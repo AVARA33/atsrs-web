@@ -4,47 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ATSRS - Offshore Certificate Tracker</title>
-
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:white}
-header{text-align:center;padding:45px 20px;background:linear-gradient(135deg,#0f172a,#1e3a8a)}
-h1{font-size:48px;margin:0 0 10px}
-.hero{color:#cbd5e1;font-size:20px}
-section{max-width:1100px;margin:auto;padding:25px 20px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
-.card,.box{background:#1e293b;padding:20px;border-radius:14px;border:1px solid #334155}
-.stat{font-size:42px;margin:10px 0}
-.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
-input,select,button{padding:12px;width:100%;margin:7px 0;border-radius:8px;border:none;box-sizing:border-box}
+header{text-align:center;padding:35px 20px;background:linear-gradient(135deg,#0f172a,#1e3a8a)}
+h1{margin:0;font-size:44px}
+section{max-width:1100px;margin:auto;padding:22px 18px}
+.box,.card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+input,select,button{width:100%;padding:12px;margin:7px 0;border:none;border-radius:8px;box-sizing:border-box}
 button{background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+button:hover{opacity:.9}
 .delete{background:#dc2626}
-table{width:100%;border-collapse:collapse;margin-top:15px}
+.logout{background:#475569}
+.stat{font-size:38px;margin:5px 0}
+.good{color:#4ade80}.warning{color:#facc15}.danger{color:#f87171}
+table{width:100%;border-collapse:collapse;margin-top:12px}
 th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 th{color:#93c5fd}
-footer{text-align:center;padding:30px;color:#94a3b8}
+.topbar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding:12px 18px}
+.topbar select,.topbar button{width:auto}
+.hidden{display:none}
+footer{text-align:center;color:#94a3b8;padding:25px}
 </style>
 </head>
 
 <body>
 
+<div class="topbar">
+<select id="language" onchange="setLanguage()">
+<option value="en">EN</option>
+<option value="az">AZ</option>
+</select>
+<button id="logoutBtn" class="logout hidden" onclick="logout()">Logout</button>
+</div>
+
 <header>
 <h1>ATSRS</h1>
-<p class="hero">Offshore Crew Certificate & Training Expiry Tracker</p>
-<p>Track crew certificates, medicals, passports, visas and offshore training expiry dates.</p>
+<p id="subtitle">Offshore Crew Certificate & Training Expiry Tracker</p>
 </header>
 
+<section id="authSection">
+<div class="box">
+<h2 id="authTitle">Login</h2>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()" id="loginBtn">Login</button>
+<button onclick="register()" id="registerBtn">Register</button>
+<p id="authMsg"></p>
+</div>
+</section>
+
+<main id="appSection" class="hidden">
+
 <section>
-<h2>Dashboard</h2>
+<h2 id="dashboardTitle">Dashboard</h2>
 <div class="cards">
-<div class="card"><p>Total Certificates</p><h3 class="stat" id="total">0</h3></div>
-<div class="card"><p>Expiring in 90 Days</p><h3 class="stat warning" id="soon90">0</h3></div>
-<div class="card"><p>Expiring in 30 Days</p><h3 class="stat danger" id="soon30">0</h3></div>
-<div class="card"><p>Expired</p><h3 class="stat danger" id="expired">0</h3></div>
+<div class="card"><p id="totalText">Total Certificates</p><h3 class="stat" id="total">0</h3></div>
+<div class="card"><p id="soon90Text">Expiring in 90 Days</p><h3 class="stat warning" id="soon90">0</h3></div>
+<div class="card"><p id="soon30Text">Expiring in 30 Days</p><h3 class="stat danger" id="soon30">0</h3></div>
+<div class="card"><p id="expiredText">Expired</p><h3 class="stat danger" id="expired">0</h3></div>
 </div>
 </section>
 
 <section>
-<h2>Add Certificate</h2>
+<h2 id="addTitle">Add Certificate</h2>
 <div class="box">
 <input id="name" type="text" placeholder="Crew Member Name">
 <input id="position" type="text" placeholder="Position / Rank">
@@ -60,22 +83,22 @@ footer{text-align:center;padding:30px;color:#94a3b8}
 <option>Other</option>
 </select>
 <input id="expiry" type="date">
-<button onclick="addCertificate()">Add Certificate</button>
+<button onclick="addCertificate()" id="addBtn">Add Certificate</button>
 </div>
 </section>
 
 <section>
-<h2>Certificate Overview</h2>
+<h2 id="overviewTitle">Certificate Overview</h2>
 <div class="box">
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Position</th>
-<th>Certificate</th>
-<th>Expiry Date</th>
-<th>Status</th>
-<th>Action</th>
+<th id="thName">Name</th>
+<th id="thPosition">Position</th>
+<th id="thCertificate">Certificate</th>
+<th id="thExpiry">Expiry Date</th>
+<th id="thStatus">Status</th>
+<th id="thAction">Action</th>
 </tr>
 </thead>
 <tbody id="tableBody"></tbody>
@@ -83,100 +106,175 @@ footer{text-align:center;padding:30px;color:#94a3b8}
 </div>
 </section>
 
-<section>
-<h2>Why ATSRS?</h2>
-<div class="box">
-<p>Offshore mobilisation can fail because of one expired certificate. ATSRS helps track expiry dates before they become an operational problem.</p>
-<p>No Excel chaos. Clear certificate visibility, expiry status and simple compliance tracking.</p>
-</div>
-</section>
+</main>
 
-<footer>
-<p>ATSRS © 2026</p>
-</footer>
+<footer>ATSRS © 2026</footer>
 
 <script>
-let records = JSON.parse(localStorage.getItem("atsrsRecords")) || [];
+let currentUser = localStorage.getItem("atsrsCurrentUser");
+let lang = localStorage.getItem("atsrsLang") || "en";
+document.getElementById("language").value = lang;
 
-function saveData(){
- localStorage.setItem("atsrsRecords", JSON.stringify(records));
-}
-
-function addCertificate(){
- const name = document.getElementById("name").value.trim();
- const position = document.getElementById("position").value.trim();
- const certificate = document.getElementById("certificate").value;
- const expiry = document.getElementById("expiry").value;
-
- if(!name || !position || !expiry){
-  alert("Please fill all fields.");
-  return;
+const t = {
+ en:{
+  subtitle:"Offshore Crew Certificate & Training Expiry Tracker",
+  authTitle:"Login", login:"Login", register:"Register",
+  dashboard:"Dashboard", total:"Total Certificates", soon90:"Expiring in 90 Days", soon30:"Expiring in 30 Days", expired:"Expired",
+  add:"Add Certificate", addBtn:"Add Certificate", overview:"Certificate Overview",
+  name:"Name", position:"Position", cert:"Certificate", expiry:"Expiry Date", status:"Status", action:"Action",
+  valid:"Valid", exp90:"Expiring <90 Days", exp30:"Expiring <30 Days", expiredStatus:"Expired",
+  fill:"Please fill all fields.", exists:"User already exists.", created:"Account created. You can login now.", wrong:"Wrong email or password."
+ },
+ az:{
+  subtitle:"Offshore heyət sertifikat və təlim müddəti izləmə sistemi",
+  authTitle:"Giriş", login:"Giriş", register:"Qeydiyyat",
+  dashboard:"Dashboard", total:"Ümumi sertifikat", soon90:"90 günə bitənlər", soon30:"30 günə bitənlər", expired:"Vaxtı keçmiş",
+  add:"Sertifikat əlavə et", addBtn:"Sertifikat əlavə et", overview:"Sertifikat siyahısı",
+  name:"Ad", position:"Vəzifə", cert:"Sertifikat", expiry:"Bitmə tarixi", status:"Status", action:"Əməliyyat",
+  valid:"Aktiv", exp90:"90 günə bitir", exp30:"30 günə bitir", expiredStatus:"Vaxtı keçib",
+  fill:"Bütün xanaları doldur.", exists:"Bu istifadəçi artıq var.", created:"Hesab yaradıldı. İndi giriş et.", wrong:"Email və ya şifrə səhvdir."
  }
+};
 
- records.push({name, position, certificate, expiry});
- saveData();
- clearForm();
+function setLanguage(){
+ lang=document.getElementById("language").value;
+ localStorage.setItem("atsrsLang",lang);
+ applyLang();
  render();
 }
 
-function clearForm(){
- document.getElementById("name").value = "";
- document.getElementById("position").value = "";
- document.getElementById("expiry").value = "";
+function applyLang(){
+ let x=t[lang];
+ subtitle.innerText=x.subtitle;
+ authTitle.innerText=x.authTitle;
+ loginBtn.innerText=x.login;
+ registerBtn.innerText=x.register;
+ dashboardTitle.innerText=x.dashboard;
+ totalText.innerText=x.total;
+ soon90Text.innerText=x.soon90;
+ soon30Text.innerText=x.soon30;
+ expiredText.innerText=x.expired;
+ addTitle.innerText=x.add;
+ addBtn.innerText=x.addBtn;
+ overviewTitle.innerText=x.overview;
+ thName.innerText=x.name;
+ thPosition.innerText=x.position;
+ thCertificate.innerText=x.cert;
+ thExpiry.innerText=x.expiry;
+ thStatus.innerText=x.status;
+ thAction.innerText=x.action;
+ logoutBtn.innerText="Logout";
 }
 
-function deleteRecord(index){
- records.splice(index,1);
- saveData();
+function getUsers(){
+ return JSON.parse(localStorage.getItem("atsrsUsers")) || [];
+}
+function saveUsers(users){
+ localStorage.setItem("atsrsUsers",JSON.stringify(users));
+}
+function register(){
+ let email=document.getElementById("email").value.trim();
+ let password=document.getElementById("password").value.trim();
+ if(!email||!password){authMsg.innerText=t[lang].fill;return;}
+ let users=getUsers();
+ if(users.find(u=>u.email===email)){authMsg.innerText=t[lang].exists;return;}
+ users.push({email,password});
+ saveUsers(users);
+ authMsg.innerText=t[lang].created;
+}
+function login(){
+ let email=document.getElementById("email").value.trim();
+ let password=document.getElementById("password").value.trim();
+ let users=getUsers();
+ let user=users.find(u=>u.email===email&&u.password===password);
+ if(!user){authMsg.innerText=t[lang].wrong;return;}
+ currentUser=email;
+ localStorage.setItem("atsrsCurrentUser",email);
+ showApp();
+}
+function logout(){
+ localStorage.removeItem("atsrsCurrentUser");
+ currentUser=null;
+ showAuth();
+}
+function showApp(){
+ authSection.classList.add("hidden");
+ appSection.classList.remove("hidden");
+ logoutBtn.classList.remove("hidden");
  render();
 }
-
+function showAuth(){
+ authSection.classList.remove("hidden");
+ appSection.classList.add("hidden");
+ logoutBtn.classList.add("hidden");
+}
+function dataKey(){
+ return "atsrsRecords_" + currentUser;
+}
+function getRecords(){
+ return JSON.parse(localStorage.getItem(dataKey())) || [];
+}
+function saveRecords(records){
+ localStorage.setItem(dataKey(),JSON.stringify(records));
+}
+function addCertificate(){
+ let records=getRecords();
+ let name=document.getElementById("name").value.trim();
+ let position=document.getElementById("position").value.trim();
+ let certificate=document.getElementById("certificate").value;
+ let expiry=document.getElementById("expiry").value;
+ if(!name||!position||!expiry){alert(t[lang].fill);return;}
+ records.push({name,position,certificate,expiry});
+ saveRecords(records);
+ document.getElementById("name").value="";
+ document.getElementById("position").value="";
+ document.getElementById("expiry").value="";
+ render();
+}
+function deleteRecord(i){
+ let records=getRecords();
+ records.splice(i,1);
+ saveRecords(records);
+ render();
+}
 function getStatus(expiry){
- const today = new Date();
- const exp = new Date(expiry);
- const diff = Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
-
- if(diff < 0) return {text:"Expired", cls:"danger"};
- if(diff <= 30) return {text:"Expiring <30 Days", cls:"danger"};
- if(diff <= 90) return {text:"Expiring <90 Days", cls:"warning"};
- return {text:"Valid", cls:"good"};
+ let today=new Date();
+ today.setHours(0,0,0,0);
+ let exp=new Date(expiry);
+ let diff=Math.ceil((exp-today)/(1000*60*60*24));
+ if(diff<0)return{text:t[lang].expiredStatus,cls:"danger",type:"expired"};
+ if(diff<=30)return{text:t[lang].exp30,cls:"danger",type:"30"};
+ if(diff<=90)return{text:t[lang].exp90,cls:"warning",type:"90"};
+ return{text:t[lang].valid,cls:"good",type:"valid"};
 }
-
 function render(){
- const tableBody = document.getElementById("tableBody");
- tableBody.innerHTML = "";
-
- let total = records.length;
- let soon90 = 0;
- let soon30 = 0;
- let expired = 0;
-
- records.forEach((r,index)=>{
-  const status = getStatus(r.expiry);
-
-  if(status.text === "Expired") expired++;
-  else if(status.text === "Expiring <30 Days") soon30++;
-  else if(status.text === "Expiring <90 Days") soon90++;
-
-  tableBody.innerHTML += `
-   <tr>
-    <td>${r.name}</td>
-    <td>${r.position}</td>
-    <td>${r.certificate}</td>
-    <td>${r.expiry}</td>
-    <td class="${status.cls}">${status.text}</td>
-    <td><button class="delete" onclick="deleteRecord(${index})">Delete</button></td>
-   </tr>
-  `;
+ if(!currentUser)return;
+ let records=getRecords();
+ tableBody.innerHTML="";
+ let total=records.length, soon90=0, soon30=0, expired=0;
+ records.forEach((r,i)=>{
+  let s=getStatus(r.expiry);
+  if(s.type==="expired")expired++;
+  if(s.type==="30")soon30++;
+  if(s.type==="90")soon90++;
+  tableBody.innerHTML+=`
+  <tr>
+  <td>${r.name}</td>
+  <td>${r.position}</td>
+  <td>${r.certificate}</td>
+  <td>${r.expiry}</td>
+  <td class="${s.cls}">${s.text}</td>
+  <td><button class="delete" onclick="deleteRecord(${i})">Delete</button></td>
+  </tr>`;
  });
-
- document.getElementById("total").innerText = total;
- document.getElementById("soon90").innerText = soon90;
- document.getElementById("soon30").innerText = soon30;
- document.getElementById("expired").innerText = expired;
+ document.getElementById("total").innerText=total;
+ document.getElementById("soon90").innerText=soon90;
+ document.getElementById("soon30").innerText=soon30;
+ document.getElementById("expired").innerText=expired;
 }
 
-render();
+applyLang();
+if(currentUser)showApp();else showAuth();
 </script>
 
 </body>
