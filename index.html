@@ -6,243 +6,178 @@
 <title>ATSRS - Offshore Certificate Tracker</title>
 
 <style>
-body{
- margin:0;
- font-family:Arial, sans-serif;
- background:#0f172a;
- color:white;
-}
-header{
- text-align:center;
- padding:70px 20px 55px;
- background:linear-gradient(135deg,#0f172a,#1e3a8a);
-}
-h1{
- font-size:58px;
- margin:0 0 10px;
-}
-.hero{
- color:#cbd5e1;
- font-size:22px;
- margin-bottom:10px;
-}
-section{
- max-width:1100px;
- margin:auto;
- padding:32px 20px;
-}
-.cards{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:18px;
-}
-.card,.box{
- background:#1e293b;
- padding:24px;
- border-radius:16px;
- border:1px solid #334155;
-}
-.card h3{
- margin:8px 0;
-}
-.stat{
- font-size:46px;
- line-height:1;
-}
-.badge{
- display:inline-block;
- padding:6px 10px;
- border-radius:20px;
- font-size:13px;
- background:#2563eb;
-}
-table{
- width:100%;
- border-collapse:collapse;
- margin-top:15px;
-}
-th,td{
- padding:12px;
- border-bottom:1px solid #334155;
- text-align:left;
-}
-th{
- color:#93c5fd;
-}
-.warning{color:#facc15;}
-.danger{color:#f87171;}
-.good{color:#4ade80;}
-button{
- background:#2563eb;
- color:white;
- border:none;
- padding:12px 22px;
- border-radius:10px;
- cursor:pointer;
- font-weight:bold;
-}
-input,select{
- padding:11px;
- width:100%;
- margin:8px 0;
- border-radius:8px;
- border:none;
- box-sizing:border-box;
-}
-footer{
- text-align:center;
- padding:35px;
- color:#94a3b8;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:white}
+header{text-align:center;padding:45px 20px;background:linear-gradient(135deg,#0f172a,#1e3a8a)}
+h1{font-size:48px;margin:0 0 10px}
+.hero{color:#cbd5e1;font-size:20px}
+section{max-width:1100px;margin:auto;padding:25px 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
+.card,.box{background:#1e293b;padding:20px;border-radius:14px;border:1px solid #334155}
+.stat{font-size:42px;margin:10px 0}
+.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
+input,select,button{padding:12px;width:100%;margin:7px 0;border-radius:8px;border:none;box-sizing:border-box}
+button{background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+.delete{background:#dc2626}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
+th{color:#93c5fd}
+footer{text-align:center;padding:30px;color:#94a3b8}
 </style>
 </head>
 
 <body>
 
 <header>
- <h1>ATSRS</h1>
- <p class="hero">Offshore Crew Compliance Platform</p>
- <p>Track BOSIET, Medical, Seaman Book, Passport, Visa and offshore training expiry dates in one clear system.</p>
- <br>
- <button>Request Demo</button>
+<h1>ATSRS</h1>
+<p class="hero">Offshore Crew Certificate & Training Expiry Tracker</p>
+<p>Track crew certificates, medicals, passports, visas and offshore training expiry dates.</p>
 </header>
 
 <section>
- <h2>Dashboard</h2>
- <div class="cards">
-  <div class="card">
-   <span class="badge">Crew</span>
-   <h3 class="stat">42</h3>
-   <p>Total Personnel</p>
-  </div>
-  <div class="card">
-   <span class="badge">Warning</span>
-   <h3 class="stat warning">8</h3>
-   <p>Expiring in 90 Days</p>
-  </div>
-  <div class="card">
-   <span class="badge">Critical</span>
-   <h3 class="stat danger">3</h3>
-   <p>Expiring in 30 Days</p>
-  </div>
-  <div class="card">
-   <span class="badge">Expired</span>
-   <h3 class="stat danger">2</h3>
-   <p>Expired Certificates</p>
-  </div>
- </div>
+<h2>Dashboard</h2>
+<div class="cards">
+<div class="card"><p>Total Certificates</p><h3 class="stat" id="total">0</h3></div>
+<div class="card"><p>Expiring in 90 Days</p><h3 class="stat warning" id="soon90">0</h3></div>
+<div class="card"><p>Expiring in 30 Days</p><h3 class="stat danger" id="soon30">0</h3></div>
+<div class="card"><p>Expired</p><h3 class="stat danger" id="expired">0</h3></div>
+</div>
 </section>
 
 <section>
- <h2>Certificate Overview</h2>
- <div class="box">
-  <table>
-   <tr>
-    <th>Name</th>
-    <th>Position</th>
-    <th>Certificate</th>
-    <th>Expiry Date</th>
-    <th>Status</th>
-   </tr>
-   <tr>
-    <td>Anar Agasiyev</td>
-    <td>ROV Senior Pilot Tech</td>
-    <td>Offshore Medical</td>
-    <td>20 Nov 2026</td>
-    <td class="good">Valid</td>
-   </tr>
-   <tr>
-    <td>Sample Crew</td>
-    <td>Survey Engineer</td>
-    <td>BOSIET</td>
-    <td>15 Jul 2026</td>
-    <td class="warning">Expiring Soon</td>
-   </tr>
-   <tr>
-    <td>Sample Crew</td>
-    <td>Rigger</td>
-    <td>Seaman Book</td>
-    <td>01 Jun 2026</td>
-    <td class="danger">Expired</td>
-   </tr>
-  </table>
- </div>
+<h2>Add Certificate</h2>
+<div class="box">
+<input id="name" type="text" placeholder="Crew Member Name">
+<input id="position" type="text" placeholder="Position / Rank">
+<select id="certificate">
+<option>BOSIET / FOET</option>
+<option>Offshore Medical</option>
+<option>Seaman Book</option>
+<option>Passport</option>
+<option>Visa</option>
+<option>Yellow Fever</option>
+<option>DP Certificate</option>
+<option>ROV Competency</option>
+<option>Other</option>
+</select>
+<input id="expiry" type="date">
+<button onclick="addCertificate()">Add Certificate</button>
+</div>
 </section>
 
 <section>
- <h2>Platform Modules</h2>
- <div class="cards">
-  <div class="card">
-   <h3>Crew Certificate Tracking</h3>
-   <p>Manage offshore certificates for all personnel in one dashboard.</p>
-  </div>
-  <div class="card">
-   <h3>Expiry Alerts</h3>
-   <p>See certificates expiring in 90, 30 and 7 days.</p>
-  </div>
-  <div class="card">
-   <h3>Medical & Seaman Book</h3>
-   <p>Track offshore medicals, seaman books and related documents.</p>
-  </div>
-  <div class="card">
-   <h3>Visa & Passport Monitoring</h3>
-   <p>Reduce mobilisation risk by tracking travel document expiry.</p>
-  </div>
- </div>
+<h2>Certificate Overview</h2>
+<div class="box">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Position</th>
+<th>Certificate</th>
+<th>Expiry Date</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
 </section>
 
 <section>
- <h2>Add Crew Member</h2>
- <div class="box">
-  <input type="text" placeholder="Full Name">
-  <input type="text" placeholder="Position / Rank">
-  <input type="text" placeholder="Company">
-  <button>Add Personnel</button>
- </div>
-</section>
-
-<section>
- <h2>Add Certificate</h2>
- <div class="box">
-  <input type="text" placeholder="Crew Member Name">
-  <select>
-   <option>BOSIET / FOET</option>
-   <option>Offshore Medical</option>
-   <option>Seaman Book</option>
-   <option>Passport</option>
-   <option>Visa</option>
-   <option>Yellow Fever</option>
-   <option>DP Certificate</option>
-   <option>ROV Competency</option>
-   <option>Other</option>
-  </select>
-  <input type="date">
-  <button>Add Certificate</button>
- </div>
-</section>
-
-<section>
- <h2>Why ATSRS?</h2>
- <div class="box">
-  <p>Offshore mobilisation can fail because of one expired certificate. ATSRS gives companies a simple way to track crew readiness before the project starts.</p>
-  <p>No overloaded HR system. No Excel chaos. Just certificate status, expiry alerts and clear compliance visibility.</p>
- </div>
-</section>
-
-<section>
- <h2>Contact</h2>
- <div class="box">
-  <input type="text" placeholder="Your Name">
-  <input type="email" placeholder="Your Email">
-  <input type="text" placeholder="Message">
-  <button>Send Message</button>
- </div>
+<h2>Why ATSRS?</h2>
+<div class="box">
+<p>Offshore mobilisation can fail because of one expired certificate. ATSRS helps track expiry dates before they become an operational problem.</p>
+<p>No Excel chaos. Clear certificate visibility, expiry status and simple compliance tracking.</p>
+</div>
 </section>
 
 <footer>
- <p>ATSRS © 2026</p>
- <p>Offshore Certificate & Training Expiry Tracker</p>
+<p>ATSRS © 2026</p>
 </footer>
+
+<script>
+let records = JSON.parse(localStorage.getItem("atsrsRecords")) || [];
+
+function saveData(){
+ localStorage.setItem("atsrsRecords", JSON.stringify(records));
+}
+
+function addCertificate(){
+ const name = document.getElementById("name").value.trim();
+ const position = document.getElementById("position").value.trim();
+ const certificate = document.getElementById("certificate").value;
+ const expiry = document.getElementById("expiry").value;
+
+ if(!name || !position || !expiry){
+  alert("Please fill all fields.");
+  return;
+ }
+
+ records.push({name, position, certificate, expiry});
+ saveData();
+ clearForm();
+ render();
+}
+
+function clearForm(){
+ document.getElementById("name").value = "";
+ document.getElementById("position").value = "";
+ document.getElementById("expiry").value = "";
+}
+
+function deleteRecord(index){
+ records.splice(index,1);
+ saveData();
+ render();
+}
+
+function getStatus(expiry){
+ const today = new Date();
+ const exp = new Date(expiry);
+ const diff = Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
+
+ if(diff < 0) return {text:"Expired", cls:"danger"};
+ if(diff <= 30) return {text:"Expiring <30 Days", cls:"danger"};
+ if(diff <= 90) return {text:"Expiring <90 Days", cls:"warning"};
+ return {text:"Valid", cls:"good"};
+}
+
+function render(){
+ const tableBody = document.getElementById("tableBody");
+ tableBody.innerHTML = "";
+
+ let total = records.length;
+ let soon90 = 0;
+ let soon30 = 0;
+ let expired = 0;
+
+ records.forEach((r,index)=>{
+  const status = getStatus(r.expiry);
+
+  if(status.text === "Expired") expired++;
+  else if(status.text === "Expiring <30 Days") soon30++;
+  else if(status.text === "Expiring <90 Days") soon90++;
+
+  tableBody.innerHTML += `
+   <tr>
+    <td>${r.name}</td>
+    <td>${r.position}</td>
+    <td>${r.certificate}</td>
+    <td>${r.expiry}</td>
+    <td class="${status.cls}">${status.text}</td>
+    <td><button class="delete" onclick="deleteRecord(${index})">Delete</button></td>
+   </tr>
+  `;
+ });
+
+ document.getElementById("total").innerText = total;
+ document.getElementById("soon90").innerText = soon90;
+ document.getElementById("soon30").innerText = soon30;
+ document.getElementById("expired").innerText = expired;
+}
+
+render();
+</script>
 
 </body>
 </html>
