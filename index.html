@@ -3,56 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATSRS - Website Monitoring & Testing</title>
+<title>ATSRS - Offshore Certificate Tracker</title>
 
 <style>
 body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#0f172a;
-    color:white;
+ margin:0;
+ font-family:Arial, sans-serif;
+ background:#0f172a;
+ color:white;
 }
 header{
-    text-align:center;
-    padding:80px 20px;
+ text-align:center;
+ padding:80px 20px;
+ background:linear-gradient(135deg,#0f172a,#1e3a8a);
 }
 h1{
-    font-size:60px;
+ font-size:58px;
+ margin-bottom:10px;
 }
 .hero{
-    color:#94a3b8;
-    font-size:20px;
+ color:#cbd5e1;
+ font-size:22px;
 }
 section{
-    max-width:1100px;
-    margin:auto;
-    padding:50px 20px;
+ max-width:1100px;
+ margin:auto;
+ padding:45px 20px;
 }
 .cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+ gap:20px;
 }
-.card,.demo-box{
-    background:#1e293b;
-    padding:25px;
-    border-radius:15px;
+.card,.box{
+ background:#1e293b;
+ padding:25px;
+ border-radius:16px;
+ border:1px solid #334155;
 }
+.card h3{
+ margin-top:0;
+}
+.badge{
+ display:inline-block;
+ padding:6px 10px;
+ border-radius:20px;
+ font-size:13px;
+ background:#2563eb;
+}
+table{
+ width:100%;
+ border-collapse:collapse;
+ margin-top:15px;
+}
+th,td{
+ padding:12px;
+ border-bottom:1px solid #334155;
+ text-align:left;
+}
+th{
+ color:#93c5fd;
+}
+.warning{color:#facc15;}
+.danger{color:#f87171;}
+.good{color:#4ade80;}
 button{
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:10px;
+ background:#2563eb;
+ color:white;
+ border:none;
+ padding:12px 20px;
+ border-radius:10px;
+ cursor:pointer;
 }
-input{
-    padding:10px;
-    width:250px;
+input,select{
+ padding:11px;
+ width:100%;
+ margin:8px 0;
+ border-radius:8px;
+ border:none;
 }
 footer{
-    text-align:center;
-    padding:40px;
-    color:#94a3b8;
+ text-align:center;
+ padding:35px;
+ color:#94a3b8;
 }
 </style>
 </head>
@@ -60,220 +93,33 @@ footer{
 <body>
 
 <header>
-<h1>ATSRS</h1>
-<p class="hero">Website Monitoring, SSL Monitoring and Automated Testing Platform</p>
-<p>Detect downtime, SSL issues and website failures before your customers do.</p>
+ <h1>ATSRS</h1>
+ <p class="hero">Offshore Crew Certificate & Training Expiry Tracker</p>
+ <p>Track BOSIET, Medical, Seaman Book, Passport, Visa and offshore training expiry dates in one clear system.</p>
 </header>
 
 <section>
-<h2>Our Services</h2>
-
-<div class="cards">
-<div class="card">
-<h3>Website Monitoring</h3>
-<p>24/7 uptime monitoring with instant alerts.</p>
-</div>
-
-<div class="card">
-<h3>SSL Monitoring</h3>
-<p>Track SSL certificate validity and expiry dates.</p>
-</div>
-
-<div class="card">
-<h3>Performance Monitoring</h3>
-<p>Measure response time and detect slow pages.</p>
-</div>
-
-<div class="card">
-<h3>Broken Link Detection</h3>
-<p>Find invalid or inaccessible links.</p>
-</div>
-
-<div class="card">
-<h3>Automated Testing</h3>
-<p>Test buttons, forms and user journeys automatically.</p>
-</div>
-
-<div class="card">
-<h3>Reports</h3>
-<p>Receive clear website health and failure reports.</p>
-</div>
-</div>
-</section>
-
-<section>
-<h2>Demo Testing Area</h2>
-
-<div class="demo-box">
-<p>This area is created for ATSRS demo testing.</p>
-
-<button onclick="alert('Button Test Successful')">Test Button</button>
-
-<br><br>
-
-<input type="text" placeholder="Test Input Field">
-</div>
-</section>
-
-<section>
-<h2>Sample Report</h2>
-
-<div class="demo-box">
-<p>Website Status: ✅ Online</p>
-<p>SSL Status: ✅ Valid</p>
-<p>Response Time: 0.42 sec</p>
-<p>Broken Links: 0</p>
-<p>Last Check: Successful</p>
-</div>
-</section>
-<section>
-
-<h2>About ATSRS</h2>
-
-<div class="demo-box">
-<p>
-ATSRS helps businesses monitor website uptime,
-SSL certificates, performance issues and website failures.
-</p>
-
-<p>
-Our goal is to provide simple monitoring,
-automated testing and clear reporting.
-</p>
-</div>
-
-</section>
-
-<section>
-
-<h2>Contact Us</h2>
-
-<div class="demo-box">
-
-<input type="text" placeholder="Your Name">
-
-<br><br>
-
-<input type="email" placeholder="Your Email">
-
-<br><br>
-
-<input type="text" placeholder="Your Message">
-
-<br><br>
-
-<button>Send Message</button>
-
-</div>
-
-</section>
-
-<section>
-
-<h2>Login Demo</h2>
-
-<div class="demo-box">
-
-<input type="email" placeholder="Email">
-
-<br><br>
-
-<input type="password" placeholder="Password">
-
-<br><br>
-
-<button>Login</button>
-
-</div>
-
-</section>
-
-<section>
-
-<h2>Create Account</h2>
-
-<div class="demo-box">
-
-<input type="text" placeholder="Full Name">
-
-<br><br>
-
-<input type="email" placeholder="Email">
-
-<br><br>
-
-<input type="password" placeholder="Password">
-
-<br><br>
-
-<button>Create Account</button>
-
-</div>
-
-</section>
-  <section>
-
-<h2>ATSRS Dashboard</h2>
-
-<div class="demo-box">
-
-<p><b>Monitored Websites:</b> 12</p>
-<p><b>Online:</b> ✅ 11</p>
-<p><b>Offline:</b> ❌ 1</p>
-<p><b>SSL Expiring Soon:</b> 2</p>
-<p><b>Average Response Time:</b> 0.38 sec</p>
-<p><b>Last Incident:</b> api.client.com</p>
-<p><b>Incident Time:</b> 2 hours ago</p>
-
-</div>
-
-</section>
-<section>
-
-<h2>Automation Test Summary</h2>
-
-<div class="demo-box">
-<p><b>Total Tests:</b> 124</p>
-<p><b>Passed:</b> ✅ 119</p>
-<p><b>Failed:</b> ❌ 5</p>
-<p><b>Success Rate:</b> 95.97%</p>
-<p><b>Last Run:</b> 01 Jun 2026</p>
-<p><b>Execution Time:</b> 18 min</p>
-</div>
-
-</section>
-<section>
-
-<h2>Test Failures Demo</h2>
-
-<div class="demo-box">
-
-<p>❌ Checkout with Visa</p>
-<p>❌ User Registration</p>
-<p>❌ Password Reset Email</p>
-<p>❌ Product Search Filter</p>
-<p>❌ User Profile Update</p>
-
-</div>
-
-</section>
- <section>
-
-<h2>Test Coverage</h2>
-
-<div class="demo-box">
-<p>🌐 Web UI Tests: 45</p>
-<p>🔗 API Tests: 38</p>
-<p>📱 Mobile Tests: 21</p>
-<p>🔒 Security Checks: 12</p>
-<p>⚡ Performance Tests: 8</p>
-</div>
-
- </section>
-<footer>
-<p>ATSRS © 2026</p>
-<p>hello@atsrs.com</p>
-</footer>
-
-</body>
-</html>
+ <h2>Platform Modules</h2>
+ <div class="cards">
+  <div class="card">
+   <h3>Crew Certificate Tracking</h3>
+   <p>Manage certificates for offshore personnel in one dashboard.</p>
+  </div>
+  <div class="card">
+   <h3>Expiry Alerts</h3>
+   <p>See certificates expiring in 90, 30 and 7 days.</p>
+  </div>
+  <div class="card">
+   <h3>Training Matrix</h3>
+   <p>Check which crew member has valid or expired training.</p>
+  </div>
+  <div class="card">
+   <h3>Medical & Seaman Book</h3>
+   <p>Track offshore medicals, seaman books and related documents.</p>
+  </div>
+  <div class="card">
+   <h3>Visa & Passport Monitoring</h3>
+   <p>Reduce mobilisation risk by tracking travel document expiry.</p>
+  </div>
+  <div class="card">
+   <h3>Compliance Reports</h3
