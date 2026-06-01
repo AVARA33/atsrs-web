@@ -3,298 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATSRS - Offshore Compliance Platform</title>
+<title>ATSRS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
-body.light{background:#f1f5f9;color:#0f172a}
 .hidden{display:none!important}
-button,input,select,textarea{font-family:inherit}
-button{cursor:pointer;border:0;border-radius:10px;padding:11px 14px;font-weight:700;background:#2563eb;color:white}
-button:hover{opacity:.9}
-input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:white;margin:7px 0}
-body.light input,body.light select,body.light textarea{background:white;color:#0f172a}
-.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#020617,#1e3a8a)}
+button,input,select{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #334155}
+button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
+.secondary{background:#475569}
+.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px}
 .auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
-.logo{font-size:38px;font-weight:900;margin:0}
+.logo{font-size:40px;font-weight:900;margin:0}
 .sub{color:#94a3b8}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 .sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}
-.brand{font-size:30px;font-weight:900;margin-bottom:6px}
-.nav button{width:100%;text-align:left;background:transparent;color:#cbd5e1;margin:5px 0}
+.brand{font-size:30px;font-weight:900}
+.nav button{text-align:left;background:transparent;color:#cbd5e1}
 .nav button.active,.nav button:hover{background:#1e293b;color:white}
 .main{padding:22px}
-.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:20px}
-.userbox{display:flex;gap:12px;align-items:center}
-.avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:#334155}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px}
-body.light .card,body.light .panel,body.light .auth-card{background:white;color:#0f172a}
-.stat{font-size:38px;margin:8px 0;font-weight:900}
-.good{color:#4ade80}.warning{color:#facc15}.danger{color:#f87171}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:11px;border-bottom:1px solid #334155;text-align:left;font-size:14px}
-th{color:#93c5fd}
-.action{background:#dc2626;padding:8px 10px}
-.secondary{background:#475569}
-.success{background:#16a34a}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-hr{border:0;border-top:1px solid #334155;margin:18px 0}
-@media(max-width:800px){
- .app{grid-template-columns:1fr}
- .row{grid-template-columns:1fr}
- .topbar{flex-direction:column;align-items:stretch}
-}
+.stat{font-size:38px;font-weight:900}
+.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
+.action{background:#dc2626}
+@media(max-width:800px){.app{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
 
 <section id="auth" class="auth">
- <div class="auth-card">
-  <h1 class="logo">ATSRS</h1>
-  <p class="sub" data-i18n="platform">Offshore Crew Compliance Platform</p>
-  <h2 data-i18n="login">Login</h2>
-  <input id="authEmail" type="email" placeholder="Email">
-  <input id="authPassword" type="password" placeholder="Password">
-  <button onclick="login()" data-i18n="login">Login</button>
-  <button class="secondary" onclick="register()" data-i18n="register">Register</button>
-  <p id="authMsg" class="sub"></p>
- </div>
+<div class="auth-card">
+<h1 class="logo">ATSRS</h1>
+<p class="sub">Offshore Crew Compliance Platform</p>
+
+<select id="authLang">
+<option value="en">English</option>
+<option value="az">Azərbaycan</option>
+<option value="ru">Русский</option>
+<option value="tr">Türkçe</option>
+<option value="no">Norsk</option>
+<option value="de">Deutsch</option>
+<option value="fr">Français</option>
+<option value="es">Español</option>
+<option value="pt">Português</option>
+<option value="ar">العربية</option>
+</select>
+
+<div id="loginBox">
+<h2>Login</h2>
+<input id="loginEmail" type="email" placeholder="Email">
+<input id="loginPassword" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button class="secondary" onclick="register()">Register</button>
+<button class="secondary" onclick="showForgot()">Forgot Password?</button>
+<p id="authMsg" class="sub"></p>
+</div>
+
+<div id="forgotBox" class="hidden">
+<h2>Reset Password</h2>
+<p class="sub">Enter your email. Reset link will be sent to your inbox.</p>
+<input id="resetEmail" type="email" placeholder="Email">
+<button onclick="forgotPassword()">Send Reset Email</button>
+<button class="secondary" onclick="showLogin()">Back to Login</button>
+<p id="resetMsg" class="sub"></p>
+</div>
+
+</div>
 </section>
 
 <section id="app" class="app hidden">
-
 <aside class="sidebar">
- <div class="brand">ATSRS</div>
- <p class="sub" data-i18n="cabinet">Compliance Cabinet</p>
- <div class="nav">
-  <button class="active" onclick="showPage('dashboard',this)" data-i18n="dashboard">Dashboard</button>
-  <button onclick="showPage('personnel',this)" data-i18n="personnel">Personnel</button>
-  <button onclick="showPage('certificates',this)" data-i18n="certificates">Certificates</button>
-  <button onclick="showPage('importExport',this)" data-i18n="importExport">Import / Export</button>
-  <button onclick="showPage('profile',this)" data-i18n="profile">Profile</button>
-  <button onclick="showPage('settings',this)" data-i18n="settings">Settings</button>
- </div>
+<div class="brand">ATSRS</div>
+<p class="sub">Compliance Cabinet</p>
+<div class="nav">
+<button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
+<button onclick="showPage('personnel',this)">Personnel</button>
+<button onclick="showPage('certificates',this)">Certificates</button>
+<button onclick="showPage('profile',this)">Profile</button>
+<button onclick="logout()">Logout</button>
+</div>
 </aside>
 
 <main class="main">
-
-<div class="topbar">
- <div>
-  <h2 id="pageTitle" data-i18n="dashboard">Dashboard</h2>
-  <p class="sub" data-i18n="desc">Track crew readiness, certificate expiry and mobilisation risk.</p>
- </div>
- <div class="userbox">
-  <img id="topAvatar" class="avatar">
-  <div>
-   <b id="topName">User</b><br>
-   <small class="sub" id="topCompany">Company</small>
-  </div>
-  <button class="secondary" onclick="logout()" data-i18n="logout">Logout</button>
- </div>
-</div>
+<h2 id="pageTitle">Dashboard</h2>
 
 <section id="dashboardPage">
- <div class="grid">
-  <div class="card"><p data-i18n="totalPersonnel">Total Personnel</p><div class="stat" id="totalPersonnel">0</div></div>
-  <div class="card"><p data-i18n="totalCerts">Total Certificates</p><div class="stat" id="totalCerts">0</div></div>
-  <div class="card"><p data-i18n="exp90">Expiring in 90 Days</p><div class="stat warning" id="exp90">0</div></div>
-  <div class="card"><p data-i18n="expired">Expired</p><div class="stat danger" id="expired">0</div></div>
- </div>
-
- <div class="panel" style="margin-top:18px">
-  <h3 data-i18n="criticalCerts">Critical Certificates</h3>
-  <table>
-   <thead><tr><th data-i18n="name">Name</th><th data-i18n="certificate">Certificate</th><th data-i18n="expiry">Expiry</th><th data-i18n="status">Status</th></tr></thead>
-   <tbody id="criticalTable"></tbody>
-  </table>
- </div>
+<div class="grid">
+<div class="card"><p>Total Personnel</p><div class="stat" id="totalPersonnel">0</div></div>
+<div class="card"><p>Total Certificates</p><div class="stat" id="totalCerts">0</div></div>
+<div class="card"><p>Expiring in 90 Days</p><div class="stat warning" id="exp90">0</div></div>
+<div class="card"><p>Expired</p><div class="stat danger" id="expired">0</div></div>
+</div>
 </section>
 
 <section id="personnelPage" class="hidden">
- <div class="panel">
-  <h3 data-i18n="addPersonnel">Add Personnel</h3>
-  <div class="row">
-   <input id="pName" data-ph="fullName" placeholder="Full Name">
-   <input id="pPosition" data-ph="position" placeholder="Position / Rank">
-  </div>
-  <div class="row">
-   <input id="pCompany" data-ph="company" placeholder="Company">
-   <input id="pEmail" data-ph="email" placeholder="Email">
-  </div>
-  <button onclick="addPersonnel()" data-i18n="addPersonnel">Add Personnel</button>
- </div>
-
- <div class="panel" style="margin-top:18px">
-  <h3 data-i18n="personnelList">Personnel List</h3>
-  <table>
-   <thead><tr><th data-i18n="name">Name</th><th data-i18n="positionShort">Position</th><th data-i18n="company">Company</th><th>Email</th><th data-i18n="action">Action</th></tr></thead>
-   <tbody id="personnelTable"></tbody>
-  </table>
- </div>
+<div class="panel">
+<h3>Add Personnel</h3>
+<input id="pName" placeholder="Full Name">
+<input id="pPosition" placeholder="Position / Rank">
+<input id="pCompany" placeholder="Company">
+<input id="pEmail" placeholder="Email">
+<button onclick="addPersonnel()">Add Personnel</button>
+</div>
+<div class="panel">
+<h3>Personnel List</h3>
+<table>
+<thead><tr><th>Name</th><th>Position</th><th>Company</th><th>Email</th><th>Action</th></tr></thead>
+<tbody id="personnelTable"></tbody>
+</table>
+</div>
 </section>
 
 <section id="certificatesPage" class="hidden">
- <div class="panel">
-  <h3 data-i18n="addCertificate">Add Certificate</h3>
-  <div class="row">
-   <select id="cPerson"></select>
-   <select id="cType">
-    <option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option>
-    <option>Passport</option><option>Visa</option><option>Yellow Fever</option>
-    <option>DP Certificate</option><option>ROV Competency</option><option>Other</option>
-   </select>
-  </div>
-  <div class="row">
-   <input id="cExpiry" type="date">
-   <input id="cProvider" data-ph="provider" placeholder="Training Center / Provider">
-  </div>
-  <button onclick="addCertificate()" data-i18n="addCertificate">Add Certificate</button>
- </div>
+<div class="panel">
+<h3>Add Certificate</h3>
+<select id="cPerson"></select>
+<select id="cType">
+<option>BOSIET / FOET</option>
+<option>Offshore Medical</option>
+<option>Seaman Book</option>
+<option>Passport</option>
+<option>Visa</option>
+<option>Yellow Fever</option>
+<option>DP Certificate</option>
+<option>ROV Competency</option>
+<option>Other</option>
+</select>
+<input id="cProvider" placeholder="Training Center / Provider">
+<input id="cExpiry" type="date">
+<button onclick="addCertificate()">Add Certificate</button>
+</div>
 
- <div class="panel" style="margin-top:18px">
-  <h3 data-i18n="certRegister">Certificate Register</h3>
-  <table>
-   <thead><tr><th data-i18n="name">Name</th><th data-i18n="certificate">Certificate</th><th data-i18n="provider">Provider</th><th data-i18n="expiry">Expiry</th><th data-i18n="status">Status</th><th data-i18n="action">Action</th></tr></thead>
-   <tbody id="certTable"></tbody>
-  </table>
- </div>
-</section>
-
-<section id="importExportPage" class="hidden">
- <div class="panel">
-  <h3 data-i18n="csvImport">CSV Import</h3>
-  <p class="sub">CSV format: Name, Position, Company, Email, Certificate, Provider, ExpiryDate</p>
-  <input type="file" id="csvFile" accept=".csv">
-  <button onclick="importCSV()" data-i18n="importCSV">Import CSV</button>
-  <hr>
-  <h3 data-i18n="exportData">Export Data</h3>
-  <button class="success" onclick="exportCSV()" data-i18n="exportCSV">Export CSV</button>
- </div>
+<div class="panel">
+<h3>Certificate Register</h3>
+<table>
+<thead><tr><th>Name</th><th>Certificate</th><th>Provider</th><th>Expiry</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="certTable"></tbody>
+</table>
+</div>
 </section>
 
 <section id="profilePage" class="hidden">
- <div class="panel">
-  <h3 data-i18n="profile">Profile</h3>
-  <img id="profileAvatar" class="avatar" style="width:90px;height:90px">
-  <input type="file" id="avatarInput" accept="image/*" onchange="uploadAvatar(event)">
-  <div class="row">
-   <input id="profileName" data-ph="fullName" placeholder="Full Name">
-   <input id="profileCompany" data-ph="company" placeholder="Company">
-  </div>
-  <div class="row">
-   <input id="profilePosition" data-ph="positionShort" placeholder="Position">
-   <input id="profilePhone" data-ph="phone" placeholder="Phone">
-  </div>
-  <button onclick="saveProfile()" data-i18n="saveProfile">Save Profile</button>
- </div>
-</section>
-
-<section id="settingsPage" class="hidden">
- <div class="panel">
-  <h3 data-i18n="settings">Settings</h3>
-
-  <label data-i18n="language">Language</label>
-  <select id="language">
-   <option value="en">English</option>
-   <option value="az">Azərbaycan</option>
-   <option value="ru">Русский</option>
-   <option value="tr">Türkçe</option>
-   <option value="no">Norsk</option>
-   <option value="de">Deutsch</option>
-   <option value="fr">Français</option>
-   <option value="es">Español</option>
-   <option value="pt">Português</option>
-   <option value="ar">العربية</option>
-  </select>
-
-  <label data-i18n="theme">Theme</label>
-  <select id="theme">
-   <option value="dark">Dark</option>
-   <option value="light">Light</option>
-  </select>
-
-  <button onclick="saveSettings()" data-i18n="saveSettings">Save Settings</button>
-  <p id="settingsMsg" class="sub"></p>
- </div>
+<div class="panel">
+<h3>Profile</h3>
+<p id="userEmail" class="sub"></p>
+<input id="profileName" placeholder="Full Name">
+<input id="profileCompany" placeholder="Company">
+<input id="profilePosition" placeholder="Position">
+<button onclick="saveProfile()">Save Profile</button>
+</div>
 </section>
 
 </main>
 </section>
 
 <script>
-let currentUser=localStorage.getItem("atsrsUser");
-let appLang=localStorage.getItem("atsrs_lang")||"en";
-let appTheme=localStorage.getItem("atsrs_theme")||"dark";
+const SUPABASE_URL = "https://hwtjuqyxziyymofamwxl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hKYyvejgPeKvidDR7uhPsQ_b38qz1U-";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const I18N={
-en:{platform:"Offshore Crew Compliance Platform",cabinet:"Compliance Cabinet",login:"Login",register:"Register",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",importExport:"Import / Export",profile:"Profile",settings:"Settings",desc:"Track crew readiness, certificate expiry and mobilisation risk.",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",criticalCerts:"Critical Certificates",name:"Name",certificate:"Certificate",expiry:"Expiry",status:"Status",addPersonnel:"Add Personnel",fullName:"Full Name",position:"Position / Rank",positionShort:"Position",company:"Company",email:"Email",personnelList:"Personnel List",action:"Action",addCertificate:"Add Certificate",provider:"Provider",certRegister:"Certificate Register",csvImport:"CSV Import",importCSV:"Import CSV",exportData:"Export Data",exportCSV:"Export CSV",phone:"Phone",saveProfile:"Save Profile",language:"Language",theme:"Theme",saveSettings:"Save Settings",saved:"Saved successfully.",delete:"Delete",valid:"Valid",exp30Text:"Expiring <30 days",exp90Text:"Expiring <90 days",expiredText:"Expired",selectCrew:"Select Crew Member"},
-az:{platform:"Offshore heyət uyğunluq platforması",cabinet:"Uyğunluq kabineti",login:"Giriş",register:"Qeydiyyat",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",importExport:"Import / Export",profile:"Profil",settings:"Ayarlar",desc:"Heyətin hazırlığını, sertifikat müddətini və mobilizasiya riskini izləyin.",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",criticalCerts:"Kritik sertifikatlar",name:"Ad",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",addPersonnel:"Heyət əlavə et",fullName:"Ad Soyad",position:"Vəzifə / Rank",positionShort:"Vəzifə",company:"Şirkət",email:"Email",personnelList:"Heyət siyahısı",action:"Əməliyyat",addCertificate:"Sertifikat əlavə et",provider:"Təlim mərkəzi",certRegister:"Sertifikat reyestri",csvImport:"CSV import",importCSV:"CSV import et",exportData:"Məlumat export",exportCSV:"CSV export et",phone:"Telefon",saveProfile:"Profili saxla",language:"Dil",theme:"Görünüş",saveSettings:"Ayarları saxla",saved:"Uğurla saxlanıldı.",delete:"Sil",valid:"Aktiv",exp30Text:"30 günə bitir",exp90Text:"90 günə bitir",expiredText:"Vaxtı keçib",selectCrew:"Heyət üzvü seç"},
-ru:{platform:"Платформа соответствия офшорного персонала",cabinet:"Кабинет соответствия",login:"Вход",register:"Регистрация",dashboard:"Панель",personnel:"Персонал",certificates:"Сертификаты",importExport:"Импорт / Экспорт",profile:"Профиль",settings:"Настройки",desc:"Контроль готовности персонала, сроков сертификатов и рисков мобилизации.",logout:"Выход",totalPersonnel:"Всего персонала",totalCerts:"Всего сертификатов",exp90:"Истекают за 90 дней",expired:"Истекшие",criticalCerts:"Критические сертификаты",name:"Имя",certificate:"Сертификат",expiry:"Срок",status:"Статус",addPersonnel:"Добавить персонал",fullName:"Полное имя",position:"Должность / ранг",positionShort:"Должность",company:"Компания",email:"Email",personnelList:"Список персонала",action:"Действие",addCertificate:"Добавить сертификат",provider:"Провайдер",certRegister:"Реестр сертификатов",csvImport:"CSV импорт",importCSV:"Импорт CSV",exportData:"Экспорт данных",exportCSV:"Экспорт CSV",phone:"Телефон",saveProfile:"Сохранить профиль",language:"Язык",theme:"Тема",saveSettings:"Сохранить настройки",saved:"Сохранено.",delete:"Удалить",valid:"Действителен",exp30Text:"Истекает <30 дней",exp90Text:"Истекает <90 дней",expiredText:"Истек",selectCrew:"Выберите сотрудника"},
-tr:{platform:"Offshore Ekip Uygunluk Platformu",cabinet:"Uygunluk Kabini",login:"Giriş",register:"Kayıt",dashboard:"Panel",personnel:"Personel",certificates:"Sertifikalar",importExport:"İçe / Dışa Aktar",profile:"Profil",settings:"Ayarlar",desc:"Ekip hazırlığını, sertifika sürelerini ve mobilizasyon riskini takip edin.",logout:"Çıkış",totalPersonnel:"Toplam Personel",totalCerts:"Toplam Sertifika",exp90:"90 Gün İçinde Bitecek",expired:"Süresi Geçmiş",criticalCerts:"Kritik Sertifikalar",name:"Ad",certificate:"Sertifika",expiry:"Bitiş",status:"Durum",addPersonnel:"Personel Ekle",fullName:"Ad Soyad",position:"Pozisyon / Rütbe",positionShort:"Pozisyon",company:"Şirket",email:"Email",personnelList:"Personel Listesi",action:"İşlem",addCertificate:"Sertifika Ekle",provider:"Sağlayıcı",certRegister:"Sertifika Kaydı",csvImport:"CSV İçe Aktar",importCSV:"CSV İçe Aktar",exportData:"Veri Dışa Aktar",exportCSV:"CSV Dışa Aktar",phone:"Telefon",saveProfile:"Profili Kaydet",language:"Dil",theme:"Tema",saveSettings:"Ayarları Kaydet",saved:"Kaydedildi.",delete:"Sil",valid:"Geçerli",exp30Text:"<30 gün içinde bitiyor",exp90Text:"<90 gün içinde bitiyor",expiredText:"Süresi geçmiş",selectCrew:"Personel seç"},
-no:{platform:"Offshore mannskapsplattform",cabinet:"Compliance-kabinett",login:"Logg inn",register:"Registrer",dashboard:"Dashboard",personnel:"Personell",certificates:"Sertifikater",importExport:"Import / Eksport",profile:"Profil",settings:"Innstillinger",desc:"Spor mannskap, sertifikatutløp og mobiliseringsrisiko.",logout:"Logg ut",totalPersonnel:"Totalt personell",totalCerts:"Totale sertifikater",exp90:"Utløper innen 90 dager",expired:"Utløpt",criticalCerts:"Kritiske sertifikater",name:"Navn",certificate:"Sertifikat",expiry:"Utløp",status:"Status",addPersonnel:"Legg til personell",fullName:"Fullt navn",position:"Stilling / rang",positionShort:"Stilling",company:"Selskap",email:"Email",personnelList:"Personelliste",action:"Handling",addCertificate:"Legg til sertifikat",provider:"Leverandør",certRegister:"Sertifikatregister",csvImport:"CSV-import",importCSV:"Importer CSV",exportData:"Eksporter data",exportCSV:"Eksporter CSV",phone:"Telefon",saveProfile:"Lagre profil",language:"Språk",theme:"Tema",saveSettings:"Lagre innstillinger",saved:"Lagret.",delete:"Slett",valid:"Gyldig",exp30Text:"Utløper <30 dager",exp90Text:"Utløper <90 dager",expiredText:"Utløpt",selectCrew:"Velg mannskap"},
-de:{platform:"Offshore Crew Compliance Plattform",cabinet:"Compliance-Kabinett",login:"Login",register:"Registrieren",dashboard:"Dashboard",personnel:"Personal",certificates:"Zertifikate",importExport:"Import / Export",profile:"Profil",settings:"Einstellungen",desc:"Crew-Bereitschaft, Zertifikatsablauf und Mobilisierungsrisiko verfolgen.",logout:"Logout",totalPersonnel:"Personal gesamt",totalCerts:"Zertifikate gesamt",exp90:"Läuft in 90 Tagen ab",expired:"Abgelaufen",criticalCerts:"Kritische Zertifikate",name:"Name",certificate:"Zertifikat",expiry:"Ablauf",status:"Status",addPersonnel:"Personal hinzufügen",fullName:"Vollständiger Name",position:"Position / Rang",positionShort:"Position",company:"Firma",email:"Email",personnelList:"Personalliste",action:"Aktion",addCertificate:"Zertifikat hinzufügen",provider:"Anbieter",certRegister:"Zertifikatsregister",csvImport:"CSV Import",importCSV:"CSV importieren",exportData:"Daten exportieren",exportCSV:"CSV exportieren",phone:"Telefon",saveProfile:"Profil speichern",language:"Sprache",theme:"Design",saveSettings:"Einstellungen speichern",saved:"Gespeichert.",delete:"Löschen",valid:"Gültig",exp30Text:"Läuft <30 Tage ab",exp90Text:"Läuft <90 Tage ab",expiredText:"Abgelaufen",selectCrew:"Crew auswählen"},
-fr:{platform:"Plateforme de conformité offshore",cabinet:"Cabinet conformité",login:"Connexion",register:"Inscription",dashboard:"Tableau de bord",personnel:"Personnel",certificates:"Certificats",importExport:"Import / Export",profile:"Profil",settings:"Paramètres",desc:"Suivez la préparation de l’équipage, l’expiration des certificats et le risque de mobilisation.",logout:"Déconnexion",totalPersonnel:"Personnel total",totalCerts:"Certificats totaux",exp90:"Expire dans 90 jours",expired:"Expiré",criticalCerts:"Certificats critiques",name:"Nom",certificate:"Certificat",expiry:"Expiration",status:"Statut",addPersonnel:"Ajouter personnel",fullName:"Nom complet",position:"Poste / rang",positionShort:"Poste",company:"Société",email:"Email",personnelList:"Liste du personnel",action:"Action",addCertificate:"Ajouter certificat",provider:"Fournisseur",certRegister:"Registre certificats",csvImport:"Import CSV",importCSV:"Importer CSV",exportData:"Exporter données",exportCSV:"Exporter CSV",phone:"Téléphone",saveProfile:"Enregistrer profil",language:"Langue",theme:"Thème",saveSettings:"Enregistrer paramètres",saved:"Enregistré.",delete:"Supprimer",valid:"Valide",exp30Text:"Expire <30 jours",exp90Text:"Expire <90 jours",expiredText:"Expiré",selectCrew:"Sélectionner équipage"},
-es:{platform:"Plataforma de cumplimiento offshore",cabinet:"Gabinete de cumplimiento",login:"Iniciar sesión",register:"Registrarse",dashboard:"Panel",personnel:"Personal",certificates:"Certificados",importExport:"Importar / Exportar",profile:"Perfil",settings:"Configuración",desc:"Controle preparación del personal, vencimientos y riesgo de movilización.",logout:"Salir",totalPersonnel:"Personal total",totalCerts:"Certificados totales",exp90:"Vencen en 90 días",expired:"Vencidos",criticalCerts:"Certificados críticos",name:"Nombre",certificate:"Certificado",expiry:"Vencimiento",status:"Estado",addPersonnel:"Añadir personal",fullName:"Nombre completo",position:"Cargo / rango",positionShort:"Cargo",company:"Empresa",email:"Email",personnelList:"Lista de personal",action:"Acción",addCertificate:"Añadir certificado",provider:"Proveedor",certRegister:"Registro de certificados",csvImport:"Importar CSV",importCSV:"Importar CSV",exportData:"Exportar datos",exportCSV:"Exportar CSV",phone:"Teléfono",saveProfile:"Guardar perfil",language:"Idioma",theme:"Tema",saveSettings:"Guardar configuración",saved:"Guardado.",delete:"Eliminar",valid:"Válido",exp30Text:"Vence <30 días",exp90Text:"Vence <90 días",expiredText:"Vencido",selectCrew:"Seleccionar personal"},
-pt:{platform:"Plataforma de conformidade offshore",cabinet:"Gabinete de conformidade",login:"Entrar",register:"Registrar",dashboard:"Painel",personnel:"Pessoal",certificates:"Certificados",importExport:"Importar / Exportar",profile:"Perfil",settings:"Definições",desc:"Acompanhe prontidão da equipa, vencimento de certificados e risco de mobilização.",logout:"Sair",totalPersonnel:"Total de pessoal",totalCerts:"Total de certificados",exp90:"Expiram em 90 dias",expired:"Expirados",criticalCerts:"Certificados críticos",name:"Nome",certificate:"Certificado",expiry:"Validade",status:"Estado",addPersonnel:"Adicionar pessoal",fullName:"Nome completo",position:"Cargo / rank",positionShort:"Cargo",company:"Empresa",email:"Email",personnelList:"Lista de pessoal",action:"Ação",addCertificate:"Adicionar certificado",provider:"Fornecedor",certRegister:"Registo de certificados",csvImport:"Importar CSV",importCSV:"Importar CSV",exportData:"Exportar dados",exportCSV:"Exportar CSV",phone:"Telefone",saveProfile:"Guardar perfil",language:"Idioma",theme:"Tema",saveSettings:"Guardar definições",saved:"Guardado.",delete:"Eliminar",valid:"Válido",exp30Text:"Expira <30 dias",exp90Text:"Expira <90 dias",expiredText:"Expirado",selectCrew:"Selecionar pessoal"},
-ar:{platform:"منصة امتثال الطاقم البحري",cabinet:"لوحة الامتثال",login:"تسجيل الدخول",register:"تسجيل",dashboard:"لوحة التحكم",personnel:"الأفراد",certificates:"الشهادات",importExport:"استيراد / تصدير",profile:"الملف الشخصي",settings:"الإعدادات",desc:"تتبع جاهزية الطاقم وانتهاء الشهادات ومخاطر التعبئة.",logout:"خروج",totalPersonnel:"إجمالي الأفراد",totalCerts:"إجمالي الشهادات",exp90:"تنتهي خلال 90 يوماً",expired:"منتهية",criticalCerts:"الشهادات الحرجة",name:"الاسم",certificate:"الشهادة",expiry:"الانتهاء",status:"الحالة",addPersonnel:"إضافة فرد",fullName:"الاسم الكامل",position:"المنصب / الرتبة",positionShort:"المنصب",company:"الشركة",email:"البريد",personnelList:"قائمة الأفراد",action:"إجراء",addCertificate:"إضافة شهادة",provider:"المزود",certRegister:"سجل الشهادات",csvImport:"استيراد CSV",importCSV:"استيراد CSV",exportData:"تصدير البيانات",exportCSV:"تصدير CSV",phone:"الهاتف",saveProfile:"حفظ الملف",language:"اللغة",theme:"المظهر",saveSettings:"حفظ الإعدادات",saved:"تم الحفظ.",delete:"حذف",valid:"صالحة",exp30Text:"تنتهي خلال أقل من 30 يوماً",exp90Text:"تنتهي خلال أقل من 90 يوماً",expiredText:"منتهية",selectCrew:"اختر فرداً"}
-};
+let currentUser = null;
 
-function tr(k){return (I18N[appLang]&&I18N[appLang][k])||I18N.en[k]||k}
-function key(name){return "atsrs_"+currentUser+"_"+name}
-function get(name,def){return JSON.parse(localStorage.getItem(key(name)))||def}
-function set(name,val){localStorage.setItem(key(name),JSON.stringify(val))}
-function getUsers(){return JSON.parse(localStorage.getItem("atsrs_users"))||[]}
-function saveUsers(u){localStorage.setItem("atsrs_users",JSON.stringify(u))}
+function localKey(name){return "atsrs_" + currentUser.id + "_" + name}
+function getData(name){return JSON.parse(localStorage.getItem(localKey(name))) || []}
+function saveData(name,data){localStorage.setItem(localKey(name),JSON.stringify(data))}
 
-function applySettingsUI(){
- document.body.classList.toggle("light",appTheme==="light");
- document.documentElement.lang=appLang;
- document.documentElement.dir=appLang==="ar"?"rtl":"ltr";
- document.querySelectorAll("[data-i18n]").forEach(el=>el.innerText=tr(el.dataset.i18n));
- document.querySelectorAll("[data-ph]").forEach(el=>el.placeholder=tr(el.dataset.ph));
- if(document.getElementById("language"))language.value=appLang;
- if(document.getElementById("theme"))theme.value=appTheme;
- renderAll();
+async function register(){
+ const email = loginEmail.value.trim();
+ const password = loginPassword.value.trim();
+
+ if(!email || !password){authMsg.innerText="Fill email and password.";return}
+
+ const { error } = await supabaseClient.auth.signUp({
+  email,
+  password,
+  options:{ emailRedirectTo:"https://avara33.github.io/atsrs-web/" }
+ });
+
+ if(error){authMsg.innerText=error.message;return}
+ authMsg.innerText="Registration email sent. Confirm your email, then login.";
 }
 
-function saveSettings(){
- appLang=language.value;
- appTheme=theme.value;
- localStorage.setItem("atsrs_lang",appLang);
- localStorage.setItem("atsrs_theme",appTheme);
- applySettingsUI();
- settingsMsg.innerText=tr("saved");
-}
+async function login(){
+ const email = loginEmail.value.trim();
+ const password = loginPassword.value.trim();
 
-function register(){
- const email=authEmail.value.trim(), pass=authPassword.value.trim();
- if(!email||!pass){authMsg.innerText="Fill email and password.";return}
- let users=getUsers();
- if(users.find(u=>u.email===email)){authMsg.innerText="User already exists.";return}
- users.push({email,pass});
- saveUsers(users);
- authMsg.innerText="Account created. Login now.";
-}
+ const { data, error } = await supabaseClient.auth.signInWithPassword({email,password});
+ if(error){authMsg.innerText=error.message;return}
 
-function login(){
- const email=authEmail.value.trim(), pass=authPassword.value.trim();
- let user=getUsers().find(u=>u.email===email&&u.pass===pass);
- if(!user){authMsg.innerText="Wrong email or password.";return}
- currentUser=email;
- localStorage.setItem("atsrsUser",email);
+ currentUser = data.user;
  openApp();
 }
 
-function logout(){localStorage.removeItem("atsrsUser");location.reload()}
+async function forgotPassword(){
+ const email = resetEmail.value.trim();
+ if(!email){resetMsg.innerText="Enter email.";return}
+
+ const { error } = await supabaseClient.auth.resetPasswordForEmail(email,{
+  redirectTo:"https://avara33.github.io/atsrs-web/"
+ });
+
+ if(error){resetMsg.innerText=error.message;return}
+ resetMsg.innerText="Password reset email sent.";
+}
+
+async function logout(){
+ await supabaseClient.auth.signOut();
+ location.reload();
+}
+
+function showForgot(){
+ loginBox.classList.add("hidden");
+ forgotBox.classList.remove("hidden");
+}
+
+function showLogin(){
+ forgotBox.classList.add("hidden");
+ loginBox.classList.remove("hidden");
+}
 
 function openApp(){
  auth.classList.add("hidden");
  app.classList.remove("hidden");
+ userEmail.innerText = currentUser.email;
  loadProfile();
- applySettingsUI();
  renderAll();
 }
 
@@ -308,65 +245,88 @@ function showPage(page,btn){
 }
 
 function addPersonnel(){
- let arr=get("personnel",[]);
+ let arr=getData("personnel");
  if(!pName.value.trim()){alert("Name required");return}
  arr.push({name:pName.value,position:pPosition.value,company:pCompany.value,email:pEmail.value});
- set("personnel",arr);
+ saveData("personnel",arr);
  pName.value=pPosition.value=pCompany.value=pEmail.value="";
  renderAll();
 }
 
-function deletePersonnel(i){let arr=get("personnel",[]);arr.splice(i,1);set("personnel",arr);renderAll()}
+function deletePersonnel(i){
+ let arr=getData("personnel");
+ arr.splice(i,1);
+ saveData("personnel",arr);
+ renderAll();
+}
 
 function addCertificate(){
- let arr=get("certs",[]);
- if(!cPerson.value||!cExpiry.value){alert("Person and expiry date required");return}
+ let arr=getData("certs");
+ if(!cPerson.value || !cExpiry.value){alert("Person and expiry required");return}
  arr.push({person:cPerson.value,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});
- set("certs",arr);
+ saveData("certs",arr);
  cProvider.value="";cExpiry.value="";
  renderAll();
 }
 
-function deleteCert(i){let arr=get("certs",[]);arr.splice(i,1);set("certs",arr);renderAll()}
+function deleteCert(i){
+ let arr=getData("certs");
+ arr.splice(i,1);
+ saveData("certs",arr);
+ renderAll();
+}
 
 function status(expiry){
  let today=new Date();today.setHours(0,0,0,0);
  let exp=new Date(expiry);
  let diff=Math.ceil((exp-today)/(1000*60*60*24));
- if(diff<0)return {txt:tr("expiredText"),cls:"danger",risk:true};
- if(diff<=30)return {txt:tr("exp30Text"),cls:"danger",risk:true};
- if(diff<=90)return {txt:tr("exp90Text"),cls:"warning",risk:true};
- return {txt:tr("valid"),cls:"good",risk:false};
+ if(diff<0)return {txt:"Expired",cls:"danger",risk:true,expired:true};
+ if(diff<=30)return {txt:"Expiring <30 days",cls:"danger",risk:true};
+ if(diff<=90)return {txt:"Expiring <90 days",cls:"warning",risk:true};
+ return {txt:"Valid",cls:"good",risk:false};
 }
 
 function renderAll(){
  if(!currentUser)return;
- let personnel=get("personnel",[]);
- let certs=get("certs",[]);
+
+ let personnel=getData("personnel");
+ let certs=getData("certs");
+
  totalPersonnel.innerText=personnel.length;
  totalCerts.innerText=certs.length;
+
  personnelTable.innerHTML="";
- cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
+ cPerson.innerHTML="<option value=''>Select Crew Member</option>";
 
  personnel.forEach((p,i)=>{
-  personnelTable.innerHTML+=`<tr><td>${p.name}</td><td>${p.position}</td><td>${p.company}</td><td>${p.email}</td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;
+  personnelTable.innerHTML+=`
+  <tr>
+   <td>${p.name}</td>
+   <td>${p.position}</td>
+   <td>${p.company}</td>
+   <td>${p.email}</td>
+   <td><button class="action" onclick="deletePersonnel(${i})">Delete</button></td>
+  </tr>`;
   cPerson.innerHTML+=`<option>${p.name}</option>`;
  });
 
  certTable.innerHTML="";
- criticalTable.innerHTML="";
  let e90=0, ex=0;
 
  certs.forEach((c,i)=>{
   let s=status(c.expiry);
-  if(s.risk && s.txt!==tr("expiredText"))e90++;
-  if(s.txt===tr("expiredText"))ex++;
+  if(s.risk && !s.expired)e90++;
+  if(s.expired)ex++;
 
-  certTable.innerHTML+=`<tr><td>${c.person}</td><td>${c.type}</td><td>${c.provider}</td><td>${c.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`;
-
-  if(s.risk){
-   criticalTable.innerHTML+=`<tr><td>${c.person}</td><td>${c.type}</td><td>${c.expiry}</td><td class="${s.cls}">${s.txt}</td></tr>`;
-  }
+  certTable.innerHTML+=`
+  <tr>
+   <td>${c.person}</td>
+   <td>${c.type}</td>
+   <td>${c.provider}</td>
+   <td>${c.expiry}</td>
+   <td class="${s.cls}">${s.txt}</td>
+   <td><button class="action" onclick="deleteCert(${i})">Delete</button></td>
+  </tr>`;
  });
 
  exp90.innerText=e90;
@@ -374,70 +334,28 @@ function renderAll(){
 }
 
 function saveProfile(){
- let profile={name:profileName.value,company:profileCompany.value,position:profilePosition.value,phone:profilePhone.value,avatar:profileAvatar.src};
- set("profile",profile);
- loadProfile();
+ const profile={
+  name:profileName.value,
+  company:profileCompany.value,
+  position:profilePosition.value
+ };
+ localStorage.setItem(localKey("profile"),JSON.stringify(profile));
+ alert("Profile saved.");
 }
 
 function loadProfile(){
- let p=get("profile",{});
+ const p=JSON.parse(localStorage.getItem(localKey("profile"))) || {};
  profileName.value=p.name||"";
  profileCompany.value=p.company||"";
  profilePosition.value=p.position||"";
- profilePhone.value=p.phone||"";
- let avatar=p.avatar||"";
- topAvatar.src=avatar;
- profileAvatar.src=avatar;
- topName.innerText=p.name||currentUser;
- topCompany.innerText=p.company||"Company";
 }
 
-function uploadAvatar(e){
- let file=e.target.files[0];
- if(!file)return;
- let reader=new FileReader();
- reader.onload=()=>{profileAvatar.src=reader.result;topAvatar.src=reader.result};
- reader.readAsDataURL(file);
-}
-
-function exportCSV(){
- let personnel=get("personnel",[]);
- let certs=get("certs",[]);
- let rows=["Name,Position,Company,Email,Certificate,Provider,ExpiryDate"];
- certs.forEach(c=>{
-  let p=personnel.find(x=>x.name===c.person)||{};
-  rows.push(`${c.person},${p.position||""},${p.company||""},${p.email||""},${c.type},${c.provider},${c.expiry}`);
- });
- let blob=new Blob([rows.join("\n")],{type:"text/csv"});
- let a=document.createElement("a");
- a.href=URL.createObjectURL(blob);
- a.download="atsrs_export.csv";
- a.click();
-}
-
-function importCSV(){
- let file=csvFile.files[0];
- if(!file){alert("Select CSV file");return}
- let reader=new FileReader();
- reader.onload=()=>{
-  let lines=reader.result.split("\n").slice(1);
-  let personnel=get("personnel",[]);
-  let certs=get("certs",[]);
-  lines.forEach(line=>{
-   let [name,position,company,email,certificate,provider,expiry]=line.split(",");
-   if(!name||!expiry)return;
-   if(!personnel.find(p=>p.name===name)){personnel.push({name,position,company,email})}
-   certs.push({person:name,type:certificate,provider,expiry:expiry.trim()});
-  });
-  set("personnel",personnel);
-  set("certs",certs);
-  renderAll();
- };
- reader.readAsText(file);
-}
-
-applySettingsUI();
-if(currentUser)openApp();
+supabaseClient.auth.getSession().then(({data})=>{
+ if(data.session){
+  currentUser=data.session.user;
+  openApp();
+ }
+});
 </script>
 
 </body>
