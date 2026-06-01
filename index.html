@@ -14,35 +14,40 @@ body{
 }
 header{
  text-align:center;
- padding:80px 20px;
+ padding:70px 20px 55px;
  background:linear-gradient(135deg,#0f172a,#1e3a8a);
 }
 h1{
  font-size:58px;
- margin-bottom:10px;
+ margin:0 0 10px;
 }
 .hero{
  color:#cbd5e1;
  font-size:22px;
+ margin-bottom:10px;
 }
 section{
  max-width:1100px;
  margin:auto;
- padding:45px 20px;
+ padding:32px 20px;
 }
 .cards{
  display:grid;
- grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
- gap:20px;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:18px;
 }
 .card,.box{
  background:#1e293b;
- padding:25px;
+ padding:24px;
  border-radius:16px;
  border:1px solid #334155;
 }
 .card h3{
- margin-top:0;
+ margin:8px 0;
+}
+.stat{
+ font-size:46px;
+ line-height:1;
 }
 .badge{
  display:inline-block;
@@ -71,9 +76,10 @@ button{
  background:#2563eb;
  color:white;
  border:none;
- padding:12px 20px;
+ padding:12px 22px;
  border-radius:10px;
  cursor:pointer;
+ font-weight:bold;
 }
 input,select{
  padding:11px;
@@ -81,6 +87,7 @@ input,select{
  margin:8px 0;
  border-radius:8px;
  border:none;
+ box-sizing:border-box;
 }
 footer{
  text-align:center;
@@ -94,24 +101,84 @@ footer{
 
 <header>
  <h1>ATSRS</h1>
- <p class="hero">Offshore Crew Certificate & Training Expiry Tracker</p>
+ <p class="hero">Offshore Crew Compliance Platform</p>
  <p>Track BOSIET, Medical, Seaman Book, Passport, Visa and offshore training expiry dates in one clear system.</p>
+ <br>
+ <button>Request Demo</button>
 </header>
+
+<section>
+ <h2>Dashboard</h2>
+ <div class="cards">
+  <div class="card">
+   <span class="badge">Crew</span>
+   <h3 class="stat">42</h3>
+   <p>Total Personnel</p>
+  </div>
+  <div class="card">
+   <span class="badge">Warning</span>
+   <h3 class="stat warning">8</h3>
+   <p>Expiring in 90 Days</p>
+  </div>
+  <div class="card">
+   <span class="badge">Critical</span>
+   <h3 class="stat danger">3</h3>
+   <p>Expiring in 30 Days</p>
+  </div>
+  <div class="card">
+   <span class="badge">Expired</span>
+   <h3 class="stat danger">2</h3>
+   <p>Expired Certificates</p>
+  </div>
+ </div>
+</section>
+
+<section>
+ <h2>Certificate Overview</h2>
+ <div class="box">
+  <table>
+   <tr>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Certificate</th>
+    <th>Expiry Date</th>
+    <th>Status</th>
+   </tr>
+   <tr>
+    <td>Anar Agasiyev</td>
+    <td>ROV Senior Pilot Tech</td>
+    <td>Offshore Medical</td>
+    <td>20 Nov 2026</td>
+    <td class="good">Valid</td>
+   </tr>
+   <tr>
+    <td>Sample Crew</td>
+    <td>Survey Engineer</td>
+    <td>BOSIET</td>
+    <td>15 Jul 2026</td>
+    <td class="warning">Expiring Soon</td>
+   </tr>
+   <tr>
+    <td>Sample Crew</td>
+    <td>Rigger</td>
+    <td>Seaman Book</td>
+    <td>01 Jun 2026</td>
+    <td class="danger">Expired</td>
+   </tr>
+  </table>
+ </div>
+</section>
 
 <section>
  <h2>Platform Modules</h2>
  <div class="cards">
   <div class="card">
    <h3>Crew Certificate Tracking</h3>
-   <p>Manage certificates for offshore personnel in one dashboard.</p>
+   <p>Manage offshore certificates for all personnel in one dashboard.</p>
   </div>
   <div class="card">
    <h3>Expiry Alerts</h3>
    <p>See certificates expiring in 90, 30 and 7 days.</p>
-  </div>
-  <div class="card">
-   <h3>Training Matrix</h3>
-   <p>Check which crew member has valid or expired training.</p>
   </div>
   <div class="card">
    <h3>Medical & Seaman Book</h3>
@@ -121,5 +188,61 @@ footer{
    <h3>Visa & Passport Monitoring</h3>
    <p>Reduce mobilisation risk by tracking travel document expiry.</p>
   </div>
-  <div class="card">
-   <h3>Compliance Reports</h3
+ </div>
+</section>
+
+<section>
+ <h2>Add Crew Member</h2>
+ <div class="box">
+  <input type="text" placeholder="Full Name">
+  <input type="text" placeholder="Position / Rank">
+  <input type="text" placeholder="Company">
+  <button>Add Personnel</button>
+ </div>
+</section>
+
+<section>
+ <h2>Add Certificate</h2>
+ <div class="box">
+  <input type="text" placeholder="Crew Member Name">
+  <select>
+   <option>BOSIET / FOET</option>
+   <option>Offshore Medical</option>
+   <option>Seaman Book</option>
+   <option>Passport</option>
+   <option>Visa</option>
+   <option>Yellow Fever</option>
+   <option>DP Certificate</option>
+   <option>ROV Competency</option>
+   <option>Other</option>
+  </select>
+  <input type="date">
+  <button>Add Certificate</button>
+ </div>
+</section>
+
+<section>
+ <h2>Why ATSRS?</h2>
+ <div class="box">
+  <p>Offshore mobilisation can fail because of one expired certificate. ATSRS gives companies a simple way to track crew readiness before the project starts.</p>
+  <p>No overloaded HR system. No Excel chaos. Just certificate status, expiry alerts and clear compliance visibility.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Contact</h2>
+ <div class="box">
+  <input type="text" placeholder="Your Name">
+  <input type="email" placeholder="Your Email">
+  <input type="text" placeholder="Message">
+  <button>Send Message</button>
+ </div>
+</section>
+
+<footer>
+ <p>ATSRS © 2026</p>
+ <p>Offshore Certificate & Training Expiry Tracker</p>
+</footer>
+
+</body>
+</html>
