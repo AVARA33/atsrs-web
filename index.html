@@ -61,6 +61,14 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 .small-note{font-size:13px;color:#94a3b8;margin-top:4px}
 .danger-zone{border-color:#7f1d1d}
 
+
+.profile-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.profile-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}
+.profile-tabs button.active{background:#2563eb}
+.profile-tab{display:none}
+.profile-tab.active{display:block}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+
 </style>
 </head>
 <body>
@@ -215,15 +223,104 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <div class="panel">
 <h3 id="profileTitle"></h3>
 <p id="userEmail" class="sub"></p>
-<div class="security-grid">
+
+<div class="profile-tabs">
+<button id="profileTabPersonalBtn" class="active" onclick="showProfileTab('personal')"></button>
+<button id="profileTabSecurityBtn" onclick="showProfileTab('security')"></button>
+<button id="profileTabPreferencesBtn" onclick="showProfileTab('preferences')"></button>
+</div>
+
+<div id="profilePersonalTab" class="profile-tab active">
+<div class="profile-grid">
 <div>
 <input id="profileName">
+<input id="profileSurname">
 <input id="profilePhone">
-<input id="profileAltEmail" type="email">
 </div>
 <div>
+<select id="profileCountry"><option value=""></option>
+<option value="Azerbaijan">Azerbaijan</option>
+<option value="Turkey">Turkey</option>
+<option value="Norway">Norway</option>
+<option value="United Kingdom">United Kingdom</option>
+<option value="United States">United States</option>
+<option value="Canada">Canada</option>
+<option value="Germany">Germany</option>
+<option value="France">France</option>
+<option value="Spain">Spain</option>
+<option value="Portugal">Portugal</option>
+<option value="Italy">Italy</option>
+<option value="Netherlands">Netherlands</option>
+<option value="Belgium">Belgium</option>
+<option value="Denmark">Denmark</option>
+<option value="Sweden">Sweden</option>
+<option value="Finland">Finland</option>
+<option value="Poland">Poland</option>
+<option value="Romania">Romania</option>
+<option value="Bulgaria">Bulgaria</option>
+<option value="Georgia">Georgia</option>
+<option value="Kazakhstan">Kazakhstan</option>
+<option value="United Arab Emirates">United Arab Emirates</option>
+<option value="Saudi Arabia">Saudi Arabia</option>
+<option value="Qatar">Qatar</option>
+<option value="Kuwait">Kuwait</option>
+<option value="Oman">Oman</option>
+<option value="Bahrain">Bahrain</option>
+<option value="India">India</option>
+<option value="Pakistan">Pakistan</option>
+<option value="Philippines">Philippines</option>
+<option value="Indonesia">Indonesia</option>
+<option value="Malaysia">Malaysia</option>
+<option value="Singapore">Singapore</option>
+<option value="China">China</option>
+<option value="Japan">Japan</option>
+<option value="South Korea">South Korea</option>
+<option value="Australia">Australia</option>
+<option value="New Zealand">New Zealand</option>
+<option value="South Africa">South Africa</option>
+<option value="Equatorial Guinea">Equatorial Guinea</option>
+<option value="Angola">Angola</option>
+<option value="Nigeria">Nigeria</option>
+<option value="Ghana">Ghana</option>
+<option value="Egypt">Egypt</option>
+<option value="Morocco">Morocco</option>
+<option value="Brazil">Brazil</option>
+<option value="Mexico">Mexico</option>
+<option value="Argentina">Argentina</option></select>
 <input id="profileCompany">
 <input id="profilePosition">
+</div>
+</div>
+<button id="saveProfileBtn" onclick="saveProfile()"></button>
+</div>
+
+<div id="profileSecurityTab" class="profile-tab">
+<div class="profile-grid">
+<div>
+<input id="profileAltEmail" type="email">
+</div>
+</div>
+<div class="setting-row">
+<div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div>
+<button class="secondary" onclick="alert('Primary email change will be connected after Supabase Auth is live.')">Change</button>
+</div>
+<div class="setting-row">
+<div><b id="changePasswordTitle"></b><div id="changePasswordNote" class="small-note"></div></div>
+<button id="changePasswordBtn" class="secondary" onclick="alert('Password change will be connected after Supabase Auth is live.')"></button>
+</div>
+<div class="setting-row">
+<div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div>
+<button id="setup2faBtn" class="secondary" onclick="alert('2FA will be added in the next security phase.')"></button>
+</div>
+<div class="setting-row">
+<div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div>
+<button id="viewSessionsBtn" class="secondary" onclick="alert('Active sessions will be connected after Supabase Auth is live.')"></button>
+</div>
+</div>
+
+<div id="profilePreferencesTab" class="profile-tab">
+<div class="profile-grid">
+<div>
 <select id="profileTimezone">
 <option value="UTC">UTC</option>
 <option value="Europe/Baku">Europe/Baku</option>
@@ -234,44 +331,18 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 </select>
 </div>
 </div>
-<button id="saveProfileBtn" onclick="saveProfile()"></button>
-</div>
-
-<div class="panel">
-<h3 id="securityTitle">Security</h3>
 <div class="setting-row">
-<div><b id="changePasswordTitle">Password</b><div id="changePasswordNote" class="small-note">Change your account password.</div></div>
-<button class="secondary" onclick="alert('Password change will be connected after Supabase Auth is live.')">Change</button>
+<div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div>
+<button id="manageNotifyBtn" class="secondary" onclick="alert('Notification settings will be added with backend alerts.')"></button>
 </div>
 <div class="setting-row">
-<div><b id="twofaTitle">Two-factor authentication</b><div id="twofaNote" class="small-note">Google Authenticator / email code support.</div></div>
-<button class="secondary" onclick="alert('2FA will be added in the next security phase.')">Setup</button>
+<div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div>
+<button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button>
 </div>
 <div class="setting-row">
-<div><b id="notifyTitle">Notifications</b><div id="notifyNote" class="small-note">Certificate expiry alerts by email/SMS.</div></div>
-<button class="secondary" onclick="alert('Notification settings will be added with backend alerts.')">Manage</button>
+<div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div>
+<button id="deleteAccountBtn" class="action" onclick="alert('Account deletion will be connected after Supabase Auth is live.')"></button>
 </div>
-</div>
-
-<div class="panel">
-<h3 id="sessionsTitle">Login History & Active Sessions</h3>
-<table>
-<thead><tr><th>Device</th><th>Location</th><th>Last active</th></tr></thead>
-<tbody id="sessionsTable">
-<tr><td>Samsung / Chrome</td><td>Local Test</td><td>Current session</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="panel danger-zone">
-<h3 id="privacyTitle">Privacy & Data</h3>
-<div class="setting-row">
-<div><b id="exportDataTitle">Export My Data</b><div id="exportDataNote" class="small-note">Download your ATSRS account data.</div></div>
-<button class="secondary" onclick="exportLocalData()">Export</button>
-</div>
-<div class="setting-row">
-<div><b id="deleteAccountTitle">Delete Account</b><div id="deleteAccountNote" class="small-note">Permanent deletion will be enabled after live Auth.</div></div>
-<button class="action" onclick="alert('Account deletion will be connected after Supabase Auth is live.')">Delete</button>
 </div>
 </div>
 </section>
@@ -306,6 +377,21 @@ pt:{sub:"Plataforma de conformidade para tripulação offshore",login:"Entrar",e
 ar:{sub:"منصة امتثال طاقم الأوفشور",login:"تسجيل الدخول",email:"البريد الإلكتروني",password:"كلمة المرور",create:"إنشاء حساب",forgot:"نسيت كلمة المرور؟",registerTitle:"إنشاء حساب",confirm:"تأكيد كلمة المرور",register:"تسجيل",back:"العودة إلى تسجيل الدخول",resetTitle:"إعادة تعيين كلمة المرور",resetInfo:"أدخل بريدك الإلكتروني. سيتم إرسال رابط إعادة التعيين إلى صندوق الوارد.",sendReset:"إرسال بريد إعادة التعيين",newPass:"تعيين كلمة مرور جديدة",newPassword:"كلمة مرور جديدة",confirmNew:"تأكيد كلمة المرور الجديدة",saveNew:"حفظ كلمة المرور الجديدة",cabinet:"لوحة الامتثال",dashboard:"لوحة التحكم",personnel:"الأفراد",certificates:"الشهادات",profile:"الملف الشخصي",logout:"تسجيل الخروج",totalPersonnel:"إجمالي الأفراد",totalCerts:"إجمالي الشهادات",exp90:"تنتهي خلال 90 يومًا",expired:"منتهية",addPersonnel:"إضافة فرد",personnelList:"قائمة الأفراد",name:"الاسم",position:"المنصب",company:"الشركة",action:"إجراء",addCert:"إضافة شهادة",provider:"مركز التدريب / المزود",certRegister:"سجل الشهادات",certificate:"الشهادة",expiry:"تاريخ الانتهاء",status:"الحالة",saveProfile:"حفظ الملف",fill:"املأ جميع الحقول.",fix:"صحح الحقول المحددة.",enterLogin:"أدخل البريد وكلمة المرور.",passRule:"يجب أن تكون كلمة المرور 6 أحرف على الأقل.",matchRule:"كلمتا المرور غير متطابقتين.",sending:"يتم إرسال البريد...",sent:"تم إرسال البريد. تحقق من inbox/spam.",connection:"فشل الاتصال. تحقق من الإنترنت أو VPN أو Supabase URL أو key أو CORS أو الحد.",selectCrew:"اختر عضو الطاقم",delete:"حذف",valid:"صالحة",exp30s:"تنتهي خلال <30 يومًا",exp90s:"تنتهي خلال <90 يومًا"}
 };
 function tr(k){return T[lang][k]||T.en[k]||k}
+
+const PROFILE_I18N={
+en:{personal:"Personal Information",security:"Security",preferences:"Preferences",surname:"Surname",phone:"Phone",country:"Country",altEmail:"Recovery email",primaryEmail:"Primary email",primaryEmailNote:"Your main login email.",password:"Password",passwordNote:"Change your account password.",change:"Change",twofa:"Two-factor authentication",twofaNote:"Google Authenticator / email code support.",setup:"Setup",sessions:"Active Sessions",sessionsNote:"View devices currently signed in.",view:"View",notifications:"Notifications",notificationsNote:"Certificate expiry alerts by email/SMS.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanent deletion will be enabled after live Auth.",delete:"Delete",timezone:"Time Zone"},
+az:{personal:"Şəxsi məlumatlar",security:"Təhlükəsizlik",preferences:"Tənzimləmələr",surname:"Soyad",phone:"Telefon",country:"Ölkə",altEmail:"Bərpa emaili",primaryEmail:"Əsas email",primaryEmailNote:"Əsas giriş emailiniz.",password:"Şifrə",passwordNote:"Hesab şifrəsini dəyiş.",change:"Dəyiş",twofa:"İki mərhələli təsdiq",twofaNote:"Google Authenticator / email kod dəstəyi.",setup:"Qur",sessions:"Aktiv sessiyalar",sessionsNote:"Hazırda daxil olmuş cihazları göstər.",view:"Bax",notifications:"Bildirişlər",notificationsNote:"Sertifikat bitmə xəbərdarlıqları email/SMS ilə.",manage:"İdarə et",exportData:"Məlumatlarımı eksport et",exportDataNote:"ATSRS hesab məlumatlarını yüklə.",export:"Eksport",deleteAccount:"Hesabı sil",deleteAccountNote:"Tam silinmə canlı Auth-dan sonra aktiv olacaq.",delete:"Sil",timezone:"Saat qurşağı"},
+ru:{personal:"Личная информация",security:"Безопасность",preferences:"Настройки",surname:"Фамилия",phone:"Телефон",country:"Страна",altEmail:"Email восстановления",primaryEmail:"Основной email",primaryEmailNote:"Ваш основной email для входа.",password:"Пароль",passwordNote:"Изменить пароль аккаунта.",change:"Изменить",twofa:"Двухфакторная защита",twofaNote:"Google Authenticator / email-код.",setup:"Настроить",sessions:"Активные сессии",sessionsNote:"Показать устройства с активным входом.",view:"Смотреть",notifications:"Уведомления",notificationsNote:"Оповещения об истечении сертификатов по email/SMS.",manage:"Управлять",exportData:"Экспорт данных",exportDataNote:"Скачать данные аккаунта ATSRS.",export:"Экспорт",deleteAccount:"Удалить аккаунт",deleteAccountNote:"Полное удаление будет включено после live Auth.",delete:"Удалить",timezone:"Часовой пояс"},
+tr:{personal:"Kişisel Bilgiler",security:"Güvenlik",preferences:"Tercihler",surname:"Soyad",phone:"Telefon",country:"Ülke",altEmail:"Kurtarma emaili",primaryEmail:"Ana email",primaryEmailNote:"Ana giriş emailiniz.",password:"Şifre",passwordNote:"Hesap şifresini değiştir.",change:"Değiştir",twofa:"İki aşamalı doğrulama",twofaNote:"Google Authenticator / email kod desteği.",setup:"Kur",sessions:"Aktif oturumlar",sessionsNote:"Giriş yapılmış cihazları görüntüle.",view:"Görüntüle",notifications:"Bildirimler",notificationsNote:"Sertifika bitiş uyarıları email/SMS ile.",manage:"Yönet",exportData:"Verilerimi dışa aktar",exportDataNote:"ATSRS hesap verilerini indir.",export:"Dışa aktar",deleteAccount:"Hesabı sil",deleteAccountNote:"Kalıcı silme live Auth sonrası aktif olacak.",delete:"Sil",timezone:"Saat dilimi"},
+no:{personal:"Personlig informasjon",security:"Sikkerhet",preferences:"Innstillinger",surname:"Etternavn",phone:"Telefon",country:"Land",altEmail:"Gjenopprettings-email",primaryEmail:"Primær email",primaryEmailNote:"Din hoved-email for innlogging.",password:"Passord",passwordNote:"Endre kontopassord.",change:"Endre",twofa:"Tofaktorautentisering",twofaNote:"Google Authenticator / emailkode.",setup:"Sett opp",sessions:"Aktive økter",sessionsNote:"Vis innloggede enheter.",view:"Vis",notifications:"Varsler",notificationsNote:"Sertifikatutløp via email/SMS.",manage:"Administrer",exportData:"Eksporter data",exportDataNote:"Last ned ATSRS-kontodata.",export:"Eksporter",deleteAccount:"Slett konto",deleteAccountNote:"Permanent sletting aktiveres etter live Auth.",delete:"Slett",timezone:"Tidssone"},
+de:{personal:"Persönliche Informationen",security:"Sicherheit",preferences:"Einstellungen",surname:"Nachname",phone:"Telefon",country:"Land",altEmail:"Wiederherstellungs-Email",primaryEmail:"Primäre Email",primaryEmailNote:"Ihre Haupt-Login-Email.",password:"Passwort",passwordNote:"Kontopasswort ändern.",change:"Ändern",twofa:"Zwei-Faktor-Authentifizierung",twofaNote:"Google Authenticator / Email-Code.",setup:"Einrichten",sessions:"Aktive Sitzungen",sessionsNote:"Angemeldete Geräte anzeigen.",view:"Anzeigen",notifications:"Benachrichtigungen",notificationsNote:"Zertifikatsablauf per Email/SMS.",manage:"Verwalten",exportData:"Meine Daten exportieren",exportDataNote:"ATSRS-Kontodaten herunterladen.",export:"Exportieren",deleteAccount:"Konto löschen",deleteAccountNote:"Dauerhaftes Löschen nach Live Auth.",delete:"Löschen",timezone:"Zeitzone"},
+fr:{personal:"Informations personnelles",security:"Sécurité",preferences:"Préférences",surname:"Nom de famille",phone:"Téléphone",country:"Pays",altEmail:"Email de récupération",primaryEmail:"Email principal",primaryEmailNote:"Votre email principal de connexion.",password:"Mot de passe",passwordNote:"Changer le mot de passe du compte.",change:"Changer",twofa:"Authentification à deux facteurs",twofaNote:"Google Authenticator / code email.",setup:"Configurer",sessions:"Sessions actives",sessionsNote:"Voir les appareils connectés.",view:"Voir",notifications:"Notifications",notificationsNote:"Alertes d’expiration par email/SMS.",manage:"Gérer",exportData:"Exporter mes données",exportDataNote:"Télécharger les données du compte ATSRS.",export:"Exporter",deleteAccount:"Supprimer le compte",deleteAccountNote:"Suppression définitive après live Auth.",delete:"Supprimer",timezone:"Fuseau horaire"},
+es:{personal:"Información personal",security:"Seguridad",preferences:"Preferencias",surname:"Apellido",phone:"Teléfono",country:"País",altEmail:"Email de recuperación",primaryEmail:"Email principal",primaryEmailNote:"Tu email principal de acceso.",password:"Contraseña",passwordNote:"Cambiar contraseña de la cuenta.",change:"Cambiar",twofa:"Autenticación de dos factores",twofaNote:"Google Authenticator / código email.",setup:"Configurar",sessions:"Sesiones activas",sessionsNote:"Ver dispositivos conectados.",view:"Ver",notifications:"Notificaciones",notificationsNote:"Alertas de vencimiento por email/SMS.",manage:"Gestionar",exportData:"Exportar mis datos",exportDataNote:"Descargar datos de cuenta ATSRS.",export:"Exportar",deleteAccount:"Eliminar cuenta",deleteAccountNote:"Eliminación permanente tras live Auth.",delete:"Eliminar",timezone:"Zona horaria"},
+pt:{personal:"Informações pessoais",security:"Segurança",preferences:"Preferências",surname:"Sobrenome",phone:"Telefone",country:"País",altEmail:"Email de recuperação",primaryEmail:"Email principal",primaryEmailNote:"Seu email principal de login.",password:"Senha",passwordNote:"Alterar senha da conta.",change:"Alterar",twofa:"Autenticação de dois fatores",twofaNote:"Google Authenticator / código por email.",setup:"Configurar",sessions:"Sessões ativas",sessionsNote:"Ver dispositivos conectados.",view:"Ver",notifications:"Notificações",notificationsNote:"Alertas de validade por email/SMS.",manage:"Gerir",exportData:"Exportar meus dados",exportDataNote:"Baixar dados da conta ATSRS.",export:"Exportar",deleteAccount:"Excluir conta",deleteAccountNote:"Exclusão permanente após live Auth.",delete:"Excluir",timezone:"Fuso horário"},
+ar:{personal:"المعلومات الشخصية",security:"الأمان",preferences:"التفضيلات",surname:"اسم العائلة",phone:"الهاتف",country:"الدولة",altEmail:"بريد الاسترداد",primaryEmail:"البريد الأساسي",primaryEmailNote:"بريد تسجيل الدخول الأساسي.",password:"كلمة المرور",passwordNote:"تغيير كلمة مرور الحساب.",change:"تغيير",twofa:"التحقق بخطوتين",twofaNote:"Google Authenticator / رمز البريد.",setup:"إعداد",sessions:"الجلسات النشطة",sessionsNote:"عرض الأجهزة المسجلة.",view:"عرض",notifications:"الإشعارات",notificationsNote:"تنبيهات انتهاء الشهادات عبر البريد/SMS.",manage:"إدارة",exportData:"تصدير بياناتي",exportDataNote:"تنزيل بيانات حساب ATSRS.",export:"تصدير",deleteAccount:"حذف الحساب",deleteAccountNote:"الحذف النهائي بعد تفعيل Auth.",delete:"حذف",timezone:"المنطقة الزمنية"}
+};
+function ptr(k){return (PROFILE_I18N[lang]&&PROFILE_I18N[lang][k])||PROFILE_I18N.en[k]||k}
+
 const LANG_FLAGS={en:"🇬🇧",az:"🇦🇿",ru:"🇷🇺",tr:"🇹🇷",no:"🇳🇴",de:"🇩🇪",fr:"🇫🇷",es:"🇪🇸",pt:"🇵🇹",ar:"🇸🇦"};
 const EMAIL_MSG={
 en:"Enter a valid email address.",
@@ -383,13 +469,38 @@ personnelListTitle.innerText=tr("personnelList");thName1.innerText=tr("name");th
 addCertTitle.innerText=tr("addCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");
 thName2.innerText=tr("name");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
 profileTitle.innerText=tr("profile");
+profileTabPersonalBtn.innerText=ptr("personal");
+profileTabSecurityBtn.innerText=ptr("security");
+profileTabPreferencesBtn.innerText=ptr("preferences");
 profileName.placeholder=tr("name");
-profilePhone.placeholder="Phone";
-profileAltEmail.placeholder="Alternative email";
+profileSurname.placeholder=ptr("surname");
+profilePhone.placeholder=ptr("phone");
+profileCountry.options[0].text=ptr("country");
 profileCompany.placeholder=tr("company");
 profilePosition.placeholder=tr("position");
-profileTimezone.title="Time Zone";
+profileAltEmail.placeholder=ptr("altEmail");
+profileTimezone.title=ptr("timezone");
 saveProfileBtn.innerText=tr("saveProfile");
+primaryEmailTitle.innerText=ptr("primaryEmail");
+primaryEmailNote.innerText=ptr("primaryEmailNote");
+changePasswordTitle.innerText=ptr("password");
+changePasswordNote.innerText=ptr("passwordNote");
+changePasswordBtn.innerText=ptr("change");
+twofaTitle.innerText=ptr("twofa");
+twofaNote.innerText=ptr("twofaNote");
+setup2faBtn.innerText=ptr("setup");
+sessionsTitle.innerText=ptr("sessions");
+sessionsNote.innerText=ptr("sessionsNote");
+viewSessionsBtn.innerText=ptr("view");
+notifyTitle.innerText=ptr("notifications");
+notifyNote.innerText=ptr("notificationsNote");
+manageNotifyBtn.innerText=ptr("manage");
+exportDataTitle.innerText=ptr("exportData");
+exportDataNote.innerText=ptr("exportDataNote");
+exportDataBtn.innerText=ptr("export");
+deleteAccountTitle.innerText=ptr("deleteAccount");
+deleteAccountNote.innerText=ptr("deleteAccountNote");
+deleteAccountBtn.innerText=ptr("delete");
 securityTitle.innerText="Security";
 changePasswordTitle.innerText="Password";
 changePasswordNote.innerText="Change your account password.";
@@ -574,13 +685,23 @@ certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider
 exp90.innerText=e90;expired.innerText=ex;
 }
 
+function showProfileTab(tab){
+["personal","security","preferences"].forEach(x=>{
+document.getElementById("profile"+x.charAt(0).toUpperCase()+x.slice(1)+"Tab").classList.remove("active");
+document.getElementById("profileTab"+x.charAt(0).toUpperCase()+x.slice(1)+"Btn").classList.remove("active");
+});
+document.getElementById("profile"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Tab").classList.add("active");
+document.getElementById("profileTab"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Btn").classList.add("active");
+}
 function saveProfile(){
 localStorage.setItem(localKey("profile"),JSON.stringify({
 name:profileName.value,
+surname:profileSurname.value,
 phone:profilePhone.value,
-altEmail:profileAltEmail.value,
+country:profileCountry.value,
 company:profileCompany.value,
 position:profilePosition.value,
+altEmail:profileAltEmail.value,
 timezone:profileTimezone.value
 }));
 alert("Profile saved.");
@@ -588,10 +709,12 @@ alert("Profile saved.");
 function loadProfile(){
 let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};
 profileName.value=p.name||"";
+profileSurname.value=p.surname||"";
 profilePhone.value=p.phone||"";
-profileAltEmail.value=p.altEmail||"";
+profileCountry.value=p.country||"";
 profileCompany.value=p.company||"";
 profilePosition.value=p.position||"";
+profileAltEmail.value=p.altEmail||"";
 profileTimezone.value=p.timezone||"UTC";
 }
 function exportLocalData(){
