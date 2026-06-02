@@ -22,7 +22,7 @@ button:disabled{background:#64748b;cursor:not-allowed}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 .sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}.brand{font-size:30px;font-weight:900}
 .nav button{text-align:left;background:transparent;color:#cbd5e1}.nav button.active,.nav button:hover{background:#1e293b;color:white}
-.main{padding:22px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.main{padding:76px 22px 22px 22px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px;margin-bottom:16px}
 .stat{font-size:38px;font-weight:900}.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
 table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
@@ -69,8 +69,6 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <input id="loginPassword" type="password">
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
-<button id="supabaseTestBtn" class="secondary" onclick="testSupabaseConnection()">Test Supabase Auth</button>
-<p id="supabaseTestMsg" class="sub"></p>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
 <p id="loginMsg" class="sub"></p>
@@ -110,6 +108,21 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 </section>
 
 <section id="app" class="app hidden">
+<div class="lang-floating app-lang-switcher">
+<button type="button" id="appLangCircle" class="lang-circle" onclick="toggleAppLangMenu()">🇬🇧</button>
+<div id="appLangMenu" class="lang-menu hidden">
+<button type="button" onclick="changeLanguage('en')"><span>🇬🇧</span> English</button>
+<button type="button" onclick="changeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
+<button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
+<button type="button" onclick="changeLanguage('tr')"><span>🇹🇷</span> Türkçe</button>
+<button type="button" onclick="changeLanguage('no')"><span>🇳🇴</span> Norsk</button>
+<button type="button" onclick="changeLanguage('de')"><span>🇩🇪</span> Deutsch</button>
+<button type="button" onclick="changeLanguage('fr')"><span>🇫🇷</span> Français</button>
+<button type="button" onclick="changeLanguage('es')"><span>🇪🇸</span> Español</button>
+<button type="button" onclick="changeLanguage('pt')"><span>🇵🇹</span> Português</button>
+<button type="button" onclick="changeLanguage('ar')"><span>🇸🇦</span> العربية</button>
+</div>
+</div>
 <aside class="sidebar">
 <div class="brand">ATSRS</div>
 <p id="cabinetText" class="sub"></p>
@@ -268,13 +281,19 @@ function emailEnterHandler(e, input, rule, action){
 function emailMsg(){return EMAIL_MSG[lang]||EMAIL_MSG.en}
 function networkMsg(){return NETWORK_MSG[lang]||NETWORK_MSG.en}
 function toggleLangMenu(){langMenu.classList.toggle("hidden")}
-document.addEventListener("click",(e)=>{if(!e.target.closest(".lang-floating"))langMenu.classList.add("hidden")})
+function toggleAppLangMenu(){appLangMenu.classList.toggle("hidden")}
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".lang-floating")){
+    langMenu.classList.add("hidden");
+    if(typeof appLangMenu!=="undefined")appLangMenu.classList.add("hidden");
+  }
+})
 
-function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");applyLanguage();renderAll()}
+function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");if(typeof appLangMenu!=="undefined")appLangMenu.classList.add("hidden");applyLanguage();renderAll()}
 function applyLanguage(){
-document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";
+document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";if(typeof appLangCircle!=="undefined")appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");
-loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");supabaseTestBtn.innerText="Test Supabase Auth";loginEmailRule.innerText=emailMsg();
+loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");loginEmailRule.innerText=emailMsg();
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");
 registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");regEmailRule.innerText=emailMsg();passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
 resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
@@ -321,31 +340,6 @@ regPassword.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefaul
 regPassword2.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();register();}});
 
 function startCountdown(){countdown=60;resetBtn.disabled=true;resetBtn.innerText="Resend in 60s";if(timer)clearInterval(timer);timer=setInterval(()=>{countdown--;resetBtn.innerText="Resend in "+countdown+"s";if(countdown<=0){clearInterval(timer);resetBtn.disabled=false;resetBtn.innerText=tr("sendReset")}},1000)}
-
-
-async function testSupabaseConnection(){
-  supabaseTestMsg.innerText="Testing real Supabase Auth endpoint...";
-  try{
-    const testUrl=SUPABASE_URL.replace(/\/$/,"")+"/auth/v1/settings";
-    const res=await fetch(testUrl,{
-      method:"GET",
-      headers:{
-        "apikey":SUPABASE_KEY,
-        "Authorization":"Bearer "+SUPABASE_KEY
-      }
-    });
-    const txt=await res.text();
-    if(res.ok){
-      supabaseTestMsg.innerText="Supabase Auth reachable. HTTP "+res.status+". Now test Create Account.";
-    }else{
-      supabaseTestMsg.innerText="Supabase reached, but returned HTTP "+res.status+": "+txt.slice(0,160);
-    }
-    console.log("Supabase auth settings test:",res.status,txt);
-  }catch(e){
-    supabaseTestMsg.innerText="Still fetch failed. This means browser/network cannot reach Supabase Auth endpoint, or browser is blocking the request before Supabase responds.";
-    console.error("Supabase real auth test failed:",e);
-  }
-}
 
 async function register(){
 let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";
