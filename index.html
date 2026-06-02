@@ -27,6 +27,16 @@ button:disabled{background:#64748b;cursor:not-allowed}
 .stat{font-size:38px;font-weight:900}.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
 table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 @media(max-width:800px){.app{grid-template-columns:1fr}}
+
+.lang-floating{position:fixed;top:18px;right:18px;z-index:50}
+.lang-circle{width:48px;height:48px;border-radius:50%;padding:0;margin:0;background:#111827;border:1px solid #334155;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.lang-menu{position:absolute;top:56px;right:0;width:220px;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:8px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.lang-menu button{background:transparent;color:#e5e7eb;text-align:left;margin:2px 0;padding:10px 12px;border:0;border-radius:10px;font-weight:600}
+.lang-menu button:hover{background:#1e293b}
+.lang-menu span{display:inline-block;width:28px}
+html[dir="rtl"] .lang-floating{right:auto;left:18px}
+html[dir="rtl"] .lang-menu{right:auto;left:0}
+
 </style>
 </head>
 <body>
@@ -36,11 +46,21 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 <h1 class="logo">ATSRS</h1>
 <p id="authSubtitle" class="sub"></p>
 
-<select id="authLang" onchange="changeLanguage(this.value)">
-<option value="en">English</option><option value="az">Azərbaycan</option><option value="ru">Русский</option>
-<option value="tr">Türkçe</option><option value="no">Norsk</option><option value="de">Deutsch</option>
-<option value="fr">Français</option><option value="es">Español</option><option value="pt">Português</option><option value="ar">العربية</option>
-</select>
+<div class="lang-floating">
+<button type="button" id="langCircle" class="lang-circle" onclick="toggleLangMenu()">🇬🇧</button>
+<div id="langMenu" class="lang-menu hidden">
+<button type="button" onclick="changeLanguage('en')"><span>🇬🇧</span> English</button>
+<button type="button" onclick="changeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
+<button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
+<button type="button" onclick="changeLanguage('tr')"><span>🇹🇷</span> Türkçe</button>
+<button type="button" onclick="changeLanguage('no')"><span>🇳🇴</span> Norsk</button>
+<button type="button" onclick="changeLanguage('de')"><span>🇩🇪</span> Deutsch</button>
+<button type="button" onclick="changeLanguage('fr')"><span>🇫🇷</span> Français</button>
+<button type="button" onclick="changeLanguage('es')"><span>🇪🇸</span> Español</button>
+<button type="button" onclick="changeLanguage('pt')"><span>🇵🇹</span> Português</button>
+<button type="button" onclick="changeLanguage('ar')"><span>🇸🇦</span> العربية</button>
+</div>
+</div>
 
 <div id="loginBox">
 <h2 id="loginTitle"></h2>
@@ -190,10 +210,40 @@ pt:{sub:"Plataforma de conformidade para tripulação offshore",login:"Entrar",e
 ar:{sub:"منصة امتثال طاقم الأوفشور",login:"تسجيل الدخول",email:"البريد الإلكتروني",password:"كلمة المرور",create:"إنشاء حساب",forgot:"نسيت كلمة المرور؟",registerTitle:"إنشاء حساب",confirm:"تأكيد كلمة المرور",register:"تسجيل",back:"العودة إلى تسجيل الدخول",resetTitle:"إعادة تعيين كلمة المرور",resetInfo:"أدخل بريدك الإلكتروني. سيتم إرسال رابط إعادة التعيين إلى صندوق الوارد.",sendReset:"إرسال بريد إعادة التعيين",newPass:"تعيين كلمة مرور جديدة",newPassword:"كلمة مرور جديدة",confirmNew:"تأكيد كلمة المرور الجديدة",saveNew:"حفظ كلمة المرور الجديدة",cabinet:"لوحة الامتثال",dashboard:"لوحة التحكم",personnel:"الأفراد",certificates:"الشهادات",profile:"الملف الشخصي",logout:"تسجيل الخروج",totalPersonnel:"إجمالي الأفراد",totalCerts:"إجمالي الشهادات",exp90:"تنتهي خلال 90 يومًا",expired:"منتهية",addPersonnel:"إضافة فرد",personnelList:"قائمة الأفراد",name:"الاسم",position:"المنصب",company:"الشركة",action:"إجراء",addCert:"إضافة شهادة",provider:"مركز التدريب / المزود",certRegister:"سجل الشهادات",certificate:"الشهادة",expiry:"تاريخ الانتهاء",status:"الحالة",saveProfile:"حفظ الملف",fill:"املأ جميع الحقول.",fix:"صحح الحقول المحددة.",enterLogin:"أدخل البريد وكلمة المرور.",passRule:"يجب أن تكون كلمة المرور 6 أحرف على الأقل.",matchRule:"كلمتا المرور غير متطابقتين.",sending:"يتم إرسال البريد...",sent:"تم إرسال البريد. تحقق من inbox/spam.",connection:"فشل الاتصال. تحقق من الإنترنت أو VPN أو Supabase URL أو key أو CORS أو الحد.",selectCrew:"اختر عضو الطاقم",delete:"حذف",valid:"صالحة",exp30s:"تنتهي خلال <30 يومًا",exp90s:"تنتهي خلال <90 يومًا"}
 };
 function tr(k){return T[lang][k]||T.en[k]||k}
+const LANG_FLAGS={en:"🇬🇧",az:"🇦🇿",ru:"🇷🇺",tr:"🇹🇷",no:"🇳🇴",de:"🇩🇪",fr:"🇫🇷",es:"🇪🇸",pt:"🇵🇹",ar:"🇸🇦"};
+const EMAIL_MSG={
+en:"Enter a valid email address.",
+az:"Düzgün email ünvanı yaz.",
+ru:"Введите корректный email.",
+tr:"Geçerli bir email yazın.",
+no:"Skriv inn en gyldig email.",
+de:"Gültige Email eingeben.",
+fr:"Entrez une adresse email valide.",
+es:"Introduce un email válido.",
+pt:"Digite um email válido.",
+ar:"أدخل بريدًا إلكترونيًا صحيحًا."
+};
+const NETWORK_MSG={
+en:"Supabase connection failed. This is usually URL/key, Supabase Auth redirect settings, CORS/network block, or project availability.",
+az:"Supabase bağlantısı alınmadı. Adətən səbəb URL/key, Supabase Auth redirect ayarları, CORS/şəbəkə bloklanması və ya project availability olur.",
+ru:"Ошибка соединения с Supabase. Обычно причина: URL/key, redirect-настройки Auth, CORS/сеть или доступность проекта.",
+tr:"Supabase bağlantısı başarısız. Genelde sebep URL/key, Auth redirect ayarları, CORS/ağ bloklaması veya proje erişimi olur.",
+no:"Supabase-tilkobling feilet. Vanlig årsak: URL/key, Auth redirect, CORS/nettverk eller prosjektstatus.",
+de:"Supabase-Verbindung fehlgeschlagen. Häufig: URL/key, Auth Redirect, CORS/Netzwerk oder Projektstatus.",
+fr:"Connexion Supabase échouée. Cause fréquente: URL/key, redirections Auth, CORS/réseau ou disponibilité du projet.",
+es:"Falló la conexión Supabase. Normalmente: URL/key, redirects Auth, CORS/red o disponibilidad del proyecto.",
+pt:"Falha na conexão Supabase. Normalmente: URL/key, redirects Auth, CORS/rede ou disponibilidade do projeto.",
+ar:"فشل الاتصال بـ Supabase. السبب غالبًا URL/key أو إعدادات redirect أو CORS/الشبكة أو توفر المشروع."
+};
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim())}
+function emailMsg(){return EMAIL_MSG[lang]||EMAIL_MSG.en}
+function networkMsg(){return NETWORK_MSG[lang]||NETWORK_MSG.en}
+function toggleLangMenu(){langMenu.classList.toggle("hidden")}
+document.addEventListener("click",(e)=>{if(!e.target.closest(".lang-floating"))langMenu.classList.add("hidden")})
 
-function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);applyLanguage();renderAll()}
+function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");applyLanguage();renderAll()}
 function applyLanguage(){
-authLang.value=lang;document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");
 loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");
@@ -227,43 +277,48 @@ else if(p2.length>0&&p1===p2&&p1.length>=6){regPassword2.classList.remove("input
 else{regPassword2.classList.remove("input-error","input-ok");matchRule.classList.add("hidden");ok=false}
 return ok;
 }
-regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
+regEmail.addEventListener("input",()=>regEmail.classList.remove("input-error"));resetEmail.addEventListener("input",()=>resetEmail.classList.remove("input-error"));regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
 function startCountdown(){countdown=60;resetBtn.disabled=true;resetBtn.innerText="Resend in 60s";if(timer)clearInterval(timer);timer=setInterval(()=>{countdown--;resetBtn.innerText="Resend in "+countdown+"s";if(countdown<=0){clearInterval(timer);resetBtn.disabled=false;resetBtn.innerText=tr("sendReset")}},1000)}
 
 async function register(){
 let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";
+regEmail.classList.remove("input-error");
 if(!email||!password||!password2){regMsg.innerText=tr("fill");if(!email)regEmail.classList.add("input-error");return}
+if(!validEmail(email)){regEmail.classList.add("input-error");regMsg.innerText=emailMsg();return}
 if(!validateRegisterFields()){regMsg.innerText=tr("fix");return}
 if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}
 regMsg.innerText="Creating account...";
 try{
 const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});
 regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam, then login.";
-}catch(e){regMsg.innerText=tr("connection");console.error(e)}
+}catch(e){regMsg.innerText=networkMsg();console.error("Register failed:",e)}
 }
 
 async function login(){
 let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";clearLoginErrors();
 if(!email||!password){loginMsg.innerText=tr("enterLogin");if(!email)loginEmail.classList.add("input-error");if(!password)loginPassword.classList.add("input-error");return}
+if(!validEmail(email)){loginEmail.classList.add("input-error");loginMsg.innerText=emailMsg();return}
 if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}
 loginMsg.innerText="Logging in...";
 try{
 const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
 if(error){loginMsg.innerText=error.message;return}
 currentUser=data.user;openApp();
-}catch(e){loginMsg.innerText=tr("connection");console.error(e)}
+}catch(e){loginMsg.innerText=networkMsg();console.error("Login failed:",e)}
 }
 
 async function forgotPassword(){
 let email=resetEmail.value.trim();resetMsg.innerText="";
+resetEmail.classList.remove("input-error");
 if(!email){resetMsg.innerText=tr("enterLogin");resetEmail.classList.add("input-error");return}
+if(!validEmail(email)){resetEmail.classList.add("input-error");resetMsg.innerText=emailMsg();return}
 if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}
-resetEmail.classList.remove("input-error");startCountdown();resetMsg.innerText=tr("sending");
+startCountdown();resetMsg.innerText=tr("sending");
 try{
 const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});
 resetMsg.innerText=error?error.message:tr("sent");
-}catch(e){resetMsg.innerText=tr("connection");console.error(e)}
+}catch(e){resetMsg.innerText=networkMsg();console.error("Reset password failed:",e)}
 }
 
 async function updatePassword(){
