@@ -18,7 +18,7 @@ button:disabled{background:#64748b;cursor:not-allowed}
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px}
 .auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
 .logo{font-size:40px;font-weight:900;margin:0}.sub{color:#94a3b8}.error{color:#f87171;font-size:14px;margin:4px 0}
-.input-error{border:2px solid #ef4444!important;background:#2a1111!important}.input-ok{border:2px solid #22c55e!important}
+.input-error{border:2px solid #ef4444!important;background:#2a1111!important}.input-ok{border:2px solid #22c55e!important}.error{margin-top:-2px;margin-bottom:8px}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 .sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}.brand{font-size:30px;font-weight:900}
 .nav button{text-align:left;background:transparent;color:#cbd5e1}.nav button.active,.nav button:hover{background:#1e293b;color:white}
@@ -65,6 +65,7 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <div id="loginBox">
 <h2 id="loginTitle"></h2>
 <input id="loginEmail" type="email">
+<p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
@@ -76,6 +77,7 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <div id="registerBox" class="hidden">
 <h2 id="registerTitle"></h2>
 <input id="regEmail" type="email">
+<p id="regEmailRule" class="error hidden"></p>
 <input id="regPassword" type="password">
 <p id="passRule" class="error hidden"></p>
 <input id="regPassword2" type="password">
@@ -89,6 +91,7 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <h2 id="resetTitle"></h2>
 <p id="resetInfo" class="sub"></p>
 <input id="resetEmail" type="email">
+<p id="resetEmailRule" class="error hidden"></p>
 <button id="resetBtn" onclick="forgotPassword()"></button>
 <button id="backLoginBtn2" class="secondary" onclick="showLogin()"></button>
 <p id="resetMsg" class="sub"></p>
@@ -236,6 +239,30 @@ pt:"Falha na conexão Supabase. Normalmente: URL/key, redirects Auth, CORS/rede 
 ar:"فشل الاتصال بـ Supabase. السبب غالبًا URL/key أو إعدادات redirect أو CORS/الشبكة أو توفر المشروع."
 };
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim())}
+function markEmail(input, rule){
+  if(!validEmail(input.value)){
+    input.classList.add("input-error");
+    input.classList.remove("input-ok");
+    rule.innerText=emailMsg();
+    rule.classList.remove("hidden");
+    return false;
+  }
+  input.classList.remove("input-error");
+  input.classList.add("input-ok");
+  rule.classList.add("hidden");
+  return true;
+}
+function clearEmailMark(input, rule){
+  input.classList.remove("input-error","input-ok");
+  rule.classList.add("hidden");
+}
+function emailEnterHandler(e, input, rule, action){
+  if(e.key==="Enter"){
+    e.preventDefault();
+    if(markEmail(input, rule) && action) action();
+  }
+}
+
 function emailMsg(){return EMAIL_MSG[lang]||EMAIL_MSG.en}
 function networkMsg(){return NETWORK_MSG[lang]||NETWORK_MSG.en}
 function toggleLangMenu(){langMenu.classList.toggle("hidden")}
@@ -245,10 +272,10 @@ function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMe
 function applyLanguage(){
 document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");
-loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");
+loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");loginEmailRule.innerText=emailMsg();
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");
-registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
-resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
+registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");regEmailRule.innerText=emailMsg();passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
+resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
 newPassTitle.innerText=tr("newPass");newPassword.placeholder=tr("newPassword");newPassword2.placeholder=tr("confirmNew");saveNewPassBtn.innerText=tr("saveNew");
 cabinetText.innerText=tr("cabinet");navDashboard.innerText=tr("dashboard");navPersonnel.innerText=tr("personnel");navCertificates.innerText=tr("certificates");navProfile.innerText=tr("profile");navLogout.innerText=tr("logout");
 pageTitle.innerText=tr("dashboard");totalPersonnelText.innerText=tr("totalPersonnel");totalCertsText.innerText=tr("totalCerts");exp90Text.innerText=tr("exp90");expiredText.innerText=tr("expired");
@@ -264,8 +291,11 @@ function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
 function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
 function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
 function clearLoginErrors(){loginEmail.classList.remove("input-error");loginPassword.classList.remove("input-error")}
-loginEmail.addEventListener("input",()=>loginEmail.classList.remove("input-error"));
+loginEmail.addEventListener("input",()=>clearEmailMark(loginEmail,loginEmailRule));
+loginEmail.addEventListener("blur",()=>{if(loginEmail.value.trim())markEmail(loginEmail,loginEmailRule)});
+loginEmail.addEventListener("keydown",(e)=>emailEnterHandler(e,loginEmail,loginEmailRule,login));
 loginPassword.addEventListener("input",()=>loginPassword.classList.remove("input-error"));
+loginPassword.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();login();}});
 
 function validateRegisterFields(){
 let p1=regPassword.value.trim(),p2=regPassword2.value.trim(),ok=true;
@@ -277,15 +307,24 @@ else if(p2.length>0&&p1===p2&&p1.length>=6){regPassword2.classList.remove("input
 else{regPassword2.classList.remove("input-error","input-ok");matchRule.classList.add("hidden");ok=false}
 return ok;
 }
-regEmail.addEventListener("input",()=>regEmail.classList.remove("input-error"));resetEmail.addEventListener("input",()=>resetEmail.classList.remove("input-error"));regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
+regEmail.addEventListener("input",()=>clearEmailMark(regEmail,regEmailRule));
+regEmail.addEventListener("blur",()=>{if(regEmail.value.trim())markEmail(regEmail,regEmailRule)});
+regEmail.addEventListener("keydown",(e)=>emailEnterHandler(e,regEmail,regEmailRule,register));
+resetEmail.addEventListener("input",()=>clearEmailMark(resetEmail,resetEmailRule));
+resetEmail.addEventListener("blur",()=>{if(resetEmail.value.trim())markEmail(resetEmail,resetEmailRule)});
+resetEmail.addEventListener("keydown",(e)=>emailEnterHandler(e,resetEmail,resetEmailRule,forgotPassword));
+regPassword.addEventListener("input",validateRegisterFields);
+regPassword2.addEventListener("input",validateRegisterFields);
+regPassword.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();register();}});
+regPassword2.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();register();}});
 
 function startCountdown(){countdown=60;resetBtn.disabled=true;resetBtn.innerText="Resend in 60s";if(timer)clearInterval(timer);timer=setInterval(()=>{countdown--;resetBtn.innerText="Resend in "+countdown+"s";if(countdown<=0){clearInterval(timer);resetBtn.disabled=false;resetBtn.innerText=tr("sendReset")}},1000)}
 
 async function register(){
 let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";
 regEmail.classList.remove("input-error");
-if(!email||!password||!password2){regMsg.innerText=tr("fill");if(!email)regEmail.classList.add("input-error");return}
-if(!validEmail(email)){regEmail.classList.add("input-error");regMsg.innerText=emailMsg();return}
+if(!email||!password||!password2){regMsg.innerText=tr("fill");if(!email){regEmail.classList.add("input-error");regEmailRule.innerText=emailMsg();regEmailRule.classList.remove("hidden")}return}
+if(!markEmail(regEmail,regEmailRule)){regMsg.innerText=emailMsg();return}
 if(!validateRegisterFields()){regMsg.innerText=tr("fix");return}
 if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}
 regMsg.innerText="Creating account...";
@@ -297,8 +336,8 @@ regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam,
 
 async function login(){
 let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";clearLoginErrors();
-if(!email||!password){loginMsg.innerText=tr("enterLogin");if(!email)loginEmail.classList.add("input-error");if(!password)loginPassword.classList.add("input-error");return}
-if(!validEmail(email)){loginEmail.classList.add("input-error");loginMsg.innerText=emailMsg();return}
+if(!email||!password){loginMsg.innerText=tr("enterLogin");if(!email){loginEmail.classList.add("input-error");loginEmailRule.innerText=emailMsg();loginEmailRule.classList.remove("hidden")}if(!password)loginPassword.classList.add("input-error");return}
+if(!markEmail(loginEmail,loginEmailRule)){loginMsg.innerText=emailMsg();return}
 if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}
 loginMsg.innerText="Logging in...";
 try{
@@ -311,8 +350,8 @@ currentUser=data.user;openApp();
 async function forgotPassword(){
 let email=resetEmail.value.trim();resetMsg.innerText="";
 resetEmail.classList.remove("input-error");
-if(!email){resetMsg.innerText=tr("enterLogin");resetEmail.classList.add("input-error");return}
-if(!validEmail(email)){resetEmail.classList.add("input-error");resetMsg.innerText=emailMsg();return}
+if(!email){resetMsg.innerText=tr("enterLogin");resetEmail.classList.add("input-error");resetEmailRule.innerText=emailMsg();resetEmailRule.classList.remove("hidden");return}
+if(!markEmail(resetEmail,resetEmailRule)){resetMsg.innerText=emailMsg();return}
 if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}
 startCountdown();resetMsg.innerText=tr("sending");
 try{
