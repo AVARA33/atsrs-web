@@ -15,83 +15,40 @@ button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
 button:disabled{background:#64748b;cursor:not-allowed}
 .secondary{background:#475569}.action{background:#dc2626}.linkbtn{background:transparent;color:#93c5fd;text-align:left;padding:6px}
 .testbtn{background:#16a34a}
-.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px}
+.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px;position:relative}
 .auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
-.logo{font-size:40px;font-weight:900;margin:0}.sub{color:#94a3b8}.error{color:#f87171;font-size:14px;margin:4px 0}
-.input-error{border:2px solid #ef4444!important;background:#2a1111!important}.input-ok{border:2px solid #22c55e!important}.error{margin-top:-2px;margin-bottom:8px}
-.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-.sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}.brand{font-size:30px;font-weight:900}
-.nav button{text-align:left;background:transparent;color:#cbd5e1}.nav button.active,.nav button:hover{background:#1e293b;color:white}
-.main{padding:76px 22px 22px 22px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px;margin-bottom:16px}
-.stat{font-size:38px;font-weight:900}.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
-table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
-@media(max-width:800px){.app{grid-template-columns:1fr}}
-
+.logo{font-size:40px;font-weight:900;margin:0}.sub{color:#94a3b8}.error{color:#f87171;font-size:14px;margin:4px 0 8px}
+.input-error{border:2px solid #ef4444!important;background:#2a1111!important}.input-ok{border:2px solid #22c55e!important}
 .lang-floating{position:fixed;top:18px;right:18px;z-index:50}
 .lang-circle{width:48px;height:48px;border-radius:50%;padding:0;margin:0;background:#111827;border:1px solid #334155;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .lang-menu{position:absolute;top:56px;right:0;width:220px;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:8px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
 .lang-menu button{background:transparent;color:#e5e7eb;text-align:left;margin:2px 0;padding:10px 12px;border:0;border-radius:10px;font-weight:600}
-.lang-menu button:hover{background:#1e293b}
-.lang-menu span{display:inline-block;width:28px}
-html[dir="rtl"] .lang-floating{right:auto;left:18px}
-html[dir="rtl"] .lang-menu{right:auto;left:0}
-
-
-@media(max-width:800px){
-  .app-lang-switcher{
-    position:absolute!important;
-    top:18px!important;
-    right:18px!important;
-  }
-  html[dir="rtl"] .app-lang-switcher{
-    right:auto!important;
-    left:18px!important;
-  }
-}
-@media(min-width:801px){
-  .app-lang-switcher{
-    position:fixed!important;
-  }
-}
-.security-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #334155;padding:12px 0}
-.setting-row:last-child{border-bottom:0}
-.setting-row button{max-width:180px;margin:0}
-.small-note{font-size:13px;color:#94a3b8;margin-top:4px}
-.danger-zone{border-color:#7f1d1d}
-
-
-.profile-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.profile-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}
-.profile-tabs button.active{background:#2563eb}
-.profile-tab{display:none}
-.profile-tab.active{display:block}
-.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-
-
+.lang-menu button:hover{background:#1e293b}.lang-menu span{display:inline-block;width:28px}
+html[dir="rtl"] .lang-floating{right:auto;left:18px} html[dir="rtl"] .lang-menu{right:auto;left:0}
 .build-badge{position:absolute;right:18px;bottom:18px;text-align:right;color:#94a3b8;font-size:12px;line-height:1.45;background:rgba(15,23,42,.65);border:1px solid #334155;border-radius:12px;padding:8px 10px}
 html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
-@media(max-width:600px){.build-badge{position:static;margin-top:18px;text-align:center}}
-.document-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}
-.scan-box{border:1px dashed #64748b;border-radius:16px;padding:14px;margin:12px 0;background:#0f172a}
-.confirm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-.preview-box{font-size:13px;color:#94a3b8;margin-top:8px;word-break:break-word}
-.account-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.account-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}
-.account-tabs button.active{background:#2563eb}
-.account-tab{display:none}
-.account-tab.active{display:block}
-
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}.brand{font-size:30px;font-weight:900}
+.nav button{text-align:left;background:transparent;color:#cbd5e1}.nav button.active,.nav button:hover{background:#1e293b;color:white}
+.main{padding:76px 22px 22px 22px;overflow-x:hidden}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px;margin-bottom:16px}
+.stat{font-size:38px;font-weight:900}.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
+table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}.table-wrap{overflow-x:auto}
+.profile-grid,.confirm-grid,.document-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.account-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.account-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}.account-tabs button.active{background:#2563eb}
+.account-tab{display:none}.account-tab.active{display:block}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #334155;padding:12px 0}.setting-row:last-child{border-bottom:0}.setting-row button{max-width:180px;margin:0}
+.small-note{font-size:13px;color:#94a3b8;margin-top:4px}.scan-box{border:1px dashed #64748b;border-radius:16px;padding:14px;margin:12px 0;background:#0f172a}.preview-box{font-size:13px;color:#94a3b8;margin-top:8px;word-break:break-word}
+@media(max-width:800px){
+.app{grid-template-columns:1fr}.sidebar{position:relative;border-right:0;border-bottom:1px solid #1e293b}.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.main{padding:76px 16px 16px}
+.app-lang-switcher{position:absolute!important;top:18px!important;right:18px!important}html[dir="rtl"] .app-lang-switcher{right:auto!important;left:18px!important}
+}
+@media(max-width:600px){.build-badge{position:static;margin-top:18px;text-align:center}.auth-card{padding:24px}.logo{font-size:34px}}
 </style>
 </head>
 <body>
 
 <section id="auth" class="auth">
-<div class="auth-card">
-<h1 class="logo">ATSRS</h1>
-<p id="authSubtitle" class="sub"></p>
-
 <div class="lang-floating">
 <button type="button" id="langCircle" class="lang-circle" onclick="toggleLangMenu()">🇬🇧</button>
 <div id="langMenu" class="lang-menu hidden">
@@ -108,10 +65,13 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 </div>
 </div>
 
+<div class="auth-card">
+<h1 class="logo">ATSRS</h1>
+<p id="authSubtitle" class="sub"></p>
+
 <div id="loginBox">
 <h2 id="loginTitle"></h2>
-<input id="loginEmail" type="email">
-<p id="loginEmailRule" class="error hidden"></p>
+<input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
@@ -122,22 +82,17 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 
 <div id="registerBox" class="hidden">
 <h2 id="registerTitle"></h2>
-<input id="regEmail" type="email">
-<p id="regEmailRule" class="error hidden"></p>
-<input id="regPassword" type="password">
-<p id="passRule" class="error hidden"></p>
-<input id="regPassword2" type="password">
-<p id="matchRule" class="error hidden"></p>
+<input id="regEmail" type="email"><p id="regEmailRule" class="error hidden"></p>
+<input id="regPassword" type="password"><p id="passRule" class="error hidden"></p>
+<input id="regPassword2" type="password"><p id="matchRule" class="error hidden"></p>
 <button id="registerBtn" onclick="register()"></button>
 <button id="backLoginBtn1" class="secondary" onclick="showLogin()"></button>
 <p id="regMsg" class="sub"></p>
 </div>
 
 <div id="forgotBox" class="hidden">
-<h2 id="resetTitle"></h2>
-<p id="resetInfo" class="sub"></p>
-<input id="resetEmail" type="email">
-<p id="resetEmailRule" class="error hidden"></p>
+<h2 id="resetTitle"></h2><p id="resetInfo" class="sub"></p>
+<input id="resetEmail" type="email"><p id="resetEmailRule" class="error hidden"></p>
 <button id="resetBtn" onclick="forgotPassword()"></button>
 <button id="backLoginBtn2" class="secondary" onclick="showLogin()"></button>
 <p id="resetMsg" class="sub"></p>
@@ -150,9 +105,10 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 <button id="saveNewPassBtn" onclick="updatePassword()"></button>
 <p id="newPassMsg" class="sub"></p>
 </div>
+
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V9</div>
-<div>Last Update: 02 Jun 2026 22:45 UTC</div>
+<div>ATSRS V10</div>
+<div>Last Update: 02 Jun 2026 23:20 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -174,6 +130,7 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 <button type="button" onclick="changeLanguage('ar')"><span>🇸🇦</span> العربية</button>
 </div>
 </div>
+
 <aside class="sidebar">
 <div class="brand">ATSRS</div>
 <p id="cabinetText" class="sub"></p>
@@ -201,18 +158,14 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 <section id="personnelPage" class="hidden">
 <div class="panel">
 <h3 id="addPersonnelTitle"></h3>
-<input id="pName">
-<input id="pPosition">
-<input id="pCompany">
-<input id="pEmail">
+<div class="profile-grid">
+<input id="pName"><input id="pSurname"><input id="pPosition"><input id="pCompany"><input id="pEmail"><input id="pPhone">
+</div>
 <button id="addPersonnelBtn" onclick="addPersonnel()"></button>
 </div>
 <div class="panel">
 <h3 id="personnelListTitle"></h3>
-<table>
-<thead><tr><th id="thName1"></th><th id="thPosition1"></th><th id="thCompany1"></th><th>Email</th><th id="thAction1"></th></tr></thead>
-<tbody id="personnelTable"></tbody>
-</table>
+<div class="table-wrap"><table><thead><tr><th id="thName1"></th><th id="thSurname1"></th><th id="thPosition1"></th><th id="thCompany1"></th><th>Email</th><th id="thPhone1"></th><th id="thAction1"></th></tr></thead><tbody id="personnelTable"></tbody></table></div>
 </div>
 </section>
 
@@ -224,55 +177,32 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 <button id="uploadDocBtn" class="secondary" onclick="documentFile.click()"></button>
 <input id="documentFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleDocumentUpload(event)">
 </div>
-
 <div id="scanBox" class="scan-box hidden">
 <p id="scanInfo" class="sub"></p>
 <input id="cameraInput" type="file" accept="image/*" capture="environment" onchange="handleDocumentUpload(event)">
 <div id="documentPreview" class="preview-box"></div>
 </div>
-
 <div id="confirmBox" class="scan-box hidden">
 <h3 id="confirmInfoTitle"></h3>
 <div class="confirm-grid">
 <select id="autoPerson"></select>
-<select id="autoDocType">
-<option>Passport</option>
-<option>Seaman Book</option>
-<option>BOSIET / FOET</option>
-<option>Offshore Medical</option>
-<option>Visa</option>
-<option>Yellow Fever</option>
-<option>ROV Competency</option>
-<option>Other</option>
-</select>
-<input id="autoDocNo">
-<input id="autoProvider">
-<input id="autoIssue" type="date">
-<input id="autoExpiry" type="date">
+<select id="autoDocType"><option>Passport</option><option>Seaman Book</option><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Visa</option><option>Yellow Fever</option><option>ROV Competency</option><option>Other</option></select>
+<input id="autoDocNo"><input id="autoProvider"><input id="autoIssue" type="date"><input id="autoExpiry" type="date">
 </div>
 <button id="confirmInfoBtn" onclick="confirmExtractedDocument()"></button>
 <p id="extractNote" class="sub"></p>
 </div>
 </div>
-
 <div class="panel">
 <h3 id="manualCertTitle"></h3>
 <select id="cPerson"></select>
-<select id="cType">
-<option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option>
-<option>Passport</option><option>Visa</option><option>Yellow Fever</option>
-<option>DP Certificate</option><option>ROV Competency</option><option>Other</option>
-</select>
-<input id="cProvider">
-<input id="cExpiry" type="date">
+<select id="cType"><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option><option>Passport</option><option>Visa</option><option>Yellow Fever</option><option>DP Certificate</option><option>ROV Competency</option><option>Other</option></select>
+<input id="cProvider"><input id="cExpiry" type="date">
 <button id="addCertBtn" onclick="addCertificate()"></button>
 </div>
 <div class="panel">
 <h3 id="certRegisterTitle"></h3>
-<table>
-<thead><tr><th id="thName2"></th><th id="thCertificate2"></th><th id="thProvider2"></th><th id="thExpiry2"></th><th id="thStatus2"></th><th id="thAction2"></th></tr></thead>
-<tbody id="certTable"></tbody>
-</table>
+<div class="table-wrap"><table><thead><tr><th id="thName2"></th><th id="thCertificate2"></th><th id="thProvider2"></th><th id="thExpiry2"></th><th id="thStatus2"></th><th id="thAction2"></th></tr></thead><tbody id="certTable"></tbody></table></div>
 </div>
 </section>
 
@@ -280,126 +210,31 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 <div class="panel">
 <h3 id="accountTitle"></h3>
 <p id="userEmail" class="sub"></p>
-
 <div class="account-tabs">
 <button id="accountTabGeneralBtn" class="active" onclick="showAccountTab('general')"></button>
 <button id="accountTabSecurityBtn" onclick="showAccountTab('security')"></button>
 <button id="accountTabPreferencesBtn" onclick="showAccountTab('preferences')"></button>
 </div>
-
 <div id="accountGeneralTab" class="account-tab active">
 <div class="profile-grid">
-<div>
-<input id="profileName">
-<input id="profileSurname">
-<input id="profilePhone">
-</div>
-<div>
-<select id="profileCountry"><option value=""></option>
-<option value="Azerbaijan">Azerbaijan</option>
-<option value="Turkey">Turkey</option>
-<option value="Norway">Norway</option>
-<option value="United Kingdom">United Kingdom</option>
-<option value="United States">United States</option>
-<option value="Canada">Canada</option>
-<option value="Germany">Germany</option>
-<option value="France">France</option>
-<option value="Spain">Spain</option>
-<option value="Portugal">Portugal</option>
-<option value="Italy">Italy</option>
-<option value="Netherlands">Netherlands</option>
-<option value="Belgium">Belgium</option>
-<option value="Denmark">Denmark</option>
-<option value="Sweden">Sweden</option>
-<option value="Finland">Finland</option>
-<option value="Poland">Poland</option>
-<option value="Romania">Romania</option>
-<option value="Bulgaria">Bulgaria</option>
-<option value="Georgia">Georgia</option>
-<option value="Kazakhstan">Kazakhstan</option>
-<option value="United Arab Emirates">United Arab Emirates</option>
-<option value="Saudi Arabia">Saudi Arabia</option>
-<option value="Qatar">Qatar</option>
-<option value="Kuwait">Kuwait</option>
-<option value="Oman">Oman</option>
-<option value="Bahrain">Bahrain</option>
-<option value="India">India</option>
-<option value="Pakistan">Pakistan</option>
-<option value="Philippines">Philippines</option>
-<option value="Indonesia">Indonesia</option>
-<option value="Malaysia">Malaysia</option>
-<option value="Singapore">Singapore</option>
-<option value="China">China</option>
-<option value="Japan">Japan</option>
-<option value="South Korea">South Korea</option>
-<option value="Australia">Australia</option>
-<option value="New Zealand">New Zealand</option>
-<option value="South Africa">South Africa</option>
-<option value="Equatorial Guinea">Equatorial Guinea</option>
-<option value="Angola">Angola</option>
-<option value="Nigeria">Nigeria</option>
-<option value="Ghana">Ghana</option>
-<option value="Egypt">Egypt</option>
-<option value="Morocco">Morocco</option>
-<option value="Brazil">Brazil</option>
-<option value="Mexico">Mexico</option>
-<option value="Argentina">Argentina</option></select>
-<input id="profileCompany">
-<input id="profilePosition">
-</div>
+<input id="profileName"><input id="profileSurname"><input id="profilePhone">
+<select id="profileCountry"></select>
+<input id="profileCompany"><input id="profilePosition">
 </div>
 <button id="saveProfileBtn" onclick="saveProfile()"></button>
 </div>
-
 <div id="accountSecurityTab" class="account-tab">
-<div class="profile-grid">
-<div>
 <input id="profileAltEmail" type="email">
+<div class="setting-row"><div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div><button id="primaryEmailBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button></div>
+<div class="setting-row"><div><b id="changePasswordTitle"></b><div id="changePasswordNote" class="small-note"></div></div><button id="changePasswordBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button></div>
+<div class="setting-row"><div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div><button id="setup2faBtn" class="secondary" onclick="alert(ptr('twofaNotice'))"></button></div>
+<div class="setting-row"><div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div><button id="viewSessionsBtn" class="secondary" onclick="alert(ptr('sessionsNotice'))"></button></div>
 </div>
-</div>
-<div class="setting-row">
-<div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div>
-<button id="primaryEmailBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button>
-</div>
-<div class="setting-row">
-<div><b id="changePasswordTitle"></b><div id="changePasswordNote" class="small-note"></div></div>
-<button id="changePasswordBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button>
-</div>
-<div class="setting-row">
-<div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div>
-<button id="setup2faBtn" class="secondary" onclick="alert(ptr('twofaNotice'))"></button>
-</div>
-<div class="setting-row">
-<div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div>
-<button id="viewSessionsBtn" class="secondary" onclick="alert(ptr('sessionsNotice'))"></button>
-</div>
-</div>
-
 <div id="accountPreferencesTab" class="account-tab">
-<div class="profile-grid">
-<div>
-<select id="profileTimezone">
-<option value="UTC">UTC</option>
-<option value="Europe/Baku">Europe/Baku</option>
-<option value="Europe/Sofia">Europe/Sofia</option>
-<option value="Europe/London">Europe/London</option>
-<option value="Europe/Oslo">Europe/Oslo</option>
-<option value="Africa/Malabo">Africa/Malabo</option>
-</select>
-</div>
-</div>
-<div class="setting-row">
-<div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div>
-<button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button>
-</div>
-<div class="setting-row">
-<div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div>
-<button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button>
-</div>
-<div class="setting-row">
-<div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div>
-<button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button>
-</div>
+<select id="profileTimezone"><option value="UTC">UTC</option><option value="Europe/Baku">Europe/Baku</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select>
+<div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
+<div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
+<div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button></div>
 </div>
 </div>
 </section>
@@ -407,486 +242,95 @@ html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
 </section>
 
 <script>
-const SUPABASE_URL = "https://hwtjuqyxziyymofamwxl.supabase.co";
-const SUPABASE_KEY = "sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
-const APP_URL = "https://atsrs.com/";
-
-let supabaseClient = null;
-try {
-  if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} catch (e) {
-  console.error("Supabase init failed:", e);
-}
-
-let currentUser=null,timer=null,countdown=0;
-let lang=localStorage.getItem("atsrs_lang")||"en";
+const SUPABASE_URL="https://hwtjuqyxziyymofamwxl.supabase.co";
+const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
+const APP_URL="https://atsrs.com/";
+let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error(e)}
+let currentUser=null,timer=null,countdown=0;let lang=localStorage.getItem("atsrs_lang")||"en";
 
 const T={
-en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",profile:"Profile",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",position:"Position",company:"Company",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save Profile",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check internet, VPN, Supabase URL, key, CORS or rate limit.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
-az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",profile:"Profil",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",position:"Vəzifə",company:"Şirkət",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Profili saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. İnternet, VPN, Supabase URL, key, CORS və ya limitə bax.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",exp30s:"30 günə bitir",exp90s:"90 günə bitir"},
-ru:{sub:"Платформа контроля соответствия offshore экипажа",login:"Вход",email:"Email",password:"Пароль",create:"Создать аккаунт",forgot:"Забыли пароль?",registerTitle:"Создать аккаунт",confirm:"Подтвердите пароль",register:"Регистрация",back:"Назад ко входу",resetTitle:"Сброс пароля",resetInfo:"Введите email. Ссылка для сброса будет отправлена на почту.",sendReset:"Отправить письмо",newPass:"Новый пароль",newPassword:"Новый пароль",confirmNew:"Подтвердите новый пароль",saveNew:"Сохранить новый пароль",cabinet:"Кабинет соответствия",dashboard:"Панель",personnel:"Персонал",certificates:"Сертификаты",profile:"Профиль",logout:"Выйти",totalPersonnel:"Всего персонала",totalCerts:"Всего сертификатов",exp90:"Истекают за 90 дней",expired:"Истекшие",addPersonnel:"Добавить персонал",personnelList:"Список персонала",name:"Имя",position:"Должность",company:"Компания",action:"Действие",addCert:"Добавить сертификат",provider:"Учебный центр / Провайдер",certRegister:"Реестр сертификатов",certificate:"Сертификат",expiry:"Срок действия",status:"Статус",saveProfile:"Сохранить профиль",fill:"Заполните все поля.",fix:"Исправьте выделенные поля.",enterLogin:"Введите email и пароль.",passRule:"Пароль должен быть минимум 6 символов.",matchRule:"Пароли не совпадают.",sending:"Отправка письма...",sent:"Письмо отправлено. Проверьте inbox/spam.",connection:"Ошибка соединения. Проверьте интернет, VPN, Supabase URL, key, CORS или лимит.",selectCrew:"Выберите члена экипажа",delete:"Удалить",valid:"Действителен",exp30s:"Истекает <30 дней",exp90s:"Истекает <90 дней"},
-tr:{sub:"Offshore ekip uyumluluk platformu",login:"Giriş",email:"Email",password:"Şifre",create:"Hesap oluştur",forgot:"Şifrenizi mi unuttunuz?",registerTitle:"Hesap oluştur",confirm:"Şifreyi onayla",register:"Kayıt ol",back:"Girişe dön",resetTitle:"Şifre sıfırlama",resetInfo:"Email yazın. Sıfırlama linki gelen kutunuza gönderilecek.",sendReset:"Sıfırlama emaili gönder",newPass:"Yeni şifre belirle",newPassword:"Yeni şifre",confirmNew:"Yeni şifreyi onayla",saveNew:"Yeni şifreyi kaydet",cabinet:"Uyumluluk kabini",dashboard:"Dashboard",personnel:"Personel",certificates:"Sertifikalar",profile:"Profil",logout:"Çıkış",totalPersonnel:"Toplam personel",totalCerts:"Toplam sertifika",exp90:"90 gün içinde bitecek",expired:"Süresi geçmiş",addPersonnel:"Personel ekle",personnelList:"Personel listesi",name:"Ad",position:"Pozisyon",company:"Şirket",action:"İşlem",addCert:"Sertifika ekle",provider:"Eğitim merkezi / Sağlayıcı",certRegister:"Sertifika kaydı",certificate:"Sertifika",expiry:"Bitiş tarihi",status:"Durum",saveProfile:"Profili kaydet",fill:"Tüm alanları doldurun.",fix:"İşaretli alanları düzeltin.",enterLogin:"Email ve şifre girin.",passRule:"Şifre en az 6 karakter olmalıdır.",matchRule:"Şifreler eşleşmiyor.",sending:"Sıfırlama emaili gönderiliyor...",sent:"Sıfırlama emaili gönderildi. Inbox/spam kontrol edin.",connection:"Bağlantı başarısız. İnternet, VPN, Supabase URL, key, CORS veya limiti kontrol edin.",selectCrew:"Ekip üyesi seç",delete:"Sil",valid:"Geçerli",exp30s:"<30 gün içinde bitiyor",exp90s:"<90 gün içinde bitiyor"},
-no:{sub:"Plattform for offshore mannskaps-samsvar",login:"Logg inn",email:"Email",password:"Passord",create:"Opprett konto",forgot:"Glemt passord?",registerTitle:"Opprett konto",confirm:"Bekreft passord",register:"Registrer",back:"Tilbake til innlogging",resetTitle:"Tilbakestill passord",resetInfo:"Skriv inn email. En lenke sendes til innboksen din.",sendReset:"Send reset-email",newPass:"Sett nytt passord",newPassword:"Nytt passord",confirmNew:"Bekreft nytt passord",saveNew:"Lagre nytt passord",cabinet:"Samsvarskabinett",dashboard:"Dashboard",personnel:"Personell",certificates:"Sertifikater",profile:"Profil",logout:"Logg ut",totalPersonnel:"Totalt personell",totalCerts:"Totalt sertifikater",exp90:"Utløper innen 90 dager",expired:"Utløpt",addPersonnel:"Legg til personell",personnelList:"Personelliste",name:"Navn",position:"Stilling",company:"Selskap",action:"Handling",addCert:"Legg til sertifikat",provider:"Treningssenter / Leverandør",certRegister:"Sertifikatregister",certificate:"Sertifikat",expiry:"Utløpsdato",status:"Status",saveProfile:"Lagre profil",fill:"Fyll ut alle feltene.",fix:"Rett de markerte feltene.",enterLogin:"Skriv inn email og passord.",passRule:"Passordet må være minst 6 tegn.",matchRule:"Passordene samsvarer ikke.",sending:"Sender reset-email...",sent:"Reset-email sendt. Sjekk inbox/spam.",connection:"Tilkobling feilet. Sjekk internett, VPN, Supabase URL, key, CORS eller grense.",selectCrew:"Velg mannskapsmedlem",delete:"Slett",valid:"Gyldig",exp30s:"Utløper <30 dager",exp90s:"Utløper <90 dager"},
-de:{sub:"Offshore-Crew-Compliance-Plattform",login:"Anmelden",email:"Email",password:"Passwort",create:"Konto erstellen",forgot:"Passwort vergessen?",registerTitle:"Konto erstellen",confirm:"Passwort bestätigen",register:"Registrieren",back:"Zurück zur Anmeldung",resetTitle:"Passwort zurücksetzen",resetInfo:"Email eingeben. Ein Reset-Link wird an den Posteingang gesendet.",sendReset:"Reset-Email senden",newPass:"Neues Passwort setzen",newPassword:"Neues Passwort",confirmNew:"Neues Passwort bestätigen",saveNew:"Neues Passwort speichern",cabinet:"Compliance-Kabinett",dashboard:"Dashboard",personnel:"Personal",certificates:"Zertifikate",profile:"Profil",logout:"Abmelden",totalPersonnel:"Personal gesamt",totalCerts:"Zertifikate gesamt",exp90:"Läuft in 90 Tagen ab",expired:"Abgelaufen",addPersonnel:"Personal hinzufügen",personnelList:"Personalliste",name:"Name",position:"Position",company:"Firma",action:"Aktion",addCert:"Zertifikat hinzufügen",provider:"Trainingszentrum / Anbieter",certRegister:"Zertifikatsregister",certificate:"Zertifikat",expiry:"Ablaufdatum",status:"Status",saveProfile:"Profil speichern",fill:"Alle Felder ausfüllen.",fix:"Markierte Felder korrigieren.",enterLogin:"Email und Passwort eingeben.",passRule:"Passwort muss mindestens 6 Zeichen haben.",matchRule:"Passwörter stimmen nicht überein.",sending:"Reset-Email wird gesendet...",sent:"Reset-Email gesendet. Inbox/Spam prüfen.",connection:"Verbindung fehlgeschlagen. Internet, VPN, Supabase URL, key, CORS oder Limit prüfen.",selectCrew:"Crew-Mitglied wählen",delete:"Löschen",valid:"Gültig",exp30s:"Läuft <30 Tage ab",exp90s:"Läuft <90 Tage ab"},
-fr:{sub:"Plateforme de conformité pour équipage offshore",login:"Connexion",email:"Email",password:"Mot de passe",create:"Créer un compte",forgot:"Mot de passe oublié ?",registerTitle:"Créer un compte",confirm:"Confirmer le mot de passe",register:"S’inscrire",back:"Retour à la connexion",resetTitle:"Réinitialiser le mot de passe",resetInfo:"Entrez votre email. Un lien sera envoyé dans votre boîte de réception.",sendReset:"Envoyer l’email de reset",newPass:"Définir un nouveau mot de passe",newPassword:"Nouveau mot de passe",confirmNew:"Confirmer le nouveau mot de passe",saveNew:"Enregistrer le nouveau mot de passe",cabinet:"Cabinet de conformité",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificats",profile:"Profil",logout:"Déconnexion",totalPersonnel:"Personnel total",totalCerts:"Certificats totaux",exp90:"Expire dans 90 jours",expired:"Expiré",addPersonnel:"Ajouter personnel",personnelList:"Liste du personnel",name:"Nom",position:"Poste",company:"Société",action:"Action",addCert:"Ajouter certificat",provider:"Centre de formation / Fournisseur",certRegister:"Registre des certificats",certificate:"Certificat",expiry:"Expiration",status:"Statut",saveProfile:"Enregistrer le profil",fill:"Remplissez tous les champs.",fix:"Corrigez les champs marqués.",enterLogin:"Entrez email et mot de passe.",passRule:"Le mot de passe doit contenir au moins 6 caractères.",matchRule:"Les mots de passe ne correspondent pas.",sending:"Envoi de l’email...",sent:"Email envoyé. Vérifiez inbox/spam.",connection:"Connexion échouée. Vérifiez internet, VPN, Supabase URL, key, CORS ou limite.",selectCrew:"Sélectionner un membre",delete:"Supprimer",valid:"Valide",exp30s:"Expire <30 jours",exp90s:"Expire <90 jours"},
-es:{sub:"Plataforma de cumplimiento para tripulación offshore",login:"Iniciar sesión",email:"Email",password:"Contraseña",create:"Crear cuenta",forgot:"¿Olvidaste la contraseña?",registerTitle:"Crear cuenta",confirm:"Confirmar contraseña",register:"Registrarse",back:"Volver al login",resetTitle:"Restablecer contraseña",resetInfo:"Introduce tu email. Se enviará un enlace a tu bandeja.",sendReset:"Enviar email de reset",newPass:"Definir nueva contraseña",newPassword:"Nueva contraseña",confirmNew:"Confirmar nueva contraseña",saveNew:"Guardar nueva contraseña",cabinet:"Gabinete de cumplimiento",dashboard:"Dashboard",personnel:"Personal",certificates:"Certificados",profile:"Perfil",logout:"Salir",totalPersonnel:"Personal total",totalCerts:"Certificados totales",exp90:"Vencen en 90 días",expired:"Vencidos",addPersonnel:"Añadir personal",personnelList:"Lista de personal",name:"Nombre",position:"Cargo",company:"Empresa",action:"Acción",addCert:"Añadir certificado",provider:"Centro de formación / Proveedor",certRegister:"Registro de certificados",certificate:"Certificado",expiry:"Vencimiento",status:"Estado",saveProfile:"Guardar perfil",fill:"Rellena todos los campos.",fix:"Corrige los campos marcados.",enterLogin:"Introduce email y contraseña.",passRule:"La contraseña debe tener al menos 6 caracteres.",matchRule:"Las contraseñas no coinciden.",sending:"Enviando email...",sent:"Email enviado. Revisa inbox/spam.",connection:"Error de conexión. Revisa internet, VPN, Supabase URL, key, CORS o límite.",selectCrew:"Seleccionar tripulante",delete:"Eliminar",valid:"Válido",exp30s:"Vence <30 días",exp90s:"Vence <90 días"},
-pt:{sub:"Plataforma de conformidade para tripulação offshore",login:"Entrar",email:"Email",password:"Senha",create:"Criar conta",forgot:"Esqueceu a senha?",registerTitle:"Criar conta",confirm:"Confirmar senha",register:"Registar",back:"Voltar ao login",resetTitle:"Redefinir senha",resetInfo:"Digite seu email. Um link será enviado para sua caixa de entrada.",sendReset:"Enviar email de reset",newPass:"Definir nova senha",newPassword:"Nova senha",confirmNew:"Confirmar nova senha",saveNew:"Salvar nova senha",cabinet:"Gabinete de conformidade",dashboard:"Dashboard",personnel:"Pessoal",certificates:"Certificados",profile:"Perfil",logout:"Sair",totalPersonnel:"Total de pessoal",totalCerts:"Total de certificados",exp90:"Expiram em 90 dias",expired:"Expirados",addPersonnel:"Adicionar pessoal",personnelList:"Lista de pessoal",name:"Nome",position:"Cargo",company:"Empresa",action:"Ação",addCert:"Adicionar certificado",provider:"Centro de formação / Provedor",certRegister:"Registro de certificados",certificate:"Certificado",expiry:"Validade",status:"Status",saveProfile:"Salvar perfil",fill:"Preencha todos os campos.",fix:"Corrija os campos destacados.",enterLogin:"Digite email e senha.",passRule:"A senha deve ter pelo menos 6 caracteres.",matchRule:"As senhas não coincidem.",sending:"Enviando email...",sent:"Email enviado. Verifique inbox/spam.",connection:"Falha de conexão. Verifique internet, VPN, Supabase URL, key, CORS ou limite.",selectCrew:"Selecionar membro",delete:"Apagar",valid:"Válido",exp30s:"Expira <30 dias",exp90s:"Expira <90 dias"},
-ar:{sub:"منصة امتثال طاقم الأوفشور",login:"تسجيل الدخول",email:"البريد الإلكتروني",password:"كلمة المرور",create:"إنشاء حساب",forgot:"نسيت كلمة المرور؟",registerTitle:"إنشاء حساب",confirm:"تأكيد كلمة المرور",register:"تسجيل",back:"العودة إلى تسجيل الدخول",resetTitle:"إعادة تعيين كلمة المرور",resetInfo:"أدخل بريدك الإلكتروني. سيتم إرسال رابط إعادة التعيين إلى صندوق الوارد.",sendReset:"إرسال بريد إعادة التعيين",newPass:"تعيين كلمة مرور جديدة",newPassword:"كلمة مرور جديدة",confirmNew:"تأكيد كلمة المرور الجديدة",saveNew:"حفظ كلمة المرور الجديدة",cabinet:"لوحة الامتثال",dashboard:"لوحة التحكم",personnel:"الأفراد",certificates:"الشهادات",profile:"الملف الشخصي",logout:"تسجيل الخروج",totalPersonnel:"إجمالي الأفراد",totalCerts:"إجمالي الشهادات",exp90:"تنتهي خلال 90 يومًا",expired:"منتهية",addPersonnel:"إضافة فرد",personnelList:"قائمة الأفراد",name:"الاسم",position:"المنصب",company:"الشركة",action:"إجراء",addCert:"إضافة شهادة",provider:"مركز التدريب / المزود",certRegister:"سجل الشهادات",certificate:"الشهادة",expiry:"تاريخ الانتهاء",status:"الحالة",saveProfile:"حفظ الملف",fill:"املأ جميع الحقول.",fix:"صحح الحقول المحددة.",enterLogin:"أدخل البريد وكلمة المرور.",passRule:"يجب أن تكون كلمة المرور 6 أحرف على الأقل.",matchRule:"كلمتا المرور غير متطابقتين.",sending:"يتم إرسال البريد...",sent:"تم إرسال البريد. تحقق من inbox/spam.",connection:"فشل الاتصال. تحقق من الإنترنت أو VPN أو Supabase URL أو key أو CORS أو الحد.",selectCrew:"اختر عضو الطاقم",delete:"حذف",valid:"صالحة",exp30s:"تنتهي خلال <30 يومًا",exp90s:"تنتهي خلال <90 يومًا"}
+en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
+az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
 };
-function tr(k){return T[lang][k]||T.en[k]||k}
+["ru","tr","no","de","fr","es","pt","ar"].forEach(l=>T[l]=T.en);
 
-
-const UI_I18N={
-en:{account:"Account",general:"General",security:"Security",preferences:"Preferences",surname:"Surname",phone:"Phone",country:"Country",recoveryEmail:"Recovery email",primaryEmail:"Primary email",primaryEmailNote:"Your main login email.",password:"Password",passwordNote:"Change your account password.",change:"Change",twofa:"Two-factor authentication",twofaNote:"Google Authenticator / email code support.",setup:"Setup",sessions:"Active Sessions",sessionsNote:"View devices currently signed in.",view:"View",notifications:"Notifications",notificationsNote:"Certificate expiry alerts by email/SMS.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanent deletion will be enabled after live Auth.",delete:"Delete",timezone:"Time Zone",addDoc:"Add Document",scanDoc:"Scan with Camera",uploadDoc:"Upload File",scanInfo:"Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.",confirmInfo:"Confirm Information",docNo:"Document / Certificate No",issueDate:"Issue Date",manualCert:"Manual Certificate Entry",confirm:"Confirm Info",extractNote:"Auto extraction is in test mode. Review and confirm before saving.",fileSelected:"File selected",authLiveNotice:"This will be connected after Supabase Auth is live.",twofaNotice:"2FA will be added in the next security phase.",sessionsNotice:"Active sessions will be connected after Supabase Auth is live.",notifyNotice:"Notification settings will be added with backend alerts.",deleteNotice:"Account deletion will be connected after Supabase Auth is live."},
-az:{account:"Hesab",general:"Ümumi",security:"Təhlükəsizlik",preferences:"Tənzimləmələr",surname:"Soyad",phone:"Telefon",country:"Ölkə",recoveryEmail:"Bərpa emaili",primaryEmail:"Əsas email",primaryEmailNote:"Əsas giriş emailiniz.",password:"Şifrə",passwordNote:"Hesab şifrəsini dəyiş.",change:"Dəyiş",twofa:"İki mərhələli təsdiq",twofaNote:"Google Authenticator / email kod dəstəyi.",setup:"Qur",sessions:"Aktiv sessiyalar",sessionsNote:"Hazırda daxil olmuş cihazları göstər.",view:"Bax",notifications:"Bildirişlər",notificationsNote:"Sertifikat bitmə xəbərdarlıqları email/SMS ilə.",manage:"İdarə et",exportData:"Məlumatlarımı eksport et",exportDataNote:"ATSRS hesab məlumatlarını yüklə.",export:"Eksport",deleteAccount:"Hesabı sil",deleteAccountNote:"Tam silinmə canlı Auth-dan sonra aktiv olacaq.",delete:"Sil",timezone:"Saat qurşağı",addDoc:"Sənəd əlavə et",scanDoc:"Kamera ilə scan et",uploadDoc:"Fayl yüklə",scanInfo:"Kamera istifadə et və ya PDF/JPG/PNG yüklə. Avtomatik oxuma OCR mərhələsində qoşulacaq.",confirmInfo:"Məlumatı təsdiqlə",docNo:"Sənəd / Sertifikat №",issueDate:"Verilmə tarixi",manualCert:"Manual sertifikat girişi",confirm:"Confirm Info",extractNote:"Auto extract test rejimindədir. Saxlamadan əvvəl yoxla və təsdiqlə.",fileSelected:"Fayl seçildi",authLiveNotice:"Bu funksiya Supabase Auth canlı olandan sonra qoşulacaq.",twofaNotice:"2FA növbəti təhlükəsizlik mərhələsində əlavə olunacaq.",sessionsNotice:"Aktiv sessiyalar Supabase Auth canlı olandan sonra qoşulacaq.",notifyNotice:"Bildiriş ayarları backend alerts ilə əlavə olunacaq.",deleteNotice:"Hesab silmə Supabase Auth canlı olandan sonra qoşulacaq."},
-ru:{account:"Аккаунт",general:"Общее",security:"Безопасность",preferences:"Настройки",surname:"Фамилия",phone:"Телефон",country:"Страна",recoveryEmail:"Email восстановления",primaryEmail:"Основной email",primaryEmailNote:"Ваш основной email для входа.",password:"Пароль",passwordNote:"Изменить пароль аккаунта.",change:"Изменить",twofa:"Двухфакторная защита",twofaNote:"Google Authenticator / email-код.",setup:"Настроить",sessions:"Активные сессии",sessionsNote:"Показать устройства с активным входом.",view:"Смотреть",notifications:"Уведомления",notificationsNote:"Оповещения об истечении сертификатов по email/SMS.",manage:"Управлять",exportData:"Экспорт данных",exportDataNote:"Скачать данные аккаунта ATSRS.",export:"Экспорт",deleteAccount:"Удалить аккаунт",deleteAccountNote:"Полное удаление будет включено после live Auth.",delete:"Удалить",timezone:"Часовой пояс",addDoc:"Добавить документ",scanDoc:"Сканировать камерой",uploadDoc:"Загрузить файл",scanInfo:"Используйте камеру или загрузите PDF/JPG/PNG. Автоизвлечение будет подключено на этапе OCR.",confirmInfo:"Подтвердить данные",docNo:"Номер документа / сертификата",issueDate:"Дата выдачи",manualCert:"Ручной ввод сертификата",confirm:"Подтвердить",extractNote:"Автоизвлечение в тестовом режиме. Проверьте и подтвердите перед сохранением.",fileSelected:"Файл выбран",authLiveNotice:"Функция будет подключена после live Supabase Auth.",twofaNotice:"2FA будет добавлена на следующем этапе безопасности.",sessionsNotice:"Активные сессии будут подключены после live Supabase Auth.",notifyNotice:"Настройки уведомлений будут добавлены вместе с backend alerts.",deleteNotice:"Удаление аккаунта будет подключено после live Supabase Auth."},
-tr:{account:"Hesap",general:"Genel",security:"Güvenlik",preferences:"Tercihler",surname:"Soyad",phone:"Telefon",country:"Ülke",recoveryEmail:"Kurtarma emaili",primaryEmail:"Ana email",primaryEmailNote:"Ana giriş emailiniz.",password:"Şifre",passwordNote:"Hesap şifresini değiştir.",change:"Değiştir",twofa:"İki aşamalı doğrulama",twofaNote:"Google Authenticator / email kod desteği.",setup:"Kur",sessions:"Aktif oturumlar",sessionsNote:"Giriş yapılmış cihazları görüntüle.",view:"Görüntüle",notifications:"Bildirimler",notificationsNote:"Sertifika bitiş uyarıları email/SMS ile.",manage:"Yönet",exportData:"Verilerimi dışa aktar",exportDataNote:"ATSRS hesap verilerini indir.",export:"Dışa aktar",deleteAccount:"Hesabı sil",deleteAccountNote:"Kalıcı silme live Auth sonrası aktif olacak.",delete:"Sil",timezone:"Saat dilimi",addDoc:"Belge ekle",scanDoc:"Kamera ile tara",uploadDoc:"Dosya yükle",scanInfo:"Kamera kullanın veya PDF/JPG/PNG yükleyin. Otomatik okuma OCR aşamasında bağlanacak.",confirmInfo:"Bilgiyi onayla",docNo:"Belge / Sertifika No",issueDate:"Veriliş tarihi",manualCert:"Manuel sertifika girişi",confirm:"Onayla",extractNote:"Auto extract test modunda. Kaydetmeden önce kontrol edip onaylayın.",fileSelected:"Dosya seçildi",authLiveNotice:"Bu özellik Supabase Auth canlı olunca bağlanacak.",twofaNotice:"2FA sonraki güvenlik aşamasında eklenecek.",sessionsNotice:"Aktif oturumlar Supabase Auth sonrası bağlanacak.",notifyNotice:"Bildirim ayarları backend alerts ile eklenecek.",deleteNotice:"Hesap silme Supabase Auth sonrası bağlanacak."}
+const UI={
+en:{account:"Account",general:"General",security:"Security",preferences:"Preferences",country:"Country",recoveryEmail:"Recovery email",primaryEmail:"Primary email",primaryEmailNote:"Your main login email.",password:"Password",passwordNote:"Change your account password.",change:"Change",twofa:"Two-factor authentication",twofaNote:"Google Authenticator / email code support.",setup:"Setup",sessions:"Active Sessions",sessionsNote:"View devices currently signed in.",view:"View",notifications:"Notifications",notificationsNote:"Certificate expiry alerts by email/SMS.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanent deletion will be enabled after live Auth.",timezone:"Time Zone",addDoc:"Add Document",scanDoc:"Scan with Camera",uploadDoc:"Upload File",scanInfo:"Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.",confirmInfo:"Confirm Information",docNo:"Document / Certificate No",issueDate:"Issue Date",manualCert:"Manual Certificate Entry",confirm:"Confirm Info",extractNote:"Auto extraction is in test mode. Review and confirm before saving.",fileSelected:"File selected",authLiveNotice:"This will be connected after Supabase Auth is live.",twofaNotice:"2FA will be added in the next security phase.",sessionsNotice:"Active sessions will be connected after Supabase Auth is live.",notifyNotice:"Notification settings will be added with backend alerts.",deleteNotice:"Account deletion will be connected after Supabase Auth is live."},
+az:{account:"Hesab",general:"Ümumi",security:"Təhlükəsizlik",preferences:"Tənzimləmələr",country:"Ölkə",recoveryEmail:"Bərpa emaili",primaryEmail:"Əsas email",primaryEmailNote:"Əsas giriş emailiniz.",password:"Şifrə",passwordNote:"Hesab şifrəsini dəyiş.",change:"Dəyiş",twofa:"İki mərhələli təsdiq",twofaNote:"Google Authenticator / email kod dəstəyi.",setup:"Qur",sessions:"Aktiv sessiyalar",sessionsNote:"Hazırda daxil olmuş cihazları göstər.",view:"Bax",notifications:"Bildirişlər",notificationsNote:"Sertifikat bitmə xəbərdarlıqları email/SMS ilə.",manage:"İdarə et",exportData:"Məlumatlarımı eksport et",exportDataNote:"ATSRS hesab məlumatlarını yüklə.",export:"Eksport",deleteAccount:"Hesabı sil",deleteAccountNote:"Tam silinmə canlı Auth-dan sonra aktiv olacaq.",timezone:"Saat qurşağı",addDoc:"Sənəd əlavə et",scanDoc:"Kamera ilə scan et",uploadDoc:"Fayl yüklə",scanInfo:"Kamera istifadə et və ya PDF/JPG/PNG yüklə. Avtomatik oxuma OCR mərhələsində qoşulacaq.",confirmInfo:"Məlumatı təsdiqlə",docNo:"Sənəd / Sertifikat №",issueDate:"Verilmə tarixi",manualCert:"Manual sertifikat girişi",confirm:"Təsdiqlə",extractNote:"Auto extract test rejimindədir. Saxlamadan əvvəl yoxla və təsdiqlə.",fileSelected:"Fayl seçildi",authLiveNotice:"Bu funksiya Supabase Auth canlı olandan sonra qoşulacaq.",twofaNotice:"2FA növbəti təhlükəsizlik mərhələsində əlavə olunacaq.",sessionsNotice:"Aktiv sessiyalar Supabase Auth canlı olandan sonra qoşulacaq.",notifyNotice:"Bildiriş ayarları backend alerts ilə əlavə olunacaq.",deleteNotice:"Hesab silmə Supabase Auth canlı olandan sonra qoşulacaq."}
 };
-["no","de","fr","es","pt","ar"].forEach(l=>UI_I18N[l]=UI_I18N.en);
-function ptr(k){return (UI_I18N[lang]&&UI_I18N[lang][k])||UI_I18N.en[k]||k}
-
+["ru","tr","no","de","fr","es","pt","ar"].forEach(l=>UI[l]=UI.en);
 const LANG_FLAGS={en:"🇬🇧",az:"🇦🇿",ru:"🇷🇺",tr:"🇹🇷",no:"🇳🇴",de:"🇩🇪",fr:"🇫🇷",es:"🇪🇸",pt:"🇵🇹",ar:"🇸🇦"};
-const EMAIL_MSG={
-en:"Enter a valid email address.",
-az:"Düzgün email ünvanı yaz.",
-ru:"Введите корректный email.",
-tr:"Geçerli bir email yazın.",
-no:"Skriv inn en gyldig email.",
-de:"Gültige Email eingeben.",
-fr:"Entrez une adresse email valide.",
-es:"Introduce un email válido.",
-pt:"Digite um email válido.",
-ar:"أدخل بريدًا إلكترونيًا صحيحًا."
-};
-const NETWORK_MSG={
-en:"Supabase connection failed. This is usually URL/key, Supabase Auth redirect settings, CORS/network block, or project availability.",
-az:"Supabase bağlantısı alınmadı. Adətən səbəb URL/key, Supabase Auth redirect ayarları, CORS/şəbəkə bloklanması və ya project availability olur.",
-ru:"Ошибка соединения с Supabase. Обычно причина: URL/key, redirect-настройки Auth, CORS/сеть или доступность проекта.",
-tr:"Supabase bağlantısı başarısız. Genelde sebep URL/key, Auth redirect ayarları, CORS/ağ bloklaması veya proje erişimi olur.",
-no:"Supabase-tilkobling feilet. Vanlig årsak: URL/key, Auth redirect, CORS/nettverk eller prosjektstatus.",
-de:"Supabase-Verbindung fehlgeschlagen. Häufig: URL/key, Auth Redirect, CORS/Netzwerk oder Projektstatus.",
-fr:"Connexion Supabase échouée. Cause fréquente: URL/key, redirections Auth, CORS/réseau ou disponibilité du projet.",
-es:"Falló la conexión Supabase. Normalmente: URL/key, redirects Auth, CORS/red o disponibilidad del proyecto.",
-pt:"Falha na conexão Supabase. Normalmente: URL/key, redirects Auth, CORS/rede ou disponibilidade do projeto.",
-ar:"فشل الاتصال بـ Supabase. السبب غالبًا URL/key أو إعدادات redirect أو CORS/الشبكة أو توفر المشروع."
-};
+const EMAIL_MSG={en:"Enter a valid email address.",az:"Düzgün email ünvanı yaz."};
+function tr(k){return (T[lang]&&T[lang][k])||T.en[k]||k}
+function ptr(k){return (UI[lang]&&UI[lang][k])||UI.en[k]||k}
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim())}
-function markEmail(input, rule){
-  if(!validEmail(input.value)){
-    input.classList.add("input-error");
-    input.classList.remove("input-ok");
-    rule.innerText=emailMsg();
-    rule.classList.remove("hidden");
-    return false;
-  }
-  input.classList.remove("input-error");
-  input.classList.add("input-ok");
-  rule.classList.add("hidden");
-  return true;
-}
-function clearEmailMark(input, rule){
-  input.classList.remove("input-error","input-ok");
-  rule.classList.add("hidden");
-}
-function emailEnterHandler(e, input, rule, action){
-  if(e.key==="Enter"){
-    e.preventDefault();
-    if(markEmail(input, rule) && action) action();
-  }
-}
-
 function emailMsg(){return EMAIL_MSG[lang]||EMAIL_MSG.en}
-function networkMsg(){return NETWORK_MSG[lang]||NETWORK_MSG.en}
+function markEmail(input,rule){if(!validEmail(input.value)){input.classList.add("input-error");rule.innerText=emailMsg();rule.classList.remove("hidden");return false}input.classList.remove("input-error");input.classList.add("input-ok");rule.classList.add("hidden");return true}
+function clearEmailMark(input,rule){input.classList.remove("input-error","input-ok");rule.classList.add("hidden")}
 function toggleLangMenu(){langMenu.classList.toggle("hidden")}
 function toggleAppLangMenu(){appLangMenu.classList.toggle("hidden")}
-document.addEventListener("click",(e)=>{
-  if(!e.target.closest(".lang-floating")){
-    langMenu.classList.add("hidden");
-    if(typeof appLangMenu!=="undefined")appLangMenu.classList.add("hidden");
-  }
-})
+document.addEventListener("click",e=>{if(!e.target.closest(".lang-floating")){langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden")}})
 
-
-function localizeExtendedUI(){
-if(typeof accountTitle!=="undefined"){
-accountTitle.innerText=ptr("account");
-accountTabGeneralBtn.innerText=ptr("general");
-accountTabSecurityBtn.innerText=ptr("security");
-accountTabPreferencesBtn.innerText=ptr("preferences");
-profileName.placeholder=tr("name");
-profileSurname.placeholder=ptr("surname");
-profilePhone.placeholder=ptr("phone");
-profileCountry.options[0].text=ptr("country");
-profileCompany.placeholder=tr("company");
-profilePosition.placeholder=tr("position");
-profileAltEmail.placeholder=ptr("recoveryEmail");
-profileTimezone.title=ptr("timezone");
-saveProfileBtn.innerText=tr("saveProfile");
-primaryEmailTitle.innerText=ptr("primaryEmail");
-primaryEmailNote.innerText=ptr("primaryEmailNote");
-primaryEmailBtn.innerText=ptr("change");
-changePasswordTitle.innerText=ptr("password");
-changePasswordNote.innerText=ptr("passwordNote");
-changePasswordBtn.innerText=ptr("change");
-twofaTitle.innerText=ptr("twofa");
-twofaNote.innerText=ptr("twofaNote");
-setup2faBtn.innerText=ptr("setup");
-sessionsTitle.innerText=ptr("sessions");
-sessionsNote.innerText=ptr("sessionsNote");
-viewSessionsBtn.innerText=ptr("view");
-notifyTitle.innerText=ptr("notifications");
-notifyNote.innerText=ptr("notificationsNote");
-manageNotifyBtn.innerText=ptr("manage");
-exportDataTitle.innerText=ptr("exportData");
-exportDataNote.innerText=ptr("exportDataNote");
-exportDataBtn.innerText=ptr("export");
-deleteAccountTitle.innerText=ptr("deleteAccount");
-deleteAccountNote.innerText=ptr("deleteAccountNote");
-deleteAccountBtn.innerText=ptr("delete");
-}
-if(typeof addDocTitle!=="undefined"){
-addDocTitle.innerText=ptr("addDoc");
-scanDocBtn.innerText=ptr("scanDoc");
-uploadDocBtn.innerText=ptr("uploadDoc");
-scanInfo.innerText=ptr("scanInfo");
-confirmInfoTitle.innerText=ptr("confirmInfo");
-autoDocNo.placeholder=ptr("docNo");
-autoProvider.placeholder=tr("provider");
-autoIssue.title=ptr("issueDate");
-autoExpiry.title=tr("expiry");
-confirmInfoBtn.innerText=ptr("confirm");
-extractNote.innerText=ptr("extractNote");
-manualCertTitle.innerText=ptr("manualCert");
-}
-}
-
-function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");if(typeof appLangMenu!=="undefined")appLangMenu.classList.add("hidden");applyLanguage();renderAll()}
+function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden");applyLanguage();renderAll()}
 function applyLanguage(){
 document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";if(typeof appLangCircle!=="undefined")appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
-authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");
-loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");loginEmailRule.innerText=emailMsg();
-registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");
-registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");regEmailRule.innerText=emailMsg();passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
+authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");loginEmailRule.innerText=emailMsg();loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");
+registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regEmailRule.innerText=emailMsg();regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
 resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
 newPassTitle.innerText=tr("newPass");newPassword.placeholder=tr("newPassword");newPassword2.placeholder=tr("confirmNew");saveNewPassBtn.innerText=tr("saveNew");
 cabinetText.innerText=tr("cabinet");navDashboard.innerText=tr("dashboard");navPersonnel.innerText=tr("personnel");navCertificates.innerText=tr("certificates");navProfile.innerText=ptr("account");navLogout.innerText=tr("logout");
-pageTitle.innerText=tr("dashboard");totalPersonnelText.innerText=tr("totalPersonnel");totalCertsText.innerText=tr("totalCerts");exp90Text.innerText=tr("exp90");expiredText.innerText=tr("expired");
-addPersonnelTitle.innerText=tr("addPersonnel");pName.placeholder=tr("name");pPosition.placeholder=tr("position");pCompany.placeholder=tr("company");pEmail.placeholder=tr("email");addPersonnelBtn.innerText=tr("addPersonnel");
-personnelListTitle.innerText=tr("personnelList");thName1.innerText=tr("name");thPosition1.innerText=tr("position");thCompany1.innerText=tr("company");thAction1.innerText=tr("action");
-addCertTitle.innerText=tr("addCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");
-thName2.innerText=tr("name");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
-localizeExtendedUI();
-profileTitle.innerText=tr("profile");
-profileTabPersonalBtn.innerText=ptr("personal");
-profileTabSecurityBtn.innerText=ptr("security");
-profileTabPreferencesBtn.innerText=ptr("preferences");
-profileName.placeholder=tr("name");
-profileSurname.placeholder=ptr("surname");
-profilePhone.placeholder=ptr("phone");
-profileCountry.options[0].text=ptr("country");
-profileCompany.placeholder=tr("company");
-profilePosition.placeholder=tr("position");
-profileAltEmail.placeholder=ptr("altEmail");
-profileTimezone.title=ptr("timezone");
-saveProfileBtn.innerText=tr("saveProfile");
-primaryEmailTitle.innerText=ptr("primaryEmail");
-primaryEmailNote.innerText=ptr("primaryEmailNote");
-changePasswordTitle.innerText=ptr("password");
-changePasswordNote.innerText=ptr("passwordNote");
-changePasswordBtn.innerText=ptr("change");
-twofaTitle.innerText=ptr("twofa");
-twofaNote.innerText=ptr("twofaNote");
-setup2faBtn.innerText=ptr("setup");
-sessionsTitle.innerText=ptr("sessions");
-sessionsNote.innerText=ptr("sessionsNote");
-viewSessionsBtn.innerText=ptr("view");
-notifyTitle.innerText=ptr("notifications");
-notifyNote.innerText=ptr("notificationsNote");
-manageNotifyBtn.innerText=ptr("manage");
-exportDataTitle.innerText=ptr("exportData");
-exportDataNote.innerText=ptr("exportDataNote");
-exportDataBtn.innerText=ptr("export");
-deleteAccountTitle.innerText=ptr("deleteAccount");
-deleteAccountNote.innerText=ptr("deleteAccountNote");
-deleteAccountBtn.innerText=ptr("delete");
-securityTitle.innerText="Security";
-changePasswordTitle.innerText="Password";
-changePasswordNote.innerText="Change your account password.";
-twofaTitle.innerText="Two-factor authentication";
-twofaNote.innerText="Google Authenticator / email code support.";
-notifyTitle.innerText="Notifications";
-notifyNote.innerText="Certificate expiry alerts by email/SMS.";
-sessionsTitle.innerText="Login History & Active Sessions";
-privacyTitle.innerText="Privacy & Data";
-exportDataTitle.innerText="Export My Data";
-exportDataNote.innerText="Download your ATSRS account data.";
-deleteAccountTitle.innerText="Delete Account";
-deleteAccountNote.innerText="Permanent deletion will be enabled after live Auth.";
+totalPersonnelText.innerText=tr("totalPersonnel");totalCertsText.innerText=tr("totalCerts");exp90Text.innerText=tr("exp90");expiredText.innerText=tr("expired");
+addPersonnelTitle.innerText=tr("addPersonnel");pName.placeholder=tr("name");pSurname.placeholder=tr("surname");pPosition.placeholder=tr("position");pCompany.placeholder=tr("company");pEmail.placeholder=tr("email");pPhone.placeholder=tr("phone");addPersonnelBtn.innerText=tr("addPersonnel");
+personnelListTitle.innerText=tr("personnelList");thName1.innerText=tr("name");thSurname1.innerText=tr("surname");thPosition1.innerText=tr("position");thCompany1.innerText=tr("company");thPhone1.innerText=tr("phone");thAction1.innerText=tr("action");
+addDocTitle.innerText=ptr("addDoc");scanDocBtn.innerText=ptr("scanDoc");uploadDocBtn.innerText=ptr("uploadDoc");scanInfo.innerText=ptr("scanInfo");confirmInfoTitle.innerText=ptr("confirmInfo");autoDocNo.placeholder=ptr("docNo");autoProvider.placeholder=tr("provider");confirmInfoBtn.innerText=ptr("confirm");extractNote.innerText=ptr("extractNote");
+manualCertTitle.innerText=ptr("manualCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");thName2.innerText=tr("name");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
+accountTitle.innerText=ptr("account");accountTabGeneralBtn.innerText=ptr("general");accountTabSecurityBtn.innerText=ptr("security");accountTabPreferencesBtn.innerText=ptr("preferences");profileName.placeholder=tr("name");profileSurname.placeholder=tr("surname");profilePhone.placeholder=tr("phone");profileCompany.placeholder=tr("company");profilePosition.placeholder=tr("position");profileCountry.options[0].text=ptr("country");saveProfileBtn.innerText=tr("saveProfile");
+profileAltEmail.placeholder=ptr("recoveryEmail");primaryEmailTitle.innerText=ptr("primaryEmail");primaryEmailNote.innerText=ptr("primaryEmailNote");primaryEmailBtn.innerText=ptr("change");changePasswordTitle.innerText=ptr("password");changePasswordNote.innerText=ptr("passwordNote");changePasswordBtn.innerText=ptr("change");twofaTitle.innerText=ptr("twofa");twofaNote.innerText=ptr("twofaNote");setup2faBtn.innerText=ptr("setup");sessionsTitle.innerText=ptr("sessions");sessionsNote.innerText=ptr("sessionsNote");viewSessionsBtn.innerText=ptr("view");
+notifyTitle.innerText=ptr("notifications");notifyNote.innerText=ptr("notificationsNote");manageNotifyBtn.innerText=ptr("manage");exportDataTitle.innerText=ptr("exportData");exportDataNote.innerText=ptr("exportDataNote");exportDataBtn.innerText=ptr("export");deleteAccountTitle.innerText=ptr("deleteAccount");deleteAccountNote.innerText=ptr("deleteAccountNote");deleteAccountBtn.innerText=tr("delete");
+if(currentUser){let active=document.querySelector(".nav button.active");pageTitle.innerText=active?active.innerText:tr("dashboard")}
 }
 
 function hideAuthBoxes(){loginBox.classList.add("hidden");registerBox.classList.add("hidden");forgotBox.classList.add("hidden");newPasswordBox.classList.add("hidden")}
 function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
 function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
 function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
-function clearLoginErrors(){loginEmail.classList.remove("input-error");loginPassword.classList.remove("input-error")}
-loginEmail.addEventListener("input",()=>clearEmailMark(loginEmail,loginEmailRule));
-loginEmail.addEventListener("blur",()=>{if(loginEmail.value.trim())markEmail(loginEmail,loginEmailRule)});
-loginEmail.addEventListener("keydown",(e)=>emailEnterHandler(e,loginEmail,loginEmailRule,login));
-loginPassword.addEventListener("input",()=>loginPassword.classList.remove("input-error"));
-loginPassword.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();login();}});
+loginEmail.addEventListener("input",()=>clearEmailMark(loginEmail,loginEmailRule));regEmail.addEventListener("input",()=>clearEmailMark(regEmail,regEmailRule));resetEmail.addEventListener("input",()=>clearEmailMark(resetEmail,resetEmailRule));
+loginEmail.addEventListener("blur",()=>{if(loginEmail.value)markEmail(loginEmail,loginEmailRule)});regEmail.addEventListener("blur",()=>{if(regEmail.value)markEmail(regEmail,regEmailRule)});resetEmail.addEventListener("blur",()=>{if(resetEmail.value)markEmail(resetEmail,resetEmailRule)});
+function validateRegisterFields(){let p1=regPassword.value.trim(),p2=regPassword2.value.trim(),ok=true;if(p1.length>0&&p1.length<6){regPassword.classList.add("input-error");passRule.classList.remove("hidden");ok=false}else{regPassword.classList.remove("input-error");passRule.classList.add("hidden")}if(p2.length>0&&p1!==p2){regPassword2.classList.add("input-error");matchRule.classList.remove("hidden");ok=false}else{regPassword2.classList.remove("input-error");matchRule.classList.add("hidden")}return ok}
+regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
-function validateRegisterFields(){
-let p1=regPassword.value.trim(),p2=regPassword2.value.trim(),ok=true;
-if(p1.length>0&&p1.length<6){regPassword.classList.add("input-error");regPassword.classList.remove("input-ok");passRule.classList.remove("hidden");ok=false}
-else if(p1.length>=6){regPassword.classList.remove("input-error");regPassword.classList.add("input-ok");passRule.classList.add("hidden")}
-else{regPassword.classList.remove("input-error","input-ok");passRule.classList.add("hidden");ok=false}
-if(p2.length>0&&p1!==p2){regPassword2.classList.add("input-error");regPassword2.classList.remove("input-ok");matchRule.classList.remove("hidden");ok=false}
-else if(p2.length>0&&p1===p2&&p1.length>=6){regPassword2.classList.remove("input-error");regPassword2.classList.add("input-ok");matchRule.classList.add("hidden")}
-else{regPassword2.classList.remove("input-error","input-ok");matchRule.classList.add("hidden");ok=false}
-return ok;
-}
-regEmail.addEventListener("input",()=>clearEmailMark(regEmail,regEmailRule));
-regEmail.addEventListener("blur",()=>{if(regEmail.value.trim())markEmail(regEmail,regEmailRule)});
-regEmail.addEventListener("keydown",(e)=>emailEnterHandler(e,regEmail,regEmailRule,register));
-resetEmail.addEventListener("input",()=>clearEmailMark(resetEmail,resetEmailRule));
-resetEmail.addEventListener("blur",()=>{if(resetEmail.value.trim())markEmail(resetEmail,resetEmailRule)});
-resetEmail.addEventListener("keydown",(e)=>emailEnterHandler(e,resetEmail,resetEmailRule,forgotPassword));
-regPassword.addEventListener("input",validateRegisterFields);
-regPassword2.addEventListener("input",validateRegisterFields);
-regPassword.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();register();}});
-regPassword2.addEventListener("keydown",(e)=>{if(e.key==="Enter"){e.preventDefault();register();}});
+async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
+async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
+async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?error.message:tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
+async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?error.message:"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
 
-function startCountdown(){countdown=60;resetBtn.disabled=true;resetBtn.innerText="Resend in 60s";if(timer)clearInterval(timer);timer=setInterval(()=>{countdown--;resetBtn.innerText="Resend in "+countdown+"s";if(countdown<=0){clearInterval(timer);resetBtn.disabled=false;resetBtn.innerText=tr("sendReset")}},1000)}
+function localTestLogin(){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");openApp()}
+async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
+function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
+function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();renderAll();restoreCurrentPage();applyLanguage()}
+function showPage(page,btn){localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"dashboard";let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,profile:navProfile};showPage(map[page]?page:"dashboard",map[page]||navDashboard)}
+function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
-async function register(){
-let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";
-regEmail.classList.remove("input-error");
-if(!email||!password||!password2){regMsg.innerText=tr("fill");if(!email){regEmail.classList.add("input-error");regEmailRule.innerText=emailMsg();regEmailRule.classList.remove("hidden")}return}
-if(!markEmail(regEmail,regEmailRule)){regMsg.innerText=emailMsg();return}
-if(!validateRegisterFields()){regMsg.innerText=tr("fix");return}
-if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}
-regMsg.innerText="Creating account...";
-try{
-const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});
-regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam, then login.";
-}catch(e){regMsg.innerText=networkMsg();console.error("Register failed:",e)}
-}
-
-async function login(){
-let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";clearLoginErrors();
-if(!email||!password){loginMsg.innerText=tr("enterLogin");if(!email){loginEmail.classList.add("input-error");loginEmailRule.innerText=emailMsg();loginEmailRule.classList.remove("hidden")}if(!password)loginPassword.classList.add("input-error");return}
-if(!markEmail(loginEmail,loginEmailRule)){loginMsg.innerText=emailMsg();return}
-if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}
-loginMsg.innerText="Logging in...";
-try{
-const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-if(error){loginMsg.innerText=error.message;return}
-currentUser=data.user;openApp();
-}catch(e){loginMsg.innerText=networkMsg();console.error("Login failed:",e)}
-}
-
-async function forgotPassword(){
-let email=resetEmail.value.trim();resetMsg.innerText="";
-resetEmail.classList.remove("input-error");
-if(!email){resetMsg.innerText=tr("enterLogin");resetEmail.classList.add("input-error");resetEmailRule.innerText=emailMsg();resetEmailRule.classList.remove("hidden");return}
-if(!markEmail(resetEmail,resetEmailRule)){resetMsg.innerText=emailMsg();return}
-if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}
-startCountdown();resetMsg.innerText=tr("sending");
-try{
-const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});
-resetMsg.innerText=error?error.message:tr("sent");
-}catch(e){resetMsg.innerText=networkMsg();console.error("Reset password failed:",e)}
-}
-
-async function updatePassword(){
-let p1=newPassword.value.trim(),p2=newPassword2.value.trim();
-if(!p1||!p2){newPassMsg.innerText=tr("fill");return}
-if(p1.length<6){newPassword.classList.add("input-error");newPassMsg.innerText=tr("passRule");return}
-if(p1!==p2){newPassword2.classList.add("input-error");newPassMsg.innerText=tr("matchRule");return}
-try{
-const {error}=await supabaseClient.auth.updateUser({password:p1});
-newPassMsg.innerText=error?error.message:"Password updated.";
-}catch(e){newPassMsg.innerText=tr("connection");console.error(e)}
-}
-
-async function logout(){
-try{ if(supabaseClient) await supabaseClient.auth.signOut(); }catch(e){}
-localStorage.removeItem("atsrs_auth_mode");
-localStorage.removeItem("atsrs_current_page");
-location.reload();
-}
-
-function localTestLogin(){
-currentUser={id:"local_test_user",email:"local-test@atsrs.com"};
-localStorage.setItem("atsrs_auth_mode","local");
-openApp();
-}
-
-function localKey(n){return"atsrs_"+currentUser.id+"_"+n}
-function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]}
-function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
-function openApp(){
-auth.classList.add("hidden");
-app.classList.remove("hidden");
-userEmail.innerText=currentUser.email;
-loadProfile();
-renderAll();
-restoreCurrentPage();
-}
-
-function showPage(page,btn){
-localStorage.setItem("atsrs_current_page",page);
-document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
-document.getElementById(page+"Page").classList.remove("hidden");
-document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
-pageTitle.innerText=btn.innerText;
-renderAll();
-}
-function restoreCurrentPage(){
-let page=localStorage.getItem("atsrs_current_page")||"dashboard";
-let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,profile:navProfile};
-if(!map[page])page="dashboard";
-showPage(page,map[page]);
-}
-
-function addPersonnel(){
-let a=getData("personnel");
-if(!pName.value.trim()){alert("Name required");return}
-a.push({name:pName.value,position:pPosition.value,company:pCompany.value,email:pEmail.value});
-saveData("personnel",a);pName.value=pPosition.value=pCompany.value=pEmail.value="";renderAll();
-}
+function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert(tr("fill"));return}a.push({name:pName.value,surname:pSurname.value,position:pPosition.value,company:pCompany.value,email:pEmail.value,phone:pPhone.value});saveData("personnel",a);pName.value=pSurname.value=pPosition.value=pCompany.value=pEmail.value=pPhone.value="";renderAll()}
 function deletePersonnel(i){let a=getData("personnel");a.splice(i,1);saveData("personnel",a);renderAll()}
-
-
-function startCameraScan(){
-scanBox.classList.remove("hidden");
-confirmBox.classList.add("hidden");
-documentPreview.innerText="";
-cameraInput.click();
-}
-function handleDocumentUpload(event){
-let file=event.target.files && event.target.files[0];
-if(!file)return;
-scanBox.classList.remove("hidden");
-confirmBox.classList.remove("hidden");
-documentPreview.innerText=ptr("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB)";
-let p=getData("personnel");
-autoPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
-p.forEach(x=>autoPerson.innerHTML+=`<option>${x.name}</option>`);
-autoDocNo.value="";
-autoProvider.value="";
-autoIssue.value="";
-autoExpiry.value="";
-}
-function confirmExtractedDocument(){
-let person=autoPerson.value || (getData("personnel")[0] && getData("personnel")[0].name) || "";
-if(!person || !autoExpiry.value){alert(tr("fill"));return}
-let a=getData("certs");
-a.push({person:person,type:autoDocType.value,provider:autoProvider.value,expiry:autoExpiry.value,docNo:autoDocNo.value,issue:autoIssue.value});
-saveData("certs",a);
-confirmBox.classList.add("hidden");
-documentPreview.innerText="";
-renderAll();
-}
-
-function addCertificate(){
-let a=getData("certs");
-if(!cPerson.value||!cExpiry.value){alert("Person and expiry required");return}
-a.push({person:cPerson.value,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});
-saveData("certs",a);cProvider.value="";cExpiry.value="";renderAll();
-}
+function startCameraScan(){scanBox.classList.remove("hidden");confirmBox.classList.add("hidden");documentPreview.innerText="";cameraInput.click()}
+function handleDocumentUpload(e){let file=e.target.files&&e.target.files[0];if(!file)return;scanBox.classList.remove("hidden");confirmBox.classList.remove("hidden");documentPreview.innerText=ptr("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB)";autoDocNo.value=autoProvider.value=autoIssue.value=autoExpiry.value=""}
+function confirmExtractedDocument(){let person=autoPerson.value;if(!person||!autoExpiry.value){alert(tr("fill"));return}let a=getData("certs");a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:autoExpiry.value,docNo:autoDocNo.value,issue:autoIssue.value});saveData("certs",a);confirmBox.classList.add("hidden");documentPreview.innerText="";renderAll()}
+function addCertificate(){let a=getData("certs");if(!cPerson.value||!cExpiry.value){alert(tr("fill"));return}a.push({person:cPerson.value,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});saveData("certs",a);cProvider.value="";cExpiry.value="";renderAll()}
 function deleteCert(i){let a=getData("certs");a.splice(i,1);saveData("certs",a);renderAll()}
+function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(86400000));if(d<0)return{txt:tr("expired"),cls:"danger",expired:true,risk:true};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true};return{txt:tr("valid"),cls:"good",risk:false}}
 
-function status(expiry){
-let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);
-let d=Math.ceil((e-t)/(1000*60*60*24));
-if(d<0)return{txt:tr("expired"),cls:"danger",risk:true,expired:true};
-if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true};
-if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true};
-return{txt:tr("valid"),cls:"good",risk:false};
-}
+function renderAll(){if(!currentUser)return;let p=getData("personnel"),c=getData("certs");totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;personnelTable.innerHTML="";cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;autoPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;p.forEach((x,i)=>{let full=(x.name||"")+" "+(x.surname||"");personnelTable.innerHTML+=`<tr><td>${x.name||""}</td><td>${x.surname||""}</td><td>${x.position||""}</td><td>${x.company||""}</td><td>${x.email||""}</td><td>${x.phone||""}</td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;cPerson.innerHTML+=`<option>${full.trim()}</option>`;autoPerson.innerHTML+=`<option>${full.trim()}</option>`});certTable.innerHTML="";let e90=0,ex=0;c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});exp90.innerText=e90;expired.innerText=ex}
 
-function renderAll(){
-if(!currentUser)return;
-let p=getData("personnel"),c=getData("certs");
-totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;
-personnelTable.innerHTML="";
-cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`; if(typeof autoPerson!=="undefined") autoPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
-p.forEach((x,i)=>{
-personnelTable.innerHTML+=`<tr><td>${x.name}</td><td>${x.position}</td><td>${x.company}</td><td>${x.email}</td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;
-cPerson.innerHTML+=`<option>${x.name}</option>`; if(typeof autoPerson!=="undefined") autoPerson.innerHTML+=`<option>${x.name}</option>`;
-});
-certTable.innerHTML="";let e90=0,ex=0;
-c.forEach((x,i)=>{
-let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(s.expired)ex++;
-certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`;
-});
-exp90.innerText=e90;expired.innerText=ex;
-}
+const countries=["","Azerbaijan","Turkey","Norway","United Kingdom","United States","Canada","Germany","France","Spain","Portugal","Italy","Netherlands","Belgium","Denmark","Sweden","Finland","Poland","Romania","Bulgaria","Georgia","Kazakhstan","United Arab Emirates","Saudi Arabia","Qatar","Kuwait","Oman","Bahrain","India","Pakistan","Philippines","Indonesia","Malaysia","Singapore","China","Japan","South Korea","Australia","New Zealand","South Africa","Equatorial Guinea","Angola","Nigeria","Ghana","Egypt","Morocco","Brazil","Mexico","Argentina"];
+function fillCountries(){profileCountry.innerHTML="";countries.forEach(c=>{let o=document.createElement("option");o.value=c;o.text=c;profileCountry.appendChild(o)})}
+function saveProfile(){localStorage.setItem(localKey("profile"),JSON.stringify({name:profileName.value,surname:profileSurname.value,phone:profilePhone.value,country:profileCountry.value,company:profileCompany.value,position:profilePosition.value,altEmail:profileAltEmail.value,timezone:profileTimezone.value}));alert("Profile saved.")}
+function loadProfile(){fillCountries();let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};profileName.value=p.name||"";profileSurname.value=p.surname||"";profilePhone.value=p.phone||"";profileCountry.value=p.country||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";profileAltEmail.value=p.altEmail||"";profileTimezone.value=p.timezone||"UTC"}
+function exportLocalData(){let data={profile:JSON.parse(localStorage.getItem(localKey("profile")))||{},personnel:getData("personnel"),certificates:getData("certs")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="atsrs-data-export.json";a.click();URL.revokeObjectURL(url)}
 
-function showProfileTab(tab){
-["personal","security","preferences"].forEach(x=>{
-document.getElementById("profile"+x.charAt(0).toUpperCase()+x.slice(1)+"Tab").classList.remove("active");
-document.getElementById("profileTab"+x.charAt(0).toUpperCase()+x.slice(1)+"Btn").classList.remove("active");
-});
-document.getElementById("profile"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Tab").classList.add("active");
-document.getElementById("profileTab"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Btn").classList.add("active");
-}
-function showAccountTab(tab){
-["general","security","preferences"].forEach(x=>{
-document.getElementById("account"+x.charAt(0).toUpperCase()+x.slice(1)+"Tab").classList.remove("active");
-document.getElementById("accountTab"+x.charAt(0).toUpperCase()+x.slice(1)+"Btn").classList.remove("active");
-});
-document.getElementById("account"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Tab").classList.add("active");
-document.getElementById("accountTab"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Btn").classList.add("active");
-}
-function saveProfile(){
-localStorage.setItem(localKey("profile"),JSON.stringify({
-name:profileName.value,
-surname:profileSurname.value,
-phone:profilePhone.value,
-country:profileCountry.value,
-company:profileCompany.value,
-position:profilePosition.value,
-altEmail:profileAltEmail.value,
-timezone:profileTimezone.value
-}));
-alert("Profile saved.");
-}
-function loadProfile(){
-let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};
-profileName.value=p.name||"";
-profileSurname.value=p.surname||"";
-profilePhone.value=p.phone||"";
-profileCountry.value=p.country||"";
-profileCompany.value=p.company||"";
-profilePosition.value=p.position||"";
-profileAltEmail.value=p.altEmail||"";
-profileTimezone.value=p.timezone||"UTC";
-}
-function exportLocalData(){
-let data={
-profile:JSON.parse(localStorage.getItem(localKey("profile")))||{},
-personnel:getData("personnel"),
-certificates:getData("certs")
-};
-let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-let url=URL.createObjectURL(blob);
-let a=document.createElement("a");
-a.href=url;
-a.download="atsrs-data-export.json";
-a.click();
-URL.revokeObjectURL(url);
-}
-
-if(localStorage.getItem("atsrs_auth_mode")==="local"){
-currentUser={id:"local_test_user",email:"local-test@atsrs.com"};
-openApp();
-}else if(supabaseClient){
-supabaseClient.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});
-supabaseClient.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;openApp()}});
-}
+if(localStorage.getItem("atsrs_auth_mode")==="local"){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};openApp()}else if(supabaseClient){supabaseClient.auth.onAuthStateChange(e=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});supabaseClient.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;openApp()}})}
 applyLanguage();
 </script>
 </body>
