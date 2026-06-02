@@ -11,6 +11,7 @@
 body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
 .hidden{display:none!important}
 button,input,select{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #334155}
+input,select{background:#0f172a;color:white}
 button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
 button:disabled{background:#64748b;cursor:not-allowed}
 .secondary{background:#475569}
@@ -18,6 +19,10 @@ button:disabled{background:#64748b;cursor:not-allowed}
 .auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
 .logo{font-size:40px;font-weight:900;margin:0}
 .sub{color:#94a3b8}
+.error{color:#f87171;font-size:14px;margin:4px 0}
+.input-error{border:2px solid #ef4444!important;background:#2a1111!important}
+.input-ok{border:2px solid #22c55e!important}
+.linkbtn{background:transparent;color:#93c5fd;padding:6px;text-align:left}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 .sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}
 .brand{font-size:30px;font-weight:900}
@@ -31,7 +36,6 @@ button:disabled{background:#64748b;cursor:not-allowed}
 table{width:100%;border-collapse:collapse}
 th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 .action{background:#dc2626}
-.linkbtn{background:transparent;color:#93c5fd;padding:6px;text-align:left}
 @media(max-width:800px){.app{grid-template-columns:1fr}}
 </style>
 </head>
@@ -70,7 +74,9 @@ th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 <h2>Create Account</h2>
 <input id="regEmail" type="email" placeholder="Email">
 <input id="regPassword" type="password" placeholder="Password">
+<p id="passRule" class="error hidden">Password must be at least 6 characters.</p>
 <input id="regPassword2" type="password" placeholder="Confirm password">
+<p id="matchRule" class="error hidden">Passwords do not match.</p>
 <button onclick="register()">Register</button>
 <button class="secondary" onclick="showLogin()">Back to Login</button>
 <p id="regMsg" class="sub"></p>
@@ -178,7 +184,6 @@ th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 <button onclick="saveProfile()">Save Profile</button>
 </div>
 </section>
-
 </main>
 </section>
 
@@ -202,6 +207,48 @@ function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
 function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
 function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
 
+function validateRegisterFields(){
+ const p1 = regPassword.value.trim();
+ const p2 = regPassword2.value.trim();
+
+ let ok = true;
+
+ if(p1.length > 0 && p1.length < 6){
+  regPassword.classList.add("input-error");
+  regPassword.classList.remove("input-ok");
+  passRule.classList.remove("hidden");
+  ok = false;
+ } else if(p1.length >= 6){
+  regPassword.classList.remove("input-error");
+  regPassword.classList.add("input-ok");
+  passRule.classList.add("hidden");
+ } else {
+  regPassword.classList.remove("input-error","input-ok");
+  passRule.classList.add("hidden");
+  ok = false;
+ }
+
+ if(p2.length > 0 && p1 !== p2){
+  regPassword2.classList.add("input-error");
+  regPassword2.classList.remove("input-ok");
+  matchRule.classList.remove("hidden");
+  ok = false;
+ } else if(p2.length > 0 && p1 === p2 && p1.length >= 6){
+  regPassword2.classList.remove("input-error");
+  regPassword2.classList.add("input-ok");
+  matchRule.classList.add("hidden");
+ } else {
+  regPassword2.classList.remove("input-error","input-ok");
+  matchRule.classList.add("hidden");
+  ok = false;
+ }
+
+ return ok;
+}
+
+regPassword.addEventListener("input", validateRegisterFields);
+regPassword2.addEventListener("input", validateRegisterFields);
+
 function startCountdown(){
  countdown = 60;
  resetBtn.disabled = true;
@@ -210,7 +257,7 @@ function startCountdown(){
  timer = setInterval(()=>{
   countdown--;
   resetBtn.innerText = "Resend in " + countdown + "s";
-  if(countdown<=0){
+  if(countdown <= 0){
    clearInterval(timer);
    resetBtn.disabled = false;
    resetBtn.innerText = "Send reset email again";
@@ -223,9 +270,18 @@ async function register(){
  const password = regPassword.value.trim();
  const password2 = regPassword2.value.trim();
 
- if(!email || !password || !password2){regMsg.innerText="Fill all fields.";return}
- if(password.length < 6){regMsg.innerText="Password must be at least 6 characters.";return}
- if(password !== password2){regMsg.innerText="Passwords do not match.";return}
+ regMsg.innerText = "";
+
+ if(!email || !password || !password2){
+  regMsg.innerText = "Fill all fields.";
+  if(!email) regEmail.classList.add("input-error");
+  return;
+ }
+
+ if(!validateRegisterFields()){
+  regMsg.innerText = "Please fix highlighted fields.";
+  return;
+ }
 
  const { error } = await supabaseClient.auth.signUp({
   email,
@@ -233,16 +289,32 @@ async function register(){
   options:{ emailRedirectTo:"https://avara33.github.io/atsrs-web/" }
  });
 
- if(error){regMsg.innerText=error.message;return}
- regMsg.innerText="Confirmation email sent. Check inbox/spam, then login.";
+ if(error){
+  regMsg.innerText = error.message;
+  return;
+ }
+
+ regMsg.innerText = "Confirmation email sent. Check inbox/spam, then login.";
+ regEmail.classList.remove("input-error");
 }
 
 async function login(){
  const email = loginEmail.value.trim();
  const password = loginPassword.value.trim();
 
+ loginMsg.innerText = "";
+
+ if(!email || !password){
+  loginMsg.innerText = "Enter email and password.";
+  return;
+ }
+
  const { data, error } = await supabaseClient.auth.signInWithPassword({email,password});
- if(error){loginMsg.innerText=error.message;return}
+
+ if(error){
+  loginMsg.innerText = error.message;
+  return;
+ }
 
  currentUser = data.user;
  openApp();
@@ -250,14 +322,26 @@ async function login(){
 
 async function forgotPassword(){
  const email = resetEmail.value.trim();
- if(!email){resetMsg.innerText="Enter email.";return}
+ resetMsg.innerText = "";
+
+ if(!email){
+  resetMsg.innerText = "Enter email.";
+  resetEmail.classList.add("input-error");
+  return;
+ }
+
+ resetEmail.classList.remove("input-error");
 
  const { error } = await supabaseClient.auth.resetPasswordForEmail(email,{
   redirectTo:"https://avara33.github.io/atsrs-web/"
  });
 
- if(error){resetMsg.innerText=error.message;return}
- resetMsg.innerText="Reset email sent. Check inbox/spam.";
+ if(error){
+  resetMsg.innerText = error.message;
+  return;
+ }
+
+ resetMsg.innerText = "Reset email sent. Check inbox/spam.";
  startCountdown();
 }
 
@@ -265,14 +349,31 @@ async function updatePassword(){
  const p1 = newPassword.value.trim();
  const p2 = newPassword2.value.trim();
 
- if(!p1 || !p2){newPassMsg.innerText="Fill both password fields.";return}
- if(p1.length < 6){newPassMsg.innerText="Password must be at least 6 characters.";return}
- if(p1 !== p2){newPassMsg.innerText="Passwords do not match.";return}
+ if(!p1 || !p2){
+  newPassMsg.innerText = "Fill both password fields.";
+  return;
+ }
+
+ if(p1.length < 6){
+  newPassword.classList.add("input-error");
+  newPassMsg.innerText = "Password must be at least 6 characters.";
+  return;
+ }
+
+ if(p1 !== p2){
+  newPassword2.classList.add("input-error");
+  newPassMsg.innerText = "Passwords do not match.";
+  return;
+ }
 
  const { error } = await supabaseClient.auth.updateUser({password:p1});
- if(error){newPassMsg.innerText=error.message;return}
 
- newPassMsg.innerText="Password updated. You can login now.";
+ if(error){
+  newPassMsg.innerText = error.message;
+  return;
+ }
+
+ newPassMsg.innerText = "Password updated. You can login now.";
  setTimeout(()=>{showLogin()},1500);
 }
 
@@ -298,66 +399,95 @@ function showPage(page,btn){
  document.getElementById(page+"Page").classList.remove("hidden");
  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
  btn.classList.add("active");
- pageTitle.innerText=btn.innerText;
+ pageTitle.innerText = btn.innerText;
  renderAll();
 }
 
 function addPersonnel(){
- let arr=getData("personnel");
- if(!pName.value.trim()){alert("Name required");return}
- arr.push({name:pName.value,position:pPosition.value,company:pCompany.value,email:pEmail.value});
+ let arr = getData("personnel");
+ if(!pName.value.trim()){
+  alert("Name required");
+  return;
+ }
+
+ arr.push({
+  name:pName.value,
+  position:pPosition.value,
+  company:pCompany.value,
+  email:pEmail.value
+ });
+
  saveData("personnel",arr);
- pName.value=pPosition.value=pCompany.value=pEmail.value="";
+ pName.value = "";
+ pPosition.value = "";
+ pCompany.value = "";
+ pEmail.value = "";
  renderAll();
 }
 
 function deletePersonnel(i){
- let arr=getData("personnel");
+ let arr = getData("personnel");
  arr.splice(i,1);
  saveData("personnel",arr);
  renderAll();
 }
 
 function addCertificate(){
- let arr=getData("certs");
- if(!cPerson.value || !cExpiry.value){alert("Person and expiry required");return}
- arr.push({person:cPerson.value,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});
+ let arr = getData("certs");
+
+ if(!cPerson.value || !cExpiry.value){
+  alert("Person and expiry required");
+  return;
+ }
+
+ arr.push({
+  person:cPerson.value,
+  type:cType.value,
+  provider:cProvider.value,
+  expiry:cExpiry.value
+ });
+
  saveData("certs",arr);
- cProvider.value="";cExpiry.value="";
+ cProvider.value = "";
+ cExpiry.value = "";
  renderAll();
 }
 
 function deleteCert(i){
- let arr=getData("certs");
+ let arr = getData("certs");
  arr.splice(i,1);
  saveData("certs",arr);
  renderAll();
 }
 
 function status(expiry){
- let today=new Date();today.setHours(0,0,0,0);
- let exp=new Date(expiry);
- let diff=Math.ceil((exp-today)/(1000*60*60*24));
- if(diff<0)return {txt:"Expired",cls:"danger",risk:true,expired:true};
- if(diff<=30)return {txt:"Expiring <30 days",cls:"danger",risk:true};
- if(diff<=90)return {txt:"Expiring <90 days",cls:"warning",risk:true};
+ let today = new Date();
+ today.setHours(0,0,0,0);
+
+ let exp = new Date(expiry);
+ let diff = Math.ceil((exp - today) / (1000*60*60*24));
+
+ if(diff < 0) return {txt:"Expired",cls:"danger",risk:true,expired:true};
+ if(diff <= 30) return {txt:"Expiring <30 days",cls:"danger",risk:true};
+ if(diff <= 90) return {txt:"Expiring <90 days",cls:"warning",risk:true};
+
  return {txt:"Valid",cls:"good",risk:false};
 }
 
 function renderAll(){
- if(!currentUser)return;
+ if(!currentUser) return;
 
- let personnel=getData("personnel");
- let certs=getData("certs");
+ let personnel = getData("personnel");
+ let certs = getData("certs");
 
- totalPersonnel.innerText=personnel.length;
- totalCerts.innerText=certs.length;
+ totalPersonnel.innerText = personnel.length;
+ totalCerts.innerText = certs.length;
 
- personnelTable.innerHTML="";
- cPerson.innerHTML="<option value=''>Select Crew Member</option>";
+ personnelTable.innerHTML = "";
+ cPerson.innerHTML = "<option value=''>Select Crew Member</option>";
 
  personnel.forEach((p,i)=>{
-  personnelTable.innerHTML+=`
+  personnelTable.innerHTML += `
   <tr>
    <td>${p.name}</td>
    <td>${p.position}</td>
@@ -365,18 +495,21 @@ function renderAll(){
    <td>${p.email}</td>
    <td><button class="action" onclick="deletePersonnel(${i})">Delete</button></td>
   </tr>`;
-  cPerson.innerHTML+=`<option>${p.name}</option>`;
+
+  cPerson.innerHTML += `<option>${p.name}</option>`;
  });
 
- certTable.innerHTML="";
- let e90=0, ex=0;
+ certTable.innerHTML = "";
+ let e90 = 0;
+ let ex = 0;
 
  certs.forEach((c,i)=>{
-  let s=status(c.expiry);
-  if(s.risk && !s.expired)e90++;
-  if(s.expired)ex++;
+  let s = status(c.expiry);
 
-  certTable.innerHTML+=`
+  if(s.risk && !s.expired) e90++;
+  if(s.expired) ex++;
+
+  certTable.innerHTML += `
   <tr>
    <td>${c.person}</td>
    <td>${c.type}</td>
@@ -387,21 +520,26 @@ function renderAll(){
   </tr>`;
  });
 
- exp90.innerText=e90;
- expired.innerText=ex;
+ exp90.innerText = e90;
+ expired.innerText = ex;
 }
 
 function saveProfile(){
- const profile={name:profileName.value,company:profileCompany.value,position:profilePosition.value};
+ const profile = {
+  name:profileName.value,
+  company:profileCompany.value,
+  position:profilePosition.value
+ };
+
  localStorage.setItem(localKey("profile"),JSON.stringify(profile));
  alert("Profile saved.");
 }
 
 function loadProfile(){
- const p=JSON.parse(localStorage.getItem(localKey("profile"))) || {};
- profileName.value=p.name||"";
- profileCompany.value=p.company||"";
- profilePosition.value=p.position||"";
+ const p = JSON.parse(localStorage.getItem(localKey("profile"))) || {};
+ profileName.value = p.name || "";
+ profileCompany.value = p.company || "";
+ profilePosition.value = p.position || "";
 }
 
 supabaseClient.auth.onAuthStateChange((event, session)=>{
@@ -413,7 +551,7 @@ supabaseClient.auth.onAuthStateChange((event, session)=>{
 
 supabaseClient.auth.getSession().then(({data})=>{
  if(data.session){
-  currentUser=data.session.user;
+  currentUser = data.session.user;
   openApp();
  }
 });
