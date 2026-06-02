@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ATSRS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -14,6 +14,7 @@ input,select{background:#0f172a;color:white}
 button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
 button:disabled{background:#64748b;cursor:not-allowed}
 .secondary{background:#475569}.action{background:#dc2626}.linkbtn{background:transparent;color:#93c5fd;text-align:left;padding:6px}
+.testbtn{background:#16a34a}
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px}
 .auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
 .logo{font-size:40px;font-weight:900;margin:0}.sub{color:#94a3b8}.error{color:#f87171;font-size:14px;margin:4px 0}
@@ -46,6 +47,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 <input id="loginEmail" type="email">
 <input id="loginPassword" type="password">
 <button id="loginBtn" onclick="login()"></button>
+<button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
 <p id="loginMsg" class="sub"></p>
@@ -106,6 +108,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
 </div>
 </section>
+
 <section id="personnelPage" class="hidden">
 <div class="panel">
 <h3 id="addPersonnelTitle"></h3>
@@ -137,7 +140,6 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 <input id="cExpiry" type="date">
 <button id="addCertBtn" onclick="addCertificate()"></button>
 </div>
-
 <div class="panel">
 <h3 id="certRegisterTitle"></h3>
 <table>
@@ -161,20 +163,28 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 </section>
 
 <script>
-const SUPABASE_URL="https://hwtjuqyxziyymofamwxl.supabase.co";
-const const SUPABASE_KEY = "sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
-const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_URL = "https://hwtjuqyxziyymofamwxl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
+const APP_URL = "https://atsrs.com/";
+
+let supabaseClient = null;
+try {
+  if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch (e) {
+  console.error("Supabase init failed:", e);
+}
 
 let currentUser=null,timer=null,countdown=0;
 let lang=localStorage.getItem("atsrs_lang")||"en";
 
 const T={
-en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",profile:"Profile",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",position:"Position",company:"Company",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save Profile",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check internet, VPN, Supabase URL or rate limit.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
-az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",profile:"Profil",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",position:"Vəzifə",company:"Şirkət",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Profili saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. İnternet, VPN, Supabase URL və ya limitə bax.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
+en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",profile:"Profile",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",position:"Position",company:"Company",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save Profile",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check internet, VPN, Supabase URL, key, CORS or rate limit.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
+az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",profile:"Profil",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",position:"Vəzifə",company:"Şirkət",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Profili saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. İnternet, VPN, Supabase URL, key, CORS və ya limitə bax.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
 };
 ["ru","tr","no","de","fr","es","pt","ar"].forEach(l=>T[l]=T.en);
 function tr(k){return T[lang][k]||T.en[k]||k}
- function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);applyLanguage();renderAll()}
+
+function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);applyLanguage();renderAll()}
 function applyLanguage(){
 authLang.value=lang;document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");
@@ -196,7 +206,6 @@ function hideAuthBoxes(){loginBox.classList.add("hidden");registerBox.classList.
 function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
 function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
 function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
-
 function clearLoginErrors(){loginEmail.classList.remove("input-error");loginPassword.classList.remove("input-error")}
 loginEmail.addEventListener("input",()=>loginEmail.classList.remove("input-error"));
 loginPassword.addEventListener("input",()=>loginPassword.classList.remove("input-error"));
@@ -219,26 +228,35 @@ async function register(){
 let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";
 if(!email||!password||!password2){regMsg.innerText=tr("fill");if(!email)regEmail.classList.add("input-error");return}
 if(!validateRegisterFields()){regMsg.innerText=tr("fix");return}
+if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}
 regMsg.innerText="Creating account...";
-const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:"https://avara33.github.io/atsrs-web/"}});
+try{
+const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});
 regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam, then login.";
+}catch(e){regMsg.innerText=tr("connection");console.error(e)}
 }
 
 async function login(){
 let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";clearLoginErrors();
 if(!email||!password){loginMsg.innerText=tr("enterLogin");if(!email)loginEmail.classList.add("input-error");if(!password)loginPassword.classList.add("input-error");return}
+if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}
 loginMsg.innerText="Logging in...";
+try{
 const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
 if(error){loginMsg.innerText=error.message;return}
 currentUser=data.user;openApp();
+}catch(e){loginMsg.innerText=tr("connection");console.error(e)}
 }
 
 async function forgotPassword(){
 let email=resetEmail.value.trim();resetMsg.innerText="";
 if(!email){resetMsg.innerText=tr("enterLogin");resetEmail.classList.add("input-error");return}
+if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}
 resetEmail.classList.remove("input-error");startCountdown();resetMsg.innerText=tr("sending");
-try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:"https://avara33.github.io/atsrs-web/"});resetMsg.innerText=error?error.message:tr("sent")}
-catch(e){resetMsg.innerText=tr("connection")}
+try{
+const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});
+resetMsg.innerText=error?error.message:tr("sent");
+}catch(e){resetMsg.innerText=tr("connection");console.error(e)}
 }
 
 async function updatePassword(){
@@ -246,25 +264,90 @@ let p1=newPassword.value.trim(),p2=newPassword2.value.trim();
 if(!p1||!p2){newPassMsg.innerText=tr("fill");return}
 if(p1.length<6){newPassword.classList.add("input-error");newPassMsg.innerText=tr("passRule");return}
 if(p1!==p2){newPassword2.classList.add("input-error");newPassMsg.innerText=tr("matchRule");return}
-const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?error.message:"Password updated.";
+try{
+const {error}=await supabaseClient.auth.updateUser({password:p1});
+newPassMsg.innerText=error?error.message:"Password updated.";
+}catch(e){newPassMsg.innerText=tr("connection");console.error(e)}
 }
 
-async function logout(){await supabaseClient.auth.signOut();location.reload()}
+async function logout(){
+try{ if(supabaseClient) await supabaseClient.auth.signOut(); }catch(e){}
+location.reload();
+}
+
+function localTestLogin(){
+currentUser={id:"local_test_user",email:"local-test@atsrs.com"};
+openApp();
+}
+
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n}
 function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]}
 function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
 function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();renderAll()}
-function showPage(page,btn){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
-function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert("Name required");return}a.push({name:pName.value,position:pPosition.value,company:pCompany.value,email:pEmail.value});saveData("personnel",a);pName.value=pPosition.value=pCompany.value=pEmail.value="";renderAll()}
+
+function showPage(page,btn){
+document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+document.getElementById(page+"Page").classList.remove("hidden");
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll();
+}
+
+function addPersonnel(){
+let a=getData("personnel");
+if(!pName.value.trim()){alert("Name required");return}
+a.push({name:pName.value,position:pPosition.value,company:pCompany.value,email:pEmail.value});
+saveData("personnel",a);pName.value=pPosition.value=pCompany.value=pEmail.value="";renderAll();
+}
 function deletePersonnel(i){let a=getData("personnel");a.splice(i,1);saveData("personnel",a);renderAll()}
-function addCertificate(){let a=getData("certs");if(!cPerson.value||!cExpiry.value){alert("Person and expiry required");return}a.push({person:cPerson.value,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});saveData("certs",a);cProvider.value="";cExpiry.value="";renderAll()}
+
+function addCertificate(){
+let a=getData("certs");
+if(!cPerson.value||!cExpiry.value){alert("Person and expiry required");return}
+a.push({person:cPerson.value,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});
+saveData("certs",a);cProvider.value="";cExpiry.value="";renderAll();
+}
 function deleteCert(i){let a=getData("certs");a.splice(i,1);saveData("certs",a);renderAll()}
-function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(1000*60*60*24));if(d<0)return{txt:tr("expired"),cls:"danger",risk:true,expired:true};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true};return{txt:tr("valid"),cls:"good",risk:false}}
-function renderAll(){if(!currentUser)return;let p=getData("personnel"),c=getData("certs");totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;personnelTable.innerHTML="";cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;p.forEach((x,i)=>{personnelTable.innerHTML+=`<tr><td>${x.name}</td><td>${x.position}</td><td>${x.company}</td><td>${x.email}</td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;cPerson.innerHTML+=`<option>${x.name}</option>`});certTable.innerHTML="";let e90=0,ex=0;c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});exp90.innerText=e90;expired.innerText=ex}
-function saveProfile(){localStorage.setItem(localKey("profile"),JSON.stringify({name:profileName.value,company:profileCompany.value,position:profilePosition.value}));alert("Profile saved.")}
-function loadProfile(){let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};profileName.value=p.name||"";profileCompany.value=p.company||"";profilePosition.value=p.position||""}
-supabaseClient.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}})
+
+function status(expiry){
+let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);
+let d=Math.ceil((e-t)/(1000*60*60*24));
+if(d<0)return{txt:tr("expired"),cls:"danger",risk:true,expired:true};
+if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true};
+if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true};
+return{txt:tr("valid"),cls:"good",risk:false};
+}
+
+function renderAll(){
+if(!currentUser)return;
+let p=getData("personnel"),c=getData("certs");
+totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;
+personnelTable.innerHTML="";
+cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
+p.forEach((x,i)=>{
+personnelTable.innerHTML+=`<tr><td>${x.name}</td><td>${x.position}</td><td>${x.company}</td><td>${x.email}</td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;
+cPerson.innerHTML+=`<option>${x.name}</option>`;
+});
+certTable.innerHTML="";let e90=0,ex=0;
+c.forEach((x,i)=>{
+let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(s.expired)ex++;
+certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`;
+});
+exp90.innerText=e90;expired.innerText=ex;
+}
+
+function saveProfile(){
+localStorage.setItem(localKey("profile"),JSON.stringify({name:profileName.value,company:profileCompany.value,position:profilePosition.value}));
+alert("Profile saved.");
+}
+function loadProfile(){
+let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};
+profileName.value=p.name||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";
+}
+
+if(supabaseClient){
+supabaseClient.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});
 supabaseClient.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;openApp()}});
+}
 applyLanguage();
 </script>
 </body>
