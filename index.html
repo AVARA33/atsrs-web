@@ -183,8 +183,8 @@ th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 <input id="profilePosition" placeholder="Position">
 <button onclick="saveProfile()">Save Profile</button>
 </div>
- </section>
- </main>
+</section>
+</main>
 </section>
 
 <script>
@@ -210,7 +210,6 @@ function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
 function validateRegisterFields(){
  const p1 = regPassword.value.trim();
  const p2 = regPassword2.value.trim();
-
  let ok = true;
 
  if(p1.length > 0 && p1.length < 6){
@@ -246,13 +245,12 @@ function validateRegisterFields(){
  return ok;
 }
 
-regPassword.addEventListener("input", validateRegisterFields);
-regPassword2.addEventListener("input", validateRegisterFields);
-
 function startCountdown(){
  countdown = 60;
  resetBtn.disabled = true;
  resetBtn.innerText = "Resend in 60s";
+
+ if(timer) clearInterval(timer);
 
  timer = setInterval(()=>{
   countdown--;
@@ -283,6 +281,8 @@ async function register(){
   return;
  }
 
+ regMsg.innerText = "Creating account...";
+
  const { error } = await supabaseClient.auth.signUp({
   email,
   password,
@@ -309,6 +309,8 @@ async function login(){
   return;
  }
 
+ loginMsg.innerText = "Logging in...";
+
  const { data, error } = await supabaseClient.auth.signInWithPassword({email,password});
 
  if(error){
@@ -331,18 +333,23 @@ async function forgotPassword(){
  }
 
  resetEmail.classList.remove("input-error");
-
- const { error } = await supabaseClient.auth.resetPasswordForEmail(email,{
-  redirectTo:"https://avara33.github.io/atsrs-web/"
- });
-
- if(error){
-  resetMsg.innerText = error.message;
-  return;
- }
-
- resetMsg.innerText = "Reset email sent. Check inbox/spam.";
  startCountdown();
+ resetMsg.innerText = "Sending reset email...";
+
+ try{
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email,{
+   redirectTo:"https://avara33.github.io/atsrs-web/"
+  });
+
+  if(error){
+   resetMsg.innerText = error.message;
+   return;
+  }
+
+  resetMsg.innerText = "Reset email sent. Check inbox/spam.";
+ }catch(e){
+  resetMsg.innerText = "Connection failed. Check internet, VPN, Supabase URL or rate limit.";
+ }
 }
 
 async function updatePassword(){
@@ -541,6 +548,9 @@ function loadProfile(){
  profileCompany.value = p.company || "";
  profilePosition.value = p.position || "";
 }
+
+regPassword.addEventListener("input", validateRegisterFields);
+regPassword2.addEventListener("input", validateRegisterFields);
 
 supabaseClient.auth.onAuthStateChange((event, session)=>{
  if(event === "PASSWORD_RECOVERY"){
