@@ -59,6 +59,12 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 .import-box{border:1px dashed #64748b;border-radius:16px;padding:16px;background:#0f172a}
 .crew-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 
+
+.mode-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}
+.mode-choice button{background:#334155;border:1px solid #475569}
+.mode-choice button.active{background:#2563eb;border-color:#60a5fa}
+.personal-only-note{font-size:13px;color:#94a3b8;margin-top:6px}
+
 </style>
 </head>
 <body>
@@ -88,6 +94,10 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 <h2 id="loginTitle"></h2>
 <input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
+<div class="mode-choice">
+<button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal Use</button>
+<button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
+</div>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
@@ -122,8 +132,8 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V13</div>
-<div>Last Update: 03 Jun 2026 00:35 UTC</div>
+<div>ATSRS V14</div>
+<div>Last Update: 03 Jun 2026 01:05 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -167,6 +177,11 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 <div class="card"><p id="totalCertsText"></p><div class="stat" id="totalCerts">0</div></div>
 <div class="card"><p id="exp90Text"></p><div class="stat warning" id="exp90">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
+</div>
+<div id="personalDashboardPanel" class="panel hidden">
+<h3 id="myDocumentsTitle">My Documents</h3>
+<p id="personalDashboardNote" class="sub">Personal mode keeps focus on your own documents only.</p>
+<button id="personalScanBtn" onclick="showPage('certificates',navCertificates)">Scan / Upload Document</button>
 </div>
 </section>
 
@@ -253,6 +268,7 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 <input id="cameraInput" type="file" accept="image/*" capture="environment" onchange="handleDocumentUpload(event)">
 <div id="documentPreview" class="preview-box"></div>
 <div id="ocrProgress" class="preview-box"></div>
+<textarea id="ocrRawText" class="hidden" style="width:100%;min-height:90px;background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:10px;margin-top:8px"></textarea>
 </div>
 <div id="confirmBox" class="scan-box hidden">
 <h3 id="confirmInfoTitle"></h3>
@@ -321,8 +337,8 @@ let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.cr
 let currentUser=null,timer=null,countdown=0;let lang=localStorage.getItem("atsrs_lang")||"en";
 
 const T={
-en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
-az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",fill:"Bütün xanaları doldur.",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",nationality:"Milliyyət",employeeId:"Employee ID",project:"Layihə",vessel:"Gəmi",crewRegister:"Crew Register",crewList:"Heyət siyahısı",addCrew:"Heyət əlavə et",importExcel:"Excel import",groupsProjects:"Qruplar / Layihələr",complianceStatus:"Compliance status",searchCrew:"Heyət axtar...",allCompanies:"Bütün şirkətlər",allPositions:"Bütün vəzifələr",allStatuses:"Bütün statuslar",ready:"Hazır",review:"Yoxlanmalıdır",blocked:"Bloklanıb",importInfo:"Excel/CSV yüklə. Tam auto-mapping növbəti data mərhələsində qoşulacaq.",fileSelected:"Fayl seçildi",projects:"Layihələr",client:"Client",team:"Komanda",addProject:"Layihə əlavə et",readyCrew:"Hazır heyət",reviewCrew:"Yoxlama tələb edir",blockedCrew:"Bloklanmış / vaxtı keçmiş",complianceNote:"Compliance sertifikat bitmə tarixlərinə əsasən hesablanır. Missing document logic document requirements ilə əlavə olunacaq.",crewStatus:"Heyət statusu",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
+en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal Use",companyUse:"Company Use",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
+az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",fill:"Bütün xanaları doldur.",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",personalUse:"Fərdi istifadə",companyUse:"Şirkət istifadəsi",myDocuments:"Mənim sənədlərim",personalDashboardNote:"Fərdi rejim yalnız sizin sənədlərə fokuslanır.",scanUpload:"Sənəd scan / upload et",ocrManual:"OCR bütün xanaları dəqiq oxuya bilmədi. Çatışmayanları doldur və təsdiqlə.",nationality:"Milliyyət",employeeId:"Employee ID",project:"Layihə",vessel:"Gəmi",crewRegister:"Crew Register",crewList:"Heyət siyahısı",addCrew:"Heyət əlavə et",importExcel:"Excel import",groupsProjects:"Qruplar / Layihələr",complianceStatus:"Compliance status",searchCrew:"Heyət axtar...",allCompanies:"Bütün şirkətlər",allPositions:"Bütün vəzifələr",allStatuses:"Bütün statuslar",ready:"Hazır",review:"Yoxlanmalıdır",blocked:"Bloklanıb",importInfo:"Excel/CSV yüklə. Tam auto-mapping növbəti data mərhələsində qoşulacaq.",fileSelected:"Fayl seçildi",projects:"Layihələr",client:"Client",team:"Komanda",addProject:"Layihə əlavə et",readyCrew:"Hazır heyət",reviewCrew:"Yoxlama tələb edir",blockedCrew:"Bloklanmış / vaxtı keçmiş",complianceNote:"Compliance sertifikat bitmə tarixlərinə əsasən hesablanır. Missing document logic document requirements ilə əlavə olunacaq.",crewStatus:"Heyət statusu",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
 };
 ["ru","tr","no","de","fr","es","pt","ar"].forEach(l=>T[l]=T.en);
 
@@ -386,15 +402,32 @@ function validateRegisterFields(){let p1=regPassword.value.trim(),p2=regPassword
 regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
 async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
-async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
+async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
 async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?error.message:tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
 async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?error.message:"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
 
-function localTestLogin(){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");openApp()}
+
+let useMode=localStorage.getItem("atsrs_use_mode")||"company";
+function setUseMode(mode){
+useMode=mode;
+localStorage.setItem("atsrs_use_mode",mode);
+if(typeof personalModeBtn!=="undefined"){
+personalModeBtn.classList.toggle("active",mode==="personal");
+companyModeBtn.classList.toggle("active",mode==="company");
+}
+}
+function applyModeUI(){
+setUseMode(localStorage.getItem("atsrs_use_mode")||useMode||"company");
+let personal=useMode==="personal";
+if(typeof navPersonnel!=="undefined")navPersonnel.classList.toggle("hidden",personal);
+if(typeof personalDashboardPanel!=="undefined")personalDashboardPanel.classList.toggle("hidden",!personal);
+}
+
+function localTestLogin(){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");localStorage.setItem("atsrs_use_mode",useMode);openApp()}
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
-function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();renderAll();restoreCurrentPage();applyLanguage()}
-function showPage(page,btn){localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
+function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();restoreCurrentPage();applyLanguage()}
+function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"dashboard";let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,profile:navProfile};showPage(map[page]?page:"dashboard",map[page]||navDashboard)}
 function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
@@ -457,71 +490,78 @@ confirmBox.classList.remove("hidden");
 documentPreview.innerText=v12("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB)";
 ocrProgress.innerText=v12("ocrStarting");
 autoDocNo.value=autoProvider.value=autoIssue.value=autoExpiry.value="";
+let fn=file.name.toUpperCase();
+if(fn.includes("PASSPORT"))autoDocType.value="Passport";
+else if(fn.includes("SEAMAN"))autoDocType.value="Seaman Book";
+else if(fn.includes("BOSIET")||fn.includes("FOET"))autoDocType.value="BOSIET / FOET";
+else if(fn.includes("MEDICAL"))autoDocType.value="Offshore Medical";
+else if(fn.includes("VISA"))autoDocType.value="Visa";
 if(!window.Tesseract){
-ocrProgress.innerText=v12("ocrNotAvailable");
+ocrProgress.innerText=v12("ocrNotAvailable")+" "+v12("ocrManual");
 return;
 }
 try{
 const result=await Tesseract.recognize(file,"eng",{
-logger:m=>{
-if(m.status&&typeof m.progress==="number"){
-ocrProgress.innerText=v12("ocrProgress")+": "+m.status+" "+Math.round(m.progress*100)+"%";
-}
-}
+logger:m=>{if(m.status&&typeof m.progress==="number"){ocrProgress.innerText=v12("ocrProgress")+": "+m.status+" "+Math.round(m.progress*100)+"%";}}
 });
 let text=(result&&result.data&&result.data.text)||"";
-console.log("OCR TEXT:",text);
-if(!text.trim()){
-ocrProgress.innerText=v12("noTextDetected");
-return;
-}
+if(!text.trim()){ocrProgress.innerText=v12("noTextDetected")+" "+v12("ocrManual");return;}
 autoFillFromOCR(text);
-ocrProgress.innerText=v12("ocrDone");
 }catch(err){
 console.error("OCR failed:",err);
-ocrProgress.innerText=v12("noTextDetected");
+ocrProgress.innerText=v12("noTextDetected")+" "+v12("ocrManual");
 }
 }
+
 function autoFillFromOCR(text){
-let clean=text.replace(/\s+/g," ").trim();
+ocrRawText.value=text||"";
+let clean=(text||"").replace(/\s+/g," ").trim();
 let upper=clean.toUpperCase();
 
 if(upper.includes("PASSPORT")) autoDocType.value="Passport";
 else if(upper.includes("SEAMAN")) autoDocType.value="Seaman Book";
 else if(upper.includes("BOSIET")||upper.includes("FOET")) autoDocType.value="BOSIET / FOET";
-else if(upper.includes("MEDICAL")) autoDocType.value="Offshore Medical";
+else if(upper.includes("MEDICAL")||upper.includes("FITNESS")) autoDocType.value="Offshore Medical";
 else if(upper.includes("VISA")) autoDocType.value="Visa";
 else if(upper.includes("YELLOW FEVER")) autoDocType.value="Yellow Fever";
 
-let passNo=upper.match(/\b[A-Z]{1,2}[0-9]{6,9}\b/) || upper.match(/\b[0-9]{7,9}\b/);
-if(passNo) autoDocNo.value=passNo[0];
+let docPatterns=[
+/(?:PASSPORT|DOCUMENT|CERTIFICATE|BOOK|NO|NUMBER|№|N)\s*[:\-]?\s*([A-Z0-9]{6,12})/i,
+/\b([A-Z]{1,3}[0-9]{5,9})\b/,
+/\b([0-9]{7,10})\b/
+];
+for(let r of docPatterns){
+let m=upper.match(r);
+if(m){autoDocNo.value=m[1]||m[0];break;}
+}
 
 let dates=[];
-let re1=/\b(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{2,4})\b/g;
-let m;
-while((m=re1.exec(clean))!==null){
-let d=parseInt(m[1]),mo=parseInt(m[2]),y=parseInt(m[3]);
-if(y<100)y+=2000;
-if(d>=1&&d<=31&&mo>=1&&mo<=12&&y>=2000&&y<=2100){
-dates.push(new Date(Date.UTC(y,mo-1,d)));
-}
-}
+let monthMap={JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12};
+let re1=/\b(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{2,4})\b/g,m;
+while((m=re1.exec(clean))!==null){pushDate(dates,m[3],m[2],m[1]);}
 let re2=/\b(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})\b/g;
-while((m=re2.exec(clean))!==null){
-let y=parseInt(m[1]),mo=parseInt(m[2]),d=parseInt(m[3]);
-if(d>=1&&d<=31&&mo>=1&&mo<=12&&y>=2000&&y<=2100){
-dates.push(new Date(Date.UTC(y,mo-1,d)));
+while((m=re2.exec(clean))!==null){pushDate(dates,m[1],m[2],m[3]);}
+let re3=/\b(\d{1,2})\s*(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z]*\s*(\d{2,4})\b/gi;
+while((m=re3.exec(clean))!==null){pushDate(dates,m[3],monthMap[m[2].toUpperCase().slice(0,3)],m[1]);}
+dates=[...new Map(dates.map(d=>[d.toISOString().slice(0,10),d])).values()].sort((a,b)=>a-b);
+if(dates.length===1){autoExpiry.value=formatDateInput(dates[0]);}
+if(dates.length>1){autoIssue.value=formatDateInput(dates[0]);autoExpiry.value=formatDateInput(dates[dates.length-1]);}
+
+let providerMatch=clean.match(/(OPITO|BOSIET|FOET|STCW|ENG1|OGUK|NOGEPA|IMCA|DNV|ABS|BV|MCA|BAHAMAS|LUXEMBOURG)/i);
+if(providerMatch) autoProvider.value=providerMatch[0].toUpperCase();
+
+if(!autoDocNo.value && !autoExpiry.value && !autoProvider.value){
+ocrProgress.innerText=v12("ocrManual");
+}else{
+ocrProgress.innerText=v12("ocrDone");
 }
 }
-dates.sort((a,b)=>a-b);
-if(dates.length){
-autoIssue.value=formatDateInput(dates[0]);
-autoExpiry.value=formatDateInput(dates[dates.length-1]);
+function pushDate(arr,y,mo,d){
+y=parseInt(y);mo=parseInt(mo);d=parseInt(d);
+if(y<100)y+=2000;
+if(d>=1&&d<=31&&mo>=1&&mo<=12&&y>=2000&&y<=2100)arr.push(new Date(Date.UTC(y,mo-1,d)));
 }
 
-let providerMatch=clean.match(/(OPITO|BOSIET|FOET|STCW|ENG1|OGUK|NOGEPA|IMCA|DNV|ABS|BV)/i);
-if(providerMatch) autoProvider.value=providerMatch[0].toUpperCase();
-}
 function formatDateInput(dt){
 let y=dt.getUTCFullYear();
 let m=String(dt.getUTCMonth()+1).padStart(2,"0");
@@ -630,6 +670,9 @@ setText("accountTitle","account");setText("accountTabGeneralBtn","general");setT
 if(profileCountry&&profileCountry.options[0])profileCountry.options[0].text=v12("country");
 setText("primaryEmailTitle","primaryEmail");setText("primaryEmailNote","primaryEmailNote");setText("primaryEmailBtn","change");setText("changePasswordTitle","passwordTitle");setText("changePasswordNote","passwordNote");setText("changePasswordBtn","change");setText("twofaTitle","twofa");setText("twofaNote","twofaNote");setText("setup2faBtn","setup");setText("sessionsTitle","sessions");setText("sessionsNote","sessionsNote");setText("viewSessionsBtn","view");setText("notifyTitle","notifications");setText("notifyNote","notificationsNote");setText("manageNotifyBtn","manage");setText("exportDataTitle","exportData");setText("exportDataNote","exportDataNote");setText("exportDataBtn","export");setText("deleteAccountTitle","deleteAccount");setText("deleteAccountNote","deleteAccountNote");setText("deleteAccountBtn","delete");
 
+if(typeof personalModeBtn!=="undefined"){personalModeBtn.innerText=v12("personalUse");companyModeBtn.innerText=v12("companyUse");}
+if(typeof myDocumentsTitle!=="undefined"){myDocumentsTitle.innerText=v12("myDocuments");personalDashboardNote.innerText=v12("personalDashboardNote");personalScanBtn.innerText=v12("scanUpload");}
+applyModeUI();
 if(currentUser){let active=document.querySelector(".nav button.active");pageTitle.innerText=active?active.innerText:v12("dashboard")}
 }
 function fillCrewFilters(personnel){
@@ -653,6 +696,7 @@ return {key:"ready",text:v12("ready"),cls:"badge-ready"};
 function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(86400000));if(d<0)return{txt:v12("expired"),cls:"danger",expired:true,risk:true};if(d<=30)return{txt:v12("exp30s"),cls:"danger",risk:true};if(d<=90)return{txt:v12("exp90s2"),cls:"warning",risk:true};return{txt:v12("valid"),cls:"good",risk:false}}
 
 applyLanguage();
+setUseMode(localStorage.getItem('atsrs_use_mode')||'company');
 </script>
 </body>
 </html>
