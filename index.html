@@ -125,8 +125,8 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V16</div>
-<div>Last Update: 03 Jun 2026 01:55 UTC</div>
+<div>ATSRS V17</div>
+<div>Last Update: 03 Jun 2026 02:10 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -629,30 +629,4 @@ addDoc:"Добавить документ",scanDoc:"Сканировать ка�
 general:"Общее",security:"Безопасность",preferences:"Настройки",country:"Страна",save:"Сохранить",recoveryEmail:"Email восстановления",primaryEmail:"Основной email",primaryEmailNote:"Ваш основной email для входа.",passwordTitle:"Пароль",passwordNote:"Изменить пароль аккаунта.",change:"Изменить",twofa:"Двухфакторная защита",twofaNote:"Google Authenticator / email-код.",setup:"Настроить",sessions:"Активные сессии",sessionsNote:"Показать устройства с активным входом.",view:"Смотреть",notifications:"Уведомления",notificationsNote:"Оповещения по email/SMS.",manage:"Управлять",exportData:"Экспорт данных",exportDataNote:"Скачать данные аккаунта ATSRS.",export:"Экспорт",deleteAccount:"Удалить аккаунт",deleteAccountNote:"Полное удаление будет включено после live Auth.",delete:"Удалить",valid:"Действителен",exp30s:"Истекает <30 дней",exp90s2:"Истекает <90 дней",ready:"Готов",review:"Проверить",blocked:"Блокирован",myDocuments:"Мои документы",personalDashboardNote:"Личный режим фокусируется только на ваших документах.",scanUpload:"Скан / загрузка документа",fill:"Заполните все поля.",fileSelected:"Файл выбран"
 }
 };
-function l16(k){return (L16[lang]&&L16[lang][k])||L16.en[k]||k}
-function setT(id,k){let e=document.getElementById(id); if(e)e.innerText=l16(k)}
-function setP(id,k){let e=document.getElementById(id); if(e)e.placeholder=l16(k)}
-function applyLanguage(){
-if(!["en","az","ru"].includes(lang))lang="en";
-document.documentElement.lang=lang; document.documentElement.dir="ltr";
-if(window.langCircle)langCircle.innerText=LANG_FLAGS[lang]||"🌐"; if(window.appLangCircle)appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
-setT("authSubtitle","sub");setT("loginTitle","login");setP("loginEmail","email");setP("loginPassword","password");setT("loginBtn","login");setT("createBtn","create");setT("forgotBtn","forgot");setT("personalModeBtn","personalUse");setT("companyModeBtn","companyUse");
-setT("registerTitle","registerTitle");setP("regEmail","email");setP("regPassword","password");setP("regPassword2","confirm");setT("registerBtn","register");setT("backLoginBtn1","back");setT("resetTitle","resetTitle");setT("resetInfo","resetInfo");setP("resetEmail","email");setT("resetBtn","sendReset");setT("backLoginBtn2","back");
-setT("cabinetText","cabinet");setT("navDashboard","dashboard");setT("navPersonnel","personnel");setT("navCertificates","certificates");setT("navProfile","account");setT("navLogout","logout");
-setT("totalPersonnelText","totalPersonnel");setT("totalCertsText","totalCerts");setT("exp90Text","exp90");setT("expiredText","expired");setT("myDocumentsTitle","myDocuments");setT("personalDashboardNote","personalDashboardNote");setT("personalScanBtn","scanUpload");
-setT("crewRegisterTitle","crewRegister");setT("crewTabListBtn","crewList");setT("crewTabAddBtn","addCrew");setT("crewTabImportBtn","importExcel");setT("crewTabProjectsBtn","groupsProjects");setT("crewTabComplianceBtn","complianceStatus");setP("crewSearch","searchCrew");
-setT("addPersonnelTitle","addPersonnel");setP("pName","name");setP("pSurname","surname");setP("pPosition","position");setP("pCompany","company");setP("pEmail","email");setP("pPhone","phone");setP("pNationality","nationality");setP("pEmployeeId","employeeId");setP("pProject","project");setP("pVessel","vessel");setT("addPersonnelBtn","addPersonnel");
-setT("thName1","name");setT("thSurname1","surname");setT("thPosition1","position");setT("thCompany1","company");setT("thPhone1","phone");setT("thCrewStatus","crewStatus");setT("thAction1","action");
-setT("importExcelTitle","importExcel");setT("importExcelInfo","importInfo");setT("projectsTitle","projects");setP("projectNameInput","project");setP("vesselNameInput","vessel");setP("clientNameInput","client");setP("teamNameInput","team");setT("addProjectBtn","addProject");setT("thProject","project");setT("thVessel","vessel");setT("thClient","client");setT("thTeam","team");setT("thActionProject","action");setT("complianceOverviewTitle","complianceStatus");setT("readyCrewText","readyCrew");setT("reviewCrewText","reviewCrew");setT("blockedCrewText","blockedCrew");setT("complianceNote","complianceNote");
-setT("addDocTitle","addDoc");setT("scanDocBtn","scanDoc");setT("uploadDocBtn","uploadDoc");setT("scanInfo","scanInfo");setT("confirmInfoTitle","confirmInfo");setP("autoDocNo","docNo");setP("autoProvider","provider");setT("confirmInfoBtn","confirmBtn");setT("extractNote","extractNote");setT("manualCertTitle","manualCert");setP("cProvider","provider");setT("addCertBtn","addCert");setT("certRegisterTitle","certRegister");setT("thName2","name");setT("thCertificate2","certificate");setT("thProvider2","provider");setT("thExpiry2","expiry");setT("thStatus2","status");setT("thAction2","action");
-setT("accountTitle","account");setT("accountTabGeneralBtn","general");setT("accountTabSecurityBtn","security");setT("accountTabPreferencesBtn","preferences");setP("profileName","name");setP("profileSurname","surname");setP("profilePhone","phone");setP("profileCompany","company");setP("profilePosition","position");setP("profileAltEmail","recoveryEmail");setT("saveProfileBtn","save"); if(window.profileCountry&&profileCountry.options[0])profileCountry.options[0].text=l16("country");
-setT("primaryEmailTitle","primaryEmail");setT("primaryEmailNote","primaryEmailNote");setT("primaryEmailBtn","change");setT("changePasswordTitle","passwordTitle");setT("changePasswordNote","passwordNote");setT("changePasswordBtn","change");setT("twofaTitle","twofa");setT("twofaNote","twofaNote");setT("setup2faBtn","setup");setT("sessionsTitle","sessions");setT("sessionsNote","sessionsNote");setT("viewSessionsBtn","view");setT("notifyTitle","notifications");setT("notifyNote","notificationsNote");setT("manageNotifyBtn","manage");setT("exportDataTitle","exportData");setT("exportDataNote","exportDataNote");setT("exportDataBtn","export");setT("deleteAccountTitle","deleteAccount");setT("deleteAccountNote","deleteAccountNote");setT("deleteAccountBtn","delete");
-if(currentUser){let active=document.querySelector(".nav button.active");pageTitle.innerText=active?active.innerText:l16("dashboard")}
-}
-function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang); if(window.langMenu)langMenu.classList.add("hidden"); if(window.appLangMenu)appLangMenu.classList.add("hidden"); applyLanguage(); if(currentUser)renderAll(); applyLanguage();}
-
-applyLanguage();
-setUseMode(localStorage.getItem('atsrs_use_mode')||'company');
-</script>
-</body>
-</html>
+function l16(k){return (L16[lang]&
