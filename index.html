@@ -37,6 +37,30 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 html[dir="rtl"] .lang-floating{right:auto;left:18px}
 html[dir="rtl"] .lang-menu{right:auto;left:0}
 
+
+@media(max-width:800px){
+  .app-lang-switcher{
+    position:absolute!important;
+    top:18px!important;
+    right:18px!important;
+  }
+  html[dir="rtl"] .app-lang-switcher{
+    right:auto!important;
+    left:18px!important;
+  }
+}
+@media(min-width:801px){
+  .app-lang-switcher{
+    position:fixed!important;
+  }
+}
+.security-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #334155;padding:12px 0}
+.setting-row:last-child{border-bottom:0}
+.setting-row button{max-width:180px;margin:0}
+.small-note{font-size:13px;color:#94a3b8;margin-top:4px}
+.danger-zone{border-color:#7f1d1d}
+
 </style>
 </head>
 <body>
@@ -191,10 +215,64 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <div class="panel">
 <h3 id="profileTitle"></h3>
 <p id="userEmail" class="sub"></p>
+<div class="security-grid">
+<div>
 <input id="profileName">
+<input id="profilePhone">
+<input id="profileAltEmail" type="email">
+</div>
+<div>
 <input id="profileCompany">
 <input id="profilePosition">
+<select id="profileTimezone">
+<option value="UTC">UTC</option>
+<option value="Europe/Baku">Europe/Baku</option>
+<option value="Europe/Sofia">Europe/Sofia</option>
+<option value="Europe/London">Europe/London</option>
+<option value="Europe/Oslo">Europe/Oslo</option>
+<option value="Africa/Malabo">Africa/Malabo</option>
+</select>
+</div>
+</div>
 <button id="saveProfileBtn" onclick="saveProfile()"></button>
+</div>
+
+<div class="panel">
+<h3 id="securityTitle">Security</h3>
+<div class="setting-row">
+<div><b id="changePasswordTitle">Password</b><div id="changePasswordNote" class="small-note">Change your account password.</div></div>
+<button class="secondary" onclick="alert('Password change will be connected after Supabase Auth is live.')">Change</button>
+</div>
+<div class="setting-row">
+<div><b id="twofaTitle">Two-factor authentication</b><div id="twofaNote" class="small-note">Google Authenticator / email code support.</div></div>
+<button class="secondary" onclick="alert('2FA will be added in the next security phase.')">Setup</button>
+</div>
+<div class="setting-row">
+<div><b id="notifyTitle">Notifications</b><div id="notifyNote" class="small-note">Certificate expiry alerts by email/SMS.</div></div>
+<button class="secondary" onclick="alert('Notification settings will be added with backend alerts.')">Manage</button>
+</div>
+</div>
+
+<div class="panel">
+<h3 id="sessionsTitle">Login History & Active Sessions</h3>
+<table>
+<thead><tr><th>Device</th><th>Location</th><th>Last active</th></tr></thead>
+<tbody id="sessionsTable">
+<tr><td>Samsung / Chrome</td><td>Local Test</td><td>Current session</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="panel danger-zone">
+<h3 id="privacyTitle">Privacy & Data</h3>
+<div class="setting-row">
+<div><b id="exportDataTitle">Export My Data</b><div id="exportDataNote" class="small-note">Download your ATSRS account data.</div></div>
+<button class="secondary" onclick="exportLocalData()">Export</button>
+</div>
+<div class="setting-row">
+<div><b id="deleteAccountTitle">Delete Account</b><div id="deleteAccountNote" class="small-note">Permanent deletion will be enabled after live Auth.</div></div>
+<button class="action" onclick="alert('Account deletion will be connected after Supabase Auth is live.')">Delete</button>
+</div>
 </div>
 </section>
 </main>
@@ -304,7 +382,27 @@ addPersonnelTitle.innerText=tr("addPersonnel");pName.placeholder=tr("name");pPos
 personnelListTitle.innerText=tr("personnelList");thName1.innerText=tr("name");thPosition1.innerText=tr("position");thCompany1.innerText=tr("company");thAction1.innerText=tr("action");
 addCertTitle.innerText=tr("addCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");
 thName2.innerText=tr("name");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
-profileTitle.innerText=tr("profile");profileName.placeholder=tr("name");profileCompany.placeholder=tr("company");profilePosition.placeholder=tr("position");saveProfileBtn.innerText=tr("saveProfile");
+profileTitle.innerText=tr("profile");
+profileName.placeholder=tr("name");
+profilePhone.placeholder="Phone";
+profileAltEmail.placeholder="Alternative email";
+profileCompany.placeholder=tr("company");
+profilePosition.placeholder=tr("position");
+profileTimezone.title="Time Zone";
+saveProfileBtn.innerText=tr("saveProfile");
+securityTitle.innerText="Security";
+changePasswordTitle.innerText="Password";
+changePasswordNote.innerText="Change your account password.";
+twofaTitle.innerText="Two-factor authentication";
+twofaNote.innerText="Google Authenticator / email code support.";
+notifyTitle.innerText="Notifications";
+notifyNote.innerText="Certificate expiry alerts by email/SMS.";
+sessionsTitle.innerText="Login History & Active Sessions";
+privacyTitle.innerText="Privacy & Data";
+exportDataTitle.innerText="Export My Data";
+exportDataNote.innerText="Download your ATSRS account data.";
+deleteAccountTitle.innerText="Delete Account";
+deleteAccountNote.innerText="Permanent deletion will be enabled after live Auth.";
 }
 
 function hideAuthBoxes(){loginBox.classList.add("hidden");registerBox.classList.add("hidden");forgotBox.classList.add("hidden");newPasswordBox.classList.add("hidden")}
@@ -394,24 +492,43 @@ newPassMsg.innerText=error?error.message:"Password updated.";
 
 async function logout(){
 try{ if(supabaseClient) await supabaseClient.auth.signOut(); }catch(e){}
+localStorage.removeItem("atsrs_auth_mode");
+localStorage.removeItem("atsrs_current_page");
 location.reload();
 }
 
 function localTestLogin(){
 currentUser={id:"local_test_user",email:"local-test@atsrs.com"};
+localStorage.setItem("atsrs_auth_mode","local");
 openApp();
 }
 
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n}
 function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]}
 function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
-function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();renderAll()}
+function openApp(){
+auth.classList.add("hidden");
+app.classList.remove("hidden");
+userEmail.innerText=currentUser.email;
+loadProfile();
+renderAll();
+restoreCurrentPage();
+}
 
 function showPage(page,btn){
+localStorage.setItem("atsrs_current_page",page);
 document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
 document.getElementById(page+"Page").classList.remove("hidden");
 document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll();
+btn.classList.add("active");
+pageTitle.innerText=btn.innerText;
+renderAll();
+}
+function restoreCurrentPage(){
+let page=localStorage.getItem("atsrs_current_page")||"dashboard";
+let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,profile:navProfile};
+if(!map[page])page="dashboard";
+showPage(page,map[page]);
 }
 
 function addPersonnel(){
@@ -458,15 +575,44 @@ exp90.innerText=e90;expired.innerText=ex;
 }
 
 function saveProfile(){
-localStorage.setItem(localKey("profile"),JSON.stringify({name:profileName.value,company:profileCompany.value,position:profilePosition.value}));
+localStorage.setItem(localKey("profile"),JSON.stringify({
+name:profileName.value,
+phone:profilePhone.value,
+altEmail:profileAltEmail.value,
+company:profileCompany.value,
+position:profilePosition.value,
+timezone:profileTimezone.value
+}));
 alert("Profile saved.");
 }
 function loadProfile(){
 let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};
-profileName.value=p.name||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";
+profileName.value=p.name||"";
+profilePhone.value=p.phone||"";
+profileAltEmail.value=p.altEmail||"";
+profileCompany.value=p.company||"";
+profilePosition.value=p.position||"";
+profileTimezone.value=p.timezone||"UTC";
+}
+function exportLocalData(){
+let data={
+profile:JSON.parse(localStorage.getItem(localKey("profile")))||{},
+personnel:getData("personnel"),
+certificates:getData("certs")
+};
+let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+let url=URL.createObjectURL(blob);
+let a=document.createElement("a");
+a.href=url;
+a.download="atsrs-data-export.json";
+a.click();
+URL.revokeObjectURL(url);
 }
 
-if(supabaseClient){
+if(localStorage.getItem("atsrs_auth_mode")==="local"){
+currentUser={id:"local_test_user",email:"local-test@atsrs.com"};
+openApp();
+}else if(supabaseClient){
 supabaseClient.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});
 supabaseClient.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;openApp()}});
 }
