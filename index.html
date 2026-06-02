@@ -69,7 +69,7 @@ html[dir="rtl"] .lang-menu{right:auto;left:0}
 <input id="loginPassword" type="password">
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
-<button id="supabaseTestBtn" class="secondary" onclick="testSupabaseConnection()">Test Supabase Connection</button>
+<button id="supabaseTestBtn" class="secondary" onclick="testSupabaseConnection()">Test Supabase Auth</button>
 <p id="supabaseTestMsg" class="sub"></p>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
@@ -274,7 +274,7 @@ function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMe
 function applyLanguage(){
 document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");
-loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");supabaseTestBtn.innerText="Test Supabase Connection";loginEmailRule.innerText=emailMsg();
+loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");supabaseTestBtn.innerText="Test Supabase Auth";loginEmailRule.innerText=emailMsg();
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");
 registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");regEmailRule.innerText=emailMsg();passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
 resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
@@ -324,16 +324,26 @@ function startCountdown(){countdown=60;resetBtn.disabled=true;resetBtn.innerText
 
 
 async function testSupabaseConnection(){
-  supabaseTestMsg.innerText="Testing Supabase...";
+  supabaseTestMsg.innerText="Testing real Supabase Auth endpoint...";
   try{
-    const healthUrl=SUPABASE_URL.replace(/\/$/,"")+"/auth/v1/health";
-    const res=await fetch(healthUrl,{method:"GET",headers:{apikey:SUPABASE_KEY}});
+    const testUrl=SUPABASE_URL.replace(/\/$/,"")+"/auth/v1/settings";
+    const res=await fetch(testUrl,{
+      method:"GET",
+      headers:{
+        "apikey":SUPABASE_KEY,
+        "Authorization":"Bearer "+SUPABASE_KEY
+      }
+    });
     const txt=await res.text();
-    supabaseTestMsg.innerText="Supabase reachable. HTTP "+res.status+" — "+txt.slice(0,120);
-    console.log("Supabase health:",res.status,txt);
+    if(res.ok){
+      supabaseTestMsg.innerText="Supabase Auth reachable. HTTP "+res.status+". Now test Create Account.";
+    }else{
+      supabaseTestMsg.innerText="Supabase reached, but returned HTTP "+res.status+": "+txt.slice(0,160);
+    }
+    console.log("Supabase auth settings test:",res.status,txt);
   }catch(e){
-    supabaseTestMsg.innerText="Supabase fetch failed. Browser cannot reach Supabase project. Check project status, URL/key, network block, or Supabase domain access.";
-    console.error("Supabase connection test failed:",e);
+    supabaseTestMsg.innerText="Still fetch failed. This means browser/network cannot reach Supabase Auth endpoint, or browser is blocking the request before Supabase responds.";
+    console.error("Supabase real auth test failed:",e);
   }
 }
 
