@@ -44,6 +44,20 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 .app-lang-switcher{position:absolute!important;top:18px!important;right:18px!important}html[dir="rtl"] .app-lang-switcher{right:auto!important;left:18px!important}
 }
 @media(max-width:600px){.build-badge{position:static;margin-top:18px;text-align:center}.auth-card{padding:24px}.logo{font-size:34px}}
+
+.module-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.module-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}
+.module-tabs button.active{background:#2563eb}
+.module-tab{display:none}
+.module-tab.active{display:block}
+.filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.badge-ready{background:#14532d;color:#bbf7d0}
+.badge-review{background:#713f12;color:#fef3c7}
+.badge-blocked{background:#7f1d1d;color:#fecaca}
+.import-box{border:1px dashed #64748b;border-radius:16px;padding:16px;background:#0f172a}
+.crew-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+
 </style>
 </head>
 <body>
@@ -107,8 +121,8 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V10</div>
-<div>Last Update: 02 Jun 2026 23:20 UTC</div>
+<div>ATSRS V11</div>
+<div>Last Update: 02 Jun 2026 23:45 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -157,15 +171,71 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 
 <section id="personnelPage" class="hidden">
 <div class="panel">
+<h3 id="crewRegisterTitle"></h3>
+<div class="module-tabs">
+<button id="crewTabListBtn" class="active" onclick="showPersonnelTab('list')"></button>
+<button id="crewTabAddBtn" onclick="showPersonnelTab('add')"></button>
+<button id="crewTabImportBtn" onclick="showPersonnelTab('import')"></button>
+<button id="crewTabProjectsBtn" onclick="showPersonnelTab('projects')"></button>
+<button id="crewTabComplianceBtn" onclick="showPersonnelTab('compliance')"></button>
+</div>
+
+<div id="crewListTab" class="module-tab active">
+<div class="filter-grid">
+<input id="crewSearch" oninput="renderAll()">
+<select id="crewCompanyFilter" onchange="renderAll()"></select>
+<select id="crewPositionFilter" onchange="renderAll()"></select>
+<select id="crewStatusFilter" onchange="renderAll()"></select>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th id="thName1"></th><th id="thSurname1"></th><th id="thPosition1"></th><th id="thCompany1"></th><th>Email</th><th id="thPhone1"></th><th id="thCrewStatus"></th><th id="thAction1"></th></tr></thead>
+<tbody id="personnelTable"></tbody>
+</table>
+</div>
+</div>
+
+<div id="crewAddTab" class="module-tab">
 <h3 id="addPersonnelTitle"></h3>
 <div class="profile-grid">
 <input id="pName"><input id="pSurname"><input id="pPosition"><input id="pCompany"><input id="pEmail"><input id="pPhone">
+<input id="pNationality"><input id="pEmployeeId"><input id="pProject"><input id="pVessel">
 </div>
 <button id="addPersonnelBtn" onclick="addPersonnel()"></button>
 </div>
-<div class="panel">
-<h3 id="personnelListTitle"></h3>
-<div class="table-wrap"><table><thead><tr><th id="thName1"></th><th id="thSurname1"></th><th id="thPosition1"></th><th id="thCompany1"></th><th>Email</th><th id="thPhone1"></th><th id="thAction1"></th></tr></thead><tbody id="personnelTable"></tbody></table></div>
+
+<div id="crewImportTab" class="module-tab">
+<div class="import-box">
+<h3 id="importExcelTitle"></h3>
+<p id="importExcelInfo" class="sub"></p>
+<input id="excelFile" type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelImport(event)">
+<div id="excelPreview" class="preview-box"></div>
+</div>
+</div>
+
+<div id="crewProjectsTab" class="module-tab">
+<h3 id="projectsTitle"></h3>
+<div class="profile-grid">
+<input id="projectNameInput">
+<input id="vesselNameInput">
+<input id="clientNameInput">
+<input id="teamNameInput">
+</div>
+<button id="addProjectBtn" onclick="addProject()"></button>
+<div class="table-wrap">
+<table><thead><tr><th id="thProject"></th><th id="thVessel"></th><th id="thClient"></th><th id="thTeam"></th><th id="thActionProject"></th></tr></thead><tbody id="projectsTable"></tbody></table>
+</div>
+</div>
+
+<div id="crewComplianceTab" class="module-tab">
+<h3 id="complianceOverviewTitle"></h3>
+<div class="grid">
+<div class="card"><p id="readyCrewText"></p><div class="stat good" id="readyCrew">0</div></div>
+<div class="card"><p id="reviewCrewText"></p><div class="stat warning" id="reviewCrew">0</div></div>
+<div class="card"><p id="blockedCrewText"></p><div class="stat danger" id="blockedCrew">0</div></div>
+</div>
+<p id="complianceNote" class="sub"></p>
+</div>
 </div>
 </section>
 
@@ -249,8 +319,8 @@ let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.cr
 let currentUser=null,timer=null,countdown=0;let lang=localStorage.getItem("atsrs_lang")||"en";
 
 const T={
-en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
-az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
+en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",expired:"Expired",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
+az:{sub:"Offshore heyət uyğunluq platforması",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",expired:"Vaxtı keçmiş",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",nationality:"Milliyyət",employeeId:"Employee ID",project:"Layihə",vessel:"Gəmi",crewRegister:"Crew Register",crewList:"Heyət siyahısı",addCrew:"Heyət əlavə et",importExcel:"Excel import",groupsProjects:"Qruplar / Layihələr",complianceStatus:"Compliance status",searchCrew:"Heyət axtar...",allCompanies:"Bütün şirkətlər",allPositions:"Bütün vəzifələr",allStatuses:"Bütün statuslar",ready:"Hazır",review:"Yoxlanmalıdır",blocked:"Bloklanıb",importInfo:"Excel/CSV yüklə. Tam auto-mapping növbəti data mərhələsində qoşulacaq.",fileSelected:"Fayl seçildi",projects:"Layihələr",client:"Client",team:"Komanda",addProject:"Layihə əlavə et",readyCrew:"Hazır heyət",reviewCrew:"Yoxlama tələb edir",blockedCrew:"Bloklanmış / vaxtı keçmiş",complianceNote:"Compliance sertifikat bitmə tarixlərinə əsasən hesablanır. Missing document logic document requirements ilə əlavə olunacaq.",crewStatus:"Heyət statusu",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
 };
 ["ru","tr","no","de","fr","es","pt","ar"].forEach(l=>T[l]=T.en);
 
@@ -280,8 +350,22 @@ resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetE
 newPassTitle.innerText=tr("newPass");newPassword.placeholder=tr("newPassword");newPassword2.placeholder=tr("confirmNew");saveNewPassBtn.innerText=tr("saveNew");
 cabinetText.innerText=tr("cabinet");navDashboard.innerText=tr("dashboard");navPersonnel.innerText=tr("personnel");navCertificates.innerText=tr("certificates");navProfile.innerText=ptr("account");navLogout.innerText=tr("logout");
 totalPersonnelText.innerText=tr("totalPersonnel");totalCertsText.innerText=tr("totalCerts");exp90Text.innerText=tr("exp90");expiredText.innerText=tr("expired");
-addPersonnelTitle.innerText=tr("addPersonnel");pName.placeholder=tr("name");pSurname.placeholder=tr("surname");pPosition.placeholder=tr("position");pCompany.placeholder=tr("company");pEmail.placeholder=tr("email");pPhone.placeholder=tr("phone");addPersonnelBtn.innerText=tr("addPersonnel");
-personnelListTitle.innerText=tr("personnelList");thName1.innerText=tr("name");thSurname1.innerText=tr("surname");thPosition1.innerText=tr("position");thCompany1.innerText=tr("company");thPhone1.innerText=tr("phone");thAction1.innerText=tr("action");
+crewRegisterTitle.innerText=tr("crewRegister");
+crewTabListBtn.innerText=tr("crewList");
+crewTabAddBtn.innerText=tr("addCrew");
+crewTabImportBtn.innerText=tr("importExcel");
+crewTabProjectsBtn.innerText=tr("groupsProjects");
+crewTabComplianceBtn.innerText=tr("complianceStatus");
+crewSearch.placeholder=tr("searchCrew");
+addPersonnelTitle.innerText=tr("addPersonnel");
+pName.placeholder=tr("name");pSurname.placeholder=tr("surname");pPosition.placeholder=tr("position");pCompany.placeholder=tr("company");pEmail.placeholder=tr("email");pPhone.placeholder=tr("phone");
+pNationality.placeholder=tr("nationality");pEmployeeId.placeholder=tr("employeeId");pProject.placeholder=tr("project");pVessel.placeholder=tr("vessel");
+addPersonnelBtn.innerText=tr("addPersonnel");
+thName1.innerText=tr("name");thSurname1.innerText=tr("surname");thPosition1.innerText=tr("position");thCompany1.innerText=tr("company");thPhone1.innerText=tr("phone");thCrewStatus.innerText=tr("crewStatus");thAction1.innerText=tr("action");
+importExcelTitle.innerText=tr("importExcel");importExcelInfo.innerText=tr("importInfo");
+projectsTitle.innerText=tr("projects");projectNameInput.placeholder=tr("project");vesselNameInput.placeholder=tr("vessel");clientNameInput.placeholder=tr("client");teamNameInput.placeholder=tr("team");addProjectBtn.innerText=tr("addProject");
+thProject.innerText=tr("project");thVessel.innerText=tr("vessel");thClient.innerText=tr("client");thTeam.innerText=tr("team");thActionProject.innerText=tr("action");
+complianceOverviewTitle.innerText=tr("complianceStatus");readyCrewText.innerText=tr("readyCrew");reviewCrewText.innerText=tr("reviewCrew");blockedCrewText.innerText=tr("blockedCrew");complianceNote.innerText=tr("complianceNote");
 addDocTitle.innerText=ptr("addDoc");scanDocBtn.innerText=ptr("scanDoc");uploadDocBtn.innerText=ptr("uploadDoc");scanInfo.innerText=ptr("scanInfo");confirmInfoTitle.innerText=ptr("confirmInfo");autoDocNo.placeholder=ptr("docNo");autoProvider.placeholder=tr("provider");confirmInfoBtn.innerText=ptr("confirm");extractNote.innerText=ptr("extractNote");
 manualCertTitle.innerText=ptr("manualCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");thName2.innerText=tr("name");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
 accountTitle.innerText=ptr("account");accountTabGeneralBtn.innerText=ptr("general");accountTabSecurityBtn.innerText=ptr("security");accountTabPreferencesBtn.innerText=ptr("preferences");profileName.placeholder=tr("name");profileSurname.placeholder=tr("surname");profilePhone.placeholder=tr("phone");profileCompany.placeholder=tr("company");profilePosition.placeholder=tr("position");profileCountry.options[0].text=ptr("country");saveProfileBtn.innerText=tr("saveProfile");
@@ -313,7 +397,53 @@ function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page"
 function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
-function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert(tr("fill"));return}a.push({name:pName.value,surname:pSurname.value,position:pPosition.value,company:pCompany.value,email:pEmail.value,phone:pPhone.value});saveData("personnel",a);pName.value=pSurname.value=pPosition.value=pCompany.value=pEmail.value=pPhone.value="";renderAll()}
+
+function showPersonnelTab(tab){
+["list","add","import","projects","compliance"].forEach(x=>{
+document.getElementById("crew"+cap(x)+"Tab").classList.remove("active");
+document.getElementById("crewTab"+cap(x)+"Btn").classList.remove("active");
+});
+document.getElementById("crew"+cap(tab)+"Tab").classList.add("active");
+document.getElementById("crewTab"+cap(tab)+"Btn").classList.add("active");
+}
+function crewComplianceStatus(name){
+let certs=getData("certs").filter(c=>c.person===name);
+if(!certs.length)return {key:"review",text:tr("review"),cls:"badge-review"};
+let hasExpired=certs.some(c=>status(c.expiry).expired);
+let hasRisk=certs.some(c=>status(c.expiry).risk);
+if(hasExpired)return {key:"blocked",text:tr("blocked"),cls:"badge-blocked"};
+if(hasRisk)return {key:"review",text:tr("review"),cls:"badge-review"};
+return {key:"ready",text:tr("ready"),cls:"badge-ready"};
+}
+function fillCrewFilters(personnel){
+let currentCompany=crewCompanyFilter.value,currentPosition=crewPositionFilter.value,currentStatus=crewStatusFilter.value;
+let companies=[...new Set(personnel.map(x=>x.company).filter(Boolean))];
+let positions=[...new Set(personnel.map(x=>x.position).filter(Boolean))];
+crewCompanyFilter.innerHTML=`<option value="">${tr("allCompanies")}</option>`+companies.map(x=>`<option>${x}</option>`).join("");
+crewPositionFilter.innerHTML=`<option value="">${tr("allPositions")}</option>`+positions.map(x=>`<option>${x}</option>`).join("");
+crewStatusFilter.innerHTML=`<option value="">${tr("allStatuses")}</option><option value="ready">${tr("ready")}</option><option value="review">${tr("review")}</option><option value="blocked">${tr("blocked")}</option>`;
+crewCompanyFilter.value=currentCompany;crewPositionFilter.value=currentPosition;crewStatusFilter.value=currentStatus;
+}
+function handleExcelImport(e){
+let file=e.target.files&&e.target.files[0];
+if(!file)return;
+excelPreview.innerText=tr("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB). "+tr("importInfo");
+}
+function getProjects(){return JSON.parse(localStorage.getItem(localKey("projects")))||[]}
+function saveProjects(d){localStorage.setItem(localKey("projects"),JSON.stringify(d))}
+function addProject(){
+let d=getProjects();
+if(!projectNameInput.value.trim()){alert(tr("fill"));return}
+d.push({project:projectNameInput.value,vessel:vesselNameInput.value,client:clientNameInput.value,team:teamNameInput.value});
+saveProjects(d);projectNameInput.value=vesselNameInput.value=clientNameInput.value=teamNameInput.value="";renderProjects();
+}
+function deleteProject(i){let d=getProjects();d.splice(i,1);saveProjects(d);renderProjects()}
+function renderProjects(){
+let d=getProjects();projectsTable.innerHTML="";
+d.forEach((x,i)=>projectsTable.innerHTML+=`<tr><td>${x.project||""}</td><td>${x.vessel||""}</td><td>${x.client||""}</td><td>${x.team||""}</td><td><button class="action" onclick="deleteProject(${i})">${tr("delete")}</button></td></tr>`);
+}
+
+function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert(tr("fill"));return}a.push({name:pName.value,surname:pSurname.value,position:pPosition.value,company:pCompany.value,email:pEmail.value,phone:pPhone.value,nationality:pNationality.value,employeeId:pEmployeeId.value,project:pProject.value,vessel:pVessel.value});saveData("personnel",a);pName.value=pSurname.value=pPosition.value=pCompany.value=pEmail.value=pPhone.value=pNationality.value=pEmployeeId.value=pProject.value=pVessel.value="";renderAll();showPersonnelTab("list")}
 function deletePersonnel(i){let a=getData("personnel");a.splice(i,1);saveData("personnel",a);renderAll()}
 function startCameraScan(){scanBox.classList.remove("hidden");confirmBox.classList.add("hidden");documentPreview.innerText="";cameraInput.click()}
 function handleDocumentUpload(e){let file=e.target.files&&e.target.files[0];if(!file)return;scanBox.classList.remove("hidden");confirmBox.classList.remove("hidden");documentPreview.innerText=ptr("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB)";autoDocNo.value=autoProvider.value=autoIssue.value=autoExpiry.value=""}
@@ -322,7 +452,35 @@ function addCertificate(){let a=getData("certs");if(!cPerson.value||!cExpiry.val
 function deleteCert(i){let a=getData("certs");a.splice(i,1);saveData("certs",a);renderAll()}
 function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(86400000));if(d<0)return{txt:tr("expired"),cls:"danger",expired:true,risk:true};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true};return{txt:tr("valid"),cls:"good",risk:false}}
 
-function renderAll(){if(!currentUser)return;let p=getData("personnel"),c=getData("certs");totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;personnelTable.innerHTML="";cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;autoPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;p.forEach((x,i)=>{let full=(x.name||"")+" "+(x.surname||"");personnelTable.innerHTML+=`<tr><td>${x.name||""}</td><td>${x.surname||""}</td><td>${x.position||""}</td><td>${x.company||""}</td><td>${x.email||""}</td><td>${x.phone||""}</td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;cPerson.innerHTML+=`<option>${full.trim()}</option>`;autoPerson.innerHTML+=`<option>${full.trim()}</option>`});certTable.innerHTML="";let e90=0,ex=0;c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});exp90.innerText=e90;expired.innerText=ex}
+function renderAll(){
+if(!currentUser)return;
+let p=getData("personnel"),c=getData("certs");
+totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;
+fillCrewFilters(p);
+let q=(crewSearch?.value||"").toLowerCase();
+let company=crewCompanyFilter?.value||"",position=crewPositionFilter?.value||"",stf=crewStatusFilter?.value||"";
+personnelTable.innerHTML="";
+cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
+autoPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
+let ready=0,review=0,blocked=0;
+p.forEach((x,i)=>{
+let full=((x.name||"")+" "+(x.surname||"")).trim();
+let st=crewComplianceStatus(full);
+if(st.key==="ready")ready++; if(st.key==="review")review++; if(st.key==="blocked")blocked++;
+let hay=[x.name,x.surname,x.position,x.company,x.email,x.phone,x.nationality,x.employeeId,x.project,x.vessel].join(" ").toLowerCase();
+if(q&&!hay.includes(q))return;
+if(company&&x.company!==company)return;
+if(position&&x.position!==position)return;
+if(stf&&st.key!==stf)return;
+personnelTable.innerHTML+=`<tr><td>${x.name||""}</td><td>${x.surname||""}</td><td>${x.position||""}</td><td>${x.company||""}</td><td>${x.email||""}</td><td>${x.phone||""}</td><td><span class="badge ${st.cls}">${st.text}</span></td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;
+cPerson.innerHTML+=`<option>${full}</option>`;autoPerson.innerHTML+=`<option>${full}</option>`;
+});
+readyCrew.innerText=ready;reviewCrew.innerText=review;blockedCrew.innerText=blocked;
+certTable.innerHTML="";let e90=0,ex=0;
+c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});
+exp90.innerText=e90;expired.innerText=ex;
+renderProjects();
+}
 
 const countries=["","Azerbaijan","Turkey","Norway","United Kingdom","United States","Canada","Germany","France","Spain","Portugal","Italy","Netherlands","Belgium","Denmark","Sweden","Finland","Poland","Romania","Bulgaria","Georgia","Kazakhstan","United Arab Emirates","Saudi Arabia","Qatar","Kuwait","Oman","Bahrain","India","Pakistan","Philippines","Indonesia","Malaysia","Singapore","China","Japan","South Korea","Australia","New Zealand","South Africa","Equatorial Guinea","Angola","Nigeria","Ghana","Egypt","Morocco","Brazil","Mexico","Argentina"];
 function fillCountries(){profileCountry.innerHTML="";countries.forEach(c=>{let o=document.createElement("option");o.value=c;o.text=c;profileCountry.appendChild(o)})}
