@@ -12,6 +12,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
 .hidden{display:none!important}
 button,input,select{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #334155}
 button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
+button:disabled{background:#64748b;cursor:not-allowed}
 .secondary{background:#475569}
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px}
 .auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
@@ -24,12 +25,13 @@ button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
 .nav button.active,.nav button:hover{background:#1e293b;color:white}
 .main{padding:22px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px}
+.card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px;margin-bottom:16px}
 .stat{font-size:38px;font-weight:900}
 .warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
 table{width:100%;border-collapse:collapse}
 th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 .action{background:#dc2626}
+.linkbtn{background:transparent;color:#93c5fd;padding:6px;text-align:left}
 @media(max-width:800px){.app{grid-template-columns:1fr}}
 </style>
 </head>
@@ -59,18 +61,36 @@ th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}
 <input id="loginEmail" type="email" placeholder="Email">
 <input id="loginPassword" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
-<button class="secondary" onclick="register()">Register</button>
-<button class="secondary" onclick="showForgot()">Forgot Password?</button>
-<p id="authMsg" class="sub"></p>
+<button class="secondary" onclick="showRegister()">Create account</button>
+<button class="linkbtn" onclick="showForgot()">Forgot password?</button>
+<p id="loginMsg" class="sub"></p>
+</div>
+
+<div id="registerBox" class="hidden">
+<h2>Create Account</h2>
+<input id="regEmail" type="email" placeholder="Email">
+<input id="regPassword" type="password" placeholder="Password">
+<input id="regPassword2" type="password" placeholder="Confirm password">
+<button onclick="register()">Register</button>
+<button class="secondary" onclick="showLogin()">Back to Login</button>
+<p id="regMsg" class="sub"></p>
 </div>
 
 <div id="forgotBox" class="hidden">
 <h2>Reset Password</h2>
-<p class="sub">Enter your email. Reset link will be sent to your inbox.</p>
+<p class="sub">Enter your email. A reset link will be sent to your inbox.</p>
 <input id="resetEmail" type="email" placeholder="Email">
-<button onclick="forgotPassword()">Send Reset Email</button>
+<button id="resetBtn" onclick="forgotPassword()">Send reset email</button>
 <button class="secondary" onclick="showLogin()">Back to Login</button>
 <p id="resetMsg" class="sub"></p>
+</div>
+
+<div id="newPasswordBox" class="hidden">
+<h2>Set New Password</h2>
+<input id="newPassword" type="password" placeholder="New password">
+<input id="newPassword2" type="password" placeholder="Confirm new password">
+<button onclick="updatePassword()">Save new password</button>
+<p id="newPassMsg" class="sub"></p>
 </div>
 
 </div>
@@ -168,16 +188,44 @@ const SUPABASE_KEY = "sb_publishable_hKYyvejgPeKvidDR7uhPsQ_b38qz1U-";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
+let countdown = 0;
+let timer = null;
 
-function localKey(name){return "atsrs_" + currentUser.id + "_" + name}
-function getData(name){return JSON.parse(localStorage.getItem(localKey(name))) || []}
-function saveData(name,data){localStorage.setItem(localKey(name),JSON.stringify(data))}
+function hideAuthBoxes(){
+ loginBox.classList.add("hidden");
+ registerBox.classList.add("hidden");
+ forgotBox.classList.add("hidden");
+ newPasswordBox.classList.add("hidden");
+}
+
+function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
+function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
+function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
+
+function startCountdown(){
+ countdown = 60;
+ resetBtn.disabled = true;
+ resetBtn.innerText = "Resend in 60s";
+
+ timer = setInterval(()=>{
+  countdown--;
+  resetBtn.innerText = "Resend in " + countdown + "s";
+  if(countdown<=0){
+   clearInterval(timer);
+   resetBtn.disabled = false;
+   resetBtn.innerText = "Send reset email again";
+  }
+ },1000);
+}
 
 async function register(){
- const email = loginEmail.value.trim();
- const password = loginPassword.value.trim();
+ const email = regEmail.value.trim();
+ const password = regPassword.value.trim();
+ const password2 = regPassword2.value.trim();
 
- if(!email || !password){authMsg.innerText="Fill email and password.";return}
+ if(!email || !password || !password2){regMsg.innerText="Fill all fields.";return}
+ if(password.length < 6){regMsg.innerText="Password must be at least 6 characters.";return}
+ if(password !== password2){regMsg.innerText="Passwords do not match.";return}
 
  const { error } = await supabaseClient.auth.signUp({
   email,
@@ -185,8 +233,8 @@ async function register(){
   options:{ emailRedirectTo:"https://avara33.github.io/atsrs-web/" }
  });
 
- if(error){authMsg.innerText=error.message;return}
- authMsg.innerText="Registration email sent. Confirm your email, then login.";
+ if(error){regMsg.innerText=error.message;return}
+ regMsg.innerText="Confirmation email sent. Check inbox/spam, then login.";
 }
 
 async function login(){
@@ -194,7 +242,7 @@ async function login(){
  const password = loginPassword.value.trim();
 
  const { data, error } = await supabaseClient.auth.signInWithPassword({email,password});
- if(error){authMsg.innerText=error.message;return}
+ if(error){loginMsg.innerText=error.message;return}
 
  currentUser = data.user;
  openApp();
@@ -209,7 +257,23 @@ async function forgotPassword(){
  });
 
  if(error){resetMsg.innerText=error.message;return}
- resetMsg.innerText="Password reset email sent.";
+ resetMsg.innerText="Reset email sent. Check inbox/spam.";
+ startCountdown();
+}
+
+async function updatePassword(){
+ const p1 = newPassword.value.trim();
+ const p2 = newPassword2.value.trim();
+
+ if(!p1 || !p2){newPassMsg.innerText="Fill both password fields.";return}
+ if(p1.length < 6){newPassMsg.innerText="Password must be at least 6 characters.";return}
+ if(p1 !== p2){newPassMsg.innerText="Passwords do not match.";return}
+
+ const { error } = await supabaseClient.auth.updateUser({password:p1});
+ if(error){newPassMsg.innerText=error.message;return}
+
+ newPassMsg.innerText="Password updated. You can login now.";
+ setTimeout(()=>{showLogin()},1500);
 }
 
 async function logout(){
@@ -217,15 +281,9 @@ async function logout(){
  location.reload();
 }
 
-function showForgot(){
- loginBox.classList.add("hidden");
- forgotBox.classList.remove("hidden");
-}
-
-function showLogin(){
- forgotBox.classList.add("hidden");
- loginBox.classList.remove("hidden");
-}
+function localKey(name){return "atsrs_" + currentUser.id + "_" + name}
+function getData(name){return JSON.parse(localStorage.getItem(localKey(name))) || []}
+function saveData(name,data){localStorage.setItem(localKey(name),JSON.stringify(data))}
 
 function openApp(){
  auth.classList.add("hidden");
@@ -334,11 +392,7 @@ function renderAll(){
 }
 
 function saveProfile(){
- const profile={
-  name:profileName.value,
-  company:profileCompany.value,
-  position:profilePosition.value
- };
+ const profile={name:profileName.value,company:profileCompany.value,position:profilePosition.value};
  localStorage.setItem(localKey("profile"),JSON.stringify(profile));
  alert("Profile saved.");
 }
@@ -349,6 +403,13 @@ function loadProfile(){
  profileCompany.value=p.company||"";
  profilePosition.value=p.position||"";
 }
+
+supabaseClient.auth.onAuthStateChange((event, session)=>{
+ if(event === "PASSWORD_RECOVERY"){
+  hideAuthBoxes();
+  newPasswordBox.classList.remove("hidden");
+ }
+});
 
 supabaseClient.auth.getSession().then(({data})=>{
  if(data.session){
