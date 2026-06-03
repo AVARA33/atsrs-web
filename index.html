@@ -143,6 +143,22 @@ body.personal-mode #navPersonnel, body.personal-mode #navCompliance, body.person
 body.company-mode .solo-personnel-card{display:block!important}
 .field-hint{font-size:12px;color:#94a3b8;margin-top:-3px;margin-bottom:6px}
 
+/* V27 Share Profile Bridge */
+.share-card{background:linear-gradient(135deg,rgba(14,165,233,.16),rgba(15,23,42,.95));border-color:#0ea5e9}
+.share-link-box{display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap}
+.share-link-box input{flex:1;min-width:220px;margin:0;background:#020617;color:#93c5fd;font-weight:800}
+.share-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
+.share-actions button{margin:0}
+.share-permissions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:10px}
+.share-permissions label{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:10px;color:#cbd5e1;font-weight:700;display:flex;gap:8px;align-items:center}
+.share-permissions input{width:auto;margin:0}
+.preview-profile{border:1px solid #334155;background:#020617;border-radius:18px;padding:16px;margin-top:14px}
+.preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid #334155;padding-bottom:12px;margin-bottom:12px}
+.preview-head h3{margin:0}.preview-head p{margin:4px 0 0;color:#94a3b8}
+.company-import-box{border:1px dashed #0ea5e9;border-radius:16px;padding:14px;background:#082f49;margin-top:12px}
+.copy-ok{color:#4ade80;font-weight:800;font-size:13px;margin-top:8px}
+@media(max-width:600px){.preview-head{display:block}.share-link-box{display:block}.share-link-box input{width:100%;margin-bottom:8px}}
+
 </style>
 </head>
 <body>
@@ -208,8 +224,8 @@ body.company-mode .solo-personnel-card{display:block!important}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V26</div>
-<div>Last Update: 03 Jun 2026 03:06 UTC</div>
+<div>ATSRS V27</div>
+<div>Last Update: 03 Jun 2026 03:18 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -280,6 +296,46 @@ body.company-mode .solo-personnel-card{display:block!important}
   <h3 id="docStatusTitle">Document Status</h3>
   <p id="docStatusSub" class="sub">Required career documents are tracked here.</p>
   <div id="docCategoryGrid" class="doc-category-grid"></div>
+</div>
+<div id="shareProfilePanel" class="panel share-card personal-only">
+  <span id="shareBadge" class="pill">SHARE PROFILE</span>
+  <h3 id="shareTitle">Share My ATSRS Profile</h3>
+  <p id="shareSub" class="sub">Send one secure profile link instead of attaching documents one by one.</p>
+  <div class="share-link-box">
+    <input id="shareProfileLink" readonly value="https://share.atsrs.com/demo/an-ag-123">
+    <button id="copyShareBtn" class="secondary" onclick="copyShareLink()">Copy Link</button>
+  </div>
+  <div class="share-actions">
+    <button id="previewShareBtn" onclick="toggleSharePreview()">Preview</button>
+    <button id="manageAccessBtn" class="secondary" onclick="toggleShareAccess()">Manage Access</button>
+  </div>
+  <div id="shareCopyMsg" class="copy-ok hidden">Link copied.</div>
+  <div id="shareAccessBox" class="share-permissions hidden">
+    <label><input type="checkbox" checked> Passport</label>
+    <label><input type="checkbox" checked> Visa</label>
+    <label><input type="checkbox" checked> Seaman Book</label>
+    <label><input type="checkbox" checked> Medical</label>
+    <label><input type="checkbox" checked> Certificates</label>
+    <label><input type="checkbox" checked> Trainings</label>
+    <label><input type="checkbox" checked> Competency</label>
+    <label><input type="checkbox" checked> References</label>
+    <label><input type="checkbox" checked> Appraisals</label>
+  </div>
+  <div id="sharePreviewBox" class="preview-profile hidden">
+    <div class="preview-head">
+      <div>
+        <h3 id="previewName">Anar Agasiyev</h3>
+        <p id="previewRole">ROV Senior Pilot Technician</p>
+      </div>
+      <span id="previewStatus" class="badge badge-ready">ATSRS Shared Profile</span>
+    </div>
+    <div id="sharePreviewDocs" class="doc-category-grid"></div>
+    <div class="company-import-box">
+      <b id="companyImportTitle">Company view</b>
+      <p id="companyImportText" class="sub">A company can review shared documents and import selected records into ATSRS Company later.</p>
+      <button id="importDemoBtn" class="secondary" onclick="alert(v27('importDemoAlert'))">Import to Company Profile</button>
+    </div>
+  </div>
 </div>
 <div id="personalDashboardPanel" class="panel hidden">
 <h3 id="myDocumentsTitle">My Documents</h3>
@@ -491,6 +547,7 @@ body.company-mode .solo-personnel-card{display:block!important}
 </div>
 <div id="accountPreferencesTab" class="account-tab">
 <select id="profileTimezone"><option value="UTC">UTC</option><option value="Europe/Baku">Europe/Baku</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select>
+<div class="setting-row"><div><b id="profileVisibilityTitle">Profile Visibility</b><div id="profileVisibilityNote" class="small-note">Private by default. Shared link only when enabled.</div></div><select id="profileVisibility"><option>Private</option><option>Link Only</option><option>Public</option></select></div>
 <div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
 <div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
 <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button></div>
@@ -1101,6 +1158,49 @@ const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();let c=g
 const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageBaseV25();applyV25Language();renderV25DocumentStatus();}
 
 
+
+/* V27 Share Profile */
+const V27_TEXT={
+ en:{shareBadge:"SHARE PROFILE",shareTitle:"Share My ATSRS Profile",shareSub:"Send one secure profile link instead of attaching documents one by one.",copyLink:"Copy Link",preview:"Preview",manageAccess:"Manage Access",linkCopied:"Link copied.",companyView:"Company view",companyImportText:"A company can review shared documents and import selected records into ATSRS Company later.",importCompany:"Import to Company Profile",importDemoAlert:"Company import will be connected after backend and permissions are ready.",profileVisibility:"Profile Visibility",profileVisibilityNote:"Private by default. Shared link only when enabled.",sharedProfile:"ATSRS Shared Profile"},
+ az:{shareBadge:"PROFİL PAYLAŞIMI",shareTitle:"ATSRS profilimi paylaş",shareSub:"Sənədləri bir-bir attach etmək əvəzinə bir təhlükəsiz profil linki göndər.",copyLink:"Linki kopyala",preview:"Ön baxış",manageAccess:"İcazələri idarə et",linkCopied:"Link kopyalandı.",companyView:"Şirkət görünüşü",companyImportText:"Şirkət paylaşılan sənədləri görə və sonra seçilənləri ATSRS Company profilinə import edə biləcək.",importCompany:"Company profilinə import et",importDemoAlert:"Company import backend və permission sistemi hazır olandan sonra qoşulacaq.",profileVisibility:"Profil görünürlüğü",profileVisibilityNote:"Default private. Link yalnız aktiv ediləndə paylaşılır.",sharedProfile:"ATSRS paylaşılan profil"},
+ ru:{shareBadge:"ПОДЕЛИТЬСЯ ПРОФИЛЕМ",shareTitle:"Поделиться ATSRS профилем",shareSub:"Отправьте одну безопасную ссылку вместо отдельных вложений.",copyLink:"Копировать ссылку",preview:"Просмотр",manageAccess:"Управление доступом",linkCopied:"Ссылка скопирована.",companyView:"Вид компании",companyImportText:"Компания сможет просмотреть документы и позже импортировать выбранные записи в ATSRS Company.",importCompany:"Импорт в профиль компании",importDemoAlert:"Импорт компании будет подключен после backend и permissions.",profileVisibility:"Видимость профиля",profileVisibilityNote:"По умолчанию private. Ссылка работает только после включения.",sharedProfile:"ATSRS общий профиль"}
+};
+function v27(k){return (V27_TEXT[lang]&&V27_TEXT[lang][k])||V27_TEXT.en[k]||k}
+function toggleSharePreview(){sharePreviewBox.classList.toggle('hidden');renderSharePreview();}
+function toggleShareAccess(){shareAccessBox.classList.toggle('hidden');}
+function copyShareLink(){
+  const val=shareProfileLink.value;
+  if(navigator.clipboard){navigator.clipboard.writeText(val).catch(()=>{});}
+  shareCopyMsg.innerText=v27('linkCopied');shareCopyMsg.classList.remove('hidden');
+  setTimeout(()=>shareCopyMsg.classList.add('hidden'),1800);
+}
+function renderSharePreview(){
+  if(typeof sharePreviewDocs==="undefined")return;
+  let c=getData("certs");
+  let have=new Set(c.map(x=>normalizeDocType(x.type)).filter(Boolean));
+  sharePreviewDocs.innerHTML=V25_REQUIRED_DOCS.map(d=>`<div class="doc-chip ${have.has(d)?'ok':'miss'}">${have.has(d)?'✓':'!'} ${d}</div>`).join("");
+  let prof=JSON.parse(localStorage.getItem(localKey("profile")))||{};
+  let full=((prof.name||"Anar")+" "+(prof.surname||"Agasiyev")).trim();
+  previewName.innerText=full;
+  previewRole.innerText=prof.position||"ROV Senior Pilot Technician";
+}
+function applyV27Language(){
+  if(typeof shareBadge!=="undefined")shareBadge.innerText=v27('shareBadge');
+  if(typeof shareTitle!=="undefined")shareTitle.innerText=v27('shareTitle');
+  if(typeof shareSub!=="undefined")shareSub.innerText=v27('shareSub');
+  if(typeof copyShareBtn!=="undefined")copyShareBtn.innerText=v27('copyLink');
+  if(typeof previewShareBtn!=="undefined")previewShareBtn.innerText=v27('preview');
+  if(typeof manageAccessBtn!=="undefined")manageAccessBtn.innerText=v27('manageAccess');
+  if(typeof companyImportTitle!=="undefined")companyImportTitle.innerText=v27('companyView');
+  if(typeof companyImportText!=="undefined")companyImportText.innerText=v27('companyImportText');
+  if(typeof importDemoBtn!=="undefined")importDemoBtn.innerText=v27('importCompany');
+  if(typeof previewStatus!=="undefined")previewStatus.innerText=v27('sharedProfile');
+  if(typeof profileVisibilityTitle!=="undefined")profileVisibilityTitle.innerText=v27('profileVisibility');
+  if(typeof profileVisibilityNote!=="undefined")profileVisibilityNote.innerText=v27('profileVisibilityNote');
+  renderSharePreview();
+}
+const renderAllBaseV27=renderAll;renderAll=function(){renderAllBaseV27();renderSharePreview();}
+
 /* V26 3-day trial text */
 const V26_TEXT={
   en:{trialTitle:"3-day free trial",trialText:"Try ATSRS for 3 days. No card required during test build.",trialNote:"Personal and Company mode included."},
@@ -1114,11 +1214,12 @@ function applyV26Language(){
   if(typeof trialNote!=="undefined")trialNote.innerText=v26('trialNote');
 }
 const applyLanguageBaseV26=applyLanguage;
-applyLanguage=function(){applyLanguageBaseV26();applyV26Language();}
+applyLanguage=function(){applyLanguageBaseV26();applyV26Language();applyV27Language();}
 
 applyLanguage();
 setUseMode(localStorage.getItem('atsrs_use_mode')||'personal');
 showCertMode('scan');
+renderSharePreview();
 </script>
 </body>
 </html>
