@@ -63,6 +63,10 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 .mode-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}
 .mode-choice button{background:#334155;border:1px solid #475569}
 .mode-choice button.active{background:#2563eb;border-color:#60a5fa}
+.mode-choice.mode-error{border:1px solid #ef4444;border-radius:14px;padding:6px;background:rgba(127,29,29,.18)}
+.mode-choice.mode-error button{border-color:#ef4444!important}
+.mode-error-text{display:none;color:#fecaca;background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:9px 11px;margin:-6px 0 12px;font-size:13px;font-weight:800}
+.mode-error-text.active{display:block}
 .personal-only-note{font-size:13px;color:#94a3b8;margin-top:6px}
 
 
@@ -159,11 +163,68 @@ body.company-mode .solo-personnel-card{display:block!important}
 .copy-ok{color:#4ade80;font-weight:800;font-size:13px;margin-top:8px}
 @media(max-width:600px){.preview-head{display:block}.share-link-box{display:block}.share-link-box input{width:100%;margin-bottom:8px}}
 
+
+/* V29 Professional landing + dashboard polish */
+.auth{align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.auth-intro{width:100%;max-width:640px;background:linear-gradient(135deg,rgba(15,23,42,.72),rgba(30,41,59,.88));border:1px solid rgba(148,163,184,.22);border-radius:26px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.auth-kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid #334155;background:#020617;border-radius:999px;color:#93c5fd;font-weight:900;font-size:12px;padding:7px 11px;margin-bottom:12px}
+.auth-intro h2{font-size:34px;line-height:1.08;margin:0 0 10px;letter-spacing:-.035em}
+.auth-intro p{color:#cbd5e1;line-height:1.55;margin:0 0 16px;font-size:15px}
+.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+.feature-tile{background:#0f172a;border:1px solid #334155;border-radius:16px;padding:13px}
+.feature-tile b{display:block;margin-bottom:4px;color:#e5e7eb}.feature-tile span{font-size:13px;color:#94a3b8;line-height:1.4}
+.doc-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.doc-strip span{border:1px solid #334155;background:#020617;border-radius:999px;padding:7px 10px;color:#cbd5e1;font-size:12px;font-weight:800}
+.auth-card{box-shadow:0 24px 70px rgba(0,0,0,.38)}
+.professional-dashboard{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:16px;margin-bottom:16px}
+.workflow-card,.snapshot-card{background:#1e293b;border:1px solid #334155;border-radius:22px;padding:18px}
+.workflow-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.workflow-step{background:#0f172a;border:1px solid #334155;border-radius:16px;padding:12px;min-height:96px}
+.workflow-step .num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#2563eb;color:#fff;font-weight:900;margin-bottom:8px}
+.workflow-step b{display:block;margin-bottom:4px}.workflow-step span{font-size:12px;color:#94a3b8;line-height:1.35}
+.snapshot-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}.snapshot-item{display:flex;justify-content:space-between;gap:10px;background:#0f172a;border:1px solid #334155;border-radius:14px;padding:11px}.snapshot-item b{font-size:13px}.snapshot-item span{font-weight:900}
+@media(max-width:980px){.auth{align-items:flex-start}.auth-intro,.auth-card{max-width:620px}.professional-dashboard{grid-template-columns:1fr}.workflow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.auth{padding:16px}.auth-intro{padding:20px}.auth-intro h2{font-size:27px}.feature-grid{grid-template-columns:1fr}.workflow-steps{grid-template-columns:1fr}}
+
+
+/* V30 animated document background for login */
+.auth{overflow:hidden}
+.auth::before{content:"";position:absolute;inset:-120px;background:radial-gradient(circle at 16% 24%,rgba(59,130,246,.22),transparent 30%),radial-gradient(circle at 84% 34%,rgba(14,165,233,.16),transparent 28%),radial-gradient(circle at 50% 86%,rgba(34,197,94,.10),transparent 30%);pointer-events:none;z-index:0}
+.auth-bg-docs{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.auth-doc-stack{position:absolute;top:50%;display:flex;flex-direction:column;gap:14px;filter:drop-shadow(0 24px 42px rgba(0,0,0,.42))}
+.auth-doc-stack.left{left:26px;transform:translateY(-50%) rotate(-5deg)}
+.auth-doc-stack.right{right:26px;transform:translateY(-50%) rotate(5deg)}
+.floating-doc{width:230px;min-height:118px;background:linear-gradient(145deg,rgba(248,250,252,.96),rgba(203,213,225,.92));color:#0f172a;border-radius:18px;padding:14px 14px 12px;border:1px solid rgba(255,255,255,.72);position:relative;overflow:hidden}
+.floating-doc::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;background:linear-gradient(90deg,#2563eb,#22c55e)}
+.floating-doc b{display:block;font-size:13px;margin:6px 0 5px;color:#0f172a}.floating-doc span{display:block;font-size:11px;color:#334155;line-height:1.35;font-weight:700}.floating-doc .doc-line{height:7px;border-radius:999px;background:rgba(51,65,85,.18);margin-top:8px}.floating-doc .doc-line.short{width:62%}.floating-doc .doc-line.mid{width:82%}
+.auth-doc-stack.left .floating-doc:nth-child(1){transform:translateX(42px) rotate(3deg)}
+.auth-doc-stack.left .floating-doc:nth-child(2){transform:translateX(4px) rotate(-2deg)}
+.auth-doc-stack.left .floating-doc:nth-child(3){transform:translateX(58px) rotate(4deg)}
+.auth-doc-stack.right .floating-doc:nth-child(1){transform:translateX(-44px) rotate(-3deg)}
+.auth-doc-stack.right .floating-doc:nth-child(2){transform:translateX(-6px) rotate(2deg)}
+.auth-doc-stack.right .floating-doc:nth-child(3){transform:translateX(-62px) rotate(-4deg)}
+.auth-intro,.auth-card,.lang-floating{position:relative;z-index:2}
+.auth-card{background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(15,23,42,.98));backdrop-filter:blur(18px)}
+@media(max-width:1180px){.auth-doc-stack{opacity:.28}.auth-doc-stack.left{left:-80px}.auth-doc-stack.right{right:-80px}}
+@media(max-width:760px){.auth-bg-docs{display:none}}
+
 </style>
 </head>
 <body>
 
 <section id="auth" class="auth">
+
+<div class="auth-bg-docs" aria-hidden="true">
+  <div class="auth-doc-stack left">
+    <div class="floating-doc"><b id="bgDocPassportTitle">Passport & Seaman Book</b><span id="bgDocPassportText">Store identity and travel documents securely.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocMedicalTitle">Medical & Certificates</b><span id="bgDocMedicalText">Track expiry dates before they become a mobilisation problem.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocTrainingTitle">Training & Competency</b><span id="bgDocTrainingText">Keep BOSIET, FOET, ROV, NDT and other proof in one place.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
+  </div>
+  <div class="auth-doc-stack right">
+    <div class="floating-doc"><b id="bgDocShareTitle">Share ATSRS Profile</b><span id="bgDocShareText">Send one controlled profile link instead of many attachments.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocAccessTitle">Access Requests</b><span id="bgDocAccessText">Companies request permission before downloading your files.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocCompanyTitle">Company Import</b><span id="bgDocCompanyText">Approved documents can move into a company compliance profile.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
+  </div>
+</div>
 <div class="lang-floating">
 <button type="button" id="langCircle" class="lang-circle" onclick="toggleLangMenu()">🇬🇧</button>
 <div id="langMenu" class="lang-menu hidden">
@@ -171,6 +232,21 @@ body.company-mode .solo-personnel-card{display:block!important}
 <button type="button" onclick="changeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
 <button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
 </div>
+</div>
+
+<div class="auth-intro">
+  <div id="introKicker" class="auth-kicker">ATSRS PLATFORM</div>
+  <h2 id="introTitle">Professional documents, expiry alerts and profile sharing — in one secure workspace.</h2>
+  <p id="introText">ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.</p>
+  <div class="feature-grid">
+    <div class="feature-tile"><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Passport, visa, medical, seaman book, certificates, trainings and more.</span></div>
+    <div class="feature-tile"><b id="featureAlertsTitle">Expiry Tracking</b><span id="featureAlertsText">90-day, 30-day and expired document visibility from the dashboard.</span></div>
+    <div class="feature-tile"><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
+    <div class="feature-tile"><b id="featureCompanyTitle">Company Compliance</b><span id="featureCompanyText">Agencies and companies can request access and import approved records.</span></div>
+  </div>
+  <div class="doc-strip">
+    <span>Passport</span><span>Medical</span><span>BOSIET / FOET</span><span>Seaman Book</span><span>Visa</span><span>Competency</span><span>References</span>
+  </div>
 </div>
 
 <div class="auth-card">
@@ -181,10 +257,11 @@ body.company-mode .solo-personnel-card{display:block!important}
 <h2 id="loginTitle"></h2>
 <input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
-<div class="mode-choice">
+<div id="modeChoiceBox" class="mode-choice">
 <button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal Use</button>
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
 </div>
+<p id="modeRule" class="mode-error-text"></p>
 <div id="trialBox" class="trial-box">
 <h3 id="trialTitle">3-day free trial</h3>
 <p id="trialText">Try ATSRS for 3 days. No card required during test build.</p>
@@ -224,8 +301,8 @@ body.company-mode .solo-personnel-card{display:block!important}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V27</div>
-<div>Last Update: 03 Jun 2026 03:18 UTC</div>
+<div>ATSRS V30</div>
+<div>Last Update: 03 Jun 2026 03:49 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -279,6 +356,31 @@ body.company-mode .solo-personnel-card{display:block!important}
     <p id="whatsappText">Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.</p>
   </div>
 </div>
+
+<div class="professional-dashboard">
+  <div class="workflow-card">
+    <span id="workflowBadge" class="pill">HOW ATSRS WORKS</span>
+    <h3 id="workflowTitle">From document upload to employer-ready profile</h3>
+    <p id="workflowSub" class="sub">A simple flow for personal users today and company compliance tomorrow.</p>
+    <div class="workflow-steps">
+      <div class="workflow-step"><div class="num">1</div><b id="step1Title">Upload</b><span id="step1Text">Add documents manually or by scan.</span></div>
+      <div class="workflow-step"><div class="num">2</div><b id="step2Title">Track</b><span id="step2Text">Monitor expiry and missing items.</span></div>
+      <div class="workflow-step"><div class="num">3</div><b id="step3Title">Share</b><span id="step3Text">Send a controlled ATSRS profile link.</span></div>
+      <div class="workflow-step"><div class="num">4</div><b id="step4Title">Approve</b><span id="step4Text">Allow companies to download or import selected documents.</span></div>
+    </div>
+  </div>
+  <div class="snapshot-card">
+    <span id="snapshotBadge" class="pill">COMPLIANCE SNAPSHOT</span>
+    <h3 id="snapshotTitle">Quick status</h3>
+    <div class="snapshot-list">
+      <div class="snapshot-item"><b id="snapValidLabel">Valid documents</b><span id="snapValid">0</span></div>
+      <div class="snapshot-item"><b id="snapRiskLabel">Expiry risk</b><span id="snapRisk" class="warning">0</span></div>
+      <div class="snapshot-item"><b id="snapMissingLabel">Missing documents</b><span id="snapMissing" class="danger">0</span></div>
+      <div class="snapshot-item"><b id="snapShareLabel">Profile sharing</b><span id="snapShare" class="good">Ready</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="grid stats-grid">
 <div class="card solo-personnel-card hidden"><p id="totalPersonnelText"></p><div class="stat" id="totalPersonnel">0</div></div>
 <div class="card"><p id="totalCertsText"></p><div class="stat" id="totalCerts">0</div></div>
@@ -740,7 +842,7 @@ document.addEventListener("click",e=>{if(!e.target.closest(".lang-floating")){la
 function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden");applyLanguage();renderAll();applyLanguage()}
 function applyLanguage(){
 document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";if(typeof appLangCircle!=="undefined")appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
-authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");loginEmailRule.innerText=emailMsg();loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");
+authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");loginEmailRule.innerText=emailMsg();loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");if(typeof modeRule!=="undefined")modeRule.innerText=modeMsg();
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regEmailRule.innerText=emailMsg();regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
 resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
 newPassTitle.innerText=tr("newPass");newPassword.placeholder=tr("newPassword");newPassword2.placeholder=tr("confirmNew");saveNewPassBtn.innerText=tr("saveNew");
@@ -781,29 +883,46 @@ function validateRegisterFields(){let p1=regPassword.value.trim(),p2=regPassword
 regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
 async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
-async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
+async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!validateUseMode())return;if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
 async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?error.message:tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
 async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?error.message:"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
 
 
-let useMode=localStorage.getItem("atsrs_use_mode")||"personal";
+let useMode="";
+function modeMsg(){
+  if(lang==="az") return "Zəhmət olmasa istifadə növünü seçin: Personal və ya Company.";
+  if(lang==="ru") return "Пожалуйста, выберите тип использования: Personal или Company.";
+  return "Please select use type: Personal or Company.";
+}
+function clearModeError(){
+  if(typeof modeChoiceBox!=="undefined") modeChoiceBox.classList.remove("mode-error");
+  if(typeof modeRule!=="undefined") modeRule.classList.remove("active");
+}
+function validateUseMode(){
+  if(useMode==="personal"||useMode==="company") return true;
+  if(typeof modeChoiceBox!=="undefined") modeChoiceBox.classList.add("mode-error");
+  if(typeof modeRule!=="undefined"){modeRule.innerText=modeMsg();modeRule.classList.add("active");}
+  return false;
+}
 function setUseMode(mode){
 useMode=mode;
 localStorage.setItem("atsrs_use_mode",mode);
+clearModeError();
 if(typeof personalModeBtn!=="undefined"){
 personalModeBtn.classList.toggle("active",mode==="personal");
 companyModeBtn.classList.toggle("active",mode==="company");
 }
 }
 function applyModeUI(){
-setUseMode(localStorage.getItem("atsrs_use_mode")||useMode||"personal");
+let saved=localStorage.getItem("atsrs_use_mode")||useMode||"personal";
+useMode=saved;
 let personal=useMode==="personal";
 if(typeof navPersonnel!=="undefined")navPersonnel.classList.toggle("hidden",personal);
 document.querySelectorAll(".solo-personnel-card").forEach(el=>el.classList.toggle("hidden",personal));
 if(typeof personalDashboardPanel!=="undefined")personalDashboardPanel.classList.toggle("hidden",!personal);
 }
 
-function localTestLogin(){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");localStorage.setItem("atsrs_use_mode",useMode);openApp()}
+function localTestLogin(){if(!validateUseMode())return;currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");localStorage.setItem("atsrs_use_mode",useMode);openApp()}
 
 function confirmLogout(){
   const msg = lang==="az" ? "Çıxış etmək istədiyinizə əminsiniz?"
@@ -1216,10 +1335,44 @@ function applyV26Language(){
 const applyLanguageBaseV26=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV26();applyV26Language();applyV27Language();}
 
+
+/* V29 professional intro + dashboard translations */
+const V29_TEXT={
+  en:{introKicker:"PROFESSIONAL CAREER COMPLIANCE",introTitle:"Professional documents, expiry alerts and profile sharing — in one secure workspace.",introText:"ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.",featureDocsTitle:"Document Vault",featureDocsText:"Passport, visa, medical, seaman book, certificates, trainings and more.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"90-day, 30-day and expired document visibility from the dashboard.",featureShareTitle:"Share Profile",featureShareText:"Send one ATSRS profile link instead of many email attachments.",featureCompanyTitle:"Company Compliance",featureCompanyText:"Agencies and companies can request access and import approved records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A simple flow for personal users today and company compliance tomorrow.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and missing items.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Valid documents",snapRiskLabel:"Expiry risk",snapMissingLabel:"Missing documents",snapShareLabel:"Profile sharing",snapShare:"Ready"},
+  az:{introKicker:"PEŞƏKAR KARYERA COMPLIANCE",introTitle:"Peşəkar sənədlər, expiry xəbərdarlıqları və profil paylaşımı — bir təhlükəsiz kabinetdə.",introText:"ATSRS offshore, marine, ROV, NDT və texniki sahə işçilərinə vacib karyera sənədlərini saxlamaq, bitmə tarixlərini izləmək və şirkət/agentliklərlə idarə olunan profil linki paylaşmaq üçün hazırlanır.",featureDocsTitle:"Sənəd kabineti",featureDocsText:"Passport, visa, medical, seaman book, sertifikatlar, training-lər və digər sənədlər.",featureAlertsTitle:"Expiry izləmə",featureAlertsText:"90 gün, 30 gün və expired sənədlər dashboard-da aydın görünür.",featureShareTitle:"Profil paylaşımı",featureShareText:"Çoxlu email attachment əvəzinə bir ATSRS profil linki göndər.",featureCompanyTitle:"Company compliance",featureCompanyText:"Agentlik və şirkətlər access request göndərib təsdiqli sənədləri import edə biləcək.",workflowBadge:"ATSRS NECƏ İŞLƏYİR",workflowTitle:"Sənəd yükləmədən employer-ready profilə qədər",workflowSub:"Bu gün personal istifadə üçün sadə flow, sabah company compliance üçün baza.",step1Title:"Yüklə",step1Text:"Sənədləri manual və ya scan ilə əlavə et.",step2Title:"İzlə",step2Text:"Expiry və missing sənədləri nəzarətdə saxla.",step3Title:"Paylaş",step3Text:"İdarə olunan ATSRS profil linki göndər.",step4Title:"Təsdiqlə",step4Text:"Şirkətə yalnız seçilmiş sənədləri görmək/yükləmək icazəsi ver.",snapshotBadge:"COMPLIANCE XÜLASƏ",snapshotTitle:"Qısa status",snapValidLabel:"Aktiv sənədlər",snapRiskLabel:"Expiry riski",snapMissingLabel:"Çatışmayan sənədlər",snapShareLabel:"Profil paylaşımı",snapShare:"Hazır"},
+  ru:{introKicker:"PROFESSIONAL CAREER COMPLIANCE",introTitle:"Профессиональные документы, expiry alerts и sharing profile — в одном защищенном кабинете.",introText:"ATSRS помогает offshore, marine, ROV, NDT и техническим специалистам хранить важные карьерные документы, отслеживать сроки и делиться контролируемой ссылкой с работодателями и агентствами.",featureDocsTitle:"Хранилище документов",featureDocsText:"Passport, visa, medical, seaman book, certificates, trainings и другие документы.",featureAlertsTitle:"Контроль сроков",featureAlertsText:"90 дней, 30 дней и expired документы видны на dashboard.",featureShareTitle:"Share Profile",featureShareText:"Одна ATSRS profile link вместо множества email attachments.",featureCompanyTitle:"Company Compliance",featureCompanyText:"Агентства и компании смогут запрашивать доступ и импортировать одобренные записи.",workflowBadge:"КАК РАБОТАЕТ ATSRS",workflowTitle:"От загрузки документа до employer-ready profile",workflowSub:"Простой flow для personal users сегодня и company compliance завтра.",step1Title:"Загрузить",step1Text:"Добавьте документы вручную или через scan.",step2Title:"Отслеживать",step2Text:"Контроль expiry и missing documents.",step3Title:"Поделиться",step3Text:"Отправьте controlled ATSRS profile link.",step4Title:"Одобрить",step4Text:"Разрешите компании download/import только выбранных документов.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Краткий статус",snapValidLabel:"Действующие документы",snapRiskLabel:"Expiry risk",snapMissingLabel:"Отсутствующие документы",snapShareLabel:"Profile sharing",snapShare:"Готово"}
+};
+function v29(k){return (V29_TEXT[lang]&&V29_TEXT[lang][k])||V29_TEXT.en[k]||k}
+function applyV29Language(){
+  ["introKicker","introTitle","introText","featureDocsTitle","featureDocsText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","workflowBadge","workflowTitle","workflowSub","step1Title","step1Text","step2Title","step2Text","step3Title","step3Text","step4Title","step4Text","snapshotBadge","snapshotTitle","snapValidLabel","snapRiskLabel","snapMissingLabel","snapShareLabel"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v29(id);});
+  if(typeof snapShare!=="undefined")snapShare.innerText=v29('snapShare');
+}
+function renderV29Snapshot(){
+  if(typeof snapValid==="undefined")return;
+  let c=getData("certs");
+  let valid=0,risk=0;
+  c.forEach(x=>{let s=status(x.expiry);if(!s.expired&&!s.risk)valid++;if(s.risk)risk++;});
+  snapValid.innerText=valid; snapRisk.innerText=risk; if(typeof snapMissing!=="undefined"&&typeof missingDocs!=="undefined")snapMissing.innerText=missingDocs.innerText||0;
+}
+const applyLanguageBaseV29=applyLanguage;applyLanguage=function(){applyLanguageBaseV29();applyV29Language();renderV29Snapshot();}
+const renderAllBaseV29=renderAll;renderAll=function(){renderAllBaseV29();renderV29Snapshot();}
+
 applyLanguage();
-setUseMode(localStorage.getItem('atsrs_use_mode')||'personal');
+useMode='';
+if(typeof personalModeBtn!=='undefined'){personalModeBtn.classList.remove('active');companyModeBtn.classList.remove('active');}
 showCertMode('scan');
 renderSharePreview();
+
+/* V30 login background document translations */
+const V30_BG_TEXT={
+  en:{bgDocPassportTitle:"Passport & Seaman Book",bgDocPassportText:"Store identity and travel documents securely.",bgDocMedicalTitle:"Medical & Certificates",bgDocMedicalText:"Track expiry dates before they become a mobilisation problem.",bgDocTrainingTitle:"Training & Competency",bgDocTrainingText:"Keep BOSIET, FOET, ROV, NDT and other proof in one place.",bgDocShareTitle:"Share ATSRS Profile",bgDocShareText:"Send one controlled profile link instead of many attachments.",bgDocAccessTitle:"Access Requests",bgDocAccessText:"Companies request permission before downloading your files.",bgDocCompanyTitle:"Company Import",bgDocCompanyText:"Approved documents can move into a company compliance profile."},
+  az:{bgDocPassportTitle:"Passport və Seaman Book",bgDocPassportText:"Şəxsiyyət və səfər sənədlərini təhlükəsiz saxla.",bgDocMedicalTitle:"Medical və Sertifikatlar",bgDocMedicalText:"Mobilizasiya problemi yaranmadan expiry tarixlərini izlə.",bgDocTrainingTitle:"Training və Competency",bgDocTrainingText:"BOSIET, FOET, ROV, NDT və digər sübutları bir yerdə saxla.",bgDocShareTitle:"ATSRS profilini paylaş",bgDocShareText:"Çoxlu attachment əvəzinə idarə olunan bir profil linki göndər.",bgDocAccessTitle:"Access request",bgDocAccessText:"Şirkətlər faylları yükləməzdən əvvəl səndən icazə istəyir.",bgDocCompanyTitle:"Company import",bgDocCompanyText:"Təsdiqlənmiş sənədlər şirkətin compliance profilinə köçürülə bilər."},
+  ru:{bgDocPassportTitle:"Passport и Seaman Book",bgDocPassportText:"Храните identity и travel documents безопасно.",bgDocMedicalTitle:"Medical и Certificates",bgDocMedicalText:"Отслеживайте expiry dates до проблем с mobilization.",bgDocTrainingTitle:"Training и Competency",bgDocTrainingText:"BOSIET, FOET, ROV, NDT и другие proof в одном месте.",bgDocShareTitle:"Share ATSRS Profile",bgDocShareText:"Одна controlled profile link вместо множества attachments.",bgDocAccessTitle:"Access Requests",bgDocAccessText:"Компании запрашивают permission перед download файлов.",bgDocCompanyTitle:"Company Import",bgDocCompanyText:"Approved documents могут перейти в company compliance profile."}
+};
+function v30bg(k){return (V30_BG_TEXT[lang]&&V30_BG_TEXT[lang][k])||V30_BG_TEXT.en[k]||k}
+function applyV30BgLanguage(){["bgDocPassportTitle","bgDocPassportText","bgDocMedicalTitle","bgDocMedicalText","bgDocTrainingTitle","bgDocTrainingText","bgDocShareTitle","bgDocShareText","bgDocAccessTitle","bgDocAccessText","bgDocCompanyTitle","bgDocCompanyText"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v30bg(id);});}
+const applyLanguageBaseV30=applyLanguage;applyLanguage=function(){applyLanguageBaseV30();applyV30BgLanguage();}
+
 </script>
 </body>
 </html>
