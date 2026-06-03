@@ -292,7 +292,9 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 #forgotBtn:hover{color:#38bdf8!important;text-decoration:underline!important}
 #navIntro{order:-2}
 .intro-service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px}
-.intro-service-card{background:#162033;border:1px solid #2a3d5a;border-radius:18px;padding:16px;min-height:130px}
+.intro-service-card{background:#162033;border:1px solid #2a3d5a;border-radius:18px;padding:16px;min-height:130px;cursor:pointer;transition:.18s ease}
+.intro-service-card:hover{border-color:#38bdf8;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.20)}
+.intro-service-card.active{border-color:#22c55e;background:linear-gradient(135deg,rgba(34,197,94,.14),rgba(22,32,51,.96));box-shadow:0 0 0 1px rgba(34,197,94,.20),0 16px 36px rgba(0,0,0,.24)}
 .intro-service-card .svc-icon{font-size:24px;margin-bottom:8px;color:#22c55e}
 .intro-service-card h3{margin:0 0 8px;font-size:17px}
 .intro-service-card p{margin:0;color:#b6c2d2;line-height:1.45;font-size:14px}
@@ -390,8 +392,8 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V38</div>
-<div>Last Update: 03 Jun 2026 05:20 UTC</div>
+<div>ATSRS V39</div>
+<div>Last Update: 03 Jun 2026 05:35 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -437,12 +439,12 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 <p id="introMainText">ATSRS helps offshore, marine, ROV, NDT and technical personnel store career documents, track expiry dates, share controlled profile links and support company compliance workflows.</p>
 </div>
 <div class="intro-service-grid">
-  <div class="intro-service-card"><div class="svc-icon">📁</div><h3 id="introSvc1Title">Document Vault</h3><p id="introSvc1Text">Store passport, visa, medical, seaman book, certificates, trainings, competency, references and appraisals in one place.</p></div>
-  <div class="intro-service-card"><div class="svc-icon">⬆️</div><h3 id="introSvc2Title">Easy Upload</h3><p id="introSvc2Text">Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.</p></div>
-  <div class="intro-service-card"><div class="svc-icon">📷</div><h3 id="introSvc3Title">Scan & Auto-fill</h3><p id="introSvc3Text">Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.</p></div>
-  <div class="intro-service-card"><div class="svc-icon">⏱️</div><h3 id="introSvc4Title">Expiry Tracking</h3><p id="introSvc4Text">See valid, expiring, expired and missing documents from a clear dashboard.</p></div>
-  <div class="intro-service-card"><div class="svc-icon">🔗</div><h3 id="introSvc5Title">Share Profile</h3><p id="introSvc5Text">Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.</p></div>
-  <div class="intro-service-card"><div class="svc-icon">🏢</div><h3 id="introSvc6Title">Company Compliance</h3><p id="introSvc6Text">Companies can request access, review approved documents and import candidate records into their compliance profile.</p></div>
+  <div class="intro-service-card active" data-intro="svc1" onclick="setIntroDetail('svc1')"><div class="svc-icon">📁</div><h3 id="introSvc1Title">Document Vault</h3><p id="introSvc1Text">Store passport, visa, medical, seaman book, certificates, trainings, competency, references and appraisals in one place.</p></div>
+  <div class="intro-service-card" data-intro="svc2" onclick="setIntroDetail('svc2')"><div class="svc-icon">⬆️</div><h3 id="introSvc2Title">Easy Upload</h3><p id="introSvc2Text">Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.</p></div>
+  <div class="intro-service-card" data-intro="svc3" onclick="setIntroDetail('svc3')"><div class="svc-icon">📷</div><h3 id="introSvc3Title">Scan & Auto-fill</h3><p id="introSvc3Text">Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.</p></div>
+  <div class="intro-service-card" data-intro="svc4" onclick="setIntroDetail('svc4')"><div class="svc-icon">⏱️</div><h3 id="introSvc4Title">Expiry Tracking</h3><p id="introSvc4Text">See valid, expiring, expired and missing documents from a clear dashboard.</p></div>
+  <div class="intro-service-card" data-intro="svc5" onclick="setIntroDetail('svc5')"><div class="svc-icon">🔗</div><h3 id="introSvc5Title">Share Profile</h3><p id="introSvc5Text">Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.</p></div>
+  <div class="intro-service-card" data-intro="svc6" onclick="setIntroDetail('svc6')"><div class="svc-icon">🏢</div><h3 id="introSvc6Title">Company Compliance</h3><p id="introSvc6Text">Companies can request access, review approved documents and import candidate records into their compliance profile.</p></div>
 </div>
 </section>
 
@@ -944,12 +946,51 @@ en:{introNav:"ATSRS Platform",introMainTitle:"Professional document, expiry and 
 az:{introNav:"ATSRS Platforması",introMainTitle:"Peşəkar sənəd, bitmə tarixi və profil paylaşım platforması",introMainText:"ATSRS offshore, marine, ROV, NDT və texniki sahə işçilərinə karyera sənədlərini saxlamaq, bitmə tarixlərini izləmək, idarə olunan profil linki paylaşmaq və şirkət uyğunluq proseslərini dəstəkləmək üçün kömək edir.",svc1Title:"Sənəd arxivi",svc1Text:"Passport, visa, medical, seaman book, sertifikatlar, təlimlər, competency, reference və appraisal sənədlərini bir yerdə saxla.",svc2Title:"Asan yükləmə",svc2Text:"PDF, JPG və ya PNG faylları yüklə və onları bitmə tarixləri və sənəd statusu ilə əlaqələndir.",svc3Title:"Skan və auto-fill",svc3Text:"Sənədi skan et; OCR qoşulanda ATSRS xanaları manual təsdiq üçün hazırlayacaq.",svc4Title:"Bitmə tarixlərinə nəzarət",svc4Text:"Aktiv, bitməyə yaxın, vaxtı keçmiş və çatışmayan sənədləri aydın dashboard-da gör.",svc5Title:"Profil paylaşımı",svc5Text:"Çoxlu attachment əvəzinə employer, agency və client-lərlə idarə olunan bir ATSRS profil linki paylaş.",svc6Title:"Şirkət uyğunluğu",svc6Text:"Şirkətlər access request göndərə, təsdiqlənmiş sənədlərə baxa və namizəd məlumatlarını compliance profilinə import edə bilər.",compliance:"Uyğunluq"},
 ru:{introNav:"Платформа ATSRS",introMainTitle:"Платформа для документов, сроков действия и профиля",introMainText:"ATSRS помогает offshore, marine, ROV, NDT и техническим специалистам хранить карьерные документы, отслеживать сроки действия, делиться контролируемой ссылкой профиля и поддерживать процессы compliance в компаниях.",svc1Title:"Хранилище документов",svc1Text:"Храните паспорт, визы, medical, seaman book, сертификаты, тренинги, competency, references и appraisals в одном месте.",svc2Title:"Простая загрузка",svc2Text:"Загружайте PDF, JPG или PNG и связывайте файлы со сроками действия и статусом документа.",svc3Title:"Скан и автозаполнение",svc3Text:"Сканируйте документы; после подключения OCR ATSRS подготовит поля для ручного подтверждения.",svc4Title:"Контроль сроков",svc4Text:"Видите valid, expiring, expired и missing documents на понятной панели.",svc5Title:"Профиль для отправки",svc5Text:"Отправляйте работодателям, агентствам и клиентам одну контролируемую ссылку ATSRS вместо множества attachment-файлов.",svc6Title:"Compliance для компаний",svc6Text:"Компании могут запрашивать доступ, проверять подтвержденные документы и импортировать кандидата в свой compliance-профиль.",compliance:"Соответствие"}
 };
+
+const INTRO_DETAIL={
+ en:{
+  svc1:{title:"Document Vault",text:"Keep passport, visa, medical, seaman book, certificates, trainings, competency, references, appraisals and CV files in one secure workspace. Documents remain private until you decide to share them."},
+  svc2:{title:"Easy Upload",text:"Upload PDF, JPG or PNG documents directly into ATSRS. Each file can be linked to document type, expiry date, status and future employer access rules."},
+  svc3:{title:"Scan & Auto-fill",text:"Use camera scan to capture documents. When OCR is connected, ATSRS will prepare fields automatically, while the user still confirms details before saving."},
+  svc4:{title:"Expiry Tracking",text:"Track valid, expiring, expired and missing documents from a clear dashboard. ATSRS is designed to highlight risks before they become mobilisation problems."},
+  svc5:{title:"Share Profile",text:"Create one controlled ATSRS profile link for employers, agencies and clients. Instead of sending many email attachments, you can share a professional profile and approve access when needed."},
+  svc6:{title:"Company Compliance",text:"Companies can request access, review approved documents and import candidate records into their own compliance profile. This supports faster checks and cleaner crew documentation workflows."}
+ },
+ az:{
+  svc1:{title:"Sənəd arxivi",text:"Passport, visa, medical, seaman book, sertifikatlar, təlimlər, competency, reference, appraisal və CV fayllarını bir təhlükəsiz iş sahəsində saxla. Sənədlər yalnız sən icazə verəndə paylaşılır."},
+  svc2:{title:"Asan yükləmə",text:"PDF, JPG və ya PNG sənədləri birbaşa ATSRS-ə yüklə. Hər fayl sənəd tipi, bitmə tarixi, status və gələcək işəgötürən icazələri ilə əlaqələndirilə bilər."},
+  svc3:{title:"Skan və auto-fill",text:"Sənədləri kamera ilə skan et. OCR qoşulanda ATSRS məlumat xanalarını avtomatik hazırlayacaq, amma saxlamadan əvvəl istifadəçi məlumatı təsdiqləyəcək."},
+  svc4:{title:"Bitmə tarixlərinə nəzarət",text:"Aktiv, bitməyə yaxın, vaxtı keçmiş və çatışmayan sənədləri aydın dashboard-dan izlə. ATSRS riskləri mobilizasiya problemindən əvvəl göstərmək üçün qurulur."},
+  svc5:{title:"Profil paylaşımı",text:"Employer, agency və client-lər üçün idarə olunan bir ATSRS profil linki yarat. Çoxlu email attachment əvəzinə peşəkar profil paylaşılır və giriş icazəsi sənin nəzarətində qalır."},
+  svc6:{title:"Şirkət uyğunluğu",text:"Şirkətlər giriş icazəsi istəyə, təsdiqlənmiş sənədlərə baxa və namizəd məlumatlarını öz compliance profilinə import edə bilər. Bu yoxlamanı sürətləndirir və crew sənəd işini səliqəyə salır."}
+ },
+ ru:{
+  svc1:{title:"Хранилище документов",text:"Храните паспорт, визы, medical, seaman book, сертификаты, тренинги, competency, references, appraisals и CV в одном защищенном рабочем пространстве. Документы остаются приватными, пока вы не дадите доступ."},
+  svc2:{title:"Простая загрузка",text:"Загружайте PDF, JPG или PNG документы прямо в ATSRS. Каждый файл можно связать с типом документа, сроком действия, статусом и будущими правами доступа для работодателей."},
+  svc3:{title:"Скан и автозаполнение",text:"Сканируйте документы камерой. После подключения OCR ATSRS будет автоматически подготавливать поля, но пользователь всё равно подтверждает данные перед сохранением."},
+  svc4:{title:"Контроль сроков",text:"Отслеживайте действующие, истекающие, просроченные и отсутствующие документы на понятной панели. ATSRS помогает увидеть риски до того, как они станут проблемой мобилизации."},
+  svc5:{title:"Профиль для отправки",text:"Создайте одну контролируемую ссылку ATSRS для работодателей, агентств и клиентов. Вместо множества email-вложений можно отправить профессиональный профиль и подтверждать доступ при необходимости."},
+  svc6:{title:"Compliance для компаний",text:"Компании могут запрашивать доступ, проверять одобренные документы и импортировать данные кандидата в свой compliance-профиль. Это ускоряет проверку и упрощает работу с документами экипажа."}
+ }
+};
+let currentIntroKey='svc1';
+function setIntroDetail(key, updateActive=true){
+ currentIntroKey=key||'svc1';
+ const d=(INTRO_DETAIL[lang]&&INTRO_DETAIL[lang][currentIntroKey])||INTRO_DETAIL.en[currentIntroKey]||INTRO_DETAIL.en.svc1;
+ const title=document.getElementById('introMainTitle'); if(title) title.innerText=d.title;
+ const text=document.getElementById('introMainText'); if(text) text.innerText=d.text;
+ if(updateActive){
+  document.querySelectorAll('.intro-service-card').forEach(card=>card.classList.toggle('active',card.dataset.intro===currentIntroKey));
+ }
+}
+
 function itx(k){return (INTRO_TX[lang]&&INTRO_TX[lang][k])||INTRO_TX.en[k]||k}
 function applyIntroLanguage(){
- const map={navIntro:'introNav',introMainTitle:'introMainTitle',introMainText:'introMainText',introSvc1Title:'svc1Title',introSvc1Text:'svc1Text',introSvc2Title:'svc2Title',introSvc2Text:'svc2Text',introSvc3Title:'svc3Title',introSvc3Text:'svc3Text',introSvc4Title:'svc4Title',introSvc4Text:'svc4Text',introSvc5Title:'svc5Title',introSvc5Text:'svc5Text',introSvc6Title:'svc6Title',introSvc6Text:'svc6Text'};
+ const map={navIntro:'introNav',introSvc1Title:'svc1Title',introSvc1Text:'svc1Text',introSvc2Title:'svc2Title',introSvc2Text:'svc2Text',introSvc3Title:'svc3Title',introSvc3Text:'svc3Text',introSvc4Title:'svc4Title',introSvc4Text:'svc4Text',introSvc5Title:'svc5Title',introSvc5Text:'svc5Text',introSvc6Title:'svc6Title',introSvc6Text:'svc6Text'};
  Object.entries(map).forEach(([id,key])=>{let el=document.getElementById(id); if(el)el.innerText=itx(key);});
  const c1=document.getElementById('compliancePageTitle'); if(c1) c1.innerText=itx('compliance');
  const c2=document.getElementById('complianceOverviewTitle'); if(c2) c2.innerText=itx('compliance');
+ setIntroDetail(currentIntroKey||'svc1',false);
 }
 
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim())}
@@ -1055,9 +1096,9 @@ function confirmLogout(){
 
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
-function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();restoreCurrentPage();applyLanguage()}
+function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();showPage('intro',navIntro);setIntroDetail('svc1');applyLanguage()}
 function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
-function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"dashboard";let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"dashboard",map[page]||navDashboard)}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
 function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
@@ -1625,4 +1666,4 @@ applyV36LoginLanguage();
 
 </script>
 </body>
-  </html>
+</html>
