@@ -120,6 +120,13 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 .required-missing{border:2px solid #ef4444!important;background:#2a1111!important}
 
 
+/* V26 Trial access block */
+.trial-box{margin:12px 0 14px;padding:12px 14px;border:1px solid #2563eb;background:linear-gradient(135deg,rgba(37,99,235,.20),rgba(15,23,42,.92));border-radius:16px}
+.trial-box h3{margin:0 0 4px;font-size:16px;color:#e0f2fe}
+.trial-box p{margin:0;color:#cbd5e1;font-size:13px;line-height:1.4}
+.trial-row{display:flex;align-items:center;gap:8px;margin-top:8px;color:#93c5fd;font-size:12px;font-weight:800}
+.trial-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 0 4px rgba(34,197,94,.12)}
+
 /* V25 Career Compliance Manager */
 .mode-badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#0f172a;border:1px solid #334155;color:#93c5fd;font-size:12px;font-weight:800;margin-bottom:8px}
 .missing{color:#fb7185}
@@ -162,6 +169,11 @@ body.company-mode .solo-personnel-card{display:block!important}
 <button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal Use</button>
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
 </div>
+<div id="trialBox" class="trial-box">
+<h3 id="trialTitle">3-day free trial</h3>
+<p id="trialText">Try ATSRS for 3 days. No card required during test build.</p>
+<div class="trial-row"><span class="trial-dot"></span><span id="trialNote">Personal and Company mode included.</span></div>
+</div>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
@@ -196,8 +208,8 @@ body.company-mode .solo-personnel-card{display:block!important}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V25</div>
-<div>Last Update: 03 Jun 2026 02:58 UTC</div>
+<div>ATSRS V26</div>
+<div>Last Update: 03 Jun 2026 03:06 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1088,9 +1100,25 @@ const setUseModeBaseV25=setUseMode;setUseMode=function(mode){setUseModeBaseV25(m
 const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();let c=getData("certs");if(typeof missingDocs!=="undefined")missingDocs.innerText=missingDocCountForCerts(c);renderV25DocumentStatus();}
 const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageBaseV25();applyV25Language();renderV25DocumentStatus();}
 
+
+/* V26 3-day trial text */
+const V26_TEXT={
+  en:{trialTitle:"3-day free trial",trialText:"Try ATSRS for 3 days. No card required during test build.",trialNote:"Personal and Company mode included."},
+  az:{trialTitle:"3 günlük pulsuz trial",trialText:"ATSRS-i 3 gün test et. Test build-də kart tələb olunmur.",trialNote:"Personal və Company mode daxildir."},
+  ru:{trialTitle:"3-дневный бесплатный trial",trialText:"Попробуйте ATSRS 3 дня. В test build карта не требуется.",trialNote:"Personal и Company mode включены."}
+};
+function v26(k){return (V26_TEXT[lang]&&V26_TEXT[lang][k])||V26_TEXT.en[k]||k}
+function applyV26Language(){
+  if(typeof trialTitle!=="undefined")trialTitle.innerText=v26('trialTitle');
+  if(typeof trialText!=="undefined")trialText.innerText=v26('trialText');
+  if(typeof trialNote!=="undefined")trialNote.innerText=v26('trialNote');
+}
+const applyLanguageBaseV26=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV26();applyV26Language();}
+
 applyLanguage();
 setUseMode(localStorage.getItem('atsrs_use_mode')||'personal');
 showCertMode('scan');
 </script>
 </body>
-                                                             </html>
+</html>
