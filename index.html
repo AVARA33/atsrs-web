@@ -77,6 +77,31 @@ html[dir="rtl"] @media(max-width:800px){
 .top-logout{width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important}
 @media(max-width:800px){.top-actions{position:absolute;top:18px;right:18px}}
 
+
+/* V20 Solo Operator UX refresh */
+body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617 100%)}
+.app{grid-template-columns:232px 1fr}
+.sidebar{background:rgba(2,6,23,.92);backdrop-filter:blur(14px);padding:20px 16px}
+.brand{letter-spacing:.5px}.nav{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.nav button{border:1px solid transparent;border-radius:14px;padding:12px 14px;margin:0;font-size:15px}
+.nav button.active{background:linear-gradient(135deg,#1d4ed8,#2563eb);border-color:#60a5fa;box-shadow:0 12px 28px rgba(37,99,235,.22)}
+.nav button:hover{border-color:#334155}
+.main{max-width:1180px;width:100%;padding-top:88px}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+#pageTitle{margin:0 0 14px;font-size:28px;letter-spacing:-.02em}
+.solo-hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.9fr);gap:16px;align-items:stretch}
+.hero-card{background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(15,23,42,.96));border:1px solid #334155;border-radius:24px;padding:22px;box-shadow:0 18px 45px rgba(0,0,0,.24)}
+.hero-card h3{margin:0 0 8px;font-size:24px}.hero-card p{margin:0;color:#cbd5e1;line-height:1.5}
+.quick-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}.quick-actions button{margin:0}
+.mini-panel{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:18px}
+.mini-panel h3{margin:0 0 8px}.mini-panel p{color:#94a3b8;line-height:1.45}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #334155;background:#111827;border-radius:999px;padding:6px 10px;font-size:12px;color:#cbd5e1;font-weight:800}
+.grid.stats-grid{grid-template-columns:repeat(5,minmax(150px,1fr));gap:12px}.stats-grid .card{margin-bottom:0;border-radius:20px;position:relative;overflow:hidden}.stats-grid .card p{margin:0 0 8px;color:#cbd5e1;font-size:13px}.stats-grid .card .stat{font-size:34px}
+.risk-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.risk-item{display:flex;justify-content:space-between;gap:10px;border:1px solid #334155;border-radius:14px;padding:10px;background:#0f172a}.risk-item b{font-size:14px}.risk-item span{font-size:12px;color:#94a3b8}.risk-item .danger{font-weight:900}.upload-simple{border:1px dashed #64748b;background:#0b1220;border-radius:20px;padding:16px;margin-bottom:16px}.upload-simple h3{margin:0 0 6px}.upload-simple p{margin:0 0 12px;color:#94a3b8}.upload-simple .document-actions{margin-top:8px}
+.whatsapp-note{border-left:4px solid #22c55e}
+@media(max-width:1000px){.solo-hero{grid-template-columns:1fr}.grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.app{grid-template-columns:1fr}.sidebar{padding-right:110px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.main{padding-top:86px}.top-actions{position:absolute}.grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.grid.stats-grid{grid-template-columns:1fr}.quick-actions{grid-template-columns:1fr}.top-logout{padding:10px!important}.lang-circle{width:44px;height:44px}}
+
 </style>
 </head>
 <body>
@@ -137,8 +162,8 @@ html[dir="rtl"] @media(max-width:800px){
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V19</div>
-<div>Last Update: 03 Jun 2026 04:35 UTC</div>
+<div>ATSRS V20</div>
+<div>Last Update: 03 Jun 2026 01:39 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -173,12 +198,34 @@ html[dir="rtl"] @media(max-width:800px){
 <h2 id="pageTitle"></h2>
 
 <section id="dashboardPage">
-<div class="grid">
+<div class="solo-hero panel">
+  <div class="hero-card">
+    <span id="soloBadge" class="pill">SOLO CONTROL</span>
+    <h3 id="soloHeroTitle">Your certificate control center</h3>
+    <p id="soloHeroText">Add personnel, upload documents and track expiry risk from one clean dashboard.</p>
+    <div class="quick-actions">
+      <button id="quickAddPersonBtn" onclick="showPage('personnel',navPersonnel);showPersonnelTab('add')">Add Person</button>
+      <button id="quickUploadBtn" class="secondary" onclick="showPage('certificates',navCertificates);documentFile.click()">Upload File</button>
+      <button id="quickManualBtn" class="secondary" onclick="showPage('certificates',navCertificates)">Manual Entry</button>
+    </div>
+  </div>
+  <div class="mini-panel whatsapp-note">
+    <span id="whatsappBadge" class="pill">WHATSAPP READY</span>
+    <h3 id="whatsappTitle">WhatsApp alerts</h3>
+    <p id="whatsappText">Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.</p>
+  </div>
+</div>
+<div class="grid stats-grid">
 <div class="card"><p id="totalPersonnelText"></p><div class="stat" id="totalPersonnel">0</div></div>
 <div class="card"><p id="totalCertsText"></p><div class="stat" id="totalCerts">0</div></div>
 <div class="card"><p id="exp90Text"></p><div class="stat warning" id="exp90">0</div></div>
 <div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
+</div>
+<div class="panel">
+  <h3 id="riskTitle">Priority alerts</h3>
+  <p id="riskSub" class="sub">Documents closest to expiry will appear here.</p>
+  <div id="riskList" class="risk-list"></div>
 </div>
 <div id="personalDashboardPanel" class="panel hidden">
 <h3 id="myDocumentsTitle">My Documents</h3>
@@ -258,6 +305,14 @@ html[dir="rtl"] @media(max-width:800px){
 </section>
 
 <section id="certificatesPage" class="hidden">
+<div class="upload-simple">
+<h3 id="simpleUploadTitle">Simple document upload</h3>
+<p id="simpleUploadText">Upload the file, review the fields manually, then save. No hidden OCR magic yet.</p>
+<div class="document-actions">
+<button id="simpleUploadBtn" class="secondary" onclick="documentFile.click()">Upload File</button>
+<button id="simpleCameraBtn" class="secondary" onclick="startCameraScan()">Camera Scan</button>
+</div>
+</div>
 <div class="panel">
 <h3 id="addDocTitle"></h3>
 <div class="document-actions">
@@ -493,6 +548,16 @@ const LANG_FLAGS={en:"🇬🇧",az:"🇦🇿",ru:"🇷🇺"};
 const EMAIL_MSG={en:"Enter a valid email address.",az:"Düzgün email ünvanı yaz."};
 function tr(k){return (T[lang]&&T[lang][k])||T.en[k]||k}
 function ptr(k){return (UI[lang]&&UI[lang][k])||UI.en[k]||k}
+const SOLO_TX={
+en:{soloBadge:"SOLO MODE",soloHeroTitle:"Your certificate control center",soloHeroText:"Add personnel, upload documents and track expiry risk from one clean dashboard.",quickAddPerson:"Add Person",quickUpload:"Upload File",quickManual:"Manual Entry",whatsappBadge:"WHATSAPP READY",whatsappTitle:"WhatsApp alerts",whatsappText:"Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.",riskTitle:"Priority alerts",riskSub:"Documents closest to expiry will appear here.",noRisk:"No urgent expiry risk detected.",simpleUploadTitle:"Simple document upload",simpleUploadText:"Upload the file, review the fields manually, then save. No hidden OCR magic yet.",cameraScan:"Camera Scan"},
+az:{soloBadge:"SOLO REJİM",soloHeroTitle:"Sertifikat nəzarət mərkəzi",soloHeroText:"Heyət əlavə et, sənəd yüklə və bitmə risklərini bir aydın dashboard-dan izlə.",quickAddPerson:"Şəxs əlavə et",quickUpload:"Fayl yüklə",quickManual:"Manual giriş",whatsappBadge:"WHATSAPP HAZIR",whatsappTitle:"WhatsApp xəbərdarlıqları",whatsappText:"Frontend yalnız ayarları göstərəcək. Real xəbərdarlıqlar backend scheduled jobs və təsdiqli WhatsApp template-lərlə işləməlidir.",riskTitle:"Prioritet xəbərdarlıqlar",riskSub:"Bitmə tarixi ən yaxın sənədlər burada görünəcək.",noRisk:"Təcili bitmə riski tapılmadı.",simpleUploadTitle:"Sadə sənəd yükləmə",simpleUploadText:"Faylı yüklə, xanaları manual yoxla, sonra saxla. Hələ gizli OCR magiyası yoxdur.",cameraScan:"Kamera scan"},
+ru:{soloBadge:"SOLO РЕЖИМ",soloHeroTitle:"Центр контроля сертификатов",soloHeroText:"Добавляйте персонал, загружайте документы и отслеживайте риски с одной понятной панели.",quickAddPerson:"Добавить человека",quickUpload:"Загрузить файл",quickManual:"Ручной ввод",whatsappBadge:"WHATSAPP ГОТОВ",whatsappTitle:"WhatsApp уведомления",whatsappText:"Frontend только покажет настройки. Реальные уведомления должны работать через backend scheduled jobs и одобренные WhatsApp templates.",riskTitle:"Приоритетные уведомления",riskSub:"Документы с ближайшим сроком истечения появятся здесь.",noRisk:"Срочных рисков истечения не найдено.",simpleUploadTitle:"Простая загрузка документа",simpleUploadText:"Загрузите файл, проверьте поля вручную и сохраните. Без нестабильной OCR-магии пока.",cameraScan:"Скан камерой"}
+};
+function sx(k){return (SOLO_TX[lang]&&SOLO_TX[lang][k])||SOLO_TX.en[k]||k}
+function applySoloLanguage(){
+  const ids={soloBadge:'soloBadge',soloHeroTitle:'soloHeroTitle',soloHeroText:'soloHeroText',quickAddPersonBtn:'quickAddPerson',quickUploadBtn:'quickUpload',quickManualBtn:'quickManual',whatsappBadge:'whatsappBadge',whatsappTitle:'whatsappTitle',whatsappText:'whatsappText',riskTitle:'riskTitle',riskSub:'riskSub',simpleUploadTitle:'simpleUploadTitle',simpleUploadText:'simpleUploadText',simpleUploadBtn:'quickUpload',simpleCameraBtn:'cameraScan'};
+  Object.entries(ids).forEach(([id,key])=>{let el=document.getElementById(id);if(el)el.innerText=sx(key);});
+}
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim())}
 function emailMsg(){return EMAIL_MSG[lang]||EMAIL_MSG.en}
 function markEmail(input,rule){if(!validEmail(input.value)){input.classList.add("input-error");rule.innerText=emailMsg();rule.classList.remove("hidden");return false}input.classList.remove("input-error");input.classList.add("input-ok");rule.classList.add("hidden");return true}
@@ -532,6 +597,7 @@ accountTitle.innerText=ptr("account");accountTabGeneralBtn.innerText=ptr("genera
 profileAltEmail.placeholder=ptr("recoveryEmail");primaryEmailTitle.innerText=ptr("primaryEmail");primaryEmailNote.innerText=ptr("primaryEmailNote");primaryEmailBtn.innerText=ptr("change");changePasswordTitle.innerText=ptr("password");changePasswordNote.innerText=ptr("passwordNote");changePasswordBtn.innerText=ptr("change");twofaTitle.innerText=ptr("twofa");twofaNote.innerText=ptr("twofaNote");setup2faBtn.innerText=ptr("setup");sessionsTitle.innerText=ptr("sessions");sessionsNote.innerText=ptr("sessionsNote");viewSessionsBtn.innerText=ptr("view");
 notifyTitle.innerText=ptr("notifications");notifyNote.innerText=ptr("notificationsNote");manageNotifyBtn.innerText=ptr("manage");exportDataTitle.innerText=ptr("exportData");exportDataNote.innerText=ptr("exportDataNote");exportDataBtn.innerText=ptr("export");deleteAccountTitle.innerText=ptr("deleteAccount");deleteAccountNote.innerText=ptr("deleteAccountNote");deleteAccountBtn.innerText=tr("delete");
 if(currentUser){let active=document.querySelector(".nav button.active");pageTitle.innerText=active?active.innerText:tr("dashboard")}
+applySoloLanguage();
 }
 
 function hideAuthBoxes(){loginBox.classList.add("hidden");registerBox.classList.add("hidden");forgotBox.classList.add("hidden");newPasswordBox.classList.add("hidden")}
@@ -724,6 +790,14 @@ function addCertificate(){let a=getData("certs");if(!cPerson.value||!cExpiry.val
 function deleteCert(i){let a=getData("certs");a.splice(i,1);saveData("certs",a);renderAll()}
 function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(86400000));if(d<0)return{txt:tr("expired"),cls:"danger",expired:true,risk:true,days:d};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true,days:d};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true,days:d};return{txt:tr("valid"),cls:"good",risk:false,days:d}}
 
+
+function renderRiskList(certs){
+  if(typeof riskList==="undefined"||!riskList)return;
+  let items=certs.map(x=>({x,s:status(x.expiry)})).filter(o=>o.s.expired||o.s.days<=90).sort((a,b)=>a.s.days-b.s.days).slice(0,5);
+  if(!items.length){riskList.innerHTML=`<div class="risk-item"><b>${sx("noRisk")}</b><span>OK</span></div>`;return;}
+  riskList.innerHTML=items.map(o=>`<div class="risk-item"><div><b>${o.x.person||"-"}</b><br><span>${o.x.type||""} • ${o.x.expiry||""}</span></div><div class="${o.s.expired?'danger':o.s.cls}">${o.s.txt}</div></div>`).join("");
+}
+
 function renderAll(){
 if(!currentUser)return;
 let p=getData("personnel"),c=getData("certs");
@@ -751,6 +825,7 @@ readyCrew.innerText=ready;reviewCrew.innerText=review;blockedCrew.innerText=bloc
 certTable.innerHTML="";let e90=0,e30=0,ex=0;
 c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(!s.expired&&s.days<=30)e30++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});
 exp90.innerText=e90;if(typeof exp30!=="undefined")exp30.innerText=e30;expired.innerText=ex;
+renderRiskList(c);
 renderProjects();
 }
 
