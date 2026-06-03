@@ -229,6 +229,63 @@ body.company-mode .solo-personnel-card{display:block!important}
 @media(max-width:1180px){.auth-doc-stack.left{left:-64px!important;opacity:.52!important}.floating-doc{width:190px!important}.auth-intro{max-width:610px!important}}
 @media(max-width:760px){.auth-bg-docs{display:none!important}.auth-card{padding-top:72px!important}}
 
+
+
+/* V37 Professional emerald/navy palette + line icons */
+:root{
+  --atsrs-bg:#07111d;
+  --atsrs-bg2:#0b1f2a;
+  --atsrs-panel:#111c2d;
+  --atsrs-panel2:#142235;
+  --atsrs-border:#264058;
+  --atsrs-text:#f3f7fb;
+  --atsrs-muted:#a7b5c5;
+  --atsrs-green:#22c55e;
+  --atsrs-green-soft:#86efac;
+  --atsrs-cyan:#38bdf8;
+  --atsrs-blue:#2563eb;
+  --atsrs-warning:#f59e0b;
+  --atsrs-danger:#ef4444;
+}
+body{background:radial-gradient(circle at 18% 0%,rgba(34,197,94,.11),transparent 28%),radial-gradient(circle at 82% 18%,rgba(56,189,248,.10),transparent 30%),linear-gradient(135deg,var(--atsrs-bg),#071827 46%,#05101d)!important;color:var(--atsrs-text)!important}
+.auth{background:linear-gradient(135deg,#07111d 0%,#0d2535 46%,#103b42 100%)!important}
+.auth::before{background:radial-gradient(circle at 17% 24%,rgba(34,197,94,.18),transparent 28%),radial-gradient(circle at 76% 38%,rgba(56,189,248,.14),transparent 30%),radial-gradient(circle at 48% 92%,rgba(134,239,172,.09),transparent 32%)!important}
+.auth-intro{background:linear-gradient(135deg,rgba(8,18,31,.78),rgba(17,34,53,.91))!important;border:1px solid rgba(134,239,172,.24)!important;box-shadow:0 28px 80px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05)!important}
+.auth-kicker,.pill,.mode-badge{border-color:rgba(34,197,94,.35)!important;background:rgba(4,16,26,.82)!important;color:var(--atsrs-green-soft)!important}
+.auth-intro h2{color:#f8fbff!important;text-shadow:0 2px 20px rgba(0,0,0,.28)}
+.auth-intro p,.sub{color:var(--atsrs-muted)!important}
+.auth-card,.card,.panel,.workflow-card,.snapshot-card,.mini-panel{background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;border-color:var(--atsrs-border)!important;box-shadow:0 22px 60px rgba(0,0,0,.30)!important}
+.sidebar{background:linear-gradient(180deg,rgba(4,12,22,.98),rgba(7,17,29,.96))!important;border-color:#16283a!important}
+.nav button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:rgba(134,239,172,.75)!important;box-shadow:0 12px 28px rgba(34,197,94,.20)!important;color:#f8fafc!important}
+.nav button:hover{border-color:rgba(56,189,248,.36)!important;background:rgba(20,34,53,.76)!important}
+input,select,textarea{background:#081524!important;border-color:#263f58!important;color:#f8fafc!important}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--atsrs-green)!important;box-shadow:0 0 0 3px rgba(34,197,94,.16)!important}
+button{background:linear-gradient(135deg,#2563eb,#0891b2)!important;box-shadow:0 10px 26px rgba(37,99,235,.20)}
+button.secondary,.mode-choice button,.cert-mode-buttons button{background:#26384e!important;border:1px solid #3b536d!important;color:#eef6ff!important;box-shadow:none!important}
+button.secondary:hover,.mode-choice button:hover,.cert-mode-buttons button:hover{background:#2f455d!important;border-color:rgba(56,189,248,.55)!important}
+button.testbtn{background:linear-gradient(135deg,#16a34a,#22c55e)!important;box-shadow:0 12px 28px rgba(34,197,94,.25)!important}
+button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!important}
+.mode-choice button.active,.cert-mode-buttons button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:rgba(134,239,172,.75)!important;color:#fff!important}
+.trial-box{border-color:rgba(34,197,94,.55)!important;background:linear-gradient(135deg,rgba(34,197,94,.14),rgba(8,21,36,.96))!important;box-shadow:0 0 0 1px rgba(134,239,172,.08) inset!important}
+.trial-box h3{color:#dcfce7!important}.trial-row{color:#bbf7d0!important}.trial-dot{background:var(--atsrs-green)!important}
+.feature-grid{gap:12px!important}
+.feature-tile{position:relative;background:linear-gradient(180deg,rgba(12,26,42,.92),rgba(8,18,31,.97))!important;border:1px solid rgba(67,92,118,.92)!important;border-radius:18px!important;padding:15px 14px 14px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.feature-tile:hover{transform:translateY(-2px);border-color:rgba(34,197,94,.65)!important;box-shadow:0 16px 38px rgba(0,0,0,.22),0 0 0 1px rgba(34,197,94,.10) inset!important}
+.feature-tile b{color:#f8fafc!important;margin:8px 0 5px!important}.feature-tile span:not(.tile-icon){color:#afbdca!important}
+.tile-icon{width:34px;height:34px;border-radius:12px;display:flex!important;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.12));border:1px solid rgba(134,239,172,.22);color:var(--atsrs-green-soft)!important;margin-bottom:4px!important}
+.tile-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.feature-tile:nth-child(2) .tile-icon,.feature-tile:nth-child(3) .tile-icon{color:#a5f3fc!important;background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(34,197,94,.10))}
+.feature-tile:nth-child(5),.feature-tile:nth-child(6){border-color:rgba(56,189,248,.35)!important}
+.floating-doc{background:linear-gradient(145deg,rgba(250,253,251,.96),rgba(222,245,231,.93))!important;border:1px solid rgba(209,250,229,.82)!important;box-shadow:0 20px 48px rgba(0,0,0,.30)!important}
+.floating-doc::before{background:linear-gradient(90deg,#22c55e,#38bdf8)!important}
+.floating-doc b{color:#0b1f2a!important}.floating-doc span{color:#334155!important}
+.lang-circle{background:#0b1a2a!important;border-color:rgba(134,239,172,.35)!important;box-shadow:0 10px 32px rgba(0,0,0,.35)!important}.lang-menu{background:#091524!important;border-color:#264058!important}
+.stat.good,.good{color:var(--atsrs-green-soft)!important}.warning{color:var(--atsrs-warning)!important}.danger{color:#fb7185!important}.missing{color:#fda4af!important}
+.badge-ready{background:#064e3b!important;color:#bbf7d0!important}.badge-review{background:#78350f!important;color:#fde68a!important}.badge-blocked{background:#7f1d1d!important;color:#fecaca!important}
+.table-wrap table th{color:#dbeafe!important} th,td{border-color:#26384e!important}
+.build-badge{background:rgba(7,17,29,.78)!important;border-color:#264058!important;color:#a7b5c5!important}
+@media(max-width:760px){.feature-tile{padding:13px!important}.tile-icon{width:32px;height:32px}}
+
 </style>
 </head>
 <body>
@@ -251,12 +308,12 @@ body.company-mode .solo-personnel-card{display:block!important}
   <h2 id="introTitle">Professional documents, expiry alerts and profile sharing — in one secure workspace.</h2>
   <p id="introText">ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.</p>
   <div class="feature-grid">
-    <div class="feature-tile"><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Keep passport, visa, medical, seaman book, certificates and career files in one secure place.</span></div>
-    <div class="feature-tile"><b id="featureUploadTitle">Easy Upload</b><span id="featureUploadText">Upload PDF, JPG or PNG files directly into your ATSRS document register.</span></div>
-    <div class="feature-tile"><b id="featureScanTitle">Scan & Auto-fill</b><span id="featureScanText">Scan a document and let ATSRS prepare fields for your manual confirmation.</span></div>
-    <div class="feature-tile"><b id="featureAlertsTitle">Expiry Tracking</b><span id="featureAlertsText">90-day, 30-day and expired document visibility from the dashboard.</span></div>
-    <div class="feature-tile"><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
-    <div class="feature-tile"><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Companies can request access and import approved documents into their compliance profile.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="M3 10h18"/></svg></span><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Keep passport, visa, medical, seaman book, certificates and career files in one secure place.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5"/></svg></span><b id="featureUploadTitle">Easy Upload</b><span id="featureUploadText">Upload PDF, JPG or PNG files directly into your ATSRS document register.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M7 12h10"/><path d="M9 9h6"/><path d="M9 15h4"/></svg></span><b id="featureScanTitle">Scan & Auto-fill</b><span id="featureScanText">Scan a document and let ATSRS prepare fields for your manual confirmation.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 14v3l2 1"/></svg></span><b id="featureAlertsTitle">Expiry Tracking</b><span id="featureAlertsText">90-day, 30-day and expired document visibility from the dashboard.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Companies can request access and import approved documents into their compliance profile.</span></div>
   </div>
 </div>
 
@@ -320,8 +377,8 @@ body.company-mode .solo-personnel-card{display:block!important}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V36</div>
-<div>Last Update: 03 Jun 2026 04:56 UTC</div>
+<div>ATSRS V37</div>
+<div>Last Update: 03 Jun 2026 05:08 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
