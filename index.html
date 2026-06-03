@@ -119,6 +119,23 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 .form-alert.active{display:block}
 .required-missing{border:2px solid #ef4444!important;background:#2a1111!important}
 
+
+/* V25 Career Compliance Manager */
+.mode-badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#0f172a;border:1px solid #334155;color:#93c5fd;font-size:12px;font-weight:800;margin-bottom:8px}
+.missing{color:#fb7185}
+.card.missing-card{border-color:#7f1d1d}
+.doc-category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
+.doc-chip{background:#0f172a;border:1px solid #334155;border-radius:14px;padding:12px;color:#cbd5e1;font-weight:700}
+.doc-chip.ok{border-color:#14532d;color:#bbf7d0}.doc-chip.miss{border-color:#7f1d1d;color:#fecaca}.doc-chip.warn{border-color:#713f12;color:#fef3c7}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.ref-card{background:#0f172a;border:1px solid #334155;border-radius:16px;padding:16px}
+.company-only{display:none}.personal-only{display:block}
+body.company-mode .company-only{display:block} body.company-mode .personal-only{display:none}
+body.personal-mode .company-only{display:none} body.personal-mode .personal-only{display:block}
+body.personal-mode #navPersonnel, body.personal-mode #navCompliance, body.personal-mode #navReports{display:none!important}
+body.company-mode .solo-personnel-card{display:block!important}
+.field-hint{font-size:12px;color:#94a3b8;margin-top:-3px;margin-bottom:6px}
+
 </style>
 </head>
 <body>
@@ -179,8 +196,8 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V24</div>
-<div>Last Update: 03 Jun 2026 02:48 UTC</div>
+<div>ATSRS V25</div>
+<div>Last Update: 03 Jun 2026 02:58 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -206,6 +223,9 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 <button id="navDashboard" class="active" onclick="showPage('dashboard',this)"></button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
 <button id="navCertificates" onclick="showPage('certificates',this)"></button>
+<button id="navRefs" onclick="showPage('refs',this)"></button>
+<button id="navCompliance" onclick="showPage('compliance',this)"></button>
+<button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
 <button id="navLogout" onclick="logout()"></button>
 </div>
@@ -237,11 +257,17 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 <div class="card"><p id="exp90Text"></p><div class="stat warning" id="exp90">0</div></div>
 <div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
+<div class="card missing-card"><p id="missingDocsText">Missing Documents</p><div class="stat missing" id="missingDocs">0</div></div>
 </div>
 <div class="panel">
   <h3 id="riskTitle">Priority alerts</h3>
   <p id="riskSub" class="sub">Documents closest to expiry will appear here.</p>
   <div id="riskList" class="risk-list"></div>
+</div>
+<div class="panel">
+  <h3 id="docStatusTitle">Document Status</h3>
+  <p id="docStatusSub" class="sub">Required career documents are tracked here.</p>
+  <div id="docCategoryGrid" class="doc-category-grid"></div>
 </div>
 <div id="personalDashboardPanel" class="panel hidden">
 <h3 id="myDocumentsTitle">My Documents</h3>
@@ -367,7 +393,15 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 <select id="cPerson"></select>
 <div class="field-wrap">
 <label id="cTypeLabel" class="field-label"></label>
-<select id="cType" data-required="true"><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option><option>Passport</option><option>Visa</option><option>Yellow Fever</option><option>DP Certificate</option><option>ROV Competency</option><option>Other</option></select>
+<select id="cType" data-required="true"><option>Passport</option><option>Visa</option><option>Seaman Book</option><option>Medical</option><option>Certificate</option><option>Training</option><option>Competency</option><option>Appraisal</option><option>Reference</option><option>Vaccination</option><option>Other Document</option></select>
+</div>
+<div class="field-wrap">
+<label id="cDocNoLabel" class="field-label">Document No (Optional)</label>
+<input id="cDocNo">
+</div>
+<div class="field-wrap">
+<label id="cCountryLabel" class="field-label">Country / Authority (Optional)</label>
+<input id="cCountry">
 </div>
 <div class="field-wrap">
 <label id="cProviderLabel" class="field-label"></label>
@@ -388,6 +422,34 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 <div class="panel">
 <h3 id="certRegisterTitle"></h3>
 <div class="table-wrap"><table><thead><tr><th id="thCertificate2"></th><th id="thProvider2"></th><th id="thExpiry2"></th><th id="thStatus2"></th><th id="thAction2"></th></tr></thead><tbody id="certTable"></tbody></table></div>
+</div>
+</section>
+
+
+<section id="refsPage" class="hidden">
+<div class="panel">
+<h3 id="refsTitle">References & Appraisals</h3>
+<p id="refsSub" class="sub">Keep appraisal forms, reference letters and client feedback in one place.</p>
+<div class="ref-grid">
+  <div class="ref-card"><h3 id="appraisalCardTitle">Appraisals</h3><p id="appraisalCardText" class="sub">Upload annual appraisals, performance reviews and evaluation forms.</p><button id="uploadAppraisalBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Appraisal</button></div>
+  <div class="ref-card"><h3 id="referenceCardTitle">References</h3><p id="referenceCardText" class="sub">Store reference letters and contact-ready career proof.</p><button id="uploadReferenceBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Reference</button></div>
+</div>
+</div>
+</section>
+
+<section id="compliancePage" class="hidden">
+<div class="panel">
+<h3 id="compliancePageTitle">Compliance Overview</h3>
+<p id="compliancePageSub" class="sub">Company mode: see who is ready, expiring, expired or missing required documents.</p>
+<div id="companyComplianceGrid" class="doc-category-grid"></div>
+</div>
+</section>
+
+<section id="reportsPage" class="hidden">
+<div class="panel">
+<h3 id="reportsTitle">Reports</h3>
+<p id="reportsSub" class="sub">Export-ready reports will be connected with backend data.</p>
+<button id="exportReportBtn" class="secondary" onclick="exportLocalData()">Export Local Data</button>
 </div>
 </section>
 
@@ -685,7 +747,7 @@ async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut(
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
 function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();restoreCurrentPage();applyLanguage()}
 function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
-function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"dashboard";let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,profile:navProfile};showPage(map[page]?page:"dashboard",map[page]||navDashboard)}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"dashboard";let map={dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"dashboard",map[page]||navDashboard)}
 function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
@@ -833,9 +895,9 @@ function addCertificate(){
 let a=getData("certs");
 let person=isPersonalMode()?soloOwnerName():cPerson.value;
 if(!validateManualCertificateForm() || !person){return}
-a.push({person,type:cType.value,provider:cProvider.value,issue:cIssue.value,expiry:cExpiry.value});
+a.push({person,type:cType.value,docNo:(cDocNo?.value||""),country:(cCountry?.value||""),provider:cProvider.value,issue:cIssue.value,expiry:cExpiry.value});
 saveData("certs",a);
-cProvider.value="";cIssue.value="";cExpiry.value="";
+cProvider.value="";cIssue.value="";cExpiry.value="";if(typeof cDocNo!=="undefined")cDocNo.value="";if(typeof cCountry!=="undefined")cCountry.value="";
 clearManualValidation();
 renderAll();
 }
@@ -967,9 +1029,68 @@ function validateManualCertificateForm(){
 const applyLanguageBaseV24=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV24();applyV24Language();}
 
+
+/* V25 Personal + Company Career Compliance Manager */
+const V25_TEXT={
+  en:{documents:"Documents",refs:"References & Appraisals",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",missingDocuments:"Missing Documents",docStatus:"Document Status",docStatusSub:"Required career documents are tracked here.",heroPersonal:"Your career compliance vault",heroCompany:"Crew compliance control center",heroPersonalText:"Track passport, visa, medical, seaman book, certificates, trainings, competency and references from one dashboard.",heroCompanyText:"Manage personnel documents, expiry risk and missing compliance items from one clean dashboard.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References & Appraisals",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload Appraisal",uploadReference:"Upload Reference",compliancePageSub:"Company mode: see who is ready, expiring, expired or missing required documents.",reportsSub:"Export-ready reports will be connected with backend data.",documentRegister:"Document Register"},
+  az:{documents:"Sənədlər",refs:"References & Appraisals",compliance:"Compliance",reports:"Reports",totalDocuments:"Ümumi sənədlər",missingDocuments:"Çatışmayan sənədlər",docStatus:"Sənəd statusu",docStatusSub:"Vacib karyera sənədləri burada izlənir.",heroPersonal:"Şəxsi karyera compliance kabineti",heroCompany:"Heyət compliance idarəetməsi",heroPersonalText:"Passport, visa, medical, seaman book, sertifikat, training, competency və reference-ləri bir dashboard-dan izlə.",heroCompanyText:"Personnel sənədlərini, expiry riskləri və missing compliance-ləri rahat dashboard-da idarə et.",docNoOptional:"Sənəd / Sertifikat № (vacib deyil)",countryOptional:"Ölkə / Qurum (vacib deyil)",refsTitle:"References & Appraisals",refsSub:"Appraisal formaları, reference məktubları və client feedback-ləri bir yerdə saxla.",appraisals:"Appraisals",appraisalsText:"Annual appraisal, performance review və evaluation formalarını yüklə.",references:"References",referencesText:"Reference məktublarını və karyera sübutlarını saxla.",uploadAppraisal:"Appraisal yüklə",uploadReference:"Reference yüklə",compliancePageSub:"Company mode: hazır, expiring, expired və missing sənədləri gör.",reportsSub:"Export-ready reports backend data ilə qoşulacaq.",documentRegister:"Sənəd reyestri"},
+  ru:{documents:"Документы",refs:"Рекомендации и аттестации",compliance:"Соответствие",reports:"Отчеты",totalDocuments:"Всего документов",missingDocuments:"Отсутствующие документы",docStatus:"Статус документов",docStatusSub:"Обязательные карьерные документы отслеживаются здесь.",heroPersonal:"Личный кабинет career compliance",heroCompany:"Центр compliance экипажа",heroPersonalText:"Отслеживайте паспорт, визы, медицину, seaman book, сертификаты, training, competency и references в одном dashboard.",heroCompanyText:"Управляйте документами персонала, сроками и отсутствующими compliance позициями.",docNoOptional:"Номер документа / сертификата (не обязательно)",countryOptional:"Страна / Орган (не обязательно)",refsTitle:"Рекомендации и аттестации",refsSub:"Храните appraisal forms, reference letters и client feedback в одном месте.",appraisals:"Аттестации",appraisalsText:"Загружайте annual appraisals, performance reviews и evaluation forms.",references:"Рекомендации",referencesText:"Храните reference letters и карьерные подтверждения.",uploadAppraisal:"Загрузить appraisal",uploadReference:"Загрузить reference",compliancePageSub:"Company mode: готовые, истекающие, просроченные и отсутствующие документы.",reportsSub:"Export-ready reports будут подключены через backend data.",documentRegister:"Реестр документов"}
+};
+const V25_REQUIRED_DOCS=["Passport","Visa","Seaman Book","Medical","Certificate","Training","Competency","Appraisal","Reference"];
+function v25(k){return (V25_TEXT[lang]&&V25_TEXT[lang][k])||V25_TEXT.en[k]||k}
+function normalizeDocType(t){t=String(t||"").toLowerCase();if(t.includes("passport"))return"Passport";if(t.includes("visa"))return"Visa";if(t.includes("seaman"))return"Seaman Book";if(t.includes("medical"))return"Medical";if(t.includes("training")||t.includes("bosiet")||t.includes("foet")||t.includes("yellow"))return"Training";if(t.includes("competency")||t.includes("rov"))return"Competency";if(t.includes("appraisal"))return"Appraisal";if(t.includes("reference"))return"Reference";if(t.includes("certificate")||t.includes("dp"))return"Certificate";return t?"Other Document":""}
+function missingDocCountForCerts(certs){let have=new Set(certs.map(x=>normalizeDocType(x.type)).filter(Boolean));return V25_REQUIRED_DOCS.filter(x=>!have.has(x)).length}
+function renderV25DocumentStatus(){
+  if(typeof docCategoryGrid==="undefined")return;
+  let c=getData("certs");
+  let have=new Set(c.map(x=>normalizeDocType(x.type)).filter(Boolean));
+  docCategoryGrid.innerHTML=V25_REQUIRED_DOCS.map(d=>`<div class="doc-chip ${have.has(d)?'ok':'miss'}">${have.has(d)?'✓':'!'} ${d}</div>`).join("");
+  if(typeof companyComplianceGrid!=="undefined"){
+    let p=getData("personnel");
+    if(isPersonalMode()){companyComplianceGrid.innerHTML=`<div class="doc-chip">${v25('compliancePageSub')}</div>`;}
+    else{companyComplianceGrid.innerHTML=p.length?p.map(x=>{let full=((x.name||'')+' '+(x.surname||'')).trim();let certs=c.filter(y=>y.person===full);let miss=missingDocCountForCerts(certs);return `<div class="doc-chip ${miss?'miss':'ok'}"><b>${full||'-'}</b><br>${v25('missingDocuments')}: ${miss}</div>`}).join(''):`<div class="doc-chip miss">${v25('missingDocuments')}: 0 personnel</div>`;}
+  }
+}
+function applyV25Mode(){
+  const personal=isPersonalMode();
+  document.body.classList.toggle('personal-mode',personal);document.body.classList.toggle('company-mode',!personal);
+  if(typeof soloBadge!=="undefined")soloBadge.innerText=personal?'PERSONAL MODE':'COMPANY MODE';
+}
+function applyV25Language(){
+  applyV25Mode();
+  if(typeof navCertificates!=="undefined")navCertificates.innerText=v25('documents');
+  if(typeof navRefs!=="undefined")navRefs.innerText=v25('refs');
+  if(typeof navCompliance!=="undefined")navCompliance.innerText=v25('compliance');
+  if(typeof navReports!=="undefined")navReports.innerText=v25('reports');
+  if(typeof totalCertsText!=="undefined")totalCertsText.innerText=v25('totalDocuments');
+  if(typeof missingDocsText!=="undefined")missingDocsText.innerText=v25('missingDocuments');
+  if(typeof docStatusTitle!=="undefined")docStatusTitle.innerText=v25('docStatus');
+  if(typeof docStatusSub!=="undefined")docStatusSub.innerText=v25('docStatusSub');
+  if(typeof soloHeroTitle!=="undefined")soloHeroTitle.innerText=isPersonalMode()?v25('heroPersonal'):v25('heroCompany');
+  if(typeof soloHeroText!=="undefined")soloHeroText.innerText=isPersonalMode()?v25('heroPersonalText'):v25('heroCompanyText');
+  if(typeof cDocNoLabel!=="undefined")cDocNoLabel.innerText=v25('docNoOptional');
+  if(typeof cCountryLabel!=="undefined")cCountryLabel.innerText=v25('countryOptional');
+  if(typeof certRegisterTitle!=="undefined")certRegisterTitle.innerText=v25('documentRegister');
+  if(typeof refsTitle!=="undefined")refsTitle.innerText=v25('refsTitle');
+  if(typeof refsSub!=="undefined")refsSub.innerText=v25('refsSub');
+  if(typeof appraisalCardTitle!=="undefined")appraisalCardTitle.innerText=v25('appraisals');
+  if(typeof appraisalCardText!=="undefined")appraisalCardText.innerText=v25('appraisalsText');
+  if(typeof referenceCardTitle!=="undefined")referenceCardTitle.innerText=v25('references');
+  if(typeof referenceCardText!=="undefined")referenceCardText.innerText=v25('referencesText');
+  if(typeof uploadAppraisalBtn!=="undefined")uploadAppraisalBtn.innerText=v25('uploadAppraisal');
+  if(typeof uploadReferenceBtn!=="undefined")uploadReferenceBtn.innerText=v25('uploadReference');
+  if(typeof compliancePageTitle!=="undefined")compliancePageTitle.innerText=v25('compliance');
+  if(typeof compliancePageSub!=="undefined")compliancePageSub.innerText=v25('compliancePageSub');
+  if(typeof reportsTitle!=="undefined")reportsTitle.innerText=v25('reports');
+  if(typeof reportsSub!=="undefined")reportsSub.innerText=v25('reportsSub');
+}
+const setUseModeBaseV25=setUseMode;setUseMode=function(mode){setUseModeBaseV25(mode);applyV25Mode();applyV25Language();renderAll();}
+const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();let c=getData("certs");if(typeof missingDocs!=="undefined")missingDocs.innerText=missingDocCountForCerts(c);renderV25DocumentStatus();}
+const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageBaseV25();applyV25Language();renderV25DocumentStatus();}
+
 applyLanguage();
 setUseMode(localStorage.getItem('atsrs_use_mode')||'personal');
 showCertMode('scan');
 </script>
 </body>
-</html>
+                                                             </html>
