@@ -110,6 +110,15 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 .unified-cert-panel{border:1px solid #334155}
 @media(max-width:520px){.grid.stats-grid{grid-template-columns:1fr}.quick-actions{grid-template-columns:1fr}.top-logout{padding:10px!important}.lang-circle{width:44px;height:44px}}
 
+/* V24 required-field labels and validation */
+.field-wrap{margin:8px 0}
+.field-label{display:block;font-size:12px;color:#94a3b8;margin:0 0 4px 2px;font-weight:700}
+.req-star{color:#ef4444;margin-right:4px}
+.optional-tag{color:#94a3b8;font-weight:600}
+.form-alert{display:none;background:#7f1d1d;color:#fecaca;border:1px solid #ef4444;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:14px;font-weight:700}
+.form-alert.active{display:block}
+.required-missing{border:2px solid #ef4444!important;background:#2a1111!important}
+
 </style>
 </head>
 <body>
@@ -170,8 +179,8 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V23</div>
-<div>Last Update: 03 Jun 2026 02:40 UTC</div>
+<div>ATSRS V24</div>
+<div>Last Update: 03 Jun 2026 02:48 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -354,9 +363,24 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 <input id="manualFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleManualFile(event)">
 </div>
 <div id="manualFilePreview" class="preview-box"></div>
+<div id="manualFormAlert" class="form-alert"></div>
 <select id="cPerson"></select>
-<select id="cType"><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option><option>Passport</option><option>Visa</option><option>Yellow Fever</option><option>DP Certificate</option><option>ROV Competency</option><option>Other</option></select>
-<input id="cProvider"><input id="cExpiry" type="date">
+<div class="field-wrap">
+<label id="cTypeLabel" class="field-label"></label>
+<select id="cType" data-required="true"><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option><option>Passport</option><option>Visa</option><option>Yellow Fever</option><option>DP Certificate</option><option>ROV Competency</option><option>Other</option></select>
+</div>
+<div class="field-wrap">
+<label id="cProviderLabel" class="field-label"></label>
+<input id="cProvider">
+</div>
+<div class="field-wrap">
+<label id="cIssueLabel" class="field-label"></label>
+<input id="cIssue" type="date">
+</div>
+<div class="field-wrap">
+<label id="cExpiryLabel" class="field-label"></label>
+<input id="cExpiry" type="date" data-required="true">
+</div>
 <button id="addCertBtn" onclick="addCertificate()"></button>
 </div>
 </div>
@@ -805,7 +829,16 @@ return y+"-"+m+"-"+d;
 function soloOwnerName(){return currentUser?.email || "My Documents"}
 function isPersonalMode(){return (localStorage.getItem("atsrs_use_mode")||useMode)==="personal"}
 function confirmExtractedDocument(){let person=isPersonalMode()?soloOwnerName():autoPerson.value;if(!person||!autoExpiry.value){alert(v12("fill")||tr("fill"));return}let a=getData("certs");a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:autoExpiry.value,docNo:autoDocNo.value,issue:autoIssue.value});saveData("certs",a);confirmBox.classList.add("hidden");documentPreview.innerText="";renderAll()}
-function addCertificate(){let a=getData("certs");let person=isPersonalMode()?soloOwnerName():cPerson.value;if(!person||!cExpiry.value){alert(v12("fill")||tr("fill"));return}a.push({person,type:cType.value,provider:cProvider.value,expiry:cExpiry.value});saveData("certs",a);cProvider.value="";cExpiry.value="";renderAll()}
+function addCertificate(){
+let a=getData("certs");
+let person=isPersonalMode()?soloOwnerName():cPerson.value;
+if(!validateManualCertificateForm() || !person){return}
+a.push({person,type:cType.value,provider:cProvider.value,issue:cIssue.value,expiry:cExpiry.value});
+saveData("certs",a);
+cProvider.value="";cIssue.value="";cExpiry.value="";
+clearManualValidation();
+renderAll();
+}
 function deleteCert(i){let a=getData("certs");a.splice(i,1);saveData("certs",a);renderAll()}
 function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(86400000));if(d<0)return{txt:tr("expired"),cls:"danger",expired:true,risk:true,days:d};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true,days:d};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true,days:d};return{txt:tr("valid"),cls:"good",risk:false,days:d}}
 
@@ -902,6 +935,37 @@ function handleManualFile(e){
 }
 const applyLanguageBaseV23=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV23();applyV23Language();}
+
+
+/* V24 manual form labels and validation */
+const V24_TEXT={
+  en:{requiredMsg:"Please complete all required fields.",certificateType:"Certificate Type",providerOptional:"Provider (Optional)",issueOptional:"Issue Date (Optional)",expiryRequired:"Expiry Date",required:"Required"},
+  az:{requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun.",certificateType:"Sertifikat növü",providerOptional:"Provider (vacib deyil)",issueOptional:"Verilmə tarixi (vacib deyil)",expiryRequired:"Bitmə tarixi",required:"Vacib"},
+  ru:{requiredMsg:"Пожалуйста, заполните все обязательные поля.",certificateType:"Тип сертификата",providerOptional:"Провайдер (не обязательно)",issueOptional:"Дата выдачи (не обязательно)",expiryRequired:"Срок действия",required:"Обязательно"}
+};
+function v24(k){return (V24_TEXT[lang]&&V24_TEXT[lang][k])||V24_TEXT.en[k]||k}
+function applyV24Language(){
+  if(typeof cTypeLabel!=="undefined")cTypeLabel.innerHTML='<span class="req-star">*</span>'+v24("certificateType");
+  if(typeof cProviderLabel!=="undefined")cProviderLabel.innerText=v24("providerOptional");
+  if(typeof cIssueLabel!=="undefined")cIssueLabel.innerText=v24("issueOptional");
+  if(typeof cExpiryLabel!=="undefined")cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v24("expiryRequired");
+  if(typeof manualFormAlert!=="undefined" && manualFormAlert.classList.contains("active"))manualFormAlert.innerText=v24("requiredMsg");
+}
+function clearManualValidation(){
+  [cType,cExpiry].forEach(el=>el&&el.classList.remove("required-missing"));
+  if(typeof manualFormAlert!=="undefined"){manualFormAlert.classList.remove("active");manualFormAlert.innerText="";}
+}
+function validateManualCertificateForm(){
+  clearManualValidation();
+  let ok=true;
+  if(!cType.value){cType.classList.add("required-missing");ok=false;}
+  if(!cExpiry.value){cExpiry.classList.add("required-missing");ok=false;}
+  if(!ok && typeof manualFormAlert!=="undefined"){manualFormAlert.innerText=v24("requiredMsg");manualFormAlert.classList.add("active");}
+  return ok;
+}
+["cType","cExpiry"].forEach(id=>{setTimeout(()=>{let el=document.getElementById(id);if(el){el.addEventListener("input",()=>el.classList.remove("required-missing"));el.addEventListener("change",()=>el.classList.remove("required-missing"));}},0)});
+const applyLanguageBaseV24=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV24();applyV24Language();}
 
 applyLanguage();
 setUseMode(localStorage.getItem('atsrs_use_mode')||'personal');
