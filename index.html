@@ -4,8 +4,230 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ATSRS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+
+/* V41 revised: Expiry N/A + Edit document register */
+const V41R_TEXT={
+  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
+  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
+  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
+};
+function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
+let editCertIndex=null;
+function ensureExpiryNAControls(){
+  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
+  items.forEach(([inputId,checkId,labelId])=>{
+    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
+    const wrap=input.closest('.field-wrap'); if(!wrap)return;
+    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+    const cb=document.getElementById(checkId);
+    cb.addEventListener('change',()=>{
+      input.disabled=cb.checked;
+      if(cb.checked){input.value='';input.classList.remove('required-missing');}
+      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
+      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
+    });
+  });
+}
+function applyV41RLanguage(){
+  ensureExpiryNAControls();
+  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
+  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
+  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
+  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+}
+const statusBaseV41R=status;
+status=function(expiry){
+  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
+  return statusBaseV41R(expiry);
+};
+function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
+function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
+const clearManualValidationBaseV41R=clearManualValidation;
+clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
+validateManualCertificateForm=function(){
+  clearManualValidation(); let ok=true;
+  if(!cType.value){cType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
+  return ok;
+};
+validateAutoConfirmForm=function(){
+  clearAutoValidation(); let ok=true;
+  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
+  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
+  return ok;
+};
+confirmExtractedDocument=function(){
+  if(!validateAutoConfirmForm())return;
+  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
+  let a=getData('certs');
+  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
+  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
+};
+addCertificate=function(){
+  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
+  if(!validateManualCertificateForm()||!person)return;
+  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
+  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
+  saveData('certs',a);
+  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
+  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
+  clearManualValidation(); applyV41RLanguage(); renderAll();
+};
+function editCertificate(i){
+  const a=getData('certs'); const x=a[i]; if(!x)return;
+  editCertIndex=i;
+  showPage('certificates',navCertificates); showCertMode('manual');
+  if(x.type && ![...cType.options].some(o=>o.value===x.type)){cType.add(new Option(x.type,x.type));}
+  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
+  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
+  if(typeof cExpiryNA!=='undefined'){
+    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
+    cExpiry.disabled=cExpiryNA.checked;
+  }
+  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
+  applyV41RLanguage();
+  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+const renderAllBaseV41R=renderAll;
+renderAll=function(){
+  renderAllBaseV41R();
+  const certs=getData('certs');
+  const rows=certTable?certTable.querySelectorAll('tr'):[];
+  rows.forEach((row,i)=>{
+    const cells=row.querySelectorAll('td');
+    if(cells.length>=5){
+      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
+        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
+      }
+      const action=cells[4];
+      if(action&&!action.querySelector('.edit-btn')){
+        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
+      }
+    }
+  });
+};
+const applyLanguageBaseV41R=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
+setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+
+/* V41 revised: Expiry N/A + Edit document register */
+const V41R_TEXT={
+  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
+  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
+  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
+};
+function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
+let editCertIndex=null;
+function ensureExpiryNAControls(){
+  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
+  items.forEach(([inputId,checkId,labelId])=>{
+    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
+    const wrap=input.closest('.field-wrap'); if(!wrap)return;
+    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+    const cb=document.getElementById(checkId);
+    cb.addEventListener('change',()=>{
+      input.disabled=cb.checked;
+      if(cb.checked){input.value='';input.classList.remove('required-missing');}
+      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
+      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
+    });
+  });
+}
+function applyV41RLanguage(){
+  ensureExpiryNAControls();
+  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
+  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
+  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
+  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+}
+const statusBaseV41R=status;
+status=function(expiry){
+  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
+  return statusBaseV41R(expiry);
+};
+function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
+function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
+const clearManualValidationBaseV41R=clearManualValidation;
+clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
+validateManualCertificateForm=function(){
+  clearManualValidation(); let ok=true;
+  if(!cType.value){cType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
+  return ok;
+};
+validateAutoConfirmForm=function(){
+  clearAutoValidation(); let ok=true;
+  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
+  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
+  return ok;
+};
+confirmExtractedDocument=function(){
+  if(!validateAutoConfirmForm())return;
+  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
+  let a=getData('certs');
+  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
+  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
+};
+addCertificate=function(){
+  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
+  if(!validateManualCertificateForm()||!person)return;
+  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
+  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
+  saveData('certs',a);
+  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
+  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
+  clearManualValidation(); applyV41RLanguage(); renderAll();
+};
+function editCertificate(i){
+  const a=getData('certs'); const x=a[i]; if(!x)return;
+  editCertIndex=i;
+  showPage('certificates',navCertificates); showCertMode('manual');
+  if(x.type && ![...cType.options].some(o=>o.value===x.type)){cType.add(new Option(x.type,x.type));}
+  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
+  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
+  if(typeof cExpiryNA!=='undefined'){
+    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
+    cExpiry.disabled=cExpiryNA.checked;
+  }
+  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
+  applyV41RLanguage();
+  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+const renderAllBaseV41R=renderAll;
+renderAll=function(){
+  renderAllBaseV41R();
+  const certs=getData('certs');
+  const rows=certTable?certTable.querySelectorAll('tr'):[];
+  rows.forEach((row,i)=>{
+    const cells=row.querySelectorAll('td');
+    if(cells.length>=5){
+      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
+        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
+      }
+      const action=cells[4];
+      if(action&&!action.querySelector('.edit-btn')){
+        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
+      }
+    }
+  });
+};
+const applyLanguageBaseV41R=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
+setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
+
+</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
@@ -301,6 +523,14 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 .intro-hero{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(56,189,248,.10));border:1px solid #2a3d5a;border-radius:22px;padding:22px;margin-bottom:16px}
 .intro-hero h3{font-size:28px;margin:0 0 10px}.intro-hero p{color:#cbd5e1;line-height:1.55;max-width:900px}
 
+
+
+/* V41 revised small controls */
+.na-check{display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:13px;font-weight:700;margin:4px 0 2px 2px}
+.na-check input{width:auto!important;margin:0!important;accent-color:#22c55e}
+.edit-btn{width:auto!important;margin:0 8px 0 0!important;padding:9px 12px!important;border-radius:10px!important;background:#334155!important;color:#e5e7eb!important}
+.edit-btn:hover{background:#475569!important}
+td:last-child{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -392,8 +622,8 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V39</div>
-<div>Last Update: 03 Jun 2026 05:35 UTC</div>
+<div>ATSRS V41</div>
+<div>Last Update: 03 Jun 2026 06:18 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -446,25 +676,6 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
   <div class="intro-service-card" data-intro="svc5" onclick="setIntroDetail('svc5')"><div class="svc-icon">🔗</div><h3 id="introSvc5Title">Share Profile</h3><p id="introSvc5Text">Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.</p></div>
   <div class="intro-service-card" data-intro="svc6" onclick="setIntroDetail('svc6')"><div class="svc-icon">🏢</div><h3 id="introSvc6Title">Company Compliance</h3><p id="introSvc6Text">Companies can request access, review approved documents and import candidate records into their compliance profile.</p></div>
 </div>
-</section>
-
-<section id="dashboardPage" class="hidden">
-<div class="solo-hero panel">
-  <div class="hero-card">
-    <span id="soloBadge" class="pill">SOLO CONTROL</span>
-    <h3 id="soloHeroTitle">Your certificate control center</h3>
-    <p id="soloHeroText">Upload your certificates and track expiry risk from one clean dashboard.</p>
-    <div class="quick-actions">
-      <button id="quickUploadBtn" onclick="showPage('certificates',navCertificates);showCertMode('scan')">Upload File</button>
-      <button id="quickManualBtn" class="secondary" onclick="showPage('certificates',navCertificates);showCertMode('manual')">Manual Entry</button>
-    </div>
-  </div>
-  <div class="mini-panel whatsapp-note">
-    <span id="whatsappBadge" class="pill">WHATSAPP READY</span>
-    <h3 id="whatsappTitle">WhatsApp alerts</h3>
-    <p id="whatsappText">Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.</p>
-  </div>
-</div>
 
 <div class="professional-dashboard">
   <div class="workflow-card">
@@ -489,6 +700,26 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
     </div>
   </div>
 </div>
+</section>
+
+<section id="dashboardPage" class="hidden">
+<div class="solo-hero panel">
+  <div class="hero-card">
+    <span id="soloBadge" class="pill">SOLO CONTROL</span>
+    <h3 id="soloHeroTitle">Your certificate control center</h3>
+    <p id="soloHeroText">Upload your certificates and track expiry risk from one clean dashboard.</p>
+    <div class="quick-actions">
+      <button id="quickUploadBtn" onclick="showPage('certificates',navCertificates);showCertMode('scan')">Upload File</button>
+      <button id="quickManualBtn" class="secondary" onclick="showPage('certificates',navCertificates);showCertMode('manual')">Manual Entry</button>
+    </div>
+  </div>
+  <div class="mini-panel whatsapp-note">
+    <span id="whatsappBadge" class="pill">WHATSAPP READY</span>
+    <h3 id="whatsappTitle">WhatsApp alerts</h3>
+    <p id="whatsappText">Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.</p>
+  </div>
+</div>
+
 
 <div class="grid stats-grid">
 <div class="card solo-personnel-card hidden"><p id="totalPersonnelText"></p><div class="stat" id="totalPersonnel">0</div></div>
@@ -650,10 +881,14 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 </div>
 <div id="confirmBox" class="scan-box hidden">
 <h3 id="confirmInfoTitle"></h3>
+<div id="autoFormAlert" class="form-alert"></div>
 <div class="confirm-grid">
-<select id="autoPerson"></select>
-<select id="autoDocType"><option>Passport</option><option>Seaman Book</option><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Visa</option><option>Yellow Fever</option><option>ROV Competency</option><option>Other</option></select>
-<input id="autoDocNo"><input id="autoProvider"><input id="autoIssue" type="date"><input id="autoExpiry" type="date">
+<div id="autoPersonWrap" class="field-wrap"><label id="autoPersonLabel" class="field-label"></label><select id="autoPerson"></select></div>
+<div class="field-wrap"><label id="autoDocTypeLabel" class="field-label"></label><select id="autoDocType" data-required="true"><option>Passport</option><option>Seaman Book</option><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Visa</option><option>Yellow Fever</option><option>ROV Competency</option><option>Other</option></select></div>
+<div class="field-wrap"><label id="autoDocNoLabel" class="field-label"></label><input id="autoDocNo"></div>
+<div class="field-wrap"><label id="autoProviderLabel" class="field-label"></label><input id="autoProvider"></div>
+<div class="field-wrap"><label id="autoIssueLabel" class="field-label"></label><input id="autoIssue" type="date"></div>
+<div class="field-wrap"><label id="autoExpiryLabel" class="field-label"></label><input id="autoExpiry" type="date" data-required="true"></div>
 </div>
 <button id="confirmInfoBtn" onclick="confirmExtractedDocument()"></button>
 <p id="extractNote" class="sub"></p>
@@ -1241,7 +1476,20 @@ return y+"-"+m+"-"+d;
 
 function soloOwnerName(){return currentUser?.email || "My Documents"}
 function isPersonalMode(){return (localStorage.getItem("atsrs_use_mode")||useMode)==="personal"}
-function confirmExtractedDocument(){let person=isPersonalMode()?soloOwnerName():autoPerson.value;if(!person||!autoExpiry.value){alert(v12("fill")||tr("fill"));return}let a=getData("certs");a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:autoExpiry.value,docNo:autoDocNo.value,issue:autoIssue.value});saveData("certs",a);confirmBox.classList.add("hidden");documentPreview.innerText="";renderAll()}
+function clearAutoValidation(){
+  [autoPerson,autoDocType,autoExpiry].forEach(el=>el&&el.classList.remove("required-missing"));
+  if(typeof autoFormAlert!=="undefined"){autoFormAlert.classList.remove("active");autoFormAlert.innerText="";}
+}
+function validateAutoConfirmForm(){
+  clearAutoValidation();
+  let ok=true;
+  if(!isPersonalMode() && !autoPerson.value){autoPerson.classList.add("required-missing");ok=false;}
+  if(!autoDocType.value){autoDocType.classList.add("required-missing");ok=false;}
+  if(!autoExpiry.value){autoExpiry.classList.add("required-missing");ok=false;}
+  if(!ok && typeof autoFormAlert!=="undefined"){autoFormAlert.innerText=v24("requiredMsg");autoFormAlert.classList.add("active");}
+  return ok;
+}
+function confirmExtractedDocument(){if(!validateAutoConfirmForm())return;let person=isPersonalMode()?soloOwnerName():autoPerson.value;let a=getData("certs");a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:autoExpiry.value,docNo:autoDocNo.value,issue:autoIssue.value});saveData("certs",a);confirmBox.classList.add("hidden");documentPreview.innerText="";renderAll()}
 function addCertificate(){
 let a=getData("certs");
 let person=isPersonalMode()?soloOwnerName():cPerson.value;
@@ -1275,12 +1523,12 @@ if(isPersonalMode()){
   cPerson.innerHTML=`<option>${soloOwnerName()}</option>`;
   autoPerson.innerHTML=`<option>${soloOwnerName()}</option>`;
   cPerson.classList.add("hidden");
-  autoPerson.classList.add("hidden");
+  autoPerson.classList.add("hidden");if(typeof autoPersonWrap!=="undefined")autoPersonWrap.classList.add("hidden");
 }else{
   cPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
   autoPerson.innerHTML=`<option value="">${tr("selectCrew")}</option>`;
   cPerson.classList.remove("hidden");
-  autoPerson.classList.remove("hidden");
+  autoPerson.classList.remove("hidden");if(typeof autoPersonWrap!=="undefined")autoPersonWrap.classList.remove("hidden");
 }
 let ready=0,review=0,blocked=0;
 p.forEach((x,i)=>{
@@ -1352,9 +1600,9 @@ applyLanguage=function(){applyLanguageBaseV23();applyV23Language();}
 
 /* V24 manual form labels and validation */
 const V24_TEXT={
-  en:{requiredMsg:"Please complete all required fields.",certificateType:"Certificate Type",providerOptional:"Provider (Optional)",issueOptional:"Issue Date (Optional)",expiryRequired:"Expiry Date",required:"Required"},
-  az:{requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun.",certificateType:"Sertifikat növü",providerOptional:"Provider (vacib deyil)",issueOptional:"Verilmə tarixi (vacib deyil)",expiryRequired:"Bitmə tarixi",required:"Vacib"},
-  ru:{requiredMsg:"Пожалуйста, заполните все обязательные поля.",certificateType:"Тип сертификата",providerOptional:"Провайдер (не обязательно)",issueOptional:"Дата выдачи (не обязательно)",expiryRequired:"Срок действия",required:"Обязательно"}
+  en:{requiredMsg:"Please complete all required fields.",certificateType:"Document Type",providerOptional:"Provider / Issuer (Optional)",issueOptional:"Issue Date (Optional)",expiryRequired:"Expiry Date",required:"Required",personRequired:"Crew Member",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)"},
+  az:{requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun.",certificateType:"Sənəd növü",providerOptional:"Provider / Qurum (vacib deyil)",issueOptional:"Verilmə tarixi (vacib deyil)",expiryRequired:"Bitmə tarixi",required:"Vacib",personRequired:"Heyət üzvü",docNoOptional:"Sənəd / Sertifikat № (vacib deyil)",countryOptional:"Ölkə / Qurum (vacib deyil)"},
+  ru:{requiredMsg:"Пожалуйста, заполните все обязательные поля.",certificateType:"Тип документа",providerOptional:"Провайдер / Орган (не обязательно)",issueOptional:"Дата выдачи (не обязательно)",expiryRequired:"Срок действия",required:"Обязательно",personRequired:"Член экипажа",docNoOptional:"Номер документа / сертификата (не обязательно)",countryOptional:"Страна / Орган (не обязательно)"}
 };
 function v24(k){return (V24_TEXT[lang]&&V24_TEXT[lang][k])||V24_TEXT.en[k]||k}
 function applyV24Language(){
@@ -1362,7 +1610,14 @@ function applyV24Language(){
   if(typeof cProviderLabel!=="undefined")cProviderLabel.innerText=v24("providerOptional");
   if(typeof cIssueLabel!=="undefined")cIssueLabel.innerText=v24("issueOptional");
   if(typeof cExpiryLabel!=="undefined")cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v24("expiryRequired");
+  if(typeof autoPersonLabel!=="undefined")autoPersonLabel.innerHTML='<span class="req-star">*</span>'+v24("personRequired");
+  if(typeof autoDocTypeLabel!=="undefined")autoDocTypeLabel.innerHTML='<span class="req-star">*</span>'+v24("certificateType");
+  if(typeof autoDocNoLabel!=="undefined")autoDocNoLabel.innerText=v24("docNoOptional");
+  if(typeof autoProviderLabel!=="undefined")autoProviderLabel.innerText=v24("providerOptional");
+  if(typeof autoIssueLabel!=="undefined")autoIssueLabel.innerText=v24("issueOptional");
+  if(typeof autoExpiryLabel!=="undefined")autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v24("expiryRequired");
   if(typeof manualFormAlert!=="undefined" && manualFormAlert.classList.contains("active"))manualFormAlert.innerText=v24("requiredMsg");
+  if(typeof autoFormAlert!=="undefined" && autoFormAlert.classList.contains("active"))autoFormAlert.innerText=v24("requiredMsg");
 }
 function clearManualValidation(){
   [cType,cExpiry].forEach(el=>el&&el.classList.remove("required-missing"));
@@ -1377,6 +1632,7 @@ function validateManualCertificateForm(){
   return ok;
 }
 ["cType","cExpiry"].forEach(id=>{setTimeout(()=>{let el=document.getElementById(id);if(el){el.addEventListener("input",()=>el.classList.remove("required-missing"));el.addEventListener("change",()=>el.classList.remove("required-missing"));}},0)});
+["autoPerson","autoDocType","autoExpiry"].forEach(id=>{setTimeout(()=>{let el=document.getElementById(id);if(el){el.addEventListener("input",()=>{el.classList.remove("required-missing");if(typeof autoFormAlert!=="undefined")autoFormAlert.classList.remove("active");});el.addEventListener("change",()=>{el.classList.remove("required-missing");if(typeof autoFormAlert!=="undefined")autoFormAlert.classList.remove("active");});}},0)});
 const applyLanguageBaseV24=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV24();applyV24Language();}
 
@@ -1664,6 +1920,117 @@ const _changeLanguageV36=changeLanguage;
 changeLanguage=function(v){_changeLanguageV36(v);applyV36LoginLanguage();setTimeout(applyV36LoginLanguage,0);};
 applyV36LoginLanguage();
 
+
+
+/* V41 revised: Expiry N/A + Edit document register */
+const V41R_TEXT={
+  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
+  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
+  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
+};
+function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
+let editCertIndex=null;
+function ensureExpiryNAControls(){
+  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
+  items.forEach(([inputId,checkId,labelId])=>{
+    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
+    const wrap=input.closest('.field-wrap'); if(!wrap)return;
+    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+    const cb=document.getElementById(checkId);
+    cb.addEventListener('change',()=>{
+      input.disabled=cb.checked;
+      if(cb.checked){input.value='';input.classList.remove('required-missing');}
+      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
+      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
+    });
+  });
+}
+function applyV41RLanguage(){
+  ensureExpiryNAControls();
+  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
+  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
+  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
+  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+}
+const statusBaseV41R=status;
+status=function(expiry){
+  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
+  return statusBaseV41R(expiry);
+};
+function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
+function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
+const clearManualValidationBaseV41R=clearManualValidation;
+clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
+validateManualCertificateForm=function(){
+  clearManualValidation(); let ok=true;
+  if(!cType.value){cType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
+  return ok;
+};
+validateAutoConfirmForm=function(){
+  clearAutoValidation(); let ok=true;
+  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
+  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
+  return ok;
+};
+confirmExtractedDocument=function(){
+  if(!validateAutoConfirmForm())return;
+  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
+  let a=getData('certs');
+  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
+  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
+};
+addCertificate=function(){
+  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
+  if(!validateManualCertificateForm()||!person)return;
+  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
+  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
+  saveData('certs',a);
+  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
+  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
+  clearManualValidation(); applyV41RLanguage(); renderAll();
+};
+function editCertificate(i){
+  const a=getData('certs'); const x=a[i]; if(!x)return;
+  editCertIndex=i;
+  showPage('certificates',navCertificates); showCertMode('manual');
+  if(x.type && ![...cType.options].some(o=>o.value===x.type)){cType.add(new Option(x.type,x.type));}
+  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
+  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
+  if(typeof cExpiryNA!=='undefined'){
+    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
+    cExpiry.disabled=cExpiryNA.checked;
+  }
+  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
+  applyV41RLanguage();
+  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+const renderAllBaseV41R=renderAll;
+renderAll=function(){
+  renderAllBaseV41R();
+  const certs=getData('certs');
+  const rows=certTable?certTable.querySelectorAll('tr'):[];
+  rows.forEach((row,i)=>{
+    const cells=row.querySelectorAll('td');
+    if(cells.length>=5){
+      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
+        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
+      }
+      const action=cells[4];
+      if(action&&!action.querySelector('.edit-btn')){
+        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
+      }
+    }
+  });
+};
+const applyLanguageBaseV41R=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
+setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
+
 </script>
 </body>
-</html>
+  </html>
