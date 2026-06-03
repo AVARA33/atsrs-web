@@ -100,6 +100,14 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 .whatsapp-note{border-left:4px solid #22c55e}
 @media(max-width:1000px){.solo-hero{grid-template-columns:1fr}.grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:800px){.app{grid-template-columns:1fr}.sidebar{padding-right:110px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.main{padding-top:86px}.top-actions{position:absolute}.grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.cert-mode-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.cert-mode-buttons button{background:#334155;border:1px solid #475569;margin:0}
+.cert-mode-buttons button.active{background:#2563eb;border-color:#60a5fa}
+.cert-mode-panel{display:none}
+.cert-mode-panel.active{display:block}
+.cert-flow-note{margin:0 0 12px;color:#94a3b8}
+.unified-cert-panel{border:1px solid #334155}
 @media(max-width:520px){.grid.stats-grid{grid-template-columns:1fr}.quick-actions{grid-template-columns:1fr}.top-logout{padding:10px!important}.lang-circle{width:44px;height:44px}}
 
 </style>
@@ -162,8 +170,8 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V21</div>
-<div>Last Update: 03 Jun 2026 02:18 UTC</div>
+<div>ATSRS V23</div>
+<div>Last Update: 03 Jun 2026 02:40 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -204,8 +212,8 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
     <h3 id="soloHeroTitle">Your certificate control center</h3>
     <p id="soloHeroText">Upload your certificates and track expiry risk from one clean dashboard.</p>
     <div class="quick-actions">
-      <button id="quickUploadBtn" onclick="showPage('certificates',navCertificates);documentFile.click()">Upload File</button>
-      <button id="quickManualBtn" class="secondary" onclick="showPage('certificates',navCertificates)">Manual Entry</button>
+      <button id="quickUploadBtn" onclick="showPage('certificates',navCertificates);showCertMode('scan')">Upload File</button>
+      <button id="quickManualBtn" class="secondary" onclick="showPage('certificates',navCertificates);showCertMode('manual')">Manual Entry</button>
     </div>
   </div>
   <div class="mini-panel whatsapp-note">
@@ -304,16 +312,16 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 </section>
 
 <section id="certificatesPage" class="hidden">
-<div class="upload-simple">
-<h3 id="simpleUploadTitle">Simple document upload</h3>
-<p id="simpleUploadText">Upload the file, review the fields manually, then save. No hidden OCR magic yet.</p>
-<div class="document-actions">
-<button id="simpleUploadBtn" class="secondary" onclick="documentFile.click()">Upload File</button>
-<button id="simpleCameraBtn" class="secondary" onclick="startCameraScan()">Camera Scan</button>
-</div>
-</div>
-<div class="panel">
+<div class="panel unified-cert-panel">
 <h3 id="addDocTitle"></h3>
+<p id="addCertFlowNote" class="cert-flow-note"></p>
+<div class="cert-mode-buttons">
+<button id="certScanModeBtn" type="button" class="active" onclick="showCertMode('scan')"></button>
+<button id="certManualModeBtn" type="button" onclick="showCertMode('manual')"></button>
+</div>
+
+<div id="certScanPanel" class="cert-mode-panel active">
+<p id="scanFlowText" class="sub"></p>
 <div class="document-actions">
 <button id="scanDocBtn" class="secondary" onclick="startCameraScan()"></button>
 <button id="uploadDocBtn" class="secondary" onclick="documentFile.click()"></button>
@@ -337,16 +345,25 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 <p id="extractNote" class="sub"></p>
 </div>
 </div>
-<div class="panel">
+
+<div id="certManualPanel" class="cert-mode-panel">
 <h3 id="manualCertTitle"></h3>
+<p id="manualFlowText" class="sub"></p>
+<div class="document-actions">
+<button id="manualUploadBtn" class="secondary" onclick="manualFile.click()"></button>
+<input id="manualFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleManualFile(event)">
+</div>
+<div id="manualFilePreview" class="preview-box"></div>
 <select id="cPerson"></select>
 <select id="cType"><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Seaman Book</option><option>Passport</option><option>Visa</option><option>Yellow Fever</option><option>DP Certificate</option><option>ROV Competency</option><option>Other</option></select>
 <input id="cProvider"><input id="cExpiry" type="date">
 <button id="addCertBtn" onclick="addCertificate()"></button>
 </div>
+</div>
+
 <div class="panel">
 <h3 id="certRegisterTitle"></h3>
-<div class="table-wrap"><table><thead><tr><th id="thName2"></th><th id="thCertificate2"></th><th id="thProvider2"></th><th id="thExpiry2"></th><th id="thStatus2"></th><th id="thAction2"></th></tr></thead><tbody id="certTable"></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th id="thCertificate2"></th><th id="thProvider2"></th><th id="thExpiry2"></th><th id="thStatus2"></th><th id="thAction2"></th></tr></thead><tbody id="certTable"></tbody></table></div>
 </div>
 </section>
 
@@ -490,8 +507,8 @@ exp90s:"Истекает <90 дней"
 };
 
 const UI={
-en:{account:"Account",general:"General",security:"Security",preferences:"Preferences",country:"Country",recoveryEmail:"Recovery email",primaryEmail:"Primary email",primaryEmailNote:"Your main login email.",password:"Password",passwordNote:"Change your account password.",change:"Change",twofa:"Two-factor authentication",twofaNote:"Google Authenticator / email code support.",setup:"Setup",sessions:"Active Sessions",sessionsNote:"View devices currently signed in.",view:"View",notifications:"Notifications",notificationsNote:"Certificate expiry alerts by email/SMS.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanent deletion will be enabled after live Auth.",timezone:"Time Zone",addDoc:"Add Document",scanDoc:"Scan with Camera",uploadDoc:"Upload File",scanInfo:"Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.",confirmInfo:"Confirm Information",docNo:"Document / Certificate No",issueDate:"Issue Date",manualCert:"Manual Certificate Entry",confirm:"Confirm Info",extractNote:"Auto extraction is in test mode. Review and confirm before saving.",fileSelected:"File selected",ocrStarting:"OCR started. Reading document...",ocrProgress:"OCR progress",ocrDone:"OCR completed. Please review detected information.",ocrNotAvailable:"OCR library is not loaded. Check internet connection.",noTextDetected:"No clear text detected. Please fill manually.",authLiveNotice:"This will be connected after Supabase Auth is live.",twofaNotice:"2FA will be added in the next security phase.",sessionsNotice:"Active sessions will be connected after Supabase Auth is live.",notifyNotice:"Notification settings will be added with backend alerts.",deleteNotice:"Account deletion will be connected after Supabase Auth is live."},
-az:{account:"Hesab",general:"Ümumi",security:"Təhlükəsizlik",preferences:"Tənzimləmələr",country:"Ölkə",recoveryEmail:"Bərpa emaili",primaryEmail:"Əsas email",primaryEmailNote:"Əsas giriş emailiniz.",password:"Şifrə",passwordNote:"Hesab şifrəsini dəyiş.",change:"Dəyiş",twofa:"İki mərhələli təsdiq",twofaNote:"Google Authenticator / email kod dəstəyi.",setup:"Qur",sessions:"Aktiv sessiyalar",sessionsNote:"Hazırda daxil olmuş cihazları göstər.",view:"Bax",notifications:"Bildirişlər",notificationsNote:"Sertifikat bitmə xəbərdarlıqları email/SMS ilə.",manage:"İdarə et",exportData:"Məlumatlarımı eksport et",exportDataNote:"ATSRS hesab məlumatlarını yüklə.",export:"Eksport",deleteAccount:"Hesabı sil",deleteAccountNote:"Tam silinmə canlı Auth-dan sonra aktiv olacaq.",timezone:"Saat qurşağı",addDoc:"Sənəd əlavə et",scanDoc:"Kamera ilə scan et",uploadDoc:"Fayl yüklə",scanInfo:"Kamera istifadə et və ya PDF/JPG/PNG yüklə. Avtomatik oxuma OCR mərhələsində qoşulacaq.",confirmInfo:"Məlumatı təsdiqlə",docNo:"Sənəd / Sertifikat №",issueDate:"Verilmə tarixi",manualCert:"Manual sertifikat girişi",confirm:"Təsdiqlə",extractNote:"Auto extract test rejimindədir. Saxlamadan əvvəl yoxla və təsdiqlə.",fileSelected:"Fayl seçildi",ocrStarting:"OCR başladı. Sənəd oxunur...",ocrProgress:"OCR progress",ocrDone:"OCR tamamlandı. Tapılan məlumatları yoxla.",ocrNotAvailable:"OCR library yüklənməyib. İnternet bağlantısını yoxla.",noTextDetected:"Aydın mətn tapılmadı. Manual doldur.",authLiveNotice:"Bu funksiya Supabase Auth canlı olandan sonra qoşulacaq.",twofaNotice:"2FA növbəti təhlükəsizlik mərhələsində əlavə olunacaq.",sessionsNotice:"Aktiv sessiyalar Supabase Auth canlı olandan sonra qoşulacaq.",notifyNotice:"Bildiriş ayarları backend alerts ilə əlavə olunacaq.",deleteNotice:"Hesab silmə Supabase Auth canlı olandan sonra qoşulacaq."}
+en:{account:"Account",general:"General",security:"Security",preferences:"Preferences",country:"Country",recoveryEmail:"Recovery email",primaryEmail:"Primary email",primaryEmailNote:"Your main login email.",password:"Password",passwordNote:"Change your account password.",change:"Change",twofa:"Two-factor authentication",twofaNote:"Google Authenticator / email code support.",setup:"Setup",sessions:"Active Sessions",sessionsNote:"View devices currently signed in.",view:"View",notifications:"Notifications",notificationsNote:"Certificate expiry alerts by email/SMS.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanent deletion will be enabled after live Auth.",timezone:"Time Zone",addDoc:"Upload Document",scanDoc:"Scan with Camera",uploadDoc:"Upload File",scanInfo:"Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.",confirmInfo:"Confirm Information",docNo:"Document / Certificate No",issueDate:"Issue Date",manualCert:"Manual Certificate Entry",confirm:"Confirm Info",extractNote:"Auto extraction is in test mode. Review and confirm before saving.",fileSelected:"File selected",ocrStarting:"OCR started. Reading document...",ocrProgress:"OCR progress",ocrDone:"OCR completed. Please review detected information.",ocrNotAvailable:"OCR library is not loaded. Check internet connection.",noTextDetected:"No clear text detected. Please fill manually.",authLiveNotice:"This will be connected after Supabase Auth is live.",twofaNotice:"2FA will be added in the next security phase.",sessionsNotice:"Active sessions will be connected after Supabase Auth is live.",notifyNotice:"Notification settings will be added with backend alerts.",deleteNotice:"Account deletion will be connected after Supabase Auth is live."},
+az:{account:"Hesab",general:"Ümumi",security:"Təhlükəsizlik",preferences:"Tənzimləmələr",country:"Ölkə",recoveryEmail:"Bərpa emaili",primaryEmail:"Əsas email",primaryEmailNote:"Əsas giriş emailiniz.",password:"Şifrə",passwordNote:"Hesab şifrəsini dəyiş.",change:"Dəyiş",twofa:"İki mərhələli təsdiq",twofaNote:"Google Authenticator / email kod dəstəyi.",setup:"Qur",sessions:"Aktiv sessiyalar",sessionsNote:"Hazırda daxil olmuş cihazları göstər.",view:"Bax",notifications:"Bildirişlər",notificationsNote:"Sertifikat bitmə xəbərdarlıqları email/SMS ilə.",manage:"İdarə et",exportData:"Məlumatlarımı eksport et",exportDataNote:"ATSRS hesab məlumatlarını yüklə.",export:"Eksport",deleteAccount:"Hesabı sil",deleteAccountNote:"Tam silinmə canlı Auth-dan sonra aktiv olacaq.",timezone:"Saat qurşağı",addDoc:"Sənəd yüklə",scanDoc:"Kamera ilə scan et",uploadDoc:"Fayl yüklə",scanInfo:"Kamera istifadə et və ya PDF/JPG/PNG yüklə. Avtomatik oxuma OCR mərhələsində qoşulacaq.",confirmInfo:"Məlumatı təsdiqlə",docNo:"Sənəd / Sertifikat №",issueDate:"Verilmə tarixi",manualCert:"Manual sertifikat girişi",confirm:"Təsdiqlə",extractNote:"Auto extract test rejimindədir. Saxlamadan əvvəl yoxla və təsdiqlə.",fileSelected:"Fayl seçildi",ocrStarting:"OCR başladı. Sənəd oxunur...",ocrProgress:"OCR progress",ocrDone:"OCR tamamlandı. Tapılan məlumatları yoxla.",ocrNotAvailable:"OCR library yüklənməyib. İnternet bağlantısını yoxla.",noTextDetected:"Aydın mətn tapılmadı. Manual doldur.",authLiveNotice:"Bu funksiya Supabase Auth canlı olandan sonra qoşulacaq.",twofaNotice:"2FA növbəti təhlükəsizlik mərhələsində əlavə olunacaq.",sessionsNotice:"Aktiv sessiyalar Supabase Auth canlı olandan sonra qoşulacaq.",notifyNotice:"Bildiriş ayarları backend alerts ilə əlavə olunacaq.",deleteNotice:"Hesab silmə Supabase Auth canlı olandan sonra qoşulacaq."}
 };
 ["tr","no","de","fr","es","pt","ar"].forEach(l=>UI[l]=UI.en);
 UI.ru={
@@ -521,7 +538,7 @@ export:"Экспорт",
 deleteAccount:"Удалить аккаунт",
 deleteAccountNote:"Полное удаление будет включено после live Auth.",
 timezone:"Часовой пояс",
-addDoc:"Добавить документ",
+addDoc:"Загрузка документа",
 scanDoc:"Сканировать камерой",
 uploadDoc:"Загрузить файл",
 scanInfo:"Используйте камеру или загрузите PDF/JPG/PNG. Автоизвлечение будет подключено позже.",
@@ -554,7 +571,7 @@ ru:{soloBadge:"SOLO РЕЖИМ",soloHeroTitle:"Центр контроля се�
 };
 function sx(k){return (SOLO_TX[lang]&&SOLO_TX[lang][k])||SOLO_TX.en[k]||k}
 function applySoloLanguage(){
-  const ids={soloBadge:'soloBadge',soloHeroTitle:'soloHeroTitle',soloHeroText:'soloHeroText',quickUploadBtn:'quickUpload',quickManualBtn:'quickManual',whatsappBadge:'whatsappBadge',whatsappTitle:'whatsappTitle',whatsappText:'whatsappText',riskTitle:'riskTitle',riskSub:'riskSub',simpleUploadTitle:'simpleUploadTitle',simpleUploadText:'simpleUploadText',simpleUploadBtn:'quickUpload',simpleCameraBtn:'cameraScan'};
+  const ids={soloBadge:'soloBadge',soloHeroTitle:'soloHeroTitle',soloHeroText:'soloHeroText',quickUploadBtn:'quickUpload',quickManualBtn:'quickManual',whatsappBadge:'whatsappBadge',whatsappTitle:'whatsappTitle',whatsappText:'whatsappText',riskTitle:'riskTitle',riskSub:'riskSub',/* upload duplicate removed in V22 */};
   Object.entries(ids).forEach(([id,key])=>{let el=document.getElementById(id);if(el)el.innerText=sx(key);});
 }
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim())}
@@ -591,7 +608,7 @@ projectsTitle.innerText=tr("projects");projectNameInput.placeholder=tr("project"
 thProject.innerText=tr("project");thVessel.innerText=tr("vessel");thClient.innerText=tr("client");thTeam.innerText=tr("team");thActionProject.innerText=tr("action");
 complianceOverviewTitle.innerText=tr("complianceStatus");readyCrewText.innerText=tr("readyCrew");reviewCrewText.innerText=tr("reviewCrew");blockedCrewText.innerText=tr("blockedCrew");complianceNote.innerText=tr("complianceNote");
 addDocTitle.innerText=ptr("addDoc");scanDocBtn.innerText=ptr("scanDoc");uploadDocBtn.innerText=ptr("uploadDoc");scanInfo.innerText=ptr("scanInfo");confirmInfoTitle.innerText=ptr("confirmInfo");autoDocNo.placeholder=ptr("docNo");autoProvider.placeholder=tr("provider");confirmInfoBtn.innerText=ptr("confirm");extractNote.innerText=ptr("extractNote");
-manualCertTitle.innerText=ptr("manualCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");thName2.innerText=tr("name");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
+manualCertTitle.innerText=ptr("manualCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
 accountTitle.innerText=ptr("account");accountTabGeneralBtn.innerText=ptr("general");accountTabSecurityBtn.innerText=ptr("security");accountTabPreferencesBtn.innerText=ptr("preferences");profileName.placeholder=tr("name");profileSurname.placeholder=tr("surname");profilePhone.placeholder=tr("phone");profileCompany.placeholder=tr("company");profilePosition.placeholder=tr("position");profileCountry.options[0].text=ptr("country");saveProfileBtn.innerText=tr("saveProfile");
 profileAltEmail.placeholder=ptr("recoveryEmail");primaryEmailTitle.innerText=ptr("primaryEmail");primaryEmailNote.innerText=ptr("primaryEmailNote");primaryEmailBtn.innerText=ptr("change");changePasswordTitle.innerText=ptr("password");changePasswordNote.innerText=ptr("passwordNote");changePasswordBtn.innerText=ptr("change");twofaTitle.innerText=ptr("twofa");twofaNote.innerText=ptr("twofaNote");setup2faBtn.innerText=ptr("setup");sessionsTitle.innerText=ptr("sessions");sessionsNote.innerText=ptr("sessionsNote");viewSessionsBtn.innerText=ptr("view");
 notifyTitle.innerText=ptr("notifications");notifyNote.innerText=ptr("notificationsNote");manageNotifyBtn.innerText=ptr("manage");exportDataTitle.innerText=ptr("exportData");exportDataNote.innerText=ptr("exportDataNote");exportDataBtn.innerText=ptr("export");deleteAccountTitle.innerText=ptr("deleteAccount");deleteAccountNote.innerText=ptr("deleteAccountNote");deleteAccountBtn.innerText=tr("delete");
@@ -834,7 +851,7 @@ if(!isPersonalMode()){cPerson.innerHTML+=`<option>${full}</option>`;autoPerson.i
 });
 readyCrew.innerText=ready;reviewCrew.innerText=review;blockedCrew.innerText=blocked;
 certTable.innerHTML="";let e90=0,e30=0,ex=0;
-c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(!s.expired&&s.days<=30)e30++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.person}</td><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});
+c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(!s.expired&&s.days<=30)e30++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});
 exp90.innerText=e90;if(typeof exp30!=="undefined")exp30.innerText=e30;expired.innerText=ex;
 renderRiskList(c);
 renderProjects();
@@ -853,8 +870,42 @@ function v12(k){
   return (T[lang]&&T[lang][k]) || (UI[lang]&&UI[lang][k]) || T.en[k] || UI.en[k] || k;
 }
 
+
+/* V23 unified certificate flow */
+const V23_TEXT={
+  en:{addDoc:"Add Certificate",flowNote:"Choose one clean path: scan for auto-fill, or upload and enter details manually.",scanTab:"Scan & Auto-fill",manualTab:"Upload / Manual Entry",scanFlow:"Use camera or file upload for OCR-assisted auto-fill, then confirm before saving.",manualFlow:"Upload the file for record keeping, then enter certificate details manually.",manualUpload:"Upload File"},
+  az:{addDoc:"Sertifikat əlavə et",flowNote:"Bir yol seç: scan ilə auto-fill, ya da fayl yüklə və məlumatları manual daxil et.",scanTab:"Scan & Auto-fill",manualTab:"Upload / Manual Entry",scanFlow:"Kamera və ya fayl yükləmə ilə OCR auto-fill yoxlaması et, sonra təsdiqlə.",manualFlow:"Faylı qeyd üçün yüklə, sonra sertifikat məlumatlarını manual daxil et.",manualUpload:"Fayl yüklə"},
+  ru:{addDoc:"Добавить сертификат",flowNote:"Выберите один понятный путь: скан для auto-fill или загрузка файла с ручным вводом.",scanTab:"Скан & Auto-fill",manualTab:"Загрузка / ручной ввод",scanFlow:"Используйте камеру или файл для OCR auto-fill, затем проверьте и подтвердите.",manualFlow:"Загрузите файл для хранения и вручную заполните данные сертификата.",manualUpload:"Загрузить файл"}
+};
+function v23(k){return (V23_TEXT[lang]&&V23_TEXT[lang][k])||V23_TEXT.en[k]||k}
+function applyV23Language(){
+  if(typeof addDocTitle!=="undefined")addDocTitle.innerText=v23("addDoc");
+  if(typeof addCertFlowNote!=="undefined")addCertFlowNote.innerText=v23("flowNote");
+  if(typeof certScanModeBtn!=="undefined")certScanModeBtn.innerText=v23("scanTab");
+  if(typeof certManualModeBtn!=="undefined")certManualModeBtn.innerText=v23("manualTab");
+  if(typeof scanFlowText!=="undefined")scanFlowText.innerText=v23("scanFlow");
+  if(typeof manualFlowText!=="undefined")manualFlowText.innerText=v23("manualFlow");
+  if(typeof manualUploadBtn!=="undefined")manualUploadBtn.innerText=v23("manualUpload");
+}
+function showCertMode(mode){
+  if(typeof certScanPanel==="undefined")return;
+  const scan=mode!=="manual";
+  certScanPanel.classList.toggle("active",scan);
+  certManualPanel.classList.toggle("active",!scan);
+  certScanModeBtn.classList.toggle("active",scan);
+  certManualModeBtn.classList.toggle("active",!scan);
+}
+function handleManualFile(e){
+  let file=e.target.files&&e.target.files[0];
+  if(!file)return;
+  manualFilePreview.innerText=(tr("fileSelected")||"File selected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB)";
+}
+const applyLanguageBaseV23=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV23();applyV23Language();}
+
 applyLanguage();
-setUseMode(localStorage.getItem('atsrs_use_mode')||'company');
+setUseMode(localStorage.getItem('atsrs_use_mode')||'personal');
+showCertMode('scan');
 </script>
 </body>
 </html>
