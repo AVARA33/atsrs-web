@@ -67,13 +67,15 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 
 
 #navLogout{display:none!important}
-.top-logout{position:fixed;top:18px;right:78px;z-index:70;width:auto;margin:0;background:#991b1b!important;color:white!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important}
 .top-logout:hover{background:#7f1d1d!important}
-html[dir="rtl"] .top-logout{right:auto;left:78px}
-@media(max-width:800px){
-  .top-logout{position:absolute;top:18px;right:78px}
-  html[dir="rtl"] .top-logout{right:auto;left:78px}
-}
+html[dir="rtl"] @media(max-width:800px){
+  html[dir="rtl"] }
+
+
+.top-actions{position:fixed;top:18px;right:18px;z-index:90;display:flex;align-items:center;gap:10px}
+.top-actions .lang-floating{position:relative!important;top:auto!important;right:auto!important;left:auto!important}
+.top-logout{width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important}
+@media(max-width:800px){.top-actions{position:absolute;top:18px;right:18px}}
 
 </style>
 </head>
@@ -135,15 +137,15 @@ html[dir="rtl"] .top-logout{right:auto;left:78px}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V17</div>
-<div>Last Update: 03 Jun 2026 03:55 UTC</div>
+<div>ATSRS V18</div>
+<div>Last Update: 03 Jun 2026 04:20 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
 </section>
 
 <section id="app" class="app hidden">
-<button id="topLogoutBtn" class="top-logout" onclick="confirmLogout()">Logout</button>
+<div class="top-actions">
 <div class="lang-floating app-lang-switcher">
 <button type="button" id="appLangCircle" class="lang-circle" onclick="toggleAppLangMenu()">🇬🇧</button>
 <div id="appLangMenu" class="lang-menu hidden">
@@ -151,6 +153,8 @@ html[dir="rtl"] .top-logout{right:auto;left:78px}
 <button type="button" onclick="changeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
 <button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
 </div>
+</div>
+<button id="topLogoutBtn" class="top-logout" onclick="confirmLogout()">Logout</button>
 </div>
 
 <aside class="sidebar">
@@ -332,7 +336,7 @@ const SUPABASE_URL="https://hwtjuqyxziyymofamwxl.supabase.co";
 const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
 const APP_URL="https://atsrs.com/";
 let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error(e)}
-let currentUser=null,timer=null,countdown=0;let lang=localStorage.getItem("atsrs_lang")||"en";if(!["en","az","ru"].includes(lang)){lang="en";localStorage.setItem("atsrs_lang","en");}if(!["en","az","ru"].includes(lang)){lang="en";localStorage.setItem("atsrs_lang","en");}
+let currentUser=null,timer=null,countdown=0;let lang=localStorage.getItem("atsrs_lang")||"en";if(!["en","az","ru"].includes(lang)){lang="en";localStorage.setItem("atsrs_lang","en");}if(!["en","az","ru"].includes(lang)){lang="en";localStorage.setItem("atsrs_lang","en");}if(!["en","az","ru"].includes(lang)){lang="en";localStorage.setItem("atsrs_lang","en");}
 
 const T={
 en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal Use",companyUse:"Company Use",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
