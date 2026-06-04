@@ -531,6 +531,35 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 .edit-btn{width:auto!important;margin:0 8px 0 0!important;padding:9px 12px!important;border-radius:10px!important;background:#334155!important;color:#e5e7eb!important}
 .edit-btn:hover{background:#475569!important}
 td:last-child{white-space:nowrap}
+
+/* V42 fixed top actions: language + logout must stay in viewport while scrolling */
+.top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  z-index:99999!important;
+}
+.top-actions .app-lang-switcher,
+.top-actions .lang-floating{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+}
+@media(max-width:800px){
+  .top-actions{
+    position:fixed!important;
+    top:14px!important;
+    right:14px!important;
+    left:auto!important;
+  }
+  html[dir="rtl"] .top-actions{
+    right:14px!important;
+    left:auto!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -622,8 +651,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V41</div>
-<div>Last Update: 03 Jun 2026 06:18 UTC</div>
+<div>ATSRS V42</div>
+<div>Last Update: 03 Jun 2026 06:28 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
