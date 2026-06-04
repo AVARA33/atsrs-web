@@ -621,6 +621,17 @@ td:last-child{white-space:nowrap}
   }
 }
 
+/* V48 CV / Resume management */
+.cv-card{border-color:rgba(56,189,248,.45)!important}
+.cv-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.cv-card-head h3{margin:0}
+.cv-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.cv-actions button{margin:0}
+.cv-beta-box{margin-top:14px;border:1px dashed #3b536d;border-radius:16px;padding:12px;background:rgba(8,21,36,.55)}
+.cv-beta-box h4{margin:8px 0 4px}
+.cv-status-card .stat{font-size:24px!important}
+@media(max-width:560px){.cv-actions{grid-template-columns:1fr}.cv-card-head{display:block}.cv-card-head .badge{margin-top:8px}}
+
 </style>
 </head>
 <body>
@@ -712,8 +723,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V47</div>
-<div>Last Update: 04 Jun 2026 03:12 UTC</div>
+<div>ATSRS V48</div>
+<div>Last Update: 04 Jun 2026 03:25 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -842,6 +853,7 @@ td:last-child{white-space:nowrap}
 <div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
 <div class="card missing-card"><p id="missingDocsText">Missing Documents</p><div class="stat missing" id="missingDocs">0</div></div>
+<div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">—</div></div>
 </div>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
@@ -1073,6 +1085,24 @@ td:last-child{white-space:nowrap}
 <div class="ref-grid">
   <div class="ref-card"><h3 id="appraisalCardTitle">Appraisals</h3><p id="appraisalCardText" class="sub">Upload annual appraisals, performance reviews and evaluation forms.</p><button id="uploadAppraisalBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Appraisal</button></div>
   <div class="ref-card"><h3 id="referenceCardTitle">References</h3><p id="referenceCardText" class="sub">Store reference letters and contact-ready career proof.</p><button id="uploadReferenceBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Reference</button></div>
+  <div class="ref-card cv-card">
+    <div class="cv-card-head"><h3 id="cvCardTitle">CV / Resume</h3><span id="cvStatusBadge" class="badge badge-blocked">No CV Uploaded</span></div>
+    <p id="cvCardText" class="sub">Store, manage and share professional CV versions for employers, agencies and clients.</p>
+    <input id="cvUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleCVUpload(event)">
+    <div id="cvFileInfo" class="preview-box"></div>
+    <div class="cv-actions">
+      <button id="uploadCVBtn" class="secondary" onclick="cvUploadInput.click()">Upload CV</button>
+      <button id="previewCVBtn" class="secondary" onclick="previewCV()">Preview CV</button>
+      <button id="downloadCVBtn" class="secondary" onclick="downloadCV()">Download CV</button>
+      <button id="deleteCVBtn" class="action" onclick="deleteCV()">Delete CV</button>
+    </div>
+    <div class="cv-beta-box">
+      <span class="pill" id="cvBetaBadge">COMING SOON</span>
+      <h4 id="cvBetaTitle">Generate ATSRS Profile CV</h4>
+      <p id="cvBetaText" class="sub">Generate a professional ATSRS formatted CV using stored profile and document data.</p>
+      <button id="generateCVBtn" class="secondary" onclick="alert(v48('cvComingSoon'))">Generate ATSRS CV (Beta)</button>
+    </div>
+  </div>
 </div>
 </div>
 </section>
@@ -1823,6 +1853,63 @@ const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageB
 
 
 
+/* V48 CV / Resume Management */
+const V48_TEXT={
+  en:{cvStatus:"CV Status",cvAvailable:"Available ✓",cvMissing:"Missing ⚠",cvTitle:"CV / Resume",cvText:"Store, manage and share professional CV versions for employers, agencies and clients.",cvUploaded:"CV Uploaded ✓",cvNotUploaded:"No CV Uploaded",uploadCV:"Upload CV",previewCV:"Preview CV",downloadCV:"Download CV",deleteCV:"Delete CV",cvBetaBadge:"COMING SOON",cvBetaTitle:"Generate ATSRS Profile CV",cvBetaText:"Generate a professional ATSRS formatted CV using stored profile and document data.",generateCV:"Generate ATSRS CV (Beta)",cvComingSoon:"ATSRS Profile CV generator will be connected in a later build.",cvNoFile:"No CV uploaded yet.",cvSaved:"CV saved",cvDeleted:"CV deleted."},
+  az:{cvStatus:"CV statusu",cvAvailable:"Mövcuddur ✓",cvMissing:"Çatışmır ⚠",cvTitle:"CV / Resume",cvText:"CV versiyalarını employer, agency və client-lərlə paylaşmaq üçün saxla və idarə et.",cvUploaded:"CV yüklənib ✓",cvNotUploaded:"CV yüklənməyib",uploadCV:"CV yüklə",previewCV:"CV-yə bax",downloadCV:"CV indir",deleteCV:"CV sil",cvBetaBadge:"TEZLİKLƏ",cvBetaTitle:"ATSRS Profile CV yarat",cvBetaText:"Profil və sənəd məlumatları əsasında professional ATSRS formatlı CV yaradacaq.",generateCV:"ATSRS CV yarat (Beta)",cvComingSoon:"ATSRS Profile CV generator növbəti build-lərdə qoşulacaq.",cvNoFile:"Hələ CV yüklənməyib.",cvSaved:"CV saxlanıldı",cvDeleted:"CV silindi."},
+  ru:{cvStatus:"Статус CV",cvAvailable:"Есть ✓",cvMissing:"Нет ⚠",cvTitle:"CV / Resume",cvText:"Храните, управляйте и отправляйте версии CV работодателям, агентствам и клиентам.",cvUploaded:"CV загружено ✓",cvNotUploaded:"CV не загружено",uploadCV:"Загрузить CV",previewCV:"Просмотр CV",downloadCV:"Скачать CV",deleteCV:"Удалить CV",cvBetaBadge:"СКОРО",cvBetaTitle:"Создать ATSRS Profile CV",cvBetaText:"Создаст профессиональное CV в формате ATSRS на основе данных профиля и документов.",generateCV:"Создать ATSRS CV (Beta)",cvComingSoon:"Генератор ATSRS Profile CV будет подключен в следующих build.",cvNoFile:"CV еще не загружено.",cvSaved:"CV сохранено",cvDeleted:"CV удалено."}
+};
+function v48(k){return (V48_TEXT[lang]&&V48_TEXT[lang][k])||V48_TEXT.en[k]||k}
+function getCV(){let a=getData('cvFiles');return Array.isArray(a)&&a.length?a[0]:null}
+function saveCV(cv){saveData('cvFiles',cv?[cv]:[])}
+function handleCVUpload(event){
+  const file=event.target.files&&event.target.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(){saveCV({name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:reader.result});renderCVStatus();renderAll();};
+  reader.readAsDataURL(file);
+}
+function previewCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} const w=window.open('','_blank'); if(w){w.document.write(`<title>${cv.name}</title><iframe src="${cv.data}" style="border:0;width:100%;height:100vh"></iframe>`);w.document.close();}}
+function downloadCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} const a=document.createElement('a');a.href=cv.data;a.download=cv.name||'ATSRS-CV';document.body.appendChild(a);a.click();a.remove();}
+function deleteCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} saveCV(null); if(typeof cvUploadInput!=='undefined')cvUploadInput.value=''; renderCVStatus(); renderAll();}
+function renderCVStatus(){
+  const cv=getCV();
+  if(typeof cvCardTitle!=='undefined')cvCardTitle.innerText=v48('cvTitle');
+  if(typeof cvCardText!=='undefined')cvCardText.innerText=v48('cvText');
+  if(typeof uploadCVBtn!=='undefined')uploadCVBtn.innerText=v48('uploadCV');
+  if(typeof previewCVBtn!=='undefined')previewCVBtn.innerText=v48('previewCV');
+  if(typeof downloadCVBtn!=='undefined')downloadCVBtn.innerText=v48('downloadCV');
+  if(typeof deleteCVBtn!=='undefined')deleteCVBtn.innerText=v48('deleteCV');
+  if(typeof cvBetaBadge!=='undefined')cvBetaBadge.innerText=v48('cvBetaBadge');
+  if(typeof cvBetaTitle!=='undefined')cvBetaTitle.innerText=v48('cvBetaTitle');
+  if(typeof cvBetaText!=='undefined')cvBetaText.innerText=v48('cvBetaText');
+  if(typeof generateCVBtn!=='undefined')generateCVBtn.innerText=v48('generateCV');
+  if(typeof cvStatusBadge!=='undefined'){cvStatusBadge.innerText=cv?v48('cvUploaded'):v48('cvNotUploaded');cvStatusBadge.className='badge '+(cv?'badge-ready':'badge-blocked');}
+  if(typeof cvFileInfo!=='undefined')cvFileInfo.innerText=cv?`${cv.name} • ${Math.round((cv.size||0)/1024)} KB`:'';
+  if(typeof cvStatusDashText!=='undefined')cvStatusDashText.innerText=v48('cvStatus');
+  if(typeof cvStatusDash!=='undefined'){cvStatusDash.innerText=cv?v48('cvAvailable'):v48('cvMissing');cvStatusDash.className='stat '+(cv?'good':'missing');}
+}
+const V25_REQUIRED_DOCS_BASE_V48=V25_REQUIRED_DOCS.slice();
+if(!V25_REQUIRED_DOCS.includes('CV'))V25_REQUIRED_DOCS.push('CV');
+const normalizeDocTypeBaseV48=normalizeDocType;
+normalizeDocType=function(t){t=String(t||''); if(t.toLowerCase().includes('cv')||t.toLowerCase().includes('resume'))return 'CV'; return normalizeDocTypeBaseV48(t);}
+const missingDocCountForCertsBaseV48=missingDocCountForCerts;
+missingDocCountForCerts=function(certs){let n=missingDocCountForCertsBaseV48(certs); if(!getCV())n++; return n;}
+const renderV25DocumentStatusBaseV48=renderV25DocumentStatus;
+renderV25DocumentStatus=function(){
+  renderV25DocumentStatusBaseV48();
+  if(typeof docCategoryGrid!=='undefined'){
+    const cv=getCV();
+    const existing=[...docCategoryGrid.querySelectorAll('.doc-chip')].some(x=>x.textContent.includes('CV'));
+    if(!existing)docCategoryGrid.insertAdjacentHTML('beforeend',`<div class="doc-chip ${cv?'ok':'miss'}">${cv?'✓':'!'} CV</div>`);
+  }
+}
+const renderAllBaseV48=renderAll;
+renderAll=function(){renderAllBaseV48(); const cv=getCV(); if(typeof totalCerts!=='undefined'){let c=getData('certs');totalCerts.innerText=c.length+(cv?1:0);} renderCVStatus();}
+const applyLanguageBaseV48=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV48();renderCVStatus();}
+setTimeout(()=>{try{renderCVStatus()}catch(e){}},0);
+
+
 /* V27 Share Profile */
 const V27_TEXT={
  en:{shareBadge:"SHARE PROFILE",shareTitle:"Share My ATSRS Profile",shareSub:"Send one secure profile link instead of attaching documents one by one.",copyLink:"Copy Link",preview:"Preview",manageAccess:"Manage Access",linkCopied:"Link copied.",companyView:"Company view",companyImportText:"A company can review shared documents and import selected records into ATSRS Company later.",importCompany:"Import to Company Profile",importDemoAlert:"Company import will be connected after backend and permissions are ready.",profileVisibility:"Profile Visibility",profileVisibilityNote:"Private by default. Shared link only when enabled.",sharedProfile:"ATSRS Shared Profile"},
@@ -2159,4 +2246,4 @@ setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 </script>
 </body>
-  </html>
+</html>
