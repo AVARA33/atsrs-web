@@ -734,6 +734,53 @@ body #app.app:not(.hidden) > .top-actions{
   position:absolute!important;
 }
 
+
+
+/* V54 FINAL FIX: app top controls must stay fixed during scroll in Chrome/Opera/mobile */
+#app.app:not(.hidden) .top-actions,
+#app.app .top-actions,
+body #app .top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  z-index:2147483000!important;
+  transform:none!important;
+}
+#app.app:not(.hidden) .top-actions .lang-floating,
+#app.app:not(.hidden) .top-actions .app-lang-switcher{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  transform:none!important;
+}
+@media(max-width:800px){
+  #app.app:not(.hidden) .top-actions,
+  #app.app .top-actions,
+  body #app .top-actions{
+    position:fixed!important;
+    top:12px!important;
+    right:12px!important;
+    left:auto!important;
+    z-index:2147483000!important;
+  }
+}
+html[dir="rtl"] #app.app:not(.hidden) .top-actions,
+html[dir="rtl"] #app.app .top-actions{
+  right:18px!important;
+  left:auto!important;
+}
+
+/* V54 Career records: multi-file list repository */
+.career-record-list{margin-top:12px;display:flex;flex-direction:column;gap:8px;max-height:310px;overflow:auto;padding-right:4px}
+.career-record-row{display:grid;grid-template-columns:minmax(0,1.3fr) 110px 160px;gap:8px;align-items:center;border:1px solid #334155;border-radius:14px;background:rgba(2,6,23,.35);padding:10px}
+.career-record-name{min-width:0}.career-record-name b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.career-record-name span{display:block;font-size:12px;color:#94a3b8;margin-top:3px}
+.career-record-date input{margin:0!important;padding:9px!important;font-size:12px!important}
+.career-record-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.career-record-actions button{margin:0!important;padding:8px 9px!important;font-size:12px!important}
+.career-count{font-size:12px;color:#a7b5c5;margin-top:6px;font-weight:700}
+@media(max-width:760px){.career-record-row{grid-template-columns:1fr}.career-record-actions{grid-template-columns:repeat(3,1fr)}}
+
 </style>
 </head>
 <body>
@@ -825,8 +872,8 @@ body #app.app:not(.hidden) > .top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V53</div>
-<div>Last Update: 04 Jun 2026 04:28 UTC</div>
+<div>ATSRS V54</div>
+<div>Last Update: 04 Jun 2026 04:42 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2408,5 +2455,109 @@ applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&
 setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 </script>
+
+<script>
+/* V54: Multi-file Career Records repository + final app top controls fix */
+const V54_TEXT={
+ en:{recommendations:'Recommendation Letters',recommendationsText:'Store recommendation letters from supervisors, clients and companies.',uploadRecommendation:'Upload Recommendation',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'No files uploaded yet.',signedDate:'Signed Date',preview:'Preview',download:'Download',deleteFile:'Delete'},
+ az:{recommendations:'Recommendation Letters',recommendationsText:'Supervisor, client və şirkətlərdən verilən recommendation letter-ləri saxla.',uploadRecommendation:'Recommendation yüklə',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'Hələ fayl yüklənməyib.',signedDate:'İmzalanma tarixi',preview:'Bax',download:'İndir',deleteFile:'Sil'},
+ ru:{recommendations:'Рекомендательные письма',recommendationsText:'Храните recommendation letters от supervisors, clients и companies.',uploadRecommendation:'Загрузить Recommendation',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'Файлы еще не загружены.',signedDate:'Дата подписи',preview:'Просмотр',download:'Скачать',deleteFile:'Удалить'}
+};
+function v54(k){return (V54_TEXT[lang]&&V54_TEXT[lang][k])||V54_TEXT.en[k]||k;}
+function careerKey(kind){return kind+'Files';}
+function getManagedFiles(kind){let a=getData(careerKey(kind));return Array.isArray(a)?a:[];}
+function setManagedFiles(kind,arr){saveData(careerKey(kind),Array.isArray(arr)?arr:[]);}
+function getManagedFile(kind){let a=getManagedFiles(kind);return a.length?a[0]:null;}
+function saveManagedFile(kind,file){ if(file){let a=getManagedFiles(kind);a.unshift(file);setManagedFiles(kind,a);}else{setManagedFiles(kind,[]);} }
+function formatCareerDate(x){return x&&x.signedDate?x.signedDate:(x&&x.updated?String(x.updated).slice(0,10):'');}
+function sortedCareerFiles(kind){return getManagedFiles(kind).slice().sort((a,b)=>String(formatCareerDate(b)).localeCompare(String(formatCareerDate(a))));}
+function ensureRecommendationCard(){
+ if(document.getElementById('recommendationCardTitle'))return;
+ const cvCard=document.getElementById('cvCardTitle')?.closest('.ref-card');
+ const grid=cvCard?.parentElement||document.querySelector('#refsPage .ref-grid');
+ if(!grid)return;
+ const html=`<div class="ref-card"><h3 id="recommendationCardTitle">Recommendation Letters</h3><p id="recommendationCardText" class="sub">Store recommendation letters from supervisors, clients and companies.</p><button id="uploadRecommendationBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Recommendation</button></div>`;
+ if(cvCard)cvCard.insertAdjacentHTML('beforebegin',html); else grid.insertAdjacentHTML('beforeend',html);
+}
+function ensureManagedCard(kind){
+ ensureRecommendationCard();
+ const map={appraisal:['appraisalCardTitle','uploadAppraisalBtn'],reference:['referenceCardTitle','uploadReferenceBtn'],recommendation:['recommendationCardTitle','uploadRecommendationBtn']};
+ const ids=map[kind]; if(!ids)return;
+ const card=document.getElementById(ids[0])?.closest('.ref-card'); if(!card)return;
+ if(card.dataset.v54Ready!=='1'){
+   card.dataset.v54Ready='1';
+   const title=document.getElementById(ids[0]);
+   if(title && !title.parentElement.classList.contains('ref-doc-head')){
+     title.outerHTML=`<div class="ref-doc-head"><h3 id="${ids[0]}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-blocked">0</span></div>`;
+   }
+   const oldBtn=document.getElementById(ids[1]); if(oldBtn)oldBtn.remove();
+   const oldInfo=document.getElementById(kind+'FileInfo'); if(oldInfo)oldInfo.remove();
+   const oldActions=card.querySelector('.ref-doc-actions'); if(oldActions)oldActions.remove();
+   card.insertAdjacentHTML('beforeend',`
+     <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)">
+     <button id="${kind}UploadBtn" class="secondary" onclick="document.getElementById('${kind}UploadInput').click()"></button>
+     <div id="${kind}Count" class="career-count"></div>
+     <div id="${kind}RecordList" class="career-record-list"></div>
+   `);
+ }
+}
+function handleManagedUpload(kind,event){
+ const file=event.target.files&&event.target.files[0]; if(!file)return;
+ const reader=new FileReader();
+ reader.onload=function(){
+   const item={id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),signedDate:new Date().toISOString().slice(0,10),data:reader.result};
+   const a=getManagedFiles(kind);a.push(item);setManagedFiles(kind,a);event.target.value='';renderManagedFiles();renderAll();
+ };
+ reader.readAsDataURL(file);
+}
+function updateManagedDate(kind,id,value){const a=getManagedFiles(kind);const x=a.find(i=>i.id===id);if(x){x.signedDate=value;setManagedFiles(kind,a);renderManagedFiles();}}
+function getCareerItem(kind,id){return getManagedFiles(kind).find(i=>i.id===id);}
+function previewManagedFile(kind,id){const f=id?getCareerItem(kind,id):getManagedFile(kind); if(!f){alert(v54('noRecords'));return;} const w=window.open('','_blank'); if(w){w.document.write(`<title>${f.name}</title><iframe src="${f.data}" style="border:0;width:100%;height:100vh"></iframe>`);w.document.close();}}
+function downloadManagedFile(kind,id){const f=id?getCareerItem(kind,id):getManagedFile(kind); if(!f){alert(v54('noRecords'));return;} const a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();}
+function deleteManagedFile(kind,id){let a=getManagedFiles(kind); if(id){a=a.filter(i=>i.id!==id);}else{a=[];} setManagedFiles(kind,a);renderManagedFiles();renderAll();}
+function renderCareerList(kind){
+ const list=document.getElementById(kind+'RecordList'); if(!list)return;
+ const files=sortedCareerFiles(kind);
+ if(!files.length){list.innerHTML=`<div class="preview-box">${v54('noRecords')}</div>`;return;}
+ list.innerHTML=files.map(f=>`
+   <div class="career-record-row">
+     <div class="career-record-name"><b title="${String(f.name||'').replace(/"/g,'&quot;')}">${f.name||'File'}</b><span>${Math.round((f.size||0)/1024)} KB</span></div>
+     <div class="career-record-date"><input type="date" value="${formatCareerDate(f)}" title="${v54('signedDate')}" onchange="updateManagedDate('${kind}','${f.id}',this.value)"></div>
+     <div class="career-record-actions"><button class="secondary" onclick="previewManagedFile('${kind}','${f.id}')">${v54('preview')}</button><button class="secondary" onclick="downloadManagedFile('${kind}','${f.id}')">${v54('download')}</button><button class="action" onclick="deleteManagedFile('${kind}','${f.id}')">${v54('deleteFile')}</button></div>
+   </div>`).join('');
+}
+function renderManagedFiles(){
+ ['appraisal','reference','recommendation'].forEach(kind=>ensureManagedCard(kind));
+ const labels={appraisal:['uploadAppraisal','appraisalsCount'],reference:['uploadReference','referencesCount'],recommendation:['uploadRecommendation','recommendationsCount']};
+ ['appraisal','reference','recommendation'].forEach(kind=>{
+   const files=getManagedFiles(kind);
+   const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=String(files.length);badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
+   const up=document.getElementById(kind+'UploadBtn'); if(up)up.innerText=(kind==='appraisal'?v49('uploadAppraisal'):kind==='reference'?v49('uploadReference'):v54('uploadRecommendation'));
+   const cnt=document.getElementById(kind+'Count'); if(cnt)cnt.innerText=`${v54(labels[kind][1])}: ${files.length} • Newest first`;
+   renderCareerList(kind);
+ });
+ if(typeof recommendationCardTitle!=='undefined')recommendationCardTitle.innerText=v54('recommendations');
+ if(typeof recommendationCardText!=='undefined')recommendationCardText.innerText=v54('recommendationsText');
+ if(typeof cType!=='undefined')cType.placeholder=v49('docTypePlaceholder');
+ if(typeof autoDocType!=='undefined')autoDocType.placeholder=v49('autoDocTypePlaceholder');
+}
+function forceTopControlsFixed(){
+ const el=document.querySelector('#app .top-actions'); if(!el)return;
+ el.style.setProperty('position','fixed','important');
+ el.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+ el.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+ el.style.setProperty('left','auto','important');
+ el.style.setProperty('z-index','2147483000','important');
+}
+const renderAllBaseV54=renderAll;
+renderAll=function(){renderAllBaseV54();renderManagedFiles();forceTopControlsFixed();};
+const applyLanguageBaseV54=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV54();renderManagedFiles();forceTopControlsFixed();};
+window.addEventListener('scroll',forceTopControlsFixed,{passive:true});
+window.addEventListener('resize',forceTopControlsFixed);
+setInterval(forceTopControlsFixed,800);
+setTimeout(()=>{try{renderManagedFiles();forceTopControlsFixed();}catch(e){}},0);
+</script>
+
 </body>
 </html>
