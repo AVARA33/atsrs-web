@@ -949,8 +949,8 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V60</div>
-<div>Last Update: 04 Jun 2026 19:45 UTC</div>
+<div>ATSRS V61</div>
+<div>Last Update: 04 Jun 2026 20:10 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2893,6 +2893,183 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
   window.addEventListener('resize',restoreV34Topbar);
   window.addEventListener('scroll',restoreV34Topbar,{passive:true});
   setTimeout(restoreV34Topbar,0);setTimeout(restoreV34Topbar,500);
+})();
+</script>
+
+
+
+<!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
+<style id="v61-topbar-troubleshoot-style">
+#atsrsTopbarTroubleBtn{
+  width:auto!important;
+  margin:0!important;
+  padding:12px 14px!important;
+  border-radius:12px!important;
+  border:1px solid #facc15!important;
+  background:linear-gradient(135deg,#ca8a04,#eab308)!important;
+  color:#07111d!important;
+  font-weight:900!important;
+  box-shadow:0 10px 26px rgba(234,179,8,.20)!important;
+  cursor:pointer!important;
+}
+#atsrsTopbarTroublePanel{
+  position:fixed!important;
+  right:18px!important;
+  top:82px!important;
+  width:min(560px,calc(100vw - 24px))!important;
+  max-height:72vh!important;
+  overflow:auto!important;
+  z-index:2147483647!important;
+  background:#06111f!important;
+  border:1px solid #facc15!important;
+  border-radius:16px!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.55)!important;
+  color:#e5e7eb!important;
+  padding:14px!important;
+  font-family:Arial,sans-serif!important;
+}
+#atsrsTopbarTroublePanel.hidden{display:none!important}
+#atsrsTopbarTroublePanel h3{margin:0 0 8px!important;font-size:16px!important;color:#fef3c7!important}
+#atsrsTopbarTroublePanel pre{
+  white-space:pre-wrap!important;
+  word-break:break-word!important;
+  background:#020617!important;
+  border:1px solid #334155!important;
+  border-radius:12px!important;
+  padding:10px!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+  color:#dbeafe!important;
+}
+#atsrsTopbarTroublePanel .trouble-actions{display:flex!important;gap:8px!important;margin:10px 0!important;flex-wrap:wrap!important}
+#atsrsTopbarTroublePanel .trouble-actions button{width:auto!important;margin:0!important;padding:9px 12px!important;border-radius:10px!important}
+#atsrsTopbarTroublePanel .trouble-close{background:#334155!important;color:#fff!important;border:1px solid #475569!important}
+#atsrsTopbarTroublePanel .trouble-fix{background:#16a34a!important;color:#fff!important;border:0!important}
+@media(max-width:800px){
+  #atsrsTopbarTroubleBtn{padding:10px 11px!important;font-size:12px!important}
+  #atsrsTopbarTroublePanel{right:12px!important;top:74px!important;max-height:70vh!important}
+}
+</style>
+<script id="v61-topbar-troubleshoot-script">
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function shortNode(el){
+    if(!el) return 'NOT FOUND';
+    return el.tagName.toLowerCase()+(el.id?'#'+el.id:'')+(el.className?'.'+String(el.className).trim().replace(/\s+/g,'.'):'');
+  }
+  function cssInfo(el){
+    if(!el) return null;
+    var cs=getComputedStyle(el), r=el.getBoundingClientRect();
+    return {
+      node:shortNode(el),
+      parent:shortNode(el.parentElement),
+      position:cs.position,
+      display:cs.display,
+      top:cs.top,
+      right:cs.right,
+      left:cs.left,
+      zIndex:cs.zIndex,
+      transform:cs.transform,
+      width:cs.width,
+      rectTop:Math.round(r.top),
+      rectRight:Math.round(r.right),
+      rectLeft:Math.round(r.left),
+      rectBottom:Math.round(r.bottom)
+    };
+  }
+  function countSelectors(selector){
+    var matches=[];
+    for(var i=0;i<document.styleSheets.length;i++){
+      var sh=document.styleSheets[i];
+      var rules;
+      try{ rules=sh.cssRules || sh.rules; }catch(e){ continue; }
+      if(!rules) continue;
+      for(var j=0;j<rules.length;j++){
+        var rule=rules[j];
+        var txt=rule.cssText||'';
+        if(txt.indexOf(selector)!==-1) matches.push(txt.slice(0,240));
+      }
+    }
+    return matches;
+  }
+  function ensurePanel(){
+    var p=document.getElementById('atsrsTopbarTroublePanel');
+    if(p) return p;
+    p=document.createElement('div');
+    p.id='atsrsTopbarTroublePanel';
+    p.className='hidden';
+    p.innerHTML='<h3>Topbar Troubleshoot Report</h3><div class="trouble-actions"><button class="trouble-fix" type="button" onclick="atsrsHardFixTopbar()">Apply Hard Fix</button><button class="trouble-close" type="button" onclick="document.getElementById(\'atsrsTopbarTroublePanel\').classList.add(\'hidden\')">Close</button></div><pre id="atsrsTopbarTroubleOutput">Press Troubleshoot.</pre>';
+    document.body.appendChild(p);
+    return p;
+  }
+  window.atsrsHardFixTopbar=function(){
+    var app=document.getElementById('app');
+    var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
+    if(!app||!top){ alert('App/top-actions not found'); return; }
+    if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
+    top.setAttribute('style','position:fixed!important;top:18px!important;right:18px!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;display:flex!important;align-items:center!important;gap:10px!important;transform:none!important;width:auto!important;height:auto!important;');
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang) lang.setAttribute('style','position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;transform:none!important;display:block!important;');
+    var logout=document.getElementById('topLogoutBtn');
+    if(logout) logout.setAttribute('style','width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important;display:block!important;position:relative!important;');
+    var btn=document.getElementById('atsrsTopbarTroubleBtn');
+    if(btn) btn.setAttribute('style','width:auto!important;margin:0!important;padding:12px 14px!important;border-radius:12px!important;border:1px solid #facc15!important;background:linear-gradient(135deg,#ca8a04,#eab308)!important;color:#07111d!important;font-weight:900!important;display:block!important;position:relative!important;');
+    window.runTopbarTroubleshoot && window.runTopbarTroubleshoot('After Apply Hard Fix');
+  };
+  window.runTopbarTroubleshoot=function(label){
+    var p=ensurePanel(); p.classList.remove('hidden');
+    var out=document.getElementById('atsrsTopbarTroubleOutput');
+    var top=document.querySelector('#app > .top-actions') || document.querySelector('.atsrs-global-top-actions') || document.querySelector('.atsrs-v56-top-actions') || document.querySelector('.top-actions');
+    var lang=document.getElementById('appLangCircle');
+    var logout=document.getElementById('topLogoutBtn');
+    var y0=window.scrollY;
+    var before=top?Math.round(top.getBoundingClientRect().top):null;
+    var report=[];
+    report.push('TEST: '+(label||'Manual troubleshoot'));
+    report.push('Time: '+new Date().toLocaleString());
+    report.push('ScrollY before: '+y0);
+    report.push('Body classes: '+document.body.className);
+    report.push('App hidden: '+(document.getElementById('app')?.classList.contains('hidden')));
+    report.push('');
+    report.push('TOP ACTIONS: '+JSON.stringify(cssInfo(top),null,2));
+    report.push('LANG BUTTON: '+JSON.stringify(cssInfo(lang),null,2));
+    report.push('LOGOUT: '+JSON.stringify(cssInfo(logout),null,2));
+    report.push('');
+    report.push('Topbar parent chain:');
+    var x=top, chain=[]; while(x&&chain.length<8){chain.push(shortNode(x)); x=x.parentElement;} report.push(chain.join('  <-  '));
+    report.push('');
+    report.push('CSS rules containing .top-actions: '+countSelectors('.top-actions').length);
+    countSelectors('.top-actions').slice(-12).forEach(function(r,i){report.push('RULE '+(i+1)+': '+r.replace(/\s+/g,' '));});
+    report.push('');
+    report.push('Running scroll movement test...');
+    out.textContent=report.join('\n');
+    var maxScroll=document.documentElement.scrollHeight-window.innerHeight;
+    var target=Math.min(maxScroll, y0+350);
+    window.scrollTo(0,target);
+    setTimeout(function(){
+      var after=top?Math.round(top.getBoundingClientRect().top):null;
+      var y1=window.scrollY;
+      report.push('');
+      report.push('ScrollY after: '+y1);
+      report.push('Top rectTop before: '+before);
+      report.push('Top rectTop after: '+after);
+      report.push('Delta: '+(after!==null&&before!==null ? (after-before) : 'N/A'));
+      report.push('Expected for fixed topbar: Delta must be 0 or near 0.');
+      report.push('Result: '+((after!==null&&before!==null&&Math.abs(after-before)<=2)?'PASS ✅ topbar is fixed':'FAIL ❌ topbar moves with page'));
+      out.textContent=report.join('\n');
+      window.scrollTo(0,y0);
+    },250);
+  };
+  ready(function(){
+    var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
+    if(top && !document.getElementById('atsrsTopbarTroubleBtn')){
+      var b=document.createElement('button');
+      b.type='button'; b.id='atsrsTopbarTroubleBtn'; b.textContent='Troubleshoot';
+      b.onclick=function(){ window.runTopbarTroubleshoot && window.runTopbarTroubleshoot(); };
+      top.appendChild(b);
+    }
+    ensurePanel();
+  });
 })();
 </script>
 
