@@ -599,6 +599,28 @@ td:last-child{white-space:nowrap}
   }
 }
 
+
+/* V47: fixed left navigation on ATSRS app pages */
+@media(min-width:801px){
+  #app.app{
+    align-items:start!important;
+  }
+  #app .sidebar{
+    position:sticky!important;
+    top:0!important;
+    height:100vh!important;
+    max-height:100vh!important;
+    align-self:start!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    z-index:80!important;
+  }
+  #app .sidebar .nav{
+    position:sticky!important;
+    top:20px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -690,8 +712,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V46</div>
-<div>Last Update: 04 Jun 2026 02:58 UTC</div>
+<div>ATSRS V47</div>
+<div>Last Update: 04 Jun 2026 03:12 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
