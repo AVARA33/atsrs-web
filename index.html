@@ -1189,7 +1189,7 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 <div class="import-box">
 <h3 id="importExcelTitle"></h3>
 <p id="importExcelInfo" class="sub"></p>
-<input id="excelFile" type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelImport(event)">
+<input id="excelFile" type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelImport(event)" multiple>
 <div id="excelPreview" class="preview-box"></div>
 </div>
 </div>
@@ -1234,11 +1234,11 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 <div class="document-actions">
 <button id="scanDocBtn" class="secondary" onclick="startCameraScan()"></button>
 <button id="uploadDocBtn" class="secondary" onclick="documentFile.click()"></button>
-<input id="documentFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleDocumentUpload(event)">
+<input id="documentFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleDocumentUpload(event)" multiple>
 </div>
 <div id="scanBox" class="scan-box hidden">
 <p id="scanInfo" class="sub"></p>
-<input id="cameraInput" type="file" accept="image/*" capture="environment" onchange="handleDocumentUpload(event)">
+<input id="cameraInput" type="file" accept="image/*" capture="environment" onchange="handleDocumentUpload(event)" multiple>
 <div id="documentPreview" class="preview-box"></div>
 <div id="ocrProgress" class="preview-box"></div>
 <textarea id="ocrRawText" class="hidden" style="width:100%;min-height:90px;background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:10px;margin-top:8px"></textarea>
@@ -1264,7 +1264,7 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 <p id="manualFlowText" class="sub"></p>
 <div class="document-actions">
 <button id="manualUploadBtn" class="secondary" onclick="manualFile.click()"></button>
-<input id="manualFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleManualFile(event)">
+<input id="manualFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleManualFile(event)" multiple>
 </div>
 <div id="manualFilePreview" class="preview-box"></div>
 <div id="manualFormAlert" class="form-alert"></div>
@@ -1314,7 +1314,7 @@ body > .atsrs-global-top-actions .app-lang-switcher{
   <div class="ref-card cv-card">
     <div class="cv-card-head"><h3 id="cvCardTitle">CV / Resume</h3><span id="cvStatusBadge" class="badge badge-blocked">No CV Uploaded</span></div>
     <p id="cvCardText" class="sub">Store, manage and share professional CV versions for employers, agencies and clients.</p>
-    <input id="cvUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleCVUpload(event)">
+    <input id="cvUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleCVUpload(event)" multiple>
     <div id="cvFileInfo" class="preview-box"></div>
     <div class="cv-actions">
       <button id="uploadCVBtn" class="secondary" onclick="cvUploadInput.click()">Upload CV</button>
@@ -2159,7 +2159,7 @@ function ensureManagedCard(kind){
  }
  const oldBtn=document.getElementById(isApp?'uploadAppraisalBtn':'uploadReferenceBtn'); if(oldBtn)oldBtn.remove();
  card.insertAdjacentHTML('beforeend',`
-   <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)">
+   <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)" multiple>
    <div id="${kind}FileInfo" class="preview-box ref-file-info"></div>
    <div class="ref-doc-actions">
      <button id="${kind}UploadBtn" class="secondary" onclick="document.getElementById('${kind}UploadInput').click()"></button>
@@ -2571,7 +2571,7 @@ function ensureManagedCard(kind){
    const oldInfo=document.getElementById(kind+'FileInfo'); if(oldInfo)oldInfo.remove();
    const oldActions=card.querySelector('.ref-doc-actions'); if(oldActions)oldActions.remove();
    card.insertAdjacentHTML('beforeend',`
-     <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)">
+     <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)" multiple>
      <button id="${kind}UploadBtn" class="secondary" onclick="document.getElementById('${kind}UploadInput').click()"></button>
      <div id="${kind}Count" class="career-count"></div>
      <div id="${kind}RecordList" class="career-record-list"></div>
