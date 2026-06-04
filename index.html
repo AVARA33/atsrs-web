@@ -652,8 +652,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V43</div>
-<div>Last Update: 03 Jun 2026 06:35 UTC</div>
+<div>ATSRS V44</div>
+<div>Last Update: 03 Jun 2026 06:48 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -719,16 +719,6 @@ td:last-child{white-space:nowrap}
       <div class="workflow-step"><div class="num">4</div><b id="step4Title">Approve</b><span id="step4Text">Allow companies to download or import selected documents.</span></div>
     </div>
   </div>
-  <div class="snapshot-card">
-    <span id="snapshotBadge" class="pill">COMPLIANCE SNAPSHOT</span>
-    <h3 id="snapshotTitle">Quick status</h3>
-    <div class="snapshot-list">
-      <div class="snapshot-item"><b id="snapValidLabel">Valid documents</b><span id="snapValid">0</span></div>
-      <div class="snapshot-item"><b id="snapRiskLabel">Expiry risk</b><span id="snapRisk" class="warning">0</span></div>
-      <div class="snapshot-item"><b id="snapMissingLabel">Missing documents</b><span id="snapMissing" class="danger">0</span></div>
-      <div class="snapshot-item"><b id="snapShareLabel">Profile sharing</b><span id="snapShare" class="good">Ready</span></div>
-    </div>
-  </div>
 </div>
 </section>
 
@@ -758,6 +748,18 @@ td:last-child{white-space:nowrap}
 <div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
 <div class="card missing-card"><p id="missingDocsText">Missing Documents</p><div class="stat missing" id="missingDocs">0</div></div>
+</div>
+<div class="panel dashboard-snapshot-panel">
+  <div class="snapshot-card">
+    <span id="snapshotBadge" class="pill">COMPLIANCE SNAPSHOT</span>
+    <h3 id="snapshotTitle">Quick status</h3>
+    <div class="snapshot-list">
+      <div class="snapshot-item"><b id="snapValidLabel">Valid documents</b><span id="snapValid">0</span></div>
+      <div class="snapshot-item"><b id="snapRiskLabel">Expiry risk</b><span id="snapRisk" class="warning">0</span></div>
+      <div class="snapshot-item"><b id="snapMissingLabel">Missing documents</b><span id="snapMissing" class="danger">0</span></div>
+      <div class="snapshot-item"><b id="snapShareLabel">Profile sharing</b><span id="snapShare" class="good">Ready</span></div>
+    </div>
+  </div>
 </div>
 <div class="panel">
   <h3 id="riskTitle">Priority alerts</h3>
@@ -2063,4 +2065,4 @@ setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 </script>
 </body>
-                                          </html>
+  </html>
