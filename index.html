@@ -82,7 +82,6 @@ function editCertificate(i){
   const a=getData('certs'); const x=a[i]; if(!x)return;
   editCertIndex=i;
   showPage('certificates',navCertificates); showCertMode('manual');
-  if(x.type && ![...cType.options].some(o=>o.value===x.type)){cType.add(new Option(x.type,x.type));}
   cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
   if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
   if(typeof cExpiryNA!=='undefined'){
@@ -194,7 +193,6 @@ function editCertificate(i){
   const a=getData('certs'); const x=a[i]; if(!x)return;
   editCertIndex=i;
   showPage('certificates',navCertificates); showCertMode('manual');
-  if(x.type && ![...cType.options].some(o=>o.value===x.type)){cType.add(new Option(x.type,x.type));}
   cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
   if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
   if(typeof cExpiryNA!=='undefined'){
@@ -632,6 +630,15 @@ td:last-child{white-space:nowrap}
 .cv-status-card .stat{font-size:24px!important}
 @media(max-width:560px){.cv-actions{grid-template-columns:1fr}.cv-card-head{display:block}.cv-card-head .badge{margin-top:8px}}
 
+
+/* V49: page persistence, free document type entry, file controls for references/appraisals */
+.ref-doc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.ref-doc-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.ref-doc-actions button{margin:0!important}
+.ref-beta-box{border:1px dashed #334155;border-radius:14px;padding:12px;margin-top:12px;background:rgba(2,6,23,.35)}
+.ref-file-info{min-height:18px}
+#cType,#autoDocType{font-weight:700}
+
 </style>
 </head>
 <body>
@@ -723,8 +730,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V48</div>
-<div>Last Update: 04 Jun 2026 03:25 UTC</div>
+<div>ATSRS V49</div>
+<div>Last Update: 04 Jun 2026 03:40 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1022,7 +1029,7 @@ td:last-child{white-space:nowrap}
 <div id="autoFormAlert" class="form-alert"></div>
 <div class="confirm-grid">
 <div id="autoPersonWrap" class="field-wrap"><label id="autoPersonLabel" class="field-label"></label><select id="autoPerson"></select></div>
-<div class="field-wrap"><label id="autoDocTypeLabel" class="field-label"></label><select id="autoDocType" data-required="true"><option>Passport</option><option>Seaman Book</option><option>BOSIET / FOET</option><option>Offshore Medical</option><option>Visa</option><option>Yellow Fever</option><option>ROV Competency</option><option>Other</option></select></div>
+<div class="field-wrap"><label id="autoDocTypeLabel" class="field-label"></label><input id="autoDocType" data-required="true" autocomplete="off"></div>
 <div class="field-wrap"><label id="autoDocNoLabel" class="field-label"></label><input id="autoDocNo"></div>
 <div class="field-wrap"><label id="autoProviderLabel" class="field-label"></label><input id="autoProvider"></div>
 <div class="field-wrap"><label id="autoIssueLabel" class="field-label"></label><input id="autoIssue" type="date"></div>
@@ -1045,7 +1052,7 @@ td:last-child{white-space:nowrap}
 <select id="cPerson"></select>
 <div class="field-wrap">
 <label id="cTypeLabel" class="field-label"></label>
-<select id="cType" data-required="true"><option>Passport</option><option>Visa</option><option>Seaman Book</option><option>Medical</option><option>Certificate</option><option>Training</option><option>Competency</option><option>Appraisal</option><option>Reference</option><option>Vaccination</option><option>Other Document</option></select>
+<input id="cType" data-required="true" autocomplete="off">
 </div>
 <div class="field-wrap">
 <label id="cDocNoLabel" class="field-label">Document No (Optional)</label>
@@ -1487,7 +1494,7 @@ function confirmLogout(){
 
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
-function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();showPage('intro',navIntro);setIntroDetail('svc1');applyLanguage()}
+function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();applyLanguage();restoreCurrentPage();setIntroDetail(currentIntroKey||'svc1');}
 function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
 function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
@@ -1909,6 +1916,73 @@ const applyLanguageBaseV48=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV48();renderCVStatus();}
 setTimeout(()=>{try{renderCVStatus()}catch(e){}},0);
 
+/* V49: persist page on refresh + manual document type + full file controls for Appraisals and References */
+const V49_FILE_TEXT={
+  en:{appStatusUploaded:"Appraisal Uploaded ✓",appStatusMissing:"No Appraisal Uploaded",refStatusUploaded:"Reference Uploaded ✓",refStatusMissing:"No Reference Uploaded",preview:"Preview",download:"Download",deleteFile:"Delete",generate:"Generate ATSRS File (Beta)",comingSoon:"ATSRS document generator will be connected in a later build.",noFile:"No file uploaded yet.",uploadAppraisal:"Upload Appraisal",uploadReference:"Upload Reference",appBetaTitle:"Generate ATSRS Appraisal Summary",appBetaText:"Generate a professional ATSRS appraisal summary from stored career data.",refBetaTitle:"Generate ATSRS Reference Pack",refBetaText:"Generate a professional ATSRS reference pack from stored career data.",docTypePlaceholder:"Write document type manually",autoDocTypePlaceholder:"Write detected document type manually"},
+  az:{appStatusUploaded:"Appraisal yüklənib ✓",appStatusMissing:"Appraisal yüklənməyib",refStatusUploaded:"Reference yüklənib ✓",refStatusMissing:"Reference yüklənməyib",preview:"Bax",download:"İndir",deleteFile:"Sil",generate:"ATSRS faylı yarat (Beta)",comingSoon:"ATSRS sənəd generatoru növbəti build-lərdə qoşulacaq.",noFile:"Hələ fayl yüklənməyib.",uploadAppraisal:"Appraisal yüklə",uploadReference:"Reference yüklə",appBetaTitle:"ATSRS Appraisal Summary yarat",appBetaText:"Saxlanılmış karyera məlumatlarına əsasən professional appraisal summary yaradacaq.",refBetaTitle:"ATSRS Reference Pack yarat",refBetaText:"Saxlanılmış karyera məlumatlarına əsasən professional reference pack yaradacaq.",docTypePlaceholder:"Sənəd növünü manual yaz",autoDocTypePlaceholder:"Tapılan sənəd növünü manual yaz"},
+  ru:{appStatusUploaded:"Appraisal загружен ✓",appStatusMissing:"Appraisal не загружен",refStatusUploaded:"Reference загружен ✓",refStatusMissing:"Reference не загружен",preview:"Просмотр",download:"Скачать",deleteFile:"Удалить",generate:"Создать ATSRS файл (Beta)",comingSoon:"Генератор ATSRS документов будет подключен в следующих build.",noFile:"Файл еще не загружен.",uploadAppraisal:"Загрузить Appraisal",uploadReference:"Загрузить Reference",appBetaTitle:"Создать ATSRS Appraisal Summary",appBetaText:"Создаст профессиональное appraisal summary на основе карьерных данных.",refBetaTitle:"Создать ATSRS Reference Pack",refBetaText:"Создаст профессиональный reference pack на основе карьерных данных.",docTypePlaceholder:"Введите тип документа вручную",autoDocTypePlaceholder:"Введите тип документа вручную"}
+};
+function v49(k){return (V49_FILE_TEXT[lang]&&V49_FILE_TEXT[lang][k])||V49_FILE_TEXT.en[k]||k}
+function getManagedFile(kind){let a=getData(kind+'Files');return Array.isArray(a)&&a.length?a[0]:null}
+function saveManagedFile(kind,file){saveData(kind+'Files',file?[file]:[])}
+function handleManagedUpload(kind,event){const file=event.target.files&&event.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=function(){saveManagedFile(kind,{name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:reader.result});renderManagedFiles();renderAll();}; reader.readAsDataURL(file);}
+function previewManagedFile(kind){const f=getManagedFile(kind); if(!f){alert(v49('noFile'));return;} const w=window.open('','_blank'); if(w){w.document.write(`<title>${f.name}</title><iframe src="${f.data}" style="border:0;width:100%;height:100vh"></iframe>`);w.document.close();}}
+function downloadManagedFile(kind){const f=getManagedFile(kind); if(!f){alert(v49('noFile'));return;} const a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();}
+function deleteManagedFile(kind){const f=getManagedFile(kind); if(!f){alert(v49('noFile'));return;} saveManagedFile(kind,null); const input=document.getElementById(kind+'UploadInput'); if(input)input.value=''; renderManagedFiles(); renderAll();}
+function ensureManagedCard(kind){
+ const isApp=kind==='appraisal';
+ const card=document.getElementById(isApp?'appraisalCardTitle':'referenceCardTitle')?.closest('.ref-card');
+ if(!card || card.dataset.v49Ready==='1')return;
+ card.dataset.v49Ready='1';
+ const title=document.getElementById(isApp?'appraisalCardTitle':'referenceCardTitle');
+ if(title && !title.parentElement.classList.contains('ref-doc-head')){
+   title.outerHTML=`<div class="ref-doc-head"><h3 id="${isApp?'appraisalCardTitle':'referenceCardTitle'}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-blocked">—</span></div>`;
+ }
+ const oldBtn=document.getElementById(isApp?'uploadAppraisalBtn':'uploadReferenceBtn'); if(oldBtn)oldBtn.remove();
+ card.insertAdjacentHTML('beforeend',`
+   <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)">
+   <div id="${kind}FileInfo" class="preview-box ref-file-info"></div>
+   <div class="ref-doc-actions">
+     <button id="${kind}UploadBtn" class="secondary" onclick="document.getElementById('${kind}UploadInput').click()"></button>
+     <button id="${kind}PreviewBtn" class="secondary" onclick="previewManagedFile('${kind}')"></button>
+     <button id="${kind}DownloadBtn" class="secondary" onclick="downloadManagedFile('${kind}')"></button>
+     <button id="${kind}DeleteBtn" class="action" onclick="deleteManagedFile('${kind}')"></button>
+   </div>
+   <div class="ref-beta-box">
+     <span class="pill">BETA</span>
+     <h4 id="${kind}BetaTitle"></h4>
+     <p id="${kind}BetaText" class="sub"></p>
+     <button id="${kind}GenerateBtn" class="secondary" onclick="alert(v49('comingSoon'))"></button>
+   </div>`);
+}
+function renderManagedFiles(){
+ ['appraisal','reference'].forEach(kind=>ensureManagedCard(kind));
+ const app=getManagedFile('appraisal'), ref=getManagedFile('reference');
+ const pairs=[['appraisal',app],['reference',ref]];
+ pairs.forEach(([kind,file])=>{
+  const isApp=kind==='appraisal';
+  const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=file?(isApp?v49('appStatusUploaded'):v49('refStatusUploaded')):(isApp?v49('appStatusMissing'):v49('refStatusMissing')); badge.className='badge '+(file?'badge-ready':'badge-blocked');}
+  const info=document.getElementById(kind+'FileInfo'); if(info)info.innerText=file?`${file.name} • ${Math.round((file.size||0)/1024)} KB`:'';
+  const up=document.getElementById(kind+'UploadBtn'); if(up)up.innerText=isApp?v49('uploadAppraisal'):v49('uploadReference');
+  const pr=document.getElementById(kind+'PreviewBtn'); if(pr)pr.innerText=v49('preview');
+  const dl=document.getElementById(kind+'DownloadBtn'); if(dl)dl.innerText=v49('download');
+  const del=document.getElementById(kind+'DeleteBtn'); if(del)del.innerText=v49('deleteFile');
+  const bt=document.getElementById(kind+'BetaTitle'); if(bt)bt.innerText=isApp?v49('appBetaTitle'):v49('refBetaTitle');
+  const bx=document.getElementById(kind+'BetaText'); if(bx)bx.innerText=isApp?v49('appBetaText'):v49('refBetaText');
+  const gen=document.getElementById(kind+'GenerateBtn'); if(gen)gen.innerText=v49('generate');
+ });
+ if(typeof cType!=='undefined')cType.placeholder=v49('docTypePlaceholder');
+ if(typeof autoDocType!=='undefined')autoDocType.placeholder=v49('autoDocTypePlaceholder');
+}
+const restoreCurrentPageBaseV49=restoreCurrentPage;
+restoreCurrentPage=function(){let page=localStorage.getItem('atsrs_current_page')||'intro';let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:'intro',map[page]||navIntro);}
+const renderAllBaseV49=renderAll;
+renderAll=function(){renderAllBaseV49();renderManagedFiles();}
+const applyLanguageBaseV49=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV49();renderManagedFiles();}
+setTimeout(()=>{try{renderManagedFiles()}catch(e){}},0);
+
+
 
 /* V27 Share Profile */
 const V27_TEXT={
@@ -2211,7 +2285,6 @@ function editCertificate(i){
   const a=getData('certs'); const x=a[i]; if(!x)return;
   editCertIndex=i;
   showPage('certificates',navCertificates); showCertMode('manual');
-  if(x.type && ![...cType.options].some(o=>o.value===x.type)){cType.add(new Option(x.type,x.type));}
   cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
   if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
   if(typeof cExpiryNA!=='undefined'){
