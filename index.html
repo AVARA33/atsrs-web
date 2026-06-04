@@ -949,8 +949,8 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V56</div>
-<div>Last Update: 04 Jun 2026 18:30 UTC</div>
+<div>ATSRS V57</div>
+<div>Last Update: 04 Jun 2026 18:45 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2868,6 +2868,68 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
   setInterval(runV56,700);
   setTimeout(runV56,0);
   setTimeout(runV56,300);
+})();
+</script>
+
+
+
+<style>
+/* V57: References/Appraisals panels show max 3 files, then internal scroll */
+#refsPage .ref-card{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+}
+#refsPage .career-record-list{
+  flex:0 1 auto!important;
+  max-height:396px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:6px!important;
+  scrollbar-gutter:stable!important;
+}
+#refsPage .career-record-list::-webkit-scrollbar{width:8px!important}
+#refsPage .career-record-list::-webkit-scrollbar-track{background:rgba(2,6,23,.35)!important;border-radius:999px!important}
+#refsPage .career-record-list::-webkit-scrollbar-thumb{background:#3b536d!important;border-radius:999px!important}
+#refsPage .career-record-row{
+  min-height:124px!important;
+  flex:0 0 auto!important;
+}
+@media(max-width:760px){
+  #refsPage .career-record-list{max-height:384px!important;}
+  #refsPage .career-record-row{min-height:118px!important;}
+}
+</style>
+<script>
+/* V57: force three-record viewport after render/language changes */
+(function(){
+  function lockCareerLists(){
+    ['appraisal','reference','recommendation'].forEach(function(kind){
+      var list=document.getElementById(kind+'RecordList');
+      if(!list)return;
+      list.style.setProperty('max-height', window.innerWidth<=760?'384px':'396px', 'important');
+      list.style.setProperty('overflow-y','auto','important');
+      list.style.setProperty('overflow-x','hidden','important');
+      list.style.setProperty('padding-right','6px','important');
+      Array.prototype.forEach.call(list.querySelectorAll('.career-record-row'),function(row){
+        row.style.setProperty('min-height', window.innerWidth<=760?'118px':'124px', 'important');
+      });
+    });
+  }
+  var baseRender=window.renderManagedFiles;
+  if(typeof baseRender==='function'){
+    window.renderManagedFiles=function(){var r=baseRender.apply(this,arguments); setTimeout(lockCareerLists,0); return r;};
+  }
+  var baseRun=window.atsrsV56ApplyLanguage;
+  if(typeof baseRun==='function'){
+    window.atsrsV56ApplyLanguage=function(){var r=baseRun.apply(this,arguments); setTimeout(lockCareerLists,0); return r;};
+  }
+  window.atsrsV57LockCareerLists=lockCareerLists;
+  window.addEventListener('resize',lockCareerLists);
+  document.addEventListener('DOMContentLoaded',lockCareerLists);
+  setInterval(lockCareerLists,900);
+  setTimeout(lockCareerLists,0);
+  setTimeout(lockCareerLists,300);
 })();
 </script>
 
