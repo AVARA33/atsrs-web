@@ -692,6 +692,48 @@ td:last-child{white-space:nowrap}
   display:none!important;
 }
 
+
+
+/* V53: final fixed top controls for app pages only.
+   Keeps language selector and logout locked to viewport during scroll. */
+#app.app:not(.hidden) > .top-actions,
+body #app.app:not(.hidden) > .top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  z-index:2147483647!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  transform:none!important;
+}
+
+#app.app:not(.hidden) > .top-actions .app-lang-switcher,
+#app.app:not(.hidden) > .top-actions .lang-floating{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+}
+
+@media(max-width:800px){
+  #app.app:not(.hidden) > .top-actions,
+  body #app.app:not(.hidden) > .top-actions{
+    position:fixed!important;
+    top:14px!important;
+    right:14px!important;
+    left:auto!important;
+    z-index:2147483647!important;
+  }
+}
+
+/* Login page language remains inside auth card as before. */
+#auth:not(.hidden) .auth-card > .lang-floating{
+  position:absolute!important;
+}
+
 </style>
 </head>
 <body>
@@ -783,8 +825,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V52</div>
-<div>Last Update: 04 Jun 2026 04:15 UTC</div>
+<div>ATSRS V53</div>
+<div>Last Update: 04 Jun 2026 04:28 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
