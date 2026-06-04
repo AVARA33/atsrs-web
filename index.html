@@ -561,83 +561,6 @@ td:last-child{white-space:nowrap}
   }
 }
 
-
-/* V45 workflow animation + fixed app top controls */
-.atsrs-workflow-panel{
-  background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(56,189,248,.10));
-  border:1px solid #2a3d5a;
-  border-radius:22px;
-  padding:20px;
-  margin:0 0 16px;
-  overflow:hidden;
-}
-.atsrs-workflow-panel h3{margin:8px 0 6px;font-size:24px}
-.atsrs-flow{
-  display:grid;
-  grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;
-  align-items:stretch;
-  gap:10px;
-  margin-top:16px;
-}
-.flow-step{
-  position:relative;
-  background:#0f172a;
-  border:1px solid #334155;
-  border-radius:18px;
-  padding:16px;
-  min-height:132px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:7px;
-  overflow:hidden;
-  animation:flowPulse 4.8s ease-in-out infinite;
-}
-.flow-step::before{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:radial-gradient(circle,rgba(34,197,94,.18),transparent 42%);
-  opacity:.55;
-  animation:flowGlow 4.8s ease-in-out infinite;
-}
-.flow-step b,.flow-step span,.flow-icon{position:relative;z-index:1}
-.flow-step b{font-size:17px}
-.flow-step span{font-size:13px;color:#a7b5c5;line-height:1.35}
-.flow-icon{font-size:28px}
-.flow-arrow{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#86efac;
-  font-weight:900;
-  font-size:26px;
-  animation:arrowMove 1.35s ease-in-out infinite;
-}
-.flow-track{animation-delay:.35s}.flow-track::before{animation-delay:.35s}
-.flow-share{animation-delay:.70s}.flow-share::before{animation-delay:.70s}
-.flow-approve{animation-delay:1.05s}.flow-approve::before{animation-delay:1.05s}
-@keyframes flowPulse{0%,100%{transform:translateY(0);border-color:#334155}45%{transform:translateY(-5px);border-color:rgba(34,197,94,.7)}}
-@keyframes flowGlow{0%,100%{transform:translateX(-18%);opacity:.25}50%{transform:translateX(18%);opacity:.75}}
-@keyframes arrowMove{0%,100%{transform:translateX(0);opacity:.55}50%{transform:translateX(4px);opacity:1}}
-#app .top-actions{
-  position:fixed!important;
-  top:18px!important;
-  right:18px!important;
-  left:auto!important;
-  z-index:999999!important;
-}
-html[dir="rtl"] #app .top-actions{right:18px!important;left:auto!important}
-.main{padding-top:92px!important}
-@media(max-width:980px){
-  .atsrs-flow{grid-template-columns:1fr;gap:8px}
-  .flow-arrow{transform:rotate(90deg);animation:none}
-}
-@media(max-width:800px){
-  #app .top-actions{position:fixed!important;top:12px!important;right:12px!important;left:auto!important}
-  .main{padding-top:96px!important}
-}
-
 </style>
 </head>
 <body>
@@ -729,8 +652,8 @@ html[dir="rtl"] #app .top-actions{right:18px!important;left:auto!important}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V45</div>
-<div>Last Update: 04 Jun 2026 02:40 UTC</div>
+<div>ATSRS V44</div>
+<div>Last Update: 03 Jun 2026 06:48 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -774,36 +697,6 @@ html[dir="rtl"] #app .top-actions{right:18px!important;left:auto!important}
 <span id="introBadge" class="pill">ATSRS PLATFORM</span>
 <h3 id="introMainTitle">Professional document, expiry and profile sharing platform</h3>
 <p id="introMainText">ATSRS helps offshore, marine, ROV, NDT and technical personnel store career documents, track expiry dates, share controlled profile links and support company compliance workflows.</p>
-</div>
-<div class="atsrs-workflow-panel">
-  <span id="wfBadge" class="pill">ATSRS WORKFLOW</span>
-  <h3 id="wfTitle">Upload → Track → Share → Approve</h3>
-  <p id="wfSub" class="sub">A simple animated flow from document upload to approved employer access.</p>
-  <div class="atsrs-flow">
-    <div class="flow-step flow-upload">
-      <div class="flow-icon">⬆️</div>
-      <b id="wfUploadTitle">Upload</b>
-      <span id="wfUploadText">Add PDF, JPG or PNG documents.</span>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step flow-track">
-      <div class="flow-icon">⏱️</div>
-      <b id="wfTrackTitle">Track</b>
-      <span id="wfTrackText">Monitor 90-day, 30-day and expired status.</span>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step flow-share">
-      <div class="flow-icon">🔗</div>
-      <b id="wfShareTitle">Share</b>
-      <span id="wfShareText">Send one controlled ATSRS profile link.</span>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step flow-approve">
-      <div class="flow-icon">✅</div>
-      <b id="wfApproveTitle">Approve</b>
-      <span id="wfApproveText">Approve company access and import selected records.</span>
-    </div>
-  </div>
 </div>
 <div class="intro-service-grid">
   <div class="intro-service-card active" data-intro="svc1" onclick="setIntroDetail('svc1')"><div class="svc-icon">📁</div><h3 id="introSvc1Title">Document Vault</h3><p id="introSvc1Text">Store passport, visa, medical, seaman book, certificates, trainings, competency, references and appraisals in one place.</p></div>
@@ -2169,58 +2062,6 @@ renderAll=function(){
 const applyLanguageBaseV41R=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
 setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
-
-
-/* V45: animated workflow translations, corrected 30/90 expiry split, fixed top action behavior */
-const V45_TEXT={
-  en:{
-    wfBadge:"ATSRS WORKFLOW",wfTitle:"Upload → Track → Share → Approve",wfSub:"A simple animated flow from document upload to approved employer access.",
-    wfUploadTitle:"Upload",wfUploadText:"Add PDF, JPG or PNG documents.",
-    wfTrackTitle:"Track",wfTrackText:"Monitor 90-day, 30-day and expired status.",
-    wfShareTitle:"Share",wfShareText:"Send one controlled ATSRS profile link.",
-    wfApproveTitle:"Approve",wfApproveText:"Approve company access and import selected records."
-  },
-  az:{
-    wfBadge:"ATSRS İŞ AXINI",wfTitle:"Yüklə → İzlə → Paylaş → Təsdiqlə",wfSub:"Sənəd yükləmədən işəgötürən icazəsinə qədər sadə animasiyalı proses.",
-    wfUploadTitle:"Yüklə",wfUploadText:"PDF, JPG və ya PNG sənədləri əlavə et.",
-    wfTrackTitle:"İzlə",wfTrackText:"90 gün, 30 gün və vaxtı keçmiş statusları izlə.",
-    wfShareTitle:"Paylaş",wfShareText:"Bir idarə olunan ATSRS profil linki göndər.",
-    wfApproveTitle:"Təsdiqlə",wfApproveText:"Şirkət access-ini təsdiqlə və seçilmiş qeydləri import et."
-  },
-  ru:{
-    wfBadge:"ПРОЦЕСС ATSRS",wfTitle:"Загрузить → Отслеживать → Поделиться → Одобрить",wfSub:"Простой анимированный процесс от загрузки документа до одобренного доступа работодателя.",
-    wfUploadTitle:"Загрузить",wfUploadText:"Добавьте документы PDF, JPG или PNG.",
-    wfTrackTitle:"Отслеживать",wfTrackText:"Контроль статусов: 90 дней, 30 дней и истекшие.",
-    wfShareTitle:"Поделиться",wfShareText:"Отправьте одну контролируемую ссылку профиля ATSRS.",
-    wfApproveTitle:"Одобрить",wfApproveText:"Одобрите доступ компании и импорт выбранных записей."
-  }
-};
-function v45(k){return (V45_TEXT[lang]&&V45_TEXT[lang][k])||V45_TEXT.en[k]||k}
-function applyV45Language(){
-  ["wfBadge","wfTitle","wfSub","wfUploadTitle","wfUploadText","wfTrackTitle","wfTrackText","wfShareTitle","wfShareText","wfApproveTitle","wfApproveText"].forEach(id=>{
-    const el=document.getElementById(id); if(el)el.innerText=v45(id);
-  });
-}
-function recalcV45ExpiryCounters(){
-  if(typeof exp90==="undefined"||typeof exp30==="undefined"||typeof expired==="undefined")return;
-  const certs=getData("certs");
-  let e90=0,e30=0,ex=0;
-  certs.forEach(x=>{
-    const s=status(x.expiry);
-    if(s.noExpiry)return;
-    if(s.expired){ex++;return;}
-    if(s.days<=30)e30++;
-    else if(s.days<=90)e90++;
-  });
-  exp90.innerText=e90;
-  exp30.innerText=e30;
-  expired.innerText=ex;
-}
-const applyLanguageBaseV45=applyLanguage;
-applyLanguage=function(){applyLanguageBaseV45();applyV45Language();recalcV45ExpiryCounters();}
-const renderAllBaseV45=renderAll;
-renderAll=function(){renderAllBaseV45();recalcV45ExpiryCounters();if(typeof renderV29Snapshot==="function")renderV29Snapshot();}
-setTimeout(()=>{try{applyV45Language();recalcV45ExpiryCounters();}catch(e){}},0);
 
 </script>
 </body>
