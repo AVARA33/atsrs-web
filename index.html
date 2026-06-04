@@ -532,6 +532,44 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 .edit-btn:hover{background:#475569!important}
 td:last-child{white-space:nowrap}
 
+
+
+/* V46 ATSRS Platform animated SaaS workflow - keeps V44/V43 top controls untouched */
+#introPage{animation:introPageFade .45s ease both}
+@keyframes introPageFade{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.intro-hero{position:relative;overflow:hidden}
+.intro-hero::after{content:"";position:absolute;inset:-80px;background:linear-gradient(115deg,transparent 0%,rgba(134,239,172,.08) 40%,rgba(56,189,248,.10) 50%,transparent 62%);transform:translateX(-60%);animation:heroSweep 6s ease-in-out infinite;pointer-events:none}
+@keyframes heroSweep{0%,18%{transform:translateX(-70%)}55%,100%{transform:translateX(70%)}}
+.atsrs-anime-stage{position:relative;background:linear-gradient(135deg,rgba(15,118,110,.18),rgba(8,21,36,.98));border:1px solid rgba(134,239,172,.24);border-radius:24px;padding:20px;margin:16px 0;overflow:hidden;box-shadow:0 24px 65px rgba(0,0,0,.28)}
+.atsrs-anime-stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 18%,rgba(34,197,94,.16),transparent 26%),radial-gradient(circle at 92% 75%,rgba(56,189,248,.12),transparent 26%);pointer-events:none}
+.anime-header{position:relative;z-index:2;margin-bottom:16px}.anime-header h3{font-size:23px;margin:10px 0 6px}.anime-header p{max-width:720px}
+.anime-workflow{position:relative;z-index:2;display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr 44px 1fr;gap:10px;align-items:stretch}
+.anime-step{position:relative;min-height:198px;background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:22px;padding:16px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);animation:stepFloat 4.6s ease-in-out infinite}
+.anime-step:nth-of-type(3){animation-delay:.3s}.anime-step:nth-of-type(5){animation-delay:.6s}.anime-step:nth-of-type(7){animation-delay:.9s}
+.anime-step::after{content:"";position:absolute;left:-40%;top:-70%;width:70%;height:190%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:rotate(18deg);animation:cardShine 5.2s ease-in-out infinite}
+@keyframes stepFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes cardShine{0%,45%{left:-65%}78%,100%{left:125%}}
+.anime-icon{width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.14));border:1px solid rgba(134,239,172,.25);font-size:24px;margin-bottom:12px;box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.doc-float{animation:docFloat 2.8s ease-in-out infinite}.pulse-calendar{animation:pulseCal 2.2s ease-in-out infinite}.link-spin{animation:linkPulse 2.8s ease-in-out infinite}.check-pop{animation:checkPop 2.4s ease-in-out infinite}
+@keyframes docFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(3deg)}}
+@keyframes pulseCal{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.0)}50%{box-shadow:0 0 0 8px rgba(34,197,94,.12)}}
+@keyframes linkPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes checkPop{0%,100%{transform:scale(1)}40%{transform:scale(1.12)}}
+.anime-step b{display:block;font-size:18px;margin-bottom:6px;color:#f8fafc}.anime-step span{display:block;color:#a7b5c5;font-size:13px;line-height:1.42}
+.anime-arrow{display:flex;align-items:center;justify-content:center}.anime-arrow span{width:36px;height:3px;border-radius:999px;background:linear-gradient(90deg,#22c55e,#38bdf8);position:relative;animation:arrowPulse 1.8s ease-in-out infinite}.anime-arrow span::after{content:"";position:absolute;right:-2px;top:-5px;width:12px;height:12px;border-right:3px solid #38bdf8;border-top:3px solid #38bdf8;transform:rotate(45deg)}
+@keyframes arrowPulse{0%,100%{opacity:.55;transform:translateX(-2px)}50%{opacity:1;transform:translateX(3px)}}
+.mini-docs,.expiry-bars,.approve-flow{display:flex;flex-direction:column;gap:6px;margin-top:14px}.mini-docs em,.approve-flow i{font-style:normal;border:1px solid rgba(67,92,118,.9);border-radius:10px;padding:6px 8px;color:#dbeafe;background:#071524;font-size:12px;font-weight:800;animation:itemSlide 4.5s ease-in-out infinite}.mini-docs em:nth-child(2),.approve-flow i:nth-child(2){animation-delay:.35s}.mini-docs em:nth-child(3),.approve-flow i:nth-child(3){animation-delay:.7s}
+@keyframes itemSlide{0%,100%{transform:translateX(0);opacity:.72}50%{transform:translateX(6px);opacity:1}}
+.expiry-bars{gap:7px}.expiry-bars i{font-style:normal;height:22px;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;color:#06111d;animation:barGrow 3.6s ease-in-out infinite}.bar90{width:82%;background:#facc15}.bar30{width:58%;background:#fb923c;animation-delay:.25s!important}.barexp{width:42%;background:#fb7185;animation-delay:.5s!important}
+@keyframes barGrow{0%,100%{transform:scaleX(.84);transform-origin:left;opacity:.78}50%{transform:scaleX(1);opacity:1}}
+.profile-link-demo{margin-top:14px;border:1px dashed rgba(56,189,248,.48);border-radius:12px;padding:9px;background:#04101d;color:#93c5fd;font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:linkGlow 2.4s ease-in-out infinite}
+@keyframes linkGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 4px rgba(56,189,248,.10)}}
+.intro-service-grid{animation:gridRise .6s ease both}.intro-service-card{animation:serviceCardRise .62s ease both}.intro-service-card:nth-child(1){animation-delay:.04s}.intro-service-card:nth-child(2){animation-delay:.12s}.intro-service-card:nth-child(3){animation-delay:.20s}.intro-service-card:nth-child(4){animation-delay:.28s}.intro-service-card:nth-child(5){animation-delay:.36s}.intro-service-card:nth-child(6){animation-delay:.44s}.intro-service-card:hover .svc-icon{animation:iconBounce .7s ease}
+@keyframes serviceCardRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}45%{transform:translateY(-7px)}}
+@media(max-width:1120px){.anime-workflow{grid-template-columns:1fr}.anime-arrow{height:24px}.anime-arrow span{transform:rotate(90deg)}.anime-arrow span::after{right:-2px}.anime-step{min-height:170px}}
+@media(max-width:600px){.atsrs-anime-stage{padding:16px}.anime-header h3{font-size:20px}.anime-step{min-height:160px}.profile-link-demo{white-space:normal}}
+
 /* V43 page-attached top actions: language + logout stay at the top-right of the app, not fixed to viewport */
 .app{position:relative}
 .top-actions{
@@ -652,8 +690,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V44</div>
-<div>Last Update: 03 Jun 2026 06:48 UTC</div>
+<div>ATSRS V46</div>
+<div>Last Update: 04 Jun 2026 02:58 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -707,16 +745,50 @@ td:last-child{white-space:nowrap}
   <div class="intro-service-card" data-intro="svc6" onclick="setIntroDetail('svc6')"><div class="svc-icon">🏢</div><h3 id="introSvc6Title">Company Compliance</h3><p id="introSvc6Text">Companies can request access, review approved documents and import candidate records into their compliance profile.</p></div>
 </div>
 
-<div class="professional-dashboard">
-  <div class="workflow-card">
+<div class="atsrs-anime-stage" aria-label="ATSRS animated workflow">
+  <div class="anime-header">
     <span id="workflowBadge" class="pill">HOW ATSRS WORKS</span>
     <h3 id="workflowTitle">From document upload to employer-ready profile</h3>
     <p id="workflowSub" class="sub">A simple flow for personal users today and company compliance tomorrow.</p>
-    <div class="workflow-steps">
-      <div class="workflow-step"><div class="num">1</div><b id="step1Title">Upload</b><span id="step1Text">Add documents manually or by scan.</span></div>
-      <div class="workflow-step"><div class="num">2</div><b id="step2Title">Track</b><span id="step2Text">Monitor expiry and missing items.</span></div>
-      <div class="workflow-step"><div class="num">3</div><b id="step3Title">Share</b><span id="step3Text">Send a controlled ATSRS profile link.</span></div>
-      <div class="workflow-step"><div class="num">4</div><b id="step4Title">Approve</b><span id="step4Text">Allow companies to download or import selected documents.</span></div>
+  </div>
+
+  <div class="anime-workflow">
+    <div class="anime-step anime-step-upload">
+      <div class="anime-icon doc-float">📄</div>
+      <b id="step1Title">Upload</b>
+      <span id="step1Text">Add documents manually or by scan.</span>
+      <div class="mini-docs">
+        <em>Passport</em><em>Medical</em><em>Certificate</em>
+      </div>
+    </div>
+
+    <div class="anime-arrow"><span></span></div>
+
+    <div class="anime-step anime-step-track">
+      <div class="anime-icon pulse-calendar">📅</div>
+      <b id="step2Title">Track</b>
+      <span id="step2Text">Monitor expiry and missing items.</span>
+      <div class="expiry-bars">
+        <i class="bar90">90</i><i class="bar30">30</i><i class="barexp">EXP</i>
+      </div>
+    </div>
+
+    <div class="anime-arrow"><span></span></div>
+
+    <div class="anime-step anime-step-share">
+      <div class="anime-icon link-spin">🔗</div>
+      <b id="step3Title">Share</b>
+      <span id="step3Text">Send a controlled ATSRS profile link.</span>
+      <div class="profile-link-demo">atsrs.com/profile/anar-agasiyev</div>
+    </div>
+
+    <div class="anime-arrow"><span></span></div>
+
+    <div class="anime-step anime-step-approve">
+      <div class="anime-icon check-pop">✅</div>
+      <b id="step4Title">Approve</b>
+      <span id="step4Text">Allow companies to download or import selected documents.</span>
+      <div class="approve-flow"><i>Request</i><i>Approve</i><i>Import</i></div>
     </div>
   </div>
 </div>
