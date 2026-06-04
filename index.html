@@ -532,9 +532,10 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 .edit-btn:hover{background:#475569!important}
 td:last-child{white-space:nowrap}
 
-/* V42 fixed top actions: language + logout must stay in viewport while scrolling */
+/* V43 page-attached top actions: language + logout stay at the top-right of the app, not fixed to viewport */
+.app{position:relative}
 .top-actions{
-  position:fixed!important;
+  position:absolute!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
@@ -549,7 +550,7 @@ td:last-child{white-space:nowrap}
 }
 @media(max-width:800px){
   .top-actions{
-    position:fixed!important;
+    position:absolute!important;
     top:14px!important;
     right:14px!important;
     left:auto!important;
@@ -651,8 +652,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V42</div>
-<div>Last Update: 03 Jun 2026 06:28 UTC</div>
+<div>ATSRS V43</div>
+<div>Last Update: 03 Jun 2026 06:35 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2062,4 +2063,4 @@ setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 </script>
 </body>
-  </html>
+                                          </html>
