@@ -927,10 +927,25 @@ body > .atsrs-global-top-actions .app-lang-switcher{
   }
 }
 
+
+/* V69: prevent login flash during refresh while auth/app state is being restored */
+body.atsrs-booting #auth,
+body.atsrs-booting #app{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+body:not(.atsrs-booting) #auth,
+body:not(.atsrs-booting) #app{
+  visibility:visible;
+  opacity:1;
+}
+
 </style>
 
 </head>
-<body>
+<body class="atsrs-booting">
 <section id="auth" class="auth">
 
 <div class="auth-bg-docs" aria-hidden="true">
@@ -1018,8 +1033,8 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V68</div>
-<div>Last Update: 04 Jun 2026 22:05 UTC</div>
+<div>ATSRS V69</div>
+<div>Last Update: 04 Jun 2026 22:15 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1782,7 +1797,18 @@ function confirmLogout(){
 
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
 function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
-function openApp(){auth.classList.add("hidden");app.classList.remove("hidden");userEmail.innerText=currentUser.email;loadProfile();applyModeUI();renderAll();applyLanguage();restoreCurrentPage();setIntroDetail(currentIntroKey||'svc1');}
+function openApp(){
+  auth.classList.add("hidden");
+  app.classList.remove("hidden");
+  userEmail.innerText=currentUser.email;
+  loadProfile();
+  applyModeUI();
+  renderAll();
+  applyLanguage();
+  restoreCurrentPage();
+  setIntroDetail(currentIntroKey||'svc1');
+  document.body.classList.remove("atsrs-booting");
+}
 function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
 function showAccountTab(tab){["general","security","preferences"].forEach(x=>{document.getElementById("account"+cap(x)+"Tab").classList.remove("active");document.getElementById("accountTab"+cap(x)+"Btn").classList.remove("active")});document.getElementById("account"+cap(tab)+"Tab").classList.add("active");document.getElementById("accountTab"+cap(tab)+"Btn").classList.add("active")}
@@ -3646,6 +3672,28 @@ html[dir="rtl"] body > .atsrs-v64-top-actions{right:18px!important;left:auto!imp
   window.addEventListener('scroll',function(){requestAnimationFrame(run);},{passive:true});
   setInterval(run,700);
   setTimeout(run,0); setTimeout(run,300); setTimeout(run,900);
+})();
+</script>
+
+
+<script>
+/* V69: release boot screen if no existing session/local login opens the app */
+(function(){
+  function releaseBootIfNeeded(){
+    try{
+      var appEl=document.getElementById('app');
+      var authEl=document.getElementById('auth');
+      var localMode=localStorage.getItem('atsrs_auth_mode');
+      var appOpen=appEl && !appEl.classList.contains('hidden');
+      if(appOpen || localMode!=='local'){
+        document.body.classList.remove('atsrs-booting');
+      }
+    }catch(e){
+      document.body.classList.remove('atsrs-booting');
+    }
+  }
+  window.addEventListener('load',function(){setTimeout(releaseBootIfNeeded,250);});
+  setTimeout(releaseBootIfNeeded,1200);
 })();
 </script>
 
