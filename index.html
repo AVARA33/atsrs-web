@@ -781,6 +781,86 @@ html[dir="rtl"] #app.app .top-actions{
 .career-count{font-size:12px;color:#a7b5c5;margin-top:6px;font-weight:700}
 @media(max-width:760px){.career-record-row{grid-template-columns:1fr}.career-record-actions{grid-template-columns:repeat(3,1fr)}}
 
+
+
+/* V55: clean References/Appraisals repository layout + bulletproof app top controls */
+#refsPage .ref-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr))!important;
+  gap:16px!important;
+  align-items:stretch!important;
+}
+#refsPage .ref-card{
+  min-width:0!important;
+  overflow:hidden!important;
+}
+#refsPage .career-record-list{
+  max-height:360px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:2px!important;
+}
+#refsPage .career-record-row{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:9px!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+#refsPage .career-record-name b{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  word-break:break-word!important;
+  line-height:1.25!important;
+}
+#refsPage .career-record-date input{
+  width:100%!important;
+  max-width:180px!important;
+}
+#refsPage .career-record-actions{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+}
+#refsPage .career-record-actions button{
+  width:100%!important;
+  min-width:0!important;
+  padding:9px 6px!important;
+  white-space:nowrap!important;
+}
+#refsPage .cv-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+@media(max-width:900px){
+  #refsPage .ref-grid{grid-template-columns:1fr!important;}
+}
+@media(max-width:520px){
+  #refsPage .career-record-actions,
+  #refsPage .cv-actions{grid-template-columns:1fr!important;}
+}
+body > .atsrs-global-top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  z-index:2147483647!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  transform:none!important;
+}
+body > .atsrs-global-top-actions .lang-floating,
+body > .atsrs-global-top-actions .app-lang-switcher{
+  position:relative!important;
+  top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;
+}
+@media(max-width:800px){
+  body > .atsrs-global-top-actions{top:12px!important;right:12px!important;}
+}
+
 </style>
 </head>
 <body>
@@ -872,8 +952,8 @@ html[dir="rtl"] #app.app .top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V54</div>
-<div>Last Update: 04 Jun 2026 04:42 UTC</div>
+<div>ATSRS V55</div>
+<div>Last Update: 04 Jun 2026 04:58 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2557,6 +2637,49 @@ window.addEventListener('scroll',forceTopControlsFixed,{passive:true});
 window.addEventListener('resize',forceTopControlsFixed);
 setInterval(forceTopControlsFixed,800);
 setTimeout(()=>{try{renderManagedFiles();forceTopControlsFixed();}catch(e){}},0);
+
+
+/* V55: dock app language/logout controls to body so no page/container scroll can move them */
+function v55DockTopActions(){
+  const app=document.getElementById('app');
+  const auth=document.getElementById('auth');
+  let top=document.querySelector('.atsrs-global-top-actions') || document.querySelector('#app .top-actions');
+  if(!top)return;
+  if(!top.classList.contains('atsrs-global-top-actions')){
+    top.classList.add('atsrs-global-top-actions');
+    document.body.appendChild(top);
+  }
+  const appVisible=app && !app.classList.contains('hidden');
+  top.style.setProperty('display',appVisible?'flex':'none','important');
+  top.style.setProperty('position','fixed','important');
+  top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+  top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+  top.style.setProperty('left','auto','important');
+  top.style.setProperty('z-index','2147483647','important');
+  top.style.setProperty('transform','none','important');
+}
+const v55ShowPageBase=typeof showPage==='function'?showPage:null;
+if(v55ShowPageBase){
+  showPage=function(){const r=v55ShowPageBase.apply(this,arguments);setTimeout(v55DockTopActions,0);return r;}
+}
+const v55LoginBase=typeof login==='function'?login:null;
+if(v55LoginBase){
+  login=function(){const r=v55LoginBase.apply(this,arguments);setTimeout(v55DockTopActions,80);setTimeout(v55DockTopActions,400);return r;}
+}
+const v55LocalTestLoginBase=typeof localTestLogin==='function'?localTestLogin:null;
+if(v55LocalTestLoginBase){
+  localTestLogin=function(){const r=v55LocalTestLoginBase.apply(this,arguments);setTimeout(v55DockTopActions,80);setTimeout(v55DockTopActions,400);return r;}
+}
+const v55LogoutBase=typeof logout==='function'?logout:null;
+if(v55LogoutBase){
+  logout=function(){const r=v55LogoutBase.apply(this,arguments);setTimeout(v55DockTopActions,0);return r;}
+}
+window.addEventListener('scroll',v55DockTopActions,{passive:true});
+window.addEventListener('resize',v55DockTopActions);
+setInterval(v55DockTopActions,500);
+setTimeout(v55DockTopActions,0);
+setTimeout(v55DockTopActions,500);
+
 </script>
 
 </body>
