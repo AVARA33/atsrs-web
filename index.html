@@ -949,8 +949,8 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V57</div>
-<div>Last Update: 04 Jun 2026 18:45 UTC</div>
+<div>ATSRS V58</div>
+<div>Last Update: 04 Jun 2026 19:05 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2930,6 +2930,153 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
   setInterval(lockCareerLists,900);
   setTimeout(lockCareerLists,0);
   setTimeout(lockCareerLists,300);
+})();
+</script>
+
+
+
+<style>
+/* V58: Stable independent viewport topbar. Old app top-actions are disabled. */
+#app .top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-global-top-actions{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#atsrsStableTopbar{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:2147483647!important;
+  display:none;
+  align-items:center!important;
+  gap:10px!important;
+  transform:none!important;
+  margin:0!important;
+  padding:0!important;
+  width:auto!important;
+  height:auto!important;
+  pointer-events:auto!important;
+}
+#atsrsStableTopbar.active{display:flex!important;}
+#atsrsStableTopbar .stable-lang-wrap{position:relative!important;margin:0!important;padding:0!important;width:auto!important;}
+#atsrsStableTopbar .stable-lang-circle{
+  width:48px!important;height:48px!important;border-radius:50%!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:#0b1a2a!important;border:1px solid rgba(134,239,172,.35)!important;color:#fff!important;
+  font-size:22px!important;box-shadow:0 10px 32px rgba(0,0,0,.35)!important;cursor:pointer!important;
+}
+#atsrsStableTopbar .stable-lang-menu{
+  position:absolute!important;top:56px!important;right:0!important;left:auto!important;width:220px!important;
+  background:#091524!important;border:1px solid #264058!important;border-radius:16px!important;padding:8px!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.45)!important;
+}
+#atsrsStableTopbar .stable-lang-menu.hidden{display:none!important;}
+#atsrsStableTopbar .stable-lang-menu button{
+  width:100%!important;background:transparent!important;color:#e5e7eb!important;text-align:left!important;
+  margin:2px 0!important;padding:10px 12px!important;border:0!important;border-radius:10px!important;font-weight:700!important;box-shadow:none!important;
+}
+#atsrsStableTopbar .stable-lang-menu button:hover{background:#1e293b!important;}
+#atsrsStableTopbar .stable-lang-menu span{display:inline-block!important;width:28px!important;}
+#atsrsStableTopbar .stable-logout{
+  width:auto!important;margin:0!important;padding:12px 14px!important;border-radius:12px!important;border:1px solid #ef4444!important;
+  background:linear-gradient(135deg,#991b1b,#dc2626)!important;color:#fff!important;font-weight:900!important;box-shadow:0 10px 26px rgba(220,38,38,.22)!important;
+}
+@media(max-width:800px){
+  #atsrsStableTopbar{top:12px!important;right:12px!important;}
+  #atsrsStableTopbar .stable-lang-circle{width:44px!important;height:44px!important;}
+  #atsrsStableTopbar .stable-lang-menu{top:52px!important;right:0!important;}
+  #atsrsStableTopbar .stable-logout{padding:10px 12px!important;}
+}
+</style>
+<script>
+/* V58: root-cause fix for language + logout drift.
+   This creates a clean fixed viewport portal and ignores all older conflicting top-action patches. */
+(function(){
+  const FLAGS={en:'🇬🇧',az:'🇦🇿',ru:'🇷🇺'};
+  const LOGOUT={en:'Logout',az:'Çıxış',ru:'Выход'};
+  function currentLang(){return window.lang || localStorage.getItem('atsrs_lang') || 'en';}
+  function appIsOpen(){const app=document.getElementById('app');return !!(app && !app.classList.contains('hidden'));}
+  function ensureTopbar(){
+    let bar=document.getElementById('atsrsStableTopbar');
+    if(bar)return bar;
+    bar=document.createElement('div');
+    bar.id='atsrsStableTopbar';
+    bar.innerHTML=`
+      <div class="stable-lang-wrap">
+        <button type="button" class="stable-lang-circle" id="stableLangCircle">🇬🇧</button>
+        <div class="stable-lang-menu hidden" id="stableLangMenu">
+          <button type="button" data-lang="en"><span>🇬🇧</span> English</button>
+          <button type="button" data-lang="az"><span>🇦🇿</span> Azərbaycan</button>
+          <button type="button" data-lang="ru"><span>🇷🇺</span> Русский</button>
+        </div>
+      </div>
+      <button type="button" class="stable-logout" id="stableLogoutBtn">Logout</button>`;
+    document.body.appendChild(bar);
+    const circle=bar.querySelector('#stableLangCircle');
+    const menu=bar.querySelector('#stableLangMenu');
+    circle.addEventListener('click',function(e){e.stopPropagation();menu.classList.toggle('hidden');});
+    menu.querySelectorAll('button[data-lang]').forEach(function(btn){
+      btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        const v=btn.getAttribute('data-lang');
+        menu.classList.add('hidden');
+        if(typeof window.changeLanguage==='function')window.changeLanguage(v);
+        else {window.lang=v;localStorage.setItem('atsrs_lang',v);}
+        setTimeout(updateTopbar,0);
+        setTimeout(updateTopbar,160);
+      });
+    });
+    bar.querySelector('#stableLogoutBtn').addEventListener('click',function(e){
+      e.stopPropagation();
+      if(typeof window.confirmLogout==='function')window.confirmLogout();
+      else if(typeof window.logout==='function')window.logout();
+      setTimeout(updateTopbar,0);
+      setTimeout(updateTopbar,250);
+    });
+    document.addEventListener('click',function(e){if(!bar.contains(e.target))menu.classList.add('hidden');});
+    return bar;
+  }
+  function neutralizeOldTopActions(){
+    document.querySelectorAll('#app .top-actions, body > .atsrs-v56-top-actions, body > .atsrs-global-top-actions').forEach(function(el){
+      if(el.id==='atsrsStableTopbar')return;
+      el.style.setProperty('display','none','important');
+      el.style.setProperty('visibility','hidden','important');
+      el.style.setProperty('pointer-events','none','important');
+    });
+  }
+  function updateTopbar(){
+    const bar=ensureTopbar();
+    const l=currentLang();
+    bar.querySelector('#stableLangCircle').textContent=FLAGS[l]||FLAGS.en;
+    bar.querySelector('#stableLogoutBtn').textContent=LOGOUT[l]||LOGOUT.en;
+    bar.classList.toggle('active',appIsOpen());
+    bar.style.setProperty('position','fixed','important');
+    bar.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+    bar.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+    bar.style.setProperty('left','auto','important');
+    bar.style.setProperty('z-index','2147483647','important');
+    bar.style.setProperty('transform','none','important');
+    neutralizeOldTopActions();
+  }
+  window.atsrsV58StableTopbar=updateTopbar;
+  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
+    const base=window[name];
+    if(typeof base==='function' && !base.__v58Wrapped){
+      const wrapped=function(){const r=base.apply(this,arguments);setTimeout(updateTopbar,0);setTimeout(updateTopbar,220);return r;};
+      wrapped.__v58Wrapped=true; window[name]=wrapped;
+    }
+  });
+  window.addEventListener('scroll',updateTopbar,{passive:true});
+  window.addEventListener('resize',updateTopbar);
+  document.addEventListener('DOMContentLoaded',updateTopbar);
+  new MutationObserver(function(){setTimeout(updateTopbar,0);}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  setInterval(updateTopbar,500);
+  setTimeout(updateTopbar,0);
+  setTimeout(updateTopbar,400);
 })();
 </script>
 
