@@ -639,6 +639,67 @@ td:last-child{white-space:nowrap}
 .ref-file-info{min-height:18px}
 #cType,#autoDocType{font-weight:700}
 
+
+
+/* V50 Chrome-safe fixed left navigation
+   Purpose: keep the left page navigation always visible while page content scrolls.
+   This avoids browser differences with CSS sticky inside grid/flex parents. */
+@media (min-width:801px){
+  #app.app{
+    display:block!important;
+    min-height:100vh!important;
+    padding-left:232px!important;
+    position:relative!important;
+  }
+  #app .sidebar{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    bottom:0!important;
+    width:232px!important;
+    height:100vh!important;
+    max-height:100vh!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    z-index:120!important;
+  }
+  #app .main{
+    width:100%!important;
+    min-height:100vh!important;
+  }
+  #app .top-actions{
+    position:fixed!important;
+    top:18px!important;
+    right:18px!important;
+    left:auto!important;
+    z-index:99999!important;
+  }
+  html[dir="rtl"] #app.app{
+    padding-left:232px!important;
+    padding-right:0!important;
+  }
+  html[dir="rtl"] #app .sidebar{
+    left:0!important;
+    right:auto!important;
+  }
+}
+@media (max-width:800px){
+  #app.app{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    padding-left:0!important;
+  }
+  #app .sidebar{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    bottom:auto!important;
+    width:auto!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -730,8 +791,8 @@ td:last-child{white-space:nowrap}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V49</div>
-<div>Last Update: 04 Jun 2026 03:40 UTC</div>
+<div>ATSRS V50</div>
+<div>Last Update: 04 Jun 2026 03:52 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2319,4 +2380,4 @@ setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 </script>
 </body>
-</html>
+  </html>
