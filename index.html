@@ -292,9 +292,6 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 
 #navLogout{display:none!important}
 .top-logout:hover{background:#7f1d1d!important}
-html[dir="rtl"] @media(max-width:800px){
-  html[dir="rtl"] }
-
 
 .top-actions{position:fixed;top:18px;right:18px;z-index:90;display:flex;align-items:center;gap:10px}
 .top-actions .lang-floating{position:relative!important;top:auto!important;right:auto!important;left:auto!important}
@@ -952,8 +949,8 @@ body > .atsrs-global-top-actions .app-lang-switcher{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V55</div>
-<div>Last Update: 04 Jun 2026 04:58 UTC</div>
+<div>ATSRS V56</div>
+<div>Last Update: 04 Jun 2026 18:30 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2680,6 +2677,198 @@ setInterval(v55DockTopActions,500);
 setTimeout(v55DockTopActions,0);
 setTimeout(v55DockTopActions,500);
 
+</script>
+
+
+<style>
+/* V56: final app-only viewport dock + cleaner career repository */
+body > .atsrs-v56-top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:2147483647!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  transform:translateZ(0)!important;
+  will-change:transform!important;
+}
+body > .atsrs-v56-top-actions .lang-floating,
+body > .atsrs-v56-top-actions .app-lang-switcher{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+}
+body > .atsrs-v56-top-actions .lang-menu{
+  position:absolute!important;
+  top:56px!important;
+  right:0!important;
+  left:auto!important;
+}
+#auth:not(.hidden) ~ .atsrs-v56-top-actions,
+body.auth-open > .atsrs-v56-top-actions{display:none!important;}
+#app.hidden ~ .atsrs-v56-top-actions{display:none!important;}
+@media(max-width:800px){
+  body > .atsrs-v56-top-actions{top:12px!important;right:12px!important;}
+  body > .atsrs-v56-top-actions .lang-menu{top:52px!important;right:0!important;left:auto!important;}
+}
+#refsPage .career-record-row{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+#refsPage .career-record-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+#refsPage .career-record-actions button{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#refsPage .career-record-date input{
+  max-width:190px!important;
+}
+@media(max-width:520px){
+  #refsPage .career-record-actions{grid-template-columns:1fr!important;}
+}
+</style>
+
+
+<script>
+/* V56: deep cleanup patch */
+(function(){
+  const V56_TEXT={
+    en:{
+      navRefs:"Career Records", navCompliance:"Compliance", navReports:"Reports",
+      refsTitle:"References, Appraisals & Recommendation Letters",
+      refsSub:"Store signed career proof as a date-sorted document repository.",
+      appraisals:"Appraisals", appraisalText:"Upload appraisal forms and performance review documents.",
+      references:"References", referenceText:"Upload signed references and client/company reference letters.",
+      recommendations:"Recommendation Letters", recommendationText:"Upload recommendation letters from supervisors, clients and companies.",
+      uploadAppraisal:"Upload Appraisal", uploadReference:"Upload Reference", uploadRecommendation:"Upload Recommendation",
+      recordsNewest:"Newest first", noRecords:"No files uploaded yet.", signedDate:"Signed Date"
+    },
+    az:{
+      navRefs:"Karyera sənədləri", navCompliance:"Uyğunluq", navReports:"Hesabatlar",
+      refsTitle:"Reference, Appraisal və Recommendation Letters",
+      refsSub:"İmzalanmış karyera sənədlərini tarixə görə sıralanan siyahı kimi saxla.",
+      appraisals:"Appraisals", appraisalText:"Appraisal formaları və performance review sənədlərini yüklə.",
+      references:"References", referenceText:"İmzalanmış reference və client/company məktublarını yüklə.",
+      recommendations:"Recommendation Letters", recommendationText:"Supervisor, client və şirkətlərdən verilən recommendation letter-ləri yüklə.",
+      uploadAppraisal:"Appraisal yüklə", uploadReference:"Reference yüklə", uploadRecommendation:"Recommendation yüklə",
+      recordsNewest:"Ən yenilər yuxarıda", noRecords:"Hələ fayl yüklənməyib.", signedDate:"İmzalanma tarixi"
+    },
+    ru:{
+      navRefs:"Карьерные документы", navCompliance:"Соответствие", navReports:"Отчёты",
+      refsTitle:"References, Appraisals и Recommendation Letters",
+      refsSub:"Храните подписанные карьерные документы в списке, отсортированном по дате.",
+      appraisals:"Appraisals", appraisalText:"Загрузите appraisal forms и performance review документы.",
+      references:"References", referenceText:"Загрузите подписанные references и письма от client/company.",
+      recommendations:"Recommendation Letters", recommendationText:"Загрузите recommendation letters от supervisors, clients и companies.",
+      uploadAppraisal:"Загрузить Appraisal", uploadReference:"Загрузить Reference", uploadRecommendation:"Загрузить Recommendation",
+      recordsNewest:"Новые сверху", noRecords:"Файлы еще не загружены.", signedDate:"Дата подписи"
+    }
+  };
+  function t(k){const l=window.lang||localStorage.getItem("atsrs_lang")||"en";return (V56_TEXT[l]&&V56_TEXT[l][k])||V56_TEXT.en[k]||k;}
+  function setText(id,val){const el=document.getElementById(id); if(el)el.innerText=val;}
+  function appVisible(){const app=document.getElementById("app"); return !!(app && !app.classList.contains("hidden"));}
+  function dockTopActions(){
+    const app=document.getElementById("app");
+    const auth=document.getElementById("auth");
+    let top=document.querySelector("body > .atsrs-v56-top-actions") || document.querySelector("body > .atsrs-global-top-actions") || document.querySelector("#app .top-actions") || document.querySelector(".top-actions");
+    if(!top)return;
+    if(!top.classList.contains("atsrs-v56-top-actions")){
+      top.classList.add("atsrs-v56-top-actions");
+      top.classList.add("atsrs-global-top-actions");
+      document.body.appendChild(top);
+    }
+    const show=appVisible();
+    document.body.classList.toggle("auth-open",!show);
+    top.style.setProperty("display",show?"flex":"none","important");
+    top.style.setProperty("position","fixed","important");
+    top.style.setProperty("top",window.innerWidth<=800?"12px":"18px","important");
+    top.style.setProperty("right",window.innerWidth<=800?"12px":"18px","important");
+    top.style.setProperty("left","auto","important");
+    top.style.setProperty("bottom","auto","important");
+    top.style.setProperty("z-index","2147483647","important");
+    top.style.setProperty("transform","translateZ(0)","important");
+  }
+  function dedupeInputs(kind){
+    const inputs=[...document.querySelectorAll("#"+kind+"UploadInput")];
+    if(inputs.length>1){
+      inputs.slice(1).forEach(x=>x.remove());
+    }
+  }
+  function enhanceCareerLanguage(){
+    setText("navRefs",t("navRefs"));
+    setText("navCompliance",t("navCompliance"));
+    setText("navReports",t("navReports"));
+    setText("refsTitle",t("refsTitle"));
+    setText("refsSub",t("refsSub"));
+    setText("appraisalCardTitle",t("appraisals"));
+    setText("appraisalCardText",t("appraisalText"));
+    setText("referenceCardTitle",t("references"));
+    setText("referenceCardText",t("referenceText"));
+    setText("recommendationCardTitle",t("recommendations"));
+    setText("recommendationCardText",t("recommendationText"));
+    setText("appraisalUploadBtn",t("uploadAppraisal"));
+    setText("referenceUploadBtn",t("uploadReference"));
+    setText("recommendationUploadBtn",t("uploadRecommendation"));
+    ["appraisal","reference","recommendation"].forEach(kind=>{
+      dedupeInputs(kind);
+      const cnt=document.getElementById(kind+"Count");
+      if(cnt){
+        const files=(typeof getManagedFiles==="function"?getManagedFiles(kind):[])||[];
+        const label=kind==="appraisal"?t("appraisals"):kind==="reference"?t("references"):t("recommendations");
+        cnt.innerText=label+": "+files.length+" • "+t("recordsNewest");
+      }
+      const list=document.getElementById(kind+"RecordList");
+      if(list && !(((typeof getManagedFiles==="function"?getManagedFiles(kind):[])||[]).length)){
+        list.innerHTML='<div class="preview-box">'+t("noRecords")+'</div>';
+      }
+      [...document.querySelectorAll("#"+kind+"RecordList input[type=date]")].forEach(inp=>inp.title=t("signedDate"));
+    });
+    const active=document.querySelector(".nav button.active");
+    const pageTitle=document.getElementById("pageTitle");
+    if(pageTitle && active) pageTitle.innerText=active.innerText;
+  }
+  function runV56(){
+    try{dockTopActions();}catch(e){}
+    try{enhanceCareerLanguage();}catch(e){}
+  }
+  window.atsrsV56DockTopActions=dockTopActions;
+  window.atsrsV56ApplyLanguage=enhanceCareerLanguage;
+
+  const baseApply=window.applyLanguage;
+  if(typeof baseApply==="function"){
+    window.applyLanguage=function(){const r=baseApply.apply(this,arguments); setTimeout(runV56,0); return r;};
+  }
+  const baseRender=window.renderAll;
+  if(typeof baseRender==="function"){
+    window.renderAll=function(){const r=baseRender.apply(this,arguments); setTimeout(runV56,0); return r;};
+  }
+  const baseOpen=window.openApp;
+  if(typeof baseOpen==="function"){
+    window.openApp=function(){const r=baseOpen.apply(this,arguments); setTimeout(runV56,0); setTimeout(runV56,250); return r;};
+  }
+  const baseShow=window.showPage;
+  if(typeof baseShow==="function"){
+    window.showPage=function(){const r=baseShow.apply(this,arguments); setTimeout(runV56,0); return r;};
+  }
+  const baseChange=window.changeLanguage;
+  if(typeof baseChange==="function"){
+    window.changeLanguage=function(v){const r=baseChange.apply(this,arguments); setTimeout(runV56,0); setTimeout(runV56,120); return r;};
+  }
+  window.addEventListener("scroll",dockTopActions,{passive:true});
+  window.addEventListener("resize",runV56);
+  document.addEventListener("DOMContentLoaded",runV56);
+  new MutationObserver(()=>setTimeout(runV56,0)).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["class","style"]});
+  setInterval(runV56,700);
+  setTimeout(runV56,0);
+  setTimeout(runV56,300);
+})();
 </script>
 
 </body>
