@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V70</div>
-<div>Last Update: 05 Jun 2026 22:45 UTC</div>
+<div>ATSRS V71</div>
+<div>Last Update: 05 Jun 2026 23:05 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2743,7 +2743,7 @@ function v55DockTopActions(){
   }
   const appVisible=app && !app.classList.contains('hidden');
   top.style.setProperty('display',appVisible?'flex':'none','important');
-  top.style.setProperty('position','fixed','important');
+  top.style.setProperty('position','absolute','important');
   top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
   top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
   top.style.setProperty('left','auto','important');
@@ -2965,7 +2965,7 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
     if(!app||!top)return;
     if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
     top.classList.remove('atsrs-v56-top-actions','atsrs-global-top-actions');
-    top.style.setProperty('position','fixed','important');
+    top.style.setProperty('position','absolute','important');
     top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
     top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
     top.style.setProperty('left','auto','important');
@@ -3332,177 +3332,7 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
 
 
 
-<!-- V63 BODY PORTAL TOPBAR: single visible source for Language + Logout -->
-<style id="atsrs-v63-portal-style">
-  /* Hide every old in-app topbar. V63 uses only the body portal below. */
-  #app > .top-actions,
-  #app .top-actions:not(#atsrsFixedPortalTopbar){
-    display:none!important;
-    visibility:hidden!important;
-    pointer-events:none!important;
-  }
-
-  #atsrsFixedPortalTopbar{
-    position:fixed!important;
-    top:18px!important;
-    right:18px!important;
-    left:auto!important;
-    z-index:2147483647!important;
-    display:none;
-    align-items:center!important;
-    gap:10px!important;
-    width:auto!important;
-    height:auto!important;
-    margin:0!important;
-    padding:0!important;
-    transform:none!important;
-    contain:none!important;
-  }
-  body.atsrs-app-visible #atsrsFixedPortalTopbar{display:flex!important;}
-  body.atsrs-auth-visible #atsrsFixedPortalTopbar{display:none!important;}
-
-  #atsrsFixedPortalTopbar .lang-floating{
-    position:relative!important;
-    top:auto!important;
-    right:auto!important;
-    left:auto!important;
-    bottom:auto!important;
-    transform:none!important;
-    display:block!important;
-    visibility:visible!important;
-    pointer-events:auto!important;
-  }
-  #atsrsFixedPortalTopbar .lang-circle{
-    width:48px!important;
-    height:48px!important;
-    min-width:48px!important;
-    min-height:48px!important;
-    border-radius:50%!important;
-    padding:0!important;
-    margin:0!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-  }
-  #atsrsFixedPortalTopbar .lang-menu{
-    position:absolute!important;
-    top:56px!important;
-    right:0!important;
-    left:auto!important;
-    width:220px!important;
-    z-index:2147483647!important;
-  }
-  #atsrsPortalLogoutBtn{
-    width:auto!important;
-    min-width:auto!important;
-    margin:0!important;
-    padding:12px 14px!important;
-    border-radius:12px!important;
-    display:inline-flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-    white-space:nowrap!important;
-    background:linear-gradient(135deg,#991b1b,#dc2626)!important;
-    color:#fff!important;
-    border:1px solid #ef4444!important;
-    font-weight:800!important;
-  }
-  @media(max-width:800px){
-    #atsrsFixedPortalTopbar{top:12px!important;right:12px!important;}
-    #atsrsFixedPortalTopbar .lang-circle{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;}
-    #atsrsFixedPortalTopbar .lang-menu{top:52px!important;right:0!important;left:auto!important;}
-    #atsrsPortalLogoutBtn{padding:10px 12px!important;}
-  }
-</style>
-
-<div id="atsrsFixedPortalTopbar" aria-label="ATSRS fixed app controls">
-  <div class="lang-floating app-lang-switcher">
-    <button type="button" id="atsrsPortalLangCircle" class="lang-circle" onclick="atsrsTogglePortalLangMenu()">🇬🇧</button>
-    <div id="atsrsPortalLangMenu" class="lang-menu hidden">
-      <button type="button" onclick="atsrsPortalChangeLanguage('en')"><span>🇬🇧</span> English</button>
-      <button type="button" onclick="atsrsPortalChangeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
-      <button type="button" onclick="atsrsPortalChangeLanguage('ru')"><span>🇷🇺</span> Русский</button>
-    </div>
-  </div>
-  <button type="button" id="atsrsPortalLogoutBtn" onclick="confirmLogout()">Logout</button>
-</div>
-
-<script id="atsrs-v63-portal-script">
-(function(){
-  function appVisible(){
-    var app=document.getElementById('app'), auth=document.getElementById('auth');
-    return !!(app && !app.classList.contains('hidden') && !(auth && !auth.classList.contains('hidden')));
-  }
-  function syncText(){
-    var map={en:'🇬🇧',az:'🇦🇿',ru:'🇷🇺'};
-    var l=(window.lang || localStorage.getItem('atsrs_lang') || 'en');
-    var btn=document.getElementById('atsrsPortalLangCircle');
-    if(btn) btn.textContent=map[l]||'🇬🇧';
-    var lo=document.getElementById('atsrsPortalLogoutBtn');
-    try{ if(lo && typeof tr==='function') lo.textContent=tr('logout') || 'Logout'; }catch(e){ if(lo) lo.textContent='Logout'; }
-  }
-  function syncVisibility(){
-    document.body.classList.toggle('atsrs-app-visible', appVisible());
-    document.body.classList.toggle('atsrs-auth-visible', !appVisible());
-    syncText();
-  }
-  window.atsrsTogglePortalLangMenu=function(){
-    var m=document.getElementById('atsrsPortalLangMenu'); if(m)m.classList.toggle('hidden');
-  };
-  window.atsrsPortalChangeLanguage=function(l){
-    if(typeof changeLanguage==='function') changeLanguage(l);
-    var m=document.getElementById('atsrsPortalLangMenu'); if(m)m.classList.add('hidden');
-    setTimeout(syncText,0);
-  };
-
-  var oldApply=window.applyLanguage;
-  if(typeof oldApply==='function'){
-    window.applyLanguage=function(){ oldApply.apply(this,arguments); setTimeout(syncText,0); };
-  }
-  var oldShowLogin=window.showLogin;
-  if(typeof oldShowLogin==='function'){
-    window.showLogin=function(){ var r=oldShowLogin.apply(this,arguments); setTimeout(syncVisibility,0); return r; };
-  }
-  var oldLocal=window.localTestLogin;
-  if(typeof oldLocal==='function'){
-    window.localTestLogin=function(){ var r=oldLocal.apply(this,arguments); setTimeout(syncVisibility,0); return r; };
-  }
-  var oldLogin=window.login;
-  if(typeof oldLogin==='function'){
-    window.login=function(){ var r=oldLogin.apply(this,arguments); setTimeout(syncVisibility,300); return r; };
-  }
-  var oldLogout=window.logout;
-  if(typeof oldLogout==='function'){
-    window.logout=function(){ var r=oldLogout.apply(this,arguments); setTimeout(syncVisibility,0); return r; };
-  }
-  var oldConfirm=window.confirmLogout;
-  if(typeof oldConfirm==='function'){
-    window.confirmLogout=function(){ var r=oldConfirm.apply(this,arguments); setTimeout(syncVisibility,0); return r; };
-  }
-
-  document.addEventListener('click',function(e){
-    var top=document.getElementById('atsrsFixedPortalTopbar');
-    var m=document.getElementById('atsrsPortalLangMenu');
-    if(top && m && !top.contains(e.target)) m.classList.add('hidden');
-  },true);
-  document.addEventListener('DOMContentLoaded',function(){
-    syncVisibility();
-    var app=document.getElementById('app'), auth=document.getElementById('auth');
-    if(window.MutationObserver){
-      [app,auth].forEach(function(node){ if(node)new MutationObserver(syncVisibility).observe(node,{attributes:true,attributeFilter:['class']}); });
-    }
-  });
-  setInterval(syncVisibility,800);
-  window.atsrsV63PortalCheck=function(){
-    var top=document.getElementById('atsrsFixedPortalTopbar');
-    if(!top)return 'V63 portal missing';
-    var b=top.getBoundingClientRect();
-    return 'V63 portal: parent='+top.parentElement.tagName.toLowerCase()+', position='+getComputedStyle(top).position+', top='+Math.round(b.top)+', right='+Math.round(window.innerWidth-b.right)+', visible='+getComputedStyle(top).display;
-  };
-})();
-</script>
-
-
+<!-- V71: removed obsolete V63 fixed portal topbar to prevent duplicate Language/Logout controls. -->
 
 <!-- V64 CLEAN FIX: login viewport loading + final app-only language/logout lock -->
 <style id="v64-clean-login-topbar-fix">
@@ -3545,7 +3375,7 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
 
 /* Single source of truth for app Language + Logout. */
 body > .atsrs-v64-top-actions{
-  position:fixed!important;
+  position:absolute!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
@@ -3626,10 +3456,10 @@ html[dir="rtl"] body > .atsrs-v64-top-actions{right:18px!important;left:auto!imp
     if(!top) return;
     top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions');
     top.classList.add('atsrs-v64-top-actions');
-    if(top.parentElement!==document.body) document.body.appendChild(top);
+    if(app && top.parentElement!==app) app.insertBefore(top, app.firstChild);
     syncBodyState();
     top.style.setProperty('display',appVisible()?'flex':'none','important');
-    top.style.setProperty('position','fixed','important');
+    top.style.setProperty('position','absolute','important');
     top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
     top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
     top.style.setProperty('left','auto','important');
@@ -3884,6 +3714,39 @@ body > .atsrs-v64-top-actions .lang-menu{
   setTimeout(normaliseTopActions,0);
   setTimeout(normaliseTopActions,300);
   setTimeout(normaliseTopActions,900);
+})();
+</script>
+
+<style id="atsrs-v71-remove-fixed-portal-style">
+/* V71: Safety guard - obsolete V63 fixed portal must never be visible. */
+#atsrsFixedPortalTopbar,
+#atsrsPortalLangCircle,
+#atsrsPortalLangMenu,
+#atsrsPortalLogoutBtn{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+</style>
+<script id="atsrs-v71-remove-fixed-portal-script">
+/* V71: remove duplicate fixed portal controls, keep only the real page-attached top-actions. */
+(function(){
+  function removeFixedPortal(){
+    ['atsrsFixedPortalTopbar','atsrs-v63-portal-style','atsrs-v63-portal-script'].forEach(function(id){
+      var n=document.getElementById(id);
+      if(n) n.remove();
+    });
+    document.body.classList.remove('atsrs-app-visible','atsrs-auth-visible');
+  }
+  window.atsrsTogglePortalLangMenu=function(){};
+  window.atsrsPortalChangeLanguage=function(l){
+    if(typeof changeLanguage==='function') changeLanguage(l);
+  };
+  document.addEventListener('DOMContentLoaded',removeFixedPortal);
+  window.addEventListener('load',removeFixedPortal);
+  setTimeout(removeFixedPortal,0);
+  setTimeout(removeFixedPortal,300);
+  setInterval(removeFixedPortal,1000);
 })();
 </script>
 
