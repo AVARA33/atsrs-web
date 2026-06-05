@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ATSRS</title>
+<title>ATSRS V76</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 
 /* V41 revised: Expiry N/A + Edit document register */
@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V75</div>
-<div>Last Update: 06 Jun 2026 00:15 UTC</div>
+<div>ATSRS V76</div>
+<div>Last Update: 06 Jun 2026 00:45 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4311,6 +4311,127 @@ body > .atsrs-v64-top-actions .lang-menu{
   },true);
   runSoon();
   setInterval(lockTestLoginLabel,300);
+})();
+</script>
+
+
+<!-- V76: Audit cleanup + visible function status matrix. Based on V75 stable backup. -->
+<style id="v76-audit-cleanup-style">
+  .v76-audit-panel{margin:18px 0 0;background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:22px;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.24)}
+  .v76-audit-panel h3{margin:0 0 8px;font-size:22px;color:#f8fafc}
+  .v76-audit-panel p{margin:0 0 14px;color:#a7b5c5;line-height:1.45}
+  .v76-status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .v76-status-card{background:#071524;border:1px solid #263f58;border-radius:16px;padding:12px;min-height:112px}
+  .v76-status-card b{display:block;margin-bottom:6px;color:#f8fafc}
+  .v76-status-card span{display:inline-block;margin-bottom:8px;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900}
+  .v76-status-card p{margin:0;color:#a7b5c5;font-size:13px;line-height:1.38}
+  .v76-ok span{background:#064e3b;color:#bbf7d0}.v76-partial span{background:#78350f;color:#fde68a}.v76-backend span{background:#7f1d1d;color:#fecaca}
+  .v76-clean-hidden{display:none!important}
+</style>
+<script id="v76-audit-cleanup-script">
+(function(){
+  const TXT={
+    en:{
+      title:'Function Status / Audit List',
+      intro:'Visible test status for the current build. Items marked Backend Required are not broken UI; they need server-side services before production.',
+      ok:'Working',partial:'Partial',backend:'Backend Required',
+      items:[
+        ['Login page language','Working','EN/AZ/RU login texts, account type buttons and Local Test Login are switching correctly.','ok'],
+        ['Language + Logout topbar','Working','Top controls are page-attached and no longer fixed to the viewport during scroll.','ok'],
+        ['Manual document register','Working','Manual certificate entry, expiry date and N/A flow are available.','ok'],
+        ['Scan & Auto-fill','Partial','Browser OCR/text preview exists. AI field selection needs backend parser.','partial'],
+        ['Share Profile','Partial','Frontend profile sharing UI exists. Real public link needs backend storage/access rules.','partial'],
+        ['CV upload','Partial','CV upload/display controls exist. Automatic ATSRS CV generation needs backend/template engine.','partial'],
+        ['WhatsApp alerts','Backend Required','Real alerts require scheduled backend jobs and approved WhatsApp templates.','backend'],
+        ['Email expiry notifications','Backend Required','Needs scheduled backend function and email provider integration.','backend'],
+        ['Reports dashboard','Backend Required','Needs saved user/company data and reporting queries.','backend'],
+        ['Company import','Backend Required','Needs secure company workspace, invitation and approval workflow.','backend']
+      ],
+      cvBtn:'Generate ATSRS CV — Backend Required', cvBadge:'BACKEND REQUIRED', waBadge:'BACKEND REQUIRED'
+    },
+    az:{
+      title:'Funksiya Statusu / Audit Siyahısı',
+      intro:'Hazırkı build üçün görünən test statusu. Backend Required işarəli hissələr UI səhvi deyil; production üçün server tərəfi lazımdır.',
+      ok:'İşləyir',partial:'Qismən işləyir',backend:'Backend lazımdır',
+      items:[
+        ['Login səhifəsi dili','İşləyir','EN/AZ/RU login mətnləri, istifadə növü düymələri və Local Test Login düzgün dəyişir.','ok'],
+        ['Language + Logout topbar','İşləyir','Yuxarı idarə düymələri artıq viewport-a sabitlənmir, səhifə ilə birlikdə hərəkət edir.','ok'],
+        ['Manual sənəd qeydiyyatı','İşləyir','Manual sertifikat əlavə etmə, expiry və N/A axını mövcuddur.','ok'],
+        ['Scan & Auto-fill','Qismən işləyir','Browser OCR/text preview var. AI ilə xanaları seçib doldurmaq üçün backend parser lazımdır.','partial'],
+        ['Share Profile','Qismən işləyir','Frontend paylaşım UI var. Real public link üçün backend storage/access rules lazımdır.','partial'],
+        ['CV upload','Qismən işləyir','CV upload/display nəzarətləri var. Avtomatik ATSRS CV yaratmaq üçün backend/template engine lazımdır.','partial'],
+        ['WhatsApp bildirişləri','Backend lazımdır','Real bildiriş üçün scheduled backend job və approved WhatsApp template lazımdır.','backend'],
+        ['Email expiry bildirişləri','Backend lazımdır','Scheduled backend function və email provider inteqrasiyası lazımdır.','backend'],
+        ['Reports dashboard','Backend lazımdır','Saxlanılmış user/company data və reporting queries lazımdır.','backend'],
+        ['Company import','Backend lazımdır','Təhlükəsiz company workspace, invitation və approval workflow lazımdır.','backend']
+      ],
+      cvBtn:'ATSRS CV yarat — Backend lazımdır', cvBadge:'BACKEND LAZIMDIR', waBadge:'BACKEND LAZIMDIR'
+    },
+    ru:{
+      title:'Статус функций / Audit List',
+      intro:'Видимый тестовый статус текущей сборки. Пункты Backend Required не являются UI-ошибкой; для production нужна серверная часть.',
+      ok:'Работает',partial:'Частично работает',backend:'Нужен backend',
+      items:[
+        ['Язык страницы входа','Работает','EN/AZ/RU тексты входа, кнопки типа использования и Local Test Login переключаются корректно.','ok'],
+        ['Language + Logout topbar','Работает','Верхние элементы больше не фиксируются к viewport и движутся вместе со страницей.','ok'],
+        ['Ручной реестр документов','Работает','Доступны ручное добавление сертификата, срок действия и режим N/A.','ok'],
+        ['Scan & Auto-fill','Частично работает','Есть browser OCR/text preview. Для AI-заполнения полей нужен backend parser.','partial'],
+        ['Share Profile','Частично работает','Frontend UI для sharing есть. Для реальной public link нужны backend storage/access rules.','partial'],
+        ['CV upload','Частично работает','Контролы CV upload/display есть. Для генерации ATSRS CV нужен backend/template engine.','partial'],
+        ['WhatsApp уведомления','Нужен backend','Для реальных уведомлений нужны scheduled backend jobs и approved WhatsApp templates.','backend'],
+        ['Email expiry уведомления','Нужен backend','Нужны scheduled backend function и интеграция email provider.','backend'],
+        ['Reports dashboard','Нужен backend','Нужны сохранённые user/company data и reporting queries.','backend'],
+        ['Company import','Нужен backend','Нужны secure company workspace, invitation и approval workflow.','backend']
+      ],
+      cvBtn:'Создать ATSRS CV — нужен backend', cvBadge:'НУЖЕН BACKEND', waBadge:'НУЖЕН BACKEND'
+    }
+  };
+  function currentLang(){
+    try{ if(typeof lang==='string' && TXT[lang]) return lang; }catch(e){}
+    const stored=localStorage.getItem('atsrs_lang'); return TXT[stored]?stored:'en';
+  }
+  function t(){return TXT[currentLang()]||TXT.en;}
+  function cleanHashes(){
+    document.querySelectorAll('h1,h2,h3,h4,p,span,button,div').forEach(el=>{
+      if(el.children.length===0 && /^#+$/.test((el.textContent||'').trim())) el.classList.add('v76-clean-hidden');
+    });
+  }
+  function updateBuild(){
+    const badge=document.getElementById('buildBadge');
+    if(badge){badge.innerHTML='<div>ATSRS V76</div><div>Last Update: 06 Jun 2026 00:45 UTC</div><div>TEST BUILD</div>';}
+    document.title='ATSRS V76';
+  }
+  function renderAuditPanel(){
+    const intro=document.getElementById('introPage')||document.querySelector('main')||document.body;
+    if(!intro) return;
+    let panel=document.getElementById('v76AuditPanel');
+    if(!panel){
+      panel=document.createElement('div'); panel.id='v76AuditPanel'; panel.className='v76-audit-panel';
+      intro.appendChild(panel);
+    }
+    const L=t();
+    panel.innerHTML='<h3>'+L.title+'</h3><p>'+L.intro+'</p><div class="v76-status-grid">'+
+      L.items.map(x=>'<div class="v76-status-card v76-'+x[3]+'"><b>'+x[0]+'</b><span>'+x[1]+'</span><p>'+x[2]+'</p></div>').join('')+
+      '</div>';
+  }
+  function markBackendItems(){
+    const L=t();
+    const cvBtn=document.getElementById('generateCVBtn'); if(cvBtn) cvBtn.textContent=L.cvBtn;
+    const cvBadge=document.getElementById('cvBetaBadge'); if(cvBadge) cvBadge.textContent=L.cvBadge;
+    const waBadge=document.getElementById('whatsappBadge'); if(waBadge) waBadge.textContent=L.waBadge;
+  }
+  function applyV76(){ updateBuild(); cleanHashes(); renderAuditPanel(); markBackendItems(); }
+  const oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'){
+    window.applyLanguage=function(){ const r=oldApply.apply(this,arguments); setTimeout(applyV76,0); return r; };
+  }
+  const oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'){
+    window.changeLanguage=function(){ const r=oldChange.apply(this,arguments); setTimeout(applyV76,0); return r; };
+  }
+  document.addEventListener('DOMContentLoaded',applyV76);
+  window.addEventListener('load',applyV76);
+  setTimeout(applyV76,0); setTimeout(applyV76,500); setInterval(applyV76,1200);
 })();
 </script>
 
