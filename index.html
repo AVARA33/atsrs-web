@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V71</div>
-<div>Last Update: 05 Jun 2026 23:05 UTC</div>
+<div>ATSRS V72</div>
+<div>Last Update: 05 Jun 2026 23:35 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -3332,7 +3332,7 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
 
 
 
-<!-- V71: removed obsolete V63 fixed portal topbar to prevent duplicate Language/Logout controls. -->
+<!-- V72: full EN/AZ/RU translation pass added; V71 topbar fix retained. -->
 
 <!-- V64 CLEAN FIX: login viewport loading + final app-only language/logout lock -->
 <style id="v64-clean-login-topbar-fix">
@@ -3747,6 +3747,326 @@ body > .atsrs-v64-top-actions .lang-menu{
   setTimeout(removeFixedPortal,0);
   setTimeout(removeFixedPortal,300);
   setInterval(removeFixedPortal,1000);
+})();
+</script>
+
+
+<script id="atsrs-v72-full-translation-patch">
+/* V72: complete EN/AZ/RU UI translation layer. Keeps V71 topbar behaviour unchanged. */
+(function(){
+  const AZ={
+    "ATSRS PLATFORM":"ATSRS PLATFORMASI",
+    "ATSRS Platform":"ATSRS Platforması",
+    "Professional documents, expiry alerts and profile sharing — in one secure workspace.":"Peşəkar sənədlər, bitmə xəbərdarlıqları və profil paylaşımı — hamısı bir təhlükəsiz kabinetdə.",
+    "ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.":"ATSRS offshore, marine, ROV, NDT və texniki mütəxəssislərə vacib karyera sənədlərini saxlamağa, bitmə tarixlərini izləməyə və işəgötürənlərlə nəzarətli profil linki paylaşmağa kömək edir.",
+    "Document Vault":"Sənəd arxivi",
+    "Keep passport, visa, medical, seaman book, certificates and career files in one secure place.":"Passport, viza, tibbi sənəd, seaman book, sertifikatlar və karyera fayllarını bir təhlükəsiz yerdə saxla.",
+    "Easy Upload":"Asan yükləmə",
+    "Upload PDF, JPG or PNG files directly into your ATSRS document register.":"PDF, JPG və ya PNG fayllarını birbaşa ATSRS sənəd reyestrinə yüklə.",
+    "Scan & Auto-fill":"Skan və avtomatik doldurma",
+    "Scan a document and let ATSRS prepare fields for your manual confirmation.":"Sənədi skan et, ATSRS xanaları hazırlasın, sən manual təsdiqlə.",
+    "Expiry Tracking":"Bitmə tarixlərinə nəzarət",
+    "90-day, 30-day and expired document visibility from the dashboard.":"90 gün, 30 gün və vaxtı keçmiş sənədləri dashboard-da aydın gör.",
+    "Share Profile":"Profil paylaşımı",
+    "Send one ATSRS profile link instead of many email attachments.":"Çoxlu email əlavəsi əvəzinə bir ATSRS profil linki göndər.",
+    "Company Import":"Şirkətə import",
+    "Companies can request access and import approved documents into their compliance profile.":"Şirkətlər icazə istəyib təsdiqlənmiş sənədləri öz uyğunluq profilinə import edə bilər.",
+    "7-day free trial":"7 günlük pulsuz trial",
+    "Try ATSRS for 7 days. No card required during test build.":"ATSRS-i 7 gün test et. Test build-də kart tələb olunmur.",
+    "Personal and Company mode included.":"Fərdi və şirkət rejimi daxildir.",
+    "Email":"Email",
+    "Password":"Şifrə",
+    "Personal Use":"Fərdi istifadə",
+    "Company Use":"Şirkət istifadəsi",
+    "Login":"Giriş",
+    "Local Test Login":"Lokal test girişi",
+    "Create account":"Hesab yarat",
+    "Forgot password?":"Şifrəni unutmusunuz?",
+    "Logout":"Çıxış",
+    "Dashboard":"Dashboard",
+    "Personnel":"Heyət",
+    "Certificates":"Sertifikatlar",
+    "My Documents":"Mənim sənədlərim",
+    "Scan / Upload Document":"Sənəd skan/yüklə",
+    "Upload File":"Fayl yüklə",
+    "Manual Entry":"Manual giriş",
+    "SOLO CONTROL":"FƏRDİ NƏZARƏT",
+    "Your certificate control center":"Sertifikat nəzarət mərkəzin",
+    "Upload your certificates and track expiry risk from one clean dashboard.":"Sertifikatlarını yüklə və bitmə riskini bir aydın dashboard-dan izlə.",
+    "WHATSAPP READY":"WHATSAPP HAZIR",
+    "WhatsApp alerts":"WhatsApp xəbərdarlıqları",
+    "Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.":"Frontend yalnız ayarları göstərəcək. Real xəbərdarlıqlar backend scheduled jobs və təsdiqli WhatsApp template-lərlə işləməlidir.",
+    "Priority alerts":"Prioritet xəbərdarlıqlar",
+    "Documents closest to expiry will appear here.":"Bitmə tarixi ən yaxın olan sənədlər burada görünəcək.",
+    "Personal mode keeps focus on your own documents only.":"Fərdi rejim yalnız sənin sənədlərinə fokuslanır.",
+    "Valid documents":"Aktiv sənədlər",
+    "Expiry risk":"Bitmə riski",
+    "Missing documents":"Çatışmayan sənədlər",
+    "Profile sharing":"Profil paylaşımı",
+    "Quick status":"Qısa status",
+    "COMPLIANCE SNAPSHOT":"UYĞUNLUQ XÜLASƏSİ",
+    "HOW ATSRS WORKS":"ATSRS NECƏ İŞLƏYİR",
+    "From document upload to employer-ready profile":"Sənəd yükləmədən işəgötürənə hazır profilə qədər",
+    "A simple flow for personal users today and company compliance tomorrow.":"Bu gün fərdi istifadəçilər, sabah şirkət uyğunluğu üçün sadə proses.",
+    "Upload":"Yüklə",
+    "Add documents manually or by scan.":"Sənədləri manual və ya skanla əlavə et.",
+    "Track":"İzlə",
+    "Monitor expiry and missing items.":"Bitmə tarixlərini və çatışmayan sənədləri izlə.",
+    "Share":"Paylaş",
+    "Send a controlled ATSRS profile link.":"Nəzarətli ATSRS profil linki göndər.",
+    "Approve":"Təsdiqlə",
+    "Allow companies to download or import selected documents.":"Şirkətlərə seçilmiş sənədləri yükləməyə və ya import etməyə icazə ver.",
+    "Professional document, expiry and profile sharing platform":"Peşəkar sənəd, bitmə tarixi və profil paylaşımı platforması",
+    "ATSRS helps offshore, marine, ROV, NDT and technical personnel store career documents, track expiry dates, share controlled profile links and support company compliance workflows.":"ATSRS offshore, marine, ROV, NDT və texniki heyətə karyera sənədlərini saxlamaq, bitmə tarixlərini izləmək, nəzarətli profil linkləri paylaşmaq və şirkət uyğunluq proseslərini dəstəkləmək imkanı verir.",
+    "Store passport, visa, medical, seaman book, certificates, trainings, competency, references and appraisals in one place.":"Passport, viza, tibbi sənəd, seaman book, sertifikatlar, təlimlər, competency, reference və appraisalları bir yerdə saxla.",
+    "Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.":"PDF, JPG və ya PNG fayllarını yüklə və onları bitmə tarixi/statusla əlaqəli saxla.",
+    "Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.":"OCR qoşulanda sənədləri skan et və ATSRS xanaları manual təsdiq üçün hazırlasın.",
+    "See valid, expiring, expired and missing documents from a clear dashboard.":"Aktiv, bitmək üzrə olan, vaxtı keçmiş və çatışmayan sənədləri aydın dashboard-dan gör.",
+    "Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.":"Çoxlu attachment əvəzinə işəgötürənlər, agentliklər və müştərilərlə bir nəzarətli ATSRS profil linki paylaş.",
+    "Companies can request access, review approved documents and import candidate records into their compliance profile.":"Şirkətlər icazə istəyib təsdiqlənmiş sənədləri yoxlaya və namizəd qeydlərini öz uyğunluq profilinə import edə bilər.",
+    "Company Compliance":"Şirkət uyğunluğu",
+    "Passport & Seaman Book":"Passport və Seaman Book",
+    "Store identity and travel documents securely.":"Şəxsiyyət və səfər sənədlərini təhlükəsiz saxla.",
+    "Medical & Certificates":"Tibbi sənəd və sertifikatlar",
+    "Track expiry dates before they become a mobilisation problem.":"Mobilizasiya problemi yaranmadan bitmə tarixlərini izlə.",
+    "Training & Competency":"Təlim və competency",
+    "Keep BOSIET, FOET, ROV, NDT and other proof in one place.":"BOSIET, FOET, ROV, NDT və digər sübutları bir yerdə saxla.",
+    "Share ATSRS Profile":"ATSRS profilini paylaş",
+    "Send one controlled profile link instead of many attachments.":"Çoxlu attachment əvəzinə bir nəzarətli profil linki göndər.",
+    "Approved documents can move into a company compliance profile.":"Təsdiqlənmiş sənədlər şirkətin uyğunluq profilinə köçürülə bilər.",
+    "References & Appraisals":"References və Appraisals",
+    "Keep appraisal forms, reference letters and client feedback in one place.":"Appraisal formaları, reference məktubları və müştəri rəylərini bir yerdə saxla.",
+    "Appraisals":"Appraisals",
+    "Upload annual appraisals, performance reviews and evaluation forms.":"İllik appraisal, performans rəyi və qiymətləndirmə formalarını yüklə.",
+    "Upload Appraisal":"Appraisal yüklə",
+    "References":"References",
+    "Store reference letters and contact-ready career proof.":"Reference məktubları və təqdimata hazır karyera sübutlarını saxla.",
+    "Upload Reference":"Reference yüklə",
+    "CV / Resume":"CV / Resume",
+    "No CV Uploaded":"CV yüklənməyib",
+    "Store, manage and share professional CV versions for employers, agencies and clients.":"İşəgötürənlər, agentliklər və müştərilər üçün peşəkar CV versiyalarını saxla, idarə et və paylaş.",
+    "Upload CV":"CV yüklə",
+    "Preview CV":"CV-yə bax",
+    "Download CV":"CV yüklə",
+    "Delete CV":"CV sil",
+    "COMING SOON":"TEZLİKLƏ",
+    "Generate ATSRS Profile CV":"ATSRS profil CV yarat",
+    "Generate a professional ATSRS formatted CV using stored profile and document data.":"Saxlanmış profil və sənəd məlumatları ilə ATSRS formatlı peşəkar CV yarat.",
+    "Generate ATSRS CV (Beta)":"ATSRS CV yarat (Beta)",
+    "Compliance Overview":"Uyğunluq icmalı",
+    "Company mode: see who is ready, expiring, expired or missing required documents.":"Şirkət rejimi: kim hazırdır, kimin sənədi bitir, vaxtı keçib və ya tələb olunan sənədlər çatışmır — gör.",
+    "Reports":"Hesabatlar",
+    "Export-ready reports will be connected with backend data.":"Export üçün hazır hesabatlar backend data ilə qoşulacaq.",
+    "Export Local Data":"Lokal datanı export et",
+    "Profile Visibility":"Profil görünürlüğü",
+    "Private by default. Shared link only when enabled.":"Default olaraq privatedir. Paylaşım linki yalnız aktiv ediləndə işləyir.",
+    "Private":"Private",
+    "Link Only":"Yalnız link",
+    "Public":"Public",
+    "Copy Link":"Linki kopyala",
+    "Link copied.":"Link kopyalandı.",
+    "Manage Access":"Girişi idarə et",
+    "Company view":"Şirkət görünüşü",
+    "Import to Company Profile":"Şirkət profilinə import et",
+    "A company can review shared documents and import selected records into ATSRS Company later.":"Şirkət paylaşılan sənədləri yoxlayıb seçilmiş qeydləri sonra ATSRS Company-yə import edə bilər.",
+    "Required career documents are tracked here.":"Tələb olunan karyera sənədləri burada izlənir.",
+    "Missing Documents":"Çatışmayan sənədlər",
+    "Document Status":"Sənəd statusu",
+    "Passport":"Passport",
+    "Visa":"Viza",
+    "Medical":"Tibbi sənəd",
+    "Seaman Book":"Seaman Book",
+    "Trainings":"Təlimlər",
+    "Competency":"Competency",
+    "Certificate":"Sertifikat",
+    "Certificates":"Sertifikatlar",
+    "Ready":"Hazır",
+    "Preview":"Bax",
+    "Import":"Import",
+    "Request":"Sorğu",
+    "Country / Authority (Optional)":"Ölkə / Qurum (istəyə bağlı)",
+    "Document No (Optional)":"Sənəd № (istəyə bağlı)",
+    "English":"İngilis dili",
+    "Azərbaycan":"Azərbaycan dili",
+    "Русский":"Rus dili"
+  };
+  const RU={
+    "ATSRS PLATFORM":"ПЛАТФОРМА ATSRS",
+    "ATSRS Platform":"Платформа ATSRS",
+    "Professional documents, expiry alerts and profile sharing — in one secure workspace.":"Профессиональные документы, уведомления о сроках и общий профиль — в одном безопасном кабинете.",
+    "ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.":"ATSRS помогает offshore, marine, ROV, NDT и другим техническим специалистам хранить важные карьерные документы, отслеживать сроки и делиться контролируемой ссылкой с работодателями и агентствами.",
+    "Document Vault":"Архив документов",
+    "Keep passport, visa, medical, seaman book, certificates and career files in one secure place.":"Храните паспорт, визу, medical, seaman book, сертификаты и карьерные файлы в одном безопасном месте.",
+    "Easy Upload":"Простая загрузка",
+    "Upload PDF, JPG or PNG files directly into your ATSRS document register.":"Загружайте PDF, JPG или PNG файлы прямо в реестр документов ATSRS.",
+    "Scan & Auto-fill":"Скан и автозаполнение",
+    "Scan a document and let ATSRS prepare fields for your manual confirmation.":"Отсканируйте документ, ATSRS подготовит поля, а вы подтвердите их вручную.",
+    "Expiry Tracking":"Контроль сроков",
+    "90-day, 30-day and expired document visibility from the dashboard.":"Документы за 90 дней, 30 дней и просроченные видны на dashboard.",
+    "Share Profile":"Поделиться профилем",
+    "Send one ATSRS profile link instead of many email attachments.":"Отправьте одну ссылку ATSRS вместо множества вложений по email.",
+    "Company Import":"Импорт в компанию",
+    "Companies can request access and import approved documents into their compliance profile.":"Компании могут запросить доступ и импортировать одобренные документы в свой compliance-профиль.",
+    "7-day free trial":"7-дневный бесплатный trial",
+    "Try ATSRS for 7 days. No card required during test build.":"Попробуйте ATSRS 7 дней. В test build карта не требуется.",
+    "Personal and Company mode included.":"Personal и Company mode включены.",
+    "Email":"Email",
+    "Password":"Пароль",
+    "Personal Use":"Личное использование",
+    "Company Use":"Для компании",
+    "Login":"Вход",
+    "Local Test Login":"Локальный тестовый вход",
+    "Create account":"Создать аккаунт",
+    "Forgot password?":"Забыли пароль?",
+    "Logout":"Выйти",
+    "Dashboard":"Панель",
+    "Personnel":"Персонал",
+    "Certificates":"Сертификаты",
+    "My Documents":"Мои документы",
+    "Scan / Upload Document":"Скан / загрузка документа",
+    "Upload File":"Загрузить файл",
+    "Manual Entry":"Ручной ввод",
+    "SOLO CONTROL":"SOLO КОНТРОЛЬ",
+    "Your certificate control center":"Центр контроля сертификатов",
+    "Upload your certificates and track expiry risk from one clean dashboard.":"Загружайте сертификаты и отслеживайте риск истечения с одной понятной панели.",
+    "WHATSAPP READY":"WHATSAPP ГОТОВ",
+    "WhatsApp alerts":"WhatsApp уведомления",
+    "Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.":"Frontend только показывает настройки. Реальные уведомления должны работать через backend scheduled jobs и утвержденные WhatsApp templates.",
+    "Priority alerts":"Приоритетные уведомления",
+    "Documents closest to expiry will appear here.":"Документы с ближайшим сроком будут показаны здесь.",
+    "Personal mode keeps focus on your own documents only.":"Личный режим показывает только ваши документы.",
+    "Valid documents":"Действующие документы",
+    "Expiry risk":"Риск истечения",
+    "Missing documents":"Отсутствующие документы",
+    "Profile sharing":"Общий профиль",
+    "Quick status":"Краткий статус",
+    "COMPLIANCE SNAPSHOT":"КРАТКИЙ СТАТУС COMPLIANCE",
+    "HOW ATSRS WORKS":"КАК РАБОТАЕТ ATSRS",
+    "From document upload to employer-ready profile":"От загрузки документа до профиля для работодателя",
+    "A simple flow for personal users today and company compliance tomorrow.":"Простой процесс для личных пользователей сегодня и company compliance завтра.",
+    "Upload":"Загрузить",
+    "Add documents manually or by scan.":"Добавляйте документы вручную или через скан.",
+    "Track":"Отслеживать",
+    "Monitor expiry and missing items.":"Контролируйте сроки и отсутствующие документы.",
+    "Share":"Поделиться",
+    "Send a controlled ATSRS profile link.":"Отправьте контролируемую ссылку ATSRS профиля.",
+    "Approve":"Одобрить",
+    "Allow companies to download or import selected documents.":"Разрешите компаниям скачать или импортировать выбранные документы.",
+    "Professional document, expiry and profile sharing platform":"Платформа профессиональных документов, сроков и общего профиля",
+    "ATSRS helps offshore, marine, ROV, NDT and technical personnel store career documents, track expiry dates, share controlled profile links and support company compliance workflows.":"ATSRS помогает offshore, marine, ROV, NDT и техническому персоналу хранить карьерные документы, отслеживать сроки, делиться контролируемыми ссылками профиля и поддерживать company compliance workflows.",
+    "Store passport, visa, medical, seaman book, certificates, trainings, competency, references and appraisals in one place.":"Храните паспорт, визу, medical, seaman book, сертификаты, trainings, competency, references и appraisals в одном месте.",
+    "Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.":"Загружайте PDF, JPG или PNG и связывайте их со сроками и статусом документа.",
+    "Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.":"Когда OCR подключен, сканируйте документы, и ATSRS подготовит поля для ручного подтверждения.",
+    "See valid, expiring, expired and missing documents from a clear dashboard.":"Смотрите действующие, истекающие, просроченные и отсутствующие документы на понятной панели.",
+    "Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.":"Делитесь одной контролируемой ссылкой ATSRS с работодателями, агентствами и клиентами вместо множества вложений.",
+    "Companies can request access, review approved documents and import candidate records into their compliance profile.":"Компании могут запросить доступ, проверить одобренные документы и импортировать данные кандидата в свой compliance-профиль.",
+    "Company Compliance":"Compliance компании",
+    "Passport & Seaman Book":"Passport и Seaman Book",
+    "Store identity and travel documents securely.":"Храните документы личности и поездок безопасно.",
+    "Medical & Certificates":"Medical и сертификаты",
+    "Track expiry dates before they become a mobilisation problem.":"Отслеживайте сроки до того, как они станут проблемой для мобилизации.",
+    "Training & Competency":"Training и Competency",
+    "Keep BOSIET, FOET, ROV, NDT and other proof in one place.":"Храните BOSIET, FOET, ROV, NDT и другие подтверждения в одном месте.",
+    "Share ATSRS Profile":"Поделиться ATSRS профилем",
+    "Send one controlled profile link instead of many attachments.":"Одна контролируемая ссылка вместо множества вложений.",
+    "Approved documents can move into a company compliance profile.":"Одобренные документы можно перенести в compliance-профиль компании.",
+    "References & Appraisals":"References и Appraisals",
+    "Keep appraisal forms, reference letters and client feedback in one place.":"Храните appraisal формы, reference letters и отзывы клиентов в одном месте.",
+    "Appraisals":"Appraisals",
+    "Upload annual appraisals, performance reviews and evaluation forms.":"Загружайте annual appraisals, performance reviews и evaluation forms.",
+    "Upload Appraisal":"Загрузить Appraisal",
+    "References":"References",
+    "Store reference letters and contact-ready career proof.":"Храните reference letters и карьерные подтверждения, готовые для отправки.",
+    "Upload Reference":"Загрузить Reference",
+    "CV / Resume":"CV / Resume",
+    "No CV Uploaded":"CV не загружено",
+    "Store, manage and share professional CV versions for employers, agencies and clients.":"Храните, управляйте и делитесь профессиональными версиями CV для работодателей, агентств и клиентов.",
+    "Upload CV":"Загрузить CV",
+    "Preview CV":"Просмотр CV",
+    "Download CV":"Скачать CV",
+    "Delete CV":"Удалить CV",
+    "COMING SOON":"СКОРО",
+    "Generate ATSRS Profile CV":"Создать ATSRS Profile CV",
+    "Generate a professional ATSRS formatted CV using stored profile and document data.":"Создайте профессиональное CV в формате ATSRS на основе данных профиля и документов.",
+    "Generate ATSRS CV (Beta)":"Создать ATSRS CV (Beta)",
+    "Compliance Overview":"Обзор compliance",
+    "Company mode: see who is ready, expiring, expired or missing required documents.":"Company mode: видно, кто готов, у кого сроки истекают, кто просрочен или кому не хватает документов.",
+    "Reports":"Отчеты",
+    "Export-ready reports will be connected with backend data.":"Отчеты для экспорта будут подключены к backend data.",
+    "Export Local Data":"Экспорт локальных данных",
+    "Profile Visibility":"Видимость профиля",
+    "Private by default. Shared link only when enabled.":"По умолчанию профиль private. Shared link работает только после включения.",
+    "Private":"Private",
+    "Link Only":"Только по ссылке",
+    "Public":"Public",
+    "Copy Link":"Копировать ссылку",
+    "Link copied.":"Ссылка скопирована.",
+    "Manage Access":"Управлять доступом",
+    "Company view":"Вид для компании",
+    "Import to Company Profile":"Импорт в профиль компании",
+    "A company can review shared documents and import selected records into ATSRS Company later.":"Компания может проверить shared documents и позже импортировать выбранные записи в ATSRS Company.",
+    "Required career documents are tracked here.":"Обязательные карьерные документы отслеживаются здесь.",
+    "Missing Documents":"Отсутствующие документы",
+    "Document Status":"Статус документов",
+    "Passport":"Passport",
+    "Visa":"Виза",
+    "Medical":"Medical",
+    "Seaman Book":"Seaman Book",
+    "Trainings":"Trainings",
+    "Competency":"Competency",
+    "Certificate":"Сертификат",
+    "Certificates":"Сертификаты",
+    "Ready":"Готов",
+    "Preview":"Просмотр",
+    "Import":"Импорт",
+    "Request":"Запрос",
+    "Country / Authority (Optional)":"Страна / Орган (необязательно)",
+    "Document No (Optional)":"№ документа (необязательно)",
+    "English":"Английский",
+    "Azərbaycan":"Азербайджанский",
+    "Русский":"Русский"
+  };
+  const DICTS={az:AZ,ru:RU,en:{}};
+  const IDMAP={
+    navIntro:'ATSRS Platform',introTitle:'Professional documents, expiry alerts and profile sharing — in one secure workspace.',introText:'ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.',introKicker:'ATSRS PLATFORM',
+    featureDocsTitle:'Document Vault',featureDocsText:'Keep passport, visa, medical, seaman book, certificates and career files in one secure place.',featureUploadTitle:'Easy Upload',featureUploadText:'Upload PDF, JPG or PNG files directly into your ATSRS document register.',featureScanTitle:'Scan & Auto-fill',featureScanText:'Scan a document and let ATSRS prepare fields for your manual confirmation.',featureAlertsTitle:'Expiry Tracking',featureAlertsText:'90-day, 30-day and expired document visibility from the dashboard.',featureShareTitle:'Share Profile',featureShareText:'Send one ATSRS profile link instead of many email attachments.',featureCompanyTitle:'Company Import',featureCompanyText:'Companies can request access and import approved documents into their compliance profile.',
+    trialTitle:'7-day free trial',trialText:'Try ATSRS for 7 days. No card required during test build.',trialNote:'Personal and Company mode included.',
+    refsTitle:'References & Appraisals',refsSub:'Keep appraisal forms, reference letters and client feedback in one place.',appraisalCardTitle:'Appraisals',appraisalCardText:'Upload annual appraisals, performance reviews and evaluation forms.',uploadAppraisalBtn:'Upload Appraisal',referenceCardTitle:'References',referenceCardText:'Store reference letters and contact-ready career proof.',uploadReferenceBtn:'Upload Reference',cvCardTitle:'CV / Resume',cvCardText:'Store, manage and share professional CV versions for employers, agencies and clients.',uploadCVBtn:'Upload CV',previewCVBtn:'Preview CV',downloadCVBtn:'Download CV',deleteCVBtn:'Delete CV',cvBetaBadge:'COMING SOON',cvBetaTitle:'Generate ATSRS Profile CV',cvBetaText:'Generate a professional ATSRS formatted CV using stored profile and document data.',generateCVBtn:'Generate ATSRS CV (Beta)',
+    compliancePageTitle:'Compliance Overview',compliancePageSub:'Company mode: see who is ready, expiring, expired or missing required documents.',reportsTitle:'Reports',reportsSub:'Export-ready reports will be connected with backend data.',exportReportBtn:'Export Local Data',profileVisibilityTitle:'Profile Visibility',profileVisibilityNote:'Private by default. Shared link only when enabled.',cDocNoLabel:'Document No (Optional)',cCountryLabel:'Country / Authority (Optional)'
+  };
+  function dict(){return DICTS[window.lang]||{};}
+  function tx(s){return dict()[s]||s;}
+  function setText(id,en){var el=document.getElementById(id); if(el) el.textContent=tx(en);}
+  function replaceTextNodes(root){
+    if(!root) return;
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p=n.parentElement; if(!p || ['SCRIPT','STYLE','TEXTAREA'].includes(p.tagName)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }});
+    var nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(n){var raw=n.nodeValue; var clean=raw.trim().replace(/\s+/g,' '); var repl=tx(clean); if(repl!==clean) n.nodeValue=raw.replace(clean,repl);});
+  }
+  function applyV72Translations(){
+    Object.keys(IDMAP).forEach(function(id){setText(id,IDMAP[id]);});
+    replaceTextNodes(document.body);
+    var pv=document.getElementById('profileVisibility');
+    if(pv && pv.options.length>=3){pv.options[0].text=tx('Private');pv.options[1].text=tx('Link Only');pv.options[2].text=tx('Public');}
+    var badge=document.getElementById('cvStatusBadge'); if(badge && /No CV Uploaded|CV yüklənməyib|CV не загружено/.test(badge.textContent)) badge.textContent=tx('No CV Uploaded');
+    document.documentElement.lang=window.lang||'en';
+  }
+  const oldApply=window.applyLanguage;
+  window.applyLanguage=function(){ if(typeof oldApply==='function') oldApply.apply(this,arguments); setTimeout(applyV72Translations,0); setTimeout(applyV72Translations,120); };
+  const oldChange=window.changeLanguage;
+  window.changeLanguage=function(v){ var r=typeof oldChange==='function'?oldChange.apply(this,arguments):undefined; setTimeout(applyV72Translations,0); setTimeout(applyV72Translations,180); return r; };
+  const oldRender=window.renderAll;
+  window.renderAll=function(){ var r=typeof oldRender==='function'?oldRender.apply(this,arguments):undefined; setTimeout(applyV72Translations,0); return r; };
+  window.atsrsV72ApplyTranslations=applyV72Translations;
+  document.addEventListener('DOMContentLoaded',applyV72Translations);
+  window.addEventListener('load',applyV72Translations);
+  setTimeout(applyV72Translations,0);
+  setTimeout(applyV72Translations,400);
+  setInterval(applyV72Translations,1200);
 })();
 </script>
 
