@@ -4133,5 +4133,122 @@ body > .atsrs-v64-top-actions .lang-menu{
 })();
 </script>
 
+
+
+<script id="atsrs-v74-use-mode-button-language-fix">
+/* V74: Use-mode buttons must follow selected language directly by ID.
+   V72 text-node replacement could translate EN -> AZ/RU, but could not reliably
+   convert already-translated AZ labels when switching later to RU. */
+(function(){
+  const MODE_LABELS={
+    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.'},
+    az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.'},
+    ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.'}
+  };
+  function currentLang(){
+    const v=(localStorage.getItem('atsrs_lang')||document.documentElement.lang||window.lang||'en');
+    return MODE_LABELS[v] ? v : 'en';
+  }
+  function applyV74UseModeLabels(){
+    const d=MODE_LABELS[currentLang()];
+    const personal=document.getElementById('personalModeBtn');
+    const company=document.getElementById('companyModeBtn');
+    if(personal) personal.textContent=d.personal;
+    if(company) company.textContent=d.company;
+    const err=document.getElementById('modeErrorText') || document.querySelector('.mode-error-text');
+    if(err) err.textContent=d.modeError;
+  }
+  const prevChange=window.changeLanguage;
+  window.changeLanguage=function(v){
+    const r=(typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    setTimeout(applyV74UseModeLabels,0);
+    setTimeout(applyV74UseModeLabels,150);
+    setTimeout(applyV74UseModeLabels,500);
+    return r;
+  };
+  const prevApply=window.applyLanguage;
+  window.applyLanguage=function(){
+    const r=(typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    setTimeout(applyV74UseModeLabels,0);
+    setTimeout(applyV74UseModeLabels,150);
+    return r;
+  };
+  window.atsrsV74UseModeLabels=applyV74UseModeLabels;
+  document.addEventListener('DOMContentLoaded',applyV74UseModeLabels);
+  window.addEventListener('load',applyV74UseModeLabels);
+  setTimeout(applyV74UseModeLabels,0);
+  setTimeout(applyV74UseModeLabels,300);
+  setInterval(applyV74UseModeLabels,1000);
+})();
+</script>
+
+
+
+<script id="atsrs-v75-final-mode-language-lock">
+/* V75: Final lock for Personal/Company mode labels.
+   Reads the actual visible flag first, so EN/AZ/RU always wins even if older
+   translation replacement scripts leave already-translated labels behind. */
+(function(){
+  const LABELS={
+    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.'},
+    az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.'},
+    ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.'}
+  };
+  function langFromFlag(){
+    const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'').trim();
+    if(flag.includes('🇦🇿')) return 'az';
+    if(flag.includes('🇷🇺')) return 'ru';
+    if(flag.includes('🇬🇧')) return 'en';
+    return '';
+  }
+  function activeLang(){
+    const candidates=[langFromFlag(), localStorage.getItem('atsrs_lang'), document.documentElement.lang, window.lang];
+    for(const v of candidates){ if(v && LABELS[v]) return v; }
+    return 'en';
+  }
+  function lockModeLabels(){
+    const d=LABELS[activeLang()];
+    const personal=document.getElementById('personalModeBtn');
+    const company=document.getElementById('companyModeBtn');
+    if(personal && personal.textContent.trim()!==d.personal) personal.textContent=d.personal;
+    if(company && company.textContent.trim()!==d.company) company.textContent=d.company;
+    const err=document.getElementById('modeErrorText') || document.querySelector('.mode-error-text');
+    if(err && err.textContent.trim()!==d.modeError) err.textContent=d.modeError;
+  }
+  function runSoon(){
+    lockModeLabels();
+    setTimeout(lockModeLabels,0);
+    setTimeout(lockModeLabels,80);
+    setTimeout(lockModeLabels,250);
+    setTimeout(lockModeLabels,700);
+  }
+  const prevChange=window.changeLanguage;
+  window.changeLanguage=function(v){
+    if(LABELS[v]) localStorage.setItem('atsrs_lang',v);
+    const r=(typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const prevApply=window.applyLanguage;
+  window.applyLanguage=function(){
+    const r=(typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const obs=new MutationObserver(runSoon);
+  document.addEventListener('DOMContentLoaded',function(){
+    runSoon();
+    const t=document.getElementById('appLangCircle')||document.getElementById('langCircle')||document.body;
+    if(t) obs.observe(t,{childList:true,characterData:true,subtree:true});
+  });
+  window.addEventListener('load',runSoon);
+  window.addEventListener('click',function(e){
+    if(e.target && e.target.closest && e.target.closest('.lang-menu')) runSoon();
+  },true);
+  runSoon();
+  setInterval(lockModeLabels,300);
+})();
+</script>
+
 </body>
   </html>
