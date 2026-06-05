@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V69</div>
-<div>Last Update: 04 Jun 2026 22:15 UTC</div>
+<div>ATSRS V70</div>
+<div>Last Update: 05 Jun 2026 22:45 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -3697,5 +3697,195 @@ html[dir="rtl"] body > .atsrs-v64-top-actions{right:18px!important;left:auto!imp
 })();
 </script>
 
+
+
+<style id="atsrs-v70-page-attached-top-actions-style">
+/* V70: Language + Logout are page-attached controls, not viewport-fixed controls. */
+#app.app{position:relative!important;}
+#app.app:not(.hidden) > .top-actions,
+#app.app:not(.hidden) > .atsrs-global-top-actions,
+#app.app:not(.hidden) > .atsrs-v56-top-actions,
+#app.app:not(.hidden) > .atsrs-v64-top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions{
+  position:absolute!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:90!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  transform:none!important;
+  will-change:auto!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+}
+#app.app:not(.hidden) > .top-actions .lang-floating,
+#app.app:not(.hidden) > .top-actions .app-lang-switcher,
+#app.app:not(.hidden) > .atsrs-global-top-actions .lang-floating,
+#app.app:not(.hidden) > .atsrs-global-top-actions .app-lang-switcher,
+#app.app:not(.hidden) > .atsrs-v56-top-actions .lang-floating,
+#app.app:not(.hidden) > .atsrs-v56-top-actions .app-lang-switcher,
+#app.app:not(.hidden) > .atsrs-v64-top-actions .lang-floating,
+#app.app:not(.hidden) > .atsrs-v64-top-actions .app-lang-switcher,
+body > .top-actions .lang-floating,
+body > .top-actions .app-lang-switcher,
+body > .atsrs-global-top-actions .lang-floating,
+body > .atsrs-global-top-actions .app-lang-switcher,
+body > .atsrs-v56-top-actions .lang-floating,
+body > .atsrs-v56-top-actions .app-lang-switcher,
+body > .atsrs-v64-top-actions .lang-floating,
+body > .atsrs-v64-top-actions .app-lang-switcher{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  display:block!important;
+}
+#app.app:not(.hidden) .lang-menu,
+body > .top-actions .lang-menu,
+body > .atsrs-global-top-actions .lang-menu,
+body > .atsrs-v56-top-actions .lang-menu,
+body > .atsrs-v64-top-actions .lang-menu{
+  position:absolute!important;
+  top:56px!important;
+  right:0!important;
+  left:auto!important;
+  bottom:auto!important;
+}
+@media(max-width:800px){
+  #app.app:not(.hidden) > .top-actions,
+  #app.app:not(.hidden) > .atsrs-global-top-actions,
+  #app.app:not(.hidden) > .atsrs-v56-top-actions,
+  #app.app:not(.hidden) > .atsrs-v64-top-actions,
+  body > .top-actions,
+  body > .atsrs-global-top-actions,
+  body > .atsrs-v56-top-actions,
+  body > .atsrs-v64-top-actions{
+    position:absolute!important;
+    top:12px!important;
+    right:12px!important;
+    left:auto!important;
+  }
+  #app.app:not(.hidden) .lang-menu,
+  body > .top-actions .lang-menu,
+  body > .atsrs-global-top-actions .lang-menu,
+  body > .atsrs-v56-top-actions .lang-menu,
+  body > .atsrs-v64-top-actions .lang-menu{
+    top:52px!important;
+    right:0!important;
+    left:auto!important;
+  }
+}
+</style>
+<script id="atsrs-v70-page-attached-top-actions-script">
+/* V70: neutralise old V53/V54/V55/V56/V64 fixed-dock logic without changing other app features. */
+(function(){
+  function appVisible(){
+    var app=document.getElementById('app');
+    return !!(app && !app.classList.contains('hidden'));
+  }
+  function normaliseTopActions(){
+    var app=document.getElementById('app');
+    var top=document.querySelector('#app > .top-actions') ||
+            document.querySelector('#app > .atsrs-global-top-actions') ||
+            document.querySelector('#app > .atsrs-v56-top-actions') ||
+            document.querySelector('#app > .atsrs-v64-top-actions') ||
+            document.querySelector('body > .atsrs-v64-top-actions') ||
+            document.querySelector('body > .atsrs-v56-top-actions') ||
+            document.querySelector('body > .atsrs-global-top-actions') ||
+            document.querySelector('body > .top-actions') ||
+            document.querySelector('.top-actions');
+    if(!app || !top) return;
+
+    top.classList.remove('atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions','atsrs-global-top-actions');
+    if(top.parentElement!==app){
+      app.insertBefore(top, app.firstChild);
+    }
+
+    var visible=appVisible();
+    top.style.setProperty('display',visible?'flex':'none','important');
+    top.style.setProperty('position','absolute','important');
+    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('left','auto','important');
+    top.style.setProperty('bottom','auto','important');
+    top.style.setProperty('z-index','90','important');
+    top.style.setProperty('transform','none','important');
+    top.style.setProperty('will-change','auto','important');
+    top.style.setProperty('width','auto','important');
+    top.style.setProperty('height','auto','important');
+    top.style.setProperty('margin','0','important');
+    top.style.setProperty('padding','0','important');
+
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang){
+      lang.style.setProperty('position','relative','important');
+      lang.style.setProperty('top','auto','important');
+      lang.style.setProperty('right','auto','important');
+      lang.style.setProperty('left','auto','important');
+      lang.style.setProperty('bottom','auto','important');
+      lang.style.setProperty('transform','none','important');
+      lang.style.setProperty('display','block','important');
+    }
+
+    var menu=top.querySelector('.lang-menu');
+    if(menu){
+      menu.style.setProperty('position','absolute','important');
+      menu.style.setProperty('top',window.innerWidth<=800?'52px':'56px','important');
+      menu.style.setProperty('right','0','important');
+      menu.style.setProperty('left','auto','important');
+      menu.style.setProperty('bottom','auto','important');
+    }
+
+    var logout=document.getElementById('topLogoutBtn');
+    if(logout){
+      logout.style.setProperty('display','inline-flex','important');
+      logout.style.setProperty('position','relative','important');
+      logout.style.setProperty('width','auto','important');
+      logout.style.setProperty('margin','0','important');
+      logout.style.setProperty('white-space','nowrap','important');
+    }
+  }
+
+  window.atsrsV70NormaliseTopActions=normaliseTopActions;
+  window.forceTopControlsFixed=normaliseTopActions;
+  window.v55DockTopActions=normaliseTopActions;
+
+  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
+    var base=window[name];
+    if(typeof base==='function' && !base.__v70PageAttached){
+      var wrapped=function(){
+        var result=base.apply(this,arguments);
+        setTimeout(normaliseTopActions,0);
+        setTimeout(normaliseTopActions,120);
+        setTimeout(normaliseTopActions,500);
+        return result;
+      };
+      wrapped.__v70PageAttached=true;
+      window[name]=wrapped;
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded',normaliseTopActions);
+  window.addEventListener('load',normaliseTopActions);
+  window.addEventListener('resize',normaliseTopActions);
+  window.addEventListener('scroll',function(){requestAnimationFrame(normaliseTopActions);},{passive:true});
+  setInterval(normaliseTopActions,80);
+  setTimeout(normaliseTopActions,0);
+  setTimeout(normaliseTopActions,300);
+  setTimeout(normaliseTopActions,900);
+})();
+</script>
+
 </body>
-</html>
+  </html>
