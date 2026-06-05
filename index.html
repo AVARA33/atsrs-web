@@ -4070,5 +4070,68 @@ body > .atsrs-v64-top-actions .lang-menu{
 })();
 </script>
 
+
+
+<script>
+/* V73 LANGUAGE CORE FIX
+   Root cause: the previous V72 translation patch was reading window.lang,
+   but the app uses top-level let lang, which is not exposed as window.lang.
+   This bridge keeps window.lang synced with localStorage and forces the
+   final translation layer to run after every language change/render. */
+(function(){
+  function getLang(){
+    var v = localStorage.getItem('atsrs_lang') || document.documentElement.lang || 'en';
+    return ['en','az','ru'].includes(v) ? v : 'en';
+  }
+  try{
+    Object.defineProperty(window,'lang',{
+      configurable:true,
+      get:function(){ return getLang(); },
+      set:function(v){ if(['en','az','ru'].includes(v)) localStorage.setItem('atsrs_lang',v); }
+    });
+  }catch(e){ window.lang=getLang(); }
+
+  function forceLangApply(){
+    try{ document.documentElement.lang=getLang(); }catch(e){}
+    try{ if(typeof window.atsrsV72ApplyTranslations==='function') window.atsrsV72ApplyTranslations(); }catch(e){}
+  }
+
+  var prevChange = window.changeLanguage;
+  window.changeLanguage=function(v){
+    if(['en','az','ru'].includes(v)) localStorage.setItem('atsrs_lang',v);
+    var r = (typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    try{ if(typeof applyLanguage==='function') applyLanguage(); }catch(e){}
+    forceLangApply();
+    setTimeout(forceLangApply,0);
+    setTimeout(forceLangApply,150);
+    setTimeout(forceLangApply,500);
+    return r;
+  };
+
+  var prevApply = window.applyLanguage;
+  window.applyLanguage=function(){
+    var r = (typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    forceLangApply();
+    setTimeout(forceLangApply,0);
+    setTimeout(forceLangApply,150);
+    return r;
+  };
+
+  var prevRender = window.renderAll;
+  window.renderAll=function(){
+    var r = (typeof prevRender==='function') ? prevRender.apply(this,arguments) : undefined;
+    setTimeout(forceLangApply,0);
+    setTimeout(forceLangApply,150);
+    return r;
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(forceLangApply,0);setTimeout(forceLangApply,300);});
+  window.addEventListener('load',function(){setTimeout(forceLangApply,0);setTimeout(forceLangApply,300);});
+  setTimeout(forceLangApply,0);
+  setTimeout(forceLangApply,300);
+  setInterval(forceLangApply,1000);
+})();
+</script>
+
 </body>
   </html>
