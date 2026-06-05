@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V72</div>
-<div>Last Update: 05 Jun 2026 23:35 UTC</div>
+<div>ATSRS V75</div>
+<div>Last Update: 06 Jun 2026 00:15 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4247,6 +4247,70 @@ body > .atsrs-v64-top-actions .lang-menu{
   },true);
   runSoon();
   setInterval(lockModeLabels,300);
+})();
+</script>
+
+
+<script id="atsrs-v75-test-login-language-lock">
+/* V75: Final lock for Local Test Login button in EN/AZ/RU.
+   This button was hardcoded and older runtime translation could leave it in RU/AZ
+   after switching flags. Read visible flag first and set the exact label by ID. */
+(function(){
+  const TEST_LOGIN_LABELS={
+    en:'Local Test Login',
+    az:'Lokal test girişi',
+    ru:'Локальный тестовый вход'
+  };
+  function langFromFlag(){
+    const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'').trim();
+    if(flag.includes('🇦🇿')) return 'az';
+    if(flag.includes('🇷🇺')) return 'ru';
+    if(flag.includes('🇬🇧')) return 'en';
+    return '';
+  }
+  function activeLang(){
+    const candidates=[langFromFlag(), localStorage.getItem('atsrs_lang'), document.documentElement.lang, window.lang];
+    for(const v of candidates){ if(v && TEST_LOGIN_LABELS[v]) return v; }
+    return 'en';
+  }
+  function lockTestLoginLabel(){
+    const btn=document.getElementById('localTestBtn');
+    if(!btn) return;
+    const txt=TEST_LOGIN_LABELS[activeLang()]||TEST_LOGIN_LABELS.en;
+    if(btn.textContent.trim()!==txt) btn.textContent=txt;
+  }
+  function runSoon(){
+    lockTestLoginLabel();
+    setTimeout(lockTestLoginLabel,0);
+    setTimeout(lockTestLoginLabel,80);
+    setTimeout(lockTestLoginLabel,250);
+    setTimeout(lockTestLoginLabel,700);
+  }
+  const prevChange=window.changeLanguage;
+  window.changeLanguage=function(v){
+    if(TEST_LOGIN_LABELS[v]) localStorage.setItem('atsrs_lang',v);
+    const r=(typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const prevApply=window.applyLanguage;
+  window.applyLanguage=function(){
+    const r=(typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const obs=new MutationObserver(runSoon);
+  document.addEventListener('DOMContentLoaded',function(){
+    runSoon();
+    const t=document.getElementById('appLangCircle')||document.getElementById('langCircle')||document.body;
+    if(t) obs.observe(t,{childList:true,characterData:true,subtree:true});
+  });
+  window.addEventListener('load',runSoon);
+  window.addEventListener('click',function(e){
+    if(e.target && e.target.closest && e.target.closest('.lang-menu')) runSoon();
+  },true);
+  runSoon();
+  setInterval(lockTestLoginLabel,300);
 })();
 </script>
 
