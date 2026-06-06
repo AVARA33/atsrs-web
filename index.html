@@ -1033,9 +1033,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V81</div>
-<div>Last Update: 06 Jun 2026 0215 UTC</div>
-<div>COLLAPSIBLE SIDEBAR BUILD</div>
+<div>ATSRS V83</div>
+<div>Last Update: 06 Jun 2026 0225 UTC</div>
+<div>LANGUAGE + THEME CLEANUP BUILD</div>
 </div>
 </div>
 </section>
@@ -3916,9 +3916,9 @@ body > .atsrs-v64-top-actions .lang-menu{
     "Request":"Sorğu",
     "Country / Authority (Optional)":"Ölkə / Qurum (istəyə bağlı)",
     "Document No (Optional)":"Sənəd № (istəyə bağlı)",
-    "English":"English",
-    "Azərbaycan":"Azərbaycan",
-    "Русский":"Русский"
+    "English":"İngilis dili",
+    "Azərbaycan":"Azərbaycan dili",
+    "Русский":"Rus dili"
   };
   const RU={
     "ATSRS PLATFORM":"ПЛАТФОРМА ATSRS",
@@ -4052,8 +4052,8 @@ body > .atsrs-v64-top-actions .lang-menu{
     "Request":"Запрос",
     "Country / Authority (Optional)":"Страна / Орган (необязательно)",
     "Document No (Optional)":"№ документа (необязательно)",
-    "English":"English",
-    "Azərbaycan":"Azərbaycan",
+    "English":"Английский",
+    "Azərbaycan":"Азербайджанский",
     "Русский":"Русский"
   };
   const DICTS={az:AZ,ru:RU,en:{}};
@@ -4619,83 +4619,39 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 
-<!-- V80: Hard lock language selector labels as native names -->
-<script>
-(function(){
-  const ATSRS_NATIVE_LANG_LABELS={en:'English',az:'Azərbaycan',ru:'Русский'};
-  function atsrsV80LangCode(btn,idx){
-    const oc=btn.getAttribute('onclick')||'';
-    const m=oc.match(/changeLanguage\('([^']+)'\)/);
-    return m?m[1]:(['en','az','ru'][idx]||'en');
-  }
-  function atsrsV80FixLangMenu(){
-    [document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean).forEach(menu=>{
-      Array.from(menu.querySelectorAll('button')).forEach((btn,idx)=>{
-        const code=atsrsV80LangCode(btn,idx);
-        const flag=code==='en'?'🇬🇧':code==='az'?'🇦🇿':'🇷🇺';
-        const label=ATSRS_NATIVE_LANG_LABELS[code]||ATSRS_NATIVE_LANG_LABELS.en;
-        const expected='<span>'+flag+'</span><span class="atsrs-lang-name">'+label+'</span>';
-        if(btn.innerHTML!==expected) btn.innerHTML=expected;
-      });
-    });
-  }
-  const oldChange=window.changeLanguage;
-  if(typeof oldChange==='function' && !oldChange.__v80Locked){
-    const wrapped=function(){
-      const r=oldChange.apply(this,arguments);
-      setTimeout(atsrsV80FixLangMenu,0);
-      setTimeout(atsrsV80FixLangMenu,60);
-      setTimeout(atsrsV80FixLangMenu,250);
-      return r;
-    };
-    wrapped.__v80Locked=true;
-    window.changeLanguage=wrapped;
-  }
-  const oldApply=window.applyLanguage;
-  if(typeof oldApply==='function' && !oldApply.__v80Locked){
-    const wrappedApply=function(){
-      const r=oldApply.apply(this,arguments);
-      setTimeout(atsrsV80FixLangMenu,0);
-      return r;
-    };
-    wrappedApply.__v80Locked=true;
-    window.applyLanguage=wrappedApply;
-  }
-  document.addEventListener('DOMContentLoaded',()=>{
-    atsrsV80FixLangMenu();
-    [document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean).forEach(menu=>{
-      new MutationObserver(()=>atsrsV80FixLangMenu()).observe(menu,{childList:true,subtree:true,characterData:true});
-    });
-  });
-  window.addEventListener('load',atsrsV80FixLangMenu);
-  setTimeout(atsrsV80FixLangMenu,0);
-  setTimeout(atsrsV80FixLangMenu,300);
-  setInterval(atsrsV80FixLangMenu,1000);
-})();
-</script>
-
-
-
-<!-- V81 Global Light/Dark Mode + stable language selector labels -->
-<style id="atsrs-v81-theme-style">
-/* V81: compact theme switcher beside Language / Logout */
-.atsrs-theme-toggle{
-  width:54px!important;height:34px!important;min-width:54px!important;margin:0!important;padding:3px!important;border-radius:999px!important;
-  border:1px solid rgba(134,239,172,.35)!important;background:#0b1a2a!important;box-shadow:0 10px 28px rgba(0,0,0,.28)!important;
-  display:inline-flex!important;align-items:center!important;justify-content:space-between!important;gap:2px!important;position:relative!important;cursor:pointer!important;
+<!-- V83: safe compact language menu + global light/dark switcher -->
+<style id="atsrs-v82-ui-style">
+/* Compact language menu: one neutral background, no colored cards */
+.lang-menu{
+  width:168px!important;min-width:168px!important;padding:6px!important;border-radius:14px!important;
+  background:#091524!important;border:1px solid #264058!important;box-shadow:0 18px 42px rgba(0,0,0,.38)!important;
 }
-.atsrs-theme-toggle span{font-size:14px;line-height:1;z-index:2;width:22px;text-align:center;opacity:.78}
-.atsrs-theme-toggle::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:999px;background:linear-gradient(135deg,#1d4ed8,#0891b2);box-shadow:0 6px 14px rgba(0,0,0,.32);transition:transform .18s ease,background .18s ease}
-body.atsrs-light-mode .atsrs-theme-toggle{background:#e8eef8!important;border-color:#bfd0e8!important;box-shadow:0 10px 24px rgba(15,23,42,.14)!important}
-body.atsrs-light-mode .atsrs-theme-toggle::after{transform:translateX(20px);background:linear-gradient(135deg,#facc15,#fb923c)}
-.auth-card>.atsrs-theme-toggle{position:absolute!important;top:18px!important;right:76px!important;z-index:22!important}
-.top-actions .atsrs-theme-toggle{position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important}
-@media(max-width:520px){.atsrs-theme-toggle{width:50px!important;min-width:50px!important;height:32px!important}.atsrs-theme-toggle::after{width:22px;height:22px}.auth-card>.atsrs-theme-toggle{right:70px!important}}
+.lang-menu button{
+  width:100%!important;margin:1px 0!important;padding:9px 10px!important;border-radius:10px!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;color:#e5e7eb!important;
+  display:flex!important;align-items:center!important;gap:8px!important;text-align:left!important;font-weight:800!important;font-size:13px!important;
+}
+.lang-menu button span{width:22px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;margin:0!important;}
+.lang-menu button:hover,.lang-menu button.atsrs-lang-active{background:rgba(148,163,184,.12)!important;}
+.lang-menu button.atsrs-lang-active::after{content:'✓';margin-left:auto;color:#86efac;font-weight:900;}
 
-/* V81 Light mode palette. Dark mode remains the existing ATSRS navy/emerald design. */
-body.atsrs-light-mode{background:#f4f7fb!important;color:#102033!important}
-body.atsrs-light-mode .auth{background:linear-gradient(135deg,#eaf3ff 0%,#f7fbff 46%,#e8fff4 100%)!important;color:#102033!important}
-body.atsrs-light-mode .auth::before{background:radial-gradient(circle at 17% 24%,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at 76% 38%,rgba(56,189,248,.14),transparent 30%),radial-gradient(circle at 48% 92%,rgba(37,99,235,.08),transparent 32%)!important}
+/* Simple safe theme toggle beside language */
+.atsrs-theme-toggle{
+  width:52px!important;min-width:52px!important;height:34px!important;margin:0!important;padding:3px!important;border-radius:999px!important;
+  border:1px solid rgba(134,239,172,.35)!important;background:#0b1a2a!important;box-shadow:0 10px 28px rgba(0,0,0,.28)!important;
+  display:inline-flex!important;align-items:center!important;justify-content:space-between!important;position:relative!important;cursor:pointer!important;
+}
+.atsrs-theme-toggle span{font-size:14px;line-height:1;z-index:2;width:21px;text-align:center;opacity:.82;pointer-events:none;}
+.atsrs-theme-toggle::after{content:'';position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:999px;background:linear-gradient(135deg,#1d4ed8,#0891b2);box-shadow:0 6px 14px rgba(0,0,0,.32);transition:transform .18s ease,background .18s ease;}
+body.atsrs-light-mode .atsrs-theme-toggle{background:#e8eef8!important;border-color:#bfd0e8!important;box-shadow:0 10px 24px rgba(15,23,42,.14)!important;}
+body.atsrs-light-mode .atsrs-theme-toggle::after{transform:translateX(18px);background:linear-gradient(135deg,#facc15,#fb923c);}
+.auth-card>.atsrs-theme-toggle{position:absolute!important;top:18px!important;right:76px!important;z-index:22!important;}
+.top-actions .atsrs-theme-toggle{position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;}
+@media(max-width:520px){.atsrs-theme-toggle{width:48px!important;min-width:48px!important;height:32px!important}.atsrs-theme-toggle::after{width:22px;height:22px}.auth-card>.atsrs-theme-toggle{right:70px!important}}
+
+/* Safe light mode palette */
+body.atsrs-light-mode{background:#f4f7fb!important;color:#102033!important;}
+body.atsrs-light-mode .auth{background:linear-gradient(135deg,#eaf3ff 0%,#f7fbff 46%,#e8fff4 100%)!important;color:#102033!important;}
 body.atsrs-light-mode .auth-card,
 body.atsrs-light-mode .auth-intro,
 body.atsrs-light-mode .card,
@@ -4716,14 +4672,282 @@ body.atsrs-light-mode .ref-card,
 body.atsrs-light-mode .import-box,
 body.atsrs-light-mode .cv-beta-box,
 body.atsrs-light-mode .ref-beta-box{
-  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(240,246,255,.96))!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(240,246,255,.97))!important;
   border-color:#c6d5e8!important;color:#102033!important;box-shadow:0 18px 46px rgba(15,23,42,.10)!important;
 }
-body.atsrs-light-mode .sidebar{background:linear-gradient(180deg,#ffffff,#edf4ff)!important;border-color:#c6d5e8!important;color:#102033!important}
-body.atsrs-light-mode .brand,body.atsrs-light-mode h1,body.atsrs-light-mode h2,body.atsrs-light-mode h3,body.atsrs-light-mode h4,body.atsrs-light-mode b{color:#102033!important}
+body.atsrs-light-mode .sidebar{background:linear-gradient(180deg,#ffffff,#edf4ff)!important;border-color:#c6d5e8!important;color:#102033!important;}
+body.atsrs-light-mode .brand,body.atsrs-light-mode h1,body.atsrs-light-mode h2,body.atsrs-light-mode h3,body.atsrs-light-mode h4,body.atsrs-light-mode b{color:#102033!important;}
+body.atsrs-light-mode .sub,body.atsrs-light-mode .small-note,body.atsrs-light-mode .field-label,body.atsrs-light-mode .feature-tile span:not(.tile-icon),body.atsrs-light-mode .auth-intro p,body.atsrs-light-mode .hero-card p,body.atsrs-light-mode .mini-panel p,body.atsrs-light-mode .intro-service-card p,body.atsrs-light-mode .intro-hero p,body.atsrs-light-mode .anime-step span,body.atsrs-light-mode .preview-head p{color:#52657a!important;}
+body.atsrs-light-mode input,body.atsrs-light-mode select,body.atsrs-light-mode textarea{background:#ffffff!important;color:#102033!important;border-color:#c0cfe3!important;}
+body.atsrs-light-mode .nav button{background:#eef5ff!important;color:#203247!important;border-color:#d4e0ef!important;}
+body.atsrs-light-mode .nav button.active,body.atsrs-light-mode .nav button:hover{background:linear-gradient(135deg,#16a34a,#22c55e)!important;color:#ffffff!important;border-color:#86efac!important;}
+body.atsrs-light-mode button.secondary,body.atsrs-light-mode .mode-choice button,body.atsrs-light-mode .cert-mode-buttons button{background:#e8eef8!important;color:#203247!important;border-color:#bfd0e8!important;}
+body.atsrs-light-mode .mode-choice button.active,body.atsrs-light-mode .cert-mode-buttons button.active{background:linear-gradient(135deg,#16a34a,#22c55e)!important;color:#ffffff!important;border-color:#86efac!important;}
+body.atsrs-light-mode .lang-circle{background:#ffffff!important;border-color:#bfd0e8!important;box-shadow:0 10px 24px rgba(15,23,42,.12)!important;}
+body.atsrs-light-mode .lang-menu{background:#ffffff!important;border-color:#c6d5e8!important;box-shadow:0 18px 42px rgba(15,23,42,.16)!important;}
+body.atsrs-light-mode .lang-menu button{color:#102033!important;background:transparent!important;}
+body.atsrs-light-mode .lang-menu button:hover,body.atsrs-light-mode .lang-menu button.atsrs-lang-active{background:#eef5ff!important;}
+body.atsrs-light-mode table th,body.atsrs-light-mode table td{border-color:#d6e1ee!important;color:#102033!important;}
+body.atsrs-light-mode .build-badge{background:rgba(255,255,255,.82)!important;border-color:#c6d5e8!important;color:#52657a!important;}
+body.atsrs-light-mode .good{color:#15803d!important} body.atsrs-light-mode .warning{color:#b45309!important} body.atsrs-light-mode .danger{color:#dc2626!important}
+</style>
+<script id="atsrs-v82-ui-script">
+(function(){
+  var LANG_LABELS={en:['🇬🇧','English'],az:['🇦🇿','Azərbaycan'],ru:['🇷🇺','Русский']};
+  var THEME_KEY='atsrs_theme_mode';
+  function currentLang(){
+    try{return localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||document.documentElement.lang||'en';}catch(e){return 'en';}
+  }
+  function fixLangMenu(){
+    var order=['en','az','ru'];
+    var menus=document.querySelectorAll('.lang-menu');
+    Array.prototype.forEach.call(menus,function(menu){
+      var buttons=menu.querySelectorAll('button');
+      Array.prototype.forEach.call(buttons,function(btn,i){
+        var code=order[i]; if(!LANG_LABELS[code]) return;
+        btn.innerHTML='<span>'+LANG_LABELS[code][0]+'</span> '+LANG_LABELS[code][1];
+        btn.classList.toggle('atsrs-lang-active', code===currentLang());
+      });
+    });
+  }
+  function getTheme(){try{return localStorage.getItem(THEME_KEY)||'dark';}catch(e){return 'dark';}}
+  function applyTheme(mode){
+    var light=mode==='light';
+    if(document.body){document.body.classList.toggle('atsrs-light-mode',light);}
+    document.documentElement.setAttribute('data-atsrs-theme',mode);
+    Array.prototype.forEach.call(document.querySelectorAll('.atsrs-theme-toggle'),function(btn){
+      btn.title=light?'Dark mode':'Light mode';
+      btn.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode');
+    });
+  }
+  function toggleTheme(){
+    var next=getTheme()==='light'?'dark':'light';
+    try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    applyTheme(next);
+  }
+  function makeThemeButton(id){
+    var btn=document.getElementById(id);
+    if(btn) return btn;
+    btn=document.createElement('button');
+    btn.type='button'; btn.id=id; btn.className='atsrs-theme-toggle';
+    btn.innerHTML='<span>🌙</span><span>☀️</span>';
+    btn.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();}toggleTheme();};
+    return btn;
+  }
+  function installThemeButtons(){
+    var appLang=document.querySelector('#app .top-actions .lang-floating, #app .top-actions .app-lang-switcher');
+    if(appLang){
+      var appBtn=makeThemeButton('atsrsThemeToggleApp');
+      if(appBtn.parentElement!==appLang.parentElement){appLang.insertAdjacentElement('afterend',appBtn);}
+    }
+    var authLang=document.querySelector('#auth .auth-card > .lang-floating');
+    if(authLang){
+      var authBtn=makeThemeButton('atsrsThemeToggleAuth');
+      if(authBtn.parentElement!==authLang.parentElement){authLang.insertAdjacentElement('afterend',authBtn);}
+    }
+    applyTheme(getTheme());
+  }
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function' && !oldChange.__v82Wrapped){
+    var wrappedChange=function(){
+      var r=oldChange.apply(this,arguments);
+      setTimeout(function(){fixLangMenu();installThemeButtons();},0);
+      return r;
+    };
+    wrappedChange.__v82Wrapped=true;
+    window.changeLanguage=wrappedChange;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function' && !oldApply.__v82Wrapped){
+    var wrappedApply=function(){
+      var r=oldApply.apply(this,arguments);
+      setTimeout(function(){fixLangMenu();installThemeButtons();},0);
+      return r;
+    };
+    wrappedApply.__v82Wrapped=true;
+    window.applyLanguage=wrappedApply;
+  }
+  function init(){installThemeButtons();fixLangMenu();}
+  document.addEventListener('DOMContentLoaded',init);
+  window.addEventListener('load',init);
+  setTimeout(init,0);
+  setTimeout(init,600);
+})();
+</script>
+
+
+
+<!-- V83: Deep UI theme audit + simplified menus (safe override, no core logic changes) -->
+<style id="atsrs-v83-deep-theme-menu-audit">
+/* =========================================================
+   V83 DESIGN RULES
+   1) Light mode must not leave dark/black panels behind.
+   2) Menus must use the parent/background color; no colored cards.
+   3) Collapse button must be a simple icon control, not a colored tile.
+   4) Language menu must stay compact and neutral.
+   ========================================================= */
+
+:root{
+  --v83-dark-bg:#07111d;
+  --v83-dark-bg2:#0b1726;
+  --v83-dark-panel:#111c2d;
+  --v83-dark-panel2:#0f1b2c;
+  --v83-dark-soft:#16243a;
+  --v83-dark-border:#2a415b;
+  --v83-dark-text:#f3f7fb;
+  --v83-dark-muted:#a7b5c5;
+
+  --v83-light-bg:#f5f8fc;
+  --v83-light-bg2:#eef4fb;
+  --v83-light-panel:#ffffff;
+  --v83-light-panel2:#f8fbff;
+  --v83-light-soft:#eef4fb;
+  --v83-light-border:#c8d7ea;
+  --v83-light-text:#102033;
+  --v83-light-muted:#52677d;
+
+  --v83-accent:#22c55e;
+  --v83-accent2:#38bdf8;
+  --v83-danger:#dc2626;
+}
+
+/* ---------- base theme tokens ---------- */
+html[data-atsrs-theme="dark"] body,
+body:not(.atsrs-light-mode){
+  background:radial-gradient(circle at 18% 0%,rgba(34,197,94,.10),transparent 28%),linear-gradient(135deg,var(--v83-dark-bg),#061422)!important;
+  color:var(--v83-dark-text)!important;
+}
+body.atsrs-light-mode{
+  background:linear-gradient(135deg,var(--v83-light-bg),#ffffff)!important;
+  color:var(--v83-light-text)!important;
+}
+
+/* ---------- panels, cards, modals, dropdowns, boxes ---------- */
+body.atsrs-light-mode .auth,
+body.atsrs-light-mode #auth{
+  background:linear-gradient(135deg,#edf6ff 0%,#ffffff 48%,#effff6 100%)!important;
+  color:var(--v83-light-text)!important;
+}
+body.atsrs-light-mode .app,
+body.atsrs-light-mode #app{
+  background:var(--v83-light-bg)!important;
+  color:var(--v83-light-text)!important;
+}
+
+body.atsrs-light-mode .auth-card,
+body.atsrs-light-mode .auth-intro,
+body.atsrs-light-mode .card,
+body.atsrs-light-mode .panel,
+body.atsrs-light-mode .workflow-card,
+body.atsrs-light-mode .snapshot-card,
+body.atsrs-light-mode .mini-panel,
+body.atsrs-light-mode .hero-card,
+body.atsrs-light-mode .feature-tile,
+body.atsrs-light-mode .intro-hero,
+body.atsrs-light-mode .intro-service-card,
+body.atsrs-light-mode .atsrs-anime-stage,
+body.atsrs-light-mode .anime-step,
+body.atsrs-light-mode .upload-simple,
+body.atsrs-light-mode .scan-box,
+body.atsrs-light-mode .preview-box,
+body.atsrs-light-mode .preview-profile,
+body.atsrs-light-mode .ref-card,
+body.atsrs-light-mode .import-box,
+body.atsrs-light-mode .cv-beta-box,
+body.atsrs-light-mode .ref-beta-box,
+body.atsrs-light-mode .company-import-box,
+body.atsrs-light-mode .trial-box,
+body.atsrs-light-mode .share-card,
+body.atsrs-light-mode .cv-card,
+body.atsrs-light-mode .cv-status-card,
+body.atsrs-light-mode .missing-card,
+body.atsrs-light-mode .risk-item,
+body.atsrs-light-mode .snapshot-item,
+body.atsrs-light-mode .doc-chip,
+body.atsrs-light-mode .mode-badge,
+body.atsrs-light-mode .pill,
+body.atsrs-light-mode .build-badge,
+body.atsrs-light-mode .form-alert,
+body.atsrs-light-mode .mode-error-text,
+body.atsrs-light-mode .share-permissions label,
+body.atsrs-light-mode .profile-link-demo,
+body.atsrs-light-mode .import-box,
+body.atsrs-light-mode .import-box *:not(button){
+  background:var(--v83-light-panel)!important;
+  color:var(--v83-light-text)!important;
+  border-color:var(--v83-light-border)!important;
+  box-shadow:0 12px 34px rgba(15,23,42,.08)!important;
+}
+
+/* Keep errors visibly red in light mode */
+body.atsrs-light-mode .form-alert,
+body.atsrs-light-mode .mode-error-text{
+  background:#fff1f2!important;
+  color:#991b1b!important;
+  border-color:#fecaca!important;
+}
+body.atsrs-light-mode .trial-box,
+body.atsrs-light-mode .share-card{
+  background:linear-gradient(135deg,#ffffff,#f0fff7)!important;
+}
+
+/* Dark mode: ensure popup/card islands are never white */
+body:not(.atsrs-light-mode) .auth-card,
+body:not(.atsrs-light-mode) .auth-intro,
+body:not(.atsrs-light-mode) .card,
+body:not(.atsrs-light-mode) .panel,
+body:not(.atsrs-light-mode) .workflow-card,
+body:not(.atsrs-light-mode) .snapshot-card,
+body:not(.atsrs-light-mode) .mini-panel,
+body:not(.atsrs-light-mode) .hero-card,
+body:not(.atsrs-light-mode) .feature-tile,
+body:not(.atsrs-light-mode) .intro-hero,
+body:not(.atsrs-light-mode) .intro-service-card,
+body:not(.atsrs-light-mode) .atsrs-anime-stage,
+body:not(.atsrs-light-mode) .anime-step,
+body:not(.atsrs-light-mode) .upload-simple,
+body:not(.atsrs-light-mode) .scan-box,
+body:not(.atsrs-light-mode) .preview-box,
+body:not(.atsrs-light-mode) .preview-profile,
+body:not(.atsrs-light-mode) .ref-card,
+body:not(.atsrs-light-mode) .import-box,
+body:not(.atsrs-light-mode) .cv-beta-box,
+body:not(.atsrs-light-mode) .ref-beta-box,
+body:not(.atsrs-light-mode) .company-import-box,
+body:not(.atsrs-light-mode) .trial-box,
+body:not(.atsrs-light-mode) .share-card,
+body:not(.atsrs-light-mode) .risk-item,
+body:not(.atsrs-light-mode) .snapshot-item,
+body:not(.atsrs-light-mode) .doc-chip,
+body:not(.atsrs-light-mode) .mode-badge,
+body:not(.atsrs-light-mode) .pill,
+body:not(.atsrs-light-mode) .share-permissions label,
+body:not(.atsrs-light-mode) .profile-link-demo{
+  background:linear-gradient(180deg,var(--v83-dark-panel),var(--v83-dark-panel2))!important;
+  color:var(--v83-dark-text)!important;
+  border-color:var(--v83-dark-border)!important;
+}
+
+/* ---------- typography in light mode ---------- */
+body.atsrs-light-mode h1,
+body.atsrs-light-mode h2,
+body.atsrs-light-mode h3,
+body.atsrs-light-mode h4,
+body.atsrs-light-mode b,
+body.atsrs-light-mode strong,
+body.atsrs-light-mode .brand,
+body.atsrs-light-mode .logo,
+body.atsrs-light-mode #pageTitle,
+body.atsrs-light-mode .stat{
+  color:var(--v83-light-text)!important;
+}
+body.atsrs-light-mode p,
+body.atsrs-light-mode span,
+body.atsrs-light-mode label,
 body.atsrs-light-mode .sub,
 body.atsrs-light-mode .small-note,
 body.atsrs-light-mode .field-label,
+body.atsrs-light-mode .field-hint,
 body.atsrs-light-mode .feature-tile span:not(.tile-icon),
 body.atsrs-light-mode .auth-intro p,
 body.atsrs-light-mode .hero-card p,
@@ -4731,87 +4955,312 @@ body.atsrs-light-mode .mini-panel p,
 body.atsrs-light-mode .intro-service-card p,
 body.atsrs-light-mode .intro-hero p,
 body.atsrs-light-mode .anime-step span,
-body.atsrs-light-mode .preview-head p{color:#52657a!important}
-body.atsrs-light-mode input,body.atsrs-light-mode select,body.atsrs-light-mode textarea{background:#ffffff!important;color:#102033!important;border-color:#c0cfe3!important}
-body.atsrs-light-mode input:focus,body.atsrs-light-mode select:focus,body.atsrs-light-mode textarea:focus{border-color:#16a34a!important;box-shadow:0 0 0 3px rgba(34,197,94,.15)!important}
-body.atsrs-light-mode .nav button{background:#eef5ff!important;color:#203247!important;border-color:#d4e0ef!important}
-body.atsrs-light-mode .nav button.active,body.atsrs-light-mode .nav button:hover{background:linear-gradient(135deg,#16a34a,#22c55e)!important;color:#ffffff!important;border-color:#86efac!important}
-body.atsrs-light-mode button.secondary,
-body.atsrs-light-mode .mode-choice button,
-body.atsrs-light-mode .cert-mode-buttons button{background:#e8eef8!important;color:#203247!important;border-color:#bfd0e8!important}
-body.atsrs-light-mode .mode-choice button.active,
-body.atsrs-light-mode .cert-mode-buttons button.active{background:linear-gradient(135deg,#16a34a,#22c55e)!important;color:#ffffff!important;border-color:#86efac!important}
-body.atsrs-light-mode .lang-circle{background:#ffffff!important;border-color:#bfd0e8!important;box-shadow:0 10px 24px rgba(15,23,42,.12)!important}
-body.atsrs-light-mode .lang-menu{background:#ffffff!important;border-color:#c6d5e8!important;box-shadow:0 18px 42px rgba(15,23,42,.16)!important}
-body.atsrs-light-mode .lang-menu button{color:#102033!important;background:#eef5ff!important}
-body.atsrs-light-mode .lang-menu button:hover{background:#dbeafe!important}
-body.atsrs-light-mode table th,body.atsrs-light-mode table td{border-color:#d6e1ee!important;color:#102033!important}
-body.atsrs-light-mode .build-badge{background:rgba(255,255,255,.82)!important;border-color:#c6d5e8!important;color:#52657a!important}
-body.atsrs-light-mode .trial-box{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(255,255,255,.94))!important;border-color:#86efac!important;color:#102033!important}
-body.atsrs-light-mode .doc-chip,body.atsrs-light-mode .risk-item,body.atsrs-light-mode .snapshot-item,body.atsrs-light-mode .profile-link-demo{background:#ffffff!important;border-color:#c6d5e8!important;color:#102033!important}
-body.atsrs-light-mode .good{color:#15803d!important} body.atsrs-light-mode .warning{color:#b45309!important} body.atsrs-light-mode .danger{color:#dc2626!important}
-body.atsrs-light-mode .floating-doc{background:linear-gradient(145deg,#ffffff,#eaf7ef)!important;border-color:#bbf7d0!important;color:#102033!important}
-body.atsrs-light-mode .floating-doc b{color:#102033!important} body.atsrs-light-mode .floating-doc span{color:#52657a!important}
+body.atsrs-light-mode .preview-head p{
+  color:var(--v83-light-muted)!important;
+}
+
+/* ---------- form controls ---------- */
+body.atsrs-light-mode input,
+body.atsrs-light-mode select,
+body.atsrs-light-mode textarea{
+  background:#ffffff!important;
+  color:var(--v83-light-text)!important;
+  border-color:var(--v83-light-border)!important;
+  box-shadow:none!important;
+}
+body.atsrs-light-mode input::placeholder,
+body.atsrs-light-mode textarea::placeholder{color:#7b8da3!important;}
+body:not(.atsrs-light-mode) input,
+body:not(.atsrs-light-mode) select,
+body:not(.atsrs-light-mode) textarea{
+  background:#081524!important;
+  color:var(--v83-dark-text)!important;
+  border-color:#263f58!important;
+}
+
+/* ---------- tables ---------- */
+body.atsrs-light-mode table,
+body.atsrs-light-mode .table-wrap{background:transparent!important;color:var(--v83-light-text)!important;}
+body.atsrs-light-mode th,
+body.atsrs-light-mode td{
+  color:var(--v83-light-text)!important;
+  border-color:#d7e2ee!important;
+  background:transparent!important;
+}
+body.atsrs-light-mode th{color:#334155!important;}
+
+/* ---------- sidebar: remove colored menu cards, keep background only ---------- */
+#app .sidebar{
+  background:linear-gradient(180deg,rgba(4,12,22,.98),rgba(7,17,29,.96))!important;
+}
+body.atsrs-light-mode #app .sidebar{
+  background:linear-gradient(180deg,#ffffff,#f2f6fb)!important;
+  color:var(--v83-light-text)!important;
+  border-color:var(--v83-light-border)!important;
+}
+
+#app .nav button,
+#app .atsrs-sidebar-toggle,
+.account-tabs button,
+.module-tabs button,
+.cert-mode-buttons button,
+.mode-choice button,
+.lang-menu button{
+  box-shadow:none!important;
+  background:transparent!important;
+  background-image:none!important;
+}
+
+#app .nav button{
+  border:1px solid transparent!important;
+  color:#cbd5e1!important;
+  border-radius:12px!important;
+}
+#app .nav button:hover{
+  background:rgba(148,163,184,.10)!important;
+  border-color:rgba(148,163,184,.18)!important;
+}
+#app .nav button.active{
+  background:rgba(34,197,94,.12)!important;
+  border-color:rgba(34,197,94,.28)!important;
+  color:#f8fafc!important;
+}
+body.atsrs-light-mode #app .nav button{
+  color:#334155!important;
+  background:transparent!important;
+  border-color:transparent!important;
+}
+body.atsrs-light-mode #app .nav button:hover{
+  background:rgba(15,23,42,.055)!important;
+  border-color:rgba(15,23,42,.08)!important;
+}
+body.atsrs-light-mode #app .nav button.active{
+  background:rgba(34,197,94,.11)!important;
+  border-color:rgba(34,197,94,.24)!important;
+  color:#0f5132!important;
+}
+
+/* Collapse button: icon only, no colored tile */
+#app .atsrs-sidebar-toggle{
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  border-radius:10px!important;
+  border:1px solid transparent!important;
+  color:#cbd5e1!important;
+  font-size:22px!important;
+  padding:0!important;
+  margin:0 0 12px 0!important;
+}
+#app .atsrs-sidebar-toggle:hover{
+  background:rgba(148,163,184,.10)!important;
+  border-color:rgba(148,163,184,.18)!important;
+  filter:none!important;
+}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle{
+  color:#334155!important;
+}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle:hover{
+  background:rgba(15,23,42,.055)!important;
+  border-color:rgba(15,23,42,.08)!important;
+}
+#app.app.sidebar-collapsed .nav button{
+  background:transparent!important;
+  border:1px solid transparent!important;
+  box-shadow:none!important;
+}
+#app.app.sidebar-collapsed .nav button:hover,
+#app.app.sidebar-collapsed .nav button.active{
+  background:rgba(34,197,94,.10)!important;
+  border-color:rgba(34,197,94,.22)!important;
+}
+
+/* ---------- language selector: compact, neutral, no colored rows ---------- */
+.lang-menu{
+  width:156px!important;
+  min-width:156px!important;
+  padding:5px!important;
+  border-radius:12px!important;
+  background:#091524!important;
+  border:1px solid var(--v83-dark-border)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.36)!important;
+}
+.lang-menu button{
+  min-height:34px!important;
+  margin:0!important;
+  padding:8px 9px!important;
+  border-radius:9px!important;
+  border:0!important;
+  color:#e5e7eb!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  text-align:left!important;
+  font-weight:750!important;
+  font-size:13px!important;
+  line-height:1.1!important;
+}
+.lang-menu button span{
+  width:20px!important;
+  min-width:20px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.lang-menu button:hover,
+.lang-menu button.atsrs-lang-active{
+  background:rgba(148,163,184,.10)!important;
+}
+.lang-menu button.atsrs-lang-active::after{
+  content:'✓';
+  margin-left:auto;
+  color:var(--v83-accent);
+  font-weight:900;
+}
+body.atsrs-light-mode .lang-menu{
+  background:#ffffff!important;
+  border-color:var(--v83-light-border)!important;
+  box-shadow:0 18px 42px rgba(15,23,42,.14)!important;
+}
+body.atsrs-light-mode .lang-menu button{
+  color:var(--v83-light-text)!important;
+  background:transparent!important;
+}
+body.atsrs-light-mode .lang-menu button:hover,
+body.atsrs-light-mode .lang-menu button.atsrs-lang-active{
+  background:rgba(15,23,42,.055)!important;
+}
+
+/* ---------- other tab/menu groups: neutral background, no colored cards ---------- */
+.account-tabs,
+.module-tabs,
+.cert-mode-buttons,
+.mode-choice{
+  background:transparent!important;
+}
+.account-tabs button,
+.module-tabs button,
+.cert-mode-buttons button,
+.mode-choice button{
+  color:#cbd5e1!important;
+  border:1px solid rgba(148,163,184,.16)!important;
+  border-radius:11px!important;
+}
+.account-tabs button:hover,
+.module-tabs button:hover,
+.cert-mode-buttons button:hover,
+.mode-choice button:hover{
+  background:rgba(148,163,184,.10)!important;
+}
+.account-tabs button.active,
+.module-tabs button.active,
+.cert-mode-buttons button.active,
+.mode-choice button.active{
+  background:rgba(34,197,94,.12)!important;
+  border-color:rgba(34,197,94,.28)!important;
+  color:#f8fafc!important;
+}
+body.atsrs-light-mode .account-tabs button,
+body.atsrs-light-mode .module-tabs button,
+body.atsrs-light-mode .cert-mode-buttons button,
+body.atsrs-light-mode .mode-choice button{
+  color:#334155!important;
+  border-color:rgba(15,23,42,.10)!important;
+  background:transparent!important;
+}
+body.atsrs-light-mode .account-tabs button:hover,
+body.atsrs-light-mode .module-tabs button:hover,
+body.atsrs-light-mode .cert-mode-buttons button:hover,
+body.atsrs-light-mode .mode-choice button:hover{
+  background:rgba(15,23,42,.055)!important;
+}
+body.atsrs-light-mode .account-tabs button.active,
+body.atsrs-light-mode .module-tabs button.active,
+body.atsrs-light-mode .cert-mode-buttons button.active,
+body.atsrs-light-mode .mode-choice button.active{
+  background:rgba(34,197,94,.11)!important;
+  border-color:rgba(34,197,94,.24)!important;
+  color:#0f5132!important;
+}
+
+/* Primary buttons remain clearly actionable, not menu-like */
+button:not(.secondary):not(.linkbtn):not(.atsrs-sidebar-toggle):not(.atsrs-theme-toggle):not(.lang-menu button):not(.nav button):not(.account-tabs button):not(.module-tabs button):not(.cert-mode-buttons button):not(.mode-choice button){
+  box-shadow:0 10px 24px rgba(37,99,235,.18)!important;
+}
+.top-logout{
+  background:transparent!important;
+  border:1px solid rgba(220,38,38,.35)!important;
+  color:#fecaca!important;
+  box-shadow:none!important;
+}
+.top-logout:hover{background:rgba(220,38,38,.12)!important;}
+body.atsrs-light-mode .top-logout{color:#991b1b!important;border-color:rgba(220,38,38,.30)!important;}
+
+/* Status colors keep meaning in both themes */
+body.atsrs-light-mode .good{color:#15803d!important;}
+body.atsrs-light-mode .warning{color:#b45309!important;}
+body.atsrs-light-mode .danger,
+body.atsrs-light-mode .missing{color:#dc2626!important;}
+
+/* Theme toggle remains neutral and compact */
+.atsrs-theme-toggle{
+  background:transparent!important;
+  border:1px solid rgba(148,163,184,.22)!important;
+  box-shadow:none!important;
+}
+.atsrs-theme-toggle:hover{background:rgba(148,163,184,.10)!important;}
+body.atsrs-light-mode .atsrs-theme-toggle{
+  background:transparent!important;
+  border-color:rgba(15,23,42,.12)!important;
+  box-shadow:none!important;
+}
+body.atsrs-light-mode .atsrs-theme-toggle:hover{background:rgba(15,23,42,.055)!important;}
 </style>
-<script id="atsrs-v81-theme-script">
+
+<script id="atsrs-v83-theme-menu-safety-check">
 (function(){
-  const LS_KEY='atsrs_theme_mode';
-  function storedTheme(){return localStorage.getItem(LS_KEY)||'dark'}
-  function applyTheme(mode){
-    const isLight=mode==='light';
-    document.body.classList.toggle('atsrs-light-mode',isLight);
-    document.documentElement.setAttribute('data-atsrs-theme',mode);
-    document.querySelectorAll('.atsrs-theme-toggle').forEach(btn=>{
-      btn.setAttribute('aria-label',isLight?'Switch to dark mode':'Switch to light mode');
-      btn.setAttribute('title',isLight?'Dark mode':'Light mode');
+  var LANGS={en:['🇬🇧','English'],az:['🇦🇿','Azərbaycan'],ru:['🇷🇺','Русский']};
+  var order=['en','az','ru'];
+  function safeLang(){
+    try{return localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||document.documentElement.lang||'en';}
+    catch(e){return 'en';}
+  }
+  function normalizeLangMenu(){
+    document.querySelectorAll('.lang-menu').forEach(function(menu){
+      var buttons=Array.prototype.slice.call(menu.querySelectorAll('button'));
+      buttons.forEach(function(btn,i){
+        var code=order[i];
+        if(!LANGS[code]) return;
+        btn.innerHTML='<span>'+LANGS[code][0]+'</span><b style="font:inherit;font-weight:750">'+LANGS[code][1]+'</b>';
+        btn.classList.toggle('atsrs-lang-active', code===safeLang());
+      });
     });
   }
-  function toggleTheme(){
-    const next=storedTheme()==='light'?'dark':'light';
-    localStorage.setItem(LS_KEY,next); applyTheme(next);
-  }
-  function makeBtn(id){
-    let btn=document.getElementById(id);
-    if(btn) return btn;
-    btn=document.createElement('button');
-    btn.id=id; btn.type='button'; btn.className='atsrs-theme-toggle';
-    btn.innerHTML='<span>🌙</span><span>☀️</span>';
-    btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();toggleTheme();});
-    return btn;
-  }
-  function installThemeButtons(){
-    const appLang=document.querySelector('#app .top-actions .lang-floating, #app .top-actions .app-lang-switcher');
-    if(appLang){
-      const appBtn=makeBtn('atsrsThemeToggleApp');
-      if(!appBtn.parentElement || appBtn.parentElement!==appLang.parentElement){appLang.insertAdjacentElement('afterend',appBtn)}
-    }
-    const authLang=document.querySelector('#auth .auth-card > .lang-floating');
-    if(authLang){
-      const authBtn=makeBtn('atsrsThemeToggleAuth');
-      if(!authBtn.parentElement || authBtn.parentElement!==authLang.parentElement){authLang.insertAdjacentElement('afterend',authBtn)}
-    }
-    applyTheme(storedTheme());
-  }
-  function lockLanguageMenuLabels(){
-    const labels=[['en','🇬🇧','English'],['az','🇦🇿','Azərbaycan'],['ru','🇷🇺','Русский']];
-    document.querySelectorAll('.lang-menu button').forEach((btn,i)=>{
-      const item=labels[i]; if(!item) return;
-      btn.innerHTML='<span>'+item[1]+'</span> '+item[2];
+  function normalizeMenuTitles(){
+    var nav=document.querySelector('#app .sidebar .nav');
+    if(!nav) return;
+    nav.querySelectorAll('button').forEach(function(btn){
+      var txt=(btn.textContent||'').replace(/^\s*[🏠📊👥📁📝🏢📈⚙️🚪]\s*/,'').trim();
+      if(txt) btn.setAttribute('title',txt);
     });
   }
-  const oldApplyLanguage=window.applyLanguage;
-  if(typeof oldApplyLanguage==='function'){
-    window.applyLanguage=function(){
-      const r=oldApplyLanguage.apply(this,arguments);
-      setTimeout(()=>{lockLanguageMenuLabels();installThemeButtons();},0);
-      return r;
-    };
+  function run(){normalizeLangMenu();normalizeMenuTitles();}
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function' && !oldChange.__v83MenuWrapped){
+    var wrapped=function(){var r=oldChange.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrapped.__v83MenuWrapped=true;
+    window.changeLanguage=wrapped;
   }
-  ['DOMContentLoaded','load'].forEach(ev=>window.addEventListener(ev,()=>{installThemeButtons();lockLanguageMenuLabels();},{passive:true}));
-  setTimeout(()=>{installThemeButtons();lockLanguageMenuLabels();},0);
-  setTimeout(()=>{installThemeButtons();lockLanguageMenuLabels();},600);
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function' && !oldApply.__v83MenuWrapped){
+    var wrappedApply=function(){var r=oldApply.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrappedApply.__v83MenuWrapped=true;
+    window.applyLanguage=wrappedApply;
+  }
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('load',run);
+  setTimeout(run,0);setTimeout(run,500);setInterval(run,1800);
 })();
 </script>
-
 </body>
 </html>
