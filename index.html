@@ -1033,9 +1033,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V78</div>
-<div>Last Update: 06 Jun 2026 01:25 UTC</div>
-<div>AUTH DEBUG BUILD</div>
+<div>ATSRS V79</div>
+<div>Last Update: 06 Jun 2026 0145 UTC</div>
+<div>COLLAPSIBLE SIDEBAR BUILD</div>
 </div>
 </div>
 </section>
@@ -4493,6 +4493,127 @@ body > .atsrs-v64-top-actions .lang-menu{
   }
   ['DOMContentLoaded','load'].forEach(e=>window.addEventListener(e,()=>setTimeout(v78Apply,0)));
   setTimeout(v78Apply,0);setTimeout(v78Apply,300);setInterval(v78Apply,1500);
+})();
+</script>
+
+
+
+<!-- V79: Collapsible Sidebar / Workspace Expansion -->
+<style id="atsrs-v79-collapsible-sidebar-style">
+  #app.app{
+    --atsrs-sidebar-open:232px;
+    --atsrs-sidebar-collapsed:74px;
+  }
+  #app .sidebar{position:relative!important;transition:width .22s ease, padding .22s ease, transform .22s ease!important;}
+  #app .atsrs-sidebar-toggle{
+    width:42px!important;height:42px!important;min-width:42px!important;margin:0 0 14px 0!important;padding:0!important;border-radius:14px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    background:linear-gradient(135deg,#0f766e,#22c55e)!important;border:1px solid rgba(134,239,172,.55)!important;
+    color:#fff!important;font-size:20px!important;box-shadow:0 12px 28px rgba(34,197,94,.18)!important;
+  }
+  #app .atsrs-sidebar-toggle:hover{filter:brightness(1.08)}
+  #app .nav button{
+    display:flex!important;align-items:center!important;gap:10px!important;white-space:nowrap!important;overflow:hidden!important;
+    transition:padding .22s ease, justify-content .22s ease, gap .22s ease!important;
+  }
+  #app .nav button::before{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:22px!important;min-width:22px!important;font-size:18px!important;line-height:1!important;
+  }
+  #navIntro::before{content:"🏠"}#navDashboard::before{content:"📊"}#navPersonnel::before{content:"👥"}#navCertificates::before{content:"📁"}
+  #navRefs::before{content:"📝"}#navCompliance::before{content:"🏢"}#navReports::before{content:"📈"}#navProfile::before{content:"⚙️"}#navLogout::before{content:"🚪"}
+
+  @media(min-width:801px){
+    #app.app:not(.hidden){grid-template-columns:var(--atsrs-sidebar-open) minmax(0,1fr)!important;transition:grid-template-columns .22s ease!important;}
+    #app.app:not(.hidden) .sidebar{width:var(--atsrs-sidebar-open)!important;min-width:var(--atsrs-sidebar-open)!important;padding:16px!important;}
+    #app.app:not(.hidden) .main{grid-column:2!important;margin-left:0!important;max-width:none!important;width:100%!important;padding-left:22px!important;}
+    #app.app.sidebar-collapsed:not(.hidden){grid-template-columns:var(--atsrs-sidebar-collapsed) minmax(0,1fr)!important;}
+    #app.app.sidebar-collapsed:not(.hidden) .sidebar{
+      width:var(--atsrs-sidebar-collapsed)!important;min-width:var(--atsrs-sidebar-collapsed)!important;padding:14px 10px!important;
+    }
+    #app.app.sidebar-collapsed .brand,
+    #app.app.sidebar-collapsed #cabinetText{display:none!important;}
+    #app.app.sidebar-collapsed .atsrs-sidebar-toggle{margin-left:auto!important;margin-right:auto!important;}
+    #app.app.sidebar-collapsed .nav{display:flex!important;grid-template-columns:none!important;gap:8px!important;margin-top:4px!important;}
+    #app.app.sidebar-collapsed .nav button{
+      width:52px!important;height:52px!important;min-width:52px!important;padding:0!important;margin:0 auto!important;border-radius:16px!important;
+      justify-content:center!important;font-size:0!important;gap:0!important;position:relative!important;
+    }
+    #app.app.sidebar-collapsed .nav button::before{font-size:21px!important;margin:0!important;}
+    #app.app.sidebar-collapsed .nav button.active{box-shadow:0 0 0 1px rgba(134,239,172,.50),0 12px 28px rgba(34,197,94,.18)!important;}
+    #app.app.sidebar-collapsed .main{padding-left:18px!important;}
+  }
+
+  @media(max-width:800px){
+    #app.app:not(.hidden){display:grid!important;grid-template-columns:168px minmax(0,1fr)!important;min-height:100vh!important;}
+    #app.app:not(.hidden) .sidebar{
+      grid-column:1!important;grid-row:1!important;width:168px!important;min-width:168px!important;height:100vh!important;max-height:100vh!important;
+      position:sticky!important;top:0!important;overflow-y:auto!important;overflow-x:hidden!important;border-right:1px solid #16283a!important;border-bottom:0!important;
+      padding:14px 10px!important;z-index:70!important;
+    }
+    #app.app:not(.hidden) .main{grid-column:2!important;grid-row:1!important;min-width:0!important;padding:74px 12px 16px!important;width:100%!important;}
+    #app.app:not(.hidden) .nav{display:flex!important;flex-direction:column!important;grid-template-columns:none!important;gap:8px!important;}
+    #app.app:not(.hidden) .nav button{font-size:12px!important;padding:10px 8px!important;border-radius:12px!important;}
+    #app.app:not(.hidden) .brand{font-size:22px!important;}
+    #app.app:not(.hidden) #cabinetText{font-size:11px!important;margin:6px 0 12px!important;}
+
+    #app.app.sidebar-collapsed:not(.hidden){grid-template-columns:68px minmax(0,1fr)!important;}
+    #app.app.sidebar-collapsed:not(.hidden) .sidebar{width:68px!important;min-width:68px!important;padding:12px 8px!important;}
+    #app.app.sidebar-collapsed .brand,
+    #app.app.sidebar-collapsed #cabinetText{display:none!important;}
+    #app.app.sidebar-collapsed .atsrs-sidebar-toggle{width:48px!important;height:48px!important;min-width:48px!important;margin:0 auto 12px!important;}
+    #app.app.sidebar-collapsed .nav button{
+      width:50px!important;height:50px!important;min-width:50px!important;padding:0!important;margin:0 auto!important;justify-content:center!important;
+      font-size:0!important;gap:0!important;border-radius:15px!important;
+    }
+    #app.app.sidebar-collapsed .nav button::before{font-size:20px!important;}
+    #app.app.sidebar-collapsed .main{padding-left:10px!important;}
+    #app.app > .top-actions{top:12px!important;right:12px!important;z-index:120!important;}
+  }
+</style>
+<script id="atsrs-v79-collapsible-sidebar-script">
+(function(){
+  function initSidebarToggle(){
+    var app=document.getElementById('app');
+    var sidebar=app && app.querySelector('.sidebar');
+    var nav=sidebar && sidebar.querySelector('.nav');
+    if(!app||!sidebar||!nav||document.getElementById('sidebarToggleBtn')) return;
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.id='sidebarToggleBtn';
+    btn.className='atsrs-sidebar-toggle';
+    btn.setAttribute('aria-label','Toggle menu');
+    btn.innerHTML='☰';
+    sidebar.insertBefore(btn, sidebar.firstChild);
+    var saved=localStorage.getItem('atsrs_sidebar_collapsed');
+    if(saved===null){ saved = window.matchMedia && window.matchMedia('(max-width: 900px)').matches ? '1' : '0'; }
+    if(saved==='1') app.classList.add('sidebar-collapsed');
+    function sync(){
+      var collapsed=app.classList.contains('sidebar-collapsed');
+      btn.innerHTML=collapsed?'☰':'‹';
+      btn.title=collapsed?'Open menu':'Collapse menu';
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      Array.prototype.forEach.call(nav.querySelectorAll('button'), function(b){
+        var t=(b.innerText||b.textContent||'').trim();
+        if(t) b.setAttribute('title',t);
+      });
+    }
+    btn.addEventListener('click',function(){
+      app.classList.toggle('sidebar-collapsed');
+      localStorage.setItem('atsrs_sidebar_collapsed', app.classList.contains('sidebar-collapsed')?'1':'0');
+      sync();
+      setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},240);
+    });
+    var oldApply=window.applyLanguage;
+    if(typeof oldApply==='function'){
+      window.applyLanguage=function(){ var r=oldApply.apply(this,arguments); setTimeout(sync,0); return r; };
+    }
+    sync();
+  }
+  document.addEventListener('DOMContentLoaded',initSidebarToggle);
+  window.addEventListener('load',initSidebarToggle);
+  setTimeout(initSidebarToggle,0);
+  setTimeout(initSidebarToggle,600);
 })();
 </script>
 
