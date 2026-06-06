@@ -1033,9 +1033,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V80</div>
-<div>Last Update: 06 Jun 2026 0200 UTC</div>
-<div>COLLAPSIBLE SIDEBAR BUILD</div>
+<div>ATSRS V75</div>
+<div>Last Update: 06 Jun 2026 00:15 UTC</div>
+<div>TEST BUILD</div>
 </div>
 </div>
 </section>
@@ -1133,36 +1133,6 @@ body:not(.atsrs-booting) #app{
       <span id="step4Text">Allow companies to download or import selected documents.</span>
       <div class="approve-flow"><i>Request</i><i>Approve</i><i>Import</i></div>
     </div>
-  </div>
-</div>
-
-<div id="atsrsValueExpansion" class="atsrs-value-expansion" aria-label="ATSRS platform value sections">
-  <div class="atsrs-value-card highlight">
-    <span class="value-icon">📊</span>
-    <h3 id="valueSnapshotTitle">Compliance Snapshot</h3>
-    <p id="valueSnapshotText">See valid, expiring, expired and missing documents in one fast overview.</p>
-    <div class="value-mini-stats"><span>Valid</span><span>Expiring</span><span>Expired</span><span>Missing</span></div>
-  </div>
-  <div class="atsrs-value-card">
-    <span class="value-icon">🔔</span>
-    <h3 id="valueAlertsTitle">Smart Alerts</h3>
-    <p id="valueAlertsText">Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.</p>
-  </div>
-  <div class="atsrs-value-card">
-    <span class="value-icon">🤖</span>
-    <h3 id="valueAiTitle">AI Document Assistant</h3>
-    <p id="valueAiText">Extract name, certificate number, issue date and expiry date from uploaded documents.</p>
-  </div>
-  <div class="atsrs-value-card">
-    <span class="value-icon">📄</span>
-    <h3 id="valueCvTitle">ATSRS CV Generator</h3>
-    <p id="valueCvText">Build export-ready CV and compliance packs for company or client submission.</p>
-  </div>
-  <div class="atsrs-value-card wide">
-    <span class="value-icon">🏢</span>
-    <h3 id="valueIndustriesTitle">Supported Industries</h3>
-    <p id="valueIndustriesText">Designed for Offshore, ROV, NDT, Marine, Survey, Renewables and Oil & Gas teams.</p>
-    <div class="industry-strip"><span>Offshore</span><span>ROV</span><span>NDT</span><span>Marine</span><span>Survey</span><span>Renewables</span><span>Oil & Gas</span></div>
   </div>
 </div>
 </section>
@@ -3916,9 +3886,9 @@ body > .atsrs-v64-top-actions .lang-menu{
     "Request":"Sorğu",
     "Country / Authority (Optional)":"Ölkə / Qurum (istəyə bağlı)",
     "Document No (Optional)":"Sənəd № (istəyə bağlı)",
-    "English":"English",
-    "Azərbaycan":"Azərbaycan",
-    "Русский":"Русский"
+    "English":"İngilis dili",
+    "Azərbaycan":"Azərbaycan dili",
+    "Русский":"Rus dili"
   };
   const RU={
     "ATSRS PLATFORM":"ПЛАТФОРМА ATSRS",
@@ -4052,8 +4022,8 @@ body > .atsrs-v64-top-actions .lang-menu{
     "Request":"Запрос",
     "Country / Authority (Optional)":"Страна / Орган (необязательно)",
     "Document No (Optional)":"№ документа (необязательно)",
-    "English":"English",
-    "Azərbaycan":"Azərbaycan",
+    "English":"Английский",
+    "Azərbaycan":"Азербайджанский",
     "Русский":"Русский"
   };
   const DICTS={az:AZ,ru:RU,en:{}};
@@ -4341,336 +4311,6 @@ body > .atsrs-v64-top-actions .lang-menu{
   },true);
   runSoon();
   setInterval(lockTestLoginLabel,300);
-})();
-</script>
-
-
-
-<!-- V77 Auth UX & Network Diagnostics -->
-<style>
-.auth-health-box{margin:10px 0 12px;padding:10px 12px;border-radius:14px;border:1px solid #334155;background:rgba(2,6,23,.42);font-size:13px;line-height:1.4;color:#cbd5e1}
-.auth-health-box strong{display:block;margin-bottom:3px;color:#e5e7eb}
-.auth-health-box.ok{border-color:#14532d;background:rgba(20,83,45,.20);color:#bbf7d0}
-.auth-health-box.warn{border-color:#713f12;background:rgba(113,63,18,.20);color:#fde68a}
-.auth-health-box.bad{border-color:#7f1d1d;background:rgba(127,29,29,.22);color:#fecaca}
-.auth-health-small{font-size:12px;color:#94a3b8;margin-top:4px}
-</style>
-<script>
-(function(){
-  const V77_AUTH_TEXT={
-    en:{
-      checkingTitle:'ATSRS service check',checking:'Checking backend connection...',okTitle:'ATSRS services online',ok:'Connection to ATSRS backend is available.',badTitle:'Network problem',bad:'Network error. Unable to connect to ATSRS services. Please check VPN, Wi-Fi or try again later.',lib:'ATSRS Auth library did not load. Check internet connection and refresh the page.',registerOk:'Confirmation email sent. Check inbox/spam.',passwordOk:'Password updated.',wrong:'Email or password is incorrect.',notConfirmed:'Email is not confirmed yet. Check inbox/spam for the confirmation link.',userNotFound:'Account not found. Please create an account first.',rate:'Too many attempts. Please wait and try again.',server:'ATSRS server is temporarily unavailable. Try again later.',details:'Technical detail:'
-    },
-    az:{
-      checkingTitle:'ATSRS servis yoxlaması',checking:'Backend bağlantısı yoxlanılır...',okTitle:'ATSRS servisləri aktivdir',ok:'ATSRS backend bağlantısı mövcuddur.',badTitle:'Şəbəkə problemi',bad:'Şəbəkə problemi. ATSRS serverinə qoşulmaq mümkün olmadı. VPN, Wi‑Fi və ya internet bağlantınızı yoxlayın.',lib:'ATSRS Auth kitabxanası yüklənmədi. İnterneti yoxlayıb səhifəni yeniləyin.',registerOk:'Təsdiq emaili göndərildi. Inbox/spam yoxlayın.',passwordOk:'Şifrə yeniləndi.',wrong:'Email və ya şifrə yanlışdır.',notConfirmed:'Email hələ təsdiqlənməyib. Təsdiq linki üçün inbox/spam yoxlayın.',userNotFound:'Hesab tapılmadı. Əvvəlcə hesab yaradın.',rate:'Çox cəhd edildi. Bir az gözləyib yenidən yoxlayın.',server:'ATSRS serveri müvəqqəti əlçatan deyil. Bir az sonra yenidən yoxlayın.',details:'Texniki detal:'
-    },
-    ru:{
-      checkingTitle:'Проверка сервиса ATSRS',checking:'Проверяется соединение с backend...',okTitle:'Сервисы ATSRS доступны',ok:'Соединение с backend ATSRS доступно.',badTitle:'Ошибка сети',bad:'Ошибка сети. Не удалось подключиться к сервисам ATSRS. Проверьте VPN, Wi‑Fi или интернет-соединение.',lib:'Библиотека ATSRS Auth не загрузилась. Проверьте интернет и обновите страницу.',registerOk:'Письмо подтверждения отправлено. Проверьте inbox/spam.',passwordOk:'Пароль обновлён.',wrong:'Email или пароль неверный.',notConfirmed:'Email ещё не подтверждён. Проверьте inbox/spam для ссылки подтверждения.',userNotFound:'Аккаунт не найден. Сначала создайте аккаунт.',rate:'Слишком много попыток. Подождите и попробуйте снова.',server:'Сервер ATSRS временно недоступен. Попробуйте позже.',details:'Техническая деталь:'
-    }
-  };
-  function v77Lang(){try{return (typeof lang!=='undefined'&&V77_AUTH_TEXT[lang])?lang:(localStorage.getItem('atsrs_lang')||'en')}catch(e){return 'en'}}
-  function v77t(k){const l=v77Lang();return (V77_AUTH_TEXT[l]&&V77_AUTH_TEXT[l][k])||V77_AUTH_TEXT.en[k]||k}
-  function v77EnsureHealthBox(){
-    const card=document.querySelector('#auth .auth-card'); if(!card) return null;
-    let box=document.getElementById('authHealthBox');
-    if(!box){
-      const sub=document.getElementById('authSubtitle');
-      box=document.createElement('div'); box.id='authHealthBox'; box.className='auth-health-box warn';
-      box.innerHTML='<strong></strong><span></span><div class="auth-health-small"></div>';
-      if(sub&&sub.parentNode) sub.parentNode.insertBefore(box, sub.nextSibling); else card.insertBefore(box, card.firstChild);
-    }
-    return box;
-  }
-  function v77SetHealth(state,title,msg,small){
-    const box=v77EnsureHealthBox(); if(!box) return;
-    box.className='auth-health-box '+(state||'warn');
-    const strong=box.querySelector('strong'), span=box.querySelector('span'), detail=box.querySelector('.auth-health-small');
-    if(strong) strong.textContent=title||''; if(span) span.textContent=msg||''; if(detail) detail.textContent=small||'';
-  }
-  function v77NormalizeError(err){
-    const raw=((err&&err.message)||String(err||'')).toLowerCase();
-    if(!navigator.onLine || raw.includes('failed to fetch') || raw.includes('network') || raw.includes('fetch') || raw.includes('load failed')) return v77t('bad');
-    if(raw.includes('invalid login') || raw.includes('invalid credentials')) return v77t('wrong');
-    if(raw.includes('email not confirmed') || raw.includes('confirm')) return v77t('notConfirmed');
-    if(raw.includes('user not found') || raw.includes('not found')) return v77t('userNotFound');
-    if(raw.includes('rate') || raw.includes('too many')) return v77t('rate');
-    if(raw.includes('server') || raw.includes('unavailable') || raw.includes('timeout')) return v77t('server');
-    return (err&&err.message)||String(err||v77t('server'));
-  }
-  async function v77CheckBackend(){
-    v77SetHealth('warn',v77t('checkingTitle'),v77t('checking'),'');
-    if(typeof SUPABASE_URL==='undefined') { v77SetHealth('bad',v77t('badTitle'),v77t('bad'),'SUPABASE_URL missing'); return false; }
-    try{
-      const ctrl=new AbortController(); const timer=setTimeout(()=>ctrl.abort(),6000);
-      const res=await fetch(SUPABASE_URL+'/auth/v1/settings',{method:'GET',headers:{'apikey':(typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:''),'x-client-info':'atsrs-v77-health'},cache:'no-store',signal:ctrl.signal});
-      clearTimeout(timer);
-      if(res && (res.ok || res.status===401 || res.status===403)){v77SetHealth('ok',v77t('okTitle'),v77t('ok'),'');return true;}
-      v77SetHealth('bad',v77t('badTitle'),v77t('server'),v77t('details')+' HTTP '+(res&&res.status)); return false;
-    }catch(e){v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));return false;}
-  }
-  window.atsrsV77CheckBackend=v77CheckBackend;
-  const oldApply=window.applyLanguage;
-  window.applyLanguage=function(){ if(typeof oldApply==='function') oldApply.apply(this,arguments); setTimeout(()=>{ const b=document.getElementById('authHealthBox'); if(b){ const isBad=b.classList.contains('bad'), isOk=b.classList.contains('ok'); if(isOk)v77SetHealth('ok',v77t('okTitle'),v77t('ok'),''); else if(isBad)v77SetHealth('bad',v77t('badTitle'),v77t('bad'),b.querySelector('.auth-health-small')?.textContent||''); else v77SetHealth('warn',v77t('checkingTitle'),v77t('checking'),''); } },0); };
-  window.register=async function(){
-    let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText='';
-    if(!email||!password||!password2){regMsg.innerText=tr('fill');return}
-    if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;
-    if(!supabaseClient){regMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
-    try{regMsg.innerText=v77t('checking'); const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}}); regMsg.innerText=error?v77NormalizeError(error):v77t('registerOk'); if(error&&String(error.message||'').toLowerCase().includes('fetch')) v77CheckBackend();}
-    catch(e){regMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
-  };
-  window.login=async function(){
-    let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText='';
-    if(!validateUseMode())return; if(!email||!password){loginMsg.innerText=tr('enterLogin');return} if(!markEmail(loginEmail,loginEmailRule))return;
-    if(!supabaseClient){loginMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
-    try{loginMsg.innerText=v77t('checking'); const {data,error}=await supabaseClient.auth.signInWithPassword({email,password}); if(error){loginMsg.innerText=v77NormalizeError(error);return} localStorage.setItem('atsrs_use_mode',useMode);currentUser=data.user;openApp();}
-    catch(e){loginMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
-  };
-  window.forgotPassword=async function(){
-    let email=resetEmail.value.trim();resetMsg.innerText=''; if(!email){resetMsg.innerText=tr('enterLogin');return} if(!markEmail(resetEmail,resetEmailRule))return;
-    if(!supabaseClient){resetMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
-    try{resetMsg.innerText=v77t('checking'); const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL}); resetMsg.innerText=error?v77NormalizeError(error):tr('sent');}
-    catch(e){resetMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
-  };
-  window.updatePassword=async function(){
-    let p1=newPassword.value.trim(),p2=newPassword2.value.trim();newPassMsg.innerText=''; if(!p1||!p2){newPassMsg.innerText=tr('fill');return} if(p1!==p2){newPassMsg.innerText=tr('matchRule');return}
-    try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?v77NormalizeError(error):v77t('passwordOk')}
-    catch(e){newPassMsg.innerText=v77NormalizeError(e)}
-  };
-  document.addEventListener('DOMContentLoaded',()=>{v77EnsureHealthBox(); setTimeout(v77CheckBackend,500);});
-  setTimeout(()=>{v77EnsureHealthBox(); if(document.getElementById('auth')&&!document.getElementById('auth').classList.contains('hidden')) v77CheckBackend();},1200);
-})();
-</script>
-
-
-
-<!-- V78: Language selector cleanup + ATSRS landing expansion -->
-<style>
-.atsrs-value-expansion{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0 22px}
-.atsrs-value-card{background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:20px;padding:16px;min-height:150px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-.atsrs-value-card.highlight{border-color:rgba(34,197,94,.62);box-shadow:0 0 0 1px rgba(34,197,94,.08), inset 0 1px 0 rgba(255,255,255,.04)}
-.atsrs-value-card.wide{grid-column:span 2}
-.atsrs-value-card h3{margin:8px 0 7px;font-size:18px;color:#f8fafc}.atsrs-value-card p{margin:0;color:#a7b5c5;line-height:1.45;font-size:14px}
-.value-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.12));border:1px solid rgba(134,239,172,.22)}
-.value-mini-stats,.industry-strip{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.value-mini-stats span,.industry-strip span{border:1px solid #334155;background:#071524;border-radius:999px;padding:6px 9px;color:#cbd5e1;font-size:12px;font-weight:800}
-.lang-menu button{display:flex!important;align-items:center!important;gap:10px!important}.lang-menu button span{width:26px!important;display:inline-flex!important;justify-content:center!important}.lang-menu button .atsrs-lang-name{flex:1;text-align:left}
-@media(max-width:760px){.atsrs-value-card.wide{grid-column:auto}.atsrs-value-expansion{grid-template-columns:1fr}.atsrs-value-card{min-height:auto}}
-</style>
-<script>
-(function(){
-  const LANG_LABELS={en:'English',az:'Azərbaycan',ru:'Русский'};
-  const VALUE_TEXT={
-    en:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'See valid, expiring, expired and missing documents in one fast overview.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.',valueAiTitle:'AI Document Assistant',valueAiText:'Extract name, certificate number, issue date and expiry date from uploaded documents.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Build export-ready CV and compliance packs for company or client submission.',valueIndustriesTitle:'Supported Industries',valueIndustriesText:'Designed for Offshore, ROV, NDT, Marine, Survey, Renewables and Oil & Gas teams.'},
-    az:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'Aktiv, bitməyə yaxın, vaxtı keçmiş və çatışmayan sənədləri bir baxışda göstərir.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Bitmə tarixindən 90, 30, 14 və 7 gün əvvəl email və WhatsApp xatırlatmaları üçün hazır məntiq.',valueAiTitle:'AI Document Assistant',valueAiText:'Yüklənmiş sənəddən ad, sertifikat nömrəsi, verilmə tarixi və bitmə tarixini çıxarmağa kömək edir.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Şirkət və ya müştəri təqdimatı üçün hazır CV və compliance paketləri yaratmaq üçün nəzərdə tutulub.',valueIndustriesTitle:'Dəstəklənən sahələr',valueIndustriesText:'Offshore, ROV, NDT, Marine, Survey, Renewables və Oil & Gas komandaları üçün dizayn edilib.'},
-    ru:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'Показывает действующие, истекающие, просроченные и отсутствующие документы в одном обзоре.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Подготовка email и WhatsApp напоминаний за 90, 30, 14 и 7 дней до окончания срока.',valueAiTitle:'AI Document Assistant',valueAiText:'Помогает извлекать имя, номер сертификата, дату выдачи и срок действия из загруженных документов.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Для создания готового CV и compliance-пакетов для отправки компании или клиенту.',valueIndustriesTitle:'Поддерживаемые отрасли',valueIndustriesText:'Создано для Offshore, ROV, NDT, Marine, Survey, Renewables и Oil & Gas команд.'}
-  };
-  function currentLang(){try{return (typeof lang!=='undefined'&&lang)||localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||'en'}catch(e){return 'en'}}
-  function cleanLangMenus(){
-    const menus=[document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean);
-    menus.forEach(menu=>{
-      const buttons=menu.querySelectorAll('button');
-      const order=['en','az','ru'];
-      buttons.forEach((btn,i)=>{
-        const code=(btn.getAttribute('onclick')||'').match(/changeLanguage\('([^']+)'\)/)?.[1]||order[i]||'en';
-        const flag=code==='en'?'🇬🇧':code==='az'?'🇦🇿':'🇷🇺';
-        btn.innerHTML='<span>'+flag+'</span><span class="atsrs-lang-name">'+LANG_LABELS[code]+'</span>';
-      });
-    });
-  }
-  function applyValueText(){
-    const L=VALUE_TEXT[currentLang()]||VALUE_TEXT.en;
-    Object.keys(L).forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=L[id];});
-  }
-  function v78Apply(){cleanLangMenus();applyValueText();}
-  window.atsrsV78Apply=v78Apply;
-  const oldApply=window.applyLanguage;
-  if(typeof oldApply==='function'){
-    window.applyLanguage=function(){const r=oldApply.apply(this,arguments);setTimeout(v78Apply,0);return r;};
-  }
-  const oldChange=window.changeLanguage;
-  if(typeof oldChange==='function'){
-    window.changeLanguage=function(){const r=oldChange.apply(this,arguments);setTimeout(v78Apply,0);setTimeout(v78Apply,80);return r;};
-  }
-  ['DOMContentLoaded','load'].forEach(e=>window.addEventListener(e,()=>setTimeout(v78Apply,0)));
-  setTimeout(v78Apply,0);setTimeout(v78Apply,300);setInterval(v78Apply,1500);
-})();
-</script>
-
-
-
-<!-- V79: Collapsible Sidebar / Workspace Expansion -->
-<style id="atsrs-v79-collapsible-sidebar-style">
-  #app.app{
-    --atsrs-sidebar-open:232px;
-    --atsrs-sidebar-collapsed:74px;
-  }
-  #app .sidebar{position:relative!important;transition:width .22s ease, padding .22s ease, transform .22s ease!important;}
-  #app .atsrs-sidebar-toggle{
-    width:42px!important;height:42px!important;min-width:42px!important;margin:0 0 14px 0!important;padding:0!important;border-radius:14px!important;
-    display:flex!important;align-items:center!important;justify-content:center!important;
-    background:linear-gradient(135deg,#0f766e,#22c55e)!important;border:1px solid rgba(134,239,172,.55)!important;
-    color:#fff!important;font-size:20px!important;box-shadow:0 12px 28px rgba(34,197,94,.18)!important;
-  }
-  #app .atsrs-sidebar-toggle:hover{filter:brightness(1.08)}
-  #app .nav button{
-    display:flex!important;align-items:center!important;gap:10px!important;white-space:nowrap!important;overflow:hidden!important;
-    transition:padding .22s ease, justify-content .22s ease, gap .22s ease!important;
-  }
-  #app .nav button::before{
-    display:inline-flex!important;align-items:center!important;justify-content:center!important;
-    width:22px!important;min-width:22px!important;font-size:18px!important;line-height:1!important;
-  }
-  #navIntro::before{content:"🏠"}#navDashboard::before{content:"📊"}#navPersonnel::before{content:"👥"}#navCertificates::before{content:"📁"}
-  #navRefs::before{content:"📝"}#navCompliance::before{content:"🏢"}#navReports::before{content:"📈"}#navProfile::before{content:"⚙️"}#navLogout::before{content:"🚪"}
-
-  @media(min-width:801px){
-    #app.app:not(.hidden){grid-template-columns:var(--atsrs-sidebar-open) minmax(0,1fr)!important;transition:grid-template-columns .22s ease!important;}
-    #app.app:not(.hidden) .sidebar{width:var(--atsrs-sidebar-open)!important;min-width:var(--atsrs-sidebar-open)!important;padding:16px!important;}
-    #app.app:not(.hidden) .main{grid-column:2!important;margin-left:0!important;max-width:none!important;width:100%!important;padding-left:22px!important;}
-    #app.app.sidebar-collapsed:not(.hidden){grid-template-columns:var(--atsrs-sidebar-collapsed) minmax(0,1fr)!important;}
-    #app.app.sidebar-collapsed:not(.hidden) .sidebar{
-      width:var(--atsrs-sidebar-collapsed)!important;min-width:var(--atsrs-sidebar-collapsed)!important;padding:14px 10px!important;
-    }
-    #app.app.sidebar-collapsed .brand,
-    #app.app.sidebar-collapsed #cabinetText{display:none!important;}
-    #app.app.sidebar-collapsed .atsrs-sidebar-toggle{margin-left:auto!important;margin-right:auto!important;}
-    #app.app.sidebar-collapsed .nav{display:flex!important;grid-template-columns:none!important;gap:8px!important;margin-top:4px!important;}
-    #app.app.sidebar-collapsed .nav button{
-      width:52px!important;height:52px!important;min-width:52px!important;padding:0!important;margin:0 auto!important;border-radius:16px!important;
-      justify-content:center!important;font-size:0!important;gap:0!important;position:relative!important;
-    }
-    #app.app.sidebar-collapsed .nav button::before{font-size:21px!important;margin:0!important;}
-    #app.app.sidebar-collapsed .nav button.active{box-shadow:0 0 0 1px rgba(134,239,172,.50),0 12px 28px rgba(34,197,94,.18)!important;}
-    #app.app.sidebar-collapsed .main{padding-left:18px!important;}
-  }
-
-  @media(max-width:800px){
-    #app.app:not(.hidden){display:grid!important;grid-template-columns:168px minmax(0,1fr)!important;min-height:100vh!important;}
-    #app.app:not(.hidden) .sidebar{
-      grid-column:1!important;grid-row:1!important;width:168px!important;min-width:168px!important;height:100vh!important;max-height:100vh!important;
-      position:sticky!important;top:0!important;overflow-y:auto!important;overflow-x:hidden!important;border-right:1px solid #16283a!important;border-bottom:0!important;
-      padding:14px 10px!important;z-index:70!important;
-    }
-    #app.app:not(.hidden) .main{grid-column:2!important;grid-row:1!important;min-width:0!important;padding:74px 12px 16px!important;width:100%!important;}
-    #app.app:not(.hidden) .nav{display:flex!important;flex-direction:column!important;grid-template-columns:none!important;gap:8px!important;}
-    #app.app:not(.hidden) .nav button{font-size:12px!important;padding:10px 8px!important;border-radius:12px!important;}
-    #app.app:not(.hidden) .brand{font-size:22px!important;}
-    #app.app:not(.hidden) #cabinetText{font-size:11px!important;margin:6px 0 12px!important;}
-
-    #app.app.sidebar-collapsed:not(.hidden){grid-template-columns:68px minmax(0,1fr)!important;}
-    #app.app.sidebar-collapsed:not(.hidden) .sidebar{width:68px!important;min-width:68px!important;padding:12px 8px!important;}
-    #app.app.sidebar-collapsed .brand,
-    #app.app.sidebar-collapsed #cabinetText{display:none!important;}
-    #app.app.sidebar-collapsed .atsrs-sidebar-toggle{width:48px!important;height:48px!important;min-width:48px!important;margin:0 auto 12px!important;}
-    #app.app.sidebar-collapsed .nav button{
-      width:50px!important;height:50px!important;min-width:50px!important;padding:0!important;margin:0 auto!important;justify-content:center!important;
-      font-size:0!important;gap:0!important;border-radius:15px!important;
-    }
-    #app.app.sidebar-collapsed .nav button::before{font-size:20px!important;}
-    #app.app.sidebar-collapsed .main{padding-left:10px!important;}
-    #app.app > .top-actions{top:12px!important;right:12px!important;z-index:120!important;}
-  }
-</style>
-<script id="atsrs-v79-collapsible-sidebar-script">
-(function(){
-  function initSidebarToggle(){
-    var app=document.getElementById('app');
-    var sidebar=app && app.querySelector('.sidebar');
-    var nav=sidebar && sidebar.querySelector('.nav');
-    if(!app||!sidebar||!nav||document.getElementById('sidebarToggleBtn')) return;
-    var btn=document.createElement('button');
-    btn.type='button';
-    btn.id='sidebarToggleBtn';
-    btn.className='atsrs-sidebar-toggle';
-    btn.setAttribute('aria-label','Toggle menu');
-    btn.innerHTML='☰';
-    sidebar.insertBefore(btn, sidebar.firstChild);
-    var saved=localStorage.getItem('atsrs_sidebar_collapsed');
-    if(saved===null){ saved = window.matchMedia && window.matchMedia('(max-width: 900px)').matches ? '1' : '0'; }
-    if(saved==='1') app.classList.add('sidebar-collapsed');
-    function sync(){
-      var collapsed=app.classList.contains('sidebar-collapsed');
-      btn.innerHTML=collapsed?'☰':'‹';
-      btn.title=collapsed?'Open menu':'Collapse menu';
-      btn.setAttribute('aria-expanded', String(!collapsed));
-      Array.prototype.forEach.call(nav.querySelectorAll('button'), function(b){
-        var t=(b.innerText||b.textContent||'').trim();
-        if(t) b.setAttribute('title',t);
-      });
-    }
-    btn.addEventListener('click',function(){
-      app.classList.toggle('sidebar-collapsed');
-      localStorage.setItem('atsrs_sidebar_collapsed', app.classList.contains('sidebar-collapsed')?'1':'0');
-      sync();
-      setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},240);
-    });
-    var oldApply=window.applyLanguage;
-    if(typeof oldApply==='function'){
-      window.applyLanguage=function(){ var r=oldApply.apply(this,arguments); setTimeout(sync,0); return r; };
-    }
-    sync();
-  }
-  document.addEventListener('DOMContentLoaded',initSidebarToggle);
-  window.addEventListener('load',initSidebarToggle);
-  setTimeout(initSidebarToggle,0);
-  setTimeout(initSidebarToggle,600);
-})();
-</script>
-
-
-
-<!-- V80: Hard lock language selector labels as native names -->
-<script>
-(function(){
-  const ATSRS_NATIVE_LANG_LABELS={en:'English',az:'Azərbaycan',ru:'Русский'};
-  function atsrsV80LangCode(btn,idx){
-    const oc=btn.getAttribute('onclick')||'';
-    const m=oc.match(/changeLanguage\('([^']+)'\)/);
-    return m?m[1]:(['en','az','ru'][idx]||'en');
-  }
-  function atsrsV80FixLangMenu(){
-    [document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean).forEach(menu=>{
-      Array.from(menu.querySelectorAll('button')).forEach((btn,idx)=>{
-        const code=atsrsV80LangCode(btn,idx);
-        const flag=code==='en'?'🇬🇧':code==='az'?'🇦🇿':'🇷🇺';
-        const label=ATSRS_NATIVE_LANG_LABELS[code]||ATSRS_NATIVE_LANG_LABELS.en;
-        const expected='<span>'+flag+'</span><span class="atsrs-lang-name">'+label+'</span>';
-        if(btn.innerHTML!==expected) btn.innerHTML=expected;
-      });
-    });
-  }
-  const oldChange=window.changeLanguage;
-  if(typeof oldChange==='function' && !oldChange.__v80Locked){
-    const wrapped=function(){
-      const r=oldChange.apply(this,arguments);
-      setTimeout(atsrsV80FixLangMenu,0);
-      setTimeout(atsrsV80FixLangMenu,60);
-      setTimeout(atsrsV80FixLangMenu,250);
-      return r;
-    };
-    wrapped.__v80Locked=true;
-    window.changeLanguage=wrapped;
-  }
-  const oldApply=window.applyLanguage;
-  if(typeof oldApply==='function' && !oldApply.__v80Locked){
-    const wrappedApply=function(){
-      const r=oldApply.apply(this,arguments);
-      setTimeout(atsrsV80FixLangMenu,0);
-      return r;
-    };
-    wrappedApply.__v80Locked=true;
-    window.applyLanguage=wrappedApply;
-  }
-  document.addEventListener('DOMContentLoaded',()=>{
-    atsrsV80FixLangMenu();
-    [document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean).forEach(menu=>{
-      new MutationObserver(()=>atsrsV80FixLangMenu()).observe(menu,{childList:true,subtree:true,characterData:true});
-    });
-  });
-  window.addEventListener('load',atsrsV80FixLangMenu);
-  setTimeout(atsrsV80FixLangMenu,0);
-  setTimeout(atsrsV80FixLangMenu,300);
-  setInterval(atsrsV80FixLangMenu,1000);
 })();
 </script>
 
