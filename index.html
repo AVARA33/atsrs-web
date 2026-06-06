@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ATSRS V76</title>
+<title>ATSRS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 
 /* V41 revised: Expiry N/A + Edit document register */
@@ -1033,9 +1033,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V76</div>
-<div>Last Update: 06 Jun 2026 00:45 UTC</div>
-<div>TEST BUILD</div>
+<div>ATSRS V77</div>
+<div>Last Update: 06 Jun 2026 01:05 UTC</div>
+<div>AUTH DEBUG BUILD</div>
 </div>
 </div>
 </section>
@@ -4315,123 +4315,100 @@ body > .atsrs-v64-top-actions .lang-menu{
 </script>
 
 
-<!-- V76: Audit cleanup + visible function status matrix. Based on V75 stable backup. -->
-<style id="v76-audit-cleanup-style">
-  .v76-audit-panel{margin:18px 0 0;background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:22px;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.24)}
-  .v76-audit-panel h3{margin:0 0 8px;font-size:22px;color:#f8fafc}
-  .v76-audit-panel p{margin:0 0 14px;color:#a7b5c5;line-height:1.45}
-  .v76-status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-  .v76-status-card{background:#071524;border:1px solid #263f58;border-radius:16px;padding:12px;min-height:112px}
-  .v76-status-card b{display:block;margin-bottom:6px;color:#f8fafc}
-  .v76-status-card span{display:inline-block;margin-bottom:8px;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900}
-  .v76-status-card p{margin:0;color:#a7b5c5;font-size:13px;line-height:1.38}
-  .v76-ok span{background:#064e3b;color:#bbf7d0}.v76-partial span{background:#78350f;color:#fde68a}.v76-backend span{background:#7f1d1d;color:#fecaca}
-  .v76-clean-hidden{display:none!important}
+
+<!-- V77 Auth UX & Network Diagnostics -->
+<style>
+.auth-health-box{margin:10px 0 12px;padding:10px 12px;border-radius:14px;border:1px solid #334155;background:rgba(2,6,23,.42);font-size:13px;line-height:1.4;color:#cbd5e1}
+.auth-health-box strong{display:block;margin-bottom:3px;color:#e5e7eb}
+.auth-health-box.ok{border-color:#14532d;background:rgba(20,83,45,.20);color:#bbf7d0}
+.auth-health-box.warn{border-color:#713f12;background:rgba(113,63,18,.20);color:#fde68a}
+.auth-health-box.bad{border-color:#7f1d1d;background:rgba(127,29,29,.22);color:#fecaca}
+.auth-health-small{font-size:12px;color:#94a3b8;margin-top:4px}
 </style>
-<script id="v76-audit-cleanup-script">
+<script>
 (function(){
-  const TXT={
+  const V77_AUTH_TEXT={
     en:{
-      title:'Function Status / Audit List',
-      intro:'Visible test status for the current build. Items marked Backend Required are not broken UI; they need server-side services before production.',
-      ok:'Working',partial:'Partial',backend:'Backend Required',
-      items:[
-        ['Login page language','Working','EN/AZ/RU login texts, account type buttons and Local Test Login are switching correctly.','ok'],
-        ['Language + Logout topbar','Working','Top controls are page-attached and no longer fixed to the viewport during scroll.','ok'],
-        ['Manual document register','Working','Manual certificate entry, expiry date and N/A flow are available.','ok'],
-        ['Scan & Auto-fill','Partial','Browser OCR/text preview exists. AI field selection needs backend parser.','partial'],
-        ['Share Profile','Partial','Frontend profile sharing UI exists. Real public link needs backend storage/access rules.','partial'],
-        ['CV upload','Partial','CV upload/display controls exist. Automatic ATSRS CV generation needs backend/template engine.','partial'],
-        ['WhatsApp alerts','Backend Required','Real alerts require scheduled backend jobs and approved WhatsApp templates.','backend'],
-        ['Email expiry notifications','Backend Required','Needs scheduled backend function and email provider integration.','backend'],
-        ['Reports dashboard','Backend Required','Needs saved user/company data and reporting queries.','backend'],
-        ['Company import','Backend Required','Needs secure company workspace, invitation and approval workflow.','backend']
-      ],
-      cvBtn:'Generate ATSRS CV — Backend Required', cvBadge:'BACKEND REQUIRED', waBadge:'BACKEND REQUIRED'
+      checkingTitle:'ATSRS service check',checking:'Checking backend connection...',okTitle:'ATSRS services online',ok:'Connection to ATSRS backend is available.',badTitle:'Network problem',bad:'Network error. Unable to connect to ATSRS services. Please check VPN, Wi-Fi or try again later.',lib:'ATSRS Auth library did not load. Check internet connection and refresh the page.',registerOk:'Confirmation email sent. Check inbox/spam.',passwordOk:'Password updated.',wrong:'Email or password is incorrect.',notConfirmed:'Email is not confirmed yet. Check inbox/spam for the confirmation link.',userNotFound:'Account not found. Please create an account first.',rate:'Too many attempts. Please wait and try again.',server:'ATSRS server is temporarily unavailable. Try again later.',details:'Technical detail:'
     },
     az:{
-      title:'Funksiya Statusu / Audit Siyahısı',
-      intro:'Hazırkı build üçün görünən test statusu. Backend Required işarəli hissələr UI səhvi deyil; production üçün server tərəfi lazımdır.',
-      ok:'İşləyir',partial:'Qismən işləyir',backend:'Backend lazımdır',
-      items:[
-        ['Login səhifəsi dili','İşləyir','EN/AZ/RU login mətnləri, istifadə növü düymələri və Local Test Login düzgün dəyişir.','ok'],
-        ['Language + Logout topbar','İşləyir','Yuxarı idarə düymələri artıq viewport-a sabitlənmir, səhifə ilə birlikdə hərəkət edir.','ok'],
-        ['Manual sənəd qeydiyyatı','İşləyir','Manual sertifikat əlavə etmə, expiry və N/A axını mövcuddur.','ok'],
-        ['Scan & Auto-fill','Qismən işləyir','Browser OCR/text preview var. AI ilə xanaları seçib doldurmaq üçün backend parser lazımdır.','partial'],
-        ['Share Profile','Qismən işləyir','Frontend paylaşım UI var. Real public link üçün backend storage/access rules lazımdır.','partial'],
-        ['CV upload','Qismən işləyir','CV upload/display nəzarətləri var. Avtomatik ATSRS CV yaratmaq üçün backend/template engine lazımdır.','partial'],
-        ['WhatsApp bildirişləri','Backend lazımdır','Real bildiriş üçün scheduled backend job və approved WhatsApp template lazımdır.','backend'],
-        ['Email expiry bildirişləri','Backend lazımdır','Scheduled backend function və email provider inteqrasiyası lazımdır.','backend'],
-        ['Reports dashboard','Backend lazımdır','Saxlanılmış user/company data və reporting queries lazımdır.','backend'],
-        ['Company import','Backend lazımdır','Təhlükəsiz company workspace, invitation və approval workflow lazımdır.','backend']
-      ],
-      cvBtn:'ATSRS CV yarat — Backend lazımdır', cvBadge:'BACKEND LAZIMDIR', waBadge:'BACKEND LAZIMDIR'
+      checkingTitle:'ATSRS servis yoxlaması',checking:'Backend bağlantısı yoxlanılır...',okTitle:'ATSRS servisləri aktivdir',ok:'ATSRS backend bağlantısı mövcuddur.',badTitle:'Şəbəkə problemi',bad:'Şəbəkə problemi. ATSRS serverinə qoşulmaq mümkün olmadı. VPN, Wi‑Fi və ya internet bağlantınızı yoxlayın.',lib:'ATSRS Auth kitabxanası yüklənmədi. İnterneti yoxlayıb səhifəni yeniləyin.',registerOk:'Təsdiq emaili göndərildi. Inbox/spam yoxlayın.',passwordOk:'Şifrə yeniləndi.',wrong:'Email və ya şifrə yanlışdır.',notConfirmed:'Email hələ təsdiqlənməyib. Təsdiq linki üçün inbox/spam yoxlayın.',userNotFound:'Hesab tapılmadı. Əvvəlcə hesab yaradın.',rate:'Çox cəhd edildi. Bir az gözləyib yenidən yoxlayın.',server:'ATSRS serveri müvəqqəti əlçatan deyil. Bir az sonra yenidən yoxlayın.',details:'Texniki detal:'
     },
     ru:{
-      title:'Статус функций / Audit List',
-      intro:'Видимый тестовый статус текущей сборки. Пункты Backend Required не являются UI-ошибкой; для production нужна серверная часть.',
-      ok:'Работает',partial:'Частично работает',backend:'Нужен backend',
-      items:[
-        ['Язык страницы входа','Работает','EN/AZ/RU тексты входа, кнопки типа использования и Local Test Login переключаются корректно.','ok'],
-        ['Language + Logout topbar','Работает','Верхние элементы больше не фиксируются к viewport и движутся вместе со страницей.','ok'],
-        ['Ручной реестр документов','Работает','Доступны ручное добавление сертификата, срок действия и режим N/A.','ok'],
-        ['Scan & Auto-fill','Частично работает','Есть browser OCR/text preview. Для AI-заполнения полей нужен backend parser.','partial'],
-        ['Share Profile','Частично работает','Frontend UI для sharing есть. Для реальной public link нужны backend storage/access rules.','partial'],
-        ['CV upload','Частично работает','Контролы CV upload/display есть. Для генерации ATSRS CV нужен backend/template engine.','partial'],
-        ['WhatsApp уведомления','Нужен backend','Для реальных уведомлений нужны scheduled backend jobs и approved WhatsApp templates.','backend'],
-        ['Email expiry уведомления','Нужен backend','Нужны scheduled backend function и интеграция email provider.','backend'],
-        ['Reports dashboard','Нужен backend','Нужны сохранённые user/company data и reporting queries.','backend'],
-        ['Company import','Нужен backend','Нужны secure company workspace, invitation и approval workflow.','backend']
-      ],
-      cvBtn:'Создать ATSRS CV — нужен backend', cvBadge:'НУЖЕН BACKEND', waBadge:'НУЖЕН BACKEND'
+      checkingTitle:'Проверка сервиса ATSRS',checking:'Проверяется соединение с backend...',okTitle:'Сервисы ATSRS доступны',ok:'Соединение с backend ATSRS доступно.',badTitle:'Ошибка сети',bad:'Ошибка сети. Не удалось подключиться к сервисам ATSRS. Проверьте VPN, Wi‑Fi или интернет-соединение.',lib:'Библиотека ATSRS Auth не загрузилась. Проверьте интернет и обновите страницу.',registerOk:'Письмо подтверждения отправлено. Проверьте inbox/spam.',passwordOk:'Пароль обновлён.',wrong:'Email или пароль неверный.',notConfirmed:'Email ещё не подтверждён. Проверьте inbox/spam для ссылки подтверждения.',userNotFound:'Аккаунт не найден. Сначала создайте аккаунт.',rate:'Слишком много попыток. Подождите и попробуйте снова.',server:'Сервер ATSRS временно недоступен. Попробуйте позже.',details:'Техническая деталь:'
     }
   };
-  function currentLang(){
-    try{ if(typeof lang==='string' && TXT[lang]) return lang; }catch(e){}
-    const stored=localStorage.getItem('atsrs_lang'); return TXT[stored]?stored:'en';
-  }
-  function t(){return TXT[currentLang()]||TXT.en;}
-  function cleanHashes(){
-    document.querySelectorAll('h1,h2,h3,h4,p,span,button,div').forEach(el=>{
-      if(el.children.length===0 && /^#+$/.test((el.textContent||'').trim())) el.classList.add('v76-clean-hidden');
-    });
-  }
-  function updateBuild(){
-    const badge=document.getElementById('buildBadge');
-    if(badge){badge.innerHTML='<div>ATSRS V76</div><div>Last Update: 06 Jun 2026 00:45 UTC</div><div>TEST BUILD</div>';}
-    document.title='ATSRS V76';
-  }
-  function renderAuditPanel(){
-    const intro=document.getElementById('introPage')||document.querySelector('main')||document.body;
-    if(!intro) return;
-    let panel=document.getElementById('v76AuditPanel');
-    if(!panel){
-      panel=document.createElement('div'); panel.id='v76AuditPanel'; panel.className='v76-audit-panel';
-      intro.appendChild(panel);
+  function v77Lang(){try{return (typeof lang!=='undefined'&&V77_AUTH_TEXT[lang])?lang:(localStorage.getItem('atsrs_lang')||'en')}catch(e){return 'en'}}
+  function v77t(k){const l=v77Lang();return (V77_AUTH_TEXT[l]&&V77_AUTH_TEXT[l][k])||V77_AUTH_TEXT.en[k]||k}
+  function v77EnsureHealthBox(){
+    const card=document.querySelector('#auth .auth-card'); if(!card) return null;
+    let box=document.getElementById('authHealthBox');
+    if(!box){
+      const sub=document.getElementById('authSubtitle');
+      box=document.createElement('div'); box.id='authHealthBox'; box.className='auth-health-box warn';
+      box.innerHTML='<strong></strong><span></span><div class="auth-health-small"></div>';
+      if(sub&&sub.parentNode) sub.parentNode.insertBefore(box, sub.nextSibling); else card.insertBefore(box, card.firstChild);
     }
-    const L=t();
-    panel.innerHTML='<h3>'+L.title+'</h3><p>'+L.intro+'</p><div class="v76-status-grid">'+
-      L.items.map(x=>'<div class="v76-status-card v76-'+x[3]+'"><b>'+x[0]+'</b><span>'+x[1]+'</span><p>'+x[2]+'</p></div>').join('')+
-      '</div>';
+    return box;
   }
-  function markBackendItems(){
-    const L=t();
-    const cvBtn=document.getElementById('generateCVBtn'); if(cvBtn) cvBtn.textContent=L.cvBtn;
-    const cvBadge=document.getElementById('cvBetaBadge'); if(cvBadge) cvBadge.textContent=L.cvBadge;
-    const waBadge=document.getElementById('whatsappBadge'); if(waBadge) waBadge.textContent=L.waBadge;
+  function v77SetHealth(state,title,msg,small){
+    const box=v77EnsureHealthBox(); if(!box) return;
+    box.className='auth-health-box '+(state||'warn');
+    const strong=box.querySelector('strong'), span=box.querySelector('span'), detail=box.querySelector('.auth-health-small');
+    if(strong) strong.textContent=title||''; if(span) span.textContent=msg||''; if(detail) detail.textContent=small||'';
   }
-  function applyV76(){ updateBuild(); cleanHashes(); renderAuditPanel(); markBackendItems(); }
+  function v77NormalizeError(err){
+    const raw=((err&&err.message)||String(err||'')).toLowerCase();
+    if(!navigator.onLine || raw.includes('failed to fetch') || raw.includes('network') || raw.includes('fetch') || raw.includes('load failed')) return v77t('bad');
+    if(raw.includes('invalid login') || raw.includes('invalid credentials')) return v77t('wrong');
+    if(raw.includes('email not confirmed') || raw.includes('confirm')) return v77t('notConfirmed');
+    if(raw.includes('user not found') || raw.includes('not found')) return v77t('userNotFound');
+    if(raw.includes('rate') || raw.includes('too many')) return v77t('rate');
+    if(raw.includes('server') || raw.includes('unavailable') || raw.includes('timeout')) return v77t('server');
+    return (err&&err.message)||String(err||v77t('server'));
+  }
+  async function v77CheckBackend(){
+    v77SetHealth('warn',v77t('checkingTitle'),v77t('checking'),'');
+    if(typeof SUPABASE_URL==='undefined') { v77SetHealth('bad',v77t('badTitle'),v77t('bad'),'SUPABASE_URL missing'); return false; }
+    try{
+      const ctrl=new AbortController(); const timer=setTimeout(()=>ctrl.abort(),6000);
+      const res=await fetch(SUPABASE_URL+'/auth/v1/settings',{method:'GET',headers:{'apikey':(typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:''),'x-client-info':'atsrs-v77-health'},cache:'no-store',signal:ctrl.signal});
+      clearTimeout(timer);
+      if(res && (res.ok || res.status===401 || res.status===403)){v77SetHealth('ok',v77t('okTitle'),v77t('ok'),'');return true;}
+      v77SetHealth('bad',v77t('badTitle'),v77t('server'),v77t('details')+' HTTP '+(res&&res.status)); return false;
+    }catch(e){v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));return false;}
+  }
+  window.atsrsV77CheckBackend=v77CheckBackend;
   const oldApply=window.applyLanguage;
-  if(typeof oldApply==='function'){
-    window.applyLanguage=function(){ const r=oldApply.apply(this,arguments); setTimeout(applyV76,0); return r; };
-  }
-  const oldChange=window.changeLanguage;
-  if(typeof oldChange==='function'){
-    window.changeLanguage=function(){ const r=oldChange.apply(this,arguments); setTimeout(applyV76,0); return r; };
-  }
-  document.addEventListener('DOMContentLoaded',applyV76);
-  window.addEventListener('load',applyV76);
-  setTimeout(applyV76,0); setTimeout(applyV76,500); setInterval(applyV76,1200);
+  window.applyLanguage=function(){ if(typeof oldApply==='function') oldApply.apply(this,arguments); setTimeout(()=>{ const b=document.getElementById('authHealthBox'); if(b){ const isBad=b.classList.contains('bad'), isOk=b.classList.contains('ok'); if(isOk)v77SetHealth('ok',v77t('okTitle'),v77t('ok'),''); else if(isBad)v77SetHealth('bad',v77t('badTitle'),v77t('bad'),b.querySelector('.auth-health-small')?.textContent||''); else v77SetHealth('warn',v77t('checkingTitle'),v77t('checking'),''); } },0); };
+  window.register=async function(){
+    let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText='';
+    if(!email||!password||!password2){regMsg.innerText=tr('fill');return}
+    if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;
+    if(!supabaseClient){regMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
+    try{regMsg.innerText=v77t('checking'); const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}}); regMsg.innerText=error?v77NormalizeError(error):v77t('registerOk'); if(error&&String(error.message||'').toLowerCase().includes('fetch')) v77CheckBackend();}
+    catch(e){regMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
+  };
+  window.login=async function(){
+    let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText='';
+    if(!validateUseMode())return; if(!email||!password){loginMsg.innerText=tr('enterLogin');return} if(!markEmail(loginEmail,loginEmailRule))return;
+    if(!supabaseClient){loginMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
+    try{loginMsg.innerText=v77t('checking'); const {data,error}=await supabaseClient.auth.signInWithPassword({email,password}); if(error){loginMsg.innerText=v77NormalizeError(error);return} localStorage.setItem('atsrs_use_mode',useMode);currentUser=data.user;openApp();}
+    catch(e){loginMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
+  };
+  window.forgotPassword=async function(){
+    let email=resetEmail.value.trim();resetMsg.innerText=''; if(!email){resetMsg.innerText=tr('enterLogin');return} if(!markEmail(resetEmail,resetEmailRule))return;
+    if(!supabaseClient){resetMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
+    try{resetMsg.innerText=v77t('checking'); const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL}); resetMsg.innerText=error?v77NormalizeError(error):tr('sent');}
+    catch(e){resetMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
+  };
+  window.updatePassword=async function(){
+    let p1=newPassword.value.trim(),p2=newPassword2.value.trim();newPassMsg.innerText=''; if(!p1||!p2){newPassMsg.innerText=tr('fill');return} if(p1!==p2){newPassMsg.innerText=tr('matchRule');return}
+    try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?v77NormalizeError(error):v77t('passwordOk')}
+    catch(e){newPassMsg.innerText=v77NormalizeError(e)}
+  };
+  document.addEventListener('DOMContentLoaded',()=>{v77EnsureHealthBox(); setTimeout(v77CheckBackend,500);});
+  setTimeout(()=>{v77EnsureHealthBox(); if(document.getElementById('auth')&&!document.getElementById('auth').classList.contains('hidden')) v77CheckBackend();},1200);
 })();
 </script>
 
