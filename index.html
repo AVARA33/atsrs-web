@@ -4568,5 +4568,158 @@ body > .atsrs-v64-top-actions .lang-menu{
 })();
 </script>
 
+
+
+<!-- V78: Login trial promo relocation + app sidebar hamburger toggle. Base: V77/V76 line. -->
+<style id="atsrs-v78-promo-sidebar-style">
+  /* Keep login card clean: trial details are moved to left marketing panel */
+  #auth:not(.hidden) #loginBox > #trialBox{display:none!important;}
+
+  #auth .atsrs-v78-promo{
+    margin-top:18px;
+    border:1px solid rgba(34,197,94,.30);
+    background:linear-gradient(135deg,rgba(5,46,36,.72),rgba(8,21,36,.94));
+    border-radius:22px;
+    padding:18px 18px 16px;
+    box-shadow:0 18px 46px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  #auth .atsrs-v78-promo .promo-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:900;
+    color:#bbf7d0;
+    border:1px solid rgba(34,197,94,.28);
+    background:rgba(4,16,26,.72);
+    border-radius:999px;
+    padding:6px 10px;
+    margin-bottom:10px;
+  }
+  #auth .atsrs-v78-promo h3{margin:0 0 8px;font-size:22px;line-height:1.2;color:#f8fafc;}
+  #auth .atsrs-v78-promo p{margin:0 0 12px;color:#cbd5e1;line-height:1.5;font-size:14px;}
+  #auth .atsrs-v78-promo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0;}
+  #auth .atsrs-v78-promo-item{display:flex;align-items:center;gap:8px;color:#e5e7eb;font-size:13px;font-weight:700;background:rgba(2,6,23,.25);border:1px solid rgba(148,163,184,.12);border-radius:12px;padding:8px 9px;}
+  #auth .atsrs-v78-promo-item span:first-child{color:#86efac;font-weight:900;}
+  #auth .atsrs-v78-promo-note{margin-top:10px;color:#bbf7d0!important;font-weight:800!important;font-size:13px!important;}
+
+  /* Sidebar hamburger toggle: same visual level as ATSRS brand */
+  #app .sidebar{position:relative!important;}
+  #app .atsrs-sidebar-toggle{
+    position:absolute!important;
+    top:20px!important;
+    right:14px!important;
+    width:42px!important;
+    height:42px!important;
+    border:1px solid rgba(148,163,184,.18)!important;
+    border-radius:12px!important;
+    background:rgba(15,23,42,.46)!important;
+    color:#e5e7eb!important;
+    box-shadow:none!important;
+    padding:0!important;
+    margin:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:22px!important;
+    line-height:1!important;
+    cursor:pointer!important;
+    z-index:12!important;
+  }
+  #app .atsrs-sidebar-toggle:hover{border-color:rgba(34,197,94,.42)!important;background:rgba(34,197,94,.08)!important;}
+  #app .brand{padding-right:54px!important;}
+
+  /* calmer menu direction: no loud blue blocks */
+  #app .nav button{
+    background:transparent!important;
+    border:1px solid transparent!important;
+    box-shadow:none!important;
+    color:#cbd5e1!important;
+  }
+  #app .nav button:hover{background:rgba(148,163,184,.06)!important;border-color:rgba(148,163,184,.14)!important;color:#f8fafc!important;}
+  #app .nav button.active{background:rgba(34,197,94,.10)!important;border-color:rgba(34,197,94,.36)!important;color:#f8fafc!important;box-shadow:none!important;}
+
+  body.atsrs-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:84px minmax(0,1fr)!important;}
+  body.atsrs-sidebar-collapsed #app.app:not(.hidden) .sidebar{width:84px!important;padding:20px 10px!important;}
+  body.atsrs-sidebar-collapsed #app .brand,
+  body.atsrs-sidebar-collapsed #app .sidebar > .sub{opacity:0!important;visibility:hidden!important;height:0!important;margin:0!important;overflow:hidden!important;padding:0!important;}
+  body.atsrs-sidebar-collapsed #app .atsrs-sidebar-toggle{top:18px!important;right:20px!important;}
+  body.atsrs-sidebar-collapsed #app .nav{margin-top:62px!important;gap:9px!important;}
+  body.atsrs-sidebar-collapsed #app .nav button{
+    width:54px!important;
+    min-height:48px!important;
+    padding:0!important;
+    margin:0 auto!important;
+    font-size:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  body.atsrs-sidebar-collapsed #app .nav button::before{
+    content:attr(data-atsrs-icon);
+    font-size:24px!important;
+    line-height:1!important;
+  }
+  @media(max-width:800px){
+    #app .atsrs-sidebar-toggle{top:18px!important;right:16px!important;}
+    body.atsrs-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:1fr!important;}
+    body.atsrs-sidebar-collapsed #app .sidebar{width:auto!important;}
+    #auth .atsrs-v78-promo-grid{grid-template-columns:1fr!important;}
+  }
+</style>
+<script id="atsrs-v78-promo-sidebar-script">
+(function(){
+  var TEXT={
+    en:{kicker:'7-DAY FREE TRIAL',title:'Test ATSRS with real offshore documents',body:'Use the test build to organise your career documents, track expiry risk and prepare one clean profile for employers or agencies. No card is required during the test phase.',items:['Passport & Seaman Book','Medical & Certificates','BOSIET / FOET / Trainings','References, Appraisals & CV'],note:'Personal and Company mode are included during the trial.'},
+    az:{kicker:'7 GÜNLÜK PULSUZ TRIAL',title:'ATSRS-i real offshore sənədlərlə test et',body:'Test build zamanı karyera sənədlərini səliqəyə sal, expiry risklərini izlə və işəgötürənlərə/agentliklərə göndərmək üçün bir təmiz profil hazırla. Test mərhələsində kart tələb olunmur.',items:['Passport və Seaman Book','Medical və Sertifikatlar','BOSIET / FOET / Trainings','References, Appraisals və CV'],note:'Trial müddətində Fərdi və Şirkət rejimi daxildir.'},
+    ru:{kicker:'7-ДНЕВНЫЙ БЕСПЛАТНЫЙ TRIAL',title:'Протестируйте ATSRS на реальных offshore документах',body:'Во время test build можно упорядочить карьерные документы, отслеживать expiry risk и подготовить чистый профиль для работодателей или агентств. Карта на этапе теста не требуется.',items:['Passport и Seaman Book','Medical и Certificates','BOSIET / FOET / Trainings','References, Appraisals и CV'],note:'Во время trial доступны Personal и Company mode.'}
+  };
+  function getLang(){
+    try{if(window.lang && TEXT[window.lang]) return window.lang;}catch(e){}
+    var stored=localStorage.getItem('atsrs_lang'); if(TEXT[stored]) return stored;
+    var circle=document.getElementById('langCircle'); var s=circle?circle.textContent:'';
+    if(s.indexOf('🇦🇿')>-1) return 'az'; if(s.indexOf('🇷🇺')>-1) return 'ru'; return 'en';
+  }
+  function ensurePromo(){
+    var intro=document.querySelector('#auth .auth-intro'); if(!intro) return;
+    var promo=document.getElementById('atsrsV78Promo');
+    if(!promo){
+      promo=document.createElement('div'); promo.id='atsrsV78Promo'; promo.className='atsrs-v78-promo';
+      promo.innerHTML='<div class="promo-kicker" id="atsrsV78PromoKicker"></div><h3 id="atsrsV78PromoTitle"></h3><p id="atsrsV78PromoBody"></p><div class="atsrs-v78-promo-grid" id="atsrsV78PromoGrid"></div><p class="atsrs-v78-promo-note" id="atsrsV78PromoNote"></p>';
+      intro.appendChild(promo);
+    }
+    var t=TEXT[getLang()]||TEXT.en;
+    document.getElementById('atsrsV78PromoKicker').textContent=t.kicker;
+    document.getElementById('atsrsV78PromoTitle').textContent=t.title;
+    document.getElementById('atsrsV78PromoBody').textContent=t.body;
+    document.getElementById('atsrsV78PromoGrid').innerHTML=t.items.map(function(x){return '<div class="atsrs-v78-promo-item"><span>✓</span><span>'+x+'</span></div>';}).join('');
+    document.getElementById('atsrsV78PromoNote').textContent='● '+t.note;
+  }
+  function ensureSidebarToggle(){
+    var sidebar=document.querySelector('#app .sidebar'); if(!sidebar) return;
+    var btn=document.getElementById('atsrsSidebarToggle');
+    if(!btn){
+      btn=document.createElement('button'); btn.id='atsrsSidebarToggle'; btn.type='button'; btn.className='atsrs-sidebar-toggle'; btn.setAttribute('aria-label','Toggle menu'); btn.textContent='☰';
+      sidebar.insertBefore(btn, sidebar.firstChild);
+      btn.addEventListener('click',function(){
+        document.body.classList.toggle('atsrs-sidebar-collapsed');
+        localStorage.setItem('atsrs_sidebar_collapsed',document.body.classList.contains('atsrs-sidebar-collapsed')?'1':'0');
+      });
+    }
+    var icons={navIntro:'🏠',navDashboard:'📊',navPersonnel:'👥',navCertificates:'📁',navRefs:'📝',navCompliance:'🏢',navReports:'📈',navProfile:'⚙️',navLogout:'🚪'};
+    Object.keys(icons).forEach(function(id){var el=document.getElementById(id); if(el) el.setAttribute('data-atsrs-icon',icons[id]);});
+    if(localStorage.getItem('atsrs_sidebar_collapsed')==='1') document.body.classList.add('atsrs-sidebar-collapsed');
+  }
+  function apply(){ensurePromo();ensureSidebarToggle();}
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function') window.applyLanguage=function(){var r=oldApply.apply(this,arguments); setTimeout(apply,0); return r;};
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function') window.changeLanguage=function(){var r=oldChange.apply(this,arguments); setTimeout(apply,0); setTimeout(apply,120); return r;};
+  document.addEventListener('DOMContentLoaded',apply);
+  window.addEventListener('load',apply);
+  setTimeout(apply,0); setTimeout(apply,300); setTimeout(apply,900);
+})();
+</script>
+
 </body>
   </html>
