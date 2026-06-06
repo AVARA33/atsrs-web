@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ATSRS</title>
+<title>ATSRS V76</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 
 /* V41 revised: Expiry N/A + Edit document register */
@@ -1034,7 +1034,7 @@ body:not(.atsrs-booting) #app{
 
 <div id="buildBadge" class="build-badge">
 <div>ATSRS V76</div>
-<div>Last Update: 06 Jun 2026 00:15 UTC</div>
+<div>Last Update: 06 Jun 2026 00:45 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -3886,9 +3886,9 @@ body > .atsrs-v64-top-actions .lang-menu{
     "Request":"Sorğu",
     "Country / Authority (Optional)":"Ölkə / Qurum (istəyə bağlı)",
     "Document No (Optional)":"Sənəd № (istəyə bağlı)",
-    "English":"English",
-    "Azərbaycan":"Azərbaycan",
-    "Русский":"Русский"
+    "English":"İngilis dili",
+    "Azərbaycan":"Azərbaycan dili",
+    "Русский":"Rus dili"
   };
   const RU={
     "ATSRS PLATFORM":"ПЛАТФОРМА ATSRS",
@@ -4022,8 +4022,8 @@ body > .atsrs-v64-top-actions .lang-menu{
     "Request":"Запрос",
     "Country / Authority (Optional)":"Страна / Орган (необязательно)",
     "Document No (Optional)":"№ документа (необязательно)",
-    "English":"English",
-    "Azərbaycan":"Azərbaycan",
+    "English":"Английский",
+    "Azərbaycan":"Азербайджанский",
     "Русский":"Русский"
   };
   const DICTS={az:AZ,ru:RU,en:{}};
@@ -4134,233 +4134,439 @@ body > .atsrs-v64-top-actions .lang-menu{
 </script>
 
 
-<style id="atsrs-v76-clean-language-warning-style">
-/* V76 from stable V75: compact language menu + soft mode warning. No light/theme/sidebar changes. */
-#auth .auth-card > .lang-floating,
-#app .top-actions .lang-floating,
-#app .top-actions .app-lang-switcher{
-  position:relative!important;
-}
-#auth .auth-card > .lang-floating{
-  position:absolute!important;
-  top:20px!important;
-  right:22px!important;
-  left:auto!important;
-  z-index:50!important;
-}
-.lang-circle{
-  width:34px!important;
-  height:34px!important;
-  min-width:34px!important;
-  border-radius:9px!important;
-  padding:0!important;
-  margin:0!important;
-  background:transparent!important;
-  border:1px solid rgba(148,163,184,.22)!important;
-  box-shadow:none!important;
-  font-size:22px!important;
-  line-height:1!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-.lang-circle:hover{
-  background:rgba(15,23,42,.48)!important;
-  border-color:rgba(134,239,172,.42)!important;
-}
-.lang-menu{
-  width:182px!important;
-  top:42px!important;
-  right:0!important;
-  left:auto!important;
-  padding:8px!important;
-  border-radius:14px!important;
-  background:rgba(8,21,36,.96)!important;
-  border:1px solid rgba(94,128,160,.62)!important;
-  box-shadow:0 18px 44px rgba(0,0,0,.42)!important;
-}
-.lang-menu button{
-  width:100%!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-start!important;
-  gap:10px!important;
-  position:relative!important;
-  margin:1px 0!important;
-  padding:9px 10px 9px 13px!important;
-  border-radius:10px!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  color:#eaf2fb!important;
-  text-align:left!important;
-  font-weight:800!important;
-  font-size:14px!important;
-  line-height:1.2!important;
-}
-.lang-menu button span{
-  width:24px!important;
-  min-width:24px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  font-size:17px!important;
-}
-.lang-menu button:hover{
-  background:rgba(30,41,59,.72)!important;
-}
-.lang-menu button.active{
-  background:rgba(30,41,59,.62)!important;
-}
-.lang-menu button.active::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:8px;
-  bottom:8px;
-  width:3px;
-  border-radius:999px;
-  background:#22c55e;
-  box-shadow:0 0 10px rgba(34,197,94,.32);
-}
-.mode-choice.mode-error{
-  border:0!important;
-  background:transparent!important;
-  padding:0!important;
-  box-shadow:none!important;
-}
-.mode-choice.mode-error button{
-  border-color:#3b536d!important;
-  background:#26384e!important;
-  box-shadow:none!important;
-}
-.mode-error-text{
-  display:none!important;
-  background:transparent!important;
-  border:0!important;
-  border-radius:0!important;
-  padding:0!important;
-  margin:6px 0 13px!important;
-  color:#fb7185!important;
-  font-size:13px!important;
-  font-weight:800!important;
-  line-height:1.35!important;
-}
-.mode-error-text.active{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-}
-.mode-error-text.active::before{
-  content:"!";
-  width:18px;
-  height:18px;
-  min-width:18px;
-  border-radius:50%;
-  border:1px solid #fb7185;
-  color:#fb7185;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:900;
-  line-height:1;
-}
-</style>
-<script id="atsrs-v76-clean-language-warning-lock">
-/* V76: single final lock for language menu and usage-mode warning.
-   Built on stable V75. It does not add repeated intervals or extra translation systems. */
+
+<script id="atsrs-v74-use-mode-button-language-fix">
+/* V74: Use-mode buttons must follow selected language directly by ID.
+   V72 text-node replacement could translate EN -> AZ/RU, but could not reliably
+   convert already-translated AZ labels when switching later to RU. */
 (function(){
-  const LANGS=[
-    {code:'en',flag:'🇬🇧',label:'English'},
-    {code:'az',flag:'🇦🇿',label:'Azərbaycan'},
-    {code:'ru',flag:'🇷🇺',label:'Русский'}
-  ];
-  const MODE={
-    en:{personal:'Personal Use',company:'Company Use',error:'Please select Personal or Company mode.',test:'Local Test Login'},
-    az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',error:'Zəhmət olmasa fərdi və ya şirkət rejimini seçin.',test:'Lokal test girişi'},
-    ru:{personal:'Личное использование',company:'Корпоративное использование',error:'Пожалуйста, выберите личный или корпоративный режим.',test:'Локальный тестовый вход'}
+  const MODE_LABELS={
+    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.'},
+    az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.'},
+    ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.'}
   };
-  function activeLang(){
-    const stored=localStorage.getItem('atsrs_lang');
-    if(MODE[stored]) return stored;
-    const root=document.documentElement.lang;
-    if(MODE[root]) return root;
-    return 'en';
+  function currentLang(){
+    const v=(localStorage.getItem('atsrs_lang')||document.documentElement.lang||window.lang||'en');
+    return MODE_LABELS[v] ? v : 'en';
   }
-  function langData(code){return LANGS.find(x=>x.code===code)||LANGS[0];}
-  function setModeMessageFunction(){
-    try{
-      window.modeMsg=function(){return MODE[activeLang()].error;};
-    }catch(e){}
-  }
-  function normalizeMenu(menu){
-    if(!menu) return;
-    let buttons=Array.from(menu.querySelectorAll('button'));
-    if(buttons.length<3){
-      menu.innerHTML=LANGS.map(x=>`<button type="button" data-lang="${x.code}"><span>${x.flag}</span>${x.label}</button>`).join('');
-      buttons=Array.from(menu.querySelectorAll('button'));
-    }
-    buttons.slice(0,3).forEach((btn,i)=>{
-      const item=LANGS[i];
-      btn.dataset.lang=item.code;
-      btn.innerHTML=`<span>${item.flag}</span>${item.label}`;
-      btn.classList.toggle('active',item.code===activeLang());
-      btn.onclick=function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        if(typeof window.changeLanguage==='function') window.changeLanguage(item.code);
-        else localStorage.setItem('atsrs_lang',item.code);
-        setTimeout(applyV76CleanUI,0);
-        setTimeout(applyV76CleanUI,120);
-      };
-    });
-  }
-  function applyV76CleanUI(){
-    const code=activeLang();
-    const item=langData(code);
-    const authCircle=document.getElementById('langCircle');
-    const appCircle=document.getElementById('appLangCircle');
-    if(authCircle) authCircle.textContent=item.flag;
-    if(appCircle) appCircle.textContent=item.flag;
-    normalizeMenu(document.getElementById('langMenu'));
-    normalizeMenu(document.getElementById('appLangMenu'));
-    const d=MODE[code];
+  function applyV74UseModeLabels(){
+    const d=MODE_LABELS[currentLang()];
     const personal=document.getElementById('personalModeBtn');
     const company=document.getElementById('companyModeBtn');
-    const test=document.getElementById('localTestBtn');
-    const err=document.getElementById('modeRule') || document.querySelector('.mode-error-text');
     if(personal) personal.textContent=d.personal;
     if(company) company.textContent=d.company;
-    if(test) test.textContent=d.test;
-    if(err && err.classList.contains('active')) err.textContent=d.error;
-    setModeMessageFunction();
+    const err=document.getElementById('modeErrorText') || document.querySelector('.mode-error-text');
+    if(err) err.textContent=d.modeError;
   }
-  setModeMessageFunction();
-  const oldChange=window.changeLanguage;
+  const prevChange=window.changeLanguage;
   window.changeLanguage=function(v){
-    if(MODE[v]) localStorage.setItem('atsrs_lang',v);
-    const result=(typeof oldChange==='function') ? oldChange.apply(this,arguments) : undefined;
-    applyV76CleanUI();
-    setTimeout(applyV76CleanUI,0);
-    setTimeout(applyV76CleanUI,120);
-    setTimeout(applyV76CleanUI,400);
-    return result;
+    const r=(typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    setTimeout(applyV74UseModeLabels,0);
+    setTimeout(applyV74UseModeLabels,150);
+    setTimeout(applyV74UseModeLabels,500);
+    return r;
   };
-  const oldApply=window.applyLanguage;
+  const prevApply=window.applyLanguage;
   window.applyLanguage=function(){
-    const result=(typeof oldApply==='function') ? oldApply.apply(this,arguments) : undefined;
-    applyV76CleanUI();
-    setTimeout(applyV76CleanUI,0);
-    setTimeout(applyV76CleanUI,120);
-    return result;
+    const r=(typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    setTimeout(applyV74UseModeLabels,0);
+    setTimeout(applyV74UseModeLabels,150);
+    return r;
   };
-  window.atsrsV76CleanUI=applyV76CleanUI;
-  document.addEventListener('DOMContentLoaded',function(){applyV76CleanUI();setTimeout(applyV76CleanUI,250);});
-  window.addEventListener('load',function(){applyV76CleanUI();setTimeout(applyV76CleanUI,250);});
-  setTimeout(applyV76CleanUI,0);
+  window.atsrsV74UseModeLabels=applyV74UseModeLabels;
+  document.addEventListener('DOMContentLoaded',applyV74UseModeLabels);
+  window.addEventListener('load',applyV74UseModeLabels);
+  setTimeout(applyV74UseModeLabels,0);
+  setTimeout(applyV74UseModeLabels,300);
+  setInterval(applyV74UseModeLabels,1000);
+})();
+</script>
+
+
+
+<script id="atsrs-v75-final-mode-language-lock">
+/* V75: Final lock for Personal/Company mode labels.
+   Reads the actual visible flag first, so EN/AZ/RU always wins even if older
+   translation replacement scripts leave already-translated labels behind. */
+(function(){
+  const LABELS={
+    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.'},
+    az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.'},
+    ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.'}
+  };
+  function langFromFlag(){
+    const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'').trim();
+    if(flag.includes('🇦🇿')) return 'az';
+    if(flag.includes('🇷🇺')) return 'ru';
+    if(flag.includes('🇬🇧')) return 'en';
+    return '';
+  }
+  function activeLang(){
+    const candidates=[langFromFlag(), localStorage.getItem('atsrs_lang'), document.documentElement.lang, window.lang];
+    for(const v of candidates){ if(v && LABELS[v]) return v; }
+    return 'en';
+  }
+  function lockModeLabels(){
+    const d=LABELS[activeLang()];
+    const personal=document.getElementById('personalModeBtn');
+    const company=document.getElementById('companyModeBtn');
+    if(personal && personal.textContent.trim()!==d.personal) personal.textContent=d.personal;
+    if(company && company.textContent.trim()!==d.company) company.textContent=d.company;
+    const err=document.getElementById('modeErrorText') || document.querySelector('.mode-error-text');
+    if(err && err.textContent.trim()!==d.modeError) err.textContent=d.modeError;
+  }
+  function runSoon(){
+    lockModeLabels();
+    setTimeout(lockModeLabels,0);
+    setTimeout(lockModeLabels,80);
+    setTimeout(lockModeLabels,250);
+    setTimeout(lockModeLabels,700);
+  }
+  const prevChange=window.changeLanguage;
+  window.changeLanguage=function(v){
+    if(LABELS[v]) localStorage.setItem('atsrs_lang',v);
+    const r=(typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const prevApply=window.applyLanguage;
+  window.applyLanguage=function(){
+    const r=(typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const obs=new MutationObserver(runSoon);
+  document.addEventListener('DOMContentLoaded',function(){
+    runSoon();
+    const t=document.getElementById('appLangCircle')||document.getElementById('langCircle')||document.body;
+    if(t) obs.observe(t,{childList:true,characterData:true,subtree:true});
+  });
+  window.addEventListener('load',runSoon);
+  window.addEventListener('click',function(e){
+    if(e.target && e.target.closest && e.target.closest('.lang-menu')) runSoon();
+  },true);
+  runSoon();
+  setInterval(lockModeLabels,300);
+})();
+</script>
+
+
+<script id="atsrs-v75-test-login-language-lock">
+/* V75: Final lock for Local Test Login button in EN/AZ/RU.
+   This button was hardcoded and older runtime translation could leave it in RU/AZ
+   after switching flags. Read visible flag first and set the exact label by ID. */
+(function(){
+  const TEST_LOGIN_LABELS={
+    en:'Local Test Login',
+    az:'Lokal test girişi',
+    ru:'Локальный тестовый вход'
+  };
+  function langFromFlag(){
+    const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'').trim();
+    if(flag.includes('🇦🇿')) return 'az';
+    if(flag.includes('🇷🇺')) return 'ru';
+    if(flag.includes('🇬🇧')) return 'en';
+    return '';
+  }
+  function activeLang(){
+    const candidates=[langFromFlag(), localStorage.getItem('atsrs_lang'), document.documentElement.lang, window.lang];
+    for(const v of candidates){ if(v && TEST_LOGIN_LABELS[v]) return v; }
+    return 'en';
+  }
+  function lockTestLoginLabel(){
+    const btn=document.getElementById('localTestBtn');
+    if(!btn) return;
+    const txt=TEST_LOGIN_LABELS[activeLang()]||TEST_LOGIN_LABELS.en;
+    if(btn.textContent.trim()!==txt) btn.textContent=txt;
+  }
+  function runSoon(){
+    lockTestLoginLabel();
+    setTimeout(lockTestLoginLabel,0);
+    setTimeout(lockTestLoginLabel,80);
+    setTimeout(lockTestLoginLabel,250);
+    setTimeout(lockTestLoginLabel,700);
+  }
+  const prevChange=window.changeLanguage;
+  window.changeLanguage=function(v){
+    if(TEST_LOGIN_LABELS[v]) localStorage.setItem('atsrs_lang',v);
+    const r=(typeof prevChange==='function') ? prevChange.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const prevApply=window.applyLanguage;
+  window.applyLanguage=function(){
+    const r=(typeof prevApply==='function') ? prevApply.apply(this,arguments) : undefined;
+    runSoon();
+    return r;
+  };
+  const obs=new MutationObserver(runSoon);
+  document.addEventListener('DOMContentLoaded',function(){
+    runSoon();
+    const t=document.getElementById('appLangCircle')||document.getElementById('langCircle')||document.body;
+    if(t) obs.observe(t,{childList:true,characterData:true,subtree:true});
+  });
+  window.addEventListener('load',runSoon);
+  window.addEventListener('click',function(e){
+    if(e.target && e.target.closest && e.target.closest('.lang-menu')) runSoon();
+  },true);
+  runSoon();
+  setInterval(lockTestLoginLabel,300);
+})();
+</script>
+
+
+<!-- V76: Audit cleanup + visible function status matrix. Based on V75 stable backup. -->
+<style id="v76-audit-cleanup-style">
+  .v76-audit-panel{margin:18px 0 0;background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:22px;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.24)}
+  .v76-audit-panel h3{margin:0 0 8px;font-size:22px;color:#f8fafc}
+  .v76-audit-panel p{margin:0 0 14px;color:#a7b5c5;line-height:1.45}
+  .v76-status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .v76-status-card{background:#071524;border:1px solid #263f58;border-radius:16px;padding:12px;min-height:112px}
+  .v76-status-card b{display:block;margin-bottom:6px;color:#f8fafc}
+  .v76-status-card span{display:inline-block;margin-bottom:8px;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900}
+  .v76-status-card p{margin:0;color:#a7b5c5;font-size:13px;line-height:1.38}
+  .v76-ok span{background:#064e3b;color:#bbf7d0}.v76-partial span{background:#78350f;color:#fde68a}.v76-backend span{background:#7f1d1d;color:#fecaca}
+  .v76-clean-hidden{display:none!important}
+</style>
+<script id="v76-audit-cleanup-script">
+(function(){
+  const TXT={
+    en:{
+      title:'Function Status / Audit List',
+      intro:'Visible test status for the current build. Items marked Backend Required are not broken UI; they need server-side services before production.',
+      ok:'Working',partial:'Partial',backend:'Backend Required',
+      items:[
+        ['Login page language','Working','EN/AZ/RU login texts, account type buttons and Local Test Login are switching correctly.','ok'],
+        ['Language + Logout topbar','Working','Top controls are page-attached and no longer fixed to the viewport during scroll.','ok'],
+        ['Manual document register','Working','Manual certificate entry, expiry date and N/A flow are available.','ok'],
+        ['Scan & Auto-fill','Partial','Browser OCR/text preview exists. AI field selection needs backend parser.','partial'],
+        ['Share Profile','Partial','Frontend profile sharing UI exists. Real public link needs backend storage/access rules.','partial'],
+        ['CV upload','Partial','CV upload/display controls exist. Automatic ATSRS CV generation needs backend/template engine.','partial'],
+        ['WhatsApp alerts','Backend Required','Real alerts require scheduled backend jobs and approved WhatsApp templates.','backend'],
+        ['Email expiry notifications','Backend Required','Needs scheduled backend function and email provider integration.','backend'],
+        ['Reports dashboard','Backend Required','Needs saved user/company data and reporting queries.','backend'],
+        ['Company import','Backend Required','Needs secure company workspace, invitation and approval workflow.','backend']
+      ],
+      cvBtn:'Generate ATSRS CV — Backend Required', cvBadge:'BACKEND REQUIRED', waBadge:'BACKEND REQUIRED'
+    },
+    az:{
+      title:'Funksiya Statusu / Audit Siyahısı',
+      intro:'Hazırkı build üçün görünən test statusu. Backend Required işarəli hissələr UI səhvi deyil; production üçün server tərəfi lazımdır.',
+      ok:'İşləyir',partial:'Qismən işləyir',backend:'Backend lazımdır',
+      items:[
+        ['Login səhifəsi dili','İşləyir','EN/AZ/RU login mətnləri, istifadə növü düymələri və Local Test Login düzgün dəyişir.','ok'],
+        ['Language + Logout topbar','İşləyir','Yuxarı idarə düymələri artıq viewport-a sabitlənmir, səhifə ilə birlikdə hərəkət edir.','ok'],
+        ['Manual sənəd qeydiyyatı','İşləyir','Manual sertifikat əlavə etmə, expiry və N/A axını mövcuddur.','ok'],
+        ['Scan & Auto-fill','Qismən işləyir','Browser OCR/text preview var. AI ilə xanaları seçib doldurmaq üçün backend parser lazımdır.','partial'],
+        ['Share Profile','Qismən işləyir','Frontend paylaşım UI var. Real public link üçün backend storage/access rules lazımdır.','partial'],
+        ['CV upload','Qismən işləyir','CV upload/display nəzarətləri var. Avtomatik ATSRS CV yaratmaq üçün backend/template engine lazımdır.','partial'],
+        ['WhatsApp bildirişləri','Backend lazımdır','Real bildiriş üçün scheduled backend job və approved WhatsApp template lazımdır.','backend'],
+        ['Email expiry bildirişləri','Backend lazımdır','Scheduled backend function və email provider inteqrasiyası lazımdır.','backend'],
+        ['Reports dashboard','Backend lazımdır','Saxlanılmış user/company data və reporting queries lazımdır.','backend'],
+        ['Company import','Backend lazımdır','Təhlükəsiz company workspace, invitation və approval workflow lazımdır.','backend']
+      ],
+      cvBtn:'ATSRS CV yarat — Backend lazımdır', cvBadge:'BACKEND LAZIMDIR', waBadge:'BACKEND LAZIMDIR'
+    },
+    ru:{
+      title:'Статус функций / Audit List',
+      intro:'Видимый тестовый статус текущей сборки. Пункты Backend Required не являются UI-ошибкой; для production нужна серверная часть.',
+      ok:'Работает',partial:'Частично работает',backend:'Нужен backend',
+      items:[
+        ['Язык страницы входа','Работает','EN/AZ/RU тексты входа, кнопки типа использования и Local Test Login переключаются корректно.','ok'],
+        ['Language + Logout topbar','Работает','Верхние элементы больше не фиксируются к viewport и движутся вместе со страницей.','ok'],
+        ['Ручной реестр документов','Работает','Доступны ручное добавление сертификата, срок действия и режим N/A.','ok'],
+        ['Scan & Auto-fill','Частично работает','Есть browser OCR/text preview. Для AI-заполнения полей нужен backend parser.','partial'],
+        ['Share Profile','Частично работает','Frontend UI для sharing есть. Для реальной public link нужны backend storage/access rules.','partial'],
+        ['CV upload','Частично работает','Контролы CV upload/display есть. Для генерации ATSRS CV нужен backend/template engine.','partial'],
+        ['WhatsApp уведомления','Нужен backend','Для реальных уведомлений нужны scheduled backend jobs и approved WhatsApp templates.','backend'],
+        ['Email expiry уведомления','Нужен backend','Нужны scheduled backend function и интеграция email provider.','backend'],
+        ['Reports dashboard','Нужен backend','Нужны сохранённые user/company data и reporting queries.','backend'],
+        ['Company import','Нужен backend','Нужны secure company workspace, invitation и approval workflow.','backend']
+      ],
+      cvBtn:'Создать ATSRS CV — нужен backend', cvBadge:'НУЖЕН BACKEND', waBadge:'НУЖЕН BACKEND'
+    }
+  };
+  function currentLang(){
+    try{ if(typeof lang==='string' && TXT[lang]) return lang; }catch(e){}
+    const stored=localStorage.getItem('atsrs_lang'); return TXT[stored]?stored:'en';
+  }
+  function t(){return TXT[currentLang()]||TXT.en;}
+  function cleanHashes(){
+    document.querySelectorAll('h1,h2,h3,h4,p,span,button,div').forEach(el=>{
+      if(el.children.length===0 && /^#+$/.test((el.textContent||'').trim())) el.classList.add('v76-clean-hidden');
+    });
+  }
+  function updateBuild(){
+    const badge=document.getElementById('buildBadge');
+    if(badge){badge.innerHTML='<div>ATSRS V76</div><div>Last Update: 06 Jun 2026 00:45 UTC</div><div>TEST BUILD</div>';}
+    document.title='ATSRS V76';
+  }
+  function renderAuditPanel(){
+    const intro=document.getElementById('introPage')||document.querySelector('main')||document.body;
+    if(!intro) return;
+    let panel=document.getElementById('v76AuditPanel');
+    if(!panel){
+      panel=document.createElement('div'); panel.id='v76AuditPanel'; panel.className='v76-audit-panel';
+      intro.appendChild(panel);
+    }
+    const L=t();
+    panel.innerHTML='<h3>'+L.title+'</h3><p>'+L.intro+'</p><div class="v76-status-grid">'+
+      L.items.map(x=>'<div class="v76-status-card v76-'+x[3]+'"><b>'+x[0]+'</b><span>'+x[1]+'</span><p>'+x[2]+'</p></div>').join('')+
+      '</div>';
+  }
+  function markBackendItems(){
+    const L=t();
+    const cvBtn=document.getElementById('generateCVBtn'); if(cvBtn) cvBtn.textContent=L.cvBtn;
+    const cvBadge=document.getElementById('cvBetaBadge'); if(cvBadge) cvBadge.textContent=L.cvBadge;
+    const waBadge=document.getElementById('whatsappBadge'); if(waBadge) waBadge.textContent=L.waBadge;
+  }
+  function applyV76(){ updateBuild(); cleanHashes(); renderAuditPanel(); markBackendItems(); }
+  const oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'){
+    window.applyLanguage=function(){ const r=oldApply.apply(this,arguments); setTimeout(applyV76,0); return r; };
+  }
+  const oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'){
+    window.changeLanguage=function(){ const r=oldChange.apply(this,arguments); setTimeout(applyV76,0); return r; };
+  }
+  document.addEventListener('DOMContentLoaded',applyV76);
+  window.addEventListener('load',applyV76);
+  setTimeout(applyV76,0); setTimeout(applyV76,500); setInterval(applyV76,1200);
+})();
+</script>
+
+
+
+<!-- V77: LOGIN PAGE ONLY - language indicator + Personal/Company translation hard fix. Based on V76. -->
+<style id="atsrs-v77-login-only-lang-fix-style">
+  #auth:not(.hidden) #langMenu button.atsrs-v77-active-lang{
+    background:rgba(34,197,94,.14)!important;
+    border-left:3px solid #22c55e!important;
+    color:#f8fafc!important;
+  }
+  #auth:not(.hidden) #langMenu button{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    text-align:left!important;
+  }
+  #auth:not(.hidden) #langMenu button span{
+    width:auto!important;
+    min-width:24px!important;
+  }
+</style>
+<script id="atsrs-v77-login-only-lang-fix-script">
+(function(){
+  var LABELS={
+    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.',flag:'🇬🇧'},
+    az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.',flag:'🇦🇿'},
+    ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.',flag:'🇷🇺'}
+  };
+  var LANG_NAMES={en:'English',az:'Azərbaycan',ru:'Русский'};
+  function isAuthVisible(){
+    var auth=document.getElementById('auth');
+    return !!(auth && !auth.classList.contains('hidden'));
+  }
+  function langFromButton(btn){
+    var text=(btn && btn.textContent ? btn.textContent : '').trim();
+    if(text.indexOf('🇦🇿')>-1) return 'az';
+    if(text.indexOf('🇷🇺')>-1) return 'ru';
+    if(text.indexOf('🇬🇧')>-1) return 'en';
+    return '';
+  }
+  function currentLang(){
+    /* Login page must read the login-page language circle first.
+       Older V75 lock used appLangCircle first, but appLangCircle exists hidden and stays EN. */
+    var primary=isAuthVisible()?document.getElementById('langCircle'):document.getElementById('appLangCircle');
+    var secondary=isAuthVisible()?document.getElementById('appLangCircle'):document.getElementById('langCircle');
+    var fromFlag=langFromButton(primary) || langFromButton(secondary);
+    if(fromFlag && LABELS[fromFlag]) return fromFlag;
+    var stored=localStorage.getItem('atsrs_lang');
+    if(stored && LABELS[stored]) return stored;
+    var docLang=document.documentElement.getAttribute('lang');
+    if(docLang && LABELS[docLang]) return docLang;
+    return 'en';
+  }
+  function normaliseLangMenus(){
+    [['#langMenu','login'],['#appLangMenu','app']].forEach(function(pair){
+      var menu=document.querySelector(pair[0]);
+      if(!menu) return;
+      var buttons=menu.querySelectorAll('button');
+      var order=['en','az','ru'];
+      for(var i=0;i<buttons.length && i<3;i++){
+        var l=order[i];
+        buttons[i].setAttribute('data-atsrs-lang',l);
+        buttons[i].innerHTML='<span>'+LABELS[l].flag+'</span> '+LANG_NAMES[l];
+      }
+    });
+  }
+  function updateLoginIndicator(){
+    var l=currentLang();
+    var circle=document.getElementById('langCircle');
+    if(circle) circle.textContent=LABELS[l].flag;
+    var menu=document.getElementById('langMenu');
+    if(menu){
+      var btns=menu.querySelectorAll('button');
+      for(var i=0;i<btns.length;i++){
+        var b=btns[i];
+        b.classList.toggle('atsrs-v77-active-lang', b.getAttribute('data-atsrs-lang')===l);
+      }
+    }
+  }
+  function updateModeLabels(){
+    var l=currentLang();
+    var d=LABELS[l]||LABELS.en;
+    var personal=document.getElementById('personalModeBtn');
+    var company=document.getElementById('companyModeBtn');
+    var err=document.getElementById('modeErrorText') || document.querySelector('#auth .mode-error-text');
+    if(personal) personal.textContent=d.personal;
+    if(company) company.textContent=d.company;
+    if(err) err.textContent=d.modeError;
+  }
+  function applyV77LoginFix(){
+    normaliseLangMenus();
+    updateLoginIndicator();
+    updateModeLabels();
+  }
+  function runSoon(){
+    applyV77LoginFix();
+    setTimeout(applyV77LoginFix,0);
+    setTimeout(applyV77LoginFix,80);
+    setTimeout(applyV77LoginFix,250);
+    setTimeout(applyV77LoginFix,600);
+  }
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'){
+    window.changeLanguage=function(v){
+      if(v && LABELS[v]) localStorage.setItem('atsrs_lang',v);
+      var r=oldChange.apply(this,arguments);
+      runSoon();
+      return r;
+    };
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'){
+    window.applyLanguage=function(){
+      var r=oldApply.apply(this,arguments);
+      runSoon();
+      return r;
+    };
+  }
+  document.addEventListener('DOMContentLoaded',runSoon);
+  window.addEventListener('load',runSoon);
+  document.addEventListener('click',function(e){
+    if(e.target && e.target.closest && (e.target.closest('#langMenu') || e.target.closest('#personalModeBtn') || e.target.closest('#companyModeBtn'))) runSoon();
+  },true);
+  var obs=new MutationObserver(function(){runSoon();});
+  document.addEventListener('DOMContentLoaded',function(){
+    var auth=document.getElementById('auth');
+    if(auth) obs.observe(auth,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
+  });
+  runSoon();
+  setInterval(applyV77LoginFix,300);
 })();
 </script>
 
 </body>
-</html>
+  </html>
