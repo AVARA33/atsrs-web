@@ -1,402 +1,980 @@
-<!-- ATSRS TEST V88 PATCH - APPEND BEFORE </body>
-     Purpose: professional UX cleanup based on live atsrs.com audit.
-     Safe/non-destructive: does not remove data functions; hides noisy beta/roadmap UI and fixes top-right scroll behavior.
--->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ATSRS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 
-<style id="atsrs-v88-critical-ux-cleanup">
-/* ================================
-   ATSRS V88 — Professional UX Cleanup
-   Build: 06 Jun 2026 04:18 UTC
-   Based on current live V86/V87 layout
-   ================================ */
-
-:root{
-  --atsrs-bg:#020617;
-  --atsrs-surface:#0f172a;
-  --atsrs-surface-2:#111827;
-  --atsrs-card:#1e293b;
-  --atsrs-border:rgba(148,163,184,.22);
-  --atsrs-border-strong:rgba(148,163,184,.34);
-  --atsrs-text:#e5e7eb;
-  --atsrs-muted:#94a3b8;
-  --atsrs-blue:#2563eb;
-  --atsrs-blue-soft:rgba(37,99,235,.16);
-  --atsrs-green:#22c55e;
-  --atsrs-red:#ef4444;
-  --atsrs-yellow:#facc15;
+/* V41 revised: Expiry N/A + Edit document register */
+const V41R_TEXT={
+  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
+  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
+  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
+};
+function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
+let editCertIndex=null;
+function ensureExpiryNAControls(){
+  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
+  items.forEach(([inputId,checkId,labelId])=>{
+    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
+    const wrap=input.closest('.field-wrap'); if(!wrap)return;
+    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+    const cb=document.getElementById(checkId);
+    cb.addEventListener('change',()=>{
+      input.disabled=cb.checked;
+      if(cb.checked){input.value='';input.classList.remove('required-missing');}
+      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
+      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
+    });
+  });
 }
+function applyV41RLanguage(){
+  ensureExpiryNAControls();
+  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
+  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
+  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
+  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+}
+const statusBaseV41R=status;
+status=function(expiry){
+  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
+  return statusBaseV41R(expiry);
+};
+function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
+function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
+const clearManualValidationBaseV41R=clearManualValidation;
+clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
+validateManualCertificateForm=function(){
+  clearManualValidation(); let ok=true;
+  if(!cType.value){cType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
+  return ok;
+};
+validateAutoConfirmForm=function(){
+  clearAutoValidation(); let ok=true;
+  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
+  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
+  return ok;
+};
+confirmExtractedDocument=function(){
+  if(!validateAutoConfirmForm())return;
+  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
+  let a=getData('certs');
+  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
+  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
+};
+addCertificate=function(){
+  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
+  if(!validateManualCertificateForm()||!person)return;
+  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
+  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
+  saveData('certs',a);
+  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
+  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
+  clearManualValidation(); applyV41RLanguage(); renderAll();
+};
+function editCertificate(i){
+  const a=getData('certs'); const x=a[i]; if(!x)return;
+  editCertIndex=i;
+  showPage('certificates',navCertificates); showCertMode('manual');
+  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
+  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
+  if(typeof cExpiryNA!=='undefined'){
+    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
+    cExpiry.disabled=cExpiryNA.checked;
+  }
+  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
+  applyV41RLanguage();
+  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+const renderAllBaseV41R=renderAll;
+renderAll=function(){
+  renderAllBaseV41R();
+  const certs=getData('certs');
+  const rows=certTable?certTable.querySelectorAll('tr'):[];
+  rows.forEach((row,i)=>{
+    const cells=row.querySelectorAll('td');
+    if(cells.length>=5){
+      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
+        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
+      }
+      const action=cells[4];
+      if(action&&!action.querySelector('.edit-btn')){
+        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
+      }
+    }
+  });
+};
+const applyLanguageBaseV41R=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
+setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
-html,body{background:var(--atsrs-bg)!important;color:var(--atsrs-text)!important;}
-body{font-family:Inter,Arial,sans-serif!important;}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
 
-/* 1) Top-right Language + Logout must belong to the page, not viewport */
-#app{position:relative!important;}
+/* V41 revised: Expiry N/A + Edit document register */
+const V41R_TEXT={
+  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
+  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
+  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
+};
+function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
+let editCertIndex=null;
+function ensureExpiryNAControls(){
+  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
+  items.forEach(([inputId,checkId,labelId])=>{
+    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
+    const wrap=input.closest('.field-wrap'); if(!wrap)return;
+    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+    const cb=document.getElementById(checkId);
+    cb.addEventListener('change',()=>{
+      input.disabled=cb.checked;
+      if(cb.checked){input.value='';input.classList.remove('required-missing');}
+      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
+      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
+    });
+  });
+}
+function applyV41RLanguage(){
+  ensureExpiryNAControls();
+  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
+  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
+  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
+  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
+}
+const statusBaseV41R=status;
+status=function(expiry){
+  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
+  return statusBaseV41R(expiry);
+};
+function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
+function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
+const clearManualValidationBaseV41R=clearManualValidation;
+clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
+validateManualCertificateForm=function(){
+  clearManualValidation(); let ok=true;
+  if(!cType.value){cType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
+  return ok;
+};
+validateAutoConfirmForm=function(){
+  clearAutoValidation(); let ok=true;
+  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
+  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
+  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
+  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
+  return ok;
+};
+confirmExtractedDocument=function(){
+  if(!validateAutoConfirmForm())return;
+  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
+  let a=getData('certs');
+  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
+  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
+};
+addCertificate=function(){
+  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
+  if(!validateManualCertificateForm()||!person)return;
+  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
+  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
+  saveData('certs',a);
+  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
+  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
+  clearManualValidation(); applyV41RLanguage(); renderAll();
+};
+function editCertificate(i){
+  const a=getData('certs'); const x=a[i]; if(!x)return;
+  editCertIndex=i;
+  showPage('certificates',navCertificates); showCertMode('manual');
+  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
+  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
+  if(typeof cExpiryNA!=='undefined'){
+    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
+    cExpiry.disabled=cExpiryNA.checked;
+  }
+  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
+  applyV41RLanguage();
+  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+const renderAllBaseV41R=renderAll;
+renderAll=function(){
+  renderAllBaseV41R();
+  const certs=getData('certs');
+  const rows=certTable?certTable.querySelectorAll('tr'):[];
+  rows.forEach((row,i)=>{
+    const cells=row.querySelectorAll('td');
+    if(cells.length>=5){
+      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
+        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
+      }
+      const action=cells[4];
+      if(action&&!action.querySelector('.edit-btn')){
+        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
+      }
+    }
+  });
+};
+const applyLanguageBaseV41R=applyLanguage;
+applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
+setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
+
+</script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
+.hidden{display:none!important}
+button,input,select{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #334155}
+input,select{background:#0f172a;color:white}
+button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
+button:disabled{background:#64748b;cursor:not-allowed}
+.secondary{background:#475569}.action{background:#dc2626}.linkbtn{background:transparent;color:#93c5fd;text-align:left;padding:6px}
+.testbtn{background:#16a34a}
+.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#020617,#1e3a8a);padding:20px;position:relative}
+.auth-card{width:100%;max-width:430px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px}
+.logo{font-size:40px;font-weight:900;margin:0}.sub{color:#94a3b8}.error{color:#f87171;font-size:14px;margin:4px 0 8px}
+.input-error{border:2px solid #ef4444!important;background:#2a1111!important}.input-ok{border:2px solid #22c55e!important}
+.lang-floating{position:fixed;top:18px;right:18px;z-index:50}
+.lang-circle{width:48px;height:48px;border-radius:50%;padding:0;margin:0;background:#111827;border:1px solid #334155;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.lang-menu{position:absolute;top:56px;right:0;width:220px;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:8px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.lang-menu button{background:transparent;color:#e5e7eb;text-align:left;margin:2px 0;padding:10px 12px;border:0;border-radius:10px;font-weight:600}
+.lang-menu button:hover{background:#1e293b}.lang-menu span{display:inline-block;width:28px}
+html[dir="rtl"] .lang-floating{right:auto;left:18px} html[dir="rtl"] .lang-menu{right:auto;left:0}
+.build-badge{position:absolute;right:18px;bottom:18px;text-align:right;color:#94a3b8;font-size:12px;line-height:1.45;background:rgba(15,23,42,.65);border:1px solid #334155;border-radius:12px;padding:8px 10px}
+html[dir="rtl"] .build-badge{right:auto;left:18px;text-align:left}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{background:#020617;border-right:1px solid #1e293b;padding:22px}.brand{font-size:30px;font-weight:900}
+.nav button{text-align:left;background:transparent;color:#cbd5e1}.nav button.active,.nav button:hover{background:#1e293b;color:white}
+.main{padding:76px 22px 22px 22px;overflow-x:hidden}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card,.panel{background:#1e293b;border:1px solid #334155;border-radius:18px;padding:18px;margin-bottom:16px}
+.stat{font-size:38px;font-weight:900}.warning{color:#facc15}.danger{color:#f87171}.good{color:#4ade80}
+table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;border-bottom:1px solid #334155;text-align:left}.table-wrap{overflow-x:auto}
+.profile-grid,.confirm-grid,.document-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.account-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.account-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}.account-tabs button.active{background:#2563eb}
+.account-tab{display:none}.account-tab.active{display:block}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #334155;padding:12px 0}.setting-row:last-child{border-bottom:0}.setting-row button{max-width:180px;margin:0}
+.small-note{font-size:13px;color:#94a3b8;margin-top:4px}.scan-box{border:1px dashed #64748b;border-radius:16px;padding:14px;margin:12px 0;background:#0f172a}.preview-box{font-size:13px;color:#94a3b8;margin-top:8px;word-break:break-word}
+@media(max-width:800px){
+.app{grid-template-columns:1fr}.sidebar{position:relative;border-right:0;border-bottom:1px solid #1e293b}.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.main{padding:76px 16px 16px}
+.app-lang-switcher{position:absolute!important;top:18px!important;right:18px!important}html[dir="rtl"] .app-lang-switcher{right:auto!important;left:18px!important}
+}
+@media(max-width:600px){.build-badge{position:static;margin-top:18px;text-align:center}.auth-card{padding:24px}.logo{font-size:34px}}
+
+.module-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.module-tabs button{width:auto;margin:0;padding:10px 14px;background:#334155}
+.module-tabs button.active{background:#2563eb}
+.module-tab{display:none}
+.module-tab.active{display:block}
+.filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.badge-ready{background:#14532d;color:#bbf7d0}
+.badge-review{background:#713f12;color:#fef3c7}
+.badge-blocked{background:#7f1d1d;color:#fecaca}
+.import-box{border:1px dashed #64748b;border-radius:16px;padding:16px;background:#0f172a}
+.crew-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+
+
+.mode-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}
+.mode-choice button{background:#334155;border:1px solid #475569}
+.mode-choice button.active{background:#2563eb;border-color:#60a5fa}
+.mode-choice.mode-error{border:1px solid #ef4444;border-radius:14px;padding:6px;background:rgba(127,29,29,.18)}
+.mode-choice.mode-error button{border-color:#ef4444!important}
+.mode-error-text{display:none;color:#fecaca;background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:9px 11px;margin:-6px 0 12px;font-size:13px;font-weight:800}
+.mode-error-text.active{display:block}
+.personal-only-note{font-size:13px;color:#94a3b8;margin-top:6px}
+
+
+#navLogout{display:none!important}
+.top-logout:hover{background:#7f1d1d!important}
+
+.top-actions{position:fixed;top:18px;right:18px;z-index:90;display:flex;align-items:center;gap:10px}
+.top-actions .lang-floating{position:relative!important;top:auto!important;right:auto!important;left:auto!important}
+.top-logout{width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important}
+@media(max-width:800px){.top-actions{position:absolute;top:18px;right:18px}}
+
+
+/* V20 Solo Operator UX refresh */
+body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617 100%)}
+.app{grid-template-columns:232px 1fr}
+.sidebar{background:rgba(2,6,23,.92);backdrop-filter:blur(14px);padding:20px 16px}
+.brand{letter-spacing:.5px}.nav{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.nav button{border:1px solid transparent;border-radius:14px;padding:12px 14px;margin:0;font-size:15px}
+.nav button.active{background:linear-gradient(135deg,#1d4ed8,#2563eb);border-color:#60a5fa;box-shadow:0 12px 28px rgba(37,99,235,.22)}
+.nav button:hover{border-color:#334155}
+.main{max-width:1180px;width:100%;padding-top:88px}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+#pageTitle{margin:0 0 14px;font-size:28px;letter-spacing:-.02em}
+.solo-hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.9fr);gap:16px;align-items:stretch}
+.hero-card{background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(15,23,42,.96));border:1px solid #334155;border-radius:24px;padding:22px;box-shadow:0 18px 45px rgba(0,0,0,.24)}
+.hero-card h3{margin:0 0 8px;font-size:24px}.hero-card p{margin:0;color:#cbd5e1;line-height:1.5}
+.quick-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}.quick-actions button{margin:0}
+.mini-panel{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:18px}
+.mini-panel h3{margin:0 0 8px}.mini-panel p{color:#94a3b8;line-height:1.45}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #334155;background:#111827;border-radius:999px;padding:6px 10px;font-size:12px;color:#cbd5e1;font-weight:800}
+.grid.stats-grid{grid-template-columns:repeat(5,minmax(150px,1fr));gap:12px}.stats-grid .card{margin-bottom:0;border-radius:20px;position:relative;overflow:hidden}.stats-grid .card p{margin:0 0 8px;color:#cbd5e1;font-size:13px}.stats-grid .card .stat{font-size:34px}
+.risk-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.risk-item{display:flex;justify-content:space-between;gap:10px;border:1px solid #334155;border-radius:14px;padding:10px;background:#0f172a}.risk-item b{font-size:14px}.risk-item span{font-size:12px;color:#94a3b8}.risk-item .danger{font-weight:900}.upload-simple{border:1px dashed #64748b;background:#0b1220;border-radius:20px;padding:16px;margin-bottom:16px}.upload-simple h3{margin:0 0 6px}.upload-simple p{margin:0 0 12px;color:#94a3b8}.upload-simple .document-actions{margin-top:8px}
+.whatsapp-note{border-left:4px solid #22c55e}
+@media(max-width:1000px){.solo-hero{grid-template-columns:1fr}.grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.app{grid-template-columns:1fr}.sidebar{padding-right:110px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.main{padding-top:86px}.top-actions{position:absolute}.grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.cert-mode-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.cert-mode-buttons button{background:#334155;border:1px solid #475569;margin:0}
+.cert-mode-buttons button.active{background:#2563eb;border-color:#60a5fa}
+.cert-mode-panel{display:none}
+.cert-mode-panel.active{display:block}
+.cert-flow-note{margin:0 0 12px;color:#94a3b8}
+.unified-cert-panel{border:1px solid #334155}
+@media(max-width:520px){.grid.stats-grid{grid-template-columns:1fr}.quick-actions{grid-template-columns:1fr}.top-logout{padding:10px!important}.lang-circle{width:44px;height:44px}}
+
+/* V24 required-field labels and validation */
+.field-wrap{margin:8px 0}
+.field-label{display:block;font-size:12px;color:#94a3b8;margin:0 0 4px 2px;font-weight:700}
+.req-star{color:#ef4444;margin-right:4px}
+.optional-tag{color:#94a3b8;font-weight:600}
+.form-alert{display:none;background:#7f1d1d;color:#fecaca;border:1px solid #ef4444;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:14px;font-weight:700}
+.form-alert.active{display:block}
+.required-missing{border:2px solid #ef4444!important;background:#2a1111!important}
+
+
+/* V26 Trial access block */
+.trial-box{margin:12px 0 14px;padding:12px 14px;border:1px solid #2563eb;background:linear-gradient(135deg,rgba(37,99,235,.20),rgba(15,23,42,.92));border-radius:16px}
+.trial-box h3{margin:0 0 4px;font-size:16px;color:#e0f2fe}
+.trial-box p{margin:0;color:#cbd5e1;font-size:13px;line-height:1.4}
+.trial-row{display:flex;align-items:center;gap:8px;margin-top:8px;color:#93c5fd;font-size:12px;font-weight:800}
+.trial-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 0 4px rgba(34,197,94,.12)}
+
+/* V25 Career Compliance Manager */
+.mode-badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#0f172a;border:1px solid #334155;color:#93c5fd;font-size:12px;font-weight:800;margin-bottom:8px}
+.missing{color:#fb7185}
+.card.missing-card{border-color:#7f1d1d}
+.doc-category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
+.doc-chip{background:#0f172a;border:1px solid #334155;border-radius:14px;padding:12px;color:#cbd5e1;font-weight:700}
+.doc-chip.ok{border-color:#14532d;color:#bbf7d0}.doc-chip.miss{border-color:#7f1d1d;color:#fecaca}.doc-chip.warn{border-color:#713f12;color:#fef3c7}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.ref-card{background:#0f172a;border:1px solid #334155;border-radius:16px;padding:16px}
+.company-only{display:none}.personal-only{display:block}
+body.company-mode .company-only{display:block} body.company-mode .personal-only{display:none}
+body.personal-mode .company-only{display:none} body.personal-mode .personal-only{display:block}
+body.personal-mode #navPersonnel, body.personal-mode #navCompliance, body.personal-mode #navReports{display:none!important}
+body.company-mode .solo-personnel-card{display:block!important}
+.field-hint{font-size:12px;color:#94a3b8;margin-top:-3px;margin-bottom:6px}
+
+/* V27 Share Profile Bridge */
+.share-card{background:linear-gradient(135deg,rgba(14,165,233,.16),rgba(15,23,42,.95));border-color:#0ea5e9}
+.share-link-box{display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap}
+.share-link-box input{flex:1;min-width:220px;margin:0;background:#020617;color:#93c5fd;font-weight:800}
+.share-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
+.share-actions button{margin:0}
+.share-permissions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:10px}
+.share-permissions label{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:10px;color:#cbd5e1;font-weight:700;display:flex;gap:8px;align-items:center}
+.share-permissions input{width:auto;margin:0}
+.preview-profile{border:1px solid #334155;background:#020617;border-radius:18px;padding:16px;margin-top:14px}
+.preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid #334155;padding-bottom:12px;margin-bottom:12px}
+.preview-head h3{margin:0}.preview-head p{margin:4px 0 0;color:#94a3b8}
+.company-import-box{border:1px dashed #0ea5e9;border-radius:16px;padding:14px;background:#082f49;margin-top:12px}
+.copy-ok{color:#4ade80;font-weight:800;font-size:13px;margin-top:8px}
+@media(max-width:600px){.preview-head{display:block}.share-link-box{display:block}.share-link-box input{width:100%;margin-bottom:8px}}
+
+
+/* V29 Professional landing + dashboard polish */
+.auth{align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.auth-intro{width:100%;max-width:640px;background:linear-gradient(135deg,rgba(15,23,42,.72),rgba(30,41,59,.88));border:1px solid rgba(148,163,184,.22);border-radius:26px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.auth-kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid #334155;background:#020617;border-radius:999px;color:#93c5fd;font-weight:900;font-size:12px;padding:7px 11px;margin-bottom:12px}
+.auth-intro h2{font-size:34px;line-height:1.08;margin:0 0 10px;letter-spacing:-.035em}
+.auth-intro p{color:#cbd5e1;line-height:1.55;margin:0 0 16px;font-size:15px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.feature-tile{background:#0f172a;border:1px solid #334155;border-radius:16px;padding:13px}
+.feature-tile b{display:block;margin-bottom:4px;color:#e5e7eb}.feature-tile span{font-size:13px;color:#94a3b8;line-height:1.4}
+.doc-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.doc-strip span{border:1px solid #334155;background:#020617;border-radius:999px;padding:7px 10px;color:#cbd5e1;font-size:12px;font-weight:800}
+.auth-card{box-shadow:0 24px 70px rgba(0,0,0,.38)}
+.professional-dashboard{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:16px;margin-bottom:16px}
+.workflow-card,.snapshot-card{background:#1e293b;border:1px solid #334155;border-radius:22px;padding:18px}
+.workflow-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.workflow-step{background:#0f172a;border:1px solid #334155;border-radius:16px;padding:12px;min-height:96px}
+.workflow-step .num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#2563eb;color:#fff;font-weight:900;margin-bottom:8px}
+.workflow-step b{display:block;margin-bottom:4px}.workflow-step span{font-size:12px;color:#94a3b8;line-height:1.35}
+.snapshot-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}.snapshot-item{display:flex;justify-content:space-between;gap:10px;background:#0f172a;border:1px solid #334155;border-radius:14px;padding:11px}.snapshot-item b{font-size:13px}.snapshot-item span{font-weight:900}
+@media(max-width:980px){.auth{align-items:flex-start}.auth-intro,.auth-card{max-width:620px}.professional-dashboard{grid-template-columns:1fr}.workflow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.auth{padding:16px}.auth-intro{padding:20px}.auth-intro h2{font-size:27px}.feature-grid{grid-template-columns:1fr}.workflow-steps{grid-template-columns:1fr}}
+
+
+/* V30 animated document background for login */
+.auth{overflow:hidden}
+.auth::before{content:"";position:absolute;inset:-120px;background:radial-gradient(circle at 16% 24%,rgba(59,130,246,.22),transparent 30%),radial-gradient(circle at 84% 34%,rgba(14,165,233,.16),transparent 28%),radial-gradient(circle at 50% 86%,rgba(34,197,94,.10),transparent 30%);pointer-events:none;z-index:0}
+.auth-bg-docs{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.auth-doc-stack{position:absolute;top:50%;display:flex;flex-direction:column;gap:14px;filter:drop-shadow(0 24px 42px rgba(0,0,0,.42))}
+.auth-doc-stack.left{left:36px;transform:translateY(-50%) rotate(-5deg)}
+.auth-doc-stack.right{left:525px;right:auto;transform:translateY(-50%) rotate(4deg)}
+.floating-doc{width:230px;min-height:118px;background:linear-gradient(145deg,rgba(248,250,252,.96),rgba(203,213,225,.92));color:#0f172a;border-radius:18px;padding:14px 14px 12px;border:1px solid rgba(255,255,255,.72);position:relative;overflow:hidden}
+.floating-doc::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;background:linear-gradient(90deg,#2563eb,#22c55e)}
+.floating-doc b{display:block;font-size:13px;margin:6px 0 5px;color:#0f172a}.floating-doc span{display:block;font-size:11px;color:#334155;line-height:1.35;font-weight:700}.floating-doc .doc-line{height:7px;border-radius:999px;background:rgba(51,65,85,.18);margin-top:8px}.floating-doc .doc-line.short{width:62%}.floating-doc .doc-line.mid{width:82%}
+.auth-doc-stack.left .floating-doc:nth-child(1){transform:translateX(42px) rotate(3deg)}
+.auth-doc-stack.left .floating-doc:nth-child(2){transform:translateX(4px) rotate(-2deg)}
+.auth-doc-stack.left .floating-doc:nth-child(3){transform:translateX(58px) rotate(4deg)}
+.auth-doc-stack.right .floating-doc:nth-child(1){transform:translateX(-44px) rotate(-3deg)}
+.auth-doc-stack.right .floating-doc:nth-child(2){transform:translateX(-6px) rotate(2deg)}
+.auth-doc-stack.right .floating-doc:nth-child(3){transform:translateX(-62px) rotate(-4deg)}
+.auth-intro,.auth-card,.lang-floating{position:relative;z-index:2}
+.auth-card{background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(15,23,42,.98));backdrop-filter:blur(18px)}
+@media(max-width:1180px){.auth-doc-stack{opacity:.22}.auth-doc-stack.left{left:-70px}.auth-doc-stack.right{left:430px;right:auto}}
+@media(max-width:760px){.auth-bg-docs{display:none}}
+
+
+
+/* V33: restore V31 hero feel, but keep 5 document cards coming from the left only */
+.auth-bg-docs{display:block!important;position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.auth-doc-stack.right{display:none!important}
+.auth-doc-stack.left{left:calc(50% - 695px)!important;top:50%!important;transform:translateY(-50%) rotate(-5deg)!important;gap:10px!important;opacity:1!important}
+.floating-doc{width:205px!important;min-height:92px!important;padding:12px 13px 11px!important;border-radius:17px!important;background:linear-gradient(145deg,rgba(248,250,252,.97),rgba(226,232,240,.94))!important;box-shadow:0 18px 45px rgba(0,0,0,.28)}
+.floating-doc b{font-size:12.5px!important;margin:5px 0 4px!important}.floating-doc span{font-size:10.8px!important;line-height:1.32!important}.floating-doc .doc-line{height:6px!important;margin-top:7px!important}
+.auth-doc-stack.left .floating-doc:nth-child(1){transform:translateX(78px) translateY(-18px) rotate(4deg)!important}
+.auth-doc-stack.left .floating-doc:nth-child(2){transform:translateX(26px) translateY(-8px) rotate(-3deg)!important}
+.auth-doc-stack.left .floating-doc:nth-child(3){transform:translateX(98px) translateY(0) rotate(3deg)!important}
+.auth-doc-stack.left .floating-doc:nth-child(4){transform:translateX(38px) translateY(8px) rotate(-2deg)!important}
+.auth-doc-stack.left .floating-doc:nth-child(5){transform:translateX(86px) translateY(16px) rotate(4deg)!important}
+.auth-intro{position:relative!important;z-index:2!important;max-width:640px!important;background:linear-gradient(135deg,rgba(15,23,42,.74),rgba(30,41,59,.89))!important}
+.auth-card{position:relative!important;z-index:3!important;padding-top:76px!important}
+.auth-card>.lang-floating{position:absolute!important;top:18px!important;right:18px!important;left:auto!important;z-index:20!important}
+.auth-card>.lang-floating .lang-menu{right:0!important;left:auto!important}
+.auth>.lang-floating{display:none!important}
+@media(max-width:1180px){.auth-doc-stack.left{left:-64px!important;opacity:.52!important}.floating-doc{width:190px!important}.auth-intro{max-width:610px!important}}
+@media(max-width:760px){.auth-bg-docs{display:none!important}.auth-card{padding-top:72px!important}}
+
+
+
+/* V37 Professional emerald/navy palette + line icons */
+:root{
+  --atsrs-bg:#07111d;
+  --atsrs-bg2:#0b1f2a;
+  --atsrs-panel:#111c2d;
+  --atsrs-panel2:#142235;
+  --atsrs-border:#264058;
+  --atsrs-text:#f3f7fb;
+  --atsrs-muted:#a7b5c5;
+  --atsrs-green:#22c55e;
+  --atsrs-green-soft:#86efac;
+  --atsrs-cyan:#38bdf8;
+  --atsrs-blue:#2563eb;
+  --atsrs-warning:#f59e0b;
+  --atsrs-danger:#ef4444;
+}
+body{background:radial-gradient(circle at 18% 0%,rgba(34,197,94,.11),transparent 28%),radial-gradient(circle at 82% 18%,rgba(56,189,248,.10),transparent 30%),linear-gradient(135deg,var(--atsrs-bg),#071827 46%,#05101d)!important;color:var(--atsrs-text)!important}
+.auth{background:linear-gradient(135deg,#07111d 0%,#0d2535 46%,#103b42 100%)!important}
+.auth::before{background:radial-gradient(circle at 17% 24%,rgba(34,197,94,.18),transparent 28%),radial-gradient(circle at 76% 38%,rgba(56,189,248,.14),transparent 30%),radial-gradient(circle at 48% 92%,rgba(134,239,172,.09),transparent 32%)!important}
+.auth-intro{background:linear-gradient(135deg,rgba(8,18,31,.78),rgba(17,34,53,.91))!important;border:1px solid rgba(134,239,172,.24)!important;box-shadow:0 28px 80px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05)!important}
+.auth-kicker,.pill,.mode-badge{border-color:rgba(34,197,94,.35)!important;background:rgba(4,16,26,.82)!important;color:var(--atsrs-green-soft)!important}
+.auth-intro h2{color:#f8fbff!important;text-shadow:0 2px 20px rgba(0,0,0,.28)}
+.auth-intro p,.sub{color:var(--atsrs-muted)!important}
+.auth-card,.card,.panel,.workflow-card,.snapshot-card,.mini-panel{background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;border-color:var(--atsrs-border)!important;box-shadow:0 22px 60px rgba(0,0,0,.30)!important}
+.sidebar{background:linear-gradient(180deg,rgba(4,12,22,.98),rgba(7,17,29,.96))!important;border-color:#16283a!important}
+.nav button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:rgba(134,239,172,.75)!important;box-shadow:0 12px 28px rgba(34,197,94,.20)!important;color:#f8fafc!important}
+.nav button:hover{border-color:rgba(56,189,248,.36)!important;background:rgba(20,34,53,.76)!important}
+input,select,textarea{background:#081524!important;border-color:#263f58!important;color:#f8fafc!important}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--atsrs-green)!important;box-shadow:0 0 0 3px rgba(34,197,94,.16)!important}
+button{background:linear-gradient(135deg,#2563eb,#0891b2)!important;box-shadow:0 10px 26px rgba(37,99,235,.20)}
+button.secondary,.mode-choice button,.cert-mode-buttons button{background:#26384e!important;border:1px solid #3b536d!important;color:#eef6ff!important;box-shadow:none!important}
+button.secondary:hover,.mode-choice button:hover,.cert-mode-buttons button:hover{background:#2f455d!important;border-color:rgba(56,189,248,.55)!important}
+button.testbtn{background:linear-gradient(135deg,#16a34a,#22c55e)!important;box-shadow:0 12px 28px rgba(34,197,94,.25)!important}
+button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!important}
+.mode-choice button.active,.cert-mode-buttons button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:rgba(134,239,172,.75)!important;color:#fff!important}
+.trial-box{border-color:rgba(34,197,94,.55)!important;background:linear-gradient(135deg,rgba(34,197,94,.14),rgba(8,21,36,.96))!important;box-shadow:0 0 0 1px rgba(134,239,172,.08) inset!important}
+.trial-box h3{color:#dcfce7!important}.trial-row{color:#bbf7d0!important}.trial-dot{background:var(--atsrs-green)!important}
+.feature-grid{gap:12px!important}
+.feature-tile{position:relative;background:linear-gradient(180deg,rgba(12,26,42,.92),rgba(8,18,31,.97))!important;border:1px solid rgba(67,92,118,.92)!important;border-radius:18px!important;padding:15px 14px 14px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.feature-tile:hover{transform:translateY(-2px);border-color:rgba(34,197,94,.65)!important;box-shadow:0 16px 38px rgba(0,0,0,.22),0 0 0 1px rgba(34,197,94,.10) inset!important}
+.feature-tile b{color:#f8fafc!important;margin:8px 0 5px!important}.feature-tile span:not(.tile-icon){color:#afbdca!important}
+.tile-icon{width:34px;height:34px;border-radius:12px;display:flex!important;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.12));border:1px solid rgba(134,239,172,.22);color:var(--atsrs-green-soft)!important;margin-bottom:4px!important}
+.tile-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.feature-tile:nth-child(2) .tile-icon,.feature-tile:nth-child(3) .tile-icon{color:#a5f3fc!important;background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(34,197,94,.10))}
+.feature-tile:nth-child(5),.feature-tile:nth-child(6){border-color:rgba(56,189,248,.35)!important}
+.floating-doc{background:linear-gradient(145deg,rgba(250,253,251,.96),rgba(222,245,231,.93))!important;border:1px solid rgba(209,250,229,.82)!important;box-shadow:0 20px 48px rgba(0,0,0,.30)!important}
+.floating-doc::before{background:linear-gradient(90deg,#22c55e,#38bdf8)!important}
+.floating-doc b{color:#0b1f2a!important}.floating-doc span{color:#334155!important}
+.lang-circle{background:#0b1a2a!important;border-color:rgba(134,239,172,.35)!important;box-shadow:0 10px 32px rgba(0,0,0,.35)!important}.lang-menu{background:#091524!important;border-color:#264058!important}
+.stat.good,.good{color:var(--atsrs-green-soft)!important}.warning{color:var(--atsrs-warning)!important}.danger{color:#fb7185!important}.missing{color:#fda4af!important}
+.badge-ready{background:#064e3b!important;color:#bbf7d0!important}.badge-review{background:#78350f!important;color:#fde68a!important}.badge-blocked{background:#7f1d1d!important;color:#fecaca!important}
+.table-wrap table th{color:#dbeafe!important} th,td{border-color:#26384e!important}
+.build-badge{background:rgba(7,17,29,.78)!important;border-color:#264058!important;color:#a7b5c5!important}
+@media(max-width:760px){.feature-tile{padding:13px!important}.tile-icon{width:32px;height:32px}}
+
+
+/* V38 refinements */
+#forgotBtn{background:transparent!important;border:0!important;box-shadow:none!important;color:#94a3b8!important;text-align:left!important;padding:4px 0!important;margin:8px 0 0!important;width:auto!important;font-weight:700!important}
+#forgotBtn:hover{color:#38bdf8!important;text-decoration:underline!important}
+#navIntro{order:-2}
+.intro-service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px}
+.intro-service-card{background:#162033;border:1px solid #2a3d5a;border-radius:18px;padding:16px;min-height:130px;cursor:pointer;transition:.18s ease}
+.intro-service-card:hover{border-color:#38bdf8;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.20)}
+.intro-service-card.active{border-color:#22c55e;background:linear-gradient(135deg,rgba(34,197,94,.14),rgba(22,32,51,.96));box-shadow:0 0 0 1px rgba(34,197,94,.20),0 16px 36px rgba(0,0,0,.24)}
+.intro-service-card .svc-icon{font-size:24px;margin-bottom:8px;color:#22c55e}
+.intro-service-card h3{margin:0 0 8px;font-size:17px}
+.intro-service-card p{margin:0;color:#b6c2d2;line-height:1.45;font-size:14px}
+.intro-hero{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(56,189,248,.10));border:1px solid #2a3d5a;border-radius:22px;padding:22px;margin-bottom:16px}
+.intro-hero h3{font-size:28px;margin:0 0 10px}.intro-hero p{color:#cbd5e1;line-height:1.55;max-width:900px}
+
+
+
+/* V41 revised small controls */
+.na-check{display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:13px;font-weight:700;margin:4px 0 2px 2px}
+.na-check input{width:auto!important;margin:0!important;accent-color:#22c55e}
+.edit-btn{width:auto!important;margin:0 8px 0 0!important;padding:9px 12px!important;border-radius:10px!important;background:#334155!important;color:#e5e7eb!important}
+.edit-btn:hover{background:#475569!important}
+td:last-child{white-space:nowrap}
+
+
+
+/* V46 ATSRS Platform animated SaaS workflow - keeps V44/V43 top controls untouched */
+#introPage{animation:introPageFade .45s ease both}
+@keyframes introPageFade{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.intro-hero{position:relative;overflow:hidden}
+.intro-hero::after{content:"";position:absolute;inset:-80px;background:linear-gradient(115deg,transparent 0%,rgba(134,239,172,.08) 40%,rgba(56,189,248,.10) 50%,transparent 62%);transform:translateX(-60%);animation:heroSweep 6s ease-in-out infinite;pointer-events:none}
+@keyframes heroSweep{0%,18%{transform:translateX(-70%)}55%,100%{transform:translateX(70%)}}
+.atsrs-anime-stage{position:relative;background:linear-gradient(135deg,rgba(15,118,110,.18),rgba(8,21,36,.98));border:1px solid rgba(134,239,172,.24);border-radius:24px;padding:20px;margin:16px 0;overflow:hidden;box-shadow:0 24px 65px rgba(0,0,0,.28)}
+.atsrs-anime-stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 18%,rgba(34,197,94,.16),transparent 26%),radial-gradient(circle at 92% 75%,rgba(56,189,248,.12),transparent 26%);pointer-events:none}
+.anime-header{position:relative;z-index:2;margin-bottom:16px}.anime-header h3{font-size:23px;margin:10px 0 6px}.anime-header p{max-width:720px}
+.anime-workflow{position:relative;z-index:2;display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr 44px 1fr;gap:10px;align-items:stretch}
+.anime-step{position:relative;min-height:198px;background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:22px;padding:16px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);animation:stepFloat 4.6s ease-in-out infinite}
+.anime-step:nth-of-type(3){animation-delay:.3s}.anime-step:nth-of-type(5){animation-delay:.6s}.anime-step:nth-of-type(7){animation-delay:.9s}
+.anime-step::after{content:"";position:absolute;left:-40%;top:-70%;width:70%;height:190%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:rotate(18deg);animation:cardShine 5.2s ease-in-out infinite}
+@keyframes stepFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes cardShine{0%,45%{left:-65%}78%,100%{left:125%}}
+.anime-icon{width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.14));border:1px solid rgba(134,239,172,.25);font-size:24px;margin-bottom:12px;box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.doc-float{animation:docFloat 2.8s ease-in-out infinite}.pulse-calendar{animation:pulseCal 2.2s ease-in-out infinite}.link-spin{animation:linkPulse 2.8s ease-in-out infinite}.check-pop{animation:checkPop 2.4s ease-in-out infinite}
+@keyframes docFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(3deg)}}
+@keyframes pulseCal{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.0)}50%{box-shadow:0 0 0 8px rgba(34,197,94,.12)}}
+@keyframes linkPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes checkPop{0%,100%{transform:scale(1)}40%{transform:scale(1.12)}}
+.anime-step b{display:block;font-size:18px;margin-bottom:6px;color:#f8fafc}.anime-step span{display:block;color:#a7b5c5;font-size:13px;line-height:1.42}
+.anime-arrow{display:flex;align-items:center;justify-content:center}.anime-arrow span{width:36px;height:3px;border-radius:999px;background:linear-gradient(90deg,#22c55e,#38bdf8);position:relative;animation:arrowPulse 1.8s ease-in-out infinite}.anime-arrow span::after{content:"";position:absolute;right:-2px;top:-5px;width:12px;height:12px;border-right:3px solid #38bdf8;border-top:3px solid #38bdf8;transform:rotate(45deg)}
+@keyframes arrowPulse{0%,100%{opacity:.55;transform:translateX(-2px)}50%{opacity:1;transform:translateX(3px)}}
+.mini-docs,.expiry-bars,.approve-flow{display:flex;flex-direction:column;gap:6px;margin-top:14px}.mini-docs em,.approve-flow i{font-style:normal;border:1px solid rgba(67,92,118,.9);border-radius:10px;padding:6px 8px;color:#dbeafe;background:#071524;font-size:12px;font-weight:800;animation:itemSlide 4.5s ease-in-out infinite}.mini-docs em:nth-child(2),.approve-flow i:nth-child(2){animation-delay:.35s}.mini-docs em:nth-child(3),.approve-flow i:nth-child(3){animation-delay:.7s}
+@keyframes itemSlide{0%,100%{transform:translateX(0);opacity:.72}50%{transform:translateX(6px);opacity:1}}
+.expiry-bars{gap:7px}.expiry-bars i{font-style:normal;height:22px;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;color:#06111d;animation:barGrow 3.6s ease-in-out infinite}.bar90{width:82%;background:#facc15}.bar30{width:58%;background:#fb923c;animation-delay:.25s!important}.barexp{width:42%;background:#fb7185;animation-delay:.5s!important}
+@keyframes barGrow{0%,100%{transform:scaleX(.84);transform-origin:left;opacity:.78}50%{transform:scaleX(1);opacity:1}}
+.profile-link-demo{margin-top:14px;border:1px dashed rgba(56,189,248,.48);border-radius:12px;padding:9px;background:#04101d;color:#93c5fd;font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:linkGlow 2.4s ease-in-out infinite}
+@keyframes linkGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 4px rgba(56,189,248,.10)}}
+.intro-service-grid{animation:gridRise .6s ease both}.intro-service-card{animation:serviceCardRise .62s ease both}.intro-service-card:nth-child(1){animation-delay:.04s}.intro-service-card:nth-child(2){animation-delay:.12s}.intro-service-card:nth-child(3){animation-delay:.20s}.intro-service-card:nth-child(4){animation-delay:.28s}.intro-service-card:nth-child(5){animation-delay:.36s}.intro-service-card:nth-child(6){animation-delay:.44s}.intro-service-card:hover .svc-icon{animation:iconBounce .7s ease}
+@keyframes serviceCardRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}45%{transform:translateY(-7px)}}
+@media(max-width:1120px){.anime-workflow{grid-template-columns:1fr}.anime-arrow{height:24px}.anime-arrow span{transform:rotate(90deg)}.anime-arrow span::after{right:-2px}.anime-step{min-height:170px}}
+@media(max-width:600px){.atsrs-anime-stage{padding:16px}.anime-header h3{font-size:20px}.anime-step{min-height:160px}.profile-link-demo{white-space:normal}}
+
+/* V43 page-attached top actions: language + logout stay at the top-right of the app, not fixed to viewport */
+.app{position:relative}
 .top-actions{
   position:absolute!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
-  z-index:20!important;
+  z-index:99999!important;
+}
+.top-actions .app-lang-switcher,
+.top-actions .lang-floating{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+}
+@media(max-width:800px){
+  .top-actions{
+    position:absolute!important;
+    top:14px!important;
+    right:14px!important;
+    left:auto!important;
+  }
+  html[dir="rtl"] .top-actions{
+    right:14px!important;
+    left:auto!important;
+  }
+}
+
+
+/* V47: fixed left navigation on ATSRS app pages */
+@media(min-width:801px){
+  #app.app{
+    align-items:start!important;
+  }
+  #app .sidebar{
+    position:sticky!important;
+    top:0!important;
+    height:100vh!important;
+    max-height:100vh!important;
+    align-self:start!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    z-index:80!important;
+  }
+  #app .sidebar .nav{
+    position:sticky!important;
+    top:20px!important;
+  }
+}
+
+/* V48 CV / Resume management */
+.cv-card{border-color:rgba(56,189,248,.45)!important}
+.cv-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.cv-card-head h3{margin:0}
+.cv-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.cv-actions button{margin:0}
+.cv-beta-box{margin-top:14px;border:1px dashed #3b536d;border-radius:16px;padding:12px;background:rgba(8,21,36,.55)}
+.cv-beta-box h4{margin:8px 0 4px}
+.cv-status-card .stat{font-size:24px!important}
+@media(max-width:560px){.cv-actions{grid-template-columns:1fr}.cv-card-head{display:block}.cv-card-head .badge{margin-top:8px}}
+
+
+/* V49: page persistence, free document type entry, file controls for references/appraisals */
+.ref-doc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.ref-doc-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.ref-doc-actions button{margin:0!important}
+.ref-beta-box{border:1px dashed #334155;border-radius:14px;padding:12px;margin-top:12px;background:rgba(2,6,23,.35)}
+.ref-file-info{min-height:18px}
+#cType,#autoDocType{font-weight:700}
+
+
+
+/* V52: app-only fixed sidebar. Login page is untouched. */
+@media(min-width:801px){
+  #app.app:not(.hidden){
+    display:grid!important;
+    grid-template-columns:232px minmax(0,1fr)!important;
+    min-height:100vh!important;
+  }
+  #app.app:not(.hidden) .sidebar{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    bottom:0!important;
+    width:232px!important;
+    height:100vh!important;
+    max-height:100vh!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    z-index:80!important;
+  }
+  #app.app:not(.hidden) .main{
+    grid-column:2!important;
+    margin-left:0!important;
+    max-width:none!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  #app.app:not(.hidden) .top-actions{
+    position:fixed!important;
+    top:18px!important;
+    right:18px!important;
+    left:auto!important;
+    z-index:99999!important;
+  }
+}
+@media(max-width:800px){
+  #app.app .sidebar{
+    position:relative!important;
+    width:auto!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+}
+
+/* V52: Reference/Appraisal are uploaded documents only. No generator controls. */
+#app .ref-beta-box,
+#app #appraisalGenerateBtn,
+#app #referenceGenerateBtn{
+  display:none!important;
+}
+
+
+
+/* V53: final fixed top controls for app pages only.
+   Keeps language selector and logout locked to viewport during scroll. */
+#app.app:not(.hidden) > .top-actions,
+body #app.app:not(.hidden) > .top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  z-index:2147483647!important;
   display:flex!important;
   align-items:center!important;
   gap:10px!important;
   transform:none!important;
 }
-.top-actions .lang-floating,
-.app-lang-switcher{
+
+#app.app:not(.hidden) > .top-actions .app-lang-switcher,
+#app.app:not(.hidden) > .top-actions .lang-floating{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+}
+
+@media(max-width:800px){
+  #app.app:not(.hidden) > .top-actions,
+  body #app.app:not(.hidden) > .top-actions{
+    position:fixed!important;
+    top:14px!important;
+    right:14px!important;
+    left:auto!important;
+    z-index:2147483647!important;
+  }
+}
+
+/* Login page language remains inside auth card as before. */
+#auth:not(.hidden) .auth-card > .lang-floating{
+  position:absolute!important;
+}
+
+
+
+/* V54 FINAL FIX: app top controls must stay fixed during scroll in Chrome/Opera/mobile */
+#app.app:not(.hidden) .top-actions,
+#app.app .top-actions,
+body #app .top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  z-index:2147483000!important;
+  transform:none!important;
+}
+#app.app:not(.hidden) .top-actions .lang-floating,
+#app.app:not(.hidden) .top-actions .app-lang-switcher{
   position:relative!important;
   top:auto!important;
   right:auto!important;
   left:auto!important;
   transform:none!important;
 }
-html[dir="rtl"] .top-actions{right:auto!important;left:18px!important;}
+@media(max-width:800px){
+  #app.app:not(.hidden) .top-actions,
+  #app.app .top-actions,
+  body #app .top-actions{
+    position:fixed!important;
+    top:12px!important;
+    right:12px!important;
+    left:auto!important;
+    z-index:2147483000!important;
+  }
+}
+html[dir="rtl"] #app.app:not(.hidden) .top-actions,
+html[dir="rtl"] #app.app .top-actions{
+  right:18px!important;
+  left:auto!important;
+}
 
-/* Login language also belongs to auth card/page, not screen */
-.auth-card{position:relative!important;}
-.auth-card>.lang-floating{
-  position:absolute!important;
+/* V54 Career records: multi-file list repository */
+.career-record-list{margin-top:12px;display:flex;flex-direction:column;gap:8px;max-height:310px;overflow:auto;padding-right:4px}
+.career-record-row{display:grid;grid-template-columns:minmax(0,1.3fr) 110px 160px;gap:8px;align-items:center;border:1px solid #334155;border-radius:14px;background:rgba(2,6,23,.35);padding:10px}
+.career-record-name{min-width:0}.career-record-name b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.career-record-name span{display:block;font-size:12px;color:#94a3b8;margin-top:3px}
+.career-record-date input{margin:0!important;padding:9px!important;font-size:12px!important}
+.career-record-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.career-record-actions button{margin:0!important;padding:8px 9px!important;font-size:12px!important}
+.career-count{font-size:12px;color:#a7b5c5;margin-top:6px;font-weight:700}
+@media(max-width:760px){.career-record-row{grid-template-columns:1fr}.career-record-actions{grid-template-columns:repeat(3,1fr)}}
+
+
+
+/* V55: clean References/Appraisals repository layout + bulletproof app top controls */
+#refsPage .ref-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr))!important;
+  gap:16px!important;
+  align-items:stretch!important;
+}
+#refsPage .ref-card{
+  min-width:0!important;
+  overflow:hidden!important;
+}
+#refsPage .career-record-list{
+  max-height:360px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:2px!important;
+}
+#refsPage .career-record-row{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:9px!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+#refsPage .career-record-name b{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  word-break:break-word!important;
+  line-height:1.25!important;
+}
+#refsPage .career-record-date input{
+  width:100%!important;
+  max-width:180px!important;
+}
+#refsPage .career-record-actions{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+}
+#refsPage .career-record-actions button{
+  width:100%!important;
+  min-width:0!important;
+  padding:9px 6px!important;
+  white-space:nowrap!important;
+}
+#refsPage .cv-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+@media(max-width:900px){
+  #refsPage .ref-grid{grid-template-columns:1fr!important;}
+}
+@media(max-width:520px){
+  #refsPage .career-record-actions,
+  #refsPage .cv-actions{grid-template-columns:1fr!important;}
+}
+body > .atsrs-global-top-actions{
+  position:fixed!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
-  z-index:5!important;
-}
-html[dir="rtl"] .auth-card>.lang-floating{right:auto!important;left:18px!important;}
-
-/* 2) Neutral language menu: no colorful item boxes */
-.lang-circle{
-  width:42px!important;
-  height:42px!important;
-  min-width:42px!important;
-  padding:0!important;
-  border-radius:999px!important;
-  background:rgba(15,23,42,.92)!important;
-  border:1px solid var(--atsrs-border-strong)!important;
-  box-shadow:0 12px 30px rgba(0,0,0,.25)!important;
-}
-.lang-menu{
-  width:178px!important;
-  right:0!important;
-  top:50px!important;
-  padding:6px!important;
-  border-radius:14px!important;
-  background:rgba(15,23,42,.98)!important;
-  border:1px solid var(--atsrs-border)!important;
-  box-shadow:0 18px 44px rgba(0,0,0,.34)!important;
-}
-.lang-menu button{
+  z-index:2147483647!important;
   display:flex!important;
   align-items:center!important;
-  gap:8px!important;
-  width:100%!important;
-  margin:0!important;
-  padding:9px 10px!important;
-  border-radius:10px!important;
-  background:transparent!important;
-  color:var(--atsrs-text)!important;
-  border:0!important;
-  text-align:left!important;
-  font-weight:700!important;
-  font-size:13px!important;
-  box-shadow:none!important;
+  gap:10px!important;
+  transform:none!important;
 }
-.lang-menu button:hover{background:rgba(148,163,184,.10)!important;}
-.lang-menu span{width:22px!important;min-width:22px!important;}
+body > .atsrs-global-top-actions .lang-floating,
+body > .atsrs-global-top-actions .app-lang-switcher{
+  position:relative!important;
+  top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;
+}
+@media(max-width:800px){
+  body > .atsrs-global-top-actions{top:12px!important;right:12px!important;}
+}
 
-/* 3) Login/landing: reduce noisy beta/marketing look */
-.auth{
-  min-height:100vh!important;
+
+/* V67: remove only the decorative white floating document cards on login page.
+   Keep Professional Document intro/features and login card unchanged. */
+#auth .auth-bg-docs,
+#auth .auth-doc-stack,
+#auth .floating-doc{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+
+/* V68: keep original professional login layout, remove only rear white floating cards, fix visible build badge */
+#auth .auth-bg-docs,
+#auth .auth-doc-stack,
+#auth .floating-doc{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Keep Professional documents panel visible and stable */
+#auth .auth-intro{
+  display:block!important;
+  max-width:640px!important;
+  flex:1 1 560px!important;
+}
+
+#auth .auth-card{
+  max-width:430px!important;
+  flex:0 0 430px!important;
+}
+
+#auth{
+  gap:24px!important;
   align-items:center!important;
   justify-content:center!important;
-  gap:22px!important;
-  padding:24px!important;
-  background:
-    radial-gradient(circle at top left,rgba(37,99,235,.22),transparent 34%),
-    linear-gradient(135deg,#020617,#08111f 55%,#020617)!important;
-}
-.auth-intro{
-  max-width:620px!important;
-  border-radius:24px!important;
-  background:linear-gradient(135deg,rgba(15,23,42,.78),rgba(17,24,39,.94))!important;
-  border:1px solid var(--atsrs-border)!important;
-  box-shadow:0 24px 70px rgba(0,0,0,.30)!important;
-}
-.auth-card{
-  max-width:420px!important;
-  border-radius:24px!important;
-  background:rgba(15,23,42,.94)!important;
-  border:1px solid var(--atsrs-border)!important;
-  box-shadow:0 24px 70px rgba(0,0,0,.32)!important;
-}
-.logo{letter-spacing:-.04em!important;}
-#authSubtitle::after{
-  content:'Track certificates, medicals, visas, references and compliance documents in one secure workspace.';
-  display:block;
-  margin-top:8px;
-  color:#cbd5e1;
-  line-height:1.45;
-  font-size:14px;
 }
 
-/* Keep only a clean value proposition on landing */
-.feature-grid,.intro-service-grid,.how-grid,.supported-industries,
-.industry-tags,.auth-metric-grid,.mini-roadmap,.roadmap-grid{
-  filter:saturate(.75)!important;
-}
-.feature-tile,.intro-service-card,.how-card,.card,.panel,.mini-panel{
-  border-color:var(--atsrs-border)!important;
-  background:rgba(15,23,42,.78)!important;
-  box-shadow:none!important;
-}
-.feature-tile:hover,.intro-service-card:hover{border-color:var(--atsrs-border-strong)!important;}
-.tile-icon,.svc-icon{background:rgba(37,99,235,.12)!important;color:#93c5fd!important;}
-
-/* 4) Trial is OK, but make it compact and premium */
-.trial-box,.trial-promo-left{
-  border-color:rgba(34,197,94,.28)!important;
-  background:linear-gradient(135deg,rgba(34,197,94,.10),rgba(15,23,42,.90))!important;
-  box-shadow:none!important;
-}
-.trial-promo-grid span{background:rgba(2,6,23,.30)!important;border-color:rgba(148,163,184,.18)!important;}
-
-/* 5) App layout: first impression must be compliance, not demo blocks */
-.main{padding-top:84px!important;}
-#introPage .intro-hero h3,
-#introMainTitle{
-  font-size:28px!important;
-  letter-spacing:-.03em!important;
-  line-height:1.15!important;
-}
-#introMainText{
-  max-width:760px!important;
-  color:#cbd5e1!important;
-  line-height:1.55!important;
-}
-#introPage .intro-hero{
-  border-radius:24px!important;
-  border:1px solid var(--atsrs-border)!important;
-  background:linear-gradient(135deg,rgba(37,99,235,.16),rgba(15,23,42,.88))!important;
+/* Prevent left professional card from looking oversized on laptop/tablet */
+#auth .feature-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;
 }
 
-/* Make dashboard/compliance numbers visually primary */
-.stats-grid .card,
-#dashboardPage .card,
-#compliancePage .card{
-  border-radius:20px!important;
-  background:rgba(15,23,42,.82)!important;
-}
-.stat{letter-spacing:-.04em!important;}
-
-/* 6) Hide obvious unfinished/beta UI that reduces trust */
-/* CV generator beta card */
-#cvPage [class*="coming"],
-#cvPage .coming-soon,
-#cvPage .beta,
-#cvPage button[id*="generate"],
-#cvPage button:disabled,
-#cvPage h4,
-#cvPage h3+button{
-  display:none!important;
+#auth .feature-tile{
+  min-height:auto!important;
 }
 
-/* Reports unfinished backend copy */
-#reportsPage p,
-#reportsPage .sub,
-#reportsPage .small-note{
-  color:#94a3b8!important;
+@media(max-width:980px){
+  #auth{
+    align-items:flex-start!important;
+  }
+  #auth .auth-intro,
+  #auth .auth-card{
+    flex:1 1 100%!important;
+    max-width:620px!important;
+  }
+  #auth .feature-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
 }
 
-/* Timezone/profile visibility should not look like core product */
-#settingsPage select,
-#profilePage select{
-  max-width:360px!important;
+@media(max-width:560px){
+  #auth .feature-grid{
+    grid-template-columns:1fr!important;
+  }
 }
 
-/* 7) Buttons: fewer aggressive colors */
-button{
-  border-radius:12px!important;
-  box-shadow:none!important;
-}
-button.secondary,
-.secondary{background:#334155!important;color:#e5e7eb!important;border:1px solid rgba(148,163,184,.22)!important;}
-button.secondary:hover,.secondary:hover{background:#3b4758!important;}
-.testbtn{background:#166534!important;border:1px solid rgba(134,239,172,.22)!important;}
-.top-logout{
-  width:auto!important;
-  min-width:auto!important;
-  background:rgba(127,29,29,.78)!important;
-  border:1px solid rgba(248,113,113,.32)!important;
-  padding:10px 13px!important;
-}
-.top-logout:hover{background:rgba(153,27,27,.95)!important;}
 
-/* 8) Forms and inputs: consistent SaaS look */
-input,select,textarea{
-  background:#020617!important;
-  border:1px solid rgba(148,163,184,.25)!important;
-  color:#e5e7eb!important;
-  outline:none!important;
-}
-input:focus,select:focus,textarea:focus,button:focus-visible{
-  border-color:#60a5fa!important;
-  box-shadow:0 0 0 3px rgba(96,165,250,.18)!important;
+/* V69: prevent login flash during refresh while auth/app state is being restored */
+body.atsrs-booting #auth,
+body.atsrs-booting #app{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
 }
 
-/* 9) Tables: less cramped */
-.table-wrap{border:1px solid var(--atsrs-border)!important;border-radius:16px!important;background:rgba(15,23,42,.55)!important;}
-table{min-width:680px!important;}
-th{color:#cbd5e1!important;background:rgba(2,6,23,.32)!important;font-size:12px!important;text-transform:uppercase!important;letter-spacing:.04em!important;}
-td{color:#e5e7eb!important;}
+body:not(.atsrs-booting) #auth,
+body:not(.atsrs-booting) #app{
+  visibility:visible;
+  opacity:1;
+}
 
-/* 10) Mobile cleanup */
-@media(max-width:800px){
-  .auth{padding:16px!important;align-items:flex-start!important;}
-  .auth-intro{max-width:100%!important;padding:20px!important;}
-  .auth-card{max-width:100%!important;padding:22px!important;}
-  .app{grid-template-columns:1fr!important;}
-  .sidebar{padding:18px 110px 18px 16px!important;}
-  .nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;}
-  .nav button{font-size:13px!important;padding:10px!important;}
-  .top-actions{position:absolute!important;top:16px!important;right:16px!important;}
-  html[dir="rtl"] .top-actions{right:auto!important;left:16px!important;}
-  .main{padding:78px 14px 16px!important;}
-  .grid.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
-}
-@media(max-width:520px){
-  .grid.stats-grid{grid-template-columns:1fr!important;}
-  .nav{grid-template-columns:1fr!important;}
-  .sidebar{padding-right:92px!important;}
-  .lang-circle{width:40px!important;height:40px!important;min-width:40px!important;}
-  .top-logout{padding:9px 11px!important;font-size:12px!important;}
-  .lang-menu{width:164px!important;}
-}
 </style>
 
-<script id="atsrs-v88-professional-cleanup-js">
-(function(){
-  'use strict';
-  const BUILD={version:'ATSRS V88',date:'06 Jun 2026 04:18 UTC',label:'PROFESSIONAL UX CLEANUP BUILD'};
+</head>
+<body class="atsrs-booting">
+<section id="auth" class="auth">
 
-  function text(el,value){ if(el && value) el.textContent=value; }
-  function html(el,value){ if(el && value) el.innerHTML=value; }
-  function q(s,root=document){ return root.querySelector(s); }
-  function qa(s,root=document){ return Array.from(root.querySelectorAll(s)); }
+<div class="auth-bg-docs" aria-hidden="true">
+  <div class="auth-doc-stack left">
+    <div class="floating-doc"><b id="bgDocPassportTitle">Passport & Seaman Book</b><span id="bgDocPassportText">Store identity and travel documents securely.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocMedicalTitle">Medical & Certificates</b><span id="bgDocMedicalText">Track expiry dates before they become a mobilisation problem.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocTrainingTitle">Training & Competency</b><span id="bgDocTrainingText">Keep BOSIET, FOET, ROV, NDT and other proof in one place.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocShareTitle">Share ATSRS Profile</b><span id="bgDocShareText">Send one controlled profile link instead of many attachments.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
+    <div class="floating-doc"><b id="bgDocCompanyTitle">Company Import</b><span id="bgDocCompanyText">Approved documents can move into a company compliance profile.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
+  </div>
+</div>
 
-  function updateBuildBadge(){
-    const badge=document.getElementById('buildBadge');
-    if(!badge) return;
-    badge.innerHTML='<div>'+BUILD.version+'</div><div>Last Update: '+BUILD.date+'</div><div>'+BUILD.label+'</div>';
-  }
 
-  function updateCoreCopy(){
-    const copy={
-      en:{
-        title:'Professional document, expiry and profile sharing platform',
-        body:'ATSRS helps offshore, marine, ROV, NDT and technical personnel track certificates, medicals, visas, references and compliance documents in one secure workspace.',
-        compliance:'Compliance control, not document chaos.',
-        cv:'Store your latest CV and share it with employers when needed.',
-        reports:'Export local compliance data when your records are ready.'
-      },
-      az:{
-        title:'Peşəkar sənəd, bitmə tarixi və profil paylaşım platforması',
-        body:'ATSRS offshore, marine, ROV, NDT və texniki personal üçün sertifikat, medical, viza, reference və compliance sənədlərini bir təhlükəsiz iş sahəsində izləməyə kömək edir.',
-        compliance:'Sənəd xaosu yox, compliance nəzarəti.',
-        cv:'Son CV-ni saxla və lazım olduqda işəgötürənlərlə paylaş.',
-        reports:'Məlumatlar hazır olduqda lokal compliance datasını export et.'
-      },
-      ru:{
-        title:'Платформа для документов, сроков действия и профиля',
-        body:'ATSRS помогает offshore, marine, ROV, NDT и техническим специалистам отслеживать сертификаты, medical, визы, references и compliance-документы в одном защищённом рабочем пространстве.',
-        compliance:'Не хаос документов, а контроль compliance.',
-        cv:'Храните актуальное CV и делитесь им с работодателями при необходимости.',
-        reports:'Экспортируйте локальные compliance-данные, когда записи готовы.'
-      }
-    };
-    const lang=(window.lang||localStorage.getItem('atsrs_lang')||document.documentElement.lang||'en').slice(0,2);
-    const c=copy[lang]||copy.en;
-    text(document.getElementById('introMainTitle'),c.title);
-    text(document.getElementById('introMainText'),c.body);
-    text(document.getElementById('authSubtitle'),c.compliance);
-    const cvPage=document.getElementById('cvPage');
-    if(cvPage){
-      const p=cvPage.querySelector('p');
-      if(p) p.textContent=c.cv;
-    }
-    const reportsPage=document.getElementById('reportsPage');
-    if(reportsPage){
-      const p=reportsPage.querySelector('p');
-      if(p) p.textContent=c.reports;
-    }
-  }
+<div class="auth-intro">
+  <div id="introKicker" class="auth-kicker">ATSRS PLATFORM</div>
+  <h2 id="introTitle">Professional documents, expiry alerts and profile sharing — in one secure workspace.</h2>
+  <p id="introText">ATSRS helps offshore, marine, ROV, NDT and technical professionals store critical career documents, track expiry dates and share a controlled profile link with employers and agencies.</p>
+  <div class="feature-grid">
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="M3 10h18"/></svg></span><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Keep passport, visa, medical, seaman book, certificates and career files in one secure place.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5"/></svg></span><b id="featureUploadTitle">Easy Upload</b><span id="featureUploadText">Upload PDF, JPG or PNG files directly into your ATSRS document register.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M7 12h10"/><path d="M9 9h6"/><path d="M9 15h4"/></svg></span><b id="featureScanTitle">Scan & Auto-fill</b><span id="featureScanText">Scan a document and let ATSRS prepare fields for your manual confirmation.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 14v3l2 1"/></svg></span><b id="featureAlertsTitle">Expiry Tracking</b><span id="featureAlertsText">90-day, 30-day and expired document visibility from the dashboard.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Companies can request access and import approved documents into their compliance profile.</span></div>
+  </div>
 
-  function hideUnfinishedBetaBlocks(){
-    qa('h4,h3,button,p,span,div').forEach(el=>{
-      const t=(el.textContent||'').trim().toLowerCase();
-      if(!t) return;
-      const noisy=(t.includes('coming soon') || t.includes('generate atsrs profile cv') || t.includes('generate atsrs cv (beta)') || t.includes('backend data'));
-      if(noisy){
-        const card=el.closest('.card,.panel,.ref-card,.mini-panel') || el;
-        card.style.display='none';
-      }
-    });
-  }
-
-  function makeLanguageMenusLeftAligned(){
-    qa('.lang-menu button').forEach(btn=>{
-      btn.style.justifyContent='flex-start';
-      btn.style.textAlign='left';
-    });
-  }
-
-  function forceTopActionsPageBound(){
-    const app=document.getElementById('app');
-    const top=document.querySelector('.top-actions');
-    if(app) app.style.position='relative';
-    if(top){
-      top.style.position='absolute';
-      top.style.top='18px';
-      top.style.right='18px';
-      top.style.left='auto';
-      top.style.zIndex='20';
-    }
-  }
-
-  function setDefaultPagePriority(){
-    // Keep existing behaviour. Only if intro is blank, direct user to dashboard-like value.
-    const pageTitle=document.getElementById('pageTitle');
-    if(pageTitle && !pageTitle.textContent.trim()) pageTitle.textContent='ATSRS Platform';
-  }
-
-  function applyV88(){
-    updateBuildBadge();
-    updateCoreCopy();
-    hideUnfinishedBetaBlocks();
-    makeLanguageMenusLeftAligned();
-    forceTopActionsPageBound();
-    setDefaultPagePriority();
-  }
-
-  const baseApplyLanguage=window.applyLanguage;
-  if(typeof baseApplyLanguage==='function'){
-    window.applyLanguage=function(){
-      const result=baseApplyLanguage.apply(this,arguments);
-      setTimeout(applyV88,0);
-      return result;
-    };
-  }
-
-  const baseChangeLanguage=window.changeLanguage;
-  if(typeof baseChangeLanguage==='function'){
-    window.changeLanguage=function(){
-      const result=baseChangeLanguage.apply(this,arguments);
-      setTimeout(applyV88,0);
-      return result;
-    };
-  }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',applyV88);
-  else applyV88();
-  setTimeout(applyV88,300);
-  setTimeout(applyV88,1200);
-})();
-</script>
+  <div id="trialBox" class="trial-box trial-promo-left">
+    <div class="trial-promo-head">
+      <span class="trial-dot"></span>
+      <h3 id="trialTitle">7-day free trial</h3>
+    </div>
+    <p id="trialText
