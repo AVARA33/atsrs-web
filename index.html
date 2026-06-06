@@ -971,21 +971,6 @@ body:not(.atsrs-booting) #app{
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Companies can request access and import approved documents into their compliance profile.</span></div>
   </div>
-
-  <div id="trialBox" class="trial-box trial-promo-left">
-    <div class="trial-promo-head">
-      <span class="trial-dot"></span>
-      <h3 id="trialTitle">7-day free trial</h3>
-    </div>
-    <p id="trialText">Test ATSRS for 7 days with no card required during this test build.</p>
-    <div id="trialNote" class="trial-promo-note">Personal and Company mode included.</div>
-    <div class="trial-promo-grid">
-      <span id="trialBullet1">Secure document vault</span>
-      <span id="trialBullet2">Expiry tracking</span>
-      <span id="trialBullet3">Employer-ready profile</span>
-      <span id="trialBullet4">Company compliance support</span>
-    </div>
-  </div>
 </div>
 
 <div class="auth-card">
@@ -1009,6 +994,11 @@ body:not(.atsrs-booting) #app{
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
 </div>
 <p id="modeRule" class="mode-error-text"></p>
+<div id="trialBox" class="trial-box">
+<h3 id="trialTitle">7-day free trial</h3>
+<p id="trialText">Try ATSRS for 7 days. No card required during test build.</p>
+<div class="trial-row"><span class="trial-dot"></span><span id="trialNote">Personal and Company mode included.</span></div>
+</div>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
@@ -5684,42 +5674,6 @@ body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94
   }catch(e){document.addEventListener('DOMContentLoaded',run);}
   window.addEventListener('load',run);
   setTimeout(run,0);setTimeout(run,200);setTimeout(run,700);setInterval(run,1200);
-})();
-</script>
-
-
-<style>
-/* V87: softer usage validation and left-side trial promo */
-.mode-choice.mode-error{border:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;}
-.mode-choice.mode-error button{border-color:rgba(248,113,113,.62)!important;box-shadow:0 0 0 1px rgba(248,113,113,.13) inset!important;}
-.mode-error-text{display:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:4px 2px!important;margin:2px 0 12px!important;color:#fb7185!important;font-size:13px!important;font-weight:800!important;line-height:1.35!important;align-items:center!important;gap:8px!important;}
-.mode-error-text.active{display:flex!important;}
-.mode-error-text::before{content:'!';width:18px;height:18px;min-width:18px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(248,113,113,.8);color:#fecaca;background:rgba(248,113,113,.12);font-size:12px;font-weight:900;}
-.auth-card #trialBox{display:none!important;}
-.auth-intro .trial-promo-left{display:block!important;margin:18px 0 0!important;padding:18px!important;border:1px solid rgba(34,197,94,.42)!important;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(8,21,36,.92))!important;border-radius:20px!important;box-shadow:0 18px 45px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.05)!important;}
-.trial-promo-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.trial-promo-head h3{margin:0!important;font-size:20px!important;color:#dcfce7!important;letter-spacing:-.01em;}
-.auth-intro .trial-promo-left p{margin:0 0 10px!important;color:#d7e5ef!important;font-size:14px!important;line-height:1.5!important;}
-.trial-promo-note{color:#bbf7d0!important;font-size:13px!important;font-weight:900!important;margin:8px 0 12px!important;}
-.trial-promo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
-.trial-promo-grid span{display:flex;align-items:center;gap:7px;border:1px solid rgba(134,239,172,.18);background:rgba(2,6,23,.28);border-radius:12px;padding:9px 10px;color:#dbeafe;font-size:12.5px;font-weight:800;}
-.trial-promo-grid span::before{content:'✓';color:#86efac;font-weight:900;}
-@media(max-width:760px){.trial-promo-grid{grid-template-columns:1fr;}.auth-intro .trial-promo-left{padding:15px!important;}}
-</style>
-<script>
-/* V87: keep the wide trial copy synced with current language */
-(function(){
-  const C={
-    en:{title:'7-day free trial',text:'Test ATSRS for 7 days with no card required during this test build. Store documents, review expiry status and prepare your profile before inviting others.',note:'Personal and Company mode included.',b1:'Secure document vault',b2:'Expiry tracking',b3:'Employer-ready profile',b4:'Company compliance support'},
-    az:{title:'7 günlük pulsuz trial',text:'Bu test build zamanı kart tələb olunmadan ATSRS-i 7 gün yoxla. Sənədləri saxla, bitmə statusunu izlə və başqalarını dəvət etməzdən əvvəl profilini hazırla.',note:'Fərdi və şirkət rejimi daxildir.',b1:'Təhlükəsiz sənəd arxivi',b2:'Bitmə tarixi izləmə',b3:'İşəgötürənə hazır profil',b4:'Şirkət compliance dəstəyi'},
-    ru:{title:'7-дневный бесплатный trial',text:'Проверьте ATSRS 7 дней без банковской карты в этом test build. Храните документы, отслеживайте сроки и подготовьте профиль перед приглашением других пользователей.',note:'Личный и корпоративный режим включены.',b1:'Безопасный архив документов',b2:'Контроль сроков действия',b3:'Профиль для работодателя',b4:'Поддержка compliance компании'}
-  };
-  function getLang(){try{return (localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||'en').slice(0,2);}catch(e){return (window.lang||'en').slice(0,2);}}
-  window.atsrsV87ApplyTrialPromo=function(){const t=C[getLang()]||C.en;const m={trialTitle:t.title,trialText:t.text,trialNote:t.note,trialBullet1:t.b1,trialBullet2:t.b2,trialBullet3:t.b3,trialBullet4:t.b4};Object.keys(m).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=m[id];});};
-  const oldApply=window.applyLanguage;if(typeof oldApply==='function'){window.applyLanguage=function(){const r=oldApply.apply(this,arguments);setTimeout(window.atsrsV87ApplyTrialPromo,0);return r;};}
-  const oldChange=window.changeLanguage;if(typeof oldChange==='function'){window.changeLanguage=function(){const r=oldChange.apply(this,arguments);setTimeout(window.atsrsV87ApplyTrialPromo,0);setTimeout(window.atsrsV87ApplyTrialPromo,80);return r;};}
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(window.atsrsV87ApplyTrialPromo,0));
-  setTimeout(window.atsrsV87ApplyTrialPromo,300);
 })();
 </script>
 
