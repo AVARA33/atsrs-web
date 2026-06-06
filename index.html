@@ -971,6 +971,21 @@ body:not(.atsrs-booting) #app{
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Companies can request access and import approved documents into their compliance profile.</span></div>
   </div>
+
+  <div id="trialBox" class="trial-box trial-promo-left">
+    <div class="trial-promo-head">
+      <span class="trial-dot"></span>
+      <h3 id="trialTitle">7-day free trial</h3>
+    </div>
+    <p id="trialText">Test ATSRS for 7 days with no card required during this test build.</p>
+    <div id="trialNote" class="trial-promo-note">Personal and Company mode included.</div>
+    <div class="trial-promo-grid">
+      <span id="trialBullet1">Secure document vault</span>
+      <span id="trialBullet2">Expiry tracking</span>
+      <span id="trialBullet3">Employer-ready profile</span>
+      <span id="trialBullet4">Company compliance support</span>
+    </div>
+  </div>
 </div>
 
 <div class="auth-card">
@@ -994,11 +1009,6 @@ body:not(.atsrs-booting) #app{
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
 </div>
 <p id="modeRule" class="mode-error-text"></p>
-<div id="trialBox" class="trial-box">
-<h3 id="trialTitle">7-day free trial</h3>
-<p id="trialText">Try ATSRS for 7 days. No card required during test build.</p>
-<div class="trial-row"><span class="trial-dot"></span><span id="trialNote">Personal and Company mode included.</span></div>
-</div>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
@@ -1033,9 +1043,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V75</div>
-<div>Last Update: 06 Jun 2026 00:15 UTC</div>
-<div>TEST BUILD</div>
+<div>ATSRS V86</div>
+<div>Last Update: 06 Jun 2026 04:10 UTC</div>
+<div>LANGUAGE MENU LOCK + DARK ONLY BUILD</div>
 </div>
 </div>
 </section>
@@ -1133,6 +1143,36 @@ body:not(.atsrs-booting) #app{
       <span id="step4Text">Allow companies to download or import selected documents.</span>
       <div class="approve-flow"><i>Request</i><i>Approve</i><i>Import</i></div>
     </div>
+  </div>
+</div>
+
+<div id="atsrsValueExpansion" class="atsrs-value-expansion" aria-label="ATSRS platform value sections">
+  <div class="atsrs-value-card highlight">
+    <span class="value-icon">📊</span>
+    <h3 id="valueSnapshotTitle">Compliance Snapshot</h3>
+    <p id="valueSnapshotText">See valid, expiring, expired and missing documents in one fast overview.</p>
+    <div class="value-mini-stats"><span>Valid</span><span>Expiring</span><span>Expired</span><span>Missing</span></div>
+  </div>
+  <div class="atsrs-value-card">
+    <span class="value-icon">🔔</span>
+    <h3 id="valueAlertsTitle">Smart Alerts</h3>
+    <p id="valueAlertsText">Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.</p>
+  </div>
+  <div class="atsrs-value-card">
+    <span class="value-icon">🤖</span>
+    <h3 id="valueAiTitle">AI Document Assistant</h3>
+    <p id="valueAiText">Extract name, certificate number, issue date and expiry date from uploaded documents.</p>
+  </div>
+  <div class="atsrs-value-card">
+    <span class="value-icon">📄</span>
+    <h3 id="valueCvTitle">ATSRS CV Generator</h3>
+    <p id="valueCvText">Build export-ready CV and compliance packs for company or client submission.</p>
+  </div>
+  <div class="atsrs-value-card wide">
+    <span class="value-icon">🏢</span>
+    <h3 id="valueIndustriesTitle">Supported Industries</h3>
+    <p id="valueIndustriesText">Designed for Offshore, ROV, NDT, Marine, Survey, Renewables and Oil & Gas teams.</p>
+    <div class="industry-strip"><span>Offshore</span><span>ROV</span><span>NDT</span><span>Marine</span><span>Survey</span><span>Renewables</span><span>Oil & Gas</span></div>
   </div>
 </div>
 </section>
@@ -4311,6 +4351,1375 @@ body > .atsrs-v64-top-actions .lang-menu{
   },true);
   runSoon();
   setInterval(lockTestLoginLabel,300);
+})();
+</script>
+
+
+
+<!-- V77 Auth UX & Network Diagnostics -->
+<style>
+.auth-health-box{margin:10px 0 12px;padding:10px 12px;border-radius:14px;border:1px solid #334155;background:rgba(2,6,23,.42);font-size:13px;line-height:1.4;color:#cbd5e1}
+.auth-health-box strong{display:block;margin-bottom:3px;color:#e5e7eb}
+.auth-health-box.ok{border-color:#14532d;background:rgba(20,83,45,.20);color:#bbf7d0}
+.auth-health-box.warn{border-color:#713f12;background:rgba(113,63,18,.20);color:#fde68a}
+.auth-health-box.bad{border-color:#7f1d1d;background:rgba(127,29,29,.22);color:#fecaca}
+.auth-health-small{font-size:12px;color:#94a3b8;margin-top:4px}
+</style>
+<script>
+(function(){
+  const V77_AUTH_TEXT={
+    en:{
+      checkingTitle:'ATSRS service check',checking:'Checking backend connection...',okTitle:'ATSRS services online',ok:'Connection to ATSRS backend is available.',badTitle:'Network problem',bad:'Network error. Unable to connect to ATSRS services. Please check VPN, Wi-Fi or try again later.',lib:'ATSRS Auth library did not load. Check internet connection and refresh the page.',registerOk:'Confirmation email sent. Check inbox/spam.',passwordOk:'Password updated.',wrong:'Email or password is incorrect.',notConfirmed:'Email is not confirmed yet. Check inbox/spam for the confirmation link.',userNotFound:'Account not found. Please create an account first.',rate:'Too many attempts. Please wait and try again.',server:'ATSRS server is temporarily unavailable. Try again later.',details:'Technical detail:'
+    },
+    az:{
+      checkingTitle:'ATSRS servis yoxlaması',checking:'Backend bağlantısı yoxlanılır...',okTitle:'ATSRS servisləri aktivdir',ok:'ATSRS backend bağlantısı mövcuddur.',badTitle:'Şəbəkə problemi',bad:'Şəbəkə problemi. ATSRS serverinə qoşulmaq mümkün olmadı. VPN, Wi‑Fi və ya internet bağlantınızı yoxlayın.',lib:'ATSRS Auth kitabxanası yüklənmədi. İnterneti yoxlayıb səhifəni yeniləyin.',registerOk:'Təsdiq emaili göndərildi. Inbox/spam yoxlayın.',passwordOk:'Şifrə yeniləndi.',wrong:'Email və ya şifrə yanlışdır.',notConfirmed:'Email hələ təsdiqlənməyib. Təsdiq linki üçün inbox/spam yoxlayın.',userNotFound:'Hesab tapılmadı. Əvvəlcə hesab yaradın.',rate:'Çox cəhd edildi. Bir az gözləyib yenidən yoxlayın.',server:'ATSRS serveri müvəqqəti əlçatan deyil. Bir az sonra yenidən yoxlayın.',details:'Texniki detal:'
+    },
+    ru:{
+      checkingTitle:'Проверка сервиса ATSRS',checking:'Проверяется соединение с backend...',okTitle:'Сервисы ATSRS доступны',ok:'Соединение с backend ATSRS доступно.',badTitle:'Ошибка сети',bad:'Ошибка сети. Не удалось подключиться к сервисам ATSRS. Проверьте VPN, Wi‑Fi или интернет-соединение.',lib:'Библиотека ATSRS Auth не загрузилась. Проверьте интернет и обновите страницу.',registerOk:'Письмо подтверждения отправлено. Проверьте inbox/spam.',passwordOk:'Пароль обновлён.',wrong:'Email или пароль неверный.',notConfirmed:'Email ещё не подтверждён. Проверьте inbox/spam для ссылки подтверждения.',userNotFound:'Аккаунт не найден. Сначала создайте аккаунт.',rate:'Слишком много попыток. Подождите и попробуйте снова.',server:'Сервер ATSRS временно недоступен. Попробуйте позже.',details:'Техническая деталь:'
+    }
+  };
+  function v77Lang(){try{return (typeof lang!=='undefined'&&V77_AUTH_TEXT[lang])?lang:(localStorage.getItem('atsrs_lang')||'en')}catch(e){return 'en'}}
+  function v77t(k){const l=v77Lang();return (V77_AUTH_TEXT[l]&&V77_AUTH_TEXT[l][k])||V77_AUTH_TEXT.en[k]||k}
+  function v77EnsureHealthBox(){
+    const card=document.querySelector('#auth .auth-card'); if(!card) return null;
+    let box=document.getElementById('authHealthBox');
+    if(!box){
+      const sub=document.getElementById('authSubtitle');
+      box=document.createElement('div'); box.id='authHealthBox'; box.className='auth-health-box warn';
+      box.innerHTML='<strong></strong><span></span><div class="auth-health-small"></div>';
+      if(sub&&sub.parentNode) sub.parentNode.insertBefore(box, sub.nextSibling); else card.insertBefore(box, card.firstChild);
+    }
+    return box;
+  }
+  function v77SetHealth(state,title,msg,small){
+    const box=v77EnsureHealthBox(); if(!box) return;
+    box.className='auth-health-box '+(state||'warn');
+    const strong=box.querySelector('strong'), span=box.querySelector('span'), detail=box.querySelector('.auth-health-small');
+    if(strong) strong.textContent=title||''; if(span) span.textContent=msg||''; if(detail) detail.textContent=small||'';
+  }
+  function v77NormalizeError(err){
+    const raw=((err&&err.message)||String(err||'')).toLowerCase();
+    if(!navigator.onLine || raw.includes('failed to fetch') || raw.includes('network') || raw.includes('fetch') || raw.includes('load failed')) return v77t('bad');
+    if(raw.includes('invalid login') || raw.includes('invalid credentials')) return v77t('wrong');
+    if(raw.includes('email not confirmed') || raw.includes('confirm')) return v77t('notConfirmed');
+    if(raw.includes('user not found') || raw.includes('not found')) return v77t('userNotFound');
+    if(raw.includes('rate') || raw.includes('too many')) return v77t('rate');
+    if(raw.includes('server') || raw.includes('unavailable') || raw.includes('timeout')) return v77t('server');
+    return (err&&err.message)||String(err||v77t('server'));
+  }
+  async function v77CheckBackend(){
+    v77SetHealth('warn',v77t('checkingTitle'),v77t('checking'),'');
+    if(typeof SUPABASE_URL==='undefined') { v77SetHealth('bad',v77t('badTitle'),v77t('bad'),'SUPABASE_URL missing'); return false; }
+    try{
+      const ctrl=new AbortController(); const timer=setTimeout(()=>ctrl.abort(),6000);
+      const res=await fetch(SUPABASE_URL+'/auth/v1/settings',{method:'GET',headers:{'apikey':(typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:''),'x-client-info':'atsrs-v77-health'},cache:'no-store',signal:ctrl.signal});
+      clearTimeout(timer);
+      if(res && (res.ok || res.status===401 || res.status===403)){v77SetHealth('ok',v77t('okTitle'),v77t('ok'),'');return true;}
+      v77SetHealth('bad',v77t('badTitle'),v77t('server'),v77t('details')+' HTTP '+(res&&res.status)); return false;
+    }catch(e){v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));return false;}
+  }
+  window.atsrsV77CheckBackend=v77CheckBackend;
+  const oldApply=window.applyLanguage;
+  window.applyLanguage=function(){ if(typeof oldApply==='function') oldApply.apply(this,arguments); setTimeout(()=>{ const b=document.getElementById('authHealthBox'); if(b){ const isBad=b.classList.contains('bad'), isOk=b.classList.contains('ok'); if(isOk)v77SetHealth('ok',v77t('okTitle'),v77t('ok'),''); else if(isBad)v77SetHealth('bad',v77t('badTitle'),v77t('bad'),b.querySelector('.auth-health-small')?.textContent||''); else v77SetHealth('warn',v77t('checkingTitle'),v77t('checking'),''); } },0); };
+  window.register=async function(){
+    let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText='';
+    if(!email||!password||!password2){regMsg.innerText=tr('fill');return}
+    if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;
+    if(!supabaseClient){regMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
+    try{regMsg.innerText=v77t('checking'); const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}}); regMsg.innerText=error?v77NormalizeError(error):v77t('registerOk'); if(error&&String(error.message||'').toLowerCase().includes('fetch')) v77CheckBackend();}
+    catch(e){regMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
+  };
+  window.login=async function(){
+    let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText='';
+    if(!validateUseMode())return; if(!email||!password){loginMsg.innerText=tr('enterLogin');return} if(!markEmail(loginEmail,loginEmailRule))return;
+    if(!supabaseClient){loginMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
+    try{loginMsg.innerText=v77t('checking'); const {data,error}=await supabaseClient.auth.signInWithPassword({email,password}); if(error){loginMsg.innerText=v77NormalizeError(error);return} localStorage.setItem('atsrs_use_mode',useMode);currentUser=data.user;openApp();}
+    catch(e){loginMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
+  };
+  window.forgotPassword=async function(){
+    let email=resetEmail.value.trim();resetMsg.innerText=''; if(!email){resetMsg.innerText=tr('enterLogin');return} if(!markEmail(resetEmail,resetEmailRule))return;
+    if(!supabaseClient){resetMsg.innerText=v77t('lib');v77SetHealth('bad',v77t('badTitle'),v77t('lib'),'');return}
+    try{resetMsg.innerText=v77t('checking'); const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL}); resetMsg.innerText=error?v77NormalizeError(error):tr('sent');}
+    catch(e){resetMsg.innerText=v77NormalizeError(e); v77SetHealth('bad',v77t('badTitle'),v77t('bad'),v77t('details')+' '+((e&&e.message)||e));}
+  };
+  window.updatePassword=async function(){
+    let p1=newPassword.value.trim(),p2=newPassword2.value.trim();newPassMsg.innerText=''; if(!p1||!p2){newPassMsg.innerText=tr('fill');return} if(p1!==p2){newPassMsg.innerText=tr('matchRule');return}
+    try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?v77NormalizeError(error):v77t('passwordOk')}
+    catch(e){newPassMsg.innerText=v77NormalizeError(e)}
+  };
+  document.addEventListener('DOMContentLoaded',()=>{v77EnsureHealthBox(); setTimeout(v77CheckBackend,500);});
+  setTimeout(()=>{v77EnsureHealthBox(); if(document.getElementById('auth')&&!document.getElementById('auth').classList.contains('hidden')) v77CheckBackend();},1200);
+})();
+</script>
+
+
+
+<!-- V78: Language selector cleanup + ATSRS landing expansion -->
+<style>
+.atsrs-value-expansion{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0 22px}
+.atsrs-value-card{background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:20px;padding:16px;min-height:150px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.atsrs-value-card.highlight{border-color:rgba(34,197,94,.62);box-shadow:0 0 0 1px rgba(34,197,94,.08), inset 0 1px 0 rgba(255,255,255,.04)}
+.atsrs-value-card.wide{grid-column:span 2}
+.atsrs-value-card h3{margin:8px 0 7px;font-size:18px;color:#f8fafc}.atsrs-value-card p{margin:0;color:#a7b5c5;line-height:1.45;font-size:14px}
+.value-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.12));border:1px solid rgba(134,239,172,.22)}
+.value-mini-stats,.industry-strip{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.value-mini-stats span,.industry-strip span{border:1px solid #334155;background:#071524;border-radius:999px;padding:6px 9px;color:#cbd5e1;font-size:12px;font-weight:800}
+.lang-menu button{display:flex!important;align-items:center!important;gap:10px!important}.lang-menu button span{width:26px!important;display:inline-flex!important;justify-content:center!important}.lang-menu button .atsrs-lang-name{flex:1;text-align:left}
+@media(max-width:760px){.atsrs-value-card.wide{grid-column:auto}.atsrs-value-expansion{grid-template-columns:1fr}.atsrs-value-card{min-height:auto}}
+</style>
+<script>
+(function(){
+  const LANG_LABELS={en:'English',az:'Azərbaycan',ru:'Русский'};
+  const VALUE_TEXT={
+    en:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'See valid, expiring, expired and missing documents in one fast overview.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.',valueAiTitle:'AI Document Assistant',valueAiText:'Extract name, certificate number, issue date and expiry date from uploaded documents.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Build export-ready CV and compliance packs for company or client submission.',valueIndustriesTitle:'Supported Industries',valueIndustriesText:'Designed for Offshore, ROV, NDT, Marine, Survey, Renewables and Oil & Gas teams.'},
+    az:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'Aktiv, bitməyə yaxın, vaxtı keçmiş və çatışmayan sənədləri bir baxışda göstərir.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Bitmə tarixindən 90, 30, 14 və 7 gün əvvəl email və WhatsApp xatırlatmaları üçün hazır məntiq.',valueAiTitle:'AI Document Assistant',valueAiText:'Yüklənmiş sənəddən ad, sertifikat nömrəsi, verilmə tarixi və bitmə tarixini çıxarmağa kömək edir.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Şirkət və ya müştəri təqdimatı üçün hazır CV və compliance paketləri yaratmaq üçün nəzərdə tutulub.',valueIndustriesTitle:'Dəstəklənən sahələr',valueIndustriesText:'Offshore, ROV, NDT, Marine, Survey, Renewables və Oil & Gas komandaları üçün dizayn edilib.'},
+    ru:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'Показывает действующие, истекающие, просроченные и отсутствующие документы в одном обзоре.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Подготовка email и WhatsApp напоминаний за 90, 30, 14 и 7 дней до окончания срока.',valueAiTitle:'AI Document Assistant',valueAiText:'Помогает извлекать имя, номер сертификата, дату выдачи и срок действия из загруженных документов.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Для создания готового CV и compliance-пакетов для отправки компании или клиенту.',valueIndustriesTitle:'Поддерживаемые отрасли',valueIndustriesText:'Создано для Offshore, ROV, NDT, Marine, Survey, Renewables и Oil & Gas команд.'}
+  };
+  function currentLang(){try{return (typeof lang!=='undefined'&&lang)||localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||'en'}catch(e){return 'en'}}
+  function cleanLangMenus(){
+    const menus=[document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean);
+    menus.forEach(menu=>{
+      const buttons=menu.querySelectorAll('button');
+      const order=['en','az','ru'];
+      buttons.forEach((btn,i)=>{
+        const code=(btn.getAttribute('onclick')||'').match(/changeLanguage\('([^']+)'\)/)?.[1]||order[i]||'en';
+        const flag=code==='en'?'🇬🇧':code==='az'?'🇦🇿':'🇷🇺';
+        btn.innerHTML='<span>'+flag+'</span><span class="atsrs-lang-name">'+LANG_LABELS[code]+'</span>';
+      });
+    });
+  }
+  function applyValueText(){
+    const L=VALUE_TEXT[currentLang()]||VALUE_TEXT.en;
+    Object.keys(L).forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=L[id];});
+  }
+  function v78Apply(){cleanLangMenus();applyValueText();}
+  window.atsrsV78Apply=v78Apply;
+  const oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'){
+    window.applyLanguage=function(){const r=oldApply.apply(this,arguments);setTimeout(v78Apply,0);return r;};
+  }
+  const oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'){
+    window.changeLanguage=function(){const r=oldChange.apply(this,arguments);setTimeout(v78Apply,0);setTimeout(v78Apply,80);return r;};
+  }
+  ['DOMContentLoaded','load'].forEach(e=>window.addEventListener(e,()=>setTimeout(v78Apply,0)));
+  setTimeout(v78Apply,0);setTimeout(v78Apply,300);setInterval(v78Apply,1500);
+})();
+</script>
+
+
+
+<!-- V79: Collapsible Sidebar / Workspace Expansion -->
+<style id="atsrs-v79-collapsible-sidebar-style">
+  #app.app{
+    --atsrs-sidebar-open:232px;
+    --atsrs-sidebar-collapsed:74px;
+  }
+  #app .sidebar{position:relative!important;transition:width .22s ease, padding .22s ease, transform .22s ease!important;}
+  #app .atsrs-sidebar-toggle{
+    width:42px!important;height:42px!important;min-width:42px!important;margin:0 0 14px 0!important;padding:0!important;border-radius:14px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    background:linear-gradient(135deg,#0f766e,#22c55e)!important;border:1px solid rgba(134,239,172,.55)!important;
+    color:#fff!important;font-size:20px!important;box-shadow:0 12px 28px rgba(34,197,94,.18)!important;
+  }
+  #app .atsrs-sidebar-toggle:hover{filter:brightness(1.08)}
+  #app .nav button{
+    display:flex!important;align-items:center!important;gap:10px!important;white-space:nowrap!important;overflow:hidden!important;
+    transition:padding .22s ease, justify-content .22s ease, gap .22s ease!important;
+  }
+  #app .nav button::before{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:22px!important;min-width:22px!important;font-size:18px!important;line-height:1!important;
+  }
+  #navIntro::before{content:"🏠"}#navDashboard::before{content:"📊"}#navPersonnel::before{content:"👥"}#navCertificates::before{content:"📁"}
+  #navRefs::before{content:"📝"}#navCompliance::before{content:"🏢"}#navReports::before{content:"📈"}#navProfile::before{content:"⚙️"}#navLogout::before{content:"🚪"}
+
+  @media(min-width:801px){
+    #app.app:not(.hidden){grid-template-columns:var(--atsrs-sidebar-open) minmax(0,1fr)!important;transition:grid-template-columns .22s ease!important;}
+    #app.app:not(.hidden) .sidebar{width:var(--atsrs-sidebar-open)!important;min-width:var(--atsrs-sidebar-open)!important;padding:16px!important;}
+    #app.app:not(.hidden) .main{grid-column:2!important;margin-left:0!important;max-width:none!important;width:100%!important;padding-left:22px!important;}
+    #app.app.sidebar-collapsed:not(.hidden){grid-template-columns:var(--atsrs-sidebar-collapsed) minmax(0,1fr)!important;}
+    #app.app.sidebar-collapsed:not(.hidden) .sidebar{
+      width:var(--atsrs-sidebar-collapsed)!important;min-width:var(--atsrs-sidebar-collapsed)!important;padding:14px 10px!important;
+    }
+    #app.app.sidebar-collapsed .brand,
+    #app.app.sidebar-collapsed #cabinetText{display:none!important;}
+    #app.app.sidebar-collapsed .atsrs-sidebar-toggle{margin-left:auto!important;margin-right:auto!important;}
+    #app.app.sidebar-collapsed .nav{display:flex!important;grid-template-columns:none!important;gap:8px!important;margin-top:4px!important;}
+    #app.app.sidebar-collapsed .nav button{
+      width:52px!important;height:52px!important;min-width:52px!important;padding:0!important;margin:0 auto!important;border-radius:16px!important;
+      justify-content:center!important;font-size:0!important;gap:0!important;position:relative!important;
+    }
+    #app.app.sidebar-collapsed .nav button::before{font-size:21px!important;margin:0!important;}
+    #app.app.sidebar-collapsed .nav button.active{box-shadow:0 0 0 1px rgba(134,239,172,.50),0 12px 28px rgba(34,197,94,.18)!important;}
+    #app.app.sidebar-collapsed .main{padding-left:18px!important;}
+  }
+
+  @media(max-width:800px){
+    #app.app:not(.hidden){display:grid!important;grid-template-columns:168px minmax(0,1fr)!important;min-height:100vh!important;}
+    #app.app:not(.hidden) .sidebar{
+      grid-column:1!important;grid-row:1!important;width:168px!important;min-width:168px!important;height:100vh!important;max-height:100vh!important;
+      position:sticky!important;top:0!important;overflow-y:auto!important;overflow-x:hidden!important;border-right:1px solid #16283a!important;border-bottom:0!important;
+      padding:14px 10px!important;z-index:70!important;
+    }
+    #app.app:not(.hidden) .main{grid-column:2!important;grid-row:1!important;min-width:0!important;padding:74px 12px 16px!important;width:100%!important;}
+    #app.app:not(.hidden) .nav{display:flex!important;flex-direction:column!important;grid-template-columns:none!important;gap:8px!important;}
+    #app.app:not(.hidden) .nav button{font-size:12px!important;padding:10px 8px!important;border-radius:12px!important;}
+    #app.app:not(.hidden) .brand{font-size:22px!important;}
+    #app.app:not(.hidden) #cabinetText{font-size:11px!important;margin:6px 0 12px!important;}
+
+    #app.app.sidebar-collapsed:not(.hidden){grid-template-columns:68px minmax(0,1fr)!important;}
+    #app.app.sidebar-collapsed:not(.hidden) .sidebar{width:68px!important;min-width:68px!important;padding:12px 8px!important;}
+    #app.app.sidebar-collapsed .brand,
+    #app.app.sidebar-collapsed #cabinetText{display:none!important;}
+    #app.app.sidebar-collapsed .atsrs-sidebar-toggle{width:48px!important;height:48px!important;min-width:48px!important;margin:0 auto 12px!important;}
+    #app.app.sidebar-collapsed .nav button{
+      width:50px!important;height:50px!important;min-width:50px!important;padding:0!important;margin:0 auto!important;justify-content:center!important;
+      font-size:0!important;gap:0!important;border-radius:15px!important;
+    }
+    #app.app.sidebar-collapsed .nav button::before{font-size:20px!important;}
+    #app.app.sidebar-collapsed .main{padding-left:10px!important;}
+    #app.app > .top-actions{top:12px!important;right:12px!important;z-index:120!important;}
+  }
+</style>
+<script id="atsrs-v79-collapsible-sidebar-script">
+(function(){
+  function initSidebarToggle(){
+    var app=document.getElementById('app');
+    var sidebar=app && app.querySelector('.sidebar');
+    var nav=sidebar && sidebar.querySelector('.nav');
+    if(!app||!sidebar||!nav||document.getElementById('sidebarToggleBtn')) return;
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.id='sidebarToggleBtn';
+    btn.className='atsrs-sidebar-toggle';
+    btn.setAttribute('aria-label','Toggle menu');
+    btn.innerHTML='☰';
+    sidebar.insertBefore(btn, sidebar.firstChild);
+    var saved=localStorage.getItem('atsrs_sidebar_collapsed');
+    if(saved===null){ saved = window.matchMedia && window.matchMedia('(max-width: 900px)').matches ? '1' : '0'; }
+    if(saved==='1') app.classList.add('sidebar-collapsed');
+    function sync(){
+      var collapsed=app.classList.contains('sidebar-collapsed');
+      btn.innerHTML=collapsed?'☰':'‹';
+      btn.title=collapsed?'Open menu':'Collapse menu';
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      Array.prototype.forEach.call(nav.querySelectorAll('button'), function(b){
+        var t=(b.innerText||b.textContent||'').trim();
+        if(t) b.setAttribute('title',t);
+      });
+    }
+    btn.addEventListener('click',function(){
+      app.classList.toggle('sidebar-collapsed');
+      localStorage.setItem('atsrs_sidebar_collapsed', app.classList.contains('sidebar-collapsed')?'1':'0');
+      sync();
+      setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},240);
+    });
+    var oldApply=window.applyLanguage;
+    if(typeof oldApply==='function'){
+      window.applyLanguage=function(){ var r=oldApply.apply(this,arguments); setTimeout(sync,0); return r; };
+    }
+    sync();
+  }
+  document.addEventListener('DOMContentLoaded',initSidebarToggle);
+  window.addEventListener('load',initSidebarToggle);
+  setTimeout(initSidebarToggle,0);
+  setTimeout(initSidebarToggle,600);
+})();
+</script>
+
+
+
+<!-- V83: safe compact language menu + global light/dark switcher -->
+<style id="atsrs-v82-ui-style">
+/* Compact language menu: one neutral background, no colored cards */
+.lang-menu{
+  width:168px!important;min-width:168px!important;padding:6px!important;border-radius:14px!important;
+  background:#091524!important;border:1px solid #264058!important;box-shadow:0 18px 42px rgba(0,0,0,.38)!important;
+}
+.lang-menu button{
+  width:100%!important;margin:1px 0!important;padding:9px 10px!important;border-radius:10px!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;color:#e5e7eb!important;
+  display:flex!important;align-items:center!important;gap:8px!important;text-align:left!important;font-weight:800!important;font-size:13px!important;
+}
+.lang-menu button span{width:22px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;margin:0!important;}
+.lang-menu button:hover,.lang-menu button.atsrs-lang-active{background:rgba(148,163,184,.12)!important;}
+.lang-menu button.atsrs-lang-active::after{content:'✓';margin-left:auto;color:#86efac;font-weight:900;}
+
+/* Simple safe theme toggle beside language */
+.atsrs-theme-toggle{
+  width:52px!important;min-width:52px!important;height:34px!important;margin:0!important;padding:3px!important;border-radius:999px!important;
+  border:1px solid rgba(134,239,172,.35)!important;background:#0b1a2a!important;box-shadow:0 10px 28px rgba(0,0,0,.28)!important;
+  display:inline-flex!important;align-items:center!important;justify-content:space-between!important;position:relative!important;cursor:pointer!important;
+}
+.atsrs-theme-toggle span{font-size:14px;line-height:1;z-index:2;width:21px;text-align:center;opacity:.82;pointer-events:none;}
+.atsrs-theme-toggle::after{content:'';position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:999px;background:linear-gradient(135deg,#1d4ed8,#0891b2);box-shadow:0 6px 14px rgba(0,0,0,.32);transition:transform .18s ease,background .18s ease;}
+body.atsrs-light-mode .atsrs-theme-toggle{background:#e8eef8!important;border-color:#bfd0e8!important;box-shadow:0 10px 24px rgba(15,23,42,.14)!important;}
+body.atsrs-light-mode .atsrs-theme-toggle::after{transform:translateX(18px);background:linear-gradient(135deg,#facc15,#fb923c);}
+.auth-card>.atsrs-theme-toggle{position:absolute!important;top:18px!important;right:76px!important;z-index:22!important;}
+.top-actions .atsrs-theme-toggle{position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;}
+@media(max-width:520px){.atsrs-theme-toggle{width:48px!important;min-width:48px!important;height:32px!important}.atsrs-theme-toggle::after{width:22px;height:22px}.auth-card>.atsrs-theme-toggle{right:70px!important}}
+
+/* Safe light mode palette */
+body.atsrs-light-mode{background:#f4f7fb!important;color:#102033!important;}
+body.atsrs-light-mode .auth{background:linear-gradient(135deg,#eaf3ff 0%,#f7fbff 46%,#e8fff4 100%)!important;color:#102033!important;}
+body.atsrs-light-mode .auth-card,
+body.atsrs-light-mode .auth-intro,
+body.atsrs-light-mode .card,
+body.atsrs-light-mode .panel,
+body.atsrs-light-mode .workflow-card,
+body.atsrs-light-mode .snapshot-card,
+body.atsrs-light-mode .mini-panel,
+body.atsrs-light-mode .hero-card,
+body.atsrs-light-mode .feature-tile,
+body.atsrs-light-mode .intro-hero,
+body.atsrs-light-mode .intro-service-card,
+body.atsrs-light-mode .atsrs-anime-stage,
+body.atsrs-light-mode .anime-step,
+body.atsrs-light-mode .upload-simple,
+body.atsrs-light-mode .scan-box,
+body.atsrs-light-mode .preview-profile,
+body.atsrs-light-mode .ref-card,
+body.atsrs-light-mode .import-box,
+body.atsrs-light-mode .cv-beta-box,
+body.atsrs-light-mode .ref-beta-box{
+  background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(240,246,255,.97))!important;
+  border-color:#c6d5e8!important;color:#102033!important;box-shadow:0 18px 46px rgba(15,23,42,.10)!important;
+}
+body.atsrs-light-mode .sidebar{background:linear-gradient(180deg,#ffffff,#edf4ff)!important;border-color:#c6d5e8!important;color:#102033!important;}
+body.atsrs-light-mode .brand,body.atsrs-light-mode h1,body.atsrs-light-mode h2,body.atsrs-light-mode h3,body.atsrs-light-mode h4,body.atsrs-light-mode b{color:#102033!important;}
+body.atsrs-light-mode .sub,body.atsrs-light-mode .small-note,body.atsrs-light-mode .field-label,body.atsrs-light-mode .feature-tile span:not(.tile-icon),body.atsrs-light-mode .auth-intro p,body.atsrs-light-mode .hero-card p,body.atsrs-light-mode .mini-panel p,body.atsrs-light-mode .intro-service-card p,body.atsrs-light-mode .intro-hero p,body.atsrs-light-mode .anime-step span,body.atsrs-light-mode .preview-head p{color:#52657a!important;}
+body.atsrs-light-mode input,body.atsrs-light-mode select,body.atsrs-light-mode textarea{background:#ffffff!important;color:#102033!important;border-color:#c0cfe3!important;}
+body.atsrs-light-mode .nav button{background:#eef5ff!important;color:#203247!important;border-color:#d4e0ef!important;}
+body.atsrs-light-mode .nav button.active,body.atsrs-light-mode .nav button:hover{background:linear-gradient(135deg,#16a34a,#22c55e)!important;color:#ffffff!important;border-color:#86efac!important;}
+body.atsrs-light-mode button.secondary,body.atsrs-light-mode .mode-choice button,body.atsrs-light-mode .cert-mode-buttons button{background:#e8eef8!important;color:#203247!important;border-color:#bfd0e8!important;}
+body.atsrs-light-mode .mode-choice button.active,body.atsrs-light-mode .cert-mode-buttons button.active{background:linear-gradient(135deg,#16a34a,#22c55e)!important;color:#ffffff!important;border-color:#86efac!important;}
+body.atsrs-light-mode .lang-circle{background:#ffffff!important;border-color:#bfd0e8!important;box-shadow:0 10px 24px rgba(15,23,42,.12)!important;}
+body.atsrs-light-mode .lang-menu{background:#ffffff!important;border-color:#c6d5e8!important;box-shadow:0 18px 42px rgba(15,23,42,.16)!important;}
+body.atsrs-light-mode .lang-menu button{color:#102033!important;background:transparent!important;}
+body.atsrs-light-mode .lang-menu button:hover,body.atsrs-light-mode .lang-menu button.atsrs-lang-active{background:#eef5ff!important;}
+body.atsrs-light-mode table th,body.atsrs-light-mode table td{border-color:#d6e1ee!important;color:#102033!important;}
+body.atsrs-light-mode .build-badge{background:rgba(255,255,255,.82)!important;border-color:#c6d5e8!important;color:#52657a!important;}
+body.atsrs-light-mode .good{color:#15803d!important} body.atsrs-light-mode .warning{color:#b45309!important} body.atsrs-light-mode .danger{color:#dc2626!important}
+</style>
+<script id="atsrs-v82-ui-script">
+(function(){
+  var LANG_LABELS={en:['🇬🇧','English'],az:['🇦🇿','Azərbaycan'],ru:['🇷🇺','Русский']};
+  var THEME_KEY='atsrs_theme_mode';
+  function currentLang(){
+    try{return localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||document.documentElement.lang||'en';}catch(e){return 'en';}
+  }
+  function fixLangMenu(){
+    var order=['en','az','ru'];
+    var menus=document.querySelectorAll('.lang-menu');
+    Array.prototype.forEach.call(menus,function(menu){
+      var buttons=menu.querySelectorAll('button');
+      Array.prototype.forEach.call(buttons,function(btn,i){
+        var code=order[i]; if(!LANG_LABELS[code]) return;
+        btn.innerHTML='<span>'+LANG_LABELS[code][0]+'</span> '+LANG_LABELS[code][1];
+        btn.classList.toggle('atsrs-lang-active', code===currentLang());
+      });
+    });
+  }
+  function getTheme(){try{return localStorage.getItem(THEME_KEY)||'dark';}catch(e){return 'dark';}}
+  function applyTheme(mode){
+    var light=mode==='light';
+    if(document.body){document.body.classList.toggle('atsrs-light-mode',light);}
+    document.documentElement.setAttribute('data-atsrs-theme',mode);
+    Array.prototype.forEach.call(document.querySelectorAll('.atsrs-theme-toggle'),function(btn){
+      btn.title=light?'Dark mode':'Light mode';
+      btn.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode');
+    });
+  }
+  function toggleTheme(){
+    var next=getTheme()==='light'?'dark':'light';
+    try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    applyTheme(next);
+  }
+  function makeThemeButton(id){
+    var btn=document.getElementById(id);
+    if(btn) return btn;
+    btn=document.createElement('button');
+    btn.type='button'; btn.id=id; btn.className='atsrs-theme-toggle';
+    btn.innerHTML='<span>🌙</span><span>☀️</span>';
+    btn.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();}toggleTheme();};
+    return btn;
+  }
+  function installThemeButtons(){
+    var appLang=document.querySelector('#app .top-actions .lang-floating, #app .top-actions .app-lang-switcher');
+    if(appLang){
+      var appBtn=makeThemeButton('atsrsThemeToggleApp');
+      if(appBtn.parentElement!==appLang.parentElement){appLang.insertAdjacentElement('afterend',appBtn);}
+    }
+    var authLang=document.querySelector('#auth .auth-card > .lang-floating');
+    if(authLang){
+      var authBtn=makeThemeButton('atsrsThemeToggleAuth');
+      if(authBtn.parentElement!==authLang.parentElement){authLang.insertAdjacentElement('afterend',authBtn);}
+    }
+    applyTheme(getTheme());
+  }
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function' && !oldChange.__v82Wrapped){
+    var wrappedChange=function(){
+      var r=oldChange.apply(this,arguments);
+      setTimeout(function(){fixLangMenu();installThemeButtons();},0);
+      return r;
+    };
+    wrappedChange.__v82Wrapped=true;
+    window.changeLanguage=wrappedChange;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function' && !oldApply.__v82Wrapped){
+    var wrappedApply=function(){
+      var r=oldApply.apply(this,arguments);
+      setTimeout(function(){fixLangMenu();installThemeButtons();},0);
+      return r;
+    };
+    wrappedApply.__v82Wrapped=true;
+    window.applyLanguage=wrappedApply;
+  }
+  function init(){installThemeButtons();fixLangMenu();}
+  document.addEventListener('DOMContentLoaded',init);
+  window.addEventListener('load',init);
+  setTimeout(init,0);
+  setTimeout(init,600);
+})();
+</script>
+
+
+
+<!-- V83: Deep UI theme audit + simplified menus (safe override, no core logic changes) -->
+<style id="atsrs-v83-deep-theme-menu-audit">
+/* =========================================================
+   V83 DESIGN RULES
+   1) Light mode must not leave dark/black panels behind.
+   2) Menus must use the parent/background color; no colored cards.
+   3) Collapse button must be a simple icon control, not a colored tile.
+   4) Language menu must stay compact and neutral.
+   ========================================================= */
+
+:root{
+  --v83-dark-bg:#07111d;
+  --v83-dark-bg2:#0b1726;
+  --v83-dark-panel:#111c2d;
+  --v83-dark-panel2:#0f1b2c;
+  --v83-dark-soft:#16243a;
+  --v83-dark-border:#2a415b;
+  --v83-dark-text:#f3f7fb;
+  --v83-dark-muted:#a7b5c5;
+
+  --v83-light-bg:#f5f8fc;
+  --v83-light-bg2:#eef4fb;
+  --v83-light-panel:#ffffff;
+  --v83-light-panel2:#f8fbff;
+  --v83-light-soft:#eef4fb;
+  --v83-light-border:#c8d7ea;
+  --v83-light-text:#102033;
+  --v83-light-muted:#52677d;
+
+  --v83-accent:#22c55e;
+  --v83-accent2:#38bdf8;
+  --v83-danger:#dc2626;
+}
+
+/* ---------- base theme tokens ---------- */
+html[data-atsrs-theme="dark"] body,
+body:not(.atsrs-light-mode){
+  background:radial-gradient(circle at 18% 0%,rgba(34,197,94,.10),transparent 28%),linear-gradient(135deg,var(--v83-dark-bg),#061422)!important;
+  color:var(--v83-dark-text)!important;
+}
+body.atsrs-light-mode{
+  background:linear-gradient(135deg,var(--v83-light-bg),#ffffff)!important;
+  color:var(--v83-light-text)!important;
+}
+
+/* ---------- panels, cards, modals, dropdowns, boxes ---------- */
+body.atsrs-light-mode .auth,
+body.atsrs-light-mode #auth{
+  background:linear-gradient(135deg,#edf6ff 0%,#ffffff 48%,#effff6 100%)!important;
+  color:var(--v83-light-text)!important;
+}
+body.atsrs-light-mode .app,
+body.atsrs-light-mode #app{
+  background:var(--v83-light-bg)!important;
+  color:var(--v83-light-text)!important;
+}
+
+body.atsrs-light-mode .auth-card,
+body.atsrs-light-mode .auth-intro,
+body.atsrs-light-mode .card,
+body.atsrs-light-mode .panel,
+body.atsrs-light-mode .workflow-card,
+body.atsrs-light-mode .snapshot-card,
+body.atsrs-light-mode .mini-panel,
+body.atsrs-light-mode .hero-card,
+body.atsrs-light-mode .feature-tile,
+body.atsrs-light-mode .intro-hero,
+body.atsrs-light-mode .intro-service-card,
+body.atsrs-light-mode .atsrs-anime-stage,
+body.atsrs-light-mode .anime-step,
+body.atsrs-light-mode .upload-simple,
+body.atsrs-light-mode .scan-box,
+body.atsrs-light-mode .preview-box,
+body.atsrs-light-mode .preview-profile,
+body.atsrs-light-mode .ref-card,
+body.atsrs-light-mode .import-box,
+body.atsrs-light-mode .cv-beta-box,
+body.atsrs-light-mode .ref-beta-box,
+body.atsrs-light-mode .company-import-box,
+body.atsrs-light-mode .trial-box,
+body.atsrs-light-mode .share-card,
+body.atsrs-light-mode .cv-card,
+body.atsrs-light-mode .cv-status-card,
+body.atsrs-light-mode .missing-card,
+body.atsrs-light-mode .risk-item,
+body.atsrs-light-mode .snapshot-item,
+body.atsrs-light-mode .doc-chip,
+body.atsrs-light-mode .mode-badge,
+body.atsrs-light-mode .pill,
+body.atsrs-light-mode .build-badge,
+body.atsrs-light-mode .form-alert,
+body.atsrs-light-mode .mode-error-text,
+body.atsrs-light-mode .share-permissions label,
+body.atsrs-light-mode .profile-link-demo,
+body.atsrs-light-mode .import-box,
+body.atsrs-light-mode .import-box *:not(button){
+  background:var(--v83-light-panel)!important;
+  color:var(--v83-light-text)!important;
+  border-color:var(--v83-light-border)!important;
+  box-shadow:0 12px 34px rgba(15,23,42,.08)!important;
+}
+
+/* Keep errors visibly red in light mode */
+body.atsrs-light-mode .form-alert,
+body.atsrs-light-mode .mode-error-text{
+  background:#fff1f2!important;
+  color:#991b1b!important;
+  border-color:#fecaca!important;
+}
+body.atsrs-light-mode .trial-box,
+body.atsrs-light-mode .share-card{
+  background:linear-gradient(135deg,#ffffff,#f0fff7)!important;
+}
+
+/* Dark mode: ensure popup/card islands are never white */
+body:not(.atsrs-light-mode) .auth-card,
+body:not(.atsrs-light-mode) .auth-intro,
+body:not(.atsrs-light-mode) .card,
+body:not(.atsrs-light-mode) .panel,
+body:not(.atsrs-light-mode) .workflow-card,
+body:not(.atsrs-light-mode) .snapshot-card,
+body:not(.atsrs-light-mode) .mini-panel,
+body:not(.atsrs-light-mode) .hero-card,
+body:not(.atsrs-light-mode) .feature-tile,
+body:not(.atsrs-light-mode) .intro-hero,
+body:not(.atsrs-light-mode) .intro-service-card,
+body:not(.atsrs-light-mode) .atsrs-anime-stage,
+body:not(.atsrs-light-mode) .anime-step,
+body:not(.atsrs-light-mode) .upload-simple,
+body:not(.atsrs-light-mode) .scan-box,
+body:not(.atsrs-light-mode) .preview-box,
+body:not(.atsrs-light-mode) .preview-profile,
+body:not(.atsrs-light-mode) .ref-card,
+body:not(.atsrs-light-mode) .import-box,
+body:not(.atsrs-light-mode) .cv-beta-box,
+body:not(.atsrs-light-mode) .ref-beta-box,
+body:not(.atsrs-light-mode) .company-import-box,
+body:not(.atsrs-light-mode) .trial-box,
+body:not(.atsrs-light-mode) .share-card,
+body:not(.atsrs-light-mode) .risk-item,
+body:not(.atsrs-light-mode) .snapshot-item,
+body:not(.atsrs-light-mode) .doc-chip,
+body:not(.atsrs-light-mode) .mode-badge,
+body:not(.atsrs-light-mode) .pill,
+body:not(.atsrs-light-mode) .share-permissions label,
+body:not(.atsrs-light-mode) .profile-link-demo{
+  background:linear-gradient(180deg,var(--v83-dark-panel),var(--v83-dark-panel2))!important;
+  color:var(--v83-dark-text)!important;
+  border-color:var(--v83-dark-border)!important;
+}
+
+/* ---------- typography in light mode ---------- */
+body.atsrs-light-mode h1,
+body.atsrs-light-mode h2,
+body.atsrs-light-mode h3,
+body.atsrs-light-mode h4,
+body.atsrs-light-mode b,
+body.atsrs-light-mode strong,
+body.atsrs-light-mode .brand,
+body.atsrs-light-mode .logo,
+body.atsrs-light-mode #pageTitle,
+body.atsrs-light-mode .stat{
+  color:var(--v83-light-text)!important;
+}
+body.atsrs-light-mode p,
+body.atsrs-light-mode span,
+body.atsrs-light-mode label,
+body.atsrs-light-mode .sub,
+body.atsrs-light-mode .small-note,
+body.atsrs-light-mode .field-label,
+body.atsrs-light-mode .field-hint,
+body.atsrs-light-mode .feature-tile span:not(.tile-icon),
+body.atsrs-light-mode .auth-intro p,
+body.atsrs-light-mode .hero-card p,
+body.atsrs-light-mode .mini-panel p,
+body.atsrs-light-mode .intro-service-card p,
+body.atsrs-light-mode .intro-hero p,
+body.atsrs-light-mode .anime-step span,
+body.atsrs-light-mode .preview-head p{
+  color:var(--v83-light-muted)!important;
+}
+
+/* ---------- form controls ---------- */
+body.atsrs-light-mode input,
+body.atsrs-light-mode select,
+body.atsrs-light-mode textarea{
+  background:#ffffff!important;
+  color:var(--v83-light-text)!important;
+  border-color:var(--v83-light-border)!important;
+  box-shadow:none!important;
+}
+body.atsrs-light-mode input::placeholder,
+body.atsrs-light-mode textarea::placeholder{color:#7b8da3!important;}
+body:not(.atsrs-light-mode) input,
+body:not(.atsrs-light-mode) select,
+body:not(.atsrs-light-mode) textarea{
+  background:#081524!important;
+  color:var(--v83-dark-text)!important;
+  border-color:#263f58!important;
+}
+
+/* ---------- tables ---------- */
+body.atsrs-light-mode table,
+body.atsrs-light-mode .table-wrap{background:transparent!important;color:var(--v83-light-text)!important;}
+body.atsrs-light-mode th,
+body.atsrs-light-mode td{
+  color:var(--v83-light-text)!important;
+  border-color:#d7e2ee!important;
+  background:transparent!important;
+}
+body.atsrs-light-mode th{color:#334155!important;}
+
+/* ---------- sidebar: remove colored menu cards, keep background only ---------- */
+#app .sidebar{
+  background:linear-gradient(180deg,rgba(4,12,22,.98),rgba(7,17,29,.96))!important;
+}
+body.atsrs-light-mode #app .sidebar{
+  background:linear-gradient(180deg,#ffffff,#f2f6fb)!important;
+  color:var(--v83-light-text)!important;
+  border-color:var(--v83-light-border)!important;
+}
+
+#app .nav button,
+#app .atsrs-sidebar-toggle,
+.account-tabs button,
+.module-tabs button,
+.cert-mode-buttons button,
+.mode-choice button,
+.lang-menu button{
+  box-shadow:none!important;
+  background:transparent!important;
+  background-image:none!important;
+}
+
+#app .nav button{
+  border:1px solid transparent!important;
+  color:#cbd5e1!important;
+  border-radius:12px!important;
+}
+#app .nav button:hover{
+  background:rgba(148,163,184,.10)!important;
+  border-color:rgba(148,163,184,.18)!important;
+}
+#app .nav button.active{
+  background:rgba(34,197,94,.12)!important;
+  border-color:rgba(34,197,94,.28)!important;
+  color:#f8fafc!important;
+}
+body.atsrs-light-mode #app .nav button{
+  color:#334155!important;
+  background:transparent!important;
+  border-color:transparent!important;
+}
+body.atsrs-light-mode #app .nav button:hover{
+  background:rgba(15,23,42,.055)!important;
+  border-color:rgba(15,23,42,.08)!important;
+}
+body.atsrs-light-mode #app .nav button.active{
+  background:rgba(34,197,94,.11)!important;
+  border-color:rgba(34,197,94,.24)!important;
+  color:#0f5132!important;
+}
+
+/* Collapse button: icon only, no colored tile */
+#app .atsrs-sidebar-toggle{
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  border-radius:10px!important;
+  border:1px solid transparent!important;
+  color:#cbd5e1!important;
+  font-size:22px!important;
+  padding:0!important;
+  margin:0 0 12px 0!important;
+}
+#app .atsrs-sidebar-toggle:hover{
+  background:rgba(148,163,184,.10)!important;
+  border-color:rgba(148,163,184,.18)!important;
+  filter:none!important;
+}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle{
+  color:#334155!important;
+}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle:hover{
+  background:rgba(15,23,42,.055)!important;
+  border-color:rgba(15,23,42,.08)!important;
+}
+#app.app.sidebar-collapsed .nav button{
+  background:transparent!important;
+  border:1px solid transparent!important;
+  box-shadow:none!important;
+}
+#app.app.sidebar-collapsed .nav button:hover,
+#app.app.sidebar-collapsed .nav button.active{
+  background:rgba(34,197,94,.10)!important;
+  border-color:rgba(34,197,94,.22)!important;
+}
+
+/* ---------- language selector: compact, neutral, no colored rows ---------- */
+.lang-menu{
+  width:156px!important;
+  min-width:156px!important;
+  padding:5px!important;
+  border-radius:12px!important;
+  background:#091524!important;
+  border:1px solid var(--v83-dark-border)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.36)!important;
+}
+.lang-menu button{
+  min-height:34px!important;
+  margin:0!important;
+  padding:8px 9px!important;
+  border-radius:9px!important;
+  border:0!important;
+  color:#e5e7eb!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  text-align:left!important;
+  font-weight:750!important;
+  font-size:13px!important;
+  line-height:1.1!important;
+}
+.lang-menu button span{
+  width:20px!important;
+  min-width:20px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.lang-menu button:hover,
+.lang-menu button.atsrs-lang-active{
+  background:rgba(148,163,184,.10)!important;
+}
+.lang-menu button.atsrs-lang-active::after{
+  content:'✓';
+  margin-left:auto;
+  color:var(--v83-accent);
+  font-weight:900;
+}
+body.atsrs-light-mode .lang-menu{
+  background:#ffffff!important;
+  border-color:var(--v83-light-border)!important;
+  box-shadow:0 18px 42px rgba(15,23,42,.14)!important;
+}
+body.atsrs-light-mode .lang-menu button{
+  color:var(--v83-light-text)!important;
+  background:transparent!important;
+}
+body.atsrs-light-mode .lang-menu button:hover,
+body.atsrs-light-mode .lang-menu button.atsrs-lang-active{
+  background:rgba(15,23,42,.055)!important;
+}
+
+/* ---------- other tab/menu groups: neutral background, no colored cards ---------- */
+.account-tabs,
+.module-tabs,
+.cert-mode-buttons,
+.mode-choice{
+  background:transparent!important;
+}
+.account-tabs button,
+.module-tabs button,
+.cert-mode-buttons button,
+.mode-choice button{
+  color:#cbd5e1!important;
+  border:1px solid rgba(148,163,184,.16)!important;
+  border-radius:11px!important;
+}
+.account-tabs button:hover,
+.module-tabs button:hover,
+.cert-mode-buttons button:hover,
+.mode-choice button:hover{
+  background:rgba(148,163,184,.10)!important;
+}
+.account-tabs button.active,
+.module-tabs button.active,
+.cert-mode-buttons button.active,
+.mode-choice button.active{
+  background:rgba(34,197,94,.12)!important;
+  border-color:rgba(34,197,94,.28)!important;
+  color:#f8fafc!important;
+}
+body.atsrs-light-mode .account-tabs button,
+body.atsrs-light-mode .module-tabs button,
+body.atsrs-light-mode .cert-mode-buttons button,
+body.atsrs-light-mode .mode-choice button{
+  color:#334155!important;
+  border-color:rgba(15,23,42,.10)!important;
+  background:transparent!important;
+}
+body.atsrs-light-mode .account-tabs button:hover,
+body.atsrs-light-mode .module-tabs button:hover,
+body.atsrs-light-mode .cert-mode-buttons button:hover,
+body.atsrs-light-mode .mode-choice button:hover{
+  background:rgba(15,23,42,.055)!important;
+}
+body.atsrs-light-mode .account-tabs button.active,
+body.atsrs-light-mode .module-tabs button.active,
+body.atsrs-light-mode .cert-mode-buttons button.active,
+body.atsrs-light-mode .mode-choice button.active{
+  background:rgba(34,197,94,.11)!important;
+  border-color:rgba(34,197,94,.24)!important;
+  color:#0f5132!important;
+}
+
+/* Primary buttons remain clearly actionable, not menu-like */
+button:not(.secondary):not(.linkbtn):not(.atsrs-sidebar-toggle):not(.atsrs-theme-toggle):not(.lang-menu button):not(.nav button):not(.account-tabs button):not(.module-tabs button):not(.cert-mode-buttons button):not(.mode-choice button){
+  box-shadow:0 10px 24px rgba(37,99,235,.18)!important;
+}
+.top-logout{
+  background:transparent!important;
+  border:1px solid rgba(220,38,38,.35)!important;
+  color:#fecaca!important;
+  box-shadow:none!important;
+}
+.top-logout:hover{background:rgba(220,38,38,.12)!important;}
+body.atsrs-light-mode .top-logout{color:#991b1b!important;border-color:rgba(220,38,38,.30)!important;}
+
+/* Status colors keep meaning in both themes */
+body.atsrs-light-mode .good{color:#15803d!important;}
+body.atsrs-light-mode .warning{color:#b45309!important;}
+body.atsrs-light-mode .danger,
+body.atsrs-light-mode .missing{color:#dc2626!important;}
+
+/* Theme toggle remains neutral and compact */
+.atsrs-theme-toggle{
+  background:transparent!important;
+  border:1px solid rgba(148,163,184,.22)!important;
+  box-shadow:none!important;
+}
+.atsrs-theme-toggle:hover{background:rgba(148,163,184,.10)!important;}
+body.atsrs-light-mode .atsrs-theme-toggle{
+  background:transparent!important;
+  border-color:rgba(15,23,42,.12)!important;
+  box-shadow:none!important;
+}
+body.atsrs-light-mode .atsrs-theme-toggle:hover{background:rgba(15,23,42,.055)!important;}
+</style>
+
+<script id="atsrs-v83-theme-menu-safety-check">
+(function(){
+  var LANGS={en:['🇬🇧','English'],az:['🇦🇿','Azərbaycan'],ru:['🇷🇺','Русский']};
+  var order=['en','az','ru'];
+  function safeLang(){
+    try{return localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||document.documentElement.lang||'en';}
+    catch(e){return 'en';}
+  }
+  function normalizeLangMenu(){
+    document.querySelectorAll('.lang-menu').forEach(function(menu){
+      var buttons=Array.prototype.slice.call(menu.querySelectorAll('button'));
+      buttons.forEach(function(btn,i){
+        var code=order[i];
+        if(!LANGS[code]) return;
+        btn.innerHTML='<span>'+LANGS[code][0]+'</span><b style="font:inherit;font-weight:750">'+LANGS[code][1]+'</b>';
+        btn.classList.toggle('atsrs-lang-active', code===safeLang());
+      });
+    });
+  }
+  function normalizeMenuTitles(){
+    var nav=document.querySelector('#app .sidebar .nav');
+    if(!nav) return;
+    nav.querySelectorAll('button').forEach(function(btn){
+      var txt=(btn.textContent||'').replace(/^\s*[🏠📊👥📁📝🏢📈⚙️🚪]\s*/,'').trim();
+      if(txt) btn.setAttribute('title',txt);
+    });
+  }
+  function run(){normalizeLangMenu();normalizeMenuTitles();}
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function' && !oldChange.__v83MenuWrapped){
+    var wrapped=function(){var r=oldChange.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrapped.__v83MenuWrapped=true;
+    window.changeLanguage=wrapped;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function' && !oldApply.__v83MenuWrapped){
+    var wrappedApply=function(){var r=oldApply.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrappedApply.__v83MenuWrapped=true;
+    window.applyLanguage=wrappedApply;
+  }
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('load',run);
+  setTimeout(run,0);setTimeout(run,500);setInterval(run,1800);
+})();
+</script>
+
+
+<!-- V84: Sidebar/Menu corrections requested by user -->
+<style id="atsrs-v84-sidebar-lang-fixes">
+/* Sidebar hamburger: always 3-line icon, positioned at ATSRS title level */
+#app .sidebar{position:relative!important;}
+#app .brand{padding-right:48px!important;}
+#app .atsrs-sidebar-toggle{
+  position:absolute!important;
+  top:18px!important;
+  right:14px!important;
+  left:auto!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:var(--atsrs-text,#f3f7fb)!important;
+  box-shadow:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:0!important;
+  line-height:1!important;
+  z-index:6!important;
+}
+#app .atsrs-sidebar-toggle::before{
+  content:'☰'!important;
+  font-size:25px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  color:inherit!important;
+}
+#app .atsrs-sidebar-toggle:hover{background:rgba(148,163,184,.10)!important;filter:none!important;}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle{color:#102033!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle:hover{background:rgba(15,23,42,.06)!important;}
+
+/* In collapsed mode keep the same hamburger icon, no arrow, no colored card */
+#app.app.sidebar-collapsed .atsrs-sidebar-toggle{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  margin:0 auto 14px!important;
+  width:46px!important;
+  height:42px!important;
+}
+#app.app.sidebar-collapsed .atsrs-sidebar-toggle::before{content:'☰'!important;font-size:24px!important;}
+
+/* Personal/default account: remove company-only Personnel from sidebar. Logout already exists in top-right, so remove sidebar logout always. */
+#app #navLogout{display:none!important;}
+body:not(.company-mode) #app #navPersonnel,
+body.personal-mode #app #navPersonnel{display:none!important;}
+body.company-mode #app #navPersonnel{display:flex!important;}
+
+/* If the app has not yet received a mode class, treat it as personal UI until company mode is explicitly selected. */
+body:not(.company-mode):not(.personal-mode) #app #navPersonnel{display:none!important;}
+
+/* Language dropdown: left-aligned compact list, no centered text, no checkmark. */
+#app .lang-menu,
+#auth .lang-menu,
+.lang-menu{
+  width:190px!important;
+  min-width:190px!important;
+  padding:8px!important;
+  border-radius:16px!important;
+}
+.lang-menu button{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  width:100%!important;
+  min-height:42px!important;
+  padding:9px 11px!important;
+  margin:1px 0!important;
+  text-align:left!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  color:inherit!important;
+}
+.lang-menu button span:first-child{
+  width:25px!important;
+  min-width:25px!important;
+  display:inline-flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  margin:0!important;
+}
+.lang-menu button b,
+.lang-menu button .atsrs-lang-name{
+  flex:0 1 auto!important;
+  text-align:left!important;
+  font:inherit!important;
+  font-weight:750!important;
+  margin:0!important;
+}
+.lang-menu button.atsrs-lang-active{
+  background:rgba(148,163,184,.12)!important;
+  border-left:3px solid rgba(34,197,94,.90)!important;
+  padding-left:8px!important;
+}
+.lang-menu button.atsrs-lang-active::after{content:none!important;display:none!important;}
+body.atsrs-light-mode .lang-menu button.atsrs-lang-active{background:#eef5ff!important;border-left-color:#16a34a!important;}
+
+/* Make nav items simpler: background belongs to sidebar, not every button. */
+#app .sidebar .nav button{
+  background:transparent!important;
+  border:1px solid transparent!important;
+  box-shadow:none!important;
+}
+#app .sidebar .nav button:hover{background:rgba(148,163,184,.09)!important;border-color:rgba(148,163,184,.18)!important;}
+#app .sidebar .nav button.active{
+  background:rgba(34,197,94,.13)!important;
+  border-color:rgba(34,197,94,.55)!important;
+  box-shadow:none!important;
+}
+body.atsrs-light-mode #app .sidebar .nav button{background:transparent!important;color:#203247!important;border-color:transparent!important;}
+body.atsrs-light-mode #app .sidebar .nav button:hover{background:rgba(15,23,42,.055)!important;border-color:rgba(15,23,42,.10)!important;}
+body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94,.12)!important;color:#102033!important;border-color:rgba(34,197,94,.45)!important;}
+
+@media(max-width:800px){
+  #app .atsrs-sidebar-toggle{top:14px!important;right:12px!important;}
+  #app .brand{padding-right:44px!important;}
+}
+</style>
+
+<script id="atsrs-v84-sidebar-lang-fixes-script">
+(function(){
+  var LANGS={en:['🇬🇧','English'],az:['🇦🇿','Azərbaycan'],ru:['🇷🇺','Русский']};
+  var ORDER=['en','az','ru'];
+  function currentLang(){
+    try{return localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||document.documentElement.lang||'en';}
+    catch(e){return 'en';}
+  }
+  function setSidebarToggleIcon(){
+    document.querySelectorAll('#app .atsrs-sidebar-toggle').forEach(function(btn){
+      btn.innerHTML='';
+      btn.title=(document.getElementById('app')&&document.getElementById('app').classList.contains('sidebar-collapsed'))?'Open menu':'Collapse menu';
+      btn.setAttribute('aria-label',btn.title);
+    });
+  }
+  function normalizeLangMenus(){
+    document.querySelectorAll('.lang-menu').forEach(function(menu){
+      var buttons=Array.prototype.slice.call(menu.querySelectorAll('button'));
+      buttons.forEach(function(btn,i){
+        var onclick=btn.getAttribute('onclick')||'';
+        var found=onclick.match(/changeLanguage\('([^']+)'\)/);
+        var code=(found&&found[1])||ORDER[i]||'en';
+        if(!LANGS[code]) code=ORDER[i]||'en';
+        btn.innerHTML='<span>'+LANGS[code][0]+'</span><b>'+LANGS[code][1]+'</b>';
+        btn.classList.toggle('atsrs-lang-active',code===currentLang());
+      });
+    });
+  }
+  function enforcePersonalSidebar(){
+    var logout=document.getElementById('navLogout');
+    if(logout) logout.style.display='none';
+    var personnel=document.getElementById('navPersonnel');
+    if(personnel){
+      var company=document.body.classList.contains('company-mode');
+      personnel.style.display=company?'flex':'none';
+    }
+  }
+  function run(){setSidebarToggleIcon();normalizeLangMenus();enforcePersonalSidebar();}
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'&&!oldChange.__v84Wrapped){
+    var wrapped=function(){var r=oldChange.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrapped.__v84Wrapped=true; window.changeLanguage=wrapped;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'&&!oldApply.__v84Wrapped){
+    var wrappedApply=function(){var r=oldApply.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrappedApply.__v84Wrapped=true; window.applyLanguage=wrappedApply;
+  }
+  var oldShowMode=window.setMode;
+  if(typeof oldShowMode==='function'&&!oldShowMode.__v84Wrapped){
+    var wrappedMode=function(){var r=oldShowMode.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrappedMode.__v84Wrapped=true; window.setMode=wrappedMode;
+  }
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('load',run);
+  setTimeout(run,0);setTimeout(run,300);setTimeout(run,900);setInterval(run,1500);
+})();
+</script>
+
+
+<!-- V85: Dark-only mode. Light mode removed until final design pass. -->
+<style id="atsrs-v85-dark-only-lock">
+  /* Hide/remove global light-dark switcher everywhere */
+  .atsrs-theme-toggle,
+  #atsrsThemeToggle,
+  #authThemeToggle,
+  [data-atsrs-theme-toggle],
+  button[aria-label*="Light"],
+  button[aria-label*="Dark"],
+  button[title*="Light mode"],
+  button[title*="Dark mode"]{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  /* Keep the app in one dark visual language for now */
+  html, html[data-atsrs-theme], body, body.atsrs-light-mode{
+    color-scheme:dark!important;
+    background:#07111d!important;
+    color:#f3f7fb!important;
+  }
+  body.atsrs-light-mode .auth,
+  body.atsrs-light-mode #app,
+  body.atsrs-light-mode .app,
+  body.atsrs-light-mode .sidebar,
+  body.atsrs-light-mode .main,
+  body.atsrs-light-mode .card,
+  body.atsrs-light-mode .panel,
+  body.atsrs-light-mode .auth-card,
+  body.atsrs-light-mode .auth-intro,
+  body.atsrs-light-mode .workflow-card,
+  body.atsrs-light-mode .snapshot-card,
+  body.atsrs-light-mode .intro-hero,
+  body.atsrs-light-mode .intro-service-card,
+  body.atsrs-light-mode .feature-tile,
+  body.atsrs-light-mode .lang-menu,
+  body.atsrs-light-mode .modal,
+  body.atsrs-light-mode dialog,
+  body.atsrs-light-mode .scan-box,
+  body.atsrs-light-mode .preview-box,
+  body.atsrs-light-mode .import-box,
+  body.atsrs-light-mode .upload-simple,
+  body.atsrs-light-mode .cv-beta-box,
+  body.atsrs-light-mode .company-import-box,
+  body.atsrs-light-mode .preview-profile{
+    background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98))!important;
+    color:#f3f7fb!important;
+    border-color:#264058!important;
+  }
+  body.atsrs-light-mode input,
+  body.atsrs-light-mode select,
+  body.atsrs-light-mode textarea{
+    background:#081524!important;
+    color:#f8fafc!important;
+    border-color:#263f58!important;
+  }
+  body.atsrs-light-mode #app .sidebar .nav button,
+  body.atsrs-light-mode .lang-menu button{
+    background:transparent!important;
+    color:#f3f7fb!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+  }
+  body.atsrs-light-mode #app .sidebar .nav button:hover,
+  body.atsrs-light-mode .lang-menu button:hover{
+    background:rgba(148,163,184,.09)!important;
+  }
+  body.atsrs-light-mode #app .sidebar .nav button.active,
+  body.atsrs-light-mode .lang-menu button.atsrs-lang-active{
+    background:rgba(34,197,94,.13)!important;
+    border-color:rgba(34,197,94,.55)!important;
+    color:#f8fafc!important;
+  }
+</style>
+<script id="atsrs-v85-dark-only-script">
+(function(){
+  function forceDarkOnly(){
+    try{
+      localStorage.setItem('atsrs_theme_mode','dark');
+      localStorage.removeItem('atsrs_theme');
+      localStorage.removeItem('theme');
+    }catch(e){}
+    document.documentElement.setAttribute('data-atsrs-theme','dark');
+    document.body && document.body.classList.remove('atsrs-light-mode','light-mode','theme-light');
+    document.body && document.body.classList.add('atsrs-dark-mode');
+    document.querySelectorAll('.atsrs-theme-toggle,#atsrsThemeToggle,#authThemeToggle,[data-atsrs-theme-toggle]').forEach(function(x){x.remove();});
+  }
+  // Disable old toggle functions safely if they exist.
+  window.atsrsApplyTheme=function(){forceDarkOnly();};
+  window.atsrsToggleTheme=function(){forceDarkOnly();};
+  document.addEventListener('DOMContentLoaded',forceDarkOnly);
+  window.addEventListener('load',forceDarkOnly);
+  setTimeout(forceDarkOnly,0);
+  setTimeout(forceDarkOnly,200);
+  setTimeout(forceDarkOnly,900);
+  setInterval(forceDarkOnly,1200);
+})();
+</script>
+
+
+<!-- V86: Final language menu canonical lock + dark-only cleanup -->
+<style id="atsrs-v86-final-language-dark-lock">
+  /* Remove any remaining moon/sun theme switcher while light mode is postponed */
+  .atsrs-theme-toggle,
+  #atsrsThemeToggle,
+  #authThemeToggle,
+  [data-atsrs-theme-toggle],
+  .top-actions button:not(.lang-circle):not(.top-logout):has(.atsrs-theme-icon),
+  .top-actions .atsrs-theme-switch,
+  .top-actions .theme-switch,
+  .theme-toggle{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
+  /* Keep existing nice language menu design, but prevent translated label drift */
+  .lang-menu button{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:14px!important;
+    text-align:left!important;
+  }
+  .lang-menu button span:first-child,
+  .lang-menu button .atsrs-lang-flag{
+    width:34px!important;
+    min-width:34px!important;
+    display:inline-flex!important;
+    justify-content:center!important;
+    align-items:center!important;
+    margin:0!important;
+  }
+  .lang-menu button b,
+  .lang-menu button .atsrs-lang-name{
+    text-align:left!important;
+    flex:1 1 auto!important;
+    font:inherit!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+  }
+  .lang-menu button.atsrs-lang-active::after{content:none!important;display:none!important;}
+</style>
+<script id="atsrs-v86-final-language-dark-lock-script">
+(function(){
+  var CANON={
+    en:{flag:'🇬🇧',label:'English'},
+    az:{flag:'🇦🇿',label:'Azərbaycan'},
+    ru:{flag:'🇷🇺',label:'Русский'}
+  };
+  var ORDER=['en','az','ru'];
+  function getLang(){
+    try{
+      var v=(typeof window.lang!=='undefined'&&window.lang)||localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||document.documentElement.lang||'en';
+      v=String(v).toLowerCase();
+      if(v.indexOf('az')===0) return 'az';
+      if(v.indexOf('ru')===0) return 'ru';
+      return 'en';
+    }catch(e){return 'en';}
+  }
+  function codeFromButton(btn,idx){
+    var onclick=btn.getAttribute('onclick')||'';
+    var m=onclick.match(/changeLanguage\(['\"]([^'\"]+)['\"]\)/);
+    if(m && CANON[m[1]]) return m[1];
+    return ORDER[idx]||'en';
+  }
+  function lockLanguageMenus(){
+    var current=getLang();
+    document.querySelectorAll('.lang-menu').forEach(function(menu){
+      var buttons=Array.prototype.slice.call(menu.querySelectorAll('button'));
+      buttons.forEach(function(btn,idx){
+        var code=codeFromButton(btn,idx);
+        var item=CANON[code]||CANON.en;
+        btn.innerHTML='<span class="atsrs-lang-flag">'+item.flag+'</span><b class="atsrs-lang-name">'+item.label+'</b>';
+        btn.classList.toggle('atsrs-lang-active',code===current);
+        btn.setAttribute('data-lang-fixed',code);
+      });
+    });
+    var circle=document.getElementById('langCircle');
+    var appCircle=document.getElementById('appLangCircle');
+    if(circle) circle.textContent=CANON[current].flag;
+    if(appCircle) appCircle.textContent=CANON[current].flag;
+  }
+  function removeThemeSwitchers(){
+    document.querySelectorAll('.atsrs-theme-toggle,#atsrsThemeToggle,#authThemeToggle,[data-atsrs-theme-toggle],.theme-toggle,.theme-switch,.atsrs-theme-switch').forEach(function(el){el.remove();});
+    document.querySelectorAll('.top-actions button').forEach(function(btn){
+      var t=(btn.textContent||'').trim();
+      if((t.indexOf('🌙')!==-1 || t.indexOf('☀️')!==-1 || t.indexOf('☀')!==-1) && !btn.classList.contains('lang-circle') && !btn.classList.contains('top-logout')){
+        btn.remove();
+      }
+    });
+    try{
+      localStorage.setItem('atsrs_theme_mode','dark');
+      localStorage.removeItem('atsrs_theme');
+      localStorage.removeItem('theme');
+    }catch(e){}
+    document.documentElement.setAttribute('data-atsrs-theme','dark');
+    if(document.body){document.body.classList.remove('atsrs-light-mode','light-mode','theme-light');document.body.classList.add('atsrs-dark-mode');}
+  }
+  function run(){removeThemeSwitchers();lockLanguageMenus();}
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function' && !oldChange.__v86LangLock){
+    var wrapped=function(){var r=oldChange.apply(this,arguments);setTimeout(run,0);setTimeout(run,80);setTimeout(run,250);return r;};
+    wrapped.__v86LangLock=true;
+    window.changeLanguage=wrapped;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function' && !oldApply.__v86LangLock){
+    var wrappedApply=function(){var r=oldApply.apply(this,arguments);setTimeout(run,0);setTimeout(run,80);setTimeout(run,250);return r;};
+    wrappedApply.__v86LangLock=true;
+    window.applyLanguage=wrappedApply;
+  }
+  try{
+    var obs=new MutationObserver(function(){setTimeout(run,0);});
+    document.addEventListener('DOMContentLoaded',function(){
+      obs.observe(document.body,{childList:true,subtree:true,characterData:true});
+      run();
+    });
+  }catch(e){document.addEventListener('DOMContentLoaded',run);}
+  window.addEventListener('load',run);
+  setTimeout(run,0);setTimeout(run,200);setTimeout(run,700);setInterval(run,1200);
+})();
+</script>
+
+
+<style>
+/* V87: softer usage validation and left-side trial promo */
+.mode-choice.mode-error{border:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;}
+.mode-choice.mode-error button{border-color:rgba(248,113,113,.62)!important;box-shadow:0 0 0 1px rgba(248,113,113,.13) inset!important;}
+.mode-error-text{display:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:4px 2px!important;margin:2px 0 12px!important;color:#fb7185!important;font-size:13px!important;font-weight:800!important;line-height:1.35!important;align-items:center!important;gap:8px!important;}
+.mode-error-text.active{display:flex!important;}
+.mode-error-text::before{content:'!';width:18px;height:18px;min-width:18px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(248,113,113,.8);color:#fecaca;background:rgba(248,113,113,.12);font-size:12px;font-weight:900;}
+.auth-card #trialBox{display:none!important;}
+.auth-intro .trial-promo-left{display:block!important;margin:18px 0 0!important;padding:18px!important;border:1px solid rgba(34,197,94,.42)!important;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(8,21,36,.92))!important;border-radius:20px!important;box-shadow:0 18px 45px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.05)!important;}
+.trial-promo-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.trial-promo-head h3{margin:0!important;font-size:20px!important;color:#dcfce7!important;letter-spacing:-.01em;}
+.auth-intro .trial-promo-left p{margin:0 0 10px!important;color:#d7e5ef!important;font-size:14px!important;line-height:1.5!important;}
+.trial-promo-note{color:#bbf7d0!important;font-size:13px!important;font-weight:900!important;margin:8px 0 12px!important;}
+.trial-promo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.trial-promo-grid span{display:flex;align-items:center;gap:7px;border:1px solid rgba(134,239,172,.18);background:rgba(2,6,23,.28);border-radius:12px;padding:9px 10px;color:#dbeafe;font-size:12.5px;font-weight:800;}
+.trial-promo-grid span::before{content:'✓';color:#86efac;font-weight:900;}
+@media(max-width:760px){.trial-promo-grid{grid-template-columns:1fr;}.auth-intro .trial-promo-left{padding:15px!important;}}
+</style>
+<script>
+/* V87: keep the wide trial copy synced with current language */
+(function(){
+  const C={
+    en:{title:'7-day free trial',text:'Test ATSRS for 7 days with no card required during this test build. Store documents, review expiry status and prepare your profile before inviting others.',note:'Personal and Company mode included.',b1:'Secure document vault',b2:'Expiry tracking',b3:'Employer-ready profile',b4:'Company compliance support'},
+    az:{title:'7 günlük pulsuz trial',text:'Bu test build zamanı kart tələb olunmadan ATSRS-i 7 gün yoxla. Sənədləri saxla, bitmə statusunu izlə və başqalarını dəvət etməzdən əvvəl profilini hazırla.',note:'Fərdi və şirkət rejimi daxildir.',b1:'Təhlükəsiz sənəd arxivi',b2:'Bitmə tarixi izləmə',b3:'İşəgötürənə hazır profil',b4:'Şirkət compliance dəstəyi'},
+    ru:{title:'7-дневный бесплатный trial',text:'Проверьте ATSRS 7 дней без банковской карты в этом test build. Храните документы, отслеживайте сроки и подготовьте профиль перед приглашением других пользователей.',note:'Личный и корпоративный режим включены.',b1:'Безопасный архив документов',b2:'Контроль сроков действия',b3:'Профиль для работодателя',b4:'Поддержка compliance компании'}
+  };
+  function getLang(){try{return (localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||'en').slice(0,2);}catch(e){return (window.lang||'en').slice(0,2);}}
+  window.atsrsV87ApplyTrialPromo=function(){const t=C[getLang()]||C.en;const m={trialTitle:t.title,trialText:t.text,trialNote:t.note,trialBullet1:t.b1,trialBullet2:t.b2,trialBullet3:t.b3,trialBullet4:t.b4};Object.keys(m).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=m[id];});};
+  const oldApply=window.applyLanguage;if(typeof oldApply==='function'){window.applyLanguage=function(){const r=oldApply.apply(this,arguments);setTimeout(window.atsrsV87ApplyTrialPromo,0);return r;};}
+  const oldChange=window.changeLanguage;if(typeof oldChange==='function'){window.changeLanguage=function(){const r=oldChange.apply(this,arguments);setTimeout(window.atsrsV87ApplyTrialPromo,0);setTimeout(window.atsrsV87ApplyTrialPromo,80);return r;};}
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(window.atsrsV87ApplyTrialPromo,0));
+  setTimeout(window.atsrsV87ApplyTrialPromo,300);
 })();
 </script>
 
