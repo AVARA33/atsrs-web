@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V77</div>
-<div>Last Update: 06 Jun 2026 01:05 UTC</div>
+<div>ATSRS V78</div>
+<div>Last Update: 06 Jun 2026 01:25 UTC</div>
 <div>AUTH DEBUG BUILD</div>
 </div>
 </div>
@@ -1133,6 +1133,36 @@ body:not(.atsrs-booting) #app{
       <span id="step4Text">Allow companies to download or import selected documents.</span>
       <div class="approve-flow"><i>Request</i><i>Approve</i><i>Import</i></div>
     </div>
+  </div>
+</div>
+
+<div id="atsrsValueExpansion" class="atsrs-value-expansion" aria-label="ATSRS platform value sections">
+  <div class="atsrs-value-card highlight">
+    <span class="value-icon">📊</span>
+    <h3 id="valueSnapshotTitle">Compliance Snapshot</h3>
+    <p id="valueSnapshotText">See valid, expiring, expired and missing documents in one fast overview.</p>
+    <div class="value-mini-stats"><span>Valid</span><span>Expiring</span><span>Expired</span><span>Missing</span></div>
+  </div>
+  <div class="atsrs-value-card">
+    <span class="value-icon">🔔</span>
+    <h3 id="valueAlertsTitle">Smart Alerts</h3>
+    <p id="valueAlertsText">Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.</p>
+  </div>
+  <div class="atsrs-value-card">
+    <span class="value-icon">🤖</span>
+    <h3 id="valueAiTitle">AI Document Assistant</h3>
+    <p id="valueAiText">Extract name, certificate number, issue date and expiry date from uploaded documents.</p>
+  </div>
+  <div class="atsrs-value-card">
+    <span class="value-icon">📄</span>
+    <h3 id="valueCvTitle">ATSRS CV Generator</h3>
+    <p id="valueCvText">Build export-ready CV and compliance packs for company or client submission.</p>
+  </div>
+  <div class="atsrs-value-card wide">
+    <span class="value-icon">🏢</span>
+    <h3 id="valueIndustriesTitle">Supported Industries</h3>
+    <p id="valueIndustriesText">Designed for Offshore, ROV, NDT, Marine, Survey, Renewables and Oil & Gas teams.</p>
+    <div class="industry-strip"><span>Offshore</span><span>ROV</span><span>NDT</span><span>Marine</span><span>Survey</span><span>Renewables</span><span>Oil & Gas</span></div>
   </div>
 </div>
 </section>
@@ -4409,6 +4439,60 @@ body > .atsrs-v64-top-actions .lang-menu{
   };
   document.addEventListener('DOMContentLoaded',()=>{v77EnsureHealthBox(); setTimeout(v77CheckBackend,500);});
   setTimeout(()=>{v77EnsureHealthBox(); if(document.getElementById('auth')&&!document.getElementById('auth').classList.contains('hidden')) v77CheckBackend();},1200);
+})();
+</script>
+
+
+
+<!-- V78: Language selector cleanup + ATSRS landing expansion -->
+<style>
+.atsrs-value-expansion{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0 22px}
+.atsrs-value-card{background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98));border:1px solid rgba(67,92,118,.94);border-radius:20px;padding:16px;min-height:150px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.atsrs-value-card.highlight{border-color:rgba(34,197,94,.62);box-shadow:0 0 0 1px rgba(34,197,94,.08), inset 0 1px 0 rgba(255,255,255,.04)}
+.atsrs-value-card.wide{grid-column:span 2}
+.atsrs-value-card h3{margin:8px 0 7px;font-size:18px;color:#f8fafc}.atsrs-value-card p{margin:0;color:#a7b5c5;line-height:1.45;font-size:14px}
+.value-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(56,189,248,.12));border:1px solid rgba(134,239,172,.22)}
+.value-mini-stats,.industry-strip{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.value-mini-stats span,.industry-strip span{border:1px solid #334155;background:#071524;border-radius:999px;padding:6px 9px;color:#cbd5e1;font-size:12px;font-weight:800}
+.lang-menu button{display:flex!important;align-items:center!important;gap:10px!important}.lang-menu button span{width:26px!important;display:inline-flex!important;justify-content:center!important}.lang-menu button .atsrs-lang-name{flex:1;text-align:left}
+@media(max-width:760px){.atsrs-value-card.wide{grid-column:auto}.atsrs-value-expansion{grid-template-columns:1fr}.atsrs-value-card{min-height:auto}}
+</style>
+<script>
+(function(){
+  const LANG_LABELS={en:'English',az:'Azərbaycan',ru:'Русский'};
+  const VALUE_TEXT={
+    en:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'See valid, expiring, expired and missing documents in one fast overview.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.',valueAiTitle:'AI Document Assistant',valueAiText:'Extract name, certificate number, issue date and expiry date from uploaded documents.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Build export-ready CV and compliance packs for company or client submission.',valueIndustriesTitle:'Supported Industries',valueIndustriesText:'Designed for Offshore, ROV, NDT, Marine, Survey, Renewables and Oil & Gas teams.'},
+    az:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'Aktiv, bitməyə yaxın, vaxtı keçmiş və çatışmayan sənədləri bir baxışda göstərir.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Bitmə tarixindən 90, 30, 14 və 7 gün əvvəl email və WhatsApp xatırlatmaları üçün hazır məntiq.',valueAiTitle:'AI Document Assistant',valueAiText:'Yüklənmiş sənəddən ad, sertifikat nömrəsi, verilmə tarixi və bitmə tarixini çıxarmağa kömək edir.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Şirkət və ya müştəri təqdimatı üçün hazır CV və compliance paketləri yaratmaq üçün nəzərdə tutulub.',valueIndustriesTitle:'Dəstəklənən sahələr',valueIndustriesText:'Offshore, ROV, NDT, Marine, Survey, Renewables və Oil & Gas komandaları üçün dizayn edilib.'},
+    ru:{valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'Показывает действующие, истекающие, просроченные и отсутствующие документы в одном обзоре.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Подготовка email и WhatsApp напоминаний за 90, 30, 14 и 7 дней до окончания срока.',valueAiTitle:'AI Document Assistant',valueAiText:'Помогает извлекать имя, номер сертификата, дату выдачи и срок действия из загруженных документов.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Для создания готового CV и compliance-пакетов для отправки компании или клиенту.',valueIndustriesTitle:'Поддерживаемые отрасли',valueIndustriesText:'Создано для Offshore, ROV, NDT, Marine, Survey, Renewables и Oil & Gas команд.'}
+  };
+  function currentLang(){try{return (typeof lang!=='undefined'&&lang)||localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||'en'}catch(e){return 'en'}}
+  function cleanLangMenus(){
+    const menus=[document.getElementById('langMenu'),document.getElementById('appLangMenu')].filter(Boolean);
+    menus.forEach(menu=>{
+      const buttons=menu.querySelectorAll('button');
+      const order=['en','az','ru'];
+      buttons.forEach((btn,i)=>{
+        const code=(btn.getAttribute('onclick')||'').match(/changeLanguage\('([^']+)'\)/)?.[1]||order[i]||'en';
+        const flag=code==='en'?'🇬🇧':code==='az'?'🇦🇿':'🇷🇺';
+        btn.innerHTML='<span>'+flag+'</span><span class="atsrs-lang-name">'+LANG_LABELS[code]+'</span>';
+      });
+    });
+  }
+  function applyValueText(){
+    const L=VALUE_TEXT[currentLang()]||VALUE_TEXT.en;
+    Object.keys(L).forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=L[id];});
+  }
+  function v78Apply(){cleanLangMenus();applyValueText();}
+  window.atsrsV78Apply=v78Apply;
+  const oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'){
+    window.applyLanguage=function(){const r=oldApply.apply(this,arguments);setTimeout(v78Apply,0);return r;};
+  }
+  const oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'){
+    window.changeLanguage=function(){const r=oldChange.apply(this,arguments);setTimeout(v78Apply,0);setTimeout(v78Apply,80);return r;};
+  }
+  ['DOMContentLoaded','load'].forEach(e=>window.addEventListener(e,()=>setTimeout(v78Apply,0)));
+  setTimeout(v78Apply,0);setTimeout(v78Apply,300);setInterval(v78Apply,1500);
 })();
 </script>
 
