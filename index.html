@@ -1033,8 +1033,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V83</div>
-<div>Last Update: 06 Jun 2026 0225 UTC</div>
+<div>ATSRS V84</div>
+<div>Last Update: 06 Jun 2026 0325 UTC</div>
 <div>LANGUAGE + THEME CLEANUP BUILD</div>
 </div>
 </div>
@@ -5262,5 +5262,195 @@ body.atsrs-light-mode .atsrs-theme-toggle:hover{background:rgba(15,23,42,.055)!i
   setTimeout(run,0);setTimeout(run,500);setInterval(run,1800);
 })();
 </script>
+
+
+<!-- V84: Sidebar/Menu corrections requested by user -->
+<style id="atsrs-v84-sidebar-lang-fixes">
+/* Sidebar hamburger: always 3-line icon, positioned at ATSRS title level */
+#app .sidebar{position:relative!important;}
+#app .brand{padding-right:48px!important;}
+#app .atsrs-sidebar-toggle{
+  position:absolute!important;
+  top:18px!important;
+  right:14px!important;
+  left:auto!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:var(--atsrs-text,#f3f7fb)!important;
+  box-shadow:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:0!important;
+  line-height:1!important;
+  z-index:6!important;
+}
+#app .atsrs-sidebar-toggle::before{
+  content:'☰'!important;
+  font-size:25px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  color:inherit!important;
+}
+#app .atsrs-sidebar-toggle:hover{background:rgba(148,163,184,.10)!important;filter:none!important;}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle{color:#102033!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+body.atsrs-light-mode #app .atsrs-sidebar-toggle:hover{background:rgba(15,23,42,.06)!important;}
+
+/* In collapsed mode keep the same hamburger icon, no arrow, no colored card */
+#app.app.sidebar-collapsed .atsrs-sidebar-toggle{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  margin:0 auto 14px!important;
+  width:46px!important;
+  height:42px!important;
+}
+#app.app.sidebar-collapsed .atsrs-sidebar-toggle::before{content:'☰'!important;font-size:24px!important;}
+
+/* Personal/default account: remove company-only Personnel from sidebar. Logout already exists in top-right, so remove sidebar logout always. */
+#app #navLogout{display:none!important;}
+body:not(.company-mode) #app #navPersonnel,
+body.personal-mode #app #navPersonnel{display:none!important;}
+body.company-mode #app #navPersonnel{display:flex!important;}
+
+/* If the app has not yet received a mode class, treat it as personal UI until company mode is explicitly selected. */
+body:not(.company-mode):not(.personal-mode) #app #navPersonnel{display:none!important;}
+
+/* Language dropdown: left-aligned compact list, no centered text, no checkmark. */
+#app .lang-menu,
+#auth .lang-menu,
+.lang-menu{
+  width:190px!important;
+  min-width:190px!important;
+  padding:8px!important;
+  border-radius:16px!important;
+}
+.lang-menu button{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  width:100%!important;
+  min-height:42px!important;
+  padding:9px 11px!important;
+  margin:1px 0!important;
+  text-align:left!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  color:inherit!important;
+}
+.lang-menu button span:first-child{
+  width:25px!important;
+  min-width:25px!important;
+  display:inline-flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  margin:0!important;
+}
+.lang-menu button b,
+.lang-menu button .atsrs-lang-name{
+  flex:0 1 auto!important;
+  text-align:left!important;
+  font:inherit!important;
+  font-weight:750!important;
+  margin:0!important;
+}
+.lang-menu button.atsrs-lang-active{
+  background:rgba(148,163,184,.12)!important;
+  border-left:3px solid rgba(34,197,94,.90)!important;
+  padding-left:8px!important;
+}
+.lang-menu button.atsrs-lang-active::after{content:none!important;display:none!important;}
+body.atsrs-light-mode .lang-menu button.atsrs-lang-active{background:#eef5ff!important;border-left-color:#16a34a!important;}
+
+/* Make nav items simpler: background belongs to sidebar, not every button. */
+#app .sidebar .nav button{
+  background:transparent!important;
+  border:1px solid transparent!important;
+  box-shadow:none!important;
+}
+#app .sidebar .nav button:hover{background:rgba(148,163,184,.09)!important;border-color:rgba(148,163,184,.18)!important;}
+#app .sidebar .nav button.active{
+  background:rgba(34,197,94,.13)!important;
+  border-color:rgba(34,197,94,.55)!important;
+  box-shadow:none!important;
+}
+body.atsrs-light-mode #app .sidebar .nav button{background:transparent!important;color:#203247!important;border-color:transparent!important;}
+body.atsrs-light-mode #app .sidebar .nav button:hover{background:rgba(15,23,42,.055)!important;border-color:rgba(15,23,42,.10)!important;}
+body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94,.12)!important;color:#102033!important;border-color:rgba(34,197,94,.45)!important;}
+
+@media(max-width:800px){
+  #app .atsrs-sidebar-toggle{top:14px!important;right:12px!important;}
+  #app .brand{padding-right:44px!important;}
+}
+</style>
+
+<script id="atsrs-v84-sidebar-lang-fixes-script">
+(function(){
+  var LANGS={en:['🇬🇧','English'],az:['🇦🇿','Azərbaycan'],ru:['🇷🇺','Русский']};
+  var ORDER=['en','az','ru'];
+  function currentLang(){
+    try{return localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||window.lang||document.documentElement.lang||'en';}
+    catch(e){return 'en';}
+  }
+  function setSidebarToggleIcon(){
+    document.querySelectorAll('#app .atsrs-sidebar-toggle').forEach(function(btn){
+      btn.innerHTML='';
+      btn.title=(document.getElementById('app')&&document.getElementById('app').classList.contains('sidebar-collapsed'))?'Open menu':'Collapse menu';
+      btn.setAttribute('aria-label',btn.title);
+    });
+  }
+  function normalizeLangMenus(){
+    document.querySelectorAll('.lang-menu').forEach(function(menu){
+      var buttons=Array.prototype.slice.call(menu.querySelectorAll('button'));
+      buttons.forEach(function(btn,i){
+        var onclick=btn.getAttribute('onclick')||'';
+        var found=onclick.match(/changeLanguage\('([^']+)'\)/);
+        var code=(found&&found[1])||ORDER[i]||'en';
+        if(!LANGS[code]) code=ORDER[i]||'en';
+        btn.innerHTML='<span>'+LANGS[code][0]+'</span><b>'+LANGS[code][1]+'</b>';
+        btn.classList.toggle('atsrs-lang-active',code===currentLang());
+      });
+    });
+  }
+  function enforcePersonalSidebar(){
+    var logout=document.getElementById('navLogout');
+    if(logout) logout.style.display='none';
+    var personnel=document.getElementById('navPersonnel');
+    if(personnel){
+      var company=document.body.classList.contains('company-mode');
+      personnel.style.display=company?'flex':'none';
+    }
+  }
+  function run(){setSidebarToggleIcon();normalizeLangMenus();enforcePersonalSidebar();}
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function'&&!oldChange.__v84Wrapped){
+    var wrapped=function(){var r=oldChange.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrapped.__v84Wrapped=true; window.changeLanguage=wrapped;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function'&&!oldApply.__v84Wrapped){
+    var wrappedApply=function(){var r=oldApply.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrappedApply.__v84Wrapped=true; window.applyLanguage=wrappedApply;
+  }
+  var oldShowMode=window.setMode;
+  if(typeof oldShowMode==='function'&&!oldShowMode.__v84Wrapped){
+    var wrappedMode=function(){var r=oldShowMode.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrappedMode.__v84Wrapped=true; window.setMode=wrappedMode;
+  }
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('load',run);
+  setTimeout(run,0);setTimeout(run,300);setTimeout(run,900);setInterval(run,1500);
+})();
+</script>
+
 </body>
-</html>
+  </html>
