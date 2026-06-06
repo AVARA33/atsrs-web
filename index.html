@@ -1033,9 +1033,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V84</div>
-<div>Last Update: 06 Jun 2026 0325 UTC</div>
-<div>LANGUAGE + THEME CLEANUP BUILD</div>
+<div>ATSRS V86</div>
+<div>Last Update: 06 Jun 2026 04:10 UTC</div>
+<div>LANGUAGE MENU LOCK + DARK ONLY BUILD</div>
 </div>
 </div>
 </section>
@@ -5449,6 +5449,231 @@ body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94
   document.addEventListener('DOMContentLoaded',run);
   window.addEventListener('load',run);
   setTimeout(run,0);setTimeout(run,300);setTimeout(run,900);setInterval(run,1500);
+})();
+</script>
+
+
+<!-- V85: Dark-only mode. Light mode removed until final design pass. -->
+<style id="atsrs-v85-dark-only-lock">
+  /* Hide/remove global light-dark switcher everywhere */
+  .atsrs-theme-toggle,
+  #atsrsThemeToggle,
+  #authThemeToggle,
+  [data-atsrs-theme-toggle],
+  button[aria-label*="Light"],
+  button[aria-label*="Dark"],
+  button[title*="Light mode"],
+  button[title*="Dark mode"]{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  /* Keep the app in one dark visual language for now */
+  html, html[data-atsrs-theme], body, body.atsrs-light-mode{
+    color-scheme:dark!important;
+    background:#07111d!important;
+    color:#f3f7fb!important;
+  }
+  body.atsrs-light-mode .auth,
+  body.atsrs-light-mode #app,
+  body.atsrs-light-mode .app,
+  body.atsrs-light-mode .sidebar,
+  body.atsrs-light-mode .main,
+  body.atsrs-light-mode .card,
+  body.atsrs-light-mode .panel,
+  body.atsrs-light-mode .auth-card,
+  body.atsrs-light-mode .auth-intro,
+  body.atsrs-light-mode .workflow-card,
+  body.atsrs-light-mode .snapshot-card,
+  body.atsrs-light-mode .intro-hero,
+  body.atsrs-light-mode .intro-service-card,
+  body.atsrs-light-mode .feature-tile,
+  body.atsrs-light-mode .lang-menu,
+  body.atsrs-light-mode .modal,
+  body.atsrs-light-mode dialog,
+  body.atsrs-light-mode .scan-box,
+  body.atsrs-light-mode .preview-box,
+  body.atsrs-light-mode .import-box,
+  body.atsrs-light-mode .upload-simple,
+  body.atsrs-light-mode .cv-beta-box,
+  body.atsrs-light-mode .company-import-box,
+  body.atsrs-light-mode .preview-profile{
+    background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(8,18,31,.98))!important;
+    color:#f3f7fb!important;
+    border-color:#264058!important;
+  }
+  body.atsrs-light-mode input,
+  body.atsrs-light-mode select,
+  body.atsrs-light-mode textarea{
+    background:#081524!important;
+    color:#f8fafc!important;
+    border-color:#263f58!important;
+  }
+  body.atsrs-light-mode #app .sidebar .nav button,
+  body.atsrs-light-mode .lang-menu button{
+    background:transparent!important;
+    color:#f3f7fb!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+  }
+  body.atsrs-light-mode #app .sidebar .nav button:hover,
+  body.atsrs-light-mode .lang-menu button:hover{
+    background:rgba(148,163,184,.09)!important;
+  }
+  body.atsrs-light-mode #app .sidebar .nav button.active,
+  body.atsrs-light-mode .lang-menu button.atsrs-lang-active{
+    background:rgba(34,197,94,.13)!important;
+    border-color:rgba(34,197,94,.55)!important;
+    color:#f8fafc!important;
+  }
+</style>
+<script id="atsrs-v85-dark-only-script">
+(function(){
+  function forceDarkOnly(){
+    try{
+      localStorage.setItem('atsrs_theme_mode','dark');
+      localStorage.removeItem('atsrs_theme');
+      localStorage.removeItem('theme');
+    }catch(e){}
+    document.documentElement.setAttribute('data-atsrs-theme','dark');
+    document.body && document.body.classList.remove('atsrs-light-mode','light-mode','theme-light');
+    document.body && document.body.classList.add('atsrs-dark-mode');
+    document.querySelectorAll('.atsrs-theme-toggle,#atsrsThemeToggle,#authThemeToggle,[data-atsrs-theme-toggle]').forEach(function(x){x.remove();});
+  }
+  // Disable old toggle functions safely if they exist.
+  window.atsrsApplyTheme=function(){forceDarkOnly();};
+  window.atsrsToggleTheme=function(){forceDarkOnly();};
+  document.addEventListener('DOMContentLoaded',forceDarkOnly);
+  window.addEventListener('load',forceDarkOnly);
+  setTimeout(forceDarkOnly,0);
+  setTimeout(forceDarkOnly,200);
+  setTimeout(forceDarkOnly,900);
+  setInterval(forceDarkOnly,1200);
+})();
+</script>
+
+
+<!-- V86: Final language menu canonical lock + dark-only cleanup -->
+<style id="atsrs-v86-final-language-dark-lock">
+  /* Remove any remaining moon/sun theme switcher while light mode is postponed */
+  .atsrs-theme-toggle,
+  #atsrsThemeToggle,
+  #authThemeToggle,
+  [data-atsrs-theme-toggle],
+  .top-actions button:not(.lang-circle):not(.top-logout):has(.atsrs-theme-icon),
+  .top-actions .atsrs-theme-switch,
+  .top-actions .theme-switch,
+  .theme-toggle{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
+  /* Keep existing nice language menu design, but prevent translated label drift */
+  .lang-menu button{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:14px!important;
+    text-align:left!important;
+  }
+  .lang-menu button span:first-child,
+  .lang-menu button .atsrs-lang-flag{
+    width:34px!important;
+    min-width:34px!important;
+    display:inline-flex!important;
+    justify-content:center!important;
+    align-items:center!important;
+    margin:0!important;
+  }
+  .lang-menu button b,
+  .lang-menu button .atsrs-lang-name{
+    text-align:left!important;
+    flex:1 1 auto!important;
+    font:inherit!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+  }
+  .lang-menu button.atsrs-lang-active::after{content:none!important;display:none!important;}
+</style>
+<script id="atsrs-v86-final-language-dark-lock-script">
+(function(){
+  var CANON={
+    en:{flag:'🇬🇧',label:'English'},
+    az:{flag:'🇦🇿',label:'Azərbaycan'},
+    ru:{flag:'🇷🇺',label:'Русский'}
+  };
+  var ORDER=['en','az','ru'];
+  function getLang(){
+    try{
+      var v=(typeof window.lang!=='undefined'&&window.lang)||localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||document.documentElement.lang||'en';
+      v=String(v).toLowerCase();
+      if(v.indexOf('az')===0) return 'az';
+      if(v.indexOf('ru')===0) return 'ru';
+      return 'en';
+    }catch(e){return 'en';}
+  }
+  function codeFromButton(btn,idx){
+    var onclick=btn.getAttribute('onclick')||'';
+    var m=onclick.match(/changeLanguage\(['\"]([^'\"]+)['\"]\)/);
+    if(m && CANON[m[1]]) return m[1];
+    return ORDER[idx]||'en';
+  }
+  function lockLanguageMenus(){
+    var current=getLang();
+    document.querySelectorAll('.lang-menu').forEach(function(menu){
+      var buttons=Array.prototype.slice.call(menu.querySelectorAll('button'));
+      buttons.forEach(function(btn,idx){
+        var code=codeFromButton(btn,idx);
+        var item=CANON[code]||CANON.en;
+        btn.innerHTML='<span class="atsrs-lang-flag">'+item.flag+'</span><b class="atsrs-lang-name">'+item.label+'</b>';
+        btn.classList.toggle('atsrs-lang-active',code===current);
+        btn.setAttribute('data-lang-fixed',code);
+      });
+    });
+    var circle=document.getElementById('langCircle');
+    var appCircle=document.getElementById('appLangCircle');
+    if(circle) circle.textContent=CANON[current].flag;
+    if(appCircle) appCircle.textContent=CANON[current].flag;
+  }
+  function removeThemeSwitchers(){
+    document.querySelectorAll('.atsrs-theme-toggle,#atsrsThemeToggle,#authThemeToggle,[data-atsrs-theme-toggle],.theme-toggle,.theme-switch,.atsrs-theme-switch').forEach(function(el){el.remove();});
+    document.querySelectorAll('.top-actions button').forEach(function(btn){
+      var t=(btn.textContent||'').trim();
+      if((t.indexOf('🌙')!==-1 || t.indexOf('☀️')!==-1 || t.indexOf('☀')!==-1) && !btn.classList.contains('lang-circle') && !btn.classList.contains('top-logout')){
+        btn.remove();
+      }
+    });
+    try{
+      localStorage.setItem('atsrs_theme_mode','dark');
+      localStorage.removeItem('atsrs_theme');
+      localStorage.removeItem('theme');
+    }catch(e){}
+    document.documentElement.setAttribute('data-atsrs-theme','dark');
+    if(document.body){document.body.classList.remove('atsrs-light-mode','light-mode','theme-light');document.body.classList.add('atsrs-dark-mode');}
+  }
+  function run(){removeThemeSwitchers();lockLanguageMenus();}
+  var oldChange=window.changeLanguage;
+  if(typeof oldChange==='function' && !oldChange.__v86LangLock){
+    var wrapped=function(){var r=oldChange.apply(this,arguments);setTimeout(run,0);setTimeout(run,80);setTimeout(run,250);return r;};
+    wrapped.__v86LangLock=true;
+    window.changeLanguage=wrapped;
+  }
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function' && !oldApply.__v86LangLock){
+    var wrappedApply=function(){var r=oldApply.apply(this,arguments);setTimeout(run,0);setTimeout(run,80);setTimeout(run,250);return r;};
+    wrappedApply.__v86LangLock=true;
+    window.applyLanguage=wrappedApply;
+  }
+  try{
+    var obs=new MutationObserver(function(){setTimeout(run,0);});
+    document.addEventListener('DOMContentLoaded',function(){
+      obs.observe(document.body,{childList:true,subtree:true,characterData:true});
+      run();
+    });
+  }catch(e){document.addEventListener('DOMContentLoaded',run);}
+  window.addEventListener('load',run);
+  setTimeout(run,0);setTimeout(run,200);setTimeout(run,700);setInterval(run,1200);
 })();
 </script>
 
