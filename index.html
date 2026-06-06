@@ -1043,9 +1043,9 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V86</div>
-<div>Last Update: 06 Jun 2026 04:10 UTC</div>
-<div>LANGUAGE MENU LOCK + DARK ONLY BUILD</div>
+<div>ATSRS V90</div>
+<div>Last Update: 06 Jun 2026 06:15 UTC</div>
+<div>FULL TRANSLATION AUDIT BUILD</div>
 </div>
 </div>
 </section>
@@ -5689,7 +5689,7 @@ body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94
 
 
 <style>
-/* V89: softer usage validation and left-side trial promo */
+/* V87: softer usage validation and left-side trial promo */
 .mode-choice.mode-error{border:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;}
 .mode-choice.mode-error button{border-color:rgba(248,113,113,.62)!important;box-shadow:0 0 0 1px rgba(248,113,113,.13) inset!important;}
 .mode-error-text{display:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:4px 2px!important;margin:2px 0 12px!important;color:#fb7185!important;font-size:13px!important;font-weight:800!important;line-height:1.35!important;align-items:center!important;gap:8px!important;}
@@ -5707,7 +5707,7 @@ body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94
 @media(max-width:760px){.trial-promo-grid{grid-template-columns:1fr;}.auth-intro .trial-promo-left{padding:15px!important;}}
 </style>
 <script>
-/* V89: keep the wide trial copy synced with current language */
+/* V87: keep the wide trial copy synced with current language */
 (function(){
   const C={
     en:{title:'7-day free trial',text:'Test ATSRS for 7 days with no card required during this test build. Store documents, review expiry status and prepare your profile before inviting others.',note:'Personal and Company mode included.',b1:'Secure document vault',b2:'Expiry tracking',b3:'Employer-ready profile',b4:'Company compliance support'},
@@ -5725,74 +5725,126 @@ body.atsrs-light-mode #app .sidebar .nav button.active{background:rgba(34,197,94
 
 
 
-<!-- ATSRS V89: Safe audit polish patch. Built from stable V87 to avoid V88 blank screen. -->
-<style id="atsrs-v89-safe-audit-polish">
-/* Safer SaaS polish: dark only, no layout-breaking JS */
-:root{--v89-bg:#06111d;--v89-panel:rgba(10,20,34,.88);--v89-soft:rgba(148,163,184,.09);--v89-border:rgba(105,135,168,.28);--v89-text:#f4f7fb;--v89-muted:#a9b8c9;--v89-green:#22c55e;--v89-red:#fb7185;}
-html,body{background:radial-gradient(circle at 18% 0%,rgba(34,197,94,.08),transparent 28%),linear-gradient(135deg,#06111d,#08192a 46%,#04101b)!important;color:var(--v89-text)!important;}
-/* reduce over-glow, keep professional dark design */
-.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.intro-hero,.feature-tile,.intro-service-card,.atsrs-anime-stage,.mini-panel{box-shadow:0 16px 38px rgba(0,0,0,.22)!important;}
-button,.testbtn,.secondary,.top-logout,.nav button,.mode-choice button,.cert-mode-buttons button{box-shadow:none!important;}
-/* login hierarchy */
-.auth-card{max-width:410px!important;background:rgba(10,20,34,.90)!important;border:1px solid var(--v89-border)!important;border-radius:24px!important;padding:24px!important;}
-.auth-card .logo{font-size:34px!important;letter-spacing:.02em!important;}
-.auth-card h2{font-size:22px!important;margin:22px 0 14px!important;}
-.auth-card input{height:48px!important;border-radius:13px!important;background:rgba(4,12,22,.88)!important;border-color:rgba(105,135,168,.36)!important;}
-.auth-card button{border-radius:13px!important;min-height:46px!important;}
-#localTestBtn{background:rgba(34,197,94,.14)!important;border:1px solid rgba(34,197,94,.34)!important;color:#d6ffe4!important;}
-#createBtn.secondary,#backLoginBtn1.secondary,#backLoginBtn2.secondary{background:rgba(148,163,184,.12)!important;border:1px solid rgba(148,163,184,.24)!important;color:#dbe7f5!important;}
-/* no scary red validation block */
-.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important;box-shadow:none!important;}
-.mode-choice.mode-error button{border-color:rgba(251,113,133,.55)!important;box-shadow:none!important;}
-.mode-error-text{display:none!important;background:transparent!important;border:0!important;color:var(--v89-red)!important;padding:2px 1px 8px!important;margin:0!important;font-size:12.8px!important;font-weight:800!important;align-items:center!important;gap:8px!important;}
-.mode-error-text.active{display:flex!important;}
-.mode-error-text::before{content:'!';width:17px;height:17px;min-width:17px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(251,113,133,.75);background:rgba(251,113,133,.10);color:#fecdd3;font-size:11px;font-weight:900;}
-/* trial stays on left, login panel stays clean */
-.auth-card #trialBox{display:none!important;}
-.auth-intro .trial-promo-left{background:rgba(8,21,36,.56)!important;border:1px solid rgba(34,197,94,.26)!important;border-radius:18px!important;padding:16px!important;margin-top:16px!important;box-shadow:none!important;}
-.trial-promo-head h3{font-size:18px!important;color:#e9fff1!important;}
-.auth-intro .trial-promo-left p{font-size:13.5px!important;color:#c8d5e3!important;margin-bottom:10px!important;}
-.trial-promo-note{font-size:12.8px!important;color:#bbf7d0!important;}
-.trial-promo-grid span{background:rgba(2,6,23,.24)!important;border-color:rgba(134,239,172,.14)!important;color:#d8e6f5!important;}
-/* language menu: fixed local names, left aligned, no centered layout */
-.lang-menu{width:190px!important;padding:8px!important;background:rgba(6,17,29,.96)!important;border:1px solid rgba(105,135,168,.34)!important;border-radius:16px!important;box-shadow:0 18px 45px rgba(0,0,0,.28)!important;}
-.lang-menu button{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;text-align:left!important;background:transparent!important;color:#e8f0f8!important;border:0!important;border-radius:11px!important;padding:9px 10px!important;margin:1px 0!important;font-weight:800!important;}
-.lang-menu button span,.lang-menu .atsrs-lang-flag{width:24px!important;display:inline-flex!important;justify-content:center!important;}
-.lang-menu button:hover{background:rgba(148,163,184,.10)!important;}
-.lang-menu button.atsrs-lang-active,.lang-menu button.atsrs-active-lang{background:rgba(34,197,94,.12)!important;border-left:3px solid var(--v89-green)!important;padding-left:7px!important;}
-/* sidebar calmer */
-.sidebar{background:rgba(2,8,17,.90)!important;border-right:1px solid rgba(105,135,168,.18)!important;}
-.nav button{background:transparent!important;border:1px solid transparent!important;border-radius:12px!important;color:#c8d5e3!important;box-shadow:none!important;}
-.nav button.active{background:rgba(34,197,94,.12)!important;border-color:rgba(34,197,94,.30)!important;color:#f4fff8!important;}
-.nav button:hover{background:rgba(148,163,184,.08)!important;border-color:rgba(105,135,168,.22)!important;}
-/* version low priority */
-.build-badge{background:transparent!important;border:1px solid rgba(105,135,168,.20)!important;color:#7f8fa3!important;font-size:10.5px!important;opacity:.82!important;}
-@media(max-width:980px){.auth-intro,.auth-card{max-width:100%!important;}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
-@media(max-width:640px){.feature-grid{grid-template-columns:1fr!important;}.auth-card{padding:20px!important;}.auth-intro h2{font-size:26px!important;}}
+<style id="v90-cleanup-style">
+/* V90: stable dark-only cleanup + compact language selector + soft validation messages */
+#langMenu.lang-menu,#appLangMenu.lang-menu{width:172px!important;padding:6px!important;border-radius:14px!important;background:#091524!important;border:1px solid #264058!important;box-shadow:0 16px 42px rgba(0,0,0,.38)!important}
+#langMenu.lang-menu button,#appLangMenu.lang-menu button{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;width:100%!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#e5e7eb!important;text-align:left!important;margin:0!important;padding:9px 10px!important;border-radius:10px!important;font-weight:700!important;line-height:1.15!important}
+#langMenu.lang-menu button:hover,#appLangMenu.lang-menu button:hover{background:rgba(148,163,184,.10)!important}
+#langMenu.lang-menu span,#appLangMenu.lang-menu span{width:22px!important;display:inline-flex!important;justify-content:center!important}
+#modeRule.mode-error-text,.form-alert,.error{background:transparent!important;border:0!important;padding:0!important;margin:7px 0!important;color:#fb7185!important;font-size:13px!important;font-weight:800!important;box-shadow:none!important}
+#modeRule.mode-error-text.active{display:flex!important;align-items:center!important;gap:7px!important}
+#modeRule.mode-error-text.active::before{content:"!";width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px solid #fb7185;color:#fb7185;font-size:12px;font-weight:900;flex:0 0 auto}
+.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}
+.mode-choice.mode-error button{border-color:#3b536d!important}
+#navLogout{display:none!important}
+body.personal-mode #navPersonnel{display:none!important}
+#auth .auth-intro{max-width:690px!important}
+#auth .auth-intro h2{font-size:32px!important;line-height:1.12!important}
+#buildBadge{opacity:.78!important;font-size:11px!important}
+.industry-strip span{background:rgba(148,163,184,.08)!important;border:1px solid rgba(148,163,184,.18)!important;color:#cbd5e1!important}
 </style>
-<script id="atsrs-v89-safe-audit-script">
+<script id="v90-full-translation-audit">
 (function(){
-  var TEXT={
-    en:{k:'OFFSHORE COMPLIANCE PLATFORM',h:'Offshore Crew Document & Compliance Platform',s:'Store documents, track expiry dates and share one controlled profile link with employers, clients and agencies.',title:'7-day free trial',txt:'Use ATSRS during the test build without a card. Prepare a clean document profile before sharing it with recruiters or clients.',note:'Personal and Company mode included.',b1:'Document vault',b2:'Expiry alerts',b3:'Profile sharing',b4:'Company review workflow'},
-    az:{k:'OFFSHORE COMPLIANCE PLATFORMASI',h:'Offshore heyət sənədləri və compliance platforması',s:'Sənədləri saxla, bitmə tarixlərini izlə və işəgötürənlər, müştərilər və agentliklərlə bir nəzarətli profil linki paylaş.',title:'7 günlük pulsuz trial',txt:'Test build zamanı kart tələb olunmadan ATSRS-dən istifadə et. Rekruter və ya müştəriyə göndərməzdən əvvəl sənəd profilini səliqəyə sal.',note:'Fərdi və şirkət rejimi daxildir.',b1:'Sənəd arxivi',b2:'Bitmə xəbərdarlıqları',b3:'Profil paylaşımı',b4:'Şirkət yoxlama prosesi'},
-    ru:{k:'OFFSHORE COMPLIANCE PLATFORM',h:'Платформа документов и compliance для offshore персонала',s:'Храните документы, отслеживайте сроки действия и делитесь одной контролируемой ссылкой профиля с работодателями, клиентами и агентствами.',title:'7-дневный бесплатный trial',txt:'Используйте ATSRS в test build без банковской карты. Подготовьте аккуратный профиль документов перед отправкой рекрутерам или клиентам.',note:'Личный и корпоративный режим включены.',b1:'Архив документов',b2:'Уведомления о сроках',b3:'Ссылка профиля',b4:'Проверка компанией'}
+  'use strict';
+  var APPLYING=false;
+  var LANG_MENU_HTML={
+    en:'<button type="button" onclick="changeLanguage(\'en\')"><span>🇬🇧</span> English</button><button type="button" onclick="changeLanguage(\'az\')"><span>🇦🇿</span> Azərbaycan</button><button type="button" onclick="changeLanguage(\'ru\')"><span>🇷🇺</span> Русский</button>',
+    az:'<button type="button" onclick="changeLanguage(\'en\')"><span>🇬🇧</span> English</button><button type="button" onclick="changeLanguage(\'az\')"><span>🇦🇿</span> Azərbaycan</button><button type="button" onclick="changeLanguage(\'ru\')"><span>🇷🇺</span> Русский</button>',
+    ru:'<button type="button" onclick="changeLanguage(\'en\')"><span>🇬🇧</span> English</button><button type="button" onclick="changeLanguage(\'az\')"><span>🇦🇿</span> Azərbaycan</button><button type="button" onclick="changeLanguage(\'ru\')"><span>🇷🇺</span> Русский</button>'
   };
-  function lang(){try{var v=(window.lang||localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||document.documentElement.lang||'en').toLowerCase();if(v.indexOf('az')===0)return 'az';if(v.indexOf('ru')===0)return 'ru';return 'en';}catch(e){return 'en';}}
-  function st(id,txt){var el=document.getElementById(id); if(el) el.textContent=txt;}
-  function apply(){try{
-    var t=TEXT[lang()]||TEXT.en;
-    var k=document.querySelector('.auth-kicker'); if(k) k.textContent=t.k;
-    var h=document.querySelector('.auth-intro h2'); if(h) h.textContent=t.h;
-    var p=document.querySelector('.auth-intro > p'); if(p) p.textContent=t.s;
-    st('trialTitle',t.title);st('trialText',t.txt);st('trialNote',t.note);st('trialBullet1',t.b1);st('trialBullet2',t.b2);st('trialBullet3',t.b3);st('trialBullet4',t.b4);
-    var menu=document.getElementById('langMenu');
-    if(menu){var rows=[['en','🇬🇧','English'],['az','🇦🇿','Azərbaycan'],['ru','🇷🇺','Русский']];var current=lang();menu.querySelectorAll('button').forEach(function(btn,i){var r=rows[i]||rows[0];btn.innerHTML='<span class="atsrs-lang-flag">'+r[1]+'</span><b class="atsrs-lang-name">'+r[2]+'</b>';btn.classList.toggle('atsrs-lang-active',r[0]===current);});}
-  }catch(e){console.warn('ATSRS V89 polish skipped:',e);}}
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(apply,0);setTimeout(apply,200);});
-  window.addEventListener('load',function(){setTimeout(apply,0);});
-  setInterval(apply,1500);
+  var T={
+    en:{
+      ids:{
+        introKicker:'DOCUMENT COMPLIANCE PLATFORM',introTitle:'Professional documents, expiry alerts and secure profile sharing — in one workspace.',introText:'ATSRS helps individuals, contractors and companies store important documents, track expiry dates and share a controlled profile link with employers, clients or agencies.',
+        featureDocsTitle:'Document Vault',featureDocsText:'Keep passports, IDs, medicals, certificates, licences, training records, references, appraisals and career files in one secure place.',featureUploadTitle:'Easy Upload',featureUploadText:'Upload PDF, JPG or PNG files directly into your ATSRS document register.',featureScanTitle:'Scan & Auto-fill',featureScanText:'Scan a document and let ATSRS prepare fields for your manual confirmation.',featureAlertsTitle:'Expiry Tracking',featureAlertsText:'90-day, 30-day and expired document visibility from the dashboard.',featureShareTitle:'Share Profile',featureShareText:'Send one ATSRS profile link instead of many email attachments.',featureCompanyTitle:'Company Compliance',featureCompanyText:'Companies can request access and review approved documents in their compliance workflow.',
+        trialTitle:'7-day free trial',trialText:'Test ATSRS for 7 days with no card required during this test build. Create your profile, add sample documents and check how expiry tracking will work.',trialNote:'Personal and Company modes included.',trialBullet1:'Secure document vault',trialBullet2:'Expiry tracking',trialBullet3:'Shareable profile',trialBullet4:'Company compliance support',
+        loginTitle:'Login',authSubtitle:'Document & Compliance Platform',personalModeBtn:'Personal Use',companyModeBtn:'Company Use',localTestBtn:'Local Test Login',createBtn:'Create account',forgotBtn:'Forgot password?',registerTitle:'Create Account',registerBtn:'Register',backLoginBtn1:'Back to Login',resetTitle:'Reset Password',resetInfo:'Enter your email. A reset link will be sent to your inbox.',resetBtn:'Send reset email',backLoginBtn2:'Back to Login',newPassTitle:'Set New Password',saveNewPassBtn:'Save new password',modeRule:'Please select Personal or Company mode.',
+        cabinetText:'Document Cabinet',topLogoutBtn:'Logout',navIntro:'ATSRS Platform',navDashboard:'Dashboard',navPersonnel:'Personnel',navCertificates:'Documents',navRefs:'References',navCompliance:'Compliance',navReports:'Reports',navProfile:'Account',pageTitle:'ATSRS Platform',
+        introBadge:'ATSRS PLATFORM',introMainTitle:'Professional document, expiry and profile sharing platform',introMainText:'ATSRS helps document holders and companies store important records, track expiry dates, share controlled profile links and support compliance workflows.',introSvc1Title:'Document Vault',introSvc1Text:'Store passports, IDs, visas, medicals, certificates, licences, training records, references, appraisals and career documents in one place.',introSvc2Title:'Easy Upload',introSvc2Text:'Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.',introSvc3Title:'Scan & Auto-fill',introSvc3Text:'Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.',introSvc4Title:'Expiry Tracking',introSvc4Text:'See valid, expiring, expired and missing documents from a clear dashboard.',introSvc5Title:'Share Profile',introSvc5Text:'Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.',introSvc6Title:'Company Compliance',introSvc6Text:'Companies can request access, review approved documents and import records into their compliance profile.',
+        workflowBadge:'HOW ATSRS WORKS',workflowTitle:'From document upload to ready-to-share profile',workflowSub:'A simple flow for personal users today and company compliance tomorrow.',step1Title:'Upload',step1Text:'Add documents manually or by scan.',step2Title:'Track',step2Text:'Monitor expiry and missing items.',step3Title:'Share',step3Text:'Send a controlled ATSRS profile link.',step4Title:'Approve',step4Text:'Allow companies to view, download or import selected documents.',
+        valueSnapshotTitle:'Compliance Snapshot',valueSnapshotText:'See valid, expiring, expired and missing documents in one fast overview.',valueAlertsTitle:'Smart Alerts',valueAlertsText:'Prepare email and WhatsApp reminders for 90, 30, 14 and 7 days before expiry.',valueAiTitle:'AI Document Assistant',valueAiText:'Extract name, document number, issue date and expiry date from uploaded documents.',valueCvTitle:'ATSRS CV Generator',valueCvText:'Build export-ready CV and document packs for company or client submission.',valueIndustriesTitle:'Supported Use Cases',valueIndustriesText:'Built for any person or company that needs to store, track and share important documents.',
+        soloBadge:'PERSONAL CONTROL',soloHeroTitle:'Your document control center',soloHeroText:'Upload your documents and track expiry risk from one clean dashboard.',quickUploadBtn:'Upload File',quickManualBtn:'Manual Entry',whatsappBadge:'ALERTS READY',whatsappTitle:'Notification alerts',whatsappText:'Frontend shows settings. Real email/WhatsApp alerts require backend scheduled jobs.',missingDocsText:'Missing Documents',cvStatusDashText:'CV Status',snapshotBadge:'COMPLIANCE SNAPSHOT',snapshotTitle:'Quick status',snapValidLabel:'Valid documents',snapRiskLabel:'Expiry risk',snapMissingLabel:'Missing documents',snapShareLabel:'Profile sharing',snapShare:'Ready',riskTitle:'Priority alerts',riskSub:'Documents closest to expiry will appear here.',docStatusTitle:'Document Status',docStatusSub:'Required documents are tracked here.',shareBadge:'SHARE PROFILE',shareTitle:'Share My ATSRS Profile',shareSub:'Send one secure profile link instead of attaching documents one by one.',copyShareBtn:'Copy Link',previewShareBtn:'Preview',manageAccessBtn:'Manage Access',shareCopyMsg:'Link copied.',companyImportTitle:'Company view',companyImportText:'A company can review shared documents and import selected records into ATSRS Company mode.',importDemoBtn:'Import to Company Profile',myDocumentsTitle:'My Documents',personalDashboardNote:'Personal mode keeps focus on your own documents only.',personalScanBtn:'Scan / Upload Document',refsTitle:'References & Appraisals',refsSub:'Keep appraisal forms, reference letters and client feedback in one place.',appraisalCardTitle:'Appraisals',appraisalCardText:'Upload annual appraisals, performance reviews and evaluation forms.',uploadAppraisalBtn:'Upload Appraisal',referenceCardTitle:'References',referenceCardText:'Store reference letters and contact-ready career proof.',uploadReferenceBtn:'Upload Reference',cvCardTitle:'CV / Resume',cvStatusBadge:'No CV Uploaded',cvCardText:'Store, manage and share professional CV versions for employers, agencies and clients.',uploadCVBtn:'Upload CV',previewCVBtn:'Preview CV',downloadCVBtn:'Download CV',deleteCVBtn:'Delete CV',cvBetaBadge:'COMING SOON',cvBetaTitle:'Generate ATSRS Profile CV',cvBetaText:'Generate a professional ATSRS formatted CV using stored profile and document data.',generateCVBtn:'Generate ATSRS CV (Beta)',compliancePageTitle:'Compliance Overview',compliancePageSub:'Company mode: see who is ready, expiring, expired or missing required documents.',reportsTitle:'Reports',reportsSub:'Export-ready reports will be connected with backend data.',exportReportBtn:'Export Local Data',profileVisibilityTitle:'Profile Visibility',profileVisibilityNote:'Private by default. Shared link only when enabled.'
+      },
+      ph:{loginEmail:'Email',loginPassword:'Password',regEmail:'Email',regPassword:'Password',regPassword2:'Confirm password',resetEmail:'Email',newPassword:'New password',newPassword2:'Confirm new password'},
+      industries:['Individuals','Contractors','HR Teams','Training Records','Licences','Medical Files','Compliance','Client Submission'],
+      miniDocs:['ID / Passport','Medical','Certificate'], approve:['Request','Approve','Import']
+    },
+    az:{
+      ids:{
+        introKicker:'SƏNƏD VƏ COMPLIANCE PLATFORMASI',introTitle:'Peşəkar sənədlər, bitmə xəbərdarlıqları və təhlükəsiz profil paylaşımı — bir kabinetdə.',introText:'ATSRS fərdi şəxslərə, kontraktorlara və şirkətlərə vacib sənədləri saxlamaq, bitmə tarixlərini izləmək və işəgötürən, müştəri və ya agentliklərlə nəzarətli profil linki paylaşmaq üçün kömək edir.',
+        featureDocsTitle:'Sənəd kabineti',featureDocsText:'Pasport, şəxsiyyət sənədi, tibbi sənəd, sertifikat, lisenziya, təlim qeydləri, referans, appraisal və karyera fayllarını bir təhlükəsiz yerdə saxla.',featureUploadTitle:'Rahat yükləmə',featureUploadText:'PDF, JPG və PNG faylları birbaşa ATSRS sənəd reyestrinə yüklə.',featureScanTitle:'Skan və avtomatik doldurma',featureScanText:'Sənədi skan et, ATSRS xanaları hazırlasın, sən manual təsdiqlə.',featureAlertsTitle:'Bitmə tarixinin izlənməsi',featureAlertsText:'90 gün, 30 gün və bitmiş sənədlər dashboard-da aydın görünür.',featureShareTitle:'Profil paylaşımı',featureShareText:'Çoxlu email əlavəsi əvəzinə bir ATSRS profil linki göndər.',featureCompanyTitle:'Şirkət compliance',featureCompanyText:'Şirkətlər giriş istəyi göndərib təsdiqlənmiş sənədləri compliance prosesində yoxlaya bilər.',
+        trialTitle:'7 günlük pulsuz sınaq',trialText:'ATSRS-i 7 gün kart tələb olunmadan test et. Profil yarat, nümunə sənədlər əlavə et və bitmə tarixlərinin necə izlənəcəyini yoxla.',trialNote:'Fərdi və Şirkət rejimləri daxildir.',trialBullet1:'Təhlükəsiz sənəd kabineti',trialBullet2:'Bitmə tarixi izləmə',trialBullet3:'Paylaşılan profil',trialBullet4:'Şirkət compliance dəstəyi',
+        loginTitle:'Giriş',authSubtitle:'Sənəd və Compliance Platforması',personalModeBtn:'Fərdi istifadə',companyModeBtn:'Şirkət istifadəsi',localTestBtn:'Lokal test girişi',createBtn:'Hesab yarat',forgotBtn:'Şifrəni unutmusunuz?',registerTitle:'Hesab yarat',registerBtn:'Qeydiyyat',backLoginBtn1:'Girişə qayıt',resetTitle:'Şifrəni yenilə',resetInfo:'Emailini yaz. Şifrə yeniləmə linki gələcək.',resetBtn:'Yeniləmə linki göndər',backLoginBtn2:'Girişə qayıt',newPassTitle:'Yeni şifrə təyin et',saveNewPassBtn:'Yeni şifrəni saxla',modeRule:'Zəhmət olmasa Fərdi və ya Şirkət rejimini seçin.',
+        cabinetText:'Sənəd kabineti',topLogoutBtn:'Çıxış',navIntro:'ATSRS Platforması',navDashboard:'Dashboard',navPersonnel:'Personal',navCertificates:'Sənədlər',navRefs:'Referanslar',navCompliance:'Compliance',navReports:'Hesabatlar',navProfile:'Hesab',pageTitle:'ATSRS Platforması',
+        introBadge:'ATSRS PLATFORMASI',introMainTitle:'Peşəkar sənəd, bitmə tarixi və profil paylaşım platforması',introMainText:'ATSRS sənəd sahiblərinə və şirkətlərə vacib qeydləri saxlamaq, bitmə tarixlərini izləmək, nəzarətli profil linkləri paylaşmaq və compliance proseslərini dəstəkləmək üçün kömək edir.',introSvc1Title:'Sənəd kabineti',introSvc1Text:'Pasport, ID, viza, tibbi sənəd, sertifikat, lisenziya, təlim qeydləri, referans, appraisal və karyera sənədlərini bir yerdə saxla.',introSvc2Title:'Rahat yükləmə',introSvc2Text:'PDF, JPG və ya PNG faylları yüklə və onları bitmə tarixi/statusla əlaqələndir.',introSvc3Title:'Skan və avtomatik doldurma',introSvc3Text:'OCR qoşulanda sənədləri skan et və ATSRS-in hazırladığı xanaları manual təsdiqlə.',introSvc4Title:'Bitmə tarixinin izlənməsi',introSvc4Text:'Aktiv, bitməyə yaxın, bitmiş və çatışmayan sənədləri aydın dashboard-da gör.',introSvc5Title:'Profil paylaşımı',introSvc5Text:'Çoxlu fayl göndərmək əvəzinə işəgötürən, agentlik və müştərilərlə bir ATSRS profil linki paylaş.',introSvc6Title:'Şirkət compliance',introSvc6Text:'Şirkətlər giriş istəyi göndərə, təsdiqlənmiş sənədləri yoxlaya və qeydləri compliance profilinə əlavə edə bilər.',
+        workflowBadge:'ATSRS NECƏ İŞLƏYİR',workflowTitle:'Sənəd yükləmədən paylaşmağa hazır profilə qədər',workflowSub:'Bu gün fərdi istifadə üçün sadə proses, sabah şirkət compliance üçün baza.',step1Title:'Yüklə',step1Text:'Sənədləri manual və ya skan ilə əlavə et.',step2Title:'İzlə',step2Text:'Bitmə tarixi və çatışmayan sənədləri nəzarətdə saxla.',step3Title:'Paylaş',step3Text:'Nəzarətli ATSRS profil linki göndər.',step4Title:'Təsdiqlə',step4Text:'Şirkətlərə yalnız seçilmiş sənədləri görmək, yükləmək və ya import etmək icazəsi ver.',
+        valueSnapshotTitle:'Compliance xülasəsi',valueSnapshotText:'Aktiv, bitməyə yaxın, bitmiş və çatışmayan sənədləri bir baxışda gör.',valueAlertsTitle:'Ağıllı bildirişlər',valueAlertsText:'Bitmə tarixindən 90, 30, 14 və 7 gün əvvəl email və WhatsApp xatırlatmaları üçün hazırlıq.',valueAiTitle:'AI sənəd köməkçisi',valueAiText:'Yüklənmiş sənədlərdən ad, sənəd nömrəsi, verilmə tarixi və bitmə tarixini çıxar.',valueCvTitle:'ATSRS CV generatoru',valueCvText:'Şirkət və ya müştəri təqdimatı üçün export-ready CV və sənəd paketi hazırla.',valueIndustriesTitle:'İstifadə sahələri',valueIndustriesText:'Vacib sənədləri saxlamaq, izləmək və paylaşmaq istəyən hər bir şəxs və şirkət üçün hazırlanıb.',
+        soloBadge:'FƏRDİ NƏZARƏT',soloHeroTitle:'Sənin sənəd idarəetmə mərkəzin',soloHeroText:'Sənədlərini yüklə və bitmə riskini təmiz dashboard-dan izlə.',quickUploadBtn:'Fayl yüklə',quickManualBtn:'Manual əlavə et',whatsappBadge:'BİLDİRİŞ HAZIRLIĞI',whatsappTitle:'Bildirişlər',whatsappText:'Frontend yalnız ayarları göstərir. Real email/WhatsApp bildirişləri backend planlı job tələb edir.',missingDocsText:'Çatışmayan sənədlər',cvStatusDashText:'CV statusu',snapshotBadge:'COMPLIANCE XÜLASƏSİ',snapshotTitle:'Qısa status',snapValidLabel:'Aktiv sənədlər',snapRiskLabel:'Bitmə riski',snapMissingLabel:'Çatışmayan sənədlər',snapShareLabel:'Profil paylaşımı',snapShare:'Hazır',riskTitle:'Prioritet xəbərdarlıqlar',riskSub:'Bitməyə ən yaxın sənədlər burada görünəcək.',docStatusTitle:'Sənəd statusu',docStatusSub:'Tələb olunan sənədlər burada izlənir.',shareBadge:'PROFİL PAYLAŞIMI',shareTitle:'ATSRS profilimi paylaş',shareSub:'Sənədləri bir-bir əlavə etmək əvəzinə bir təhlükəsiz profil linki göndər.',copyShareBtn:'Linki kopyala',previewShareBtn:'Ön baxış',manageAccessBtn:'Girişi idarə et',shareCopyMsg:'Link kopyalandı.',companyImportTitle:'Şirkət görünüşü',companyImportText:'Şirkət paylaşılan sənədləri yoxlaya və seçilmiş qeydləri ATSRS Şirkət rejiminə import edə bilər.',importDemoBtn:'Şirkət profilinə import et',myDocumentsTitle:'Sənədlərim',personalDashboardNote:'Fərdi rejim yalnız sənin sənədlərinə fokuslanır.',personalScanBtn:'Skan / Sənəd yüklə',refsTitle:'Referanslar və Appraisallar',refsSub:'Appraisal formaları, referans məktubları və müştəri rəylərini bir yerdə saxla.',appraisalCardTitle:'Appraisallar',appraisalCardText:'İllik appraisal, performans rəyi və qiymətləndirmə formalarını yüklə.',uploadAppraisalBtn:'Appraisal yüklə',referenceCardTitle:'Referanslar',referenceCardText:'Referans məktubları və karyera sübutlarını saxla.',uploadReferenceBtn:'Referans yüklə',cvCardTitle:'CV / Resume',cvStatusBadge:'CV yüklənməyib',cvCardText:'İşəgötürənlər, agentliklər və müştərilər üçün peşəkar CV versiyalarını saxla və paylaş.',uploadCVBtn:'CV yüklə',previewCVBtn:'CV-yə bax',downloadCVBtn:'CV-ni endir',deleteCVBtn:'CV-ni sil',cvBetaBadge:'TEZLİKLƏ',cvBetaTitle:'ATSRS profil CV-si yarat',cvBetaText:'Saxlanmış profil və sənəd məlumatları ilə ATSRS formatında peşəkar CV yarat.',generateCVBtn:'ATSRS CV yarat (Beta)',compliancePageTitle:'Compliance icmalı',compliancePageSub:'Şirkət rejimi: kim hazırdır, kimdə bitməyə yaxın, bitmiş və ya çatışmayan sənədlər var.',reportsTitle:'Hesabatlar',reportsSub:'Export-ready hesabatlar backend məlumatları ilə qoşulacaq.',exportReportBtn:'Lokal məlumatları export et',profileVisibilityTitle:'Profil görünürlüğü',profileVisibilityNote:'Default olaraq gizlidir. Yalnız paylaşım linki aktiv ediləndə görünür.'
+      },
+      ph:{loginEmail:'Email',loginPassword:'Şifrə',regEmail:'Email',regPassword:'Şifrə',regPassword2:'Şifrəni təsdiqlə',resetEmail:'Email',newPassword:'Yeni şifrə',newPassword2:'Yeni şifrəni təsdiqlə'},
+      industries:['Fərdi şəxslər','Kontraktorlar','HR komandaları','Təlim qeydləri','Lisenziyalar','Tibbi fayllar','Compliance','Müştəri təqdimatı'],
+      miniDocs:['ID / Pasport','Tibbi sənəd','Sertifikat'], approve:['Sorğu','Təsdiq','Import']
+    },
+    ru:{
+      ids:{
+        introKicker:'ПЛАТФОРМА ДОКУМЕНТОВ И COMPLIANCE',introTitle:'Профессиональные документы, уведомления о сроках и безопасный обмен профилем — в одном кабинете.',introText:'ATSRS помогает частным пользователям, подрядчикам и компаниям хранить важные документы, отслеживать сроки действия и делиться контролируемой ссылкой профиля с работодателями, клиентами или агентствами.',
+        featureDocsTitle:'Хранилище документов',featureDocsText:'Храните паспорта, ID, медицинские документы, сертификаты, лицензии, записи обучения, рекомендации, оценки и карьерные файлы в одном защищенном месте.',featureUploadTitle:'Удобная загрузка',featureUploadText:'Загружайте PDF, JPG или PNG файлы прямо в реестр документов ATSRS.',featureScanTitle:'Сканирование и автозаполнение',featureScanText:'Сканируйте документ, а ATSRS подготовит поля для ручного подтверждения.',featureAlertsTitle:'Контроль сроков',featureAlertsText:'Документы за 90 дней, 30 дней и просроченные видны на dashboard.',featureShareTitle:'Поделиться профилем',featureShareText:'Отправьте одну ссылку профиля ATSRS вместо множества вложений.',featureCompanyTitle:'Compliance компании',featureCompanyText:'Компании могут запросить доступ и проверять одобренные документы в своем compliance-процессе.',
+        trialTitle:'7-дневный бесплатный тест',trialText:'Тестируйте ATSRS 7 дней без карты в этой тестовой версии. Создайте профиль, добавьте примерные документы и проверьте контроль сроков.',trialNote:'Доступны личный и корпоративный режимы.',trialBullet1:'Защищенное хранилище',trialBullet2:'Контроль сроков',trialBullet3:'Профиль для обмена',trialBullet4:'Поддержка compliance компании',
+        loginTitle:'Вход',authSubtitle:'Платформа документов и Compliance',personalModeBtn:'Личное использование',companyModeBtn:'Корпоративное использование',localTestBtn:'Локальный тестовый вход',createBtn:'Создать аккаунт',forgotBtn:'Забыли пароль?',registerTitle:'Создать аккаунт',registerBtn:'Регистрация',backLoginBtn1:'Вернуться ко входу',resetTitle:'Сброс пароля',resetInfo:'Введите email. Ссылка для сброса будет отправлена на почту.',resetBtn:'Отправить ссылку',backLoginBtn2:'Вернуться ко входу',newPassTitle:'Задать новый пароль',saveNewPassBtn:'Сохранить новый пароль',modeRule:'Пожалуйста, выберите личный или корпоративный режим.',
+        cabinetText:'Кабинет документов',topLogoutBtn:'Выход',navIntro:'Платформа ATSRS',navDashboard:'Панель',navPersonnel:'Персонал',navCertificates:'Документы',navRefs:'Рекомендации',navCompliance:'Compliance',navReports:'Отчеты',navProfile:'Аккаунт',pageTitle:'Платформа ATSRS',
+        introBadge:'ПЛАТФОРМА ATSRS',introMainTitle:'Платформа документов, сроков и обмена профилем',introMainText:'ATSRS помогает владельцам документов и компаниям хранить важные записи, отслеживать сроки, делиться контролируемыми ссылками профиля и поддерживать compliance-процессы.',introSvc1Title:'Хранилище документов',introSvc1Text:'Храните паспорта, ID, визы, медицинские документы, сертификаты, лицензии, записи обучения, рекомендации, оценки и карьерные документы в одном месте.',introSvc2Title:'Удобная загрузка',introSvc2Text:'Загружайте PDF, JPG или PNG файлы и связывайте их со сроками и статусом документа.',introSvc3Title:'Сканирование и автозаполнение',introSvc3Text:'После подключения OCR сканируйте документы и вручную подтверждайте подготовленные ATSRS поля.',introSvc4Title:'Контроль сроков',introSvc4Text:'Видите действующие, истекающие, просроченные и отсутствующие документы в понятной панели.',introSvc5Title:'Поделиться профилем',introSvc5Text:'Делитесь одной ссылкой ATSRS с работодателями, агентствами и клиентами вместо множества вложений.',introSvc6Title:'Compliance компании',introSvc6Text:'Компании могут запросить доступ, проверить одобренные документы и добавить записи в свой compliance-профиль.',
+        workflowBadge:'КАК РАБОТАЕТ ATSRS',workflowTitle:'От загрузки документа до готового профиля',workflowSub:'Простой процесс для личных пользователей сегодня и база для compliance компании завтра.',step1Title:'Загрузить',step1Text:'Добавьте документы вручную или сканированием.',step2Title:'Отслеживать',step2Text:'Контролируйте сроки и отсутствующие документы.',step3Title:'Поделиться',step3Text:'Отправьте контролируемую ссылку профиля ATSRS.',step4Title:'Одобрить',step4Text:'Разрешите компаниям видеть, скачивать или импортировать выбранные документы.',
+        valueSnapshotTitle:'Сводка compliance',valueSnapshotText:'Видите действующие, истекающие, просроченные и отсутствующие документы в одном обзоре.',valueAlertsTitle:'Умные уведомления',valueAlertsText:'Подготовка email и WhatsApp напоминаний за 90, 30, 14 и 7 дней до истечения.',valueAiTitle:'AI помощник документов',valueAiText:'Извлекает имя, номер документа, дату выдачи и срок действия из загруженных документов.',valueCvTitle:'Генератор CV ATSRS',valueCvText:'Создавайте готовые к экспорту CV и пакеты документов для компаний или клиентов.',valueIndustriesTitle:'Сценарии использования',valueIndustriesText:'Создано для любого человека или компании, которым нужно хранить, отслеживать и делиться важными документами.',
+        soloBadge:'ЛИЧНЫЙ КОНТРОЛЬ',soloHeroTitle:'Ваш центр управления документами',soloHeroText:'Загружайте документы и отслеживайте риски сроков в чистой панели.',quickUploadBtn:'Загрузить файл',quickManualBtn:'Ручной ввод',whatsappBadge:'УВЕДОМЛЕНИЯ ГОТОВЯТСЯ',whatsappTitle:'Уведомления',whatsappText:'Frontend показывает только настройки. Реальные email/WhatsApp уведомления требуют backend scheduled jobs.',missingDocsText:'Отсутствующие документы',cvStatusDashText:'Статус CV',snapshotBadge:'СВОДКА COMPLIANCE',snapshotTitle:'Краткий статус',snapValidLabel:'Действующие документы',snapRiskLabel:'Риск истечения',snapMissingLabel:'Отсутствующие документы',snapShareLabel:'Обмен профилем',snapShare:'Готово',riskTitle:'Приоритетные уведомления',riskSub:'Документы с ближайшим сроком появятся здесь.',docStatusTitle:'Статус документов',docStatusSub:'Требуемые документы отслеживаются здесь.',shareBadge:'ПОДЕЛИТЬСЯ ПРОФИЛЕМ',shareTitle:'Поделиться моим профилем ATSRS',shareSub:'Отправьте одну безопасную ссылку профиля вместо множества вложений.',copyShareBtn:'Копировать ссылку',previewShareBtn:'Предпросмотр',manageAccessBtn:'Управление доступом',shareCopyMsg:'Ссылка скопирована.',companyImportTitle:'Вид компании',companyImportText:'Компания может проверить общие документы и импортировать выбранные записи в режим компании ATSRS.',importDemoBtn:'Импорт в профиль компании',myDocumentsTitle:'Мои документы',personalDashboardNote:'Личный режим фокусируется только на ваших документах.',personalScanBtn:'Скан / Загрузка документа',refsTitle:'Рекомендации и оценки',refsSub:'Храните формы оценки, рекомендательные письма и отзывы клиентов в одном месте.',appraisalCardTitle:'Оценки',appraisalCardText:'Загружайте годовые оценки, отзывы о работе и формы оценки.',uploadAppraisalBtn:'Загрузить оценку',referenceCardTitle:'Рекомендации',referenceCardText:'Храните рекомендательные письма и карьерные подтверждения.',uploadReferenceBtn:'Загрузить рекомендацию',cvCardTitle:'CV / Резюме',cvStatusBadge:'CV не загружено',cvCardText:'Храните, управляйте и делитесь профессиональными версиями CV для работодателей, агентств и клиентов.',uploadCVBtn:'Загрузить CV',previewCVBtn:'Просмотр CV',downloadCVBtn:'Скачать CV',deleteCVBtn:'Удалить CV',cvBetaBadge:'СКОРО',cvBetaTitle:'Создать CV профиля ATSRS',cvBetaText:'Создать профессиональное CV в формате ATSRS на основе данных профиля и документов.',generateCVBtn:'Создать ATSRS CV (Beta)',compliancePageTitle:'Обзор compliance',compliancePageSub:'Режим компании: кто готов, у кого истекают, просрочены или отсутствуют обязательные документы.',reportsTitle:'Отчеты',reportsSub:'Готовые к экспорту отчеты будут подключены к backend данным.',exportReportBtn:'Экспорт локальных данных',profileVisibilityTitle:'Видимость профиля',profileVisibilityNote:'По умолчанию приватно. Доступно только при включенной ссылке.'
+      },
+      ph:{loginEmail:'Email',loginPassword:'Пароль',regEmail:'Email',regPassword:'Пароль',regPassword2:'Подтвердите пароль',resetEmail:'Email',newPassword:'Новый пароль',newPassword2:'Подтвердите новый пароль'},
+      industries:['Частные пользователи','Подрядчики','HR команды','Записи обучения','Лицензии','Медицинские файлы','Compliance','Подача клиенту'],
+      miniDocs:['ID / Паспорт','Медицинский','Сертификат'], approve:['Запрос','Одобрить','Импорт']
+    }
+  };
+  function getLang(){try{var v=(typeof lang!=='undefined'&&lang)||localStorage.getItem('atsrs_lang')||document.documentElement.lang||'en';v=String(v).slice(0,2);return T[v]?v:'en';}catch(e){return 'en';}}
+  function byId(id){return document.getElementById(id)}
+  function setText(id,txt){var el=byId(id);if(el&&typeof txt==='string'&&el.textContent!==txt)el.textContent=txt;}
+  function setPH(id,txt){var el=byId(id);if(el&&typeof txt==='string')el.setAttribute('placeholder',txt);}
+  function setList(sel,arr){var nodes=document.querySelectorAll(sel); if(!nodes.length)return; nodes.forEach(function(n,i){if(arr[i])n.textContent=arr[i];});}
+  function fixLanguageMenus(){['langMenu','appLangMenu'].forEach(function(id){var el=byId(id); if(el && el.innerHTML!==LANG_MENU_HTML.en) el.innerHTML=LANG_MENU_HTML.en;});}
+  function applyV90(){
+    if(APPLYING)return; APPLYING=true;
+    try{
+      var l=getLang(), d=T[l]; document.documentElement.lang=l;
+      Object.keys(d.ids).forEach(function(id){setText(id,d.ids[id]);});
+      Object.keys(d.ph).forEach(function(id){setPH(id,d.ph[id]);});
+      fixLanguageMenus();
+      setList('.industry-strip span',d.industries);
+      setList('.mini-docs em',d.miniDocs);
+      setList('.approve-flow i',d.approve);
+      var badge=byId('buildBadge'); if(badge){badge.innerHTML='<div>ATSRS V90</div><div>Last Update: 06 Jun 2026 06:15 UTC</div><div>FULL TRANSLATION AUDIT BUILD</div>';}
+      var role=byId('previewRole'); if(role){role.textContent=(l==='az'?'Sənəd sahibi':l==='ru'?'Владелец документов':'Document Owner');}
+      var status=byId('previewStatus'); if(status){status.textContent=(l==='az'?'ATSRS paylaşılan profil':l==='ru'?'Общий профиль ATSRS':'ATSRS Shared Profile');}
+      var navPersonnel=byId('navPersonnel'); if(navPersonnel && document.body.classList.contains('personal-mode')) navPersonnel.style.display='none';
+      var navLogout=byId('navLogout'); if(navLogout) navLogout.style.display='none';
+    }finally{APPLYING=false;}
+  }
+  var oldApply=window.applyLanguage|| (typeof applyLanguage!=='undefined'?applyLanguage:null);
+  try{
+    if(typeof applyLanguage==='function'){
+      var base=applyLanguage;
+      applyLanguage=function(){try{base.apply(this,arguments);}catch(e){} setTimeout(applyV90,0);};
+    }
+  }catch(e){}
+  try{
+    if(typeof changeLanguage==='function'){
+      var oldChange=changeLanguage;
+      changeLanguage=function(v){try{oldChange(v);}catch(e){try{localStorage.setItem('atsrs_lang',v);}catch(_){}} setTimeout(applyV90,0); setTimeout(applyV90,80);};
+    }
+  }catch(e){}
+  document.addEventListener('DOMContentLoaded',function(){applyV90(); setTimeout(applyV90,120); setTimeout(applyV90,500);});
+  window.addEventListener('load',function(){applyV90(); setTimeout(applyV90,300);});
+  var mo=new MutationObserver(function(){if(!APPLYING) setTimeout(applyV90,0);});
+  try{mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});}catch(e){}
+  setInterval(applyV90,1500);
 })();
 </script>
 
 </body>
-  </html>
+</html>
