@@ -1009,7 +1009,7 @@ body > .atsrs-global-top-actions .top-logout:active,
 
 <div id="buildBadge" class="build-badge">
 <div>ATSRS V102</div>
-<div>Last Update: 08 Jun 2026 0055 UTC</div>
+<div>Last Update: 08 Jun 2026 0125 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -5119,7 +5119,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
     if(rows[0] && rows[0].textContent.trim()!=='ATSRS V102')rows[0].textContent='ATSRS V102';
-    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0055 UTC
+    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0125 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0125 UTC';
     if(rows[2] && rows[2].textContent.trim()!=='TEST BUILD')rows[2].textContent='TEST BUILD';
   }
   function lockV101(){lockAuthSubtitle();lockBuildBadge();}
@@ -5166,151 +5166,137 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 
 
 
-<style id="atsrs-v101-login-as-test-css">
-/* V101: Hide separate Local Test Login button. Main Login temporarily uses test login behavior. */
+<style id="atsrs-v102-test-login-restored-css">
+/* V102: separate Test Login is visible again, but styled as a neutral secondary action. */
 #auth #localTestBtn,
 #localTestBtn{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
+  display:block!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#auth #localTestBtn:hover,
+#localTestBtn:hover{
+  background:#2f455d!important;
+  border-color:rgba(56,189,248,.55)!important;
+}
+#auth .mode-instruction-icon,
+.mode-instruction-icon{
+  background:transparent!important;
+  border:2px solid #ef4444!important;
+  color:#ef4444!important;
 }
 </style>
 
-<script id="atsrs-v101-login-as-test-lock">
-/* V101: main Login button works as Local Test Login for current test/demo stage. */
+<script id="atsrs-v102-account-mode-warning-lock">
+/* V102: restore separate Test Login and action-specific account type warnings. */
 (function(){
   'use strict';
+  var loginWarning='Select Personal or Corporate account to login.';
+  var registerWarning='Select Personal or Corporate account to register.';
   function selectedMode(){
     try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
   }
-  function showLoginModeWarning(){
-    var message='Select Personal or Corporate account to login.';
+  function showWarning(message){
     var x=document.getElementById('modeInstruction');
     if(x){
       x.classList.add('active');
       x.innerHTML='<span class="mode-instruction-icon">!</span><span>'+message+'</span>';
     }
     var r=document.getElementById('modeRule');
-    if(r)r.textContent=message;
+    if(r){r.textContent=message;r.classList.remove('active');}
     var box=document.getElementById('modeChoiceBox');
     if(box)box.classList.add('mode-error');
   }
-  function validateLoginMode(){
+  function clearWarning(){
+    var x=document.getElementById('modeInstruction');
+    if(x)x.classList.remove('active');
+    var r=document.getElementById('modeRule');
+    if(r)r.classList.remove('active');
+    var box=document.getElementById('modeChoiceBox');
+    if(box)box.classList.remove('mode-error');
+  }
+  function validateMode(action){
     var mode=selectedMode();
-    if(mode==='personal'||mode==='company')return true;
-    showLoginModeWarning();
+    if(mode==='personal'||mode==='company'){clearWarning();return true;}
+    showWarning(action==='register'?registerWarning:loginWarning);
     return false;
   }
-  function hideLocalTestButton(){
-    var b=document.getElementById('localTestBtn');
-    if(b){b.style.display='none';b.setAttribute('aria-hidden','true');b.tabIndex=-1;}
+  function lockLabels(){
+    var p=document.getElementById('personalModeBtn');
+    var c=document.getElementById('companyModeBtn');
+    if(p)p.textContent='Personal';
+    if(c)c.textContent='Corporate';
   }
-  function setBuildV101(){
+  function restoreTestButton(){
+    var b=document.getElementById('localTestBtn');
+    if(!b)return;
+    b.style.display='block';
+    b.style.visibility='visible';
+    b.removeAttribute('aria-hidden');
+    b.tabIndex=0;
+    b.textContent='Test Login';
+  }
+  var originalValidate=window.validateUseMode;
+  window.validateUseMode=function(){
+    return validateMode(window.atsrsModeAction||'login');
+  };
+  var originalSet=window.setUseMode;
+  if(typeof originalSet==='function'){
+    window.setUseMode=function(){
+      var r=originalSet.apply(this,arguments);
+      clearWarning();
+      lockLabels();
+      return r;
+    };
+  }
+  var originalLogin=window.login;
+  if(typeof originalLogin==='function'){
+    window.login=function(){
+      window.atsrsModeAction='login';
+      return originalLogin.apply(this,arguments);
+    };
+  }
+  var originalLocal=window.localTestLogin;
+  if(typeof originalLocal==='function'){
+    window.localTestLogin=function(){
+      window.atsrsModeAction='login';
+      return originalLocal.apply(this,arguments);
+    };
+  }
+  var originalShowRegister=window.showRegister;
+  if(typeof originalShowRegister==='function'){
+    window.showRegister=function(){
+      window.atsrsModeAction='register';
+      if(!validateMode('register'))return;
+      return originalShowRegister.apply(this,arguments);
+    };
+  }
+  var originalSocial=window.atsrsSocialAuth;
+  if(typeof originalSocial==='function'){
+    window.atsrsSocialAuth=function(providerKey,flow){
+      var action=(flow==='register')?'register':'login';
+      window.atsrsModeAction=action;
+      if(!validateMode(action))return;
+      return originalSocial.apply(this,arguments);
+    };
+  }
+  function lockBuild(){
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
     if(rows[0])rows[0].textContent='ATSRS V102';
-    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0055 UTC
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0125 UTC';
     if(rows[2])rows[2].textContent='TEST BUILD';
   }
-  function loginAsTest(){
-    window.atsrsModeAction='login';
-    if(!validateLoginMode())return;
-    window.currentUser={id:'local_test_user',email:'local-test@atsrs.com'};
-    try{localStorage.setItem('atsrs_auth_mode','local');localStorage.setItem('atsrs_use_mode',selectedMode());}catch(e){}
-    if(typeof window.openApp==='function')window.openApp();
-  }
-  function lockV101(){
-    hideLocalTestButton();
-    setBuildV101();
-    window.login=loginAsTest;
-    var btn=document.getElementById('loginBtn');
-    if(btn){btn.onclick=loginAsTest;}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lockV101); else lockV101();
-  window.addEventListener('load',lockV101);
-  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(lockV101,ms);});
-  setInterval(lockV101,1500);
-})();
-</script>
-
-
-
-<script>
-/* V102: Reference/Appraisal ghost-file cleanup + legacy delete fix */
-(function(){
-  function safeGetData(key){
-    try{
-      if(typeof getData === 'function') return getData(key);
-      return JSON.parse(localStorage.getItem(key)||'[]');
-    }catch(e){return []}
-  }
-  function safeSaveData(key,val){
-    try{
-      if(typeof saveData === 'function') return saveData(key,val);
-      localStorage.setItem(key,JSON.stringify(val));
-    }catch(e){}
-  }
-  function isRealCareerFile(f){
-    return !!(f && typeof f === 'object' && f.name && typeof f.data === 'string' && f.data.indexOf('data:') === 0);
-  }
-  window.sanitizeCareerFiles = function(kind){
-    const key = kind + 'Files';
-    let arr = safeGetData(key);
-    if(!Array.isArray(arr)) arr = [];
-    const cleaned = arr.filter(isRealCareerFile).map(function(f,idx){
-      if(!f.id) f.id = 'legacy_' + kind + '_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).slice(2);
-      if(!f.updated) f.updated = new Date().toISOString();
-      if(!f.signedDate && f.updated) f.signedDate = String(f.updated).slice(0,10);
-      return f;
-    });
-    if(JSON.stringify(arr) !== JSON.stringify(cleaned)) safeSaveData(key, cleaned);
-    return cleaned;
-  };
-  window.getManagedFiles = function(kind){
-    return sanitizeCareerFiles(kind);
-  };
-  window.setManagedFiles = function(kind,arr){
-    safeSaveData(kind+'Files', Array.isArray(arr) ? arr.filter(isRealCareerFile) : []);
-  };
-  window.getManagedFile = function(kind){
-    const a = getManagedFiles(kind);
-    return a.length ? a[0] : null;
-  };
-  window.getCareerItem = function(kind,id){
-    return getManagedFiles(kind).find(function(i){return String(i.id) === String(id);});
-  };
-  window.deleteManagedFile = function(kind,id){
-    let arr = getManagedFiles(kind);
-    if(id){
-      arr = arr.filter(function(i){return String(i.id) !== String(id);});
-    }else{
-      arr = [];
-    }
-    setManagedFiles(kind, arr);
-    const input = document.getElementById(kind+'UploadInput');
-    if(input) input.value = '';
-    if(typeof renderManagedFiles === 'function') renderManagedFiles();
-    if(typeof renderAll === 'function') setTimeout(function(){try{renderAll()}catch(e){}},0);
-  };
-  const previousRenderCareerList = window.renderCareerList;
-  window.renderCareerList = function(kind){
-    const list = document.getElementById(kind+'RecordList');
-    if(!list) return;
-    sanitizeCareerFiles(kind);
-    if(typeof previousRenderCareerList === 'function') return previousRenderCareerList(kind);
-  };
-  window.clearGhostCareerRecords = function(){
-    ['appraisal','reference','recommendation'].forEach(function(kind){sanitizeCareerFiles(kind);});
-    if(typeof renderManagedFiles === 'function') renderManagedFiles();
-  };
-  const previousRenderManagedFiles = window.renderManagedFiles;
-  window.renderManagedFiles = function(){
-    ['appraisal','reference','recommendation'].forEach(function(kind){sanitizeCareerFiles(kind);});
-    if(typeof previousRenderManagedFiles === 'function') previousRenderManagedFiles();
-  };
-  setTimeout(function(){try{clearGhostCareerRecords()}catch(e){}},0);
-  setTimeout(function(){try{clearGhostCareerRecords()}catch(e){}},600);
+  function lockAll(){restoreTestButton();lockLabels();lockBuild();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lockAll); else lockAll();
+  window.addEventListener('load',lockAll);
+  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(lockAll,ms);});
+  setInterval(lockAll,1500);
 })();
 </script>
 
