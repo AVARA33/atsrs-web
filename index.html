@@ -872,8 +872,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V89</div>
-<div>Last Update: 07 Jun 2026 07:15 UTC</div>
+<div>ATSRS V90</div>
+<div>Last Update: 07 Jun 2026 0735 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4599,6 +4599,31 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   .social-auth-btn{font-size:13px!important;padding:10px!important;}
 }
 </style>
+
+/* V90: social provider icon optical balance - remove extra white badge border */
+.social-auth-icon{
+  width:22px!important;
+  height:22px!important;
+  flex:0 0 22px!important;
+  border-radius:6px!important;
+}
+.social-google .social-auth-icon,
+.social-microsoft .social-auth-icon{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.social-google .social-auth-icon svg,
+.social-microsoft .social-auth-icon svg{
+  width:18px!important;
+  height:18px!important;
+}
+.social-linkedin .social-auth-icon{
+  width:22px!important;
+  height:22px!important;
+  flex:0 0 22px!important;
+}
+
 <script id="atsrs-v87-social-auth-script">
 (function(){
   'use strict';
