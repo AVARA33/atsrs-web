@@ -798,8 +798,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V77</div>
-<div>Last Update: 07 Jun 2026 00:45 UTC</div>
+<div>ATSRS V79</div>
+<div>Last Update: 07 Jun 2026 01:30 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4055,7 +4055,7 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 <style id="atsrs-v76-minimal-ui-and-audit-style">
-/* V77: keep V76 design, fix sidebar toggle position, language indicator tracking, and audit false positives. */
+/* V79: keep V78 design, refine sidebar hamburger size and right alignment. */
 :root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
 body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
 .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
@@ -4065,6 +4065,46 @@ button{box-shadow:none!important}
 .sidebar{background:#06111d!important;border-right:1px solid #17263a!important;box-shadow:none!important}.sidebar-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.sidebar-head .brand{order:1}.sidebar-head .sidebar-toggle{order:2}.sidebar-toggle{width:42px!important;height:42px!important;padding:0!important;margin:0!important;border-radius:12px!important;background:#101d2e!important;border:1px solid var(--v76-border)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important}.sidebar-toggle span{display:block;width:18px;height:2px;border-radius:99px;background:var(--v76-text)}.brand{font-size:28px!important}.nav{gap:4px!important}.nav button{background:transparent!important;border:0!important;border-left:3px solid transparent!important;border-radius:8px!important;color:#dbeafe!important;padding:12px 10px!important;text-align:left!important;box-shadow:none!important}.nav button.active,.nav button:hover{background:#101d2e!important;border-left-color:var(--v76-green)!important;color:#fff!important}.nav button::before{margin-right:8px}.nav button.active{font-weight:900!important}.intro-service-card,.feature-tile,.workflow-step,.snapshot-item,.risk-item{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.intro-service-card.active{background:#0f1f31!important;border-color:var(--v76-green)!important}.mode-choice{gap:10px!important}.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}.mode-choice button{border:1px solid var(--v76-border)!important;border-radius:12px!important;background:#0b1726!important;color:#fff!important}.mode-choice button.active{background:#10251d!important;border-color:var(--v76-green)!important}.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:var(--v76-red);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}.trial-box{order:20;margin:14px 0 4px!important;padding:10px 12px!important;background:transparent!important;border:1px solid var(--v76-border)!important;border-radius:14px!important;box-shadow:none!important;text-align:left!important}.trial-box h3{font-size:14px!important;margin:0 0 3px!important;color:#dfffea!important}.trial-box p,.trial-row{font-size:12px!important;color:var(--v76-muted)!important}.trial-dot{box-shadow:none!important;width:8px!important;height:8px!important;background:var(--v76-green)!important}.auth-card{display:flex!important;flex-direction:column!important}.auth-card #loginBox{display:flex;flex-direction:column!important}.auth-card #loginBox.hidden{display:none!important}#loginBtn{order:10}#localTestBtn{order:11}.atsrs-audit-btn{order:12;background:#17263a!important;border:1px solid var(--v76-border)!important;color:#dbeafe!important}.trial-box{order:18}#createBtn{order:13}#forgotBtn{order:14}#loginMsg{order:19}.build-badge{background:transparent!important;border:1px solid var(--v76-border)!important;color:var(--v76-muted)!important;box-shadow:none!important}.top-actions{gap:6px!important}.top-logout{border-radius:10px!important;padding:10px 12px!important}.app-audit{width:auto!important;margin:0!important;padding:10px 12px!important;border-radius:10px!important}.stats-grid .card,.grid .card{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.nav button,.account-tabs button,.module-tabs button,.cert-mode-buttons button{background:transparent!important;background-image:none!important}.account-tabs button.active,.module-tabs button.active,.cert-mode-buttons button.active{background:#10251d!important;border-color:var(--v76-green)!important}.v76-audit-modal{position:fixed;inset:0;z-index:2147483647;background:rgba(2,6,23,.72);display:flex;align-items:flex-start;justify-content:center;padding:28px 14px;overflow:auto}.v76-audit-card{width:min(920px,100%);background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:18px;box-shadow:0 28px 80px rgba(0,0,0,.45)}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:12px;margin-bottom:12px}.v76-audit-head h3{margin:0}.v76-audit-close{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
 body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minmax(0,1fr)!important}body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{width:78px!important}body.v76-sidebar-collapsed .sidebar .brand,body.v76-sidebar-collapsed .sidebar .sub,body.v76-sidebar-collapsed .sidebar .nav button{font-size:0!important}body.v76-sidebar-collapsed .sidebar .nav button{height:44px!important;text-align:center!important}body.v76-sidebar-collapsed .sidebar .nav button::before{font-size:22px!important;margin:0!important}body.v76-sidebar-collapsed #navIntro::before{content:'🏠'}body.v76-sidebar-collapsed #navDashboard::before{content:'📊'}body.v76-sidebar-collapsed #navPersonnel::before{content:'👥'}body.v76-sidebar-collapsed #navCertificates::before{content:'📁'}body.v76-sidebar-collapsed #navRefs::before{content:'📄'}body.v76-sidebar-collapsed #navCompliance::before{content:'✅'}body.v76-sidebar-collapsed #navReports::before{content:'📈'}body.v76-sidebar-collapsed #navProfile::before{content:'⚙️'}
 @media(max-width:800px){.sidebar-head{justify-content:flex-start}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
+
+
+/* V79: align sidebar hamburger to the right edge, level with ATSRS brand, compact */
+#app .sidebar-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  margin-bottom:18px!important;
+  width:100%!important;
+}
+#app .sidebar-head .brand{
+  line-height:34px!important;
+  margin:0!important;
+  flex:0 0 auto!important;
+}
+#app .sidebar-head .sidebar-toggle{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  padding:0!important;
+  margin:0 0 0 auto!important;
+  border-radius:9px!important;
+  align-self:center!important;
+}
+#app .sidebar-head .sidebar-toggle span{
+  width:15px!important;
+  height:2px!important;
+}
+body.v76-sidebar-collapsed #app .sidebar-head{
+  justify-content:center!important;
+}
+body.v76-sidebar-collapsed #app .sidebar-head .sidebar-toggle{
+  margin:0!important;
+}
+@media(max-width:800px){
+  #app .sidebar-head{justify-content:space-between!important;}
+  #app .sidebar-head .sidebar-toggle{margin-left:auto!important;}
+}
 </style>
 
 
@@ -4143,7 +4183,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     const counts=results.reduce((a,r)=>(a[r.state]=(a[r.state]||0)+1,a),{});
     const body=results.map(r=>`<div class="v76-audit-row"><div class="v76-status v76-${r.state.toLowerCase()}">${r.state}</div><div><b>${r.label}</b><p>${r.detail}</p></div></div>`).join('');
     const old=document.getElementById('v76AuditModal');if(old)old.remove();
-    const modal=document.createElement('div');modal.id='v76AuditModal';modal.className='v76-audit-modal';modal.innerHTML=`<div class="v76-audit-card"><div class="v76-audit-head"><h3>ATSRS V77 Audit</h3><button class="v76-audit-close" onclick="document.getElementById('v76AuditModal').remove()">Close</button></div><div class="v76-summary"><span class="v76-chip v76-pass">PASS ${counts.PASS||0}</span><span class="v76-chip v76-warn">WARN ${counts.WARN||0}</span><span class="v76-chip v76-fail">FAIL ${counts.FAIL||0}</span></div>${body}</div>`;document.body.appendChild(modal);
+    const modal=document.createElement('div');modal.id='v76AuditModal';modal.className='v76-audit-modal';modal.innerHTML=`<div class="v76-audit-card"><div class="v76-audit-head"><h3>ATSRS V79 Audit</h3><button class="v76-audit-close" onclick="document.getElementById('v76AuditModal').remove()">Close</button></div><div class="v76-summary"><span class="v76-chip v76-pass">PASS ${counts.PASS||0}</span><span class="v76-chip v76-warn">WARN ${counts.WARN||0}</span><span class="v76-chip v76-fail">FAIL ${counts.FAIL||0}</span></div>${body}</div>`;document.body.appendChild(modal);
   };
   const prevChange=window.changeLanguage;window.changeLanguage=function(v){const r=typeof prevChange==='function'?prevChange.apply(this,arguments):undefined;setTimeout(v76Apply,0);setTimeout(v76Apply,160);return r};
   document.addEventListener('DOMContentLoaded',v76Apply);document.addEventListener('click',e=>{if(e.target&&e.target.closest&&e.target.closest('.lang-menu'))setTimeout(v76Apply,60);},true);window.addEventListener('load',v76Apply);setTimeout(v76Apply,0);setTimeout(v76Apply,400);setInterval(v76Apply,800);
