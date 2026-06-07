@@ -707,9 +707,9 @@ body:not(.atsrs-booting) #app{
 }
 
 
-/* V81: left-side trial and why choose ATSRS content */
+/* V82: left-side trial fixed + mode warning only after failed action */
 #auth .auth-intro .trial-box-left{
-  margin:18px 0 0!important;
+  margin:28px 0 0!important;
   padding:18px!important;
   background:rgba(8,21,36,.72)!important;
   border:1px solid rgba(34,197,94,.36)!important;
@@ -744,15 +744,25 @@ body:not(.atsrs-booting) #app{
   margin-top:10px!important;color:#bbf7d0!important;font-size:12px!important;font-weight:800!important;
 }
 .mode-instruction{
-  display:flex;align-items:flex-start;gap:8px;
+  display:none;align-items:flex-start;gap:8px;
   margin:2px 0 10px!important;padding:0 2px!important;
   color:#ffb4b4!important;font-size:13px!important;font-weight:800!important;line-height:1.35!important;
 }
+.mode-instruction.active{display:flex!important}
 .mode-instruction-icon{
   width:17px;height:17px;min-width:17px;border-radius:50%;
   background:var(--v76-red,#ef4444);color:#fff;
   display:inline-flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:900;margin-top:0;
+}
+
+#auth .auth-intro{
+  display:flex!important;
+  flex-direction:column!important;
+}
+#auth .auth-intro #trialBox{
+  width:100%!important;
+  align-self:stretch!important;
 }
 @media(max-width:980px){#auth .auth-intro .why-grid{grid-template-columns:1fr}}
 </style>
@@ -852,8 +862,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V81</div>
-<div>Last Update: 07 Jun 2026 03:25 UTC</div>
+<div>ATSRS V82</div>
+<div>Last Update: 07 Jun 2026 04:05 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4099,7 +4109,7 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 <style id="atsrs-v76-minimal-ui-and-audit-style">
-/* V81: move trial/why-choose-ATSRS block to left intro; keep V80 backup behavior otherwise. */
+/* V82: keep trial/why-choose-ATSRS on left intro; warning appears only after action. */
 :root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
 body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
 .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
@@ -4121,15 +4131,33 @@ button{box-shadow:none!important}
 .v76-audit-modal{position:fixed;inset:0;background:rgba(2,6,23,.72);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:18px}.v76-audit-card{width:min(760px,100%);max-height:86vh;overflow:auto;background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:16px}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:10px}.v76-audit-head h3{margin:0}.v76-audit-close,.v76-copy-btn{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
 body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minmax(0,1fr)!important}body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{width:78px!important}body.v76-sidebar-collapsed .sidebar .brand,body.v76-sidebar-collapsed .sidebar .sub,body.v76-sidebar-collapsed .sidebar .nav button{font-size:0!important}body.v76-sidebar-collapsed .sidebar .nav button{height:44px!important;text-align:center!important}body.v76-sidebar-collapsed .sidebar .nav button::before{font-size:22px!important;margin:0!important}body.v76-sidebar-collapsed #navIntro::before{content:'🏠'}body.v76-sidebar-collapsed #navDashboard::before{content:'📊'}body.v76-sidebar-collapsed #navPersonnel::before{content:'👥'}body.v76-sidebar-collapsed #navCertificates::before{content:'📁'}body.v76-sidebar-collapsed #navRefs::before{content:'📄'}body.v76-sidebar-collapsed #navCompliance::before{content:'✅'}body.v76-sidebar-collapsed #navReports::before{content:'📈'}body.v76-sidebar-collapsed #navProfile::before{content:'⚙️'}
 @media(max-width:800px){.sidebar-head{justify-content:space-between!important}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
+
+/* V82 final login fixes */
+#auth .auth-card #trialBox{display:none!important}
+#auth .auth-intro #trialBox{display:block!important;order:99!important}
+#modeRule{display:none!important}
+#modeInstruction{display:none!important}
+#modeInstruction.active{display:flex!important}
 </style>
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V81';
+  const BUILD='V82';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
   };
+  function showModeInstruction(){const x=document.getElementById('modeInstruction');if(x)x.classList.add('active')}
+  function hideModeInstruction(){const x=document.getElementById('modeInstruction');if(x)x.classList.remove('active')}
+  const baseValidateUseMode=window.validateUseMode;
+  window.validateUseMode=function(){
+    const ok=typeof baseValidateUseMode==='function'?baseValidateUseMode():true;
+    if(ok){hideModeInstruction();}
+    else{showModeInstruction();const r=document.getElementById('modeRule');if(r)r.classList.remove('active');}
+    return ok;
+  };
+  const baseSetUseMode=window.setUseMode;
+  window.setUseMode=function(mode){if(typeof baseSetUseMode==='function')baseSetUseMode(mode);hideModeInstruction();};
   function forceEnglish(){
     try{localStorage.setItem('atsrs_lang','en');localStorage.setItem('lang','en')}catch(e){}
     window.lang='en';
@@ -4139,10 +4167,10 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     ['langMenu','appLangMenu'].forEach(id=>{const m=document.getElementById(id);if(m)m.classList.add('hidden');});
     document.querySelectorAll('.lang-menu button').forEach(b=>{b.classList.toggle('v76-selected-lang',true);b.setAttribute('aria-current','true')});
   }
-  function moveTrialLow(){const loginBox=document.getElementById('loginBox'),trial=document.getElementById('trialBox'),forgot=document.getElementById('forgotBtn');if(loginBox&&trial&&forgot&&trial.previousElementSibling!==forgot){loginBox.insertBefore(trial,forgot.nextSibling)}}
+  function keepTrialLeft(){const intro=document.querySelector('#auth .auth-intro'),trial=document.getElementById('trialBox');if(intro&&trial&&trial.parentElement!==intro){intro.appendChild(trial)}}
   function simplifyModeError(){const err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');if(err&&err.id!=='modeErrorText')err.id='modeErrorText'}
   window.atsrsV76ToggleSidebar=function(){const app=document.getElementById('app');const side=document.querySelector('#app .sidebar');if(!app||app.classList.contains('hidden'))return;if(window.innerWidth<=800&&side){side.classList.toggle('v76-mobile-closed');return;}document.body.classList.toggle('v76-sidebar-collapsed');};
-  function v78Apply(){forceEnglish();moveTrialLow();simplifyModeError();}
+  function v78Apply(){forceEnglish();keepTrialLeft();simplifyModeError();}
   function row(label,state,detail){return{label,state,detail}}
   function computed(el,prop){return el?getComputedStyle(el).getPropertyValue(prop):''}
   function duplicateIds(){const map={},dups=[];document.querySelectorAll('[id]').forEach(e=>{map[e.id]=(map[e.id]||0)+1});Object.keys(map).forEach(k=>{if(map[k]>1)dups.push(k+' ×'+map[k])});return dups;}
