@@ -823,6 +823,8 @@ body:not(.atsrs-booting) #app{
 <h2 id="loginTitle"></h2>
 <input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
+<label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me on this device</span></label>
+<p id="rememberNote" class="remember-note">Saves your email and keeps the browser session available after login.</p>
 <div id="modeChoiceBox" class="mode-choice">
 <button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal Use</button>
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
@@ -863,8 +865,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V84</div>
-<div>Last Update: 07 Jun 2026 05:00 UTC</div>
+<div>ATSRS V85</div>
+<div>Last Update: 07 Jun 2026 05:20 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4143,7 +4145,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V84';
+  const BUILD='V85';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4372,6 +4374,117 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     setTimeout(ensureRegisterModeCard,0);
   };
   window.addEventListener('load',function(){setTimeout(ensureRegisterModeCard,80);});
+})();
+</script>
+
+
+
+<style id="atsrs-v85-remember-and-compact-login-style">
+/* V85: Remember me + compact login card spacing. */
+#auth .auth-card{
+  padding:24px 26px!important;
+}
+#auth .auth-card .logo{
+  font-size:36px!important;
+  line-height:1.05!important;
+}
+#auth .auth-card #authSubtitle{
+  margin:8px 0 18px!important;
+}
+#auth #loginTitle{
+  margin:0 0 14px!important;
+}
+#auth #loginBox input{
+  margin:5px 0!important;
+  padding:11px 12px!important;
+}
+#auth .mode-choice{
+  margin:8px 0 8px!important;
+  gap:9px!important;
+}
+#auth .mode-choice button{
+  padding:10px 12px!important;
+  margin:0!important;
+}
+#auth #loginBtn,#auth #localTestBtn,#auth #createBtn{
+  margin:5px 0!important;
+  padding:11px 12px!important;
+}
+#auth #forgotBtn{
+  margin:6px 0 0!important;
+  padding:3px 0!important;
+}
+#auth .mode-instruction.active{
+  margin:4px 0 8px!important;
+  padding:4px 2px!important;
+}
+.remember-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:4px 0 0!important;
+  color:#dbeafe;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  user-select:none;
+}
+.remember-row input{
+  width:16px!important;
+  height:16px!important;
+  min-width:16px!important;
+  margin:0!important;
+  padding:0!important;
+  accent-color:#22c55e;
+}
+.remember-note{
+  margin:2px 0 6px!important;
+  color:#8fa1b7;
+  font-size:11px;
+  line-height:1.35;
+}
+</style>
+<script id="atsrs-v85-remember-and-compact-login-script">
+(function(){
+  'use strict';
+  function el(id){return document.getElementById(id)}
+  function loadRememberedLogin(){
+    const remember=el('rememberMe');
+    const email=el('loginEmail');
+    if(!remember||!email)return;
+    const saved=localStorage.getItem('atsrs_remember_me')==='1';
+    remember.checked=saved;
+    if(saved){
+      const savedEmail=localStorage.getItem('atsrs_saved_login_email')||'';
+      if(savedEmail&&!email.value)email.value=savedEmail;
+    }
+  }
+  function saveRememberPreference(){
+    const remember=el('rememberMe');
+    const email=el('loginEmail');
+    if(!remember||!email)return;
+    if(remember.checked){
+      localStorage.setItem('atsrs_remember_me','1');
+      localStorage.setItem('atsrs_saved_login_email',(email.value||'').trim());
+      if(window.useMode)localStorage.setItem('atsrs_use_mode',window.useMode);
+    }else{
+      localStorage.removeItem('atsrs_remember_me');
+      localStorage.removeItem('atsrs_saved_login_email');
+    }
+  }
+  const baseLogin=window.login;
+  window.login=function(){
+    saveRememberPreference();
+    return typeof baseLogin==='function'?baseLogin.apply(this,arguments):undefined;
+  };
+  const baseLocalTestLogin=window.localTestLogin;
+  window.localTestLogin=function(){
+    saveRememberPreference();
+    return typeof baseLocalTestLogin==='function'?baseLocalTestLogin.apply(this,arguments):undefined;
+  };
+  document.addEventListener('DOMContentLoaded',loadRememberedLogin);
+  window.addEventListener('load',function(){setTimeout(loadRememberedLogin,80)});
+  setTimeout(loadRememberedLogin,0);
 })();
 </script>
 
