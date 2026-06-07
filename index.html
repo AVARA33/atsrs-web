@@ -804,6 +804,38 @@ body > .atsrs-global-top-actions .top-logout:active,
   transform:translateY(1px)!important;
 }
 
+
+/* V94: public ATSRS meaning under login intro badge */
+.atsrs-name-meaning{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin:0 0 14px!important;
+  padding:6px 10px;
+  border:1px solid rgba(134,239,172,.22);
+  border-radius:999px;
+  background:rgba(4,16,26,.48);
+  color:#cfe8dc;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.075em;
+  text-transform:uppercase;
+}
+.atsrs-name-meaning .meaning-and{
+  color:#86efac;
+  font-weight:1000;
+}
+@media(max-width:560px){
+  .atsrs-name-meaning{
+    display:flex;
+    width:100%;
+    justify-content:center;
+    text-align:center;
+    line-height:1.35;
+    white-space:normal;
+  }
+}
+
 </style>
 
 </head>
@@ -823,6 +855,7 @@ body > .atsrs-global-top-actions .top-logout:active,
 
 <div class="auth-intro">
   <div id="introKicker" class="auth-kicker">ATSRS PLATFORM</div>
+  <div id="introMeaning" class="atsrs-name-meaning">Automated Tracking <span class="meaning-and">&amp;</span> Records System</div>
   <h2 id="introTitle">Professional documents, expiry alerts and profile sharing — in one secure workspace.</h2>
   <p id="introText">ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.</p>
   <p id="introIndustryText" class="sub">Built for professionals across marine, healthcare, engineering, construction, energy, aviation, corporate and technical industries.</p>
@@ -902,7 +935,7 @@ body > .atsrs-global-top-actions .top-logout:active,
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V93</div>
+<div>ATSRS V94</div>
 <div>Last Update: 07 Jun 2026 0735 UTC</div>
 <div>TEST BUILD</div>
 </div>
