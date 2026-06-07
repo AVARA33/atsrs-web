@@ -872,8 +872,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V88</div>
-<div>Last Update: 07 Jun 2026 06:35 UTC</div>
+<div>ATSRS V89</div>
+<div>Last Update: 07 Jun 2026 07:15 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4152,7 +4152,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V88';
+  const BUILD='V89';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4492,7 +4492,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 
 
 <style id="atsrs-v87-social-auth-style">
-/* V88: Social account creation stays below Create Account; original provider icons. */
+/* V89: Social provider icons normalized to LinkedIn visual size. */
 .signup-social-area{
   margin:8px 0 4px!important;
 }
@@ -4545,6 +4545,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   overflow:hidden;
 }
 .social-auth-icon svg{width:17px;height:17px;display:block;}
+.social-google .social-auth-icon svg{width:14px!important;height:14px!important;}
+.social-microsoft .social-auth-icon svg{width:14px!important;height:14px!important;}
 .social-google .social-auth-icon{background:#ffffff;border:1px solid rgba(148,163,184,.35);}
 .social-microsoft .social-auth-icon{background:#ffffff;border:1px solid rgba(148,163,184,.35);}
 .social-linkedin .social-auth-icon{background:#0a66c2;color:#ffffff;font-family:Arial,sans-serif;border:0;}
