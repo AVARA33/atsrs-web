@@ -4,228 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ATSRS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-
-/* V41 revised: Expiry N/A + Edit document register */
-const V41R_TEXT={
-  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
-  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
-  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
-};
-function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
-let editCertIndex=null;
-function ensureExpiryNAControls(){
-  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
-  items.forEach(([inputId,checkId,labelId])=>{
-    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
-    const wrap=input.closest('.field-wrap'); if(!wrap)return;
-    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
-    const cb=document.getElementById(checkId);
-    cb.addEventListener('change',()=>{
-      input.disabled=cb.checked;
-      if(cb.checked){input.value='';input.classList.remove('required-missing');}
-      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
-      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
-    });
-  });
-}
-function applyV41RLanguage(){
-  ensureExpiryNAControls();
-  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
-  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
-  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
-  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
-  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
-}
-const statusBaseV41R=status;
-status=function(expiry){
-  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
-  return statusBaseV41R(expiry);
-};
-function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
-function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
-const clearManualValidationBaseV41R=clearManualValidation;
-clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
-validateManualCertificateForm=function(){
-  clearManualValidation(); let ok=true;
-  if(!cType.value){cType.classList.add('required-missing');ok=false;}
-  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
-  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
-  return ok;
-};
-validateAutoConfirmForm=function(){
-  clearAutoValidation(); let ok=true;
-  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
-  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
-  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
-  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
-  return ok;
-};
-confirmExtractedDocument=function(){
-  if(!validateAutoConfirmForm())return;
-  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
-  let a=getData('certs');
-  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
-  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
-};
-addCertificate=function(){
-  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
-  if(!validateManualCertificateForm()||!person)return;
-  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
-  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
-  saveData('certs',a);
-  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
-  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
-  clearManualValidation(); applyV41RLanguage(); renderAll();
-};
-function editCertificate(i){
-  const a=getData('certs'); const x=a[i]; if(!x)return;
-  editCertIndex=i;
-  showPage('certificates',navCertificates); showCertMode('manual');
-  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
-  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
-  if(typeof cExpiryNA!=='undefined'){
-    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
-    cExpiry.disabled=cExpiryNA.checked;
-  }
-  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
-  applyV41RLanguage();
-  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
-}
-const renderAllBaseV41R=renderAll;
-renderAll=function(){
-  renderAllBaseV41R();
-  const certs=getData('certs');
-  const rows=certTable?certTable.querySelectorAll('tr'):[];
-  rows.forEach((row,i)=>{
-    const cells=row.querySelectorAll('td');
-    if(cells.length>=5){
-      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
-        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
-      }
-      const action=cells[4];
-      if(action&&!action.querySelector('.edit-btn')){
-        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
-      }
-    }
-  });
-};
-const applyLanguageBaseV41R=applyLanguage;
-applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
-setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
-
-</script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
-
-/* V41 revised: Expiry N/A + Edit document register */
-const V41R_TEXT={
-  en:{notApplicable:"Not Applicable",noExpiry:"No Expiry",edit:"Edit",update:"Update Document",add:"Add Certificate",expiryRequired:"Expiry Date",requiredMsg:"Please complete all required fields."},
-  az:{notApplicable:"Tətbiq olunmur",noExpiry:"Bitmə tarixi yoxdur",edit:"Düzəlt",update:"Sənədi yenilə",add:"Sertifikat əlavə et",expiryRequired:"Bitmə tarixi",requiredMsg:"Zəhmət olmasa bütün məcburi xanaları doldurun."},
-  ru:{notApplicable:"Не применяется",noExpiry:"Без срока действия",edit:"Изменить",update:"Обновить документ",add:"Добавить сертификат",expiryRequired:"Срок действия",requiredMsg:"Пожалуйста, заполните все обязательные поля."}
-};
-function v41r(k){return (V41R_TEXT[lang]&&V41R_TEXT[lang][k])||V41R_TEXT.en[k]||k}
-let editCertIndex=null;
-function ensureExpiryNAControls(){
-  const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
-  items.forEach(([inputId,checkId,labelId])=>{
-    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
-    const wrap=input.closest('.field-wrap'); if(!wrap)return;
-    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
-    const cb=document.getElementById(checkId);
-    cb.addEventListener('change',()=>{
-      input.disabled=cb.checked;
-      if(cb.checked){input.value='';input.classList.remove('required-missing');}
-      if(typeof manualFormAlert!=='undefined')manualFormAlert.classList.remove('active');
-      if(typeof autoFormAlert!=='undefined')autoFormAlert.classList.remove('active');
-    });
-  });
-}
-function applyV41RLanguage(){
-  ensureExpiryNAControls();
-  const m=document.getElementById('cExpiryNALabel'); if(m)m.innerText=v41r('notApplicable');
-  const a=document.getElementById('autoExpiryNALabel'); if(a)a.innerText=v41r('notApplicable');
-  const addBtn=document.getElementById('addCertBtn'); if(addBtn)addBtn.innerText=editCertIndex===null?(tr('addCert')||v41r('add')):v41r('update');
-  if(typeof cExpiryLabel!=='undefined')cExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
-  if(typeof autoExpiryLabel!=='undefined')autoExpiryLabel.innerHTML='<span class="req-star">*</span>'+v41r('expiryRequired');
-}
-const statusBaseV41R=status;
-status=function(expiry){
-  if(!expiry || String(expiry).toUpperCase()==='N/A')return{txt:v41r('noExpiry'),cls:'good',expired:false,risk:false,days:99999,noExpiry:true};
-  return statusBaseV41R(expiry);
-};
-function expiryNAValue(id){const cb=document.getElementById(id);return !!(cb&&cb.checked)}
-function normalizeExpiry(inputId,cbId){return expiryNAValue(cbId)?'N/A':(document.getElementById(inputId)?.value||'')}
-const clearManualValidationBaseV41R=clearManualValidation;
-clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
-validateManualCertificateForm=function(){
-  clearManualValidation(); let ok=true;
-  if(!cType.value){cType.classList.add('required-missing');ok=false;}
-  if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
-  if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
-  return ok;
-};
-validateAutoConfirmForm=function(){
-  clearAutoValidation(); let ok=true;
-  if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
-  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
-  if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
-  if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
-  return ok;
-};
-confirmExtractedDocument=function(){
-  if(!validateAutoConfirmForm())return;
-  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
-  let a=getData('certs');
-  a.push({person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value});
-  saveData('certs',a);confirmBox.classList.add('hidden');documentPreview.innerText='';renderAll();
-};
-addCertificate=function(){
-  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
-  if(!validateManualCertificateForm()||!person)return;
-  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
-  if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
-  saveData('certs',a);
-  cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
-  if(typeof cExpiryNA!=='undefined'){cExpiryNA.checked=false;cExpiry.disabled=false;}
-  clearManualValidation(); applyV41RLanguage(); renderAll();
-};
-function editCertificate(i){
-  const a=getData('certs'); const x=a[i]; if(!x)return;
-  editCertIndex=i;
-  showPage('certificates',navCertificates); showCertMode('manual');
-  cType.value=x.type||''; cProvider.value=x.provider||''; cIssue.value=x.issue||'';
-  if(typeof cDocNo!=='undefined')cDocNo.value=x.docNo||''; if(typeof cCountry!=='undefined')cCountry.value=x.country||'';
-  if(typeof cExpiryNA!=='undefined'){
-    cExpiryNA.checked=String(x.expiry||'').toUpperCase()==='N/A';
-    cExpiry.disabled=cExpiryNA.checked;
-  }
-  cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
-  applyV41RLanguage();
-  document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
-}
-const renderAllBaseV41R=renderAll;
-renderAll=function(){
-  renderAllBaseV41R();
-  const certs=getData('certs');
-  const rows=certTable?certTable.querySelectorAll('tr'):[];
-  rows.forEach((row,i)=>{
-    const cells=row.querySelectorAll('td');
-    if(cells.length>=5){
-      if(String(certs[i]?.expiry||'').toUpperCase()==='N/A'){
-        cells[2].innerText='N/A'; cells[3].innerText=v41r('noExpiry'); cells[3].className='good';
-      }
-      const action=cells[4];
-      if(action&&!action.querySelector('.edit-btn')){
-        action.insertAdjacentHTML('afterbegin',`<button class="secondary edit-btn" onclick="editCertificate(${i})">${v41r('edit')}</button>`);
-      }
-    }
-  });
-};
-const applyLanguageBaseV41R=applyLanguage;
-applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
-setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
@@ -425,8 +205,6 @@ body.company-mode .solo-personnel-card{display:block!important}
 @media(max-width:1180px){.auth-doc-stack{opacity:.22}.auth-doc-stack.left{left:-70px}.auth-doc-stack.right{left:430px;right:auto}}
 @media(max-width:760px){.auth-bg-docs{display:none}}
 
-
-
 /* V33: restore V31 hero feel, but keep 5 document cards coming from the left only */
 .auth-bg-docs{display:block!important;position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
 .auth-doc-stack.right{display:none!important}
@@ -445,8 +223,6 @@ body.company-mode .solo-personnel-card{display:block!important}
 .auth>.lang-floating{display:none!important}
 @media(max-width:1180px){.auth-doc-stack.left{left:-64px!important;opacity:.52!important}.floating-doc{width:190px!important}.auth-intro{max-width:610px!important}}
 @media(max-width:760px){.auth-bg-docs{display:none!important}.auth-card{padding-top:72px!important}}
-
-
 
 /* V37 Professional emerald/navy palette + line icons */
 :root{
@@ -518,16 +294,12 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 .intro-hero{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(56,189,248,.10));border:1px solid #2a3d5a;border-radius:22px;padding:22px;margin-bottom:16px}
 .intro-hero h3{font-size:28px;margin:0 0 10px}.intro-hero p{color:#cbd5e1;line-height:1.55;max-width:900px}
 
-
-
 /* V41 revised small controls */
 .na-check{display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:13px;font-weight:700;margin:4px 0 2px 2px}
 .na-check input{width:auto!important;margin:0!important;accent-color:#22c55e}
 .edit-btn{width:auto!important;margin:0 8px 0 0!important;padding:9px 12px!important;border-radius:10px!important;background:#334155!important;color:#e5e7eb!important}
 .edit-btn:hover{background:#475569!important}
 td:last-child{white-space:nowrap}
-
-
 
 /* V46 ATSRS Platform animated SaaS workflow - keeps V44/V43 top controls untouched */
 #introPage{animation:introPageFade .45s ease both}
@@ -636,8 +408,6 @@ td:last-child{white-space:nowrap}
 .ref-file-info{min-height:18px}
 #cType,#autoDocType{font-weight:700}
 
-
-
 /* V52: app-only fixed sidebar. Login page is untouched. */
 @media(min-width:801px){
   #app.app:not(.hidden){
@@ -689,8 +459,6 @@ td:last-child{white-space:nowrap}
   display:none!important;
 }
 
-
-
 /* V53: final fixed top controls for app pages only.
    Keeps language selector and logout locked to viewport during scroll. */
 #app.app:not(.hidden) > .top-actions,
@@ -730,8 +498,6 @@ body #app.app:not(.hidden) > .top-actions{
 #auth:not(.hidden) .auth-card > .lang-floating{
   position:absolute!important;
 }
-
-
 
 /* V54 FINAL FIX: app top controls must stay fixed during scroll in Chrome/Opera/mobile */
 #app.app:not(.hidden) .top-actions,
@@ -777,8 +543,6 @@ html[dir="rtl"] #app.app .top-actions{
 .career-record-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.career-record-actions button{margin:0!important;padding:8px 9px!important;font-size:12px!important}
 .career-count{font-size:12px;color:#a7b5c5;margin-top:6px;font-weight:700}
 @media(max-width:760px){.career-record-row{grid-template-columns:1fr}.career-record-actions{grid-template-columns:repeat(3,1fr)}}
-
-
 
 /* V55: clean References/Appraisals repository layout + bulletproof app top controls */
 #refsPage .ref-grid{
@@ -1001,6 +765,7 @@ body:not(.atsrs-booting) #app{
 </div>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
+<button id="v76AuditBtnLogin" class="secondary atsrs-audit-btn" type="button" onclick="atsrsV76RunAudit()">TEST</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
 <p id="loginMsg" class="sub"></p>
@@ -1033,8 +798,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V75</div>
-<div>Last Update: 06 Jun 2026 00:15 UTC</div>
+<div>ATSRS V76</div>
+<div>Last Update: 07 Jun 2026 00:15 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1050,11 +815,12 @@ body:not(.atsrs-booting) #app{
 <button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
 </div>
 </div>
+<button id="v76AuditBtnApp" class="secondary atsrs-audit-btn app-audit" type="button" onclick="atsrsV76RunAudit()">TEST</button>
 <button id="topLogoutBtn" class="top-logout" onclick="confirmLogout()">Logout</button>
 </div>
 
 <aside class="sidebar">
-<div class="brand">ATSRS</div>
+<div class="sidebar-head"><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button><div class="brand">ATSRS</div></div>
 <p id="cabinetText" class="sub"></p>
 <div class="nav">
 <button id="navIntro" class="active" onclick="showPage('intro',this)">ATSRS Platform</button>
@@ -2172,8 +1938,6 @@ const setUseModeBaseV25=setUseMode;setUseMode=function(mode){setUseModeBaseV25(m
 const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();let c=getData("certs");if(typeof missingDocs!=="undefined")missingDocs.innerText=missingDocCountForCerts(c);renderV25DocumentStatus();}
 const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageBaseV25();applyV25Language();renderV25DocumentStatus();}
 
-
-
 /* V48 CV / Resume Management */
 const V48_TEXT={
   en:{cvStatus:"CV Status",cvAvailable:"Available ✓",cvMissing:"Missing ⚠",cvTitle:"CV / Resume",cvText:"Store, manage and share professional CV versions for employers, agencies and clients.",cvUploaded:"CV Uploaded ✓",cvNotUploaded:"No CV Uploaded",uploadCV:"Upload CV",previewCV:"Preview CV",downloadCV:"Download CV",deleteCV:"Delete CV",cvBetaBadge:"COMING SOON",cvBetaTitle:"Generate ATSRS Profile CV",cvBetaText:"Generate a professional ATSRS formatted CV using stored profile and document data.",generateCV:"Generate ATSRS CV (Beta)",cvComingSoon:"ATSRS Profile CV generator will be connected in a later build.",cvNoFile:"No CV uploaded yet.",cvSaved:"CV saved",cvDeleted:"CV deleted."},
@@ -2290,8 +2054,6 @@ renderAll=function(){renderAllBaseV49();renderManagedFiles();}
 const applyLanguageBaseV49=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV49();renderManagedFiles();}
 setTimeout(()=>{try{renderManagedFiles()}catch(e){}},0);
-
-
 
 /* V27 Share Profile */
 const V27_TEXT={
@@ -2515,8 +2277,6 @@ applyLanguage=function(){_applyLanguageV36();applyV36LoginLanguage();};
 const _changeLanguageV36=changeLanguage;
 changeLanguage=function(v){_changeLanguageV36(v);applyV36LoginLanguage();setTimeout(applyV36LoginLanguage,0);};
 applyV36LoginLanguage();
-
-
 
 /* V41 revised: Expiry N/A + Edit document register */
 const V41R_TEXT={
@@ -2891,13 +2651,6 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
 })();
 </script>
 
-
-
-
-
-
-
-
 <style>
 /* V60 CLEAN TOPBAR: restored V34-style app top controls and removed V56/V59 docking conflicts. */
 #navLogout{display:none!important;}
@@ -2990,8 +2743,6 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
   setTimeout(restoreV34Topbar,0);setTimeout(restoreV34Topbar,500);
 })();
 </script>
-
-
 
 <!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
 <style id="v61-topbar-troubleshoot-style">
@@ -3168,8 +2919,6 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
 })();
 </script>
 
-
-
 <!-- V62 TEST AUTOMATION: in-app QA runner for ATSRS core functions -->
 <style id="v62-test-automation-style">
 #atsrsTestAutomationBtn{
@@ -3329,8 +3078,6 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
   });
 })();
 </script>
-
-
 
 <!-- V72: full EN/AZ/RU translation pass added; V71 topbar fix retained. -->
 
@@ -3526,8 +3273,6 @@ html[dir="rtl"] body > .atsrs-v64-top-actions{right:18px!important;left:auto!imp
   setTimeout(releaseBootIfNeeded,1200);
 })();
 </script>
-
-
 
 <style id="atsrs-v70-page-attached-top-actions-style">
 /* V70: Language + Logout are page-attached controls, not viewport-fixed controls. */
@@ -4070,8 +3815,6 @@ body > .atsrs-v64-top-actions .lang-menu{
 })();
 </script>
 
-
-
 <script>
 /* V73 LANGUAGE CORE FIX
    Root cause: the previous V72 translation patch was reading window.lang,
@@ -4133,8 +3876,6 @@ body > .atsrs-v64-top-actions .lang-menu{
 })();
 </script>
 
-
-
 <script id="atsrs-v74-use-mode-button-language-fix">
 /* V74: Use-mode buttons must follow selected language directly by ID.
    V72 text-node replacement could translate EN -> AZ/RU, but could not reliably
@@ -4181,8 +3922,6 @@ body > .atsrs-v64-top-actions .lang-menu{
   setInterval(applyV74UseModeLabels,1000);
 })();
 </script>
-
-
 
 <script id="atsrs-v75-final-mode-language-lock">
 /* V75: Final lock for Personal/Company mode labels.
@@ -4311,6 +4050,74 @@ body > .atsrs-v64-top-actions .lang-menu{
   },true);
   runSoon();
   setInterval(lockTestLoginLabel,300);
+})();
+</script>
+
+
+<style id="atsrs-v76-minimal-ui-and-audit-style">
+/* V76: minimal SaaS cleanup + self-audit button. Kept as one override block to avoid scattered patches. */
+:root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
+body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
+.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
+button{box-shadow:none!important}
+.lang-circle{width:auto!important;height:auto!important;min-width:44px!important;border-radius:10px!important;padding:8px 10px!important;background:transparent!important;border:0!important;box-shadow:none!important;font-size:24px!important;line-height:1!important}
+.lang-circle::after{content:'▾';font-size:12px;margin-left:6px;color:var(--v76-muted);vertical-align:middle}.lang-menu{border:1px solid var(--v76-border)!important;border-radius:16px!important;background:#081524!important;box-shadow:0 18px 42px rgba(0,0,0,.32)!important}.lang-menu button{border-left:4px solid transparent!important;background:transparent!important;color:var(--v76-text)!important;box-shadow:none!important}.lang-menu button:hover{background:#101d2e!important}.lang-menu button.v76-selected-lang{border-left-color:var(--v76-green)!important;background:#17263a!important}.lang-menu button.v76-selected-lang::before{content:'✓';color:var(--v76-green);font-weight:900;margin-right:10px}
+.sidebar{background:#06111d!important;border-right:1px solid #17263a!important;box-shadow:none!important}.sidebar-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.sidebar-toggle{width:42px!important;height:42px!important;padding:0!important;margin:0!important;border-radius:12px!important;background:#101d2e!important;border:1px solid var(--v76-border)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important}.sidebar-toggle span{display:block;width:18px;height:2px;border-radius:99px;background:var(--v76-text)}.brand{font-size:28px!important}.nav{gap:4px!important}.nav button{background:transparent!important;border:0!important;border-left:3px solid transparent!important;border-radius:8px!important;color:#dbeafe!important;padding:12px 10px!important;text-align:left!important;box-shadow:none!important}.nav button.active,.nav button:hover{background:#101d2e!important;border-left-color:var(--v76-green)!important;color:#fff!important}.nav button::before{margin-right:8px}.nav button.active{font-weight:900!important}.intro-service-card,.feature-tile,.workflow-step,.snapshot-item,.risk-item{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.intro-service-card.active{background:#0f1f31!important;border-color:var(--v76-green)!important}.mode-choice{gap:10px!important}.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}.mode-choice button{border:1px solid var(--v76-border)!important;border-radius:12px!important;background:#0b1726!important;color:#fff!important}.mode-choice button.active{background:#10251d!important;border-color:var(--v76-green)!important}.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:var(--v76-red);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}.trial-box{order:20;margin:14px 0 4px!important;padding:10px 12px!important;background:transparent!important;border:1px solid var(--v76-border)!important;border-radius:14px!important;box-shadow:none!important;text-align:left!important}.trial-box h3{font-size:14px!important;margin:0 0 3px!important;color:#dfffea!important}.trial-box p,.trial-row{font-size:12px!important;color:var(--v76-muted)!important}.trial-dot{box-shadow:none!important;width:8px!important;height:8px!important;background:var(--v76-green)!important}.auth-card{display:flex!important;flex-direction:column!important}.auth-card #loginBox{display:flex;flex-direction:column!important}.auth-card #loginBox.hidden{display:none!important}#loginBtn{order:10}#localTestBtn{order:11}.atsrs-audit-btn{order:12;background:#17263a!important;border:1px solid var(--v76-border)!important;color:#dbeafe!important}.trial-box{order:18}#createBtn{order:13}#forgotBtn{order:14}#loginMsg{order:19}.build-badge{background:transparent!important;border:1px solid var(--v76-border)!important;color:var(--v76-muted)!important;box-shadow:none!important}.top-actions{gap:6px!important}.top-logout{border-radius:10px!important;padding:10px 12px!important}.app-audit{width:auto!important;margin:0!important;padding:10px 12px!important;border-radius:10px!important}.stats-grid .card,.grid .card{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.nav button,.account-tabs button,.module-tabs button,.cert-mode-buttons button{background:transparent!important;background-image:none!important}.account-tabs button.active,.module-tabs button.active,.cert-mode-buttons button.active{background:#10251d!important;border-color:var(--v76-green)!important}.v76-audit-modal{position:fixed;inset:0;z-index:2147483647;background:rgba(2,6,23,.72);display:flex;align-items:flex-start;justify-content:center;padding:28px 14px;overflow:auto}.v76-audit-card{width:min(920px,100%);background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:18px;box-shadow:0 28px 80px rgba(0,0,0,.45)}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:12px;margin-bottom:12px}.v76-audit-head h3{margin:0}.v76-audit-close{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
+body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minmax(0,1fr)!important}body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{width:78px!important}body.v76-sidebar-collapsed .sidebar .brand,body.v76-sidebar-collapsed .sidebar .sub,body.v76-sidebar-collapsed .sidebar .nav button{font-size:0!important}body.v76-sidebar-collapsed .sidebar .nav button{height:44px!important;text-align:center!important}body.v76-sidebar-collapsed .sidebar .nav button::before{font-size:22px!important;margin:0!important}body.v76-sidebar-collapsed #navIntro::before{content:'🏠'}body.v76-sidebar-collapsed #navDashboard::before{content:'📊'}body.v76-sidebar-collapsed #navPersonnel::before{content:'👥'}body.v76-sidebar-collapsed #navCertificates::before{content:'📁'}body.v76-sidebar-collapsed #navRefs::before{content:'📄'}body.v76-sidebar-collapsed #navCompliance::before{content:'✅'}body.v76-sidebar-collapsed #navReports::before{content:'📈'}body.v76-sidebar-collapsed #navProfile::before{content:'⚙️'}
+@media(max-width:800px){.sidebar-head{justify-content:flex-start}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
+</style>
+
+
+<script id="atsrs-v76-minimal-ui-and-audit-script">
+(function(){
+  'use strict';
+  const LANGS={en:'English',az:'Azərbaycan dili',ru:'Rus dili'};
+  function activeLang(){const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'');if(flag.includes('🇦🇿'))return'az';if(flag.includes('🇷🇺'))return'ru';return localStorage.getItem('atsrs_lang')||document.documentElement.lang||'en'}
+  function markSelectedLang(){const l=activeLang();document.querySelectorAll('.lang-menu button').forEach(b=>{const txt=b.textContent||'';b.classList.toggle('v76-selected-lang',(l==='az'&&txt.includes('Azərbaycan'))||(l==='ru'&&(txt.includes('Рус')||txt.includes('Rus'))) || (l==='en'&&txt.includes('English')));});}
+  function moveTrialLow(){const loginBox=document.getElementById('loginBox'),trial=document.getElementById('trialBox'),forgot=document.getElementById('forgotBtn');if(loginBox&&trial&&forgot&&trial.previousElementSibling!==forgot){loginBox.insertBefore(trial,forgot.nextSibling)}}
+  function simplifyModeError(){const err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');if(err&&err.id!=='modeErrorText')err.id='modeErrorText'}
+  window.atsrsV76ToggleSidebar=function(){const app=document.getElementById('app');const side=document.querySelector('#app .sidebar');if(!app||app.classList.contains('hidden'))return;if(window.innerWidth<=800&&side){side.classList.toggle('v76-mobile-closed');return;}document.body.classList.toggle('v76-sidebar-collapsed');};
+  function v76Apply(){markSelectedLang();moveTrialLow();simplifyModeError();}
+  function status(ok,warn){return ok?'PASS':(warn?'WARN':'FAIL')}
+  function row(label,state,detail){return{label,state,detail}}
+  function computed(el,prop){return el?getComputedStyle(el).getPropertyValue(prop):''}
+  function duplicateIds(){const map={},dups=[];document.querySelectorAll('[id]').forEach(e=>{map[e.id]=(map[e.id]||0)+1});Object.keys(map).forEach(k=>{if(map[k]>1)dups.push(k+' ×'+map[k])});return dups;}
+  function functionNameRepeats(){const html=document.documentElement.outerHTML;const names=[...html.matchAll(/function\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(m=>m[1]);const count={};names.forEach(n=>count[n]=(count[n]||0)+1);return Object.entries(count).filter(([n,c])=>c>1).map(([n,c])=>n+' ×'+c).slice(0,12);}
+  window.atsrsV76RunAudit=function(){
+    v76Apply();
+    const results=[];
+    const langBtn=document.getElementById('langCircle');
+    const appLangBtn=document.getElementById('appLangCircle');
+    const langRadius=parseFloat(computed(langBtn,'border-radius'))||0;
+    results.push(row('Language UI',langBtn&&langRadius<=12?'PASS':'WARN','Flag button should be plain, not a round badge. Current radius: '+langRadius+'px.'));
+    results.push(row('Selected language mark',document.querySelector('.lang-menu .v76-selected-lang')?'PASS':'WARN','Selected language should have a small green mark in the menu.'));
+    results.push(row('Sidebar toggle',document.getElementById('sidebarToggleBtn')?'PASS':'FAIL','Hamburger button near ATSRS brand must exist and toggle the left panel.'));
+    const trial=document.getElementById('trialBox'),forgot=document.getElementById('forgotBtn');
+    results.push(row('Trial placement',trial&&forgot&&trial.compareDocumentPosition(forgot)&Node.DOCUMENT_POSITION_PRECEDING?'PASS':'WARN','Trial block should sit lower in login menu, after main action buttons.'));
+    const modeBox=document.getElementById('modeChoiceBox'),err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');
+    results.push(row('Mode warning style',modeBox&&computed(modeBox,'border-top-width')==='0px'?'PASS':'WARN','Personal/Company warning should be simple text with a small red icon, not a large red frame.'));
+    const activeNav=document.querySelector('#app .nav button.active');
+    const navBg=computed(activeNav,'background-image')||computed(activeNav,'background-color');
+    results.push(row('Menu simplicity',navBg.includes('gradient')?'WARN':'PASS','Left menu should be minimal without blue gradient selection.'));
+    const top=document.querySelector('#app .top-actions');
+    results.push(row('Top actions',top&&computed(top,'position')==='fixed'?'PASS':'WARN','Language/logout/test controls should remain available in app view.'));
+    const dups=duplicateIds();
+    results.push(row('Duplicate IDs',dups.length?'FAIL':'PASS',dups.length?dups.join(', '):'No duplicate element IDs found.'));
+    const fn=functionNameRepeats();
+    results.push(row('Duplicate functions',fn.length?'WARN':'PASS',fn.length?fn.join(', '):'No repeated function declarations found in current DOM source.'));
+    const sx=Math.max(document.body.scrollWidth,document.documentElement.scrollWidth)-window.innerWidth;
+    results.push(row('Horizontal overflow',sx>2?'WARN':'PASS',sx>2?'Page is wider than viewport by '+Math.round(sx)+'px.':'No visible horizontal overflow.'));
+    const redFetch=[...document.querySelectorAll('p,div,span')].filter(e=>(e.textContent||'').toLowerCase().includes('failed to fetch')).length;
+    results.push(row('Fetch errors',redFetch?'WARN':'PASS',redFetch?'A visible Failed to fetch message is present. Usually network/Supabase/VPN related.':'No visible Failed to fetch message.'));
+    const missingTrans=[...document.querySelectorAll('[id]')].filter(e=>/^[a-zA-Z]+[A-Za-z0-9]*$/.test((e.textContent||'').trim())&&e.textContent.trim().length<32).length;
+    results.push(row('Translation surface',missingTrans>25?'WARN':'PASS','Detected '+missingTrans+' short raw labels; review after language switch if needed.'));
+    const counts=results.reduce((a,r)=>(a[r.state]=(a[r.state]||0)+1,a),{});
+    const body=results.map(r=>`<div class="v76-audit-row"><div class="v76-status v76-${r.state.toLowerCase()}">${r.state}</div><div><b>${r.label}</b><p>${r.detail}</p></div></div>`).join('');
+    const old=document.getElementById('v76AuditModal');if(old)old.remove();
+    const modal=document.createElement('div');modal.id='v76AuditModal';modal.className='v76-audit-modal';modal.innerHTML=`<div class="v76-audit-card"><div class="v76-audit-head"><h3>ATSRS V76 Audit</h3><button class="v76-audit-close" onclick="document.getElementById('v76AuditModal').remove()">Close</button></div><div class="v76-summary"><span class="v76-chip v76-pass">PASS ${counts.PASS||0}</span><span class="v76-chip v76-warn">WARN ${counts.WARN||0}</span><span class="v76-chip v76-fail">FAIL ${counts.FAIL||0}</span></div>${body}</div>`;document.body.appendChild(modal);
+  };
+  const prevChange=window.changeLanguage;window.changeLanguage=function(v){const r=typeof prevChange==='function'?prevChange.apply(this,arguments):undefined;setTimeout(v76Apply,0);setTimeout(v76Apply,160);return r};
+  document.addEventListener('DOMContentLoaded',v76Apply);window.addEventListener('load',v76Apply);setTimeout(v76Apply,0);setTimeout(v76Apply,400);
 })();
 </script>
 
