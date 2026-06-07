@@ -821,12 +821,6 @@ body:not(.atsrs-booting) #app{
 
 <div id="loginBox">
 <h2 id="loginTitle"></h2>
-<div id="loginSocialAuth" class="social-auth-group" aria-label="Social login options">
-<button type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','login')"><span class="social-auth-icon">G</span><span>Continue with Google</span></button>
-<button type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','login')"><span class="social-auth-icon">M</span><span>Continue with Microsoft</span></button>
-<button type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','login')"><span class="social-auth-icon">in</span><span>Continue with LinkedIn</span></button>
-</div>
-<div class="auth-divider"><span>or continue with email</span></div>
 <input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
 <label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me on this device</span></label>
@@ -840,18 +834,20 @@ body:not(.atsrs-booting) #app{
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
+<div id="signupSocialArea" class="signup-social-area" aria-label="Alternative account creation options">
+  <div class="auth-divider"><span>or create account with</span></div>
+  <div id="signupSocialAuth" class="social-auth-group social-auth-inline">
+    <button type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','register')"><span class="social-auth-icon">G</span><span>Google</span></button>
+    <button type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','register')"><span class="social-auth-icon">M</span><span>Microsoft</span></button>
+    <button type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','register')"><span class="social-auth-icon">in</span><span>LinkedIn</span></button>
+  </div>
+</div>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
 <p id="loginMsg" class="sub"></p>
 </div>
 
 <div id="registerBox" class="hidden">
 <h2 id="registerTitle"></h2>
-<div id="registerSocialAuth" class="social-auth-group" aria-label="Social registration options">
-<button type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','register')"><span class="social-auth-icon">G</span><span>Continue with Google</span></button>
-<button type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','register')"><span class="social-auth-icon">M</span><span>Continue with Microsoft</span></button>
-<button type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','register')"><span class="social-auth-icon">in</span><span>Continue with LinkedIn</span></button>
-</div>
-<div class="auth-divider"><span>or create account with email</span></div>
 <input id="regEmail" type="email"><p id="regEmailRule" class="error hidden"></p>
 <input id="regPassword" type="password"><p id="passRule" class="error hidden"></p>
 <input id="regPassword2" type="password"><p id="matchRule" class="error hidden"></p>
@@ -877,8 +873,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V86</div>
-<div>Last Update: 07 Jun 2026 05:20 UTC</div>
+<div>ATSRS V87</div>
+<div>Last Update: 07 Jun 2026 06:15 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4157,7 +4153,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V86';
+  const BUILD='V87';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4501,30 +4497,38 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </script>
 
 
-<style id="atsrs-v86-social-auth-style">
-/* V86: Professional social authentication UI for Google, Microsoft and LinkedIn. */
+<style id="atsrs-v87-social-auth-style">
+/* V87: Compact social account creation below Create Account. */
+.signup-social-area{
+  margin:6px 0 4px!important;
+}
 .social-auth-group{
   display:flex;
-  flex-direction:column;
   gap:8px;
-  margin:10px 0 10px!important;
+  margin:8px 0 2px!important;
+}
+.social-auth-inline{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px!important;
 }
 .social-auth-btn{
   width:100%!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  gap:10px!important;
+  gap:7px!important;
   margin:0!important;
-  padding:10px 12px!important;
+  padding:9px 8px!important;
   border-radius:12px!important;
-  border:1px solid rgba(148,163,184,.32)!important;
-  background:rgba(8,21,36,.88)!important;
+  border:1px solid rgba(148,163,184,.28)!important;
+  background:rgba(8,21,36,.82)!important;
   color:#eef6ff!important;
   box-shadow:none!important;
-  font-size:14px!important;
+  font-size:12.5px!important;
   font-weight:850!important;
   letter-spacing:.01em;
+  white-space:nowrap!important;
 }
 .social-auth-btn:hover{
   border-color:rgba(34,197,94,.62)!important;
@@ -4532,14 +4536,14 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   transform:translateY(-1px);
 }
 .social-auth-icon{
-  width:22px;
-  height:22px;
+  width:20px;
+  height:20px;
   border-radius:7px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  flex:0 0 22px;
-  font-size:12px;
+  flex:0 0 20px;
+  font-size:11px;
   font-weight:950;
   background:#f8fafc;
   color:#0f172a;
@@ -4551,9 +4555,9 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   display:flex;
   align-items:center;
   gap:10px;
-  margin:8px 0 8px!important;
+  margin:6px 0 6px!important;
   color:#8fa1b7;
-  font-size:11px;
+  font-size:10.5px;
   font-weight:800;
   text-transform:uppercase;
   letter-spacing:.08em;
@@ -4563,10 +4567,6 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   height:1px;
   background:rgba(148,163,184,.25);
   flex:1;
-}
-#auth #registerBox .register-account-type-card + #registerSocialAuth,
-#auth #registerBox #registerSocialAuth{
-  margin-top:10px!important;
 }
 #auth #loginBox input,
 #auth #registerBox input{
@@ -4578,10 +4578,11 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   padding:11px 12px!important;
 }
 @media(max-width:560px){
+  .social-auth-inline{grid-template-columns:1fr!important;}
   .social-auth-btn{font-size:13px!important;padding:10px!important;}
 }
 </style>
-<script id="atsrs-v86-social-auth-script">
+<script id="atsrs-v87-social-auth-script">
 (function(){
   'use strict';
   const PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
@@ -4605,7 +4606,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     const provider=PROVIDERS[providerKey];
     const target=messageTarget(flow);
     if(target)target.textContent='';
-    if(!validateModeForSocial(flow))return;
+    if(!validateModeForSocial(flow)){try{document.getElementById('modeChoiceBox')?.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}return;}
     if(window.useMode){try{localStorage.setItem('atsrs_use_mode',window.useMode);}catch(e){}}
     if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
       if(target)target.textContent=label+' sign-in will be available after OAuth is configured in Supabase.';
