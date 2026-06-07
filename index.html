@@ -992,8 +992,8 @@ body > .atsrs-global-top-actions .top-logout:active,
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V94</div>
-<div>Last Update: 07 Jun 2026 0735 UTC</div>
+<div>ATSRS V100</div>
+<div>Last Update: 07 Jun 2026 2355 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1434,8 +1434,8 @@ let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.cr
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
-en:{sub:"Professional Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
-az:{sub:"Professional Compliance Platform",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",exp30:"30 günə bitənlər",expired:"Vaxtı keçmiş",fill:"Bütün xanaları doldur.",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",personalUse:"Fərdi istifadə",companyUse:"Şirkət istifadəsi",myDocuments:"Mənim sənədlərim",personalDashboardNote:"Fərdi rejim yalnız sizin sənədlərə fokuslanır.",scanUpload:"Sənəd scan / upload et",ocrManual:"OCR bütün xanaları dəqiq oxuya bilmədi. Çatışmayanları doldur və təsdiqlə.",nationality:"Milliyyət",employeeId:"Employee ID",project:"Layihə",vessel:"Gəmi",crewRegister:"Crew Register",crewList:"Heyət siyahısı",addCrew:"Heyət əlavə et",importExcel:"Excel import",groupsProjects:"Qruplar / Layihələr",complianceStatus:"Compliance status",searchCrew:"Heyət axtar...",allCompanies:"Bütün şirkətlər",allPositions:"Bütün vəzifələr",allStatuses:"Bütün statuslar",ready:"Hazır",review:"Yoxlanmalıdır",blocked:"Bloklanıb",importInfo:"Excel/CSV yüklə. Tam auto-mapping növbəti data mərhələsində qoşulacaq.",fileSelected:"Fayl seçildi",projects:"Layihələr",client:"Client",team:"Komanda",addProject:"Layihə əlavə et",readyCrew:"Hazır heyət",reviewCrew:"Yoxlama tələb edir",blockedCrew:"Bloklanmış / vaxtı keçmiş",complianceNote:"Compliance sertifikat bitmə tarixlərinə əsasən hesablanır. Missing document logic document requirements ilə əlavə olunacaq.",crewStatus:"Heyət statusu",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
+en:{sub:"Automated Tracking & Reporting System",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
+az:{sub:"Automated Tracking & Reporting System",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",exp30:"30 günə bitənlər",expired:"Vaxtı keçmiş",fill:"Bütün xanaları doldur.",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",personalUse:"Fərdi istifadə",companyUse:"Şirkət istifadəsi",myDocuments:"Mənim sənədlərim",personalDashboardNote:"Fərdi rejim yalnız sizin sənədlərə fokuslanır.",scanUpload:"Sənəd scan / upload et",ocrManual:"OCR bütün xanaları dəqiq oxuya bilmədi. Çatışmayanları doldur və təsdiqlə.",nationality:"Milliyyət",employeeId:"Employee ID",project:"Layihə",vessel:"Gəmi",crewRegister:"Crew Register",crewList:"Heyət siyahısı",addCrew:"Heyət əlavə et",importExcel:"Excel import",groupsProjects:"Qruplar / Layihələr",complianceStatus:"Compliance status",searchCrew:"Heyət axtar...",allCompanies:"Bütün şirkətlər",allPositions:"Bütün vəzifələr",allStatuses:"Bütün statuslar",ready:"Hazır",review:"Yoxlanmalıdır",blocked:"Bloklanıb",importInfo:"Excel/CSV yüklə. Tam auto-mapping növbəti data mərhələsində qoşulacaq.",fileSelected:"Fayl seçildi",projects:"Layihələr",client:"Client",team:"Komanda",addProject:"Layihə əlavə et",readyCrew:"Hazır heyət",reviewCrew:"Yoxlama tələb edir",blockedCrew:"Bloklanmış / vaxtı keçmiş",complianceNote:"Compliance sertifikat bitmə tarixlərinə əsasən hesablanır. Missing document logic document requirements ilə əlavə olunacaq.",crewStatus:"Heyət statusu",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
 };
 ["tr","no","de","fr","es","pt","ar"].forEach(l=>T[l]=T.en);
 T.ru={
@@ -4272,7 +4272,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V89';
+  const BUILD='V101';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4893,6 +4893,40 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   window.addEventListener('load',keepStable);
   [0,100,300,800,1500].forEach(function(ms){setTimeout(keepStable,ms);});
   setInterval(keepStable,1000);
+})();
+</script>
+
+
+<script id="atsrs-v101-auth-subtitle-build-lock">
+/* V101: keep login card subtitle aligned with ATSRS meaning and build badge aligned with filename. */
+(function(){
+  'use strict';
+  var subtitle='Automated Tracking & Reporting System';
+  function lockAuthSubtitle(){
+    var el=document.getElementById('authSubtitle');
+    if(el && el.textContent.trim()!==subtitle){el.textContent=subtitle;}
+  }
+  function lockBuildBadge(){
+    var badge=document.getElementById('buildBadge');
+    if(!badge)return;
+    var rows=badge.querySelectorAll('div');
+    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V100')rows[0].textContent='ATSRS V100';
+    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 07 Jun 2026 2355 UTC')rows[1].textContent='Last Update: 07 Jun 2026 2355 UTC';
+    if(rows[2] && rows[2].textContent.trim()!=='TEST BUILD')rows[2].textContent='TEST BUILD';
+  }
+  function lockV101(){lockAuthSubtitle();lockBuildBadge();}
+  var baseApplyLanguage=window.applyLanguage;
+  if(typeof baseApplyLanguage==='function'){
+    window.applyLanguage=function(){
+      var result=baseApplyLanguage.apply(this,arguments);
+      lockV101();
+      return result;
+    };
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lockV101); else lockV101();
+  window.addEventListener('load',lockV101);
+  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(lockV101,ms);});
+  setInterval(lockV101,1500);
 })();
 </script>
 
