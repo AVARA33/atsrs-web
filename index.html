@@ -862,8 +862,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V82</div>
-<div>Last Update: 07 Jun 2026 04:05 UTC</div>
+<div>ATSRS V83</div>
+<div>Last Update: 07 Jun 2026 04:30 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4142,7 +4142,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V82';
+  const BUILD='V83';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4288,6 +4288,89 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   document.addEventListener('DOMContentLoaded',function(){forceEnglishSurface();setTimeout(forceEnglishSurface,200);setTimeout(forceEnglishSurface,800);});
   window.addEventListener('load',function(){forceEnglishSurface();setTimeout(forceEnglishSurface,300);});
   setTimeout(forceEnglishSurface,0);setTimeout(forceEnglishSurface,500);
+})();
+</script>
+
+
+
+<style id="atsrs-v83-create-account-mode-style">
+/* V83: Create Account requires Personal/Company selection and displays selected account type on register screen. */
+.register-account-type-card{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:0 0 14px;
+  padding:11px 12px;
+  border:1px solid rgba(34,197,94,.45);
+  background:rgba(34,197,94,.08);
+  border-radius:14px;
+  color:#eafdf0;
+}
+.register-account-type-icon{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#22c55e;
+  color:#04111d;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  flex:0 0 auto;
+}
+.register-account-type-card b{display:block;font-size:13px;margin-bottom:2px;color:#ffffff;}
+.register-account-type-card span{display:block;font-size:12px;line-height:1.35;color:#b7c7d8;}
+</style>
+<script id="atsrs-v83-create-account-mode-script">
+(function(){
+  'use strict';
+  function selectedMode(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
+  }
+  function modeTitle(mode){return mode==='company'?'Company Use Account':'Personal Use Account';}
+  function modeText(mode){
+    return mode==='company'
+      ? 'You are creating a company workspace for managing crew compliance, personnel documents and project readiness.'
+      : 'You are creating a personal workspace for your own offshore, marine and technical career documents.';
+  }
+  function ensureRegisterModeCard(){
+    const box=document.getElementById('registerBox');
+    const title=document.getElementById('registerTitle');
+    if(!box || !title)return;
+    let card=document.getElementById('registerAccountTypeCard');
+    if(!card){
+      card=document.createElement('div');
+      card.id='registerAccountTypeCard';
+      card.className='register-account-type-card';
+      card.innerHTML='<div class="register-account-type-icon">✓</div><div><b id="registerAccountTypeTitle"></b><span id="registerAccountTypeText"></span></div>';
+      title.insertAdjacentElement('afterend',card);
+    }
+    const mode=selectedMode();
+    const t=document.getElementById('registerAccountTypeTitle');
+    const x=document.getElementById('registerAccountTypeText');
+    if(t)t.textContent=modeTitle(mode);
+    if(x)x.textContent=modeText(mode);
+  }
+  function showModeWarningForCreate(){
+    if(typeof window.validateUseMode==='function')return window.validateUseMode();
+    const mode=selectedMode();
+    if(mode==='personal'||mode==='company')return true;
+    const x=document.getElementById('modeInstruction')||document.getElementById('modeRule');
+    if(x){x.classList.add('active');x.textContent='Please select Personal Use or Company Use above before continuing.';}
+    return false;
+  }
+  const baseShowRegister=window.showRegister;
+  window.showRegister=function(){
+    if(!showModeWarningForCreate())return;
+    if(typeof baseShowRegister==='function')baseShowRegister();
+    ensureRegisterModeCard();
+  };
+  const baseSetUseMode=window.setUseMode;
+  window.setUseMode=function(mode){
+    if(typeof baseSetUseMode==='function')baseSetUseMode(mode);
+    setTimeout(ensureRegisterModeCard,0);
+  };
+  window.addEventListener('load',function(){setTimeout(ensureRegisterModeCard,80);});
 })();
 </script>
 
