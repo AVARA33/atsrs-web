@@ -739,11 +739,9 @@ body:not(.atsrs-booting) #app{
 
 <div class="auth-card">
 <div class="lang-floating">
-<button type="button" id="langCircle" class="lang-circle" onclick="toggleLangMenu()">🇬🇧</button>
+<button type="button" id="langCircle" class="lang-circle" onclick="atsrsV78EnglishOnlyNotice()">🇬🇧</button>
 <div id="langMenu" class="lang-menu hidden">
-<button type="button" onclick="changeLanguage('en')"><span>🇬🇧</span> English</button>
-<button type="button" onclick="changeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
-<button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
+<button type="button" data-lang="en"><span>🇬🇧</span> English</button>
 </div>
 </div>
 <h1 class="logo">ATSRS</h1>
@@ -798,8 +796,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V77</div>
-<div>Last Update: 07 Jun 2026 00:45 UTC</div>
+<div>ATSRS V78</div>
+<div>Last Update: 07 Jun 2026 02:35 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -808,11 +806,9 @@ body:not(.atsrs-booting) #app{
 <section id="app" class="app hidden">
 <div class="top-actions">
 <div class="lang-floating app-lang-switcher">
-<button type="button" id="appLangCircle" class="lang-circle" onclick="toggleAppLangMenu()">🇬🇧</button>
+<button type="button" id="appLangCircle" class="lang-circle" onclick="atsrsV78EnglishOnlyNotice()">🇬🇧</button>
 <div id="appLangMenu" class="lang-menu hidden">
-<button type="button" onclick="changeLanguage('en')"><span>🇬🇧</span> English</button>
-<button type="button" onclick="changeLanguage('az')"><span>🇦🇿</span> Azərbaycan</button>
-<button type="button" onclick="changeLanguage('ru')"><span>🇷🇺</span> Русский</button>
+<button type="button" data-lang="en"><span>🇬🇧</span> English</button>
 </div>
 </div>
 <button id="v76AuditBtnApp" class="secondary atsrs-audit-btn app-audit" type="button" onclick="atsrsV76RunAudit()">TEST</button>
@@ -4055,100 +4051,115 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 <style id="atsrs-v76-minimal-ui-and-audit-style">
-/* V77: keep V76 design, fix sidebar toggle position, language indicator tracking, and audit false positives. */
+/* V78: English-only build, stable V77 design, right-aligned compact hamburger, cleaner diagnostics. */
 :root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
 body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
 .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
 button{box-shadow:none!important}
-.lang-circle{width:auto!important;height:auto!important;min-width:44px!important;border-radius:10px!important;padding:8px 10px!important;background:transparent!important;border:0!important;box-shadow:none!important;font-size:24px!important;line-height:1!important}
-.lang-circle::after{content:'▾';font-size:12px;margin-left:6px;color:var(--v76-muted);vertical-align:middle}.lang-menu{border:1px solid var(--v76-border)!important;border-radius:16px!important;background:#081524!important;box-shadow:0 18px 42px rgba(0,0,0,.32)!important}.lang-menu button{border-left:4px solid transparent!important;background:transparent!important;color:var(--v76-text)!important;box-shadow:none!important}.lang-menu button:hover{background:#101d2e!important}.lang-menu button.v76-selected-lang{border-left-color:transparent!important;background:#17263a!important;position:relative!important}.lang-menu button.v76-selected-lang::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--v76-green);display:inline-block;margin-right:10px;box-shadow:0 0 0 4px rgba(34,197,94,.14);vertical-align:middle}
-.sidebar{background:#06111d!important;border-right:1px solid #17263a!important;box-shadow:none!important}.sidebar-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.sidebar-head .brand{order:1}.sidebar-head .sidebar-toggle{order:2}.sidebar-toggle{width:42px!important;height:42px!important;padding:0!important;margin:0!important;border-radius:12px!important;background:#101d2e!important;border:1px solid var(--v76-border)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important}.sidebar-toggle span{display:block;width:18px;height:2px;border-radius:99px;background:var(--v76-text)}.brand{font-size:28px!important}.nav{gap:4px!important}.nav button{background:transparent!important;border:0!important;border-left:3px solid transparent!important;border-radius:8px!important;color:#dbeafe!important;padding:12px 10px!important;text-align:left!important;box-shadow:none!important}.nav button.active,.nav button:hover{background:#101d2e!important;border-left-color:var(--v76-green)!important;color:#fff!important}.nav button::before{margin-right:8px}.nav button.active{font-weight:900!important}.intro-service-card,.feature-tile,.workflow-step,.snapshot-item,.risk-item{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.intro-service-card.active{background:#0f1f31!important;border-color:var(--v76-green)!important}.mode-choice{gap:10px!important}.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}.mode-choice button{border:1px solid var(--v76-border)!important;border-radius:12px!important;background:#0b1726!important;color:#fff!important}.mode-choice button.active{background:#10251d!important;border-color:var(--v76-green)!important}.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:var(--v76-red);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}.trial-box{order:20;margin:14px 0 4px!important;padding:10px 12px!important;background:transparent!important;border:1px solid var(--v76-border)!important;border-radius:14px!important;box-shadow:none!important;text-align:left!important}.trial-box h3{font-size:14px!important;margin:0 0 3px!important;color:#dfffea!important}.trial-box p,.trial-row{font-size:12px!important;color:var(--v76-muted)!important}.trial-dot{box-shadow:none!important;width:8px!important;height:8px!important;background:var(--v76-green)!important}.auth-card{display:flex!important;flex-direction:column!important}.auth-card #loginBox{display:flex;flex-direction:column!important}.auth-card #loginBox.hidden{display:none!important}#loginBtn{order:10}#localTestBtn{order:11}.atsrs-audit-btn{order:12;background:#17263a!important;border:1px solid var(--v76-border)!important;color:#dbeafe!important}.trial-box{order:18}#createBtn{order:13}#forgotBtn{order:14}#loginMsg{order:19}.build-badge{background:transparent!important;border:1px solid var(--v76-border)!important;color:var(--v76-muted)!important;box-shadow:none!important}.top-actions{gap:6px!important}.top-logout{border-radius:10px!important;padding:10px 12px!important}.app-audit{width:auto!important;margin:0!important;padding:10px 12px!important;border-radius:10px!important}.stats-grid .card,.grid .card{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.nav button,.account-tabs button,.module-tabs button,.cert-mode-buttons button{background:transparent!important;background-image:none!important}.account-tabs button.active,.module-tabs button.active,.cert-mode-buttons button.active{background:#10251d!important;border-color:var(--v76-green)!important}.v76-audit-modal{position:fixed;inset:0;z-index:2147483647;background:rgba(2,6,23,.72);display:flex;align-items:flex-start;justify-content:center;padding:28px 14px;overflow:auto}.v76-audit-card{width:min(920px,100%);background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:18px;box-shadow:0 28px 80px rgba(0,0,0,.45)}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:12px;margin-bottom:12px}.v76-audit-head h3{margin:0}.v76-audit-close{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
+.lang-circle{width:auto!important;height:auto!important;min-width:44px!important;border-radius:10px!important;padding:8px 10px!important;background:transparent!important;border:0!important;box-shadow:none!important;font-size:24px!important;line-height:1!important;cursor:default!important}
+.lang-circle::after{content:'EN';font-size:11px;margin-left:6px;color:var(--v76-muted);vertical-align:middle;font-weight:900;letter-spacing:.03em}
+.lang-menu{display:none!important}
+.sidebar{background:#06111d!important;border-right:1px solid #17263a!important;box-shadow:none!important}
+.sidebar-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;margin-bottom:10px!important;width:100%!important}
+.sidebar-head .brand{order:1!important;line-height:34px!important;white-space:nowrap!important}.sidebar-head .sidebar-toggle{order:2!important;margin-left:auto!important}
+.sidebar-toggle{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;margin:0 0 0 auto!important;border-radius:9px!important;background:#101d2e!important;border:1px solid var(--v76-border)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important}
+.sidebar-toggle span{display:block!important;width:16px!important;height:2px!important;border-radius:99px!important;background:var(--v76-text)!important}.brand{font-size:28px!important}
+.nav{gap:4px!important}.nav button{background:transparent!important;border:0!important;border-left:3px solid transparent!important;border-radius:8px!important;color:#dbeafe!important;padding:12px 10px!important;text-align:left!important;box-shadow:none!important}.nav button.active,.nav button:hover{background:#101d2e!important;border-left-color:var(--v76-green)!important;color:#fff!important}.nav button::before{margin-right:8px}.nav button.active{font-weight:900!important}
+.intro-service-card,.feature-tile,.workflow-step,.snapshot-item,.risk-item{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.intro-service-card.active{background:#0f1f31!important;border-color:var(--v76-green)!important}
+.mode-choice{gap:10px!important}.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}.mode-choice button{border:1px solid var(--v76-border)!important;border-radius:12px!important;background:#0b1726!important;color:#fff!important}.mode-choice button.active{background:#10251d!important;border-color:var(--v76-green)!important}
+.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:var(--v76-red);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}
+.trial-box{order:20;margin:14px 0 4px!important;padding:10px 12px!important;background:transparent!important;border:1px solid var(--v76-border)!important;border-radius:14px!important;box-shadow:none!important;text-align:left!important}.trial-box h3{font-size:14px!important;margin:0 0 3px!important;color:#dfffea!important}.trial-box p,.trial-row{font-size:12px!important;color:var(--v76-muted)!important}.trial-dot{box-shadow:none!important;width:8px!important;height:8px!important;background:var(--v76-green)!important}
+.auth-card{display:flex!important;flex-direction:column!important}.auth-card #loginBox{display:flex;flex-direction:column!important}.auth-card #loginBox.hidden{display:none!important}#loginBtn{order:10}#localTestBtn{order:11}.atsrs-audit-btn{order:12;background:#17263a!important;border:1px solid var(--v76-border)!important;color:#dbeafe!important}#createBtn{order:13}#forgotBtn{order:14}.trial-box{order:15}
+.v76-audit-modal{position:fixed;inset:0;background:rgba(2,6,23,.72);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:18px}.v76-audit-card{width:min(760px,100%);max-height:86vh;overflow:auto;background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:16px}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:10px}.v76-audit-head h3{margin:0}.v76-audit-close,.v76-copy-btn{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
 body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minmax(0,1fr)!important}body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{width:78px!important}body.v76-sidebar-collapsed .sidebar .brand,body.v76-sidebar-collapsed .sidebar .sub,body.v76-sidebar-collapsed .sidebar .nav button{font-size:0!important}body.v76-sidebar-collapsed .sidebar .nav button{height:44px!important;text-align:center!important}body.v76-sidebar-collapsed .sidebar .nav button::before{font-size:22px!important;margin:0!important}body.v76-sidebar-collapsed #navIntro::before{content:'🏠'}body.v76-sidebar-collapsed #navDashboard::before{content:'📊'}body.v76-sidebar-collapsed #navPersonnel::before{content:'👥'}body.v76-sidebar-collapsed #navCertificates::before{content:'📁'}body.v76-sidebar-collapsed #navRefs::before{content:'📄'}body.v76-sidebar-collapsed #navCompliance::before{content:'✅'}body.v76-sidebar-collapsed #navReports::before{content:'📈'}body.v76-sidebar-collapsed #navProfile::before{content:'⚙️'}
-@media(max-width:800px){.sidebar-head{justify-content:flex-start}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
+@media(max-width:800px){.sidebar-head{justify-content:space-between!important}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
 </style>
-
-
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const LANGS={en:'English',az:'Azərbaycan dili',ru:'Rus dili'};
-  function v77CurrentLang(){
-    const stored=localStorage.getItem('atsrs_lang')||localStorage.getItem('lang')||'';
-    const global=(typeof window.lang==='string'&&window.lang)||'';
-    const htmlLang=document.documentElement.getAttribute('lang')||'';
-    const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'');
-    if(global==='az'||stored==='az'||htmlLang==='az'||flag.includes('🇦🇿'))return'az';
-    if(global==='ru'||stored==='ru'||htmlLang==='ru'||flag.includes('🇷🇺'))return'ru';
-    return'en';
-  }
-  function v77SetFlag(l){
-    const flag=l==='az'?'🇦🇿':(l==='ru'?'🇷🇺':'🇬🇧');
-    ['langCircle','appLangCircle'].forEach(id=>{const b=document.getElementById(id);if(b&&b.textContent.trim()!==flag)b.textContent=flag;});
-    document.documentElement.setAttribute('lang',l);
-    try{localStorage.setItem('atsrs_lang',l)}catch(e){}
-  }
-  function markSelectedLang(){
-    const l=v77CurrentLang();v77SetFlag(l);
-    document.querySelectorAll('.lang-menu button').forEach(b=>{
-      const txt=b.textContent||'';
-      const selected=(l==='az'&&txt.includes('Azərbaycan'))||(l==='ru'&&(txt.includes('Рус')||txt.includes('Rus'))) || (l==='en'&&(txt.includes('English')||txt.includes('İngilis')));
-      b.classList.toggle('v76-selected-lang',selected);
-      b.setAttribute('aria-current',selected?'true':'false');
-    });
+  const BUILD='V78';
+  window.atsrsV78EnglishOnlyNotice=function(){
+    const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
+    const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
+  };
+  function forceEnglish(){
+    try{localStorage.setItem('atsrs_lang','en');localStorage.setItem('lang','en')}catch(e){}
+    window.lang='en';
+    document.documentElement.setAttribute('lang','en');
+    document.documentElement.setAttribute('dir','ltr');
+    ['langCircle','appLangCircle'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent='🇬🇧';});
+    ['langMenu','appLangMenu'].forEach(id=>{const m=document.getElementById(id);if(m)m.classList.add('hidden');});
+    document.querySelectorAll('.lang-menu button').forEach(b=>{b.classList.toggle('v76-selected-lang',true);b.setAttribute('aria-current','true')});
   }
   function moveTrialLow(){const loginBox=document.getElementById('loginBox'),trial=document.getElementById('trialBox'),forgot=document.getElementById('forgotBtn');if(loginBox&&trial&&forgot&&trial.previousElementSibling!==forgot){loginBox.insertBefore(trial,forgot.nextSibling)}}
   function simplifyModeError(){const err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');if(err&&err.id!=='modeErrorText')err.id='modeErrorText'}
   window.atsrsV76ToggleSidebar=function(){const app=document.getElementById('app');const side=document.querySelector('#app .sidebar');if(!app||app.classList.contains('hidden'))return;if(window.innerWidth<=800&&side){side.classList.toggle('v76-mobile-closed');return;}document.body.classList.toggle('v76-sidebar-collapsed');};
-  function v76Apply(){markSelectedLang();moveTrialLow();simplifyModeError();}
-  function v77AuditStatus(ok,warn){return ok?'PASS':(warn?'WARN':'FAIL')}
+  function v78Apply(){forceEnglish();moveTrialLow();simplifyModeError();}
   function row(label,state,detail){return{label,state,detail}}
   function computed(el,prop){return el?getComputedStyle(el).getPropertyValue(prop):''}
   function duplicateIds(){const map={},dups=[];document.querySelectorAll('[id]').forEach(e=>{map[e.id]=(map[e.id]||0)+1});Object.keys(map).forEach(k=>{if(map[k]>1)dups.push(k+' ×'+map[k])});return dups;}
-  function functionNameRepeats(){
+  function riskyFunctionRepeats(){
     const src=document.documentElement.outerHTML;
     const names=[...src.matchAll(/function\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(m=>m[1]);
     const count={};names.forEach(n=>count[n]=(count[n]||0)+1);
     const legacyAllow=new Set(['status','getManagedFile','saveManagedFile','handleManagedUpload','previewManagedFile','downloadManagedFile','deleteManagedFile','ensureManagedCard','renderManagedFiles','ready','ensurePanel','appVisible','langFromFlag','activeLang','runSoon']);
-    return Object.entries(count).filter(([n,c])=>c>1&&!legacyAllow.has(n)).map(([n,c])=>n+' ×'+c).slice(0,12);
+    return Object.entries(count).filter(([n,c])=>c>1&&!legacyAllow.has(n)).map(([n,c])=>n+' ×'+c).slice(0,20);
   }
+  function rectInfo(el){if(!el)return null;const r=el.getBoundingClientRect();return{left:Math.round(r.left),right:Math.round(r.right),top:Math.round(r.top),height:Math.round(r.height),width:Math.round(r.width)}}
   window.atsrsV76RunAudit=function(){
-    v76Apply();
+    v78Apply();
     const results=[];
-    const langBtn=document.getElementById('langCircle');
-    const appLangBtn=document.getElementById('appLangCircle');
-    const langRadius=Math.max(parseFloat(computed(langBtn,'border-radius'))||0,parseFloat(computed(appLangBtn,'border-radius'))||0);
-    results.push(row('Language UI',langBtn&&appLangBtn&&langRadius<=12?'PASS':'WARN','Flag buttons should be plain, not round badges. Max radius: '+langRadius+'px.'));
-    const selectedMarks=document.querySelectorAll('.lang-menu .v76-selected-lang').length;
-    results.push(row('Selected language mark',selectedMarks>=1?'PASS':'WARN','Selected language should have a small green dot and follow EN/AZ/RU changes. Active: '+v77CurrentLang()+'.'));
-    results.push(row('Sidebar toggle',document.getElementById('sidebarToggleBtn')?'PASS':'FAIL','Hamburger button near ATSRS brand must exist and toggle the left panel.'));
+    const langBtns=[document.getElementById('langCircle'),document.getElementById('appLangCircle')].filter(Boolean);
+    const nonEn=langBtns.filter(b=>!(b.textContent||'').includes('🇬🇧')).length;
+    results.push(row('English-only mode',nonEn===0?'PASS':'FAIL',nonEn===0?'Only English is active. AZ/RU switch is disabled for now.':'A non-English flag is still visible.'));
+    const menusVisible=[...document.querySelectorAll('.lang-menu')].filter(m=>computed(m,'display')!=='none'&&!m.classList.contains('hidden')).length;
+    results.push(row('Language dropdown disabled',menusVisible===0?'PASS':'WARN',menusVisible===0?'Language dropdowns are hidden until multilingual build is reintroduced.':'A language menu is still opening.'));
+    const toggle=document.getElementById('sidebarToggleBtn'),brand=document.querySelector('#app .sidebar .brand'),side=document.querySelector('#app .sidebar');
+    const tr=rectInfo(toggle),br=rectInfo(brand),sr=rectInfo(side);
+    const rightGap=(tr&&sr)?Math.round(sr.right-tr.right):999;
+    const sameLine=(tr&&br)?Math.abs((tr.top+tr.height/2)-(br.top+br.height/2))<=4:false;
+    results.push(row('Hamburger placement',toggle&&rightGap<=22&&sameLine?'PASS':'WARN',toggle?`Right gap: ${rightGap}px. Same line with ATSRS: ${sameLine}. Size: ${tr.width}×${tr.height}px.`:'Hamburger button missing.'));
+    const before=document.body.classList.contains('v76-sidebar-collapsed');
+    if(toggle&&window.innerWidth>800){toggle.click();var changed=document.body.classList.contains('v76-sidebar-collapsed')!==before;toggle.click();}else{var changed=!!toggle;}
+    results.push(row('Sidebar toggle function',changed?'PASS':'FAIL',changed?'Sidebar collapse state changes when hamburger is clicked.':'Hamburger click did not change sidebar state.'));
     const trial=document.getElementById('trialBox'),forgot=document.getElementById('forgotBtn');
-    results.push(row('Trial placement',trial&&forgot&&trial.compareDocumentPosition(forgot)&Node.DOCUMENT_POSITION_PRECEDING?'PASS':'WARN','Trial block should sit lower in login menu, after main action buttons.'));
-    const modeBox=document.getElementById('modeChoiceBox'),err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');
-    results.push(row('Mode warning style',modeBox&&computed(modeBox,'border-top-width')==='0px'?'PASS':'WARN','Personal/Company warning should be simple text with a small red icon, not a large red frame.'));
+    results.push(row('Trial placement',trial&&forgot&&trial.previousElementSibling===forgot?'PASS':'WARN','Trial block should sit after Forgot password / main actions in login menu.'));
+    const modeBox=document.getElementById('modeChoiceBox');
+    results.push(row('Mode warning style',modeBox&&computed(modeBox,'border-top-width')==='0px'?'PASS':'WARN','Personal/Company warning should be simple text with a small red icon.'));
     const activeNav=document.querySelector('#app .nav button.active');
-    const navBg=computed(activeNav,'background-image')||computed(activeNav,'background-color');
+    const navBg=(computed(activeNav,'background-image')||'')+(computed(activeNav,'background-color')||'');
     results.push(row('Menu simplicity',navBg.includes('gradient')?'WARN':'PASS','Left menu should be minimal without blue gradient selection.'));
     const top=document.querySelector('#app .top-actions');
     results.push(row('Top actions',top&&computed(top,'position')==='fixed'?'PASS':'WARN','Language/logout/test controls should remain available in app view.'));
     const dups=duplicateIds();
     results.push(row('Duplicate IDs',dups.length?'FAIL':'PASS',dups.length?dups.join(', '):'No duplicate element IDs found.'));
-    const fn=functionNameRepeats();
-    results.push(row('Duplicate functions',fn.length?'WARN':'PASS',fn.length?fn.join(', '):'No risky duplicate function declarations found. Legacy override names are ignored.'));
+    const fn=riskyFunctionRepeats();
+    results.push(row('Duplicate functions',fn.length?'WARN':'PASS',fn.length?fn.join(', '):'No risky duplicate function declarations found. Legacy overrides ignored.'));
     const sx=Math.max(document.body.scrollWidth,document.documentElement.scrollWidth)-window.innerWidth;
     results.push(row('Horizontal overflow',sx>2?'WARN':'PASS',sx>2?'Page is wider than viewport by '+Math.round(sx)+'px.':'No visible horizontal overflow.'));
-    const redFetch=[...document.querySelectorAll('p,div,span')].filter(e=>(e.textContent||'').toLowerCase().includes('failed to fetch')).length;
-    results.push(row('Fetch errors',redFetch?'WARN':'PASS',redFetch?'A visible Failed to fetch message is present. Usually network/Supabase/VPN related.':'No visible Failed to fetch message.'));
-    const missingTrans=[...document.querySelectorAll('[id]')].filter(e=>/^[a-zA-Z]+[A-Za-z0-9]*$/.test((e.textContent||'').trim())&&e.textContent.trim().length<32).length;
-    results.push(row('Translation surface',missingTrans>25?'WARN':'PASS','Detected '+missingTrans+' short raw labels; review after language switch if needed.'));
+    const visibleFetch=[...document.querySelectorAll('p,div,span')].filter(e=>(e.textContent||'').toLowerCase().includes('failed to fetch')).length;
+    results.push(row('Fetch errors',visibleFetch?'WARN':'PASS',visibleFetch?'A visible Failed to fetch message is present. Usually network/Supabase/VPN related.':'No visible Failed to fetch message.'));
     const counts=results.reduce((a,r)=>(a[r.state]=(a[r.state]||0)+1,a),{});
+    const reportText=results.map(r=>`${r.state}\n${r.label}\n${r.detail}`).join('\n\n');
     const body=results.map(r=>`<div class="v76-audit-row"><div class="v76-status v76-${r.state.toLowerCase()}">${r.state}</div><div><b>${r.label}</b><p>${r.detail}</p></div></div>`).join('');
     const old=document.getElementById('v76AuditModal');if(old)old.remove();
-    const modal=document.createElement('div');modal.id='v76AuditModal';modal.className='v76-audit-modal';modal.innerHTML=`<div class="v76-audit-card"><div class="v76-audit-head"><h3>ATSRS V77 Audit</h3><button class="v76-audit-close" onclick="document.getElementById('v76AuditModal').remove()">Close</button></div><div class="v76-summary"><span class="v76-chip v76-pass">PASS ${counts.PASS||0}</span><span class="v76-chip v76-warn">WARN ${counts.WARN||0}</span><span class="v76-chip v76-fail">FAIL ${counts.FAIL||0}</span></div>${body}</div>`;document.body.appendChild(modal);
+    const modal=document.createElement('div');modal.id='v76AuditModal';modal.className='v76-audit-modal';
+    modal.innerHTML=`<div class="v76-audit-card"><div class="v76-audit-head"><h3>ATSRS ${BUILD} Audit</h3><div style="display:flex;gap:8px"><button class="v76-copy-btn" id="v78CopyAuditBtn">Copy report</button><button class="v76-audit-close" onclick="document.getElementById('v76AuditModal').remove()">Close</button></div></div><div class="v76-summary"><span class="v76-chip v76-pass">PASS ${counts.PASS||0}</span><span class="v76-chip v76-warn">WARN ${counts.WARN||0}</span><span class="v76-chip v76-fail">FAIL ${counts.FAIL||0}</span></div>${body}</div>`;
+    document.body.appendChild(modal);
+    const copy=document.getElementById('v78CopyAuditBtn');if(copy)copy.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(reportText);copy.textContent='Copied';};
   };
-  const prevChange=window.changeLanguage;window.changeLanguage=function(v){const r=typeof prevChange==='function'?prevChange.apply(this,arguments):undefined;setTimeout(v76Apply,0);setTimeout(v76Apply,160);return r};
-  document.addEventListener('DOMContentLoaded',v76Apply);document.addEventListener('click',e=>{if(e.target&&e.target.closest&&e.target.closest('.lang-menu'))setTimeout(v76Apply,60);},true);window.addEventListener('load',v76Apply);setTimeout(v76Apply,0);setTimeout(v76Apply,400);setInterval(v76Apply,800);
+  const originalChangeLanguage=window.changeLanguage;
+  window.changeLanguage=function(){
+    let r;
+    if(typeof originalChangeLanguage==='function')r=originalChangeLanguage.call(this,'en');
+    setTimeout(v78Apply,0);setTimeout(v78Apply,160);return r;
+  };
+  window.toggleLangMenu=window.atsrsV78EnglishOnlyNotice;
+  window.toggleAppLangMenu=window.atsrsV78EnglishOnlyNotice;
+  document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);setInterval(v78Apply,1000);
 })();
 </script>
+
 
 </body>
   </html>
