@@ -5300,5 +5300,97 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<style id="atsrs-v103-delete-neutral-css">
+/* V103: make destructive record actions less visually aggressive in career repository. */
+#refsPage .career-record-actions .action,
+#refsPage #cvCard .action,
+#refsPage button.action{
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#refsPage .career-record-actions .action:hover,
+#refsPage #cvCard .action:hover,
+#refsPage button.action:hover{
+  background:#2f455d!important;
+  border-color:rgba(56,189,248,.55)!important;
+}
+</style>
+
+<script id="atsrs-v103-reference-zero-uploads">
+/* V103: reset old Appraisal/Reference ghost metadata once, then keep future uploads working normally. */
+(function(){
+  'use strict';
+  var wipeFlag='atsrs_v103_reference_appraisal_zeroed';
+  var managedKeys=['appraisalFiles','referenceFiles'];
+  var legacyKeys=['appraisalFile','referenceFile','appraisal','reference'];
+
+  function safeSet(key,value){
+    try{
+      if(typeof saveData==='function') saveData(key,value);
+      else localStorage.setItem(key,JSON.stringify(value));
+    }catch(e){try{localStorage.setItem(key,JSON.stringify(value));}catch(_){}}
+  }
+  function safeRemove(key){
+    try{localStorage.removeItem(key);}catch(e){}
+  }
+  function zeroCareerFiles(){
+    try{
+      if(localStorage.getItem(wipeFlag)==='1') return;
+      managedKeys.forEach(function(k){safeSet(k,[]);});
+      legacyKeys.forEach(safeRemove);
+      localStorage.setItem(wipeFlag,'1');
+    }catch(e){}
+  }
+  function isRealCareerFile(f){
+    return !!(f && typeof f==='object' && f.name && f.data && String(f.data).indexOf('data:')===0);
+  }
+  function cleanInvalidCareerFiles(){
+    managedKeys.forEach(function(k){
+      try{
+        var arr=(typeof getData==='function')?getData(k):JSON.parse(localStorage.getItem(k)||'[]');
+        if(!Array.isArray(arr)) arr=[];
+        var clean=arr.filter(isRealCareerFile);
+        if(clean.length!==arr.length) safeSet(k,clean);
+      }catch(e){safeSet(k,[]);}
+    });
+  }
+  function forceRenderZero(){
+    cleanInvalidCareerFiles();
+    try{ if(typeof renderManagedFiles==='function') renderManagedFiles(); }catch(e){}
+    try{ if(typeof renderAll==='function') renderAll(); }catch(e){}
+    ['appraisal','reference'].forEach(function(kind){
+      var count=document.getElementById(kind+'Count');
+      if(count && (!count.textContent || /:\s*0\s*•/.test(count.textContent)===false)){
+        count.textContent=(kind==='appraisal'?'Appraisals':'References')+': 0 • Newest first';
+      }
+      var list=document.getElementById(kind+'RecordList');
+      if(list && !list.children.length) list.innerHTML='<div class="preview-box">No files uploaded yet.</div>';
+      var badge=document.getElementById(kind+'StatusBadge');
+      if(badge && ((typeof getData==='function'?getData(kind+'Files'):[])||[]).length===0){
+        badge.textContent='0';
+        badge.className='badge badge-blocked';
+      }
+    });
+  }
+  function lockBuild(){
+    var badge=document.getElementById('buildBadge');
+    if(!badge)return;
+    var rows=badge.querySelectorAll('div');
+    if(rows[0])rows[0].textContent='ATSRS V103';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0135 UTC';
+    if(rows[2])rows[2].textContent='TEST BUILD';
+  }
+  function boot(){zeroCareerFiles();forceRenderZero();lockBuild();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
+  window.addEventListener('load',boot);
+  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(boot,ms);});
+  setInterval(lockBuild,1500);
+})();
+</script>
+
 </body>
   </html>
