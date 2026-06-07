@@ -763,7 +763,6 @@ body:not(.atsrs-booting) #app{
 </div>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
-<button id="v76AuditBtnLogin" class="secondary atsrs-audit-btn" type="button" onclick="atsrsV76RunAudit()">TEST</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
 <p id="loginMsg" class="sub"></p>
@@ -796,8 +795,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V79</div>
-<div>Last Update: 07 Jun 2026 03:05 UTC</div>
+<div>ATSRS V80</div>
+<div>Last Update: 07 Jun 2026 03:25 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -811,7 +810,6 @@ body:not(.atsrs-booting) #app{
 <button type="button" data-lang="en"><span>🇬🇧</span> English</button>
 </div>
 </div>
-<button id="v76AuditBtnApp" class="secondary atsrs-audit-btn app-audit" type="button" onclick="atsrsV76RunAudit()">TEST</button>
 <button id="topLogoutBtn" class="top-logout" onclick="confirmLogout()">Logout</button>
 </div>
 
@@ -4044,7 +4042,7 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 <style id="atsrs-v76-minimal-ui-and-audit-style">
-/* V79: full English-only cleanup, stable V77 design, compact right-aligned hamburger, improved diagnostics. */
+/* V80: stable English-only backup. TEST buttons removed; all other V79 UI behavior preserved. */
 :root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
 body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
 .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
@@ -4070,7 +4068,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V79';
+  const BUILD='V80';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
