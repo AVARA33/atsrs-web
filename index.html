@@ -765,6 +765,21 @@ body:not(.atsrs-booting) #app{
   align-self:stretch!important;
 }
 @media(max-width:980px){#auth .auth-intro .why-grid{grid-template-columns:1fr}}
+
+/* V92: Trial section temporarily removed until subscription/service flow is ready */
+#trialBox,
+.trial-box,
+.trial-section,
+#introTrialBox,
+#trialIntroBox,
+#trialFeatureBox,
+[id*="trial" i],
+[class*="trial" i]{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
 </style>
 
 </head>
@@ -795,16 +810,7 @@ body:not(.atsrs-booting) #app{
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Share one secure ATSRS profile link instead of sending multiple attachments.</span></div>
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Allow organisations to request access and import approved documents into their compliance records.</span></div>
   </div>
-  <div id="trialBox" class="trial-box trial-box-left">
-    <div class="trial-left-kicker"><span class="trial-dot"></span><span>7-day free trial</span></div>
-    <h3 id="trialTitle">Why professionals choose ATSRS</h3>
-    <p id="trialText">ATSRS keeps professional documents organised in one secure workspace for individuals and organisations across marine, healthcare, engineering, construction, energy, aviation, corporate and technical industries.</p>
-    <div class="why-grid">
-      <div><b>One document vault</b><span>Keep licences, certificates, permits, medical records, references and career documents together.</span></div>
-      <div><b>Expiry visibility</b><span>See expired, 30-day and 90-day risks before they become a compliance problem.</span></div>
-      <div><b>Fast sharing</b><span>Share one controlled ATSRS profile instead of sending many attachments by email.</span></div>
-      <div><b>Built for many industries</b><span>Designed for professionals and companies across multiple regulated industries.</span></div>
-    </div>
+  
     <div class="trial-row"><span class="trial-dot"></span><span id="trialNote">Personal and Company mode included during the test period. No card required.</span></div>
   </div>
 </div>
@@ -872,7 +878,7 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V91</div>
+<div>ATSRS V92</div>
 <div>Last Update: 07 Jun 2026 0735 UTC</div>
 <div>TEST BUILD</div>
 </div>
