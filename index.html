@@ -796,8 +796,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V78</div>
-<div>Last Update: 07 Jun 2026 02:35 UTC</div>
+<div>ATSRS V79</div>
+<div>Last Update: 07 Jun 2026 03:05 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1236,7 +1236,7 @@ const SUPABASE_URL="https://hwtjuqyxziyymofamwxl.supabase.co";
 const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
 const APP_URL="https://atsrs.com/";
 let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error(e)}
-let currentUser=null,timer=null,countdown=0;let lang=localStorage.getItem("atsrs_lang")||"en";if(!["en","az","ru"].includes(lang)){lang="en";localStorage.setItem("atsrs_lang","en");}
+let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
 en:{sub:"Offshore Crew Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal Use",companyUse:"Company Use",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
@@ -1464,9 +1464,10 @@ function toggleLangMenu(){langMenu.classList.toggle("hidden")}
 function toggleAppLangMenu(){appLangMenu.classList.toggle("hidden")}
 document.addEventListener("click",e=>{if(!e.target.closest(".lang-floating")){langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden")}})
 
-function changeLanguage(v){lang=v;localStorage.setItem("atsrs_lang",lang);langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden");applyLanguage();renderAll();applyLanguage()}
+function changeLanguage(v){lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){};langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden");applyLanguage();renderAll();applyLanguage()}
 function applyLanguage(){
-document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";if(typeof appLangCircle!=="undefined")appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
+lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
+document.documentElement.lang="en";document.documentElement.dir="ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";if(typeof appLangCircle!=="undefined")appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");loginEmailRule.innerText=emailMsg();loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");if(typeof modeRule!=="undefined")modeRule.innerText=modeMsg();
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regEmailRule.innerText=emailMsg();regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
 resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
@@ -2953,7 +2954,6 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
 </style>
 <script id="v62-test-automation-script">
 (function(){
-  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
   function el(id){ return document.getElementById(id); }
   function shown(node){ return !!node && getComputedStyle(node).display!=='none' && getComputedStyle(node).visibility!=='hidden'; }
   function add(result, level, title, detail, fixFn){ result.push({level:level,title:title,detail:detail||'',fixFn:fixFn||null}); }
@@ -3996,13 +3996,6 @@ body > .atsrs-v64-top-actions .lang-menu{
     az:'Lokal test girişi',
     ru:'Локальный тестовый вход'
   };
-  function langFromFlag(){
-    const flag=((document.getElementById('appLangCircle')||document.getElementById('langCircle'))?.textContent||'').trim();
-    if(flag.includes('🇦🇿')) return 'az';
-    if(flag.includes('🇷🇺')) return 'ru';
-    if(flag.includes('🇬🇧')) return 'en';
-    return '';
-  }
   function activeLang(){
     const candidates=[langFromFlag(), localStorage.getItem('atsrs_lang'), document.documentElement.lang, window.lang];
     for(const v of candidates){ if(v && TEST_LOGIN_LABELS[v]) return v; }
@@ -4051,7 +4044,7 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 <style id="atsrs-v76-minimal-ui-and-audit-style">
-/* V78: English-only build, stable V77 design, right-aligned compact hamburger, cleaner diagnostics. */
+/* V79: full English-only cleanup, stable V77 design, compact right-aligned hamburger, improved diagnostics. */
 :root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
 body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
 .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
@@ -4077,7 +4070,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V78';
+  const BUILD='V79';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4160,6 +4153,60 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<script id="atsrs-v79-full-english-cleanup">
+(function(){
+  'use strict';
+  const EN_TEXT={
+    'Вход':'Login','Пароль':'Password','Создать аккаунт':'Create account','Забыли пароль?':'Forgot password?','Регистрация':'Register','Назад ко входу':'Back to Login','Сброс пароля':'Reset Password','Отправить письмо':'Send reset email','Новый пароль':'New password','Сохранить пароль':'Save password','Кабинет соответствия':'Compliance Dashboard','Панель':'Dashboard','Персонал':'Personnel','Сертификаты':'Certificates','Выйти':'Logout','Всего персонала':'Total Personnel','Всего сертификатов':'Total Certificates','Истекают за 90 дней':'Expiring in 90 Days','Истекают за 30 дней':'Expiring in 30 Days','Истекшие':'Expired','Заполните все поля.':'Please complete all fields.','Имя':'Name','Фамилия':'Surname','Должность':'Position','Компания':'Company','Действие':'Action','Срок действия':'Expiry Date','Дата выдачи':'Issue Date','Статус':'Status','Сохранить':'Save','Удалить':'Delete','Открыть':'Open','Скачать':'Download','Изменить':'Edit','Обновить':'Update','Не применяется':'Not Applicable','Без срока действия':'No Expiry','Пожалуйста, заполните все обязательные поля.':'Please complete all required fields.',
+    'Giriş':'Login','Şifrə':'Password','Hesab yarat':'Create account','Şifrəni unutmusunuz?':'Forgot password?','Qeydiyyat':'Register','Girişə qayıt':'Back to Login','Şifrəni sıfırla':'Reset Password','Emailə link göndər':'Send reset email','Yeni şifrə':'New password','Yeni şifrəni saxla':'Save new password','Uyğunluq kabineti':'Compliance Dashboard','Heyət':'Personnel','Sertifikatlar':'Certificates','Çıxış':'Logout','Ümumi heyət':'Total Personnel','Ümumi sertifikat':'Total Certificates','90 günə bitənlər':'Expiring in 90 Days','30 günə bitənlər':'Expiring in 30 Days','Vaxtı keçmiş':'Expired','Bütün xanaları doldur.':'Please complete all fields.','Ad':'Name','Soyad':'Surname','Vəzifə':'Position','Şirkət':'Company','Əməliyyat':'Action','Bitmə tarixi':'Expiry Date','Verilmə tarixi':'Issue Date','Saxla':'Save','Sil':'Delete','Aç':'Open','Yüklə':'Download','Düzəlt':'Edit','Yenilə':'Update','Tətbiq olunmur':'Not Applicable','Bitmə tarixi yoxdur':'No Expiry'
+  };
+  function hasNonEnglishChars(t){return /[\u0400-\u04FFƏəĞğİıÖöŞşÜüÇç]/.test(t||'');}
+  function cleanTextNode(node){
+    let v=node.nodeValue;
+    if(!hasNonEnglishChars(v))return;
+    Object.keys(EN_TEXT).sort((a,b)=>b.length-a.length).forEach(k=>{v=v.split(k).join(EN_TEXT[k]);});
+    node.nodeValue=v;
+  }
+  function forceEnglishSurface(){
+    try{localStorage.setItem('atsrs_lang','en');localStorage.setItem('lang','en');}catch(e){}
+    document.documentElement.lang='en';document.documentElement.dir='ltr';
+    ['langCircle','appLangCircle'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent='🇬🇧';});
+    ['langMenu','appLangMenu'].forEach(id=>{const m=document.getElementById(id);if(m)m.classList.add('hidden');});
+    if(typeof window.T==='object'&&window.T.en){window.T.az=window.T.en;window.T.ru=window.T.en;window.T.tr=window.T.en;window.T.no=window.T.en;window.T.de=window.T.en;window.T.fr=window.T.en;window.T.es=window.T.en;window.T.pt=window.T.en;window.T.ar=window.T.en;}
+    if(typeof window.applyLanguage==='function'){try{window.applyLanguage()}catch(e){}}
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
+      const p=n.parentElement;if(!p)return NodeFilter.FILTER_REJECT;
+      if(['SCRIPT','STYLE','TEXTAREA'].includes(p.tagName))return NodeFilter.FILTER_REJECT;
+      return hasNonEnglishChars(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(cleanTextNode);
+  }
+  const prevAudit=window.atsrsV76RunAudit;
+  window.atsrsV76RunAudit=function(){
+    forceEnglishSurface();
+    if(typeof prevAudit==='function')prevAudit.apply(this,arguments);
+    setTimeout(function(){
+      const modal=document.getElementById('v76AuditModal'); if(!modal)return;
+      const visibleNonEnglish=[...document.body.querySelectorAll('body *')].filter(e=>{
+        if(['SCRIPT','STYLE','TEXTAREA','INPUT'].includes(e.tagName))return false;
+        const cs=getComputedStyle(e); if(cs.display==='none'||cs.visibility==='hidden')return false;
+        return hasNonEnglishChars(e.textContent||'');
+      }).slice(0,6).map(e=>(e.textContent||'').trim().replace(/\s+/g,' ').slice(0,80));
+      const card=modal.querySelector('.v76-audit-card');
+      if(card){card.insertAdjacentHTML('beforeend',`<div class="v76-audit-row"><div class="v76-status ${visibleNonEnglish.length?'v76-warn':'v76-pass'}">${visibleNonEnglish.length?'WARN':'PASS'}</div><div><b>English surface check</b><p>${visibleNonEnglish.length?'Visible non-English text remains: '+visibleNonEnglish.join(' | '):'No visible Russian/Azerbaijani text detected.'}</p></div></div>`);}
+    },120);
+  };
+  const oldChange=window.changeLanguage;
+  window.changeLanguage=function(){try{if(typeof oldChange==='function')oldChange.call(this,'en');}catch(e){} forceEnglishSurface();};
+  window.toggleLangMenu=function(){forceEnglishSurface();};
+  window.toggleAppLangMenu=function(){forceEnglishSurface();};
+  document.addEventListener('DOMContentLoaded',function(){forceEnglishSurface();setTimeout(forceEnglishSurface,200);setTimeout(forceEnglishSurface,800);});
+  window.addEventListener('load',function(){forceEnglishSurface();setTimeout(forceEnglishSurface,300);});
+  setTimeout(forceEnglishSurface,0);setTimeout(forceEnglishSurface,500);
+})();
+</script>
 
 </body>
   </html>
