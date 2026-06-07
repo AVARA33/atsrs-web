@@ -780,6 +780,30 @@ body:not(.atsrs-booting) #app{
   pointer-events:none!important;
 }
 
+
+
+/* V93: Professional neutral Logout button - no danger/red styling */
+#app.app:not(.hidden) .top-logout,
+body > .atsrs-global-top-actions .top-logout,
+.top-logout{
+  background:linear-gradient(180deg,#1f2f45,#182638)!important;
+  color:#dbe7f3!important;
+  border:1px solid #334b63!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.18)!important;
+}
+#app.app:not(.hidden) .top-logout:hover,
+body > .atsrs-global-top-actions .top-logout:hover,
+.top-logout:hover{
+  background:linear-gradient(180deg,#273a52,#203247)!important;
+  color:#ffffff!important;
+  border-color:#49657f!important;
+}
+#app.app:not(.hidden) .top-logout:active,
+body > .atsrs-global-top-actions .top-logout:active,
+.top-logout:active{
+  transform:translateY(1px)!important;
+}
+
 </style>
 
 </head>
@@ -878,7 +902,7 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V92</div>
+<div>ATSRS V93</div>
 <div>Last Update: 07 Jun 2026 0735 UTC</div>
 <div>TEST BUILD</div>
 </div>
