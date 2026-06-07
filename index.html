@@ -836,6 +836,53 @@ body > .atsrs-global-top-actions .top-logout:active,
   }
 }
 
+
+
+/* V97: ATSRS meaning compact inside the ATSRS PLATFORM badge */
+#auth #introKicker.auth-kicker{
+  display:inline-flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  gap:3px!important;
+  padding:10px 16px!important;
+  border-radius:999px!important;
+  margin-bottom:14px!important;
+  width:auto!important;
+  max-width:100%!important;
+}
+#auth #introKicker .intro-kicker-main{
+  font-size:13px!important;
+  line-height:1.1!important;
+  font-weight:900!important;
+  letter-spacing:.02em!important;
+}
+#auth #introKicker .intro-kicker-sub{
+  display:block!important;
+  font-size:10.5px!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+  letter-spacing:.045em!important;
+  text-transform:uppercase!important;
+  color:#cbd5e1!important;
+}
+#auth #introKicker .meaning-and{
+  color:#86efac!important;
+  font-weight:1000!important;
+}
+#auth #introMeaning{display:none!important;}
+@media(max-width:560px){
+  #auth #introKicker.auth-kicker{
+    width:100%!important;
+    align-items:flex-start!important;
+    border-radius:22px!important;
+  }
+  #auth #introKicker .intro-kicker-sub{
+    white-space:normal!important;
+    letter-spacing:.035em!important;
+  }
+}
+
 </style>
 
 </head>
@@ -854,8 +901,7 @@ body > .atsrs-global-top-actions .top-logout:active,
 
 
 <div class="auth-intro">
-  <div id="introKicker" class="auth-kicker">ATSRS PLATFORM</div>
-  <div id="introMeaning" class="atsrs-name-meaning">Automated Tracking <span class="meaning-and">&amp;</span> Records System</div>
+  <div id="introKicker" class="auth-kicker"><span class="intro-kicker-main">ATSRS PLATFORM</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span></div>
   <h2 id="introTitle">Professional documents, expiry alerts and profile sharing — in one secure workspace.</h2>
   <p id="introText">ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.</p>
   <p id="introIndustryText" class="sub">Built for professionals across marine, healthcare, engineering, construction, energy, aviation, corporate and technical industries.</p>
@@ -4725,6 +4771,21 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
       if(target)target.textContent=(e&&e.message)?e.message:(label+' sign-in is not configured yet.');
     }
   };
+})();
+</script>
+
+
+<script>
+(function(){
+  function atsrsCompactMeaning(){
+    var el=document.getElementById('introKicker');
+    if(!el)return;
+    el.innerHTML='<span class="intro-kicker-main">ATSRS PLATFORM</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span>';
+  }
+  atsrsCompactMeaning();
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',atsrsCompactMeaning);}
+  setTimeout(atsrsCompactMeaning,0);
+  setTimeout(atsrsCompactMeaning,250);
 })();
 </script>
 
