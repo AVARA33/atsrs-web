@@ -821,6 +821,12 @@ body:not(.atsrs-booting) #app{
 
 <div id="loginBox">
 <h2 id="loginTitle"></h2>
+<div id="loginSocialAuth" class="social-auth-group" aria-label="Social login options">
+<button type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','login')"><span class="social-auth-icon">G</span><span>Continue with Google</span></button>
+<button type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','login')"><span class="social-auth-icon">M</span><span>Continue with Microsoft</span></button>
+<button type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','login')"><span class="social-auth-icon">in</span><span>Continue with LinkedIn</span></button>
+</div>
+<div class="auth-divider"><span>or continue with email</span></div>
 <input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
 <label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me on this device</span></label>
@@ -840,6 +846,12 @@ body:not(.atsrs-booting) #app{
 
 <div id="registerBox" class="hidden">
 <h2 id="registerTitle"></h2>
+<div id="registerSocialAuth" class="social-auth-group" aria-label="Social registration options">
+<button type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','register')"><span class="social-auth-icon">G</span><span>Continue with Google</span></button>
+<button type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','register')"><span class="social-auth-icon">M</span><span>Continue with Microsoft</span></button>
+<button type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','register')"><span class="social-auth-icon">in</span><span>Continue with LinkedIn</span></button>
+</div>
+<div class="auth-divider"><span>or create account with email</span></div>
 <input id="regEmail" type="email"><p id="regEmailRule" class="error hidden"></p>
 <input id="regPassword" type="password"><p id="passRule" class="error hidden"></p>
 <input id="regPassword2" type="password"><p id="matchRule" class="error hidden"></p>
@@ -865,7 +877,7 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V85</div>
+<div>ATSRS V86</div>
 <div>Last Update: 07 Jun 2026 05:20 UTC</div>
 <div>TEST BUILD</div>
 </div>
@@ -4145,7 +4157,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V85';
+  const BUILD='V86';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4485,6 +4497,128 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   document.addEventListener('DOMContentLoaded',loadRememberedLogin);
   window.addEventListener('load',function(){setTimeout(loadRememberedLogin,80)});
   setTimeout(loadRememberedLogin,0);
+})();
+</script>
+
+
+<style id="atsrs-v86-social-auth-style">
+/* V86: Professional social authentication UI for Google, Microsoft and LinkedIn. */
+.social-auth-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:10px 0 10px!important;
+}
+.social-auth-btn{
+  width:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  margin:0!important;
+  padding:10px 12px!important;
+  border-radius:12px!important;
+  border:1px solid rgba(148,163,184,.32)!important;
+  background:rgba(8,21,36,.88)!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+  font-size:14px!important;
+  font-weight:850!important;
+  letter-spacing:.01em;
+}
+.social-auth-btn:hover{
+  border-color:rgba(34,197,94,.62)!important;
+  background:rgba(15,33,50,.96)!important;
+  transform:translateY(-1px);
+}
+.social-auth-icon{
+  width:22px;
+  height:22px;
+  border-radius:7px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 22px;
+  font-size:12px;
+  font-weight:950;
+  background:#f8fafc;
+  color:#0f172a;
+  line-height:1;
+}
+.social-microsoft .social-auth-icon{background:#111827;color:#f8fafc;border:1px solid #475569;}
+.social-linkedin .social-auth-icon{background:#0a66c2;color:#ffffff;font-family:Arial,sans-serif;}
+.auth-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:8px 0 8px!important;
+  color:#8fa1b7;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.auth-divider::before,.auth-divider::after{
+  content:"";
+  height:1px;
+  background:rgba(148,163,184,.25);
+  flex:1;
+}
+#auth #registerBox .register-account-type-card + #registerSocialAuth,
+#auth #registerBox #registerSocialAuth{
+  margin-top:10px!important;
+}
+#auth #loginBox input,
+#auth #registerBox input{
+  margin:5px 0!important;
+}
+#auth #registerBox #registerBtn,
+#auth #registerBox #backLoginBtn1{
+  margin:5px 0!important;
+  padding:11px 12px!important;
+}
+@media(max-width:560px){
+  .social-auth-btn{font-size:13px!important;padding:10px!important;}
+}
+</style>
+<script id="atsrs-v86-social-auth-script">
+(function(){
+  'use strict';
+  const PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
+  const LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
+  function messageTarget(flow){
+    return document.getElementById(flow==='register'?'regMsg':'loginMsg') || document.getElementById('loginMsg');
+  }
+  function selectedMode(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
+  }
+  function validateModeForSocial(flow){
+    if(typeof window.validateUseMode==='function')return window.validateUseMode();
+    const mode=selectedMode();
+    if(mode==='personal'||mode==='company')return true;
+    const target=messageTarget(flow);
+    if(target)target.textContent='Please select Personal Use or Company Use before continuing.';
+    return false;
+  }
+  window.atsrsSocialAuth=async function(providerKey,flow){
+    const label=LABELS[providerKey]||providerKey;
+    const provider=PROVIDERS[providerKey];
+    const target=messageTarget(flow);
+    if(target)target.textContent='';
+    if(!validateModeForSocial(flow))return;
+    if(window.useMode){try{localStorage.setItem('atsrs_use_mode',window.useMode);}catch(e){}}
+    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
+      if(target)target.textContent=label+' sign-in will be available after OAuth is configured in Supabase.';
+      return;
+    }
+    try{
+      const redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
+      const result=await window.supabaseClient.auth.signInWithOAuth({provider:provider,options:{redirectTo:redirectTo}});
+      if(result && result.error && target)target.textContent=result.error.message || (label+' sign-in failed.');
+    }catch(e){
+      if(target)target.textContent=(e&&e.message)?e.message:(label+' sign-in is not configured yet.');
+    }
+  };
 })();
 </script>
 
