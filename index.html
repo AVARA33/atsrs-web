@@ -894,6 +894,22 @@ body > .atsrs-global-top-actions .top-logout:active,
   box-shadow:none!important;
 }
 
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 
 </head>
@@ -913,8 +929,8 @@ body > .atsrs-global-top-actions .top-logout:active,
 
 <div class="auth-intro">
   <div id="introKicker" class="auth-kicker"><span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span></div>
-  <h2 id="introTitle">Professional documents, expiry alerts and profile sharing — in one secure workspace.</h2>
-  <p id="introText">ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.</p>
+  <h2 id="introTitle">Documents, expiry alerts and profile sharing.</h2>
+  <p id="introText">Keep information organized and stay compliant.</p>
   <p id="introIndustryText" class="sub">Built for professionals across marine, healthcare, engineering, construction, energy, aviation, corporate and technical industries.</p>
   <div class="feature-grid">
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="M3 10h18"/></svg></span><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Keep passports, licences, certifications, medical records and career documents in one secure place.</span></div>
@@ -993,7 +1009,7 @@ body > .atsrs-global-top-actions .top-logout:active,
 
 <div id="buildBadge" class="build-badge">
 <div>ATSRS V100</div>
-<div>Last Update: 07 Jun 2026 2355 UTC</div>
+<div>Last Update: 08 Jun 2026 0010 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2307,7 +2323,7 @@ applyLanguage=function(){applyLanguageBaseV26();applyV26Language();applyV27Langu
 
 /* V29 professional intro + dashboard translations */
 const V29_TEXT={
-  en:{introKicker:"PROFESSIONAL CAREER COMPLIANCE",introTitle:"Professional documents, expiry alerts and profile sharing — in one secure workspace.",introText:"ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.",featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for licences, certificates, permits and compliance documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their compliance records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A simple flow for personal users today and company compliance tomorrow.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and missing items.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Valid documents",snapRiskLabel:"Expiry risk",snapMissingLabel:"Missing documents",snapShareLabel:"Profile sharing",snapShare:"Ready"},
+  en:{introKicker:"PROFESSIONAL CAREER COMPLIANCE",introTitle:"Documents, expiry alerts and profile sharing.",introText:"Keep information organized and stay compliant.",featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for licences, certificates, permits and compliance documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their compliance records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A simple flow for personal users today and company compliance tomorrow.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and missing items.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Valid documents",snapRiskLabel:"Expiry risk",snapMissingLabel:"Missing documents",snapShareLabel:"Profile sharing",snapShare:"Ready"},
   az:{introKicker:"PEŞƏKAR KARYERA COMPLIANCE",introTitle:"Peşəkar sənədlər, expiry xəbərdarlıqları və profil paylaşımı — bir təhlükəsiz kabinetdə.",introText:"ATSRS marine, licences and certifications və texniki sahə işçilərinə vacib karyera sənədlərini saxlamaq, bitmə tarixlərini izləmək və şirkət/agentliklərlə idarə olunan profil linki paylaşmaq üçün hazırlanır.",featureDocsTitle:"Sənəd kabineti",featureDocsText:"Passport, visa, medical, seaman book, sertifikat və karyera fayllarını bir təhlükəsiz yerdə saxla.",featureUploadTitle:"Rahat upload",featureUploadText:"PDF, JPG və PNG faylları birbaşa ATSRS sənəd reyestrinə yüklə.",featureScanTitle:"Scan və auto-fill",featureScanText:"Sənədi scan et, ATSRS xanaları hazırlasın, sən manual təsdiqlə.",featureAlertsTitle:"Expiry izləmə",featureAlertsText:"90 gün, 30 gün və expired sənədlər dashboard-da aydın görünür.",featureShareTitle:"Profil paylaşımı",featureShareText:"Çoxlu email attachment əvəzinə bir ATSRS profil linki göndər.",featureCompanyTitle:"Company import",featureCompanyText:"Şirkətlər access request göndərib təsdiqlənmiş sənədləri öz compliance profilinə import edə biləcək.",workflowBadge:"ATSRS NECƏ İŞLƏYİR",workflowTitle:"Sənəd yükləmədən employer-ready profilə qədər",workflowSub:"Bu gün personal istifadə üçün sadə flow, sabah company compliance üçün baza.",step1Title:"Yüklə",step1Text:"Sənədləri manual və ya scan ilə əlavə et.",step2Title:"İzlə",step2Text:"Expiry və missing sənədləri nəzarətdə saxla.",step3Title:"Paylaş",step3Text:"İdarə olunan ATSRS profil linki göndər.",step4Title:"Təsdiqlə",step4Text:"Şirkətə yalnız seçilmiş sənədləri görmək/yükləmək icazəsi ver.",snapshotBadge:"COMPLIANCE XÜLASƏ",snapshotTitle:"Qısa status",snapValidLabel:"Aktiv sənədlər",snapRiskLabel:"Expiry riski",snapMissingLabel:"Çatışmayan sənədlər",snapShareLabel:"Profil paylaşımı",snapShare:"Hazır"},
   ru:{introKicker:"PROFESSIONAL CAREER COMPLIANCE",introTitle:"Профессиональные документы, expiry alerts и sharing profile — в одном защищенном кабинете.",introText:"ATSRS помогает marine, licences and certifications и техническим специалистам хранить важные карьерные документы, отслеживать сроки и делиться контролируемой ссылкой с работодателями и агентствами.",featureDocsTitle:"Хранилище документов",featureDocsText:"Passport, visa, medical, seaman book, certificates и career files в одном защищенном месте.",featureUploadTitle:"Easy Upload",featureUploadText:"Загружайте PDF, JPG или PNG файлы прямо в ATSRS document register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Сканируйте документ, ATSRS подготовит поля для ручного подтверждения.",featureAlertsTitle:"Контроль сроков",featureAlertsText:"90 дней, 30 дней и expired документы видны на dashboard.",featureShareTitle:"Share Profile",featureShareText:"Одна ATSRS profile link вместо множества email attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Компании могут запросить доступ и импортировать approved documents в compliance profile.",workflowBadge:"КАК РАБОТАЕТ ATSRS",workflowTitle:"От загрузки документа до employer-ready profile",workflowSub:"Простой flow для personal users сегодня и company compliance завтра.",step1Title:"Загрузить",step1Text:"Добавьте документы вручную или через scan.",step2Title:"Отслеживать",step2Text:"Контроль expiry и missing documents.",step3Title:"Поделиться",step3Text:"Отправьте controlled ATSRS profile link.",step4Title:"Одобрить",step4Text:"Разрешите компании download/import только выбранных документов.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Краткий статус",snapValidLabel:"Действующие документы",snapRiskLabel:"Expiry risk",snapMissingLabel:"Отсутствующие документы",snapShareLabel:"Profile sharing",snapShare:"Готово"}
 };
@@ -2347,8 +2363,8 @@ const applyLanguageBaseV30=applyLanguage;applyLanguage=function(){applyLanguageB
 const V35_LOGIN_TEXT={
   en:{
     introKicker:"ATSRS Platform",
-    introTitle:"Professional documents, expiry alerts and profile sharing — in one secure workspace.",
-    introText:"ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.",
+    introTitle:"Documents, expiry alerts and profile sharing.",
+    introText:"Keep information organized and stay compliant.",
     featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",
     featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",
     featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",
@@ -2410,8 +2426,8 @@ applyV35LoginLanguage();
 const V36_LOGIN_TEXT={
   en:{
     introKicker:"ATSRS Platform",
-    introTitle:"Professional documents, expiry alerts and profile sharing — in one secure workspace.",
-    introText:"ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.",
+    introTitle:"Documents, expiry alerts and profile sharing.",
+    introText:"Keep information organized and stay compliant.",
     featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",
     featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",
     featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",
@@ -2780,6 +2796,22 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
 @media(max-width:520px){
   #refsPage .career-record-actions{grid-template-columns:1fr!important;}
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 
 
@@ -2809,6 +2841,22 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
   #refsPage .career-record-list{max-height:384px!important;}
   #refsPage .career-record-row{min-height:118px!important;}
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script>
 /* V57: force three-record viewport after render/language changes */
@@ -2900,6 +2948,22 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
 }
 html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important;}
 @media(max-width:800px){html[dir="rtl"] #app.app > .top-actions{right:12px!important;left:auto!important;}}
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script>
 /* V60: keep V34 topbar in #app and prevent later scripts/styles from docking or hiding it. */
@@ -2987,6 +3051,22 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
   #atsrsTopbarTroubleBtn{padding:10px 11px!important;font-size:12px!important}
   #atsrsTopbarTroublePanel{right:12px!important;top:74px!important;max-height:70vh!important}
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="v61-topbar-troubleshoot-script">
 (function(){
@@ -3146,6 +3226,22 @@ html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important
   #atsrsTestAutomationPanel{right:12px!important;top:122px!important;max-height:72vh!important}
   #atsrsTestAutomationPanel .qa-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="v62-test-automation-script">
 (function(){
@@ -3372,6 +3468,22 @@ body:not(.app-open) > .atsrs-v64-top-actions{
 }
 html[dir="rtl"] body > .atsrs-v64-top-actions{right:18px!important;left:auto!important;}
 @media(max-width:800px){html[dir="rtl"] body > .atsrs-v64-top-actions{right:12px!important;left:auto!important;}}
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="v64-clean-login-topbar-fix-script">
 (function(){
@@ -3551,6 +3663,22 @@ body > .atsrs-v64-top-actions .lang-menu{
     left:auto!important;
   }
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="atsrs-v70-page-attached-top-actions-script">
 /* V70: neutralise old V53/V54/V55/V56/V64 fixed-dock logic without changing other app features. */
@@ -3663,6 +3791,22 @@ body > .atsrs-v64-top-actions .lang-menu{
   visibility:hidden!important;
   pointer-events:none!important;
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="atsrs-v71-remove-fixed-portal-script">
 /* V71: remove duplicate fixed portal controls, keep only the real page-attached top-actions. */
@@ -3693,8 +3837,8 @@ body > .atsrs-v64-top-actions .lang-menu{
   const AZ={
     "ATSRS PLATFORM":"ATSRS PLATFORMASI",
     "ATSRS Platform":"ATSRS Platforması",
-    "Professional documents, expiry alerts and profile sharing — in one secure workspace.":"Peşəkar sənədlər, bitmə xəbərdarlıqları və profil paylaşımı — hamısı bir təhlükəsiz kabinetdə.",
-    "ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.":"ATSRS marine, licences and certifications və texniki mütəxəssislərə vacib karyera sənədlərini saxlamağa, bitmə tarixlərini izləməyə və işəgötürənlərlə nəzarətli profil linki paylaşmağa kömək edir.",
+    "Documents, expiry alerts and profile sharing.":"Peşəkar sənədlər, bitmə xəbərdarlıqları və profil paylaşımı — hamısı bir təhlükəsiz kabinetdə.",
+    "Keep information organized and stay compliant.":"ATSRS marine, licences and certifications və texniki mütəxəssislərə vacib karyera sənədlərini saxlamağa, bitmə tarixlərini izləməyə və işəgötürənlərlə nəzarətli profil linki paylaşmağa kömək edir.",
     "Document Vault":"Sənəd arxivi",
     "Keep passports, licences, certifications, medical records and career documents in one secure place.":"Passport, viza, tibbi sənəd, seaman book, sertifikatlar və karyera fayllarını bir təhlükəsiz yerdə saxla.",
     "Easy Upload":"Asan yükləmə",
@@ -3829,8 +3973,8 @@ body > .atsrs-v64-top-actions .lang-menu{
   const RU={
     "ATSRS PLATFORM":"ПЛАТФОРМА ATSRS",
     "ATSRS Platform":"Платформа ATSRS",
-    "Professional documents, expiry alerts and profile sharing — in one secure workspace.":"Профессиональные документы, уведомления о сроках и общий профиль — в одном безопасном кабинете.",
-    "ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.":"ATSRS помогает marine, licences and certifications и другим техническим специалистам хранить важные карьерные документы, отслеживать сроки и делиться контролируемой ссылкой с работодателями и агентствами.",
+    "Documents, expiry alerts and profile sharing.":"Профессиональные документы, уведомления о сроках и общий профиль — в одном безопасном кабинете.",
+    "Keep information organized and stay compliant.":"ATSRS помогает marine, licences and certifications и другим техническим специалистам хранить важные карьерные документы, отслеживать сроки и делиться контролируемой ссылкой с работодателями и агентствами.",
     "Document Vault":"Архив документов",
     "Keep passports, licences, certifications, medical records and career documents in one secure place.":"Храните паспорт, визу, medical, seaman book, сертификаты и карьерные файлы в одном безопасном месте.",
     "Easy Upload":"Простая загрузка",
@@ -3964,7 +4108,7 @@ body > .atsrs-v64-top-actions .lang-menu{
   };
   const DICTS={az:AZ,ru:RU,en:{}};
   const IDMAP={
-    navIntro:'ATSRS Platform',introTitle:'Professional documents, expiry alerts and profile sharing — in one secure workspace.',introText:'ATSRS helps professionals and organisations keep important documents organised, track expiry dates and share information securely with employers, clients and agencies.',introKicker:'ATSRS Platform',
+    navIntro:'ATSRS Platform',introTitle:'Documents, expiry alerts and profile sharing.',introText:'Keep information organized and stay compliant.',introKicker:'ATSRS Platform',
     featureDocsTitle:'Document Vault',featureDocsText:'Keep passports, licences, certifications, medical records and career documents in one secure place.',featureUploadTitle:'Easy Upload',featureUploadText:'Upload PDF, JPG or PNG files directly into your secure ATSRS register.',featureScanTitle:'Scan & Auto-fill',featureScanText:'Scan documents and let ATSRS prepare information for manual review.',featureAlertsTitle:'Expiry Tracking',featureAlertsText:'Stay ahead with reminders for licences, certificates, permits and compliance documents.',featureShareTitle:'Share Profile',featureShareText:'Share one secure ATSRS profile link instead of sending multiple attachments.',featureCompanyTitle:'Company Import',featureCompanyText:'Allow organisations to request access and import approved documents into their compliance records.',
     trialTitle:'7-day free trial',trialText:'Try ATSRS for 7 days. No card required during test build.',trialNote:'Personal and Company mode included.',
     refsTitle:'References & Appraisals',refsSub:'Keep appraisal forms, reference letters and client feedback in one place.',appraisalCardTitle:'Appraisals',appraisalCardText:'Upload annual appraisals, performance reviews and evaluation forms.',uploadAppraisalBtn:'Upload Appraisal',referenceCardTitle:'References',referenceCardText:'Store reference letters and contact-ready career proof.',uploadReferenceBtn:'Upload Reference',cvCardTitle:'CV / Resume',cvCardText:'Store, manage and share professional CV versions for employers, agencies and clients.',uploadCVBtn:'Upload CV',previewCVBtn:'Preview CV',downloadCVBtn:'Download CV',deleteCVBtn:'Delete CV',cvBetaBadge:'COMING SOON',cvBetaTitle:'Generate ATSRS Profile CV',cvBetaText:'Generate a professional ATSRS formatted CV using stored profile and document data.',generateCVBtn:'Generate ATSRS CV (Beta)',
@@ -4268,6 +4412,22 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 #modeRule{display:none!important}
 #modeInstruction{display:none!important}
 #modeInstruction.active{display:flex!important}
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
@@ -4450,6 +4610,22 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 }
 .register-account-type-card b{display:block;font-size:13px;margin-bottom:2px;color:#ffffff;}
 .register-account-type-card span{display:block;font-size:12px;line-height:1.35;color:#b7c7d8;}
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="atsrs-v83-create-account-mode-script">
 (function(){
@@ -4565,6 +4741,22 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   accent-color:#22c55e;
 }
 .remember-note{display:none!important;}
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 <script id="atsrs-v85-remember-and-compact-login-script">
 (function(){
@@ -4742,6 +4934,22 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   height:22px!important;
   flex:0 0 22px!important;
 }
+
+/* V100 intro copy compact: shorter hero title and smaller supporting line */
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
 </style>
 
 <script id="atsrs-v87-social-auth-script">
@@ -4897,8 +5105,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </script>
 
 
-<script id="atsrs-v101-auth-subtitle-build-lock">
-/* V101: keep login card subtitle aligned with ATSRS meaning and build badge aligned with filename. */
+<script id="atsrs-v100-auth-subtitle-build-lock">
+/* V100: keep login card subtitle aligned with ATSRS meaning and build badge aligned with filename. */
 (function(){
   'use strict';
   var subtitle='Automated Tracking & Reporting System';
@@ -4911,7 +5119,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
     if(rows[0] && rows[0].textContent.trim()!=='ATSRS V100')rows[0].textContent='ATSRS V100';
-    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 07 Jun 2026 2355 UTC')rows[1].textContent='Last Update: 07 Jun 2026 2355 UTC';
+    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0010 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0010 UTC';
     if(rows[2] && rows[2].textContent.trim()!=='TEST BUILD')rows[2].textContent='TEST BUILD';
   }
   function lockV101(){lockAuthSubtitle();lockBuildBadge();}
@@ -4922,6 +5130,102 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
       lockV101();
       return result;
     };
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lockV101); else lockV101();
+  window.addEventListener('load',lockV101);
+  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(lockV101,ms);});
+  setInterval(lockV101,1500);
+})();
+</script>
+
+
+<script id="atsrs-v100-intro-copy-lock">
+(function(){
+  function lockIntroCopy(){
+    var title=document.getElementById('introTitle');
+    var text=document.getElementById('introText');
+    var kicker=document.getElementById('introKicker');
+    if(kicker){
+      kicker.innerHTML='<strong>ATSRS Platform</strong><br><span>Automated Tracking &amp; Reporting System</span>';
+    }
+    if(title && title.textContent.trim()!=='Documents, expiry alerts and profile sharing.'){
+      title.textContent='Documents, expiry alerts and profile sharing.';
+    }
+    if(text && text.textContent.trim()!=='Keep information organized and stay compliant.'){
+      text.textContent='Keep information organized and stay compliant.';
+    }
+  }
+  lockIntroCopy();
+  document.addEventListener('DOMContentLoaded',lockIntroCopy);
+  window.addEventListener('load',lockIntroCopy);
+  setTimeout(lockIntroCopy,80);
+  setTimeout(lockIntroCopy,350);
+  setTimeout(lockIntroCopy,1000);
+})();
+</script>
+
+
+
+<style id="atsrs-v101-login-as-test-css">
+/* V101: Hide separate Local Test Login button. Main Login temporarily uses test login behavior. */
+#auth #localTestBtn,
+#localTestBtn{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+</style>
+
+<script id="atsrs-v101-login-as-test-lock">
+/* V101: main Login button works as Local Test Login for current test/demo stage. */
+(function(){
+  'use strict';
+  function selectedMode(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
+  }
+  function showLoginModeWarning(){
+    var message='Select Personal or Corporate account to login.';
+    var x=document.getElementById('modeInstruction');
+    if(x){
+      x.classList.add('active');
+      x.innerHTML='<span class="mode-instruction-icon">!</span><span>'+message+'</span>';
+    }
+    var r=document.getElementById('modeRule');
+    if(r)r.textContent=message;
+    var box=document.getElementById('modeChoiceBox');
+    if(box)box.classList.add('mode-error');
+  }
+  function validateLoginMode(){
+    var mode=selectedMode();
+    if(mode==='personal'||mode==='company')return true;
+    showLoginModeWarning();
+    return false;
+  }
+  function hideLocalTestButton(){
+    var b=document.getElementById('localTestBtn');
+    if(b){b.style.display='none';b.setAttribute('aria-hidden','true');b.tabIndex=-1;}
+  }
+  function setBuildV101(){
+    var badge=document.getElementById('buildBadge');
+    if(!badge)return;
+    var rows=badge.querySelectorAll('div');
+    if(rows[0])rows[0].textContent='ATSRS V101';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0030 UTC';
+    if(rows[2])rows[2].textContent='TEST BUILD';
+  }
+  function loginAsTest(){
+    window.atsrsModeAction='login';
+    if(!validateLoginMode())return;
+    window.currentUser={id:'local_test_user',email:'local-test@atsrs.com'};
+    try{localStorage.setItem('atsrs_auth_mode','local');localStorage.setItem('atsrs_use_mode',selectedMode());}catch(e){}
+    if(typeof window.openApp==='function')window.openApp();
+  }
+  function lockV101(){
+    hideLocalTestButton();
+    setBuildV101();
+    window.login=loginAsTest;
+    var btn=document.getElementById('loginBtn');
+    if(btn){btn.onclick=loginAsTest;}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lockV101); else lockV101();
   window.addEventListener('load',lockV101);
