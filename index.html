@@ -706,6 +706,55 @@ body:not(.atsrs-booting) #app{
   opacity:1;
 }
 
+
+/* V81: left-side trial and why choose ATSRS content */
+#auth .auth-intro .trial-box-left{
+  margin:18px 0 0!important;
+  padding:18px!important;
+  background:rgba(8,21,36,.72)!important;
+  border:1px solid rgba(34,197,94,.36)!important;
+  border-radius:20px!important;
+  box-shadow:none!important;
+  text-align:left!important;
+}
+#auth .auth-intro .trial-left-kicker{
+  display:flex;align-items:center;gap:8px;
+  color:#bbf7d0;font-size:12px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;
+}
+#auth .auth-intro .trial-box-left h3{
+  margin:0 0 8px!important;font-size:22px!important;line-height:1.18!important;color:#f8fafc!important;
+}
+#auth .auth-intro .trial-box-left p{
+  margin:0 0 14px!important;color:#b7c5d7!important;font-size:14px!important;line-height:1.5!important;
+}
+#auth .auth-intro .why-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 12px;
+}
+#auth .auth-intro .why-grid div{
+  background:#0b1726;border:1px solid var(--v76-border,#253850);border-radius:14px;padding:11px;
+}
+#auth .auth-intro .why-grid b{
+  display:block;color:#f8fafc;font-size:13px;margin-bottom:4px;
+}
+#auth .auth-intro .why-grid span{
+  display:block;color:#9fb0c5;font-size:12px;line-height:1.38;
+}
+#auth .auth-intro .trial-row{
+  margin-top:10px!important;color:#bbf7d0!important;font-size:12px!important;font-weight:800!important;
+}
+.mode-instruction{
+  display:flex;align-items:flex-start;gap:8px;
+  margin:2px 0 10px!important;padding:0 2px!important;
+  color:#ffb4b4!important;font-size:13px!important;font-weight:800!important;line-height:1.35!important;
+}
+.mode-instruction-icon{
+  width:17px;height:17px;min-width:17px;border-radius:50%;
+  background:var(--v76-red,#ef4444);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;margin-top:0;
+}
+@media(max-width:980px){#auth .auth-intro .why-grid{grid-template-columns:1fr}}
 </style>
 
 </head>
@@ -735,6 +784,18 @@ body:not(.atsrs-booting) #app{
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Send one ATSRS profile link instead of many email attachments.</span></div>
     <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Companies can request access and import approved documents into their compliance profile.</span></div>
   </div>
+  <div id="trialBox" class="trial-box trial-box-left">
+    <div class="trial-left-kicker"><span class="trial-dot"></span><span>7-day free trial</span></div>
+    <h3 id="trialTitle">Why professionals choose ATSRS</h3>
+    <p id="trialText">ATSRS keeps offshore, marine, ROV, NDT and technical career documents organised in one secure workspace, so mobilisation paperwork is faster, cleaner and easier to share.</p>
+    <div class="why-grid">
+      <div><b>One document vault</b><span>Keep certificates, passport, visa, medical, seaman book, references and appraisals together.</span></div>
+      <div><b>Expiry visibility</b><span>See expired, 30-day and 90-day risks before they become a project problem.</span></div>
+      <div><b>Fast sharing</b><span>Share one controlled ATSRS profile instead of sending many attachments by email.</span></div>
+      <div><b>Built for technical work</b><span>Designed around real offshore, marine and industrial compliance needs.</span></div>
+    </div>
+    <div class="trial-row"><span class="trial-dot"></span><span id="trialNote">Personal and Company mode included during the test build. No card required.</span></div>
+  </div>
 </div>
 
 <div class="auth-card">
@@ -756,11 +817,7 @@ body:not(.atsrs-booting) #app{
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
 </div>
 <p id="modeRule" class="mode-error-text"></p>
-<div id="trialBox" class="trial-box">
-<h3 id="trialTitle">7-day free trial</h3>
-<p id="trialText">Try ATSRS for 7 days. No card required during test build.</p>
-<div class="trial-row"><span class="trial-dot"></span><span id="trialNote">Personal and Company mode included.</span></div>
-</div>
+<p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Please select <b>Personal Use</b> or <b>Company Use</b> above before continuing.</span></p>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
@@ -795,7 +852,7 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V80</div>
+<div>ATSRS V81</div>
 <div>Last Update: 07 Jun 2026 03:25 UTC</div>
 <div>TEST BUILD</div>
 </div>
@@ -4042,7 +4099,7 @@ body > .atsrs-v64-top-actions .lang-menu{
 
 
 <style id="atsrs-v76-minimal-ui-and-audit-style">
-/* V80: stable English-only backup. TEST buttons removed; all other V79 UI behavior preserved. */
+/* V81: move trial/why-choose-ATSRS block to left intro; keep V80 backup behavior otherwise. */
 :root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
 body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
 .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
@@ -4068,7 +4125,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V80';
+  const BUILD='V81';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
