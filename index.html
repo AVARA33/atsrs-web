@@ -1008,8 +1008,8 @@ body > .atsrs-global-top-actions .top-logout:active,
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V100</div>
-<div>Last Update: 08 Jun 2026 0010 UTC</div>
+<div>ATSRS V102</div>
+<div>Last Update: 08 Jun 2026 0055 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -5118,8 +5118,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V100')rows[0].textContent='ATSRS V100';
-    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0010 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0010 UTC';
+    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V102')rows[0].textContent='ATSRS V102';
+    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0055 UTC
     if(rows[2] && rows[2].textContent.trim()!=='TEST BUILD')rows[2].textContent='TEST BUILD';
   }
   function lockV101(){lockAuthSubtitle();lockBuildBadge();}
@@ -5209,8 +5209,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0])rows[0].textContent='ATSRS V101';
-    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0030 UTC';
+    if(rows[0])rows[0].textContent='ATSRS V102';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0055 UTC
     if(rows[2])rows[2].textContent='TEST BUILD';
   }
   function loginAsTest(){
@@ -5231,6 +5231,86 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   window.addEventListener('load',lockV101);
   [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(lockV101,ms);});
   setInterval(lockV101,1500);
+})();
+</script>
+
+
+
+<script>
+/* V102: Reference/Appraisal ghost-file cleanup + legacy delete fix */
+(function(){
+  function safeGetData(key){
+    try{
+      if(typeof getData === 'function') return getData(key);
+      return JSON.parse(localStorage.getItem(key)||'[]');
+    }catch(e){return []}
+  }
+  function safeSaveData(key,val){
+    try{
+      if(typeof saveData === 'function') return saveData(key,val);
+      localStorage.setItem(key,JSON.stringify(val));
+    }catch(e){}
+  }
+  function isRealCareerFile(f){
+    return !!(f && typeof f === 'object' && f.name && typeof f.data === 'string' && f.data.indexOf('data:') === 0);
+  }
+  window.sanitizeCareerFiles = function(kind){
+    const key = kind + 'Files';
+    let arr = safeGetData(key);
+    if(!Array.isArray(arr)) arr = [];
+    const cleaned = arr.filter(isRealCareerFile).map(function(f,idx){
+      if(!f.id) f.id = 'legacy_' + kind + '_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).slice(2);
+      if(!f.updated) f.updated = new Date().toISOString();
+      if(!f.signedDate && f.updated) f.signedDate = String(f.updated).slice(0,10);
+      return f;
+    });
+    if(JSON.stringify(arr) !== JSON.stringify(cleaned)) safeSaveData(key, cleaned);
+    return cleaned;
+  };
+  window.getManagedFiles = function(kind){
+    return sanitizeCareerFiles(kind);
+  };
+  window.setManagedFiles = function(kind,arr){
+    safeSaveData(kind+'Files', Array.isArray(arr) ? arr.filter(isRealCareerFile) : []);
+  };
+  window.getManagedFile = function(kind){
+    const a = getManagedFiles(kind);
+    return a.length ? a[0] : null;
+  };
+  window.getCareerItem = function(kind,id){
+    return getManagedFiles(kind).find(function(i){return String(i.id) === String(id);});
+  };
+  window.deleteManagedFile = function(kind,id){
+    let arr = getManagedFiles(kind);
+    if(id){
+      arr = arr.filter(function(i){return String(i.id) !== String(id);});
+    }else{
+      arr = [];
+    }
+    setManagedFiles(kind, arr);
+    const input = document.getElementById(kind+'UploadInput');
+    if(input) input.value = '';
+    if(typeof renderManagedFiles === 'function') renderManagedFiles();
+    if(typeof renderAll === 'function') setTimeout(function(){try{renderAll()}catch(e){}},0);
+  };
+  const previousRenderCareerList = window.renderCareerList;
+  window.renderCareerList = function(kind){
+    const list = document.getElementById(kind+'RecordList');
+    if(!list) return;
+    sanitizeCareerFiles(kind);
+    if(typeof previousRenderCareerList === 'function') return previousRenderCareerList(kind);
+  };
+  window.clearGhostCareerRecords = function(){
+    ['appraisal','reference','recommendation'].forEach(function(kind){sanitizeCareerFiles(kind);});
+    if(typeof renderManagedFiles === 'function') renderManagedFiles();
+  };
+  const previousRenderManagedFiles = window.renderManagedFiles;
+  window.renderManagedFiles = function(){
+    ['appraisal','reference','recommendation'].forEach(function(kind){sanitizeCareerFiles(kind);});
+    if(typeof previousRenderManagedFiles === 'function') previousRenderManagedFiles();
+  };
+  setTimeout(function(){try{clearGhostCareerRecords()}catch(e){}},0);
+  setTimeout(function(){try{clearGhostCareerRecords()}catch(e){}},600);
 })();
 </script>
 
