@@ -823,8 +823,7 @@ body:not(.atsrs-booting) #app{
 <h2 id="loginTitle"></h2>
 <input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
 <input id="loginPassword" type="password">
-<label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me on this device</span></label>
-<p id="rememberNote" class="remember-note">Saves your email and keeps the browser session available after login.</p>
+<label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me</span></label>
 <div id="modeChoiceBox" class="mode-choice">
 <button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal Use</button>
 <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
@@ -837,9 +836,9 @@ body:not(.atsrs-booting) #app{
 <div id="signupSocialArea" class="signup-social-area" aria-label="Alternative account creation options">
   <div class="auth-divider"><span>or create account with</span></div>
   <div id="signupSocialAuth" class="social-auth-group social-auth-inline">
-    <button type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','register')"><span class="social-auth-icon">G</span><span>Google</span></button>
-    <button type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','register')"><span class="social-auth-icon">M</span><span>Microsoft</span></button>
-    <button type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','register')"><span class="social-auth-icon">in</span><span>LinkedIn</span></button>
+    <button id="socialGoogleBtn" type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','register')"><span class="social-auth-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06L5.84 9.9c.87-2.6 3.3-4.52 6.16-4.52z"/></svg></span><span>Google</span></button>
+    <button id="socialMicrosoftBtn" type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','register')"><span class="social-auth-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#F25022" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" d="M12.5 12.5H22V22h-9.5z"/></svg></span><span>Microsoft</span></button>
+    <button id="socialLinkedInBtn" type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','register')"><span class="social-auth-icon">in</span><span>LinkedIn</span></button>
   </div>
 </div>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
@@ -873,8 +872,8 @@ body:not(.atsrs-booting) #app{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V87</div>
-<div>Last Update: 07 Jun 2026 06:15 UTC</div>
+<div>ATSRS V88</div>
+<div>Last Update: 07 Jun 2026 06:35 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4153,7 +4152,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V87';
+  const BUILD='V88';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4445,12 +4444,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   padding:0!important;
   accent-color:#22c55e;
 }
-.remember-note{
-  margin:2px 0 6px!important;
-  color:#8fa1b7;
-  font-size:11px;
-  line-height:1.35;
-}
+.remember-note{display:none!important;}
 </style>
 <script id="atsrs-v85-remember-and-compact-login-script">
 (function(){
@@ -4498,9 +4492,9 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 
 
 <style id="atsrs-v87-social-auth-style">
-/* V87: Compact social account creation below Create Account. */
+/* V88: Social account creation stays below Create Account; original provider icons. */
 .signup-social-area{
-  margin:6px 0 4px!important;
+  margin:8px 0 4px!important;
 }
 .social-auth-group{
   display:flex;
@@ -4536,21 +4530,24 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   transform:translateY(-1px);
 }
 .social-auth-icon{
-  width:20px;
-  height:20px;
-  border-radius:7px;
+  width:22px;
+  height:22px;
+  border-radius:6px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  flex:0 0 20px;
+  flex:0 0 22px;
   font-size:11px;
   font-weight:950;
-  background:#f8fafc;
+  background:#ffffff;
   color:#0f172a;
   line-height:1;
+  overflow:hidden;
 }
-.social-microsoft .social-auth-icon{background:#111827;color:#f8fafc;border:1px solid #475569;}
-.social-linkedin .social-auth-icon{background:#0a66c2;color:#ffffff;font-family:Arial,sans-serif;}
+.social-auth-icon svg{width:17px;height:17px;display:block;}
+.social-google .social-auth-icon{background:#ffffff;border:1px solid rgba(148,163,184,.35);}
+.social-microsoft .social-auth-icon{background:#ffffff;border:1px solid rgba(148,163,184,.35);}
+.social-linkedin .social-auth-icon{background:#0a66c2;color:#ffffff;font-family:Arial,sans-serif;border:0;}
 .auth-divider{
   display:flex;
   align-items:center;
@@ -4577,6 +4574,24 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   margin:5px 0!important;
   padding:11px 12px!important;
 }
+
+/* V88 strict visual order inside login panel */
+#auth #loginBox{display:flex!important;flex-direction:column!important;}
+#auth #loginTitle{order:1;}
+#auth #loginEmail{order:2;}
+#auth #loginEmailRule{order:3;}
+#auth #loginPassword{order:4;}
+#auth #rememberRow{order:5;}
+#auth #modeChoiceBox{order:6;}
+#auth #modeRule{order:7;}
+#auth #modeInstruction{order:8;}
+#auth #loginBtn{order:9;}
+#auth #localTestBtn{order:10;}
+#auth #createBtn{order:11;}
+#auth #signupSocialArea{order:12;}
+#auth #forgotBtn{order:13;}
+#auth #loginMsg{order:14;}
+
 @media(max-width:560px){
   .social-auth-inline{grid-template-columns:1fr!important;}
   .social-auth-btn{font-size:13px!important;padding:10px!important;}
