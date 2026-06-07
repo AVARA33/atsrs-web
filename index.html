@@ -934,11 +934,11 @@ body > .atsrs-global-top-actions .top-logout:active,
 <input id="loginPassword" type="password">
 <label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me</span></label>
 <div id="modeChoiceBox" class="mode-choice">
-<button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal Use</button>
-<button type="button" id="companyModeBtn" onclick="setUseMode('company')">Company Use</button>
+<button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal</button>
+<button type="button" id="companyModeBtn" onclick="setUseMode('company')">Corporate</button>
 </div>
 <p id="modeRule" class="mode-error-text"></p>
-<p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Please select <b>Personal Use</b> or <b>Company Use</b> above before continuing.</span></p>
+<p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Select Personal or Corporate account to login.</span></p>
 <button id="loginBtn" onclick="login()"></button>
 <button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Local Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
@@ -1423,7 +1423,7 @@ let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.cr
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
-en:{sub:"Professional Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal Use",companyUse:"Company Use",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
+en:{sub:"Professional Compliance Platform",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Missing-document logic will be added with document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"},
 az:{sub:"Professional Compliance Platform",login:"Giriş",email:"Email",password:"Şifrə",create:"Hesab yarat",forgot:"Şifrəni unutmusunuz?",registerTitle:"Hesab yarat",confirm:"Şifrəni təsdiqlə",register:"Qeydiyyat",back:"Girişə qayıt",resetTitle:"Şifrəni yenilə",resetInfo:"Email yaz. Şifrə yeniləmə linki inbox-a göndəriləcək.",sendReset:"Reset email göndər",newPass:"Yeni şifrə təyin et",newPassword:"Yeni şifrə",confirmNew:"Yeni şifrəni təsdiqlə",saveNew:"Yeni şifrəni saxla",cabinet:"Uyğunluq kabineti",dashboard:"Dashboard",personnel:"Heyət",certificates:"Sertifikatlar",logout:"Çıxış",totalPersonnel:"Ümumi heyət",totalCerts:"Ümumi sertifikat",exp90:"90 günə bitənlər",exp30:"30 günə bitənlər",expired:"Vaxtı keçmiş",fill:"Bütün xanaları doldur.",addPersonnel:"Heyət əlavə et",personnelList:"Heyət siyahısı",name:"Ad",surname:"Soyad",position:"Vəzifə",company:"Şirkət",phone:"Telefon",action:"Əməliyyat",addCert:"Sertifikat əlavə et",provider:"Təlim mərkəzi / Provider",certRegister:"Sertifikat reyestri",certificate:"Sertifikat",expiry:"Bitmə tarixi",status:"Status",saveProfile:"Saxla",fill:"Bütün xanaları doldur.",fix:"Qırmızı xanaları düzəlt.",enterLogin:"Email və şifrə yaz.",passRule:"Şifrə ən az 6 simvol olmalıdır.",matchRule:"Şifrələr uyğun gəlmir.",sending:"Reset email göndərilir...",sent:"Reset email göndərildi. Inbox/spam yoxla.",connection:"Bağlantı alınmadı. Şəbəkə və ya Supabase çıxışını yoxla.",selectCrew:"Heyət üzvü seç",delete:"Sil",valid:"Aktiv",personalUse:"Fərdi istifadə",companyUse:"Şirkət istifadəsi",myDocuments:"Mənim sənədlərim",personalDashboardNote:"Fərdi rejim yalnız sizin sənədlərə fokuslanır.",scanUpload:"Sənəd scan / upload et",ocrManual:"OCR bütün xanaları dəqiq oxuya bilmədi. Çatışmayanları doldur və təsdiqlə.",nationality:"Milliyyət",employeeId:"Employee ID",project:"Layihə",vessel:"Gəmi",crewRegister:"Crew Register",crewList:"Heyət siyahısı",addCrew:"Heyət əlavə et",importExcel:"Excel import",groupsProjects:"Qruplar / Layihələr",complianceStatus:"Compliance status",searchCrew:"Heyət axtar...",allCompanies:"Bütün şirkətlər",allPositions:"Bütün vəzifələr",allStatuses:"Bütün statuslar",ready:"Hazır",review:"Yoxlanmalıdır",blocked:"Bloklanıb",importInfo:"Excel/CSV yüklə. Tam auto-mapping növbəti data mərhələsində qoşulacaq.",fileSelected:"Fayl seçildi",projects:"Layihələr",client:"Client",team:"Komanda",addProject:"Layihə əlavə et",readyCrew:"Hazır heyət",reviewCrew:"Yoxlama tələb edir",blockedCrew:"Bloklanmış / vaxtı keçmiş",complianceNote:"Compliance sertifikat bitmə tarixlərinə əsasən hesablanır. Missing document logic document requirements ilə əlavə olunacaq.",crewStatus:"Heyət statusu",exp30s:"30 günə bitir",exp90s:"90 günə bitir"}
 };
 ["tr","no","de","fr","es","pt","ar"].forEach(l=>T[l]=T.en);
@@ -1703,7 +1703,7 @@ let useMode="";
 function modeMsg(){
   if(lang==="az") return "Zəhmət olmasa istifadə növünü seçin: Personal və ya Company.";
   if(lang==="ru") return "Пожалуйста, выберите тип использования: Personal или Company.";
-  return "Please select use type: Personal or Company.";
+  return "Select Personal or Corporate account to login.";
 }
 function clearModeError(){
   if(typeof modeChoiceBox!=="undefined") modeChoiceBox.classList.remove("mode-error");
@@ -4062,7 +4062,7 @@ body > .atsrs-v64-top-actions .lang-menu{
    convert already-translated AZ labels when switching later to RU. */
 (function(){
   const MODE_LABELS={
-    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.'},
+    en:{personal:'Personal',company:'Corporate',modeError:'Select Personal or Corporate account to login.'},
     az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.'},
     ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.'}
   };
@@ -4109,7 +4109,7 @@ body > .atsrs-v64-top-actions .lang-menu{
    translation replacement scripts leave already-translated labels behind. */
 (function(){
   const LABELS={
-    en:{personal:'Personal Use',company:'Company Use',modeError:'Please select usage type: Personal or Company.'},
+    en:{personal:'Personal',company:'Corporate',modeError:'Select Personal or Corporate account to login.'},
     az:{personal:'Fərdi istifadə',company:'Şirkət istifadəsi',modeError:'Zəhmət olmasa istifadə tipini seçin: Fərdi və ya Şirkət.'},
     ru:{personal:'Личное использование',company:'Корпоративное использование',modeError:'Пожалуйста, выберите тип использования: Personal или Company.'}
   };
@@ -4446,7 +4446,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   function selectedMode(){
     try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
   }
-  function modeTitle(mode){return mode==='company'?'Company Use Account':'Personal Use Account';}
+  function modeTitle(mode){return mode==='company'?'Corporate Account':'Personal Account';}
   function modeText(mode){
     return mode==='company'
       ? 'You are creating a company workspace for managing crew compliance, personnel documents and project readiness.'
@@ -4475,7 +4475,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     const mode=selectedMode();
     if(mode==='personal'||mode==='company')return true;
     const x=document.getElementById('modeInstruction')||document.getElementById('modeRule');
-    if(x){x.classList.add('active');x.textContent='Please select Personal Use or Company Use above before continuing.';}
+    if(x){x.classList.add('active');x.textContent='Select Personal or Corporate account register.';}
     return false;
   }
   const baseShowRegister=window.showRegister;
@@ -4749,7 +4749,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     const mode=selectedMode();
     if(mode==='personal'||mode==='company')return true;
     const target=messageTarget(flow);
-    if(target)target.textContent='Please select Personal Use or Company Use before continuing.';
+    if(target)target.textContent='Select Personal or Corporate account register.';
     return false;
   }
   window.atsrsSocialAuth=async function(providerKey,flow){
@@ -4807,6 +4807,81 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     if(el)observer.observe(el,{childList:true,characterData:true,subtree:true});
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver); else startObserver();
+})();
+</script>
+
+
+<script id="atsrs-v99-personal-corporate-action-warnings">
+/* V99: Professional account type labels + action-specific warnings.
+   Keeps login selection simple and prevents older scripts from restoring "Use" wording. */
+(function(){
+  'use strict';
+  var loginWarning='Select Personal or Corporate account to login.';
+  var registerWarning='Select Personal or Corporate account register.';
+  function selectedMode(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
+  }
+  function setInstruction(message){
+    var x=document.getElementById('modeInstruction');
+    if(x){
+      x.classList.add('active');
+      x.innerHTML='<span class="mode-instruction-icon">!</span><span>'+message+'</span>';
+    }
+    var r=document.getElementById('modeRule');
+    if(r){r.textContent=message;r.classList.remove('active');}
+    var box=document.getElementById('modeChoiceBox');
+    if(box)box.classList.add('mode-error');
+  }
+  function hideInstruction(){
+    var x=document.getElementById('modeInstruction');
+    if(x)x.classList.remove('active');
+    var r=document.getElementById('modeRule');
+    if(r)r.classList.remove('active');
+    var box=document.getElementById('modeChoiceBox');
+    if(box)box.classList.remove('mode-error');
+  }
+  function lockLabels(){
+    var p=document.getElementById('personalModeBtn');
+    var c=document.getElementById('companyModeBtn');
+    if(p && p.textContent.trim()!=='Personal')p.textContent='Personal';
+    if(c && c.textContent.trim()!=='Corporate')c.textContent='Corporate';
+  }
+  function validateFor(action){
+    lockLabels();
+    var mode=selectedMode();
+    if(mode==='personal'||mode==='company'){hideInstruction();return true;}
+    setInstruction(action==='register'?registerWarning:loginWarning);
+    return false;
+  }
+  var baseValidate=window.validateUseMode;
+  window.validateUseMode=function(){return validateFor(window.atsrsModeAction||'login');};
+  var baseSet=window.setUseMode;
+  window.setUseMode=function(mode){
+    var r=(typeof baseSet==='function')?baseSet.apply(this,arguments):undefined;
+    hideInstruction(); lockLabels();
+    return r;
+  };
+  var baseLogin=window.login;
+  if(typeof baseLogin==='function'){
+    window.login=function(){window.atsrsModeAction='login';return baseLogin.apply(this,arguments);};
+  }
+  var baseLocal=window.localTestLogin;
+  if(typeof baseLocal==='function'){
+    window.localTestLogin=function(){window.atsrsModeAction='login';return baseLocal.apply(this,arguments);};
+  }
+  var baseShowRegister=window.showRegister;
+  if(typeof baseShowRegister==='function'){
+    window.showRegister=function(){window.atsrsModeAction='register';return baseShowRegister.apply(this,arguments);};
+  }
+  var baseSocial=window.atsrsSocialAuth;
+  if(typeof baseSocial==='function'){
+    window.atsrsSocialAuth=function(providerKey,flow){window.atsrsModeAction=(flow==='register'?'register':'login');return baseSocial.apply(this,arguments);};
+  }
+  function keepStable(){lockLabels();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',keepStable); else keepStable();
+  window.addEventListener('load',keepStable);
+  [0,100,300,800,1500].forEach(function(ms){setTimeout(keepStable,ms);});
+  setInterval(keepStable,1000);
 })();
 </script>
 
