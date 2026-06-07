@@ -751,7 +751,7 @@ body:not(.atsrs-booting) #app{
 .mode-instruction.active{display:flex!important}
 .mode-instruction-icon{
   width:17px;height:17px;min-width:17px;border-radius:50%;
-  background:var(--v76-red,#ef4444);color:#fff;
+  background:transparent;color:var(--v76-red,#ef4444);border:1.5px solid var(--v76-red,#ef4444);
   display:inline-flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:900;margin-top:0;
 }
@@ -881,6 +881,17 @@ body > .atsrs-global-top-actions .top-logout:active,
     white-space:normal!important;
     letter-spacing:.035em!important;
   }
+}
+
+
+
+/* V100: Neutral warning icon and grammar fix */
+#auth .mode-instruction-icon,
+#auth .mode-error-text.active::before{
+  background:transparent!important;
+  color:var(--v76-red,#ef4444)!important;
+  border:1.5px solid var(--v76-red,#ef4444)!important;
+  box-shadow:none!important;
 }
 
 </style>
@@ -4244,7 +4255,7 @@ button{box-shadow:none!important}
 .nav{gap:4px!important}.nav button{background:transparent!important;border:0!important;border-left:3px solid transparent!important;border-radius:8px!important;color:#dbeafe!important;padding:12px 10px!important;text-align:left!important;box-shadow:none!important}.nav button.active,.nav button:hover{background:#101d2e!important;border-left-color:var(--v76-green)!important;color:#fff!important}.nav button::before{margin-right:8px}.nav button.active{font-weight:900!important}
 .intro-service-card,.feature-tile,.workflow-step,.snapshot-item,.risk-item{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.intro-service-card.active{background:#0f1f31!important;border-color:var(--v76-green)!important}
 .mode-choice{gap:10px!important}.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}.mode-choice button{border:1px solid var(--v76-border)!important;border-radius:12px!important;background:#0b1726!important;color:#fff!important}.mode-choice button.active{background:#10251d!important;border-color:var(--v76-green)!important}
-.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:var(--v76-red);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}
+.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:transparent;color:var(--v76-red);border:1.5px solid var(--v76-red);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}
 .trial-box{order:20;margin:14px 0 4px!important;padding:10px 12px!important;background:transparent!important;border:1px solid var(--v76-border)!important;border-radius:14px!important;box-shadow:none!important;text-align:left!important}.trial-box h3{font-size:14px!important;margin:0 0 3px!important;color:#dfffea!important}.trial-box p,.trial-row{font-size:12px!important;color:var(--v76-muted)!important}.trial-dot{box-shadow:none!important;width:8px!important;height:8px!important;background:var(--v76-green)!important}
 .auth-card{display:flex!important;flex-direction:column!important}.auth-card #loginBox{display:flex;flex-direction:column!important}.auth-card #loginBox.hidden{display:none!important}#loginBtn{order:10}#localTestBtn{order:11}.atsrs-audit-btn{order:12;background:#17263a!important;border:1px solid var(--v76-border)!important;color:#dbeafe!important}#createBtn{order:13}#forgotBtn{order:14}.trial-box{order:15}
 .v76-audit-modal{position:fixed;inset:0;background:rgba(2,6,23,.72);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:18px}.v76-audit-card{width:min(760px,100%);max-height:86vh;overflow:auto;background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:16px}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:10px}.v76-audit-head h3{margin:0}.v76-audit-close,.v76-copy-btn{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
@@ -4475,7 +4486,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     const mode=selectedMode();
     if(mode==='personal'||mode==='company')return true;
     const x=document.getElementById('modeInstruction')||document.getElementById('modeRule');
-    if(x){x.classList.add('active');x.textContent='Select Personal or Corporate account register.';}
+    if(x){x.classList.add('active');x.textContent='Select Personal or Corporate account to register.';}
     return false;
   }
   const baseShowRegister=window.showRegister;
@@ -4749,7 +4760,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     const mode=selectedMode();
     if(mode==='personal'||mode==='company')return true;
     const target=messageTarget(flow);
-    if(target)target.textContent='Select Personal or Corporate account register.';
+    if(target)target.textContent='Select Personal or Corporate account to register.';
     return false;
   }
   window.atsrsSocialAuth=async function(providerKey,flow){
@@ -4817,7 +4828,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 (function(){
   'use strict';
   var loginWarning='Select Personal or Corporate account to login.';
-  var registerWarning='Select Personal or Corporate account register.';
+  var registerWarning='Select Personal or Corporate account to register.';
   function selectedMode(){
     try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
   }
