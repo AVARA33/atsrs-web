@@ -910,10 +910,74 @@ body > .atsrs-global-top-actions .top-logout:active,
   #auth #introText{font-size:16px!important;}
 }
 
+
+/* V107: dark ATSRS loading screen while app/auth is booting */
+#atsrsBootScreen{
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at 50% 18%,rgba(34,197,94,.16),transparent 30%),
+             radial-gradient(circle at 80% 80%,rgba(56,189,248,.10),transparent 28%),
+             linear-gradient(135deg,#020617,#07111d 48%,#0b1f2a);
+  color:#f8fafc;
+  text-align:center;
+  padding:24px;
+}
+body.atsrs-booting #atsrsBootScreen{display:flex!important;}
+.atsrs-loader-card{
+  width:min(92vw,420px);
+  border:1px solid rgba(134,239,172,.22);
+  background:rgba(8,18,31,.66);
+  border-radius:24px;
+  padding:30px 24px;
+  box-shadow:0 28px 80px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(14px);
+}
+.atsrs-loader-logo{
+  font-size:30px;
+  font-weight:900;
+  letter-spacing:.08em;
+  margin-bottom:18px;
+  color:#f8fafc;
+}
+.atsrs-spinner{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:3px solid rgba(148,163,184,.22);
+  border-top-color:#22c55e;
+  border-right-color:#38bdf8;
+  margin:0 auto 18px;
+  animation:atsrsSpin .9s linear infinite;
+}
+.atsrs-loader-title{
+  margin:0 0 7px;
+  font-size:18px;
+  font-weight:800;
+  color:#f8fafc;
+}
+.atsrs-loader-sub{
+  margin:0;
+  font-size:14px;
+  color:#a7b5c5;
+}
+@keyframes atsrsSpin{to{transform:rotate(360deg)}}
+
 </style>
 
 </head>
 <body class="atsrs-booting">
+<div id="atsrsBootScreen" role="status" aria-live="polite">
+  <div class="atsrs-loader-card">
+    <div class="atsrs-loader-logo">ATSRS</div>
+    <div class="atsrs-spinner" aria-hidden="true"></div>
+    <p class="atsrs-loader-title">Thanks for joining ATSRS Platform.</p>
+    <p class="atsrs-loader-sub">Getting things ready for you...</p>
+  </div>
+</div>
 <section id="auth" class="auth">
 
 <div class="auth-bg-docs" aria-hidden="true">
@@ -1008,8 +1072,8 @@ body > .atsrs-global-top-actions .top-logout:active,
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V106</div>
-<div>Last Update: 08 Jun 2026 0230 UTC</div>
+<div>ATSRS V107</div>
+<div>Last Update: 08 Jun 2026 0325 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -5118,8 +5182,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V106')rows[0].textContent='ATSRS V106';
-    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0230 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0230 UTC';
+    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V107')rows[0].textContent='ATSRS V107';
+    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0325 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0325 UTC';
     if(rows[2] && rows[2].textContent.trim()!=='TEST BUILD')rows[2].textContent='TEST BUILD';
   }
   function lockV101(){lockAuthSubtitle();lockBuildBadge();}
@@ -5288,8 +5352,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0])rows[0].textContent='ATSRS V106';
-    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0230 UTC';
+    if(rows[0])rows[0].textContent='ATSRS V107';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0325 UTC';
     if(rows[2])rows[2].textContent='TEST BUILD';
   }
   function lockAll(){restoreTestButton();lockLabels();lockBuild();}
@@ -5380,8 +5444,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0])rows[0].textContent='ATSRS V106';
-    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0230 UTC';
+    if(rows[0])rows[0].textContent='ATSRS V107';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0325 UTC';
     if(rows[2])rows[2].textContent='TEST BUILD';
   }
   function boot(){zeroCareerFiles();forceRenderZero();lockBuild();}
@@ -5398,8 +5462,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 /* V104: hard cleanup for ghost career files that remain in browser storage after older test builds. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V106';
-  var UPDATE='Last Update: 08 Jun 2026 0230 UTC';
+  var BUILD='ATSRS V107';
+  var UPDATE='Last Update: 08 Jun 2026 0325 UTC';
   var kinds=['appraisal','reference'];
   var suffixes=['appraisalFiles','referenceFiles','appraisalFile','referenceFile','appraisal','reference'];
 
@@ -5554,8 +5618,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V106';
-  var UPDATE='Last Update: 08 Jun 2026 0230 UTC';
+  var BUILD='ATSRS V107';
+  var UPDATE='Last Update: 08 Jun 2026 0325 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -5645,58 +5709,234 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </script>
 
 
-<style id="atsrs-v106-create-autoscroll-style">
-/* V106: smoother Create Account UX on login page */
-#registerBox{scroll-margin-top:24px;}
-@media(max-width:760px){#registerBox{scroll-margin-top:16px;}}
-</style>
-<script id="atsrs-v106-create-autoscroll-script">
+
+<script id="atsrs-v106-create-validation-autoscroll">
+/* V107: Dark branded loading screen + Create Account flow from V105.
+   Order is strict: validate Personal/Corporate first, then open Register box, then auto-scroll.
+   If no account type is selected, keep user on the account choice and show the existing warning. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V106';
-  var UPDATE='Last Update: 08 Jun 2026 0230 UTC';
-  function lockBuild(){
-    var b=document.getElementById('buildBadge');
-    if(!b)return;
-    var d=b.querySelectorAll('div');
-    if(d[0])d[0].textContent=BUILD;
-    if(d[1])d[1].textContent=UPDATE;
-    if(d[2])d[2].textContent='TEST BUILD';
+  var loginWarning='Select Personal or Corporate account to login.';
+  var registerWarning='Select Personal or Corporate account to register.';
+
+  function selectedMode(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
   }
-  function isVisible(el){return !!(el && !el.classList.contains('hidden') && el.offsetParent!==null);}
-  function scrollToRegister(){
-    var box=document.getElementById('registerBox');
-    if(!isVisible(box))return;
-    try{box.scrollIntoView({behavior:'smooth',block:'start',inline:'nearest'});}catch(e){box.scrollIntoView(true);}
-  }
-  function wrapShowRegister(){
-    if(typeof window.showRegister!=='function' || window.showRegister.__atsrsV106Wrapped)return;
-    var base=window.showRegister;
-    function wrappedShowRegister(){
-      var result=base.apply(this,arguments);
-      setTimeout(scrollToRegister,60);
-      setTimeout(scrollToRegister,260);
-      return result;
+  function showAccountWarning(message){
+    var x=document.getElementById('modeInstruction');
+    if(x){
+      x.classList.add('active');
+      x.innerHTML='<span class="mode-instruction-icon">!</span><span>'+message+'</span>';
     }
-    wrappedShowRegister.__atsrsV106Wrapped=true;
-    window.showRegister=wrappedShowRegister;
+    var r=document.getElementById('modeRule');
+    if(r){r.textContent=message;r.classList.remove('active');}
+    var box=document.getElementById('modeChoiceBox');
+    if(box){
+      box.classList.add('mode-error');
+      try{box.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){box.scrollIntoView();}
+    }
   }
-  function bindCreateButton(){
-    var btn=document.getElementById('createBtn');
-    if(!btn || btn.__atsrsV106Bound)return;
-    btn.__atsrsV106Bound=true;
-    btn.addEventListener('click',function(){
-      setTimeout(scrollToRegister,80);
-      setTimeout(scrollToRegister,320);
-    },true);
+  function clearAccountWarning(){
+    var x=document.getElementById('modeInstruction'); if(x)x.classList.remove('active');
+    var r=document.getElementById('modeRule'); if(r)r.classList.remove('active');
+    var box=document.getElementById('modeChoiceBox'); if(box)box.classList.remove('mode-error');
   }
-  function run(){lockBuild();wrapShowRegister();bindCreateButton();}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',run);
-  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(run,ms);});
-  setInterval(function(){lockBuild();wrapShowRegister();bindCreateButton();},1200);
+  function hasMode(){
+    var mode=selectedMode();
+    return mode==='personal'||mode==='company';
+  }
+  function validateAction(action){
+    if(hasMode()){clearAccountWarning();return true;}
+    showAccountWarning(action==='register'?registerWarning:loginWarning);
+    return false;
+  }
+  function scrollToRegister(){
+    var target=document.getElementById('registerBox') || document.getElementById('registerTitle');
+    if(!target || target.classList.contains('hidden'))return;
+    setTimeout(function(){
+      try{target.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){target.scrollIntoView();}
+    },90);
+  }
+
+  var baseValidate=window.validateUseMode;
+  window.validateUseMode=function(){
+    return validateAction(window.atsrsModeAction||'login');
+  };
+
+  var baseSetMode=window.setUseMode;
+  if(typeof baseSetMode==='function'){
+    window.setUseMode=function(){
+      var result=baseSetMode.apply(this,arguments);
+      clearAccountWarning();
+      return result;
+    };
+  }
+
+  var baseLogin=window.login;
+  if(typeof baseLogin==='function'){
+    window.login=function(){
+      window.atsrsModeAction='login';
+      return baseLogin.apply(this,arguments);
+    };
+  }
+
+  var baseLocalTest=window.localTestLogin;
+  if(typeof baseLocalTest==='function'){
+    window.localTestLogin=function(){
+      window.atsrsModeAction='login';
+      return baseLocalTest.apply(this,arguments);
+    };
+  }
+
+  var baseShowRegister=window.showRegister;
+  if(typeof baseShowRegister==='function'){
+    window.showRegister=function(){
+      window.atsrsModeAction='register';
+      if(!validateAction('register'))return;
+      var result=baseShowRegister.apply(this,arguments);
+      scrollToRegister();
+      return result;
+    };
+  }
+
+  var baseSocial=window.atsrsSocialAuth;
+  if(typeof baseSocial==='function'){
+    window.atsrsSocialAuth=function(providerKey,flow){
+      var action=(flow==='register')?'register':'login';
+      window.atsrsModeAction=action;
+      if(!validateAction(action))return;
+      return baseSocial.apply(this,arguments);
+    };
+  }
+})();
+</script>
+
+
+
+<script id="atsrs-v107-final-auth-validation-fix">
+/* V107 FINAL: first-load account selection validation + dark loading preserved.
+   Fix: ignore old saved account mode on the login screen. User must select Personal/Corporate
+   before Login, Test Login, Create Account or social register. Validation runs before scroll. */
+(function(){
+  'use strict';
+  var LOGIN_WARNING='Select Personal or Corporate account to login.';
+  var REGISTER_WARNING='Select Personal or Corporate account to register.';
+
+  function byId(id){return document.getElementById(id);}
+  function authIsVisible(){var a=byId('auth'); return !!(a && !a.classList.contains('hidden'));}
+  function appIsHidden(){var a=byId('app'); return !!(!a || a.classList.contains('hidden'));}
+  function personalActive(){var b=byId('personalModeBtn'); return !!(b && b.classList.contains('active'));}
+  function corporateActive(){var b=byId('companyModeBtn'); return !!(b && b.classList.contains('active'));}
+  function currentSelectedMode(){
+    if(personalActive())return 'personal';
+    if(corporateActive())return 'company';
+    return '';
+  }
+  function setWarning(message){
+    var box=byId('modeChoiceBox');
+    if(box)box.classList.add('mode-error');
+    var rule=byId('modeRule');
+    if(rule){rule.textContent=message;rule.classList.remove('active');}
+    var inst=byId('modeInstruction');
+    if(inst){
+      inst.innerHTML='<span class="mode-instruction-icon">!</span><span>'+message+'</span>';
+      inst.classList.add('active');
+    }
+    try{ if(box)box.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){ if(box)box.scrollIntoView(); }
+  }
+  function clearWarning(){
+    var box=byId('modeChoiceBox'); if(box)box.classList.remove('mode-error');
+    var rule=byId('modeRule'); if(rule)rule.classList.remove('active');
+    var inst=byId('modeInstruction'); if(inst)inst.classList.remove('active');
+  }
+  function markSelected(mode){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p)p.classList.toggle('active',mode==='personal');
+    if(c)c.classList.toggle('active',mode==='company');
+  }
+  function resetAuthSelectionOnce(){
+    if(!authIsVisible() || !appIsHidden())return;
+    // Only on the public login screen. Do not auto-select from old localStorage here.
+    window.useMode='';
+    markSelected('');
+    clearWarning();
+  }
+  function validateFor(action){
+    var mode=currentSelectedMode();
+    if(mode==='personal'||mode==='company'){
+      window.useMode=mode;
+      try{localStorage.setItem('atsrs_use_mode',mode);}catch(e){}
+      clearWarning();
+      return true;
+    }
+    window.useMode='';
+    setWarning(action==='register'?REGISTER_WARNING:LOGIN_WARNING);
+    return false;
+  }
+  function openRegisterDirect(){
+    if(typeof window.hideAuthBoxes==='function')window.hideAuthBoxes();
+    var box=byId('registerBox');
+    if(box)box.classList.remove('hidden');
+    setTimeout(function(){
+      var target=byId('registerBox')||byId('registerTitle');
+      if(target){try{target.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){target.scrollIntoView();}}
+    },90);
+  }
+
+  // Make the current screen start clean. This fixes the first-open bug before logout.
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',resetAuthSelectionOnce);
+  else resetAuthSelectionOnce();
+  setTimeout(resetAuthSelectionOnce,0);
+  setTimeout(resetAuthSelectionOnce,250);
+
+  var previousSetUseMode=window.setUseMode;
+  window.setUseMode=function(mode){
+    window.useMode=mode;
+    try{localStorage.setItem('atsrs_use_mode',mode);}catch(e){}
+    markSelected(mode);
+    clearWarning();
+    if(typeof previousSetUseMode==='function'){
+      try{return previousSetUseMode.apply(this,arguments);}catch(e){}
+    }
+  };
+
+  window.validateUseMode=function(){return validateFor(window.atsrsModeAction||'login');};
+
+  var previousLogin=window.login;
+  if(typeof previousLogin==='function'){
+    window.login=function(){
+      window.atsrsModeAction='login';
+      if(!validateFor('login'))return;
+      return previousLogin.apply(this,arguments);
+    };
+  }
+
+  var previousLocalTest=window.localTestLogin;
+  if(typeof previousLocalTest==='function'){
+    window.localTestLogin=function(){
+      window.atsrsModeAction='login';
+      if(!validateFor('login'))return;
+      return previousLocalTest.apply(this,arguments);
+    };
+  }
+
+  window.showRegister=function(){
+    window.atsrsModeAction='register';
+    if(!validateFor('register'))return;
+    openRegisterDirect();
+  };
+
+  var previousSocial=window.atsrsSocialAuth;
+  if(typeof previousSocial==='function'){
+    window.atsrsSocialAuth=function(providerKey,flow){
+      var action=(flow==='register')?'register':'login';
+      window.atsrsModeAction=action;
+      if(!validateFor(action))return;
+      return previousSocial.apply(this,arguments);
+    };
+  }
 })();
 </script>
 
 </body>
-  </html>
+    </html>
