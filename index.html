@@ -1008,8 +1008,8 @@ body > .atsrs-global-top-actions .top-logout:active,
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V105</div>
-<div>Last Update: 08 Jun 2026 0210 UTC</div>
+<div>ATSRS V106</div>
+<div>Last Update: 08 Jun 2026 0230 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -5118,8 +5118,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V105')rows[0].textContent='ATSRS V105';
-    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0210 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0210 UTC';
+    if(rows[0] && rows[0].textContent.trim()!=='ATSRS V106')rows[0].textContent='ATSRS V106';
+    if(rows[1] && rows[1].textContent.trim()!=='Last Update: 08 Jun 2026 0230 UTC')rows[1].textContent='Last Update: 08 Jun 2026 0230 UTC';
     if(rows[2] && rows[2].textContent.trim()!=='TEST BUILD')rows[2].textContent='TEST BUILD';
   }
   function lockV101(){lockAuthSubtitle();lockBuildBadge();}
@@ -5288,8 +5288,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0])rows[0].textContent='ATSRS V105';
-    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0210 UTC';
+    if(rows[0])rows[0].textContent='ATSRS V106';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0230 UTC';
     if(rows[2])rows[2].textContent='TEST BUILD';
   }
   function lockAll(){restoreTestButton();lockLabels();lockBuild();}
@@ -5380,8 +5380,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var badge=document.getElementById('buildBadge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows[0])rows[0].textContent='ATSRS V105';
-    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0210 UTC';
+    if(rows[0])rows[0].textContent='ATSRS V106';
+    if(rows[1])rows[1].textContent='Last Update: 08 Jun 2026 0230 UTC';
     if(rows[2])rows[2].textContent='TEST BUILD';
   }
   function boot(){zeroCareerFiles();forceRenderZero();lockBuild();}
@@ -5398,8 +5398,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 /* V104: hard cleanup for ghost career files that remain in browser storage after older test builds. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V105';
-  var UPDATE='Last Update: 08 Jun 2026 0210 UTC';
+  var BUILD='ATSRS V106';
+  var UPDATE='Last Update: 08 Jun 2026 0230 UTC';
   var kinds=['appraisal','reference'];
   var suffixes=['appraisalFiles','referenceFiles','appraisalFile','referenceFile','appraisal','reference'];
 
@@ -5554,8 +5554,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V105';
-  var UPDATE='Last Update: 08 Jun 2026 0210 UTC';
+  var BUILD='ATSRS V106';
+  var UPDATE='Last Update: 08 Jun 2026 0230 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -5641,6 +5641,60 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
   window.addEventListener('load',run);
   [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(run,ms)});
   setInterval(function(){ if(document.getElementById('refsPage') && !document.getElementById('refsPage').classList.contains('hidden')) run(); lockBuild(); },1500);
+})();
+</script>
+
+
+<style id="atsrs-v106-create-autoscroll-style">
+/* V106: smoother Create Account UX on login page */
+#registerBox{scroll-margin-top:24px;}
+@media(max-width:760px){#registerBox{scroll-margin-top:16px;}}
+</style>
+<script id="atsrs-v106-create-autoscroll-script">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V106';
+  var UPDATE='Last Update: 08 Jun 2026 0230 UTC';
+  function lockBuild(){
+    var b=document.getElementById('buildBadge');
+    if(!b)return;
+    var d=b.querySelectorAll('div');
+    if(d[0])d[0].textContent=BUILD;
+    if(d[1])d[1].textContent=UPDATE;
+    if(d[2])d[2].textContent='TEST BUILD';
+  }
+  function isVisible(el){return !!(el && !el.classList.contains('hidden') && el.offsetParent!==null);}
+  function scrollToRegister(){
+    var box=document.getElementById('registerBox');
+    if(!isVisible(box))return;
+    try{box.scrollIntoView({behavior:'smooth',block:'start',inline:'nearest'});}catch(e){box.scrollIntoView(true);}
+  }
+  function wrapShowRegister(){
+    if(typeof window.showRegister!=='function' || window.showRegister.__atsrsV106Wrapped)return;
+    var base=window.showRegister;
+    function wrappedShowRegister(){
+      var result=base.apply(this,arguments);
+      setTimeout(scrollToRegister,60);
+      setTimeout(scrollToRegister,260);
+      return result;
+    }
+    wrappedShowRegister.__atsrsV106Wrapped=true;
+    window.showRegister=wrappedShowRegister;
+  }
+  function bindCreateButton(){
+    var btn=document.getElementById('createBtn');
+    if(!btn || btn.__atsrsV106Bound)return;
+    btn.__atsrsV106Bound=true;
+    btn.addEventListener('click',function(){
+      setTimeout(scrollToRegister,80);
+      setTimeout(scrollToRegister,320);
+    },true);
+  }
+  function run(){lockBuild();wrapShowRegister();bindCreateButton();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',run);
+  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(run,ms);});
+  setInterval(function(){lockBuild();wrapShowRegister();bindCreateButton();},1200);
 })();
 </script>
 
