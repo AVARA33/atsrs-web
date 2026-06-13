@@ -4251,5 +4251,121 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<!-- V109 HOTFIX: Create Account validation restored without touching other flows -->
+<style id="atsrs-v109-create-validation-hotfix-style">
+#auth #modeChoiceBox.mode-error,
+#modeChoiceBox.mode-error{
+  border:1.5px solid #ef4444!important;
+  border-radius:14px!important;
+  padding:6px!important;
+  background:rgba(127,29,29,.18)!important;
+}
+#auth #modeChoiceBox.mode-error button,
+#modeChoiceBox.mode-error button{
+  border-color:#ef4444!important;
+}
+</style>
+<script id="atsrs-v109-create-validation-hotfix-script">
+(function(){
+  'use strict';
+  var REGISTER_MSG='Select Personal or Corporate account to register.';
+  var LOGIN_MSG='Select Personal or Corporate account to login.';
+  function byId(id){return document.getElementById(id);}
+  function selectedFromButtons(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p && p.classList.contains('active')) return 'personal';
+    if(c && c.classList.contains('active')) return 'company';
+    return '';
+  }
+  function selectedMode(){
+    /* Do not trust old localStorage alone here; validation must follow visible selected button. */
+    return selectedFromButtons();
+  }
+  function showAccountWarning(kind){
+    var msg=(kind==='register')?REGISTER_MSG:LOGIN_MSG;
+    var box=byId('modeChoiceBox');
+    var rule=byId('modeRule');
+    var instruction=byId('modeInstruction');
+    if(box) box.classList.add('mode-error');
+    if(rule){ rule.textContent=msg; rule.classList.add('active'); }
+    if(instruction){
+      instruction.classList.add('active');
+      instruction.innerHTML='<span class="mode-instruction-icon">!</span><span>'+msg+'</span>';
+    }
+  }
+  function clearAccountWarning(){
+    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
+    if(box) box.classList.remove('mode-error');
+    if(rule) rule.classList.remove('active');
+    if(instruction) instruction.classList.remove('active');
+  }
+  function ensureRegisterModeCard(){
+    var box=byId('registerBox'), title=byId('registerTitle');
+    if(!box || !title || box.classList.contains('hidden')) return;
+    var mode=selectedMode() || 'personal';
+    var card=byId('registerAccountTypeCard');
+    if(!card){
+      card=document.createElement('div');
+      card.id='registerAccountTypeCard';
+      card.className='register-account-type-card';
+      card.innerHTML='<div class="register-account-type-icon">✓</div><div><b id="registerAccountTypeTitle"></b><span id="registerAccountTypeText"></span></div>';
+      title.insertAdjacentElement('afterend',card);
+    }
+    var t=byId('registerAccountTypeTitle'), x=byId('registerAccountTypeText');
+    if(t) t.textContent=(mode==='company')?'Corporate Account':'Personal Account';
+    if(x) x.textContent=(mode==='company')
+      ? 'You are creating a corporate account for managing personnel documents, expiry tracking, compliance readiness and profile sharing across your organization.'
+      : 'You are creating a personal account for keeping your licences, certificates, medical records, references, appraisals and career documents organized in one place.';
+  }
+  function safeOpenRegister(){
+    if(!selectedMode()){
+      showAccountWarning('register');
+      return false; /* no scroll and no form opening */
+    }
+    clearAccountWarning();
+    if(typeof window.__atsrsBaseShowRegisterV109==='function') window.__atsrsBaseShowRegisterV109();
+    else if(typeof hideAuthBoxes==='function'){
+      try{hideAuthBoxes(); var rb=byId('registerBox'); if(rb) rb.classList.remove('hidden');}catch(e){}
+    }
+    setTimeout(function(){
+      ensureRegisterModeCard();
+      var rb=byId('registerBox');
+      if(rb && rb.scrollIntoView) rb.scrollIntoView({behavior:'smooth',block:'start'});
+    },60);
+    return false;
+  }
+  function bind(){
+    if(!window.__atsrsBaseShowRegisterV109 && typeof window.showRegister==='function') window.__atsrsBaseShowRegisterV109=window.showRegister;
+    window.showRegister=safeOpenRegister;
+    var createBtn=byId('createBtn');
+    if(createBtn){
+      createBtn.onclick=safeOpenRegister;
+      if(!createBtn.dataset.v109CreateCapture){
+        createBtn.addEventListener('click',function(e){
+          if(!selectedMode()){
+            e.preventDefault(); e.stopImmediatePropagation();
+            showAccountWarning('register');
+            return false;
+          }
+        },true);
+        createBtn.dataset.v109CreateCapture='1';
+      }
+    }
+    ['personalModeBtn','companyModeBtn'].forEach(function(id){
+      var b=byId(id);
+      if(b && !b.dataset.v109ClearWarning){
+        b.addEventListener('click',function(){setTimeout(function(){clearAccountWarning(); ensureRegisterModeCard();},0);});
+        b.dataset.v109ClearWarning='1';
+      }
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+  window.addEventListener('load',bind);
+  [100,500,1200].forEach(function(ms){setTimeout(bind,ms);});
+})();
+</script>
+
 </body>
-  </html>
+                                                                                    </html>
