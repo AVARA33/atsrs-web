@@ -949,8 +949,8 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V108</div>
-<div>Last Update: 13 Jun 2026 0515 UTC</div>
+<div>ATSRS V109</div>
+<div>Last Update: 13 Jun 2026 0641 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -3971,8 +3971,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V108';
-  var UPDATE='Last Update: 13 Jun 2026 0515 UTC';
+  var BUILD='ATSRS V109';
+  var UPDATE='Last Update: 13 Jun 2026 0641 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -4064,8 +4064,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V108';
-  const UPDATE = 'Last Update: 13 Jun 2026 0515 UTC';
+  const BUILD = 'ATSRS V109';
+  const UPDATE = 'Last Update: 13 Jun 2026 0641 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -4152,5 +4152,104 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<!-- V109: Restore Create Account selected account description from V105 -->
+<style id="atsrs-v109-create-account-description-style">
+.register-account-type-card{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:0 0 14px;
+  padding:11px 12px;
+  border:1px solid rgba(34,197,94,.45);
+  background:rgba(34,197,94,.08);
+  border-radius:14px;
+  color:#eafdf0;
+}
+.register-account-type-icon{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#22c55e;
+  color:#04111d;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  flex:0 0 auto;
+}
+.register-account-type-card b{display:block;font-size:13px;margin-bottom:2px;color:#ffffff;}
+.register-account-type-card span{display:block;font-size:12px;line-height:1.35;color:#b7c7d8;}
+</style>
+<script id="atsrs-v109-create-account-description-script">
+(function(){
+  'use strict';
+  function selectedMode(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
+  }
+  function modeTitle(mode){return mode==='company'?'Corporate Account':'Personal Account';}
+  function modeText(mode){
+    return mode==='company'
+      ? 'You are creating a corporate account for managing personnel documents, expiry tracking, compliance readiness and profile sharing across your organization.'
+      : 'You are creating a personal account for keeping your licences, certificates, medical records, references, appraisals and career documents organized in one place.';
+  }
+  function ensureRegisterModeCard(){
+    const box=document.getElementById('registerBox');
+    const title=document.getElementById('registerTitle');
+    if(!box || !title || box.classList.contains('hidden'))return;
+    let card=document.getElementById('registerAccountTypeCard');
+    if(!card){
+      card=document.createElement('div');
+      card.id='registerAccountTypeCard';
+      card.className='register-account-type-card';
+      card.innerHTML='<div class="register-account-type-icon">✓</div><div><b id="registerAccountTypeTitle"></b><span id="registerAccountTypeText"></span></div>';
+      title.insertAdjacentElement('afterend',card);
+    }
+    const mode=selectedMode();
+    const t=document.getElementById('registerAccountTypeTitle');
+    const x=document.getElementById('registerAccountTypeText');
+    if(t)t.textContent=modeTitle(mode);
+    if(x)x.textContent=modeText(mode);
+  }
+  function showModeWarningForCreate(){
+    const mode=selectedMode();
+    if(mode==='personal'||mode==='company')return true;
+    const choice=document.getElementById('modeChoiceBox');
+    const instruction=document.getElementById('modeInstruction');
+    const rule=document.getElementById('modeRule');
+    if(choice)choice.classList.add('mode-error');
+    if(instruction){
+      instruction.classList.add('active');
+      const span=instruction.querySelector('span:last-child');
+      if(span)span.textContent='Select Personal or Corporate account to register.';
+      else instruction.textContent='Select Personal or Corporate account to register.';
+    }
+    if(rule){
+      rule.classList.add('active');
+      rule.textContent='Select Personal or Corporate account to register.';
+    }
+    return false;
+  }
+  const baseShowRegister=window.showRegister;
+  window.showRegister=function(){
+    if(!showModeWarningForCreate())return;
+    if(typeof baseShowRegister==='function')baseShowRegister();
+    setTimeout(function(){
+      ensureRegisterModeCard();
+      const box=document.getElementById('registerBox');
+      if(box && typeof box.scrollIntoView==='function')box.scrollIntoView({behavior:'smooth',block:'start'});
+    },0);
+  };
+  const baseSetUseMode=window.setUseMode;
+  window.setUseMode=function(mode){
+    if(typeof baseSetUseMode==='function')baseSetUseMode(mode);
+    setTimeout(ensureRegisterModeCard,0);
+  };
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(ensureRegisterModeCard,120);});
+  window.addEventListener('load',function(){setTimeout(ensureRegisterModeCard,120);});
+})();
+</script>
+
 </body>
-    </html>
+  </html>
