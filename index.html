@@ -4652,5 +4652,184 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<!-- V112: compact register choice + icon-only social refinement -->
+<style id="atsrs-v112-compact-register-choice-style">
+/* Smaller Personal / Corporate choice cards */
+#registerAccountTypeArea .mode-choice{
+  gap:8px!important;
+  margin:8px 0 10px!important;
+}
+#registerAccountTypeArea .mode-choice button,
+#registerAccountTypeArea .mode-choice.mode-error button{
+  min-height:44px!important;
+  height:44px!important;
+  padding:8px 10px!important;
+  border-radius:13px!important;
+  font-size:13.5px!important;
+  line-height:1.1!important;
+  border:1px solid #334155!important;
+  background:#17263a!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea .mode-choice button.active{
+  background:linear-gradient(135deg,rgba(34,197,94,.17),rgba(15,118,110,.22))!important;
+  border-color:#22c55e!important;
+}
+
+/* Warning/info text: no red box, only icon + text */
+#registerAccountNotice,
+#registerAccountNotice.choice-missing,
+#registerAccountNotice.choice-selected{
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:9px!important;
+  margin:8px 0 13px!important;
+  padding:2px 2px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#registerAccountNotice.choice-missing{color:#fecaca!important;}
+#registerAccountNotice.choice-selected{color:#eafdf0!important;}
+#registerAccountNotice .notice-icon{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  flex:0 0 22px!important;
+  border-radius:50%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-weight:950!important;
+  line-height:1!important;
+  margin-top:1px!important;
+}
+#registerAccountNotice.choice-missing .notice-icon{
+  background:transparent!important;
+  border:2px solid #ef4444!important;
+  color:#ef4444!important;
+}
+#registerAccountNotice.choice-selected .notice-icon{
+  background:#22c55e!important;
+  border:2px solid #22c55e!important;
+  color:#052e16!important;
+}
+#registerAccountNotice b{
+  display:block!important;
+  font-size:13.5px!important;
+  line-height:1.25!important;
+  margin:0 0 2px!important;
+  color:inherit!important;
+}
+#registerAccountNotice span{
+  display:block!important;
+  font-size:12.5px!important;
+  line-height:1.35!important;
+  color:inherit!important;
+}
+
+/* Smaller social icons, no text, no card/box */
+#signupSocialAuth.social-auth-inline{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:14px!important;
+  margin:9px 0 3px!important;
+}
+#signupSocialAuth .social-auth-btn{
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#signupSocialAuth .social-auth-btn span:not(.social-auth-icon){display:none!important;}
+#signupSocialAuth .social-auth-icon{
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  border-radius:6px!important;
+}
+#signupSocialAuth .social-auth-icon svg{
+  width:22px!important;
+  height:22px!important;
+}
+#signupSocialAuth .social-google .social-auth-icon svg,
+#signupSocialAuth .social-microsoft .social-auth-icon svg{
+  width:21px!important;
+  height:21px!important;
+}
+#signupSocialAuth .social-linkedin .social-auth-icon{
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  border-radius:6px!important;
+  font-size:14px!important;
+}
+</style>
+<script id="atsrs-v112-compact-register-choice-script">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V112';
+  var UPDATE='Last Update: 14 Jun 2026 2340 UTC';
+  var TEST='TEST BUILD';
+  function byId(id){return document.getElementById(id);}
+  function updateBuild(){
+    var rows=document.querySelectorAll('.build-badge div');
+    if(rows[0])rows[0].textContent=BUILD;
+    if(rows[1])rows[1].textContent=UPDATE;
+    if(rows[2])rows[2].textContent=TEST;
+  }
+  function getSelectedMode(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p&&p.classList.contains('active'))return 'personal';
+    if(c&&c.classList.contains('active'))return 'company';
+    return '';
+  }
+  function normalizeNotice(){
+    var notice=byId('registerAccountNotice');
+    var title=byId('registerAccountNoticeTitle');
+    var text=byId('registerAccountNoticeText');
+    var icon=notice?notice.querySelector('.notice-icon'):null;
+    if(!notice||!title||!text)return;
+    var mode=getSelectedMode();
+    notice.classList.toggle('choice-missing',!mode);
+    notice.classList.toggle('choice-selected',!!mode);
+    if(!mode){
+      if(icon)icon.textContent='!';
+      title.textContent='Choose Account Type';
+      if(!/continue registration with/i.test(text.textContent||'')){
+        text.textContent='Select Personal or Corporate before creating your ATSRS account.';
+      }
+    }else if(mode==='personal'){
+      if(icon)icon.textContent='✓';
+      title.textContent='Personal Account';
+      text.textContent='You are creating a Personal account to keep your documents, certificates, references, appraisals and expiry alerts organized.';
+    }else{
+      if(icon)icon.textContent='✓';
+      title.textContent='Corporate Account';
+      text.textContent='You are creating a Corporate account to manage personnel, compliance records, shared documents and workforce information.';
+    }
+  }
+  function boot(){
+    updateBuild();
+    normalizeNotice();
+    ['personalModeBtn','companyModeBtn','createBtn','registerBtn','socialGoogleBtn','socialMicrosoftBtn','socialLinkedInBtn'].forEach(function(id){
+      var el=byId(id); if(el && !el.dataset.v112Watch){el.dataset.v112Watch='1'; el.addEventListener('click',function(){setTimeout(normalizeNotice,80);setTimeout(normalizeNotice,220);},true);}
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  window.addEventListener('load',boot);
+  [100,400,900,1600,2600].forEach(function(ms){setTimeout(boot,ms);});
+})();
+</script>
+
 </body>
   </html>
