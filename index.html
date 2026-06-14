@@ -4831,5 +4831,224 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<!-- V113: social placeholder flow + two direct test login buttons -->
+<style id="atsrs-v113-test-social-flow-style">
+/* Replace single Test Login with two direct test buttons */
+#localTestBtn{display:none!important;}
+#atsrsV113TestLoginGroup{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin:7px 0!important;
+}
+#atsrsV113TestLoginGroup button{
+  min-height:42px!important;
+  height:42px!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  margin:0!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#atsrsV113TestLoginGroup button:hover{
+  background:#2f455d!important;
+  border-color:rgba(56,189,248,.55)!important;
+}
+
+/* Social register placeholder: no email/password fields */
+#registerBox.social-register-mode #regEmail,
+#registerBox.social-register-mode #regEmailRule,
+#registerBox.social-register-mode #regPassword,
+#registerBox.social-register-mode #passRule,
+#registerBox.social-register-mode #regPassword2,
+#registerBox.social-register-mode #matchRule,
+#registerBox.social-register-mode #registerBtn{
+  display:none!important;
+}
+#registerBox.social-register-mode #registerTitle::after{
+  content:"Social sign in setup";
+  display:block;
+  margin-top:4px;
+  font-size:12px;
+  color:#94a3b8;
+  font-weight:700;
+}
+#atsrsV113SocialNotice{
+  display:none;
+  align-items:flex-start;
+  gap:9px;
+  margin:10px 0 13px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#cbd5e1;
+  line-height:1.35;
+}
+#registerBox.social-register-mode #atsrsV113SocialNotice{display:flex!important;}
+#atsrsV113SocialNotice .notice-icon{
+  width:22px;
+  height:22px;
+  min-width:22px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid #f59e0b;
+  color:#f59e0b;
+  font-weight:950;
+  line-height:1;
+  margin-top:1px;
+}
+#atsrsV113SocialNotice b{display:block;font-size:13.5px;color:#f8fafc;margin:0 0 2px;}
+#atsrsV113SocialNotice span{display:block;font-size:12.5px;color:#a7b5c5;}
+@media(max-width:420px){#atsrsV113TestLoginGroup{grid-template-columns:1fr!important;}}
+</style>
+<script id="atsrs-v113-test-social-flow-script">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V113';
+  var UPDATE='Last Update: 15 Jun 2026 0005 UTC';
+  var TEST='TEST BUILD';
+  var socialProviderPending=null;
+  function byId(id){return document.getElementById(id);}
+  function label(provider){return provider==='microsoft'?'Microsoft':provider==='linkedin'?'LinkedIn':'Google';}
+  function updateBuild(){
+    var rows=document.querySelectorAll('.build-badge div');
+    if(rows[0])rows[0].textContent=BUILD;
+    if(rows[1])rows[1].textContent=UPDATE;
+    if(rows[2])rows[2].textContent=TEST;
+  }
+  function ensureTestButtons(){
+    var old=byId('localTestBtn');
+    if(!old || byId('atsrsV113TestLoginGroup'))return;
+    var wrap=document.createElement('div');
+    wrap.id='atsrsV113TestLoginGroup';
+    wrap.innerHTML='<button type="button" id="atsrsV113TestPersonal">Test Personal</button><button type="button" id="atsrsV113TestCorporate">Test Corporate</button>';
+    old.insertAdjacentElement('afterend',wrap);
+    byId('atsrsV113TestPersonal').onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
+    byId('atsrsV113TestCorporate').onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
+  }
+  function directTestLogin(mode){
+    try{
+      window.useMode=mode;
+      localStorage.setItem('atsrs_use_mode',mode);
+      localStorage.setItem('atsrs_auth_mode','local');
+      localStorage.setItem('atsrs_current_page',mode==='company'?'dashboard':'intro');
+    }catch(e){}
+    if(typeof window.setUseMode==='function'){
+      try{window.setUseMode(mode);}catch(e){}
+    }
+    window.currentUser={id:'local_test_'+mode,email:mode==='company'?'corporate-test@atsrs.com':'personal-test@atsrs.com'};
+    if(typeof window.openApp==='function')window.openApp();
+  }
+  function ensureSocialNotice(){
+    var rb=byId('registerBox');
+    if(!rb)return null;
+    var n=byId('atsrsV113SocialNotice');
+    if(!n){
+      n=document.createElement('div');
+      n.id='atsrsV113SocialNotice';
+      n.innerHTML='<span class="notice-icon">!</span><div><b>Social sign in is not available yet.</b><span>Google, Microsoft and LinkedIn sign in will be enabled in a future update.</span></div>';
+      var area=byId('registerAccountTypeArea');
+      if(area)area.insertAdjacentElement('afterend',n);
+      else rb.insertBefore(n,rb.children[1]||null);
+    }
+    return n;
+  }
+  function hideAuthBoxes(){
+    ['loginBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id); if(el)el.classList.add('hidden');});
+    var rb=byId('registerBox'); if(rb)rb.classList.remove('hidden');
+  }
+  function resetRegisterMode(){
+    var rb=byId('registerBox');
+    if(rb)rb.classList.remove('social-register-mode');
+    socialProviderPending=null;
+  }
+  function openSocialChoice(provider){
+    socialProviderPending=provider;
+    hideAuthBoxes();
+    var rb=byId('registerBox'); if(rb)rb.classList.add('social-register-mode');
+    if(typeof window.setUseMode==='function'){
+      try{window.setUseMode('');}catch(e){}
+    }
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p)p.classList.remove('active');
+    if(c)c.classList.remove('active');
+    ensureSocialNotice();
+    if(typeof window.atsrsV113UpdateNotice==='function')window.atsrsV113UpdateNotice(provider);
+    setTimeout(function(){
+      var area=byId('registerAccountTypeArea');
+      if(area && area.scrollIntoView)area.scrollIntoView({behavior:'smooth',block:'center'});
+    },80);
+    return false;
+  }
+  function updateAccountNotice(provider){
+    var area=byId('registerAccountTypeArea');
+    var notice=byId('registerAccountNotice');
+    var title=byId('registerAccountNoticeTitle');
+    var text=byId('registerAccountNoticeText');
+    var icon=notice?notice.querySelector('.notice-icon'):null;
+    if(!notice || !title || !text)return;
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    var mode=(p&&p.classList.contains('active'))?'personal':((c&&c.classList.contains('active'))?'company':'');
+    if(area)area.classList.toggle('needs-choice',!mode);
+    notice.classList.toggle('choice-missing',!mode);
+    notice.classList.toggle('choice-selected',!!mode);
+    if(!mode){
+      if(icon)icon.textContent='!';
+      title.textContent='Choose Account Type';
+      text.textContent=provider?('Select Personal or Corporate to prepare '+label(provider)+' sign in.'):('Select Personal or Corporate before creating your ATSRS account.');
+    }else if(mode==='personal'){
+      if(icon)icon.textContent='✓';
+      title.textContent='Personal Account';
+      text.textContent='You are creating a Personal account to keep your documents, certificates, references, appraisals and expiry alerts organized.';
+    }else{
+      if(icon)icon.textContent='✓';
+      title.textContent='Corporate Account';
+      text.textContent='You are creating a Corporate account to manage personnel, compliance records, shared documents and workforce information.';
+    }
+  }
+  window.atsrsV113UpdateNotice=updateAccountNotice;
+  function bind(){
+    updateBuild();
+    ensureTestButtons();
+    ensureSocialNotice();
+    var create=byId('createBtn');
+    if(create && !create.dataset.v113Bound){
+      create.dataset.v113Bound='1';
+      create.addEventListener('click',function(){resetRegisterMode();setTimeout(function(){updateAccountNotice(null);},120);},true);
+    }
+    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
+      var b=byId(pair[0]);
+      if(b){b.onclick=function(e){if(e)e.preventDefault();return openSocialChoice(pair[1]);};}
+    });
+    ['personalModeBtn','companyModeBtn'].forEach(function(id){
+      var el=byId(id);
+      if(el && !el.dataset.v113ModeWatch){
+        el.dataset.v113ModeWatch='1';
+        el.addEventListener('click',function(){
+          setTimeout(function(){
+            updateAccountNotice(socialProviderPending);
+            if(socialProviderPending){
+              var msg=byId('regMsg');
+              if(msg)msg.textContent='Social sign in is not available yet. Google, Microsoft and LinkedIn sign in will be enabled in a future update.';
+            }
+          },90);
+        },true);
+      }
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+  window.addEventListener('load',bind);
+  [100,400,900,1600,2600].forEach(function(ms){setTimeout(bind,ms);});
+})();
+</script>
+
 </body>
   </html>
