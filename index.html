@@ -63,6 +63,7 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 .mode-choice button{background:#334155;border:1px solid #475569}
 .mode-choice button.active{background:#2563eb;border-color:#60a5fa}
 .mode-choice.mode-error{border:1px solid #ef4444;border-radius:14px;padding:6px;background:rgba(127,29,29,.18)}
+.mode-choice.mode-error button{border-color:#ef4444!important}
 .mode-error-text{display:none;color:#fecaca;background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:9px 11px;margin:-6px 0 12px;font-size:13px;font-weight:800}
 .mode-error-text.active{display:block}
 .personal-only-note{font-size:13px;color:#94a3b8;margin-top:6px}
@@ -844,21 +845,6 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
   color:#a7b5c5;
 }
 @keyframes atsrsSpin{to{transform:rotate(360deg)}}
-
-
-/* V109 hotfix: Account type error state - single red border only */
-.mode-choice.mode-error{
-  border:1px solid #ef4444!important;
-  border-radius:16px!important;
-  padding:8px!important;
-  background:rgba(127,29,29,.14)!important;
-}
-.mode-choice.mode-error button{
-  border-color:#475569!important;
-}
-.mode-choice.mode-error button.active{
-  border-color:#60a5fa!important;
-}
 
 </style>
 
@@ -4278,7 +4264,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 }
 #auth #modeChoiceBox.mode-error button,
 #modeChoiceBox.mode-error button{
-  border-color:#475569!important;
+  border-color:#ef4444!important;
 }
 </style>
 <script id="atsrs-v109-create-validation-hotfix-script">
@@ -4382,366 +4368,441 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </script>
 
 
-<!-- V109 HOTFIX: Social register buttons must start OAuth directly, not open Create Account form -->
-<script id="atsrs-v109-social-register-direct-hotfix">
-(function(){
-  'use strict';
-  var REGISTER_MSG='Select Personal or Corporate account to register.';
-  var LOGIN_MSG='Select Personal or Corporate account to login.';
-  var PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
-  var LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
-  function byId(id){return document.getElementById(id);}
-  function selectedMode(){
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    if(p && p.classList.contains('active')) return 'personal';
-    if(c && c.classList.contains('active')) return 'company';
-    return '';
-  }
-  function showWarning(kind){
-    var msg=(kind==='register')?REGISTER_MSG:LOGIN_MSG;
-    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
-    if(box) box.classList.add('mode-error');
-    if(rule){rule.textContent=msg;rule.classList.add('active');}
-    if(instruction){
-      instruction.classList.add('active');
-      instruction.innerHTML='<span class="mode-instruction-icon">!</span><span>'+msg+'</span>';
-    }
-  }
-  function clearWarning(){
-    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
-    if(box) box.classList.remove('mode-error');
-    if(rule) rule.classList.remove('active');
-    if(instruction) instruction.classList.remove('active');
-  }
-  window.atsrsSocialAuth=async function(providerKey,flow){
-    flow=flow||'register';
-    var label=LABELS[providerKey]||providerKey;
-    var provider=PROVIDERS[providerKey]||providerKey;
-    var mode=selectedMode();
-    var target=byId(flow==='register'?'loginMsg':'loginMsg') || byId('loginMsg');
-    if(target) target.textContent='';
-    if(!mode){
-      showWarning(flow==='login'?'login':'register');
-      return false;
-    }
-    clearWarning();
-    try{
-      window.useMode=mode;
-      localStorage.setItem('atsrs_use_mode',mode);
-    }catch(e){}
-    /* IMPORTANT: do not call showRegister() here. Social register goes directly through OAuth. */
-    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
-      if(target) target.textContent=label+' register will be available after OAuth is configured in Supabase.';
-      return false;
-    }
-    try{
-      var redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
-      var result=await window.supabaseClient.auth.signInWithOAuth({
-        provider:provider,
-        options:{redirectTo:redirectTo,queryParams:{prompt:'select_account'}}
-      });
-      if(result && result.error && target) target.textContent=result.error.message || (label+' register failed.');
-    }catch(e){
-      if(target) target.textContent=(e&&e.message)?e.message:(label+' register is not configured yet.');
-    }
-    return false;
-  };
-  function bind(){
-    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
-      var b=byId(pair[0]);
-      if(!b || b.dataset.v109SocialDirect==='1') return;
-      b.onclick=function(e){
-        if(e){e.preventDefault();e.stopPropagation();}
-        return window.atsrsSocialAuth(pair[1],'register');
-      };
-      b.dataset.v109SocialDirect='1';
-    });
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
-  window.addEventListener('load',bind);
-  [100,500,1200].forEach(function(ms){setTimeout(bind,ms);});
-})();
-</script>
 
-
-
-<!-- V109 FINAL UX FIX: Account type belongs to registration only, not login -->
-<style id="atsrs-v109-register-only-account-mode-style">
-/* Login must stay clean: no account type choice near Remember me */
-#loginBox > #modeChoiceBox,
-#loginBox > #modeRule,
-#loginBox > #modeInstruction{
-  display:none!important;
-}
-/* Register account type selector */
-.register-mode-choice{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:10px 0 12px;
-}
-.register-mode-choice.mode-error{
+<!-- V109 FINAL HOTFIX: Register warning for Create Account and social register buttons -->
+<style id="atsrs-v109-register-warning-final-style">
+#modeChoiceBox.mode-error,
+#auth #modeChoiceBox.mode-error{
   border:1.5px solid #ef4444!important;
   border-radius:14px!important;
   padding:6px!important;
   background:rgba(127,29,29,.18)!important;
 }
-.register-mode-choice button{
-  margin:0!important;
-  border:1px solid #3b536d!important;
-  border-radius:12px!important;
-  background:#26384e!important;
-  color:#eef6ff!important;
-  box-shadow:none!important;
+#modeChoiceBox.mode-error button,
+#auth #modeChoiceBox.mode-error button{
+  border-color:#ef4444!important;
+  box-shadow:0 0 0 1px rgba(239,68,68,.45),0 0 16px rgba(239,68,68,.45)!important;
 }
-.register-mode-choice button:hover{
-  background:#2f455d!important;
-  border-color:rgba(56,189,248,.55)!important;
+#modeInstruction.active{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
 }
-.register-mode-choice button.active{
-  background:linear-gradient(135deg,#0f766e,#22c55e)!important;
-  border-color:rgba(134,239,172,.75)!important;
+#modeInstruction .mode-instruction-icon{
+  width:22px!important;
+  height:22px!important;
+  border-radius:50%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#ef4444!important;
   color:#fff!important;
+  font-weight:900!important;
+  line-height:1!important;
+  flex:0 0 auto!important;
 }
-.register-mode-rule{
-  display:none;
-  color:#fecaca;
-  background:#7f1d1d;
-  border:1px solid #ef4444;
-  border-radius:12px;
-  padding:9px 11px;
-  margin:0 0 12px;
-  font-size:13px;
-  font-weight:800;
-}
-.register-mode-rule.active{display:block;}
-.register-social-pending-note{
-  display:none;
-  margin:0 0 12px;
-  padding:10px 12px;
-  border:1px solid rgba(56,189,248,.38);
-  background:rgba(8,47,73,.42);
-  color:#bfdbfe;
-  border-radius:12px;
-  font-size:13px;
-  line-height:1.4;
-  font-weight:700;
-}
-.register-social-pending-note.active{display:block;}
-.register-account-type-card{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  margin:0 0 14px;
-  padding:11px 12px;
-  border:1px solid rgba(34,197,94,.45);
-  background:rgba(34,197,94,.08);
-  border-radius:14px;
-  color:#eafdf0;
-}
-.register-account-type-icon{
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:#22c55e;
-  color:#04111d;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  flex:0 0 auto;
-}
-.register-account-type-card b{display:block;font-size:13px;margin-bottom:2px;color:#ffffff;}
-.register-account-type-card span{display:block;font-size:12px;line-height:1.35;color:#b7c7d8;}
 </style>
-<script id="atsrs-v109-register-only-account-mode-script">
+<script id="atsrs-v109-register-warning-final-script">
 (function(){
   'use strict';
+  var LOGIN_MSG='Select Personal or Corporate account to login.';
   var REGISTER_MSG='Select Personal or Corporate account to register.';
-  var PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
-  var LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
-  var pendingSocialProvider='';
   function byId(id){return document.getElementById(id);}
-  function visible(el){return el && !el.classList.contains('hidden');}
-  function setText(el,txt){if(el)el.textContent=txt;}
-  function modeTitle(mode){return mode==='company'?'Corporate Account':'Personal Account';}
-  function modeText(mode){
-    return mode==='company'
-      ? 'You are creating a corporate account for managing personnel documents, expiry tracking, compliance readiness and profile sharing across your organization.'
-      : 'You are creating a personal account for keeping your licences, certificates, medical records, references, appraisals and career documents organized in one place.';
-  }
-  function selectedRegisterMode(){
-    var p=byId('regPersonalModeBtn'), c=byId('regCompanyModeBtn');
+  function visibleSelectedMode(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
     if(p && p.classList.contains('active')) return 'personal';
     if(c && c.classList.contains('active')) return 'company';
     return '';
   }
-  function persistMode(mode){
-    try{window.useMode=mode;localStorage.setItem('atsrs_use_mode',mode);}catch(e){window.useMode=mode;}
+  function setRegisterMessage(kind){
+    var msg=(kind==='register')?REGISTER_MSG:LOGIN_MSG;
+    var box=byId('modeChoiceBox');
+    var instruction=byId('modeInstruction');
+    var rule=byId('modeRule');
+    if(box) box.classList.add('mode-error');
+    if(rule){rule.textContent=msg;rule.classList.add('active');}
+    if(instruction){
+      instruction.innerHTML='<span class="mode-instruction-icon">!</span><span>'+msg+'</span>';
+      instruction.classList.add('active');
+    }
+    return false;
   }
-  function ensureRegisterModeUI(){
+  function clearRegisterMessage(){
+    var box=byId('modeChoiceBox');
+    var instruction=byId('modeInstruction');
+    var rule=byId('modeRule');
+    if(box) box.classList.remove('mode-error');
+    if(instruction) instruction.classList.remove('active');
+    if(rule) rule.classList.remove('active');
+  }
+  function ensureRegisterDescription(){
     var box=byId('registerBox'), title=byId('registerTitle');
-    if(!box || !title) return;
-    var choice=byId('regModeChoiceBox');
-    if(!choice){
-      choice=document.createElement('div');
-      choice.id='regModeChoiceBox';
-      choice.className='register-mode-choice';
-      choice.innerHTML='<button type="button" id="regPersonalModeBtn">Personal</button><button type="button" id="regCompanyModeBtn">Corporate</button>';
-      title.insertAdjacentElement('afterend',choice);
-    }
-    var rule=byId('regModeRule');
-    if(!rule){
-      rule=document.createElement('p');
-      rule.id='regModeRule';
-      rule.className='register-mode-rule';
-      rule.textContent=REGISTER_MSG;
-      choice.insertAdjacentElement('afterend',rule);
-    }
-    var note=byId('registerSocialPendingNote');
-    if(!note){
-      note=document.createElement('p');
-      note.id='registerSocialPendingNote';
-      note.className='register-social-pending-note';
-      rule.insertAdjacentElement('afterend',note);
-    }
+    if(!box || !title || box.classList.contains('hidden')) return;
+    var mode=visibleSelectedMode() || 'personal';
     var card=byId('registerAccountTypeCard');
     if(!card){
       card=document.createElement('div');
       card.id='registerAccountTypeCard';
       card.className='register-account-type-card';
-      card.innerHTML='<div class="register-account-type-icon">✓</div><div><b id="registerAccountTypeTitle">Account Type</b><span id="registerAccountTypeText">Choose Personal or Corporate to continue registration.</span></div>';
-      note.insertAdjacentElement('afterend',card);
+      card.innerHTML='<div class="register-account-type-icon">✓</div><div><b id="registerAccountTypeTitle"></b><span id="registerAccountTypeText"></span></div>';
+      title.insertAdjacentElement('afterend',card);
     }
-    bindModeButtons();
-    refreshRegisterModeCard();
+    var t=byId('registerAccountTypeTitle'), x=byId('registerAccountTypeText');
+    if(t) t.textContent=(mode==='company')?'Corporate Account':'Personal Account';
+    if(x) x.textContent=(mode==='company')
+      ? 'You are creating a corporate account for managing personnel documents, expiry tracking, compliance readiness and profile sharing across your organization.'
+      : 'You are creating a personal account for keeping your licences, certificates, medical records, references, appraisals and career documents organized in one place.';
   }
-  function refreshRegisterModeCard(){
-    var mode=selectedRegisterMode();
-    var card=byId('registerAccountTypeCard');
-    var t=byId('registerAccountTypeTitle');
-    var x=byId('registerAccountTypeText');
-    if(!card || !t || !x)return;
-    if(!mode){
-      t.textContent='Choose Account Type';
-      x.textContent='Select Personal or Corporate before creating your ATSRS account.';
-      return;
+  function openRegisterSafely(e){
+    if(e){e.preventDefault();e.stopPropagation();}
+    if(!visibleSelectedMode()) return setRegisterMessage('register');
+    clearRegisterMessage();
+    if(typeof window.__atsrsOriginalShowRegisterFinal!=='function' && typeof window.showRegister==='function' && window.showRegister!==openRegisterSafely){
+      window.__atsrsOriginalShowRegisterFinal=window.showRegister;
     }
-    t.textContent=modeTitle(mode);
-    x.textContent=modeText(mode);
+    if(typeof window.__atsrsBaseShowRegisterV109==='function') window.__atsrsBaseShowRegisterV109();
+    else if(typeof window.__atsrsOriginalShowRegisterFinal==='function') window.__atsrsOriginalShowRegisterFinal();
+    else {
+      var loginBox=byId('loginBox'), registerBox=byId('registerBox');
+      if(loginBox) loginBox.classList.add('hidden');
+      if(registerBox) registerBox.classList.remove('hidden');
+    }
+    setTimeout(function(){
+      ensureRegisterDescription();
+      var rb=byId('registerBox');
+      if(rb && rb.scrollIntoView) rb.scrollIntoView({behavior:'smooth',block:'start'});
+    },60);
+    return false;
   }
-  function clearRegisterWarning(){
-    var choice=byId('regModeChoiceBox'), rule=byId('regModeRule');
-    if(choice)choice.classList.remove('mode-error');
-    if(rule)rule.classList.remove('active');
+  function bindCreateAndSocial(){
+    if(typeof window.showRegister==='function' && window.showRegister!==openRegisterSafely && !window.__atsrsOriginalShowRegisterFinal){
+      window.__atsrsOriginalShowRegisterFinal=window.showRegister;
+    }
+    window.showRegister=openRegisterSafely;
+    var createBtn=byId('createBtn');
+    if(createBtn){
+      createBtn.onclick=openRegisterSafely;
+      if(!createBtn.dataset.v109FinalRegisterBound){
+        createBtn.addEventListener('click',function(e){
+          if(!visibleSelectedMode()){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            setRegisterMessage('register');
+            return false;
+          }
+        },true);
+        createBtn.dataset.v109FinalRegisterBound='1';
+      }
+    }
+    ['socialGoogleBtn','socialMicrosoftBtn','socialLinkedInBtn'].forEach(function(id){
+      var b=byId(id);
+      if(b && !b.dataset.v109FinalSocialBound){
+        b.addEventListener('click',function(e){
+          if(!visibleSelectedMode()){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            setRegisterMessage('register');
+            return false;
+          }
+        },true);
+        b.dataset.v109FinalSocialBound='1';
+      }
+    });
+    ['personalModeBtn','companyModeBtn'].forEach(function(id){
+      var b=byId(id);
+      if(b && !b.dataset.v109FinalClearBound){
+        b.addEventListener('click',function(){setTimeout(function(){clearRegisterMessage();ensureRegisterDescription();},0);});
+        b.dataset.v109FinalClearBound='1';
+      }
+    });
   }
-  function showRegisterWarning(){
-    ensureRegisterModeUI();
-    var choice=byId('regModeChoiceBox'), rule=byId('regModeRule');
-    if(choice)choice.classList.add('mode-error');
-    if(rule){rule.textContent=REGISTER_MSG;rule.classList.add('active');}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindCreateAndSocial); else bindCreateAndSocial();
+  window.addEventListener('load',bindCreateAndSocial);
+  [100,500,1200,2200].forEach(function(ms){setTimeout(bindCreateAndSocial,ms);});
+})();
+</script>
+
+
+
+<!-- V109 FINAL UX PATCH: Register-only account type selection, single warning, shimmer choice cards, icon-only social register -->
+<style id="atsrs-v109-final-register-ux-style">
+/* Login must stay clean: account type is a registration decision only */
+#auth #loginBox > #modeChoiceBox,
+#auth #loginBox > #modeRule,
+#auth #loginBox > #modeInstruction{
+  display:none!important;
+}
+
+/* Register account selector */
+#registerModeChoiceBox.register-mode-choice{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+  margin:10px 0 12px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+#registerModeChoiceBox .register-mode-btn{
+  position:relative!important;
+  overflow:hidden!important;
+  margin:0!important;
+  padding:13px 14px!important;
+  border-radius:14px!important;
+  border:1px solid #3b536d!important;
+  background:#26384e!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+  font-weight:900!important;
+}
+#registerModeChoiceBox .register-mode-btn.active{
+  background:linear-gradient(135deg,#0f766e,#22c55e)!important;
+  border-color:rgba(134,239,172,.75)!important;
+  color:#fff!important;
+}
+#registerModeChoiceBox.awaiting-choice .register-mode-btn:not(.active)::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-120%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  animation:atsrsChoiceShimmer 1.35s infinite;
+  pointer-events:none;
+}
+#registerModeChoiceBox.awaiting-choice .register-mode-btn:nth-child(2)::after{animation-delay:.28s;}
+@keyframes atsrsChoiceShimmer{100%{transform:translateX(120%);}}
+
+/* Single register warning only */
+#registerModeWarning{
+  display:none;
+  align-items:flex-start;
+  gap:10px;
+  margin:8px 0 12px!important;
+  padding:11px 12px!important;
+  border:1px solid rgba(34,197,94,.45)!important;
+  background:rgba(34,197,94,.08)!important;
+  border-radius:14px!important;
+  color:#eafdf0!important;
+}
+#registerModeWarning.active{display:flex!important;}
+#registerModeWarning .register-account-type-icon{
+  width:24px!important;height:24px!important;border-radius:50%!important;
+  background:#22c55e!important;color:#04111d!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  font-weight:900!important;flex:0 0 auto!important;
+}
+#registerModeWarning b{display:block!important;font-size:13px!important;margin-bottom:2px!important;color:#fff!important;}
+#registerModeWarning span{display:block!important;font-size:12px!important;line-height:1.35!important;color:#b7c7d8!important;}
+
+/* Hide previous duplicate register messages/cards produced by earlier patches */
+#registerAccountTypeCard,
+#registerModeProviderNote,
+#registerModeErrorText,
+#registerBox .mode-error-text,
+#registerBox .mode-instruction,
+#registerBox .provider-note,
+#registerBox .social-register-note{
+  display:none!important;
+}
+
+/* Social register options: icon-only, no boxes */
+#signupSocialAuth.social-auth-inline{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:18px!important;
+  grid-template-columns:none!important;
+}
+#signupSocialAuth .social-auth-btn{
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  padding:6px!important;
+  margin:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:999px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#signupSocialAuth .social-auth-btn span:not(.social-auth-icon){display:none!important;}
+#signupSocialAuth .social-auth-icon{
+  width:30px!important;
+  height:30px!important;
+  flex:0 0 30px!important;
+  border-radius:8px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#signupSocialAuth .social-google .social-auth-icon,
+#signupSocialAuth .social-microsoft .social-auth-icon{
+  background:transparent!important;
+  border:0!important;
+}
+#signupSocialAuth .social-google svg,
+#signupSocialAuth .social-microsoft svg{
+  width:26px!important;
+  height:26px!important;
+}
+#signupSocialAuth .social-linkedin .social-auth-icon{
+  background:#0a66c2!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:900!important;
+}
+</style>
+<script id="atsrs-v109-final-register-ux-script">
+(function(){
+  'use strict';
+  var REGISTER_MSG='Select Personal or Corporate account to register.';
+  var pendingProvider='';
+  function byId(id){return document.getElementById(id);}
+  function selectedMode(){
+    var box=byId('registerModeChoiceBox');
+    if(box){
+      var active=box.querySelector('.register-mode-btn.active');
+      if(active) return active.getAttribute('data-mode')||'';
+    }
+    try{return localStorage.getItem('atsrs_register_mode') || window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode||'';}
   }
   function setRegisterMode(mode){
-    ensureRegisterModeUI();
-    var p=byId('regPersonalModeBtn'), c=byId('regCompanyModeBtn');
-    if(p)p.classList.toggle('active',mode==='personal');
-    if(c)c.classList.toggle('active',mode==='company');
-    persistMode(mode);
-    clearRegisterWarning();
-    refreshRegisterModeCard();
-    if(pendingSocialProvider){
-      var provider=pendingSocialProvider;
-      pendingSocialProvider='';
-      setTimeout(function(){startSocialOAuth(provider);},80);
+    if(mode!=='personal' && mode!=='company') return;
+    window.useMode=mode;
+    try{localStorage.setItem('atsrs_use_mode',mode);localStorage.setItem('atsrs_register_mode',mode);}catch(e){}
+    if(typeof window.setUseMode==='function'){
+      try{window.setUseMode(mode);}catch(e){}
+    }
+    var box=byId('registerModeChoiceBox');
+    if(box){
+      box.querySelectorAll('.register-mode-btn').forEach(function(btn){btn.classList.toggle('active',btn.getAttribute('data-mode')===mode);});
+      box.classList.remove('awaiting-choice');
+    }
+    updateRegisterWarning(false);
+  }
+  function warningText(mode){
+    if(mode==='company') return 'You are creating a corporate account for managing personnel documents, expiry tracking, compliance readiness and profile sharing across your organization.';
+    if(mode==='personal') return 'You are creating a personal account for keeping licences, certificates, medical records, references, appraisals and career documents organized in one place.';
+    return 'Select Personal or Corporate before creating your ATSRS account.';
+  }
+  function updateRegisterWarning(force){
+    var warn=byId('registerModeWarning');
+    if(!warn) return;
+    var mode=selectedMode();
+    var title=byId('registerModeWarningTitle');
+    var text=byId('registerModeWarningText');
+    if(mode==='personal' || mode==='company'){
+      warn.classList.add('active');
+      if(title) title.textContent=(mode==='company')?'Corporate Account':'Personal Account';
+      if(text) text.textContent=warningText(mode);
+    }else if(force){
+      warn.classList.add('active');
+      if(title) title.textContent='Choose Account Type';
+      if(text) text.textContent=REGISTER_MSG;
+    }else{
+      warn.classList.remove('active');
     }
   }
-  function bindModeButtons(){
-    var p=byId('regPersonalModeBtn'), c=byId('regCompanyModeBtn');
-    if(p && !p.dataset.v109RegModeBound){p.onclick=function(){setRegisterMode('personal');};p.dataset.v109RegModeBound='1';}
-    if(c && !c.dataset.v109RegModeBound){c.onclick=function(){setRegisterMode('company');};c.dataset.v109RegModeBound='1';}
-  }
-  function hideLoginModeUI(){
-    ['modeChoiceBox','modeRule','modeInstruction'].forEach(function(id){var el=byId(id); if(el)el.style.display='none';});
-  }
-  function openRegisterPanel(){
-    var loginBox=byId('loginBox'), registerBox=byId('registerBox'), forgotBox=byId('forgotBox'), newPassBox=byId('newPassBox');
-    if(loginBox)loginBox.classList.add('hidden');
-    if(forgotBox)forgotBox.classList.add('hidden');
-    if(newPassBox)newPassBox.classList.add('hidden');
-    if(registerBox)registerBox.classList.remove('hidden');
-    ensureRegisterModeUI();
-    setTimeout(function(){var rb=byId('registerBox'); if(rb && rb.scrollIntoView)rb.scrollIntoView({behavior:'smooth',block:'start'});},60);
-    return false;
-  }
-  function validateRegisterMode(){
-    ensureRegisterModeUI();
-    var mode=selectedRegisterMode();
-    if(!mode){showRegisterWarning();return '';}
-    persistMode(mode);
-    clearRegisterWarning();
-    return mode;
-  }
-  async function startSocialOAuth(providerKey){
-    var mode=validateRegisterMode();
-    var label=LABELS[providerKey]||providerKey;
-    var target=byId('regMsg')||byId('loginMsg');
-    if(!mode)return false;
-    if(target)target.textContent='';
-    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
-      if(target)target.textContent=label+' register will be available after OAuth is configured in Supabase.';
-      return false;
-    }
-    try{
-      var redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
-      var result=await window.supabaseClient.auth.signInWithOAuth({
-        provider:PROVIDERS[providerKey]||providerKey,
-        options:{redirectTo:redirectTo,queryParams:{prompt:'select_account'}}
+  function ensureRegisterSelector(){
+    var box=byId('registerBox');
+    var title=byId('registerTitle');
+    if(!box || !title) return;
+    var choice=byId('registerModeChoiceBox');
+    if(!choice){
+      choice=document.createElement('div');
+      choice.id='registerModeChoiceBox';
+      choice.className='register-mode-choice awaiting-choice';
+      choice.innerHTML='<button type="button" class="register-mode-btn" data-mode="personal">Personal</button><button type="button" class="register-mode-btn" data-mode="company">Corporate</button>';
+      title.insertAdjacentElement('afterend',choice);
+      choice.querySelectorAll('.register-mode-btn').forEach(function(btn){
+        btn.addEventListener('click',function(){setRegisterMode(btn.getAttribute('data-mode'));});
       });
-      if(result && result.error && target)target.textContent=result.error.message || (label+' register failed.');
-    }catch(e){
-      if(target)target.textContent=(e&&e.message)?e.message:(label+' register is not configured yet.');
     }
+    var warn=byId('registerModeWarning');
+    if(!warn){
+      warn=document.createElement('div');
+      warn.id='registerModeWarning';
+      warn.innerHTML='<div class="register-account-type-icon">✓</div><div><b id="registerModeWarningTitle">Choose Account Type</b><span id="registerModeWarningText">'+REGISTER_MSG+'</span></div>';
+      choice.insertAdjacentElement('afterend',warn);
+    }
+    var mode=selectedMode();
+    if(mode==='personal' || mode==='company'){
+      choice.querySelectorAll('.register-mode-btn').forEach(function(btn){btn.classList.toggle('active',btn.getAttribute('data-mode')===mode);});
+      choice.classList.remove('awaiting-choice');
+      updateRegisterWarning(false);
+    }else{
+      choice.classList.add('awaiting-choice');
+    }
+  }
+  function hideLoginAccountChoice(){
+    ['modeChoiceBox','modeRule','modeInstruction'].forEach(function(id){var el=byId(id); if(el) el.style.display='none';});
+  }
+  function openRegister(provider){
+    pendingProvider=provider||'';
+    hideLoginAccountChoice();
+    var loginBox=byId('loginBox'), registerBox=byId('registerBox'), forgotBox=byId('forgotBox'), newPasswordBox=byId('newPasswordBox');
+    if(loginBox) loginBox.classList.remove('hidden');
+    if(registerBox) registerBox.classList.remove('hidden');
+    if(forgotBox) forgotBox.classList.add('hidden');
+    if(newPasswordBox) newPasswordBox.classList.add('hidden');
+    ensureRegisterSelector();
+    if(!selectedMode()) updateRegisterWarning(true);
+    var rb=byId('registerBox');
+    if(rb && rb.scrollIntoView){setTimeout(function(){rb.scrollIntoView({behavior:'smooth',block:'start'});},70);}
     return false;
   }
-  function openRegisterForSocial(providerKey){
-    pendingSocialProvider=providerKey;
-    openRegisterPanel();
-    var note=byId('registerSocialPendingNote');
-    if(note){
-      note.textContent='Choose Personal or Corporate to continue registration with '+(LABELS[providerKey]||providerKey)+'.';
-      note.classList.add('active');
+  function cleanDuplicateMessages(){
+    ['registerAccountTypeCard','registerModeProviderNote','registerModeErrorText'].forEach(function(id){var el=byId(id); if(el) el.remove();});
+    var rb=byId('registerBox');
+    if(rb){
+      rb.querySelectorAll('.mode-error-text,.mode-instruction,.provider-note,.social-register-note').forEach(function(el){el.remove();});
     }
-    if(!selectedRegisterMode())showRegisterWarning();
-    else startSocialOAuth(providerKey);
-    return false;
   }
-  function bind(){
-    hideLoginModeUI();
-    window.showRegister=function(){pendingSocialProvider='';var n=byId('registerSocialPendingNote');if(n)n.classList.remove('active');return openRegisterPanel();};
+  function bindFinal(){
+    hideLoginAccountChoice();
+    ensureRegisterSelector();
+    cleanDuplicateMessages();
     var createBtn=byId('createBtn');
-    if(createBtn)createBtn.onclick=window.showRegister;
-    var baseRegister=window.register;
-    if(!window.__atsrsV109BaseRegister && typeof baseRegister==='function')window.__atsrsV109BaseRegister=baseRegister;
-    window.register=function(){
-      if(!validateRegisterMode())return false;
-      if(typeof window.__atsrsV109BaseRegister==='function')return window.__atsrsV109BaseRegister();
-      return false;
-    };
+    if(createBtn){
+      createBtn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return openRegister('');};
+    }
+    var loginBtn=byId('loginBtn');
+    if(loginBtn){loginBtn.onclick=function(e){return (typeof window.login==='function')?window.login(e):true;};}
+    var testBtn=byId('localTestBtn');
+    if(testBtn){testBtn.onclick=function(e){return (typeof window.localTestLogin==='function')?window.localTestLogin(e):true;};}
     var regBtn=byId('registerBtn');
-    if(regBtn)regBtn.onclick=window.register;
-    window.atsrsSocialAuth=function(providerKey,flow){
-      /* Social buttons on the login screen are account creation shortcuts, so first show register account type choice. */
-      return openRegisterForSocial(providerKey);
-    };
-    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
-      var b=byId(pair[0]);
-      if(b){b.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}return openRegisterForSocial(pair[1]);};}
+    if(regBtn){
+      regBtn.onclick=function(e){
+        ensureRegisterSelector();
+        if(!selectedMode()){
+          if(e){e.preventDefault();e.stopPropagation();}
+          var choice=byId('registerModeChoiceBox'); if(choice) choice.classList.add('awaiting-choice');
+          updateRegisterWarning(true);
+          var rb=byId('registerBox'); if(rb&&rb.scrollIntoView) rb.scrollIntoView({behavior:'smooth',block:'start'});
+          return false;
+        }
+        return (typeof window.register==='function')?window.register(e):true;
+      };
+    }
+    var map={socialGoogleBtn:'google',socialMicrosoftBtn:'microsoft',socialLinkedInBtn:'linkedin'};
+    Object.keys(map).forEach(function(id){
+      var b=byId(id); if(!b) return;
+      b.onclick=function(e){
+        var provider=map[id];
+        if(!selectedMode()){
+          if(e){e.preventDefault();e.stopPropagation();}
+          return openRegister(provider);
+        }
+        if(typeof window.atsrsSocialAuth==='function') return window.atsrsSocialAuth(provider,'register');
+        return true;
+      };
     });
-    if(visible(byId('registerBox')))ensureRegisterModeUI();
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-  window.addEventListener('load',bind);
-  [100,500,1200,2200].forEach(function(ms){setTimeout(bind,ms);});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindFinal); else bindFinal();
+  window.addEventListener('load',bindFinal);
+  [100,500,1000,2000].forEach(function(ms){setTimeout(bindFinal,ms);});
 })();
 </script>
 
