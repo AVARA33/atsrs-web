@@ -63,7 +63,6 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 .mode-choice button{background:#334155;border:1px solid #475569}
 .mode-choice button.active{background:#2563eb;border-color:#60a5fa}
 .mode-choice.mode-error{border:1px solid #ef4444;border-radius:14px;padding:6px;background:rgba(127,29,29,.18)}
-.mode-choice.mode-error button{border-color:#ef4444!important}
 .mode-error-text{display:none;color:#fecaca;background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:9px 11px;margin:-6px 0 12px;font-size:13px;font-weight:800}
 .mode-error-text.active{display:block}
 .personal-only-note{font-size:13px;color:#94a3b8;margin-top:6px}
@@ -845,6 +844,21 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
   color:#a7b5c5;
 }
 @keyframes atsrsSpin{to{transform:rotate(360deg)}}
+
+
+/* V109 hotfix: Account type error state - single red border only */
+.mode-choice.mode-error{
+  border:1px solid #ef4444!important;
+  border-radius:16px!important;
+  padding:8px!important;
+  background:rgba(127,29,29,.14)!important;
+}
+.mode-choice.mode-error button{
+  border-color:#475569!important;
+}
+.mode-choice.mode-error button.active{
+  border-color:#60a5fa!important;
+}
 
 </style>
 
@@ -4264,7 +4278,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 }
 #auth #modeChoiceBox.mode-error button,
 #modeChoiceBox.mode-error button{
-  border-color:#ef4444!important;
+  border-color:#475569!important;
 }
 </style>
 <script id="atsrs-v109-create-validation-hotfix-script">
@@ -4368,77 +4382,143 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </script>
 
 
-
-<!-- V109 FINAL HOTFIX: Register warning for Create Account and social register buttons -->
-<style id="atsrs-v109-register-warning-final-style">
-#modeChoiceBox.mode-error,
-#auth #modeChoiceBox.mode-error{
-  border:1.5px solid #ef4444!important;
-  border-radius:14px!important;
-  padding:6px!important;
-  background:rgba(127,29,29,.18)!important;
-}
-#modeChoiceBox.mode-error button,
-#auth #modeChoiceBox.mode-error button{
-  border-color:#ef4444!important;
-  box-shadow:0 0 0 1px rgba(239,68,68,.45),0 0 16px rgba(239,68,68,.45)!important;
-}
-#modeInstruction.active{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-}
-#modeInstruction .mode-instruction-icon{
-  width:22px!important;
-  height:22px!important;
-  border-radius:50%!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  background:#ef4444!important;
-  color:#fff!important;
-  font-weight:900!important;
-  line-height:1!important;
-  flex:0 0 auto!important;
-}
-</style>
-<script id="atsrs-v109-register-warning-final-script">
+<!-- V109 HOTFIX: Social register buttons must start OAuth directly, not open Create Account form -->
+<script id="atsrs-v109-social-register-direct-hotfix">
 (function(){
   'use strict';
-  var LOGIN_MSG='Select Personal or Corporate account to login.';
   var REGISTER_MSG='Select Personal or Corporate account to register.';
+  var LOGIN_MSG='Select Personal or Corporate account to login.';
+  var PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
+  var LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
   function byId(id){return document.getElementById(id);}
-  function visibleSelectedMode(){
+  function selectedMode(){
     var p=byId('personalModeBtn'), c=byId('companyModeBtn');
     if(p && p.classList.contains('active')) return 'personal';
     if(c && c.classList.contains('active')) return 'company';
     return '';
   }
-  function setRegisterMessage(kind){
+  function showWarning(kind){
     var msg=(kind==='register')?REGISTER_MSG:LOGIN_MSG;
-    var box=byId('modeChoiceBox');
-    var instruction=byId('modeInstruction');
-    var rule=byId('modeRule');
+    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
     if(box) box.classList.add('mode-error');
     if(rule){rule.textContent=msg;rule.classList.add('active');}
     if(instruction){
-      instruction.innerHTML='<span class="mode-instruction-icon">!</span><span>'+msg+'</span>';
       instruction.classList.add('active');
+      instruction.innerHTML='<span class="mode-instruction-icon">!</span><span>'+msg+'</span>';
+    }
+  }
+  function clearWarning(){
+    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
+    if(box) box.classList.remove('mode-error');
+    if(rule) rule.classList.remove('active');
+    if(instruction) instruction.classList.remove('active');
+  }
+  window.atsrsSocialAuth=async function(providerKey,flow){
+    flow=flow||'register';
+    var label=LABELS[providerKey]||providerKey;
+    var provider=PROVIDERS[providerKey]||providerKey;
+    var mode=selectedMode();
+    var target=byId(flow==='register'?'loginMsg':'loginMsg') || byId('loginMsg');
+    if(target) target.textContent='';
+    if(!mode){
+      showWarning(flow==='login'?'login':'register');
+      return false;
+    }
+    clearWarning();
+    try{
+      window.useMode=mode;
+      localStorage.setItem('atsrs_use_mode',mode);
+    }catch(e){}
+    /* IMPORTANT: do not call showRegister() here. Social register goes directly through OAuth. */
+    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
+      if(target) target.textContent=label+' register will be available after OAuth is configured in Supabase.';
+      return false;
+    }
+    try{
+      var redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
+      var result=await window.supabaseClient.auth.signInWithOAuth({
+        provider:provider,
+        options:{redirectTo:redirectTo,queryParams:{prompt:'select_account'}}
+      });
+      if(result && result.error && target) target.textContent=result.error.message || (label+' register failed.');
+    }catch(e){
+      if(target) target.textContent=(e&&e.message)?e.message:(label+' register is not configured yet.');
     }
     return false;
+  };
+  function bind(){
+    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
+      var b=byId(pair[0]);
+      if(!b || b.dataset.v109SocialDirect==='1') return;
+      b.onclick=function(e){
+        if(e){e.preventDefault();e.stopPropagation();}
+        return window.atsrsSocialAuth(pair[1],'register');
+      };
+      b.dataset.v109SocialDirect='1';
+    });
   }
-  function clearRegisterMessage(){
-    var box=byId('modeChoiceBox');
-    var instruction=byId('modeInstruction');
-    var rule=byId('modeRule');
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+  window.addEventListener('load',bind);
+  [100,500,1200].forEach(function(ms){setTimeout(bind,ms);});
+})();
+</script>
+
+
+
+<!-- V109 FINAL FIX: Single account warning border + direct social register OAuth -->
+<style id="atsrs-v109-final-account-warning-fix">
+#auth #modeChoiceBox.mode-error,
+#modeChoiceBox.mode-error{
+  border:1.5px solid #ef4444!important;
+  border-radius:16px!important;
+  padding:8px!important;
+  background:rgba(127,29,29,.14)!important;
+}
+#auth #modeChoiceBox.mode-error button,
+#modeChoiceBox.mode-error button{
+  border-color:#475569!important;
+  box-shadow:none!important;
+}
+#auth #modeChoiceBox.mode-error button.active,
+#modeChoiceBox.mode-error button.active{
+  border-color:#22c55e!important;
+}
+</style>
+<script id="atsrs-v109-final-account-flow-fix">
+(function(){
+  'use strict';
+  var REGISTER_MSG='Select Personal or Corporate account to register.';
+  var LOGIN_MSG='Select Personal or Corporate account to login.';
+  var PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
+  var LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
+  function byId(id){return document.getElementById(id);}
+  function selectedMode(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p && p.classList.contains('active')) return 'personal';
+    if(c && c.classList.contains('active')) return 'company';
+    return '';
+  }
+  function messageTarget(flow){return byId(flow==='register'?'regMsg':'loginMsg') || byId('loginMsg');}
+  function showWarning(kind){
+    var msg=kind==='register'?REGISTER_MSG:LOGIN_MSG;
+    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
+    if(box) box.classList.add('mode-error');
+    if(rule){rule.textContent=msg;rule.classList.add('active');}
+    if(instruction){
+      instruction.classList.add('active');
+      instruction.innerHTML='<span class="mode-instruction-icon">!</span><span>'+msg+'</span>';
+    }
+  }
+  function clearWarning(){
+    var box=byId('modeChoiceBox'), rule=byId('modeRule'), instruction=byId('modeInstruction');
     if(box) box.classList.remove('mode-error');
-    if(instruction) instruction.classList.remove('active');
     if(rule) rule.classList.remove('active');
+    if(instruction) instruction.classList.remove('active');
   }
-  function ensureRegisterDescription(){
+  function ensureRegisterModeCard(){
     var box=byId('registerBox'), title=byId('registerTitle');
     if(!box || !title || box.classList.contains('hidden')) return;
-    var mode=visibleSelectedMode() || 'personal';
+    var mode=selectedMode() || 'personal';
     var card=byId('registerAccountTypeCard');
     if(!card){
       card=document.createElement('div');
@@ -4448,77 +4528,80 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
       title.insertAdjacentElement('afterend',card);
     }
     var t=byId('registerAccountTypeTitle'), x=byId('registerAccountTypeText');
-    if(t) t.textContent=(mode==='company')?'Corporate Account':'Personal Account';
-    if(x) x.textContent=(mode==='company')
+    if(t) t.textContent=mode==='company'?'Corporate Account':'Personal Account';
+    if(x) x.textContent=mode==='company'
       ? 'You are creating a corporate account for managing personnel documents, expiry tracking, compliance readiness and profile sharing across your organization.'
       : 'You are creating a personal account for keeping your licences, certificates, medical records, references, appraisals and career documents organized in one place.';
   }
-  function openRegisterSafely(e){
-    if(e){e.preventDefault();e.stopPropagation();}
-    if(!visibleSelectedMode()) return setRegisterMessage('register');
-    clearRegisterMessage();
-    if(typeof window.__atsrsOriginalShowRegisterFinal!=='function' && typeof window.showRegister==='function' && window.showRegister!==openRegisterSafely){
-      window.__atsrsOriginalShowRegisterFinal=window.showRegister;
+  function openRegisterForm(){
+    if(!selectedMode()){
+      showWarning('register');
+      return false;
     }
-    if(typeof window.__atsrsBaseShowRegisterV109==='function') window.__atsrsBaseShowRegisterV109();
-    else if(typeof window.__atsrsOriginalShowRegisterFinal==='function') window.__atsrsOriginalShowRegisterFinal();
-    else {
-      var loginBox=byId('loginBox'), registerBox=byId('registerBox');
-      if(loginBox) loginBox.classList.add('hidden');
-      if(registerBox) registerBox.classList.remove('hidden');
-    }
+    clearWarning();
+    try{
+      if(typeof window.hideAuthBoxes==='function') window.hideAuthBoxes();
+      else ['loginBox','registerBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id); if(el) el.classList.add('hidden');});
+      var rb=byId('registerBox');
+      if(rb) rb.classList.remove('hidden');
+    }catch(e){}
     setTimeout(function(){
-      ensureRegisterDescription();
+      ensureRegisterModeCard();
       var rb=byId('registerBox');
       if(rb && rb.scrollIntoView) rb.scrollIntoView({behavior:'smooth',block:'start'});
     },60);
     return false;
   }
-  function bindCreateAndSocial(){
-    if(typeof window.showRegister==='function' && window.showRegister!==openRegisterSafely && !window.__atsrsOriginalShowRegisterFinal){
-      window.__atsrsOriginalShowRegisterFinal=window.showRegister;
+  window.showRegister=openRegisterForm;
+  window.atsrsSocialAuth=async function(providerKey,flow){
+    flow=flow||'register';
+    var label=LABELS[providerKey]||providerKey;
+    var provider=PROVIDERS[providerKey]||providerKey;
+    var target=messageTarget(flow);
+    if(target) target.textContent='';
+    var mode=selectedMode();
+    if(!mode){
+      showWarning(flow==='login'?'login':'register');
+      return false;
     }
-    window.showRegister=openRegisterSafely;
+    clearWarning();
+    try{window.useMode=mode;localStorage.setItem('atsrs_use_mode',mode);}catch(e){}
+    /* Social register goes directly to OAuth. It must not open Create Account form. */
+    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
+      if(target) target.textContent=label+' register will be available after OAuth is configured in Supabase.';
+      return false;
+    }
+    try{
+      var redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
+      var result=await window.supabaseClient.auth.signInWithOAuth({
+        provider:provider,
+        options:{redirectTo:redirectTo,queryParams:{prompt:'select_account'}}
+      });
+      if(result && result.error && target) target.textContent=result.error.message || (label+' register failed.');
+    }catch(e){
+      if(target) target.textContent=(e&&e.message)?e.message:(label+' register is not configured yet.');
+    }
+    return false;
+  };
+  function bind(){
     var createBtn=byId('createBtn');
-    if(createBtn){
-      createBtn.onclick=openRegisterSafely;
-      if(!createBtn.dataset.v109FinalRegisterBound){
-        createBtn.addEventListener('click',function(e){
-          if(!visibleSelectedMode()){
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            setRegisterMessage('register');
-            return false;
-          }
-        },true);
-        createBtn.dataset.v109FinalRegisterBound='1';
-      }
-    }
-    ['socialGoogleBtn','socialMicrosoftBtn','socialLinkedInBtn'].forEach(function(id){
-      var b=byId(id);
-      if(b && !b.dataset.v109FinalSocialBound){
-        b.addEventListener('click',function(e){
-          if(!visibleSelectedMode()){
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            setRegisterMessage('register');
-            return false;
-          }
-        },true);
-        b.dataset.v109FinalSocialBound='1';
-      }
+    if(createBtn){createBtn.onclick=openRegisterForm;}
+    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
+      var b=byId(pair[0]);
+      if(!b) return;
+      b.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return window.atsrsSocialAuth(pair[1],'register');};
     });
     ['personalModeBtn','companyModeBtn'].forEach(function(id){
       var b=byId(id);
-      if(b && !b.dataset.v109FinalClearBound){
-        b.addEventListener('click',function(){setTimeout(function(){clearRegisterMessage();ensureRegisterDescription();},0);});
-        b.dataset.v109FinalClearBound='1';
+      if(b && !b.dataset.v109FinalClear){
+        b.addEventListener('click',function(){setTimeout(function(){clearWarning();ensureRegisterModeCard();},0);});
+        b.dataset.v109FinalClear='1';
       }
     });
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindCreateAndSocial); else bindCreateAndSocial();
-  window.addEventListener('load',bindCreateAndSocial);
-  [100,500,1200,2200].forEach(function(ms){setTimeout(bindCreateAndSocial,ms);});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+  window.addEventListener('load',bind);
+  [100,500,1200,2500].forEach(function(ms){setTimeout(bind,ms);});
 })();
 </script>
 
