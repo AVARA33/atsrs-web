@@ -4483,5 +4483,174 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 })();
 </script>
 
+
+
+<!-- V111: register account type UX logic correction -->
+<style id="atsrs-v111-register-choice-style">
+#registerAccountNotice.choice-missing{
+  border:1px solid rgba(239,68,68,.60)!important;
+  background:rgba(127,29,29,.10)!important;
+  color:#fee2e2!important;
+}
+#registerAccountNotice.choice-missing .notice-icon{
+  background:transparent!important;
+  border:2px solid #ef4444!important;
+  color:#ef4444!important;
+}
+#registerAccountNotice.choice-selected{
+  border:1px solid rgba(34,197,94,.55)!important;
+  background:rgba(34,197,94,.08)!important;
+  color:#eafdf0!important;
+}
+#registerAccountNotice.choice-selected .notice-icon{
+  background:#22c55e!important;
+  border:2px solid #22c55e!important;
+  color:#052e16!important;
+}
+#registerAccountTypeArea .mode-choice,
+#registerAccountTypeArea .mode-choice.mode-error{
+  border:0!important;
+  background:transparent!important;
+  padding:0!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea .mode-choice button,
+#registerAccountTypeArea .mode-choice.mode-error button{
+  border:1px solid #334155!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:not(.active)::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  transform:translateX(-125%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent)!important;
+  animation:atsrsV111ChoiceShimmer 1.35s infinite!important;
+  pointer-events:none!important;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:nth-child(2)::after{animation-delay:.32s!important;}
+@keyframes atsrsV111ChoiceShimmer{100%{transform:translateX(125%);}}
+#loginBox > #modeChoiceBox,
+#loginBox > #modeRule,
+#loginBox > #modeInstruction{display:none!important;}
+</style>
+<script id="atsrs-v111-register-choice-script">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V111';
+  var UPDATE='Last Update: 14 Jun 2026 2325 UTC';
+  var TEST='TEST BUILD';
+  var selectedMode='';
+  var pendingProvider=null;
+  var baseRegister=window.register;
+  var baseSocialAuth=window.atsrsSocialAuth;
+  function byId(id){return document.getElementById(id);}
+  function providerLabel(p){return p==='microsoft'?'Microsoft':p==='linkedin'?'LinkedIn':'Google';}
+  function updateBuild(){
+    var rows=document.querySelectorAll('.build-badge div');
+    if(rows[0]) rows[0].textContent=BUILD;
+    if(rows[1]) rows[1].textContent=UPDATE;
+    if(rows[2]) rows[2].textContent=TEST;
+  }
+  function setButtons(mode){
+    selectedMode=mode || '';
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p) p.classList.toggle('active',selectedMode==='personal');
+    if(c) c.classList.toggle('active',selectedMode==='company');
+  }
+  function clearOldWarnings(){
+    ['modeRule','modeInstruction'].forEach(function(id){var el=byId(id); if(el){el.classList.remove('active'); el.style.display='none'; el.textContent='';}});
+    var mc=byId('modeChoiceBox'); if(mc) mc.classList.remove('mode-error');
+    ['loginMsg','regMsg'].forEach(function(id){var el=byId(id); if(el && /Select Personal or Corporate account/i.test(el.textContent||'')) el.textContent='';});
+  }
+  function ensureRegisterAccountArea(){
+    var rb=byId('registerBox'), title=byId('registerTitle'), choice=byId('modeChoiceBox');
+    if(!rb || !title || !choice) return null;
+    var area=byId('registerAccountTypeArea');
+    if(!area){
+      area=document.createElement('div');
+      area.id='registerAccountTypeArea';
+      title.insertAdjacentElement('afterend',area);
+    }
+    if(choice.parentElement!==area) area.insertBefore(choice,area.firstChild);
+    var notice=byId('registerAccountNotice');
+    if(!notice){
+      notice=document.createElement('div');
+      notice.id='registerAccountNotice';
+      notice.innerHTML='<div class="notice-icon">!</div><div><b id="registerAccountNoticeTitle">Choose Account Type</b><span id="registerAccountNoticeText">Select Personal or Corporate before creating your ATSRS account.</span></div>';
+      area.appendChild(notice);
+    }else if(notice.parentElement!==area){area.appendChild(notice);}
+    updateNotice();
+    return area;
+  }
+  function updateNotice(){
+    var area=byId('registerAccountTypeArea');
+    var notice=byId('registerAccountNotice');
+    var icon=notice?notice.querySelector('.notice-icon'):null;
+    var title=byId('registerAccountNoticeTitle'), text=byId('registerAccountNoticeText');
+    if(area) area.classList.toggle('needs-choice',!selectedMode);
+    if(!notice || !title || !text) return;
+    notice.classList.toggle('choice-missing',!selectedMode);
+    notice.classList.toggle('choice-selected',!!selectedMode);
+    if(!selectedMode){
+      if(icon) icon.textContent='!';
+      title.textContent='Choose Account Type';
+      text.textContent=pendingProvider ? ('Select Personal or Corporate to continue registration with '+providerLabel(pendingProvider)+'.') : 'Select Personal or Corporate before creating your ATSRS account.';
+    }else if(selectedMode==='personal'){
+      if(icon) icon.textContent='✓';
+      title.textContent='Personal Account';
+      text.textContent='Create a personal profile to keep documents, certificates, references, appraisals and expiry alerts organized.';
+    }else{
+      if(icon) icon.textContent='✓';
+      title.textContent='Corporate Account';
+      text.textContent='Create an organization account to manage personnel, compliance records, shared documents and workforce information.';
+    }
+  }
+  function showRegisterOnly(){
+    ['loginBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id); if(el) el.classList.add('hidden');});
+    var rb=byId('registerBox'); if(rb) rb.classList.remove('hidden');
+  }
+  function openRegister(provider){
+    pendingProvider=provider || null;
+    setButtons('');
+    clearOldWarnings();
+    showRegisterOnly();
+    var area=ensureRegisterAccountArea();
+    updateNotice();
+    setTimeout(function(){area=ensureRegisterAccountArea(); updateNotice(); if(area && area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});},90);
+    return false;
+  }
+  function continueProvider(){
+    if(!pendingProvider || !selectedMode) return;
+    var p=pendingProvider;
+    pendingProvider=null;
+    updateNotice();
+    try{localStorage.setItem('atsrs_use_mode',selectedMode); window.useMode=selectedMode;}catch(e){}
+    setTimeout(function(){if(typeof baseSocialAuth==='function') baseSocialAuth(p,'register');},180);
+  }
+  function bind(){
+    updateBuild(); clearOldWarnings();
+    var create=byId('createBtn'); if(create) create.onclick=function(e){if(e)e.preventDefault(); return openRegister(null);};
+    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
+      var b=byId(pair[0]); if(b) b.onclick=function(e){if(e)e.preventDefault(); return openRegister(pair[1]);};
+    });
+    var p=byId('personalModeBtn'); if(p) p.onclick=function(e){if(e)e.preventDefault(); setButtons('personal'); updateNotice(); continueProvider(); return false;};
+    var c=byId('companyModeBtn'); if(c) c.onclick=function(e){if(e)e.preventDefault(); setButtons('company'); updateNotice(); continueProvider(); return false;};
+    var reg=byId('registerBtn'); if(reg) reg.onclick=function(e){
+      if(e)e.preventDefault();
+      ensureRegisterAccountArea();
+      if(!selectedMode){updateNotice(); var area=byId('registerAccountTypeArea'); if(area&&area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'}); return false;}
+      try{localStorage.setItem('atsrs_use_mode',selectedMode); window.useMode=selectedMode;}catch(ex){}
+      if(typeof baseRegister==='function') return baseRegister();
+      return false;
+    };
+    var rb=byId('registerBox'); if(rb && !rb.classList.contains('hidden')) ensureRegisterAccountArea();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+  window.addEventListener('load',bind);
+  [120,500,1000,1800].forEach(function(ms){setTimeout(bind,ms);});
+})();
+</script>
+
 </body>
   </html>
