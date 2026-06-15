@@ -7698,7 +7698,94 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   ['renderAll','showPage','applyLanguage'].forEach(function(name){var old=window[name];if(typeof old==='function'&&!old.__atsrsV132){window[name]=function(){var r=old.apply(this,arguments);setTimeout(renderAllUnified,30);setTimeout(renderAllUnified,250);return r;};window[name].__atsrsV132=true;}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderAllUnified);else renderAllUnified();
   window.addEventListener('load',function(){renderAllUnified();setTimeout(renderAllUnified,600);});
-  setTimeout(renderAllUnified,900); setInterval(renderAllUnified,250);
+  setTimeout(renderAllUnified,900); setInterval(renderAllUnified,1400);
+})();
+</script>
+
+
+
+<style id="ATSRS_V133_REFERENCES_REMOVE_TOP_BADGES_CSS">
+/* V133: remove duplicated red header badges. Keep a single red text status line under each upload button. */
+#refsPage #appraisalStatusBadge,
+#refsPage #referenceStatusBadge,
+#refsPage #recommendationStatusBadge,
+#refsPage #coverLetterStatusBadge,
+#refsPage #v105_appraisal_badge,
+#refsPage #v105_reference_badge,
+#refsPage .ref-doc-head .badge{
+  display:none!important;
+  visibility:hidden!important;
+}
+#refsPage .ref-doc-head,
+#refsPage #coverLetterCard .ref-doc-head{
+  display:block!important;
+  min-height:58px!important;
+  margin:0 0 16px!important;
+}
+#refsPage .ref-doc-head h3{
+  min-height:48px!important;
+  display:block!important;
+}
+#refsPage .career-count,
+#refsPage #coverLetterCount,
+#refsPage #v105_appraisal_count,
+#refsPage #v105_reference_count,
+#refsPage #appraisalCount,
+#refsPage #referenceCount,
+#refsPage #recommendationCount{
+  color:#f87171!important;
+  background:transparent!important;
+  border:0!important;
+  padding:0!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  min-height:18px!important;
+  margin:0 0 8px!important;
+}
+#refsPage .ref-card:not(.cv-card) > button.secondary,
+#refsPage #coverLetterUploadBtn{
+  margin-bottom:10px!important;
+}
+</style>
+<script id="ATSRS_V133_REFERENCES_REMOVE_TOP_BADGES_JS">
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+  function safeParse(v,f){try{var p=JSON.parse(v||'');return p==null?f:p;}catch(e){return f;}}
+  function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
+  function localKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){}return 'atsrs_'+safeUserId()+'_'+name;}
+  function readJson(name){try{return safeParse(localStorage.getItem(localKey(name)),[]);}catch(e){return [];}}
+  function readV105(kind){try{return safeParse(localStorage.getItem('atsrs_v105_'+kind+'_files'),[]).filter(function(f){return f&&f.name;});}catch(e){return [];}}
+  function getFiles(kind){
+    if(kind==='appraisal'||kind==='reference'){
+      var v105=readV105(kind); if(v105.length)return v105;
+    }
+    if(kind==='coverLetter')return readJson('coverLetterFiles');
+    try{if(typeof window.getManagedFiles==='function'){var a=window.getManagedFiles(kind); if(Array.isArray(a))return a;}}catch(e){}
+    return readJson(kind+'Files');
+  }
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V133';if(d[1])d[1].textContent='Last Update: 16 Jun 2026 0348 UTC';if(d[2])d[2].textContent='TEST BUILD';});}
+  function removeTopBadges(){
+    ['appraisalStatusBadge','referenceStatusBadge','recommendationStatusBadge','coverLetterStatusBadge','v105_appraisal_badge','v105_reference_badge'].forEach(function(id){var el=byId(id); if(el)el.remove();});
+    qa('#refsPage .ref-doc-head .badge').forEach(function(el){el.remove();});
+  }
+  function setStatus(id,n){var el=byId(id); if(el){el.textContent=label(n)+' • Newest first';el.className='career-count atsrs-v133-red-status';}}
+  function normalize(){
+    setBuild();
+    removeTopBadges();
+    var counts={appraisal:getFiles('appraisal').length,reference:getFiles('reference').length,recommendation:getFiles('recommendation').length,coverLetter:getFiles('coverLetter').length};
+    setStatus('appraisalCount',counts.appraisal); setStatus('v105_appraisal_count',counts.appraisal);
+    setStatus('referenceCount',counts.reference); setStatus('v105_reference_count',counts.reference);
+    setStatus('recommendationCount',counts.recommendation);
+    setStatus('coverLetterCount',counts.coverLetter);
+  }
+  ['renderAll','showPage','applyLanguage','renderManagedFiles'].forEach(function(name){var old=window[name]; if(typeof old==='function'&&!old.__atsrsV133){window[name]=function(){var r=old.apply(this,arguments);setTimeout(normalize,20);setTimeout(normalize,220);return r;};window[name].__atsrsV133=true;}});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',normalize);else normalize();
+  window.addEventListener('load',function(){normalize();setTimeout(normalize,700);});
+  setTimeout(normalize,1000); setInterval(normalize,1000);
 })();
 </script>
 
