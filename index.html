@@ -846,6 +846,9 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
 }
 @keyframes atsrsSpin{to{transform:rotate(360deg)}}
 
+
+/* V117 remove legacy single Test Login button */
+#localTestBtn{display:none!important;}
 </style>
 
 </head>
@@ -908,7 +911,6 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
 <p id="modeRule" class="mode-error-text"></p>
 <p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Select Personal or Corporate account to login.</span></p>
 <button id="loginBtn" onclick="login()"></button>
-<button id="localTestBtn" class="testbtn" onclick="localTestLogin()">Test Login</button>
 <button id="createBtn" class="secondary" onclick="showRegister()"></button>
 <div id="signupSocialArea" class="signup-social-area" aria-label="Alternative account creation options">
   <div class="auth-divider"><span>or create account with</span></div>
@@ -949,8 +951,8 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V116</div>
-<div>Last Update: 15 Jun 2026 0045 UTC</div>
+<div>ATSRS V117</div>
+<div>Last Update: 15 Jun 2026 0105 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -3971,8 +3973,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -4064,8 +4066,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V116';
-  const UPDATE = 'Last Update: 15 Jun 2026 0045 UTC';
+  const BUILD = 'ATSRS V117';
+  const UPDATE = 'Last Update: 15 Jun 2026 0105 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -4294,8 +4296,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -4537,8 +4539,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -4777,8 +4779,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -4912,8 +4914,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5056,8 +5058,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V116';
-  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD_LABEL = 'ATSRS V117';
+  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0105 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -5133,8 +5135,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -5240,7 +5242,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 #localTestBtn{display:none!important;}
 #atsrsV113TestLoginGroup,
 #atsrsV115TestLoginGroup,
-#atsrsV116TestLoginGroup{
+#atsrsV117TestLoginGroup{
   display:grid!important;
   grid-template-columns:1fr 1fr!important;
   gap:8px!important;
@@ -5250,7 +5252,7 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 }
 #atsrsV113TestLoginGroup button,
 #atsrsV115TestLoginGroup button,
-#atsrsV116TestLoginGroup button{
+#atsrsV117TestLoginGroup button{
   min-height:38px!important;
   height:38px!important;
   padding:7px 10px!important;
@@ -5270,13 +5272,13 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 #createBtn{order:8!important;}
 #signupSocialArea{order:9!important;}
 #forgotBtn{order:10!important;}
-@media(max-width:420px){#atsrsV113TestLoginGroup,#atsrsV115TestLoginGroup,#atsrsV116TestLoginGroup{grid-template-columns:1fr!important;}}
+@media(max-width:420px){#atsrsV113TestLoginGroup,#atsrsV115TestLoginGroup,#atsrsV117TestLoginGroup{grid-template-columns:1fr!important;}}
 </style>
-<script id="atsrs-v116-test-placement-script">
+<script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V116';
-  var UPDATE='Last Update: 15 Jun 2026 0045 UTC';
+  var BUILD='ATSRS V117';
+  var UPDATE='Last Update: 15 Jun 2026 0105 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -5298,11 +5300,11 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     if(typeof window.openApp==='function')window.openApp();
   }
   function getOrCreateGroup(){
-    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup')||byId('atsrsV116TestLoginGroup');
+    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup')||byId('atsrsV117TestLoginGroup');
     if(!group){
       group=document.createElement('div');
-      group.id='atsrsV116TestLoginGroup';
-      group.innerHTML='<button type="button" id="atsrsV116TestPersonal">Test Personal</button><button type="button" id="atsrsV116TestCorporate">Test Corporate</button>';
+      group.id='atsrsV117TestLoginGroup';
+      group.innerHTML='<button type="button" id="atsrsV117TestPersonal">Test Personal</button><button type="button" id="atsrsV117TestCorporate">Test Corporate</button>';
     }
     return group;
   }
@@ -5313,8 +5315,8 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
     var old=byId('localTestBtn'); if(old)old.style.display='none';
     var group=getOrCreateGroup();
     if(group.previousElementSibling!==remember){remember.insertAdjacentElement('afterend',group);}
-    var p=byId('atsrsV116TestPersonal')||byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
-    var c=byId('atsrsV116TestCorporate')||byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
+    var p=byId('atsrsV117TestPersonal')||byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
+    var c=byId('atsrsV117TestCorporate')||byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
     if(p)p.onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
     if(c)c.onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
   }
