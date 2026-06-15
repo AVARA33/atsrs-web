@@ -927,24 +927,30 @@ html, body{background-color:#07111d!important;color-scheme:dark!important;}
 
 
 
-/* V122 Customizable Dashboard: drag, resize, minimize */
+
+
+/* V123 Dashboard Builder: drag, resize, minimize. Stored locally per browser. */
 #dashboardPage{position:relative;}
-#dashboardPage .dash-custom-ready{position:relative;}
-#dashboardPage .dash-card-tools{position:absolute;top:8px;right:10px;z-index:8;display:flex;gap:6px;align-items:center;opacity:.58;transition:opacity .18s ease;}
-#dashboardPage .dash-custom-ready:hover>.dash-card-tools{opacity:1;}
-#dashboardPage .dash-drag-handle,#dashboardPage .dash-min-btn{width:30px!important;height:28px!important;min-width:30px!important;margin:0!important;padding:0!important;border-radius:10px!important;background:rgba(15,23,42,.72)!important;border:1px solid rgba(148,163,184,.30)!important;color:#cbd5e1!important;box-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;line-height:1!important;cursor:grab!important;}
-#dashboardPage .dash-min-btn{cursor:pointer!important;font-size:16px!important;}
+#dashboardPage .dash-custom-ready{position:relative;min-height:96px;min-width:160px;overflow:visible;touch-action:auto;}
+#dashboardPage .dash-custom-ready.dash-resizable{resize:none;overflow:auto;}
+#dashboardPage .dash-card-tools{position:absolute;top:8px;right:8px;z-index:30;display:flex;gap:6px;align-items:center;opacity:.50;transition:opacity .18s ease;}
+#dashboardPage .dash-custom-ready:hover>.dash-card-tools,#dashboardPage .dash-card-tools:focus-within{opacity:1;}
+#dashboardPage .dash-drag-handle,#dashboardPage .dash-min-btn{width:30px!important;height:28px!important;min-width:30px!important;margin:0!important;padding:0!important;border-radius:10px!important;background:rgba(15,23,42,.78)!important;border:1px solid rgba(148,163,184,.30)!important;color:#cbd5e1!important;box-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;line-height:1!important;}
+#dashboardPage .dash-drag-handle{cursor:grab!important;touch-action:none!important;}
 #dashboardPage .dash-drag-handle:active{cursor:grabbing!important;}
-#dashboardPage .dash-custom-ready{resize:both;overflow:auto;min-height:92px;min-width:220px;}
-#dashboardPage .stats-grid .dash-custom-ready{min-width:140px;min-height:105px;}
-#dashboardPage .dash-dragging{opacity:.46;outline:2px dashed rgba(56,189,248,.75);}
+#dashboardPage .dash-min-btn{cursor:pointer!important;font-size:16px!important;}
+#dashboardPage .dash-resize-handle{position:absolute;right:6px;bottom:6px;width:18px;height:18px;border-radius:6px;z-index:25;cursor:nwse-resize;opacity:.42;background:linear-gradient(135deg,transparent 0 45%,rgba(148,163,184,.55) 46% 54%,transparent 55% 100%);touch-action:none;}
+#dashboardPage .dash-custom-ready:hover>.dash-resize-handle{opacity:.82;}
+#dashboardPage .dash-drag-float{position:fixed!important;z-index:9999!important;pointer-events:none!important;opacity:.86!important;box-shadow:0 25px 80px rgba(0,0,0,.45)!important;transform:scale(.98);}
+#dashboardPage .dash-placeholder{border:2px dashed rgba(56,189,248,.72)!important;border-radius:18px!important;background:rgba(56,189,248,.08)!important;min-height:90px!important;margin-bottom:16px!important;}
+#dashboardPage .stats-grid .dash-placeholder{min-height:104px!important;margin-bottom:0!important;}
 #dashboardPage .dash-minimized{display:none!important;}
-#dashboardDock{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;flex-direction:column;gap:8px;max-width:190px;}
+#dashboardDock{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;flex-direction:column;gap:8px;max-width:210px;}
 #dashboardDock.hidden{display:none!important;}
-#dashboardDock .dock-item{width:auto!important;margin:0!important;padding:9px 11px!important;border-radius:999px!important;background:rgba(15,23,42,.92)!important;border:1px solid rgba(34,197,94,.35)!important;color:#bbf7d0!important;box-shadow:0 14px 30px rgba(0,0,0,.28)!important;font-size:12px!important;font-weight:800!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#dashboardPage .card,#dashboardPage .panel,#dashboardPage .solo-hero{scrollbar-width:thin;}
+#dashboardDock .dock-item{width:auto!important;margin:0!important;padding:9px 11px!important;border-radius:999px!important;background:rgba(15,23,42,.94)!important;border:1px solid rgba(34,197,94,.35)!important;color:#bbf7d0!important;box-shadow:0 14px 30px rgba(0,0,0,.28)!important;font-size:12px!important;font-weight:800!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 #dashboardPage .dash-custom-ready p,#dashboardPage .dash-custom-ready span,#dashboardPage .dash-custom-ready b,#dashboardPage .dash-custom-ready h3{overflow-wrap:anywhere;}
-@media(max-width:800px){#dashboardPage .dash-custom-ready{resize:vertical;min-width:0;width:auto!important}#dashboardDock{right:10px;bottom:10px;max-width:155px}.dash-card-tools{top:6px!important;right:6px!important}}
+#dashboardPage .dash-custom-ready>.dash-card-tools+*{margin-top:8px;}
+@media(max-width:800px){#dashboardPage .dash-custom-ready{min-width:0!important;width:auto!important}#dashboardDock{right:10px;bottom:10px;max-width:160px}.dash-card-tools{top:6px!important;right:6px!important}}
 
 </style>
 
@@ -1048,8 +1054,8 @@ html, body{background-color:#07111d!important;color-scheme:dark!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V122</div>
-<div>Last Update: 15 Jun 2026 0310 UTC</div>
+<div>ATSRS V123</div>
+<div>Last Update: 15 Jun 2026 0335 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4624,8 +4630,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -4717,8 +4723,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V122';
-  const UPDATE = 'Last Update: 15 Jun 2026 0310 UTC';
+  const BUILD = 'ATSRS V123';
+  const UPDATE = 'Last Update: 15 Jun 2026 0335 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -4987,8 +4993,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5270,8 +5276,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5550,8 +5556,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5725,8 +5731,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5869,8 +5875,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V122';
-  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD_LABEL = 'ATSRS V123';
+  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0335 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -5986,8 +5992,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6168,8 +6174,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6335,8 +6341,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V122';
-  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
+  var BUILD='ATSRS V123';
+  var UPDATE='Last Update: 15 Jun 2026 0335 UTC';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -6365,78 +6371,116 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </script>
 
 
+
+
+
 <script>
-/* V122 Customizable Dashboard: drag, resize, minimize. Stored locally per browser. */
+/* V123 Dashboard Builder: robust drag, resize, minimize. */
 (function(){
-  const STORE='atsrs_dashboard_layout_v122';
-  const SIZE='atsrs_dashboard_sizes_v122';
-  const MIN='atsrs_dashboard_minimized_v122';
-  const labels={hero:'Dashboard intro',stats:'Summary counters',snapshot:'Quick status',alerts:'Priority alerts',share:'Share profile',personalDocs:'My documents'};
-  function safeParse(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
-  function saveOrder(scope,ids){let data=safeParse(STORE,{});data[scope]=ids;localStorage.setItem(STORE,JSON.stringify(data));}
-  function getLabel(el){return el.getAttribute('data-dash-label')||labels[el.dataset.dashId]||el.id||'Card'}
-  function makeTools(el){
-    if(el.querySelector(':scope > .dash-card-tools'))return;
+  const STORE='atsrs_dashboard_order_v123';
+  const SIZE='atsrs_dashboard_size_v123';
+  const MIN='atsrs_dashboard_min_v123';
+  const LABELS={hero:'Dashboard intro',statsGrid:'Summary counters',snapshot:'Quick status',alerts:'Priority alerts',share:'Share profile',personalDocs:'My documents'};
+  const state={drag:null,resize:null};
+  function safeGet(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function q(s,r=document){return r.querySelector(s)}
+  function qa(s,r=document){return Array.from(r.querySelectorAll(s))}
+  function labelOf(el){return el.getAttribute('data-dash-label')||LABELS[el.dataset.dashId]||'Card'}
+  function isHidden(el){return el.classList.contains('hidden')||getComputedStyle(el).display==='none'}
+  function ensureId(el,base,index){if(!el.dataset.dashId)el.dataset.dashId=base+(index!=null?'-'+index:'');return el.dataset.dashId}
+  function ensureTools(el){
+    if(q(':scope > .dash-card-tools',el))return;
     const tools=document.createElement('div');tools.className='dash-card-tools';
-    const drag=document.createElement('button');drag.type='button';drag.className='dash-drag-handle';drag.innerHTML='⋮⋮';drag.title='Move';drag.setAttribute('aria-label','Move card');
-    const min=document.createElement('button');min.type='button';min.className='dash-min-btn';min.innerHTML='−';min.title='Minimize';min.setAttribute('aria-label','Minimize card');
-    min.addEventListener('click',function(ev){ev.stopPropagation();minimizeCard(el);});
+    const drag=document.createElement('button');drag.type='button';drag.className='dash-drag-handle';drag.innerHTML='⋮⋮';drag.title='Move card';drag.setAttribute('aria-label','Move card');
+    const min=document.createElement('button');min.type='button';min.className='dash-min-btn';min.innerHTML='−';min.title='Minimize card';min.setAttribute('aria-label','Minimize card');
     tools.appendChild(drag);tools.appendChild(min);el.insertBefore(tools,el.firstChild);
-    el.draggable=true;
-    drag.addEventListener('pointerdown',()=>{el.draggable=true});
-    el.addEventListener('dragstart',function(e){e.dataTransfer.setData('text/plain',el.dataset.dashId);e.dataTransfer.effectAllowed='move';el.classList.add('dash-dragging');});
-    el.addEventListener('dragend',function(){el.classList.remove('dash-dragging');persistScope(el.parentElement);saveSizes();});
+    const resize=document.createElement('div');resize.className='dash-resize-handle';resize.title='Resize card';el.appendChild(resize);
+    drag.addEventListener('pointerdown',startDrag);
+    min.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();minimize(el);});
+    resize.addEventListener('pointerdown',startResize);
   }
-  function makeCard(el,id,label){el.dataset.dashId=id;el.setAttribute('data-dash-label',label);el.classList.add('dash-custom-ready');makeTools(el);}
-  function setupDropZone(container,scope){
-    if(!container || container.dataset.dashDropReady)return; container.dataset.dashDropReady='1'; container.dataset.dashScope=scope;
-    container.addEventListener('dragover',function(e){
-      const dragging=document.querySelector('#dashboardPage .dash-dragging'); if(!dragging || dragging.parentElement!==container)return;
-      e.preventDefault();
-      const after=getAfterElement(container,e.clientY,e.clientX);
-      if(after==null)container.appendChild(dragging); else container.insertBefore(dragging,after);
-    });
-    container.addEventListener('drop',function(e){e.preventDefault();persistScope(container);saveSizes();});
+  function make(el,id,label,scope){
+    if(!el)return; el.classList.add('dash-custom-ready','dash-resizable'); el.dataset.dashId=id; el.dataset.dashScope=scope; el.setAttribute('data-dash-label',label); ensureTools(el);
   }
-  function getAfterElement(container,y,x){
-    const els=[...container.querySelectorAll(':scope > .dash-custom-ready:not(.dash-dragging):not(.dash-minimized)')];
-    return els.reduce((closest,child)=>{
-      const box=child.getBoundingClientRect();
-      const offset=(y-box.top-box.height/2)+(x-box.left-box.width/2)*0.12;
-      if(offset<0 && offset>closest.offset)return {offset,element:child};
-      return closest;
-    },{offset:Number.NEGATIVE_INFINITY}).element;
+  function applySavedOrder(container,scope){
+    const data=safeGet(STORE,{}); const order=data[scope]; if(!Array.isArray(order))return;
+    order.forEach(id=>{const el=q(`:scope > .dash-custom-ready[data-dash-id="${CSS.escape(id)}"]`,container); if(el)container.appendChild(el);});
   }
-  function persistScope(container){if(!container||!container.dataset.dashScope)return;saveOrder(container.dataset.dashScope,[...container.querySelectorAll(':scope > .dash-custom-ready')].map(x=>x.dataset.dashId));}
-  function applyOrder(container,scope){const data=safeParse(STORE,{});const order=data[scope];if(!order)return;order.forEach(id=>{const el=container.querySelector(`:scope > [data-dash-id="${id}"]`);if(el)container.appendChild(el);});}
-  function saveSizes(){const d={};document.querySelectorAll('#dashboardPage .dash-custom-ready').forEach(el=>{d[el.dataset.dashId]={w:el.style.width,h:el.style.height};});localStorage.setItem(SIZE,JSON.stringify(d));}
-  function applySizes(){const d=safeParse(SIZE,{});Object.entries(d).forEach(([id,v])=>{const el=document.querySelector(`#dashboardPage [data-dash-id="${id}"]`);if(el&&v){if(v.w)el.style.width=v.w;if(v.h)el.style.height=v.h;}});}
-  function minimizedIds(){return safeParse(MIN,[])}
-  function setMinimized(ids){localStorage.setItem(MIN,JSON.stringify(ids));}
-  function ensureDock(){let dock=document.getElementById('dashboardDock');if(!dock){dock=document.createElement('div');dock.id='dashboardDock';dock.className='hidden';document.body.appendChild(dock);}return dock;}
-  function minimizeCard(el){let ids=minimizedIds();if(!ids.includes(el.dataset.dashId))ids.push(el.dataset.dashId);setMinimized(ids);renderMinimized();}
-  function restoreCard(id){setMinimized(minimizedIds().filter(x=>x!==id));renderMinimized();}
-  function renderMinimized(){
-    const ids=minimizedIds();const dock=ensureDock();dock.innerHTML='';
-    document.querySelectorAll('#dashboardPage .dash-custom-ready').forEach(el=>el.classList.toggle('dash-minimized',ids.includes(el.dataset.dashId)));
-    ids.forEach(id=>{const el=document.querySelector(`#dashboardPage [data-dash-id="${id}"]`);if(!el)return;const b=document.createElement('button');b.type='button';b.className='dock-item';b.textContent=getLabel(el);b.title='Restore '+getLabel(el);b.onclick=()=>restoreCard(id);dock.appendChild(b);});
-    dock.classList.toggle('hidden',!dock.children.length);
+  function persistOrder(container){
+    if(!container)return; const scope=container.dataset.dashScope; if(!scope)return;
+    const data=safeGet(STORE,{}); data[scope]=qa(':scope > .dash-custom-ready',container).map(el=>el.dataset.dashId); save(STORE,data);
   }
-  function initDashboardCustomizer(){
-    const page=document.getElementById('dashboardPage'); if(!page || page.dataset.customizerReady)return; page.dataset.customizerReady='1';
-    const hero=page.querySelector(':scope > .solo-hero'); if(hero)makeCard(hero,'hero','Dashboard intro');
-    const stats=page.querySelector(':scope > .stats-grid'); if(stats){stats.dataset.dashId='statsGrid';stats.setAttribute('data-dash-label','Summary counters'); [...stats.children].forEach((el,i)=>makeCard(el,'stat'+i,(el.innerText||'Counter').trim().split('\n')[0]||('Counter '+(i+1)))); setupDropZone(stats,'stats');}
-    const snapshot=page.querySelector(':scope > .dashboard-snapshot-panel'); if(snapshot)makeCard(snapshot,'snapshot','Quick status');
-    const panels=[...page.querySelectorAll(':scope > .panel:not(.dashboard-snapshot-panel):not(#shareProfilePanel):not(#personalDashboardPanel)')]; if(panels[0])makeCard(panels[0],'alerts','Priority alerts');
-    const share=document.getElementById('shareProfilePanel'); if(share)makeCard(share,'share','Share profile');
-    const pd=document.getElementById('personalDashboardPanel'); if(pd)makeCard(pd,'personalDocs','My documents');
-    setupDropZone(page,'main'); applyOrder(page,'main'); if(stats)applyOrder(stats,'stats'); applySizes(); renderMinimized();
-    window.addEventListener('mouseup',saveSizes); window.addEventListener('touchend',saveSizes,{passive:true}); window.addEventListener('beforeunload',saveSizes);
+  function applySizes(){
+    const sizes=safeGet(SIZE,{});
+    qa('#dashboardPage .dash-custom-ready').forEach(el=>{const s=sizes[el.dataset.dashId]; if(!s)return; if(s.w)el.style.width=s.w; if(s.h)el.style.height=s.h;});
   }
-  const oldShow=window.showPage; if(typeof oldShow==='function'){window.showPage=function(){const r=oldShow.apply(this,arguments);setTimeout(initDashboardCustomizer,0);return r;};}
-  const oldRender=window.renderAll; if(typeof oldRender==='function'){window.renderAll=function(){const r=oldRender.apply(this,arguments);setTimeout(initDashboardCustomizer,0);return r;};}
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(initDashboardCustomizer,300));
-  window.initDashboardCustomizer=initDashboardCustomizer;
+  function saveSizes(){
+    const sizes={}; qa('#dashboardPage .dash-custom-ready').forEach(el=>{sizes[el.dataset.dashId]={w:el.style.width||'',h:el.style.height||''};}); save(SIZE,sizes);
+  }
+  function ensureDock(){let d=q('#dashboardDock'); if(!d){d=document.createElement('div');d.id='dashboardDock';d.className='hidden';document.body.appendChild(d);} return d;}
+  function minimized(){return safeGet(MIN,[])}
+  function setMinimized(ids){save(MIN,ids)}
+  function minimize(el){const ids=minimized(); if(!ids.includes(el.dataset.dashId))ids.push(el.dataset.dashId); setMinimized(ids); renderDock();}
+  function restore(id){setMinimized(minimized().filter(x=>x!==id)); renderDock();}
+  function renderDock(){
+    const ids=minimized(); const dock=ensureDock(); dock.innerHTML='';
+    qa('#dashboardPage .dash-custom-ready').forEach(el=>el.classList.toggle('dash-minimized',ids.includes(el.dataset.dashId)));
+    ids.forEach(id=>{const el=q(`#dashboardPage .dash-custom-ready[data-dash-id="${CSS.escape(id)}"]`); if(!el)return; const b=document.createElement('button'); b.type='button'; b.className='dock-item'; b.textContent=labelOf(el); b.onclick=()=>restore(id); dock.appendChild(b);});
+    dock.classList.toggle('hidden',dock.children.length===0);
+  }
+  function startResize(e){
+    const el=e.currentTarget.closest('.dash-custom-ready'); if(!el)return; e.preventDefault(); e.stopPropagation();
+    const r=el.getBoundingClientRect(); state.resize={el,startX:e.clientX,startY:e.clientY,w:r.width,h:r.height};
+    window.addEventListener('pointermove',onResize,{passive:false}); window.addEventListener('pointerup',endResize,{once:true});
+  }
+  function onResize(e){
+    if(!state.resize)return; e.preventDefault(); const s=state.resize;
+    const w=Math.max(150,s.w+(e.clientX-s.startX)); const h=Math.max(90,s.h+(e.clientY-s.startY));
+    s.el.style.width=w+'px'; s.el.style.height=h+'px';
+  }
+  function endResize(){window.removeEventListener('pointermove',onResize); saveSizes(); state.resize=null;}
+  function startDrag(e){
+    const el=e.currentTarget.closest('.dash-custom-ready'); if(!el || isHidden(el))return; e.preventDefault(); e.stopPropagation();
+    const parent=el.parentElement; const rect=el.getBoundingClientRect();
+    const ph=document.createElement('div'); ph.className='dash-placeholder'; ph.style.width=rect.width+'px'; ph.style.height=rect.height+'px';
+    parent.insertBefore(ph,el.nextSibling);
+    state.drag={el,parent,ph,offsetX:e.clientX-rect.left,offsetY:e.clientY-rect.top};
+    el.classList.add('dash-drag-float'); el.style.width=rect.width+'px'; el.style.height=rect.height+'px'; moveFloat(e.clientX,e.clientY);
+    window.addEventListener('pointermove',onDrag,{passive:false}); window.addEventListener('pointerup',endDrag,{once:true});
+  }
+  function moveFloat(x,y){const d=state.drag;if(!d)return; d.el.style.left=(x-d.offsetX)+'px'; d.el.style.top=(y-d.offsetY)+'px';}
+  function onDrag(e){
+    if(!state.drag)return; e.preventDefault(); moveFloat(e.clientX,e.clientY);
+    const d=state.drag; d.el.style.display='none'; const target=document.elementFromPoint(e.clientX,e.clientY); d.el.style.display='';
+    let over=target&&target.closest?target.closest('#dashboardPage .dash-custom-ready'):null;
+    if(over && over!==d.el && over.parentElement===d.parent && !over.classList.contains('dash-minimized')){
+      const r=over.getBoundingClientRect(); const before=(e.clientY<r.top+r.height/2) || (Math.abs(e.clientY-(r.top+r.height/2))<r.height*.35 && e.clientX<r.left+r.width/2);
+      d.parent.insertBefore(d.ph,before?over:over.nextSibling);
+    }
+  }
+  function endDrag(){
+    const d=state.drag; if(!d)return; window.removeEventListener('pointermove',onDrag);
+    d.parent.insertBefore(d.el,d.ph); d.ph.remove();
+    d.el.classList.remove('dash-drag-float'); d.el.style.left=''; d.el.style.top=''; d.el.style.width=d.el.style.width||''; d.el.style.height=d.el.style.height||'';
+    persistOrder(d.parent); saveSizes(); state.drag=null;
+  }
+  function build(){
+    const page=q('#dashboardPage'); if(!page)return; page.dataset.dashScope='main';
+    const hero=q(':scope > .solo-hero',page); make(hero,'hero','Dashboard intro','main');
+    const stats=q(':scope > .stats-grid',page); if(stats){stats.dataset.dashScope='stats'; stats.dataset.dashId='statsGrid'; stats.setAttribute('data-dash-label','Summary counters'); qa(':scope > .card',stats).forEach((el,i)=>make(el,'stat-'+i,((el.innerText||'Counter').trim().split('\n')[0]||('Counter '+(i+1))),'stats')); applySavedOrder(stats,'stats');}
+    const snapshot=q(':scope > .dashboard-snapshot-panel',page); make(snapshot,'snapshot','Quick status','main');
+    const panels=qa(':scope > .panel',page).filter(el=>!el.classList.contains('dashboard-snapshot-panel') && el.id!=='shareProfilePanel' && el.id!=='personalDashboardPanel' && !el.classList.contains('solo-hero'));
+    if(panels[0])make(panels[0],'alerts','Priority alerts','main');
+    make(q('#shareProfilePanel'), 'share','Share profile','main');
+    make(q('#personalDashboardPanel'),'personalDocs','My documents','main');
+    applySavedOrder(page,'main'); applySizes(); renderDock();
+  }
+  function schedule(){setTimeout(build,60)}
+  const oldShow=window.showPage; if(typeof oldShow==='function'){window.showPage=function(){const r=oldShow.apply(this,arguments); schedule(); return r;};}
+  const oldRender=window.renderAll; if(typeof oldRender==='function'){window.renderAll=function(){const r=oldRender.apply(this,arguments); schedule(); return r;};}
+  document.addEventListener('DOMContentLoaded',schedule); window.addEventListener('load',schedule); setInterval(function(){const p=q('#dashboardPage'); if(p && !p.classList.contains('hidden'))build();},1500);
+  window.initDashboardBuilderV123=build;
 })();
 </script>
 
