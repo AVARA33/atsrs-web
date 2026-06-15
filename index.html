@@ -1258,7 +1258,7 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V127</div>
+<div>ATSRS V131</div>
 <div>Last Update: 15 Jun 2026 0755 UTC</div>
 <div>TEST BUILD</div>
 </div>
@@ -2560,7 +2560,7 @@ function ensureManagedCard(kind){
    card.dataset.v54Ready='1';
    const title=document.getElementById(ids[0]);
    if(title && !title.parentElement.classList.contains('ref-doc-head')){
-     title.outerHTML=`<div class="ref-doc-head"><h3 id="${ids[0]}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-blocked">0</span></div>`;
+     title.outerHTML=`<div class="ref-doc-head"><h3 id="${ids[0]}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-blocked">No File</span></div>`;
    }
    const oldBtn=document.getElementById(ids[1]); if(oldBtn)oldBtn.remove();
    const oldInfo=document.getElementById(kind+'FileInfo'); if(oldInfo)oldInfo.remove();
@@ -2603,9 +2603,9 @@ function renderManagedFiles(){
  const labels={appraisal:['uploadAppraisal','appraisalsCount'],reference:['uploadReference','referencesCount'],recommendation:['uploadRecommendation','recommendationsCount']};
  ['appraisal','reference','recommendation'].forEach(kind=>{
    const files=getManagedFiles(kind);
-   const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=String(files.length);badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
+   const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=(files.length?(files.length+' File'+(files.length>1?'s':'')):'No File');badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
    const up=document.getElementById(kind+'UploadBtn'); if(up)up.innerText=(kind==='appraisal'?v49('uploadAppraisal'):kind==='reference'?v49('uploadReference'):v54('uploadRecommendation'));
-   const cnt=document.getElementById(kind+'Count'); if(cnt)cnt.innerText=`${v54(labels[kind][1])}: ${files.length} • Newest first`;
+   const cnt=document.getElementById(kind+'Count'); if(cnt)cnt.innerText=`${v54(labels[kind][1])}: ${files.length?(files.length+' File'+(files.length>1?'s':'')):'No File'} • Newest first`;
    renderCareerList(kind);
  });
  if(typeof recommendationCardTitle!=='undefined')recommendationCardTitle.innerText=v54('recommendations');
@@ -4834,7 +4834,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
@@ -4927,7 +4927,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V127';
+  const BUILD = 'ATSRS V131';
   const UPDATE = 'Last Update: 15 Jun 2026 0755 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
@@ -5197,7 +5197,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
@@ -5480,7 +5480,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
@@ -5760,7 +5760,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -5935,7 +5935,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
@@ -6079,7 +6079,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V127';
+  var BUILD_LABEL = 'ATSRS V131';
   var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0755 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -6196,7 +6196,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6378,7 +6378,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6545,7 +6545,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -7024,7 +7024,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V127';
+  var BUILD='ATSRS V131';
   var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
@@ -7096,7 +7096,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V127';
+    var BUILD='ATSRS V131';
     var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
@@ -7182,8 +7182,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     try{var raw=localStorage.getItem(storageKey(name)); var parsed=raw?JSON.parse(raw):[]; return Array.isArray(parsed)?parsed:[];}catch(e){return [];}
   }
   function applyBuild(){
-    var BUILD='ATSRS V129';
-    var UPDATE='Last Update: 16 Jun 2026 0305 UTC';
+    var BUILD='ATSRS V131';
+    var UPDATE='Last Update: 16 Jun 2026 0325 UTC';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -7320,8 +7320,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     try{var raw=localStorage.getItem(storageKey(name));var parsed=raw?JSON.parse(raw):[];return Array.isArray(parsed)?parsed:[];}catch(e){return [];}
   }
   function applyBuild(){
-    var BUILD='ATSRS V130';
-    var UPDATE='Last Update: 16 Jun 2026 0315 UTC';
+    var BUILD='ATSRS V131';
+    var UPDATE='Last Update: 16 Jun 2026 0325 UTC';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -7413,6 +7413,82 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   window.addEventListener('load',function(){run();setTimeout(run,500);});
   setTimeout(run,900);
   setInterval(function(){ensureBadgesExist();updateCounts();},1000);
+})();
+</script>
+
+
+
+<style id="ATSRS_V131_REFERENCES_BADGES_FINAL_CSS">
+/* V131: Final visual alignment for References/Appraisals file badges. */
+#refsPage .ref-doc-head .badge,
+#refsPage #coverLetterStatusBadge{
+  min-width:72px!important;
+  height:24px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  white-space:nowrap!important;
+}
+</style>
+<script id="ATSRS_V131_REFERENCES_BADGES_FINAL_JS">
+(function(){
+  'use strict';
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function byId(id){return document.getElementById(id);}
+  function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+  function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
+  function storageKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){}return 'atsrs_'+safeUserId()+'_'+name;}
+  function readArr(name){
+    try{if(typeof window.getData==='function'&&window.currentUser&&window.currentUser.id){var a=window.getData(name);return Array.isArray(a)?a:[];}}catch(e){}
+    try{var raw=localStorage.getItem(storageKey(name));var p=raw?JSON.parse(raw):[];return Array.isArray(p)?p:[];}catch(e){return [];}
+  }
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent='ATSRS V131';
+      if(d[1])d[1].textContent='Last Update: 16 Jun 2026 0325 UTC';
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function setBadge(id,n){
+    var el=byId(id); if(!el)return;
+    el.textContent=label(n);
+    el.className='badge '+(n>0?'badge-ready':'badge-blocked');
+  }
+  function normalize(){
+    var counts={
+      appraisal:readArr('appraisalFiles').length,
+      reference:readArr('referenceFiles').length,
+      recommendation:readArr('recommendationFiles').length,
+      cover:readArr('coverLetterFiles').length
+    };
+    setBadge('appraisalStatusBadge',counts.appraisal);
+    setBadge('referenceStatusBadge',counts.reference);
+    setBadge('recommendationStatusBadge',counts.recommendation);
+    setBadge('coverLetterStatusBadge',counts.cover);
+    var names={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters'};
+    Object.keys(names).forEach(function(k){var c=byId(k+'Count'); if(c)c.textContent=names[k]+': '+label(counts[k])+' • Newest first';});
+  }
+  function run(){setBuild();normalize();}
+  var old=window.renderManagedFiles;
+  if(typeof old==='function'&&!old.__atsrsV131){
+    var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,0);setTimeout(run,80);return r;};
+    wrapped.__atsrsV131=true;
+    window.renderManagedFiles=wrapped;
+  }
+  ['renderAll','showPage','applyLanguage'].forEach(function(name){
+    var base=window[name];
+    if(typeof base==='function'&&!base.__atsrsV131){
+      var wrapped=function(){var r=base.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+      wrapped.__atsrsV131=true;
+      window[name]=wrapped;
+    }
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,350);});
+  setTimeout(run,700);
+  setInterval(run,900);
 })();
 </script>
 
