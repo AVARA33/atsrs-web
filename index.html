@@ -7243,5 +7243,178 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 })();
 </script>
 
+
+
+<style id="ATSRS_V130_REFERENCES_ALIGNMENT_BADGES_CSS">
+/* V130: References cards header alignment and unified badge text. */
+#refsPage .ref-grid{
+  align-items:stretch!important;
+}
+#refsPage .ref-card:not(.cv-card){
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+}
+#refsPage .ref-doc-head,
+#refsPage #coverLetterCard .cv-card-head,
+#refsPage .cover-letter-card .cv-card-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  min-height:54px!important;
+  margin:0 0 18px!important;
+}
+#refsPage .ref-doc-head h3,
+#refsPage #coverLetterCard .cv-card-head h3,
+#refsPage .cover-letter-card .cv-card-head h3{
+  margin:0!important;
+  padding:0!important;
+  line-height:1.18!important;
+  min-height:46px!important;
+  display:flex!important;
+  align-items:flex-start!important;
+}
+#refsPage .ref-doc-head .badge,
+#refsPage #coverLetterCard .cv-card-head .badge,
+#refsPage .cover-letter-card .cv-card-head .badge,
+#refsPage #appraisalStatusBadge,
+#refsPage #referenceStatusBadge,
+#refsPage #recommendationStatusBadge,
+#refsPage #coverLetterStatusBadge{
+  margin:0!important;
+  align-self:flex-start!important;
+  min-width:72px!important;
+  height:24px!important;
+  padding:5px 10px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+#refsPage #appraisalCardText,
+#refsPage #referenceCardText,
+#refsPage #recommendationCardText,
+#refsPage #coverLetterCard .sub{
+  margin-top:0!important;
+}
+#refsPage #coverLetterCard,
+#refsPage .cover-letter-card{
+  border-color:var(--atsrs-border,#264058)!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
+}
+</style>
+<script id="ATSRS_V130_REFERENCES_ALIGNMENT_BADGES_JS">
+(function(){
+  'use strict';
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function byId(id){return document.getElementById(id);}
+  function countLabel(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+  function safeUserId(){try{return (window.currentUser&&currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
+  function storageKey(name){try{if(typeof window.localKey==='function' && window.currentUser && window.currentUser.id)return window.localKey(name);}catch(e){} return 'atsrs_'+safeUserId()+'_'+name;}
+  function readArr(name){
+    try{if(typeof window.getData==='function' && window.currentUser && window.currentUser.id){var a=window.getData(name);return Array.isArray(a)?a:[];}}catch(e){}
+    try{var raw=localStorage.getItem(storageKey(name));var parsed=raw?JSON.parse(raw):[];return Array.isArray(parsed)?parsed:[];}catch(e){return [];}
+  }
+  function applyBuild(){
+    var BUILD='ATSRS V130';
+    var UPDATE='Last Update: 16 Jun 2026 0315 UTC';
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function wrapHeader(kind,titleId){
+    var title=byId(titleId); if(!title)return;
+    var card=title.closest('.ref-card'); if(!card)return;
+    var badge=byId(kind+'StatusBadge');
+    if(title.parentElement && title.parentElement.classList.contains('ref-doc-head')){
+      if(badge && badge.parentElement!==title.parentElement) title.parentElement.appendChild(badge);
+      return;
+    }
+    var head=document.createElement('div');
+    head.className='ref-doc-head';
+    title.parentNode.insertBefore(head,title);
+    head.appendChild(title);
+    if(badge)head.appendChild(badge);
+  }
+  function ensureBadgesExist(){
+    [['appraisal','appraisalCardTitle'],['reference','referenceCardTitle'],['recommendation','recommendationCardTitle']].forEach(function(pair){
+      var kind=pair[0], titleId=pair[1], title=byId(titleId); if(!title)return;
+      var card=title.closest('.ref-card'); if(!card)return;
+      var badge=byId(kind+'StatusBadge');
+      if(!badge){badge=document.createElement('span');badge.id=kind+'StatusBadge';badge.className='badge badge-blocked';badge.textContent='No File';}
+      wrapHeader(kind,titleId);
+    });
+    var cover=byId('coverLetterCard');
+    if(cover){
+      cover.classList.add('ref-card','cover-letter-card');
+      var head=q('.cv-card-head',cover);
+      var title=byId('coverLetterCardTitle') || q('h3',cover);
+      var badge=byId('coverLetterStatusBadge');
+      if(!badge){badge=document.createElement('span');badge.id='coverLetterStatusBadge';badge.className='badge badge-blocked';badge.textContent='No File';}
+      if(!head && title){
+        head=document.createElement('div'); head.className='cv-card-head'; title.parentNode.insertBefore(head,title); head.appendChild(title);
+      }
+      if(head && badge.parentElement!==head)head.appendChild(badge);
+    }
+  }
+  function setBadge(id,n){
+    var el=byId(id); if(!el)return;
+    el.textContent=countLabel(n);
+    el.className='badge '+(n>0?'badge-ready':'badge-blocked');
+  }
+  function updateCounts(){
+    var counts={
+      appraisal:readArr('appraisalFiles').length,
+      reference:readArr('referenceFiles').length,
+      recommendation:readArr('recommendationFiles').length,
+      cover:readArr('coverLetterFiles').length
+    };
+    setBadge('appraisalStatusBadge',counts.appraisal);
+    setBadge('referenceStatusBadge',counts.reference);
+    setBadge('recommendationStatusBadge',counts.recommendation);
+    setBadge('coverLetterStatusBadge',counts.cover);
+    var labels={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters'};
+    Object.keys(labels).forEach(function(kind){
+      var c=byId(kind+'Count'); if(c)c.textContent=labels[kind]+': '+countLabel(counts[kind])+' • Newest first';
+    });
+  }
+  function orderCards(){
+    var grid=q('#refsPage .ref-grid'); if(!grid)return;
+    var cv=byId('cvCardTitle'); var cvCard=cv?cv.closest('.ref-card'):q('#refsPage .cv-card');
+    var cover=byId('coverLetterCard');
+    if(cvCard){cvCard.style.order='-100';cvCard.classList.add('cv-card');}
+    var order=[['appraisalCardTitle','10'],['referenceCardTitle','20'],['recommendationCardTitle','30']];
+    order.forEach(function(x){var t=byId(x[0]); var c=t?t.closest('.ref-card'):null; if(c)c.style.order=x[1];});
+    if(cover){cover.style.order='40';}
+  }
+  function run(){
+    applyBuild();
+    try{if(typeof window.renderManagedFiles==='function')window.renderManagedFiles();}catch(e){}
+    ensureBadgesExist();
+    orderCards();
+    updateCounts();
+  }
+  var oldRenderManaged=window.renderManagedFiles;
+  if(typeof oldRenderManaged==='function'){
+    window.renderManagedFiles=function(){var r=oldRenderManaged.apply(this,arguments);setTimeout(function(){ensureBadgesExist();orderCards();updateCounts();},0);return r;};
+  }
+  ['renderAll','showPage','applyLanguage'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function')window[name]=function(){var r=old.apply(this,arguments);setTimeout(run,30);setTimeout(run,220);return r;};
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,500);});
+  setTimeout(run,900);
+  setInterval(function(){ensureBadgesExist();updateCounts();},1000);
+})();
+</script>
+
 </body>
 </html>
