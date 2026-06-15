@@ -4779,150 +4779,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 
 </style>
 
-<style id="v105-refs-appraisals-rebuilt-style">
-#refsPage .ref-card[data-v105-career-card="1"] .career-record-row,
-#refsPage .ref-card[data-v105-career-card="1"] .ref-file-info{
-  display:none!important;
-}
-.v105-empty-note{color:#94a3b8;font-size:13px;margin-top:10px;border:1px dashed #334155;border-radius:12px;padding:10px;background:rgba(2,6,23,.28)}
-.v105-career-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-height:340px;overflow:auto}
-.v105-career-row{border:1px solid #334155;border-radius:14px;background:rgba(2,6,23,.35);padding:10px;display:grid;gap:8px}
-.v105-career-row b{display:block;word-break:break-word;line-height:1.25}.v105-career-row span{font-size:12px;color:#94a3b8}
-.v105-career-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.v105-career-actions button{margin:0!important;padding:9px 6px!important}
-.v105-date{max-width:180px;margin:0!important;padding:9px!important;font-size:12px!important}
-@media(max-width:520px){.v105-career-actions{grid-template-columns:1fr}}
 
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
 
-</style>
-<script id="v105-refs-appraisals-rebuilt-script">
-(function(){
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
-  var kinds=['appraisal','reference'];
-  var labelMap={appraisal:'Appraisals',reference:'References'};
-  var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
-  var descMap={appraisal:'Upload annual appraisals, performance reviews and evaluation forms.',reference:'Store reference letters and contact-ready career proof.'};
-  var titleId={appraisal:'appraisalCardTitle',reference:'referenceCardTitle'};
-  function safeParse(v){try{return JSON.parse(v||'[]')}catch(e){return []}}
-  function freshKey(kind){return 'atsrs_v105_'+kind+'_files';}
-  function clearLegacy(){
-    try{
-      var kill=[];
-      for(var i=0;i<localStorage.length;i++){
-        var k=localStorage.key(i)||'';
-        var low=k.toLowerCase();
-        if((low.indexOf('appraisal')!==-1||low.indexOf('reference')!==-1) && low.indexOf('atsrs_v105_')===-1){kill.push(k)}
-      }
-      kill.forEach(function(k){localStorage.removeItem(k)});
-    }catch(e){}
-    try{ if(typeof saveData==='function'){ saveData('appraisalFiles',[]); saveData('referenceFiles',[]); } }catch(e){}
-    try{ if(typeof setManagedFiles==='function'){ setManagedFiles('appraisal',[]); setManagedFiles('reference',[]); } }catch(e){}
-  }
-  function getFiles(kind){return safeParse(localStorage.getItem(freshKey(kind))).filter(function(f){return f&&f.name&&f.data});}
-  function setFiles(kind,arr){localStorage.setItem(freshKey(kind),JSON.stringify(Array.isArray(arr)?arr:[]));}
-  function card(kind){return document.getElementById(titleId[kind])?.closest('.ref-card');}
-  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
-  function rebuildCard(kind){
-    var c=card(kind); if(!c)return;
-    c.dataset.v105CareerCard='1';
-    c.innerHTML=''
-      +'<div class="ref-doc-head"><h3 id="'+titleId[kind]+'">'+labelMap[kind]+'</h3><span id="v105_'+kind+'_badge" class="badge badge-blocked">0</span></div>'
-      +'<p class="sub">'+descMap[kind]+'</p>'
-      +'<input id="v105_'+kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden">'
-      +'<button id="v105_'+kind+'_upload" class="secondary">'+uploadMap[kind]+'</button>'
-      +'<div id="v105_'+kind+'_count" class="career-count"></div>'
-      +'<div id="v105_'+kind+'_list" class="v105-career-list"></div>';
-    var btn=document.getElementById('v105_'+kind+'_upload');
-    var inp=document.getElementById('v105_'+kind+'_input');
-    if(btn&&inp){
-      btn.onclick=function(){inp.click();};
-      inp.onchange=function(e){
-        var file=e.target.files&&e.target.files[0]; if(!file)return;
-        var reader=new FileReader();
-        reader.onload=function(){
-          var arr=getFiles(kind);
-          arr.push({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),signedDate:new Date().toISOString().slice(0,10),data:reader.result});
-          setFiles(kind,arr); inp.value=''; renderKind(kind);
-        };
-        reader.readAsDataURL(file);
-      };
-    }
-  }
-  function preview(kind,id){
-    var f=getFiles(kind).find(function(x){return x.id===id}); if(!f)return;
-    var w=window.open('','_blank'); if(w){w.document.write('<title>'+esc(f.name)+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}
-  }
-  function download(kind,id){
-    var f=getFiles(kind).find(function(x){return x.id===id}); if(!f)return;
-    var a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();
-  }
-  function del(kind,id){setFiles(kind,getFiles(kind).filter(function(x){return x.id!==id}));renderKind(kind);}
-  window.v105PreviewCareerFile=preview;
-  window.v105DownloadCareerFile=download;
-  window.v105DeleteCareerFile=del;
-  window.v105UpdateCareerDate=function(kind,id,val){var arr=getFiles(kind);arr.forEach(function(f){if(f.id===id)f.signedDate=val});setFiles(kind,arr);renderKind(kind);};
-  function renderKind(kind){
-    var files=getFiles(kind).sort(function(a,b){return String(b.signedDate||b.updated||'').localeCompare(String(a.signedDate||a.updated||''));});
-    var badge=document.getElementById('v105_'+kind+'_badge'); if(badge){badge.textContent=String(files.length);badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
-    var cnt=document.getElementById('v105_'+kind+'_count'); if(cnt)cnt.textContent=labelMap[kind]+': '+files.length+' • Newest first';
-    var list=document.getElementById('v105_'+kind+'_list'); if(!list)return;
-    if(!files.length){list.innerHTML='<div class="v105-empty-note">No files uploaded yet.</div>';return;}
-    list.innerHTML=files.map(function(f){
-      return '<div class="v105-career-row"><div><b title="'+esc(f.name)+'">'+esc(f.name)+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div>'
-        +'<input class="v105-date" type="date" value="'+esc(f.signedDate||'')+'" onchange="v105UpdateCareerDate(\''+kind+'\',\''+f.id+'\',this.value)">'
-        +'<div class="v105-career-actions"><button class="secondary" onclick="v105PreviewCareerFile(\''+kind+'\',\''+f.id+'\')">Preview</button><button class="secondary" onclick="v105DownloadCareerFile(\''+kind+'\',\''+f.id+'\')">Download</button><button class="action" onclick="v105DeleteCareerFile(\''+kind+'\',\''+f.id+'\')">Delete</button></div></div>';
-    }).join('');
-  }
-  function v105LockBuild(){var b=document.getElementById('buildBadge');if(!b)return;var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';}
-  function run(){clearLegacy();kinds.forEach(rebuildCard);kinds.forEach(renderKind);v105LockBuild();}
-  var baseRender=window.renderManagedFiles;
-  window.renderManagedFiles=function(){try{if(typeof baseRender==='function')baseRender.apply(this,arguments);}catch(e){} setTimeout(run,0);};
-  var baseShow=window.showPage;
-  if(typeof baseShow==='function'){window.showPage=function(){var r=baseShow.apply(this,arguments);setTimeout(run,0);setTimeout(run,250);return r;};}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',run);
-  [0,100,300,800,1500,3000].forEach(function(ms){setTimeout(run,ms)});
-  setInterval(function(){ if(document.getElementById('refsPage') && !document.getElementById('refsPage').classList.contains('hidden')) run(); v105LockBuild(); },1500);
-})();
-</script>
 
 <script>
 (function(){
@@ -7148,564 +7006,139 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 
 
 
-<style id="ATSRS_V129_COVER_LETTER_UNIFIED_BADGES_CSS">
-/* V129 from V127 + V128: Cover Letter card visual match and unified file badges. */
-#refsPage .cover-letter-card,
-#refsPage #coverLetterCard{
-  border-color:var(--atsrs-border,#264058)!important;
-  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
-}
-#refsPage .cover-letter-card:hover,
-#refsPage #coverLetterCard:hover{
-  border-color:var(--atsrs-border,#264058)!important;
-}
-#refsPage .ref-doc-head .badge,
-#refsPage #coverLetterStatusBadge{
-  min-width:62px!important;
-  text-align:center!important;
-  white-space:nowrap!important;
-}
-</style>
-<script id="ATSRS_V129_COVER_LETTER_UNIFIED_BADGES_JS">
-(function(){
-  'use strict';
-  function q(s,r){return (r||document).querySelector(s);}
-  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function byId(id){return document.getElementById(id);}
-  function countLabel(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
-  function safeUserId(){try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
-  function storageKey(name){try{if(typeof window.localKey==='function' && window.currentUser && currentUser.id)return window.localKey(name);}catch(e){} return 'atsrs_'+safeUserId()+'_'+name;}
-  function readArr(name){
-    try{
-      if(typeof window.getData==='function' && window.currentUser && currentUser.id){var a=window.getData(name); return Array.isArray(a)?a:[];}
-    }catch(e){}
-    try{var raw=localStorage.getItem(storageKey(name)); var parsed=raw?JSON.parse(raw):[]; return Array.isArray(parsed)?parsed:[];}catch(e){return [];}
-  }
-  function applyBuild(){
-    var BUILD='ATSRS V131';
-    var UPDATE='Last Update: 16 Jun 2026 0325 UTC';
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent=UPDATE;
-      if(d[2])d[2].textContent='TEST BUILD';
-    });
-  }
-  function ensureRecommendationCardReady(){try{if(typeof window.renderManagedFiles==='function')window.renderManagedFiles();}catch(e){}}
-  function badge(id,n){
-    var el=byId(id); if(!el)return;
-    el.textContent=countLabel(n);
-    el.className='badge '+(n>0?'badge-ready':'badge-blocked');
-  }
-  function normalizeReferenceCardStyles(){
-    var cover=byId('coverLetterCard');
-    if(cover){
-      cover.classList.add('ref-card','cover-letter-card');
-      cover.style.borderColor='';
-      cover.style.boxShadow='';
-    }
-    var grid=q('#refsPage .ref-grid');
-    var cv=byId('cvCardTitle');
-    var cvCard=cv?cv.closest('.ref-card'):q('#refsPage .cv-card');
-    if(grid&&cvCard&&cover&&cover.previousElementSibling!==cvCard){grid.insertBefore(cover,cvCard.nextSibling);}
-  }
-  function applyUnifiedBadges(){
-    normalizeReferenceCardStyles();
-    var counts={
-      appraisal:readArr('appraisalFiles').length,
-      reference:readArr('referenceFiles').length,
-      recommendation:readArr('recommendationFiles').length,
-      cover:readArr('coverLetterFiles').length
-    };
-    badge('appraisalStatusBadge',counts.appraisal);
-    badge('referenceStatusBadge',counts.reference);
-    badge('recommendationStatusBadge',counts.recommendation);
-    badge('coverLetterStatusBadge',counts.cover);
-    var map={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters'};
-    Object.keys(map).forEach(function(kind){
-      var c=byId(kind+'Count');
-      if(c)c.textContent=map[kind]+': '+countLabel(counts[kind])+' • Newest first';
-    });
-  }
-  function run(){applyBuild();ensureRecommendationCardReady();applyUnifiedBadges();}
-  var oldRenderManaged=window.renderManagedFiles;
-  if(typeof oldRenderManaged==='function'){
-    window.renderManagedFiles=function(){var r=oldRenderManaged.apply(this,arguments);setTimeout(applyUnifiedBadges,0);return r;};
-  }
-  ['renderAll','showPage','applyLanguage'].forEach(function(name){
-    var old=window[name];
-    if(typeof old==='function')window[name]=function(){var r=old.apply(this,arguments);setTimeout(run,60);setTimeout(run,260);return r;};
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',function(){run();setTimeout(run,500);});
-  setTimeout(run,900);
-  setInterval(applyUnifiedBadges,1800);
-})();
-</script>
 
 
 
-<style id="ATSRS_V130_REFERENCES_ALIGNMENT_BADGES_CSS">
-/* V130: References cards header alignment and unified badge text. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="ATSRS_V134_REFERENCES_STABLE_SINGLE_SYSTEM_CSS">
+/* V134: single clean References/Appraisals card system. Removes visual jumps and duplicated counters. */
 #refsPage .ref-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:14px!important;
   align-items:stretch!important;
 }
-#refsPage .ref-card:not(.cv-card){
-  display:flex!important;
-  flex-direction:column!important;
-  justify-content:flex-start!important;
+#refsPage .cv-card{
+  order:-100!important;
+  grid-column:1 / -1!important;
+  width:100%!important;
 }
-#refsPage .ref-doc-head,
-#refsPage #coverLetterCard .cv-card-head,
-#refsPage .cover-letter-card .cv-card-head{
-  display:flex!important;
-  align-items:flex-start!important;
-  justify-content:space-between!important;
-  gap:12px!important;
-  min-height:54px!important;
-  margin:0 0 18px!important;
-}
-#refsPage .ref-doc-head h3,
-#refsPage #coverLetterCard .cv-card-head h3,
-#refsPage .cover-letter-card .cv-card-head h3{
-  margin:0!important;
-  padding:0!important;
-  line-height:1.18!important;
-  min-height:46px!important;
-  display:flex!important;
-  align-items:flex-start!important;
-}
-#refsPage .ref-doc-head .badge,
-#refsPage #coverLetterCard .cv-card-head .badge,
-#refsPage .cover-letter-card .cv-card-head .badge,
-#refsPage #appraisalStatusBadge,
-#refsPage #referenceStatusBadge,
-#refsPage #recommendationStatusBadge,
-#refsPage #coverLetterStatusBadge{
-  margin:0!important;
-  align-self:flex-start!important;
-  min-width:72px!important;
-  height:24px!important;
-  padding:5px 10px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  line-height:1!important;
-  white-space:nowrap!important;
-  text-align:center!important;
-}
-#refsPage #appraisalCardText,
-#refsPage #referenceCardText,
-#refsPage #recommendationCardText,
-#refsPage #coverLetterCard .sub{
-  margin-top:0!important;
-}
-#refsPage #coverLetterCard,
-#refsPage .cover-letter-card{
-  border-color:var(--atsrs-border,#264058)!important;
-  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
-}
-</style>
-<script id="ATSRS_V130_REFERENCES_ALIGNMENT_BADGES_JS">
-(function(){
-  'use strict';
-  function q(s,r){return (r||document).querySelector(s);}
-  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function byId(id){return document.getElementById(id);}
-  function countLabel(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
-  function safeUserId(){try{return (window.currentUser&&currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
-  function storageKey(name){try{if(typeof window.localKey==='function' && window.currentUser && window.currentUser.id)return window.localKey(name);}catch(e){} return 'atsrs_'+safeUserId()+'_'+name;}
-  function readArr(name){
-    try{if(typeof window.getData==='function' && window.currentUser && window.currentUser.id){var a=window.getData(name);return Array.isArray(a)?a:[];}}catch(e){}
-    try{var raw=localStorage.getItem(storageKey(name));var parsed=raw?JSON.parse(raw):[];return Array.isArray(parsed)?parsed:[];}catch(e){return [];}
-  }
-  function applyBuild(){
-    var BUILD='ATSRS V131';
-    var UPDATE='Last Update: 16 Jun 2026 0325 UTC';
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent=UPDATE;
-      if(d[2])d[2].textContent='TEST BUILD';
-    });
-  }
-  function wrapHeader(kind,titleId){
-    var title=byId(titleId); if(!title)return;
-    var card=title.closest('.ref-card'); if(!card)return;
-    var badge=byId(kind+'StatusBadge');
-    if(title.parentElement && title.parentElement.classList.contains('ref-doc-head')){
-      if(badge && badge.parentElement!==title.parentElement) title.parentElement.appendChild(badge);
-      return;
-    }
-    var head=document.createElement('div');
-    head.className='ref-doc-head';
-    title.parentNode.insertBefore(head,title);
-    head.appendChild(title);
-    if(badge)head.appendChild(badge);
-  }
-  function ensureBadgesExist(){
-    [['appraisal','appraisalCardTitle'],['reference','referenceCardTitle'],['recommendation','recommendationCardTitle']].forEach(function(pair){
-      var kind=pair[0], titleId=pair[1], title=byId(titleId); if(!title)return;
-      var card=title.closest('.ref-card'); if(!card)return;
-      var badge=byId(kind+'StatusBadge');
-      if(!badge){badge=document.createElement('span');badge.id=kind+'StatusBadge';badge.className='badge badge-blocked';badge.textContent='No File';}
-      wrapHeader(kind,titleId);
-    });
-    var cover=byId('coverLetterCard');
-    if(cover){
-      cover.classList.add('ref-card','cover-letter-card');
-      var head=q('.cv-card-head',cover);
-      var title=byId('coverLetterCardTitle') || q('h3',cover);
-      var badge=byId('coverLetterStatusBadge');
-      if(!badge){badge=document.createElement('span');badge.id='coverLetterStatusBadge';badge.className='badge badge-blocked';badge.textContent='No File';}
-      if(!head && title){
-        head=document.createElement('div'); head.className='cv-card-head'; title.parentNode.insertBefore(head,title); head.appendChild(title);
-      }
-      if(head && badge.parentElement!==head)head.appendChild(badge);
-    }
-  }
-  function setBadge(id,n){
-    var el=byId(id); if(!el)return;
-    el.textContent=countLabel(n);
-    el.className='badge '+(n>0?'badge-ready':'badge-blocked');
-  }
-  function updateCounts(){
-    var counts={
-      appraisal:readArr('appraisalFiles').length,
-      reference:readArr('referenceFiles').length,
-      recommendation:readArr('recommendationFiles').length,
-      cover:readArr('coverLetterFiles').length
-    };
-    setBadge('appraisalStatusBadge',counts.appraisal);
-    setBadge('referenceStatusBadge',counts.reference);
-    setBadge('recommendationStatusBadge',counts.recommendation);
-    setBadge('coverLetterStatusBadge',counts.cover);
-    var labels={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters'};
-    Object.keys(labels).forEach(function(kind){
-      var c=byId(kind+'Count'); if(c)c.textContent=labels[kind]+': '+countLabel(counts[kind])+' • Newest first';
-    });
-  }
-  function orderCards(){
-    var grid=q('#refsPage .ref-grid'); if(!grid)return;
-    var cv=byId('cvCardTitle'); var cvCard=cv?cv.closest('.ref-card'):q('#refsPage .cv-card');
-    var cover=byId('coverLetterCard');
-    if(cvCard){cvCard.style.order='-100';cvCard.classList.add('cv-card');}
-    var order=[['appraisalCardTitle','10'],['referenceCardTitle','20'],['recommendationCardTitle','30']];
-    order.forEach(function(x){var t=byId(x[0]); var c=t?t.closest('.ref-card'):null; if(c)c.style.order=x[1];});
-    if(cover){cover.style.order='40';}
-  }
-  function run(){
-    applyBuild();
-    try{if(typeof window.renderManagedFiles==='function')window.renderManagedFiles();}catch(e){}
-    ensureBadgesExist();
-    orderCards();
-    updateCounts();
-  }
-  var oldRenderManaged=window.renderManagedFiles;
-  if(typeof oldRenderManaged==='function'){
-    window.renderManagedFiles=function(){var r=oldRenderManaged.apply(this,arguments);setTimeout(function(){ensureBadgesExist();orderCards();updateCounts();},0);return r;};
-  }
-  ['renderAll','showPage','applyLanguage'].forEach(function(name){
-    var old=window[name];
-    if(typeof old==='function')window[name]=function(){var r=old.apply(this,arguments);setTimeout(run,30);setTimeout(run,220);return r;};
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',function(){run();setTimeout(run,500);});
-  setTimeout(run,900);
-  setInterval(function(){ensureBadgesExist();updateCounts();},1000);
-})();
-</script>
-
-
-
-<style id="ATSRS_V131_REFERENCES_BADGES_FINAL_CSS">
-/* V131: Final visual alignment for References/Appraisals file badges. */
-#refsPage .ref-doc-head .badge,
-#refsPage #coverLetterStatusBadge{
-  min-width:72px!important;
-  height:24px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  margin:0!important;
-  white-space:nowrap!important;
-}
-</style>
-<script id="ATSRS_V131_REFERENCES_BADGES_FINAL_JS">
-(function(){
-  'use strict';
-  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function byId(id){return document.getElementById(id);}
-  function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
-  function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
-  function storageKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){}return 'atsrs_'+safeUserId()+'_'+name;}
-  function readArr(name){
-    try{if(typeof window.getData==='function'&&window.currentUser&&window.currentUser.id){var a=window.getData(name);return Array.isArray(a)?a:[];}}catch(e){}
-    try{var raw=localStorage.getItem(storageKey(name));var p=raw?JSON.parse(raw):[];return Array.isArray(p)?p:[];}catch(e){return [];}
-  }
-  function setBuild(){
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V131';
-      if(d[1])d[1].textContent='Last Update: 16 Jun 2026 0325 UTC';
-      if(d[2])d[2].textContent='TEST BUILD';
-    });
-  }
-  function setBadge(id,n){
-    var el=byId(id); if(!el)return;
-    el.textContent=label(n);
-    el.className='badge '+(n>0?'badge-ready':'badge-blocked');
-  }
-  function normalize(){
-    var counts={
-      appraisal:readArr('appraisalFiles').length,
-      reference:readArr('referenceFiles').length,
-      recommendation:readArr('recommendationFiles').length,
-      cover:readArr('coverLetterFiles').length
-    };
-    setBadge('appraisalStatusBadge',counts.appraisal);
-    setBadge('referenceStatusBadge',counts.reference);
-    setBadge('recommendationStatusBadge',counts.recommendation);
-    setBadge('coverLetterStatusBadge',counts.cover);
-    var names={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters'};
-    Object.keys(names).forEach(function(k){var c=byId(k+'Count'); if(c)c.textContent=names[k]+': '+label(counts[k])+' • Newest first';});
-  }
-  function run(){setBuild();normalize();}
-  var old=window.renderManagedFiles;
-  if(typeof old==='function'&&!old.__atsrsV131){
-    var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,0);setTimeout(run,80);return r;};
-    wrapped.__atsrsV131=true;
-    window.renderManagedFiles=wrapped;
-  }
-  ['renderAll','showPage','applyLanguage'].forEach(function(name){
-    var base=window[name];
-    if(typeof base==='function'&&!base.__atsrsV131){
-      var wrapped=function(){var r=base.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
-      wrapped.__atsrsV131=true;
-      window[name]=wrapped;
-    }
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',function(){run();setTimeout(run,350);});
-  setTimeout(run,700);
-  setInterval(run,900);
-})();
-</script>
-
-
-
-<style id="ATSRS_V132_REFERENCES_UNIFIED_CARDS_CSS">
-/* V132: references cards use one visual system, no 0 badges, lists scroll after approx. 3 files. */
-#refsPage .ref-grid{align-items:stretch!important;}
-#refsPage .ref-card:not(.cv-card),
-#refsPage #coverLetterCard{
+#refsPage .atsrs-v134-career-card{
   display:flex!important;
   flex-direction:column!important;
   min-height:342px!important;
-  border-color:var(--atsrs-border,#264058)!important;
+  height:342px!important;
+  border:1px solid var(--atsrs-border,#264058)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;
   box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
+  padding:18px!important;
+  overflow:hidden!important;
 }
-#refsPage .ref-doc-head,
-#refsPage #coverLetterCard .ref-doc-head{
-  display:flex!important;
-  align-items:flex-start!important;
-  justify-content:space-between!important;
-  gap:12px!important;
-  min-height:58px!important;
-  margin:0 0 16px!important;
-}
-#refsPage .ref-doc-head h3{
-  margin:0!important;
+#refsPage .atsrs-v134-career-card h3{
+  margin:0 0 36px!important;
   padding:0!important;
-  line-height:1.16!important;
-  min-height:48px!important;
-  display:flex!important;
-  align-items:flex-start!important;
+  min-height:46px!important;
+  line-height:1.18!important;
+  font-size:20px!important;
+  color:#f8fafc!important;
 }
-#refsPage .ref-doc-head .badge,
-#refsPage #v105_appraisal_badge,
-#refsPage #v105_reference_badge,
-#refsPage #appraisalStatusBadge,
-#refsPage #referenceStatusBadge,
-#refsPage #recommendationStatusBadge,
-#refsPage #coverLetterStatusBadge{
-  min-width:72px!important;
-  height:24px!important;
-  padding:5px 10px!important;
-  margin:0!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  line-height:1!important;
-  white-space:nowrap!important;
-  text-align:center!important;
-  align-self:flex-start!important;
-}
-#refsPage .ref-card:not(.cv-card) > .sub,
-#refsPage #coverLetterCard > .sub{
+#refsPage .atsrs-v134-career-card .atsrs-v134-desc{
   min-height:70px!important;
-  margin:0 0 12px!important;
+  margin:0 0 14px!important;
+  color:#a7b5c5!important;
   line-height:1.35!important;
 }
-#refsPage .ref-card:not(.cv-card) > button.secondary,
-#refsPage #coverLetterCard > button.secondary,
-#refsPage #coverLetterUploadBtn{
-  margin-top:auto!important;
-  margin-bottom:10px!important;
+#refsPage .atsrs-v134-career-card .atsrs-v134-upload{
+  margin:auto 0 10px!important;
+  width:100%!important;
+  background:#1a293b!important;
+  border:1px solid #31465f!important;
+  box-shadow:none!important;
+  color:#eef6ff!important;
 }
-#refsPage .career-count,
-#refsPage .v105-career-list + .career-count,
-#refsPage #coverLetterCount{
-  min-height:18px!important;
+#refsPage .atsrs-v134-status{
   margin:0 0 8px!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
   font-size:12px!important;
-  color:#a7b5c5!important;
-  font-weight:800!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  min-height:18px!important;
 }
-#refsPage .career-record-list,
-#refsPage .v105-career-list,
-#refsPage #coverLetterRecordList{
-  max-height:142px!important;
+#refsPage .atsrs-v134-status.empty{color:#f87171!important;}
+#refsPage .atsrs-v134-status.ready{color:#86efac!important;}
+#refsPage .atsrs-v134-list{
+  max-height:104px!important;
+  min-height:39px!important;
   overflow-y:auto!important;
   overflow-x:hidden!important;
   padding-right:4px!important;
   border-radius:12px!important;
 }
-#refsPage .preview-box,
-#refsPage .v105-empty-note,
-#refsPage .atsrs-v132-empty-note{
+#refsPage .atsrs-v134-empty{
   color:#94a3b8!important;
   font-size:13px!important;
   border:1px dashed #334155!important;
   border-radius:12px!important;
   padding:10px!important;
   background:rgba(2,6,23,.28)!important;
-  margin:0!important;
 }
-#refsPage .atsrs-v132-row{
+#refsPage .atsrs-v134-row{
   border:1px solid #334155!important;
   border-radius:14px!important;
   background:rgba(2,6,23,.35)!important;
-  padding:10px!important;
+  padding:9px!important;
   display:grid!important;
   gap:8px!important;
   margin-bottom:8px!important;
 }
-#refsPage .atsrs-v132-row b{display:block!important;word-break:break-word!important;line-height:1.25!important;}
-#refsPage .atsrs-v132-row span{font-size:12px!important;color:#94a3b8!important;}
-#refsPage .atsrs-v132-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;}
-#refsPage .atsrs-v132-actions button{margin:0!important;padding:9px 6px!important;}
-@media(max-width:520px){#refsPage .atsrs-v132-actions{grid-template-columns:1fr!important;}}
-</style>
-<script id="ATSRS_V132_REFERENCES_UNIFIED_CARDS_JS">
-(function(){
-  'use strict';
-  function q(s,r){return (r||document).querySelector(s);}
-  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function byId(id){return document.getElementById(id);}
-  function esc(s){return String(s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c;});}
-  function fileLabel(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
-  function safeParse(v,fallback){try{var p=JSON.parse(v||'');return p==null?fallback:p;}catch(e){return fallback;}}
-  function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
-  function localKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){}return 'atsrs_'+safeUserId()+'_'+name;}
-  function readJson(name){try{return safeParse(localStorage.getItem(localKey(name)),[]);}catch(e){return [];}}
-  function writeJson(name,arr){try{localStorage.setItem(localKey(name),JSON.stringify(Array.isArray(arr)?arr:[]));}catch(e){}}
-  function readV105(kind){try{return safeParse(localStorage.getItem('atsrs_v105_'+kind+'_files'),[]).filter(function(f){return f&&f.name;});}catch(e){return [];}}
-  function writeV105(kind,arr){try{localStorage.setItem('atsrs_v105_'+kind+'_files',JSON.stringify(Array.isArray(arr)?arr:[]));}catch(e){}}
-  function managedFiles(kind){
-    if(kind==='appraisal'||kind==='reference'){
-      var v105=readV105(kind); if(v105.length)return v105;
-    }
-    try{if(typeof window.getManagedFiles==='function'){var a=window.getManagedFiles(kind); if(Array.isArray(a))return a;}}catch(e){}
-    return readJson(kind+'Files');
-  }
-  function setManaged(kind,arr){
-    if(kind==='appraisal'||kind==='reference')writeV105(kind,arr);
-    else {try{if(typeof window.setManagedFiles==='function'){window.setManagedFiles(kind,arr);return;}}catch(e){} writeJson(kind+'Files',arr);}
-  }
-  function coverFiles(){return readJson('coverLetterFiles');}
-  function saveCoverFiles(arr){writeJson('coverLetterFiles',arr);}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V132';if(d[1])d[1].textContent='Last Update: 16 Jun 2026 0338 UTC';if(d[2])d[2].textContent='TEST BUILD';});}
-  function ensureHead(card,titleId,titleText,badgeId){
-    if(!card)return null;
-    var title=byId(titleId)||q('h3',card);
-    if(!title){title=document.createElement('h3');title.id=titleId;title.textContent=titleText;card.insertBefore(title,card.firstChild);}
-    title.id=titleId; title.textContent=titleText;
-    var head=title.closest('.ref-doc-head');
-    if(!head){head=document.createElement('div');head.className='ref-doc-head';title.parentNode.insertBefore(head,title);head.appendChild(title);}
-    var badge=byId(badgeId);
-    if(!badge){badge=document.createElement('span');badge.id=badgeId;badge.className='badge badge-blocked';badge.textContent='No File';}
-    if(badge.parentElement!==head)head.appendChild(badge);
-    return badge;
-  }
-  function setBadge(ids,n){ids.forEach(function(id){var b=byId(id);if(b){b.textContent=fileLabel(n);b.className='badge '+(n>0?'badge-ready':'badge-blocked');}});}
-  function ensureStandardCards(){
-    try{if(typeof window.ensureRecommendationCard==='function')window.ensureRecommendationCard();}catch(e){}
-    try{if(typeof window.ensureCoverLetterCard==='function')window.ensureCoverLetterCard();}catch(e){}
-    var configs=[
-      {kind:'appraisal',titleId:'appraisalCardTitle',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',legacyBadge:'v105_appraisal_badge'},
-      {kind:'reference',titleId:'referenceCardTitle',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',legacyBadge:'v105_reference_badge'},
-      {kind:'recommendation',titleId:'recommendationCardTitle',title:'Recommendation Letters',desc:'Store recommendation letters from supervisors, clients and companies.',upload:'Upload Recommendation'},
-      {kind:'coverLetter',titleId:'coverLetterCardTitle',title:'Cover Letter',desc:'Store cover letter versions next to your CV for faster applications.',upload:'Upload Cover Letter'}
-    ];
-    configs.forEach(function(c){
-      var title=byId(c.titleId); var card=title?title.closest('.ref-card'):(c.kind==='coverLetter'?byId('coverLetterCard'):null); if(!card)return;
-      if(c.kind==='coverLetter'){card.id='coverLetterCard';card.classList.add('ref-card','cover-letter-card');}
-      ensureHead(card,c.titleId,c.title,c.kind+'StatusBadge');
-      if(c.legacyBadge){var legacy=byId(c.legacyBadge); if(legacy)legacy.id=c.kind+'StatusBadge';}
-      var p=byId(c.kind+'CardText')||q(':scope > p.sub',card); if(!p){p=document.createElement('p');p.className='sub';var h=q('.ref-doc-head',card);h?h.insertAdjacentElement('afterend',p):card.appendChild(p);} p.id=c.kind+'CardText'; p.textContent=c.desc;
-      if(c.kind==='coverLetter'){
-        var oldActions=q('.cv-actions',card); if(oldActions)oldActions.remove();
-        var oldInfo=byId('coverLetterFileInfo'); if(oldInfo)oldInfo.remove();
-        if(!byId('coverLetterUploadInput')){var inp=document.createElement('input');inp.id='coverLetterUploadInput';inp.type='file';inp.accept='.pdf,.doc,.docx,.jpg,.jpeg,.png';inp.multiple=true;inp.className='hidden';card.appendChild(inp);}
-        var btn=byId('coverLetterUploadBtn'); if(!btn){btn=document.createElement('button');btn.id='coverLetterUploadBtn';btn.className='secondary';card.appendChild(btn);} btn.textContent=c.upload; btn.onclick=function(){var i=byId('coverLetterUploadInput');if(i)i.click();};
-        var inp2=byId('coverLetterUploadInput'); if(inp2)inp2.onchange=handleCoverUpload;
-        if(!byId('coverLetterCount')){var cnt=document.createElement('div');cnt.id='coverLetterCount';cnt.className='career-count';card.appendChild(cnt);}
-        if(!byId('coverLetterRecordList')){var list=document.createElement('div');list.id='coverLetterRecordList';list.className='career-record-list';card.appendChild(list);}
-      }
-    });
-  }
-  function previewData(f){if(!f)return;var w=window.open('','_blank');if(w){w.document.write('<title>'+esc(f.name||'File')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}}
-  function downloadData(f,prefix){if(!f)return;var a=document.createElement('a');a.href=f.data;a.download=f.name||prefix||'ATSRS-file';document.body.appendChild(a);a.click();a.remove();}
-  window.atsrsV132Preview=function(kind,id){var arr=(kind==='coverLetter'?coverFiles():managedFiles(kind));var f=arr.find(function(x){return x.id===id;});previewData(f);};
-  window.atsrsV132Download=function(kind,id){var arr=(kind==='coverLetter'?coverFiles():managedFiles(kind));var f=arr.find(function(x){return x.id===id;});downloadData(f,'ATSRS-'+kind);};
-  window.atsrsV132Delete=function(kind,id){var arr=(kind==='coverLetter'?coverFiles():managedFiles(kind)).filter(function(x){return x.id!==id;}); if(kind==='coverLetter')saveCoverFiles(arr);else setManaged(kind,arr); renderAllUnified();};
-  function rowHtml(kind,f){return '<div class="atsrs-v132-row"><div><b title="'+esc(f.name)+'">'+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v132-actions"><button class="secondary" onclick="atsrsV132Preview(\''+kind+'\',\''+f.id+'\')">Preview</button><button class="secondary" onclick="atsrsV132Download(\''+kind+'\',\''+f.id+'\')">Download</button><button class="action" onclick="atsrsV132Delete(\''+kind+'\',\''+f.id+'\')">Delete</button></div></div>';}
-  function renderList(kind,arr){
-    var id=kind==='coverLetter'?'coverLetterRecordList':(kind+'RecordList');
-    var list=byId(id)||byId('v105_'+kind+'_list'); if(!list)return;
-    arr=arr.slice().sort(function(a,b){return String(b.signedDate||b.updated||'').localeCompare(String(a.signedDate||a.updated||''));});
-    if(!arr.length){list.innerHTML='<div class="atsrs-v132-empty-note">No files uploaded yet.</div>';return;}
-    list.innerHTML=arr.map(function(f){return rowHtml(kind,f);}).join('');
-  }
-  function renderAllUnified(){
-    setBuild(); ensureStandardCards();
-    var data={appraisal:managedFiles('appraisal'),reference:managedFiles('reference'),recommendation:managedFiles('recommendation'),coverLetter:coverFiles()};
-    setBadge(['appraisalStatusBadge','v105_appraisal_badge'],data.appraisal.length);
-    setBadge(['referenceStatusBadge','v105_reference_badge'],data.reference.length);
-    setBadge(['recommendationStatusBadge'],data.recommendation.length);
-    setBadge(['coverLetterStatusBadge'],data.coverLetter.length);
-    var countMap={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters',coverLetter:'Cover Letter'};
-    Object.keys(countMap).forEach(function(k){var c=byId(k+'Count')||byId('v105_'+k+'_count'); if(c)c.textContent=fileLabel(data[k].length)+' • Newest first'; renderList(k,data[k]);});
-  }
-  function handleCoverUpload(event){
-    var files=event.target.files||[]; if(!files.length)return;
-    var arr=coverFiles(), left=files.length;
-    Array.prototype.forEach.call(files,function(file){var r=new FileReader();r.onload=function(){arr.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:r.result});if(--left===0){saveCoverFiles(arr);event.target.value='';renderAllUnified();}};r.readAsDataURL(file);});
-  }
-  var oldRenderManaged=window.renderManagedFiles;
-  if(typeof oldRenderManaged==='function'&&!oldRenderManaged.__atsrsV132){window.renderManagedFiles=function(){var r=oldRenderManaged.apply(this,arguments);setTimeout(renderAllUnified,0);return r;};window.renderManagedFiles.__atsrsV132=true;}
-  ['renderAll','showPage','applyLanguage'].forEach(function(name){var old=window[name];if(typeof old==='function'&&!old.__atsrsV132){window[name]=function(){var r=old.apply(this,arguments);setTimeout(renderAllUnified,30);setTimeout(renderAllUnified,250);return r;};window[name].__atsrsV132=true;}});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderAllUnified);else renderAllUnified();
-  window.addEventListener('load',function(){renderAllUnified();setTimeout(renderAllUnified,600);});
-  setTimeout(renderAllUnified,900); setInterval(renderAllUnified,1400);
-})();
-</script>
-
-
-
-<style id="ATSRS_V133_REFERENCES_REMOVE_TOP_BADGES_CSS">
-/* V133: remove duplicated red header badges. Keep a single red text status line under each upload button. */
+#refsPage .atsrs-v134-row b{
+  display:block!important;
+  word-break:break-word!important;
+  line-height:1.25!important;
+  color:#e5e7eb!important;
+}
+#refsPage .atsrs-v134-row span{
+  display:block!important;
+  font-size:12px!important;
+  color:#94a3b8!important;
+  margin-top:3px!important;
+}
+#refsPage .atsrs-v134-actions{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+#refsPage .atsrs-v134-actions button{
+  width:100%!important;
+  margin:0!important;
+  padding:8px 6px!important;
+  font-size:12px!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-hidden-badge,
 #refsPage #appraisalStatusBadge,
 #refsPage #referenceStatusBadge,
 #refsPage #recommendationStatusBadge,
@@ -7714,78 +7147,194 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #refsPage #v105_reference_badge,
 #refsPage .ref-doc-head .badge{
   display:none!important;
-  visibility:hidden!important;
 }
-#refsPage .ref-doc-head,
-#refsPage #coverLetterCard .ref-doc-head{
-  display:block!important;
-  min-height:58px!important;
-  margin:0 0 16px!important;
-}
-#refsPage .ref-doc-head h3{
-  min-height:48px!important;
-  display:block!important;
-}
-#refsPage .career-count,
-#refsPage #coverLetterCount,
-#refsPage #v105_appraisal_count,
-#refsPage #v105_reference_count,
-#refsPage #appraisalCount,
-#refsPage #referenceCount,
-#refsPage #recommendationCount{
-  color:#f87171!important;
-  background:transparent!important;
-  border:0!important;
-  padding:0!important;
-  font-size:12px!important;
-  font-weight:900!important;
-  line-height:1.35!important;
-  min-height:18px!important;
-  margin:0 0 8px!important;
-}
-#refsPage .ref-card:not(.cv-card) > button.secondary,
-#refsPage #coverLetterUploadBtn{
-  margin-bottom:10px!important;
-}
+@media(max-width:1100px){#refsPage .ref-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+@media(max-width:640px){#refsPage .ref-grid{grid-template-columns:1fr!important;}#refsPage .cv-card{grid-column:1 / -1!important;}.atsrs-v134-actions{grid-template-columns:1fr!important;}}
 </style>
-<script id="ATSRS_V133_REFERENCES_REMOVE_TOP_BADGES_JS">
+<script id="ATSRS_V134_REFERENCES_STABLE_SINGLE_SYSTEM_JS">
 (function(){
   'use strict';
+
+  var BUILD='ATSRS V134';
+  var UPDATE='Last Update: 16 Jun 2026 0400 UTC';
+  var CONFIGS=[
+    {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
+    {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
+    {kind:'recommendation',title:'Recommendation Letters',desc:'Store recommendation letters from supervisors, clients and companies.',upload:'Upload Recommendation',order:30,oldKeys:['recommendationFiles']},
+    {kind:'coverLetter',title:'Cover Letter',desc:'Store cover letter versions next to your CV for faster applications.',upload:'Upload Cover Letter',order:40,oldKeys:['coverLetterFiles']}
+  ];
+
   function byId(id){return document.getElementById(id);}
+  function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
-  function safeParse(v,f){try{var p=JSON.parse(v||'');return p==null?f:p;}catch(e){return f;}}
+  function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c;});}
+  function parse(raw){try{var p=JSON.parse(raw||'[]');return Array.isArray(p)?p:[];}catch(e){return [];}}
   function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
-  function localKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){}return 'atsrs_'+safeUserId()+'_'+name;}
-  function readJson(name){try{return safeParse(localStorage.getItem(localKey(name)),[]);}catch(e){return [];}}
-  function readV105(kind){try{return safeParse(localStorage.getItem('atsrs_v105_'+kind+'_files'),[]).filter(function(f){return f&&f.name;});}catch(e){return [];}}
-  function getFiles(kind){
-    if(kind==='appraisal'||kind==='reference'){
-      var v105=readV105(kind); if(v105.length)return v105;
+  function scopedKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){} return 'atsrs_'+safeUserId()+'_'+name;}
+  function newKey(kind){return scopedKey('v134_'+kind+'_files');}
+  function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+
+  function readRawKey(k){
+    try{return parse(localStorage.getItem(k));}catch(e){return [];}
+  }
+  function readPossibleStorage(kind,cfg){
+    var arr=readRawKey(newKey(kind));
+    if(arr.length)return arr;
+    var sources=[];
+    (cfg.oldKeys||[]).forEach(function(k){
+      sources=sources.concat(readRawKey(k));
+      sources=sources.concat(readRawKey(scopedKey(k)));
+    });
+    try{ if(kind!=='coverLetter' && typeof window.getManagedFiles==='function'){var m=window.getManagedFiles(kind); if(Array.isArray(m))sources=sources.concat(m);} }catch(e){}
+    var seen={}, out=[];
+    sources.forEach(function(f){
+      if(!f || !f.name)return;
+      var id=f.id || (Date.now()+'_'+Math.random().toString(36).slice(2));
+      var key=String(f.name)+'|'+String(f.size||'')+'|'+String(f.updated||f.signedDate||'');
+      if(seen[key])return; seen[key]=1;
+      out.push({
+        id:id,name:f.name,type:f.type||'application/octet-stream',size:f.size||0,
+        updated:f.updated||new Date().toISOString(),data:f.data||''
+      });
+    });
+    if(out.length)writeFiles(kind,out);
+    return out;
+  }
+  function readFiles(kind){
+    var cfg=CONFIGS.find(function(x){return x.kind===kind;});
+    return readPossibleStorage(kind,cfg||{});
+  }
+  function writeFiles(kind,arr){
+    try{localStorage.setItem(newKey(kind),JSON.stringify(Array.isArray(arr)?arr:[]));}catch(e){}
+  }
+
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+
+  function findGrid(){
+    return q('#refsPage .ref-grid');
+  }
+  function findCard(kind){
+    if(kind==='coverLetter')return byId('coverLetterCard');
+    var titleId=kind==='appraisal'?'appraisalCardTitle':kind==='reference'?'referenceCardTitle':'recommendationCardTitle';
+    var title=byId(titleId);
+    return title?title.closest('.ref-card'):null;
+  }
+  function createCard(kind){
+    var grid=findGrid(); if(!grid)return null;
+    var card=document.createElement('div');
+    card.className='ref-card atsrs-v134-career-card';
+    if(kind==='coverLetter')card.id='coverLetterCard';
+    grid.appendChild(card);
+    return card;
+  }
+
+  function buildCard(cfg){
+    var grid=findGrid(); if(!grid)return;
+    var card=findCard(cfg.kind)||createCard(cfg.kind); if(!card)return;
+    card.className='ref-card atsrs-v134-career-card'+(cfg.kind==='coverLetter'?' cover-letter-card':'');
+    card.style.order=String(cfg.order);
+    card.dataset.atsrsV134Kind=cfg.kind;
+    var titleId=cfg.kind==='appraisal'?'appraisalCardTitle':cfg.kind==='reference'?'referenceCardTitle':cfg.kind==='recommendation'?'recommendationCardTitle':'coverLetterCardTitle';
+    card.innerHTML=
+      '<h3 id="'+titleId+'">'+esc(cfg.title)+'</h3>'+
+      '<p class="atsrs-v134-desc">'+esc(cfg.desc)+'</p>'+
+      '<input id="v134_'+cfg.kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
+      '<button id="v134_'+cfg.kind+'_upload" class="secondary atsrs-v134-upload">'+esc(cfg.upload)+'</button>'+
+      '<div id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File • Newest first</div>'+
+      '<div id="v134_'+cfg.kind+'_list" class="atsrs-v134-list"><div class="atsrs-v134-empty">No files uploaded yet.</div></div>';
+    var btn=byId('v134_'+cfg.kind+'_upload');
+    var inp=byId('v134_'+cfg.kind+'_input');
+    if(btn&&inp){
+      btn.onclick=function(){inp.click();};
+      inp.onchange=function(e){handleUpload(cfg.kind,e);};
     }
-    if(kind==='coverLetter')return readJson('coverLetterFiles');
-    try{if(typeof window.getManagedFiles==='function'){var a=window.getManagedFiles(kind); if(Array.isArray(a))return a;}}catch(e){}
-    return readJson(kind+'Files');
   }
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V133';if(d[1])d[1].textContent='Last Update: 16 Jun 2026 0348 UTC';if(d[2])d[2].textContent='TEST BUILD';});}
-  function removeTopBadges(){
-    ['appraisalStatusBadge','referenceStatusBadge','recommendationStatusBadge','coverLetterStatusBadge','v105_appraisal_badge','v105_reference_badge'].forEach(function(id){var el=byId(id); if(el)el.remove();});
-    qa('#refsPage .ref-doc-head .badge').forEach(function(el){el.remove();});
+
+  function ensureLayout(){
+    var grid=findGrid(); if(!grid)return;
+    var cvTitle=byId('cvCardTitle');
+    var cvCard=cvTitle?cvTitle.closest('.ref-card'):q('#refsPage .cv-card');
+    if(cvCard){cvCard.classList.add('cv-card');cvCard.style.order='-100';cvCard.style.gridColumn='1 / -1';}
+    CONFIGS.forEach(buildCard);
   }
-  function setStatus(id,n){var el=byId(id); if(el){el.textContent=label(n)+' • Newest first';el.className='career-count atsrs-v133-red-status';}}
-  function normalize(){
-    setBuild();
-    removeTopBadges();
-    var counts={appraisal:getFiles('appraisal').length,reference:getFiles('reference').length,recommendation:getFiles('recommendation').length,coverLetter:getFiles('coverLetter').length};
-    setStatus('appraisalCount',counts.appraisal); setStatus('v105_appraisal_count',counts.appraisal);
-    setStatus('referenceCount',counts.reference); setStatus('v105_reference_count',counts.reference);
-    setStatus('recommendationCount',counts.recommendation);
-    setStatus('coverLetterCount',counts.coverLetter);
+
+  function handleUpload(kind,event){
+    var files=event.target.files||[]; if(!files.length)return;
+    var arr=readFiles(kind), left=files.length;
+    Array.prototype.forEach.call(files,function(file){
+      var reader=new FileReader();
+      reader.onload=function(){
+        arr.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size||0,updated:new Date().toISOString(),data:reader.result});
+        left--;
+        if(left===0){writeFiles(kind,arr);event.target.value='';render();}
+      };
+      reader.readAsDataURL(file);
+    });
   }
-  ['renderAll','showPage','applyLanguage','renderManagedFiles'].forEach(function(name){var old=window[name]; if(typeof old==='function'&&!old.__atsrsV133){window[name]=function(){var r=old.apply(this,arguments);setTimeout(normalize,20);setTimeout(normalize,220);return r;};window[name].__atsrsV133=true;}});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',normalize);else normalize();
-  window.addEventListener('load',function(){normalize();setTimeout(normalize,700);});
-  setTimeout(normalize,1000); setInterval(normalize,1000);
+
+  window.atsrsV134Preview=function(kind,id){
+    var f=readFiles(kind).find(function(x){return x.id===id;}); if(!f||!f.data){alert('File preview is not available.');return;}
+    var w=window.open('','_blank'); if(w){w.document.write('<title>'+esc(f.name||'File')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}
+  };
+  window.atsrsV134Download=function(kind,id){
+    var f=readFiles(kind).find(function(x){return x.id===id;}); if(!f||!f.data){alert('File download is not available.');return;}
+    var a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();
+  };
+  window.atsrsV134Delete=function(kind,id){
+    writeFiles(kind,readFiles(kind).filter(function(f){return f.id!==id;})); render();
+  };
+
+  function row(kind,f){
+    return '<div class="atsrs-v134-row">'+
+      '<div><b title="'+esc(f.name)+'">'+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div>'+
+      '<div class="atsrs-v134-actions">'+
+      '<button class="secondary" onclick="atsrsV134Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button>'+
+      '<button class="secondary" onclick="atsrsV134Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button>'+
+      '<button class="action" onclick="atsrsV134Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button>'+
+      '</div></div>';
+  }
+
+  function render(){
+    setBuild(); ensureLayout();
+    CONFIGS.forEach(function(cfg){
+      var arr=readFiles(cfg.kind).slice().sort(function(a,b){return String(b.updated||'').localeCompare(String(a.updated||''));});
+      var status=byId('v134_'+cfg.kind+'_status');
+      var list=byId('v134_'+cfg.kind+'_list');
+      if(status){
+        status.textContent=label(arr.length)+' • Newest first';
+        status.className='atsrs-v134-status '+(arr.length?'ready':'empty');
+      }
+      if(list){
+        list.innerHTML=arr.length?arr.map(function(f){return row(cfg.kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
+      }
+    });
+  }
+
+  function hideLegacyNoise(){
+    qa('#refsPage #appraisalStatusBadge,#refsPage #referenceStatusBadge,#refsPage #recommendationStatusBadge,#refsPage #coverLetterStatusBadge,#refsPage #v105_appraisal_badge,#refsPage #v105_reference_badge,#refsPage .ref-doc-head .badge').forEach(function(x){x.remove();});
+  }
+
+  function run(){setBuild();ensureLayout();hideLegacyNoise();render();}
+
+  ['renderAll','showPage','applyLanguage','renderManagedFiles'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function'&&!old.__atsrsV134){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,40);setTimeout(run,240);return r;};
+      wrapped.__atsrsV134=true;
+      window[name]=wrapped;
+    }
+  });
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,500);});
+  setTimeout(run,900);
 })();
 </script>
 
