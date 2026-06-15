@@ -7031,7 +7031,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 
 
 <style id="ATSRS_V134_REFERENCES_STABLE_SINGLE_SYSTEM_CSS">
-/* V134: single clean References/Appraisals card system. Removes visual jumps and duplicated counters. */
+/* V135: clean References/Appraisals status and filter row. No top badges, no duplicated counters. */
 #refsPage .ref-grid{
   display:grid!important;
   grid-template-columns:repeat(4,minmax(0,1fr))!important;
@@ -7077,18 +7077,42 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   box-shadow:none!important;
   color:#eef6ff!important;
 }
-#refsPage .atsrs-v134-status{
+#refsPage .atsrs-v134-statusbar{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
   margin:0 0 8px!important;
+  min-height:28px!important;
+}
+#refsPage .atsrs-v134-status{
+  margin:0!important;
   padding:0!important;
   background:transparent!important;
   border:0!important;
   font-size:12px!important;
   font-weight:900!important;
   line-height:1.35!important;
-  min-height:18px!important;
+  min-height:auto!important;
 }
 #refsPage .atsrs-v134-status.empty{color:#f87171!important;}
 #refsPage .atsrs-v134-status.ready{color:#86efac!important;}
+#refsPage .atsrs-v134-filter{
+  display:none!important;
+  width:auto!important;
+  min-width:118px!important;
+  max-width:140px!important;
+  margin:0!important;
+  padding:6px 9px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  background:#0b1726!important;
+  border:1px solid #334155!important;
+  color:#cbd5e1!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-filter.active{display:block!important;}
 #refsPage .atsrs-v134-list{
   max-height:104px!important;
   min-height:39px!important;
@@ -7155,7 +7179,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V134';
+  var BUILD='ATSRS V135';
   var UPDATE='Last Update: 16 Jun 2026 0400 UTC';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
@@ -7247,7 +7271,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
       '<p class="atsrs-v134-desc">'+esc(cfg.desc)+'</p>'+
       '<input id="v134_'+cfg.kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
       '<button id="v134_'+cfg.kind+'_upload" class="secondary atsrs-v134-upload">'+esc(cfg.upload)+'</button>'+
-      '<div id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File • Newest first</div>'+
+      '<div class="atsrs-v134-statusbar"><span id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File</span><select id="v134_'+cfg.kind+'_filter" class="atsrs-v134-filter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option></select></div>'+
       '<div id="v134_'+cfg.kind+'_list" class="atsrs-v134-list"><div class="atsrs-v134-empty">No files uploaded yet.</div></div>';
     var btn=byId('v134_'+cfg.kind+'_upload');
     var inp=byId('v134_'+cfg.kind+'_input');
@@ -7255,6 +7279,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
       btn.onclick=function(){inp.click();};
       inp.onchange=function(e){handleUpload(cfg.kind,e);};
     }
+    var fil=byId('v134_'+cfg.kind+'_filter');
+    if(fil){ fil.onchange=function(){ render(); }; }
   }
 
   function ensureLayout(){
@@ -7304,12 +7330,23 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function render(){
     setBuild(); ensureLayout();
     CONFIGS.forEach(function(cfg){
-      var arr=readFiles(cfg.kind).slice().sort(function(a,b){return String(b.updated||'').localeCompare(String(a.updated||''));});
+      var arr=readFiles(cfg.kind).slice();
+      var filter=byId('v134_'+cfg.kind+'_filter');
+      var mode=filter?filter.value:'newest';
+      arr.sort(function(a,b){
+        if(mode==='oldest')return String(a.updated||'').localeCompare(String(b.updated||''));
+        if(mode==='az')return String(a.name||'').localeCompare(String(b.name||''));
+        if(mode==='za')return String(b.name||'').localeCompare(String(a.name||''));
+        return String(b.updated||'').localeCompare(String(a.updated||''));
+      });
       var status=byId('v134_'+cfg.kind+'_status');
       var list=byId('v134_'+cfg.kind+'_list');
       if(status){
-        status.textContent=label(arr.length)+' • Newest first';
+        status.textContent=label(arr.length);
         status.className='atsrs-v134-status '+(arr.length?'ready':'empty');
+      }
+      if(filter){
+        filter.classList.toggle('active',arr.length>0);
       }
       if(list){
         list.innerHTML=arr.length?arr.map(function(f){return row(cfg.kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
