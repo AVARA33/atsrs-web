@@ -7146,5 +7146,102 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 })();
 </script>
 
+
+
+<style id="ATSRS_V129_COVER_LETTER_UNIFIED_BADGES_CSS">
+/* V129 from V127 + V128: Cover Letter card visual match and unified file badges. */
+#refsPage .cover-letter-card,
+#refsPage #coverLetterCard{
+  border-color:var(--atsrs-border,#264058)!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
+}
+#refsPage .cover-letter-card:hover,
+#refsPage #coverLetterCard:hover{
+  border-color:var(--atsrs-border,#264058)!important;
+}
+#refsPage .ref-doc-head .badge,
+#refsPage #coverLetterStatusBadge{
+  min-width:62px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+</style>
+<script id="ATSRS_V129_COVER_LETTER_UNIFIED_BADGES_JS">
+(function(){
+  'use strict';
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function byId(id){return document.getElementById(id);}
+  function countLabel(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+  function safeUserId(){try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
+  function storageKey(name){try{if(typeof window.localKey==='function' && window.currentUser && currentUser.id)return window.localKey(name);}catch(e){} return 'atsrs_'+safeUserId()+'_'+name;}
+  function readArr(name){
+    try{
+      if(typeof window.getData==='function' && window.currentUser && currentUser.id){var a=window.getData(name); return Array.isArray(a)?a:[];}
+    }catch(e){}
+    try{var raw=localStorage.getItem(storageKey(name)); var parsed=raw?JSON.parse(raw):[]; return Array.isArray(parsed)?parsed:[];}catch(e){return [];}
+  }
+  function applyBuild(){
+    var BUILD='ATSRS V129';
+    var UPDATE='Last Update: 16 Jun 2026 0305 UTC';
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function ensureRecommendationCardReady(){try{if(typeof window.renderManagedFiles==='function')window.renderManagedFiles();}catch(e){}}
+  function badge(id,n){
+    var el=byId(id); if(!el)return;
+    el.textContent=countLabel(n);
+    el.className='badge '+(n>0?'badge-ready':'badge-blocked');
+  }
+  function normalizeReferenceCardStyles(){
+    var cover=byId('coverLetterCard');
+    if(cover){
+      cover.classList.add('ref-card','cover-letter-card');
+      cover.style.borderColor='';
+      cover.style.boxShadow='';
+    }
+    var grid=q('#refsPage .ref-grid');
+    var cv=byId('cvCardTitle');
+    var cvCard=cv?cv.closest('.ref-card'):q('#refsPage .cv-card');
+    if(grid&&cvCard&&cover&&cover.previousElementSibling!==cvCard){grid.insertBefore(cover,cvCard.nextSibling);}
+  }
+  function applyUnifiedBadges(){
+    normalizeReferenceCardStyles();
+    var counts={
+      appraisal:readArr('appraisalFiles').length,
+      reference:readArr('referenceFiles').length,
+      recommendation:readArr('recommendationFiles').length,
+      cover:readArr('coverLetterFiles').length
+    };
+    badge('appraisalStatusBadge',counts.appraisal);
+    badge('referenceStatusBadge',counts.reference);
+    badge('recommendationStatusBadge',counts.recommendation);
+    badge('coverLetterStatusBadge',counts.cover);
+    var map={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters'};
+    Object.keys(map).forEach(function(kind){
+      var c=byId(kind+'Count');
+      if(c)c.textContent=map[kind]+': '+countLabel(counts[kind])+' • Newest first';
+    });
+  }
+  function run(){applyBuild();ensureRecommendationCardReady();applyUnifiedBadges();}
+  var oldRenderManaged=window.renderManagedFiles;
+  if(typeof oldRenderManaged==='function'){
+    window.renderManagedFiles=function(){var r=oldRenderManaged.apply(this,arguments);setTimeout(applyUnifiedBadges,0);return r;};
+  }
+  ['renderAll','showPage','applyLanguage'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function')window[name]=function(){var r=old.apply(this,arguments);setTimeout(run,60);setTimeout(run,260);return r;};
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,500);});
+  setTimeout(run,900);
+  setInterval(applyUnifiedBadges,1800);
+})();
+</script>
+
 </body>
 </html>
