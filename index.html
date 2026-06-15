@@ -895,6 +895,56 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 /* V120 Android dark system navigation bar support */
 html, body{background-color:#07111d!important;color-scheme:dark!important;}
 
+
+
+/* V121: Login feature cards taller, same compact width, single-row desktop/tablet layout */
+#auth .feature-grid{
+  grid-template-columns:repeat(6,minmax(92px,1fr))!important;
+  gap:10px!important;
+  align-items:stretch!important;
+}
+#auth .feature-tile{
+  min-height:142px!important;
+  padding:18px 10px 14px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+}
+#auth .feature-tile .tile-icon{
+  margin-bottom:10px!important;
+}
+#auth .feature-tile b{
+  margin:0 0 8px!important;
+  font-size:13px!important;
+  line-height:1.2!important;
+}
+#auth .feature-tile span:not(.tile-icon){
+  font-size:11.2px!important;
+  line-height:1.35!important;
+}
+@media(max-width:980px){
+  #auth .feature-grid{
+    grid-template-columns:repeat(6,minmax(82px,1fr))!important;
+    gap:8px!important;
+  }
+  #auth .feature-tile{
+    min-height:136px!important;
+    padding:16px 8px 12px!important;
+  }
+  #auth .feature-tile b{font-size:12px!important;}
+  #auth .feature-tile span:not(.tile-icon){font-size:10.5px!important;}
+}
+@media(max-width:760px){
+  #auth .feature-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:560px){
+  #auth .feature-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
 </style>
 
 </head>
@@ -997,8 +1047,8 @@ html, body{background-color:#07111d!important;color-scheme:dark!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V120</div>
-<div>Last Update: 15 Jun 2026 0205 UTC</div>
+<div>ATSRS V121</div>
+<div>Last Update: 15 Jun 2026 0225 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -3892,7 +3942,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v76-minimal-ui-and-audit-script">
 (function(){
   'use strict';
-  const BUILD='V120';
+  const BUILD='V121';
   window.atsrsV78EnglishOnlyNotice=function(){
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
@@ -4573,8 +4623,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -4666,8 +4716,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V120';
-  const UPDATE = 'Last Update: 15 Jun 2026 0205 UTC';
+  const BUILD = 'ATSRS V121';
+  const UPDATE = 'Last Update: 15 Jun 2026 0225 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -4936,8 +4986,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5219,8 +5269,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5499,8 +5549,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5674,8 +5724,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5818,8 +5868,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V120';
-  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD_LABEL = 'ATSRS V121';
+  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0225 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -5935,8 +5985,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6117,8 +6167,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6284,8 +6334,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V120';
-  var UPDATE='Last Update: 15 Jun 2026 0205 UTC';
+  var BUILD='ATSRS V121';
+  var UPDATE='Last Update: 15 Jun 2026 0225 UTC';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
