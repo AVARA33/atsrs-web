@@ -897,7 +897,7 @@ html, body{background-color:#07111d!important;color-scheme:dark!important;}
 
 
 
-/* V121 - Main ATSRS Platform service cards height adjustment only. Login page untouched. */
+/* V122 - Main ATSRS Platform service cards height adjustment only. Login page untouched. */
 @media (min-width: 1180px){
   #introPage .intro-service-grid{
     grid-template-columns:repeat(5,minmax(0,1fr))!important;
@@ -924,6 +924,27 @@ html, body{background-color:#07111d!important;color-scheme:dark!important;}
 @media (max-width:1179px){
   #introPage .intro-service-card{min-height:156px!important;}
 }
+
+
+
+/* V122 Customizable Dashboard: drag, resize, minimize */
+#dashboardPage{position:relative;}
+#dashboardPage .dash-custom-ready{position:relative;}
+#dashboardPage .dash-card-tools{position:absolute;top:8px;right:10px;z-index:8;display:flex;gap:6px;align-items:center;opacity:.58;transition:opacity .18s ease;}
+#dashboardPage .dash-custom-ready:hover>.dash-card-tools{opacity:1;}
+#dashboardPage .dash-drag-handle,#dashboardPage .dash-min-btn{width:30px!important;height:28px!important;min-width:30px!important;margin:0!important;padding:0!important;border-radius:10px!important;background:rgba(15,23,42,.72)!important;border:1px solid rgba(148,163,184,.30)!important;color:#cbd5e1!important;box-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;line-height:1!important;cursor:grab!important;}
+#dashboardPage .dash-min-btn{cursor:pointer!important;font-size:16px!important;}
+#dashboardPage .dash-drag-handle:active{cursor:grabbing!important;}
+#dashboardPage .dash-custom-ready{resize:both;overflow:auto;min-height:92px;min-width:220px;}
+#dashboardPage .stats-grid .dash-custom-ready{min-width:140px;min-height:105px;}
+#dashboardPage .dash-dragging{opacity:.46;outline:2px dashed rgba(56,189,248,.75);}
+#dashboardPage .dash-minimized{display:none!important;}
+#dashboardDock{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;flex-direction:column;gap:8px;max-width:190px;}
+#dashboardDock.hidden{display:none!important;}
+#dashboardDock .dock-item{width:auto!important;margin:0!important;padding:9px 11px!important;border-radius:999px!important;background:rgba(15,23,42,.92)!important;border:1px solid rgba(34,197,94,.35)!important;color:#bbf7d0!important;box-shadow:0 14px 30px rgba(0,0,0,.28)!important;font-size:12px!important;font-weight:800!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#dashboardPage .card,#dashboardPage .panel,#dashboardPage .solo-hero{scrollbar-width:thin;}
+#dashboardPage .dash-custom-ready p,#dashboardPage .dash-custom-ready span,#dashboardPage .dash-custom-ready b,#dashboardPage .dash-custom-ready h3{overflow-wrap:anywhere;}
+@media(max-width:800px){#dashboardPage .dash-custom-ready{resize:vertical;min-width:0;width:auto!important}#dashboardDock{right:10px;bottom:10px;max-width:155px}.dash-card-tools{top:6px!important;right:6px!important}}
 
 </style>
 
@@ -1027,8 +1048,8 @@ html, body{background-color:#07111d!important;color-scheme:dark!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V121</div>
-<div>Last Update: 15 Jun 2026 0245 UTC</div>
+<div>ATSRS V122</div>
+<div>Last Update: 15 Jun 2026 0310 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4603,8 +4624,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="v105-refs-appraisals-rebuilt-script">
 (function(){
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var kinds=['appraisal','reference'];
   var labelMap={appraisal:'Appraisals',reference:'References'};
   var uploadMap={appraisal:'Upload Appraisal',reference:'Upload Reference'};
@@ -4696,8 +4717,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V121';
-  const UPDATE = 'Last Update: 15 Jun 2026 0245 UTC';
+  const BUILD = 'ATSRS V122';
+  const UPDATE = 'Last Update: 15 Jun 2026 0310 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -4966,8 +4987,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5249,8 +5270,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5529,8 +5550,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5704,8 +5725,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5848,8 +5869,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V121';
-  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD_LABEL = 'ATSRS V122';
+  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0310 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -5965,8 +5986,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6147,8 +6168,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6314,8 +6335,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V121';
-  var UPDATE='Last Update: 15 Jun 2026 0245 UTC';
+  var BUILD='ATSRS V122';
+  var UPDATE='Last Update: 15 Jun 2026 0310 UTC';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -6340,6 +6361,82 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   }
   ['DOMContentLoaded','load'].forEach(function(evt){window.addEventListener(evt,function(){lockBuild();cleanTopbar();setTimeout(cleanTopbar,300);});});
   setInterval(function(){lockBuild();cleanTopbar();},1200);
+})();
+</script>
+
+
+<script>
+/* V122 Customizable Dashboard: drag, resize, minimize. Stored locally per browser. */
+(function(){
+  const STORE='atsrs_dashboard_layout_v122';
+  const SIZE='atsrs_dashboard_sizes_v122';
+  const MIN='atsrs_dashboard_minimized_v122';
+  const labels={hero:'Dashboard intro',stats:'Summary counters',snapshot:'Quick status',alerts:'Priority alerts',share:'Share profile',personalDocs:'My documents'};
+  function safeParse(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
+  function saveOrder(scope,ids){let data=safeParse(STORE,{});data[scope]=ids;localStorage.setItem(STORE,JSON.stringify(data));}
+  function getLabel(el){return el.getAttribute('data-dash-label')||labels[el.dataset.dashId]||el.id||'Card'}
+  function makeTools(el){
+    if(el.querySelector(':scope > .dash-card-tools'))return;
+    const tools=document.createElement('div');tools.className='dash-card-tools';
+    const drag=document.createElement('button');drag.type='button';drag.className='dash-drag-handle';drag.innerHTML='⋮⋮';drag.title='Move';drag.setAttribute('aria-label','Move card');
+    const min=document.createElement('button');min.type='button';min.className='dash-min-btn';min.innerHTML='−';min.title='Minimize';min.setAttribute('aria-label','Minimize card');
+    min.addEventListener('click',function(ev){ev.stopPropagation();minimizeCard(el);});
+    tools.appendChild(drag);tools.appendChild(min);el.insertBefore(tools,el.firstChild);
+    el.draggable=true;
+    drag.addEventListener('pointerdown',()=>{el.draggable=true});
+    el.addEventListener('dragstart',function(e){e.dataTransfer.setData('text/plain',el.dataset.dashId);e.dataTransfer.effectAllowed='move';el.classList.add('dash-dragging');});
+    el.addEventListener('dragend',function(){el.classList.remove('dash-dragging');persistScope(el.parentElement);saveSizes();});
+  }
+  function makeCard(el,id,label){el.dataset.dashId=id;el.setAttribute('data-dash-label',label);el.classList.add('dash-custom-ready');makeTools(el);}
+  function setupDropZone(container,scope){
+    if(!container || container.dataset.dashDropReady)return; container.dataset.dashDropReady='1'; container.dataset.dashScope=scope;
+    container.addEventListener('dragover',function(e){
+      const dragging=document.querySelector('#dashboardPage .dash-dragging'); if(!dragging || dragging.parentElement!==container)return;
+      e.preventDefault();
+      const after=getAfterElement(container,e.clientY,e.clientX);
+      if(after==null)container.appendChild(dragging); else container.insertBefore(dragging,after);
+    });
+    container.addEventListener('drop',function(e){e.preventDefault();persistScope(container);saveSizes();});
+  }
+  function getAfterElement(container,y,x){
+    const els=[...container.querySelectorAll(':scope > .dash-custom-ready:not(.dash-dragging):not(.dash-minimized)')];
+    return els.reduce((closest,child)=>{
+      const box=child.getBoundingClientRect();
+      const offset=(y-box.top-box.height/2)+(x-box.left-box.width/2)*0.12;
+      if(offset<0 && offset>closest.offset)return {offset,element:child};
+      return closest;
+    },{offset:Number.NEGATIVE_INFINITY}).element;
+  }
+  function persistScope(container){if(!container||!container.dataset.dashScope)return;saveOrder(container.dataset.dashScope,[...container.querySelectorAll(':scope > .dash-custom-ready')].map(x=>x.dataset.dashId));}
+  function applyOrder(container,scope){const data=safeParse(STORE,{});const order=data[scope];if(!order)return;order.forEach(id=>{const el=container.querySelector(`:scope > [data-dash-id="${id}"]`);if(el)container.appendChild(el);});}
+  function saveSizes(){const d={};document.querySelectorAll('#dashboardPage .dash-custom-ready').forEach(el=>{d[el.dataset.dashId]={w:el.style.width,h:el.style.height};});localStorage.setItem(SIZE,JSON.stringify(d));}
+  function applySizes(){const d=safeParse(SIZE,{});Object.entries(d).forEach(([id,v])=>{const el=document.querySelector(`#dashboardPage [data-dash-id="${id}"]`);if(el&&v){if(v.w)el.style.width=v.w;if(v.h)el.style.height=v.h;}});}
+  function minimizedIds(){return safeParse(MIN,[])}
+  function setMinimized(ids){localStorage.setItem(MIN,JSON.stringify(ids));}
+  function ensureDock(){let dock=document.getElementById('dashboardDock');if(!dock){dock=document.createElement('div');dock.id='dashboardDock';dock.className='hidden';document.body.appendChild(dock);}return dock;}
+  function minimizeCard(el){let ids=minimizedIds();if(!ids.includes(el.dataset.dashId))ids.push(el.dataset.dashId);setMinimized(ids);renderMinimized();}
+  function restoreCard(id){setMinimized(minimizedIds().filter(x=>x!==id));renderMinimized();}
+  function renderMinimized(){
+    const ids=minimizedIds();const dock=ensureDock();dock.innerHTML='';
+    document.querySelectorAll('#dashboardPage .dash-custom-ready').forEach(el=>el.classList.toggle('dash-minimized',ids.includes(el.dataset.dashId)));
+    ids.forEach(id=>{const el=document.querySelector(`#dashboardPage [data-dash-id="${id}"]`);if(!el)return;const b=document.createElement('button');b.type='button';b.className='dock-item';b.textContent=getLabel(el);b.title='Restore '+getLabel(el);b.onclick=()=>restoreCard(id);dock.appendChild(b);});
+    dock.classList.toggle('hidden',!dock.children.length);
+  }
+  function initDashboardCustomizer(){
+    const page=document.getElementById('dashboardPage'); if(!page || page.dataset.customizerReady)return; page.dataset.customizerReady='1';
+    const hero=page.querySelector(':scope > .solo-hero'); if(hero)makeCard(hero,'hero','Dashboard intro');
+    const stats=page.querySelector(':scope > .stats-grid'); if(stats){stats.dataset.dashId='statsGrid';stats.setAttribute('data-dash-label','Summary counters'); [...stats.children].forEach((el,i)=>makeCard(el,'stat'+i,(el.innerText||'Counter').trim().split('\n')[0]||('Counter '+(i+1)))); setupDropZone(stats,'stats');}
+    const snapshot=page.querySelector(':scope > .dashboard-snapshot-panel'); if(snapshot)makeCard(snapshot,'snapshot','Quick status');
+    const panels=[...page.querySelectorAll(':scope > .panel:not(.dashboard-snapshot-panel):not(#shareProfilePanel):not(#personalDashboardPanel)')]; if(panels[0])makeCard(panels[0],'alerts','Priority alerts');
+    const share=document.getElementById('shareProfilePanel'); if(share)makeCard(share,'share','Share profile');
+    const pd=document.getElementById('personalDashboardPanel'); if(pd)makeCard(pd,'personalDocs','My documents');
+    setupDropZone(page,'main'); applyOrder(page,'main'); if(stats)applyOrder(stats,'stats'); applySizes(); renderMinimized();
+    window.addEventListener('mouseup',saveSizes); window.addEventListener('touchend',saveSizes,{passive:true}); window.addEventListener('beforeunload',saveSizes);
+  }
+  const oldShow=window.showPage; if(typeof oldShow==='function'){window.showPage=function(){const r=oldShow.apply(this,arguments);setTimeout(initDashboardCustomizer,0);return r;};}
+  const oldRender=window.renderAll; if(typeof oldRender==='function'){window.renderAll=function(){const r=oldRender.apply(this,arguments);setTimeout(initDashboardCustomizer,0);return r;};}
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(initDashboardCustomizer,300));
+  window.initDashboardCustomizer=initDashboardCustomizer;
 })();
 </script>
 
