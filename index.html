@@ -7492,5 +7492,215 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 })();
 </script>
 
+
+
+<style id="ATSRS_V132_REFERENCES_UNIFIED_CARDS_CSS">
+/* V132: references cards use one visual system, no 0 badges, lists scroll after approx. 3 files. */
+#refsPage .ref-grid{align-items:stretch!important;}
+#refsPage .ref-card:not(.cv-card),
+#refsPage #coverLetterCard{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:342px!important;
+  border-color:var(--atsrs-border,#264058)!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
+}
+#refsPage .ref-doc-head,
+#refsPage #coverLetterCard .ref-doc-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  min-height:58px!important;
+  margin:0 0 16px!important;
+}
+#refsPage .ref-doc-head h3{
+  margin:0!important;
+  padding:0!important;
+  line-height:1.16!important;
+  min-height:48px!important;
+  display:flex!important;
+  align-items:flex-start!important;
+}
+#refsPage .ref-doc-head .badge,
+#refsPage #v105_appraisal_badge,
+#refsPage #v105_reference_badge,
+#refsPage #appraisalStatusBadge,
+#refsPage #referenceStatusBadge,
+#refsPage #recommendationStatusBadge,
+#refsPage #coverLetterStatusBadge{
+  min-width:72px!important;
+  height:24px!important;
+  padding:5px 10px!important;
+  margin:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+  align-self:flex-start!important;
+}
+#refsPage .ref-card:not(.cv-card) > .sub,
+#refsPage #coverLetterCard > .sub{
+  min-height:70px!important;
+  margin:0 0 12px!important;
+  line-height:1.35!important;
+}
+#refsPage .ref-card:not(.cv-card) > button.secondary,
+#refsPage #coverLetterCard > button.secondary,
+#refsPage #coverLetterUploadBtn{
+  margin-top:auto!important;
+  margin-bottom:10px!important;
+}
+#refsPage .career-count,
+#refsPage .v105-career-list + .career-count,
+#refsPage #coverLetterCount{
+  min-height:18px!important;
+  margin:0 0 8px!important;
+  font-size:12px!important;
+  color:#a7b5c5!important;
+  font-weight:800!important;
+}
+#refsPage .career-record-list,
+#refsPage .v105-career-list,
+#refsPage #coverLetterRecordList{
+  max-height:142px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:4px!important;
+  border-radius:12px!important;
+}
+#refsPage .preview-box,
+#refsPage .v105-empty-note,
+#refsPage .atsrs-v132-empty-note{
+  color:#94a3b8!important;
+  font-size:13px!important;
+  border:1px dashed #334155!important;
+  border-radius:12px!important;
+  padding:10px!important;
+  background:rgba(2,6,23,.28)!important;
+  margin:0!important;
+}
+#refsPage .atsrs-v132-row{
+  border:1px solid #334155!important;
+  border-radius:14px!important;
+  background:rgba(2,6,23,.35)!important;
+  padding:10px!important;
+  display:grid!important;
+  gap:8px!important;
+  margin-bottom:8px!important;
+}
+#refsPage .atsrs-v132-row b{display:block!important;word-break:break-word!important;line-height:1.25!important;}
+#refsPage .atsrs-v132-row span{font-size:12px!important;color:#94a3b8!important;}
+#refsPage .atsrs-v132-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;}
+#refsPage .atsrs-v132-actions button{margin:0!important;padding:9px 6px!important;}
+@media(max-width:520px){#refsPage .atsrs-v132-actions{grid-template-columns:1fr!important;}}
+</style>
+<script id="ATSRS_V132_REFERENCES_UNIFIED_CARDS_JS">
+(function(){
+  'use strict';
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function byId(id){return document.getElementById(id);}
+  function esc(s){return String(s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c;});}
+  function fileLabel(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+  function safeParse(v,fallback){try{var p=JSON.parse(v||'');return p==null?fallback:p;}catch(e){return fallback;}}
+  function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
+  function localKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){}return 'atsrs_'+safeUserId()+'_'+name;}
+  function readJson(name){try{return safeParse(localStorage.getItem(localKey(name)),[]);}catch(e){return [];}}
+  function writeJson(name,arr){try{localStorage.setItem(localKey(name),JSON.stringify(Array.isArray(arr)?arr:[]));}catch(e){}}
+  function readV105(kind){try{return safeParse(localStorage.getItem('atsrs_v105_'+kind+'_files'),[]).filter(function(f){return f&&f.name;});}catch(e){return [];}}
+  function writeV105(kind,arr){try{localStorage.setItem('atsrs_v105_'+kind+'_files',JSON.stringify(Array.isArray(arr)?arr:[]));}catch(e){}}
+  function managedFiles(kind){
+    if(kind==='appraisal'||kind==='reference'){
+      var v105=readV105(kind); if(v105.length)return v105;
+    }
+    try{if(typeof window.getManagedFiles==='function'){var a=window.getManagedFiles(kind); if(Array.isArray(a))return a;}}catch(e){}
+    return readJson(kind+'Files');
+  }
+  function setManaged(kind,arr){
+    if(kind==='appraisal'||kind==='reference')writeV105(kind,arr);
+    else {try{if(typeof window.setManagedFiles==='function'){window.setManagedFiles(kind,arr);return;}}catch(e){} writeJson(kind+'Files',arr);}
+  }
+  function coverFiles(){return readJson('coverLetterFiles');}
+  function saveCoverFiles(arr){writeJson('coverLetterFiles',arr);}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V132';if(d[1])d[1].textContent='Last Update: 16 Jun 2026 0338 UTC';if(d[2])d[2].textContent='TEST BUILD';});}
+  function ensureHead(card,titleId,titleText,badgeId){
+    if(!card)return null;
+    var title=byId(titleId)||q('h3',card);
+    if(!title){title=document.createElement('h3');title.id=titleId;title.textContent=titleText;card.insertBefore(title,card.firstChild);}
+    title.id=titleId; title.textContent=titleText;
+    var head=title.closest('.ref-doc-head');
+    if(!head){head=document.createElement('div');head.className='ref-doc-head';title.parentNode.insertBefore(head,title);head.appendChild(title);}
+    var badge=byId(badgeId);
+    if(!badge){badge=document.createElement('span');badge.id=badgeId;badge.className='badge badge-blocked';badge.textContent='No File';}
+    if(badge.parentElement!==head)head.appendChild(badge);
+    return badge;
+  }
+  function setBadge(ids,n){ids.forEach(function(id){var b=byId(id);if(b){b.textContent=fileLabel(n);b.className='badge '+(n>0?'badge-ready':'badge-blocked');}});}
+  function ensureStandardCards(){
+    try{if(typeof window.ensureRecommendationCard==='function')window.ensureRecommendationCard();}catch(e){}
+    try{if(typeof window.ensureCoverLetterCard==='function')window.ensureCoverLetterCard();}catch(e){}
+    var configs=[
+      {kind:'appraisal',titleId:'appraisalCardTitle',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',legacyBadge:'v105_appraisal_badge'},
+      {kind:'reference',titleId:'referenceCardTitle',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',legacyBadge:'v105_reference_badge'},
+      {kind:'recommendation',titleId:'recommendationCardTitle',title:'Recommendation Letters',desc:'Store recommendation letters from supervisors, clients and companies.',upload:'Upload Recommendation'},
+      {kind:'coverLetter',titleId:'coverLetterCardTitle',title:'Cover Letter',desc:'Store cover letter versions next to your CV for faster applications.',upload:'Upload Cover Letter'}
+    ];
+    configs.forEach(function(c){
+      var title=byId(c.titleId); var card=title?title.closest('.ref-card'):(c.kind==='coverLetter'?byId('coverLetterCard'):null); if(!card)return;
+      if(c.kind==='coverLetter'){card.id='coverLetterCard';card.classList.add('ref-card','cover-letter-card');}
+      ensureHead(card,c.titleId,c.title,c.kind+'StatusBadge');
+      if(c.legacyBadge){var legacy=byId(c.legacyBadge); if(legacy)legacy.id=c.kind+'StatusBadge';}
+      var p=byId(c.kind+'CardText')||q(':scope > p.sub',card); if(!p){p=document.createElement('p');p.className='sub';var h=q('.ref-doc-head',card);h?h.insertAdjacentElement('afterend',p):card.appendChild(p);} p.id=c.kind+'CardText'; p.textContent=c.desc;
+      if(c.kind==='coverLetter'){
+        var oldActions=q('.cv-actions',card); if(oldActions)oldActions.remove();
+        var oldInfo=byId('coverLetterFileInfo'); if(oldInfo)oldInfo.remove();
+        if(!byId('coverLetterUploadInput')){var inp=document.createElement('input');inp.id='coverLetterUploadInput';inp.type='file';inp.accept='.pdf,.doc,.docx,.jpg,.jpeg,.png';inp.multiple=true;inp.className='hidden';card.appendChild(inp);}
+        var btn=byId('coverLetterUploadBtn'); if(!btn){btn=document.createElement('button');btn.id='coverLetterUploadBtn';btn.className='secondary';card.appendChild(btn);} btn.textContent=c.upload; btn.onclick=function(){var i=byId('coverLetterUploadInput');if(i)i.click();};
+        var inp2=byId('coverLetterUploadInput'); if(inp2)inp2.onchange=handleCoverUpload;
+        if(!byId('coverLetterCount')){var cnt=document.createElement('div');cnt.id='coverLetterCount';cnt.className='career-count';card.appendChild(cnt);}
+        if(!byId('coverLetterRecordList')){var list=document.createElement('div');list.id='coverLetterRecordList';list.className='career-record-list';card.appendChild(list);}
+      }
+    });
+  }
+  function previewData(f){if(!f)return;var w=window.open('','_blank');if(w){w.document.write('<title>'+esc(f.name||'File')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}}
+  function downloadData(f,prefix){if(!f)return;var a=document.createElement('a');a.href=f.data;a.download=f.name||prefix||'ATSRS-file';document.body.appendChild(a);a.click();a.remove();}
+  window.atsrsV132Preview=function(kind,id){var arr=(kind==='coverLetter'?coverFiles():managedFiles(kind));var f=arr.find(function(x){return x.id===id;});previewData(f);};
+  window.atsrsV132Download=function(kind,id){var arr=(kind==='coverLetter'?coverFiles():managedFiles(kind));var f=arr.find(function(x){return x.id===id;});downloadData(f,'ATSRS-'+kind);};
+  window.atsrsV132Delete=function(kind,id){var arr=(kind==='coverLetter'?coverFiles():managedFiles(kind)).filter(function(x){return x.id!==id;}); if(kind==='coverLetter')saveCoverFiles(arr);else setManaged(kind,arr); renderAllUnified();};
+  function rowHtml(kind,f){return '<div class="atsrs-v132-row"><div><b title="'+esc(f.name)+'">'+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v132-actions"><button class="secondary" onclick="atsrsV132Preview(\''+kind+'\',\''+f.id+'\')">Preview</button><button class="secondary" onclick="atsrsV132Download(\''+kind+'\',\''+f.id+'\')">Download</button><button class="action" onclick="atsrsV132Delete(\''+kind+'\',\''+f.id+'\')">Delete</button></div></div>';}
+  function renderList(kind,arr){
+    var id=kind==='coverLetter'?'coverLetterRecordList':(kind+'RecordList');
+    var list=byId(id)||byId('v105_'+kind+'_list'); if(!list)return;
+    arr=arr.slice().sort(function(a,b){return String(b.signedDate||b.updated||'').localeCompare(String(a.signedDate||a.updated||''));});
+    if(!arr.length){list.innerHTML='<div class="atsrs-v132-empty-note">No files uploaded yet.</div>';return;}
+    list.innerHTML=arr.map(function(f){return rowHtml(kind,f);}).join('');
+  }
+  function renderAllUnified(){
+    setBuild(); ensureStandardCards();
+    var data={appraisal:managedFiles('appraisal'),reference:managedFiles('reference'),recommendation:managedFiles('recommendation'),coverLetter:coverFiles()};
+    setBadge(['appraisalStatusBadge','v105_appraisal_badge'],data.appraisal.length);
+    setBadge(['referenceStatusBadge','v105_reference_badge'],data.reference.length);
+    setBadge(['recommendationStatusBadge'],data.recommendation.length);
+    setBadge(['coverLetterStatusBadge'],data.coverLetter.length);
+    var countMap={appraisal:'Appraisals',reference:'References',recommendation:'Recommendation Letters',coverLetter:'Cover Letter'};
+    Object.keys(countMap).forEach(function(k){var c=byId(k+'Count')||byId('v105_'+k+'_count'); if(c)c.textContent=fileLabel(data[k].length)+' • Newest first'; renderList(k,data[k]);});
+  }
+  function handleCoverUpload(event){
+    var files=event.target.files||[]; if(!files.length)return;
+    var arr=coverFiles(), left=files.length;
+    Array.prototype.forEach.call(files,function(file){var r=new FileReader();r.onload=function(){arr.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:r.result});if(--left===0){saveCoverFiles(arr);event.target.value='';renderAllUnified();}};r.readAsDataURL(file);});
+  }
+  var oldRenderManaged=window.renderManagedFiles;
+  if(typeof oldRenderManaged==='function'&&!oldRenderManaged.__atsrsV132){window.renderManagedFiles=function(){var r=oldRenderManaged.apply(this,arguments);setTimeout(renderAllUnified,0);return r;};window.renderManagedFiles.__atsrsV132=true;}
+  ['renderAll','showPage','applyLanguage'].forEach(function(name){var old=window[name];if(typeof old==='function'&&!old.__atsrsV132){window[name]=function(){var r=old.apply(this,arguments);setTimeout(renderAllUnified,30);setTimeout(renderAllUnified,250);return r;};window[name].__atsrsV132=true;}});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderAllUnified);else renderAllUnified();
+  window.addEventListener('load',function(){renderAllUnified();setTimeout(renderAllUnified,600);});
+  setTimeout(renderAllUnified,900); setInterval(renderAllUnified,250);
+})();
+</script>
+
 </body>
 </html>
