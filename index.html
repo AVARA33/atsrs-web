@@ -1258,8 +1258,8 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V131</div>
-<div>Last Update: 15 Jun 2026 0755 UTC</div>
+<div>ATSRS V136</div>
+<div>Last Update: 16 Jun 2026 0425 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4785,8 +4785,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V131';
-  const UPDATE = 'Last Update: 15 Jun 2026 0755 UTC';
+  const BUILD = 'ATSRS V136';
+  const UPDATE = 'Last Update: 16 Jun 2026 0425 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -5055,8 +5055,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5338,8 +5338,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5618,8 +5618,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5793,8 +5793,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5937,8 +5937,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V131';
-  var UPDATE_LABEL = 'Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD_LABEL = 'ATSRS V136';
+  var UPDATE_LABEL = 'Last Update: 16 Jun 2026 0425 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -6054,8 +6054,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6236,8 +6236,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6403,8 +6403,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -6433,170 +6433,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </script>
 
 
-
-
-
-<script>
-/* V124 Dashboard Builder: robust drag, resize, minimize. */
-(function(){
-  const STORE='atsrs_dashboard_order_v124';
-  const SIZE='atsrs_dashboard_size_v124';
-  const MIN='atsrs_dashboard_min_v124';
-  const LABELS={hero:'Dashboard intro',statsGrid:'Summary counters',snapshot:'Quick status',alerts:'Priority alerts',share:'Share profile',personalDocs:'My documents'};
-  const state={drag:null,resize:null};
-  function safeGet(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
-  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-  function q(s,r=document){return r.querySelector(s)}
-  function qa(s,r=document){return Array.from(r.querySelectorAll(s))}
-  function labelOf(el){return el.getAttribute('data-dash-label')||LABELS[el.dataset.dashId]||'Card'}
-  function isHidden(el){return el.classList.contains('hidden')||getComputedStyle(el).display==='none'}
-  function ensureId(el,base,index){if(!el.dataset.dashId)el.dataset.dashId=base+(index!=null?'-'+index:'');return el.dataset.dashId}
-  function ensureTools(el){
-    if(q(':scope > .dash-card-tools',el))return;
-    const tools=document.createElement('div');tools.className='dash-card-tools';
-    const drag=document.createElement('button');drag.type='button';drag.className='dash-drag-handle';drag.innerHTML='⋮⋮';drag.title='Move card';drag.setAttribute('aria-label','Move card');
-    const min=document.createElement('button');min.type='button';min.className='dash-min-btn';min.innerHTML='−';min.title='Minimize card';min.setAttribute('aria-label','Minimize card');
-    tools.appendChild(drag);tools.appendChild(min);el.insertBefore(tools,el.firstChild);
-    const resize=document.createElement('div');resize.className='dash-resize-handle';resize.title='Resize card';el.appendChild(resize);
-    drag.addEventListener('pointerdown',startDrag);
-    min.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();minimize(el);});
-    resize.addEventListener('pointerdown',startResize);
-  }
-  function make(el,id,label,scope){
-    if(!el)return; el.classList.add('dash-custom-ready','dash-resizable'); el.dataset.dashId=id; el.dataset.dashScope=scope; el.setAttribute('data-dash-label',label); ensureTools(el);
-  }
-  function applySavedOrder(container,scope){
-    const data=safeGet(STORE,{}); const order=data[scope]; if(!Array.isArray(order))return;
-    order.forEach(id=>{const el=q(`:scope > .dash-custom-ready[data-dash-id="${CSS.escape(id)}"]`,container); if(el)container.appendChild(el);});
-  }
-  function persistOrder(container){
-    if(!container)return; const scope=container.dataset.dashScope; if(!scope)return;
-    const data=safeGet(STORE,{}); data[scope]=qa(':scope > .dash-custom-ready',container).map(el=>el.dataset.dashId); save(STORE,data);
-  }
-  function applySizes(){
-    const sizes=safeGet(SIZE,{});
-    qa('#dashboardPage .dash-custom-ready').forEach(el=>{const s=sizes[el.dataset.dashId]; if(!s)return; if(s.w)el.style.width=s.w; if(s.h)el.style.height=s.h;});
-  }
-  function saveSizes(){
-    const sizes={}; qa('#dashboardPage .dash-custom-ready').forEach(el=>{sizes[el.dataset.dashId]={w:el.style.width||'',h:el.style.height||''};}); save(SIZE,sizes);
-  }
-  function ensureDock(){let d=q('#dashboardDock'); if(!d){d=document.createElement('div');d.id='dashboardDock';d.className='hidden';document.body.appendChild(d);} return d;}
-  function minimized(){return safeGet(MIN,[])}
-  function setMinimized(ids){save(MIN,ids)}
-  function minimize(el){const ids=minimized(); if(!ids.includes(el.dataset.dashId))ids.push(el.dataset.dashId); setMinimized(ids); renderDock();}
-  function restore(id){setMinimized(minimized().filter(x=>x!==id)); renderDock();}
-  function renderDock(){
-    const ids=minimized(); const dock=ensureDock(); dock.innerHTML='';
-    qa('#dashboardPage .dash-custom-ready').forEach(el=>el.classList.toggle('dash-minimized',ids.includes(el.dataset.dashId)));
-    ids.forEach(id=>{const el=q(`#dashboardPage .dash-custom-ready[data-dash-id="${CSS.escape(id)}"]`); if(!el)return; const b=document.createElement('button'); b.type='button'; b.className='dock-item'; b.textContent=labelOf(el); b.onclick=()=>restore(id); dock.appendChild(b);});
-    dock.classList.toggle('hidden',dock.children.length===0);
-  }
-  function startResize(e){
-    const el=e.currentTarget.closest('.dash-custom-ready'); if(!el)return; e.preventDefault(); e.stopPropagation();
-    const r=el.getBoundingClientRect(); state.resize={el,startX:e.clientX,startY:e.clientY,w:r.width,h:r.height};
-    window.addEventListener('pointermove',onResize,{passive:false}); window.addEventListener('pointerup',endResize,{once:true});
-  }
-  function onResize(e){
-    if(!state.resize)return; e.preventDefault(); const s=state.resize;
-    const w=Math.max(150,s.w+(e.clientX-s.startX)); const h=Math.max(90,s.h+(e.clientY-s.startY));
-    s.el.style.width=w+'px'; s.el.style.height=h+'px';
-  }
-  function endResize(){window.removeEventListener('pointermove',onResize); saveSizes(); state.resize=null;}
-  function startDrag(e){
-    const el=e.currentTarget.closest('.dash-custom-ready'); if(!el || isHidden(el))return; e.preventDefault(); e.stopPropagation();
-    const parent=el.parentElement; const rect=el.getBoundingClientRect();
-    const ph=document.createElement('div'); ph.className='dash-placeholder'; ph.style.width=rect.width+'px'; ph.style.height=rect.height+'px';
-    parent.insertBefore(ph,el.nextSibling);
-    state.drag={el,parent,ph,offsetX:e.clientX-rect.left,offsetY:e.clientY-rect.top};
-    el.classList.add('dash-drag-float'); el.style.width=rect.width+'px'; el.style.height=rect.height+'px'; moveFloat(e.clientX,e.clientY);
-    window.addEventListener('pointermove',onDrag,{passive:false}); window.addEventListener('pointerup',endDrag,{once:true});
-  }
-  function moveFloat(x,y){const d=state.drag;if(!d)return; d.el.style.left=(x-d.offsetX)+'px'; d.el.style.top=(y-d.offsetY)+'px';}
-  function onDrag(e){
-    if(!state.drag)return; e.preventDefault(); moveFloat(e.clientX,e.clientY);
-    const d=state.drag; d.el.style.display='none'; const target=document.elementFromPoint(e.clientX,e.clientY); d.el.style.display='';
-    let over=target&&target.closest?target.closest('#dashboardPage .dash-custom-ready'):null;
-    if(over && over!==d.el && over.parentElement===d.parent && !over.classList.contains('dash-minimized')){
-      const r=over.getBoundingClientRect(); const before=(e.clientY<r.top+r.height/2) || (Math.abs(e.clientY-(r.top+r.height/2))<r.height*.35 && e.clientX<r.left+r.width/2);
-      d.parent.insertBefore(d.ph,before?over:over.nextSibling);
-    }
-  }
-  function endDrag(){
-    const d=state.drag; if(!d)return; window.removeEventListener('pointermove',onDrag);
-    d.parent.insertBefore(d.el,d.ph); d.ph.remove();
-    d.el.classList.remove('dash-drag-float'); d.el.style.left=''; d.el.style.top=''; d.el.style.width=d.el.style.width||''; d.el.style.height=d.el.style.height||'';
-    persistOrder(d.parent); saveSizes(); state.drag=null;
-  }
-  function build(){
-    const page=q('#dashboardPage'); if(!page)return; page.dataset.dashScope='main';
-    const hero=q(':scope > .solo-hero',page); make(hero,'hero','Dashboard intro','main');
-    const stats=q(':scope > .stats-grid',page); if(stats){stats.dataset.dashScope='stats'; stats.dataset.dashId='statsGrid'; stats.setAttribute('data-dash-label','Summary counters'); qa(':scope > .card',stats).forEach((el,i)=>make(el,'stat-'+i,((el.innerText||'Counter').trim().split('\n')[0]||('Counter '+(i+1))),'stats')); applySavedOrder(stats,'stats');}
-    const snapshot=q(':scope > .dashboard-snapshot-panel',page); make(snapshot,'snapshot','Quick status','main');
-    const panels=qa(':scope > .panel',page).filter(el=>!el.classList.contains('dashboard-snapshot-panel') && el.id!=='shareProfilePanel' && el.id!=='personalDashboardPanel' && !el.classList.contains('solo-hero'));
-    if(panels[0])make(panels[0],'alerts','Priority alerts','main');
-    make(q('#shareProfilePanel'), 'share','Share profile','main');
-    make(q('#personalDashboardPanel'),'personalDocs','My documents','main');
-    applySavedOrder(page,'main'); applySizes(); renderDock();
-  }
-  function schedule(){setTimeout(build,60)}
-  const oldShow=window.showPage; if(typeof oldShow==='function'){window.showPage=function(){const r=oldShow.apply(this,arguments); schedule(); return r;};}
-  const oldRender=window.renderAll; if(typeof oldRender==='function'){window.renderAll=function(){const r=oldRender.apply(this,arguments); schedule(); return r;};}
-  document.addEventListener('DOMContentLoaded',schedule); window.addEventListener('load',schedule); setInterval(function(){const p=q('#dashboardPage'); if(p && !p.classList.contains('hidden'))build();},1500);
-  window.initDashboardBuilderV123=build;
-})();
-</script>
-
-
-<script>
-/* V124: grouped dashboard counters, stable dock, button/label fixes */
-(function(){
-  function q(s,r=document){return r.querySelector(s)}
-  function qa(s,r=document){return Array.from(r.querySelectorAll(s))}
-  function txt(id,value){const el=document.getElementById(id); if(el && !String(el.textContent||'').trim()) el.textContent=value;}
-  function fixStaticText(){
-    txt('saveProfileBtn','Save');
-    txt('uploadDocBtn','Upload Document');
-    txt('scanDocBtn','Camera Scan');
-    txt('certScanModeBtn','Scan / Upload');
-    txt('certManualModeBtn','Manual Entry');
-    txt('manualUploadBtn','Upload File');
-  }
-  function calmDock(){
-    const dock=q('#dashboardDock'); if(dock){dock.style.animation='none';dock.style.transform='none';qa('.dock-item',dock).forEach(b=>{b.style.animation='none';b.style.transform='none';});}
-  }
-  function removeStatTools(){
-    const stats=q('#dashboardPage .stats-grid');
-    if(!stats)return;
-    stats.classList.add('dash-custom-ready','dash-resizable');
-    stats.dataset.dashId='statsGrid';stats.dataset.dashScope='main';stats.setAttribute('data-dash-label','Summary counters');
-    qa(':scope > .card',stats).forEach(card=>{
-      card.classList.remove('dash-custom-ready','dash-resizable','dash-minimized');
-      delete card.dataset.dashId; delete card.dataset.dashScope;
-      qa(':scope > .dash-card-tools,:scope > .dash-resize-handle',card).forEach(x=>x.remove());
-      card.style.width='';card.style.height='';card.style.left='';card.style.top='';
-    });
-  }
-  function fixDashboardBuilder(){
-    removeStatTools();
-    calmDock();
-  }
-  const oldInit=window.initDashboardBuilderV123;
-  if(typeof oldInit==='function'){
-    window.initDashboardBuilderV123=function(){const r=oldInit.apply(this,arguments);setTimeout(fixDashboardBuilder,30);return r;};
-  }
-  const oldRender=window.renderAll;
-  if(typeof oldRender==='function'){
-    window.renderAll=function(){const r=oldRender.apply(this,arguments);fixStaticText();setTimeout(fixDashboardBuilder,80);return r;};
-  }
-  const oldShow=window.showPage;
-  if(typeof oldShow==='function'){
-    window.showPage=function(){const r=oldShow.apply(this,arguments);fixStaticText();setTimeout(fixDashboardBuilder,80);return r;};
-  }
-  document.addEventListener('DOMContentLoaded',()=>{fixStaticText();setTimeout(fixDashboardBuilder,250);});
-  window.addEventListener('load',()=>{fixStaticText();setTimeout(fixDashboardBuilder,500);});
-  setInterval(()=>{fixStaticText();fixDashboardBuilder();},1800);
-})();
-</script>
 
 
 
@@ -6882,8 +6718,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V131';
-  var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
@@ -6954,8 +6790,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V131';
-    var UPDATE='Last Update: 15 Jun 2026 0755 UTC';
+    var BUILD='ATSRS V136';
+    var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -7179,8 +7015,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V135';
-  var UPDATE='Last Update: 16 Jun 2026 0400 UTC';
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
     {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
@@ -7372,6 +7208,193 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',function(){run();setTimeout(run,500);});
   setTimeout(run,900);
+})();
+</script>
+
+
+<style id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_CSS">
+/* V136 DC/CU: Dashboard stable view mode. Builder/drag/resize/minimize remains parked. */
+#dashboardPage{
+  position:relative!important;
+  overflow:visible!important;
+}
+#dashboardPage .dash-card-tools,
+#dashboardPage .dash-resize-handle,
+#dashboardPage .dash-placeholder,
+#dashboardDock{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#dashboardPage .dash-custom-ready,
+#dashboardPage .dash-resizable,
+#dashboardPage .dash-drag-float,
+#dashboardPage .dash-minimized{
+  position:relative!important;
+  left:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  transform:none!important;
+  resize:none!important;
+  overflow:visible!important;
+  opacity:1!important;
+  display:block!important;
+  pointer-events:auto!important;
+  touch-action:auto!important;
+}
+#dashboardPage .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;
+  gap:12px!important;
+  padding:0!important;
+  min-height:0!important;
+  height:auto!important;
+  width:100%!important;
+}
+#dashboardPage .stats-grid > .card{
+  min-height:94px!important;
+  height:auto!important;
+  width:auto!important;
+  transform:none!important;
+  resize:none!important;
+  overflow:hidden!important;
+}
+#dashboardPage .solo-hero,
+#dashboardPage .professional-dashboard,
+#dashboardPage .grid,
+#dashboardPage .panel,
+#dashboardPage .card,
+#dashboardPage .workflow-card,
+#dashboardPage .snapshot-card{
+  transform:none!important;
+  animation:none!important;
+  transition:border-color .15s ease, background .15s ease!important;
+}
+#dashboardPage .quick-actions button,
+#dashboardPage .share-actions button,
+#dashboardPage #copyShareBtn,
+#dashboardPage #uploadDocBtn,
+#dashboardPage #scanDocBtn{
+  min-height:38px!important;
+  padding:9px 12px!important;
+  margin:0!important;
+  background:#1a293b!important;
+  border:1px solid #31465f!important;
+  color:#e5eef8!important;
+  box-shadow:none!important;
+}
+#shareProfilePanel{
+  max-height:440px!important;
+  overflow:auto!important;
+}
+#shareProfilePanel .share-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+}
+#shareProfilePanel .share-actions button{
+  flex:1 1 135px!important;
+}
+#shareProfilePanel .share-permissions{
+  max-height:120px!important;
+  overflow:auto!important;
+}
+#shareProfilePanel .preview-profile{
+  max-height:160px!important;
+  overflow:auto!important;
+}
+/* Top actions must scroll away with the page, not remain fixed on screen. */
+#app.app > .top-actions,
+#app.app:not(.hidden) > .top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions{
+  position:absolute!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:90!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+#app.app.hidden > .top-actions,
+body.auth-open > .top-actions{display:none!important;}
+@media(max-width:900px){
+  #dashboardPage .solo-hero,
+  #dashboardPage .professional-dashboard{grid-template-columns:1fr!important;}
+}
+@media(max-width:600px){
+  #dashboardPage .stats-grid{grid-template-columns:1fr!important;}
+  #shareProfilePanel{max-height:360px!important;}
+}
+</style>
+
+<script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
+(function(){
+  var BUILD='ATSRS V136';
+  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function clearDashboardStorageOnce(){
+    try{
+      ['atsrs_dashboard_order_v124','atsrs_dashboard_size_v124','atsrs_dashboard_min_v124'].forEach(function(k){localStorage.removeItem(k);});
+    }catch(e){}
+  }
+  function parkDashboardBuilder(){
+    var page=q('#dashboardPage'); if(!page)return;
+    qa('.dash-card-tools,.dash-resize-handle,.dash-placeholder',page).forEach(function(x){x.remove();});
+    qa('.dash-minimized',page).forEach(function(x){x.classList.remove('dash-minimized');});
+    qa('.dash-custom-ready,.dash-resizable,.dash-drag-float',page).forEach(function(el){
+      el.classList.remove('dash-drag-float','dash-resizable');
+      ['width','height','left','top','right','bottom','transform','opacity','minWidth','maxWidth','zIndex'].forEach(function(p){el.style[p]='';});
+      if(el.classList.contains('dash-custom-ready')) el.classList.remove('dash-custom-ready');
+    });
+    var dock=q('#dashboardDock');
+    if(dock){dock.innerHTML='';dock.className='hidden';dock.style.display='none';}
+  }
+  function attachTopActionsToApp(){
+    var app=q('#app'); if(!app)return;
+    var top=q('body > .top-actions') || q('body > .atsrs-global-top-actions') || q('body > .atsrs-v56-top-actions') || q('body > .atsrs-v64-top-actions') || q('#app > .top-actions');
+    if(!top)return;
+    if(top.parentElement!==app)app.insertBefore(top,app.firstChild);
+    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions');
+    top.removeAttribute('style');
+  }
+  function stabilizeDashboard(){
+    var page=q('#dashboardPage'); if(!page)return;
+    var stats=q('.stats-grid',page);
+    if(stats){stats.style.cssText=''; qa(':scope > .card',stats).forEach(function(card){card.style.cssText=card.style.cssText.replace(/(?:width|height|left|top|right|bottom|transform|opacity|z-index)\s*:[^;]+;?/gi,'');});}
+    var share=q('#shareProfilePanel'); if(share){share.classList.add('atsrs-v136-share-compact');}
+  }
+  function run(){setBuild();clearDashboardStorageOnce();parkDashboardBuilder();attachTopActionsToApp();stabilizeDashboard();}
+  window.initDashboardBuilderV123=function(){setTimeout(run,0);return true;};
+  ['showPage','renderAll','applyLanguage'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function' && !old.__atsrsV136){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,30);setTimeout(run,220);return r;};
+      wrapped.__atsrsV136=true; window[name]=wrapped;
+    }
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,500);});
+  setTimeout(run,900);
+  setInterval(function(){setBuild();parkDashboardBuilder();attachTopActionsToApp();},2500);
 })();
 </script>
 
