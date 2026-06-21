@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#07111d" />
 <meta name="color-scheme" content="dark" />
-<title>ATSRS</title>
+<title>ATSRS V163</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
@@ -1158,6 +1158,94 @@ body > .atsrs-v64-top-actions{
 }
 </style>
 
+
+
+<style id="atsrs-v163-login-and-layout-fix">
+/* V163 SAFETY RESTORE: based on full V161, not the 24KB V162 skeleton. */
+/* Login: remove the left boxed panel look, keep only direct background text + auth card. */
+#auth:not(.hidden){
+  min-height:100vh!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:42px!important;
+  padding:28px!important;
+  background:radial-gradient(circle at 16% 20%,rgba(34,197,94,.14),transparent 30%),radial-gradient(circle at 84% 44%,rgba(56,189,248,.12),transparent 32%),linear-gradient(135deg,#07111d 0%,#0d2535 48%,#103b42 100%)!important;
+}
+#auth .auth-bg-docs,#auth .auth-doc-stack,#auth .floating-doc{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#auth .auth-intro{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  flex:1 1 520px!important;
+  max-width:600px!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+#auth .auth-intro #introKicker{
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0 0 14px!important;
+  background:rgba(4,16,26,.42)!important;
+  border:1px solid rgba(134,239,172,.25)!important;
+  box-shadow:none!important;
+}
+#auth .auth-intro #introTitle{
+  margin:0 0 10px!important;
+  max-width:720px!important;
+  font-size:42px!important;
+  line-height:1.05!important;
+  letter-spacing:-.045em!important;
+  color:#f8fafc!important;
+  text-shadow:0 18px 45px rgba(0,0,0,.35)!important;
+}
+#auth .auth-intro #introText{
+  margin:0!important;
+  max-width:560px!important;
+  font-size:18px!important;
+  color:#cbd5e1!important;
+  line-height:1.48!important;
+}
+#auth .auth-intro #introIndustryText,
+#auth .auth-intro .feature-grid,
+#auth .auth-intro .doc-strip,
+#auth .auth-intro .why-grid{display:none!important;}
+#auth .auth-card{
+  flex:0 0 430px!important;
+  max-width:430px!important;
+  margin:0!important;
+  background:rgba(11,23,38,.94)!important;
+  border:1px solid rgba(134,239,172,.18)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.34)!important;
+  border-radius:22px!important;
+}
+#buildBadge .utc-time,.build-utc,.utc-label{display:none!important;}
+@media(max-width:980px){
+  #auth:not(.hidden){align-items:flex-start!important;gap:20px!important;}
+  #auth .auth-intro,#auth .auth-card{flex:1 1 100%!important;max-width:620px!important;}
+  #auth .auth-intro #introTitle{font-size:34px!important;}
+}
+@media(max-width:560px){
+  #auth:not(.hidden){padding:16px!important;}
+  #auth .auth-intro #introTitle{font-size:28px!important;}
+  #auth .auth-intro #introText{font-size:15px!important;}
+  #auth .auth-card{max-width:100%!important;}
+}
+/* Flat cards rule: avoid extra visual wrapper effect where pages contain nested panels. */
+#app .main > .panel:has(> .card),
+#app .main > .card:has(> .card){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+</style>
+
 </head>
 <body class="atsrs-booting">
 <div id="atsrsBootScreen" role="status" aria-live="polite">
@@ -1258,7 +1346,7 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V161</div>
+<div>ATSRS V163</div>
 <div>Last Update: 21 Jun 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -4785,7 +4873,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V161';
+  const BUILD = 'ATSRS V163';
   const UPDATE = 'Last Update: 21 Jun 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
@@ -5055,7 +5143,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
@@ -5338,7 +5426,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
@@ -5618,7 +5706,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -5793,7 +5881,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
@@ -5937,7 +6025,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V161';
+  var BUILD_LABEL = 'ATSRS V163';
   var UPDATE_LABEL = 'Last Update: 21 Jun 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -6054,7 +6142,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6236,7 +6324,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6403,7 +6491,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -6718,7 +6806,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
@@ -6790,7 +6878,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V161';
+    var BUILD='ATSRS V163';
     var UPDATE='Last Update: 21 Jun 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
@@ -7015,7 +7103,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
@@ -7338,7 +7426,7 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7444,7 +7532,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
 (function(){
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7746,7 +7834,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -7886,7 +7974,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V142_REFERENCES_ICON_EXPAND_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8031,7 +8119,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8258,7 +8346,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8447,7 +8535,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -8582,7 +8670,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V161';if(d[1])d[1].textContent='Last Update: 21 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 21 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8678,7 +8766,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V161';if(d[1])d[1].textContent='Last Update: 21 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 21 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -8787,7 +8875,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS">
 (function(){
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATED='21 Jun 2026 1838 UTC';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8879,7 +8967,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -8957,7 +9045,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -9010,7 +9098,7 @@ body > .atsrs-v64-top-actions{
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
     await migrate(kind);
-    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V161 read failed',e);}mirrorMeta(kind,arr);
+    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V163 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(st){st.textContent=label(arr.length);st.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
     if(filter)filter.classList.toggle('active',arr.length>0);
@@ -9157,7 +9245,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V156_CV_SLOTS_UNDER_MAIN_STABLE_LAYOUT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
@@ -9390,7 +9478,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V158_CV_STABLE_HEIGHT_PLAN_SLOTS_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 21 Jun 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, busy=false, queued=false, lastHtml='';
@@ -9580,7 +9668,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V159_FLAT_CARDS_SMART_SLOT_OFFERS_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161', UPDATE='Last Update: 21 Jun 2026';
+  var BUILD='ATSRS V163', UPDATE='Last Update: 21 Jun 2026';
   var PLAN_NAMES=[['silver','🥈 Silver'],['titanium','🥉 Titanium'],['gold','🥇 Gold']];
   var PLAN_INDEX={silver:0,titanium:1,gold:2};
   var CONFIG={
@@ -9734,7 +9822,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V160_ACCOUNT_SUBSCRIPTION_SLOT_ECONOMY_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161', UPDATE='Last Update: 21 Jun 2026';
+  var BUILD='ATSRS V163', UPDATE='Last Update: 21 Jun 2026';
   var PLANS=[['silver','🥈 Silver'],['titanium','🥉 Titanium'],['gold','🥇 Gold']], IDX={silver:0,titanium:1,gold:2};
   var CONFIG={
     cv:{label:'CV / Resume',title:'Additional CV Slots',base:'Main CV is included in Free.',unit:'additional CV',slots:[1,2,3]},
@@ -9823,8 +9911,8 @@ body > .atsrs-v64-top-actions{
 </script>
 
 
-<!-- V161: Flat login intro + reliable subscription offers/account center + date-only build label -->
-<style id="ATSRS_V161_SLOT_SUBSCRIPTION_FLAT_LOGIN_CSS">
+<!-- V163: Flat login intro + reliable subscription offers/account center + date-only build label -->
+<style id="ATSRS_V163_SLOT_SUBSCRIPTION_FLAT_LOGIN_CSS">
 /* Login left block: text directly on background, no big card */
 #auth .auth-intro{
   background:transparent!important;
@@ -9897,13 +9985,13 @@ body > .atsrs-v64-top-actions{
 .atsrs-v161-sub-actions{display:flex;gap:7px;align-items:center;}
 .atsrs-v161-sub-actions button{width:auto!important;margin:0!important;padding:8px 10px!important;font-size:12px!important;border-radius:10px!important;}
 .atsrs-v161-empty{color:#94a3b8;border:1px dashed #334155;border-radius:12px;padding:10px;font-size:13px;}
-#atsrsV161Toast{position:fixed;right:18px;bottom:18px;z-index:2147483647;background:#052e1a;color:#bbf7d0;border:1px solid #22c55e;border-radius:14px;padding:11px 13px;font-size:13px;font-weight:800;box-shadow:0 18px 42px rgba(0,0,0,.35);display:none;max-width:350px;}
+#atsrsV163Toast{position:fixed;right:18px;bottom:18px;z-index:2147483647;background:#052e1a;color:#bbf7d0;border:1px solid #22c55e;border-radius:14px;padding:11px 13px;font-size:13px;font-weight:800;box-shadow:0 18px 42px rgba(0,0,0,.35);display:none;max-width:350px;}
 @media(max-width:680px){.atsrs-v161-sub-row{grid-template-columns:1fr}.atsrs-v161-sub-actions{display:grid;grid-template-columns:1fr 1fr}.atsrs-v161-sub-actions button{width:100%!important}.atsrs-v161-billing{grid-template-columns:1fr}}
 </style>
-<script id="ATSRS_V161_SLOT_SUBSCRIPTION_FLAT_LOGIN_JS">
+<script id="ATSRS_V163_SLOT_SUBSCRIPTION_FLAT_LOGIN_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V161', UPDATE='Last Update: 21 Jun 2026';
+  var BUILD='ATSRS V163', UPDATE='Last Update: 21 Jun 2026';
   var PLANS=[['silver','🥈 Silver'],['titanium','🥉 Titanium'],['gold','🥇 Gold']], IDX={silver:0,titanium:1,gold:2};
   var PRICES={monthly:[0.99,1.99,3.49],yearly:[9.99,19.99,34.99]};
   var CONFIG={
@@ -9930,13 +10018,13 @@ body > .atsrs-v64-top-actions{
     var bb=byId('buildBadge'); if(bb){bb.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>TEST BUILD</div>';}
     document.title='ATSRS '+BUILD.replace('ATSRS ','');
   }
-  function toast(msg){var t=byId('atsrsV161Toast'); if(!t){t=document.createElement('div');t.id='atsrsV161Toast';document.body.appendChild(t);} t.textContent=msg;t.style.display='block';clearTimeout(window.__atsrsV161ToastTimer);window.__atsrsV161ToastTimer=setTimeout(function(){t.style.display='none'},4200);}
+  function toast(msg){var t=byId('atsrsV163Toast'); if(!t){t=document.createElement('div');t.id='atsrsV163Toast';document.body.appendChild(t);} t.textContent=msg;t.style.display='block';clearTimeout(window.__atsrsV163ToastTimer);window.__atsrsV163ToastTimer=setTimeout(function(){t.style.display='none'},4200);}
   function clean(root){qa('.atsrs-v156-slots-box,.atsrs-v158-slots,.atsrs-v159-slot-offers,.atsrs-v160-slot-offers,.atsrs-v161-offers',root||document).forEach(function(x){try{x.remove()}catch(e){}})}
   function offerHTML(kind){
     var cfg=CONFIG[kind], st=get(kind), billing=st.billing||'monthly', active=st.plan||'';
     var start=active?IDX[active]+1:0;
     var h='<div class="atsrs-v161-offers" data-kind="'+kind+'"><div class="atsrs-v161-head"><div><b>'+cfg.title+'</b><span>'+cfg.base+'</span></div></div>';
-    h+='<div class="atsrs-v161-billing"><button class="'+(billing==='monthly'?'active':'')+'" onclick="atsrsV161Billing(\''+kind+'\',\'monthly\')">Monthly</button><button class="'+(billing==='yearly'?'active':'')+'" onclick="atsrsV161Billing(\''+kind+'\',\'yearly\')">Yearly · save up to '+yearlySavePct(2)+'%</button></div>';
+    h+='<div class="atsrs-v161-billing"><button class="'+(billing==='monthly'?'active':'')+'" onclick="atsrsV163Billing(\''+kind+'\',\'monthly\')">Monthly</button><button class="'+(billing==='yearly'?'active':'')+'" onclick="atsrsV163Billing(\''+kind+'\',\'yearly\')">Yearly · save up to '+yearlySavePct(2)+'%</button></div>';
     if(start>=PLANS.length){h+='<div class="atsrs-v161-note">Gold package selected. Subscription is managed from Account.</div></div>'; return h;}
     if(active){h+='<div class="atsrs-v161-note">Selected package moved to Account. Higher upgrade options remain available below.</div>';}
     h+='<div class="atsrs-v161-plans">';
@@ -9944,7 +10032,7 @@ body > .atsrs-v64-top-actions{
       var p=PLANS[i], price=PRICES[billing][i], metrics=[];
       if(i>0){metrics.push('<em>'+unitEconomyPct(cfg,i,billing)+'% better slot value</em>');metrics.push('<em>+'+betterPct(cfg,i)+'% more slots</em>');}
       if(billing==='yearly')metrics.push('<em>'+yearlySavePct(i)+'% yearly saving</em>');
-      h+='<button class="atsrs-v161-plan '+p[0]+'" onclick="atsrsV161Select(\''+kind+'\',\''+p[0]+'\')"><b>'+p[1]+'</b><small>+'+cfg.slots[i]+' '+cfg.unit+'</small><div class="atsrs-v161-metrics">'+metrics.join('')+'</div><strong>'+money(price)+'/'+(billing==='yearly'?'yr':'mo')+'</strong></button>';
+      h+='<button class="atsrs-v161-plan '+p[0]+'" onclick="atsrsV163Select(\''+kind+'\',\''+p[0]+'\')"><b>'+p[1]+'</b><small>+'+cfg.slots[i]+' '+cfg.unit+'</small><div class="atsrs-v161-metrics">'+metrics.join('')+'</div><strong>'+money(price)+'/'+(billing==='yearly'?'yr':'mo')+'</strong></button>';
     }
     h+='</div></div>'; return h;
   }
@@ -9976,20 +10064,44 @@ body > .atsrs-v64-top-actions{
     }
   }
   function accountHTML(){
-    var rows=''; Object.keys(CONFIG).forEach(function(k){var st=get(k); if(!st.plan)return; var cfg=CONFIG[k], i=IDX[st.plan], bill=st.billing||'monthly', price=PRICES[bill][i], status=st.status==='subscribed'?'Subscribed':'Selected only'; rows+='<div class="atsrs-v161-sub-row"><div><b>'+cfg.label+' · '+PLANS[i][1]+'</b><span>+'+cfg.slots[i]+' '+cfg.unit+' · '+money(price)+'/'+(bill==='yearly'?'year':'month')+' · '+status+'</span></div><div class="atsrs-v161-sub-actions">'+(st.status==='subscribed'?'<button class="secondary" onclick="atsrsV161Unsubscribe(\''+k+'\')">Unsubscribe</button>':'<button onclick="atsrsV161Subscribe(\''+k+'\')">Subscribe</button>')+'<button class="secondary" onclick="atsrsV161OpenCard(\''+k+'\')">Change</button></div></div>';});
-    return '<div class="atsrs-v161-sub-center" id="atsrsV161SubCenter"><h3>Selected Slot Packages</h3><p>Selected packages appear here. Subscription and cancellation are managed from Account.</p><div class="atsrs-v161-sub-list">'+(rows||'<div class="atsrs-v161-empty">No slot package selected yet.</div>')+'</div></div>';
+    var rows=''; Object.keys(CONFIG).forEach(function(k){var st=get(k); if(!st.plan)return; var cfg=CONFIG[k], i=IDX[st.plan], bill=st.billing||'monthly', price=PRICES[bill][i], status=st.status==='subscribed'?'Subscribed':'Selected only'; rows+='<div class="atsrs-v161-sub-row"><div><b>'+cfg.label+' · '+PLANS[i][1]+'</b><span>+'+cfg.slots[i]+' '+cfg.unit+' · '+money(price)+'/'+(bill==='yearly'?'year':'month')+' · '+status+'</span></div><div class="atsrs-v161-sub-actions">'+(st.status==='subscribed'?'<button class="secondary" onclick="atsrsV163Unsubscribe(\''+k+'\')">Unsubscribe</button>':'<button onclick="atsrsV163Subscribe(\''+k+'\')">Subscribe</button>')+'<button class="secondary" onclick="atsrsV163OpenCard(\''+k+'\')">Change</button></div></div>';});
+    return '<div class="atsrs-v161-sub-center" id="atsrsV163SubCenter"><h3>Selected Slot Packages</h3><p>Selected packages appear here. Subscription and cancellation are managed from Account.</p><div class="atsrs-v161-sub-list">'+(rows||'<div class="atsrs-v161-empty">No slot package selected yet.</div>')+'</div></div>';
   }
-  function placeAccount(){var page=byId('profilePage')||byId('accountPage'); if(!page)return; qa('#atsrsV161SubCenter,#atsrsV160SubCenter',page).forEach(function(x){try{x.remove()}catch(e){}}); var target=q('.account-tabs',page)||q('.panel',page)||page; target.insertAdjacentHTML(target===page?'beforeend':'afterend',accountHTML());}
+  function placeAccount(){var page=byId('profilePage')||byId('accountPage'); if(!page)return; qa('#atsrsV163SubCenter,#atsrsV160SubCenter',page).forEach(function(x){try{x.remove()}catch(e){}}); var target=q('.account-tabs',page)||q('.panel',page)||page; target.insertAdjacentHTML(target===page?'beforeend':'afterend',accountHTML());}
   function render(){updateBuild(); clean(); labelCards(); placeAccount();}
-  window.atsrsV161Billing=function(kind,billing){var st=get(kind);st.billing=billing;st.status=st.status||'selected';set(kind,st);render();};
-  window.atsrsV161Select=function(kind,plan){var st=get(kind);st.plan=plan;st.billing=st.billing||'monthly';st.status='selected';set(kind,st);toast(CONFIG[kind].label+' '+PLANS[IDX[plan]][1]+' selected. Subscribe from Account.');render();};
-  window.atsrsV161Subscribe=function(kind){var st=get(kind); if(!st.plan)return; var ok=confirm('You can unsubscribe anytime from the Account section. Press OK to confirm that you have read and understood this.'); if(!ok)return; st.status='subscribed'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription activated. You can unsubscribe anytime from Account.');};
-  window.atsrsV161Unsubscribe=function(kind){var ok=confirm('Unsubscribe this slot package? Extra slots will be locked after cancellation.'); if(!ok)return; var st=get(kind); st.status='selected'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription changed to not subscribed.');};
-  window.atsrsV161OpenCard=function(kind){toast('Open the relevant card and choose a higher package. Lower packages are hidden after selection.');};
-  window.atsrsV160Billing=window.atsrsV161Billing; window.atsrsV160Select=window.atsrsV161Select; window.atsrsV160Subscribe=window.atsrsV161Subscribe; window.atsrsV160Unsubscribe=window.atsrsV161Unsubscribe;
-  ['renderAll','showPage','applyLanguage','renderManagedFiles','renderCVStatus','renderRefsPage'].forEach(function(n){var old=window[n]; if(typeof old==='function'&&!old.__atsrsV161){var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);setTimeout(render,180);return r;}; w.__atsrsV161=true; window[n]=w;}});
+  window.atsrsV163Billing=function(kind,billing){var st=get(kind);st.billing=billing;st.status=st.status||'selected';set(kind,st);render();};
+  window.atsrsV163Select=function(kind,plan){var st=get(kind);st.plan=plan;st.billing=st.billing||'monthly';st.status='selected';set(kind,st);toast(CONFIG[kind].label+' '+PLANS[IDX[plan]][1]+' selected. Subscribe from Account.');render();};
+  window.atsrsV163Subscribe=function(kind){var st=get(kind); if(!st.plan)return; var ok=confirm('You can unsubscribe anytime from the Account section. Press OK to confirm that you have read and understood this.'); if(!ok)return; st.status='subscribed'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription activated. You can unsubscribe anytime from Account.');};
+  window.atsrsV163Unsubscribe=function(kind){var ok=confirm('Unsubscribe this slot package? Extra slots will be locked after cancellation.'); if(!ok)return; var st=get(kind); st.status='selected'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription changed to not subscribed.');};
+  window.atsrsV163OpenCard=function(kind){toast('Open the relevant card and choose a higher package. Lower packages are hidden after selection.');};
+  window.atsrsV160Billing=window.atsrsV163Billing; window.atsrsV160Select=window.atsrsV163Select; window.atsrsV160Subscribe=window.atsrsV163Subscribe; window.atsrsV160Unsubscribe=window.atsrsV163Unsubscribe;
+  ['renderAll','showPage','applyLanguage','renderManagedFiles','renderCVStatus','renderRefsPage'].forEach(function(n){var old=window[n]; if(typeof old==='function'&&!old.__atsrsV163){var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);setTimeout(render,180);return r;}; w.__atsrsV163=true; window[n]=w;}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render); else render();
   setTimeout(render,250);setTimeout(render,900);setInterval(function(){updateBuild(); placeAccount();},3000);
+})();
+</script>
+
+
+
+<script id="atsrs-v163-final-build-lock">
+(function(){
+  const BUILD='ATSRS V163';
+  const UPDATE='Last Update: 21 Jun 2026';
+  function setText(id,val){const el=document.getElementById(id); if(el) el.textContent=val;}
+  function apply(){
+    const badge=document.getElementById('buildBadge');
+    if(badge){
+      const divs=badge.querySelectorAll('div');
+      if(divs[0]) divs[0].textContent=BUILD;
+      if(divs[1]) divs[1].textContent=UPDATE;
+      if(divs[2]) divs[2].textContent='TEST BUILD';
+    }
+    document.querySelectorAll('.build-badge div').forEach(function(el){
+      if((el.textContent||'').includes('UTC')) el.textContent=el.textContent.replace(/\s*UTC.*$/,'');
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
+  window.addEventListener('load',apply,{once:true});
 })();
 </script>
 
