@@ -8675,11 +8675,138 @@ body > .atsrs-v64-top-actions{
   }
 }
 </style>
-<script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
+<script id="ATSRS_V148_BUILD_LABEL_SCRIPT_DISABLED" type="text/plain">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V148';if(d[1])d[1].textContent='Last Update: 21 Jun 2026 1812 UTC';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
+})();
+</script>
+
+
+
+<!-- V149: References managed file rows rebuilt as true compact list. V148 kept as base. -->
+<style id="ATSRS_V149_REFERENCES_ROW_REBUILD_COMPACT_CSS">
+#refsPage .career-record-list{
+  display:block!important;
+  max-height:196px!important;
+  min-height:0!important;
+  height:auto!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding:0 4px 0 0!important;
+  margin:8px 0 4px!important;
+  border-top:1px solid rgba(51,65,85,.72)!important;
+}
+#refsPage .career-record-row.atsrs-v149-row,
+#refsPage .career-record-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-height:38px!important;
+  height:38px!important;
+  max-height:38px!important;
+  padding:0 8px!important;
+  margin:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(51,65,85,.72)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+#refsPage .career-record-name.atsrs-v149-name,
+#refsPage .career-record-name{
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  overflow:hidden!important;
+}
+#refsPage .career-record-name b{
+  display:inline-block!important;
+  min-width:0!important;
+  max-width:100%!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  font-size:12.5px!important;
+  line-height:1!important;
+  font-weight:800!important;
+}
+#refsPage .career-record-name span{
+  display:inline-block!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+  font-size:10.5px!important;
+  line-height:1!important;
+  color:#8fa3b8!important;
+}
+#refsPage .career-record-date{display:none!important;}
+#refsPage .career-record-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:5px!important;
+  min-width:max-content!important;
+}
+#refsPage .career-record-actions button{
+  width:auto!important;
+  height:24px!important;
+  min-height:24px!important;
+  padding:3px 7px!important;
+  margin:0!important;
+  border-radius:7px!important;
+  font-size:10.5px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  box-shadow:none!important;
+}
+#refsPage .career-count{
+  margin:8px 0 4px!important;
+  font-size:12px!important;
+  line-height:1!important;
+}
+@media(max-width:760px){
+  #refsPage .career-record-list{max-height:220px!important;}
+  #refsPage .career-record-row.atsrs-v149-row,
+  #refsPage .career-record-row{
+    grid-template-columns:1fr!important;
+    height:auto!important;
+    min-height:54px!important;
+    max-height:none!important;
+    padding:7px 6px!important;
+    gap:6px!important;
+  }
+  #refsPage .career-record-actions{justify-content:flex-start!important;}
+}
+</style>
+<script id="ATSRS_V149_REFERENCES_ROW_REBUILD_COMPACT_SCRIPT">
+(function(){
+  function esc(v){return String(v||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c;});}
+  function label(fn, fallback){try{return typeof fn==='function'?fn(fallback):fallback;}catch(e){return fallback;}}
+  window.renderCareerList=function(kind){
+    var list=document.getElementById(kind+'RecordList'); if(!list)return;
+    var files=(typeof sortedCareerFiles==='function')?sortedCareerFiles(kind):[];
+    if(!files.length){list.innerHTML='<div class="preview-box">'+esc(label(window.v54,'No file'))+'</div>';return;}
+    list.innerHTML=files.map(function(f){
+      var kb=Math.round((f.size||0)/1024)+' KB';
+      var name=esc(f.name||'File');
+      return '<div class="career-record-row atsrs-v149-row">'+
+        '<div class="career-record-name atsrs-v149-name"><b title="'+name+'">📄 '+name+'</b><span>'+kb+'</span></div>'+
+        '<div class="career-record-actions">'+
+          '<button class="secondary" onclick="previewManagedFile(\''+kind+'\',\''+f.id+'\')">Preview</button>'+
+          '<button class="secondary" onclick="downloadManagedFile(\''+kind+'\',\''+f.id+'\')">Download</button>'+
+          '<button class="action" onclick="deleteManagedFile(\''+kind+'\',\''+f.id+'\')">Delete</button>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  };
+  function setBuild(){document.querySelectorAll('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V149';if(d[1])d[1].textContent='Last Update: 21 Jun 2026 1825 UTC';if(d[2])d[2].textContent='TEST BUILD';});}
+  function rerender(){try{if(typeof renderManagedFiles==='function')renderManagedFiles();}catch(e){} setBuild();}
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(rerender,80);setTimeout(rerender,500);});
+  setTimeout(rerender,250);setTimeout(setBuild,900);
 })();
 </script>
 
