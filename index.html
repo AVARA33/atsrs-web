@@ -446,11 +446,11 @@ body #app.app:not(.hidden) > .top-actions{
 #app.app:not(.hidden) .top-actions,
 #app.app .top-actions,
 body #app .top-actions{
-  position:fixed!important;
+  position:absolute!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
-  z-index:2147483000!important;
+  z-index:90!important;
   transform:none!important;
 }
 #app.app:not(.hidden) .top-actions .lang-floating,
@@ -542,7 +542,7 @@ html[dir="rtl"] #app.app .top-actions{
   #refsPage .cv-actions{grid-template-columns:1fr!important;}
 }
 body > .atsrs-global-top-actions{
-  position:fixed!important;
+  position:absolute!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
@@ -1258,8 +1258,8 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V136</div>
-<div>Last Update: 16 Jun 2026 0425 UTC</div>
+<div>ATSRS V137</div>
+<div>Last Update: 16 Jun 2026 0440 UTC</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -2615,11 +2615,11 @@ function renderManagedFiles(){
 }
 function forceTopControlsFixed(){
  const el=document.querySelector('#app .top-actions'); if(!el)return;
- el.style.setProperty('position','fixed','important');
+ el.style.setProperty('position','absolute','important');
  el.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
  el.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
  el.style.setProperty('left','auto','important');
- el.style.setProperty('z-index','2147483000','important');
+ el.style.setProperty('z-index','90','important');
 }
 const renderAllBaseV54=renderAll;
 renderAll=function(){renderAllBaseV54();renderManagedFiles();forceTopControlsFixed();};
@@ -2673,7 +2673,7 @@ setTimeout(v55DockTopActions,500);
 
 <style>
 body > .atsrs-v56-top-actions{
-  position:fixed!important;
+  position:absolute!important;
   top:18px!important;
   right:18px!important;
   left:auto!important;
@@ -4785,8 +4785,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V136';
-  const UPDATE = 'Last Update: 16 Jun 2026 0425 UTC';
+  const BUILD = 'ATSRS V137';
+  const UPDATE = 'Last Update: 16 Jun 2026 0440 UTC';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -5055,8 +5055,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5338,8 +5338,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5618,8 +5618,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5793,8 +5793,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5937,8 +5937,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V136';
-  var UPDATE_LABEL = 'Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD_LABEL = 'ATSRS V137';
+  var UPDATE_LABEL = 'Last Update: 16 Jun 2026 0440 UTC';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -6054,8 +6054,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6236,8 +6236,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6403,8 +6403,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -6718,8 +6718,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
@@ -6790,8 +6790,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V136';
-    var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+    var BUILD='ATSRS V137';
+    var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -7015,8 +7015,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
     {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
@@ -7338,8 +7338,8 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V136';
-  var UPDATE='Last Update: 16 Jun 2026 0425 UTC';
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){
@@ -7395,6 +7395,95 @@ body.auth-open > .top-actions{display:none!important;}
   window.addEventListener('load',function(){run();setTimeout(run,500);});
   setTimeout(run,900);
   setInterval(function(){setBuild();parkDashboardBuilder();attachTopActionsToApp();},2500);
+})();
+</script>
+
+
+<style id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_CSS">
+/* V137: language/account/logout are part of the page and must scroll away. */
+#app.app{position:relative!important;}
+#app.app > .top-actions,
+#app.app > .atsrs-global-top-actions,
+#app.app > .atsrs-v56-top-actions,
+#app.app > .atsrs-v64-top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions{
+  position:absolute!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:90!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+#app.app > .top-actions .lang-floating,
+#app.app > .top-actions .app-lang-switcher,
+#app.app > .atsrs-global-top-actions .lang-floating,
+#app.app > .atsrs-v56-top-actions .lang-floating,
+#app.app > .atsrs-v64-top-actions .lang-floating{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+}
+@media(max-width:800px){
+  #app.app > .top-actions,
+  #app.app > .atsrs-global-top-actions,
+  #app.app > .atsrs-v56-top-actions,
+  #app.app > .atsrs-v64-top-actions,
+  body > .top-actions,
+  body > .atsrs-global-top-actions,
+  body > .atsrs-v56-top-actions,
+  body > .atsrs-v64-top-actions{top:12px!important;right:12px!important;}
+}
+</style>
+<script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
+(function(){
+  var BUILD='ATSRS V137';
+  var UPDATE='Last Update: 16 Jun 2026 0440 UTC';
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
+  function topbar(){
+    var app=q('#app'); if(!app)return;
+    var top=q('#app > .top-actions') || q('#app > .atsrs-global-top-actions') || q('#app > .atsrs-v56-top-actions') || q('#app > .atsrs-v64-top-actions') || q('body > .top-actions') || q('body > .atsrs-global-top-actions') || q('body > .atsrs-v56-top-actions') || q('body > .atsrs-v64-top-actions');
+    if(!top)return;
+    if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
+    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions');
+    top.style.setProperty('display',app.classList.contains('hidden')?'none':'flex','important');
+    top.style.setProperty('position','absolute','important');
+    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('left','auto','important');
+    top.style.setProperty('bottom','auto','important');
+    top.style.setProperty('z-index','90','important');
+    top.style.setProperty('transform','none','important');
+    top.style.setProperty('will-change','auto','important');
+    top.style.setProperty('position','absolute','important');
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang){lang.style.setProperty('position','relative','important');lang.style.setProperty('top','auto','important');lang.style.setProperty('right','auto','important');lang.style.setProperty('left','auto','important');lang.style.setProperty('bottom','auto','important');lang.style.setProperty('transform','none','important');}
+  }
+  function run(){setBuild();topbar();}
+  window.forceTopControlsFixed=topbar;
+  window.v55DockTopActions=topbar;
+  window.atsrsV70NormaliseTopActions=topbar;
+  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function' && !old.__atsrsV137){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,0);setTimeout(run,100);setTimeout(run,400);return r;};
+      wrapped.__atsrsV137=true; window[name]=wrapped;
+    }
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,300);});
+  window.addEventListener('resize',run);
+  setTimeout(run,0);setTimeout(run,500);setTimeout(run,1200);
 })();
 </script>
 
