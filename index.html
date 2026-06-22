@@ -1355,7 +1355,7 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V168</div>
+<div>ATSRS V169</div>
 <div>Last Update: 22 Jun 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -1363,17 +1363,6 @@ body > .atsrs-v64-top-actions{
 </section>
 
 <section id="app" class="app hidden">
-<div class="top-actions">
-<div class="lang-floating app-lang-switcher">
-<button type="button" id="appLangCircle" class="lang-circle" onclick="atsrsV78EnglishOnlyNotice()">🇬🇧</button>
-<div id="appLangMenu" class="lang-menu hidden">
-<button type="button" data-lang="en"><span>🇬🇧</span> English</button>
-</div>
-</div>
-<div id="atsrsAccountBadge" class="atsrs-account-badge"><div id="atsrsAccountTypeLabel">Personal Account</div><div id="atsrsAccountEmailLabel">local-test@atsrs.com</div></div>
-<button id="topLogoutBtn" class="top-logout" onclick="confirmLogout()">Logout</button>
-</div>
-
 <aside class="sidebar">
 <div class="sidebar-head"><div class="brand">ATSRS</div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
 <p id="cabinetText" class="sub"></p>
@@ -1386,7 +1375,7 @@ body > .atsrs-v64-top-actions{
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
-<button id="navLogout" onclick="logout()"></button>
+<button id="navLogout" class="sidebar-exit" onclick="confirmLogout()">Exit</button>
 </div>
 </aside>
 
@@ -4882,7 +4871,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V168';
+  const BUILD = 'ATSRS V169';
   const UPDATE = 'Last Update: 22 Jun 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
@@ -5152,7 +5141,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
@@ -5435,7 +5424,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
@@ -5715,7 +5704,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -5890,7 +5879,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
@@ -6034,7 +6023,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V168';
+  var BUILD_LABEL = 'ATSRS V169';
   var UPDATE_LABEL = 'Last Update: 22 Jun 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -6151,7 +6140,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6333,7 +6322,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6500,7 +6489,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -6815,7 +6804,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
@@ -6887,7 +6876,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V168';
+    var BUILD='ATSRS V169';
     var UPDATE='Last Update: 22 Jun 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
@@ -7112,7 +7101,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
@@ -7435,7 +7424,7 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7541,7 +7530,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
 (function(){
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7843,7 +7832,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -7983,7 +7972,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V142_REFERENCES_ICON_EXPAND_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8128,7 +8117,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8355,7 +8344,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8544,7 +8533,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -8679,7 +8668,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V169';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8775,7 +8764,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V169';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -8884,7 +8873,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS">
 (function(){
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATED='22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8976,7 +8965,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -9054,7 +9043,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -9107,7 +9096,7 @@ body > .atsrs-v64-top-actions{
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
     await migrate(kind);
-    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V168 read failed',e);}mirrorMeta(kind,arr);
+    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V169 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(st){st.textContent=label(arr.length);st.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
     if(filter)filter.classList.toggle('active',arr.length>0);
@@ -9417,7 +9406,7 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v157-login-cleanup-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -9563,7 +9552,7 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v161-single-date-badge-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   var cleaning=false;
@@ -9605,7 +9594,7 @@ body > .atsrs-v64-top-actions{
 
 
 
-<!-- ATSRS V168: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
+<!-- ATSRS V169: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
 <style id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_CSS">
 /* Dashboard: keep layout, remove visible card boxes from background */
 #dashboardPage .card,
@@ -9703,7 +9692,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -9750,7 +9739,7 @@ body > .atsrs-v64-top-actions{
 
 
 
-<!-- ATSRS V168: strict references upload/filter compact + hide additional CV slots + dashboard frameless cleanup. Base: V166/V163. Storage untouched. -->
+<!-- ATSRS V169: strict references upload/filter compact + hide additional CV slots + dashboard frameless cleanup. Base: V166/V163. Storage untouched. -->
 <style id="ATSRS_V167_REFS_DASH_STRICT_CSS">
 /* Dashboard: remove remaining visible boxes, keep positions/text */
 #dashboardPage .hero-card,
@@ -9866,7 +9855,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V167_REFS_DASH_STRICT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -9994,7 +9983,7 @@ body.company-mode #navLogout{
 <script id="atsrs-v168-exit-sidebar-top-clean-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V168';
+  var BUILD='ATSRS V169';
   var DATE='22 Jun 2026';
   function q(s,root){return (root||document).querySelector(s);} 
   function qa(s,root){return Array.prototype.slice.call((root||document).querySelectorAll(s));}
@@ -10034,6 +10023,63 @@ body.company-mode #navLogout{
     new MutationObserver(function(){clearTimeout(window.__atsrsV168T);window.__atsrsV168T=setTimeout(run,60);}).observe(document.body,{childList:true,subtree:true,characterData:true});
   }
   run();setTimeout(run,500);setTimeout(run,1500);setInterval(run,2000);
+})();
+</script>
+
+
+<style id="atsrs-v169-top-actions-remove">
+/* V169: app top language/account/logout removed completely. Exit lives only in sidebar. */
+#app > .top-actions,
+#app .top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#navLogout.sidebar-exit,
+#navLogout{
+  display:block!important;
+  width:100%!important;
+  text-align:left!important;
+  background:transparent!important;
+  color:#cbd5e1!important;
+  border:1px solid transparent!important;
+  border-radius:14px!important;
+  padding:12px 14px!important;
+  margin:0!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  box-shadow:none!important;
+}
+#navLogout:hover{
+  background:#1e293b!important;
+  color:#fff!important;
+  border-color:#334155!important;
+}
+</style>
+<script id="atsrs-v169-top-actions-clean">
+(function(){
+  function cleanTopActions(){
+    document.querySelectorAll('#app > .top-actions, body > .top-actions, body > .atsrs-global-top-actions, body > .atsrs-v56-top-actions, body > .atsrs-v64-top-actions').forEach(function(el){ el.remove(); });
+    var exit=document.getElementById('navLogout');
+    if(exit){
+      exit.textContent='Exit';
+      exit.classList.add('sidebar-exit');
+      exit.style.display='block';
+      exit.onclick=function(){
+        if(typeof confirmLogout==='function'){ confirmLogout(); }
+        else if(typeof logout==='function'){ logout(); }
+      };
+    }
+  }
+  document.addEventListener('DOMContentLoaded', cleanTopActions);
+  window.addEventListener('load', cleanTopActions);
+  var mo=new MutationObserver(cleanTopActions);
+  mo.observe(document.documentElement,{childList:true,subtree:true});
+  cleanTopActions();
 })();
 </script>
 
