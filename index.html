@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#07111d" />
 <meta name="color-scheme" content="dark" />
-<title>ATSRS</title>
+<title>ATSRS V163</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
@@ -1158,6 +1158,94 @@ body > .atsrs-v64-top-actions{
 }
 </style>
 
+
+
+<style id="atsrs-v163-login-and-layout-fix">
+/* V163 SAFETY RESTORE: based on full V161, not the 24KB V162 skeleton. */
+/* Login: remove the left boxed panel look, keep only direct background text + auth card. */
+#auth:not(.hidden){
+  min-height:100vh!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:42px!important;
+  padding:28px!important;
+  background:radial-gradient(circle at 16% 20%,rgba(34,197,94,.14),transparent 30%),radial-gradient(circle at 84% 44%,rgba(56,189,248,.12),transparent 32%),linear-gradient(135deg,#07111d 0%,#0d2535 48%,#103b42 100%)!important;
+}
+#auth .auth-bg-docs,#auth .auth-doc-stack,#auth .floating-doc{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#auth .auth-intro{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  flex:1 1 520px!important;
+  max-width:600px!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+#auth .auth-intro #introKicker{
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0 0 14px!important;
+  background:rgba(4,16,26,.42)!important;
+  border:1px solid rgba(134,239,172,.25)!important;
+  box-shadow:none!important;
+}
+#auth .auth-intro #introTitle{
+  margin:0 0 10px!important;
+  max-width:720px!important;
+  font-size:42px!important;
+  line-height:1.05!important;
+  letter-spacing:-.045em!important;
+  color:#f8fafc!important;
+  text-shadow:0 18px 45px rgba(0,0,0,.35)!important;
+}
+#auth .auth-intro #introText{
+  margin:0!important;
+  max-width:560px!important;
+  font-size:18px!important;
+  color:#cbd5e1!important;
+  line-height:1.48!important;
+}
+#auth .auth-intro #introIndustryText,
+#auth .auth-intro .feature-grid,
+#auth .auth-intro .doc-strip,
+#auth .auth-intro .why-grid{display:none!important;}
+#auth .auth-card{
+  flex:0 0 430px!important;
+  max-width:430px!important;
+  margin:0!important;
+  background:rgba(11,23,38,.94)!important;
+  border:1px solid rgba(134,239,172,.18)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.34)!important;
+  border-radius:22px!important;
+}
+#buildBadge .utc-time,.build-utc,.utc-label{display:none!important;}
+@media(max-width:980px){
+  #auth:not(.hidden){align-items:flex-start!important;gap:20px!important;}
+  #auth .auth-intro,#auth .auth-card{flex:1 1 100%!important;max-width:620px!important;}
+  #auth .auth-intro #introTitle{font-size:34px!important;}
+}
+@media(max-width:560px){
+  #auth:not(.hidden){padding:16px!important;}
+  #auth .auth-intro #introTitle{font-size:28px!important;}
+  #auth .auth-intro #introText{font-size:15px!important;}
+  #auth .auth-card{max-width:100%!important;}
+}
+/* Flat cards rule: avoid extra visual wrapper effect where pages contain nested panels. */
+#app .main > .panel:has(> .card),
+#app .main > .card:has(> .card){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+</style>
+
 </head>
 <body class="atsrs-booting">
 <div id="atsrsBootScreen" role="status" aria-live="polite">
@@ -1180,7 +1268,21 @@ body > .atsrs-v64-top-actions{
   </div>
 </div>
 
-
+<div class="auth-intro">
+  <div id="introKicker" class="auth-kicker"><span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span></div>
+  <h2 id="introTitle">Documents, expiry alerts and profile sharing.</h2>
+  <p id="introText">Keep information organized and stay compliant.</p>
+  <p id="introIndustryText" class="sub">Built for professionals across marine, healthcare, engineering, construction, energy, aviation, corporate and technical industries.</p>
+  <div class="feature-grid">
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="M3 10h18"/></svg></span><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Keep passports, licences, certifications, medical records and career documents in one secure place.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5"/></svg></span><b id="featureUploadTitle">Easy Upload</b><span id="featureUploadText">Upload PDF, JPG or PNG files directly into your secure ATSRS register.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M7 12h10"/><path d="M9 9h6"/><path d="M9 15h4"/></svg></span><b id="featureScanTitle">Scan & Auto-fill</b><span id="featureScanText">Scan documents and let ATSRS prepare information for manual review.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 14v3l2 1"/></svg></span><b id="featureAlertsTitle">Expiry Tracking</b><span id="featureAlertsText">Stay ahead with reminders for licences, certificates, permits and compliance documents.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Share one secure ATSRS profile link instead of sending multiple attachments.</span></div>
+    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Allow organisations to request access and import approved documents into their compliance records.</span></div>
+  </div>
+</div>
+</div>
 
 <div class="auth-card">
 <div class="lang-floating">
@@ -1209,6 +1311,8 @@ body > .atsrs-v64-top-actions{
   <div class="auth-divider"><span>or create account with</span></div>
   <div id="signupSocialAuth" class="social-auth-group social-auth-inline">
     <button id="socialGoogleBtn" type="button" class="social-auth-btn social-google" onclick="atsrsSocialAuth('google','register')"><span class="social-auth-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06L5.84 9.9c.87-2.6 3.3-4.52 6.16-4.52z"/></svg></span><span>Google</span></button>
+    <button id="socialMicrosoftBtn" type="button" class="social-auth-btn social-microsoft" onclick="atsrsSocialAuth('microsoft','register')"><span class="social-auth-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#F25022" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" d="M12.5 12.5H22V22h-9.5z"/></svg></span><span>Microsoft</span></button>
+    <button id="socialLinkedInBtn" type="button" class="social-auth-btn social-linkedin" onclick="atsrsSocialAuth('linkedin','register')"><span class="social-auth-icon">in</span><span>LinkedIn</span></button>
   </div>
 </div>
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
@@ -1242,8 +1346,8 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V164</div>
-<div>Last Update: 22 Jun 2026</div>
+<div>ATSRS V163</div>
+<div>Last Update: 21 Jun 2026</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -4769,8 +4873,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V164';
-  const UPDATE = 'Last Update: 22 Jun 2026';
+  const BUILD = 'ATSRS V163';
+  const UPDATE = 'Last Update: 21 Jun 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -5039,8 +5143,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5322,8 +5426,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5602,8 +5706,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5777,8 +5881,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -5921,8 +6025,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V164';
-  var UPDATE_LABEL = 'Last Update: 22 Jun 2026';
+  var BUILD_LABEL = 'ATSRS V163';
+  var UPDATE_LABEL = 'Last Update: 21 Jun 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -6038,8 +6142,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6220,8 +6324,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6387,8 +6491,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -6702,8 +6806,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
@@ -6774,8 +6878,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V164';
-    var UPDATE='Last Update: 22 Jun 2026';
+    var BUILD='ATSRS V163';
+    var UPDATE='Last Update: 21 Jun 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -6999,8 +7103,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
     {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
@@ -7322,8 +7426,8 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){
@@ -7428,8 +7532,8 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
 (function(){
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
@@ -7730,8 +7834,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -7870,8 +7974,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V142_REFERENCES_ICON_EXPAND_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -8015,8 +8119,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
   function setBuild(){
@@ -8242,8 +8346,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
@@ -8431,8 +8535,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -8566,7 +8670,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V164';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 21 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8662,7 +8766,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V164';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 21 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -8771,7 +8875,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS">
 (function(){
-  var BUILD='ATSRS V164';
+  var BUILD='ATSRS V163';
   var UPDATED='21 Jun 2026 1838 UTC';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8863,8 +8967,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
   var STORE='files';
@@ -8941,8 +9045,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
   var STORE='referenceFiles';
@@ -8994,7 +9098,7 @@ body > .atsrs-v64-top-actions{
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
     await migrate(kind);
-    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V164 read failed',e);}mirrorMeta(kind,arr);
+    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V163 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(st){st.textContent=label(arr.length);st.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
     if(filter)filter.classList.toggle('active',arr.length>0);
@@ -9141,8 +9245,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V156_CV_SLOTS_UNDER_MAIN_STABLE_LAYOUT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
   function byId(id){return document.getElementById(id);} 
@@ -9237,90 +9341,769 @@ body > .atsrs-v64-top-actions{
 })();
 </script>
 
-<style id="ATSRS_V164_LOGIN_CLEAN_DATE_ONLY_CSS">
-/* V164 login cleanup: single Google path, no left intro panel, date-only build info */
-#auth.auth{
-  min-height:100vh!important;
+
+
+<style id="ATSRS_V158_CV_STABLE_HEIGHT_PLAN_SLOTS_CSS">
+/* V158 DC/CU: stop CV card jump by reserving final height and using one vertical plan block.
+   Free = Main CV only. PRO = Main + 1 additional. Premium = Main + 3 additional. No unlimited. */
+#refsPage .cv-card{
+  align-self:start!important;
+  overflow:visible!important;
+  transform:none!important;
+  transition:none!important;
+}
+#refsPage #cvFileInfo,
+#refsPage #cvFileInfo.atsrs-v156-cv-area,
+#refsPage #cvFileInfo.atsrs-v157-cv-area{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:7px!important;
+  width:100%!important;
+  min-height:118px!important;
+  max-height:none!important;
+  overflow:visible!important;
+  margin-top:8px!important;
+  padding:0!important;
+  transition:none!important;
+  contain:layout style!important;
+}
+#refsPage .atsrs-v157-main-box,
+#refsPage .atsrs-v157-plan-box{
+  width:100%!important;
+  min-width:0!important;
+  background:rgba(2,6,23,.22)!important;
+  border:1px solid rgba(51,65,85,.70)!important;
+  border-radius:12px!important;
+  padding:8px!important;
+  overflow:hidden!important;
+  transition:none!important;
+}
+#refsPage .atsrs-v157-title{
+  display:block!important;
+  margin:0 0 6px!important;
+  font-size:10px!important;
+  line-height:1!important;
+  color:#94a3b8!important;
+  font-weight:900!important;
+  text-transform:uppercase!important;
+  letter-spacing:.04em!important;
+}
+#refsPage .atsrs-v157-main-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-height:36px!important;
+  height:36px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+#refsPage .atsrs-v157-main-name{min-width:0!important;line-height:1.05!important;}
+#refsPage .atsrs-v157-main-name b{
+  display:block!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  font-size:12.5px!important;
+  color:#e5e7eb!important;
+  font-weight:850!important;
+}
+#refsPage .atsrs-v157-main-name span{display:block!important;font-size:10px!important;color:#94a3b8!important;margin-top:2px!important;}
+#refsPage .atsrs-v157-actions{display:flex!important;gap:4px!important;align-items:center!important;justify-content:flex-end!important;}
+#refsPage .atsrs-v157-actions button{
+  width:auto!important;
+  min-width:48px!important;
+  margin:0!important;
+  padding:5px 6px!important;
+  border-radius:7px!important;
+  font-size:10px!important;
+  line-height:1!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#dbeafe!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v157-actions .action{color:#fecaca!important;}
+#refsPage .atsrs-v157-empty{
+  height:36px!important;
   display:flex!important;
   align-items:center!important;
-  justify-content:flex-end!important;
-  padding:28px 8vw!important;
-  gap:0!important;
+  font-size:12px!important;
+  color:#94a3b8!important;
 }
-#auth .auth-intro,
-#auth .auth-bg-docs,
-#auth .auth-doc-stack,
-#auth .floating-doc{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-#auth .auth-card{
-  width:100%!important;
-  max-width:430px!important;
-  flex:0 1 430px!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  backdrop-filter:none!important;
-  border-radius:0!important;
-  padding:76px 0 0!important;
-}
-#auth .auth-card::before,
-#auth .auth-card::after{display:none!important;}
-#auth .auth-card > .lang-floating{
-  position:absolute!important;
-  top:0!important;
-  right:0!important;
-}
-#auth #signupSocialArea{margin-top:14px!important;}
-#auth #signupSocialAuth{
+#refsPage .atsrs-v157-plan-grid{
   display:grid!important;
-  grid-template-columns:1fr!important;
-  gap:0!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
 }
-#auth #socialMicrosoftBtn,
-#auth #socialLinkedInBtn{display:none!important;}
-#auth .build-badge{
-  position:static!important;
-  margin-top:22px!important;
-  width:auto!important;
-  text-align:left!important;
+#refsPage .atsrs-v157-plan-chip{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  min-height:28px!important;
+  height:28px!important;
+  padding:0 9px!important;
+  border:1px solid rgba(59,83,109,.75)!important;
+  background:#101c2c!important;
+  border-radius:999px!important;
+  color:#cbd5e1!important;
+  overflow:hidden!important;
+}
+#refsPage .atsrs-v157-plan-chip b{
+  min-width:0!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  font-size:10px!important;
+  font-weight:850!important;
+}
+#refsPage .atsrs-v157-plan-chip span{
+  flex:0 0 auto!important;
+  font-size:9.5px!important;
+  color:#94a3b8!important;
+  font-weight:900!important;
+}
+@media(max-width:720px){
+  #refsPage #cvFileInfo,
+  #refsPage #cvFileInfo.atsrs-v156-cv-area,
+  #refsPage #cvFileInfo.atsrs-v157-cv-area{min-height:158px!important;}
+  #refsPage .atsrs-v157-main-row{grid-template-columns:1fr!important;height:auto!important;min-height:58px!important;gap:5px!important;}
+  #refsPage .atsrs-v157-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;}
+  #refsPage .atsrs-v157-actions button{width:100%!important;}
+  #refsPage .atsrs-v157-plan-grid{grid-template-columns:1fr!important;}
+}
+</style>
+<script id="ATSRS_V158_CV_STABLE_HEIGHT_PLAN_SLOTS_JS">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V163';
+  var UPDATE='Last Update: 21 Jun 2026';
+  var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
+  var dbp=null, busy=false, queued=false, lastHtml='';
+  function byId(id){return document.getElementById(id);} 
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+  function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function uid(){try{return (window.currentUser&&window.currentUser.id)||localStorage.getItem('atsrs_saved_login_email')||localStorage.getItem('atsrs_local_uid')||'local_test_user';}catch(e){return 'local_test_user';}}
+  function scope(){return uid()+'::'+KIND;}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
+  function openDB(){
+    if(dbp)return dbp;
+    dbp=new Promise(function(resolve,reject){
+      if(!window.indexedDB){reject(new Error('IndexedDB blocked'));return;}
+      var req=indexedDB.open(DB_NAME,1);
+      req.onupgradeneeded=function(){var db=req.result;if(!db.objectStoreNames.contains(STORE)){var st=db.createObjectStore(STORE,{keyPath:'id'});st.createIndex('scopeKind','scopeKind',{unique:false});}};
+      req.onsuccess=function(){resolve(req.result);};
+      req.onerror=function(){reject(req.error||new Error('IndexedDB open failed'));};
+    });
+    return dbp;
+  }
+  function asDataURL(file){return new Promise(function(resolve,reject){var r=new FileReader();r.onload=function(){resolve(r.result);};r.onerror=function(){reject(r.error||new Error('File read failed'));};r.readAsDataURL(file);});}
+  async function all(){
+    var db=await openDB(), key=scope();
+    return new Promise(function(resolve,reject){
+      var t=db.transaction(STORE,'readonly'), st=t.objectStore(STORE), idx=st.index('scopeKind'), req=idx.getAll(key);
+      req.onsuccess=function(){var a=req.result||[];a.sort(function(a,b){return (b.isMain?1:0)-(a.isMain?1:0)||String(b.updated||'').localeCompare(String(a.updated||''));});resolve(a);};
+      req.onerror=function(){reject(req.error);};
+    });
+  }
+  async function clearAllAndPut(row){
+    var db=await openDB(), key=scope();
+    await new Promise(function(resolve,reject){
+      var t=db.transaction(STORE,'readwrite'), st=t.objectStore(STORE), idx=st.index('scopeKind'), req=idx.getAll(key);
+      req.onsuccess=function(){(req.result||[]).forEach(function(x){st.delete(x.id);});if(row)st.put(row);};
+      t.oncomplete=resolve;t.onerror=function(){reject(t.error);};
+    });
+  }
+  async function del(id){var db=await openDB();await new Promise(function(resolve,reject){var t=db.transaction(STORE,'readwrite');t.objectStore(STORE).delete(id);t.oncomplete=resolve;t.onerror=function(){reject(t.error);};});}
+  async function main(){var a=await all();return a.find(function(x){return x.isMain;})||a[0]||null;}
+  function dataURLToBlobURL(data){try{var p=String(data||'').split(','), meta=p[0]||'', bin=atob(p[1]||''), mime=(meta.match(/data:([^;]+)/)||[])[1]||'application/octet-stream', len=bin.length, u8=new Uint8Array(len);for(var i=0;i<len;i++)u8[i]=bin.charCodeAt(i);return URL.createObjectURL(new Blob([u8],{type:mime}));}catch(e){return data;}}
+  function openFile(f){if(!f||!f.data){alert('CV preview is not available.');return;}var url=dataURLToBlobURL(f.data);var w=window.open(url,'_blank','noopener');if(!w){var a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();}setTimeout(function(){try{if(String(url).indexOf('blob:')===0)URL.revokeObjectURL(url);}catch(e){}},60000);}
+  function downloadFile(f){if(!f||!f.data){alert('CV download is not available.');return;}var a=document.createElement('a');a.href=f.data;a.download=f.name||'ATSRS-CV';document.body.appendChild(a);a.click();a.remove();}
+  function mainBox(f){
+    var body=f?'<div class="atsrs-v157-main-row"><div class="atsrs-v157-main-name"><b title="'+esc(f.name)+'">📄 '+esc(f.name||'Main CV')+' <span class="atsrs-v153-main-badge">MAIN</span></b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v157-actions"><button class="secondary" onclick="previewCV()">Preview</button><button class="secondary" onclick="downloadCV()">Download</button><button class="action" onclick="deleteCV()">Delete</button></div></div>':'<div class="atsrs-v157-empty">No Main CV uploaded yet.</div>';
+    return '<div class="atsrs-v157-main-box"><span class="atsrs-v157-title">Main CV</span>'+body+'</div>';
+  }
+  function planBox(){
+    return '<div class="atsrs-v157-plan-box"><span class="atsrs-v157-title">Paid CV Capacity</span><div class="atsrs-v157-plan-grid">'+
+      '<div class="atsrs-v157-plan-chip"><b>🔒 PRO plan</b><span>Main + 1 additional</span></div>'+ 
+      '<div class="atsrs-v157-plan-chip"><b>🔒 Premium plan</b><span>Main + 3 additional</span></div>'+ 
+      '</div></div>';
+  }
+  function skeleton(){return '<div class="atsrs-v157-main-box"><span class="atsrs-v157-title">Main CV</span><div class="atsrs-v157-empty">Loading CV...</div></div>'+planBox();}
+  function ensureNode(){
+    var info=byId('cvFileInfo');
+    if(!info)return null;
+    if(!info.__atsrsV158Clean){
+      var clone=info.cloneNode(false); /* removes old MutationObserver target and old transient DOM */
+      clone.id='cvFileInfo'; clone.className='preview-box atsrs-v157-cv-area'; clone.innerHTML=skeleton(); clone.__atsrsV158Clean=true;
+      info.parentNode.replaceChild(clone,info); info=clone; lastHtml=clone.innerHTML;
+    }
+    info.className='preview-box atsrs-v157-cv-area';
+    return info;
+  }
+  async function renderCV(){
+    if(busy){queued=true;return;} busy=true;
+    try{
+      setBuild();
+      var info=ensureNode();
+      var arr=[];try{arr=await all();}catch(e){console.warn('V158 CV read failed',e);} 
+      var m=arr.find(function(x){return x.isMain;})||arr[0]||null;
+      if(m && (!m.isMain || arr.length>1)){m.isMain=true;await clearAllAndPut(m);} 
+      var html=mainBox(m)+planBox();
+      info=ensureNode();
+      if(info && html!==lastHtml){info.innerHTML=html;lastHtml=html;}
+      var badge=byId('cvStatusBadge'); if(badge){badge.textContent=m?'Main CV':'No CV Uploaded';badge.className='badge '+(m?'badge-ready':'badge-blocked');}
+      var dash=byId('cvStatusDash'); if(dash){dash.textContent=m?'Available ✓':'Missing ⚠';dash.className='stat '+(m?'good':'missing');}
+      var up=byId('uploadCVBtn'); if(up)up.textContent=m?'Replace Main CV':'Upload Main CV';
+      var inp=byId('cvUploadInput'); if(inp)inp.removeAttribute('multiple');
+      var prev=byId('previewCVBtn'); if(prev)prev.textContent='Preview Main CV';
+      var down=byId('downloadCVBtn'); if(down)down.textContent='Download Main CV';
+      var delb=byId('deleteCVBtn'); if(delb)delb.textContent='Delete Main CV';
+    } finally {busy=false;if(queued){queued=false;requestAnimationFrame(renderCV);}}
+  }
+  var timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(renderCV,30);} 
+  window.handleCVUpload=async function(event){
+    try{
+      var files=Array.prototype.slice.call((event&&event.target&&event.target.files)||[]);if(!files.length)return;
+      var f=files[0];
+      var row={id:Date.now()+'_main_'+Math.random().toString(36).slice(2),scopeKind:scope(),userId:uid(),kind:KIND,name:f.name,type:f.type||'application/octet-stream',size:f.size||0,updated:new Date().toISOString(),isMain:true,data:await asDataURL(f)};
+      await clearAllAndPut(row);
+      if(event&&event.target)event.target.value='';
+      await renderCV();
+      if(files.length>1)alert('Free plan allows Main CV only. PRO unlocks 1 additional CV. Premium unlocks 3 additional CVs.');
+    }catch(err){console.error(err);alert('CV could not be saved. Storage is blocked/full.');}
+  };
+  window.previewCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}openFile(f);};
+  window.downloadCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}downloadFile(f);};
+  window.deleteCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}await del(f.id);await renderCV();};
+  window.renderCVStatus=function(){schedule();};
+  window.atsrsV156RenderCV=function(){};
+  window.atsrsV158RenderCV=renderCV;
+  ['renderAll','showPage','applyLanguage'].forEach(function(n){var old=window[n];if(typeof old==='function'&&!old.__atsrsV158){var wrap=function(){var r=old.apply(this,arguments);schedule();return r;};wrap.__atsrsV158=true;window[n]=wrap;}});
+  function boot(){ensureNode();renderCV();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  window.addEventListener('load',boot);
+})();
+</script>
+
+
+
+
+
+<!-- V159: Flat page cards + smart slot offers + legacy package cleanup -->
+<style id="ATSRS_V159_FLAT_CARDS_SMART_SLOT_OFFERS_CSS">
+/* V159 DC/CU: remove the giant wrapper panel only where it is used as a shell around cards. */
+#refsPage > .panel,
+#dashboardPage > .panel:has(.grid),
+#dashboardPage > .panel:has(.professional-dashboard),
+#dashboardPage > .panel:has(.solo-hero),
+#documentsPage > .panel:has(.grid),
+#profilePage > .panel:has(.grid),
+#accountPage > .panel:has(.account-tabs),
+#certificatesPage > .panel:has(.grid){
   background:transparent!important;
   border:0!important;
   box-shadow:none!important;
   padding:0!important;
-  color:#a7b5c5!important;
+  border-radius:0!important;
 }
-#auth .build-badge div{margin:2px 0!important;}
+#refsPage > .panel > h3,
+#refsPage > .panel > p.sub{
+  padding-left:2px!important;
+  padding-right:2px!important;
+}
+/* Park old slot UI completely; V159 is the only active package layer. */
+#refsPage .atsrs-v156-slots-box,
+#refsPage .atsrs-v156-slot-list,
+#refsPage .atsrs-v158-slots,
+#refsPage .atsrs-v158-active-slots,
+#refsPage .atsrs-v158-free-note{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#refsPage .atsrs-v159-slot-offers{
+  margin:10px 0 12px!important;
+  border:1px solid rgba(67,92,118,.70)!important;
+  border-radius:16px!important;
+  background:rgba(7,18,31,.56)!important;
+  padding:11px!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v159-slot-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:10px!important;margin-bottom:9px!important;}
+#refsPage .atsrs-v159-slot-head b{font-size:13px!important;line-height:1.2!important;color:#f8fafc!important;}
+#refsPage .atsrs-v159-slot-head span{font-size:11px!important;line-height:1.25!important;color:#94a3b8!important;font-weight:800!important;text-align:right!important;}
+#refsPage .atsrs-v159-billing{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-bottom:9px!important;}
+#refsPage .atsrs-v159-billing button{margin:0!important;padding:7px 9px!important;border-radius:11px!important;background:#223248!important;border:1px solid #36506a!important;box-shadow:none!important;font-size:12px!important;line-height:1.1!important;}
+#refsPage .atsrs-v159-billing button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:#86efac!important;color:#fff!important;}
+#refsPage .atsrs-v159-plan-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;}
+#refsPage .atsrs-v159-plan{margin:0!important;padding:9px 8px!important;border-radius:13px!important;background:#071524!important;border:1px solid #334155!important;box-shadow:none!important;text-align:left!important;color:#e5e7eb!important;min-height:78px!important;display:flex!important;flex-direction:column!important;gap:3px!important;}
+#refsPage .atsrs-v159-plan b{font-size:12.5px!important;line-height:1.15!important;}
+#refsPage .atsrs-v159-plan small{font-size:10.8px!important;color:#a7b5c5!important;line-height:1.25!important;}
+#refsPage .atsrs-v159-plan strong{font-size:13px!important;color:#f8fafc!important;margin-top:auto!important;}
+#refsPage .atsrs-v159-plan.silver{border-color:#9ca3af!important;}
+#refsPage .atsrs-v159-plan.titanium{border-color:#38bdf8!important;}
+#refsPage .atsrs-v159-plan.gold{border-color:#facc15!important;}
+#refsPage .atsrs-v159-plan.active{box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 10px 22px rgba(0,0,0,.18)!important;}
+#refsPage .atsrs-v159-plan.silver.active{background:linear-gradient(135deg,rgba(156,163,175,.22),rgba(7,21,36,.98))!important;}
+#refsPage .atsrs-v159-plan.titanium.active{background:linear-gradient(135deg,rgba(56,189,248,.20),rgba(7,21,36,.98))!important;}
+#refsPage .atsrs-v159-plan.gold.active{background:linear-gradient(135deg,rgba(250,204,21,.22),rgba(7,21,36,.98))!important;}
+#refsPage .atsrs-v159-active-slots{margin-top:9px!important;display:flex!important;flex-direction:column!important;gap:6px!important;}
+#refsPage .atsrs-v159-slot-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;border:1px dashed #3b536d!important;background:rgba(2,6,23,.38)!important;border-radius:12px!important;padding:7px 8px!important;min-height:36px!important;}
+#refsPage .atsrs-v159-slot-row b{font-size:12px!important;color:#e5e7eb!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+#refsPage .atsrs-v159-slot-row span{font-size:10.8px!important;color:#94a3b8!important;}
+#refsPage .atsrs-v159-slot-actions{display:flex!important;gap:5px!important;align-items:center!important;}
+#refsPage .atsrs-v159-slot-actions button{width:auto!important;margin:0!important;padding:6px 8px!important;border-radius:9px!important;font-size:11px!important;line-height:1.1!important;box-shadow:none!important;}
+#refsPage .atsrs-v159-note{margin-top:8px!important;font-size:11px!important;color:#94a3b8!important;line-height:1.35!important;}
+#refsPage .atsrs-v159-card-silver{border-color:#9ca3af!important;}
+#refsPage .atsrs-v159-card-titanium{border-color:#38bdf8!important;}
+#refsPage .atsrs-v159-card-gold{border-color:#facc15!important;}
+/* keep offer blocks directly under main buttons */
+#refsPage .cv-actions + .atsrs-v159-slot-offers,
+#refsPage .atsrs-v134-upload + .atsrs-v159-slot-offers{margin-top:10px!important;}
 @media(max-width:760px){
-  #auth.auth{justify-content:center!important;padding:22px!important;}
-  #auth .auth-card{max-width:430px!important;flex:1 1 auto!important;padding-top:72px!important;}
+  #refsPage .atsrs-v159-plan-grid{grid-template-columns:1fr!important;}
+  #refsPage .atsrs-v159-slot-row{grid-template-columns:1fr!important;}
+  #refsPage .atsrs-v159-slot-actions{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;}
 }
 </style>
-<script id="ATSRS_V164_LOGIN_CLEAN_DATE_ONLY_JS">
+<script id="ATSRS_V159_FLAT_CARDS_SMART_SLOT_OFFERS_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
-  function byId(id){return document.getElementById(id);}
-  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
-  function applyV164(){
-    var intro=document.querySelector('#auth .auth-intro'); if(intro) intro.remove();
-    ['socialMicrosoftBtn','socialLinkedInBtn'].forEach(function(id){var el=byId(id); if(el) el.remove();});
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0]) d[0].textContent=BUILD;
-      if(d[1]) d[1].textContent=UPDATE;
-      if(d[2]) d[2].textContent='TEST BUILD';
-    });
-    // Keep provider handler limited to Google on visible social login.
-    window.atsrsV164LoginCleanApplied=true;
+  var BUILD='ATSRS V163', UPDATE='Last Update: 21 Jun 2026';
+  var PLAN_NAMES=[['silver','🥈 Silver'],['titanium','🥉 Titanium'],['gold','🥇 Gold']];
+  var PLAN_INDEX={silver:0,titanium:1,gold:2};
+  var CONFIG={
+    cv:{title:'Additional CV Slots',base:'Main CV is included in Free.',unit:'additional CV',slots:[1,2,3]},
+    appraisal:{title:'Additional Appraisal Slots',base:'For larger appraisal history.',unit:'additional appraisals',slots:[5,10,20]},
+    reference:{title:'Additional Reference Slots',base:'For extra reference proof.',unit:'additional references',slots:[2,5,10]},
+    recommendation:{title:'Additional Recommendation Slots',base:'For extra recommendation letters.',unit:'additional recommendations',slots:[1,2,3]},
+    coverLetter:{title:'Additional Cover Letter Slots',base:'For role-specific cover letters.',unit:'additional cover letters',slots:[1,2,3]}
+  };
+  var PRICES={monthly:[.99,1.99,3.49],yearly:[9.99,19.99,34.99]};
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function byId(id){return document.getElementById(id)}
+  function money(v){return '$'+Number(v).toFixed(2)}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
+  function key(kind){return 'atsrs_v159_slot_plan_'+kind}
+  function oldKey(kind){return 'atsrs_v158_slot_plan_'+kind}
+  function getState(kind){
+    try{
+      var st=JSON.parse(localStorage.getItem(key(kind))||'{}');
+      if(!st.plan){
+        var old=JSON.parse(localStorage.getItem(oldKey(kind))||'{}');
+        if(old&&old.plan){st={plan:old.plan,billing:old.billing||'monthly'};localStorage.setItem(key(kind),JSON.stringify(st));}
+      }
+      return st||{};
+    }catch(e){return {};}
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',applyV164); else applyV164();
-  window.addEventListener('load',applyV164);
+  function setState(kind,obj){try{localStorage.setItem(key(kind),JSON.stringify(obj||{}));}catch(e){}}
+  function findCard(kind){
+    if(kind==='cv'){var t=byId('cvCardTitle');return t?t.closest('.ref-card'):q('#refsPage .cv-card');}
+    if(kind==='coverLetter')return byId('coverLetterCard');
+    var id=kind==='appraisal'?'appraisalCardTitle':kind==='reference'?'referenceCardTitle':'recommendationCardTitle';
+    var t=byId(id); return t?t.closest('.ref-card'):null;
+  }
+  function activeCount(kind){var st=getState(kind), cfg=CONFIG[kind]; if(!st.plan||PLAN_INDEX[st.plan]==null)return 0; return cfg.slots[PLAN_INDEX[st.plan]]||0;}
+  function html(kind){
+    var cfg=CONFIG[kind], st=getState(kind), billing=st.billing||'monthly', active=st.plan||'', activeIdx=PLAN_INDEX[active];
+    var prices=PRICES[billing];
+    var h='<div class="atsrs-v159-slot-offers" data-kind="'+kind+'"><div class="atsrs-v159-slot-head"><b>'+cfg.title+'</b><span>'+cfg.base+'</span></div>'+
+      '<div class="atsrs-v159-billing"><button class="'+(billing==='monthly'?'active':'')+'" onclick="atsrsV159Billing(\''+kind+'\',\'monthly\')">Monthly</button><button class="'+(billing==='yearly'?'active':'')+'" onclick="atsrsV159Billing(\''+kind+'\',\'yearly\')">Yearly</button></div>'+
+      '<div class="atsrs-v159-plan-grid">';
+    PLAN_NAMES.forEach(function(p,i){
+      if(active && i<activeIdx) return; // higher plan hides lower offers; lower plan still shows upgrade options
+      h+='<button class="atsrs-v159-plan '+p[0]+' '+(active===p[0]?'active':'')+'" onclick="atsrsV159Select(\''+kind+'\',\''+p[0]+'\')"><b>'+p[1]+'</b><small>+'+cfg.slots[i]+' '+cfg.unit+'</small><strong>'+money(prices[i])+'/'+(billing==='yearly'?'yr':'mo')+'</strong></button>';
+    });
+    h+='</div>';
+    var count=activeCount(kind);
+    if(count){
+      h+='<div class="atsrs-v159-active-slots">';
+      for(var n=1;n<=Math.min(count,6);n++){
+        h+='<div class="atsrs-v159-slot-row"><div><b>Additional slot #'+n+'</b><span>'+((getState(kind).plan||'').toUpperCase())+' plan preview</span></div><div class="atsrs-v159-slot-actions"><button class="secondary" onclick="atsrsV159Locked()">Upload</button><button class="secondary" onclick="atsrsV159Locked()">Preview</button><button class="secondary" onclick="atsrsV159Locked()">Download</button><button class="action" onclick="atsrsV159Locked()">Delete</button></div></div>';
+      }
+      if(count>6) h+='<div class="atsrs-v159-note">+'+(count-6)+' more slots included in this plan. Full activation comes with payment integration.</div>';
+      h+='</div>';
+    }else{
+      h+='<div class="atsrs-v159-note">Select a plan to preview how extra upload slots will open inside this card.</div>';
+    }
+    h+='</div>'; return h;
+  }
+  window.atsrsV159Locked=function(){alert('Payment integration will unlock this slot.');};
+  window.atsrsV159Billing=function(kind,billing){var st=getState(kind);st.billing=billing;setState(kind,st);render();};
+  window.atsrsV159Select=function(kind,plan){var st=getState(kind);st.plan=plan;st.billing=st.billing||'monthly';setState(kind,st);render();};
+  function place(kind){
+    var card=findCard(kind); if(!card)return;
+    qa('.atsrs-v158-slots,.atsrs-v156-slots-box,.atsrs-v159-slot-offers',card).forEach(function(x){try{x.remove()}catch(e){}});
+    card.classList.remove('atsrs-v158-card-silver','atsrs-v158-card-titanium','atsrs-v158-card-gold','atsrs-v159-card-silver','atsrs-v159-card-titanium','atsrs-v159-card-gold');
+    var st=getState(kind); if(st.plan)card.classList.add('atsrs-v159-card-'+st.plan);
+    var target=null;
+    if(kind==='cv')target=q('.cv-actions',card);
+    else target=q('.atsrs-v134-upload',card)||q('button.secondary',card);
+    if(target) target.insertAdjacentHTML('afterend',html(kind));
+    else card.insertAdjacentHTML('beforeend',html(kind));
+  }
+  function flatShells(){
+    qa('#refsPage > .panel,#dashboardPage > .panel,#documentsPage > .panel,#profilePage > .panel,#accountPage > .panel,#certificatesPage > .panel').forEach(function(p){
+      if(q('.ref-grid,.grid,.professional-dashboard,.solo-hero,.account-tabs',p))p.classList.add('atsrs-v159-shell-panel');
+    });
+  }
+  function clean(){
+    qa('#refsPage .atsrs-v158-slots,#refsPage .atsrs-v156-slots-box,#refsPage .atsrs-v156-slot-list').forEach(function(x){try{x.remove()}catch(e){}});
+    qa('#refsPage .ref-beta-box,#refsPage #appraisalGenerateBtn,#refsPage #referenceGenerateBtn,#refsPage .ref-doc-head .badge,#refsPage #appraisalStatusBadge,#refsPage #referenceStatusBadge,#refsPage #recommendationStatusBadge,#refsPage #coverLetterStatusBadge').forEach(function(x){try{x.remove()}catch(e){}});
+  }
+  function render(){
+    setBuild(); flatShells(); clean();
+    ['cv','appraisal','reference','recommendation','coverLetter'].forEach(place);
+    var page=byId('refsPage'); if(page)page.classList.add('atsrs-v158-ready','atsrs-v159-ready');
+  }
+  /* Park V158 public methods so old package UI cannot come back after delayed renders. */
+  window.atsrsV158Billing=function(kind,billing){window.atsrsV159Billing(kind,billing);};
+  window.atsrsV158SelectPlan=function(kind,plan){window.atsrsV159Select(kind,plan);};
+  ['renderAll','showPage','applyLanguage','renderManagedFiles','renderCVStatus'].forEach(function(n){var old=window[n]; if(typeof old==='function'&&!old.__atsrsV159){var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);setTimeout(render,120);return r;}; w.__atsrsV159=true; window[n]=w;}});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
+  window.addEventListener('load',function(){render();setTimeout(render,250);setTimeout(render,900);});
+  setTimeout(render,600);setTimeout(render,1600);
+})();
+</script>
+
+
+
+<!-- V160: Account subscription center + economy metrics + selected-plan cleanup -->
+<style id="ATSRS_V160_ACCOUNT_SUBSCRIPTION_SLOT_ECONOMY_CSS">
+#refsPage .atsrs-v159-slot-offers{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#refsPage .atsrs-v160-slot-offers{
+  margin:10px 0 12px!important;border:1px solid rgba(67,92,118,.62)!important;border-radius:16px!important;
+  background:rgba(7,18,31,.50)!important;padding:11px!important;box-shadow:none!important;
+}
+#refsPage .atsrs-v160-slot-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:10px!important;margin-bottom:9px!important}
+#refsPage .atsrs-v160-slot-head b{font-size:13px!important;line-height:1.2!important;color:#f8fafc!important}
+#refsPage .atsrs-v160-slot-head span{font-size:11px!important;line-height:1.25!important;color:#94a3b8!important;font-weight:800!important;text-align:right!important}
+#refsPage .atsrs-v160-billing{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-bottom:9px!important}
+#refsPage .atsrs-v160-billing button{margin:0!important;padding:7px 9px!important;border-radius:11px!important;background:#223248!important;border:1px solid #36506a!important;box-shadow:none!important;font-size:12px!important;line-height:1.1!important}
+#refsPage .atsrs-v160-billing button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:#86efac!important;color:#fff!important}
+#refsPage .atsrs-v160-plan-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+#refsPage .atsrs-v160-plan{margin:0!important;padding:9px 8px!important;border-radius:13px!important;background:#071524!important;border:1px solid #334155!important;box-shadow:none!important;text-align:left!important;color:#e5e7eb!important;min-height:96px!important;display:flex!important;flex-direction:column!important;gap:4px!important}
+#refsPage .atsrs-v160-plan b{font-size:12.5px!important;line-height:1.15!important}
+#refsPage .atsrs-v160-plan small{font-size:10.8px!important;color:#a7b5c5!important;line-height:1.25!important}
+#refsPage .atsrs-v160-plan strong{font-size:13px!important;color:#f8fafc!important;margin-top:auto!important}
+#refsPage .atsrs-v160-metrics{display:flex!important;flex-wrap:wrap!important;gap:4px!important;margin-top:2px!important}
+#refsPage .atsrs-v160-metrics em{font-style:normal!important;font-size:10px!important;line-height:1.1!important;border:1px solid rgba(148,163,184,.28)!important;border-radius:999px!important;padding:3px 5px!important;color:#cbd5e1!important;background:rgba(2,6,23,.36)!important}
+#refsPage .atsrs-v160-plan.silver{border-color:#9ca3af!important}
+#refsPage .atsrs-v160-plan.titanium{border-color:#38bdf8!important}
+#refsPage .atsrs-v160-plan.gold{border-color:#facc15!important}
+#refsPage .atsrs-v160-active-slots{margin-top:9px!important;display:flex!important;flex-direction:column!important;gap:6px!important}
+#refsPage .atsrs-v160-slot-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;border:1px dashed #3b536d!important;background:rgba(2,6,23,.38)!important;border-radius:12px!important;padding:7px 8px!important;min-height:36px!important}
+#refsPage .atsrs-v160-slot-row b{font-size:12px!important;color:#e5e7eb!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+#refsPage .atsrs-v160-slot-row span{font-size:10.8px!important;color:#94a3b8!important}
+#refsPage .atsrs-v160-slot-actions{display:flex!important;gap:5px!important;align-items:center!important}
+#refsPage .atsrs-v160-slot-actions button{width:auto!important;margin:0!important;padding:6px 8px!important;border-radius:9px!important;font-size:11px!important;line-height:1.1!important;box-shadow:none!important}
+#refsPage .atsrs-v160-note{margin-top:8px!important;font-size:11px!important;color:#94a3b8!important;line-height:1.35!important}
+#refsPage .atsrs-v160-card-silver{border-color:#9ca3af!important}
+#refsPage .atsrs-v160-card-titanium{border-color:#38bdf8!important}
+#refsPage .atsrs-v160-card-gold{border-color:#facc15!important}
+#accountPage .atsrs-v160-sub-center{margin-top:14px!important;border:1px solid rgba(67,92,118,.72)!important;border-radius:18px!important;background:rgba(7,18,31,.45)!important;padding:14px!important}
+#accountPage .atsrs-v160-sub-center h3{margin:0 0 6px!important}
+#accountPage .atsrs-v160-sub-center p{margin:0 0 10px!important;color:#94a3b8!important;font-size:13px!important;line-height:1.4!important}
+#accountPage .atsrs-v160-sub-list{display:flex!important;flex-direction:column!important;gap:8px!important}
+#accountPage .atsrs-v160-sub-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;align-items:center!important;border:1px solid #334155!important;background:rgba(2,6,23,.36)!important;border-radius:14px!important;padding:10px!important}
+#accountPage .atsrs-v160-sub-row b{display:block!important;font-size:13px!important;color:#f8fafc!important}
+#accountPage .atsrs-v160-sub-row span{display:block!important;font-size:11px!important;color:#94a3b8!important;margin-top:3px!important}
+#accountPage .atsrs-v160-sub-actions{display:flex!important;gap:6px!important;align-items:center!important}
+#accountPage .atsrs-v160-sub-actions button{width:auto!important;margin:0!important;padding:8px 10px!important;border-radius:10px!important;font-size:12px!important;box-shadow:none!important}
+#accountPage .atsrs-v160-empty{font-size:12px!important;color:#94a3b8!important;border:1px dashed #334155!important;border-radius:12px!important;padding:10px!important;background:rgba(2,6,23,.25)!important}
+#atsrsV160Toast{position:fixed;right:18px;bottom:18px;z-index:2147483647;background:#052e1a;color:#bbf7d0;border:1px solid #22c55e;border-radius:14px;padding:11px 13px;font-size:13px;font-weight:800;box-shadow:0 18px 42px rgba(0,0,0,.35);display:none;max-width:330px}
+@media(max-width:760px){
+  #refsPage .atsrs-v160-plan-grid{grid-template-columns:1fr!important}
+  #refsPage .atsrs-v160-slot-row,#accountPage .atsrs-v160-sub-row{grid-template-columns:1fr!important}
+  #refsPage .atsrs-v160-slot-actions{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #accountPage .atsrs-v160-sub-actions{display:grid!important;grid-template-columns:1fr 1fr!important}
+}
+</style>
+<script id="ATSRS_V160_ACCOUNT_SUBSCRIPTION_SLOT_ECONOMY_JS">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V163', UPDATE='Last Update: 21 Jun 2026';
+  var PLANS=[['silver','🥈 Silver'],['titanium','🥉 Titanium'],['gold','🥇 Gold']], IDX={silver:0,titanium:1,gold:2};
+  var CONFIG={
+    cv:{label:'CV / Resume',title:'Additional CV Slots',base:'Main CV is included in Free.',unit:'additional CV',slots:[1,2,3]},
+    appraisal:{label:'Appraisals',title:'Additional Appraisal Slots',base:'For larger appraisal history.',unit:'additional appraisals',slots:[5,10,20]},
+    reference:{label:'References',title:'Additional Reference Slots',base:'For extra reference proof.',unit:'additional references',slots:[2,5,10]},
+    recommendation:{label:'Recommendation Letters',title:'Additional Recommendation Slots',base:'For extra recommendation letters.',unit:'additional recommendations',slots:[1,2,3]},
+    coverLetter:{label:'Cover Letter',title:'Additional Cover Letter Slots',base:'For role-specific cover letters.',unit:'additional cover letters',slots:[1,2,3]}
+  };
+  var PRICES={monthly:[.99,1.99,3.49],yearly:[9.99,19.99,34.99]};
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function byId(id){return document.getElementById(id)}
+  function money(v){return '$'+Number(v).toFixed(2)}
+  function key(kind){return 'atsrs_v160_slot_plan_'+kind}
+  function oldKeys(kind){return ['atsrs_v159_slot_plan_'+kind,'atsrs_v158_slot_plan_'+kind]}
+  function get(kind){try{var st=JSON.parse(localStorage.getItem(key(kind))||'{}')||{}; if(!st.plan){oldKeys(kind).some(function(k){try{var o=JSON.parse(localStorage.getItem(k)||'{}'); if(o&&o.plan){st={plan:o.plan,billing:o.billing||'monthly',status:'selected'}; localStorage.setItem(key(kind),JSON.stringify(st)); return true;}}catch(e){} return false;});} return st;}catch(e){return {}}}
+  function set(kind,st){try{localStorage.setItem(key(kind),JSON.stringify(st||{}));}catch(e){}}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div'); if(d[0])d[0].textContent=BUILD; if(d[1])d[1].textContent=UPDATE; if(d[2])d[2].textContent='TEST BUILD';});}
+  function findCard(kind){
+    if(kind==='cv'){var t=byId('cvCardTitle');return t?t.closest('.ref-card'):q('#refsPage .cv-card');}
+    if(kind==='coverLetter')return byId('coverLetterCard');
+    var id=kind==='appraisal'?'appraisalCardTitle':kind==='reference'?'referenceCardTitle':'recommendationCardTitle'; var t=byId(id); return t?t.closest('.ref-card'):null;
+  }
+  function yearlySavePct(planIdx){var m=PRICES.monthly[planIdx]*12, y=PRICES.yearly[planIdx]; return Math.max(0,Math.round((1-y/m)*100));}
+  function slotMorePct(kind,i){var base=CONFIG[kind].slots[0]||1; return i===0?0:Math.round(((CONFIG[kind].slots[i]-base)/base)*100);}
+  function valueSavePct(kind,billing,i){var basePer=PRICES[billing][0]/CONFIG[kind].slots[0]; var curPer=PRICES[billing][i]/CONFIG[kind].slots[i]; return i===0?0:Math.max(0,Math.round((1-curPer/basePer)*100));}
+  function count(kind){var st=get(kind), cfg=CONFIG[kind]; return st.plan&&IDX[st.plan]!=null ? (cfg.slots[IDX[st.plan]]||0) : 0;}
+  function offerHTML(kind){
+    var cfg=CONFIG[kind], st=get(kind), billing=st.billing||'monthly', active=st.plan||'', activeIdx=IDX[active], prices=PRICES[billing];
+    var h='<div class="atsrs-v160-slot-offers" data-kind="'+kind+'"><div class="atsrs-v160-slot-head"><b>'+cfg.title+'</b><span>'+cfg.base+'</span></div>'+
+      '<div class="atsrs-v160-billing"><button class="'+(billing==='monthly'?'active':'')+'" onclick="atsrsV160Billing(\''+kind+'\',\'monthly\')">Monthly</button><button class="'+(billing==='yearly'?'active':'')+'" onclick="atsrsV160Billing(\''+kind+'\',\'yearly\')">Yearly · save up to '+yearlySavePct(2)+'%</button></div>'+
+      '<div class="atsrs-v160-plan-grid">';
+    PLANS.forEach(function(p,i){
+      if(active && i<=activeIdx) return; // selected and lower plans disappear after selection
+      var metrics=[];
+      if(i>0) metrics.push('<em>+'+slotMorePct(kind,i)+'% slots</em>');
+      if(i>0) metrics.push('<em>'+valueSavePct(kind,billing,i)+'% lower / slot</em>');
+      if(billing==='yearly') metrics.push('<em>'+yearlySavePct(i)+'% yearly save</em>');
+      h+='<button class="atsrs-v160-plan '+p[0]+'" onclick="atsrsV160Select(\''+kind+'\',\''+p[0]+'\')"><b>'+p[1]+'</b><small>+'+cfg.slots[i]+' '+cfg.unit+'</small><div class="atsrs-v160-metrics">'+metrics.join('')+'</div><strong>'+money(prices[i])+'/'+(billing==='yearly'?'yr':'mo')+'</strong></button>';
+    });
+    h+='</div>';
+    var c=count(kind);
+    if(c){
+      h+='<div class="atsrs-v160-active-slots">';
+      for(var n=1;n<=Math.min(c,6);n++) h+='<div class="atsrs-v160-slot-row"><div><b>Additional slot #'+n+'</b><span>Selected in Account · '+(st.plan||'').toUpperCase()+'</span></div><div class="atsrs-v160-slot-actions"><button class="secondary" onclick="atsrsV160Locked()">Upload</button><button class="secondary" onclick="atsrsV160Locked()">Preview</button><button class="secondary" onclick="atsrsV160Locked()">Download</button><button class="action" onclick="atsrsV160Locked()">Delete</button></div></div>';
+      if(c>6) h+='<div class="atsrs-v160-note">+'+(c-6)+' more slots included. Subscribe from Account to activate live storage.</div>';
+      h+='</div>';
+    }
+    if(active==='gold') h+='<div class="atsrs-v160-note">Gold selected. No higher slot plan is available for this card.</div>';
+    else if(!active) h+='<div class="atsrs-v160-note">Choose a slot package. The selected package will move to Account for subscription.</div>';
+    else h+='<div class="atsrs-v160-note">Upgrade options remain here. Your selected package is managed in Account.</div>';
+    h+='</div>'; return h;
+  }
+  function place(kind){
+    var card=findCard(kind); if(!card)return;
+    qa('.atsrs-v159-slot-offers,.atsrs-v160-slot-offers,.atsrs-v158-slots,.atsrs-v156-slots-box',card).forEach(function(x){try{x.remove()}catch(e){}});
+    card.classList.remove('atsrs-v159-card-silver','atsrs-v159-card-titanium','atsrs-v159-card-gold','atsrs-v160-card-silver','atsrs-v160-card-titanium','atsrs-v160-card-gold');
+    var st=get(kind); if(st.plan)card.classList.add('atsrs-v160-card-'+st.plan);
+    var target=kind==='cv'?q('.cv-actions',card):(q('.atsrs-v134-upload',card)||q('button.secondary',card));
+    if(target)target.insertAdjacentHTML('afterend',offerHTML(kind)); else card.insertAdjacentHTML('beforeend',offerHTML(kind));
+  }
+  function accountHTML(){
+    var rows='';
+    Object.keys(CONFIG).forEach(function(k){var st=get(k); if(!st.plan)return; var i=IDX[st.plan], cfg=CONFIG[k], bill=st.billing||'monthly', price=PRICES[bill][i], status=st.status==='subscribed'?'Subscribed':'Selected, not subscribed';
+      rows+='<div class="atsrs-v160-sub-row"><div><b>'+cfg.label+' · '+PLANS[i][1]+'</b><span>+'+cfg.slots[i]+' '+cfg.unit+' · '+money(price)+'/'+(bill==='yearly'?'year':'month')+' · '+status+'</span></div><div class="atsrs-v160-sub-actions">'+(st.status==='subscribed'?'<button class="secondary" onclick="atsrsV160Unsubscribe(\''+k+'\')">Unsubscribe</button>':'<button onclick="atsrsV160Subscribe(\''+k+'\')">Subscribe</button>')+'<button class="secondary" onclick="atsrsV160Change(\''+k+'\')">Change</button></div></div>';
+    });
+    return '<div class="atsrs-v160-sub-center" id="atsrsV160SubCenter"><h3>Selected Slot Packages</h3><p>Selected packages appear here. Subscription and cancellation are managed from Account.</p><div class="atsrs-v160-sub-list">'+(rows||'<div class="atsrs-v160-empty">No slot package selected yet.</div>')+'</div></div>';
+  }
+  function placeAccount(){var page=byId('accountPage'); if(!page)return; qa('#atsrsV160SubCenter',page).forEach(function(x){try{x.remove()}catch(e){}}); var target=q('.account-tabs',page)||q('.panel',page)||page; target.insertAdjacentHTML(target===page?'beforeend':'afterend',accountHTML());}
+  function toast(msg){var t=byId('atsrsV160Toast'); if(!t){t=document.createElement('div');t.id='atsrsV160Toast';document.body.appendChild(t);} t.textContent=msg;t.style.display='block';clearTimeout(window.__atsrsV160ToastTimer);window.__atsrsV160ToastTimer=setTimeout(function(){t.style.display='none'},3600);}
+  window.atsrsV160Locked=function(){alert('This slot will be activated after subscription. You can manage subscription from Account.');};
+  window.atsrsV160Billing=function(kind,billing){var st=get(kind);st.billing=billing;st.status=st.status||'selected';set(kind,st);render();};
+  window.atsrsV160Select=function(kind,plan){var st=get(kind);st.plan=plan;st.billing=st.billing||'monthly';st.status='selected';set(kind,st);toast(CONFIG[kind].label+' '+PLANS[IDX[plan]][1]+' selected. Subscribe from Account.');render();};
+  window.atsrsV160Subscribe=function(kind){var st=get(kind); if(!st.plan)return; var ok=confirm('You can unsubscribe anytime from the Account section. Press OK to confirm that you have read and understood this.'); if(!ok)return; st.status='subscribed'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription activated. You can unsubscribe anytime from Account.');};
+  window.atsrsV160Unsubscribe=function(kind){var ok=confirm('Unsubscribe this slot package? Extra slots will be locked after cancellation.'); if(!ok)return; var st=get(kind); st.status='selected'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription changed to not subscribed.');};
+  window.atsrsV160Change=function(kind){toast('Open the relevant card and choose a higher package. Lower selected packages are hidden by design.');};
+  function clean(){qa('#refsPage .atsrs-v158-slots,#refsPage .atsrs-v156-slots-box,#refsPage .atsrs-v156-slot-list,#refsPage .atsrs-v159-slot-offers').forEach(function(x){try{x.remove()}catch(e){}});}
+  function render(){setBuild(); clean(); ['cv','appraisal','reference','recommendation','coverLetter'].forEach(place); placeAccount();}
+  window.atsrsV159Select=function(kind,plan){window.atsrsV160Select(kind,plan)};
+  window.atsrsV159Billing=function(kind,billing){window.atsrsV160Billing(kind,billing)};
+  ['renderAll','showPage','applyLanguage','renderManagedFiles','renderCVStatus'].forEach(function(n){var old=window[n]; if(typeof old==='function'&&!old.__atsrsV160){var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);setTimeout(render,120);return r;}; w.__atsrsV160=true; window[n]=w;}});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
+  window.addEventListener('load',function(){render();setTimeout(render,250);setTimeout(render,900)});
+  setTimeout(render,600);setTimeout(render,1600);
+})();
+</script>
+
+
+<!-- V163: Flat login intro + reliable subscription offers/account center + date-only build label -->
+<style id="ATSRS_V163_SLOT_SUBSCRIPTION_FLAT_LOGIN_CSS">
+/* Login left block: text directly on background, no big card */
+#auth .auth-intro{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  padding:10px 18px!important;
+}
+#auth .feature-tile{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:10px 6px!important;
+}
+#auth .feature-tile:hover{transform:none!important;border:0!important;box-shadow:none!important;}
+#auth .tile-icon{background:rgba(4,16,26,.32)!important;border-color:rgba(134,239,172,.18)!important;}
+#auth #introKicker.auth-kicker{background:rgba(4,16,26,.38)!important;border-color:rgba(134,239,172,.18)!important;}
+#buildBadge div:nth-child(2){font-size:12px!important;}
+
+/* General page simplification: remove the large wrapper-card look where panels only wrap cards */
+#refsPage>.panel,
+#certificatesPage>.panel,
+#profilePage>.panel,
+#compliancePage>.panel,
+#reportsPage>.panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+#refsPage>.panel>h3,#refsPage>.panel>p{padding-left:2px!important;}
+#refsPage .ref-card,.card,.workflow-card,.snapshot-card,.mini-panel{
+  border-color:#263f58!important;
+}
+
+/* Hide older package layers with higher priority */
+#refsPage .atsrs-v156-slots-box,
+#refsPage .atsrs-v158-slots,
+#refsPage .atsrs-v159-slot-offers,
+#refsPage .atsrs-v160-slot-offers,
+.atsrs-v156-slots-box,.atsrs-v158-slots,.atsrs-v159-slot-offers,.atsrs-v160-slot-offers{
+  display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;
+}
+
+.atsrs-v161-offers{margin:12px 0 0!important;border-top:1px solid rgba(38,63,88,.95)!important;padding-top:12px!important;}
+.atsrs-v161-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.atsrs-v161-head b{display:block;color:#f8fafc;font-size:13px;}
+.atsrs-v161-head span{display:block;color:#94a3b8;font-size:12px;margin-top:3px;}
+.atsrs-v161-billing{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.atsrs-v161-billing button{margin:0!important;padding:8px 10px!important;border-radius:10px!important;background:#1a293b!important;border:1px solid #31465f!important;box-shadow:none!important;font-size:12px!important;}
+.atsrs-v161-billing button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:#86efac!important;color:#fff!important;}
+.atsrs-v161-plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:8px;}
+.atsrs-v161-plan{margin:0!important;padding:10px!important;text-align:left!important;border-radius:12px!important;background:#0b1726!important;border:1px solid #2b4058!important;box-shadow:none!important;color:#e5e7eb!important;}
+.atsrs-v161-plan.silver{border-color:#94a3b8!important;}
+.atsrs-v161-plan.titanium{border-color:#38bdf8!important;}
+.atsrs-v161-plan.gold{border-color:#f59e0b!important;}
+.atsrs-v161-plan b{display:block;font-size:13px;margin-bottom:4px;}
+.atsrs-v161-plan small{display:block;color:#cbd5e1;font-size:11px;line-height:1.35;}
+.atsrs-v161-plan strong{display:block;margin-top:7px;font-size:14px;color:#f8fafc;}
+.atsrs-v161-metrics{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.atsrs-v161-metrics em{font-style:normal;border:1px solid rgba(134,239,172,.24);border-radius:999px;padding:3px 6px;font-size:10.5px;color:#bbf7d0;background:rgba(6,78,59,.18);}
+.atsrs-v161-note{margin-top:9px;border:1px solid #263f58;background:#081524;border-radius:12px;padding:9px 10px;color:#a7b5c5;font-size:12px;line-height:1.4;}
+.atsrs-v161-sub-center{margin-top:16px;border:1px solid #263f58;background:#0b1726;border-radius:18px;padding:15px;}
+.atsrs-v161-sub-center h3{margin:0 0 5px;font-size:18px;}
+.atsrs-v161-sub-center p{margin:0 0 12px;color:#94a3b8;font-size:13px;}
+.atsrs-v161-sub-list{display:flex;flex-direction:column;gap:8px;}
+.atsrs-v161-sub-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid #263f58;border-radius:14px;background:#07111d;padding:10px;}
+.atsrs-v161-sub-row b{display:block;font-size:13px;}
+.atsrs-v161-sub-row span{display:block;font-size:12px;color:#94a3b8;margin-top:3px;}
+.atsrs-v161-sub-actions{display:flex;gap:7px;align-items:center;}
+.atsrs-v161-sub-actions button{width:auto!important;margin:0!important;padding:8px 10px!important;font-size:12px!important;border-radius:10px!important;}
+.atsrs-v161-empty{color:#94a3b8;border:1px dashed #334155;border-radius:12px;padding:10px;font-size:13px;}
+#atsrsV163Toast{position:fixed;right:18px;bottom:18px;z-index:2147483647;background:#052e1a;color:#bbf7d0;border:1px solid #22c55e;border-radius:14px;padding:11px 13px;font-size:13px;font-weight:800;box-shadow:0 18px 42px rgba(0,0,0,.35);display:none;max-width:350px;}
+@media(max-width:680px){.atsrs-v161-sub-row{grid-template-columns:1fr}.atsrs-v161-sub-actions{display:grid;grid-template-columns:1fr 1fr}.atsrs-v161-sub-actions button{width:100%!important}.atsrs-v161-billing{grid-template-columns:1fr}}
+</style>
+<script id="ATSRS_V163_SLOT_SUBSCRIPTION_FLAT_LOGIN_JS">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V163', UPDATE='Last Update: 21 Jun 2026';
+  var PLANS=[['silver','🥈 Silver'],['titanium','🥉 Titanium'],['gold','🥇 Gold']], IDX={silver:0,titanium:1,gold:2};
+  var PRICES={monthly:[0.99,1.99,3.49],yearly:[9.99,19.99,34.99]};
+  var CONFIG={
+    cv:{label:'CV / Resume',title:'Additional CV Slots',base:'Main CV is included in Free.',unit:'additional CV',slots:[1,2,3]},
+    appraisal:{label:'Appraisals',title:'Additional Appraisal Slots',base:'For larger appraisal history.',unit:'additional appraisals',slots:[5,10,20]},
+    reference:{label:'References',title:'Additional Reference Slots',base:'For extra reference proof.',unit:'additional references',slots:[2,5,10]},
+    recommendation:{label:'Recommendation Letters',title:'Additional Recommendation Slots',base:'For extra recommendation letters.',unit:'additional recommendations',slots:[1,2,3]},
+    coverLetter:{label:'Cover Letter',title:'Additional Cover Letter Slots',base:'For role-specific cover letters.',unit:'additional cover letters',slots:[1,2,3]},
+    certificates:{label:'Certificates',title:'Additional Certificate Slots',base:'For wider certificate history.',unit:'additional certificates',slots:[5,10,20]},
+    trainings:{label:'Trainings',title:'Additional Training Slots',base:'For wider training history.',unit:'additional trainings',slots:[5,10,20]},
+    passport:{label:'Passport / Visa / Medical / Seaman Book',title:'Additional Document Slots',base:'For extra identity, travel and medical documents.',unit:'additional documents',slots:[2,5,10]}
+  };
+  function byId(id){return document.getElementById(id)}
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function money(n){return '$'+Number(n).toFixed(2)}
+  function key(k){return 'atsrs_v161_slot_'+k}
+  function get(k){try{return JSON.parse(localStorage.getItem(key(k)))||{billing:'monthly'}}catch(e){return {billing:'monthly'}}}
+  function set(k,v){localStorage.setItem(key(k),JSON.stringify(v||{}))}
+  function yearlySavePct(i){var monthly=PRICES.monthly[i]*12, yearly=PRICES.yearly[i]; return Math.max(0,Math.round((1-yearly/monthly)*100));}
+  function betterPct(cfg,i){ if(i===0)return 0; var prevSlots=cfg.slots[i-1], now=cfg.slots[i]; return Math.round(((now-prevSlots)/prevSlots)*100); }
+  function unitEconomyPct(cfg,i,billing){ if(i===0)return 0; var prev=(PRICES[billing][i-1]/cfg.slots[i-1]), now=(PRICES[billing][i]/cfg.slots[i]); return Math.max(0,Math.round((1-now/prev)*100)); }
+  function updateBuild(){
+    var bb=byId('buildBadge'); if(bb){bb.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>TEST BUILD</div>';}
+    document.title='ATSRS '+BUILD.replace('ATSRS ','');
+  }
+  function toast(msg){var t=byId('atsrsV163Toast'); if(!t){t=document.createElement('div');t.id='atsrsV163Toast';document.body.appendChild(t);} t.textContent=msg;t.style.display='block';clearTimeout(window.__atsrsV163ToastTimer);window.__atsrsV163ToastTimer=setTimeout(function(){t.style.display='none'},4200);}
+  function clean(root){qa('.atsrs-v156-slots-box,.atsrs-v158-slots,.atsrs-v159-slot-offers,.atsrs-v160-slot-offers,.atsrs-v161-offers',root||document).forEach(function(x){try{x.remove()}catch(e){}})}
+  function offerHTML(kind){
+    var cfg=CONFIG[kind], st=get(kind), billing=st.billing||'monthly', active=st.plan||'';
+    var start=active?IDX[active]+1:0;
+    var h='<div class="atsrs-v161-offers" data-kind="'+kind+'"><div class="atsrs-v161-head"><div><b>'+cfg.title+'</b><span>'+cfg.base+'</span></div></div>';
+    h+='<div class="atsrs-v161-billing"><button class="'+(billing==='monthly'?'active':'')+'" onclick="atsrsV163Billing(\''+kind+'\',\'monthly\')">Monthly</button><button class="'+(billing==='yearly'?'active':'')+'" onclick="atsrsV163Billing(\''+kind+'\',\'yearly\')">Yearly · save up to '+yearlySavePct(2)+'%</button></div>';
+    if(start>=PLANS.length){h+='<div class="atsrs-v161-note">Gold package selected. Subscription is managed from Account.</div></div>'; return h;}
+    if(active){h+='<div class="atsrs-v161-note">Selected package moved to Account. Higher upgrade options remain available below.</div>';}
+    h+='<div class="atsrs-v161-plans">';
+    for(var i=start;i<PLANS.length;i++){
+      var p=PLANS[i], price=PRICES[billing][i], metrics=[];
+      if(i>0){metrics.push('<em>'+unitEconomyPct(cfg,i,billing)+'% better slot value</em>');metrics.push('<em>+'+betterPct(cfg,i)+'% more slots</em>');}
+      if(billing==='yearly')metrics.push('<em>'+yearlySavePct(i)+'% yearly saving</em>');
+      h+='<button class="atsrs-v161-plan '+p[0]+'" onclick="atsrsV163Select(\''+kind+'\',\''+p[0]+'\')"><b>'+p[1]+'</b><small>+'+cfg.slots[i]+' '+cfg.unit+'</small><div class="atsrs-v161-metrics">'+metrics.join('')+'</div><strong>'+money(price)+'/'+(billing==='yearly'?'yr':'mo')+'</strong></button>';
+    }
+    h+='</div></div>'; return h;
+  }
+  function appendOfferAfterActions(card,kind){
+    if(!card||!CONFIG[kind])return; clean(card);
+    var anchor=q('.cv-actions',card)||q('.ref-doc-actions',card)||q('.career-record-actions',card)||q('button:last-of-type',card)||card;
+    if(anchor===card) card.insertAdjacentHTML('beforeend',offerHTML(kind)); else anchor.insertAdjacentHTML('afterend',offerHTML(kind));
+  }
+  function labelCards(){
+    var refs=byId('refsPage'); if(refs){
+      qa('.ref-card',refs).forEach(function(card){
+        var text=(card.textContent||'').toLowerCase();
+        var kind=null;
+        if(text.indexOf('cv')>-1||text.indexOf('resume')>-1)kind='cv';
+        else if(text.indexOf('appraisal')>-1)kind='appraisal';
+        else if(text.indexOf('recommendation')>-1)kind='recommendation';
+        else if(text.indexOf('cover letter')>-1)kind='coverLetter';
+        else if(text.indexOf('reference')>-1)kind='reference';
+        if(kind) appendOfferAfterActions(card,kind);
+      });
+    }
+    var cert=byId('certificatesPage'); if(cert){
+      qa('.scan-box,.import-box,.panel',cert).forEach(function(card){
+        var text=(card.textContent||'').toLowerCase();
+        if(text.indexOf('training')>-1)appendOfferAfterActions(card,'trainings');
+        else if(text.indexOf('passport')>-1||text.indexOf('visa')>-1||text.indexOf('medical')>-1||text.indexOf('seaman')>-1)appendOfferAfterActions(card,'passport');
+        else if(text.indexOf('certificate')>-1)appendOfferAfterActions(card,'certificates');
+      });
+    }
+  }
+  function accountHTML(){
+    var rows=''; Object.keys(CONFIG).forEach(function(k){var st=get(k); if(!st.plan)return; var cfg=CONFIG[k], i=IDX[st.plan], bill=st.billing||'monthly', price=PRICES[bill][i], status=st.status==='subscribed'?'Subscribed':'Selected only'; rows+='<div class="atsrs-v161-sub-row"><div><b>'+cfg.label+' · '+PLANS[i][1]+'</b><span>+'+cfg.slots[i]+' '+cfg.unit+' · '+money(price)+'/'+(bill==='yearly'?'year':'month')+' · '+status+'</span></div><div class="atsrs-v161-sub-actions">'+(st.status==='subscribed'?'<button class="secondary" onclick="atsrsV163Unsubscribe(\''+k+'\')">Unsubscribe</button>':'<button onclick="atsrsV163Subscribe(\''+k+'\')">Subscribe</button>')+'<button class="secondary" onclick="atsrsV163OpenCard(\''+k+'\')">Change</button></div></div>';});
+    return '<div class="atsrs-v161-sub-center" id="atsrsV163SubCenter"><h3>Selected Slot Packages</h3><p>Selected packages appear here. Subscription and cancellation are managed from Account.</p><div class="atsrs-v161-sub-list">'+(rows||'<div class="atsrs-v161-empty">No slot package selected yet.</div>')+'</div></div>';
+  }
+  function placeAccount(){var page=byId('profilePage')||byId('accountPage'); if(!page)return; qa('#atsrsV163SubCenter,#atsrsV160SubCenter',page).forEach(function(x){try{x.remove()}catch(e){}}); var target=q('.account-tabs',page)||q('.panel',page)||page; target.insertAdjacentHTML(target===page?'beforeend':'afterend',accountHTML());}
+  function render(){updateBuild(); clean(); labelCards(); placeAccount();}
+  window.atsrsV163Billing=function(kind,billing){var st=get(kind);st.billing=billing;st.status=st.status||'selected';set(kind,st);render();};
+  window.atsrsV163Select=function(kind,plan){var st=get(kind);st.plan=plan;st.billing=st.billing||'monthly';st.status='selected';set(kind,st);toast(CONFIG[kind].label+' '+PLANS[IDX[plan]][1]+' selected. Subscribe from Account.');render();};
+  window.atsrsV163Subscribe=function(kind){var st=get(kind); if(!st.plan)return; var ok=confirm('You can unsubscribe anytime from the Account section. Press OK to confirm that you have read and understood this.'); if(!ok)return; st.status='subscribed'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription activated. You can unsubscribe anytime from Account.');};
+  window.atsrsV163Unsubscribe=function(kind){var ok=confirm('Unsubscribe this slot package? Extra slots will be locked after cancellation.'); if(!ok)return; var st=get(kind); st.status='selected'; set(kind,st); render(); toast(CONFIG[kind].label+' subscription changed to not subscribed.');};
+  window.atsrsV163OpenCard=function(kind){toast('Open the relevant card and choose a higher package. Lower packages are hidden after selection.');};
+  window.atsrsV160Billing=window.atsrsV163Billing; window.atsrsV160Select=window.atsrsV163Select; window.atsrsV160Subscribe=window.atsrsV163Subscribe; window.atsrsV160Unsubscribe=window.atsrsV163Unsubscribe;
+  ['renderAll','showPage','applyLanguage','renderManagedFiles','renderCVStatus','renderRefsPage'].forEach(function(n){var old=window[n]; if(typeof old==='function'&&!old.__atsrsV163){var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);setTimeout(render,180);return r;}; w.__atsrsV163=true; window[n]=w;}});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render); else render();
+  setTimeout(render,250);setTimeout(render,900);setInterval(function(){updateBuild(); placeAccount();},3000);
+})();
+</script>
+
+
+
+<script id="atsrs-v163-final-build-lock">
+(function(){
+  const BUILD='ATSRS V163';
+  const UPDATE='Last Update: 21 Jun 2026';
+  function setText(id,val){const el=document.getElementById(id); if(el) el.textContent=val;}
+  function apply(){
+    const badge=document.getElementById('buildBadge');
+    if(badge){
+      const divs=badge.querySelectorAll('div');
+      if(divs[0]) divs[0].textContent=BUILD;
+      if(divs[1]) divs[1].textContent=UPDATE;
+      if(divs[2]) divs[2].textContent='TEST BUILD';
+    }
+    document.querySelectorAll('.build-badge div').forEach(function(el){
+      if((el.textContent||'').includes('UTC')) el.textContent=el.textContent.replace(/\s*UTC.*$/,'');
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
+  window.addEventListener('load',apply,{once:true});
 })();
 </script>
 
 </body>
-  </html>
+</html>
