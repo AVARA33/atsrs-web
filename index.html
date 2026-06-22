@@ -9603,5 +9603,260 @@ body > .atsrs-v64-top-actions{
 })();
 </script>
 
+
+
+<!-- V164 flat dashboard/documents/references cleanup: no wrapper boxes, document labels fixed, refs stable toolbar -->
+<style id="atsrs-v164-flat-stable-style">
+/* Global app pages: remove the big wrapper panel look on selected pages only */
+#dashboardPage > .panel,
+#certificatesPage > .panel,
+#certificatesPage .unified-cert-panel,
+#refsPage > .panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:0!important;
+  margin-bottom:16px!important;
+}
+
+/* Dashboard: content directly on background, compact and calm */
+#dashboardPage .hero-card,
+#dashboardPage .mini-panel,
+#dashboardPage #shareProfilePanel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:8px 0!important;
+}
+#dashboardPage .stats-grid .card{
+  background:transparent!important;
+  border:1px solid rgba(148,163,184,.22)!important;
+  box-shadow:none!important;
+  border-radius:12px!important;
+}
+#dashboardPage .risk-item,
+#dashboardPage .share-link-box input{
+  background:transparent!important;
+  border-color:rgba(148,163,184,.28)!important;
+  box-shadow:none!important;
+}
+
+/* Documents page: keep controls visible and labels stable */
+#certificatesPage .scan-box,
+#certificatesPage .import-box,
+#certificatesPage .table-wrap{
+  background:transparent!important;
+  border-color:rgba(148,163,184,.25)!important;
+  box-shadow:none!important;
+}
+#certificatesPage .cert-mode-buttons,
+#certificatesPage .document-actions{
+  gap:8px!important;
+}
+#certificatesPage .cert-mode-buttons button,
+#certificatesPage .document-actions button,
+#certificatesPage #addCertBtn,
+#certificatesPage #confirmInfoBtn{
+  min-height:36px!important;
+  padding:8px 12px!important;
+  font-size:12px!important;
+  border-radius:10px!important;
+}
+#certificatesPage table th:empty::after{content:' ';}
+
+/* References page: no big wrapper, cards directly on background, stable layout */
+#refsPage .ref-grid{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(180px,1fr))!important;
+  gap:14px!important;
+  align-items:start!important;
+}
+#refsPage .ref-card,
+#refsPage .atsrs-v134-career-card,
+#refsPage .cover-letter-card,
+#refsPage .cv-card{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:8px 4px!important;
+  min-height:270px!important;
+  height:auto!important;
+  transform:none!important;
+  transition:none!important;
+  overflow:hidden!important;
+}
+#refsPage .cv-card{
+  grid-column:auto!important;
+  order:30!important;
+}
+#refsPage .cover-letter-card{order:40!important;}
+#refsPage .atsrs-v134-career-card h3,
+#refsPage .cv-card h3{
+  margin:0 0 7px!important;
+  font-size:17px!important;
+  line-height:1.2!important;
+}
+#refsPage .atsrs-v134-desc,
+#refsPage .cv-card .sub{
+  min-height:44px!important;
+  font-size:12.5px!important;
+  line-height:1.35!important;
+  margin-bottom:8px!important;
+}
+#refsPage .atsrs-v164-ref-toolbar{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:8px!important;
+  margin:8px 0!important;
+  min-height:34px!important;
+}
+#refsPage .atsrs-v134-upload,
+#refsPage #uploadCVBtn,
+#refsPage .cv-actions button,
+#refsPage .atsrs-v134-actions button{
+  width:auto!important;
+  min-width:86px!important;
+  max-width:126px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:6px 10px!important;
+  margin:0!important;
+  border-radius:9px!important;
+  font-size:11.5px!important;
+  line-height:1!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-statusbar{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:0!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+#refsPage .atsrs-v134-status{white-space:nowrap!important;font-size:11.5px!important;}
+#refsPage .atsrs-v134-filter{
+  width:auto!important;
+  max-width:126px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:5px 8px!important;
+  margin:0!important;
+  font-size:11.5px!important;
+  border-radius:9px!important;
+}
+#refsPage .atsrs-v134-list{
+  height:150px!important;
+  min-height:150px!important;
+  max-height:150px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  margin-top:8px!important;
+}
+#refsPage .atsrs-v134-row{
+  min-height:42px!important;
+  padding:8px!important;
+  margin-bottom:6px!important;
+  background:rgba(2,6,23,.22)!important;
+  border-color:rgba(148,163,184,.22)!important;
+}
+#refsPage .cv-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-top:8px!important;
+}
+#refsPage .cv-beta-box{display:none!important;}
+@media(max-width:1280px){#refsPage .ref-grid{grid-template-columns:repeat(3,minmax(180px,1fr))!important;}}
+@media(max-width:800px){#refsPage .ref-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}#refsPage .ref-card,#refsPage .atsrs-v134-career-card,#refsPage .cv-card{min-height:250px!important;}}
+@media(max-width:520px){#refsPage .ref-grid{grid-template-columns:1fr!important;}}
+</style>
+<script id="atsrs-v164-flat-stable-script">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V164';
+  var UPDATE='Last Update: 22 Jun 2026';
+  function byId(id){return document.getElementById(id);}
+  function txt(id,value){var el=byId(id); if(el && !String(el.textContent||'').trim()) el.textContent=value;}
+  function ph(id,value){var el=byId(id); if(el && !String(el.getAttribute('placeholder')||'').trim()) el.setAttribute('placeholder',value);}
+
+  function lockBuild(){
+    document.querySelectorAll('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+
+  function ensureDocumentLabels(){
+    txt('addDocTitle','Upload Document');
+    txt('addCertFlowNote','Upload or scan documents and keep them linked to expiry dates.');
+    txt('certScanModeBtn','Scan with Camera');
+    txt('certManualModeBtn','Manual Entry');
+    txt('scanFlowText','Scan a document or upload a PDF, JPG or PNG file.');
+    txt('scanDocBtn','Scan with Camera');
+    txt('uploadDocBtn','Upload File');
+    txt('manualCertTitle','Manual Document Entry');
+    txt('manualFlowText','Upload a file and enter document details manually.');
+    txt('manualUploadBtn','Upload File');
+    txt('confirmInfoTitle','Confirm information');
+    txt('confirmInfoBtn','Confirm');
+    txt('addCertBtn','Add Document');
+    txt('certRegisterTitle','Document Register');
+    txt('thCertificate2','Certificate');
+    txt('thProvider2','Training Center / Provider');
+    txt('thExpiry2','Expiry');
+    txt('thStatus2','Status');
+    txt('thAction2','Action');
+    txt('autoPersonLabel','Person'); txt('autoDocTypeLabel','Document Type'); txt('autoDocNoLabel','Document No'); txt('autoProviderLabel','Provider'); txt('autoIssueLabel','Issue Date'); txt('autoExpiryLabel','Expiry Date');
+    txt('cTypeLabel','Document Type'); txt('cProviderLabel','Training Center / Provider'); txt('cIssueLabel','Issue Date'); txt('cExpiryLabel','Expiry Date');
+    ph('autoDocType','Document type'); ph('autoDocNo','Document number'); ph('autoProvider','Provider'); ph('cType','Document type'); ph('cProvider','Provider');
+  }
+
+  function flattenDashboardDocsRefs(){
+    ['dashboardPage','certificatesPage','refsPage'].forEach(function(id){
+      var page=byId(id); if(!page)return;
+      page.querySelectorAll(':scope > .panel').forEach(function(p){p.classList.add('atsrs-v164-flat-panel');});
+    });
+  }
+
+  function stabilizeRefs(){
+    var refs=byId('refsPage'); if(!refs)return;
+    var panel=refs.querySelector(':scope > .panel'); if(panel) panel.classList.add('atsrs-v164-flat-panel');
+    refs.querySelectorAll('.atsrs-v134-career-card').forEach(function(card){
+      var kind=card.getAttribute('data-atsrs-v134-kind'); if(!kind)return;
+      var btn=byId('v134_'+kind+'_upload');
+      var bar=card.querySelector('.atsrs-v134-statusbar');
+      if(btn && bar && !card.querySelector('.atsrs-v164-ref-toolbar')){
+        var tool=document.createElement('div');
+        tool.className='atsrs-v164-ref-toolbar';
+        card.insertBefore(tool, btn);
+        tool.appendChild(btn);
+        tool.appendChild(bar);
+      }
+    });
+  }
+
+  function run(){lockBuild();ensureDocumentLabels();flattenDashboardDocsRefs();stabilizeRefs();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,200);setTimeout(run,800);});
+  ['showPage','renderAll','applyLanguage','renderManagedFiles'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function'&&!old.__atsrsV164){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,0);setTimeout(run,160);return r;};
+      wrapped.__atsrsV164=true;
+      window[name]=wrapped;
+    }
+  });
+  [50,250,700,1400,2500].forEach(function(ms){setTimeout(run,ms);});
+  setInterval(run,1600);
+})();
+</script>
+
 </body>
   </html>
