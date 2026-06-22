@@ -1355,7 +1355,7 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V164</div>
+<div>ATSRS V163</div>
 <div>Last Update: 22 Jun 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -4882,7 +4882,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V164';
+  const BUILD = 'ATSRS V163';
   const UPDATE = 'Last Update: 22 Jun 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
@@ -6034,7 +6034,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V164';
+  var BUILD_LABEL = 'ATSRS V163';
   var UPDATE_LABEL = 'Last Update: 22 Jun 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -8679,7 +8679,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V164';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8775,7 +8775,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V164';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -9107,7 +9107,7 @@ body > .atsrs-v64-top-actions{
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
     await migrate(kind);
-    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V164 read failed',e);}mirrorMeta(kind,arr);
+    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V163 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(st){st.textContent=label(arr.length);st.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
     if(filter)filter.classList.toggle('active',arr.length>0);
@@ -9604,167 +9604,108 @@ body > .atsrs-v64-top-actions{
 </script>
 
 
-
-<style id="ATSRS_V164_REBUILT_FROM_V163_FLAT_SECTIONS_DOCS_REFS_FIX_CSS">
-/* V164 rebuilt from V163 only: remove large page wrapper boxes, keep existing card design. */
+<style id="atsrs-v164-outer-shell-only-css">
+/* V164 rebuilt from V163. Shell-only cleanup: no data keys, upload handlers or button positions changed. */
 #dashboardPage > .panel,
-#documentsPage > .panel,
 #certificatesPage > .panel,
 #refsPage > .panel{
   background:transparent!important;
   border:0!important;
   box-shadow:none!important;
   padding:0!important;
-  margin-bottom:18px!important;
 }
-#dashboardPage > .panel > h3,
-#documentsPage > .panel > h3,
-#certificatesPage > .panel > h3,
-#refsPage > .panel > h3{
-  margin-top:0!important;
+#dashboardPage > .panel.dashboard-snapshot-panel,
+#dashboardPage > #shareProfilePanel.panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
 }
-/* Keep references layout from V163 stable; only flatten the outer container. */
+#certificatesPage > .panel.unified-cert-panel,
+#certificatesPage > .panel:not(.unified-cert-panel){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+#refsPage > .panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+/* Preserve existing cards exactly; only keep them from jumping/reflowing badly. */
 #refsPage .ref-grid{
   align-items:start!important;
   grid-auto-flow:row!important;
 }
-#refsPage .atsrs-v134-career-card{
-  min-height:342px!important;
-  height:342px!important;
+#refsPage .ref-card{
+  min-width:0!important;
   transform:none!important;
-  transition:border-color .18s ease, box-shadow .18s ease!important;
 }
-#refsPage .atsrs-v134-card-tools,
-#refsPage .dash-card-tools,
-#refsPage .dash-resize-handle{
-  display:none!important;
-}
-/* References upload row: compact upload button sits left of Newest first filter. */
-#refsPage .atsrs-v134-statusbar{
-  display:grid!important;
-  grid-template-columns:auto minmax(95px,130px) minmax(60px,1fr)!important;
-  align-items:center!important;
-  justify-content:start!important;
-  gap:8px!important;
-  margin:0 0 8px!important;
-}
-#refsPage .atsrs-v134-upload{
-  width:auto!important;
-  min-width:128px!important;
-  max-width:180px!important;
-  margin:0!important;
-  padding:8px 12px!important;
-  border-radius:10px!important;
-  font-size:12px!important;
-  line-height:1.15!important;
-  white-space:nowrap!important;
-  align-self:center!important;
-}
-#refsPage .atsrs-v134-filter{
-  min-width:104px!important;
-  max-width:126px!important;
-  padding:7px 8px!important;
-  font-size:12px!important;
-}
-#refsPage .atsrs-v134-status{
-  justify-self:end!important;
-  white-space:nowrap!important;
-}
-#refsPage .cv-actions button,
-#refsPage #cvCard button,
-#refsPage .cover-letter-card button,
-#refsPage .ref-card button.secondary{
-  width:auto!important;
-  max-width:180px!important;
-  padding:8px 12px!important;
-  border-radius:10px!important;
-  font-size:12px!important;
-  line-height:1.15!important;
-}
-#refsPage .cv-actions{
-  display:flex!important;
-  flex-wrap:wrap!important;
-  gap:8px!important;
-}
-@media(max-width:760px){
-  #refsPage .atsrs-v134-statusbar{grid-template-columns:1fr!important;align-items:stretch!important;}
-  #refsPage .atsrs-v134-upload,#refsPage .atsrs-v134-filter,#refsPage .atsrs-v134-status{width:100%!important;max-width:none!important;justify-self:stretch!important;}
-}
-/* Documents first-open label protection: prevent invisible blank header cells/buttons. */
-#documentsPage th,
-#certificatesPage th,
-#documentsPage button,
-#certificatesPage button{
-  opacity:1!important;
-  visibility:visible!important;
+#refsPage .ref-card button{
+  transform:none!important;
 }
 </style>
-
-<script id="ATSRS_V164_REBUILT_FROM_V163_FIX_JS">
+<script id="atsrs-v164-doc-label-stability">
 (function(){
   'use strict';
-  var BUILD='ATSRS V164';
-  var UPDATE='Last Update: 22 Jun 2026';
-  function q(s,r){return (r||document).querySelector(s)}
-  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
-  function text(id,value){var el=document.getElementById(id); if(el && !String(el.textContent||'').trim()) el.textContent=value;}
-  function setBuild(){
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent=UPDATE;
-      if(d[2])d[2].textContent='TEST BUILD';
-    });
+  var labels={
+    addDocTitle:'Upload Document',
+    addCertFlowNote:'',
+    certScanModeBtn:'Scan with Camera',
+    certManualModeBtn:'Upload File',
+    scanDocBtn:'Scan with Camera',
+    uploadDocBtn:'Upload File',
+    scanFlowText:'Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.',
+    certRegisterTitle:'Document Register',
+    thCertificate2:'Certificate',
+    thProvider2:'Training Center / Provider',
+    thExpiry2:'Expiry',
+    thStatus2:'Status',
+    thAction2:'Action',
+    manualCertTitle:'Manual Certificate Entry',
+    manualFlowText:'Upload a file first, then enter the document information manually.',
+    manualUploadBtn:'Upload File',
+    addCertBtn:'Add Certificate',
+    cTypeLabel:'Certificate',
+    cProviderLabel:'Training Center / Provider',
+    cIssueLabel:'Issue Date',
+    cExpiryLabel:'Expiry Date',
+    confirmInfoTitle:'Confirm Information',
+    autoDocTypeLabel:'Document Type',
+    autoDocNoLabel:'Document / Certificate No',
+    autoProviderLabel:'Training Center / Provider',
+    autoIssueLabel:'Issue Date',
+    autoExpiryLabel:'Expiry Date',
+    confirmInfoBtn:'Confirm Info'
+  };
+  function text(el,val){
+    if(!el || val===undefined || val===null) return;
+    if(String(el.textContent||'').trim()==='') el.textContent=val;
   }
-  function protectDocumentsLabels(){
-    text('addDocTitle','Upload Document');
-    text('scanDocBtn','Scan with Camera');
-    text('uploadDocBtn','Upload File');
-    text('confirmInfoTitle','Confirm Information');
-    text('confirmInfoBtn','Confirm Info');
-    text('manualCertTitle','Manual Certificate Entry');
-    text('addCertBtn','Add Certificate');
-    text('certRegisterTitle','Document Register');
-    text('thCertificate2','Certificate');
-    text('thProvider2','Training Center / Provider');
-    text('thExpiry2','Expiry');
-    text('thStatus2','Status');
-    text('thAction2','Action');
+  function repairDocumentLabels(){
+    Object.keys(labels).forEach(function(id){text(document.getElementById(id),labels[id]);});
+    var cDocNo=document.getElementById('cDocNoLabel'); if(cDocNo && !String(cDocNo.textContent||'').trim()) cDocNo.textContent='Document No (Optional)';
+    var cCountry=document.getElementById('cCountryLabel'); if(cCountry && !String(cCountry.textContent||'').trim()) cCountry.textContent='Country / Authority (Optional)';
   }
-  function moveRefUploadsLeftOfFilter(){
-    ['appraisal','reference','recommendation','coverLetter'].forEach(function(kind){
-      var btn=q('#v134_'+kind+'_upload');
-      var bar=q('#v134_'+kind+'_status')?q('#v134_'+kind+'_status').closest('.atsrs-v134-statusbar'):null;
-      var filter=q('#v134_'+kind+'_filter');
-      if(btn && bar && btn.parentElement!==bar){
-        bar.insertBefore(btn, filter || bar.firstChild);
-      }else if(btn && bar && filter && btn.nextSibling!==filter){
-        bar.insertBefore(btn, filter);
-      }
-    });
+  function run(){try{repairDocumentLabels();}catch(e){}}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  window.addEventListener('load',run);
+  [0,50,150,350,800,1500].forEach(function(ms){setTimeout(run,ms);});
+  if(window.MutationObserver){
+    var root=document.getElementById('certificatesPage')||document.body;
+    new MutationObserver(function(){setTimeout(run,0);}).observe(root,{childList:true,subtree:true,characterData:true});
   }
-  function stabilizeRefs(){
-    var page=q('#refsPage'); if(!page)return;
-    qa('.dash-card-tools,.dash-resize-handle,.dash-placeholder',page).forEach(function(x){x.remove();});
-    qa('.ref-card,.atsrs-v134-career-card,.cv-card',page).forEach(function(card){
-      ['left','top','right','bottom','transform','opacity','zIndex'].forEach(function(p){card.style[p]='';});
-      card.classList.remove('dash-drag-float','dash-resizable','dash-custom-ready','dash-minimized');
-    });
-    moveRefUploadsLeftOfFilter();
-  }
-  function run(){setBuild();protectDocumentsLabels();stabilizeRefs();}
-  ['showPage','renderAll','applyLanguage','renderManagedFiles'].forEach(function(name){
+  var wrap=function(name){
     var old=window[name];
-    if(typeof old==='function' && !old.__atsrsV164Rebuilt){
-      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,30);setTimeout(run,260);return r;};
-      wrapped.__atsrsV164Rebuilt=true; window[name]=wrapped;
+    if(typeof old==='function'){
+      window[name]=function(){var r=old.apply(this,arguments);setTimeout(run,0);return r;};
     }
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',function(){run();setTimeout(run,500);setTimeout(run,1200);});
-  setInterval(run,1800);
+  };
+  wrap('showPage');wrap('renderAll');wrap('applyLanguage');
 })();
 </script>
 
 </body>
-                                                   </html>
+  </html>
