@@ -9748,5 +9748,208 @@ body > .atsrs-v64-top-actions{
 })();
 </script>
 
+
+
+<!-- ATSRS V167: strict references upload/filter compact + hide additional CV slots + dashboard frameless cleanup. Base: V166/V163. Storage untouched. -->
+<style id="ATSRS_V167_REFS_DASH_STRICT_CSS">
+/* Dashboard: remove remaining visible boxes, keep positions/text */
+#dashboardPage .hero-card,
+#dashboardPage .mini-panel,
+#dashboardPage .card,
+#dashboardPage .panel,
+#dashboardPage .workflow-card,
+#dashboardPage .snapshot-card,
+#dashboardPage .dashboard-snapshot-panel,
+#dashboardPage .share-card,
+#dashboardPage .stats-grid .card,
+#dashboardPage #shareProfilePanel,
+#dashboardPage .preview-profile{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#dashboardPage .snapshot-item,
+#dashboardPage .risk-item,
+#dashboardPage .share-link-box input,
+#dashboardPage .share-permissions label{
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px solid rgba(148,163,184,.28)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+#dashboardPage .stats-grid{gap:12px!important;}
+#dashboardPage .stats-grid .card{padding:10px 8px!important;min-height:auto!important;}
+#dashboardPage .solo-hero{gap:18px!important;}
+
+/* References: no outer boxes, only text/list lines */
+#refsPage > .panel,
+#refsPage .panel,
+#refsPage .ref-card,
+#refsPage .atsrs-v134-career-card,
+#refsPage .cv-card,
+#refsPage .cover-letter-card{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-career-card{
+  padding:10px 8px!important;
+  min-height:245px!important;
+  height:auto!important;
+}
+#refsPage .atsrs-v134-career-card h3{margin:0 0 6px!important;min-height:0!important;}
+#refsPage .atsrs-v134-career-card .atsrs-v134-desc{min-height:42px!important;margin:0 0 10px!important;}
+#refsPage .atsrs-v134-statusbar{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto auto!important;
+  align-items:center!important;
+  column-gap:8px!important;
+  row-gap:6px!important;
+  margin:0 0 8px!important;
+  min-height:32px!important;
+}
+#refsPage .atsrs-v134-upload,
+#refsPage button.atsrs-v134-upload{
+  width:86px!important;
+  min-width:86px!important;
+  max-width:86px!important;
+  padding:7px 10px!important;
+  margin:0!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  line-height:1.1!important;
+  justify-self:end!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+#refsPage .atsrs-v134-filter,
+#refsPage select.atsrs-v134-filter{
+  display:block!important;
+  width:124px!important;
+  min-width:124px!important;
+  max-width:124px!important;
+  padding:7px 8px!important;
+  margin:0!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  justify-self:end!important;
+  opacity:.96!important;
+}
+#refsPage .atsrs-v134-filter:disabled{opacity:.68!important;color:#94a3b8!important;}
+#refsPage .atsrs-v134-empty,
+#refsPage .career-record-row,
+#refsPage .atsrs-v134-row,
+#refsPage .preview-box{
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px solid rgba(148,163,184,.32)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+#refsPage .cv-beta-box,
+#refsPage .ref-beta-box,
+#refsPage .cv-card [class*="slot"],
+#refsPage .cv-card [id*="slot"],
+#refsPage .cv-card [id*="Slot"],
+#refsPage .cv-card [class*="premium"],
+#refsPage .cv-card [class*="Premium"],
+#refsPage .cv-card .pill{
+  display:none!important;
+  visibility:hidden!important;
+}
+@media(max-width:760px){
+  #refsPage .atsrs-v134-statusbar{grid-template-columns:1fr!important;}
+  #refsPage .atsrs-v134-upload,#refsPage .atsrs-v134-filter{width:100%!important;max-width:none!important;justify-self:stretch!important;}
+}
+</style>
+<script id="ATSRS_V167_REFS_DASH_STRICT_JS">
+(function(){
+  'use strict';
+  var BUILD='ATSRS V167';
+  var UPDATE='Last Update: 22 Jun 2026';
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function normalizeRefs(){
+    qa('#refsPage .atsrs-v134-career-card').forEach(function(card){
+      var btn=q('.atsrs-v134-upload',card);
+      var bar=q('.atsrs-v134-statusbar',card);
+      var filter=q('.atsrs-v134-filter',card);
+      var status=q('.atsrs-v134-status',card);
+      if(!bar){
+        bar=document.createElement('div');
+        bar.className='atsrs-v134-statusbar';
+        var list=q('.atsrs-v134-list',card);
+        if(list)card.insertBefore(bar,list); else card.appendChild(bar);
+      }
+      if(!filter){
+        filter=document.createElement('select');
+        filter.className='atsrs-v134-filter';
+        filter.innerHTML='<option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option>';
+      }
+      if(btn){
+        btn.textContent='Upload';
+        btn.setAttribute('aria-label','Upload');
+        btn.style.width='86px';btn.style.minWidth='86px';btn.style.maxWidth='86px';
+        btn.style.padding='7px 10px';btn.style.margin='0';btn.style.justifySelf='end';
+      }
+      if(status && status.parentElement!==bar)bar.appendChild(status);
+      if(btn && btn.parentElement!==bar)bar.appendChild(btn);
+      if(filter && filter.parentElement!==bar)bar.appendChild(filter);
+      if(filter){
+        var empty=!!(status && /No File/i.test(status.textContent||''));
+        if(empty){
+          filter.innerHTML='<option value="none">No files</option>';
+          filter.disabled=true;
+        }else if(filter.options.length<2 || filter.value==='none'){
+          filter.disabled=false;
+          filter.innerHTML='<option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option>';
+        }else{
+          filter.disabled=false;
+        }
+        filter.classList.add('active');
+        filter.style.display='block';
+      }
+    });
+    hideAdditionalCVSlots();
+  }
+  function hideAdditionalCVSlots(){
+    qa('#refsPage .cv-card .cv-beta-box,#refsPage .cv-card .ref-beta-box,#refsPage .cv-card .pill,#refsPage .cv-card [class*="slot"],#refsPage .cv-card [id*="slot"],#refsPage .cv-card [id*="Slot"],#refsPage .cv-card [class*="premium"],#refsPage .cv-card [class*="Premium"]').forEach(function(x){x.style.display='none';x.style.visibility='hidden';});
+    qa('#refsPage .cv-card *').forEach(function(el){
+      var t=(el.textContent||'').trim();
+      if(/ADDITIONAL\s+CV\s+SLOTS/i.test(t) || /Premium/i.test(t) || /\bPRO\b/i.test(t)){
+        var target=el.closest('.cv-beta-box,.ref-beta-box,.preview-box,div')||el;
+        if(target && !target.matches('.cv-card')){target.style.display='none';target.style.visibility='hidden';}
+      }
+    });
+  }
+  function run(){setBuild();normalizeRefs();}
+  ['DOMContentLoaded','load'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(run,40);setTimeout(run,300);setTimeout(run,900);});});
+  var oldRender=window.renderAll;
+  if(typeof oldRender==='function'&&!oldRender.__atsrsV167){
+    window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(run,60);setTimeout(run,350);return r;};
+    window.renderAll.__atsrsV167=true;
+  }
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__atsrsV167){
+    window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,60);setTimeout(run,350);return r;};
+    window.showPage.__atsrsV167=true;
+  }
+  if(window.MutationObserver){
+    var mo=new MutationObserver(function(){clearTimeout(window.__atsrsV167T);window.__atsrsV167T=setTimeout(run,80);});
+    mo.observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  run(); setTimeout(run,500); setTimeout(run,1500); setInterval(run,1600);
+})();
+</script>
+
 </body>
-                                                        </html>
+</html>
