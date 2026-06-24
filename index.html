@@ -9896,5 +9896,198 @@ body > script + text{display:none!important;}
 })();
 </script>
 
+
+
+<!-- V170: Documents actions logic cleanup: no duplicate labels, direct scan action, compact Save/Cancel, flat documents section -->
+<style id="ATSRS_V170_DOCUMENTS_ACTIONS_CSS">
+/* Keep Documents page on background, remove wrapper boxes only */
+#certificatesPage > .panel,
+#certificatesPage .unified-cert-panel,
+#certificatesPage .scan-box,
+#certificatesPage #confirmBox,
+#certificatesPage .table-wrap{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#certificatesPage > .panel,
+#certificatesPage .unified-cert-panel{
+  padding:0!important;
+  margin-bottom:22px!important;
+}
+#certificatesPage .scan-box,
+#certificatesPage #confirmBox{
+  padding:0!important;
+  margin-top:12px!important;
+}
+#certificatesPage .cert-mode-buttons,
+#certificatesPage .document-actions{
+  max-width:760px!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(160px,1fr))!important;
+  gap:10px!important;
+}
+#certificatesPage .cert-mode-buttons button,
+#certificatesPage .document-actions button{
+  min-height:38px!important;
+  padding:9px 12px!important;
+  border-radius:12px!important;
+}
+/* Make top row clear: mode/entry selectors, not duplicate upload actions */
+#certificatesPage .cert-mode-buttons button{
+  opacity:.92!important;
+}
+#certificatesPage .cert-mode-buttons button.active{
+  opacity:1!important;
+}
+#certificatesPage #manualActionRow{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  flex-wrap:wrap!important;
+  margin-top:10px!important;
+  max-width:360px!important;
+}
+#certificatesPage #manualActionRow button{
+  width:auto!important;
+  min-width:110px!important;
+  max-width:140px!important;
+  padding:9px 14px!important;
+  margin:0!important;
+  border-radius:11px!important;
+  min-height:36px!important;
+}
+#certificatesPage #manualCancelBtn{
+  background:#334155!important;
+  color:#e5e7eb!important;
+  border:1px solid #475569!important;
+  box-shadow:none!important;
+}
+#certificatesPage #manualCancelBtn:hover{background:#475569!important;}
+#certificatesPage .confirm-grid,
+#certificatesPage .profile-grid{
+  max-width:900px!important;
+}
+#certificatesPage select,
+#certificatesPage input,
+#certificatesPage textarea{
+  max-width:760px!important;
+}
+#certificatesPage table,
+#certificatesPage th,
+#certificatesPage td{background:transparent!important;}
+/* Hide accidental visible CSS/debug fragments if older injected text nodes survive */
+.atsrs-v170-code-garbage{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;}
+@media(max-width:640px){
+  #certificatesPage .cert-mode-buttons,
+  #certificatesPage .document-actions{grid-template-columns:1fr!important;}
+}
+</style>
+<script id="ATSRS_V170_DOCUMENTS_ACTIONS_JS">
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function qa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel));}
+  function setText(id,value){var el=byId(id); if(el) el.textContent=value;}
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0]) d[0].textContent='ATSRS V170';
+      if(d[1]) d[1].textContent='Last Update: 22 Jun 2026';
+      if(d[2]) d[2].textContent='TEST BUILD';
+    });
+  }
+  function showScanSafe(){
+    if(typeof window.showCertMode==='function') window.showCertMode('scan');
+    var s=byId('certScanPanel'), m=byId('certManualPanel');
+    if(s) s.classList.add('active');
+    if(m) m.classList.remove('active');
+  }
+  function showManualSafe(){
+    if(typeof window.showCertMode==='function') window.showCertMode('manual');
+    var s=byId('certScanPanel'), m=byId('certManualPanel');
+    if(s) s.classList.remove('active');
+    if(m) m.classList.add('active');
+  }
+  window.atsrsV170OpenScan=function(){
+    showScanSafe();
+    setTimeout(function(){
+      if(typeof window.startCameraScan==='function') window.startCameraScan();
+      else { var c=byId('cameraInput'); if(c) c.click(); }
+    },80);
+  };
+  window.atsrsV170OpenManual=function(){ showManualSafe(); };
+  window.atsrsV170CancelManual=function(){
+    var f=byId('certManualPanel');
+    if(f){
+      qa('input,textarea,select',f).forEach(function(el){
+        if(el.type==='file') el.value='';
+        else if(el.tagName==='SELECT') el.selectedIndex=0;
+        else el.value='';
+      });
+    }
+    var p=byId('manualFilePreview'); if(p) p.textContent='';
+    var a=byId('manualFormAlert'); if(a){a.textContent='';a.classList.remove('active');}
+    showScanSafe();
+  };
+  function fixDocumentsUI(){
+    setBuild();
+    setText('addDocTitle','Documents');
+    setText('addCertFlowNote','Choose one clean path: scan with camera, upload a file, or enter details manually.');
+    setText('certScanModeBtn','Scan');
+    setText('certManualModeBtn','Manual Entry');
+    setText('scanFlowText','Use camera or file upload for documents.');
+    setText('scanDocBtn','Scan');
+    setText('uploadDocBtn','Upload File');
+    setText('manualCertTitle','Manual Document Entry');
+    setText('manualFlowText','Fill document details manually and attach a file if needed.');
+    setText('manualUploadBtn','Attach File');
+    setText('addCertBtn','Save');
+    var topScan=byId('certScanModeBtn');
+    if(topScan){ topScan.onclick=function(e){e.preventDefault(); window.atsrsV170OpenScan();}; }
+    var topManual=byId('certManualModeBtn');
+    if(topManual){ topManual.onclick=function(e){e.preventDefault(); window.atsrsV170OpenManual();}; }
+    var add=byId('addCertBtn');
+    if(add && !byId('manualActionRow')){
+      var row=document.createElement('div'); row.id='manualActionRow';
+      add.parentNode.insertBefore(row,add);
+      row.appendChild(add);
+      var cancel=document.createElement('button');
+      cancel.id='manualCancelBtn'; cancel.type='button'; cancel.textContent='Cancel';
+      cancel.onclick=function(e){e.preventDefault(); window.atsrsV170CancelManual();};
+      row.appendChild(cancel);
+    }
+    var cancel=byId('manualCancelBtn'); if(cancel) cancel.textContent='Cancel';
+    // Keep labels visible even if language/render race runs later
+    [['certRegisterTitle','Document Register'],['thCertificate2','Certificate'],['thProvider2','Training Center / Provider'],['thExpiry2','Expiry'],['thStatus2','Status'],['thAction2','Action'],['cTypeLabel','Certificate'],['cProviderLabel','Training Center / Provider'],['cExpiryLabel','Expiry']].forEach(function(x){setText(x[0],x[1]);});
+  }
+  function removeVisibleCodeGarbage(){
+    var badPatterns=['MOVED + TOP ACTIONS','auth_lang_floating','atsrsV64TopActions','important;color','#fff!important'];
+    function scan(node){
+      if(!node || !node.childNodes) return;
+      Array.prototype.slice.call(node.childNodes).forEach(function(ch){
+        if(ch.nodeType===3){
+          var t=ch.nodeValue||'';
+          if(badPatterns.some(function(p){return t.indexOf(p)>-1;})){
+            var span=document.createElement('span'); span.className='atsrs-v170-code-garbage';
+            ch.parentNode.replaceChild(span,ch);
+          }
+        } else if(ch.nodeType===1 && !/^(SCRIPT|STYLE|TEXTAREA)$/i.test(ch.tagName)) scan(ch);
+      });
+    }
+    scan(document.body);
+  }
+  function run(){fixDocumentsUI();removeVisibleCodeGarbage();}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  window.addEventListener('load',run);
+  [60,200,600,1200,2200].forEach(function(ms){setTimeout(run,ms);});
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function' && !oldShow.__atsrsV170){
+    window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,0);setTimeout(run,150);setTimeout(run,600);return r;};
+    window.showPage.__atsrsV170=true;
+  }
+})();
+</script>
+
 </body>
-        </html>
+  </html>
