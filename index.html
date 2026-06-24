@@ -1298,12 +1298,6 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div class="auth-card">
-<div class="lang-floating">
-<button type="button" id="langCircle" class="lang-circle" onclick="atsrsV78EnglishOnlyNotice()">🇬🇧</button>
-<div id="langMenu" class="lang-menu hidden">
-<button type="button" data-lang="en"><span>🇬🇧</span> English</button>
-</div>
-</div>
 <h1 class="logo">ATSRS</h1>
 <p id="authSubtitle" class="sub"></p>
 
@@ -1355,7 +1349,7 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V167</div>
+<div>ATSRS V168</div>
 <div>Last Update: 22 Jun 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -1777,7 +1771,7 @@ let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.cr
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
-  en:{sub:"Automated Tracking & Reporting System",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Logout",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Document requirement rules will be added later if needed.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"}
+  en:{sub:"Automated Tracking & Reporting System",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Exit",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Document requirement rules will be added later if needed.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"}
 };
 const UI={
   en:{account:"Account",general:"General",security:"Security",preferences:"Preferences",country:"Country",recoveryEmail:"Recovery email",primaryEmail:"Primary email",primaryEmailNote:"Your main login email.",password:"Password",passwordNote:"Change your account password.",change:"Change",twofa:"Two-factor authentication",twofaNote:"Google Authenticator / email code support.",setup:"Setup",sessions:"Active Sessions",sessionsNote:"View devices currently signed in.",view:"View",notifications:"Notifications",notificationsNote:"Certificate expiry alerts by email/SMS.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanent deletion will be enabled after live Auth.",timezone:"Time Zone",addDoc:"Upload Document",scanDoc:"Scan with Camera",uploadDoc:"Upload File",scanInfo:"Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.",confirmInfo:"Confirm Information",docNo:"Document / Certificate No",issueDate:"Issue Date",manualCert:"Manual Certificate Entry",confirm:"Confirm Info",extractNote:"Auto extraction is in test mode. Review and confirm before saving.",fileSelected:"File selected",ocrStarting:"OCR started. Reading document...",ocrProgress:"OCR progress",ocrDone:"OCR completed. Please review detected information.",ocrNotAvailable:"OCR library is not loaded. Check internet connection.",noTextDetected:"No clear text detected. Please fill manually.",authLiveNotice:"This will be connected after Supabase Auth is live.",twofaNotice:"2FA will be added in the next security phase.",sessionsNotice:"Active sessions will be connected after Supabase Auth is live.",notifyNotice:"Notification settings will be added with backend alerts.",deleteNotice:"Account deletion will be connected after Supabase Auth is live."}
@@ -1833,14 +1827,14 @@ function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").tr
 function emailMsg(){return EMAIL_MSG[lang]||EMAIL_MSG.en}
 function markEmail(input,rule){if(!validEmail(input.value)){input.classList.add("input-error");rule.innerText=emailMsg();rule.classList.remove("hidden");return false}input.classList.remove("input-error");input.classList.add("input-ok");rule.classList.add("hidden");return true}
 function clearEmailMark(input,rule){input.classList.remove("input-error","input-ok");rule.classList.add("hidden")}
-function toggleLangMenu(){langMenu.classList.toggle("hidden")}
-function toggleAppLangMenu(){appLangMenu.classList.toggle("hidden")}
-document.addEventListener("click",e=>{if(!e.target.closest(".lang-floating")){langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden")}})
+function toggleLangMenu(){const m=document.getElementById("langMenu");if(m)m.classList.toggle("hidden")}
+function toggleAppLangMenu(){const m=document.getElementById("appLangMenu");if(m)m.classList.toggle("hidden")}
+document.addEventListener("click",e=>{if(!e.target.closest(".lang-floating")){const m=document.getElementById("langMenu");if(m)m.classList.add("hidden");const am=document.getElementById("appLangMenu");if(am)am.classList.add("hidden");}})
 
-function changeLanguage(v){lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){};langMenu.classList.add("hidden");appLangMenu?.classList.add("hidden");applyLanguage();renderAll();applyLanguage()}
+function changeLanguage(v){lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){};const m=document.getElementById("langMenu");if(m)m.classList.add("hidden");const am=document.getElementById("appLangMenu");if(am)am.classList.add("hidden");applyLanguage();renderAll();applyLanguage()}
 function applyLanguage(){
 lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
-document.documentElement.lang="en";document.documentElement.dir="ltr";langCircle.innerText=LANG_FLAGS[lang]||"🌐";if(typeof appLangCircle!=="undefined")appLangCircle.innerText=LANG_FLAGS[lang]||"🌐";
+document.documentElement.lang="en";document.documentElement.dir="ltr";const lc=document.getElementById("langCircle");if(lc)lc.innerText=LANG_FLAGS[lang]||"🌐";const alc=document.getElementById("appLangCircle");if(alc)alc.innerText=LANG_FLAGS[lang]||"🌐";
 authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");loginEmailRule.innerText=emailMsg();loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");if(typeof modeRule!=="undefined")modeRule.innerText=modeMsg();
 registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regEmailRule.innerText=emailMsg();regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
 resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
@@ -4871,7 +4865,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V167';
+  const BUILD = 'ATSRS V168';
   const UPDATE = 'Last Update: 22 Jun 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
@@ -5141,7 +5135,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
@@ -5201,7 +5195,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     var title=byId('registerAccountNoticeTitle'), text=byId('registerAccountNoticeText');
     if(!title||!text)return;
     if(mode==='personal'){
-      title.textContent='Personal Account';
+      title.textContent='';
       text.textContent='Create a personal profile to keep documents, certificates, references, appraisals and expiry alerts organized.';
     }else if(mode==='company'){
       title.textContent='Corporate Account';
@@ -5424,7 +5418,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
@@ -5485,7 +5479,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
       text.textContent=pendingProvider ? ('Select Personal or Corporate to continue registration with '+providerLabel(pendingProvider)+'.') : 'Select Personal or Corporate before creating your ATSRS account.';
     }else if(selectedMode==='personal'){
       if(icon) icon.textContent='✓';
-      title.textContent='Personal Account';
+      title.textContent='';
       text.textContent='Create a personal profile to keep documents, certificates, references, appraisals and expiry alerts organized.';
     }else{
       if(icon) icon.textContent='✓';
@@ -5704,7 +5698,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -5737,7 +5731,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
       }
     }else if(mode==='personal'){
       if(icon)icon.textContent='✓';
-      title.textContent='Personal Account';
+      title.textContent='';
       text.textContent='You are creating a Personal account to keep your documents, certificates, references, appraisals and expiry alerts organized.';
     }else{
       if(icon)icon.textContent='✓';
@@ -5879,7 +5873,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
@@ -5973,7 +5967,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
       text.textContent=provider?('Select Personal or Corporate to prepare '+label(provider)+' sign in.'):('Select Personal or Corporate before creating your ATSRS account.');
     }else if(mode==='personal'){
       if(icon)icon.textContent='✓';
-      title.textContent='Personal Account';
+      title.textContent='';
       text.textContent='You are creating a Personal account to keep your documents, certificates, references, appraisals and expiry alerts organized.';
     }else{
       if(icon)icon.textContent='✓';
@@ -6023,7 +6017,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V167';
+  var BUILD_LABEL = 'ATSRS V168';
   var UPDATE_LABEL = 'Last Update: 22 Jun 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -6140,7 +6134,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6322,7 +6316,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6391,7 +6385,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     var mail=byId('atsrsAccountEmailLabel');
     if(!type || !mail) return;
     var mode=getMode();
-    type.textContent = mode === 'company' ? 'Corporate Account' : 'Personal Account';
+    type.textContent = mode === 'company' ? '' : '';
     mail.textContent = getEmail();
   }
   function simplifyDashboard(){
@@ -6489,7 +6483,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -6503,7 +6497,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     var badge=document.getElementById('atsrsAccountBadge');
     var type=document.getElementById('atsrsAccountTypeLabel');
     var email=document.getElementById('atsrsAccountEmailLabel');
-    var mode=(document.body.classList.contains('company-mode')?'Corporate Account':'Personal Account');
+    var mode='';
     if(type) type.textContent=mode;
     if(email && (!email.textContent || /local-test|undefined|null/i.test(email.textContent))) {
       var stored=localStorage.getItem('atsrsUserEmail') || localStorage.getItem('atsrsEmail') || localStorage.getItem('email') || 'local-test@atsrs.com';
@@ -6511,7 +6505,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     }
     if(badge){badge.removeAttribute('style');}
     var logout=document.getElementById('topLogoutBtn');
-    if(logout){logout.removeAttribute('style');logout.textContent='Logout';}
+    if(logout){logout.removeAttribute('style');logout.textContent='Exit';}
   }
   ['DOMContentLoaded','load'].forEach(function(evt){window.addEventListener(evt,function(){lockBuild();cleanTopbar();setTimeout(cleanTopbar,300);});});
   setInterval(function(){lockBuild();cleanTopbar();},1200);
@@ -6804,7 +6798,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
@@ -6876,7 +6870,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V167';
+    var BUILD='ATSRS V168';
     var UPDATE='Last Update: 22 Jun 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
@@ -7101,7 +7095,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
@@ -7424,7 +7418,7 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7530,7 +7524,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
 (function(){
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7832,7 +7826,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -7972,7 +7966,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V142_REFERENCES_ICON_EXPAND_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8117,7 +8111,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8344,7 +8338,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8533,7 +8527,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -8668,7 +8662,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V167';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8764,7 +8758,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V167';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -8873,7 +8867,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS">
 (function(){
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATED='22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8965,7 +8959,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -9043,7 +9037,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -9096,7 +9090,7 @@ body > .atsrs-v64-top-actions{
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
     await migrate(kind);
-    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V167 read failed',e);}mirrorMeta(kind,arr);
+    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V168 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(st){st.textContent=label(arr.length);st.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
     if(filter)filter.classList.toggle('active',arr.length>0);
@@ -9406,7 +9400,7 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v157-login-cleanup-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -9552,7 +9546,7 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v161-single-date-badge-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   var cleaning=false;
@@ -9594,7 +9588,7 @@ body > .atsrs-v64-top-actions{
 
 
 
-<!-- ATSRS V167: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
+<!-- ATSRS V168: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
 <style id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_CSS">
 /* Dashboard: keep layout, remove visible card boxes from background */
 #dashboardPage .card,
@@ -9692,7 +9686,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V167';
+  var BUILD='ATSRS V168';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -9796,6 +9790,30 @@ body > .atsrs-v64-top-actions,
   setTimeout(cleanTop,100);
   setTimeout(cleanTop,800);
   setTimeout(cleanTop,2000);
+})();
+</script>
+
+
+
+/* V168 LOGIN LANGUAGE REMOVED + TOP ACTIONS HARD CLEAN */
+#auth .lang-floating,#auth .lang-circle,#auth .lang-menu,#langCircle,#langMenu,
+#app > .top-actions, body > .top-actions, body > .atsrs-global-top-actions, body > .atsrs-v56-top-actions, body > .atsrs-v64-top-actions,
+#appLangCircle,#appLangMenu,#topLogoutBtn,.atsrs-account-badge{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+#navLogout.exit-nav-btn{display:block!important;margin-top:0!important;background:transparent!important;border:0!important;box-shadow:none!important;text-align:left!important;color:#cbd5e1!important;padding:12px 14px!important;border-radius:14px!important;font-weight:800!important;}
+#navLogout.exit-nav-btn:hover{background:#1e293b!important;color:#fff!important;}
+
+<script>
+(function atsrsV168RemoveLanguageAndTopActions(){
+  function clean(){
+    var ids=['langCircle','langMenu','appLangCircle','appLangMenu','topLogoutBtn'];
+    ids.forEach(function(id){var el=document.getElementById(id); if(el) el.remove();});
+    document.querySelectorAll('#auth .lang-floating,#app > .top-actions,body > .top-actions,body > .atsrs-global-top-actions,body > .atsrs-v56-top-actions,body > .atsrs-v64-top-actions,.atsrs-account-badge').forEach(function(el){el.remove();});
+    var exit=document.getElementById('navLogout');
+    if(exit){ exit.textContent='Exit'; exit.classList.add('exit-nav-btn'); }
+  }
+  clean();
+  document.addEventListener('DOMContentLoaded',clean);
+  setTimeout(clean,0); setTimeout(clean,500); setTimeout(clean,1500);
 })();
 </script>
 
