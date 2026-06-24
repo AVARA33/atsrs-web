@@ -9795,25 +9795,104 @@ body > .atsrs-v64-top-actions,
 
 
 
-/* V168 LOGIN LANGUAGE REMOVED + TOP ACTIONS HARD CLEAN */
-#auth .lang-floating,#auth .lang-circle,#auth .lang-menu,#langCircle,#langMenu,
-#app > .top-actions, body > .top-actions, body > .atsrs-global-top-actions, body > .atsrs-v56-top-actions, body > .atsrs-v64-top-actions,
-#appLangCircle,#appLangMenu,#topLogoutBtn,.atsrs-account-badge{display:none!important;visibility:hidden!important;pointer-events:none!important;}
-#navLogout.exit-nav-btn{display:block!important;margin-top:0!important;background:transparent!important;border:0!important;box-shadow:none!important;text-align:left!important;color:#cbd5e1!important;padding:12px 14px!important;border-radius:14px!important;font-weight:800!important;}
-#navLogout.exit-nav-btn:hover{background:#1e293b!important;color:#fff!important;}
-
+<style>
+/* V169 Documents page cleanup: remove outer boxes, keep controls and data system intact */
+#certificatesPage > .panel,
+#certificatesPage .unified-cert-panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  margin-bottom:22px!important;
+}
+#certificatesPage .scan-box,
+#certificatesPage #confirmBox,
+#certificatesPage .table-wrap{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+#certificatesPage table{
+  background:transparent!important;
+}
+#certificatesPage th,
+#certificatesPage td{
+  background:transparent!important;
+}
+#certificatesPage .cert-mode-buttons,
+#certificatesPage .document-actions{
+  max-width:760px!important;
+}
+#certificatesPage .cert-mode-buttons button,
+#certificatesPage .document-actions button{
+  min-height:38px!important;
+  padding:10px 12px!important;
+}
+#certificatesPage .field-wrap,
+#certificatesPage select,
+#certificatesPage input,
+#certificatesPage textarea{
+  max-width:760px;
+}
+/* Prevent previous debug/CSS text from being visible anywhere */
+body > style + text,
+body > script + text{display:none!important;}
+</style>
 <script>
-(function atsrsV168RemoveLanguageAndTopActions(){
-  function clean(){
-    var ids=['langCircle','langMenu','appLangCircle','appLangMenu','topLogoutBtn'];
-    ids.forEach(function(id){var el=document.getElementById(id); if(el) el.remove();});
+(function atsrsV169DocumentsClean(){
+  function text(id,value){var el=document.getElementById(id); if(el && !String(el.textContent||'').trim()) el.textContent=value;}
+  function forceText(id,value){var el=document.getElementById(id); if(el) el.textContent=value;}
+  function cleanTopAndLang(){
+    ['langCircle','langMenu','appLangCircle','appLangMenu','topLogoutBtn'].forEach(function(id){var el=document.getElementById(id); if(el) el.remove();});
     document.querySelectorAll('#auth .lang-floating,#app > .top-actions,body > .top-actions,body > .atsrs-global-top-actions,body > .atsrs-v56-top-actions,body > .atsrs-v64-top-actions,.atsrs-account-badge').forEach(function(el){el.remove();});
     var exit=document.getElementById('navLogout');
-    if(exit){ exit.textContent='Exit'; exit.classList.add('exit-nav-btn'); }
+    if(exit){exit.textContent='Exit';exit.classList.add('exit-nav-btn');exit.style.display='block';}
   }
-  clean();
-  document.addEventListener('DOMContentLoaded',clean);
-  setTimeout(clean,0); setTimeout(clean,500); setTimeout(clean,1500);
+  function fixDocumentsLabels(){
+    forceText('addDocTitle','Upload Document');
+    text('addCertFlowNote','Upload or scan a document, then confirm the information manually.');
+    forceText('certScanModeBtn','Scan with Camera');
+    forceText('certManualModeBtn','Upload File');
+    text('scanFlowText','Scan or upload PDF, JPG or PNG files.');
+    forceText('scanDocBtn','Scan with Camera');
+    forceText('uploadDocBtn','Upload File');
+    text('scanInfo','Use your camera or upload PDF/JPG/PNG.');
+    forceText('confirmInfoTitle','Confirm Information');
+    forceText('autoPersonLabel','Person');
+    forceText('autoDocTypeLabel','Document Type');
+    forceText('autoDocNoLabel','Document / Certificate No');
+    forceText('autoProviderLabel','Training Center / Provider');
+    forceText('autoIssueLabel','Issue Date');
+    forceText('autoExpiryLabel','Expiry');
+    forceText('confirmInfoBtn','Confirm Info');
+    text('extractNote','Review and confirm before saving.');
+    forceText('manualCertTitle','Manual Certificate Entry');
+    text('manualFlowText','Enter document details manually and attach a file if needed.');
+    forceText('manualUploadBtn','Upload File');
+    forceText('cTypeLabel','Certificate');
+    forceText('cDocNoLabel','Document / Certificate No (Optional)');
+    forceText('cCountryLabel','Country / Authority (Optional)');
+    forceText('cProviderLabel','Training Center / Provider');
+    forceText('cIssueLabel','Issue Date');
+    forceText('cExpiryLabel','Expiry');
+    forceText('addCertBtn','Save Document');
+    forceText('certRegisterTitle','Document Register');
+    forceText('thCertificate2','Certificate');
+    forceText('thProvider2','Training Center / Provider');
+    forceText('thExpiry2','Expiry');
+    forceText('thStatus2','Status');
+    forceText('thAction2','Action');
+  }
+  function run(){cleanTopAndLang();fixDocumentsLabels();}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', run); else run();
+  window.addEventListener('load', run);
+  [80,300,900,1800].forEach(function(ms){setTimeout(run,ms);});
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function' && !oldShow.__v169Wrapped){
+    var wrapped=function(){var r=oldShow.apply(this,arguments);setTimeout(run,0);setTimeout(run,120);return r;};
+    wrapped.__v169Wrapped=true;window.showPage=wrapped;
+  }
 })();
 </script>
 
