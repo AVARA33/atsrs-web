@@ -9796,8 +9796,9 @@ body > .atsrs-v64-top-actions,
 
 
 
-<style id="ATSRS_V170_DOCUMENTS_STABLE_CSS">
-/* V170 rebuilt from previous V169: Documents section only, no storage/upload core changes */
+
+<style id="ATSRS_V171_DOCUMENTS_MANUAL_COLLAPSE_CSS">
+/* V171 from V170_0955: Documents UX only. No storage/upload core changes. */
 #certificatesPage > .panel,
 #certificatesPage .unified-cert-panel,
 #certificatesPage .scan-box,
@@ -9819,33 +9820,45 @@ body > .atsrs-v64-top-actions,
   max-width:460px!important;
   margin:14px 0 16px!important;
 }
-#certificatesPage .cert-mode-buttons button{
+#certificatesPage .cert-mode-buttons button,
+#certificatesPage .cert-mode-buttons button.active,
+#certificatesPage #certScanModeBtn,
+#certificatesPage #certScanModeBtn.active,
+#certificatesPage #certManualModeBtn,
+#certificatesPage #certManualModeBtn.active{
   width:100%!important;
   min-height:38px!important;
   padding:10px 12px!important;
   margin:0!important;
   border-radius:12px!important;
-}
-#certificatesPage #certScanModeBtn{
   background:#26384e!important;
   border:1px solid #3b536d!important;
   color:#dbeafe!important;
   box-shadow:none!important;
 }
-#certificatesPage #certManualModeBtn.active,
-#certificatesPage #certManualModeBtn{
-  background:linear-gradient(135deg,#0f766e,#22c55e)!important;
-  border:1px solid rgba(134,239,172,.75)!important;
-  color:#fff!important;
+#certificatesPage .cert-mode-buttons button:hover{
+  background:#2f455d!important;
+  border-color:#58718d!important;
 }
-#certificatesPage #certManualPanel{display:block!important;max-width:860px!important;}
-#certificatesPage #certManualPanel.cert-mode-panel{display:block!important;}
+#certificatesPage #certManualPanel,
+#certificatesPage #certManualPanel.cert-mode-panel{
+  display:none!important;
+  max-width:860px!important;
+}
+body.atsrs-doc-manual-open #certificatesPage #certManualPanel,
+body.atsrs-doc-manual-open #certificatesPage #certManualPanel.cert-mode-panel{
+  display:block!important;
+}
 #certificatesPage #manualUploadBtn{
   width:auto!important;
   min-width:150px!important;
   max-width:190px!important;
   padding:10px 14px!important;
   margin:4px 0 10px!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#dbeafe!important;
+  box-shadow:none!important;
 }
 #certificatesPage #addCertBtn,
 #certificatesPage #cancelCertBtn{
@@ -9858,17 +9871,16 @@ body > .atsrs-v64-top-actions,
   align-items:center!important;
   justify-content:center!important;
   border-radius:10px!important;
-}
-#certificatesPage #cancelCertBtn{
   background:#26384e!important;
   border:1px solid #3b536d!important;
   color:#dbeafe!important;
   box-shadow:none!important;
 }
+#certificatesPage #cancelCertBtn{color:#dbeafe!important;}
 #certificatesPage table,
 #certificatesPage th,
 #certificatesPage td{background:transparent!important;}
-#certTable td:last-child{white-space:nowrap!important;min-width:220px!important;}
+#certTable td:last-child{white-space:nowrap!important;min-width:240px!important;}
 #certTable .atsrs-row-btn{
   width:auto!important;
   min-width:62px!important;
@@ -9896,10 +9908,10 @@ body > .atsrs-v64-top-actions,
   #certTable td:last-child{min-width:0!important;}
 }
 </style>
-<script id="ATSRS_V170_DOCUMENTS_STABLE_JS">
+<script id="ATSRS_V171_DOCUMENTS_MANUAL_COLLAPSE_JS">
 (function(){
-  var VERSION='ATSRS V170';
-  var UPDATE='Last Update: 22 Jun 2026';
+  var VERSION='ATSRS V171';
+  var UPDATE='Last Update: 24 Jun 2026';
   function q(id){return document.getElementById(id)}
   function qa(sel){return Array.prototype.slice.call(document.querySelectorAll(sel))}
   function setText(id,value){var el=q(id); if(el) el.textContent=value;}
@@ -9922,16 +9934,30 @@ body > .atsrs-v64-top-actions,
     ['cType','cDocNo','cCountry','cProvider','cIssue','cExpiry'].forEach(function(id){var el=q(id); if(el) el.value='';});
     var p=q('manualFilePreview'); if(p) p.textContent='';
     var f=q('manualFile'); if(f) f.value='';
-    if(typeof editCertIndex!=='undefined') editCertIndex=null;
+    try{ if(typeof editCertIndex!=='undefined') editCertIndex=null; }catch(e){}
     if(typeof clearManualValidation==='function') clearManualValidation();
   }
-  window.cancelCertificateEdit=clearManualForm;
+  function closeManual(){
+    clearManualForm();
+    document.body.classList.remove('atsrs-doc-manual-open');
+    var mp=q('certManualPanel'); if(mp){mp.classList.remove('active');mp.style.display='none';}
+    qa('#certificatesPage .cert-mode-buttons button').forEach(function(b){b.classList.remove('active');});
+  }
+  function openManual(){
+    document.body.classList.add('atsrs-doc-manual-open');
+    var mp=q('certManualPanel'); if(mp){mp.classList.add('active');mp.style.display='block';}
+    qa('#certificatesPage .cert-mode-buttons button').forEach(function(b){b.classList.remove('active');});
+    setTimeout(function(){var mp=q('certManualPanel'); if(mp) mp.scrollIntoView({behavior:'smooth',block:'start'});},30);
+  }
+  window.cancelCertificateEdit=closeManual;
   window.previewCertificate=function(i){
     try{
       var a=(typeof getData==='function')?getData('certs'):[];
       var x=a[i];
       if(!x){alert('No document found.');return;}
-      alert('Document: '+(x.type||'-')+'\nProvider: '+(x.provider||'-')+'\nExpiry: '+(x.expiry||'-'));
+      alert('Document: '+(x.type||'-')+'
+Provider: '+(x.provider||'-')+'
+Expiry: '+(x.expiry||'-'));
     }catch(e){alert('Preview is not available for this record.');}
   };
   function ensureCancel(){
@@ -9943,11 +9969,15 @@ body > .atsrs-v64-top-actions,
     setText('addDocTitle','Documents');
     setText('addCertFlowNote','Choose one method: Scan with AI or Manual Upload.');
     var scan=q('certScanModeBtn');
-    if(scan){scan.textContent='Scan with AI';scan.classList.remove('active');scan.onclick=aiNotice;}
+    if(scan){scan.textContent='Scan with AI';scan.classList.remove('active');scan.onclick=function(e){if(e)e.preventDefault();aiNotice();return false;};}
     var manual=q('certManualModeBtn');
-    if(manual){manual.textContent='Manual Upload';manual.classList.add('active');manual.onclick=function(){showCertMode('manual');};}
+    if(manual){manual.textContent='Manual Upload';manual.classList.remove('active');manual.onclick=function(e){if(e)e.preventDefault();openManual();return false;};}
     var sp=q('certScanPanel'); if(sp){sp.classList.remove('active');sp.style.display='none';}
-    var mp=q('certManualPanel'); if(mp){mp.classList.add('active');mp.style.display='block';}
+    var mp=q('certManualPanel');
+    if(mp){
+      if(document.body.classList.contains('atsrs-doc-manual-open')){mp.classList.add('active');mp.style.display='block';}
+      else{mp.classList.remove('active');mp.style.display='none';}
+    }
     setText('manualCertTitle','Manual Upload');
     setText('manualFlowText','Upload a file and enter document details manually.');
     setText('manualUploadBtn','Upload File');
@@ -9971,23 +10001,29 @@ body > .atsrs-v64-top-actions,
     qa('#certTable tr').forEach(function(row,i){
       var cells=row.querySelectorAll('td');
       if(cells.length<5 || !certs[i]) return;
-      cells[4].innerHTML='<button class="atsrs-row-btn" onclick="previewCertificate('+i+')">Preview</button>'+
-        '<button class="atsrs-row-btn" onclick="editCertificate('+i+')">Edit</button>'+
+      cells[4].innerHTML='<button class="atsrs-row-btn" onclick="previewCertificate('+i+')">Preview</button>'+ 
+        '<button class="atsrs-row-btn" onclick="editCertificate('+i+')">Edit</button>'+ 
         '<button class="atsrs-row-btn atsrs-soft-delete" onclick="deleteCert('+i+')">Delete</button>';
     });
   }
   function stableDocuments(){build();cleanTop();documentsLabels();patchRows();}
   var oldShowCert=window.showCertMode;
   window.showCertMode=function(mode){
-    if(mode==='scan'){aiNotice(); mode='manual';}
-    if(typeof oldShowCert==='function') oldShowCert.call(this,'manual');
-    setTimeout(stableDocuments,0);return false;
+    if(mode==='scan'){aiNotice();return false;}
+    if(mode==='manual'){openManual();stableDocuments();return false;}
+    if(typeof oldShowCert==='function') return oldShowCert.apply(this,arguments);
+    return false;
   };
+  var oldEdit=window.editCertificate;
+  if(typeof oldEdit==='function' && !oldEdit.__atsrsV171Docs){
+    var editWrap=function(){var r=oldEdit.apply(this,arguments);openManual();setTimeout(stableDocuments,0);return r;};
+    editWrap.__atsrsV171Docs=true; window.editCertificate=editWrap;
+  }
   ['applyLanguage','renderAll','showPage'].forEach(function(name){
     var old=window[name];
-    if(typeof old==='function' && !old.__atsrsV170Docs){
+    if(typeof old==='function' && !old.__atsrsV171Docs){
       var wrap=function(){var r=old.apply(this,arguments);setTimeout(stableDocuments,0);setTimeout(stableDocuments,120);return r;};
-      wrap.__atsrsV170Docs=true; window[name]=wrap;
+      wrap.__atsrsV171Docs=true; window[name]=wrap;
     }
   });
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', stableDocuments); else stableDocuments();
