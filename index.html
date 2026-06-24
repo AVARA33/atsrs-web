@@ -1355,7 +1355,7 @@ body > .atsrs-v64-top-actions{
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V169</div>
+<div>ATSRS V163</div>
 <div>Last Update: 22 Jun 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -1363,6 +1363,17 @@ body > .atsrs-v64-top-actions{
 </section>
 
 <section id="app" class="app hidden">
+<div class="top-actions">
+<div class="lang-floating app-lang-switcher">
+<button type="button" id="appLangCircle" class="lang-circle" onclick="atsrsV78EnglishOnlyNotice()">🇬🇧</button>
+<div id="appLangMenu" class="lang-menu hidden">
+<button type="button" data-lang="en"><span>🇬🇧</span> English</button>
+</div>
+</div>
+<div id="atsrsAccountBadge" class="atsrs-account-badge"><div id="atsrsAccountTypeLabel">Personal Account</div><div id="atsrsAccountEmailLabel">local-test@atsrs.com</div></div>
+<button id="topLogoutBtn" class="top-logout" onclick="confirmLogout()">Logout</button>
+</div>
+
 <aside class="sidebar">
 <div class="sidebar-head"><div class="brand">ATSRS</div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
 <p id="cabinetText" class="sub"></p>
@@ -1375,7 +1386,7 @@ body > .atsrs-v64-top-actions{
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
-<button id="navLogout" class="sidebar-exit" onclick="confirmLogout()">Exit</button>
+<button id="navLogout" onclick="logout()"></button>
 </div>
 </aside>
 
@@ -4871,7 +4882,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V169';
+  const BUILD = 'ATSRS V163';
   const UPDATE = 'Last Update: 22 Jun 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
@@ -5141,7 +5152,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
@@ -5424,7 +5435,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
@@ -5704,7 +5715,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -5879,7 +5890,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
@@ -6023,7 +6034,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script>
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V169';
+  var BUILD_LABEL = 'ATSRS V163';
   var UPDATE_LABEL = 'Last Update: 22 Jun 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -6140,7 +6151,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6322,7 +6333,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -6489,7 +6500,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -6804,7 +6815,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
@@ -6876,7 +6887,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V169';
+    var BUILD='ATSRS V163';
     var UPDATE='Last Update: 22 Jun 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
@@ -7101,7 +7112,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
@@ -7424,7 +7435,7 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7530,7 +7541,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
 (function(){
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -7832,7 +7843,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -7972,7 +7983,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V142_REFERENCES_ICON_EXPAND_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8117,7 +8128,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8344,7 +8355,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -8533,7 +8544,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -8668,7 +8679,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V169';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8764,7 +8775,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V169';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V163';if(d[1])d[1].textContent='Last Update: 22 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -8873,7 +8884,7 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS">
 (function(){
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATED='22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -8965,7 +8976,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -9043,7 +9054,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -9096,7 +9107,7 @@ body > .atsrs-v64-top-actions{
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
     await migrate(kind);
-    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V169 read failed',e);}mirrorMeta(kind,arr);
+    var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V163 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(st){st.textContent=label(arr.length);st.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
     if(filter)filter.classList.toggle('active',arr.length>0);
@@ -9406,7 +9417,7 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v157-login-cleanup-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -9552,7 +9563,7 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v161-single-date-badge-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V163';
   var UPDATE='Last Update: 22 Jun 2026';
   var TYPE='TEST BUILD';
   var cleaning=false;
@@ -9594,7 +9605,7 @@ body > .atsrs-v64-top-actions{
 
 
 
-<!-- ATSRS V169: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
+<!-- ATSRS V166: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
 <style id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_CSS">
 /* Dashboard: keep layout, remove visible card boxes from background */
 #dashboardPage .card,
@@ -9692,7 +9703,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V169';
+  var BUILD='ATSRS V166';
   var UPDATE='Last Update: 22 Jun 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -9737,351 +9748,5 @@ body > .atsrs-v64-top-actions{
 })();
 </script>
 
-
-
-<!-- ATSRS V169: strict references upload/filter compact + hide additional CV slots + dashboard frameless cleanup. Base: V166/V163. Storage untouched. -->
-<style id="ATSRS_V167_REFS_DASH_STRICT_CSS">
-/* Dashboard: remove remaining visible boxes, keep positions/text */
-#dashboardPage .hero-card,
-#dashboardPage .mini-panel,
-#dashboardPage .card,
-#dashboardPage .panel,
-#dashboardPage .workflow-card,
-#dashboardPage .snapshot-card,
-#dashboardPage .dashboard-snapshot-panel,
-#dashboardPage .share-card,
-#dashboardPage .stats-grid .card,
-#dashboardPage #shareProfilePanel,
-#dashboardPage .preview-profile{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-#dashboardPage .snapshot-item,
-#dashboardPage .risk-item,
-#dashboardPage .share-link-box input,
-#dashboardPage .share-permissions label{
-  background:transparent!important;
-  border:0!important;
-  border-bottom:1px solid rgba(148,163,184,.28)!important;
-  border-radius:0!important;
-  box-shadow:none!important;
-}
-#dashboardPage .stats-grid{gap:12px!important;}
-#dashboardPage .stats-grid .card{padding:10px 8px!important;min-height:auto!important;}
-#dashboardPage .solo-hero{gap:18px!important;}
-
-/* References: no outer boxes, only text/list lines */
-#refsPage > .panel,
-#refsPage .panel,
-#refsPage .ref-card,
-#refsPage .atsrs-v134-career-card,
-#refsPage .cv-card,
-#refsPage .cover-letter-card{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-#refsPage .atsrs-v134-career-card{
-  padding:10px 8px!important;
-  min-height:245px!important;
-  height:auto!important;
-}
-#refsPage .atsrs-v134-career-card h3{margin:0 0 6px!important;min-height:0!important;}
-#refsPage .atsrs-v134-career-card .atsrs-v134-desc{min-height:42px!important;margin:0 0 10px!important;}
-#refsPage .atsrs-v134-statusbar{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto auto!important;
-  align-items:center!important;
-  column-gap:8px!important;
-  row-gap:6px!important;
-  margin:0 0 8px!important;
-  min-height:32px!important;
-}
-#refsPage .atsrs-v134-upload,
-#refsPage button.atsrs-v134-upload{
-  width:86px!important;
-  min-width:86px!important;
-  max-width:86px!important;
-  padding:7px 10px!important;
-  margin:0!important;
-  border-radius:10px!important;
-  font-size:12px!important;
-  line-height:1.1!important;
-  justify-self:end!important;
-  white-space:nowrap!important;
-  text-align:center!important;
-}
-#refsPage .atsrs-v134-filter,
-#refsPage select.atsrs-v134-filter{
-  display:block!important;
-  width:124px!important;
-  min-width:124px!important;
-  max-width:124px!important;
-  padding:7px 8px!important;
-  margin:0!important;
-  border-radius:10px!important;
-  font-size:12px!important;
-  justify-self:end!important;
-  opacity:.96!important;
-}
-#refsPage .atsrs-v134-filter:disabled{opacity:.68!important;color:#94a3b8!important;}
-#refsPage .atsrs-v134-empty,
-#refsPage .career-record-row,
-#refsPage .atsrs-v134-row,
-#refsPage .preview-box{
-  background:transparent!important;
-  border:0!important;
-  border-bottom:1px solid rgba(148,163,184,.32)!important;
-  border-radius:0!important;
-  box-shadow:none!important;
-}
-#refsPage .cv-beta-box,
-#refsPage .ref-beta-box,
-#refsPage .cv-card [class*="slot"],
-#refsPage .cv-card [id*="slot"],
-#refsPage .cv-card [id*="Slot"],
-#refsPage .cv-card [class*="premium"],
-#refsPage .cv-card [class*="Premium"],
-#refsPage .cv-card .pill{
-  display:none!important;
-  visibility:hidden!important;
-}
-@media(max-width:760px){
-  #refsPage .atsrs-v134-statusbar{grid-template-columns:1fr!important;}
-  #refsPage .atsrs-v134-upload,#refsPage .atsrs-v134-filter{width:100%!important;max-width:none!important;justify-self:stretch!important;}
-}
-</style>
-<script id="ATSRS_V167_REFS_DASH_STRICT_JS">
-(function(){
-  'use strict';
-  var BUILD='ATSRS V169';
-  var UPDATE='Last Update: 22 Jun 2026';
-  function q(s,r){return (r||document).querySelector(s);}
-  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent=UPDATE;
-      if(d[2])d[2].textContent='TEST BUILD';
-    });
-  }
-  function normalizeRefs(){
-    qa('#refsPage .atsrs-v134-career-card').forEach(function(card){
-      var btn=q('.atsrs-v134-upload',card);
-      var bar=q('.atsrs-v134-statusbar',card);
-      var filter=q('.atsrs-v134-filter',card);
-      var status=q('.atsrs-v134-status',card);
-      if(!bar){
-        bar=document.createElement('div');
-        bar.className='atsrs-v134-statusbar';
-        var list=q('.atsrs-v134-list',card);
-        if(list)card.insertBefore(bar,list); else card.appendChild(bar);
-      }
-      if(!filter){
-        filter=document.createElement('select');
-        filter.className='atsrs-v134-filter';
-        filter.innerHTML='<option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option>';
-      }
-      if(btn){
-        btn.textContent='Upload';
-        btn.setAttribute('aria-label','Upload');
-        btn.style.width='86px';btn.style.minWidth='86px';btn.style.maxWidth='86px';
-        btn.style.padding='7px 10px';btn.style.margin='0';btn.style.justifySelf='end';
-      }
-      if(status && status.parentElement!==bar)bar.appendChild(status);
-      if(btn && btn.parentElement!==bar)bar.appendChild(btn);
-      if(filter && filter.parentElement!==bar)bar.appendChild(filter);
-      if(filter){
-        var empty=!!(status && /No File/i.test(status.textContent||''));
-        if(empty){
-          filter.innerHTML='<option value="none">No files</option>';
-          filter.disabled=true;
-        }else if(filter.options.length<2 || filter.value==='none'){
-          filter.disabled=false;
-          filter.innerHTML='<option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option>';
-        }else{
-          filter.disabled=false;
-        }
-        filter.classList.add('active');
-        filter.style.display='block';
-      }
-    });
-    hideAdditionalCVSlots();
-  }
-  function hideAdditionalCVSlots(){
-    qa('#refsPage .cv-card .cv-beta-box,#refsPage .cv-card .ref-beta-box,#refsPage .cv-card .pill,#refsPage .cv-card [class*="slot"],#refsPage .cv-card [id*="slot"],#refsPage .cv-card [id*="Slot"],#refsPage .cv-card [class*="premium"],#refsPage .cv-card [class*="Premium"]').forEach(function(x){x.style.display='none';x.style.visibility='hidden';});
-    qa('#refsPage .cv-card *').forEach(function(el){
-      var t=(el.textContent||'').trim();
-      if(/ADDITIONAL\s+CV\s+SLOTS/i.test(t) || /Premium/i.test(t) || /\bPRO\b/i.test(t)){
-        var target=el.closest('.cv-beta-box,.ref-beta-box,.preview-box,div')||el;
-        if(target && !target.matches('.cv-card')){target.style.display='none';target.style.visibility='hidden';}
-      }
-    });
-  }
-  function run(){setBuild();normalizeRefs();}
-  ['DOMContentLoaded','load'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(run,40);setTimeout(run,300);setTimeout(run,900);});});
-  var oldRender=window.renderAll;
-  if(typeof oldRender==='function'&&!oldRender.__atsrsV167){
-    window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(run,60);setTimeout(run,350);return r;};
-    window.renderAll.__atsrsV167=true;
-  }
-  var oldShow=window.showPage;
-  if(typeof oldShow==='function'&&!oldShow.__atsrsV167){
-    window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,60);setTimeout(run,350);return r;};
-    window.showPage.__atsrsV167=true;
-  }
-  if(window.MutationObserver){
-    var mo=new MutationObserver(function(){clearTimeout(window.__atsrsV167T);window.__atsrsV167T=setTimeout(run,80);});
-    mo.observe(document.body,{childList:true,subtree:true,characterData:true});
-  }
-  run(); setTimeout(run,500); setTimeout(run,1500); setInterval(run,1600);
-})();
-</script>
-
-
-<style id="atsrs-v168-exit-sidebar-top-clean">
-/* V168: remove app top language/account/logout controls; move exit to sidebar under Account. */
-#app.app:not(.hidden) > .top-actions,
-#app.app > .top-actions,
-body > .atsrs-global-top-actions,
-body > .atsrs-v56-top-actions,
-body > .atsrs-v64-top-actions{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-#navLogout{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  width:100%!important;
-  margin:4px 0 0!important;
-  padding:11px 14px!important;
-  border-radius:14px!important;
-  border:1px solid transparent!important;
-  background:transparent!important;
-  color:#cbd5e1!important;
-  text-align:left!important;
-  font-weight:800!important;
-  box-shadow:none!important;
-}
-#navLogout:hover{
-  background:rgba(30,41,59,.88)!important;
-  border-color:#334155!important;
-  color:#fff!important;
-}
-body.personal-mode #navLogout,
-body.company-mode #navLogout{
-  display:block!important;
-}
-@media(max-width:800px){
-  .sidebar{padding-right:16px!important;}
-}
-</style>
-<script id="atsrs-v168-exit-sidebar-top-clean-script">
-(function(){
-  'use strict';
-  var BUILD='ATSRS V169';
-  var DATE='22 Jun 2026';
-  function q(s,root){return (root||document).querySelector(s);} 
-  function qa(s,root){return Array.prototype.slice.call((root||document).querySelectorAll(s));}
-  function cleanTop(){
-    qa('#app > .top-actions, body > .atsrs-global-top-actions, body > .atsrs-v56-top-actions, body > .atsrs-v64-top-actions').forEach(function(el){
-      el.style.display='none';el.style.visibility='hidden';el.setAttribute('aria-hidden','true');
-    });
-    var nav=q('#navLogout');
-    if(nav){
-      nav.textContent='Exit';
-      nav.innerText='Exit';
-      nav.onclick=function(e){e.preventDefault(); if(typeof confirmLogout==='function')confirmLogout(); else if(typeof logout==='function')logout();};
-      nav.style.display='block';
-      nav.removeAttribute('hidden');
-    }
-    var badge=q('#buildBadge');
-    if(badge){
-      var d=badge.querySelectorAll('div');
-      if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent='Last Update: '+DATE;
-      if(d[2])d[2].textContent='TEST BUILD';
-    }
-  }
-  function run(){cleanTop();}
-  ['DOMContentLoaded','load'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(run,20);setTimeout(run,250);setTimeout(run,900);});});
-  var oldSetLanguage=window.setLanguage;
-  if(typeof oldSetLanguage==='function'&&!oldSetLanguage.__atsrsV168){
-    window.setLanguage=function(){var r=oldSetLanguage.apply(this,arguments);setTimeout(run,20);return r;};
-    window.setLanguage.__atsrsV168=true;
-  }
-  var oldShowPage=window.showPage;
-  if(typeof oldShowPage==='function'&&!oldShowPage.__atsrsV168){
-    window.showPage=function(){var r=oldShowPage.apply(this,arguments);setTimeout(run,30);return r;};
-    window.showPage.__atsrsV168=true;
-  }
-  if(window.MutationObserver){
-    new MutationObserver(function(){clearTimeout(window.__atsrsV168T);window.__atsrsV168T=setTimeout(run,60);}).observe(document.body,{childList:true,subtree:true,characterData:true});
-  }
-  run();setTimeout(run,500);setTimeout(run,1500);setInterval(run,2000);
-})();
-</script>
-
-
-<style id="atsrs-v169-top-actions-remove">
-/* V169: app top language/account/logout removed completely. Exit lives only in sidebar. */
-#app > .top-actions,
-#app .top-actions,
-body > .top-actions,
-body > .atsrs-global-top-actions,
-body > .atsrs-v56-top-actions,
-body > .atsrs-v64-top-actions{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-#navLogout.sidebar-exit,
-#navLogout{
-  display:block!important;
-  width:100%!important;
-  text-align:left!important;
-  background:transparent!important;
-  color:#cbd5e1!important;
-  border:1px solid transparent!important;
-  border-radius:14px!important;
-  padding:12px 14px!important;
-  margin:0!important;
-  font-size:15px!important;
-  font-weight:800!important;
-  box-shadow:none!important;
-}
-#navLogout:hover{
-  background:#1e293b!important;
-  color:#fff!important;
-  border-color:#334155!important;
-}
-</style>
-<script id="atsrs-v169-top-actions-clean">
-(function(){
-  function cleanTopActions(){
-    document.querySelectorAll('#app > .top-actions, body > .top-actions, body > .atsrs-global-top-actions, body > .atsrs-v56-top-actions, body > .atsrs-v64-top-actions').forEach(function(el){ el.remove(); });
-    var exit=document.getElementById('navLogout');
-    if(exit){
-      exit.textContent='Exit';
-      exit.classList.add('sidebar-exit');
-      exit.style.display='block';
-      exit.onclick=function(){
-        if(typeof confirmLogout==='function'){ confirmLogout(); }
-        else if(typeof logout==='function'){ logout(); }
-      };
-    }
-  }
-  document.addEventListener('DOMContentLoaded', cleanTopActions);
-  window.addEventListener('load', cleanTopActions);
-  var mo=new MutationObserver(cleanTopActions);
-  mo.observe(document.documentElement,{childList:true,subtree:true});
-  cleanTopActions();
-})();
-</script>
-
 </body>
-</html>
+  </html>
