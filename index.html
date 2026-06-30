@@ -1350,7 +1350,7 @@ body > .atsrs-v64-top-actions{
 
 <div id="buildBadge" class="build-badge">
 <div>ATSRS V168</div>
-<div>Last Update: 24 Jun 2026</div>
+<div>Last Update: 1 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -1687,8 +1687,8 @@ body > .atsrs-v64-top-actions{
 <h3 id="refsTitle">References & Appraisals</h3>
 <p id="refsSub" class="sub">Keep appraisal forms, reference letters and client feedback in one place.</p>
 <div class="ref-grid">
-  <div class="ref-card"><h3 id="appraisalCardTitle">Appraisals</h3><p id="appraisalCardText" class="sub">Upload annual appraisals, performance reviews and evaluation forms.</p><button id="uploadAppraisalBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Appraisal</button></div>
-  <div class="ref-card"><h3 id="referenceCardTitle">References</h3><p id="referenceCardText" class="sub">Store reference letters and contact-ready career proof.</p><button id="uploadReferenceBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Reference</button></div>
+  <div class="ref-card"><h3 id="appraisalCardTitle">Appraisals</h3><p id="appraisalCardText" class="sub">Upload annual appraisals, performance reviews and evaluation forms.</p><button id="uploadAppraisalBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload</button></div>
+  <div class="ref-card"><h3 id="referenceCardTitle">References</h3><p id="referenceCardText" class="sub">Store reference letters and contact-ready career proof.</p><button id="uploadReferenceBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload</button></div>
   <div class="ref-card cv-card">
     <div class="cv-card-head"><h3 id="cvCardTitle">CV / Resume</h3><span id="cvStatusBadge" class="badge badge-blocked">No CV Uploaded</span></div>
     <p id="cvCardText" class="sub">Store, manage and share professional CV versions for employers, agencies and clients.</p>
@@ -2628,7 +2628,7 @@ function ensureRecommendationCard(){
  const cvCard=document.getElementById('cvCardTitle')?.closest('.ref-card');
  const grid=cvCard?.parentElement||document.querySelector('#refsPage .ref-grid');
  if(!grid)return;
- const html=`<div class="ref-card"><h3 id="recommendationCardTitle">Recommendation Letters</h3><p id="recommendationCardText" class="sub">Store recommendation letters from supervisors, clients and companies.</p><button id="uploadRecommendationBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload Recommendation</button></div>`;
+ const html=`<div class="ref-card"><h3 id="recommendationCardTitle">Recommendation Letters</h3><p id="recommendationCardText" class="sub">Store recommendation letters from supervisors, clients and companies.</p><button id="uploadRecommendationBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload</button></div>`;
  if(cvCard)cvCard.insertAdjacentHTML('beforebegin',html); else grid.insertAdjacentHTML('beforeend',html);
 }
 function ensureManagedCard(kind){
@@ -4866,7 +4866,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
   const BUILD = 'ATSRS V168';
-  const UPDATE = 'Last Update: 24 Jun 2026';
+  const UPDATE = 'Last Update: 1 Jul 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
@@ -5135,8 +5135,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v110-clean-register-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -5418,8 +5418,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v111-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -5698,8 +5698,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v112-compact-register-choice-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -5873,8 +5873,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v113-test-social-flow-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -6018,7 +6018,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
   var BUILD_LABEL = 'ATSRS V168';
-  var UPDATE_LABEL = 'Last Update: 24 Jun 2026';
+  var UPDATE_LABEL = 'Last Update: 1 Jul 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -6134,8 +6134,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v115-flow-fix-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6316,8 +6316,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="atsrs-v117-test-placement-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -6483,8 +6483,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 </style>
 <script id="ATSRS_V119_BUILD_AND_TOPBAR_LOCK">
 (function(){
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -6798,8 +6798,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 <script id="ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
@@ -6870,8 +6870,8 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V172';
-    var UPDATE='Last Update: 24 Jun 2026';
+    var BUILD='ATSRS V173';
+    var UPDATE='Last Update: 1 Jul 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -7095,13 +7095,13 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var CONFIGS=[
-    {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload Appraisal',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
-    {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload Reference',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
-    {kind:'recommendation',title:'Recommendation Letters',desc:'Store recommendation letters from supervisors, clients and companies.',upload:'Upload Recommendation',order:30,oldKeys:['recommendationFiles']},
-    {kind:'coverLetter',title:'Cover Letter',desc:'Store cover letter versions next to your CV for faster applications.',upload:'Upload Cover Letter',order:40,oldKeys:['coverLetterFiles']}
+    {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
+    {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
+    {kind:'recommendation',title:'Recommendation Letters',desc:'Store recommendation letters from supervisors, clients and companies.',upload:'Upload',order:30,oldKeys:['recommendationFiles']},
+    {kind:'coverLetter',title:'Cover Letter',desc:'Store cover letter versions next to your CV for faster applications.',upload:'Upload',order:40,oldKeys:['coverLetterFiles']}
   ];
 
   function byId(id){return document.getElementById(id);}
@@ -7418,8 +7418,8 @@ body.auth-open > .top-actions{display:none!important;}
 
 <script id="ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS">
 (function(){
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){
@@ -7524,8 +7524,8 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS">
 (function(){
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
@@ -7826,8 +7826,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -7966,8 +7966,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V142_REFERENCES_ICON_EXPAND_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -8111,8 +8111,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
   function setBuild(){
@@ -8338,8 +8338,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
@@ -8527,8 +8527,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -8662,7 +8662,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V147_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 24 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 1 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
@@ -8758,7 +8758,7 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V148_BUILD_LABEL_SCRIPT">
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 24 Jun 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 1 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 </script>
@@ -8867,14 +8867,14 @@ body > .atsrs-v64-top-actions{
 </style>
 <script id="ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS">
 (function(){
-  var BUILD='ATSRS V172';
+  var BUILD='ATSRS V173';
   var UPDATED='22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent='Last Update: 24 Jun 2026'+UPDATED;
+      if(d[1])d[1].textContent='Last Update: 1 Jul 2026'+UPDATED;
       if(d[2])d[2].textContent='TEST BUILD';
     });
   }
@@ -8959,8 +8959,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
   var STORE='files';
@@ -9037,8 +9037,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
   var STORE='referenceFiles';
@@ -9238,7 +9238,7 @@ body > .atsrs-v64-top-actions{
 (function(){
   'use strict';
   var BUILD='ATSRS V156';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var UPDATE='Last Update: 1 Jul 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
   function byId(id){return document.getElementById(id);} 
@@ -9400,8 +9400,8 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v157-login-cleanup-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
@@ -9546,8 +9546,8 @@ body > .atsrs-v64-top-actions{
 <script id="atsrs-v161-single-date-badge-script">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   var TYPE='TEST BUILD';
   var cleaning=false;
   function isBuildText(t){
@@ -9686,8 +9686,8 @@ body > .atsrs-v64-top-actions{
 <script id="ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS">
 (function(){
   'use strict';
-  var BUILD='ATSRS V172';
-  var UPDATE='Last Update: 24 Jun 2026';
+  var BUILD='ATSRS V173';
+  var UPDATE='Last Update: 1 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -10033,5 +10033,98 @@ body > .atsrs-v64-top-actions,
 })();
 </script>
 
+
+
+<style id="ATSRS_V173_REFS_UPLOAD_FILTER_COMPACT_CSS">
+/* V173: References page compact upload/filter controls. No storage or file logic changes. */
+#refsPage .atsrs-v134-career-card .atsrs-v134-upload{
+  width:118px!important;
+  min-width:118px!important;
+  max-width:118px!important;
+  margin:0!important;
+  padding:6px 9px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  background:#0b1726!important;
+  border:1px solid #334155!important;
+  color:#e5eef8!important;
+  box-shadow:none!important;
+  line-height:1.2!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-upload:hover{
+  background:#111f31!important;
+  border-color:#48627d!important;
+}
+#refsPage .atsrs-v134-statusbar{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:0 0 8px!important;
+  min-height:30px!important;
+}
+#refsPage .atsrs-v134-status{
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+#refsPage .atsrs-v134-filter{
+  width:118px!important;
+  min-width:118px!important;
+  max-width:118px!important;
+  padding:6px 9px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  background:#0b1726!important;
+  border:1px solid #334155!important;
+  color:#cbd5e1!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-filter.active,
+#refsPage .atsrs-v134-filter{
+  display:block!important;
+}
+#refsPage .atsrs-v134-career-card > .atsrs-v134-upload{
+  display:none!important;
+}
+@media(max-width:640px){
+  #refsPage .atsrs-v134-career-card .atsrs-v134-upload,
+  #refsPage .atsrs-v134-filter{
+    width:104px!important;
+    min-width:104px!important;
+    max-width:104px!important;
+  }
+}
+</style>
+<script id="ATSRS_V173_REFS_UPLOAD_FILTER_COMPACT_JS">
+(function(){
+  'use strict';
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function fixRefsControls(){
+    var page=document.getElementById('refsPage');
+    if(!page)return;
+    qa('.atsrs-v134-career-card',page).forEach(function(card){
+      var btn=card.querySelector('.atsrs-v134-upload');
+      var bar=card.querySelector('.atsrs-v134-statusbar');
+      var filter=card.querySelector('.atsrs-v134-filter');
+      if(btn){btn.textContent='Upload'; btn.title='Upload';}
+      if(btn&&bar&&btn.parentElement!==bar){
+        if(filter)bar.insertBefore(btn,filter); else bar.appendChild(btn);
+      }
+    });
+  }
+  ['DOMContentLoaded','load'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(fixRefsControls,30);setTimeout(fixRefsControls,300);});});
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__atsrsV173Refs){
+    var wrapped=function(){var r=oldShow.apply(this,arguments);setTimeout(fixRefsControls,40);setTimeout(fixRefsControls,300);return r;};
+    wrapped.__atsrsV173Refs=true;
+    window.showPage=wrapped;
+  }
+  var mo=new MutationObserver(function(){fixRefsControls();});
+  if(document.body)mo.observe(document.body,{childList:true,subtree:true});
+  setTimeout(fixRefsControls,100);setTimeout(fixRefsControls,700);
+})();
+</script>
+
 </body>
-  </html>
+</html>
