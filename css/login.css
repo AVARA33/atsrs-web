@@ -907,3 +907,35 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   font-size:18px!important;
   line-height:1.45!important;
   color:#b8c5d6!important;
+
+/* V187 Register account-type hint: shine only on Personal / Corporate buttons */
+#registerAccountTypeArea .mode-choice button{
+  position:relative!important;
+  overflow:hidden!important;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button::before,
+#registerAccountTypeArea .mode-choice.mode-error button::before{
+  content:"";
+  position:absolute;
+  top:-45%;
+  left:-70%;
+  width:56%;
+  height:190%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);
+  transform:rotate(18deg);
+  animation:atsrsRegisterChoiceSweep 1.45s ease-in-out infinite;
+  pointer-events:none;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:nth-child(2)::before,
+#registerAccountTypeArea .mode-choice.mode-error button:nth-child(2)::before{
+  animation-delay:.18s;
+}
+#registerAccountTypeArea:not(.needs-choice) .mode-choice:not(.mode-error) button::before{
+  display:none!important;
+}
+@keyframes atsrsRegisterChoiceSweep{
+  0%{left:-75%;opacity:0;}
+  22%{opacity:.95;}
+  68%{left:118%;opacity:.85;}
+  100%{left:118%;opacity:0;}
+}
