@@ -1,4 +1,898 @@
-/* ATSRS V179 split from V178 - documents.css. Original CSS order preserved by index link order. */
+/* ATSRS V178 extracted CSS batch: documents.css. Preserves original V178 cascade order. */
+position:relative!important;
+  overflow:hidden!important;
+  min-height:58px!important;
+  border:1px solid #334155!important;
+  border-radius:16px!important;
+  background:#17263a!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea .mode-choice button.active{
+  background:linear-gradient(135deg,rgba(34,197,94,.17),rgba(15,118,110,.22))!important;
+  border-color:#22c55e!important;
+  box-shadow:0 0 0 1px rgba(34,197,94,.20) inset!important;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:not(.active)::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-125%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
+  animation:atsrsV110ChoiceShimmer 1.35s infinite;
+  pointer-events:none;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:nth-child(2)::after{animation-delay:.32s;}
+@keyframes atsrsV110ChoiceShimmer{100%{transform:translateX(125%);}}
+
+/* Single guidance card only. */
+#registerAccountNotice{
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:10px!important;
+  margin:12px 0 16px!important;
+  padding:13px 14px!important;
+  border:1px solid rgba(34,197,94,.55)!important;
+  background:rgba(34,197,94,.08)!important;
+  border-radius:16px!important;
+  color:#eafdf0!important;
+}
+#registerAccountNotice .notice-icon{
+  width:28px!important;
+  height:28px!important;
+  border-radius:50%!important;
+  background:#22c55e!important;
+  color:#04111d!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-weight:900!important;
+  flex:0 0 auto!important;
+}
+#registerAccountNotice b{display:block!important;font-size:14px!important;margin:0 0 2px!important;color:#fff!important;}
+#registerAccountNotice span{display:block!important;font-size:13px!important;line-height:1.38!important;color:#d7e3ef!important;}
+
+/* Remove old warning duplicates from register. */
+#registerBox #modeRule,
+#registerBox #modeInstruction,
+#registerBox .mode-error-text,
+#registerBox .mode-instruction{
+  display:none!important;
+}
+
+/* Social register icons: keep inline icon design, remove names and boxes. */
+#signupSocialAuth.social-auth-inline{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:18px!important;
+  margin:12px 0!important;
+}
+#signupSocialAuth .social-auth-btn{
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#signupSocialAuth .social-auth-btn span:not(.social-auth-icon){display:none!important;}
+#signupSocialAuth .social-auth-icon{
+  width:34px!important;
+  height:34px!important;
+  flex:0 0 34px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#signupSocialAuth .social-auth-icon svg{width:30px!important;height:30px!important;}
+#signupSocialAuth .social-linkedin .social-auth-icon{
+  border-radius:8px!important;
+  background:#0a66c2!important;
+  color:#fff!important;
+  font-weight:900!important;
+  font-size:19px!important;
+  font-family:Arial,sans-serif!important;
+}
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+#registerAccountNotice.choice-missing{
+  border:1px solid rgba(239,68,68,.60)!important;
+  background:rgba(127,29,29,.10)!important;
+  color:#fee2e2!important;
+}
+#registerAccountNotice.choice-missing .notice-icon{
+  background:transparent!important;
+  border:2px solid #ef4444!important;
+  color:#ef4444!important;
+}
+#registerAccountNotice.choice-selected{
+  border:1px solid rgba(34,197,94,.55)!important;
+  background:rgba(34,197,94,.08)!important;
+  color:#eafdf0!important;
+}
+#registerAccountNotice.choice-selected .notice-icon{
+  background:#22c55e!important;
+  border:2px solid #22c55e!important;
+  color:#052e16!important;
+}
+#registerAccountTypeArea .mode-choice,
+#registerAccountTypeArea .mode-choice.mode-error{
+  border:0!important;
+  background:transparent!important;
+  padding:0!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea .mode-choice button,
+#registerAccountTypeArea .mode-choice.mode-error button{
+  border:1px solid #334155!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:not(.active)::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  transform:translateX(-125%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent)!important;
+  animation:atsrsV111ChoiceShimmer 1.35s infinite!important;
+  pointer-events:none!important;
+}
+#registerAccountTypeArea.needs-choice .mode-choice button:nth-child(2)::after{animation-delay:.32s!important;}
+@keyframes atsrsV111ChoiceShimmer{100%{transform:translateX(125%);}}
+#loginBox > #modeChoiceBox,
+#loginBox > #modeRule,
+#loginBox > #modeInstruction{display:none!important;}
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+/* Smaller Personal / Corporate choice cards */
+#registerAccountTypeArea .mode-choice{
+  gap:8px!important;
+  margin:8px 0 10px!important;
+}
+#registerAccountTypeArea .mode-choice button,
+#registerAccountTypeArea .mode-choice.mode-error button{
+  min-height:44px!important;
+  height:44px!important;
+  padding:8px 10px!important;
+  border-radius:13px!important;
+  font-size:13.5px!important;
+  line-height:1.1!important;
+  border:1px solid #334155!important;
+  background:#17263a!important;
+  box-shadow:none!important;
+}
+#registerAccountTypeArea .mode-choice button.active{
+  background:linear-gradient(135deg,rgba(34,197,94,.17),rgba(15,118,110,.22))!important;
+  border-color:#22c55e!important;
+}
+
+/* Warning/info text: no red box, only icon + text */
+#registerAccountNotice,
+#registerAccountNotice.choice-missing,
+#registerAccountNotice.choice-selected{
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:9px!important;
+  margin:8px 0 13px!important;
+  padding:2px 2px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#registerAccountNotice.choice-missing{color:#fecaca!important;}
+#registerAccountNotice.choice-selected{color:#eafdf0!important;}
+#registerAccountNotice .notice-icon{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  flex:0 0 22px!important;
+  border-radius:50%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-weight:950!important;
+  line-height:1!important;
+  margin-top:1px!important;
+}
+#registerAccountNotice.choice-missing .notice-icon{
+  background:transparent!important;
+  border:2px solid #ef4444!important;
+  color:#ef4444!important;
+}
+#registerAccountNotice.choice-selected .notice-icon{
+  background:#22c55e!important;
+  border:2px solid #22c55e!important;
+  color:#052e16!important;
+}
+#registerAccountNotice b{
+  display:block!important;
+  font-size:13.5px!important;
+  line-height:1.25!important;
+  margin:0 0 2px!important;
+  color:inherit!important;
+}
+#registerAccountNotice span{
+  display:block!important;
+  font-size:12.5px!important;
+  line-height:1.35!important;
+  color:inherit!important;
+}
+
+/* Smaller social icons, no text, no card/box */
+#signupSocialAuth.social-auth-inline{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:14px!important;
+  margin:9px 0 3px!important;
+}
+#signupSocialAuth .social-auth-btn{
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#signupSocialAuth .social-auth-btn span:not(.social-auth-icon){display:none!important;}
+#signupSocialAuth .social-auth-icon{
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  border-radius:6px!important;
+}
+#signupSocialAuth .social-auth-icon svg{
+  width:22px!important;
+  height:22px!important;
+}
+#signupSocialAuth .social-google .social-auth-icon svg,
+#signupSocialAuth .social-microsoft .social-auth-icon svg{
+  width:21px!important;
+  height:21px!important;
+}
+#signupSocialAuth .social-linkedin .social-auth-icon{
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  border-radius:6px!important;
+  font-size:14px!important;
+}
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+/* Replace single Test Login with two direct test buttons */
+#localTestBtn{display:none!important;}
+#atsrsV113TestLoginGroup{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin:7px 0!important;
+}
+#atsrsV113TestLoginGroup button{
+  min-height:42px!important;
+  height:42px!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  margin:0!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#atsrsV113TestLoginGroup button:hover{
+  background:#2f455d!important;
+  border-color:rgba(56,189,248,.55)!important;
+}
+
+/* Social register placeholder: no email/password fields */
+#registerBox.social-register-mode #regEmail,
+#registerBox.social-register-mode #regEmailRule,
+#registerBox.social-register-mode #regPassword,
+#registerBox.social-register-mode #passRule,
+#registerBox.social-register-mode #regPassword2,
+#registerBox.social-register-mode #matchRule,
+#registerBox.social-register-mode #registerBtn{
+  display:none!important;
+}
+#registerBox.social-register-mode #registerTitle::after{
+  content:"Social sign in setup";
+  display:block;
+  margin-top:4px;
+  font-size:12px;
+  color:#94a3b8;
+  font-weight:700;
+}
+#atsrsV113SocialNotice{
+  display:none;
+  align-items:flex-start;
+  gap:9px;
+  margin:10px 0 13px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#cbd5e1;
+  line-height:1.35;
+}
+#registerBox.social-register-mode #atsrsV113SocialNotice{display:flex!important;}
+#atsrsV113SocialNotice .notice-icon{
+  width:22px;
+  height:22px;
+  min-width:22px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid #f59e0b;
+  color:#f59e0b;
+  font-weight:950;
+  line-height:1;
+  margin-top:1px;
+}
+#atsrsV113SocialNotice b{display:block;font-size:13.5px;color:#f8fafc;margin:0 0 2px;}
+#atsrsV113SocialNotice span{display:block;font-size:12.5px;color:#a7b5c5;}
+@media(max-width:420px){#atsrsV113TestLoginGroup{grid-template-columns:1fr!important;}}
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+/* Test buttons directly below Remember me */
+#atsrsV113TestLoginGroup,
+#atsrsV115TestLoginGroup{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin:8px 0 10px!important;
+}
+#atsrsV113TestLoginGroup button,
+#atsrsV115TestLoginGroup button{
+  min-height:38px!important;
+  height:38px!important;
+  padding:7px 10px!important;
+  border-radius:11px!important;
+  margin:0!important;
+  font-size:12.5px!important;
+  font-weight:850!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#atsrsV113TestLoginGroup button:hover,
+#atsrsV115TestLoginGroup button:hover{
+  background:#2f455d!important;
+  border-color:rgba(56,189,248,.55)!important;
+}
+
+/* When social icons are selected, show only social placeholder message, not normal register choices */
+#registerBox.social-register-mode #registerAccountTypeArea,
+#registerBox.social-register-mode #registerAccountNotice,
+#registerBox.social-register-mode #regEmail,
+#registerBox.social-register-mode #regEmailRule,
+#registerBox.social-register-mode #regPassword,
+#registerBox.social-register-mode #passRule,
+#registerBox.social-register-mode #regPassword2,
+#registerBox.social-register-mode #matchRule,
+#registerBox.social-register-mode #registerBtn{
+  display:none!important;
+}
+#registerBox.social-register-mode #atsrsV113SocialNotice,
+#registerBox.social-register-mode #atsrsV115SocialNotice{
+  display:flex!important;
+}
+@media(max-width:420px){
+  #atsrsV113TestLoginGroup,#atsrsV115TestLoginGroup{grid-template-columns:1fr!important;}
+}
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+#localTestBtn{display:none!important;}
+#atsrsV113TestLoginGroup,
+#atsrsV115TestLoginGroup,
+#atsrsV117TestLoginGroup{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin:8px 0 12px!important;
+  order:4!important;
+  width:100%!important;
+}
+#atsrsV113TestLoginGroup button,
+#atsrsV115TestLoginGroup button,
+#atsrsV117TestLoginGroup button{
+  min-height:38px!important;
+  height:38px!important;
+  padding:7px 10px!important;
+  border-radius:11px!important;
+  margin:0!important;
+  font-size:12.5px!important;
+  font-weight:850!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#rememberRow{order:3!important;}
+#modeChoiceBox{order:5!important;}
+#modeRule,#modeInstruction{order:6!important;}
+#loginBtn{order:7!important;}
+#createBtn{order:8!important;}
+#signupSocialArea{order:9!important;}
+#forgotBtn{order:10!important;}
+@media(max-width:420px){#atsrsV113TestLoginGroup,#atsrsV115TestLoginGroup,#atsrsV117TestLoginGroup{grid-template-columns:1fr!important;}}
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+/* V119 clean topbar: account info and logout without boxes */
+#app .top-actions{
+  align-items:center !important;
+  gap:12px !important;
+}
+#app .atsrs-account-badge,
+.top-actions .atsrs-account-badge,
+.atsrs-account-badge{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  min-width:auto !important;
+  max-width:none !important;
+  border-radius:0 !important;
+  text-align:left !important;
+  line-height:1.15 !important;
+}
+#app .atsrs-account-badge div:first-child,
+.atsrs-account-badge div:first-child,
+#atsrsAccountTypeLabel{
+  color:#86efac !important;
+  font-weight:900 !important;
+  font-size:12px !important;
+  letter-spacing:.02em !important;
+  text-transform:none !important;
+  white-space:nowrap !important;
+}
+#app .atsrs-account-badge div:last-child,
+.atsrs-account-badge div:last-child,
+#atsrsAccountEmailLabel{
+  color:#94a3b8 !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  margin-top:2px !important;
+  display:block !important;
+  max-width:210px !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+#app #topLogoutBtn,
+#topLogoutBtn.top-logout,
+.top-actions .top-logout{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  color:#cbd5e1 !important;
+  width:auto !important;
+  margin:0 !important;
+  padding:4px 0 !important;
+  border-radius:0 !important;
+  font-weight:800 !important;
+  font-size:13px !important;
+}
+#app #topLogoutBtn:hover,
+#topLogoutBtn.top-logout:hover,
+.top-actions .top-logout:hover{
+  background:transparent !important;
+  color:#f87171 !important;
+  text-decoration:underline !important;
+}
+@media(max-width:800px){
+  #app .top-actions{gap:8px !important;}
+  #app .atsrs-account-badge div:last-child,
+  .atsrs-account-badge div:last-child,
+  #atsrsAccountEmailLabel{display:block !important;max-width:145px !important;}
+}
+
+/* V125 targeted CU: Account persistence, References CV/Cover Letter layout, flag-only language buttons */
+#langCircle.lang-circle,
+#appLangCircle.lang-circle{
+  font-size:0!important;
+  line-height:1!important;
+  overflow:hidden!important;
+}
+#langCircle.lang-circle::before,
+#appLangCircle.lang-circle::before{
+  content:"🇬🇧";
+  font-size:18px!important;
+  line-height:1!important;
+}
+#profileSaveStatus{
+  display:none;
+  margin-top:8px;
+  color:#86efac;
+  font-size:13px;
+  font-weight:900;
+}
+#profileSaveStatus.active{display:block!important;}
+#refsPage .ref-grid{
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+#refsPage .cv-card{
+  order:-10!important;
+  grid-column:span 2!important;
+  min-height:220px!important;
+}
+#refsPage .cover-letter-card{
+  order:-9!important;
+  grid-column:span 1!important;
+  min-height:220px!important;
+  border-color:rgba(56,189,248,.34)!important;
+}
+#refsPage .cover-letter-card .cv-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+@media(max-width:980px){
+  #refsPage .cv-card,
+  #refsPage .cover-letter-card{grid-column:1 / -1!important;}
+}
+
+/* V126 targeted CU: References CV full row, calm dashboard buttons, true flag-only language UI */
+#refsPage .ref-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+#refsPage .cv-card{
+  order:-100!important;
+  grid-column:1 / -1!important;
+  width:100%!important;
+  min-height:230px!important;
+}
+#refsPage .cover-letter-card,
+#refsPage .ref-card:not(.cv-card){
+  grid-column:auto!important;
+  min-width:0!important;
+}
+#refsPage .cover-letter-card{order:40!important;}
+#refsPage #appraisalCardTitle.closest,
+#refsPage #referenceCardTitle.closest{order:10!important;}
+#refsPage .ref-card{min-height:220px!important;}
+@media(max-width:1100px){#refsPage .ref-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+@media(max-width:640px){#refsPage .ref-grid{grid-template-columns:1fr!important;}#refsPage .cv-card{grid-column:1 / -1!important;}}
+
+/* Dashboard: remove oversized blue-heavy buttons and make action areas calmer */
+#dashboardPage button,
+#dashboardPage .quick-actions button,
+#dashboardPage .share-actions button,
+#dashboardPage .share-link-box button,
+#dashboardPage #personalScanBtn,
+#dashboardPage #importDemoBtn{
+  width:auto!important;
+  min-width:0!important;
+  max-width:190px!important;
+  padding:9px 13px!important;
+  margin:0!important;
+  border-radius:11px!important;
+  background:#1a293b!important;
+  border:1px solid #31465f!important;
+  color:#dbe7f3!important;
+  box-shadow:none!important;
+  font-size:13px!important;
+  font-weight:800!important;
+}
+#dashboardPage button:hover,
+#dashboardPage .quick-actions button:hover,
+#dashboardPage .share-actions button:hover,
+#dashboardPage .share-link-box button:hover,
+#dashboardPage #personalScanBtn:hover,
+#dashboardPage #importDemoBtn:hover{
+  background:#223449!important;
+  border-color:#49657f!important;
+  color:#ffffff!important;
+}
+#dashboardPage .quick-actions,
+#dashboardPage .share-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+  align-items:center!important;
+}
+#dashboardPage .share-link-box{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+}
+#dashboardPage .share-link-box input{
+  min-width:240px!important;
+  flex:1 1 280px!important;
+}
+#dashboardPage .panel,
+#dashboardPage .hero-card,
+#dashboardPage .mini-panel,
+#dashboardPage .snapshot-card{
+  border-color:#26384e!important;
+}
+
+/* Language: button and menu must show only the flag, no EN / English text remains visible */
+#langCircle.lang-circle,
+#appLangCircle.lang-circle{
+  font-size:0!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  position:relative!important;
+}
+#langCircle.lang-circle::before,
+#appLangCircle.lang-circle::before{
+  content:"🇬🇧"!important;
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-indent:0!important;
+  color:initial!important;
+  font-size:18px!important;
+  line-height:1!important;
+}
+.lang-menu button[data-lang="en"]{
+  font-size:0!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  justify-content:center!important;
+  text-align:center!important;
+  position:relative!important;
+  min-height:38px!important;
+}
+.lang-menu button[data-lang="en"]::before{
+  content:"🇬🇧"!important;
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-indent:0!important;
+  color:initial!important;
+  font-size:20px!important;
+}
+.lang-menu button[data-lang="en"] span{display:none!important;}
 
 /* V135: clean References/Appraisals status and filter row. No top badges, no duplicated counters. */
 #refsPage .ref-grid{
@@ -14,674 +908,3 @@
 }
 #refsPage .atsrs-v134-career-card{
   display:flex!important;
-  flex-direction:column!important;
-  min-height:342px!important;
-  height:342px!important;
-  border:1px solid var(--atsrs-border,#264058)!important;
-  border-radius:18px!important;
-  background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;
-  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
-  padding:18px!important;
-  overflow:hidden!important;
-}
-#refsPage .atsrs-v134-career-card h3{
-  margin:0 0 36px!important;
-  padding:0!important;
-  min-height:46px!important;
-  line-height:1.18!important;
-  font-size:20px!important;
-  color:#f8fafc!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-desc{
-  min-height:70px!important;
-  margin:0 0 14px!important;
-  color:#a7b5c5!important;
-  line-height:1.35!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-upload{
-  margin:auto 0 10px!important;
-  width:100%!important;
-  background:#1a293b!important;
-  border:1px solid #31465f!important;
-  box-shadow:none!important;
-  color:#eef6ff!important;
-}
-#refsPage .atsrs-v134-statusbar{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:10px!important;
-  margin:0 0 8px!important;
-  min-height:28px!important;
-}
-#refsPage .atsrs-v134-status{
-  margin:0!important;
-  padding:0!important;
-  background:transparent!important;
-  border:0!important;
-  font-size:12px!important;
-  font-weight:900!important;
-  line-height:1.35!important;
-  min-height:auto!important;
-}
-#refsPage .atsrs-v134-status.empty{color:#f87171!important;}
-#refsPage .atsrs-v134-status.ready{color:#86efac!important;}
-#refsPage .atsrs-v134-filter{
-  display:none!important;
-  width:auto!important;
-  min-width:118px!important;
-  max-width:140px!important;
-  margin:0!important;
-  padding:6px 9px!important;
-  border-radius:10px!important;
-  font-size:12px!important;
-  font-weight:800!important;
-  background:#0b1726!important;
-  border:1px solid #334155!important;
-  color:#cbd5e1!important;
-  box-shadow:none!important;
-}
-#refsPage .atsrs-v134-filter.active{display:block!important;}
-#refsPage .atsrs-v134-list{
-  max-height:104px!important;
-  min-height:39px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  padding-right:4px!important;
-  border-radius:12px!important;
-}
-#refsPage .atsrs-v134-empty{
-  color:#94a3b8!important;
-  font-size:13px!important;
-  border:1px dashed #334155!important;
-  border-radius:12px!important;
-  padding:10px!important;
-  background:rgba(2,6,23,.28)!important;
-}
-#refsPage .atsrs-v134-row{
-  border:1px solid #334155!important;
-  border-radius:14px!important;
-  background:rgba(2,6,23,.35)!important;
-  padding:9px!important;
-  display:grid!important;
-  gap:8px!important;
-  margin-bottom:8px!important;
-}
-#refsPage .atsrs-v134-row b{
-  display:block!important;
-  word-break:break-word!important;
-  line-height:1.25!important;
-  color:#e5e7eb!important;
-}
-#refsPage .atsrs-v134-row span{
-  display:block!important;
-  font-size:12px!important;
-  color:#94a3b8!important;
-  margin-top:3px!important;
-}
-#refsPage .atsrs-v134-actions{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:6px!important;
-}
-#refsPage .atsrs-v134-actions button{
-  width:100%!important;
-  margin:0!important;
-  padding:8px 6px!important;
-  font-size:12px!important;
-  box-shadow:none!important;
-}
-#refsPage .atsrs-v134-hidden-badge,
-#refsPage #appraisalStatusBadge,
-#refsPage #referenceStatusBadge,
-#refsPage #recommendationStatusBadge,
-#refsPage #coverLetterStatusBadge,
-#refsPage #v105_appraisal_badge,
-#refsPage #v105_reference_badge,
-#refsPage .ref-doc-head .badge{
-  display:none!important;
-}
-@media(max-width:1100px){#refsPage .ref-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
-@media(max-width:640px){#refsPage .ref-grid{grid-template-columns:1fr!important;}#refsPage .cv-card{grid-column:1 / -1!important;}.atsrs-v134-actions{grid-template-columns:1fr!important;}}
-
-
-/* V136 DC/CU: Dashboard stable view mode. Builder/drag/resize/minimize remains parked. */
-#dashboardPage{
-  position:relative!important;
-  overflow:visible!important;
-}
-#dashboardPage .dash-card-tools,
-#dashboardPage .dash-resize-handle,
-#dashboardPage .dash-placeholder,
-#dashboardDock{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-#dashboardPage .dash-custom-ready,
-#dashboardPage .dash-resizable,
-#dashboardPage .dash-drag-float,
-#dashboardPage .dash-minimized{
-  position:relative!important;
-  left:auto!important;
-  top:auto!important;
-  right:auto!important;
-  bottom:auto!important;
-  width:auto!important;
-  height:auto!important;
-  min-width:0!important;
-  max-width:none!important;
-  transform:none!important;
-  resize:none!important;
-  overflow:visible!important;
-  opacity:1!important;
-  display:block!important;
-  pointer-events:auto!important;
-  touch-action:auto!important;
-}
-#dashboardPage .stats-grid{
-  display:grid!important;
-  grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;
-  gap:12px!important;
-  padding:0!important;
-  min-height:0!important;
-  height:auto!important;
-  width:100%!important;
-}
-#dashboardPage .stats-grid > .card{
-  min-height:94px!important;
-  height:auto!important;
-  width:auto!important;
-  transform:none!important;
-  resize:none!important;
-  overflow:hidden!important;
-}
-#dashboardPage .solo-hero,
-#dashboardPage .professional-dashboard,
-#dashboardPage .grid,
-#dashboardPage .panel,
-#dashboardPage .card,
-#dashboardPage .workflow-card,
-#dashboardPage .snapshot-card{
-  transform:none!important;
-  animation:none!important;
-  transition:border-color .15s ease, background .15s ease!important;
-}
-#dashboardPage .quick-actions button,
-#dashboardPage .share-actions button,
-#dashboardPage #copyShareBtn,
-#dashboardPage #uploadDocBtn,
-#dashboardPage #scanDocBtn{
-  min-height:38px!important;
-  padding:9px 12px!important;
-  margin:0!important;
-  background:#1a293b!important;
-  border:1px solid #31465f!important;
-  color:#e5eef8!important;
-  box-shadow:none!important;
-}
-#shareProfilePanel{
-  max-height:440px!important;
-  overflow:auto!important;
-}
-#shareProfilePanel .share-actions{
-  display:flex!important;
-  flex-wrap:wrap!important;
-  gap:8px!important;
-}
-#shareProfilePanel .share-actions button{
-  flex:1 1 135px!important;
-}
-#shareProfilePanel .share-permissions{
-  max-height:120px!important;
-  overflow:auto!important;
-}
-#shareProfilePanel .preview-profile{
-  max-height:160px!important;
-  overflow:auto!important;
-}
-/* Top actions must scroll away with the page, not remain fixed on screen. */
-#app.app > .top-actions,
-#app.app:not(.hidden) > .top-actions,
-body > .top-actions,
-body > .atsrs-global-top-actions,
-body > .atsrs-v56-top-actions,
-body > .atsrs-v64-top-actions{
-  position:absolute!important;
-  top:18px!important;
-  right:18px!important;
-  left:auto!important;
-  bottom:auto!important;
-  z-index:90!important;
-  transform:none!important;
-  will-change:auto!important;
-}
-#app.app.hidden > .top-actions,
-body.auth-open > .top-actions{display:none!important;}
-@media(max-width:900px){
-  #dashboardPage .solo-hero,
-  #dashboardPage .professional-dashboard{grid-template-columns:1fr!important;}
-}
-@media(max-width:600px){
-  #dashboardPage .stats-grid{grid-template-columns:1fr!important;}
-  #shareProfilePanel{max-height:360px!important;}
-}
-
-
-/* V137: language/account/logout are part of the page and must scroll away. */
-#app.app{position:relative!important;}
-#app.app > .top-actions,
-#app.app > .atsrs-global-top-actions,
-#app.app > .atsrs-v56-top-actions,
-#app.app > .atsrs-v64-top-actions,
-body > .top-actions,
-body > .atsrs-global-top-actions,
-body > .atsrs-v56-top-actions,
-body > .atsrs-v64-top-actions{
-  position:absolute!important;
-  top:18px!important;
-  right:18px!important;
-  left:auto!important;
-  bottom:auto!important;
-  z-index:90!important;
-  transform:none!important;
-  will-change:auto!important;
-}
-#app.app > .top-actions .lang-floating,
-#app.app > .top-actions .app-lang-switcher,
-#app.app > .atsrs-global-top-actions .lang-floating,
-#app.app > .atsrs-v56-top-actions .lang-floating,
-#app.app > .atsrs-v64-top-actions .lang-floating{
-  position:relative!important;
-  top:auto!important;
-  right:auto!important;
-  left:auto!important;
-  bottom:auto!important;
-  transform:none!important;
-}
-@media(max-width:800px){
-  #app.app > .top-actions,
-  #app.app > .atsrs-global-top-actions,
-  #app.app > .atsrs-v56-top-actions,
-  #app.app > .atsrs-v64-top-actions,
-  body > .top-actions,
-  body > .atsrs-global-top-actions,
-  body > .atsrs-v56-top-actions,
-  body > .atsrs-v64-top-actions{top:12px!important;right:12px!important;}
-}
-
-
-/* V138: keep destructive table actions compact; avoid oversized red blocks in registers. */
-#certTable td:last-child,
-#personnelTable td:last-child,
-#projectsTable td:last-child{width:1%;white-space:nowrap;text-align:left!important;}
-#certTable td:last-child button.action,
-#personnelTable td:last-child button.action,
-#projectsTable td:last-child button.action,
-.table-wrap table td:last-child button.action{
-  width:auto!important;
-  min-width:72px!important;
-  max-width:96px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  padding:9px 14px!important;
-  margin:0!important;
-  border-radius:10px!important;
-  font-size:13px!important;
-  line-height:1.1!important;
-  box-shadow:none!important;
-}
-#certTable td:last-child button.secondary,
-#personnelTable td:last-child button.secondary,
-#projectsTable td:last-child button.secondary,
-.table-wrap table td:last-child button.secondary{
-  width:auto!important;
-  min-width:58px!important;
-  max-width:86px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  padding:9px 12px!important;
-  margin:0 6px 0 0!important;
-  border-radius:10px!important;
-  font-size:13px!important;
-  line-height:1.1!important;
-  box-shadow:none!important;
-}
-
-
-#refsPage .atsrs-v134-list{
-  max-height:252px!important;
-  min-height:42px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  padding-right:6px!important;
-  scrollbar-width:thin!important;
-}
-#refsPage .atsrs-v134-row{
-  min-height:72px!important;
-  padding:9px 10px!important;
-  margin-bottom:8px!important;
-}
-#refsPage .atsrs-v134-row:last-child{margin-bottom:0!important;}
-#refsPage .atsrs-v134-row b{
-  white-space:normal!important;
-  overflow:visible!important;
-  text-overflow:clip!important;
-  word-break:break-word!important;
-}
-#refsPage .atsrs-v134-actions{
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-}
-#refsPage .atsrs-v134-actions button{
-  min-height:30px!important;
-  padding:7px 6px!important;
-}
-@media(max-width:760px){
-  #refsPage .atsrs-v134-list{max-height:270px!important;}
-}
-
-
-#refsPage .atsrs-v134-career-card{
-  min-height:390px!important;
-  display:flex!important;
-  flex-direction:column!important;
-  overflow:hidden!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-upload{
-  margin-top:auto!important;
-}
-#refsPage .atsrs-v134-list{
-  min-height:42px!important;
-  max-height:none!important;
-  overflow-y:visible!important;
-  overflow-x:hidden!important;
-  padding-right:0!important;
-}
-#refsPage .atsrs-v134-list:has(.atsrs-v134-row){
-  height:252px!important;
-  max-height:252px!important;
-  min-height:252px!important;
-  overflow-y:auto!important;
-  padding-right:6px!important;
-  scrollbar-width:thin!important;
-}
-#refsPage .atsrs-v134-row{
-  min-height:74px!important;
-  padding:10px 10px!important;
-  margin-bottom:8px!important;
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr)!important;
-  gap:8px!important;
-}
-#refsPage .atsrs-v134-row:last-child{margin-bottom:0!important;}
-#refsPage .atsrs-v134-row b{
-  white-space:normal!important;
-  overflow:visible!important;
-  text-overflow:clip!important;
-  word-break:break-word!important;
-  line-height:1.25!important;
-}
-#refsPage .atsrs-v134-actions{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:6px!important;
-}
-#refsPage .atsrs-v134-actions button{
-  min-height:30px!important;
-  padding:7px 6px!important;
-  font-size:12px!important;
-}
-@media(max-width:760px){
-  #refsPage .atsrs-v134-career-card{min-height:410px!important;}
-  #refsPage .atsrs-v134-list:has(.atsrs-v134-row){height:270px!important;max-height:270px!important;min-height:270px!important;}
-}
-
-
-#refsPage .atsrs-v134-career-card{
-  position:relative!important;
-  min-height:460px!important;
-  height:auto!important;
-  overflow:hidden!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){
-  height:340px!important;
-  max-height:340px!important;
-  min-height:340px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  padding-right:8px!important;
-  scrollbar-width:thin!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-row{
-  min-height:96px!important;
-  padding:11px 10px!important;
-  margin-bottom:8px!important;
-}
-#refsPage .atsrs-v134-max-icon{
-  position:absolute!important;
-  top:14px!important;
-  right:14px!important;
-  z-index:9!important;
-  width:auto!important;
-  min-width:0!important;
-  height:auto!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  color:#94a3b8!important;
-  font-size:18px!important;
-  line-height:1!important;
-  font-weight:900!important;
-  cursor:pointer!important;
-  opacity:.74!important;
-}
-#refsPage .atsrs-v134-max-icon:hover{
-  color:#e5e7eb!important;
-  opacity:1!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded{
-  grid-column:1 / -1!important;
-  min-height:560px!important;
-  height:auto!important;
-  z-index:4!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){
-  height:420px!important;
-  max-height:420px!important;
-  min-height:420px!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{
-  grid-template-columns:minmax(0,1fr) 260px!important;
-  align-items:center!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-actions{
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-}
-@media(max-width:900px){
-  #refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){height:330px!important;max-height:330px!important;min-height:330px!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{grid-template-columns:1fr!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){height:400px!important;max-height:400px!important;min-height:400px!important;}
-}
-
-
-#refsPage .atsrs-v134-career-card{
-  position:relative!important;
-  min-height:540px!important;
-  height:auto!important;
-  overflow:hidden!important;
-  padding-top:18px!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){
-  height:390px!important;
-  max-height:390px!important;
-  min-height:390px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  padding-right:10px!important;
-  scrollbar-width:thin!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-row{
-  min-height:116px!important;
-  padding:13px 12px!important;
-  margin-bottom:10px!important;
-}
-#refsPage .atsrs-v134-max-icon{
-  position:absolute!important;
-  top:14px!important;
-  right:14px!important;
-  z-index:20!important;
-  width:26px!important;
-  min-width:26px!important;
-  height:26px!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  outline:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  color:#cbd5e1!important;
-  font-size:22px!important;
-  line-height:26px!important;
-  font-weight:900!important;
-  cursor:pointer!important;
-  opacity:.82!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-#refsPage .atsrs-v134-max-icon:hover,
-#refsPage .atsrs-v134-max-icon:focus{
-  color:#ffffff!important;
-  opacity:1!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  border:0!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v142-expanded,
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded{
-  grid-column:1 / -1!important;
-  min-height:690px!important;
-  height:auto!important;
-  z-index:5!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-list:has(.atsrs-v134-row),
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){
-  height:535px!important;
-  max-height:535px!important;
-  min-height:535px!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-row,
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{
-  min-height:96px!important;
-  grid-template-columns:minmax(0,1fr) 280px!important;
-  align-items:center!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-actions,
-#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-actions{
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-}
-@media(max-width:900px){
-  #refsPage .atsrs-v134-career-card{min-height:520px!important;}
-  #refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){height:370px!important;max-height:370px!important;min-height:370px!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-list:has(.atsrs-v134-row),
-  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){height:500px!important;max-height:500px!important;min-height:500px!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-row,
-  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{grid-template-columns:1fr!important;}
-}
-
-
-#refsPage .ref-grid{
-  position:relative!important;
-  isolation:isolate!important;
-}
-#refsPage .ref-grid.atsrs-v144-overlay-active{
-  min-height:760px!important;
-}
-#refsPage .atsrs-v144-placeholder{
-  visibility:hidden!important;
-  pointer-events:none!important;
-  min-height:580px!important;
-  height:auto!important;
-  border:0!important;
-  margin:0!important;
-  padding:0!important;
-  box-shadow:none!important;
-  background:transparent!important;
-}
-#refsPage .atsrs-v134-career-card{
-  min-height:600px!important;
-  overflow:hidden!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){
-  height:450px!important;
-  max-height:450px!important;
-  min-height:450px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-}
-#refsPage .atsrs-v134-career-card .atsrs-v134-row{
-  min-height:42px!important;
-}
-#refsPage .atsrs-v134-max-icon{
-  position:absolute!important;
-  top:14px!important;
-  right:14px!important;
-  z-index:40!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  width:24px!important;
-  height:24px!important;
-  min-width:24px!important;
-  padding:0!important;
-  margin:0!important;
-  font-size:22px!important;
-  line-height:24px!important;
-  color:#dbe7f3!important;
-  cursor:pointer!important;
-}
-#refsPage .atsrs-v134-max-icon:hover{color:#fff!important;background:transparent!important;box-shadow:none!important;border:0!important;}
-#refsPage .atsrs-v134-career-card.atsrs-v144-expanded{
-  position:absolute!important;
-  top:var(--atsrs-v144-overlay-top,0px)!important;
-  left:0!important;
-  right:0!important;
-  width:100%!important;
-  max-width:none!important;
-  min-height:760px!important;
-  height:auto!important;
-  z-index:999!important;
-  grid-column:auto!important;
-  order:9999!important;
-  box-shadow:0 28px 90px rgba(0,0,0,.55)!important;
-  border-color:rgba(134,239,172,.55)!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-list:has(.atsrs-v134-row){
-  height:590px!important;
-  max-height:590px!important;
-  min-height:590px!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-row{
-  min-height:104px!important;
-  grid-template-columns:minmax(0,1fr) 300px!important;
-  align-items:center!important;
-}
-#refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-actions{
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-}
-@media(max-width:900px){
-  #refsPage .ref-grid.atsrs-v144-overlay-active{min-height:760px!important;}
-  #refsPage .atsrs-v134-career-card{min-height:580px!important;}
-  #refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){height:430px!important;max-height:430px!important;min-height:430px!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v144-expanded{min-height:740px!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-list:has(.atsrs-v134-row){height:565px!important;max-height:565px!important;min-height:565px!important;}
-  #refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-row{grid-template-columns:1fr!important;}
-}
