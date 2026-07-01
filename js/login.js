@@ -657,3 +657,43 @@
   window.addEventListener('load',bindAuthButtons);
   [100,400,900,1600,2600].forEach(function(ms){setTimeout(bindAuthButtons,ms);});
 })();
+
+/* ===== ATSRS V182 Auth Debug UI Fix - force detailed register diagnostics into visible UI ===== */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function show(msg){
+    var el=byId('regMsg');
+    if(el){
+      el.style.whiteSpace='pre-line';
+      el.textContent=msg||'';
+    }
+  }
+  function bindDebugRegisterUI(){
+    var btn=byId('registerBtn');
+    if(!btn) return;
+    btn.onclick=function(e){
+      if(e){e.preventDefault();}
+      if(typeof window.atsrsAuthDebugRegister==='function'){
+        return window.atsrsAuthDebugRegister();
+      }
+      if(window.atsrsCoreAuth && typeof window.atsrsCoreAuth.register==='function'){
+        return window.atsrsCoreAuth.register();
+      }
+      show('Create Account failed — debug report\nError: Auth debug/register handler is not loaded.\nMeaning: js/storage.js or auth module did not load correctly.');
+      return false;
+    };
+    if(!btn.dataset.v182DebugCapture){
+      btn.dataset.v182DebugCapture='1';
+      btn.addEventListener('click',function(e){
+        if(typeof window.atsrsAuthDebugRegister==='function'){
+          if(e){e.preventDefault();e.stopImmediatePropagation();}
+          return window.atsrsAuthDebugRegister();
+        }
+      },true);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindDebugRegisterUI); else bindDebugRegisterUI();
+  window.addEventListener('load',bindDebugRegisterUI);
+  [100,300,700,1200,2200,3500].forEach(function(ms){setTimeout(bindDebugRegisterUI,ms);});
+})();
