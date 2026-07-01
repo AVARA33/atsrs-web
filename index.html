@@ -6,20 +6,20 @@
 <meta name="theme-color" content="#07111d" />
 <meta name="color-scheme" content="dark" />
 <title>ATSRS</title>
+<!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
-
-
-
-
-
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/login.css">
 <link rel="stylesheet" href="css/dashboard.css">
 <link rel="stylesheet" href="css/documents.css">
 <link rel="stylesheet" href="css/references.css">
 <link rel="stylesheet" href="css/account.css">
+
+
+
+
+
 </head>
 <body class="atsrs-booting">
 <div id="atsrsBootScreen" role="status" aria-live="polite">
@@ -524,7 +524,15 @@
 </main>
 </section>
 
-
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/login.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/documents.js"></script>
+<script src="js/references.js"></script>
+<script src="js/account.js"></script>
+<script src="js/app.js"></script>
 
 
 
@@ -805,14 +813,5 @@
 
 
 
-<script src="js/app.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/login.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/documents.js"></script>
-<script src="js/references.js"></script>
-<script src="js/account.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/ui.js"></script>
 </body>
 </html>
