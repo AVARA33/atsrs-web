@@ -1,356 +1,299 @@
-/* ATSRS V179 split from V178 - auth.js. Original JS execution order preserved by index script order. */
-
-/* --- Original inline script id=v62-test-automation-script --- */
+/* ATSRS V178 extracted JavaScript batch: auth.js. Loaded in original V178 execution order. No placeholder code. */
+/* ===== extracted from inline script id=atsrs-v76-minimal-ui-and-audit-script ===== */
 (function(){
-  function el(id){ return document.getElementById(id); }
-  function shown(node){ return !!node && getComputedStyle(node).display!=='none' && getComputedStyle(node).visibility!=='hidden'; }
-  function add(result, level, title, detail, fixFn){ result.push({level:level,title:title,detail:detail||'',fixFn:fixFn||null}); }
-  function ensurePanel(){
-    var p=el('atsrsTestAutomationPanel'); if(p) return p;
-    p=document.createElement('div'); p.id='atsrsTestAutomationPanel'; p.className='hidden';
-    p.innerHTML='<h3>ATSRS Test Automation Report</h3><p class="qa-sub">Runs frontend QA checks, applies safe local fixes, and lists items requiring backend/manual work.</p><div class="qa-actions"><button class="qa-run" type="button" onclick="atsrsRunFullAutomation(false)">Run Test</button><button class="qa-fix" type="button" onclick="atsrsRunFullAutomation(true)">Run + Auto Fix</button><button class="qa-close" type="button" onclick="document.getElementById(\'atsrsTestAutomationPanel\').classList.add(\'hidden\')">Close</button></div><div id="atsrsQaOutput"></div>';
-    document.body.appendChild(p); return p;
-  }
-  function hardFixTopbar(){
-    var app=el('app'); var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
-    if(!app||!top) return false;
-    if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
-    top.classList.remove('atsrs-v56-top-actions','atsrs-global-top-actions');
-    top.style.cssText='position:fixed!important;top:18px!important;right:18px!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;display:flex!important;align-items:center!important;gap:10px!important;transform:none!important;width:auto!important;height:auto!important;';
-    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
-    if(lang) lang.style.cssText='position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;transform:none!important;display:block!important;';
-    var logout=el('topLogoutBtn');
-    if(logout) logout.style.cssText='width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important;display:block!important;position:relative!important;';
-    return true;
-  }
-  function fixRefScroll(){
-    var fixed=0;
-    var candidates=document.querySelectorAll('.ref-card,.cv-card,.panel');
-    candidates.forEach(function(card){
-      var text=(card.textContent||'').toLowerCase();
-      if(text.indexOf('appraisal')!==-1 || text.indexOf('reference')!==-1 || text.indexOf('recommendation')!==-1 || text.indexOf('cv')!==-1){
-        var lists=card.querySelectorAll('.preview-box,.ref-file-info,.ref-doc-list,.ref-upload-list,.cv-file-list,ul,tbody');
-        lists.forEach(function(list){
-          if(list && list.children && list.children.length>3){ list.classList.add('atsrs-ref-file-scroll'); fixed++; }
-        });
-      }
-    });
-    return fixed;
-  }
-  function fixMissingButtonStyles(){
-    ['atsrsTopbarTroubleBtn','atsrsTestAutomationBtn'].forEach(function(id){ var b=el(id); if(b){b.style.width='auto';b.style.margin='0';} });
-    return true;
-  }
-  function testTopbar(res, autoFix){
-    var app=el('app'), top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions'), lang=el('appLangCircle'), logout=el('topLogoutBtn');
-    if(!top){ add(res,'fail','Topbar not found','Language/logout container is missing.'); return; }
-    if(!lang) add(res,'fail','App language button missing','appLangCircle not found.'); else add(res,'pass','App language button exists','appLangCircle found.');
-    if(!logout) add(res,'fail','Logout button missing','topLogoutBtn not found.'); else add(res,'pass','Logout button exists','topLogoutBtn found.');
-    var cs=getComputedStyle(top);
-    if(cs.position==='fixed') add(res,'pass','Topbar CSS position is fixed','Current position: fixed.');
-    else add(res,'fail','Topbar CSS position is not fixed','Current position: '+cs.position, hardFixTopbar);
-    var y0=window.scrollY, before=Math.round(top.getBoundingClientRect().top), max=document.documentElement.scrollHeight-window.innerHeight, target=Math.min(max,y0+260);
-    window.scrollTo(0,target);
-    var after=Math.round(top.getBoundingClientRect().top); window.scrollTo(0,y0);
-    if(Math.abs(after-before)<=2) add(res,'pass','Topbar scroll test passed','Before: '+before+', after: '+after+'.');
-    else add(res,'fail','Topbar moves during scroll','Before: '+before+', after: '+after+'.', hardFixTopbar);
-    if(autoFix) hardFixTopbar();
-  }
-  function testCoreDom(res){
-    [['auth','Login section'],['app','App section'],['dashboardPage','Dashboard'],['certificatesPage','Certificates'],['refsPage','References/Appraisals'],['profilePage','Profile'],['navDashboard','Dashboard nav'],['navCertificates','Certificates nav'],['navRefs','Refs nav'],['navProfile','Profile nav']].forEach(function(x){
-      add(res, el(x[0])?'pass':'fail', x[1]+' exists', x[0]+(el(x[0])?' found.':' missing.'));
-    });
-  }
-  function testFunctions(res){
-    ['changeLanguage','toggleAppLangMenu','showPage','renderAll','addCertificate','confirmLogout','logout','localTestLogin','saveProfile'].forEach(function(fn){
-      add(res, typeof window[fn]==='function'?'pass':'fail', 'Function '+fn, typeof window[fn]==='function'?'Available.':'Missing or overwritten.');
-    });
-  }
-  function testLanguage(res){
-    try{
-      if(typeof changeLanguage==='function'){
-        changeLanguage('en');
-        add(res,'pass','English-only language test','Only English is active.');
-      } else add(res,'fail','English-only language test','changeLanguage function missing.');
-    }catch(e){ add(res,'fail','English-only language test',String(e)); }
-  }
-  function testStorage(res){
-    try{ localStorage.setItem('atsrs_qa_test','ok'); var ok=localStorage.getItem('atsrs_qa_test')==='ok'; localStorage.removeItem('atsrs_qa_test'); add(res,ok?'pass':'fail','LocalStorage availability',ok?'LocalStorage works.':'LocalStorage write/read failed.'); }
-    catch(e){ add(res,'fail','LocalStorage blocked',String(e)); }
-  }
-  function testReferenceScroll(res, autoFix){
-    var before=document.querySelectorAll('.atsrs-ref-file-scroll').length;
-    var fixed=autoFix?fixRefScroll():0;
-    var after=document.querySelectorAll('.atsrs-ref-file-scroll').length;
-    add(res,(after>0||fixed>0||before>0)?'fixed':'warn','Reference/Appraisal file list scroll guard','Existing/fixed scroll containers: '+Math.max(after,before)+'. If no files are uploaded yet, this check can only prepare CSS.');
-  }
-  function testBackendLimits(res){
-    add(res,'warn','Backend-required: real file storage','File persistence/upload must be verified with Supabase Storage or backend. Frontend can only preview/store local metadata.');
-    add(res,'warn','Backend-required: WhatsApp/email alerts','Scheduled alerts cannot run from static HTML alone. Need backend cron/edge function.');
-    add(res,'warn','Backend-required: OCR reliability','Tesseract loads from CDN; offline/weak network can fail. Production needs controlled OCR pipeline.');
-    add(res,'warn','Backend-required: secure shared profile','Demo link is frontend-only. Real secure share requires backend auth, tokens and permissions.');
-  }
-  function renderOutput(results, autoFix){
-    var out=el('atsrsQaOutput'); if(!out) return;
-    var counts={pass:0,warn:0,fail:0,fixed:0}; results.forEach(function(r){counts[r.level]=(counts[r.level]||0)+1;});
-    function group(level,label){
-      var items=results.filter(function(r){return r.level===level;});
-      if(!items.length) return '';
-      return '<details open><summary class="qa-'+level+'">'+label+' ('+items.length+')</summary><ul>'+items.map(function(r){return '<li><b>'+r.title+'</b><br><span>'+r.detail+'</span></li>';}).join('')+'</ul></details>';
-    }
-    out.innerHTML='<div class="qa-summary"><div class="qa-box"><b class="qa-pass">'+counts.pass+'</b><span>PASS</span></div><div class="qa-box"><b class="qa-fixed">'+counts.fixed+'</b><span>FIXED</span></div><div class="qa-box"><b class="qa-warn">'+counts.warn+'</b><span>WARN</span></div><div class="qa-box"><b class="qa-fail">'+counts.fail+'</b><span>FAIL</span></div></div>'+
-      '<p class="qa-sub">Mode: '+(autoFix?'Run + Auto Fix':'Run Test')+' · '+new Date().toLocaleString()+'</p>'+group('fail','Needs correction')+group('fixed','Auto-fix / guarded')+group('warn','Cannot be fully fixed from static frontend')+group('pass','Passed checks');
-  }
-  window.atsrsRunFullAutomation=function(autoFix){
-    ensurePanel().classList.remove('hidden');
-    var results=[];
-    testCoreDom(results); testFunctions(results); testStorage(results); testLanguage(results); testTopbar(results, !!autoFix); testReferenceScroll(results, !!autoFix); testBackendLimits(results);
-    if(autoFix){ fixMissingButtonStyles(); hardFixTopbar(); }
-    renderOutput(results, !!autoFix);
+  'use strict';
+  const BUILD='V120';
+  window.atsrsV78EnglishOnlyNotice=function(){
+    const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
+    const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
   };
-  ready(function(){
-    var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
-    if(top && !el('atsrsTestAutomationBtn')){
-      var b=document.createElement('button'); b.type='button'; b.id='atsrsTestAutomationBtn'; b.textContent='Test Automation';
-      b.onclick=function(){ atsrsRunFullAutomation(false); };
-      var trouble=el('atsrsTopbarTroubleBtn');
-      if(trouble && trouble.parentElement===top) top.insertBefore(b,trouble); else top.appendChild(b);
-    }
-    ensurePanel();
-  });
+  function showModeInstruction(){const x=document.getElementById('modeInstruction');if(x)x.classList.add('active')}
+  function hideModeInstruction(){const x=document.getElementById('modeInstruction');if(x)x.classList.remove('active')}
+  const baseValidateUseMode=window.validateUseMode;
+  window.validateUseMode=function(){
+    const ok=typeof baseValidateUseMode==='function'?baseValidateUseMode():true;
+    if(ok){hideModeInstruction();}
+    else{showModeInstruction();const r=document.getElementById('modeRule');if(r)r.classList.remove('active');}
+    return ok;
+  };
+  const baseSetUseMode=window.setUseMode;
+  window.setUseMode=function(mode){if(typeof baseSetUseMode==='function')baseSetUseMode(mode);hideModeInstruction();};
+  function forceEnglish(){
+    try{localStorage.setItem('atsrs_lang','en');localStorage.setItem('lang','en')}catch(e){}
+    window.lang='en';
+    document.documentElement.setAttribute('lang','en');
+    document.documentElement.setAttribute('dir','ltr');
+    ['langCircle','appLangCircle'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent='🇬🇧';});
+    ['langMenu','appLangMenu'].forEach(id=>{const m=document.getElementById(id);if(m)m.classList.add('hidden');});
+    document.querySelectorAll('.lang-menu button').forEach(b=>{b.classList.toggle('v76-selected-lang',true);b.setAttribute('aria-current','true')});
+  }
+  function simplifyModeError(){const err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');if(err&&err.id!=='modeErrorText')err.id='modeErrorText'}
+  window.atsrsV76ToggleSidebar=function(){const app=document.getElementById('app');const side=document.querySelector('#app .sidebar');if(!app||app.classList.contains('hidden'))return;if(window.innerWidth<=800&&side){side.classList.toggle('v76-mobile-closed');return;}document.body.classList.toggle('v76-sidebar-collapsed');};
+  function v78Apply(){forceEnglish();simplifyModeError();}
+  function row(label,state,detail){return{label,state,detail}}
+  function computed(el,prop){return el?getComputedStyle(el).getPropertyValue(prop):''}
+  function duplicateIds(){const map={},dups=[];document.querySelectorAll('[id]').forEach(e=>{map[e.id]=(map[e.id]||0)+1});Object.keys(map).forEach(k=>{if(map[k]>1)dups.push(k+' ×'+map[k])});return dups;}
+  function riskyFunctionRepeats(){
+    const src=document.documentElement.outerHTML;
+    const names=[...src.matchAll(/function\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(m=>m[1]);
+    const count={};names.forEach(n=>count[n]=(count[n]||0)+1);
+    const legacyAllow=new Set(['status','getManagedFile','saveManagedFile','handleManagedUpload','previewManagedFile','downloadManagedFile','deleteManagedFile','ensureManagedCard','renderManagedFiles','ready','ensurePanel','appVisible','langFromFlag','activeLang','runSoon']);
+    return Object.entries(count).filter(([n,c])=>c>1&&!legacyAllow.has(n)).map(([n,c])=>n+' ×'+c).slice(0,20);
+  }
+  function rectInfo(el){if(!el)return null;const r=el.getBoundingClientRect();return{left:Math.round(r.left),right:Math.round(r.right),top:Math.round(r.top),height:Math.round(r.height),width:Math.round(r.width)}}
+  window.atsrsV76RunAudit=function(){
+    v78Apply();
+    const results=[];
+    const langBtns=[document.getElementById('langCircle'),document.getElementById('appLangCircle')].filter(Boolean);
+    const nonEn=langBtns.filter(b=>!(b.textContent||'').includes('🇬🇧')).length;
+    results.push(row('English-only mode',nonEn===0?'PASS':'FAIL',nonEn===0?'Only English is active. extra language switches are disabled for now.':'A non-English flag is still visible.'));
+    const menusVisible=[...document.querySelectorAll('.lang-menu')].filter(m=>computed(m,'display')!=='none'&&!m.classList.contains('hidden')).length;
+    results.push(row('Language dropdown disabled',menusVisible===0?'PASS':'WARN',menusVisible===0?'Language dropdowns are hidden until multilingual build is reintroduced.':'A language menu is still opening.'));
+    const toggle=document.getElementById('sidebarToggleBtn'),brand=document.querySelector('#app .sidebar .brand'),side=document.querySelector('#app .sidebar');
+    const tr=rectInfo(toggle),br=rectInfo(brand),sr=rectInfo(side);
+    const rightGap=(tr&&sr)?Math.round(sr.right-tr.right):999;
+    const sameLine=(tr&&br)?Math.abs((tr.top+tr.height/2)-(br.top+br.height/2))<=4:false;
+    results.push(row('Hamburger placement',toggle&&rightGap<=22&&sameLine?'PASS':'WARN',toggle?`Right gap: ${rightGap}px. Same line with ATSRS: ${sameLine}. Size: ${tr.width}×${tr.height}px.`:'Hamburger button missing.'));
+    const before=document.body.classList.contains('v76-sidebar-collapsed');
+    if(toggle&&window.innerWidth>800){toggle.click();var changed=document.body.classList.contains('v76-sidebar-collapsed')!==before;toggle.click();}else{var changed=!!toggle;}
+    results.push(row('Sidebar toggle function',changed?'PASS':'FAIL',changed?'Sidebar collapse state changes when hamburger is clicked.':'Hamburger click did not change sidebar state.'));
+    const modeBox=document.getElementById('modeChoiceBox');
+    results.push(row('Mode warning style',modeBox&&computed(modeBox,'border-top-width')==='0px'?'PASS':'WARN','Personal/Company warning should be simple text with a small red icon.'));
+    const activeNav=document.querySelector('#app .nav button.active');
+    const navBg=(computed(activeNav,'background-image')||'')+(computed(activeNav,'background-color')||'');
+    results.push(row('Menu simplicity',navBg.includes('gradient')?'WARN':'PASS','Left menu should be minimal without blue gradient selection.'));
+    const top=document.querySelector('#app .top-actions');
+    results.push(row('Top actions',top&&computed(top,'position')==='fixed'?'PASS':'WARN','Language/logout/test controls should remain available in app view.'));
+    const dups=duplicateIds();
+    results.push(row('Duplicate IDs',dups.length?'FAIL':'PASS',dups.length?dups.join(', '):'No duplicate element IDs found.'));
+    const fn=riskyFunctionRepeats();
+    results.push(row('Duplicate functions',fn.length?'WARN':'PASS',fn.length?fn.join(', '):'No risky duplicate function declarations found. Legacy overrides ignored.'));
+    const sx=Math.max(document.body.scrollWidth,document.documentElement.scrollWidth)-window.innerWidth;
+    results.push(row('Horizontal overflow',sx>2?'WARN':'PASS',sx>2?'Page is wider than viewport by '+Math.round(sx)+'px.':'No visible horizontal overflow.'));
+    const visibleFetch=[...document.querySelectorAll('p,div,span')].filter(e=>(e.textContent||'').toLowerCase().includes('failed to fetch')).length;
+    results.push(row('Fetch errors',visibleFetch?'WARN':'PASS',visibleFetch?'A visible Failed to fetch message is present. Usually network/Supabase/VPN related.':'No visible Failed to fetch message.'));
+    const counts=results.reduce((a,r)=>(a[r.state]=(a[r.state]||0)+1,a),{});
+    const reportText=results.map(r=>`${r.state}\n${r.label}\n${r.detail}`).join('\n\n');
+    const body=results.map(r=>`<div class="v76-audit-row"><div class="v76-status v76-${r.state.toLowerCase()}">${r.state}</div><div><b>${r.label}</b><p>${r.detail}</p></div></div>`).join('');
+    const old=document.getElementById('v76AuditModal');if(old)old.remove();
+    const modal=document.createElement('div');modal.id='v76AuditModal';modal.className='v76-audit-modal';
+    modal.innerHTML=`<div class="v76-audit-card"><div class="v76-audit-head"><h3>ATSRS ${BUILD} Audit</h3><div style="display:flex;gap:8px"><button class="v76-copy-btn" id="v78CopyAuditBtn">Copy report</button><button class="v76-audit-close" onclick="document.getElementById('v76AuditModal').remove()">Close</button></div></div><div class="v76-summary"><span class="v76-chip v76-pass">PASS ${counts.PASS||0}</span><span class="v76-chip v76-warn">WARN ${counts.WARN||0}</span><span class="v76-chip v76-fail">FAIL ${counts.FAIL||0}</span></div>${body}</div>`;
+    document.body.appendChild(modal);
+    const copy=document.getElementById('v78CopyAuditBtn');if(copy)copy.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(reportText);copy.textContent='Copied';};
+  };
+  const originalChangeLanguage=window.changeLanguage;
+  window.changeLanguage=function(){
+    let r;
+    if(typeof originalChangeLanguage==='function')r=originalChangeLanguage.call(this,'en');
+    setTimeout(v78Apply,0);setTimeout(v78Apply,160);return r;
+  };
+  window.toggleLangMenu=window.atsrsV78EnglishOnlyNotice;
+  window.toggleAppLangMenu=window.atsrsV78EnglishOnlyNotice;
+  document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);setInterval(v78Apply,1000);
 })();
 
-/* --- Original inline script id=v64-clean-login-topbar-fix-script --- */
+/* ===== extracted from inline script id=atsrs-v85-remember-and-compact-login-script ===== */
 (function(){
-  function appVisible(){
-    var app=document.getElementById('app');
-    return !!(app && !app.classList.contains('hidden'));
-  }
-  function removeTempButtons(){
-    ['atsrsTopbarTroubleBtn','atsrsTopbarTroublePanel','atsrsTestAutomationBtn','atsrsTestAutomationPanel'].forEach(function(id){
-      var n=document.getElementById(id); if(n) n.remove();
-    });
-  }
-  function syncBodyState(){
-    document.body.classList.toggle('app-open', appVisible());
-    document.body.classList.toggle('auth-open', !appVisible());
-  }
-  function dockTopbar(){
-    var app=document.getElementById('app');
-    var top=document.querySelector('body > .atsrs-v64-top-actions') || document.querySelector('.top-actions');
-    if(!top) return;
-    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions');
-    top.classList.add('atsrs-v64-top-actions');
-    if(app && top.parentElement!==app) app.insertBefore(top, app.firstChild);
-    syncBodyState();
-    top.style.setProperty('display',appVisible()?'flex':'none','important');
-    top.style.setProperty('position','absolute','important');
-    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
-    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
-    top.style.setProperty('left','auto','important');
-    top.style.setProperty('bottom','auto','important');
-    top.style.setProperty('z-index','2147483647','important');
-    top.style.setProperty('transform','none','important');
-    top.style.setProperty('width','auto','important');
-    top.style.setProperty('height','auto','important');
-    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
-    if(lang){
-      lang.style.setProperty('position','relative','important');
-      lang.style.setProperty('top','auto','important');
-      lang.style.setProperty('right','auto','important');
-      lang.style.setProperty('left','auto','important');
-      lang.style.setProperty('bottom','auto','important');
-      lang.style.setProperty('transform','none','important');
-      lang.style.setProperty('display','block','important');
+  'use strict';
+  function el(id){return document.getElementById(id)}
+  function loadRememberedLogin(){
+    const remember=el('rememberMe');
+    const email=el('loginEmail');
+    if(!remember||!email)return;
+    const saved=localStorage.getItem('atsrs_remember_me')==='1';
+    remember.checked=saved;
+    if(saved){
+      const savedEmail=localStorage.getItem('atsrs_saved_login_email')||'';
+      if(savedEmail&&!email.value)email.value=savedEmail;
     }
-    var logout=document.getElementById('topLogoutBtn');
-    if(logout){
-      logout.style.setProperty('display','inline-flex','important');
-      logout.style.setProperty('position','relative','important');
-      logout.style.setProperty('width','auto','important');
-      logout.style.setProperty('margin','0','important');
-      logout.style.setProperty('white-space','nowrap','important');
-    }
-    removeTempButtons();
   }
-  function run(){ syncBodyState(); dockTopbar(); }
-  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
-    var base=window[name];
-    if(typeof base==='function' && !base.__v64Dock){
-      var wrapped=function(){ var r=base.apply(this,arguments); setTimeout(run,0); setTimeout(run,120); setTimeout(run,500); return r; };
-      wrapped.__v64Dock=true; window[name]=wrapped;
+  function saveRememberPreference(){
+    const remember=el('rememberMe');
+    const email=el('loginEmail');
+    if(!remember||!email)return;
+    if(remember.checked){
+      localStorage.setItem('atsrs_remember_me','1');
+      localStorage.setItem('atsrs_saved_login_email',(email.value||'').trim());
+      if(window.useMode)localStorage.setItem('atsrs_use_mode',window.useMode);
+    }else{
+      localStorage.removeItem('atsrs_remember_me');
+      localStorage.removeItem('atsrs_saved_login_email');
     }
-  });
-  document.addEventListener('DOMContentLoaded',run);
-  window.addEventListener('load',run);
-  window.addEventListener('resize',run);
-  window.addEventListener('scroll',function(){requestAnimationFrame(run);},{passive:true});
-  setInterval(run,700);
-  setTimeout(run,0); setTimeout(run,300); setTimeout(run,900);
+  }
+  const baseLogin=window.login;
+  window.login=function(){
+    saveRememberPreference();
+    return typeof baseLogin==='function'?baseLogin.apply(this,arguments):undefined;
+  };
+  const baseLocalTestLogin=window.localTestLogin;
+  window.localTestLogin=function(){
+    saveRememberPreference();
+    return typeof baseLocalTestLogin==='function'?baseLocalTestLogin.apply(this,arguments):undefined;
+  };
+  document.addEventListener('DOMContentLoaded',loadRememberedLogin);
+  window.addEventListener('load',function(){setTimeout(loadRememberedLogin,80)});
+  setTimeout(loadRememberedLogin,0);
 })();
 
-/* --- Original inline script --- */
+/* ===== extracted from inline script id=atsrs-v87-social-auth-script ===== */
 (function(){
-  function releaseBootIfNeeded(){
+  'use strict';
+  const PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
+  const LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
+  function messageTarget(flow){
+    return document.getElementById(flow==='register'?'regMsg':'loginMsg') || document.getElementById('loginMsg');
+  }
+  function getUseModeForSocial(){
+    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
+  }
+  function validateModeForSocial(flow){
+    if(typeof window.validateUseMode==='function')return window.validateUseMode();
+    const mode=getUseModeForSocial();
+    if(mode==='personal'||mode==='company')return true;
+    const target=messageTarget(flow);
+    if(target)target.textContent='Select Personal or Corporate account to register.';
+    return false;
+  }
+  window.atsrsSocialAuth=async function(providerKey,flow){
+    const label=LABELS[providerKey]||providerKey;
+    const provider=PROVIDERS[providerKey];
+    const target=messageTarget(flow);
+    if(target)target.textContent='';
+    if(!validateModeForSocial(flow)){try{document.getElementById('modeChoiceBox')?.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}return;}
+    if(window.useMode){try{localStorage.setItem('atsrs_use_mode',window.useMode);}catch(e){}}
+    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
+      if(target)target.textContent=label+' sign-in will be available after OAuth is configured in Supabase.';
+      return;
+    }
     try{
-      var appEl=document.getElementById('app');
-      var authEl=document.getElementById('auth');
-      var localMode=localStorage.getItem('atsrs_auth_mode');
-      var appOpen=appEl && !appEl.classList.contains('hidden');
-      if(appOpen || localMode!=='local'){
-        document.body.classList.remove('atsrs-booting');
-      }
+      const redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
+      const result=await window.supabaseClient.auth.signInWithOAuth({provider:provider,options:{redirectTo:redirectTo}});
+      if(result && result.error && target)target.textContent=result.error.message || (label+' sign-in failed.');
     }catch(e){
-      document.body.classList.remove('atsrs-booting');
+      if(target)target.textContent=(e&&e.message)?e.message:(label+' sign-in is not configured yet.');
     }
-  }
-  window.addEventListener('load',function(){setTimeout(releaseBootIfNeeded,250);});
-  setTimeout(releaseBootIfNeeded,1200);
-})();
-
-/* --- Original inline script id=atsrs-v70-page-attached-top-actions-script --- */
-(function(){
-  function appVisible(){
-    var app=document.getElementById('app');
-    return !!(app && !app.classList.contains('hidden'));
-  }
-  function normaliseTopActions(){
-    var app=document.getElementById('app');
-    var top=document.querySelector('#app > .top-actions') ||
-            document.querySelector('#app > .atsrs-global-top-actions') ||
-            document.querySelector('#app > .atsrs-v56-top-actions') ||
-            document.querySelector('#app > .atsrs-v64-top-actions') ||
-            document.querySelector('body > .atsrs-v64-top-actions') ||
-            document.querySelector('body > .atsrs-v56-top-actions') ||
-            document.querySelector('body > .atsrs-global-top-actions') ||
-            document.querySelector('body > .top-actions') ||
-            document.querySelector('.top-actions');
-    if(!app || !top) return;
-
-    top.classList.remove('atsrs-v56-top-actions','atsrs-v64-top-actions');
-    top.classList.add('top-actions','atsrs-global-top-actions');
-    if(top.parentElement!==app){
-      app.insertBefore(top, app.firstChild);
-    }
-
-    var visible=appVisible();
-    top.style.setProperty('display',visible?'flex':'none','important');
-    top.style.setProperty('position','absolute','important');
-    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
-    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
-    top.style.setProperty('left','auto','important');
-    top.style.setProperty('bottom','auto','important');
-    top.style.setProperty('z-index','90','important');
-    top.style.setProperty('transform','none','important');
-    top.style.setProperty('will-change','auto','important');
-    top.style.setProperty('width','auto','important');
-    top.style.setProperty('height','auto','important');
-    top.style.setProperty('margin','0','important');
-    top.style.setProperty('padding','0','important');
-
-    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
-    if(lang){
-      lang.style.setProperty('position','relative','important');
-      lang.style.setProperty('top','auto','important');
-      lang.style.setProperty('right','auto','important');
-      lang.style.setProperty('left','auto','important');
-      lang.style.setProperty('bottom','auto','important');
-      lang.style.setProperty('transform','none','important');
-      lang.style.setProperty('display','block','important');
-    }
-
-    var menu=top.querySelector('.lang-menu');
-    if(menu){
-      menu.style.setProperty('position','absolute','important');
-      menu.style.setProperty('top',window.innerWidth<=800?'52px':'56px','important');
-      menu.style.setProperty('right','0','important');
-      menu.style.setProperty('left','auto','important');
-      menu.style.setProperty('bottom','auto','important');
-    }
-
-    var logout=document.getElementById('topLogoutBtn');
-    if(logout){
-      logout.style.setProperty('display','inline-flex','important');
-      logout.style.setProperty('position','relative','important');
-      logout.style.setProperty('width','auto','important');
-      logout.style.setProperty('margin','0','important');
-      logout.style.setProperty('white-space','nowrap','important');
-    }
-  }
-
-  window.atsrsV70NormaliseTopActions=normaliseTopActions;
-  window.forceTopControlsFixed=normaliseTopActions;
-  window.v55DockTopActions=normaliseTopActions;
-
-  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
-    var base=window[name];
-    if(typeof base==='function' && !base.__v70PageAttached){
-      var wrapped=function(){
-        var result=base.apply(this,arguments);
-        setTimeout(normaliseTopActions,0);
-        setTimeout(normaliseTopActions,120);
-        setTimeout(normaliseTopActions,500);
-        return result;
-      };
-      wrapped.__v70PageAttached=true;
-      window[name]=wrapped;
-    }
-  });
-
-  document.addEventListener('DOMContentLoaded',normaliseTopActions);
-  window.addEventListener('load',normaliseTopActions);
-  window.addEventListener('resize',normaliseTopActions);
-  window.addEventListener('scroll',function(){requestAnimationFrame(normaliseTopActions);},{passive:true});
-  setInterval(normaliseTopActions,80);
-  setTimeout(normaliseTopActions,0);
-  setTimeout(normaliseTopActions,300);
-  setTimeout(normaliseTopActions,900);
-})();
-
-/* --- Original inline script id=atsrs-v71-remove-fixed-portal-script --- */
-(function(){
-  function removeFixedPortal(){
-    ['atsrsFixedPortalTopbar','atsrs-v63-portal-style','atsrs-v63-portal-script'].forEach(function(id){
-      var n=document.getElementById(id);
-      if(n) n.remove();
-    });
-    document.body.classList.remove('atsrs-app-visible','atsrs-auth-visible');
-  }
-  window.atsrsTogglePortalLangMenu=function(){};
-  window.atsrsPortalChangeLanguage=function(l){
-    if(typeof changeLanguage==='function') changeLanguage(l);
   };
-  document.addEventListener('DOMContentLoaded',removeFixedPortal);
-  window.addEventListener('load',removeFixedPortal);
-  setTimeout(removeFixedPortal,0);
-  setTimeout(removeFixedPortal,300);
-  setInterval(removeFixedPortal,1000);
 })();
 
-/* --- Original inline script --- */
+/* ===== extracted from inline script ===== */
 (function(){
-  function getLang(){ return "en"; }
-  try{
-    Object.defineProperty(window,'lang',{
-      configurable:true,
-      get:function(){ return "en"; },
-      set:function(v){ localStorage.setItem('atsrs_lang','en'); }
-    });
-  }catch(e){ window.lang='en'; }
-
-  function forceLangApply(){
-    try{ document.documentElement.lang='en'; document.documentElement.dir='ltr'; }catch(e){}
+  var desiredHTML='<span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span>';
+  var applying=false;
+  function atsrsCompactMeaning(){
+    var el=document.getElementById('introKicker');
+    if(!el || applying)return;
+    if(el.innerHTML!==desiredHTML){
+      applying=true;
+      el.innerHTML=desiredHTML;
+      applying=false;
+    }
   }
-
-  var prevChange = window.changeLanguage;
-  window.changeLanguage=function(v){
-    localStorage.setItem('atsrs_lang','en');
-    var r = (typeof prevChange==='function') ? prevChange.apply(this,['en']) : undefined;
-    try{ if(typeof applyLanguage==='function') applyLanguage(); }catch(e){}
-    forceLangApply();
-    setTimeout(forceLangApply,0);
-    setTimeout(forceLangApply,150);
-    setTimeout(forceLangApply,500);
-    return r;
+  atsrsCompactMeaning();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',atsrsCompactMeaning);
+  window.addEventListener('load',atsrsCompactMeaning);
+  [0,100,300,800,1500].forEach(function(ms){setTimeout(atsrsCompactMeaning,ms);});
+  var baseApplyLanguage=window.applyLanguage;
+  if(typeof baseApplyLanguage==='function'){
+    window.applyLanguage=function(){
+      var result=baseApplyLanguage.apply(this,arguments);
+      atsrsCompactMeaning();
+      return result;
+    };
+  }
+  var observer=new MutationObserver(function(){atsrsCompactMeaning();});
+  var startObserver=function(){
+    var el=document.getElementById('introKicker');
+    if(el)observer.observe(el,{childList:true,characterData:true,subtree:true});
   };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver); else startObserver();
+})();
+
+/* ===== extracted from inline script ===== */
+(function(){
+  'use strict';
+  const BUILD = 'ATSRS V168';
+  const UPDATE = 'Last Update: 01 Jul 2026';
+  const TEST = 'TEST BUILD';
+  const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
+  const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
+  const ATSRS_MEANING = 'Automated Tracking & Reporting System';
+  function byId(id){ return document.getElementById(id); }
+  function currentAccountMode(){
+    return window.useMode || localStorage.getItem('atsrs_use_mode') || '';
+  }
+  function applyBuildBadge(){
+    const rows = document.querySelectorAll('.build-badge div');
+    if(rows[0]) rows[0].textContent = BUILD;
+    if(rows[1]) rows[1].textContent = UPDATE;
+    if(rows[2]) rows[2].textContent = TEST;
+  }
+  function lockIntro(){
+    const kicker = byId('introKicker');
+    if(kicker){
+      kicker.innerHTML = '<span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span>';
+    }
+    const title = byId('introTitle');
+    if(title) title.textContent = 'Documents, expiry alerts and profile sharing.';
+    const text = byId('introText');
+    if(text) text.textContent = 'Keep information organized and stay compliant.';
+    const subtitle = byId('authSubtitle');
+    if(subtitle) subtitle.textContent = ATSRS_MEANING;
+  }
+  function showAccountWarning(kind){
+    const box = byId('modeChoiceBox');
+    const rule = byId('modeRule');
+    const instruction = byId('modeInstruction');
+    const msg = kind === 'register' ? ACCOUNT_REGISTER : ACCOUNT_LOGIN;
+    if(box) box.classList.add('mode-error');
+    if(rule){ rule.textContent = msg; rule.classList.add('active'); }
+    if(instruction){ instruction.innerHTML = '<span class="mode-instruction-icon">!</span><span>'+msg+'</span>'; instruction.classList.add('active'); }
+  }
+  function clearAccountWarning(){
+    const box = byId('modeChoiceBox');
+    const rule = byId('modeRule');
+    const instruction = byId('modeInstruction');
+    if(box) box.classList.remove('mode-error');
+    if(rule) rule.classList.remove('active');
+    if(instruction) instruction.classList.remove('active');
+  }
+  function requireAccount(kind){
+    if(currentAccountMode()){ clearAccountWarning(); return true; }
+    showAccountWarning(kind);
+    const box = byId('modeChoiceBox');
+    if(box && box.scrollIntoView) box.scrollIntoView({behavior:'smooth', block:'center'});
+    return false;
+  }
+  function scrollToRegister(){
+    const target = byId('registerBox') || byId('registerForm') || byId('createBox') || byId('signupSocialArea');
+    if(target && target.scrollIntoView){ setTimeout(()=>target.scrollIntoView({behavior:'smooth', block:'center'}), 80); }
+  }
+  function bindValidation(){
+    const loginBtn = byId('loginBtn');
+    const testBtn = byId('localTestBtn');
+    const createBtn = byId('createBtn');
+    if(loginBtn && !loginBtn.dataset.cuBound){
+      const old = loginBtn.onclick;
+      loginBtn.onclick = function(e){ if(!requireAccount('login')) return false; return old ? old.call(this,e) : true; };
+      loginBtn.dataset.cuBound = '1';
+    }
+    if(testBtn && !testBtn.dataset.cuBound){
+      const old = testBtn.onclick;
+      testBtn.onclick = function(e){ if(!requireAccount('login')) return false; return old ? old.call(this,e) : true; };
+      testBtn.dataset.cuBound = '1';
+    }
+    if(createBtn && !createBtn.dataset.cuBound){
+      const old = createBtn.onclick;
+      createBtn.onclick = function(e){ if(!requireAccount('register')) return false; const r = old ? old.call(this,e) : true; scrollToRegister(); return r; };
+      createBtn.dataset.cuBound = '1';
+    }
+    ['personalModeBtn','companyModeBtn'].forEach(id=>{
+      const btn = byId(id);
+      if(btn && !btn.dataset.cuClear){ btn.addEventListener('click', clearAccountWarning); btn.dataset.cuClear='1'; }
+    });
+  }
+  function boot(){ applyBuildBadge(); lockIntro(); bindValidation(); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.addEventListener('load', boot);
+  setTimeout(boot, 100);
+  setTimeout(boot, 700);
 })();
