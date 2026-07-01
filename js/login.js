@@ -628,3 +628,28 @@
   [80,250,700,1300,2400].forEach(function(ms){setTimeout(bind,ms);});
   setInterval(lockBuild,250);
 })();
+
+
+/* ===== ATSRS V179 Auth Module V1 - final UI binding to core auth closures ===== */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function bindAuthButtons(){
+    var core=window.atsrsCoreAuth;
+    if(!core) return;
+    window.login=function(){return core.login();};
+    window.register=function(){return core.register();};
+    window.forgotPassword=function(){return core.forgotPassword();};
+    window.updatePassword=function(){return core.updatePassword();};
+    window.logout=function(){return core.logout();};
+    var b;
+    b=byId('loginBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.login();};
+    b=byId('registerBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.register();};
+    b=byId('resetBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.forgotPassword();};
+    b=byId('saveNewPassBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.updatePassword();};
+    ['navLogout','topLogout','accountExitBtn'].forEach(function(id){var x=byId(id); if(x) x.onclick=function(e){if(e)e.preventDefault();return core.logout();};});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindAuthButtons); else bindAuthButtons();
+  window.addEventListener('load',bindAuthButtons);
+  [100,400,900,1600,2600].forEach(function(ms){setTimeout(bindAuthButtons,ms);});
+})();
