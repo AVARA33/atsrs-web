@@ -697,3 +697,42 @@
   window.addEventListener('load',bindDebugRegisterUI);
   [100,300,700,1200,2200,3500].forEach(function(ms){setTimeout(bindDebugRegisterUI,ms);});
 })();
+
+/* ===== ATSRS V183 Register Handler Cleanup - force single visible debug/register flow ===== */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function show(msg){
+    var el=byId('regMsg');
+    if(el){el.style.whiteSpace='pre-line';el.textContent=msg||'';}
+  }
+  function runRegister(){
+    if(typeof window.atsrsAuthDebugRegister==='function') return window.atsrsAuthDebugRegister();
+    if(window.atsrsCoreAuth && typeof window.atsrsCoreAuth.register==='function') return window.atsrsCoreAuth.register();
+    if(typeof window.register==='function') return window.register();
+    show('Create Account failed — register handler is not available.\nMeaning: auth module did not load correctly.');
+    return false;
+  }
+  function forceBind(){
+    var btn=byId('registerBtn');
+    if(btn){
+      btn.onclick=function(e){if(e)e.preventDefault();return runRegister();};
+      btn.dataset.v183RegisterHandler='forced';
+    }
+  }
+  if(!window.__atsrsV183RegisterCapture){
+    window.__atsrsV183RegisterCapture=true;
+    document.addEventListener('click',function(e){
+      var target=e.target;
+      var btn=target && target.closest ? target.closest('#registerBtn') : null;
+      if(!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+      return runRegister();
+    },true);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',forceBind); else forceBind();
+  window.addEventListener('load',forceBind);
+  [50,150,350,700,1200,1800,2600,3500].forEach(function(ms){setTimeout(forceBind,ms);});
+})();
