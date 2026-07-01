@@ -3,7 +3,7 @@
 const SUPABASE_URL="https://hwtjuqyxziyymofamwxl.supabase.co";
 const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
 const APP_URL="https://atsrs.com/";
-let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error(e)}
+let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);window.supabaseClient=supabaseClient}catch(e){console.error(e)}
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
@@ -1167,4 +1167,200 @@ setTimeout(v55DockTopActions,500);
     }
     ensurePanel();
   });
+})();
+
+
+/* ===== ATSRS V179 Auth Module V1 - real Supabase email/password auth ===== */
+(function(){
+  'use strict';
+  var AUTH_BUILD='ATSRS V179 AUTH MODULE V1';
+  function byId(id){return document.getElementById(id);}
+  function setText(id,msg){var el=byId(id); if(el) el.textContent=msg||'';}
+  function redirectUrl(){
+    try{
+      var origin=window.location.origin || 'https://atsrs.com';
+      var path=window.location.pathname || '/';
+      return origin + path;
+    }catch(e){return 'https://atsrs.com/';}
+  }
+  function selectedAccountType(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    var mode='';
+    if(p && p.classList.contains('active')) mode='personal';
+    if(c && c.classList.contains('active')) mode='company';
+    try{ if(!mode) mode=localStorage.getItem('atsrs_use_mode')||''; }catch(e){}
+    if(mode!=='personal' && mode!=='company') mode='';
+    return mode;
+  }
+  function applyAccountType(mode){
+    if(mode!=='personal' && mode!=='company') return;
+    try{localStorage.setItem('atsrs_use_mode',mode);}catch(e){}
+    try{useMode=mode;}catch(e){}
+    try{window.useMode=mode;}catch(e){}
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p) p.classList.toggle('active',mode==='personal');
+    if(c) c.classList.toggle('active',mode==='company');
+    document.body.classList.toggle('personal-mode',mode==='personal');
+    document.body.classList.toggle('company-mode',mode==='company');
+  }
+  function accountTypeFromUser(user){
+    var meta=(user && (user.user_metadata || user.raw_user_meta_data)) || {};
+    return meta.account_type || meta.atsrs_account_type || meta.use_mode || '';
+  }
+  function validEmailInput(input,rule){
+    if(typeof markEmail==='function' && input && rule) return markEmail(input,rule);
+    return !!(input && /.+@.+\..+/.test((input.value||'').trim()));
+  }
+  function saveRemember(){
+    var remember=byId('rememberMe'), email=byId('loginEmail');
+    if(!remember || !email) return;
+    try{
+      if(remember.checked){
+        localStorage.setItem('atsrs_remember_me','1');
+        localStorage.setItem('atsrs_saved_login_email',(email.value||'').trim());
+      }else{
+        localStorage.removeItem('atsrs_remember_me');
+        localStorage.removeItem('atsrs_saved_login_email');
+      }
+    }catch(e){}
+  }
+  function showRegisterModeRequired(){
+    var area=byId('registerAccountTypeArea') || byId('modeChoiceBox');
+    var notice=byId('registerAccountNotice');
+    if(area) area.classList.add('needs-choice');
+    if(notice) notice.classList.add('choice-missing');
+    setText('regMsg','Select Personal or Corporate before creating your ATSRS account.');
+    try{if(area && area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
+  }
+  async function realRegister(){
+    var emailEl=byId('regEmail'), passEl=byId('regPassword'), pass2El=byId('regPassword2');
+    var email=(emailEl && emailEl.value || '').trim();
+    var password=(passEl && passEl.value || '').trim();
+    var password2=(pass2El && pass2El.value || '').trim();
+    var mode=selectedAccountType();
+    setText('regMsg','');
+    if(!mode){showRegisterModeRequired();return false;}
+    if(!email || !password || !password2){setText('regMsg',typeof tr==='function'?tr('fill'):'Fill all required fields.');return false;}
+    if(password!==password2){setText('regMsg','Passwords do not match.');return false;}
+    if(typeof validateRegisterFields==='function' && !validateRegisterFields()) return false;
+    if(!validEmailInput(emailEl,byId('regEmailRule'))) return false;
+    if(!supabaseClient || !supabaseClient.auth){setText('regMsg','Supabase library did not load.');return false;}
+    try{
+      applyAccountType(mode);
+      var res=await supabaseClient.auth.signUp({
+        email:email,
+        password:password,
+        options:{
+          emailRedirectTo:redirectUrl(),
+          data:{account_type:mode,atsrs_account_type:mode,source:'atsrs-web'}
+        }
+      });
+      if(res.error){setText('regMsg',res.error.message);return false;}
+      setText('regMsg','Confirmation email sent. Check inbox/spam.');
+      return true;
+    }catch(e){setText('regMsg',(e&&e.message)|| (typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
+  }
+  async function realLogin(){
+    var emailEl=byId('loginEmail'), passEl=byId('loginPassword');
+    var email=(emailEl && emailEl.value || '').trim();
+    var password=(passEl && passEl.value || '').trim();
+    setText('loginMsg','');
+    if(!email || !password){setText('loginMsg',typeof tr==='function'?tr('enterLogin'):'Enter email and password.');return false;}
+    if(!validEmailInput(emailEl,byId('loginEmailRule'))) return false;
+    if(!supabaseClient || !supabaseClient.auth){setText('loginMsg','Supabase library did not load.');return false;}
+    try{
+      saveRemember();
+      var res=await supabaseClient.auth.signInWithPassword({email:email,password:password});
+      if(res.error){setText('loginMsg',res.error.message);return false;}
+      var user=res.data && res.data.user;
+      var mode=accountTypeFromUser(user) || selectedAccountType() || 'personal';
+      applyAccountType(mode);
+      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      currentUser=user;
+      window.currentUser=user;
+      if(typeof openApp==='function') openApp();
+      return true;
+    }catch(e){setText('loginMsg',(e&&e.message)|| (typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
+  }
+  async function realForgotPassword(){
+    var emailEl=byId('resetEmail');
+    var email=(emailEl && emailEl.value || '').trim();
+    setText('resetMsg','');
+    if(!email){setText('resetMsg',typeof tr==='function'?tr('enterLogin'):'Enter email.');return false;}
+    if(!validEmailInput(emailEl,byId('resetEmailRule'))) return false;
+    if(!supabaseClient || !supabaseClient.auth){setText('resetMsg','Supabase library did not load.');return false;}
+    try{
+      var res=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:redirectUrl()});
+      setText('resetMsg',res.error?res.error.message:(typeof tr==='function'?tr('sent'):'Reset link sent.'));
+      return !res.error;
+    }catch(e){setText('resetMsg',(e&&e.message)||'Connection failed.');return false;}
+  }
+  async function realUpdatePassword(){
+    var p1=(byId('newPassword') && byId('newPassword').value || '').trim();
+    var p2=(byId('newPassword2') && byId('newPassword2').value || '').trim();
+    setText('newPassMsg','');
+    if(!p1 || !p2){setText('newPassMsg',typeof tr==='function'?tr('fill'):'Fill all fields.');return false;}
+    if(p1!==p2){setText('newPassMsg',typeof tr==='function'?tr('matchRule'):'Passwords do not match.');return false;}
+    if(!supabaseClient || !supabaseClient.auth){setText('newPassMsg','Supabase library did not load.');return false;}
+    try{
+      var res=await supabaseClient.auth.updateUser({password:p1});
+      setText('newPassMsg',res.error?res.error.message:'Password updated.');
+      return !res.error;
+    }catch(e){setText('newPassMsg',(e&&e.message)||'Connection failed.');return false;}
+  }
+  async function realLogout(){
+    try{if(supabaseClient && supabaseClient.auth) await supabaseClient.auth.signOut();}catch(e){}
+    try{localStorage.removeItem('atsrs_auth_mode');localStorage.removeItem('atsrs_current_page');}catch(e){}
+    location.reload();
+  }
+  function restoreSession(){
+    if(!supabaseClient || !supabaseClient.auth) return;
+    try{
+      supabaseClient.auth.onAuthStateChange(function(event,session){
+        if(event==='PASSWORD_RECOVERY'){
+          if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+          var box=byId('newPasswordBox'); if(box) box.classList.remove('hidden');
+          return;
+        }
+        if(session && session.user && (event==='SIGNED_IN' || event==='TOKEN_REFRESHED' || event==='INITIAL_SESSION')){
+          var mode=accountTypeFromUser(session.user) || selectedAccountType() || 'personal';
+          applyAccountType(mode);
+          try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+          currentUser=session.user;
+          window.currentUser=session.user;
+          if(typeof openApp==='function') openApp();
+        }
+      });
+      supabaseClient.auth.getSession().then(function(r){
+        var session=r && r.data && r.data.session;
+        if(session && session.user){
+          var mode=accountTypeFromUser(session.user) || selectedAccountType() || 'personal';
+          applyAccountType(mode);
+          try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+          currentUser=session.user;
+          window.currentUser=session.user;
+          if(typeof openApp==='function') openApp();
+        }
+      });
+    }catch(e){console.warn('ATSRS auth restore failed',e);}
+  }
+  window.atsrsCoreAuth={
+    build:AUTH_BUILD,
+    register:realRegister,
+    login:realLogin,
+    forgotPassword:realForgotPassword,
+    updatePassword:realUpdatePassword,
+    logout:realLogout,
+    restoreSession:restoreSession,
+    applyAccountType:applyAccountType,
+    selectedAccountType:selectedAccountType,
+    client:supabaseClient
+  };
+  window.register=realRegister;
+  window.login=realLogin;
+  window.forgotPassword=realForgotPassword;
+  window.updatePassword=realUpdatePassword;
+  window.logout=realLogout;
+  window.supabaseClient=supabaseClient;
+  restoreSession();
 })();
