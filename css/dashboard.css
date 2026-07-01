@@ -909,129 +909,111 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #registerAccountTypeArea .mode-choice button,
 #registerAccountTypeArea .mode-choice.mode-error button{
 
-/* V186 Dashboard frameless cleanup
-   Scope: Dashboard only. V185 remains backup. index.html untouched. */
-#dashboardPage{
-  background:transparent!important;
-}
-
+/* V187 Dashboard frameless cleanup: dashboard only, no HTML/version change */
 #dashboardPage .panel,
 #dashboardPage .card,
+#dashboardPage .hero-card,
 #dashboardPage .mini-panel,
-#dashboardPage .snapshot-card,
 #dashboardPage .workflow-card,
+#dashboardPage .snapshot-card,
 #dashboardPage .share-card,
-#dashboardPage .upload-simple{
+#dashboardPage #personalDashboardPanel{
   background:transparent!important;
   border:0!important;
   box-shadow:none!important;
 }
-
-#dashboardPage .panel,
-#dashboardPage .mini-panel,
-#dashboardPage .snapshot-card,
-#dashboardPage .share-card,
-#dashboardPage .upload-simple{
+#dashboardPage .solo-hero.panel{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.55fr) minmax(280px,.85fr)!important;
+  gap:34px!important;
   padding:0!important;
-  margin-bottom:22px!important;
-  border-radius:0!important;
-}
-
-#dashboardPage .professional-dashboard,
-#dashboardPage .solo-hero{
-  gap:36px!important;
+  margin:0 0 26px!important;
   align-items:start!important;
 }
-
-#dashboardPage .grid.stats-grid{
-  gap:26px!important;
-  margin:8px 0 26px!important;
+#dashboardPage .hero-card,
+#dashboardPage .mini-panel{
+  padding:0!important;
+  margin:0!important;
 }
-
+#dashboardPage .whatsapp-note{
+  border-left:0!important;
+}
+#dashboardPage .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(120px,1fr))!important;
+  gap:28px!important;
+  margin:8px 0 36px!important;
+  align-items:start!important;
+}
 #dashboardPage .stats-grid .card{
   padding:0!important;
   margin:0!important;
   min-height:auto!important;
+  overflow:visible!important;
 }
-
 #dashboardPage .stats-grid .card p{
-  margin:0 0 6px!important;
+  margin:0 0 8px!important;
   color:#a7b5c5!important;
+  font-size:12px!important;
 }
-
 #dashboardPage .stats-grid .card .stat{
   font-size:26px!important;
-  line-height:1.1!important;
+  line-height:1.05!important;
 }
-
+#dashboardPage .dashboard-snapshot-panel{
+  padding:0!important;
+  margin:0 0 22px!important;
+}
+#dashboardPage .dashboard-snapshot-panel .snapshot-card{
+  padding:0!important;
+  margin:0!important;
+}
 #dashboardPage .snapshot-list{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:12px!important;
-  margin-top:10px!important;
+  gap:28px!important;
+  margin-top:12px!important;
 }
-
 #dashboardPage .snapshot-item,
 #dashboardPage .risk-item{
   background:transparent!important;
   border:0!important;
-  border-bottom:1px solid rgba(148,163,184,.14)!important;
+  border-bottom:1px solid rgba(38,64,88,.58)!important;
   border-radius:0!important;
-  padding:8px 0!important;
-  box-shadow:none!important;
+  padding:0 0 10px!important;
 }
-
-#dashboardPage .risk-list{
-  gap:0!important;
-  margin-top:8px!important;
+#dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel):not(#shareProfilePanel):not(#personalDashboardPanel){
+  padding:0!important;
+  margin:0 0 22px!important;
 }
-
-#dashboardPage #shareProfilePanel{
-  max-width:none!important;
+#dashboardPage #shareProfilePanel,
+#dashboardPage #personalDashboardPanel{
+  padding:0!important;
+  margin:0 0 22px!important;
 }
-
-#dashboardPage .share-link-box{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) 120px!important;
-  gap:8px!important;
-  align-items:center!important;
-  margin:10px 0 8px!important;
-}
-
 #dashboardPage .share-link-box input{
-  width:100%!important;
-  min-width:0!important;
-}
-
-#dashboardPage .share-actions{
-  grid-template-columns:160px 160px!important;
-  justify-content:start!important;
-  gap:8px!important;
-}
-
-#dashboardPage #dashboardPage h3,
-#dashboardPage h3{
-  margin-top:0!important;
-}
-
-#dashboardPage .pill{
-  background:rgba(4,16,26,.52)!important;
-  border-color:rgba(34,197,94,.24)!important;
+  background:rgba(2,6,23,.36)!important;
+  border:1px solid rgba(38,64,88,.82)!important;
   box-shadow:none!important;
 }
-
-@media(max-width:900px){
-  #dashboardPage .professional-dashboard,
-  #dashboardPage .solo-hero{
-    gap:18px!important;
-  }
-  #dashboardPage .snapshot-list{
-    grid-template-columns:1fr!important;
-  }
-  #dashboardPage .share-link-box{
-    grid-template-columns:1fr!important;
-  }
-  #dashboardPage .share-actions{
-    grid-template-columns:1fr!important;
-  }
+#dashboardPage .share-actions{
+  max-width:520px!important;
+}
+#dashboardPage .share-actions button,
+#dashboardPage .quick-actions button,
+#dashboardPage #personalScanBtn,
+#dashboardPage #copyShareBtn{
+  box-shadow:none!important;
+}
+#dashboardPage .pill{
+  background:rgba(4,16,26,.42)!important;
+  box-shadow:none!important;
+}
+@media(max-width:1000px){
+  #dashboardPage .solo-hero.panel{grid-template-columns:1fr!important;gap:22px!important;}
+  #dashboardPage .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #dashboardPage .snapshot-list{grid-template-columns:1fr!important;gap:12px!important;}
+}
+@media(max-width:560px){
+  #dashboardPage .stats-grid{grid-template-columns:1fr!important;gap:18px!important;}
 }
