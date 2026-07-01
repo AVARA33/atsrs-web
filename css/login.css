@@ -1,10 +1,454 @@
-/* ATSRS V179 split from V178 - login.css. Original CSS order preserved by index link order. */
+/* ATSRS V178 extracted CSS batch: login.css. Preserves original V178 cascade order. */
+#introPage .intro-service-card p{
+  line-height:1.52!important;
+}
+@media (max-width:1179px){
+  #introPage .intro-service-card{min-height:156px!important;}
+}
 
-#app.app{position:relative!important;}
+
+
+
+
+/* V124 Dashboard Builder: drag, resize, minimize. Stored locally per browser. */
+#dashboardPage{position:relative;}
+#dashboardPage .dash-custom-ready{position:relative;min-height:96px;min-width:160px;overflow:visible;touch-action:auto;}
+#dashboardPage .dash-custom-ready.dash-resizable{resize:none;overflow:auto;}
+#dashboardPage .dash-card-tools{position:absolute;top:8px;right:8px;z-index:30;display:flex;gap:6px;align-items:center;opacity:.50;transition:opacity .18s ease;}
+#dashboardPage .dash-custom-ready:hover>.dash-card-tools,#dashboardPage .dash-card-tools:focus-within{opacity:1;}
+#dashboardPage .dash-drag-handle,#dashboardPage .dash-min-btn{width:30px!important;height:28px!important;min-width:30px!important;margin:0!important;padding:0!important;border-radius:10px!important;background:rgba(15,23,42,.78)!important;border:1px solid rgba(148,163,184,.30)!important;color:#cbd5e1!important;box-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;line-height:1!important;}
+#dashboardPage .dash-drag-handle{cursor:grab!important;touch-action:none!important;}
+#dashboardPage .dash-drag-handle:active{cursor:grabbing!important;}
+#dashboardPage .dash-min-btn{cursor:pointer!important;font-size:16px!important;}
+#dashboardPage .dash-resize-handle{position:absolute;right:6px;bottom:6px;width:18px;height:18px;border-radius:6px;z-index:25;cursor:nwse-resize;opacity:.42;background:linear-gradient(135deg,transparent 0 45%,rgba(148,163,184,.55) 46% 54%,transparent 55% 100%);touch-action:none;}
+#dashboardPage .dash-custom-ready:hover>.dash-resize-handle{opacity:.82;}
+#dashboardPage .dash-drag-float{position:fixed!important;z-index:9999!important;pointer-events:none!important;opacity:.86!important;box-shadow:0 25px 80px rgba(0,0,0,.45)!important;transform:scale(.98);}
+#dashboardPage .dash-placeholder{border:2px dashed rgba(56,189,248,.72)!important;border-radius:18px!important;background:rgba(56,189,248,.08)!important;min-height:90px!important;margin-bottom:16px!important;}
+#dashboardPage .stats-grid .dash-placeholder{min-height:104px!important;margin-bottom:0!important;}
+#dashboardPage .dash-minimized{display:none!important;}
+#dashboardDock{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;flex-direction:column;gap:8px;max-width:210px;}
+#dashboardDock.hidden{display:none!important;}
+#dashboardDock .dock-item{width:auto!important;margin:0!important;padding:9px 11px!important;border-radius:999px!important;background:rgba(15,23,42,.94)!important;border:1px solid rgba(34,197,94,.35)!important;color:#bbf7d0!important;box-shadow:0 14px 30px rgba(0,0,0,.28)!important;font-size:12px!important;font-weight:800!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#dashboardPage .dash-custom-ready p,#dashboardPage .dash-custom-ready span,#dashboardPage .dash-custom-ready b,#dashboardPage .dash-custom-ready h3{overflow-wrap:anywhere;}
+#dashboardPage .dash-custom-ready>.dash-card-tools+*{margin-top:8px;}
+@media(max-width:800px){#dashboardPage .dash-custom-ready{min-width:0!important;width:auto!important}#dashboardDock{right:10px;bottom:10px;max-width:160px}.dash-card-tools{top:6px!important;right:6px!important}}
+
+
+
+/* V124 UX cleanup: dashboard grouped counters, calm forms, refs layout, smaller language flag */
+#appLangCircle.lang-circle,
+#langCircle.lang-circle{
+  width:38px!important;height:38px!important;min-width:38px!important;font-size:18px!important;border-radius:50%!important;
+  padding:0!important;margin:0!important;box-shadow:0 8px 20px rgba(0,0,0,.24)!important;
+}
+.lang-menu button[data-lang="en"]{font-size:0!important;text-align:center!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.lang-menu button[data-lang="en"] span{font-size:20px!important;width:auto!important;margin:0!important;}
+
+/* Dashboard: counters move as ONE group, not separate cards */
+#dashboardPage .stats-grid.dash-custom-ready{padding-top:38px!important;position:relative!important;min-height:136px!important;}
+#dashboardPage .stats-grid>.card .dash-card-tools,
+#dashboardPage .stats-grid>.card .dash-resize-handle{display:none!important;}
+#dashboardPage .stats-grid>.card{cursor:default!important;}
+#dashboardPage .stats-grid>.card.dash-custom-ready{resize:none!important;overflow:visible!important;}
+#dashboardPage .stats-grid .dash-placeholder{display:none!important;}
+#dashboardDock .dock-item{animation:none!important;transform:none!important;transition:background .15s ease,border-color .15s ease!important;}
+#dashboardDock{animation:none!important;transform:none!important;}
+
+/* Account page: calmer inputs and visible save button */
+#profilePage input,#profilePage select,#certificatesPage input,#certificatesPage select,#certificatesPage textarea{
+  background:#0b1624!important;border:1px solid #26384e!important;color:#eef6ff!important;box-shadow:none!important;
+}
+#profilePage input:focus,#profilePage select:focus,#certificatesPage input:focus,#certificatesPage select:focus,#certificatesPage textarea:focus{
+  border-color:#38bdf8!important;box-shadow:0 0 0 2px rgba(56,189,248,.12)!important;
+}
+#profilePage .profile-grid{gap:12px!important;}
+#saveProfileBtn{display:block!important;visibility:visible!important;opacity:1!important;max-width:180px!important;margin-top:14px!important;background:#1f6f78!important;border:1px solid rgba(56,189,248,.35)!important;color:#f8fafc!important;box-shadow:none!important;}
+#profilePage .account-tabs button,#certificatesPage .cert-mode-buttons button,#certificatesPage button.secondary,#profilePage button.secondary{
+  background:#1a293b!important;border:1px solid #31465f!important;color:#e5eef8!important;box-shadow:none!important;
+}
+#profilePage .account-tabs button.active,#certificatesPage .cert-mode-buttons button.active{
+  background:#164e63!important;border-color:#38bdf8!important;color:#f8fafc!important;
+}
+
+/* Documents page: reduce color noise */
+#certificatesPage .panel,#certificatesPage .scan-box,#certificatesPage .import-box{border-color:#26384e!important;background:linear-gradient(180deg,rgba(15,26,42,.96),rgba(9,19,32,.98))!important;}
+#certificatesPage button:not(.action){box-shadow:none!important;}
+#certificatesPage button.action{background:#5f1f2a!important;border:1px solid #7f3340!important;box-shadow:none!important;}
+
+/* References page: CV first, full width; other cards below */
+#refsPage .ref-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important;gap:14px!important;align-items:start!important;}
+#refsPage .cv-card{order:-10!important;grid-column:1 / -1!important;max-width:none!important;}
+#refsPage .cv-actions{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(135px,1fr))!important;gap:10px!important;}
+#refsPage .ref-card{background:#0f1b2b!important;border:1px solid #26384e!important;box-shadow:none!important;}
+#refsPage .ref-card button.secondary{background:#1a293b!important;border:1px solid #31465f!important;box-shadow:none!important;}
+
+@media(max-width:800px){
+  #appLangCircle.lang-circle,#langCircle.lang-circle{width:34px!important;height:34px!important;min-width:34px!important;font-size:16px!important;}
+  #dashboardPage .stats-grid.dash-custom-ready{padding-top:34px!important;}
+}
+
+
+
+/* V163 Platform compact text-only layout: remove hero box, keep content positions, fit six services in one row */
+#introPage .intro-hero{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:6px 0 10px!important;
+  margin-bottom:10px!important;
+}
+#introPage .intro-hero::after{display:none!important;}
+#introPage .intro-hero #introBadge{
+  background:transparent!important;
+  border-color:rgba(134,239,172,.28)!important;
+}
+#introPage .intro-service-grid{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:start!important;
+  margin-top:8px!important;
+}
+#introPage .intro-service-card,
+#introPage .intro-service-card.active{
+  min-height:0!important;
+  padding:8px 4px!important;
+  background:transparent!important;
+  border:0!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  transform:none!important;
+}
+#introPage .intro-service-card:hover{
+  transform:none!important;
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+#introPage .intro-service-card .svc-icon{
+  font-size:22px!important;
+  margin:0 0 9px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#introPage .intro-service-card h3{
+  font-size:16px!important;
+  line-height:1.2!important;
+  margin:0 0 8px!important;
+}
+#introPage .intro-service-card p{
+  font-size:13px!important;
+  line-height:1.42!important;
+  margin:0!important;
+}
+#introPage .atsrs-anime-stage{
+  margin-top:16px!important;
+  padding:10px 0 0!important;
+  background:transparent!important;
+  border:0!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#introPage .atsrs-anime-stage::before,
+#introPage .anime-step::after{display:none!important;}
+#introPage .anime-header{margin-bottom:10px!important;}
+#introPage .anime-step{
+  min-height:0!important;
+  padding:10px 4px!important;
+  background:transparent!important;
+  border:0!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#introPage .anime-icon{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  margin-bottom:8px!important;
+}
+#introPage .mini-docs em,
+#introPage .approve-flow i,
+#introPage .profile-link-demo{
+  background:transparent!important;
+  border-color:rgba(148,163,184,.32)!important;
+  box-shadow:none!important;
+}
+@media(max-width:1180px){
+  #introPage .intro-service-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+}
+@media(max-width:720px){
+  #introPage .intro-service-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+@media(max-width:460px){
+  #introPage .intro-service-grid{grid-template-columns:1fr!important;}
+}
+
+
+
+/* V177 Dashboard frameless compact cleanup - BASE V176
+   Scope: Dashboard only. No storage, boot, Documents or References logic touched. */
+#dashboardPage .panel,
+#dashboardPage .hero-card,
+#dashboardPage .mini-panel,
+#dashboardPage .card,
+#dashboardPage .snapshot-card,
+#dashboardPage .share-card{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#dashboardPage .panel{
+  padding:0!important;
+  margin:14px 0 18px!important;
+}
+#dashboardPage .solo-hero{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.4fr) minmax(260px,.8fr)!important;
+  gap:28px!important;
+  align-items:start!important;
+  margin-bottom:18px!important;
+}
+#dashboardPage .hero-card,
+#dashboardPage .mini-panel{
+  padding:0!important;
+  border-radius:0!important;
+}
+#dashboardPage .hero-card h3,
+#dashboardPage .mini-panel h3{
+  margin-top:6px!important;
+  margin-bottom:8px!important;
+}
+#dashboardPage .hero-card p,
+#dashboardPage .mini-panel p{
+  margin-bottom:10px!important;
+}
+#dashboardPage .quick-actions{
+  display:flex!important;
+  gap:8px!important;
+  margin-top:12px!important;
+}
+#dashboardPage .quick-actions button{
+  width:auto!important;
+  min-width:116px!important;
+  max-width:150px!important;
+  padding:10px 14px!important;
+  margin:0!important;
+}
+#dashboardPage .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(120px,1fr))!important;
+  gap:16px!important;
+  margin:14px 0 18px!important;
+}
+#dashboardPage .stats-grid .card{
+  padding:0!important;
+  min-height:0!important;
+  border-radius:0!important;
+}
+#dashboardPage .stats-grid .card p{
+  margin:0 0 6px!important;
+  color:#cbd5e1!important;
+}
+#dashboardPage .stats-grid .stat{
+  font-size:26px!important;
+  line-height:1.05!important;
+}
+#dashboardPage .dashboard-snapshot-panel{
+  padding:0!important;
+  margin:10px 0 14px!important;
+}
+#dashboardPage .snapshot-card{
+  padding:0!important;
+}
+#dashboardPage #snapshotBadge{
+  margin-bottom:8px!important;
+}
+#dashboardPage #snapshotTitle{
+  margin:6px 0 8px!important;
+  font-size:19px!important;
+}
+#dashboardPage .snapshot-list{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin-top:8px!important;
+}
+#dashboardPage .snapshot-item{
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px solid rgba(148,163,184,.22)!important;
+  border-radius:0!important;
+  padding:8px 0!important;
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+}
+#dashboardPage .snapshot-item b{
+  font-size:13px!important;
+}
+#dashboardPage .snapshot-item span{
+  font-size:15px!important;
+}
+#dashboardPage #riskTitle{
+  margin:8px 0 6px!important;
+  font-size:19px!important;
+}
+#dashboardPage #riskSub{
+  margin:0 0 8px!important;
+}
+#dashboardPage .risk-list{
+  gap:6px!important;
+  margin-top:8px!important;
+}
+#dashboardPage .risk-item{
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px solid rgba(148,163,184,.18)!important;
+  border-radius:0!important;
+  padding:8px 0!important;
+}
+#dashboardPage #shareProfilePanel{
+  margin-top:18px!important;
+  padding:0!important;
+}
+#dashboardPage .share-link-box{
+  margin:10px 0!important;
+}
+@media(max-width:1000px){
+  #dashboardPage .snapshot-list{grid-template-columns:1fr!important;gap:4px!important;}
+  #dashboardPage .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #dashboardPage .solo-hero{grid-template-columns:1fr!important;gap:18px!important;}
+}
+
+/* V127 DC/CU: Dashboard must behave as a calm view page. Custom builder is parked for later. */
+#dashboardPage .dash-card-tools,
+#dashboardPage .dash-resize-handle,
+#dashboardDock{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#dashboardPage .dash-custom-ready,
+#dashboardPage .dash-resizable,
+#dashboardPage .dash-drag-float{
+  position:relative!important;
+  left:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  transform:none!important;
+  resize:none!important;
+  overflow:visible!important;
+  opacity:1!important;
+  box-shadow:inherit!important;
+  touch-action:auto!important;
+}
+#dashboardPage .dash-placeholder{display:none!important;}
+#dashboardPage .dash-minimized{display:block!important;}
+#dashboardPage .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))!important;
+  gap:12px!important;
+  padding-top:0!important;
+  min-height:0!important;
+  align-items:stretch!important;
+}
+#dashboardPage .stats-grid .card{
+  width:auto!important;
+  height:auto!important;
+  min-height:96px!important;
+  margin:0!important;
+}
+#dashboardPage .solo-hero{
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  grid-template-columns:minmax(0,1.45fr) minmax(240px,.75fr)!important;
+}
+#dashboardPage .hero-card{
+  background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;
+  border:1px solid #264058!important;
+  box-shadow:none!important;
+}
+#dashboardPage .quick-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-top:14px!important;
+}
+#dashboardPage .quick-actions button,
+#dashboardPage .share-actions button,
+#dashboardPage #copyShareBtn{
+  width:auto!important;
+  min-width:112px!important;
+  max-width:160px!important;
+  padding:9px 12px!important;
+  margin:0!important;
+  border-radius:10px!important;
+  background:#1b2b3d!important;
+  border:1px solid #334b63!important;
+  color:#dbe7f3!important;
+  box-shadow:none!important;
+  font-size:13px!important;
+  font-weight:800!important;
+}
+#dashboardPage .quick-actions button:hover,
+#dashboardPage .share-actions button:hover,
+#dashboardPage #copyShareBtn:hover{
+  background:#24384f!important;
+  border-color:#45617c!important;
+  color:#fff!important;
+}
+#shareProfilePanel{
+  padding:14px!important;
+  background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;
+  border-color:#264058!important;
+  box-shadow:none!important;
+  max-height:320px!important;
+  overflow:auto!important;
+}
+#shareProfilePanel h3{font-size:18px!important;margin:6px 0 4px!important;}
+#shareProfilePanel #shareSub{font-size:13px!important;margin:0 0 10px!important;line-height:1.35!important;}
+#shareProfilePanel .share-link-box{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:8px!important;
+  margin:8px 0!important;
+}
+#shareProfilePanel .share-link-box input{
+  min-width:0!important;
+  height:40px!important;
+  padding:9px 10px!important;
+  font-size:12px!important;
+}
+#shareProfilePanel .share-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-top:8px!important;
+}
+#shareProfilePanel .share-permissions{
+  max-height:135px!important;
+  overflow:auto!important;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;
+}
+#shareProfilePanel .preview-profile{max-height:180px!important;overflow:auto!important;}
+/* Top actions should belong to the page, not the screen. They disappear naturally on scroll. */
+#app.app > .top-actions,
 #app.app:not(.hidden) > .top-actions,
-#app.app:not(.hidden) > .atsrs-global-top-actions,
-#app.app:not(.hidden) > .atsrs-v56-top-actions,
-#app.app:not(.hidden) > .atsrs-v64-top-actions,
+#app.app > .atsrs-global-top-actions,
+#app.app > .atsrs-v56-top-actions,
+#app.app > .atsrs-v64-top-actions,
 body > .top-actions,
 body > .atsrs-global-top-actions,
 body > .atsrs-v56-top-actions,
@@ -15,814 +459,162 @@ body > .atsrs-v64-top-actions{
   left:auto!important;
   bottom:auto!important;
   z-index:90!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+#app.app.hidden > .top-actions{display:none!important;}
+@media(max-width:900px){
+  #dashboardPage .solo-hero{grid-template-columns:1fr!important;}
+}
+@media(max-width:600px){
+  #shareProfilePanel{max-height:360px!important;}
+  #shareProfilePanel .share-link-box{grid-template-columns:1fr!important;}
+  #dashboardPage .quick-actions button,#dashboardPage .share-actions button,#dashboardPage #copyShareBtn{width:100%!important;max-width:none!important;}
+}
+
+body > .atsrs-v56-top-actions{
+  position:absolute!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:2147483647!important;
   display:flex!important;
   align-items:center!important;
   gap:10px!important;
-  transform:none!important;
-  will-change:auto!important;
-  width:auto!important;
-  height:auto!important;
-  margin:0!important;
-  padding:0!important;
+  transform:translateZ(0)!important;
+  will-change:transform!important;
 }
-#app.app:not(.hidden) > .top-actions .lang-floating,
-#app.app:not(.hidden) > .top-actions .app-lang-switcher,
-#app.app:not(.hidden) > .atsrs-global-top-actions .lang-floating,
-#app.app:not(.hidden) > .atsrs-global-top-actions .app-lang-switcher,
-#app.app:not(.hidden) > .atsrs-v56-top-actions .lang-floating,
-#app.app:not(.hidden) > .atsrs-v56-top-actions .app-lang-switcher,
-#app.app:not(.hidden) > .atsrs-v64-top-actions .lang-floating,
-#app.app:not(.hidden) > .atsrs-v64-top-actions .app-lang-switcher,
-body > .top-actions .lang-floating,
-body > .top-actions .app-lang-switcher,
-body > .atsrs-global-top-actions .lang-floating,
-body > .atsrs-global-top-actions .app-lang-switcher,
 body > .atsrs-v56-top-actions .lang-floating,
-body > .atsrs-v56-top-actions .app-lang-switcher,
-body > .atsrs-v64-top-actions .lang-floating,
-body > .atsrs-v64-top-actions .app-lang-switcher{
+body > .atsrs-v56-top-actions .app-lang-switcher{
   position:relative!important;
   top:auto!important;
   right:auto!important;
   left:auto!important;
   bottom:auto!important;
   transform:none!important;
-  display:block!important;
 }
-#app.app:not(.hidden) .lang-menu,
-body > .top-actions .lang-menu,
-body > .atsrs-global-top-actions .lang-menu,
-body > .atsrs-v56-top-actions .lang-menu,
-body > .atsrs-v64-top-actions .lang-menu{
+body > .atsrs-v56-top-actions .lang-menu{
   position:absolute!important;
   top:56px!important;
   right:0!important;
   left:auto!important;
-  bottom:auto!important;
 }
+#auth:not(.hidden) ~ .atsrs-v56-top-actions,
+body.auth-open > .atsrs-v56-top-actions{display:none!important;}
+#app.hidden ~ .atsrs-v56-top-actions{display:none!important;}
 @media(max-width:800px){
-  #app.app:not(.hidden) > .top-actions,
-  #app.app:not(.hidden) > .atsrs-global-top-actions,
-  #app.app:not(.hidden) > .atsrs-v56-top-actions,
-  #app.app:not(.hidden) > .atsrs-v64-top-actions,
-  body > .top-actions,
-  body > .atsrs-global-top-actions,
-  body > .atsrs-v56-top-actions,
-  body > .atsrs-v64-top-actions{
-    position:absolute!important;
-    top:12px!important;
-    right:12px!important;
-    left:auto!important;
-  }
-  #app.app:not(.hidden) .lang-menu,
-  body > .top-actions .lang-menu,
-  body > .atsrs-global-top-actions .lang-menu,
-  body > .atsrs-v56-top-actions .lang-menu,
-  body > .atsrs-v64-top-actions .lang-menu{
-    top:52px!important;
-    right:0!important;
-    left:auto!important;
-  }
+  body > .atsrs-v56-top-actions{top:12px!important;right:12px!important;}
+  body > .atsrs-v56-top-actions .lang-menu{top:52px!important;right:0!important;left:auto!important;}
 }
-#auth #introTitle{
-  max-width:920px!important;
+#refsPage .career-record-row{
+  grid-template-columns:minmax(0,1fr)!important;
 }
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
+#refsPage .career-record-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
 }
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-#atsrsFixedPortalTopbar,
-#atsrsPortalLangCircle,
-#atsrsPortalLangMenu,
-#atsrsPortalLogoutBtn{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-:root{--v76-bg:#06111d;--v76-panel:#0b1726;--v76-panel2:#101d2e;--v76-border:#253850;--v76-text:#f8fafc;--v76-muted:#9fb0c5;--v76-green:#22c55e;--v76-red:#ef4444;--v76-blue:#38bdf8}
-body{background:linear-gradient(135deg,#06111d,#082033 52%,#071827)!important;color:var(--v76-text)!important}
-.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.intro-service-card{background:rgba(11,23,38,.94)!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}
-button{box-shadow:none!important}
-.lang-circle{width:auto!important;height:auto!important;min-width:44px!important;border-radius:10px!important;padding:8px 10px!important;background:transparent!important;border:0!important;box-shadow:none!important;font-size:24px!important;line-height:1!important;cursor:default!important}
-.lang-circle::after{content:'EN';font-size:11px;margin-left:6px;color:var(--v76-muted);vertical-align:middle;font-weight:900;letter-spacing:.03em}
-.lang-menu{display:none!important}
-.sidebar{background:#06111d!important;border-right:1px solid #17263a!important;box-shadow:none!important}
-.sidebar-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;margin-bottom:10px!important;width:100%!important}
-.sidebar-head .brand{order:1!important;line-height:34px!important;white-space:nowrap!important}.sidebar-head .sidebar-toggle{order:2!important;margin-left:auto!important}
-.sidebar-toggle{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;margin:0 0 0 auto!important;border-radius:9px!important;background:#101d2e!important;border:1px solid var(--v76-border)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important}
-.sidebar-toggle span{display:block!important;width:16px!important;height:2px!important;border-radius:99px!important;background:var(--v76-text)!important}.brand{font-size:28px!important}
-.nav{gap:4px!important}.nav button{background:transparent!important;border:0!important;border-left:3px solid transparent!important;border-radius:8px!important;color:#dbeafe!important;padding:12px 10px!important;text-align:left!important;box-shadow:none!important}.nav button.active,.nav button:hover{background:#101d2e!important;border-left-color:var(--v76-green)!important;color:#fff!important}.nav button::before{margin-right:8px}.nav button.active{font-weight:900!important}
-.intro-service-card,.feature-tile,.workflow-step,.snapshot-item,.risk-item{background:#0b1726!important;border:1px solid var(--v76-border)!important;box-shadow:none!important}.intro-service-card.active{background:#0f1f31!important;border-color:var(--v76-green)!important}
-.mode-choice{gap:10px!important}.mode-choice.mode-error{border:0!important;background:transparent!important;padding:0!important}.mode-choice button{border:1px solid var(--v76-border)!important;border-radius:12px!important;background:#0b1726!important;color:#fff!important}.mode-choice button.active{background:#10251d!important;border-color:var(--v76-green)!important}
-.mode-error-text.active{display:flex!important;align-items:center;gap:8px;background:transparent!important;border:0!important;border-radius:0!important;color:#ffb4b4!important;padding:6px 2px!important;margin:2px 0 8px!important;font-size:13px!important;font-weight:800!important}.mode-error-text.active::before{content:'!';width:17px;height:17px;border-radius:50%;background:transparent;color:var(--v76-red);border:1.5px solid var(--v76-red);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:0 0 auto}
-.auth-card{display:flex!important;flex-direction:column!important}.auth-card #loginBox{display:flex;flex-direction:column!important}.auth-card #loginBox.hidden{display:none!important}#loginBtn{order:10}#localTestBtn{order:11}.atsrs-audit-btn{order:12;background:#17263a!important;border:1px solid var(--v76-border)!important;color:#dbeafe!important}#createBtn{order:13}#forgotBtn{order:14}
-.v76-audit-modal{position:fixed;inset:0;background:rgba(2,6,23,.72);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:18px}.v76-audit-card{width:min(760px,100%);max-height:86vh;overflow:auto;background:#081524;border:1px solid var(--v76-border);border-radius:18px;padding:16px}.v76-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--v76-border);padding-bottom:10px}.v76-audit-head h3{margin:0}.v76-audit-close,.v76-copy-btn{width:auto!important;background:#17263a!important;border:1px solid var(--v76-border)!important;padding:8px 12px!important;margin:0!important}.v76-audit-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #142235}.v76-audit-row:last-child{border-bottom:0}.v76-status{font-weight:900}.v76-pass{color:#86efac}.v76-warn{color:#facc15}.v76-fail{color:#fda4af}.v76-audit-row p{margin:2px 0 0;color:var(--v76-muted);font-size:13px}.v76-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.v76-chip{border:1px solid var(--v76-border);border-radius:999px;padding:5px 9px;color:#cbd5e1;font-size:12px;font-weight:900}
-body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minmax(0,1fr)!important}body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{width:78px!important}body.v76-sidebar-collapsed .sidebar .brand,body.v76-sidebar-collapsed .sidebar .sub,body.v76-sidebar-collapsed .sidebar .nav button{font-size:0!important}body.v76-sidebar-collapsed .sidebar .nav button{height:44px!important;text-align:center!important}body.v76-sidebar-collapsed .sidebar .nav button::before{font-size:22px!important;margin:0!important}body.v76-sidebar-collapsed #navIntro::before{content:'🏠'}body.v76-sidebar-collapsed #navDashboard::before{content:'📊'}body.v76-sidebar-collapsed #navPersonnel::before{content:'👥'}body.v76-sidebar-collapsed #navCertificates::before{content:'📁'}body.v76-sidebar-collapsed #navRefs::before{content:'📄'}body.v76-sidebar-collapsed #navCompliance::before{content:'✅'}body.v76-sidebar-collapsed #navReports::before{content:'📈'}body.v76-sidebar-collapsed #navProfile::before{content:'⚙️'}
-@media(max-width:800px){.sidebar-head{justify-content:space-between!important}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
-#modeRule{display:none!important}
-#modeInstruction{display:none!important}
-#modeInstruction.active{display:flex!important}
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-#auth .auth-card{
-  padding:24px 26px!important;
-}
-#auth .auth-card .logo{
-  font-size:36px!important;
-  line-height:1.05!important;
-}
-#auth .auth-card #authSubtitle{
-  margin:8px 0 18px!important;
-}
-#auth #loginTitle{
-  margin:0 0 14px!important;
-}
-#auth #loginBox input{
-  margin:5px 0!important;
-  padding:11px 12px!important;
-}
-#auth .mode-choice{
-  margin:8px 0 8px!important;
-  gap:9px!important;
-}
-#auth .mode-choice button{
-  padding:10px 12px!important;
-  margin:0!important;
-}
-#auth #loginBtn,#auth #localTestBtn,#auth #createBtn{
-  margin:5px 0!important;
-  padding:11px 12px!important;
-}
-#auth #forgotBtn{
-  margin:6px 0 0!important;
-  padding:3px 0!important;
-}
-#auth .mode-instruction.active{
-  margin:4px 0 8px!important;
-  padding:4px 2px!important;
-}
-.remember-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin:4px 0 0!important;
-  color:#dbeafe;
-  font-size:13px;
-  font-weight:800;
-  cursor:pointer;
-  user-select:none;
-}
-.remember-row input{
-  width:16px!important;
-  height:16px!important;
-  min-width:16px!important;
-  margin:0!important;
-  padding:0!important;
-  accent-color:#22c55e;
-}
-.remember-note{display:none!important;}
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-.signup-social-area{
-  margin:8px 0 4px!important;
-}
-.social-auth-group{
-  display:flex;
-  gap:8px;
-  margin:8px 0 2px!important;
-}
-.social-auth-inline{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px!important;
-}
-.social-auth-btn{
-  width:100%!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:7px!important;
-  margin:0!important;
-  padding:9px 8px!important;
-  border-radius:12px!important;
-  border:1px solid rgba(148,163,184,.28)!important;
-  background:rgba(8,21,36,.82)!important;
-  color:#eef6ff!important;
-  box-shadow:none!important;
-  font-size:12.5px!important;
-  font-weight:850!important;
-  letter-spacing:.01em;
-  white-space:nowrap!important;
-}
-.social-auth-btn:hover{
-  border-color:rgba(34,197,94,.62)!important;
-  background:rgba(15,33,50,.96)!important;
-  transform:translateY(-1px);
-}
-.social-auth-icon{
-  width:22px;
-  height:22px;
-  border-radius:6px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 22px;
-  font-size:11px;
-  font-weight:950;
-  background:#ffffff;
-  color:#0f172a;
-  line-height:1;
-  overflow:hidden;
-}
-.social-auth-icon svg{width:17px;height:17px;display:block;}
-.social-google .social-auth-icon svg{width:14px!important;height:14px!important;}
-.social-microsoft .social-auth-icon svg{width:14px!important;height:14px!important;}
-.social-google .social-auth-icon{background:#ffffff;border:1px solid rgba(148,163,184,.35);}
-.social-microsoft .social-auth-icon{background:#ffffff;border:1px solid rgba(148,163,184,.35);}
-.social-linkedin .social-auth-icon{background:#0a66c2;color:#ffffff;font-family:Arial,sans-serif;border:0;}
-.auth-divider{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:6px 0 6px!important;
-  color:#8fa1b7;
-  font-size:10.5px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-.auth-divider::before,.auth-divider::after{
-  content:"";
-  height:1px;
-  background:rgba(148,163,184,.25);
-  flex:1;
-}
-#auth #loginBox input,
-#auth #registerBox input{
-  margin:5px 0!important;
-}
-#auth #registerBox #registerBtn,
-#auth #registerBox #backLoginBtn1{
-  margin:5px 0!important;
-  padding:11px 12px!important;
-}
-#auth #loginBox{display:flex!important;flex-direction:column!important;}
-#auth #loginTitle{order:1;}
-#auth #loginEmail{order:2;}
-#auth #loginEmailRule{order:3;}
-#auth #loginPassword{order:4;}
-#auth #rememberRow{order:5;}
-#auth #modeChoiceBox{order:6;}
-#auth #modeRule{order:7;}
-#auth #modeInstruction{order:8;}
-#auth #loginBtn{order:9;}
-#auth #localTestBtn{order:10;}
-#auth #createBtn{order:11;}
-#auth #signupSocialArea{order:12;}
-#auth #forgotBtn{order:13;}
-#auth #loginMsg{order:14;}
-
-@media(max-width:560px){
-  .social-auth-inline{grid-template-columns:1fr!important;}
-  .social-auth-btn{font-size:13px!important;padding:10px!important;}
-}
-.social-auth-icon{
-  width:22px!important;
-  height:22px!important;
-  flex:0 0 22px!important;
-  border-radius:6px!important;
-}
-.social-google .social-auth-icon,
-.social-microsoft .social-auth-icon{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-.social-google .social-auth-icon svg,
-.social-microsoft .social-auth-icon svg{
-  width:18px!important;
-  height:18px!important;
-}
-.social-linkedin .social-auth-icon{
-  width:22px!important;
-  height:22px!important;
-  flex:0 0 22px!important;
-}
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-#auth #localTestBtn,
-#localTestBtn{
-  display:block!important;
-  visibility:visible!important;
-  pointer-events:auto!important;
-  background:#26384e!important;
-  border:1px solid #3b536d!important;
-  color:#eef6ff!important;
-  box-shadow:none!important;
-}
-#auth #localTestBtn:hover,
-#localTestBtn:hover{
-  background:#2f455d!important;
-  border-color:rgba(56,189,248,.55)!important;
-}
-#auth .mode-instruction-icon,
-.mode-instruction-icon{
-  background:transparent!important;
-  border:2px solid #ef4444!important;
-  color:#ef4444!important;
-}
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-#refsPage .career-record-actions .action,
-#refsPage #cvCard .action,
-#refsPage button.action{
-  background:#26384e!important;
-  border:1px solid #3b536d!important;
-  color:#eef6ff!important;
-  box-shadow:none!important;
-}
-#refsPage .career-record-actions .action:hover,
-#refsPage #cvCard .action:hover,
-#refsPage button.action:hover{
-  background:#2f455d!important;
-  border-color:rgba(56,189,248,.55)!important;
-}
-
-/* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
-.atsrs-account-badge{
-  min-width:190px;
-  max-width:260px;
-  background:#020617;
-  border:1px solid rgba(34,197,94,.45);
-  border-radius:14px;
-  padding:8px 12px;
-  box-shadow:0 14px 32px rgba(0,0,0,.30);
-  line-height:1.25;
-}
-.atsrs-account-badge div:first-child{
-  color:#86efac;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-.atsrs-account-badge div:last-child{
-  color:#cbd5e1;
-  font-size:11px;
-  margin-top:3px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-body.personal-mode #totalPersonnelText,
-body.personal-mode #totalPersonnel{display:none!important}
-body.personal-mode .dashboard-snapshot-panel{display:block!important}
-body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
-body.personal-mode #dashboardPage .card{border-color:#264058!important}
-@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
-
-
-/* V110: Login stays simple. Account type belongs only to registration. */
-#loginBox > #modeChoiceBox,
-#loginBox > #modeRule,
-#loginBox > #modeInstruction{
-  display:none!important;
-}
-#loginBox .mode-error-text,
-#loginBox .mode-instruction{
-  display:none!important;
-}
-
-/* Register account type area */
-#registerAccountTypeArea{
-  margin:4px 0 16px!important;
-}
-#registerAccountTypeArea .mode-choice{
-  display:grid!important;
-  grid-template-columns:1fr 1fr!important;
-  gap:10px!important;
-  margin:10px 0 12px!important;
-  border:0!important;
-  padding:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-#registerAccountTypeArea .mode-choice.mode-error{
-  border:0!important;
-  background:transparent!important;
-  padding:0!important;
-  box-shadow:none!important;
-}
-#registerAccountTypeArea .mode-choice button,
-#registerAccountTypeArea .mode-choice.mode-error button{
-  position:relative!important;
+#refsPage .career-record-actions button{
   overflow:hidden!important;
-  min-height:58px!important;
-  border:1px solid #334155!important;
-  border-radius:16px!important;
-  background:#17263a!important;
-  color:#f8fafc!important;
-  box-shadow:none!important;
+  text-overflow:ellipsis!important;
 }
-#registerAccountTypeArea .mode-choice button.active{
-  background:linear-gradient(135deg,rgba(34,197,94,.17),rgba(15,118,110,.22))!important;
-  border-color:#22c55e!important;
-  box-shadow:0 0 0 1px rgba(34,197,94,.20) inset!important;
+#refsPage .career-record-date input{
+  max-width:190px!important;
 }
-#registerAccountTypeArea.needs-choice .mode-choice button:not(.active)::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  transform:translateX(-125%);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
-  animation:atsrsV110ChoiceShimmer 1.35s infinite;
-  pointer-events:none;
+@media(max-width:520px){
+  #refsPage .career-record-actions{grid-template-columns:1fr!important;}
 }
-#registerAccountTypeArea.needs-choice .mode-choice button:nth-child(2)::after{animation-delay:.32s;}
-@keyframes atsrsV110ChoiceShimmer{100%{transform:translateX(125%);}}
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
 
-/* Single guidance card only. */
-#registerAccountNotice{
-  display:flex!important;
-  align-items:flex-start!important;
-  gap:10px!important;
-  margin:12px 0 16px!important;
-  padding:13px 14px!important;
-  border:1px solid rgba(34,197,94,.55)!important;
-  background:rgba(34,197,94,.08)!important;
-  border-radius:16px!important;
-  color:#eafdf0!important;
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
 }
-#registerAccountNotice .notice-icon{
-  width:28px!important;
-  height:28px!important;
-  border-radius:50%!important;
-  background:#22c55e!important;
-  color:#04111d!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  font-weight:900!important;
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+#refsPage .ref-card{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+}
+#refsPage .career-record-list{
+  flex:0 1 auto!important;
+  max-height:196px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:6px!important;
+  scrollbar-gutter:stable!important;
+}
+#refsPage .career-record-list::-webkit-scrollbar{width:8px!important}
+#refsPage .career-record-list::-webkit-scrollbar-track{background:rgba(2,6,23,.35)!important;border-radius:999px!important}
+#refsPage .career-record-list::-webkit-scrollbar-thumb{background:#3b536d!important;border-radius:999px!important}
+#refsPage .career-record-row{
+  min-height:38px!important;
   flex:0 0 auto!important;
 }
-#registerAccountNotice b{display:block!important;font-size:14px!important;margin:0 0 2px!important;color:#fff!important;}
-#registerAccountNotice span{display:block!important;font-size:13px!important;line-height:1.38!important;color:#d7e3ef!important;}
-
-/* Remove old warning duplicates from register. */
-#registerBox #modeRule,
-#registerBox #modeInstruction,
-#registerBox .mode-error-text,
-#registerBox .mode-instruction{
-  display:none!important;
+@media(max-width:760px){
+  #refsPage .career-record-list{max-height:216px!important;}
+  #refsPage .career-record-row{min-height:42px!important;}
+}
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
 }
 
-/* Social register icons: keep inline icon design, remove names and boxes. */
-#signupSocialAuth.social-auth-inline{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:18px!important;
-  margin:12px 0!important;
-}
-#signupSocialAuth .social-auth-btn{
-  width:auto!important;
-  height:auto!important;
-  min-width:0!important;
-  padding:0!important;
-  margin:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-#signupSocialAuth .social-auth-btn span:not(.social-auth-icon){display:none!important;}
-#signupSocialAuth .social-auth-icon{
-  width:34px!important;
-  height:34px!important;
-  flex:0 0 34px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-#signupSocialAuth .social-auth-icon svg{width:30px!important;height:30px!important;}
-#signupSocialAuth .social-linkedin .social-auth-icon{
-  border-radius:8px!important;
-  background:#0a66c2!important;
-  color:#fff!important;
-  font-weight:900!important;
-  font-size:19px!important;
-  font-family:Arial,sans-serif!important;
-}
 
 /* V118 Personal dashboard simplification + account badge */
 #dashboardPage .missing-card,
@@ -862,3 +654,256 @@ body.personal-mode .dashboard-snapshot-panel{display:block!important}
 body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
 body.personal-mode #dashboardPage .card{border-color:#264058!important}
 @media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+#navLogout{display:none!important;}
+#app.app > .top-actions{
+  position:fixed!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:2147483647!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+#app.app.hidden > .top-actions{display:none!important;}
+#app.app > .top-actions .lang-floating,
+#app.app > .top-actions .app-lang-switcher{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+#app.app > .top-actions .lang-menu{
+  position:absolute!important;
+  top:56px!important;
+  right:0!important;
+  left:auto!important;
+}
+#app.app > .top-actions .top-logout{
+  width:auto!important;
+  margin:0!important;
+  padding:12px 14px!important;
+  border-radius:12px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+@media(max-width:800px){
+  #app.app > .top-actions{top:12px!important;right:12px!important;}
+  #app.app > .top-actions .lang-menu{top:52px!important;right:0!important;left:auto!important;}
+  #app.app > .top-actions .top-logout{padding:10px 12px!important;}
+}
+html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important;}
+@media(max-width:800px){html[dir="rtl"] #app.app > .top-actions{right:12px!important;left:auto!important;}}
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+#atsrsTopbarTroubleBtn{
+  width:auto!important;
+  margin:0!important;
+  padding:12px 14px!important;
+  border-radius:12px!important;
+  border:1px solid #facc15!important;
+  background:linear-gradient(135deg,#ca8a04,#eab308)!important;
+  color:#07111d!important;
+  font-weight:900!important;
+  box-shadow:0 10px 26px rgba(234,179,8,.20)!important;
+  cursor:pointer!important;
+}
+#atsrsTopbarTroublePanel{
+  position:fixed!important;
+  right:18px!important;
+  top:82px!important;
+  width:min(560px,calc(100vw - 24px))!important;
+  max-height:72vh!important;
+  overflow:auto!important;
+  z-index:2147483647!important;
+  background:#06111f!important;
+  border:1px solid #facc15!important;
+  border-radius:16px!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.55)!important;
+  color:#e5e7eb!important;
+  padding:14px!important;
+  font-family:Arial,sans-serif!important;
+}
+#atsrsTopbarTroublePanel.hidden{display:none!important}
+#atsrsTopbarTroublePanel h3{margin:0 0 8px!important;font-size:16px!important;color:#fef3c7!important}
+#atsrsTopbarTroublePanel pre{
+  white-space:pre-wrap!important;
+  word-break:break-word!important;
+  background:#020617!important;
+  border:1px solid #334155!important;
+  border-radius:12px!important;
+  padding:10px!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+  color:#dbeafe!important;
+}
+#atsrsTopbarTroublePanel .trouble-actions{display:flex!important;gap:8px!important;margin:10px 0!important;flex-wrap:wrap!important}
+#atsrsTopbarTroublePanel .trouble-actions button{width:auto!important;margin:0!important;padding:9px 12px!important;border-radius:10px!important}
+#atsrsTopbarTroublePanel .trouble-close{background:#334155!important;color:#fff!important;border:1px solid #475569!important}
+#atsrsTopbarTroublePanel .trouble-fix{background:#16a34a!important;color:#fff!important;border:0!important}
+@media(max-width:800px){
+  #atsrsTopbarTroubleBtn{padding:10px 11px!important;font-size:12px!important}
+  #atsrsTopbarTroublePanel{right:12px!important;top:74px!important;max-height:70vh!important}
+}
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
+  max-width:720px!important;
+  margin-top:10px!important;
+}
+@media(max-width:760px){
+  #auth #introText{font-size:16px!important;}
+}
+
+
+/* V118 Personal dashboard simplification + account badge */
+#dashboardPage .missing-card,
+#dashboardPage #missingDocs,
+#dashboardPage #missingDocsText,
+#dashboardPage #docStatusTitle,
+#dashboardPage #docStatusSub,
+#dashboardPage #docCategoryGrid{display:none!important}
+.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
+.atsrs-account-badge{
+  min-width:190px;
+  max-width:260px;
+  background:#020617;
+  border:1px solid rgba(34,197,94,.45);
+  border-radius:14px;
+  padding:8px 12px;
+  box-shadow:0 14px 32px rgba(0,0,0,.30);
+  line-height:1.25;
+}
+.atsrs-account-badge div:first-child{
+  color:#86efac;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.atsrs-account-badge div:last-child{
+  color:#cbd5e1;
+  font-size:11px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.personal-mode #totalPersonnelText,
+body.personal-mode #totalPersonnel{display:none!important}
+body.personal-mode .dashboard-snapshot-panel{display:block!important}
+body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+body.personal-mode #dashboardPage .card{border-color:#264058!important}
+@media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
+
+#atsrsTestAutomationBtn{
+  width:auto!important;margin:0!important;padding:12px 14px!important;border-radius:12px!important;
+  border:1px solid #38bdf8!important;background:linear-gradient(135deg,#0284c7,#22c55e)!important;
+  color:#fff!important;font-weight:900!important;box-shadow:0 10px 26px rgba(14,165,233,.20)!important;
+  cursor:pointer!important;position:relative!important;display:block!important;white-space:nowrap!important;
+}
+#atsrsTestAutomationPanel{
+  position:fixed!important;right:18px!important;top:132px!important;width:min(760px,calc(100vw - 24px))!important;
+  max-height:76vh!important;overflow:auto!important;z-index:2147483647!important;background:#06111f!important;
+  border:1px solid #38bdf8!important;border-radius:18px!important;box-shadow:0 24px 80px rgba(0,0,0,.58)!important;
+  color:#e5e7eb!important;padding:16px!important;font-family:Arial,sans-serif!important;
+}
+#atsrsTestAutomationPanel.hidden{display:none!important}
+#atsrsTestAutomationPanel h3{margin:0 0 8px!important;font-size:18px!important;color:#dffcff!important}
+#atsrsTestAutomationPanel .qa-sub{margin:0 0 12px!important;color:#a7b5c5!important;font-size:13px!important;line-height:1.45!important}
+#atsrsTestAutomationPanel .qa-actions{display:flex!important;gap:8px!important;flex-wrap:wrap!important;margin:10px 0 12px!important}
+#atsrsTestAutomationPanel .qa-actions button{width:auto!important;margin:0!important;padding:9px 12px!important;border-radius:10px!important}
+#atsrsTestAutomationPanel .qa-close{background:#334155!important;color:#fff!important;border:1px solid #475569!important}
+#atsrsTestAutomationPanel .qa-fix{background:#16a34a!important;color:#fff!important;border:0!important}
+#atsrsTestAutomationPanel .qa-run{background:#0284c7!important;color:#fff!important;border:0!important}
+#atsrsTestAutomationPanel .qa-summary{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;margin:10px 0!important}
+#atsrsTestAutomationPanel .qa-box{background:#020617!important;border:1px solid #334155!important;border-radius:12px!important;padding:10px!important;text-align:center!important}
+#atsrsTestAutomationPanel .qa-box b{display:block!important;font-size:22px!important}.qa-pass{color:#86efac!important}.qa-warn{color:#fde68a!important}.qa-fail{color:#fda4af!important}.qa-fixed{color:#a5f3fc!important}
+#atsrsTestAutomationPanel details{background:#020617!important;border:1px solid #334155!important;border-radius:12px!important;margin:8px 0!important;padding:10px!important}
+#atsrsTestAutomationPanel summary{cursor:pointer!important;font-weight:900!important;color:#e0f2fe!important}
+#atsrsTestAutomationPanel ul{margin:8px 0 0 18px!important;padding:0!important}
+#atsrsTestAutomationPanel li{margin:5px 0!important;font-size:13px!important;line-height:1.35!important}
+.atsrs-ref-file-scroll{max-height:168px!important;overflow-y:auto!important;padding-right:6px!important;scrollbar-width:thin!important}
+@media(max-width:800px){
+  #atsrsTestAutomationBtn{padding:10px 11px!important;font-size:12px!important}
+  #atsrsTestAutomationPanel{right:12px!important;top:122px!important;max-height:72vh!important}
+  #atsrsTestAutomationPanel .qa-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+#auth #introTitle{
+  max-width:920px!important;
+}
+#auth #introText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#b8c5d6!important;
