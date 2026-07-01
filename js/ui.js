@@ -1,293 +1,355 @@
-/* ATSRS V179 split from V178 - ui.js. Original JS execution order preserved by index script order. */
-
-/* --- Original inline script id=atsrs-v161-single-date-badge-script --- */
+/* ATSRS V178 extracted JavaScript batch: ui.js. Loaded in original V178 execution order. No placeholder code. */
+/* ===== extracted from inline script id=v62-test-automation-script ===== */
 (function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TYPE='TEST BUILD';
-  var cleaning=false;
-  function isBuildText(t){
-    t=String(t||'').trim();
-    return /^ATSRS\s+V\d+/i.test(t) || /^Last\s+Update\s*:/i.test(t) || /TEST\s+BUILD/i.test(t) || /\bUTC\b/i.test(t);
+  function el(id){ return document.getElementById(id); }
+  function shown(node){ return !!node && getComputedStyle(node).display!=='none' && getComputedStyle(node).visibility!=='hidden'; }
+  function add(result, level, title, detail, fixFn){ result.push({level:level,title:title,detail:detail||'',fixFn:fixFn||null}); }
+  function ensurePanel(){
+    var p=el('atsrsTestAutomationPanel'); if(p) return p;
+    p=document.createElement('div'); p.id='atsrsTestAutomationPanel'; p.className='hidden';
+    p.innerHTML='<h3>ATSRS Test Automation Report</h3><p class="qa-sub">Runs frontend QA checks, applies safe local fixes, and lists items requiring backend/manual work.</p><div class="qa-actions"><button class="qa-run" type="button" onclick="atsrsRunFullAutomation(false)">Run Test</button><button class="qa-fix" type="button" onclick="atsrsRunFullAutomation(true)">Run + Auto Fix</button><button class="qa-close" type="button" onclick="document.getElementById(\'atsrsTestAutomationPanel\').classList.add(\'hidden\')">Close</button></div><div id="atsrsQaOutput"></div>';
+    document.body.appendChild(p); return p;
   }
-  function normalizeBadge(){
-    if(cleaning)return;
-    cleaning=true;
+  function hardFixTopbar(){
+    var app=el('app'); var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
+    if(!app||!top) return false;
+    if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
+    top.classList.remove('atsrs-v56-top-actions','atsrs-global-top-actions');
+    top.style.cssText='position:fixed!important;top:18px!important;right:18px!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;display:flex!important;align-items:center!important;gap:10px!important;transform:none!important;width:auto!important;height:auto!important;';
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang) lang.style.cssText='position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;transform:none!important;display:block!important;';
+    var logout=el('topLogoutBtn');
+    if(logout) logout.style.cssText='width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important;display:block!important;position:relative!important;';
+    return true;
+  }
+  function fixRefScroll(){
+    var fixed=0;
+    var candidates=document.querySelectorAll('.ref-card,.cv-card,.panel');
+    candidates.forEach(function(card){
+      var text=(card.textContent||'').toLowerCase();
+      if(text.indexOf('appraisal')!==-1 || text.indexOf('reference')!==-1 || text.indexOf('recommendation')!==-1 || text.indexOf('cv')!==-1){
+        var lists=card.querySelectorAll('.preview-box,.ref-file-info,.ref-doc-list,.ref-upload-list,.cv-file-list,ul,tbody');
+        lists.forEach(function(list){
+          if(list && list.children && list.children.length>3){ list.classList.add('atsrs-ref-file-scroll'); fixed++; }
+        });
+      }
+    });
+    return fixed;
+  }
+  function fixMissingButtonStyles(){
+    ['atsrsTopbarTroubleBtn','atsrsTestAutomationBtn'].forEach(function(id){ var b=el(id); if(b){b.style.width='auto';b.style.margin='0';} });
+    return true;
+  }
+  function testTopbar(res, autoFix){
+    var app=el('app'), top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions'), lang=el('appLangCircle'), logout=el('topLogoutBtn');
+    if(!top){ add(res,'fail','Topbar not found','Language/logout container is missing.'); return; }
+    if(!lang) add(res,'fail','App language button missing','appLangCircle not found.'); else add(res,'pass','App language button exists','appLangCircle found.');
+    if(!logout) add(res,'fail','Logout button missing','topLogoutBtn not found.'); else add(res,'pass','Logout button exists','topLogoutBtn found.');
+    var cs=getComputedStyle(top);
+    if(cs.position==='fixed') add(res,'pass','Topbar CSS position is fixed','Current position: fixed.');
+    else add(res,'fail','Topbar CSS position is not fixed','Current position: '+cs.position, hardFixTopbar);
+    var y0=window.scrollY, before=Math.round(top.getBoundingClientRect().top), max=document.documentElement.scrollHeight-window.innerHeight, target=Math.min(max,y0+260);
+    window.scrollTo(0,target);
+    var after=Math.round(top.getBoundingClientRect().top); window.scrollTo(0,y0);
+    if(Math.abs(after-before)<=2) add(res,'pass','Topbar scroll test passed','Before: '+before+', after: '+after+'.');
+    else add(res,'fail','Topbar moves during scroll','Before: '+before+', after: '+after+'.', hardFixTopbar);
+    if(autoFix) hardFixTopbar();
+  }
+  function testCoreDom(res){
+    [['auth','Login section'],['app','App section'],['dashboardPage','Dashboard'],['certificatesPage','Certificates'],['refsPage','References/Appraisals'],['profilePage','Profile'],['navDashboard','Dashboard nav'],['navCertificates','Certificates nav'],['navRefs','Refs nav'],['navProfile','Profile nav']].forEach(function(x){
+      add(res, el(x[0])?'pass':'fail', x[1]+' exists', x[0]+(el(x[0])?' found.':' missing.'));
+    });
+  }
+  function testFunctions(res){
+    ['changeLanguage','toggleAppLangMenu','showPage','renderAll','addCertificate','confirmLogout','logout','localTestLogin','saveProfile'].forEach(function(fn){
+      add(res, typeof window[fn]==='function'?'pass':'fail', 'Function '+fn, typeof window[fn]==='function'?'Available.':'Missing or overwritten.');
+    });
+  }
+  function testLanguage(res){
     try{
-      var main=document.getElementById('buildBadge');
-      if(!main){cleaning=false;return;}
-      document.querySelectorAll('.build-badge').forEach(function(b){
-        if(b!==main) b.remove();
-      });
-      main.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';
-      document.querySelectorAll('#auth *').forEach(function(el){
-        if(el===main || main.contains(el)) return;
-        if(el.closest && el.closest('#buildBadge')) return;
-        if(el.children && el.children.length) return;
-        if(isBuildText(el.textContent)) el.remove();
-      });
-    }catch(e){}
-    cleaning=false;
+      if(typeof changeLanguage==='function'){
+        changeLanguage('en');
+        add(res,'pass','English-only language test','Only English is active.');
+      } else add(res,'fail','English-only language test','changeLanguage function missing.');
+    }catch(e){ add(res,'fail','English-only language test',String(e)); }
   }
-  function run(){normalizeBadge();}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',run);
-  [0,50,150,400,900,1600,2600].forEach(function(ms){setTimeout(run,ms);});
-  setInterval(run,900);
-  if(window.MutationObserver){
-    var root=document.getElementById('auth')||document.body;
-    var mo=new MutationObserver(function(){setTimeout(run,0);});
-    mo.observe(root,{childList:true,subtree:true,characterData:true});
+  function testStorage(res){
+    try{ localStorage.setItem('atsrs_qa_test','ok'); var ok=localStorage.getItem('atsrs_qa_test')==='ok'; localStorage.removeItem('atsrs_qa_test'); add(res,ok?'pass':'fail','LocalStorage availability',ok?'LocalStorage works.':'LocalStorage write/read failed.'); }
+    catch(e){ add(res,'fail','LocalStorage blocked',String(e)); }
   }
+  function testReferenceScroll(res, autoFix){
+    var before=document.querySelectorAll('.atsrs-ref-file-scroll').length;
+    var fixed=autoFix?fixRefScroll():0;
+    var after=document.querySelectorAll('.atsrs-ref-file-scroll').length;
+    add(res,(after>0||fixed>0||before>0)?'fixed':'warn','Reference/Appraisal file list scroll guard','Existing/fixed scroll containers: '+Math.max(after,before)+'. If no files are uploaded yet, this check can only prepare CSS.');
+  }
+  function testBackendLimits(res){
+    add(res,'warn','Backend-required: real file storage','File persistence/upload must be verified with Supabase Storage or backend. Frontend can only preview/store local metadata.');
+    add(res,'warn','Backend-required: WhatsApp/email alerts','Scheduled alerts cannot run from static HTML alone. Need backend cron/edge function.');
+    add(res,'warn','Backend-required: OCR reliability','Tesseract loads from CDN; offline/weak network can fail. Production needs controlled OCR pipeline.');
+    add(res,'warn','Backend-required: secure shared profile','Demo link is frontend-only. Real secure share requires backend auth, tokens and permissions.');
+  }
+  function renderOutput(results, autoFix){
+    var out=el('atsrsQaOutput'); if(!out) return;
+    var counts={pass:0,warn:0,fail:0,fixed:0}; results.forEach(function(r){counts[r.level]=(counts[r.level]||0)+1;});
+    function group(level,label){
+      var items=results.filter(function(r){return r.level===level;});
+      if(!items.length) return '';
+      return '<details open><summary class="qa-'+level+'">'+label+' ('+items.length+')</summary><ul>'+items.map(function(r){return '<li><b>'+r.title+'</b><br><span>'+r.detail+'</span></li>';}).join('')+'</ul></details>';
+    }
+    out.innerHTML='<div class="qa-summary"><div class="qa-box"><b class="qa-pass">'+counts.pass+'</b><span>PASS</span></div><div class="qa-box"><b class="qa-fixed">'+counts.fixed+'</b><span>FIXED</span></div><div class="qa-box"><b class="qa-warn">'+counts.warn+'</b><span>WARN</span></div><div class="qa-box"><b class="qa-fail">'+counts.fail+'</b><span>FAIL</span></div></div>'+
+      '<p class="qa-sub">Mode: '+(autoFix?'Run + Auto Fix':'Run Test')+' · '+new Date().toLocaleString()+'</p>'+group('fail','Needs correction')+group('fixed','Auto-fix / guarded')+group('warn','Cannot be fully fixed from static frontend')+group('pass','Passed checks');
+  }
+  window.atsrsRunFullAutomation=function(autoFix){
+    ensurePanel().classList.remove('hidden');
+    var results=[];
+    testCoreDom(results); testFunctions(results); testStorage(results); testLanguage(results); testTopbar(results, !!autoFix); testReferenceScroll(results, !!autoFix); testBackendLimits(results);
+    if(autoFix){ fixMissingButtonStyles(); hardFixTopbar(); }
+    renderOutput(results, !!autoFix);
+  };
+  ready(function(){
+    var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
+    if(top && !el('atsrsTestAutomationBtn')){
+      var b=document.createElement('button'); b.type='button'; b.id='atsrsTestAutomationBtn'; b.textContent='Test Automation';
+      b.onclick=function(){ atsrsRunFullAutomation(false); };
+      var trouble=el('atsrsTopbarTroubleBtn');
+      if(trouble && trouble.parentElement===top) top.insertBefore(b,trouble); else top.appendChild(b);
+    }
+    ensurePanel();
+  });
 })();
 
-/* --- Original inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS --- */
+/* ===== extracted from inline script id=v64-clean-login-topbar-fix-script ===== */
 (function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  function q(s,r){return (r||document).querySelector(s);}
-  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){
-    qa('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent=UPDATE;
-      if(d[2])d[2].textContent='TEST BUILD';
+  function appVisible(){
+    var app=document.getElementById('app');
+    return !!(app && !app.classList.contains('hidden'));
+  }
+  function removeTempButtons(){
+    ['atsrsTopbarTroubleBtn','atsrsTopbarTroublePanel','atsrsTestAutomationBtn','atsrsTestAutomationPanel'].forEach(function(id){
+      var n=document.getElementById(id); if(n) n.remove();
     });
   }
-  function compactRefControls(){
-    qa('#refsPage .atsrs-v134-career-card').forEach(function(card){
-      var btn=q('.atsrs-v134-upload',card);
-      var bar=q('.atsrs-v134-statusbar',card);
-      var filter=q('.atsrs-v134-filter',card);
-      var status=q('.atsrs-v134-status',card);
-      if(btn&&bar&&btn.parentElement!==bar){
-        if(filter)bar.insertBefore(btn,filter); else bar.appendChild(btn);
+  function syncBodyState(){
+    document.body.classList.toggle('app-open', appVisible());
+    document.body.classList.toggle('auth-open', !appVisible());
+  }
+  function dockTopbar(){
+    var app=document.getElementById('app');
+    var top=document.querySelector('body > .atsrs-v64-top-actions') || document.querySelector('.top-actions');
+    if(!top) return;
+    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions');
+    top.classList.add('atsrs-v64-top-actions');
+    if(app && top.parentElement!==app) app.insertBefore(top, app.firstChild);
+    syncBodyState();
+    top.style.setProperty('display',appVisible()?'flex':'none','important');
+    top.style.setProperty('position','absolute','important');
+    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('left','auto','important');
+    top.style.setProperty('bottom','auto','important');
+    top.style.setProperty('z-index','2147483647','important');
+    top.style.setProperty('transform','none','important');
+    top.style.setProperty('width','auto','important');
+    top.style.setProperty('height','auto','important');
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang){
+      lang.style.setProperty('position','relative','important');
+      lang.style.setProperty('top','auto','important');
+      lang.style.setProperty('right','auto','important');
+      lang.style.setProperty('left','auto','important');
+      lang.style.setProperty('bottom','auto','important');
+      lang.style.setProperty('transform','none','important');
+      lang.style.setProperty('display','block','important');
+    }
+    var logout=document.getElementById('topLogoutBtn');
+    if(logout){
+      logout.style.setProperty('display','inline-flex','important');
+      logout.style.setProperty('position','relative','important');
+      logout.style.setProperty('width','auto','important');
+      logout.style.setProperty('margin','0','important');
+      logout.style.setProperty('white-space','nowrap','important');
+    }
+    removeTempButtons();
+  }
+  function run(){ syncBodyState(); dockTopbar(); }
+  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
+    var base=window[name];
+    if(typeof base==='function' && !base.__v64Dock){
+      var wrapped=function(){ var r=base.apply(this,arguments); setTimeout(run,0); setTimeout(run,120); setTimeout(run,500); return r; };
+      wrapped.__v64Dock=true; window[name]=wrapped;
+    }
+  });
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('load',run);
+  window.addEventListener('resize',run);
+  window.addEventListener('scroll',function(){requestAnimationFrame(run);},{passive:true});
+  setInterval(run,700);
+  setTimeout(run,0); setTimeout(run,300); setTimeout(run,900);
+})();
+
+/* ===== extracted from inline script ===== */
+(function(){
+  function releaseBootIfNeeded(){
+    try{
+      var appEl=document.getElementById('app');
+      var authEl=document.getElementById('auth');
+      var localMode=localStorage.getItem('atsrs_auth_mode');
+      var appOpen=appEl && !appEl.classList.contains('hidden');
+      if(appOpen || localMode!=='local'){
+        document.body.classList.remove('atsrs-booting');
       }
-      if(filter){
-        filter.classList.add('active');
-        filter.style.display='block';
-        filter.disabled = !!(status && /No File/i.test(status.textContent||''));
-      }
+    }catch(e){
+      document.body.classList.remove('atsrs-booting');
+    }
+  }
+  window.addEventListener('load',function(){setTimeout(releaseBootIfNeeded,250);});
+  setTimeout(releaseBootIfNeeded,1200);
+})();
+
+/* ===== extracted from inline script id=atsrs-v70-page-attached-top-actions-script ===== */
+(function(){
+  function appVisible(){
+    var app=document.getElementById('app');
+    return !!(app && !app.classList.contains('hidden'));
+  }
+  function normaliseTopActions(){
+    var app=document.getElementById('app');
+    var top=document.querySelector('#app > .top-actions') ||
+            document.querySelector('#app > .atsrs-global-top-actions') ||
+            document.querySelector('#app > .atsrs-v56-top-actions') ||
+            document.querySelector('#app > .atsrs-v64-top-actions') ||
+            document.querySelector('body > .atsrs-v64-top-actions') ||
+            document.querySelector('body > .atsrs-v56-top-actions') ||
+            document.querySelector('body > .atsrs-global-top-actions') ||
+            document.querySelector('body > .top-actions') ||
+            document.querySelector('.top-actions');
+    if(!app || !top) return;
+
+    top.classList.remove('atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions','atsrs-global-top-actions');
+    if(top.parentElement!==app){
+      app.insertBefore(top, app.firstChild);
+    }
+
+    var visible=appVisible();
+    top.style.setProperty('display',visible?'flex':'none','important');
+    top.style.setProperty('position','absolute','important');
+    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('left','auto','important');
+    top.style.setProperty('bottom','auto','important');
+    top.style.setProperty('z-index','90','important');
+    top.style.setProperty('transform','none','important');
+    top.style.setProperty('will-change','auto','important');
+    top.style.setProperty('width','auto','important');
+    top.style.setProperty('height','auto','important');
+    top.style.setProperty('margin','0','important');
+    top.style.setProperty('padding','0','important');
+
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang){
+      lang.style.setProperty('position','relative','important');
+      lang.style.setProperty('top','auto','important');
+      lang.style.setProperty('right','auto','important');
+      lang.style.setProperty('left','auto','important');
+      lang.style.setProperty('bottom','auto','important');
+      lang.style.setProperty('transform','none','important');
+      lang.style.setProperty('display','block','important');
+    }
+
+    var menu=top.querySelector('.lang-menu');
+    if(menu){
+      menu.style.setProperty('position','absolute','important');
+      menu.style.setProperty('top',window.innerWidth<=800?'52px':'56px','important');
+      menu.style.setProperty('right','0','important');
+      menu.style.setProperty('left','auto','important');
+      menu.style.setProperty('bottom','auto','important');
+    }
+
+    var logout=document.getElementById('topLogoutBtn');
+    if(logout){
+      logout.style.setProperty('display','inline-flex','important');
+      logout.style.setProperty('position','relative','important');
+      logout.style.setProperty('width','auto','important');
+      logout.style.setProperty('margin','0','important');
+      logout.style.setProperty('white-space','nowrap','important');
+    }
+  }
+
+  window.atsrsV70NormaliseTopActions=normaliseTopActions;
+  window.forceTopControlsFixed=normaliseTopActions;
+  window.v55DockTopActions=normaliseTopActions;
+
+  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
+    var base=window[name];
+    if(typeof base==='function' && !base.__v70PageAttached){
+      var wrapped=function(){
+        var result=base.apply(this,arguments);
+        setTimeout(normaliseTopActions,0);
+        setTimeout(normaliseTopActions,120);
+        setTimeout(normaliseTopActions,500);
+        return result;
+      };
+      wrapped.__v70PageAttached=true;
+      window[name]=wrapped;
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded',normaliseTopActions);
+  window.addEventListener('load',normaliseTopActions);
+  window.addEventListener('resize',normaliseTopActions);
+  window.addEventListener('scroll',function(){requestAnimationFrame(normaliseTopActions);},{passive:true});
+  setInterval(normaliseTopActions,80);
+  setTimeout(normaliseTopActions,0);
+  setTimeout(normaliseTopActions,300);
+  setTimeout(normaliseTopActions,900);
+})();
+
+/* ===== extracted from inline script id=atsrs-v71-remove-fixed-portal-script ===== */
+(function(){
+  function removeFixedPortal(){
+    ['atsrsFixedPortalTopbar','atsrs-v63-portal-style','atsrs-v63-portal-script'].forEach(function(id){
+      var n=document.getElementById(id);
+      if(n) n.remove();
     });
-    qa('#refsPage #cvCard [class*="slot"],#refsPage #cvCard [id*="slot"],#refsPage #cvCard [id*="Slot"],#refsPage #cvCard [class*="premium"],#refsPage #cvCard [class*="Premium"]').forEach(function(x){x.style.display='none';});
+    document.body.classList.remove('atsrs-app-visible','atsrs-auth-visible');
   }
-  function run(){setBuild();compactRefControls();}
-  ['DOMContentLoaded','load'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(run,60);setTimeout(run,350);});});
-  var oldRender=window.renderAll;
-  if(typeof oldRender==='function'&&!oldRender.__atsrsV166){
-    window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(run,80);return r;};
-    window.renderAll.__atsrsV166=true;
-  }
-  var oldShow=window.showPage;
-  if(typeof oldShow==='function'&&!oldShow.__atsrsV166){
-    window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,80);setTimeout(run,380);return r;};
-    window.showPage.__atsrsV166=true;
-  }
-  run(); setTimeout(run,500); setTimeout(run,1200);
+  window.atsrsTogglePortalLangMenu=function(){};
+  window.atsrsPortalChangeLanguage=function(l){
+    if(typeof changeLanguage==='function') changeLanguage(l);
+  };
+  document.addEventListener('DOMContentLoaded',removeFixedPortal);
+  window.addEventListener('load',removeFixedPortal);
+  setTimeout(removeFixedPortal,0);
+  setTimeout(removeFixedPortal,300);
+  setInterval(removeFixedPortal,1000);
 })();
 
-/* --- Original inline script --- */
-(function atsrsV167TopClean(){
-  function cleanTop(){
-    document.querySelectorAll('#app .top-actions,#app .atsrs-global-top-actions,#app .atsrs-v56-top-actions,#app .atsrs-v64-top-actions,body > .top-actions,body > .atsrs-global-top-actions,body > .atsrs-v56-top-actions,body > .atsrs-v64-top-actions').forEach(function(el){el.remove();});
-    var exit=document.getElementById('navLogout');
-    if(exit){
-      exit.textContent='Exit';
-      exit.classList.add('exit-nav-btn');
-      exit.setAttribute('onclick','confirmLogout()');
-    }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', cleanTop); else cleanTop();
-  setTimeout(cleanTop,100);
-  setTimeout(cleanTop,800);
-  setTimeout(cleanTop,2000);
-})();
+/* ===== extracted from inline script ===== */
+(function(){
+  function getLang(){ return "en"; }
+  try{
+    Object.defineProperty(window,'lang',{
+      configurable:true,
+      get:function(){ return "en"; },
+      set:function(v){ localStorage.setItem('atsrs_lang','en'); }
+    });
+  }catch(e){ window.lang='en'; }
 
-/* --- Original inline script id=ATSRS_V172_DOCUMENTS_STABLE_JS --- */
-(function atsrsV172DocumentsStable(){
-  'use strict';
-  var editIndex=null;
-  function byId(id){return document.getElementById(id);}
-  function setText(id,value){var el=byId(id); if(el) el.textContent=value;}
-  function q(sel,root){return (root||document).querySelector(sel);}
-  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-
-  function cleanTopAndLang(){
-    ['langCircle','langMenu','appLangCircle','appLangMenu','topLogoutBtn'].forEach(function(id){var el=byId(id); if(el) el.remove();});
-    document.querySelectorAll('#auth .lang-floating,#app > .top-actions,body > .top-actions,body > .atsrs-global-top-actions,body > .atsrs-v56-top-actions,body > .atsrs-v64-top-actions,.atsrs-account-badge').forEach(function(el){el.remove();});
-    var exit=byId('navLogout');
-    if(exit){exit.textContent='Exit';exit.classList.add('exit-nav-btn');exit.style.display='block';exit.setAttribute('onclick','confirmLogout()');}
+  function forceLangApply(){
+    try{ document.documentElement.lang='en'; document.documentElement.dir='ltr'; }catch(e){}
   }
 
-  function aiNotice(){
-    alert('Scan with AI / Auto-fill with AI will be available in a future update. Use Manual Upload for now.');
-  }
-
-  function closeManual(){
-    var p=byId('certManualPanel'); if(p)p.classList.remove('active');
-    var b=byId('certManualModeBtn'); if(b)b.classList.remove('active');
-    editIndex=null;
-    setText('addCertBtn','Save Document');
-    ['manualFormAlert','manualFilePreview'].forEach(function(id){var el=byId(id); if(el){el.classList&&el.classList.remove('active'); el.textContent='';}});
-  }
-
-  function openManual(){
-    var scan=byId('certScanPanel'); if(scan)scan.classList.remove('active');
-    var p=byId('certManualPanel'); if(p)p.classList.add('active');
-    var sb=byId('certScanModeBtn'); if(sb)sb.classList.remove('active');
-    var mb=byId('certManualModeBtn'); if(mb)mb.classList.add('active');
-  }
-
-  function ensureCancel(){
-    var save=byId('addCertBtn'); if(!save)return;
-    var parent=save.parentElement;
-    if(!parent.classList.contains('atsrs-v172-form-actions')){
-      var wrap=document.createElement('div');
-      wrap.className='atsrs-v172-form-actions';
-      parent.insertBefore(wrap,save);
-      wrap.appendChild(save);
-    }
-    if(!byId('cancelCertBtn')){
-      var c=document.createElement('button');
-      c.id='cancelCertBtn';
-      c.type='button';
-      c.className='secondary';
-      c.textContent='Cancel';
-      c.onclick=function(){closeManual();};
-      save.parentElement.appendChild(c);
-    }
-  }
-
-  function fixLabels(){
-    setText('addDocTitle','Documents');
-    setText('addCertFlowNote','Choose one method: Scan with AI or Manual Upload.');
-    setText('certScanModeBtn','Scan with AI');
-    setText('certManualModeBtn','Manual Upload');
-    setText('scanFlowText','Scan with AI / Auto-fill with AI will be available in a future update.');
-    setText('manualCertTitle','Manual Upload');
-    setText('manualFlowText','Upload a file and enter document details manually.');
-    setText('manualUploadBtn','Upload File');
-    setText('cTypeLabel','Certificate');
-    setText('cDocNoLabel','Document / Certificate No (Optional)');
-    setText('cCountryLabel','Country / Authority (Optional)');
-    setText('cProviderLabel','Training Center / Provider');
-    setText('cIssueLabel','Issue Date');
-    setText('cExpiryLabel','Expiry');
-    setText('addCertBtn',editIndex===null?'Save Document':'Update Document');
-    setText('certRegisterTitle','Document Register');
-    setText('thCertificate2','Certificate');
-    setText('thProvider2','Training Center / Provider');
-    setText('thExpiry2','Expiry');
-    setText('thStatus2','Status');
-    setText('thAction2','Action');
-  }
-
-  function wireMethods(){
-    var scan=byId('certScanModeBtn');
-    if(scan){scan.onclick=function(e){if(e)e.preventDefault(); aiNotice(); closeManual();};}
-    var manual=byId('certManualModeBtn');
-    if(manual){manual.onclick=function(e){if(e)e.preventDefault(); openManual();};}
-    var scanDoc=byId('scanDocBtn');
-    if(scanDoc){scanDoc.onclick=function(e){if(e)e.preventDefault(); aiNotice();};}
-    var uploadDoc=byId('uploadDocBtn');
-    if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); aiNotice();};}
-    ensureCancel();
-  }
-
-  function clearForm(){
-    ['cDocNo','cCountry','cProvider','cIssue','cExpiry'].forEach(function(id){var el=byId(id); if(el)el.value='';});
-    var t=byId('cType'); if(t)t.value='';
-    var f=byId('manualFile'); if(f)f.value='';
-    var p=byId('manualFilePreview'); if(p)p.textContent='';
-  }
-
-  window.atsrsV172PreviewCert=function(i){
-    var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
-    if(!x){alert('Document not found.');return;}
-    alert('Document: '+(x.type||'-')+'\nProvider: '+(x.provider||'-')+'\nExpiry: '+(x.expiry||'-')+'\nStatus: '+((typeof status==='function'&&x.expiry)?status(x.expiry).txt:'-'));
-  };
-  window.atsrsV172EditCert=function(i){
-    var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
-    if(!x){alert('Document not found.');return;}
-    editIndex=i; openManual();
-    var cp=byId('cPerson'); if(cp&&x.person)cp.value=x.person;
-    var t=byId('cType'); if(t)t.value=x.type||'';
-    var n=byId('cDocNo'); if(n)n.value=x.docNo||'';
-    var co=byId('cCountry'); if(co)co.value=x.country||'';
-    var pr=byId('cProvider'); if(pr)pr.value=x.provider||'';
-    var is=byId('cIssue'); if(is)is.value=x.issue||'';
-    var ex=byId('cExpiry'); if(ex)ex.value=x.expiry||'';
-    setText('addCertBtn','Update Document');
-    setTimeout(function(){var panel=byId('certManualPanel'); if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});},60);
-  };
-
-  var oldAdd=window.addCertificate;
-  window.addCertificate=function(){
-    if(editIndex!==null){
-      var a=(typeof getData==='function'?getData('certs'):[])||[];
-      if(!a[editIndex]){editIndex=null; return oldAdd&&oldAdd.apply(this,arguments);}
-      if(typeof validateManualCertificateForm==='function' && !validateManualCertificateForm())return;
-      var person=(typeof isPersonalMode==='function'&&isPersonalMode())?(typeof soloOwnerName==='function'?soloOwnerName():''):(byId('cPerson')?byId('cPerson').value:'');
-      a[editIndex]={person:person,type:(byId('cType')?byId('cType').value:''),docNo:(byId('cDocNo')?byId('cDocNo').value:''),country:(byId('cCountry')?byId('cCountry').value:''),provider:(byId('cProvider')?byId('cProvider').value:''),issue:(byId('cIssue')?byId('cIssue').value:''),expiry:(byId('cExpiry')?byId('cExpiry').value:'')};
-      if(typeof saveData==='function')saveData('certs',a);
-      editIndex=null; clearForm(); closeManual(); if(typeof clearManualValidation==='function')clearManualValidation(); if(typeof renderAll==='function')renderAll(); return;
-    }
-    var r=oldAdd&&oldAdd.apply(this,arguments);
-    closeManual();
+  var prevChange = window.changeLanguage;
+  window.changeLanguage=function(v){
+    localStorage.setItem('atsrs_lang','en');
+    var r = (typeof prevChange==='function') ? prevChange.apply(this,['en']) : undefined;
+    try{ if(typeof applyLanguage==='function') applyLanguage(); }catch(e){}
+    forceLangApply();
+    setTimeout(forceLangApply,0);
+    setTimeout(forceLangApply,150);
+    setTimeout(forceLangApply,500);
     return r;
   };
-
-  function renderCertRows(){
-    if(!byId('certTable') || typeof getData!=='function' || typeof status!=='function')return;
-    var c=getData('certs')||[];
-    var html='';
-    c.forEach(function(x,i){
-      var st=status(x.expiry);
-      html+='<tr><td>'+esc(x.type||'')+'</td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td>'+
-        '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
-        '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
-        '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
-      '</td></tr>';
-    });
-    byId('certTable').innerHTML=html;
-  }
-
-  function stableDocuments(){
-    cleanTopAndLang(); fixLabels(); wireMethods(); renderCertRows();
-    var scanPanel=byId('certScanPanel'); if(scanPanel)scanPanel.classList.remove('active');
-    var scanBtn=byId('certScanModeBtn'); if(scanBtn)scanBtn.classList.remove('active');
-    if(editIndex===null){var manual=byId('certManualPanel'); if(manual&&!manual.dataset.keepOpen)manual.classList.remove('active'); var mb=byId('certManualModeBtn'); if(mb)mb.classList.remove('active');}
-  }
-
-  var oldRender=window.renderAll;
-  if(typeof oldRender==='function' && !oldRender.__atsrsV172){
-    window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(function(){fixLabels();wireMethods();renderCertRows();},0);setTimeout(function(){fixLabels();renderCertRows();},120);return r;};
-    window.renderAll.__atsrsV172=true;
-  }
-  var oldShow=window.showPage;
-  if(typeof oldShow==='function' && !oldShow.__atsrsV172){
-    window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(stableDocuments,0);setTimeout(stableDocuments,160);return r;};
-    window.showPage.__atsrsV172=true;
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(stableDocuments,80);setTimeout(stableDocuments,500);});
-  else {setTimeout(stableDocuments,80);setTimeout(stableDocuments,500);}
-  window.addEventListener('load',function(){setTimeout(stableDocuments,120);setTimeout(stableDocuments,900);});
-})();
-
-/* --- Original inline script id=ATSRS_V178_BUILD_LOCK_JS --- */
-(function(){
-  'use strict';
-  function lockBuild(){
-    document.querySelectorAll('.build-badge').forEach(function(b){
-      var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V178';
-      if(d[1])d[1].textContent='Last Update: 01 Jul 2026';
-      if(d[2])d[2].textContent='TEST BUILD';
-    });
-  }
-  lockBuild();
-  window.addEventListener('load',function(){setTimeout(lockBuild,50);setTimeout(lockBuild,500);});
 })();
