@@ -1170,16 +1170,17 @@ setTimeout(v55DockTopActions,500);
 })();
 
 
-/* ===== ATSRS V179 Auth Module V1 - real Supabase email/password auth ===== */
+/* ===== ATSRS V180 Create Account V1 - real Supabase register enabled ===== */
 (function(){
   'use strict';
-  var AUTH_BUILD='ATSRS V179 AUTH MODULE V1';
+  var AUTH_BUILD='ATSRS V180 CREATE ACCOUNT V1';
   function byId(id){return document.getElementById(id);}
   function setText(id,msg){var el=byId(id); if(el) el.textContent=msg||'';}
   function redirectUrl(){
     try{
       var origin=window.location.origin || 'https://atsrs.com';
       var path=window.location.pathname || '/';
+      if(!path) path='/';
       return origin + path;
     }catch(e){return 'https://atsrs.com/';}
   }
@@ -1232,33 +1233,64 @@ setTimeout(v55DockTopActions,500);
     setText('regMsg','Select Personal or Corporate before creating your ATSRS account.');
     try{if(area && area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
   }
+  function setRegisterBusy(isBusy){
+    var b=byId('registerBtn');
+    if(!b) return;
+    b.disabled=!!isBusy;
+    if(isBusy){
+      if(!b.dataset.atsrsOriginalText) b.dataset.atsrsOriginalText=b.textContent||'Register';
+      b.textContent='Creating account...';
+    }else if(b.dataset.atsrsOriginalText){
+      b.textContent=b.dataset.atsrsOriginalText;
+    }
+  }
   async function realRegister(){
     var emailEl=byId('regEmail'), passEl=byId('regPassword'), pass2El=byId('regPassword2');
-    var email=(emailEl && emailEl.value || '').trim();
+    var email=(emailEl && emailEl.value || '').trim().toLowerCase();
     var password=(passEl && passEl.value || '').trim();
     var password2=(pass2El && pass2El.value || '').trim();
     var mode=selectedAccountType();
     setText('regMsg','');
     if(!mode){showRegisterModeRequired();return false;}
     if(!email || !password || !password2){setText('regMsg',typeof tr==='function'?tr('fill'):'Fill all required fields.');return false;}
-    if(password!==password2){setText('regMsg','Passwords do not match.');return false;}
+    if(password.length<6){setText('regMsg',typeof tr==='function'?tr('passRule'):'Password must be at least 6 characters.');return false;}
+    if(password!==password2){setText('regMsg',typeof tr==='function'?tr('matchRule'):'Passwords do not match.');return false;}
     if(typeof validateRegisterFields==='function' && !validateRegisterFields()) return false;
     if(!validEmailInput(emailEl,byId('regEmailRule'))) return false;
     if(!supabaseClient || !supabaseClient.auth){setText('regMsg','Supabase library did not load.');return false;}
     try{
+      setRegisterBusy(true);
+      setText('regMsg','Creating account...');
       applyAccountType(mode);
       var res=await supabaseClient.auth.signUp({
         email:email,
         password:password,
         options:{
           emailRedirectTo:redirectUrl(),
-          data:{account_type:mode,atsrs_account_type:mode,source:'atsrs-web'}
+          data:{
+            account_type:mode,
+            atsrs_account_type:mode,
+            use_mode:mode,
+            source:'atsrs-web',
+            app:'ATSRS'
+          }
         }
       });
       if(res.error){setText('regMsg',res.error.message);return false;}
-      setText('regMsg','Confirmation email sent. Check inbox/spam.');
+      var user=res.data && res.data.user;
+      var needsEmailConfirm=!(res.data && res.data.session);
+      try{
+        localStorage.setItem('atsrs_pending_email',email);
+        localStorage.setItem('atsrs_use_mode',mode);
+      }catch(e){}
+      if(user && user.identities && user.identities.length===0){
+        setText('regMsg','This email may already be registered. Try Login or Forgot Password.');
+        return true;
+      }
+      setText('regMsg',needsEmailConfirm ? 'Account created. Confirmation email sent. Check inbox/spam.' : 'Account created. You can now continue.');
       return true;
     }catch(e){setText('regMsg',(e&&e.message)|| (typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
+    finally{setRegisterBusy(false);}
   }
   async function realLogin(){
     var emailEl=byId('loginEmail'), passEl=byId('loginPassword');
