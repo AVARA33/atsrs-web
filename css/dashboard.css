@@ -908,3 +908,120 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 #registerAccountTypeArea .mode-choice button,
 #registerAccountTypeArea .mode-choice.mode-error button{
+
+/* ATSRS V186 — Dashboard frameless text UI only. No layout/function changes. */
+#dashboardPage .card,
+#dashboardPage .panel,
+#dashboardPage .workflow-card,
+#dashboardPage .snapshot-card,
+#dashboardPage .mini-panel,
+#dashboardPage .hero-card,
+#dashboardPage .upload-simple,
+#dashboardPage .dashboard-snapshot-panel,
+#dashboardPage .share-card,
+#dashboardPage .preview-profile,
+#dashboardPage .company-import-box,
+#dashboardPage .scan-box,
+#dashboardPage .import-box,
+#dashboardPage .ref-card,
+#dashboardPage .cv-card,
+#dashboardPage .ref-beta-box,
+#dashboardPage .atsrs-anime-stage,
+#dashboardPage .workflow-step,
+#dashboardPage .anime-step,
+#dashboardPage .intro-hero,
+#dashboardPage .intro-service-card,
+#dashboardPage .feature-tile{
+  background:transparent!important;
+  background-image:none!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+
+#dashboardPage .card,
+#dashboardPage .panel,
+#dashboardPage .workflow-card,
+#dashboardPage .snapshot-card,
+#dashboardPage .mini-panel,
+#dashboardPage .hero-card,
+#dashboardPage .upload-simple,
+#dashboardPage .share-card,
+#dashboardPage .preview-profile{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+
+#dashboardPage .stats-grid .card,
+#dashboardPage .dashboard-snapshot-panel,
+#dashboardPage .snapshot-list,
+#dashboardPage .snapshot-item,
+#dashboardPage .risk-list,
+#dashboardPage .risk-item,
+#dashboardPage .doc-category-grid,
+#dashboardPage .doc-chip,
+#dashboardPage .share-link-box,
+#dashboardPage .share-permissions label{
+  background:transparent!important;
+  background-image:none!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#dashboardPage .snapshot-item,
+#dashboardPage .risk-item{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+
+#dashboardPage .atsrs-account-badge,
+#dashboardPage .pill,
+#dashboardPage .mode-badge,
+#dashboardPage .badge,
+#dashboardPage .badge-ready,
+#dashboardPage .badge-review,
+#dashboardPage .badge-blocked{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+
+#dashboardPage input,
+#dashboardPage select,
+#dashboardPage textarea,
+#dashboardPage .share-link-box input{
+  background:transparent!important;
+  border-color:rgba(148,163,184,.22)!important;
+  box-shadow:none!important;
+}
+
+#dashboardPage table,
+#dashboardPage th,
+#dashboardPage td,
+#dashboardPage .table-wrap{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+#dashboardPage .quick-actions button,
+#dashboardPage .document-actions button,
+#dashboardPage .share-actions button,
+#dashboardPage .cv-actions button,
+#dashboardPage .ref-doc-actions button{
+  box-shadow:none!important;
+}
+
+#dashboardPage .card::before,
+#dashboardPage .card::after,
+#dashboardPage .panel::before,
+#dashboardPage .panel::after,
+#dashboardPage .hero-card::before,
+#dashboardPage .hero-card::after,
+#dashboardPage .upload-simple::before,
+#dashboardPage .upload-simple::after,
+#dashboardPage .share-card::before,
+#dashboardPage .share-card::after{
+  display:none!important;
+}
