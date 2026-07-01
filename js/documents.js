@@ -1,298 +1,448 @@
-/* ATSRS V179 split from V178 - documents.js. Original JS execution order preserved by index script order. */
-
-/* --- Original inline script id=atsrs-v117-test-placement-script --- */
+/* ATSRS V178 extracted JavaScript batch: documents.js. Loaded in original V178 execution order. No placeholder code. */
+/* ===== extracted from inline script id=ATSRS_V127_DASHBOARD_STABILITY_JS ===== */
 (function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TYPE='TEST BUILD';
-  function byId(id){return document.getElementById(id);}
-  function lockBuild(){
-    var badge=byId('buildBadge')||document.querySelector('.build-badge');
-    if(!badge)return;
-    var rows=badge.querySelectorAll('div');
-    if(rows.length>=3){rows[0].textContent=BUILD;rows[1].textContent=UPDATE;rows[2].textContent=TYPE;}
-    else{badge.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';}
-  }
-  function directTestLogin(mode){
-    try{
-      window.useMode=mode;
-      localStorage.setItem('atsrs_use_mode',mode);
-      localStorage.setItem('atsrs_auth_mode','local');
-      localStorage.setItem('atsrs_current_page',mode==='company'?'dashboard':'intro');
-    }catch(e){}
-    if(typeof window.setUseMode==='function')try{window.setUseMode(mode);}catch(e){}
-    window.currentUser={id:'local_test_'+mode,email:mode==='company'?'corporate-test@atsrs.com':'personal-test@atsrs.com'};
-    if(typeof window.openApp==='function')window.openApp();
-  }
-  function getOrCreateGroup(){
-    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup')||byId('atsrsV117TestLoginGroup');
-    if(!group){
-      group=document.createElement('div');
-      group.id='atsrsV117TestLoginGroup';
-      group.innerHTML='<button type="button" id="atsrsV117TestPersonal">Test Personal</button><button type="button" id="atsrsV117TestCorporate">Test Corporate</button>';
-    }
-    return group;
-  }
-  function placeTestButtons(){
-    var remember=byId('rememberRow');
-    var loginBox=byId('loginBox');
-    if(!remember||!loginBox)return;
-    var old=byId('localTestBtn'); if(old)old.style.display='none';
-    var group=getOrCreateGroup();
-    if(group.previousElementSibling!==remember){remember.insertAdjacentElement('afterend',group);}
-    var p=byId('atsrsV117TestPersonal')||byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
-    var c=byId('atsrsV117TestCorporate')||byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
-    if(p)p.onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
-    if(c)c.onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
-  }
-  function run(){lockBuild();placeTestButtons();}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',run);
-  [50,150,400,900,1600,2600].forEach(function(ms){setTimeout(run,ms);});
-  setInterval(run,800);
-  setInterval(lockBuild,250);
-})();
-
-/* --- Original inline script --- */
-/* V118 dashboard simplification and account badge sync */
-(function(){
-  function byId(id){return document.getElementById(id);}
-  function getMode(){return localStorage.getItem('atsrs_use_mode') || (window.useMode || 'personal');}
-  function getEmail(){
-    if(window.currentUser && window.currentUser.email) return window.currentUser.email;
-    var saved=localStorage.getItem('atsrs_saved_login_email');
-    var login=byId('loginEmail');
-    return saved || (login && login.value) || 'Not signed in';
-  }
-  function updateAccountBadge(){
-    var type=byId('atsrsAccountTypeLabel');
-    var mail=byId('atsrsAccountEmailLabel');
-    if(!type || !mail) return;
-    var mode=getMode();
-    type.textContent = mode === 'company' ? '' : '';
-    mail.textContent = getEmail();
-  }
-  function simplifyDashboard(){
-    ['missingDocsText','missingDocs','docStatusTitle','docStatusSub','docCategoryGrid'].forEach(function(id){var el=byId(id); if(el) el.style.display='none';});
-    var missingCard=document.querySelector('#dashboardPage .missing-card'); if(missingCard) missingCard.remove();
-    var snapMissing=byId('snapMissing'); if(snapMissing){var row=snapMissing.closest('.snapshot-item'); if(row) row.remove();}
-    var docStatus=byId('docStatusTitle'); if(docStatus){var panel=docStatus.closest('.panel'); if(panel) panel.remove();}
-    var totalCertsText=byId('totalCertsText'); if(totalCertsText) totalCertsText.textContent='Uploaded Documents';
-    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your document overview';
-    var soloHeroText=byId('soloHeroText'); if(soloHeroText) soloHeroText.textContent='Keep your uploaded documents and expiry dates in one clean view.';
-    var snapshotTitle=byId('snapshotTitle'); if(snapshotTitle) snapshotTitle.textContent='Quick overview';
-  }
-  var oldOpen=window.openApp;
-  if(typeof oldOpen==='function'){
-    window.openApp=function(){ oldOpen.apply(this,arguments); setTimeout(function(){updateAccountBadge(); simplifyDashboard();},0); };
-  }
-  var oldRender=window.renderAll;
-  if(typeof oldRender==='function'){
-    window.renderAll=function(){ oldRender.apply(this,arguments); simplifyDashboard(); updateAccountBadge(); };
-  }
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){updateAccountBadge(); simplifyDashboard();},80);});
-})();
-
-/* --- Original inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK --- */
-(function(){
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  function lockBuild(){
-    var b=document.getElementById('buildBadge');
-    if(!b)return;
-    var d=b.querySelectorAll('div');
-    if(d[0])d[0].textContent=BUILD;
-    if(d[1])d[1].textContent=UPDATE;
-    if(d[2])d[2].textContent='TEST BUILD';
-  }
-  function cleanTopbar(){
-    var badge=document.getElementById('atsrsAccountBadge');
-    var type=document.getElementById('atsrsAccountTypeLabel');
-    var email=document.getElementById('atsrsAccountEmailLabel');
-    var mode='';
-    if(type) type.textContent=mode;
-    if(email && (!email.textContent || /local-test|undefined|null/i.test(email.textContent))) {
-      var stored=localStorage.getItem('atsrsUserEmail') || localStorage.getItem('atsrsEmail') || localStorage.getItem('email') || 'local-test@atsrs.com';
-      email.textContent=stored;
-    }
-    if(badge){badge.removeAttribute('style');}
-    var logout=document.getElementById('topLogoutBtn');
-    if(logout){logout.removeAttribute('style');logout.textContent='Exit';}
-  }
-  ['DOMContentLoaded','load'].forEach(function(evt){window.addEventListener(evt,function(){lockBuild();cleanTopbar();setTimeout(cleanTopbar,300);});});
-  setInterval(function(){lockBuild();cleanTopbar();},1200);
-})();
-
-/* --- Original inline script id=ATSRS_V125_ACCOUNT_REFS_LANG_CLEANUP_JS --- */
-/* V125: stabilize current pages before new features */
-(function(){
-  'use strict';
-  var PROFILE_KEY='profile';
-  function byId(id){return document.getElementById(id)}
-  function safeUserId(){
-    try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}
-    catch(e){return 'local_test_user';}
-  }
-  function key(name){
-    try{ if(typeof window.localKey==='function' && window.currentUser && currentUser.id) return window.localKey(name); }
-    catch(e){}
-    return 'atsrs_'+safeUserId()+'_'+name;
-  }
-  function readJson(name, fallback){
-    try{var raw=localStorage.getItem(key(name)); return raw?JSON.parse(raw):fallback;}
-    catch(e){return fallback;}
-  }
-  function writeJson(name, data){
-    try{localStorage.setItem(key(name),JSON.stringify(data)); return true;}
-    catch(e){return false;}
-  }
-  function val(id){var e=byId(id); return e?e.value:'';}
-  function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
-  function ensureProfileStatus(){
-    var btn=byId('saveProfileBtn'); if(!btn)return null;
-    var status=byId('profileSaveStatus');
-    if(!status){status=document.createElement('div');status.id='profileSaveStatus';status.setAttribute('role','status');btn.insertAdjacentElement('afterend',status);}
-    return status;
-  }
-  function showSaved(){
-    var s=ensureProfileStatus(); if(!s)return;
-    s.textContent='Saved ✓'; s.classList.add('active');
-    clearTimeout(window.__atsrsV125ProfileSavedTimer);
-    window.__atsrsV125ProfileSavedTimer=setTimeout(function(){s.classList.remove('active');},2200);
-  }
-  window.saveProfile=function(){
-    var data={
-      name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
-      company:val('profileCompany'),position:val('profilePosition'),altEmail:val('profileAltEmail'),
-      timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',savedAt:new Date().toISOString()
-    };
-    writeJson(PROFILE_KEY,data); showSaved(); return true;
-  };
-  window.loadProfile=function(){
-    try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
-    var p=readJson(PROFILE_KEY,{});
-    setVal('profileName',p.name); setVal('profileSurname',p.surname); setVal('profilePhone',p.phone); setVal('profileCountry',p.country);
-    setVal('profileCompany',p.company); setVal('profilePosition',p.position); setVal('profileAltEmail',p.altEmail);
-    setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private'); ensureProfileStatus();
-  };
-  function forceFlagOnly(){
-    ['langCircle','appLangCircle'].forEach(function(id){var b=byId(id); if(b){b.textContent=''; b.setAttribute('aria-label','Language'); b.removeAttribute('title');}});
-    document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
-      b.childNodes.forEach(function(n){ if(n.nodeType===3)n.textContent=''; });
-      var s=b.querySelector('span'); if(s)s.textContent='🇬🇧';
-    });
-  }
-  var oldApply=window.applyLanguage;
-  if(typeof oldApply==='function') window.applyLanguage=function(){var r=oldApply.apply(this,arguments); forceFlagOnly(); return r;};
-  function coverFiles(){return readJson('coverLetterFiles',[]);}
-  function saveCoverFiles(arr){writeJson('coverLetterFiles',Array.isArray(arr)?arr:[]);}
-  function firstCover(){var a=coverFiles();return a&&a.length?a[0]:null;}
-  function ensureCoverLetterCard(){
-    if(byId('coverLetterCard'))return;
-    var cv=byId('cvCardTitle'); var cvCard=cv?cv.closest('.ref-card'):null; var grid=cvCard?cvCard.parentElement:document.querySelector('#refsPage .ref-grid'); if(!grid)return;
-    var card=document.createElement('div'); card.className='ref-card cover-letter-card'; card.id='coverLetterCard';
-    card.innerHTML='<div class="cv-card-head"><h3 id="coverLetterCardTitle">Cover Letter</h3><span id="coverLetterStatusBadge" class="badge badge-blocked">No File</span></div>'+
-      '<p class="sub">Store cover letter versions next to your CV for faster applications.</p>'+
-      '<input id="coverLetterUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
-      '<div id="coverLetterFileInfo" class="preview-box"></div>'+
-      '<div class="cv-actions"><button id="uploadCoverLetterBtn" class="secondary">Upload</button><button id="previewCoverLetterBtn" class="secondary">Preview</button><button id="downloadCoverLetterBtn" class="secondary">Download</button><button id="deleteCoverLetterBtn" class="action">Delete</button></div>';
-    if(cvCard&&cvCard.nextSibling)cvCard.parentNode.insertBefore(card,cvCard.nextSibling); else grid.appendChild(card);
-    byId('uploadCoverLetterBtn').onclick=function(){byId('coverLetterUploadInput').click();};
-    byId('previewCoverLetterBtn').onclick=previewCoverLetter;
-    byId('downloadCoverLetterBtn').onclick=downloadCoverLetter;
-    byId('deleteCoverLetterBtn').onclick=deleteCoverLetter;
-    byId('coverLetterUploadInput').onchange=handleCoverLetterUpload;
-  }
-  window.handleCoverLetterUpload=function(event){
-    var files=event.target.files||[]; if(!files.length)return;
-    var remaining=files.length, saved=coverFiles();
-    Array.prototype.forEach.call(files,function(file){
-      var reader=new FileReader();
-      reader.onload=function(){saved.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:reader.result}); if(--remaining===0){saveCoverFiles(saved);event.target.value='';renderCoverLetter();}};
-      reader.readAsDataURL(file);
-    });
-  };
-  window.previewCoverLetter=function(){var f=firstCover(); if(!f){alert('No cover letter uploaded yet.');return;} var w=window.open('','_blank'); if(w){w.document.write('<title>'+String(f.name||'Cover Letter').replace(/[<>]/g,'')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}};
-  window.downloadCoverLetter=function(){var f=firstCover(); if(!f){alert('No cover letter uploaded yet.');return;} var a=document.createElement('a');a.href=f.data;a.download=f.name||'ATSRS-cover-letter';document.body.appendChild(a);a.click();a.remove();};
-  window.deleteCoverLetter=function(){saveCoverFiles([]);renderCoverLetter();};
-  function renderCoverLetter(){
-    ensureCoverLetterCard(); var files=coverFiles(); var badge=byId('coverLetterStatusBadge'), info=byId('coverLetterFileInfo');
-    if(badge){badge.textContent=files.length?String(files.length)+' file'+(files.length>1?'s':''):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
-    if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' • '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
-  }
-  var oldRender=window.renderAll;
-  if(typeof oldRender==='function') window.renderAll=function(){var r=oldRender.apply(this,arguments); renderCoverLetter(); forceFlagOnly(); return r;};
-  var oldShow=window.showPage;
-  if(typeof oldShow==='function') window.showPage=function(){var r=oldShow.apply(this,arguments); if(String(arguments[0]||'')==='refs'||byId('refsPage'))setTimeout(renderCoverLetter,40); if(String(arguments[0]||'')==='profile')setTimeout(window.loadProfile,40); forceFlagOnly(); return r;};
-  document.addEventListener('DOMContentLoaded',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
-  window.addEventListener('load',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
-  setInterval(function(){forceFlagOnly(); if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden'))renderCoverLetter();},1500);
-})();
-
-/* --- Original inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS --- */
-(function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  function byId(id){return document.getElementById(id);}
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    document.querySelectorAll('.build-badge').forEach(function(b){
+    var BUILD='ATSRS V178';
+    var UPDATE='Last Update: 01 Jul 2026';
+    qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
       if(d[1])d[1].textContent=UPDATE;
       if(d[2])d[2].textContent='TEST BUILD';
     });
   }
-  function forceFlagOnly(){
-    ['langCircle','appLangCircle'].forEach(function(id){
-      var b=byId(id);
-      if(!b)return;
-      b.textContent='';
-      b.innerHTML='';
-      b.setAttribute('aria-label','Language');
-      b.removeAttribute('title');
+  function parkDashboardBuilder(){
+    var page=q('#dashboardPage'); if(!page)return;
+    qa('.dash-card-tools,.dash-resize-handle,.dash-placeholder',page).forEach(function(x){x.remove();});
+    qa('.dash-minimized',page).forEach(function(x){x.classList.remove('dash-minimized');});
+    qa('.dash-custom-ready,.dash-resizable,.dash-drag-float',page).forEach(function(el){
+      el.classList.remove('dash-drag-float');
+      ['width','height','left','top','right','bottom','position','transform','opacity','minWidth','maxWidth'].forEach(function(p){el.style[p]='';});
     });
-    document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
-      b.innerHTML='';
-      b.setAttribute('aria-label','English');
-      b.setAttribute('title','English');
-    });
+    var dock=q('#dashboardDock'); if(dock){dock.innerHTML='';dock.classList.add('hidden');dock.style.display='none';}
   }
-  function ensureCoverAfterCv(){
-    var grid=document.querySelector('#refsPage .ref-grid');
-    var cv=byId('cvCardTitle');
-    var cvCard=cv?cv.closest('.ref-card'):document.querySelector('#refsPage .cv-card');
-    var cover=byId('coverLetterCard');
-    if(grid&&cvCard&&cover&&cover.previousElementSibling!==cvCard){
-      grid.insertBefore(cover,cvCard.nextSibling);
-    }
+  function attachTopActionsToPage(){
+    var app=q('#app'); if(!app)return;
+    var top=q('body > .top-actions') || q('body > .atsrs-global-top-actions') || q('body > .atsrs-v56-top-actions') || q('body > .atsrs-v64-top-actions') || q('#app > .top-actions');
+    if(!top)return;
+    if(top.parentElement!==app)app.insertBefore(top,app.firstChild);
+    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions');
+    top.style.position='absolute';
+    top.style.top='18px';
+    top.style.right='18px';
+    top.style.left='auto';
+    top.style.zIndex='90';
   }
-  function classifyRefCards(){
-    var grid=document.querySelector('#refsPage .ref-grid'); if(!grid)return;
-    var cards=[].slice.call(grid.children).filter(function(x){return x.classList&&x.classList.contains('ref-card');});
-    cards.forEach(function(card){card.style.removeProperty('grid-column');});
-    var cv=byId('cvCardTitle');
-    var cvCard=cv?cv.closest('.ref-card'):document.querySelector('#refsPage .cv-card');
-    if(cvCard){cvCard.classList.add('cv-card');cvCard.style.order='-100';}
-    var cover=byId('coverLetterCard'); if(cover)cover.style.order='40';
-    var app=byId('appraisalCardTitle'); if(app&&app.closest('.ref-card'))app.closest('.ref-card').style.order='10';
-    var ref=byId('referenceCardTitle'); if(ref&&ref.closest('.ref-card'))ref.closest('.ref-card').style.order='20';
-    var rec=byId('recommendationCardTitle'); if(rec&&rec.closest('.ref-card'))rec.closest('.ref-card').style.order='30';
+  function compactShareProfile(){
+    var p=q('#shareProfilePanel'); if(!p)return;
+    p.classList.add('atsrs-v127-share-compact');
+    var sub=q('#shareSub',p); if(sub)sub.textContent='Share one controlled profile link when needed.';
   }
-  function calmDashboardButtons(){
-    document.querySelectorAll('#dashboardPage button').forEach(function(b){
-      b.classList.add('atsrs-v126-calm-dashboard-button');
-    });
-  }
-  function run(){applyBuild();forceFlagOnly();ensureCoverAfterCv();classifyRefCards();calmDashboardButtons();}
-  var oldApply=window.applyLanguage;
-  if(typeof oldApply==='function')window.applyLanguage=function(){var r=oldApply.apply(this,arguments);run();return r;};
-  var oldRender=window.renderAll;
-  if(typeof oldRender==='function')window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(run,0);return r;};
+  function run(){applyBuild();parkDashboardBuilder();attachTopActionsToPage();compactShareProfile();}
+  /* Park older interval-based dashboard builder by replacing exposed init with stable cleanup. */
+  window.initDashboardBuilderV123=function(){setTimeout(run,0);return true;};
   var oldShow=window.showPage;
-  if(typeof oldShow==='function')window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,40);setTimeout(run,220);return r;};
+  if(typeof oldShow==='function')window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,30);setTimeout(run,250);return r;};
+  var oldRender=window.renderAll;
+  if(typeof oldRender==='function')window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(run,30);return r;};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,300);});
+  setTimeout(run,800);
+})();
+
+/* ===== extracted from inline script id=ATSRS_V134_REFERENCES_STABLE_SINGLE_SYSTEM_JS ===== */
+(function(){
+  'use strict';
+
+  var BUILD='ATSRS V178';
+  var UPDATE='Last Update: 01 Jul 2026';
+  var CONFIGS=[
+    {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
+    {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
+    {kind:'recommendation',title:'Recommendation Letters',desc:'Store recommendation letters from supervisors, clients and companies.',upload:'Upload',order:30,oldKeys:['recommendationFiles']},
+    {kind:'coverLetter',title:'Cover Letter',desc:'Store cover letter versions next to your CV for faster applications.',upload:'Upload',order:40,oldKeys:['coverLetterFiles']}
+  ];
+
+  function byId(id){return document.getElementById(id);}
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c;});}
+  function parse(raw){try{var p=JSON.parse(raw||'[]');return Array.isArray(p)?p:[];}catch(e){return [];}}
+  function safeUserId(){try{return (window.currentUser&&window.currentUser.id)?window.currentUser.id:'local_test_user';}catch(e){return 'local_test_user';}}
+  function scopedKey(name){try{if(typeof window.localKey==='function'&&window.currentUser&&window.currentUser.id)return window.localKey(name);}catch(e){} return 'atsrs_'+safeUserId()+'_'+name;}
+  function newKey(kind){return scopedKey('v134_'+kind+'_files');}
+  function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
+
+  function readRawKey(k){
+    try{return parse(localStorage.getItem(k));}catch(e){return [];}
+  }
+  function readPossibleStorage(kind,cfg){
+    var arr=readRawKey(newKey(kind));
+    if(arr.length)return arr;
+    var sources=[];
+    (cfg.oldKeys||[]).forEach(function(k){
+      sources=sources.concat(readRawKey(k));
+      sources=sources.concat(readRawKey(scopedKey(k)));
+    });
+    try{ if(kind!=='coverLetter' && typeof window.getManagedFiles==='function'){var m=window.getManagedFiles(kind); if(Array.isArray(m))sources=sources.concat(m);} }catch(e){}
+    var seen={}, out=[];
+    sources.forEach(function(f){
+      if(!f || !f.name)return;
+      var id=f.id || (Date.now()+'_'+Math.random().toString(36).slice(2));
+      var key=String(f.name)+'|'+String(f.size||'')+'|'+String(f.updated||f.signedDate||'');
+      if(seen[key])return; seen[key]=1;
+      out.push({
+        id:id,name:f.name,type:f.type||'application/octet-stream',size:f.size||0,
+        updated:f.updated||new Date().toISOString(),data:f.data||''
+      });
+    });
+    if(out.length)writeFiles(kind,out);
+    return out;
+  }
+  function readFiles(kind){
+    var cfg=CONFIGS.find(function(x){return x.kind===kind;});
+    return readPossibleStorage(kind,cfg||{});
+  }
+  function writeFiles(kind,arr){
+    try{localStorage.setItem(newKey(kind),JSON.stringify(Array.isArray(arr)?arr:[]));}catch(e){}
+  }
+
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+
+  function findGrid(){
+    return q('#refsPage .ref-grid');
+  }
+  function findCard(kind){
+    if(kind==='coverLetter')return byId('coverLetterCard');
+    var titleId=kind==='appraisal'?'appraisalCardTitle':kind==='reference'?'referenceCardTitle':'recommendationCardTitle';
+    var title=byId(titleId);
+    return title?title.closest('.ref-card'):null;
+  }
+  function createCard(kind){
+    var grid=findGrid(); if(!grid)return null;
+    var card=document.createElement('div');
+    card.className='ref-card atsrs-v134-career-card';
+    if(kind==='coverLetter')card.id='coverLetterCard';
+    grid.appendChild(card);
+    return card;
+  }
+
+  function buildCard(cfg){
+    var grid=findGrid(); if(!grid)return;
+    var card=findCard(cfg.kind)||createCard(cfg.kind); if(!card)return;
+    card.className='ref-card atsrs-v134-career-card'+(cfg.kind==='coverLetter'?' cover-letter-card':'');
+    card.style.order=String(cfg.order);
+    card.dataset.atsrsV134Kind=cfg.kind;
+    var titleId=cfg.kind==='appraisal'?'appraisalCardTitle':cfg.kind==='reference'?'referenceCardTitle':cfg.kind==='recommendation'?'recommendationCardTitle':'coverLetterCardTitle';
+    card.innerHTML=
+      '<h3 id="'+titleId+'">'+esc(cfg.title)+'</h3>'+
+      '<p class="atsrs-v134-desc">'+esc(cfg.desc)+'</p>'+
+      '<input id="v134_'+cfg.kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
+      '<div class="atsrs-v134-statusbar"><button id="v134_'+cfg.kind+'_upload" class="atsrs-v134-upload" type="button">Upload</button><select id="v134_'+cfg.kind+'_filter" class="atsrs-v134-filter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option></select><span id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File</span></div>'+
+      '<div id="v134_'+cfg.kind+'_list" class="atsrs-v134-list"><div class="atsrs-v134-empty">No files uploaded yet.</div></div>';
+    var btn=byId('v134_'+cfg.kind+'_upload');
+    var inp=byId('v134_'+cfg.kind+'_input');
+    if(btn&&inp){
+      btn.onclick=function(){inp.click();};
+      inp.onchange=function(e){handleUpload(cfg.kind,e);};
+    }
+    var fil=byId('v134_'+cfg.kind+'_filter');
+    if(fil){ fil.onchange=function(){ render(); }; }
+  }
+
+  function ensureLayout(){
+    var grid=findGrid(); if(!grid)return;
+    var cvTitle=byId('cvCardTitle');
+    var cvCard=cvTitle?cvTitle.closest('.ref-card'):q('#refsPage .cv-card');
+    if(cvCard){cvCard.classList.add('cv-card');cvCard.style.order='-100';cvCard.style.gridColumn='1 / -1';}
+    CONFIGS.forEach(buildCard);
+  }
+
+  function handleUpload(kind,event){
+    var files=event.target.files||[]; if(!files.length)return;
+    var arr=readFiles(kind), left=files.length;
+    Array.prototype.forEach.call(files,function(file){
+      var reader=new FileReader();
+      reader.onload=function(){
+        arr.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size||0,updated:new Date().toISOString(),data:reader.result});
+        left--;
+        if(left===0){writeFiles(kind,arr);event.target.value='';render();}
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  window.atsrsV134Preview=function(kind,id){
+    var f=readFiles(kind).find(function(x){return x.id===id;}); if(!f||!f.data){alert('File preview is not available.');return;}
+    var w=window.open('','_blank'); if(w){w.document.write('<title>'+esc(f.name||'File')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}
+  };
+  window.atsrsV134Download=function(kind,id){
+    var f=readFiles(kind).find(function(x){return x.id===id;}); if(!f||!f.data){alert('File download is not available.');return;}
+    var a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();
+  };
+  window.atsrsV134Delete=function(kind,id){
+    writeFiles(kind,readFiles(kind).filter(function(f){return f.id!==id;})); render();
+  };
+
+  function row(kind,f){
+    return '<div class="atsrs-v134-row">'+
+      '<div><b title="'+esc(f.name)+'">'+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div>'+
+      '<div class="atsrs-v134-actions">'+
+      '<button class="secondary" onclick="atsrsV134Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button>'+
+      '<button class="secondary" onclick="atsrsV134Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button>'+
+      '<button class="action" onclick="atsrsV134Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button>'+
+      '</div></div>';
+  }
+
+  function render(){
+    setBuild(); ensureLayout();
+    CONFIGS.forEach(function(cfg){
+      var arr=readFiles(cfg.kind).slice();
+      var filter=byId('v134_'+cfg.kind+'_filter');
+      var mode=filter?filter.value:'newest';
+      arr.sort(function(a,b){
+        if(mode==='oldest')return String(a.updated||'').localeCompare(String(b.updated||''));
+        if(mode==='az')return String(a.name||'').localeCompare(String(b.name||''));
+        if(mode==='za')return String(b.name||'').localeCompare(String(a.name||''));
+        return String(b.updated||'').localeCompare(String(a.updated||''));
+      });
+      var status=byId('v134_'+cfg.kind+'_status');
+      var list=byId('v134_'+cfg.kind+'_list');
+      if(status){
+        status.textContent=label(arr.length);
+        status.className='atsrs-v134-status '+(arr.length?'ready':'empty');
+      }
+      if(filter){
+        filter.classList.toggle('active',arr.length>0);
+      }
+      if(list){
+        list.innerHTML=arr.length?arr.map(function(f){return row(cfg.kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
+      }
+    });
+  }
+
+  function hideLegacyNoise(){
+    qa('#refsPage #appraisalStatusBadge,#refsPage #referenceStatusBadge,#refsPage #recommendationStatusBadge,#refsPage #coverLetterStatusBadge,#refsPage #v105_appraisal_badge,#refsPage #v105_reference_badge,#refsPage .ref-doc-head .badge').forEach(function(x){x.remove();});
+  }
+
+  function run(){setBuild();ensureLayout();hideLegacyNoise();render();}
+
+  ['renderAll','showPage','applyLanguage','renderManagedFiles'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function'&&!old.__atsrsV134){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,40);setTimeout(run,240);return r;};
+      wrapped.__atsrsV134=true;
+      window[name]=wrapped;
+    }
+  });
+
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',function(){run();setTimeout(run,500);});
-  setInterval(run,1500);
+  setTimeout(run,900);
+})();
+
+/* ===== extracted from inline script id=ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS ===== */
+(function(){
+  var BUILD='ATSRS V178';
+  var UPDATE='Last Update: 01 Jul 2026';
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function clearDashboardStorageOnce(){
+    try{
+      ['atsrs_dashboard_order_v124','atsrs_dashboard_size_v124','atsrs_dashboard_min_v124'].forEach(function(k){localStorage.removeItem(k);});
+    }catch(e){}
+  }
+  function parkDashboardBuilder(){
+    var page=q('#dashboardPage'); if(!page)return;
+    qa('.dash-card-tools,.dash-resize-handle,.dash-placeholder',page).forEach(function(x){x.remove();});
+    qa('.dash-minimized',page).forEach(function(x){x.classList.remove('dash-minimized');});
+    qa('.dash-custom-ready,.dash-resizable,.dash-drag-float',page).forEach(function(el){
+      el.classList.remove('dash-drag-float','dash-resizable');
+      ['width','height','left','top','right','bottom','transform','opacity','minWidth','maxWidth','zIndex'].forEach(function(p){el.style[p]='';});
+      if(el.classList.contains('dash-custom-ready')) el.classList.remove('dash-custom-ready');
+    });
+    var dock=q('#dashboardDock');
+    if(dock){dock.innerHTML='';dock.className='hidden';dock.style.display='none';}
+  }
+  function attachTopActionsToApp(){
+    var app=q('#app'); if(!app)return;
+    var top=q('body > .top-actions') || q('body > .atsrs-global-top-actions') || q('body > .atsrs-v56-top-actions') || q('body > .atsrs-v64-top-actions') || q('#app > .top-actions');
+    if(!top)return;
+    if(top.parentElement!==app)app.insertBefore(top,app.firstChild);
+    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions');
+    top.removeAttribute('style');
+  }
+  function stabilizeDashboard(){
+    var page=q('#dashboardPage'); if(!page)return;
+    var stats=q('.stats-grid',page);
+    if(stats){stats.style.cssText=''; qa(':scope > .card',stats).forEach(function(card){card.style.cssText=card.style.cssText.replace(/(?:width|height|left|top|right|bottom|transform|opacity|z-index)\s*:[^;]+;?/gi,'');});}
+    var share=q('#shareProfilePanel'); if(share){share.classList.add('atsrs-v136-share-compact');}
+  }
+  function run(){setBuild();clearDashboardStorageOnce();parkDashboardBuilder();attachTopActionsToApp();stabilizeDashboard();}
+  window.initDashboardBuilderV123=function(){setTimeout(run,0);return true;};
+  ['showPage','renderAll','applyLanguage'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function' && !old.__atsrsV136){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,30);setTimeout(run,220);return r;};
+      wrapped.__atsrsV136=true; window[name]=wrapped;
+    }
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,500);});
+  setTimeout(run,900);
+  setInterval(function(){setBuild();parkDashboardBuilder();attachTopActionsToApp();},2500);
+})();
+
+/* ===== extracted from inline script id=ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS ===== */
+(function(){
+  var BUILD='ATSRS V178';
+  var UPDATE='Last Update: 01 Jul 2026';
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
+  function topbar(){
+    var app=q('#app'); if(!app)return;
+    var top=q('#app > .top-actions') || q('#app > .atsrs-global-top-actions') || q('#app > .atsrs-v56-top-actions') || q('#app > .atsrs-v64-top-actions') || q('body > .top-actions') || q('body > .atsrs-global-top-actions') || q('body > .atsrs-v56-top-actions') || q('body > .atsrs-v64-top-actions');
+    if(!top)return;
+    if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
+    top.classList.remove('atsrs-global-top-actions','atsrs-v56-top-actions','atsrs-v64-top-actions');
+    top.classList.add('top-actions');
+    top.style.setProperty('display',app.classList.contains('hidden')?'none':'flex','important');
+    top.style.setProperty('position','absolute','important');
+    top.style.setProperty('top',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('right',window.innerWidth<=800?'12px':'18px','important');
+    top.style.setProperty('left','auto','important');
+    top.style.setProperty('bottom','auto','important');
+    top.style.setProperty('z-index','90','important');
+    top.style.setProperty('transform','none','important');
+    top.style.setProperty('will-change','auto','important');
+    top.style.setProperty('position','absolute','important');
+    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
+    if(lang){lang.style.setProperty('position','relative','important');lang.style.setProperty('top','auto','important');lang.style.setProperty('right','auto','important');lang.style.setProperty('left','auto','important');lang.style.setProperty('bottom','auto','important');lang.style.setProperty('transform','none','important');}
+  }
+  function run(){setBuild();topbar();}
+  window.forceTopControlsFixed=topbar;
+  window.v55DockTopActions=topbar;
+  window.atsrsV70NormaliseTopActions=topbar;
+  ['openApp','showPage','renderAll','applyLanguage','changeLanguage','login','localTestLogin','logout','confirmLogout'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function' && !old.__atsrsV137){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,0);setTimeout(run,100);setTimeout(run,400);return r;};
+      wrapped.__atsrsV137=true; window[name]=wrapped;
+    }
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,300);});
+  window.addEventListener('resize',run);
+  setTimeout(run,0);setTimeout(run,500);setTimeout(run,1200);
+})();
+
+/* ===== extracted from inline script id=ATSRS_V138_CV_PREVIEW_DIRECT_JS ===== */
+(function(){
+  function dataUrlToBlob(dataUrl){
+    var parts=String(dataUrl||'').split(',');
+    if(parts.length<2) return null;
+    var meta=parts[0]||'';
+    var mimeMatch=meta.match(/data:([^;]+)/i);
+    var mime=mimeMatch?mimeMatch[1]:'application/octet-stream';
+    var binary=atob(parts.slice(1).join(','));
+    var len=binary.length;
+    var bytes=new Uint8Array(len);
+    for(var i=0;i<len;i++) bytes[i]=binary.charCodeAt(i);
+    return new Blob([bytes],{type:mime});
+  }
+  window.previewCV=function(){
+    var cv=(typeof getCV==='function')?getCV():null;
+    if(!cv){
+      if(typeof v48==='function') alert(v48('cvNoFile'));
+      else alert('No CV uploaded yet.');
+      return;
+    }
+    try{
+      var targetUrl=cv.data;
+      if(String(cv.data||'').indexOf('data:')===0){
+        var blob=dataUrlToBlob(cv.data);
+        if(blob) targetUrl=URL.createObjectURL(blob);
+      }
+      var w=window.open(targetUrl,'_blank','noopener');
+      if(!w){
+        var a=document.createElement('a');
+        a.href=targetUrl;
+        a.target='_blank';
+        a.rel='noopener';
+        a.click();
+      }
+      if(targetUrl!==cv.data){setTimeout(function(){try{URL.revokeObjectURL(targetUrl)}catch(e){}},60000);}
+    }catch(e){
+      if(cv.data){window.open(cv.data,'_blank','noopener');}
+    }
+  };
+})();
+
+/* ===== extracted from inline script id=ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS ===== */
+(function(){
+  'use strict';
+  var BUILD='ATSRS V178';
+  var UPDATE='Last Update: 01 Jul 2026';
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+  function setBuild(){
+    qa('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function ensureReferenceMaxIcons(){
+    var cards=qa('#refsPage .atsrs-v134-career-card');
+    cards.forEach(function(card){
+      if(card.querySelector('.atsrs-v134-max-icon'))return;
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='atsrs-v134-max-icon';
+      btn.setAttribute('aria-label','Maximize card');
+      btn.title='Maximize';
+      btn.textContent='□';
+      btn.onclick=function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var expanded=card.classList.toggle('atsrs-v141-expanded');
+        btn.textContent=expanded?'—':'□';
+        btn.title=expanded?'Minimize':'Maximize';
+        btn.setAttribute('aria-label',expanded?'Minimize card':'Maximize card');
+      };
+      card.appendChild(btn);
+    });
+  }
+  function run(){setBuild();ensureReferenceMaxIcons();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,250);setTimeout(run,900);});
+  ['renderAll','showPage','applyLanguage'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function'&&!old.__atsrsV141){
+      var wrapped=function(){var r=old.apply(this,arguments);setTimeout(run,50);setTimeout(run,300);return r;};
+      wrapped.__atsrsV141=true;
+      window[name]=wrapped;
+    }
+  });
+  setInterval(function(){if(document.getElementById('refsPage'))run();},1500);
 })();
