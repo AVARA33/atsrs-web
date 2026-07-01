@@ -1,1 +1,491 @@
-/* ATSRS V179 modular placeholder. CSS preserved in base.css to keep exact V178 order. */
+/* ATSRS V179 split from V178 - account.css. Original CSS order preserved by index link order. */
+
+#auth #signupSocialArea{margin:6px 0 8px!important;text-align:center!important;}
+#auth #signupSocialArea .auth-divider{display:flex!important;align-items:center!important;gap:10px!important;margin:4px 0 4px!important;color:#8fa1b7!important;font-size:13px!important;font-weight:800!important;text-transform:none!important;}
+#auth #signupSocialArea .auth-divider::before,#auth #signupSocialArea .auth-divider::after{content:"";height:1px;background:#334155;flex:1;}
+#auth #signupSocialArea .auth-divider span{white-space:nowrap!important;}
+#auth .google-text-link{display:inline!important;width:auto!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#cbd5e1!important;font-size:14px!important;font-weight:800!important;text-transform:none!important;line-height:1.4!important;}
+#auth .google-text-link:hover{text-decoration:underline!important;color:#f8fafc!important;}
+#auth .google-word{font-weight:900!important;letter-spacing:.01em!important;}
+#auth .g-blue{color:#4285F4!important;}#auth .g-red{color:#EA4335!important;}#auth .g-yellow{color:#FBBC05!important;}#auth .g-green{color:#34A853!important;}
+#auth #socialGoogleBtn,#auth #socialMicrosoftBtn,#auth #socialLinkedInBtn,#auth .social-auth-icon{display:none!important;}
+
+
+/* V158 login clean: date-only build label, darker background, intro panel without box */
+#auth.auth{
+  background:
+    radial-gradient(circle at 18% 18%,rgba(34,197,94,.10),transparent 28%),
+    radial-gradient(circle at 78% 35%,rgba(56,189,248,.07),transparent 30%),
+    linear-gradient(135deg,#020711 0%,#04101d 48%,#061827 100%)!important;
+}
+#auth.auth::before{
+  background:
+    radial-gradient(circle at 16% 24%,rgba(34,197,94,.08),transparent 28%),
+    radial-gradient(circle at 78% 38%,rgba(56,189,248,.06),transparent 30%)!important;
+}
+#auth .auth-intro{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  padding:18px 8px!important;
+}
+#auth #introKicker.auth-kicker{
+  display:block!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  margin:0 0 14px!important;
+  border-radius:0!important;
+  color:#e8f7ef!important;
+}
+#auth #introKicker .intro-kicker-main{
+  display:block!important;
+  color:#f8fafc!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  letter-spacing:.02em!important;
+  line-height:1.15!important;
+}
+#auth #introKicker .intro-kicker-sub{
+  display:block!important;
+  margin-top:5px!important;
+  color:#9fb0c5!important;
+  font-size:11.5px!important;
+  font-weight:800!important;
+  letter-spacing:.045em!important;
+  line-height:1.25!important;
+}
+#auth #introKicker .meaning-and{color:#86efac!important;}
+#auth:not(.hidden) .build-badge div:nth-child(2){white-space:nowrap!important;}
+
+
+#auth:not(.hidden) .build-badge{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:8px 10px!important;
+}
+#auth:not(.hidden) .build-badge div{
+  text-shadow:0 2px 14px rgba(0,0,0,.55)!important;
+}
+#auth .feature-tile{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:15px 14px 14px!important;
+  transform:none!important;
+}
+#auth .feature-tile:hover{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+#auth .feature-tile:nth-child(5),
+#auth .feature-tile:nth-child(6){
+  border:0!important;
+}
+#auth .feature-tile b,
+#auth .feature-tile span:not(.tile-icon){
+  text-shadow:0 2px 14px rgba(0,0,0,.55)!important;
+}
+#auth .tile-icon{
+  box-shadow:none!important;
+}
+#auth #introKicker.auth-kicker{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+
+#auth:not(.hidden) #buildBadge.build-badge{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:8px 10px!important;
+}
+#auth:not(.hidden) .build-badge:not(#buildBadge){display:none!important;visibility:hidden!important;opacity:0!important;}
+#auth:not(.hidden) #buildBadge.build-badge div:nth-child(n+4){display:none!important;}
+#auth:not(.hidden) #buildBadge.build-badge div{white-space:nowrap!important;text-shadow:0 2px 14px rgba(0,0,0,.55)!important;}
+
+
+/* V162 Platform page simplification: remove visual boxes, keep text positions */
+#introPage .intro-service-card,
+#introPage .intro-service-card.active{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#introPage .intro-service-card:hover{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+#introPage .intro-service-card .svc-icon{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+#introPage .atsrs-anime-stage{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#introPage .atsrs-anime-stage::before,
+#introPage .anime-step::after{
+  display:none!important;
+}
+#introPage .anime-step{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+#introPage .anime-step:hover{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+#introPage .mini-docs em,
+#introPage .approve-flow i,
+#introPage .profile-link-demo{
+  background:transparent!important;
+  border-color:rgba(148,163,184,.45)!important;
+  box-shadow:none!important;
+}
+
+
+/* Dashboard: keep layout, remove visible card boxes from background */
+#dashboardPage .card,
+#dashboardPage .panel,
+#dashboardPage .workflow-card,
+#dashboardPage .snapshot-card,
+#dashboardPage .mini-panel,
+#dashboardPage .dashboard-snapshot-panel,
+#dashboardPage .share-card{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+#dashboardPage .snapshot-item,
+#dashboardPage .risk-item{
+  background:rgba(8,21,36,.22)!important;
+  border-color:rgba(148,163,184,.22)!important;
+}
+
+/* References: keep grid/layout, remove card boxes */
+#refsPage .ref-card,
+#refsPage .atsrs-v134-career-card,
+#refsPage .cv-card,
+#refsPage .cover-letter-card{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  padding:10px 8px!important;
+}
+#refsPage .atsrs-v134-career-card{
+  min-height:300px!important;
+  height:300px!important;
+}
+#refsPage .atsrs-v134-career-card h3{margin-bottom:10px!important;min-height:0!important;}
+#refsPage .atsrs-v134-career-card .atsrs-v134-desc{min-height:54px!important;margin-bottom:12px!important;}
+#refsPage .atsrs-v134-statusbar{
+  display:grid!important;
+  grid-template-columns:1fr auto auto!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:34px!important;
+  margin:0 0 8px!important;
+}
+#refsPage .atsrs-v134-upload{
+  width:auto!important;
+  min-width:116px!important;
+  max-width:150px!important;
+  margin:0!important;
+  padding:7px 12px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  justify-self:end!important;
+}
+#refsPage .atsrs-v134-filter{
+  display:block!important;
+  width:auto!important;
+  min-width:122px!important;
+  max-width:138px!important;
+  margin:0!important;
+  padding:7px 9px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  justify-self:end!important;
+  opacity:.96!important;
+}
+#refsPage .atsrs-v134-filter:disabled{opacity:.55!important;}
+#refsPage .atsrs-v134-empty{
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px solid rgba(148,163,184,.35)!important;
+  border-radius:0!important;
+  padding:9px 0!important;
+}
+#refsPage .atsrs-v134-list{max-height:116px!important;}
+#refsPage .atsrs-v134-row{
+  background:rgba(8,21,36,.20)!important;
+  border-color:rgba(148,163,184,.22)!important;
+}
+#refsPage #cvCard .cv-beta-box,
+#refsPage #cvCard .ref-beta-box,
+#refsPage #cvCard [class*="slot"],
+#refsPage #cvCard [id*="slot"],
+#refsPage #cvCard [id*="Slot"],
+#refsPage #cvCard [class*="premium"],
+#refsPage #cvCard [class*="Premium"]{
+  display:none!important;
+}
+@media(max-width:760px){
+  #refsPage .atsrs-v134-statusbar{grid-template-columns:1fr!important;}
+  #refsPage .atsrs-v134-upload,#refsPage .atsrs-v134-filter{justify-self:stretch!important;width:100%!important;max-width:none!important;}
+}
+
+
+#app .top-actions,
+#app .atsrs-global-top-actions,
+#app .atsrs-v56-top-actions,
+#app .atsrs-v64-top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions,
+#app .app-lang-switcher,
+#app #appLangCircle,
+#app #appLangMenu,
+#app #atsrsAccountBadge,
+#app #atsrsAccountTypeLabel,
+#app #atsrsAccountEmailLabel,
+#app #topLogoutBtn{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#navLogout.exit-nav-btn{
+  display:block!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  width:100%!important;
+  margin:6px 0 0!important;
+  padding:12px 14px!important;
+  border-radius:14px!important;
+  text-align:left!important;
+  background:transparent!important;
+  border:1px solid transparent!important;
+  color:#cbd5e1!important;
+  font-weight:800!important;
+  box-shadow:none!important;
+}
+#navLogout.exit-nav-btn:hover{
+  background:rgba(30,41,59,.86)!important;
+  border-color:#334155!important;
+  color:#fff!important;
+}
+
+
+/* V172: Documents page - keep layout/system, only stabilize method UI and remove outer shells */
+#certificatesPage > .panel,
+#certificatesPage .unified-cert-panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  margin-bottom:22px!important;
+}
+#certificatesPage .scan-box,
+#certificatesPage #confirmBox,
+#certificatesPage .table-wrap{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+#certificatesPage table,
+#certificatesPage th,
+#certificatesPage td{background:transparent!important;}
+#certificatesPage .cert-mode-buttons,
+#certificatesPage .document-actions{
+  max-width:760px!important;
+  display:flex!important;
+  gap:10px!important;
+  flex-wrap:wrap!important;
+}
+#certificatesPage .cert-mode-buttons button,
+#certificatesPage .document-actions button{
+  width:auto!important;
+  min-width:190px!important;
+  max-width:240px!important;
+  min-height:38px!important;
+  padding:10px 14px!important;
+  margin:0!important;
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#eef6ff!important;
+  box-shadow:none!important;
+}
+#certificatesPage .cert-mode-buttons button.active{
+  background:#2f455d!important;
+  border-color:#5c7894!important;
+  color:#ffffff!important;
+}
+#certificatesPage #certManualPanel,
+#certificatesPage #certScanPanel{display:none!important;}
+#certificatesPage #certManualPanel.active,
+#certificatesPage #certScanPanel.active{display:block!important;}
+#certificatesPage .field-wrap,
+#certificatesPage select,
+#certificatesPage input,
+#certificatesPage textarea{max-width:760px;}
+#certificatesPage .atsrs-v172-form-actions{display:flex!important;gap:10px!important;align-items:center!important;flex-wrap:wrap!important;margin-top:10px!important;}
+#certificatesPage .atsrs-v172-form-actions button{width:auto!important;min-width:120px!important;max-width:170px!important;margin:0!important;padding:10px 14px!important;}
+#certificatesPage .atsrs-v172-delete{
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#fca5a5!important;
+  box-shadow:none!important;
+}
+#certificatesPage td:last-child{white-space:nowrap!important;}
+#certificatesPage td:last-child button{width:auto!important;min-width:74px!important;margin:0 5px 0 0!important;padding:8px 11px!important;font-size:12px!important;}
+
+
+/* V176: from V172. References UI only. Upload is plain text beside filter; no boxed upload button. */
+#refsPage, #refsPage *{
+  animation:none!important;
+  transition:none!important;
+}
+#refsPage .ref-grid{
+  align-items:start!important;
+  grid-auto-flow:row!important;
+}
+#refsPage .ref-card,
+#refsPage .atsrs-v134-career-card{
+  position:relative!important;
+  transform:none!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  min-height:245px!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+#refsPage .atsrs-v134-desc{
+  min-height:42px!important;
+  margin-bottom:10px!important;
+}
+#refsPage .atsrs-v134-statusbar{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  margin:2px 0 10px!important;
+  min-height:34px!important;
+  flex-wrap:nowrap!important;
+}
+#refsPage .atsrs-v134-upload,
+#refsPage button.atsrs-v134-upload,
+#refsPage .ref-card .atsrs-v134-upload{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:74px!important;
+  max-width:90px!important;
+  height:32px!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  color:#93c5fd!important;
+  font-size:12px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  text-align:left!important;
+  text-decoration:none!important;
+  cursor:pointer!important;
+}
+#refsPage .atsrs-v134-upload:hover{
+  color:#bfdbfe!important;
+  text-decoration:underline!important;
+  background:transparent!important;
+}
+#refsPage .atsrs-v134-filter,
+#refsPage .atsrs-v134-filter.active{
+  display:inline-block!important;
+  width:118px!important;
+  min-width:118px!important;
+  max-width:118px!important;
+  height:32px!important;
+  padding:5px 8px!important;
+  margin:0!important;
+  flex:0 0 118px!important;
+}
+#refsPage .atsrs-v134-status{
+  display:inline-block!important;
+  flex:1 1 auto!important;
+  min-width:52px!important;
+  text-align:right!important;
+  white-space:nowrap!important;
+}
+#refsPage .atsrs-v134-list{
+  min-height:40px!important;
+  max-height:130px!important;
+}
+#refsPage .atsrs-v134-empty{
+  min-height:40px!important;
+}
+#refsPage .atsrs-v156-slots-box,
+#refsPage .atsrs-v156-slot-list,
+#refsPage .atsrs-v156-slot-chip{
+  display:none!important;
+  visibility:hidden!important;
+}
+#refsPage .atsrs-v134-actions .action,
+#refsPage .atsrs-v134-actions button.action{
+  background:#26384e!important;
+  border:1px solid #3b536d!important;
+  color:#fca5a5!important;
+  box-shadow:none!important;
+}
+
+
+/* Remove the remaining visible Dashboard hero/card frame without changing layout or logic. */
+#dashboardPage .hero-card,
+#dashboardPage .solo-hero .hero-card,
+#dashboardPage .solo-hero > .hero-card,
+#dashboardPage .dashboard-hero,
+#dashboardPage .dash-hero{
+  background:transparent!important;
+  border-color:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#dashboardPage .hero-card::before,
+#dashboardPage .hero-card::after{
+  display:none!important;
+  content:none!important;
+}
+/* Keep dashboard content stable on refresh; no moving/jumping animation. */
+#dashboardPage,
+#dashboardPage *{
+  animation:none!important;
+  transition:none!important;
+}
