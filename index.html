@@ -30,6 +30,27 @@
     <p class="atsrs-loader-sub">Getting things ready for you...</p>
   </div>
 </div>
+<script id="atsrs-v178-modular-boot-guard">
+(function(){
+  function unlockBoot(){
+    try{
+      if(document && document.body){
+        document.body.classList.remove('atsrs-booting');
+      }
+    }catch(e){}
+  }
+  window.addEventListener('error',function(){setTimeout(unlockBoot,0);});
+  window.addEventListener('unhandledrejection',function(){setTimeout(unlockBoot,0);});
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(unlockBoot,450);});
+  }else{
+    setTimeout(unlockBoot,450);
+  }
+  window.addEventListener('load',function(){setTimeout(unlockBoot,650);});
+  setTimeout(unlockBoot,1800);
+  setTimeout(unlockBoot,3500);
+})();
+</script>
 <section id="auth" class="auth">
 
 <div class="auth-bg-docs" aria-hidden="true">
