@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<!-- ATSRS V179 modular base generated from V178. UI preserved. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#07111d" />
 <meta name="color-scheme" content="dark" />
-<title>ATSRS</title>
+<title>ATSRS V179</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
 
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/login.css" />
@@ -17,6 +15,12 @@
 <link rel="stylesheet" href="css/documents.css" />
 <link rel="stylesheet" href="css/references.css" />
 <link rel="stylesheet" href="css/account.css" />
+
+
+
+
+
+
 </head>
 <body class="atsrs-booting">
 <div id="atsrsBootScreen" role="status" aria-live="polite">
@@ -107,7 +111,7 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V168</div>
+<div>ATSRS V179</div>
 <div>Last Update: 01 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -522,95 +526,295 @@
 </section>
 
 
-<!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
-
-
-<!-- V62 TEST AUTOMATION: in-app QA runner for ATSRS core functions -->
-
-
-<!-- V64 CLEAN FIX: login viewport loading + final app-only language/logout lock -->
-
-
-<!-- V110 FINAL: clean register-only account type flow -->
-
-
-<!-- V111: register account type UX logic correction -->
-
-
-<!-- V112: compact register choice + icon-only social refinement -->
-
-
-<!-- V113: social placeholder flow + two direct test login buttons -->
-
-
-<!-- V114: authoritative build badge lock -->
-
-
-<!-- V115: test buttons placement + social placeholder cleanup -->
-
-
-<!-- V116: authoritative test-login placement under Remember me -->
-
-
-<!-- V138: Direct CV preview + compact table delete buttons -->
-
-
-<!-- V139: References file list height fix - show 3 files comfortably, scroll from 4th. -->
-
-
-<!-- V140: References/Appraisals file windows - show 3 uploaded files, start internal scroll from 4th. Documents page untouched. -->
-
-
-<!-- V141: References larger file windows + per-card maximize/minimize icons. Based on V140. Preserved; overridden by V142 below. -->
-
-
-<!-- V142: Taller References file windows + clean per-card expand/minimize icon. Based on V141. -->
-
-
-<!-- V144: References overlay maximize stable for all 4 cards. No grid shift. -->
-
-
-<!-- V145: References full-width stacked cards. CV-style layout, no max/min overlay. 5 visible files, scroll from 6th. -->
-
-
-<!-- V146: References compact file list. Removes nested file-card look. 5 visible files, scroll from 6th. -->
-
-
-<!-- V147: References compact list density fix. Rows tightened; list height is content-based until 6th file, then scroll. -->
-
-
-<!-- V148: References vertical gap compression. Reduces legacy career-record row height while keeping compact list + 5-file scroll. -->
-
-
-<!-- V150: Remove old 124px row lock and force true compact managed-file rows. V148 kept as base. -->
-
-
-<!-- V157 clean login/build/social cleanup: V156 base, no UTC badge, Google text only -->
-
-
-<!-- V160/V161 login text-only visual cleanup: remove build/feature card boxes, keep layout/text positions -->
-
-
-<!-- V161 authoritative login build badge cleanup: single static date only, no ghost duplicate -->
-
-
-<!-- ATSRS V168: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
-
-
-<!-- V167: remove app top language/account/logout and add Exit in sidebar only -->
-
-
-<!-- V178: Dashboard hero/card frame cleanup only. Base: V177. -->
-
-
-<script src="js/storage.js"></script>
-<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/login.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/documents.js"></script>
 <script src="js/references.js"></script>
 <script src="js/account.js"></script>
-<script src="js/app.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
+
+
+
+<!-- V62 TEST AUTOMATION: in-app QA runner for ATSRS core functions -->
+
+
+
+
+<!-- V64 CLEAN FIX: login viewport loading + final app-only language/logout lock -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- V110 FINAL: clean register-only account type flow -->
+
+
+
+
+
+<!-- V111: register account type UX logic correction -->
+
+
+
+
+
+<!-- V112: compact register choice + icon-only social refinement -->
+
+
+
+
+
+<!-- V113: social placeholder flow + two direct test login buttons -->
+
+
+
+
+
+<!-- V114: authoritative build badge lock -->
+
+
+
+
+<!-- V115: test buttons placement + social placeholder cleanup -->
+
+
+
+
+
+<!-- V116: authoritative test-login placement under Remember me -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- V138: Direct CV preview + compact table delete buttons -->
+
+
+
+
+
+<!-- V139: References file list height fix - show 3 files comfortably, scroll from 4th. -->
+
+
+
+<!-- V140: References/Appraisals file windows - show 3 uploaded files, start internal scroll from 4th. Documents page untouched. -->
+
+
+
+
+<!-- V141: References larger file windows + per-card maximize/minimize icons. Based on V140. Preserved; overridden by V142 below. -->
+
+
+
+
+
+<!-- V142: Taller References file windows + clean per-card expand/minimize icon. Based on V141. -->
+
+
+
+
+
+<!-- V144: References overlay maximize stable for all 4 cards. No grid shift. -->
+
+
+
+
+
+<!-- V145: References full-width stacked cards. CV-style layout, no max/min overlay. 5 visible files, scroll from 6th. -->
+
+
+
+
+
+<!-- V146: References compact file list. Removes nested file-card look. 5 visible files, scroll from 6th. -->
+
+
+
+
+
+<!-- V147: References compact list density fix. Rows tightened; list height is content-based until 6th file, then scroll. -->
+
+
+
+
+
+<!-- V148: References vertical gap compression. Reduces legacy career-record row height while keeping compact list + 5-file scroll. -->
+
+
+
+
+
+<!-- V150: Remove old 124px row lock and force true compact managed-file rows. V148 kept as base. -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- V157 clean login/build/social cleanup: V156 base, no UTC badge, Google text only -->
+
+
+
+
+<!-- V160/V161 login text-only visual cleanup: remove build/feature card boxes, keep layout/text positions -->
+
+
+
+
+
+<!-- V161 authoritative login build badge cleanup: single static date only, no ghost duplicate -->
+
+
+
+
+
+<!-- ATSRS V168: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
+
+
+
+
+
+<!-- V167: remove app top language/account/logout and add Exit in sidebar only -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- V178: Dashboard hero/card frame cleanup only. Base: V177. -->
+
+
+
 </body>
 </html>
