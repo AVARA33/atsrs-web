@@ -847,3 +847,110 @@
   window.addEventListener('load',bind);
   [100,300,700,1200,2200,3500].forEach(function(ms){setTimeout(bind,ms);});
 })();
+
+/* ===== ATSRS V185 Register Single Handler Fix - remove old listeners by replacing Register button ===== */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function val(id){var el=byId(id); return el ? (el.value||'').trim() : '';}
+  function show(msg){var el=byId('regMsg'); if(el){el.style.whiteSpace='pre-line'; el.textContent=msg||'';}}
+  function mode(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn'), m='';
+    if(p && p.classList.contains('active')) m='personal';
+    if(c && c.classList.contains('active')) m='company';
+    try{if(!m)m=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+    return (m==='personal'||m==='company')?m:'';
+  }
+  function errText(e){return e ? ([e.name,e.message].filter(Boolean).join(': ')||String(e)) : 'Unknown error';}
+  function redirectUrl(){try{return (window.location.origin||'https://atsrs.com') + (window.location.pathname||'/');}catch(e){return 'https://atsrs.com/';}}
+  function getSupabaseUrl(){try{return (typeof SUPABASE_URL!=='undefined'?SUPABASE_URL:'');}catch(e){return '';}}
+  function getSupabaseKey(){try{return (typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:'');}catch(e){return '';}}
+  function getClient(){
+    try{ if(window.supabaseClient && window.supabaseClient.auth) return window.supabaseClient; }catch(e){}
+    try{ if(typeof supabaseClient!=='undefined' && supabaseClient && supabaseClient.auth) return supabaseClient; }catch(e){}
+    try{
+      var url=getSupabaseUrl(), key=getSupabaseKey();
+      if(window.supabase && url && key){
+        var c=window.supabase.createClient(url,key);
+        window.supabaseClient=c;
+        return c;
+      }
+    }catch(e){}
+    return null;
+  }
+  async function directFetchTest(){
+    var url=getSupabaseUrl(), key=getSupabaseKey();
+    if(!url) return {ok:false,status:'NO_URL',detail:'SUPABASE_URL missing'};
+    try{
+      var r=await fetch(url+'/auth/v1/settings',{method:'GET',headers:{apikey:key,Authorization:'Bearer '+key}});
+      var text=''; try{text=await r.text();}catch(_e){}
+      return {ok:r.ok,status:r.status,detail:text.slice(0,240)};
+    }catch(e){return {ok:false,status:'FETCH_FAILED',detail:errText(e)};}
+  }
+  function buildDebug(error,fetchResult){
+    var lines=[];
+    lines.push('Create Account failed — debug report');
+    lines.push('Error: '+errText(error));
+    lines.push('Handler: V185 single register handler');
+    lines.push('Online: '+(navigator.onLine?'yes':'no'));
+    lines.push('Origin: '+window.location.origin);
+    lines.push('Redirect: '+redirectUrl());
+    lines.push('Supabase lib: '+(window.supabase?'loaded':'NOT loaded'));
+    lines.push('Client: '+(getClient()?'created':'NOT created'));
+    lines.push('Supabase URL: '+(getSupabaseUrl()||'missing'));
+    var key=getSupabaseKey(); lines.push('Anon key prefix: '+(key?key.slice(0,16)+'...':'missing'));
+    if(fetchResult){
+      lines.push('Direct fetch: '+fetchResult.status+' / '+(fetchResult.ok?'OK':'FAILED'));
+      if(fetchResult.detail) lines.push('Fetch detail: '+fetchResult.detail);
+    }
+    lines.push('Meaning: FETCH_FAILED = network/Wi-Fi/DNS/VPN/blocking. Auth error text = Supabase auth setting/config.');
+    return lines.join('\n');
+  }
+  async function registerV185(){
+    var email=val('regEmail').toLowerCase(), password=val('regPassword'), password2=val('regPassword2'), m=mode();
+    show('');
+    if(!m){show('Select Personal or Corporate before creating your ATSRS account.');return false;}
+    if(!email || !password || !password2){show('Fill all required fields.');return false;}
+    if(password.length<6){show('Password must be at least 6 characters.');return false;}
+    if(password!==password2){show('Passwords do not match.');return false;}
+    var client=getClient();
+    if(!client){show(buildDebug(new Error('Supabase library/client did not load'),await directFetchTest()));return false;}
+    var btn=byId('registerBtn'), old=btn?btn.textContent:'';
+    try{
+      if(btn){btn.disabled=true;btn.textContent='Creating account...';}
+      show('Creating account...');
+      var res=await client.auth.signUp({
+        email:email,
+        password:password,
+        options:{
+          emailRedirectTo:redirectUrl(),
+          data:{account_type:m,atsrs_account_type:m,use_mode:m,source:'atsrs-web',app:'ATSRS'}
+        }
+      });
+      if(res.error){show('Supabase Auth error: '+res.error.message);return false;}
+      try{localStorage.setItem('atsrs_pending_email',email);localStorage.setItem('atsrs_use_mode',m);}catch(_e){}
+      show((res.data && res.data.session)?'Account created. You can now continue.':'Account created. Confirmation email sent. Check inbox/spam.');
+      return true;
+    }catch(e){
+      show(buildDebug(e,await directFetchTest()));
+      return false;
+    }finally{
+      if(btn){btn.disabled=false;if(old)btn.textContent=old;}
+    }
+  }
+  function replaceAndBind(){
+    window.atsrsAuthDebugRegister=registerV185;
+    window.register=registerV185;
+    if(window.atsrsCoreAuth) window.atsrsCoreAuth.register=registerV185;
+    var oldBtn=byId('registerBtn');
+    if(!oldBtn || oldBtn.dataset.v185SingleHandler==='1') return;
+    var newBtn=oldBtn.cloneNode(true);
+    newBtn.dataset.v185SingleHandler='1';
+    newBtn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return registerV185();};
+    newBtn.addEventListener('click',function(e){if(e){e.preventDefault();e.stopImmediatePropagation();} return registerV185();},true);
+    oldBtn.parentNode.replaceChild(newBtn,oldBtn);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',replaceAndBind); else replaceAndBind();
+  window.addEventListener('load',replaceAndBind);
+  [100,300,700,1200,2200,3500,5500].forEach(function(ms){setTimeout(replaceAndBind,ms);});
+})();
