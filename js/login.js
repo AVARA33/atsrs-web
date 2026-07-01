@@ -630,7 +630,7 @@
 })();
 
 
-/* ===== ATSRS V179 Auth Module V1 - final UI binding to core auth closures ===== */
+/* ===== ATSRS V180 Create Account V1 - UI binding to core auth closures ===== */
 (function(){
   'use strict';
   function byId(id){return document.getElementById(id);}
@@ -644,6 +644,10 @@
     window.logout=function(){return core.logout();};
     var b;
     b=byId('loginBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.login();};
+    b=byId('createBtn'); if(b && !b.dataset.v180CreateOpen){
+      b.dataset.v180CreateOpen='1';
+      b.addEventListener('click',function(){var m=byId('regMsg'); if(m)m.textContent='';},true);
+    }
     b=byId('registerBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.register();};
     b=byId('resetBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.forgotPassword();};
     b=byId('saveNewPassBtn'); if(b) b.onclick=function(e){if(e)e.preventDefault();return core.updatePassword();};
