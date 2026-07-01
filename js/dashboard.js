@@ -1,534 +1,5 @@
-/* ATSRS V179 split from V178 - dashboard.js. Original JS execution order preserved by index script order. */
-
-/* --- Original inline script id=atsrs-v110-clean-register-flow-script --- */
-(function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TEST='TEST BUILD';
-  var pendingProvider=null;
-  var baseRegister=window.register;
-  var baseSocialAuth=window.atsrsSocialAuth;
-  var baseSetUseMode=window.setUseMode;
-  var baseOpenApp=window.openApp;
-
-  function byId(id){return document.getElementById(id);}
-  function currentMode(){
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    if(p && p.classList.contains('active')) return 'personal';
-    if(c && c.classList.contains('active')) return 'company';
-    try{
-      var m=window.useMode || localStorage.getItem('atsrs_use_mode') || '';
-      return (m==='personal'||m==='company') ? m : '';
-    }catch(e){return window.useMode || '';}
-  }
-  function providerLabel(p){return p==='microsoft'?'Microsoft':p==='linkedin'?'LinkedIn':'Google';}
-  function updateBuild(){
-    var rows=document.querySelectorAll('.build-badge div');
-    if(rows[0])rows[0].textContent=BUILD;
-    if(rows[1])rows[1].textContent=UPDATE;
-    if(rows[2])rows[2].textContent=TEST;
-  }
-  function clearOldWarnings(){
-    ['modeRule','modeInstruction'].forEach(function(id){var el=byId(id);if(el){el.classList.remove('active');el.style.display='none';}});
-    var mc=byId('modeChoiceBox'); if(mc) mc.classList.remove('mode-error');
-    ['loginMsg','regMsg'].forEach(function(id){
-      var el=byId(id); if(el && /Select Personal or Corporate account/i.test(el.textContent||'')) el.textContent='';
-    });
-  }
-  function ensureRegisterAccountArea(){
-    var rb=byId('registerBox'), title=byId('registerTitle'), choice=byId('modeChoiceBox');
-    if(!rb || !title || !choice) return null;
-    var area=byId('registerAccountTypeArea');
-    if(!area){
-      area=document.createElement('div');
-      area.id='registerAccountTypeArea';
-      title.insertAdjacentElement('afterend',area);
-    }
-    if(choice.parentElement!==area) area.insertBefore(choice,area.firstChild);
-    var notice=byId('registerAccountNotice');
-    if(!notice){
-      notice=document.createElement('div');
-      notice.id='registerAccountNotice';
-      notice.innerHTML='<div class="notice-icon">✓</div><div><b id="registerAccountNoticeTitle">Choose Account Type</b><span id="registerAccountNoticeText">Select Personal or Corporate before creating your ATSRS account.</span></div>';
-      area.appendChild(notice);
-    }else if(notice.parentElement!==area){area.appendChild(notice);}
-    updateNotice();
-    return area;
-  }
-  function updateNotice(){
-    var mode=currentMode();
-    var area=byId('registerAccountTypeArea');
-    if(area) area.classList.toggle('needs-choice',!mode);
-    var title=byId('registerAccountNoticeTitle'), text=byId('registerAccountNoticeText');
-    if(!title||!text)return;
-    if(mode==='personal'){
-      title.textContent='';
-      text.textContent='Create a personal profile to keep documents, certificates, references, appraisals and expiry alerts organized.';
-    }else if(mode==='company'){
-      title.textContent='Corporate Account';
-      text.textContent='Create an organization account for personnel documents, expiry tracking, compliance readiness and controlled profile sharing.';
-    }else if(pendingProvider){
-      title.textContent='Choose Account Type';
-      text.textContent='Select Personal or Corporate to continue registration with '+providerLabel(pendingProvider)+'.';
-    }else{
-      title.textContent='Choose Account Type';
-      text.textContent='Select Personal or Corporate before creating your ATSRS account.';
-    }
-  }
-  function openRegisterAndScroll(){
-    pendingProvider=pendingProvider||null;
-    clearOldWarnings();
-    try{
-      if(typeof window.hideAuthBoxes==='function') window.hideAuthBoxes();
-      else{
-        ['loginBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id);if(el)el.classList.add('hidden');});
-      }
-      var rb=byId('registerBox'); if(rb) rb.classList.remove('hidden');
-    }catch(e){}
-    setTimeout(function(){
-      var area=ensureRegisterAccountArea();
-      clearOldWarnings();
-      updateNotice();
-      if(area && area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});
-    },80);
-    return false;
-  }
-  function canRegister(){
-    ensureRegisterAccountArea();
-    updateNotice();
-    var ok=!!currentMode();
-    var area=byId('registerAccountTypeArea');
-    if(area) area.classList.toggle('needs-choice',!ok);
-    if(!ok && area && area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});
-    return ok;
-  }
-  function continuePendingProvider(){
-    if(!pendingProvider || !currentMode()) return;
-    var provider=pendingProvider;
-    pendingProvider=null;
-    updateNotice();
-    setTimeout(function(){
-      if(typeof baseSocialAuth==='function') baseSocialAuth(provider,'register');
-    },220);
-  }
-
-  /* Login does not ask for Personal/Corporate anymore. The mode is resolved after sign-in/profile load. */
-  window.validateUseMode=function(){return true;};
-
-  window.login=async function(){
-    var email=(byId('loginEmail')&&byId('loginEmail').value||'').trim();
-    var password=(byId('loginPassword')&&byId('loginPassword').value||'').trim();
-    var msg=byId('loginMsg'); if(msg)msg.textContent='';
-    if(!email||!password){if(msg)msg.textContent=(typeof tr==='function'?tr('enterLogin'):'Enter email and password.');return;}
-    if(typeof markEmail==='function' && byId('loginEmail') && byId('loginEmailRule') && !markEmail(byId('loginEmail'),byId('loginEmailRule'))) return;
-    if(!window.supabaseClient){if(msg)msg.textContent='Supabase library did not load.';return;}
-    try{
-      var res=await window.supabaseClient.auth.signInWithPassword({email:email,password:password});
-      if(res.error){if(msg)msg.textContent=res.error.message;return;}
-      window.currentUser=res.data.user;
-      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-      if(typeof window.openApp==='function') window.openApp();
-    }catch(e){if(msg)msg.textContent=(typeof tr==='function'?tr('connection'):'Connection failed.');}
-  };
-  window.localTestLogin=function(){
-    window.currentUser={id:'local_test_user',email:'local-test@atsrs.com'};
-    try{
-      localStorage.setItem('atsrs_auth_mode','local');
-      if(!localStorage.getItem('atsrs_use_mode')) localStorage.setItem('atsrs_use_mode','personal');
-    }catch(e){}
-    if(typeof window.openApp==='function') window.openApp();
-  };
-  window.showRegister=function(){pendingProvider=null;return openRegisterAndScroll();};
-  window.register=function(){
-    if(!canRegister()) return false;
-    if(typeof baseRegister==='function') return baseRegister.apply(this,arguments);
-    return false;
-  };
-  window.atsrsSocialAuth=function(providerKey,flow){
-    if(!currentMode()){
-      pendingProvider=providerKey;
-      openRegisterAndScroll();
-      updateNotice();
-      return false;
-    }
-    pendingProvider=null;
-    if(typeof baseSocialAuth==='function') return baseSocialAuth(providerKey,'register');
-    return false;
-  };
-  window.setUseMode=function(mode){
-    if(mode!=='personal' && mode!=='company') return;
-    if(typeof baseSetUseMode==='function') baseSetUseMode(mode);
-    else{
-      window.useMode=mode;
-      try{localStorage.setItem('atsrs_use_mode',mode);}catch(e){}
-      var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-      if(p)p.classList.toggle('active',mode==='personal');
-      if(c)c.classList.toggle('active',mode==='company');
-      document.body.classList.toggle('personal-mode',mode==='personal');
-      document.body.classList.toggle('company-mode',mode==='company');
-    }
-    clearOldWarnings();
-    ensureRegisterAccountArea();
-    updateNotice();
-    continuePendingProvider();
-  };
-
-  function bind(){
-    updateBuild();
-    clearOldWarnings();
-    var create=byId('createBtn'); if(create) create.onclick=function(e){if(e)e.preventDefault();pendingProvider=null;return openRegisterAndScroll();};
-    var login=byId('loginBtn'); if(login) login.onclick=function(e){if(e)e.preventDefault();return window.login();};
-    var test=byId('localTestBtn'); if(test) test.onclick=function(e){if(e)e.preventDefault();return window.localTestLogin();};
-    var reg=byId('registerBtn'); if(reg) reg.onclick=function(e){if(e)e.preventDefault();return window.register();};
-    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
-      var b=byId(pair[0]); if(b) b.onclick=function(e){if(e)e.preventDefault();return window.atsrsSocialAuth(pair[1],'register');};
-    });
-    var rb=byId('registerBox'); if(rb && !rb.classList.contains('hidden')) ensureRegisterAccountArea();
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
-  window.addEventListener('load',bind);
-  [100,400,900,1600].forEach(function(ms){setTimeout(bind,ms);});
-})();
-
-/* --- Original inline script id=atsrs-v111-register-choice-script --- */
-(function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TEST='TEST BUILD';
-  var selectedMode='';
-  var pendingProvider=null;
-  var baseRegister=window.register;
-  var baseSocialAuth=window.atsrsSocialAuth;
-  function byId(id){return document.getElementById(id);}
-  function providerLabel(p){return p==='microsoft'?'Microsoft':p==='linkedin'?'LinkedIn':'Google';}
-  function updateBuild(){
-    var rows=document.querySelectorAll('.build-badge div');
-    if(rows[0]) rows[0].textContent=BUILD;
-    if(rows[1]) rows[1].textContent=UPDATE;
-    if(rows[2]) rows[2].textContent=TEST;
-  }
-  function setButtons(mode){
-    selectedMode=mode || '';
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    if(p) p.classList.toggle('active',selectedMode==='personal');
-    if(c) c.classList.toggle('active',selectedMode==='company');
-  }
-  function clearOldWarnings(){
-    ['modeRule','modeInstruction'].forEach(function(id){var el=byId(id); if(el){el.classList.remove('active'); el.style.display='none'; el.textContent='';}});
-    var mc=byId('modeChoiceBox'); if(mc) mc.classList.remove('mode-error');
-    ['loginMsg','regMsg'].forEach(function(id){var el=byId(id); if(el && /Select Personal or Corporate account/i.test(el.textContent||'')) el.textContent='';});
-  }
-  function ensureRegisterAccountArea(){
-    var rb=byId('registerBox'), title=byId('registerTitle'), choice=byId('modeChoiceBox');
-    if(!rb || !title || !choice) return null;
-    var area=byId('registerAccountTypeArea');
-    if(!area){
-      area=document.createElement('div');
-      area.id='registerAccountTypeArea';
-      title.insertAdjacentElement('afterend',area);
-    }
-    if(choice.parentElement!==area) area.insertBefore(choice,area.firstChild);
-    var notice=byId('registerAccountNotice');
-    if(!notice){
-      notice=document.createElement('div');
-      notice.id='registerAccountNotice';
-      notice.innerHTML='<div class="notice-icon">!</div><div><b id="registerAccountNoticeTitle">Choose Account Type</b><span id="registerAccountNoticeText">Select Personal or Corporate before creating your ATSRS account.</span></div>';
-      area.appendChild(notice);
-    }else if(notice.parentElement!==area){area.appendChild(notice);}
-    updateNotice();
-    return area;
-  }
-  function updateNotice(){
-    var area=byId('registerAccountTypeArea');
-    var notice=byId('registerAccountNotice');
-    var icon=notice?notice.querySelector('.notice-icon'):null;
-    var title=byId('registerAccountNoticeTitle'), text=byId('registerAccountNoticeText');
-    if(area) area.classList.toggle('needs-choice',!selectedMode);
-    if(!notice || !title || !text) return;
-    notice.classList.toggle('choice-missing',!selectedMode);
-    notice.classList.toggle('choice-selected',!!selectedMode);
-    if(!selectedMode){
-      if(icon) icon.textContent='!';
-      title.textContent='Choose Account Type';
-      text.textContent=pendingProvider ? ('Select Personal or Corporate to continue registration with '+providerLabel(pendingProvider)+'.') : 'Select Personal or Corporate before creating your ATSRS account.';
-    }else if(selectedMode==='personal'){
-      if(icon) icon.textContent='✓';
-      title.textContent='';
-      text.textContent='Create a personal profile to keep documents, certificates, references, appraisals and expiry alerts organized.';
-    }else{
-      if(icon) icon.textContent='✓';
-      title.textContent='Corporate Account';
-      text.textContent='Create an organization account to manage personnel, compliance records, shared documents and workforce information.';
-    }
-  }
-  function showRegisterOnly(){
-    ['loginBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id); if(el) el.classList.add('hidden');});
-    var rb=byId('registerBox'); if(rb) rb.classList.remove('hidden');
-  }
-  function openRegister(provider){
-    pendingProvider=provider || null;
-    setButtons('');
-    clearOldWarnings();
-    showRegisterOnly();
-    var area=ensureRegisterAccountArea();
-    updateNotice();
-    setTimeout(function(){area=ensureRegisterAccountArea(); updateNotice(); if(area && area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});},90);
-    return false;
-  }
-  function continueProvider(){
-    if(!pendingProvider || !selectedMode) return;
-    var p=pendingProvider;
-    pendingProvider=null;
-    updateNotice();
-    try{localStorage.setItem('atsrs_use_mode',selectedMode); window.useMode=selectedMode;}catch(e){}
-    setTimeout(function(){if(typeof baseSocialAuth==='function') baseSocialAuth(p,'register');},180);
-  }
-  function bind(){
-    updateBuild(); clearOldWarnings();
-    var create=byId('createBtn'); if(create) create.onclick=function(e){if(e)e.preventDefault(); return openRegister(null);};
-    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
-      var b=byId(pair[0]); if(b) b.onclick=function(e){if(e)e.preventDefault(); return openRegister(pair[1]);};
-    });
-    var p=byId('personalModeBtn'); if(p) p.onclick=function(e){if(e)e.preventDefault(); setButtons('personal'); updateNotice(); continueProvider(); return false;};
-    var c=byId('companyModeBtn'); if(c) c.onclick=function(e){if(e)e.preventDefault(); setButtons('company'); updateNotice(); continueProvider(); return false;};
-    var reg=byId('registerBtn'); if(reg) reg.onclick=function(e){
-      if(e)e.preventDefault();
-      ensureRegisterAccountArea();
-      if(!selectedMode){updateNotice(); var area=byId('registerAccountTypeArea'); if(area&&area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'}); return false;}
-      try{localStorage.setItem('atsrs_use_mode',selectedMode); window.useMode=selectedMode;}catch(ex){}
-      if(typeof baseRegister==='function') return baseRegister();
-      return false;
-    };
-    var rb=byId('registerBox'); if(rb && !rb.classList.contains('hidden')) ensureRegisterAccountArea();
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
-  window.addEventListener('load',bind);
-  [120,500,1000,1800].forEach(function(ms){setTimeout(bind,ms);});
-})();
-
-/* --- Original inline script id=atsrs-v112-compact-register-choice-script --- */
-(function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TEST='TEST BUILD';
-  function byId(id){return document.getElementById(id);}
-  function updateBuild(){
-    var rows=document.querySelectorAll('.build-badge div');
-    if(rows[0])rows[0].textContent=BUILD;
-    if(rows[1])rows[1].textContent=UPDATE;
-    if(rows[2])rows[2].textContent=TEST;
-  }
-  function getSelectedMode(){
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    if(p&&p.classList.contains('active'))return 'personal';
-    if(c&&c.classList.contains('active'))return 'company';
-    return '';
-  }
-  function normalizeNotice(){
-    var notice=byId('registerAccountNotice');
-    var title=byId('registerAccountNoticeTitle');
-    var text=byId('registerAccountNoticeText');
-    var icon=notice?notice.querySelector('.notice-icon'):null;
-    if(!notice||!title||!text)return;
-    var mode=getSelectedMode();
-    notice.classList.toggle('choice-missing',!mode);
-    notice.classList.toggle('choice-selected',!!mode);
-    if(!mode){
-      if(icon)icon.textContent='!';
-      title.textContent='Choose Account Type';
-      if(!/continue registration with/i.test(text.textContent||'')){
-        text.textContent='Select Personal or Corporate before creating your ATSRS account.';
-      }
-    }else if(mode==='personal'){
-      if(icon)icon.textContent='✓';
-      title.textContent='';
-      text.textContent='You are creating a Personal account to keep your documents, certificates, references, appraisals and expiry alerts organized.';
-    }else{
-      if(icon)icon.textContent='✓';
-      title.textContent='Corporate Account';
-      text.textContent='You are creating a Corporate account to manage personnel, compliance records, shared documents and workforce information.';
-    }
-  }
-  function boot(){
-    updateBuild();
-    normalizeNotice();
-    ['personalModeBtn','companyModeBtn','createBtn','registerBtn','socialGoogleBtn','socialMicrosoftBtn','socialLinkedInBtn'].forEach(function(id){
-      var el=byId(id); if(el && !el.dataset.v112Watch){el.dataset.v112Watch='1'; el.addEventListener('click',function(){setTimeout(normalizeNotice,80);setTimeout(normalizeNotice,220);},true);}
-    });
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-  window.addEventListener('load',boot);
-  [100,400,900,1600,2600].forEach(function(ms){setTimeout(boot,ms);});
-})();
-
-/* --- Original inline script id=atsrs-v113-test-social-flow-script --- */
-(function(){
-  'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TEST='TEST BUILD';
-  var socialProviderPending=null;
-  function byId(id){return document.getElementById(id);}
-  function label(provider){return provider==='microsoft'?'Microsoft':provider==='linkedin'?'LinkedIn':'Google';}
-  function updateBuild(){
-    var rows=document.querySelectorAll('.build-badge div');
-    if(rows[0])rows[0].textContent=BUILD;
-    if(rows[1])rows[1].textContent=UPDATE;
-    if(rows[2])rows[2].textContent=TEST;
-  }
-  function ensureTestButtons(){
-    var old=byId('localTestBtn');
-    if(!old || byId('atsrsV113TestLoginGroup'))return;
-    var wrap=document.createElement('div');
-    wrap.id='atsrsV113TestLoginGroup';
-    wrap.innerHTML='<button type="button" id="atsrsV113TestPersonal">Test Personal</button><button type="button" id="atsrsV113TestCorporate">Test Corporate</button>';
-    old.insertAdjacentElement('afterend',wrap);
-    byId('atsrsV113TestPersonal').onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
-    byId('atsrsV113TestCorporate').onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
-  }
-  function directTestLogin(mode){
-    try{
-      window.useMode=mode;
-      localStorage.setItem('atsrs_use_mode',mode);
-      localStorage.setItem('atsrs_auth_mode','local');
-      localStorage.setItem('atsrs_current_page',mode==='company'?'dashboard':'intro');
-    }catch(e){}
-    if(typeof window.setUseMode==='function'){
-      try{window.setUseMode(mode);}catch(e){}
-    }
-    window.currentUser={id:'local_test_'+mode,email:mode==='company'?'corporate-test@atsrs.com':'personal-test@atsrs.com'};
-    if(typeof window.openApp==='function')window.openApp();
-  }
-  function ensureSocialNotice(){
-    var rb=byId('registerBox');
-    if(!rb)return null;
-    var n=byId('atsrsV113SocialNotice');
-    if(!n){
-      n=document.createElement('div');
-      n.id='atsrsV113SocialNotice';
-      n.innerHTML='<span class="notice-icon">!</span><div><b>Social sign in is not available yet.</b><span>Google, Microsoft and LinkedIn sign in will be enabled in a future update.</span></div>';
-      var area=byId('registerAccountTypeArea');
-      if(area)area.insertAdjacentElement('afterend',n);
-      else rb.insertBefore(n,rb.children[1]||null);
-    }
-    return n;
-  }
-  function hideAuthBoxes(){
-    ['loginBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id); if(el)el.classList.add('hidden');});
-    var rb=byId('registerBox'); if(rb)rb.classList.remove('hidden');
-  }
-  function resetRegisterMode(){
-    var rb=byId('registerBox');
-    if(rb)rb.classList.remove('social-register-mode');
-    socialProviderPending=null;
-  }
-  function openSocialChoice(provider){
-    socialProviderPending=provider;
-    hideAuthBoxes();
-    var rb=byId('registerBox'); if(rb)rb.classList.add('social-register-mode');
-    if(typeof window.setUseMode==='function'){
-      try{window.setUseMode('');}catch(e){}
-    }
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    if(p)p.classList.remove('active');
-    if(c)c.classList.remove('active');
-    ensureSocialNotice();
-    if(typeof window.atsrsV113UpdateNotice==='function')window.atsrsV113UpdateNotice(provider);
-    setTimeout(function(){
-      var area=byId('registerAccountTypeArea');
-      if(area && area.scrollIntoView)area.scrollIntoView({behavior:'smooth',block:'center'});
-    },80);
-    return false;
-  }
-  function updateAccountNotice(provider){
-    var area=byId('registerAccountTypeArea');
-    var notice=byId('registerAccountNotice');
-    var title=byId('registerAccountNoticeTitle');
-    var text=byId('registerAccountNoticeText');
-    var icon=notice?notice.querySelector('.notice-icon'):null;
-    if(!notice || !title || !text)return;
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    var mode=(p&&p.classList.contains('active'))?'personal':((c&&c.classList.contains('active'))?'company':'');
-    if(area)area.classList.toggle('needs-choice',!mode);
-    notice.classList.toggle('choice-missing',!mode);
-    notice.classList.toggle('choice-selected',!!mode);
-    if(!mode){
-      if(icon)icon.textContent='!';
-      title.textContent='Choose Account Type';
-      text.textContent=provider?('Select Personal or Corporate to prepare '+label(provider)+' sign in.'):('Select Personal or Corporate before creating your ATSRS account.');
-    }else if(mode==='personal'){
-      if(icon)icon.textContent='✓';
-      title.textContent='';
-      text.textContent='You are creating a Personal account to keep your documents, certificates, references, appraisals and expiry alerts organized.';
-    }else{
-      if(icon)icon.textContent='✓';
-      title.textContent='Corporate Account';
-      text.textContent='You are creating a Corporate account to manage personnel, compliance records, shared documents and workforce information.';
-    }
-  }
-  window.atsrsV113UpdateNotice=updateAccountNotice;
-  function bind(){
-    updateBuild();
-    ensureTestButtons();
-    ensureSocialNotice();
-    var create=byId('createBtn');
-    if(create && !create.dataset.v113Bound){
-      create.dataset.v113Bound='1';
-      create.addEventListener('click',function(){resetRegisterMode();setTimeout(function(){updateAccountNotice(null);},120);},true);
-    }
-    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
-      var b=byId(pair[0]);
-      if(b){b.onclick=function(e){if(e)e.preventDefault();return openSocialChoice(pair[1]);};}
-    });
-    ['personalModeBtn','companyModeBtn'].forEach(function(id){
-      var el=byId(id);
-      if(el && !el.dataset.v113ModeWatch){
-        el.dataset.v113ModeWatch='1';
-        el.addEventListener('click',function(){
-          setTimeout(function(){
-            updateAccountNotice(socialProviderPending);
-            if(socialProviderPending){
-              var msg=byId('regMsg');
-              if(msg)msg.textContent='Social sign in is not available yet. Google, Microsoft and LinkedIn sign in will be enabled in a future update.';
-            }
-          },90);
-        },true);
-      }
-    });
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-  window.addEventListener('load',bind);
-  [100,400,900,1600,2600].forEach(function(ms){setTimeout(bind,ms);});
-})();
-
-/* --- Original inline script --- */
-(function(){
-  'use strict';
-  var BUILD_LABEL = 'ATSRS V168';
-  var UPDATE_LABEL = 'Last Update: 01 Jul 2026';
-  var BUILD_TYPE = 'TEST BUILD';
-  function lockBuildBadge(){
-    var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
-    if(!badge) return;
-    var rows = badge.querySelectorAll('div');
-    if(rows.length >= 3){
-      rows[0].textContent = BUILD_LABEL;
-      rows[1].textContent = UPDATE_LABEL;
-      rows[2].textContent = BUILD_TYPE;
-    }else{
-      badge.innerHTML = '<div>'+BUILD_LABEL+'</div><div>'+UPDATE_LABEL+'</div><div>'+BUILD_TYPE+'</div>';
-    }
-  }
-  lockBuildBadge();
-  document.addEventListener('DOMContentLoaded', lockBuildBadge);
-  window.addEventListener('load', lockBuildBadge);
-  setInterval(lockBuildBadge, 250);
-})();
-
-/* --- Original inline script id=atsrs-v115-flow-fix-script --- */
+/* ATSRS V178 extracted JavaScript batch: dashboard.js. Loaded in original V178 execution order. No placeholder code. */
+/* ===== extracted from inline script id=atsrs-v117-test-placement-script ===== */
 (function(){
   'use strict';
   var BUILD='ATSRS V178';
@@ -553,79 +24,274 @@
     window.currentUser={id:'local_test_'+mode,email:mode==='company'?'corporate-test@atsrs.com':'personal-test@atsrs.com'};
     if(typeof window.openApp==='function')window.openApp();
   }
-  function placeTestButtons(){
-    var remember=byId('rememberRow');
-    var old=byId('localTestBtn');
-    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup');
-    if(!remember)return;
+  function getOrCreateGroup(){
+    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup')||byId('atsrsV117TestLoginGroup');
     if(!group){
       group=document.createElement('div');
-      group.id='atsrsV115TestLoginGroup';
-      group.innerHTML='<button type="button" id="atsrsV115TestPersonal">Test Personal</button><button type="button" id="atsrsV115TestCorporate">Test Corporate</button>';
+      group.id='atsrsV117TestLoginGroup';
+      group.innerHTML='<button type="button" id="atsrsV117TestPersonal">Test Personal</button><button type="button" id="atsrsV117TestCorporate">Test Corporate</button>';
     }
-    if(group.previousElementSibling!==remember) remember.insertAdjacentElement('afterend',group);
-    if(old)old.style.display='none';
-    var p=byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
-    var c=byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
+    return group;
+  }
+  function placeTestButtons(){
+    var remember=byId('rememberRow');
+    var loginBox=byId('loginBox');
+    if(!remember||!loginBox)return;
+    var old=byId('localTestBtn'); if(old)old.style.display='none';
+    var group=getOrCreateGroup();
+    if(group.previousElementSibling!==remember){remember.insertAdjacentElement('afterend',group);}
+    var p=byId('atsrsV117TestPersonal')||byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
+    var c=byId('atsrsV117TestCorporate')||byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
     if(p)p.onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
     if(c)c.onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
   }
-  function ensureSocialNotice(){
-    var rb=byId('registerBox'); if(!rb)return null;
-    var n=byId('atsrsV113SocialNotice')||byId('atsrsV115SocialNotice');
-    if(!n){
-      n=document.createElement('div');
-      n.id='atsrsV115SocialNotice';
-      n.innerHTML='<span class="notice-icon">!</span><div><b>Social sign in is not available yet.</b><span>Google, Microsoft and LinkedIn sign in will be enabled in a future update.</span></div>';
-      var title=byId('registerTitle');
-      if(title)title.insertAdjacentElement('afterend',n); else rb.insertBefore(n,rb.firstChild);
-    }
-    return n;
+  function run(){lockBuild();placeTestButtons();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',run);
+  [50,150,400,900,1600,2600].forEach(function(ms){setTimeout(run,ms);});
+  setInterval(run,800);
+  setInterval(lockBuild,250);
+})();
+
+/* ===== extracted from inline script ===== */
+/* V118 dashboard simplification and account badge sync */
+(function(){
+  function byId(id){return document.getElementById(id);}
+  function getMode(){return localStorage.getItem('atsrs_use_mode') || (window.useMode || 'personal');}
+  function getEmail(){
+    if(window.currentUser && window.currentUser.email) return window.currentUser.email;
+    var saved=localStorage.getItem('atsrs_saved_login_email');
+    var login=byId('loginEmail');
+    return saved || (login && login.value) || 'Not signed in';
   }
-  function openSocialPlaceholder(provider){
-    ['loginBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id);if(el)el.classList.add('hidden');});
-    var rb=byId('registerBox');
-    if(rb){rb.classList.remove('hidden');rb.classList.add('social-register-mode');}
-    var n=ensureSocialNotice();
-    if(n){
-      n.style.display='flex';
-      var txt=n.querySelector('span:last-child');
-      if(txt)txt.textContent='Google, Microsoft and LinkedIn sign in will be enabled in a future update.';
-    }
-    var area=byId('registerAccountTypeArea'); if(area)area.classList.remove('needs-choice');
-    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
-    if(p)p.classList.remove('active'); if(c)c.classList.remove('active');
-    setTimeout(function(){var rb2=byId('registerBox'); if(rb2&&rb2.scrollIntoView)rb2.scrollIntoView({behavior:'smooth',block:'start'});},60);
-    return false;
+  function updateAccountBadge(){
+    var type=byId('atsrsAccountTypeLabel');
+    var mail=byId('atsrsAccountEmailLabel');
+    if(!type || !mail) return;
+    var mode=getMode();
+    type.textContent = mode === 'company' ? '' : '';
+    mail.textContent = getEmail();
   }
-  function normalCreateMode(){
-    var rb=byId('registerBox');
-    if(rb)rb.classList.remove('social-register-mode');
-    var n=byId('atsrsV113SocialNotice')||byId('atsrsV115SocialNotice');
-    if(n)n.style.display='none';
+  function simplifyDashboard(){
+    ['missingDocsText','missingDocs','docStatusTitle','docStatusSub','docCategoryGrid'].forEach(function(id){var el=byId(id); if(el) el.style.display='none';});
+    var missingCard=document.querySelector('#dashboardPage .missing-card'); if(missingCard) missingCard.remove();
+    var snapMissing=byId('snapMissing'); if(snapMissing){var row=snapMissing.closest('.snapshot-item'); if(row) row.remove();}
+    var docStatus=byId('docStatusTitle'); if(docStatus){var panel=docStatus.closest('.panel'); if(panel) panel.remove();}
+    var totalCertsText=byId('totalCertsText'); if(totalCertsText) totalCertsText.textContent='Uploaded Documents';
+    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your document overview';
+    var soloHeroText=byId('soloHeroText'); if(soloHeroText) soloHeroText.textContent='Keep your uploaded documents and expiry dates in one clean view.';
+    var snapshotTitle=byId('snapshotTitle'); if(snapshotTitle) snapshotTitle.textContent='Quick overview';
   }
-  function bind(){
-    lockBuild();
-    placeTestButtons();
-    ensureSocialNotice();
-    var create=byId('createBtn');
-    if(create && !create.dataset.v115Create){
-      create.dataset.v115Create='1';
-      create.addEventListener('click',function(){setTimeout(normalCreateMode,20);},true);
+  var oldOpen=window.openApp;
+  if(typeof oldOpen==='function'){
+    window.openApp=function(){ oldOpen.apply(this,arguments); setTimeout(function(){updateAccountBadge(); simplifyDashboard();},0); };
+  }
+  var oldRender=window.renderAll;
+  if(typeof oldRender==='function'){
+    window.renderAll=function(){ oldRender.apply(this,arguments); simplifyDashboard(); updateAccountBadge(); };
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){updateAccountBadge(); simplifyDashboard();},80);});
+})();
+
+/* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
+(function(){
+  var BUILD='ATSRS V178';
+  var UPDATE='Last Update: 01 Jul 2026';
+  function lockBuild(){
+    var b=document.getElementById('buildBadge');
+    if(!b)return;
+    var d=b.querySelectorAll('div');
+    if(d[0])d[0].textContent=BUILD;
+    if(d[1])d[1].textContent=UPDATE;
+    if(d[2])d[2].textContent='TEST BUILD';
+  }
+  function cleanTopbar(){
+    var badge=document.getElementById('atsrsAccountBadge');
+    var type=document.getElementById('atsrsAccountTypeLabel');
+    var email=document.getElementById('atsrsAccountEmailLabel');
+    var mode='';
+    if(type) type.textContent=mode;
+    if(email && (!email.textContent || /local-test|undefined|null/i.test(email.textContent))) {
+      var stored=localStorage.getItem('atsrsUserEmail') || localStorage.getItem('atsrsEmail') || localStorage.getItem('email') || 'local-test@atsrs.com';
+      email.textContent=stored;
     }
-    [['socialGoogleBtn','google'],['socialMicrosoftBtn','microsoft'],['socialLinkedInBtn','linkedin']].forEach(function(pair){
-      var b=byId(pair[0]);
-      if(b){
-        b.onclick=function(e){if(e)e.preventDefault();return openSocialPlaceholder(pair[1]);};
-        if(!b.dataset.v115Social){
-          b.dataset.v115Social='1';
-          b.addEventListener('click',function(e){if(e){e.preventDefault();e.stopImmediatePropagation();}return openSocialPlaceholder(pair[1]);},true);
-        }
-      }
+    if(badge){badge.removeAttribute('style');}
+    var logout=document.getElementById('topLogoutBtn');
+    if(logout){logout.removeAttribute('style');logout.textContent='Exit';}
+  }
+  ['DOMContentLoaded','load'].forEach(function(evt){window.addEventListener(evt,function(){lockBuild();cleanTopbar();setTimeout(cleanTopbar,300);});});
+  setInterval(function(){lockBuild();cleanTopbar();},1200);
+})();
+
+/* ===== extracted from inline script id=ATSRS_V125_ACCOUNT_REFS_LANG_CLEANUP_JS ===== */
+/* V125: stabilize current pages before new features */
+(function(){
+  'use strict';
+  var PROFILE_KEY='profile';
+  function byId(id){return document.getElementById(id)}
+  function safeUserId(){
+    try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}
+    catch(e){return 'local_test_user';}
+  }
+  function key(name){
+    try{ if(typeof window.localKey==='function' && window.currentUser && currentUser.id) return window.localKey(name); }
+    catch(e){}
+    return 'atsrs_'+safeUserId()+'_'+name;
+  }
+  function readJson(name, fallback){
+    try{var raw=localStorage.getItem(key(name)); return raw?JSON.parse(raw):fallback;}
+    catch(e){return fallback;}
+  }
+  function writeJson(name, data){
+    try{localStorage.setItem(key(name),JSON.stringify(data)); return true;}
+    catch(e){return false;}
+  }
+  function val(id){var e=byId(id); return e?e.value:'';}
+  function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
+  function ensureProfileStatus(){
+    var btn=byId('saveProfileBtn'); if(!btn)return null;
+    var status=byId('profileSaveStatus');
+    if(!status){status=document.createElement('div');status.id='profileSaveStatus';status.setAttribute('role','status');btn.insertAdjacentElement('afterend',status);}
+    return status;
+  }
+  function showSaved(){
+    var s=ensureProfileStatus(); if(!s)return;
+    s.textContent='Saved ✓'; s.classList.add('active');
+    clearTimeout(window.__atsrsV125ProfileSavedTimer);
+    window.__atsrsV125ProfileSavedTimer=setTimeout(function(){s.classList.remove('active');},2200);
+  }
+  window.saveProfile=function(){
+    var data={
+      name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
+      company:val('profileCompany'),position:val('profilePosition'),altEmail:val('profileAltEmail'),
+      timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',savedAt:new Date().toISOString()
+    };
+    writeJson(PROFILE_KEY,data); showSaved(); return true;
+  };
+  window.loadProfile=function(){
+    try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
+    var p=readJson(PROFILE_KEY,{});
+    setVal('profileName',p.name); setVal('profileSurname',p.surname); setVal('profilePhone',p.phone); setVal('profileCountry',p.country);
+    setVal('profileCompany',p.company); setVal('profilePosition',p.position); setVal('profileAltEmail',p.altEmail);
+    setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private'); ensureProfileStatus();
+  };
+  function forceFlagOnly(){
+    ['langCircle','appLangCircle'].forEach(function(id){var b=byId(id); if(b){b.textContent=''; b.setAttribute('aria-label','Language'); b.removeAttribute('title');}});
+    document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
+      b.childNodes.forEach(function(n){ if(n.nodeType===3)n.textContent=''; });
+      var s=b.querySelector('span'); if(s)s.textContent='🇬🇧';
     });
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-  window.addEventListener('load',bind);
-  [80,250,700,1300,2400].forEach(function(ms){setTimeout(bind,ms);});
-  setInterval(lockBuild,250);
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function') window.applyLanguage=function(){var r=oldApply.apply(this,arguments); forceFlagOnly(); return r;};
+  function coverFiles(){return readJson('coverLetterFiles',[]);}
+  function saveCoverFiles(arr){writeJson('coverLetterFiles',Array.isArray(arr)?arr:[]);}
+  function firstCover(){var a=coverFiles();return a&&a.length?a[0]:null;}
+  function ensureCoverLetterCard(){
+    if(byId('coverLetterCard'))return;
+    var cv=byId('cvCardTitle'); var cvCard=cv?cv.closest('.ref-card'):null; var grid=cvCard?cvCard.parentElement:document.querySelector('#refsPage .ref-grid'); if(!grid)return;
+    var card=document.createElement('div'); card.className='ref-card cover-letter-card'; card.id='coverLetterCard';
+    card.innerHTML='<div class="cv-card-head"><h3 id="coverLetterCardTitle">Cover Letter</h3><span id="coverLetterStatusBadge" class="badge badge-blocked">No File</span></div>'+
+      '<p class="sub">Store cover letter versions next to your CV for faster applications.</p>'+
+      '<input id="coverLetterUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
+      '<div id="coverLetterFileInfo" class="preview-box"></div>'+
+      '<div class="cv-actions"><button id="uploadCoverLetterBtn" class="secondary">Upload</button><button id="previewCoverLetterBtn" class="secondary">Preview</button><button id="downloadCoverLetterBtn" class="secondary">Download</button><button id="deleteCoverLetterBtn" class="action">Delete</button></div>';
+    if(cvCard&&cvCard.nextSibling)cvCard.parentNode.insertBefore(card,cvCard.nextSibling); else grid.appendChild(card);
+    byId('uploadCoverLetterBtn').onclick=function(){byId('coverLetterUploadInput').click();};
+    byId('previewCoverLetterBtn').onclick=previewCoverLetter;
+    byId('downloadCoverLetterBtn').onclick=downloadCoverLetter;
+    byId('deleteCoverLetterBtn').onclick=deleteCoverLetter;
+    byId('coverLetterUploadInput').onchange=handleCoverLetterUpload;
+  }
+  window.handleCoverLetterUpload=function(event){
+    var files=event.target.files||[]; if(!files.length)return;
+    var remaining=files.length, saved=coverFiles();
+    Array.prototype.forEach.call(files,function(file){
+      var reader=new FileReader();
+      reader.onload=function(){saved.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:reader.result}); if(--remaining===0){saveCoverFiles(saved);event.target.value='';renderCoverLetter();}};
+      reader.readAsDataURL(file);
+    });
+  };
+  window.previewCoverLetter=function(){var f=firstCover(); if(!f){alert('No cover letter uploaded yet.');return;} var w=window.open('','_blank'); if(w){w.document.write('<title>'+String(f.name||'Cover Letter').replace(/[<>]/g,'')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}};
+  window.downloadCoverLetter=function(){var f=firstCover(); if(!f){alert('No cover letter uploaded yet.');return;} var a=document.createElement('a');a.href=f.data;a.download=f.name||'ATSRS-cover-letter';document.body.appendChild(a);a.click();a.remove();};
+  window.deleteCoverLetter=function(){saveCoverFiles([]);renderCoverLetter();};
+  function renderCoverLetter(){
+    ensureCoverLetterCard(); var files=coverFiles(); var badge=byId('coverLetterStatusBadge'), info=byId('coverLetterFileInfo');
+    if(badge){badge.textContent=files.length?String(files.length)+' file'+(files.length>1?'s':''):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
+    if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' • '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
+  }
+  var oldRender=window.renderAll;
+  if(typeof oldRender==='function') window.renderAll=function(){var r=oldRender.apply(this,arguments); renderCoverLetter(); forceFlagOnly(); return r;};
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function') window.showPage=function(){var r=oldShow.apply(this,arguments); if(String(arguments[0]||'')==='refs'||byId('refsPage'))setTimeout(renderCoverLetter,40); if(String(arguments[0]||'')==='profile')setTimeout(window.loadProfile,40); forceFlagOnly(); return r;};
+  document.addEventListener('DOMContentLoaded',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
+  window.addEventListener('load',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
+  setInterval(function(){forceFlagOnly(); if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden'))renderCoverLetter();},1500);
+})();
+
+/* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
+(function(){
+  'use strict';
+  var BUILD='ATSRS V178';
+  var UPDATE='Last Update: 01 Jul 2026';
+  function byId(id){return document.getElementById(id);}
+  function applyBuild(){
+    document.querySelectorAll('.build-badge').forEach(function(b){
+      var d=b.querySelectorAll('div');
+      if(d[0])d[0].textContent=BUILD;
+      if(d[1])d[1].textContent=UPDATE;
+      if(d[2])d[2].textContent='TEST BUILD';
+    });
+  }
+  function forceFlagOnly(){
+    ['langCircle','appLangCircle'].forEach(function(id){
+      var b=byId(id);
+      if(!b)return;
+      b.textContent='';
+      b.innerHTML='';
+      b.setAttribute('aria-label','Language');
+      b.removeAttribute('title');
+    });
+    document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
+      b.innerHTML='';
+      b.setAttribute('aria-label','English');
+      b.setAttribute('title','English');
+    });
+  }
+  function ensureCoverAfterCv(){
+    var grid=document.querySelector('#refsPage .ref-grid');
+    var cv=byId('cvCardTitle');
+    var cvCard=cv?cv.closest('.ref-card'):document.querySelector('#refsPage .cv-card');
+    var cover=byId('coverLetterCard');
+    if(grid&&cvCard&&cover&&cover.previousElementSibling!==cvCard){
+      grid.insertBefore(cover,cvCard.nextSibling);
+    }
+  }
+  function classifyRefCards(){
+    var grid=document.querySelector('#refsPage .ref-grid'); if(!grid)return;
+    var cards=[].slice.call(grid.children).filter(function(x){return x.classList&&x.classList.contains('ref-card');});
+    cards.forEach(function(card){card.style.removeProperty('grid-column');});
+    var cv=byId('cvCardTitle');
+    var cvCard=cv?cv.closest('.ref-card'):document.querySelector('#refsPage .cv-card');
+    if(cvCard){cvCard.classList.add('cv-card');cvCard.style.order='-100';}
+    var cover=byId('coverLetterCard'); if(cover)cover.style.order='40';
+    var app=byId('appraisalCardTitle'); if(app&&app.closest('.ref-card'))app.closest('.ref-card').style.order='10';
+    var ref=byId('referenceCardTitle'); if(ref&&ref.closest('.ref-card'))ref.closest('.ref-card').style.order='20';
+    var rec=byId('recommendationCardTitle'); if(rec&&rec.closest('.ref-card'))rec.closest('.ref-card').style.order='30';
+  }
+  function calmDashboardButtons(){
+    document.querySelectorAll('#dashboardPage button').forEach(function(b){
+      b.classList.add('atsrs-v126-calm-dashboard-button');
+    });
+  }
+  function run(){applyBuild();forceFlagOnly();ensureCoverAfterCv();classifyRefCards();calmDashboardButtons();}
+  var oldApply=window.applyLanguage;
+  if(typeof oldApply==='function')window.applyLanguage=function(){var r=oldApply.apply(this,arguments);run();return r;};
+  var oldRender=window.renderAll;
+  if(typeof oldRender==='function')window.renderAll=function(){var r=oldRender.apply(this,arguments);setTimeout(run,0);return r;};
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function')window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,40);setTimeout(run,220);return r;};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('load',function(){run();setTimeout(run,500);});
+  setInterval(run,1500);
 })();
