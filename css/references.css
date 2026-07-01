@@ -1,4 +1,667 @@
-/* ATSRS V179 split from V178 - references.css. Original CSS order preserved by index link order. */
+/* ATSRS V178 extracted CSS batch: references.css. Preserves original V178 cascade order. */
+flex-direction:column!important;
+  min-height:342px!important;
+  height:342px!important;
+  border:1px solid var(--atsrs-border,#264058)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(17,28,45,.96),rgba(10,20,34,.98))!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.30)!important;
+  padding:18px!important;
+  overflow:hidden!important;
+}
+#refsPage .atsrs-v134-career-card h3{
+  margin:0 0 36px!important;
+  padding:0!important;
+  min-height:46px!important;
+  line-height:1.18!important;
+  font-size:20px!important;
+  color:#f8fafc!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-desc{
+  min-height:70px!important;
+  margin:0 0 14px!important;
+  color:#a7b5c5!important;
+  line-height:1.35!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-upload{
+  margin:auto 0 10px!important;
+  width:100%!important;
+  background:#1a293b!important;
+  border:1px solid #31465f!important;
+  box-shadow:none!important;
+  color:#eef6ff!important;
+}
+#refsPage .atsrs-v134-statusbar{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  margin:0 0 8px!important;
+  min-height:28px!important;
+}
+#refsPage .atsrs-v134-status{
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  min-height:auto!important;
+}
+#refsPage .atsrs-v134-status.empty{color:#f87171!important;}
+#refsPage .atsrs-v134-status.ready{color:#86efac!important;}
+#refsPage .atsrs-v134-filter{
+  display:none!important;
+  width:auto!important;
+  min-width:118px!important;
+  max-width:140px!important;
+  margin:0!important;
+  padding:6px 9px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  background:#0b1726!important;
+  border:1px solid #334155!important;
+  color:#cbd5e1!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-filter.active{display:block!important;}
+#refsPage .atsrs-v134-list{
+  max-height:104px!important;
+  min-height:39px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:4px!important;
+  border-radius:12px!important;
+}
+#refsPage .atsrs-v134-empty{
+  color:#94a3b8!important;
+  font-size:13px!important;
+  border:1px dashed #334155!important;
+  border-radius:12px!important;
+  padding:10px!important;
+  background:rgba(2,6,23,.28)!important;
+}
+#refsPage .atsrs-v134-row{
+  border:1px solid #334155!important;
+  border-radius:14px!important;
+  background:rgba(2,6,23,.35)!important;
+  padding:9px!important;
+  display:grid!important;
+  gap:8px!important;
+  margin-bottom:8px!important;
+}
+#refsPage .atsrs-v134-row b{
+  display:block!important;
+  word-break:break-word!important;
+  line-height:1.25!important;
+  color:#e5e7eb!important;
+}
+#refsPage .atsrs-v134-row span{
+  display:block!important;
+  font-size:12px!important;
+  color:#94a3b8!important;
+  margin-top:3px!important;
+}
+#refsPage .atsrs-v134-actions{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+#refsPage .atsrs-v134-actions button{
+  width:100%!important;
+  margin:0!important;
+  padding:8px 6px!important;
+  font-size:12px!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-hidden-badge,
+#refsPage #appraisalStatusBadge,
+#refsPage #referenceStatusBadge,
+#refsPage #recommendationStatusBadge,
+#refsPage #coverLetterStatusBadge,
+#refsPage #v105_appraisal_badge,
+#refsPage #v105_reference_badge,
+#refsPage .ref-doc-head .badge{
+  display:none!important;
+}
+@media(max-width:1100px){#refsPage .ref-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+@media(max-width:640px){#refsPage .ref-grid{grid-template-columns:1fr!important;}#refsPage .cv-card{grid-column:1 / -1!important;}.atsrs-v134-actions{grid-template-columns:1fr!important;}}
+
+/* V136 DC/CU: Dashboard stable view mode. Builder/drag/resize/minimize remains parked. */
+#dashboardPage{
+  position:relative!important;
+  overflow:visible!important;
+}
+#dashboardPage .dash-card-tools,
+#dashboardPage .dash-resize-handle,
+#dashboardPage .dash-placeholder,
+#dashboardDock{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#dashboardPage .dash-custom-ready,
+#dashboardPage .dash-resizable,
+#dashboardPage .dash-drag-float,
+#dashboardPage .dash-minimized{
+  position:relative!important;
+  left:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  transform:none!important;
+  resize:none!important;
+  overflow:visible!important;
+  opacity:1!important;
+  display:block!important;
+  pointer-events:auto!important;
+  touch-action:auto!important;
+}
+#dashboardPage .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;
+  gap:12px!important;
+  padding:0!important;
+  min-height:0!important;
+  height:auto!important;
+  width:100%!important;
+}
+#dashboardPage .stats-grid > .card{
+  min-height:94px!important;
+  height:auto!important;
+  width:auto!important;
+  transform:none!important;
+  resize:none!important;
+  overflow:hidden!important;
+}
+#dashboardPage .solo-hero,
+#dashboardPage .professional-dashboard,
+#dashboardPage .grid,
+#dashboardPage .panel,
+#dashboardPage .card,
+#dashboardPage .workflow-card,
+#dashboardPage .snapshot-card{
+  transform:none!important;
+  animation:none!important;
+  transition:border-color .15s ease, background .15s ease!important;
+}
+#dashboardPage .quick-actions button,
+#dashboardPage .share-actions button,
+#dashboardPage #copyShareBtn,
+#dashboardPage #uploadDocBtn,
+#dashboardPage #scanDocBtn{
+  min-height:38px!important;
+  padding:9px 12px!important;
+  margin:0!important;
+  background:#1a293b!important;
+  border:1px solid #31465f!important;
+  color:#e5eef8!important;
+  box-shadow:none!important;
+}
+#shareProfilePanel{
+  max-height:440px!important;
+  overflow:auto!important;
+}
+#shareProfilePanel .share-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+}
+#shareProfilePanel .share-actions button{
+  flex:1 1 135px!important;
+}
+#shareProfilePanel .share-permissions{
+  max-height:120px!important;
+  overflow:auto!important;
+}
+#shareProfilePanel .preview-profile{
+  max-height:160px!important;
+  overflow:auto!important;
+}
+/* Top actions must scroll away with the page, not remain fixed on screen. */
+#app.app > .top-actions,
+#app.app:not(.hidden) > .top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions{
+  position:absolute!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:90!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+#app.app.hidden > .top-actions,
+body.auth-open > .top-actions{display:none!important;}
+@media(max-width:900px){
+  #dashboardPage .solo-hero,
+  #dashboardPage .professional-dashboard{grid-template-columns:1fr!important;}
+}
+@media(max-width:600px){
+  #dashboardPage .stats-grid{grid-template-columns:1fr!important;}
+  #shareProfilePanel{max-height:360px!important;}
+}
+
+/* V137: language/account/logout are part of the page and must scroll away. */
+#app.app{position:relative!important;}
+#app.app > .top-actions,
+#app.app > .atsrs-global-top-actions,
+#app.app > .atsrs-v56-top-actions,
+#app.app > .atsrs-v64-top-actions,
+body > .top-actions,
+body > .atsrs-global-top-actions,
+body > .atsrs-v56-top-actions,
+body > .atsrs-v64-top-actions{
+  position:absolute!important;
+  top:18px!important;
+  right:18px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:90!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+#app.app > .top-actions .lang-floating,
+#app.app > .top-actions .app-lang-switcher,
+#app.app > .atsrs-global-top-actions .lang-floating,
+#app.app > .atsrs-v56-top-actions .lang-floating,
+#app.app > .atsrs-v64-top-actions .lang-floating{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+}
+@media(max-width:800px){
+  #app.app > .top-actions,
+  #app.app > .atsrs-global-top-actions,
+  #app.app > .atsrs-v56-top-actions,
+  #app.app > .atsrs-v64-top-actions,
+  body > .top-actions,
+  body > .atsrs-global-top-actions,
+  body > .atsrs-v56-top-actions,
+  body > .atsrs-v64-top-actions{top:12px!important;right:12px!important;}
+}
+
+/* V138: keep destructive table actions compact; avoid oversized red blocks in registers. */
+#certTable td:last-child,
+#personnelTable td:last-child,
+#projectsTable td:last-child{width:1%;white-space:nowrap;text-align:left!important;}
+#certTable td:last-child button.action,
+#personnelTable td:last-child button.action,
+#projectsTable td:last-child button.action,
+.table-wrap table td:last-child button.action{
+  width:auto!important;
+  min-width:72px!important;
+  max-width:96px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:9px 14px!important;
+  margin:0!important;
+  border-radius:10px!important;
+  font-size:13px!important;
+  line-height:1.1!important;
+  box-shadow:none!important;
+}
+#certTable td:last-child button.secondary,
+#personnelTable td:last-child button.secondary,
+#projectsTable td:last-child button.secondary,
+.table-wrap table td:last-child button.secondary{
+  width:auto!important;
+  min-width:58px!important;
+  max-width:86px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:9px 12px!important;
+  margin:0 6px 0 0!important;
+  border-radius:10px!important;
+  font-size:13px!important;
+  line-height:1.1!important;
+  box-shadow:none!important;
+}
+
+#refsPage .atsrs-v134-list{
+  max-height:252px!important;
+  min-height:42px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:6px!important;
+  scrollbar-width:thin!important;
+}
+#refsPage .atsrs-v134-row{
+  min-height:72px!important;
+  padding:9px 10px!important;
+  margin-bottom:8px!important;
+}
+#refsPage .atsrs-v134-row:last-child{margin-bottom:0!important;}
+#refsPage .atsrs-v134-row b{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  word-break:break-word!important;
+}
+#refsPage .atsrs-v134-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+#refsPage .atsrs-v134-actions button{
+  min-height:30px!important;
+  padding:7px 6px!important;
+}
+@media(max-width:760px){
+  #refsPage .atsrs-v134-list{max-height:270px!important;}
+}
+
+#refsPage .atsrs-v134-career-card{
+  min-height:390px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-upload{
+  margin-top:auto!important;
+}
+#refsPage .atsrs-v134-list{
+  min-height:42px!important;
+  max-height:none!important;
+  overflow-y:visible!important;
+  overflow-x:hidden!important;
+  padding-right:0!important;
+}
+#refsPage .atsrs-v134-list:has(.atsrs-v134-row){
+  height:252px!important;
+  max-height:252px!important;
+  min-height:252px!important;
+  overflow-y:auto!important;
+  padding-right:6px!important;
+  scrollbar-width:thin!important;
+}
+#refsPage .atsrs-v134-row{
+  min-height:74px!important;
+  padding:10px 10px!important;
+  margin-bottom:8px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:8px!important;
+}
+#refsPage .atsrs-v134-row:last-child{margin-bottom:0!important;}
+#refsPage .atsrs-v134-row b{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  word-break:break-word!important;
+  line-height:1.25!important;
+}
+#refsPage .atsrs-v134-actions{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+#refsPage .atsrs-v134-actions button{
+  min-height:30px!important;
+  padding:7px 6px!important;
+  font-size:12px!important;
+}
+@media(max-width:760px){
+  #refsPage .atsrs-v134-career-card{min-height:410px!important;}
+  #refsPage .atsrs-v134-list:has(.atsrs-v134-row){height:270px!important;max-height:270px!important;min-height:270px!important;}
+}
+
+#refsPage .atsrs-v134-career-card{
+  position:relative!important;
+  min-height:460px!important;
+  height:auto!important;
+  overflow:hidden!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){
+  height:340px!important;
+  max-height:340px!important;
+  min-height:340px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:8px!important;
+  scrollbar-width:thin!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-row{
+  min-height:96px!important;
+  padding:11px 10px!important;
+  margin-bottom:8px!important;
+}
+#refsPage .atsrs-v134-max-icon{
+  position:absolute!important;
+  top:14px!important;
+  right:14px!important;
+  z-index:9!important;
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#94a3b8!important;
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  opacity:.74!important;
+}
+#refsPage .atsrs-v134-max-icon:hover{
+  color:#e5e7eb!important;
+  opacity:1!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded{
+  grid-column:1 / -1!important;
+  min-height:560px!important;
+  height:auto!important;
+  z-index:4!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){
+  height:420px!important;
+  max-height:420px!important;
+  min-height:420px!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{
+  grid-template-columns:minmax(0,1fr) 260px!important;
+  align-items:center!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+@media(max-width:900px){
+  #refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){height:330px!important;max-height:330px!important;min-height:330px!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{grid-template-columns:1fr!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){height:400px!important;max-height:400px!important;min-height:400px!important;}
+}
+
+#refsPage .atsrs-v134-career-card{
+  position:relative!important;
+  min-height:540px!important;
+  height:auto!important;
+  overflow:hidden!important;
+  padding-top:18px!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){
+  height:390px!important;
+  max-height:390px!important;
+  min-height:390px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-right:10px!important;
+  scrollbar-width:thin!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-row{
+  min-height:116px!important;
+  padding:13px 12px!important;
+  margin-bottom:10px!important;
+}
+#refsPage .atsrs-v134-max-icon{
+  position:absolute!important;
+  top:14px!important;
+  right:14px!important;
+  z-index:20!important;
+  width:26px!important;
+  min-width:26px!important;
+  height:26px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#cbd5e1!important;
+  font-size:22px!important;
+  line-height:26px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  opacity:.82!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#refsPage .atsrs-v134-max-icon:hover,
+#refsPage .atsrs-v134-max-icon:focus{
+  color:#ffffff!important;
+  opacity:1!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v142-expanded,
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded{
+  grid-column:1 / -1!important;
+  min-height:690px!important;
+  height:auto!important;
+  z-index:5!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-list:has(.atsrs-v134-row),
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){
+  height:535px!important;
+  max-height:535px!important;
+  min-height:535px!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-row,
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{
+  min-height:96px!important;
+  grid-template-columns:minmax(0,1fr) 280px!important;
+  align-items:center!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-actions,
+#refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+@media(max-width:900px){
+  #refsPage .atsrs-v134-career-card{min-height:520px!important;}
+  #refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){height:370px!important;max-height:370px!important;min-height:370px!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-list:has(.atsrs-v134-row),
+  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-list:has(.atsrs-v134-row){height:500px!important;max-height:500px!important;min-height:500px!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v142-expanded .atsrs-v134-row,
+  #refsPage .atsrs-v134-career-card.atsrs-v141-expanded .atsrs-v134-row{grid-template-columns:1fr!important;}
+}
+
+#refsPage .ref-grid{
+  position:relative!important;
+  isolation:isolate!important;
+}
+#refsPage .ref-grid.atsrs-v144-overlay-active{
+  min-height:760px!important;
+}
+#refsPage .atsrs-v144-placeholder{
+  visibility:hidden!important;
+  pointer-events:none!important;
+  min-height:580px!important;
+  height:auto!important;
+  border:0!important;
+  margin:0!important;
+  padding:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+#refsPage .atsrs-v134-career-card{
+  min-height:600px!important;
+  overflow:hidden!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){
+  height:450px!important;
+  max-height:450px!important;
+  min-height:450px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+#refsPage .atsrs-v134-career-card .atsrs-v134-row{
+  min-height:42px!important;
+}
+#refsPage .atsrs-v134-max-icon{
+  position:absolute!important;
+  top:14px!important;
+  right:14px!important;
+  z-index:40!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  width:24px!important;
+  height:24px!important;
+  min-width:24px!important;
+  padding:0!important;
+  margin:0!important;
+  font-size:22px!important;
+  line-height:24px!important;
+  color:#dbe7f3!important;
+  cursor:pointer!important;
+}
+#refsPage .atsrs-v134-max-icon:hover{color:#fff!important;background:transparent!important;box-shadow:none!important;border:0!important;}
+#refsPage .atsrs-v134-career-card.atsrs-v144-expanded{
+  position:absolute!important;
+  top:var(--atsrs-v144-overlay-top,0px)!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:760px!important;
+  height:auto!important;
+  z-index:999!important;
+  grid-column:auto!important;
+  order:9999!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.55)!important;
+  border-color:rgba(134,239,172,.55)!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-list:has(.atsrs-v134-row){
+  height:590px!important;
+  max-height:590px!important;
+  min-height:590px!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-row{
+  min-height:104px!important;
+  grid-template-columns:minmax(0,1fr) 300px!important;
+  align-items:center!important;
+}
+#refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+@media(max-width:900px){
+  #refsPage .ref-grid.atsrs-v144-overlay-active{min-height:760px!important;}
+  #refsPage .atsrs-v134-career-card{min-height:580px!important;}
+  #refsPage .atsrs-v134-career-card .atsrs-v134-list:has(.atsrs-v134-row){height:430px!important;max-height:430px!important;min-height:430px!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v144-expanded{min-height:740px!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-list:has(.atsrs-v134-row){height:565px!important;max-height:565px!important;min-height:565px!important;}
+  #refsPage .atsrs-v134-career-card.atsrs-v144-expanded .atsrs-v134-row{grid-template-columns:1fr!important;}
+}
 
 #refsPage .ref-grid{
   display:grid!important;
@@ -123,7 +786,6 @@
   }
 }
 
-
 #refsPage .ref-grid{
   display:grid!important;
   grid-template-columns:1fr!important;
@@ -245,435 +907,3 @@
 #refsPage .atsrs-v134-empty,
 #refsPage .atsrs-v146-empty{
   border:0!important;
-  border-bottom:1px solid rgba(51,65,85,.78)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  padding:12px 0!important;
-  color:#94a3b8!important;
-  font-size:13px!important;
-}
-#refsPage .cv-actions{grid-template-columns:repeat(4,max-content)!important;justify-content:start!important;gap:8px!important;}
-#refsPage .cv-actions button{width:auto!important;min-width:0!important;padding:8px 10px!important;font-size:12px!important;box-shadow:none!important;}
-#refsPage .cv-beta-box{display:none!important;}
-@media(max-width:760px){
-  #refsPage .atsrs-v134-row,
-  #refsPage .atsrs-v146-row{grid-template-columns:1fr!important;height:auto!important;min-height:62px!important;align-items:start!important;gap:5px!important;padding:8px 0!important;}
-  #refsPage .atsrs-v134-actions,
-  #refsPage .atsrs-v146-actions{justify-content:flex-start!important;flex-wrap:wrap!important;}
-  #refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-  #refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-  #refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){height:310px!important;max-height:310px!important;min-height:310px!important;}
-  #refsPage .cv-actions{grid-template-columns:repeat(2,max-content)!important;}
-}
-
-
-#refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-#refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-#refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){
-  height:auto!important;
-  min-height:0!important;
-  max-height:198px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  padding-right:6px!important;
-  margin:8px 0 8px!important;
-}
-#refsPage .atsrs-v134-row,
-#refsPage .atsrs-v146-row{
-  min-height:38px!important;
-  height:38px!important;
-  padding:4px 0!important;
-  gap:8px!important;
-}
-#refsPage .atsrs-v134-row b,
-#refsPage .atsrs-v146-name b{
-  font-size:12.5px!important;
-  line-height:1.15!important;
-}
-#refsPage .atsrs-v134-row span,
-#refsPage .atsrs-v146-size{
-  font-size:10.5px!important;
-}
-#refsPage .atsrs-v134-actions button,
-#refsPage .atsrs-v146-actions button{
-  height:24px!important;
-  min-height:24px!important;
-  padding:4px 7px!important;
-  font-size:10.5px!important;
-  border-radius:7px!important;
-}
-#refsPage .cv-card,
-#refsPage .atsrs-v134-career-card{
-  padding-bottom:14px!important;
-}
-@media(max-width:760px){
-  #refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-  #refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-  #refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){
-    height:auto!important;
-    min-height:0!important;
-    max-height:270px!important;
-  }
-  #refsPage .atsrs-v134-row,
-  #refsPage .atsrs-v146-row{
-    min-height:52px!important;
-    height:auto!important;
-    padding:6px 0!important;
-  }
-}
-
-
-#refsPage .career-record-list,
-#refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-#refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-#refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){
-  max-height:232px!important;
-  height:auto!important;
-  min-height:0!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  padding-right:6px!important;
-  margin:6px 0 6px!important;
-}
-#refsPage .career-record-row,
-#refsPage .atsrs-v134-row,
-#refsPage .atsrs-v146-row{
-  min-height:42px!important;
-  height:42px!important;
-  max-height:42px!important;
-  padding:5px 0!important;
-  margin:0!important;
-  gap:8px!important;
-  align-items:center!important;
-  border-bottom:1px solid rgba(51,65,85,.72)!important;
-}
-#refsPage .career-record-name b,
-#refsPage .atsrs-v134-row b,
-#refsPage .atsrs-v146-name b{
-  font-size:12.5px!important;
-  line-height:1.15!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-}
-#refsPage .career-record-name span,
-#refsPage .atsrs-v134-row span,
-#refsPage .atsrs-v146-size{
-  font-size:10.5px!important;
-  line-height:1.1!important;
-  margin-top:0!important;
-}
-#refsPage .career-record-date{display:none!important;}
-#refsPage .career-record-actions,
-#refsPage .atsrs-v134-actions,
-#refsPage .atsrs-v146-actions{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  gap:6px!important;
-}
-#refsPage .career-record-actions button,
-#refsPage .atsrs-v134-actions button,
-#refsPage .atsrs-v146-actions button{
-  height:24px!important;
-  min-height:24px!important;
-  padding:4px 7px!important;
-  font-size:10.5px!important;
-  border-radius:7px!important;
-  margin:0!important;
-  width:auto!important;
-}
-#refsPage .cv-card,
-#refsPage .atsrs-v134-career-card{
-  padding-top:16px!important;
-  padding-bottom:12px!important;
-}
-@media(max-width:760px){
-  #refsPage .career-record-list,
-  #refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-  #refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-  #refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){
-    max-height:270px!important;
-  }
-  #refsPage .career-record-row,
-  #refsPage .atsrs-v134-row,
-  #refsPage .atsrs-v146-row{
-    min-height:48px!important;
-    height:auto!important;
-    max-height:none!important;
-    grid-template-columns:1fr auto!important;
-  }
-}
-
-
-#refsPage .career-record-list,
-#refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-#refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-#refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){
-  max-height:196px!important;
-  min-height:0!important;
-  height:auto!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  margin:6px 0 4px!important;
-  padding:0 4px 0 0!important;
-  border-top:1px solid rgba(51,65,85,.70)!important;
-}
-#refsPage .career-record-row,
-#refsPage .atsrs-v134-row,
-#refsPage .atsrs-v146-row{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto!important;
-  align-items:center!important;
-  min-height:38px!important;
-  height:38px!important;
-  max-height:38px!important;
-  padding:0 8px!important;
-  margin:0!important;
-  gap:10px!important;
-  border:0!important;
-  border-bottom:1px solid rgba(51,65,85,.70)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  overflow:hidden!important;
-}
-#refsPage .career-record-name,
-#refsPage .atsrs-v146-name{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-width:0!important;
-  overflow:hidden!important;
-}
-#refsPage .career-record-name b,
-#refsPage .atsrs-v134-row b,
-#refsPage .atsrs-v146-name b{
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  font-size:12.5px!important;
-  line-height:1!important;
-  margin:0!important;
-}
-#refsPage .career-record-name span,
-#refsPage .atsrs-v134-row span,
-#refsPage .atsrs-v146-size{
-  display:inline-block!important;
-  flex:0 0 auto!important;
-  margin:0!important;
-  font-size:10.5px!important;
-  line-height:1!important;
-  color:#8fa3b8!important;
-}
-#refsPage .career-record-date{display:none!important;}
-#refsPage .career-record-actions,
-#refsPage .atsrs-v134-actions,
-#refsPage .atsrs-v146-actions{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  gap:6px!important;
-  min-width:max-content!important;
-}
-#refsPage .career-record-actions button,
-#refsPage .atsrs-v134-actions button,
-#refsPage .atsrs-v146-actions button{
-  width:auto!important;
-  min-width:0!important;
-  height:24px!important;
-  min-height:24px!important;
-  padding:3px 7px!important;
-  margin:0!important;
-  border-radius:7px!important;
-  font-size:10.5px!important;
-  line-height:1!important;
-}
-#refsPage .ref-card,
-#refsPage .cv-card,
-#refsPage .atsrs-v134-career-card{
-  padding-bottom:12px!important;
-}
-@media(max-width:760px){
-  #refsPage .career-record-list,
-  #refsPage .atsrs-v134-list:has(.atsrs-v134-row),
-  #refsPage #cvFileInfo.atsrs-v146-list:has(.atsrs-v146-row),
-  #refsPage #coverLetterFileInfo.atsrs-v146-list:has(.atsrs-v146-row){max-height:216px!important;}
-  #refsPage .career-record-row,
-  #refsPage .atsrs-v134-row,
-  #refsPage .atsrs-v146-row{height:42px!important;min-height:42px!important;max-height:42px!important;}
-}
-
-
-/* V151: References uploads persist in IndexedDB + exactly 5 compact rows visible before scroll. */
-#refsPage .ref-grid{grid-template-columns:1fr!important;gap:14px!important;}
-#refsPage .atsrs-v134-career-card{
-  width:100%!important;grid-column:1 / -1!important;height:auto!important;min-height:0!important;
-  padding:14px 16px!important;border-radius:18px!important;
-}
-#refsPage .atsrs-v134-career-card h3{margin:0 0 6px!important;min-height:0!important;font-size:19px!important;line-height:1.2!important;}
-#refsPage .atsrs-v134-career-card .atsrs-v134-desc{min-height:0!important;margin:0 0 10px!important;font-size:13px!important;line-height:1.35!important;}
-#refsPage .atsrs-v134-career-card .atsrs-v134-upload{margin:0 0 8px!important;padding:9px 12px!important;border-radius:11px!important;}
-#refsPage .atsrs-v134-statusbar{min-height:0!important;margin:0 0 6px!important;}
-#refsPage .atsrs-v134-list{
-  max-height:184px!important; /* 5 rows x 34px + separators/gaps */
-  min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding-right:4px!important;border-radius:10px!important;
-}
-#refsPage .atsrs-v134-row{
-  min-height:34px!important;height:auto!important;margin:0!important;padding:5px 0!important;
-  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:10px!important;
-  border:0!important;border-bottom:1px solid #334155!important;border-radius:0!important;background:transparent!important;
-}
-#refsPage .atsrs-v134-row:last-child{border-bottom:0!important;}
-#refsPage .atsrs-v134-row b{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;word-break:normal!important;font-size:13px!important;line-height:1.2!important;}
-#refsPage .atsrs-v134-row span{display:inline!important;margin:0 0 0 8px!important;font-size:11px!important;color:#94a3b8!important;white-space:nowrap!important;}
-#refsPage .atsrs-v134-actions{display:flex!important;gap:5px!important;align-items:center!important;justify-content:flex-end!important;}
-#refsPage .atsrs-v134-actions button{width:auto!important;min-width:0!important;margin:0!important;padding:5px 8px!important;border-radius:8px!important;font-size:11px!important;line-height:1.1!important;box-shadow:none!important;}
-#refsPage .atsrs-v134-actions .action{background:#26384e!important;border:1px solid #3b536d!important;color:#fecaca!important;}
-#refsPage .atsrs-v134-empty{padding:8px 10px!important;font-size:12px!important;}
-@media(max-width:640px){
-  #refsPage .atsrs-v134-row{grid-template-columns:1fr!important;gap:5px!important;padding:6px 0!important;min-height:54px!important;}
-  #refsPage .atsrs-v134-list{max-height:294px!important;}
-  #refsPage .atsrs-v134-actions{justify-content:stretch!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;}
-  #refsPage .atsrs-v134-actions button{width:100%!important;}
-}
-
-
-/* V152: persistence hard fix. Same compact UI, 5 fully visible rows, scroll from 6th. */
-#refsPage .ref-grid{grid-template-columns:1fr!important;gap:12px!important;}
-#refsPage .atsrs-v134-career-card{grid-column:1 / -1!important;width:100%!important;min-height:0!important;padding:12px 14px!important;}
-#refsPage .atsrs-v134-list{max-height:178px!important;overflow-y:auto!important;overflow-x:hidden!important;padding-right:4px!important;}
-#refsPage .atsrs-v134-row{min-height:34px!important;padding:4px 0!important;margin:0!important;border-bottom:1px solid #334155!important;border-radius:0!important;background:transparent!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:10px!important;}
-#refsPage .atsrs-v134-row b{font-size:13px!important;line-height:1.15!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
-#refsPage .atsrs-v134-row span{font-size:11px!important;line-height:1!important;margin-left:8px!important;color:#94a3b8!important;}
-#refsPage .atsrs-v134-actions{display:flex!important;gap:5px!important;justify-content:flex-end!important;align-items:center!important;}
-#refsPage .atsrs-v134-actions button{width:auto!important;margin:0!important;padding:5px 8px!important;border-radius:8px!important;font-size:11px!important;line-height:1.05!important;box-shadow:none!important;}
-#refsPage .atsrs-v134-actions .action{background:#26384e!important;border:1px solid #3b536d!important;color:#fecaca!important;}
-#refsPage .atsrs-v134-statusbar{margin:0 0 6px!important;min-height:0!important;}
-#refsPage .atsrs-v134-upload{margin:0 0 8px!important;padding:8px 11px!important;}
-@media(max-width:640px){#refsPage .atsrs-v134-row{grid-template-columns:1fr!important;min-height:52px!important;gap:5px!important;}#refsPage .atsrs-v134-list{max-height:284px!important;}#refsPage .atsrs-v134-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;}#refsPage .atsrs-v134-actions button{width:100%!important;}}
-
-
-/* V156: CV Main full-width. Paid additional CV slot info sits under Main CV, not on the right. Old V153/V154/V155 grid/timer blocks removed. */
-#refsPage .cv-card{
-  align-self:start!important;
-  overflow:visible!important;
-  transition:none!important;
-}
-#refsPage #cvFileInfo{
-  transition:none!important;
-  margin-top:8px!important;
-  padding:0!important;
-}
-#refsPage #cvFileInfo.atsrs-v156-cv-area{
-  display:flex!important;
-  flex-direction:column!important;
-  gap:8px!important;
-  min-height:0!important;
-  max-height:none!important;
-  overflow:visible!important;
-  width:100%!important;
-}
-#refsPage .atsrs-v156-main-box,
-#refsPage .atsrs-v156-slots-box{
-  width:100%!important;
-  min-width:0!important;
-  background:rgba(2,6,23,.22)!important;
-  border:1px solid rgba(51,65,85,.70)!important;
-  border-radius:12px!important;
-  padding:8px!important;
-  overflow:hidden!important;
-}
-#refsPage .atsrs-v156-box-title{
-  display:block!important;
-  margin:0 0 6px!important;
-  font-size:10px!important;
-  line-height:1!important;
-  color:#94a3b8!important;
-  font-weight:900!important;
-  text-transform:uppercase!important;
-  letter-spacing:.04em!important;
-}
-#refsPage .atsrs-v156-main-row{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto!important;
-  gap:8px!important;
-  align-items:center!important;
-  min-height:36px!important;
-  height:36px!important;
-  padding:0!important;
-  border:0!important;
-  background:transparent!important;
-}
-#refsPage .atsrs-v156-main-name{min-width:0!important;line-height:1.05!important;}
-#refsPage .atsrs-v156-main-name b{
-  display:block!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  font-size:12.5px!important;
-  color:#e5e7eb!important;
-  font-weight:850!important;
-}
-#refsPage .atsrs-v156-main-name span{display:block!important;font-size:10px!important;color:#94a3b8!important;margin-top:2px!important;}
-#refsPage .atsrs-v156-actions{display:flex!important;gap:4px!important;align-items:center!important;justify-content:flex-end!important;}
-#refsPage .atsrs-v156-actions button{
-  width:auto!important;
-  min-width:48px!important;
-  margin:0!important;
-  padding:5px 6px!important;
-  border-radius:7px!important;
-  font-size:10px!important;
-  line-height:1!important;
-  background:#26384e!important;
-  border:1px solid #3b536d!important;
-  color:#dbeafe!important;
-  box-shadow:none!important;
-}
-#refsPage .atsrs-v156-actions .action{color:#fecaca!important;}
-#refsPage .atsrs-v156-empty{
-  height:36px!important;
-  display:flex!important;
-  align-items:center!important;
-  font-size:12px!important;
-  color:#94a3b8!important;
-}
-#refsPage .atsrs-v156-slot-list{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:6px!important;
-}
-#refsPage .atsrs-v156-slot-chip{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:7px!important;
-  min-height:24px!important;
-  height:24px!important;
-  padding:0 8px!important;
-  border:1px solid rgba(59,83,109,.75)!important;
-  background:#101c2c!important;
-  border-radius:999px!important;
-  color:#cbd5e1!important;
-  overflow:hidden!important;
-}
-#refsPage .atsrs-v156-slot-chip b{
-  min-width:0!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  font-size:10px!important;
-  font-weight:850!important;
-}
-#refsPage .atsrs-v156-slot-chip span{
-  flex:0 0 auto!important;
-  font-size:9.5px!important;
-  color:#94a3b8!important;
-  font-weight:900!important;
-}
-@media(max-width:720px){
-  #refsPage .atsrs-v156-main-row{grid-template-columns:1fr!important;height:auto!important;min-height:58px!important;gap:5px!important;}
-  #refsPage .atsrs-v156-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;}
-  #refsPage .atsrs-v156-actions button{width:100%!important;}
-  #refsPage .atsrs-v156-slot-list{grid-template-columns:1fr!important;}
-}
