@@ -69,40 +69,52 @@ document.addEventListener("click",e=>{if(!e.target.closest(".lang-floating")){co
 
 function changeLanguage(v){lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){};const m=document.getElementById("langMenu");if(m)m.classList.add("hidden");const am=document.getElementById("appLangMenu");if(am)am.classList.add("hidden");applyLanguage();renderAll();applyLanguage()}
 function applyLanguage(){
-lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
-document.documentElement.lang="en";document.documentElement.dir="ltr";const lc=document.getElementById("langCircle");if(lc)lc.innerText=LANG_FLAGS[lang]||"🌐";const alc=document.getElementById("appLangCircle");if(alc)alc.innerText=LANG_FLAGS[lang]||"🌐";
-authSubtitle.innerText=tr("sub");loginTitle.innerText=tr("login");loginEmail.placeholder=tr("email");loginPassword.placeholder=tr("password");loginEmailRule.innerText=emailMsg();loginBtn.innerText=tr("login");createBtn.innerText=tr("create");forgotBtn.innerText=tr("forgot");if(typeof modeRule!=="undefined")modeRule.innerText=modeMsg();
-registerTitle.innerText=tr("registerTitle");regEmail.placeholder=tr("email");regEmailRule.innerText=emailMsg();regPassword.placeholder=tr("password");regPassword2.placeholder=tr("confirm");registerBtn.innerText=tr("register");backLoginBtn1.innerText=tr("back");passRule.innerText=tr("passRule");matchRule.innerText=tr("matchRule");
-resetTitle.innerText=tr("resetTitle");resetInfo.innerText=tr("resetInfo");resetEmail.placeholder=tr("email");resetEmailRule.innerText=emailMsg();resetBtn.innerText=tr("sendReset");backLoginBtn2.innerText=tr("back");
-newPassTitle.innerText=tr("newPass");newPassword.placeholder=tr("newPassword");newPassword2.placeholder=tr("confirmNew");saveNewPassBtn.innerText=tr("saveNew");
-cabinetText.innerText=tr("cabinet");navDashboard.innerText=tr("dashboard");navPersonnel.innerText=tr("personnel");navCertificates.innerText=tr("certificates");navProfile.innerText=ptr("account");navLogout.innerText=tr("logout");if(typeof topLogoutBtn!=="undefined")topLogoutBtn.innerText=tr("logout");
-totalPersonnelText.innerText=tr("totalPersonnel");totalCertsText.innerText=tr("totalCerts");exp90Text.innerText=tr("exp90");if(typeof exp30Text!=="undefined")exp30Text.innerText=tr("exp30");expiredText.innerText=tr("expired");if(typeof myDocumentsTitle!=="undefined"){myDocumentsTitle.innerText=tr("myDocuments");personalDashboardNote.innerText=tr("personalDashboardNote");personalScanBtn.innerText=tr("scanUpload");}
-crewRegisterTitle.innerText=tr("crewRegister");
-crewTabListBtn.innerText=tr("crewList");
-crewTabAddBtn.innerText=tr("addCrew");
-crewTabImportBtn.innerText=tr("importExcel");
-crewTabProjectsBtn.innerText=tr("groupsProjects");
-crewTabComplianceBtn.innerText=tr("complianceStatus");
-crewSearch.placeholder=tr("searchCrew");
-addPersonnelTitle.innerText=tr("addPersonnel");
-pName.placeholder=tr("name");pSurname.placeholder=tr("surname");pPosition.placeholder=tr("position");pCompany.placeholder=tr("company");pEmail.placeholder=tr("email");pPhone.placeholder=tr("phone");
-pNationality.placeholder=tr("nationality");pEmployeeId.placeholder=tr("employeeId");pProject.placeholder=tr("project");pVessel.placeholder=tr("vessel");
-addPersonnelBtn.innerText=tr("addPersonnel");
-thName1.innerText=tr("name");thSurname1.innerText=tr("surname");thPosition1.innerText=tr("position");thCompany1.innerText=tr("company");thPhone1.innerText=tr("phone");thCrewStatus.innerText=tr("crewStatus");thAction1.innerText=tr("action");
-importExcelTitle.innerText=tr("importExcel");importExcelInfo.innerText=tr("importInfo");
-projectsTitle.innerText=tr("projects");projectNameInput.placeholder=tr("project");vesselNameInput.placeholder=tr("vessel");clientNameInput.placeholder=tr("client");teamNameInput.placeholder=tr("team");addProjectBtn.innerText=tr("addProject");
-thProject.innerText=tr("project");thVessel.innerText=tr("vessel");thClient.innerText=tr("client");thTeam.innerText=tr("team");thActionProject.innerText=tr("action");
-complianceOverviewTitle.innerText=tr("complianceStatus");readyCrewText.innerText=tr("readyCrew");reviewCrewText.innerText=tr("reviewCrew");blockedCrewText.innerText=tr("blockedCrew");complianceNote.innerText=tr("complianceNote");
-addDocTitle.innerText=ptr("addDoc");scanDocBtn.innerText=ptr("scanDoc");uploadDocBtn.innerText=ptr("uploadDoc");scanInfo.innerText=ptr("scanInfo");confirmInfoTitle.innerText=ptr("confirmInfo");autoDocNo.placeholder=ptr("docNo");autoProvider.placeholder=tr("provider");confirmInfoBtn.innerText=ptr("confirm");extractNote.innerText=ptr("extractNote");
-manualCertTitle.innerText=ptr("manualCert");cProvider.placeholder=tr("provider");addCertBtn.innerText=tr("addCert");certRegisterTitle.innerText=tr("certRegister");thCertificate2.innerText=tr("certificate");thProvider2.innerText=tr("provider");thExpiry2.innerText=tr("expiry");thStatus2.innerText=tr("status");thAction2.innerText=tr("action");
-accountTitle.innerText=ptr("account");accountTabGeneralBtn.innerText=ptr("general");accountTabSecurityBtn.innerText=ptr("security");accountTabPreferencesBtn.innerText=ptr("preferences");profileName.placeholder=tr("name");profileSurname.placeholder=tr("surname");profilePhone.placeholder=tr("phone");profileCompany.placeholder=tr("company");profilePosition.placeholder=tr("position");profileCountry.options[0].text=ptr("country");saveProfileBtn.innerText=tr("saveProfile");
-profileAltEmail.placeholder=ptr("recoveryEmail");primaryEmailTitle.innerText=ptr("primaryEmail");primaryEmailNote.innerText=ptr("primaryEmailNote");primaryEmailBtn.innerText=ptr("change");changePasswordTitle.innerText=ptr("password");changePasswordNote.innerText=ptr("passwordNote");changePasswordBtn.innerText=ptr("change");twofaTitle.innerText=ptr("twofa");twofaNote.innerText=ptr("twofaNote");setup2faBtn.innerText=ptr("setup");sessionsTitle.innerText=ptr("sessions");sessionsNote.innerText=ptr("sessionsNote");viewSessionsBtn.innerText=ptr("view");
-notifyTitle.innerText=ptr("notifications");notifyNote.innerText=ptr("notificationsNote");manageNotifyBtn.innerText=ptr("manage");exportDataTitle.innerText=ptr("exportData");exportDataNote.innerText=ptr("exportDataNote");exportDataBtn.innerText=ptr("export");deleteAccountTitle.innerText=ptr("deleteAccount");deleteAccountNote.innerText=ptr("deleteAccountNote");deleteAccountBtn.innerText=tr("delete");
-if(currentUser){let active=document.querySelector(".nav button.active");pageTitle.innerText=active?active.innerText:tr("dashboard")}
-applySoloLanguage();
-applyIntroLanguage();
-}
+  lang="en";
+  try{localStorage.setItem("atsrs_lang","en")}catch(e){}
+  document.documentElement.lang="en";
+  document.documentElement.dir="ltr";
 
+  const el=(id)=>document.getElementById(id);
+  const txt=(id,value)=>{const node=el(id); if(node) node.innerText=value;};
+  const ph=(id,value)=>{const node=el(id); if(node) node.placeholder=value;};
+  const opt0=(id,value)=>{const node=el(id); if(node && node.options && node.options[0]) node.options[0].text=value;};
+
+  const lc=el("langCircle"); if(lc)lc.innerText=LANG_FLAGS[lang]||"🌐";
+  const alc=el("appLangCircle"); if(alc)alc.innerText=LANG_FLAGS[lang]||"🌐";
+
+  txt("authSubtitle",tr("sub"));txt("loginTitle",tr("login"));ph("loginEmail",tr("email"));ph("loginPassword",tr("password"));txt("loginEmailRule",emailMsg());txt("loginBtn",tr("login"));txt("createBtn",tr("create"));txt("forgotBtn",tr("forgot"));txt("modeRule",modeMsg());
+  txt("registerTitle",tr("registerTitle"));ph("regEmail",tr("email"));txt("regEmailRule",emailMsg());ph("regPassword",tr("password"));ph("regPassword2",tr("confirm"));txt("registerBtn",tr("register"));txt("backLoginBtn1",tr("back"));txt("passRule",tr("passRule"));txt("matchRule",tr("matchRule"));
+  txt("resetTitle",tr("resetTitle"));txt("resetInfo",tr("resetInfo"));ph("resetEmail",tr("email"));txt("resetEmailRule",emailMsg());txt("resetBtn",tr("sendReset"));txt("backLoginBtn2",tr("back"));
+  txt("newPassTitle",tr("newPass"));ph("newPassword",tr("newPassword"));ph("newPassword2",tr("confirmNew"));txt("saveNewPassBtn",tr("saveNew"));
+
+  txt("cabinetText",tr("cabinet"));txt("navDashboard",tr("dashboard"));txt("navPersonnel",tr("personnel"));txt("navCertificates",tr("certificates"));txt("navProfile",ptr("account"));txt("navLogout",tr("logout"));txt("topLogoutBtn",tr("logout"));
+  txt("totalPersonnelText",tr("totalPersonnel"));txt("totalCertsText",tr("totalCerts"));txt("exp90Text",tr("exp90"));txt("exp30Text",tr("exp30"));txt("expiredText",tr("expired"));
+  txt("myDocumentsTitle",tr("myDocuments"));txt("personalDashboardNote",tr("personalDashboardNote"));txt("personalScanBtn",tr("scanUpload"));
+
+  txt("crewRegisterTitle",tr("crewRegister"));txt("crewTabListBtn",tr("crewList"));txt("crewTabAddBtn",tr("addCrew"));txt("crewTabImportBtn",tr("importExcel"));txt("crewTabProjectsBtn",tr("groupsProjects"));txt("crewTabComplianceBtn",tr("complianceStatus"));ph("crewSearch",tr("searchCrew"));
+  txt("addPersonnelTitle",tr("addPersonnel"));
+  ["pName:name","pSurname:surname","pPosition:position","pCompany:company","pEmail:email","pPhone:phone","pNationality:nationality","pEmployeeId:employeeId","pProject:project","pVessel:vessel"].forEach(x=>{let [id,key]=x.split(':');ph(id,tr(key));});
+  txt("addPersonnelBtn",tr("addPersonnel"));
+  ["thName1:name","thSurname1:surname","thPosition1:position","thCompany1:company","thPhone1:phone","thCrewStatus:crewStatus","thAction1:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
+
+  txt("importExcelTitle",tr("importExcel"));txt("importExcelInfo",tr("importInfo"));
+  txt("projectsTitle",tr("projects"));ph("projectNameInput",tr("project"));ph("vesselNameInput",tr("vessel"));ph("clientNameInput",tr("client"));ph("teamNameInput",tr("team"));txt("addProjectBtn",tr("addProject"));
+  ["thProject:project","thVessel:vessel","thClient:client","thTeam:team","thActionProject:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
+  txt("complianceOverviewTitle",tr("complianceStatus"));txt("readyCrewText",tr("readyCrew"));txt("reviewCrewText",tr("reviewCrew"));txt("blockedCrewText",tr("blockedCrew"));txt("complianceNote",tr("complianceNote"));
+
+  txt("addDocTitle",ptr("addDoc"));txt("scanDocBtn",ptr("scanDoc"));txt("uploadDocBtn",ptr("uploadDoc"));txt("scanInfo",ptr("scanInfo"));txt("confirmInfoTitle",ptr("confirmInfo"));ph("autoDocNo",ptr("docNo"));ph("autoProvider",tr("provider"));txt("confirmInfoBtn",ptr("confirm"));txt("extractNote",ptr("extractNote"));
+  txt("manualCertTitle",ptr("manualCert"));ph("cProvider",tr("provider"));txt("addCertBtn",tr("addCert"));txt("certRegisterTitle",tr("certRegister"));
+  ["thCertificate2:certificate","thProvider2:provider","thExpiry2:expiry","thStatus2:status","thAction2:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
+
+  txt("accountTitle",ptr("account"));txt("accountTabGeneralBtn",ptr("general"));txt("accountTabSecurityBtn",ptr("security"));txt("accountTabPreferencesBtn",ptr("preferences"));
+  ph("profileName",tr("name"));ph("profileSurname",tr("surname"));ph("profilePhone",tr("phone"));ph("profileCompany",tr("company"));ph("profilePosition",tr("position"));opt0("profileCountry",ptr("country"));txt("saveProfileBtn",tr("saveProfile"));
+  ph("profileAltEmail",ptr("recoveryEmail"));txt("primaryEmailTitle",ptr("primaryEmail"));txt("primaryEmailNote",ptr("primaryEmailNote"));txt("primaryEmailBtn",ptr("change"));txt("changePasswordTitle",ptr("password"));txt("changePasswordNote",ptr("passwordNote"));txt("changePasswordBtn",ptr("change"));txt("twofaTitle",ptr("twofa"));txt("twofaNote",ptr("twofaNote"));txt("setup2faBtn",ptr("setup"));txt("sessionsTitle",ptr("sessions"));txt("sessionsNote",ptr("sessionsNote"));txt("viewSessionsBtn",ptr("view"));
+  txt("notifyTitle",ptr("notifications"));txt("notifyNote",ptr("notificationsNote"));txt("manageNotifyBtn",ptr("manage"));txt("exportDataTitle",ptr("exportData"));txt("exportDataNote",ptr("exportDataNote"));txt("exportDataBtn",ptr("export"));txt("deleteAccountTitle",ptr("deleteAccount"));txt("deleteAccountNote",ptr("deleteAccountNote"));txt("deleteAccountBtn",tr("delete"));
+
+  if(currentUser){let active=document.querySelector(".nav button.active");txt("pageTitle",active?active.innerText:tr("dashboard"));}
+  try{applySoloLanguage();}catch(e){console.warn("ATSRS solo language skipped",e)}
+  try{applyIntroLanguage();}catch(e){console.warn("ATSRS intro language skipped",e)}
+}
 function hideAuthBoxes(){loginBox.classList.add("hidden");registerBox.classList.add("hidden");forgotBox.classList.add("hidden");newPasswordBox.classList.add("hidden")}
 function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
 function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
@@ -156,7 +168,20 @@ function confirmLogout(){
 }
 
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
-function localKey(n){return"atsrs_"+currentUser.id+"_"+n} function getData(n){return JSON.parse(localStorage.getItem(localKey(n)))||[]} function saveData(n,d){localStorage.setItem(localKey(n),JSON.stringify(d))}
+function localKey(n){
+  if(!currentUser || !currentUser.id) return null;
+  return "atsrs_"+currentUser.id+"_"+n;
+}
+function getData(n){
+  const key=localKey(n);
+  if(!key) return [];
+  try{return JSON.parse(localStorage.getItem(key))||[]}catch(e){console.warn("ATSRS storage read failed",n,e);return []}
+}
+function saveData(n,d){
+  const key=localKey(n);
+  if(!key) return;
+  try{localStorage.setItem(key,JSON.stringify(d))}catch(e){console.warn("ATSRS storage save failed",n,e)}
+}
 function openApp(){
   auth.classList.add("hidden");
   app.classList.remove("hidden");
