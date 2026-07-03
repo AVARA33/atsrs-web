@@ -240,6 +240,7 @@
   };
 
   function renderCertRows(){
+    if(typeof currentUser==='undefined' || !currentUser)return;
     if(!byId('certTable') || typeof getData!=='function' || typeof status!=='function')return;
     var c=getData('certs')||[];
     var html='';
@@ -255,7 +256,8 @@
   }
 
   function stableDocuments(){
-    cleanTopAndLang(); fixLabels(); wireMethods(); renderCertRows();
+    cleanTopAndLang(); fixLabels(); wireMethods();
+    if(typeof currentUser!=='undefined' && currentUser) renderCertRows();
     var scanPanel=byId('certScanPanel'); if(scanPanel)scanPanel.classList.remove('active');
     var scanBtn=byId('certScanModeBtn'); if(scanBtn)scanBtn.classList.remove('active');
     if(editIndex===null){var manual=byId('certManualPanel'); if(manual&&!manual.dataset.keepOpen)manual.classList.remove('active'); var mb=byId('certManualModeBtn'); if(mb)mb.classList.remove('active');}
