@@ -1,4 +1,5 @@
 /* ATSRS V178 extracted JavaScript batch: ui.js. Loaded in original V178 execution order. No placeholder code. */
+function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
 /* ===== extracted from inline script id=v62-test-automation-script ===== */
 (function(){
   function el(id){ return document.getElementById(id); }
