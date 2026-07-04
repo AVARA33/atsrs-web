@@ -702,6 +702,15 @@ function renderV29Snapshot(){
 const applyLanguageBaseV29=applyLanguage;applyLanguage=function(){applyLanguageBaseV29();applyV29Language();renderV29Snapshot();}
 const renderAllBaseV29=renderAll;renderAll=function(){renderAllBaseV29();renderV29Snapshot();}
 
+/* V193: V54 text registry moved before early applyLanguage() calls to prevent TDZ initialization errors. */
+var V54_TEXT={
+  en:{recommendations:'Recommendation Letters',recommendationsText:'Store recommendation letters from supervisors, clients and companies.',uploadRecommendation:'Upload',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'No files uploaded yet.',signedDate:'Signed Date',preview:'Preview',download:'Download',deleteFile:'Delete'}
+};
+function v54(k){
+  var dict=(typeof V54_TEXT!=='undefined' && V54_TEXT) ? V54_TEXT : {en:{}};
+  return (dict[lang]&&dict[lang][k])||(dict.en&&dict.en[k])||k;
+}
+
 applyLanguage();
 useMode='';
 if(typeof personalModeBtn!=='undefined'){personalModeBtn.classList.remove('active');companyModeBtn.classList.remove('active');}
@@ -871,10 +880,7 @@ applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&
 setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 /* ===== extracted from inline script ===== */
-const V54_TEXT={
-  en:{recommendations:'Recommendation Letters',recommendationsText:'Store recommendation letters from supervisors, clients and companies.',uploadRecommendation:'Upload',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'No files uploaded yet.',signedDate:'Signed Date',preview:'Preview',download:'Download',deleteFile:'Delete'}
-};
-function v54(k){return (V54_TEXT[lang]&&V54_TEXT[lang][k])||V54_TEXT.en[k]||k;}
+/* V193: V54_TEXT/v54 are declared earlier before applyLanguage() is called. */
 function careerKey(kind){return kind+'Files';}
 function getManagedFiles(kind){let a=getData(careerKey(kind));return Array.isArray(a)?a:[];}
 function setManagedFiles(kind,arr){saveData(careerKey(kind),Array.isArray(arr)?arr:[]);}
