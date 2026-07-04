@@ -1,6 +1,6 @@
 /* ATSRS V178 extracted JavaScript batch: storage.js. Loaded in original V178 execution order. No placeholder code. */
 /* ===== extracted from inline script ===== */
-const SUPABASE_URL="https://hwtjuqyxziyymofamwxl.supabase.co";
+const SUPABASE_URL="https://hwtjuqyxziyvmofamwxl.supabase.co";
 const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
 const APP_URL="https://atsrs.com/";
 let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);window.supabaseClient=supabaseClient}catch(e){console.error(e)}
@@ -866,24 +866,15 @@ renderAll=function(){
     }
   });
 };
-/* V190 Stability: V54 labels must exist before applyLanguage can trigger renderAll. */
-var V54_TEXT={
-  en:{recommendations:'Recommendation Letters',recommendationsText:'Store recommendation letters from supervisors, clients and companies.',uploadRecommendation:'Upload',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'No files uploaded yet.',signedDate:'Signed Date',preview:'Preview',download:'Download',deleteFile:'Delete'}
-};
-function v54(k){
-  const pack=(typeof V54_TEXT==='object' && V54_TEXT) ? V54_TEXT : {en:{}};
-  const current=(pack[typeof lang==='string'?lang:'en']||pack.en||{});
-  return current[k] || (pack.en&&pack.en[k]) || k;
-}
 const applyLanguageBaseV41R=applyLanguage;
-applyLanguage=function(){
-  try{applyLanguageBaseV41R();}catch(e){console.warn('ATSRS applyLanguage base skipped',e);}
-  try{applyV41RLanguage();}catch(e){console.warn('ATSRS V41 language skipped',e);}
-  if(typeof renderAll==='function') setTimeout(()=>{try{renderAll()}catch(e){console.warn('ATSRS renderAll skipped',e);}},0);
-}
-setTimeout(()=>{try{ensureExpiryNAControls();applyV41RLanguage();}catch(e){}},0);
+applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&setTimeout(()=>{try{renderAll()}catch(e){}},0);}
+setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 /* ===== extracted from inline script ===== */
+const V54_TEXT={
+  en:{recommendations:'Recommendation Letters',recommendationsText:'Store recommendation letters from supervisors, clients and companies.',uploadRecommendation:'Upload',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'No files uploaded yet.',signedDate:'Signed Date',preview:'Preview',download:'Download',deleteFile:'Delete'}
+};
+function v54(k){return (V54_TEXT[lang]&&V54_TEXT[lang][k])||V54_TEXT.en[k]||k;}
 function careerKey(kind){return kind+'Files';}
 function getManagedFiles(kind){let a=getData(careerKey(kind));return Array.isArray(a)?a:[];}
 function setManagedFiles(kind,arr){saveData(careerKey(kind),Array.isArray(arr)?arr:[]);}
