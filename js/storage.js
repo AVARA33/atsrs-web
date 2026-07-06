@@ -170,10 +170,7 @@ function confirmLogout(){
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
 function localKey(n){
   if(!currentUser || !currentUser.id) return null;
-  var mode="personal";
-  try{mode=localStorage.getItem("atsrs_use_mode")||useMode||"personal";}catch(e){mode=useMode||"personal";}
-  if(mode!=="personal" && mode!=="company") mode="personal";
-  return "atsrs_"+currentUser.id+"_"+mode+"_"+n;
+  return "atsrs_"+currentUser.id+"_"+n;
 }
 function getData(n){
   const key=localKey(n);
@@ -420,46 +417,7 @@ function saveProfile(){localStorage.setItem(localKey("profile"),JSON.stringify({
 function loadProfile(){fillCountries();let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};profileName.value=p.name||"";profileSurname.value=p.surname||"";profilePhone.value=p.phone||"";profileCountry.value=p.country||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";profileAltEmail.value=p.altEmail||"";profileTimezone.value=p.timezone||"UTC"}
 function exportLocalData(){let data={profile:JSON.parse(localStorage.getItem(localKey("profile")))||{},personnel:getData("personnel"),certificates:getData("certs")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="atsrs-data-export.json";a.click();URL.revokeObjectURL(url)}
 
-function atsrsShowWorkspacePicker(user){
-  currentUser=user;
-  try{window.currentUser=user;window.__atsrsPendingGoogleUser=user;}catch(e){}
-  try{auth.classList.remove("hidden");app.classList.add("hidden");}catch(e){}
-  try{hideAuthBoxes();}catch(e){
-    ["loginBox","registerBox","forgotBox","newPasswordBox"].forEach(id=>{let el=document.getElementById(id);if(el)el.classList.add("hidden")});
-  }
-  let box=document.getElementById("googleWorkspaceBox"); if(box)box.classList.remove("hidden");
-  let msg=document.getElementById("workspaceMsg"); if(msg)msg.textContent="Google account: "+(user&&user.email?user.email:"");
-  document.body.classList.remove("atsrs-booting");
-}
-function atsrsOpenSessionUser(user){
-  let saved=""; try{saved=localStorage.getItem("atsrs_use_mode")||"";}catch(e){}
-  if(saved==="personal"||saved==="company"){currentUser=user;window.currentUser=user;openApp();return;}
-  atsrsShowWorkspacePicker(user);
-}
-window.atsrsChooseWorkspace=function(mode){
-  if(mode!=="personal"&&mode!=="company")return false;
-  let user=null;try{user=window.__atsrsPendingGoogleUser||currentUser;}catch(e){user=currentUser;}
-  if(!user){let msg=document.getElementById("workspaceMsg");if(msg)msg.textContent="Google session not found. Please sign in again.";return false;}
-  useMode=mode;window.useMode=mode;
-  try{localStorage.setItem("atsrs_use_mode",mode);localStorage.setItem("atsrs_auth_mode","supabase");}catch(e){}
-  currentUser=user;window.currentUser=user;
-  let box=document.getElementById("googleWorkspaceBox"); if(box)box.classList.add("hidden");
-  if(typeof openApp==="function")openApp();
-  return false;
-};
-window.atsrsGoogleLogin=async function(e){
-  if(e&&e.preventDefault)e.preventDefault();
-  let msg=document.getElementById("loginMsg"); if(msg)msg.textContent="Opening Google sign-in...";
-  if(!supabaseClient||!supabaseClient.auth||typeof supabaseClient.auth.signInWithOAuth!=="function"){if(msg)msg.textContent="Supabase Auth is not ready.";return false;}
-  try{
-    try{localStorage.removeItem("atsrs_use_mode");}catch(x){}
-    const redirectTo=(window.location.origin||"https://atsrs.com")+(window.location.pathname||"/");
-    const res=await supabaseClient.auth.signInWithOAuth({provider:"google",options:{redirectTo:redirectTo}});
-    if(res&&res.error&&msg)msg.textContent=res.error.message||"Google sign-in failed.";
-  }catch(err){if(msg)msg.textContent=(err&&err.message)||"Google sign-in failed.";}
-  return false;
-};
-if(localStorage.getItem("atsrs_auth_mode")==="local"){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};openApp()}else if(supabaseClient){supabaseClient.auth.onAuthStateChange(e=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});supabaseClient.auth.getSession().then(({data})=>{if(data.session){atsrsOpenSessionUser(data.session.user)}})}
+if(supabaseClient){supabaseClient.auth.onAuthStateChange(function(e,session){if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden");return} if(session){window.atsrsSupabaseSession=session; if(typeof window.atsrsHandleOAuthSession==="function") window.atsrsHandleOAuthSession(session);}});supabaseClient.auth.getSession().then(function(res){var data=res&&res.data; if(data&&data.session){window.atsrsSupabaseSession=data.session; if(typeof window.atsrsHandleOAuthSession==="function") window.atsrsHandleOAuthSession(data.session);}})}
 function v12(k){
   return (T[lang]&&T[lang][k]) || (UI[lang]&&UI[lang][k]) || T.en[k] || UI.en[k] || k;
 }
@@ -1428,17 +1386,15 @@ setTimeout(v55DockTopActions,500);
           return;
         }
         if(session && session.user && (event==='SIGNED_IN' || event==='TOKEN_REFRESHED' || event==='INITIAL_SESSION')){
-          var mode=accountTypeFromUser(session.user) || selectedAccountType();
-          if(mode){applyAccountType(mode);try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}currentUser=session.user;window.currentUser=session.user;if(typeof openApp==='function') openApp();}
-          else if(typeof atsrsShowWorkspacePicker==='function'){atsrsShowWorkspacePicker(session.user);} 
+          window.atsrsSupabaseSession=session;
+          if(typeof window.atsrsHandleOAuthSession==='function') window.atsrsHandleOAuthSession(session);
         }
       });
       supabaseClient.auth.getSession().then(function(r){
         var session=r && r.data && r.data.session;
         if(session && session.user){
-          var mode=accountTypeFromUser(session.user) || selectedAccountType();
-          if(mode){applyAccountType(mode);try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}currentUser=session.user;window.currentUser=session.user;if(typeof openApp==='function') openApp();}
-          else if(typeof atsrsShowWorkspacePicker==='function'){atsrsShowWorkspacePicker(session.user);} 
+          window.atsrsSupabaseSession=session;
+          if(typeof window.atsrsHandleOAuthSession==='function') window.atsrsHandleOAuthSession(session);
         }
       });
     }catch(e){console.warn('ATSRS auth restore failed',e);}
@@ -1568,23 +1524,3 @@ setTimeout(v55DockTopActions,500);
   [150,500,1000,2000].forEach(function(ms){setTimeout(bind,ms);});
   window.atsrsAuthDebugRegister=debugRegister;
 })();
-
-
-/* V194 Google-only login final override */
-(function(){
-  'use strict';
-  function byId(id){return document.getElementById(id);}
-  function cleanLoginDuplicates(){
-    ['atsrsV113TestPersonal','atsrsV113TestCorporate','atsrsV115TestPersonal','atsrsV115TestCorporate','atsrsV117TestPersonal','atsrsV117TestCorporate','localTestBtn'].forEach(function(id){var el=byId(id);if(el)el.remove();});
-    document.querySelectorAll('#loginBox button').forEach(function(btn){
-      var t=(btn.textContent||'').trim();
-      if(/Test Personal|Test Corporate|Create account|Forgot password/i.test(t)) btn.remove();
-    });
-    var google=byId('googleLoginBtn'); if(google)google.onclick=window.atsrsGoogleLogin;
-  }
-  document.addEventListener('DOMContentLoaded',cleanLoginDuplicates);
-  window.addEventListener('load',function(){setTimeout(cleanLoginDuplicates,0);setTimeout(cleanLoginDuplicates,200);setTimeout(cleanLoginDuplicates,800);});
-})();
-
-
-/* V198: temporary dev access removed. Google OAuth is the only frontend sign-in path. */
