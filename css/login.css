@@ -940,15 +940,43 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   100%{left:118%;opacity:0;}
 }
 
-/* ATSRS V199 classic Google auth cleanup */
-.classic-google-auth .auth-flow-note{margin:8px 0 14px;line-height:1.45}
-.google-auth-btn{width:100%;min-height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.16);font-weight:700;cursor:pointer;margin-top:10px;background:rgba(255,255,255,.06);color:#eef7ff;display:flex;align-items:center;justify-content:center;gap:6px}
-.google-auth-btn:hover{background:rgba(255,255,255,.10)}
-.google-auth-primary{background:linear-gradient(90deg,#0b71f6,#06a7c9);border-color:rgba(0,180,216,.45)}
-.google-auth-secondary{background:rgba(255,255,255,.045)}
-.atsrs-workspace-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.62);z-index:9999;padding:20px}
-.atsrs-workspace-modal.hidden{display:none!important}
-.atsrs-workspace-card{width:min(420px,94vw);background:#071a28;border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.45)}
-.atsrs-workspace-card h3{margin:0 0 8px;font-size:22px}
-.atsrs-workspace-actions{display:grid;gap:10px;margin-top:16px}
-.atsrs-workspace-actions button{width:100%;min-height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(90deg,#0b71f6,#06a7c9);color:white;font-weight:700;cursor:pointer}
+
+/* ATSRS V200: classic login Google workspace flow. Keeps classic login layout; only adds functional Google/workspace controls. */
+.google-auth-choice{
+  display:block;
+  width:100%;
+  text-align:center;
+  margin:6px 0 0 0;
+}
+.atsrs-workspace-box{
+  margin-top:14px;
+}
+.atsrs-workspace-actions{
+  display:grid;
+  gap:10px;
+  margin:14px 0;
+}
+.atsrs-workspace-actions button{
+  width:100%;
+  text-align:left;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  padding:12px 14px;
+  cursor:pointer;
+}
+.atsrs-workspace-actions button:hover{
+  border-color:rgba(45,212,191,.45);
+  background:rgba(45,212,191,.08);
+}
+.atsrs-workspace-actions b{
+  display:block;
+  font-size:14px;
+}
+.atsrs-workspace-actions span{
+  display:block;
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+}
