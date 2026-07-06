@@ -170,7 +170,12 @@ function confirmLogout(){
 async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
 function localKey(n){
   if(!currentUser || !currentUser.id) return null;
-  return "atsrs_"+currentUser.id+"_"+n;
+  let mode="personal";
+  try{
+    mode=localStorage.getItem("atsrs_use_mode") || useMode || "personal";
+  }catch(e){mode=useMode||"personal";}
+  if(mode!=="personal" && mode!=="company") mode="personal";
+  return "atsrs_"+currentUser.id+"_"+mode+"_"+n;
 }
 function getData(n){
   const key=localKey(n);
@@ -417,7 +422,7 @@ function saveProfile(){localStorage.setItem(localKey("profile"),JSON.stringify({
 function loadProfile(){fillCountries();let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};profileName.value=p.name||"";profileSurname.value=p.surname||"";profilePhone.value=p.phone||"";profileCountry.value=p.country||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";profileAltEmail.value=p.altEmail||"";profileTimezone.value=p.timezone||"UTC"}
 function exportLocalData(){let data={profile:JSON.parse(localStorage.getItem(localKey("profile")))||{},personnel:getData("personnel"),certificates:getData("certs")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="atsrs-data-export.json";a.click();URL.revokeObjectURL(url)}
 
-if(supabaseClient){supabaseClient.auth.onAuthStateChange(function(e,session){if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden");return} if(session){window.atsrsSupabaseSession=session; if(typeof window.atsrsHandleOAuthSession==="function") window.atsrsHandleOAuthSession(session);}});supabaseClient.auth.getSession().then(function(res){var data=res&&res.data; if(data&&data.session){window.atsrsSupabaseSession=data.session; if(typeof window.atsrsHandleOAuthSession==="function") window.atsrsHandleOAuthSession(data.session);}})}
+if(localStorage.getItem("atsrs_auth_mode")==="local"){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};openApp()}else if(supabaseClient){supabaseClient.auth.onAuthStateChange(e=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});supabaseClient.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;openApp()}})}
 function v12(k){
   return (T[lang]&&T[lang][k]) || (UI[lang]&&UI[lang][k]) || T.en[k] || UI.en[k] || k;
 }
@@ -702,7 +707,7 @@ function renderV29Snapshot(){
 const applyLanguageBaseV29=applyLanguage;applyLanguage=function(){applyLanguageBaseV29();applyV29Language();renderV29Snapshot();}
 const renderAllBaseV29=renderAll;renderAll=function(){renderAllBaseV29();renderV29Snapshot();}
 
-/* V193: V54 text registry moved before early applyLanguage() calls to prevent TDZ initialization errors. */
+/* V200: V54 text registry moved before early applyLanguage() calls to prevent TDZ initialization errors. */
 var V54_TEXT={
   en:{recommendations:'Recommendation Letters',recommendationsText:'Store recommendation letters from supervisors, clients and companies.',uploadRecommendation:'Upload',appraisalsCount:'Appraisals',referencesCount:'References',recommendationsCount:'Recommendation Letters',noRecords:'No files uploaded yet.',signedDate:'Signed Date',preview:'Preview',download:'Download',deleteFile:'Delete'}
 };
@@ -880,7 +885,7 @@ applyLanguage=function(){applyLanguageBaseV41R();applyV41RLanguage();renderAll&&
 setTimeout(()=>{ensureExpiryNAControls();applyV41RLanguage();},0);
 
 /* ===== extracted from inline script ===== */
-/* V193: V54_TEXT/v54 are declared earlier before applyLanguage() is called. */
+/* V200: V54_TEXT/v54 are declared earlier before applyLanguage() is called. */
 function careerKey(kind){return kind+'Files';}
 function getManagedFiles(kind){let a=getData(careerKey(kind));return Array.isArray(a)?a:[];}
 function setManagedFiles(kind,arr){saveData(careerKey(kind),Array.isArray(arr)?arr:[]);}
@@ -1378,6 +1383,60 @@ setTimeout(v55DockTopActions,500);
   }
   function restoreSession(){
     if(!supabaseClient || !supabaseClient.auth) return;
+    function workspaceKey(user,mode){return 'atsrs_workspace_'+user.id+'_'+mode;}
+    function hasWorkspace(user,mode){
+      try{return localStorage.getItem(workspaceKey(user,mode))==='1';}catch(e){return false;}
+    }
+    function showWorkspaceChoice(user,reason){
+      currentUser=user;
+      window.currentUser=user;
+      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+      var box=byId('googleWorkspaceBox');
+      var msg=byId('workspaceMsg');
+      var info=byId('workspaceInfo');
+      var p=byId('workspacePersonalBtn');
+      var c=byId('workspaceCorporateBtn');
+      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+      if(info){
+        if(pHas||cHas) info.textContent='Choose an existing workspace or create another one for this Google account.';
+        else info.textContent='Choose how you want to use ATSRS with this Google account.';
+      }
+      if(p) p.querySelector('b').textContent=pHas?'Continue as Personal':'Create Personal Account';
+      if(c) c.querySelector('b').textContent=cHas?'Continue as Corporate':'Create Corporate Account';
+      if(msg) msg.textContent='';
+      if(box) box.classList.remove('hidden');
+      document.body.classList.remove('atsrs-booting');
+    }
+    function continueSession(session,event){
+      if(!session || !session.user) return;
+      var user=session.user;
+      var intent='';
+      try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
+      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+      var saved='';
+      try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+      if(intent==='signup' || !saved || (pHas && cHas)){
+        showWorkspaceChoice(user,intent||event||'session');
+        return;
+      }
+      if(saved==='personal' && pHas){
+        applyAccountType('personal');
+      }else if(saved==='company' && cHas){
+        applyAccountType('company');
+      }else if(pHas && !cHas){
+        applyAccountType('personal');
+      }else if(cHas && !pHas){
+        applyAccountType('company');
+      }else{
+        showWorkspaceChoice(user,intent||event||'new');
+        return;
+      }
+      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      currentUser=user;
+      window.currentUser=user;
+      if(typeof openApp==='function') openApp();
+    }
     try{
       supabaseClient.auth.onAuthStateChange(function(event,session){
         if(event==='PASSWORD_RECOVERY'){
@@ -1386,16 +1445,12 @@ setTimeout(v55DockTopActions,500);
           return;
         }
         if(session && session.user && (event==='SIGNED_IN' || event==='TOKEN_REFRESHED' || event==='INITIAL_SESSION')){
-          window.atsrsSupabaseSession=session;
-          if(typeof window.atsrsHandleOAuthSession==='function') window.atsrsHandleOAuthSession(session);
+          continueSession(session,event);
         }
       });
       supabaseClient.auth.getSession().then(function(r){
         var session=r && r.data && r.data.session;
-        if(session && session.user){
-          window.atsrsSupabaseSession=session;
-          if(typeof window.atsrsHandleOAuthSession==='function') window.atsrsHandleOAuthSession(session);
-        }
+        if(session && session.user) continueSession(session,'getSession');
       });
     }catch(e){console.warn('ATSRS auth restore failed',e);}
   }
@@ -1523,4 +1578,87 @@ setTimeout(v55DockTopActions,500);
   window.addEventListener('load',bind);
   [150,500,1000,2000].forEach(function(ms){setTimeout(bind,ms);});
   window.atsrsAuthDebugRegister=debugRegister;
+})();
+
+
+/* ===== ATSRS V200 Classic Google OAuth Workspace Flow ===== */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function setMsg(id,msg){var el=byId(id); if(el) el.textContent=msg||'';}
+  function redirectUrl(){
+    try{return (window.location.origin || 'https://atsrs.com') + (window.location.pathname || '/');}
+    catch(e){return 'https://atsrs.com/';}
+  }
+  function hideAuthBoxesSafe(){
+    if(typeof hideAuthBoxes==='function'){hideAuthBoxes();return;}
+    ['loginBox','registerBox','forgotBox','newPasswordBox','googleWorkspaceBox'].forEach(function(id){
+      var el=byId(id); if(el) el.classList.add('hidden');
+    });
+  }
+  function workspaceKey(user,mode){return 'atsrs_workspace_'+user.id+'_'+mode;}
+  function applyMode(mode){
+    if(typeof setUseMode==='function') setUseMode(mode);
+    else {
+      try{localStorage.setItem('atsrs_use_mode',mode);}catch(e){}
+      try{useMode=mode;}catch(e){}
+    }
+    try{
+      var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+      if(p) p.classList.toggle('active',mode==='personal');
+      if(c) c.classList.toggle('active',mode==='company');
+      document.body.classList.toggle('personal-mode',mode==='personal');
+      document.body.classList.toggle('company-mode',mode==='company');
+    }catch(e){}
+  }
+  async function startGoogle(intent){
+    if(event && event.preventDefault) event.preventDefault();
+    setMsg('loginMsg','');
+    if(!window.supabaseClient || !window.supabaseClient.auth){
+      setMsg('loginMsg','Google sign-in is not ready. Supabase client did not load.');
+      return;
+    }
+    try{localStorage.setItem('atsrs_google_intent',intent||'signin');}catch(e){}
+    try{
+      var res=await window.supabaseClient.auth.signInWithOAuth({
+        provider:'google',
+        options:{redirectTo:redirectUrl()}
+      });
+      if(res && res.error){setMsg('loginMsg',res.error.message||'Google sign-in failed.');}
+    }catch(e){
+      setMsg('loginMsg',(e && e.message) ? e.message : 'Google sign-in failed.');
+    }
+  }
+  window.atsrsGoogleSignIn=function(e){
+    if(e && e.preventDefault)e.preventDefault();
+    return startGoogle('signin');
+  };
+  window.atsrsGoogleSignUp=function(e){
+    if(e && e.preventDefault)e.preventDefault();
+    return startGoogle('signup');
+  };
+  window.atsrsBackToLogin=function(){
+    hideAuthBoxesSafe();
+    var box=byId('loginBox'); if(box) box.classList.remove('hidden');
+  };
+  window.atsrsChooseWorkspace=async function(mode){
+    if(mode!=='personal' && mode!=='company') return;
+    var user=null;
+    try{
+      var r=await window.supabaseClient.auth.getSession();
+      user=r && r.data && r.data.session && r.data.session.user;
+    }catch(e){}
+    if(!user && typeof currentUser!=='undefined') user=currentUser;
+    if(!user){setMsg('workspaceMsg','Google session not found. Please sign in again.');return;}
+    try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
+    try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+    applyMode(mode);
+    try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+    try{currentUser=user;}catch(e){}
+    window.currentUser=user;
+    try{
+      await window.supabaseClient.auth.updateUser({data:{atsrs_last_workspace:mode}});
+    }catch(e){}
+    if(typeof openApp==='function') openApp();
+  };
 })();
