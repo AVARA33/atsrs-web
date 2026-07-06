@@ -939,3 +939,28 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   68%{left:118%;opacity:.85;}
   100%{left:118%;opacity:0;}
 }
+
+/* V194 Google-only login cleanup */
+#auth #loginEmail,#auth #loginPassword,#auth #rememberRow,#auth #modeChoiceBox,#auth #modeRule,#auth #modeInstruction,#auth #loginBtn,#auth #createBtn,#auth #forgotBtn,#auth #registerBox,#auth #forgotBox{
+  display:none!important;
+}
+#auth .atsrs-google-only-note{margin:8px 0 16px!important;line-height:1.45!important;color:#aebdce!important;}
+#auth .atsrs-google-main-btn{
+  width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;
+  min-height:46px!important;border-radius:12px!important;border:1px solid rgba(148,163,184,.35)!important;
+  background:#f8fafc!important;color:#0f172a!important;font-weight:900!important;box-shadow:0 14px 28px rgba(0,0,0,.26)!important;
+  cursor:pointer!important;
+}
+#auth .atsrs-google-main-btn:hover{filter:brightness(1.03)!important;transform:translateY(-1px)!important;}
+#auth .atsrs-google-main-btn .google-word{font-weight:900!important;letter-spacing:.01em!important;}
+#auth .atsrs-workspace-box{display:flex;flex-direction:column;gap:12px;}
+#auth .atsrs-workspace-box.hidden{display:none!important;}
+#auth .atsrs-workspace-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px;}
+#auth .atsrs-workspace-actions button{
+  width:100%!important;text-align:left!important;margin:0!important;padding:14px!important;border-radius:14px!important;
+  border:1px solid rgba(34,197,94,.36)!important;background:rgba(15,23,42,.82)!important;color:#e5e7eb!important;
+  box-shadow:none!important;cursor:pointer!important;
+}
+#auth .atsrs-workspace-actions button:hover{border-color:#22c55e!important;background:rgba(20,34,54,.95)!important;}
+#auth .atsrs-workspace-actions b{display:block;font-size:14px;margin-bottom:5px;color:#f8fafc;}
+#auth .atsrs-workspace-actions span{display:block;font-size:12px;line-height:1.35;color:#aebdce;}
