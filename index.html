@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#07111d" />
 <meta name="color-scheme" content="dark" />
 <title>ATSRS</title>
-<!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
+<!-- ATSRS V199 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<link rel="stylesheet" href="css/base.css?v=194">
-<link rel="stylesheet" href="css/login.css?v=194">
-<link rel="stylesheet" href="css/dashboard.css?v=194">
-<link rel="stylesheet" href="css/documents.css?v=194">
-<link rel="stylesheet" href="css/references.css?v=194">
-<link rel="stylesheet" href="css/account.css?v=194">
+<link rel="stylesheet" href="css/base.css?v=199">
+<link rel="stylesheet" href="css/login.css?v=199">
+<link rel="stylesheet" href="css/dashboard.css?v=199">
+<link rel="stylesheet" href="css/documents.css?v=199">
+<link rel="stylesheet" href="css/references.css?v=199">
+<link rel="stylesheet" href="css/account.css?v=199">
 
 
 
@@ -83,31 +83,22 @@
 <h1 class="logo">ATSRS</h1>
 <p id="authSubtitle" class="sub"></p>
 
-<div id="loginBox">
+<div id="loginBox" class="classic-google-auth">
 <h2 id="loginTitle">Sign in</h2>
-<p class="sub atsrs-google-only-note">Use Google to continue. Choose Personal or Corporate workspace after sign-in.</p>
-<button id="googleLoginBtn" type="button" class="atsrs-google-main-btn" onclick="atsrsGoogleLogin(event)"><span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span><span>Continue with Google</span></button>
-
+<p class="sub auth-flow-note">Use Google to access ATSRS. You can create Personal and Corporate workspaces under the same Google account.</p>
+<label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox" checked><span>Remember me</span></label>
+<button id="googleSigninBtn" type="button" class="google-auth-btn google-auth-primary">Sign in with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+<button id="googleSignupBtn" type="button" class="google-auth-btn google-auth-secondary">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
 <p id="loginMsg" class="sub"></p>
 </div>
 
-<div id="googleWorkspaceBox" class="hidden atsrs-workspace-box">
-<h2>Select workspace</h2>
-<p class="sub">Signed in with Google. Choose how you want to use ATSRS.</p>
-<div class="atsrs-workspace-actions">
-<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Personal</b><span>My documents, certificates and profile.</span></button>
-<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Corporate</b><span>Company personnel, compliance and shared records.</span></button>
-</div>
-<p id="workspaceMsg" class="sub"></p>
-</div>
-
-<div id="registerBox" class="hidden">
-<h2 id="registerTitle"></h2>
+<div id="registerBox" class="hidden" aria-hidden="true">
+<h2 id="registerTitle">Create Account</h2>
 <input id="regEmail" type="email"><p id="regEmailRule" class="error hidden"></p>
 <input id="regPassword" type="password"><p id="passRule" class="error hidden"></p>
 <input id="regPassword2" type="password"><p id="matchRule" class="error hidden"></p>
-<button id="registerBtn" onclick="register()"></button>
-<button id="backLoginBtn1" class="secondary" onclick="showLogin()"></button>
+<button id="registerBtn" type="button"></button>
+<button id="backLoginBtn1" class="secondary" type="button"></button>
 <p id="regMsg" class="sub"></p>
 </div>
 
@@ -128,8 +119,8 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V198</div>
-<div>Last Update: 06 Jul 2026</div>
+<div>ATSRS V193</div>
+<div>Last Update: 04 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -542,15 +533,15 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=198"></script>
-<script src="js/ui.js?v=194"></script>
-<script src="js/auth.js?v=194"></script>
-<script src="js/login.js?v=194"></script>
-<script src="js/dashboard.js?v=194"></script>
-<script src="js/documents.js?v=194"></script>
-<script src="js/references.js?v=194"></script>
-<script src="js/account.js?v=194"></script>
-<script src="js/app.js?v=194"></script>
+<script src="js/storage.js?v=199"></script>
+<script src="js/ui.js?v=199"></script>
+<script src="js/auth.js?v=199"></script>
+<script src="js/login.js?v=199"></script>
+<script src="js/dashboard.js?v=199"></script>
+<script src="js/documents.js?v=199"></script>
+<script src="js/references.js?v=199"></script>
+<script src="js/account.js?v=199"></script>
+<script src="js/app.js?v=199"></script>
 
 
 
