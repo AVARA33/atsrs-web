@@ -9,12 +9,12 @@
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<link rel="stylesheet" href="css/base.css?v=193">
-<link rel="stylesheet" href="css/login.css?v=193">
-<link rel="stylesheet" href="css/dashboard.css?v=193">
-<link rel="stylesheet" href="css/documents.css?v=193">
-<link rel="stylesheet" href="css/references.css?v=193">
-<link rel="stylesheet" href="css/account.css?v=193">
+<link rel="stylesheet" href="css/base.css?v=196">
+<link rel="stylesheet" href="css/login.css?v=196">
+<link rel="stylesheet" href="css/dashboard.css?v=196">
+<link rel="stylesheet" href="css/documents.css?v=196">
+<link rel="stylesheet" href="css/references.css?v=196">
+<link rel="stylesheet" href="css/account.css?v=196">
 
 
 
@@ -84,24 +84,21 @@
 <p id="authSubtitle" class="sub"></p>
 
 <div id="loginBox">
-<h2 id="loginTitle"></h2>
-<input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
-<input id="loginPassword" type="password">
-<label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me</span></label>
-<div id="modeChoiceBox" class="mode-choice">
-<button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal</button>
-<button type="button" id="companyModeBtn" onclick="setUseMode('company')">Corporate</button>
-</div>
-<p id="modeRule" class="mode-error-text"></p>
-<p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Select Personal or Corporate account to login.</span></p>
-<button id="loginBtn" onclick="login()"></button>
-<button id="createBtn" class="secondary" onclick="showRegister()"></button>
-<div id="signupSocialArea" class="signup-social-area" aria-label="Google sign in option">
-  <div class="auth-divider"><span>or</span></div>
-  <button id="continueGoogleTextBtn" type="button" class="google-text-link" onclick="atsrsV157GoogleNotice(event)">continue with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
-</div>
-<button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
+<h2 id="loginTitle">Sign in</h2>
+<p class="sub atsrs-google-only-note">Use Google to continue. Choose Personal or Corporate workspace after sign-in.</p>
+<button id="googleLoginBtn" type="button" class="atsrs-google-main-btn" onclick="atsrsGoogleLogin(event)"><span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span><span>Continue with Google</span></button>
+<div id="atsrsDevAccess" class="atsrs-dev-access"><button type="button" onclick="atsrsDevLogin('personal')">Dev Personal</button><button type="button" onclick="atsrsDevLogin('company')">Dev Corporate</button></div><p class="sub atsrs-dev-note">Temporary development access while Google login is tested.</p>
 <p id="loginMsg" class="sub"></p>
+</div>
+
+<div id="googleWorkspaceBox" class="hidden atsrs-workspace-box">
+<h2>Select workspace</h2>
+<p class="sub">Signed in with Google. Choose how you want to use ATSRS.</p>
+<div class="atsrs-workspace-actions">
+<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Personal</b><span>My documents, certificates and profile.</span></button>
+<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Corporate</b><span>Company personnel, compliance and shared records.</span></button>
+</div>
+<p id="workspaceMsg" class="sub"></p>
 </div>
 
 <div id="registerBox" class="hidden">
@@ -131,8 +128,8 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V193</div>
-<div>Last Update: 04 Jul 2026</div>
+<div>ATSRS V196</div>
+<div>Last Update: 06 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -545,15 +542,15 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=193"></script>
-<script src="js/ui.js?v=193"></script>
-<script src="js/auth.js?v=193"></script>
-<script src="js/login.js?v=193"></script>
-<script src="js/dashboard.js?v=193"></script>
-<script src="js/documents.js?v=193"></script>
-<script src="js/references.js?v=193"></script>
-<script src="js/account.js?v=193"></script>
-<script src="js/app.js?v=193"></script>
+<script src="js/storage.js?v=196"></script>
+<script src="js/ui.js?v=196"></script>
+<script src="js/auth.js?v=196"></script>
+<script src="js/login.js?v=196"></script>
+<script src="js/dashboard.js?v=196"></script>
+<script src="js/documents.js?v=196"></script>
+<script src="js/references.js?v=196"></script>
+<script src="js/account.js?v=196"></script>
+<script src="js/app.js?v=196"></script>
 
 
 
