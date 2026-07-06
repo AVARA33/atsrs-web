@@ -432,8 +432,8 @@ function atsrsShowWorkspacePicker(user){
   document.body.classList.remove("atsrs-booting");
 }
 function atsrsOpenSessionUser(user){
-  /* V196: Google OAuth is live. Always show workspace picker for Supabase users so the same Google account can open/create both Personal and Corporate workspaces without mixing data. */
-  try{localStorage.setItem("atsrs_auth_mode","supabase");}catch(e){}
+  let saved=""; try{saved=localStorage.getItem("atsrs_use_mode")||"";}catch(e){}
+  if(saved==="personal"||saved==="company"){currentUser=user;window.currentUser=user;openApp();return;}
   atsrsShowWorkspacePicker(user);
 }
 window.atsrsChooseWorkspace=function(mode){
@@ -459,7 +459,7 @@ window.atsrsGoogleLogin=async function(e){
   }catch(err){if(msg)msg.textContent=(err&&err.message)||"Google sign-in failed.";}
   return false;
 };
-if(localStorage.getItem("atsrs_auth_mode")==="local"){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};openApp()}else if(supabaseClient){supabaseClient.auth.onAuthStateChange((e,session)=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}else if((e==="SIGNED_IN"||e==="TOKEN_REFRESHED")&&session&&session.user){atsrsOpenSessionUser(session.user)}});supabaseClient.auth.getSession().then(({data})=>{if(data.session){atsrsOpenSessionUser(data.session.user)}})}
+if(localStorage.getItem("atsrs_auth_mode")==="local"){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};openApp()}else if(supabaseClient){supabaseClient.auth.onAuthStateChange(e=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}});supabaseClient.auth.getSession().then(({data})=>{if(data.session){atsrsOpenSessionUser(data.session.user)}})}
 function v12(k){
   return (T[lang]&&T[lang][k]) || (UI[lang]&&UI[lang][k]) || T.en[k] || UI.en[k] || k;
 }
@@ -1587,33 +1587,4 @@ setTimeout(v55DockTopActions,500);
 })();
 
 
-/* V195 temporary dev access while Google backend is connected */
-(function(){
-  'use strict';
-  window.atsrsDevLogin=function(mode){
-    if(mode!=="personal"&&mode!=="company")mode="personal";
-    try{
-      window.useMode=mode;
-      localStorage.setItem("atsrs_use_mode",mode);
-      localStorage.setItem("atsrs_auth_mode","local");
-      localStorage.setItem("atsrs_current_page",mode==="company"?"dashboard":"intro");
-    }catch(e){}
-    try{if(typeof window.setUseMode==="function")window.setUseMode(mode);}catch(e){}
-    window.currentUser={id:"local_test_"+mode,email:mode==="company"?"corporate-test@atsrs.com":"personal-test@atsrs.com"};
-    try{currentUser=window.currentUser;}catch(e){}
-    if(typeof window.openApp==="function")window.openApp();
-    return false;
-  };
-})();
-
-
-/* V196 Google OAuth backend connect */
-(function(){
-  'use strict';
-  function bindGoogle(){
-    var btn=document.getElementById('googleLoginBtn');
-    if(btn && window.atsrsGoogleLogin) btn.onclick=window.atsrsGoogleLogin;
-  }
-  document.addEventListener('DOMContentLoaded',bindGoogle);
-  window.addEventListener('load',function(){setTimeout(bindGoogle,0);setTimeout(bindGoogle,500);});
-})();
+/* V198: temporary dev access removed. Google OAuth is the only frontend sign-in path. */
