@@ -1611,8 +1611,8 @@ setTimeout(v55DockTopActions,500);
       document.body.classList.toggle('company-mode',mode==='company');
     }catch(e){}
   }
-  async function startGoogle(intent){
-    if(event && event.preventDefault) event.preventDefault();
+  async function startGoogle(ev,intent){
+    if(ev && ev.preventDefault) ev.preventDefault();
     setMsg('loginMsg','');
     if(!window.supabaseClient || !window.supabaseClient.auth){
       setMsg('loginMsg','Google sign-in is not ready. Supabase client did not load.');
@@ -1631,11 +1631,11 @@ setTimeout(v55DockTopActions,500);
   }
   window.atsrsGoogleSignIn=function(e){
     if(e && e.preventDefault)e.preventDefault();
-    return startGoogle('signin');
+    return startGoogle(e,'signin');
   };
   window.atsrsGoogleSignUp=function(e){
     if(e && e.preventDefault)e.preventDefault();
-    return startGoogle('signup');
+    return startGoogle(e,'signup');
   };
   window.atsrsBackToLogin=function(){
     hideAuthBoxesSafe();
