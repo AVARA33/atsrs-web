@@ -1,6 +1,6 @@
 /* ATSRS V178 extracted JavaScript batch: storage.js. Loaded in original V178 execution order. No placeholder code. */
 /* ===== extracted from inline script ===== */
-const SUPABASE_URL="https://hwtjuqyxziyvmofamwxl.supabase.co";
+const SUPABASE_URL="https://hwtjuqyxzivymofamwxl.supabase.co";
 const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
 const APP_URL="https://atsrs.com/";
 let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);window.supabaseClient=supabaseClient}catch(e){console.error(e)}
