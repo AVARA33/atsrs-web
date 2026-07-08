@@ -3,7 +3,7 @@
 const SUPABASE_URL="https://hwtjuqyxzivymofamwxl.supabase.co";
 const SUPABASE_KEY="sb_publishable_57xvbnJGp7pTXvfG11EdvA_Du_LvVyD";
 const APP_URL="https://atsrs.com/";
-let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);window.supabaseClient=supabaseClient}catch(e){console.error(e)}
+let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{flowType:'pkce'}});window.supabaseClient=supabaseClient}catch(e){console.error(e)}
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
