@@ -1398,12 +1398,9 @@ setTimeout(v55DockTopActions,500);
       var p=byId('workspacePersonalBtn');
       var c=byId('workspaceCorporateBtn');
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
-      if(info){
-        if(pHas||cHas) info.textContent='Choose an existing workspace or create another one for this Google account.';
-        else info.textContent='Choose how you want to use ATSRS with this Google account.';
-      }
-      if(p) p.querySelector('b').textContent=pHas?'Continue as Personal':'Create Personal Account';
-      if(c) c.querySelector('b').textContent=cHas?'Continue as Corporate':'Create Corporate Account';
+      if(info){info.textContent=''; info.classList.add('hidden');}
+      if(p){var pb=p.querySelector('b'); if(pb) pb.textContent=pHas?'Continue as Personal':'Create Personal Account'; var ps=p.querySelector('span'); if(ps) ps.remove();}
+      if(c){var cb=c.querySelector('b'); if(cb) cb.textContent=cHas?'Continue as Corporate':'Create Corporate Account'; var cs=c.querySelector('span'); if(cs) cs.remove();}
       if(msg) msg.textContent='';
       if(box) box.classList.remove('hidden');
       document.body.classList.remove('atsrs-booting');
