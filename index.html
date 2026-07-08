@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=209">
+<link rel="stylesheet" href="css/login.css?v=210">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -48,32 +48,6 @@
 })();
 </script>
 <section id="auth" class="auth">
-
-<div class="auth-bg-docs" aria-hidden="true">
-  <div class="auth-doc-stack left">
-    <div class="floating-doc"><b id="bgDocPassportTitle">Passport & Seaman Book</b><span id="bgDocPassportText">Store identity and travel documents securely.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
-    <div class="floating-doc"><b id="bgDocMedicalTitle">Medical & Certificates</b><span id="bgDocMedicalText">Track expiry dates before they become a compliance problem.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
-    <div class="floating-doc"><b id="bgDocTrainingTitle">Training & Competency</b><span id="bgDocTrainingText">Keep licences, training records, certificates and other proof in one place.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
-    <div class="floating-doc"><b id="bgDocShareTitle">Share ATSRS Profile</b><span id="bgDocShareText">Send one controlled profile link instead of many attachments.</span><div class="doc-line"></div><div class="doc-line short"></div></div>
-    <div class="floating-doc"><b id="bgDocCompanyTitle">Company Import</b><span id="bgDocCompanyText">Approved documents can move into company compliance records.</span><div class="doc-line mid"></div><div class="doc-line short"></div></div>
-  </div>
-</div>
-
-<div class="auth-intro">
-  <div id="introKicker" class="auth-kicker"><span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span></div>
-  <h2 id="introTitle">Documents, expiry alerts and profile sharing.</h2>
-  <p id="introText">Keep information organized and stay compliant.</p>
-  <p id="introIndustryText" class="sub">Built for professionals across marine, healthcare, engineering, construction, energy, aviation, corporate and technical industries.</p>
-  <div class="feature-grid">
-    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="M3 10h18"/></svg></span><b id="featureDocsTitle">Document Vault</b><span id="featureDocsText">Keep passports, licences, certifications, medical records and career documents in one secure place.</span></div>
-    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5"/></svg></span><b id="featureUploadTitle">Easy Upload</b><span id="featureUploadText">Upload PDF, JPG or PNG files directly into your secure ATSRS register.</span></div>
-    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M7 12h10"/><path d="M9 9h6"/><path d="M9 15h4"/></svg></span><b id="featureScanTitle">Scan & Auto-fill</b><span id="featureScanText">Scan documents and let ATSRS prepare information for manual review.</span></div>
-    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 14v3l2 1"/></svg></span><b id="featureAlertsTitle">Expiry Tracking</b><span id="featureAlertsText">Stay ahead with reminders for licences, certificates, permits and compliance documents.</span></div>
-    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19.07"/></svg></span><b id="featureShareTitle">Share Profile</b><span id="featureShareText">Share one secure ATSRS profile link instead of sending multiple attachments.</span></div>
-    <div class="feature-tile"><span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h7v18"/><path d="M14 8h3a2 2 0 0 1 2 2v11"/><path d="M8 7h2"/><path d="M8 11h2"/><path d="M8 15h2"/></svg></span><b id="featureCompanyTitle">Company Import</b><span id="featureCompanyText">Allow organisations to request access and import approved documents into their compliance records.</span></div>
-  </div>
-</div>
-</div>
 
 <div class="auth-card">
 <h1 class="logo">ATSRS</h1>
@@ -128,7 +102,7 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V207</div>
+<div>ATSRS V210</div>
 <div>Last Update: 08 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -542,14 +516,14 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=207"></script>
+<script src="js/storage.js?v=210"></script>
 <script src="js/ui.js?v=200"></script>
 <script src="js/auth.js?v=200"></script>
-<script src="js/login.js?v=207"></script>
-<script src="js/dashboard.js?v=207"></script>
+<script src="js/login.js?v=210"></script>
+<script src="js/dashboard.js?v=210"></script>
 <script src="js/documents.js?v=200"></script>
 <script src="js/references.js?v=200"></script>
-<script src="js/account.js?v=209"></script>
+<script src="js/account.js?v=210"></script>
 <script src="js/app.js?v=200"></script>
 
 <!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
