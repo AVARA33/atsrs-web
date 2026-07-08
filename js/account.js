@@ -307,14 +307,15 @@
   function cleanSocial(){
     var area=byId('signupSocialArea');
     if(!area)return;
-    area.innerHTML='<div class="auth-divider"><span>or</span></div><button id="continueGoogleTextBtn" type="button" class="google-text-link">sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>';
-    var btn=byId('continueGoogleTextBtn');
-    if(btn){btn.onclick=function(e){if(e)e.preventDefault();return window.atsrsV157GoogleNotice(e);};}
+    area.innerHTML='<div class="auth-divider"><span>or</span></div><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice">sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>';
+    var btn=byId('googleSignupBtn');
+    if(btn){btn.onclick=function(e){if(e)e.preventDefault();if(typeof window.atsrsGoogleSignUp==='function')return window.atsrsGoogleSignUp(e);var msg=byId('loginMsg')||byId('regMsg');if(msg)msg.textContent='Google sign-up is loading. Please refresh and try again.';return false;};}
   }
   window.atsrsV157GoogleNotice=function(e){
     if(e){e.preventDefault();e.stopPropagation();}
+    if(typeof window.atsrsGoogleSignUp==='function') return window.atsrsGoogleSignUp(e);
     var msg=byId('loginMsg')||byId('regMsg');
-    if(msg)msg.textContent='Google sign-in will be connected after backend OAuth configuration.';
+    if(msg)msg.textContent='Google sign-up is loading. Please refresh and try again.';
     return false;
   };
   function run(){lockBuild();cleanSocial();}
