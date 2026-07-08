@@ -1757,12 +1757,13 @@ setTimeout(v55DockTopActions,500);
     if(!window.supabaseClient || !window.supabaseClient.auth) return;
     var hasCode=false;
     try{hasCode=new URLSearchParams(window.location.search).has('code');}catch(e){}
-    try{
-      if(hasCode && typeof window.supabaseClient.auth.exchangeCodeForSession==='function'){
-        var ex=await window.supabaseClient.auth.exchangeCodeForSession(window.location.href);
-        if(ex && ex.error){setMsg(ex.error.message||'Google sign-in failed.'); return;}
-      }
-    }catch(e){setMsg((e&&e.message)||'Google sign-in failed.'); return;}
+    if(hasCode && typeof window.supabaseClient.auth.exchangeCodeForSession==='function'){
+      /* ATSRS V224: with flowType:'pkce', the Supabase client already auto-exchanges this
+         code via detectSessionInUrl. This manual call is a best-effort fallback only; if the
+         verifier was already consumed by the automatic exchange, ignore the error instead of
+         aborting, and let the getSession() retry loop below pick up the resulting session. */
+      try{ await window.supabaseClient.auth.exchangeCodeForSession(window.location.href); }catch(e){}
+    }
     var tries=[0,200,600,1200,2200];
     tries.forEach(function(ms){setTimeout(async function(){
       try{var r=await window.supabaseClient.auth.getSession(); var session=r && r.data && r.data.session; if(session && session.user){cleanOAuthUrl(); await routeSession(session,'oauth');}}
