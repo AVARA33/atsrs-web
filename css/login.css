@@ -1954,3 +1954,19 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #auth .google-text-link:active::after,#auth .google-text-link.is-pressed::after{transform:scaleX(1)!important;}
 #auth .google-text-link:active{opacity:.72!important;}
 #auth .google-word,#auth .google-word *,#auth .google-brand,#auth .google-brand *{border-bottom:0!important;text-decoration:none!important;}
+
+
+/* ATSRS V222 - final no-permanent-underline and clickable auth links */
+#auth #signupSocialArea{pointer-events:auto!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+#auth .auth-google-links{pointer-events:auto!important;display:flex!important;align-items:baseline!important;justify-content:center!important;gap:11px!important;}
+#auth .google-text-link,#auth .google-text-link[type="button"]{
+  all:unset!important;position:relative!important;display:inline-flex!important;align-items:baseline!important;
+  color:#f2f7ff!important;font:inherit!important;cursor:pointer!important;pointer-events:auto!important;
+  text-decoration:none!important;border:0!important;border-bottom:0!important;background:transparent!important;box-shadow:none!important;
+  padding:0 0 5px!important;touch-action:manipulation!important;
+}
+#auth .google-text-link::after{content:""!important;position:absolute!important;left:0!important;right:0!important;bottom:0!important;height:2px!important;background:currentColor!important;transform:scaleX(0)!important;transform-origin:left center!important;transition:transform .16s ease!important;border:0!important;}
+#auth .google-text-link:hover,#auth .google-text-link:focus-visible{color:#fff!important;text-decoration:none!important;border-bottom:0!important;}
+#auth .google-text-link:hover::after,#auth .google-text-link:focus-visible::after{transform:scaleX(0)!important;}
+#auth .google-text-link:active::after,#auth .google-text-link.is-pressed::after{transform:scaleX(1)!important;}
+#auth .google-word,#auth .google-word *,#auth .google-brand,#auth .google-brand *{text-decoration:none!important;border-bottom:0!important;}
