@@ -941,7 +941,327 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 
 
-/* ATSRS V218 - cleaned minimal centered login, glossy round Google auth buttons only */
+/* ATSRS V200: classic login Google workspace flow. Keeps classic login layout; only adds functional Google/workspace controls. */
+.google-auth-choice{
+  display:block;
+  width:100%;
+  text-align:center;
+  margin:6px 0 0 0;
+}
+.atsrs-workspace-box{
+  margin-top:14px;
+}
+.atsrs-workspace-actions{
+  display:grid;
+  gap:10px;
+  margin:14px 0;
+}
+.atsrs-workspace-actions button{
+  width:100%;
+  text-align:left;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  padding:12px 14px;
+  cursor:pointer;
+}
+.atsrs-workspace-actions button:hover{
+  border-color:rgba(45,212,191,.45);
+  background:rgba(45,212,191,.08);
+}
+.atsrs-workspace-actions b{
+  display:block;
+  font-size:14px;
+}
+.atsrs-workspace-actions span{
+  display:block;
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+
+/* ATSRS V205 - classic login cleanup: Google-only registration, no dev/test buttons, simple workspace picker */
+#atsrsV113TestLoginGroup,
+#atsrsV115TestLoginGroup,
+#atsrsV117TestLoginGroup,
+#localTestBtn{
+  display:none!important;
+}
+#googleSignupBtn.google-text-link,
+#googleSignupBtn.google-auth-choice{
+  cursor:pointer;
+}
+.atsrs-workspace-box .sub.hidden,
+.atsrs-workspace-actions button span{
+  display:none!important;
+}
+.atsrs-workspace-actions{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:12px!important;
+}
+.atsrs-workspace-actions button{
+  width:100%!important;
+  min-height:52px!important;
+  padding:14px 16px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(148,163,184,.28)!important;
+  background:#23364d!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  text-align:center!important;
+}
+.atsrs-workspace-actions button b{
+  display:block!important;
+  font-size:15px!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+}
+.atsrs-workspace-actions button:hover{
+  border-color:rgba(56,189,248,.45)!important;
+  background:#2a405b!important;
+}
+
+
+/* ATSRS V206 - workspace picker neutral buttons; no gradient/blue blocks */
+.atsrs-workspace-actions button{
+  background:rgba(255,255,255,.04)!important;
+  border:1px solid rgba(148,163,184,.28)!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  text-align:center!important;
+}
+.atsrs-workspace-actions button:hover{
+  background:rgba(255,255,255,.07)!important;
+  border-color:rgba(148,163,184,.45)!important;
+}
+.atsrs-workspace-actions button:focus{
+  outline:none!important;
+  border-color:rgba(148,163,184,.58)!important;
+}
+
+/* ATSRS V207 - Google-only auth, separate Sign in / Sign up links, neutral workspace buttons */
+#loginBox.google-only-login input,
+#loginBox.google-only-login .remember-row,
+#loginBox.google-only-login #modeChoiceBox,
+#loginBox.google-only-login #modeRule,
+#loginBox.google-only-login #modeInstruction,
+#loginBox.google-only-login #loginBtn,
+#loginBox.google-only-login #forgotBtn,
+#registerBox,
+#forgotBox,
+#newPasswordBox{
+  display:none!important;
+}
+.google-only-login #signupSocialArea{
+  margin-top:16px!important;
+}
+.auth-google-split{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  flex-wrap:wrap!important;
+  margin:8px 0 2px!important;
+}
+.auth-google-split .google-text-link{
+  display:inline-flex!important;
+  width:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#f8fafc!important;
+  font-size:16px!important;
+  font-weight:800!important;
+  line-height:1.25!important;
+  text-decoration:underline!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.auth-google-split .google-text-link:hover{
+  color:#e2e8f0!important;
+  background:transparent!important;
+}
+.auth-google-separator{
+  color:#94a3b8!important;
+  font-weight:800!important;
+  font-size:16px!important;
+}
+.auth-card .atsrs-workspace-actions button,
+.auth-card .atsrs-workspace-actions button[type="button"]{
+  background:rgba(255,255,255,.04)!important;
+  background-image:none!important;
+  border:1px solid rgba(148,163,184,.30)!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  text-align:center!important;
+}
+.auth-card .atsrs-workspace-actions button:hover,
+.auth-card .atsrs-workspace-actions button[type="button"]:hover{
+  background:rgba(255,255,255,.07)!important;
+  background-image:none!important;
+  border-color:rgba(148,163,184,.48)!important;
+}
+.auth-card .atsrs-workspace-actions button::before,
+.auth-card .atsrs-workspace-actions button::after{
+  display:none!important;
+}
+
+
+/* ATSRS V209 - minimal Google-only login, no card box, split underline links */
+#auth.auth{
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  padding:28px 18px!important;
+}
+#auth .auth-bg-docs,
+#auth .auth-doc-stack,
+#auth .auth-intro{
+  display:none!important;
+}
+#auth .auth-card{
+  width:min(680px,100%)!important;
+  max-width:680px!important;
+  padding:0!important;
+  margin:0 auto!important;
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+#auth .auth-card .logo{
+  font-size:56px!important;
+  line-height:1!important;
+  margin:0 0 18px!important;
+}
+#auth .auth-card #authSubtitle{
+  font-size:23px!important;
+  margin:0 0 42px!important;
+}
+#auth .auth-card #loginTitle{
+  font-size:34px!important;
+  margin:0 0 54px!important;
+}
+#auth .auth-divider{
+  display:flex!important;
+  align-items:center!important;
+  gap:28px!important;
+  margin:0 0 26px!important;
+}
+#auth .auth-divider::before,
+#auth .auth-divider::after{
+  content:""!important;
+  height:1px!important;
+  flex:1!important;
+  background:rgba(148,163,184,.34)!important;
+}
+#auth .auth-divider span{
+  color:#94a3b8!important;
+  font-weight:800!important;
+  font-size:18px!important;
+}
+#auth .auth-google-split{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+  gap:0!important;
+  margin:0!important;
+  text-align:center!important;
+  font-size:20px!important;
+  font-weight:800!important;
+  line-height:1.35!important;
+}
+#auth .auth-google-split .google-text-link{
+  display:inline!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  color:#e5edf8!important;
+  font:inherit!important;
+  text-decoration-line:underline!important;
+  text-decoration-thickness:1.5px!important;
+  text-underline-offset:3px!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+  outline:none!important;
+  vertical-align:baseline!important;
+}
+#auth .auth-google-split .google-text-link:hover,
+#auth .auth-google-split .google-text-link:focus{
+  color:#ffffff!important;
+  background:transparent!important;
+  text-decoration-thickness:2px!important;
+}
+#auth .auth-google-split .google-text-link:active{
+  transform:none!important;
+  opacity:.72!important;
+}
+#auth .auth-google-separator{
+  color:#e5edf8!important;
+  font:inherit!important;
+  font-weight:800!important;
+  margin:0 1px!important;
+}
+#auth #loginMsg{
+  text-align:center!important;
+  margin-top:22px!important;
+}
+#auth #googleWorkspaceBox{
+  margin-top:44px!important;
+}
+#auth #googleWorkspaceBox h2{
+  font-size:32px!important;
+  margin:0 0 22px!important;
+}
+#auth .atsrs-workspace-actions{
+  gap:12px!important;
+}
+#auth .atsrs-workspace-actions button,
+#auth .atsrs-workspace-actions button[type="button"],
+#auth #googleWorkspaceBox .secondary{
+  width:100%!important;
+  background:rgba(255,255,255,.035)!important;
+  background-image:none!important;
+  border:1px solid rgba(148,163,184,.32)!important;
+  border-radius:12px!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  padding:14px 16px!important;
+}
+#auth .atsrs-workspace-actions button:hover,
+#auth .atsrs-workspace-actions button[type="button"]:hover,
+#auth #googleWorkspaceBox .secondary:hover{
+  background:rgba(255,255,255,.065)!important;
+  border-color:rgba(148,163,184,.50)!important;
+}
+#registerBox,
+#forgotBox,
+#newPasswordBox{
+  display:none!important;
+}
+@media(max-width:600px){
+  #auth.auth{align-items:flex-start!important;padding:56px 28px 34px!important;}
+  #auth .auth-card .logo{font-size:52px!important;}
+  #auth .auth-card #authSubtitle{font-size:22px!important;margin-bottom:38px!important;}
+  #auth .auth-card #loginTitle{font-size:34px!important;margin-bottom:50px!important;}
+  #auth .auth-google-split{font-size:20px!important;}
+}
+
+/* ATSRS V210 - centered minimal Google login, no intro, no card frame */
 #auth.auth{
   min-height:100vh!important;
   display:flex!important;
@@ -953,59 +1273,355 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #auth .auth-bg-docs,
 #auth .auth-doc-stack,
 #auth .auth-intro,
-#auth .feature-grid,
-#auth .auth-divider,
-#auth .divider,
-#auth .auth-or,
-#auth .version,
-#auth #buildBadge,
-.build-badge,
-#auth #loginTitle,
-#auth #registerBox,
-#auth #forgotBox,
-#auth #newPasswordBox{
+#auth .feature-grid{
   display:none!important;
-  visibility:hidden!important;
-  height:0!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
 }
 #auth .auth-card{
-  width:min(620px,94vw)!important;
-  max-width:620px!important;
+  width:min(560px,100%)!important;
+  max-width:560px!important;
   min-height:0!important;
-  margin:0 auto!important;
   padding:0!important;
+  margin:0 auto!important;
   background:transparent!important;
   background-image:none!important;
   border:0!important;
   border-radius:0!important;
   box-shadow:none!important;
-  outline:0!important;
   backdrop-filter:none!important;
-  text-align:center!important;
+  text-align:left!important;
 }
 #auth .auth-card::before,
 #auth .auth-card::after{
   display:none!important;
-  content:none!important;
 }
 #auth .auth-card .logo{
-  font-size:66px!important;
+  font-size:58px!important;
   line-height:1!important;
   margin:0 0 18px!important;
   letter-spacing:-1.5px!important;
-  color:#f8fafc!important;
 }
 #auth .auth-card #authSubtitle{
   display:block!important;
-  font-size:23px!important;
+  font-size:22px!important;
   line-height:1.35!important;
-  margin:0 0 60px!important;
+  margin:0 0 40px!important;
   color:#aebbd0!important;
 }
-#auth #loginBox,
+#auth .auth-card #loginTitle{
+  font-size:34px!important;
+  line-height:1.1!important;
+  margin:0 0 54px!important;
+}
+#auth .auth-divider{
+  display:flex!important;
+  align-items:center!important;
+  gap:24px!important;
+  margin:0 0 22px!important;
+}
+#auth .auth-divider::before,
+#auth .auth-divider::after{
+  content:""!important;
+  height:1px!important;
+  flex:1!important;
+  background:rgba(148,163,184,.34)!important;
+}
+#auth .auth-divider span{
+  color:#94a3b8!important;
+  font-weight:800!important;
+  font-size:18px!important;
+}
+#auth .auth-google-split{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+  gap:0!important;
+  margin:0!important;
+  text-align:center!important;
+  font-size:22px!important;
+  font-weight:800!important;
+  line-height:1.35!important;
+}
+#auth .auth-google-split .google-text-link{
+  display:inline!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  color:#e5edf8!important;
+  font:inherit!important;
+  text-decoration-line:underline!important;
+  text-decoration-thickness:1.5px!important;
+  text-underline-offset:4px!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+  outline:none!important;
+  vertical-align:baseline!important;
+  touch-action:manipulation!important;
+}
+#auth .auth-google-split .google-text-link:hover,
+#auth .auth-google-split .google-text-link:focus{
+  color:#ffffff!important;
+  background:transparent!important;
+  text-decoration-thickness:2px!important;
+}
+#auth .auth-google-split .google-text-link:active{
+  opacity:.68!important;
+  transform:none!important;
+}
+#auth .auth-google-separator{
+  display:inline!important;
+  color:#e5edf8!important;
+  font:inherit!important;
+  font-weight:800!important;
+  margin:0 1px!important;
+}
+#auth #loginMsg{
+  text-align:center!important;
+  margin-top:22px!important;
+  color:#94a3b8!important;
+}
+#auth #googleWorkspaceBox{
+  margin-top:46px!important;
+}
+#auth #googleWorkspaceBox h2{
+  font-size:32px!important;
+  margin:0 0 22px!important;
+}
+#auth .atsrs-workspace-actions button,
+#auth .atsrs-workspace-actions button[type="button"],
+#auth #googleWorkspaceBox .secondary{
+  width:100%!important;
+  background:rgba(255,255,255,.035)!important;
+  background-image:none!important;
+  border:1px solid rgba(148,163,184,.32)!important;
+  border-radius:12px!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  padding:14px 16px!important;
+}
+#auth .atsrs-workspace-actions button:hover,
+#auth .atsrs-workspace-actions button[type="button"]:hover,
+#auth #googleWorkspaceBox .secondary:hover{
+  background:rgba(255,255,255,.065)!important;
+  border-color:rgba(148,163,184,.50)!important;
+}
+@media(max-width:600px){
+  #auth.auth{align-items:center!important;padding:42px 28px!important;}
+  #auth .auth-card .logo{font-size:52px!important;}
+  #auth .auth-card #authSubtitle{font-size:21px!important;margin-bottom:38px!important;}
+  #auth .auth-card #loginTitle{font-size:34px!important;margin-bottom:50px!important;}
+  #auth .auth-google-split{font-size:21px!important;}
+}
+
+
+/* ATSRS V211 - final minimal centered Google-only login */
+#auth.auth{min-height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:32px 22px!important;gap:0!important;}
+#auth .auth-bg-docs,#auth .auth-doc-stack,#auth .auth-intro,#auth .feature-grid{display:none!important;}
+#auth .auth-card{width:min(560px,92vw)!important;max-width:560px!important;margin:0 auto!important;padding:0!important;min-height:0!important;background:transparent!important;background-image:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;text-align:center!important;}
+#auth .auth-card::before,#auth .auth-card::after{display:none!important;}
+#auth .auth-card .logo{font-size:64px!important;line-height:1!important;margin:0 0 18px!important;letter-spacing:-1.4px!important;}
+#auth .auth-card #authSubtitle{display:block!important;font-size:23px!important;line-height:1.35!important;margin:0 0 64px!important;color:#aebbd0!important;}
+#auth .auth-card #loginTitle,#auth .auth-divider{display:none!important;}
+#auth .auth-google-split{display:flex!important;align-items:baseline!important;justify-content:center!important;gap:5px!important;margin:0!important;text-align:center!important;font-size:24px!important;font-weight:800!important;line-height:1.35!important;}
+#auth .auth-google-split .google-text-link{display:inline-flex!important;align-items:baseline!important;width:auto!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;color:#e5edf8!important;font:inherit!important;text-decoration-line:underline!important;text-decoration-thickness:1.5px!important;text-underline-offset:5px!important;cursor:pointer!important;box-shadow:none!important;outline:none!important;vertical-align:baseline!important;touch-action:manipulation!important;}
+#auth .auth-google-split .google-text-link:hover,#auth .auth-google-split .google-text-link:focus{color:#fff!important;text-decoration-thickness:2px!important;}
+#auth .auth-google-split .google-text-link:active{opacity:.68!important;}
+#auth .auth-google-separator{display:inline-flex!important;color:#e5edf8!important;font:inherit!important;font-weight:800!important;margin:0 2px!important;}
+#auth #loginMsg{margin-top:24px!important;text-align:center!important;color:#94a3b8!important;}
+#auth .version{margin-top:72px!important;text-align:center!important;}
+#auth #googleWorkspaceBox{margin-top:48px!important;text-align:center!important;}
+#auth #googleWorkspaceBox h2{font-size:30px!important;margin:0 0 22px!important;}
+#auth .atsrs-workspace-actions button,#auth .atsrs-workspace-actions button[type=button],#auth #googleWorkspaceBox .secondary{width:100%!important;background:rgba(255,255,255,.035)!important;background-image:none!important;border:1px solid rgba(148,163,184,.32)!important;border-radius:12px!important;color:#f8fafc!important;box-shadow:none!important;padding:14px 16px!important;}
+@media(max-width:600px){#auth.auth{padding:34px 28px!important;}#auth .auth-card .logo{font-size:54px!important;}#auth .auth-card #authSubtitle{font-size:21px!important;margin-bottom:54px!important;}#auth .auth-google-split{font-size:21px!important;}}
+
+/* ATSRS V212: remove login card/divider/version; centered background-only Google auth */
+#auth.auth{min-height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:32px 22px!important;gap:0!important;}
+#auth .auth-bg-docs,#auth .auth-doc-stack,#auth .auth-intro,#auth .feature-grid{display:none!important;}
+#auth .auth-card{width:min(680px,92vw)!important;max-width:680px!important;margin:0 auto!important;padding:0!important;min-height:0!important;background:transparent!important;background-image:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:0!important;backdrop-filter:none!important;text-align:center!important;}
+#auth .auth-card::before,#auth .auth-card::after{display:none!important;content:none!important;}
+#auth .auth-card #loginTitle,#auth .auth-divider,#auth .divider,#auth .auth-or,#auth .version{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;}
+#auth #signupSocialArea{display:block!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+#auth .auth-google-split{display:flex!important;align-items:baseline!important;justify-content:center!important;gap:8px!important;margin:0!important;text-align:center!important;font-size:27px!important;font-weight:800!important;line-height:1.35!important;}
+#auth .auth-google-split .google-text-link{display:inline-flex!important;align-items:baseline!important;width:auto!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;color:#e5edf8!important;font:inherit!important;text-decoration-line:underline!important;text-decoration-thickness:1.5px!important;text-underline-offset:5px!important;cursor:pointer!important;box-shadow:none!important;outline:none!important;vertical-align:baseline!important;touch-action:manipulation!important;}
+#auth .google-word{display:inline-flex!important;margin-left:.18em!important;}
+
+
+/* ATSRS V213: dotted underline only under Sign in / Sign up; no Google underline; no version block */
+#auth .auth-divider,#auth .divider,#auth .auth-or,#auth .version,#auth #buildBadge,.build-badge{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;}
+#auth .auth-google-split .google-text-link{
+  text-decoration:none!important;
+  display:inline-flex!important;
+  align-items:baseline!important;
+  gap:0!important;
+}
+#auth .auth-google-split .google-text-link .link-underline{
+  display:inline-block!important;
+  border-bottom:2px dotted currentColor!important;
+  line-height:1.05!important;
+  padding-bottom:2px!important;
+}
+#auth .auth-google-split .google-text-link:hover .link-underline,
+#auth .auth-google-split .google-text-link:focus .link-underline{
+  border-bottom-style:solid!important;
+}
+#auth .auth-google-split .google-text-link .google-tail,
+#auth .auth-google-split .google-text-link .google-word{
+  text-decoration:none!important;
+  border-bottom:0!important;
+}
+#auth .google-word{
+  margin-left:0!important;
+}
+#auth .auth-google-separator{
+  margin:0 8px!important;
+}
+
+/* ATSRS V214 - official-style split Google buttons, no underline */
+#auth .auth-google-split,
+#auth .auth-google-separator,
+#auth .google-text-link,
+#auth .link-underline{
+  text-decoration:none!important;
+  border:0!important;
+}
+#auth .auth-google-buttons{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:14px!important;
+  flex-wrap:wrap!important;
+  width:100%!important;
+  margin:0 auto!important;
+}
+#auth .google-auth-button,
+#auth .google-auth-button[type="button"]{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  width:auto!important;
+  min-width:205px!important;
+  min-height:46px!important;
+  padding:11px 18px!important;
+  margin:0!important;
+  border:1px solid rgba(226,232,240,.46)!important;
+  border-radius:12px!important;
+  background:rgba(15,23,42,.42)!important;
+  background-image:none!important;
+  color:#e5edf8!important;
+  font-size:15px!important;
+  font-weight:600!important;
+  line-height:1!important;
+  letter-spacing:.01em!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  text-decoration:none!important;
+  touch-action:manipulation!important;
+}
+#auth .google-auth-button:hover,
+#auth .google-auth-button:focus{
+  border-color:rgba(226,232,240,.72)!important;
+  background:rgba(30,41,59,.58)!important;
+  transform:translateY(-1px)!important;
+}
+#auth .google-auth-button:active{
+  transform:translateY(0)!important;
+}
+#auth .google-auth-button .google-mark{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  margin:0!important;
+  font-weight:800!important;
+  letter-spacing:-.05em!important;
+  line-height:1!important;
+}
+@media (max-width: 640px){
+  #auth .auth-google-buttons{
+    flex-direction:column!important;
+    gap:12px!important;
+  }
+  #auth .google-auth-button,
+  #auth .google-auth-button[type="button"]{
+    width:min(280px,86vw)!important;
+  }
+}
+
+
+/* ATSRS V215 - professional text-only Google auth actions; no button boxes */
+#auth .auth-google-buttons,
+#auth .google-auth-button,
+#auth .google-auth-button[type="button"]{
+  all:unset!important;
+}
+#auth .auth-google-line{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:10px!important;
+  width:100%!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  color:#e5edf8!important;
+  font-size:24px!important;
+  font-weight:800!important;
+  line-height:1.25!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+#auth .google-text-action,
+#auth .google-text-action[type="button"]{
+  all:unset!important;
+  display:inline-flex!important;
+  align-items:baseline!important;
+  gap:0!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  color:#e5edf8!important;
+  font:inherit!important;
+  line-height:inherit!important;
+  cursor:pointer!important;
+  text-decoration:none!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  touch-action:manipulation!important;
+}
+#auth .google-text-action .link-underline{
+  display:inline-block!important;
+  border-bottom:2px dotted currentColor!important;
+  line-height:1.05!important;
+  padding-bottom:3px!important;
+}
+#auth .google-text-action:hover .link-underline,
+#auth .google-text-action:focus-visible .link-underline{
+  border-bottom-style:solid!important;
+}
+#auth .google-tail,
+#auth .google-word{
+  display:inline-flex!important;
+  border-bottom:0!important;
+  text-decoration:none!important;
+}
+#auth .google-word{margin-left:.16em!important;font-weight:900!important;letter-spacing:-.04em!important;}
+#auth .auth-google-separator{color:#cbd5e1!important;opacity:.9!important;font-weight:700!important;margin:0 2px!important;}
+@media(max-width:640px){
+  #auth .auth-google-line{font-size:21px!important;gap:8px!important;white-space:normal!important;flex-wrap:wrap!important;}
+}
+
+
+/* ATSRS V216 - compact two-line Google action buttons */
 #auth #signupSocialArea{
   display:block!important;
   margin:0!important;
@@ -1015,13 +1631,97 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   box-shadow:none!important;
 }
 #auth .auth-google-line,
-#auth .auth-google-split,
 #auth .auth-google-separator,
 #auth .google-text-action,
-#auth .google-text-link,
 #auth .link-underline,
 #auth .google-tail{
   display:none!important;
+}
+#auth .auth-google-buttons{
+  all:unset!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:14px!important;
+  margin:0 auto!important;
+  width:100%!important;
+  max-width:460px!important;
+}
+#auth .google-auth-button,
+#auth .google-auth-button[type="button"]{
+  all:unset!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  width:210px!important;
+  min-height:64px!important;
+  padding:10px 18px!important;
+  border:1px solid rgba(148,163,184,.34)!important;
+  border-radius:14px!important;
+  background:rgba(15,23,42,.42)!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  text-align:center!important;
+  touch-action:manipulation!important;
+  transition:background .16s ease,border-color .16s ease,transform .16s ease!important;
+}
+#auth .google-auth-button:hover,
+#auth .google-auth-button:focus-visible{
+  background:rgba(255,255,255,.065)!important;
+  border-color:rgba(203,213,225,.58)!important;
+  outline:none!important;
+}
+#auth .google-auth-button:active{
+  transform:translateY(1px)!important;
+  opacity:.86!important;
+}
+#auth .google-auth-button .google-brand,
+#auth .google-auth-button .google-word{
+  display:inline-flex!important;
+  margin:0!important;
+  border:0!important;
+  text-decoration:none!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  letter-spacing:-.04em!important;
+  line-height:1!important;
+}
+#auth .google-action-text{
+  display:block!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  letter-spacing:.01em!important;
+  line-height:1.15!important;
+  color:#f8fafc!important;
+}
+@media(max-width:640px){
+  #auth .auth-google-buttons{
+    flex-direction:column!important;
+    gap:12px!important;
+    max-width:280px!important;
+  }
+  #auth .google-auth-button,
+  #auth .google-auth-button[type="button"]{
+    width:min(280px,86vw)!important;
+  }
+}
+
+
+/* ATSRS V217 - glossy round Google auth buttons, always side-by-side */
+#auth #signupSocialArea{
+  width:100%!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
 }
 #auth .auth-google-buttons{
   all:unset!important;
@@ -1030,7 +1730,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   flex-wrap:nowrap!important;
   align-items:center!important;
   justify-content:center!important;
-  gap:26px!important;
+  gap:22px!important;
   width:auto!important;
   max-width:none!important;
   margin:0 auto!important;
@@ -1041,10 +1741,10 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #auth .google-auth-button[type="button"]{
   all:unset!important;
   box-sizing:border-box!important;
-  width:146px!important;
-  height:146px!important;
-  min-width:146px!important;
-  min-height:146px!important;
+  width:148px!important;
+  height:148px!important;
+  min-width:148px!important;
+  min-height:148px!important;
   border-radius:999px!important;
   display:inline-flex!important;
   flex-direction:column!important;
@@ -1056,16 +1756,12 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   user-select:none!important;
   -webkit-tap-highlight-color:transparent!important;
   color:#fff!important;
-  border:1px solid rgba(255,255,255,.32)!important;
-  box-shadow:
-    inset 0 18px 24px rgba(255,255,255,.22),
-    inset 0 -18px 26px rgba(0,0,0,.30),
-    0 14px 30px rgba(0,0,0,.34)!important;
+  border:1px solid rgba(255,255,255,.30)!important;
+  box-shadow:inset 0 16px 22px rgba(255,255,255,.22), inset 0 -18px 26px rgba(0,0,0,.28), 0 14px 30px rgba(0,0,0,.34)!important;
   text-decoration:none!important;
   overflow:hidden!important;
   position:relative!important;
   touch-action:manipulation!important;
-  transition:transform .12s ease, filter .12s ease, box-shadow .12s ease!important;
 }
 #auth .google-auth-button::before{
   content:""!important;
@@ -1073,16 +1769,16 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   left:18px!important;
   right:18px!important;
   top:12px!important;
-  height:42px!important;
+  height:44px!important;
   border-radius:999px!important;
-  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.08))!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.54),rgba(255,255,255,.08))!important;
   pointer-events:none!important;
 }
 #auth #googleSigninBtn.google-auth-button{
-  background:radial-gradient(circle at 50% 38%,#21df8b 0%,#10b981 53%,#087a4b 100%)!important;
+  background:radial-gradient(circle at 50% 38%,#1ddf88 0%,#10b96f 52%,#07834e 100%)!important;
 }
 #auth #googleSignupBtn.google-auth-button{
-  background:radial-gradient(circle at 50% 38%,#ff5050 0%,#dc2626 54%,#991b1b 100%)!important;
+  background:radial-gradient(circle at 50% 38%,#ff4b4b 0%,#dc2626 54%,#991b1b 100%)!important;
 }
 #auth .google-auth-button:hover,
 #auth .google-auth-button:focus-visible{
@@ -1092,10 +1788,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 #auth .google-auth-button:active{
   transform:translateY(2px) scale(.985)!important;
-  box-shadow:
-    inset 0 10px 18px rgba(255,255,255,.16),
-    inset 0 -12px 22px rgba(0,0,0,.33),
-    0 8px 18px rgba(0,0,0,.28)!important;
+  box-shadow:inset 0 10px 18px rgba(255,255,255,.16), inset 0 -12px 22px rgba(0,0,0,.33), 0 8px 18px rgba(0,0,0,.28)!important;
 }
 #auth .google-auth-button .google-brand,
 #auth .google-auth-button .google-word{
@@ -1122,57 +1815,44 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   line-height:1!important;
   text-transform:none!important;
 }
-#auth #loginMsg{
-  margin-top:26px!important;
-  text-align:center!important;
-  color:#94a3b8!important;
-}
-#auth #googleWorkspaceBox{
-  margin-top:48px!important;
-  text-align:center!important;
-}
-#auth #googleWorkspaceBox h2{
-  font-size:30px!important;
-  margin:0 0 22px!important;
-  color:#f8fafc!important;
-}
-#auth .atsrs-workspace-actions{
-  display:grid!important;
-  gap:12px!important;
-  width:min(360px,86vw)!important;
-  margin:0 auto 14px!important;
-}
-#auth .atsrs-workspace-actions button,
-#auth .atsrs-workspace-actions button[type="button"],
-#auth #googleWorkspaceBox .secondary{
-  width:100%!important;
-  background:rgba(255,255,255,.035)!important;
-  background-image:none!important;
-  border:1px solid rgba(148,163,184,.32)!important;
-  border-radius:12px!important;
-  color:#f8fafc!important;
-  box-shadow:none!important;
-  padding:14px 16px!important;
-}
-#auth .atsrs-workspace-actions button:hover,
-#auth .atsrs-workspace-actions button[type="button"]:hover,
-#auth #googleWorkspaceBox .secondary:hover{
-  background:rgba(255,255,255,.06)!important;
-  border-color:rgba(203,213,225,.55)!important;
-}
 @media(max-width:640px){
-  #auth.auth{padding:30px 18px!important;}
-  #auth .auth-card .logo{font-size:54px!important;}
-  #auth .auth-card #authSubtitle{font-size:20px!important;margin-bottom:44px!important;}
-  #auth .auth-google-buttons{gap:14px!important;}
+  #auth .auth-google-buttons{
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    gap:14px!important;
+    max-width:none!important;
+  }
   #auth .google-auth-button,
   #auth .google-auth-button[type="button"]{
-    width:120px!important;
-    height:120px!important;
-    min-width:120px!important;
-    min-height:120px!important;
+    width:128px!important;
+    height:128px!important;
+    min-width:128px!important;
+    min-height:128px!important;
   }
   #auth .google-auth-button .google-brand,
-  #auth .google-auth-button .google-word{font-size:18px!important;}
-  #auth .google-action-text{font-size:19px!important;}
+  #auth .google-auth-button .google-word{font-size:19px!important;}
+  #auth .google-action-text{font-size:20px!important;}
 }
+
+
+/* ATSRS V219 - final minimal text-link Google auth override. No card, no button visuals. */
+#auth.auth{min-height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:32px 22px!important;gap:0!important;}
+#auth .auth-bg-docs,#auth .auth-doc-stack,#auth .auth-intro,#auth .feature-grid{display:none!important;}
+#auth .auth-card{width:min(760px,94vw)!important;max-width:760px!important;margin:0 auto!important;padding:0!important;min-height:0!important;background:transparent!important;background-image:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:0!important;backdrop-filter:none!important;text-align:center!important;}
+#auth .auth-card::before,#auth .auth-card::after{display:none!important;content:none!important;}
+#auth .auth-card .logo{font-size:64px!important;line-height:1!important;margin:0 0 18px!important;letter-spacing:-1.4px!important;}
+#auth .auth-card #authSubtitle{display:block!important;font-size:23px!important;line-height:1.35!important;margin:0 0 62px!important;color:#aebbd0!important;}
+#auth .auth-card #loginTitle,#auth .auth-divider,#auth .divider,#auth .auth-or,#auth .version,#auth .build-badge{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;}
+#auth #signupSocialArea{display:flex!important;justify-content:center!important;align-items:center!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+#auth .auth-google-links{display:flex!important;align-items:baseline!important;justify-content:center!important;gap:11px!important;margin:0!important;padding:0!important;text-align:center!important;font-size:29px!important;font-weight:850!important;line-height:1.25!important;}
+#auth .auth-google-separator{color:#d7e1ef!important;font:inherit!important;font-weight:750!important;opacity:.9!important;}
+#auth .google-text-link{all:unset!important;display:inline-flex!important;align-items:baseline!important;width:auto!important;min-width:0!important;margin:0!important;padding:0 0 3px!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;color:#f2f7ff!important;font:inherit!important;cursor:pointer!important;box-shadow:none!important;outline:none!important;vertical-align:baseline!important;text-decoration:none!important;border-bottom:2px dotted rgba(242,247,255,.86)!important;touch-action:manipulation!important;}
+#auth .google-text-link:hover,#auth .google-text-link:focus-visible{color:#fff!important;border-bottom-color:#fff!important;}
+#auth .google-text-link:active{opacity:.72!important;}
+#auth .google-word{display:inline-flex!important;margin-left:.22em!important;letter-spacing:-.055em!important;border-bottom:0!important;text-decoration:none!important;}
+#auth .google-word *{border-bottom:0!important;text-decoration:none!important;}
+#auth #loginMsg{margin-top:26px!important;text-align:center!important;color:#94a3b8!important;font-size:16px!important;}
+#auth #googleWorkspaceBox{margin-top:48px!important;text-align:center!important;}
+#auth #googleWorkspaceBox h2{font-size:30px!important;margin:0 0 22px!important;}
+#auth .atsrs-workspace-actions button,#auth .atsrs-workspace-actions button[type=button],#auth #googleWorkspaceBox .secondary{width:100%!important;background:rgba(255,255,255,.035)!important;background-image:none!important;border:1px solid rgba(148,163,184,.32)!important;border-radius:12px!important;color:#f8fafc!important;box-shadow:none!important;padding:14px 16px!important;}
+@media(max-width:600px){#auth.auth{padding:34px 28px!important;}#auth .auth-card .logo{font-size:54px!important;}#auth .auth-card #authSubtitle{font-size:21px!important;margin-bottom:48px!important;}#auth .auth-google-links{font-size:21px!important;gap:7px!important;}}
