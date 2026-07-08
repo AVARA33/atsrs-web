@@ -324,3 +324,16 @@
   [80,250,700,1300,2400].forEach(function(ms){setTimeout(run,ms);});
   setInterval(lockBuild,500);
 })();
+
+/* ATSRS V207 - bind separate Google auth links */
+(function(){
+  'use strict';
+  function bind(){
+    var signIn=document.getElementById('googleSigninBtn');
+    var signUp=document.getElementById('googleSignupBtn');
+    if(signIn) signIn.onclick=function(e){ if(e)e.preventDefault(); return window.atsrsGoogleSignIn ? window.atsrsGoogleSignIn(e) : false; };
+    if(signUp) signUp.onclick=function(e){ if(e)e.preventDefault(); return window.atsrsGoogleSignUp ? window.atsrsGoogleSignUp(e) : false; };
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+  window.addEventListener('load',bind);
+})();
