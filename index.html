@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=212">
+<link rel="stylesheet" href="css/login.css?v=213">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -100,7 +100,7 @@
 <div id="loginBox" class="google-only-login">
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
   <div class="auth-google-split">
-    <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in</button><span class="auth-google-separator">/</span><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+    <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)"><span class="link-underline">Sign in</span></button><span class="auth-google-separator">/</span><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)"><span class="link-underline">Sign up</span><span class="google-tail"> with </span><span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
   </div>
 </div>
 <p id="loginMsg" class="sub"></p>
@@ -143,11 +143,6 @@
 <p id="newPassMsg" class="sub"></p>
 </div>
 
-<div id="buildBadge" class="build-badge">
-<div>ATSRS V210</div>
-<div>Last Update: 08 Jul 2026</div>
-<div>TEST BUILD</div>
-</div>
 </div>
 </section>
 
