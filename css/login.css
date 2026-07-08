@@ -1552,3 +1552,160 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
     width:min(280px,86vw)!important;
   }
 }
+
+
+/* ATSRS V215 - professional text-only Google auth actions; no button boxes */
+#auth .auth-google-buttons,
+#auth .google-auth-button,
+#auth .google-auth-button[type="button"]{
+  all:unset!important;
+}
+#auth .auth-google-line{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:10px!important;
+  width:100%!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  color:#e5edf8!important;
+  font-size:24px!important;
+  font-weight:800!important;
+  line-height:1.25!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+#auth .google-text-action,
+#auth .google-text-action[type="button"]{
+  all:unset!important;
+  display:inline-flex!important;
+  align-items:baseline!important;
+  gap:0!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  color:#e5edf8!important;
+  font:inherit!important;
+  line-height:inherit!important;
+  cursor:pointer!important;
+  text-decoration:none!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  touch-action:manipulation!important;
+}
+#auth .google-text-action .link-underline{
+  display:inline-block!important;
+  border-bottom:2px dotted currentColor!important;
+  line-height:1.05!important;
+  padding-bottom:3px!important;
+}
+#auth .google-text-action:hover .link-underline,
+#auth .google-text-action:focus-visible .link-underline{
+  border-bottom-style:solid!important;
+}
+#auth .google-tail,
+#auth .google-word{
+  display:inline-flex!important;
+  border-bottom:0!important;
+  text-decoration:none!important;
+}
+#auth .google-word{margin-left:.16em!important;font-weight:900!important;letter-spacing:-.04em!important;}
+#auth .auth-google-separator{color:#cbd5e1!important;opacity:.9!important;font-weight:700!important;margin:0 2px!important;}
+@media(max-width:640px){
+  #auth .auth-google-line{font-size:21px!important;gap:8px!important;white-space:normal!important;flex-wrap:wrap!important;}
+}
+
+
+/* ATSRS V216 - compact two-line Google action buttons */
+#auth #signupSocialArea{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#auth .auth-google-line,
+#auth .auth-google-separator,
+#auth .google-text-action,
+#auth .link-underline,
+#auth .google-tail{
+  display:none!important;
+}
+#auth .auth-google-buttons{
+  all:unset!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:14px!important;
+  margin:0 auto!important;
+  width:100%!important;
+  max-width:460px!important;
+}
+#auth .google-auth-button,
+#auth .google-auth-button[type="button"]{
+  all:unset!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  width:210px!important;
+  min-height:64px!important;
+  padding:10px 18px!important;
+  border:1px solid rgba(148,163,184,.34)!important;
+  border-radius:14px!important;
+  background:rgba(15,23,42,.42)!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  text-align:center!important;
+  touch-action:manipulation!important;
+  transition:background .16s ease,border-color .16s ease,transform .16s ease!important;
+}
+#auth .google-auth-button:hover,
+#auth .google-auth-button:focus-visible{
+  background:rgba(255,255,255,.065)!important;
+  border-color:rgba(203,213,225,.58)!important;
+  outline:none!important;
+}
+#auth .google-auth-button:active{
+  transform:translateY(1px)!important;
+  opacity:.86!important;
+}
+#auth .google-auth-button .google-brand,
+#auth .google-auth-button .google-word{
+  display:inline-flex!important;
+  margin:0!important;
+  border:0!important;
+  text-decoration:none!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  letter-spacing:-.04em!important;
+  line-height:1!important;
+}
+#auth .google-action-text{
+  display:block!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  letter-spacing:.01em!important;
+  line-height:1.15!important;
+  color:#f8fafc!important;
+}
+@media(max-width:640px){
+  #auth .auth-google-buttons{
+    flex-direction:column!important;
+    gap:12px!important;
+    max-width:280px!important;
+  }
+  #auth .google-auth-button,
+  #auth .google-auth-button[type="button"]{
+    width:min(280px,86vw)!important;
+  }
+}
