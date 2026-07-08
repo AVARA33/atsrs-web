@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=200">
+<link rel="stylesheet" href="css/login.css?v=205">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -98,7 +98,7 @@
 
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
   <div class="auth-divider"><span>or</span></div>
-  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">Sign in / Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
 </div>
 
 <button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
@@ -107,10 +107,10 @@
 
 <div id="googleWorkspaceBox" class="hidden atsrs-workspace-box">
 <h2 id="workspaceTitle">Choose account type</h2>
-<p id="workspaceInfo" class="sub">Choose how you want to use ATSRS with this Google account.</p>
+<p id="workspaceInfo" class="sub hidden"></p>
 <div class="atsrs-workspace-actions">
-<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Personal Account</b><span>My documents, certificates and profile.</span></button>
-<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Corporate Account</b><span>Company personnel, compliance and shared records.</span></button>
+<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Create Personal Account</b></button>
+<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Create Corporate Account</b></button>
 </div>
 <button type="button" class="secondary" onclick="atsrsBackToLogin()">Back to login</button>
 <p id="workspaceMsg" class="sub"></p>
@@ -557,14 +557,14 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=204"></script>
+<script src="js/storage.js?v=205"></script>
 <script src="js/ui.js?v=200"></script>
 <script src="js/auth.js?v=200"></script>
-<script src="js/login.js?v=200"></script>
-<script src="js/dashboard.js?v=200"></script>
+<script src="js/login.js?v=205"></script>
+<script src="js/dashboard.js?v=205"></script>
 <script src="js/documents.js?v=200"></script>
 <script src="js/references.js?v=200"></script>
-<script src="js/account.js?v=204"></script>
+<script src="js/account.js?v=205"></script>
 <script src="js/app.js?v=200"></script>
 
 
