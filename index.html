@@ -10,15 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=207">
+<link rel="stylesheet" href="css/login.css?v=209">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
 <link rel="stylesheet" href="css/account.css?v=200">
-
-
-
-
 
 </head>
 <body class="atsrs-booting">
@@ -88,9 +84,7 @@
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
   <div class="auth-divider"><span>or</span></div>
   <div class="auth-google-split">
-    <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in</button>
-    <span class="auth-google-separator">/</span>
-    <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+    <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in</button><span class="auth-google-separator">/</span><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
   </div>
 </div>
 <p id="loginMsg" class="sub"></p>
@@ -555,287 +549,62 @@
 <script src="js/dashboard.js?v=207"></script>
 <script src="js/documents.js?v=200"></script>
 <script src="js/references.js?v=200"></script>
-<script src="js/account.js?v=208"></script>
+<script src="js/account.js?v=209"></script>
 <script src="js/app.js?v=200"></script>
-
-
-
-
-
-
-
-
-
-
 
 <!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
 
-
-
 <!-- V62 TEST AUTOMATION: in-app QA runner for ATSRS core functions -->
-
-
-
 
 <!-- V64 CLEAN FIX: login viewport loading + final app-only language/logout lock -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- V110 FINAL: clean register-only account type flow -->
-
-
-
-
 
 <!-- V111: register account type UX logic correction -->
 
-
-
-
-
 <!-- V112: compact register choice + icon-only social refinement -->
-
-
-
-
 
 <!-- V113: social placeholder flow + two direct test login buttons -->
 
-
-
-
-
 <!-- V114: authoritative build badge lock -->
-
-
-
 
 <!-- V115: test buttons placement + social placeholder cleanup -->
 
-
-
-
-
 <!-- V116: authoritative test-login placement under Remember me -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- V138: Direct CV preview + compact table delete buttons -->
 
-
-
-
-
 <!-- V139: References file list height fix - show 3 files comfortably, scroll from 4th. -->
-
-
 
 <!-- V140: References/Appraisals file windows - show 3 uploaded files, start internal scroll from 4th. Documents page untouched. -->
 
-
-
-
 <!-- V141: References larger file windows + per-card maximize/minimize icons. Based on V140. Preserved; overridden by V142 below. -->
-
-
-
-
 
 <!-- V142: Taller References file windows + clean per-card expand/minimize icon. Based on V141. -->
 
-
-
-
-
 <!-- V144: References overlay maximize stable for all 4 cards. No grid shift. -->
-
-
-
-
 
 <!-- V145: References full-width stacked cards. CV-style layout, no max/min overlay. 5 visible files, scroll from 6th. -->
 
-
-
-
-
 <!-- V146: References compact file list. Removes nested file-card look. 5 visible files, scroll from 6th. -->
-
-
-
-
 
 <!-- V147: References compact list density fix. Rows tightened; list height is content-based until 6th file, then scroll. -->
 
-
-
-
-
 <!-- V148: References vertical gap compression. Reduces legacy career-record row height while keeping compact list + 5-file scroll. -->
-
-
-
-
 
 <!-- V150: Remove old 124px row lock and force true compact managed-file rows. V148 kept as base. -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- V157 clean login/build/social cleanup: V156 base, no UTC badge, Google text only -->
-
-
-
 
 <!-- V160/V161 login text-only visual cleanup: remove build/feature card boxes, keep layout/text positions -->
 
-
-
-
-
 <!-- V161 authoritative login build badge cleanup: single static date only, no ghost duplicate -->
-
-
-
-
 
 <!-- ATSRS V168: references controls compact + frameless dashboard/references visual only. Base: V163. Storage untouched. -->
 
-
-
-
-
 <!-- V167: remove app top language/account/logout and add Exit in sidebar only -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- V178: Dashboard hero/card frame cleanup only. Base: V177. -->
 
-
-
 </body>
-  </html>
+</html>
