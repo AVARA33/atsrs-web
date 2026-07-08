@@ -935,19 +935,3 @@
   window.addEventListener('load',replaceAndBind);
   [100,300,700,1200,2200,3500,5500].forEach(function(ms){setTimeout(replaceAndBind,ms);});
 })();
-
-/* ATSRS V207 - Google-only login surface cleanup */
-(function(){
-  'use strict';
-  function byId(id){return document.getElementById(id);}
-  function cleanupGoogleOnlyLogin(){
-    ['loginEmail','loginEmailRule','loginPassword','rememberRow','modeChoiceBox','modeRule','modeInstruction','loginBtn','forgotBtn','registerBox','forgotBox','newPasswordBox','atsrsV113TestLoginGroup','atsrsV115TestLoginGroup','atsrsV117TestLoginGroup','localTestBtn'].forEach(function(id){
-      var el=byId(id); if(el) el.classList.add('hidden');
-    });
-    var msg=byId('loginMsg');
-    if(msg && /will be connected after backend|Social sign in is not available/i.test(msg.textContent||'')) msg.textContent='';
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',cleanupGoogleOnlyLogin); else cleanupGoogleOnlyLogin();
-  window.addEventListener('load',cleanupGoogleOnlyLogin);
-  [100,300,800,1600,3000].forEach(function(ms){setTimeout(cleanupGoogleOnlyLogin,ms);});
-})();

@@ -304,20 +304,12 @@
     if(rows.length>=3){rows[0].textContent=BUILD;rows[1].textContent=UPDATE;rows[2].textContent=TYPE;}
     else{badge.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';}
   }
-  function googleWord(){
-    return '<span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span>';
-  }
-  function bindGoogleSplit(){
-    var signIn=byId('googleSigninBtn');
-    var signUp=byId('googleSignupBtn');
-    if(signIn){signIn.onclick=function(e){if(e)e.preventDefault();return window.atsrsGoogleSignIn?window.atsrsGoogleSignIn(e):false;};}
-    if(signUp){signUp.onclick=function(e){if(e)e.preventDefault();return window.atsrsGoogleSignUp?window.atsrsGoogleSignUp(e):false;};}
-  }
   function cleanSocial(){
     var area=byId('signupSocialArea');
     if(!area)return;
-    area.innerHTML='<div class="auth-google-links"><button id="googleSigninBtn" type="button" class="google-text-link">Sign in</button><span class="auth-google-separator" aria-hidden="true">/</span><button id="googleSignupBtn" type="button" class="google-text-link">Sign up with '+googleWord()+'</button></div>';
-    bindGoogleSplit();
+    area.innerHTML='<div class="auth-divider"><span>or</span></div><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice">Sign in / Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>';
+    var btn=byId('googleSignupBtn');
+    if(btn){btn.onclick=function(e){if(e)e.preventDefault();if(typeof window.atsrsGoogleSignUp==='function')return window.atsrsGoogleSignUp(e);var msg=byId('loginMsg')||byId('regMsg');if(msg)msg.textContent='Google sign-up is loading. Please refresh and try again.';return false;};}
   }
   window.atsrsV157GoogleNotice=function(e){
     if(e){e.preventDefault();e.stopPropagation();}
@@ -331,97 +323,4 @@
   window.addEventListener('load',run);
   [80,250,700,1300,2400].forEach(function(ms){setTimeout(run,ms);});
   setInterval(lockBuild,500);
-})();
-
-/* ATSRS V208 - keep Sign in and Sign up as separate clickable text links */
-(function(){
-  'use strict';
-  function bind(){
-    var signIn=document.getElementById('googleSigninBtn');
-    var signUp=document.getElementById('googleSignupBtn');
-    if(signIn) signIn.onclick=function(e){ if(e)e.preventDefault(); return window.atsrsGoogleSignIn ? window.atsrsGoogleSignIn(e) : false; };
-    if(signUp) signUp.onclick=function(e){ if(e)e.preventDefault(); return window.atsrsGoogleSignUp ? window.atsrsGoogleSignUp(e) : false; };
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
-  window.addEventListener('load',bind);
-  [80,250,700,1300].forEach(function(ms){setTimeout(bind,ms);});
-})();
-
-
-/* ATSRS V209 - final split Google auth links: only text is clickable */
-(function(){
-  'use strict';
-  function byId(id){return document.getElementById(id);}
-  function googleWord(){return '<span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span>';}
-  function render(){
-    var area=byId('signupSocialArea');
-    if(area){
-      area.innerHTML='<div class="auth-google-links"><button id="googleSigninBtn" type="button" class="google-text-link">Sign in</button><span class="auth-google-separator" aria-hidden="true">/</span><button id="googleSignupBtn" type="button" class="google-text-link">Sign up with '+googleWord()+'</button></div>';
-    }
-    bind();
-  }
-  function bind(){
-    var signIn=byId('googleSigninBtn');
-    var signUp=byId('googleSignupBtn');
-    if(signIn){signIn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return window.atsrsGoogleSignIn ? window.atsrsGoogleSignIn(e) : false;};}
-    if(signUp){signUp.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return window.atsrsGoogleSignUp ? window.atsrsGoogleSignUp(e) : false;};}
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',render); else render();
-  window.addEventListener('load',render);
-  [80,250,700,1300,2400].forEach(function(ms){setTimeout(render,ms);});
-})();
-
-
-/* ATSRS V222 - authoritative Google OAuth click binding */
-(function(){
-  'use strict';
-  function byId(id){return document.getElementById(id);}
-  function setMsg(msg){var el=byId('loginMsg')||byId('regMsg'); if(el) el.textContent=msg||'';}
-  function redirectUrl(){
-    try{ return (window.location.origin || 'https://atsrs.com') + (window.location.pathname || '/'); }
-    catch(e){ return 'https://atsrs.com/'; }
-  }
-  function press(el){
-    if(!el)return;
-    el.classList.add('is-pressed');
-    setTimeout(function(){try{el.classList.remove('is-pressed');}catch(e){}},260);
-  }
-  async function startGoogle(intent,ev){
-    if(ev){ev.preventDefault();ev.stopPropagation();}
-    var btn=ev && ev.currentTarget ? ev.currentTarget : (intent==='signup'?byId('googleSignupBtn'):byId('googleSigninBtn'));
-    press(btn);
-    setMsg('');
-    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
-      setMsg('Google sign-in is not ready. Refresh the page and try again.');
-      return false;
-    }
-    try{localStorage.setItem('atsrs_google_intent',intent||'signin');}catch(e){}
-    try{
-      var result=await window.supabaseClient.auth.signInWithOAuth({
-        provider:'google',
-        options:{redirectTo:redirectUrl()}
-      });
-      if(result && result.error){setMsg(result.error.message || 'Google sign-in failed.');}
-    }catch(e){setMsg((e&&e.message)?e.message:'Google sign-in failed.');}
-    return false;
-  }
-  window.atsrsGoogleSignIn=function(ev){return startGoogle('signin',ev);};
-  window.atsrsGoogleSignUp=function(ev){return startGoogle('signup',ev);};
-  function bind(){
-    var signIn=byId('googleSigninBtn');
-    var signUp=byId('googleSignupBtn');
-    if(signIn){
-      signIn.onclick=function(ev){return window.atsrsGoogleSignIn(ev);};
-      signIn.setAttribute('role','button');
-      signIn.style.pointerEvents='auto';
-    }
-    if(signUp){
-      signUp.onclick=function(ev){return window.atsrsGoogleSignUp(ev);};
-      signUp.setAttribute('role','button');
-      signUp.style.pointerEvents='auto';
-    }
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-  window.addEventListener('load',bind);
-  [50,150,400,900,1500,2500].forEach(function(ms){setTimeout(bind,ms);});
 })();
