@@ -1398,6 +1398,7 @@ setTimeout(v55DockTopActions,500);
       var p=byId('workspacePersonalBtn');
       var c=byId('workspaceCorporateBtn');
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+      ['forgotBox','newPasswordBox','registerBox'].forEach(function(id){var el=byId(id); if(el) el.classList.add('hidden');});
       if(info){info.textContent=''; info.classList.add('hidden');}
       if(p){var pb=p.querySelector('b'); if(pb) pb.textContent=pHas?'Continue as Personal':'Create Personal Account'; var ps=p.querySelector('span'); if(ps) ps.remove();}
       if(c){var cb=c.querySelector('b'); if(cb) cb.textContent=cHas?'Continue as Corporate':'Create Corporate Account'; var cs=c.querySelector('span'); if(cs) cs.remove();}
@@ -1658,4 +1659,117 @@ setTimeout(v55DockTopActions,500);
     }catch(e){}
     if(typeof openApp==='function') openApp();
   };
+})();
+
+
+/* ===== ATSRS V223 Google OAuth Callback + Workspace Completion Fix ===== */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function setMsg(msg){var el=byId('loginMsg')||byId('workspaceMsg'); if(el) el.textContent=msg||'';}
+  function cleanOAuthUrl(){
+    try{
+      if(window.history && (window.location.search || window.location.hash)){
+        var clean=window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, clean);
+      }
+    }catch(e){}
+  }
+  function getUserFromSession(session){return session && session.user ? session.user : null;}
+  function workspaceKey(user,mode){return user && user.id ? ('atsrs_workspace_'+user.id+'_'+mode) : '';}
+  function hasWorkspace(user,mode){try{return localStorage.getItem(workspaceKey(user,mode))==='1';}catch(e){return false;}}
+  function applyMode(mode){
+    try{ if(typeof setUseMode==='function') setUseMode(mode); }catch(e){}
+    try{ if(typeof applyAccountType==='function') applyAccountType(mode); }catch(e){}
+    try{ localStorage.setItem('atsrs_use_mode',mode); }catch(e){}
+    try{ window.useMode=mode; }catch(e){}
+    try{
+      document.body.classList.toggle('personal-mode',mode==='personal');
+      document.body.classList.toggle('company-mode',mode==='company');
+    }catch(e){}
+  }
+  function hideAuthBoxes(){
+    ['loginBox','registerBox','forgotBox','newPasswordBox'].forEach(function(id){var el=byId(id); if(el) el.classList.add('hidden');});
+  }
+  function showWorkspaceChoice(user){
+    if(!user) return;
+    try{window.currentUser=user; currentUser=user;}catch(e){window.currentUser=user;}
+    try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+    hideAuthBoxes();
+    var auth=byId('auth'); if(auth) auth.classList.remove('hidden');
+    var app=byId('app'); if(app) app.classList.add('hidden');
+    var box=byId('googleWorkspaceBox');
+    var msg=byId('workspaceMsg'); if(msg) msg.textContent='';
+    var info=byId('workspaceInfo'); if(info){info.textContent=''; info.classList.add('hidden');}
+    var p=byId('workspacePersonalBtn'), c=byId('workspaceCorporateBtn');
+    var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+    if(p){var pb=p.querySelector('b')||p; pb.textContent=pHas?'Continue as Personal':'Create Personal Account';}
+    if(c){var cb=c.querySelector('b')||c; cb.textContent=cHas?'Continue as Corporate':'Create Corporate Account';}
+    if(box) box.classList.remove('hidden');
+    document.body.classList.remove('atsrs-booting');
+  }
+  function openAccountPage(){
+    setTimeout(function(){
+      try{
+        if(typeof showPage==='function'){
+          var btn=byId('navProfile')||byId('navAccount')||document.querySelector('[onclick*="profile"]');
+          showPage('profile', btn || byId('navDashboard'));
+        }
+      }catch(e){}
+    },80);
+  }
+  function openAppForUser(user,mode,forceProfile){
+    if(!user) return;
+    try{window.currentUser=user; currentUser=user;}catch(e){window.currentUser=user;}
+    applyMode(mode||'personal');
+    try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+    var auth=byId('auth'); if(auth) auth.classList.add('hidden');
+    var app=byId('app'); if(app) app.classList.remove('hidden');
+    if(typeof openApp==='function') openApp();
+    if(forceProfile) openAccountPage();
+  }
+  async function finishWorkspace(mode){
+    if(mode!=='personal' && mode!=='company') return false;
+    var user=null;
+    try{var r=await window.supabaseClient.auth.getSession(); user=getUserFromSession(r && r.data && r.data.session);}catch(e){}
+    if(!user){setMsg('Google session not found. Please sign in again.'); return false;}
+    try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
+    try{localStorage.setItem('atsrs_use_mode',mode); localStorage.setItem('atsrs_auth_mode','supabase'); localStorage.removeItem('atsrs_google_intent');}catch(e){}
+    try{await window.supabaseClient.auth.updateUser({data:{atsrs_last_workspace:mode, atsrs_workspace_created:true}});}catch(e){}
+    openAppForUser(user,mode,true);
+    return false;
+  }
+  async function routeSession(session,source){
+    var user=getUserFromSession(session); if(!user) return false;
+    var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
+    var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+    var saved=''; try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+    if(intent==='signup' || (!pHas && !cHas)) { showWorkspaceChoice(user); return true; }
+    if(pHas && cHas){ showWorkspaceChoice(user); return true; }
+    if(saved==='company' && cHas){ openAppForUser(user,'company',false); return true; }
+    if(saved==='personal' && pHas){ openAppForUser(user,'personal',false); return true; }
+    if(pHas){ openAppForUser(user,'personal',false); return true; }
+    if(cHas){ openAppForUser(user,'company',false); return true; }
+    showWorkspaceChoice(user); return true;
+  }
+  async function handleOAuthReturn(){
+    if(!window.supabaseClient || !window.supabaseClient.auth) return;
+    var hasCode=false;
+    try{hasCode=new URLSearchParams(window.location.search).has('code');}catch(e){}
+    try{
+      if(hasCode && typeof window.supabaseClient.auth.exchangeCodeForSession==='function'){
+        var ex=await window.supabaseClient.auth.exchangeCodeForSession(window.location.href);
+        if(ex && ex.error){setMsg(ex.error.message||'Google sign-in failed.'); return;}
+      }
+    }catch(e){setMsg((e&&e.message)||'Google sign-in failed.'); return;}
+    var tries=[0,200,600,1200,2200];
+    tries.forEach(function(ms){setTimeout(async function(){
+      try{var r=await window.supabaseClient.auth.getSession(); var session=r && r.data && r.data.session; if(session && session.user){cleanOAuthUrl(); await routeSession(session,'oauth');}}
+      catch(e){}
+    },ms);});
+  }
+  window.atsrsChooseWorkspace=finishWorkspace;
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',handleOAuthReturn); else handleOAuthReturn();
+  window.addEventListener('load',handleOAuthReturn);
+  try{ if(window.supabaseClient && window.supabaseClient.auth){ window.supabaseClient.auth.onAuthStateChange(function(event,session){ if(session && session.user && (event==='SIGNED_IN'||event==='INITIAL_SESSION')) routeSession(session,event); }); } }catch(e){}
 })();
