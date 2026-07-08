@@ -346,3 +346,27 @@
   window.addEventListener('load',bind);
   [80,250,700,1300].forEach(function(ms){setTimeout(bind,ms);});
 })();
+
+
+/* ATSRS V209 - final split Google auth links: only text is clickable */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function googleWord(){return '<span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span>';}
+  function render(){
+    var area=byId('signupSocialArea');
+    if(area){
+      area.innerHTML='<div class="auth-divider"><span>or</span></div><div class="auth-google-split"><button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice">Sign in</button><span class="auth-google-separator">/</span><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice">Sign up with '+googleWord()+'</button></div>';
+    }
+    bind();
+  }
+  function bind(){
+    var signIn=byId('googleSigninBtn');
+    var signUp=byId('googleSignupBtn');
+    if(signIn){signIn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return window.atsrsGoogleSignIn ? window.atsrsGoogleSignIn(e) : false;};}
+    if(signUp){signUp.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} return window.atsrsGoogleSignUp ? window.atsrsGoogleSignUp(e) : false;};}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',render); else render();
+  window.addEventListener('load',render);
+  [80,250,700,1300,2400].forEach(function(ms){setTimeout(render,ms);});
+})();
