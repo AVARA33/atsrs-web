@@ -1,57 +1,18 @@
 /* ATSRS V178 extracted JavaScript batch: dashboard.js. Loaded in original V178 execution order. No placeholder code. */
-/* ===== extracted from inline script id=atsrs-v117-test-placement-script ===== */
+/* ===== ATSRS V205: test login placement disabled ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V178';
-  var UPDATE='Last Update: 01 Jul 2026';
-  var TYPE='TEST BUILD';
-  function byId(id){return document.getElementById(id);}
-  function lockBuild(){
-    var badge=byId('buildBadge')||document.querySelector('.build-badge');
-    if(!badge)return;
-    var rows=badge.querySelectorAll('div');
-    if(rows.length>=3){rows[0].textContent=BUILD;rows[1].textContent=UPDATE;rows[2].textContent=TYPE;}
-    else{badge.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';}
+  function removeTestLogin(){
+    ['atsrsV113TestLoginGroup','atsrsV115TestLoginGroup','atsrsV117TestLoginGroup','localTestBtn'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.remove();
+    });
   }
-  function directTestLogin(mode){
-    try{
-      window.useMode=mode;
-      localStorage.setItem('atsrs_use_mode',mode);
-      localStorage.setItem('atsrs_auth_mode','local');
-      localStorage.setItem('atsrs_current_page',mode==='company'?'dashboard':'intro');
-    }catch(e){}
-    if(typeof window.setUseMode==='function')try{window.setUseMode(mode);}catch(e){}
-    window.currentUser={id:'local_test_'+mode,email:mode==='company'?'corporate-test@atsrs.com':'personal-test@atsrs.com'};
-    if(typeof window.openApp==='function')window.openApp();
-  }
-  function getOrCreateGroup(){
-    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup')||byId('atsrsV117TestLoginGroup');
-    if(!group){
-      group=document.createElement('div');
-      group.id='atsrsV117TestLoginGroup';
-      group.innerHTML='<button type="button" id="atsrsV117TestPersonal">Test Personal</button><button type="button" id="atsrsV117TestCorporate">Test Corporate</button>';
-    }
-    return group;
-  }
-  function placeTestButtons(){
-    var remember=byId('rememberRow');
-    var loginBox=byId('loginBox');
-    if(!remember||!loginBox)return;
-    var old=byId('localTestBtn'); if(old)old.style.display='none';
-    var group=getOrCreateGroup();
-    if(group.previousElementSibling!==remember){remember.insertAdjacentElement('afterend',group);}
-    var p=byId('atsrsV117TestPersonal')||byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
-    var c=byId('atsrsV117TestCorporate')||byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
-    if(p)p.onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
-    if(c)c.onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
-  }
-  function run(){lockBuild();placeTestButtons();}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-  window.addEventListener('load',run);
-  [50,150,400,900,1600,2600].forEach(function(ms){setTimeout(run,ms);});
-  setInterval(run,800);
-  setInterval(lockBuild,250);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',removeTestLogin);else removeTestLogin();
+  window.addEventListener('load',removeTestLogin);
+  [50,150,400,900,1600,2600].forEach(function(ms){setTimeout(removeTestLogin,ms);});
 })();
+
 
 /* ===== extracted from inline script ===== */
 /* V118 dashboard simplification and account badge sync */
