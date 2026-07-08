@@ -379,14 +379,8 @@
     if(rows[2])rows[2].textContent=TEST;
   }
   function ensureTestButtons(){
-    var old=byId('localTestBtn');
-    if(!old || byId('atsrsV113TestLoginGroup'))return;
-    var wrap=document.createElement('div');
-    wrap.id='atsrsV113TestLoginGroup';
-    wrap.innerHTML='<button type="button" id="atsrsV113TestPersonal">Test Personal</button><button type="button" id="atsrsV113TestCorporate">Test Corporate</button>';
-    old.insertAdjacentElement('afterend',wrap);
-    byId('atsrsV113TestPersonal').onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
-    byId('atsrsV113TestCorporate').onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
+    // V205: Test Personal / Test Corporate removed from login UI.
+    ['atsrsV113TestLoginGroup','atsrsV115TestLoginGroup','atsrsV117TestLoginGroup','localTestBtn'].forEach(function(id){var el=byId(id); if(el) el.remove();});
   }
   function directTestLogin(mode){
     try{
@@ -553,21 +547,8 @@
     if(typeof window.openApp==='function')window.openApp();
   }
   function placeTestButtons(){
-    var remember=byId('rememberRow');
-    var old=byId('localTestBtn');
-    var group=byId('atsrsV113TestLoginGroup')||byId('atsrsV115TestLoginGroup');
-    if(!remember)return;
-    if(!group){
-      group=document.createElement('div');
-      group.id='atsrsV115TestLoginGroup';
-      group.innerHTML='<button type="button" id="atsrsV115TestPersonal">Test Personal</button><button type="button" id="atsrsV115TestCorporate">Test Corporate</button>';
-    }
-    if(group.previousElementSibling!==remember) remember.insertAdjacentElement('afterend',group);
-    if(old)old.style.display='none';
-    var p=byId('atsrsV115TestPersonal')||byId('atsrsV113TestPersonal');
-    var c=byId('atsrsV115TestCorporate')||byId('atsrsV113TestCorporate');
-    if(p)p.onclick=function(e){if(e)e.preventDefault();directTestLogin('personal');return false;};
-    if(c)c.onclick=function(e){if(e)e.preventDefault();directTestLogin('company');return false;};
+    // V205: no temporary/test access buttons in production login.
+    ['atsrsV113TestLoginGroup','atsrsV115TestLoginGroup','atsrsV117TestLoginGroup','localTestBtn'].forEach(function(id){var el=byId(id); if(el) el.remove();});
   }
   function ensureSocialNotice(){
     var rb=byId('registerBox'); if(!rb)return null;
