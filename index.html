@@ -10,12 +10,35 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=218">
+<link rel="stylesheet" href="css/login.css?v=219">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
 <link rel="stylesheet" href="css/account.css?v=200">
 
+
+<style id="atsrs-v219-minimal-login-override">
+/* ATSRS V219 - minimal centered Google text links, no login card, no buttons */
+#auth.auth{min-height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:32px 22px!important;gap:0!important;}
+#auth .auth-bg-docs,#auth .auth-doc-stack,#auth .auth-intro,#auth .feature-grid{display:none!important;}
+#auth .auth-card{width:min(760px,94vw)!important;max-width:760px!important;margin:0 auto!important;padding:0!important;min-height:0!important;background:transparent!important;background-image:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:0!important;backdrop-filter:none!important;text-align:center!important;}
+#auth .auth-card::before,#auth .auth-card::after{display:none!important;content:none!important;}
+#auth .auth-card .logo{font-size:64px!important;line-height:1!important;margin:0 0 18px!important;letter-spacing:-1.4px!important;}
+#auth .auth-card #authSubtitle{display:block!important;font-size:23px!important;line-height:1.35!important;margin:0 0 62px!important;color:#aebbd0!important;}
+#auth .auth-card #loginTitle,#auth .auth-divider,#auth .divider,#auth .auth-or,#auth .version,#auth .build-badge{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;}
+#auth #signupSocialArea{display:flex!important;justify-content:center!important;align-items:center!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+#auth .auth-google-links{display:flex!important;align-items:baseline!important;justify-content:center!important;gap:11px!important;margin:0!important;padding:0!important;text-align:center!important;font-size:29px!important;font-weight:850!important;line-height:1.25!important;}
+#auth .auth-google-separator{color:#d7e1ef!important;font:inherit!important;font-weight:750!important;opacity:.9!important;}
+#auth .google-text-link{all:unset!important;display:inline-flex!important;align-items:baseline!important;width:auto!important;min-width:0!important;margin:0!important;padding:0 0 3px!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;color:#f2f7ff!important;font:inherit!important;cursor:pointer!important;box-shadow:none!important;outline:none!important;vertical-align:baseline!important;text-decoration:none!important;border-bottom:2px dotted rgba(242,247,255,.86)!important;touch-action:manipulation!important;}
+#auth .google-text-link:hover,#auth .google-text-link:focus-visible{color:#fff!important;border-bottom-color:#fff!important;}
+#auth .google-text-link:active{opacity:.72!important;}
+#auth .google-word{display:inline-flex!important;margin-left:.22em!important;letter-spacing:-.055em!important;border-bottom:0!important;text-decoration:none!important;}
+#auth #loginMsg{margin-top:26px!important;text-align:center!important;color:#94a3b8!important;font-size:16px!important;}
+#auth #googleWorkspaceBox{margin-top:48px!important;text-align:center!important;}
+#auth #googleWorkspaceBox h2{font-size:30px!important;margin:0 0 22px!important;}
+#auth .atsrs-workspace-actions button,#auth .atsrs-workspace-actions button[type=button],#auth #googleWorkspaceBox .secondary{width:100%!important;background:rgba(255,255,255,.035)!important;background-image:none!important;border:1px solid rgba(148,163,184,.32)!important;border-radius:12px!important;color:#f8fafc!important;box-shadow:none!important;padding:14px 16px!important;}
+@media(max-width:600px){#auth.auth{padding:34px 28px!important;}#auth .auth-card .logo{font-size:54px!important;}#auth .auth-card #authSubtitle{font-size:21px!important;margin-bottom:48px!important;}#auth .auth-google-links{font-size:21px!important;gap:7px!important;}}
+</style>
 </head>
 <body class="atsrs-booting">
 <div id="atsrsBootScreen" role="status" aria-live="polite">
@@ -55,15 +78,10 @@
 
 <div id="loginBox" class="google-only-login">
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
-  <div class="auth-google-buttons" aria-label="Google account options">
-    <button id="googleSigninBtn" type="button" class="google-auth-button" onclick="atsrsGoogleSignIn(event)">
-      <span class="google-word google-brand" aria-hidden="true"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span>
-      <span class="google-action-text">Sign in</span>
-    </button>
-    <button id="googleSignupBtn" type="button" class="google-auth-button" onclick="atsrsGoogleSignUp(event)">
-      <span class="google-word google-brand" aria-hidden="true"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span>
-      <span class="google-action-text">Sign up</span>
-    </button>
+  <div class="auth-google-links" aria-label="Google account options">
+    <button id="googleSigninBtn" type="button" class="google-text-link" onclick="atsrsGoogleSignIn(event)">Sign in</button>
+    <span class="auth-google-separator" aria-hidden="true">/</span>
+    <button id="googleSignupBtn" type="button" class="google-text-link" onclick="atsrsGoogleSignUp(event)">Sign up with <span class="google-word google-brand" aria-hidden="true"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
   </div>
 </div>
 <p id="loginMsg" class="sub"></p>
@@ -523,7 +541,7 @@
 <script src="js/dashboard.js?v=210"></script>
 <script src="js/documents.js?v=200"></script>
 <script src="js/references.js?v=200"></script>
-<script src="js/account.js?v=217"></script>
+<script src="js/account.js?v=219"></script>
 <script src="js/app.js?v=200"></script>
 
 <!-- V61 TROUBLESHOOT: Topbar diagnostic button for language/logout scroll issue -->
