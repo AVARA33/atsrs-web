@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=205">
+<link rel="stylesheet" href="css/login.css?v=207">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -83,25 +83,15 @@
 <h1 class="logo">ATSRS</h1>
 <p id="authSubtitle" class="sub"></p>
 
-<div id="loginBox">
-<h2 id="loginTitle"></h2>
-<input id="loginEmail" type="email"><p id="loginEmailRule" class="error hidden"></p>
-<input id="loginPassword" type="password">
-<label id="rememberRow" class="remember-row"><input id="rememberMe" type="checkbox"><span>Remember me</span></label>
-<div id="modeChoiceBox" class="mode-choice">
-<button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal</button>
-<button type="button" id="companyModeBtn" onclick="setUseMode('company')">Corporate</button>
-</div>
-<p id="modeRule" class="mode-error-text"></p>
-<p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Select Personal or Corporate account to login.</span></p>
-<button id="loginBtn" onclick="login()"></button>
-
+<div id="loginBox" class="google-only-login">
+<h2 id="loginTitle">Login</h2>
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
-  <div class="auth-divider"><span>or</span></div>
-  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">Sign in / Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  <div class="auth-google-split">
+    <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in</button>
+    <span class="auth-google-separator">/</span>
+    <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignUp(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  </div>
 </div>
-
-<button id="forgotBtn" class="linkbtn" onclick="showForgot()"></button>
 <p id="loginMsg" class="sub"></p>
 </div>
 
@@ -143,8 +133,8 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V200</div>
-<div>Last Update: 04 Jul 2026</div>
+<div>ATSRS V207</div>
+<div>Last Update: 08 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
 </div>
@@ -557,14 +547,14 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=205"></script>
+<script src="js/storage.js?v=207"></script>
 <script src="js/ui.js?v=200"></script>
 <script src="js/auth.js?v=200"></script>
-<script src="js/login.js?v=205"></script>
-<script src="js/dashboard.js?v=205"></script>
+<script src="js/login.js?v=207"></script>
+<script src="js/dashboard.js?v=207"></script>
 <script src="js/documents.js?v=200"></script>
 <script src="js/references.js?v=200"></script>
-<script src="js/account.js?v=205"></script>
+<script src="js/account.js?v=207"></script>
 <script src="js/app.js?v=200"></script>
 
 
