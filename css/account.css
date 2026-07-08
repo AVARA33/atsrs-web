@@ -908,3 +908,99 @@ body > .atsrs-v64-top-actions,
   animation:none!important;
   transition:none!important;
 }
+
+/* V188 FINAL OVERRIDE — loaded after dashboard.css/login.css.
+   Reason: account.css is the last stylesheet in index.html, so dashboard.css/login.css overrides were being cancelled by later CSS. */
+body #dashboardPage .panel,
+body #dashboardPage .card,
+body #dashboardPage .hero-card,
+body #dashboardPage .mini-panel,
+body #dashboardPage .workflow-card,
+body #dashboardPage .snapshot-card,
+body #dashboardPage .dashboard-snapshot-panel,
+body #dashboardPage .share-card,
+body #dashboardPage #personalDashboardPanel,
+body #dashboardPage .solo-hero,
+body #dashboardPage .solo-hero.panel{
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  outline:0!important;
+}
+body #dashboardPage .panel::before,
+body #dashboardPage .panel::after,
+body #dashboardPage .card::before,
+body #dashboardPage .card::after,
+body #dashboardPage .hero-card::before,
+body #dashboardPage .hero-card::after,
+body #dashboardPage .mini-panel::before,
+body #dashboardPage .mini-panel::after,
+body #dashboardPage .snapshot-card::before,
+body #dashboardPage .snapshot-card::after,
+body #dashboardPage .share-card::before,
+body #dashboardPage .share-card::after{
+  display:none!important;
+  content:none!important;
+}
+body #dashboardPage .stats-grid .card{
+  padding:4px 0!important;
+  border-radius:0!important;
+}
+body #dashboardPage .snapshot-item,
+body #dashboardPage .risk-item{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:8px 0!important;
+  border-radius:0!important;
+}
+body #dashboardPage .share-link-box input{
+  background:rgba(2,6,23,.45)!important;
+  border:1px solid rgba(38,64,88,.65)!important;
+  box-shadow:none!important;
+}
+body #dashboardPage .pill{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* V188 Register account-type wave hint — final loaded stylesheet. */
+body #registerAccountTypeArea .mode-choice button,
+body #modeChoiceBox.mode-error button{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+body #registerAccountTypeArea.needs-choice .mode-choice button::before,
+body #registerAccountTypeArea .mode-choice.mode-error button::before,
+body #modeChoiceBox.mode-error button::before{
+  content:""!important;
+  position:absolute!important;
+  top:-45%!important;
+  left:-75%!important;
+  width:58%!important;
+  height:190%!important;
+  z-index:1!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.46),transparent)!important;
+  transform:rotate(18deg)!important;
+  animation:atsrsV188ChoiceWave 1.28s ease-in-out infinite!important;
+  pointer-events:none!important;
+  display:block!important;
+}
+body #registerAccountTypeArea.needs-choice .mode-choice button:nth-child(2)::before,
+body #registerAccountTypeArea .mode-choice.mode-error button:nth-child(2)::before,
+body #modeChoiceBox.mode-error button:nth-child(2)::before{
+  animation-delay:.22s!important;
+}
+body #registerAccountTypeArea:not(.needs-choice) .mode-choice:not(.mode-error) button::before,
+body #modeChoiceBox:not(.mode-error) button::before{
+  display:none!important;
+}
+@keyframes atsrsV188ChoiceWave{
+  0%{left:-78%;opacity:0;}
+  18%{opacity:1;}
+  62%{left:120%;opacity:.92;}
+  100%{left:120%;opacity:0;}
+}
