@@ -316,7 +316,7 @@
   function cleanSocial(){
     var area=byId('signupSocialArea');
     if(!area)return;
-    area.innerHTML='<div class="auth-divider"><span>or</span></div><div class="auth-google-split"><button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice">Sign in</button><span class="auth-google-separator">/</span><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice">Sign up with '+googleWord()+'</button></div>';
+    area.innerHTML='<div class="auth-google-buttons"><button id="googleSigninBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign in with Google</span></button><button id="googleSignupBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign up with Google</span></button></div>';
     bindGoogleSplit();
   }
   window.atsrsV157GoogleNotice=function(e){
@@ -356,7 +356,7 @@
   function render(){
     var area=byId('signupSocialArea');
     if(area){
-      area.innerHTML='<div class="auth-divider"><span>or</span></div><div class="auth-google-split"><button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice">Sign in</button><span class="auth-google-separator">/</span><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice">Sign up with '+googleWord()+'</button></div>';
+      area.innerHTML='<div class="auth-google-buttons"><button id="googleSigninBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign in with Google</span></button><button id="googleSignupBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign up with Google</span></button></div>';
     }
     bind();
   }
