@@ -189,6 +189,7 @@ function saveData(n,d){
   try{localStorage.setItem(key,JSON.stringify(d))}catch(e){console.warn("ATSRS storage save failed",n,e)}
 }
 function openApp(){
+  window.__atsrsSessionOpened=true;
   auth.classList.add("hidden");
   app.classList.remove("hidden");
   userEmail.innerText=currentUser.email;
@@ -1409,6 +1410,7 @@ setTimeout(v55DockTopActions,500);
     }
     function continueSession(session,event){
       if(!session || !session.user) return;
+      if(window.__atsrsSessionOpened) return;
       var user=session.user;
       var intent='';
       try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
@@ -1721,6 +1723,7 @@ setTimeout(v55DockTopActions,500);
   }
   function openAppForUser(user,mode,forceProfile){
     if(!user) return;
+    window.__atsrsSessionOpened=true;
     try{window.currentUser=user; currentUser=user;}catch(e){window.currentUser=user;}
     applyMode(mode||'personal');
     try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
@@ -1742,6 +1745,7 @@ setTimeout(v55DockTopActions,500);
   }
   async function routeSession(session,source){
     var user=getUserFromSession(session); if(!user) return false;
+    if(window.__atsrsSessionOpened) return false;
     var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
     var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
     var saved=''; try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
@@ -1755,6 +1759,8 @@ setTimeout(v55DockTopActions,500);
   }
   async function handleOAuthReturn(){
     if(!window.supabaseClient || !window.supabaseClient.auth) return;
+    if(window.__atsrsOAuthReturnHandled) return;
+    window.__atsrsOAuthReturnHandled=true;
     var hasCode=false;
     try{hasCode=new URLSearchParams(window.location.search).has('code');}catch(e){}
     if(hasCode && typeof window.supabaseClient.auth.exchangeCodeForSession==='function'){
