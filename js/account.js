@@ -370,3 +370,58 @@
   window.addEventListener('load',render);
   [80,250,700,1300,2400].forEach(function(ms){setTimeout(render,ms);});
 })();
+
+
+/* ATSRS V222 - authoritative Google OAuth click binding */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id);}
+  function setMsg(msg){var el=byId('loginMsg')||byId('regMsg'); if(el) el.textContent=msg||'';}
+  function redirectUrl(){
+    try{ return (window.location.origin || 'https://atsrs.com') + (window.location.pathname || '/'); }
+    catch(e){ return 'https://atsrs.com/'; }
+  }
+  function press(el){
+    if(!el)return;
+    el.classList.add('is-pressed');
+    setTimeout(function(){try{el.classList.remove('is-pressed');}catch(e){}},260);
+  }
+  async function startGoogle(intent,ev){
+    if(ev){ev.preventDefault();ev.stopPropagation();}
+    var btn=ev && ev.currentTarget ? ev.currentTarget : (intent==='signup'?byId('googleSignupBtn'):byId('googleSigninBtn'));
+    press(btn);
+    setMsg('');
+    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
+      setMsg('Google sign-in is not ready. Refresh the page and try again.');
+      return false;
+    }
+    try{localStorage.setItem('atsrs_google_intent',intent||'signin');}catch(e){}
+    try{
+      var result=await window.supabaseClient.auth.signInWithOAuth({
+        provider:'google',
+        options:{redirectTo:redirectUrl()}
+      });
+      if(result && result.error){setMsg(result.error.message || 'Google sign-in failed.');}
+    }catch(e){setMsg((e&&e.message)?e.message:'Google sign-in failed.');}
+    return false;
+  }
+  window.atsrsGoogleSignIn=function(ev){return startGoogle('signin',ev);};
+  window.atsrsGoogleSignUp=function(ev){return startGoogle('signup',ev);};
+  function bind(){
+    var signIn=byId('googleSigninBtn');
+    var signUp=byId('googleSignupBtn');
+    if(signIn){
+      signIn.onclick=function(ev){return window.atsrsGoogleSignIn(ev);};
+      signIn.setAttribute('role','button');
+      signIn.style.pointerEvents='auto';
+    }
+    if(signUp){
+      signUp.onclick=function(ev){return window.atsrsGoogleSignUp(ev);};
+      signUp.setAttribute('role','button');
+      signUp.style.pointerEvents='auto';
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+  window.addEventListener('load',bind);
+  [50,150,400,900,1500,2500].forEach(function(ms){setTimeout(bind,ms);});
+})();
