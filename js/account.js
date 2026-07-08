@@ -316,7 +316,7 @@
   function cleanSocial(){
     var area=byId('signupSocialArea');
     if(!area)return;
-    area.innerHTML='<div class="auth-google-buttons"><button id="googleSigninBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign in with Google</span></button><button id="googleSignupBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign up with Google</span></button></div>';
+    area.innerHTML='<div class="auth-google-buttons"><button id="googleSigninBtn" type="button" class="google-auth-button"><span class="google-word google-brand" aria-hidden="true">'+googleWord()+'</span><span class="google-action-text">Sign in</span></button><button id="googleSignupBtn" type="button" class="google-auth-button"><span class="google-word google-brand" aria-hidden="true">'+googleWord()+'</span><span class="google-action-text">Sign up</span></button></div>';
     bindGoogleSplit();
   }
   window.atsrsV157GoogleNotice=function(e){
@@ -356,7 +356,7 @@
   function render(){
     var area=byId('signupSocialArea');
     if(area){
-      area.innerHTML='<div class="auth-google-buttons"><button id="googleSigninBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign in with Google</span></button><button id="googleSignupBtn" type="button" class="google-auth-button"><span class="google-mark" aria-hidden="true">'+googleWord()+'</span><span>Sign up with Google</span></button></div>';
+      area.innerHTML='<div class="auth-google-buttons"><button id="googleSigninBtn" type="button" class="google-auth-button"><span class="google-word google-brand" aria-hidden="true">'+googleWord()+'</span><span class="google-action-text">Sign in</span></button><button id="googleSignupBtn" type="button" class="google-auth-button"><span class="google-word google-brand" aria-hidden="true">'+googleWord()+'</span><span class="google-action-text">Sign up</span></button></div>';
     }
     bind();
   }
