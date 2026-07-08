@@ -1480,3 +1480,75 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #auth .auth-google-separator{
   margin:0 8px!important;
 }
+
+/* ATSRS V214 - official-style split Google buttons, no underline */
+#auth .auth-google-split,
+#auth .auth-google-separator,
+#auth .google-text-link,
+#auth .link-underline{
+  text-decoration:none!important;
+  border:0!important;
+}
+#auth .auth-google-buttons{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:14px!important;
+  flex-wrap:wrap!important;
+  width:100%!important;
+  margin:0 auto!important;
+}
+#auth .google-auth-button,
+#auth .google-auth-button[type="button"]{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  width:auto!important;
+  min-width:205px!important;
+  min-height:46px!important;
+  padding:11px 18px!important;
+  margin:0!important;
+  border:1px solid rgba(226,232,240,.46)!important;
+  border-radius:12px!important;
+  background:rgba(15,23,42,.42)!important;
+  background-image:none!important;
+  color:#e5edf8!important;
+  font-size:15px!important;
+  font-weight:600!important;
+  line-height:1!important;
+  letter-spacing:.01em!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  text-decoration:none!important;
+  touch-action:manipulation!important;
+}
+#auth .google-auth-button:hover,
+#auth .google-auth-button:focus{
+  border-color:rgba(226,232,240,.72)!important;
+  background:rgba(30,41,59,.58)!important;
+  transform:translateY(-1px)!important;
+}
+#auth .google-auth-button:active{
+  transform:translateY(0)!important;
+}
+#auth .google-auth-button .google-mark{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  margin:0!important;
+  font-weight:800!important;
+  letter-spacing:-.05em!important;
+  line-height:1!important;
+}
+@media (max-width: 640px){
+  #auth .auth-google-buttons{
+    flex-direction:column!important;
+    gap:12px!important;
+  }
+  #auth .google-auth-button,
+  #auth .google-auth-button[type="button"]{
+    width:min(280px,86vw)!important;
+  }
+}
