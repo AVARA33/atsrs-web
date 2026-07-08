@@ -1111,3 +1111,152 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 .auth-card .atsrs-workspace-actions button::after{
   display:none!important;
 }
+
+
+/* ATSRS V209 - minimal Google-only login, no card box, split underline links */
+#auth.auth{
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  padding:28px 18px!important;
+}
+#auth .auth-bg-docs,
+#auth .auth-doc-stack,
+#auth .auth-intro{
+  display:none!important;
+}
+#auth .auth-card{
+  width:min(680px,100%)!important;
+  max-width:680px!important;
+  padding:0!important;
+  margin:0 auto!important;
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+#auth .auth-card .logo{
+  font-size:56px!important;
+  line-height:1!important;
+  margin:0 0 18px!important;
+}
+#auth .auth-card #authSubtitle{
+  font-size:23px!important;
+  margin:0 0 42px!important;
+}
+#auth .auth-card #loginTitle{
+  font-size:34px!important;
+  margin:0 0 54px!important;
+}
+#auth .auth-divider{
+  display:flex!important;
+  align-items:center!important;
+  gap:28px!important;
+  margin:0 0 26px!important;
+}
+#auth .auth-divider::before,
+#auth .auth-divider::after{
+  content:""!important;
+  height:1px!important;
+  flex:1!important;
+  background:rgba(148,163,184,.34)!important;
+}
+#auth .auth-divider span{
+  color:#94a3b8!important;
+  font-weight:800!important;
+  font-size:18px!important;
+}
+#auth .auth-google-split{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+  gap:0!important;
+  margin:0!important;
+  text-align:center!important;
+  font-size:20px!important;
+  font-weight:800!important;
+  line-height:1.35!important;
+}
+#auth .auth-google-split .google-text-link{
+  display:inline!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  color:#e5edf8!important;
+  font:inherit!important;
+  text-decoration-line:underline!important;
+  text-decoration-thickness:1.5px!important;
+  text-underline-offset:3px!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+  outline:none!important;
+  vertical-align:baseline!important;
+}
+#auth .auth-google-split .google-text-link:hover,
+#auth .auth-google-split .google-text-link:focus{
+  color:#ffffff!important;
+  background:transparent!important;
+  text-decoration-thickness:2px!important;
+}
+#auth .auth-google-split .google-text-link:active{
+  transform:none!important;
+  opacity:.72!important;
+}
+#auth .auth-google-separator{
+  color:#e5edf8!important;
+  font:inherit!important;
+  font-weight:800!important;
+  margin:0 1px!important;
+}
+#auth #loginMsg{
+  text-align:center!important;
+  margin-top:22px!important;
+}
+#auth #googleWorkspaceBox{
+  margin-top:44px!important;
+}
+#auth #googleWorkspaceBox h2{
+  font-size:32px!important;
+  margin:0 0 22px!important;
+}
+#auth .atsrs-workspace-actions{
+  gap:12px!important;
+}
+#auth .atsrs-workspace-actions button,
+#auth .atsrs-workspace-actions button[type="button"],
+#auth #googleWorkspaceBox .secondary{
+  width:100%!important;
+  background:rgba(255,255,255,.035)!important;
+  background-image:none!important;
+  border:1px solid rgba(148,163,184,.32)!important;
+  border-radius:12px!important;
+  color:#f8fafc!important;
+  box-shadow:none!important;
+  padding:14px 16px!important;
+}
+#auth .atsrs-workspace-actions button:hover,
+#auth .atsrs-workspace-actions button[type="button"]:hover,
+#auth #googleWorkspaceBox .secondary:hover{
+  background:rgba(255,255,255,.065)!important;
+  border-color:rgba(148,163,184,.50)!important;
+}
+#registerBox,
+#forgotBox,
+#newPasswordBox{
+  display:none!important;
+}
+@media(max-width:600px){
+  #auth.auth{align-items:flex-start!important;padding:56px 28px 34px!important;}
+  #auth .auth-card .logo{font-size:52px!important;}
+  #auth .auth-card #authSubtitle{font-size:22px!important;margin-bottom:38px!important;}
+  #auth .auth-card #loginTitle{font-size:34px!important;margin-bottom:50px!important;}
+  #auth .auth-google-split{font-size:20px!important;}
+}
