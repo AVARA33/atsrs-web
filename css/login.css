@@ -1449,3 +1449,34 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #auth .auth-google-split{display:flex!important;align-items:baseline!important;justify-content:center!important;gap:8px!important;margin:0!important;text-align:center!important;font-size:27px!important;font-weight:800!important;line-height:1.35!important;}
 #auth .auth-google-split .google-text-link{display:inline-flex!important;align-items:baseline!important;width:auto!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;color:#e5edf8!important;font:inherit!important;text-decoration-line:underline!important;text-decoration-thickness:1.5px!important;text-underline-offset:5px!important;cursor:pointer!important;box-shadow:none!important;outline:none!important;vertical-align:baseline!important;touch-action:manipulation!important;}
 #auth .google-word{display:inline-flex!important;margin-left:.18em!important;}
+
+
+/* ATSRS V213: dotted underline only under Sign in / Sign up; no Google underline; no version block */
+#auth .auth-divider,#auth .divider,#auth .auth-or,#auth .version,#auth #buildBadge,.build-badge{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;}
+#auth .auth-google-split .google-text-link{
+  text-decoration:none!important;
+  display:inline-flex!important;
+  align-items:baseline!important;
+  gap:0!important;
+}
+#auth .auth-google-split .google-text-link .link-underline{
+  display:inline-block!important;
+  border-bottom:2px dotted currentColor!important;
+  line-height:1.05!important;
+  padding-bottom:2px!important;
+}
+#auth .auth-google-split .google-text-link:hover .link-underline,
+#auth .auth-google-split .google-text-link:focus .link-underline{
+  border-bottom-style:solid!important;
+}
+#auth .auth-google-split .google-text-link .google-tail,
+#auth .auth-google-split .google-text-link .google-word{
+  text-decoration:none!important;
+  border-bottom:0!important;
+}
+#auth .google-word{
+  margin-left:0!important;
+}
+#auth .auth-google-separator{
+  margin:0 8px!important;
+}
