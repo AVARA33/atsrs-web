@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v110-clean-register-flow-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
@@ -193,7 +193,7 @@
 /* ===== extracted from inline script id=atsrs-v111-register-choice-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
@@ -310,7 +310,7 @@
 /* ===== extracted from inline script id=atsrs-v112-compact-register-choice-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -366,7 +366,7 @@
 /* ===== extracted from inline script id=atsrs-v113-test-social-flow-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
@@ -500,7 +500,7 @@
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V209';
+  var BUILD_LABEL = 'ATSRS V210';
   var UPDATE_LABEL = 'Last Update: 09 Jul 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
@@ -524,7 +524,7 @@
 /* ===== extracted from inline script id=atsrs-v115-flow-fix-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}

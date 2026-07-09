@@ -2,13 +2,13 @@
 /* ===== extracted from inline script id=ATSRS_V148_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V209';if(d[1])d[1].textContent='Last Update: 09 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V210';if(d[1])d[1].textContent='Last Update: 09 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS ===== */
 (function(){
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATED='22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -63,7 +63,7 @@
 /* ===== extracted from inline script id=ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -123,7 +123,7 @@
 /* ===== extracted from inline script id=ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -293,7 +293,7 @@
 /* ===== extracted from inline script id=atsrs-v157-login-cleanup-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V209';
+  var BUILD='ATSRS V210';
   var UPDATE='Last Update: 09 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
@@ -304,13 +304,11 @@
     if(rows.length>=3){rows[0].textContent=BUILD;rows[1].textContent=UPDATE;rows[2].textContent=TYPE;}
     else{badge.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';}
   }
-  function cleanSocial(){
-    var area=byId('signupSocialArea');
-    if(!area)return;
-    area.innerHTML='<div class="auth-divider"><span>or</span></div><button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice">Sign in / Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>';
-    var btn=byId('googleSignupBtn');
-    if(btn){btn.onclick=function(e){if(e)e.preventDefault();if(typeof window.atsrsGoogleSignUp==='function')return window.atsrsGoogleSignUp(e);var msg=byId('loginMsg')||byId('regMsg');if(msg)msg.textContent='Google sign-up is loading. Please refresh and try again.';return false;};}
-  }
+  /* V210: cleanSocial() used to force-rewrite #signupSocialArea back to a
+     single stale button + "or" divider on a repeating timer, destroying the
+     Sign In / Sign Up split and the pre-auth account-type panel added in
+     V208/V209. Disabled - the current markup in index.html is already the
+     intended clean UI and must not be overwritten. */
   window.atsrsV157GoogleNotice=function(e){
     if(e){e.preventDefault();e.stopPropagation();}
     if(typeof window.atsrsGoogleSignUp==='function') return window.atsrsGoogleSignUp(e);
@@ -318,7 +316,7 @@
     if(msg)msg.textContent='Google sign-up is loading. Please refresh and try again.';
     return false;
   };
-  function run(){lockBuild();cleanSocial();}
+  function run(){lockBuild();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',run);
   [80,250,700,1300,2400].forEach(function(ms){setTimeout(run,ms);});

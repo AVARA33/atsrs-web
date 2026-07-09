@@ -50,7 +50,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   min-height:100svh!important;
   height:auto!important;
   overflow-y:auto!important;
-  align-items:flex-start!important;
+  align-items:center!important;
   padding-top:32px!important;
   padding-bottom:32px!important;
 }
@@ -60,18 +60,29 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   overflow:visible!important;
   padding-bottom:28px!important;
 }
+/* V210: badge stays fixed to the viewport corner instead of sitting in the
+   login card flow (was position:static, which put it right under the
+   Google buttons instead of the bottom-right of the screen). */
 #auth:not(.hidden) .build-badge{
-  position:static!important;
+  position:fixed!important;
+  right:18px!important;
+  bottom:18px!important;
+  left:auto!important;
+  top:auto!important;
   display:block!important;
   width:fit-content!important;
-  max-width:100%!important;
-  margin:18px 0 0 auto!important;
+  max-width:calc(100% - 36px)!important;
+  margin:0!important;
   text-align:right!important;
 }
+html[dir="rtl"] #auth:not(.hidden) .build-badge{
+  right:auto!important;
+  left:18px!important;
+  text-align:left!important;
+}
 @media(max-width:800px){
-  #auth.auth{padding:16px!important;align-items:flex-start!important;justify-content:flex-start!important;}
+  #auth.auth{padding:16px!important;align-items:center!important;justify-content:center!important;}
   #auth:not(.hidden) .auth-card{padding:72px 20px 22px!important;}
-  #auth:not(.hidden) .build-badge{margin:16px auto 0!important;text-align:center!important;}
 }
 #atsrsTopbarTroubleBtn,
 #atsrsTopbarTroublePanel,
