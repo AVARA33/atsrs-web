@@ -690,11 +690,11 @@ function applyV27Language(){
 }
 const renderAllBaseV27=renderAll;renderAll=function(){renderAllBaseV27();renderSharePreview();}
 const V29_TEXT={
-  en:{introKicker:"PROFESSIONAL CAREER COMPLIANCE",introTitle:"Documents, expiry alerts and profile sharing.",introText:"Keep information organized and stay compliant.",featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for licences, certificates, permits and compliance documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their compliance records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A simple flow for personal users today and company compliance tomorrow.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and document dates.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Valid documents",snapRiskLabel:"Expiry risk",snapMissingLabel:"Missing documents",snapShareLabel:"Profile sharing",snapShare:"Ready"}
+  en:{featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for licences, certificates, permits and compliance documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their compliance records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A simple flow for personal users today and company compliance tomorrow.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and document dates.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Valid documents",snapRiskLabel:"Expiry risk",snapMissingLabel:"Missing documents",snapShareLabel:"Profile sharing",snapShare:"Ready"}
 };
 function v29(k){return (V29_TEXT[lang]&&V29_TEXT[lang][k])||V29_TEXT.en[k]||k}
 function applyV29Language(){
-  ["introKicker","introTitle","introText","featureDocsTitle","featureDocsText","featureUploadTitle","featureUploadText","featureScanTitle","featureScanText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","workflowBadge","workflowTitle","workflowSub","step1Title","step1Text","step2Title","step2Text","step3Title","step3Text","step4Title","step4Text","snapshotBadge","snapshotTitle","snapValidLabel","snapRiskLabel","snapMissingLabel","snapShareLabel"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v29(id);});
+  ["featureDocsTitle","featureDocsText","featureUploadTitle","featureUploadText","featureScanTitle","featureScanText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","workflowBadge","workflowTitle","workflowSub","step1Title","step1Text","step2Title","step2Text","step3Title","step3Text","step4Title","step4Text","snapshotBadge","snapshotTitle","snapValidLabel","snapRiskLabel","snapMissingLabel","snapShareLabel"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v29(id);});
   if(typeof snapShare!=="undefined")snapShare.innerText=v29('snapShare');
 }
 function renderV29Snapshot(){
@@ -729,9 +729,6 @@ function applyV30BgLanguage(){["bgDocPassportTitle","bgDocPassportText","bgDocMe
 const applyLanguageBaseV30=applyLanguage;applyLanguage=function(){applyLanguageBaseV30();applyV30BgLanguage();}
 const V35_LOGIN_TEXT={
   en:{
-    introKicker:"ATSRS Platform",
-    introTitle:"Documents, expiry alerts and profile sharing.",
-    introText:"Keep information organized and stay compliant.",
     featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",
     featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",
     featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",
@@ -747,16 +744,13 @@ const V35_LOGIN_TEXT={
 };
 function v35(k){return (V35_LOGIN_TEXT[lang]&&V35_LOGIN_TEXT[lang][k])||V35_LOGIN_TEXT.en[k]||k}
 function applyV35LoginLanguage(){
-  ["introKicker","introTitle","introText","featureDocsTitle","featureDocsText","featureUploadTitle","featureUploadText","featureScanTitle","featureScanText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","bgDocPassportTitle","bgDocPassportText","bgDocMedicalTitle","bgDocMedicalText","bgDocTrainingTitle","bgDocTrainingText","bgDocShareTitle","bgDocShareText","bgDocCompanyTitle","bgDocCompanyText"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v35(id);});
+  ["featureDocsTitle","featureDocsText","featureUploadTitle","featureUploadText","featureScanTitle","featureScanText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","bgDocPassportTitle","bgDocPassportText","bgDocMedicalTitle","bgDocMedicalText","bgDocTrainingTitle","bgDocTrainingText","bgDocShareTitle","bgDocShareText","bgDocCompanyTitle","bgDocCompanyText"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v35(id);});
 }
 const applyLanguageBaseV35=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV35();applyV35LoginLanguage();};
 applyV35LoginLanguage();
 const V36_LOGIN_TEXT={
   en:{
-    introKicker:"ATSRS Platform",
-    introTitle:"Documents, expiry alerts and profile sharing.",
-    introText:"Keep information organized and stay compliant.",
     featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",
     featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",
     featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",
