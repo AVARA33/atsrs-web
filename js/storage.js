@@ -1381,21 +1381,19 @@ setTimeout(v55DockTopActions,500);
     function hasWorkspace(user,mode){
       try{return localStorage.getItem(workspaceKey(user,mode))==='1';}catch(e){return false;}
     }
+    function resetWorkspaceBox(){
+      var title=byId('workspaceTitle'); if(title){title.textContent='Choose account type';title.classList.remove('hidden');}
+      var info=byId('workspaceInfo'); if(info){info.textContent='';info.classList.add('hidden');}
+      var actions=byId('workspaceActions'); if(actions) actions.classList.remove('hidden');
+      var msg=byId('workspaceMsg'); if(msg) msg.textContent='';
+    }
     function showWorkspaceChoice(user,reason){
       currentUser=user;
       window.currentUser=user;
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
       if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+      resetWorkspaceBox();
       var box=byId('googleWorkspaceBox');
-      var msg=byId('workspaceMsg');
-      var info=byId('workspaceInfo');
-      var p=byId('workspacePersonalBtn');
-      var c=byId('workspaceCorporateBtn');
-      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
-      if(info){info.textContent=''; info.classList.add('hidden');}
-      if(p){var pb=p.querySelector('b'); if(pb) pb.textContent=pHas?'Continue as Personal':'Create Personal Account'; var ps=p.querySelector('span'); if(ps) ps.remove();}
-      if(c){var cb=c.querySelector('b'); if(cb) cb.textContent=cHas?'Continue as Corporate':'Create Corporate Account'; var cs=c.querySelector('span'); if(cs) cs.remove();}
-      if(msg) msg.textContent='';
       if(box) box.classList.remove('hidden');
       document.body.classList.remove('atsrs-booting');
     }
@@ -1404,36 +1402,59 @@ setTimeout(v55DockTopActions,500);
       window.currentUser=user;
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
       if(typeof hideAuthBoxes==='function') hideAuthBoxes();
-      var box=byId('googleWorkspaceBox');
+      resetWorkspaceBox();
       var info=byId('workspaceInfo');
-      var p=byId('workspacePersonalBtn');
-      var c=byId('workspaceCorporateBtn');
       if(info){info.textContent='This Google account already exists. Please sign in.';info.classList.remove('hidden');}
-      if(p){var pb=p.querySelector('b'); if(pb) pb.textContent=existingMode==='personal'?'Continue as Personal':'Create Personal Account'; var ps=p.querySelector('span'); if(ps) ps.remove();}
-      if(c){var cb=c.querySelector('b'); if(cb) cb.textContent=existingMode==='company'?'Continue as Corporate':'Create Corporate Account'; var cs=c.querySelector('span'); if(cs) cs.remove();}
+      var box=byId('googleWorkspaceBox');
       if(box) box.classList.remove('hidden');
       document.body.classList.remove('atsrs-booting');
     }
-    /* V208: existence of a saved workspace (per Google user id) is now the
-       source of truth for new-vs-existing, instead of the pre-auth intent
-       string. If exactly one workspace exists it opens directly; if both
-       exist the user picks which to open; if none exist it is a real new
-       account (created with the type chosen in the pre-auth panel, when
-       available). Prevents showing the workspace picker to returning users
-       and prevents creating a duplicate workspace type on repeat sign-up. */
+    function showNotRegisteredNotice(user){
+      currentUser=user;
+      window.currentUser=user;
+      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+      resetWorkspaceBox();
+      var title=byId('workspaceTitle'); if(title) title.classList.add('hidden');
+      var actions=byId('workspaceActions'); if(actions) actions.classList.add('hidden');
+      var info=byId('workspaceInfo');
+      if(info){info.textContent='This Google account is not registered. Please sign up.';info.classList.remove('hidden');}
+      var box=byId('googleWorkspaceBox');
+      if(box) box.classList.remove('hidden');
+      document.body.classList.remove('atsrs-booting');
+    }
+    /* V209: Sign In and Sign Up are now separate entry points with their own
+       atsrs_google_intent. Sign In never shows Personal/Corporate selection
+       and never creates a workspace - it only opens an existing one, or
+       shows the "not registered" notice. Sign Up is the only path that can
+       create a new workspace, and warns instead of duplicating when the
+       chosen type differs from one the identity already has. */
     function continueSession(session,event){
       if(!session || !session.user) return;
       var user=session.user;
+      var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
       var saved='';
       try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+
+      if(intent==='signin'){
+        if(!pHas && !cHas){ showNotRegisteredNotice(user); return; }
+        var signinMode=(saved==='personal'&&pHas)?'personal':(saved==='company'&&cHas)?'company':(pHas?'personal':'company');
+        applyAccountType(signinMode);
+        try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+        try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+        currentUser=user; window.currentUser=user;
+        if(typeof openApp==='function') openApp();
+        return;
+      }
+
       if(pHas && cHas){
         showWorkspaceChoice(user,event||'choose');
         return;
       }
       if(pHas || cHas){
         var existingMode=pHas?'personal':'company';
-        if(saved && saved!==existingMode){
+        if(intent==='signup' && saved && saved!==existingMode){
           showExistingAccountNotice(user,existingMode);
           return;
         }
@@ -1653,8 +1674,13 @@ setTimeout(v55DockTopActions,500);
   };
   window.atsrsBackToLogin=function(){
     hideAuthBoxesSafe();
+    try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
     var box=byId('loginBox'); if(box) box.classList.remove('hidden');
     var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+    var modeBox=byId('modeChoiceBox'); if(modeBox) modeBox.classList.remove('mode-error');
+    var rule=byId('modeRule'); if(rule){rule.textContent='';rule.classList.remove('active');}
+    var wMsg=byId('workspaceMsg'); if(wMsg) wMsg.textContent='';
+    var wInfo=byId('workspaceInfo'); if(wInfo){wInfo.textContent='';wInfo.classList.add('hidden');}
   };
   /* V208: single Google button now opens an account-type panel before
      signInWithOAuth is called, instead of starting Google immediately. */

@@ -9,8 +9,8 @@
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<link rel="stylesheet" href="css/base.css?v=200">
-<link rel="stylesheet" href="css/login.css?v=206">
+<link rel="stylesheet" href="css/base.css?v=201">
+<link rel="stylesheet" href="css/login.css?v=207">
 <link rel="stylesheet" href="css/dashboard.css?v=200">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -59,10 +59,11 @@
 
 <div id="loginBox">
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
-  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsOpenGoogleChoice(event)">Sign in / Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsOpenGoogleChoice(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
 
   <div id="googleChoiceArea" class="hidden google-choice-area">
-    <p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Select Personal or Corporate to continue.</span></p>
+    <p id="modeInstruction" class="mode-instruction"><span class="mode-instruction-icon">!</span><span>Choose account type</span></p>
     <div id="modeChoiceBox" class="mode-choice">
     <button type="button" id="personalModeBtn" onclick="setUseMode('personal')">Personal</button>
     <button type="button" id="companyModeBtn" onclick="setUseMode('company')">Corporate</button>
@@ -78,9 +79,9 @@
 <div id="googleWorkspaceBox" class="hidden atsrs-workspace-box">
 <h2 id="workspaceTitle">Choose account type</h2>
 <p id="workspaceInfo" class="sub hidden"></p>
-<div class="atsrs-workspace-actions">
-<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Create Personal Account</b></button>
-<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Create Corporate Account</b></button>
+<div id="workspaceActions" class="mode-choice atsrs-workspace-actions">
+<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Personal</b></button>
+<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Corporate</b></button>
 </div>
 <button type="button" class="secondary" onclick="atsrsBackToLogin()">Back to login</button>
 <p id="workspaceMsg" class="sub"></p>
@@ -113,7 +114,7 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V208</div>
+<div>ATSRS V209</div>
 <div>Last Update: 09 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -525,7 +526,7 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=208"></script>
+<script src="js/storage.js?v=209"></script>
 <script src="js/ui.js?v=200"></script>
 <script src="js/auth.js?v=201"></script>
 <script src="js/login.js?v=205"></script>

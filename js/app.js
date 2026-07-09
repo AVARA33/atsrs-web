@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V208';
+  var BUILD='ATSRS V209';
   var UPDATE='Last Update: 09 Jul 2026';
   var TYPE='TEST BUILD';
   var cleaning=false;
@@ -44,7 +44,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V208';
+  var BUILD='ATSRS V209';
   var UPDATE='Last Update: 09 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -284,7 +284,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V208';
+      if(d[0])d[0].textContent='ATSRS V209';
       if(d[1])d[1].textContent='Last Update: 09 Jul 2026';
       if(d[2])d[2].textContent='TEST BUILD';
     });

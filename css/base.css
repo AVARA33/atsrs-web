@@ -574,6 +574,15 @@ body > .atsrs-global-top-actions .app-lang-switcher{
   max-width:430px!important;
   flex:0 0 430px!important;
 }
+/* ATSRS V209 - remove the login "card" container look; the Google entry
+   floats directly on the auth background, no colored box behind it. */
+#auth .auth-card{
+  background:none!important;
+  border:none!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  padding:20px!important;
+}
 
 #auth{
   gap:24px!important;
