@@ -46,12 +46,14 @@ body.personal-mode #dashboardPage .stats-grid{grid-template-columns:repeat(auto-
 body.personal-mode #dashboardPage .card{border-color:#264058!important}
 @media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
 
+/* V211: padding-top is intentionally larger than padding-bottom so the
+   centered card sits slightly below true vertical center, per request. */
 #auth.auth{
   min-height:100svh!important;
   height:auto!important;
   overflow-y:auto!important;
   align-items:center!important;
-  padding-top:32px!important;
+  padding-top:96px!important;
   padding-bottom:32px!important;
 }
 #auth:not(.hidden) .auth-card{
@@ -81,7 +83,7 @@ html[dir="rtl"] #auth:not(.hidden) .build-badge{
   text-align:left!important;
 }
 @media(max-width:800px){
-  #auth.auth{padding:16px!important;align-items:center!important;justify-content:center!important;}
+  #auth.auth{padding:72px 16px 20px!important;align-items:center!important;justify-content:center!important;}
   #auth:not(.hidden) .auth-card{padding:72px 20px 22px!important;}
 }
 #atsrsTopbarTroubleBtn,

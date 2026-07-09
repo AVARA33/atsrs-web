@@ -1386,6 +1386,7 @@ setTimeout(v55DockTopActions,500);
       var info=byId('workspaceInfo'); if(info){info.textContent='';info.classList.add('hidden');}
       var actions=byId('workspaceActions'); if(actions) actions.classList.remove('hidden');
       var msg=byId('workspaceMsg'); if(msg) msg.textContent='';
+      var goSignup=byId('workspaceGoSignupBtn'); if(goSignup) goSignup.classList.add('hidden');
     }
     function showWorkspaceChoice(user,reason){
       currentUser=user;
@@ -1404,7 +1405,7 @@ setTimeout(v55DockTopActions,500);
       if(typeof hideAuthBoxes==='function') hideAuthBoxes();
       resetWorkspaceBox();
       var info=byId('workspaceInfo');
-      if(info){info.textContent='This Google account already exists. Please sign in.';info.classList.remove('hidden');}
+      if(info){info.textContent='This Google account already exists. Please Sign In.';info.classList.remove('hidden');}
       var box=byId('googleWorkspaceBox');
       if(box) box.classList.remove('hidden');
       document.body.classList.remove('atsrs-booting');
@@ -1418,7 +1419,8 @@ setTimeout(v55DockTopActions,500);
       var title=byId('workspaceTitle'); if(title) title.classList.add('hidden');
       var actions=byId('workspaceActions'); if(actions) actions.classList.add('hidden');
       var info=byId('workspaceInfo');
-      if(info){info.textContent='This Google account is not registered. Please sign up.';info.classList.remove('hidden');}
+      if(info){info.textContent='This Google account is not registered. Please Sign Up.';info.classList.remove('hidden');}
+      var goSignup=byId('workspaceGoSignupBtn'); if(goSignup) goSignup.classList.remove('hidden');
       var box=byId('googleWorkspaceBox');
       if(box) box.classList.remove('hidden');
       document.body.classList.remove('atsrs-booting');
@@ -1672,18 +1674,28 @@ setTimeout(v55DockTopActions,500);
     if(e && e.preventDefault)e.preventDefault();
     return startGoogle(e,'signup');
   };
+  /* V211: reset every transient state the choice/workspace panels can be
+     left in, so Back to Login always returns to a clean [Sign In][Sign Up]
+     screen - no leftover panel, no leftover error/notice text. */
   window.atsrsBackToLogin=function(){
     hideAuthBoxesSafe();
     try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
     var box=byId('loginBox'); if(box) box.classList.remove('hidden');
+    var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
     var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+    var continueBtn=byId('continueGoogleBtn'); if(continueBtn) continueBtn.classList.add('hidden');
+    var p=byId('personalModeBtn'); if(p) p.classList.remove('active');
+    var c=byId('companyModeBtn'); if(c) c.classList.remove('active');
     var modeBox=byId('modeChoiceBox'); if(modeBox) modeBox.classList.remove('mode-error');
     var rule=byId('modeRule'); if(rule){rule.textContent='';rule.classList.remove('active');}
     var wMsg=byId('workspaceMsg'); if(wMsg) wMsg.textContent='';
     var wInfo=byId('workspaceInfo'); if(wInfo){wInfo.textContent='';wInfo.classList.add('hidden');}
+    var goSignup=byId('workspaceGoSignupBtn'); if(goSignup) goSignup.classList.add('hidden');
   };
   /* V208: single Google button now opens an account-type panel before
-     signInWithOAuth is called, instead of starting Google immediately. */
+     signInWithOAuth is called, instead of starting Google immediately.
+     V211: Continue with Google only appears once Personal/Corporate has
+     actually been chosen (see atsrsSelectGoogleMode). */
   window.atsrsOpenGoogleChoice=function(ev){
     if(ev && ev.preventDefault) ev.preventDefault();
     var area=byId('googleChoiceArea');
@@ -1692,9 +1704,24 @@ setTimeout(v55DockTopActions,500);
     area.classList.toggle('hidden');
     if(opening){
       var saved=''; try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
-      if(saved==='personal' || saved==='company') applyMode(saved);
+      if(saved==='personal' || saved==='company'){
+        applyMode(saved);
+        var continueBtn=byId('continueGoogleBtn'); if(continueBtn) continueBtn.classList.remove('hidden');
+      }
       if(area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});
     }
+  };
+  /* V211: Personal/Corporate buttons inside the Google choice panel call
+     this instead of the shared setUseMode() directly, so selecting a type
+     also reveals the single "Continue with Google" button. Does not change
+     setUseMode() itself, so the register-page account-type buttons are
+     unaffected. */
+  window.atsrsSelectGoogleMode=function(mode){
+    if(mode!=='personal' && mode!=='company') return;
+    applyMode(mode);
+    var continueBtn=byId('continueGoogleBtn'); if(continueBtn) continueBtn.classList.remove('hidden');
+    var modeBox=byId('modeChoiceBox'); if(modeBox) modeBox.classList.remove('mode-error');
+    var rule=byId('modeRule'); if(rule){rule.textContent='';rule.classList.remove('active');}
   };
   function currentChoiceMode(){
     var p=byId('personalModeBtn'), c=byId('companyModeBtn');
@@ -1712,6 +1739,14 @@ setTimeout(v55DockTopActions,500);
       return;
     }
     return startGoogle(ev,'signup');
+  };
+  /* V211: CTA shown on the Sign In "not registered" notice - closes the
+     notice and reopens the Sign Up choice panel directly instead of making
+     the user click Sign Up again. */
+  window.atsrsGoToSignup=function(ev){
+    if(ev && ev.preventDefault) ev.preventDefault();
+    window.atsrsBackToLogin();
+    return window.atsrsOpenGoogleChoice();
   };
   window.atsrsChooseWorkspace=async function(mode){
     if(mode!=='personal' && mode!=='company') return;
