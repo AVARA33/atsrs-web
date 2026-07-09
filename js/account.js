@@ -2,13 +2,13 @@
 /* ===== extracted from inline script id=ATSRS_V148_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V212';if(d[1])d[1].textContent='Last Update: 09 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V213';if(d[1])d[1].textContent='Last Update: 09 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS ===== */
 (function(){
-  var BUILD='ATSRS V212';
+  var BUILD='ATSRS V213';
   var UPDATED='22 Jun 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -63,7 +63,7 @@
 /* ===== extracted from inline script id=ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V212';
+  var BUILD='ATSRS V213';
   var UPDATE='Last Update: 09 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -123,7 +123,7 @@
 /* ===== extracted from inline script id=ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V212';
+  var BUILD='ATSRS V213';
   var UPDATE='Last Update: 09 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -293,7 +293,7 @@
 /* ===== extracted from inline script id=atsrs-v157-login-cleanup-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V212';
+  var BUILD='ATSRS V213';
   var UPDATE='Last Update: 09 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}

@@ -7,17 +7,6 @@
     const m=document.getElementById('langMenu'); if(m)m.classList.add('hidden');
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
   };
-  function showModeInstruction(){const x=document.getElementById('modeInstruction');if(x)x.classList.add('active')}
-  function hideModeInstruction(){const x=document.getElementById('modeInstruction');if(x)x.classList.remove('active')}
-  const baseValidateUseMode=window.validateUseMode;
-  window.validateUseMode=function(){
-    const ok=typeof baseValidateUseMode==='function'?baseValidateUseMode():true;
-    if(ok){hideModeInstruction();}
-    else{showModeInstruction();const r=document.getElementById('modeRule');if(r)r.classList.remove('active');}
-    return ok;
-  };
-  const baseSetUseMode=window.setUseMode;
-  window.setUseMode=function(mode){if(typeof baseSetUseMode==='function')baseSetUseMode(mode);hideModeInstruction();};
   function forceEnglish(){
     try{localStorage.setItem('atsrs_lang','en');localStorage.setItem('lang','en')}catch(e){}
     window.lang='en';
@@ -92,106 +81,14 @@
   document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);setInterval(v78Apply,1000);
 })();
 
-/* ===== extracted from inline script id=atsrs-v85-remember-and-compact-login-script ===== */
-(function(){
-  'use strict';
-  function el(id){return document.getElementById(id)}
-  function loadRememberedLogin(){
-    const remember=el('rememberMe');
-    const email=el('loginEmail');
-    if(!remember||!email)return;
-    const saved=localStorage.getItem('atsrs_remember_me')==='1';
-    remember.checked=saved;
-    if(saved){
-      const savedEmail=localStorage.getItem('atsrs_saved_login_email')||'';
-      if(savedEmail&&!email.value)email.value=savedEmail;
-    }
-  }
-  function saveRememberPreference(){
-    const remember=el('rememberMe');
-    const email=el('loginEmail');
-    if(!remember||!email)return;
-    if(remember.checked){
-      localStorage.setItem('atsrs_remember_me','1');
-      localStorage.setItem('atsrs_saved_login_email',(email.value||'').trim());
-      if(window.useMode)localStorage.setItem('atsrs_use_mode',window.useMode);
-    }else{
-      localStorage.removeItem('atsrs_remember_me');
-      localStorage.removeItem('atsrs_saved_login_email');
-    }
-  }
-  const baseLogin=window.login;
-  window.login=function(){
-    saveRememberPreference();
-    return typeof baseLogin==='function'?baseLogin.apply(this,arguments):undefined;
-  };
-  const baseLocalTestLogin=window.localTestLogin;
-  window.localTestLogin=function(){
-    saveRememberPreference();
-    return typeof baseLocalTestLogin==='function'?baseLocalTestLogin.apply(this,arguments):undefined;
-  };
-  document.addEventListener('DOMContentLoaded',loadRememberedLogin);
-  window.addEventListener('load',function(){setTimeout(loadRememberedLogin,80)});
-  setTimeout(loadRememberedLogin,0);
-})();
-
-/* ===== extracted from inline script id=atsrs-v87-social-auth-script ===== */
-(function(){
-  'use strict';
-  const PROVIDERS={google:'google',microsoft:'azure',linkedin:'linkedin_oidc'};
-  const LABELS={google:'Google',microsoft:'Microsoft',linkedin:'LinkedIn'};
-  function messageTarget(flow){
-    return document.getElementById(flow==='register'?'regMsg':'loginMsg') || document.getElementById('loginMsg');
-  }
-  function getUseModeForSocial(){
-    try{return window.useMode || localStorage.getItem('atsrs_use_mode') || '';}catch(e){return window.useMode || '';}
-  }
-  function validateModeForSocial(flow){
-    if(typeof window.validateUseMode==='function')return window.validateUseMode();
-    const mode=getUseModeForSocial();
-    if(mode==='personal'||mode==='company')return true;
-    const target=messageTarget(flow);
-    if(target)target.textContent='Select Personal or Corporate account to register.';
-    return false;
-  }
-  window.atsrsSocialAuth=async function(providerKey,flow){
-    const label=LABELS[providerKey]||providerKey;
-    const provider=PROVIDERS[providerKey];
-    const target=messageTarget(flow);
-    if(target)target.textContent='';
-    if(!validateModeForSocial(flow)){try{document.getElementById('modeChoiceBox')?.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}return;}
-    if(window.useMode){try{localStorage.setItem('atsrs_use_mode',window.useMode);}catch(e){}}
-    if(!window.supabaseClient || !window.supabaseClient.auth || typeof window.supabaseClient.auth.signInWithOAuth!=='function'){
-      if(target)target.textContent=label+' sign-in will be available after OAuth is configured in Supabase.';
-      return;
-    }
-    try{
-      const redirectTo=(typeof window.APP_URL==='string'&&window.APP_URL)?window.APP_URL:(window.location.origin+window.location.pathname);
-      const result=await window.supabaseClient.auth.signInWithOAuth({provider:provider,options:{redirectTo:redirectTo}});
-      if(result && result.error && target)target.textContent=result.error.message || (label+' sign-in failed.');
-    }catch(e){
-      if(target)target.textContent=(e&&e.message)?e.message:(label+' sign-in is not configured yet.');
-    }
-  };
-})();
-
-/* ===== extracted from inline script ===== */
-/* V207: atsrsCompactMeaning IIFE removed. It only targeted #introKicker,
-   which was deleted with the auth-intro block; the code was dead. */
-
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V212';
+  const BUILD = 'ATSRS V213';
   const UPDATE = 'Last Update: 09 Jul 2026';
   const TEST = 'TEST BUILD';
-  const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
-  const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';
   const ATSRS_MEANING = 'Automated Tracking & Reporting System';
   function byId(id){ return document.getElementById(id); }
-  function currentAccountMode(){
-    return window.useMode || localStorage.getItem('atsrs_use_mode') || '';
-  }
   function applyBuildBadge(){
     const rows = document.querySelectorAll('.build-badge div');
     if(rows[0]) rows[0].textContent = BUILD;
@@ -204,59 +101,7 @@
     const subtitle = byId('authSubtitle');
     if(subtitle) subtitle.textContent = ATSRS_MEANING;
   }
-  function showAccountWarning(kind){
-    const box = byId('modeChoiceBox');
-    const rule = byId('modeRule');
-    const instruction = byId('modeInstruction');
-    const msg = kind === 'register' ? ACCOUNT_REGISTER : ACCOUNT_LOGIN;
-    if(box) box.classList.add('mode-error');
-    if(rule){ rule.textContent = msg; rule.classList.add('active'); }
-    if(instruction){ instruction.innerHTML = '<span class="mode-instruction-icon">!</span><span>'+msg+'</span>'; instruction.classList.add('active'); }
-  }
-  function clearAccountWarning(){
-    const box = byId('modeChoiceBox');
-    const rule = byId('modeRule');
-    const instruction = byId('modeInstruction');
-    if(box) box.classList.remove('mode-error');
-    if(rule) rule.classList.remove('active');
-    if(instruction) instruction.classList.remove('active');
-  }
-  function requireAccount(kind){
-    if(currentAccountMode()){ clearAccountWarning(); return true; }
-    showAccountWarning(kind);
-    const box = byId('modeChoiceBox');
-    if(box && box.scrollIntoView) box.scrollIntoView({behavior:'smooth', block:'center'});
-    return false;
-  }
-  function scrollToRegister(){
-    const target = byId('registerBox') || byId('registerForm') || byId('createBox') || byId('signupSocialArea');
-    if(target && target.scrollIntoView){ setTimeout(()=>target.scrollIntoView({behavior:'smooth', block:'center'}), 80); }
-  }
-  function bindValidation(){
-    const loginBtn = byId('loginBtn');
-    const testBtn = byId('localTestBtn');
-    const createBtn = byId('createBtn');
-    if(loginBtn && !loginBtn.dataset.cuBound){
-      const old = loginBtn.onclick;
-      loginBtn.onclick = function(e){ if(!requireAccount('login')) return false; return old ? old.call(this,e) : true; };
-      loginBtn.dataset.cuBound = '1';
-    }
-    if(testBtn && !testBtn.dataset.cuBound){
-      const old = testBtn.onclick;
-      testBtn.onclick = function(e){ if(!requireAccount('login')) return false; return old ? old.call(this,e) : true; };
-      testBtn.dataset.cuBound = '1';
-    }
-    if(createBtn && !createBtn.dataset.cuBound){
-      const old = createBtn.onclick;
-      createBtn.onclick = function(e){ if(!requireAccount('register')) return false; const r = old ? old.call(this,e) : true; scrollToRegister(); return r; };
-      createBtn.dataset.cuBound = '1';
-    }
-    ['personalModeBtn','companyModeBtn'].forEach(id=>{
-      const btn = byId(id);
-      if(btn && !btn.dataset.cuClear){ btn.addEventListener('click', clearAccountWarning); btn.dataset.cuClear='1'; }
-    });
-  }
-  function boot(){ applyBuildBadge(); lockIntro(); bindValidation(); }
+  function boot(){ applyBuildBadge(); lockIntro(); }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
   window.addEventListener('load', boot);
   setTimeout(boot, 100);

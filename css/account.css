@@ -427,14 +427,10 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
 }
 
 #auth #signupSocialArea{margin:6px 0 8px!important;text-align:center!important;}
-#auth #signupSocialArea .auth-divider{display:flex!important;align-items:center!important;gap:10px!important;margin:4px 0 4px!important;color:#8fa1b7!important;font-size:13px!important;font-weight:800!important;text-transform:none!important;}
-#auth #signupSocialArea .auth-divider::before,#auth #signupSocialArea .auth-divider::after{content:"";height:1px;background:#334155;flex:1;}
-#auth #signupSocialArea .auth-divider span{white-space:nowrap!important;}
 #auth .google-text-link{display:inline!important;width:auto!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#cbd5e1!important;font-size:14px!important;font-weight:800!important;text-transform:none!important;line-height:1.4!important;}
 #auth .google-text-link:hover{text-decoration:underline!important;color:#f8fafc!important;}
 #auth .google-word{font-weight:900!important;letter-spacing:.01em!important;}
 #auth .g-blue{color:#4285F4!important;}#auth .g-red{color:#EA4335!important;}#auth .g-yellow{color:#FBBC05!important;}#auth .g-green{color:#34A853!important;}
-#auth #socialGoogleBtn,#auth #socialMicrosoftBtn,#auth #socialLinkedInBtn,#auth .social-auth-icon{display:none!important;}
 
 
 /* V158 login clean: date-only build label, darker background, intro panel without box */
@@ -449,41 +445,6 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
     radial-gradient(circle at 16% 24%,rgba(34,197,94,.08),transparent 28%),
     radial-gradient(circle at 78% 38%,rgba(56,189,248,.06),transparent 30%)!important;
 }
-#auth .auth-intro{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  backdrop-filter:none!important;
-  padding:18px 8px!important;
-}
-#auth #introKicker.auth-kicker{
-  display:block!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  padding:0!important;
-  margin:0 0 14px!important;
-  border-radius:0!important;
-  color:#e8f7ef!important;
-}
-#auth #introKicker .intro-kicker-main{
-  display:block!important;
-  color:#f8fafc!important;
-  font-size:16px!important;
-  font-weight:900!important;
-  letter-spacing:.02em!important;
-  line-height:1.15!important;
-}
-#auth #introKicker .intro-kicker-sub{
-  display:block!important;
-  margin-top:5px!important;
-  color:#9fb0c5!important;
-  font-size:11.5px!important;
-  font-weight:800!important;
-  letter-spacing:.045em!important;
-  line-height:1.25!important;
-}
-#auth #introKicker .meaning-and{color:#86efac!important;}
 #auth:not(.hidden) .build-badge div:nth-child(2){white-space:nowrap!important;}
 
 #auth:not(.hidden) .build-badge{
@@ -495,37 +456,6 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
 #auth:not(.hidden) .build-badge div{
   text-shadow:0 2px 14px rgba(0,0,0,.55)!important;
 }
-#auth .feature-tile{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  border-radius:0!important;
-  padding:15px 14px 14px!important;
-  transform:none!important;
-}
-#auth .feature-tile:hover{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  transform:none!important;
-}
-#auth .feature-tile:nth-child(5),
-#auth .feature-tile:nth-child(6){
-  border:0!important;
-}
-#auth .feature-tile b,
-#auth .feature-tile span:not(.tile-icon){
-  text-shadow:0 2px 14px rgba(0,0,0,.55)!important;
-}
-#auth .tile-icon{
-  box-shadow:none!important;
-}
-#auth #introKicker.auth-kicker{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-
 #auth:not(.hidden) #buildBadge.build-badge{
   display:block!important;
   visibility:visible!important;

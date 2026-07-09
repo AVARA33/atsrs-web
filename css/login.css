@@ -523,21 +523,6 @@ body.auth-open > .atsrs-v56-top-actions{display:none!important;}
 @media(max-width:520px){
   #refsPage .career-record-actions{grid-template-columns:1fr!important;}
 }
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
 /* V118 Personal dashboard simplification + account badge */
 #dashboardPage .missing-card,
 #dashboardPage #missingDocs,
@@ -601,21 +586,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   #refsPage .career-record-list{max-height:216px!important;}
   #refsPage .career-record-row{min-height:42px!important;}
 }
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
 /* V118 Personal dashboard simplification + account badge */
 #dashboardPage .missing-card,
 #dashboardPage #missingDocs,
@@ -710,21 +680,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 html[dir="rtl"] #app.app > .top-actions{right:18px!important;left:auto!important;}
 @media(max-width:800px){html[dir="rtl"] #app.app > .top-actions{right:12px!important;left:auto!important;}}
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
 /* V118 Personal dashboard simplification + account badge */
 #dashboardPage .missing-card,
 #dashboardPage #missingDocs,
@@ -813,21 +768,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   #atsrsTopbarTroubleBtn{padding:10px 11px!important;font-size:12px!important}
   #atsrsTopbarTroublePanel{right:12px!important;top:74px!important;max-height:70vh!important}
 }
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-  max-width:720px!important;
-  margin-top:10px!important;
-}
-@media(max-width:760px){
-  #auth #introText{font-size:16px!important;}
-}
-
-
 /* V118 Personal dashboard simplification + account badge */
 #dashboardPage .missing-card,
 #dashboardPage #missingDocs,
@@ -900,14 +840,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   #atsrsTestAutomationPanel{right:12px!important;top:122px!important;max-height:72vh!important}
   #atsrsTestAutomationPanel .qa-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
-#auth #introTitle{
-  max-width:920px!important;
-}
-#auth #introText{
-  font-size:18px!important;
-  line-height:1.45!important;
-  color:#b8c5d6!important;
-
 /* V187 Register account-type hint: shine only on Personal / Corporate buttons */
 #registerAccountTypeArea .mode-choice button{
   position:relative!important;
@@ -964,12 +896,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 
 
 /* ATSRS V205 - classic login cleanup: Google-only registration, no dev/test buttons, simple workspace picker */
-#atsrsV113TestLoginGroup,
-#atsrsV115TestLoginGroup,
-#atsrsV117TestLoginGroup,
-#localTestBtn{
-  display:none!important;
-}
 #googleSignupBtn.google-text-link,
 #googleSignupBtn.google-auth-choice{
   cursor:pointer;
@@ -980,9 +906,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 .google-choice-area{
   margin-top:14px;
   padding-top:2px;
-}
-.google-continue-btn{
-  margin-top:4px;
 }
 .atsrs-workspace-box .sub.hidden,
 .atsrs-workspace-actions button span{
