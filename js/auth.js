@@ -182,8 +182,8 @@
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V168';
-  const UPDATE = 'Last Update: 01 Jul 2026';
+  const BUILD = 'ATSRS V207';
+  const UPDATE = 'Last Update: 09 Jul 2026';
   const TEST = 'TEST BUILD';
   const ACCOUNT_LOGIN = 'Select Personal or Corporate account to login.';
   const ACCOUNT_REGISTER = 'Select Personal or Corporate account to register.';

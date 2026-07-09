@@ -3,7 +3,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   var pendingProvider=null;
   var baseRegister=window.register;
@@ -194,7 +194,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   var selectedMode='';
   var pendingProvider=null;
@@ -311,7 +311,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function updateBuild(){
@@ -367,7 +367,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   var TEST='TEST BUILD';
   var socialProviderPending=null;
   function byId(id){return document.getElementById(id);}
@@ -500,8 +500,8 @@
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V168';
-  var UPDATE_LABEL = 'Last Update: 01 Jul 2026';
+  var BUILD_LABEL = 'ATSRS V207';
+  var UPDATE_LABEL = 'Last Update: 09 Jul 2026';
   var BUILD_TYPE = 'TEST BUILD';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
@@ -525,7 +525,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   var TYPE='TEST BUILD';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){

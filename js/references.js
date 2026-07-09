@@ -3,7 +3,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -55,7 +55,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
   function setBuild(){
@@ -154,7 +154,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
@@ -196,7 +196,7 @@
 (function(){
   'use strict';
   var BUILD='ATSRS V207';
-  var UPDATE='Last Update: 01 Jul 2026';
+  var UPDATE='Last Update: 09 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -270,7 +270,7 @@
 /* ===== extracted from inline script id=ATSRS_V147_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V168';if(d[1])d[1].textContent='Last Update: 01 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V207';if(d[1])d[1].textContent='Last Update: 09 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
   setBuild();
   document.addEventListener('DOMContentLoaded',setBuild);
   setTimeout(setBuild,300);
