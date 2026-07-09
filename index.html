@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=202">
-<link rel="stylesheet" href="css/login.css?v=208">
+<link rel="stylesheet" href="css/login.css?v=209">
 <link rel="stylesheet" href="css/dashboard.css?v=202">
 <link rel="stylesheet" href="css/documents.css?v=200">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -59,21 +59,15 @@
 
 <div id="loginBox">
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
-  <div class="google-auth-actions">
-    <button id="googleSigninBtn" type="button" class="google-auth-btn" onclick="atsrsGoogleSignIn(event)">Sign In</button>
-    <button id="googleSignupBtn" type="button" class="google-auth-btn" onclick="atsrsOpenGoogleChoice(event)">Sign Up</button>
-  </div>
-  <p class="google-auth-caption">with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></p>
+  <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsOpenGoogleChoice(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
 
   <div id="googleChoiceArea" class="hidden google-choice-area">
-    <p class="google-choice-heading">Create account</p>
-    <p class="google-choice-instruction">Choose account type</p>
     <div id="modeChoiceBox" class="mode-choice">
     <button type="button" id="personalModeBtn" onclick="atsrsSelectGoogleMode('personal')">Personal</button>
     <button type="button" id="companyModeBtn" onclick="atsrsSelectGoogleMode('company')">Corporate</button>
     </div>
     <p id="modeRule" class="mode-error-text"></p>
-    <button type="button" id="continueGoogleBtn" class="hidden google-continue-btn" onclick="atsrsGoogleContinue(event)">Continue with Google</button>
   </div>
 </div>
 
@@ -87,7 +81,6 @@
 <button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Personal</b></button>
 <button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Corporate</b></button>
 </div>
-<button type="button" id="workspaceGoSignupBtn" class="hidden" onclick="atsrsGoToSignup(event)">Go to Sign Up</button>
 <button type="button" class="secondary" onclick="atsrsBackToLogin()">Back to login</button>
 <p id="workspaceMsg" class="sub"></p>
 </div>
@@ -119,7 +112,7 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V211</div>
+<div>ATSRS V212</div>
 <div>Last Update: 09 Jul 2026</div>
 <div>TEST BUILD</div>
 </div>
@@ -531,7 +524,7 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=210"></script>
+<script src="js/storage.js?v=211"></script>
 <script src="js/ui.js?v=200"></script>
 <script src="js/auth.js?v=203"></script>
 <script src="js/login.js?v=207"></script>

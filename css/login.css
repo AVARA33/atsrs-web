@@ -984,53 +984,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 .google-continue-btn{
   margin-top:4px;
 }
-/* ATSRS V211 - two separate Sign In / Sign Up buttons + one shared
-   "with Google" caption, replacing the old single text-link buttons that
-   each repeated "with Google". */
-.google-auth-actions{
-  display:flex;
-  gap:10px;
-  margin:6px 0 0;
-}
-.google-auth-btn{
-  flex:1 1 0;
-  width:auto;
-  margin:0;
-  padding:13px 10px;
-  border-radius:12px;
-  border:1px solid rgba(148,163,184,.28);
-  background:#23364d;
-  color:#f8fafc;
-  font-weight:800;
-  font-size:15px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.google-auth-btn:hover{
-  border-color:rgba(56,189,248,.55);
-  background:#2a3f59;
-}
-.google-auth-caption{
-  margin:10px 0 0;
-  text-align:center;
-  color:#94a3b8;
-  font-size:13px;
-  font-weight:700;
-}
-.google-choice-heading{
-  margin:0 0 4px;
-  font-size:15px;
-  font-weight:900;
-  color:#f8fafc;
-  text-align:center;
-}
-.google-choice-instruction{
-  margin:0 0 10px;
-  font-size:13px;
-  font-weight:700;
-  color:#94a3b8;
-  text-align:center;
-}
 .atsrs-workspace-box .sub.hidden,
 .atsrs-workspace-actions button span{
   display:none!important;
