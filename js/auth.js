@@ -176,37 +176,8 @@
 })();
 
 /* ===== extracted from inline script ===== */
-(function(){
-  var desiredHTML='<span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span>';
-  var applying=false;
-  function atsrsCompactMeaning(){
-    var el=document.getElementById('introKicker');
-    if(!el || applying)return;
-    if(el.innerHTML!==desiredHTML){
-      applying=true;
-      el.innerHTML=desiredHTML;
-      applying=false;
-    }
-  }
-  atsrsCompactMeaning();
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',atsrsCompactMeaning);
-  window.addEventListener('load',atsrsCompactMeaning);
-  [0,100,300,800,1500].forEach(function(ms){setTimeout(atsrsCompactMeaning,ms);});
-  var baseApplyLanguage=window.applyLanguage;
-  if(typeof baseApplyLanguage==='function'){
-    window.applyLanguage=function(){
-      var result=baseApplyLanguage.apply(this,arguments);
-      atsrsCompactMeaning();
-      return result;
-    };
-  }
-  var observer=new MutationObserver(function(){atsrsCompactMeaning();});
-  var startObserver=function(){
-    var el=document.getElementById('introKicker');
-    if(el)observer.observe(el,{childList:true,characterData:true,subtree:true});
-  };
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver); else startObserver();
-})();
+/* V207: atsrsCompactMeaning IIFE removed. It only targeted #introKicker,
+   which was deleted with the auth-intro block; the code was dead. */
 
 /* ===== extracted from inline script ===== */
 (function(){
@@ -228,14 +199,8 @@
     if(rows[2]) rows[2].textContent = TEST;
   }
   function lockIntro(){
-    const kicker = byId('introKicker');
-    if(kicker){
-      kicker.innerHTML = '<span class="intro-kicker-main">ATSRS Platform</span><span class="intro-kicker-sub">Automated Tracking <span class="meaning-and">&amp;</span> Reporting System</span>';
-    }
-    const title = byId('introTitle');
-    if(title) title.textContent = 'Documents, expiry alerts and profile sharing.';
-    const text = byId('introText');
-    if(text) text.textContent = 'Keep information organized and stay compliant.';
+    /* V207: introKicker/introTitle/introText targets removed with the
+       auth-intro block. authSubtitle (login panel) is kept. */
     const subtitle = byId('authSubtitle');
     if(subtitle) subtitle.textContent = ATSRS_MEANING;
   }
