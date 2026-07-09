@@ -993,6 +993,15 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #googleSignupBtn.google-auth-choice{
   cursor:pointer;
 }
+/* ATSRS V208 - pre-auth account-type panel shown before Google is opened */
+.google-choice-area{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.google-continue-btn{
+  margin-top:4px;
+}
 .atsrs-workspace-box .sub.hidden,
 .atsrs-workspace-actions button span{
   display:none!important;

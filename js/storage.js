@@ -119,8 +119,8 @@ function hideAuthBoxes(){loginBox.classList.add("hidden");registerBox.classList.
 function showLogin(){hideAuthBoxes();loginBox.classList.remove("hidden")}
 function showRegister(){hideAuthBoxes();registerBox.classList.remove("hidden")}
 function showForgot(){hideAuthBoxes();forgotBox.classList.remove("hidden")}
-loginEmail.addEventListener("input",()=>clearEmailMark(loginEmail,loginEmailRule));regEmail.addEventListener("input",()=>clearEmailMark(regEmail,regEmailRule));resetEmail.addEventListener("input",()=>clearEmailMark(resetEmail,resetEmailRule));
-loginEmail.addEventListener("blur",()=>{if(loginEmail.value)markEmail(loginEmail,loginEmailRule)});regEmail.addEventListener("blur",()=>{if(regEmail.value)markEmail(regEmail,regEmailRule)});resetEmail.addEventListener("blur",()=>{if(resetEmail.value)markEmail(resetEmail,resetEmailRule)});
+if(typeof loginEmail!=="undefined"&&loginEmail)loginEmail.addEventListener("input",()=>clearEmailMark(loginEmail,loginEmailRule));regEmail.addEventListener("input",()=>clearEmailMark(regEmail,regEmailRule));resetEmail.addEventListener("input",()=>clearEmailMark(resetEmail,resetEmailRule));
+if(typeof loginEmail!=="undefined"&&loginEmail)loginEmail.addEventListener("blur",()=>{if(loginEmail.value)markEmail(loginEmail,loginEmailRule)});regEmail.addEventListener("blur",()=>{if(regEmail.value)markEmail(regEmail,regEmailRule)});resetEmail.addEventListener("blur",()=>{if(resetEmail.value)markEmail(resetEmail,resetEmailRule)});
 function validateRegisterFields(){let p1=regPassword.value.trim(),p2=regPassword2.value.trim(),ok=true;if(p1.length>0&&p1.length<6){regPassword.classList.add("input-error");passRule.classList.remove("hidden");ok=false}else{regPassword.classList.remove("input-error");passRule.classList.add("hidden")}if(p2.length>0&&p1!==p2){regPassword2.classList.add("input-error");matchRule.classList.remove("hidden");ok=false}else{regPassword2.classList.remove("input-error");matchRule.classList.add("hidden")}return ok}
 regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
@@ -1399,31 +1399,54 @@ setTimeout(v55DockTopActions,500);
       if(box) box.classList.remove('hidden');
       document.body.classList.remove('atsrs-booting');
     }
+    function showExistingAccountNotice(user,existingMode){
+      currentUser=user;
+      window.currentUser=user;
+      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+      var box=byId('googleWorkspaceBox');
+      var info=byId('workspaceInfo');
+      var p=byId('workspacePersonalBtn');
+      var c=byId('workspaceCorporateBtn');
+      if(info){info.textContent='This Google account already exists. Please sign in.';info.classList.remove('hidden');}
+      if(p){var pb=p.querySelector('b'); if(pb) pb.textContent=existingMode==='personal'?'Continue as Personal':'Create Personal Account'; var ps=p.querySelector('span'); if(ps) ps.remove();}
+      if(c){var cb=c.querySelector('b'); if(cb) cb.textContent=existingMode==='company'?'Continue as Corporate':'Create Corporate Account'; var cs=c.querySelector('span'); if(cs) cs.remove();}
+      if(box) box.classList.remove('hidden');
+      document.body.classList.remove('atsrs-booting');
+    }
+    /* V208: existence of a saved workspace (per Google user id) is now the
+       source of truth for new-vs-existing, instead of the pre-auth intent
+       string. If exactly one workspace exists it opens directly; if both
+       exist the user picks which to open; if none exist it is a real new
+       account (created with the type chosen in the pre-auth panel, when
+       available). Prevents showing the workspace picker to returning users
+       and prevents creating a duplicate workspace type on repeat sign-up. */
     function continueSession(session,event){
       if(!session || !session.user) return;
       var user=session.user;
-      var intent='';
-      try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
       var saved='';
       try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
-      if(intent==='signup' || !saved || (pHas && cHas)){
-        showWorkspaceChoice(user,intent||event||'session');
+      if(pHas && cHas){
+        showWorkspaceChoice(user,event||'choose');
         return;
       }
-      if(saved==='personal' && pHas){
-        applyAccountType('personal');
-      }else if(saved==='company' && cHas){
-        applyAccountType('company');
-      }else if(pHas && !cHas){
-        applyAccountType('personal');
-      }else if(cHas && !pHas){
-        applyAccountType('company');
+      if(pHas || cHas){
+        var existingMode=pHas?'personal':'company';
+        if(saved && saved!==existingMode){
+          showExistingAccountNotice(user,existingMode);
+          return;
+        }
+        applyAccountType(existingMode);
+      }else if(saved==='personal' || saved==='company'){
+        try{localStorage.setItem(workspaceKey(user,saved),'1');}catch(e){}
+        applyAccountType(saved);
       }else{
-        showWorkspaceChoice(user,intent||event||'new');
+        showWorkspaceChoice(user,event||'new');
         return;
       }
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
       currentUser=user;
       window.currentUser=user;
       if(typeof openApp==='function') openApp();
@@ -1631,6 +1654,38 @@ setTimeout(v55DockTopActions,500);
   window.atsrsBackToLogin=function(){
     hideAuthBoxesSafe();
     var box=byId('loginBox'); if(box) box.classList.remove('hidden');
+    var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+  };
+  /* V208: single Google button now opens an account-type panel before
+     signInWithOAuth is called, instead of starting Google immediately. */
+  window.atsrsOpenGoogleChoice=function(ev){
+    if(ev && ev.preventDefault) ev.preventDefault();
+    var area=byId('googleChoiceArea');
+    if(!area) return;
+    var opening=area.classList.contains('hidden');
+    area.classList.toggle('hidden');
+    if(opening){
+      var saved=''; try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+      if(saved==='personal' || saved==='company') applyMode(saved);
+      if(area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  };
+  function currentChoiceMode(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p && p.classList.contains('active')) return 'personal';
+    if(c && c.classList.contains('active')) return 'company';
+    var saved=''; try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+    return (saved==='personal'||saved==='company')?saved:'';
+  }
+  window.atsrsGoogleContinue=function(ev){
+    if(ev && ev.preventDefault) ev.preventDefault();
+    var mode=currentChoiceMode();
+    if(mode!=='personal' && mode!=='company'){
+      var box=byId('modeChoiceBox'); if(box) box.classList.add('mode-error');
+      var rule=byId('modeRule'); if(rule){rule.textContent='Select Personal or Corporate to continue with Google.';rule.classList.add('active');}
+      return;
+    }
+    return startGoogle(ev,'signup');
   };
   window.atsrsChooseWorkspace=async function(mode){
     if(mode!=='personal' && mode!=='company') return;
