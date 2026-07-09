@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=ATSRS_V142_REFERENCES_ICON_EXPAND_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V178';
+  var BUILD='ATSRS V207';
   var UPDATE='Last Update: 01 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -54,7 +54,7 @@
 /* ===== extracted from inline script id=ATSRS_V144_REFERENCES_OVERLAY_MAXIMIZE_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V178';
+  var BUILD='ATSRS V207';
   var UPDATE='Last Update: 01 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -153,7 +153,7 @@
 /* ===== extracted from inline script id=ATSRS_V145_REFERENCES_FULL_WIDTH_STACK_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V178';
+  var BUILD='ATSRS V207';
   var UPDATE='Last Update: 01 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function q(s,r){return (r||document).querySelector(s);}
@@ -195,7 +195,7 @@
 /* ===== extracted from inline script id=ATSRS_V146_REFERENCES_COMPACT_LIST_FIVE_FILES_SCROLL_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V178';
+  var BUILD='ATSRS V207';
   var UPDATE='Last Update: 01 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
