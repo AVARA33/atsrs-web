@@ -21,19 +21,17 @@
    in js/storage.js and was not touched. */
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V213';
-  var UPDATE_LABEL = 'Last Update: 09 Jul 2026';
-  var BUILD_TYPE = 'TEST BUILD';
+  var BUILD_LABEL = 'ATSRS V214';
+  var UPDATE_LABEL = 'Last Update: 12 Jul 2026';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');
     if(!badge) return;
     var rows = badge.querySelectorAll('div');
-    if(rows.length >= 3){
+    if(rows.length >= 2){
       rows[0].textContent = BUILD_LABEL;
       rows[1].textContent = UPDATE_LABEL;
-      rows[2].textContent = BUILD_TYPE;
     }else{
-      badge.innerHTML = '<div>'+BUILD_LABEL+'</div><div>'+UPDATE_LABEL+'</div><div>'+BUILD_TYPE+'</div>';
+      badge.innerHTML = '<div>'+BUILD_LABEL+'</div><div>'+UPDATE_LABEL+'</div>';
     }
   }
   lockBuildBadge();

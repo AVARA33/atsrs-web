@@ -874,12 +874,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 
 
 /* ATSRS V200: classic login Google workspace flow. Keeps classic login layout; only adds functional Google/workspace controls. */
-.google-auth-choice{
-  display:block;
-  width:100%;
-  text-align:center;
-  margin:6px 0 0 0;
-}
 .atsrs-workspace-box{
   margin-top:14px;
 }
@@ -895,11 +889,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 
 
-/* ATSRS V205 - classic login cleanup: Google-only registration, no dev/test buttons, simple workspace picker */
-#googleSignupBtn.google-text-link,
-#googleSignupBtn.google-auth-choice{
-  cursor:pointer;
-}
 /* ATSRS V208 - pre-auth account-type panel shown before Google is opened */
 /* V211 - divider line removed: no visual separator needed between the
    Sign In/Sign Up buttons and the account-type panel. */

@@ -2,21 +2,19 @@
 /* ===== extracted from inline script id=ATSRS_V148_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V213';if(d[1])d[1].textContent='Last Update: 09 Jul 2026';if(d[2])d[2].textContent='TEST BUILD';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V214';if(d[1])d[1].textContent='Last Update: 12 Jul 2026';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS ===== */
 (function(){
-  var BUILD='ATSRS V213';
-  var UPDATED='22 Jun 2026';
+  var BUILD='ATSRS V214';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent='Last Update: 09 Jul 2026'+UPDATED;
-      if(d[2])d[2].textContent='TEST BUILD';
+      if(d[1])d[1].textContent='Last Update: 12 Jul 2026';
     });
   }
   function compactRows(){
@@ -63,8 +61,8 @@
 /* ===== extracted from inline script id=ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
   var STORE='files';
@@ -123,8 +121,8 @@
 /* ===== extracted from inline script id=ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
   var STORE='referenceFiles';
@@ -195,8 +193,8 @@
 /* ===== extracted from inline script id=ATSRS_V156_CV_SLOTS_UNDER_MAIN_STABLE_LAYOUT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V156';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
   function byId(id){return document.getElementById(id);} 
@@ -293,16 +291,15 @@
 /* ===== extracted from inline script id=atsrs-v157-login-cleanup-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
-  var TYPE='TEST BUILD';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
     var badge=byId('buildBadge')||document.querySelector('.build-badge');
     if(!badge)return;
     var rows=badge.querySelectorAll('div');
-    if(rows.length>=3){rows[0].textContent=BUILD;rows[1].textContent=UPDATE;rows[2].textContent=TYPE;}
-    else{badge.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';}
+    if(rows.length>=2){rows[0].textContent=BUILD;rows[1].textContent=UPDATE;}
+    else{badge.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div>';}
   }
   /* V210: cleanSocial() used to force-rewrite #signupSocialArea back to a
      single stale button + "or" divider on a repeating timer, destroying the

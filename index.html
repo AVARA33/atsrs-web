@@ -10,11 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=213">
-<link rel="stylesheet" href="css/login.css?v=213">
+<link rel="stylesheet" href="css/login.css?v=214">
 <link rel="stylesheet" href="css/dashboard.css?v=213">
 <link rel="stylesheet" href="css/documents.css?v=213">
 <link rel="stylesheet" href="css/references.css?v=200">
-<link rel="stylesheet" href="css/account.css?v=213">
+<link rel="stylesheet" href="css/account.css?v=214">
 
 
 
@@ -59,8 +59,12 @@
 
 <div id="loginBox">
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
-  <button id="googleSigninBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsGoogleSignIn(event)">Sign in with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
-  <button id="googleSignupBtn" type="button" class="google-text-link google-auth-choice" onclick="atsrsOpenGoogleChoice(event)">Sign up with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></button>
+  <div class="auth-tabs">
+    <button id="googleSigninBtn" type="button" class="auth-tab active" onclick="atsrsAuthTabClick('signin',event)">Sign in</button>
+    <span class="auth-tab-sep">/</span>
+    <button id="googleSignupBtn" type="button" class="auth-tab" onclick="atsrsAuthTabClick('signup',event)">Sign up</button>
+  </div>
+  <p class="auth-tab-caption">with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></p>
 
   <div id="googleChoiceArea" class="hidden google-choice-area">
     <div id="modeChoiceBox" class="mode-choice">
@@ -112,9 +116,8 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V213</div>
-<div>Last Update: 09 Jul 2026</div>
-<div>TEST BUILD</div>
+<div>ATSRS V214</div>
+<div>Last Update: 12 Jul 2026</div>
 </div>
 </div>
 </section>
@@ -526,13 +529,13 @@
 
 <script src="js/storage.js?v=211"></script>
 <script src="js/ui.js?v=200"></script>
-<script src="js/auth.js?v=213"></script>
-<script src="js/login.js?v=213"></script>
-<script src="js/dashboard.js?v=213"></script>
-<script src="js/documents.js?v=213"></script>
-<script src="js/references.js?v=213"></script>
-<script src="js/account.js?v=213"></script>
-<script src="js/app.js?v=213"></script>
+<script src="js/auth.js?v=214"></script>
+<script src="js/login.js?v=214"></script>
+<script src="js/dashboard.js?v=214"></script>
+<script src="js/documents.js?v=214"></script>
+<script src="js/references.js?v=214"></script>
+<script src="js/account.js?v=214"></script>
+<script src="js/app.js?v=214"></script>
 
 
 

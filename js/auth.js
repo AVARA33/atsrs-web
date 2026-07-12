@@ -84,16 +84,14 @@
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V213';
-  const UPDATE = 'Last Update: 09 Jul 2026';
-  const TEST = 'TEST BUILD';
+  const BUILD = 'ATSRS V214';
+  const UPDATE = 'Last Update: 12 Jul 2026';
   const ATSRS_MEANING = 'Automated Tracking & Reporting System';
   function byId(id){ return document.getElementById(id); }
   function applyBuildBadge(){
     const rows = document.querySelectorAll('.build-badge div');
     if(rows[0]) rows[0].textContent = BUILD;
     if(rows[1]) rows[1].textContent = UPDATE;
-    if(rows[2]) rows[2].textContent = TEST;
   }
   function lockIntro(){
     /* V207: introKicker/introTitle/introText targets removed with the
@@ -101,6 +99,23 @@
     const subtitle = byId('authSubtitle');
     if(subtitle) subtitle.textContent = ATSRS_MEANING;
   }
+  /* V214: Sign in / Sign up tab active-state only. Delegates to the
+     unmodified Google OAuth functions in js/storage.js
+     (atsrsGoogleSignIn / atsrsOpenGoogleChoice). */
+  window.atsrsAuthTabClick = function(tab, ev){
+    if(ev && ev.preventDefault) ev.preventDefault();
+    const signinBtn = byId('googleSigninBtn');
+    const signupBtn = byId('googleSignupBtn');
+    if(signinBtn) signinBtn.classList.toggle('active', tab === 'signin');
+    if(signupBtn) signupBtn.classList.toggle('active', tab === 'signup');
+    if(tab === 'signup'){
+      if(typeof window.atsrsOpenGoogleChoice === 'function') window.atsrsOpenGoogleChoice(ev);
+    }else{
+      const choice = byId('googleChoiceArea');
+      if(choice && !choice.classList.contains('hidden')) choice.classList.add('hidden');
+      if(typeof window.atsrsGoogleSignIn === 'function') window.atsrsGoogleSignIn(ev);
+    }
+  };
   function boot(){ applyBuildBadge(); lockIntro(); }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
   window.addEventListener('load', boot);

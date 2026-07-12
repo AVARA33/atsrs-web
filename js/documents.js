@@ -4,8 +4,8 @@
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V213';
-    var UPDATE='Last Update: 09 Jul 2026';
+    var BUILD='ATSRS V214';
+    var UPDATE='Last Update: 12 Jul 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
@@ -57,8 +57,8 @@
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
     {kind:'reference',title:'References',desc:'Store reference letters and contact-ready career proof.',upload:'Upload',order:20,oldKeys:['atsrs_v105_reference_files','referenceFiles']},
@@ -253,8 +253,8 @@
 
 /* ===== extracted from inline script id=ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS ===== */
 (function(){
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){
@@ -314,8 +314,8 @@
 
 /* ===== extracted from inline script id=ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS ===== */
 (function(){
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent=BUILD;if(d[1])d[1].textContent=UPDATE;if(d[2])d[2].textContent='TEST BUILD';});}
@@ -401,8 +401,8 @@
 /* ===== extracted from inline script id=ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){

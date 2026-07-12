@@ -2,9 +2,8 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
-  var TYPE='TEST BUILD';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
     t=String(t||'').trim();
@@ -19,7 +18,7 @@
       document.querySelectorAll('.build-badge').forEach(function(b){
         if(b!==main) b.remove();
       });
-      main.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div><div>'+TYPE+'</div>';
+      main.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div>';
       document.querySelectorAll('#auth *').forEach(function(el){
         if(el===main || main.contains(el)) return;
         if(el.closest && el.closest('#buildBadge')) return;
@@ -44,8 +43,8 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V213';
-  var UPDATE='Last Update: 09 Jul 2026';
+  var BUILD='ATSRS V214';
+  var UPDATE='Last Update: 12 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -284,9 +283,8 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V213';
-      if(d[1])d[1].textContent='Last Update: 09 Jul 2026';
-      if(d[2])d[2].textContent='TEST BUILD';
+      if(d[0])d[0].textContent='ATSRS V214';
+      if(d[1])d[1].textContent='Last Update: 12 Jul 2026';
     });
   }
   lockBuild();
