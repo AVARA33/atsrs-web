@@ -1381,6 +1381,32 @@ setTimeout(v55DockTopActions,500);
     function hasWorkspace(user,mode){
       try{return localStorage.getItem(workspaceKey(user,mode))==='1';}catch(e){return false;}
     }
+    function persistWorkspace(user,mode){
+      if(!user || !user.id || (mode!=='personal' && mode!=='company')) return;
+      try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
+      applyAccountType(mode);
+    }
+    function clearTransientAuth(){
+      try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+      try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
+    }
+    function enterApp(user,mode){
+      persistWorkspace(user,mode);
+      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      clearTransientAuth();
+      var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+      var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
+      currentUser=user; window.currentUser=user;
+      window.__atsrsSessionOpened=true;
+      if(typeof openApp==='function') openApp();
+    }
+    function pendingSignupMode(saved){
+      var pendingMode=''; try{pendingMode=localStorage.getItem('atsrs_pending_account_type')||'';}catch(e){}
+      if(pendingMode!=='personal' && pendingMode!=='company'){
+        pendingMode=(saved==='personal'||saved==='company')?saved:'';
+      }
+      return pendingMode;
+    }
     function resetWorkspaceBox(){
       var title=byId('workspaceTitle'); if(title){title.textContent='Choose account type';title.classList.remove('hidden');}
       var info=byId('workspaceInfo'); if(info){info.textContent='';info.classList.add('hidden');}
@@ -1432,89 +1458,60 @@ setTimeout(v55DockTopActions,500);
     function continueSession(session,event){
       if(!session || !session.user) return;
       var user=session.user;
+      if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
+
       var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
       var saved='';
       try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
 
-      if(intent==='signin'){
-        if(!pHas && !cHas){ showNotRegisteredNotice(user); return; }
-        var signinMode=(saved==='personal'&&pHas)?'personal':(saved==='company'&&cHas)?'company':(pHas?'personal':'company');
-        applyAccountType(signinMode);
-        try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-        try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
-        currentUser=user; window.currentUser=user;
-        if(typeof openApp==='function') openApp();
-        return;
-      }
-
-      /* BUG FIX: Personal/Corporate must be asked ONE TIME ONLY, before the
-         Google redirect. atsrsSelectGoogleMode() persists the choice under
-         atsrs_pending_account_type before signInWithOAuth() runs. This
-         branch reads that stored value on the OAuth callback and finishes
-         account creation directly - it never calls showWorkspaceChoice()
-         or atsrsOpenGoogleChoice(), so the chooser cannot appear a second
-         time. This also makes repeat continueSession() calls for the same
-         callback (onAuthStateChange + getSession both fire) idempotent. */
-      if(intent==='signup'){
-        var pendingMode=''; try{pendingMode=localStorage.getItem('atsrs_pending_account_type')||'';}catch(e){}
-        if(pendingMode!=='personal' && pendingMode!=='company'){
-          pendingMode=(saved==='personal'||saved==='company')?saved:'';
-        }
-        function clearPendingType(){ try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){} }
-        function finishSignup(mode){
-          applyAccountType(mode);
-          try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-          try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
-          clearPendingType();
-          var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
-          currentUser=user; window.currentUser=user;
-          if(typeof openApp==='function') openApp();
-        }
-        if(pHas || cHas){
-          var signupExistingMode=pHas?'personal':'company';
-          if(pendingMode && pendingMode!==signupExistingMode){
-            clearPendingType();
-            showExistingAccountNotice(user,signupExistingMode);
-            return;
-          }
-          finishSignup(signupExistingMode);
-          return;
-        }
-        if(!pendingMode){
-          /* Should not happen - type is persisted before redirect. Fail
-             safe with a single chooser rather than silently guessing. */
-          showWorkspaceChoice(user,event||'new');
-          return;
-        }
-        try{localStorage.setItem(workspaceKey(user,pendingMode),'1');}catch(e){}
-        finishSignup(pendingMode);
-        return;
-      }
-
+      /* Permanent workspace restore runs before transient OAuth intent logic.
+         This is what keeps refresh from reopening "Choose account type" after
+         signup has already saved atsrs_workspace_<userId>_<mode> = "1". */
       if(pHas && cHas){
+        if(saved==='personal' || saved==='company'){ enterApp(user,saved); return; }
         showWorkspaceChoice(user,event||'choose');
         return;
       }
-      if(pHas || cHas){
-        var existingMode=pHas?'personal':'company';
-        if(intent==='signup' && saved && saved!==existingMode){
-          showExistingAccountNotice(user,existingMode);
+      if(pHas && !cHas){
+        if(intent==='signup' && pendingSignupMode(saved)==='company'){
+          clearTransientAuth();
+          showExistingAccountNotice(user,'personal');
           return;
         }
-        applyAccountType(existingMode);
-      }else if(saved==='personal' || saved==='company'){
-        try{localStorage.setItem(workspaceKey(user,saved),'1');}catch(e){}
-        applyAccountType(saved);
-      }else{
-        showWorkspaceChoice(user,event||'new');
+        enterApp(user,'personal');
         return;
       }
-      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-      try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
-      currentUser=user;
-      window.currentUser=user;
-      if(typeof openApp==='function') openApp();
+      if(cHas && !pHas){
+        if(intent==='signup' && pendingSignupMode(saved)==='personal'){
+          clearTransientAuth();
+          showExistingAccountNotice(user,'company');
+          return;
+        }
+        enterApp(user,'company');
+        return;
+      }
+
+      if(intent==='signin'){
+        showNotRegisteredNotice(user);
+        return;
+      }
+
+      if(intent==='signup'){
+        var pendingMode=pendingSignupMode(saved);
+        if(!pendingMode){
+          showWorkspaceChoice(user,event||'new');
+          return;
+        }
+        enterApp(user,pendingMode);
+        return;
+      }
+
+      if(saved==='personal' || saved==='company'){
+        enterApp(user,saved);
+        return;
+      }
+      showWorkspaceChoice(user,event||'new');
     }
     try{
       supabaseClient.auth.onAuthStateChange(function(event,session){
@@ -1768,12 +1765,14 @@ setTimeout(v55DockTopActions,500);
     if(!user && typeof currentUser!=='undefined') user=currentUser;
     if(!user){setMsg('workspaceMsg','Google session not found. Please sign in again.');return;}
     try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
-    try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
-    try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
     applyMode(mode);
     try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+    try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+    try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
     try{currentUser=user;}catch(e){}
     window.currentUser=user;
+    window.__atsrsSessionOpened=true;
+    var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
     try{
       await window.supabaseClient.auth.updateUser({data:{atsrs_last_workspace:mode}});
     }catch(e){}
