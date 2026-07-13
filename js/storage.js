@@ -167,7 +167,17 @@ function confirmLogout(){
   if(confirm("Are you sure you want to logout?")){ logout(); }
 }
 
-async function logout(){try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}localStorage.removeItem("atsrs_auth_mode");localStorage.removeItem("atsrs_current_page");location.reload()}
+async function logout(){
+  try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}
+  try{
+    localStorage.removeItem("atsrs_auth_mode");
+    localStorage.removeItem("atsrs_current_page");
+    localStorage.setItem("atsrs_google_intent","");
+    localStorage.removeItem("atsrs_pending_account_type");
+  }catch(e){}
+  try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
+  location.reload();
+}
 function localKey(n){
   if(!currentUser || !currentUser.id) return null;
   let mode="personal";
@@ -1372,7 +1382,13 @@ setTimeout(v55DockTopActions,500);
   }
   async function realLogout(){
     try{if(supabaseClient && supabaseClient.auth) await supabaseClient.auth.signOut();}catch(e){}
-    try{localStorage.removeItem('atsrs_auth_mode');localStorage.removeItem('atsrs_current_page');}catch(e){}
+    try{
+      localStorage.removeItem('atsrs_auth_mode');
+      localStorage.removeItem('atsrs_current_page');
+      localStorage.setItem('atsrs_google_intent','');
+      localStorage.removeItem('atsrs_pending_account_type');
+    }catch(e){}
+    try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
     location.reload();
   }
   function restoreSession(){
@@ -1696,9 +1712,13 @@ setTimeout(v55DockTopActions,500);
     }
     try{localStorage.setItem('atsrs_google_intent',intent||'signin');}catch(e){}
     try{
+      var oauthOptions={redirectTo:redirectUrl()};
+      if(intent==='signin'){
+        oauthOptions.queryParams={prompt:'select_account'};
+      }
       var res=await window.supabaseClient.auth.signInWithOAuth({
         provider:'google',
-        options:{redirectTo:redirectUrl()}
+        options:oauthOptions
       });
       if(res && res.error){setMsg('loginMsg',res.error.message||'Google sign-in failed.');}
     }catch(e){
