@@ -172,18 +172,18 @@ function confirmLogout(){
 
 async function logout(){
   if(typeof window.atsrsLogout==="function") return window.atsrsLogout();
-  try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){console.error("ATSRS logout signOut failed",e);}
   try{
     localStorage.removeItem("atsrs_auth_mode");
     localStorage.removeItem("atsrs_current_page");
+    localStorage.removeItem("atsrs_use_mode");
     localStorage.setItem("atsrs_google_intent","");
     localStorage.removeItem("atsrs_pending_account_type");
+    localStorage.setItem("atsrs_workspace_pick_required","1");
   }catch(e){console.warn("ATSRS logout storage clear failed",e);}
   try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
   var authEl=document.getElementById("auth"), appEl=document.getElementById("app");
   if(appEl) appEl.classList.add("hidden");
   if(authEl) authEl.classList.remove("hidden");
-  location.reload();
 }
 function localKey(n){
   if(!currentUser || !currentUser.id) return null;
@@ -1387,39 +1387,7 @@ setTimeout(v55DockTopActions,500);
       return !res.error;
     }catch(e){setText('newPassMsg',(e&&e.message)||'Connection failed.');return false;}
   }
-  async function realLogout(){
-    var authEl=byId('auth');
-    var appEl=byId('app');
-    var btn=byId('accountLogoutBtn');
-    if(btn){btn.disabled=true;btn.textContent='Signing out...';}
-    try{
-      if(supabaseClient && supabaseClient.auth){
-        var out=await supabaseClient.auth.signOut();
-        if(out && out.error) throw out.error;
-        var sess=await supabaseClient.auth.getSession();
-        if(sess && sess.data && sess.data.session){
-          console.warn('ATSRS logout: Supabase session still present after signOut');
-        }
-      }
-    }catch(err){
-      console.error('ATSRS logout failed',err);
-      if(btn){btn.disabled=false;btn.textContent='Logout';}
-      alert('Logout failed: '+((err && err.message)||String(err)));
-      return;
-    }
-    try{
-      localStorage.removeItem('atsrs_auth_mode');
-      localStorage.removeItem('atsrs_current_page');
-      localStorage.setItem('atsrs_google_intent','');
-      localStorage.removeItem('atsrs_pending_account_type');
-      localStorage.setItem('atsrs_force_google_account_choice','1');
-    }catch(e){console.warn('ATSRS logout storage update failed',e);}
-    try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
-    if(appEl) appEl.classList.add('hidden');
-    if(authEl) authEl.classList.remove('hidden');
-    location.reload();
-  }
-  function realExit(){
+  function showLoginScreen(){
     var authEl=byId('auth');
     var appEl=byId('app');
     window.__atsrsSessionOpened=false;
@@ -1430,6 +1398,29 @@ setTimeout(v55DockTopActions,500);
     if(appEl) appEl.classList.add('hidden');
     if(authEl) authEl.classList.remove('hidden');
     document.body.classList.remove('atsrs-booting');
+  }
+  function realLogout(){
+    var btn=byId('accountLogoutBtn');
+    if(btn){btn.disabled=true;btn.textContent='Logging out...';}
+    try{
+      localStorage.removeItem('atsrs_auth_mode');
+      localStorage.removeItem('atsrs_current_page');
+      localStorage.removeItem('atsrs_use_mode');
+      localStorage.setItem('atsrs_google_intent','');
+      localStorage.removeItem('atsrs_pending_account_type');
+      localStorage.removeItem('atsrs_force_google_account_choice');
+      localStorage.setItem('atsrs_workspace_pick_required','1');
+    }catch(e){console.warn('ATSRS logout storage update failed',e);}
+    try{currentUser=null;window.currentUser=null;}catch(e){}
+    showLoginScreen();
+    if(btn){btn.disabled=false;btn.textContent='Logout';}
+  }
+  function realExit(){
+    try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
+    try{localStorage.removeItem('atsrs_auth_mode');}catch(e){}
+    try{localStorage.removeItem('atsrs_current_page');}catch(e){}
+    try{currentUser=null;window.currentUser=null;}catch(e){}
+    showLoginScreen();
   }
   function bindAccountLogoutBtn(){
     var btn=byId('accountLogoutBtn');
@@ -1444,23 +1435,41 @@ setTimeout(v55DockTopActions,500);
   function restoreSession(){
     if(!supabaseClient || !supabaseClient.auth) return;
     function workspaceKey(user,mode){return 'atsrs_workspace_'+user.id+'_'+mode;}
+    function lastWorkspaceKey(user){return 'atsrs_last_workspace_'+user.id;}
     function hasWorkspace(user,mode){
       try{return localStorage.getItem(workspaceKey(user,mode))==='1';}catch(e){return false;}
+    }
+    function readLastWorkspace(user){
+      var last=''; try{last=localStorage.getItem(lastWorkspaceKey(user))||'';}catch(e){}
+      return (last==='personal'||last==='company')?last:'';
+    }
+    function saveLastWorkspace(user,mode){
+      if(!user || !user.id || (mode!=='personal' && mode!=='company')) return;
+      try{localStorage.setItem(lastWorkspaceKey(user),mode);}catch(e){}
     }
     function persistWorkspace(user,mode){
       if(!user || !user.id || (mode!=='personal' && mode!=='company')) return;
       try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
       applyAccountType(mode);
+      saveLastWorkspace(user,mode);
     }
     function clearTransientAuth(){
       try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
       try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
-      try{localStorage.removeItem('atsrs_force_google_account_choice');}catch(e){}
+    }
+    function shouldWaitOnLoginScreen(event){
+      var appEl=byId('app');
+      if(!appEl || !appEl.classList.contains('hidden')) return false;
+      if(event==='resume') return false;
+      var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
+      if(intent==='signin' || intent==='signup') return false;
+      return event==='INITIAL_SESSION' || event==='getSession' || event==='TOKEN_REFRESHED';
     }
     function enterApp(user,mode){
       persistWorkspace(user,mode);
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
       clearTransientAuth();
+      try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
       var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
       var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
       currentUser=user; window.currentUser=user;
@@ -1526,6 +1535,7 @@ setTimeout(v55DockTopActions,500);
       if(!session || !session.user) return;
       var user=session.user;
       if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
+      if(shouldWaitOnLoginScreen(event)) return;
 
       var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
@@ -1536,6 +1546,13 @@ setTimeout(v55DockTopActions,500);
          This is what keeps refresh from reopening "Choose account type" after
          signup has already saved atsrs_workspace_<userId>_<mode> = "1". */
       if(pHas && cHas){
+        var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
+        if(pickRequired){
+          showWorkspaceChoice(user,event||'choose');
+          return;
+        }
+        var lastMode=readLastWorkspace(user);
+        if(lastMode){ enterApp(user,lastMode); return; }
         if(saved==='personal' || saved==='company'){ enterApp(user,saved); return; }
         showWorkspaceChoice(user,event||'choose');
         return;
@@ -1780,21 +1797,15 @@ setTimeout(v55DockTopActions,500);
     try{
       var oauthOptions={redirectTo:redirectUrl()};
       if(intent==='signin'){
-        var forceChoice=false;
-        try{forceChoice=localStorage.getItem('atsrs_force_google_account_choice')==='1';}catch(e){}
-        if(!forceChoice){
-          try{
-            var sessR=await window.supabaseClient.auth.getSession();
-            var existing=sessR&&sessR.data&&sessR.data.session;
-            if(existing&&existing.user&&typeof window.atsrsResumeSession==='function'){
-              window.__atsrsSessionOpened=false;
-              window.atsrsResumeSession(existing);
-              return;
-            }
-          }catch(e){console.warn('ATSRS sign-in session reuse failed',e);}
-        }else{
-          oauthOptions.queryParams={prompt:'select_account'};
-        }
+        try{
+          var sessR=await window.supabaseClient.auth.getSession();
+          var existing=sessR&&sessR.data&&sessR.data.session;
+          if(existing&&existing.user&&typeof window.atsrsResumeSession==='function'){
+            window.__atsrsSessionOpened=false;
+            window.atsrsResumeSession(existing);
+            return;
+          }
+        }catch(e){console.warn('ATSRS sign-in session reuse failed',e);}
       }
       var res=await window.supabaseClient.auth.signInWithOAuth({
         provider:'google',
@@ -1865,10 +1876,12 @@ setTimeout(v55DockTopActions,500);
     if(!user && typeof currentUser!=='undefined') user=currentUser;
     if(!user){setMsg('workspaceMsg','Google session not found. Please sign in again.');return;}
     try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
+    try{localStorage.setItem('atsrs_last_workspace_'+user.id,mode);}catch(e){}
     applyMode(mode);
     try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
     try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
     try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
+    try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
     try{currentUser=user;}catch(e){}
     window.currentUser=user;
     window.__atsrsSessionOpened=true;
