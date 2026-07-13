@@ -510,6 +510,10 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
   font-size:13px!important;
   font-weight:700!important;
 }
+#profilePage .account-logout-row,
+#profilePage #accountLogoutBtn{
+  pointer-events:auto!important;
+}
 @media(max-width:480px){
   #auth .auth-tab{font-size:16px!important;}
   #auth .auth-tabs{gap:9px!important;}

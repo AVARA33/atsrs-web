@@ -2,13 +2,13 @@
 /* ===== extracted from inline script id=ATSRS_V148_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V215';if(d[1])d[1].textContent='Last Update: 12 Jul 2026';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V216';if(d[1])d[1].textContent='Last Update: 12 Jul 2026';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS ===== */
 (function(){
-  var BUILD='ATSRS V215';
+  var BUILD='ATSRS V216';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -61,7 +61,7 @@
 /* ===== extracted from inline script id=ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V215';
+  var BUILD='ATSRS V216';
   var UPDATE='Last Update: 12 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -121,7 +121,7 @@
 /* ===== extracted from inline script id=ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V215';
+  var BUILD='ATSRS V216';
   var UPDATE='Last Update: 12 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -193,7 +193,7 @@
 /* ===== extracted from inline script id=ATSRS_V156_CV_SLOTS_UNDER_MAIN_STABLE_LAYOUT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V215';
+  var BUILD='ATSRS V216';
   var UPDATE='Last Update: 12 Jul 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
@@ -291,7 +291,7 @@
 /* ===== extracted from inline script id=atsrs-v157-login-cleanup-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V215';
+  var BUILD='ATSRS V216';
   var UPDATE='Last Update: 12 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){

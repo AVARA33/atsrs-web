@@ -164,18 +164,25 @@ if(typeof personalDashboardPanel!=="undefined")personalDashboardPanel.classList.
 function localTestLogin(){if(!validateUseMode())return;currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");localStorage.setItem("atsrs_use_mode",useMode);openApp()}
 
 function confirmLogout(){
-  if(confirm("Are you sure you want to logout?")){ logout(); }
+  if(confirm("Are you sure you want to logout?")){
+    if(typeof window.atsrsLogout==="function") window.atsrsLogout();
+    else logout();
+  }
 }
 
 async function logout(){
-  try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){}
+  if(typeof window.atsrsLogout==="function") return window.atsrsLogout();
+  try{if(supabaseClient)await supabaseClient.auth.signOut()}catch(e){console.error("ATSRS logout signOut failed",e);}
   try{
     localStorage.removeItem("atsrs_auth_mode");
     localStorage.removeItem("atsrs_current_page");
     localStorage.setItem("atsrs_google_intent","");
     localStorage.removeItem("atsrs_pending_account_type");
-  }catch(e){}
+  }catch(e){console.warn("ATSRS logout storage clear failed",e);}
   try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
+  var authEl=document.getElementById("auth"), appEl=document.getElementById("app");
+  if(appEl) appEl.classList.add("hidden");
+  if(authEl) authEl.classList.remove("hidden");
   location.reload();
 }
 function localKey(n){
@@ -1381,15 +1388,45 @@ setTimeout(v55DockTopActions,500);
     }catch(e){setText('newPassMsg',(e&&e.message)||'Connection failed.');return false;}
   }
   async function realLogout(){
-    try{if(supabaseClient && supabaseClient.auth) await supabaseClient.auth.signOut();}catch(e){}
+    var authEl=byId('auth');
+    var appEl=byId('app');
+    var btn=byId('accountLogoutBtn');
+    if(btn){btn.disabled=true;btn.textContent='Signing out...';}
+    try{
+      if(supabaseClient && supabaseClient.auth){
+        var out=await supabaseClient.auth.signOut();
+        if(out && out.error) throw out.error;
+        var sess=await supabaseClient.auth.getSession();
+        if(sess && sess.data && sess.data.session){
+          console.warn('ATSRS logout: Supabase session still present after signOut');
+        }
+      }
+    }catch(err){
+      console.error('ATSRS logout failed',err);
+      if(btn){btn.disabled=false;btn.textContent='Logout';}
+      alert('Logout failed: '+((err && err.message)||String(err)));
+      return;
+    }
     try{
       localStorage.removeItem('atsrs_auth_mode');
       localStorage.removeItem('atsrs_current_page');
       localStorage.setItem('atsrs_google_intent','');
       localStorage.removeItem('atsrs_pending_account_type');
-    }catch(e){}
+    }catch(e){console.warn('ATSRS logout storage clear failed',e);}
     try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
+    if(appEl) appEl.classList.add('hidden');
+    if(authEl) authEl.classList.remove('hidden');
     location.reload();
+  }
+  function bindAccountLogoutBtn(){
+    var btn=byId('accountLogoutBtn');
+    if(!btn || btn.dataset.atsrsLogoutBound==='1') return;
+    btn.dataset.atsrsLogoutBound='1';
+    btn.type='button';
+    btn.addEventListener('click',function(ev){
+      if(ev){ev.preventDefault();ev.stopPropagation();}
+      realLogout();
+    });
   }
   function restoreSession(){
     if(!supabaseClient || !supabaseClient.auth) return;
@@ -1562,7 +1599,15 @@ setTimeout(v55DockTopActions,500);
   window.login=realLogin;
   window.forgotPassword=realForgotPassword;
   window.updatePassword=realUpdatePassword;
+  window.atsrsLogout=realLogout;
   window.logout=realLogout;
+  window.confirmLogout=function(){
+    if(confirm('Are you sure you want to logout?')) realLogout();
+  };
+  bindAccountLogoutBtn();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindAccountLogoutBtn);
+  window.addEventListener('load',bindAccountLogoutBtn);
+  [0,400,1200].forEach(function(ms){setTimeout(bindAccountLogoutBtn,ms);});
   window.supabaseClient=supabaseClient;
   restoreSession();
 })();
