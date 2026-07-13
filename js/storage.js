@@ -1412,11 +1412,24 @@ setTimeout(v55DockTopActions,500);
       localStorage.removeItem('atsrs_current_page');
       localStorage.setItem('atsrs_google_intent','');
       localStorage.removeItem('atsrs_pending_account_type');
-    }catch(e){console.warn('ATSRS logout storage clear failed',e);}
+      localStorage.setItem('atsrs_force_google_account_choice','1');
+    }catch(e){console.warn('ATSRS logout storage update failed',e);}
     try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
     if(appEl) appEl.classList.add('hidden');
     if(authEl) authEl.classList.remove('hidden');
     location.reload();
+  }
+  function realExit(){
+    var authEl=byId('auth');
+    var appEl=byId('app');
+    window.__atsrsSessionOpened=false;
+    if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+    var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
+    var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
+    var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+    if(appEl) appEl.classList.add('hidden');
+    if(authEl) authEl.classList.remove('hidden');
+    document.body.classList.remove('atsrs-booting');
   }
   function bindAccountLogoutBtn(){
     var btn=byId('accountLogoutBtn');
@@ -1442,6 +1455,7 @@ setTimeout(v55DockTopActions,500);
     function clearTransientAuth(){
       try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
       try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
+      try{localStorage.removeItem('atsrs_force_google_account_choice');}catch(e){}
     }
     function enterApp(user,mode){
       persistWorkspace(user,mode);
@@ -1581,6 +1595,12 @@ setTimeout(v55DockTopActions,500);
         var session=r && r.data && r.data.session;
         if(session && session.user) continueSession(session,'getSession');
       });
+      window.atsrsResumeSession=function(session){
+        if(session && session.user){
+          window.__atsrsSessionOpened=false;
+          continueSession(session,'resume');
+        }
+      };
     }catch(e){console.warn('ATSRS auth restore failed',e);}
   }
   window.atsrsCoreAuth={
@@ -1600,6 +1620,7 @@ setTimeout(v55DockTopActions,500);
   window.forgotPassword=realForgotPassword;
   window.updatePassword=realUpdatePassword;
   window.atsrsLogout=realLogout;
+  window.atsrsExit=realExit;
   window.logout=realLogout;
   window.confirmLogout=function(){
     if(confirm('Are you sure you want to logout?')) realLogout();
@@ -1759,7 +1780,21 @@ setTimeout(v55DockTopActions,500);
     try{
       var oauthOptions={redirectTo:redirectUrl()};
       if(intent==='signin'){
-        oauthOptions.queryParams={prompt:'select_account'};
+        var forceChoice=false;
+        try{forceChoice=localStorage.getItem('atsrs_force_google_account_choice')==='1';}catch(e){}
+        if(!forceChoice){
+          try{
+            var sessR=await window.supabaseClient.auth.getSession();
+            var existing=sessR&&sessR.data&&sessR.data.session;
+            if(existing&&existing.user&&typeof window.atsrsResumeSession==='function'){
+              window.__atsrsSessionOpened=false;
+              window.atsrsResumeSession(existing);
+              return;
+            }
+          }catch(e){console.warn('ATSRS sign-in session reuse failed',e);}
+        }else{
+          oauthOptions.queryParams={prompt:'select_account'};
+        }
       }
       var res=await window.supabaseClient.auth.signInWithOAuth({
         provider:'google',

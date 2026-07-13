@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V216';
+  var BUILD='ATSRS V217';
   var UPDATE='Last Update: 12 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V216';
+  var BUILD='ATSRS V217';
   var UPDATE='Last Update: 12 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -95,7 +95,7 @@
     if(exit){
       exit.textContent='Exit';
       exit.classList.add('exit-nav-btn');
-      exit.setAttribute('onclick','confirmLogout()');
+      exit.setAttribute('onclick','atsrsExit()');
     }
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', cleanTop); else cleanTop();
@@ -117,7 +117,7 @@
     ['langCircle','langMenu','appLangCircle','appLangMenu','topLogoutBtn'].forEach(function(id){var el=byId(id); if(el) el.remove();});
     document.querySelectorAll('#auth .lang-floating,#app > .top-actions,body > .top-actions,body > .atsrs-global-top-actions,body > .atsrs-v56-top-actions,body > .atsrs-v64-top-actions,.atsrs-account-badge').forEach(function(el){el.remove();});
     var exit=byId('navLogout');
-    if(exit){exit.textContent='Exit';exit.classList.add('exit-nav-btn');exit.style.display='block';exit.setAttribute('onclick','confirmLogout()');}
+    if(exit){exit.textContent='Exit';exit.classList.add('exit-nav-btn');exit.style.display='block';exit.setAttribute('onclick','atsrsExit()');}
   }
 
   function aiNotice(){
@@ -283,7 +283,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V216';
+      if(d[0])d[0].textContent='ATSRS V217';
       if(d[1])d[1].textContent='Last Update: 12 Jul 2026';
     });
   }

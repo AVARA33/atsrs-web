@@ -494,8 +494,7 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
 #auth .auth-tab:hover{color:#f8fafc!important;}
 #auth .auth-tab.active{
   color:#f8fafc!important;
-  text-decoration:underline!important;
-  text-decoration-thickness:1.5px!important;
+  text-decoration:none!important;
 }
 #auth .auth-tab-sep{
   color:#64748b!important;
