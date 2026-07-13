@@ -443,6 +443,28 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
   border-radius:0!important;
   backdrop-filter:none!important;
 }
+#auth .auth-brand{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+}
+#auth .auth-brand .logo,
+#auth .auth-brand #authSubtitle{
+  width:100%!important;
+  max-width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  text-align:center!important;
+  transform:none!important;
+  left:auto!important;
+  position:static!important;
+}
 #auth .auth-tabs{
   display:flex!important;
   align-items:baseline!important;
