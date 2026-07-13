@@ -1448,6 +1448,50 @@ setTimeout(v55DockTopActions,500);
         return;
       }
 
+      /* BUG FIX: Personal/Corporate must be asked ONE TIME ONLY, before the
+         Google redirect. atsrsSelectGoogleMode() persists the choice under
+         atsrs_pending_account_type before signInWithOAuth() runs. This
+         branch reads that stored value on the OAuth callback and finishes
+         account creation directly - it never calls showWorkspaceChoice()
+         or atsrsOpenGoogleChoice(), so the chooser cannot appear a second
+         time. This also makes repeat continueSession() calls for the same
+         callback (onAuthStateChange + getSession both fire) idempotent. */
+      if(intent==='signup'){
+        var pendingMode=''; try{pendingMode=localStorage.getItem('atsrs_pending_account_type')||'';}catch(e){}
+        if(pendingMode!=='personal' && pendingMode!=='company'){
+          pendingMode=(saved==='personal'||saved==='company')?saved:'';
+        }
+        function clearPendingType(){ try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){} }
+        function finishSignup(mode){
+          applyAccountType(mode);
+          try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+          try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+          clearPendingType();
+          var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+          currentUser=user; window.currentUser=user;
+          if(typeof openApp==='function') openApp();
+        }
+        if(pHas || cHas){
+          var signupExistingMode=pHas?'personal':'company';
+          if(pendingMode && pendingMode!==signupExistingMode){
+            clearPendingType();
+            showExistingAccountNotice(user,signupExistingMode);
+            return;
+          }
+          finishSignup(signupExistingMode);
+          return;
+        }
+        if(!pendingMode){
+          /* Should not happen - type is persisted before redirect. Fail
+             safe with a single chooser rather than silently guessing. */
+          showWorkspaceChoice(user,event||'new');
+          return;
+        }
+        try{localStorage.setItem(workspaceKey(user,pendingMode),'1');}catch(e){}
+        finishSignup(pendingMode);
+        return;
+      }
+
       if(pHas && cHas){
         showWorkspaceChoice(user,event||'choose');
         return;
@@ -1678,6 +1722,7 @@ setTimeout(v55DockTopActions,500);
   window.atsrsBackToLogin=function(){
     hideAuthBoxesSafe();
     try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+    try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
     var box=byId('loginBox'); if(box) box.classList.remove('hidden');
     var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
     var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
@@ -1707,6 +1752,10 @@ setTimeout(v55DockTopActions,500);
   window.atsrsSelectGoogleMode=function(mode){
     if(mode!=='personal' && mode!=='company') return;
     applyMode(mode);
+    /* BUG FIX: persist the Sign Up choice BEFORE the Google redirect so the
+       OAuth callback can read it and finish account creation directly,
+       instead of asking Personal/Corporate a second time. */
+    try{localStorage.setItem('atsrs_pending_account_type',mode);}catch(e){}
     return startGoogle(null,'signup');
   };
   window.atsrsChooseWorkspace=async function(mode){
@@ -1720,6 +1769,7 @@ setTimeout(v55DockTopActions,500);
     if(!user){setMsg('workspaceMsg','Google session not found. Please sign in again.');return;}
     try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
     try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+    try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
     applyMode(mode);
     try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
     try{currentUser=user;}catch(e){}
