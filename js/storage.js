@@ -1483,6 +1483,20 @@ setTimeout(v55DockTopActions,500);
       }
       return pendingMode;
     }
+    function returnToLogin(message){
+      clearTransientAuth();
+      try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
+      window.__atsrsSessionOpened=false;
+      try{currentUser=null;window.currentUser=null;}catch(e){}
+      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+      var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
+      var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
+      var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+      var authEl=byId('auth'); if(authEl) authEl.classList.remove('hidden');
+      var appEl=byId('app'); if(appEl) appEl.classList.add('hidden');
+      var msg=byId('loginMsg'); if(msg) msg.textContent=message||'';
+      document.body.classList.remove('atsrs-booting');
+    }
     function resetWorkspaceBox(){
       var title=byId('workspaceTitle'); if(title){title.textContent='Choose account type';title.classList.remove('hidden');}
       var info=byId('workspaceInfo'); if(info){info.textContent='';info.classList.add('hidden');}
@@ -1541,6 +1555,16 @@ setTimeout(v55DockTopActions,500);
       var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
       var saved='';
       try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
+      var pendingMode=intent==='signup'?pendingSignupMode(saved):'';
+
+      if(intent==='signup' && pendingMode==='personal' && pHas){
+        returnToLogin('Personal account already exists.\n\nPlease sign in.');
+        return;
+      }
+      if(intent==='signup' && pendingMode==='company' && cHas){
+        returnToLogin('Corporate account already exists.\n\nPlease sign in.');
+        return;
+      }
 
       /* Permanent workspace restore runs before transient OAuth intent logic.
          This is what keeps refresh from reopening "Choose account type" after
@@ -1558,18 +1582,16 @@ setTimeout(v55DockTopActions,500);
         return;
       }
       if(pHas && !cHas){
-        if(intent==='signup' && pendingSignupMode(saved)==='company'){
-          clearTransientAuth();
-          showExistingAccountNotice(user,'personal');
+        if(intent==='signup' && pendingMode){
+          enterApp(user,pendingMode);
           return;
         }
         enterApp(user,'personal');
         return;
       }
       if(cHas && !pHas){
-        if(intent==='signup' && pendingSignupMode(saved)==='personal'){
-          clearTransientAuth();
-          showExistingAccountNotice(user,'company');
+        if(intent==='signup' && pendingMode){
+          enterApp(user,pendingMode);
           return;
         }
         enterApp(user,'company');
@@ -1582,7 +1604,6 @@ setTimeout(v55DockTopActions,500);
       }
 
       if(intent==='signup'){
-        var pendingMode=pendingSignupMode(saved);
         if(!pendingMode){
           showWorkspaceChoice(user,event||'new');
           return;
