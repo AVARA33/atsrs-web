@@ -873,56 +873,39 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 
 
-/* ATSRS V200: classic login Google workspace flow. Keeps classic login layout; only adds functional Google/workspace controls. */
-.atsrs-workspace-box{
-  margin-top:14px;
-}
-/* ATSRS V209 - simplified to plain Personal/Corporate buttons, no cards */
-.atsrs-workspace-actions{
-  margin:14px 0;
-}
-.atsrs-workspace-actions button{
-  cursor:pointer;
-}
-.atsrs-workspace-actions b{
-  font-weight:700;
-}
-
-
-/* ATSRS V208 - pre-auth account-type panel shown before Google is opened */
-/* V211 - divider line removed: no visual separator needed between the
-   Sign In/Sign Up buttons and the account-type panel. */
-.google-choice-area{
+/* ATSRS V221 - compact Google account-type selector (single canonical row) */
+#auth #googleChoiceArea.google-choice-area{
   margin-top:14px;
   padding-top:2px;
 }
-.atsrs-workspace-box .sub.hidden,
-.atsrs-workspace-actions button span{
-  display:none!important;
+#auth #googleChoiceArea .mode-choice{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:0;
 }
-.atsrs-workspace-actions{
-  display:grid!important;
-  grid-template-columns:1fr!important;
-  gap:12px!important;
+#auth #googleChoiceArea .mode-choice button{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid rgba(148,163,184,.32);
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+  color:#f8fafc;
+  font-size:15px;
+  font-weight:600;
+  box-shadow:none;
+  cursor:pointer;
 }
-.atsrs-workspace-actions button{
-  width:100%!important;
-  min-height:52px!important;
-  padding:14px 16px!important;
-  border-radius:14px!important;
-  border:1px solid rgba(148,163,184,.28)!important;
-  background:#23364d!important;
-  color:#f8fafc!important;
-  box-shadow:none!important;
-  text-align:center!important;
+#auth #googleChoiceArea .mode-choice button:hover{
+  border-color:rgba(56,189,248,.45);
+  background:#2a405b;
 }
-.atsrs-workspace-actions button b{
-  display:block!important;
-  font-size:15px!important;
-  line-height:1.2!important;
-  font-weight:800!important;
+#auth #googleChoiceArea .mode-choice button.active{
+  border-color:rgba(134,239,172,.75);
+  background:#10251d;
 }
-.atsrs-workspace-actions button:hover{
-  border-color:rgba(56,189,248,.45)!important;
-  background:#2a405b!important;
+@media (max-width:420px){
+  #auth #googleChoiceArea .mode-choice{
+    grid-template-columns:1fr;
+  }
 }

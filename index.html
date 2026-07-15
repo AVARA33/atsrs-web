@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="css/base.css?v=213">
-<link rel="stylesheet" href="css/login.css?v=214">
+<link rel="stylesheet" href="css/login.css?v=215">
 <link rel="stylesheet" href="css/dashboard.css?v=213">
 <link rel="stylesheet" href="css/documents.css?v=213">
 <link rel="stylesheet" href="css/references.css?v=200">
@@ -70,25 +70,13 @@
 
   <div id="googleChoiceArea" class="hidden google-choice-area">
     <div id="modeChoiceBox" class="mode-choice">
-    <button type="button" id="personalModeBtn" onclick="atsrsSelectGoogleMode('personal')">Personal</button>
-    <button type="button" id="companyModeBtn" onclick="atsrsSelectGoogleMode('company')">Corporate</button>
+      <button type="button" id="personalModeBtn">Personal</button>
+      <button type="button" id="companyModeBtn">Corporate</button>
     </div>
-    <p id="modeRule" class="mode-error-text"></p>
   </div>
 </div>
 
 <p id="loginMsg" class="sub"></p>
-</div>
-
-<div id="googleWorkspaceBox" class="hidden atsrs-workspace-box">
-<h2 id="workspaceTitle">Choose account type</h2>
-<p id="workspaceInfo" class="sub hidden"></p>
-<div id="workspaceActions" class="mode-choice atsrs-workspace-actions">
-<button type="button" id="workspacePersonalBtn" onclick="atsrsChooseWorkspace('personal')"><b>Personal</b></button>
-<button type="button" id="workspaceCorporateBtn" onclick="atsrsChooseWorkspace('company')"><b>Corporate</b></button>
-</div>
-<button type="button" class="secondary" onclick="atsrsBackToLogin()">Back to login</button>
-<p id="workspaceMsg" class="sub"></p>
 </div>
 
 <div id="registerBox" class="hidden">
@@ -533,10 +521,10 @@
 </main>
 </section>
 
-<script src="js/storage.js?v=220"></script>
+<script src="js/storage.js?v=222"></script>
 <script src="js/ui.js?v=200"></script>
-<script src="js/auth.js?v=214"></script>
-<script src="js/login.js?v=214"></script>
+<script src="js/auth.js?v=215"></script>
+<script src="js/login.js?v=215"></script>
 <script src="js/dashboard.js?v=214"></script>
 <script src="js/documents.js?v=214"></script>
 <script src="js/references.js?v=214"></script>

@@ -1393,8 +1393,7 @@ setTimeout(v55DockTopActions,500);
     window.__atsrsSessionOpened=false;
     if(typeof hideAuthBoxes==='function') hideAuthBoxes();
     var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
-    var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
-    var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
+    if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
     if(appEl) appEl.classList.add('hidden');
     if(authEl) authEl.classList.remove('hidden');
     document.body.classList.remove('atsrs-booting');
@@ -1434,6 +1433,7 @@ setTimeout(v55DockTopActions,500);
   }
   function restoreSession(){
     if(!supabaseClient || !supabaseClient.auth) return;
+    var authDecision={userId:null,terminal:false,message:''};
     function workspaceKey(user,mode){return 'atsrs_workspace_'+user.id+'_'+mode;}
     function lastWorkspaceKey(user){return 'atsrs_last_workspace_'+user.id;}
     function hasWorkspace(user,mode){
@@ -1457,6 +1457,30 @@ setTimeout(v55DockTopActions,500);
       try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
       try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
     }
+    function lockTerminalDecision(user,message){
+      authDecision.userId=user.id;
+      authDecision.terminal=true;
+      authDecision.message=message||'';
+    }
+    function isTerminalLocked(user){
+      return authDecision.terminal && user && authDecision.userId===user.id;
+    }
+    function ensureTerminalLoginState(message){
+      window.__atsrsSessionOpened=false;
+      try{currentUser=null;window.currentUser=null;}catch(e){}
+      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
+      var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
+      if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
+      var authEl=byId('auth'); if(authEl) authEl.classList.remove('hidden');
+      var appEl=byId('app'); if(appEl) appEl.classList.add('hidden');
+      var msg=byId('loginMsg'); if(msg){msg.style.whiteSpace='pre-line'; msg.textContent=message||'';}
+      document.body.classList.remove('atsrs-booting');
+    }
+    window.atsrsResetAuthDecision=function(){
+      authDecision.userId=null;
+      authDecision.terminal=false;
+      authDecision.message='';
+    };
     function shouldWaitOnLoginScreen(event){
       var appEl=byId('app');
       if(!appEl || !appEl.classList.contains('hidden')) return false;
@@ -1465,159 +1489,113 @@ setTimeout(v55DockTopActions,500);
       if(intent==='signin' || intent==='signup') return false;
       return event==='INITIAL_SESSION' || event==='getSession' || event==='TOKEN_REFRESHED';
     }
-    function enterApp(user,mode){
-      persistWorkspace(user,mode);
+    function finishOpen(user){
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
       clearTransientAuth();
       try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
-      var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
-      var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
+      if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
       currentUser=user; window.currentUser=user;
       window.__atsrsSessionOpened=true;
       if(typeof openApp==='function') openApp();
     }
-    function pendingSignupMode(saved){
+    function openExistingWorkspace(user,mode){
+      if(!user || !hasWorkspace(user,mode)) return false;
+      applyAccountType(mode);
+      saveLastWorkspace(user,mode);
+      finishOpen(user);
+      return true;
+    }
+    function createAndOpenWorkspace(user,mode){
+      if(!user || (mode!=='personal' && mode!=='company')) return false;
+      if(hasWorkspace(user,mode)) return false;
+      persistWorkspace(user,mode);
+      finishOpen(user);
+      return true;
+    }
+    function pendingSignupMode(){
       var pendingMode=''; try{pendingMode=localStorage.getItem('atsrs_pending_account_type')||'';}catch(e){}
-      if(pendingMode!=='personal' && pendingMode!=='company'){
-        pendingMode=(saved==='personal'||saved==='company')?saved:'';
-      }
-      return pendingMode;
+      return (pendingMode==='personal'||pendingMode==='company')?pendingMode:'';
     }
-    function returnToLogin(message){
+    function returnToLogin(user,message){
+      lockTerminalDecision(user,message);
       clearTransientAuth();
-      try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
-      window.__atsrsSessionOpened=false;
-      try{currentUser=null;window.currentUser=null;}catch(e){}
-      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
-      var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
-      var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
-      var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
-      var authEl=byId('auth'); if(authEl) authEl.classList.remove('hidden');
-      var appEl=byId('app'); if(appEl) appEl.classList.add('hidden');
-      var msg=byId('loginMsg'); if(msg) msg.textContent=message||'';
-      document.body.classList.remove('atsrs-booting');
-    }
-    function resetWorkspaceBox(){
-      var title=byId('workspaceTitle'); if(title){title.textContent='Choose account type';title.classList.remove('hidden');}
-      var info=byId('workspaceInfo'); if(info){info.textContent='';info.classList.add('hidden');}
-      var actions=byId('workspaceActions'); if(actions) actions.classList.remove('hidden');
-      var msg=byId('workspaceMsg'); if(msg) msg.textContent='';
+      ensureTerminalLoginState(message);
     }
     function showWorkspaceChoice(user,reason){
       currentUser=user;
       window.currentUser=user;
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
       if(typeof hideAuthBoxes==='function') hideAuthBoxes();
-      resetWorkspaceBox();
-      var box=byId('googleWorkspaceBox');
-      if(box) box.classList.remove('hidden');
+      var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
+      var authEl=byId('auth'); if(authEl) authEl.classList.remove('hidden');
+      var appEl=byId('app'); if(appEl) appEl.classList.add('hidden');
+      var msg=byId('loginMsg'); if(msg) msg.textContent='';
+      if(typeof window.atsrsShowCompactChoice==='function') window.atsrsShowCompactChoice('signin-workspace');
       document.body.classList.remove('atsrs-booting');
     }
-    function showExistingAccountNotice(user,existingMode){
-      currentUser=user;
-      window.currentUser=user;
-      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
-      resetWorkspaceBox();
-      var info=byId('workspaceInfo');
-      if(info){info.textContent='This Google account already exists. Please Sign In.';info.classList.remove('hidden');}
-      var box=byId('googleWorkspaceBox');
-      if(box) box.classList.remove('hidden');
-      document.body.classList.remove('atsrs-booting');
+    function handleSignUp(user,event){
+      if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
+      var pendingMode=pendingSignupMode();
+      if(!pendingMode){
+        returnToLogin(user,'Sign Up could not be completed.\n\nPlease select Personal or Corporate and try again.');
+        return;
+      }
+      if(pendingMode==='personal' && hasWorkspace(user,'personal')){
+        returnToLogin(user,'Personal account already exists. Please sign in.');
+        return;
+      }
+      if(pendingMode==='company' && hasWorkspace(user,'company')){
+        returnToLogin(user,'Corporate account already exists. Please sign in.');
+        return;
+      }
+      createAndOpenWorkspace(user,pendingMode);
     }
-    function showNotRegisteredNotice(user){
-      currentUser=user;
-      window.currentUser=user;
-      try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-      if(typeof hideAuthBoxes==='function') hideAuthBoxes();
-      resetWorkspaceBox();
-      var title=byId('workspaceTitle'); if(title) title.classList.add('hidden');
-      var actions=byId('workspaceActions'); if(actions) actions.classList.add('hidden');
-      var info=byId('workspaceInfo');
-      if(info){info.textContent='This Google account is not registered. Please Sign Up.';info.classList.remove('hidden');}
-      var box=byId('googleWorkspaceBox');
-      if(box) box.classList.remove('hidden');
-      document.body.classList.remove('atsrs-booting');
+    function handleSignIn(user,event){
+      if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
+      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+      if(!pHas && !cHas){
+        returnToLogin(user,'This Google account is not registered. Please Sign Up.');
+        return;
+      }
+      if(pHas && !cHas){ openExistingWorkspace(user,'personal'); return; }
+      if(cHas && !pHas){ openExistingWorkspace(user,'company'); return; }
+      var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
+      if(pickRequired){ showWorkspaceChoice(user,event||'choose'); return; }
+      var lastMode=readLastWorkspace(user);
+      if(lastMode && hasWorkspace(user,lastMode)){ openExistingWorkspace(user,lastMode); return; }
+      if(pHas) openExistingWorkspace(user,'personal');
+      else if(cHas) openExistingWorkspace(user,'company');
     }
-    /* V209: Sign In and Sign Up are now separate entry points with their own
-       atsrs_google_intent. Sign In never shows Personal/Corporate selection
-       and never creates a workspace - it only opens an existing one, or
-       shows the "not registered" notice. Sign Up is the only path that can
-       create a new workspace, and warns instead of duplicating when the
-       chosen type differs from one the identity already has. */
+    function handlePassiveRestore(user,event){
+      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
+      if(!pHas && !cHas) return;
+      if(pHas && !cHas){ openExistingWorkspace(user,'personal'); return; }
+      if(cHas && !pHas){ openExistingWorkspace(user,'company'); return; }
+      var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
+      if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return; }
+      var lastMode=readLastWorkspace(user);
+      if(lastMode && hasWorkspace(user,lastMode)){ openExistingWorkspace(user,lastMode); return; }
+      if(pHas) openExistingWorkspace(user,'personal');
+      else if(cHas) openExistingWorkspace(user,'company');
+    }
     function continueSession(session,event){
       if(!session || !session.user) return;
       var user=session.user;
+      if(isTerminalLocked(user)){
+        ensureTerminalLoginState(authDecision.message);
+        return;
+      }
       if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
       if(shouldWaitOnLoginScreen(event)) return;
-
       var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
-      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
-      var saved='';
-      try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
-      var pendingMode=intent==='signup'?pendingSignupMode(saved):'';
-
-      if(intent==='signup' && pendingMode==='personal' && pHas){
-        returnToLogin('Personal account already exists.\n\nPlease sign in.');
-        return;
-      }
-      if(intent==='signup' && pendingMode==='company' && cHas){
-        returnToLogin('Corporate account already exists.\n\nPlease sign in.');
-        return;
-      }
-
-      /* Permanent workspace restore runs before transient OAuth intent logic.
-         This is what keeps refresh from reopening "Choose account type" after
-         signup has already saved atsrs_workspace_<userId>_<mode> = "1". */
-      if(pHas && cHas){
-        var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
-        if(pickRequired){
-          showWorkspaceChoice(user,event||'choose');
-          return;
-        }
-        var lastMode=readLastWorkspace(user);
-        if(lastMode){ enterApp(user,lastMode); return; }
-        if(saved==='personal' || saved==='company'){ enterApp(user,saved); return; }
-        showWorkspaceChoice(user,event||'choose');
-        return;
-      }
-      if(pHas && !cHas){
-        if(intent==='signup' && pendingMode){
-          enterApp(user,pendingMode);
-          return;
-        }
-        enterApp(user,'personal');
-        return;
-      }
-      if(cHas && !pHas){
-        if(intent==='signup' && pendingMode){
-          enterApp(user,pendingMode);
-          return;
-        }
-        enterApp(user,'company');
-        return;
-      }
-
-      if(intent==='signin'){
-        showNotRegisteredNotice(user);
-        return;
-      }
-
-      if(intent==='signup'){
-        if(!pendingMode){
-          showWorkspaceChoice(user,event||'new');
-          return;
-        }
-        enterApp(user,pendingMode);
-        return;
-      }
-
-      if(saved==='personal' || saved==='company'){
-        enterApp(user,saved);
-        return;
-      }
-      showWorkspaceChoice(user,event||'new');
+      if(intent==='signup'){ handleSignUp(user,event); return; }
+      if(intent==='signin'){ handleSignIn(user,event); return; }
+      var authMode=''; try{authMode=localStorage.getItem('atsrs_auth_mode')||'';}catch(e){}
+      if(authMode==='supabase') handlePassiveRestore(user,event);
     }
+    window.atsrsOpenExistingWorkspace=function(user,mode){
+      return openExistingWorkspace(user,mode);
+    };
     try{
       supabaseClient.auth.onAuthStateChange(function(event,session){
         if(event==='PASSWORD_RECOVERY'){
@@ -1781,18 +1759,20 @@ setTimeout(v55DockTopActions,500);
 (function(){
   'use strict';
   function byId(id){return document.getElementById(id);}
-  function setMsg(id,msg){var el=byId(id); if(el) el.textContent=msg||'';}
+  function setLoginMsg(msg){
+    var el=byId('loginMsg');
+    if(el){el.style.whiteSpace='pre-line'; el.textContent=msg||'';}
+  }
   function redirectUrl(){
     try{return (window.location.origin || 'https://atsrs.com') + (window.location.pathname || '/');}
     catch(e){return 'https://atsrs.com/';}
   }
   function hideAuthBoxesSafe(){
     if(typeof hideAuthBoxes==='function'){hideAuthBoxes();return;}
-    ['loginBox','registerBox','forgotBox','newPasswordBox','googleWorkspaceBox'].forEach(function(id){
+    ['loginBox','registerBox','forgotBox','newPasswordBox'].forEach(function(id){
       var el=byId(id); if(el) el.classList.add('hidden');
     });
   }
-  function workspaceKey(user,mode){return 'atsrs_workspace_'+user.id+'_'+mode;}
   function applyMode(mode){
     if(typeof setUseMode==='function') setUseMode(mode);
     else {
@@ -1807,11 +1787,46 @@ setTimeout(v55DockTopActions,500);
       document.body.classList.toggle('company-mode',mode==='company');
     }catch(e){}
   }
+  window.__atsrsAccountTypeChoiceContext='';
+  function hideCompactChoice(){
+    window.__atsrsAccountTypeChoiceContext='';
+    var choice=byId('googleChoiceArea');
+    if(choice) choice.classList.add('hidden');
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p) p.classList.remove('active');
+    if(c) c.classList.remove('active');
+    var modeBox=byId('modeChoiceBox'); if(modeBox) modeBox.classList.remove('mode-error');
+  }
+  window.atsrsHideCompactChoice=hideCompactChoice;
+  window.atsrsShowCompactChoice=function(context){
+    window.__atsrsAccountTypeChoiceContext=context||'';
+    var choice=byId('googleChoiceArea');
+    if(choice) choice.classList.remove('hidden');
+  };
+  function bindCompactChoiceButtons(){
+    var p=byId('personalModeBtn'), c=byId('companyModeBtn');
+    if(p && p.dataset.atsrsChoiceBound!=='1'){
+      p.dataset.atsrsChoiceBound='1';
+      p.removeAttribute('onclick');
+      p.addEventListener('click',function(ev){
+        if(ev){ev.preventDefault();ev.stopPropagation();}
+        window.atsrsHandleAccountTypeChoice('personal');
+      });
+    }
+    if(c && c.dataset.atsrsChoiceBound!=='1'){
+      c.dataset.atsrsChoiceBound='1';
+      c.removeAttribute('onclick');
+      c.addEventListener('click',function(ev){
+        if(ev){ev.preventDefault();ev.stopPropagation();}
+        window.atsrsHandleAccountTypeChoice('company');
+      });
+    }
+  }
   async function startGoogle(ev,intent){
     if(ev && ev.preventDefault) ev.preventDefault();
-    setMsg('loginMsg','');
+    if(typeof window.atsrsResetAuthDecision==='function') window.atsrsResetAuthDecision();
     if(!window.supabaseClient || !window.supabaseClient.auth){
-      setMsg('loginMsg','Google sign-in is not ready. Supabase client did not load.');
+      setLoginMsg('Google sign-in is not ready. Supabase client did not load.');
       return;
     }
     try{localStorage.setItem('atsrs_google_intent',intent||'signin');}catch(e){}
@@ -1832,84 +1847,65 @@ setTimeout(v55DockTopActions,500);
         provider:'google',
         options:oauthOptions
       });
-      if(res && res.error){setMsg('loginMsg',res.error.message||'Google sign-in failed.');}
+      if(res && res.error){setLoginMsg(res.error.message||'Google sign-in failed.');}
     }catch(e){
-      setMsg('loginMsg',(e && e.message) ? e.message : 'Google sign-in failed.');
+      setLoginMsg((e && e.message) ? e.message : 'Google sign-in failed.');
     }
   }
+  window.atsrsHandleAccountTypeChoice=async function(mode){
+    if(mode!=='personal' && mode!=='company') return;
+    var ctx=window.__atsrsAccountTypeChoiceContext||'';
+    applyMode(mode);
+    if(ctx==='signup'){
+      try{localStorage.setItem('atsrs_pending_account_type',mode);}catch(e){}
+      hideCompactChoice();
+      return startGoogle(null,'signup');
+    }
+    if(ctx==='signin-workspace'){
+      hideCompactChoice();
+      var user=null;
+      try{
+        if(typeof currentUser!=='undefined' && currentUser) user=currentUser;
+        if(!user){
+          var r=await window.supabaseClient.auth.getSession();
+          user=r && r.data && r.data.session && r.data.session.user;
+        }
+      }catch(e){}
+      if(!user){setLoginMsg('Google session not found. Please sign in again.');return;}
+      if(typeof window.atsrsOpenExistingWorkspace==='function'){
+        if(!window.atsrsOpenExistingWorkspace(user,mode)){
+          setLoginMsg('This workspace is not available for your account.');
+        }
+        return;
+      }
+      setLoginMsg('Google session not found. Please sign in again.');
+    }
+  };
   window.atsrsGoogleSignIn=function(e){
     if(e && e.preventDefault)e.preventDefault();
+    if(typeof window.atsrsResetAuthDecision==='function') window.atsrsResetAuthDecision();
+    setLoginMsg('');
+    hideCompactChoice();
     return startGoogle(e,'signin');
   };
-  window.atsrsGoogleSignUp=function(e){
+  window.atsrsPrepareSignUpChoice=function(e){
     if(e && e.preventDefault)e.preventDefault();
-    return startGoogle(e,'signup');
+    if(typeof window.atsrsResetAuthDecision==='function') window.atsrsResetAuthDecision();
+    setLoginMsg('');
+    hideCompactChoice();
+    window.atsrsShowCompactChoice('signup');
   };
-  /* V212: rollback of the V211 extra-step UI. Back to Login still resets
-     every transient panel/error state so it always returns to a clean
-     [Sign in with Google][Sign up with Google] screen. */
+  window.atsrsGoogleSignUp=window.atsrsPrepareSignUpChoice;
   window.atsrsBackToLogin=function(){
     hideAuthBoxesSafe();
+    hideCompactChoice();
+    setLoginMsg('');
     try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
     try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
     var box=byId('loginBox'); if(box) box.classList.remove('hidden');
-    var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
-    var choice=byId('googleChoiceArea'); if(choice) choice.classList.add('hidden');
-    var p=byId('personalModeBtn'); if(p) p.classList.remove('active');
-    var c=byId('companyModeBtn'); if(c) c.classList.remove('active');
-    var modeBox=byId('modeChoiceBox'); if(modeBox) modeBox.classList.remove('mode-error');
-    var rule=byId('modeRule'); if(rule){rule.textContent='';rule.classList.remove('active');}
-    var wMsg=byId('workspaceMsg'); if(wMsg) wMsg.textContent='';
-    var wInfo=byId('workspaceInfo'); if(wInfo){wInfo.textContent='';wInfo.classList.add('hidden');}
   };
-  /* V208: Sign Up button opens an account-type panel before signInWithOAuth
-     is called, instead of starting Google immediately. */
-  window.atsrsOpenGoogleChoice=function(ev){
-    if(ev && ev.preventDefault) ev.preventDefault();
-    var area=byId('googleChoiceArea');
-    if(!area) return;
-    var opening=area.classList.contains('hidden');
-    area.classList.toggle('hidden');
-    if(opening){
-      var saved=''; try{saved=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
-      if(saved==='personal' || saved==='company') applyMode(saved);
-      if(area.scrollIntoView) area.scrollIntoView({behavior:'smooth',block:'center'});
-    }
-  };
-  /* V212: Personal/Corporate buttons in the Sign Up panel open Google
-     immediately on selection - no separate Continue step. */
-  window.atsrsSelectGoogleMode=function(mode){
-    if(mode!=='personal' && mode!=='company') return;
-    applyMode(mode);
-    /* BUG FIX: persist the Sign Up choice BEFORE the Google redirect so the
-       OAuth callback can read it and finish account creation directly,
-       instead of asking Personal/Corporate a second time. */
-    try{localStorage.setItem('atsrs_pending_account_type',mode);}catch(e){}
-    return startGoogle(null,'signup');
-  };
-  window.atsrsChooseWorkspace=async function(mode){
-    if(mode!=='personal' && mode!=='company') return;
-    var user=null;
-    try{
-      var r=await window.supabaseClient.auth.getSession();
-      user=r && r.data && r.data.session && r.data.session.user;
-    }catch(e){}
-    if(!user && typeof currentUser!=='undefined') user=currentUser;
-    if(!user){setMsg('workspaceMsg','Google session not found. Please sign in again.');return;}
-    try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
-    try{localStorage.setItem('atsrs_last_workspace_'+user.id,mode);}catch(e){}
-    applyMode(mode);
-    try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-    try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
-    try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
-    try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
-    try{currentUser=user;}catch(e){}
-    window.currentUser=user;
-    window.__atsrsSessionOpened=true;
-    var wbox=byId('googleWorkspaceBox'); if(wbox) wbox.classList.add('hidden');
-    try{
-      await window.supabaseClient.auth.updateUser({data:{atsrs_last_workspace:mode}});
-    }catch(e){}
-    if(typeof openApp==='function') openApp();
-  };
+  bindCompactChoiceButtons();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindCompactChoiceButtons);
+  window.addEventListener('load',bindCompactChoiceButtons);
+  [0,400,1200].forEach(function(ms){setTimeout(bindCompactChoiceButtons,ms);});
 })();

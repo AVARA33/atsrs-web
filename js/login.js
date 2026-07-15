@@ -12,12 +12,12 @@
    One confirmed side effect of removing this: the V111 register-choice
    IIFE used to call personalModeBtn.onclick = ... / companyModeBtn.onclick =
    ... on its own repeating timer, which overwrote the live
-   onclick="atsrsSelectGoogleMode(...)" handlers used by the current Google
+   onclick handlers bound by js/storage.js (atsrsHandleAccountTypeChoice).
    Sign Up account-type step (js/storage.js, V212). Removing it also removes
    that override hazard on the live Google OAuth flow.
 
-   Google OAuth (atsrsGoogleSignIn/atsrsGoogleSignUp/atsrsOpenGoogleChoice/
-   atsrsSelectGoogleMode/atsrsChooseWorkspace/atsrsBackToLogin) lives entirely
+   Google OAuth (atsrsGoogleSignIn/atsrsPrepareSignUpChoice/
+   atsrsHandleAccountTypeChoice/atsrsBackToLogin) lives entirely
    in js/storage.js and was not touched. */
 (function(){
   'use strict';

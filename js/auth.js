@@ -99,9 +99,7 @@
     const subtitle = byId('authSubtitle');
     if(subtitle) subtitle.textContent = ATSRS_MEANING;
   }
-  /* V214: Sign in / Sign up tab active-state only. Delegates to the
-     unmodified Google OAuth functions in js/storage.js
-     (atsrsGoogleSignIn / atsrsOpenGoogleChoice). */
+  /* V222: Sign in / Sign up tab routing uses the compact account-type row only. */
   window.atsrsAuthTabClick = function(tab, ev){
     if(ev && ev.preventDefault) ev.preventDefault();
     const signinBtn = byId('googleSigninBtn');
@@ -109,10 +107,8 @@
     if(signinBtn) signinBtn.classList.toggle('active', tab === 'signin');
     if(signupBtn) signupBtn.classList.toggle('active', tab === 'signup');
     if(tab === 'signup'){
-      if(typeof window.atsrsOpenGoogleChoice === 'function') window.atsrsOpenGoogleChoice(ev);
+      if(typeof window.atsrsPrepareSignUpChoice === 'function') window.atsrsPrepareSignUpChoice(ev);
     }else{
-      const choice = byId('googleChoiceArea');
-      if(choice && !choice.classList.contains('hidden')) choice.classList.add('hidden');
       if(typeof window.atsrsGoogleSignIn === 'function') window.atsrsGoogleSignIn(ev);
     }
   };
