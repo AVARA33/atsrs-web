@@ -204,7 +204,7 @@ function saveData(n,d){
   if(!key) return;
   try{localStorage.setItem(key,JSON.stringify(d))}catch(e){console.warn("ATSRS storage save failed",n,e)}
 }
-function openApp(){
+function openAppLocal(){
   auth.classList.add("hidden");
   app.classList.remove("hidden");
   userEmail.innerText=currentUser.email;
@@ -215,6 +215,12 @@ function openApp(){
   restoreCurrentPage();
   setIntroDetail(currentIntroKey||'svc1');
   document.body.classList.remove("atsrs-booting");
+}
+function openApp(){
+  if(window.atsrsCloudData&&typeof window.atsrsCloudData.openApp==="function"){
+    return window.atsrsCloudData.openApp(openAppLocal);
+  }
+  return openAppLocal();
 }
 function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
