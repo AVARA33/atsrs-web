@@ -743,10 +743,23 @@ body > .atsrs-global-top-actions .top-logout:active,
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#020617,#1e3a8a);
+  background:linear-gradient(135deg,#07111d 0%,#0d2535 46%,#103b42 100%);
   color:#f8fafc;
   text-align:center;
   padding:24px;
+}
+#atsrsBootScreen::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 17% 24%,rgba(34,197,94,.18),transparent 28%),
+             radial-gradient(circle at 76% 38%,rgba(56,189,248,.14),transparent 30%),
+             radial-gradient(circle at 48% 92%,rgba(134,239,172,.09),transparent 32%);
+  pointer-events:none;
+}
+#atsrsBootScreen > *{
+  position:relative;
+  z-index:1;
 }
 body.atsrs-booting #atsrsBootScreen{display:flex!important;}
 .atsrs-loader-logo{
