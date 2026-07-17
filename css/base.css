@@ -752,12 +752,7 @@ body > .atsrs-global-top-actions .top-logout:active,
 body.atsrs-booting #atsrsBootScreen{display:flex!important;}
 .atsrs-loader-card{
   width:min(92vw,420px);
-  border:1px solid rgba(134,239,172,.22);
-  background:rgba(8,18,31,.66);
-  border-radius:24px;
   padding:30px 24px;
-  box-shadow:0 28px 80px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05);
-  backdrop-filter:blur(14px);
 }
 .atsrs-loader-logo{
   font-size:30px;
