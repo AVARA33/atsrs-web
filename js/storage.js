@@ -1398,9 +1398,18 @@ setTimeout(v55DockTopActions,500);
     if(authEl) authEl.classList.remove('hidden');
     document.body.classList.remove('atsrs-booting');
   }
-  function realLogout(){
+  async function realLogout(){
     var btn=byId('accountLogoutBtn');
     if(btn){btn.disabled=true;btn.textContent='Logging out...';}
+    var signOutError=null;
+    try{
+      if(supabaseClient && supabaseClient.auth){
+        var signOutResult=await supabaseClient.auth.signOut({scope:'local'});
+        signOutError=signOutResult && signOutResult.error;
+      }
+    }catch(e){
+      signOutError=e;
+    }
     try{
       localStorage.removeItem('atsrs_auth_mode');
       localStorage.removeItem('atsrs_current_page');
@@ -1412,6 +1421,12 @@ setTimeout(v55DockTopActions,500);
     }catch(e){console.warn('ATSRS logout storage update failed',e);}
     try{currentUser=null;window.currentUser=null;}catch(e){}
     showLoginScreen();
+    if(signOutError){
+      setText('loginMsg','Logout completed on this device, but the server session could not be closed. Please try Sign In again.');
+      console.warn('ATSRS Supabase signOut failed',signOutError);
+    }else{
+      setText('loginMsg','');
+    }
     if(btn){btn.disabled=false;btn.textContent='Logout';}
   }
   function realExit(){
@@ -1434,10 +1449,64 @@ setTimeout(v55DockTopActions,500);
   function restoreSession(){
     if(!supabaseClient || !supabaseClient.auth) return;
     var authDecision={userId:null,terminal:false,message:''};
+    var WORKSPACE_TABLE='atsrs_workspaces';
+    var sessionQueue=Promise.resolve();
     function workspaceKey(user,mode){return 'atsrs_workspace_'+user.id+'_'+mode;}
     function lastWorkspaceKey(user){return 'atsrs_last_workspace_'+user.id;}
-    function hasWorkspace(user,mode){
-      try{return localStorage.getItem(workspaceKey(user,mode))==='1';}catch(e){return false;}
+    function emptyWorkspaceState(){
+      return {personal:false,company:false};
+    }
+    function hasWorkspace(state,mode){
+      return !!(state && (mode==='personal'||mode==='company') && state[mode]);
+    }
+    function workspaceServiceMessage(error){
+      var code=(error && error.code)||'';
+      var message=(error && error.message)||'';
+      if(code==='42P01' || code==='PGRST205' || /atsrs_workspaces|relation .* does not exist/i.test(message)){
+        return 'ATSRS account service is not ready yet. Please contact support.';
+      }
+      return 'Your ATSRS account could not be verified. Please check the connection and try again.';
+    }
+    function legacyWorkspaceModes(user){
+      var modes=[];
+      if(!user || !user.id) return modes;
+      try{
+        if(localStorage.getItem(workspaceKey(user,'personal'))==='1') modes.push('personal');
+        if(localStorage.getItem(workspaceKey(user,'company'))==='1') modes.push('company');
+      }catch(e){}
+      return modes;
+    }
+    async function queryWorkspaceState(user){
+      if(!user || !user.id) return emptyWorkspaceState();
+      var result=await supabaseClient
+        .from(WORKSPACE_TABLE)
+        .select('account_type')
+        .eq('user_id',user.id);
+      if(result.error) throw result.error;
+      var state=emptyWorkspaceState();
+      (result.data||[]).forEach(function(row){
+        if(row && (row.account_type==='personal'||row.account_type==='company')){
+          state[row.account_type]=true;
+        }
+      });
+      return state;
+    }
+    async function migrateLegacyWorkspaces(user,state){
+      var legacy=legacyWorkspaceModes(user);
+      for(var i=0;i<legacy.length;i++){
+        var mode=legacy[i];
+        if(hasWorkspace(state,mode)) continue;
+        var result=await supabaseClient
+          .from(WORKSPACE_TABLE)
+          .insert({user_id:user.id,account_type:mode});
+        if(result.error && result.error.code!=='23505') throw result.error;
+        state[mode]=true;
+      }
+      return state;
+    }
+    async function readWorkspaceState(user){
+      var state=await queryWorkspaceState(user);
+      return migrateLegacyWorkspaces(user,state);
     }
     function readLastWorkspace(user){
       var last=''; try{last=localStorage.getItem(lastWorkspaceKey(user))||'';}catch(e){}
@@ -1447,7 +1516,7 @@ setTimeout(v55DockTopActions,500);
       if(!user || !user.id || (mode!=='personal' && mode!=='company')) return;
       try{localStorage.setItem(lastWorkspaceKey(user),mode);}catch(e){}
     }
-    function persistWorkspace(user,mode){
+    function rememberWorkspaceLocally(user,mode){
       if(!user || !user.id || (mode!=='personal' && mode!=='company')) return;
       try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
       applyAccountType(mode);
@@ -1498,19 +1567,25 @@ setTimeout(v55DockTopActions,500);
       window.__atsrsSessionOpened=true;
       if(typeof openApp==='function') openApp();
     }
-    function openExistingWorkspace(user,mode){
-      if(!user || !hasWorkspace(user,mode)) return false;
+    function openExistingWorkspace(user,mode,state){
+      if(!user || !hasWorkspace(state,mode)) return false;
       applyAccountType(mode);
       saveLastWorkspace(user,mode);
       finishOpen(user);
       return true;
     }
-    function createAndOpenWorkspace(user,mode){
-      if(!user || (mode!=='personal' && mode!=='company')) return false;
-      if(hasWorkspace(user,mode)) return false;
-      persistWorkspace(user,mode);
+    async function createAndOpenWorkspace(user,mode){
+      if(!user || (mode!=='personal' && mode!=='company')) return {created:false,duplicate:false};
+      var result=await supabaseClient
+        .from(WORKSPACE_TABLE)
+        .insert({user_id:user.id,account_type:mode});
+      if(result.error){
+        if(result.error.code==='23505') return {created:false,duplicate:true};
+        throw result.error;
+      }
+      rememberWorkspaceLocally(user,mode);
       finishOpen(user);
-      return true;
+      return {created:true,duplicate:false};
     }
     function pendingSignupMode(){
       var pendingMode=''; try{pendingMode=localStorage.getItem('atsrs_pending_account_type')||'';}catch(e){}
@@ -1533,52 +1608,71 @@ setTimeout(v55DockTopActions,500);
       if(typeof window.atsrsShowCompactChoice==='function') window.atsrsShowCompactChoice('signin-workspace');
       document.body.classList.remove('atsrs-booting');
     }
-    function handleSignUp(user,event){
+    async function handleSignUp(user,event){
       if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
       var pendingMode=pendingSignupMode();
       if(!pendingMode){
         returnToLogin(user,'Sign Up could not be completed.\n\nPlease select Personal or Corporate and try again.');
         return;
       }
-      if(pendingMode==='personal' && hasWorkspace(user,'personal')){
-        returnToLogin(user,'Personal account already exists. Please sign in.');
-        return;
+      try{
+        var state=await readWorkspaceState(user);
+        if(hasWorkspace(state,pendingMode)){
+          returnToLogin(user,pendingMode==='personal'
+            ? 'Personal account already exists. Please sign in.'
+            : 'Corporate account already exists. Please sign in.');
+          return;
+        }
+        var created=await createAndOpenWorkspace(user,pendingMode);
+        if(created.duplicate){
+          returnToLogin(user,pendingMode==='personal'
+            ? 'Personal account already exists. Please sign in.'
+            : 'Corporate account already exists. Please sign in.');
+        }
+      }catch(error){
+        console.warn('ATSRS workspace Sign Up failed',error);
+        returnToLogin(user,workspaceServiceMessage(error));
       }
-      if(pendingMode==='company' && hasWorkspace(user,'company')){
-        returnToLogin(user,'Corporate account already exists. Please sign in.');
-        return;
-      }
-      createAndOpenWorkspace(user,pendingMode);
     }
-    function handleSignIn(user,event){
+    async function handleSignIn(user,event){
       if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
-      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
-      if(!pHas && !cHas){
-        returnToLogin(user,'This Google account is not registered. Please Sign Up.');
-        return;
+      try{
+        var state=await readWorkspaceState(user);
+        var pHas=hasWorkspace(state,'personal'), cHas=hasWorkspace(state,'company');
+        if(!pHas && !cHas){
+          returnToLogin(user,'This Google account is not registered. Please Sign Up.');
+          return;
+        }
+        if(pHas && !cHas){ openExistingWorkspace(user,'personal',state); return; }
+        if(cHas && !pHas){ openExistingWorkspace(user,'company',state); return; }
+        var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
+        if(pickRequired){ showWorkspaceChoice(user,event||'choose'); return; }
+        var lastMode=readLastWorkspace(user);
+        if(lastMode && hasWorkspace(state,lastMode)){ openExistingWorkspace(user,lastMode,state); return; }
+        showWorkspaceChoice(user,event||'choose');
+      }catch(error){
+        console.warn('ATSRS workspace Sign In failed',error);
+        returnToLogin(user,workspaceServiceMessage(error));
       }
-      if(pHas && !cHas){ openExistingWorkspace(user,'personal'); return; }
-      if(cHas && !pHas){ openExistingWorkspace(user,'company'); return; }
-      var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
-      if(pickRequired){ showWorkspaceChoice(user,event||'choose'); return; }
-      var lastMode=readLastWorkspace(user);
-      if(lastMode && hasWorkspace(user,lastMode)){ openExistingWorkspace(user,lastMode); return; }
-      if(pHas) openExistingWorkspace(user,'personal');
-      else if(cHas) openExistingWorkspace(user,'company');
     }
-    function handlePassiveRestore(user,event){
-      var pHas=hasWorkspace(user,'personal'), cHas=hasWorkspace(user,'company');
-      if(!pHas && !cHas) return;
-      if(pHas && !cHas){ openExistingWorkspace(user,'personal'); return; }
-      if(cHas && !pHas){ openExistingWorkspace(user,'company'); return; }
-      var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
-      if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return; }
-      var lastMode=readLastWorkspace(user);
-      if(lastMode && hasWorkspace(user,lastMode)){ openExistingWorkspace(user,lastMode); return; }
-      if(pHas) openExistingWorkspace(user,'personal');
-      else if(cHas) openExistingWorkspace(user,'company');
+    async function handlePassiveRestore(user,event){
+      try{
+        var state=await readWorkspaceState(user);
+        var pHas=hasWorkspace(state,'personal'), cHas=hasWorkspace(state,'company');
+        if(!pHas && !cHas) return;
+        if(pHas && !cHas){ openExistingWorkspace(user,'personal',state); return; }
+        if(cHas && !pHas){ openExistingWorkspace(user,'company',state); return; }
+        var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
+        if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return; }
+        var lastMode=readLastWorkspace(user);
+        if(lastMode && hasWorkspace(state,lastMode)){ openExistingWorkspace(user,lastMode,state); return; }
+        showWorkspaceChoice(user,event||'restore');
+      }catch(error){
+        console.warn('ATSRS passive workspace restore failed',error);
+        returnToLogin(user,workspaceServiceMessage(error));
+      }
     }
-    function continueSession(session,event){
+    async function continueSession(session,event){
       if(!session || !session.user) return;
       var user=session.user;
       if(isTerminalLocked(user)){
@@ -1588,13 +1682,29 @@ setTimeout(v55DockTopActions,500);
       if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
       if(shouldWaitOnLoginScreen(event)) return;
       var intent=''; try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
-      if(intent==='signup'){ handleSignUp(user,event); return; }
-      if(intent==='signin'){ handleSignIn(user,event); return; }
+      if(intent==='signup'){ await handleSignUp(user,event); return; }
+      if(intent==='signin'){ await handleSignIn(user,event); return; }
       var authMode=''; try{authMode=localStorage.getItem('atsrs_auth_mode')||'';}catch(e){}
-      if(authMode==='supabase') handlePassiveRestore(user,event);
+      if(authMode==='supabase') await handlePassiveRestore(user,event);
     }
-    window.atsrsOpenExistingWorkspace=function(user,mode){
-      return openExistingWorkspace(user,mode);
+    function queueSession(session,event){
+      sessionQueue=sessionQueue
+        .then(function(){return continueSession(session,event);})
+        .catch(function(error){
+          console.warn('ATSRS queued auth session failed',error);
+          if(session && session.user) returnToLogin(session.user,workspaceServiceMessage(error));
+        });
+      return sessionQueue;
+    }
+    window.atsrsOpenExistingWorkspace=async function(user,mode){
+      try{
+        var state=await readWorkspaceState(user);
+        return openExistingWorkspace(user,mode,state);
+      }catch(error){
+        console.warn('ATSRS workspace selection failed',error);
+        returnToLogin(user,workspaceServiceMessage(error));
+        return false;
+      }
     };
     try{
       supabaseClient.auth.onAuthStateChange(function(event,session){
@@ -1604,17 +1714,17 @@ setTimeout(v55DockTopActions,500);
           return;
         }
         if(session && session.user && (event==='SIGNED_IN' || event==='TOKEN_REFRESHED' || event==='INITIAL_SESSION')){
-          continueSession(session,event);
+          queueSession(session,event);
         }
       });
       supabaseClient.auth.getSession().then(function(r){
         var session=r && r.data && r.data.session;
-        if(session && session.user) continueSession(session,'getSession');
+        if(session && session.user) queueSession(session,'getSession');
       });
       window.atsrsResumeSession=function(session){
         if(session && session.user){
           window.__atsrsSessionOpened=false;
-          continueSession(session,'resume');
+          return queueSession(session,'resume');
         }
       };
     }catch(e){console.warn('ATSRS auth restore failed',e);}
@@ -1873,8 +1983,11 @@ setTimeout(v55DockTopActions,500);
       }catch(e){}
       if(!user){setLoginMsg('Google session not found. Please sign in again.');return;}
       if(typeof window.atsrsOpenExistingWorkspace==='function'){
-        if(!window.atsrsOpenExistingWorkspace(user,mode)){
-          setLoginMsg('This workspace is not available for your account.');
+        if(!await window.atsrsOpenExistingWorkspace(user,mode)){
+          var currentMessage=byId('loginMsg');
+          if(!currentMessage || !currentMessage.textContent){
+            setLoginMsg('This workspace is not available for your account.');
+          }
         }
         return;
       }
