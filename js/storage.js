@@ -15,6 +15,10 @@ const APP_URL="https://atsrs.com/";
     var mode=params.get('atsrs_mode')||'';
     var attemptId=params.get('atsrs_attempt')||'';
     if(!code&&!callbackError) return;
+    /* A password-recovery PKCE callback also has `code`, but it does not
+       carry ATSRS Google-flow markers and must remain Supabase-managed. */
+    if(!intent&&!attemptId) return;
+    window.__atsrsOAuthMarkedCallback=true;
     window.__atsrsOAuthInvalidCallback=true;
     if(!attemptId || (intent!=='signin'&&intent!=='signup')) return;
     var attempt=JSON.parse(localStorage.getItem('atsrs_oauth_attempt')||'null');
@@ -24,6 +28,7 @@ const APP_URL="https://atsrs.com/";
     if(intent==='signup' && ((mode!=='personal'&&mode!=='company') || attempt.mode!==mode)) return;
     window.__atsrsOAuthInvalidCallback=false;
     window.__atsrsOAuthCallback=true;
+    window.__atsrsOAuthCode=code;
     window.__atsrsOAuthSessionReceived=false;
     if(callbackError) window.__atsrsOAuthError=callbackError;
     localStorage.setItem('atsrs_google_intent',intent);
@@ -32,7 +37,7 @@ const APP_URL="https://atsrs.com/";
     }
   }catch(e){}
 })();
-let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{flowType:'pkce',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});window.supabaseClient=supabaseClient}catch(e){console.error(e)}
+let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{flowType:'pkce',detectSessionInUrl:!window.__atsrsOAuthMarkedCallback,persistSession:true,autoRefreshToken:true}});window.supabaseClient=supabaseClient}catch(e){console.error(e)}
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
@@ -1613,6 +1618,8 @@ setTimeout(v55DockTopActions,500);
       try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
       try{localStorage.removeItem('atsrs_oauth_attempt');}catch(e){}
       window.__atsrsOAuthCallback=false;
+      window.__atsrsOAuthCode='';
+      window.__atsrsOAuthMarkedCallback=false;
       window.__atsrsOAuthInvalidCallback=false;
       window.__atsrsOAuthSessionReceived=false;
       window.__atsrsOAuthError='';
@@ -1831,30 +1838,35 @@ setTimeout(v55DockTopActions,500);
           queueSession(session,event);
         }
       });
-      supabaseClient.auth.getSession().then(function(r){
-        var session=r && r.data && r.data.session;
-        if(session && session.user) queueSession(session,'getSession');
-      });
-      /* Mobile browsers can complete the PKCE exchange after the first
-         getSession() call. Retry a few times so a valid callback never remains
-         stuck on the login page. Duplicate calls are ignored by continueSession. */
-      if(window.__atsrsOAuthCallback){
-        [350,1200,3000].forEach(function(delay){
-          setTimeout(function(){
-            if(window.__atsrsSessionOpened || !window.__atsrsOAuthCallback) return;
-            supabaseClient.auth.getSession().then(function(r){
-              var session=r && r.data && r.data.session;
-              if(session && session.user) queueSession(session,'resume');
-            }).catch(function(error){
-              console.warn('ATSRS mobile auth recovery failed',error);
+      if(window.__atsrsOAuthCallback && window.__atsrsOAuthCode){
+        /* For ATSRS Google callbacks, perform the PKCE exchange explicitly.
+           This avoids depending on timing between automatic URL detection,
+           INITIAL_SESSION and getSession() on mobile/tablet browsers. */
+        supabaseClient.auth.exchangeCodeForSession(window.__atsrsOAuthCode)
+          .then(function(result){
+            if(result && result.error) throw result.error;
+            var session=result && result.data && result.data.session;
+            if(session && session.user){
+              if(!window.__atsrsOAuthSessionReceived) return queueSession(session,'oauth-exchange');
+              return;
+            }
+            return supabaseClient.auth.getSession().then(function(r){
+              var recovered=r && r.data && r.data.session;
+              if(recovered && recovered.user) return queueSession(recovered,'oauth-exchange-recovery');
+              throw new Error('Supabase did not return a Google session.');
             });
-          },delay);
+          })
+          .catch(function(error){
+            if(window.__atsrsOAuthSessionReceived || !window.__atsrsOAuthCallback) return;
+            console.warn('ATSRS Google PKCE exchange failed',error);
+            clearTransientAuth();
+            ensureTerminalLoginState('Google sign-in could not be completed. Please try again.');
+          });
+      }else{
+        supabaseClient.auth.getSession().then(function(r){
+          var session=r && r.data && r.data.session;
+          if(session && session.user) queueSession(session,'getSession');
         });
-        setTimeout(function(){
-          if(window.__atsrsOAuthSessionReceived || !window.__atsrsOAuthCallback) return;
-          clearTransientAuth();
-          ensureTerminalLoginState('Google sign-in could not be completed. Please try again.');
-        },10000);
       }
       window.atsrsResumeSession=function(session){
         if(session && session.user){
