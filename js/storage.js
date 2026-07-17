@@ -1464,6 +1464,11 @@ setTimeout(v55DockTopActions,500);
     }
     var signOutError=null;
     try{
+      if(currentUser && typeof currentUser.email==='string' && currentUser.email.trim()){
+        localStorage.setItem('atsrs_last_google_email',currentUser.email.trim().toLowerCase());
+      }
+    }catch(e){}
+    try{
       if(supabaseClient && supabaseClient.auth){
         var signOutResult=await supabaseClient.auth.signOut({scope:'local'});
         signOutError=signOutResult && signOutResult.error;
@@ -1659,6 +1664,11 @@ setTimeout(v55DockTopActions,500);
     }
     function finishOpen(user){
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      try{
+        if(user && typeof user.email==='string' && user.email.trim()){
+          localStorage.setItem('atsrs_last_google_email',user.email.trim().toLowerCase());
+        }
+      }catch(e){}
       clearTransientAuth();
       try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
       if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
@@ -2143,9 +2153,17 @@ setTimeout(v55DockTopActions,500);
       if(!savedAttempt || savedAttempt.id!==attemptId || savedAttempt.intent!==attemptRecord.intent){
         throw new Error('Browser site data could not be saved. Please enable cookies/site data and try again.');
       }
+      var googleQueryParams={prompt:'select_account'};
+      if(intent==='signin'){
+        var loginHint='';
+        try{loginHint=(localStorage.getItem('atsrs_last_google_email')||'').trim().toLowerCase();}catch(e){}
+        if(loginHint && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginHint)){
+          googleQueryParams={login_hint:loginHint};
+        }
+      }
       var oauthOptions={
         redirectTo:redirectUrl(intent,pendingMode,attemptId),
-        queryParams:{prompt:'select_account'}
+        queryParams:googleQueryParams
       };
       var res=await window.supabaseClient.auth.signInWithOAuth({
         provider:'google',
