@@ -125,7 +125,7 @@ function validateRegisterFields(){let p1=regPassword.value.trim(),p2=regPassword
 regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
 async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
-async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!validateUseMode())return;if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
+async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!validateUseMode())return;if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;window.currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
 async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?error.message:tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
 async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?error.message:"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
 
@@ -161,7 +161,7 @@ document.querySelectorAll(".solo-personnel-card").forEach(el=>el.classList.toggl
 if(typeof personalDashboardPanel!=="undefined")personalDashboardPanel.classList.toggle("hidden",!personal);
 }
 
-function localTestLogin(){if(!validateUseMode())return;currentUser={id:"local_test_user",email:"local-test@atsrs.com"};localStorage.setItem("atsrs_auth_mode","local");localStorage.setItem("atsrs_use_mode",useMode);openApp()}
+function localTestLogin(){loginMsg.innerText="Local test accounts are disabled. Please sign in with your ATSRS account."}
 
 function confirmLogout(){
   if(confirm("Are you sure you want to logout?")){
@@ -194,15 +194,28 @@ function localKey(n){
   if(mode!=="personal" && mode!=="company") mode="personal";
   return "atsrs_"+currentUser.id+"_"+mode+"_"+n;
 }
+function readAppDataKey(key){
+  if(window.atsrsCloudData&&typeof window.atsrsCloudData.read==="function"&&window.atsrsCloudData.isManagedKey(key)){
+    return window.atsrsCloudData.read(key);
+  }
+  return localStorage.getItem(key);
+}
+function writeAppDataKey(key,value){
+  if(window.atsrsCloudData&&typeof window.atsrsCloudData.write==="function"&&window.atsrsCloudData.isManagedKey(key)){
+    return window.atsrsCloudData.write(key,value);
+  }
+  localStorage.setItem(key,value);
+  return true;
+}
 function getData(n){
   const key=localKey(n);
   if(!key) return [];
-  try{return JSON.parse(localStorage.getItem(key))||[]}catch(e){console.warn("ATSRS storage read failed",n,e);return []}
+  try{return JSON.parse(readAppDataKey(key))||[]}catch(e){console.warn("ATSRS storage read failed",n,e);return []}
 }
 function saveData(n,d){
   const key=localKey(n);
   if(!key) return;
-  try{localStorage.setItem(key,JSON.stringify(d))}catch(e){console.warn("ATSRS storage save failed",n,e)}
+  try{writeAppDataKey(key,JSON.stringify(d))}catch(e){console.warn("ATSRS storage save failed",n,e)}
 }
 function openAppLocal(){
   auth.classList.add("hidden");
@@ -258,8 +271,8 @@ let file=e.target.files&&e.target.files[0];
 if(!file)return;
 excelPreview.innerText=tr("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB). "+tr("importInfo");
 }
-function getProjects(){return JSON.parse(localStorage.getItem(localKey("projects")))||[]}
-function saveProjects(d){localStorage.setItem(localKey("projects"),JSON.stringify(d))}
+function getProjects(){return JSON.parse(readAppDataKey(localKey("projects")))||[]}
+function saveProjects(d){writeAppDataKey(localKey("projects"),JSON.stringify(d))}
 function addProject(){
 let d=getProjects();
 if(!projectNameInput.value.trim()){alert(v12("fill")||tr("fill"));return}
@@ -441,11 +454,11 @@ renderProjects();
 
 const countries=["","Azerbaijan","Turkey","Norway","United Kingdom","United States","Canada","Germany","France","Spain","Portugal","Italy","Netherlands","Belgium","Denmark","Sweden","Finland","Poland","Romania","Bulgaria","Georgia","Kazakhstan","United Arab Emirates","Saudi Arabia","Qatar","Kuwait","Oman","Bahrain","India","Pakistan","Philippines","Indonesia","Malaysia","Singapore","China","Japan","South Korea","Australia","New Zealand","South Africa","Equatorial Guinea","Angola","Nigeria","Ghana","Egypt","Morocco","Brazil","Mexico","Argentina"];
 function fillCountries(){profileCountry.innerHTML="";countries.forEach(c=>{let o=document.createElement("option");o.value=c;o.text=c;profileCountry.appendChild(o)})}
-function saveProfile(){localStorage.setItem(localKey("profile"),JSON.stringify({name:profileName.value,surname:profileSurname.value,phone:profilePhone.value,country:profileCountry.value,company:profileCompany.value,position:profilePosition.value,altEmail:profileAltEmail.value,timezone:profileTimezone.value}));alert("Profile saved.")}
-function loadProfile(){fillCountries();let p=JSON.parse(localStorage.getItem(localKey("profile")))||{};profileName.value=p.name||"";profileSurname.value=p.surname||"";profilePhone.value=p.phone||"";profileCountry.value=p.country||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";profileAltEmail.value=p.altEmail||"";profileTimezone.value=p.timezone||"UTC"}
-function exportLocalData(){let data={profile:JSON.parse(localStorage.getItem(localKey("profile")))||{},personnel:getData("personnel"),certificates:getData("certs")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="atsrs-data-export.json";a.click();URL.revokeObjectURL(url)}
+async function saveProfile(){writeAppDataKey(localKey("profile"),JSON.stringify({name:profileName.value,surname:profileSurname.value,phone:profilePhone.value,country:profileCountry.value,company:profileCompany.value,position:profilePosition.value,altEmail:profileAltEmail.value,timezone:profileTimezone.value}));var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==="function"?await window.atsrsCloudData.flush():true;alert(saved?"Profile saved to the ATSRS server.":"Profile was not saved. Check the connection and try again.")}
+function loadProfile(){fillCountries();let p=JSON.parse(readAppDataKey(localKey("profile")))||{};profileName.value=p.name||"";profileSurname.value=p.surname||"";profilePhone.value=p.phone||"";profileCountry.value=p.country||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";profileAltEmail.value=p.altEmail||"";profileTimezone.value=p.timezone||"UTC"}
+function exportLocalData(){let data={profile:JSON.parse(readAppDataKey(localKey("profile")))||{},personnel:getData("personnel"),certificates:getData("certs")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="atsrs-data-export.json";a.click();URL.revokeObjectURL(url)}
 
-if(localStorage.getItem("atsrs_auth_mode")==="local"){currentUser={id:"local_test_user",email:"local-test@atsrs.com"};openApp()}else if(supabaseClient){supabaseClient.auth.onAuthStateChange(e=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}})}
+if(localStorage.getItem("atsrs_auth_mode")==="local"){localStorage.removeItem("atsrs_auth_mode")}if(supabaseClient){supabaseClient.auth.onAuthStateChange(e=>{if(e==="PASSWORD_RECOVERY"){hideAuthBoxes();newPasswordBox.classList.remove("hidden")}})}
 function v12(k){
   return (T[lang]&&T[lang][k]) || (UI[lang]&&UI[lang][k]) || T.en[k] || UI.en[k] || k;
 }
@@ -691,7 +704,7 @@ function renderSharePreview(){
   let c=getData("certs");
   let have=new Set(c.map(x=>normalizeDocType(x.type)).filter(Boolean));
   sharePreviewDocs.innerHTML=V25_REQUIRED_DOCS.map(d=>`<div class="doc-chip ${have.has(d)?'ok':'miss'}">${have.has(d)?'✓':'!'} ${d}</div>`).join("");
-  let prof=JSON.parse(localStorage.getItem(localKey("profile")))||{};
+  let prof=JSON.parse(readAppDataKey(localKey("profile")))||{};
   let full=((prof.name||"Anar")+" "+(prof.surname||"Agasiyev")).trim();
   previewName.innerText=full;
   previewRole.innerText=prof.position||"Professional Document Holder";
@@ -1407,6 +1420,14 @@ setTimeout(v55DockTopActions,500);
   async function realLogout(){
     var btn=byId('accountLogoutBtn');
     if(btn){btn.disabled=true;btn.textContent='Logging out...';}
+    if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
+      var saved=await window.atsrsCloudData.flush();
+      if(saved===false||!window.atsrsCloudData.isSynced()){
+        if(btn){btn.disabled=false;btn.textContent='Logout';}
+        alert('Your latest changes were not saved to the ATSRS server. Check the connection and try Logout again.');
+        return false;
+      }
+    }
     var signOutError=null;
     try{
       if(supabaseClient && supabaseClient.auth){
@@ -1426,6 +1447,9 @@ setTimeout(v55DockTopActions,500);
       localStorage.setItem('atsrs_workspace_pick_required','1');
     }catch(e){console.warn('ATSRS logout storage update failed',e);}
     try{currentUser=null;window.currentUser=null;}catch(e){}
+    if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
+      window.atsrsCloudData.clearSession();
+    }
     showLoginScreen();
     if(signOutError){
       setText('loginMsg','Logout completed on this device, but the server session could not be closed. Please try Sign In again.');
@@ -1434,12 +1458,16 @@ setTimeout(v55DockTopActions,500);
       setText('loginMsg','');
     }
     if(btn){btn.disabled=false;btn.textContent='Logout';}
+    return true;
   }
   function realExit(){
     try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
     try{localStorage.removeItem('atsrs_auth_mode');}catch(e){}
     try{localStorage.removeItem('atsrs_current_page');}catch(e){}
     try{currentUser=null;window.currentUser=null;}catch(e){}
+    if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
+      window.atsrsCloudData.clearSession();
+    }
     showLoginScreen();
   }
   function bindAccountLogoutBtn(){
@@ -1508,6 +1536,10 @@ setTimeout(v55DockTopActions,500);
         if(result.error && result.error.code!=='23505') throw result.error;
         state[mode]=true;
       }
+      try{
+        localStorage.removeItem(workspaceKey(user,'personal'));
+        localStorage.removeItem(workspaceKey(user,'company'));
+      }catch(e){}
       return state;
     }
     async function readWorkspaceState(user){
@@ -1524,7 +1556,6 @@ setTimeout(v55DockTopActions,500);
     }
     function rememberWorkspaceLocally(user,mode){
       if(!user || !user.id || (mode!=='personal' && mode!=='company')) return;
-      try{localStorage.setItem(workspaceKey(user,mode),'1');}catch(e){}
       applyAccountType(mode);
       saveLastWorkspace(user,mode);
     }

@@ -1,26 +1,33 @@
 /* ATSRS cloud data layer.
-   Supabase is the source of truth. localStorage is only a compatibility cache
-   for the existing synchronous UI code and is repopulated after every login. */
+   Supabase is the source of truth. Business data is held only in RAM while the
+   signed-in app is open; localStorage is reserved for non-authoritative UI and
+   authentication preferences. */
 (function(){
   'use strict';
 
   var DATA_TABLE='atsrs_workspace_data';
   var FILE_TABLE='atsrs_files';
   var FILE_BUCKET='atsrs-user-files';
-  var DATA_MIGRATION_KEY='__cloud_data_migration_v1';
-  var FILE_MIGRATION_KEY='__cloud_file_migration_v1';
+  var DATA_MIGRATION_KEY='__cloud_data_migration_v2';
+  var FILE_MIGRATION_KEY='__cloud_file_migration_v2';
   var nativeSet=Storage.prototype.setItem;
   var nativeRemove=Storage.prototype.removeItem;
   var nativeGet=Storage.prototype.getItem;
-  var suppressSync=false;
+  var memoryStore=new Map();
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
+  var pendingWrites=0;
+  var lastWriteError=null;
+  var failedOperations=[];
   var fileRenderTimer=0;
 
   function client(){return window.supabaseClient||null;}
   function user(){
     var value=window.currentUser;
+    try{
+      if((!value||!value.id)&&typeof currentUser!=='undefined')value=currentUser;
+    }catch(e){}
     return value&&value.id?value:null;
   }
   function accountType(){
@@ -36,16 +43,25 @@
     var value=user();
     return value?'atsrs_'+value.id+'_':'';
   }
+  function managedPrefix(){
+    var prefix=localPrefix();
+    return prefix?prefix+accountType()+'_':'';
+  }
   function isCloudSession(){
     var value=user();
     return !!(value&&value.id&&value.id!=='local_test_user'&&client());
   }
   function isFileLikeKey(key){
-    return /file|upload|documentblob|attachment/i.test(String(key||''));
+    var text=String(key||'');
+    return /(^|_)(file|files|upload|uploads|documentblob|attachment|attachments)(_|$)/i.test(text)
+      || /(File|Files|Upload|Uploads|DocumentBlob|Attachment|Attachments)$/.test(text);
+  }
+  function isManagedBusinessKey(key){
+    var prefix=managedPrefix();
+    return !!(prefix&&String(key||'').indexOf(prefix)===0&&!isFileLikeKey(key));
   }
   function shouldSyncKey(key){
-    var prefix=localPrefix();
-    return !!(prefix&&String(key||'').indexOf(prefix)===0&&!isFileLikeKey(key));
+    return isCloudSession()&&isManagedBusinessKey(key);
   }
   function cloudErrorMessage(error){
     var detail=error&&error.message?'\n\n'+error.message:'';
@@ -62,11 +78,20 @@
     document.body.classList.remove('atsrs-booting');
   }
   function enqueue(operation){
+    pendingWrites++;
     writeQueue=writeQueue
       .then(operation)
+      .then(function(){
+        pendingWrites=Math.max(0,pendingWrites-1);
+        return true;
+      })
       .catch(function(error){
+        pendingWrites=Math.max(0,pendingWrites-1);
+        lastWriteError=error;
+        failedOperations.push(operation);
         console.error('ATSRS cloud save failed',error);
         showSaveWarning();
+        return false;
       });
     return writeQueue;
   }
@@ -85,46 +110,107 @@
     clearTimeout(window.__atsrsCloudWarningTimer);
     window.__atsrsCloudWarningTimer=setTimeout(function(){warning.style.display='none';},7000);
   }
-  function rowForStorage(key,value){
+  function writeContext(){
     var valueUser=user();
+    return valueUser?{user_id:valueUser.id,account_type:accountType()}:null;
+  }
+  function rowForStorage(key,value,context){
+    context=context||writeContext();
     return {
-      user_id:valueUser.id,
-      account_type:accountType(),
+      user_id:context.user_id,
+      account_type:context.account_type,
       data_key:String(key),
-      payload:{value:String(value)}
+      payload:{value:String(value)},
+      updated_at:new Date().toISOString()
     };
   }
-  async function upsertStorageValue(key,value){
-    if(!isCloudSession()||!shouldSyncKey(key))return;
+  async function upsertStorageValue(key,value,context){
+    if(!context)return;
     var result=await client().from(DATA_TABLE).upsert(
-      rowForStorage(key,value),
+      rowForStorage(key,value,context),
       {onConflict:'user_id,account_type,data_key'}
     );
     if(result.error)throw result.error;
   }
-  async function deleteStorageValue(key){
-    if(!isCloudSession()||!shouldSyncKey(key))return;
-    var valueUser=user();
-    var result=await client().from(DATA_TABLE)
-      .delete()
-      .eq('user_id',valueUser.id)
-      .eq('account_type',accountType())
-      .eq('data_key',String(key));
+  async function deleteStorageValue(key,context){
+    if(!context)return;
+    var result=await client().from(DATA_TABLE).upsert({
+      user_id:context.user_id,
+      account_type:context.account_type,
+      data_key:String(key),
+      payload:{deleted:true},
+      updated_at:new Date().toISOString()
+    },{onConflict:'user_id,account_type,data_key'});
     if(result.error)throw result.error;
   }
+  function readBusinessValue(key){
+    if(!isCloudSession()||!isManagedBusinessKey(key))return null;
+    return memoryStore.has(String(key))?memoryStore.get(String(key)):null;
+  }
+  function writeBusinessValue(key,value){
+    if(!shouldSyncKey(key))return false;
+    var context=writeContext();
+    memoryStore.set(String(key),String(value));
+    enqueue(function(){return upsertStorageValue(key,value,context);});
+    return true;
+  }
+  function removeBusinessValue(key){
+    if(!shouldSyncKey(key))return false;
+    var context=writeContext();
+    memoryStore.delete(String(key));
+    enqueue(function(){return deleteStorageValue(key,context);});
+    return true;
+  }
 
-  Storage.prototype.setItem=function(key,value){
-    nativeSet.call(this,key,value);
-    if(this===localStorage&&!suppressSync&&shouldSyncKey(key)){
-      enqueue(function(){return upsertStorageValue(key,value);});
+  Storage.prototype.getItem=function(key){
+    if(this===localStorage&&isCloudSession()&&isManagedBusinessKey(key)){
+      return readBusinessValue(key);
     }
+    if(this===localStorage&&isCloudSession()&&isLegacyFileKeyForCurrentScope(key)){
+      return null;
+    }
+    return nativeGet.call(this,key);
+  };
+  Storage.prototype.setItem=function(key,value){
+    if(this===localStorage&&writeBusinessValue(key,value))return;
+    if(this===localStorage&&isCloudSession()&&isLegacyFileKeyForCurrentScope(key)){
+      return;
+    }
+    nativeSet.call(this,key,value);
   };
   Storage.prototype.removeItem=function(key){
-    nativeRemove.call(this,key);
-    if(this===localStorage&&!suppressSync&&shouldSyncKey(key)){
-      enqueue(function(){return deleteStorageValue(key);});
+    if(this===localStorage&&removeBusinessValue(key))return;
+    if(this===localStorage&&isCloudSession()&&isLegacyFileKeyForCurrentScope(key)){
+      nativeRemove.call(this,key);
+      return;
     }
+    nativeRemove.call(this,key);
   };
+
+  window.addEventListener('beforeunload',function(event){
+    if(!pendingWrites&&!failedOperations.length)return;
+    event.preventDefault();
+    event.returnValue='';
+  });
+  async function flushWrites(){
+    await writeQueue;
+    if(!failedOperations.length)return true;
+    var retry=failedOperations.splice(0);
+    for(var i=0;i<retry.length;i++){
+      try{
+        await retry[i]();
+      }catch(error){
+        lastWriteError=error;
+        failedOperations.push(retry[i]);
+      }
+    }
+    if(!failedOperations.length){
+      lastWriteError=null;
+      return true;
+    }
+    showSaveWarning();
+    return false;
+  }
 
   function allLocalKeys(){
     var keys=[];
@@ -136,66 +222,119 @@
     }catch(e){}
     return keys;
   }
-  function mappedLegacyKey(key){
+  function canonicalBusinessKey(key){
     var valueUser=user();
     if(!valueUser)return '';
+    key=String(key||'');
     var currentPrefix='atsrs_'+valueUser.id+'_';
-    if(key.indexOf(currentPrefix)===0)return key;
+    var currentMode=accountType();
+    var currentScopePrefix=currentPrefix+currentMode+'_';
+    if(key.indexOf(currentScopePrefix)===0)return isFileLikeKey(key)?'':key;
+    if(key.indexOf(currentPrefix+'personal_')===0||key.indexOf(currentPrefix+'company_')===0){
+      return '';
+    }
+    if(key.indexOf(currentPrefix)===0){
+      var currentSuffix=key.slice(currentPrefix.length);
+      if(!currentSuffix||/^(auth|workspace|last_workspace|pending|google|remember|saved_login|current_page|use_mode)/i.test(currentSuffix))return '';
+      return isFileLikeKey(key)?'':currentScopePrefix+currentSuffix;
+    }
     var legacyPrefix='atsrs_local_test_user_';
     if(key.indexOf(legacyPrefix)!==0)return '';
     var suffix=key.slice(legacyPrefix.length);
-    if(suffix.indexOf('personal_')===0||suffix.indexOf('company_')===0){
-      return currentPrefix+suffix;
+    if(suffix.indexOf(currentMode+'_')===0){
+      return isFileLikeKey(key)?'':currentPrefix+suffix;
     }
-    return currentPrefix+accountType()+'_'+suffix;
+    if(suffix.indexOf('personal_')===0||suffix.indexOf('company_')===0)return '';
+    return isFileLikeKey(key)?'':currentScopePrefix+suffix;
   }
   async function loadWorkspaceRows(){
     var valueUser=user();
     var result=await client().from(DATA_TABLE)
-      .select('data_key,payload')
+      .select('data_key,payload,updated_at')
       .eq('user_id',valueUser.id)
       .eq('account_type',accountType());
     if(result.error)throw result.error;
     return result.data||[];
   }
   async function migrateLegacyStorage(serverRows){
-    var serverKeys=new Set((serverRows||[]).map(function(row){return row.data_key;}));
-    if(serverKeys.has(DATA_MIGRATION_KEY))return;
-    var rows=[];
+    var valueUser=user();
+    var canonicalRows=new Map();
+    var blockedKeys=new Set();
+    var obsoleteServerKeys=[];
+    (serverRows||[]).forEach(function(row){
+      if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
+      var canonical=canonicalBusinessKey(row.data_key);
+      if(!canonical)return;
+      var payload=row.payload||{};
+      if(payload.deleted===true){
+        blockedKeys.add(canonical);
+        canonicalRows.delete(canonical);
+        if(canonical!==row.data_key)obsoleteServerKeys.push(row.data_key);
+        return;
+      }
+      if(blockedKeys.has(canonical))return;
+      if(!canonicalRows.has(canonical)&&typeof payload.value==='string'){
+        canonicalRows.set(canonical,payload.value);
+      }
+      if(canonical!==row.data_key)obsoleteServerKeys.push(row.data_key);
+    });
     allLocalKeys().forEach(function(oldKey){
-      var key=mappedLegacyKey(oldKey);
-      if(!key||serverKeys.has(key)||isFileLikeKey(key))return;
+      var key=canonicalBusinessKey(oldKey);
+      if(!key||canonicalRows.has(key)||blockedKeys.has(key))return;
       var value=nativeGet.call(localStorage,oldKey);
       if(value===null)return;
-      rows.push(rowForStorage(key,value));
-      if(key!==oldKey){
-        suppressSync=true;
-        try{nativeSet.call(localStorage,key,value);}finally{suppressSync=false;}
-      }
+      canonicalRows.set(key,value);
+    });
+    var rows=Array.from(canonicalRows.entries()).map(function(entry){
+      return rowForStorage(entry[0],entry[1]);
+    });
+    blockedKeys.forEach(function(key){
+      rows.push({
+        user_id:valueUser.id,
+        account_type:accountType(),
+        data_key:key,
+        payload:{deleted:true},
+        updated_at:new Date().toISOString()
+      });
     });
     rows.push({
-      user_id:user().id,
+      user_id:valueUser.id,
       account_type:accountType(),
       data_key:DATA_MIGRATION_KEY,
-      payload:{completed_at:new Date().toISOString()}
+      payload:{completed_at:new Date().toISOString()},
+      updated_at:new Date().toISOString()
     });
     var result=await client().from(DATA_TABLE).upsert(
       rows,
       {onConflict:'user_id,account_type,data_key'}
     );
     if(result.error)throw result.error;
+    if(obsoleteServerKeys.length){
+      var cleanup=await client().from(DATA_TABLE)
+        .delete()
+        .eq('user_id',valueUser.id)
+        .eq('account_type',accountType())
+        .in('data_key',Array.from(new Set(obsoleteServerKeys)));
+      if(cleanup.error)throw cleanup.error;
+    }
+    return loadWorkspaceRows();
   }
   function restoreServerRows(rows){
-    suppressSync=true;
-    try{
-      (rows||[]).forEach(function(row){
-        if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
-        var payload=row.payload||{};
-        if(typeof payload.value==='string'){
-          nativeSet.call(localStorage,row.data_key,payload.value);
-        }
-      });
-    }finally{suppressSync=false;}
+    var prefix=managedPrefix();
+    Array.from(memoryStore.keys()).forEach(function(key){
+      if(prefix&&key.indexOf(prefix)===0)memoryStore.delete(key);
+    });
+    (rows||[]).forEach(function(row){
+      if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
+      if(!isManagedBusinessKey(row.data_key))return;
+      var payload=row.payload||{};
+      if(typeof payload.value==='string')memoryStore.set(String(row.data_key),payload.value);
+    });
+  }
+  function clearNativeBusinessData(){
+    allLocalKeys().forEach(function(key){
+      if(canonicalBusinessKey(key))nativeRemove.call(localStorage,key);
+    });
   }
   async function ensureWorkspaceData(){
     if(!isCloudSession())throw new Error('No active Supabase session.');
@@ -204,9 +343,10 @@
     if(loadingPromise&&loadingPromise.scope===wantedScope)return loadingPromise;
     var promise=(async function(){
       var rows=await loadWorkspaceRows();
+      rows=await migrateLegacyStorage(rows);
       restoreServerRows(rows);
-      await migrateLegacyStorage(rows);
       await migrateLegacyFiles(rows);
+      clearNativeBusinessData();
       loadedScope=wantedScope;
       scheduleFileRender(0);
       return true;
@@ -240,9 +380,10 @@
   async function uploadFile(category,file,details){
     if(!isCloudSession())throw new Error('No active Supabase session.');
     var valueUser=user();
+    var mode=accountType();
     var id=uniqueId();
     var fileName=safeName((details&&details.name)||file.name||'file');
-    var storagePath=valueUser.id+'/'+accountType()+'/'+category+'/'+id+'-'+fileName;
+    var storagePath=valueUser.id+'/'+mode+'/'+category+'/'+id+'-'+fileName;
     var upload=await client().storage.from(FILE_BUCKET).upload(storagePath,file,{
       cacheControl:'3600',
       contentType:(details&&details.type)||file.type||'application/octet-stream',
@@ -251,7 +392,7 @@
     if(upload.error)throw upload.error;
     var insert=await client().from(FILE_TABLE).insert({
       user_id:valueUser.id,
-      account_type:accountType(),
+      account_type:mode,
       category:category,
       file_name:fileName,
       mime_type:(details&&details.type)||file.type||'application/octet-stream',
@@ -552,7 +693,11 @@
             try{
               var tx=db.transaction(storeName,'readonly');
               var get=tx.objectStore(storeName).getAll();
-              get.onsuccess=function(){output=output.concat(get.result||[]);};
+              get.onsuccess=function(){
+                output=output.concat((get.result||[]).map(function(row){
+                  return Object.assign({},row,{__atsrsDbName:names[i],__atsrsStoreName:storeName});
+                }));
+              };
               tx.oncomplete=function(){if(--pending===0){db.close();resolve(output);}};
               tx.onerror=function(){if(--pending===0){db.close();resolve(output);}};
             }catch(e){if(--pending===0){db.close();resolve(output);}}
@@ -563,10 +708,39 @@
     }
     return rows;
   }
+  function legacyRowBelongsToCurrentUser(row){
+    var valueUser=user();
+    if(!valueUser||!row)return false;
+    var candidates=[String(valueUser.id||''),String(valueUser.email||'')];
+    try{candidates.push(String(nativeGet.call(localStorage,'atsrs_saved_login_email')||''));}catch(e){}
+    candidates=candidates.filter(Boolean);
+    var rowUser=String(row.userId||'');
+    var scopeKind=String(row.scopeKind||'');
+    if(rowUser==='local_test_user'||scopeKind.indexOf('local_test_user::')===0)return true;
+    return candidates.some(function(candidate){
+      return rowUser===candidate||scopeKind.indexOf(candidate+'::')===0;
+    });
+  }
+  function isLegacyFileKeyForCurrentScope(key){
+    var valueUser=user();
+    if(!valueUser)return false;
+    key=String(key||'');
+    var mode=accountType();
+    var userPrefix='atsrs_'+valueUser.id+'_';
+    var scopePrefix=userPrefix+mode+'_';
+    if(key.indexOf(scopePrefix)===0)return isFileLikeKey(key);
+    if(key.indexOf(userPrefix+'personal_')===0||key.indexOf(userPrefix+'company_')===0)return false;
+    if(key.indexOf(userPrefix)===0&&isFileLikeKey(key))return true;
+    if(key.indexOf('atsrs_file_meta_'+valueUser.id+'_')===0)return true;
+    if(key.indexOf('atsrs_local_test_user_'+mode+'_')===0&&isFileLikeKey(key))return true;
+    if(key.indexOf('atsrs_local_test_user_personal_')===0||key.indexOf('atsrs_local_test_user_company_')===0)return false;
+    if(key.indexOf('atsrs_local_test_user_')===0&&isFileLikeKey(key))return true;
+    return /^(cvFiles|appraisalFiles|referenceFiles|recommendationFiles|coverLetterFiles|atsrs_v105_(appraisal|reference)_files)$/i.test(key);
+  }
   function localFileRows(){
     var output=[];
     allLocalKeys().forEach(function(key){
-      if(!isFileLikeKey(key))return;
+      if(!isLegacyFileKeyForCurrentScope(key))return;
       try{
         var value=JSON.parse(nativeGet.call(localStorage,key)||'null');
         if(Array.isArray(value)){
@@ -576,41 +750,114 @@
     });
     return output;
   }
+  function metadataOnlyLocalFileKeys(){
+    var output=[];
+    allLocalKeys().forEach(function(key){
+      if(!isLegacyFileKeyForCurrentScope(key))return;
+      try{
+        var value=JSON.parse(nativeGet.call(localStorage,key)||'null');
+        if(Array.isArray(value)&&value.every(function(row){return !row||(!row.data&&!row.blob);})){
+          output.push(key);
+        }
+      }catch(e){}
+    });
+    return output;
+  }
   async function migrateOneLegacyFile(category,row,key,known){
     var blob=row.blob instanceof Blob?row.blob:dataUrlToBlob(row.data);
-    if(!blob||!blob.size)return;
+    if(!blob||!blob.size)return false;
     var name=safeName(row.name||'Legacy file');
     var signature=category+'::'+name+'::'+(row.size||blob.size);
-    if(known.has(signature))return;
-    if(category==='cv'&&Array.from(known).some(function(value){return value.indexOf('cv::')===0;}))return;
+    if(known.has(signature))return true;
+    if(category==='cv'&&Array.from(known).some(function(value){return value.indexOf('cv::')===0;}))return true;
     await uploadFile(category,blob,{name:name,type:row.type||blob.type,size:row.size||blob.size,metadata:{migrated_from:key||'indexeddb'}});
     known.add(signature);
+    return true;
+  }
+  async function clearMigratedIndexedDbRows(rows){
+    var groups=new Map();
+    (rows||[]).forEach(function(row){
+      if(!row||!row.id||!row.__atsrsDbName||!row.__atsrsStoreName)return;
+      var key=row.__atsrsDbName+'::'+row.__atsrsStoreName;
+      if(!groups.has(key))groups.set(key,[]);
+      groups.get(key).push(row.id);
+    });
+    for(var entry of groups.entries()){
+      var split=entry[0].split('::');
+      var dbName=split.shift();
+      var storeName=split.join('::');
+      var ids=entry[1];
+      await new Promise(function(resolve){
+        var request=indexedDB.open(dbName);
+        request.onerror=function(){resolve();};
+        request.onsuccess=function(){
+          var db=request.result;
+          if(!db.objectStoreNames.contains(storeName)){db.close();resolve();return;}
+          try{
+            var tx=db.transaction(storeName,'readwrite');
+            var store=tx.objectStore(storeName);
+            ids.forEach(function(id){store.delete(id);});
+            tx.oncomplete=function(){db.close();resolve();};
+            tx.onerror=function(){db.close();resolve();};
+          }catch(e){db.close();resolve();}
+        };
+      });
+    }
+  }
+  function clearMigratedLocalFileRows(keys){
+    (keys||[]).forEach(function(key){
+      if(isLegacyFileKeyForCurrentScope(key))nativeRemove.call(localStorage,key);
+    });
   }
   async function migrateLegacyFiles(serverRows){
-    if((serverRows||[]).some(function(row){return row.data_key===FILE_MIGRATION_KEY;}))return;
     var existing=await listFiles();
     var known=new Set(existing.map(function(row){return row.category+'::'+row.file_name+'::'+row.size_bytes;}));
-    var idb=await indexedDbRows();
+    var idb=(await indexedDbRows()).filter(legacyRowBelongsToCurrentUser);
+    var migratedIdb=[];
     for(var i=0;i<idb.length;i++){
       var record=idb[i]||{};
-      await migrateOneLegacyFile(legacyCategory(record.scopeKind,record),record,'indexeddb',known);
+      if(await migrateOneLegacyFile(legacyCategory(record.scopeKind,record),record,'indexeddb',known)){
+        migratedIdb.push(record);
+      }
     }
     var local=localFileRows();
+    var safeLocalKeys=new Set(metadataOnlyLocalFileKeys());
+    var unsafeLocalKeys=new Set();
     for(var j=0;j<local.length;j++){
-      await migrateOneLegacyFile(legacyCategory(local[j].key,local[j].row),local[j].row,local[j].key,known);
+      if(await migrateOneLegacyFile(legacyCategory(local[j].key,local[j].row),local[j].row,local[j].key,known)){
+        safeLocalKeys.add(local[j].key);
+      }else{
+        unsafeLocalKeys.add(local[j].key);
+      }
     }
     var result=await client().from(DATA_TABLE).upsert({
       user_id:user().id,
       account_type:accountType(),
       data_key:FILE_MIGRATION_KEY,
-      payload:{completed_at:new Date().toISOString()}
+      payload:{completed_at:new Date().toISOString()},
+      updated_at:new Date().toISOString()
     },{onConflict:'user_id,account_type,data_key'});
     if(result.error)throw result.error;
+    await clearMigratedIndexedDbRows(migratedIdb);
+    unsafeLocalKeys.forEach(function(key){safeLocalKeys.delete(key);});
+    clearMigratedLocalFileRows(Array.from(safeLocalKeys));
   }
 
   window.atsrsCloudData={
     ensureLoaded:ensureWorkspaceData,
     isLoaded:function(){return loadedScope===scope();},
+    isManagedKey:isManagedBusinessKey,
+    read:readBusinessValue,
+    write:writeBusinessValue,
+    remove:removeBusinessValue,
+    isSynced:function(){return pendingWrites===0&&!lastWriteError&&!failedOperations.length;},
+    clearSession:function(){
+      memoryStore.clear();
+      loadedScope='';
+      loadingPromise=null;
+      lastWriteError=null;
+      failedOperations=[];
+    },
     openApp:async function(openLocalApp){
       try{
         await ensureWorkspaceData();
@@ -620,7 +867,7 @@
         return false;
       }
     },
-    flush:function(){return writeQueue;},
+    flush:flushWrites,
     refresh:async function(){
       loadedScope='';
       await ensureWorkspaceData();

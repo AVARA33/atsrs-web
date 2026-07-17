@@ -100,11 +100,24 @@
     return 'atsrs_'+safeUserId()+'_'+name;
   }
   function readJson(name, fallback){
-    try{var raw=localStorage.getItem(key(name)); return raw?JSON.parse(raw):fallback;}
+    try{
+      var storageKey=key(name);
+      var raw=window.atsrsCloudData&&window.atsrsCloudData.isManagedKey(storageKey)
+        ?window.atsrsCloudData.read(storageKey)
+        :localStorage.getItem(storageKey);
+      return raw?JSON.parse(raw):fallback;
+    }
     catch(e){return fallback;}
   }
   function writeJson(name, data){
-    try{localStorage.setItem(key(name),JSON.stringify(data)); return true;}
+    try{
+      var storageKey=key(name),value=JSON.stringify(data);
+      if(window.atsrsCloudData&&window.atsrsCloudData.isManagedKey(storageKey)){
+        return window.atsrsCloudData.write(storageKey,value);
+      }
+      localStorage.setItem(storageKey,value);
+      return true;
+    }
     catch(e){return false;}
   }
   function val(id){var e=byId(id); return e?e.value:'';}
@@ -121,13 +134,22 @@
     clearTimeout(window.__atsrsV125ProfileSavedTimer);
     window.__atsrsV125ProfileSavedTimer=setTimeout(function(){s.classList.remove('active');},2200);
   }
-  window.saveProfile=function(){
+  function showSaveError(){
+    var s=ensureProfileStatus(); if(!s)return;
+    s.textContent='Not saved — check connection'; s.classList.add('active');
+  }
+  window.saveProfile=async function(){
     var data={
       name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),altEmail:val('profileAltEmail'),
       timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',savedAt:new Date().toISOString()
     };
-    writeJson(PROFILE_KEY,data); showSaved(); return true;
+    if(!writeJson(PROFILE_KEY,data)){showSaveError();return false;}
+    var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'
+      ?await window.atsrsCloudData.flush()
+      :true;
+    if(saved){showSaved();return true;}
+    showSaveError();return false;
   };
   window.loadProfile=function(){
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
