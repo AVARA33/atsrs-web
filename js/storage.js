@@ -1782,6 +1782,7 @@ setTimeout(v55DockTopActions,500);
       }
       if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
       if(shouldWaitOnLoginScreen(event)) return;
+      if(event==='signin-session'){ await handleSignIn(user,event); return; }
       var intent=currentAuthIntent();
       if(intent==='signup'){ await handleSignUp(user,event); return; }
       if(intent==='signin'){ await handleSignIn(user,event); return; }
@@ -1868,10 +1869,10 @@ setTimeout(v55DockTopActions,500);
           if(session && session.user) queueSession(session,'getSession');
         });
       }
-      window.atsrsResumeSession=function(session){
+      window.atsrsResumeSession=function(session,intent){
         if(session && session.user){
           window.__atsrsSessionOpened=false;
-          return queueSession(session,'resume');
+          return queueSession(session,intent==='signin'?'signin-session':'resume');
         }
       };
     }catch(e){console.warn('ATSRS auth restore failed',e);}
@@ -2114,6 +2115,21 @@ setTimeout(v55DockTopActions,500);
       if(intent==='signup' && pendingMode!=='personal' && pendingMode!=='company'){
         throw new Error('Please select Personal or Corporate and try again.');
       }
+      var sessionResult=await window.supabaseClient.auth.getSession();
+      if(sessionResult && sessionResult.error) throw sessionResult.error;
+      var existingSession=sessionResult&&sessionResult.data&&sessionResult.data.session;
+      if(existingSession && intent==='signin'){
+        clearOAuthStartState();
+        try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+        if(typeof window.atsrsResumeSession==='function'){
+          return window.atsrsResumeSession(existingSession,'signin');
+        }
+        throw new Error('Your ATSRS session could not be resumed. Please refresh the page and try again.');
+      }
+      if(existingSession){
+        var signOutResult=await window.supabaseClient.auth.signOut({scope:'local'});
+        if(signOutResult && signOutResult.error) throw signOutResult.error;
+      }
       var attemptId=createOAuthAttemptId();
       var attemptRecord={
         id:attemptId,
@@ -2126,13 +2142,6 @@ setTimeout(v55DockTopActions,500);
       var savedAttempt=JSON.parse(localStorage.getItem('atsrs_oauth_attempt')||'null');
       if(!savedAttempt || savedAttempt.id!==attemptId || savedAttempt.intent!==attemptRecord.intent){
         throw new Error('Browser site data could not be saved. Please enable cookies/site data and try again.');
-      }
-      var sessionResult=await window.supabaseClient.auth.getSession();
-      if(sessionResult && sessionResult.error) throw sessionResult.error;
-      var existingSession=sessionResult&&sessionResult.data&&sessionResult.data.session;
-      if(existingSession){
-        var signOutResult=await window.supabaseClient.auth.signOut({scope:'local'});
-        if(signOutResult && signOutResult.error) throw signOutResult.error;
       }
       var oauthOptions={
         redirectTo:redirectUrl(intent,pendingMode,attemptId),
