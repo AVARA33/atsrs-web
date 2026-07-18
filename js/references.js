@@ -226,6 +226,7 @@
   window.downloadCV=function(){window.atsrsV146CV.download('cv','');};
   window.deleteCV=function(){var a=window.atsrsV146CV.files(); if(!a.length){alert('No CV uploaded yet.');return;} window.atsrsV146CV.save([]); var input=byId('cvUploadInput'); if(input)input.value=''; renderCVStatus();};
   window.renderCVStatus=function(){
+    if(window.atsrsCloudData&&typeof window.atsrsCloudData.renderFiles==='function')return;
     var files=window.atsrsV146CV.files();
     var badge=byId('cvStatusBadge'); if(badge){badge.textContent=files.length?(files.length+' file'+(files.length>1?'s':'')):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
     var info=byId('cvFileInfo'); if(info){info.classList.add('atsrs-v146-list');info.innerHTML=files.length?files.map(function(f){return fileRow('cv',f,'atsrsV146CV');}).join(''):'<div class="atsrs-v146-empty">No files uploaded yet.</div>';}

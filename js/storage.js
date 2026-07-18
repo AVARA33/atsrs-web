@@ -630,6 +630,9 @@ function previewCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} c
 function downloadCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} const a=document.createElement('a');a.href=cv.data;a.download=cv.name||'ATSRS-CV';document.body.appendChild(a);a.click();a.remove();}
 function deleteCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} saveCV(null); if(typeof cvUploadInput!=='undefined')cvUploadInput.value=''; renderCVStatus(); renderAll();}
 function renderCVStatus(){
+  /* Supabase owns the CV card while a cloud workspace is active.
+     Legacy local CV state must never overwrite the server result. */
+  if(window.atsrsCloudData&&typeof window.atsrsCloudData.renderFiles==='function')return;
   const cv=getCV();
   if(typeof cvCardTitle!=='undefined')cvCardTitle.innerText=v48('cvTitle');
   if(typeof cvCardText!=='undefined')cvCardText.innerText=v48('cvText');

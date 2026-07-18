@@ -248,6 +248,10 @@
       '</div></div>';
   }
   async function renderCV(){
+    if(window.atsrsCloudData&&typeof window.atsrsCloudData.renderFiles==='function'){
+      await window.atsrsCloudData.renderFiles();
+      return;
+    }
     if(rendering){pending=true;return;} rendering=true;
     try{
       setBuild();
