@@ -2,8 +2,8 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V232';
+  var UPDATE='Last Update: 18 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
     t=String(t||'').trim();
@@ -43,8 +43,8 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V232';
+  var UPDATE='Last Update: 18 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
@@ -200,11 +200,17 @@
     var t=byId('cType'); if(t)t.value='';
     var f=byId('manualFile'); if(f)f.value='';
     var p=byId('manualFilePreview'); if(p)p.textContent='';
+    window.atsrsPendingCertificateFile=null;
   }
 
   window.atsrsV172PreviewCert=function(i){
     var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
     if(!x){alert('Document not found.');return;}
+    if(x.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.openDocument==='function'){
+      return window.atsrsCloudData.openDocument(x.cloudFileId,false).catch(function(error){
+        console.error(error);alert('The document file could not be opened from the ATSRS server.');
+      });
+    }
     alert('Document: '+(x.type||'-')+'\nProvider: '+(x.provider||'-')+'\nExpiry: '+(x.expiry||'-')+'\nStatus: '+((typeof status==='function'&&x.expiry)?status(x.expiry).txt:'-'));
   };
   window.atsrsV172EditCert=function(i){
@@ -222,20 +228,74 @@
     setTimeout(function(){var panel=byId('certManualPanel'); if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});},60);
   };
 
-  var oldAdd=window.addCertificate;
-  window.addCertificate=function(){
-    if(editIndex!==null){
-      var a=(typeof getData==='function'?getData('certs'):[])||[];
-      if(!a[editIndex]){editIndex=null; return oldAdd&&oldAdd.apply(this,arguments);}
-      if(typeof validateManualCertificateForm==='function' && !validateManualCertificateForm())return;
-      var person=(typeof isPersonalMode==='function'&&isPersonalMode())?(typeof soloOwnerName==='function'?soloOwnerName():''):(byId('cPerson')?byId('cPerson').value:'');
-      a[editIndex]={person:person,type:(byId('cType')?byId('cType').value:''),docNo:(byId('cDocNo')?byId('cDocNo').value:''),country:(byId('cCountry')?byId('cCountry').value:''),provider:(byId('cProvider')?byId('cProvider').value:''),issue:(byId('cIssue')?byId('cIssue').value:''),expiry:(byId('cExpiry')?byId('cExpiry').value:'')};
-      if(typeof saveData==='function')saveData('certs',a);
-      editIndex=null; clearForm(); closeManual(); if(typeof clearManualValidation==='function')clearManualValidation(); if(typeof renderAll==='function')renderAll(); return;
+  window.addCertificate=async function(){
+    if(typeof validateManualCertificateForm==='function' && !validateManualCertificateForm())return;
+    var a=(typeof getData==='function'?getData('certs'):[])||[];
+    var previous=editIndex!==null?a[editIndex]:null;
+    var person=(typeof isPersonalMode==='function'&&isPersonalMode())?(typeof soloOwnerName==='function'?soloOwnerName():''):(byId('cPerson')?byId('cPerson').value:'');
+    if(!person)return;
+    var item={
+      person:person,
+      type:(byId('cType')?byId('cType').value:''),
+      docNo:(byId('cDocNo')?byId('cDocNo').value:''),
+      country:(byId('cCountry')?byId('cCountry').value:''),
+      provider:(byId('cProvider')?byId('cProvider').value:''),
+      issue:(byId('cIssue')?byId('cIssue').value:''),
+      expiry:(byId('cExpiryNA')&&byId('cExpiryNA').checked)?'N/A':(byId('cExpiry')?byId('cExpiry').value:'')
+    };
+    if(previous){
+      item.cloudFileId=previous.cloudFileId||'';
+      item.fileName=previous.fileName||'';
+      item.mimeType=previous.mimeType||'';
+      item.fileSize=previous.fileSize||0;
     }
-    var r=oldAdd&&oldAdd.apply(this,arguments);
-    closeManual();
-    return r;
+    var button=byId('addCertBtn'),oldText=button&&button.textContent;
+    if(button){button.disabled=true;button.textContent='Saving to server...';}
+    var uploadedRow=null;
+    try{
+      var file=window.atsrsPendingCertificateFile;
+      if(file){
+        if(!window.atsrsCloudData||typeof window.atsrsCloudData.uploadDocument!=='function')throw new Error('ATSRS cloud storage is not ready.');
+        uploadedRow=await window.atsrsCloudData.uploadDocument(file,{document:item});
+        item.cloudFileId=uploadedRow.id;item.fileName=uploadedRow.file_name;item.mimeType=uploadedRow.mime_type;item.fileSize=uploadedRow.size_bytes;
+      }else if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
+        await window.atsrsCloudData.updateDocumentMetadata(item.cloudFileId,{document:item});
+      }
+      if(editIndex!==null&&a[editIndex])a[editIndex]=item;else a.push(item);
+      if(typeof saveData==='function')saveData('certs',a);
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document details could not be saved.');
+      if(file&&previous&&previous.cloudFileId&&previous.cloudFileId!==item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
+        await window.atsrsCloudData.deleteDocument(previous.cloudFileId);
+      }
+      editIndex=null;clearForm();closeManual();
+      if(typeof clearManualValidation==='function')clearManualValidation();
+      if(typeof renderAll==='function')renderAll();
+    }catch(error){
+      console.error('ATSRS document save failed',error);
+      if(uploadedRow&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
+        try{await window.atsrsCloudData.deleteDocument(uploadedRow.id);}catch(cleanupError){console.error('ATSRS orphan document cleanup failed',cleanupError);}
+      }
+      alert('The document was not saved to the ATSRS server. Check the connection and try again.');
+    }finally{
+      if(button){button.disabled=false;button.textContent=oldText||'Save Document';}
+    }
+  };
+
+  window.deleteCert=async function(i){
+    var a=(typeof getData==='function'?getData('certs'):[])||[],item=a[i];
+    if(!item)return;
+    try{
+      a.splice(i,1);
+      if(typeof saveData==='function')saveData('certs',a);
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document details could not be deleted.');
+      if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
+        await window.atsrsCloudData.deleteDocument(item.cloudFileId);
+      }
+      if(typeof renderAll==='function')window.renderAll();
+    }catch(error){
+      console.error('ATSRS document delete failed',error);
+      alert('The document could not be deleted from the ATSRS server.');
+    }
   };
 
   function renderCertRows(){
@@ -283,8 +343,8 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V231';
-      if(d[1])d[1].textContent='Last Update: 17 Jul 2026';
+      if(d[0])d[0].textContent='ATSRS V232';
+      if(d[1])d[1].textContent='Last Update: 18 Jul 2026';
     });
   }
   lockBuild();

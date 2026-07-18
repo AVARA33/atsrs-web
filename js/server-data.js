@@ -874,7 +874,25 @@
       if(typeof window.renderAll==='function')window.renderAll();
       await renderCloudFiles();
     },
-    renderFiles:renderCloudFiles
+    renderFiles:renderCloudFiles,
+    uploadDocument:function(file,metadata){
+      return uploadFile('document',file,{metadata:metadata||{}});
+    },
+    updateDocumentMetadata:async function(id,metadata){
+      var row=await findFile(id);
+      if(!row)throw new Error('Document file was not found on the ATSRS server.');
+      var result=await client().from(FILE_TABLE)
+        .update({metadata:Object.assign({},row.metadata||{},metadata||{})})
+        .eq('id',id);
+      if(result.error)throw result.error;
+      return true;
+    },
+    openDocument:function(id,download){
+      return openCloudFile(id,!!download);
+    },
+    deleteDocument:function(id){
+      return deleteCloudFile(id);
+    }
   };
 
   function finalInstall(){
