@@ -20,8 +20,18 @@
 
 
 
+<style id="atsrs-v237-session-boot-style">
+body.atsrs-session-pending #auth,
+body.atsrs-session-pending #app{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
+</style>
+
 </head>
-<body class="atsrs-booting">
+<body class="atsrs-booting atsrs-session-pending">
 <div id="atsrsBootScreen" role="status" aria-live="polite">
   <div class="atsrs-loader-logo">ATSRS</div>
   <div class="atsrs-spinner" aria-hidden="true"></div>
@@ -104,8 +114,8 @@
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V236</div>
-<div>Last Update: 18 Jul 2026</div>
+<div>ATSRS V237</div>
+<div>Last Update: 19 Jul 2026</div>
 </div>
 </div>
 </section>
@@ -528,7 +538,8 @@
 <script src="js/documents.js?v=215"></script>
 <script src="js/references.js?v=234"></script>
 <script src="js/account.js?v=216"></script>
-<script src="js/app.js?v=236"></script>
+<script src="js/app.js?v=237"></script>
+<script src="js/boot-refresh.js?v=237"></script>
 
 
 
