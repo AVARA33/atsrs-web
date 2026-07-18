@@ -1,0 +1,34 @@
+/* ATSRS V239 — server-backed expiry notification center */
+.atsrs-notification-panel{margin-top:18px}
+.atsrs-notification-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.atsrs-notification-head h3{margin:0 0 5px}
+.atsrs-notification-count{min-width:30px;height:30px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:#dc2626;color:#fff;font-weight:800;font-size:13px}
+.atsrs-notification-count.is-empty{background:#243244;color:#aebbd0}
+.atsrs-notification-actions{display:flex;gap:9px;flex-wrap:wrap}
+.atsrs-notification-list{display:grid;gap:10px}
+.atsrs-notification-item{display:grid;grid-template-columns:10px 1fr auto;gap:12px;align-items:start;padding:14px;border:1px solid #26384e;border-radius:14px;background:rgba(8,20,34,.72)}
+.atsrs-notification-item.is-unread{border-color:#3d6085;background:rgba(12,30,49,.94)}
+.atsrs-notification-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;background:#6b7280}
+.atsrs-notification-item[data-severity="notice"] .atsrs-notification-dot{background:#38bdf8}
+.atsrs-notification-item[data-severity="warning"] .atsrs-notification-dot{background:#f59e0b}
+.atsrs-notification-item[data-severity="urgent"] .atsrs-notification-dot,.atsrs-notification-item[data-severity="expired"] .atsrs-notification-dot{background:#ef4444}
+.atsrs-notification-copy b{display:block;margin-bottom:4px;color:#f4f7fb}
+.atsrs-notification-copy p{margin:0 0 6px;color:#aebbd0;line-height:1.45}
+.atsrs-notification-copy time{font-size:12px;color:#7f91a8}
+.atsrs-notification-empty{padding:18px;border:1px dashed #31445c;border-radius:14px;color:#94a3b8;text-align:center}
+.atsrs-notification-error{color:#fca5a5}
+.atsrs-notification-settings{margin:12px 0 16px;padding:16px;border:1px solid #2d4159;border-radius:14px;background:rgba(7,18,31,.76)}
+.atsrs-notification-settings.hidden{display:none!important}
+.atsrs-notification-settings h4{margin:0 0 5px}
+.atsrs-notification-settings>p{margin:0 0 15px;color:#94a3b8}
+.atsrs-notification-field{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #223247}
+.atsrs-notification-field:last-of-type{border-bottom:0}
+.atsrs-notification-field label{font-weight:700}
+.atsrs-notification-field small{display:block;margin-top:4px;color:#8798ad;font-weight:400}
+.atsrs-notification-field input[type="checkbox"]{width:20px;height:20px;accent-color:#22c55e}
+.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:260px;margin:0}
+.atsrs-notification-savebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:15px}
+.atsrs-notification-status{font-size:13px;color:#94a3b8}
+.atsrs-notification-status.is-ok{color:#86efac}
+.atsrs-notification-status.is-error{color:#fca5a5}
+@media(max-width:720px){.atsrs-notification-head,.atsrs-notification-field{align-items:stretch;flex-direction:column}.atsrs-notification-item{grid-template-columns:10px 1fr}.atsrs-notification-item>button{grid-column:2}.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:none;width:100%}}
