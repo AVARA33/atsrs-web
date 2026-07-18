@@ -13,7 +13,15 @@
     Object.keys(attributes).forEach(function(name){element.setAttribute(name,attributes[name]);});
     (tag==='link'?document.head:document.body).appendChild(element);
   }
+  function lockBuildBadge(){
+    var badge=byId('buildBadge');
+    if(!badge)return;
+    var lines=badge.querySelectorAll('div');
+    if(lines[0]&&lines[0].textContent!=='ATSRS V239')lines[0].textContent='ATSRS V239';
+    if(lines[1]&&lines[1].textContent!=='Last Update: 19 Jul 2026')lines[1].textContent='Last Update: 19 Jul 2026';
+  }
   function loadV239(){
+    lockBuildBadge();
     loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=239'});
     loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=239'});
   }
@@ -58,5 +66,6 @@
   }else{
     resolveSession();
   }
+  setInterval(lockBuildBadge,250);
   fallbackTimer=setTimeout(finishBoot,12000);
 })();
