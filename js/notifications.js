@@ -1,0 +1,179 @@
+/* ATSRS V239 — server-backed expiry notification preferences and in-app center. */
+(function(){
+  'use strict';
+  var BUILD='ATSRS V239';
+  var UPDATE='Last Update: 19 Jul 2026';
+  var client=null;
+  var user=null;
+  var loading=false;
+  var uiReady=false;
+
+  function byId(id){return document.getElementById(id);}
+  function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function mode(){
+    var value='';
+    try{value=localStorage.getItem('atsrs_use_mode')||localStorage.getItem('atsrs_account_type')||'';}catch(e){}
+    value=String(value).toLowerCase();
+    return value==='company'||value==='corporate'?'company':'personal';
+  }
+  function setBuild(){
+    var badge=byId('buildBadge');
+    if(!badge)return;
+    var lines=badge.querySelectorAll('div');
+    if(lines[0]&&lines[0].textContent!==BUILD)lines[0].textContent=BUILD;
+    if(lines[1]&&lines[1].textContent!==UPDATE)lines[1].textContent=UPDATE;
+  }
+  function setStatus(text,kind){
+    var el=byId('atsrsNotificationStatus');
+    if(!el)return;
+    el.textContent=text||'';
+    el.className='atsrs-notification-status'+(kind?' is-'+kind:'');
+  }
+  async function resolveUser(){
+    client=window.supabaseClient||client;
+    if(!client||!client.auth)return null;
+    if(window.currentUser&&window.currentUser.id){user=window.currentUser;return user;}
+    try{
+      var result=await client.auth.getUser();
+      user=result&&result.data&&result.data.user||null;
+      return user;
+    }catch(e){return null;}
+  }
+
+  function ensureDashboardPanel(){
+    if(byId('atsrsNotificationPanel'))return;
+    var risk=byId('riskList');
+    var anchor=risk&&risk.closest('.panel');
+    if(!anchor)return;
+    var panel=document.createElement('div');
+    panel.id='atsrsNotificationPanel';
+    panel.className='panel atsrs-notification-panel';
+    panel.innerHTML='<div class="atsrs-notification-head"><div><h3>Expiry notifications</h3><p class="sub">Server reminders for documents approaching expiry.</p></div><div class="atsrs-notification-actions"><span id="atsrsNotificationCount" class="atsrs-notification-count is-empty">0</span><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button></div></div><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
+    anchor.insertAdjacentElement('afterend',panel);
+    byId('atsrsMarkAllRead').addEventListener('click',markAllRead);
+  }
+
+  function ensureSettingsPanel(){
+    if(byId('atsrsNotificationSettings'))return;
+    var manage=byId('manageNotifyBtn');
+    if(!manage)return;
+    manage.removeAttribute('onclick');
+    manage.textContent='Manage';
+    manage.onclick=function(){
+      var panel=byId('atsrsNotificationSettings');
+      panel.classList.toggle('hidden');
+      if(!panel.classList.contains('hidden'))loadPreferences();
+    };
+    var row=manage.closest('.setting-row');
+    var panel=document.createElement('div');
+    panel.id='atsrsNotificationSettings';
+    panel.className='atsrs-notification-settings hidden';
+    panel.innerHTML='<h4>Expiry reminder settings</h4><p>ATSRS checks document expiry dates on the server every day.</p><div class="atsrs-notification-field"><div><label for="atsrsEmailEnabled">Email reminders</label><small>90, 30, 7 days and expiry day.</small></div><input id="atsrsEmailEnabled" type="checkbox" checked></div><div class="atsrs-notification-field"><div><label for="atsrsWhatsappEnabled">WhatsApp reminders</label><small>30, 7 days and expiry day. Delivery activates after a WhatsApp provider is connected.</small></div><input id="atsrsWhatsappEnabled" type="checkbox"></div><div class="atsrs-notification-field"><div><label for="atsrsWhatsappPhone">WhatsApp number</label><small>International format, for example +994501234567.</small></div><input id="atsrsWhatsappPhone" type="tel" inputmode="tel" placeholder="+994501234567"></div><div class="atsrs-notification-field"><div><label for="atsrsNotificationTimezone">Timezone</label><small>Used by the daily server schedule.</small></div><select id="atsrsNotificationTimezone"><option value="Asia/Baku">Asia/Baku</option><option value="UTC">UTC</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Europe/Sofia">Europe/Sofia</option></select></div><div class="atsrs-notification-savebar"><button id="atsrsSaveNotifications" type="button">Save notification settings</button><span id="atsrsNotificationStatus" class="atsrs-notification-status"></span></div>';
+    row.insertAdjacentElement('afterend',panel);
+    byId('atsrsSaveNotifications').addEventListener('click',savePreferences);
+    byId('atsrsWhatsappEnabled').addEventListener('change',syncPhoneState);
+  }
+
+  function syncPhoneState(){
+    var enabled=byId('atsrsWhatsappEnabled');
+    var phone=byId('atsrsWhatsappPhone');
+    if(phone)phone.disabled=!(enabled&&enabled.checked);
+  }
+
+  function ensureUi(){
+    ensureDashboardPanel();
+    ensureSettingsPanel();
+    var timezone=byId('profileTimezone');
+    if(timezone){
+      var old=timezone.querySelector('option[value="Europe/Baku"]');
+      if(old){old.value='Asia/Baku';old.textContent='Asia/Baku';}
+    }
+    uiReady=!!(byId('atsrsNotificationPanel')&&byId('atsrsNotificationSettings'));
+    setBuild();
+  }
+
+  async function loadPreferences(){
+    if(!await resolveUser()){setStatus('Sign in to manage notifications.','error');return;}
+    setStatus('Loading...');
+    var result=await client.from('atsrs_notification_preferences').select('email_enabled,whatsapp_enabled,whatsapp_phone_e164,timezone').eq('user_id',user.id).eq('account_type',mode()).maybeSingle();
+    if(result.error){setStatus('Settings could not be loaded.','error');return;}
+    var data=result.data||{email_enabled:true,whatsapp_enabled:false,whatsapp_phone_e164:'',timezone:'Asia/Baku'};
+    byId('atsrsEmailEnabled').checked=data.email_enabled!==false;
+    byId('atsrsWhatsappEnabled').checked=!!data.whatsapp_enabled;
+    byId('atsrsWhatsappPhone').value=data.whatsapp_phone_e164||'';
+    byId('atsrsNotificationTimezone').value=data.timezone||'Asia/Baku';
+    syncPhoneState();
+    setStatus('Settings are stored on the ATSRS server.','ok');
+  }
+
+  async function savePreferences(){
+    if(!await resolveUser()){setStatus('Sign in to save notifications.','error');return;}
+    var email=byId('atsrsEmailEnabled').checked;
+    var whatsapp=byId('atsrsWhatsappEnabled').checked;
+    var phone=byId('atsrsWhatsappPhone').value.trim();
+    var timezone=byId('atsrsNotificationTimezone').value||'Asia/Baku';
+    if(whatsapp&&!/^\+[1-9]\d{7,14}$/.test(phone)){setStatus('Enter the WhatsApp number in international format: +994...','error');return;}
+    var button=byId('atsrsSaveNotifications');
+    button.disabled=true;setStatus('Saving to server...');
+    var result=await client.from('atsrs_notification_preferences').upsert({user_id:user.id,account_type:mode(),email_enabled:email,whatsapp_enabled:whatsapp,whatsapp_phone_e164:whatsapp?phone:null,timezone:timezone,updated_at:new Date().toISOString()},{onConflict:'user_id,account_type'});
+    button.disabled=false;
+    if(result.error){console.error('ATSRS notification preference save failed',result.error);setStatus('Settings could not be saved. Try again.','error');return;}
+    setStatus('Notification settings saved on the ATSRS server.','ok');
+  }
+
+  function notificationMarkup(item){
+    var unread=!item.read_at;
+    var created=item.created_at?new Date(item.created_at).toLocaleString():'';
+    return '<article class="atsrs-notification-item'+(unread?' is-unread':'')+'" data-severity="'+esc(item.severity||'notice')+'"><span class="atsrs-notification-dot"></span><div class="atsrs-notification-copy"><b>'+esc(item.title||'Document reminder')+'</b><p>'+esc(item.body||'')+'</p><time>'+esc(created)+'</time></div>'+(unread?'<button type="button" class="secondary" data-notification-id="'+esc(item.id)+'">Mark read</button>':'')+'</article>';
+  }
+
+  async function loadNotifications(){
+    if(loading)return;
+    ensureUi();
+    var list=byId('atsrsNotificationList');
+    if(!list)return;
+    if(!await resolveUser()){list.innerHTML='<div class="atsrs-notification-empty">Sign in to see notifications.</div>';return;}
+    loading=true;
+    var result=await client.from('atsrs_notifications').select('id,title,body,severity,read_at,created_at,expiry_date,days_remaining').eq('user_id',user.id).eq('account_type',mode()).order('created_at',{ascending:false}).limit(20);
+    loading=false;
+    if(result.error){console.error('ATSRS notifications load failed',result.error);list.innerHTML='<div class="atsrs-notification-empty atsrs-notification-error">Notifications could not be loaded from the server.</div>';return;}
+    var rows=result.data||[];
+    var unread=rows.filter(function(row){return !row.read_at;}).length;
+    var count=byId('atsrsNotificationCount');
+    count.textContent=String(unread);count.classList.toggle('is-empty',unread===0);
+    var all=byId('atsrsMarkAllRead');if(all)all.disabled=unread===0;
+    list.innerHTML=rows.length?rows.map(notificationMarkup).join(''):'<div class="atsrs-notification-empty">No expiry notifications yet.</div>';
+    list.querySelectorAll('[data-notification-id]').forEach(function(button){button.addEventListener('click',function(){markRead(button.getAttribute('data-notification-id'));});});
+  }
+
+  async function markRead(id){
+    if(!id||!await resolveUser())return;
+    var result=await client.from('atsrs_notifications').update({read_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+    if(!result.error)loadNotifications();
+  }
+  async function markAllRead(){
+    if(!await resolveUser())return;
+    var result=await client.from('atsrs_notifications').update({read_at:new Date().toISOString()}).eq('user_id',user.id).eq('account_type',mode()).is('read_at',null);
+    if(!result.error)loadNotifications();
+  }
+
+  function refresh(){ensureUi();setBuild();loadNotifications();}
+  function boot(){
+    ensureUi();
+    setBuild();
+    if(window.MutationObserver){
+      var badge=byId('buildBadge');
+      if(badge)new MutationObserver(setBuild).observe(badge,{childList:true,subtree:true,characterData:true});
+    }
+    var oldShow=window.showPage;
+    if(typeof oldShow==='function'&&!oldShow.__atsrsNotifications){
+      window.showPage=function(){var value=oldShow.apply(this,arguments);setTimeout(refresh,80);return value;};
+      window.showPage.__atsrsNotifications=true;
+    }
+    setTimeout(refresh,250);
+    setTimeout(refresh,1000);
+  }
+  window.atsrsRefreshNotifications=refresh;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+  window.addEventListener('load',function(){setTimeout(refresh,100);});
+})();
