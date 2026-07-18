@@ -1,4 +1,4 @@
-/* ATSRS V237: session-aware refresh loading controller. */
+/* ATSRS V239: session-aware refresh loading controller + notification assets. */
 (function(){
   'use strict';
   var finished=false;
@@ -6,12 +6,23 @@
   var fallbackTimer=0;
 
   function byId(id){return document.getElementById(id);}
+  function loadAsset(tag,attributes){
+    var key=attributes.id;
+    if(key&&byId(key))return;
+    var element=document.createElement(tag);
+    Object.keys(attributes).forEach(function(name){element.setAttribute(name,attributes[name]);});
+    (tag==='link'?document.head:document.body).appendChild(element);
+  }
+  function loadV239(){
+    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=239'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=239'});
+  }
   function appIsOpen(){
     var app=byId('app');
     return !!(app && !app.classList.contains('hidden'));
   }
   function finishBoot(){
-    if(finished) return;
+    if(finished)return;
     finished=true;
     if(observer){observer.disconnect();observer=null;}
     if(fallbackTimer){clearTimeout(fallbackTimer);fallbackTimer=0;}
@@ -22,23 +33,22 @@
   }
   function watchForOpenApp(){
     var app=byId('app');
-    if(!app) return;
+    if(!app)return;
     if(appIsOpen()){finishBoot();return;}
-    observer=new MutationObserver(function(){
-      if(appIsOpen()) finishBoot();
-    });
+    observer=new MutationObserver(function(){if(appIsOpen())finishBoot();});
     observer.observe(app,{attributes:true,attributeFilter:['class']});
   }
   function resolveSession(){
+    loadV239();
     watchForOpenApp();
     var client=window.supabaseClient;
-    if(!client || !client.auth || typeof client.auth.getSession!=='function'){
+    if(!client||!client.auth||typeof client.auth.getSession!=='function'){
       finishBoot();
       return;
     }
     client.auth.getSession().then(function(result){
-      var session=result && result.data && result.data.session;
-      if(!session || !session.user) finishBoot();
+      var session=result&&result.data&&result.data.session;
+      if(!session||!session.user)finishBoot();
     }).catch(finishBoot);
   }
 
