@@ -1,12 +1,11 @@
-/* ATSRS V239 — server-backed expiry notification preferences and in-app center. */
+/* ATSRS V240 — server-backed expiry notification preferences and in-app center. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V239';
+  var BUILD='ATSRS V240';
   var UPDATE='Last Update: 19 Jul 2026';
   var client=null;
   var user=null;
   var loading=false;
-  var uiReady=false;
 
   function byId(id){return document.getElementById(id);}
   function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -68,7 +67,7 @@
     var panel=document.createElement('div');
     panel.id='atsrsNotificationSettings';
     panel.className='atsrs-notification-settings hidden';
-    panel.innerHTML='<h4>Expiry reminder settings</h4><p>ATSRS checks document expiry dates on the server every day.</p><div class="atsrs-notification-field"><div><label for="atsrsEmailEnabled">Email reminders</label><small>90, 30, 7 days and expiry day.</small></div><input id="atsrsEmailEnabled" type="checkbox" checked></div><div class="atsrs-notification-field"><div><label for="atsrsWhatsappEnabled">WhatsApp reminders</label><small>30, 7 days and expiry day. Delivery activates after a WhatsApp provider is connected.</small></div><input id="atsrsWhatsappEnabled" type="checkbox"></div><div class="atsrs-notification-field"><div><label for="atsrsWhatsappPhone">WhatsApp number</label><small>International format, for example +994501234567.</small></div><input id="atsrsWhatsappPhone" type="tel" inputmode="tel" placeholder="+994501234567"></div><div class="atsrs-notification-field"><div><label for="atsrsNotificationTimezone">Timezone</label><small>Used by the daily server schedule.</small></div><select id="atsrsNotificationTimezone"><option value="Asia/Baku">Asia/Baku</option><option value="UTC">UTC</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Europe/Sofia">Europe/Sofia</option></select></div><div class="atsrs-notification-savebar"><button id="atsrsSaveNotifications" type="button">Save notification settings</button><span id="atsrsNotificationStatus" class="atsrs-notification-status"></span></div>';
+    panel.innerHTML='<h4>Expiry reminder settings</h4><p>ATSRS checks document expiry dates on the server every day.</p><div class="atsrs-notification-field"><div><label for="atsrsEmailEnabled">Email reminders</label><small>90 days, 30 days and expiry day. Sending activates after an email provider is connected.</small></div><input id="atsrsEmailEnabled" type="checkbox" checked></div><div class="atsrs-notification-field"><div><label for="atsrsWhatsappEnabled">WhatsApp reminders</label><small>90 days, 30 days and expiry day. Sending activates after a WhatsApp Business provider is connected.</small></div><input id="atsrsWhatsappEnabled" type="checkbox"></div><div class="atsrs-notification-field"><div><label for="atsrsWhatsappPhone">WhatsApp number</label><small>International format, for example +994501234567.</small></div><input id="atsrsWhatsappPhone" type="tel" inputmode="tel" placeholder="+994501234567"></div><div class="atsrs-notification-field"><div><label for="atsrsNotificationTimezone">Timezone</label><small>Used by the daily server schedule.</small></div><select id="atsrsNotificationTimezone"><option value="Asia/Baku">Asia/Baku</option><option value="UTC">UTC</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Europe/Sofia">Europe/Sofia</option></select></div><div class="atsrs-notification-savebar"><button id="atsrsSaveNotifications" type="button">Save notification settings</button><span id="atsrsNotificationStatus" class="atsrs-notification-status"></span></div>';
     row.insertAdjacentElement('afterend',panel);
     byId('atsrsSaveNotifications').addEventListener('click',savePreferences);
     byId('atsrsWhatsappEnabled').addEventListener('change',syncPhoneState);
@@ -88,7 +87,6 @@
       var old=timezone.querySelector('option[value="Europe/Baku"]');
       if(old){old.value='Asia/Baku';old.textContent='Asia/Baku';}
     }
-    uiReady=!!(byId('atsrsNotificationPanel')&&byId('atsrsNotificationSettings'));
     setBuild();
   }
 
@@ -118,7 +116,7 @@
     var result=await client.from('atsrs_notification_preferences').upsert({user_id:user.id,account_type:mode(),email_enabled:email,whatsapp_enabled:whatsapp,whatsapp_phone_e164:whatsapp?phone:null,timezone:timezone,updated_at:new Date().toISOString()},{onConflict:'user_id,account_type'});
     button.disabled=false;
     if(result.error){console.error('ATSRS notification preference save failed',result.error);setStatus('Settings could not be saved. Try again.','error');return;}
-    setStatus('Notification settings saved on the ATSRS server.','ok');
+    setStatus('Reminder preferences saved on the ATSRS server.','ok');
   }
 
   function notificationMarkup(item){
