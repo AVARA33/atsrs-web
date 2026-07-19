@@ -1,4 +1,4 @@
-/* ATSRS V240: session-aware refresh loading controller + notification assets. */
+/* ATSRS V241: session-aware refresh loading controller + notification assets. */
 (function(){
   'use strict';
   var finished=false;
@@ -17,13 +17,13 @@
     var badge=byId('buildBadge');
     if(!badge)return;
     var lines=badge.querySelectorAll('div');
-    if(lines[0]&&lines[0].textContent!=='ATSRS V240')lines[0].textContent='ATSRS V240';
+    if(lines[0]&&lines[0].textContent!=='ATSRS V241')lines[0].textContent='ATSRS V241';
     if(lines[1]&&lines[1].textContent!=='Last Update: 19 Jul 2026')lines[1].textContent='Last Update: 19 Jul 2026';
   }
-  function loadV240(){
+  function loadV241(){
     lockBuildBadge();
-    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=240'});
-    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=240'});
+    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=241'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=241'});
   }
   function appIsOpen(){
     var app=byId('app');
@@ -47,7 +47,7 @@
     observer.observe(app,{attributes:true,attributeFilter:['class']});
   }
   function resolveSession(){
-    loadV240();
+    loadV241();
     watchForOpenApp();
     var client=window.supabaseClient;
     if(!client||!client.auth||typeof client.auth.getSession!=='function'){
