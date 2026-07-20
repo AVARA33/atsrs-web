@@ -78,14 +78,14 @@
   };
   window.toggleLangMenu=window.atsrsV78EnglishOnlyNotice;
   window.toggleAppLangMenu=window.atsrsV78EnglishOnlyNotice;
-  document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);setInterval(v78Apply,1000);
+  document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);window.addEventListener('atsrs:resume',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);atsrsStableInterval(v78Apply,1000);
 })();
 
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V231';
-  const UPDATE = 'Last Update: 17 Jul 2026';
+  const BUILD = 'ATSRS V245';
+  const UPDATE = 'Last Update: 21 Jul 2026';
   const ATSRS_MEANING = 'Automated Tracking & Reporting System';
   function byId(id){ return document.getElementById(id); }
   function applyBuildBadge(){

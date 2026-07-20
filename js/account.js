@@ -2,19 +2,19 @@
 /* ===== extracted from inline script id=ATSRS_V148_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V231';if(d[1])d[1].textContent='Last Update: 17 Jul 2026';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V245';if(d[1])d[1].textContent='Last Update: 21 Jul 2026';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS ===== */
 (function(){
-  var BUILD='ATSRS V231';
+  var BUILD='ATSRS V245';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
       if(d[0])d[0].textContent=BUILD;
-      if(d[1])d[1].textContent='Last Update: 17 Jul 2026';
+      if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }
   function compactRows(){
@@ -55,14 +55,14 @@
       wrapped.__atsrsV150Compact=true;window[name]=wrapped;
     }
   });
-  setInterval(compactRows,250);
+  atsrsStableInterval(compactRows,250);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
   var STORE='files';
@@ -121,8 +121,8 @@
 /* ===== extracted from inline script id=ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
   var STORE='referenceFiles';
@@ -187,14 +187,14 @@
   window.atsrsV152Delete=async function(kind,id){await del(kind,id);await render();};
   ['renderAll','showPage','applyLanguage','renderManagedFiles'].forEach(function(n){var old=window[n];if(typeof old==='function'&&!old.__atsrsV152){var wrap=function(){var r=old.apply(this,arguments);setTimeout(render,120);setTimeout(render,500);return r;};wrap.__atsrsV152=true;window[n]=wrap;}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(render,150);});else setTimeout(render,150);
-  window.addEventListener('load',function(){render();setTimeout(render,800);});setInterval(function(){if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden')){setBuild();bind();}},1200);
+  window.addEventListener('load',function(){render();setTimeout(render,800);});atsrsStableInterval(function(){if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden')){setBuild();bind();}},1200);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V156_CV_SLOTS_UNDER_MAIN_STABLE_LAYOUT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
   function byId(id){return document.getElementById(id);} 
@@ -295,8 +295,8 @@
 /* ===== extracted from inline script id=atsrs-v157-login-cleanup-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){
     var badge=byId('buildBadge')||document.querySelector('.build-badge');
@@ -321,5 +321,5 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',run);
   [80,250,700,1300,2400].forEach(function(ms){setTimeout(run,ms);});
-  setInterval(lockBuild,500);
+  atsrsStableInterval(lockBuild,500);
 })();

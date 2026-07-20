@@ -1,8 +1,8 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V241';
-  var UPDATE='Last Update: 19 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   var client=null;
   var user=null;
   var loading=false;
@@ -163,10 +163,7 @@
   function boot(){
     ensureUi();
     setBuild();
-    if(window.MutationObserver){
-      var badge=byId('buildBadge');
-      if(badge)new MutationObserver(setBuild).observe(badge,{childList:true,subtree:true,characterData:true});
-    }
+    window.addEventListener('atsrs:resume',refresh);
     var oldShow=window.showPage;
     if(typeof oldShow==='function'&&!oldShow.__atsrsNotifications){
       window.showPage=function(){var value=oldShow.apply(this,arguments);setTimeout(refresh,80);return value;};

@@ -436,6 +436,21 @@ function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert
 function deletePersonnel(i){let a=getData("personnel");a.splice(i,1);saveData("personnel",a);renderAll()}
 function startCameraScan(){scanBox.classList.remove("hidden");confirmBox.classList.add("hidden");documentPreview.innerText="";cameraInput.click()}
 
+let atsrsTesseractPromise=null;
+function loadTesseractOnDemand(){
+if(window.Tesseract)return Promise.resolve(window.Tesseract);
+if(atsrsTesseractPromise)return atsrsTesseractPromise;
+atsrsTesseractPromise=new Promise((resolve,reject)=>{
+let script=document.createElement("script");
+script.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+script.async=true;
+script.onload=()=>window.Tesseract?resolve(window.Tesseract):reject(new Error("OCR library did not initialize."));
+script.onerror=()=>reject(new Error("OCR library could not be loaded."));
+document.head.appendChild(script);
+}).catch(error=>{atsrsTesseractPromise=null;throw error;});
+return atsrsTesseractPromise;
+}
+
 async function handleDocumentUpload(e){
 let file=e.target.files&&e.target.files[0];
 if(!file)return;
@@ -451,11 +466,9 @@ else if(fn.includes("SEAMAN"))autoDocType.value="Seaman Book";
 else if(fn.includes("BOSIET")||fn.includes("FOET"))autoDocType.value="BOSIET / FOET";
 else if(fn.includes("MEDICAL"))autoDocType.value="Professional Medical";
 else if(fn.includes("VISA"))autoDocType.value="Visa";
-if(!window.Tesseract){
-ocrProgress.innerText=v12("ocrNotAvailable")+" "+v12("ocrManual");
-return;
-}
 try{
+ocrProgress.innerText=v12("ocrStarting");
+await loadTesseractOnDemand();
 const result=await Tesseract.recognize(file,"eng",{
 logger:m=>{if(m.status&&typeof m.progress==="number"){ocrProgress.innerText=v12("ocrProgress")+": "+m.status+" "+Math.round(m.progress*100)+"%";}}
 });
@@ -464,7 +477,7 @@ if(!text.trim()){ocrProgress.innerText=v12("noTextDetected")+" "+v12("ocrManual"
 autoFillFromOCR(text);
 }catch(err){
 console.error("OCR failed:",err);
-ocrProgress.innerText=v12("noTextDetected")+" "+v12("ocrManual");
+ocrProgress.innerText=v12("ocrNotAvailable")+" "+v12("ocrManual");
 }
 }
 
@@ -1185,7 +1198,7 @@ const applyLanguageBaseV54=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV54();renderManagedFiles();forceTopControlsFixed();};
 window.addEventListener('scroll',forceTopControlsFixed,{passive:true});
 window.addEventListener('resize',forceTopControlsFixed);
-setInterval(forceTopControlsFixed,800);
+atsrsStableInterval(forceTopControlsFixed,800);
 setTimeout(()=>{try{renderManagedFiles();forceTopControlsFixed();}catch(e){}},0);
 function v55DockTopActions(){
   const app=document.getElementById('app');
@@ -1223,7 +1236,7 @@ if(v55LogoutBase){
 }
 window.addEventListener('scroll',v55DockTopActions,{passive:true});
 window.addEventListener('resize',v55DockTopActions);
-setInterval(v55DockTopActions,500);
+atsrsStableInterval(v55DockTopActions,500);
 setTimeout(v55DockTopActions,0);
 setTimeout(v55DockTopActions,500);
 
@@ -1253,7 +1266,7 @@ setTimeout(v55DockTopActions,500);
   window.atsrsV57LockCareerLists=lockCareerLists;
   window.addEventListener('resize',lockCareerLists);
   document.addEventListener('DOMContentLoaded',lockCareerLists);
-  setInterval(lockCareerLists,900);
+  atsrsStableInterval(lockCareerLists,900);
   setTimeout(lockCareerLists,0);
   setTimeout(lockCareerLists,300);
 })();
