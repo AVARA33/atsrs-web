@@ -17,7 +17,7 @@
     var badge=byId('buildBadge');
     if(!badge)return;
     var lines=badge.querySelectorAll('div');
-    if(lines[0]&&lines[0].textContent!=='ATSRS V242')lines[0].textContent='ATSRS V242';
+    if(lines[0]&&lines[0].textContent!=='ATSRS V243')lines[0].textContent='ATSRS V243';
     if(lines[1]&&lines[1].textContent!=='Last Update: 20 Jul 2026')lines[1].textContent='Last Update: 20 Jul 2026';
   }
   function loadV241(){

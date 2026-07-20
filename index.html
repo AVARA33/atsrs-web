@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#07111d" />
 <meta name="color-scheme" content="dark" />
+<meta name="referrer" content="no-referrer" />
 <title>ATSRS</title>
+<script>
+try{
+  if(new URLSearchParams(window.location.search).get('share')){
+    document.documentElement.classList.add('atsrs-public-share-mode');
+  }
+}catch(error){}
+</script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -16,6 +24,8 @@
 <link rel="stylesheet" href="css/references.css?v=200">
 <link rel="stylesheet" href="css/account.css?v=218">
 <link rel="stylesheet" href="css/product-experience.css?v=242">
+<link rel="stylesheet" href="css/date-picker.css?v=243">
+<link rel="stylesheet" href="css/share-profile.css?v=243">
 
 
 
@@ -117,7 +127,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V242</div>
+<div>ATSRS V243</div>
 <div>Last Update: 20 Jul 2026</div>
 </div>
 </div>
@@ -282,41 +292,29 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div id="shareProfilePanel" class="panel share-card personal-only">
   <span id="shareBadge" class="pill">SHARE PROFILE</span>
   <h3 id="shareTitle">Share My ATSRS Profile</h3>
-  <p id="shareSub" class="sub">Send one secure profile link instead of attaching documents one by one.</p>
+  <p id="shareSub" class="sub">Choose your server documents and send recruiters one revocable ATSRS link.</p>
   <div class="share-link-box">
-    <input id="shareProfileLink" readonly value="https://share.atsrs.com/demo/an-ag-123">
-    <button id="copyShareBtn" class="secondary" onclick="copyShareLink()">Copy Link</button>
+    <input id="shareProfileLink" readonly placeholder="Create a secure link after choosing documents.">
+    <button id="copyShareBtn" class="secondary" onclick="copyShareLink()" disabled>Copy Link</button>
   </div>
+  <div id="shareProfileStatus" class="share-live-status">Private. No recruiter link has been created yet.</div>
   <div class="share-actions">
-    <button id="previewShareBtn" onclick="toggleSharePreview()">Preview</button>
-    <button id="manageAccessBtn" class="secondary" onclick="toggleShareAccess()">Manage Access</button>
+    <button id="manageAccessBtn" onclick="toggleShareAccess()">Choose Documents</button>
+    <button id="previewShareBtn" class="secondary" onclick="previewShareProfile()" disabled>Preview Public Profile</button>
+    <button id="revokeShareBtn" class="action hidden" onclick="revokeShareProfileLink()">Disable Link</button>
   </div>
   <div id="shareCopyMsg" class="copy-ok hidden">Link copied.</div>
   <div id="shareAccessBox" class="share-permissions hidden">
-    <label><input type="checkbox" checked> Passport</label>
-    <label><input type="checkbox" checked> Visa</label>
-    <label><input type="checkbox" checked> Seaman Book</label>
-    <label><input type="checkbox" checked> Medical</label>
-    <label><input type="checkbox" checked> Certificates</label>
-    <label><input type="checkbox" checked> Trainings</label>
-    <label><input type="checkbox" checked> Competency</label>
-    <label><input type="checkbox" checked> References</label>
-    <label><input type="checkbox" checked> Appraisals</label>
-  </div>
-  <div id="sharePreviewBox" class="preview-profile hidden">
-    <div class="preview-head">
-      <div>
-        <h3 id="previewName">Anar Agasiyev</h3>
-        <p id="previewRole">Professional Document Holder</p>
-      </div>
-      <span id="previewStatus" class="badge badge-ready">ATSRS Shared Profile</span>
+    <div class="share-permissions-head">
+      <div><b>Recruiter access</b><span>Only checked server files will be visible.</span></div>
     </div>
-    <div id="sharePreviewDocs" class="doc-category-grid"></div>
-    <div class="company-import-box">
-      <b id="companyImportTitle">Company view</b>
-      <p id="companyImportText" class="sub">A company can review shared documents and import selected records into ATSRS Company later.</p>
-      <button id="importDemoBtn" class="secondary" onclick="alert(v27('importDemoAlert'))">Import to Company Profile</button>
+    <div id="shareDocumentChoices" class="share-document-choices">
+      <div class="preview-box">Loading your server documents...</div>
     </div>
+    <div class="share-permissions-actions">
+      <button id="saveShareBtn" type="button" onclick="createShareProfileLink()">Create Secure Link</button>
+    </div>
+    <div id="shareManageMsg" class="share-manage-message" role="status"></div>
   </div>
 </div>
 </section>
@@ -559,6 +557,49 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </main>
 </section>
 
+<main id="sharedProfilePage" class="shared-profile-page hidden">
+  <div class="shared-profile-shell">
+    <header class="shared-profile-topbar">
+      <a class="shared-profile-brand" href="https://atsrs.com/">ATSRS</a>
+      <span class="shared-profile-trust">Secure owner-controlled profile</span>
+    </header>
+    <section id="sharedProfileLoading" class="shared-profile-loading">
+      <div class="atsrs-spinner" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <h1>Opening shared profile</h1>
+      <p>Loading the latest owner-approved documents...</p>
+    </section>
+    <section id="sharedProfileError" class="shared-profile-error hidden">
+      <h1>Link unavailable</h1>
+      <p>This shared profile is unavailable or the owner has disabled access.</p>
+      <a class="secondary" href="https://atsrs.com/">Open ATSRS</a>
+    </section>
+    <section id="sharedProfileContent" class="hidden">
+      <div class="shared-profile-hero">
+        <div>
+          <span class="shared-profile-kicker">ATSRS SHARED PROFILE</span>
+          <h1 id="sharedProfileName">ATSRS Professional</h1>
+          <p id="sharedProfileRole" class="shared-profile-role">Professional Document Holder</p>
+        </div>
+        <div id="sharedProfileMeta" class="shared-profile-meta"></div>
+      </div>
+      <div class="shared-profile-note">
+        These files were uploaded and shared by the profile owner. ATSRS provides secure access and expiry visibility; recruiters should complete their normal verification process.
+      </div>
+      <div class="shared-profile-section-head">
+        <h2>Shared documents</h2>
+        <span id="sharedProfileDocumentCount">0 shared files</span>
+      </div>
+      <div id="sharedProfileDocuments" class="shared-document-grid"></div>
+      <footer class="shared-profile-footer">
+        Files remain private in ATSRS Storage. Preview and download access is temporary and controlled by the profile owner.
+      </footer>
+    </section>
+  </div>
+</main>
+
 <div id="atsrsFilePreviewModal" class="file-preview-modal hidden" role="dialog" aria-modal="true" aria-labelledby="atsrsFilePreviewTitle">
   <div class="file-preview-backdrop" data-preview-close="true"></div>
   <div class="file-preview-dialog">
@@ -582,9 +623,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/documents.js?v=215"></script>
 <script src="js/references.js?v=234"></script>
 <script src="js/account.js?v=216"></script>
-<script src="js/app.js?v=242"></script>
-<script src="js/boot-refresh.js?v=242"></script>
+<script src="js/app.js?v=243"></script>
 <script src="js/product-experience.js?v=242"></script>
+<script src="js/date-picker.js?v=243"></script>
+<script src="js/share-profile.js?v=243"></script>
+<script src="js/boot-refresh.js?v=243"></script>
 
 
 
