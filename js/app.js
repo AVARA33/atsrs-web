@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V244';
+  var BUILD='ATSRS V245';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -18,7 +18,12 @@
       document.querySelectorAll('.build-badge').forEach(function(b){
         if(b!==main) b.remove();
       });
-      main.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div>';
+      var rows=main.querySelectorAll('div');
+      if(rows.length<2){main.innerHTML='<div>'+BUILD+'</div><div>'+UPDATE+'</div>';}
+      else{
+        if(rows[0].textContent!==BUILD)rows[0].textContent=BUILD;
+        if(rows[1].textContent!==UPDATE)rows[1].textContent=UPDATE;
+      }
       document.querySelectorAll('#auth *').forEach(function(el){
         if(el===main || main.contains(el)) return;
         if(el.closest && el.closest('#buildBadge')) return;
@@ -32,18 +37,13 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',run);
   [0,50,150,400,900,1600,2600].forEach(function(ms){setTimeout(run,ms);});
-  setInterval(run,900);
-  if(window.MutationObserver){
-    var root=document.getElementById('auth')||document.body;
-    var mo=new MutationObserver(function(){setTimeout(run,0);});
-    mo.observe(root,{childList:true,subtree:true,characterData:true});
-  }
+  window.addEventListener('atsrs:resume',run);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V244';
+  var BUILD='ATSRS V245';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -343,7 +343,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V244';
+      if(d[0])d[0].textContent='ATSRS V245';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }

@@ -185,7 +185,7 @@ function ready(fn){ if(document.readyState==='loading') document.addEventListene
   window.addEventListener('load',run);
   window.addEventListener('resize',run);
   window.addEventListener('scroll',function(){requestAnimationFrame(run);},{passive:true});
-  setInterval(run,700);
+  atsrsStableInterval(run,700);
   setTimeout(run,0); setTimeout(run,300); setTimeout(run,900);
 })();
 
@@ -301,7 +301,7 @@ function ready(fn){ if(document.readyState==='loading') document.addEventListene
   window.addEventListener('load',normaliseTopActions);
   window.addEventListener('resize',normaliseTopActions);
   window.addEventListener('scroll',function(){requestAnimationFrame(normaliseTopActions);},{passive:true});
-  setInterval(normaliseTopActions,80);
+  atsrsStableInterval(normaliseTopActions,80);
   setTimeout(normaliseTopActions,0);
   setTimeout(normaliseTopActions,300);
   setTimeout(normaliseTopActions,900);
@@ -324,7 +324,7 @@ function ready(fn){ if(document.readyState==='loading') document.addEventListene
   window.addEventListener('load',removeFixedPortal);
   setTimeout(removeFixedPortal,0);
   setTimeout(removeFixedPortal,300);
-  setInterval(removeFixedPortal,1000);
+  atsrsStableInterval(removeFixedPortal,1000);
 })();
 
 /* ===== extracted from inline script ===== */

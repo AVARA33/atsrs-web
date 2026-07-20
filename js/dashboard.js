@@ -57,8 +57,8 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -82,7 +82,7 @@
     if(logout){logout.removeAttribute('style');logout.textContent='Exit';}
   }
   ['DOMContentLoaded','load'].forEach(function(evt){window.addEventListener(evt,function(){lockBuild();cleanTopbar();setTimeout(cleanTopbar,300);});});
-  setInterval(function(){lockBuild();cleanTopbar();},1200);
+  atsrsStableInterval(function(){lockBuild();cleanTopbar();},1200);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V125_ACCOUNT_REFS_LANG_CLEANUP_JS ===== */
@@ -210,14 +210,14 @@
   if(typeof oldShow==='function') window.showPage=function(){var r=oldShow.apply(this,arguments); if(String(arguments[0]||'')==='refs'||byId('refsPage'))setTimeout(renderCoverLetter,40); if(String(arguments[0]||'')==='profile')setTimeout(window.loadProfile,40); forceFlagOnly(); return r;};
   document.addEventListener('DOMContentLoaded',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
   window.addEventListener('load',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
-  setInterval(function(){forceFlagOnly(); if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden'))renderCoverLetter();},1500);
+  atsrsStableInterval(function(){forceFlagOnly(); if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden'))renderCoverLetter();},1500);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V231';
-  var UPDATE='Last Update: 17 Jul 2026';
+  var BUILD='ATSRS V245';
+  var UPDATE='Last Update: 21 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
@@ -277,5 +277,5 @@
   if(typeof oldShow==='function')window.showPage=function(){var r=oldShow.apply(this,arguments);setTimeout(run,40);setTimeout(run,220);return r;};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',function(){run();setTimeout(run,500);});
-  setInterval(run,1500);
+  atsrsStableInterval(run,1500);
 })();

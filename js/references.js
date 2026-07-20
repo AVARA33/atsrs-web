@@ -13,8 +13,8 @@
   function setBuild(){
     document.querySelectorAll('.build-badge').forEach(function(badge){
       var rows=badge.querySelectorAll('div');
-      if(rows[0])rows[0].textContent='ATSRS V234';
-      if(rows[1])rows[1].textContent='Last Update: 18 Jul 2026';
+      if(rows[0]&&rows[0].textContent!=='ATSRS V245')rows[0].textContent='ATSRS V245';
+      if(rows[1]&&rows[1].textContent!=='Last Update: 21 Jul 2026')rows[1].textContent='Last Update: 21 Jul 2026';
     });
   }
   function isLegacyFileKey(key){
@@ -69,7 +69,7 @@
   window.addEventListener('load',function(){run();setTimeout(run,300);setTimeout(run,1000);});
 
   /* Older ATSRS scripts can repaint later; Supabase always wins the final render. */
-  setInterval(function(){
+  atsrsStableInterval(function(){
     setBuild();
     if(!cloudActive())return;
     installCloudOnlyFacade();
