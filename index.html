@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="css/documents.css?v=213">
 <link rel="stylesheet" href="css/references.css?v=200">
 <link rel="stylesheet" href="css/account.css?v=218">
+<link rel="stylesheet" href="css/product-experience.css?v=242">
 
 
 
@@ -113,8 +114,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V241</div>
-<div>Last Update: 19 Jul 2026</div>
+<div>ATSRS V242</div>
+<div>Last Update: 20 Jul 2026</div>
 </div>
 </div>
 </section>
@@ -124,7 +125,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="sidebar-head"><div class="brand">ATSRS</div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
 <p id="cabinetText" class="sub"></p>
 <div class="nav">
-<button id="navIntro" class="active" onclick="showPage('intro',this)">ATSRS Platform</button>
+<button id="navIntro" class="active" onclick="showPage('intro',this)">ATSRS Updates</button>
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
 <button id="navCertificates" onclick="showPage('certificates',this)"></button>
@@ -199,6 +200,46 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </div>
   </div>
 </div>
+
+<div class="product-updates-content">
+  <div class="intro-hero updates-hero">
+    <span class="pill">PRODUCT UPDATES</span>
+    <h3>What’s coming to ATSRS</h3>
+    <p>A clear view of the features, services and plans currently being prepared for the ATSRS platform.</p>
+  </div>
+
+  <div class="roadmap-section">
+    <div class="roadmap-heading">
+      <div><span class="roadmap-kicker">PRODUCT ROADMAP</span><h3>Built for simpler document compliance</h3></div>
+      <p>Statuses are shown honestly so you always know what is available and what is still being developed.</p>
+    </div>
+    <div class="roadmap-grid">
+      <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">AI</div><h3>AI Document Scan</h3><p>Read uploaded documents, suggest key fields and let you confirm the information before saving.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">WA</div><h3>WhatsApp Expiry Alerts</h3><p>Receive approved WhatsApp reminders for documents approaching expiry or already overdue.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">RP</div><h3>Automated Reports</h3><p>Create clear expiry and compliance reports for individuals, teams and company workspaces.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">CO</div><h3>Company Workspace</h3><p>Review personnel documents, identify compliance gaps and manage controlled access in one place.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">CV</div><h3>ATSRS Profile CV</h3><p>Generate a structured professional CV using approved profile and career information.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">EM</div><h3>Email Expiry Alerts</h3><p>Server-side reminders for documents approaching expiry at 90 days, 30 days and overdue status.</p></article>
+    </div>
+  </div>
+
+  <div class="plans-section">
+    <div class="roadmap-heading">
+      <div><span class="roadmap-kicker">FUTURE SUBSCRIPTIONS</span><h3>Plans designed to grow with you</h3></div>
+      <p>Final pricing and limits will be announced before subscriptions become available.</p>
+    </div>
+    <div class="plans-grid">
+      <article class="plan-card"><span>FREE</span><h3>Personal essentials</h3><p>Core document storage, expiry tracking and one main CV.</p></article>
+      <article class="plan-card plan-highlight"><span>PRO</span><h3>Advanced career tools</h3><p>Additional capacity, enhanced alerts and professional ATSRS tools.</p></article>
+      <article class="plan-card"><span>BUSINESS</span><h3>Team compliance</h3><p>Company workspaces, personnel oversight and automated reporting.</p></article>
+    </div>
+  </div>
+
+  <div class="updates-signup">
+    <div><span class="roadmap-kicker">PRODUCT NEWS</span><h3>ATSRS update emails</h3><p>Optional product-update registration will open before the next public feature release.</p></div>
+    <button type="button" class="secondary" disabled>Registration coming soon</button>
+  </div>
+</div>
 </section>
 
 <section id="dashboardPage" class="hidden">
@@ -207,15 +248,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <span id="soloBadge" class="pill">SOLO CONTROL</span>
     <h3 id="soloHeroTitle">Your certificate control center</h3>
     <p id="soloHeroText">Upload your certificates and track expiry risk from one clean dashboard.</p>
-    <div class="quick-actions">
-      <button id="quickUploadBtn" onclick="showPage('certificates',navCertificates);showCertMode('scan')">Upload File</button>
-      <button id="quickManualBtn" class="secondary" onclick="showPage('certificates',navCertificates);showCertMode('manual')">Manual Entry</button>
-    </div>
-  </div>
-  <div class="mini-panel whatsapp-note">
-    <span id="whatsappBadge" class="pill">WHATSAPP READY</span>
-    <h3 id="whatsappTitle">WhatsApp alerts</h3>
-    <p id="whatsappText">Frontend will only show settings. Real alerts must run from backend scheduled jobs using approved WhatsApp templates.</p>
   </div>
 </div>
 
@@ -224,6 +256,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="card"><p id="totalCertsText"></p><div class="stat" id="totalCerts">0</div></div>
 <div class="card"><p id="exp90Text"></p><div class="stat warning" id="exp90">0</div></div>
 <div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
+<div class="card"><p id="expTodayText">Expires Today</p><div class="stat danger" id="expToday">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
 <div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">—</div></div>
 </div>
@@ -282,11 +315,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <button id="importDemoBtn" class="secondary" onclick="alert(v27('importDemoAlert'))">Import to Company Profile</button>
     </div>
   </div>
-</div>
-<div id="personalDashboardPanel" class="panel hidden">
-<h3 id="myDocumentsTitle">My Documents</h3>
-<p id="personalDashboardNote" class="sub">Personal mode keeps focus on your own documents only.</p>
-<button id="personalScanBtn" onclick="showPage('certificates',navCertificates)">Scan / Upload Document</button>
 </div>
 </section>
 
@@ -528,17 +556,32 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </main>
 </section>
 
-<script src="js/server-data.js?v=5"></script>
-<script src="js/storage.js?v=233"></script>
+<div id="atsrsFilePreviewModal" class="file-preview-modal hidden" role="dialog" aria-modal="true" aria-labelledby="atsrsFilePreviewTitle">
+  <div class="file-preview-backdrop" data-preview-close="true"></div>
+  <div class="file-preview-dialog">
+    <div class="file-preview-head">
+      <div><span class="roadmap-kicker">DOCUMENT PREVIEW</span><h3 id="atsrsFilePreviewTitle">Preview</h3></div>
+      <div class="file-preview-actions">
+        <button id="atsrsFilePreviewDownload" type="button" class="secondary">Download</button>
+        <button id="atsrsFilePreviewClose" type="button" class="file-preview-close" aria-label="Close preview">×</button>
+      </div>
+    </div>
+    <div class="file-preview-body"><iframe id="atsrsFilePreviewFrame" title="ATSRS document preview"></iframe></div>
+  </div>
+</div>
+
+<script src="js/server-data.js?v=6"></script>
+<script src="js/storage.js?v=234"></script>
 <script src="js/ui.js?v=200"></script>
 <script src="js/auth.js?v=216"></script>
 <script src="js/login.js?v=216"></script>
-<script src="js/dashboard.js?v=216"></script>
+<script src="js/dashboard.js?v=217"></script>
 <script src="js/documents.js?v=215"></script>
 <script src="js/references.js?v=234"></script>
 <script src="js/account.js?v=216"></script>
-<script src="js/app.js?v=240"></script>
-<script src="js/boot-refresh.js?v=241"></script>
+<script src="js/app.js?v=242"></script>
+<script src="js/boot-refresh.js?v=242"></script>
+<script src="js/product-experience.js?v=242"></script>
 
 
 
