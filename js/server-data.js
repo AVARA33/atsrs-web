@@ -14,6 +14,7 @@
   var nativeRemove=Storage.prototype.removeItem;
   var nativeGet=Storage.prototype.getItem;
   var memoryStore=new Map();
+  var writeVersions=new Map();
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
@@ -77,7 +78,7 @@
     if(msg){msg.style.whiteSpace='pre-line';msg.textContent=cloudErrorMessage(error);}
     document.body.classList.remove('atsrs-booting');
   }
-  function enqueue(operation){
+  function enqueue(operation,onFailure){
     pendingWrites++;
     writeQueue=writeQueue
       .then(operation)
@@ -88,7 +89,8 @@
       .catch(function(error){
         pendingWrites=Math.max(0,pendingWrites-1);
         lastWriteError=error;
-        failedOperations.push(operation);
+        if(typeof onFailure==='function')onFailure();
+        failedOperations.push({run:operation,onFailure:onFailure});
         console.error('ATSRS cloud save failed',error);
         showSaveWarning();
         return false;
@@ -149,16 +151,48 @@
   }
   function writeBusinessValue(key,value){
     if(!shouldSyncKey(key))return false;
+    key=String(key);
+    value=String(value);
     var context=writeContext();
-    memoryStore.set(String(key),String(value));
-    enqueue(function(){return upsertStorageValue(key,value,context);});
+    var hadPrevious=memoryStore.has(key);
+    var previousValue=hadPrevious?memoryStore.get(key):null;
+    var version=(writeVersions.get(key)||0)+1;
+    writeVersions.set(key,version);
+    memoryStore.set(key,value);
+    enqueue(
+      async function(){
+        await upsertStorageValue(key,value,context);
+        if(writeVersions.get(key)===version)memoryStore.set(key,value);
+      },
+      function(){
+        if(writeVersions.get(key)!==version)return;
+        if(hadPrevious)memoryStore.set(key,previousValue);
+        else memoryStore.delete(key);
+        if(typeof window.renderAll==='function')setTimeout(window.renderAll,0);
+      }
+    );
     return true;
   }
   function removeBusinessValue(key){
     if(!shouldSyncKey(key))return false;
+    key=String(key);
     var context=writeContext();
-    memoryStore.delete(String(key));
-    enqueue(function(){return deleteStorageValue(key,context);});
+    var hadPrevious=memoryStore.has(key);
+    var previousValue=hadPrevious?memoryStore.get(key):null;
+    var version=(writeVersions.get(key)||0)+1;
+    writeVersions.set(key,version);
+    memoryStore.delete(key);
+    enqueue(
+      async function(){
+        await deleteStorageValue(key,context);
+        if(writeVersions.get(key)===version)memoryStore.delete(key);
+      },
+      function(){
+        if(writeVersions.get(key)!==version)return;
+        if(hadPrevious)memoryStore.set(key,previousValue);
+        if(typeof window.renderAll==='function')setTimeout(window.renderAll,0);
+      }
+    );
     return true;
   }
 
@@ -197,11 +231,14 @@
     if(!failedOperations.length)return true;
     var retry=failedOperations.splice(0);
     for(var i=0;i<retry.length;i++){
+      var entry=retry[i];
+      var operation=typeof entry==='function'?entry:entry.run;
       try{
-        await retry[i]();
+        await operation();
       }catch(error){
         lastWriteError=error;
-        failedOperations.push(retry[i]);
+        if(entry&&typeof entry.onFailure==='function')entry.onFailure();
+        failedOperations.push(entry);
       }
     }
     if(!failedOperations.length){
@@ -247,6 +284,44 @@
     if(suffix.indexOf('personal_')===0||suffix.indexOf('company_')===0)return '';
     return isFileLikeKey(key)?'':currentScopePrefix+suffix;
   }
+  function certificateIdentity(item,index){
+    item=item&&typeof item==='object'?item:{};
+    if(item.cloudFileId)return 'file:'+String(item.cloudFileId);
+    if(item.docNo){
+      return 'doc:'+[
+        item.docNo,item.type,item.provider,item.person
+      ].map(function(value){return String(value||'').trim().toLowerCase();}).join('|');
+    }
+    var fallback=[
+      item.type,item.provider,item.person,item.fileName,item.issue
+    ].map(function(value){return String(value||'').trim().toLowerCase();}).join('|');
+    return fallback.replace(/\|/g,'')?'fields:'+fallback:'row:'+index+':'+JSON.stringify(item);
+  }
+  function mergeCertificateValues(serverValue,localValue){
+    try{
+      var serverRows=JSON.parse(serverValue);
+      var localRows=JSON.parse(localValue);
+      if(!Array.isArray(serverRows)||!Array.isArray(localRows))return serverValue;
+      var merged=serverRows.slice();
+      var positions=new Map();
+      merged.forEach(function(item,index){
+        positions.set(certificateIdentity(item,index),index);
+      });
+      localRows.forEach(function(item,index){
+        var identity=certificateIdentity(item,index);
+        if(positions.has(identity)){
+          merged[positions.get(identity)]=item;
+        }else{
+          positions.set(identity,merged.length);
+          merged.push(item);
+        }
+      });
+      return JSON.stringify(merged);
+    }catch(error){
+      console.warn('ATSRS certificate migration merge failed',error);
+      return serverValue;
+    }
+  }
   async function loadWorkspaceRows(){
     var valueUser=user();
     var result=await client().from(DATA_TABLE)
@@ -280,9 +355,15 @@
     });
     allLocalKeys().forEach(function(oldKey){
       var key=canonicalBusinessKey(oldKey);
-      if(!key||canonicalRows.has(key)||blockedKeys.has(key))return;
+      if(!key||blockedKeys.has(key))return;
       var value=nativeGet.call(localStorage,oldKey);
       if(value===null)return;
+      if(canonicalRows.has(key)){
+        if(/_certs$/.test(key)){
+          canonicalRows.set(key,mergeCertificateValues(canonicalRows.get(key),value));
+        }
+        return;
+      }
       canonicalRows.set(key,value);
     });
     var rows=Array.from(canonicalRows.entries()).map(function(entry){
@@ -853,6 +934,7 @@
     isSynced:function(){return pendingWrites===0&&!lastWriteError&&!failedOperations.length;},
     clearSession:function(){
       memoryStore.clear();
+      writeVersions.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;
