@@ -9,134 +9,187 @@
   position:fixed;
   inset:0;
   z-index:2147483646;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
+  pointer-events:none;
 }
 .atsrs-date-picker.hidden{
   display:none!important;
 }
 .atsrs-date-picker-backdrop{
-  position:absolute;
+  position:fixed;
   inset:0;
-  background:rgba(1,6,14,.78);
-  backdrop-filter:blur(8px);
+  pointer-events:auto;
+  background:transparent;
 }
 .atsrs-date-picker-dialog{
-  position:relative;
-  width:min(390px,100%);
-  padding:20px;
-  border:1px solid rgba(75,110,142,.55);
-  border-radius:20px;
-  background:linear-gradient(165deg,#071522 0%,#04101b 100%);
-  box-shadow:0 28px 80px rgba(0,0,0,.48);
+  --date-anchor-x:50%;
+  position:fixed;
+  width:min(320px,calc(100vw - 24px));
+  padding:12px;
+  pointer-events:auto;
+  border:1px solid rgba(91,119,142,.48);
+  border-radius:13px;
+  background:#081521;
+  box-shadow:0 14px 38px rgba(0,0,0,.42),0 2px 8px rgba(0,0,0,.28);
   color:#f8fafc;
 }
+.atsrs-date-picker-dialog::before,
+.atsrs-date-picker-dialog::after{
+  content:"";
+  position:absolute;
+  left:var(--date-anchor-x);
+  width:0;
+  height:0;
+  transform:translateX(-50%);
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+}
+.atsrs-date-picker-dialog.place-below::before{
+  top:-8px;
+  border-bottom:8px solid rgba(91,119,142,.48);
+}
+.atsrs-date-picker-dialog.place-below::after{
+  top:-7px;
+  border-bottom:8px solid #081521;
+}
+.atsrs-date-picker-dialog.place-above::before{
+  bottom:-8px;
+  border-top:8px solid rgba(91,119,142,.48);
+}
+.atsrs-date-picker-dialog.place-above::after{
+  bottom:-7px;
+  border-top:8px solid #081521;
+}
 .atsrs-date-picker-kicker{
-  margin:0 0 5px;
-  color:#22c55e;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.12em;
-  text-transform:uppercase;
+  display:none;
 }
 .atsrs-date-picker-title{
-  margin:0;
-  font-size:18px;
-  font-weight:800;
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
 }
 .atsrs-date-picker-nav{
   display:grid;
-  grid-template-columns:42px 1fr 42px;
+  grid-template-columns:34px 1fr 34px;
   align-items:center;
-  gap:8px;
-  margin:18px 0 14px;
+  gap:6px;
+  margin:0 0 8px;
 }
 .atsrs-date-picker-nav button{
-  min-height:40px;
-  padding:0;
-  border:1px solid rgba(75,110,142,.55);
-  border-radius:11px;
-  background:rgba(10,27,43,.78);
-  color:#e8f1f8;
-  font-size:22px;
+  min-height:32px!important;
+  padding:0!important;
+  border:1px solid transparent!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#aebfcd!important;
+  font-size:20px!important;
+}
+.atsrs-date-picker-nav button:hover,
+.atsrs-date-picker-nav button:focus-visible{
+  border-color:rgba(91,119,142,.48)!important;
+  background:rgba(148,163,184,.08)!important;
+  outline:none;
 }
 .atsrs-date-picker-month{
   text-align:center;
-  font-size:15px;
+  font-size:14px;
   font-weight:800;
 }
 .atsrs-date-picker-weekdays,
 .atsrs-date-picker-days{
   display:grid;
   grid-template-columns:repeat(7,1fr);
-  gap:5px;
+  gap:2px;
 }
 .atsrs-date-picker-weekdays span{
-  padding:5px 0;
+  padding:4px 0 6px;
   color:#7890a6;
   text-align:center;
-  font-size:11px;
+  font-size:10px;
   font-weight:800;
   text-transform:uppercase;
 }
 .atsrs-date-picker-days button,
 .atsrs-date-picker-days .empty{
-  min-height:39px;
+  min-height:34px;
 }
 .atsrs-date-picker-days button{
-  padding:0;
-  border:1px solid transparent;
-  border-radius:10px;
-  background:transparent;
-  color:#c9d7e3;
-  font-weight:700;
+  min-width:0!important;
+  padding:0!important;
+  border:1px solid transparent!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#c9d7e3!important;
+  font-size:12px!important;
+  font-weight:700!important;
 }
 .atsrs-date-picker-days button:hover,
 .atsrs-date-picker-days button:focus-visible{
-  border-color:rgba(34,197,94,.55);
-  background:rgba(34,197,94,.10);
+  border-color:rgba(148,163,184,.18)!important;
+  background:rgba(148,163,184,.08)!important;
   outline:none;
 }
 .atsrs-date-picker-days button.today{
-  border-color:rgba(79,134,170,.72);
+  border-color:rgba(148,163,184,.52)!important;
 }
 .atsrs-date-picker-days button.selected{
-  border-color:#22c55e;
-  background:#22c55e;
-  color:#03120a;
-  box-shadow:0 8px 24px rgba(34,197,94,.25);
+  border-color:#22c55e!important;
+  background:#22c55e!important;
+  color:#03120a!important;
+  box-shadow:0 5px 14px rgba(34,197,94,.20)!important;
 }
 .atsrs-date-picker-selection{
-  min-height:20px;
-  margin:14px 0 0;
+  min-height:17px;
+  margin:7px 0 0;
   color:#93a9bc;
-  font-size:12px;
+  font-size:10px;
   text-align:center;
 }
 .atsrs-date-picker-actions{
-  display:grid;
-  grid-template-columns:auto auto 1fr auto;
-  gap:8px;
-  margin-top:16px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:8px;
+  padding-top:8px;
+  border-top:1px solid rgba(91,119,142,.22);
 }
 .atsrs-date-picker-actions button{
-  min-height:40px;
-  padding:8px 13px;
+  min-height:32px!important;
+  padding:5px 9px!important;
+  border:1px solid transparent!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#9eb0bf!important;
+  font-size:11px!important;
+}
+.atsrs-date-picker-actions button:hover,
+.atsrs-date-picker-actions button:focus-visible{
+  background:rgba(148,163,184,.08)!important;
+  color:#e8eef3!important;
+  outline:none;
+}
+.atsrs-date-picker-actions .cancel{
+  margin-left:auto;
 }
 .atsrs-date-picker-actions .confirm{
-  min-width:78px;
+  min-width:54px;
   background:#22c55e!important;
   color:#03120a!important;
   border-color:#22c55e!important;
 }
 @media(max-width:480px){
-  .atsrs-date-picker-dialog{padding:17px;border-radius:17px}
-  .atsrs-date-picker-actions{grid-template-columns:1fr 1fr}
-  .atsrs-date-picker-actions .cancel{grid-column:1}
-  .atsrs-date-picker-actions .confirm{grid-column:2;grid-row:2}
-}
-@media(prefers-reduced-motion:reduce){
-  .atsrs-date-picker-backdrop{backdrop-filter:none}
+  .atsrs-date-picker-dialog{
+    width:min(310px,calc(100vw - 20px));
+    padding:11px;
+  }
+  .atsrs-date-picker-days button,
+  .atsrs-date-picker-days .empty{min-height:32px}
 }

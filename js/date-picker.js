@@ -46,7 +46,7 @@
     picker.id='atsrsDatePicker';
     picker.className='atsrs-date-picker hidden';
     picker.setAttribute('role','dialog');
-    picker.setAttribute('aria-modal','true');
+    picker.setAttribute('aria-modal','false');
     picker.setAttribute('aria-labelledby','atsrsDatePickerTitle');
     picker.innerHTML=
       '<div class="atsrs-date-picker-backdrop" data-date-cancel="true"></div>'+
@@ -71,6 +71,34 @@
     document.body.appendChild(picker);
     picker.addEventListener('click',onPickerClick);
     return picker;
+  }
+  function positionPicker(){
+    if(!picker||!activeInput||picker.classList.contains('hidden'))return;
+    var dialog=picker.querySelector('.atsrs-date-picker-dialog');
+    if(!dialog)return;
+    var inputRect=activeInput.getBoundingClientRect();
+    var dialogRect=dialog.getBoundingClientRect();
+    var gap=8;
+    var edge=12;
+    var centeredLeft=inputRect.left+(inputRect.width-dialogRect.width)/2;
+    var maxLeft=Math.max(edge,window.innerWidth-dialogRect.width-edge);
+    var left=Math.min(Math.max(edge,centeredLeft),maxLeft);
+    var belowTop=inputRect.bottom+gap;
+    var aboveTop=inputRect.top-dialogRect.height-gap;
+    var belowSpace=window.innerHeight-inputRect.bottom-gap-edge;
+    var aboveSpace=inputRect.top-gap-edge;
+    var placeAbove=belowSpace<dialogRect.height&&aboveSpace>belowSpace;
+    var maxTop=Math.max(edge,window.innerHeight-dialogRect.height-edge);
+    var top=Math.min(Math.max(edge,placeAbove?aboveTop:belowTop),maxTop);
+    var anchorCenter=inputRect.left+(inputRect.width/2)-left;
+
+    dialog.style.left=Math.round(left)+'px';
+    dialog.style.top=Math.round(top)+'px';
+    dialog.style.setProperty('--date-anchor-x',Math.round(
+      Math.min(Math.max(20,anchorCenter),dialogRect.width-20)
+    )+'px');
+    dialog.classList.toggle('place-above',placeAbove);
+    dialog.classList.toggle('place-below',!placeAbove);
   }
   function render(){
     ensurePicker();
@@ -106,6 +134,9 @@
         days.appendChild(dayButton);
       })(day);
     }
+    if(activeInput&&!picker.classList.contains('hidden')){
+      requestAnimationFrame(positionPicker);
+    }
   }
   function open(input){
     if(!input||input.disabled)return;
@@ -118,11 +149,12 @@
     picker.classList.remove('hidden');
     document.body.classList.add('atsrs-date-picker-open');
     render();
-    setTimeout(function(){
+    requestAnimationFrame(function(){
+      positionPicker();
       var selected=picker.querySelector('.selected');
       var focusTarget=selected||picker.querySelector('[data-date-confirm]');
       if(focusTarget)focusTarget.focus();
-    },0);
+    });
   }
   function close(){
     if(!picker)return;
@@ -199,6 +231,8 @@
     document.addEventListener('keydown',function(event){
       if(event.key==='Escape'&&picker&&!picker.classList.contains('hidden'))close();
     });
+    window.addEventListener('resize',positionPicker);
+    document.addEventListener('scroll',positionPicker,true);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);
   else install();
