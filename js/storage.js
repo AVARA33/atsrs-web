@@ -37,6 +37,119 @@ const APP_URL="https://atsrs.com/";
     }
   }catch(e){}
 })();
+
+/* ATSRS V242: exclusive expiry bands, read-only dashboard, and file discovery. */
+window.addEventListener('load',function(){
+  T.en.exp90='Expiring in 31–90 Days';
+  T.en.exp30='Expiring in 1–30 Days';
+  T.en.expToday='Expires Today';
+  SOLO_TX.en.soloBadge='DOCUMENT OVERVIEW';
+  SOLO_TX.en.soloHeroTitle='Your compliance dashboard';
+  SOLO_TX.en.soloHeroText='Review document totals, expiry risk and profile readiness from one clear view.';
+  INTRO_TX.en.introNav='ATSRS Updates';
+
+  function escapeV242(value){
+    return String(value||'').replace(/[&<>"']/g,function(character){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character];
+    });
+  }
+
+  var statusBaseV242=status;
+  status=function(expiry){
+    if(!expiry||String(expiry).toUpperCase()==='N/A')return statusBaseV242(expiry);
+    var today=new Date();today.setHours(0,0,0,0);
+    var expiryDate=new Date(expiry);
+    var days=Math.ceil((expiryDate-today)/86400000);
+    if(days===0)return{txt:'Expires today',cls:'danger',expired:false,risk:true,today:true,days:0};
+    return statusBaseV242(expiry);
+  };
+
+  window.atsrsV242ViewCertificate=function(index){
+    if(typeof showPage==='function'&&typeof navCertificates!=='undefined')showPage('certificates',navCertificates);
+    setTimeout(function(){
+      var row=document.getElementById('atsrs-cert-row-'+index);
+      if(!row)return;
+      row.scrollIntoView({behavior:'smooth',block:'center'});
+      row.classList.remove('cert-row-focus');
+      void row.offsetWidth;
+      row.classList.add('cert-row-focus');
+    },80);
+  };
+
+  renderRiskList=function(certs){
+    if(typeof riskList==='undefined'||!riskList)return;
+    var items=certs.map(function(item,index){return{x:item,s:status(item.expiry),index:index};})
+      .filter(function(entry){return entry.s.expired||entry.s.days<=90;})
+      .sort(function(a,b){return a.s.days-b.s.days;})
+      .slice(0,5);
+    if(!items.length){
+      riskList.innerHTML='<div class="risk-item"><b>'+escapeV242(sx('noRisk'))+'</b><span>OK</span></div>';
+      return;
+    }
+    riskList.innerHTML=items.map(function(entry){
+      return '<div class="risk-item"><div><b>'+escapeV242(entry.x.type||'Document')+'</b><br><span>'+
+        escapeV242(entry.x.expiry||'No expiry date')+' · '+escapeV242(entry.s.txt)+'</span></div>'+
+        '<button type="button" class="dashboard-view-button" onclick="atsrsV242ViewCertificate('+entry.index+')">View document</button></div>';
+    }).join('');
+  };
+
+  var renderAllBaseV242=renderAll;
+  renderAll=function(){
+    renderAllBaseV242();
+    var certificates=getData('certs');
+    var in90=0,in30=0,todayCount=0,expiredCount=0;
+    certificates.forEach(function(item){
+      var value=status(item.expiry);
+      if(value.noExpiry)return;
+      if(value.days<0)expiredCount++;
+      else if(value.days===0)todayCount++;
+      else if(value.days<=30)in30++;
+      else if(value.days<=90)in90++;
+    });
+    if(typeof exp90!=='undefined')exp90.innerText=in90;
+    if(typeof exp30!=='undefined')exp30.innerText=in30;
+    if(typeof expToday!=='undefined')expToday.innerText=todayCount;
+    if(typeof expired!=='undefined')expired.innerText=expiredCount;
+    renderRiskList(certificates);
+
+    if(typeof certTable!=='undefined'&&certTable){
+      Array.prototype.forEach.call(certTable.querySelectorAll('tr'),function(row,index){
+        row.id='atsrs-cert-row-'+index;
+        var item=certificates[index]||{};
+        var actionCell=row.lastElementChild;
+        if(!actionCell||!item.cloudFileId)return;
+        var preview=document.createElement('button');
+        preview.type='button';
+        preview.className='secondary';
+        preview.textContent='Preview';
+        preview.addEventListener('click',function(){
+          if(typeof window.atsrsCloudPreview==='function')window.atsrsCloudPreview(item.cloudFileId);
+        });
+        actionCell.insertBefore(preview,actionCell.firstChild);
+      });
+    }
+  };
+
+  var applyLanguageBaseV242=applyLanguage;
+  applyLanguage=function(){
+    applyLanguageBaseV242();
+    var set=function(id,value){var element=document.getElementById(id);if(element)element.textContent=value;};
+    set('navIntro','ATSRS Updates');
+    set('exp90Text',T.en.exp90);
+    set('exp30Text',T.en.exp30);
+    set('expTodayText',T.en.expToday);
+    set('soloBadge',SOLO_TX.en.soloBadge);
+    set('soloHeroTitle',SOLO_TX.en.soloHeroTitle);
+    set('soloHeroText',SOLO_TX.en.soloHeroText);
+  };
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){applyLanguage();});
+  }else{
+    applyLanguage();
+  }
+  if(typeof currentUser!=='undefined'&&currentUser)renderAll();
+});
 let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{flowType:'pkce',detectSessionInUrl:!window.__atsrsOAuthMarkedCallback,persistSession:true,autoRefreshToken:true}});window.supabaseClient=supabaseClient}catch(e){console.error(e)}
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
@@ -626,7 +739,13 @@ function handleCVUpload(event){
   reader.onload=function(){saveCV({name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:reader.result});renderCVStatus();renderAll();};
   reader.readAsDataURL(file);
 }
-function previewCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} const w=window.open('','_blank'); if(w){w.document.write(`<title>${cv.name}</title><iframe src="${cv.data}" style="border:0;width:100%;height:100vh"></iframe>`);w.document.close();}}
+function previewCV(){
+  const cv=getCV();
+  if(!cv){alert(v48('cvNoFile'));return;}
+  if(typeof window.atsrsOpenFilePreview==='function'){
+    window.atsrsOpenFilePreview({url:cv.data,title:cv.name||'ATSRS CV',downloadUrl:cv.data});
+  }
+}
 function downloadCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} const a=document.createElement('a');a.href=cv.data;a.download=cv.name||'ATSRS-CV';document.body.appendChild(a);a.click();a.remove();}
 function deleteCV(){const cv=getCV(); if(!cv){alert(v48('cvNoFile'));return;} saveCV(null); if(typeof cvUploadInput!=='undefined')cvUploadInput.value=''; renderCVStatus(); renderAll();}
 function renderCVStatus(){

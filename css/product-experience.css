@@ -1,0 +1,69 @@
+/* ATSRS V242: product updates, read-only dashboard, and in-page file preview. */
+body.atsrs-preview-open{overflow:hidden}
+
+/* Replace the old marketing/demo content with an honest in-app roadmap. */
+#introPage>.intro-hero:not(.updates-hero),
+#introPage>.intro-service-grid,
+#introPage>.atsrs-anime-stage{display:none!important}
+#introPage .updates-hero{
+  margin-bottom:24px;padding:30px;border:1px solid rgba(96,165,250,.22);border-radius:22px;
+  background:radial-gradient(circle at 85% 15%,rgba(56,189,248,.13),transparent 32%),linear-gradient(145deg,rgba(15,23,42,.78),rgba(8,15,27,.94));
+}
+#introPage .updates-hero h3{max-width:720px;margin:12px 0 8px;font-size:clamp(28px,4vw,44px);line-height:1.08}
+#introPage .updates-hero p{max-width:760px;margin:0;color:#aebed0;font-size:15px;line-height:1.7}
+.roadmap-section,.plans-section,.updates-signup{margin-top:24px;padding:24px;border:1px solid rgba(148,163,184,.16);border-radius:20px;background:rgba(7,15,27,.58)}
+.roadmap-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px}
+.roadmap-heading h3,.updates-signup h3{margin:5px 0 0;font-size:22px}
+.roadmap-heading>p{max-width:520px;margin:0;color:#8fa2b8;line-height:1.55}
+.roadmap-kicker{color:#60a5fa;font-size:11px;font-weight:800;letter-spacing:.16em}
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.roadmap-card{position:relative;min-height:210px;padding:20px;border:1px solid rgba(148,163,184,.16);border-radius:17px;background:linear-gradient(155deg,rgba(18,31,49,.88),rgba(8,16,29,.9))}
+.roadmap-card h3{margin:17px 0 8px;font-size:18px}
+.roadmap-card p,.plan-card p,.updates-signup p{margin:0;color:#93a5ba;line-height:1.55}
+.roadmap-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin-top:20px;border:1px solid rgba(96,165,250,.32);border-radius:12px;background:rgba(37,99,235,.12);color:#bfdbfe;font-size:12px;font-weight:900;letter-spacing:.08em}
+.roadmap-status{position:absolute;top:16px;right:16px;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.status-development{color:#fde68a;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28)}
+.status-planned{color:#cbd5e1;background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.22)}
+.status-available{color:#86efac;background:rgba(34,197,94,.11);border:1px solid rgba(34,197,94,.28)}
+.plans-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.plan-card{padding:20px;border:1px solid rgba(148,163,184,.16);border-radius:17px;background:rgba(13,24,40,.72)}
+.plan-card>span{color:#93c5fd;font-size:11px;font-weight:900;letter-spacing:.15em}
+.plan-card h3{margin:8px 0;font-size:18px}
+.plan-highlight{border-color:rgba(59,130,246,.4);background:linear-gradient(145deg,rgba(30,64,175,.15),rgba(13,24,40,.78))}
+.updates-signup{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.updates-signup button[disabled]{opacity:.55;cursor:not-allowed}
+
+/* Dashboard is an information surface; uploads belong to Documents. */
+#dashboardPage .quick-actions,
+#dashboardPage .whatsapp-note,
+#dashboardPage #personalDashboardPanel{display:none!important}
+#dashboardPage .solo-hero{display:block!important}
+#dashboardPage .solo-hero .hero-card{max-width:none!important;width:100%!important}
+#dashboardPage .solo-hero .hero-card p{max-width:720px}
+#dashboardPage .dashboard-view-button{width:auto!important;min-width:0!important;margin:0!important;padding:6px 10px!important;border:1px solid rgba(96,165,250,.28)!important;border-radius:9px!important;background:rgba(37,99,235,.1)!important;color:#bfdbfe!important;font-size:11px!important;box-shadow:none!important}
+.cert-row-focus{animation:atsrs-row-focus 1.8s ease}
+@keyframes atsrs-row-focus{0%,100%{background:transparent}35%{background:rgba(59,130,246,.18)}}
+
+.file-preview-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:22px}
+.file-preview-modal.hidden{display:none!important}
+.file-preview-backdrop{position:absolute;inset:0;background:rgba(2,6,14,.78);backdrop-filter:blur(7px)}
+.file-preview-dialog{position:relative;display:flex;flex-direction:column;width:min(1180px,96vw);height:min(860px,92vh);overflow:hidden;border:1px solid rgba(148,163,184,.28);border-radius:20px;background:#08111f;box-shadow:0 30px 100px rgba(0,0,0,.58)}
+.file-preview-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px;border-bottom:1px solid rgba(148,163,184,.17)}
+.file-preview-head h3{max-width:min(680px,60vw);margin:4px 0 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px}
+.file-preview-actions{display:flex;align-items:center;gap:9px}
+.file-preview-actions button{width:auto!important;margin:0!important}
+.file-preview-close{display:flex;align-items:center;justify-content:center;width:38px!important;height:38px!important;min-width:38px!important;padding:0!important;border:1px solid rgba(148,163,184,.25)!important;border-radius:10px!important;background:rgba(15,23,42,.85)!important;color:#e2e8f0!important;font-size:25px!important;line-height:1!important}
+.file-preview-body{flex:1;min-height:0;padding:10px;background:#111827}
+.file-preview-body iframe{display:block;width:100%;height:100%;border:0;border-radius:10px;background:#fff}
+
+@media(max-width:900px){.roadmap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.roadmap-heading{align-items:flex-start;flex-direction:column;gap:8px}}
+@media(max-width:640px){
+  #introPage .updates-hero,.roadmap-section,.plans-section,.updates-signup{padding:18px}
+  .roadmap-grid,.plans-grid{grid-template-columns:1fr}
+  .updates-signup{align-items:flex-start;flex-direction:column}
+  .file-preview-modal{padding:0}
+  .file-preview-dialog{width:100vw;height:100dvh;border:0;border-radius:0}
+  .file-preview-head{padding:12px}
+  .file-preview-head h3{max-width:46vw}
+  .file-preview-actions .secondary{padding:8px 10px!important;font-size:12px!important}
+}

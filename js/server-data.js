@@ -536,8 +536,14 @@
         a.href=url;a.download=row.file_name||'ATSRS-file';
         document.body.appendChild(a);a.click();a.remove();
       }else{
-        var opened=window.open(url,'_blank','noopener');
-        if(!opened)window.location.href=url;
+        if(typeof window.atsrsOpenFilePreview!=='function'){
+          throw new Error('ATSRS preview is not available');
+        }
+        window.atsrsOpenFilePreview({
+          url:url,
+          title:row.file_name||'ATSRS document',
+          onDownload:function(){return openCloudFile(id,true);}
+        });
       }
     }catch(error){console.error(error);alert('File could not be opened from the ATSRS server.');}
   }

@@ -39,8 +39,9 @@
     var snapMissing=byId('snapMissing'); if(snapMissing){var row=snapMissing.closest('.snapshot-item'); if(row) row.remove();}
     var docStatus=byId('docStatusTitle'); if(docStatus){var panel=docStatus.closest('.panel'); if(panel) panel.remove();}
     var totalCertsText=byId('totalCertsText'); if(totalCertsText) totalCertsText.textContent='Uploaded Documents';
-    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your document overview';
-    var soloHeroText=byId('soloHeroText'); if(soloHeroText) soloHeroText.textContent='Keep your uploaded documents and expiry dates in one clean view.';
+    var soloBadge=byId('soloBadge'); if(soloBadge) soloBadge.textContent='DOCUMENT OVERVIEW';
+    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your compliance dashboard';
+    var soloHeroText=byId('soloHeroText'); if(soloHeroText) soloHeroText.textContent='Review document totals, expiry risk and profile readiness from one clear view.';
     var snapshotTitle=byId('snapshotTitle'); if(snapshotTitle) snapshotTitle.textContent='Quick overview';
   }
   var oldOpen=window.openApp;
