@@ -760,14 +760,39 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
   color:#f8fafc;
 }
 .atsrs-spinner{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  border:3px solid rgba(148,163,184,.22);
-  border-top-color:#22c55e;
-  border-right-color:#38bdf8;
-  margin:0 auto 18px;
-  animation:atsrsSpin .9s linear infinite;
+  position:relative;
+  width:52px;
+  height:52px;
+  margin:0 auto 20px;
+  filter:drop-shadow(0 0 12px rgba(34,197,94,.18));
+}
+.atsrs-spinner span{
+  position:absolute;
+  top:3px;
+  left:50%;
+  width:5px;
+  height:14px;
+  margin-left:-2.5px;
+  border-radius:999px;
+  background:#22c55e;
+  transform-origin:50% 23px;
+  animation:atsrsSegmentPulse 1s linear infinite;
+}
+.atsrs-spinner span:nth-child(1){transform:rotate(0deg);animation-delay:-.875s}
+.atsrs-spinner span:nth-child(2){transform:rotate(45deg);animation-delay:-.75s}
+.atsrs-spinner span:nth-child(3){transform:rotate(90deg);animation-delay:-.625s}
+.atsrs-spinner span:nth-child(4){transform:rotate(135deg);animation-delay:-.5s}
+.atsrs-spinner span:nth-child(5){transform:rotate(180deg);animation-delay:-.375s}
+.atsrs-spinner span:nth-child(6){transform:rotate(225deg);animation-delay:-.25s}
+.atsrs-spinner span:nth-child(7){transform:rotate(270deg);animation-delay:-.125s}
+.atsrs-spinner span:nth-child(8){transform:rotate(315deg);animation-delay:0s}
+@keyframes atsrsSegmentPulse{
+  0%{opacity:1}
+  50%,100%{opacity:.18}
+}
+@media(prefers-reduced-motion:reduce){
+  .atsrs-spinner span{animation:none}
+  .atsrs-spinner span:nth-child(n+3){opacity:.32}
 }
 .atsrs-loader-title{
   margin:0 0 7px;
@@ -780,9 +805,6 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
   font-size:14px;
   color:#a7b5c5;
 }
-@keyframes atsrsSpin{to{transform:rotate(360deg)}}
-
-
 /* V118 Personal dashboard simplification + account badge */
 #dashboardPage .missing-card,
 #dashboardPage #missingDocs,
