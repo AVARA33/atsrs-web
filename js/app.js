@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V256';
+  var BUILD='ATSRS V257';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V256';
+  var BUILD='ATSRS V257';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -132,7 +132,7 @@
   }
 
   var aiScanBusy=false;
-  var aiPendingPicker='';
+  var aiConsentGranted=false;
 
   function setAiScanStatus(message,isError){
     var scanBox=byId('scanBox');
@@ -159,15 +159,15 @@
   }
 
   function closeAiConsent(){
-    aiPendingPicker='';
+    aiConsentGranted=false;
     var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
     var checkbox=byId('aiConsentCheckbox');if(checkbox)checkbox.checked=false;
     var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=true;
   }
 
-  function requestAiConsent(picker){
+  function requestAiConsent(){
     if(aiScanBusy)return;
-    aiPendingPicker=picker;
+    aiConsentGranted=false;
     var panel=byId('aiConsentPanel');if(panel)panel.classList.remove('hidden');
     var checkbox=byId('aiConsentCheckbox');if(checkbox){checkbox.checked=false;checkbox.focus();}
     var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=true;
@@ -177,10 +177,9 @@
   function continueAiConsent(){
     var checkbox=byId('aiConsentCheckbox');
     if(!checkbox||!checkbox.checked)return;
-    var picker=aiPendingPicker;
+    aiConsentGranted=true;
     var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
-    var input=byId(picker==='camera'?'cameraInput':'documentFile');
-    aiPendingPicker='';
+    var input=byId('documentFile');
     if(input)input.click();
   }
 
@@ -237,7 +236,7 @@
       return;
     }
     aiScanBusy=true;
-    var buttons=[byId('scanDocBtn'),byId('uploadDocBtn')].filter(Boolean);
+    var buttons=[byId('uploadDocBtn')].filter(Boolean);
     buttons.forEach(function(button){button.disabled=true;});
     var preview=byId('documentPreview');
     if(preview){preview.textContent='Selected: '+file.name+' ('+Math.round(file.size/1024)+' KB)';preview.classList.add('active');}
@@ -264,7 +263,6 @@
       aiScanBusy=false;
       buttons.forEach(function(button){button.disabled=false;});
       var documentInput=byId('documentFile');if(documentInput)documentInput.value='';
-      var cameraInput=byId('cameraInput');if(cameraInput)cameraInput.value='';
     }
   }
 
@@ -321,6 +319,8 @@
     setText('certScanModeBtn','Scan with AI');
     setText('certManualModeBtn','Manual Upload');
     setText('scanFlowText','Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.');
+    setText('uploadDocBtn','Upload File');
+    setText('scanInfo','AI will fill the document details after the upload.');
     setText('manualCertTitle','Manual Upload');
     setText('manualFlowText','Upload a file and enter document details manually.');
     setText('manualUploadBtn','Upload File');
@@ -428,10 +428,8 @@
     if(scan){scan.onclick=function(e){if(e)e.preventDefault(); openAiScan();};}
     var manual=byId('certManualModeBtn');
     if(manual){manual.onclick=function(e){if(e)e.preventDefault(); openManual();};}
-    var scanDoc=byId('scanDocBtn');
-    if(scanDoc){scanDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent('camera');};}
     var uploadDoc=byId('uploadDocBtn');
-    if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent('file');};}
+    if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent();};}
     var checkbox=byId('aiConsentCheckbox');
     if(checkbox){checkbox.onchange=function(){var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=!checkbox.checked;};}
     var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.onclick=function(e){if(e)e.preventDefault();continueAiConsent();};
@@ -442,6 +440,12 @@
 
   window.handleDocumentUpload=function(event){
     var files=event&&event.target&&event.target.files;
+    if(!aiConsentGranted){
+      if(event&&event.target)event.target.value='';
+      requestAiConsent();
+      return;
+    }
+    aiConsentGranted=false;
     if(files&&files.length>1)alert('Scan with AI processes one document at a time. The first file will be scanned.');
     var file=files&&files[0];
     if(file)scanDocumentFile(file);
@@ -675,7 +679,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V256';
+      if(d[0])d[0].textContent='ATSRS V257';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }
