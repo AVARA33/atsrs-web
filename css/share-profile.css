@@ -466,6 +466,9 @@ body.atsrs-public-share-view{
   border-color:rgba(74,222,128,.38)!important;
   color:#d6f7e1!important;
 }
+#accountSharingTab .share-link-controls #revokeShareBtn{
+  margin-left:0!important;
+}
 #accountSharingTab .share-link-controls>button:disabled{
   opacity:.45!important;
 }
