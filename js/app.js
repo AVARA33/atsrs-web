@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V254';
+  var BUILD='ATSRS V255';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V254';
+  var BUILD='ATSRS V255';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -131,8 +131,148 @@
     if(exit){exit.textContent='Exit';exit.classList.add('exit-nav-btn');exit.style.display='block';exit.setAttribute('onclick','atsrsExit()');}
   }
 
-  function aiNotice(){
-    alert('Scan with AI / Auto-fill with AI will be available in a future update. Use Manual Upload for now.');
+  var aiScanBusy=false;
+  var aiPendingPicker='';
+
+  function setAiScanStatus(message,isError){
+    var scanBox=byId('scanBox');
+    var progress=byId('ocrProgress');
+    if(scanBox)scanBox.classList.remove('hidden');
+    if(progress){
+      progress.textContent=message||'';
+      progress.classList.toggle('active',!!message);
+      progress.classList.toggle('atsrs-ai-scan-error',!!isError);
+    }
+  }
+
+  function fileAsDataUrl(file){
+    return new Promise(function(resolve,reject){
+      var reader=new FileReader();
+      reader.onload=function(){resolve(String(reader.result||''));};
+      reader.onerror=function(){reject(new Error('The document could not be read.'));};
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function supportedAiFile(file){
+    return !!file&&['application/pdf','image/jpeg','image/png','image/webp'].indexOf(String(file.type||'').toLowerCase())!==-1;
+  }
+
+  function closeAiConsent(){
+    aiPendingPicker='';
+    var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
+    var checkbox=byId('aiConsentCheckbox');if(checkbox)checkbox.checked=false;
+    var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=true;
+  }
+
+  function requestAiConsent(picker){
+    if(aiScanBusy)return;
+    aiPendingPicker=picker;
+    var panel=byId('aiConsentPanel');if(panel)panel.classList.remove('hidden');
+    var checkbox=byId('aiConsentCheckbox');if(checkbox){checkbox.checked=false;checkbox.focus();}
+    var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=true;
+    if(panel)panel.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  function continueAiConsent(){
+    var checkbox=byId('aiConsentCheckbox');
+    if(!checkbox||!checkbox.checked)return;
+    var picker=aiPendingPicker;
+    var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
+    var input=byId(picker==='camera'?'cameraInput':'documentFile');
+    aiPendingPicker='';
+    if(input)input.click();
+  }
+
+  function useManualInstead(){
+    closeAiConsent();
+    openManual();
+  }
+
+  function applyAiResult(file,result){
+    openManual();
+    var documentData=result&&result.document&&typeof result.document==='object'?result.document:{};
+    var values={
+      cType:documentData.document_type,
+      cDocNo:documentData.document_number,
+      cCountry:documentData.country_authority,
+      cProvider:documentData.provider,
+      cIssue:documentData.issue_date,
+      cExpiry:documentData.expiry_date
+    };
+    Object.keys(values).forEach(function(id){var field=byId(id);if(field)field.value=String(values[id]||'');});
+    var noExpiry=byId('cExpiryNA');
+    if(noExpiry){
+      noExpiry.checked=!!documentData.expiry_not_applicable;
+      noExpiry.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+    window.atsrsPendingCertificateFile=file;
+    var preview=byId('manualFilePreview');
+    if(preview){
+      preview.textContent='AI scan ready: '+file.name+' ('+Math.round(file.size/1024)+' KB)';
+      preview.classList.add('active');
+    }
+    var warnings=Array.isArray(documentData.warnings)?documentData.warnings.filter(Boolean):[];
+    var alertBox=byId('manualFormAlert');
+    if(alertBox){
+      alertBox.textContent=warnings.length?'Review carefully: '+warnings.join(' '):'AI filled the fields. Review every value, then save the document.';
+      alertBox.classList.add('active');
+      alertBox.classList.toggle('atsrs-ai-review-warning',warnings.length>0);
+    }
+    setTimeout(function(){var panel=byId('certManualPanel');if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});},60);
+  }
+
+  async function scanDocumentFile(file){
+    if(aiScanBusy)return;
+    if(!supportedAiFile(file)){
+      setAiScanStatus('Use a PDF, JPG, PNG, or WebP file.',true);
+      return;
+    }
+    if(file.size>10*1024*1024){
+      setAiScanStatus('This file is larger than 10 MB. Use a smaller file.',true);
+      return;
+    }
+    if(!window.supabaseClient||!window.currentUser){
+      setAiScanStatus('Sign in before using Scan with AI.',true);
+      return;
+    }
+    aiScanBusy=true;
+    var buttons=[byId('scanDocBtn'),byId('uploadDocBtn')].filter(Boolean);
+    buttons.forEach(function(button){button.disabled=true;});
+    var preview=byId('documentPreview');
+    if(preview){preview.textContent='Selected: '+file.name+' ('+Math.round(file.size/1024)+' KB)';preview.classList.add('active');}
+    setAiScanStatus('Securely scanning the document with AI...');
+    try{
+      var fileData=await fileAsDataUrl(file);
+      var invoked=await window.supabaseClient.functions.invoke('scan-document',{body:{
+        filename:file.name,
+        mime_type:file.type,
+        file_data:fileData,
+        consent_accepted:true,
+        consent_version:'2026-07-21'
+      }});
+      if(invoked.error)throw invoked.error;
+      if(!invoked.data||!invoked.data.document)throw new Error('No document details were returned.');
+      setAiScanStatus('AI scan completed. Review the detected information before saving.');
+      applyAiResult(file,invoked.data);
+    }catch(error){
+      console.error('ATSRS AI document scan failed',error);
+      var message=error&&error.message?String(error.message):'';
+      if(/non-2xx|edge function/i.test(message))message='The AI scan could not be completed. Check the file and try again.';
+      setAiScanStatus(message||'The AI scan could not be completed. Try again.',true);
+    }finally{
+      aiScanBusy=false;
+      buttons.forEach(function(button){button.disabled=false;});
+      var documentInput=byId('documentFile');if(documentInput)documentInput.value='';
+      var cameraInput=byId('cameraInput');if(cameraInput)cameraInput.value='';
+    }
+  }
+
+  function openAiScan(){
+    closeManual();
+    var scan=byId('certScanPanel');if(scan)scan.classList.add('active');
+    var button=byId('certScanModeBtn');if(button)button.classList.add('active');
+    setAiScanStatus('Choose a document to scan. AI suggestions must be reviewed before saving.');
   }
 
   function closeManual(){
@@ -180,7 +320,7 @@
     setText('addCertFlowNote','Choose one method: Scan with AI or Manual Upload.');
     setText('certScanModeBtn','Scan with AI');
     setText('certManualModeBtn','Manual Upload');
-    setText('scanFlowText','Scan with AI / Auto-fill with AI will be available in a future update.');
+    setText('scanFlowText','Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.');
     setText('manualCertTitle','Manual Upload');
     setText('manualFlowText','Upload a file and enter document details manually.');
     setText('manualUploadBtn','Upload File');
@@ -285,15 +425,27 @@
 
   function wireMethods(){
     var scan=byId('certScanModeBtn');
-    if(scan){scan.onclick=function(e){if(e)e.preventDefault(); aiNotice(); closeManual();};}
+    if(scan){scan.onclick=function(e){if(e)e.preventDefault(); openAiScan();};}
     var manual=byId('certManualModeBtn');
     if(manual){manual.onclick=function(e){if(e)e.preventDefault(); openManual();};}
     var scanDoc=byId('scanDocBtn');
-    if(scanDoc){scanDoc.onclick=function(e){if(e)e.preventDefault(); aiNotice();};}
+    if(scanDoc){scanDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent('camera');};}
     var uploadDoc=byId('uploadDocBtn');
-    if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); aiNotice();};}
+    if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent('file');};}
+    var checkbox=byId('aiConsentCheckbox');
+    if(checkbox){checkbox.onchange=function(){var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=!checkbox.checked;};}
+    var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.onclick=function(e){if(e)e.preventDefault();continueAiConsent();};
+    var cancel=byId('aiConsentCancelBtn');if(cancel)cancel.onclick=function(e){if(e)e.preventDefault();useManualInstead();};
+    var close=byId('aiConsentCloseBtn');if(close)close.onclick=function(e){if(e)e.preventDefault();closeAiConsent();};
     ensureCancel();
   }
+
+  window.handleDocumentUpload=function(event){
+    var files=event&&event.target&&event.target.files;
+    if(files&&files.length>1)alert('Scan with AI processes one document at a time. The first file will be scanned.');
+    var file=files&&files[0];
+    if(file)scanDocumentFile(file);
+  };
 
   function clearForm(){
     ['cType','cDocNo','cCountry','cProvider','cIssue','cExpiry'].forEach(function(id){
@@ -523,7 +675,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V254';
+      if(d[0])d[0].textContent='ATSRS V255';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }
