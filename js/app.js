@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V257';
+  var BUILD='ATSRS V258';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V257';
+  var BUILD='ATSRS V258';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -174,11 +174,36 @@
     if(panel)panel.scrollIntoView({behavior:'smooth',block:'center'});
   }
 
-  function continueAiConsent(){
+  async function continueAiConsent(){
     var checkbox=byId('aiConsentCheckbox');
     if(!checkbox||!checkbox.checked)return;
     aiConsentGranted=true;
     var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
+    if(typeof window.showOpenFilePicker==='function'){
+      try{
+        var handles=await window.showOpenFilePicker({
+          multiple:false,
+          excludeAcceptAllOption:true,
+          types:[{
+            description:'PDF and image documents',
+            accept:{
+              'application/pdf':['.pdf'],
+              'image/jpeg':['.jpg','.jpeg'],
+              'image/png':['.png'],
+              'image/webp':['.webp']
+            }
+          }]
+        });
+        var file=handles&&handles[0]?await handles[0].getFile():null;
+        if(!file){aiConsentGranted=false;return;}
+        aiConsentGranted=false;
+        scanDocumentFile(file);
+        return;
+      }catch(error){
+        if(error&&error.name==='AbortError'){aiConsentGranted=false;return;}
+        console.warn('ATSRS native file picker unavailable; using browser fallback.',error);
+      }
+    }
     var input=byId('documentFile');
     if(input)input.click();
   }
@@ -679,7 +704,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V257';
+      if(d[0])d[0].textContent='ATSRS V258';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }

@@ -1,4 +1,4 @@
-/* ATSRS V257: stable in-page image preview with dedicated zoom controls. */
+/* ATSRS V258: stable in-page image preview with dedicated zoom controls. */
 (function(){
   var modal=document.getElementById('atsrsFilePreviewModal');
   var frame=document.getElementById('atsrsFilePreviewFrame');
