@@ -89,11 +89,14 @@
     var selected=new Set(activeShare&&Array.isArray(activeShare.selected_file_ids)?activeShare.selected_file_ids:[]);
     if(!ownerFiles.length){list.innerHTML='<div class="preview-box">Upload documents or a CV first, then return here to create your recruiter link.</div>';syncShareSelectAll();return;}
     list.innerHTML='';ownerFiles.forEach(function(file){
-      var meta=documentMeta(file),label=document.createElement('label');label.className='share-document-choice';
-      var checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.value=file.id;checkbox.checked=selected.has(file.id);checkbox.addEventListener('change',syncShareSelectAll);
-      var name=document.createElement('b');name.textContent=meta.type;name.title=file.file_name||meta.type;
+      var meta=documentMeta(file),row=document.createElement('div');row.className='share-document-choice';
+      var checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.id='share-file-'+file.id;checkbox.value=file.id;checkbox.checked=selected.has(file.id);checkbox.addEventListener('change',syncShareSelectAll);
+      var nameLabel=document.createElement('label');nameLabel.className='share-document-name';nameLabel.htmlFor=checkbox.id;
+      var name=document.createElement('b');name.textContent=meta.type;name.title=file.file_name||meta.type;nameLabel.appendChild(name);
       var category=document.createElement('span');category.textContent=file.category==='cv'?'CV':'Document';
-      label.appendChild(checkbox);label.appendChild(name);label.appendChild(category);list.appendChild(label);
+      var preview=document.createElement('button');preview.type='button';preview.className='secondary share-document-preview';preview.textContent='Preview';
+      preview.addEventListener('click',function(){if(typeof window.atsrsCloudPreview==='function')window.atsrsCloudPreview(file.id);else window.alert('Document preview is not available yet.');});
+      row.appendChild(checkbox);row.appendChild(nameLabel);row.appendChild(category);row.appendChild(preview);list.appendChild(row);
     });
     syncShareSelectAll();
   }

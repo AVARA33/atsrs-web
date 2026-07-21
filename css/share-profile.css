@@ -327,13 +327,38 @@ body.atsrs-public-share-view{
   white-space:nowrap;
 }
 .share-select-all input{
+  position:relative;
+  appearance:none;
+  -webkit-appearance:none;
+  box-sizing:border-box;
   width:16px!important;
   height:16px!important;
+  min-width:16px!important;
+  min-height:16px!important;
   margin:0!important;
-  accent-color:#22c55e;
+  padding:0!important;
+  border:1px solid #a7b4c0!important;
+  border-radius:3px!important;
+  background:#f8fafc!important;
 }
 .share-permissions-head .share-select-all span{color:#cbd7e0;font-size:12px}
 .share-select-all input:disabled{opacity:.45}
+.share-select-all input:checked::after,
+.share-select-all input:indeterminate::after,
+.share-document-choice>input:checked::after{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#15803d;
+  font-size:14px;
+  font-weight:900;
+  line-height:1;
+}
+.share-select-all input:checked::after,
+.share-document-choice>input:checked::after{content:"✓"}
+.share-select-all input:indeterminate::after{content:"−"}
 .share-document-choices{
   display:grid;
   gap:8px;
@@ -343,21 +368,42 @@ body.atsrs-public-share-view{
 }
 .share-document-choice{
   display:grid!important;
-  grid-template-columns:auto minmax(0,1fr) auto;
+  grid-template-columns:auto minmax(0,1fr) auto auto;
   align-items:center;
   gap:10px;
   margin:0!important;
-  padding:11px 12px;
+  min-height:38px;
+  padding:7px 10px;
   border:1px solid rgba(52,83,108,.62);
   border-radius:12px;
   background:rgba(4,16,27,.58);
 }
-.share-document-choice input{
-  width:17px!important;
-  height:17px!important;
+.share-document-choice>input{
+  position:relative;
+  appearance:none;
+  -webkit-appearance:none;
+  box-sizing:border-box;
+  width:16px!important;
+  height:16px!important;
+  min-width:16px!important;
+  min-height:16px!important;
   margin:0!important;
+  padding:0!important;
+  border:1px solid #a7b4c0!important;
+  border-radius:3px!important;
+  background:#f8fafc!important;
+}
+.share-document-name{
+  display:block!important;
+  min-width:0;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  cursor:pointer;
 }
 .share-document-choice b{
+  display:block;
   overflow:hidden;
   color:#d8e2e9;
   font-size:12px;
@@ -368,6 +414,17 @@ body.atsrs-public-share-view{
   color:#7890a3;
   font-size:10px;
   text-transform:uppercase;
+}
+.share-document-preview{
+  width:auto!important;
+  min-width:0!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:4px 8px!important;
+  border-color:rgba(94,123,146,.55)!important;
+  background:transparent!important;
+  color:#b8c8d5!important;
+  font-size:10px!important;
 }
 .share-permissions-actions{
   display:flex;
@@ -431,24 +488,29 @@ body.company-mode #accountTabSharingBtn{display:none!important}
   overflow:visible!important;
 }
 #accountSharingTab #shareProfilePanel .share-document-choices{
-  max-height:none!important;
-  overflow:visible!important;
-  padding-right:0;
+  max-height:336px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  padding-right:5px;
+  scrollbar-width:thin;
+  scrollbar-color:#40566a transparent;
 }
 .share-expiry-settings{
   display:flex;
-  flex-wrap:wrap;
-  gap:10px 16px;
+  flex-wrap:nowrap;
+  gap:8px 12px;
   align-items:center;
   margin-top:12px;
-  padding:9px 12px;
+  min-height:44px;
+  padding:7px 10px;
   border:1px solid rgba(57,89,114,.65);
   border-radius:12px;
   background:rgba(4,16,27,.58);
 }
 .share-expiry-copy{
   display:flex;
-  flex:1 1 260px;
+  flex:1 1 220px;
   align-items:baseline;
   gap:8px;
   min-width:0;
@@ -457,7 +519,7 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 .share-expiry-options{
   display:flex;
   flex:0 1 auto;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
   align-items:center;
   gap:7px 14px;
   min-width:0;
@@ -483,33 +545,47 @@ body.company-mode #accountTabSharingBtn{display:none!important}
   position:relative;
   appearance:none;
   -webkit-appearance:none;
-  width:15px!important;
-  height:15px!important;
-  flex:0 0 15px;
+  box-sizing:border-box;
+  width:16px!important;
+  height:16px!important;
+  min-width:16px!important;
+  min-height:16px!important;
+  flex:0 0 16px;
   margin:0!important;
-  border:1px solid #5b7185!important;
+  padding:0!important;
+  border:1px solid #a7b4c0!important;
   border-radius:3px!important;
-  background:#07131f!important;
+  background:#f8fafc!important;
   cursor:pointer;
 }
 .share-expiry-option input[type="radio"]:checked{
   border-color:#4ade80!important;
-  background:rgba(34,197,94,.14)!important;
+  background:#f8fafc!important;
 }
 .share-expiry-option input[type="radio"]:checked::after{
   content:"✓";
   position:absolute;
-  inset:-3px 0 0 1px;
-  color:#86efac;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#15803d;
   font-size:14px;
   font-weight:900;
+  line-height:1;
 }
 .share-expiry-option input[type="radio"]:focus-visible{outline:2px solid #38bdf8;outline-offset:2px}
 #shareExpiryCustom{
-  width:156px!important;
-  height:34px!important;
+  box-sizing:border-box;
+  flex:0 0 142px;
+  width:142px!important;
+  min-width:142px!important;
+  max-width:142px!important;
+  height:30px!important;
+  min-height:30px!important;
   margin:0!important;
-  padding:6px 9px!important;
+  padding:4px 7px!important;
+  font-size:11px!important;
 }
 .sharing-history{
   margin-top:28px;
@@ -603,8 +679,11 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 
 @media(max-width:760px){
   .sharing-heading,.access-panel-head,.sharing-history-head,.shared-profile-head-actions{align-items:flex-start;flex-direction:column}
+  .share-expiry-settings{flex-wrap:wrap}
   .share-expiry-copy{flex-basis:100%}
-  .share-expiry-options{width:100%}
+  .share-expiry-options{width:100%;flex-wrap:wrap}
+  .share-document-choice{grid-template-columns:auto minmax(0,1fr) auto!important}
+  .share-document-choice>span{display:none}
   .share-analytics{grid-template-columns:repeat(2,minmax(0,1fr))}
   .shared-profile-head-actions{width:100%}
   .shared-profile-head-actions button{width:100%!important}
