@@ -89,6 +89,8 @@ body #app.app{
 }
 body #app .sidebar{
   position:sticky!important;
+  width:auto!important;
+  max-width:none!important;
   top:16px!important;
   align-self:start!important;
   height:calc(100vh - 32px)!important;
@@ -497,3 +499,183 @@ body #atsrsBootScreen .atsrs-spinner{filter:drop-shadow(0 0 13px rgba(72,238,156
 }
 @media(max-width:430px){body #app .nav{grid-template-columns:1fr!important}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+
+/* v3 — approved reference composition, not only surface styling. */
+@media(min-width:761px){
+  body #app.app,body #app.app:not(.hidden){grid-template-columns:178px minmax(0,1fr)!important}
+  body #app.app:not(.hidden)>aside.sidebar{position:sticky!important;width:178px!important;max-width:178px!important}
+  body #app.app:not(.hidden)>main.main{margin-left:0!important}
+  body #app .nav{align-items:flex-start!important}
+  body #app .nav button:not(.active){
+    width:48px!important;
+    grid-template-columns:1fr!important;
+    padding:9px!important;
+    font-size:0!important;
+  }
+  body #app .nav button:not(.active)::before{font-size:19px!important}
+  body #app .nav button.active{width:100%!important;font-size:11px!important}
+}
+
+body #app .main::before{
+  content:""!important;
+  display:block!important;
+  position:fixed!important;
+  z-index:-1!important;
+  left:14vw!important;
+  right:-12vw!important;
+  bottom:-47vh!important;
+  height:70vh!important;
+  border:1px solid rgba(83,219,237,.18)!important;
+  border-radius:50%!important;
+  transform:rotate(-5deg)!important;
+  box-shadow:
+    0 0 0 3vh rgba(83,219,237,.012),
+    0 0 0 8vh rgba(83,219,237,.009),
+    0 -8px 35px rgba(53,203,226,.10),
+    inset 0 12px 44px rgba(44,194,219,.055)!important;
+  pointer-events:none!important;
+}
+body #app .main::after{
+  content:""!important;
+  display:block!important;
+  position:fixed!important;
+  z-index:-1!important;
+  width:86vw!important;
+  height:28vh!important;
+  left:14vw!important;
+  top:5vh!important;
+  border-top:1px solid rgba(103,218,235,.14)!important;
+  border-radius:50%!important;
+  transform:rotate(-7deg)!important;
+  box-shadow:0 -16px 40px rgba(67,200,223,.045)!important;
+  pointer-events:none!important;
+}
+
+body #app #profilePage:not(.hidden){
+  display:grid!important;
+  grid-template-columns:210px minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:20px!important;
+}
+body #app #profilePage .account-holographic-panel{
+  min-width:0!important;
+  padding:0 18px 18px!important;
+  border-radius:30px!important;
+  background:
+    linear-gradient(145deg,rgba(10,48,66,.72),rgba(2,18,30,.86) 62%),
+    radial-gradient(circle at 90% 12%,rgba(69,186,215,.10),transparent 32%)!important;
+  border-color:rgba(125,211,233,.44)!important;
+  box-shadow:
+    0 38px 100px rgba(0,0,0,.56),
+    inset 0 0 0 1px rgba(166,226,239,.055),
+    inset 0 1px 0 rgba(235,253,255,.13),
+    0 0 42px rgba(57,186,215,.045)!important;
+}
+body #app #profilePage .account-holographic-panel::before{
+  left:30px!important;
+  right:30px!important;
+  background:linear-gradient(90deg,transparent,rgba(134,233,245,.85),transparent)!important;
+}
+body #app #profilePage .account-holographic-panel>#accountTitle,
+body #app #profilePage .account-holographic-panel>#userEmail{display:none!important}
+body #app #profilePage .account-tabs{
+  margin:0 -18px 10px!important;
+  padding:0 22px!important;
+  min-height:48px!important;
+  align-items:end!important;
+  background:linear-gradient(180deg,rgba(8,35,50,.36),rgba(2,18,29,.10))!important;
+  border-radius:30px 30px 0 0!important;
+}
+body #app #profilePage .account-tabs button{
+  min-width:145px!important;
+  padding:14px 22px 12px!important;
+  font-size:13px!important;
+}
+body #app #profilePage .account-tab.active{padding-top:2px!important}
+body #app #profilePage .account-security-list .setting-row{
+  grid-template-columns:minmax(260px,.82fr) minmax(260px,1.18fr)!important;
+  min-height:54px!important;
+  margin:5px 0!important;
+  padding:9px 54px 9px 62px!important;
+  background:linear-gradient(90deg,rgba(8,42,58,.64),rgba(5,30,44,.54))!important;
+  border-color:rgba(104,185,211,.20)!important;
+  border-radius:14px!important;
+}
+body #app #profilePage .account-security-list .setting-row:hover{
+  background:linear-gradient(90deg,rgba(10,48,65,.73),rgba(6,34,49,.62))!important;
+  border-color:rgba(104,199,220,.30)!important;
+}
+body #app #profilePage .account-security-list .setting-row b{font-size:14px!important;font-weight:600!important}
+body #app #profilePage .account-security-list .setting-row .small-note{font-size:10px!important;opacity:.72}
+body #app #profilePage .account-security-list .setting-row>button,
+body #app #profilePage .account-security-list .setting-row>input,
+body #app #profilePage .account-security-list .setting-row>select{
+  width:min(250px,100%)!important;
+  max-width:250px!important;
+  justify-self:start!important;
+  background:rgba(1,16,26,.28)!important;
+  border-color:rgba(102,178,203,.22)!important;
+}
+body #app #profilePage .account-security-list .setting-row::before{
+  left:19px!important;
+  font-size:25px!important;
+  color:#d6edf3!important;
+}
+body #app #profilePage .account-security-list .setting-row::after{right:18px!important;color:#d7edf2!important}
+
+.holo-trust-module{
+  position:sticky;
+  top:52px;
+  display:grid;
+  place-items:center;
+  width:210px;
+  min-height:250px;
+  padding-top:4px;
+}
+.holo-orbit-ring{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:138px;
+  height:138px;
+  border:1px solid rgba(104,229,239,.45);
+  border-radius:50%;
+  color:#dff8fa;
+  background:radial-gradient(circle,rgba(21,94,108,.27),rgba(2,18,29,.18) 58%,transparent 61%);
+  box-shadow:
+    0 0 0 8px rgba(79,218,231,.025),
+    0 0 0 18px rgba(79,218,231,.018),
+    0 0 32px rgba(73,221,233,.22),
+    inset 0 0 32px rgba(70,215,228,.11);
+}
+.holo-orbit-ring::before,.holo-orbit-ring::after{
+  content:"";
+  position:absolute;
+  inset:-24px;
+  border:1px dashed rgba(95,220,232,.24);
+  border-radius:50%;
+  transform:rotate(28deg) scaleY(.58);
+  box-shadow:0 0 15px rgba(73,221,233,.07);
+}
+.holo-orbit-ring::after{inset:-41px -29px;transform:rotate(-22deg) scaleY(.42);border-style:solid;border-color:rgba(72,238,156,.16)}
+.holo-orbit-ring span{color:#8fb1bd;font-size:10px;letter-spacing:.03em}
+.holo-orbit-ring strong{margin:2px 0;color:#dff8fb;font-size:34px;font-weight:300;line-height:1.05;text-shadow:0 0 20px rgba(92,223,237,.26)}
+.holo-orbit-ring i{display:grid;place-items:center;width:21px;height:24px;margin-top:2px;border:1px solid rgba(72,238,156,.57);border-radius:5px 5px 9px 9px;color:var(--hw-green);font-size:11px;font-style:normal;box-shadow:0 0 14px rgba(72,238,156,.16)}
+
+@media(max-width:1180px){
+  body #app #profilePage:not(.hidden){grid-template-columns:150px minmax(0,1fr)!important;gap:12px!important}
+  .holo-trust-module{width:150px}.holo-orbit-ring{width:112px;height:112px}.holo-orbit-ring strong{font-size:28px}
+  body #app #profilePage .account-security-list .setting-row{grid-template-columns:minmax(200px,.9fr) minmax(190px,1.1fr)!important}
+}
+@media(max-width:920px){
+  body #app #profilePage:not(.hidden){grid-template-columns:1fr!important}
+  .holo-trust-module{position:relative;top:auto;width:100%;min-height:145px;padding:0 0 12px}.holo-orbit-ring{width:104px;height:104px}.holo-orbit-ring::after{display:none}
+}
+@media(max-width:700px){
+  body #app #profilePage .account-holographic-panel{padding:0 12px 12px!important}
+  body #app #profilePage .account-tabs{margin:0 -12px 8px!important;padding:0 8px!important}
+  body #app #profilePage .account-tabs button{min-width:max-content!important;padding:12px 14px!important}
+  body #app #profilePage .account-security-list .setting-row{grid-template-columns:1fr!important;padding:12px 38px 12px 52px!important}
+}
