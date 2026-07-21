@@ -5,7 +5,7 @@
   var nextTaskId=1;
   var wakeTimer=0;
   var recoveryTimer=0;
-  var BUILD='ATSRS V256';
+  var BUILD='ATSRS V257';
   var UPDATE='Last Update: 21 Jul 2026';
 
   function visible(){return document.visibilityState!=='hidden';}
