@@ -22,8 +22,8 @@ try{
 <link rel="stylesheet" href="css/documents.css?v=213">
 <link rel="stylesheet" href="css/references.css?v=200">
 <link rel="stylesheet" href="css/account.css?v=218">
-<link rel="stylesheet" href="css/product-experience.css?v=242">
-<link rel="stylesheet" href="css/date-picker.css?v=249">
+<link rel="stylesheet" href="css/product-experience.css?v=250">
+<link rel="stylesheet" href="css/date-picker.css?v=250">
 <link rel="stylesheet" href="css/share-profile.css?v=246">
 <link rel="stylesheet" href="css/calm-actions.css?v=247">
 
@@ -127,7 +127,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V249</div>
+<div>ATSRS V250</div>
 <div>Last Update: 21 Jul 2026</div>
 </div>
 </div>
@@ -667,25 +667,38 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <button id="atsrsFilePreviewClose" type="button" class="file-preview-close" aria-label="Close preview">×</button>
       </div>
     </div>
-    <div class="file-preview-body"><iframe id="atsrsFilePreviewFrame" title="ATSRS document preview"></iframe></div>
+    <div class="file-preview-body">
+      <iframe id="atsrsFilePreviewFrame" title="ATSRS document preview"></iframe>
+      <div id="atsrsImagePreview" class="file-preview-image hidden">
+        <div class="file-preview-image-tools" aria-label="Image zoom controls">
+          <button id="atsrsImageZoomOut" type="button" class="secondary" aria-label="Zoom out">−</button>
+          <span id="atsrsImageZoomLabel" aria-live="polite">100%</span>
+          <button id="atsrsImageZoomIn" type="button" class="secondary" aria-label="Zoom in">+</button>
+          <button id="atsrsImageFit" type="button" class="secondary">Fit</button>
+        </div>
+        <div id="atsrsImageStage" class="file-preview-image-stage">
+          <div id="atsrsImageCanvas" class="file-preview-image-canvas"><img id="atsrsImageContent" alt="Document preview"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=249"></script>
-<script src="js/server-data.js?v=6"></script>
-<script src="js/storage.js?v=249"></script>
-<script src="js/ui.js?v=249"></script>
-<script src="js/auth.js?v=249"></script>
-<script src="js/login.js?v=249"></script>
-<script src="js/dashboard.js?v=249"></script>
-<script src="js/documents.js?v=249"></script>
-<script src="js/references.js?v=249"></script>
-<script src="js/account.js?v=249"></script>
-<script src="js/app.js?v=249"></script>
-<script src="js/product-experience.js?v=242"></script>
-<script src="js/date-picker.js?v=249"></script>
-<script src="js/share-profile.js?v=249"></script>
-<script src="js/boot-refresh.js?v=249"></script>
+<script src="js/stability-runtime.js?v=250"></script>
+<script src="js/server-data.js?v=7"></script>
+<script src="js/storage.js?v=250"></script>
+<script src="js/ui.js?v=250"></script>
+<script src="js/auth.js?v=250"></script>
+<script src="js/login.js?v=250"></script>
+<script src="js/dashboard.js?v=250"></script>
+<script src="js/documents.js?v=250"></script>
+<script src="js/references.js?v=250"></script>
+<script src="js/account.js?v=250"></script>
+<script src="js/app.js?v=250"></script>
+<script src="js/product-experience.js?v=250"></script>
+<script src="js/date-picker.js?v=250"></script>
+<script src="js/share-profile.js?v=250"></script>
+<script src="js/boot-refresh.js?v=250"></script>
 
 
 
