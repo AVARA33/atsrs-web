@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V251';
+  var BUILD='ATSRS V252';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V251';
+  var BUILD='ATSRS V252';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -108,10 +108,18 @@
 (function atsrsV172DocumentsStable(){
   'use strict';
   var editIndex=null;
+  var editKey='';
   function byId(id){return document.getElementById(id);}
   function setText(id,value){var el=byId(id); if(el) el.textContent=value;}
   function q(sel,root){return (root||document).querySelector(sel);}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function certificateKey(item){
+    item=item&&typeof item==='object'?item:{};
+    if(item.cloudFileId)return 'file:'+String(item.cloudFileId);
+    return 'fields:'+[
+      item.docNo,item.type,item.provider,item.person,item.issue,item.fileName
+    ].map(function(value){return String(value==null?'':value).trim().toLowerCase();}).join('|');
+  }
 
   function cleanTopAndLang(){
     ['langCircle','langMenu','appLangCircle','appLangMenu','topLogoutBtn'].forEach(function(id){var el=byId(id); if(el) el.remove();});
@@ -128,6 +136,7 @@
     var p=byId('certManualPanel'); if(p)p.classList.remove('active');
     var b=byId('certManualModeBtn'); if(b)b.classList.remove('active');
     editIndex=null;
+    editKey='';
     if(typeof editCertIndex!=='undefined')editCertIndex=null;
     clearForm();
     if(typeof clearManualValidation==='function')clearManualValidation();
@@ -236,14 +245,22 @@
   window.atsrsV172EditCert=function(i){
     var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
     if(!x){alert('Document not found.');return;}
-    editIndex=i; openManual();
+    editIndex=i; editKey=certificateKey(x); openManual();
+    var fileInput=byId('manualFile'); if(fileInput)fileInput.value='';
+    window.atsrsPendingCertificateFile=null;
     var cp=byId('cPerson'); if(cp&&x.person)cp.value=x.person;
     var t=byId('cType'); if(t)t.value=x.type||'';
     var n=byId('cDocNo'); if(n)n.value=x.docNo||'';
     var co=byId('cCountry'); if(co)co.value=x.country||'';
     var pr=byId('cProvider'); if(pr)pr.value=x.provider||'';
     var is=byId('cIssue'); if(is)is.value=x.issue||'';
-    var ex=byId('cExpiry'); if(ex)ex.value=x.expiry||'';
+    var noExpiry=String(x.expiry||'').toUpperCase()==='N/A';
+    var expiryNA=byId('cExpiryNA');
+    if(expiryNA){expiryNA.checked=noExpiry;expiryNA.defaultChecked=false;}
+    var ex=byId('cExpiry'); if(ex){ex.disabled=noExpiry;ex.value=noExpiry?'':(x.expiry||'');}
+    var filePreview=byId('manualFilePreview');
+    if(filePreview){filePreview.textContent=x.fileName?'Current file: '+x.fileName:'';filePreview.classList.toggle('active',!!x.fileName);}
+    if(typeof clearManualValidation==='function')clearManualValidation();
     setText('addCertBtn','Update Document');
     setTimeout(function(){var panel=byId('certManualPanel'); if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});},60);
   };
@@ -251,7 +268,17 @@
   window.addCertificate=async function(){
     if(typeof validateManualCertificateForm==='function' && !validateManualCertificateForm())return;
     var a=(typeof getData==='function'?getData('certs'):[])||[];
-    var previous=editIndex!==null?a[editIndex]:null;
+    var editing=editIndex!==null;
+    var targetIndex=editIndex;
+    if(editing&&editKey&&(!a[targetIndex]||certificateKey(a[targetIndex])!==editKey)){
+      var matchedIndex=a.findIndex(function(entry){return certificateKey(entry)===editKey;});
+      if(matchedIndex>=0)targetIndex=matchedIndex;
+    }
+    var previous=editing&&targetIndex!==null?a[targetIndex]:null;
+    if(editing&&!previous){
+      alert('This document changed while it was being edited. Refresh the page and try again.');
+      return;
+    }
     var person=(typeof isPersonalMode==='function'&&isPersonalMode())?(typeof soloOwnerName==='function'?soloOwnerName():''):(byId('cPerson')?byId('cPerson').value:'');
     if(!person)return;
     var item={
@@ -272,6 +299,8 @@
     var button=byId('addCertBtn'),oldText=button&&button.textContent;
     if(button){button.disabled=true;button.textContent='Saving to server...';}
     var uploadedRow=null;
+    var metadataUpdated=false;
+    var saveCompleted=false;
     try{
       var file=window.atsrsPendingCertificateFile;
       if(file){
@@ -280,24 +309,30 @@
         item.cloudFileId=uploadedRow.id;item.fileName=uploadedRow.file_name;item.mimeType=uploadedRow.mime_type;item.fileSize=uploadedRow.size_bytes;
       }else if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
         await window.atsrsCloudData.updateDocumentMetadata(item.cloudFileId,{document:item});
+        metadataUpdated=true;
       }
-      if(editIndex!==null&&a[editIndex])a[editIndex]=item;else a.push(item);
+      if(editing&&targetIndex!==null&&a[targetIndex])a[targetIndex]=item;else a.push(item);
       if(typeof saveData==='function')saveData('certs',a);
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document details could not be saved.');
       if(file&&previous&&previous.cloudFileId&&previous.cloudFileId!==item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
-        await window.atsrsCloudData.deleteDocument(previous.cloudFileId);
+        try{await window.atsrsCloudData.deleteDocument(previous.cloudFileId);}catch(cleanupError){console.warn('ATSRS old document cleanup deferred',cleanupError);}
       }
-      editIndex=null;clearForm();closeManual();
-      if(typeof clearManualValidation==='function')clearManualValidation();
-      if(typeof renderAll==='function')renderAll();
+      saveCompleted=true;
+      editIndex=null;editKey='';closeManual();
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.refresh==='function'){
+        try{await window.atsrsCloudData.refresh();}catch(refreshError){console.warn('ATSRS post-save refresh failed',refreshError);if(typeof renderAll==='function')renderAll();}
+      }else if(typeof renderAll==='function')renderAll();
     }catch(error){
       console.error('ATSRS document save failed',error);
+      if(metadataUpdated&&previous&&previous.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
+        try{await window.atsrsCloudData.updateDocumentMetadata(previous.cloudFileId,{document:previous});}catch(rollbackError){console.error('ATSRS metadata rollback failed',rollbackError);}
+      }
       if(uploadedRow&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
         try{await window.atsrsCloudData.deleteDocument(uploadedRow.id);}catch(cleanupError){console.error('ATSRS orphan document cleanup failed',cleanupError);}
       }
       alert('The document was not saved to the ATSRS server. Check the connection and try again.');
     }finally{
-      if(button){button.disabled=false;button.textContent=oldText||'Save Document';}
+      if(button){button.disabled=false;button.textContent=saveCompleted?'Save Document':(oldText||'Save Document');}
     }
   };
 
@@ -363,7 +398,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V251';
+      if(d[0])d[0].textContent='ATSRS V252';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }
