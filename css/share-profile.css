@@ -403,6 +403,15 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 }
 #shareAccessBox{display:block}
 #shareAccessBox.hidden{display:none!important}
+#accountSharingTab #shareProfilePanel #shareAccessBox{
+  max-height:none!important;
+  overflow:visible!important;
+}
+#accountSharingTab #shareProfilePanel .share-document-choices{
+  max-height:none!important;
+  overflow:visible!important;
+  padding-right:0;
+}
 .share-expiry-settings{
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(150px,210px) minmax(150px,210px);
