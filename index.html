@@ -26,6 +26,7 @@ try{
 <link rel="stylesheet" href="css/date-picker.css?v=260">
 <link rel="stylesheet" href="css/share-profile.css?v=264">
 <link rel="stylesheet" href="css/calm-actions.css?v=261">
+<link rel="stylesheet" href="css/account-holographic-exact.css?v=1">
 
 
 
@@ -538,15 +539,24 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="profilePage" class="hidden">
-<div class="panel">
+<aside class="holo-trust-module" aria-label="Account trust index">
+  <div class="holo-trust-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="holo-trust-core">
+    <span>Trust Index</span>
+    <strong>98%</strong>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.4 2.7 7.7 6.5 9.8 3.8-2.1 6.5-5.4 6.5-9.8V6L12 3Z"/><path d="m9 12 2 2 4-5"/></svg>
+  </div>
+  <span class="holo-trust-status">Identity protected</span>
+</aside>
+<div class="panel holo-account-panel">
 <h3 id="accountTitle"></h3>
 <p id="userEmail" class="sub"></p>
 <div class="account-tabs">
-<button id="accountTabGeneralBtn" class="active" onclick="showAccountTab('general')"></button>
-<button id="accountTabSecurityBtn" onclick="showAccountTab('security')"></button>
+<button id="accountTabGeneralBtn" onclick="showAccountTab('general')"></button>
+<button id="accountTabSecurityBtn" class="active" onclick="showAccountTab('security')"></button>
 <button id="accountTabSharingBtn" onclick="showAccountTab('sharing')">Privacy &amp; Sharing</button>
 </div>
-<div id="accountGeneralTab" class="account-tab active">
+<div id="accountGeneralTab" class="account-tab">
 <div class="profile-grid">
 <input id="profileName"><input id="profileSurname"><input id="profilePhone">
 <select id="profileCountry"></select>
@@ -554,19 +564,19 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <button id="saveProfileBtn" onclick="saveProfile()"></button>
 </div>
-<div id="accountSecurityTab" class="account-tab">
+<div id="accountSecurityTab" class="account-tab active">
 <div class="account-security-list">
-  <div class="setting-row"><div><b>Recovery Email</b><div class="small-note">Used to help secure and recover your account.</div></div><input id="profileAltEmail" type="email"></div>
-  <div class="setting-row"><div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div><button id="primaryEmailBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button></div>
-  <div class="setting-row"><div><b id="changePasswordTitle"></b><div id="changePasswordNote" class="small-note"></div></div><button id="changePasswordBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button></div>
-  <div class="setting-row"><div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div><button id="setup2faBtn" class="secondary" onclick="alert(ptr('twofaNotice'))"></button></div>
-  <div class="setting-row"><div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div><button id="viewSessionsBtn" class="secondary" onclick="alert(ptr('sessionsNotice'))"></button></div>
-  <div class="setting-row"><div><b>Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select id="profileTimezone"><option value="UTC">UTC</option><option value="Europe/Baku">Europe/Baku</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select></div>
-  <div class="setting-row"><div><b id="profileVisibilityTitle">Profile Visibility</b><div id="profileVisibilityNote" class="small-note">Private by default. Shared link only when enabled.</div></div><select id="profileVisibility"><option>Private</option><option>Link Only</option><option>Public</option></select></div>
-  <div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
-  <div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
-  <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button></div>
-  <div class="setting-row account-logout-row"><div><b id="accountLogoutTitle">Logout</b><div id="accountLogoutNote" class="small-note">Sign out and return to the login screen.</div></div><button id="accountLogoutBtn" type="button" class="secondary">Logout</button></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><path d="M12 3 5.5 6v5.2c0 4.4 2.7 7.7 6.5 9.8 3.8-2.1 6.5-5.4 6.5-9.8V6L12 3Z"/><path d="M9.5 12.2 11 13.7l3.5-4"/></svg></span><div><b>Recovery Identity</b><div class="small-note">Used to help secure and recover your account.</div></div><input id="profileAltEmail" type="email"><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4.5 21v-2.5A6.5 6.5 0 0 1 11 12h2a6.5 6.5 0 0 1 6.5 6.5V21"/></svg></span><div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div><button id="primaryEmailBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="3.5"/><path d="m10.5 12.5 7-7a2.1 2.1 0 0 1 3 3l-7 7M15 8l3 3M5.5 17.5 3 20"/></svg></span><div><b id="changePasswordTitle">Quantum Passkey</b><div id="changePasswordNote" class="small-note"></div></div><button id="changePasswordBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><path d="M12 3 5.5 6v5.2c0 4.4 2.7 7.7 6.5 9.8 3.8-2.1 6.5-5.4 6.5-9.8V6L12 3Z"/><path d="M8.5 12h7M12 8.5v7"/></svg></span><div><b id="twofaTitle">Multi-Factor Shield</b><div id="twofaNote" class="small-note"></div></div><button id="setup2faBtn" class="secondary" onclick="alert(ptr('twofaNotice'))"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div><button id="viewSessionsBtn" class="secondary" onclick="alert(ptr('sessionsNotice'))"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg></span><div><b>Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select id="profileTimezone"><option value="UTC">UTC</option><option value="Europe/Baku">Europe/Baku</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></span><div><b id="profileVisibilityTitle">Profile Visibility</b><div id="profileVisibilityNote" class="small-note">Private by default. Shared link only when enabled.</div></div><select id="profileVisibility"><option>Private</option><option>Link Only</option><option>Public</option></select><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 8h18c0-1-3-1-3-8Z"/><path d="M10 21h4"/></svg></span><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg></span><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2.5 20v-2A6.5 6.5 0 0 1 9 11.5M16 14l5 5M21 14l-5 5"/></svg></span><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button><span class="holo-row-chevron">›</span></div>
+  <div class="setting-row account-logout-row"><span class="holo-setting-icon"><svg viewBox="0 0 24 24"><path d="M14 8V4H4v16h10v-4M10 12h11M17 8l4 4-4 4"/></svg></span><div><b id="accountLogoutTitle">Logout</b><div id="accountLogoutNote" class="small-note">Sign out and return to the login screen.</div></div><button id="accountLogoutBtn" type="button" class="secondary">Logout</button><span class="holo-row-chevron">›</span></div>
 </div>
 </div>
 <div id="accountSharingTab" class="account-tab">
