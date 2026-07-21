@@ -24,7 +24,7 @@ try{
 <link rel="stylesheet" href="css/account.css?v=259">
 <link rel="stylesheet" href="css/product-experience.css?v=259">
 <link rel="stylesheet" href="css/date-picker.css?v=259">
-<link rel="stylesheet" href="css/share-profile.css?v=263">
+<link rel="stylesheet" href="css/share-profile.css?v=264">
 <link rel="stylesheet" href="css/calm-actions.css?v=259">
 
 
@@ -576,17 +576,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span class="preview-only-badge">PREVIEW ONLY BY DEFAULT</span>
     </div>
     <p id="shareSub" class="sub">Create a time-limited recruiter link. Downloads require verified email and your approval.</p>
-    <div class="share-link-box">
-      <input id="shareProfileLink" readonly placeholder="Create a secure link after choosing documents.">
-      <button id="copyShareBtn" class="secondary" onclick="copyShareLink()" disabled>Copy Link</button>
-    </div>
     <div id="shareProfileStatus" class="share-live-status">Private. No recruiter link has been created yet.</div>
     <div class="share-actions">
       <button id="manageAccessBtn" onclick="toggleShareAccess()">Configure Share Link</button>
       <button id="previewShareBtn" class="secondary" onclick="previewShareProfile()" disabled>Preview Shared Profile</button>
       <button id="revokeShareBtn" class="action hidden" onclick="revokeShareProfileLink()">Disable Link</button>
     </div>
-    <div id="shareCopyMsg" class="copy-ok hidden">Link copied.</div>
     <div id="shareAccessBox" class="share-permissions hidden">
       <div class="share-permissions-head">
         <div><b>Visible documents</b><span>Recruiters can preview checked server files. Download always requires approval.</span></div>
@@ -605,9 +600,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </fieldset>
         <input id="shareExpiryCustom" class="hidden" type="date" aria-label="Custom share link expiry date">
       </div>
-      <div class="share-permissions-actions">
+      <div class="share-link-controls">
+        <input id="shareProfileLink" readonly placeholder="Secure link will appear here.">
         <button id="saveShareBtn" type="button" onclick="createShareProfileLink()">Create Secure Link</button>
+        <button id="copyShareBtn" type="button" class="secondary" onclick="copyShareLink()" disabled>Copy Link</button>
       </div>
+      <div class="share-link-feedback"><div id="shareCopyMsg" class="copy-ok hidden">Link copied.</div></div>
       <div id="shareManageMsg" class="share-manage-message" role="status"></div>
     </div>
     <div class="sharing-history">

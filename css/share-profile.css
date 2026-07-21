@@ -432,6 +432,55 @@ body.atsrs-public-share-view{
   gap:10px;
   margin-top:13px;
 }
+#accountSharingTab .share-link-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+}
+#accountSharingTab .share-link-controls>input{
+  box-sizing:border-box;
+  flex:1 1 360px;
+  width:auto!important;
+  min-width:220px;
+  height:36px!important;
+  min-height:36px!important;
+  margin:0!important;
+  padding:8px 10px!important;
+  font-size:11px!important;
+}
+#accountSharingTab .share-link-controls>button{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:36px!important;
+  margin:0!important;
+  padding:8px 11px!important;
+  border-color:rgba(76,106,130,.62)!important;
+  background:transparent!important;
+  color:#c8d5df!important;
+  font-size:11px!important;
+  white-space:nowrap;
+}
+#accountSharingTab .share-link-controls #saveShareBtn{
+  border-color:rgba(74,222,128,.38)!important;
+  color:#d6f7e1!important;
+}
+#accountSharingTab .share-link-controls>button:disabled{
+  opacity:.45!important;
+}
+#accountSharingTab .share-link-feedback{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:18px;
+  margin-top:5px;
+}
+#accountSharingTab .share-link-feedback .copy-ok{
+  margin:0!important;
+  color:#86efac;
+  font-size:11px;
+}
 .share-manage-message{
   min-height:18px;
   margin-top:9px;
@@ -679,6 +728,8 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 
 @media(max-width:760px){
   .sharing-heading,.access-panel-head,.sharing-history-head,.shared-profile-head-actions{align-items:flex-start;flex-direction:column}
+  #accountSharingTab .share-link-controls{flex-wrap:wrap}
+  #accountSharingTab .share-link-controls>input{flex-basis:100%;width:100%!important}
   .share-expiry-settings{flex-wrap:wrap}
   .share-expiry-copy{flex-basis:100%}
   .share-expiry-options{width:100%;flex-wrap:wrap}
