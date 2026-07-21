@@ -676,8 +676,16 @@
         if(!row)return;
         var metadata=row.metadata||{};
         metadata.signed_date=value||'';
-        var result=await client().from(FILE_TABLE).update({metadata:metadata,updated_at:new Date().toISOString()}).eq('id',id);
+        var valueUser=user();
+        var result=await client().from(FILE_TABLE)
+          .update({metadata:metadata,updated_at:new Date().toISOString()})
+          .eq('user_id',valueUser.id)
+          .eq('account_type',accountType())
+          .eq('id',id)
+          .select('id,updated_at')
+          .maybeSingle();
         if(result.error)throw result.error;
+        if(!result.data)throw new Error('The file date update was not confirmed by the server.');
       }catch(error){console.error(error);alert('The date could not be saved to the ATSRS server.');}
     };
     window.atsrsV134Preview=function(kind,id){return window.atsrsCloudPreview(id);};
@@ -970,11 +978,17 @@
     updateDocumentMetadata:async function(id,metadata){
       var row=await findFile(id);
       if(!row)throw new Error('Document file was not found on the ATSRS server.');
+      var valueUser=user();
       var result=await client().from(FILE_TABLE)
         .update({metadata:Object.assign({},row.metadata||{},metadata||{})})
-        .eq('id',id);
+        .eq('user_id',valueUser.id)
+        .eq('account_type',accountType())
+        .eq('id',id)
+        .select('id,metadata,updated_at')
+        .maybeSingle();
       if(result.error)throw result.error;
-      return true;
+      if(!result.data)throw new Error('The document update was not confirmed by the server.');
+      return result.data;
     },
     openDocument:function(id,download){
       return openCloudFile(id,!!download);
