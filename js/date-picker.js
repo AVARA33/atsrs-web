@@ -5,7 +5,9 @@
   var activeInput=null;
   var selectedDate=null;
   var viewDate=null;
-  var monthFormatter=new Intl.DateTimeFormat('en',{month:'long',year:'numeric'});
+  var monthNames=Array.from({length:12},function(_,month){
+    return new Intl.DateTimeFormat('en',{month:'long'}).format(new Date(2024,month,1));
+  });
   var selectionFormatter=new Intl.DateTimeFormat('en',{day:'2-digit',month:'short',year:'numeric'});
 
   function pad(value){return String(value).padStart(2,'0');}
@@ -54,9 +56,12 @@
         '<p class="atsrs-date-picker-kicker">ATSRS CALENDAR</p>'+
         '<h3 id="atsrsDatePickerTitle" class="atsrs-date-picker-title">Select date</h3>'+
         '<div class="atsrs-date-picker-nav">'+
-          '<button type="button" data-date-prev="true" aria-label="Previous month">‹</button>'+
-          '<div id="atsrsDatePickerMonth" class="atsrs-date-picker-month"></div>'+
-          '<button type="button" data-date-next="true" aria-label="Next month">›</button>'+
+          '<button type="button" data-date-prev="true" aria-label="Previous month">&lsaquo;</button>'+
+          '<div id="atsrsDatePickerMonth" class="atsrs-date-picker-month" role="group" aria-label="Choose month and year">'+
+            '<select data-date-month="true" aria-label="Month"></select>'+
+            '<select data-date-year="true" aria-label="Year"></select>'+
+          '</div>'+
+          '<button type="button" data-date-next="true" aria-label="Next month">&rsaquo;</button>'+
         '</div>'+
         '<div class="atsrs-date-picker-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>'+
         '<div id="atsrsDatePickerDays" class="atsrs-date-picker-days"></div>'+
@@ -70,6 +75,7 @@
       '</div>';
     document.body.appendChild(picker);
     picker.addEventListener('click',onPickerClick);
+    picker.addEventListener('change',onPickerChange);
     return picker;
   }
   function positionPicker(){
@@ -102,15 +108,39 @@
   }
   function render(){
     ensurePicker();
-    var month=picker.querySelector('#atsrsDatePickerMonth');
+    var monthSelect=picker.querySelector('[data-date-month]');
+    var yearSelect=picker.querySelector('[data-date-year]');
     var days=picker.querySelector('#atsrsDatePickerDays');
     var selection=picker.querySelector('#atsrsDatePickerSelection');
-    month.textContent=monthFormatter.format(viewDate);
     selection.textContent=selectedDate?'Selected: '+selectionFormatter.format(selectedDate):'No date selected';
     days.innerHTML='';
 
     var year=viewDate.getFullYear();
     var monthIndex=viewDate.getMonth();
+    if(!monthSelect.options.length){
+      monthNames.forEach(function(name,index){
+        var option=document.createElement('option');
+        option.value=String(index);
+        option.textContent=name;
+        monthSelect.appendChild(option);
+      });
+    }
+    var currentYear=new Date().getFullYear();
+    var yearStart=Math.min(currentYear-100,year-10);
+    var yearEnd=Math.max(currentYear+100,year+10);
+    var rangeKey=yearStart+':'+yearEnd;
+    if(yearSelect.dataset.range!==rangeKey){
+      yearSelect.innerHTML='';
+      for(var optionYear=yearStart;optionYear<=yearEnd;optionYear++){
+        var yearOption=document.createElement('option');
+        yearOption.value=String(optionYear);
+        yearOption.textContent=String(optionYear);
+        yearSelect.appendChild(yearOption);
+      }
+      yearSelect.dataset.range=rangeKey;
+    }
+    monthSelect.value=String(monthIndex);
+    yearSelect.value=String(year);
     var firstDay=new Date(year,monthIndex,1).getDay();
     var dayCount=new Date(year,monthIndex+1,0).getDate();
     for(var empty=0;empty<firstDay;empty++){
@@ -136,6 +166,19 @@
     }
     if(activeInput&&!picker.classList.contains('hidden')){
       requestAnimationFrame(positionPicker);
+    }
+  }
+  function onPickerChange(event){
+    var target=event.target;
+    if(!target||!viewDate)return;
+    if(target.hasAttribute('data-date-month')){
+      viewDate=new Date(viewDate.getFullYear(),Number(target.value),1);
+      render();
+      return;
+    }
+    if(target.hasAttribute('data-date-year')){
+      viewDate=new Date(Number(target.value),viewDate.getMonth(),1);
+      render();
     }
   }
   function open(input){
