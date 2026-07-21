@@ -30,6 +30,11 @@
   function sameDate(a,b){
     return !!(a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate());
   }
+  function moveSelectedDate(year,month){
+    if(!selectedDate)return;
+    var lastDay=new Date(year,month+1,0).getDate();
+    selectedDate=new Date(year,month,Math.min(selectedDate.getDate(),lastDay));
+  }
   function button(label,className){
     var element=document.createElement('button');
     element.type='button';
@@ -172,12 +177,16 @@
     var target=event.target;
     if(!target||!viewDate)return;
     if(target.hasAttribute('data-date-month')){
-      viewDate=new Date(viewDate.getFullYear(),Number(target.value),1);
+      var selectedMonth=Number(target.value);
+      moveSelectedDate(viewDate.getFullYear(),selectedMonth);
+      viewDate=new Date(viewDate.getFullYear(),selectedMonth,1);
       render();
       return;
     }
     if(target.hasAttribute('data-date-year')){
-      viewDate=new Date(Number(target.value),viewDate.getMonth(),1);
+      var selectedYear=Number(target.value);
+      moveSelectedDate(selectedYear,viewDate.getMonth());
+      viewDate=new Date(selectedYear,viewDate.getMonth(),1);
       render();
     }
   }
