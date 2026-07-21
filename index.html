@@ -16,16 +16,16 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=218">
-<link rel="stylesheet" href="css/login.css?v=215">
-<link rel="stylesheet" href="css/dashboard.css?v=213">
-<link rel="stylesheet" href="css/documents.css?v=213">
-<link rel="stylesheet" href="css/references.css?v=200">
-<link rel="stylesheet" href="css/account.css?v=218">
-<link rel="stylesheet" href="css/product-experience.css?v=253">
-<link rel="stylesheet" href="css/date-picker.css?v=253">
-<link rel="stylesheet" href="css/share-profile.css?v=246">
-<link rel="stylesheet" href="css/calm-actions.css?v=247">
+<link rel="stylesheet" href="css/base.css?v=254">
+<link rel="stylesheet" href="css/login.css?v=254">
+<link rel="stylesheet" href="css/dashboard.css?v=254">
+<link rel="stylesheet" href="css/documents.css?v=254">
+<link rel="stylesheet" href="css/references.css?v=254">
+<link rel="stylesheet" href="css/account.css?v=254">
+<link rel="stylesheet" href="css/product-experience.css?v=254">
+<link rel="stylesheet" href="css/date-picker.css?v=254">
+<link rel="stylesheet" href="css/share-profile.css?v=254">
+<link rel="stylesheet" href="css/calm-actions.css?v=254">
 
 
 
@@ -127,7 +127,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V253</div>
+<div>ATSRS V254</div>
 <div>Last Update: 21 Jul 2026</div>
 </div>
 </div>
@@ -450,7 +450,24 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <div class="panel">
 <h3 id="certRegisterTitle"></h3>
-<div class="table-wrap"><table><thead><tr><th id="thCertificate2"></th><th id="thProvider2"></th><th id="thExpiry2"></th><th id="thStatus2"></th><th id="thAction2"></th></tr></thead><tbody id="certTable"></tbody></table></div>
+<div class="atsrs-document-register-toolbar">
+  <label class="atsrs-document-filter" for="certDocumentFilter">
+    <span>Filter</span>
+    <input id="certDocumentFilter" type="search" placeholder="Filter documents..." autocomplete="off">
+  </label>
+  <div class="atsrs-document-bulk-actions">
+    <span id="certSelectionCount" aria-live="polite">0 selected</span>
+    <button id="deleteSelectedCertsBtn" type="button" class="secondary danger" disabled>Delete selected</button>
+  </div>
+</div>
+<div class="table-wrap"><table class="atsrs-document-register"><thead><tr>
+  <th class="atsrs-document-select-column"><input id="certSelectAll" type="checkbox" aria-label="Select all visible documents"></th>
+  <th id="thCertificate2"><button type="button" class="atsrs-document-sort" data-cert-sort="type"><span id="certSortTypeLabel">Certificate</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">▲</i><i class="down">▼</i></span></button></th>
+  <th id="thProvider2"></th>
+  <th id="thExpiry2"><button type="button" class="atsrs-document-sort" data-cert-sort="expiry"><span id="certSortExpiryLabel">Expiry</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">▲</i><i class="down">▼</i></span></button></th>
+  <th id="thStatus2"><button type="button" class="atsrs-document-sort" data-cert-sort="status"><span id="certSortStatusLabel">Status</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">▲</i><i class="down">▼</i></span></button></th>
+  <th id="thAction2"></th>
+</tr></thead><tbody id="certTable"></tbody></table></div>
 </div>
 </section>
 
@@ -684,21 +701,21 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=253"></script>
-<script src="js/server-data.js?v=8"></script>
-<script src="js/storage.js?v=253"></script>
-<script src="js/ui.js?v=253"></script>
-<script src="js/auth.js?v=253"></script>
-<script src="js/login.js?v=253"></script>
-<script src="js/dashboard.js?v=253"></script>
-<script src="js/documents.js?v=253"></script>
-<script src="js/references.js?v=253"></script>
-<script src="js/account.js?v=253"></script>
-<script src="js/app.js?v=253"></script>
-<script src="js/product-experience.js?v=253"></script>
-<script src="js/date-picker.js?v=253"></script>
-<script src="js/share-profile.js?v=253"></script>
-<script src="js/boot-refresh.js?v=253"></script>
+<script src="js/stability-runtime.js?v=254"></script>
+<script src="js/server-data.js?v=254"></script>
+<script src="js/storage.js?v=254"></script>
+<script src="js/ui.js?v=254"></script>
+<script src="js/auth.js?v=254"></script>
+<script src="js/login.js?v=254"></script>
+<script src="js/dashboard.js?v=254"></script>
+<script src="js/documents.js?v=254"></script>
+<script src="js/references.js?v=254"></script>
+<script src="js/account.js?v=254"></script>
+<script src="js/app.js?v=254"></script>
+<script src="js/product-experience.js?v=254"></script>
+<script src="js/date-picker.js?v=254"></script>
+<script src="js/share-profile.js?v=254"></script>
+<script src="js/boot-refresh.js?v=254"></script>
 
 
 
