@@ -9,6 +9,21 @@
     var c=getClient();if(!c||!c.auth)return null;
     try{var result=await c.auth.getUser();user=result&&result.data&&result.data.user||null;return user}catch(e){return null}
   }
+  function authProviders(u){
+    var providers=[],meta=u&&u.app_metadata||{};
+    if(meta.provider)providers.push(meta.provider);
+    if(Array.isArray(meta.providers))providers=providers.concat(meta.providers);
+    if(u&&Array.isArray(u.identities))u.identities.forEach(function(identity){if(identity&&identity.provider)providers.push(identity.provider)});
+    return providers.map(function(provider){return String(provider).toLowerCase()}).filter(function(provider,index,list){return list.indexOf(provider)===index});
+  }
+  function usesEmailPassword(u){return authProviders(u).indexOf('email')!==-1}
+  async function applyAuthMethodControls(){
+    var u=await getUser(),showPasswordControls=usesEmailPassword(u);
+    if(!u)return;
+    var primaryRow=byId('primaryEmailRow'),passwordRow=byId('changePasswordRow');
+    if(primaryRow)primaryRow.hidden=!showPasswordControls;
+    if(passwordRow)passwordRow.hidden=!showPasswordControls;
+  }
   function toast(message,kind){
     var old=byId('atsrsAccountToast');if(old)old.remove();
     var el=document.createElement('div');el.id='atsrsAccountToast';el.className='atsrs-account-toast '+(kind?'is-'+kind:'');el.textContent=message;document.body.appendChild(el);
@@ -51,15 +66,22 @@
       toast('Recovery email saved.','ok');
     }catch(e){toast(e.message||'Recovery email could not be saved.','error')}finally{busy(button,false)}
   }
-  function openEmailChange(){
+  async function openEmailChange(){
+    var current=await getUser();if(!usesEmailPassword(current)){toast('Your sign-in email is managed by Google.','ok');return}
     openModal('<h3>Change primary email</h3><p>A confirmation link may be sent to both the current and new address. Your sign-in email changes only after confirmation.</p><div class="atsrs-security-form"><label>New email<input id="atsrsNewEmail" type="email" autocomplete="email"></label><label class="atsrs-security-consent"><input id="atsrsEmailConsent" type="checkbox"><span>I understand that I must confirm the new address before it becomes active.</span></label><div class="atsrs-security-actions"><button type="button" class="secondary" id="atsrsCancelSecurity">Cancel</button><button type="button" id="atsrsSubmitEmail">Send confirmation</button></div><p id="atsrsSecurityMessage" class="atsrs-security-message"></p></div>');
     byId('atsrsCancelSecurity').onclick=closeModal;byId('atsrsSubmitEmail').onclick=submitEmailChange;
   }
   async function submitEmailChange(){
     var email=(byId('atsrsNewEmail').value||'').trim(),button=byId('atsrsSubmitEmail');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){message('Enter a valid email address.','error');return}if(!byId('atsrsEmailConsent').checked){message('Confirm that you understand the email verification step.','error');return}
-    busy(button,true,'Sending...');try{var result=await getClient().auth.updateUser({email:email},{emailRedirectTo:location.origin+location.pathname});if(result.error)throw result.error;message('Confirmation sent. Open the email to complete the change.','ok')}catch(e){message(e.message||'Email change could not be started.','error')}finally{busy(button,false)}
+    busy(button,true,'Sending...');try{
+      var current=await getUser();if(!current)throw new Error('Sign in again to change your email.');
+      if(!usesEmailPassword(current))throw new Error('Your sign-in email is managed by Google.');
+      if(String(current.email||'').trim().toLowerCase()===email.toLowerCase()){message('This is already your primary email. No confirmation is needed.','ok');return}
+      var result=await getClient().auth.updateUser({email:email},{emailRedirectTo:location.origin+location.pathname});if(result.error)throw result.error;message('Confirmation sent. Open the new email address to complete the change.','ok')
+    }catch(e){message(e.message||'Email change could not be started.','error')}finally{busy(button,false)}
   }
-  function openPasswordChange(){
+  async function openPasswordChange(){
+    var current=await getUser();if(!usesEmailPassword(current)){toast('Google manages the sign-in for this account.','ok');return}
     openModal('<h3>Change password</h3><p>Use a unique password with at least 10 characters. Changing it does not sign this device out.</p><div class="atsrs-security-form"><label>New password<input id="atsrsNewPassword" type="password" autocomplete="new-password"></label><label>Confirm password<input id="atsrsConfirmPassword" type="password" autocomplete="new-password"></label><div class="atsrs-security-actions"><button type="button" class="secondary" id="atsrsCancelSecurity">Cancel</button><button type="button" id="atsrsSubmitPassword">Update password</button></div><p id="atsrsSecurityMessage" class="atsrs-security-message"></p></div>');
     byId('atsrsCancelSecurity').onclick=closeModal;byId('atsrsSubmitPassword').onclick=submitPasswordChange;
   }
@@ -117,6 +139,6 @@
     var timezone=byId('profileTimezone');if(timezone)timezone.addEventListener('change',async function(){decorateTimezones();var saved=await persistProfile();toast(saved===false?'Timezone could not be saved.':'Timezone saved as '+timezone.options[timezone.selectedIndex].textContent,saved===false?'error':'ok')});
     var visibility=byId('profileVisibility');if(visibility)visibility.addEventListener('change',async function(){var saved=await persistProfile();toast(saved===false?'Profile visibility could not be saved.':'Profile visibility saved.',saved===false?'error':'ok')});
   }
-  function boot(){bind();setTimeout(decorateTimezones,400);setTimeout(decorateTimezones,1200);setTimeout(enforceMfa,900);window.addEventListener('atsrs:resume',function(){decorateTimezones();enforceMfa()})}
+  function boot(){bind();applyAuthMethodControls();setTimeout(function(){decorateTimezones();applyAuthMethodControls()},400);setTimeout(function(){decorateTimezones();applyAuthMethodControls()},1200);setTimeout(enforceMfa,900);window.addEventListener('atsrs:resume',function(){decorateTimezones();applyAuthMethodControls();enforceMfa()})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
