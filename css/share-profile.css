@@ -311,6 +311,29 @@ body.atsrs-public-share-view{
   color:#8298aa;
   font-size:11px;
 }
+.share-select-all{
+  display:inline-flex!important;
+  flex:0 0 auto;
+  align-items:center!important;
+  gap:7px!important;
+  width:auto!important;
+  margin:0!important;
+  padding:3px 0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#cbd7e0!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  white-space:nowrap;
+}
+.share-select-all input{
+  width:16px!important;
+  height:16px!important;
+  margin:0!important;
+  accent-color:#22c55e;
+}
+.share-permissions-head .share-select-all span{color:#cbd7e0;font-size:12px}
+.share-select-all input:disabled{opacity:.45}
 .share-document-choices{
   display:grid;
   gap:8px;

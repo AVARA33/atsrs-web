@@ -24,7 +24,7 @@ try{
 <link rel="stylesheet" href="css/account.css?v=259">
 <link rel="stylesheet" href="css/product-experience.css?v=259">
 <link rel="stylesheet" href="css/date-picker.css?v=259">
-<link rel="stylesheet" href="css/share-profile.css?v=261">
+<link rel="stylesheet" href="css/share-profile.css?v=262">
 <link rel="stylesheet" href="css/calm-actions.css?v=259">
 
 
@@ -590,6 +590,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div id="shareAccessBox" class="share-permissions hidden">
       <div class="share-permissions-head">
         <div><b>Visible documents</b><span>Recruiters can preview checked server files. Download always requires approval.</span></div>
+        <label class="share-select-all"><input id="shareSelectAll" type="checkbox" onchange="toggleShareSelectAll(this.checked)"><span>Select all</span></label>
       </div>
       <div id="shareDocumentChoices" class="share-document-choices">
         <div class="preview-box">Loading your server documents...</div>
@@ -735,7 +736,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/app.js?v=259"></script>
 <script src="js/product-experience.js?v=259"></script>
 <script src="js/date-picker.js?v=259"></script>
-<script src="js/share-profile.js?v=261"></script>
+<script src="js/share-profile.js?v=262"></script>
 <script src="js/boot-refresh.js?v=259"></script>
 
 

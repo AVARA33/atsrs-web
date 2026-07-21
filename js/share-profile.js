@@ -72,17 +72,30 @@
     if(result.error)throw result.error;return result.data||[];
   }
   function ownerFileName(id){var file=ownerFiles.find(function(item){return item.id===id;});return file?documentMeta(file).type:'Document';}
+  function syncShareSelectAll(){
+    var control=byId('shareSelectAll'),boxes=Array.prototype.slice.call(document.querySelectorAll('#shareDocumentChoices input[type="checkbox"]'));
+    if(!control)return;
+    var selected=boxes.filter(function(box){return box.checked;}).length;
+    control.disabled=!boxes.length;
+    control.checked=Boolean(boxes.length)&&selected===boxes.length;
+    control.indeterminate=selected>0&&selected<boxes.length;
+  }
+  window.toggleShareSelectAll=function(checked){
+    Array.prototype.forEach.call(document.querySelectorAll('#shareDocumentChoices input[type="checkbox"]'),function(box){box.checked=checked;});
+    syncShareSelectAll();
+  };
   function renderOwnerFiles(){
     var list=byId('shareDocumentChoices');if(!list)return;
     var selected=new Set(activeShare&&Array.isArray(activeShare.selected_file_ids)?activeShare.selected_file_ids:[]);
-    if(!ownerFiles.length){list.innerHTML='<div class="preview-box">Upload documents or a CV first, then return here to create your recruiter link.</div>';return;}
+    if(!ownerFiles.length){list.innerHTML='<div class="preview-box">Upload documents or a CV first, then return here to create your recruiter link.</div>';syncShareSelectAll();return;}
     list.innerHTML='';ownerFiles.forEach(function(file){
       var meta=documentMeta(file),label=document.createElement('label');label.className='share-document-choice';
-      var checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.value=file.id;checkbox.checked=selected.has(file.id);
+      var checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.value=file.id;checkbox.checked=selected.has(file.id);checkbox.addEventListener('change',syncShareSelectAll);
       var name=document.createElement('b');name.textContent=meta.type;name.title=file.file_name||meta.type;
       var category=document.createElement('span');category.textContent=file.category==='cv'?'CV':'Document';
       label.appendChild(checkbox);label.appendChild(name);label.appendChild(category);list.appendChild(label);
     });
+    syncShareSelectAll();
   }
   function selectedOwnerFiles(){return Array.prototype.map.call(document.querySelectorAll('#shareDocumentChoices input[type="checkbox"]:checked'),function(input){return input.value;});}
   function renderOwnerStatus(){
