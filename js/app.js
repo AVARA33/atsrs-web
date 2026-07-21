@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V248';
+  var BUILD='ATSRS V249';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V248';
+  var BUILD='ATSRS V249';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -128,8 +128,10 @@
     var p=byId('certManualPanel'); if(p)p.classList.remove('active');
     var b=byId('certManualModeBtn'); if(b)b.classList.remove('active');
     editIndex=null;
+    if(typeof editCertIndex!=='undefined')editCertIndex=null;
+    clearForm();
+    if(typeof clearManualValidation==='function')clearManualValidation();
     setText('addCertBtn','Save Document');
-    ['manualFormAlert','manualFilePreview'].forEach(function(id){var el=byId(id); if(el){el.classList&&el.classList.remove('active'); el.textContent='';}});
   }
 
   function openManual(){
@@ -196,10 +198,21 @@
   }
 
   function clearForm(){
-    ['cDocNo','cCountry','cProvider','cIssue','cExpiry'].forEach(function(id){var el=byId(id); if(el)el.value='';});
-    var t=byId('cType'); if(t)t.value='';
+    ['cType','cDocNo','cCountry','cProvider','cIssue','cExpiry'].forEach(function(id){
+      var el=byId(id);
+      if(el){el.value='';el.classList.remove('required-missing','input-error','input-ok');}
+    });
+    var person=byId('cPerson');
+    if(person){person.selectedIndex=0;person.classList.remove('required-missing','input-error','input-ok');}
+    var expiryNA=byId('cExpiryNA');
+    if(expiryNA)expiryNA.checked=false;
+    var expiry=byId('cExpiry');
+    if(expiry)expiry.disabled=false;
     var f=byId('manualFile'); if(f)f.value='';
-    var p=byId('manualFilePreview'); if(p)p.textContent='';
+    ['manualFormAlert','manualFilePreview'].forEach(function(id){
+      var el=byId(id);
+      if(el){el.classList.remove('active');el.textContent='';}
+    });
     window.atsrsPendingCertificateFile=null;
   }
 
@@ -343,7 +356,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V248';
+      if(d[0])d[0].textContent='ATSRS V249';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }
