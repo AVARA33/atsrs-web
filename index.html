@@ -26,6 +26,7 @@ try{
 <link rel="stylesheet" href="css/date-picker.css?v=260">
 <link rel="stylesheet" href="css/share-profile.css?v=264">
 <link rel="stylesheet" href="css/calm-actions.css?v=261">
+<link rel="stylesheet" href="css/account-security-live.css?v=1">
 
 
 
@@ -556,16 +557,16 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div id="accountSecurityTab" class="account-tab">
 <div class="account-security-list">
-  <div class="setting-row"><div><b>Recovery Email</b><div class="small-note">Used to help secure and recover your account.</div></div><input id="profileAltEmail" type="email"></div>
-  <div class="setting-row"><div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div><button id="primaryEmailBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button></div>
-  <div class="setting-row"><div><b id="changePasswordTitle"></b><div id="changePasswordNote" class="small-note"></div></div><button id="changePasswordBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))"></button></div>
-  <div class="setting-row"><div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div><button id="setup2faBtn" class="secondary" onclick="alert(ptr('twofaNotice'))"></button></div>
-  <div class="setting-row"><div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div><button id="viewSessionsBtn" class="secondary" onclick="alert(ptr('sessionsNotice'))"></button></div>
-  <div class="setting-row"><div><b>Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select id="profileTimezone"><option value="UTC">UTC</option><option value="Europe/Baku">Europe/Baku</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select></div>
+  <div class="setting-row"><div><b>Recovery Email</b><div class="small-note">Stored for account support; it does not replace your primary sign-in email.</div></div><div class="account-inline-control"><input id="profileAltEmail" type="email"><button id="saveRecoveryEmailBtn" type="button" class="secondary">Save</button></div></div>
+  <div class="setting-row"><div><b id="primaryEmailTitle"></b><div id="primaryEmailNote" class="small-note"></div></div><button id="primaryEmailBtn" class="secondary"></button></div>
+  <div class="setting-row"><div><b id="changePasswordTitle"></b><div id="changePasswordNote" class="small-note"></div></div><button id="changePasswordBtn" class="secondary"></button></div>
+  <div class="setting-row"><div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div><button id="setup2faBtn" class="secondary"></button></div>
+  <div class="setting-row"><div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div><button id="viewSessionsBtn" class="secondary"></button></div>
+  <div class="setting-row"><div><b>Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select id="profileTimezone"><option value="UTC">UTC (UTC+0)</option><option value="Asia/Baku">Asia/Baku (UTC+4)</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select></div>
   <div class="setting-row"><div><b id="profileVisibilityTitle">Profile Visibility</b><div id="profileVisibilityNote" class="small-note">Private by default. Shared link only when enabled.</div></div><select id="profileVisibility"><option>Private</option><option>Link Only</option><option>Public</option></select></div>
   <div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
   <div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
-  <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button></div>
+  <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action"></button></div>
   <div class="setting-row account-logout-row"><div><b id="accountLogoutTitle">Logout</b><div id="accountLogoutNote" class="small-note">Sign out and return to the login screen.</div></div><button id="accountLogoutBtn" type="button" class="secondary">Logout</button></div>
 </div>
 </div>
@@ -732,6 +733,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/date-picker.js?v=260"></script>
 <script src="js/share-profile.js?v=263"></script>
 <script src="js/boot-refresh.js?v=260"></script>
+<script src="js/account-security-live.js?v=1"></script>
 
 
 
