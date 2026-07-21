@@ -19,10 +19,12 @@ type ScanRequest = {
 };
 
 type OpenAIResponse = {
+  status?: string;
+  incomplete_details?: { reason?: string };
   output_text?: string;
   output?: Array<{
     type?: string;
-    content?: Array<{ type?: string; text?: string }>;
+    content?: Array<{ type?: string; text?: string; refusal?: string }>;
   }>;
   error?: { message?: string };
 };
@@ -146,7 +148,7 @@ Deno.serve(async (req: Request) => {
   if (estimatedBytes(fileData) > MAX_FILE_BYTES) return json(req, 413, { error: "The document is larger than 10 MB." });
 
   const fileContent = mimeType === "application/pdf"
-    ? { type: "input_file", filename, file_data: fileData, detail: "high" }
+    ? { type: "input_file", filename, file_data: fileData }
     : { type: "input_image", image_url: fileData, detail: "high" };
 
   const prompt = [
@@ -186,7 +188,8 @@ Deno.serve(async (req: Request) => {
           },
         },
         store: false,
-        max_output_tokens: 900,
+        reasoning: { effort: "minimal" },
+        max_output_tokens: 2500,
       }),
     });
   } catch {
@@ -208,6 +211,13 @@ Deno.serve(async (req: Request) => {
   }
 
   const text = outputText(aiBody);
+  if (!text && aiBody.status === "incomplete") {
+    console.error("OpenAI scan response incomplete", {
+      requestUser: authData.user.id,
+      reason: aiBody.incomplete_details?.reason ?? "unknown",
+    });
+    return json(req, 502, { error: "The AI scan did not finish. Please try once more." });
+  }
   try {
     const extracted = JSON.parse(text) as Record<string, unknown>;
     return json(req, 200, { document: extracted, model: OPENAI_MODEL });

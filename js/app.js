@@ -174,13 +174,14 @@
   function retryableFunctionError(error){
     var name=String(error&&error.constructor&&error.constructor.name||error&&error.name||'');
     var message=String(error&&error.message||'');
-    return /Functions(?:Fetch|Relay)Error/i.test(name)||/failed to fetch|failed to send|network|relay/i.test(message);
+    var status=Number(error&&error.context&&error.context.status||0);
+    return status===502||status===503||status===504||/Functions(?:Fetch|Relay)Error/i.test(name)||/failed to fetch|failed to send|network|relay/i.test(message);
   }
 
   async function invokeAiScan(body){
     var first=await window.supabaseClient.functions.invoke('scan-document',{body:body});
     if(!first.error||!retryableFunctionError(first.error))return first;
-    setAiScanStatus('Connection interrupted. Retrying the AI scan...');
+    setAiScanStatus('The first scan did not finish. Retrying automatically...');
     await new Promise(function(resolve){setTimeout(resolve,650);});
     return window.supabaseClient.functions.invoke('scan-document',{body:body});
   }
