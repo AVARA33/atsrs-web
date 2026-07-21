@@ -16,16 +16,16 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=254">
-<link rel="stylesheet" href="css/login.css?v=254">
-<link rel="stylesheet" href="css/dashboard.css?v=254">
-<link rel="stylesheet" href="css/documents.css?v=254">
-<link rel="stylesheet" href="css/references.css?v=254">
-<link rel="stylesheet" href="css/account.css?v=254">
-<link rel="stylesheet" href="css/product-experience.css?v=254">
-<link rel="stylesheet" href="css/date-picker.css?v=254">
-<link rel="stylesheet" href="css/share-profile.css?v=254">
-<link rel="stylesheet" href="css/calm-actions.css?v=254">
+<link rel="stylesheet" href="css/base.css?v=255">
+<link rel="stylesheet" href="css/login.css?v=255">
+<link rel="stylesheet" href="css/dashboard.css?v=255">
+<link rel="stylesheet" href="css/documents.css?v=255">
+<link rel="stylesheet" href="css/references.css?v=255">
+<link rel="stylesheet" href="css/account.css?v=255">
+<link rel="stylesheet" href="css/product-experience.css?v=255">
+<link rel="stylesheet" href="css/date-picker.css?v=255">
+<link rel="stylesheet" href="css/share-profile.css?v=255">
+<link rel="stylesheet" href="css/calm-actions.css?v=255">
 
 
 
@@ -127,7 +127,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V254</div>
+<div>ATSRS V255</div>
 <div>Last Update: 21 Jul 2026</div>
 </div>
 </div>
@@ -385,11 +385,34 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="document-actions">
 <button id="scanDocBtn" class="secondary" onclick="startCameraScan()"></button>
 <button id="uploadDocBtn" class="secondary" onclick="documentFile.click()"></button>
-<input id="documentFile" type="file" accept="image/*,.pdf" class="hidden" onchange="handleDocumentUpload(event)" multiple>
+<input id="documentFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" class="hidden" onchange="handleDocumentUpload(event)">
+</div>
+<div id="aiConsentPanel" class="atsrs-ai-consent hidden" role="dialog" aria-labelledby="aiConsentTitle" aria-describedby="aiConsentText">
+  <div class="atsrs-ai-consent-head">
+    <div>
+      <span class="atsrs-ai-consent-kicker">Before AI scan</span>
+      <h4 id="aiConsentTitle">Confirm document processing</h4>
+    </div>
+    <button id="aiConsentCloseBtn" type="button" class="secondary" aria-label="Close AI consent notice">Close</button>
+  </div>
+  <p id="aiConsentText">The document you select will be securely sent to the OpenAI API so AI can suggest its details. The file may contain personal or sensitive information. OpenAI API data is not used for model training by default, but limited temporary safety processing may occur.</p>
+  <ul>
+    <li>Only the document selected for this scan is sent. Other ATSRS documents are not sent.</li>
+    <li>AI suggestions can be incomplete or incorrect. Review every field before saving.</li>
+    <li>Manual Upload remains available if you do not want to use AI.</li>
+  </ul>
+  <label class="atsrs-ai-consent-check" for="aiConsentCheckbox">
+    <input id="aiConsentCheckbox" type="checkbox">
+    <span>I understand and agree that my selected document will be sent to the OpenAI API for AI-assisted data extraction.</span>
+  </label>
+  <div class="atsrs-ai-consent-actions">
+    <button id="aiConsentContinueBtn" type="button" class="secondary" disabled>Continue with AI</button>
+    <button id="aiConsentCancelBtn" type="button" class="secondary">Use Manual Upload</button>
+  </div>
 </div>
 <div id="scanBox" class="scan-box hidden">
 <p id="scanInfo" class="sub"></p>
-<input id="cameraInput" type="file" accept="image/*" capture="environment" onchange="handleDocumentUpload(event)" multiple>
+<input id="cameraInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onchange="handleDocumentUpload(event)">
 <div id="documentPreview" class="preview-box"></div>
 <div id="ocrProgress" class="preview-box"></div>
 <textarea id="ocrRawText" class="hidden" style="width:100%;min-height:90px;background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:10px;margin-top:8px"></textarea>
@@ -701,21 +724,21 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=254"></script>
-<script src="js/server-data.js?v=254"></script>
-<script src="js/storage.js?v=254"></script>
-<script src="js/ui.js?v=254"></script>
-<script src="js/auth.js?v=254"></script>
-<script src="js/login.js?v=254"></script>
-<script src="js/dashboard.js?v=254"></script>
-<script src="js/documents.js?v=254"></script>
-<script src="js/references.js?v=254"></script>
-<script src="js/account.js?v=254"></script>
-<script src="js/app.js?v=254"></script>
-<script src="js/product-experience.js?v=254"></script>
-<script src="js/date-picker.js?v=254"></script>
-<script src="js/share-profile.js?v=254"></script>
-<script src="js/boot-refresh.js?v=254"></script>
+<script src="js/stability-runtime.js?v=255"></script>
+<script src="js/server-data.js?v=255"></script>
+<script src="js/storage.js?v=255"></script>
+<script src="js/ui.js?v=255"></script>
+<script src="js/auth.js?v=255"></script>
+<script src="js/login.js?v=255"></script>
+<script src="js/dashboard.js?v=255"></script>
+<script src="js/documents.js?v=255"></script>
+<script src="js/references.js?v=255"></script>
+<script src="js/account.js?v=255"></script>
+<script src="js/app.js?v=255"></script>
+<script src="js/product-experience.js?v=255"></script>
+<script src="js/date-picker.js?v=255"></script>
+<script src="js/share-profile.js?v=255"></script>
+<script src="js/boot-refresh.js?v=255"></script>
 
 
 

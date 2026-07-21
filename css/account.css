@@ -810,6 +810,22 @@ body > .atsrs-v64-top-actions,
 }
 .atsrs-document-filter{display:flex;flex-direction:column;gap:6px;min-width:240px;max-width:360px;width:34%;color:#9fb1c5;font-size:12px;font-weight:700;}
 #certificatesPage .atsrs-document-filter input{width:100%;max-width:none!important;min-height:36px!important;padding:8px 11px!important;background:rgba(7,17,29,.34)!important;border:1px solid rgba(93,119,143,.36)!important;border-radius:8px!important;box-shadow:none!important;color:#e8f0f7!important;}
+
+.atsrs-ai-consent{max-width:760px;margin:14px 0;padding:16px;border:1px solid rgba(93,119,143,.45);border-radius:12px;background:rgba(7,17,29,.52);color:#dce7f1;box-shadow:none}
+.atsrs-ai-consent-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.atsrs-ai-consent-head h4{margin:3px 0 0;color:#f3f7fb;font-size:17px}
+.atsrs-ai-consent-kicker{color:#8da5b9;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.atsrs-ai-consent p,.atsrs-ai-consent li{color:#aebdca;font-size:13px;line-height:1.55}
+.atsrs-ai-consent ul{margin:10px 0 14px;padding-left:20px}
+.atsrs-ai-consent-check{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid rgba(93,119,143,.4);border-radius:9px;background:rgba(6,15,26,.42);cursor:pointer}
+#certificatesPage .atsrs-ai-consent-check input{width:17px!important;height:17px!important;min-height:0!important;margin:2px 0 0!important;flex:0 0 auto}
+.atsrs-ai-consent-check span{color:#dce7f1;font-size:13px;line-height:1.45}
+.atsrs-ai-consent-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.atsrs-ai-consent-actions button,.atsrs-ai-consent-head button{width:auto!important;min-width:0!important;margin:0!important;padding:8px 12px!important;background:transparent!important;border:1px solid rgba(113,139,163,.55)!important;color:#dce7f1!important;box-shadow:none!important}
+.atsrs-ai-consent-actions button:disabled{opacity:.42;cursor:not-allowed}
+.atsrs-ai-scan-error{border-color:rgba(190,87,100,.55)!important;color:#efb4bd!important}
+.atsrs-ai-review-warning{border-color:rgba(191,145,66,.55)!important;color:#e5c58b!important}
+@media(max-width:640px){.atsrs-ai-consent-head{align-items:center}.atsrs-ai-consent-actions{flex-direction:column;align-items:flex-start}}
 .atsrs-document-bulk-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-height:36px;}
 #certSelectionCount{color:#8fa2b5;font-size:12px;white-space:nowrap;}
 #deleteSelectedCertsBtn{width:auto!important;min-width:128px!important;margin:0!important;padding:8px 11px!important;font-size:12px!important;}
