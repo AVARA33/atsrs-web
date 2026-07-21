@@ -15,6 +15,10 @@
 .atsrs-notification-copy b{display:block;margin-bottom:4px;color:#f4f7fb}
 .atsrs-notification-copy p{margin:0 0 6px;color:#aebbd0;line-height:1.45}
 .atsrs-notification-copy time{font-size:12px;color:#7f91a8}
+.atsrs-notification-item-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px}
+.atsrs-notification-item-actions>button{width:auto!important;margin:0!important}
+.atsrs-notification-dismiss{width:28px!important;height:28px!important;min-width:28px!important;padding:0!important;border:1px solid transparent!important;border-radius:7px!important;background:transparent!important;color:#8fa0b5!important;font-size:20px!important;line-height:1!important}
+.atsrs-notification-dismiss:hover,.atsrs-notification-dismiss:focus-visible{border-color:#41536a!important;background:rgba(255,255,255,.035)!important;color:#e5edf7!important}
 .atsrs-notification-empty{padding:18px;border:1px dashed #31445c;border-radius:14px;color:#94a3b8;text-align:center}
 .atsrs-notification-error{color:#fca5a5}
 .atsrs-notification-settings{margin:12px 0 16px;padding:16px;border:1px solid #2d4159;border-radius:14px;background:rgba(7,18,31,.76)}
@@ -31,4 +35,4 @@
 .atsrs-notification-status{font-size:13px;color:#94a3b8}
 .atsrs-notification-status.is-ok{color:#86efac}
 .atsrs-notification-status.is-error{color:#fca5a5}
-@media(max-width:720px){.atsrs-notification-head,.atsrs-notification-field{align-items:stretch;flex-direction:column}.atsrs-notification-item{grid-template-columns:10px 1fr}.atsrs-notification-item>button{grid-column:2}.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:none;width:100%}}
+@media(max-width:720px){.atsrs-notification-head,.atsrs-notification-field{align-items:stretch;flex-direction:column}.atsrs-notification-item{grid-template-columns:10px 1fr}.atsrs-notification-item-actions{grid-column:2;justify-content:flex-start}.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:none;width:100%}}

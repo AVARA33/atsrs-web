@@ -22,8 +22,8 @@
   }
   function loadV241(){
     lockBuildBadge();
-    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=241'});
-    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=259'});
+    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=242'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=260'});
   }
   function appIsOpen(){
     var app=byId('app');
