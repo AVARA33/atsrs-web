@@ -4,7 +4,7 @@
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s))}
   function applyBuild(){
-    var BUILD='ATSRS V246';
+    var BUILD='ATSRS V247';
     var UPDATE='Last Update: 21 Jul 2026';
     qa('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
@@ -57,7 +57,7 @@
 (function(){
   'use strict';
 
-  var BUILD='ATSRS V246';
+  var BUILD='ATSRS V247';
   var UPDATE='Last Update: 21 Jul 2026';
   var CONFIGS=[
     {kind:'appraisal',title:'Appraisals',desc:'Upload annual appraisals, performance reviews and evaluation forms.',upload:'Upload',order:10,oldKeys:['atsrs_v105_appraisal_files','appraisalFiles']},
@@ -253,7 +253,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V136_DASHBOARD_STABILITY_DC_CU_JS ===== */
 (function(){
-  var BUILD='ATSRS V246';
+  var BUILD='ATSRS V247';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -314,7 +314,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V137_TOP_ACTIONS_SCROLL_FIX_JS ===== */
 (function(){
-  var BUILD='ATSRS V246';
+  var BUILD='ATSRS V247';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s)}
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
@@ -401,7 +401,7 @@
 /* ===== extracted from inline script id=ATSRS_V141_REFERENCES_CARD_MAXIMIZE_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V246';
+  var BUILD='ATSRS V247';
   var UPDATE='Last Update: 21 Jul 2026';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){

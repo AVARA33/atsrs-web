@@ -20,7 +20,7 @@ function ready(fn){ if(document.readyState==='loading') document.addEventListene
     var lang=top.querySelector('.lang-floating,.app-lang-switcher');
     if(lang) lang.style.cssText='position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;transform:none!important;display:block!important;';
     var logout=el('topLogoutBtn');
-    if(logout) logout.style.cssText='width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important;display:block!important;position:relative!important;';
+    if(logout) logout.style.cssText='width:auto!important;margin:0!important;background:rgba(239,68,68,.035)!important;color:#fca5a5!important;border:1px solid rgba(248,113,113,.42)!important;padding:10px 13px!important;border-radius:9px!important;font-weight:800!important;box-shadow:none!important;display:block!important;position:relative!important;';
     return true;
   }
   function fixRefScroll(){
