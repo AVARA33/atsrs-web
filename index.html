@@ -24,7 +24,7 @@ try{
 <link rel="stylesheet" href="css/account.css?v=259">
 <link rel="stylesheet" href="css/product-experience.css?v=259">
 <link rel="stylesheet" href="css/date-picker.css?v=259">
-<link rel="stylesheet" href="css/share-profile.css?v=260">
+<link rel="stylesheet" href="css/share-profile.css?v=261">
 <link rel="stylesheet" href="css/calm-actions.css?v=259">
 
 
@@ -595,13 +595,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div class="preview-box">Loading your server documents...</div>
       </div>
       <div class="share-expiry-settings">
-        <label for="shareExpiryPreset"><b>Link active for</b><span>All download permissions end with the link.</span></label>
-        <select id="shareExpiryPreset" onchange="updateShareExpiryChoice()">
-          <option value="24h">24 hours</option>
-          <option value="3d">3 days</option>
-          <option value="7d" selected>7 days</option>
-          <option value="custom">Custom date</option>
-        </select>
+        <div class="share-expiry-copy"><b>Link active for</b><span>All permissions end with the link.</span></div>
+        <fieldset id="shareExpiryPreset" class="share-expiry-options" aria-label="Link active period">
+          <label class="share-expiry-option"><input type="radio" name="shareExpiryPreset" value="24h" onchange="updateShareExpiryChoice()"><span>24 hours</span></label>
+          <label class="share-expiry-option"><input type="radio" name="shareExpiryPreset" value="3d" onchange="updateShareExpiryChoice()"><span>3 days</span></label>
+          <label class="share-expiry-option"><input type="radio" name="shareExpiryPreset" value="7d" onchange="updateShareExpiryChoice()" checked><span>7 days</span></label>
+          <label class="share-expiry-option"><input type="radio" name="shareExpiryPreset" value="custom" onchange="updateShareExpiryChoice()"><span>Custom</span></label>
+        </fieldset>
         <input id="shareExpiryCustom" class="hidden" type="date" aria-label="Custom share link expiry date">
       </div>
       <div class="share-permissions-actions">
@@ -735,7 +735,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/app.js?v=259"></script>
 <script src="js/product-experience.js?v=259"></script>
 <script src="js/date-picker.js?v=259"></script>
-<script src="js/share-profile.js?v=259"></script>
+<script src="js/share-profile.js?v=261"></script>
 <script src="js/boot-refresh.js?v=259"></script>
 
 

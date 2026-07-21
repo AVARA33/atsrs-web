@@ -413,28 +413,81 @@ body.company-mode #accountTabSharingBtn{display:none!important}
   padding-right:0;
 }
 .share-expiry-settings{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(150px,210px) minmax(150px,210px);
-  gap:12px;
-  align-items:end;
-  margin-top:16px;
-  padding:14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  align-items:center;
+  margin-top:12px;
+  padding:9px 12px;
   border:1px solid rgba(57,89,114,.65);
-  border-radius:14px;
+  border-radius:12px;
   background:rgba(4,16,27,.58);
 }
-.share-expiry-settings label b,
-.share-expiry-settings label span{display:block}
-.share-expiry-settings label{
+.share-expiry-copy{
+  display:flex;
+  flex:1 1 260px;
+  align-items:baseline;
+  gap:8px;
+  min-width:0;
+}
+.share-expiry-copy span{color:#8298aa;font-size:11px}
+.share-expiry-options{
+  display:flex;
+  flex:0 1 auto;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:7px 14px;
+  min-width:0;
+  margin:0;
+  padding:0;
+  border:0;
+}
+.share-expiry-option{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  width:auto!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   background:transparent!important;
-  color:#d7e1e8!important;
+  color:#cbd7e0!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  white-space:nowrap;
 }
-.share-expiry-settings label span{margin-top:4px;color:#8298aa;font-size:11px}
-.share-expiry-settings select,
-.share-expiry-settings input{width:100%;margin:0}
+.share-expiry-option input[type="radio"]{
+  position:relative;
+  appearance:none;
+  -webkit-appearance:none;
+  width:15px!important;
+  height:15px!important;
+  flex:0 0 15px;
+  margin:0!important;
+  border:1px solid #5b7185!important;
+  border-radius:3px!important;
+  background:#07131f!important;
+  cursor:pointer;
+}
+.share-expiry-option input[type="radio"]:checked{
+  border-color:#4ade80!important;
+  background:rgba(34,197,94,.14)!important;
+}
+.share-expiry-option input[type="radio"]:checked::after{
+  content:"✓";
+  position:absolute;
+  inset:-3px 0 0 1px;
+  color:#86efac;
+  font-size:14px;
+  font-weight:900;
+}
+.share-expiry-option input[type="radio"]:focus-visible{outline:2px solid #38bdf8;outline-offset:2px}
+#shareExpiryCustom{
+  width:156px!important;
+  height:34px!important;
+  margin:0!important;
+  padding:6px 9px!important;
+}
 .sharing-history{
   margin-top:28px;
   padding-top:24px;
@@ -527,7 +580,8 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 
 @media(max-width:760px){
   .sharing-heading,.access-panel-head,.sharing-history-head,.shared-profile-head-actions{align-items:flex-start;flex-direction:column}
-  .share-expiry-settings{grid-template-columns:1fr}
+  .share-expiry-copy{flex-basis:100%}
+  .share-expiry-options{width:100%}
   .share-analytics{grid-template-columns:repeat(2,minmax(0,1fr))}
   .shared-profile-head-actions{width:100%}
   .shared-profile-head-actions button{width:100%!important}

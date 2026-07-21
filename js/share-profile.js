@@ -143,9 +143,9 @@
     }catch(error){console.error('ATSRS share profile status failed',error);setStatus('Share status could not be loaded. Check the connection.','revoked');}
   }
   window.toggleShareAccess=async function(){var box=byId('shareAccessBox');if(!box)return;box.classList.toggle('hidden');if(!box.classList.contains('hidden')){ownerMessage('Loading your server documents...');await refreshOwnerPanel();ownerMessage(ownerFiles.length?'Choose visible documents and the link expiry.':'');}};
-  window.updateShareExpiryChoice=function(){var custom=byId('shareExpiryCustom'),preset=byId('shareExpiryPreset');if(custom&&preset)custom.classList.toggle('hidden',preset.value!=='custom');};
+  window.updateShareExpiryChoice=function(){var custom=byId('shareExpiryCustom'),preset=document.querySelector('input[name="shareExpiryPreset"]:checked');if(custom)custom.classList.toggle('hidden',!preset||preset.value!=='custom');};
   function selectedExpiry(){
-    var preset=byId('shareExpiryPreset'),value=preset?preset.value:'7d',date=new Date();
+    var preset=document.querySelector('input[name="shareExpiryPreset"]:checked'),value=preset?preset.value:'7d',date=new Date();
     if(value==='24h')date=new Date(Date.now()+86400000);else if(value==='3d')date=new Date(Date.now()+3*86400000);else if(value==='7d')date=new Date(Date.now()+7*86400000);else{
       var custom=byId('shareExpiryCustom'),raw=custom?custom.value:'';if(!raw)return'';date=new Date(raw+'T23:59:59');
     }
