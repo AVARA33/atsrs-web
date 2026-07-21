@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V255';
+  var BUILD='ATSRS V256';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V255';
+  var BUILD='ATSRS V256';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -215,9 +215,9 @@
     var warnings=Array.isArray(documentData.warnings)?documentData.warnings.filter(Boolean):[];
     var alertBox=byId('manualFormAlert');
     if(alertBox){
-      alertBox.textContent=warnings.length?'Review carefully: '+warnings.join(' '):'AI filled the fields. Review every value, then save the document.';
+      alertBox.textContent=warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.';
       alertBox.classList.add('active');
-      alertBox.classList.toggle('atsrs-ai-review-warning',warnings.length>0);
+      alertBox.classList.add('atsrs-ai-review-warning');
     }
     setTimeout(function(){var panel=byId('certManualPanel');if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});},60);
   }
@@ -675,7 +675,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V255';
+      if(d[0])d[0].textContent='ATSRS V256';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }

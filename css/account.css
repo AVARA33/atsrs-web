@@ -824,7 +824,18 @@ body > .atsrs-v64-top-actions,
 .atsrs-ai-consent-actions button,.atsrs-ai-consent-head button{width:auto!important;min-width:0!important;margin:0!important;padding:8px 12px!important;background:transparent!important;border:1px solid rgba(113,139,163,.55)!important;color:#dce7f1!important;box-shadow:none!important}
 .atsrs-ai-consent-actions button:disabled{opacity:.42;cursor:not-allowed}
 .atsrs-ai-scan-error{border-color:rgba(190,87,100,.55)!important;color:#efb4bd!important}
-.atsrs-ai-review-warning{border-color:rgba(191,145,66,.55)!important;color:#e5c58b!important}
+.atsrs-ai-review-warning{
+  margin:7px 0 10px!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  color:#9fb1c5!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  line-height:1.45!important;
+  box-shadow:none!important;
+}
 @media(max-width:640px){.atsrs-ai-consent-head{align-items:center}.atsrs-ai-consent-actions{flex-direction:column;align-items:flex-start}}
 .atsrs-document-bulk-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-height:36px;}
 #certSelectionCount{color:#8fa2b5;font-size:12px;white-space:nowrap;}
