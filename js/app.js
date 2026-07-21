@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V253';
+  var BUILD='ATSRS V254';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V253';
+  var BUILD='ATSRS V254';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -109,6 +109,9 @@
   'use strict';
   var editIndex=null;
   var editKey='';
+  var registerFilter='';
+  var registerSort={key:'',direction:1};
+  var selectedCertIndices=new Set();
   function byId(id){return document.getElementById(id);}
   function setText(id,value){var el=byId(id); if(el) el.textContent=value;}
   function q(sel,root){return (root||document).querySelector(sel);}
@@ -189,11 +192,95 @@
     setText('cExpiryLabel','Expiry');
     setText('addCertBtn',editIndex===null?'Save Document':'Update Document');
     setText('certRegisterTitle','Document Register');
-    setText('thCertificate2','Certificate');
+    setText('certSortTypeLabel','Certificate');
     setText('thProvider2','Training Center / Provider');
-    setText('thExpiry2','Expiry');
-    setText('thStatus2','Status');
+    setText('certSortExpiryLabel','Expiry');
+    setText('certSortStatusLabel','Status');
     setText('thAction2','Action');
+  }
+
+  function certificateSearchText(item,statusData){
+    return [item.type,item.provider,item.docNo,item.country,item.issue,item.expiry,statusData&&statusData.txt]
+      .map(function(value){return String(value==null?'':value).toLocaleLowerCase();})
+      .join(' ');
+  }
+
+  function compareCertificateRows(a,b,key){
+    if(key==='expiry'){
+      var aValue=String(a.item.expiry||'').toUpperCase()==='N/A'?'9999-12-31':String(a.item.expiry||'9999-12-31');
+      var bValue=String(b.item.expiry||'').toUpperCase()==='N/A'?'9999-12-31':String(b.item.expiry||'9999-12-31');
+      return aValue.localeCompare(bValue);
+    }
+    if(key==='status'){
+      var aDays=Number(a.statusData.days); if(!Number.isFinite(aDays))aDays=99999;
+      var bDays=Number(b.statusData.days); if(!Number.isFinite(bDays))bDays=99999;
+      return aDays-bDays;
+    }
+    return String(a.item.type||'').localeCompare(String(b.item.type||''),undefined,{sensitivity:'base',numeric:true});
+  }
+
+  function updateRegisterControls(visibleIndices){
+    var count=byId('certSelectionCount');
+    var remove=byId('deleteSelectedCertsBtn');
+    var selectedCount=selectedCertIndices.size;
+    if(count)count.textContent=selectedCount+' selected';
+    if(remove){remove.disabled=selectedCount===0;remove.textContent=selectedCount?'Delete selected ('+selectedCount+')':'Delete selected';}
+    var all=byId('certSelectAll');
+    if(all){
+      var selectedVisible=visibleIndices.filter(function(index){return selectedCertIndices.has(index);}).length;
+      all.checked=visibleIndices.length>0&&selectedVisible===visibleIndices.length;
+      all.indeterminate=selectedVisible>0&&selectedVisible<visibleIndices.length;
+      all.disabled=visibleIndices.length===0;
+    }
+  }
+
+  function updateSortHeaders(){
+    document.querySelectorAll('[data-cert-sort]').forEach(function(button){
+      var active=button.getAttribute('data-cert-sort')===registerSort.key;
+      button.classList.toggle('active',active);
+      button.classList.toggle('descending',active&&registerSort.direction<0);
+      button.setAttribute('aria-label','Sort by '+(button.textContent||'column').trim()+(active?(registerSort.direction>0?', ascending':', descending'):''));
+    });
+  }
+
+  function ensureRegisterControls(){
+    var filter=byId('certDocumentFilter');
+    if(filter&&!filter.dataset.bound){
+      filter.dataset.bound='true';
+      filter.addEventListener('input',function(){registerFilter=String(filter.value||'').trim().toLocaleLowerCase();renderCertRows();});
+    }
+    document.querySelectorAll('[data-cert-sort]').forEach(function(button){
+      if(button.dataset.bound)return;
+      button.dataset.bound='true';
+      button.addEventListener('click',function(){
+        var key=button.getAttribute('data-cert-sort');
+        if(registerSort.key===key)registerSort.direction*=-1;
+        else registerSort={key:key,direction:1};
+        renderCertRows();
+      });
+    });
+    var table=byId('certTable');
+    if(table&&!table.dataset.selectionBound){
+      table.dataset.selectionBound='true';
+      table.addEventListener('change',function(event){
+        var checkbox=event.target&&event.target.closest?event.target.closest('[data-cert-select]'):null;
+        if(!checkbox)return;
+        var index=Number(checkbox.getAttribute('data-cert-select'));
+        if(checkbox.checked)selectedCertIndices.add(index);else selectedCertIndices.delete(index);
+        renderCertRows();
+      });
+    }
+    var selectAll=byId('certSelectAll');
+    if(selectAll&&!selectAll.dataset.bound){
+      selectAll.dataset.bound='true';
+      selectAll.addEventListener('change',function(){
+        var visible=Array.from(document.querySelectorAll('[data-cert-select]')).map(function(box){return Number(box.getAttribute('data-cert-select'));});
+        visible.forEach(function(index){if(selectAll.checked)selectedCertIndices.add(index);else selectedCertIndices.delete(index);});
+        renderCertRows();
+      });
+    }
+    var remove=byId('deleteSelectedCertsBtn');
+    if(remove&&!remove.dataset.bound){remove.dataset.bound='true';remove.addEventListener('click',deleteSelectedCertificates);}
   }
 
   function wireMethods(){
@@ -318,6 +405,7 @@
         try{await window.atsrsCloudData.deleteDocument(previous.cloudFileId);}catch(cleanupError){console.warn('ATSRS old document cleanup deferred',cleanupError);}
       }
       saveCompleted=true;
+      selectedCertIndices.clear();
       editIndex=null;editKey='';closeManual();
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.refresh==='function'){
         try{await window.atsrsCloudData.refresh();}catch(refreshError){console.warn('ATSRS post-save refresh failed',refreshError);if(typeof renderAll==='function')renderAll();}
@@ -346,6 +434,7 @@
       if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
         await window.atsrsCloudData.deleteDocument(item.cloudFileId);
       }
+      selectedCertIndices.clear();
       if(typeof renderAll==='function')window.renderAll();
     }catch(error){
       console.error('ATSRS document delete failed',error);
@@ -353,24 +442,60 @@
     }
   };
 
+  async function deleteSelectedCertificates(){
+    var a=(typeof getData==='function'?getData('certs'):[])||[];
+    var indices=Array.from(selectedCertIndices).filter(function(index){return Number.isInteger(index)&&index>=0&&index<a.length;}).sort(function(left,right){return right-left;});
+    if(!indices.length)return;
+    if(!window.confirm('Delete '+indices.length+' selected document'+(indices.length===1?'':'s')+'? This permanently removes the selected files.'))return;
+    var remove=byId('deleteSelectedCertsBtn');
+    if(remove){remove.disabled=true;remove.textContent='Deleting...';}
+    var removed=indices.map(function(index){return a[index];});
+    try{
+      var remaining=a.filter(function(_,index){return indices.indexOf(index)===-1;});
+      if(typeof saveData==='function')saveData('certs',remaining);
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document register changes could not be saved.');
+      var cleanupFailures=0;
+      for(var i=0;i<removed.length;i++){
+        var item=removed[i];
+        if(item&&item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
+          try{await window.atsrsCloudData.deleteDocument(item.cloudFileId);}catch(cleanupError){cleanupFailures++;console.error('ATSRS selected document cleanup failed',cleanupError);}
+        }
+      }
+      selectedCertIndices.clear();
+      if(typeof renderAll==='function')window.renderAll();else renderCertRows();
+      if(cleanupFailures)alert('The documents were removed from the register, but '+cleanupFailures+' server file'+(cleanupFailures===1?' needs':'s need')+' cleanup. Please try again later.');
+    }catch(error){
+      console.error('ATSRS selected document delete failed',error);
+      alert('The selected documents could not be deleted from the ATSRS server.');
+      renderCertRows();
+    }
+  }
+
   function renderCertRows(){
     if(typeof currentUser==='undefined' || !currentUser)return;
     if(!byId('certTable') || typeof getData!=='function' || typeof status!=='function')return;
     var c=getData('certs')||[];
+    selectedCertIndices.forEach(function(index){if(index<0||index>=c.length)selectedCertIndices.delete(index);});
+    var rows=c.map(function(item,index){return{item:item,index:index,statusData:status(item.expiry)};});
+    if(registerFilter)rows=rows.filter(function(row){return certificateSearchText(row.item,row.statusData).indexOf(registerFilter)!==-1;});
+    if(registerSort.key)rows.sort(function(a,b){var result=compareCertificateRows(a,b,registerSort.key);return result===0?a.index-b.index:result*registerSort.direction;});
     var html='';
-    c.forEach(function(x,i){
-      var st=status(x.expiry);
-      html+='<tr><td>'+esc(x.type||'')+'</td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td>'+
+    rows.forEach(function(row){
+      var x=row.item,i=row.index,st=row.statusData;
+      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td>'+esc(x.type||'')+'</td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td>'+
         '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
         '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
         '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
       '</td></tr>';
     });
+    if(!rows.length)html='<tr><td colspan="6" class="atsrs-document-empty">No documents match this filter.</td></tr>';
     byId('certTable').innerHTML=html;
+    updateSortHeaders();
+    updateRegisterControls(rows.map(function(row){return row.index;}));
   }
 
   function stableDocuments(){
-    cleanTopAndLang(); fixLabels(); wireMethods();
+    cleanTopAndLang(); fixLabels(); wireMethods();ensureRegisterControls();
     if(typeof currentUser!=='undefined' && currentUser) renderCertRows();
     var scanPanel=byId('certScanPanel'); if(scanPanel)scanPanel.classList.remove('active');
     var scanBtn=byId('certScanModeBtn'); if(scanBtn)scanBtn.classList.remove('active');
@@ -398,7 +523,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V253';
+      if(d[0])d[0].textContent='ATSRS V254';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }

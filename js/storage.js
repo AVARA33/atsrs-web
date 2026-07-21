@@ -251,7 +251,7 @@ function applyLanguage(){
 
   txt("addDocTitle",ptr("addDoc"));txt("scanDocBtn",ptr("scanDoc"));txt("uploadDocBtn",ptr("uploadDoc"));txt("scanInfo",ptr("scanInfo"));txt("confirmInfoTitle",ptr("confirmInfo"));ph("autoDocNo",ptr("docNo"));ph("autoProvider",tr("provider"));txt("confirmInfoBtn",ptr("confirm"));txt("extractNote",ptr("extractNote"));
   txt("manualCertTitle",ptr("manualCert"));ph("cProvider",tr("provider"));txt("addCertBtn",tr("addCert"));txt("certRegisterTitle",tr("certRegister"));
-  ["thCertificate2:certificate","thProvider2:provider","thExpiry2:expiry","thStatus2:status","thAction2:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
+  ["certSortTypeLabel:certificate","thProvider2:provider","certSortExpiryLabel:expiry","certSortStatusLabel:status","thAction2:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
 
   txt("accountTitle",ptr("account"));txt("accountTabGeneralBtn",ptr("general"));txt("accountTabSecurityBtn",ptr("security"));txt("accountTabPreferencesBtn",ptr("preferences"));txt("accountTabSharingBtn","Privacy & Sharing");
   ph("profileName",tr("name"));ph("profileSurname",tr("surname"));ph("profilePhone",tr("phone"));ph("profileCompany",tr("company"));ph("profilePosition",tr("position"));opt0("profileCountry",ptr("country"));txt("saveProfileBtn",tr("saveProfile"));
