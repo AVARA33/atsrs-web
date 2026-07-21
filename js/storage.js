@@ -1365,9 +1365,9 @@ setTimeout(v55DockTopActions,500);
     var lang=top.querySelector('.lang-floating,.app-lang-switcher');
     if(lang) lang.setAttribute('style','position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;transform:none!important;display:block!important;');
     var logout=document.getElementById('topLogoutBtn');
-    if(logout) logout.setAttribute('style','width:auto!important;margin:0!important;background:#991b1b!important;color:#fff!important;border:1px solid #ef4444!important;padding:12px 14px!important;border-radius:12px!important;font-weight:800!important;display:block!important;position:relative!important;');
+    if(logout) logout.setAttribute('style','width:auto!important;margin:0!important;background:rgba(239,68,68,.035)!important;color:#fca5a5!important;border:1px solid rgba(248,113,113,.42)!important;padding:10px 13px!important;border-radius:9px!important;font-weight:800!important;box-shadow:none!important;display:block!important;position:relative!important;');
     var btn=document.getElementById('atsrsTopbarTroubleBtn');
-    if(btn) btn.setAttribute('style','width:auto!important;margin:0!important;padding:12px 14px!important;border-radius:12px!important;border:1px solid #facc15!important;background:linear-gradient(135deg,#ca8a04,#eab308)!important;color:#07111d!important;font-weight:900!important;display:block!important;position:relative!important;');
+    if(btn) btn.setAttribute('style','width:auto!important;margin:0!important;padding:10px 13px!important;border-radius:9px!important;border:1px solid rgba(250,204,21,.46)!important;background:rgba(250,204,21,.035)!important;color:#fde68a!important;font-weight:800!important;box-shadow:none!important;display:block!important;position:relative!important;');
     window.runTopbarTroubleshoot && window.runTopbarTroubleshoot('After Apply Hard Fix');
   };
   window.runTopbarTroubleshoot=function(label){
