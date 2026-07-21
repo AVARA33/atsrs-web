@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "npm:@supabase/supabase-js@2.55.0";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+import { corsHeaders } from "jsr:@supabase/supabase-js@2/cors";
 
 const OPENAI_MODEL = "gpt-5-mini";
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
@@ -65,8 +66,8 @@ function allowedOrigin(req: Request) {
 
 function responseHeaders(req: Request) {
   return {
+    ...corsHeaders,
     "Access-Control-Allow-Origin": allowedOrigin(req),
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json",
     "Vary": "Origin",
