@@ -542,6 +542,7 @@
         window.atsrsOpenFilePreview({
           url:url,
           title:row.file_name||'ATSRS document',
+          mimeType:row.mime_type||'',
           onDownload:function(){return openCloudFile(id,true);}
         });
       }
