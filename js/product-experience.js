@@ -1,4 +1,4 @@
-/* ATSRS V250: shared, in-page document preview with image fit and zoom. */
+/* ATSRS V251: stable in-page image preview with dedicated zoom controls. */
 (function(){
   var modal=document.getElementById('atsrsFilePreviewModal');
   var frame=document.getElementById('atsrsFilePreviewFrame');
@@ -18,6 +18,7 @@
   var imageScale=1;
   var imageFitScale=1;
   var imageFitted=true;
+  var lastWheelZoom=0;
 
   function isImage(options){
     return /^image\//i.test(options.mimeType||'')||/\.(avif|bmp|gif|heic|heif|jpe?g|png|webp)(?:$|[?#])/i.test(options.title||options.url||'');
@@ -51,6 +52,20 @@
   function changeImageZoom(multiplier){
     imageFitted=false;
     applyImageScale(imageScale*multiplier);
+  }
+
+  function imagePreviewIsOpen(){
+    return !!(modal&&imagePreview&&!modal.classList.contains('hidden')&&!imagePreview.classList.contains('hidden'));
+  }
+
+  function handlePreviewWheel(event){
+    if(!event.ctrlKey||!imagePreviewIsOpen())return;
+    event.preventDefault();
+    event.stopPropagation();
+    var now=Date.now();
+    if(now-lastWheelZoom<45)return;
+    lastWheelZoom=now;
+    changeImageZoom(event.deltaY<0?1.12:1/1.12);
   }
 
   function closePreview(){
@@ -107,6 +122,7 @@
   if(imageZoomOut)imageZoomOut.addEventListener('click',function(){changeImageZoom(1/1.2);});
   if(imageZoomIn)imageZoomIn.addEventListener('click',function(){changeImageZoom(1.2);});
   if(imageFit)imageFit.addEventListener('click',fitImage);
+  document.addEventListener('wheel',handlePreviewWheel,{capture:true,passive:false});
   window.addEventListener('resize',function(){if(imageFitted&&modal&&!modal.classList.contains('hidden'))fitImage();});
   if(modal)modal.addEventListener('click',function(event){
     if(event.target&&event.target.getAttribute('data-preview-close')==='true')closePreview();
