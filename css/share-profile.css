@@ -370,3 +370,156 @@ body.atsrs-public-share-view{
   .shared-document-grid{grid-template-columns:1fr}
   .shared-profile-section-head{align-items:flex-start;flex-direction:column}
 }
+
+/* ATSRS V246: owner-controlled recruiter requests and timed downloads. */
+#accountSharingTab #shareProfilePanel{
+  padding:2px 0 0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+body.company-mode #accountTabSharingBtn{display:none!important}
+.sharing-heading,
+.access-panel-head,
+.sharing-history-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+.sharing-heading h3,
+.access-panel-head h3{margin:9px 0 0}
+.preview-only-badge{
+  display:inline-flex;
+  flex:0 0 auto;
+  padding:7px 10px;
+  border:1px solid rgba(34,197,94,.35);
+  border-radius:999px;
+  background:rgba(34,197,94,.09);
+  color:#86efac;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+#shareAccessBox{display:block}
+#shareAccessBox.hidden{display:none!important}
+.share-expiry-settings{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(150px,210px) minmax(150px,210px);
+  gap:12px;
+  align-items:end;
+  margin-top:16px;
+  padding:14px;
+  border:1px solid rgba(57,89,114,.65);
+  border-radius:14px;
+  background:rgba(4,16,27,.58);
+}
+.share-expiry-settings label b,
+.share-expiry-settings label span{display:block}
+.share-expiry-settings label{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#d7e1e8!important;
+}
+.share-expiry-settings label span{margin-top:4px;color:#8298aa;font-size:11px}
+.share-expiry-settings select,
+.share-expiry-settings input{width:100%;margin:0}
+.sharing-history{
+  margin-top:28px;
+  padding-top:24px;
+  border-top:1px solid rgba(66,96,120,.5);
+}
+.sharing-history-head span{display:block;margin-top:4px;color:#8298aa;font-size:11px}
+.sharing-history-head button{width:auto!important;margin:0!important}
+.share-analytics{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:16px 0;
+}
+.share-analytics>div{
+  padding:13px;
+  border:1px solid rgba(50,82,107,.62);
+  border-radius:13px;
+  background:rgba(4,16,27,.55);
+}
+.share-analytics b{display:block;color:#f1f5f9;font-size:21px}
+.share-analytics span{color:#8298aa;font-size:10px;text-transform:uppercase}
+.share-analytics-detail{grid-column:1/-1;margin:0!important;color:#8fa4b5;font-size:11px;line-height:1.5}
+.request-count{
+  display:inline-flex;
+  margin-left:7px;
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(245,158,11,.12);
+  color:#fbbf24;
+  font-size:10px;
+  vertical-align:middle;
+}
+.access-panel-head button{width:auto!important;margin:0!important}
+.access-request-list,
+.share-request-list{display:grid;gap:10px;margin-top:14px}
+.access-request-card{
+  padding:15px;
+  border:1px solid rgba(51,82,108,.62);
+  border-radius:15px;
+  background:rgba(5,18,29,.72);
+}
+.access-request-card.status-pending{border-color:rgba(245,158,11,.36)}
+.access-request-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.access-request-top>div b,.access-request-top>div span{display:block}
+.access-request-top>div span{margin-top:3px;color:#8298aa;font-size:11px}
+.access-status{
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(100,116,139,.15);
+  color:#aab8c6;
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.status-pending .access-status{background:rgba(245,158,11,.13);color:#fbbf24}
+.status-approved .access-status{background:rgba(34,197,94,.12);color:#86efac}
+.status-declined .access-status,.status-expired .access-status{background:rgba(239,68,68,.12);color:#fca5a5}
+.access-request-card p{margin:12px 0 5px;color:#d4dee6;font-size:12px}
+.access-request-card p span{color:#7890a3;text-transform:uppercase;font-size:9px;font-weight:900}
+.access-request-card small{color:#6f879b}
+.access-request-details{margin-top:10px;padding:10px;border-radius:10px;background:rgba(15,23,42,.72);color:#9fb0bf;font-size:11px}
+.access-request-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.access-request-actions button{width:auto!important;min-width:90px;margin:0!important;padding:8px 11px!important;font-size:11px!important}
+.access-empty{padding:22px;border:1px dashed rgba(67,101,128,.55);border-radius:13px;color:#8298aa;text-align:center;font-size:12px}
+.shared-profile-section-head>div:first-child span{display:block;margin-top:5px;color:#7f94a7;font-size:12px}
+.shared-profile-head-actions{display:flex;align-items:center;gap:10px}
+.shared-profile-head-actions>span{color:#86a0b3;font-size:11px}
+.shared-profile-head-actions button{width:auto!important;margin:0!important;padding:9px 13px!important}
+.share-request-modal{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:20px}
+.share-request-modal.hidden{display:none!important}
+.share-request-backdrop{position:absolute;inset:0;background:rgba(1,7,13,.82);backdrop-filter:blur(8px)}
+.share-request-dialog{
+  position:relative;
+  width:min(500px,100%);
+  padding:28px;
+  border:1px solid rgba(58,91,116,.78);
+  border-radius:20px;
+  background:linear-gradient(145deg,#071827,#04101b);
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+.share-request-dialog h2{margin:7px 0 8px;color:#f5f9fc}
+.share-request-dialog>p{margin:0 0 18px;color:#91a5b5;font-size:12px;line-height:1.55}
+.share-request-dialog label{display:block;margin:10px 0;color:#b9c8d3;font-size:11px;font-weight:800}
+.share-request-dialog input{width:100%;margin:6px 0 0}
+.share-request-dialog button{margin:10px 0 0}
+.share-request-close{position:absolute;top:12px;right:12px;width:38px!important;height:38px;padding:0!important;border-radius:10px!important;background:rgba(15,23,42,.85)!important;font-size:23px!important}
+.share-request-message{min-height:18px;margin-top:12px;color:#86efac;font-size:11px}
+.share-request-message.error{color:#fca5a5}
+.share-verified-identity{padding:13px;border:1px solid rgba(34,197,94,.25);border-radius:12px;background:rgba(34,197,94,.07);color:#bde7cc;font-size:12px;line-height:1.5}
+
+@media(max-width:760px){
+  .sharing-heading,.access-panel-head,.sharing-history-head,.shared-profile-head-actions{align-items:flex-start;flex-direction:column}
+  .share-expiry-settings{grid-template-columns:1fr}
+  .share-analytics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shared-profile-head-actions{width:100%}
+  .shared-profile-head-actions button{width:100%!important}
+}

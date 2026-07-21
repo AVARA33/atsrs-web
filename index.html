@@ -24,7 +24,7 @@ try{
 <link rel="stylesheet" href="css/account.css?v=218">
 <link rel="stylesheet" href="css/product-experience.css?v=242">
 <link rel="stylesheet" href="css/date-picker.css?v=244">
-<link rel="stylesheet" href="css/share-profile.css?v=243">
+<link rel="stylesheet" href="css/share-profile.css?v=246">
 
 
 
@@ -126,7 +126,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V245</div>
+<div>ATSRS V246</div>
 <div>Last Update: 21 Jul 2026</div>
 </div>
 </div>
@@ -288,32 +288,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <p id="riskSub" class="sub">Documents closest to expiry will appear here.</p>
   <div id="riskList" class="risk-list"></div>
 </div>
-<div id="shareProfilePanel" class="panel share-card personal-only">
-  <span id="shareBadge" class="pill">SHARE PROFILE</span>
-  <h3 id="shareTitle">Share My ATSRS Profile</h3>
-  <p id="shareSub" class="sub">Choose your server documents and send recruiters one revocable ATSRS link.</p>
-  <div class="share-link-box">
-    <input id="shareProfileLink" readonly placeholder="Create a secure link after choosing documents.">
-    <button id="copyShareBtn" class="secondary" onclick="copyShareLink()" disabled>Copy Link</button>
+<div id="accessRequestsPanel" class="panel access-requests-panel personal-only">
+  <div class="access-panel-head">
+    <div><span class="pill">ACCESS REQUESTS</span><h3>Document Access Requests <span id="pendingRequestCount" class="request-count">0 pending</span></h3></div>
+    <button id="approveAllRequestsBtn" type="button" class="secondary hidden" onclick="approveAllShareRequests()">Approve all pending</button>
   </div>
-  <div id="shareProfileStatus" class="share-live-status">Private. No recruiter link has been created yet.</div>
-  <div class="share-actions">
-    <button id="manageAccessBtn" onclick="toggleShareAccess()">Choose Documents</button>
-    <button id="previewShareBtn" class="secondary" onclick="previewShareProfile()" disabled>Preview Public Profile</button>
-    <button id="revokeShareBtn" class="action hidden" onclick="revokeShareProfileLink()">Disable Link</button>
-  </div>
-  <div id="shareCopyMsg" class="copy-ok hidden">Link copied.</div>
-  <div id="shareAccessBox" class="share-permissions hidden">
-    <div class="share-permissions-head">
-      <div><b>Recruiter access</b><span>Only checked server files will be visible.</span></div>
-    </div>
-    <div id="shareDocumentChoices" class="share-document-choices">
-      <div class="preview-box">Loading your server documents...</div>
-    </div>
-    <div class="share-permissions-actions">
-      <button id="saveShareBtn" type="button" onclick="createShareProfileLink()">Create Secure Link</button>
-    </div>
-    <div id="shareManageMsg" class="share-manage-message" role="status"></div>
+  <p class="sub">Review verified recruiter download requests. Preview access never requires approval.</p>
+  <div id="dashboardAccessRequests" class="access-request-list">
+    <div class="access-empty">No pending requests.</div>
   </div>
 </div>
 </section>
@@ -524,6 +506,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="accountTabGeneralBtn" class="active" onclick="showAccountTab('general')"></button>
 <button id="accountTabSecurityBtn" onclick="showAccountTab('security')"></button>
 <button id="accountTabPreferencesBtn" onclick="showAccountTab('preferences')"></button>
+<button id="accountTabSharingBtn" onclick="showAccountTab('sharing')">Privacy &amp; Sharing</button>
 </div>
 <div id="accountGeneralTab" class="account-tab active">
 <div class="profile-grid">
@@ -546,6 +529,53 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
 <div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
 <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action" onclick="alert(ptr('deleteNotice'))"></button></div>
+</div>
+<div id="accountSharingTab" class="account-tab">
+  <div id="shareProfilePanel" class="share-card personal-only">
+    <div class="sharing-heading">
+      <div><span id="shareBadge" class="pill">PRIVACY &amp; SHARING</span><h3 id="shareTitle">Share My ATSRS Profile</h3></div>
+      <span class="preview-only-badge">PREVIEW ONLY BY DEFAULT</span>
+    </div>
+    <p id="shareSub" class="sub">Create a time-limited recruiter link. Downloads require verified email and your approval.</p>
+    <div class="share-link-box">
+      <input id="shareProfileLink" readonly placeholder="Create a secure link after choosing documents.">
+      <button id="copyShareBtn" class="secondary" onclick="copyShareLink()" disabled>Copy Link</button>
+    </div>
+    <div id="shareProfileStatus" class="share-live-status">Private. No recruiter link has been created yet.</div>
+    <div class="share-actions">
+      <button id="manageAccessBtn" onclick="toggleShareAccess()">Configure Share Link</button>
+      <button id="previewShareBtn" class="secondary" onclick="previewShareProfile()" disabled>Preview Shared Profile</button>
+      <button id="revokeShareBtn" class="action hidden" onclick="revokeShareProfileLink()">Disable Link</button>
+    </div>
+    <div id="shareCopyMsg" class="copy-ok hidden">Link copied.</div>
+    <div id="shareAccessBox" class="share-permissions hidden">
+      <div class="share-permissions-head">
+        <div><b>Visible documents</b><span>Recruiters can preview checked server files. Download always requires approval.</span></div>
+      </div>
+      <div id="shareDocumentChoices" class="share-document-choices">
+        <div class="preview-box">Loading your server documents...</div>
+      </div>
+      <div class="share-expiry-settings">
+        <label for="shareExpiryPreset"><b>Link active for</b><span>All download permissions end with the link.</span></label>
+        <select id="shareExpiryPreset" onchange="updateShareExpiryChoice()">
+          <option value="24h">24 hours</option>
+          <option value="3d">3 days</option>
+          <option value="7d" selected>7 days</option>
+          <option value="custom">Custom date</option>
+        </select>
+        <input id="shareExpiryCustom" class="hidden" type="date" aria-label="Custom share link expiry date">
+      </div>
+      <div class="share-permissions-actions">
+        <button id="saveShareBtn" type="button" onclick="createShareProfileLink()">Create Secure Link</button>
+      </div>
+      <div id="shareManageMsg" class="share-manage-message" role="status"></div>
+    </div>
+    <div class="sharing-history">
+      <div class="sharing-history-head"><div><b>Access history</b><span>Verified requests, decisions and recruiter activity.</span></div><button type="button" class="secondary" onclick="refreshShareRequests()">Refresh</button></div>
+      <div id="shareAnalytics" class="share-analytics"></div>
+      <div id="shareRequestHistory" class="share-request-list"><div class="access-empty">No access history yet.</div></div>
+    </div>
+  </div>
 </div>
 <div class="setting-row account-logout-row">
 <div><b id="accountLogoutTitle">Logout</b><div id="accountLogoutNote" class="small-note">Sign out and return to the login screen.</div></div>
@@ -588,8 +618,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         These files were uploaded and shared by the profile owner. ATSRS provides secure access and expiry visibility; recruiters should complete their normal verification process.
       </div>
       <div class="shared-profile-section-head">
-        <h2>Shared documents</h2>
-        <span id="sharedProfileDocumentCount">0 shared files</span>
+        <div><h2>Shared documents</h2><span id="sharedProfileDocumentCount">0 shared files</span></div>
+        <div class="shared-profile-head-actions"><span id="sharedProfileExpiry">Preview link active</span><button id="requestAllDocumentsBtn" type="button" onclick="openDownloadRequest('all')">Request All Documents</button></div>
       </div>
       <div id="sharedProfileDocuments" class="shared-document-grid"></div>
       <footer class="shared-profile-footer">
@@ -598,6 +628,33 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </section>
   </div>
 </main>
+
+<div id="shareRequestModal" class="share-request-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shareRequestTitle">
+  <div class="share-request-backdrop" onclick="closeDownloadRequest()"></div>
+  <div class="share-request-dialog">
+    <button type="button" class="share-request-close" onclick="closeDownloadRequest()" aria-label="Close">×</button>
+    <span class="shared-profile-kicker">VERIFIED DOWNLOAD REQUEST</span>
+    <h2 id="shareRequestTitle">Request document download</h2>
+    <p id="shareRequestSummary">The owner will review your request. Approval lasts for 30 minutes and never beyond the link expiry.</p>
+    <div id="shareIdentityStep">
+      <label>Full name<input id="shareRequesterName" autocomplete="name" maxlength="100"></label>
+      <label>Company<input id="shareRequesterCompany" autocomplete="organization" maxlength="140"></label>
+      <label>Work email<input id="shareRequesterEmail" type="email" autocomplete="email" maxlength="254"></label>
+      <button id="sendShareOtpBtn" type="button" onclick="sendShareRequestOtp()">Verify Email &amp; Send Request</button>
+    </div>
+    <div id="shareOtpStep" class="hidden">
+      <label>6-digit code<input id="shareRequesterOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}"></label>
+      <button id="verifyShareOtpBtn" type="button" onclick="verifyShareRequestOtp()">Verify &amp; Submit</button>
+      <button type="button" class="secondary" onclick="resetShareVerification()">Use another email</button>
+    </div>
+    <div id="shareVerifiedStep" class="hidden">
+      <div id="shareVerifiedIdentity" class="share-verified-identity"></div>
+      <button id="sendVerifiedShareRequestBtn" type="button" onclick="sendVerifiedShareRequest()">Send Download Request</button>
+      <button type="button" class="secondary" onclick="resetShareVerification()">Verify another email</button>
+    </div>
+    <div id="shareRequestMessage" class="share-request-message" role="status"></div>
+  </div>
+</div>
 
 <div id="atsrsFilePreviewModal" class="file-preview-modal hidden" role="dialog" aria-modal="true" aria-labelledby="atsrsFilePreviewTitle">
   <div class="file-preview-backdrop" data-preview-close="true"></div>
@@ -613,21 +670,21 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=245"></script>
+<script src="js/stability-runtime.js?v=246"></script>
 <script src="js/server-data.js?v=6"></script>
-<script src="js/storage.js?v=245"></script>
-<script src="js/ui.js?v=245"></script>
-<script src="js/auth.js?v=245"></script>
-<script src="js/login.js?v=245"></script>
-<script src="js/dashboard.js?v=245"></script>
-<script src="js/documents.js?v=245"></script>
-<script src="js/references.js?v=245"></script>
-<script src="js/account.js?v=245"></script>
-<script src="js/app.js?v=245"></script>
+<script src="js/storage.js?v=246"></script>
+<script src="js/ui.js?v=246"></script>
+<script src="js/auth.js?v=246"></script>
+<script src="js/login.js?v=246"></script>
+<script src="js/dashboard.js?v=246"></script>
+<script src="js/documents.js?v=246"></script>
+<script src="js/references.js?v=246"></script>
+<script src="js/account.js?v=246"></script>
+<script src="js/app.js?v=246"></script>
 <script src="js/product-experience.js?v=242"></script>
 <script src="js/date-picker.js?v=244"></script>
-<script src="js/share-profile.js?v=243"></script>
-<script src="js/boot-refresh.js?v=245"></script>
+<script src="js/share-profile.js?v=246"></script>
+<script src="js/boot-refresh.js?v=246"></script>
 
 
 
