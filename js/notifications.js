@@ -47,9 +47,10 @@
     var panel=document.createElement('div');
     panel.id='atsrsNotificationPanel';
     panel.className='panel atsrs-notification-panel';
-    panel.innerHTML='<div class="atsrs-notification-head"><div><h3>Expiry notifications</h3><p class="sub">Server reminders for documents approaching expiry.</p></div><div class="atsrs-notification-actions"><span id="atsrsNotificationCount" class="atsrs-notification-count is-empty">0</span><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button></div></div><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
+    panel.innerHTML='<div class="atsrs-notification-head"><div><h3>Expiry notifications</h3><p class="sub">Server reminders for documents approaching expiry.</p></div><div class="atsrs-notification-actions"><span id="atsrsNotificationCount" class="atsrs-notification-count is-empty">0</span><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button><button id="atsrsClearNotifications" type="button" class="secondary">Clear all</button></div></div><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
     anchor.insertAdjacentElement('afterend',panel);
     byId('atsrsMarkAllRead').addEventListener('click',markAllRead);
+    byId('atsrsClearNotifications').addEventListener('click',dismissAllNotifications);
   }
 
   function ensureSettingsPanel(){
@@ -126,7 +127,7 @@
   function notificationMarkup(item){
     var unread=!item.read_at;
     var created=item.created_at?new Date(item.created_at).toLocaleString():'';
-    return '<article class="atsrs-notification-item'+(unread?' is-unread':'')+'" data-severity="'+esc(item.severity||'notice')+'"><span class="atsrs-notification-dot"></span><div class="atsrs-notification-copy"><b>'+esc(item.title||'Document reminder')+'</b><p>'+esc(item.body||'')+'</p><time>'+esc(created)+'</time></div>'+(unread?'<button type="button" class="secondary" data-notification-id="'+esc(item.id)+'">Mark read</button>':'')+'</article>';
+    return '<article class="atsrs-notification-item'+(unread?' is-unread':'')+'" data-severity="'+esc(item.severity||'notice')+'"><span class="atsrs-notification-dot"></span><div class="atsrs-notification-copy"><b>'+esc(item.title||'Document reminder')+'</b><p>'+esc(item.body||'')+'</p><time>'+esc(created)+'</time></div><div class="atsrs-notification-item-actions">'+(unread?'<button type="button" class="secondary" data-notification-read="'+esc(item.id)+'">Mark read</button>':'')+'<button type="button" class="atsrs-notification-dismiss" data-notification-dismiss="'+esc(item.id)+'" aria-label="Remove notification" title="Remove">&times;</button></div></article>';
   }
 
   async function loadNotifications(){
@@ -144,8 +145,10 @@
     var count=byId('atsrsNotificationCount');
     count.textContent=String(unread);count.classList.toggle('is-empty',unread===0);
     var all=byId('atsrsMarkAllRead');if(all)all.disabled=unread===0;
+    var clear=byId('atsrsClearNotifications');if(clear)clear.disabled=rows.length===0;
     list.innerHTML=rows.length?rows.map(notificationMarkup).join(''):'<div class="atsrs-notification-empty">No expiry notifications yet.</div>';
-    list.querySelectorAll('[data-notification-id]').forEach(function(button){button.addEventListener('click',function(){markRead(button.getAttribute('data-notification-id'));});});
+    list.querySelectorAll('[data-notification-read]').forEach(function(button){button.addEventListener('click',function(){markRead(button.getAttribute('data-notification-read'));});});
+    list.querySelectorAll('[data-notification-dismiss]').forEach(function(button){button.addEventListener('click',function(){dismissNotification(button.getAttribute('data-notification-dismiss'),button);});});
   }
 
   async function markRead(id){
@@ -157,6 +160,21 @@
     if(!await resolveUser())return;
     var result=await client.from('atsrs_notifications').update({read_at:new Date().toISOString()}).eq('user_id',user.id).eq('account_type',mode()).is('read_at',null);
     if(!result.error)loadNotifications();
+  }
+  async function dismissNotification(id,button){
+    if(!id||!await resolveUser())return;
+    if(button)button.disabled=true;
+    var result=await client.from('atsrs_notifications').delete().eq('id',id).eq('user_id',user.id).eq('account_type',mode());
+    if(result.error){console.error('ATSRS notification removal failed',result.error);if(button)button.disabled=false;return;}
+    loadNotifications();
+  }
+  async function dismissAllNotifications(){
+    if(!await resolveUser())return;
+    if(!window.confirm('Remove all expiry notifications from this list?'))return;
+    var button=byId('atsrsClearNotifications');if(button)button.disabled=true;
+    var result=await client.from('atsrs_notifications').delete().eq('user_id',user.id).eq('account_type',mode());
+    if(result.error){console.error('ATSRS notifications clear failed',result.error);if(button)button.disabled=false;return;}
+    loadNotifications();
   }
 
   function refresh(){ensureUi();setBuild();loadNotifications();}
