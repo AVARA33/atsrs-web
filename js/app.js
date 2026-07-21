@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V258';
+  var BUILD='ATSRS V259';
   var UPDATE='Last Update: 21 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V258';
+  var BUILD='ATSRS V259';
   var UPDATE='Last Update: 21 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -155,7 +155,45 @@
   }
 
   function supportedAiFile(file){
-    return !!file&&['application/pdf','image/jpeg','image/png','image/webp'].indexOf(String(file.type||'').toLowerCase())!==-1;
+    return !!file&&['application/pdf','image/jpeg','image/png','image/webp'].indexOf(aiFileMime(file))!==-1;
+  }
+
+  function aiFileMime(file){
+    var declared=String(file&&file.type||'').toLowerCase();
+    if(['application/pdf','image/jpeg','image/png','image/webp'].indexOf(declared)!==-1)return declared;
+    var extension=String(file&&file.name||'').toLowerCase().split('.').pop();
+    return {pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp'}[extension]||declared;
+  }
+
+  function normalizeFileDataMime(dataUrl,mimeType){
+    var value=String(dataUrl||'');
+    if(!mimeType)return value;
+    return value.replace(/^data:(?:application\/octet-stream)?;/i,'data:'+mimeType+';');
+  }
+
+  function retryableFunctionError(error){
+    var name=String(error&&error.constructor&&error.constructor.name||error&&error.name||'');
+    var message=String(error&&error.message||'');
+    return /Functions(?:Fetch|Relay)Error/i.test(name)||/failed to fetch|failed to send|network|relay/i.test(message);
+  }
+
+  async function invokeAiScan(body){
+    var first=await window.supabaseClient.functions.invoke('scan-document',{body:body});
+    if(!first.error||!retryableFunctionError(first.error))return first;
+    setAiScanStatus('Connection interrupted. Retrying the AI scan...');
+    await new Promise(function(resolve){setTimeout(resolve,650);});
+    return window.supabaseClient.functions.invoke('scan-document',{body:body});
+  }
+
+  async function functionErrorMessage(error){
+    try{
+      if(error&&error.context&&typeof error.context.json==='function'){
+        var details=await error.context.json();
+        if(details&&details.error)return String(details.error);
+        if(details&&details.message)return String(details.message);
+      }
+    }catch(ignore){}
+    return String(error&&error.message||'');
   }
 
   function closeAiConsent(){
@@ -267,22 +305,26 @@
     if(preview){preview.textContent='Selected: '+file.name+' ('+Math.round(file.size/1024)+' KB)';preview.classList.add('active');}
     setAiScanStatus('Securely scanning the document with AI...');
     try{
-      var fileData=await fileAsDataUrl(file);
-      var invoked=await window.supabaseClient.functions.invoke('scan-document',{body:{
+      var mimeType=aiFileMime(file);
+      var fileData=normalizeFileDataMime(await fileAsDataUrl(file),mimeType);
+      var invoked=await invokeAiScan({
         filename:file.name,
-        mime_type:file.type,
+        mime_type:mimeType,
         file_data:fileData,
         consent_accepted:true,
         consent_version:'2026-07-21'
-      }});
-      if(invoked.error)throw invoked.error;
+      });
+      if(invoked.error){
+        var detailedError=await functionErrorMessage(invoked.error);
+        throw new Error(detailedError||'The AI scan could not be completed.');
+      }
       if(!invoked.data||!invoked.data.document)throw new Error('No document details were returned.');
       setAiScanStatus('AI scan completed. Review the detected information before saving.');
       applyAiResult(file,invoked.data);
     }catch(error){
       console.error('ATSRS AI document scan failed',error);
-      var message=error&&error.message?String(error.message):'';
-      if(/non-2xx|edge function/i.test(message))message='The AI scan could not be completed. Check the file and try again.';
+      var message=String(error&&error.message||'');
+      if(/non-2xx|edge function/i.test(message))message='The AI scan could not be completed. Please try again.';
       setAiScanStatus(message||'The AI scan could not be completed. Try again.',true);
     }finally{
       aiScanBusy=false;
@@ -704,7 +746,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V258';
+      if(d[0])d[0].textContent='ATSRS V259';
       if(d[1])d[1].textContent='Last Update: 21 Jul 2026';
     });
   }
