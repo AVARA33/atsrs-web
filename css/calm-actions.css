@@ -210,3 +210,21 @@ button.confirm,
     margin-left:0!important;
   }
 }
+/* V260: neutral, compact Account actions. */
+#profilePage .account-tabs button.active{
+  background:transparent!important;
+  border-color:rgba(134,160,183,.58)!important;
+  color:#f4f8fb!important;
+}
+#profilePage #saveProfileBtn,
+#profilePage #saveProfileBtn:hover:not(:disabled){
+  width:auto!important;
+  min-width:84px!important;
+  max-width:none!important;
+  min-height:34px!important;
+  margin-top:12px!important;
+  padding:7px 14px!important;
+  background:transparent!important;
+  border-color:rgba(93,119,143,.42)!important;
+  color:var(--atsrs-action-text)!important;
+}
