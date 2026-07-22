@@ -340,6 +340,7 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
     if (eventsResult.error) throw eventsResult.error;
     const counts: Record<string, number> = {};
     const downloadsByRequest: Record<string, number> = {};
+    const downloadedFilesByRequest: Record<string, string[]> = {};
     const previewsByFile: Record<string, number> = {};
     (eventsResult.data ?? []).forEach((event) => {
       const type = String(event.event_type ?? "");
@@ -347,6 +348,10 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
       if (type === "document_downloaded" && event.request_id) {
         const requestId = String(event.request_id);
         downloadsByRequest[requestId] = (downloadsByRequest[requestId] ?? 0) + 1;
+        if (event.file_id) downloadedFilesByRequest[requestId] = [
+          ...(downloadedFilesByRequest[requestId] ?? []),
+          String(event.file_id),
+        ];
       }
       if (type === "document_previewed" && event.file_id) {
         const fileId = String(event.file_id);
@@ -357,6 +362,7 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
       requests: (requestsResult.data ?? []).map((row) => ({
         ...publicRequestStatus(row as AccessRequestRow),
         download_count: downloadsByRequest[String(row.id)] ?? 0,
+        downloaded_file_ids: downloadedFilesByRequest[String(row.id)] ?? [],
       })),
       analytics: {
         link_opened: counts.link_opened ?? Number(existing?.view_count ?? 0),
@@ -654,6 +660,14 @@ async function createVerifiedRequest(req: Request, admin: AdminClient, share: Sh
   const requestAll = body.request_all === true;
   const fileIds = requestedFiles(share, body.file_ids, requestAll);
   if (!fileIds.length) return json(req, 400, { error: "Choose at least one shared document." });
+  const duplicate = await admin.from("atsrs_share_access_requests").select("id,status")
+    .eq("share_id", share.id).eq("share_token_hash", share.token_hash)
+    .eq("viewer_token_hash", identity.tokenHash).neq("status", "otp_pending")
+    .overlaps("requested_file_ids", fileIds).limit(1).maybeSingle();
+  if (duplicate.error) throw duplicate.error;
+  if (duplicate.data) {
+    return json(req, 409, { error: "These documents were already requested with this verified profile link." });
+  }
   const now = new Date().toISOString();
   const insert = await admin.from("atsrs_share_access_requests").insert({
     share_id: share.id,
@@ -688,8 +702,18 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
     .contains("requested_file_ids", [fileId]).gt("access_expires_at", new Date().toISOString())
     .order("access_expires_at", { ascending: false }).limit(20);
   if (approved.error) throw approved.error;
-  const access = ((approved.data ?? []) as AccessRequestRow[]).find((row) =>
-    !uniqueFileIds(row.revoked_file_ids).includes(fileId)
+  const approvedRows = (approved.data ?? []) as AccessRequestRow[];
+  const approvedIds = approvedRows.map((row) => row.id);
+  let consumedRequestIds = new Set<string>();
+  if (approvedIds.length) {
+    const consumed = await admin.from("atsrs_share_events").select("request_id")
+      .eq("share_id", share.id).eq("file_id", fileId).eq("event_type", "document_downloaded")
+      .in("request_id", approvedIds);
+    if (consumed.error) throw consumed.error;
+    consumedRequestIds = new Set((consumed.data ?? []).map((event) => String(event.request_id)));
+  }
+  const access = approvedRows.find((row) =>
+    !uniqueFileIds(row.revoked_file_ids).includes(fileId) && !consumedRequestIds.has(row.id)
   ) ?? null;
   if (!access?.access_expires_at) return json(req, 403, { error: "Download access has not been approved or has expired." });
   const file = await admin.from("atsrs_files").select("id,file_name,storage_path")
@@ -703,7 +727,18 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
   ));
   const signed = await admin.storage.from(FILE_BUCKET).createSignedUrl(file.data.storage_path, seconds, { download: file.data.file_name });
   if (signed.error) throw signed.error;
-  await insertEvent(admin, share, "document_downloaded", { request_id: access.id, file_id: fileId });
+  const consumed = await admin.from("atsrs_share_events").insert({
+    share_id: share.id,
+    owner_id: share.user_id,
+    request_id: access.id,
+    file_id: fileId,
+    event_type: "document_downloaded",
+    event_data: {},
+  });
+  if (consumed.error) {
+    if (consumed.error.code === "23505") return json(req, 409, { error: "This approved document has already been downloaded." });
+    throw consumed.error;
+  }
   return json(req, 200, { download_url: signed.data.signedUrl, expires_in: seconds });
 }
 
@@ -751,25 +786,44 @@ async function publicRequest(req: Request, admin: AdminClient) {
   if (TOKEN_PATTERN.test(viewerToken)) tokenHash = await sha256Hex(viewerToken);
   let approvedRows: AccessRequestRow[] = [];
   let viewerRequests: AccessRequestRow[] = [];
+  const downloadedByRequest = new Map<string, Set<string>>();
   if (tokenHash) {
     const requestResult = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
       .eq("share_id", share.id).eq("share_token_hash", share.token_hash).eq("viewer_token_hash", tokenHash).order("created_at", { ascending: false });
     if (requestResult.error) throw requestResult.error;
     viewerRequests = (requestResult.data ?? []) as AccessRequestRow[];
     approvedRows = viewerRequests.filter((row) => row.status === "approved" && row.access_expires_at && new Date(row.access_expires_at).getTime() > Date.now());
+    const requestIds = viewerRequests.map((row) => row.id);
+    if (requestIds.length) {
+      const downloaded = await admin.from("atsrs_share_events").select("request_id,file_id")
+        .eq("share_id", share.id).eq("event_type", "document_downloaded").in("request_id", requestIds);
+      if (downloaded.error) throw downloaded.error;
+      (downloaded.data ?? []).forEach((event) => {
+        const requestId = String(event.request_id ?? "");
+        const fileId = String(event.file_id ?? "");
+        if (!requestId || !fileId) return;
+        if (!downloadedByRequest.has(requestId)) downloadedByRequest.set(requestId, new Set());
+        downloadedByRequest.get(requestId)!.add(fileId);
+      });
+    }
   }
   const documents = await Promise.all(files.map(async (file) => {
     const details = documentDetails(file);
     const preview = await admin.storage.from(FILE_BUCKET).createSignedUrl(String(file.storage_path), PREVIEW_URL_SECONDS);
     if (preview.error) throw preview.error;
+    const downloaded = viewerRequests.find((row) =>
+      row.requested_file_ids.includes(details.id) && downloadedByRequest.get(row.id)?.has(details.id)
+    );
     const approved = approvedRows.find((row) =>
-      row.requested_file_ids.includes(details.id) && !uniqueFileIds(row.revoked_file_ids).includes(details.id)
+      row.requested_file_ids.includes(details.id) && !uniqueFileIds(row.revoked_file_ids).includes(details.id) && !downloadedByRequest.get(row.id)?.has(details.id)
     );
     const pending = viewerRequests.find((row) => row.status === "pending" && row.requested_file_ids.includes(details.id));
+    const declined = viewerRequests.find((row) => row.status === "declined" && row.requested_file_ids.includes(details.id));
+    const previouslyRequested = viewerRequests.find((row) => row.status !== "otp_pending" && row.requested_file_ids.includes(details.id));
     return {
       ...details,
       preview_url: preview.data.signedUrl,
-      download_status: approved ? "approved" : pending ? "pending" : "available_on_request",
+      download_status: downloaded ? "downloaded" : approved ? "approved" : pending ? "pending" : declined ? "declined" : previouslyRequested ? "approval_expired" : "available_on_request",
       download_expires_at: approved?.access_expires_at ?? null,
     };
   }));
@@ -786,7 +840,10 @@ async function publicRequest(req: Request, admin: AdminClient) {
       country: safeText(profileValue.country, 100),
     },
     documents,
-    requests: viewerRequests.map(publicRequestStatus),
+    requests: viewerRequests.map((row) => ({
+      ...publicRequestStatus(row),
+      downloaded_file_ids: Array.from(downloadedByRequest.get(row.id) ?? []),
+    })),
     access: { preview_only: true, share_expires_at: share.expires_at, download_window_minutes: 30 },
   });
 }
