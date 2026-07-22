@@ -16,17 +16,17 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=267">
-<link rel="stylesheet" href="css/login.css?v=267">
-<link rel="stylesheet" href="css/dashboard.css?v=267">
-<link rel="stylesheet" href="css/documents.css?v=267">
-<link rel="stylesheet" href="css/references.css?v=267">
-<link rel="stylesheet" href="css/account.css?v=267">
-<link rel="stylesheet" href="css/product-experience.css?v=267">
-<link rel="stylesheet" href="css/date-picker.css?v=267">
-<link rel="stylesheet" href="css/share-profile.css?v=267">
-<link rel="stylesheet" href="css/calm-actions.css?v=267">
-<link rel="stylesheet" href="css/account-security-live.css?v=267">
+<link rel="stylesheet" href="css/base.css?v=268">
+<link rel="stylesheet" href="css/login.css?v=268">
+<link rel="stylesheet" href="css/dashboard.css?v=268">
+<link rel="stylesheet" href="css/documents.css?v=268">
+<link rel="stylesheet" href="css/references.css?v=268">
+<link rel="stylesheet" href="css/account.css?v=268">
+<link rel="stylesheet" href="css/product-experience.css?v=268">
+<link rel="stylesheet" href="css/date-picker.css?v=268">
+<link rel="stylesheet" href="css/share-profile.css?v=268">
+<link rel="stylesheet" href="css/calm-actions.css?v=268">
+<link rel="stylesheet" href="css/account-security-live.css?v=268">
 
 
 
@@ -128,7 +128,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V267</div>
+<div>ATSRS V268</div>
 <div>Last Update: 22 Jul 2026</div>
 </div>
 </div>
@@ -688,6 +688,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div><h2>Shared documents</h2><span id="sharedProfileDocumentCount">0 shared files</span></div>
         <div class="shared-profile-head-actions"><span id="sharedProfileExpiry">Preview link active</span><button id="requestAllDocumentsBtn" type="button" onclick="openDownloadRequest('all')">Request All Documents</button></div>
       </div>
+      <nav id="sharedProfileSummary" class="shared-document-summary hidden" aria-label="Shared document summary">
+        <div class="shared-document-summary-head">
+          <div><span class="shared-profile-kicker">QUICK SUMMARY</span><h3>Documents at a glance</h3></div>
+          <span id="sharedProfileSummaryCount">0 documents</span>
+        </div>
+        <ol id="sharedProfileSummaryList" class="shared-document-summary-list"></ol>
+      </nav>
       <div id="sharedProfileDocuments" class="shared-document-grid"></div>
       <footer class="shared-profile-footer">
         Files remain private in ATSRS Storage. Preview and download access is temporary and controlled by the profile owner.
@@ -750,22 +757,22 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=267"></script>
-<script src="js/server-data.js?v=267"></script>
-<script src="js/storage.js?v=267"></script>
-<script src="js/ui.js?v=267"></script>
-<script src="js/auth.js?v=267"></script>
-<script src="js/login.js?v=267"></script>
-<script src="js/dashboard.js?v=267"></script>
-<script src="js/documents.js?v=267"></script>
-<script src="js/references.js?v=267"></script>
-<script src="js/account.js?v=267"></script>
-<script src="js/app.js?v=267"></script>
-<script src="js/product-experience.js?v=267"></script>
-<script src="js/date-picker.js?v=267"></script>
-<script src="js/share-profile.js?v=267"></script>
-<script src="js/boot-refresh.js?v=267"></script>
-<script src="js/account-security-live.js?v=267"></script>
+<script src="js/stability-runtime.js?v=268"></script>
+<script src="js/server-data.js?v=268"></script>
+<script src="js/storage.js?v=268"></script>
+<script src="js/ui.js?v=268"></script>
+<script src="js/auth.js?v=268"></script>
+<script src="js/login.js?v=268"></script>
+<script src="js/dashboard.js?v=268"></script>
+<script src="js/documents.js?v=268"></script>
+<script src="js/references.js?v=268"></script>
+<script src="js/account.js?v=268"></script>
+<script src="js/app.js?v=268"></script>
+<script src="js/product-experience.js?v=268"></script>
+<script src="js/date-picker.js?v=268"></script>
+<script src="js/share-profile.js?v=268"></script>
+<script src="js/boot-refresh.js?v=268"></script>
+<script src="js/account-security-live.js?v=268"></script>
 
 
 
