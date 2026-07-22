@@ -16,17 +16,18 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=268">
-<link rel="stylesheet" href="css/login.css?v=268">
-<link rel="stylesheet" href="css/dashboard.css?v=268">
-<link rel="stylesheet" href="css/documents.css?v=268">
-<link rel="stylesheet" href="css/references.css?v=268">
-<link rel="stylesheet" href="css/account.css?v=268">
-<link rel="stylesheet" href="css/product-experience.css?v=268">
-<link rel="stylesheet" href="css/date-picker.css?v=268">
-<link rel="stylesheet" href="css/share-profile.css?v=268">
-<link rel="stylesheet" href="css/calm-actions.css?v=268">
-<link rel="stylesheet" href="css/account-security-live.css?v=268">
+<link rel="stylesheet" href="css/base.css?v=269">
+<link rel="stylesheet" href="css/login.css?v=269">
+<link rel="stylesheet" href="css/dashboard.css?v=269">
+<link rel="stylesheet" href="css/documents.css?v=269">
+<link rel="stylesheet" href="css/references.css?v=269">
+<link rel="stylesheet" href="css/account.css?v=269">
+<link rel="stylesheet" href="css/product-experience.css?v=269">
+<link rel="stylesheet" href="css/date-picker.css?v=269">
+<link rel="stylesheet" href="css/share-profile.css?v=269">
+<link rel="stylesheet" href="css/calm-actions.css?v=269">
+<link rel="stylesheet" href="css/account-security-live.css?v=269">
+<link rel="stylesheet" href="css/talent-directory.css?v=269">
 
 
 
@@ -128,7 +129,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V268</div>
+<div>ATSRS V269</div>
 <div>Last Update: 22 Jul 2026</div>
 </div>
 </div>
@@ -338,72 +339,40 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="personnelPage" class="hidden">
-<div class="panel">
-<h3 id="crewRegisterTitle"></h3>
-<div class="module-tabs">
-<button id="crewTabListBtn" class="active" onclick="showPersonnelTab('list')"></button>
-<button id="crewTabAddBtn" onclick="showPersonnelTab('add')"></button>
-<button id="crewTabImportBtn" onclick="showPersonnelTab('import')"></button>
-<button id="crewTabProjectsBtn" onclick="showPersonnelTab('projects')"></button>
-<button id="crewTabComplianceBtn" onclick="showPersonnelTab('compliance')"></button>
-</div>
-
-<div id="crewListTab" class="module-tab active">
-<div class="filter-grid">
-<input id="crewSearch" oninput="renderAll()">
-<select id="crewCompanyFilter" onchange="renderAll()"></select>
-<select id="crewPositionFilter" onchange="renderAll()"></select>
-<select id="crewStatusFilter" onchange="renderAll()"></select>
-</div>
-<div class="table-wrap">
-<table>
-<thead><tr><th id="thName1"></th><th id="thSurname1"></th><th id="thPosition1"></th><th id="thCompany1"></th><th>Email</th><th id="thPhone1"></th><th id="thCrewStatus"></th><th id="thAction1"></th></tr></thead>
-<tbody id="personnelTable"></tbody>
-</table>
-</div>
-</div>
-
-<div id="crewAddTab" class="module-tab">
-<h3 id="addPersonnelTitle"></h3>
-<div class="profile-grid">
-<input id="pName"><input id="pSurname"><input id="pPosition"><input id="pCompany"><input id="pEmail"><input id="pPhone">
-<input id="pNationality"><input id="pEmployeeId"><input id="pProject"><input id="pVessel">
-</div>
-<button id="addPersonnelBtn" onclick="addPersonnel()"></button>
-</div>
-
-<div id="crewImportTab" class="module-tab">
-<div class="import-box">
-<h3 id="importExcelTitle"></h3>
-<p id="importExcelInfo" class="sub"></p>
-<input id="excelFile" type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelImport(event)" multiple>
-<div id="excelPreview" class="preview-box"></div>
-</div>
-</div>
-
-<div id="crewProjectsTab" class="module-tab">
-<h3 id="projectsTitle"></h3>
-<div class="profile-grid">
-<input id="projectNameInput">
-<input id="vesselNameInput">
-<input id="clientNameInput">
-<input id="teamNameInput">
-</div>
-<button id="addProjectBtn" onclick="addProject()"></button>
-<div class="table-wrap">
-<table><thead><tr><th id="thProject"></th><th id="thVessel"></th><th id="thClient"></th><th id="thTeam"></th><th id="thActionProject"></th></tr></thead><tbody id="projectsTable"></tbody></table>
-</div>
-</div>
-
-<div id="crewComplianceTab" class="module-tab">
-<h3 id="complianceOverviewTitle"></h3>
-<div class="grid">
-<div class="card"><p id="readyCrewText"></p><div class="stat good" id="readyCrew">0</div></div>
-<div class="card"><p id="reviewCrewText"></p><div class="stat warning" id="reviewCrew">0</div></div>
-<div class="card"><p id="blockedCrewText"></p><div class="stat danger" id="blockedCrew">0</div></div>
-</div>
-<p id="complianceNote" class="sub"></p>
-</div>
+<div class="panel talent-directory-panel">
+  <div class="talent-directory-head">
+    <div>
+      <span class="pill">PERSONNEL DIRECTORY</span>
+      <h3>Find ATSRS professionals</h3>
+      <p class="sub">Search complete professional profiles. Private contact details and documents are never shown here.</p>
+    </div>
+    <span id="talentDirectoryCount" class="talent-count">0 professionals</span>
+  </div>
+  <div class="talent-searchbar">
+    <label class="talent-search-field">
+      <span>Search by name or profession</span>
+      <input id="talentSearch" type="search" placeholder="e.g. ROV Pilot, Electrician, Anar" autocomplete="off">
+    </label>
+    <label>
+      <span>Profession</span>
+      <select id="talentPositionFilter"><option value="">All professions</option></select>
+    </label>
+    <label>
+      <span>Country</span>
+      <select id="talentCountryFilter"><option value="">All countries</option></select>
+    </label>
+    <label>
+      <span>Availability</span>
+      <select id="talentAvailabilityFilter"><option value="">All</option><option value="available">Available</option><option value="online">Online now</option></select>
+    </label>
+  </div>
+  <div id="talentDirectoryStatus" class="talent-directory-status" role="status">Loading professional profiles...</div>
+  <div id="talentDirectoryGrid" class="talent-directory-grid"></div>
+  <div class="hidden" aria-hidden="true">
+    <input id="crewSearch"><select id="crewCompanyFilter"></select><select id="crewPositionFilter"></select><select id="crewStatusFilter"></select>
+    <table><tbody id="personnelTable"></tbody><tbody id="projectsTable"></tbody></table>
+    <span id="readyCrew">0</span><span id="reviewCrew">0</span><span id="blockedCrew">0</span>
+  </div>
 </div>
 </section>
 
@@ -757,22 +726,23 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=268"></script>
-<script src="js/server-data.js?v=268"></script>
-<script src="js/storage.js?v=268"></script>
-<script src="js/ui.js?v=268"></script>
-<script src="js/auth.js?v=268"></script>
-<script src="js/login.js?v=268"></script>
-<script src="js/dashboard.js?v=268"></script>
-<script src="js/documents.js?v=268"></script>
-<script src="js/references.js?v=268"></script>
-<script src="js/account.js?v=268"></script>
-<script src="js/app.js?v=268"></script>
-<script src="js/product-experience.js?v=268"></script>
-<script src="js/date-picker.js?v=268"></script>
-<script src="js/share-profile.js?v=268"></script>
-<script src="js/boot-refresh.js?v=268"></script>
-<script src="js/account-security-live.js?v=268"></script>
+<script src="js/stability-runtime.js?v=269"></script>
+<script src="js/server-data.js?v=269"></script>
+<script src="js/storage.js?v=269"></script>
+<script src="js/ui.js?v=269"></script>
+<script src="js/auth.js?v=269"></script>
+<script src="js/login.js?v=269"></script>
+<script src="js/dashboard.js?v=269"></script>
+<script src="js/documents.js?v=269"></script>
+<script src="js/references.js?v=269"></script>
+<script src="js/account.js?v=269"></script>
+<script src="js/app.js?v=269"></script>
+<script src="js/product-experience.js?v=269"></script>
+<script src="js/date-picker.js?v=269"></script>
+<script src="js/share-profile.js?v=269"></script>
+<script src="js/boot-refresh.js?v=269"></script>
+<script src="js/account-security-live.js?v=269"></script>
+<script src="js/talent-directory.js?v=269"></script>
 
 
 
