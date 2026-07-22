@@ -111,6 +111,8 @@
     var token=safeSessionGet(OWNER_TOKEN_KEY);setKnownLink(activeShare&&activeShare.active&&token?shareUrl(token):'');
   }
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared documents':names.join(', ');}
+  function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}
+  function activeRequestFileIds(request){var revoked=new Set(request.revoked_file_ids||[]);return(request.requested_file_ids||[]).filter(function(id){return !revoked.has(id);});}
   function makeButton(text,className,onClick){var button=document.createElement('button');button.type='button';button.textContent=text;if(className)button.className=className;button.addEventListener('click',onClick);return button;}
   function renderRequestCard(request,history){
     var card=document.createElement('article');card.className='access-request-card status-'+request.status;
@@ -118,16 +120,20 @@
     var identity=document.createElement('div'),name=document.createElement('b'),company=document.createElement('span');
     name.textContent=request.requester_name+' · '+request.requester_company;company.textContent=request.requester_email;
     identity.appendChild(name);identity.appendChild(company);
-    var status=document.createElement('span');status.className='access-status';status.textContent=request.status;
+    var status=document.createElement('span');status.className='access-status';status.textContent=requestHasActiveAccess(request)?'Access active':request.status;
     top.appendChild(identity);top.appendChild(status);
     var requested=document.createElement('p');requested.innerHTML='<span>Requested</span> ';requested.appendChild(document.createTextNode(requestNames(request)));
     var time=document.createElement('small');time.textContent=(history?formatDateTime(request.created_at):relativeTime(request.created_at));
-    var details=document.createElement('div');details.className='access-request-details hidden';details.textContent='Verified work email · '+request.requester_email+(request.access_expires_at?' · Access until '+formatDateTime(request.access_expires_at):'')+(request.download_count?' · '+request.download_count+' document download(s) completed':'');
+    var details=document.createElement('div');details.className='access-request-details hidden';
+    var detailSummary=document.createElement('div');detailSummary.className='access-request-summary';detailSummary.textContent='Verified work email · '+request.requester_email+(request.access_expires_at?' · Access until '+formatDateTime(request.access_expires_at):'')+(request.download_count?' · '+request.download_count+' document download(s) completed':'');details.appendChild(detailSummary);
+    var revokedIds=new Set(request.revoked_file_ids||[]),documentList=document.createElement('div');documentList.className='access-document-list';
+    (request.requested_file_ids||[]).forEach(function(fileId){var row=document.createElement('div');row.className='access-document-row';var label=document.createElement('span');label.textContent=ownerFileName(fileId);var state=document.createElement('small');var revoked=revokedIds.has(fileId)||request.status!=='approved';state.textContent=revoked?'Access closed':'Active';state.className=revoked?'closed':'';row.appendChild(label);row.appendChild(state);if(requestHasActiveAccess(request)&&!revoked){row.appendChild(makeButton('Revoke','access-revoke-document',function(){window.revokeShareDocumentAccess(request.id,fileId);}));}documentList.appendChild(row);});details.appendChild(documentList);
     var actions=document.createElement('div');actions.className='access-request-actions';
     if(request.status==='pending'){
       actions.appendChild(makeButton('Approve','',function(){window.decideShareRequest(request.id,'approve');}));
       actions.appendChild(makeButton('Decline','action',function(){window.decideShareRequest(request.id,'decline');}));
     }
+    if(requestHasActiveAccess(request)&&activeRequestFileIds(request).length){actions.appendChild(makeButton('Revoke all access','access-revoke-all',function(){window.revokeShareRequestAccess(request.id);}));}
     actions.appendChild(makeButton('View details','secondary',function(){details.classList.toggle('hidden');}));
     card.appendChild(top);card.appendChild(requested);card.appendChild(time);card.appendChild(details);card.appendChild(actions);return card;
   }
@@ -187,6 +193,14 @@
     if(!window.confirm((decision==='approve'?'Approve':'Decline')+' this verified recruiter request?'))return;
     try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests();}catch(error){window.alert(error.message||'The request could not be updated.');}
   };
+  window.revokeShareRequestAccess=async function(id){
+    if(!window.confirm('Close all active download access for this recruiter? The shared preview link will remain active.'))return;
+    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests();}catch(error){window.alert(error.message||'Access could not be closed.');}
+  };
+  window.revokeShareDocumentAccess=async function(id,fileId){
+    if(!window.confirm('Close download access to this document? Other approved documents will remain available.'))return;
+    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests();}catch(error){window.alert(error.message||'Document access could not be closed.');}
+  };
   window.approveAllShareRequests=async function(){
     if(!window.confirm('Approve every pending recruiter request for 30 minutes?'))return;
     var button=byId('approveAllRequestsBtn');if(button)button.disabled=true;
@@ -196,12 +210,23 @@
   function publicStatus(expiry){if(!expiry||String(expiry).toUpperCase()==='N/A')return{label:'No expiry date',className:''};var today=new Date();today.setHours(0,0,0,0);var date=new Date(String(expiry).slice(0,10)+'T00:00:00'),days=Math.round((date-today)/86400000);if(days<0)return{label:'Expired',className:'expired'};if(days===0)return{label:'Expires today',className:'warning'};if(days<=30)return{label:days+' days left',className:'warning'};return{label:'Valid',className:''};}
   function detail(label,value){var wrap=document.createElement('div');wrap.className='shared-document-detail';var key=document.createElement('span'),text=document.createElement('b');key.textContent=label;text.textContent=value||'Not provided';wrap.appendChild(key);wrap.appendChild(text);return wrap;}
   function publicDocumentName(id){var file=publicDocuments.find(function(item){return item.id===id;});return file?(file.document_type||file.file_name):'Document';}
+  function publicDocumentDomId(id){return 'shared-document-'+String(id||'file').replace(/[^a-zA-Z0-9_-]/g,'-');}
+  function renderPublicSummary(){
+    var summary=byId('sharedProfileSummary'),list=byId('sharedProfileSummaryList'),count=byId('sharedProfileSummaryCount');if(!summary||!list)return;
+    list.innerHTML='';summary.classList.toggle('hidden',!publicDocuments.length);if(count)count.textContent=publicDocuments.length+' document'+(publicDocuments.length===1?'':'s');
+    publicDocuments.forEach(function(item,index){
+      var row=document.createElement('li'),link=document.createElement('a'),number=document.createElement('span'),copy=document.createElement('span'),name=document.createElement('b'),provider=document.createElement('small');
+      var statusData=publicStatus(item.expiry_date),status=document.createElement('span');link.href='#'+publicDocumentDomId(item.id);link.className='shared-document-summary-link';number.className='shared-document-summary-number';number.textContent=String(index+1).padStart(2,'0');
+      name.textContent=item.document_type||item.file_name||'ATSRS document';provider.textContent=item.provider||'Provider not listed';copy.appendChild(name);copy.appendChild(provider);status.className='shared-document-summary-status'+(statusData.className?' '+statusData.className:'');status.textContent=statusData.label;
+      link.appendChild(number);link.appendChild(copy);link.appendChild(status);link.addEventListener('click',function(){setTimeout(function(){var card=byId(publicDocumentDomId(item.id));if(card){card.classList.remove('summary-focus');void card.offsetWidth;card.classList.add('summary-focus');}},0);});row.appendChild(link);list.appendChild(row);
+    });
+  }
   async function downloadPublicDocument(documentData,button){
     if(button)button.disabled=true;
     try{var result=await publicCall({action:'download',file_id:documentData.id,viewer_token:viewerToken});window.location.assign(result.download_url);}catch(error){window.alert(error.message||'Download access is unavailable.');await loadPublicProfile(publicToken);}finally{if(button)button.disabled=false;}
   }
   function renderPublicDocument(documentData){
-    var card=document.createElement('article');card.className='shared-document-card';
+    var card=document.createElement('article');card.className='shared-document-card';card.id=publicDocumentDomId(documentData.id);
     var top=document.createElement('div');top.className='shared-document-top';var nameWrap=document.createElement('div');
     var category=document.createElement('span');category.className='shared-document-category';category.textContent=documentData.category==='cv'?'Professional profile':'Owner-provided document';
     var title=document.createElement('h3');title.textContent=documentData.document_type||documentData.file_name||'ATSRS document';
@@ -222,7 +247,7 @@
     byId('sharedProfileName').textContent=fullName;byId('sharedProfileRole').textContent=profile.position||'Professional Document Holder';var meta=byId('sharedProfileMeta');meta.innerHTML='';[profile.company,profile.country].filter(Boolean).forEach(function(value){var tag=document.createElement('span');tag.textContent=value;meta.appendChild(tag);});
     publicDocuments=Array.isArray(data.documents)?data.documents:[];byId('sharedProfileDocumentCount').textContent=publicDocuments.length+' shared file'+(publicDocuments.length===1?'':'s');
     var expiry=byId('sharedProfileExpiry');if(expiry)expiry.textContent='Link expires '+formatDateTime(data.access&&data.access.share_expires_at);
-    var grid=byId('sharedProfileDocuments');grid.innerHTML='';if(!publicDocuments.length){var empty=document.createElement('div');empty.className='shared-profile-empty';empty.textContent='No documents are currently shared through this link.';grid.appendChild(empty);}else publicDocuments.forEach(function(item){grid.appendChild(renderPublicDocument(item));});
+    renderPublicSummary();var grid=byId('sharedProfileDocuments');grid.innerHTML='';if(!publicDocuments.length){var empty=document.createElement('div');empty.className='shared-profile-empty';empty.textContent='No documents are currently shared through this link.';grid.appendChild(empty);}else publicDocuments.forEach(function(item){grid.appendChild(renderPublicDocument(item));});
     var all=byId('requestAllDocumentsBtn');if(all){var approved=publicDocuments.length&&publicDocuments.every(function(item){return item.download_status==='approved';}),pending=publicDocuments.length&&publicDocuments.every(function(item){return item.download_status==='pending'||item.download_status==='approved';});all.disabled=approved||pending;all.textContent=approved?'All Downloads Approved':pending?'Request Pending':'Request All Documents';}
     byId('sharedProfileLoading').classList.add('hidden');byId('sharedProfileError').classList.add('hidden');byId('sharedProfileContent').classList.remove('hidden');
   }
