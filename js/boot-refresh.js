@@ -17,13 +17,13 @@
     var badge=byId('buildBadge');
     if(!badge)return;
     var lines=badge.querySelectorAll('div');
-    if(lines[0]&&lines[0].textContent!=='ATSRS V270')lines[0].textContent='ATSRS V270';
-    if(lines[1]&&lines[1].textContent!=='Last Update: 22 Jul 2026')lines[1].textContent='Last Update: 22 Jul 2026';
+    if(lines[0]&&lines[0].textContent!=='ATSRS V271')lines[0].textContent='ATSRS V271';
+    if(lines[1]&&lines[1].textContent!=='Last Update: 23 Jul 2026')lines[1].textContent='Last Update: 23 Jul 2026';
   }
   function loadV241(){
     lockBuildBadge();
-    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=270'});
-    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=270'});
+    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=271'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=271'});
   }
   function appIsOpen(){
     var app=byId('app');
