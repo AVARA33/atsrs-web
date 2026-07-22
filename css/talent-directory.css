@@ -1,0 +1,35 @@
+/* ATSRS V269 - calm, server-backed corporate personnel discovery. */
+.talent-directory-panel{max-width:none}
+.talent-directory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px}
+.talent-directory-head h3{margin:8px 0 4px}
+.talent-count{color:#9fb0c2;font-size:12px;white-space:nowrap;padding-top:8px}
+.talent-searchbar{display:grid;grid-template-columns:minmax(260px,1.7fr) repeat(3,minmax(150px,.75fr));gap:10px;padding:14px 0 18px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
+.talent-searchbar label{display:grid;gap:6px;color:#8ea2b5;font-size:11px;font-weight:600}
+.talent-searchbar input,.talent-searchbar select{width:100%;min-height:40px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
+.talent-searchbar input:focus,.talent-searchbar select:focus{border-color:#4e7187!important;outline:none}
+.talent-directory-status{padding:24px 0;color:#91a5b8;font-size:13px}
+.talent-directory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;padding-top:16px}
+.talent-card{display:flex;flex-direction:column;min-height:270px;padding:18px;border:1px solid #24394b;border-radius:16px;background:rgba(5,16,27,.3)}
+.talent-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.talent-avatar{display:grid;place-items:center;width:42px;height:42px;border:1px solid #345269;border-radius:50%;color:#dcecf7;font-weight:700;background:#0b1d2c}
+.talent-card h4{font-size:18px;margin:18px 0 4px;color:#f5f8fb}
+.talent-role{margin:0;color:#91b6cb;font-size:13px}
+.talent-presence{display:inline-flex;align-items:center;gap:7px;color:#95a7b8;font-size:11px}
+.talent-presence i{width:7px;height:7px;border-radius:50%;background:#76889a}
+.talent-presence.is-online{color:#77dda2}.talent-presence.is-online i{background:#44d47a;box-shadow:0 0 0 3px rgba(68,212,122,.1)}
+.talent-presence.is-today i,.talent-presence.is-recent i{background:#58a8d1}
+.talent-card dl,.talent-modal-card dl{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.talent-card dl div,.talent-modal-card dl div{min-width:0}
+.talent-card dt,.talent-modal-card dt{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#6f869a}
+.talent-card dd,.talent-modal-card dd{margin:4px 0 0;color:#d8e3ec;font-size:12px;overflow-wrap:anywhere}
+.talent-view{align-self:flex-start;margin-top:auto!important;width:auto!important;min-height:34px!important;padding:7px 12px!important;background:transparent!important;border-color:#315067!important;color:#dce9f2!important}
+.talent-empty{grid-column:1/-1;display:grid;gap:5px;padding:34px 0;color:#d7e1e9;text-align:center}
+.talent-empty span{color:#8ea2b5;font-size:12px}
+.talent-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:20px}
+.talent-modal-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(1,7,13,.78);backdrop-filter:blur(7px)}
+.talent-modal-card{position:relative;width:min(440px,100%);padding:26px;border:1px solid #355166;border-radius:18px;background:#091522;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+.talent-modal-card h3{margin:18px 0 4px}.talent-modal-card>.talent-presence{position:absolute;top:28px;right:56px}
+.talent-modal-close{position:absolute;top:14px;right:14px;width:32px!important;height:32px!important;padding:0!important;background:transparent!important;border:1px solid #2b4052!important;color:#b8c7d3!important}
+.talent-privacy-note{margin:18px 0 0;padding-top:14px;border-top:1px solid #213547;color:#879bad;font-size:11px;line-height:1.5}
+@media(max-width:950px){.talent-searchbar{grid-template-columns:1fr 1fr}.talent-search-field{grid-column:1/-1}}
+@media(max-width:620px){.talent-directory-head{display:grid}.talent-searchbar{grid-template-columns:1fr}.talent-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl{grid-template-columns:1fr}}
