@@ -40,17 +40,6 @@
     var notify=byId('atsrsNotificationTimezone');if(notify)Array.prototype.forEach.call(notify.options,function(option){option.textContent=option.value+' ('+formatOffset(option.value)+')'});
   }
   async function persistProfile(){if(typeof window.saveProfile==='function')return await window.saveProfile();return false}
-  async function saveRecovery(){
-    var input=byId('profileAltEmail'),button=byId('saveRecoveryEmailBtn');var email=(input&&input.value||'').trim();
-    if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast('Enter a valid recovery email.','error');return}
-    busy(button,true,'Saving...');
-    try{
-      var c=getClient(),u=await getUser();if(!c||!u)throw new Error('Sign in again to save this setting.');
-      var metadata=Object.assign({},u.user_metadata||{}, {recovery_email:email||null});var result=await c.auth.updateUser({data:metadata});if(result.error)throw result.error;
-      var saved=await persistProfile();if(saved===false)throw new Error('The profile server could not save this change.');
-      toast('Recovery email saved.','ok');
-    }catch(e){toast(e.message||'Recovery email could not be saved.','error')}finally{busy(button,false)}
-  }
   async function verifiedTotp(){var result=await getClient().auth.mfa.listFactors();if(result.error)throw result.error;var factors=result.data&&result.data.totp||[];return factors.filter(function(f){return f.status==='verified'})}
   async function openMfa(){
     try{
@@ -92,7 +81,6 @@
   }
   function bind(){
     decorateTimezones();
-    var recovery=byId('saveRecoveryEmailBtn');if(recovery)recovery.onclick=saveRecovery;
     var mfa=byId('setup2faBtn');if(mfa){mfa.removeAttribute('onclick');mfa.onclick=openMfa}
     var sessions=byId('viewSessionsBtn');if(sessions){sessions.removeAttribute('onclick');sessions.onclick=openSessions}
     var del=byId('deleteAccountBtn');if(del){del.removeAttribute('onclick');del.onclick=openDeleteAccount}
