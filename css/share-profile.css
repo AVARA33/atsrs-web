@@ -151,8 +151,10 @@ body.atsrs-public-share-view{
   gap:14px;
 }
 .shared-document-card{
+  display:flex;
   min-width:0;
   padding:20px;
+  flex-direction:column;
   border:1px solid rgba(48,80,106,.62);
   border-radius:18px;
   background:rgba(5,18,29,.82);
@@ -229,6 +231,7 @@ body.atsrs-public-share-view{
 .shared-document-actions{
   display:flex;
   gap:9px;
+  margin-top:auto;
 }
 .shared-document-actions button,
 .shared-document-actions a{
