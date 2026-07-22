@@ -142,7 +142,7 @@
   window.saveProfile=async function(){
     var data={
       name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
-      company:val('profileCompany'),position:val('profilePosition'),altEmail:val('profileAltEmail'),
+      company:val('profileCompany'),position:val('profilePosition'),
       timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',savedAt:new Date().toISOString()
     };
     if(!writeJson(PROFILE_KEY,data)){showSaveError();return false;}
@@ -156,7 +156,7 @@
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
     var p=readJson(PROFILE_KEY,{});
     setVal('profileName',p.name); setVal('profileSurname',p.surname); setVal('profilePhone',p.phone); setVal('profileCountry',p.country);
-    setVal('profileCompany',p.company); setVal('profilePosition',p.position); setVal('profileAltEmail',p.altEmail);
+    setVal('profileCompany',p.company); setVal('profilePosition',p.position);
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private'); ensureProfileStatus();
   };
   function forceFlagOnly(){
