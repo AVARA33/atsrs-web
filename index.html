@@ -22,7 +22,7 @@ try{
 <link rel="stylesheet" href="css/documents.css?v=260">
 <link rel="stylesheet" href="css/references.css?v=260">
 <link rel="stylesheet" href="css/account.css?v=261">
-<link rel="stylesheet" href="css/product-experience.css?v=260">
+<link rel="stylesheet" href="css/product-experience.css?v=262">
 <link rel="stylesheet" href="css/date-picker.css?v=260">
 <link rel="stylesheet" href="css/share-profile.css?v=264">
 <link rel="stylesheet" href="css/calm-actions.css?v=261">
@@ -218,8 +218,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="product-updates-content">
   <div class="intro-hero updates-hero">
     <span class="pill">PRODUCT UPDATES</span>
-    <h3>What’s coming to ATSRS</h3>
-    <p>A clear view of the features, services and plans currently being prepared for the ATSRS platform.</p>
+    <h3>What’s new and what’s next</h3>
+    <p>Live ATSRS releases, upcoming tools and transparent plan limits in one place.</p>
   </div>
 
   <div class="roadmap-section">
@@ -228,7 +228,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <p>Statuses are shown honestly so you always know what is available and what is still being developed.</p>
     </div>
     <div class="roadmap-grid">
-      <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">AI</div><h3>AI Document Scan</h3><p>Read uploaded documents, suggest key fields and let you confirm the information before saving.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">AI</div><h3>AI Document Scan</h3><p>Upload a PDF or image, let AI suggest the document details, then review every field before saving.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">WA</div><h3>WhatsApp Expiry Alerts</h3><p>Receive approved WhatsApp reminders for documents approaching expiry or already overdue.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">RP</div><h3>Automated Reports</h3><p>Create clear expiry and compliance reports for individuals, teams and company workspaces.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">CO</div><h3>Company Workspace</h3><p>Review personnel documents, identify compliance gaps and manage controlled access in one place.</p></article>
@@ -239,19 +239,58 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
   <div class="plans-section">
     <div class="roadmap-heading">
-      <div><span class="roadmap-kicker">FUTURE SUBSCRIPTIONS</span><h3>Plans designed to grow with you</h3></div>
-      <p>Final pricing and limits will be announced before subscriptions become available.</p>
+      <div><span class="roadmap-kicker">PLANS &amp; LIMITS</span><h3>Simple capacity, clearly priced</h3></div>
+      <p>These are the ATSRS launch prices. Paid billing will open after business registration and payment setup are complete.</p>
     </div>
     <div class="plans-grid">
-      <article class="plan-card"><span>FREE</span><h3>Personal essentials</h3><p>Core document storage, expiry tracking and one main CV.</p></article>
-      <article class="plan-card plan-highlight"><span>PRO</span><h3>Advanced career tools</h3><p>Additional capacity, enhanced alerts and professional ATSRS tools.</p></article>
-      <article class="plan-card"><span>BUSINESS</span><h3>Team compliance</h3><p>Company workspaces, personnel oversight and automated reporting.</p></article>
+      <article class="plan-card plan-free">
+        <div class="plan-card-head"><span class="plan-name">FREE</span><span class="plan-availability">Available</span></div>
+        <div class="plan-price"><strong>$0</strong><span>forever</span></div>
+        <div class="plan-annual">No annual commitment</div>
+        <p>Essential document control for one professional.</p>
+        <ul class="plan-limits">
+          <li><strong>20</strong><span>stored files</span></li>
+          <li><strong>5</strong><span>AI scans each month</span></li>
+          <li><strong>1</strong><span>main CV</span></li>
+          <li><strong>Included</strong><span>expiry email alerts</span></li>
+          <li><strong>Included</strong><span>secure profile sharing</span></li>
+        </ul>
+        <div class="plan-footnote">No card required</div>
+      </article>
+      <article class="plan-card plan-pro">
+        <div class="plan-card-head"><span class="plan-name">PRO</span><span class="plan-availability">Billing soon</span></div>
+        <div class="plan-price"><strong>$7.99</strong><span>per month</span></div>
+        <div class="plan-annual">$79 billed yearly</div>
+        <p>More capacity for active professionals and frequent applications.</p>
+        <ul class="plan-limits">
+          <li><strong>200</strong><span>stored files</span></li>
+          <li><strong>100</strong><span>AI scans each month</span></li>
+          <li><strong>Included</strong><span>90/30-day and overdue alerts</span></li>
+          <li><strong>Included</strong><span>controlled download requests</span></li>
+          <li><strong>Included</strong><span>profile access history</span></li>
+        </ul>
+        <div class="plan-footnote">Save $16.88 with annual billing</div>
+      </article>
+      <article class="plan-card plan-business">
+        <div class="plan-card-head"><span class="plan-name">BUSINESS</span><span class="plan-availability">Billing soon</span></div>
+        <div class="plan-price"><strong>$39</strong><span>per month</span></div>
+        <div class="plan-annual">$390 billed yearly</div>
+        <p>Team capacity for controlled personnel compliance.</p>
+        <ul class="plan-limits">
+          <li><strong>10</strong><span>team members</span></li>
+          <li><strong>2,000</strong><span>stored files</span></li>
+          <li><strong>500</strong><span>AI scans each month</span></li>
+          <li><strong>Planned</strong><span>company workspace</span></li>
+          <li><strong>Planned</strong><span>automated compliance reports</span></li>
+        </ul>
+        <div class="plan-footnote">Save $78 with annual billing</div>
+      </article>
     </div>
   </div>
 
   <div class="updates-signup">
-    <div><span class="roadmap-kicker">PRODUCT NEWS</span><h3>ATSRS update emails</h3><p>Optional product-update registration will open before the next public feature release.</p></div>
-    <button type="button" class="secondary" disabled>Registration coming soon</button>
+    <div><span class="roadmap-kicker">ATSRS NEWSLETTER · 22 JULY 2026</span><h3>AI Scan is now available</h3><p>Choose Scan with AI in Documents, upload a PDF, JPG, PNG or WebP file and review the suggested details before saving.</p></div>
+    <span class="release-state">LIVE RELEASE</span>
   </div>
 </div>
 </section>
@@ -725,7 +764,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/documents.js?v=260"></script>
 <script src="js/references.js?v=260"></script>
 <script src="js/account.js?v=260"></script>
-<script src="js/app.js?v=260"></script>
+<script src="js/app.js?v=262"></script>
 <script src="js/product-experience.js?v=260"></script>
 <script src="js/date-picker.js?v=260"></script>
 <script src="js/share-profile.js?v=263"></script>

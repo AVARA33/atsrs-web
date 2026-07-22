@@ -30,6 +30,15 @@ type OpenAIResponse = {
   error?: { message?: string };
 };
 
+type ScanQuota = {
+  plan: "free" | "pro" | "business";
+  used: number;
+  scan_limit: number;
+  remaining: number;
+  allowed: boolean;
+  reason: "reserved" | "monthly_limit" | "cooldown";
+};
+
 const extractionSchema = {
   type: "object",
   additionalProperties: false,
@@ -115,8 +124,9 @@ Deno.serve(async (req: Request) => {
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const publishableKey = getPublishableKey();
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const openAiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
-  if (!supabaseUrl || !publishableKey || !openAiKey) {
+  if (!supabaseUrl || !publishableKey || !serviceRoleKey || !openAiKey) {
     return json(req, 500, { error: "Server configuration is incomplete." });
   }
 
@@ -147,6 +157,30 @@ Deno.serve(async (req: Request) => {
   if (!ALLOWED_MIME_TYPES.has(mimeType)) return json(req, 415, { error: "Use a PDF, JPG, PNG, or WebP file." });
   if (!fileData.startsWith(`data:${mimeType};base64,`)) return json(req, 400, { error: "The document data is invalid." });
   if (estimatedBytes(fileData) > MAX_FILE_BYTES) return json(req, 413, { error: "The document is larger than 10 MB." });
+
+  const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data: quotaRows, error: quotaError } = await supabaseAdmin.rpc("atsrs_reserve_ai_scan", {
+    p_user_id: authData.user.id,
+  });
+  const quota = Array.isArray(quotaRows) ? quotaRows[0] as ScanQuota | undefined : undefined;
+  if (quotaError || !quota) {
+    console.error("ATSRS AI quota reservation failed", { requestUser: authData.user.id, quotaError });
+    return json(req, 500, { error: "Your AI Scan allowance could not be checked. Try again." });
+  }
+  if (!quota.allowed) {
+    if (quota.reason === "cooldown") {
+      return json(req, 429, {
+        error: "Please wait a few seconds before starting another AI Scan.",
+        quota,
+      });
+    }
+    return json(req, 429, {
+      error: `Your ${quota.plan.toUpperCase()} plan includes ${quota.scan_limit} AI scans per month. The monthly limit has been reached.`,
+      quota,
+    });
+  }
 
   const fileContent = mimeType === "application/pdf"
     ? { type: "input_file", filename, file_data: fileData }
@@ -221,7 +255,7 @@ Deno.serve(async (req: Request) => {
   }
   try {
     const extracted = JSON.parse(text) as Record<string, unknown>;
-    return json(req, 200, { document: extracted, model: OPENAI_MODEL });
+    return json(req, 200, { document: extracted, model: OPENAI_MODEL, quota });
   } catch {
     return json(req, 502, { error: "The AI result could not be validated. Try scanning again." });
   }

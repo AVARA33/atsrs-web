@@ -26,12 +26,25 @@ body.atsrs-preview-open{overflow:hidden}
 .status-planned{color:#cbd5e1;background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.22)}
 .status-available{color:#86efac;background:rgba(34,197,94,.11);border:1px solid rgba(34,197,94,.28)}
 .plans-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.plan-card{padding:20px;border:1px solid rgba(148,163,184,.16);border-radius:17px;background:rgba(13,24,40,.72)}
-.plan-card>span{color:#93c5fd;font-size:11px;font-weight:900;letter-spacing:.15em}
-.plan-card h3{margin:8px 0;font-size:18px}
-.plan-highlight{border-color:rgba(59,130,246,.4);background:linear-gradient(145deg,rgba(30,64,175,.15),rgba(13,24,40,.78))}
+.plan-card{--plan-accent:#94a3b8;--plan-accent-rgb:148,163,184;position:relative;display:flex;min-height:430px;padding:21px;overflow:hidden;flex-direction:column;border:1px solid rgba(var(--plan-accent-rgb),.25);border-radius:17px;background:rgba(9,18,31,.66)}
+.plan-card::before{position:absolute;top:0;right:22px;left:22px;height:1px;background:linear-gradient(90deg,transparent,var(--plan-accent),transparent);content:"";opacity:.8}
+.plan-pro{--plan-accent:#a78bfa;--plan-accent-rgb:167,139,250}
+.plan-business{--plan-accent:#e5b96a;--plan-accent-rgb:229,185,106}
+.plan-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.plan-name{color:var(--plan-accent);font-size:11px;font-weight:900;letter-spacing:.17em}
+.plan-availability{padding:4px 8px;border:1px solid rgba(var(--plan-accent-rgb),.24);border-radius:999px;color:#aebed0;font-size:10px;font-weight:750;letter-spacing:.04em;text-transform:uppercase}
+.plan-price{display:flex;align-items:baseline;gap:9px;margin-top:25px}
+.plan-price strong{color:#f5f8fc;font-size:36px;font-weight:760;letter-spacing:-.045em;line-height:1}
+.plan-price span,.plan-annual{color:#8093aa;font-size:12px}
+.plan-annual{min-height:18px;margin-top:7px}
+.plan-card>p{min-height:48px;margin-top:18px!important}
+.plan-limits{display:grid;gap:0;margin:20px 0 0;padding:0;border-top:1px solid rgba(148,163,184,.12);list-style:none}
+.plan-limits li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(148,163,184,.1);font-size:12px}
+.plan-limits strong{color:#e7edf5;font-size:12px;font-weight:760}
+.plan-limits span{color:#8fa2b8;text-align:right}
+.plan-footnote{margin-top:auto;padding-top:17px;color:var(--plan-accent);font-size:11px;font-weight:700}
 .updates-signup{display:flex;align-items:center;justify-content:space-between;gap:24px}
-.updates-signup button[disabled]{opacity:.55;cursor:not-allowed}
+.release-state{padding:7px 10px;border:1px solid rgba(34,197,94,.3);border-radius:999px;color:#86efac;font-size:10px;font-weight:850;letter-spacing:.1em;white-space:nowrap}
 
 /* Dashboard is an information surface; uploads belong to Documents. */
 #dashboardPage .quick-actions,
