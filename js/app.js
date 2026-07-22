@@ -175,7 +175,7 @@
     var name=String(error&&error.constructor&&error.constructor.name||error&&error.name||'');
     var message=String(error&&error.message||'');
     var status=Number(error&&error.context&&error.context.status||0);
-    return status===502||status===503||status===504||/Functions(?:Fetch|Relay)Error/i.test(name)||/failed to fetch|failed to send|network|relay/i.test(message);
+    return status===503||status===504||/Functions(?:Fetch|Relay)Error/i.test(name)||/failed to fetch|failed to send|network|relay/i.test(message);
   }
 
   async function invokeAiScan(body){
@@ -278,7 +278,9 @@
     var warnings=Array.isArray(documentData.warnings)?documentData.warnings.filter(Boolean):[];
     var alertBox=byId('manualFormAlert');
     if(alertBox){
-      alertBox.textContent=warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.';
+      var quota=result&&result.quota;
+      var quotaNote=quota&&typeof quota.remaining==='number'?' '+quota.remaining+' of '+quota.scan_limit+' AI scans remain this month.':'';
+      alertBox.textContent=(warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.')+quotaNote;
       alertBox.classList.add('active');
       alertBox.classList.add('atsrs-ai-review-warning');
     }
