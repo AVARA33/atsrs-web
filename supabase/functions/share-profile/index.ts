@@ -37,6 +37,7 @@ type AccessRequestRow = {
   requester_company: string;
   requester_email: string;
   requested_file_ids: string[];
+  revoked_file_ids: string[];
   request_all: boolean;
   status: string;
   otp_hash: string | null;
@@ -52,7 +53,7 @@ type AccessRequestRow = {
 };
 
 const SHARE_SELECT = "id,user_id,account_type,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
-const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requested_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
+const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
 
 function getSupabaseSecretKey() {
   const legacyKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -177,6 +178,7 @@ function publicRequestStatus(row: AccessRequestRow) {
     requester_company: row.requester_company,
     requester_email: row.requester_email,
     requested_file_ids: row.requested_file_ids ?? [],
+    revoked_file_ids: row.revoked_file_ids ?? [],
     request_all: Boolean(row.request_all),
     status: row.status,
     email_verified_at: row.email_verified_at,
@@ -412,6 +414,62 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
     return json(req, 200, { request: publicRequestStatus(updated) });
   }
 
+  if (action === "revoke_request_access") {
+    const requestId = safeText(body.request_id, 40);
+    if (!UUID_PATTERN.test(requestId)) return json(req, 400, { error: "Invalid access request." });
+    const requestResult = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
+      .eq("id", requestId).eq("owner_id", user.id).eq("status", "approved").maybeSingle();
+    if (requestResult.error) throw requestResult.error;
+    const accessRequest = requestResult.data as AccessRequestRow | null;
+    if (!accessRequest) return json(req, 404, { error: "Active access was not found." });
+    const now = new Date().toISOString();
+    const update = await admin.from("atsrs_share_access_requests").update({
+      status: "expired", access_expires_at: null, updated_at: now,
+    }).eq("id", accessRequest.id).eq("owner_id", user.id).eq("status", "approved")
+      .select(REQUEST_SELECT).single();
+    if (update.error) throw update.error;
+    const shareResult = await admin.from("atsrs_profile_shares").select(SHARE_SELECT)
+      .eq("id", accessRequest.share_id).eq("user_id", user.id).maybeSingle();
+    if (shareResult.error) throw shareResult.error;
+    const share = shareResult.data as ShareRow | null;
+    if (share) await insertEvent(admin, share, "access_revoked", { request_id: accessRequest.id });
+    return json(req, 200, { request: publicRequestStatus(update.data as AccessRequestRow) });
+  }
+
+  if (action === "revoke_document_access") {
+    const requestId = safeText(body.request_id, 40);
+    const fileId = safeText(body.file_id, 40);
+    if (!UUID_PATTERN.test(requestId) || !UUID_PATTERN.test(fileId)) {
+      return json(req, 400, { error: "Invalid document access request." });
+    }
+    const requestResult = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
+      .eq("id", requestId).eq("owner_id", user.id).eq("status", "approved").maybeSingle();
+    if (requestResult.error) throw requestResult.error;
+    const accessRequest = requestResult.data as AccessRequestRow | null;
+    if (!accessRequest || !uniqueFileIds(accessRequest.requested_file_ids).includes(fileId)) {
+      return json(req, 404, { error: "Active document access was not found." });
+    }
+    const revoked = uniqueFileIds([...(accessRequest.revoked_file_ids ?? []), fileId]);
+    const remaining = uniqueFileIds(accessRequest.requested_file_ids).filter((id) => !revoked.includes(id));
+    const now = new Date().toISOString();
+    const update = await admin.from("atsrs_share_access_requests").update({
+      revoked_file_ids: revoked,
+      status: remaining.length ? "approved" : "expired",
+      access_expires_at: remaining.length ? accessRequest.access_expires_at : null,
+      updated_at: now,
+    }).eq("id", accessRequest.id).eq("owner_id", user.id).eq("status", "approved")
+      .select(REQUEST_SELECT).single();
+    if (update.error) throw update.error;
+    const shareResult = await admin.from("atsrs_profile_shares").select(SHARE_SELECT)
+      .eq("id", accessRequest.share_id).eq("user_id", user.id).maybeSingle();
+    if (shareResult.error) throw shareResult.error;
+    const share = shareResult.data as ShareRow | null;
+    if (share) await insertEvent(admin, share, "document_access_revoked", {
+      request_id: accessRequest.id, file_id: fileId,
+    });
+    return json(req, 200, { request: publicRequestStatus(update.data as AccessRequestRow) });
+  }
+
   if (action === "approve_all_pending") {
     if (!shareIsActive(existing)) return json(req, 409, { error: "Create or renew an active share link first." });
     const pending = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
@@ -628,9 +686,11 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
   const approved = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
     .eq("share_id", share.id).eq("share_token_hash", share.token_hash).eq("viewer_token_hash", identity.tokenHash).eq("status", "approved")
     .contains("requested_file_ids", [fileId]).gt("access_expires_at", new Date().toISOString())
-    .order("access_expires_at", { ascending: false }).limit(1).maybeSingle();
+    .order("access_expires_at", { ascending: false }).limit(20);
   if (approved.error) throw approved.error;
-  const access = approved.data as AccessRequestRow | null;
+  const access = ((approved.data ?? []) as AccessRequestRow[]).find((row) =>
+    !uniqueFileIds(row.revoked_file_ids).includes(fileId)
+  ) ?? null;
   if (!access?.access_expires_at) return json(req, 403, { error: "Download access has not been approved or has expired." });
   const file = await admin.from("atsrs_files").select("id,file_name,storage_path")
     .eq("id", fileId).eq("user_id", share.user_id).eq("account_type", share.account_type).maybeSingle();
@@ -702,7 +762,9 @@ async function publicRequest(req: Request, admin: AdminClient) {
     const details = documentDetails(file);
     const preview = await admin.storage.from(FILE_BUCKET).createSignedUrl(String(file.storage_path), PREVIEW_URL_SECONDS);
     if (preview.error) throw preview.error;
-    const approved = approvedRows.find((row) => row.requested_file_ids.includes(details.id));
+    const approved = approvedRows.find((row) =>
+      row.requested_file_ids.includes(details.id) && !uniqueFileIds(row.revoked_file_ids).includes(details.id)
+    );
     const pending = viewerRequests.find((row) => row.status === "pending" && row.requested_file_ids.includes(details.id));
     return {
       ...details,

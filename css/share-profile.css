@@ -703,8 +703,16 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 .access-request-card p span{color:#7890a3;text-transform:uppercase;font-size:9px;font-weight:900}
 .access-request-card small{color:#6f879b}
 .access-request-details{margin-top:10px;padding:10px;border-radius:10px;background:rgba(15,23,42,.72);color:#9fb0bf;font-size:11px}
+.access-request-summary{line-height:1.5}
+.access-document-list{display:grid;gap:0;margin-top:9px;border-top:1px solid rgba(67,101,128,.4)}
+.access-document-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(67,101,128,.3)}
+.access-document-row>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d7e2ea}
+.access-document-row>small{color:#86efac;font-size:10px}
+.access-document-row>small.closed{color:#8298aa}
+.access-document-row button{width:auto!important;min-width:0!important;margin:0!important;padding:5px 8px!important;border-color:rgba(248,113,113,.35)!important;background:transparent!important;color:#fca5a5!important;font-size:10px!important}
 .access-request-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .access-request-actions button{width:auto!important;min-width:90px;margin:0!important;padding:8px 11px!important;font-size:11px!important}
+.access-request-actions .access-revoke-all{border-color:rgba(248,113,113,.4)!important;background:transparent!important;color:#fca5a5!important}
 .access-empty{padding:22px;border:1px dashed rgba(67,101,128,.55);border-radius:13px;color:#8298aa;text-align:center;font-size:12px}
 .shared-profile-section-head>div:first-child span{display:block;margin-top:5px;color:#7f94a7;font-size:12px}
 .shared-profile-head-actions{display:flex;align-items:center;gap:10px}
@@ -744,4 +752,6 @@ body.company-mode #accountTabSharingBtn{display:none!important}
   .share-analytics{grid-template-columns:repeat(2,minmax(0,1fr))}
   .shared-profile-head-actions{width:100%}
   .shared-profile-head-actions button{width:100%!important}
+  .access-document-row{grid-template-columns:minmax(0,1fr) auto}
+  .access-document-row>small{display:none}
 }
