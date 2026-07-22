@@ -1,4 +1,4 @@
-/* ATSRS V252: product updates, read-only dashboard, and in-page file preview. */
+/* ATSRS V267: product updates, read-only dashboard, and in-page file preview. */
 body.atsrs-preview-open{overflow:hidden}
 
 /* Replace the old marketing/demo content with an honest in-app roadmap. */
@@ -11,15 +11,17 @@ body.atsrs-preview-open{overflow:hidden}
 }
 #introPage .updates-hero h3{max-width:720px;margin:12px 0 8px;font-size:clamp(28px,4vw,44px);line-height:1.08}
 #introPage .updates-hero p{max-width:760px;margin:0;color:#aebed0;font-size:15px;line-height:1.7}
-.roadmap-section,.plans-section,.updates-signup{margin-top:24px;padding:24px;border:1px solid rgba(148,163,184,.16);border-radius:20px;background:rgba(7,15,27,.58)}
+.roadmap-section,.plans-section{margin-top:24px;padding:24px;border:1px solid rgba(148,163,184,.16);border-radius:20px;background:rgba(7,15,27,.58)}
 .roadmap-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px}
-.roadmap-heading h3,.updates-signup h3{margin:5px 0 0;font-size:22px}
+.roadmap-heading h3{margin:5px 0 0;font-size:22px}
 .roadmap-heading>p{max-width:520px;margin:0;color:#8fa2b8;line-height:1.55}
 .roadmap-kicker{color:#60a5fa;font-size:11px;font-weight:800;letter-spacing:.16em}
 .roadmap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .roadmap-card{position:relative;min-height:210px;padding:20px;border:1px solid rgba(148,163,184,.16);border-radius:17px;background:linear-gradient(155deg,rgba(18,31,49,.88),rgba(8,16,29,.9))}
+.roadmap-card-featured{border-color:rgba(34,197,94,.3);box-shadow:inset 0 1px 0 rgba(134,239,172,.08)}
+.roadmap-news{display:block;margin:2px 112px 0 0;color:#86efac;font-size:10px;font-weight:850;letter-spacing:.1em;line-height:1.4}
 .roadmap-card h3{margin:17px 0 8px;font-size:18px}
-.roadmap-card p,.plan-card p,.updates-signup p{margin:0;color:#93a5ba;line-height:1.55}
+.roadmap-card p,.plan-card p{margin:0;color:#93a5ba;line-height:1.55}
 .roadmap-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin-top:20px;border:1px solid rgba(96,165,250,.32);border-radius:12px;background:rgba(37,99,235,.12);color:#bfdbfe;font-size:12px;font-weight:900;letter-spacing:.08em}
 .roadmap-status{position:absolute;top:16px;right:16px;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .status-development{color:#fde68a;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28)}
@@ -43,8 +45,6 @@ body.atsrs-preview-open{overflow:hidden}
 .plan-limits strong{color:#e7edf5;font-size:12px;font-weight:760}
 .plan-limits span{color:#8fa2b8;text-align:right}
 .plan-footnote{margin-top:auto;padding-top:17px;color:var(--plan-accent);font-size:11px;font-weight:700}
-.updates-signup{display:flex;align-items:center;justify-content:space-between;gap:24px}
-.release-state{padding:7px 10px;border:1px solid rgba(34,197,94,.3);border-radius:999px;color:#86efac;font-size:10px;font-weight:850;letter-spacing:.1em;white-space:nowrap}
 
 /* Dashboard is an information surface; uploads belong to Documents. */
 #dashboardPage .quick-actions,
@@ -80,9 +80,8 @@ body.atsrs-preview-open{overflow:hidden}
 
 @media(max-width:900px){.roadmap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.roadmap-heading{align-items:flex-start;flex-direction:column;gap:8px}}
 @media(max-width:640px){
-  #introPage .updates-hero,.roadmap-section,.plans-section,.updates-signup{padding:18px}
+  #introPage .updates-hero,.roadmap-section,.plans-section{padding:18px}
   .roadmap-grid,.plans-grid{grid-template-columns:1fr}
-  .updates-signup{align-items:flex-start;flex-direction:column}
   .file-preview-modal{padding:0}
   .file-preview-dialog{width:100vw;height:100dvh;border:0;border-radius:0}
   .file-preview-head{padding:12px}
