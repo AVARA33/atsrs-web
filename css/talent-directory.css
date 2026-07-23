@@ -1,4 +1,4 @@
-/* ATSRS V298 - separate candidate discovery from linked company personnel. */
+/* ATSRS V299 - separate candidate discovery from linked company personnel. */
 .talent-directory-panel{max-width:none}
 .talent-directory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px}
 .talent-directory-head h3{margin:8px 0 4px}
@@ -8,16 +8,18 @@
 .talent-view-switch{display:flex;align-items:center;gap:3px;padding:3px;border:1px solid #263c4e;border-radius:9px;background:rgba(5,16,27,.22)}
 .talent-view-switch button{width:auto!important;min-height:28px!important;margin:0!important;padding:4px 9px!important;border:0!important;border-radius:6px!important;background:transparent!important;color:#8398a9!important;font-size:10px!important}
 .talent-view-switch button.active{background:#15283a!important;color:#e4edf3!important;box-shadow:inset 0 0 0 1px #345066}
-.linked-personnel-panel{margin:0;padding:14px;border:1px solid #22384a;border-radius:14px;background:rgba(5,16,27,.18)}
-.linked-personnel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-.linked-personnel-head h4{margin:0 0 4px;color:#edf4f9;font-size:14px}
-.linked-personnel-head p{margin:0;color:#8399aa;font-size:11px}
-.linked-personnel-head>span{color:#8fa6b6;font-size:11px;white-space:nowrap}
-.linked-personnel-list{margin-top:12px;max-height:248px;overflow:auto}
+.personnel-filterbar{display:grid;grid-template-columns:minmax(210px,1.35fr) repeat(4,minmax(130px,.8fr)) minmax(170px,1fr);gap:9px;padding:14px 0 16px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
+.personnel-filterbar>label,.personnel-sort-control label{display:grid;gap:6px;color:#8ea2b5;font-size:10px;font-weight:600}
+.personnel-filterbar input,.personnel-filterbar select{width:100%;min-height:38px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
+.personnel-filterbar select{appearance:none;-webkit-appearance:none;padding-right:30px!important;cursor:pointer;color-scheme:dark;background-color:#091522!important;background-image:linear-gradient(45deg,transparent 50%,#91a4b4 50%),linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;background-position:calc(100% - 14px) 50%,calc(100% - 10px) 50%!important;background-size:4px 4px,4px 4px!important;background-repeat:no-repeat!important}
+.personnel-filterbar input:hover,.personnel-filterbar input:focus,.personnel-filterbar select:hover,.personnel-filterbar select:focus{background-color:#091522!important;border-color:#4e7187!important;color:#edf5fb!important;outline:none}
+.personnel-sort-control{display:grid;grid-template-columns:1fr 38px;align-items:end;gap:6px}
+.personnel-sort-control button{width:38px!important;min-width:38px!important;min-height:38px!important;margin:0!important;padding:0!important;background:transparent!important;border-color:#315067!important;color:#bcd0dd!important;font-size:16px!important}
+.linked-personnel-list{margin-top:12px;max-height:min(520px,calc(100vh - 400px));min-height:120px;overflow:auto}
 .linked-personnel-empty{display:grid;gap:5px;padding:34px 12px;color:#8499aa;font-size:11px;text-align:center}
 .linked-personnel-empty b{color:#d9e4eb;font-size:13px}
 .linked-personnel-table{display:grid;min-width:780px}
-.linked-personnel-row{display:grid;grid-template-columns:1.25fr 1fr .8fr 1fr auto;align-items:center;gap:14px;min-height:48px;padding:8px 10px;border-top:1px solid #1d3142;color:#cbd8e1;font-size:11px}
+.linked-personnel-row{display:grid;grid-template-columns:1.2fr 1fr 1fr .8fr .85fr auto;align-items:center;gap:14px;min-height:48px;padding:8px 10px;border-top:1px solid #1d3142;color:#cbd8e1;font-size:11px}
 .linked-personnel-row.is-head{min-height:32px;color:#72899c;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .linked-personnel-row>span:first-child{display:grid;gap:2px}.linked-personnel-row b{color:#edf3f7;font-size:12px}.linked-personnel-row small{color:#7790a3;font-size:9px}
 .linked-personnel-actions{display:flex!important;grid-auto-flow:column;gap:6px}
@@ -176,5 +178,6 @@
 .talent-messages-panel{margin-top:16px}.talent-messages-head h3{margin:8px 0 0}.talent-messages-head>button{width:auto!important;min-height:34px!important;margin:0!important;padding:7px 12px!important;background:transparent!important}
 .talent-messages-list{display:grid;gap:8px;margin-top:16px}.talent-message{display:grid;gap:10px;padding:14px;border:1px solid #24394b;border-radius:12px;background:rgba(5,16,27,.22)}.talent-message.is-unread{border-left:2px solid #55c986}
 .talent-message>div{display:grid;gap:3px}.talent-message>div span{color:#8097aa;font-size:10px}.talent-message p{margin:0;color:#c9d6df;font-size:12px;line-height:1.55;white-space:pre-wrap}
-@media(max-width:950px){.talent-searchbar{grid-template-columns:1fr 1fr}.talent-search-field{grid-column:1/-1}}
-@media(max-width:620px){.talent-directory-head,.linked-personnel-head{display:grid}.talent-head-tools{justify-content:space-between}.talent-searchbar{grid-template-columns:1fr}.talent-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl{grid-template-columns:1fr}.talent-summary-list>div{display:grid;gap:6px}.talent-summary-list em{text-align:left;white-space:normal}.talent-messages-head{align-items:flex-start}}
+@media(max-width:1180px){.personnel-filterbar{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:950px){.talent-searchbar{grid-template-columns:1fr 1fr}.talent-search-field{grid-column:1/-1}.personnel-filterbar{grid-template-columns:1fr 1fr}.personnel-search-field{grid-column:1/-1}}
+@media(max-width:620px){.talent-directory-head,.linked-personnel-head{display:grid}.talent-head-tools{justify-content:space-between}.talent-searchbar,.personnel-filterbar{grid-template-columns:1fr}.talent-search-field,.personnel-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl{grid-template-columns:1fr}.talent-summary-list>div{display:grid;gap:6px}.talent-summary-list em{text-align:left;white-space:normal}.talent-messages-head{align-items:flex-start}}

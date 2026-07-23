@@ -1,4 +1,4 @@
-/* ATSRS V298 - keep nested Personnel content visible during page navigation. */
+/* ATSRS V299 - keep nested Personnel content visible during page navigation. */
 (function(){
   'use strict';
   var profiles=[];
@@ -8,6 +8,7 @@
   var activeActionPanel=null;
   var candidateView='cards';
   var personnelView='list';
+  var personnelSortDirection='asc';
   try{
     candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
     personnelView=localStorage.getItem('atsrs_personnel_view')||'list';
@@ -190,35 +191,96 @@
     window.saveData('personnel',personnel);
     if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')window.atsrsCloudData.flush();
   }
+  function workspacePersonnelRecord(profile){
+    if(!profile||typeof window.getData!=='function')return {};
+    var personnel=window.getData('personnel');
+    personnel=Array.isArray(personnel)?personnel:[];
+    return personnel.find(function(item){
+      if(item&&item.linkedUserId===profile.user_id)return true;
+      return normalized((item&&item.name)+' '+(item&&item.surname))===normalized(profile.name+' '+profile.surname)
+        &&normalized(item&&item.position)===normalized(profile.position);
+    })||{};
+  }
+  function personnelProject(profile){
+    var record=workspacePersonnelRecord(profile);
+    return String(record.project||record.vessel||'').trim();
+  }
+  function personnelWorkStatusKey(profile){
+    var status=String(profile&&profile.availability_status||'not_set');
+    if(status==='available_now'||status==='available_from')return 'available';
+    if(status==='open_to_offers')return 'open_to_offers';
+    if(status==='not_available')return 'not_available';
+    return 'not_set';
+  }
+  function personnelAccessKey(item){
+    return item&&item.status&&item.status!=='linked'?item.status:'public_profile_only';
+  }
+  function fillPersonnelSelect(id,values,label){
+    var select=byId(id);if(!select)return;
+    var current=select.value;
+    select.innerHTML='<option value="">'+safe(label)+'</option>'+unique(values).map(function(value){return '<option value="'+safe(value)+'">'+safe(value)+'</option>'}).join('');
+    select.value=Array.prototype.some.call(select.options,function(option){return option.value===current})?current:'';
+  }
+  function filteredPersonnelRows(){
+    var query=normalized(byId('personnelSearch')&&byId('personnelSearch').value);
+    var profession=normalized(byId('personnelProfessionFilter')&&byId('personnelProfessionFilter').value);
+    var workStatus=byId('personnelWorkStatusFilter')&&byId('personnelWorkStatusFilter').value||'';
+    var project=normalized(byId('personnelProjectFilter')&&byId('personnelProjectFilter').value);
+    var access=byId('personnelAccessFilter')&&byId('personnelAccessFilter').value||'';
+    var sortBy=byId('personnelSortBy')&&byId('personnelSortBy').value||'name';
+    var rows=linkedPersonnel.filter(function(item){
+      var profile=item&&item.profile;if(!profile)return false;
+      if(query&&normalized(profile.name+' '+profile.surname).indexOf(query)<0)return false;
+      if(profession&&normalized(profile.position)!==profession)return false;
+      if(workStatus&&personnelWorkStatusKey(profile)!==workStatus)return false;
+      if(project&&normalized(personnelProject(profile))!==project)return false;
+      if(access&&personnelAccessKey(item)!==access)return false;
+      return true;
+    });
+    rows.sort(function(a,b){
+      var ap=a.profile,bp=b.profile,av='',bv='';
+      if(sortBy==='profession'){av=ap.position;bv=bp.position}
+      else if(sortBy==='status'){av=availability(ap).label;bv=availability(bp).label}
+      else if(sortBy==='project'){av=personnelProject(ap);bv=personnelProject(bp)}
+      else{av=ap.name+' '+ap.surname;bv=bp.name+' '+bp.surname}
+      var result=String(av||'').localeCompare(String(bv||''),undefined,{sensitivity:'base'});
+      return personnelSortDirection==='desc'?-result:result;
+    });
+    return rows;
+  }
   function renderLinkedPersonnelModern(){
     var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
-    var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
-    if(count)count.textContent=rows.length+' linked';
+    var allRows=linkedPersonnel.filter(function(item){return item&&item.profile});
+    fillPersonnelSelect('personnelProfessionFilter',allRows.map(function(item){return item.profile.position}),'All professions');
+    fillPersonnelSelect('personnelProjectFilter',allRows.map(function(item){return personnelProject(item.profile)}),'All projects');
+    var rows=filteredPersonnelRows();
+    if(count)count.textContent=rows.length===allRows.length?allRows.length+' linked':rows.length+' of '+allRows.length;
     updateViewSwitches();
     if(!rows.length){
-      list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a candidate profile and choose Add to Personnel.</span></div>';
+      list.innerHTML=allRows.length
+        ?'<div class="linked-personnel-empty"><b>No matching personnel</b><span>Clear or change the filters to see more people.</span></div>'
+        :'<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a candidate profile and choose Add to Personnel.</span></div>';
       return;
     }
     if(personnelView==='cards'){
       list.innerHTML='<div class="linked-personnel-cards">'+rows.map(function(item){
-        var profile=item.profile;
+        var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
         var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
         var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
         return '<article class="linked-personnel-card">'+
           '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
           '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+
-          '<dl><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div><div><dt>Tracking</dt><dd>'+safe(tracking)+'</dd></div></dl>'+
+          '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div><div><dt>Tracking</dt><dd>'+safe(tracking)+'</dd></div></dl>'+
           '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
       }).join('')+'</div>';
     }else{
-      list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Candidate</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
+      list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Candidate</span><span>Profession</span><span>Work status</span><span>Project</span><span>Access</span><span>Action</span></div>'+
         rows.map(function(item){
-          var profile=item.profile;
+          var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
           var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
-          var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
           return '<div class="linked-personnel-row" role="row">'+
             '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small></span>'+
-            '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(access)+'</span><span>'+safe(tracking)+'</span>'+
+            '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(work.label)+'</span><span>'+safe(project)+'</span><span>'+safe(access)+'</span>'+
             '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
         }).join('')+'</div>';
     }
@@ -493,6 +555,18 @@
       });
     });
     updateViewSwitches();
+    ['personnelSearch','personnelProfessionFilter','personnelWorkStatusFilter','personnelProjectFilter','personnelAccessFilter','personnelSortBy'].forEach(function(id){
+      var element=byId(id);if(!element)return;
+      element.addEventListener(id==='personnelSearch'?'input':'change',renderLinkedPersonnel);
+    });
+    var personnelSortButton=byId('personnelSortDirection');
+    if(personnelSortButton)personnelSortButton.addEventListener('click',function(){
+      personnelSortDirection=personnelSortDirection==='asc'?'desc':'asc';
+      personnelSortButton.textContent=personnelSortDirection==='asc'?'↑':'↓';
+      personnelSortButton.setAttribute('aria-label',personnelSortDirection==='asc'?'Sort ascending':'Sort descending');
+      personnelSortButton.title=personnelSortDirection==='asc'?'Sort ascending':'Sort descending';
+      renderLinkedPersonnel();
+    });
     ['talentSearch','talentPositionFilter','talentCountryFilter','talentAvailabilityFilter'].forEach(function(id){var el=byId(id);if(el)el.addEventListener(id==='talentSearch'?'input':'change',render)});
     var workFilter=byId('talentWorkPreferenceFilter');
     if(workFilter){

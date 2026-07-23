@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=298">
-<link rel="stylesheet" href="css/login.css?v=298">
-<link rel="stylesheet" href="css/dashboard.css?v=298">
-<link rel="stylesheet" href="css/documents.css?v=298">
-<link rel="stylesheet" href="css/references.css?v=298">
-<link rel="stylesheet" href="css/account.css?v=298">
-<link rel="stylesheet" href="css/product-experience.css?v=298">
-<link rel="stylesheet" href="css/date-picker.css?v=298">
-<link rel="stylesheet" href="css/share-profile.css?v=298">
-<link rel="stylesheet" href="css/calm-actions.css?v=298">
-<link rel="stylesheet" href="css/account-security-live.css?v=298">
-<link rel="stylesheet" href="css/talent-directory.css?v=298">
-<link rel="stylesheet" href="css/maintenance.css?v=298">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=298">
-<script defer src="js/maintenance-guard.js?v=298"></script>
+<link rel="stylesheet" href="css/base.css?v=299">
+<link rel="stylesheet" href="css/login.css?v=299">
+<link rel="stylesheet" href="css/dashboard.css?v=299">
+<link rel="stylesheet" href="css/documents.css?v=299">
+<link rel="stylesheet" href="css/references.css?v=299">
+<link rel="stylesheet" href="css/account.css?v=299">
+<link rel="stylesheet" href="css/product-experience.css?v=299">
+<link rel="stylesheet" href="css/date-picker.css?v=299">
+<link rel="stylesheet" href="css/share-profile.css?v=299">
+<link rel="stylesheet" href="css/calm-actions.css?v=299">
+<link rel="stylesheet" href="css/account-security-live.css?v=299">
+<link rel="stylesheet" href="css/talent-directory.css?v=299">
+<link rel="stylesheet" href="css/maintenance.css?v=299">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=299">
+<script defer src="js/maintenance-guard.js?v=299"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V298</div>
+<div>ATSRS V299</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -381,16 +381,54 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </div>
     </div>
   </div>
-  <div class="linked-personnel-panel" aria-labelledby="linkedPersonnelTitle">
-    <div class="linked-personnel-head">
-      <div>
-        <h4 id="linkedPersonnelTitle">Personnel list</h4>
-        <p>Add suitable professionals from Candidates. Private contact details and documents still require separate permission.</p>
-      </div>
+  <div class="personnel-filterbar" aria-label="Personnel filters">
+    <label class="personnel-search-field">
+      <span>Search</span>
+      <input id="personnelSearch" type="search" placeholder="Search by name" autocomplete="off">
+    </label>
+    <label>
+      <span>Profession</span>
+      <select id="personnelProfessionFilter"><option value="">All professions</option></select>
+    </label>
+    <label>
+      <span>Work status</span>
+      <select id="personnelWorkStatusFilter">
+        <option value="">All statuses</option>
+        <option value="available">Available</option>
+        <option value="open_to_offers">Open to offers</option>
+        <option value="not_available">Not available</option>
+        <option value="not_set">Not specified</option>
+      </select>
+    </label>
+    <label>
+      <span>Project</span>
+      <select id="personnelProjectFilter"><option value="">All projects</option></select>
+    </label>
+    <label>
+      <span>Access</span>
+      <select id="personnelAccessFilter">
+        <option value="">All access</option>
+        <option value="access_granted">Access granted</option>
+        <option value="access_pending">Access pending</option>
+        <option value="public_profile_only">Public profile only</option>
+        <option value="access_revoked">Access revoked</option>
+      </select>
+    </label>
+    <div class="personnel-sort-control">
+      <label>
+        <span>Sort by</span>
+        <select id="personnelSortBy">
+          <option value="name">Name</option>
+          <option value="profession">Profession</option>
+          <option value="status">Work status</option>
+          <option value="project">Project</option>
+        </select>
+      </label>
+      <button id="personnelSortDirection" type="button" class="secondary" aria-label="Sort ascending" title="Sort ascending">↑</button>
     </div>
-    <div id="linkedPersonnelList" class="linked-personnel-list">
-      <div class="linked-personnel-empty">No professionals added yet.</div>
-    </div>
+  </div>
+  <div id="linkedPersonnelList" class="linked-personnel-list">
+    <div class="linked-personnel-empty">No professionals added yet.</div>
   </div>
   <div class="hidden" aria-hidden="true">
     <input id="crewSearch"><select id="crewCompanyFilter"></select><select id="crewPositionFilter"></select><select id="crewStatusFilter"></select>
@@ -863,25 +901,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=298"></script>
-<script src="js/server-data.js?v=298"></script>
-<script src="js/storage.js?v=298"></script>
-<script src="js/ui.js?v=298"></script>
-<script src="js/auth.js?v=298"></script>
-<script src="js/login.js?v=298"></script>
-<script src="js/dashboard.js?v=298"></script>
-<script src="js/avatar.js?v=298"></script>
-<script src="js/documents.js?v=298"></script>
-<script src="js/references.js?v=298"></script>
-<script src="js/account.js?v=298"></script>
-<script src="js/app.js?v=298"></script>
-<script src="js/product-experience.js?v=298"></script>
-<script src="js/date-picker.js?v=298"></script>
-<script src="js/share-profile.js?v=298"></script>
-<script src="js/boot-refresh.js?v=298"></script>
-<script src="js/account-security-live.js?v=298"></script>
-<script src="js/talent-directory.js?v=298"></script>
-<script src="js/workspace-switcher.js?v=298"></script>
+<script src="js/stability-runtime.js?v=299"></script>
+<script src="js/server-data.js?v=299"></script>
+<script src="js/storage.js?v=299"></script>
+<script src="js/ui.js?v=299"></script>
+<script src="js/auth.js?v=299"></script>
+<script src="js/login.js?v=299"></script>
+<script src="js/dashboard.js?v=299"></script>
+<script src="js/avatar.js?v=299"></script>
+<script src="js/documents.js?v=299"></script>
+<script src="js/references.js?v=299"></script>
+<script src="js/account.js?v=299"></script>
+<script src="js/app.js?v=299"></script>
+<script src="js/product-experience.js?v=299"></script>
+<script src="js/date-picker.js?v=299"></script>
+<script src="js/share-profile.js?v=299"></script>
+<script src="js/boot-refresh.js?v=299"></script>
+<script src="js/account-security-live.js?v=299"></script>
+<script src="js/talent-directory.js?v=299"></script>
+<script src="js/workspace-switcher.js?v=299"></script>
 
 
 
