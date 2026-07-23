@@ -1,4 +1,4 @@
-/* ATSRS V292 - working corporate profile actions and linked personnel. */
+/* ATSRS V293 - separate candidate discovery from linked company personnel. */
 (function(){
   'use strict';
   var profiles=[];
@@ -61,6 +61,25 @@
     };
   }
   function complete(profile){return !!(profile.name&&profile.surname&&profile.position&&profile.country)}
+  function profileReadiness(profile){
+    var status=String(profile&&profile.availability_status||'not_set');
+    var preferences=normalizeWorkPreferences(profile&&(
+      profile.work_preferences||profile.work_preference||[]
+    ));
+    var checks=[
+      profile&&profile.name,
+      profile&&profile.surname,
+      profile&&profile.position,
+      profile&&profile.country,
+      profile&&profile.company,
+      safeAvatar(profile&&profile.avatar_url),
+      status!=='not_set',
+      status!=='available_from'||!!(profile&&profile.available_from),
+      profile&&profile.availability_confirmed_at,
+      preferences.length>0
+    ];
+    return checks.reduce(function(score,value){return score+(value?10:0)},0);
+  }
   async function user(){
     var c=client();if(!c||!c.auth)return null;
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
@@ -145,7 +164,7 @@
     var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
     var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
     if(count)count.textContent=rows.length+' linked';
-    if(!rows.length){list.innerHTML='<div class="linked-personnel-empty">No professionals added yet. Use “Add to Personnel” from a professional profile.</div>';return}
+    if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a professional profile and choose “Add to Personnel”.</span></div>';return}
     list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Professional</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
       rows.map(function(item){
         var profile=item.profile,access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
@@ -255,11 +274,11 @@
   function render(){
     var grid=byId('talentDirectoryGrid'),count=byId('talentDirectoryCount'),status=byId('talentDirectoryStatus');if(!grid)return;
     var visible=filtered();
-    if(count)count.textContent=visible.length+' professional'+(visible.length===1?'':'s');
+    if(count)count.textContent=visible.length+' candidate'+(visible.length===1?'':'s');
     if(status)status.classList.add('hidden');
     if(!visible.length){grid.innerHTML='<div class="talent-empty"><b>No matching professionals</b><span>Try a broader profession, country or name.</span></div>';return}
-    grid.innerHTML=visible.map(function(profile){var active=activity(profile),work=availability(profile);return '<article class="talent-card">'+
-      '<div class="talent-card-top">'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span></div>'+
+    grid.innerHTML=visible.map(function(profile){var active=activity(profile),work=availability(profile),readiness=profileReadiness(profile);return '<article class="talent-card">'+
+      '<div class="talent-card-top">'+avatarMarkup(profile)+'<div class="talent-card-signals"><span class="talent-readiness">'+safe(readiness)+'% complete</span><span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span></div></div>'+
       '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p class="talent-role">'+safe(profile.position)+'</p>'+
       '<div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div>'+
       '<dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl>'+
@@ -267,7 +286,7 @@
     grid.querySelectorAll('.talent-view').forEach(function(button){button.onclick=function(){openProfile(button.dataset.talentId)}});
   }
   function openProfile(id){
-    var profile=profiles.find(function(item){return item.user_id===id});if(!profile)return;
+    var profile=profiles.find(function(item){return item.user_id===id})||(linkedRecord(id)&&linkedRecord(id).profile);if(!profile)return;
     var active=activity(profile),work=availability(profile),isLinked=!!linkedRecord(id),old=byId('atsrsTalentModal');if(old)old.remove();
     var modal=document.createElement('div');modal.id='atsrsTalentModal';modal.className='talent-modal';
     modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-added':'')+'" data-talent-action="personnel"'+(isLinked?' disabled':'')+'>'+(isLinked?'Added to Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain private. Adding this profile copies public professional details only; CV and documents require separate permission.</p></div>';
@@ -301,6 +320,7 @@
       var data=await actionCall({action:'cv',target_user_id:profile.user_id});
       var panel=actionPanel();if(panel)panel.classList.add('hidden');
       if(typeof window.atsrsOpenFilePreview!=='function')throw new Error('CV preview is unavailable.');
+      var talentModal=byId('atsrsTalentModal');if(talentModal)talentModal.remove();
       window.atsrsOpenFilePreview({url:data.url,title:data.file_name||'Curriculum Vitae',mimeType:data.mime_type||'application/pdf'});
     }catch(error){panelMessage(error.message||'CV could not be opened.',true)}
   }
@@ -326,7 +346,7 @@
     var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
     loading=false;
     if(result.error){if(status){status.textContent='Professional profiles could not be loaded. Please refresh and try again.';status.classList.remove('hidden')}console.warn('ATSRS talent directory load failed',result.error);return}
-    profiles=Array.isArray(result.data)?result.data:[];
+    profiles=(Array.isArray(result.data)?result.data:[]).filter(function(profile){return profileReadiness(profile)>=90});
     try{await loadPersonnelLinks()}catch(error){console.warn('ATSRS linked personnel load failed',error);renderLinkedPersonnel()}
     fillSelect('talentPositionFilter',profiles.map(function(profile){return profile.position}),'All professions');
     fillSelect('talentCountryFilter',profiles.map(function(profile){return profile.country}),'All countries');
@@ -345,13 +365,26 @@
     var oldSave=window.saveProfile;
     if(typeof oldSave==='function')window.saveProfile=async function(){var result=await oldSave.apply(this,arguments);if(result!==false)await syncOwnProfile(true);return result};
     var oldShow=window.showPage;
-    if(typeof oldShow==='function')window.showPage=function(){var result=oldShow.apply(this,arguments);if(String(arguments[0]||'')==='personnel')setTimeout(loadDirectory,30);return result};
-    setTimeout(function(){if(mode()==='personal'){syncOwnProfile(true);loadInbox()}else if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadDirectory()},1200);
-    window.addEventListener('atsrs:resume',function(){if(mode()==='personal'){syncOwnProfile(false);loadInbox()}else loadDirectory()});
-    window.addEventListener('atsrs:profile-photo-changed',function(){if(mode()==='personal')syncOwnProfile(true);else loadDirectory()});
+    if(typeof oldShow==='function')window.showPage=function(){
+      var page=String(arguments[0]||''),result=oldShow.apply(this,arguments);
+      if(page==='candidates')setTimeout(loadDirectory,30);
+      if(page==='personnel')setTimeout(function(){loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)})},30);
+      return result;
+    };
+    setTimeout(function(){
+      if(mode()==='personal'){syncOwnProfile(true);loadInbox();return}
+      if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
+      else if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)});
+    },1200);
+    window.addEventListener('atsrs:resume',function(){
+      if(mode()==='personal'){syncOwnProfile(false);loadInbox();return}
+      if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
+      if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)});
+    });
+    window.addEventListener('atsrs:profile-photo-changed',function(){if(mode()==='personal')syncOwnProfile(true);else if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory()});
     setInterval(function(){if(mode()==='personal')syncOwnProfile(false)},300000);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
   window.atsrsTalentAvailability=availability;
-  window.atsrsTalentDirectory={load:loadDirectory,sync:syncOwnProfile};
+  window.atsrsTalentDirectory={load:loadDirectory,loadPersonnel:loadPersonnelLinks,sync:syncOwnProfile};
 })();

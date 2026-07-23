@@ -234,7 +234,7 @@ function applyLanguage(){
   txt("resetTitle",tr("resetTitle"));txt("resetInfo",tr("resetInfo"));ph("resetEmail",tr("email"));txt("resetEmailRule",emailMsg());txt("resetBtn",tr("sendReset"));txt("backLoginBtn2",tr("back"));
   txt("newPassTitle",tr("newPass"));ph("newPassword",tr("newPassword"));ph("newPassword2",tr("confirmNew"));txt("saveNewPassBtn",tr("saveNew"));
 
-  txt("cabinetText",tr("cabinet"));txt("navDashboard",tr("dashboard"));txt("navPersonnel",tr("personnel"));txt("navCertificates",tr("certificates"));txt("navProfile",ptr("account"));txt("navLogout",tr("logout"));txt("topLogoutBtn",tr("logout"));
+  txt("cabinetText",tr("cabinet"));txt("navDashboard",tr("dashboard"));txt("navCandidates","Candidates");txt("navPersonnel",tr("personnel"));txt("navCertificates",tr("certificates"));txt("navProfile",ptr("account"));txt("navLogout",tr("logout"));txt("topLogoutBtn",tr("logout"));
   txt("totalPersonnelText",tr("totalPersonnel"));txt("totalCertsText",tr("totalCerts"));txt("exp90Text",tr("exp90"));txt("exp30Text",tr("exp30"));txt("expiredText",tr("expired"));
   txt("myDocumentsTitle",tr("myDocuments"));txt("personalDashboardNote",tr("personalDashboardNote"));txt("personalScanBtn",tr("scanUpload"));
 
@@ -304,6 +304,7 @@ let saved=localStorage.getItem("atsrs_use_mode")||useMode||"personal";
 useMode=saved;
 let personal=useMode==="personal";
 if(typeof navPersonnel!=="undefined")navPersonnel.classList.toggle("hidden",personal);
+if(typeof navCandidates!=="undefined")navCandidates.classList.toggle("hidden",personal);
 document.querySelectorAll(".solo-personnel-card").forEach(el=>el.classList.toggle("hidden",personal));
 if(typeof personalDashboardPanel!=="undefined")personalDashboardPanel.classList.toggle("hidden",!personal);
 }
@@ -382,8 +383,8 @@ function openApp(){
   }
   return openAppLocal();
 }
-function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&page==="personnel"){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
-function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
+function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
 function showAccountTab(tab){["general","security","sharing"].forEach(x=>{let panel=document.getElementById("account"+cap(x)+"Tab"),button=document.getElementById("accountTab"+cap(x)+"Btn");if(panel)panel.classList.remove("active");if(button)button.classList.remove("active")});let panel=document.getElementById("account"+cap(tab)+"Tab"),button=document.getElementById("accountTab"+cap(tab)+"Btn");if(panel)panel.classList.add("active");if(button)button.classList.add("active")}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
@@ -852,7 +853,7 @@ function renderManagedFiles(){
  if(typeof autoDocType!=='undefined')autoDocType.placeholder=v49('autoDocTypePlaceholder');
 }
 const restoreCurrentPageBaseV49=restoreCurrentPage;
-restoreCurrentPage=function(){let page=localStorage.getItem('atsrs_current_page')||'intro';let map={intro:navIntro,dashboard:navDashboard,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:'intro',map[page]||navIntro);}
+restoreCurrentPage=function(){let page=localStorage.getItem('atsrs_current_page')||'intro';let map={intro:navIntro,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:'intro',map[page]||navIntro);}
 const renderAllBaseV49=renderAll;
 renderAll=function(){renderAllBaseV49();renderManagedFiles();}
 const applyLanguageBaseV49=applyLanguage;
