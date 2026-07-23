@@ -1,4 +1,4 @@
-/* ATSRS V282 - owner-controlled profile photos with Google and initials fallback. */
+/* ATSRS V283 - owner-uploaded profile photos with initials fallback. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';
@@ -35,11 +35,11 @@
   function allowedUrl(value){
     try{var url=new URL(String(value||''),location.origin);return url.protocol==='https:'?url.href:''}catch(error){return ''}
   }
-  function googleAvatar(){
-    var meta=window.currentUser&&window.currentUser.user_metadata||{};
-    return allowedUrl(meta.avatar_url||meta.picture||'');
+  function resolvedUrl(profile){
+    return profile&&profile.avatarSource==='upload'&&profile.avatarPath
+      ?allowedUrl(profile.avatarUrl)
+      :'';
   }
-  function resolvedUrl(profile){return allowedUrl(profile&&profile.avatarUrl)||googleAvatar()}
   function status(message,error){
     var el=byId('profilePhotoStatus');if(!el)return;
     el.textContent=message||'';el.classList.toggle('error',!!error);
@@ -149,8 +149,8 @@
       profile.avatarUrl='';profile.avatarPath='';profile.avatarSource='';profile.updatedAt=new Date().toISOString();
       if(!writeProfile(profile))throw new Error('The profile photo could not be removed.');
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
-      render(profile);status(googleAvatar()?'Uploaded photo removed. Your Google photo is now used.':'Profile photo removed.');
-      window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:googleAvatar(),path:''}}));
+      render(profile);status('Profile photo removed.');
+      window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:'',path:''}}));
     }catch(error){status((error&&error.message)||'The profile photo could not be removed.',true)}
     finally{button.disabled=false}
   }

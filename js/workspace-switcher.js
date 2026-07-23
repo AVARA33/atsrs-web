@@ -47,6 +47,8 @@
     if(avatar){
       var photo=mode==='personal'&&window.atsrsProfilePhoto&&window.atsrsProfilePhoto.currentUrl?window.atsrsProfilePhoto.currentUrl():'';
       avatar.innerHTML=photo?'<img src="'+String(photo).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})+'" alt="" referrerpolicy="no-referrer">':initials(name);
+      var avatarImage=avatar.querySelector('img');
+      if(avatarImage)avatarImage.onerror=function(){avatar.textContent=initials(name)};
     }
     if(label)label.textContent=mode==='company'?'Corporate Account':'Personal Account';
     ['personal','company'].forEach(function(workspace){
