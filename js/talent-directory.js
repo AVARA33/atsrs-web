@@ -1,4 +1,4 @@
-/* ATSRS V293 - separate candidate discovery from linked company personnel. */
+/* ATSRS V294 - separate candidate discovery from linked company personnel. */
 (function(){
   'use strict';
   var profiles=[];
@@ -320,7 +320,6 @@
       var data=await actionCall({action:'cv',target_user_id:profile.user_id});
       var panel=actionPanel();if(panel)panel.classList.add('hidden');
       if(typeof window.atsrsOpenFilePreview!=='function')throw new Error('CV preview is unavailable.');
-      var talentModal=byId('atsrsTalentModal');if(talentModal)talentModal.remove();
       window.atsrsOpenFilePreview({url:data.url,title:data.file_name||'Curriculum Vitae',mimeType:data.mime_type||'application/pdf'});
     }catch(error){panelMessage(error.message||'CV could not be opened.',true)}
   }
