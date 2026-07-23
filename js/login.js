@@ -21,7 +21,7 @@
    in js/storage.js and was not touched. */
 (function(){
   'use strict';
-  var BUILD_LABEL = 'ATSRS V281';
+  var BUILD_LABEL = 'ATSRS V282';
   var UPDATE_LABEL = 'Last Update: 23 Jul 2026';
   function lockBuildBadge(){
     var badge = document.getElementById('buildBadge') || document.querySelector('.build-badge');

@@ -1,4 +1,4 @@
-/* ATSRS V281 - owner-controlled profile photos with Google and initials fallback. */
+/* ATSRS V282 - owner-controlled profile photos with Google and initials fallback. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';

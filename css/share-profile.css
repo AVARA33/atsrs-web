@@ -172,6 +172,23 @@ body.atsrs-public-share-view{
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:14px;
 }
+.shared-profile-page #sharedProfileDocuments{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+}
+.shared-file-group{min-width:0}
+.shared-file-group-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 10px;
+  padding:0 1px 8px;
+  border-bottom:1px solid rgba(67,101,128,.38);
+}
+.shared-file-group-heading h3{margin:0;color:#dce7ef;font-size:15px}
+.shared-file-group-heading span{color:#71889b;font-size:10px}
 .shared-document-card{
   display:flex;
   min-width:0;
@@ -394,6 +411,18 @@ body.atsrs-public-share-view{
   overflow:auto;
   padding-right:4px;
 }
+.share-document-group-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:5px 2px 0;
+  padding:8px 2px 3px;
+  border-bottom:1px solid rgba(67,101,128,.34);
+}
+.share-document-group-heading:first-child{margin-top:0}
+.share-document-group-heading b{color:#b8c8d4;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.share-document-group-heading span{color:#6f8799;font-size:10px}
 .share-document-choice{
   display:grid!important;
   grid-template-columns:auto minmax(0,1fr) auto auto;

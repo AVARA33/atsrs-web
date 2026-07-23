@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=281">
-<link rel="stylesheet" href="css/login.css?v=281">
-<link rel="stylesheet" href="css/dashboard.css?v=281">
-<link rel="stylesheet" href="css/documents.css?v=281">
-<link rel="stylesheet" href="css/references.css?v=281">
-<link rel="stylesheet" href="css/account.css?v=281">
-<link rel="stylesheet" href="css/product-experience.css?v=281">
-<link rel="stylesheet" href="css/date-picker.css?v=281">
-<link rel="stylesheet" href="css/share-profile.css?v=281">
-<link rel="stylesheet" href="css/calm-actions.css?v=281">
-<link rel="stylesheet" href="css/account-security-live.css?v=281">
-<link rel="stylesheet" href="css/talent-directory.css?v=281">
-<link rel="stylesheet" href="css/maintenance.css?v=281">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=281">
-<script defer src="js/maintenance-guard.js?v=281"></script>
+<link rel="stylesheet" href="css/base.css?v=282">
+<link rel="stylesheet" href="css/login.css?v=282">
+<link rel="stylesheet" href="css/dashboard.css?v=282">
+<link rel="stylesheet" href="css/documents.css?v=282">
+<link rel="stylesheet" href="css/references.css?v=282">
+<link rel="stylesheet" href="css/account.css?v=282">
+<link rel="stylesheet" href="css/product-experience.css?v=282">
+<link rel="stylesheet" href="css/date-picker.css?v=282">
+<link rel="stylesheet" href="css/share-profile.css?v=282">
+<link rel="stylesheet" href="css/calm-actions.css?v=282">
+<link rel="stylesheet" href="css/account-security-live.css?v=282">
+<link rel="stylesheet" href="css/talent-directory.css?v=282">
+<link rel="stylesheet" href="css/maintenance.css?v=282">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=282">
+<script defer src="js/maintenance-guard.js?v=282"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V281</div>
+<div>ATSRS V282</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -691,7 +691,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </div>
     <div id="shareAccessBox" class="share-permissions hidden">
       <div class="share-permissions-head">
-        <div><b>Visible documents</b><span>Recruiters can preview checked server files. Download always requires approval.</span></div>
+        <div><b>Visible files</b><span>Select documents, CV and References. Recruiters can preview checked server files; download always requires approval.</span></div>
         <label class="share-select-all"><input id="shareSelectAll" type="checkbox" onchange="toggleShareSelectAll(this.checked)"><span>Select all</span></label>
       </div>
       <div id="shareDocumentChoices" class="share-document-choices">
@@ -763,13 +763,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         These files were uploaded and shared by the profile owner. ATSRS provides secure access and expiry visibility; recruiters should complete their normal verification process.
       </div>
       <div class="shared-profile-section-head">
-        <div><h2>Shared documents</h2><span id="sharedProfileDocumentCount">0 shared files</span></div>
-        <div class="shared-profile-head-actions"><span id="sharedProfileExpiry">Preview link active</span><button id="requestAllDocumentsBtn" type="button" onclick="openDownloadRequest('all')">Request All Documents</button></div>
+        <div><h2>Shared profile files</h2><span id="sharedProfileDocumentCount">0 shared files</span></div>
+        <div class="shared-profile-head-actions"><span id="sharedProfileExpiry">Preview link active</span><button id="requestAllDocumentsBtn" type="button" onclick="openDownloadRequest('all')">Request All Files</button></div>
       </div>
       <nav id="sharedProfileSummary" class="shared-document-summary hidden" aria-label="Shared document summary">
         <div class="shared-document-summary-head">
-          <div><span class="shared-profile-kicker">QUICK SUMMARY</span><h3>Documents at a glance</h3></div>
-          <span id="sharedProfileSummaryCount">0 documents</span>
+          <div><span class="shared-profile-kicker">QUICK SUMMARY</span><h3>Files at a glance</h3></div>
+          <span id="sharedProfileSummaryCount">0 shared files</span>
         </div>
         <ol id="sharedProfileSummaryList" class="shared-document-summary-list"></ol>
       </nav>
@@ -835,25 +835,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=281"></script>
-<script src="js/server-data.js?v=281"></script>
-<script src="js/storage.js?v=281"></script>
-<script src="js/ui.js?v=281"></script>
-<script src="js/auth.js?v=281"></script>
-<script src="js/login.js?v=281"></script>
-<script src="js/dashboard.js?v=281"></script>
-<script src="js/avatar.js?v=281"></script>
-<script src="js/documents.js?v=281"></script>
-<script src="js/references.js?v=281"></script>
-<script src="js/account.js?v=281"></script>
-<script src="js/app.js?v=281"></script>
-<script src="js/product-experience.js?v=281"></script>
-<script src="js/date-picker.js?v=281"></script>
-<script src="js/share-profile.js?v=281"></script>
-<script src="js/boot-refresh.js?v=281"></script>
-<script src="js/account-security-live.js?v=281"></script>
-<script src="js/talent-directory.js?v=281"></script>
-<script src="js/workspace-switcher.js?v=281"></script>
+<script src="js/stability-runtime.js?v=282"></script>
+<script src="js/server-data.js?v=282"></script>
+<script src="js/storage.js?v=282"></script>
+<script src="js/ui.js?v=282"></script>
+<script src="js/auth.js?v=282"></script>
+<script src="js/login.js?v=282"></script>
+<script src="js/dashboard.js?v=282"></script>
+<script src="js/avatar.js?v=282"></script>
+<script src="js/documents.js?v=282"></script>
+<script src="js/references.js?v=282"></script>
+<script src="js/account.js?v=282"></script>
+<script src="js/app.js?v=282"></script>
+<script src="js/product-experience.js?v=282"></script>
+<script src="js/date-picker.js?v=282"></script>
+<script src="js/share-profile.js?v=282"></script>
+<script src="js/boot-refresh.js?v=282"></script>
+<script src="js/account-security-live.js?v=282"></script>
+<script src="js/talent-directory.js?v=282"></script>
+<script src="js/workspace-switcher.js?v=282"></script>
 
 
 

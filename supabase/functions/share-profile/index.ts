@@ -288,12 +288,12 @@ async function notifyOwner(admin: AdminClient, row: AccessRequestRow) {
     .eq("user_id", row.owner_id).in("id", row.requested_file_ids);
   const names = (files.data ?? []).map((file) => documentDetails(file as JsonObject).document_type);
   const documents = row.request_all
-    ? `All shared documents${names.length ? `: ${names.join(", ")}` : ""}`
-    : (names.join(", ") || `${row.requested_file_ids.length} document(s)`);
+    ? `All shared files${names.length ? `: ${names.join(", ")}` : ""}`
+    : (names.join(", ") || `${row.requested_file_ids.length} file(s)`);
   await sendEmail(
     email,
     `ATSRS download request from ${row.requester_name}`,
-    `<div style="font-family:Arial,sans-serif;max-width:620px;margin:auto;color:#172033"><h2>New document access request</h2><p><b>${escapeHtml(row.requester_name)}</b> from <b>${escapeHtml(row.requester_company)}</b> verified <b>${escapeHtml(row.requester_email)}</b> and requested download access.</p><p><b>Requested:</b> ${escapeHtml(documents)}</p><p><a href="${SITE_URL}" style="display:inline-block;padding:12px 18px;border-radius:10px;background:#2563eb;color:#fff;text-decoration:none;font-weight:700">Review in ATSRS Dashboard</a></p><p style="color:#64748b;font-size:12px">No download is possible until you approve this request.</p></div>`,
+    `<div style="font-family:Arial,sans-serif;max-width:620px;margin:auto;color:#172033"><h2>New file access request</h2><p><b>${escapeHtml(row.requester_name)}</b> from <b>${escapeHtml(row.requester_company)}</b> verified <b>${escapeHtml(row.requester_email)}</b> and requested download access.</p><p><b>Requested:</b> ${escapeHtml(documents)}</p><p><a href="${SITE_URL}" style="display:inline-block;padding:12px 18px;border-radius:10px;background:#2563eb;color:#fff;text-decoration:none;font-weight:700">Review in ATSRS Dashboard</a></p><p style="color:#64748b;font-size:12px">No download is possible until you approve this request.</p></div>`,
     `New ATSRS request from ${row.requester_name} (${row.requester_company}, ${row.requester_email}). Requested: ${documents}. Review it in your ATSRS Dashboard.`,
   );
 }
