@@ -1163,19 +1163,26 @@ body.profile-photo-cropping{overflow:hidden}
   display:grid;
   grid-template-columns:250px 250px 400px 96px;
   grid-template-areas:"status available work save";
-  align-items:end;
+  align-items:start;
   gap:10px;
   width:min(100%,1026px);
 }
 .work-availability-grid>label:first-child{grid-area:status}
-#profileAvailableFromWrap{grid-area:available}
+#profileAvailableFromWrap{
+  grid-area:available;
+  margin:0!important;
+}
 .work-type-field{grid-area:work}
 .work-availability-save{grid-area:save}
 .work-availability-grid>label,.work-type-field,.work-availability-save{
   display:grid;
   grid-template-rows:16px 44px;
   gap:6px;
-  align-content:end;
+  align-content:start;
+  box-sizing:border-box;
+  height:66px;
+  min-height:66px;
+  margin:0!important;
   color:#8ba0b1;
   font-size:11px;
   font-weight:700;
