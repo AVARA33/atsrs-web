@@ -1088,7 +1088,7 @@ body #modeChoiceBox:not(.mode-error) button::before{
 body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid{
   display:grid!important;
-  grid-template-columns:180px 180px 260px 260px!important;
+  grid-template-columns:180px 180px 220px 220px!important;
   gap:10px!important;
   align-items:start!important;
   justify-content:start!important;
@@ -1103,6 +1103,7 @@ body.personal-mode #profilePhotoCard{display:flex}
 }
 #profilePage #accountGeneralTab>.profile-grid>.phone-field{
   grid-column:auto;
+  width:260px!important;
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileCountry{
   grid-column:auto;
@@ -1115,6 +1116,24 @@ body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
   grid-column:auto;
 }
+#profilePage #accountGeneralTab>.profile-grid>#profileName{order:1}
+#profilePage #accountGeneralTab>.profile-grid>#profileSurname{order:2}
+#profilePage #accountGeneralTab>.profile-grid>#profileCountry{order:3}
+#profilePage #accountGeneralTab>.profile-grid>#profileCompany{order:4}
+#profilePage #accountGeneralTab>.profile-grid>#profilePosition{order:5}
+#profilePage #accountGeneralTab>.profile-grid>#profileZipCode{order:6}
+#profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{order:7}
+#profilePage #accountGeneralTab>.profile-grid>.mobile-phone-field{
+  order:8;
+  grid-column:1/3;
+  justify-self:start;
+}
+#profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-field{
+  order:9;
+  grid-column:3/5;
+  justify-self:start;
+}
+#profilePage #accountGeneralTab>.profile-grid>.profile-verification-note{order:10}
 #profilePage #accountGeneralTab>.profile-grid>input,
 #profilePage #accountGeneralTab>.profile-grid>select,
 #profilePage #accountGeneralTab>.profile-grid>.phone-field{
@@ -1511,6 +1530,11 @@ body.profile-photo-cropping{overflow:hidden}
   #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
     grid-column:auto;
   }
+  #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-field,
+  #profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-field{
+    grid-column:auto;
+    width:100%!important;
+  }
 }
 @media(max-width:1250px){
   .work-availability-grid{
@@ -1534,6 +1558,11 @@ body.profile-photo-cropping{overflow:hidden}
   #profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
   #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
     grid-column:1/-1;
+  }
+  #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-field,
+  #profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-field{
+    grid-column:1/-1;
+    width:100%!important;
   }
   .work-availability-heading{display:grid;gap:4px}
   .work-availability-grid{
