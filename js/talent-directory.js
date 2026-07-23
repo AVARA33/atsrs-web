@@ -1,4 +1,4 @@
-/* ATSRS V288 - profile photos in talent discovery and linked personnel. */
+/* ATSRS V289 - profile photos in talent discovery and linked personnel. */
 (function(){
   'use strict';
   var profiles=[];
