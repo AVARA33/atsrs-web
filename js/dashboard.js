@@ -1,4 +1,4 @@
-/* ATSRS V178 extracted JavaScript batch: dashboard.js. Loaded in original V178 execution order. No placeholder code. */
+﻿/* ATSRS V178 extracted JavaScript batch: dashboard.js. Loaded in original V178 execution order. No placeholder code. */
 /* ===== ATSRS V205: test login placement disabled ===== */
 (function(){
   'use strict';
@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V302';
+  var BUILD='ATSRS V303';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -123,7 +123,22 @@
   }
   function val(id){var e=byId(id); return e?e.value:'';}
   function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
-  var PHONE_CODES=['+994','+1','+44','+971','+966','+974','+965','+973','+968','+995','+7','+47','+31','+49','+33','+34','+39','+30','+40','+359','+380','+91','+92','+880','+94','+977','+63','+62','+60','+65','+66','+84','+86','+81','+82','+61','+64','+27','+20','+234','+233','+254','+55','+54','+52','+240'];
+  var PHONE_COUNTRIES=[
+    ['AZ','+994'],['US','+1'],['GB','+44'],['AE','+971'],['SA','+966'],['QA','+974'],['KW','+965'],['BH','+973'],['OM','+968'],['TR','+90'],
+    ['GE','+995'],['KZ','+7'],['NO','+47'],['NL','+31'],['DE','+49'],['FR','+33'],['ES','+34'],['IT','+39'],['GR','+30'],['RO','+40'],
+    ['BG','+359'],['UA','+380'],['IN','+91'],['PK','+92'],['BD','+880'],['LK','+94'],['NP','+977'],['PH','+63'],['ID','+62'],['MY','+60'],
+    ['SG','+65'],['TH','+66'],['VN','+84'],['CN','+86'],['JP','+81'],['KR','+82'],['AU','+61'],['NZ','+64'],['ZA','+27'],['EG','+20'],
+    ['NG','+234'],['GH','+233'],['KE','+254'],['BR','+55'],['AR','+54'],['MX','+52'],['GQ','+240']
+  ];
+  var PHONE_CODES=PHONE_COUNTRIES.map(function(item){return item[1]});
+  function flagFromIso(iso){
+    return String(iso||'').toUpperCase().replace(/./g,function(char){
+      return String.fromCodePoint(127397+char.charCodeAt(0));
+    });
+  }
+  function phoneCountryForCode(code){
+    return PHONE_COUNTRIES.filter(function(item){return item[1]===code})[0]||PHONE_COUNTRIES[0];
+  }
   function cleanPhonePart(value){return String(value||'').replace(/[^\d]/g,'').trim();}
   function splitPhone(value,fallbackCode){
     var text=String(value||'').trim();
@@ -139,17 +154,105 @@
     setVal(prefix,local?code+local:'');
     return {code:code,local:local,full:local?code+local:''};
   }
+  function normalizePhoneCode(value){
+    var raw=String(value||'').replace(/[^\d+]/g,'');
+    if(!raw)return '+';
+    if(raw.charAt(0)!=='+')raw='+'+raw.replace(/\+/g,'');
+    return raw;
+  }
+  function syncPhonePicker(select){
+    if(!select||!select.__atsrsPicker)return;
+    var code=select.value||'+994';
+    var country=phoneCountryForCode(code);
+    select.__atsrsPicker.flag.textContent=flagFromIso(country[0]);
+    select.__atsrsPicker.input.value=code;
+  }
+  function filterPhoneCountries(query){
+    var raw=normalizePhoneCode(query);
+    var digits=raw.replace(/[^\d]/g,'');
+    var list=PHONE_COUNTRIES.filter(function(item){
+      var codeDigits=item[1].replace(/[^\d]/g,'');
+      return !digits||codeDigits.indexOf(digits)===0||codeDigits.indexOf(digits)>=0;
+    });
+    return list.length?list:PHONE_COUNTRIES;
+  }
+  function closePhoneMenus(except){
+    document.querySelectorAll('.phone-code-menu').forEach(function(menu){
+      if(menu!==except)menu.classList.add('hidden');
+    });
+  }
+  function renderPhoneMenu(select,query){
+    if(!select||!select.__atsrsPicker)return;
+    var picker=select.__atsrsPicker,menu=picker.menu;
+    menu.innerHTML='';
+    filterPhoneCountries(query).slice(0,40).forEach(function(item){
+      var button=document.createElement('button');
+      button.type='button';
+      button.className='phone-code-option';
+      button.innerHTML='<span>'+flagFromIso(item[0])+'</span><span>'+item[1]+'</span>';
+      button.addEventListener('mousedown',function(event){event.preventDefault();});
+      button.addEventListener('click',function(){
+        select.value=item[1];
+        syncPhonePicker(select);
+        updatePhoneHidden(select.id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
+        menu.classList.add('hidden');
+      });
+      menu.appendChild(button);
+    });
+    closePhoneMenus(menu);
+    menu.classList.remove('hidden');
+  }
+  function ensurePhonePicker(select){
+    if(!select||select.__atsrsPicker)return;
+    var field=select.closest('.phone-field');
+    if(!field)return;
+    var picker=document.createElement('div');
+    picker.className='phone-code-picker';
+    picker.innerHTML='<span class="phone-code-flag" aria-hidden="true"></span><input class="phone-code-input" inputmode="tel" autocomplete="off" aria-label="Country code"><button type="button" class="phone-code-arrow" aria-label="Show country codes">вЊ„</button><div class="phone-code-menu hidden"></div>';
+    field.insertBefore(picker,select);
+    select.__atsrsPicker={
+      root:picker,
+      flag:picker.querySelector('.phone-code-flag'),
+      input:picker.querySelector('.phone-code-input'),
+      arrow:picker.querySelector('.phone-code-arrow'),
+      menu:picker.querySelector('.phone-code-menu')
+    };
+    syncPhonePicker(select);
+    select.__atsrsPicker.input.addEventListener('focus',function(){renderPhoneMenu(select,select.__atsrsPicker.input.value);});
+    select.__atsrsPicker.input.addEventListener('input',function(){
+      var next=normalizePhoneCode(select.__atsrsPicker.input.value);
+      select.__atsrsPicker.input.value=next;
+      var exact=PHONE_CODES.indexOf(next)>=0;
+      if(exact){
+        select.value=next;
+        syncPhonePicker(select);
+        updatePhoneHidden(select.id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
+      }
+      renderPhoneMenu(select,next);
+    });
+    select.__atsrsPicker.arrow.addEventListener('click',function(){
+      renderPhoneMenu(select,select.__atsrsPicker.input.value);
+      select.__atsrsPicker.input.focus();
+    });
+  }
+  function ensurePhonePickers(){
+    ['profilePhoneCountryCode','profileWhatsappCountryCode'].forEach(function(id){
+      ensurePhonePicker(byId(id));
+    });
+  }
   function setVerificationText(id,verified){
     var el=byId(id);if(!el)return;
     el.textContent=verified?'Verified':'Not verified';
     el.classList.toggle('is-verified',!!verified);
   }
   function bindOfficialProfileControls(){
+    ensurePhonePickers();
     ['profilePhoneCountryCode','profilePhoneLocal','profileWhatsappCountryCode','profileWhatsappLocal'].forEach(function(id){
       var el=byId(id);if(!el||el.__atsrsOfficialBound)return;
       el.__atsrsOfficialBound=true;
       el.addEventListener(id.indexOf('Local')>=0?'input':'change',function(){
         updatePhoneHidden(id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
+        if(id.indexOf('CountryCode')>=0)syncPhonePicker(el);
       });
     });
     document.querySelectorAll('[data-profile-verify]').forEach(function(button){
@@ -220,13 +323,13 @@
   }
   function showSaved(){
     var s=ensureProfileStatus(); if(!s)return;
-    s.textContent='Saved ✓'; s.classList.add('active');
+    s.textContent='Saved вњ“'; s.classList.add('active');
     clearTimeout(window.__atsrsV125ProfileSavedTimer);
     window.__atsrsV125ProfileSavedTimer=setTimeout(function(){s.classList.remove('active');},2200);
   }
   function showSaveError(){
     var s=ensureProfileStatus(); if(!s)return;
-    s.textContent='Not saved — check connection'; s.classList.add('active');
+    s.textContent='Not saved вЂ” check connection'; s.classList.add('active');
   }
   window.saveProfile=async function(){
     var availabilityStatus=val('profileAvailabilityStatus')||'not_set';
@@ -279,9 +382,11 @@
     setVal('profileName',p.name); setVal('profileSurname',p.surname);
     setVal('profilePhoneCountryCode',p.phoneCountryCode||phone.code||'+994');
     setVal('profilePhoneLocal',p.phoneLocal||phone.local||'');
+    syncPhonePicker(byId('profilePhoneCountryCode'));
     updatePhoneHidden('profilePhone');
     setVal('profileWhatsappCountryCode',p.whatsappCountryCode||whatsapp.code||p.phoneCountryCode||'+994');
     setVal('profileWhatsappLocal',p.whatsappLocal||whatsapp.local||'');
+    syncPhonePicker(byId('profileWhatsappCountryCode'));
     updatePhoneHidden('profileWhatsapp');
     setVal('profileCountry',p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
@@ -305,6 +410,9 @@
     ensureProfileStatus();
     bindOfficialProfileControls();
   };
+  document.addEventListener('click',function(event){
+    if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();
+  });
   window.atsrsUpdateAvailabilityControls=updateAvailabilityControls;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAvailabilityControls);
   else bindAvailabilityControls();
@@ -312,7 +420,7 @@
     ['langCircle','appLangCircle'].forEach(function(id){var b=byId(id); if(b){b.textContent=''; b.setAttribute('aria-label','Language'); b.removeAttribute('title');}});
     document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
       b.childNodes.forEach(function(n){ if(n.nodeType===3)n.textContent=''; });
-      var s=b.querySelector('span'); if(s)s.textContent='🇬🇧';
+      var s=b.querySelector('span'); if(s)s.textContent='рџ‡¬рџ‡§';
     });
   }
   var oldApply=window.applyLanguage;
@@ -351,7 +459,7 @@
   function renderCoverLetter(){
     ensureCoverLetterCard(); var files=coverFiles(); var badge=byId('coverLetterStatusBadge'), info=byId('coverLetterFileInfo');
     if(badge){badge.textContent=files.length?String(files.length)+' file'+(files.length>1?'s':''):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
-    if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' • '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
+    if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' вЂў '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
   }
   var oldRender=window.renderAll;
   if(typeof oldRender==='function') window.renderAll=function(){var r=oldRender.apply(this,arguments); renderCoverLetter(); forceFlagOnly(); return r;};
@@ -365,7 +473,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V302';
+  var BUILD='ATSRS V303';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
