@@ -4,15 +4,17 @@
   top:18px;
   right:24px;
   z-index:2200;
-  width:min(270px,calc(100vw - 32px));
+  width:max-content;
+  max-width:calc(100vw - 32px);
   color:#e7eef5;
 }
 .workspace-switcher-button{
   display:grid!important;
-  grid-template-columns:38px minmax(0,1fr) 15px;
+  grid-template-columns:38px max-content 15px;
   align-items:center;
   gap:10px;
-  width:100%!important;
+  width:max-content!important;
+  max-width:calc(100vw - 32px);
   min-height:48px!important;
   margin:0!important;
   padding:5px 9px 5px 6px!important;
@@ -54,6 +56,7 @@
 .workspace-switcher-copy{
   display:grid;
   gap:2px;
+  max-width:140px;
   min-width:0;
   line-height:1.15;
 }
@@ -87,7 +90,7 @@
   position:absolute;
   top:56px;
   right:0;
-  width:100%;
+  width:min(270px,calc(100vw - 24px));
   padding:8px;
   border:1px solid rgba(76,105,130,.5);
   border-radius:15px;
@@ -167,11 +170,11 @@
   opacity:.65;
 }
 @media(max-width:800px){
-  .workspace-switcher{top:12px;right:12px;width:210px}
-  .workspace-switcher-button{grid-template-columns:34px minmax(0,1fr) 12px;min-height:44px!important}
+  .workspace-switcher{top:12px;right:12px;width:max-content;max-width:calc(100vw - 24px)}
+  .workspace-switcher-button{grid-template-columns:34px max-content 12px;max-width:calc(100vw - 24px);min-height:44px!important}
   .workspace-switcher-avatar{width:34px;height:34px}
 }
 @media(max-width:520px){
-  .workspace-switcher{width:190px}
+  .workspace-switcher-copy{max-width:125px}
   .workspace-switcher-copy strong{font-size:11px}
 }
