@@ -16,18 +16,20 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=273">
-<link rel="stylesheet" href="css/login.css?v=273">
-<link rel="stylesheet" href="css/dashboard.css?v=273">
-<link rel="stylesheet" href="css/documents.css?v=273">
-<link rel="stylesheet" href="css/references.css?v=273">
-<link rel="stylesheet" href="css/account.css?v=273">
-<link rel="stylesheet" href="css/product-experience.css?v=273">
-<link rel="stylesheet" href="css/date-picker.css?v=273">
-<link rel="stylesheet" href="css/share-profile.css?v=273">
-<link rel="stylesheet" href="css/calm-actions.css?v=273">
-<link rel="stylesheet" href="css/account-security-live.css?v=273">
-<link rel="stylesheet" href="css/talent-directory.css?v=273">
+<link rel="stylesheet" href="css/base.css?v=274">
+<link rel="stylesheet" href="css/login.css?v=274">
+<link rel="stylesheet" href="css/dashboard.css?v=274">
+<link rel="stylesheet" href="css/documents.css?v=274">
+<link rel="stylesheet" href="css/references.css?v=274">
+<link rel="stylesheet" href="css/account.css?v=274">
+<link rel="stylesheet" href="css/product-experience.css?v=274">
+<link rel="stylesheet" href="css/date-picker.css?v=274">
+<link rel="stylesheet" href="css/share-profile.css?v=274">
+<link rel="stylesheet" href="css/calm-actions.css?v=274">
+<link rel="stylesheet" href="css/account-security-live.css?v=274">
+<link rel="stylesheet" href="css/talent-directory.css?v=274">
+<link rel="stylesheet" href="css/maintenance.css?v=274">
+<script defer src="js/maintenance-guard.js?v=274"></script>
 
 
 
@@ -129,7 +131,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V273</div>
+<div>ATSRS V274</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -363,7 +365,22 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </label>
     <label>
       <span>Availability</span>
-      <select id="talentAvailabilityFilter"><option value="">All</option><option value="available">Available</option><option value="online">Online now</option></select>
+      <select id="talentAvailabilityFilter">
+        <option value="">All availability</option>
+        <option value="available_now">Available now</option>
+        <option value="within_30">Available within 30 days</option>
+        <option value="open_to_offers">Open to offers</option>
+        <option value="online">Online now</option>
+      </select>
+    </label>
+    <label>
+      <span>Work type</span>
+      <select id="talentWorkPreferenceFilter">
+        <option value="">All work types</option>
+        <option value="freelance">Freelance</option>
+        <option value="contract">Contract</option>
+        <option value="permanent">Permanent</option>
+      </select>
     </label>
   </div>
   <div id="talentDirectoryStatus" class="talent-directory-status" role="status">Loading professional profiles...</div>
@@ -557,6 +574,42 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <select id="profileCountry"></select>
 <input id="profileCompany"><input id="profilePosition">
 </div>
+<div class="work-availability-card personal-only">
+  <div class="work-availability-heading">
+    <div>
+      <span class="pill">WORK AVAILABILITY</span>
+      <h4>Let verified companies know when you can start</h4>
+      <p>Optional. This status appears on your professional profile and can be changed at any time.</p>
+    </div>
+    <span id="availabilityConfirmationNote">Not confirmed</span>
+  </div>
+  <div class="work-availability-grid">
+    <label>
+      <span>Status</span>
+      <select id="profileAvailabilityStatus">
+        <option value="not_set">Not specified</option>
+        <option value="available_now">Available now</option>
+        <option value="available_from">Available from a date</option>
+        <option value="open_to_offers">Open to offers</option>
+        <option value="not_available">Not currently available</option>
+      </select>
+    </label>
+    <label id="profileAvailableFromWrap" class="hidden field-wrap">
+      <span>Available from</span>
+      <input id="profileAvailableFrom" type="date" title="Available from">
+    </label>
+    <label>
+      <span>Preferred work type</span>
+      <select id="profileWorkPreference">
+        <option value="any">Any opportunity</option>
+        <option value="freelance">Freelance</option>
+        <option value="contract">Contract</option>
+        <option value="permanent">Permanent</option>
+      </select>
+    </label>
+  </div>
+  <div id="workAvailabilityStatus" class="work-availability-status" role="status"></div>
+</div>
 <button id="saveProfileBtn" onclick="saveProfile()"></button>
 </div>
 <div id="accountSecurityTab" class="account-tab">
@@ -726,23 +779,23 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=273"></script>
-<script src="js/server-data.js?v=273"></script>
-<script src="js/storage.js?v=273"></script>
-<script src="js/ui.js?v=273"></script>
-<script src="js/auth.js?v=273"></script>
-<script src="js/login.js?v=273"></script>
-<script src="js/dashboard.js?v=273"></script>
-<script src="js/documents.js?v=273"></script>
-<script src="js/references.js?v=273"></script>
-<script src="js/account.js?v=273"></script>
-<script src="js/app.js?v=273"></script>
-<script src="js/product-experience.js?v=273"></script>
-<script src="js/date-picker.js?v=273"></script>
-<script src="js/share-profile.js?v=273"></script>
-<script src="js/boot-refresh.js?v=273"></script>
-<script src="js/account-security-live.js?v=273"></script>
-<script src="js/talent-directory.js?v=273"></script>
+<script src="js/stability-runtime.js?v=274"></script>
+<script src="js/server-data.js?v=274"></script>
+<script src="js/storage.js?v=274"></script>
+<script src="js/ui.js?v=274"></script>
+<script src="js/auth.js?v=274"></script>
+<script src="js/login.js?v=274"></script>
+<script src="js/dashboard.js?v=274"></script>
+<script src="js/documents.js?v=274"></script>
+<script src="js/references.js?v=274"></script>
+<script src="js/account.js?v=274"></script>
+<script src="js/app.js?v=274"></script>
+<script src="js/product-experience.js?v=274"></script>
+<script src="js/date-picker.js?v=274"></script>
+<script src="js/share-profile.js?v=274"></script>
+<script src="js/boot-refresh.js?v=274"></script>
+<script src="js/account-security-live.js?v=274"></script>
+<script src="js/talent-directory.js?v=274"></script>
 
 
 

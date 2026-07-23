@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V273';
+  var BUILD='ATSRS V274';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -123,6 +123,24 @@
   }
   function val(id){var e=byId(id); return e?e.value:'';}
   function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
+  function updateAvailabilityControls(){
+    var status=val('profileAvailabilityStatus')||'not_set';
+    var dateWrap=byId('profileAvailableFromWrap');
+    if(dateWrap)dateWrap.classList.toggle('hidden',status!=='available_from');
+    var note=byId('workAvailabilityStatus');
+    if(note&&status!=='available_from')note.textContent='';
+  }
+  function bindAvailabilityControls(){
+    var status=byId('profileAvailabilityStatus');
+    if(status&&!status.__atsrsAvailabilityBound){
+      status.__atsrsAvailabilityBound=true;
+      status.addEventListener('change',function(){
+        updateAvailabilityControls();
+        var confirmed=byId('availabilityConfirmationNote');
+        if(confirmed)confirmed.textContent='Changes not saved';
+      });
+    }
+  }
   function ensureProfileStatus(){
     var btn=byId('saveProfileBtn'); if(!btn)return null;
     var status=byId('profileSaveStatus');
@@ -140,16 +158,34 @@
     s.textContent='Not saved — check connection'; s.classList.add('active');
   }
   window.saveProfile=async function(){
+    var availabilityStatus=val('profileAvailabilityStatus')||'not_set';
+    var availableFrom=val('profileAvailableFrom');
+    var availabilityMessage=byId('workAvailabilityStatus');
+    if(availabilityStatus==='available_from'&&!availableFrom){
+      if(availabilityMessage)availabilityMessage.textContent='Select the date when you will be ready to start.';
+      return false;
+    }
+    if(availabilityMessage)availabilityMessage.textContent='';
+    var confirmedAt=new Date().toISOString();
     var data={
       name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
-      timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',savedAt:new Date().toISOString()
+      timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',
+      availabilityStatus:availabilityStatus,
+      availableFrom:availabilityStatus==='available_from'?availableFrom:'',
+      workPreference:val('profileWorkPreference')||'any',
+      availabilityConfirmedAt:confirmedAt,
+      savedAt:confirmedAt
     };
     if(!writeJson(PROFILE_KEY,data)){showSaveError();return false;}
     var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'
       ?await window.atsrsCloudData.flush()
       :true;
-    if(saved){showSaved();return true;}
+    if(saved){
+      var confirmed=byId('availabilityConfirmationNote');
+      if(confirmed)confirmed.textContent=availabilityStatus==='not_set'?'Not specified':'Confirmed now';
+      showSaved();return true;
+    }
     showSaveError();return false;
   };
   window.loadProfile=function(){
@@ -157,8 +193,22 @@
     var p=readJson(PROFILE_KEY,{});
     setVal('profileName',p.name); setVal('profileSurname',p.surname); setVal('profilePhone',p.phone); setVal('profileCountry',p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
-    setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private'); ensureProfileStatus();
+    setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');
+    setVal('profileAvailabilityStatus',p.availabilityStatus||'not_set');
+    setVal('profileAvailableFrom',p.availableFrom||'');
+    setVal('profileWorkPreference',p.workPreference||'any');
+    bindAvailabilityControls();updateAvailabilityControls();
+    var confirmed=byId('availabilityConfirmationNote');
+    if(confirmed){
+      confirmed.textContent=p.availabilityStatus&&p.availabilityStatus!=='not_set'&&p.availabilityConfirmedAt
+        ?'Confirmed '+new Date(p.availabilityConfirmedAt).toLocaleDateString()
+        :'Not confirmed';
+    }
+    ensureProfileStatus();
   };
+  window.atsrsUpdateAvailabilityControls=updateAvailabilityControls;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAvailabilityControls);
+  else bindAvailabilityControls();
   function forceFlagOnly(){
     ['langCircle','appLangCircle'].forEach(function(id){var b=byId(id); if(b){b.textContent=''; b.setAttribute('aria-label','Language'); b.removeAttribute('title');}});
     document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
@@ -216,7 +266,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V273';
+  var BUILD='ATSRS V274';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
