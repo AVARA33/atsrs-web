@@ -1,10 +1,17 @@
-/* ATSRS V297 - keep nested Personnel content visible during page navigation. */
+/* ATSRS V298 - keep nested Personnel content visible during page navigation. */
 (function(){
   'use strict';
   var profiles=[];
   var linkedPersonnel=[];
   var loading=false;
   var lastSync=0;
+  var activeActionPanel=null;
+  var candidateView='cards';
+  var personnelView='list';
+  try{
+    candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
+    personnelView=localStorage.getItem('atsrs_personnel_view')||'list';
+  }catch(ignore){}
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
@@ -136,6 +143,16 @@
   function linkedRecord(id){
     return linkedPersonnel.find(function(item){return item.professional_user_id===id})||null;
   }
+  function updateViewSwitches(){
+    document.querySelectorAll('[data-candidate-view]').forEach(function(button){
+      button.classList.toggle('active',button.dataset.candidateView===candidateView);
+      button.setAttribute('aria-pressed',button.dataset.candidateView===candidateView?'true':'false');
+    });
+    document.querySelectorAll('[data-personnel-view]').forEach(function(button){
+      button.classList.toggle('active',button.dataset.personnelView===personnelView);
+      button.setAttribute('aria-pressed',button.dataset.personnelView===personnelView?'true':'false');
+    });
+  }
   function upsertLinkedPersonnel(link,profile){
     if(!profile||!profile.user_id)return null;
     var record=Object.assign({},link||{},{
@@ -173,7 +190,44 @@
     window.saveData('personnel',personnel);
     if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')window.atsrsCloudData.flush();
   }
+  function renderLinkedPersonnelModern(){
+    var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
+    var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
+    if(count)count.textContent=rows.length+' linked';
+    updateViewSwitches();
+    if(!rows.length){
+      list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a candidate profile and choose Add to Personnel.</span></div>';
+      return;
+    }
+    if(personnelView==='cards'){
+      list.innerHTML='<div class="linked-personnel-cards">'+rows.map(function(item){
+        var profile=item.profile;
+        var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
+        var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
+        return '<article class="linked-personnel-card">'+
+          '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
+          '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+
+          '<dl><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div><div><dt>Tracking</dt><dd>'+safe(tracking)+'</dd></div></dl>'+
+          '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
+      }).join('')+'</div>';
+    }else{
+      list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Candidate</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
+        rows.map(function(item){
+          var profile=item.profile;
+          var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
+          var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
+          return '<div class="linked-personnel-row" role="row">'+
+            '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small></span>'+
+            '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(access)+'</span><span>'+safe(tracking)+'</span>'+
+            '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
+        }).join('')+'</div>';
+    }
+    list.querySelectorAll('[data-linked-open]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedOpen)}});
+    list.querySelectorAll('[data-linked-remove]').forEach(function(button){button.onclick=function(){removeFromPersonnel(button.dataset.linkedRemove,button)}});
+  }
   function renderLinkedPersonnel(){
+    return renderLinkedPersonnelModern();
+    /* Retained below only for compatibility with older cached markup. */
     var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
     var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
     if(count)count.textContent=rows.length+' linked';
@@ -210,7 +264,7 @@
         console.warn('ATSRS personnel refresh failed after confirmed add',refreshError);
       }
       if(!linkedRecord(profile.user_id))upsertLinkedPersonnel(confirmedRecord,confirmedProfile);
-      if(button){button.textContent='Added to Personnel';button.classList.add('is-added')}
+      if(button){button.disabled=false;button.textContent='Remove from Personnel';button.classList.remove('is-added');button.classList.add('is-remove')}
       panelMessage('Added to Company Personnel. Only public profile details were copied; private documents still require permission.',false);
     }catch(error){
       if(button){button.disabled=false;button.textContent='Add to Personnel'}
@@ -229,7 +283,7 @@
       renderLinkedPersonnel();render();
       var modal=byId('atsrsTalentModal');if(modal)modal.remove();
     }catch(error){
-      if(button){button.disabled=false;button.textContent='Remove'}
+      if(button){button.disabled=false;button.textContent='Remove from Personnel'}
       panelMessage(error.message||'This professional could not be removed.',true);
     }
   }
@@ -292,39 +346,90 @@
       return true;
     });
   }
-  function render(){
+  function personnelActionMarkup(profile){
+    var linked=!!linkedRecord(profile.user_id);
+    return '<button type="button" class="secondary talent-add-personnel'+(linked?' is-remove':'')+'" data-list-action="personnel">'+
+      (linked?'Remove from Personnel':'Add to Personnel')+'</button>';
+  }
+  function activateListPanel(panel){
+    document.querySelectorAll('.talent-list-action-panel').forEach(function(item){
+      if(item!==panel){item.classList.add('hidden');item.innerHTML=''}
+    });
+    activeActionPanel=panel;
+  }
+  function bindCandidateListActions(grid){
+    grid.querySelectorAll('[data-candidate-row]').forEach(function(row){
+      var profile=profiles.find(function(item){return item.user_id===row.dataset.candidateRow});
+      var panel=row.querySelector('.talent-list-action-panel');if(!profile||!panel)return;
+      row.querySelectorAll('[data-list-action]').forEach(function(button){
+        button.onclick=function(){
+          activateListPanel(panel);
+          var action=button.dataset.listAction;
+          if(action==='message')showMessageForm(profile);
+          if(action==='summary')showDocumentSummary(profile);
+          if(action==='cv')openTalentCv(profile);
+          if(action==='personnel'){
+            if(linkedRecord(profile.user_id))removeFromPersonnel(profile.user_id,button);
+            else addToPersonnel(profile,button);
+          }
+        };
+      });
+    });
+  }
+  function renderDirectoryModern(){
     var grid=byId('talentDirectoryGrid'),count=byId('talentDirectoryCount'),status=byId('talentDirectoryStatus');if(!grid)return;
     var visible=filtered();
     if(count)count.textContent=visible.length+' candidate'+(visible.length===1?'':'s');
     if(status)status.classList.add('hidden');
-    if(!visible.length){grid.innerHTML='<div class="talent-empty"><b>No matching professionals</b><span>Try a broader profession, country or name.</span></div>';return}
+    updateViewSwitches();
+    grid.classList.toggle('is-list',candidateView==='list');
+    if(!visible.length){grid.innerHTML='<div class="talent-empty"><b>No matching candidates</b><span>Try a broader profession, country or name.</span></div>';return}
+    if(candidateView==='list'){
+      grid.innerHTML='<div class="talent-list-table" role="table"><div class="talent-list-row is-head" role="row"><span>Candidate</span><span>Availability</span><span>Country</span><span>Work type</span><span>Actions</span></div>'+
+        visible.map(function(profile){
+          var active=activity(profile),work=availability(profile);
+          return '<div class="talent-list-row" role="row" data-candidate-row="'+safe(profile.user_id)+'">'+
+            '<span class="talent-list-person">'+avatarMarkup(profile)+'<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.position)+'</small></span></span>'+
+            '<span class="talent-list-availability"><b>'+safe(work.label)+'</b><small class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</small></span>'+
+            '<span>'+safe(profile.country||'Not listed')+'</span><span>'+safe(work.detail)+'</span>'+
+            '<span class="talent-list-actions"><button type="button" class="secondary" data-list-action="message">Message</button><button type="button" class="secondary" data-list-action="summary">Summary</button><button type="button" class="secondary" data-list-action="cv">CV</button>'+personnelActionMarkup(profile)+'</span>'+
+            '<div class="talent-action-panel talent-list-action-panel hidden"></div></div>';
+        }).join('')+'</div>';
+      bindCandidateListActions(grid);
+      return;
+    }
     grid.innerHTML=visible.map(function(profile){var active=activity(profile),work=availability(profile),readiness=profileReadiness(profile);return '<article class="talent-card">'+
       '<div class="talent-card-top">'+avatarMarkup(profile)+'<div class="talent-card-signals"><span class="talent-readiness">'+safe(readiness)+'% complete</span><span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span></div></div>'+
       '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p class="talent-role">'+safe(profile.position)+'</p>'+
       '<div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div>'+
       '<dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl>'+
-      '<button type="button" class="secondary talent-view" data-talent-id="'+safe(profile.user_id)+'">View professional profile</button></article>'}).join('');
+      '<button type="button" class="secondary talent-view" data-talent-id="'+safe(profile.user_id)+'">View candidate profile</button></article>'}).join('');
     grid.querySelectorAll('.talent-view').forEach(function(button){button.onclick=function(){openProfile(button.dataset.talentId)}});
+  }
+  function render(){
+    return renderDirectoryModern();
   }
   function openProfile(id){
     var profile=profiles.find(function(item){return item.user_id===id})||(linkedRecord(id)&&linkedRecord(id).profile);if(!profile)return;
     var active=activity(profile),work=availability(profile),isLinked=!!linkedRecord(id),old=byId('atsrsTalentModal');if(old)old.remove();
     var modal=document.createElement('div');modal.id='atsrsTalentModal';modal.className='talent-modal';
-    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-added':'')+'" data-talent-action="personnel"'+(isLinked?' disabled':'')+'>'+(isLinked?'Added to Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain private. Adding this profile copies public professional details only; CV and documents require separate permission.</p></div>';
-    document.body.appendChild(modal);modal.querySelectorAll('.talent-modal-backdrop,.talent-modal-close').forEach(function(button){button.onclick=function(){modal.remove()}});
+    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain private. Adding this profile copies public professional details only; CV and documents require separate permission.</p></div>';
+    document.body.appendChild(modal);
+    activeActionPanel=modal.querySelector('#talentActionPanel');
+    modal.querySelectorAll('.talent-modal-backdrop,.talent-modal-close').forEach(function(button){button.onclick=function(){if(activeActionPanel&&modal.contains(activeActionPanel))activeActionPanel=null;modal.remove()}});
     modal.querySelector('[data-talent-action="message"]').onclick=function(){showMessageForm(profile)};
     modal.querySelector('[data-talent-action="summary"]').onclick=function(){showDocumentSummary(profile)};
     modal.querySelector('[data-talent-action="cv"]').onclick=function(){openTalentCv(profile)};
-    modal.querySelector('[data-talent-action="personnel"]').onclick=function(){addToPersonnel(profile,this)};
+    modal.querySelector('[data-talent-action="personnel"]').onclick=function(){if(linkedRecord(profile.user_id))removeFromPersonnel(profile.user_id,this);else addToPersonnel(profile,this)};
   }
-  function actionPanel(){return byId('talentActionPanel')}
+  function actionPanel(){return activeActionPanel&&activeActionPanel.isConnected?activeActionPanel:byId('talentActionPanel')}
   function panelMessage(text,error){var panel=actionPanel();if(!panel)return;panel.classList.remove('hidden');panel.innerHTML='<p class="talent-action-message'+(error?' is-error':'')+'">'+safe(text)+'</p>'}
   function showMessageForm(profile){
     var panel=actionPanel();if(!panel)return;panel.classList.remove('hidden');
-    panel.innerHTML='<form class="talent-message-form"><label>Company name<input id="talentMessageCompany" maxlength="140" autocomplete="organization" placeholder="Your company"></label><label>Message<textarea id="talentMessageBody" maxlength="1200" rows="4" placeholder="Introduce the opportunity and how the professional can contact you."></textarea></label><div class="talent-form-actions"><button type="submit" class="secondary">Send Message</button><span id="talentMessageStatus" role="status"></span></div></form>';
+    panel.innerHTML='<form class="talent-message-form"><label>Company name<input name="company" maxlength="140" autocomplete="organization" placeholder="Your company"></label><label>Message<textarea name="message" maxlength="1200" rows="4" placeholder="Introduce the opportunity and how the candidate can contact you."></textarea></label><div class="talent-form-actions"><button type="submit" class="secondary">Send Message</button><span class="talent-message-status" role="status"></span></div></form>';
     panel.querySelector('form').onsubmit=async function(event){
-      event.preventDefault();var button=event.submitter||panel.querySelector('button'),status=byId('talentMessageStatus');button.disabled=true;button.textContent='Sending...';if(status)status.textContent='';
-      try{await actionCall({action:'send_message',target_user_id:profile.user_id,company:byId('talentMessageCompany').value,message:byId('talentMessageBody').value});panelMessage('Message sent securely through ATSRS.',false)}
+      event.preventDefault();var form=event.currentTarget,button=event.submitter||form.querySelector('button'),status=form.querySelector('.talent-message-status');button.disabled=true;button.textContent='Sending...';if(status)status.textContent='';
+      try{await actionCall({action:'send_message',target_user_id:profile.user_id,company:form.elements.company.value,message:form.elements.message.value});panelMessage('Message sent securely through ATSRS.',false)}
       catch(error){if(status)status.textContent=error.message||'Message could not be sent.';button.disabled=false;button.textContent='Send Message'}
     };
   }
@@ -373,6 +478,21 @@
     render();
   }
   function bind(){
+    document.querySelectorAll('[data-candidate-view]').forEach(function(button){
+      button.addEventListener('click',function(){
+        candidateView=button.dataset.candidateView||'cards';
+        try{localStorage.setItem('atsrs_candidate_view',candidateView)}catch(ignore){}
+        render();
+      });
+    });
+    document.querySelectorAll('[data-personnel-view]').forEach(function(button){
+      button.addEventListener('click',function(){
+        personnelView=button.dataset.personnelView||'list';
+        try{localStorage.setItem('atsrs_personnel_view',personnelView)}catch(ignore){}
+        renderLinkedPersonnel();
+      });
+    });
+    updateViewSwitches();
     ['talentSearch','talentPositionFilter','talentCountryFilter','talentAvailabilityFilter'].forEach(function(id){var el=byId(id);if(el)el.addEventListener(id==='talentSearch'?'input':'change',render)});
     var workFilter=byId('talentWorkPreferenceFilter');
     if(workFilter){

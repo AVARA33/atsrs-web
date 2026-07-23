@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=297">
-<link rel="stylesheet" href="css/login.css?v=297">
-<link rel="stylesheet" href="css/dashboard.css?v=297">
-<link rel="stylesheet" href="css/documents.css?v=297">
-<link rel="stylesheet" href="css/references.css?v=297">
-<link rel="stylesheet" href="css/account.css?v=297">
-<link rel="stylesheet" href="css/product-experience.css?v=297">
-<link rel="stylesheet" href="css/date-picker.css?v=297">
-<link rel="stylesheet" href="css/share-profile.css?v=297">
-<link rel="stylesheet" href="css/calm-actions.css?v=297">
-<link rel="stylesheet" href="css/account-security-live.css?v=297">
-<link rel="stylesheet" href="css/talent-directory.css?v=297">
-<link rel="stylesheet" href="css/maintenance.css?v=297">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=297">
-<script defer src="js/maintenance-guard.js?v=297"></script>
+<link rel="stylesheet" href="css/base.css?v=298">
+<link rel="stylesheet" href="css/login.css?v=298">
+<link rel="stylesheet" href="css/dashboard.css?v=298">
+<link rel="stylesheet" href="css/documents.css?v=298">
+<link rel="stylesheet" href="css/references.css?v=298">
+<link rel="stylesheet" href="css/account.css?v=298">
+<link rel="stylesheet" href="css/product-experience.css?v=298">
+<link rel="stylesheet" href="css/date-picker.css?v=298">
+<link rel="stylesheet" href="css/share-profile.css?v=298">
+<link rel="stylesheet" href="css/calm-actions.css?v=298">
+<link rel="stylesheet" href="css/account-security-live.css?v=298">
+<link rel="stylesheet" href="css/talent-directory.css?v=298">
+<link rel="stylesheet" href="css/maintenance.css?v=298">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=298">
+<script defer src="js/maintenance-guard.js?v=298"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V297</div>
+<div>ATSRS V298</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -373,7 +373,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <h3>Your selected professionals</h3>
       <p class="sub">Only candidates added by your company appear here. Use this list for fast access, project assignment and future Excel exports.</p>
     </div>
-    <span id="linkedPersonnelCount">0 linked</span>
+    <div class="talent-head-tools">
+      <span id="linkedPersonnelCount">0 linked</span>
+      <div class="talent-view-switch" role="group" aria-label="Personnel view">
+        <button type="button" data-personnel-view="cards">Cards</button>
+        <button type="button" data-personnel-view="list">List</button>
+      </div>
+    </div>
   </div>
   <div class="linked-personnel-panel" aria-labelledby="linkedPersonnelTitle">
     <div class="linked-personnel-head">
@@ -402,7 +408,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <h3>Find ATSRS professionals</h3>
       <p class="sub">Only profiles that are at least 90% complete appear here. Review a candidate, then add the right person to Company Personnel.</p>
     </div>
-    <span id="talentDirectoryCount" class="talent-count">0 candidates</span>
+    <div class="talent-head-tools">
+      <span id="talentDirectoryCount" class="talent-count">0 candidates</span>
+      <div class="talent-view-switch" role="group" aria-label="Candidate view">
+        <button type="button" data-candidate-view="cards">Cards</button>
+        <button type="button" data-candidate-view="list">List</button>
+      </div>
+    </div>
   </div>
   <div class="talent-searchbar">
     <label class="talent-search-field">
@@ -851,25 +863,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=297"></script>
-<script src="js/server-data.js?v=297"></script>
-<script src="js/storage.js?v=297"></script>
-<script src="js/ui.js?v=297"></script>
-<script src="js/auth.js?v=297"></script>
-<script src="js/login.js?v=297"></script>
-<script src="js/dashboard.js?v=297"></script>
-<script src="js/avatar.js?v=297"></script>
-<script src="js/documents.js?v=297"></script>
-<script src="js/references.js?v=297"></script>
-<script src="js/account.js?v=297"></script>
-<script src="js/app.js?v=297"></script>
-<script src="js/product-experience.js?v=297"></script>
-<script src="js/date-picker.js?v=297"></script>
-<script src="js/share-profile.js?v=297"></script>
-<script src="js/boot-refresh.js?v=297"></script>
-<script src="js/account-security-live.js?v=297"></script>
-<script src="js/talent-directory.js?v=297"></script>
-<script src="js/workspace-switcher.js?v=297"></script>
+<script src="js/stability-runtime.js?v=298"></script>
+<script src="js/server-data.js?v=298"></script>
+<script src="js/storage.js?v=298"></script>
+<script src="js/ui.js?v=298"></script>
+<script src="js/auth.js?v=298"></script>
+<script src="js/login.js?v=298"></script>
+<script src="js/dashboard.js?v=298"></script>
+<script src="js/avatar.js?v=298"></script>
+<script src="js/documents.js?v=298"></script>
+<script src="js/references.js?v=298"></script>
+<script src="js/account.js?v=298"></script>
+<script src="js/app.js?v=298"></script>
+<script src="js/product-experience.js?v=298"></script>
+<script src="js/date-picker.js?v=298"></script>
+<script src="js/share-profile.js?v=298"></script>
+<script src="js/boot-refresh.js?v=298"></script>
+<script src="js/account-security-live.js?v=298"></script>
+<script src="js/talent-directory.js?v=298"></script>
+<script src="js/workspace-switcher.js?v=298"></script>
 
 
 
