@@ -84,7 +84,7 @@
 /* ===== extracted from inline script ===== */
 (function(){
   'use strict';
-  const BUILD = 'ATSRS V314';
+  const BUILD = 'ATSRS V315';
   const UPDATE = 'Last Update: 23 Jul 2026';
   const ATSRS_MEANING = 'Automated Tracking & Reporting System';
   function byId(id){ return document.getElementById(id); }

@@ -1,4 +1,4 @@
-/* ATSRS V314 - refined international profile details. */
+/* ATSRS V315 - server-enforced candidate profile visibility. */
 (function(){
   'use strict';
   var profiles=[];
@@ -112,6 +112,7 @@
       whatsappVerified:!!stored.whatsappVerified,
       zipCode:formValue('profileZipCode',stored.zipCode||''),
       birthDate:formValue('profileBirthDate',stored.birthDate||''),
+      visibility:formValue('profileVisibility',stored.visibility||'Private')||'Private',
       availabilityStatus:availabilityStatus,
       availableFrom:availabilityStatus==='available_from'?availableFrom:null,
       workPreferences:workPreferences,
@@ -172,11 +173,23 @@
     if(mode()!=='personal'||loading)return false;
     if(!force&&Date.now()-lastSync<240000)return true;
     var c=client(),u=await user(),profile=profileFromForm();
-    if(!c||!u||!complete(profile))return false;
+    if(!c||!u)return false;
+    var isPublic=profile.visibility==='Public';
+    if(!complete(profile)){
+      if(!isPublic){
+        var hidden=await c.from('atsrs_talent_profiles').update({
+          discoverable:false,profile_visibility:profile.visibility,updated_at:new Date().toISOString()
+        }).eq('user_id',u.id);
+        if(hidden.error){console.warn('ATSRS talent privacy sync failed',hidden.error);return false}
+        lastSync=Date.now();return true;
+      }
+      return false;
+    }
     var isAvailable=['available_now','available_from','open_to_offers'].indexOf(profile.availabilityStatus)>=0;
     var result=await c.from('atsrs_talent_profiles').upsert({
       user_id:u.id,name:profile.name,surname:profile.surname,position:profile.position,
-      country:profile.country,company:profile.company||null,available:isAvailable,discoverable:true,
+      country:profile.country,company:profile.company||null,available:isAvailable,
+      discoverable:isPublic,profile_visibility:profile.visibility,
       availability_status:profile.availabilityStatus,available_from:profile.availableFrom,
       work_preference:profile.workPreference,work_preferences:profile.workPreferences,
       availability_confirmed_at:profile.availabilityConfirmedAt,
