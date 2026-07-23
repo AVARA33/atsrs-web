@@ -1,4 +1,4 @@
-/* ATSRS V305 - refined international profile details. */
+/* ATSRS V306 - refined international profile details. */
 (function(){
   'use strict';
   var profiles=[];
