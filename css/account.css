@@ -1088,53 +1088,66 @@ body #modeChoiceBox:not(.mode-error) button::before{
 body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid{
   display:grid!important;
-  grid-template-columns:180px 180px 220px 220px!important;
-  gap:10px!important;
+  grid-template-columns:260px 260px!important;
+  column-gap:80px!important;
+  row-gap:12px!important;
   align-items:start!important;
   justify-content:start!important;
-  width:max-content!important;
-  max-width:100%!important;
+  width:100%!important;
   padding-top:16px;
   border-top:1px solid rgba(51,65,85,.72);
 }
-#profilePage #accountGeneralTab>.profile-grid>#profileName,
-#profilePage #accountGeneralTab>.profile-grid>#profileSurname{
-  grid-column:auto;
+#profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:minmax(560px,.9fr) minmax(700px,1.1fr);
+  gap:24px;
+  width:100%;
+  align-items:end;
+}
+.profile-details-group{
+  display:grid;
+  gap:10px;
+  min-width:0;
+}
+.profile-details-primary{
+  grid-template-columns:repeat(4,minmax(125px,1fr));
+}
+.profile-details-secondary{
+  grid-template-columns:minmax(135px,.9fr) minmax(120px,.72fr) minmax(145px,.9fr) minmax(210px,1.38fr);
+}
+.profile-labeled-field{
+  display:grid;
+  gap:6px;
+  min-width:0;
+  margin:0;
+}
+.profile-labeled-field>span{
+  color:#9fb2c8;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.2;
+}
+.profile-labeled-field>input,
+.profile-labeled-field>select{
+  width:100%!important;
+  height:42px!important;
+  min-height:42px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
 }
 #profilePage #accountGeneralTab>.profile-grid>.phone-entry{
   grid-column:auto;
   width:260px!important;
 }
-#profilePage #accountGeneralTab>.profile-grid>#profileCountry{
-  grid-column:auto;
-}
-#profilePage #accountGeneralTab>.profile-grid>#profileCompany,
-#profilePage #accountGeneralTab>.profile-grid>#profilePosition{
-  grid-column:auto;
-}
-#profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
-#profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
-  grid-column:auto;
-}
-#profilePage #accountGeneralTab>.profile-grid>#profileName{order:1}
-#profilePage #accountGeneralTab>.profile-grid>#profileSurname{order:2}
-#profilePage #accountGeneralTab>.profile-grid>#profileCountry{order:3}
-#profilePage #accountGeneralTab>.profile-grid>#profileCompany{order:4}
-#profilePage #accountGeneralTab>.profile-grid>#profilePosition{order:5}
-#profilePage #accountGeneralTab>.profile-grid>#profileZipCode{order:6}
-#profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{order:7}
 #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-entry{
-  order:8;
-  grid-column:1/3;
+  grid-column:1;
   justify-self:start;
 }
 #profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-entry{
-  order:9;
-  grid-column:3/5;
+  grid-column:2;
   justify-self:start;
 }
-#profilePage #accountGeneralTab>.profile-grid>input,
-#profilePage #accountGeneralTab>.profile-grid>select,
 #profilePage #accountGeneralTab>.profile-grid>.phone-entry>.phone-field{
   height:42px!important;
   min-height:42px!important;
@@ -1510,25 +1523,17 @@ body.profile-photo-cropping{overflow:hidden}
   outline-offset:2px;
 }
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
-@media(max-width:1150px){
+@media(max-width:1380px){
   #profilePage #accountGeneralTab>.profile-grid{
     grid-template-columns:minmax(220px,280px) minmax(220px,280px)!important;
     width:100%!important;
   }
-  #profilePage #accountGeneralTab>.profile-grid>#profileName,
-  #profilePage #accountGeneralTab>.profile-grid>#profileSurname,
-  #profilePage #accountGeneralTab>.profile-grid>.phone-entry,
-  #profilePage #accountGeneralTab>.profile-grid>#profileCountry,
-  #profilePage #accountGeneralTab>.profile-grid>#profileCompany,
-  #profilePage #accountGeneralTab>.profile-grid>#profilePosition,
-  #profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
-  #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
-    grid-column:auto;
+  #profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{
+    grid-template-columns:1fr;
   }
-  #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-entry,
-  #profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-entry{
-    grid-column:auto;
-    width:100%!important;
+  .profile-details-primary,
+  .profile-details-secondary{
+    grid-template-columns:repeat(2,minmax(180px,1fr));
   }
 }
 @media(max-width:1250px){
@@ -1544,15 +1549,9 @@ body.profile-photo-cropping{overflow:hidden}
   #profilePage #accountGeneralTab>.profile-grid{
     grid-template-columns:1fr!important;
   }
-  #profilePage #accountGeneralTab>.profile-grid>#profileName,
-  #profilePage #accountGeneralTab>.profile-grid>#profileSurname,
-  #profilePage #accountGeneralTab>.profile-grid>.phone-entry,
-  #profilePage #accountGeneralTab>.profile-grid>#profileCountry,
-  #profilePage #accountGeneralTab>.profile-grid>#profileCompany,
-  #profilePage #accountGeneralTab>.profile-grid>#profilePosition,
-  #profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
-  #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
-    grid-column:1/-1;
+  .profile-details-primary,
+  .profile-details-secondary{
+    grid-template-columns:1fr;
   }
   #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-entry,
   #profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-entry{

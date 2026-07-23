@@ -57,8 +57,8 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V315';
-  var UPDATE='Last Update: 23 Jul 2026';
+  var BUILD='ATSRS V316';
+  var UPDATE='Last Update: 24 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -372,7 +372,7 @@
       whatsappCountryCode:whatsappParts.code,whatsappLocal:whatsappParts.local,whatsappVerified:!!existing.whatsappVerified,
       country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
-      zipCode:val('profileZipCode'),birthDate:val('profileBirthDate'),
+      zipCode:val('profileZipCode'),birthDate:val('profileBirthDate'),address:val('profileAddress'),
       avatarUrl:existing.avatarUrl||'',
       avatarPath:existing.avatarPath||'',
       avatarSource:existing.avatarSource||'',
@@ -411,7 +411,7 @@
     updatePhoneHidden('profileWhatsapp');
     setVal('profileCountry',p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
-    setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate);
+    setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate); setVal('profileAddress',p.address);
     setVerificationText('profilePhoneVerifiedText',!!p.phoneVerified);
     setVerificationText('profileWhatsappVerifiedText',!!p.whatsappVerified);
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');
@@ -494,8 +494,8 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V315';
-  var UPDATE='Last Update: 23 Jul 2026';
+  var BUILD='ATSRS V316';
+  var UPDATE='Last Update: 24 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){

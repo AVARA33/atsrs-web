@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=315">
-<link rel="stylesheet" href="css/login.css?v=315">
-<link rel="stylesheet" href="css/dashboard.css?v=315">
-<link rel="stylesheet" href="css/documents.css?v=315">
-<link rel="stylesheet" href="css/references.css?v=315">
-<link rel="stylesheet" href="css/account.css?v=315">
-<link rel="stylesheet" href="css/product-experience.css?v=315">
-<link rel="stylesheet" href="css/date-picker.css?v=315">
-<link rel="stylesheet" href="css/share-profile.css?v=315">
-<link rel="stylesheet" href="css/calm-actions.css?v=315">
-<link rel="stylesheet" href="css/account-security-live.css?v=315">
-<link rel="stylesheet" href="css/talent-directory.css?v=315">
-<link rel="stylesheet" href="css/maintenance.css?v=315">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=315">
-<script defer src="js/maintenance-guard.js?v=315"></script>
+<link rel="stylesheet" href="css/base.css?v=316">
+<link rel="stylesheet" href="css/login.css?v=316">
+<link rel="stylesheet" href="css/dashboard.css?v=316">
+<link rel="stylesheet" href="css/documents.css?v=316">
+<link rel="stylesheet" href="css/references.css?v=316">
+<link rel="stylesheet" href="css/account.css?v=316">
+<link rel="stylesheet" href="css/product-experience.css?v=316">
+<link rel="stylesheet" href="css/date-picker.css?v=316">
+<link rel="stylesheet" href="css/share-profile.css?v=316">
+<link rel="stylesheet" href="css/calm-actions.css?v=316">
+<link rel="stylesheet" href="css/account-security-live.css?v=316">
+<link rel="stylesheet" href="css/talent-directory.css?v=316">
+<link rel="stylesheet" href="css/maintenance.css?v=316">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=316">
+<script defer src="js/maintenance-guard.js?v=316"></script>
 
 
 
@@ -132,8 +132,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V315</div>
-<div>Last Update: 23 Jul 2026</div>
+<div>ATSRS V316</div>
+<div>Last Update: 24 Jul 2026</div>
 </div>
 </div>
 </section>
@@ -675,7 +675,44 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 <div class="profile-grid">
-<input id="profileName"><input id="profileSurname">
+<div class="profile-details-layout">
+  <div class="profile-details-group profile-details-primary">
+    <label class="profile-labeled-field">
+      <span>Name</span>
+      <input id="profileName" autocomplete="given-name">
+    </label>
+    <label class="profile-labeled-field">
+      <span>Surname</span>
+      <input id="profileSurname" autocomplete="family-name">
+    </label>
+    <label class="profile-labeled-field">
+      <span>Country</span>
+      <select id="profileCountry"></select>
+    </label>
+    <label class="profile-labeled-field">
+      <span>Current workplace</span>
+      <input id="profileCompany" autocomplete="organization">
+    </label>
+  </div>
+  <div class="profile-details-group profile-details-secondary">
+    <label class="profile-labeled-field">
+      <span>Position</span>
+      <input id="profilePosition" autocomplete="organization-title">
+    </label>
+    <label class="profile-labeled-field">
+      <span>ZIP / postal code</span>
+      <input id="profileZipCode" autocomplete="postal-code">
+    </label>
+    <label class="profile-labeled-field">
+      <span>Date of birth</span>
+      <input id="profileBirthDate" type="date">
+    </label>
+    <label class="profile-labeled-field profile-address-field">
+      <span>Physical address</span>
+      <input id="profileAddress" autocomplete="street-address">
+    </label>
+  </div>
+</div>
 <div class="phone-entry mobile-phone-entry">
 <div class="phone-field mobile-phone-field" aria-label="Mobile phone number">
   <select id="profilePhoneCountryCode" title="Country calling code">
@@ -788,10 +825,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div class="phone-verification-note">WhatsApp verification: <b id="profileWhatsappVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="whatsapp">Verify</button></div>
 </div>
-<select id="profileCountry"></select>
-<input id="profileCompany"><input id="profilePosition">
-<input id="profileZipCode" autocomplete="postal-code" placeholder="ZIP / postal code">
-<input id="profileBirthDate" type="date" title="Date of birth">
 </div>
 <div class="work-availability-card personal-only">
   <div class="work-availability-heading">
@@ -1003,25 +1036,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=315"></script>
-<script src="js/server-data.js?v=315"></script>
-<script src="js/storage.js?v=315"></script>
-<script src="js/ui.js?v=315"></script>
-<script src="js/auth.js?v=315"></script>
-<script src="js/login.js?v=315"></script>
-<script src="js/dashboard.js?v=315"></script>
-<script src="js/avatar.js?v=315"></script>
-<script src="js/documents.js?v=315"></script>
-<script src="js/references.js?v=315"></script>
-<script src="js/account.js?v=315"></script>
-<script src="js/app.js?v=315"></script>
-<script src="js/product-experience.js?v=315"></script>
-<script src="js/date-picker.js?v=315"></script>
-<script src="js/share-profile.js?v=315"></script>
-<script src="js/boot-refresh.js?v=315"></script>
-<script src="js/account-security-live.js?v=315"></script>
-<script src="js/talent-directory.js?v=315"></script>
-<script src="js/workspace-switcher.js?v=315"></script>
+<script src="js/stability-runtime.js?v=316"></script>
+<script src="js/server-data.js?v=316"></script>
+<script src="js/storage.js?v=316"></script>
+<script src="js/ui.js?v=316"></script>
+<script src="js/auth.js?v=316"></script>
+<script src="js/login.js?v=316"></script>
+<script src="js/dashboard.js?v=316"></script>
+<script src="js/avatar.js?v=316"></script>
+<script src="js/documents.js?v=316"></script>
+<script src="js/references.js?v=316"></script>
+<script src="js/account.js?v=316"></script>
+<script src="js/app.js?v=316"></script>
+<script src="js/product-experience.js?v=316"></script>
+<script src="js/date-picker.js?v=316"></script>
+<script src="js/share-profile.js?v=316"></script>
+<script src="js/boot-refresh.js?v=316"></script>
+<script src="js/account-security-live.js?v=316"></script>
+<script src="js/talent-directory.js?v=316"></script>
+<script src="js/workspace-switcher.js?v=316"></script>
 
 
 

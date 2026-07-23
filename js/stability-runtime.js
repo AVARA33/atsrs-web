@@ -5,8 +5,8 @@
   var nextTaskId=1;
   var wakeTimer=0;
   var recoveryTimer=0;
-  var BUILD='ATSRS V315';
-  var UPDATE='Last Update: 23 Jul 2026';
+  var BUILD='ATSRS V316';
+  var UPDATE='Last Update: 24 Jul 2026';
 
   function visible(){return document.visibilityState!=='hidden';}
   function clearWake(){if(wakeTimer){clearTimeout(wakeTimer);wakeTimer=0;}}
