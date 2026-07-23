@@ -1,4 +1,4 @@
-/* ATSRS V295 - keep server-confirmed candidates visible in Company Personnel. */
+/* ATSRS V296 - keep nested Personnel content visible during page navigation. */
 (function(){
   'use strict';
   var profiles=[];
