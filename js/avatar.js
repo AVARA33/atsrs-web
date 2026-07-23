@@ -1,9 +1,13 @@
-/* ATSRS V289 - owner-uploaded profile photos with initials fallback. */
+/* ATSRS V290 - one owner-uploaded identity photo across personal and corporate workspaces. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';
   var MAX_BYTES=5*1024*1024;
   var cropState=null;
+  var identityUrl='';
+  var identityPath='';
+  var identityUserId='';
+  var identityPromise=null;
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
@@ -36,15 +40,60 @@
     try{var url=new URL(String(value||''),location.origin);return url.protocol==='https:'?url.href:''}catch(error){return ''}
   }
   function resolvedUrl(profile){
-    return profile&&profile.avatarSource==='upload'&&profile.avatarPath
-      ?allowedUrl(profile.avatarUrl)
-      :'';
+    var workspaceUrl=profile&&profile.avatarSource==='upload'&&profile.avatarPath?allowedUrl(profile.avatarUrl):'';
+    return workspaceUrl||identityUrl;
+  }
+  function profileFromPayload(payload){
+    try{
+      var raw=payload&&payload.value;
+      var profile=typeof raw==='string'?JSON.parse(raw):{};
+      return profile&&typeof profile==='object'?profile:{};
+    }catch(error){return {}}
+  }
+  async function hydrateIdentityPhoto(force){
+    var c=client(),user=window.currentUser&&window.currentUser.id?window.currentUser:null;
+    if(!c||!user)return '';
+    var localProfile=readProfile(),localUrl=localProfile&&localProfile.avatarSource==='upload'&&localProfile.avatarPath?allowedUrl(localProfile.avatarUrl):'';
+    if(localUrl){
+      identityUrl=localUrl;identityPath=localProfile.avatarPath||'';identityUserId=user.id;
+      return identityUrl;
+    }
+    if(!force&&identityUserId===user.id&&identityUrl)return identityUrl;
+    if(identityPromise&&identityPromise.userId===user.id)return identityPromise;
+    var promise=(async function(){
+      var url='',path='';
+      var key='atsrs_'+user.id+'_personal_profile';
+      var personal=await c.from('atsrs_workspace_data')
+        .select('payload')
+        .eq('user_id',user.id)
+        .eq('account_type','personal')
+        .eq('data_key',key)
+        .maybeSingle();
+      if(!personal.error&&personal.data){
+        var profile=profileFromPayload(personal.data.payload);
+        if(profile.avatarSource==='upload'&&profile.avatarPath){
+          url=allowedUrl(profile.avatarUrl);path=profile.avatarPath||'';
+        }
+      }
+      if(!url){
+        var directory=await c.from('atsrs_talent_profiles').select('avatar_url').eq('user_id',user.id).maybeSingle();
+        if(!directory.error&&directory.data)url=allowedUrl(directory.data.avatar_url);
+      }
+      identityUrl=url;identityPath=path;identityUserId=user.id;
+      render(readProfile(),true);
+      window.dispatchEvent(new CustomEvent('atsrs:identity-photo-hydrated',{detail:{url:url,path:path}}));
+      return url;
+    })();
+    promise.userId=user.id;identityPromise=promise;
+    try{return await promise}
+    catch(error){console.warn('ATSRS identity photo could not be loaded',error);return ''}
+    finally{if(identityPromise===promise)identityPromise=null}
   }
   function status(message,error){
     var el=byId('profilePhotoStatus');if(!el)return;
     el.textContent=message||'';el.classList.toggle('error',!!error);
   }
-  function render(profile){
+  function render(profile,skipHydrate){
     profile=profile||readProfile();
     var image=byId('profilePhotoImage'),letters=byId('profilePhotoInitials'),remove=byId('profilePhotoRemoveBtn'),url=resolvedUrl(profile);
     if(letters)letters.textContent=initials(profile);
@@ -53,8 +102,9 @@
       image.onerror=function(){image.classList.add('hidden');if(letters)letters.classList.remove('hidden')};
       if(url)image.src=url;else{image.removeAttribute('src');image.classList.add('hidden');if(letters)letters.classList.remove('hidden')}
     }
-    if(remove)remove.classList.toggle('hidden',!profile.avatarPath);
+    if(remove)remove.classList.toggle('hidden',!(profile.avatarPath||identityPath));
     if(typeof window.atsrsWorkspaceSwitcherUpdate==='function')window.atsrsWorkspaceSwitcherUpdate();
+    if(!skipHydrate)hydrateIdentityPhoto();
   }
   function ensureCropModal(){
     var modal=byId('profilePhotoCropModal');if(modal)return modal;
@@ -135,13 +185,14 @@
         var saved=await window.atsrsCloudData.flush();if(saved===false)throw new Error('The profile photo could not be saved to ATSRS.');
       }
       if(oldPath&&oldPath!==path)await c.storage.from(BUCKET).remove([oldPath]);
-      render(profile);closeCrop();status('Profile photo saved.');
+      identityUrl=url;identityPath=path;identityUserId=user.id;
+      render(profile,true);closeCrop();status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
     }catch(error){status((error&&error.message)||'The profile photo could not be saved.',true)}
     finally{button.disabled=false;button.textContent='Use photo'}
   }
   async function removePhoto(){
-    var button=byId('profilePhotoRemoveBtn'),profile=readProfile(),path=profile.avatarPath||'';
+    var button=byId('profilePhotoRemoveBtn'),profile=readProfile(),path=profile.avatarPath||identityPath||'';
     if(!path)return;
     button.disabled=true;status('Removing...');
     try{
@@ -149,7 +200,8 @@
       profile.avatarUrl='';profile.avatarPath='';profile.avatarSource='';profile.updatedAt=new Date().toISOString();
       if(!writeProfile(profile))throw new Error('The profile photo could not be removed.');
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
-      render(profile);status('Profile photo removed.');
+      identityUrl='';identityPath='';identityUserId=(window.currentUser&&window.currentUser.id)||'';
+      render(profile,true);status('Profile photo removed.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:'',path:''}}));
     }catch(error){status((error&&error.message)||'The profile photo could not be removed.',true)}
     finally{button.disabled=false}
@@ -160,8 +212,8 @@
     upload.dataset.bound='1';upload.onclick=function(){input.click()};input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
     render();
   }
-  window.atsrsProfilePhoto={render:render,currentUrl:function(){return resolvedUrl(readProfile())},initials:function(){return initials(readProfile())}};
-  window.addEventListener('atsrs:data-hydrated',function(){render()});
+  window.atsrsProfilePhoto={render:render,hydrate:hydrateIdentityPhoto,currentUrl:function(){return resolvedUrl(readProfile())},initials:function(){return initials(readProfile())}};
+  window.addEventListener('atsrs:data-hydrated',function(){render();hydrateIdentityPhoto(true)});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
   window.addEventListener('load',function(){bind();render()});
 })();
