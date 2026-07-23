@@ -65,8 +65,7 @@
     return isCloudSession()&&isManagedBusinessKey(key);
   }
   function cloudErrorMessage(error){
-    var detail=error&&error.message?'\n\n'+error.message:'';
-    return 'ATSRS server data could not be loaded. Please check the connection and try again.'+detail;
+    return 'ATSRS server data could not be loaded. Please check the connection and try again.';
   }
   function showCloudError(error){
     console.error('ATSRS cloud data error',error);

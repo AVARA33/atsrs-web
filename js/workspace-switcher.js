@@ -73,7 +73,7 @@
       if(switched===false)setBusy(false,'Workspace could not be switched.');
     }catch(error){
       setBusy(false,'Workspace could not be switched.');
-      setStatus((error&&error.message)||'Workspace could not be switched.',true);
+      setStatus('Workspace could not be switched. Please try again.',true);
     }
   }
   function bind(){

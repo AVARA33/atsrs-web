@@ -1,4 +1,4 @@
-/* ATSRS V312 - refined international profile details. */
+/* ATSRS V313 - refined international profile details. */
 (function(){
   'use strict';
   var profiles=[];
@@ -19,6 +19,12 @@
   function client(){return window.supabaseClient||null}
   function mode(){try{return localStorage.getItem('atsrs_use_mode')||window.useMode||'personal'}catch(e){return 'personal'}}
   function safe(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function friendlyError(error,fallback){
+    var text=String(error&&error.message||'').toLowerCase();
+    if(/not authenticated|unauthorized|jwt|session|sign in/.test(text))return 'Your session has expired. Please sign in again.';
+    if(/network|fetch|connection|timeout|offline/.test(text))return 'Connection problem. Check your internet and try again.';
+    return fallback;
+  }
   function safeAvatar(value){
     try{var parsed=new URL(String(value||''),location.origin);return parsed.protocol==='https:'?parsed.href:''}catch(error){return ''}
   }
@@ -358,7 +364,7 @@
     var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
     var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
     if(count)count.textContent=rows.length+' linked';
-    if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a professional profile and choose РІР‚СљAdd to PersonnelРІР‚Сњ.</span></div>';return}
+    if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a candidate profile and choose “Add to Personnel”.</span></div>';return}
     list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Professional</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
       rows.map(function(item){
         var profile=item.profile,access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
@@ -395,7 +401,7 @@
       panelMessage('Added to Company Personnel. Only public profile details were copied; private documents still require permission.',false);
     }catch(error){
       if(button){button.disabled=false;button.textContent='Add to Personnel'}
-      panelMessage(error.message||'This professional could not be added.',true);
+      panelMessage(friendlyError(error,'This candidate could not be added to Personnel. Please try again.'),true);
     }
   }
   async function removeFromPersonnel(id,button){
@@ -411,12 +417,12 @@
       var modal=byId('atsrsTalentModal');if(modal)modal.remove();
     }catch(error){
       if(button){button.disabled=false;button.textContent='Remove from Personnel'}
-      panelMessage(error.message||'This professional could not be removed.',true);
+      panelMessage(friendlyError(error,'This candidate could not be removed from Personnel. Please try again.'),true);
     }
   }
   function preferenceLabel(value){
     var labels={freelance:'Freelance',contract:'Contract',permanent:'Permanent',any:'Any opportunity'};
-    return normalizeWorkPreferences(value).map(function(item){return labels[item]}).join(' Р’В· ');
+    return normalizeWorkPreferences(value).map(function(item){return labels[item]}).join(' · ');
   }
   function availability(profile){
     var preferences=profile.work_preferences||profile.work_preference||'any';
@@ -432,7 +438,7 @@
     if(status==='available_from'&&profile.available_from){
       var date=new Date(profile.available_from+'T00:00:00');
       var formatter=new Intl.DateTimeFormat('en',{day:'2-digit',month:'short',year:'numeric'});
-      if(date.getTime()<=Date.now())return {key:'now',label:'Available now',detail:'Available since '+formatter.format(date)+' Р’В· '+preferenceLabel(preferences)};
+      if(date.getTime()<=Date.now())return {key:'now',label:'Available now',detail:'Available since '+formatter.format(date)+' · '+preferenceLabel(preferences)};
       return {key:'from',label:'Available from '+formatter.format(date),detail:preferenceLabel(preferences),date:date};
     }
     return {key:'unset',label:'Availability not specified',detail:preferenceLabel(preferences)};
@@ -557,7 +563,7 @@
     panel.querySelector('form').onsubmit=async function(event){
       event.preventDefault();var form=event.currentTarget,button=event.submitter||form.querySelector('button'),status=form.querySelector('.talent-message-status');button.disabled=true;button.textContent='Sending...';if(status)status.textContent='';
       try{await actionCall({action:'send_message',target_user_id:profile.user_id,company:form.elements.company.value,message:form.elements.message.value});panelMessage('Message sent securely through ATSRS.',false)}
-      catch(error){if(status)status.textContent=error.message||'Message could not be sent.';button.disabled=false;button.textContent='Send Message'}
+      catch(error){if(status)status.textContent=friendlyError(error,'Message could not be sent. Please try again.');button.disabled=false;button.textContent='Send Message'}
     };
   }
   async function showDocumentSummary(profile){
@@ -565,7 +571,7 @@
     try{
       var data=await actionCall({action:'summary',target_user_id:profile.user_id}),panel=actionPanel(),counts=data.counts||{},documents=Array.isArray(data.documents)?data.documents:[];
       if(!panel)return;panel.innerHTML='<div class="talent-summary-head"><b>Document Summary</b><span>'+safe(counts.total||0)+' documents</span></div><div class="talent-summary-stats"><span><b>'+safe(counts.current||0)+'</b> current</span><span><b>'+safe(counts.expiryRisk||0)+'</b> expiry risk</span><span><b>'+safe(counts.expired||0)+'</b> expired</span></div>'+(documents.length?'<div class="talent-summary-list">'+documents.map(function(document){return '<div><span><b>'+safe(document.title)+'</b><small>'+safe(document.provider)+'</small></span><em>'+safe(document.status)+(document.expiry?' &middot; '+safe(document.expiry):'')+'</em></div>'}).join('')+'</div>':'<p class="talent-action-message">No document metadata is available.</p>');
-    }catch(error){panelMessage(error.message||'Document summary could not be loaded.',true)}
+    }catch(error){panelMessage(friendlyError(error,'Document summary could not be loaded. Please try again.'),true)}
   }
   async function openTalentCv(profile){
     panelMessage('Preparing CV preview...',false);
@@ -574,7 +580,7 @@
       var panel=actionPanel();if(panel)panel.classList.add('hidden');
       if(typeof window.atsrsOpenFilePreview!=='function')throw new Error('CV preview is unavailable.');
       window.atsrsOpenFilePreview({url:data.url,title:data.file_name||'Curriculum Vitae',mimeType:data.mime_type||'application/pdf'});
-    }catch(error){panelMessage(error.message||'CV could not be opened.',true)}
+    }catch(error){panelMessage(friendlyError(error,'CV could not be opened. Please try again.'),true)}
   }
   function ensureInbox(){
     var dashboard=byId('dashboardPage'),existing=byId('talentMessagesPanel');if(existing||!dashboard)return existing;

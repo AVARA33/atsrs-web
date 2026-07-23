@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V301';
+  var BUILD='ATSRS V313';
   var UPDATE='Last Update: 23 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V301';
+  var BUILD='ATSRS V313';
   var UPDATE='Last Update: 23 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -193,6 +193,16 @@
     return String(error&&error.message||'');
   }
 
+  function friendlyAiError(error){
+    var message=String(error&&error.message||error||'');
+    if(/larger than 10 mb/i.test(message))return 'This file is larger than 10 MB. Use a smaller file.';
+    if(/unsupported|pdf|jpg|jpeg|png|webp/i.test(message))return 'Use a PDF, JPG, PNG, or WebP file.';
+    if(/sign in|unauthorized|jwt|session/i.test(message))return 'Your session has expired. Please sign in again.';
+    if(/network|fetch|connection|timeout|relay/i.test(message))return 'Connection problem. Check your internet and try again.';
+    if(/no document details/i.test(message))return 'No document details could be detected. Try a clearer file or enter the details manually.';
+    return 'The AI scan could not be completed. Please try again.';
+  }
+
   function closeAiConsent(){
     aiConsentGranted=false;
     var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
@@ -322,9 +332,7 @@
       applyAiResult(file,invoked.data);
     }catch(error){
       console.error('ATSRS AI document scan failed',error);
-      var message=String(error&&error.message||'');
-      if(/non-2xx|edge function/i.test(message))message='The AI scan could not be completed. Please try again.';
-      setAiScanStatus(message||'The AI scan could not be completed. Try again.',true);
+      setAiScanStatus(friendlyAiError(error),true);
     }finally{
       aiScanBusy=false;
       buttons.forEach(function(button){button.disabled=false;});
@@ -745,7 +753,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V301';
+      if(d[0])d[0].textContent='ATSRS V313';
       if(d[1])d[1].textContent='Last Update: 23 Jul 2026';
     });
   }

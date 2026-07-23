@@ -271,10 +271,21 @@ if(typeof loginEmail!=="undefined"&&loginEmail)loginEmail.addEventListener("blur
 function validateRegisterFields(){let p1=regPassword.value.trim(),p2=regPassword2.value.trim(),ok=true;if(p1.length>0&&p1.length<6){regPassword.classList.add("input-error");passRule.classList.remove("hidden");ok=false}else{regPassword.classList.remove("input-error");passRule.classList.add("hidden")}if(p2.length>0&&p1!==p2){regPassword2.classList.add("input-error");matchRule.classList.remove("hidden");ok=false}else{regPassword2.classList.remove("input-error");matchRule.classList.add("hidden")}return ok}
 regPassword.addEventListener("input",validateRegisterFields);regPassword2.addEventListener("input",validateRegisterFields);
 
-async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?error.message:"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
-async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!validateUseMode())return;if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="Supabase library did not load.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=error.message;return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;window.currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
-async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="Supabase library did not load.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?error.message:tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
-async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?error.message:"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
+function atsrsFriendlyAuthError(error,fallback){
+  var text=String(error&&error.message||error||'').toLowerCase();
+  if(/invalid login|invalid credentials|email or password/.test(text))return 'Email or password is incorrect.';
+  if(/email.*not.*confirm/.test(text))return 'Please confirm your email before signing in.';
+  if(/rate limit|too many|over_email_send_rate_limit/.test(text))return 'Too many attempts. Please wait a moment and try again.';
+  if(/network|fetch|connection|timeout|offline/.test(text))return 'Connection problem. Check your internet and try again.';
+  if(/session|jwt|not authenticated|unauthorized/.test(text))return 'Your session has expired. Please sign in again.';
+  return fallback||'The request could not be completed. Please try again.';
+}
+window.atsrsFriendlyAuthError=atsrsFriendlyAuthError;
+
+async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?atsrsFriendlyAuthError(error,'Account could not be created. Please try again.'):"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
+async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!validateUseMode())return;if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=atsrsFriendlyAuthError(error,'Sign in failed. Please try again.');return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;window.currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
+async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?atsrsFriendlyAuthError(error,'Reset link could not be sent. Please try again.'):tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
+async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?atsrsFriendlyAuthError(error,'Password could not be updated. Please try again.'):"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
 
 let useMode="";
 function modeMsg(){
@@ -1360,7 +1371,7 @@ setTimeout(v55DockTopActions,500);
   window.atsrsHardFixTopbar=function(){
     var app=document.getElementById('app');
     var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
-    if(!app||!top){ alert('App/top-actions not found'); return; }
+    if(!app||!top){ console.warn('ATSRS layout container was not found.'); return; }
     if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
     top.setAttribute('style','position:fixed!important;top:18px!important;right:18px!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;display:flex!important;align-items:center!important;gap:10px!important;transform:none!important;width:auto!important;height:auto!important;');
     var lang=top.querySelector('.lang-floating,.app-lang-switcher');
@@ -1534,7 +1545,7 @@ setTimeout(v55DockTopActions,500);
           }
         }
       });
-      if(res.error){setText('regMsg',res.error.message);return false;}
+      if(res.error){setText('regMsg',atsrsFriendlyAuthError(res.error,'Account could not be created. Please try again.'));return false;}
       var user=res.data && res.data.user;
       var needsEmailConfirm=!(res.data && res.data.session);
       try{
@@ -1547,7 +1558,7 @@ setTimeout(v55DockTopActions,500);
       }
       setText('regMsg',needsEmailConfirm ? 'Account created. Confirmation email sent. Check inbox/spam.' : 'Account created. You can now continue.');
       return true;
-    }catch(e){setText('regMsg',(e&&e.message)|| (typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
+    }catch(e){setText('regMsg',atsrsFriendlyAuthError(e,typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
     finally{setRegisterBusy(false);}
   }
   async function realLogin(){
@@ -1561,7 +1572,7 @@ setTimeout(v55DockTopActions,500);
     try{
       saveRemember();
       var res=await supabaseClient.auth.signInWithPassword({email:email,password:password});
-      if(res.error){setText('loginMsg',res.error.message);return false;}
+      if(res.error){setText('loginMsg',atsrsFriendlyAuthError(res.error,'Sign in failed. Please try again.'));return false;}
       var user=res.data && res.data.user;
       var mode=accountTypeFromUser(user) || selectedAccountType() || 'personal';
       applyAccountType(mode);
@@ -1570,7 +1581,7 @@ setTimeout(v55DockTopActions,500);
       window.currentUser=user;
       if(typeof openApp==='function') openApp();
       return true;
-    }catch(e){setText('loginMsg',(e&&e.message)|| (typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
+    }catch(e){setText('loginMsg',atsrsFriendlyAuthError(e,typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
   }
   async function realForgotPassword(){
     var emailEl=byId('resetEmail');
@@ -1581,9 +1592,9 @@ setTimeout(v55DockTopActions,500);
     if(!supabaseClient || !supabaseClient.auth){setText('resetMsg','Supabase library did not load.');return false;}
     try{
       var res=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:redirectUrl()});
-      setText('resetMsg',res.error?res.error.message:(typeof tr==='function'?tr('sent'):'Reset link sent.'));
+      setText('resetMsg',res.error?atsrsFriendlyAuthError(res.error,'Reset link could not be sent. Please try again.'):(typeof tr==='function'?tr('sent'):'Reset link sent.'));
       return !res.error;
-    }catch(e){setText('resetMsg',(e&&e.message)||'Connection failed.');return false;}
+    }catch(e){setText('resetMsg',atsrsFriendlyAuthError(e,'Connection failed.'));return false;}
   }
   async function realUpdatePassword(){
     var p1=(byId('newPassword') && byId('newPassword').value || '').trim();
@@ -1594,9 +1605,9 @@ setTimeout(v55DockTopActions,500);
     if(!supabaseClient || !supabaseClient.auth){setText('newPassMsg','Supabase library did not load.');return false;}
     try{
       var res=await supabaseClient.auth.updateUser({password:p1});
-      setText('newPassMsg',res.error?res.error.message:'Password updated.');
+      setText('newPassMsg',res.error?atsrsFriendlyAuthError(res.error,'Password could not be updated. Please try again.'):'Password updated.');
       return !res.error;
-    }catch(e){setText('newPassMsg',(e&&e.message)||'Connection failed.');return false;}
+    }catch(e){setText('newPassMsg',atsrsFriendlyAuthError(e,'Connection failed.'));return false;}
   }
   function showLoginScreen(){
     var authEl=byId('auth');
@@ -2127,22 +2138,8 @@ setTimeout(v55DockTopActions,500);
     }
   }
   function buildDebug(error,fetchResult){
-    var lines=[];
-    lines.push('Create Account failed — debug report');
-    lines.push('Error: '+errText(error));
-    lines.push('Online: '+(navigator.onLine?'yes':'no'));
-    lines.push('Origin: '+window.location.origin);
-    lines.push('Redirect: '+redirectUrl());
-    lines.push('Supabase lib: '+(window.supabase?'loaded':'NOT loaded'));
-    lines.push('Client: '+(window.supabaseClient&&window.supabaseClient.auth?'created':'NOT created'));
-    try{lines.push('Supabase URL: '+(typeof SUPABASE_URL!=='undefined'?SUPABASE_URL:'missing'));}catch(e){lines.push('Supabase URL: inaccessible');}
-    try{lines.push('Anon key prefix: '+(typeof SUPABASE_KEY!=='undefined'?String(SUPABASE_KEY).slice(0,16)+'...':'missing'));}catch(e){lines.push('Anon key: inaccessible');}
-    if(fetchResult){
-      lines.push('Direct fetch: '+fetchResult.status+' / '+(fetchResult.ok?'OK':'FAILED'));
-      if(fetchResult.detail) lines.push('Fetch detail: '+fetchResult.detail);
-    }
-    lines.push('Meaning: if Direct fetch is FETCH_FAILED, this is network/Wi-Fi/DNS/VPN/blocking or Supabase endpoint access, not page UI.');
-    return lines.join('\n');
+    console.warn('ATSRS account request diagnostics',error,fetchResult);
+    return atsrsFriendlyAuthError(error,'Account could not be created. Check your connection and try again.');
   }
   async function debugRegister(){
     var email=val('regEmail').toLowerCase();
@@ -2171,7 +2168,7 @@ setTimeout(v55DockTopActions,500);
           data:{account_type:m,atsrs_account_type:m,use_mode:m,source:'atsrs-web',app:'ATSRS'}
         }
       });
-      if(res.error){setMsg('regMsg','Supabase Auth error: '+res.error.message);return false;}
+      if(res.error){setMsg('regMsg',atsrsFriendlyAuthError(res.error,'Account could not be created. Please try again.'));return false;}
       try{localStorage.setItem('atsrs_pending_email',email);localStorage.setItem('atsrs_use_mode',m);}catch(_e){}
       setMsg('regMsg',(res.data && res.data.session)?'Account created. You can now continue.':'Account created. Confirmation email sent. Check inbox/spam.');
       return true;
@@ -2350,11 +2347,11 @@ setTimeout(v55DockTopActions,500);
       });
       if(res && res.error){
         clearOAuthStartState();
-        setLoginMsg(res.error.message||'Google sign-in failed.');
+        setLoginMsg(atsrsFriendlyAuthError(res.error,'Google sign-in failed. Please try again.'));
       }
     }catch(e){
       clearOAuthStartState();
-      setLoginMsg((e && e.message) ? e.message : 'Google sign-in failed.');
+      setLoginMsg(atsrsFriendlyAuthError(e,'Google sign-in failed. Please try again.'));
     }
   }
   window.atsrsHandleAccountTypeChoice=async function(mode){

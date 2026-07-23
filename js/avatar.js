@@ -1,4 +1,4 @@
-/* ATSRS V301 - one owner-uploaded identity photo across personal and corporate workspaces. */
+/* ATSRS V313 - one owner-uploaded identity photo across personal and corporate workspaces. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';
@@ -225,7 +225,7 @@
       identityUrl=url;identityPath=path;identityUserId=user.id;
       render(profile,true);closeCrop();status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
-    }catch(error){status((error&&error.message)||'The profile photo could not be saved.',true)}
+    }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
     finally{button.disabled=false;button.textContent='Use photo'}
   }
   async function removePhoto(){
@@ -241,7 +241,7 @@
       identityUrl='';identityPath='';identityUserId=(window.currentUser&&window.currentUser.id)||'';
       render(profile,true);status('Profile photo removed.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:'',path:''}}));
-    }catch(error){status((error&&error.message)||'The profile photo could not be removed.',true)}
+    }catch(error){console.error('ATSRS profile photo removal failed',error);status('The profile photo could not be removed. Check your connection and try again.',true)}
     finally{button.disabled=false}
   }
   function bind(){

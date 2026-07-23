@@ -16,6 +16,13 @@
 
   function byId(id){return document.getElementById(id);}
   function client(){return window.supabaseClient||null;}
+  function friendlyError(error,fallback){
+    var text=String(error&&error.message||'').toLowerCase();
+    if(/not authenticated|unauthorized|jwt|session|sign in/.test(text))return 'Your session has expired. Please sign in again.';
+    if(/network|fetch|connection|timeout|offline/.test(text))return 'Connection problem. Check your internet and try again.';
+    if(/expired/.test(text))return 'This secure link has expired.';
+    return fallback;
+  }
   function endpoint(){var base=typeof SUPABASE_URL!=='undefined'?SUPABASE_URL:'';return base?base+'/functions/v1/share-profile':'';}
   function publishableKey(){return typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:'';}
   function safeSessionGet(key){try{return sessionStorage.getItem(key)||'';}catch(error){return '';}}
@@ -200,33 +207,33 @@
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
     try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests();}
-    catch(error){console.error(error);ownerMessage(error.message||'Secure link could not be created.',true);}finally{if(button)button.disabled=false;}
+    catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.revokeShareProfileLink=async function(){
     if(!window.confirm('Disable this recruiter link? Preview and every approved download will stop immediately.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Disabling all recruiter access...');
     try{var result=await ownerCall({action:'revoke'});activeShare=result.share||activeShare;safeSessionSet(OWNER_TOKEN_KEY,'');setKnownLink('');renderOwnerStatus();ownerMessage('The old link and all download permissions are disabled.');await refreshShareRequests();}
-    catch(error){ownerMessage(error.message||'The link could not be disabled.',true);}finally{if(button)button.disabled=false;}
+    catch(error){ownerMessage(friendlyError(error,'The link could not be disabled. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.copyShareLink=async function(){if(!knownShareUrl)return;try{await navigator.clipboard.writeText(knownShareUrl);}catch(error){var input=byId('shareProfileLink');if(input){input.focus();input.select();document.execCommand('copy');}}var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}};
   window.previewShareProfile=function(){if(knownShareUrl)window.location.assign(knownShareUrl);};
   window.toggleSharePreview=window.previewShareProfile;
   window.decideShareRequest=async function(id,decision){
     if(!window.confirm((decision==='approve'?'Approve':'Decline')+' this verified recruiter request?'))return;
-    try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests();}catch(error){window.alert(error.message||'The request could not be updated.');}
+    try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'The request could not be updated. Please try again.'));}
   };
   window.revokeShareRequestAccess=async function(id){
     if(!window.confirm('Close all active download access for this recruiter? The shared preview link will remain active.'))return;
-    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests();}catch(error){window.alert(error.message||'Access could not be closed.');}
+    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'Access could not be closed. Please try again.'));}
   };
   window.revokeShareDocumentAccess=async function(id,fileId){
     if(!window.confirm('Close download access to this document? Other approved documents will remain available.'))return;
-    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests();}catch(error){window.alert(error.message||'Document access could not be closed.');}
+    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'Document access could not be closed. Please try again.'));}
   };
   window.approveAllShareRequests=async function(){
     if(!window.confirm('Approve every pending recruiter request for 30 minutes?'))return;
     var button=byId('approveAllRequestsBtn');if(button)button.disabled=true;
-    try{var result=await ownerCall({action:'approve_all_pending'});window.alert(result.approved+' request(s) approved.');await refreshShareRequests();}catch(error){window.alert(error.message||'Requests could not be approved.');}finally{if(button)button.disabled=false;}
+    try{var result=await ownerCall({action:'approve_all_pending'});window.alert(result.approved+' request(s) approved.');await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'Requests could not be approved. Please try again.'));}finally{if(button)button.disabled=false;}
   };
 
   function publicStatus(expiry){if(!expiry||String(expiry).toUpperCase()==='N/A')return{label:'No expiry date',className:''};var today=new Date();today.setHours(0,0,0,0);var date=new Date(String(expiry).slice(0,10)+'T00:00:00'),days=Math.round((date-today)/86400000);if(days<0)return{label:'Expired',className:'expired'};if(days===0)return{label:'Expires today',className:'warning'};if(days<=30)return{label:days+' days left',className:'warning'};return{label:'Valid',className:''};}
@@ -247,7 +254,7 @@
   async function downloadPublicDocument(documentData,button,quiet){
     if(button)button.disabled=true;
     try{var result=await publicCall({action:'download',file_id:documentData.id,viewer_token:viewerToken});documentData.download_status='downloaded';startBrowserDownload(result.download_url,documentData.file_name);if(button){button.textContent='Downloaded';button.disabled=true;}if(!quiet)setTimeout(function(){loadPublicProfile(publicToken);},250);return true;}
-    catch(error){if(!quiet)window.alert(error.message||'Download access is unavailable.');return false;}
+    catch(error){if(!quiet)window.alert(friendlyError(error,'Download access is unavailable. Please try again.'));return false;}
     finally{if(button&&documentData.download_status!=='downloaded')button.disabled=false;}
   }
   async function downloadAllApproved(button){
@@ -314,7 +321,7 @@
   async function loadPublicProfile(token){
     document.body.classList.add('atsrs-public-share-view');document.body.classList.remove('atsrs-session-pending','atsrs-booting');var page=byId('sharedProfilePage');if(page)page.classList.remove('hidden');
     try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:headers}),data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');renderPublicProfile(data);}
-    catch(error){console.error('ATSRS public profile failed',error);showPublicError(error.message||'This shared profile is unavailable.');}
+    catch(error){console.error('ATSRS public profile failed',error);showPublicError(friendlyError(error,'This shared profile is unavailable.'));}
   }
   function setRequestStep(step){['shareIdentityStep','shareOtpStep','shareVerifiedStep'].forEach(function(id){var element=byId(id);if(element)element.classList.toggle('hidden',id!==step);});}
   window.openDownloadRequest=function(target){
@@ -331,17 +338,17 @@
     if(!requestContext)return;var button=byId('sendShareOtpBtn'),name=(byId('shareRequesterName').value||'').trim(),company=(byId('shareRequesterCompany').value||'').trim(),email=(byId('shareRequesterEmail').value||'').trim();
     if(button)button.disabled=true;requestMessage('Sending a verification code to your work email...');
     try{var result=await publicCall({action:'start_verification',requester_name:name,requester_company:company,requester_email:email,file_ids:requestContext.file_ids,request_all:requestContext.request_all});pendingVerificationId=result.request_id;viewerIdentity={name:name,company:company,email:email.toLowerCase()};setRequestStep('shareOtpStep');requestMessage('Enter the 6-digit code sent to '+viewerIdentity.email+'.');var otp=byId('shareRequesterOtp');if(otp)otp.focus();}
-    catch(error){requestMessage(error.message||'Verification code could not be sent.',true);}finally{if(button)button.disabled=false;}
+    catch(error){requestMessage(friendlyError(error,'Verification code could not be sent. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.verifyShareRequestOtp=async function(){
     var button=byId('verifyShareOtpBtn'),otp=(byId('shareRequesterOtp').value||'').trim();if(button)button.disabled=true;requestMessage('Verifying your email...');
     try{var result=await publicCall({action:'verify_otp',request_id:pendingVerificationId,otp:otp});viewerToken=result.viewer_token||'';safeViewerSet(viewerKey('token'),viewerToken);safeViewerSet(viewerKey('identity'),JSON.stringify(viewerIdentity||{}));requestMessage('Verified. Your request is waiting for the profile owner.');setTimeout(function(){window.closeDownloadRequest();loadPublicProfile(publicToken);},900);}
-    catch(error){requestMessage(error.message||'The code could not be verified.',true);}finally{if(button)button.disabled=false;}
+    catch(error){requestMessage(friendlyError(error,'The code could not be verified. Check it and try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.sendVerifiedShareRequest=async function(){
     if(!requestContext)return;var button=byId('sendVerifiedShareRequestBtn');if(button)button.disabled=true;requestMessage('Sending your verified request...');
     try{await publicCall({action:'create_request',viewer_token:viewerToken,file_ids:requestContext.file_ids,request_all:requestContext.request_all});requestMessage('Request sent. The profile owner has been notified.');setTimeout(function(){window.closeDownloadRequest();loadPublicProfile(publicToken);},800);}
-    catch(error){requestMessage(error.message||'The request could not be sent.',true);}finally{if(button)button.disabled=false;}
+    catch(error){requestMessage(friendlyError(error,'The request could not be sent. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   function install(){
     publicToken=new URLSearchParams(location.search).get('share')||'';

@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=312">
-<link rel="stylesheet" href="css/login.css?v=312">
-<link rel="stylesheet" href="css/dashboard.css?v=312">
-<link rel="stylesheet" href="css/documents.css?v=312">
-<link rel="stylesheet" href="css/references.css?v=312">
-<link rel="stylesheet" href="css/account.css?v=312">
-<link rel="stylesheet" href="css/product-experience.css?v=312">
-<link rel="stylesheet" href="css/date-picker.css?v=312">
-<link rel="stylesheet" href="css/share-profile.css?v=312">
-<link rel="stylesheet" href="css/calm-actions.css?v=312">
-<link rel="stylesheet" href="css/account-security-live.css?v=312">
-<link rel="stylesheet" href="css/talent-directory.css?v=312">
-<link rel="stylesheet" href="css/maintenance.css?v=312">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=312">
-<script defer src="js/maintenance-guard.js?v=312"></script>
+<link rel="stylesheet" href="css/base.css?v=313">
+<link rel="stylesheet" href="css/login.css?v=313">
+<link rel="stylesheet" href="css/dashboard.css?v=313">
+<link rel="stylesheet" href="css/documents.css?v=313">
+<link rel="stylesheet" href="css/references.css?v=313">
+<link rel="stylesheet" href="css/account.css?v=313">
+<link rel="stylesheet" href="css/product-experience.css?v=313">
+<link rel="stylesheet" href="css/date-picker.css?v=313">
+<link rel="stylesheet" href="css/share-profile.css?v=313">
+<link rel="stylesheet" href="css/calm-actions.css?v=313">
+<link rel="stylesheet" href="css/account-security-live.css?v=313">
+<link rel="stylesheet" href="css/talent-directory.css?v=313">
+<link rel="stylesheet" href="css/maintenance.css?v=313">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=313">
+<script defer src="js/maintenance-guard.js?v=313"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V312</div>
+<div>ATSRS V313</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -169,11 +169,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <p class="workspace-switcher-menu-label">Switch workspace</p>
     <button id="workspacePersonalOption" class="workspace-option" type="button" role="menuitem" data-workspace="personal">
       <span><strong>Personal Account</strong><small>Your documents and professional profile</small></span>
-      <span class="workspace-option-check" aria-hidden="true">РІСљвЂњ</span>
+      <span class="workspace-option-check" aria-hidden="true">&#10003;</span>
     </button>
     <button id="workspaceCompanyOption" class="workspace-option" type="button" role="menuitem" data-workspace="company">
       <span><strong>Corporate Account</strong><small>Personnel and compliance workspace</small></span>
-      <span class="workspace-option-check" aria-hidden="true">РІСљвЂњ</span>
+      <span class="workspace-option-check" aria-hidden="true">&#10003;</span>
     </button>
     <div class="workspace-switcher-divider"></div>
     <button id="workspaceLogoutBtn" class="workspace-logout-button" type="button" role="menuitem">Logout</button>
@@ -189,10 +189,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <p id="introMainText">ATSRS helps professionals and organisations manage important documents, track expiry dates, share controlled profile links and support compliance workflows.</p>
 </div>
 <div class="intro-service-grid">
-  <div class="intro-service-card active" data-intro="svc1" onclick="setIntroDetail('svc1')"><div class="svc-icon">СЂСџвЂњРѓ</div><h3 id="introSvc1Title">Document Vault</h3><p id="introSvc1Text">Store licences, certificates, permits, medical records, training proof, references and appraisals in one place.</p></div>
-  <div class="intro-service-card" data-intro="svc2" onclick="setIntroDetail('svc2')"><div class="svc-icon">РІВ¬вЂ РїС‘РЏ</div><h3 id="introSvc2Title">Easy Upload</h3><p id="introSvc2Text">Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.</p></div>
-  <div class="intro-service-card" data-intro="svc4" onclick="setIntroDetail('svc4')"><div class="svc-icon">РІРЏВ±РїС‘РЏ</div><h3 id="introSvc4Title">Expiry Tracking</h3><p id="introSvc4Text">See document totals and expiry alerts from a clear dashboard.</p></div>
-  <div class="intro-service-card" data-intro="svc6" onclick="setIntroDetail('svc6')"><div class="svc-icon">СЂСџРЏСћ</div><h3 id="introSvc6Title">Company Compliance</h3><p id="introSvc6Text">Companies can request access, review approved documents and import candidate records into their compliance profile.</p></div>
+  <div class="intro-service-card active" data-intro="svc1" onclick="setIntroDetail('svc1')"><div class="svc-icon" aria-hidden="true">&#128451;</div><h3 id="introSvc1Title">Document Vault</h3><p id="introSvc1Text">Store licences, certificates, permits, medical records, training proof, references and appraisals in one place.</p></div>
+  <div class="intro-service-card" data-intro="svc2" onclick="setIntroDetail('svc2')"><div class="svc-icon" aria-hidden="true">&#8679;</div><h3 id="introSvc2Title">Easy Upload</h3><p id="introSvc2Text">Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.</p></div>
+  <div class="intro-service-card" data-intro="svc4" onclick="setIntroDetail('svc4')"><div class="svc-icon" aria-hidden="true">&#9200;</div><h3 id="introSvc4Title">Expiry Tracking</h3><p id="introSvc4Text">See document totals and expiry alerts from a clear dashboard.</p></div>
+  <div class="intro-service-card" data-intro="svc6" onclick="setIntroDetail('svc6')"><div class="svc-icon" aria-hidden="true">&#128737;</div><h3 id="introSvc6Title">Company Compliance</h3><p id="introSvc6Text">Companies can request access, review approved documents and import candidate records into their compliance profile.</p></div>
 </div>
 
 <div class="atsrs-anime-stage" aria-label="ATSRS animated workflow">
@@ -204,7 +204,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
   <div class="anime-workflow">
     <div class="anime-step anime-step-upload">
-      <div class="anime-icon doc-float">СЂСџвЂњвЂћ</div>
+      <div class="anime-icon doc-float" aria-hidden="true">&#128196;</div>
       <b id="step1Title">Upload</b>
       <span id="step1Text">Add documents manually or by scan.</span>
       <div class="mini-docs">
@@ -215,7 +215,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="anime-arrow"><span></span></div>
 
     <div class="anime-step anime-step-track">
-      <div class="anime-icon pulse-calendar">СЂСџвЂњвЂ¦</div>
+      <div class="anime-icon pulse-calendar" aria-hidden="true">&#128197;</div>
       <b id="step2Title">Track</b>
       <span id="step2Text">Monitor expiry and document dates.</span>
       <div class="expiry-bars">
@@ -226,7 +226,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="anime-arrow"><span></span></div>
 
     <div class="anime-step anime-step-share">
-      <div class="anime-icon link-spin">СЂСџвЂќвЂ”</div>
+      <div class="anime-icon link-spin" aria-hidden="true">&#128279;</div>
       <b id="step3Title">Share</b>
       <span id="step3Text">Send a controlled ATSRS profile link.</span>
       <div class="profile-link-demo">atsrs.com/profile/anar-agasiyev</div>
@@ -235,7 +235,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="anime-arrow"><span></span></div>
 
     <div class="anime-step anime-step-approve">
-      <div class="anime-icon check-pop">РІСљвЂ¦</div>
+      <div class="anime-icon check-pop" aria-hidden="true">&#10003;</div>
       <b id="step4Title">Approve</b>
       <span id="step4Text">Allow companies to download or import selected documents.</span>
       <div class="approve-flow"><i>Request</i><i>Approve</i><i>Import</i></div>
@@ -335,7 +335,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
 <div class="card"><p id="expTodayText">Expires Today</p><div class="stat danger" id="expToday">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
-<div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">РІР‚вЂќ</div></div>
+<div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">&mdash;</div></div>
 </div>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
@@ -594,10 +594,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div class="table-wrap"><table class="atsrs-document-register"><thead><tr>
   <th class="atsrs-document-select-column"><input id="certSelectAll" type="checkbox" aria-label="Select all visible documents"></th>
-  <th id="thCertificate2"><button type="button" class="atsrs-document-sort" data-cert-sort="type"><span id="certSortTypeLabel">Certificate</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">РІвЂ“Р†</i><i class="down">РІвЂ“С</i></span></button></th>
+  <th id="thCertificate2"><button type="button" class="atsrs-document-sort" data-cert-sort="type"><span id="certSortTypeLabel">Certificate</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">&#9650;</i><i class="down">&#9660;</i></span></button></th>
   <th id="thProvider2"></th>
-  <th id="thExpiry2"><button type="button" class="atsrs-document-sort" data-cert-sort="expiry"><span id="certSortExpiryLabel">Expiry</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">РІвЂ“Р†</i><i class="down">РІвЂ“С</i></span></button></th>
-  <th id="thStatus2"><button type="button" class="atsrs-document-sort" data-cert-sort="status"><span id="certSortStatusLabel">Status</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">РІвЂ“Р†</i><i class="down">РІвЂ“С</i></span></button></th>
+  <th id="thExpiry2"><button type="button" class="atsrs-document-sort" data-cert-sort="expiry"><span id="certSortExpiryLabel">Expiry</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">&#9650;</i><i class="down">&#9660;</i></span></button></th>
+  <th id="thStatus2"><button type="button" class="atsrs-document-sort" data-cert-sort="status"><span id="certSortStatusLabel">Status</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">&#9650;</i><i class="down">&#9660;</i></span></button></th>
   <th id="thAction2"></th>
 </tr></thead><tbody id="certTable"></tbody></table></div>
 </div>
@@ -679,53 +679,53 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="phone-entry mobile-phone-entry">
 <div class="phone-field mobile-phone-field" aria-label="Mobile phone number">
   <select id="profilePhoneCountryCode" title="Country calling code">
-    <option value="+994" data-country="Azerbaijan">СЂСџвЂЎВ¦СЂСџвЂЎС— +994</option>
-    <option value="+1" data-country="United States / Canada">СЂСџвЂЎС”СЂСџвЂЎС‘ +1</option>
-    <option value="+44" data-country="United Kingdom">СЂСџвЂЎВ¬СЂСџвЂЎВ§ +44</option>
-    <option value="+971" data-country="United Arab Emirates">СЂСџвЂЎВ¦СЂСџвЂЎР„ +971</option>
-    <option value="+966" data-country="Saudi Arabia">СЂСџвЂЎС‘СЂСџвЂЎВ¦ +966</option>
-    <option value="+974" data-country="Qatar">СЂСџвЂЎВ¶СЂСџвЂЎВ¦ +974</option>
-    <option value="+965" data-country="Kuwait">СЂСџвЂЎВ°СЂСџвЂЎС +965</option>
-    <option value="+973" data-country="Bahrain">СЂСџвЂЎВ§СЂСџвЂЎВ­ +973</option>
-    <option value="+968" data-country="Oman">СЂСџвЂЎТ‘СЂСџвЂЎР† +968</option>
-    <option value="+90" data-country="Turkey">СЂСџвЂЎв„–СЂСџвЂЎВ· +90</option>
-    <option value="+995" data-country="Georgia">СЂСџвЂЎВ¬СЂСџвЂЎР„ +995</option>
-    <option value="+7" data-country="Kazakhstan / Russia">СЂСџвЂЎВ°СЂСџвЂЎС— +7</option>
-    <option value="+47" data-country="Norway">СЂСџвЂЎС–СЂСџвЂЎТ‘ +47</option>
-    <option value="+31" data-country="Netherlands">СЂСџвЂЎС–СЂСџвЂЎВ± +31</option>
-    <option value="+49" data-country="Germany">СЂСџвЂЎВ©СЂСџвЂЎР„ +49</option>
-    <option value="+33" data-country="France">СЂСџвЂЎВ«СЂСџвЂЎВ· +33</option>
-    <option value="+34" data-country="Spain">СЂСџвЂЎР„СЂСџвЂЎС‘ +34</option>
-    <option value="+39" data-country="Italy">СЂСџвЂЎВ®СЂСџвЂЎв„– +39</option>
-    <option value="+30" data-country="Greece">СЂСџвЂЎВ¬СЂСџвЂЎВ· +30</option>
-    <option value="+40" data-country="Romania">СЂСџвЂЎВ·СЂСџвЂЎТ‘ +40</option>
-    <option value="+359" data-country="Bulgaria">СЂСџвЂЎВ§СЂСџвЂЎВ¬ +359</option>
-    <option value="+380" data-country="Ukraine">СЂСџвЂЎС”СЂСџвЂЎВ¦ +380</option>
-    <option value="+91" data-country="India">СЂСџвЂЎВ®СЂСџвЂЎС– +91</option>
-    <option value="+92" data-country="Pakistan">СЂСџвЂЎВµСЂСџвЂЎВ° +92</option>
-    <option value="+880" data-country="Bangladesh">СЂСџвЂЎВ§СЂСџвЂЎВ© +880</option>
-    <option value="+94" data-country="Sri Lanka">СЂСџвЂЎВ±СЂСџвЂЎВ° +94</option>
-    <option value="+977" data-country="Nepal">СЂСџвЂЎС–СЂСџвЂЎВµ +977</option>
-    <option value="+63" data-country="Philippines">СЂСџвЂЎВµСЂСџвЂЎВ­ +63</option>
-    <option value="+62" data-country="Indonesia">СЂСџвЂЎВ®СЂСџвЂЎВ© +62</option>
-    <option value="+60" data-country="Malaysia">СЂСџвЂЎР†СЂСџвЂЎС• +60</option>
-    <option value="+65" data-country="Singapore">СЂСџвЂЎС‘СЂСџвЂЎВ¬ +65</option>
-    <option value="+66" data-country="Thailand">СЂСџвЂЎв„–СЂСџвЂЎВ­ +66</option>
-    <option value="+84" data-country="Vietnam">СЂСџвЂЎВ»СЂСџвЂЎС– +84</option>
-    <option value="+86" data-country="China">СЂСџвЂЎРЃСЂСџвЂЎС– +86</option>
-    <option value="+81" data-country="Japan">СЂСџвЂЎР‡СЂСџвЂЎВµ +81</option>
-    <option value="+82" data-country="South Korea">СЂСџвЂЎВ°СЂСџвЂЎВ· +82</option>
-    <option value="+61" data-country="Australia">СЂСџвЂЎВ¦СЂСџвЂЎС” +61</option>
-    <option value="+64" data-country="New Zealand">СЂСџвЂЎС–СЂСџвЂЎС— +64</option>
-    <option value="+27" data-country="South Africa">СЂСџвЂЎС—СЂСџвЂЎВ¦ +27</option>
-    <option value="+20" data-country="Egypt">СЂСџвЂЎР„СЂСџвЂЎВ¬ +20</option>
-    <option value="+234" data-country="Nigeria">СЂСџвЂЎС–СЂСџвЂЎВ¬ +234</option>
-    <option value="+233" data-country="Ghana">СЂСџвЂЎВ¬СЂСџвЂЎВ­ +233</option>
-    <option value="+254" data-country="Kenya">СЂСџвЂЎВ°СЂСџвЂЎР„ +254</option>
-    <option value="+55" data-country="Brazil">СЂСџвЂЎВ§СЂСџвЂЎВ· +55</option>
-    <option value="+54" data-country="Argentina">СЂСџвЂЎВ¦СЂСџвЂЎВ· +54</option>
-    <option value="+52" data-country="Mexico">СЂСџвЂЎР†СЂСџвЂЎР… +52</option>
-    <option value="+240" data-country="Equatorial Guinea">СЂСџвЂЎВ¬СЂСџвЂЎВ¶ +240</option>
+    <option value="+994" data-country="Azerbaijan">&#127462;&#127487; +994</option>
+    <option value="+1" data-country="United States / Canada">&#127482;&#127480; +1</option>
+    <option value="+44" data-country="United Kingdom">&#127468;&#127463; +44</option>
+    <option value="+971" data-country="United Arab Emirates">&#127462;&#127466; +971</option>
+    <option value="+966" data-country="Saudi Arabia">&#127480;&#127462; +966</option>
+    <option value="+974" data-country="Qatar">&#127478;&#127462; +974</option>
+    <option value="+965" data-country="Kuwait">&#127472;&#127484; +965</option>
+    <option value="+973" data-country="Bahrain">&#127463;&#127469; +973</option>
+    <option value="+968" data-country="Oman">&#127476;&#127474; +968</option>
+    <option value="+90" data-country="Turkey">&#127481;&#127479; +90</option>
+    <option value="+995" data-country="Georgia">&#127468;&#127466; +995</option>
+    <option value="+7" data-country="Kazakhstan / Russia">&#127472;&#127487; +7</option>
+    <option value="+47" data-country="Norway">&#127475;&#127476; +47</option>
+    <option value="+31" data-country="Netherlands">&#127475;&#127473; +31</option>
+    <option value="+49" data-country="Germany">&#127465;&#127466; +49</option>
+    <option value="+33" data-country="France">&#127467;&#127479; +33</option>
+    <option value="+34" data-country="Spain">&#127466;&#127480; +34</option>
+    <option value="+39" data-country="Italy">&#127470;&#127481; +39</option>
+    <option value="+30" data-country="Greece">&#127468;&#127479; +30</option>
+    <option value="+40" data-country="Romania">&#127479;&#127476; +40</option>
+    <option value="+359" data-country="Bulgaria">&#127463;&#127468; +359</option>
+    <option value="+380" data-country="Ukraine">&#127482;&#127462; +380</option>
+    <option value="+91" data-country="India">&#127470;&#127475; +91</option>
+    <option value="+92" data-country="Pakistan">&#127477;&#127472; +92</option>
+    <option value="+880" data-country="Bangladesh">&#127463;&#127465; +880</option>
+    <option value="+94" data-country="Sri Lanka">&#127473;&#127472; +94</option>
+    <option value="+977" data-country="Nepal">&#127475;&#127477; +977</option>
+    <option value="+63" data-country="Philippines">&#127477;&#127469; +63</option>
+    <option value="+62" data-country="Indonesia">&#127470;&#127465; +62</option>
+    <option value="+60" data-country="Malaysia">&#127474;&#127486; +60</option>
+    <option value="+65" data-country="Singapore">&#127480;&#127468; +65</option>
+    <option value="+66" data-country="Thailand">&#127481;&#127469; +66</option>
+    <option value="+84" data-country="Vietnam">&#127483;&#127475; +84</option>
+    <option value="+86" data-country="China">&#127464;&#127475; +86</option>
+    <option value="+81" data-country="Japan">&#127471;&#127477; +81</option>
+    <option value="+82" data-country="South Korea">&#127472;&#127479; +82</option>
+    <option value="+61" data-country="Australia">&#127462;&#127482; +61</option>
+    <option value="+64" data-country="New Zealand">&#127475;&#127487; +64</option>
+    <option value="+27" data-country="South Africa">&#127487;&#127462; +27</option>
+    <option value="+20" data-country="Egypt">&#127466;&#127468; +20</option>
+    <option value="+234" data-country="Nigeria">&#127475;&#127468; +234</option>
+    <option value="+233" data-country="Ghana">&#127468;&#127469; +233</option>
+    <option value="+254" data-country="Kenya">&#127472;&#127466; +254</option>
+    <option value="+55" data-country="Brazil">&#127463;&#127479; +55</option>
+    <option value="+54" data-country="Argentina">&#127462;&#127479; +54</option>
+    <option value="+52" data-country="Mexico">&#127474;&#127485; +52</option>
+    <option value="+240" data-country="Equatorial Guinea">&#127468;&#127478; +240</option>
   </select>
   <input id="profilePhoneLocal" inputmode="tel" autocomplete="tel-national" placeholder="Mobile number">
   <input id="profilePhone" type="hidden">
@@ -735,53 +735,53 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="phone-entry whatsapp-phone-entry">
 <div class="phone-field whatsapp-phone-field" aria-label="WhatsApp number">
   <select id="profileWhatsappCountryCode" title="WhatsApp country calling code">
-    <option value="+994" data-country="Azerbaijan">СЂСџвЂЎВ¦СЂСџвЂЎС— +994</option>
-    <option value="+1" data-country="United States / Canada">СЂСџвЂЎС”СЂСџвЂЎС‘ +1</option>
-    <option value="+44" data-country="United Kingdom">СЂСџвЂЎВ¬СЂСџвЂЎВ§ +44</option>
-    <option value="+971" data-country="United Arab Emirates">СЂСџвЂЎВ¦СЂСџвЂЎР„ +971</option>
-    <option value="+966" data-country="Saudi Arabia">СЂСџвЂЎС‘СЂСџвЂЎВ¦ +966</option>
-    <option value="+974" data-country="Qatar">СЂСџвЂЎВ¶СЂСџвЂЎВ¦ +974</option>
-    <option value="+965" data-country="Kuwait">СЂСџвЂЎВ°СЂСџвЂЎС +965</option>
-    <option value="+973" data-country="Bahrain">СЂСџвЂЎВ§СЂСџвЂЎВ­ +973</option>
-    <option value="+968" data-country="Oman">СЂСџвЂЎТ‘СЂСџвЂЎР† +968</option>
-    <option value="+90" data-country="Turkey">СЂСџвЂЎв„–СЂСџвЂЎВ· +90</option>
-    <option value="+995" data-country="Georgia">СЂСџвЂЎВ¬СЂСџвЂЎР„ +995</option>
-    <option value="+7" data-country="Kazakhstan / Russia">СЂСџвЂЎВ°СЂСџвЂЎС— +7</option>
-    <option value="+47" data-country="Norway">СЂСџвЂЎС–СЂСџвЂЎТ‘ +47</option>
-    <option value="+31" data-country="Netherlands">СЂСџвЂЎС–СЂСџвЂЎВ± +31</option>
-    <option value="+49" data-country="Germany">СЂСџвЂЎВ©СЂСџвЂЎР„ +49</option>
-    <option value="+33" data-country="France">СЂСџвЂЎВ«СЂСџвЂЎВ· +33</option>
-    <option value="+34" data-country="Spain">СЂСџвЂЎР„СЂСџвЂЎС‘ +34</option>
-    <option value="+39" data-country="Italy">СЂСџвЂЎВ®СЂСџвЂЎв„– +39</option>
-    <option value="+30" data-country="Greece">СЂСџвЂЎВ¬СЂСџвЂЎВ· +30</option>
-    <option value="+40" data-country="Romania">СЂСџвЂЎВ·СЂСџвЂЎТ‘ +40</option>
-    <option value="+359" data-country="Bulgaria">СЂСџвЂЎВ§СЂСџвЂЎВ¬ +359</option>
-    <option value="+380" data-country="Ukraine">СЂСџвЂЎС”СЂСџвЂЎВ¦ +380</option>
-    <option value="+91" data-country="India">СЂСџвЂЎВ®СЂСџвЂЎС– +91</option>
-    <option value="+92" data-country="Pakistan">СЂСџвЂЎВµСЂСџвЂЎВ° +92</option>
-    <option value="+880" data-country="Bangladesh">СЂСџвЂЎВ§СЂСџвЂЎВ© +880</option>
-    <option value="+94" data-country="Sri Lanka">СЂСџвЂЎВ±СЂСџвЂЎВ° +94</option>
-    <option value="+977" data-country="Nepal">СЂСџвЂЎС–СЂСџвЂЎВµ +977</option>
-    <option value="+63" data-country="Philippines">СЂСџвЂЎВµСЂСџвЂЎВ­ +63</option>
-    <option value="+62" data-country="Indonesia">СЂСџвЂЎВ®СЂСџвЂЎВ© +62</option>
-    <option value="+60" data-country="Malaysia">СЂСџвЂЎР†СЂСџвЂЎС• +60</option>
-    <option value="+65" data-country="Singapore">СЂСџвЂЎС‘СЂСџвЂЎВ¬ +65</option>
-    <option value="+66" data-country="Thailand">СЂСџвЂЎв„–СЂСџвЂЎВ­ +66</option>
-    <option value="+84" data-country="Vietnam">СЂСџвЂЎВ»СЂСџвЂЎС– +84</option>
-    <option value="+86" data-country="China">СЂСџвЂЎРЃСЂСџвЂЎС– +86</option>
-    <option value="+81" data-country="Japan">СЂСџвЂЎР‡СЂСџвЂЎВµ +81</option>
-    <option value="+82" data-country="South Korea">СЂСџвЂЎВ°СЂСџвЂЎВ· +82</option>
-    <option value="+61" data-country="Australia">СЂСџвЂЎВ¦СЂСџвЂЎС” +61</option>
-    <option value="+64" data-country="New Zealand">СЂСџвЂЎС–СЂСџвЂЎС— +64</option>
-    <option value="+27" data-country="South Africa">СЂСџвЂЎС—СЂСџвЂЎВ¦ +27</option>
-    <option value="+20" data-country="Egypt">СЂСџвЂЎР„СЂСџвЂЎВ¬ +20</option>
-    <option value="+234" data-country="Nigeria">СЂСџвЂЎС–СЂСџвЂЎВ¬ +234</option>
-    <option value="+233" data-country="Ghana">СЂСџвЂЎВ¬СЂСџвЂЎВ­ +233</option>
-    <option value="+254" data-country="Kenya">СЂСџвЂЎВ°СЂСџвЂЎР„ +254</option>
-    <option value="+55" data-country="Brazil">СЂСџвЂЎВ§СЂСџвЂЎВ· +55</option>
-    <option value="+54" data-country="Argentina">СЂСџвЂЎВ¦СЂСџвЂЎВ· +54</option>
-    <option value="+52" data-country="Mexico">СЂСџвЂЎР†СЂСџвЂЎР… +52</option>
-    <option value="+240" data-country="Equatorial Guinea">СЂСџвЂЎВ¬СЂСџвЂЎВ¶ +240</option>
+    <option value="+994" data-country="Azerbaijan">&#127462;&#127487; +994</option>
+    <option value="+1" data-country="United States / Canada">&#127482;&#127480; +1</option>
+    <option value="+44" data-country="United Kingdom">&#127468;&#127463; +44</option>
+    <option value="+971" data-country="United Arab Emirates">&#127462;&#127466; +971</option>
+    <option value="+966" data-country="Saudi Arabia">&#127480;&#127462; +966</option>
+    <option value="+974" data-country="Qatar">&#127478;&#127462; +974</option>
+    <option value="+965" data-country="Kuwait">&#127472;&#127484; +965</option>
+    <option value="+973" data-country="Bahrain">&#127463;&#127469; +973</option>
+    <option value="+968" data-country="Oman">&#127476;&#127474; +968</option>
+    <option value="+90" data-country="Turkey">&#127481;&#127479; +90</option>
+    <option value="+995" data-country="Georgia">&#127468;&#127466; +995</option>
+    <option value="+7" data-country="Kazakhstan / Russia">&#127472;&#127487; +7</option>
+    <option value="+47" data-country="Norway">&#127475;&#127476; +47</option>
+    <option value="+31" data-country="Netherlands">&#127475;&#127473; +31</option>
+    <option value="+49" data-country="Germany">&#127465;&#127466; +49</option>
+    <option value="+33" data-country="France">&#127467;&#127479; +33</option>
+    <option value="+34" data-country="Spain">&#127466;&#127480; +34</option>
+    <option value="+39" data-country="Italy">&#127470;&#127481; +39</option>
+    <option value="+30" data-country="Greece">&#127468;&#127479; +30</option>
+    <option value="+40" data-country="Romania">&#127479;&#127476; +40</option>
+    <option value="+359" data-country="Bulgaria">&#127463;&#127468; +359</option>
+    <option value="+380" data-country="Ukraine">&#127482;&#127462; +380</option>
+    <option value="+91" data-country="India">&#127470;&#127475; +91</option>
+    <option value="+92" data-country="Pakistan">&#127477;&#127472; +92</option>
+    <option value="+880" data-country="Bangladesh">&#127463;&#127465; +880</option>
+    <option value="+94" data-country="Sri Lanka">&#127473;&#127472; +94</option>
+    <option value="+977" data-country="Nepal">&#127475;&#127477; +977</option>
+    <option value="+63" data-country="Philippines">&#127477;&#127469; +63</option>
+    <option value="+62" data-country="Indonesia">&#127470;&#127465; +62</option>
+    <option value="+60" data-country="Malaysia">&#127474;&#127486; +60</option>
+    <option value="+65" data-country="Singapore">&#127480;&#127468; +65</option>
+    <option value="+66" data-country="Thailand">&#127481;&#127469; +66</option>
+    <option value="+84" data-country="Vietnam">&#127483;&#127475; +84</option>
+    <option value="+86" data-country="China">&#127464;&#127475; +86</option>
+    <option value="+81" data-country="Japan">&#127471;&#127477; +81</option>
+    <option value="+82" data-country="South Korea">&#127472;&#127479; +82</option>
+    <option value="+61" data-country="Australia">&#127462;&#127482; +61</option>
+    <option value="+64" data-country="New Zealand">&#127475;&#127487; +64</option>
+    <option value="+27" data-country="South Africa">&#127487;&#127462; +27</option>
+    <option value="+20" data-country="Egypt">&#127466;&#127468; +20</option>
+    <option value="+234" data-country="Nigeria">&#127475;&#127468; +234</option>
+    <option value="+233" data-country="Ghana">&#127468;&#127469; +233</option>
+    <option value="+254" data-country="Kenya">&#127472;&#127466; +254</option>
+    <option value="+55" data-country="Brazil">&#127463;&#127479; +55</option>
+    <option value="+54" data-country="Argentina">&#127462;&#127479; +54</option>
+    <option value="+52" data-country="Mexico">&#127474;&#127485; +52</option>
+    <option value="+240" data-country="Equatorial Guinea">&#127468;&#127478; +240</option>
   </select>
   <input id="profileWhatsappLocal" inputmode="tel" autocomplete="tel" placeholder="WhatsApp number">
   <input id="profileWhatsapp" type="hidden">
@@ -952,7 +952,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div id="shareRequestModal" class="share-request-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shareRequestTitle">
   <div class="share-request-backdrop" onclick="closeDownloadRequest()"></div>
   <div class="share-request-dialog">
-    <button type="button" class="share-request-close" onclick="closeDownloadRequest()" aria-label="Close">Р“вЂ”</button>
+    <button type="button" class="share-request-close" onclick="closeDownloadRequest()" aria-label="Close">&times;</button>
     <span class="shared-profile-kicker">VERIFIED DOWNLOAD REQUEST</span>
     <h2 id="shareRequestTitle">Request document download</h2>
     <p id="shareRequestSummary">The owner will review your request. Approval lasts for 30 minutes and never beyond the link expiry.</p>
@@ -983,14 +983,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div><span class="roadmap-kicker">DOCUMENT PREVIEW</span><h3 id="atsrsFilePreviewTitle">Preview</h3></div>
       <div class="file-preview-actions">
         <button id="atsrsFilePreviewDownload" type="button" class="secondary">Download</button>
-        <button id="atsrsFilePreviewClose" type="button" class="file-preview-close" aria-label="Close preview">Р“вЂ”</button>
+        <button id="atsrsFilePreviewClose" type="button" class="file-preview-close" aria-label="Close preview">&times;</button>
       </div>
     </div>
     <div class="file-preview-body">
       <iframe id="atsrsFilePreviewFrame" title="ATSRS document preview"></iframe>
       <div id="atsrsImagePreview" class="file-preview-image hidden">
         <div class="file-preview-image-tools" aria-label="Image zoom controls">
-          <button id="atsrsImageZoomOut" type="button" class="secondary" aria-label="Zoom out">РІв‚¬вЂ™</button>
+          <button id="atsrsImageZoomOut" type="button" class="secondary" aria-label="Zoom out">&minus;</button>
           <span id="atsrsImageZoomLabel" aria-live="polite">100%</span>
           <button id="atsrsImageZoomIn" type="button" class="secondary" aria-label="Zoom in">+</button>
           <button id="atsrsImageFit" type="button" class="secondary">Fit</button>
@@ -1003,25 +1003,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=312"></script>
-<script src="js/server-data.js?v=312"></script>
-<script src="js/storage.js?v=312"></script>
-<script src="js/ui.js?v=312"></script>
-<script src="js/auth.js?v=312"></script>
-<script src="js/login.js?v=312"></script>
-<script src="js/dashboard.js?v=312"></script>
-<script src="js/avatar.js?v=312"></script>
-<script src="js/documents.js?v=312"></script>
-<script src="js/references.js?v=312"></script>
-<script src="js/account.js?v=312"></script>
-<script src="js/app.js?v=312"></script>
-<script src="js/product-experience.js?v=312"></script>
-<script src="js/date-picker.js?v=312"></script>
-<script src="js/share-profile.js?v=312"></script>
-<script src="js/boot-refresh.js?v=312"></script>
-<script src="js/account-security-live.js?v=312"></script>
-<script src="js/talent-directory.js?v=312"></script>
-<script src="js/workspace-switcher.js?v=312"></script>
+<script src="js/stability-runtime.js?v=313"></script>
+<script src="js/server-data.js?v=313"></script>
+<script src="js/storage.js?v=313"></script>
+<script src="js/ui.js?v=313"></script>
+<script src="js/auth.js?v=313"></script>
+<script src="js/login.js?v=313"></script>
+<script src="js/dashboard.js?v=313"></script>
+<script src="js/avatar.js?v=313"></script>
+<script src="js/documents.js?v=313"></script>
+<script src="js/references.js?v=313"></script>
+<script src="js/account.js?v=313"></script>
+<script src="js/app.js?v=313"></script>
+<script src="js/product-experience.js?v=313"></script>
+<script src="js/date-picker.js?v=313"></script>
+<script src="js/share-profile.js?v=313"></script>
+<script src="js/boot-refresh.js?v=313"></script>
+<script src="js/account-security-live.js?v=313"></script>
+<script src="js/talent-directory.js?v=313"></script>
+<script src="js/workspace-switcher.js?v=313"></script>
 
 
 
