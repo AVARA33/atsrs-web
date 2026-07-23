@@ -1,4 +1,4 @@
-/* ATSRS V290 - one owner-uploaded identity photo across personal and corporate workspaces. */
+/* ATSRS V291 - one owner-uploaded identity photo across personal and corporate workspaces. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';
@@ -39,9 +39,34 @@
   function allowedUrl(value){
     try{var url=new URL(String(value||''),location.origin);return url.protocol==='https:'?url.href:''}catch(error){return ''}
   }
+  function metadataPhoto(user){
+    var metadata=user&&user.user_metadata||{};
+    var url=allowedUrl(metadata.atsrs_profile_photo_url);
+    return url?{url:url,path:String(metadata.atsrs_profile_photo_path||'')}:{url:'',path:''};
+  }
+  function applyIdentityMetadata(user){
+    var photo=metadataPhoto(user);
+    if(!photo.url)return false;
+    identityUrl=photo.url;identityPath=photo.path;identityUserId=user.id;
+    return true;
+  }
+  async function saveIdentityMetadata(url,path){
+    var c=client();if(!c||!c.auth)return false;
+    var result=await c.auth.updateUser({data:{
+      atsrs_profile_photo_url:url||null,
+      atsrs_profile_photo_path:path||null
+    }});
+    if(result.error)throw result.error;
+    if(result.data&&result.data.user){
+      window.currentUser=result.data.user;
+      try{currentUser=result.data.user}catch(ignore){}
+    }
+    return true;
+  }
   function resolvedUrl(profile){
     var workspaceUrl=profile&&profile.avatarSource==='upload'&&profile.avatarPath?allowedUrl(profile.avatarUrl):'';
-    return workspaceUrl||identityUrl;
+    var userPhoto=metadataPhoto(window.currentUser);
+    return workspaceUrl||userPhoto.url||identityUrl;
   }
   function profileFromPayload(payload){
     try{
@@ -53,9 +78,14 @@
   async function hydrateIdentityPhoto(force){
     var c=client(),user=window.currentUser&&window.currentUser.id?window.currentUser:null;
     if(!c||!user)return '';
+    applyIdentityMetadata(user);
     var localProfile=readProfile(),localUrl=localProfile&&localProfile.avatarSource==='upload'&&localProfile.avatarPath?allowedUrl(localProfile.avatarUrl):'';
     if(localUrl){
       identityUrl=localUrl;identityPath=localProfile.avatarPath||'';identityUserId=user.id;
+      var localMetadata=metadataPhoto(user);
+      if(localMetadata.url!==localUrl||localMetadata.path!==identityPath){
+        saveIdentityMetadata(localUrl,identityPath).catch(function(error){console.warn('ATSRS identity photo metadata could not be updated',error)});
+      }
       return identityUrl;
     }
     if(!force&&identityUserId===user.id&&identityUrl)return identityUrl;
@@ -80,6 +110,12 @@
         if(!directory.error&&directory.data)url=allowedUrl(directory.data.avatar_url);
       }
       identityUrl=url;identityPath=path;identityUserId=user.id;
+      if(url){
+        var currentMetadata=metadataPhoto(user);
+        if(currentMetadata.url!==url||currentMetadata.path!==path){
+          try{await saveIdentityMetadata(url,path)}catch(error){console.warn('ATSRS identity photo metadata migration failed',error)}
+        }
+      }
       render(readProfile(),true);
       window.dispatchEvent(new CustomEvent('atsrs:identity-photo-hydrated',{detail:{url:url,path:path}}));
       return url;
@@ -184,6 +220,7 @@
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
         var saved=await window.atsrsCloudData.flush();if(saved===false)throw new Error('The profile photo could not be saved to ATSRS.');
       }
+      await saveIdentityMetadata(url,path);
       if(oldPath&&oldPath!==path)await c.storage.from(BUCKET).remove([oldPath]);
       identityUrl=url;identityPath=path;identityUserId=user.id;
       render(profile,true);closeCrop();status('Profile photo saved.');
@@ -200,6 +237,7 @@
       profile.avatarUrl='';profile.avatarPath='';profile.avatarSource='';profile.updatedAt=new Date().toISOString();
       if(!writeProfile(profile))throw new Error('The profile photo could not be removed.');
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
+      await saveIdentityMetadata('','');
       identityUrl='';identityPath='';identityUserId=(window.currentUser&&window.currentUser.id)||'';
       render(profile,true);status('Profile photo removed.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:'',path:''}}));
