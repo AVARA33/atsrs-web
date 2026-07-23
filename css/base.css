@@ -848,6 +848,38 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 /* V120 Android dark system navigation bar support */
 html, body{background-color:#07111d!important;color-scheme:dark!important;}
 
+/* ATSRS permanent UI rule: select arrows never switch to a white native control. */
+select:not([multiple]){
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  padding-right:34px!important;
+  color-scheme:dark!important;
+  background-color:#081524!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#91a4b4 50%),
+    linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;
+  background-position:
+    calc(100% - 15px) 50%,
+    calc(100% - 11px) 50%!important;
+  background-size:4px 4px,4px 4px!important;
+  background-repeat:no-repeat!important;
+}
+select:not([multiple]):hover,
+select:not([multiple]):focus,
+select:not([multiple]):focus-visible,
+select:not([multiple]):active{
+  background-color:#081524!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#91a4b4 50%),
+    linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;
+  color:#f8fafc!important;
+}
+select::-ms-expand{display:none}
+select option{
+  background:#081524;
+  color:#f8fafc;
+}
+
 
 
 /* V122 - Main ATSRS Platform service cards height adjustment only. Login page untouched. */
