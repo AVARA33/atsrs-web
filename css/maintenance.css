@@ -1,0 +1,46 @@
+.atsrs-maintenance{
+  position:fixed;
+  inset:0;
+  z-index:30000;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(30,104,130,.16),transparent 34%),
+    #030b13;
+  color:#e8f0f5;
+}
+.atsrs-maintenance-card{
+  width:min(540px,100%);
+  padding:32px;
+  border:1px solid #294254;
+  border-radius:20px;
+  background:rgba(7,20,32,.96);
+  box-shadow:0 28px 80px rgba(0,0,0,.42);
+  text-align:center;
+}
+.atsrs-maintenance-mark{
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  margin:0 auto 20px;
+  border:1px solid #3d6574;
+  border-radius:50%;
+  color:#65d493;
+  font-size:20px;
+  font-weight:800;
+}
+.atsrs-maintenance-card h1{margin:0 0 12px;font-size:24px;letter-spacing:-.02em}
+.atsrs-maintenance-card p{margin:0;color:#9db0bd;font-size:14px;line-height:1.65}
+.atsrs-maintenance-card button{
+  width:auto!important;
+  min-height:36px!important;
+  margin:22px 0 0!important;
+  padding:8px 14px!important;
+  border:1px solid #355266!important;
+  background:transparent!important;
+  color:#dce8ef!important;
+}
+.atsrs-maintenance-note{display:block;margin-top:16px;color:#718898;font-size:11px}
+body.atsrs-maintenance-active{overflow:hidden!important}

@@ -1,9 +1,9 @@
-/* ATSRS V273 - calm, server-backed corporate personnel discovery. */
+/* ATSRS V274 - calm, server-backed corporate personnel discovery. */
 .talent-directory-panel{max-width:none}
 .talent-directory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px}
 .talent-directory-head h3{margin:8px 0 4px}
 .talent-count{color:#9fb0c2;font-size:12px;white-space:nowrap;padding-top:8px}
-.talent-searchbar{display:grid;grid-template-columns:minmax(260px,1.7fr) repeat(3,minmax(150px,.75fr));gap:10px;padding:14px 0 18px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
+.talent-searchbar{display:grid;grid-template-columns:minmax(240px,1.5fr) repeat(4,minmax(135px,.7fr));gap:10px;padding:14px 0 18px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
 .talent-searchbar label{display:grid;gap:6px;color:#8ea2b5;font-size:11px;font-weight:600}
 .talent-searchbar input,.talent-searchbar select{width:100%;min-height:40px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
 .talent-searchbar select{appearance:none;-webkit-appearance:none;padding-right:34px!important;cursor:pointer;color-scheme:dark;background-color:#091522!important;background-image:linear-gradient(45deg,transparent 50%,#91a4b4 50%),linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;background-position:calc(100% - 15px) 50%,calc(100% - 11px) 50%!important;background-size:4px 4px,4px 4px!important;background-repeat:no-repeat!important}
@@ -16,6 +16,11 @@
 .talent-avatar{display:grid;place-items:center;width:42px;height:42px;border:1px solid #345269;border-radius:50%;color:#dcecf7;font-weight:700;background:#0b1d2c}
 .talent-card h4{font-size:18px;margin:18px 0 4px;color:#f5f8fb}
 .talent-role{margin:0;color:#91b6cb;font-size:13px}
+.talent-work-status{display:grid;gap:3px;margin-top:14px;padding:10px 0;border-top:1px solid #1c3041;border-bottom:1px solid #1c3041}
+.talent-work-status b{color:#a9bac7;font-size:11px}.talent-work-status span{color:#748b9d;font-size:10px}
+.talent-work-status.is-now b,.talent-work-status.is-offers b{color:#73d99b}
+.talent-work-status.is-from b{color:#7fc5e2}
+.talent-work-status.is-unavailable b,.talent-work-status.is-stale b{color:#b0a59a}
 .talent-presence{display:inline-flex;align-items:center;gap:7px;color:#95a7b8;font-size:11px}
 .talent-presence i{width:7px;height:7px;border-radius:50%;background:#76889a}
 .talent-presence.is-online{color:#77dda2}.talent-presence.is-online i{background:#44d47a;box-shadow:0 0 0 3px rgba(68,212,122,.1)}
