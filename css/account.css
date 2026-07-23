@@ -1088,29 +1088,32 @@ body #modeChoiceBox:not(.mode-error) button::before{
 body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid{
   display:grid!important;
-  grid-template-columns:repeat(12,minmax(0,1fr))!important;
+  grid-template-columns:180px 180px 260px 260px!important;
   gap:10px!important;
   align-items:start!important;
+  justify-content:start!important;
+  width:max-content!important;
+  max-width:100%!important;
   padding-top:16px;
   border-top:1px solid rgba(51,65,85,.72);
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileName,
 #profilePage #accountGeneralTab>.profile-grid>#profileSurname{
-  grid-column:span 3;
+  grid-column:auto;
 }
 #profilePage #accountGeneralTab>.profile-grid>.phone-field{
-  grid-column:span 3;
+  grid-column:auto;
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileCountry{
-  grid-column:span 3;
+  grid-column:auto;
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileCompany,
 #profilePage #accountGeneralTab>.profile-grid>#profilePosition{
-  grid-column:span 3;
+  grid-column:auto;
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
 #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
-  grid-column:span 3;
+  grid-column:auto;
 }
 #profilePage #accountGeneralTab>.profile-grid>input,
 #profilePage #accountGeneralTab>.profile-grid>select,
@@ -1493,9 +1496,10 @@ body.profile-photo-cropping{overflow:hidden}
   outline-offset:2px;
 }
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
-@media(max-width:1500px){
+@media(max-width:1150px){
   #profilePage #accountGeneralTab>.profile-grid{
-    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    grid-template-columns:minmax(220px,280px) minmax(220px,280px)!important;
+    width:100%!important;
   }
   #profilePage #accountGeneralTab>.profile-grid>#profileName,
   #profilePage #accountGeneralTab>.profile-grid>#profileSurname,
@@ -1505,7 +1509,7 @@ body.profile-photo-cropping{overflow:hidden}
   #profilePage #accountGeneralTab>.profile-grid>#profilePosition,
   #profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
   #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
-    grid-column:span 3;
+    grid-column:auto;
   }
 }
 @media(max-width:1250px){
