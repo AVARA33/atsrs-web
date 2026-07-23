@@ -1,4 +1,4 @@
-/* ATSRS V294 - separate candidate discovery from linked company personnel. */
+/* ATSRS V295 - keep server-confirmed candidates visible in Company Personnel. */
 (function(){
   'use strict';
   var profiles=[];
@@ -136,6 +136,19 @@
   function linkedRecord(id){
     return linkedPersonnel.find(function(item){return item.professional_user_id===id})||null;
   }
+  function upsertLinkedPersonnel(link,profile){
+    if(!profile||!profile.user_id)return null;
+    var record=Object.assign({},link||{},{
+      professional_user_id:(link&&link.professional_user_id)||profile.user_id,
+      profile:profile
+    });
+    var index=linkedPersonnel.findIndex(function(item){return item&&item.professional_user_id===record.professional_user_id});
+    if(index>=0)linkedPersonnel[index]=Object.assign({},linkedPersonnel[index],record);
+    else linkedPersonnel.push(record);
+    saveWorkspaceLink(profile,false);
+    renderLinkedPersonnel();
+    return record;
+  }
   function saveWorkspaceLink(profile,remove){
     if(typeof window.getData!=='function'||typeof window.saveData!=='function')return;
     var personnel=window.getData('personnel');
@@ -179,16 +192,24 @@
   }
   async function loadPersonnelLinks(){
     var data=await actionCall({action:'personnel_links'});
-    linkedPersonnel=Array.isArray(data.personnel)?data.personnel:[];
+    if(!data||!Array.isArray(data.personnel))throw new Error('Personnel list could not be verified.');
+    linkedPersonnel=data.personnel;
     linkedPersonnel.forEach(function(item){if(item.profile)saveWorkspaceLink(item.profile,false)});
     renderLinkedPersonnel();
+    return linkedPersonnel;
   }
   async function addToPersonnel(profile,button){
     if(button){button.disabled=true;button.textContent='Adding...'}
     try{
       var data=await actionCall({action:'add_to_personnel',target_user_id:profile.user_id});
-      saveWorkspaceLink(data.profile||profile,false);
-      await loadPersonnelLinks();
+      var confirmedProfile=data.profile||profile;
+      var confirmedRecord=upsertLinkedPersonnel(data.link,confirmedProfile);
+      try{
+        await loadPersonnelLinks();
+      }catch(refreshError){
+        console.warn('ATSRS personnel refresh failed after confirmed add',refreshError);
+      }
+      if(!linkedRecord(profile.user_id))upsertLinkedPersonnel(confirmedRecord,confirmedProfile);
       if(button){button.textContent='Added to Personnel';button.classList.add('is-added')}
       panelMessage('Added to Company Personnel. Only public profile details were copied; private documents still require permission.',false);
     }catch(error){
@@ -367,7 +388,10 @@
     if(typeof oldShow==='function')window.showPage=function(){
       var page=String(arguments[0]||''),result=oldShow.apply(this,arguments);
       if(page==='candidates')setTimeout(loadDirectory,30);
-      if(page==='personnel')setTimeout(function(){loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)})},30);
+      if(page==='personnel'){
+        renderLinkedPersonnel();
+        setTimeout(function(){loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)})},30);
+      }
       return result;
     };
     setTimeout(function(){
