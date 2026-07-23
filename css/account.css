@@ -1153,6 +1153,7 @@ body.profile-photo-cropping{overflow:hidden}
   align-items:flex-start;
   justify-content:space-between;
   gap:20px;
+  width:min(100%,1080px);
   margin-bottom:12px;
 }
 .work-availability-heading h4{margin:9px 0 4px;color:#e7eef4;font-size:15px}
@@ -1160,11 +1161,16 @@ body.profile-photo-cropping{overflow:hidden}
 .work-availability-heading>span{padding-top:8px;color:#7f96a8;font-size:10px;white-space:nowrap}
 .work-availability-grid{
   display:grid;
-  grid-template-columns:minmax(220px,1fr) minmax(220px,1fr) minmax(360px,1.45fr) 96px;
-  align-items:stretch;
+  grid-template-columns:250px 250px 400px 96px;
+  grid-template-areas:"status available work save";
+  align-items:end;
   gap:10px;
-  width:100%;
+  width:min(100%,1026px);
 }
+.work-availability-grid>label:first-child{grid-area:status}
+#profileAvailableFromWrap{grid-area:available}
+.work-type-field{grid-area:work}
+.work-availability-save{grid-area:save}
 .work-availability-grid>label,.work-type-field,.work-availability-save{
   display:grid;
   grid-template-rows:16px 44px;
@@ -1260,12 +1266,26 @@ body.profile-photo-cropping{overflow:hidden}
 }
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
 @media(max-width:1250px){
-  .work-availability-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .work-availability-grid{
+    grid-template-columns:minmax(210px,1fr) minmax(210px,1fr);
+    grid-template-areas:
+      "status available"
+      "work save";
+    width:min(100%,760px);
+  }
   .work-availability-save{justify-items:start}
 }
 @media(max-width:760px){
   .work-availability-heading{display:grid;gap:4px}
-  .work-availability-grid{grid-template-columns:1fr}
+  .work-availability-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "status"
+      "available"
+      "work"
+      "save";
+    width:100%;
+  }
   .work-availability-save{grid-template-rows:auto 40px}
   .work-availability-save>span{display:none}
   .work-availability-save #saveProfileBtn{height:40px!important;min-height:40px!important}
