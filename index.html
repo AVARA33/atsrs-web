@@ -16,20 +16,20 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=275">
-<link rel="stylesheet" href="css/login.css?v=275">
-<link rel="stylesheet" href="css/dashboard.css?v=275">
-<link rel="stylesheet" href="css/documents.css?v=275">
-<link rel="stylesheet" href="css/references.css?v=275">
-<link rel="stylesheet" href="css/account.css?v=275">
-<link rel="stylesheet" href="css/product-experience.css?v=275">
-<link rel="stylesheet" href="css/date-picker.css?v=275">
-<link rel="stylesheet" href="css/share-profile.css?v=275">
-<link rel="stylesheet" href="css/calm-actions.css?v=275">
-<link rel="stylesheet" href="css/account-security-live.css?v=275">
-<link rel="stylesheet" href="css/talent-directory.css?v=275">
-<link rel="stylesheet" href="css/maintenance.css?v=275">
-<script defer src="js/maintenance-guard.js?v=275"></script>
+<link rel="stylesheet" href="css/base.css?v=276">
+<link rel="stylesheet" href="css/login.css?v=276">
+<link rel="stylesheet" href="css/dashboard.css?v=276">
+<link rel="stylesheet" href="css/documents.css?v=276">
+<link rel="stylesheet" href="css/references.css?v=276">
+<link rel="stylesheet" href="css/account.css?v=276">
+<link rel="stylesheet" href="css/product-experience.css?v=276">
+<link rel="stylesheet" href="css/date-picker.css?v=276">
+<link rel="stylesheet" href="css/share-profile.css?v=276">
+<link rel="stylesheet" href="css/calm-actions.css?v=276">
+<link rel="stylesheet" href="css/account-security-live.css?v=276">
+<link rel="stylesheet" href="css/talent-directory.css?v=276">
+<link rel="stylesheet" href="css/maintenance.css?v=276">
+<script defer src="js/maintenance-guard.js?v=276"></script>
 
 
 
@@ -131,7 +131,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V275</div>
+<div>ATSRS V276</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -373,15 +373,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <option value="online">Online now</option>
       </select>
     </label>
-    <label>
+    <div class="talent-filter-field">
       <span>Work type</span>
-      <select id="talentWorkPreferenceFilter">
-        <option value="">All work types</option>
-        <option value="freelance">Freelance</option>
-        <option value="contract">Contract</option>
-        <option value="permanent">Permanent</option>
-      </select>
-    </label>
+      <details id="talentWorkPreferenceFilter" class="work-type-multiselect talent-work-type-filter">
+        <summary>All work types</summary>
+        <div class="work-type-options">
+          <label><input type="checkbox" value="freelance"><span>Freelance</span></label>
+          <label><input type="checkbox" value="contract"><span>Contract</span></label>
+          <label><input type="checkbox" value="permanent"><span>Permanent</span></label>
+        </div>
+      </details>
+    </div>
   </div>
   <div id="talentDirectoryStatus" class="talent-directory-status" role="status">Loading professional profiles...</div>
   <div id="talentDirectoryGrid" class="talent-directory-grid"></div>
@@ -598,15 +600,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span>Available from</span>
       <input id="profileAvailableFrom" type="date" title="Available from">
     </label>
-    <label>
+    <div class="work-type-field">
       <span>Preferred work type</span>
-      <select id="profileWorkPreference">
-        <option value="any">Any opportunity</option>
-        <option value="freelance">Freelance</option>
-        <option value="contract">Contract</option>
-        <option value="permanent">Permanent</option>
-      </select>
-    </label>
+      <div id="profileWorkPreferences" class="work-type-options work-type-options-inline">
+        <label><input type="checkbox" value="any"><span>Any opportunity</span></label>
+        <label><input type="checkbox" value="freelance"><span>Freelance</span></label>
+        <label><input type="checkbox" value="contract"><span>Contract</span></label>
+        <label><input type="checkbox" value="permanent"><span>Permanent</span></label>
+      </div>
+    </div>
   </div>
   <div id="workAvailabilityStatus" class="work-availability-status" role="status"></div>
 </div>
@@ -779,23 +781,23 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=275"></script>
-<script src="js/server-data.js?v=275"></script>
-<script src="js/storage.js?v=275"></script>
-<script src="js/ui.js?v=275"></script>
-<script src="js/auth.js?v=275"></script>
-<script src="js/login.js?v=275"></script>
-<script src="js/dashboard.js?v=275"></script>
-<script src="js/documents.js?v=275"></script>
-<script src="js/references.js?v=275"></script>
-<script src="js/account.js?v=275"></script>
-<script src="js/app.js?v=275"></script>
-<script src="js/product-experience.js?v=275"></script>
-<script src="js/date-picker.js?v=275"></script>
-<script src="js/share-profile.js?v=275"></script>
-<script src="js/boot-refresh.js?v=275"></script>
-<script src="js/account-security-live.js?v=275"></script>
-<script src="js/talent-directory.js?v=275"></script>
+<script src="js/stability-runtime.js?v=276"></script>
+<script src="js/server-data.js?v=276"></script>
+<script src="js/storage.js?v=276"></script>
+<script src="js/ui.js?v=276"></script>
+<script src="js/auth.js?v=276"></script>
+<script src="js/login.js?v=276"></script>
+<script src="js/dashboard.js?v=276"></script>
+<script src="js/documents.js?v=276"></script>
+<script src="js/references.js?v=276"></script>
+<script src="js/account.js?v=276"></script>
+<script src="js/app.js?v=276"></script>
+<script src="js/product-experience.js?v=276"></script>
+<script src="js/date-picker.js?v=276"></script>
+<script src="js/share-profile.js?v=276"></script>
+<script src="js/boot-refresh.js?v=276"></script>
+<script src="js/account-security-live.js?v=276"></script>
+<script src="js/talent-directory.js?v=276"></script>
 
 
 

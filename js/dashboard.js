@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V275';
+  var BUILD='ATSRS V276';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -123,6 +123,38 @@
   }
   function val(id){var e=byId(id); return e?e.value:'';}
   function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
+  function normalizeWorkPreferences(values){
+    var allowed=['any','freelance','contract','permanent'];
+    var next=(Array.isArray(values)?values:[values]).filter(function(value,index,list){
+      return allowed.indexOf(value)>=0&&list.indexOf(value)===index;
+    });
+    if(next.indexOf('any')>=0)return ['any'];
+    return next.length?next:['any'];
+  }
+  function selectedWorkPreferences(){
+    var root=byId('profileWorkPreferences');
+    if(!root)return ['any'];
+    return normalizeWorkPreferences(Array.from(root.querySelectorAll('input:checked')).map(function(input){return input.value}));
+  }
+  function setWorkPreferences(values){
+    var root=byId('profileWorkPreferences'),next=normalizeWorkPreferences(values);
+    if(!root)return;
+    root.querySelectorAll('input[type="checkbox"]').forEach(function(input){input.checked=next.indexOf(input.value)>=0});
+  }
+  function bindWorkPreferences(){
+    var root=byId('profileWorkPreferences');
+    if(!root||root.__atsrsWorkPreferencesBound)return;
+    root.__atsrsWorkPreferencesBound=true;
+    root.addEventListener('change',function(event){
+      var input=event.target;if(!input||input.type!=='checkbox')return;
+      var inputs=Array.from(root.querySelectorAll('input[type="checkbox"]'));
+      if(input.value==='any'&&input.checked)inputs.forEach(function(item){if(item!==input)item.checked=false});
+      else if(input.checked){var any=root.querySelector('input[value="any"]');if(any)any.checked=false}
+      if(!inputs.some(function(item){return item.checked})){var fallback=root.querySelector('input[value="any"]');if(fallback)fallback.checked=true}
+      var confirmed=byId('availabilityConfirmationNote');
+      if(confirmed)confirmed.textContent='Changes not saved';
+    });
+  }
   function updateAvailabilityControls(){
     var status=val('profileAvailabilityStatus')||'not_set';
     var dateWrap=byId('profileAvailableFromWrap');
@@ -131,6 +163,7 @@
     if(note&&status!=='available_from')note.textContent='';
   }
   function bindAvailabilityControls(){
+    bindWorkPreferences();
     var status=byId('profileAvailabilityStatus');
     if(status&&!status.__atsrsAvailabilityBound){
       status.__atsrsAvailabilityBound=true;
@@ -173,7 +206,8 @@
       timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',
       availabilityStatus:availabilityStatus,
       availableFrom:availabilityStatus==='available_from'?availableFrom:'',
-      workPreference:val('profileWorkPreference')||'any',
+      workPreferences:selectedWorkPreferences(),
+      workPreference:selectedWorkPreferences()[0]||'any',
       availabilityConfirmedAt:confirmedAt,
       savedAt:confirmedAt
     };
@@ -196,7 +230,7 @@
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');
     setVal('profileAvailabilityStatus',p.availabilityStatus||'not_set');
     setVal('profileAvailableFrom',p.availableFrom||'');
-    setVal('profileWorkPreference',p.workPreference||'any');
+    setWorkPreferences(p.workPreferences||p.workPreference||'any');
     bindAvailabilityControls();updateAvailabilityControls();
     var confirmed=byId('availabilityConfirmationNote');
     if(confirmed){
@@ -266,7 +300,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V275';
+  var BUILD='ATSRS V276';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
