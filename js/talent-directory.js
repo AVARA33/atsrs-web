@@ -1,4 +1,4 @@
-/* ATSRS V307 - refined international profile details. */
+/* ATSRS V308 - refined international profile details. */
 (function(){
   'use strict';
   var profiles=[];
@@ -358,7 +358,7 @@
     var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
     var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
     if(count)count.textContent=rows.length+' linked';
-    if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a professional profile and choose вЂњAdd to PersonnelвЂќ.</span></div>';return}
+    if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a professional profile and choose РІР‚СљAdd to PersonnelРІР‚Сњ.</span></div>';return}
     list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Professional</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
       rows.map(function(item){
         var profile=item.profile,access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
@@ -416,7 +416,7 @@
   }
   function preferenceLabel(value){
     var labels={freelance:'Freelance',contract:'Contract',permanent:'Permanent',any:'Any opportunity'};
-    return normalizeWorkPreferences(value).map(function(item){return labels[item]}).join(' В· ');
+    return normalizeWorkPreferences(value).map(function(item){return labels[item]}).join(' Р’В· ');
   }
   function availability(profile){
     var preferences=profile.work_preferences||profile.work_preference||'any';
@@ -432,7 +432,7 @@
     if(status==='available_from'&&profile.available_from){
       var date=new Date(profile.available_from+'T00:00:00');
       var formatter=new Intl.DateTimeFormat('en',{day:'2-digit',month:'short',year:'numeric'});
-      if(date.getTime()<=Date.now())return {key:'now',label:'Available now',detail:'Available since '+formatter.format(date)+' В· '+preferenceLabel(preferences)};
+      if(date.getTime()<=Date.now())return {key:'now',label:'Available now',detail:'Available since '+formatter.format(date)+' Р’В· '+preferenceLabel(preferences)};
       return {key:'from',label:'Available from '+formatter.format(date),detail:preferenceLabel(preferences),date:date};
     }
     return {key:'unset',label:'Availability not specified',detail:preferenceLabel(preferences)};
