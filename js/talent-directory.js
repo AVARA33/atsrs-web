@@ -1,4 +1,4 @@
-/* ATSRS V296 - keep nested Personnel content visible during page navigation. */
+/* ATSRS V297 - keep nested Personnel content visible during page navigation. */
 (function(){
   'use strict';
   var profiles=[];

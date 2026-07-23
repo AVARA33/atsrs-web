@@ -1,6 +1,6 @@
 /* ATSRS workspace switcher. The only in-app logout control. */
 .workspace-switcher{
-  position:fixed;
+  position:absolute;
   top:18px;
   right:24px;
   z-index:2200;
@@ -170,7 +170,7 @@
   opacity:.65;
 }
 @media(max-width:800px){
-  .workspace-switcher{top:12px;right:12px;width:max-content;max-width:calc(100vw - 24px)}
+  .workspace-switcher{position:absolute;top:12px;right:12px;width:max-content;max-width:calc(100vw - 24px)}
   .workspace-switcher-button{grid-template-columns:34px max-content 12px;max-width:calc(100vw - 24px);min-height:44px!important}
   .workspace-switcher-avatar{width:34px;height:34px}
 }
