@@ -1,4 +1,4 @@
-/* ATSRS V300 - compact Personnel column sorting. */
+/* ATSRS V301 - compact Personnel column sorting. */
 .talent-directory-panel{max-width:none}
 .talent-directory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px}
 .talent-directory-head h3{margin:8px 0 4px}
@@ -158,6 +158,51 @@
 .talent-card dl div,.talent-modal-card dl div{min-width:0}
 .talent-card dt,.talent-modal-card dt{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#6f869a}
 .talent-card dd,.talent-modal-card dd{margin:4px 0 0;color:#d8e3ec;font-size:12px;overflow-wrap:anywhere}
+.talent-official-title{margin:18px 0 8px!important;color:#e5edf4;font-size:13px}
+.talent-official-details{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 16px;
+  margin:0 0 18px;
+  padding:14px 0;
+  border-top:1px solid #1c3041;
+  border-bottom:1px solid #1c3041;
+}
+.talent-official-details div{min-width:0}
+.talent-official-details dt{
+  margin:0;
+  color:#6f869a;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.talent-official-details dd{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:4px 0 0;
+  color:#d8e3ec;
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+.talent-verification-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:18px;
+  padding:2px 7px;
+  border:1px solid rgba(239,154,154,.34);
+  border-radius:999px;
+  color:#f1a6a6;
+  font-size:9px;
+  font-weight:700;
+  line-height:1;
+}
+.talent-verification-badge.is-verified{
+  border-color:rgba(134,239,172,.34);
+  color:#86efac;
+}
 .talent-view{align-self:flex-start;margin-top:auto!important;width:auto!important;min-height:34px!important;padding:7px 12px!important;background:transparent!important;border-color:#315067!important;color:#dce9f2!important}
 .talent-empty{grid-column:1/-1;display:grid;gap:5px;padding:34px 0;color:#d7e1e9;text-align:center}
 .talent-empty span{color:#8ea2b5;font-size:12px}
@@ -184,4 +229,4 @@
 .talent-message>div{display:grid;gap:3px}.talent-message>div span{color:#8097aa;font-size:10px}.talent-message p{margin:0;color:#c9d6df;font-size:12px;line-height:1.55;white-space:pre-wrap}
 @media(max-width:1180px){.personnel-filterbar{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:950px){.talent-searchbar{grid-template-columns:1fr 1fr}.talent-search-field{grid-column:1/-1}.personnel-filterbar{grid-template-columns:1fr 1fr}.personnel-search-field{grid-column:1/-1}}
-@media(max-width:620px){.talent-directory-head,.linked-personnel-head{display:grid}.talent-head-tools{justify-content:space-between}.talent-searchbar,.personnel-filterbar{grid-template-columns:1fr}.talent-search-field,.personnel-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl{grid-template-columns:1fr}.talent-summary-list>div{display:grid;gap:6px}.talent-summary-list em{text-align:left;white-space:normal}.talent-messages-head{align-items:flex-start}}
+@media(max-width:620px){.talent-directory-head,.linked-personnel-head{display:grid}.talent-head-tools{justify-content:space-between}.talent-searchbar,.personnel-filterbar{grid-template-columns:1fr}.talent-search-field,.personnel-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl,.talent-official-details{grid-template-columns:1fr}.talent-summary-list>div{display:grid;gap:6px}.talent-summary-list em{text-align:left;white-space:normal}.talent-messages-head{align-items:flex-start}}

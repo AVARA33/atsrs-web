@@ -1,4 +1,4 @@
-/* ATSRS V300 - compact Personnel column sorting. */
+/* ATSRS V301 - official profile details and guided phone code selection. */
 (function(){
   'use strict';
   var profiles=[];
@@ -28,6 +28,35 @@
   }
   function normalized(value){return String(value||'').trim().toLowerCase()}
   function unique(values){return Array.from(new Set(values.filter(Boolean))).sort(function(a,b){return a.localeCompare(b)})}
+  function formValue(id,fallback){
+    var el=byId(id);
+    var value=el?el.value:fallback;
+    return String(value||'').trim();
+  }
+  function cleanPhonePart(value){return String(value||'').replace(/[^\d]/g,'').trim()}
+  function combinedPhone(code,local){return local?String(code||'+994')+cleanPhonePart(local):''}
+  function ageFromBirthDate(value){
+    if(!value)return '';
+    var date=new Date(value+'T00:00:00');
+    if(isNaN(date.getTime()))return '';
+    var now=new Date(),age=now.getFullYear()-date.getFullYear();
+    var beforeBirthday=now.getMonth()<date.getMonth()||(now.getMonth()===date.getMonth()&&now.getDate()<date.getDate());
+    return String(beforeBirthday?age-1:age);
+  }
+  function verificationBadge(label,verified){
+    return '<span class="talent-verification-badge '+(verified?'is-verified':'is-pending')+'">'+safe(label)+': '+safe(verified?'Verified':'Not verified')+'</span>';
+  }
+  function officialDetailsMarkup(profile){
+    var phone=profile.phone_number||combinedPhone(profile.phone_country_code,profile.phone_local);
+    var age=ageFromBirthDate(profile.birth_date);
+    var stcw=profile.stcw_number||'Not provided';
+    return '<div class="talent-official-details" aria-label="Official candidate information">'+
+      '<div><dt>Verified phone</dt><dd>'+safe(phone||'Not provided')+' '+verificationBadge('Phone',!!profile.phone_verified)+'</dd></div>'+
+      '<div><dt>Age</dt><dd>'+safe(age?age+' years':'Not provided')+'</dd></div>'+
+      '<div><dt>ZIP / postal code</dt><dd>'+safe(profile.zip_code||'Not provided')+'</dd></div>'+
+      '<div><dt>STCW / seafarer ID</dt><dd>'+safe(stcw)+' '+verificationBadge('STCW',!!profile.stcw_verified)+'</dd></div>'+
+    '</div>';
+  }
   function normalizeWorkPreferences(values){
     var allowed=['any','freelance','contract','permanent'];
     var next=(Array.isArray(values)?values:[values]).filter(function(value,index,list){
@@ -54,6 +83,9 @@
     var availableFrom=(byId('profileAvailableFrom')&&byId('profileAvailableFrom').value||stored.availableFrom||'').trim();
     var workRoot=byId('profileWorkPreferences');
     var workPreferences=normalizeWorkPreferences(workRoot?checkedValues(workRoot):(stored.workPreferences||stored.workPreference||'any'));
+    var phoneCode=formValue('profilePhoneCountryCode',stored.phoneCountryCode||'+994')||'+994';
+    var phoneLocal=cleanPhonePart(formValue('profilePhoneLocal',stored.phoneLocal||''));
+    var phoneNumber=formValue('profilePhone',stored.phone||stored.phoneNumber||combinedPhone(phoneCode,phoneLocal));
     if(availabilityStatus==='available_from'&&!availableFrom)availabilityStatus='not_set';
     return {
       name:(byId('profileName')&&byId('profileName').value||'').trim(),
@@ -61,6 +93,14 @@
       position:(byId('profilePosition')&&byId('profilePosition').value||'').trim(),
       country:(byId('profileCountry')&&byId('profileCountry').value||'').trim(),
       company:(byId('profileCompany')&&byId('profileCompany').value||'').trim(),
+      phoneCountryCode:phoneCode,
+      phoneLocal:phoneLocal,
+      phoneNumber:phoneNumber||combinedPhone(phoneCode,phoneLocal),
+      phoneVerified:!!stored.phoneVerified,
+      zipCode:formValue('profileZipCode',stored.zipCode||''),
+      birthDate:formValue('profileBirthDate',stored.birthDate||''),
+      stcwNumber:formValue('profileStcwNumber',stored.stcwNumber||''),
+      stcwVerified:!!stored.stcwVerified,
       availabilityStatus:availabilityStatus,
       availableFrom:availabilityStatus==='available_from'?availableFrom:null,
       workPreferences:workPreferences,
@@ -130,6 +170,14 @@
       work_preference:profile.workPreference,work_preferences:profile.workPreferences,
       availability_confirmed_at:profile.availabilityConfirmedAt,
       avatar_url:safeAvatar(profile.avatarUrl)||null,
+      phone_country_code:profile.phoneCountryCode||null,
+      phone_local:profile.phoneLocal||null,
+      phone_number:profile.phoneNumber||null,
+      phone_verified:!!profile.phoneVerified,
+      zip_code:profile.zipCode||null,
+      birth_date:profile.birthDate||null,
+      stcw_number:profile.stcwNumber||null,
+      stcw_verified:!!profile.stcwVerified,
       last_active_at:new Date().toISOString(),updated_at:new Date().toISOString()
     },{onConflict:'user_id'});
     if(result.error){console.warn('ATSRS talent profile sync failed',result.error);return false}
@@ -184,7 +232,10 @@
         linkedUserId:profile.user_id,source:'talent_directory',linkedStatus:'linked',
         accessStatus:'public_profile_only',trackerStatus:'awaiting_document_access',
         name:profile.name||'',surname:profile.surname||'',position:profile.position||'',
-        country:profile.country||'',company:profile.company||'',email:'',phone:''
+        country:profile.country||'',company:profile.company||'',email:'',
+        phone:profile.phone_number||'',phoneVerified:!!profile.phone_verified,
+        zipCode:profile.zip_code||'',birthDate:profile.birth_date||'',
+        stcwNumber:profile.stcw_number||'',stcwVerified:!!profile.stcw_verified
       };
       if(index>=0)personnel[index]=Object.assign({},personnel[index],publicRecord);
       else personnel.push(publicRecord);
@@ -482,7 +533,7 @@
     var profile=profiles.find(function(item){return item.user_id===id})||(linkedRecord(id)&&linkedRecord(id).profile);if(!profile)return;
     var active=activity(profile),work=availability(profile),isLinked=!!linkedRecord(id),old=byId('atsrsTalentModal');if(old)old.remove();
     var modal=document.createElement('div');modal.id='atsrsTalentModal';modal.className='talent-modal';
-    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain private. Adding this profile copies public professional details only; CV and documents require separate permission.</p></div>';
+    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><h4 class="talent-official-title">Official profile details</h4>'+officialDetailsMarkup(profile)+'<div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain controlled by ATSRS. Official fields show only the profile data the candidate has provided; document access still requires separate permission.</p></div>';
     document.body.appendChild(modal);
     activeActionPanel=modal.querySelector('#talentActionPanel');
     modal.querySelectorAll('.talent-modal-backdrop,.talent-modal-close').forEach(function(button){button.onclick=function(){if(activeActionPanel&&modal.contains(activeActionPanel))activeActionPanel=null;modal.remove()}});
@@ -537,7 +588,7 @@
     if(mode()!=='company')return;
     var grid=byId('talentDirectoryGrid'),status=byId('talentDirectoryStatus'),c=client();if(!grid||!c)return;
     loading=true;if(status){status.textContent='Loading professional profiles...';status.classList.remove('hidden')}
-    var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
+    var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,zip_code,birth_date,stcw_number,stcw_verified,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
     loading=false;
     if(result.error){if(status){status.textContent='Professional profiles could not be loaded. Please refresh and try again.';status.classList.remove('hidden')}console.warn('ATSRS talent directory load failed',result.error);return}
     profiles=(Array.isArray(result.data)?result.data:[]).filter(function(profile){return profileReadiness(profile)>=90});

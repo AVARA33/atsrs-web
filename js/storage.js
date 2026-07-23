@@ -254,7 +254,7 @@ function applyLanguage(){
   ["certSortTypeLabel:certificate","thProvider2:provider","certSortExpiryLabel:expiry","certSortStatusLabel:status","thAction2:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
 
   txt("accountTitle",ptr("account"));txt("accountTabGeneralBtn",ptr("general"));txt("accountTabSecurityBtn",ptr("security"));txt("accountTabPreferencesBtn",ptr("preferences"));txt("accountTabSharingBtn","Privacy & Sharing");
-  ph("profileName",tr("name"));ph("profileSurname",tr("surname"));ph("profilePhone",tr("phone"));ph("profileCompany",tr("company"));ph("profilePosition",tr("position"));opt0("profileCountry",ptr("country"));txt("saveProfileBtn",tr("saveProfile"));
+  ph("profileName",tr("name"));ph("profileSurname",tr("surname"));ph("profilePhoneLocal",tr("phone"));ph("profileZipCode","ZIP / postal code");ph("profileStcwNumber","STCW / seafarer ID");ph("profileCompany",tr("company"));ph("profilePosition",tr("position"));opt0("profileCountry",ptr("country"));txt("saveProfileBtn",tr("saveProfile"));
   txt("twofaTitle",ptr("twofa"));txt("twofaNote",ptr("twofaNote"));txt("setup2faBtn",ptr("setup"));txt("sessionsTitle",ptr("sessions"));txt("sessionsNote",ptr("sessionsNote"));txt("viewSessionsBtn",ptr("view"));
   txt("notifyTitle",ptr("notifications"));txt("notifyNote",ptr("notificationsNote"));txt("manageNotifyBtn",ptr("manage"));txt("exportDataTitle",ptr("exportData"));txt("exportDataNote",ptr("exportDataNote"));txt("exportDataBtn",ptr("export"));txt("deleteAccountTitle",ptr("deleteAccount"));txt("deleteAccountNote",ptr("deleteAccountNote"));txt("deleteAccountBtn",tr("delete"));
 

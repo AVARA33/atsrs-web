@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V300';
+  var BUILD='ATSRS V301';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -123,6 +123,33 @@
   }
   function val(id){var e=byId(id); return e?e.value:'';}
   function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
+  var PHONE_CODES=['+994','+44','+971','+47','+90','+359','+240','+995','+40','+380','+63','+91','+62','+60','+65','+31','+49','+1'];
+  function cleanPhonePart(value){return String(value||'').replace(/[^\d]/g,'').trim();}
+  function splitPhone(value){
+    var text=String(value||'').trim();
+    var compact=text.replace(/[\s().-]/g,'');
+    var found=PHONE_CODES.filter(function(code){return compact.indexOf(code)===0}).sort(function(a,b){return b.length-a.length})[0];
+    if(found)return {code:found,local:cleanPhonePart(compact.slice(found.length))};
+    return {code:val('profilePhoneCountryCode')||'+994',local:cleanPhonePart(text)};
+  }
+  function updatePhoneHidden(){
+    var code=val('profilePhoneCountryCode')||'+994';
+    var local=cleanPhonePart(val('profilePhoneLocal'));
+    setVal('profilePhone',local?code+local:'');
+    return {code:code,local:local,full:local?code+local:''};
+  }
+  function setVerificationText(id,verified){
+    var el=byId(id);if(!el)return;
+    el.textContent=verified?'Verified':'Not verified';
+    el.classList.toggle('is-verified',!!verified);
+  }
+  function bindOfficialProfileControls(){
+    ['profilePhoneCountryCode','profilePhoneLocal'].forEach(function(id){
+      var el=byId(id);if(!el||el.__atsrsOfficialBound)return;
+      el.__atsrsOfficialBound=true;
+      el.addEventListener(id==='profilePhoneLocal'?'input':'change',updatePhoneHidden);
+    });
+  }
   function normalizeWorkPreferences(values){
     var allowed=['any','freelance','contract','permanent'];
     var next=(Array.isArray(values)?values:[values]).filter(function(value,index,list){
@@ -201,9 +228,14 @@
     if(availabilityMessage)availabilityMessage.textContent='';
     var confirmedAt=new Date().toISOString();
     var existing=readJson(PROFILE_KEY,{});
+    var phoneParts=updatePhoneHidden();
     var data={
-      name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
+      name:val('profileName'),surname:val('profileSurname'),phone:phoneParts.full,
+      phoneCountryCode:phoneParts.code,phoneLocal:phoneParts.local,phoneVerified:!!existing.phoneVerified,
+      country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
+      zipCode:val('profileZipCode'),birthDate:val('profileBirthDate'),
+      stcwNumber:val('profileStcwNumber'),stcwVerified:!!existing.stcwVerified,
       avatarUrl:existing.avatarUrl||'',
       avatarPath:existing.avatarPath||'',
       avatarSource:existing.avatarSource||'',
@@ -229,8 +261,16 @@
   window.loadProfile=function(){
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
     var p=readJson(PROFILE_KEY,{});
-    setVal('profileName',p.name); setVal('profileSurname',p.surname); setVal('profilePhone',p.phone); setVal('profileCountry',p.country);
+    var phone=splitPhone(p.phone||((p.phoneCountryCode||'')+(p.phoneLocal||'')));
+    setVal('profileName',p.name); setVal('profileSurname',p.surname);
+    setVal('profilePhoneCountryCode',p.phoneCountryCode||phone.code||'+994');
+    setVal('profilePhoneLocal',p.phoneLocal||phone.local||'');
+    updatePhoneHidden();
+    setVal('profileCountry',p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
+    setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate); setVal('profileStcwNumber',p.stcwNumber);
+    setVerificationText('profilePhoneVerifiedText',!!p.phoneVerified);
+    setVerificationText('profileStcwVerifiedText',!!p.stcwVerified);
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');
     setVal('profileAvailabilityStatus',p.availabilityStatus||'not_set');
     setVal('profileAvailableFrom',p.availableFrom||'');
@@ -246,6 +286,7 @@
       window.atsrsProfilePhoto.render(p);
     }
     ensureProfileStatus();
+    bindOfficialProfileControls();
   };
   window.atsrsUpdateAvailabilityControls=updateAvailabilityControls;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAvailabilityControls);
@@ -307,7 +348,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V300';
+  var BUILD='ATSRS V301';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
