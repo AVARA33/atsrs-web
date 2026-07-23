@@ -51,11 +51,12 @@ Deno.serve(async (req) => {
     return json(401, { error: "Authentication is required." });
   }
 
+  const token = authorization.slice(7).trim();
   const authClient = createClient(url, anonKey, {
     global: { headers: { Authorization: authorization } },
     auth: { persistSession: false, autoRefreshToken: false },
   });
-  const { data: userData, error: userError } = await authClient.auth.getUser();
+  const { data: userData, error: userError } = await authClient.auth.getUser(token);
   const user = userData.user;
   if (userError || !user) return json(401, { error: "The session is invalid or expired." });
 
@@ -92,13 +93,23 @@ Deno.serve(async (req) => {
   const targetUserId = clean(body.target_user_id, 50);
   if (!targetUserId) return json(400, { error: "Professional profile is required." });
 
-  const { data: companyWorkspace } = await admin
+  const { data: companyWorkspaces, error: companyWorkspaceError } = await admin
     .from("atsrs_workspaces")
     .select("user_id")
     .eq("user_id", user.id)
     .eq("account_type", "company")
-    .maybeSingle();
-  if (!companyWorkspace) return json(403, { error: "A corporate ATSRS account is required." });
+    .limit(1);
+  if (companyWorkspaceError) {
+    console.error("talent-profile-actions workspace lookup failed", {
+      user_id: user.id,
+      code: companyWorkspaceError.code,
+      message: companyWorkspaceError.message,
+    });
+    return json(500, { error: "Your Corporate workspace could not be verified. Please try again." });
+  }
+  if (!companyWorkspaces?.length) {
+    return json(403, { error: "Open your ATSRS Corporate workspace to use this function." });
+  }
 
   const { data: profile } = await admin
     .from("atsrs_talent_profiles")
