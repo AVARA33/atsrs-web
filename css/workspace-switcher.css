@@ -1,0 +1,175 @@
+/* ATSRS workspace switcher. The only in-app logout control. */
+.workspace-switcher{
+  position:fixed;
+  top:18px;
+  right:24px;
+  z-index:2200;
+  width:min(270px,calc(100vw - 32px));
+  color:#e7eef5;
+}
+.workspace-switcher-button{
+  display:grid!important;
+  grid-template-columns:38px minmax(0,1fr) 15px;
+  align-items:center;
+  gap:10px;
+  width:100%!important;
+  min-height:48px!important;
+  margin:0!important;
+  padding:5px 9px 5px 6px!important;
+  border:1px solid rgba(76,105,130,.46)!important;
+  border-radius:16px!important;
+  background:rgba(7,18,30,.93)!important;
+  color:#e7eef5!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.2)!important;
+  text-align:left!important;
+  backdrop-filter:blur(14px);
+}
+.workspace-switcher-button:hover,
+.workspace-switcher-button:focus-visible,
+.workspace-switcher.open .workspace-switcher-button{
+  background:rgba(9,23,37,.97)!important;
+  border-color:rgba(107,141,169,.65)!important;
+  color:#fff!important;
+  transform:none!important;
+}
+.workspace-switcher-button:focus-visible{
+  outline:2px solid rgba(74,222,128,.32)!important;
+  outline-offset:2px;
+}
+.workspace-switcher-avatar{
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border:1px solid rgba(104,139,166,.65);
+  border-radius:50%;
+  background:rgba(17,34,51,.78);
+  color:#dceaf3;
+  font-size:13px;
+  font-weight:850;
+  letter-spacing:.02em;
+}
+.workspace-switcher-copy{
+  display:grid;
+  gap:2px;
+  min-width:0;
+  line-height:1.15;
+}
+.workspace-switcher-copy strong{
+  overflow:hidden;
+  color:#f1f6fa;
+  font-size:12px;
+  font-weight:750;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.workspace-switcher-copy>span{
+  color:#88a0b3;
+  font-size:10px;
+  font-weight:650;
+}
+.workspace-switcher-chevron{
+  width:7px;
+  height:7px;
+  margin:-3px 2px 0 0;
+  border-right:1.5px solid #91a6b7;
+  border-bottom:1.5px solid #91a6b7;
+  transform:rotate(45deg);
+  transition:transform .16s ease;
+}
+.workspace-switcher.open .workspace-switcher-chevron{
+  margin-top:3px;
+  transform:rotate(225deg);
+}
+.workspace-switcher-menu{
+  position:absolute;
+  top:56px;
+  right:0;
+  width:100%;
+  padding:8px;
+  border:1px solid rgba(76,105,130,.5);
+  border-radius:15px;
+  background:rgba(7,18,30,.985);
+  box-shadow:0 20px 48px rgba(0,0,0,.34);
+  backdrop-filter:blur(18px);
+}
+.workspace-switcher-menu-label{
+  margin:3px 7px 7px;
+  color:#71899c;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.workspace-option,
+.workspace-logout-button{
+  display:flex!important;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:10px!important;
+  border:1px solid transparent!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:#dce7ef!important;
+  box-shadow:none!important;
+  text-align:left!important;
+}
+.workspace-option:hover,
+.workspace-option:focus-visible,
+.workspace-logout-button:hover,
+.workspace-logout-button:focus-visible{
+  border-color:rgba(75,102,125,.42)!important;
+  background:rgba(25,43,59,.58)!important;
+  color:#fff!important;
+  transform:none!important;
+}
+.workspace-option>span:first-child{display:grid;gap:3px;min-width:0}
+.workspace-option strong{font-size:12px;font-weight:750}
+.workspace-option small{color:#7890a3;font-size:9px;line-height:1.3}
+.workspace-option-check{
+  visibility:hidden;
+  color:#75e49c;
+  font-size:14px;
+  font-weight:900;
+}
+.workspace-option.active .workspace-option-check{visibility:visible}
+.workspace-option[hidden]{display:none!important}
+.workspace-switcher-divider{
+  height:1px;
+  margin:7px 4px;
+  background:rgba(60,83,104,.55);
+}
+.workspace-logout-button{
+  justify-content:flex-start;
+  color:#cbd8e2!important;
+  font-size:12px!important;
+  font-weight:750!important;
+}
+.workspace-switcher-status{
+  display:none;
+  margin:6px 9px 2px;
+  color:#90a7b8;
+  font-size:9px;
+  line-height:1.35;
+}
+.workspace-switcher-status:not(:empty){display:block}
+.workspace-switcher-status.error{color:#efaaaa}
+.workspace-switcher.busy .workspace-switcher-button,
+.workspace-switcher.busy .workspace-option,
+.workspace-switcher.busy .workspace-logout-button{
+  pointer-events:none!important;
+  opacity:.65;
+}
+@media(max-width:800px){
+  .workspace-switcher{top:12px;right:12px;width:210px}
+  .workspace-switcher-button{grid-template-columns:34px minmax(0,1fr) 12px;min-height:44px!important}
+  .workspace-switcher-avatar{width:34px;height:34px}
+}
+@media(max-width:520px){
+  .workspace-switcher{width:190px}
+  .workspace-switcher-copy strong{font-size:11px}
+}

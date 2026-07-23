@@ -16,20 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=278">
-<link rel="stylesheet" href="css/login.css?v=278">
-<link rel="stylesheet" href="css/dashboard.css?v=278">
-<link rel="stylesheet" href="css/documents.css?v=278">
-<link rel="stylesheet" href="css/references.css?v=278">
-<link rel="stylesheet" href="css/account.css?v=278">
-<link rel="stylesheet" href="css/product-experience.css?v=278">
-<link rel="stylesheet" href="css/date-picker.css?v=278">
-<link rel="stylesheet" href="css/share-profile.css?v=278">
-<link rel="stylesheet" href="css/calm-actions.css?v=278">
-<link rel="stylesheet" href="css/account-security-live.css?v=278">
-<link rel="stylesheet" href="css/talent-directory.css?v=278">
-<link rel="stylesheet" href="css/maintenance.css?v=278">
-<script defer src="js/maintenance-guard.js?v=278"></script>
+<link rel="stylesheet" href="css/base.css?v=279">
+<link rel="stylesheet" href="css/login.css?v=279">
+<link rel="stylesheet" href="css/dashboard.css?v=279">
+<link rel="stylesheet" href="css/documents.css?v=279">
+<link rel="stylesheet" href="css/references.css?v=279">
+<link rel="stylesheet" href="css/account.css?v=279">
+<link rel="stylesheet" href="css/product-experience.css?v=279">
+<link rel="stylesheet" href="css/date-picker.css?v=279">
+<link rel="stylesheet" href="css/share-profile.css?v=279">
+<link rel="stylesheet" href="css/calm-actions.css?v=279">
+<link rel="stylesheet" href="css/account-security-live.css?v=279">
+<link rel="stylesheet" href="css/talent-directory.css?v=279">
+<link rel="stylesheet" href="css/maintenance.css?v=279">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=279">
+<script defer src="js/maintenance-guard.js?v=279"></script>
 
 
 
@@ -131,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V278</div>
+<div>ATSRS V279</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -150,11 +151,34 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
-<button id="navLogout" class="exit-nav-btn" onclick="atsrsExit()">Exit</button>
 </div>
 </aside>
 
 <main class="main">
+<div id="workspaceSwitcher" class="workspace-switcher" aria-label="ATSRS account switcher">
+  <button id="workspaceSwitcherButton" class="workspace-switcher-button" type="button" aria-haspopup="menu" aria-expanded="false">
+    <span id="workspaceSwitcherAvatar" class="workspace-switcher-avatar" aria-hidden="true">A</span>
+    <span class="workspace-switcher-copy">
+      <strong id="workspaceSwitcherName">ATSRS</strong>
+      <span id="workspaceSwitcherLabel">Personal Account</span>
+    </span>
+    <span class="workspace-switcher-chevron" aria-hidden="true"></span>
+  </button>
+  <div id="workspaceSwitcherMenu" class="workspace-switcher-menu hidden" role="menu">
+    <p class="workspace-switcher-menu-label">Switch workspace</p>
+    <button id="workspacePersonalOption" class="workspace-option" type="button" role="menuitem" data-workspace="personal">
+      <span><strong>Personal Account</strong><small>Your documents and professional profile</small></span>
+      <span class="workspace-option-check" aria-hidden="true">✓</span>
+    </button>
+    <button id="workspaceCompanyOption" class="workspace-option" type="button" role="menuitem" data-workspace="company">
+      <span><strong>Corporate Account</strong><small>Personnel and compliance workspace</small></span>
+      <span class="workspace-option-check" aria-hidden="true">✓</span>
+    </button>
+    <div class="workspace-switcher-divider"></div>
+    <button id="workspaceLogoutBtn" class="workspace-logout-button" type="button" role="menuitem">Logout</button>
+    <p id="workspaceSwitcherStatus" class="workspace-switcher-status" role="status"></p>
+  </div>
+</div>
 <h2 id="pageTitle"></h2>
 
 <section id="introPage">
@@ -635,7 +659,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
   <div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
   <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action"></button></div>
-  <div class="setting-row account-logout-row"><div><b id="accountLogoutTitle">Logout</b><div id="accountLogoutNote" class="small-note">Sign out and return to the login screen.</div></div><button id="accountLogoutBtn" type="button" class="secondary">Logout</button></div>
 </div>
 </div>
 <div id="accountSharingTab" class="account-tab">
@@ -793,23 +816,24 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=278"></script>
-<script src="js/server-data.js?v=278"></script>
-<script src="js/storage.js?v=278"></script>
-<script src="js/ui.js?v=278"></script>
-<script src="js/auth.js?v=278"></script>
-<script src="js/login.js?v=278"></script>
-<script src="js/dashboard.js?v=278"></script>
-<script src="js/documents.js?v=278"></script>
-<script src="js/references.js?v=278"></script>
-<script src="js/account.js?v=278"></script>
-<script src="js/app.js?v=278"></script>
-<script src="js/product-experience.js?v=278"></script>
-<script src="js/date-picker.js?v=278"></script>
-<script src="js/share-profile.js?v=278"></script>
-<script src="js/boot-refresh.js?v=278"></script>
-<script src="js/account-security-live.js?v=278"></script>
-<script src="js/talent-directory.js?v=278"></script>
+<script src="js/stability-runtime.js?v=279"></script>
+<script src="js/server-data.js?v=279"></script>
+<script src="js/storage.js?v=279"></script>
+<script src="js/ui.js?v=279"></script>
+<script src="js/auth.js?v=279"></script>
+<script src="js/login.js?v=279"></script>
+<script src="js/dashboard.js?v=279"></script>
+<script src="js/documents.js?v=279"></script>
+<script src="js/references.js?v=279"></script>
+<script src="js/account.js?v=279"></script>
+<script src="js/app.js?v=279"></script>
+<script src="js/product-experience.js?v=279"></script>
+<script src="js/date-picker.js?v=279"></script>
+<script src="js/share-profile.js?v=279"></script>
+<script src="js/boot-refresh.js?v=279"></script>
+<script src="js/account-security-live.js?v=279"></script>
+<script src="js/talent-directory.js?v=279"></script>
+<script src="js/workspace-switcher.js?v=279"></script>
 
 
 
