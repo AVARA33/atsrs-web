@@ -90,9 +90,6 @@ Deno.serve(async (req) => {
     return json(200, { updated: true });
   }
 
-  const targetUserId = clean(body.target_user_id, 50);
-  if (!targetUserId) return json(400, { error: "Professional profile is required." });
-
   const { data: companyWorkspaces, error: companyWorkspaceError } = await admin
     .from("atsrs_workspaces")
     .select("user_id")
@@ -111,13 +108,65 @@ Deno.serve(async (req) => {
     return json(403, { error: "Open your ATSRS Corporate workspace to use this function." });
   }
 
+  if (action === "personnel_links") {
+    const { data: links, error: linksError } = await admin
+      .from("atsrs_talent_personnel_links")
+      .select("id,professional_user_id,status,source,created_at,updated_at")
+      .eq("company_user_id", user.id)
+      .order("updated_at", { ascending: false });
+    if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
+    const professionalIds = (links || []).map((link) => link.professional_user_id);
+    if (!professionalIds.length) return json(200, { personnel: [] });
+    const { data: linkedProfiles, error: profilesError } = await admin
+      .from("atsrs_talent_profiles")
+      .select("user_id,name,surname,position,country,company,availability_status,available_from,work_preference,work_preferences,last_active_at")
+      .in("user_id", professionalIds);
+    if (profilesError) return json(500, { error: "Linked professional profiles could not be loaded." });
+    const profileMap = new Map((linkedProfiles || []).map((item) => [item.user_id, item]));
+    const personnel = (links || []).map((link) => ({
+      ...link,
+      profile: profileMap.get(link.professional_user_id) || null,
+    }));
+    return json(200, { personnel });
+  }
+
+  const targetUserId = clean(body.target_user_id, 50);
+  if (!targetUserId) return json(400, { error: "Professional profile is required." });
+
   const { data: profile } = await admin
     .from("atsrs_talent_profiles")
-    .select("user_id,name,surname,discoverable")
+    .select("user_id,name,surname,position,country,company,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable")
     .eq("user_id", targetUserId)
     .eq("discoverable", true)
     .maybeSingle();
   if (!profile) return json(404, { error: "This professional profile is unavailable." });
+
+  if (action === "add_to_personnel") {
+    const now = new Date().toISOString();
+    const { data: link, error } = await admin
+      .from("atsrs_talent_personnel_links")
+      .upsert({
+        company_user_id: user.id,
+        professional_user_id: targetUserId,
+        status: "linked",
+        source: "talent_directory",
+        updated_at: now,
+      }, { onConflict: "company_user_id,professional_user_id" })
+      .select("id,professional_user_id,status,source,created_at,updated_at")
+      .single();
+    if (error) return json(500, { error: "This professional could not be added to Company Personnel." });
+    return json(200, { added: true, link, profile });
+  }
+
+  if (action === "remove_from_personnel") {
+    const { error } = await admin
+      .from("atsrs_talent_personnel_links")
+      .delete()
+      .eq("company_user_id", user.id)
+      .eq("professional_user_id", targetUserId);
+    if (error) return json(500, { error: "This professional could not be removed from Company Personnel." });
+    return json(200, { removed: true });
+  }
 
   if (action === "summary") {
     const { data: files, error } = await admin
