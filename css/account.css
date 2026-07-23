@@ -1096,13 +1096,13 @@ body.personal-mode #profilePhotoCard{display:flex}
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileName,
 #profilePage #accountGeneralTab>.profile-grid>#profileSurname{
-  grid-column:span 2;
+  grid-column:span 3;
 }
 #profilePage #accountGeneralTab>.profile-grid>.phone-field{
   grid-column:span 3;
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileCountry{
-  grid-column:span 2;
+  grid-column:span 3;
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileCompany,
 #profilePage #accountGeneralTab>.profile-grid>#profilePosition{
@@ -1110,7 +1110,7 @@ body.personal-mode #profilePhotoCard{display:flex}
 }
 #profilePage #accountGeneralTab>.profile-grid>#profileZipCode,
 #profilePage #accountGeneralTab>.profile-grid>#profileBirthDate{
-  grid-column:span 2;
+  grid-column:span 3;
 }
 #profilePage #accountGeneralTab>.profile-grid>input,
 #profilePage #accountGeneralTab>.profile-grid>select,
