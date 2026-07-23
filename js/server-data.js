@@ -429,6 +429,9 @@
       await migrateLegacyFiles(rows);
       clearNativeBusinessData();
       loadedScope=wantedScope;
+      window.dispatchEvent(new CustomEvent('atsrs:data-hydrated',{
+        detail:{scope:wantedScope,accountType:accountType()}
+      }));
       scheduleFileRender(0);
       return true;
     })();

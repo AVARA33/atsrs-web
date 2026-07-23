@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V284';
+  var BUILD='ATSRS V285';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -242,6 +242,9 @@
         ?'Confirmed '+new Date(p.availabilityConfirmedAt).toLocaleDateString()
         :'Not confirmed';
     }
+    if(window.atsrsProfilePhoto&&typeof window.atsrsProfilePhoto.render==='function'){
+      window.atsrsProfilePhoto.render(p);
+    }
     ensureProfileStatus();
   };
   window.atsrsUpdateAvailabilityControls=updateAvailabilityControls;
@@ -304,7 +307,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V284';
+  var BUILD='ATSRS V285';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
