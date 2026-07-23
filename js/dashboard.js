@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V301';
+  var BUILD='ATSRS V302';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -123,19 +123,20 @@
   }
   function val(id){var e=byId(id); return e?e.value:'';}
   function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
-  var PHONE_CODES=['+994','+44','+971','+47','+90','+359','+240','+995','+40','+380','+63','+91','+62','+60','+65','+31','+49','+1'];
+  var PHONE_CODES=['+994','+1','+44','+971','+966','+974','+965','+973','+968','+995','+7','+47','+31','+49','+33','+34','+39','+30','+40','+359','+380','+91','+92','+880','+94','+977','+63','+62','+60','+65','+66','+84','+86','+81','+82','+61','+64','+27','+20','+234','+233','+254','+55','+54','+52','+240'];
   function cleanPhonePart(value){return String(value||'').replace(/[^\d]/g,'').trim();}
-  function splitPhone(value){
+  function splitPhone(value,fallbackCode){
     var text=String(value||'').trim();
     var compact=text.replace(/[\s().-]/g,'');
     var found=PHONE_CODES.filter(function(code){return compact.indexOf(code)===0}).sort(function(a,b){return b.length-a.length})[0];
     if(found)return {code:found,local:cleanPhonePart(compact.slice(found.length))};
-    return {code:val('profilePhoneCountryCode')||'+994',local:cleanPhonePart(text)};
+    return {code:fallbackCode||val('profilePhoneCountryCode')||'+994',local:cleanPhonePart(text)};
   }
-  function updatePhoneHidden(){
-    var code=val('profilePhoneCountryCode')||'+994';
-    var local=cleanPhonePart(val('profilePhoneLocal'));
-    setVal('profilePhone',local?code+local:'');
+  function updatePhoneHidden(prefix){
+    prefix=prefix||'profilePhone';
+    var code=val(prefix+'CountryCode')||'+994';
+    var local=cleanPhonePart(val(prefix+'Local'));
+    setVal(prefix,local?code+local:'');
     return {code:code,local:local,full:local?code+local:''};
   }
   function setVerificationText(id,verified){
@@ -144,10 +145,20 @@
     el.classList.toggle('is-verified',!!verified);
   }
   function bindOfficialProfileControls(){
-    ['profilePhoneCountryCode','profilePhoneLocal'].forEach(function(id){
+    ['profilePhoneCountryCode','profilePhoneLocal','profileWhatsappCountryCode','profileWhatsappLocal'].forEach(function(id){
       var el=byId(id);if(!el||el.__atsrsOfficialBound)return;
       el.__atsrsOfficialBound=true;
-      el.addEventListener(id==='profilePhoneLocal'?'input':'change',updatePhoneHidden);
+      el.addEventListener(id.indexOf('Local')>=0?'input':'change',function(){
+        updatePhoneHidden(id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
+      });
+    });
+    document.querySelectorAll('[data-profile-verify]').forEach(function(button){
+      if(button.__atsrsVerifyBound)return;
+      button.__atsrsVerifyBound=true;
+      button.addEventListener('click',function(){
+        var target=button.getAttribute('data-profile-verify')==='whatsapp'?'WhatsApp':'mobile phone';
+        alert(target+' verification will be connected after ATSRS adds an approved SMS / WhatsApp OTP provider. The number is saved now, but it will not be marked verified until a real code is confirmed.');
+      });
     });
   }
   function normalizeWorkPreferences(values){
@@ -228,14 +239,16 @@
     if(availabilityMessage)availabilityMessage.textContent='';
     var confirmedAt=new Date().toISOString();
     var existing=readJson(PROFILE_KEY,{});
-    var phoneParts=updatePhoneHidden();
+    var phoneParts=updatePhoneHidden('profilePhone');
+    var whatsappParts=updatePhoneHidden('profileWhatsapp');
     var data={
       name:val('profileName'),surname:val('profileSurname'),phone:phoneParts.full,
       phoneCountryCode:phoneParts.code,phoneLocal:phoneParts.local,phoneVerified:!!existing.phoneVerified,
+      whatsapp:whatsappParts.full,
+      whatsappCountryCode:whatsappParts.code,whatsappLocal:whatsappParts.local,whatsappVerified:!!existing.whatsappVerified,
       country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
       zipCode:val('profileZipCode'),birthDate:val('profileBirthDate'),
-      stcwNumber:val('profileStcwNumber'),stcwVerified:!!existing.stcwVerified,
       avatarUrl:existing.avatarUrl||'',
       avatarPath:existing.avatarPath||'',
       avatarSource:existing.avatarSource||'',
@@ -261,16 +274,20 @@
   window.loadProfile=function(){
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
     var p=readJson(PROFILE_KEY,{});
-    var phone=splitPhone(p.phone||((p.phoneCountryCode||'')+(p.phoneLocal||'')));
+    var phone=splitPhone(p.phone||((p.phoneCountryCode||'')+(p.phoneLocal||'')),p.phoneCountryCode||'+994');
+    var whatsapp=splitPhone(p.whatsapp||((p.whatsappCountryCode||'')+(p.whatsappLocal||'')),p.whatsappCountryCode||p.phoneCountryCode||'+994');
     setVal('profileName',p.name); setVal('profileSurname',p.surname);
     setVal('profilePhoneCountryCode',p.phoneCountryCode||phone.code||'+994');
     setVal('profilePhoneLocal',p.phoneLocal||phone.local||'');
-    updatePhoneHidden();
+    updatePhoneHidden('profilePhone');
+    setVal('profileWhatsappCountryCode',p.whatsappCountryCode||whatsapp.code||p.phoneCountryCode||'+994');
+    setVal('profileWhatsappLocal',p.whatsappLocal||whatsapp.local||'');
+    updatePhoneHidden('profileWhatsapp');
     setVal('profileCountry',p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
-    setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate); setVal('profileStcwNumber',p.stcwNumber);
+    setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate);
     setVerificationText('profilePhoneVerifiedText',!!p.phoneVerified);
-    setVerificationText('profileStcwVerifiedText',!!p.stcwVerified);
+    setVerificationText('profileWhatsappVerifiedText',!!p.whatsappVerified);
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');
     setVal('profileAvailabilityStatus',p.availabilityStatus||'not_set');
     setVal('profileAvailableFrom',p.availableFrom||'');
@@ -348,7 +365,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V301';
+  var BUILD='ATSRS V302';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){

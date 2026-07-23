@@ -1,4 +1,4 @@
-/* ATSRS V301 - official profile details and guided phone code selection. */
+/* ATSRS V302 - refined international profile details. */
 (function(){
   'use strict';
   var profiles=[];
@@ -48,13 +48,13 @@
   }
   function officialDetailsMarkup(profile){
     var phone=profile.phone_number||combinedPhone(profile.phone_country_code,profile.phone_local);
+    var whatsapp=profile.whatsapp_number||combinedPhone(profile.whatsapp_country_code,profile.whatsapp_local);
     var age=ageFromBirthDate(profile.birth_date);
-    var stcw=profile.stcw_number||'Not provided';
     return '<div class="talent-official-details" aria-label="Official candidate information">'+
-      '<div><dt>Verified phone</dt><dd>'+safe(phone||'Not provided')+' '+verificationBadge('Phone',!!profile.phone_verified)+'</dd></div>'+
+      '<div><dt>Mobile phone</dt><dd>'+safe(phone||'Not provided')+' '+verificationBadge('Mobile',!!profile.phone_verified)+'</dd></div>'+
+      '<div><dt>WhatsApp</dt><dd>'+safe(whatsapp||'Not provided')+' '+verificationBadge('WhatsApp',!!profile.whatsapp_verified)+'</dd></div>'+
       '<div><dt>Age</dt><dd>'+safe(age?age+' years':'Not provided')+'</dd></div>'+
       '<div><dt>ZIP / postal code</dt><dd>'+safe(profile.zip_code||'Not provided')+'</dd></div>'+
-      '<div><dt>STCW / seafarer ID</dt><dd>'+safe(stcw)+' '+verificationBadge('STCW',!!profile.stcw_verified)+'</dd></div>'+
     '</div>';
   }
   function normalizeWorkPreferences(values){
@@ -86,6 +86,9 @@
     var phoneCode=formValue('profilePhoneCountryCode',stored.phoneCountryCode||'+994')||'+994';
     var phoneLocal=cleanPhonePart(formValue('profilePhoneLocal',stored.phoneLocal||''));
     var phoneNumber=formValue('profilePhone',stored.phone||stored.phoneNumber||combinedPhone(phoneCode,phoneLocal));
+    var whatsappCode=formValue('profileWhatsappCountryCode',stored.whatsappCountryCode||phoneCode)||phoneCode;
+    var whatsappLocal=cleanPhonePart(formValue('profileWhatsappLocal',stored.whatsappLocal||''));
+    var whatsappNumber=formValue('profileWhatsapp',stored.whatsapp||stored.whatsappNumber||combinedPhone(whatsappCode,whatsappLocal));
     if(availabilityStatus==='available_from'&&!availableFrom)availabilityStatus='not_set';
     return {
       name:(byId('profileName')&&byId('profileName').value||'').trim(),
@@ -97,10 +100,12 @@
       phoneLocal:phoneLocal,
       phoneNumber:phoneNumber||combinedPhone(phoneCode,phoneLocal),
       phoneVerified:!!stored.phoneVerified,
+      whatsappCountryCode:whatsappCode,
+      whatsappLocal:whatsappLocal,
+      whatsappNumber:whatsappNumber||combinedPhone(whatsappCode,whatsappLocal),
+      whatsappVerified:!!stored.whatsappVerified,
       zipCode:formValue('profileZipCode',stored.zipCode||''),
       birthDate:formValue('profileBirthDate',stored.birthDate||''),
-      stcwNumber:formValue('profileStcwNumber',stored.stcwNumber||''),
-      stcwVerified:!!stored.stcwVerified,
       availabilityStatus:availabilityStatus,
       availableFrom:availabilityStatus==='available_from'?availableFrom:null,
       workPreferences:workPreferences,
@@ -174,10 +179,12 @@
       phone_local:profile.phoneLocal||null,
       phone_number:profile.phoneNumber||null,
       phone_verified:!!profile.phoneVerified,
+      whatsapp_country_code:profile.whatsappCountryCode||null,
+      whatsapp_local:profile.whatsappLocal||null,
+      whatsapp_number:profile.whatsappNumber||null,
+      whatsapp_verified:!!profile.whatsappVerified,
       zip_code:profile.zipCode||null,
       birth_date:profile.birthDate||null,
-      stcw_number:profile.stcwNumber||null,
-      stcw_verified:!!profile.stcwVerified,
       last_active_at:new Date().toISOString(),updated_at:new Date().toISOString()
     },{onConflict:'user_id'});
     if(result.error){console.warn('ATSRS talent profile sync failed',result.error);return false}
@@ -234,8 +241,8 @@
         name:profile.name||'',surname:profile.surname||'',position:profile.position||'',
         country:profile.country||'',company:profile.company||'',email:'',
         phone:profile.phone_number||'',phoneVerified:!!profile.phone_verified,
-        zipCode:profile.zip_code||'',birthDate:profile.birth_date||'',
-        stcwNumber:profile.stcw_number||'',stcwVerified:!!profile.stcw_verified
+        whatsapp:profile.whatsapp_number||'',whatsappVerified:!!profile.whatsapp_verified,
+        zipCode:profile.zip_code||'',birthDate:profile.birth_date||''
       };
       if(index>=0)personnel[index]=Object.assign({},personnel[index],publicRecord);
       else personnel.push(publicRecord);
@@ -588,7 +595,7 @@
     if(mode()!=='company')return;
     var grid=byId('talentDirectoryGrid'),status=byId('talentDirectoryStatus'),c=client();if(!grid||!c)return;
     loading=true;if(status){status.textContent='Loading professional profiles...';status.classList.remove('hidden')}
-    var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,zip_code,birth_date,stcw_number,stcw_verified,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
+    var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
     loading=false;
     if(result.error){if(status){status.textContent='Professional profiles could not be loaded. Please refresh and try again.';status.classList.remove('hidden')}console.warn('ATSRS talent directory load failed',result.error);return}
     profiles=(Array.isArray(result.data)?result.data:[]).filter(function(profile){return profileReadiness(profile)>=90});

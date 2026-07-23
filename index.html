@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=301">
-<link rel="stylesheet" href="css/login.css?v=301">
-<link rel="stylesheet" href="css/dashboard.css?v=301">
-<link rel="stylesheet" href="css/documents.css?v=301">
-<link rel="stylesheet" href="css/references.css?v=301">
-<link rel="stylesheet" href="css/account.css?v=301">
-<link rel="stylesheet" href="css/product-experience.css?v=301">
-<link rel="stylesheet" href="css/date-picker.css?v=301">
-<link rel="stylesheet" href="css/share-profile.css?v=301">
-<link rel="stylesheet" href="css/calm-actions.css?v=301">
-<link rel="stylesheet" href="css/account-security-live.css?v=301">
-<link rel="stylesheet" href="css/talent-directory.css?v=301">
-<link rel="stylesheet" href="css/maintenance.css?v=301">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=301">
-<script defer src="js/maintenance-guard.js?v=301"></script>
+<link rel="stylesheet" href="css/base.css?v=302">
+<link rel="stylesheet" href="css/login.css?v=302">
+<link rel="stylesheet" href="css/dashboard.css?v=302">
+<link rel="stylesheet" href="css/documents.css?v=302">
+<link rel="stylesheet" href="css/references.css?v=302">
+<link rel="stylesheet" href="css/account.css?v=302">
+<link rel="stylesheet" href="css/product-experience.css?v=302">
+<link rel="stylesheet" href="css/date-picker.css?v=302">
+<link rel="stylesheet" href="css/share-profile.css?v=302">
+<link rel="stylesheet" href="css/calm-actions.css?v=302">
+<link rel="stylesheet" href="css/account-security-live.css?v=302">
+<link rel="stylesheet" href="css/talent-directory.css?v=302">
+<link rel="stylesheet" href="css/maintenance.css?v=302">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=302">
+<script defer src="js/maintenance-guard.js?v=302"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V301</div>
+<div>ATSRS V302</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -676,38 +676,119 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div class="profile-grid">
 <input id="profileName"><input id="profileSurname">
-<div class="phone-field" aria-label="Phone number">
+<div class="phone-field" aria-label="Mobile phone number">
   <select id="profilePhoneCountryCode" title="Country calling code">
     <option value="+994" data-country="Azerbaijan">🇦🇿 +994</option>
+    <option value="+1" data-country="United States / Canada">🇺🇸 +1</option>
     <option value="+44" data-country="United Kingdom">🇬🇧 +44</option>
     <option value="+971" data-country="United Arab Emirates">🇦🇪 +971</option>
-    <option value="+47" data-country="Norway">🇳🇴 +47</option>
+    <option value="+966" data-country="Saudi Arabia">🇸🇦 +966</option>
+    <option value="+974" data-country="Qatar">🇶🇦 +974</option>
+    <option value="+965" data-country="Kuwait">🇰🇼 +965</option>
+    <option value="+973" data-country="Bahrain">🇧🇭 +973</option>
+    <option value="+968" data-country="Oman">🇴🇲 +968</option>
     <option value="+90" data-country="Turkey">🇹🇷 +90</option>
-    <option value="+359" data-country="Bulgaria">🇧🇬 +359</option>
-    <option value="+240" data-country="Equatorial Guinea">🇬🇶 +240</option>
     <option value="+995" data-country="Georgia">🇬🇪 +995</option>
+    <option value="+7" data-country="Kazakhstan / Russia">🇰🇿 +7</option>
+    <option value="+47" data-country="Norway">🇳🇴 +47</option>
+    <option value="+31" data-country="Netherlands">🇳🇱 +31</option>
+    <option value="+49" data-country="Germany">🇩🇪 +49</option>
+    <option value="+33" data-country="France">🇫🇷 +33</option>
+    <option value="+34" data-country="Spain">🇪🇸 +34</option>
+    <option value="+39" data-country="Italy">🇮🇹 +39</option>
+    <option value="+30" data-country="Greece">🇬🇷 +30</option>
     <option value="+40" data-country="Romania">🇷🇴 +40</option>
+    <option value="+359" data-country="Bulgaria">🇧🇬 +359</option>
     <option value="+380" data-country="Ukraine">🇺🇦 +380</option>
-    <option value="+63" data-country="Philippines">🇵🇭 +63</option>
     <option value="+91" data-country="India">🇮🇳 +91</option>
+    <option value="+92" data-country="Pakistan">🇵🇰 +92</option>
+    <option value="+880" data-country="Bangladesh">🇧🇩 +880</option>
+    <option value="+94" data-country="Sri Lanka">🇱🇰 +94</option>
+    <option value="+977" data-country="Nepal">🇳🇵 +977</option>
+    <option value="+63" data-country="Philippines">🇵🇭 +63</option>
     <option value="+62" data-country="Indonesia">🇮🇩 +62</option>
     <option value="+60" data-country="Malaysia">🇲🇾 +60</option>
     <option value="+65" data-country="Singapore">🇸🇬 +65</option>
+    <option value="+66" data-country="Thailand">🇹🇭 +66</option>
+    <option value="+84" data-country="Vietnam">🇻🇳 +84</option>
+    <option value="+86" data-country="China">🇨🇳 +86</option>
+    <option value="+81" data-country="Japan">🇯🇵 +81</option>
+    <option value="+82" data-country="South Korea">🇰🇷 +82</option>
+    <option value="+61" data-country="Australia">🇦🇺 +61</option>
+    <option value="+64" data-country="New Zealand">🇳🇿 +64</option>
+    <option value="+27" data-country="South Africa">🇿🇦 +27</option>
+    <option value="+20" data-country="Egypt">🇪🇬 +20</option>
+    <option value="+234" data-country="Nigeria">🇳🇬 +234</option>
+    <option value="+233" data-country="Ghana">🇬🇭 +233</option>
+    <option value="+254" data-country="Kenya">🇰🇪 +254</option>
+    <option value="+55" data-country="Brazil">🇧🇷 +55</option>
+    <option value="+54" data-country="Argentina">🇦🇷 +54</option>
+    <option value="+52" data-country="Mexico">🇲🇽 +52</option>
+    <option value="+240" data-country="Equatorial Guinea">🇬🇶 +240</option>
+  </select>
+  <input id="profilePhoneLocal" inputmode="tel" autocomplete="tel-national" placeholder="Mobile number">
+  <input id="profilePhone" type="hidden">
+</div>
+<div class="phone-field" aria-label="WhatsApp number">
+  <select id="profileWhatsappCountryCode" title="WhatsApp country calling code">
+    <option value="+994" data-country="Azerbaijan">🇦🇿 +994</option>
+    <option value="+1" data-country="United States / Canada">🇺🇸 +1</option>
+    <option value="+44" data-country="United Kingdom">🇬🇧 +44</option>
+    <option value="+971" data-country="United Arab Emirates">🇦🇪 +971</option>
+    <option value="+966" data-country="Saudi Arabia">🇸🇦 +966</option>
+    <option value="+974" data-country="Qatar">🇶🇦 +974</option>
+    <option value="+965" data-country="Kuwait">🇰🇼 +965</option>
+    <option value="+973" data-country="Bahrain">🇧🇭 +973</option>
+    <option value="+968" data-country="Oman">🇴🇲 +968</option>
+    <option value="+90" data-country="Turkey">🇹🇷 +90</option>
+    <option value="+995" data-country="Georgia">🇬🇪 +995</option>
+    <option value="+7" data-country="Kazakhstan / Russia">🇰🇿 +7</option>
+    <option value="+47" data-country="Norway">🇳🇴 +47</option>
     <option value="+31" data-country="Netherlands">🇳🇱 +31</option>
     <option value="+49" data-country="Germany">🇩🇪 +49</option>
-    <option value="+1" data-country="United States">🇺🇸 +1</option>
+    <option value="+33" data-country="France">🇫🇷 +33</option>
+    <option value="+34" data-country="Spain">🇪🇸 +34</option>
+    <option value="+39" data-country="Italy">🇮🇹 +39</option>
+    <option value="+30" data-country="Greece">🇬🇷 +30</option>
+    <option value="+40" data-country="Romania">🇷🇴 +40</option>
+    <option value="+359" data-country="Bulgaria">🇧🇬 +359</option>
+    <option value="+380" data-country="Ukraine">🇺🇦 +380</option>
+    <option value="+91" data-country="India">🇮🇳 +91</option>
+    <option value="+92" data-country="Pakistan">🇵🇰 +92</option>
+    <option value="+880" data-country="Bangladesh">🇧🇩 +880</option>
+    <option value="+94" data-country="Sri Lanka">🇱🇰 +94</option>
+    <option value="+977" data-country="Nepal">🇳🇵 +977</option>
+    <option value="+63" data-country="Philippines">🇵🇭 +63</option>
+    <option value="+62" data-country="Indonesia">🇮🇩 +62</option>
+    <option value="+60" data-country="Malaysia">🇲🇾 +60</option>
+    <option value="+65" data-country="Singapore">🇸🇬 +65</option>
+    <option value="+66" data-country="Thailand">🇹🇭 +66</option>
+    <option value="+84" data-country="Vietnam">🇻🇳 +84</option>
+    <option value="+86" data-country="China">🇨🇳 +86</option>
+    <option value="+81" data-country="Japan">🇯🇵 +81</option>
+    <option value="+82" data-country="South Korea">🇰🇷 +82</option>
+    <option value="+61" data-country="Australia">🇦🇺 +61</option>
+    <option value="+64" data-country="New Zealand">🇳🇿 +64</option>
+    <option value="+27" data-country="South Africa">🇿🇦 +27</option>
+    <option value="+20" data-country="Egypt">🇪🇬 +20</option>
+    <option value="+234" data-country="Nigeria">🇳🇬 +234</option>
+    <option value="+233" data-country="Ghana">🇬🇭 +233</option>
+    <option value="+254" data-country="Kenya">🇰🇪 +254</option>
+    <option value="+55" data-country="Brazil">🇧🇷 +55</option>
+    <option value="+54" data-country="Argentina">🇦🇷 +54</option>
+    <option value="+52" data-country="Mexico">🇲🇽 +52</option>
+    <option value="+240" data-country="Equatorial Guinea">🇬🇶 +240</option>
   </select>
-  <input id="profilePhoneLocal" inputmode="tel" autocomplete="tel-national" placeholder="Phone number">
-  <input id="profilePhone" type="hidden">
+  <input id="profileWhatsappLocal" inputmode="tel" autocomplete="tel" placeholder="WhatsApp number">
+  <input id="profileWhatsapp" type="hidden">
 </div>
 <select id="profileCountry"></select>
 <input id="profileCompany"><input id="profilePosition">
 <input id="profileZipCode" autocomplete="postal-code" placeholder="ZIP / postal code">
 <input id="profileBirthDate" type="date" title="Date of birth">
-<input id="profileStcwNumber" placeholder="STCW / seafarer ID">
 <div class="profile-verification-note">
-  <span>Phone verification: <b id="profilePhoneVerifiedText">Not verified</b></span>
-  <span>STCW verification: <b id="profileStcwVerifiedText">Not verified</b></span>
+  <span>Mobile verification: <b id="profilePhoneVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="mobile">Verify</button></span>
+  <span>WhatsApp verification: <b id="profileWhatsappVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="whatsapp">Verify</button></span>
 </div>
 </div>
 <div class="work-availability-card personal-only">
@@ -743,12 +824,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <label><input type="checkbox" value="permanent"><span>Permanent</span></label>
       </div>
     </div>
-    <div class="work-availability-save">
-      <span>Save changes</span>
-      <button id="saveProfileBtn" type="button" onclick="saveProfile()">Save</button>
-    </div>
   </div>
   <div id="workAvailabilityStatus" class="work-availability-status" role="status"></div>
+</div>
+<div class="profile-save-row">
+  <button id="saveProfileBtn" type="button" onclick="saveProfile()">Save profile</button>
+  <span id="profileSaveStatus" role="status"></span>
 </div>
 </div>
 <div id="accountSecurityTab" class="account-tab">
@@ -920,25 +1001,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=301"></script>
-<script src="js/server-data.js?v=301"></script>
-<script src="js/storage.js?v=301"></script>
-<script src="js/ui.js?v=301"></script>
-<script src="js/auth.js?v=301"></script>
-<script src="js/login.js?v=301"></script>
-<script src="js/dashboard.js?v=301"></script>
-<script src="js/avatar.js?v=301"></script>
-<script src="js/documents.js?v=301"></script>
-<script src="js/references.js?v=301"></script>
-<script src="js/account.js?v=301"></script>
-<script src="js/app.js?v=301"></script>
-<script src="js/product-experience.js?v=301"></script>
-<script src="js/date-picker.js?v=301"></script>
-<script src="js/share-profile.js?v=301"></script>
-<script src="js/boot-refresh.js?v=301"></script>
-<script src="js/account-security-live.js?v=301"></script>
-<script src="js/talent-directory.js?v=301"></script>
-<script src="js/workspace-switcher.js?v=301"></script>
+<script src="js/stability-runtime.js?v=302"></script>
+<script src="js/server-data.js?v=302"></script>
+<script src="js/storage.js?v=302"></script>
+<script src="js/ui.js?v=302"></script>
+<script src="js/auth.js?v=302"></script>
+<script src="js/login.js?v=302"></script>
+<script src="js/dashboard.js?v=302"></script>
+<script src="js/avatar.js?v=302"></script>
+<script src="js/documents.js?v=302"></script>
+<script src="js/references.js?v=302"></script>
+<script src="js/account.js?v=302"></script>
+<script src="js/app.js?v=302"></script>
+<script src="js/product-experience.js?v=302"></script>
+<script src="js/date-picker.js?v=302"></script>
+<script src="js/share-profile.js?v=302"></script>
+<script src="js/boot-refresh.js?v=302"></script>
+<script src="js/account-security-live.js?v=302"></script>
+<script src="js/talent-directory.js?v=302"></script>
+<script src="js/workspace-switcher.js?v=302"></script>
 
 
 
