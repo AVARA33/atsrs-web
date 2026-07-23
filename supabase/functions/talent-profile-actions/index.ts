@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
     if (!professionalIds.length) return json(200, { personnel: [] });
     const { data: linkedProfiles, error: profilesError } = await admin
       .from("atsrs_talent_profiles")
-      .select("user_id,name,surname,position,country,company,availability_status,available_from,work_preference,work_preferences,last_active_at")
+      .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at")
       .in("user_id", professionalIds);
     if (profilesError) return json(500, { error: "Linked professional profiles could not be loaded." });
     const profileMap = new Map((linkedProfiles || []).map((item) => [item.user_id, item]));
@@ -135,7 +135,7 @@ Deno.serve(async (req) => {
 
   const { data: profile } = await admin
     .from("atsrs_talent_profiles")
-    .select("user_id,name,surname,position,country,company,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable")
+    .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable")
     .eq("user_id", targetUserId)
     .eq("discoverable", true)
     .maybeSingle();

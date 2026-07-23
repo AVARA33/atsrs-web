@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V279';
+  var BUILD='ATSRS V280';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -200,9 +200,13 @@
     }
     if(availabilityMessage)availabilityMessage.textContent='';
     var confirmedAt=new Date().toISOString();
+    var existing=readJson(PROFILE_KEY,{});
     var data={
       name:val('profileName'),surname:val('profileSurname'),phone:val('profilePhone'),country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
+      avatarUrl:existing.avatarUrl||'',
+      avatarPath:existing.avatarPath||'',
+      avatarSource:existing.avatarSource||'',
       timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',
       availabilityStatus:availabilityStatus,
       availableFrom:availabilityStatus==='available_from'?availableFrom:'',
@@ -300,7 +304,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V279';
+  var BUILD='ATSRS V280';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){

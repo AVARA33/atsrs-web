@@ -263,7 +263,11 @@
   function renderPublicProfile(data){
     lastPublicProfileData=data;
     var profile=data.profile||{},fullName=((profile.name||'')+' '+(profile.surname||'')).trim()||'ATSRS Professional';document.title=fullName+' · ATSRS Shared Profile';
-    byId('sharedProfileName').textContent=fullName;byId('sharedProfileRole').textContent=profile.position||'Professional Document Holder';var meta=byId('sharedProfileMeta');meta.innerHTML='';[profile.company,profile.country].filter(Boolean).forEach(function(value){var tag=document.createElement('span');tag.textContent=value;meta.appendChild(tag);});
+    byId('sharedProfileName').textContent=fullName;byId('sharedProfileRole').textContent=profile.position||'Professional Document Holder';
+    var avatar=byId('sharedProfileAvatar'),avatarUrl='';
+    try{var parsedAvatar=new URL(String(profile.avatar_url||''),location.origin);if(parsedAvatar.protocol==='https:')avatarUrl=parsedAvatar.href}catch(ignore){}
+    if(avatar)avatar.innerHTML=avatarUrl?'<img src="'+avatarUrl.replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})+'" alt="" referrerpolicy="no-referrer">':'<span>'+((profile.name||'A').charAt(0)+(profile.surname||'').charAt(0)).toUpperCase()+'</span>';
+    var meta=byId('sharedProfileMeta');meta.innerHTML='';[profile.company,profile.country].filter(Boolean).forEach(function(value){var tag=document.createElement('span');tag.textContent=value;meta.appendChild(tag);});
     publicDocuments=Array.isArray(data.documents)?data.documents:[];byId('sharedProfileDocumentCount').textContent=publicDocuments.length+' shared file'+(publicDocuments.length===1?'':'s');
     var expiry=byId('sharedProfileExpiry');if(expiry)expiry.textContent='Link expires '+formatDateTime(data.access&&data.access.share_expires_at);
     renderPublicSummary();var grid=byId('sharedProfileDocuments');grid.innerHTML='';if(!publicDocuments.length){var empty=document.createElement('div');empty.className='shared-profile-empty';empty.textContent='No documents are currently shared through this link.';grid.appendChild(empty);}else publicDocuments.forEach(function(item){grid.appendChild(renderPublicDocument(item));});

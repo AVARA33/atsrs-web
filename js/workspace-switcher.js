@@ -44,7 +44,10 @@
     var name=userName(user);
     var nameEl=byId('workspaceSwitcherName'), avatar=byId('workspaceSwitcherAvatar'), label=byId('workspaceSwitcherLabel');
     if(nameEl)nameEl.textContent=name;
-    if(avatar)avatar.textContent=initials(name);
+    if(avatar){
+      var photo=mode==='personal'&&window.atsrsProfilePhoto&&window.atsrsProfilePhoto.currentUrl?window.atsrsProfilePhoto.currentUrl():'';
+      avatar.innerHTML=photo?'<img src="'+String(photo).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})+'" alt="" referrerpolicy="no-referrer">':initials(name);
+    }
     if(label)label.textContent=mode==='company'?'Corporate Account':'Personal Account';
     ['personal','company'].forEach(function(workspace){
       var option=byId(workspace==='personal'?'workspacePersonalOption':'workspaceCompanyOption');

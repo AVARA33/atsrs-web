@@ -769,6 +769,14 @@ async function publicRequest(req: Request, admin: AdminClient) {
   if (workspace.error) throw workspace.error;
   const profileRow = (workspace.data ?? []).find((row) => String(row.data_key ?? "").endsWith(`_${share.account_type}_profile`));
   const profileValue = parseWorkspaceValue(profileRow?.payload) as JsonObject;
+  let avatarUrl = safeText(profileValue.avatarUrl ?? profileValue.avatar_url, 500);
+  if (!avatarUrl) {
+    const ownerResult = await admin.auth.admin.getUserById(share.user_id);
+    if (!ownerResult.error) {
+      const metadata = ownerResult.data.user?.user_metadata ?? {};
+      avatarUrl = safeText(metadata.avatar_url ?? metadata.picture, 500);
+    }
+  }
   const selectedFileIds = uniqueFileIds(share.selected_file_ids);
   let files: JsonObject[] = [];
   if (selectedFileIds.length) {
@@ -838,6 +846,7 @@ async function publicRequest(req: Request, admin: AdminClient) {
       name: safeText(profileValue.name, 100), surname: safeText(profileValue.surname, 100),
       position: safeText(profileValue.position, 140), company: safeText(profileValue.company, 140),
       country: safeText(profileValue.country, 100),
+      avatar_url: avatarUrl,
     },
     documents,
     requests: viewerRequests.map((row) => ({

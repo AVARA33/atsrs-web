@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=279">
-<link rel="stylesheet" href="css/login.css?v=279">
-<link rel="stylesheet" href="css/dashboard.css?v=279">
-<link rel="stylesheet" href="css/documents.css?v=279">
-<link rel="stylesheet" href="css/references.css?v=279">
-<link rel="stylesheet" href="css/account.css?v=279">
-<link rel="stylesheet" href="css/product-experience.css?v=279">
-<link rel="stylesheet" href="css/date-picker.css?v=279">
-<link rel="stylesheet" href="css/share-profile.css?v=279">
-<link rel="stylesheet" href="css/calm-actions.css?v=279">
-<link rel="stylesheet" href="css/account-security-live.css?v=279">
-<link rel="stylesheet" href="css/talent-directory.css?v=279">
-<link rel="stylesheet" href="css/maintenance.css?v=279">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=279">
-<script defer src="js/maintenance-guard.js?v=279"></script>
+<link rel="stylesheet" href="css/base.css?v=280">
+<link rel="stylesheet" href="css/login.css?v=280">
+<link rel="stylesheet" href="css/dashboard.css?v=280">
+<link rel="stylesheet" href="css/documents.css?v=280">
+<link rel="stylesheet" href="css/references.css?v=280">
+<link rel="stylesheet" href="css/account.css?v=280">
+<link rel="stylesheet" href="css/product-experience.css?v=280">
+<link rel="stylesheet" href="css/date-picker.css?v=280">
+<link rel="stylesheet" href="css/share-profile.css?v=280">
+<link rel="stylesheet" href="css/calm-actions.css?v=280">
+<link rel="stylesheet" href="css/account-security-live.css?v=280">
+<link rel="stylesheet" href="css/talent-directory.css?v=280">
+<link rel="stylesheet" href="css/maintenance.css?v=280">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=280">
+<script defer src="js/maintenance-guard.js?v=280"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V279</div>
+<div>ATSRS V280</div>
 <div>Last Update: 23 Jul 2026</div>
 </div>
 </div>
@@ -607,6 +607,22 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="accountTabSharingBtn" onclick="showAccountTab('sharing')">Privacy &amp; Sharing</button>
 </div>
 <div id="accountGeneralTab" class="account-tab active">
+<section id="profilePhotoCard" class="profile-photo-card personal-only" aria-labelledby="profilePhotoTitle">
+  <div id="profilePhotoPreview" class="profile-photo-preview" aria-hidden="true">
+    <img id="profilePhotoImage" class="hidden" alt="">
+    <span id="profilePhotoInitials">A</span>
+  </div>
+  <div class="profile-photo-copy">
+    <h4 id="profilePhotoTitle">Profile photo</h4>
+    <p>Use a clear portrait. It appears on your professional profile when the profile is visible.</p>
+    <div class="profile-photo-actions">
+      <input id="profilePhotoInput" class="hidden" type="file" accept="image/jpeg,image/png,image/webp">
+      <button id="profilePhotoUploadBtn" type="button" class="secondary">Upload photo</button>
+      <button id="profilePhotoRemoveBtn" type="button" class="secondary hidden">Remove</button>
+    </div>
+    <div id="profilePhotoStatus" class="profile-photo-status" role="status"></div>
+  </div>
+</section>
 <div class="profile-grid">
 <input id="profileName"><input id="profileSurname"><input id="profilePhone">
 <select id="profileCountry"></select>
@@ -733,10 +749,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </section>
     <section id="sharedProfileContent" class="hidden">
       <div class="shared-profile-hero">
-        <div>
+        <div class="shared-profile-identity">
+          <div id="sharedProfileAvatar" class="shared-profile-avatar" aria-hidden="true"><span>AP</span></div>
+          <div>
           <span class="shared-profile-kicker">ATSRS SHARED PROFILE</span>
           <h1 id="sharedProfileName">ATSRS Professional</h1>
           <p id="sharedProfileRole" class="shared-profile-role">Professional Document Holder</p>
+          </div>
         </div>
         <div id="sharedProfileMeta" class="shared-profile-meta"></div>
       </div>
@@ -816,24 +835,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=279"></script>
-<script src="js/server-data.js?v=279"></script>
-<script src="js/storage.js?v=279"></script>
-<script src="js/ui.js?v=279"></script>
-<script src="js/auth.js?v=279"></script>
-<script src="js/login.js?v=279"></script>
-<script src="js/dashboard.js?v=279"></script>
-<script src="js/documents.js?v=279"></script>
-<script src="js/references.js?v=279"></script>
-<script src="js/account.js?v=279"></script>
-<script src="js/app.js?v=279"></script>
-<script src="js/product-experience.js?v=279"></script>
-<script src="js/date-picker.js?v=279"></script>
-<script src="js/share-profile.js?v=279"></script>
-<script src="js/boot-refresh.js?v=279"></script>
-<script src="js/account-security-live.js?v=279"></script>
-<script src="js/talent-directory.js?v=279"></script>
-<script src="js/workspace-switcher.js?v=279"></script>
+<script src="js/stability-runtime.js?v=280"></script>
+<script src="js/server-data.js?v=280"></script>
+<script src="js/storage.js?v=280"></script>
+<script src="js/ui.js?v=280"></script>
+<script src="js/auth.js?v=280"></script>
+<script src="js/login.js?v=280"></script>
+<script src="js/dashboard.js?v=280"></script>
+<script src="js/avatar.js?v=280"></script>
+<script src="js/documents.js?v=280"></script>
+<script src="js/references.js?v=280"></script>
+<script src="js/account.js?v=280"></script>
+<script src="js/app.js?v=280"></script>
+<script src="js/product-experience.js?v=280"></script>
+<script src="js/date-picker.js?v=280"></script>
+<script src="js/share-profile.js?v=280"></script>
+<script src="js/boot-refresh.js?v=280"></script>
+<script src="js/account-security-live.js?v=280"></script>
+<script src="js/talent-directory.js?v=280"></script>
+<script src="js/workspace-switcher.js?v=280"></script>
 
 
 

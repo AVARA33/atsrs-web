@@ -1,0 +1,167 @@
+/* ATSRS V280 - owner-controlled profile photos with Google and initials fallback. */
+(function(){
+  'use strict';
+  var BUCKET='atsrs-profile-photos';
+  var MAX_BYTES=5*1024*1024;
+  var cropState=null;
+
+  function byId(id){return document.getElementById(id)}
+  function client(){return window.supabaseClient||null}
+  function profileKey(){
+    try{return typeof window.localKey==='function'?window.localKey('profile'):'atsrs_'+((window.currentUser&&window.currentUser.id)||'local_test_user')+'_profile'}
+    catch(error){return 'atsrs_local_test_user_profile'}
+  }
+  function readProfile(){
+    try{
+      var key=profileKey(),raw=window.atsrsCloudData&&window.atsrsCloudData.isManagedKey(key)?window.atsrsCloudData.read(key):localStorage.getItem(key);
+      return raw?JSON.parse(raw):{};
+    }catch(error){return {}}
+  }
+  function writeProfile(profile){
+    try{
+      var key=profileKey(),value=JSON.stringify(profile);
+      if(window.atsrsCloudData&&window.atsrsCloudData.isManagedKey(key))return window.atsrsCloudData.write(key,value);
+      localStorage.setItem(key,value);return true;
+    }catch(error){return false}
+  }
+  function initials(profile){
+    var values=[profile&&profile.name,profile&&profile.surname].filter(Boolean);
+    if(!values.length){
+      var meta=window.currentUser&&window.currentUser.user_metadata||{};
+      values=String(meta.full_name||meta.name||'A').split(/\s+/).filter(Boolean);
+    }
+    return values.slice(0,2).map(function(value){return String(value).charAt(0).toUpperCase()}).join('')||'A';
+  }
+  function allowedUrl(value){
+    try{var url=new URL(String(value||''),location.origin);return url.protocol==='https:'?url.href:''}catch(error){return ''}
+  }
+  function googleAvatar(){
+    var meta=window.currentUser&&window.currentUser.user_metadata||{};
+    return allowedUrl(meta.avatar_url||meta.picture||'');
+  }
+  function resolvedUrl(profile){return allowedUrl(profile&&profile.avatarUrl)||googleAvatar()}
+  function status(message,error){
+    var el=byId('profilePhotoStatus');if(!el)return;
+    el.textContent=message||'';el.classList.toggle('error',!!error);
+  }
+  function render(profile){
+    profile=profile||readProfile();
+    var image=byId('profilePhotoImage'),letters=byId('profilePhotoInitials'),remove=byId('profilePhotoRemoveBtn'),url=resolvedUrl(profile);
+    if(letters)letters.textContent=initials(profile);
+    if(image){
+      image.onload=function(){image.classList.remove('hidden');if(letters)letters.classList.add('hidden')};
+      image.onerror=function(){image.classList.add('hidden');if(letters)letters.classList.remove('hidden')};
+      if(url)image.src=url;else{image.removeAttribute('src');image.classList.add('hidden');if(letters)letters.classList.remove('hidden')}
+    }
+    if(remove)remove.classList.toggle('hidden',!profile.avatarPath);
+    if(typeof window.atsrsWorkspaceSwitcherUpdate==='function')window.atsrsWorkspaceSwitcherUpdate();
+  }
+  function ensureCropModal(){
+    var modal=byId('profilePhotoCropModal');if(modal)return modal;
+    modal=document.createElement('div');modal.id='profilePhotoCropModal';modal.className='profile-photo-crop-modal hidden';
+    modal.innerHTML='<button type="button" class="profile-photo-crop-backdrop" aria-label="Cancel"></button>'+
+      '<section class="profile-photo-crop-dialog" role="dialog" aria-modal="true" aria-labelledby="profilePhotoCropTitle">'+
+      '<div class="profile-photo-crop-head"><div><span>PROFILE PHOTO</span><h3 id="profilePhotoCropTitle">Position and crop</h3></div><button type="button" class="secondary" data-crop-cancel aria-label="Close">&times;</button></div>'+
+      '<p>Drag the photo to position your face. Use the slider to zoom.</p>'+
+      '<div class="profile-photo-crop-stage"><canvas id="profilePhotoCropCanvas" width="512" height="512"></canvas></div>'+
+      '<label class="profile-photo-zoom"><span>Zoom</span><input id="profilePhotoZoom" type="range" min="1" max="3" step=".01" value="1"></label>'+
+      '<div class="profile-photo-crop-actions"><button type="button" class="secondary" data-crop-cancel>Cancel</button><button type="button" class="secondary" id="profilePhotoUseBtn">Use photo</button></div></section>';
+    document.body.appendChild(modal);
+    modal.querySelectorAll('[data-crop-cancel],.profile-photo-crop-backdrop').forEach(function(button){button.onclick=closeCrop});
+    byId('profilePhotoZoom').addEventListener('input',function(){if(cropState){cropState.zoom=Number(this.value)||1;drawCrop()}});
+    byId('profilePhotoUseBtn').onclick=uploadCropped;
+    var canvas=byId('profilePhotoCropCanvas'),dragging=false,lastX=0,lastY=0;
+    canvas.addEventListener('pointerdown',function(event){dragging=true;lastX=event.clientX;lastY=event.clientY;canvas.setPointerCapture(event.pointerId)});
+    canvas.addEventListener('pointermove',function(event){
+      if(!dragging||!cropState)return;
+      var rect=canvas.getBoundingClientRect(),ratioX=canvas.width/Math.max(rect.width,1),ratioY=canvas.height/Math.max(rect.height,1);
+      cropState.x+=(event.clientX-lastX)*ratioX;cropState.y+=(event.clientY-lastY)*ratioY;
+      lastX=event.clientX;lastY=event.clientY;drawCrop();
+    });
+    canvas.addEventListener('pointerup',function(){dragging=false});
+    return modal;
+  }
+  function drawCrop(){
+    var canvas=byId('profilePhotoCropCanvas');if(!canvas||!cropState)return;
+    var ctx=canvas.getContext('2d'),image=cropState.image,base=Math.max(512/image.width,512/image.height),scale=base*cropState.zoom;
+    var width=image.width*scale,height=image.height*scale,maxX=Math.max(0,(width-512)/2),maxY=Math.max(0,(height-512)/2);
+    cropState.x=Math.max(-maxX,Math.min(maxX,cropState.x));
+    cropState.y=Math.max(-maxY,Math.min(maxY,cropState.y));
+    var x=(512-width)/2+cropState.x,y=(512-height)/2+cropState.y;
+    ctx.clearRect(0,0,512,512);ctx.fillStyle='#07131f';ctx.fillRect(0,0,512,512);ctx.drawImage(image,x,y,width,height);
+  }
+  function openCrop(file){
+    if(!file)return;
+    if(!/^image\/(jpeg|png|webp)$/i.test(file.type)){status('Choose a JPG, PNG or WebP image.',true);return}
+    if(file.size>MAX_BYTES){status('The image must be smaller than 5 MB.',true);return}
+    var image=new Image(),url=URL.createObjectURL(file);
+    image.onload=function(){
+      cropState={image:image,sourceUrl:url,x:0,y:0,zoom:1};
+      ensureCropModal().classList.remove('hidden');document.body.classList.add('profile-photo-cropping');
+      byId('profilePhotoZoom').value='1';drawCrop();
+    };
+    image.onerror=function(){URL.revokeObjectURL(url);status('This image could not be opened.',true)};
+    image.src=url;
+  }
+  function closeCrop(){
+    var modal=byId('profilePhotoCropModal');if(modal)modal.classList.add('hidden');
+    document.body.classList.remove('profile-photo-cropping');
+    if(cropState&&cropState.sourceUrl)URL.revokeObjectURL(cropState.sourceUrl);
+    cropState=null;
+    var input=byId('profilePhotoInput');if(input)input.value='';
+  }
+  function canvasBlob(){
+    return new Promise(function(resolve){byId('profilePhotoCropCanvas').toBlob(resolve,'image/webp',.88)});
+  }
+  async function currentUser(){
+    var c=client();if(!c)return null;
+    var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
+  }
+  async function uploadCropped(){
+    var button=byId('profilePhotoUseBtn');if(!cropState||!button)return;
+    button.disabled=true;button.textContent='Saving...';status('');
+    try{
+      var c=client(),user=await currentUser(),blob=await canvasBlob();
+      if(!c||!user||!blob)throw new Error('Your session is unavailable. Sign in again.');
+      var path=user.id+'/avatar-'+Date.now()+'.webp';
+      var uploaded=await c.storage.from(BUCKET).upload(path,blob,{contentType:'image/webp',cacheControl:'3600',upsert:false});
+      if(uploaded.error)throw uploaded.error;
+      var publicData=c.storage.from(BUCKET).getPublicUrl(path),url=publicData&&publicData.data&&publicData.data.publicUrl;
+      if(!url)throw new Error('The profile photo URL could not be created.');
+      var profile=readProfile(),oldPath=profile.avatarPath||'';
+      profile.avatarUrl=url;profile.avatarPath=path;profile.avatarSource='upload';profile.updatedAt=new Date().toISOString();
+      if(!writeProfile(profile))throw new Error('The profile photo could not be saved.');
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
+        var saved=await window.atsrsCloudData.flush();if(saved===false)throw new Error('The profile photo could not be saved to ATSRS.');
+      }
+      if(oldPath&&oldPath!==path)await c.storage.from(BUCKET).remove([oldPath]);
+      render(profile);closeCrop();status('Profile photo saved.');
+      window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
+    }catch(error){status((error&&error.message)||'The profile photo could not be saved.',true)}
+    finally{button.disabled=false;button.textContent='Use photo'}
+  }
+  async function removePhoto(){
+    var button=byId('profilePhotoRemoveBtn'),profile=readProfile(),path=profile.avatarPath||'';
+    if(!path)return;
+    button.disabled=true;status('Removing...');
+    try{
+      var c=client();if(c){var result=await c.storage.from(BUCKET).remove([path]);if(result.error)throw result.error}
+      profile.avatarUrl='';profile.avatarPath='';profile.avatarSource='';profile.updatedAt=new Date().toISOString();
+      if(!writeProfile(profile))throw new Error('The profile photo could not be removed.');
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
+      render(profile);status(googleAvatar()?'Uploaded photo removed. Your Google photo is now used.':'Profile photo removed.');
+      window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:googleAvatar(),path:''}}));
+    }catch(error){status((error&&error.message)||'The profile photo could not be removed.',true)}
+    finally{button.disabled=false}
+  }
+  function bind(){
+    var upload=byId('profilePhotoUploadBtn'),input=byId('profilePhotoInput'),remove=byId('profilePhotoRemoveBtn');
+    if(!upload||upload.dataset.bound==='1')return;
+    upload.dataset.bound='1';upload.onclick=function(){input.click()};input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
+    render();
+  }
+  window.atsrsProfilePhoto={render:render,currentUrl:function(){return resolvedUrl(readProfile())},initials:function(){return initials(readProfile())}};
+  window.addEventListener('atsrs:data-hydrated',function(){render()});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+  window.addEventListener('load',function(){bind();render()});
+})();

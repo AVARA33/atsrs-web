@@ -1075,6 +1075,52 @@ body #modeChoiceBox:not(.mode-error) button::before{
   100%{left:120%;opacity:0;}
 }
 /* V260: compact account controls and a single security settings list. */
+.profile-photo-card{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  max-width:720px;
+  margin:2px 0 18px;
+  padding:0 0 18px;
+  border-bottom:1px solid rgba(51,65,85,.72);
+}
+.profile-photo-preview{
+  display:grid;
+  flex:0 0 82px;
+  place-items:center;
+  width:82px;
+  height:82px;
+  overflow:hidden;
+  border:1px solid #345269;
+  border-radius:50%;
+  background:#0a1927;
+  color:#dcecf7;
+  font-size:22px;
+  font-weight:800;
+}
+.profile-photo-preview img{width:100%;height:100%;object-fit:cover}
+.profile-photo-copy h4{margin:0 0 4px;color:#edf4f8;font-size:15px}
+.profile-photo-copy p{max-width:520px;margin:0;color:#8499aa;font-size:11px;line-height:1.5}
+.profile-photo-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.profile-photo-actions button{width:auto!important;min-height:32px!important;margin:0!important;padding:6px 11px!important;background:transparent!important}
+.profile-photo-status{min-height:16px;margin-top:7px;color:#76cf99;font-size:10px}
+.profile-photo-status.error{color:#e7a1a1}
+.profile-photo-crop-modal{position:fixed;inset:0;z-index:15000;display:grid;place-items:center;padding:20px}
+.profile-photo-crop-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0!important;background:rgba(1,7,13,.84)!important;backdrop-filter:blur(8px)}
+.profile-photo-crop-dialog{position:relative;width:min(470px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:20px;border:1px solid #355166;border-radius:18px;background:#091522;box-shadow:0 24px 70px rgba(0,0,0,.42)}
+.profile-photo-crop-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.profile-photo-crop-head span{color:#64d18c;font-size:9px;font-weight:800;letter-spacing:.12em}
+.profile-photo-crop-head h3{margin:5px 0 0;color:#edf4f8;font-size:18px}
+.profile-photo-crop-head button{width:34px!important;height:34px!important;margin:0!important;padding:0!important;background:transparent!important}
+.profile-photo-crop-dialog>p{margin:9px 0 14px;color:#8ca0b1;font-size:11px}
+.profile-photo-crop-stage{width:min(360px,100%);margin:auto;overflow:hidden;border:1px solid #2e4659;border-radius:50%;background:#06111d;touch-action:none}
+.profile-photo-crop-stage canvas{display:block;width:100%;height:auto;cursor:grab;touch-action:none}
+.profile-photo-crop-stage canvas:active{cursor:grabbing}
+.profile-photo-zoom{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;margin:16px 0;color:#8ca0b1;font-size:11px}
+.profile-photo-zoom input{width:100%;margin:0}
+.profile-photo-crop-actions{display:flex;justify-content:flex-end;gap:8px}
+.profile-photo-crop-actions button{width:auto!important;min-height:34px!important;margin:0!important;padding:7px 12px!important;background:transparent!important}
+body.profile-photo-cropping{overflow:hidden}
 #profilePage #accountGeneralTab #saveProfileBtn{
   display:inline-flex!important;
   align-items:center!important;
@@ -1130,6 +1176,10 @@ body #modeChoiceBox:not(.mode-error) button::before{
   border:1px solid #2a4053;
   border-radius:10px;
   background:#0a1724;
+}
+@media(max-width:620px){
+  .profile-photo-card{align-items:flex-start}
+  .profile-photo-preview{flex-basis:66px;width:66px;height:66px}
 }
 .work-type-options-inline label{
   display:inline-flex!important;
