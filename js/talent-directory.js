@@ -1,4 +1,4 @@
-/* ATSRS V291 - profile photos in talent discovery and linked personnel. */
+/* ATSRS V292 - working corporate profile actions and linked personnel. */
 (function(){
   'use strict';
   var profiles=[];

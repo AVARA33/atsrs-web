@@ -90,7 +90,12 @@ Deno.serve(async (req) => {
     return json(200, { updated: true });
   }
 
-  const { data: companyWorkspaces, error: companyWorkspaceError } = await admin
+  // Verify Corporate access with the caller's JWT and the existing RLS policy.
+  // The directory itself uses this same authoritative workspace row. Using the
+  // service client here made every action fail when the service schema cache
+  // could not resolve atsrs_workspaces, even though the signed-in user had a
+  // valid Corporate workspace.
+  const { data: companyWorkspaces, error: companyWorkspaceError } = await authClient
     .from("atsrs_workspaces")
     .select("user_id")
     .eq("user_id", user.id)
@@ -102,7 +107,7 @@ Deno.serve(async (req) => {
       code: companyWorkspaceError.code,
       message: companyWorkspaceError.message,
     });
-    return json(500, { error: "Your Corporate workspace could not be verified. Please try again." });
+    return json(500, { error: "Your Corporate workspace could not be verified. Refresh the page and try again." });
   }
   if (!companyWorkspaces?.length) {
     return json(403, { error: "Open your ATSRS Corporate workspace to use this function." });
