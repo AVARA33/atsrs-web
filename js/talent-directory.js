@@ -1,4 +1,4 @@
-/* ATSRS V276 - server-backed corporate talent directory. */
+/* ATSRS V277 - server-backed corporate talent directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -58,8 +58,25 @@
   }
   async function actionCall(payload){
     var c=client();if(!c||!c.functions)throw new Error('ATSRS service is unavailable.');
-    var result=await c.functions.invoke('talent-profile-actions',{body:payload||{}});
-    if(result.error)throw result.error;
+    var sessionResult=await c.auth.getSession();
+    var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
+    if(!session||!session.access_token)throw new Error('Your session has expired. Please sign in again.');
+    var result=await c.functions.invoke('talent-profile-actions',{
+      body:payload||{},
+      headers:{Authorization:'Bearer '+session.access_token}
+    });
+    if(result.error){
+      var message='';
+      try{
+        var response=result.error.context;
+        if(response&&typeof response.clone==='function')response=response.clone();
+        if(response&&typeof response.json==='function'){
+          var details=await response.json();
+          message=details&&details.error||details&&details.message||'';
+        }
+      }catch(ignore){}
+      throw new Error(message||'The ATSRS service could not complete this request. Please try again.');
+    }
     if(!result.data||result.data.error)throw new Error(result.data&&result.data.error||'The request could not be completed.');
     return result.data;
   }
