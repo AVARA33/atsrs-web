@@ -23,6 +23,11 @@ type OpenAIResponse = {
   status?: string;
   incomplete_details?: { reason?: string };
   output_text?: string;
+  usage?: {
+    input_tokens?: number;
+    output_tokens?: number;
+    total_tokens?: number;
+  };
   output?: Array<{
     type?: string;
     content?: Array<{ type?: string; text?: string; refusal?: string }>;
@@ -243,6 +248,27 @@ Deno.serve(async (req: Request) => {
       : "The AI service could not process this document.";
     console.error("OpenAI scan request failed", { status: aiResponse.status, requestUser: authData.user.id, providerMessage: aiBody.error?.message?.slice(0, 160) });
     return json(req, 502, { error: message });
+  }
+
+  const inputTokens = Math.max(0, Number(aiBody.usage?.input_tokens ?? 0));
+  const outputTokens = Math.max(0, Number(aiBody.usage?.output_tokens ?? 0));
+  const estimatedCostUsd = (inputTokens * 0.25 / 1_000_000) +
+    (outputTokens * 2.00 / 1_000_000);
+  const { error: usageError } = await supabaseAdmin
+    .from("atsrs_ai_usage")
+    .insert({
+      user_id: authData.user.id,
+      event_type: "scan_document",
+      model: OPENAI_MODEL,
+      input_tokens: inputTokens,
+      output_tokens: outputTokens,
+      estimated_cost_usd: estimatedCostUsd,
+    });
+  if (usageError) {
+    console.error("ATSRS AI usage metric could not be stored", {
+      requestUser: authData.user.id,
+      usageError,
+    });
   }
 
   const text = outputText(aiBody);

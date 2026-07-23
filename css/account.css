@@ -1085,6 +1085,122 @@ body #modeChoiceBox:not(.mode-error) button::before{
   padding:0;
   border:0;
 }
+.profile-general-head{
+  display:grid;
+  grid-template-columns:minmax(430px,.78fr) minmax(520px,1.22fr);
+  gap:34px;
+  align-items:stretch;
+  width:100%;
+}
+.profile-general-head .profile-photo-card{
+  margin:2px 0 14px;
+}
+.admin-overview-panel{
+  align-self:stretch;
+  min-width:0;
+  margin:2px 0 14px;
+  padding:16px 18px;
+  border:1px solid rgba(53,89,108,.72);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(8,28,40,.9),rgba(8,23,36,.68));
+  box-shadow:inset 0 1px 0 rgba(131,222,232,.04);
+}
+body:not(.personal-mode) .admin-overview-panel{
+  display:none!important;
+}
+.admin-overview-heading,
+.admin-overview-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.admin-overview-kicker{
+  color:#64e58c;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.admin-overview-heading h4{
+  margin:3px 0 0;
+  color:#edf6fa;
+  font-size:16px;
+}
+.admin-overview-secure{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#92a9b8;
+  font-size:11px;
+  white-space:nowrap;
+}
+.admin-overview-secure i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4fd37b;
+  box-shadow:0 0 0 4px rgba(79,211,123,.08);
+}
+.admin-overview-stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0 12px;
+}
+.admin-overview-stat{
+  min-width:0;
+  padding:10px 12px;
+  border:1px solid rgba(48,76,96,.74);
+  border-radius:10px;
+  background:rgba(5,20,32,.58);
+}
+.admin-overview-stat span{
+  display:block;
+  overflow:hidden;
+  color:#8098aa;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.admin-overview-stat strong{
+  display:block;
+  margin-top:4px;
+  color:#edf6fa;
+  font-size:19px;
+  line-height:1;
+}
+.admin-overview-footer{
+  padding-top:10px;
+  border-top:1px solid rgba(48,76,96,.55);
+  color:#7f96a8;
+  font-size:10px;
+}
+.admin-overview-refresh{
+  flex:none;
+  padding:3px 0;
+  border:0;
+  background:transparent;
+  color:#9ed5dc;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+.admin-overview-refresh:hover,
+.admin-overview-refresh:focus-visible{
+  color:#c7f5f1;
+  background:transparent;
+  outline:none;
+}
+.admin-overview-refresh:disabled{
+  opacity:.5;
+  cursor:wait;
+}
+@media(max-width:1180px){
+  .profile-general-head{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+}
 body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid{
   display:grid!important;
@@ -1484,6 +1600,8 @@ body.profile-photo-cropping{overflow:hidden}
 @media(max-width:620px){
   .profile-photo-card{align-items:flex-start}
   .profile-photo-preview{flex-basis:66px;width:66px;height:66px}
+  .profile-general-head{grid-template-columns:1fr;gap:10px}
+  .admin-overview-stats{grid-template-columns:1fr}
 }
 .work-type-options-inline label{
   display:inline-flex!important;

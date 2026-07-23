@@ -1,4 +1,4 @@
-/* ATSRS V316 - one owner-uploaded identity photo across personal and corporate workspaces. */
+/* ATSRS V317 - one owner-uploaded identity photo across personal and corporate workspaces. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';
