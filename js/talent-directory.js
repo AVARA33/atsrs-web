@@ -1,4 +1,4 @@
-/* ATSRS V299 - keep nested Personnel content visible during page navigation. */
+/* ATSRS V300 - compact Personnel column sorting. */
 (function(){
   'use strict';
   var profiles=[];
@@ -8,6 +8,7 @@
   var activeActionPanel=null;
   var candidateView='cards';
   var personnelView='list';
+  var personnelSortBy='name';
   var personnelSortDirection='asc';
   try{
     candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
@@ -215,6 +216,10 @@
   function personnelAccessKey(item){
     return item&&item.status&&item.status!=='linked'?item.status:'public_profile_only';
   }
+  function personnelSortHeading(key,label){
+    var active=personnelSortBy===key;
+    return '<span><button type="button" class="personnel-column-sort'+(active?' is-active':'')+(active&&personnelSortDirection==='desc'?' is-desc':'')+'" data-personnel-sort="'+key+'" aria-label="Sort by '+safe(label)+'">'+safe(label)+'<i class="personnel-sort-arrows" aria-hidden="true"><b></b><em></em></i></button></span>';
+  }
   function fillPersonnelSelect(id,values,label){
     var select=byId(id);if(!select)return;
     var current=select.value;
@@ -227,7 +232,7 @@
     var workStatus=byId('personnelWorkStatusFilter')&&byId('personnelWorkStatusFilter').value||'';
     var project=normalized(byId('personnelProjectFilter')&&byId('personnelProjectFilter').value);
     var access=byId('personnelAccessFilter')&&byId('personnelAccessFilter').value||'';
-    var sortBy=byId('personnelSortBy')&&byId('personnelSortBy').value||'name';
+    var sortBy=personnelSortBy;
     var rows=linkedPersonnel.filter(function(item){
       var profile=item&&item.profile;if(!profile)return false;
       if(query&&normalized(profile.name+' '+profile.surname).indexOf(query)<0)return false;
@@ -274,7 +279,9 @@
           '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
       }).join('')+'</div>';
     }else{
-      list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Candidate</span><span>Profession</span><span>Work status</span><span>Project</span><span>Access</span><span>Action</span></div>'+
+      list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row">'+
+        personnelSortHeading('name','Candidate')+personnelSortHeading('profession','Profession')+personnelSortHeading('status','Work status')+personnelSortHeading('project','Project')+
+        '<span>Access</span><span>Action</span></div>'+
         rows.map(function(item){
           var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
           var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
@@ -555,16 +562,16 @@
       });
     });
     updateViewSwitches();
-    ['personnelSearch','personnelProfessionFilter','personnelWorkStatusFilter','personnelProjectFilter','personnelAccessFilter','personnelSortBy'].forEach(function(id){
+    ['personnelSearch','personnelProfessionFilter','personnelWorkStatusFilter','personnelProjectFilter','personnelAccessFilter'].forEach(function(id){
       var element=byId(id);if(!element)return;
       element.addEventListener(id==='personnelSearch'?'input':'change',renderLinkedPersonnel);
     });
-    var personnelSortButton=byId('personnelSortDirection');
-    if(personnelSortButton)personnelSortButton.addEventListener('click',function(){
-      personnelSortDirection=personnelSortDirection==='asc'?'desc':'asc';
-      personnelSortButton.textContent=personnelSortDirection==='asc'?'↑':'↓';
-      personnelSortButton.setAttribute('aria-label',personnelSortDirection==='asc'?'Sort ascending':'Sort descending');
-      personnelSortButton.title=personnelSortDirection==='asc'?'Sort ascending':'Sort descending';
+    var linkedList=byId('linkedPersonnelList');
+    if(linkedList)linkedList.addEventListener('click',function(event){
+      var button=event.target.closest('[data-personnel-sort]');if(!button)return;
+      var nextSort=button.dataset.personnelSort;
+      if(personnelSortBy===nextSort)personnelSortDirection=personnelSortDirection==='asc'?'desc':'asc';
+      else{personnelSortBy=nextSort;personnelSortDirection='asc'}
       renderLinkedPersonnel();
     });
     ['talentSearch','talentPositionFilter','talentCountryFilter','talentAvailabilityFilter'].forEach(function(id){var el=byId(id);if(el)el.addEventListener(id==='talentSearch'?'input':'change',render)});
