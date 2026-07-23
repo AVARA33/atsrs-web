@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V307';
+  var BUILD='ATSRS V308';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -343,13 +343,13 @@
   }
   function showSaved(){
     var s=ensureProfileStatus(); if(!s)return;
-    s.textContent='Saved вњ“'; s.classList.add('active');
+    s.textContent='Saved РІСљвЂњ'; s.classList.add('active');
     clearTimeout(window.__atsrsV125ProfileSavedTimer);
     window.__atsrsV125ProfileSavedTimer=setTimeout(function(){s.classList.remove('active');},2200);
   }
   function showSaveError(){
     var s=ensureProfileStatus(); if(!s)return;
-    s.textContent='Not saved вЂ” check connection'; s.classList.add('active');
+    s.textContent='Not saved РІР‚вЂќ check connection'; s.classList.add('active');
   }
   window.saveProfile=async function(){
     var availabilityStatus=val('profileAvailabilityStatus')||'not_set';
@@ -440,7 +440,7 @@
     ['langCircle','appLangCircle'].forEach(function(id){var b=byId(id); if(b){b.textContent=''; b.setAttribute('aria-label','Language'); b.removeAttribute('title');}});
     document.querySelectorAll('.lang-menu button[data-lang="en"]').forEach(function(b){
       b.childNodes.forEach(function(n){ if(n.nodeType===3)n.textContent=''; });
-      var s=b.querySelector('span'); if(s)s.textContent='рџ‡¬рџ‡§';
+      var s=b.querySelector('span'); if(s)s.textContent='СЂСџвЂЎВ¬СЂСџвЂЎВ§';
     });
   }
   var oldApply=window.applyLanguage;
@@ -479,7 +479,7 @@
   function renderCoverLetter(){
     ensureCoverLetterCard(); var files=coverFiles(); var badge=byId('coverLetterStatusBadge'), info=byId('coverLetterFileInfo');
     if(badge){badge.textContent=files.length?String(files.length)+' file'+(files.length>1?'s':''):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
-    if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' вЂў '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
+    if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' РІР‚Сћ '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
   }
   var oldRender=window.renderAll;
   if(typeof oldRender==='function') window.renderAll=function(){var r=oldRender.apply(this,arguments); renderCoverLetter(); forceFlagOnly(); return r;};
@@ -493,7 +493,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V307';
+  var BUILD='ATSRS V308';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
