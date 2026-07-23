@@ -1,14 +1,88 @@
-/* ATSRS V275 - calm, server-backed corporate personnel discovery. */
+/* ATSRS V276 - calm, server-backed corporate personnel discovery. */
 .talent-directory-panel{max-width:none}
 .talent-directory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px}
 .talent-directory-head h3{margin:8px 0 4px}
 .talent-count{color:#9fb0c2;font-size:12px;white-space:nowrap;padding-top:8px}
 .talent-searchbar{display:grid;grid-template-columns:minmax(240px,1.5fr) repeat(4,minmax(135px,.7fr));gap:10px;padding:14px 0 18px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
-.talent-searchbar label{display:grid;gap:6px;color:#8ea2b5;font-size:11px;font-weight:600}
+.talent-searchbar>label,.talent-filter-field{display:grid;gap:6px;color:#8ea2b5;font-size:11px;font-weight:600}
 .talent-searchbar input,.talent-searchbar select{width:100%;min-height:40px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
 .talent-searchbar select{appearance:none;-webkit-appearance:none;padding-right:34px!important;cursor:pointer;color-scheme:dark;background-color:#091522!important;background-image:linear-gradient(45deg,transparent 50%,#91a4b4 50%),linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;background-position:calc(100% - 15px) 50%,calc(100% - 11px) 50%!important;background-size:4px 4px,4px 4px!important;background-repeat:no-repeat!important}
 .talent-searchbar select:hover,.talent-searchbar select:focus{background-color:#091522!important;color:#edf5fb!important}
 .talent-searchbar input:focus,.talent-searchbar select:focus{border-color:#4e7187!important;outline:none}
+.talent-work-type-filter{position:relative;min-width:0}
+.talent-work-type-filter summary{
+  box-sizing:border-box;
+  min-height:40px;
+  padding:11px 34px 10px 12px;
+  overflow:hidden;
+  border:1px solid #26394c;
+  border-radius:10px;
+  background-color:#091522;
+  background-image:linear-gradient(45deg,transparent 50%,#91a4b4 50%),linear-gradient(135deg,#91a4b4 50%,transparent 50%);
+  background-position:calc(100% - 15px) 50%,calc(100% - 11px) 50%;
+  background-size:4px 4px,4px 4px;
+  background-repeat:no-repeat;
+  color:#edf5fb;
+  font-size:13px;
+  font-weight:400;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  cursor:pointer;
+  list-style:none;
+}
+.talent-work-type-filter summary::-webkit-details-marker{display:none}
+.talent-work-type-filter summary:hover,.talent-work-type-filter summary:focus-visible,.talent-work-type-filter[open] summary{
+  border-color:#4e7187;
+  background-color:#091522;
+  outline:none;
+}
+.talent-work-type-filter .work-type-options{
+  position:absolute;
+  z-index:40;
+  top:46px;
+  left:0;
+  right:0;
+  display:grid;
+  gap:4px;
+  padding:8px;
+  border:1px solid #2a4053;
+  border-radius:10px;
+  background:#081522;
+  box-shadow:0 14px 36px rgba(0,0,0,.34);
+}
+.talent-work-type-filter .work-type-options label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px;
+  color:#d8e4ec;
+  font-size:12px;
+  cursor:pointer;
+}
+.talent-work-type-filter input{
+  appearance:none;
+  -webkit-appearance:none;
+  position:relative;
+  width:15px!important;
+  height:15px!important;
+  min-width:15px!important;
+  min-height:15px!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid #7e92a2!important;
+  border-radius:3px!important;
+  background:#f8fafc!important;
+  box-shadow:none!important;
+}
+.talent-work-type-filter input:checked::after{
+  content:"✓";
+  position:absolute;
+  inset:-3px 0 0;
+  color:#168746;
+  text-align:center;
+  font-size:15px;
+  font-weight:900;
+}
 .talent-directory-status{padding:24px 0;color:#91a5b8;font-size:13px}
 .talent-directory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;padding-top:16px}
 .talent-card{display:flex;flex-direction:column;min-height:270px;padding:18px;border:1px solid #24394b;border-radius:16px;background:rgba(5,16,27,.3)}
