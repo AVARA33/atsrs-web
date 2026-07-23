@@ -1079,12 +1079,17 @@ body #modeChoiceBox:not(.mode-error) button::before{
   display:flex;
   align-items:center;
   gap:16px;
-  max-width:720px;
-  margin:2px 0 18px;
-  padding:0 0 18px;
-  border-bottom:1px solid rgba(51,65,85,.72);
+  width:100%;
+  max-width:none;
+  margin:2px 0 14px;
+  padding:0;
+  border:0;
 }
 body.personal-mode #profilePhotoCard{display:flex}
+#profilePage #accountGeneralTab>.profile-grid{
+  padding-top:16px;
+  border-top:1px solid rgba(51,65,85,.72);
+}
 .profile-photo-preview{
   display:grid;
   flex:0 0 82px;
@@ -1155,10 +1160,10 @@ body.profile-photo-cropping{overflow:hidden}
 .work-availability-heading>span{padding-top:8px;color:#7f96a8;font-size:10px;white-space:nowrap}
 .work-availability-grid{
   display:grid;
-  grid-template-columns:minmax(210px,1fr) minmax(210px,1fr) minmax(300px,1.35fr) 96px;
+  grid-template-columns:minmax(220px,1fr) minmax(220px,1fr) minmax(360px,1.45fr) 96px;
   align-items:stretch;
   gap:10px;
-  width:min(100%,1120px);
+  width:100%;
 }
 .work-availability-grid>label,.work-type-field,.work-availability-save{
   display:grid;
@@ -1254,6 +1259,10 @@ body.profile-photo-cropping{overflow:hidden}
   outline-offset:2px;
 }
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
+@media(max-width:1250px){
+  .work-availability-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .work-availability-save{justify-items:start}
+}
 @media(max-width:760px){
   .work-availability-heading{display:grid;gap:4px}
   .work-availability-grid{grid-template-columns:1fr}

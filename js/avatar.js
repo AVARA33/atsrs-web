@@ -1,4 +1,4 @@
-/* ATSRS V283 - owner-uploaded profile photos with initials fallback. */
+/* ATSRS V284 - owner-uploaded profile photos with initials fallback. */
 (function(){
   'use strict';
   var BUCKET='atsrs-profile-photos';
