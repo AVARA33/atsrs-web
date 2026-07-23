@@ -1,4 +1,4 @@
-﻿/* ATSRS V178 extracted JavaScript batch: dashboard.js. Loaded in original V178 execution order. No placeholder code. */
+/* ATSRS V178 extracted JavaScript batch: dashboard.js. Loaded in original V178 execution order. No placeholder code. */
 /* ===== ATSRS V205: test login placement disabled ===== */
 (function(){
   'use strict';
@@ -57,7 +57,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V303';
+  var BUILD='ATSRS V304';
   var UPDATE='Last Update: 23 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -131,10 +131,14 @@
     ['NG','+234'],['GH','+233'],['KE','+254'],['BR','+55'],['AR','+54'],['MX','+52'],['GQ','+240']
   ];
   var PHONE_CODES=PHONE_COUNTRIES.map(function(item){return item[1]});
-  function flagFromIso(iso){
-    return String(iso||'').toUpperCase().replace(/./g,function(char){
-      return String.fromCodePoint(127397+char.charCodeAt(0));
-    });
+  function flagUrl(iso){
+    return 'https://flagcdn.com/24x18/'+String(iso||'az').toLowerCase()+'.png';
+  }
+  function applyPhoneFlag(el,iso){
+    if(!el)return;
+    el.textContent='';
+    el.style.backgroundImage='url("'+flagUrl(iso)+'")';
+    el.setAttribute('aria-label',String(iso||'').toUpperCase()+' flag');
   }
   function phoneCountryForCode(code){
     return PHONE_COUNTRIES.filter(function(item){return item[1]===code})[0]||PHONE_COUNTRIES[0];
@@ -164,8 +168,9 @@
     if(!select||!select.__atsrsPicker)return;
     var code=select.value||'+994';
     var country=phoneCountryForCode(code);
-    select.__atsrsPicker.flag.textContent=flagFromIso(country[0]);
-    select.__atsrsPicker.input.value=code;
+    applyPhoneFlag(select.__atsrsPicker.flag,country[0]);
+    select.__atsrsPicker.value.textContent=code;
+    if(select.__atsrsPicker.search&&!select.__atsrsPicker.search.matches(':focus'))select.__atsrsPicker.search.value=code;
   }
   function filterPhoneCountries(query){
     var raw=normalizePhoneCode(query);
@@ -183,13 +188,19 @@
   }
   function renderPhoneMenu(select,query){
     if(!select||!select.__atsrsPicker)return;
-    var picker=select.__atsrsPicker,menu=picker.menu;
-    menu.innerHTML='';
+    var picker=select.__atsrsPicker,menu=picker.menu,list=picker.list;
+    list.innerHTML='';
     filterPhoneCountries(query).slice(0,40).forEach(function(item){
       var button=document.createElement('button');
       button.type='button';
       button.className='phone-code-option';
-      button.innerHTML='<span>'+flagFromIso(item[0])+'</span><span>'+item[1]+'</span>';
+      var flag=document.createElement('span');
+      flag.className='phone-code-flag';
+      applyPhoneFlag(flag,item[0]);
+      var code=document.createElement('span');
+      code.textContent=item[1];
+      button.appendChild(flag);
+      button.appendChild(code);
       button.addEventListener('mousedown',function(event){event.preventDefault();});
       button.addEventListener('click',function(){
         select.value=item[1];
@@ -197,7 +208,7 @@
         updatePhoneHidden(select.id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
         menu.classList.add('hidden');
       });
-      menu.appendChild(button);
+      list.appendChild(button);
     });
     closePhoneMenus(menu);
     menu.classList.remove('hidden');
@@ -208,31 +219,40 @@
     if(!field)return;
     var picker=document.createElement('div');
     picker.className='phone-code-picker';
-    picker.innerHTML='<span class="phone-code-flag" aria-hidden="true"></span><input class="phone-code-input" inputmode="tel" autocomplete="off" aria-label="Country code"><button type="button" class="phone-code-arrow" aria-label="Show country codes">вЊ„</button><div class="phone-code-menu hidden"></div>';
+    picker.innerHTML='<button type="button" class="phone-code-display" aria-label="Country calling code"><span class="phone-code-flag" aria-hidden="true"></span><span class="phone-code-value"></span><span class="phone-code-arrow" aria-hidden="true">&#8964;</span></button><div class="phone-code-menu hidden"><input class="phone-code-search" inputmode="tel" autocomplete="off" aria-label="Search country code"><div class="phone-code-list"></div></div>';
     field.insertBefore(picker,select);
     select.__atsrsPicker={
       root:picker,
-      flag:picker.querySelector('.phone-code-flag'),
-      input:picker.querySelector('.phone-code-input'),
-      arrow:picker.querySelector('.phone-code-arrow'),
-      menu:picker.querySelector('.phone-code-menu')
+      button:picker.querySelector('.phone-code-display'),
+      flag:picker.querySelector('.phone-code-display .phone-code-flag'),
+      value:picker.querySelector('.phone-code-value'),
+      menu:picker.querySelector('.phone-code-menu'),
+      search:picker.querySelector('.phone-code-search'),
+      list:picker.querySelector('.phone-code-list')
     };
     syncPhonePicker(select);
-    select.__atsrsPicker.input.addEventListener('focus',function(){renderPhoneMenu(select,select.__atsrsPicker.input.value);});
-    select.__atsrsPicker.input.addEventListener('input',function(){
-      var next=normalizePhoneCode(select.__atsrsPicker.input.value);
-      select.__atsrsPicker.input.value=next;
+    select.__atsrsPicker.button.addEventListener('click',function(){
+      var search=select.__atsrsPicker.search;
+      search.value=select.value||'+994';
+      renderPhoneMenu(select,search.value);
+      search.focus();
+      search.select();
+    });
+    select.__atsrsPicker.search.addEventListener('input',function(){
+      var next=normalizePhoneCode(select.__atsrsPicker.search.value);
+      select.__atsrsPicker.search.value=next;
       var exact=PHONE_CODES.indexOf(next)>=0;
       if(exact){
         select.value=next;
-        syncPhonePicker(select);
+        var country=phoneCountryForCode(next);
+        applyPhoneFlag(select.__atsrsPicker.flag,country[0]);
+        select.__atsrsPicker.value.textContent=next;
         updatePhoneHidden(select.id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
       }
       renderPhoneMenu(select,next);
     });
-    select.__atsrsPicker.arrow.addEventListener('click',function(){
-      renderPhoneMenu(select,select.__atsrsPicker.input.value);
-      select.__atsrsPicker.input.focus();
+    select.__atsrsPicker.search.addEventListener('keydown',function(event){
+      if(event.key==='Escape')select.__atsrsPicker.menu.classList.add('hidden');
     });
   }
   function ensurePhonePickers(){
@@ -473,7 +493,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V303';
+  var BUILD='ATSRS V304';
   var UPDATE='Last Update: 23 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
