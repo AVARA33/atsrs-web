@@ -113,6 +113,34 @@ function estimatedBytes(dataUrl: string) {
   return Math.floor((base64.length * 3) / 4);
 }
 
+class RequestTooLargeError extends Error {}
+
+async function readJsonBody(req: Request): Promise<ScanRequest> {
+  if (!req.body) throw new Error("Missing request body.");
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_REQUEST_BYTES) {
+      await reader.cancel().catch(() => undefined);
+      throw new RequestTooLargeError("Request body exceeds the scan limit.");
+    }
+    chunks.push(value);
+  }
+
+  const payload = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    payload.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(payload)) as ScanRequest;
+}
+
 function outputText(value: OpenAIResponse) {
   if (typeof value.output_text === "string" && value.output_text.trim()) return value.output_text;
   for (const item of value.output ?? []) {
@@ -154,8 +182,11 @@ Deno.serve(async (req: Request) => {
 
   let body: ScanRequest;
   try {
-    body = await req.json() as ScanRequest;
-  } catch {
+    body = await readJsonBody(req);
+  } catch (error) {
+    if (error instanceof RequestTooLargeError) {
+      return json(req, 413, { error: "The document request is too large." });
+    }
     return json(req, 400, { error: "Invalid request body." });
   }
 
