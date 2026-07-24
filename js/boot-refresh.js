@@ -1,4 +1,4 @@
-/* ATSRS V325: session-aware refresh loading controller + notification assets. */
+/* ATSRS V326: session-aware refresh loading controller + notification assets. */
 (function(){
   'use strict';
   var finished=false;
@@ -17,13 +17,13 @@
     var badge=byId('buildBadge');
     if(!badge)return;
     var lines=badge.querySelectorAll('div');
-    if(lines[0]&&lines[0].textContent!=='ATSRS V325')lines[0].textContent='ATSRS V325';
+    if(lines[0]&&lines[0].textContent!=='ATSRS V326')lines[0].textContent='ATSRS V326';
     if(lines[1]&&lines[1].textContent!=='Last Update: 24 Jul 2026')lines[1].textContent='Last Update: 24 Jul 2026';
   }
   function loadV241(){
     lockBuildBadge();
-    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=325'});
-    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=325'});
+    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=326'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=326'});
   }
   function appIsOpen(){
     var app=byId('app');

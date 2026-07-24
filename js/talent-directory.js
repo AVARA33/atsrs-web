@@ -1,4 +1,4 @@
-/* ATSRS V325 - server-enforced candidate profile visibility. */
+/* ATSRS V326 - server-enforced candidate profile visibility. */
 (function(){
   'use strict';
   var profiles=[];
@@ -10,6 +10,7 @@
   var personnelView='list';
   var personnelSortBy='name';
   var personnelSortDirection='asc';
+  var talentMailbox='active';
   try{
     candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
     personnelView=localStorage.getItem('atsrs_personnel_view')||'list';
@@ -598,16 +599,34 @@
   function ensureInbox(){
     var dashboard=byId('dashboardPage'),existing=byId('talentMessagesPanel');if(existing||!dashboard)return existing;
     var panel=document.createElement('div');panel.id='talentMessagesPanel';panel.className='panel talent-messages-panel personal-only';
-    panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">PROFESSIONAL MESSAGES</span><h3>Messages from companies <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No messages yet.</div></div>';
-    dashboard.appendChild(panel);byId('refreshTalentMessages').onclick=loadInbox;return panel;
+    panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">PROFESSIONAL MESSAGES</span><h3>Messages from companies <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><div class="talent-mailbox-tools"><button type="button" class="secondary is-active" id="talentActiveMessages">Inbox</button><button type="button" class="secondary" id="talentArchivedMessages">Archived</button><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No messages yet.</div></div>';
+    dashboard.appendChild(panel);
+    byId('refreshTalentMessages').onclick=loadInbox;
+    byId('talentActiveMessages').onclick=function(){talentMailbox='active';loadInbox()};
+    byId('talentArchivedMessages').onclick=function(){talentMailbox='archived';loadInbox()};
+    return panel;
   }
   async function loadInbox(){
     if(mode()!=='personal')return;ensureInbox();var list=byId('talentMessagesList'),count=byId('talentUnreadCount');if(!list)return;
+    var activeButton=byId('talentActiveMessages'),archiveButton=byId('talentArchivedMessages');
+    if(activeButton)activeButton.classList.toggle('is-active',talentMailbox==='active');
+    if(archiveButton)archiveButton.classList.toggle('is-active',talentMailbox==='archived');
     try{
-      var data=await actionCall({action:'inbox'}),messages=Array.isArray(data.messages)?data.messages:[],unread=messages.filter(function(message){return !message.read_at}).length;
-      if(count)count.textContent=unread+' new';
-      list.innerHTML=messages.length?messages.map(function(message){return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString())+'</span></div><p>'+safe(message.body)+'</p>'+(message.read_at?'':'<button type="button" class="secondary" data-message-read="'+safe(message.id)+'">Mark as read</button>')+'</article>'}).join(''):'<div class="access-empty">No messages yet.</div>';
-      list.querySelectorAll('[data-message-read]').forEach(function(button){button.onclick=async function(){button.disabled=true;try{await actionCall({action:'mark_read',message_id:button.dataset.messageRead});await loadInbox()}catch(error){button.disabled=false}}});
+      var data=await actionCall({action:'inbox',mailbox:talentMailbox}),messages=Array.isArray(data.messages)?data.messages:[],unread=messages.filter(function(message){return !message.read_at}).length;
+      if(count){count.textContent=talentMailbox==='active'?unread+' new':'Archived';count.classList.toggle('is-archived',talentMailbox==='archived')}
+      list.innerHTML=messages.length?messages.map(function(message){
+        var readButton=message.read_at?'':'<button type="button" class="secondary" data-message-action="mark_read" data-message-id="'+safe(message.id)+'">Mark as read</button>';
+        var archiveControl=talentMailbox==='archived'
+          ?'<button type="button" class="secondary" data-message-action="restore_message" data-message-id="'+safe(message.id)+'">Restore</button>'
+          :'<button type="button" class="secondary" data-message-action="archive_message" data-message-id="'+safe(message.id)+'">Archive</button>';
+        return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString())+'</span></div><p>'+safe(message.body)+'</p><div class="talent-message-actions">'+readButton+archiveControl+'<button type="button" class="talent-message-delete" data-message-action="delete_message" data-message-id="'+safe(message.id)+'">Delete</button></div></article>';
+      }).join(''):'<div class="access-empty">'+(talentMailbox==='archived'?'No archived messages.':'No messages yet.')+'</div>';
+      list.querySelectorAll('[data-message-action]').forEach(function(button){button.onclick=async function(){
+        var action=button.dataset.messageAction;
+        if(action==='delete_message'&&!window.confirm('Delete this message permanently?'))return;
+        button.disabled=true;
+        try{await actionCall({action:action,message_id:button.dataset.messageId});await loadInbox()}catch(error){button.disabled=false}
+      }});
     }catch(error){list.innerHTML='<div class="access-empty">Messages could not be loaded.</div>'}
   }
   async function loadDirectory(){

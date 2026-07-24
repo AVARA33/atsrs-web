@@ -12,6 +12,7 @@ type Body = {
   company?: string;
   message?: string;
   message_id?: string;
+  mailbox?: string;
 };
 
 function json(status: number, body: Record<string, unknown>) {
@@ -68,25 +69,46 @@ Deno.serve(async (req) => {
   });
 
   if (action === "inbox") {
-    const { data, error } = await admin
+    const mailbox = clean(body.mailbox, 20) === "archived" ? "archived" : "active";
+    let query = admin
       .from("atsrs_talent_messages")
-      .select("id,sender_email,sender_company,body,read_at,created_at")
+      .select("id,sender_email,sender_company,body,read_at,archived_at,created_at")
       .eq("recipient_id", user.id)
       .order("created_at", { ascending: false })
       .limit(50);
+    query = mailbox === "archived" ? query.not("archived_at", "is", null) : query.is("archived_at", null);
+    const { data, error } = await query;
     if (error) return json(500, { error: "Messages could not be loaded." });
     return json(200, { messages: data || [] });
   }
 
-  if (action === "mark_read") {
+  if (action === "mark_read" || action === "archive_message" || action === "restore_message" || action === "delete_message") {
     const messageId = clean(body.message_id, 50);
     if (!messageId) return json(400, { error: "Message is required." });
-    const { error } = await admin
+    if (action === "delete_message") {
+      const { data, error } = await admin
+        .from("atsrs_talent_messages")
+        .delete()
+        .eq("id", messageId)
+        .eq("recipient_id", user.id)
+        .select("id")
+        .maybeSingle();
+      if (error) return json(500, { error: "Message could not be deleted." });
+      if (!data) return json(404, { error: "Message was not found." });
+      return json(200, { deleted: true });
+    }
+    const changes = action === "mark_read"
+      ? { read_at: new Date().toISOString() }
+      : { archived_at: action === "archive_message" ? new Date().toISOString() : null };
+    const { data, error } = await admin
       .from("atsrs_talent_messages")
-      .update({ read_at: new Date().toISOString() })
+      .update(changes)
       .eq("id", messageId)
-      .eq("recipient_id", user.id);
+      .eq("recipient_id", user.id)
+      .select("id")
+      .maybeSingle();
     if (error) return json(500, { error: "Message status could not be updated." });
+    if (!data) return json(404, { error: "Message was not found." });
     return json(200, { updated: true });
   }
 

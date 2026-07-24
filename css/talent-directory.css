@@ -227,6 +227,12 @@
 .talent-messages-panel{margin-top:16px}.talent-messages-head h3{margin:8px 0 0}.talent-messages-head>button{width:auto!important;min-height:34px!important;margin:0!important;padding:7px 12px!important;background:transparent!important}
 .talent-messages-list{display:grid;gap:8px;margin-top:16px}.talent-message{display:grid;gap:10px;padding:14px;border:1px solid #24394b;border-radius:12px;background:rgba(5,16,27,.22)}.talent-message.is-unread{border-left:2px solid #55c986}
 .talent-message>div{display:grid;gap:3px}.talent-message>div span{color:#8097aa;font-size:10px}.talent-message p{margin:0;color:#c9d6df;font-size:12px;line-height:1.55;white-space:pre-wrap}
+.talent-mailbox-tools,.talent-message-actions{display:flex!important;align-items:center;gap:8px;flex-wrap:wrap}
+.talent-mailbox-tools button.is-active{border-color:#4d7a69!important;color:#7ee6a7!important}
+.talent-message-actions{margin-top:2px}.talent-message-actions button{width:auto!important}
+.talent-message-delete{min-height:34px;padding:7px 10px;border:0;background:transparent;color:#ff9999;font:inherit;font-weight:700;cursor:pointer}
+.talent-message-delete:hover,.talent-message-delete:focus-visible{color:#ffb3b3;text-decoration:underline;outline:none}
+.request-count.is-archived{color:#9db0c0;background:transparent}
 @media(max-width:1180px){.personnel-filterbar{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:950px){.talent-searchbar{grid-template-columns:1fr 1fr}.talent-search-field{grid-column:1/-1}.personnel-filterbar{grid-template-columns:1fr 1fr}.personnel-search-field{grid-column:1/-1}}
 @media(max-width:620px){.talent-directory-head,.linked-personnel-head{display:grid}.talent-head-tools{justify-content:space-between}.talent-searchbar,.personnel-filterbar{grid-template-columns:1fr}.talent-search-field,.personnel-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl,.talent-official-details{grid-template-columns:1fr}.talent-summary-list>div{display:grid;gap:6px}.talent-summary-list em{text-align:left;white-space:normal}.talent-messages-head{align-items:flex-start}}
