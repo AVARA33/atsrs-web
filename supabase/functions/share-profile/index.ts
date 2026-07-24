@@ -36,6 +36,7 @@ type AccessRequestRow = {
   requester_name: string;
   requester_company: string;
   requester_email: string;
+  requester_user_id: string | null;
   requested_file_ids: string[];
   revoked_file_ids: string[];
   request_all: boolean;
@@ -53,7 +54,7 @@ type AccessRequestRow = {
 };
 
 const SHARE_SELECT = "id,user_id,account_type,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
-const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
+const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requester_user_id,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
 
 function getSupabaseSecretKey() {
   const legacyKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -83,7 +84,7 @@ function allowedOrigin(req: Request) {
 function responseHeaders(req: Request) {
   return {
     "Access-Control-Allow-Origin": allowedOrigin(req) ?? SITE_URL,
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-atsrs-viewer-token",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-atsrs-viewer-token, x-atsrs-requester-account",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Cache-Control": "no-store",
     "Content-Type": "application/json",
@@ -187,6 +188,16 @@ function publicRequestStatus(row: AccessRequestRow) {
     created_at: row.created_at,
     updated_at: row.updated_at,
   };
+}
+
+async function corporateRequesterId(req: Request, admin: AdminClient) {
+  if ((req.headers.get("x-atsrs-requester-account") ?? "").toLowerCase() !== "company") return null;
+  const user = await authenticatedUser(admin, req);
+  if (!user) return null;
+  const workspace = await admin.from("atsrs_workspaces").select("user_id")
+    .eq("user_id", user.id).eq("account_type", "company").maybeSingle();
+  if (workspace.error) throw workspace.error;
+  return workspace.data ? user.id : null;
 }
 
 function parseWorkspaceValue(payload: unknown) {
@@ -330,6 +341,55 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
   const existing = existingResult.data as ShareRow | null;
 
   if (action === "status") return json(req, 200, { share: publicShareStatus(existing) });
+
+  if (action === "list_sent_requests") {
+    const workspace = await admin.from("atsrs_workspaces").select("user_id")
+      .eq("user_id", user.id).eq("account_type", "company").maybeSingle();
+    if (workspace.error) throw workspace.error;
+    if (!workspace.data) return json(req, 403, { error: "A Corporate workspace is required." });
+
+    const requestsResult = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
+      .eq("requester_user_id", user.id).not("email_verified_at", "is", null)
+      .order("created_at", { ascending: false }).limit(100);
+    if (requestsResult.error) throw requestsResult.error;
+    const requestRows = (requestsResult.data ?? []) as AccessRequestRow[];
+    const ownerIds = Array.from(new Set(requestRows.map((row) => row.owner_id)));
+    const fileIds = Array.from(new Set(requestRows.flatMap((row) => row.requested_file_ids ?? [])));
+    const profilesByOwner = new Map<string, JsonObject>();
+    const filesById = new Map<string, JsonObject>();
+
+    if (ownerIds.length) {
+      const profiles = await admin.from("atsrs_workspace_data").select("user_id,data_key,payload")
+        .in("user_id", ownerIds).eq("account_type", "personal");
+      if (profiles.error) throw profiles.error;
+      (profiles.data ?? []).forEach((row) => {
+        if (!String(row.data_key ?? "").endsWith("_personal_profile")) return;
+        profilesByOwner.set(String(row.user_id), parseWorkspaceValue(row.payload) as JsonObject);
+      });
+    }
+    if (fileIds.length) {
+      const files = await admin.from("atsrs_files")
+        .select("id,user_id,category,file_name,metadata").in("id", fileIds);
+      if (files.error) throw files.error;
+      (files.data ?? []).forEach((file) => filesById.set(String(file.id), file as JsonObject));
+    }
+
+    return json(req, 200, {
+      requests: requestRows.map((row) => {
+        const profile = profilesByOwner.get(row.owner_id) ?? {};
+        return {
+          ...publicRequestStatus(row),
+          owner_name: [safeText(profile.name, 100), safeText(profile.surname, 100)].filter(Boolean).join(" ")
+            || "ATSRS profile owner",
+          owner_position: safeText(profile.position, 140),
+          requested_files: (row.requested_file_ids ?? []).map((id) => {
+            const file = filesById.get(id);
+            return file ? documentDetails(file) : { id, document_type: "Shared document" };
+          }),
+        };
+      }),
+    });
+  }
 
   if (action === "list_requests") {
     const requestsResult = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
@@ -548,6 +608,7 @@ async function startVerification(
   const email = safeEmail(body.requester_email);
   const requestAll = body.request_all === true;
   const fileIds = requestedFiles(share, body.file_ids, requestAll);
+  const requesterUserId = await corporateRequesterId(req, admin);
   if (name.length < 2 || company.length < 2 || !email) {
     return json(req, 400, { error: "Enter your name, company and a valid work email." });
   }
@@ -574,6 +635,7 @@ async function startVerification(
     requester_name: name,
     requester_company: company,
     requester_email: email,
+    requester_user_id: requesterUserId,
     requested_file_ids: fileIds,
     request_all: requestAll,
     status: "otp_pending",
@@ -676,6 +738,7 @@ async function createVerifiedRequest(req: Request, admin: AdminClient, share: Sh
     requester_name: identity.row.requester_name,
     requester_company: identity.row.requester_company,
     requester_email: identity.row.requester_email,
+    requester_user_id: identity.row.requester_user_id ?? await corporateRequesterId(req, admin),
     requested_file_ids: fileIds,
     request_all: requestAll,
     status: "pending",

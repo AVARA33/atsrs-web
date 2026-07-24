@@ -16,6 +16,7 @@
 
   function byId(id){return document.getElementById(id);}
   function client(){return window.supabaseClient||null;}
+  function accountMode(){try{return localStorage.getItem('atsrs_use_mode')||window.useMode||'personal';}catch(error){return window.useMode||'personal';}}
   function friendlyError(error,fallback){
     var text=String(error&&error.message||'').toLowerCase();
     if(/not authenticated|unauthorized|jwt|session|sign in/.test(text))return 'Your session has expired. Please sign in again.';
@@ -95,6 +96,11 @@
   async function publicCall(body){
     body=Object.assign({token:publicToken},body||{});
     var headers={apikey:publishableKey(),'Content-Type':'application/json'};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;
+    if(accountMode()==='company'){
+      var accessToken=await authToken();
+      if(accessToken)headers.Authorization='Bearer '+accessToken;
+      headers['x-atsrs-requester-account']='company';
+    }
     var response=await fetch(endpoint(),{method:'POST',headers:headers,body:JSON.stringify(body)});
     var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'Request failed.');return data;
   }
@@ -193,16 +199,58 @@
       if(previews.length){var detailBox=document.createElement('p');detailBox.className='share-analytics-detail';detailBox.textContent='Most previewed: '+previews.slice(0,3).map(function(item){return ownerFileName(item.file_id)+' ('+item.count+')';}).join(' · ');metrics.appendChild(detailBox);}
     }
   }
+  function sentRequestStatus(request){
+    var status=String(request&&request.status||'pending').toLowerCase();
+    if(status==='approved'){
+      if(request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now())return{label:'Approved · access active',className:'approved'};
+      return{label:'Approval expired',className:'expired'};
+    }
+    if(status==='otp_pending')return{label:'Email verification incomplete',className:'pending'};
+    if(status==='pending')return{label:'Waiting for approval',className:'pending'};
+    if(status==='declined')return{label:'Declined',className:'declined'};
+    if(status==='revoked')return{label:'Access revoked',className:'revoked'};
+    if(status==='expired')return{label:'Expired',className:'expired'};
+    return{label:status.replace(/_/g,' '),className:status};
+  }
+  function sentRequestNames(request){
+    var files=Array.isArray(request&&request.requested_files)?request.requested_files:[];
+    if(request&&request.request_all)return files.length?'All shared files · '+files.map(function(file){return file.document_type||file.file_name||'Document';}).join(', '):'All shared files';
+    return files.length?files.map(function(file){return file.document_type||file.file_name||'Document';}).join(', '):'Shared document';
+  }
+  function renderSentRequests(requests){
+    requests=Array.isArray(requests)?requests:[];
+    var count=byId('sentRequestCount');if(count)count.textContent=requests.length+' request'+(requests.length===1?'':'s');
+    var list=byId('dashboardSentRequests');if(!list)return;
+    list.innerHTML='';
+    if(!requests.length){list.innerHTML='<div class="access-empty">No download requests sent yet.</div>';return;}
+    requests.forEach(function(request){
+      var statusInfo=sentRequestStatus(request),card=document.createElement('article');card.className='access-request-card corporate-sent-request status-'+statusInfo.className;
+      var target=document.createElement('div');target.className='sent-request-target';
+      var owner=document.createElement('div'),ownerName=document.createElement('b'),ownerPosition=document.createElement('span');
+      ownerName.textContent=request.owner_name||'ATSRS profile owner';ownerPosition.textContent=request.owner_position||'Shared ATSRS profile';owner.appendChild(ownerName);owner.appendChild(ownerPosition);
+      var badge=document.createElement('span');badge.className='access-status';badge.textContent=statusInfo.label;target.appendChild(owner);target.appendChild(badge);
+      var details=document.createElement('div');details.className='sent-request-grid';
+      var documents=document.createElement('div');documents.innerHTML='<small>REQUESTED DOCUMENTS</small><p></p>';documents.querySelector('p').textContent=sentRequestNames(request);
+      var sent=document.createElement('div');sent.innerHTML='<small>SENT</small><p></p>';sent.querySelector('p').textContent=formatDateTime(request.created_at)+' · '+relativeTime(request.created_at);
+      details.appendChild(documents);details.appendChild(sent);
+      if(request.access_expires_at){var access=document.createElement('div');access.innerHTML='<small>DOWNLOAD ACCESS</small><p></p>';access.querySelector('p').textContent=requestHasActiveAccess(request)?'Available until '+formatDateTime(request.access_expires_at):'Closed';details.appendChild(access);}
+      card.appendChild(target);card.appendChild(details);list.appendChild(card);
+    });
+  }
   async function refreshShareRequests(){
     if(new URLSearchParams(location.search).get('share')||!client())return;
     if(!await authToken())return;
-    try{var result=await ownerCall({action:'list_requests'});ownerRequests=result.requests||[];renderOwnerRequests(result.analytics||{});}catch(error){console.error('ATSRS access requests failed',error);}
+    try{
+      if(accountMode()==='company'){var sentResult=await ownerCall({action:'list_sent_requests'});renderSentRequests(sentResult.requests||[]);return;}
+      var result=await ownerCall({action:'list_requests'});ownerRequests=result.requests||[];renderOwnerRequests(result.analytics||{});
+    }catch(error){console.error('ATSRS access requests failed',error);}
   }
   window.refreshShareRequests=refreshShareRequests;
   async function refreshOwnerPanel(){
     if(new URLSearchParams(location.search).get('share')||!byId('shareProfilePanel')||!client())return;
     try{
       var token=await authToken();if(!token)return;
+      if(accountMode()==='company'){await refreshShareRequests();return;}
       var results=await Promise.all([ownerCall({action:'status'}),listOwnerFiles(),ownerCall({action:'list_requests'})]);
       activeShare=results[0].share||null;ownerFiles=results[1]||[];ownerRequests=results[2].requests||[];
       renderOwnerFiles();renderOwnerStatus();renderOwnerRequests(results[2].analytics||{});

@@ -16,21 +16,21 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=324">
-<link rel="stylesheet" href="css/login.css?v=324">
-<link rel="stylesheet" href="css/dashboard.css?v=324">
-<link rel="stylesheet" href="css/documents.css?v=324">
-<link rel="stylesheet" href="css/references.css?v=324">
-<link rel="stylesheet" href="css/account.css?v=324">
-<link rel="stylesheet" href="css/product-experience.css?v=324">
-<link rel="stylesheet" href="css/date-picker.css?v=324">
-<link rel="stylesheet" href="css/share-profile.css?v=324">
-<link rel="stylesheet" href="css/calm-actions.css?v=324">
-<link rel="stylesheet" href="css/account-security-live.css?v=324">
-<link rel="stylesheet" href="css/talent-directory.css?v=324">
-<link rel="stylesheet" href="css/maintenance.css?v=324">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=324">
-<script defer src="js/maintenance-guard.js?v=324"></script>
+<link rel="stylesheet" href="css/base.css?v=325">
+<link rel="stylesheet" href="css/login.css?v=325">
+<link rel="stylesheet" href="css/dashboard.css?v=325">
+<link rel="stylesheet" href="css/documents.css?v=325">
+<link rel="stylesheet" href="css/references.css?v=325">
+<link rel="stylesheet" href="css/account.css?v=325">
+<link rel="stylesheet" href="css/product-experience.css?v=325">
+<link rel="stylesheet" href="css/date-picker.css?v=325">
+<link rel="stylesheet" href="css/share-profile.css?v=325">
+<link rel="stylesheet" href="css/calm-actions.css?v=325">
+<link rel="stylesheet" href="css/account-security-live.css?v=325">
+<link rel="stylesheet" href="css/talent-directory.css?v=325">
+<link rel="stylesheet" href="css/maintenance.css?v=325">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=325">
+<script defer src="js/maintenance-guard.js?v=325"></script>
 
 
 
@@ -132,7 +132,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V324</div>
+<div>ATSRS V325</div>
 <div>Last Update: 24 Jul 2026</div>
 </div>
 </div>
@@ -310,6 +310,19 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <p class="sub">Review verified recruiter download requests. Preview access never requires approval.</p>
   <div id="dashboardAccessRequests" class="access-request-list">
     <div class="access-empty">No pending requests.</div>
+  </div>
+</div>
+<div id="sentRequestsPanel" class="panel access-requests-panel company-only">
+  <div class="access-panel-head">
+    <div>
+      <span class="pill">SENT REQUESTS</span>
+      <h3>My Download Requests <span id="sentRequestCount" class="request-count corporate-request-count">0 requests</span></h3>
+    </div>
+    <button type="button" class="secondary" onclick="refreshShareRequests()">Refresh</button>
+  </div>
+  <p class="sub">Track document download requests sent from this Corporate account.</p>
+  <div id="dashboardSentRequests" class="access-request-list corporate-sent-request-list">
+    <div class="access-empty">No download requests sent yet.</div>
   </div>
 </div>
 </section>
@@ -1026,26 +1039,26 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=324"></script>
-<script src="js/server-data.js?v=324"></script>
-<script src="js/storage.js?v=324"></script>
-<script src="js/ui.js?v=324"></script>
-<script src="js/auth.js?v=324"></script>
-<script src="js/login.js?v=324"></script>
-<script src="js/dashboard.js?v=324"></script>
-<script src="js/avatar.js?v=324"></script>
-<script src="js/documents.js?v=324"></script>
-<script src="js/references.js?v=324"></script>
-<script src="js/account.js?v=324"></script>
-<script src="js/app.js?v=324"></script>
-<script src="js/product-experience.js?v=324"></script>
-<script src="js/date-picker.js?v=324"></script>
-<script src="js/share-profile.js?v=324"></script>
-<script src="js/boot-refresh.js?v=324"></script>
-<script src="js/account-security-live.js?v=324"></script>
-<script src="js/talent-directory.js?v=324"></script>
-<script src="js/admin-overview.js?v=324"></script>
-<script src="js/workspace-switcher.js?v=324"></script>
+<script src="js/stability-runtime.js?v=325"></script>
+<script src="js/server-data.js?v=325"></script>
+<script src="js/storage.js?v=325"></script>
+<script src="js/ui.js?v=325"></script>
+<script src="js/auth.js?v=325"></script>
+<script src="js/login.js?v=325"></script>
+<script src="js/dashboard.js?v=325"></script>
+<script src="js/avatar.js?v=325"></script>
+<script src="js/documents.js?v=325"></script>
+<script src="js/references.js?v=325"></script>
+<script src="js/account.js?v=325"></script>
+<script src="js/app.js?v=325"></script>
+<script src="js/product-experience.js?v=325"></script>
+<script src="js/date-picker.js?v=325"></script>
+<script src="js/share-profile.js?v=325"></script>
+<script src="js/boot-refresh.js?v=325"></script>
+<script src="js/account-security-live.js?v=325"></script>
+<script src="js/talent-directory.js?v=325"></script>
+<script src="js/admin-overview.js?v=325"></script>
+<script src="js/workspace-switcher.js?v=325"></script>
 
 
 

@@ -769,6 +769,17 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 .access-request-actions button{width:auto!important;min-width:90px;margin:0!important;padding:8px 11px!important;font-size:11px!important}
 .access-request-actions .access-revoke-all{border-color:rgba(248,113,113,.4)!important;background:transparent!important;color:#fca5a5!important}
 .access-empty{padding:22px;border:1px dashed rgba(67,101,128,.55);border-radius:13px;color:#8298aa;text-align:center;font-size:12px}
+.corporate-request-count{background:rgba(56,189,248,.1);color:#7dd3fc}
+.corporate-sent-request-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+.corporate-sent-request{display:flex;min-height:150px;flex-direction:column;gap:14px}
+.sent-request-target{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.sent-request-target>div b,.sent-request-target>div span{display:block}
+.sent-request-target>div span{margin-top:3px;color:#8298aa;font-size:11px}
+.sent-request-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(150px,.7fr);gap:16px;margin-top:auto;padding-top:12px;border-top:1px solid rgba(67,101,128,.34)}
+.sent-request-grid>div{min-width:0}
+.sent-request-grid small{display:block;margin-bottom:5px;color:#7890a3;font-size:9px;font-weight:900;letter-spacing:.05em}
+.sent-request-grid p{margin:0;color:#d4dee6;font-size:12px;line-height:1.45}
+.status-revoked .access-status{background:rgba(239,68,68,.08);color:#fca5a5}
 .shared-profile-section-head>div:first-child span{display:block;margin-top:5px;color:#7f94a7;font-size:12px}
 .shared-profile-head-actions{display:flex;align-items:center;gap:10px}
 .shared-profile-head-actions>span{color:#86a0b3;font-size:11px}
@@ -811,4 +822,6 @@ body.company-mode #accountTabSharingBtn{display:none!important}
   .shared-document-summary-head{align-items:flex-start;flex-direction:column;gap:5px}
   .access-document-row{grid-template-columns:minmax(0,1fr) auto}
   .access-document-row>small{display:none}
+  .corporate-sent-request-list{grid-template-columns:1fr}
+  .sent-request-grid{grid-template-columns:1fr}
 }
