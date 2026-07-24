@@ -2389,7 +2389,7 @@ setTimeout(v55DockTopActions,500);
     }
     googleAuthStarting=true;
     setGoogleAuthBusy(true);
-    setLoginMsg('Opening Google sign-in…');
+    setLoginMsg('');
     try{
       if(intent==='signin'){
         try{localStorage.setItem('atsrs_workspace_pick_required','1');}catch(e){}
