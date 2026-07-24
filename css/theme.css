@@ -454,3 +454,311 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls{align-items:flex-start}
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
+
+/* V332: final light-theme contrast and fixed top-right controls. */
+html[data-theme="light"]{
+  --atsrs-light-page:#f6f8fb;
+  --atsrs-light-surface:#ffffff;
+  --atsrs-light-soft:#f1f5f9;
+  --atsrs-light-text:#172033;
+  --atsrs-light-muted:#5f7087;
+  --atsrs-light-faint:#7d8ca1;
+  --atsrs-light-blue:#2563eb;
+  --atsrs-light-blue-soft:#eff6ff;
+  --atsrs-light-green:#15803d;
+  --atsrs-light-green-soft:#ecfdf3;
+  --atsrs-light-amber:#a15c00;
+  --atsrs-light-amber-soft:#fff7e6;
+  --atsrs-light-neutral:#526277;
+  --atsrs-light-neutral-soft:#eef2f6;
+  --atsrs-light-border:#dce4ed;
+  --atsrs-light-shadow:0 2px 8px rgba(15,23,42,.06);
+  --atsrs-light-focus:0 0 0 3px rgba(37,99,235,.22);
+}
+html[data-theme="light"] body{
+  background:var(--atsrs-light-page)!important;
+  color:var(--atsrs-light-text)!important;
+}
+html[data-theme="light"] body #app{
+  background:
+    linear-gradient(180deg,var(--atsrs-light-blue-soft) 0,rgba(246,248,251,.94) 230px,var(--atsrs-light-page) 440px)!important;
+  color:var(--atsrs-light-text)!important;
+}
+html[data-theme="light"] body #app .sidebar{
+  background:var(--atsrs-light-surface)!important;
+  border-right:1px solid var(--atsrs-light-border)!important;
+}
+html[data-theme="light"] body #app .sidebar :where(.brand,.logo){
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+}
+html[data-theme="light"] body #app .sidebar :where(.subtitle,.brand-subtitle){
+  color:#64748b!important;
+  -webkit-text-fill-color:#64748b!important;
+}
+html[data-theme="light"] body #app .nav{
+  gap:7px!important;
+}
+html[data-theme="light"] body #app .nav button{
+  min-height:42px!important;
+  background:transparent!important;
+  border:1px solid transparent!important;
+  color:#42556d!important;
+  -webkit-text-fill-color:#42556d!important;
+}
+html[data-theme="light"] body #app .nav button:hover{
+  background:var(--atsrs-light-soft)!important;
+  border-color:var(--atsrs-light-border)!important;
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+}
+html[data-theme="light"] body #app .nav button.active{
+  background:#eaf2ff!important;
+  border-color:#cfe0ff!important;
+  color:#1d4ed8!important;
+  -webkit-text-fill-color:#1d4ed8!important;
+  font-weight:700!important;
+  box-shadow:inset 3px 0 0 #2563eb!important;
+}
+body > #atsrsGlobalControls{
+  position:fixed!important;
+  top:18px!important;
+  right:24px!important;
+  bottom:auto!important;
+  left:auto!important;
+  z-index:2147482000!important;
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:10px!important;
+  width:max-content!important;
+  max-width:calc(100vw - 32px)!important;
+  transform:none!important;
+  isolation:isolate;
+}
+body > #atsrsGlobalControls > #atsrsThemeToggle{
+  order:1!important;
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  flex:0 0 50px!important;
+}
+body > #atsrsGlobalControls > #workspaceSwitcher{
+  order:2!important;
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+
+html[data-theme="light"] body #app button{
+  background:var(--atsrs-light-surface)!important;
+  border-color:var(--atsrs-light-border)!important;
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body #app button:hover{
+  background:var(--atsrs-light-soft)!important;
+  border-color:#b8c7d9!important;
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+}
+html[data-theme="light"] body #app #profilePage .account-tabs button.active,
+html[data-theme="light"] body #app .module-tabs button.active,
+html[data-theme="light"] body #app .mode-choice button.active,
+html[data-theme="light"] body #app .talent-view-switch button.active{
+  background:var(--atsrs-light-blue-soft)!important;
+  border-color:#b9d2ff!important;
+  color:#173b75!important;
+  -webkit-text-fill-color:#173b75!important;
+  font-weight:700!important;
+  opacity:1!important;
+}
+html[data-theme="light"] body #app :where(.danger-button,.delete-button,.action){
+  background:#fffafa!important;
+  border-color:#e2b6b9!important;
+  color:#a72e36!important;
+  -webkit-text-fill-color:#a72e36!important;
+}
+
+html[data-theme="light"] body #app :where(
+  input[type="text"],input[type="search"],input[type="email"],input[type="tel"],
+  input[type="date"],input[type="number"],textarea,select,
+  .atsrs-document-filter input,.talent-searchbar input,.personnel-filterbar input
+){
+  background:var(--atsrs-light-surface)!important;
+  border-color:var(--atsrs-light-border)!important;
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+  opacity:1!important;
+}
+html[data-theme="light"] body #app :where(
+  input[type="text"],input[type="search"],input[type="email"],input[type="tel"],
+  input[type="date"],input[type="number"],textarea
+)::placeholder{
+  color:var(--atsrs-light-faint)!important;
+  -webkit-text-fill-color:var(--atsrs-light-faint)!important;
+  opacity:1!important;
+}
+
+html[data-theme="light"] body #app #certificatesPage :where(
+  table thead th,table thead th button,table thead th button span,
+  #thCertificate2,#thProvider2,#thExpiry2,#thStatus2,#thAction2
+){
+  color:#33465c!important;
+  -webkit-text-fill-color:#33465c!important;
+  font-weight:750!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html[data-theme="light"] body #app #certificatesPage table tbody :where(td,td span){
+  color:#20384b!important;
+  -webkit-text-fill-color:#20384b!important;
+}
+html[data-theme="light"] body #app #certificatesPage .atsrs-document-filter input{
+  background:var(--atsrs-light-surface)!important;
+  border:1px solid #b8c7d2!important;
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+}
+
+html[data-theme="light"] body #app #refsPage :where(
+  .preview-box,.atsrs-v134-row,.atsrs-v134-empty,.atsrs-v134-list,
+  .reference-item,.appraisal-item,.cv-item
+){
+  background:#f8fafc!important;
+  border-color:#c7d3dc!important;
+  color:#20384b!important;
+}
+html[data-theme="light"] body #app #refsPage :where(button,.secondary){
+  background:var(--atsrs-light-surface)!important;
+  border-color:var(--atsrs-light-border)!important;
+  color:#284256!important;
+  -webkit-text-fill-color:#284256!important;
+}
+
+/* Light product experience: clean white surfaces, readable roadmap states. */
+html[data-theme="light"] body #app #introPage .updates-hero{
+  background:linear-gradient(135deg,#eff6ff 0%,#f6f8fb 72%)!important;
+  border-color:var(--atsrs-light-border)!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body #app #introPage .updates-hero h3{
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+  font-weight:750!important;
+}
+html[data-theme="light"] body #app #introPage .updates-hero p{
+  color:var(--atsrs-light-muted)!important;
+  -webkit-text-fill-color:var(--atsrs-light-muted)!important;
+  font-size:16px!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-section{
+  padding:24px!important;
+  background:var(--atsrs-light-surface)!important;
+  border:1px solid var(--atsrs-light-border)!important;
+  box-shadow:var(--atsrs-light-shadow)!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-kicker{
+  color:var(--atsrs-light-blue)!important;
+  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
+  font-size:12px!important;
+  letter-spacing:.06em!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-heading h3,
+html[data-theme="light"] body #app #introPage .roadmap-card h3{
+  color:var(--atsrs-light-text)!important;
+  -webkit-text-fill-color:var(--atsrs-light-text)!important;
+  font-weight:700!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-heading>p,
+html[data-theme="light"] body #app #introPage .roadmap-card p{
+  color:var(--atsrs-light-muted)!important;
+  -webkit-text-fill-color:var(--atsrs-light-muted)!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-heading>p{
+  max-width:420px!important;
+  font-size:14px!important;
+  line-height:1.5!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-grid{
+  gap:16px!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-card{
+  min-height:210px!important;
+  padding:20px!important;
+  background:var(--atsrs-light-surface)!important;
+  border:1px solid var(--atsrs-light-border)!important;
+  box-shadow:var(--atsrs-light-shadow)!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-card:hover{
+  border-color:#b8c7d9!important;
+  box-shadow:0 8px 22px rgba(15,23,42,.09)!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-card-featured{
+  border-color:#bbe7c8!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-icon{
+  width:40px!important;
+  height:40px!important;
+  margin-top:20px!important;
+  background:var(--atsrs-light-blue-soft)!important;
+  border-color:#cfe0ff!important;
+  color:var(--atsrs-light-blue)!important;
+  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
+  border-radius:10px!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-news{
+  color:var(--atsrs-light-green)!important;
+  -webkit-text-fill-color:var(--atsrs-light-green)!important;
+  letter-spacing:.06em!important;
+}
+html[data-theme="light"] body #app #introPage .roadmap-status{
+  min-height:24px!important;
+  padding:5px 9px!important;
+  font-size:11px!important;
+  letter-spacing:.03em!important;
+}
+html[data-theme="light"] body #app #introPage .status-available{
+  background:var(--atsrs-light-green-soft)!important;
+  border-color:#bbe7c8!important;
+  color:var(--atsrs-light-green)!important;
+  -webkit-text-fill-color:var(--atsrs-light-green)!important;
+}
+html[data-theme="light"] body #app #introPage .status-development{
+  background:var(--atsrs-light-amber-soft)!important;
+  border-color:#f2d39b!important;
+  color:var(--atsrs-light-amber)!important;
+  -webkit-text-fill-color:var(--atsrs-light-amber)!important;
+}
+html[data-theme="light"] body #app #introPage .status-planned{
+  background:var(--atsrs-light-neutral-soft)!important;
+  border-color:#d6dee8!important;
+  color:var(--atsrs-light-neutral)!important;
+  -webkit-text-fill-color:var(--atsrs-light-neutral)!important;
+}
+
+html[data-theme="light"] body #app :where(button,input,select,textarea):focus-visible{
+  outline:0!important;
+  box-shadow:var(--atsrs-light-focus)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+
+@media(max-width:800px){
+  body > #atsrsGlobalControls{
+    top:12px!important;
+    right:12px!important;
+    gap:8px!important;
+    max-width:calc(100vw - 24px)!important;
+  }
+}

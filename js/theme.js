@@ -53,18 +53,23 @@
     if(!button){
       button=document.createElement('button');
       button.id='atsrsThemeToggle';
-      button.className='atsrs-theme-toggle';
-      button.type='button';
-      button.setAttribute('role','switch');
+    }
+    button.className='atsrs-theme-toggle';
+    button.type='button';
+    button.setAttribute('role','switch');
+    if(!button.querySelector('.atsrs-theme-track')){
       button.innerHTML=
         '<span class="atsrs-theme-track" aria-hidden="true">'+
           '<span class="atsrs-theme-sun">&#9728;</span>'+
           '<span class="atsrs-theme-moon">&#9790;</span>'+
           '<span class="atsrs-theme-thumb"></span>'+
         '</span>';
+    }
+    if(button.dataset.atsrsThemeBound!=='true'){
       button.addEventListener('click',function(){
         applyTheme(currentTheme()==='light'?'dark':'light',true);
       });
+      button.dataset.atsrsThemeBound='true';
     }
     controls.appendChild(button);
 
