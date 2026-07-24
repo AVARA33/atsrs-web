@@ -138,12 +138,16 @@ Deno.serve(async (req) => {
   if (action === "directory") {
     const { data: directoryProfiles, error: profilesError } = await admin
       .from("atsrs_talent_profiles")
-      .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at")
+      .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at,profile_visibility")
       .eq("discoverable", true)
+      .eq("profile_visibility", "Public")
       .order("last_active_at", { ascending: false });
     if (profilesError) return json(500, { error: "Candidate profiles could not be loaded." });
 
-    const profileIds = (directoryProfiles || []).map((profile) => profile.user_id);
+    const normalizeUserId = (value: unknown) => String(value || "").trim().toLowerCase();
+    const profileIds = (directoryProfiles || [])
+      .map((profile) => normalizeUserId(profile.user_id))
+      .filter(Boolean);
     if (!profileIds.length) return json(200, { profiles: [] });
 
     const { data: certificateRows, error: certificatesError } = await admin
@@ -155,8 +159,11 @@ Deno.serve(async (req) => {
       .limit(10000);
     if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
 
-    const certifiedUsers = new Set((certificateRows || []).map((row) => row.user_id));
-    const profiles = (directoryProfiles || []).filter((profile) => certifiedUsers.has(profile.user_id));
+    const certifiedUsers = new Set(
+      (certificateRows || []).map((row) => normalizeUserId(row.user_id)).filter(Boolean),
+    );
+    const profiles = (directoryProfiles || [])
+      .filter((profile) => certifiedUsers.has(normalizeUserId(profile.user_id)));
     return json(200, { profiles });
   }
 

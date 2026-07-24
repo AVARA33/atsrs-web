@@ -5,7 +5,7 @@ html[data-theme="light"] body{color-scheme:light!important}
 
 /* One stable top-right group prevents the theme control and account switcher overlapping. */
 .atsrs-global-controls{
-  position:fixed;
+  position:absolute;
   top:18px;
   right:24px;
   z-index:13500;
@@ -455,7 +455,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V332: final light-theme contrast and fixed top-right controls. */
+/* V333: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -521,7 +521,7 @@ html[data-theme="light"] body #app .nav button.active{
   box-shadow:inset 3px 0 0 #2563eb!important;
 }
 body > #atsrsGlobalControls{
-  position:fixed!important;
+  position:absolute!important;
   top:18px!important;
   right:24px!important;
   bottom:auto!important;
@@ -760,5 +760,310 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
     right:12px!important;
     gap:8px!important;
     max-width:calc(100vw - 24px)!important;
+  }
+}
+
+/* V333 — Account light mode: one calm, fully light and responsive system. */
+html[data-theme="light"] body #app #profilePage{
+  color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage > .panel{
+  padding:24px!important;
+  overflow:visible!important;
+  border:1px solid #dce4ed!important;
+  border-radius:20px!important;
+  background:#fff!important;
+  box-shadow:0 2px 10px rgba(15,23,42,.06)!important;
+}
+html[data-theme="light"] body #app #profilePage > .panel > h3{
+  margin:0 0 6px!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+  font-size:28px!important;
+  font-weight:700!important;
+  letter-spacing:-.02em!important;
+}
+html[data-theme="light"] body #app #profilePage #userEmail{
+  margin-bottom:14px!important;
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+}
+html[data-theme="light"] body #app #profilePage .account-tabs{
+  gap:8px!important;
+  margin-bottom:20px!important;
+}
+html[data-theme="light"] body #app #profilePage .account-tabs button{
+  min-height:40px!important;
+  padding:8px 15px!important;
+  border:1px solid #dce4ed!important;
+  border-radius:10px!important;
+  background:#f8fafc!important;
+  color:#334155!important;
+  -webkit-text-fill-color:#334155!important;
+  font-weight:650!important;
+}
+html[data-theme="light"] body #app #profilePage .account-tabs button.active{
+  border-color:#bfd4ff!important;
+  background:#eaf2ff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-general-head{
+  display:grid!important;
+  grid-template-columns:minmax(280px,1fr) minmax(340px,370px)!important;
+  gap:24px!important;
+  align-items:center!important;
+  margin-bottom:20px!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-photo-card{
+  min-height:94px!important;
+  margin:0!important;
+  padding:12px 0!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-photo-preview{
+  width:76px!important;
+  height:76px!important;
+  flex:0 0 76px!important;
+  border:1px solid #cbd5e1!important;
+  background:#f8fafc!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-photo-copy h4{
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-photo-copy p,
+html[data-theme="light"] body #app #profilePage .profile-photo-status{
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-panel{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  max-width:370px!important;
+  margin:0!important;
+  padding:12px!important;
+  justify-self:end!important;
+  border:1px solid #dce4ed!important;
+  border-radius:14px!important;
+  background:#f8fafc!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-kicker{
+  color:#15803d!important;
+  -webkit-text-fill-color:#15803d!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-heading h4,
+html[data-theme="light"] body #app #profilePage .admin-overview-stat strong{
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-secure,
+html[data-theme="light"] body #app #profilePage .admin-overview-stat span,
+html[data-theme="light"] body #app #profilePage .admin-overview-footer{
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-stats{
+  gap:7px!important;
+  margin:8px 0!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-stat{
+  padding:7px 8px!important;
+  border:1px solid #dce4ed!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-footer{
+  border-color:#dce4ed!important;
+}
+html[data-theme="light"] body #app #profilePage .admin-overview-refresh{
+  width:auto!important;
+  min-width:68px!important;
+  min-height:30px!important;
+  padding:5px 10px!important;
+  border-color:#cbd5e1!important;
+  background:#fff!important;
+  color:#334155!important;
+  -webkit-text-fill-color:#334155!important;
+}
+html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
+  grid-template-columns:260px 260px!important;
+  column-gap:24px!important;
+  row-gap:14px!important;
+  padding-top:18px!important;
+  border-color:#dce4ed!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-details-layout{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:14px!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-details-primary,
+html[data-theme="light"] body #app #profilePage .profile-details-secondary{
+  gap:10px!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-labeled-field > span,
+html[data-theme="light"] body #app #profilePage .work-availability-grid > label > span,
+html[data-theme="light"] body #app #profilePage .work-type-field > span{
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+  font-size:12px!important;
+  font-weight:600!important;
+}
+html[data-theme="light"] body #app #profilePage :where(
+  .profile-labeled-field>input,.profile-labeled-field>select,
+  .work-availability-grid input,.work-availability-grid select,
+  .phone-field
+){
+  height:42px!important;
+  min-height:42px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body #app #profilePage .phone-field input{
+  height:40px!important;
+  min-height:40px!important;
+  background:#fff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage .phone-code-picker,
+html[data-theme="light"] body #app #profilePage .phone-code-display{
+  background:#f8fafc!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage .phone-code-display{
+  border-right:1px solid #dce4ed!important;
+  border-radius:9px 0 0 9px!important;
+}
+html[data-theme="light"] body #app #profilePage .phone-verification-note{
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+}
+html[data-theme="light"] body #app #profilePage .phone-verification-note b{
+  color:#b42318!important;
+  -webkit-text-fill-color:#b42318!important;
+}
+html[data-theme="light"] body #app #profilePage .inline-verify-btn{
+  width:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:2px 4px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#2563eb!important;
+  -webkit-text-fill-color:#2563eb!important;
+  text-decoration:underline!important;
+}
+html[data-theme="light"] body #app #profilePage .work-availability-card{
+  margin-top:20px!important;
+  padding:18px!important;
+  border:1px solid #dce4ed!important;
+  border-radius:16px!important;
+  background:#f8fafc!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body #app #profilePage .work-availability-heading h4{
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage .work-availability-heading p,
+html[data-theme="light"] body #app #profilePage .work-availability-heading > span{
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+}
+html[data-theme="light"] body #app #profilePage .work-type-options{
+  min-height:42px!important;
+  padding:7px 10px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:10px!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body #app #profilePage .work-type-options label,
+html[data-theme="light"] body #app #profilePage .work-type-options span{
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage input[type="checkbox"]{
+  accent-color:#2563eb!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-save-row{
+  margin-top:18px!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-save-row button{
+  width:auto!important;
+  min-width:108px!important;
+  min-height:42px!important;
+  padding:9px 18px!important;
+  border-color:#2563eb!important;
+  background:#2563eb!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font-weight:700!important;
+  box-shadow:0 1px 2px rgba(37,99,235,.18)!important;
+}
+html[data-theme="light"] body #app #profilePage .profile-save-row button:hover{
+  border-color:#1d4ed8!important;
+  background:#1d4ed8!important;
+}
+html[data-theme="light"] body #app #profilePage :where(input,select,textarea):-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px #fff inset!important;
+  -webkit-text-fill-color:#172033!important;
+  caret-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage :where(input,select,textarea):focus{
+  border-color:#2563eb!important;
+  box-shadow:0 0 0 3px rgba(37,99,235,.16)!important;
+}
+html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row){
+  border-color:#dce4ed!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row) :where(h4,strong){
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row) :where(p,span){
+  color:#5f7087!important;
+  -webkit-text-fill-color:#5f7087!important;
+}
+
+@media(max-width:1180px){
+  html[data-theme="light"] body #app #profilePage .profile-general-head{
+    grid-template-columns:1fr!important;
+  }
+  html[data-theme="light"] body #app #profilePage .admin-overview-panel{
+    max-width:none!important;
+    justify-self:stretch!important;
+  }
+  html[data-theme="light"] body #app #profilePage .profile-details-layout{
+    grid-template-columns:1fr!important;
+  }
+}
+@media(max-width:760px){
+  html[data-theme="light"] body #app #profilePage > .panel{
+    padding:16px!important;
+    border-radius:16px!important;
+  }
+  html[data-theme="light"] body #app #profilePage > .panel > h3{
+    font-size:24px!important;
+  }
+  html[data-theme="light"] body #app #profilePage .profile-details-primary,
+  html[data-theme="light"] body #app #profilePage .profile-details-secondary{
+    grid-template-columns:1fr!important;
+  }
+  html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
+    grid-template-columns:1fr!important;
+  }
+  html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid > .phone-entry{
+    grid-column:1!important;
+    width:100%!important;
+  }
+  html[data-theme="light"] body #app #profilePage .work-availability-grid{
+    grid-template-columns:1fr!important;
   }
 }
