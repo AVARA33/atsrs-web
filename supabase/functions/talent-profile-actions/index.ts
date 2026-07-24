@@ -138,12 +138,24 @@ Deno.serve(async (req) => {
   const targetUserId = clean(body.target_user_id, 50);
   if (!targetUserId) return json(400, { error: "Professional profile is required." });
 
-  const { data: profile } = await admin
+  if (action === "remove_from_personnel") {
+    const { error } = await admin
+      .from("atsrs_talent_personnel_links")
+      .delete()
+      .eq("company_user_id", user.id)
+      .eq("professional_user_id", targetUserId);
+    if (error) return json(500, { error: "This professional could not be removed from Company Personnel." });
+    return json(200, { removed: true });
+  }
+
+  const { data: profile, error: profileError } = await admin
     .from("atsrs_talent_profiles")
-    .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable")
+    .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable,profile_visibility")
     .eq("user_id", targetUserId)
     .eq("discoverable", true)
+    .eq("profile_visibility", "Public")
     .maybeSingle();
+  if (profileError) return json(500, { error: "This professional profile could not be verified." });
   if (!profile) return json(404, { error: "This professional profile is unavailable." });
 
   if (action === "add_to_personnel") {
@@ -163,14 +175,16 @@ Deno.serve(async (req) => {
     return json(200, { added: true, link, profile });
   }
 
-  if (action === "remove_from_personnel") {
-    const { error } = await admin
+  if (action === "summary" || action === "cv") {
+    const { data: access, error: accessError } = await admin
       .from("atsrs_talent_personnel_links")
-      .delete()
+      .select("id")
       .eq("company_user_id", user.id)
-      .eq("professional_user_id", targetUserId);
-    if (error) return json(500, { error: "This professional could not be removed from Company Personnel." });
-    return json(200, { removed: true });
+      .eq("professional_user_id", targetUserId)
+      .eq("status", "access_granted")
+      .maybeSingle();
+    if (accessError) return json(500, { error: "Document access could not be verified." });
+    if (!access) return json(403, { error: "The professional has not granted document access to this company." });
   }
 
   if (action === "summary") {

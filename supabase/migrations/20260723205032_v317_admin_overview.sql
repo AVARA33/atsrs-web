@@ -8,9 +8,8 @@ create table if not exists public.atsrs_admin_users (
 alter table public.atsrs_admin_users enable row level security;
 revoke all on table public.atsrs_admin_users from anon, authenticated;
 
-insert into public.atsrs_admin_users (user_id)
-values ('a45fb228-ad16-4b8a-8c9f-2064c39e453d')
-on conflict (user_id) do nothing;
+-- Admin membership is operational configuration. Provision it explicitly in each
+-- environment after the target auth user has been verified; never commit a user UUID.
 
 create table if not exists public.atsrs_ai_usage (
   id bigint generated always as identity primary key,
@@ -63,7 +62,7 @@ returns table (
 )
 language plpgsql
 security definer
-set search_path = public, auth
+set search_path = ''
 as $$
 declare
   v_is_admin boolean;

@@ -1,4 +1,4 @@
-/* ATSRS V317 - protected owner-only operational overview. */
+/* ATSRS V318 candidate - protected owner-only operational overview. */
 (function () {
   'use strict';
 
@@ -12,9 +12,10 @@
   }
 
   function money(value) {
+    if (value === null || value === undefined || value === '') return '—';
     var amount = Number(value);
     if (!Number.isFinite(amount)) return '—';
-    return '$' + amount.toFixed(2);
+    return String.fromCharCode(36) + amount.toFixed(2);
   }
 
   function hidePanel() {
