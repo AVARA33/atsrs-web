@@ -1216,7 +1216,7 @@ body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{
   grid-column:1/-1;
   display:grid;
-  grid-template-columns:minmax(560px,.9fr) minmax(700px,1.1fr);
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
   gap:24px;
   width:100%;
   align-items:end;
@@ -1641,7 +1641,7 @@ body.profile-photo-cropping{overflow:hidden}
   outline-offset:2px;
 }
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
-@media(max-width:1380px){
+@media(max-width:1480px){
   #profilePage #accountGeneralTab>.profile-grid{
     grid-template-columns:minmax(220px,280px) minmax(220px,280px)!important;
     width:100%!important;
