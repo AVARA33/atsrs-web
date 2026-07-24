@@ -135,6 +135,31 @@ Deno.serve(async (req) => {
     return json(403, { error: "Open your ATSRS Corporate workspace to use this function." });
   }
 
+  if (action === "directory") {
+    const { data: directoryProfiles, error: profilesError } = await admin
+      .from("atsrs_talent_profiles")
+      .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at")
+      .eq("discoverable", true)
+      .order("last_active_at", { ascending: false });
+    if (profilesError) return json(500, { error: "Candidate profiles could not be loaded." });
+
+    const profileIds = (directoryProfiles || []).map((profile) => profile.user_id);
+    if (!profileIds.length) return json(200, { profiles: [] });
+
+    const { data: certificateRows, error: certificatesError } = await admin
+      .from("atsrs_files")
+      .select("user_id")
+      .eq("account_type", "personal")
+      .eq("category", "document")
+      .in("user_id", profileIds)
+      .limit(10000);
+    if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
+
+    const certifiedUsers = new Set((certificateRows || []).map((row) => row.user_id));
+    const profiles = (directoryProfiles || []).filter((profile) => certifiedUsers.has(profile.user_id));
+    return json(200, { profiles });
+  }
+
   if (action === "personnel_links") {
     const { data: links, error: linksError } = await admin
       .from("atsrs_talent_personnel_links")

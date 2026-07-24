@@ -1,4 +1,4 @@
-/* ATSRS V326 - server-enforced candidate profile visibility. */
+/* ATSRS V327 - server-enforced candidate profile visibility. */
 (function(){
   'use strict';
   var profiles=[];
@@ -633,10 +633,16 @@
     if(mode()!=='company')return;
     var grid=byId('talentDirectoryGrid'),status=byId('talentDirectoryStatus'),c=client();if(!grid||!c)return;
     loading=true;if(status){status.textContent='Loading professional profiles...';status.classList.remove('hidden')}
-    var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
+    try{
+      var result=await actionCall({action:'directory'});
+      profiles=Array.isArray(result.profiles)?result.profiles:[];
+    }catch(error){
+      if(status){status.textContent=friendlyError(error,'Candidate profiles could not be loaded. Please refresh and try again.');status.classList.remove('hidden')}
+      console.warn('ATSRS talent directory load failed',error);
+      loading=false;
+      return;
+    }
     loading=false;
-    if(result.error){if(status){status.textContent='Professional profiles could not be loaded. Please refresh and try again.';status.classList.remove('hidden')}console.warn('ATSRS talent directory load failed',result.error);return}
-    profiles=(Array.isArray(result.data)?result.data:[]).filter(function(profile){return profileReadiness(profile)>=90});
     try{await loadPersonnelLinks()}catch(error){console.warn('ATSRS linked personnel load failed',error);renderLinkedPersonnel()}
     fillSelect('talentPositionFilter',profiles.map(function(profile){return profile.position}),'All professions');
     fillSelect('talentCountryFilter',profiles.map(function(profile){return profile.country}),'All countries');
