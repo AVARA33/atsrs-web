@@ -455,7 +455,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V333: final light-theme contrast and fixed top-right controls. */
+/* V334: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -763,7 +763,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V333 — Account light mode: one calm, fully light and responsive system. */
+/* V334 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }

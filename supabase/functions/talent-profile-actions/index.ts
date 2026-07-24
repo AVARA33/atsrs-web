@@ -150,12 +150,14 @@ Deno.serve(async (req) => {
       .filter(Boolean);
     if (!profileIds.length) return json(200, { profiles: [] });
 
+    // Load certificate owners independently and join them in memory. Passing the
+    // profile UUID array through PostgREST's `in` filter intermittently returned
+    // no rows in production even though qualifying files existed.
     const { data: certificateRows, error: certificatesError } = await admin
       .from("atsrs_files")
       .select("user_id")
       .eq("account_type", "personal")
       .eq("category", "document")
-      .in("user_id", profileIds)
       .limit(10000);
     if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
 
@@ -164,6 +166,11 @@ Deno.serve(async (req) => {
     );
     const profiles = (directoryProfiles || [])
       .filter((profile) => certifiedUsers.has(normalizeUserId(profile.user_id)));
+    console.info("talent-profile-actions directory", {
+      eligible_profiles: profileIds.length,
+      certificate_owners: certifiedUsers.size,
+      returned_profiles: profiles.length,
+    });
     return json(200, { profiles });
   }
 
