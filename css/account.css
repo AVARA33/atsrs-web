@@ -1103,10 +1103,10 @@ body #modeChoiceBox:not(.mode-error) button::before{
   align-self:stretch;
   justify-self:end;
   width:100%;
-  max-width:720px;
+  max-width:390px;
   min-width:0;
   margin:2px 0 14px;
-  padding:10px 12px;
+  padding:8px 9px;
   box-sizing:border-box;
   border:1px solid rgba(53,89,108,.72);
   border-radius:14px;
@@ -1121,25 +1121,25 @@ body:not(.personal-mode) .admin-overview-panel{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:18px;
+  gap:8px;
 }
 .admin-overview-kicker{
   color:#64e58c;
-  font-size:10px;
+  font-size:8px;
   font-weight:800;
   letter-spacing:.12em;
 }
 .admin-overview-heading h4{
   margin:2px 0 0;
   color:#edf6fa;
-  font-size:15px;
+  font-size:13px;
 }
 .admin-overview-secure{
   display:inline-flex;
   align-items:center;
-  gap:7px;
+  gap:5px;
   color:#92a9b8;
-  font-size:11px;
+  font-size:9px;
   white-space:nowrap;
 }
 .admin-overview-secure i{
@@ -1152,12 +1152,12 @@ body:not(.personal-mode) .admin-overview-panel{
 .admin-overview-stats{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:7px;
-  margin:8px 0 7px;
+  gap:4px;
+  margin:6px 0 5px;
 }
 .admin-overview-stat{
   min-width:0;
-  padding:7px 9px;
+  padding:5px 6px;
   border:1px solid rgba(48,76,96,.74);
   border-radius:10px;
   background:rgba(5,20,32,.58);
@@ -1166,26 +1166,26 @@ body:not(.personal-mode) .admin-overview-panel{
   display:block;
   overflow:hidden;
   color:#8098aa;
-  font-size:10px;
+  font-size:8px;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 .admin-overview-stat strong{
   display:block;
-  margin-top:3px;
+  margin-top:2px;
   color:#edf6fa;
-  font-size:17px;
+  font-size:14px;
   line-height:1;
 }
 .admin-overview-footer{
   display:grid!important;
   grid-template-columns:minmax(0,1fr) auto;
   align-items:center;
-  gap:10px;
-  padding-top:7px;
+  gap:6px;
+  padding-top:5px;
   border-top:1px solid rgba(48,76,96,.55);
   color:#7f96a8;
-  font-size:10px;
+  font-size:8px;
 }
 .admin-overview-footer > span{
   min-width:0;
@@ -1198,13 +1198,13 @@ body:not(.personal-mode) .admin-overview-panel{
   flex:0 0 auto;
   width:auto!important;
   min-width:0;
-  min-height:30px;
-  padding:5px 11px;
+  min-height:25px;
+  padding:4px 8px;
   border:1px solid rgba(58,91,111,.78);
   border-radius:8px;
   background:rgba(10,31,45,.72);
   color:#9ed5dc;
-  font-size:11px;
+  font-size:9px;
   font-weight:700;
   line-height:1;
   cursor:pointer;
