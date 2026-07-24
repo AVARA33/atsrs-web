@@ -15,10 +15,9 @@
     var button=document.getElementById('atsrsThemeToggle');
     if(!button)return;
     var light=currentTheme()==='light';
-    button.innerHTML='<span class="atsrs-theme-toggle-icon" aria-hidden="true">'+(light?'☾':'☀')+'</span><span class="atsrs-theme-toggle-label">'+(light?'Dark':'Light')+'</span>';
     button.setAttribute('aria-label','Switch to '+(light?'dark':'light')+' mode');
     button.setAttribute('title','Switch to '+(light?'dark':'light')+' mode');
-    button.setAttribute('aria-pressed',light?'true':'false');
+    button.setAttribute('aria-checked',light?'true':'false');
   }
 
   function applyTheme(theme,persist){
@@ -26,7 +25,7 @@
     document.documentElement.dataset.theme=theme;
     document.documentElement.style.colorScheme=theme;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',theme==='light'?'#f4f7fa':'#07111d');
+    if(meta)meta.setAttribute('content',theme==='light'?'#f6f8fb':'#07111d');
     if(persist)saveTheme(theme);
     syncButton();
     window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:theme}}));
@@ -34,20 +33,47 @@
 
   function syncPlacement(){
     var app=document.getElementById('app');
-    document.body.classList.toggle('atsrs-app-visible',!!(app&&!app.classList.contains('hidden')));
+    var appVisible=!!(app&&!app.classList.contains('hidden'));
+    document.body.classList.toggle('atsrs-app-visible',appVisible);
+    var workspace=document.getElementById('workspaceSwitcher');
+    if(workspace)workspace.hidden=!appVisible;
   }
 
-  function bind(){
-    if(!document.getElementById('atsrsThemeToggle')){
-      var button=document.createElement('button');
+  function ensureControls(){
+    var controls=document.getElementById('atsrsGlobalControls');
+    if(!controls){
+      controls=document.createElement('div');
+      controls.id='atsrsGlobalControls';
+      controls.className='atsrs-global-controls';
+      controls.setAttribute('aria-label','Display and account controls');
+      document.body.appendChild(controls);
+    }
+
+    var button=document.getElementById('atsrsThemeToggle');
+    if(!button){
+      button=document.createElement('button');
       button.id='atsrsThemeToggle';
       button.className='atsrs-theme-toggle';
       button.type='button';
+      button.setAttribute('role','switch');
+      button.innerHTML=
+        '<span class="atsrs-theme-track" aria-hidden="true">'+
+          '<span class="atsrs-theme-sun">&#9728;</span>'+
+          '<span class="atsrs-theme-moon">&#9790;</span>'+
+          '<span class="atsrs-theme-thumb"></span>'+
+        '</span>';
       button.addEventListener('click',function(){
         applyTheme(currentTheme()==='light'?'dark':'light',true);
       });
-      document.body.appendChild(button);
     }
+    controls.appendChild(button);
+
+    var workspace=document.getElementById('workspaceSwitcher');
+    if(workspace)controls.appendChild(workspace);
+  }
+
+  function bind(){
+    ensureControls();
     applyTheme(currentTheme(),false);
     syncPlacement();
 

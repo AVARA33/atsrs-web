@@ -1,206 +1,456 @@
-/* ATSRS global appearance modes. Dark remains the default. */
+/* ATSRS appearance system. Dark is the default; light is a complete UI theme. */
 html{color-scheme:dark}
-html[data-theme="light"]{color-scheme:light}
+html[data-theme="light"],
+html[data-theme="light"] body{color-scheme:light!important}
 
-.atsrs-theme-toggle{
-  position:fixed!important;
-  top:18px!important;
-  right:82px!important;
-  z-index:13500!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:7px!important;
-  width:auto!important;
-  min-width:74px!important;
-  min-height:40px!important;
-  margin:0!important;
-  padding:8px 11px!important;
-  border:1px solid rgba(88,115,139,.48)!important;
-  border-radius:13px!important;
-  background:rgba(7,18,30,.94)!important;
-  color:#dbe7ef!important;
-  box-shadow:0 10px 28px rgba(0,0,0,.18)!important;
-  font-size:11px!important;
-  font-weight:750!important;
-  line-height:1!important;
-  backdrop-filter:blur(14px);
+/* One stable top-right group prevents the theme control and account switcher overlapping. */
+.atsrs-global-controls{
+  position:fixed;
+  top:18px;
+  right:24px;
+  z-index:13500;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  width:max-content;
+  max-width:calc(100vw - 32px);
+  pointer-events:none;
 }
-body.atsrs-app-visible .atsrs-theme-toggle{right:214px!important}
-html.atsrs-public-share-mode .atsrs-theme-toggle{right:18px!important}
-.atsrs-theme-toggle:hover,.atsrs-theme-toggle:focus-visible{
-  border-color:rgba(120,151,176,.7)!important;
-  background:rgba(12,27,42,.98)!important;
+.atsrs-global-controls>*{pointer-events:auto}
+.atsrs-global-controls .workspace-switcher{
+  position:relative!important;
+  top:auto!important;
+  right:auto!important;
+  z-index:auto!important;
+}
+.atsrs-global-controls .workspace-switcher[hidden]{display:none!important}
+
+/* Compact familiar switch: no text box, no moving placement. */
+.atsrs-theme-toggle{
+  position:relative!important;
+  display:block!important;
+  flex:0 0 50px!important;
+  width:50px!important;
+  min-width:50px!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:1px solid #42566a!important;
+  border-radius:999px!important;
+  background:#101d2b!important;
+  color:#dbe7ef!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.18)!important;
+  cursor:pointer;
+  transform:none!important;
+  transition:border-color .18s ease,background-color .18s ease!important;
+}
+.atsrs-theme-toggle:hover,
+.atsrs-theme-toggle:focus-visible{
+  border-color:#71879a!important;
+  background:#152638!important;
+  outline:0!important;
   transform:none!important;
 }
-.atsrs-theme-toggle-icon{font-size:16px;line-height:1}
-
-html[data-theme="light"] body{
-  --atsrs-bg:#edf3f7;
-  --atsrs-bg2:#f7fafc;
-  --atsrs-panel:#ffffff;
-  --atsrs-panel2:#f3f7fa;
-  --atsrs-border:#cbd8e2;
-  --atsrs-text:#102235;
-  --atsrs-muted:#5f7285;
-  --v76-bg:#edf3f7;
-  --v76-panel:#ffffff;
-  --v76-panel2:#f3f7fa;
-  --v76-border:#cbd8e2;
-  --v76-text:#102235;
-  --v76-muted:#607487;
-  --atsrs-action-surface:rgba(243,247,250,.96);
-  --atsrs-action-surface-hover:#e8f0f5;
-  --atsrs-action-border:#bdccd8;
-  --atsrs-action-border-hover:#91a8ba;
-  --atsrs-action-text:#183047;
-  --atsrs-action-muted:#607487;
-  background:
-    radial-gradient(circle at 15% 0%,rgba(34,197,94,.07),transparent 28%),
-    radial-gradient(circle at 86% 12%,rgba(56,189,248,.08),transparent 30%),
-    linear-gradient(135deg,#f7fafc,#edf3f7 52%,#e7eff4)!important;
-  color:#102235!important;
+.atsrs-theme-toggle:focus-visible{box-shadow:0 0 0 3px rgba(56,189,248,.16)!important}
+.atsrs-theme-track{position:absolute;inset:0;display:block}
+.atsrs-theme-sun,
+.atsrs-theme-moon{
+  position:absolute;
+  top:50%;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+  color:#8396a8;
+  font-size:12px;
+  line-height:1;
+  transform:translateY(-50%);
+  transition:color .18s ease;
 }
-html[data-theme="light"] body::before{opacity:.14!important}
-html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){color:#102235!important;text-shadow:none!important}
-html[data-theme="light"] :where(p,small,.sub,.small-note,.field-hint,.field-label,.preview-box,.workspace-option small){color:#607487!important}
-html[data-theme="light"] a{color:#176b9a}
+.atsrs-theme-sun{right:4px}
+.atsrs-theme-moon{left:4px}
+.atsrs-theme-thumb{
+  position:absolute;
+  top:3px;
+  left:3px;
+  z-index:1;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#eef4f8;
+  box-shadow:0 2px 7px rgba(0,0,0,.3);
+  transition:transform .2s ease,background-color .2s ease;
+}
+html[data-theme="dark"] .atsrs-theme-moon{color:#f4f8fb}
+html[data-theme="light"] .atsrs-theme-sun{color:#8a5b00}
+html[data-theme="light"] .atsrs-theme-thumb{
+  background:#ffffff;
+  transform:translateX(24px);
+}
 
+/* Professional light palette: calm white surfaces, cool grey borders and restrained accent. */
+html[data-theme="light"] body{
+  --atsrs-bg:#f3f6f9;
+  --atsrs-bg2:#f8fafc;
+  --atsrs-panel:#ffffff;
+  --atsrs-panel2:#f7f9fb;
+  --atsrs-border:#d6e0e8;
+  --atsrs-text:#172b3d;
+  --atsrs-muted:#62778a;
+  --v76-bg:#f3f6f9;
+  --v76-panel:#ffffff;
+  --v76-panel2:#f7f9fb;
+  --v76-border:#d6e0e8;
+  --v76-text:#172b3d;
+  --v76-muted:#62778a;
+  --atsrs-action-surface:#ffffff;
+  --atsrs-action-surface-hover:#eef3f7;
+  --atsrs-action-border:#c8d4de;
+  --atsrs-action-border-hover:#9fb2c1;
+  --atsrs-action-text:#223c52;
+  --atsrs-action-muted:#65798b;
+  background:
+    radial-gradient(circle at 9% 0%,rgba(34,197,94,.045),transparent 25%),
+    radial-gradient(circle at 91% 5%,rgba(14,165,233,.055),transparent 26%),
+    #f3f6f9!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"] body::before{opacity:.05!important}
+html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){
+  color:#172b3d!important;
+  text-shadow:none!important;
+}
+html[data-theme="light"] :where(p,small,.sub,.small-note,.field-hint,.field-label,.preview-box,.workspace-option small){
+  color:#62778a!important;
+}
+html[data-theme="light"] a{color:#176f9f}
+
+/* Page shells and navigation. */
 html[data-theme="light"] :where(
-  .main,.shared-profile-page,.shared-profile-shell,.shared-profile-content,
+  .app,.main,.shared-profile-page,.shared-profile-shell,.shared-profile-content,
   #introPage,#dashboardPage,#candidatesPage,#personnelPage,#certificatesPage,
   #refsPage,#compliancePage,#reportsPage,#profilePage
-){color:#102235!important}
+){
+  background:transparent!important;
+  color:#172b3d!important;
+}
 html[data-theme="light"] .sidebar{
-  background:rgba(248,251,253,.97)!important;
-  border-color:#cfdae3!important;
+  background:rgba(255,255,255,.96)!important;
+  border-color:#d9e2e9!important;
   box-shadow:none!important;
 }
-html[data-theme="light"] .brand{color:#102235!important}
-html[data-theme="light"] .nav button{color:#334e65!important}
+html[data-theme="light"] .brand{color:#172b3d!important}
+html[data-theme="light"] .nav button{
+  background:transparent!important;
+  border-color:transparent!important;
+  color:#405a70!important;
+}
 html[data-theme="light"] .nav button:hover,
 html[data-theme="light"] .nav button.active{
-  background:#e8f0f5!important;
-  border-color:#c5d3de!important;
-  color:#102235!important;
+  background:#edf3f6!important;
+  border-color:#d2dde5!important;
+  color:#172b3d!important;
 }
 
+/* Cards, panels and nested operational surfaces. */
 html[data-theme="light"] :where(
-  .panel,.card,.snapshot-card,.mini-panel,.hero-card,.intro-hero,.roadmap-card,
-  .share-card,.preview-profile,.ref-card,.scan-box,.upload-simple,.import-box,
-  .risk-item,.doc-chip,.company-import-box,.atsrs-admin-overview,
-  .atsrs-notification-item,.atsrs-access-request,.atsrs-professional-message,
-  .candidate-card,.personnel-card,.talent-card,.directory-card,
+  .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,
+  .intro-service-card,.intro-hero,.hero-card,.roadmap-section,.roadmap-card,
+  .scan-box,.upload-simple,.import-box,.company-import-box,.risk-item,.doc-chip,
+  .ref-card,.preview-profile,.share-card,.atsrs-admin-overview,
+  .atsrs-notification-item,.atsrs-notification-settings,.atsrs-access-request,
+  .atsrs-professional-message,.candidate-card,.personnel-card,.talent-card,
+  .linked-personnel-card,.directory-card,.talent-message,.personnel-list,
   .shared-profile-hero,.shared-document-card,.shared-document-summary,
   .shared-profile-request-card,.shared-profile-error,.shared-profile-loading,
-  .atsrs-security-card,.atsrs-ai-consent,.date-picker-popover
+  .atsrs-security-card,.atsrs-ai-consent,.atsrs-ai-consent-check,
+  .atsrs-session-card,.date-picker-popover,.profile-photo-crop-dialog,
+  .file-preview-dialog,.file-preview-card,.file-preview-shell,
+  .shared-preview-card,.shared-preview-shell,.v76-audit-card
 ){
   background:#ffffff!important;
-  border-color:#cbd8e2!important;
-  color:#102235!important;
-  box-shadow:0 8px 26px rgba(36,63,82,.06)!important;
+  border-color:#d4dfe7!important;
+  color:#172b3d!important;
+  box-shadow:0 8px 24px rgba(36,61,80,.055)!important;
 }
-html[data-theme="light"] :where(.panel,.card,.snapshot-card,.roadmap-card,.shared-document-card) *{text-shadow:none!important}
+html[data-theme="light"] :where(
+  .panel,.card,.snapshot-card,.roadmap-card,.shared-document-card,
+  .talent-card,.linked-personnel-card
+) *{text-shadow:none!important}
+html[data-theme="light"] :where(
+  .snapshot-item,.career-record-row,.access-request-details,.cv-beta-box,
+  .ref-beta-box,.mini-docs em,.approve-flow i,.profile-link-demo
+){
+  background:#f7f9fb!important;
+  border-color:#d9e2e9!important;
+  color:#284258!important;
+}
 
-html[data-theme="light"] :where(input,select,textarea){
-  background:#ffffff!important;
-  border-color:#bdccd8!important;
-  color:#102235!important;
-  caret-color:#102235!important;
-}
-html[data-theme="light"] :where(input,textarea)::placeholder{color:#8293a2!important}
-html[data-theme="light"] :where(input,select,textarea):focus{
-  border-color:#5ba6c9!important;
-  box-shadow:0 0 0 3px rgba(56,189,248,.12)!important;
-  outline:0!important;
-}
-html[data-theme="light"] :where(button,.secondary,.module-tabs button,.account-tabs button){
-  background:#f2f6f9!important;
-  border-color:#bdccd8!important;
-  color:#183047!important;
+/* Forms. Explicit specificity defeats legacy dark !important declarations. */
+html[data-theme="light"] body :where(input,select,textarea),
+html[data-theme="light"] body .talent-searchbar :where(input,select),
+html[data-theme="light"] body .personnel-filterbar :where(input,select),
+html[data-theme="light"] body .talent-message-form :where(input,textarea),
+html[data-theme="light"] body #certificatesPage .atsrs-document-filter input{
+  color-scheme:light!important;
+  background-color:#ffffff!important;
+  border-color:#c8d4de!important;
+  color:#172b3d!important;
+  caret-color:#172b3d!important;
   box-shadow:none!important;
 }
-html[data-theme="light"] :where(button,.secondary,.module-tabs button,.account-tabs button):hover{
-  background:#e7eff4!important;
-  border-color:#9fb2c2!important;
-  color:#102235!important;
+html[data-theme="light"] body :where(input,textarea)::placeholder{color:#8797a5!important}
+html[data-theme="light"] body :where(input,select,textarea):hover{
+  background-color:#ffffff!important;
+  border-color:#adc0ce!important;
+}
+html[data-theme="light"] body :where(input,select,textarea):focus{
+  background-color:#ffffff!important;
+  border-color:#4c91b5!important;
+  box-shadow:0 0 0 3px rgba(31,132,180,.11)!important;
+  outline:0!important;
+}
+html[data-theme="light"] body select:not([multiple]),
+html[data-theme="light"] body .talent-searchbar select,
+html[data-theme="light"] body .personnel-filterbar select{
+  color-scheme:light!important;
+  background-color:#ffffff!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#718596 50%),
+    linear-gradient(135deg,#718596 50%,transparent 50%)!important;
+}
+
+/* Calm controls: no black filled buttons in light mode. */
+html[data-theme="light"] body :where(
+  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
+  .dashboard-view-button,.talent-view-switch button,.file-preview-close,
+  .share-request-close,.v76-audit-close,.v76-copy-btn
+){
+  background:#ffffff!important;
+  border-color:#c8d4de!important;
+  color:#263f54!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body :where(
+  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
+  .dashboard-view-button,.talent-view-switch button
+):hover{
+  background:#eef3f7!important;
+  border-color:#9fb2c1!important;
+  color:#172b3d!important;
   transform:none!important;
 }
-html[data-theme="light"] button:disabled{background:#e6ebef!important;color:#8997a3!important;border-color:#d3dde4!important}
-html[data-theme="light"] :where(.action,.danger-button,.delete-button){color:#b4232d!important;border-color:#e1a6aa!important;background:#fff7f7!important}
-html[data-theme="light"] :where(.good,.copy-ok,.badge-ready){color:#13733c!important}
+html[data-theme="light"] body :where(
+  .account-tabs button.active,.module-tabs button.active,.mode-choice button.active,
+  .talent-view-switch button.active,.auth-tab.active
+){
+  background:#e8f1f5!important;
+  border-color:#9eb7c7!important;
+  color:#173b50!important;
+}
+html[data-theme="light"] body button:disabled{
+  background:#edf1f4!important;
+  border-color:#dae2e8!important;
+  color:#8998a4!important;
+}
+html[data-theme="light"] body :where(.action,.danger-button,.delete-button,.workspace-logout-button){
+  background:#fffafa!important;
+  border-color:#e2b6b9!important;
+  color:#aa2d35!important;
+}
+html[data-theme="light"] :where(.good,.copy-ok,.badge-ready){color:#187642!important}
 
-html[data-theme="light"] :where(table,thead,tbody,tr,th,td,.table-wrap){background:transparent!important;color:#183047!important}
-html[data-theme="light"] :where(th,td,tr,.setting-row){border-color:#d7e1e8!important}
-html[data-theme="light"] tbody tr:hover{background:#f5f8fa!important}
+/* Tables and lists. */
+html[data-theme="light"] :where(table,thead,tbody,tr,th,td,.table-wrap){
+  background:transparent!important;
+  color:#263f54!important;
+}
+html[data-theme="light"] :where(th,td,tr,.setting-row){border-color:#dbe3e9!important}
+html[data-theme="light"] tbody tr:hover{background:#f6f8fa!important}
 html[data-theme="light"] :where(.badge,.pill,.mode-badge,.auth-kicker){
-  background:#f3f8f5!important;
-  border-color:#b7d9c4!important;
-  color:#197446!important;
+  background:#f4faf6!important;
+  border-color:#b9dbc6!important;
+  color:#197246!important;
 }
 
+/* Stable account selector and theme switch. */
 html[data-theme="light"] .workspace-switcher-button,
 html[data-theme="light"] .workspace-switcher-menu{
   background:rgba(255,255,255,.98)!important;
-  border-color:#c3d0da!important;
-  color:#183047!important;
-  box-shadow:0 12px 32px rgba(35,61,80,.12)!important;
-}
-html[data-theme="light"] .workspace-switcher-avatar{background:#edf3f7!important;border-color:#b9c9d5!important;color:#183047!important}
-html[data-theme="light"] .workspace-switcher-copy strong,
-html[data-theme="light"] .workspace-option,
-html[data-theme="light"] .workspace-logout-button{color:#183047!important}
-html[data-theme="light"] .workspace-switcher-copy>span{color:#65798a!important}
-html[data-theme="light"] .workspace-option:hover,
-html[data-theme="light"] .workspace-logout-button:hover{background:#edf3f7!important;border-color:#c3d0da!important}
-html[data-theme="light"] .workspace-switcher-divider{background:#d5dfe6!important}
-html[data-theme="light"] .atsrs-theme-toggle{
-  background:rgba(255,255,255,.98)!important;
-  border-color:#c3d0da!important;
-  color:#183047!important;
+  border-color:#cbd7e0!important;
+  color:#263f54!important;
   box-shadow:0 10px 28px rgba(35,61,80,.1)!important;
 }
+html[data-theme="light"] .workspace-switcher-avatar{
+  background:#f1f5f8!important;
+  border-color:#bfcfd9!important;
+  color:#263f54!important;
+}
+html[data-theme="light"] .workspace-switcher-copy strong,
+html[data-theme="light"] .workspace-option{color:#263f54!important}
+html[data-theme="light"] .workspace-switcher-copy>span{color:#6c7f8f!important}
+html[data-theme="light"] .workspace-option:hover,
+html[data-theme="light"] .workspace-logout-button:hover{
+  background:#eef3f7!important;
+  border-color:#cbd7e0!important;
+}
+html[data-theme="light"] .workspace-switcher-divider{background:#dbe3e9!important}
+html[data-theme="light"] .atsrs-theme-toggle{
+  background:#e8eef3!important;
+  border-color:#b8c8d4!important;
+  color:#263f54!important;
+  box-shadow:0 7px 18px rgba(35,61,80,.08)!important;
+}
+html[data-theme="light"] .atsrs-theme-toggle:hover{background:#dde7ed!important}
 
-html[data-theme="light"] .auth{
-  background:linear-gradient(135deg,#f7fafc 0%,#e8f1f5 48%,#e1f0ed 100%)!important;
+/* Login is a first-class light page, not a dark page with a white card. */
+html[data-theme="light"] #auth.auth{
+  background:
+    radial-gradient(circle at 16% 18%,rgba(34,197,94,.07),transparent 26%),
+    radial-gradient(circle at 82% 28%,rgba(14,165,233,.08),transparent 28%),
+    linear-gradient(145deg,#f9fbfc,#edf3f6)!important;
+  color:#172b3d!important;
 }
-html[data-theme="light"] .auth::before{
-  background:radial-gradient(circle at 17% 24%,rgba(34,197,94,.1),transparent 28%),radial-gradient(circle at 76% 38%,rgba(56,189,248,.1),transparent 30%)!important;
+html[data-theme="light"] #auth.auth::before{
+  background:linear-gradient(120deg,rgba(255,255,255,.5),transparent)!important;
+  opacity:.8!important;
 }
-html[data-theme="light"] :where(.auth-card,.auth-intro){
-  background:rgba(255,255,255,.94)!important;
-  border-color:#c7d5df!important;
-  color:#102235!important;
-  box-shadow:0 24px 70px rgba(35,61,80,.12)!important;
+html[data-theme="light"] #auth .auth-card,
+html[data-theme="light"] #auth .auth-intro{
+  background:rgba(255,255,255,.96)!important;
+  border-color:#d3dee6!important;
+  color:#172b3d!important;
+  box-shadow:0 24px 70px rgba(36,61,80,.12)!important;
 }
-html[data-theme="light"] .lang-circle,
-html[data-theme="light"] .lang-menu{
+html[data-theme="light"] #auth .auth-card{
+  border:1px solid #d3dee6!important;
+  border-radius:22px!important;
+  padding:28px!important;
+}
+html[data-theme="light"] #auth :where(
+  .logo,#authSubtitle,.auth-tab,.auth-tab-caption,#loginMsg,
+  #registerTitle,#resetTitle,#resetInfo
+){
+  color:#172b3d!important;
+  text-shadow:none!important;
+}
+html[data-theme="light"] #auth .auth-tab,
+html[data-theme="light"] #auth .auth-tab.active{
+  background:transparent!important;
+  border:0!important;
+  color:#263f54!important;
+}
+html[data-theme="light"] #auth .auth-tab:not(.active){color:#65798b!important}
+html[data-theme="light"] #auth .auth-tab.active{
+  color:#172b3d!important;
+  text-decoration:underline!important;
+  text-decoration-color:#7ca2b8!important;
+  text-decoration-thickness:2px!important;
+}
+html[data-theme="light"] #auth .auth-tab-sep{color:#91a0ac!important}
+html[data-theme="light"] #auth #buildBadge.build-badge,
+html[data-theme="light"] #auth .build-badge{
+  background:rgba(255,255,255,.9)!important;
+  border-color:#d3dee6!important;
+  color:#62778a!important;
+}
+html[data-theme="light"] #auth #buildBadge.build-badge div{
+  color:#62778a!important;
+  text-shadow:none!important;
+}
+html[data-theme="light"] :where(.google-choice-area,.signup-social-area){
+  background:transparent!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"] :where(.lang-circle,.lang-menu){
   background:#ffffff!important;
-  border-color:#c3d0da!important;
-  color:#183047!important;
+  border-color:#cbd7e0!important;
+  color:#263f54!important;
 }
-html[data-theme="light"] .lang-menu button{background:transparent!important;color:#183047!important}
-html[data-theme="light"] .lang-menu button:hover{background:#edf3f7!important}
+html[data-theme="light"] .lang-menu button{background:transparent!important;color:#263f54!important}
+html[data-theme="light"] .lang-menu button:hover{background:#eef3f7!important}
+html[data-theme="light"] .build-badge{
+  background:rgba(255,255,255,.84)!important;
+  border-color:#d3dee6!important;
+  color:#6a7e8f!important;
+}
 
-html[data-theme="light"] :where(.file-preview-card,.file-preview-shell,.shared-preview-card,.shared-preview-shell){
-  background:#f5f8fa!important;
-  border-color:#bdccd8!important;
+/* Dialogs, overlays and document preview. */
+html[data-theme="light"] :where(
+  .talent-modal-backdrop,.file-preview-backdrop,.share-request-backdrop,
+  .atsrs-security-backdrop,.profile-photo-crop-backdrop,.v76-audit-modal
+){
+  background:rgba(38,54,68,.48)!important;
 }
-html[data-theme="light"] :where(.file-preview-head,.shared-preview-head){background:#ffffff!important;border-color:#ccd8e1!important}
-html[data-theme="light"] :where(.file-preview-stage,.file-preview-body,.shared-preview-body){
-  background:#dce4ea!important;
+html[data-theme="light"] :where(.talent-modal-card,.atsrs-security-dialog){
+  background:#ffffff!important;
+  border-color:#cbd7e0!important;
+  color:#172b3d!important;
+  box-shadow:0 24px 70px rgba(36,61,80,.2)!important;
 }
-html[data-theme="light"] .file-preview-close{background:#f2f6f9!important;color:#183047!important;border-color:#bdccd8!important}
+html[data-theme="light"] :where(.file-preview-head,.shared-preview-head){
+  background:#ffffff!important;
+  border-color:#d3dee6!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"] :where(
+  .file-preview-stage,.file-preview-body,.shared-preview-body,.profile-photo-crop-stage
+){
+  background:#e2e8ed!important;
+}
+html[data-theme="light"] .atsrs-account-toast{
+  background:#ffffff!important;
+  border-color:#cbd7e0!important;
+  color:#263f54!important;
+  box-shadow:0 14px 38px rgba(36,61,80,.16)!important;
+}
+
+/* Final application override: legacy page-specific selectors must not leave dark islands. */
+html[data-theme="light"] body #app :where(
+  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
+  .dashboard-view-button,.talent-view-switch button,.file-preview-close,
+  .share-request-close,.v76-audit-close,.v76-copy-btn
+){
+  background:#ffffff!important;
+  border-color:#c8d4de!important;
+  color:#263f54!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body #app :where(
+  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
+  .dashboard-view-button,.talent-view-switch button
+):hover{
+  background:#eef3f7!important;
+  border-color:#9fb2c1!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"] body #app :where(
+  .account-tabs button.active,.module-tabs button.active,.mode-choice button.active,
+  .talent-view-switch button.active
+){
+  background:#e8f1f5!important;
+  border-color:#9eb7c7!important;
+  color:#173b50!important;
+}
+html[data-theme="light"] body #app :where(.action,.danger-button,.delete-button){
+  background:#fffafa!important;
+  border-color:#e2b6b9!important;
+  color:#aa2d35!important;
+}
 
 html[data-theme="light"] ::-webkit-scrollbar-track{background:#edf2f5}
 html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-color:#edf2f5}
 
 @media(max-width:800px){
-  .atsrs-theme-toggle{top:14px!important;right:70px!important;min-width:42px!important;width:42px!important;padding:8px!important}
-  body.atsrs-app-visible .atsrs-theme-toggle{right:196px!important}
-  html.atsrs-public-share-mode .atsrs-theme-toggle{right:12px!important}
-  .atsrs-theme-toggle-label{display:none}
+  .atsrs-global-controls{top:12px;right:12px;gap:8px;max-width:calc(100vw - 24px)}
+  .atsrs-theme-toggle{flex-basis:46px!important;width:46px!important;min-width:46px!important}
+  html[data-theme="light"] .atsrs-theme-thumb{transform:translateX(20px)}
 }
-@media(max-width:420px){
-  body.atsrs-app-visible .atsrs-theme-toggle{top:62px!important;right:12px!important}
+@media(max-width:480px){
+  .atsrs-global-controls{align-items:flex-start}
+  .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
