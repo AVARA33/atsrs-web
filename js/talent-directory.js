@@ -1,4 +1,4 @@
-/* ATSRS V319 - server-enforced candidate profile visibility. */
+/* ATSRS V320 - server-enforced candidate profile visibility. */
 (function(){
   'use strict';
   var profiles=[];
