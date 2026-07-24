@@ -1175,20 +1175,31 @@ body:not(.personal-mode) .admin-overview-panel{
   color:#7f96a8;
   font-size:10px;
 }
+.admin-overview-footer > span{
+  flex:1 1 auto;
+  min-width:0;
+  line-height:1.45;
+}
 .admin-overview-refresh{
-  flex:none;
-  padding:3px 0;
-  border:0;
-  background:transparent;
+  flex:0 0 auto;
+  width:auto!important;
+  min-width:0;
+  min-height:30px;
+  padding:5px 11px;
+  border:1px solid rgba(58,91,111,.78);
+  border-radius:8px;
+  background:rgba(10,31,45,.72);
   color:#9ed5dc;
   font-size:11px;
   font-weight:700;
+  line-height:1;
   cursor:pointer;
 }
 .admin-overview-refresh:hover,
 .admin-overview-refresh:focus-visible{
   color:#c7f5f1;
-  background:transparent;
+  border-color:rgba(100,181,190,.72);
+  background:rgba(13,40,54,.82);
   outline:none;
 }
 .admin-overview-refresh:disabled{
