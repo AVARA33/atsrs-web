@@ -1,4 +1,4 @@
-/* ATSRS V317 - server-enforced candidate profile visibility. */
+/* ATSRS V318 candidate - least-privilege public talent directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -52,15 +52,13 @@
   function verificationBadge(label,verified){
     return '<span class="talent-verification-badge '+(verified?'is-verified':'is-pending')+'">'+safe(label)+': '+safe(verified?'Verified':'Not verified')+'</span>';
   }
-  function officialDetailsMarkup(profile){
-    var phone=profile.phone_number||combinedPhone(profile.phone_country_code,profile.phone_local);
-    var whatsapp=profile.whatsapp_number||combinedPhone(profile.whatsapp_country_code,profile.whatsapp_local);
-    var age=ageFromBirthDate(profile.birth_date);
-    return '<div class="talent-official-details" aria-label="Official candidate information">'+
-      '<div><dt>Mobile phone</dt><dd>'+safe(phone||'Not provided')+' '+verificationBadge('Mobile',!!profile.phone_verified)+'</dd></div>'+
-      '<div><dt>WhatsApp</dt><dd>'+safe(whatsapp||'Not provided')+' '+verificationBadge('WhatsApp',!!profile.whatsapp_verified)+'</dd></div>'+
-      '<div><dt>Age</dt><dd>'+safe(age?age+' years':'Not provided')+'</dd></div>'+
-      '<div><dt>ZIP / postal code</dt><dd>'+safe(profile.zip_code||'Not provided')+'</dd></div>'+
+  function publicDetailsMarkup(profile){
+    var preferences=normalizeWorkPreferences(profile.work_preferences||profile.work_preference||'any');
+    var updated=profile.updated_at?new Date(profile.updated_at):null;
+    var updatedLabel=updated&&!isNaN(updated.getTime())?updated.toLocaleDateString():'Not listed';
+    return '<div class="talent-official-details" aria-label="Public professional information">'+
+      '<div><dt>Work types</dt><dd>'+safe(preferenceLabel(preferences))+'</dd></div>'+
+      '<div><dt>Profile updated</dt><dd>'+safe(updatedLabel)+'</dd></div>'+
     '</div>';
   }
   function normalizeWorkPreferences(values){
@@ -259,9 +257,8 @@
         accessStatus:'public_profile_only',trackerStatus:'awaiting_document_access',
         name:profile.name||'',surname:profile.surname||'',position:profile.position||'',
         country:profile.country||'',company:profile.company||'',email:'',
-        phone:profile.phone_number||'',phoneVerified:!!profile.phone_verified,
-        whatsapp:profile.whatsapp_number||'',whatsappVerified:!!profile.whatsapp_verified,
-        zipCode:profile.zip_code||'',birthDate:profile.birth_date||''
+        phone:'',phoneVerified:false,whatsapp:'',whatsappVerified:false,
+        zipCode:'',birthDate:''
       };
       if(index>=0)personnel[index]=Object.assign({},personnel[index],publicRecord);
       else personnel.push(publicRecord);
@@ -559,7 +556,7 @@
     var profile=profiles.find(function(item){return item.user_id===id})||(linkedRecord(id)&&linkedRecord(id).profile);if(!profile)return;
     var active=activity(profile),work=availability(profile),isLinked=!!linkedRecord(id),old=byId('atsrsTalentModal');if(old)old.remove();
     var modal=document.createElement('div');modal.id='atsrsTalentModal';modal.className='talent-modal';
-    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><h4 class="talent-official-title">Official profile details</h4>'+officialDetailsMarkup(profile)+'<div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain controlled by ATSRS. Official fields show only the profile data the candidate has provided; document access still requires separate permission.</p></div>';
+    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><h4 class="talent-official-title">Public profile details</h4>'+publicDetailsMarkup(profile)+'<div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Private contact fields are never included in the company directory. Document access requires a separate granted permission.</p></div>';
     document.body.appendChild(modal);
     activeActionPanel=modal.querySelector('#talentActionPanel');
     modal.querySelectorAll('.talent-modal-backdrop,.talent-modal-close').forEach(function(button){button.onclick=function(){if(activeActionPanel&&modal.contains(activeActionPanel))activeActionPanel=null;modal.remove()}});
@@ -614,7 +611,7 @@
     if(mode()!=='company')return;
     var grid=byId('talentDirectoryGrid'),status=byId('talentDirectoryStatus'),c=client();if(!grid||!c)return;
     loading=true;if(status){status.textContent='Loading professional profiles...';status.classList.remove('hidden')}
-    var result=await c.from('atsrs_talent_profiles').select('user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at').eq('discoverable',true).order('last_active_at',{ascending:false});
+    var result=await c.rpc('atsrs_list_public_talent_profiles').order('last_active_at',{ascending:false});
     loading=false;
     if(result.error){if(status){status.textContent='Professional profiles could not be loaded. Please refresh and try again.';status.classList.remove('hidden')}console.warn('ATSRS talent directory load failed',result.error);return}
     profiles=(Array.isArray(result.data)?result.data:[]).filter(function(profile){return profileReadiness(profile)>=90});
