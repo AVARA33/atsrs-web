@@ -4,6 +4,7 @@ import { corsHeaders } from "jsr:@supabase/supabase-js@2/cors";
 
 const OPENAI_MODEL = "gpt-5-mini";
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_REQUEST_BYTES = Math.ceil(MAX_FILE_BYTES * 4 / 3) + 512 * 1024;
 const ALLOWED_MIME_TYPES = new Set([
   "application/pdf",
   "image/jpeg",
@@ -146,6 +147,11 @@ Deno.serve(async (req: Request) => {
   const { data: authData, error: authError } = await supabase.auth.getUser(token);
   if (authError || !authData.user) return json(req, 401, { error: "Your session is no longer valid. Sign in again." });
 
+  const contentLength = Number(req.headers.get("content-length") || 0);
+  if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+    return json(req, 413, { error: "The document request is too large." });
+  }
+
   let body: ScanRequest;
   try {
     body = await req.json() as ScanRequest;
@@ -161,7 +167,9 @@ Deno.serve(async (req: Request) => {
   }
   if (!ALLOWED_MIME_TYPES.has(mimeType)) return json(req, 415, { error: "Use a PDF, JPG, PNG, or WebP file." });
   if (!fileData.startsWith(`data:${mimeType};base64,`)) return json(req, 400, { error: "The document data is invalid." });
-  if (estimatedBytes(fileData) > MAX_FILE_BYTES) return json(req, 413, { error: "The document is larger than 10 MB." });
+  const fileBytes = estimatedBytes(fileData);
+  if (fileBytes <= 0) return json(req, 400, { error: "The document is empty." });
+  if (fileBytes > MAX_FILE_BYTES) return json(req, 413, { error: "The document is larger than 10 MB." });
 
   const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -186,6 +194,18 @@ Deno.serve(async (req: Request) => {
       quota,
     });
   }
+
+  let quotaReleased = false;
+  const releaseQuota = async () => {
+    if (quotaReleased) return;
+    quotaReleased = true;
+    const { error } = await supabaseAdmin.rpc("atsrs_release_ai_scan", {
+      p_user_id: authData.user.id,
+    });
+    if (error) {
+      console.error("ATSRS AI quota release failed", { requestUser: authData.user.id, error });
+    }
+  };
 
   const fileContent = mimeType === "application/pdf"
     ? { type: "input_file", filename, file_data: fileData }
@@ -233,6 +253,7 @@ Deno.serve(async (req: Request) => {
       }),
     });
   } catch {
+    await releaseQuota();
     return json(req, 502, { error: "The AI service could not be reached. Try again." });
   }
 
@@ -240,6 +261,7 @@ Deno.serve(async (req: Request) => {
   try {
     aiBody = await aiResponse.json() as OpenAIResponse;
   } catch {
+    await releaseQuota();
     return json(req, 502, { error: "The AI service returned an unreadable response." });
   }
   if (!aiResponse.ok) {
@@ -247,6 +269,7 @@ Deno.serve(async (req: Request) => {
       ? "The AI scan limit was reached. Try again shortly."
       : "The AI service could not process this document.";
     console.error("OpenAI scan request failed", { status: aiResponse.status, requestUser: authData.user.id, providerMessage: aiBody.error?.message?.slice(0, 160) });
+    await releaseQuota();
     return json(req, 502, { error: message });
   }
 
@@ -277,12 +300,14 @@ Deno.serve(async (req: Request) => {
       requestUser: authData.user.id,
       reason: aiBody.incomplete_details?.reason ?? "unknown",
     });
+    await releaseQuota();
     return json(req, 502, { error: "The AI scan did not finish. Please try once more." });
   }
   try {
     const extracted = JSON.parse(text) as Record<string, unknown>;
     return json(req, 200, { document: extracted, model: OPENAI_MODEL, quota });
   } catch {
+    await releaseQuota();
     return json(req, 502, { error: "The AI result could not be validated. Try scanning again." });
   }
 });
