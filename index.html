@@ -4,11 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#07111d" />
-<meta name="color-scheme" content="dark" />
+<meta name="color-scheme" content="dark light" />
 <meta name="referrer" content="no-referrer" />
 <title>ATSRS</title>
 <script>
 try{
+  var savedTheme=localStorage.getItem('atsrs_theme');
+  document.documentElement.dataset.theme=savedTheme==='light'?'light':'dark';
   if(new URLSearchParams(window.location.search).get('share')){
     document.documentElement.classList.add('atsrs-public-share-mode');
   }
@@ -16,21 +18,22 @@ try{
 </script>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=328">
-<link rel="stylesheet" href="css/login.css?v=328">
-<link rel="stylesheet" href="css/dashboard.css?v=328">
-<link rel="stylesheet" href="css/documents.css?v=328">
-<link rel="stylesheet" href="css/references.css?v=328">
-<link rel="stylesheet" href="css/account.css?v=328">
-<link rel="stylesheet" href="css/product-experience.css?v=328">
-<link rel="stylesheet" href="css/date-picker.css?v=328">
-<link rel="stylesheet" href="css/share-profile.css?v=328">
-<link rel="stylesheet" href="css/calm-actions.css?v=328">
-<link rel="stylesheet" href="css/account-security-live.css?v=328">
-<link rel="stylesheet" href="css/talent-directory.css?v=328">
-<link rel="stylesheet" href="css/maintenance.css?v=328">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=328">
-<script defer src="js/maintenance-guard.js?v=328"></script>
+<link rel="stylesheet" href="css/base.css?v=329">
+<link rel="stylesheet" href="css/login.css?v=329">
+<link rel="stylesheet" href="css/dashboard.css?v=329">
+<link rel="stylesheet" href="css/documents.css?v=329">
+<link rel="stylesheet" href="css/references.css?v=329">
+<link rel="stylesheet" href="css/account.css?v=329">
+<link rel="stylesheet" href="css/product-experience.css?v=329">
+<link rel="stylesheet" href="css/date-picker.css?v=329">
+<link rel="stylesheet" href="css/share-profile.css?v=329">
+<link rel="stylesheet" href="css/calm-actions.css?v=329">
+<link rel="stylesheet" href="css/account-security-live.css?v=329">
+<link rel="stylesheet" href="css/talent-directory.css?v=329">
+<link rel="stylesheet" href="css/maintenance.css?v=329">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=329">
+<link rel="stylesheet" href="css/theme.css?v=329">
+<script defer src="js/maintenance-guard.js?v=329"></script>
 
 
 
@@ -132,7 +135,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V328</div>
+<div>ATSRS V329</div>
 <div>Last Update: 24 Jul 2026</div>
 </div>
 </div>
@@ -1039,26 +1042,27 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=328"></script>
-<script src="js/server-data.js?v=328"></script>
-<script src="js/storage.js?v=328"></script>
-<script src="js/ui.js?v=328"></script>
-<script src="js/auth.js?v=328"></script>
-<script src="js/login.js?v=328"></script>
-<script src="js/dashboard.js?v=328"></script>
-<script src="js/avatar.js?v=328"></script>
-<script src="js/documents.js?v=328"></script>
-<script src="js/references.js?v=328"></script>
-<script src="js/account.js?v=328"></script>
-<script src="js/app.js?v=328"></script>
-<script src="js/product-experience.js?v=328"></script>
-<script src="js/date-picker.js?v=328"></script>
-<script src="js/share-profile.js?v=328"></script>
-<script src="js/boot-refresh.js?v=328"></script>
-<script src="js/account-security-live.js?v=328"></script>
-<script src="js/talent-directory.js?v=328"></script>
-<script src="js/admin-overview.js?v=328"></script>
-<script src="js/workspace-switcher.js?v=328"></script>
+<script src="js/stability-runtime.js?v=329"></script>
+<script src="js/server-data.js?v=329"></script>
+<script src="js/storage.js?v=329"></script>
+<script src="js/ui.js?v=329"></script>
+<script src="js/auth.js?v=329"></script>
+<script src="js/login.js?v=329"></script>
+<script src="js/dashboard.js?v=329"></script>
+<script src="js/avatar.js?v=329"></script>
+<script src="js/documents.js?v=329"></script>
+<script src="js/references.js?v=329"></script>
+<script src="js/account.js?v=329"></script>
+<script src="js/app.js?v=329"></script>
+<script src="js/product-experience.js?v=329"></script>
+<script src="js/date-picker.js?v=329"></script>
+<script src="js/share-profile.js?v=329"></script>
+<script src="js/boot-refresh.js?v=329"></script>
+<script src="js/account-security-live.js?v=329"></script>
+<script src="js/talent-directory.js?v=329"></script>
+<script src="js/admin-overview.js?v=329"></script>
+<script src="js/workspace-switcher.js?v=329"></script>
+<script src="js/theme.js?v=329"></script>
 
 
 
