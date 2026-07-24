@@ -2362,13 +2362,34 @@ setTimeout(v55DockTopActions,500);
     }catch(e){}
     throw new Error('Secure browser storage is not available. Please enable cookies/site data and try again.');
   }
+  var googleAuthStarting=false;
+  function authWithTimeout(promise,delay,message){
+    return Promise.race([
+      promise,
+      new Promise(function(_,reject){
+        setTimeout(function(){reject(new Error(message||'The sign-in service did not respond. Please try again.'));},delay);
+      })
+    ]);
+  }
+  function setGoogleAuthBusy(busy){
+    ['googleSigninBtn','googleSignupBtn'].forEach(function(id){
+      var button=byId(id);
+      if(!button)return;
+      button.disabled=!!busy;
+      button.setAttribute('aria-busy',busy?'true':'false');
+    });
+  }
   async function startGoogle(ev,intent){
     if(ev && ev.preventDefault) ev.preventDefault();
+    if(googleAuthStarting)return;
     if(typeof window.atsrsResetAuthDecision==='function') window.atsrsResetAuthDecision();
     if(!window.supabaseClient || !window.supabaseClient.auth){
       setLoginMsg('Google sign-in is not ready. Supabase client did not load.');
       return;
     }
+    googleAuthStarting=true;
+    setGoogleAuthBusy(true);
+    setLoginMsg('Opening Google sign-in…');
     try{
       if(intent==='signin'){
         try{localStorage.setItem('atsrs_workspace_pick_required','1');}catch(e){}
@@ -2378,19 +2399,25 @@ setTimeout(v55DockTopActions,500);
       if(intent==='signup' && pendingMode!=='personal' && pendingMode!=='company'){
         throw new Error('Please select Personal or Corporate and try again.');
       }
-      var sessionResult=await window.supabaseClient.auth.getSession();
-      if(sessionResult && sessionResult.error) throw sessionResult.error;
-      var existingSession=sessionResult&&sessionResult.data&&sessionResult.data.session;
-      if(existingSession && intent==='signin'){
-        clearOAuthStartState();
-        try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
-        if(typeof window.atsrsResumeSession==='function'){
-          return window.atsrsResumeSession(existingSession,'signin');
-        }
-        throw new Error('Your ATSRS session could not be resumed. Please refresh the page and try again.');
+      /* A local getSession() can wait behind a stale browser auth lock after
+         logout. Sign-in must always be able to start a fresh Google redirect,
+         so only account creation needs to inspect/sign out an existing session. */
+      var existingSession=null;
+      if(intent==='signup'){
+        var sessionResult=await authWithTimeout(
+          window.supabaseClient.auth.getSession(),
+          8000,
+          'The current browser session could not be checked. Please try again.'
+        );
+        if(sessionResult && sessionResult.error) throw sessionResult.error;
+        existingSession=sessionResult&&sessionResult.data&&sessionResult.data.session;
       }
-      if(existingSession){
-        var signOutResult=await window.supabaseClient.auth.signOut({scope:'local'});
+      if(existingSession && intent==='signup'){
+        var signOutResult=await authWithTimeout(
+          window.supabaseClient.auth.signOut({scope:'local'}),
+          8000,
+          'The previous browser session could not be closed. Please refresh and try again.'
+        );
         if(signOutResult && signOutResult.error) throw signOutResult.error;
       }
       var attemptId=createOAuthAttemptId();
@@ -2422,19 +2449,31 @@ setTimeout(v55DockTopActions,500);
       }
       var oauthOptions={
         redirectTo:redirectUrl(intent,pendingMode,attemptId),
-        queryParams:googleQueryParams
+        queryParams:googleQueryParams,
+        skipBrowserRedirect:true
       };
-      var res=await window.supabaseClient.auth.signInWithOAuth({
-        provider:'google',
-        options:oauthOptions
-      });
+      var res=await authWithTimeout(
+        window.supabaseClient.auth.signInWithOAuth({
+          provider:'google',
+          options:oauthOptions
+        }),
+        12000,
+        'Google sign-in did not respond. Check your connection and try again.'
+      );
       if(res && res.error){
         clearOAuthStartState();
         setLoginMsg(atsrsFriendlyAuthError(res.error,'Google sign-in failed. Please try again.'));
+        return;
       }
+      var oauthUrl=res&&res.data&&res.data.url;
+      if(!oauthUrl) throw new Error('Google sign-in did not return a secure redirect. Please try again.');
+      window.location.assign(oauthUrl);
     }catch(e){
       clearOAuthStartState();
       setLoginMsg(atsrsFriendlyAuthError(e,'Google sign-in failed. Please try again.'));
+    }finally{
+      googleAuthStarting=false;
+      setGoogleAuthBusy(false);
     }
   }
   window.atsrsHandleAccountTypeChoice=async function(mode){
