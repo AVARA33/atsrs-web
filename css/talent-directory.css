@@ -236,3 +236,412 @@
 @media(max-width:1180px){.personnel-filterbar{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:950px){.talent-searchbar{grid-template-columns:1fr 1fr}.talent-search-field{grid-column:1/-1}.personnel-filterbar{grid-template-columns:1fr 1fr}.personnel-search-field{grid-column:1/-1}}
 @media(max-width:620px){.talent-directory-head,.linked-personnel-head{display:grid}.talent-head-tools{justify-content:space-between}.talent-searchbar,.personnel-filterbar{grid-template-columns:1fr}.talent-search-field,.personnel-search-field{grid-column:auto}.talent-directory-grid{grid-template-columns:1fr}.talent-card{min-height:240px}.talent-card dl,.talent-modal-card dl,.talent-official-details{grid-template-columns:1fr}.talent-summary-list>div{display:grid;gap:6px}.talent-summary-list em{text-align:left;white-space:normal}.talent-messages-head{align-items:flex-start}}
+
+.corporate-page-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.corporate-report-actions{display:flex;flex-wrap:wrap;gap:.65rem}
+.corporate-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin:1rem 0}
+.corporate-summary-card,.corporate-compliance-card{border:1px solid rgba(148,163,184,.22);border-radius:14px;background:rgba(15,23,42,.54)}
+.corporate-summary-card{padding:.9rem 1rem}.corporate-summary-card b{display:block;margin-top:.25rem;font-size:1.45rem}
+.corporate-summary-card.is-ready b{color:#34d399}.corporate-summary-card.is-review b{color:#fbbf24}
+.corporate-summary-card.is-blocked b{color:#fb7185}
+.corporate-data-status{min-height:1.…158593 tokens truncated…egory === "coverletter") return "Reference";
+  const metadata = (file.metadata || {}) as Record<string, unknown>;
+  const document = (metadata.document || {}) as Record<string, unknown>;
+  const value = clean(document.type, 160).toLowerCase();
+  if (value.includes("passport")) return "Passport";
+  if (value.includes("visa")) return "Visa";
+  if (value.includes("seaman")) return "Seaman Book";
+  if (value.includes("medical")) return "Medical";
+  if (value.includes("training") || value.includes("bosiet") || value.includes("foet") || value.includes("yellow")) return "Training";
+  if (value.includes("competency") || value.includes("rov")) return "Competency";
+  if (value.includes("appraisal")) return "Appraisal";
+  if (value.includes("reference")) return "Reference";
+  if (value.includes("certificate") || value.includes("dp")) return "Certificate";
+  return value ? "Other Document" : "";
+}
+
+function complianceExpiry(file: Record<string, unknown>) {
+  const metadata = (file.metadata || {}) as Record<string, unknown>;
+  const document = (metadata.document || {}) as Record<string, unknown>;
+  const expiry = clean(document.expiry, 20);
+  if (!expiry) return "current";
+  const today = new Date();
+  const midnight = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+  const target = Date.parse(`${expiry}T00:00:00Z`);
+  if (!Number.isFinite(target)) return "current";
+  const days = Math.ceil((target - midnight) / 86400000);
+  if (days < 0) return "expired";
+  if (days <= 30) return "expiring_30";
+  if (days <= 90) return "expiring_90";
+  return "current";
+}
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method !== "POST") return json(405, { error: "Method not allowed." });
+
+  const url = Deno.env.get("SUPABASE_URL");
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const authorization = req.headers.get("Authorization") || "";
+  if (!url || !anonKey || !serviceKey || !authorization.startsWith("Bearer ")) {
+    return json(401, { error: "Authentication is required." });
+  }
+
+  const token = authorization.slice(7).trim();
+  const authClient = createClient(url, anonKey, {
+    global: { headers: { Authorization: authorization } },
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data: userData, error: userError } = await authClient.auth.getUser(token);
+  const user = userData.user;
+  if (userError || !user) return json(401, { error: "The session is invalid or expired." });
+
+  let body: Body;
+  try { body = await req.json(); } catch (_) { return json(400, { error: "Invalid request." }); }
+  const action = clean(body.action, 40);
+  const admin = createClient(url, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  if (action === "inbox") {
+    const mailbox = clean(body.mailbox, 20) === "archived" ? "archived" : "active";
+    let query = admin
+      .from("atsrs_talent_messages")
+      .select("id,sender_email,sender_company,body,read_at,archived_at,created_at")
+      .eq("recipient_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    query = mailbox === "archived" ? query.not("archived_at", "is", null) : query.is("archived_at", null);
+    const { data, error } = await query;
+    if (error) return json(500, { error: "Messages could not be loaded." });
+    return json(200, { messages: data || [] });
+  }
+
+  if (action === "mark_read" || action === "archive_message" || action === "restore_message" || action === "delete_message") {
+    const messageId = clean(body.message_id, 50);
+    if (!messageId) return json(400, { error: "Message is required." });
+    if (action === "delete_message") {
+      const { data, error } = await admin
+        .from("atsrs_talent_messages")
+        .delete()
+        .eq("id", messageId)
+        .eq("recipient_id", user.id)
+        .select("id")
+        .maybeSingle();
+      if (error) return json(500, { error: "Message could not be deleted." });
+      if (!data) return json(404, { error: "Message was not found." });
+      return json(200, { deleted: true });
+    }
+    const changes = action === "mark_read"
+      ? { read_at: new Date().toISOString() }
+      : { archived_at: action === "archive_message" ? new Date().toISOString() : null };
+    const { data, error } = await admin
+      .from("atsrs_talent_messages")
+      .update(changes)
+      .eq("id", messageId)
+      .eq("recipient_id", user.id)
+      .select("id")
+      .maybeSingle();
+    if (error) return json(500, { error: "Message status could not be updated." });
+    if (!data) return json(404, { error: "Message was not found." });
+    return json(200, { updated: true });
+  }
+
+  // Verify Corporate access with the caller's JWT and the existing RLS policy.
+  // The directory itself uses this same authoritative workspace row. Using the
+  // service client here made every action fail when the service schema cache
+  // could not resolve atsrs_workspaces, even though the signed-in user had a
+  // valid Corporate workspace.
+  const { data: companyWorkspaces, error: companyWorkspaceError } = await authClient
+    .from("atsrs_workspaces")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .eq("account_type", "company")
+    .limit(1);
+  if (companyWorkspaceError) {
+    console.error("talent-profile-actions workspace lookup failed", {
+      user_id: user.id,
+      code: companyWorkspaceError.code,
+      message: companyWorkspaceError.message,
+    });
+    return json(500, { error: "Your Corporate workspace could not be verified. Refresh the page and try again." });
+  }
+  if (!companyWorkspaces?.length) {
+    return json(403, { error: "Open your ATSRS Corporate workspace to use this function." });
+  }
+
+  if (action === "compliance" || action === "report") {
+    const { data: links, error: linksError } = await admin
+      .from("atsrs_talent_personnel_links")
+      .select("professional_user_id,status,updated_at")
+      .eq("company_user_id", user.id)
+      .eq("status", "linked")
+      .order("updated_at", { ascending: false })
+      .limit(2000);
+    if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
+
+    const professionalIds = Array.from(new Set(
+      (links || []).map((link) => clean(link.professional_user_id, 50)).filter(Boolean),
+    ));
+    if (!professionalIds.length) {
+      const empty = {
+        generated_at: new Date().toISOString(),
+        summary: { personnel: 0, ready: 0, review: 0, blocked: 0, documents: 0, expired: 0, expiring: 0, missing: 0 },
+        rows: [],
+      };
+      return json(200, action === "report" ? { report: empty } : { compliance: empty });
+    }
+
+    const [profileResult, fileResult] = await Promise.all([
+      admin
+        .from("atsrs_talent_profiles")
+        .select("user_id,name,surname,position,country,company")
+        .in("user_id", professionalIds)
+        .limit(2000),
+      admin
+        .from("atsrs_files")
+        .select("user_id,category,metadata,created_at")
+        .eq("account_type", "personal")
+        .in("user_id", professionalIds)
+        .limit(10000),
+    ]);
+    if (profileResult.error) return json(500, { error: "Personnel profiles could not be loaded." });
+    if (fileResult.error) return json(500, { error: "Personnel documents could not be loaded." });
+
+    const filesByOwner = new Map<string, Record<string, unknown>[]>();
+    (fileResult.data || []).forEach((file) => {
+      const owner = clean(file.user_id, 50);
+      if (!filesByOwner.has(owner)) filesByOwner.set(owner, []);
+      filesByOwner.get(owner)?.push(file as Record<string, unknown>);
+    });
+    const profileMap = new Map((profileResult.data || []).map((profile) => [clean(profile.user_id, 50), profile]));
+    const rows = professionalIds.map((professionalId) => {
+      const profile = (profileMap.get(professionalId) || {}) as Record<string, unknown>;
+      const files = filesByOwner.get(professionalId) || [];
+      const documentTypes = new Set(files.map(normalizedDocumentType).filter(Boolean));
+      const missingDocuments = REQUIRED_COMPLIANCE_DOCUMENTS.filter((type) => !documentTypes.has(type));
+      const expiry = files.reduce((counts, file) => {
+        const bucket = complianceExpiry(file);
+        counts[bucket] += 1;
+        return counts;
+      }, { current: 0, expiring_30: 0, expiring_90: 0, expired: 0 } as Record<string, number>);
+      const status = expiry.expired > 0 || missingDocuments.length > 0
+        ? "blocked"
+        : expiry.expiring_30 > 0 || expiry.expiring_90 > 0
+          ? "review"
+          : "ready";
+      return {
+        professional_user_id: professionalId,
+        name: clean(profile.name, 120),
+        surname: clean(profile.surname, 120),
+        position: clean(profile.position, 160),
+        country: clean(profile.country, 120),
+        company: clean(profile.company, 160),
+        status,
+        document_count: files.length,
+        current_count: expiry.current,
+        expiring_30_count: expiry.expiring_30,
+        expiring_90_count: expiry.expiring_90,
+        expired_count: expiry.expired,
+        missing_count: missingDocuments.length,
+        missing_documents: missingDocuments,
+      };
+    });
+    const summary = rows.reduce((totals, row) => {
+      totals.personnel += 1;
+      totals[row.status] += 1;
+      totals.documents += row.document_count;
+      totals.expired += row.expired_count;
+      totals.expiring += row.expiring_30_count + row.expiring_90_count;
+      totals.missing += row.missing_count;
+      return totals;
+    }, { personnel: 0, ready: 0, review: 0, blocked: 0, documents: 0, expired: 0, expiring: 0, missing: 0 } as Record<string, number>);
+    const payload = { generated_at: new Date().toISOString(), summary, rows };
+    return json(200, action === "report" ? { report: payload } : { compliance: payload });
+  }
+
+  if (action === "directory") {
+    const { data: directoryProfiles, error: profilesError } = await admin
+      .from("atsrs_talent_profiles")
+      .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at,profile_visibility")
+      .eq("discoverable", true)
+      .eq("profile_visibility", "Public")
+      .order("last_active_at", { ascending: false });
+    if (profilesError) return json(500, { error: "Candidate profiles could not be loaded." });
+
+    const normalizeUserId = (value: unknown) => String(value || "").trim().toLowerCase();
+    const profileIds = (directoryProfiles || [])
+      .map((profile) => normalizeUserId(profile.user_id))
+      .filter(Boolean);
+    if (!profileIds.length) {
+      return json(200, {
+        profiles: [],
+        meta: { eligible_profiles: 0, document_owners: 0, returned_profiles: 0 },
+      });
+    }
+
+    // Load certificate owners independently and join them in memory. Passing the
+    // profile UUID array through PostgREST's `in` filter intermittently returned
+    // no rows in production even though qualifying files existed.
+    const { data: certificateRows, error: certificatesError } = await admin
+      .from("atsrs_files")
+      .select("user_id")
+      .eq("account_type", "personal")
+      .eq("category", "document")
+      .limit(10000);
+    if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
+
+    const certifiedUsers = new Set(
+      (certificateRows || []).map((row) => normalizeUserId(row.user_id)).filter(Boolean),
+    );
+    const profiles = (directoryProfiles || [])
+      .filter((profile) => certifiedUsers.has(normalizeUserId(profile.user_id)));
+    console.info("talent-profile-actions directory", {
+      eligible_profiles: profileIds.length,
+      certificate_owners: certifiedUsers.size,
+      returned_profiles: profiles.length,
+    });
+    return json(200, {
+      profiles,
+      meta: {
+        eligible_profiles: profileIds.length,
+        document_owners: certifiedUsers.size,
+        returned_profiles: profiles.length,
+      },
+    });
+  }
+
+  if (action === "personnel_links") {
+    const { data: links, error: linksError } = await admin
+      .from("atsrs_talent_personnel_links")
+      .select("id,professional_user_id,status,source,created_at,updated_at")
+      .eq("company_user_id", user.id)
+      .order("updated_at", { ascending: false });
+    if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
+    const professionalIds = (links || []).map((link) => link.professional_user_id);
+    if (!professionalIds.length) return json(200, { personnel: [] });
+    const { data: linkedProfiles, error: profilesError } = await admin
+      .from("atsrs_talent_profiles")
+      .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at")
+      .in("user_id", professionalIds);
+    if (profilesError) return json(500, { error: "Linked professional profiles could not be loaded." });
+    const profileMap = new Map((linkedProfiles || []).map((item) => [item.user_id, item]));
+    const personnel = (links || []).map((link) => ({
+      ...link,
+      profile: profileMap.get(link.professional_user_id) || null,
+    }));
+    return json(200, { personnel });
+  }
+
+  const targetUserId = clean(body.target_user_id, 50);
+  if (!targetUserId) return json(400, { error: "Professional profile is required." });
+
+  const { data: profile } = await admin
+    .from("atsrs_talent_profiles")
+    .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable,profile_visibility")
+    .eq("user_id", targetUserId)
+    .eq("discoverable", true)
+    .eq("profile_visibility", "Public")
+    .maybeSingle();
+  if (!profile) return json(404, { error: "This professional profile is unavailable." });
+
+  if (action === "add_to_personnel") {
+    const now = new Date().toISOString();
+    const { data: link, error } = await admin
+      .from("atsrs_talent_personnel_links")
+      .upsert({
+        company_user_id: user.id,
+        professional_user_id: targetUserId,
+        status: "linked",
+        source: "talent_directory",
+        updated_at: now,
+      }, { onConflict: "company_user_id,professional_user_id" })
+      .select("id,professional_user_id,status,source,created_at,updated_at")
+      .single();
+    if (error) return json(500, { error: "This professional could not be added to Company Personnel." });
+    return json(200, { added: true, link, profile });
+  }
+
+  if (action === "remove_from_personnel") {
+    const { error } = await admin
+      .from("atsrs_talent_personnel_links")
+      .delete()
+      .eq("company_user_id", user.id)
+      .eq("professional_user_id", targetUserId);
+    if (error) return json(500, { error: "This professional could not be removed from Company Personnel." });
+    return json(200, { removed: true });
+  }
+
+  if (action === "summary") {
+    const { data: files, error } = await admin
+      .from("atsrs_files")
+      .select("category,file_name,metadata,created_at")
+      .eq("user_id", targetUserId)
+      .eq("account_type", "personal")
+      .eq("category", "document")
+      .order("created_at", { ascending: false });
+    if (error) return json(500, { error: "Document summary could not be loaded." });
+    const documents = (files || []).map((file: Record<string, unknown>) => {
+      const metadata = (file.metadata || {}) as Record<string, unknown>;
+      const document = (metadata.document || {}) as Record<string, unknown>;
+      const expiry = clean(document.expiry, 20) || null;
+      return {
+        title: clean(document.type, 160) || clean(file.file_name, 160) || "Document",
+        provider: clean(document.provider, 140) || "Provider not listed",
+        expiry,
+        status: documentStatus(expiry),
+      };
+    });
+    const counts = documents.reduce((value, document) => {
+      value.total += 1;
+      if (document.status === "Expired") value.expired += 1;
+      else if (document.status.includes("remaining") || document.status.includes("within") || document.status === "Expires today") value.expiryRisk += 1;
+      else value.current += 1;
+      return value;
+    }, { total: 0, current: 0, expiryRisk: 0, expired: 0 });
+    return json(200, { professional: `${profile.name} ${profile.surname}`, counts, documents });
+  }
+
+  if (action === "cv") {
+    const { data: cv, error } = await admin
+      .from("atsrs_files")
+      .select("file_name,mime_type,storage_path")
+      .eq("user_id", targetUserId)
+      .eq("account_type", "personal")
+      .eq("category", "cv")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (error) return json(500, { error: "CV could not be loaded." });
+    if (!cv) return json(404, { error: "This professional has not added a CV yet." });
+    const signed = await admin.storage.from("atsrs-user-files").createSignedUrl(cv.storage_path, 300);
+    if (signed.error || !signed.data?.signedUrl) return json(500, { error: "CV preview could not be prepared." });
+    return json(200, { file_name: cv.file_name, mime_type: cv.mime_type, url: signed.data.signedUrl });
+  }
+
+  if (action === "send_message") {
+    const company = clean(body.company, 140);
+    const message = clean(body.message, 1200);
+    if (company.length < 2) return json(400, { error: "Enter your company name." });
+    if (message.length < 10) return json(400, { error: "Write a message of at least 10 characters." });
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { count } = await admin
+      .from("atsrs_talent_messages")
+      .select("id", { count: "exact", head: true })
+      .eq("sender_id", user.id)
+      .gte("created_at", since);
+    if ((count || 0) >= 10) return json(429, { error: "Daily message limit reached. Try again later." });
+    const { error } = await admin.from("atsrs_talent_messages").insert({
+      sender_id: user.id,
+      recipient_id: targetUserId,
+      sender_email: clean(user.email, 254),
+      sender_company: company,
+      body: message,
+    });
+    if (error) return json(500, { error: "Your message could not be sent." });
+    return json(200, { sent: true });
+  }
+
+  return json(400, { error: "Unknown action." });
+});
