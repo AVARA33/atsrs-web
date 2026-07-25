@@ -244,7 +244,7 @@
 .corporate-summary-card{padding:.9rem 1rem}.corporate-summary-card b{display:block;margin-top:.25rem;font-size:1.45rem}
 .corporate-summary-card.is-ready b{color:#34d399}.corporate-summary-card.is-review b{color:#fbbf24}
 .corporate-summary-card.is-blocked b{color:#fb7185}
-.corporate-data-status{min-height:1.…158593 tokens truncated…egory === "coverletter") return "Reference";
+.corporate-data-status{min-height:1.4rem;color:#94a3b8;font-size:.9rem}.corporat…158582 tokens truncated…egory === "coverletter") return "Reference";
   const metadata = (file.metadata || {}) as Record<string, unknown>;
   const document = (metadata.document || {}) as Record<string, unknown>;
   const value = clean(document.type, 160).toLowerCase();
