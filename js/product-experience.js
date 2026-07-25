@@ -87,9 +87,9 @@
 
   async function pdfLibrary(){
     if(window.atsrsPdfJs)return window.atsrsPdfJs;
-    var moduleUrl=new URL('vendor/pdfjs/pdf.min.mjs?v=335',document.baseURI).href;
+    var moduleUrl=new URL('vendor/pdfjs/pdf.min.mjs?v=336',document.baseURI).href;
     var library=await import(moduleUrl);
-    library.GlobalWorkerOptions.workerSrc=new URL('vendor/pdfjs/pdf.worker.min.mjs?v=335',document.baseURI).href;
+    library.GlobalWorkerOptions.workerSrc=new URL('vendor/pdfjs/pdf.worker.min.mjs?v=336',document.baseURI).href;
     window.atsrsPdfJs=library;
     return library;
   }
@@ -114,6 +114,10 @@
         canvas.style.width=Math.floor(viewport.width)+'px';
         canvas.style.height=Math.floor(viewport.height)+'px';
         pdfPages.appendChild(canvas);
+        context.save();
+        context.fillStyle='#ffffff';
+        context.fillRect(0,0,canvas.width,canvas.height);
+        context.restore();
         var renderOptions={canvasContext:context,viewport:viewport};
         if(outputScale!==1)renderOptions.transform=[outputScale,0,0,outputScale,0,0];
         await page.render(renderOptions).promise;
@@ -157,7 +161,7 @@
     pdfScale=1;
     pdfFitted=true;
     var library=await pdfLibrary();
-    var response=await fetch(options.url||'',{credentials:'omit'});
+    var response=await fetch(options.url||'',{credentials:'omit',cache:'no-store',mode:'cors'});
     if(!response.ok)throw new Error('Document download failed ('+response.status+').');
     var bytes=await response.arrayBuffer();
     if(openVersion!==pdfOpenVersion||!pdfPreviewIsOpen())return;
@@ -169,8 +173,9 @@
 
   function handlePreviewWheel(event){
     if(!event.ctrlKey||(!imagePreviewIsOpen()&&!pdfPreviewIsOpen()))return;
-    event.preventDefault();
+    if(event.cancelable)event.preventDefault();
     event.stopPropagation();
+    if(typeof event.stopImmediatePropagation==='function')event.stopImmediatePropagation();
     var now=Date.now();
     if(now-lastWheelZoom<45)return;
     lastWheelZoom=now;

@@ -13,8 +13,8 @@
   function setBuild(){
     document.querySelectorAll('.build-badge').forEach(function(badge){
       var rows=badge.querySelectorAll('div');
-      if(rows[0]&&rows[0].textContent!=='ATSRS V335')rows[0].textContent='ATSRS V335';
-      if(rows[1]&&rows[1].textContent!=='Last Update: 24 Jul 2026')rows[1].textContent='Last Update: 24 Jul 2026';
+      if(rows[0]&&rows[0].textContent!=='ATSRS V336')rows[0].textContent='ATSRS V336';
+      if(rows[1]&&rows[1].textContent!=='Last Update: 25 Jul 2026')rows[1].textContent='Last Update: 25 Jul 2026';
     });
   }
   function isLegacyFileKey(key){

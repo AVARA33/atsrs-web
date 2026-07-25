@@ -27,22 +27,22 @@ html[data-theme="light"] body{background:#f3f6f9}
 </style>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=335">
-<link rel="stylesheet" href="css/login.css?v=335">
-<link rel="stylesheet" href="css/dashboard.css?v=335">
-<link rel="stylesheet" href="css/documents.css?v=335">
-<link rel="stylesheet" href="css/references.css?v=335">
-<link rel="stylesheet" href="css/account.css?v=335">
-<link rel="stylesheet" href="css/product-experience.css?v=335">
-<link rel="stylesheet" href="css/date-picker.css?v=335">
-<link rel="stylesheet" href="css/share-profile.css?v=335">
-<link rel="stylesheet" href="css/calm-actions.css?v=335">
-<link rel="stylesheet" href="css/account-security-live.css?v=335">
-<link rel="stylesheet" href="css/talent-directory.css?v=335">
-<link rel="stylesheet" href="css/maintenance.css?v=335">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=335">
-<link rel="stylesheet" href="css/theme.css?v=335">
-<script defer src="js/maintenance-guard.js?v=335"></script>
+<link rel="stylesheet" href="css/base.css?v=336">
+<link rel="stylesheet" href="css/login.css?v=336">
+<link rel="stylesheet" href="css/dashboard.css?v=336">
+<link rel="stylesheet" href="css/documents.css?v=336">
+<link rel="stylesheet" href="css/references.css?v=336">
+<link rel="stylesheet" href="css/account.css?v=336">
+<link rel="stylesheet" href="css/product-experience.css?v=336">
+<link rel="stylesheet" href="css/date-picker.css?v=336">
+<link rel="stylesheet" href="css/share-profile.css?v=336">
+<link rel="stylesheet" href="css/calm-actions.css?v=336">
+<link rel="stylesheet" href="css/account-security-live.css?v=336">
+<link rel="stylesheet" href="css/talent-directory.css?v=336">
+<link rel="stylesheet" href="css/maintenance.css?v=336">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=336">
+<link rel="stylesheet" href="css/theme.css?v=336">
+<script defer src="js/maintenance-guard.js?v=336"></script>
 
 
 
@@ -144,8 +144,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V335</div>
-<div>Last Update: 24 Jul 2026</div>
+<div>ATSRS V336</div>
+<div>Last Update: 25 Jul 2026</div>
 </div>
 </div>
 </section>
@@ -271,7 +271,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">NEW &middot; AI SCAN LIVE</span><div class="roadmap-icon">AI</div><h3>AI Document Scan</h3><p>Upload a PDF or image, let AI suggest the document details, then review every field before saving.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">WA</div><h3>WhatsApp Expiry Alerts</h3><p>Receive approved WhatsApp reminders for documents approaching expiry or already overdue.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">RP</div><h3>Automated Reports</h3><p>Create clear expiry and compliance reports for individuals, teams and company workspaces.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">CO</div><h3>Company Workspace</h3><p>Review personnel documents, identify compliance gaps and manage controlled access in one place.</p></article>
+      <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">CO</div><h3>Company Workspace</h3><p>Candidates and Company Personnel are live. Server-backed compliance and reporting continue to expand.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">CV</div><h3>ATSRS Profile CV</h3><p>Generate a structured professional CV using approved profile and career information.</p></article>
       <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">EM</div><h3>Email Expiry Alerts</h3><p>Server-side reminders for documents approaching expiry at 90 days, 30 days and overdue status.</p></article>
     </div>
@@ -608,17 +608,36 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <section id="compliancePage" class="hidden">
 <div class="panel">
-<h3 id="compliancePageTitle">Compliance Overview</h3>
-<p id="compliancePageSub" class="sub">Company mode: see who is ready, expiring, expired or missing required documents.</p>
-<div id="companyComplianceGrid" class="doc-category-grid"></div>
+<div class="corporate-page-heading">
+  <div><span class="pill">LIVE SERVER DATA</span><h3 id="compliancePageTitle">Compliance Overview</h3></div>
+  <button id="refreshCorporateCompliance" type="button" class="secondary">Refresh</button>
+</div>
+<p id="compliancePageSub" class="sub">Company Personnel compliance calculated from linked professional profiles and their current server documents.</p>
+<div id="corporateComplianceSummary" class="corporate-summary-grid" aria-label="Corporate compliance summary"></div>
+<p id="corporateComplianceStatus" class="corporate-data-status" role="status"></p>
+<div id="companyComplianceGrid" class="corporate-compliance-list"></div>
 </div>
 </section>
 
 <section id="reportsPage" class="hidden">
 <div class="panel">
-<h3 id="reportsTitle">Reports</h3>
-<p id="reportsSub" class="sub">Export-ready reports will be connected with backend data.</p>
-<button id="exportReportBtn" class="secondary" onclick="exportLocalData()">Export Local Data</button>
+<div class="corporate-page-heading">
+  <div><span class="pill">LIVE CORPORATE REPORT</span><h3 id="reportsTitle">Reports</h3></div>
+  <div class="corporate-report-actions">
+    <button id="refreshCorporateReport" type="button" class="secondary">Refresh</button>
+    <button id="exportReportBtn" type="button" class="secondary">Export CSV</button>
+  </div>
+</div>
+<p id="reportsSub" class="sub">Generate a current Personnel compliance report from ATSRS server data.</p>
+<div id="corporateReportSummary" class="corporate-summary-grid" aria-label="Corporate report summary"></div>
+<p id="corporateReportGenerated" class="corporate-report-generated"></p>
+<p id="corporateReportStatus" class="corporate-data-status" role="status"></p>
+<div class="corporate-report-table-wrap">
+  <table class="corporate-report-table">
+    <thead><tr><th>Professional</th><th>Position</th><th>Status</th><th>Documents</th><th>&le;30 days</th><th>31&ndash;90 days</th><th>Expired</th><th>Missing</th></tr></thead>
+    <tbody id="corporateReportBody"><tr><td colspan="8">Open Reports to load live server data.</td></tr></tbody>
+  </table>
+</div>
 </div>
 </section>
 
@@ -770,7 +789,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <input id="profilePhoneLocal" inputmode="tel" autocomplete="tel-national" placeholder="Mobile number">
   <input id="profilePhone" type="hidden">
 </div>
-<div class="phone-verification-note">Mobile verification: <b id="profilePhoneVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="mobile">Verify</button></div>
+<div class="phone-verification-note">Mobile verification: <b id="profilePhoneVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="mobile" disabled title="SMS OTP provider is not connected yet">Coming soon</button></div>
 </div>
 <div class="phone-entry whatsapp-phone-entry">
 <div class="phone-field whatsapp-phone-field" aria-label="WhatsApp number">
@@ -826,7 +845,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <input id="profileWhatsappLocal" inputmode="tel" autocomplete="tel" placeholder="WhatsApp number">
   <input id="profileWhatsapp" type="hidden">
 </div>
-<div class="phone-verification-note">WhatsApp verification: <b id="profileWhatsappVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="whatsapp">Verify</button></div>
+<div class="phone-verification-note">WhatsApp verification: <b id="profileWhatsappVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="whatsapp" disabled title="WhatsApp OTP provider is not connected yet">Coming soon</button></div>
 </div>
 </div>
 <div class="work-availability-card personal-only">
@@ -1051,27 +1070,28 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=335"></script>
-<script src="js/server-data.js?v=335"></script>
-<script src="js/storage.js?v=335"></script>
-<script src="js/ui.js?v=335"></script>
-<script src="js/auth.js?v=335"></script>
-<script src="js/login.js?v=335"></script>
-<script src="js/dashboard.js?v=335"></script>
-<script src="js/avatar.js?v=335"></script>
-<script src="js/documents.js?v=335"></script>
-<script src="js/references.js?v=335"></script>
-<script src="js/account.js?v=335"></script>
-<script src="js/app.js?v=335"></script>
-<script src="js/product-experience.js?v=335"></script>
-<script src="js/date-picker.js?v=335"></script>
-<script src="js/share-profile.js?v=335"></script>
-<script src="js/boot-refresh.js?v=335"></script>
-<script src="js/account-security-live.js?v=335"></script>
-<script src="js/talent-directory.js?v=335"></script>
-<script src="js/admin-overview.js?v=335"></script>
-<script src="js/workspace-switcher.js?v=335"></script>
-<script src="js/theme.js?v=335"></script>
+<script src="js/stability-runtime.js?v=336"></script>
+<script src="js/server-data.js?v=336"></script>
+<script src="js/storage.js?v=336"></script>
+<script src="js/ui.js?v=336"></script>
+<script src="js/auth.js?v=336"></script>
+<script src="js/login.js?v=336"></script>
+<script src="js/dashboard.js?v=336"></script>
+<script src="js/avatar.js?v=336"></script>
+<script src="js/documents.js?v=336"></script>
+<script src="js/references.js?v=336"></script>
+<script src="js/account.js?v=336"></script>
+<script src="js/app.js?v=336"></script>
+<script src="js/product-experience.js?v=336"></script>
+<script src="js/date-picker.js?v=336"></script>
+<script src="js/share-profile.js?v=336"></script>
+<script src="js/boot-refresh.js?v=336"></script>
+<script src="js/account-security-live.js?v=336"></script>
+<script src="js/talent-directory.js?v=336"></script>
+<script src="js/corporate-reporting.js?v=336"></script>
+<script src="js/admin-overview.js?v=336"></script>
+<script src="js/workspace-switcher.js?v=336"></script>
+<script src="js/theme.js?v=336"></script>
 
 
 

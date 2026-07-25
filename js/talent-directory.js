@@ -1,7 +1,8 @@
-/* ATSRS V335 - server-enforced candidate profile visibility. */
+/* ATSRS V336 - server-enforced candidate profile visibility. */
 (function(){
   'use strict';
   var profiles=[];
+  var directoryMeta={eligible_profiles:0,document_owners:0,returned_profiles:0};
   var linkedPersonnel=[];
   var loading=false;
   var lastSync=0;
@@ -530,7 +531,13 @@
     if(status)status.classList.add('hidden');
     updateViewSwitches();
     grid.classList.toggle('is-list',candidateView==='list');
-    if(!visible.length){grid.innerHTML='<div class="talent-empty"><b>No matching candidates</b><span>Try a broader profession, country or name.</span></div>';return}
+    if(!visible.length){
+      var hasDirectoryProfiles=profiles.length>0||Number(directoryMeta.returned_profiles||0)>0;
+      grid.innerHTML=hasDirectoryProfiles
+        ?'<div class="talent-empty"><b>No matching candidates</b><span>Try a broader profession, country or name.</span></div>'
+        :'<div class="talent-empty"><b>No eligible public candidates yet</b><span>Profiles appear here after the professional chooses Public visibility and uploads at least one document.</span></div>';
+      return;
+    }
     if(candidateView==='list'){
       grid.innerHTML='<div class="talent-list-table" role="table"><div class="talent-list-row is-head" role="row"><span>Candidate</span><span>Availability</span><span>Country</span><span>Work type</span><span>Actions</span></div>'+
         visible.map(function(profile){
@@ -636,6 +643,7 @@
     try{
       var result=await actionCall({action:'directory'});
       profiles=Array.isArray(result.profiles)?result.profiles:[];
+      directoryMeta=result.meta&&typeof result.meta==='object'?result.meta:{eligible_profiles:profiles.length,document_owners:profiles.length,returned_profiles:profiles.length};
     }catch(error){
       if(status){status.textContent=friendlyError(error,'Candidate profiles could not be loaded. Please refresh and try again.');status.classList.remove('hidden')}
       console.warn('ATSRS talent directory load failed',error);

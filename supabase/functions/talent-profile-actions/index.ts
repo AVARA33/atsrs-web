@@ -40,6 +40,55 @@ function documentStatus(expiry: string | null | undefined) {
   return "Valid";
 }
 
+const REQUIRED_COMPLIANCE_DOCUMENTS = [
+  "Passport",
+  "Visa",
+  "Seaman Book",
+  "Medical",
+  "Certificate",
+  "Training",
+  "Competency",
+  "Appraisal",
+  "Reference",
+  "CV",
+];
+
+function normalizedDocumentType(file: Record<string, unknown>) {
+  const category = clean(file.category, 40).toLowerCase();
+  if (category === "cv") return "CV";
+  if (category === "appraisal") return "Appraisal";
+  if (category === "reference" || category === "recommendation" || category === "coverletter") return "Reference";
+  const metadata = (file.metadata || {}) as Record<string, unknown>;
+  const document = (metadata.document || {}) as Record<string, unknown>;
+  const value = clean(document.type, 160).toLowerCase();
+  if (value.includes("passport")) return "Passport";
+  if (value.includes("visa")) return "Visa";
+  if (value.includes("seaman")) return "Seaman Book";
+  if (value.includes("medical")) return "Medical";
+  if (value.includes("training") || value.includes("bosiet") || value.includes("foet") || value.includes("yellow")) return "Training";
+  if (value.includes("competency") || value.includes("rov")) return "Competency";
+  if (value.includes("appraisal")) return "Appraisal";
+  if (value.includes("reference")) return "Reference";
+  if (value.includes("certificate") || value.includes("dp")) return "Certificate";
+  return value ? "Other Document" : "";
+}
+
+function complianceExpiry(file: Record<string, unknown>) {
+  const metadata = (file.metadata || {}) as Record<string, unknown>;
+  const document = (metadata.document || {}) as Record<string, unknown>;
+  const expiry = clean(document.expiry, 20);
+  if (!expiry) return "current";
+  const today = new Date();
+  const midnight = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+  const target = Date.parse(`${expiry}T00:00:00Z`);
+  if (!Number.isFinite(target)) return "current";
+  const days = Math.ceil((target - midnight) / 86400000);
+  if (days < 0) return "expired";
+  if (days <= 30) return "expiring_30";
+  if (days <= 90) return "expiring_90";
+  return "current";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });
@@ -135,6 +184,96 @@ Deno.serve(async (req) => {
     return json(403, { error: "Open your ATSRS Corporate workspace to use this function." });
   }
 
+  if (action === "compliance" || action === "report") {
+    const { data: links, error: linksError } = await admin
+      .from("atsrs_talent_personnel_links")
+      .select("professional_user_id,status,updated_at")
+      .eq("company_user_id", user.id)
+      .eq("status", "linked")
+      .order("updated_at", { ascending: false })
+      .limit(2000);
+    if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
+
+    const professionalIds = Array.from(new Set(
+      (links || []).map((link) => clean(link.professional_user_id, 50)).filter(Boolean),
+    ));
+    if (!professionalIds.length) {
+      const empty = {
+        generated_at: new Date().toISOString(),
+        summary: { personnel: 0, ready: 0, review: 0, blocked: 0, documents: 0, expired: 0, expiring: 0, missing: 0 },
+        rows: [],
+      };
+      return json(200, action === "report" ? { report: empty } : { compliance: empty });
+    }
+
+    const [profileResult, fileResult] = await Promise.all([
+      admin
+        .from("atsrs_talent_profiles")
+        .select("user_id,name,surname,position,country,company")
+        .in("user_id", professionalIds)
+        .limit(2000),
+      admin
+        .from("atsrs_files")
+        .select("user_id,category,metadata,created_at")
+        .eq("account_type", "personal")
+        .in("user_id", professionalIds)
+        .limit(10000),
+    ]);
+    if (profileResult.error) return json(500, { error: "Personnel profiles could not be loaded." });
+    if (fileResult.error) return json(500, { error: "Personnel documents could not be loaded." });
+
+    const filesByOwner = new Map<string, Record<string, unknown>[]>();
+    (fileResult.data || []).forEach((file) => {
+      const owner = clean(file.user_id, 50);
+      if (!filesByOwner.has(owner)) filesByOwner.set(owner, []);
+      filesByOwner.get(owner)?.push(file as Record<string, unknown>);
+    });
+    const profileMap = new Map((profileResult.data || []).map((profile) => [clean(profile.user_id, 50), profile]));
+    const rows = professionalIds.map((professionalId) => {
+      const profile = (profileMap.get(professionalId) || {}) as Record<string, unknown>;
+      const files = filesByOwner.get(professionalId) || [];
+      const documentTypes = new Set(files.map(normalizedDocumentType).filter(Boolean));
+      const missingDocuments = REQUIRED_COMPLIANCE_DOCUMENTS.filter((type) => !documentTypes.has(type));
+      const expiry = files.reduce((counts, file) => {
+        const bucket = complianceExpiry(file);
+        counts[bucket] += 1;
+        return counts;
+      }, { current: 0, expiring_30: 0, expiring_90: 0, expired: 0 } as Record<string, number>);
+      const status = expiry.expired > 0 || missingDocuments.length > 0
+        ? "blocked"
+        : expiry.expiring_30 > 0 || expiry.expiring_90 > 0
+          ? "review"
+          : "ready";
+      return {
+        professional_user_id: professionalId,
+        name: clean(profile.name, 120),
+        surname: clean(profile.surname, 120),
+        position: clean(profile.position, 160),
+        country: clean(profile.country, 120),
+        company: clean(profile.company, 160),
+        status,
+        document_count: files.length,
+        current_count: expiry.current,
+        expiring_30_count: expiry.expiring_30,
+        expiring_90_count: expiry.expiring_90,
+        expired_count: expiry.expired,
+        missing_count: missingDocuments.length,
+        missing_documents: missingDocuments,
+      };
+    });
+    const summary = rows.reduce((totals, row) => {
+      totals.personnel += 1;
+      totals[row.status] += 1;
+      totals.documents += row.document_count;
+      totals.expired += row.expired_count;
+      totals.expiring += row.expiring_30_count + row.expiring_90_count;
+      totals.missing += row.missing_count;
+      return totals;
+    }, { personnel: 0, ready: 0, review: 0, blocked: 0, documents: 0, expired: 0, expiring: 0, missing: 0 } as Record<string, number>);
+    const payload = { generated_at: new Date().toISOString(), summary, rows };
+    return json(200, action === "report" ? { report: payload } : { compliance: payload });
+  }
+
   if (action === "directory") {
     const { data: directoryProfiles, error: profilesError } = await admin
       .from("atsrs_talent_profiles")
@@ -148,7 +287,12 @@ Deno.serve(async (req) => {
     const profileIds = (directoryProfiles || [])
       .map((profile) => normalizeUserId(profile.user_id))
       .filter(Boolean);
-    if (!profileIds.length) return json(200, { profiles: [] });
+    if (!profileIds.length) {
+      return json(200, {
+        profiles: [],
+        meta: { eligible_profiles: 0, document_owners: 0, returned_profiles: 0 },
+      });
+    }
 
     // Load certificate owners independently and join them in memory. Passing the
     // profile UUID array through PostgREST's `in` filter intermittently returned
@@ -171,7 +315,14 @@ Deno.serve(async (req) => {
       certificate_owners: certifiedUsers.size,
       returned_profiles: profiles.length,
     });
-    return json(200, { profiles });
+    return json(200, {
+      profiles,
+      meta: {
+        eligible_profiles: profileIds.length,
+        document_owners: certifiedUsers.size,
+        returned_profiles: profiles.length,
+      },
+    });
   }
 
   if (action === "personnel_links") {
@@ -201,9 +352,10 @@ Deno.serve(async (req) => {
 
   const { data: profile } = await admin
     .from("atsrs_talent_profiles")
-    .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable")
+    .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable,profile_visibility")
     .eq("user_id", targetUserId)
     .eq("discoverable", true)
+    .eq("profile_visibility", "Public")
     .maybeSingle();
   if (!profile) return json(404, { error: "This professional profile is unavailable." });
 
