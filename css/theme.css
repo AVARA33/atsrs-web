@@ -1178,6 +1178,31 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
 }
 
 /* V349: sharing and download-request surfaces must follow the active light theme. */
+html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel{
+  background:#ffffff!important;
+  background-image:none!important;
+  border:1px solid #d4dfe7!important;
+  color:#172033!important;
+  box-shadow:0 8px 24px rgba(36,61,80,.055)!important;
+}
+html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel :where(
+  h3,b,strong,p,.sub,.share-live-status,.sharing-history-head
+){
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel :where(
+  .share-live-status,.sharing-history-head span,.share-analytics-detail,
+  .access-request-card small,.access-request-card p span
+){
+  color:#60748a!important;
+  -webkit-text-fill-color:#60748a!important;
+}
+html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel :where(
+  .sharing-history,.share-permissions,.share-expiry-settings
+){
+  border-color:#dce4ed!important;
+}
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){
