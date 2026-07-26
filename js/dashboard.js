@@ -54,7 +54,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V354';
+  var BUILD='ATSRS V355';
   var UPDATE='Last Update: 27 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -292,7 +292,7 @@
   function selectedWorkPreferences(){
     var root=byId('profileWorkPreferences');
     if(!root)return ['any'];
-    return normalizeWorkPreferences(Array.from(root.querySelectorAll('input:checked')).map(function(input){return input.value}));
+    return normalizeWorkPreferences(root.dataset.value||'any').slice(0,1);
   }
   function workPreferencesText(values){
     var labels={any:'Any opportunity',freelance:'Freelance',contract:'Contract',permanent:'Permanent'};
@@ -302,8 +302,11 @@
     root=root||byId('profileWorkPreferences');
     if(!root)return;
     var summary=byId('profileWorkPreferencesSummary');
-    var selected=normalizeWorkPreferences(Array.from(root.querySelectorAll('input:checked')).map(function(input){return input.value}));
+    var selected=normalizeWorkPreferences(root.dataset.value||'any').slice(0,1);
     if(summary)summary.textContent=workPreferencesText(selected);
+    root.querySelectorAll('[data-work-preference-value]').forEach(function(option){
+      option.setAttribute('aria-selected',option.dataset.workPreferenceValue===selected[0]?'true':'false');
+    });
   }
   function setWorkPreferencesMenu(root,open){
     root=root||byId('profileWorkPreferences');
@@ -316,7 +319,7 @@
   function setWorkPreferences(values){
     var root=byId('profileWorkPreferences'),next=normalizeWorkPreferences(values);
     if(!root)return;
-    root.querySelectorAll('input[type="checkbox"]').forEach(function(input){input.checked=next.indexOf(input.value)>=0});
+    root.dataset.value=next[0]||'any';
     updateWorkPreferencesSummary(root);
   }
   function bindWorkPreferences(){
@@ -327,13 +330,13 @@
     if(toggle)toggle.addEventListener('click',function(){
       setWorkPreferencesMenu(root,toggle.getAttribute('aria-expanded')!=='true');
     });
-    root.addEventListener('change',function(event){
-      var input=event.target;if(!input||input.type!=='checkbox')return;
-      var inputs=Array.from(root.querySelectorAll('input[type="checkbox"]'));
-      if(input.value==='any'&&input.checked)inputs.forEach(function(item){if(item!==input)item.checked=false});
-      else if(input.checked){var any=root.querySelector('input[value="any"]');if(any)any.checked=false}
-      if(!inputs.some(function(item){return item.checked})){var fallback=root.querySelector('input[value="any"]');if(fallback)fallback.checked=true}
+    root.addEventListener('click',function(event){
+      var option=event.target.closest&&event.target.closest('[data-work-preference-value]');
+      if(!option||!root.contains(option))return;
+      root.dataset.value=option.dataset.workPreferenceValue||'any';
       updateWorkPreferencesSummary(root);
+      setWorkPreferencesMenu(root,false);
+      if(toggle)toggle.focus();
       var confirmed=byId('availabilityConfirmationNote');
       if(confirmed)confirmed.textContent='Changes not saved';
     });
@@ -524,7 +527,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V354';
+  var BUILD='ATSRS V355';
   var UPDATE='Last Update: 27 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){

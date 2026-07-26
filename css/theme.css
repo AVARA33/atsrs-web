@@ -252,6 +252,14 @@ html[data-theme="light"] body .personnel-filterbar select{
     linear-gradient(45deg,transparent 50%,#718596 50%),
     linear-gradient(135deg,#718596 50%,transparent 50%)!important;
 }
+html[data-theme="light"] body .personnel-filterbar select{
+  background-image:none!important;
+}
+html[data-theme="light"] body #app .personnel-combobox>.personnel-combobox-toggle{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
 html[data-theme="light"] body .personnel-filterbar select option{
   color-scheme:light!important;
   background:#ffffff!important;

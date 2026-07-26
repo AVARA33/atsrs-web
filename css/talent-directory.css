@@ -11,12 +11,15 @@
 .personnel-filterbar{display:grid;grid-template-columns:minmax(210px,1.35fr) repeat(5,minmax(130px,.8fr));gap:9px;padding:14px 0 16px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
 .personnel-filterbar>label{display:grid;gap:6px;color:#8ea2b5;font-size:10px;font-weight:600}
 .personnel-filterbar input,.personnel-filterbar select{width:100%;min-height:38px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
-.personnel-filterbar select{appearance:none;-webkit-appearance:none;padding-right:30px!important;cursor:pointer;color-scheme:dark;background-color:#091522!important;background-image:linear-gradient(45deg,transparent 50%,#91a4b4 50%),linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;background-position:calc(100% - 14px) 50%,calc(100% - 10px) 50%!important;background-size:4px 4px,4px 4px!important;background-repeat:no-repeat!important}
+.personnel-filterbar select{appearance:none;-webkit-appearance:none;padding-right:34px!important;cursor:pointer;color-scheme:dark;background-color:#091522!important;background-image:none!important}
 .personnel-filterbar input:hover,.personnel-filterbar input:focus,.personnel-filterbar select:hover,.personnel-filterbar select:focus{background-color:#091522!important;border-color:#4e7187!important;color:#edf5fb!important;outline:none}
 .personnel-combobox{position:relative;display:block;min-width:0}
-.personnel-combobox>input{padding-right:34px!important}
-.personnel-combobox-toggle{position:absolute!important;z-index:2;top:0!important;right:0!important;width:34px!important;min-width:34px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
-.personnel-combobox-toggle::after{content:"";position:absolute;top:16px;right:13px;width:6px;height:6px;border-right:2px solid #91a4b4;border-bottom:2px solid #91a4b4;transform:rotate(45deg)}
+.personnel-combobox>input{padding-right:34px!important;border-radius:10px!important}
+#app .personnel-combobox>.personnel-combobox-toggle{position:absolute!important;z-index:2;top:1px!important;right:1px!important;width:32px!important;min-width:32px!important;height:36px!important;min-height:36px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0 9px 9px 0!important;background:transparent!important;box-shadow:none!important}
+.personnel-select-shell{position:relative;display:block;min-width:0}
+.personnel-select-shell>select{border-radius:10px!important}
+.personnel-filter-arrow{position:absolute;z-index:2;top:1px;right:1px;width:32px;height:36px;pointer-events:none}
+.personnel-combobox-toggle::after,.personnel-filter-arrow::after{content:"";position:absolute;top:13px;right:12px;width:7px;height:7px;border-right:2px solid #718596;border-bottom:2px solid #718596;transform:rotate(45deg)}
 .personnel-combobox-options{position:absolute;z-index:80;top:calc(100% + 6px);left:0;right:0;display:grid;max-height:240px;overflow:auto;padding:6px;border:1px solid #2b4255;border-radius:10px;background:#0b1825;box-shadow:0 16px 34px rgba(0,0,0,.28)}
 .personnel-combobox-options.hidden{display:none!important}
 .personnel-combobox-options button{display:block!important;width:100%!important;min-height:34px!important;margin:0!important;padding:8px 10px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#dce7ee!important;text-align:left!important;font-size:11px!important;box-shadow:none!important}

@@ -1,4 +1,4 @@
-/* ATSRS V354 - certificate-qualified candidate directory. */
+/* ATSRS V355 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -90,7 +90,7 @@
     var availabilityStatus=(byId('profileAvailabilityStatus')&&byId('profileAvailabilityStatus').value||stored.availabilityStatus||'not_set').trim();
     var availableFrom=(byId('profileAvailableFrom')&&byId('profileAvailableFrom').value||stored.availableFrom||'').trim();
     var workRoot=byId('profileWorkPreferences');
-    var workPreferences=normalizeWorkPreferences(workRoot?checkedValues(workRoot):(stored.workPreferences||stored.workPreference||'any'));
+    var workPreferences=normalizeWorkPreferences(workRoot?(workRoot.dataset.value||'any'):(stored.workPreferences||stored.workPreference||'any')).slice(0,1);
     var phoneCode=formValue('profilePhoneCountryCode',stored.phoneCountryCode||'+994')||'+994';
     var phoneLocal=cleanPhonePart(formValue('profilePhoneLocal',stored.phoneLocal||''));
     var phoneNumber=formValue('profilePhone',stored.phone||stored.phoneNumber||combinedPhone(phoneCode,phoneLocal));
