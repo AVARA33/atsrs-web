@@ -1234,8 +1234,8 @@ body:not(.personal-mode) .admin-overview-panel{
 body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid{
   display:grid!important;
-  grid-template-columns:260px 260px!important;
-  column-gap:80px!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  column-gap:24px!important;
   row-gap:12px!important;
   align-items:start!important;
   justify-content:start!important;
@@ -1257,10 +1257,10 @@ body.personal-mode #profilePhotoCard{display:flex}
   min-width:0;
 }
 .profile-details-primary{
-  grid-template-columns:repeat(4,minmax(125px,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
 }
 .profile-details-secondary{
-  grid-template-columns:minmax(135px,.9fr) minmax(120px,.72fr) minmax(145px,.9fr) minmax(210px,1.38fr);
+  grid-template-columns:minmax(0,.9fr) minmax(0,.72fr) minmax(0,.9fr) minmax(0,1.38fr);
 }
 .profile-labeled-field{
   display:grid;
@@ -1679,7 +1679,7 @@ body.profile-photo-cropping{overflow:hidden}
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
 @media(max-width:1380px){
   #profilePage #accountGeneralTab>.profile-grid{
-    grid-template-columns:minmax(220px,280px) minmax(220px,280px)!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
     width:100%!important;
   }
   #profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{

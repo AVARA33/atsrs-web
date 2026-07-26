@@ -983,7 +983,7 @@ html[data-theme="light"] body #app #profilePage .admin-overview-refresh{
   -webkit-text-fill-color:#334155!important;
 }
 html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
-  grid-template-columns:260px 260px!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
   column-gap:24px!important;
   row-gap:14px!important;
   padding-top:18px!important;
