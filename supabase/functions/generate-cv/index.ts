@@ -1,0 +1,401 @@
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+import { corsHeaders } from "jsr:@supabase/supabase-js@2/cors";
+
+const OPENAI_MODEL = Deno.env.get("OPENAI_CV_MODEL") ?? "gpt-5.6";
+const CONSENT_VERSION = "2026-07-26";
+
+type CvRequest = {
+  target_role?: unknown;
+  language?: unknown;
+  summary_notes?: unknown;
+  skills?: unknown;
+  experience_text?: unknown;
+  education_text?: unknown;
+  consent_accepted?: unknown;
+  consent_version?: unknown;
+};
+
+type OpenAIResponse = {
+  status?: string;
+  incomplete_details?: { reason?: string };
+  output_text?: string;
+  output?: Array<{
+    type?: string;
+    content?: Array<{ type?: string; text?: string; refusal?: string }>;
+  }>;
+  usage?: { input_tokens?: number; output_tokens?: number };
+  error?: { message?: string };
+};
+
+type CvQuota = {
+  plan: "free" | "pro" | "business";
+  used: number;
+  generation_limit: number;
+  remaining: number;
+  allowed: boolean;
+  reason: "reserved" | "generation_limit" | "cooldown";
+};
+
+const cvSchema = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    full_name: { type: "string" },
+    headline: { type: "string" },
+    contact: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        email: { type: "string" },
+        phone: { type: "string" },
+        whatsapp: { type: "string" },
+        location: { type: "string" },
+        country: { type: "string" },
+      },
+      required: ["email", "phone", "whatsapp", "location", "country"],
+    },
+    professional_summary: { type: "string" },
+    core_skills: { type: "array", items: { type: "string" } },
+    experience: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          role: { type: "string" },
+          employer: { type: "string" },
+          location: { type: "string" },
+          start_date: { type: "string" },
+          end_date: { type: "string" },
+          highlights: { type: "array", items: { type: "string" } },
+        },
+        required: ["role", "employer", "location", "start_date", "end_date", "highlights"],
+      },
+    },
+    education: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          institution: { type: "string" },
+          qualification: { type: "string" },
+          location: { type: "string" },
+          start_date: { type: "string" },
+          end_date: { type: "string" },
+          highlights: { type: "array", items: { type: "string" } },
+        },
+        required: ["institution", "qualification", "location", "start_date", "end_date", "highlights"],
+      },
+    },
+    certifications: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          name: { type: "string" },
+          issuer: { type: "string" },
+          issue_date: { type: "string" },
+          expiry_date: { type: "string" },
+        },
+        required: ["name", "issuer", "issue_date", "expiry_date"],
+      },
+    },
+  },
+  required: [
+    "full_name",
+    "headline",
+    "contact",
+    "professional_summary",
+    "core_skills",
+    "experience",
+    "education",
+    "certifications",
+  ],
+} as const;
+
+function allowedOrigin(req: Request) {
+  const origin = req.headers.get("Origin") ?? "";
+  if (origin === "https://atsrs.com" || origin === "https://www.atsrs.com") return origin;
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return origin;
+  return "https://atsrs.com";
+}
+
+function headers(req: Request) {
+  return {
+    ...corsHeaders,
+    "Access-Control-Allow-Origin": allowedOrigin(req),
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Content-Type": "application/json",
+    "Vary": "Origin",
+  };
+}
+
+function json(req: Request, status: number, body: Record<string, unknown>) {
+  return new Response(JSON.stringify(body), { status, headers: headers(req) });
+}
+
+function getPublishableKey() {
+  const keys = Deno.env.get("SUPABASE_PUBLISHABLE_KEYS");
+  if (keys) {
+    try {
+      const parsed = JSON.parse(keys) as Record<string, string>;
+      if (parsed.default) return parsed.default;
+    } catch {
+      // Use the legacy key while the project completes key migration.
+    }
+  }
+  return Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+}
+
+function stringValue(value: unknown, limit: number) {
+  return typeof value === "string" ? value.trim().slice(0, limit) : "";
+}
+
+function stringArray(value: unknown, limit: number) {
+  return Array.isArray(value)
+    ? value.map((item) => stringValue(item, 120)).filter(Boolean).slice(0, limit)
+    : [];
+}
+
+function parseWorkspaceValue(payload: unknown) {
+  if (!payload || typeof payload !== "object") return null;
+  const value = (payload as { value?: unknown }).value;
+  if (typeof value !== "string") return value ?? null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
+function outputText(value: OpenAIResponse) {
+  if (typeof value.output_text === "string" && value.output_text.trim()) return value.output_text;
+  for (const item of value.output ?? []) {
+    if (item.type !== "message") continue;
+    for (const content of item.content ?? []) {
+      if (content.type === "output_text" && typeof content.text === "string") return content.text;
+    }
+  }
+  return "";
+}
+
+Deno.serve(async (req: Request) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: headers(req) });
+  if (req.method !== "POST") return json(req, 405, { error: "Method not allowed." });
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+  const publishableKey = getPublishableKey();
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const openAiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
+  if (!supabaseUrl || !publishableKey || !serviceRoleKey || !openAiKey) {
+    return json(req, 500, { error: "Server configuration is incomplete." });
+  }
+
+  const authorization = req.headers.get("Authorization") ?? "";
+  const token = authorization.startsWith("Bearer ") ? authorization.slice(7).trim() : "";
+  if (!token) return json(req, 401, { error: "Sign in before generating a CV." });
+
+  const supabase = createClient(supabaseUrl, publishableKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { headers: { Authorization: `Bearer ${token}` } },
+  });
+  const authResult = await supabase.auth.getUser(token);
+  if (authResult.error || !authResult.data.user) {
+    return json(req, 401, { error: "Your session is no longer valid. Sign in again." });
+  }
+
+  let body: CvRequest;
+  try {
+    body = await req.json() as CvRequest;
+  } catch {
+    return json(req, 400, { error: "Invalid request body." });
+  }
+  if (body.consent_accepted !== true || body.consent_version !== CONSENT_VERSION) {
+    return json(req, 400, { error: "Confirm the AI CV processing notice before continuing." });
+  }
+
+  const careerInput = {
+    target_role: stringValue(body.target_role, 120),
+    language: stringValue(body.language, 40) || "English",
+    summary_notes: stringValue(body.summary_notes, 1800),
+    skills: stringArray(body.skills, 40),
+    experience_text: stringValue(body.experience_text, 7000),
+    education_text: stringValue(body.education_text, 3500),
+  };
+  if (
+    !careerInput.summary_notes &&
+    !careerInput.skills.length &&
+    !careerInput.experience_text &&
+    !careerInput.education_text
+  ) {
+    return json(req, 400, { error: "Add experience, education, skills or summary notes first." });
+  }
+
+  const admin = createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const userId = authResult.data.user.id;
+  const [profileResult, workspaceResult] = await Promise.all([
+    admin.from("atsrs_talent_profiles").select("*").eq("user_id", userId).maybeSingle(),
+    admin.from("atsrs_workspace_data")
+      .select("data_key,payload")
+      .eq("user_id", userId)
+      .eq("account_type", "personal"),
+  ]);
+  if (profileResult.error || workspaceResult.error) {
+    console.error("ATSRS CV source query failed", {
+      userId,
+      profileError: profileResult.error,
+      workspaceError: workspaceResult.error,
+    });
+    return json(req, 500, { error: "Your ATSRS profile data could not be prepared." });
+  }
+
+  const workspace: Record<string, unknown> = {};
+  for (const row of workspaceResult.data ?? []) {
+    if (String(row.data_key).endsWith("_profile")) workspace.profile = parseWorkspaceValue(row.payload);
+    if (String(row.data_key).endsWith("_certs")) workspace.documents = parseWorkspaceValue(row.payload);
+  }
+  const profile = profileResult.data ?? workspace.profile ?? {};
+  const source = {
+    account_email: authResult.data.user.email ?? "",
+    profile,
+    documents: Array.isArray(workspace.documents) ? workspace.documents.slice(0, 250) : [],
+    career_input: careerInput,
+  };
+
+  const quotaResult = await admin.rpc("atsrs_reserve_ai_cv", { p_user_id: userId });
+  const quota = Array.isArray(quotaResult.data)
+    ? quotaResult.data[0] as CvQuota | undefined
+    : undefined;
+  if (quotaResult.error || !quota) {
+    console.error("ATSRS AI CV quota reservation failed", { userId, error: quotaResult.error });
+    return json(req, 500, { error: "Your AI CV allowance could not be checked. Try again." });
+  }
+  if (!quota.allowed) {
+    if (quota.reason === "cooldown") {
+      return json(req, 429, {
+        error: "Please wait a few seconds before generating another CV.",
+        quota,
+      });
+    }
+    return json(req, 429, {
+      error: quota.plan === "free"
+        ? "Your complimentary AI CV generation has been used. Upgrade to Titanium to create more versions."
+        : `Your plan includes ${quota.generation_limit} AI CV generations per month. The monthly limit has been reached.`,
+      quota,
+    });
+  }
+  const quotaPeriod = quota.plan === "free"
+    ? "1970-01-01"
+    : new Date().toISOString().slice(0, 7) + "-01";
+  const releaseQuota = async () => {
+    const released = await admin.rpc("atsrs_release_ai_cv", {
+      p_user_id: userId,
+      p_period_start: quotaPeriod,
+    });
+    if (released.error) {
+      console.error("ATSRS AI CV quota release failed", { userId, error: released.error });
+    }
+  };
+
+  const instructions = [
+    "Create a concise, professional, ATS-friendly CV in the language requested by the user.",
+    "Use only facts present in the supplied ATSRS data and user career input.",
+    "Never invent employers, dates, education, achievements, duties, skills, licences, document numbers, or contact details.",
+    "You may improve grammar and rewrite user-provided responsibilities as clear action-oriented bullet points without changing their meaning.",
+    "If a field is not supported by the source, return an empty string or empty array.",
+    "Do not include birth date, age, marital status, religion, gender, nationality assumptions, document numbers, or sensitive identity information.",
+    "Do not claim ATSRS has verified a document unless the source explicitly says it is verified.",
+    "Use the target role as the headline when supplied; otherwise use the saved profile position.",
+    "Include relevant uploaded document titles in certifications, but never infer skills solely from a certificate title.",
+    "Keep the professional summary factual and between 60 and 110 words when enough source material exists.",
+    "Keep each experience highlight short, specific and suitable for a CV.",
+  ].join(" ");
+
+  let openAiResponse: Response;
+  try {
+    openAiResponse = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${openAiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: OPENAI_MODEL,
+        instructions,
+        input: JSON.stringify(source),
+        text: {
+          format: {
+            type: "json_schema",
+            name: "atsrs_profile_cv",
+            strict: true,
+            schema: cvSchema,
+          },
+        },
+        store: false,
+        reasoning: { effort: "minimal" },
+        max_output_tokens: 7000,
+      }),
+    });
+  } catch {
+    await releaseQuota();
+    return json(req, 502, { error: "The AI service could not be reached. Try again." });
+  }
+
+  let openAiBody: OpenAIResponse;
+  try {
+    openAiBody = await openAiResponse.json() as OpenAIResponse;
+  } catch {
+    await releaseQuota();
+    return json(req, 502, { error: "The AI service returned an unreadable response." });
+  }
+  if (!openAiResponse.ok) {
+    await releaseQuota();
+    console.error("OpenAI CV request failed", {
+      status: openAiResponse.status,
+      userId,
+      providerMessage: openAiBody.error?.message?.slice(0, 160),
+    });
+    const message = openAiResponse.status === 429
+      ? "The AI service is busy or your allowance has been reached. Try again shortly."
+      : "The AI service could not prepare this CV.";
+    return json(req, 502, { error: message });
+  }
+
+  const text = outputText(openAiBody);
+  if (!text && openAiBody.status === "incomplete") {
+    await releaseQuota();
+    console.error("OpenAI CV response incomplete", {
+      userId,
+      reason: openAiBody.incomplete_details?.reason ?? "unknown",
+    });
+    return json(req, 502, { error: "The AI CV did not finish. Please try once more." });
+  }
+  let cv: Record<string, unknown>;
+  try {
+    cv = JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    await releaseQuota();
+    return json(req, 502, { error: "The AI CV result could not be validated. Try again." });
+  }
+  const usage = openAiBody.usage ?? {};
+  const usageResult = await admin.from("atsrs_ai_usage").insert({
+    user_id: userId,
+    event_type: "generate_cv",
+    model: OPENAI_MODEL,
+    input_tokens: Math.max(0, Number(usage.input_tokens ?? 0)),
+    output_tokens: Math.max(0, Number(usage.output_tokens ?? 0)),
+    estimated_cost_usd: 0,
+  });
+  if (usageResult.error) {
+    console.error("ATSRS AI CV usage metric could not be stored", {
+      userId,
+      error: usageResult.error,
+    });
+  }
+  return json(req, 200, { cv, model: OPENAI_MODEL, quota });
+});
