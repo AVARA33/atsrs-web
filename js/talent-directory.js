@@ -1,4 +1,4 @@
-/* ATSRS V345 - certificate-qualified candidate directory. */
+/* ATSRS V346 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -384,7 +384,7 @@
           '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
           '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+personnelDocumentMarkup(item)+
           '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div><div><dt>Tracking</dt><dd>'+safe(tracking)+'</dd></div></dl>'+
-          '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
+          '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
       }).join('')+'</div>';
     }else{
       list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row">'+
@@ -396,7 +396,7 @@
           return '<div class="linked-personnel-row" role="row">'+
             '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small>'+personnelDocumentMarkup(item)+'</span>'+
             '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(work.label)+'</span><span>'+safe(project)+'</span><span>'+safe(access)+'</span>'+
-            '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
+            '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
         }).join('')+'</div>';
     }
     list.querySelectorAll('[data-linked-open]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedOpen)}});
@@ -416,7 +416,7 @@
         return '<div class="linked-personnel-row" role="row">'+
           '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small></span>'+
           '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(access)+'</span><span>'+safe(tracking)+'</span>'+
-          '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
+          '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
       }).join('')+'</div>';
     list.querySelectorAll('[data-linked-open]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedOpen)}});
     list.querySelectorAll('[data-linked-remove]').forEach(function(button){button.onclick=function(){removeFromPersonnel(button.dataset.linkedRemove,button)}});
