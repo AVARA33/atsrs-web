@@ -1032,6 +1032,21 @@ html[data-theme="light"] body #app #profilePage :where(
   -webkit-text-fill-color:#172033!important;
   box-shadow:none!important;
 }
+html[data-theme="light"] body #app #profilePage :where(
+  .profile-labeled-field>select,.work-availability-grid select
+){
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+  line-height:20px!important;
+  color-scheme:light!important;
+}
+html[data-theme="light"] body #app #profilePage select option,
+html[data-theme="light"] body #app #profilePage select optgroup{
+  background:#ffffff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+  color-scheme:light!important;
+}
 html[data-theme="light"] body #app #profilePage .phone-field input{
   height:34px!important;
   min-height:34px!important;
@@ -1139,6 +1154,97 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
 html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row) :where(p,span){
   color:#5f7087!important;
   -webkit-text-fill-color:#5f7087!important;
+}
+
+/* Account date fields use the ATSRS calendar appended directly to body. */
+html[data-theme="light"] body .atsrs-date-picker-dialog{
+  border-color:#cbd5e1!important;
+  background:#ffffff!important;
+  color:#172033!important;
+  box-shadow:0 14px 38px rgba(15,23,42,.16),0 2px 8px rgba(15,23,42,.08)!important;
+  color-scheme:light!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-dialog.place-below::before{
+  border-bottom-color:#cbd5e1!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-dialog.place-below::after{
+  border-bottom-color:#ffffff!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-dialog.place-above::before{
+  border-top-color:#cbd5e1!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-dialog.place-above::after{
+  border-top-color:#ffffff!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-nav button{
+  background:transparent!important;
+  color:#42556d!important;
+  -webkit-text-fill-color:#42556d!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-nav button:hover,
+html[data-theme="light"] body .atsrs-date-picker-nav button:focus-visible{
+  border-color:#cbd5e1!important;
+  background:#f1f5f9!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-month select{
+  border-color:#cbd5e1!important;
+  background-color:#ffffff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+  color-scheme:light!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-month select option{
+  background:#ffffff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+  color-scheme:light!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-weekdays span{
+  color:#60748a!important;
+  -webkit-text-fill-color:#60748a!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-days button{
+  background:transparent!important;
+  color:#334155!important;
+  -webkit-text-fill-color:#334155!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-days button:hover,
+html[data-theme="light"] body .atsrs-date-picker-days button:focus-visible{
+  border-color:#cbd5e1!important;
+  background:#f1f5f9!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-days button.today{
+  border-color:#94a3b8!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-days button.selected{
+  border-color:#4f8f68!important;
+  background:#e9f8ee!important;
+  color:#17643a!important;
+  -webkit-text-fill-color:#17643a!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-selection{
+  color:#60748a!important;
+  -webkit-text-fill-color:#60748a!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-actions{
+  border-top-color:#dce4ed!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-actions button{
+  background:transparent!important;
+  color:#42556d!important;
+  -webkit-text-fill-color:#42556d!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-actions button:hover,
+html[data-theme="light"] body .atsrs-date-picker-actions button:focus-visible{
+  background:#f1f5f9!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body .atsrs-date-picker-actions .confirm{
+  border-color:#75aa86!important;
+  background:#e9f8ee!important;
+  color:#17643a!important;
+  -webkit-text-fill-color:#17643a!important;
 }
 
 @media(max-width:1180px){
