@@ -505,7 +505,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V343: final light-theme contrast and fixed top-right controls. */
+/* V344: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -813,7 +813,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V343 — Account light mode: one calm, fully light and responsive system. */
+/* V344 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1118,7 +1118,7 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   }
 }
 
-/* V343: sharing and download-request surfaces must follow the active light theme. */
+/* V344: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){
@@ -1197,4 +1197,66 @@ html[data-theme="light"] .share-request-dialog :where(h2,label){
 html[data-theme="light"] .share-request-dialog>p{
   color:#60748a!important;
   -webkit-text-fill-color:#60748a!important;
+}
+
+/* V344: Personnel cards and list must remain comfortably readable in light mode. */
+html[data-theme="light"] .linked-personnel-row{
+  border-color:#cbd7e0!important;
+  color:#2b465a!important;
+  font-size:12px!important;
+  font-weight:500!important;
+}
+html[data-theme="light"] .linked-personnel-row.is-head{
+  color:#405b70!important;
+  font-size:10px!important;
+  font-weight:800!important;
+}
+html[data-theme="light"] .linked-personnel-row b{
+  color:#142c3f!important;
+  font-size:12px!important;
+  font-weight:750!important;
+}
+html[data-theme="light"] .linked-personnel-row small{
+  color:#526d81!important;
+  font-size:10px!important;
+  font-weight:500!important;
+}
+html[data-theme="light"] .linked-personnel-card-head>span{
+  color:#405f75!important;
+  font-size:11px!important;
+  font-weight:650!important;
+}
+html[data-theme="light"] .linked-personnel-card h4{
+  color:#142c3f!important;
+  font-weight:750!important;
+}
+html[data-theme="light"] .linked-personnel-card>p{
+  color:#3d5c72!important;
+  font-size:12px!important;
+  font-weight:550!important;
+}
+html[data-theme="light"] .linked-personnel-card dt{
+  color:#4b6579!important;
+  font-size:10px!important;
+  font-weight:750!important;
+}
+html[data-theme="light"] .linked-personnel-card dd{
+  color:#29475c!important;
+  font-size:12px!important;
+  font-weight:550!important;
+  line-height:1.35!important;
+}
+html[data-theme="light"] .personnel-document-update{
+  color:#4e697d!important;
+  font-size:10px!important;
+  font-weight:600!important;
+}
+html[data-theme="light"] .personnel-document-update.is-recent{
+  color:#18783e!important;
+  font-weight:800!important;
+}
+html[data-theme="light"] :where(.talent-head-tools>span,.talent-count){
+  color:#4d687d!important;
+  font-size:11px!important;
+  font-weight:650!important;
 }
