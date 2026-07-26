@@ -1,4 +1,4 @@
-/* ATSRS V340 - certificate-qualified candidate directory. */
+/* ATSRS V341 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -522,8 +522,9 @@
       var panel=row.querySelector('.talent-list-action-panel');if(!profile||!panel)return;
       row.querySelectorAll('[data-list-action]').forEach(function(button){
         button.onclick=function(){
-          activateListPanel(panel);
           var action=button.dataset.listAction;
+          if(action==='view'){openProfile(profile.user_id);return;}
+          activateListPanel(panel);
           if(action==='message')showMessageForm(profile);
           if(action==='summary')showDocumentSummary(profile);
           if(action==='cv')openTalentCv(profile);
@@ -557,7 +558,7 @@
             '<span class="talent-list-person">'+avatarMarkup(profile)+'<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.position)+'</small></span></span>'+
             '<span class="talent-list-availability"><b>'+safe(work.label)+'</b><small class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</small></span>'+
             '<span>'+safe(profile.country||'Not listed')+'</span><span>'+safe(work.detail)+'</span>'+
-            '<span class="talent-list-actions"><button type="button" class="secondary" data-list-action="message">Message</button><button type="button" class="secondary" data-list-action="summary">Summary</button><button type="button" class="secondary" data-list-action="cv">CV</button>'+personnelActionMarkup(profile)+'</span>'+
+            '<span class="talent-list-actions"><button type="button" class="secondary" data-list-action="view">View Profile</button><button type="button" class="secondary" data-list-action="message">Message</button><button type="button" class="secondary" data-list-action="summary">Summary</button><button type="button" class="secondary" data-list-action="cv">CV</button>'+personnelActionMarkup(profile)+'</span>'+
             '<div class="talent-action-panel talent-list-action-panel hidden"></div></div>';
         }).join('')+'</div>';
       bindCandidateListActions(grid);
@@ -568,7 +569,7 @@
       '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p class="talent-role">'+safe(profile.position)+'</p>'+
       '<div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div>'+
       '<dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl>'+
-      '<button type="button" class="secondary talent-view" data-talent-id="'+safe(profile.user_id)+'">View candidate profile</button></article>'}).join('');
+      '<button type="button" class="secondary talent-view" data-talent-id="'+safe(profile.user_id)+'">View Profile</button></article>'}).join('');
     grid.querySelectorAll('.talent-view').forEach(function(button){button.onclick=function(){openProfile(button.dataset.talentId)}});
   }
   function render(){
