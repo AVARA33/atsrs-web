@@ -275,50 +275,135 @@ Deno.serve(async (req) => {
   }
 
   if (action === "directory") {
-    const { data: directoryProfiles, error: profilesError } = await admin
-      .from("atsrs_talent_profiles")
-      .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at,profile_visibility")
-      .eq("discoverable", true)
-      .eq("profile_visibility", "Public")
-      .order("last_active_at", { ascending: false });
-    if (profilesError) return json(500, { error: "Candidate profiles could not be loaded." });
-
     const normalizeUserId = (value: unknown) => String(value || "").trim().toLowerCase();
-    const profileIds = (directoryProfiles || [])
-      .map((profile) => normalizeUserId(profile.user_id))
-      .filter(Boolean);
-    if (!profileIds.length) {
+    const pageSize = 1000;
+    const certifiedUsers = new Set<string>();
+    for (let offset = 0; ; offset += pageSize) {
+      const { data: certificatePage, error: certificatesError } = await admin
+        .from("atsrs_files")
+        .select("user_id")
+        .eq("account_type", "personal")
+        .eq("category", "document")
+        .order("user_id", { ascending: true })
+        .range(offset, offset + pageSize - 1);
+      if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
+      (certificatePage || []).forEach((row) => {
+        const ownerId = normalizeUserId(row.user_id);
+        if (ownerId) certifiedUsers.add(ownerId);
+      });
+      if ((certificatePage || []).length < pageSize) break;
+    }
+    if (!certifiedUsers.size) {
       return json(200, {
         profiles: [],
         meta: { eligible_profiles: 0, document_owners: 0, returned_profiles: 0 },
       });
     }
 
-    // Load certificate owners independently and join them in memory. Passing the
-    // profile UUID array through PostgREST's `in` filter intermittently returned
-    // no rows in production even though qualifying files existed.
-    const { data: certificateRows, error: certificatesError } = await admin
-      .from("atsrs_files")
-      .select("user_id")
-      .eq("account_type", "personal")
-      .eq("category", "document")
-      .limit(10000);
-    if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
+    const profileMap = new Map<string, Record<string, unknown>>();
+    for (let offset = 0; ; offset += pageSize) {
+      const { data: profilePage, error: profilesError } = await admin
+        .from("atsrs_talent_profiles")
+        .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at,profile_visibility")
+        .order("user_id", { ascending: true })
+        .range(offset, offset + pageSize - 1);
+      if (profilesError) return json(500, { error: "Candidate profiles could not be loaded." });
+      (profilePage || []).forEach((profile) => {
+        const profileId = normalizeUserId(profile.user_id);
+        if (certifiedUsers.has(profileId)) profileMap.set(profileId, profile as Record<string, unknown>);
+      });
+      if ((profilePage || []).length < pageSize) break;
+    }
 
-    const certifiedUsers = new Set(
-      (certificateRows || []).map((row) => normalizeUserId(row.user_id)).filter(Boolean),
-    );
-    const profiles = (directoryProfiles || [])
-      .filter((profile) => certifiedUsers.has(normalizeUserId(profile.user_id)));
+    // A certificate upload is the only listing requirement. If the denormalized
+    // talent row has not synced yet, build a safe professional-only fallback from
+    // the user's own workspace profile instead of silently dropping the user.
+    const missingProfileIds = Array.from(certifiedUsers).filter((id) => !profileMap.has(id));
+    const fallbackProfiles: Record<string, unknown>[] = [];
+    for (let offset = 0; offset < missingProfileIds.length; offset += 100) {
+      const idBatch = missingProfileIds.slice(offset, offset + 100);
+      const { data: workspaceProfiles, error: workspaceError } = await admin
+        .from("atsrs_workspace_data")
+        .select("user_id,payload,updated_at")
+        .eq("account_type", "personal")
+        .like("data_key", "%_personal_profile")
+        .in("user_id", idBatch);
+      if (workspaceError) return json(500, { error: "Candidate profile details could not be loaded." });
+      (workspaceProfiles || []).forEach((row) => {
+        const profileId = normalizeUserId(row.user_id);
+        if (!profileId || profileMap.has(profileId)) return;
+        const payload = row.payload && typeof row.payload === "object"
+          ? row.payload as Record<string, unknown>
+          : {};
+        let source: Record<string, unknown> = {};
+        try {
+          const value = payload.value;
+          source = typeof value === "string"
+            ? JSON.parse(value) as Record<string, unknown>
+            : value && typeof value === "object"
+              ? value as Record<string, unknown>
+              : {};
+        } catch (_) {
+          source = {};
+        }
+        const fallbackUpdatedAt = clean(row.updated_at, 40) || new Date().toISOString();
+        const fallbackProfile = {
+          user_id: profileId,
+          name: clean(source.name, 120) || "ATSRS",
+          surname: clean(source.surname, 120) || "Professional",
+          position: clean(source.position, 160) || "Professional",
+          country: clean(source.country, 120) || "Not listed",
+          company: clean(source.company, 160) || null,
+          avatar_url: clean(source.avatarUrl, 1000) || null,
+          available: false,
+          availability_status: clean(source.availabilityStatus, 40) || "not_set",
+          available_from: clean(source.availableFrom, 20) || null,
+          work_preference: clean(source.workPreference, 40) || "any",
+          work_preferences: Array.isArray(source.workPreferences) ? source.workPreferences : ["any"],
+          availability_confirmed_at: clean(source.availabilityConfirmedAt, 40) || null,
+          last_active_at: fallbackUpdatedAt,
+          updated_at: fallbackUpdatedAt,
+          profile_visibility: clean(source.visibility, 20) || "Private",
+          discoverable: true,
+        };
+        fallbackProfiles.push(fallbackProfile);
+        profileMap.set(profileId, fallbackProfile);
+      });
+    }
+    if (fallbackProfiles.length) {
+      const { error: fallbackSyncError } = await admin
+        .from("atsrs_talent_profiles")
+        .upsert(fallbackProfiles, { onConflict: "user_id" });
+      if (fallbackSyncError) return json(500, { error: "Candidate profiles could not be synchronized." });
+    }
+
+    const profiles = Array.from(profileMap.values())
+      .sort((left, right) => Date.parse(String(right.last_active_at || right.updated_at || 0)) - Date.parse(String(left.last_active_at || left.updated_at || 0)))
+      .map((profile) => {
+        if (profile.profile_visibility === "Public") return profile;
+        return {
+          ...profile,
+          phone_country_code: null,
+          phone_local: null,
+          phone_number: null,
+          phone_verified: false,
+          whatsapp_country_code: null,
+          whatsapp_local: null,
+          whatsapp_number: null,
+          whatsapp_verified: false,
+          zip_code: null,
+          birth_date: null,
+        };
+      });
     console.info("talent-profile-actions directory", {
-      eligible_profiles: profileIds.length,
+      eligible_profiles: certifiedUsers.size,
       certificate_owners: certifiedUsers.size,
       returned_profiles: profiles.length,
     });
     return json(200, {
       profiles,
       meta: {
-        eligible_profiles: profileIds.length,
+        eligible_profiles: certifiedUsers.size,
         document_owners: certifiedUsers.size,
         returned_profiles: profiles.length,
       },
@@ -354,10 +439,16 @@ Deno.serve(async (req) => {
     .from("atsrs_talent_profiles")
     .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable,profile_visibility")
     .eq("user_id", targetUserId)
-    .eq("discoverable", true)
-    .eq("profile_visibility", "Public")
     .maybeSingle();
   if (!profile) return json(404, { error: "This professional profile is unavailable." });
+  const { count: certificateCount, error: certificateError } = await admin
+    .from("atsrs_files")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", targetUserId)
+    .eq("account_type", "personal")
+    .eq("category", "document");
+  if (certificateError) return json(500, { error: "Candidate eligibility could not be verified." });
+  if (!certificateCount) return json(404, { error: "This professional has not uploaded a certificate." });
 
   if (action === "add_to_personnel") {
     const now = new Date().toISOString();

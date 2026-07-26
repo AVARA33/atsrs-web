@@ -1,4 +1,4 @@
-/* ATSRS V337 - server-enforced candidate profile visibility. */
+/* ATSRS V338 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -535,7 +535,7 @@
       var hasDirectoryProfiles=profiles.length>0||Number(directoryMeta.returned_profiles||0)>0;
       grid.innerHTML=hasDirectoryProfiles
         ?'<div class="talent-empty"><b>No matching candidates</b><span>Try a broader profession, country or name.</span></div>'
-        :'<div class="talent-empty"><b>No eligible public candidates yet</b><span>Profiles appear here after the professional chooses Public visibility and uploads at least one document.</span></div>';
+        :'<div class="talent-empty"><b>No certificate-qualified candidates yet</b><span>Every Personal user appears here automatically after uploading at least one certificate.</span></div>';
       return;
     }
     if(candidateView==='list'){
