@@ -245,6 +245,29 @@ html[data-theme="light"] body .personnel-filterbar select{
 }
 html[data-theme="light"] body .talent-summary-filter select,
 html[data-theme="light"] body .shared-document-summary-tools select{background-color:#fff!important;border-color:#cbd5e1!important;color:#0f172a!important}
+html[data-theme="light"] body .talent-work-type-filter summary,
+html[data-theme="light"] body .talent-work-type-filter summary:hover,
+html[data-theme="light"] body .talent-work-type-filter summary:focus-visible,
+html[data-theme="light"] body .talent-work-type-filter[open] summary{
+  background-color:#ffffff!important;
+  border-color:#c8d4de!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+}
+html[data-theme="light"] body .talent-work-type-filter .work-type-options{
+  background:#ffffff!important;
+  border-color:#c8d4de!important;
+  box-shadow:0 14px 34px rgba(36,61,80,.14)!important;
+}
+html[data-theme="light"] body .talent-work-type-filter .work-type-options label,
+html[data-theme="light"] body .talent-work-type-filter .work-type-options span{
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+}
+html[data-theme="light"] body .talent-work-type-filter input{
+  background:#ffffff!important;
+  border-color:#91a4b4!important;
+}
 html[data-theme="light"] body .personnel-document-update.is-recent,
 html[data-theme="light"] body .talent-upload-date.is-recent,
 html[data-theme="light"] body .shared-document-summary-link small.is-recent,
@@ -482,7 +505,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V339: final light-theme contrast and fixed top-right controls. */
+/* V340: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -790,7 +813,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V339 — Account light mode: one calm, fully light and responsive system. */
+/* V340 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1095,7 +1118,7 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   }
 }
 
-/* V339: sharing and download-request surfaces must follow the active light theme. */
+/* V340: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){
