@@ -538,7 +538,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V346: final light-theme contrast and fixed top-right controls. */
+/* V347: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -846,7 +846,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V346 — Account light mode: one calm, fully light and responsive system. */
+/* V347 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1151,7 +1151,7 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   }
 }
 
-/* V346: sharing and download-request surfaces must follow the active light theme. */
+/* V347: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){
@@ -1232,7 +1232,7 @@ html[data-theme="light"] .share-request-dialog>p{
   -webkit-text-fill-color:#60748a!important;
 }
 
-/* V346: Personnel cards and list must remain comfortably readable in light mode. */
+/* V347: Personnel cards and list must remain comfortably readable in light mode. */
 html[data-theme="light"] .linked-personnel-row{
   border-color:#cbd7e0!important;
   color:#2b465a!important;
@@ -1292,4 +1292,89 @@ html[data-theme="light"] :where(.talent-head-tools>span,.talent-count){
   color:#4d687d!important;
   font-size:11px!important;
   font-weight:650!important;
+}
+
+/* V347: Corporate light mode uses near-black neutral copy across every workspace page. */
+html[data-theme="light"] body.company-mode #app :where(
+  p:not(.is-error):not(.error),
+  small,
+  label,
+  dt,
+  dd,
+  th,
+  td,
+  .sub,
+  .muted,
+  .small-note,
+  .field-hint,
+  .field-label,
+  .talent-count,
+  .talent-head-tools>span,
+  .talent-directory-status,
+  .linked-personnel-empty,
+  .linked-personnel-row,
+  .linked-personnel-row small,
+  .linked-personnel-card-head>span,
+  .linked-personnel-card>p,
+  .linked-personnel-card dt,
+  .linked-personnel-card dd,
+  .talent-list-row,
+  .talent-list-person small,
+  .talent-list-availability small,
+  .talent-list-availability>b,
+  .talent-role,
+  .talent-work-status span,
+  .talent-card dt,
+  .talent-card dd,
+  .talent-modal-card dt,
+  .talent-modal-card dd,
+  .talent-privacy-note,
+  .talent-summary-filter,
+  .talent-summary-list small,
+  .talent-summary-list em,
+  .corporate-data-status:not(.is-error),
+  .corporate-report-generated,
+  .corporate-report-empty,
+  .corporate-compliance-head span,
+  .corporate-compliance-head em,
+  .access-empty
+){
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  opacity:1!important;
+}
+html[data-theme="light"] body.company-mode #app :where(input,textarea)::placeholder{
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  opacity:1!important;
+}
+html[data-theme="light"] body.company-mode #app :where(
+  .is-error,
+  .error,
+  .error-text,
+  .danger-text,
+  .talent-action-message.is-error,
+  .corporate-data-status.is-error
+){
+  color:#b4232c!important;
+  -webkit-text-fill-color:#b4232c!important;
+}
+html[data-theme="light"] body.company-mode #app :where(
+  .good,
+  .copy-ok,
+  .badge-ready,
+  .is-success
+){
+  color:#187642!important;
+  -webkit-text-fill-color:#187642!important;
+}
+html[data-theme="light"] body.company-mode #app .corporate-summary-card.is-ready b,
+html[data-theme="light"] body.company-mode #app .corporate-compliance-card.is-ready .corporate-compliance-head em{
+  color:#187642!important;
+  -webkit-text-fill-color:#187642!important;
+}
+html[data-theme="light"] body.company-mode #app .corporate-summary-card.is-review b,
+html[data-theme="light"] body.company-mode #app .corporate-compliance-card.is-review .corporate-compliance-head em{
+  color:#8a5b00!important;
+  -webkit-text-fill-color:#8a5b00!important;
 }
