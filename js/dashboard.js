@@ -54,8 +54,8 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V352';
-  var UPDATE='Last Update: 26 Jul 2026';
+  var BUILD='ATSRS V353';
+  var UPDATE='Last Update: 27 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
     if(!b)return;
@@ -524,8 +524,8 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V352';
-  var UPDATE='Last Update: 26 Jul 2026';
+  var BUILD='ATSRS V353';
+  var UPDATE='Last Update: 27 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){

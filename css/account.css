@@ -1236,18 +1236,18 @@ body.personal-mode #profilePhotoCard{display:flex}
   display:grid!important;
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
   column-gap:24px!important;
-  row-gap:12px!important;
+  row-gap:10px!important;
   align-items:start!important;
   justify-content:start!important;
   width:100%!important;
-  padding-top:16px;
+  padding-top:12px;
   border-top:1px solid rgba(51,65,85,.72);
 }
 #profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{
   grid-column:1/-1;
   display:grid;
-  grid-template-columns:minmax(560px,.9fr) minmax(700px,1.1fr);
-  gap:24px;
+  grid-template-columns:1fr;
+  gap:10px;
   width:100%;
   align-items:end;
 }
@@ -1257,34 +1257,34 @@ body.personal-mode #profilePhotoCard{display:flex}
   min-width:0;
 }
 .profile-details-primary{
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(150px,1fr));
 }
 .profile-details-secondary{
-  grid-template-columns:minmax(0,.9fr) minmax(0,.72fr) minmax(0,.9fr) minmax(0,1.38fr);
+  grid-template-columns:repeat(4,minmax(150px,1fr));
 }
 .profile-labeled-field{
   display:grid;
-  gap:6px;
+  gap:4px;
   min-width:0;
   margin:0;
 }
 .profile-labeled-field>span{
   color:#9fb2c8;
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
   line-height:1.2;
 }
 .profile-labeled-field>input,
 .profile-labeled-field>select{
   width:100%!important;
-  height:42px!important;
-  min-height:42px!important;
+  height:36px!important;
+  min-height:36px!important;
   margin:0!important;
   box-sizing:border-box!important;
 }
 #profilePage #accountGeneralTab>.profile-grid>.phone-entry{
   grid-column:auto;
-  width:260px!important;
+  width:230px!important;
 }
 #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-entry{
   grid-column:1;
@@ -1295,17 +1295,17 @@ body.personal-mode #profilePhotoCard{display:flex}
   justify-self:start;
 }
 #profilePage #accountGeneralTab>.profile-grid>.phone-entry>.phone-field{
-  height:42px!important;
-  min-height:42px!important;
+  height:36px!important;
+  min-height:36px!important;
   box-sizing:border-box!important;
 }
 .phone-field{
   display:grid;
-  grid-template-columns:86px minmax(0,1fr);
+  grid-template-columns:80px minmax(0,1fr);
   align-items:center;
   min-width:0;
   width:100%;
-  height:42px;
+  height:36px;
   overflow:visible;
   border:1px solid rgba(42,64,83,.92);
   border-radius:10px;
@@ -1315,8 +1315,8 @@ body.personal-mode #profilePhotoCard{display:flex}
 .phone-field input{
   width:100%!important;
   min-width:0!important;
-  height:40px!important;
-  min-height:40px!important;
+  height:34px!important;
+  min-height:34px!important;
   margin:0!important;
   border:0!important;
   border-radius:0!important;
@@ -1533,13 +1533,13 @@ body.profile-photo-cropping{overflow:hidden}
   display:inline-flex!important;
   align-items:center!important;
   justify-content:center!important;
-  width:96px!important;
-  min-width:96px!important;
-  max-width:96px!important;
-  height:44px!important;
-  min-height:44px!important;
+  width:auto!important;
+  min-width:104px!important;
+  max-width:none!important;
+  height:36px!important;
+  min-height:36px!important;
   margin:0!important;
-  padding:8px 14px!important;
+  padding:6px 14px!important;
   background:transparent!important;
   border:1px solid rgba(93,119,143,.42)!important;
   color:#d9e4ec!important;
@@ -1549,8 +1549,8 @@ body.profile-photo-cropping{overflow:hidden}
   display:flex;
   align-items:center;
   gap:10px;
-  margin-top:16px;
-  padding-top:14px;
+  margin-top:12px;
+  padding-top:10px;
   border-top:1px solid rgba(51,65,85,.72);
 }
 .profile-save-row #profileSaveStatus{
@@ -1562,8 +1562,8 @@ body.profile-photo-cropping{overflow:hidden}
   color:#eea0a0;
 }
 .work-availability-card{
-  margin-top:18px;
-  padding:16px 0 0;
+  margin-top:14px;
+  padding:12px 0 0;
   border-top:1px solid rgba(51,65,85,.72);
 }
 .work-availability-heading{
@@ -1571,19 +1571,19 @@ body.profile-photo-cropping{overflow:hidden}
   align-items:flex-start;
   justify-content:space-between;
   gap:20px;
-  width:min(100%,1080px);
-  margin-bottom:12px;
+  width:min(100%,800px);
+  margin-bottom:9px;
 }
-.work-availability-heading h4{margin:9px 0 4px;color:#e7eef4;font-size:15px}
+.work-availability-heading h4{margin:7px 0 3px;color:#e7eef4;font-size:14px}
 .work-availability-heading p{margin:0;color:#879bab;font-size:11px;line-height:1.45}
 .work-availability-heading>span{padding-top:8px;color:#7f96a8;font-size:10px;white-space:nowrap}
 .work-availability-grid{
   display:grid;
-  grid-template-columns:250px 250px 400px;
+  grid-template-columns:220px 220px 300px;
   grid-template-areas:"status available work";
   align-items:start;
   gap:10px;
-  width:min(100%,1026px);
+  width:min(100%,760px);
 }
 .work-availability-grid>label:first-child{grid-area:status}
 #profileAvailableFromWrap{
@@ -1593,12 +1593,12 @@ body.profile-photo-cropping{overflow:hidden}
 .work-type-field{grid-area:work}
 .work-availability-grid>label,.work-type-field{
   display:grid;
-  grid-template-rows:16px 44px;
-  gap:6px;
+  grid-template-rows:14px 36px;
+  gap:4px;
   align-content:start;
   box-sizing:border-box;
-  height:66px;
-  min-height:66px;
+  height:54px;
+  min-height:54px;
   margin:0!important;
   color:#8ba0b1;
   font-size:11px;
@@ -1606,8 +1606,8 @@ body.profile-photo-cropping{overflow:hidden}
 }
 .work-availability-grid input,.work-availability-grid select{
   width:100%;
-  min-height:44px;
-  height:44px;
+  min-height:36px;
+  height:36px;
   margin:0;
   box-sizing:border-box;
   background:#0a1724!important;
@@ -1617,8 +1617,8 @@ body.profile-photo-cropping{overflow:hidden}
 .work-type-select{
   position:relative;
   box-sizing:border-box;
-  height:44px;
-  min-height:44px;
+  height:36px;
+  min-height:36px;
 }
 .work-type-select-toggle{
   display:flex;
@@ -1626,8 +1626,8 @@ body.profile-photo-cropping{overflow:hidden}
   justify-content:space-between;
   gap:12px;
   width:100%;
-  height:44px;
-  min-height:44px;
+  height:36px;
+  min-height:36px;
   margin:0!important;
   padding:0 13px!important;
   border:1px solid #2a4053;
