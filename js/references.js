@@ -13,7 +13,7 @@
   function setBuild(){
     document.querySelectorAll('.build-badge').forEach(function(badge){
       var rows=badge.querySelectorAll('div');
-      if(rows[0]&&rows[0].textContent!=='ATSRS V347')rows[0].textContent='ATSRS V347';
+      if(rows[0]&&rows[0].textContent!=='ATSRS V348')rows[0].textContent='ATSRS V348';
       if(rows[1]&&rows[1].textContent!=='Last Update: 26 Jul 2026')rows[1].textContent='Last Update: 26 Jul 2026';
     });
   }
