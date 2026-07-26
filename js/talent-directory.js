@@ -1,4 +1,4 @@
-/* ATSRS V344 - certificate-qualified candidate directory. */
+/* ATSRS V345 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -306,11 +306,29 @@
     var active=personnelSortBy===key;
     return '<span><button type="button" class="personnel-column-sort'+(active?' is-active':'')+(active&&personnelSortDirection==='desc'?' is-desc':'')+'" data-personnel-sort="'+key+'" aria-label="Sort by '+safe(label)+'">'+safe(label)+'<i class="personnel-sort-arrows" aria-hidden="true"><b></b><em></em></i></button></span>';
   }
-  function fillPersonnelSelect(id,values,label){
-    var select=byId(id);if(!select)return;
-    var current=select.value;
-    select.innerHTML='<option value="">'+safe(label)+'</option>'+unique(values).map(function(value){return '<option value="'+safe(value)+'">'+safe(value)+'</option>'}).join('');
-    select.value=Array.prototype.some.call(select.options,function(option){return option.value===current})?current:'';
+  var personnelComboboxValues={profession:[],project:[]};
+  function personnelComboboxConfig(kind){
+    return kind==='project'
+      ?{input:'personnelProjectFilter',options:'personnelProjectOptions',all:'All projects'}
+      :{input:'personnelProfessionFilter',options:'personnelProfessionOptions',all:'All professions'};
+  }
+  function setPersonnelComboboxOpen(kind,open){
+    var config=personnelComboboxConfig(kind),input=byId(config.input),options=byId(config.options);
+    if(!input||!options)return;
+    options.classList.toggle('hidden',!open);
+    input.setAttribute('aria-expanded',open?'true':'false');
+  }
+  function renderPersonnelComboboxOptions(kind){
+    var config=personnelComboboxConfig(kind),input=byId(config.input),options=byId(config.options);if(!input||!options)return;
+    var query=normalized(input.value),values=(personnelComboboxValues[kind]||[]).filter(function(value){return !query||normalized(value).indexOf(query)>=0});
+    options.innerHTML='<button type="button" role="option" data-personnel-filter-value="">'+safe(config.all)+'</button>'+
+      (values.length
+        ?values.map(function(value){return '<button type="button" role="option" data-personnel-filter-value="'+safe(value)+'">'+safe(value)+'</button>'}).join('')
+        :'<span class="personnel-combobox-empty">No matching saved options</span>');
+  }
+  function fillPersonnelCombobox(kind,values){
+    personnelComboboxValues[kind]=unique(values);
+    renderPersonnelComboboxOptions(kind);
   }
   function filteredPersonnelRows(){
     var query=normalized(byId('personnelSearch')&&byId('personnelSearch').value);
@@ -323,9 +341,9 @@
     var rows=linkedPersonnel.filter(function(item){
       var profile=item&&item.profile;if(!profile)return false;
       if(query&&normalized(profile.name+' '+profile.surname).indexOf(query)<0)return false;
-      if(profession&&normalized(profile.position)!==profession)return false;
+      if(profession&&normalized(profile.position).indexOf(profession)<0)return false;
       if(workStatus&&personnelWorkStatusKey(profile)!==workStatus)return false;
-      if(project&&normalized(personnelProject(profile))!==project)return false;
+      if(project&&normalized(personnelProject(profile)||'Unassigned').indexOf(project)<0)return false;
       if(access&&personnelAccessKey(item)!==access)return false;
       if(documentFilter==='recent'&&!Number(item.recent_document_count||0))return false;
       if(documentFilter==='has_documents'&&!Number(item.document_count||0))return false;
@@ -346,8 +364,8 @@
   function renderLinkedPersonnelModern(){
     var list=byId('linkedPersonnelList'),count=byId('linkedPersonnelCount');if(!list)return;
     var allRows=linkedPersonnel.filter(function(item){return item&&item.profile});
-    fillPersonnelSelect('personnelProfessionFilter',allRows.map(function(item){return item.profile.position}),'All professions');
-    fillPersonnelSelect('personnelProjectFilter',allRows.map(function(item){return personnelProject(item.profile)}),'All projects');
+    fillPersonnelCombobox('profession',allRows.map(function(item){return item.profile.position}));
+    fillPersonnelCombobox('project',allRows.map(function(item){return personnelProject(item.profile)||'Unassigned'}));
     var rows=filteredPersonnelRows();
     if(count)count.textContent=rows.length===allRows.length?allRows.length+' linked':rows.length+' of '+allRows.length;
     updateViewSwitches();
@@ -696,9 +714,49 @@
       });
     });
     updateViewSwitches();
-    ['personnelSearch','personnelProfessionFilter','personnelWorkStatusFilter','personnelProjectFilter','personnelAccessFilter','personnelDocumentFilter'].forEach(function(id){
+    ['personnelSearch','personnelWorkStatusFilter','personnelAccessFilter','personnelDocumentFilter'].forEach(function(id){
       var element=byId(id);if(!element)return;
       element.addEventListener(id==='personnelSearch'?'input':'change',renderLinkedPersonnel);
+    });
+    ['profession','project'].forEach(function(kind){
+      var config=personnelComboboxConfig(kind),input=byId(config.input),options=byId(config.options);
+      if(!input||!options)return;
+      var root=input.closest('.personnel-combobox'),toggle=root&&root.querySelector('.personnel-combobox-toggle');
+      input.addEventListener('focus',function(){renderPersonnelComboboxOptions(kind);setPersonnelComboboxOpen(kind,true)});
+      input.addEventListener('input',function(){renderPersonnelComboboxOptions(kind);setPersonnelComboboxOpen(kind,true);renderLinkedPersonnel()});
+      input.addEventListener('keydown',function(event){
+        if(event.key==='Escape'){setPersonnelComboboxOpen(kind,false);input.blur();return}
+        if(event.key==='ArrowDown'){
+          event.preventDefault();setPersonnelComboboxOpen(kind,true);
+          var first=options.querySelector('[data-personnel-filter-value]');if(first)first.focus();
+        }
+      });
+      if(toggle)toggle.addEventListener('click',function(){
+        var opening=options.classList.contains('hidden');renderPersonnelComboboxOptions(kind);
+        if(opening){input.focus();setPersonnelComboboxOpen(kind,true)}
+        else setPersonnelComboboxOpen(kind,false);
+      });
+      options.addEventListener('click',function(event){
+        var option=event.target.closest('[data-personnel-filter-value]');if(!option)return;
+        input.value=option.dataset.personnelFilterValue||'';renderLinkedPersonnel();input.focus();setPersonnelComboboxOpen(kind,false);
+      });
+      options.addEventListener('keydown',function(event){
+        var option=event.target.closest('[data-personnel-filter-value]');if(!option)return;
+        if(event.key==='Enter'||event.key===' '){event.preventDefault();option.click();return}
+        if(event.key==='Escape'){setPersonnelComboboxOpen(kind,false);input.focus();return}
+        if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+          event.preventDefault();
+          var choices=Array.prototype.slice.call(options.querySelectorAll('[data-personnel-filter-value]')),index=choices.indexOf(option),step=event.key==='ArrowDown'?1:-1;
+          if(choices.length)choices[(index+step+choices.length)%choices.length].focus();
+        }
+      });
+    });
+    document.addEventListener('click',function(event){
+      document.querySelectorAll('.personnel-combobox').forEach(function(root){
+        if(root.contains(event.target))return;
+        var input=root.querySelector('[role="combobox"]'),kind=root.dataset.personnelCombobox;
+        if(input&&kind)setPersonnelComboboxOpen(kind,false);
+      });
     });
     var linkedList=byId('linkedPersonnelList');
     if(linkedList)linkedList.addEventListener('click',function(event){

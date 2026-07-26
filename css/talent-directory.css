@@ -13,6 +13,15 @@
 .personnel-filterbar input,.personnel-filterbar select{width:100%;min-height:38px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
 .personnel-filterbar select{appearance:none;-webkit-appearance:none;padding-right:30px!important;cursor:pointer;color-scheme:dark;background-color:#091522!important;background-image:linear-gradient(45deg,transparent 50%,#91a4b4 50%),linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;background-position:calc(100% - 14px) 50%,calc(100% - 10px) 50%!important;background-size:4px 4px,4px 4px!important;background-repeat:no-repeat!important}
 .personnel-filterbar input:hover,.personnel-filterbar input:focus,.personnel-filterbar select:hover,.personnel-filterbar select:focus{background-color:#091522!important;border-color:#4e7187!important;color:#edf5fb!important;outline:none}
+.personnel-combobox{position:relative;display:block;min-width:0}
+.personnel-combobox>input{padding-right:34px!important}
+.personnel-combobox-toggle{position:absolute!important;z-index:2;top:0!important;right:0!important;width:34px!important;min-width:34px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.personnel-combobox-toggle::after{content:"";position:absolute;top:16px;right:13px;width:6px;height:6px;border-right:2px solid #91a4b4;border-bottom:2px solid #91a4b4;transform:rotate(45deg)}
+.personnel-combobox-options{position:absolute;z-index:80;top:calc(100% + 6px);left:0;right:0;display:grid;max-height:240px;overflow:auto;padding:6px;border:1px solid #2b4255;border-radius:10px;background:#0b1825;box-shadow:0 16px 34px rgba(0,0,0,.28)}
+.personnel-combobox-options.hidden{display:none!important}
+.personnel-combobox-options button{display:block!important;width:100%!important;min-height:34px!important;margin:0!important;padding:8px 10px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#dce7ee!important;text-align:left!important;font-size:11px!important;box-shadow:none!important}
+.personnel-combobox-options button:hover,.personnel-combobox-options button:focus{background:#152b3d!important;color:#fff!important;outline:none!important}
+.personnel-combobox-empty{padding:9px 10px;color:#8ea2b5;font-size:11px}
 .linked-personnel-list{margin-top:12px;max-height:min(520px,calc(100vh - 400px));min-height:120px;overflow:auto}
 .linked-personnel-empty{display:grid;gap:5px;padding:34px 12px;color:#8499aa;font-size:11px;text-align:center}
 .linked-personnel-empty b{color:#d9e4eb;font-size:13px}

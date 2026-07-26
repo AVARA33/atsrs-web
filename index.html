@@ -27,22 +27,22 @@ html[data-theme="light"] body{background:#f3f6f9}
 </style>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="css/base.css?v=344">
-<link rel="stylesheet" href="css/login.css?v=344">
-<link rel="stylesheet" href="css/dashboard.css?v=344">
-<link rel="stylesheet" href="css/documents.css?v=344">
-<link rel="stylesheet" href="css/references.css?v=344">
-<link rel="stylesheet" href="css/account.css?v=344">
-<link rel="stylesheet" href="css/product-experience.css?v=344">
-<link rel="stylesheet" href="css/date-picker.css?v=344">
-<link rel="stylesheet" href="css/share-profile.css?v=344">
-<link rel="stylesheet" href="css/calm-actions.css?v=344">
-<link rel="stylesheet" href="css/account-security-live.css?v=344">
-<link rel="stylesheet" href="css/talent-directory.css?v=344">
-<link rel="stylesheet" href="css/maintenance.css?v=344">
-<link rel="stylesheet" href="css/workspace-switcher.css?v=344">
-<link rel="stylesheet" href="css/theme.css?v=344">
-<script defer src="js/maintenance-guard.js?v=344"></script>
+<link rel="stylesheet" href="css/base.css?v=345">
+<link rel="stylesheet" href="css/login.css?v=345">
+<link rel="stylesheet" href="css/dashboard.css?v=345">
+<link rel="stylesheet" href="css/documents.css?v=345">
+<link rel="stylesheet" href="css/references.css?v=345">
+<link rel="stylesheet" href="css/account.css?v=345">
+<link rel="stylesheet" href="css/product-experience.css?v=345">
+<link rel="stylesheet" href="css/date-picker.css?v=345">
+<link rel="stylesheet" href="css/share-profile.css?v=345">
+<link rel="stylesheet" href="css/calm-actions.css?v=345">
+<link rel="stylesheet" href="css/account-security-live.css?v=345">
+<link rel="stylesheet" href="css/talent-directory.css?v=345">
+<link rel="stylesheet" href="css/maintenance.css?v=345">
+<link rel="stylesheet" href="css/workspace-switcher.css?v=345">
+<link rel="stylesheet" href="css/theme.css?v=345">
+<script defer src="js/maintenance-guard.js?v=345"></script>
 
 
 
@@ -144,7 +144,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="buildBadge" class="build-badge">
-<div>ATSRS V344</div>
+<div>ATSRS V345</div>
 <div>Last Update: 26 Jul 2026</div>
 </div>
 </div>
@@ -360,9 +360,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span>Search</span>
       <input id="personnelSearch" type="search" placeholder="Search by name" autocomplete="off">
     </label>
-    <label>
+    <label class="personnel-combobox-field">
       <span>Profession</span>
-      <select id="personnelProfessionFilter"><option value="">All professions</option></select>
+      <span class="personnel-combobox" data-personnel-combobox="profession">
+        <input id="personnelProfessionFilter" type="text" placeholder="All professions" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="personnelProfessionOptions">
+        <button type="button" class="personnel-combobox-toggle" aria-label="Open profession options" tabindex="-1"></button>
+        <span id="personnelProfessionOptions" class="personnel-combobox-options hidden" role="listbox"></span>
+      </span>
     </label>
     <label>
       <span>Work status</span>
@@ -374,9 +378,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <option value="not_set">Not specified</option>
       </select>
     </label>
-    <label>
+    <label class="personnel-combobox-field">
       <span>Project</span>
-      <select id="personnelProjectFilter"><option value="">All projects</option></select>
+      <span class="personnel-combobox" data-personnel-combobox="project">
+        <input id="personnelProjectFilter" type="text" placeholder="All projects" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="personnelProjectOptions">
+        <button type="button" class="personnel-combobox-toggle" aria-label="Open project options" tabindex="-1"></button>
+        <span id="personnelProjectOptions" class="personnel-combobox-options hidden" role="listbox"></span>
+      </span>
     </label>
     <label>
       <span>Access</span>
@@ -1090,28 +1098,28 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=344"></script>
-<script src="js/server-data.js?v=344"></script>
-<script src="js/storage.js?v=344"></script>
-<script src="js/ui.js?v=344"></script>
-<script src="js/auth.js?v=344"></script>
-<script src="js/login.js?v=344"></script>
-<script src="js/dashboard.js?v=344"></script>
-<script src="js/avatar.js?v=344"></script>
-<script src="js/documents.js?v=344"></script>
-<script src="js/references.js?v=344"></script>
-<script src="js/account.js?v=344"></script>
-<script src="js/app.js?v=344"></script>
-<script src="js/product-experience.js?v=344"></script>
-<script src="js/date-picker.js?v=344"></script>
-<script src="js/share-profile.js?v=344"></script>
-<script src="js/boot-refresh.js?v=344"></script>
-<script src="js/account-security-live.js?v=344"></script>
-<script src="js/talent-directory.js?v=344"></script>
-<script src="js/corporate-reporting.js?v=344"></script>
-<script src="js/admin-overview.js?v=344"></script>
-<script src="js/workspace-switcher.js?v=344"></script>
-<script src="js/theme.js?v=344"></script>
+<script src="js/stability-runtime.js?v=345"></script>
+<script src="js/server-data.js?v=345"></script>
+<script src="js/storage.js?v=345"></script>
+<script src="js/ui.js?v=345"></script>
+<script src="js/auth.js?v=345"></script>
+<script src="js/login.js?v=345"></script>
+<script src="js/dashboard.js?v=345"></script>
+<script src="js/avatar.js?v=345"></script>
+<script src="js/documents.js?v=345"></script>
+<script src="js/references.js?v=345"></script>
+<script src="js/account.js?v=345"></script>
+<script src="js/app.js?v=345"></script>
+<script src="js/product-experience.js?v=345"></script>
+<script src="js/date-picker.js?v=345"></script>
+<script src="js/share-profile.js?v=345"></script>
+<script src="js/boot-refresh.js?v=345"></script>
+<script src="js/account-security-live.js?v=345"></script>
+<script src="js/talent-directory.js?v=345"></script>
+<script src="js/corporate-reporting.js?v=345"></script>
+<script src="js/admin-overview.js?v=345"></script>
+<script src="js/workspace-switcher.js?v=345"></script>
+<script src="js/theme.js?v=345"></script>
 
 
 

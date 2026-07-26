@@ -243,6 +243,32 @@ html[data-theme="light"] body .personnel-filterbar select{
     linear-gradient(45deg,transparent 50%,#718596 50%),
     linear-gradient(135deg,#718596 50%,transparent 50%)!important;
 }
+html[data-theme="light"] body .personnel-filterbar select option{
+  color-scheme:light!important;
+  background:#ffffff!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"] body .personnel-combobox-options{
+  color-scheme:light!important;
+  background:#ffffff!important;
+  border-color:#c8d4de!important;
+  box-shadow:0 14px 34px rgba(36,61,80,.16)!important;
+}
+html[data-theme="light"] body .personnel-combobox-options button{
+  background:#ffffff!important;
+  color:#20394d!important;
+  -webkit-text-fill-color:#20394d!important;
+}
+html[data-theme="light"] body .personnel-combobox-options button:hover,
+html[data-theme="light"] body .personnel-combobox-options button:focus{
+  background:#edf4f8!important;
+  color:#102b40!important;
+  -webkit-text-fill-color:#102b40!important;
+}
+html[data-theme="light"] body .personnel-combobox-empty{
+  color:#60778a!important;
+  -webkit-text-fill-color:#60778a!important;
+}
 html[data-theme="light"] body .talent-summary-filter select,
 html[data-theme="light"] body .shared-document-summary-tools select{background-color:#fff!important;border-color:#cbd5e1!important;color:#0f172a!important}
 html[data-theme="light"] body .talent-work-type-filter summary,
@@ -505,7 +531,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V344: final light-theme contrast and fixed top-right controls. */
+/* V345: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -813,7 +839,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V344 — Account light mode: one calm, fully light and responsive system. */
+/* V345 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1118,7 +1144,7 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   }
 }
 
-/* V344: sharing and download-request surfaces must follow the active light theme. */
+/* V345: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){
@@ -1199,7 +1225,7 @@ html[data-theme="light"] .share-request-dialog>p{
   -webkit-text-fill-color:#60748a!important;
 }
 
-/* V344: Personnel cards and list must remain comfortably readable in light mode. */
+/* V345: Personnel cards and list must remain comfortably readable in light mode. */
 html[data-theme="light"] .linked-personnel-row{
   border-color:#cbd7e0!important;
   color:#2b465a!important;
