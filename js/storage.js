@@ -194,7 +194,7 @@ function applySoloLanguage(){
 }
 
 const INTRO_TX={
-  en:{introNav:"ATSRS Platform",introMainTitle:"Professional document, expiry and profile sharing platform",introMainText:"ATSRS helps professionals and organisations manage important documents, track expiry dates, share controlled profile links and support compliance workflows.",svc1Title:"Document Vault",svc1Text:"Store licences, certificates, permits, medical records, training proof, references and appraisals in one place.",svc2Title:"Easy Upload",svc2Text:"Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.",svc3Title:"Scan & Auto-fill",svc3Text:"Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.",svc4Title:"Expiry Tracking",svc4Text:"See document totals and expiry alerts from a clear dashboard.",svc5Title:"Share Profile",svc5Text:"Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.",svc6Title:"Company Compliance",svc6Text:"Companies can request access, review approved documents and import candidate records into their compliance profile.",compliance:"Compliance"}
+  en:{introNav:"ATSRS Platform",introMainTitle:"Document, expiry and profile sharing platform",introMainText:"ATSRS helps people and organisations manage important documents, track expiry dates, share controlled profile links and support compliance workflows.",svc1Title:"Document Vault",svc1Text:"Store licences, certificates, permits, medical records, training proof, references and appraisals in one place.",svc2Title:"Easy Upload",svc2Text:"Upload PDF, JPG or PNG files and keep them linked to expiry dates and document status.",svc3Title:"Scan & Auto-fill",svc3Text:"Scan documents and let ATSRS prepare fields for manual confirmation when OCR is connected.",svc4Title:"Expiry Tracking",svc4Text:"See document totals and expiry alerts from a clear dashboard.",svc5Title:"Share Profile",svc5Text:"Share one controlled ATSRS profile link with employers, agencies and clients instead of many attachments.",svc6Title:"Company Compliance",svc6Text:"Companies can request access, review approved documents and import candidate records into their compliance profile.",compliance:"Compliance"}
 };
 
 const INTRO_DETAIL={
@@ -203,7 +203,7 @@ const INTRO_DETAIL={
   svc2:{title:"Easy Upload",text:"Upload PDF, JPG or PNG documents directly into ATSRS. Each file can be linked to document type, expiry date, status and future employer access rules."},
   svc3:{title:"Scan & Auto-fill",text:"Use camera scan to capture documents. When OCR is connected, ATSRS will prepare fields automatically, while the user still confirms details before saving."},
   svc4:{title:"Expiry Tracking",text:"Track current, expiring and expired documents from a clear dashboard. ATSRS highlights date-based risks without imposing profession-specific requirements."},
-  svc5:{title:"Share Profile",text:"Create one controlled ATSRS profile link for employers, agencies and clients. Instead of sending many email attachments, you can share a professional profile and approve access when needed."},
+  svc5:{title:"Share Profile",text:"Create one controlled ATSRS profile link for employers, agencies and clients. Instead of sending many email attachments, you can share a profile and approve access when needed."},
   svc6:{title:"Company Compliance",text:"Companies can request access, review approved documents and import candidate records into their own compliance profile. This supports faster checks and cleaner crew documentation workflows."}
  }
 };
@@ -501,7 +501,7 @@ let fn=file.name.toUpperCase();
 if(fn.includes("PASSPORT"))autoDocType.value="Passport";
 else if(fn.includes("SEAMAN"))autoDocType.value="Seaman Book";
 else if(fn.includes("BOSIET")||fn.includes("FOET"))autoDocType.value="BOSIET / FOET";
-else if(fn.includes("MEDICAL"))autoDocType.value="Professional Medical";
+else if(fn.includes("MEDICAL"))autoDocType.value="Medical";
 else if(fn.includes("VISA"))autoDocType.value="Visa";
 try{
 ocrProgress.innerText=v12("ocrStarting");
@@ -526,7 +526,7 @@ let upper=clean.toUpperCase();
 if(upper.includes("PASSPORT")) autoDocType.value="Passport";
 else if(upper.includes("SEAMAN")) autoDocType.value="Seaman Book";
 else if(upper.includes("BOSIET")||upper.includes("FOET")) autoDocType.value="BOSIET / FOET";
-else if(upper.includes("MEDICAL")||upper.includes("FITNESS")) autoDocType.value="Professional Medical";
+else if(upper.includes("MEDICAL")||upper.includes("FITNESS")) autoDocType.value="Medical";
 else if(upper.includes("VISA")) autoDocType.value="Visa";
 else if(upper.includes("YELLOW FEVER")) autoDocType.value="Yellow Fever";
 
@@ -724,7 +724,7 @@ function validateManualCertificateForm(){
 const applyLanguageBaseV24=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV24();applyV24Language();}
 const V25_TEXT={
-  en:{documents:"Documents",refs:"References",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",docStatus:"Document Overview",docStatusSub:"Uploaded career documents appear here without profession-specific requirements.",heroPersonal:"Your professional document vault",heroCompany:"Personnel document control center",heroPersonalText:"Store and track the documents relevant to your own profession from one dashboard.",heroCompanyText:"Review Personnel documents and expiry dates without imposing a universal document checklist.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload",uploadReference:"Upload",compliancePageSub:"Company Personnel status is based only on uploaded document dates.",reportsSub:"Generate a current Personnel document report from ATSRS server data.",documentRegister:"Document Register"}
+  en:{documents:"Documents",refs:"References",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",docStatus:"Document Overview",docStatusSub:"Uploaded career documents appear here without profession-specific requirements.",heroPersonal:"Your document vault",heroCompany:"Personnel document control center",heroPersonalText:"Store and track the documents relevant to your own profession from one dashboard.",heroCompanyText:"Review Personnel documents and expiry dates without imposing a universal document checklist.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload",uploadReference:"Upload",compliancePageSub:"Company Personnel status is based only on uploaded document dates.",reportsSub:"Generate a current Personnel document report from ATSRS server data.",documentRegister:"Document Register"}
 };
 function v25(k){return (V25_TEXT[lang]&&V25_TEXT[lang][k])||V25_TEXT.en[k]||k}
 function v25Safe(value){return String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -775,7 +775,7 @@ const setUseModeBaseV25=setUseMode;setUseMode=function(mode){setUseModeBaseV25(m
 const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();renderV25DocumentStatus();}
 const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageBaseV25();applyV25Language();renderV25DocumentStatus();}
 const V48_TEXT={
-  en:{cvStatus:"CV Status",cvAvailable:"Available ✓",cvMissing:"Missing ⚠",cvTitle:"CV / Resume",cvText:"Store, manage and share professional CV versions for employers, agencies and clients.",cvUploaded:"CV Uploaded ✓",cvNotUploaded:"No CV Uploaded",uploadCV:"Upload CV",previewCV:"Preview CV",downloadCV:"Download CV",deleteCV:"Delete CV",cvBetaBadge:"COMING SOON",cvBetaTitle:"Generate ATSRS Profile CV",cvBetaText:"Generate a professional ATSRS formatted CV using stored profile and document data.",generateCV:"Generate ATSRS CV (Beta)",cvComingSoon:"ATSRS Profile CV generator will be connected in a later build.",cvNoFile:"No CV uploaded yet.",cvSaved:"CV saved",cvDeleted:"CV deleted."}
+  en:{cvStatus:"CV Status",cvAvailable:"Available ✓",cvMissing:"Missing ⚠",cvTitle:"CV / Resume",cvText:"Store, manage and share CV versions for employers, agencies and clients.",cvUploaded:"CV Uploaded ✓",cvNotUploaded:"No CV Uploaded",uploadCV:"Upload CV",previewCV:"Preview CV",downloadCV:"Download CV",deleteCV:"Delete CV",cvBetaBadge:"COMING SOON",cvBetaTitle:"Generate ATSRS Profile CV",cvBetaText:"Generate an ATSRS formatted CV using stored profile and document data.",generateCV:"Generate ATSRS CV (Beta)",cvComingSoon:"ATSRS Profile CV generator will be connected in a later build.",cvNoFile:"No CV uploaded yet.",cvSaved:"CV saved",cvDeleted:"CV deleted."}
 };
 function v48(k){return (V48_TEXT[lang]&&V48_TEXT[lang][k])||V48_TEXT.en[k]||k}
 function getCV(){let a=getData('cvFiles');return Array.isArray(a)&&a.length?a[0]:null}
@@ -821,7 +821,7 @@ const applyLanguageBaseV48=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV48();renderCVStatus();}
 setTimeout(()=>{try{renderCVStatus()}catch(e){}},0);
 const V49_FILE_TEXT={
-  en:{appStatusUploaded:"Appraisal Uploaded ✓",appStatusMissing:"No Appraisal Uploaded",refStatusUploaded:"Reference Uploaded ✓",refStatusMissing:"No Reference Uploaded",preview:"Preview",download:"Download",deleteFile:"Delete",generate:"Generate ATSRS File (Beta)",comingSoon:"ATSRS document generator will be connected in a later build.",noFile:"No file uploaded yet.",uploadAppraisal:"Upload",uploadReference:"Upload",appBetaTitle:"Generate ATSRS Appraisal Summary",appBetaText:"Generate a professional ATSRS appraisal summary from stored career data.",refBetaTitle:"Generate ATSRS Reference Pack",refBetaText:"Generate a professional ATSRS reference pack from stored career data.",docTypePlaceholder:"Write document type manually",autoDocTypePlaceholder:"Write detected document type manually"}
+  en:{appStatusUploaded:"Appraisal Uploaded ✓",appStatusMissing:"No Appraisal Uploaded",refStatusUploaded:"Reference Uploaded ✓",refStatusMissing:"No Reference Uploaded",preview:"Preview",download:"Download",deleteFile:"Delete",generate:"Generate ATSRS File (Beta)",comingSoon:"ATSRS document generator will be connected in a later build.",noFile:"No file uploaded yet.",uploadAppraisal:"Upload",uploadReference:"Upload",appBetaTitle:"Generate ATSRS Appraisal Summary",appBetaText:"Generate an ATSRS appraisal summary from stored career data.",refBetaTitle:"Generate ATSRS Reference Pack",refBetaText:"Generate an ATSRS reference pack from stored career data.",docTypePlaceholder:"Write document type manually",autoDocTypePlaceholder:"Write detected document type manually"}
 };
 function v49(k){return (V49_FILE_TEXT[lang]&&V49_FILE_TEXT[lang][k])||V49_FILE_TEXT.en[k]||k}
 function getManagedFile(kind){let a=getData(kind+'Files');return Array.isArray(a)&&a.length?a[0]:null}
@@ -898,7 +898,7 @@ function renderSharePreview(){
   let prof=JSON.parse(readAppDataKey(localKey("profile")))||{};
   let full=((prof.name||"Anar")+" "+(prof.surname||"Agasiyev")).trim();
   previewName.innerText=full;
-  previewRole.innerText=prof.position||"Professional Document Holder";
+  previewRole.innerText=prof.position||"Document Holder";
 }
 function applyV27Language(){
   if(typeof shareBadge!=="undefined")shareBadge.innerText=v27('shareBadge');
@@ -917,7 +917,7 @@ function applyV27Language(){
 }
 const renderAllBaseV27=renderAll;renderAll=function(){renderAllBaseV27();renderSharePreview();}
 const V29_TEXT={
-  en:{featureDocsTitle:"Document Vault",featureDocsText:"Keep licences, certifications, identity records and other career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for time-limited professional documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A flexible flow for professionals and organisations across industries.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and document dates.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"DOCUMENT SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Current documents",snapRiskLabel:"Expiry risk",snapShareLabel:"Profile sharing",snapShare:"Ready"}
+  en:{featureDocsTitle:"Document Vault",featureDocsText:"Keep licences, certifications, identity records and other career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for time-limited documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A flexible flow for people and organisations across industries.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and document dates.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"DOCUMENT SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Current documents",snapRiskLabel:"Expiry risk",snapShareLabel:"Profile sharing",snapShare:"Ready"}
 };
 function v29(k){return (V29_TEXT[lang]&&V29_TEXT[lang][k])||V29_TEXT.en[k]||k}
 function applyV29Language(){

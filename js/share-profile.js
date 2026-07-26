@@ -357,8 +357,8 @@
   function showPublicError(message){var loading=byId('sharedProfileLoading'),content=byId('sharedProfileContent'),error=byId('sharedProfileError');if(loading)loading.classList.add('hidden');if(content)content.classList.add('hidden');if(error){error.classList.remove('hidden');var text=error.querySelector('p');if(text)text.textContent=message||'This shared profile is unavailable.';}}
   function renderPublicProfile(data){
     lastPublicProfileData=data;
-    var profile=data.profile||{},fullName=((profile.name||'')+' '+(profile.surname||'')).trim()||'ATSRS Professional';document.title=fullName+' · ATSRS Shared Profile';
-    byId('sharedProfileName').textContent=fullName;byId('sharedProfileRole').textContent=profile.position||'Professional Document Holder';
+    var profile=data.profile||{},fullName=((profile.name||'')+' '+(profile.surname||'')).trim()||'ATSRS Profile';document.title=fullName+' · ATSRS Shared Profile';
+    byId('sharedProfileName').textContent=fullName;byId('sharedProfileRole').textContent=profile.position||'Document Holder';
     var avatar=byId('sharedProfileAvatar'),avatarUrl='';
     try{var parsedAvatar=new URL(String(profile.avatar_url||''),location.origin);if(parsedAvatar.protocol==='https:')avatarUrl=parsedAvatar.href}catch(ignore){}
     if(avatar)avatar.innerHTML=avatarUrl?'<img src="'+avatarUrl.replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})+'" alt="" referrerpolicy="no-referrer">':'<span>'+((profile.name||'A').charAt(0)+(profile.surname||'').charAt(0)).toUpperCase()+'</span>';

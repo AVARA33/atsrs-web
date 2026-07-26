@@ -310,8 +310,8 @@ Deno.serve(async (req) => {
         const fallbackProfile = {
           user_id: profileId,
           name: clean(source.name, 120) || "ATSRS",
-          surname: clean(source.surname, 120) || "Professional",
-          position: clean(source.position, 160) || "Professional",
+          surname: clean(source.surname, 120) || "Profile",
+          position: clean(source.position, 160) || "Profile",
           country: clean(source.country, 120) || "Not listed",
           company: clean(source.company, 160) || null,
           avatar_url: clean(source.avatarUrl, 1000) || null,
@@ -393,7 +393,7 @@ Deno.serve(async (req) => {
         .order("created_at", { ascending: false }),
     ]);
     const { data: linkedProfiles, error: profilesError } = profilesResult;
-    if (profilesError) return json(500, { error: "Linked professional profiles could not be loaded." });
+    if (profilesError) return json(500, { error: "Linked profiles could not be loaded." });
     if (filesResult.error) return json(500, { error: "Personnel document activity could not be loaded." });
     const profileMap = new Map((linkedProfiles || []).map((item) => [item.user_id, item]));
     const recentSince = Date.now() - 7 * 24 * 60 * 60 * 1000;
@@ -418,14 +418,14 @@ Deno.serve(async (req) => {
   }
 
   const targetUserId = clean(body.target_user_id, 50);
-  if (!targetUserId) return json(400, { error: "Professional profile is required." });
+  if (!targetUserId) return json(400, { error: "A profile is required." });
 
   const { data: profile } = await admin
     .from("atsrs_talent_profiles")
     .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at,discoverable,profile_visibility")
     .eq("user_id", targetUserId)
     .maybeSingle();
-  if (!profile) return json(404, { error: "This professional profile is unavailable." });
+  if (!profile) return json(404, { error: "This profile is unavailable." });
   const { count: certificateCount, error: certificateError } = await admin
     .from("atsrs_files")
     .select("id", { count: "exact", head: true })
@@ -433,7 +433,7 @@ Deno.serve(async (req) => {
     .eq("account_type", "personal")
     .eq("category", "document");
   if (certificateError) return json(500, { error: "Candidate eligibility could not be verified." });
-  if (!certificateCount) return json(404, { error: "This professional has not uploaded a certificate." });
+  if (!certificateCount) return json(404, { error: "This profile has not uploaded a certificate." });
 
   if (action === "add_to_personnel") {
     const now = new Date().toISOString();
@@ -448,7 +448,7 @@ Deno.serve(async (req) => {
       }, { onConflict: "company_user_id,professional_user_id" })
       .select("id,professional_user_id,status,source,created_at,updated_at")
       .single();
-    if (error) return json(500, { error: "This professional could not be added to Company Personnel." });
+    if (error) return json(500, { error: "This profile could not be added to Company Personnel." });
     return json(200, { added: true, link, profile });
   }
 
@@ -458,7 +458,7 @@ Deno.serve(async (req) => {
       .delete()
       .eq("company_user_id", user.id)
       .eq("professional_user_id", targetUserId);
-    if (error) return json(500, { error: "This professional could not be removed from Company Personnel." });
+    if (error) return json(500, { error: "This profile could not be removed from Company Personnel." });
     return json(200, { removed: true });
   }
 
@@ -504,7 +504,7 @@ Deno.serve(async (req) => {
       .limit(1)
       .maybeSingle();
     if (error) return json(500, { error: "CV could not be loaded." });
-    if (!cv) return json(404, { error: "This professional has not added a CV yet." });
+    if (!cv) return json(404, { error: "This profile has not added a CV yet." });
     const signed = await admin.storage.from("atsrs-user-files").createSignedUrl(cv.storage_path, 300);
     if (signed.error || !signed.data?.signedUrl) return json(500, { error: "CV preview could not be prepared." });
     return json(200, { file_name: cv.file_name, mime_type: cv.mime_type, url: signed.data.signedUrl });

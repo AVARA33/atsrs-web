@@ -37,7 +37,7 @@
     var docStatus=byId('docStatusTitle'); if(docStatus){var panel=docStatus.closest('.panel'); if(panel) panel.remove();}
     var totalCertsText=byId('totalCertsText'); if(totalCertsText) totalCertsText.textContent='Uploaded Documents';
     var soloBadge=byId('soloBadge'); if(soloBadge) soloBadge.textContent='DOCUMENT OVERVIEW';
-    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your professional document dashboard';
+    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your document dashboard';
     var soloHeroText=byId('soloHeroText'); if(soloHeroText) soloHeroText.textContent='Review document totals, expiry risk and profile readiness from one clear view.';
     var snapshotTitle=byId('snapshotTitle'); if(snapshotTitle) snapshotTitle.textContent='Quick overview';
   }
@@ -54,7 +54,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V342';
+  var BUILD='ATSRS V343';
   var UPDATE='Last Update: 26 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -491,7 +491,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V342';
+  var BUILD='ATSRS V343';
   var UPDATE='Last Update: 26 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){

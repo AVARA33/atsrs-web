@@ -1,4 +1,4 @@
-/* ATSRS V342 - certificate-qualified candidate directory. */
+/* ATSRS V343 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -391,7 +391,7 @@
     var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
     if(count)count.textContent=rows.length+' linked';
     if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a candidate profile and choose “Add to Personnel”.</span></div>';return}
-    list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Professional</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
+    list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Profile</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
       rows.map(function(item){
         var profile=item.profile,access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
         var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
@@ -568,7 +568,7 @@
       '<div class="talent-card-top">'+avatarMarkup(profile)+'<div class="talent-card-signals"><span class="talent-readiness">'+safe(readiness)+'% complete</span><span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span></div></div>'+
       '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p class="talent-role">'+safe(profile.position)+'</p>'+
       '<div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div>'+
-      '<dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl>'+
+      '<dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent')+'</dd></div></dl>'+
       '<button type="button" class="secondary talent-view" data-talent-id="'+safe(profile.user_id)+'">View Profile</button></article>'}).join('');
     grid.querySelectorAll('.talent-view').forEach(function(button){button.onclick=function(){openProfile(button.dataset.talentId)}});
   }
@@ -579,7 +579,7 @@
     var profile=profiles.find(function(item){return item.user_id===id})||(linkedRecord(id)&&linkedRecord(id).profile);if(!profile)return;
     var active=activity(profile),work=availability(profile),isLinked=!!linkedRecord(id),old=byId('atsrsTalentModal');if(old)old.remove();
     var modal=document.createElement('div');modal.id='atsrsTalentModal';modal.className='talent-modal';
-    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent professional')+'</dd></div></dl><h4 class="talent-official-title">Official profile details</h4>'+officialDetailsMarkup(profile)+'<div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain controlled by ATSRS. Official fields show only the profile data the candidate has provided; document access still requires separate permission.</p></div>';
+    modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent')+'</dd></div></dl><h4 class="talent-official-title">Official profile details</h4>'+officialDetailsMarkup(profile)+'<div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain controlled by ATSRS. Official fields show only the profile data the candidate has provided; document access still requires separate permission.</p></div>';
     document.body.appendChild(modal);
     activeActionPanel=modal.querySelector('#talentActionPanel');
     modal.querySelectorAll('.talent-modal-backdrop,.talent-modal-close').forEach(function(button){button.onclick=function(){if(activeActionPanel&&modal.contains(activeActionPanel))activeActionPanel=null;modal.remove()}});
@@ -630,7 +630,7 @@
   function ensureInbox(){
     var dashboard=byId('dashboardPage'),existing=byId('talentMessagesPanel');if(existing||!dashboard)return existing;
     var panel=document.createElement('div');panel.id='talentMessagesPanel';panel.className='panel talent-messages-panel personal-only';
-    panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">PROFESSIONAL MESSAGES</span><h3>Messages from companies <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><div class="talent-mailbox-tools"><button type="button" class="secondary is-active" id="talentActiveMessages">Inbox</button><button type="button" class="secondary" id="talentArchivedMessages">Archived</button><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No messages yet.</div></div>';
+    panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">PROFILE MESSAGES</span><h3>Messages from companies <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><div class="talent-mailbox-tools"><button type="button" class="secondary is-active" id="talentActiveMessages">Inbox</button><button type="button" class="secondary" id="talentArchivedMessages">Archived</button><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No messages yet.</div></div>';
     dashboard.appendChild(panel);
     byId('refreshTalentMessages').onclick=loadInbox;
     byId('talentActiveMessages').onclick=function(){talentMailbox='active';loadInbox()};
@@ -663,7 +663,7 @@
   async function loadDirectory(){
     if(mode()!=='company')return;
     var grid=byId('talentDirectoryGrid'),status=byId('talentDirectoryStatus'),c=client();if(!grid||!c)return;
-    loading=true;if(status){status.textContent='Loading professional profiles...';status.classList.remove('hidden')}
+    loading=true;if(status){status.textContent='Loading profiles...';status.classList.remove('hidden')}
     try{
       var result=await actionCall({action:'directory'});
       profiles=Array.isArray(result.profiles)?result.profiles:[];

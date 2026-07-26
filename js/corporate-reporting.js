@@ -68,14 +68,14 @@
     list.innerHTML='';
     if(!rows.length){
       var empty=document.createElement('div');empty.className='corporate-report-empty';
-      empty.textContent='No professionals have been added to Company Personnel yet.';
+      empty.textContent='No profiles have been added to Company Personnel yet.';
       list.appendChild(empty);return;
     }
     rows.forEach(function(row){
       var card=document.createElement('article');card.className='corporate-compliance-card is-'+text(row.status);
       var head=document.createElement('div');head.className='corporate-compliance-head';
       var identity=document.createElement('div'),name=document.createElement('b'),role=document.createElement('span'),badge=document.createElement('em');
-      name.textContent=(text(row.name)+' '+text(row.surname)).trim()||'Professional';
+      name.textContent=(text(row.name)+' '+text(row.surname)).trim()||'Profile';
       role.textContent=text(row.position)||'Position not provided';
       badge.textContent=statusLabel(row.status);identity.appendChild(name);identity.appendChild(role);head.appendChild(identity);head.appendChild(badge);
       var metrics=document.createElement('div');metrics.className='corporate-compliance-metrics';
