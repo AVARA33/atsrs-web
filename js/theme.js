@@ -34,7 +34,13 @@
   function syncPlacement(){
     var app=document.getElementById('app');
     var appVisible=!!(app&&!app.classList.contains('hidden'));
+    var controls=document.getElementById('atsrsGlobalControls');
+    var main=app&&app.querySelector(':scope > .main');
     document.body.classList.toggle('atsrs-app-visible',appVisible);
+    if(controls){
+      if(appVisible&&main&&controls.parentElement!==main)main.insertBefore(controls,main.firstChild);
+      else if(!appVisible&&controls.parentElement!==document.body)document.body.appendChild(controls);
+    }
     var workspace=document.getElementById('workspaceSwitcher');
     if(workspace)workspace.hidden=!appVisible;
   }
