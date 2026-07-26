@@ -475,7 +475,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V336: final light-theme contrast and fixed top-right controls. */
+/* V337: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -783,7 +783,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V336 — Account light mode: one calm, fully light and responsive system. */
+/* V337 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1086,4 +1086,85 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   html[data-theme="light"] body #app #profilePage .work-availability-grid{
     grid-template-columns:1fr!important;
   }
+}
+
+/* V337: sharing and download-request surfaces must follow the active light theme. */
+html[data-theme="light"] body #app :where(
+  .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
+){
+  background:#ffffff!important;
+  border-color:#d6e0e8!important;
+  color:#172033!important;
+  box-shadow:0 6px 18px rgba(36,61,80,.045)!important;
+}
+html[data-theme="light"] body #app .access-request-card.status-pending{
+  border-color:#e7cf9f!important;
+}
+html[data-theme="light"] body #app :where(
+  .access-request-top>div b,.sent-request-target>div b,.access-request-card p,
+  .sent-request-grid p,.access-document-row>span,.share-document-choice b,
+  .share-analytics b
+){
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] body #app :where(
+  .access-request-top>div span,.sent-request-target>div span,.access-request-card small,
+  .access-request-card p span,.sent-request-grid small,.share-document-choice span,
+  .share-expiry-copy span,.sharing-history-head span,.share-analytics span,
+  .share-analytics-detail,.share-manage-message
+){
+  color:#60748a!important;
+  -webkit-text-fill-color:#60748a!important;
+}
+html[data-theme="light"] body #app :where(
+  .sent-request-grid,.access-document-list,.access-document-row,.sharing-history
+){
+  border-color:#dce4ed!important;
+}
+html[data-theme="light"] body #app .access-request-details{
+  background:#f8fafc!important;
+  border-color:#dce4ed!important;
+  color:#42556d!important;
+}
+html[data-theme="light"] body #app .access-empty{
+  background:#fbfcfd!important;
+  border-color:#b8c7d9!important;
+  color:#60748a!important;
+}
+html[data-theme="light"] body #app .corporate-request-count{
+  background:#eaf6ff!important;
+  color:#176f9f!important;
+}
+html[data-theme="light"] body #app .access-status{
+  background:#eef2f6!important;
+  color:#52667b!important;
+}
+html[data-theme="light"] body #app .status-pending .access-status{
+  background:#fff4d6!important;
+  color:#8a5b00!important;
+}
+html[data-theme="light"] body #app .status-approved .access-status{
+  background:#e9f8ee!important;
+  color:#187642!important;
+}
+html[data-theme="light"] body #app :where(
+  .status-declined .access-status,.status-expired .access-status,.status-revoked .access-status
+){
+  background:#fff0f1!important;
+  color:#aa2d35!important;
+}
+html[data-theme="light"] .share-request-dialog{
+  background:#ffffff!important;
+  border-color:#cbd7e0!important;
+  color:#172033!important;
+  box-shadow:0 24px 70px rgba(36,61,80,.2)!important;
+}
+html[data-theme="light"] .share-request-dialog :where(h2,label){
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] .share-request-dialog>p{
+  color:#60748a!important;
+  -webkit-text-fill-color:#60748a!important;
 }
