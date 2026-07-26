@@ -333,7 +333,7 @@
   async function migrateLegacyStorage(serverRows){
     var valueUser=user();
     var canonicalRows=new Map();
-    var blockedKeys=new Set();
+    var deletedKeys=new Set();
     var obsoleteServerKeys=[];
     (serverRows||[]).forEach(function(row){
       if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
@@ -341,12 +341,12 @@
       if(!canonical)return;
       var payload=row.payload||{};
       if(payload.deleted===true){
-        blockedKeys.add(canonical);
+        deletedKeys.add(canonical);
         canonicalRows.delete(canonical);
         if(canonical!==row.data_key)obsoleteServerKeys.push(row.data_key);
         return;
       }
-      if(blockedKeys.has(canonical))return;
+      if(deletedKeys.has(canonical))return;
       if(!canonicalRows.has(canonical)&&typeof payload.value==='string'){
         canonicalRows.set(canonical,payload.value);
       }
@@ -354,7 +354,7 @@
     });
     allLocalKeys().forEach(function(oldKey){
       var key=canonicalBusinessKey(oldKey);
-      if(!key||blockedKeys.has(key))return;
+      if(!key||deletedKeys.has(key))return;
       var value=nativeGet.call(localStorage,oldKey);
       if(value===null)return;
       if(canonicalRows.has(key)){
@@ -368,7 +368,7 @@
     var rows=Array.from(canonicalRows.entries()).map(function(entry){
       return rowForStorage(entry[0],entry[1]);
     });
-    blockedKeys.forEach(function(key){
+    deletedKeys.forEach(function(key){
       rows.push({
         user_id:valueUser.id,
         account_type:accountType(),
@@ -577,7 +577,7 @@
     if(list)list.innerHTML=values.length?values.map(function(row){return referenceRow(kind,row);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
     if(managedStatus){
       managedStatus.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')):'No File';
-      managedStatus.className='badge '+(values.length?'badge-ready':'badge-blocked');
+      managedStatus.className='badge '+(values.length?'badge-ready':'badge-missing');
     }
     if(managedCount)managedCount.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')+' • Newest first'):'No File';
     if(managedList){
@@ -593,7 +593,7 @@
       var coverInfo=document.getElementById('coverLetterFileInfo');
       if(coverBadge){
         coverBadge.textContent=values.length?(values.length+' file'+(values.length>1?'s':'')):'No File';
-        coverBadge.className='badge '+(values.length?'badge-ready':'badge-blocked');
+        coverBadge.className='badge '+(values.length?'badge-ready':'badge-missing');
       }
       if(coverInfo){
         coverInfo.innerHTML=values.length?values.slice(0,5).map(function(row){
@@ -615,7 +615,7 @@
         (cv?'<div class="atsrs-v156-main-row"><div class="atsrs-v156-main-name"><b title="'+escapeHtml(cv.file_name)+'">📄 '+escapeHtml(cv.file_name)+' <span class="atsrs-v153-main-badge">MAIN</span></b><span>'+Math.round((cv.size_bytes||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsCloudPreview(\''+cv.id+'\')">Preview</button><button class="secondary" onclick="atsrsCloudDownload(\''+cv.id+'\')">Download</button><button class="action" onclick="atsrsCloudDelete(\''+cv.id+'\')">Delete</button></div></div>':'<div class="atsrs-v156-empty">No Main CV uploaded yet.</div>')+
         '</div><div class="atsrs-v156-slots-box"><span class="atsrs-v156-box-title">Additional CV Slots</span><div class="atsrs-v156-slot-list"><div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 1</b><span>PRO</span></div><div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 2</b><span>Premium</span></div><div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 3</b><span>Premium</span></div></div></div>';
     }
-    if(badge){badge.textContent=cv?'Main CV':'No CV Uploaded';badge.className='badge '+(cv?'badge-ready':'badge-blocked');}
+    if(badge){badge.textContent=cv?'Main CV':'No CV Uploaded';badge.className='badge '+(cv?'badge-ready':'badge-missing');}
     if(dash){dash.textContent=cv?'Available ✓':'Missing ⚠';dash.className='stat '+(cv?'good':'missing');}
     if(upload)upload.textContent=cv?'Replace Main CV':'Upload Main CV';
     if(input)input.removeAttribute('multiple');

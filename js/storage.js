@@ -175,7 +175,7 @@ let supabaseClient=null;try{if(window.supabase)supabaseClient=window.supabase.cr
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={
-  en:{sub:"Automated Tracking & Reporting System",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Exit",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",blocked:"Blocked",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",blockedCrew:"Blocked / expired",complianceNote:"Compliance is calculated from certificate expiry dates. Document requirement rules will be added later if needed.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"}
+  en:{sub:"Automated Tracking & Reporting System",login:"Login",email:"Email",password:"Password",create:"Create account",forgot:"Forgot password?",registerTitle:"Create Account",confirm:"Confirm password",register:"Register",back:"Back to Login",resetTitle:"Reset Password",resetInfo:"Enter your email. A reset link will be sent to your inbox.",sendReset:"Send reset email",newPass:"Set New Password",newPassword:"New password",confirmNew:"Confirm new password",saveNew:"Save new password",cabinet:"Compliance Cabinet",dashboard:"Dashboard",personnel:"Personnel",certificates:"Certificates",logout:"Exit",totalPersonnel:"Total Personnel",totalCerts:"Total Certificates",exp90:"Expiring in 90 Days",exp30:"Expiring in 30 Days",expired:"Expired",fill:"Fill all fields.",addPersonnel:"Add Personnel",personnelList:"Personnel List",name:"Name",surname:"Surname",position:"Position",company:"Company",phone:"Phone",action:"Action",addCert:"Add Certificate",provider:"Training Center / Provider",certRegister:"Certificate Register",certificate:"Certificate",expiry:"Expiry",status:"Status",saveProfile:"Save",fill:"Fill all fields.",fix:"Please fix highlighted fields.",enterLogin:"Enter email and password.",passRule:"Password must be at least 6 characters.",matchRule:"Passwords do not match.",sending:"Sending reset email...",sent:"Reset email sent. Check inbox/spam.",connection:"Connection failed. Check network or Supabase access.",selectCrew:"Select Crew Member",delete:"Delete",valid:"Valid",personalUse:"Personal",companyUse:"Corporate",myDocuments:"My Documents",personalDashboardNote:"Personal mode keeps focus on your own documents only.",scanUpload:"Scan / Upload Document",ocrManual:"OCR could not confidently read all fields. Please fill missing fields and confirm.",nationality:"Nationality",employeeId:"Employee ID",project:"Project",vessel:"Vessel",crewRegister:"Crew Register",crewList:"Crew List",addCrew:"Add Crew",importExcel:"Import Excel",groupsProjects:"Groups / Projects",complianceStatus:"Compliance Status",searchCrew:"Search crew...",allCompanies:"All companies",allPositions:"All positions",allStatuses:"All statuses",ready:"Ready",review:"Review",importInfo:"Upload Excel/CSV. Full auto-mapping will be connected in the next data phase.",fileSelected:"File selected",projects:"Projects",client:"Client",team:"Team",addProject:"Add Project",readyCrew:"Ready crew",reviewCrew:"Needs review",complianceNote:"Document status is based only on dates supplied for each uploaded file. ATSRS does not impose profession-specific document requirements.",crewStatus:"Crew Status",exp30s:"Expiring <30 days",exp90s:"Expiring <90 days"}
 };
 const UI={
   en:{account:"Account",general:"General",security:"Security",preferences:"Preferences",country:"Country",twofa:"Two-factor authentication",twofaNote:"Authenticator app protection for this account.",setup:"Setup",sessions:"Session Security",sessionsNote:"Review this browser session and sign out every other session.",view:"View",notifications:"Notifications",notificationsNote:"Server-side certificate expiry alerts by email.",manage:"Manage",exportData:"Export My Data",exportDataNote:"Download your ATSRS account data.",export:"Export",deleteAccount:"Delete Account",deleteAccountNote:"Permanently delete the account and its server data.",timezone:"Time Zone",addDoc:"Upload Document",scanDoc:"Scan with Camera",uploadDoc:"Upload File",scanInfo:"Use your camera or upload PDF/JPG/PNG. Auto extraction will be connected in the OCR phase.",confirmInfo:"Confirm Information",docNo:"Document / Certificate No",issueDate:"Issue Date",manualCert:"Manual Certificate Entry",confirm:"Confirm Info",extractNote:"Auto extraction is in test mode. Review and confirm before saving.",fileSelected:"File selected",ocrStarting:"OCR started. Reading document...",ocrProgress:"OCR progress",ocrDone:"OCR completed. Please review detected information.",ocrNotAvailable:"OCR library is not loaded. Check internet connection.",noTextDetected:"No clear text detected. Please fill manually.",authLiveNotice:"This will be connected after Supabase Auth is live.",twofaNotice:"2FA will be added in the next security phase.",sessionsNotice:"Session controls could not be opened.",notifyNotice:"Email expiry notification preferences are available below.",deleteNotice:"Account deletion is available from the Security tab."}
@@ -199,10 +199,10 @@ const INTRO_TX={
 
 const INTRO_DETAIL={
   en:{
-  svc1:{title:"Document Vault",text:"Keep passport, visa, medical, seaman book, certificates, trainings, competency, references, appraisals and CV files in one secure workspace. Documents remain private until you decide to share them."},
+  svc1:{title:"Document Vault",text:"Keep the identity, licence, certification, training, reference and career files relevant to your profession in one secure workspace. Documents remain private until you decide to share them."},
   svc2:{title:"Easy Upload",text:"Upload PDF, JPG or PNG documents directly into ATSRS. Each file can be linked to document type, expiry date, status and future employer access rules."},
   svc3:{title:"Scan & Auto-fill",text:"Use camera scan to capture documents. When OCR is connected, ATSRS will prepare fields automatically, while the user still confirms details before saving."},
-  svc4:{title:"Expiry Tracking",text:"Track valid, expiring, expired and missing documents from a clear dashboard. ATSRS is designed to highlight risks before they become mobilisation problems."},
+  svc4:{title:"Expiry Tracking",text:"Track current, expiring and expired documents from a clear dashboard. ATSRS highlights date-based risks without imposing profession-specific requirements."},
   svc5:{title:"Share Profile",text:"Create one controlled ATSRS profile link for employers, agencies and clients. Instead of sending many email attachments, you can share a professional profile and approve access when needed."},
   svc6:{title:"Company Compliance",text:"Companies can request access, review approved documents and import candidate records into their own compliance profile. This supports faster checks and cleaner crew documentation workflows."}
  }
@@ -268,7 +268,7 @@ function applyLanguage(){
   txt("importExcelTitle",tr("importExcel"));txt("importExcelInfo",tr("importInfo"));
   txt("projectsTitle",tr("projects"));ph("projectNameInput",tr("project"));ph("vesselNameInput",tr("vessel"));ph("clientNameInput",tr("client"));ph("teamNameInput",tr("team"));txt("addProjectBtn",tr("addProject"));
   ["thProject:project","thVessel:vessel","thClient:client","thTeam:team","thActionProject:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
-  txt("complianceOverviewTitle",tr("complianceStatus"));txt("readyCrewText",tr("readyCrew"));txt("reviewCrewText",tr("reviewCrew"));txt("blockedCrewText",tr("blockedCrew"));txt("complianceNote",tr("complianceNote"));
+  txt("complianceOverviewTitle",tr("complianceStatus"));txt("readyCrewText",tr("readyCrew"));txt("reviewCrewText",tr("reviewCrew"));txt("complianceNote",tr("complianceNote"));
 
   txt("addDocTitle",ptr("addDoc"));txt("scanDocBtn",ptr("scanDoc"));txt("uploadDocBtn",ptr("uploadDoc"));txt("scanInfo",ptr("scanInfo"));txt("confirmInfoTitle",ptr("confirmInfo"));ph("autoDocNo",ptr("docNo"));ph("autoProvider",tr("provider"));txt("confirmInfoBtn",ptr("confirm"));txt("extractNote",ptr("extractNote"));
   txt("manualCertTitle",ptr("manualCert"));ph("cProvider",tr("provider"));txt("addCertBtn",tr("addCert"));txt("certRegisterTitle",tr("certRegister"));
@@ -438,8 +438,7 @@ let certs=getData("certs").filter(c=>c.person===name);
 if(!certs.length)return {key:"review",text:tr("review"),cls:"badge-review"};
 let hasExpired=certs.some(c=>status(c.expiry).expired);
 let hasRisk=certs.some(c=>status(c.expiry).risk);
-if(hasExpired)return {key:"blocked",text:tr("blocked"),cls:"badge-blocked"};
-if(hasRisk)return {key:"review",text:tr("review"),cls:"badge-review"};
+if(hasExpired||hasRisk)return {key:"review",text:tr("review"),cls:"badge-review"};
 return {key:"ready",text:tr("ready"),cls:"badge-ready"};
 }
 function fillCrewFilters(personnel){
@@ -448,7 +447,7 @@ let companies=[...new Set(personnel.map(x=>x.company).filter(Boolean))];
 let positions=[...new Set(personnel.map(x=>x.position).filter(Boolean))];
 crewCompanyFilter.innerHTML=`<option value="">${tr("allCompanies")}</option>`+companies.map(x=>`<option>${x}</option>`).join("");
 crewPositionFilter.innerHTML=`<option value="">${tr("allPositions")}</option>`+positions.map(x=>`<option>${x}</option>`).join("");
-crewStatusFilter.innerHTML=`<option value="">${tr("allStatuses")}</option><option value="ready">${tr("ready")}</option><option value="review">${tr("review")}</option><option value="blocked">${tr("blocked")}</option>`;
+crewStatusFilter.innerHTML=`<option value="">${tr("allStatuses")}</option><option value="ready">${tr("ready")}</option><option value="review">${tr("review")}</option>`;
 crewCompanyFilter.value=currentCompany;crewPositionFilter.value=currentPosition;crewStatusFilter.value=currentStatus;
 }
 function handleExcelImport(e){
@@ -630,11 +629,11 @@ if(isPersonalMode()){
   cPerson.classList.remove("hidden");
   autoPerson.classList.remove("hidden");if(typeof autoPersonWrap!=="undefined")autoPersonWrap.classList.remove("hidden");
 }
-let ready=0,review=0,blocked=0;
+let ready=0,review=0;
 p.forEach((x,i)=>{
 let full=((x.name||"")+" "+(x.surname||"")).trim();
 let st=crewComplianceStatus(full);
-if(st.key==="ready")ready++; if(st.key==="review")review++; if(st.key==="blocked")blocked++;
+if(st.key==="ready")ready++; if(st.key==="review")review++;
 let hay=[x.name,x.surname,x.position,x.company,x.email,x.phone,x.nationality,x.employeeId,x.project,x.vessel].join(" ").toLowerCase();
 if(q&&!hay.includes(q))return;
 if(company&&x.company!==company)return;
@@ -643,7 +642,7 @@ if(stf&&st.key!==stf)return;
 personnelTable.innerHTML+=`<tr><td>${x.name||""}</td><td>${x.surname||""}</td><td>${x.position||""}</td><td>${x.company||""}</td><td>${x.email||""}</td><td>${x.phone||""}</td><td><span class="badge ${st.cls}">${st.text}</span></td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;
 if(!isPersonalMode()){cPerson.innerHTML+=`<option>${full}</option>`;autoPerson.innerHTML+=`<option>${full}</option>`;}
 });
-readyCrew.innerText=ready;reviewCrew.innerText=review;blockedCrew.innerText=blocked;
+readyCrew.innerText=ready;reviewCrew.innerText=review;
 certTable.innerHTML="";let e90=0,e30=0,ex=0;
 c.forEach((x,i)=>{let s=status(x.expiry);if(s.risk&&!s.expired)e90++;if(!s.expired&&s.days<=30)e30++;if(s.expired)ex++;certTable.innerHTML+=`<tr><td>${x.type}</td><td>${x.provider||""}</td><td>${x.expiry}</td><td class="${s.cls}">${s.txt}</td><td><button class="action" onclick="deleteCert(${i})">${tr("delete")}</button></td></tr>`});
 exp90.innerText=e90;if(typeof exp30!=="undefined")exp30.innerText=e30;expired.innerText=ex;
@@ -725,17 +724,14 @@ function validateManualCertificateForm(){
 const applyLanguageBaseV24=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV24();applyV24Language();}
 const V25_TEXT={
-  en:{documents:"Documents",refs:"References",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",missingDocuments:"Missing Documents",docStatus:"Document Status",docStatusSub:"Required career documents are tracked here.",heroPersonal:"Your career compliance vault",heroCompany:"Crew compliance control center",heroPersonalText:"Track passport, visa, medical, seaman book, certificates, trainings, competency and references from one dashboard.",heroCompanyText:"Manage personnel documents, expiry risk and missing compliance items from one clean dashboard.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload",uploadReference:"Upload",compliancePageSub:"Company Personnel compliance calculated from linked profiles and live server documents.",reportsSub:"Generate a current Personnel compliance report from ATSRS server data.",documentRegister:"Document Register"}
+  en:{documents:"Documents",refs:"References",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",docStatus:"Document Overview",docStatusSub:"Uploaded career documents appear here without profession-specific requirements.",heroPersonal:"Your professional document vault",heroCompany:"Personnel document control center",heroPersonalText:"Store and track the documents relevant to your own profession from one dashboard.",heroCompanyText:"Review Personnel documents and expiry dates without imposing a universal document checklist.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload",uploadReference:"Upload",compliancePageSub:"Company Personnel status is based only on uploaded document dates.",reportsSub:"Generate a current Personnel document report from ATSRS server data.",documentRegister:"Document Register"}
 };
-const V25_REQUIRED_DOCS=["Passport","Visa","Seaman Book","Medical","Certificate","Training","Competency","Appraisal","Reference"];
 function v25(k){return (V25_TEXT[lang]&&V25_TEXT[lang][k])||V25_TEXT.en[k]||k}
-function normalizeDocType(t){t=String(t||"").toLowerCase();if(t.includes("passport"))return"Passport";if(t.includes("visa"))return"Visa";if(t.includes("seaman"))return"Seaman Book";if(t.includes("medical"))return"Medical";if(t.includes("training")||t.includes("bosiet")||t.includes("foet")||t.includes("yellow"))return"Training";if(t.includes("competency")||t.includes("rov"))return"Competency";if(t.includes("appraisal"))return"Appraisal";if(t.includes("reference"))return"Reference";if(t.includes("certificate")||t.includes("dp"))return"Certificate";return t?"Other Document":""}
-function missingDocCountForCerts(certs){let have=new Set(certs.map(x=>normalizeDocType(x.type)).filter(Boolean));return V25_REQUIRED_DOCS.filter(x=>!have.has(x)).length}
+function v25Safe(value){return String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function renderV25DocumentStatus(){
   if(typeof docCategoryGrid==="undefined")return;
   let c=getData("certs");
-  let have=new Set(c.map(x=>normalizeDocType(x.type)).filter(Boolean));
-  docCategoryGrid.innerHTML=V25_REQUIRED_DOCS.map(d=>`<div class="doc-chip ${have.has(d)?'ok':'miss'}">${have.has(d)?'✓':'!'} ${d}</div>`).join("");
+  docCategoryGrid.innerHTML=c.length?c.map(x=>`<div class="doc-chip ok">✓ ${v25Safe(x.type||'Document')}</div>`).join(""):'<div class="doc-chip">No documents uploaded yet.</div>';
   if(typeof companyComplianceGrid!=="undefined"){
     if(isPersonalMode()){companyComplianceGrid.innerHTML=`<div class="doc-chip">${v25('compliancePageSub')}</div>`;}
     else if(window.atsrsCorporateReporting&&window.atsrsCorporateReporting.ownsCompliance){
@@ -755,7 +751,6 @@ function applyV25Language(){
   if(typeof navCompliance!=="undefined")navCompliance.innerText=v25('compliance');
   if(typeof navReports!=="undefined")navReports.innerText=v25('reports');
   if(typeof totalCertsText!=="undefined")totalCertsText.innerText=v25('totalDocuments');
-  if(typeof missingDocsText!=="undefined")missingDocsText.innerText=v25('missingDocuments');
   if(typeof docStatusTitle!=="undefined")docStatusTitle.innerText=v25('docStatus');
   if(typeof docStatusSub!=="undefined")docStatusSub.innerText=v25('docStatusSub');
   if(typeof soloHeroTitle!=="undefined")soloHeroTitle.innerText=isPersonalMode()?v25('heroPersonal'):v25('heroCompany');
@@ -777,7 +772,7 @@ function applyV25Language(){
   if(typeof reportsSub!=="undefined")reportsSub.innerText=v25('reportsSub');
 }
 const setUseModeBaseV25=setUseMode;setUseMode=function(mode){setUseModeBaseV25(mode);applyV25Mode();applyV25Language();renderAll();}
-const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();let c=getData("certs");if(typeof missingDocs!=="undefined")missingDocs.innerText=missingDocCountForCerts(c);renderV25DocumentStatus();}
+const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();renderV25DocumentStatus();}
 const applyLanguageBaseV25=applyLanguage;applyLanguage=function(){applyLanguageBaseV25();applyV25Language();renderV25DocumentStatus();}
 const V48_TEXT={
   en:{cvStatus:"CV Status",cvAvailable:"Available ✓",cvMissing:"Missing ⚠",cvTitle:"CV / Resume",cvText:"Store, manage and share professional CV versions for employers, agencies and clients.",cvUploaded:"CV Uploaded ✓",cvNotUploaded:"No CV Uploaded",uploadCV:"Upload CV",previewCV:"Preview CV",downloadCV:"Download CV",deleteCV:"Delete CV",cvBetaBadge:"COMING SOON",cvBetaTitle:"Generate ATSRS Profile CV",cvBetaText:"Generate a professional ATSRS formatted CV using stored profile and document data.",generateCV:"Generate ATSRS CV (Beta)",cvComingSoon:"ATSRS Profile CV generator will be connected in a later build.",cvNoFile:"No CV uploaded yet.",cvSaved:"CV saved",cvDeleted:"CV deleted."}
@@ -815,25 +810,10 @@ function renderCVStatus(){
   if(typeof cvBetaTitle!=='undefined')cvBetaTitle.innerText=v48('cvBetaTitle');
   if(typeof cvBetaText!=='undefined')cvBetaText.innerText=v48('cvBetaText');
   if(typeof generateCVBtn!=='undefined')generateCVBtn.innerText=v48('generateCV');
-  if(typeof cvStatusBadge!=='undefined'){cvStatusBadge.innerText=cv?v48('cvUploaded'):v48('cvNotUploaded');cvStatusBadge.className='badge '+(cv?'badge-ready':'badge-blocked');}
+  if(typeof cvStatusBadge!=='undefined'){cvStatusBadge.innerText=cv?v48('cvUploaded'):v48('cvNotUploaded');cvStatusBadge.className='badge '+(cv?'badge-ready':'badge-missing');}
   if(typeof cvFileInfo!=='undefined')cvFileInfo.innerText=cv?`${cv.name} • ${Math.round((cv.size||0)/1024)} KB`:'';
   if(typeof cvStatusDashText!=='undefined')cvStatusDashText.innerText=v48('cvStatus');
   if(typeof cvStatusDash!=='undefined'){cvStatusDash.innerText=cv?v48('cvAvailable'):v48('cvMissing');cvStatusDash.className='stat '+(cv?'good':'missing');}
-}
-const V25_REQUIRED_DOCS_BASE_V48=V25_REQUIRED_DOCS.slice();
-if(!V25_REQUIRED_DOCS.includes('CV'))V25_REQUIRED_DOCS.push('CV');
-const normalizeDocTypeBaseV48=normalizeDocType;
-normalizeDocType=function(t){t=String(t||''); if(t.toLowerCase().includes('cv')||t.toLowerCase().includes('resume'))return 'CV'; return normalizeDocTypeBaseV48(t);}
-const missingDocCountForCertsBaseV48=missingDocCountForCerts;
-missingDocCountForCerts=function(certs){let n=missingDocCountForCertsBaseV48(certs); if(!getCV())n++; return n;}
-const renderV25DocumentStatusBaseV48=renderV25DocumentStatus;
-renderV25DocumentStatus=function(){
-  renderV25DocumentStatusBaseV48();
-  if(typeof docCategoryGrid!=='undefined'){
-    const cv=getCV();
-    const existing=[...docCategoryGrid.querySelectorAll('.doc-chip')].some(x=>x.textContent.includes('CV'));
-    if(!existing)docCategoryGrid.insertAdjacentHTML('beforeend',`<div class="doc-chip ${cv?'ok':'miss'}">${cv?'✓':'!'} CV</div>`);
-  }
 }
 const renderAllBaseV48=renderAll;
 renderAll=function(){renderAllBaseV48(); const cv=getCV(); if(typeof totalCerts!=='undefined'){let c=getData('certs');totalCerts.innerText=c.length+(cv?1:0);} renderCVStatus();}
@@ -857,7 +837,7 @@ function ensureManagedCard(kind){
  card.dataset.v49Ready='1';
  const title=document.getElementById(isApp?'appraisalCardTitle':'referenceCardTitle');
  if(title && !title.parentElement.classList.contains('ref-doc-head')){
-   title.outerHTML=`<div class="ref-doc-head"><h3 id="${isApp?'appraisalCardTitle':'referenceCardTitle'}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-blocked">—</span></div>`;
+   title.outerHTML=`<div class="ref-doc-head"><h3 id="${isApp?'appraisalCardTitle':'referenceCardTitle'}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-missing">—</span></div>`;
  }
  const oldBtn=document.getElementById(isApp?'uploadAppraisalBtn':'uploadReferenceBtn'); if(oldBtn)oldBtn.remove();
  card.insertAdjacentHTML('beforeend',`
@@ -877,7 +857,7 @@ function renderManagedFiles(){
  const pairs=[['appraisal',app],['reference',ref]];
  pairs.forEach(([kind,file])=>{
   const isApp=kind==='appraisal';
-  const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=file?(isApp?v49('appStatusUploaded'):v49('refStatusUploaded')):(isApp?v49('appStatusMissing'):v49('refStatusMissing')); badge.className='badge '+(file?'badge-ready':'badge-blocked');}
+  const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=file?(isApp?v49('appStatusUploaded'):v49('refStatusUploaded')):(isApp?v49('appStatusMissing'):v49('refStatusMissing')); badge.className='badge '+(file?'badge-ready':'badge-missing');}
   const info=document.getElementById(kind+'FileInfo'); if(info)info.innerText=file?`${file.name} • ${Math.round((file.size||0)/1024)} KB`:'';
   const up=document.getElementById(kind+'UploadBtn'); if(up)up.innerText=isApp?v49('uploadAppraisal'):v49('uploadReference');
   const pr=document.getElementById(kind+'PreviewBtn'); if(pr)pr.innerText=v49('preview');
@@ -912,8 +892,9 @@ function copyShareLink(){
 function renderSharePreview(){
   if(typeof sharePreviewDocs==="undefined")return;
   let c=getData("certs");
-  let have=new Set(c.map(x=>normalizeDocType(x.type)).filter(Boolean));
-  sharePreviewDocs.innerHTML=V25_REQUIRED_DOCS.map(d=>`<div class="doc-chip ${have.has(d)?'ok':'miss'}">${have.has(d)?'✓':'!'} ${d}</div>`).join("");
+  let labels=c.map(x=>String(x.type||'Document')).filter(Boolean);
+  if(getCV())labels.push('CV');
+  sharePreviewDocs.innerHTML=labels.length?labels.map(d=>`<div class="doc-chip ok">✓ ${v25Safe(d)}</div>`).join(""):'<div class="doc-chip">No documents selected.</div>';
   let prof=JSON.parse(readAppDataKey(localKey("profile")))||{};
   let full=((prof.name||"Anar")+" "+(prof.surname||"Agasiyev")).trim();
   previewName.innerText=full;
@@ -936,11 +917,11 @@ function applyV27Language(){
 }
 const renderAllBaseV27=renderAll;renderAll=function(){renderAllBaseV27();renderSharePreview();}
 const V29_TEXT={
-  en:{featureDocsTitle:"Document Vault",featureDocsText:"Keep passports, licences, certifications, medical records and career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for licences, certificates, permits and compliance documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their compliance records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A simple flow for personal users today and company compliance tomorrow.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and document dates.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"COMPLIANCE SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Valid documents",snapRiskLabel:"Expiry risk",snapMissingLabel:"Missing documents",snapShareLabel:"Profile sharing",snapShare:"Ready"}
+  en:{featureDocsTitle:"Document Vault",featureDocsText:"Keep licences, certifications, identity records and other career documents in one secure place.",featureUploadTitle:"Easy Upload",featureUploadText:"Upload PDF, JPG or PNG files directly into your secure ATSRS register.",featureScanTitle:"Scan & Auto-fill",featureScanText:"Scan documents and let ATSRS prepare information for manual review.",featureAlertsTitle:"Expiry Tracking",featureAlertsText:"Stay ahead with reminders for time-limited professional documents.",featureShareTitle:"Share Profile",featureShareText:"Share one secure ATSRS profile link instead of sending multiple attachments.",featureCompanyTitle:"Company Import",featureCompanyText:"Allow organisations to request access and import approved documents into their records.",workflowBadge:"HOW ATSRS WORKS",workflowTitle:"From document upload to employer-ready profile",workflowSub:"A flexible flow for professionals and organisations across industries.",step1Title:"Upload",step1Text:"Add documents manually or by scan.",step2Title:"Track",step2Text:"Monitor expiry and document dates.",step3Title:"Share",step3Text:"Send a controlled ATSRS profile link.",step4Title:"Approve",step4Text:"Allow companies to download or import selected documents.",snapshotBadge:"DOCUMENT SNAPSHOT",snapshotTitle:"Quick status",snapValidLabel:"Current documents",snapRiskLabel:"Expiry risk",snapShareLabel:"Profile sharing",snapShare:"Ready"}
 };
 function v29(k){return (V29_TEXT[lang]&&V29_TEXT[lang][k])||V29_TEXT.en[k]||k}
 function applyV29Language(){
-  ["featureDocsTitle","featureDocsText","featureUploadTitle","featureUploadText","featureScanTitle","featureScanText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","workflowBadge","workflowTitle","workflowSub","step1Title","step1Text","step2Title","step2Text","step3Title","step3Text","step4Title","step4Text","snapshotBadge","snapshotTitle","snapValidLabel","snapRiskLabel","snapMissingLabel","snapShareLabel"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v29(id);});
+  ["featureDocsTitle","featureDocsText","featureUploadTitle","featureUploadText","featureScanTitle","featureScanText","featureAlertsTitle","featureAlertsText","featureShareTitle","featureShareText","featureCompanyTitle","featureCompanyText","workflowBadge","workflowTitle","workflowSub","step1Title","step1Text","step2Title","step2Text","step3Title","step3Text","step4Title","step4Text","snapshotBadge","snapshotTitle","snapValidLabel","snapRiskLabel","snapShareLabel"].forEach(id=>{let el=document.getElementById(id);if(el)el.innerText=v29(id);});
   if(typeof snapShare!=="undefined")snapShare.innerText=v29('snapShare');
 }
 function renderV29Snapshot(){
@@ -948,7 +929,7 @@ function renderV29Snapshot(){
   let c=getData("certs");
   let valid=0,risk=0;
   c.forEach(x=>{let s=status(x.expiry);if(!s.expired&&!s.risk)valid++;if(s.risk)risk++;});
-  snapValid.innerText=valid; snapRisk.innerText=risk; if(typeof snapMissing!=="undefined"&&typeof missingDocs!=="undefined")snapMissing.innerText=missingDocs.innerText||0;
+  snapValid.innerText=valid; snapRisk.innerText=risk;
 }
 const applyLanguageBaseV29=applyLanguage;applyLanguage=function(){applyLanguageBaseV29();applyV29Language();renderV29Snapshot();}
 const renderAllBaseV29=renderAll;renderAll=function(){renderAllBaseV29();renderV29Snapshot();}
@@ -1170,7 +1151,7 @@ function ensureManagedCard(kind){
    card.dataset.v54Ready='1';
    const title=document.getElementById(ids[0]);
    if(title && !title.parentElement.classList.contains('ref-doc-head')){
-     title.outerHTML=`<div class="ref-doc-head"><h3 id="${ids[0]}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-blocked">No File</span></div>`;
+     title.outerHTML=`<div class="ref-doc-head"><h3 id="${ids[0]}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-missing">No File</span></div>`;
    }
    const oldBtn=document.getElementById(ids[1]); if(oldBtn)oldBtn.remove();
    const oldInfo=document.getElementById(kind+'FileInfo'); if(oldInfo)oldInfo.remove();
@@ -1213,7 +1194,7 @@ function renderManagedFiles(){
  const labels={appraisal:['uploadAppraisal','appraisalsCount'],reference:['uploadReference','referencesCount'],recommendation:['uploadRecommendation','recommendationsCount']};
  ['appraisal','reference','recommendation'].forEach(kind=>{
    const files=getManagedFiles(kind);
-   const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=(files.length?(files.length+' File'+(files.length>1?'s':'')):'No File');badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
+   const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=(files.length?(files.length+' File'+(files.length>1?'s':'')):'No File');badge.className='badge '+(files.length?'badge-ready':'badge-missing');}
    const up=document.getElementById(kind+'UploadBtn'); if(up)up.innerText=(kind==='appraisal'?v49('uploadAppraisal'):kind==='reference'?v49('uploadReference'):v54('uploadRecommendation'));
    const cnt=document.getElementById(kind+'Count'); if(cnt)cnt.innerText=`${v54(labels[kind][1])}: ${files.length?(files.length+' File'+(files.length>1?'s':'')):'No File'} • Newest first`;
    renderCareerList(kind);

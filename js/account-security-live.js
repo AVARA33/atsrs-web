@@ -1,7 +1,7 @@
 /* ATSRS V261 - live Account security controls backed by Supabase Auth. */
 (function(){
   'use strict';
-  var client=null,user=null,mfaBlocking=false;
+  var client=null,user=null,mfaRequired=false;
   function byId(id){return document.getElementById(id)}
   function safe(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function getClient(){client=window.supabaseClient||client;return client}
@@ -19,11 +19,11 @@
     modal=document.createElement('div');modal.id='atsrsSecurityModal';modal.className='atsrs-security-modal hidden';modal.innerHTML='<div class="atsrs-security-backdrop"></div><div class="atsrs-security-dialog" role="dialog" aria-modal="true"><button type="button" class="atsrs-security-close" aria-label="Close">&times;</button><div id="atsrsSecurityContent"></div></div>';
     document.body.appendChild(modal);
     modal.querySelector('.atsrs-security-close').onclick=closeModal;
-    modal.querySelector('.atsrs-security-backdrop').onclick=function(){if(!mfaBlocking)closeModal()};
+    modal.querySelector('.atsrs-security-backdrop').onclick=function(){if(!mfaRequired)closeModal()};
     return modal;
   }
-  function openModal(html,blocking){var modal=ensureModal();mfaBlocking=!!blocking;modal.querySelector('.atsrs-security-close').classList.toggle('hidden',mfaBlocking);byId('atsrsSecurityContent').innerHTML=html;modal.classList.remove('hidden')}
-  function closeModal(){if(mfaBlocking)return;var modal=byId('atsrsSecurityModal');if(modal)modal.classList.add('hidden')}
+  function openModal(html,required){var modal=ensureModal();mfaRequired=!!required;modal.querySelector('.atsrs-security-close').classList.toggle('hidden',mfaRequired);byId('atsrsSecurityContent').innerHTML=html;modal.classList.remove('hidden')}
+  function closeModal(){if(mfaRequired)return;var modal=byId('atsrsSecurityModal');if(modal)modal.classList.add('hidden')}
   function message(text,kind){var el=byId('atsrsSecurityMessage');if(!el)return;el.textContent=text||'';el.className='atsrs-security-message'+(kind?' is-'+kind:'')}
   function busy(button,on,label){if(!button)return;if(on){button.dataset.oldText=button.textContent;button.textContent=label||'Working...';button.disabled=true}else{button.textContent=button.dataset.oldText||button.textContent;button.disabled=false}}
   function formatOffset(zone){
@@ -49,7 +49,7 @@
       }
       var enroll=await getClient().auth.mfa.enroll({factorType:'totp',friendlyName:'ATSRS Authenticator'});if(enroll.error)throw enroll.error;var data=enroll.data;
       openModal('<h3>Set up authenticator</h3><p>Scan this QR code with Google Authenticator, Microsoft Authenticator or another TOTP app. Then enter the six-digit code.</p><img class="atsrs-mfa-qr" alt="Authenticator QR code" src="'+safe(data.totp.qr_code)+'"><div class="atsrs-mfa-secret">'+safe(data.totp.secret)+'</div><div class="atsrs-security-form"><label>Six-digit code<input id="atsrsMfaCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></label><div class="atsrs-security-actions"><button type="button" class="secondary" id="atsrsCancelMfa">Cancel</button><button type="button" id="atsrsVerifyMfa">Verify and enable</button></div><p id="atsrsSecurityMessage" class="atsrs-security-message"></p></div>');
-      byId('atsrsCancelMfa').onclick=async function(){try{await getClient().auth.mfa.unenroll({factorId:data.id})}catch(e){}mfaBlocking=false;closeModal()};byId('atsrsVerifyMfa').onclick=function(){verifyMfa(data.id)};
+      byId('atsrsCancelMfa').onclick=async function(){try{await getClient().auth.mfa.unenroll({factorId:data.id})}catch(e){}mfaRequired=false;closeModal()};byId('atsrsVerifyMfa').onclick=function(){verifyMfa(data.id)};
     }catch(e){toast(e.message||'Authenticator setup could not start.','error')}
   }
   async function verifyMfa(factorId){
@@ -76,7 +76,7 @@
     var c=getClient();if(!c||!c.auth||!c.auth.mfa)return;
     try{var aal=await c.auth.mfa.getAuthenticatorAssuranceLevel();if(aal.error)return;var data=aal.data||{};if(data.currentLevel!=='aal1'||data.nextLevel!=='aal2')return;var factors=await verifiedTotp();if(!factors.length)return;var factor=factors[0];var challenge=await c.auth.mfa.challenge({factorId:factor.id});if(challenge.error)throw challenge.error;
       openModal('<h3>Authenticator verification</h3><p>Enter the six-digit code from your authenticator app to continue to ATSRS.</p><div class="atsrs-security-form"><label>Six-digit code<input id="atsrsMfaLoginCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></label><div class="atsrs-security-actions"><button type="button" id="atsrsVerifyMfaLogin">Verify</button></div><p id="atsrsSecurityMessage" class="atsrs-security-message"></p></div>',true);
-      byId('atsrsVerifyMfaLogin').onclick=async function(){var code=(byId('atsrsMfaLoginCode').value||'').replace(/\D/g,''),button=byId('atsrsVerifyMfaLogin');if(code.length!==6){message('Enter the six-digit code.','error');return}busy(button,true,'Verifying...');var result=await c.auth.mfa.verify({factorId:factor.id,challengeId:challenge.data.id,code:code});if(result.error){message('The code could not be verified. Check it and try again.','error');busy(button,false);return}mfaBlocking=false;closeModal();toast('Identity verified.','ok')};
+      byId('atsrsVerifyMfaLogin').onclick=async function(){var code=(byId('atsrsMfaLoginCode').value||'').replace(/\D/g,''),button=byId('atsrsVerifyMfaLogin');if(code.length!==6){message('Enter the six-digit code.','error');return}busy(button,true,'Verifying...');var result=await c.auth.mfa.verify({factorId:factor.id,challengeId:challenge.data.id,code:code});if(result.error){message('The code could not be verified. Check it and try again.','error');busy(button,false);return}mfaRequired=false;closeModal();toast('Identity verified.','ok')};
     }catch(e){console.warn('ATSRS MFA check failed',e)}
   }
   function bind(){

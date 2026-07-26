@@ -1,12 +1,5 @@
 /* ATSRS V178 extracted CSS batch: dashboard.css. Preserves original V178 cascade order. */
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -146,13 +139,6 @@ html[dir="rtl"] body > .atsrs-v64-top-actions{right:18px!important;left:auto!imp
 @media(max-width:800px){html[dir="rtl"] body > .atsrs-v64-top-actions{right:12px!important;left:auto!important;}}
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -270,13 +256,6 @@ body > .atsrs-v64-top-actions .lang-menu{
 }
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -318,13 +297,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -378,13 +350,6 @@ body.v76-sidebar-collapsed #app.app:not(.hidden){grid-template-columns:78px minm
 @media(max-width:800px){.sidebar-head{justify-content:space-between!important}.sidebar .nav{grid-template-columns:1fr!important}.sidebar.v76-mobile-closed .nav,.sidebar.v76-mobile-closed .sub{display:none!important}.main{padding-top:82px!important}.auth-card{max-width:430px!important}}
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -436,13 +401,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -486,13 +444,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 #auth #loginMsg{order:14;}
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -525,13 +476,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 @media(max-width:800px){.atsrs-account-badge{min-width:150px;max-width:190px;padding:7px 10px}.atsrs-account-badge div:last-child{display:none}.top-actions{gap:7px!important}}
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;
@@ -579,13 +523,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 }
 
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;

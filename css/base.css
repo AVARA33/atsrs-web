@@ -47,7 +47,7 @@ table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;bor
 .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
 .badge-ready{background:#14532d;color:#bbf7d0}
 .badge-review{background:#713f12;color:#fef3c7}
-.badge-blocked{background:#7f1d1d;color:#fecaca}
+.badge-missing{background:#334155;color:#e2e8f0}
 .import-box{border:1px dashed #64748b;border-radius:16px;padding:16px;background:#0f172a}
 .crew-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 
@@ -106,7 +106,6 @@ body{background:radial-gradient(circle at top left,#172554 0,#0f172a 36%,#020617
 .required-missing{border:2px solid #ef4444!important;background:#2a1111!important}
 .mode-badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#0f172a;border:1px solid #334155;color:#93c5fd;font-size:12px;font-weight:800;margin-bottom:8px}
 .missing{color:#fb7185}
-.card.missing-card{border-color:#7f1d1d}
 .doc-category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
 .doc-chip{background:#0f172a;border:1px solid #334155;border-radius:14px;padding:12px;color:#cbd5e1;font-weight:700}
 .doc-chip.ok{border-color:#14532d;color:#bbf7d0}.doc-chip.miss{border-color:#7f1d1d;color:#fecaca}.doc-chip.warn{border-color:#713f12;color:#fef3c7}
@@ -212,7 +211,7 @@ button.action,.top-logout{background:linear-gradient(135deg,#991b1b,#dc2626)!imp
 .floating-doc b{color:#0b1f2a!important}.floating-doc span{color:#334155!important}
 .lang-circle{background:#0b1a2a!important;border-color:rgba(134,239,172,.35)!important;box-shadow:0 10px 32px rgba(0,0,0,.35)!important}.lang-menu{background:#091524!important;border-color:#264058!important}
 .stat.good,.good{color:var(--atsrs-green-soft)!important}.warning{color:var(--atsrs-warning)!important}.danger{color:#fb7185!important}.missing{color:#fda4af!important}
-.badge-ready{background:#064e3b!important;color:#bbf7d0!important}.badge-review{background:#78350f!important;color:#fde68a!important}.badge-blocked{background:#7f1d1d!important;color:#fecaca!important}
+.badge-ready{background:#064e3b!important;color:#bbf7d0!important}.badge-review{background:#78350f!important;color:#fde68a!important}.badge-missing{background:#334155!important;color:#e2e8f0!important}
 .table-wrap table th{color:#dbeafe!important} th,td{border-color:#26384e!important}
 .build-badge{background:rgba(7,17,29,.78)!important;border-color:#264058!important;color:#a7b5c5!important}
 #navIntro{order:-2}
@@ -806,13 +805,6 @@ body.atsrs-booting #atsrsBootScreen{display:flex!important;}
   color:#a7b5c5;
 }
 /* V118 Personal dashboard simplification + account badge */
-#dashboardPage .missing-card,
-#dashboardPage #missingDocs,
-#dashboardPage #missingDocsText,
-#dashboardPage #docStatusTitle,
-#dashboardPage #docStatusSub,
-#dashboardPage #docCategoryGrid{display:none!important}
-.dashboard-snapshot-panel .snapshot-list .snapshot-item:has(#snapMissing){display:none!important}
 .atsrs-account-badge{
   min-width:190px;
   max-width:260px;

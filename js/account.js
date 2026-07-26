@@ -2,13 +2,13 @@
 /* ===== extracted from inline script id=ATSRS_V148_BUILD_LABEL_SCRIPT ===== */
 (function(){
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
-  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V341';if(d[1])d[1].textContent='Last Update: 26 Jul 2026';});}
+  function setBuild(){qa('.build-badge').forEach(function(b){var d=b.querySelectorAll('div');if(d[0])d[0].textContent='ATSRS V342';if(d[1])d[1].textContent='Last Update: 26 Jul 2026';});}
   setBuild();document.addEventListener('DOMContentLoaded',setBuild);setTimeout(setBuild,300);setTimeout(setBuild,900);
 })();
 
 /* ===== extracted from inline script id=ATSRS_V150_OLD_LOCK_REMOVED_COMPACT_ROWS_JS ===== */
 (function(){
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
   function setBuild(){
     qa('.build-badge').forEach(function(b){
@@ -61,7 +61,7 @@
 /* ===== extracted from inline script id=ATSRS_V151_INDEXEDDB_REFERENCES_UPLOAD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   var UPDATE='Last Update: 26 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_V151';
@@ -108,7 +108,7 @@
     if(list){list.innerHTML=arr.length?arr.map(function(f){return row(kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';}
   }
   async function renderAllV151(){setBuild(); for(var i=0;i<KINDS.length;i++) await renderKind(KINDS[i]);}
-  function bindInputs(){KINDS.forEach(function(kind){var inp=byId('v134_'+kind+'_input'); if(inp && !inp.__v151Bound){inp.__v151Bound=true; inp.onchange=async function(e){try{await putFiles(kind,e.target.files); e.target.value=''; await renderAllV151();}catch(err){alert('Upload could not be saved. Browser storage may be blocked or full.'); console.error(err);}};}});}
+  function bindInputs(){KINDS.forEach(function(kind){var inp=byId('v134_'+kind+'_input'); if(inp && !inp.__v151Bound){inp.__v151Bound=true; inp.onchange=async function(e){try{await putFiles(kind,e.target.files); e.target.value=''; await renderAllV151();}catch(err){alert('Upload could not be saved. Browser storage may be unavailable or full.'); console.error(err);}};}});}
   window.atsrsV151Preview=async function(kind,id){var f=await getOne(kind,id); if(!f||!f.blob){alert('File preview is not available.');return;} var url=URL.createObjectURL(f.blob); var w=window.open('','_blank'); if(w){w.document.write('<title>'+esc(f.name||'File')+'</title><iframe src="'+url+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();} setTimeout(function(){URL.revokeObjectURL(url);},60000);};
   window.atsrsV151Download=async function(kind,id){var f=await getOne(kind,id); if(!f||!f.blob){alert('File download is not available.');return;} var url=URL.createObjectURL(f.blob); var a=document.createElement('a'); a.href=url; a.download=f.name||('ATSRS-'+kind); document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},30000);};
   window.atsrsV151Delete=async function(kind,id){await del(kind,id); await renderAllV151();};
@@ -121,7 +121,7 @@
 /* ===== extracted from inline script id=ATSRS_V152_REFERENCES_PERSISTENCE_HARD_FIX_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   var UPDATE='Last Update: 26 Jul 2026';
   var KINDS=['appraisal','reference','recommendation','coverLetter'];
   var DB_NAME='ATSRS_FILE_DB_MAIN';
@@ -136,7 +136,7 @@
   function openDB(){
     if(dbp)return dbp;
     dbp=new Promise(function(resolve,reject){
-      if(!window.indexedDB){reject(new Error('IndexedDB is blocked'));return;}
+      if(!window.indexedDB){reject(new Error('IndexedDB is unavailable'));return;}
       var req=indexedDB.open(DB_NAME,1);
       req.onupgradeneeded=function(){var db=req.result;if(!db.objectStoreNames.contains(STORE)){var st=db.createObjectStore(STORE,{keyPath:'id'});st.createIndex('scopeKind','scopeKind',{unique:false});}};
       req.onsuccess=function(){resolve(req.result);};
@@ -181,7 +181,7 @@
     if(list)list.innerHTML=arr.length?arr.map(function(f){return row(kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
   }
   async function render(){setBuild();for(var i=0;i<KINDS.length;i++)await renderKind(KINDS[i]);bind();}
-  function bind(){KINDS.forEach(function(kind){var inp=byId('v134_'+kind+'_input');if(inp){inp.onchange=async function(e){try{await put(kind,e.target.files);e.target.value='';await render();}catch(err){console.error(err);alert('Upload could not be saved. Storage is blocked/full. Try Chrome and keep the same file location, or connect backend storage.');}};}});}
+  function bind(){KINDS.forEach(function(kind){var inp=byId('v134_'+kind+'_input');if(inp){inp.onchange=async function(e){try{await put(kind,e.target.files);e.target.value='';await render();}catch(err){console.error(err);alert('Upload could not be saved. Storage is unavailable or full. Try Chrome and keep the same file location, or connect backend storage.');}};}});}
   window.atsrsV152Preview=async function(kind,id){var f=await one(kind,id);if(!f||!f.data){alert('File preview is not available.');return;}var w=window.open('','_blank');if(w){w.document.write('<title>'+esc(f.name||'File')+'</title><iframe src="'+f.data+'" style="border:0;width:100%;height:100vh"></iframe>');w.document.close();}};
   window.atsrsV152Download=async function(kind,id){var f=await one(kind,id);if(!f||!f.data){alert('File download is not available.');return;}var a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();};
   window.atsrsV152Delete=async function(kind,id){await del(kind,id);await render();};
@@ -193,7 +193,7 @@
 /* ===== extracted from inline script id=ATSRS_V156_CV_SLOTS_UNDER_MAIN_STABLE_LAYOUT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   var UPDATE='Last Update: 26 Jul 2026';
   var DB_NAME='ATSRS_FILE_DB_MAIN', STORE='referenceFiles', KIND='cv';
   var dbp=null, rendering=false, pending=false;
@@ -206,7 +206,7 @@
   function openDB(){
     if(dbp)return dbp;
     dbp=new Promise(function(resolve,reject){
-      if(!window.indexedDB){reject(new Error('IndexedDB blocked'));return;}
+      if(!window.indexedDB){reject(new Error('IndexedDB unavailable'));return;}
       var req=indexedDB.open(DB_NAME,1);
       req.onupgradeneeded=function(){var db=req.result;if(!db.objectStoreNames.contains(STORE)){var st=db.createObjectStore(STORE,{keyPath:'id'});st.createIndex('scopeKind','scopeKind',{unique:false});}};
       req.onsuccess=function(){resolve(req.result);};
@@ -260,7 +260,7 @@
       if(m && (!m.isMain || arr.length>1)){m.isMain=true;await clearAllAndPut(m);} 
       var info=byId('cvFileInfo');
       if(info){info.className='preview-box atsrs-v156-cv-area';info.innerHTML=mainBox(m)+slotsBox();}
-      var badge=byId('cvStatusBadge'); if(badge){badge.textContent=m?'Main CV':'No CV Uploaded';badge.className='badge '+(m?'badge-ready':'badge-blocked');}
+      var badge=byId('cvStatusBadge'); if(badge){badge.textContent=m?'Main CV':'No CV Uploaded';badge.className='badge '+(m?'badge-ready':'badge-missing');}
       var dash=byId('cvStatusDash'); if(dash){dash.textContent=m?'Available ✓':'Missing ⚠';dash.className='stat '+(m?'good':'missing');}
       var up=byId('uploadCVBtn'); if(up)up.textContent=m?'Replace Main CV':'Upload Main CV';
       var inp=byId('cvUploadInput'); if(inp)inp.removeAttribute('multiple');
@@ -279,7 +279,7 @@
       if(event&&event.target)event.target.value='';
       await renderCV();
       if(files.length>1)alert('Free plan allows only Main CV. Additional CV slots are prepared for paid plans.');
-    }catch(err){console.error(err);alert('CV could not be saved. Storage is blocked/full.');}
+    }catch(err){console.error(err);alert('CV could not be saved. Storage is unavailable or full.');}
   };
   window.previewCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}openFile(f);};
   window.downloadCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}downloadFile(f);};
@@ -295,7 +295,7 @@
 /* ===== extracted from inline script id=atsrs-v157-login-cleanup-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   var UPDATE='Last Update: 26 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function lockBuild(){

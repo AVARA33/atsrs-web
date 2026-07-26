@@ -76,7 +76,7 @@ function ready(fn){ if(document.readyState==='loading') document.addEventListene
   }
   function testStorage(res){
     try{ localStorage.setItem('atsrs_qa_test','ok'); var ok=localStorage.getItem('atsrs_qa_test')==='ok'; localStorage.removeItem('atsrs_qa_test'); add(res,ok?'pass':'fail','LocalStorage availability',ok?'LocalStorage works.':'LocalStorage write/read failed.'); }
-    catch(e){ add(res,'fail','LocalStorage blocked',String(e)); }
+    catch(e){ add(res,'fail','LocalStorage unavailable',String(e)); }
   }
   function testReferenceScroll(res, autoFix){
     var before=document.querySelectorAll('.atsrs-ref-file-scroll').length;

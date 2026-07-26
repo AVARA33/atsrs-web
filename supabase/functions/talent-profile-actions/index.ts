@@ -40,39 +40,6 @@ function documentStatus(expiry: string | null | undefined) {
   return "Valid";
 }
 
-const REQUIRED_COMPLIANCE_DOCUMENTS = [
-  "Passport",
-  "Visa",
-  "Seaman Book",
-  "Medical",
-  "Certificate",
-  "Training",
-  "Competency",
-  "Appraisal",
-  "Reference",
-  "CV",
-];
-
-function normalizedDocumentType(file: Record<string, unknown>) {
-  const category = clean(file.category, 40).toLowerCase();
-  if (category === "cv") return "CV";
-  if (category === "appraisal") return "Appraisal";
-  if (category === "reference" || category === "recommendation" || category === "coverletter") return "Reference";
-  const metadata = (file.metadata || {}) as Record<string, unknown>;
-  const document = (metadata.document || {}) as Record<string, unknown>;
-  const value = clean(document.type, 160).toLowerCase();
-  if (value.includes("passport")) return "Passport";
-  if (value.includes("visa")) return "Visa";
-  if (value.includes("seaman")) return "Seaman Book";
-  if (value.includes("medical")) return "Medical";
-  if (value.includes("training") || value.includes("bosiet") || value.includes("foet") || value.includes("yellow")) return "Training";
-  if (value.includes("competency") || value.includes("rov")) return "Competency";
-  if (value.includes("appraisal")) return "Appraisal";
-  if (value.includes("reference")) return "Reference";
-  if (value.includes("certificate") || value.includes("dp")) return "Certificate";
-  return value ? "Other Document" : "";
-}
-
 function complianceExpiry(file: Record<string, unknown>) {
   const metadata = (file.metadata || {}) as Record<string, unknown>;
   const document = (metadata.document || {}) as Record<string, unknown>;
@@ -200,7 +167,7 @@ Deno.serve(async (req) => {
     if (!professionalIds.length) {
       const empty = {
         generated_at: new Date().toISOString(),
-        summary: { personnel: 0, ready: 0, review: 0, blocked: 0, documents: 0, expired: 0, expiring: 0, missing: 0 },
+        summary: { personnel: 0, ready: 0, review: 0, documents: 0, expired: 0, expiring: 0 },
         rows: [],
       };
       return json(200, action === "report" ? { report: empty } : { compliance: empty });
@@ -232,16 +199,12 @@ Deno.serve(async (req) => {
     const rows = professionalIds.map((professionalId) => {
       const profile = (profileMap.get(professionalId) || {}) as Record<string, unknown>;
       const files = filesByOwner.get(professionalId) || [];
-      const documentTypes = new Set(files.map(normalizedDocumentType).filter(Boolean));
-      const missingDocuments = REQUIRED_COMPLIANCE_DOCUMENTS.filter((type) => !documentTypes.has(type));
       const expiry = files.reduce((counts, file) => {
         const bucket = complianceExpiry(file);
         counts[bucket] += 1;
         return counts;
       }, { current: 0, expiring_30: 0, expiring_90: 0, expired: 0 } as Record<string, number>);
-      const status = expiry.expired > 0 || missingDocuments.length > 0
-        ? "blocked"
-        : expiry.expiring_30 > 0 || expiry.expiring_90 > 0
+      const status = expiry.expired > 0 || expiry.expiring_30 > 0 || expiry.expiring_90 > 0
           ? "review"
           : "ready";
       return {
@@ -257,8 +220,6 @@ Deno.serve(async (req) => {
         expiring_30_count: expiry.expiring_30,
         expiring_90_count: expiry.expiring_90,
         expired_count: expiry.expired,
-        missing_count: missingDocuments.length,
-        missing_documents: missingDocuments,
       };
     });
     const summary = rows.reduce((totals, row) => {
@@ -267,9 +228,8 @@ Deno.serve(async (req) => {
       totals.documents += row.document_count;
       totals.expired += row.expired_count;
       totals.expiring += row.expiring_30_count + row.expiring_90_count;
-      totals.missing += row.missing_count;
       return totals;
-    }, { personnel: 0, ready: 0, review: 0, blocked: 0, documents: 0, expired: 0, expiring: 0, missing: 0 } as Record<string, number>);
+    }, { personnel: 0, ready: 0, review: 0, documents: 0, expired: 0, expiring: 0 } as Record<string, number>);
     const payload = { generated_at: new Date().toISOString(), summary, rows };
     return json(200, action === "report" ? { report: payload } : { compliance: payload });
   }

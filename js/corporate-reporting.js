@@ -48,9 +48,7 @@
       ['Personnel',summary.personnel,'neutral'],
       ['Ready',summary.ready,'ready'],
       ['Needs review',summary.review,'review'],
-      ['Blocked',summary.blocked,'blocked'],
-      ['Documents',summary.documents,'neutral'],
-      ['Missing',summary.missing,'blocked']
+      ['Documents',summary.documents,'neutral']
     ].forEach(function(item){
       var card=document.createElement('div');
       card.className='corporate-summary-card is-'+item[2];
@@ -60,7 +58,7 @@
     });
   }
   function statusLabel(value){
-    return value==='ready'?'Ready':value==='review'?'Needs review':'Blocked';
+    return value==='ready'?'Ready':'Needs review';
   }
   function renderCompliance(){
     var list=byId('companyComplianceGrid'),summaryContainer=byId('corporateComplianceSummary');
@@ -86,19 +84,13 @@
         ['Current',row.current_count],
         ['<=30 days',row.expiring_30_count],
         ['31-90 days',row.expiring_90_count],
-        ['Expired',row.expired_count],
-        ['Missing',row.missing_count]
+        ['Expired',row.expired_count]
       ].forEach(function(item){
         var metric=document.createElement('div'),label=document.createElement('span'),value=document.createElement('b');
         label.textContent=item[0];value.textContent=String(number(item[1]));
         metric.appendChild(label);metric.appendChild(value);metrics.appendChild(metric);
       });
       card.appendChild(head);card.appendChild(metrics);
-      if(Array.isArray(row.missing_documents)&&row.missing_documents.length){
-        var missing=document.createElement('p');missing.className='corporate-missing-documents';
-        missing.textContent='Missing: '+row.missing_documents.join(', ');
-        card.appendChild(missing);
-      }
       list.appendChild(card);
     });
   }
@@ -111,7 +103,7 @@
     var rows=Array.isArray(reportCache.rows)?reportCache.rows:[];
     if(!rows.length){
       var empty=document.createElement('tr'),cell=document.createElement('td');
-      cell.colSpan=8;cell.textContent='No Company Personnel data is available for this report.';
+      cell.colSpan=7;cell.textContent='No Company Personnel data is available for this report.';
       empty.appendChild(cell);body.appendChild(empty);return;
     }
     rows.forEach(function(row){
@@ -123,8 +115,7 @@
         row.document_count,
         row.expiring_30_count,
         row.expiring_90_count,
-        row.expired_count,
-        row.missing_count
+        row.expired_count
       ].forEach(function(value){var td=document.createElement('td');td.textContent=text(value);tr.appendChild(td)});
       body.appendChild(tr);
     });
@@ -166,12 +157,11 @@
   }
   async function exportReport(){
     var report=reportCache||await loadReport(true);if(!report)return;
-    var rows=[['Name','Position','Country','Status','Documents','Current','Expiring <=30 days','Expiring 31-90 days','Expired','Missing','Missing document types']];
+    var rows=[['Name','Position','Country','Status','Documents','Current','Expiring <=30 days','Expiring 31-90 days','Expired']];
     (report.rows||[]).forEach(function(row){
       rows.push([
         (text(row.name)+' '+text(row.surname)).trim(),row.position,row.country,statusLabel(row.status),
-        row.document_count,row.current_count,row.expiring_30_count,row.expiring_90_count,row.expired_count,row.missing_count,
-        Array.isArray(row.missing_documents)?row.missing_documents.join('; '):''
+        row.document_count,row.current_count,row.expiring_30_count,row.expiring_90_count,row.expired_count
       ]);
     });
     var csv='\ufeff'+rows.map(function(row){return row.map(csvCell).join(',')}).join('\r\n');

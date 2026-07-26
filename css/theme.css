@@ -505,7 +505,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V341: final light-theme contrast and fixed top-right controls. */
+/* V342: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -813,7 +813,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V341 — Account light mode: one calm, fully light and responsive system. */
+/* V342 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1118,7 +1118,7 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   }
 }
 
-/* V341: sharing and download-request surfaces must follow the active light theme. */
+/* V342: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){

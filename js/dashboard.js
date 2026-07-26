@@ -34,13 +34,10 @@
     mail.textContent = getEmail();
   }
   function simplifyDashboard(){
-    ['missingDocsText','missingDocs','docStatusTitle','docStatusSub','docCategoryGrid'].forEach(function(id){var el=byId(id); if(el) el.style.display='none';});
-    var missingCard=document.querySelector('#dashboardPage .missing-card'); if(missingCard) missingCard.remove();
-    var snapMissing=byId('snapMissing'); if(snapMissing){var row=snapMissing.closest('.snapshot-item'); if(row) row.remove();}
     var docStatus=byId('docStatusTitle'); if(docStatus){var panel=docStatus.closest('.panel'); if(panel) panel.remove();}
     var totalCertsText=byId('totalCertsText'); if(totalCertsText) totalCertsText.textContent='Uploaded Documents';
     var soloBadge=byId('soloBadge'); if(soloBadge) soloBadge.textContent='DOCUMENT OVERVIEW';
-    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your compliance dashboard';
+    var soloHeroTitle=byId('soloHeroTitle'); if(soloHeroTitle) soloHeroTitle.textContent='Your professional document dashboard';
     var soloHeroText=byId('soloHeroText'); if(soloHeroText) soloHeroText.textContent='Review document totals, expiry risk and profile readiness from one clear view.';
     var snapshotTitle=byId('snapshotTitle'); if(snapshotTitle) snapshotTitle.textContent='Quick overview';
   }
@@ -57,7 +54,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   var UPDATE='Last Update: 26 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -453,7 +450,7 @@
     if(byId('coverLetterCard'))return;
     var cv=byId('cvCardTitle'); var cvCard=cv?cv.closest('.ref-card'):null; var grid=cvCard?cvCard.parentElement:document.querySelector('#refsPage .ref-grid'); if(!grid)return;
     var card=document.createElement('div'); card.className='ref-card cover-letter-card'; card.id='coverLetterCard';
-    card.innerHTML='<div class="cv-card-head"><h3 id="coverLetterCardTitle">Cover Letter</h3><span id="coverLetterStatusBadge" class="badge badge-blocked">No File</span></div>'+
+    card.innerHTML='<div class="cv-card-head"><h3 id="coverLetterCardTitle">Cover Letter</h3><span id="coverLetterStatusBadge" class="badge badge-missing">No File</span></div>'+
       '<p class="sub">Store cover letter versions next to your CV for faster applications.</p>'+
       '<input id="coverLetterUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
       '<div id="coverLetterFileInfo" class="preview-box"></div>'+
@@ -479,7 +476,7 @@
   window.deleteCoverLetter=function(){saveCoverFiles([]);renderCoverLetter();};
   function renderCoverLetter(){
     ensureCoverLetterCard(); var files=coverFiles(); var badge=byId('coverLetterStatusBadge'), info=byId('coverLetterFileInfo');
-    if(badge){badge.textContent=files.length?String(files.length)+' file'+(files.length>1?'s':''):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-blocked');}
+    if(badge){badge.textContent=files.length?String(files.length)+' file'+(files.length>1?'s':''):'No File';badge.className='badge '+(files.length?'badge-ready':'badge-missing');}
     if(info){info.innerHTML=files.length?files.slice(0,5).map(function(f){return '<div>'+String(f.name||'File').replace(/[<>&]/g,'')+' · '+Math.round((f.size||0)/1024)+' KB</div>';}).join(''):'No cover letter uploaded yet.';}
   }
   var oldRender=window.renderAll;
@@ -494,7 +491,7 @@
 /* ===== extracted from inline script id=ATSRS_V126_LAYOUT_BUTTON_LANG_CLEANUP_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V341';
+  var BUILD='ATSRS V342';
   var UPDATE='Last Update: 26 Jul 2026';
   function byId(id){return document.getElementById(id);}
   function applyBuild(){
