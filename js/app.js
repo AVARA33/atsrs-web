@@ -2,7 +2,7 @@
 /* ===== extracted from inline script id=atsrs-v161-single-date-badge-script ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V338';
+  var BUILD='ATSRS V339';
   var UPDATE='Last Update: 26 Jul 2026';
   var cleaning=false;
   function isBuildText(t){
@@ -43,7 +43,7 @@
 /* ===== extracted from inline script id=ATSRS_V166_REFS_DASH_FRAMELESS_COMPACT_JS ===== */
 (function(){
   'use strict';
-  var BUILD='ATSRS V338';
+  var BUILD='ATSRS V339';
   var UPDATE='Last Update: 26 Jul 2026';
   function q(s,r){return (r||document).querySelector(s);}
   function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
@@ -414,12 +414,13 @@
   }
 
   function certificateSearchText(item,statusData){
-    return [item.type,item.provider,item.docNo,item.country,item.issue,item.expiry,statusData&&statusData.txt]
+    return [item.type,item.provider,item.docNo,item.country,item.issue,item.expiry,certificateUploadedAt(item),statusData&&statusData.txt]
       .map(function(value){return String(value==null?'':value).toLocaleLowerCase();})
       .join(' ');
   }
 
   function compareCertificateRows(a,b,key){
+    if(key==='uploaded')return String(certificateUploadedAt(a.item)||'').localeCompare(String(certificateUploadedAt(b.item)||''));
     if(key==='expiry'){
       var aValue=String(a.item.expiry||'').toUpperCase()==='N/A'?'9999-12-31':String(a.item.expiry||'9999-12-31');
       var bValue=String(b.item.expiry||'').toUpperCase()==='N/A'?'9999-12-31':String(b.item.expiry||'9999-12-31');
@@ -431,6 +432,16 @@
       return aDays-bDays;
     }
     return String(a.item.type||'').localeCompare(String(b.item.type||''),undefined,{sensitivity:'base',numeric:true});
+  }
+
+  function certificateUploadedAt(item){
+    return item&&item.uploadedAt||(item&&item.cloudFileId&&window.atsrsDocumentUploadDates&&window.atsrsDocumentUploadDates[item.cloudFileId])||'';
+  }
+  function isRecentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000;}
+  function uploadDateMarkup(item){
+    var value=certificateUploadedAt(item);if(!value)return '<span class="atsrs-upload-date">—</span>';
+    var date=new Date(value),label=Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):String(value);
+    return '<span class="atsrs-upload-date'+(isRecentUpload(value)?' is-recent':'')+'">'+(isRecentUpload(value)?'<b>NEW</b> ':'')+esc(label)+'</span>';
   }
 
   function updateRegisterControls(visibleIndices){
@@ -612,6 +623,7 @@
       item.fileName=previous.fileName||'';
       item.mimeType=previous.mimeType||'';
       item.fileSize=previous.fileSize||0;
+      item.uploadedAt=previous.uploadedAt||'';
     }
     var button=byId('addCertBtn'),oldText=button&&button.textContent;
     if(button){button.disabled=true;button.textContent='Saving to server...';}
@@ -623,7 +635,7 @@
       if(file){
         if(!window.atsrsCloudData||typeof window.atsrsCloudData.uploadDocument!=='function')throw new Error('ATSRS cloud storage is not ready.');
         uploadedRow=await window.atsrsCloudData.uploadDocument(file,{document:item});
-        item.cloudFileId=uploadedRow.id;item.fileName=uploadedRow.file_name;item.mimeType=uploadedRow.mime_type;item.fileSize=uploadedRow.size_bytes;
+        item.cloudFileId=uploadedRow.id;item.fileName=uploadedRow.file_name;item.mimeType=uploadedRow.mime_type;item.fileSize=uploadedRow.size_bytes;item.uploadedAt=uploadedRow.created_at||new Date().toISOString();
       }else if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
         await window.atsrsCloudData.updateDocumentMetadata(item.cloudFileId,{document:item});
         metadataUpdated=true;
@@ -712,17 +724,19 @@
     var html='';
     rows.forEach(function(row){
       var x=row.item,i=row.index,st=row.statusData;
-      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td>'+esc(x.type||'')+'</td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td>'+
+      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td>'+esc(x.type||'')+'</td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td>'+uploadDateMarkup(x)+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td>'+
         '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
         '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
         '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
       '</td></tr>';
     });
-    if(!rows.length)html='<tr><td colspan="6" class="atsrs-document-empty">No documents match this filter.</td></tr>';
+    if(!rows.length)html='<tr><td colspan="7" class="atsrs-document-empty">No documents match this filter.</td></tr>';
     byId('certTable').innerHTML=html;
     updateSortHeaders();
     updateRegisterControls(rows.map(function(row){return row.index;}));
   }
+
+  document.addEventListener('atsrs-document-files-updated',function(){renderCertRows();});
 
   function stableDocuments(){
     cleanTopAndLang(); fixLabels(); wireMethods();ensureRegisterControls();
@@ -753,7 +767,7 @@
   function lockBuild(){
     document.querySelectorAll('.build-badge').forEach(function(b){
       var d=b.querySelectorAll('div');
-      if(d[0])d[0].textContent='ATSRS V338';
+      if(d[0])d[0].textContent='ATSRS V339';
       if(d[1])d[1].textContent='Last Update: 26 Jul 2026';
     });
   }

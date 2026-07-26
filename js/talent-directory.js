@@ -1,4 +1,4 @@
-/* ATSRS V338 - certificate-qualified candidate directory. */
+/* ATSRS V339 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -295,6 +295,13 @@
   function personnelAccessKey(item){
     return item&&item.status&&item.status!=='linked'?item.status:'public_profile_only';
   }
+  function recentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000}
+  function uploadDateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):'No uploads'}
+  function personnelDocumentMarkup(item){
+    var count=Number(item&&item.document_count||0),recent=Number(item&&item.recent_document_count||0),latest=item&&item.latest_document_uploaded_at;
+    if(!count)return '<span class="personnel-document-update">No documents</span>';
+    return '<span class="personnel-document-update'+(recentUpload(latest)?' is-recent':'')+'">'+(recent?'<b>NEW</b> ':'')+safe(uploadDateLabel(latest))+' · '+count+' document'+(count===1?'':'s')+'</span>';
+  }
   function personnelSortHeading(key,label){
     var active=personnelSortBy===key;
     return '<span><button type="button" class="personnel-column-sort'+(active?' is-active':'')+(active&&personnelSortDirection==='desc'?' is-desc':'')+'" data-personnel-sort="'+key+'" aria-label="Sort by '+safe(label)+'">'+safe(label)+'<i class="personnel-sort-arrows" aria-hidden="true"><b></b><em></em></i></button></span>';
@@ -311,6 +318,7 @@
     var workStatus=byId('personnelWorkStatusFilter')&&byId('personnelWorkStatusFilter').value||'';
     var project=normalized(byId('personnelProjectFilter')&&byId('personnelProjectFilter').value);
     var access=byId('personnelAccessFilter')&&byId('personnelAccessFilter').value||'';
+    var documentFilter=byId('personnelDocumentFilter')&&byId('personnelDocumentFilter').value||'';
     var sortBy=personnelSortBy;
     var rows=linkedPersonnel.filter(function(item){
       var profile=item&&item.profile;if(!profile)return false;
@@ -319,6 +327,9 @@
       if(workStatus&&personnelWorkStatusKey(profile)!==workStatus)return false;
       if(project&&normalized(personnelProject(profile))!==project)return false;
       if(access&&personnelAccessKey(item)!==access)return false;
+      if(documentFilter==='recent'&&!Number(item.recent_document_count||0))return false;
+      if(documentFilter==='has_documents'&&!Number(item.document_count||0))return false;
+      if(documentFilter==='no_documents'&&Number(item.document_count||0))return false;
       return true;
     });
     rows.sort(function(a,b){
@@ -353,7 +364,7 @@
         var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
         return '<article class="linked-personnel-card">'+
           '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
-          '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+
+          '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+personnelDocumentMarkup(item)+
           '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div><div><dt>Tracking</dt><dd>'+safe(tracking)+'</dd></div></dl>'+
           '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
       }).join('')+'</div>';
@@ -365,7 +376,7 @@
           var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
           var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
           return '<div class="linked-personnel-row" role="row">'+
-            '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small></span>'+
+            '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small>'+personnelDocumentMarkup(item)+'</span>'+
             '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(work.label)+'</span><span>'+safe(project)+'</span><span>'+safe(access)+'</span>'+
             '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">Open profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
         }).join('')+'</div>';
@@ -591,7 +602,19 @@
     panelMessage('Loading document summary...',false);
     try{
       var data=await actionCall({action:'summary',target_user_id:profile.user_id}),panel=actionPanel(),counts=data.counts||{},documents=Array.isArray(data.documents)?data.documents:[];
-      if(!panel)return;panel.innerHTML='<div class="talent-summary-head"><b>Document Summary</b><span>'+safe(counts.total||0)+' documents</span></div><div class="talent-summary-stats"><span><b>'+safe(counts.current||0)+'</b> current</span><span><b>'+safe(counts.expiryRisk||0)+'</b> expiry risk</span><span><b>'+safe(counts.expired||0)+'</b> expired</span></div>'+(documents.length?'<div class="talent-summary-list">'+documents.map(function(document){return '<div><span><b>'+safe(document.title)+'</b><small>'+safe(document.provider)+'</small></span><em>'+safe(document.status)+(document.expiry?' &middot; '+safe(document.expiry):'')+'</em></div>'}).join('')+'</div>':'<p class="talent-action-message">No document metadata is available.</p>');
+      if(!panel)return;
+      function renderSummary(filter){
+        var visible=documents.filter(function(document){
+          if(filter==='recent')return recentUpload(document.uploaded_at);
+          if(filter==='expired')return document.status==='Expired';
+          if(filter==='expiry_risk')return document.status==='Expires today'||document.status.indexOf('remaining')>=0||document.status.indexOf('within')>=0;
+          if(filter==='current')return document.status==='Valid'||document.status==='No expiry'||document.status==='Date not confirmed';
+          return true;
+        });
+        panel.innerHTML='<div class="talent-summary-head"><b>Document Summary</b><span>'+safe(visible.length)+' of '+safe(counts.total||0)+' documents</span></div><div class="talent-summary-stats"><span><b>'+safe(counts.current||0)+'</b> current</span><span><b>'+safe(counts.expiryRisk||0)+'</b> expiry risk</span><span><b>'+safe(counts.expired||0)+'</b> expired</span></div><label class="talent-summary-filter"><span>Show</span><select><option value="all">All documents</option><option value="recent">New uploads (7 days)</option><option value="current">Current</option><option value="expiry_risk">Expiry risk</option><option value="expired">Expired</option></select></label>'+(visible.length?'<div class="talent-summary-list">'+visible.map(function(document){var recent=recentUpload(document.uploaded_at);return '<div><span><b>'+safe(document.title)+'</b><small>'+safe(document.provider)+'</small><small class="talent-upload-date'+(recent?' is-recent':'')+'">'+(recent?'<b>NEW UPDATE</b> ':'')+'Uploaded '+safe(uploadDateLabel(document.uploaded_at))+'</small></span><em>'+safe(document.status)+(document.expiry?' &middot; '+safe(document.expiry):'')+'</em></div>'}).join('')+'</div>':'<p class="talent-action-message">No documents match this filter.</p>');
+        var select=panel.querySelector('.talent-summary-filter select');if(select){select.value=filter;select.onchange=function(){renderSummary(select.value)}}
+      }
+      renderSummary('all');
     }catch(error){panelMessage(friendlyError(error,'Document summary could not be loaded. Please try again.'),true)}
   }
   async function openTalentCv(profile){
@@ -672,7 +695,7 @@
       });
     });
     updateViewSwitches();
-    ['personnelSearch','personnelProfessionFilter','personnelWorkStatusFilter','personnelProjectFilter','personnelAccessFilter'].forEach(function(id){
+    ['personnelSearch','personnelProfessionFilter','personnelWorkStatusFilter','personnelProjectFilter','personnelAccessFilter','personnelDocumentFilter'].forEach(function(id){
       var element=byId(id);if(!element)return;
       element.addEventListener(id==='personnelSearch'?'input':'change',renderLinkedPersonnel);
     });

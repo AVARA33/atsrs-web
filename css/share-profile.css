@@ -156,16 +156,19 @@ body.atsrs-public-share-view{
 }
 .shared-document-summary-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:7px}
 .shared-document-summary-head h3{margin:4px 0 0;color:#e7eef4;font-size:16px}
-.shared-document-summary-head>span{color:#7f94a7;font-size:11px}
+.shared-document-summary-head>span,.shared-document-summary-tools>span{color:#7f94a7;font-size:11px}
+.shared-document-summary-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px}.shared-document-summary-tools label{color:#71889b;font-size:10px}.shared-document-summary-tools select{width:auto;min-height:32px;margin:0;padding:5px 28px 5px 9px;border:1px solid rgba(67,101,128,.58);border-radius:8px;background:#07131f;color:#dce7ef;font-size:10px}
 .shared-document-summary-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:26px;margin:0;padding:0;list-style:none}
 .shared-document-summary-link{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid rgba(67,101,128,.26);color:#dce7ef;text-decoration:none}
 .shared-document-summary-number{color:#5f778b;font-size:10px;font-weight:800;letter-spacing:.08em}
 .shared-document-summary-link b,.shared-document-summary-link small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shared-document-summary-link b{font-size:12px}
 .shared-document-summary-link small{margin-top:3px;color:#71889b;font-size:10px}
+.shared-document-summary-link small.is-recent{color:#55d98a;font-weight:700}
 .shared-document-summary-status{color:#6ee7a1;font-size:10px;font-weight:750;white-space:nowrap}
 .shared-document-summary-status.warning{color:#fbbf24}
 .shared-document-summary-status.expired{color:#f87171}
+.shared-document-summary-status.is-new{color:#55d98a}
 .shared-document-summary-link:hover b{color:#86efac}
 .shared-document-grid{
   display:grid;
@@ -200,6 +203,8 @@ body.atsrs-public-share-view{
   scroll-margin-top:18px;
 }
 .shared-document-card.summary-focus{animation:shared-summary-focus 1.5s ease}
+.shared-document-card.is-recent-upload{border-color:rgba(34,197,94,.58);box-shadow:inset 3px 0 0 rgba(34,197,94,.72)}
+.shared-document-detail.shared-upload-date.is-recent b{color:#55d98a}.shared-document-detail.shared-upload-date.is-recent b::before{content:"NEW UPDATE · ";font-size:9px;font-weight:900;letter-spacing:.06em}
 @keyframes shared-summary-focus{0%,100%{border-color:rgba(48,80,106,.62)}35%{border-color:rgba(34,197,94,.72)}}
 .shared-document-top{
   display:flex;

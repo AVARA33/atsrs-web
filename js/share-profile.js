@@ -300,18 +300,24 @@
   };
 
   function publicStatus(expiry){if(!expiry||String(expiry).toUpperCase()==='N/A')return{label:'No expiry date',className:''};var today=new Date();today.setHours(0,0,0,0);var date=new Date(String(expiry).slice(0,10)+'T00:00:00'),days=Math.round((date-today)/86400000);if(days<0)return{label:'Expired',className:'expired'};if(days===0)return{label:'Expires today',className:'warning'};if(days<=30)return{label:days+' days left',className:'warning'};return{label:'Valid',className:''};}
-  function detail(label,value){var wrap=document.createElement('div');wrap.className='shared-document-detail';var key=document.createElement('span'),text=document.createElement('b');key.textContent=label;text.textContent=value||'Not provided';wrap.appendChild(key);wrap.appendChild(text);return wrap;}
+  function recentPublicUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000;}
+  function publicUploadLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):'Not provided';}
+  function detail(label,value,className){var wrap=document.createElement('div');wrap.className='shared-document-detail'+(className?' '+className:'');var key=document.createElement('span'),text=document.createElement('b');key.textContent=label;text.textContent=value||'Not provided';wrap.appendChild(key);wrap.appendChild(text);return wrap;}
   function publicDocumentName(id){var file=publicDocuments.find(function(item){return item.id===id;});return file?(file.document_type||file.file_name):'Document';}
   function publicDocumentDomId(id){return 'shared-document-'+String(id||'file').replace(/[^a-zA-Z0-9_-]/g,'-');}
   function renderPublicSummary(){
     var summary=byId('sharedProfileSummary'),list=byId('sharedProfileSummaryList'),count=byId('sharedProfileSummaryCount');if(!summary||!list)return;
-    list.innerHTML='';summary.classList.toggle('hidden',!publicDocuments.length);if(count)count.textContent=publicDocuments.length+' shared file'+(publicDocuments.length===1?'':'s');
-    publicDocuments.forEach(function(item,index){
+    var filter=byId('sharedProfileSummaryFilter'),selected=filter&&filter.value||'all';
+    var visible=publicDocuments.filter(function(item){var itemStatus=publicStatus(item.expiry_date);if(selected==='recent')return recentPublicUpload(item.uploaded_at);if(selected==='expired')return itemStatus.className==='expired';if(selected==='expiry_risk')return itemStatus.className==='warning';if(selected==='current')return !itemStatus.className;return true;});
+    list.innerHTML='';summary.classList.toggle('hidden',!publicDocuments.length);if(count)count.textContent=visible.length+' of '+publicDocuments.length+' file'+(publicDocuments.length===1?'':'s');
+    visible.forEach(function(item,index){
       var row=document.createElement('li'),link=document.createElement('a'),number=document.createElement('span'),copy=document.createElement('span'),name=document.createElement('b'),provider=document.createElement('small');
       var statusData=publicStatus(item.expiry_date),status=document.createElement('span');link.href='#'+publicDocumentDomId(item.id);link.className='shared-document-summary-link';number.className='shared-document-summary-number';number.textContent=String(index+1).padStart(2,'0');
       name.textContent=item.document_type||item.file_name||'ATSRS document';provider.textContent=fileCategoryLabel(item)+(item.provider?' · '+item.provider:'');copy.appendChild(name);copy.appendChild(provider);status.className='shared-document-summary-status'+(statusData.className?' '+statusData.className:'');status.textContent=statusData.label;
+      var recent=recentPublicUpload(item.uploaded_at);provider.textContent+=' · Uploaded '+publicUploadLabel(item.uploaded_at);provider.className=recent?'is-recent':'';if(recent){status.classList.add('is-new');status.textContent='NEW UPDATE';}
       link.appendChild(number);link.appendChild(copy);link.appendChild(status);link.addEventListener('click',function(){setTimeout(function(){var card=byId(publicDocumentDomId(item.id));if(card){card.classList.remove('summary-focus');void card.offsetWidth;card.classList.add('summary-focus');}},0);});row.appendChild(link);list.appendChild(row);
     });
+    if(filter&&!filter.dataset.bound){filter.dataset.bound='true';filter.addEventListener('change',renderPublicSummary);}
   }
   function startBrowserDownload(url,fileName){var link=document.createElement('a');link.href=url;link.download=fileName||'';link.rel='noopener';link.style.display='none';document.body.appendChild(link);link.click();setTimeout(function(){link.remove();},1000);}
   async function downloadPublicDocument(documentData,button,quiet){
@@ -330,13 +336,13 @@
     if(failed)window.alert(completed+' file(s) downloaded. '+failed+' could not be downloaded. Refreshing the page will show the current status.');
   }
   function renderPublicDocument(documentData){
-    var card=document.createElement('article');card.className='shared-document-card';card.id=publicDocumentDomId(documentData.id);
+    var recent=recentPublicUpload(documentData.uploaded_at),card=document.createElement('article');card.className='shared-document-card'+(recent?' is-recent-upload':'');card.id=publicDocumentDomId(documentData.id);
     var top=document.createElement('div');top.className='shared-document-top';var nameWrap=document.createElement('div');
     var category=document.createElement('span');category.className='shared-document-category';category.textContent=fileCategoryLabel(documentData);
     var title=document.createElement('h3');title.textContent=documentData.document_type||documentData.file_name||'ATSRS document';
     var file=document.createElement('p');file.className='shared-document-file';file.textContent=documentData.file_name||'';nameWrap.appendChild(category);nameWrap.appendChild(title);nameWrap.appendChild(file);
     var statusData=publicStatus(documentData.expiry_date),status=document.createElement('span');status.className='shared-document-status'+(statusData.className?' '+statusData.className:'');status.textContent=statusData.label;top.appendChild(nameWrap);top.appendChild(status);
-    var details=document.createElement('div');details.className='shared-document-details';details.appendChild(detail('Issue date',formatDate(documentData.issue_date)));details.appendChild(detail('Expiry date',formatDate(documentData.expiry_date)));details.appendChild(detail('Provider',documentData.provider||'Not provided'));details.appendChild(detail('File size',formatSize(documentData.size_bytes)));
+    var details=document.createElement('div');details.className='shared-document-details';details.appendChild(detail('Uploaded',publicUploadLabel(documentData.uploaded_at),recent?'shared-upload-date is-recent':''));details.appendChild(detail('Issue date',formatDate(documentData.issue_date)));details.appendChild(detail('Expiry date',formatDate(documentData.expiry_date)));details.appendChild(detail('Provider',documentData.provider||'Not provided'));details.appendChild(detail('File size',formatSize(documentData.size_bytes)));
     var actions=document.createElement('div');actions.className='shared-document-actions';var preview=document.createElement('button');preview.type='button';preview.textContent='Preview';
     preview.addEventListener('click',function(){publicCall({action:'track_preview',file_id:documentData.id}).catch(function(){});if(typeof window.atsrsOpenFilePreview==='function')window.atsrsOpenFilePreview({url:documentData.preview_url,title:documentData.document_type||documentData.file_name||'ATSRS document',mimeType:documentData.mime_type||''});else window.location.assign(documentData.preview_url);});
     var access=document.createElement('button');access.type='button';access.className='secondary';

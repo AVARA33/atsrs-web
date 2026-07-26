@@ -419,15 +419,40 @@ Deno.serve(async (req) => {
     if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
     const professionalIds = (links || []).map((link) => link.professional_user_id);
     if (!professionalIds.length) return json(200, { personnel: [] });
-    const { data: linkedProfiles, error: profilesError } = await admin
-      .from("atsrs_talent_profiles")
-      .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at")
-      .in("user_id", professionalIds);
+    const [profilesResult, filesResult] = await Promise.all([
+      admin
+        .from("atsrs_talent_profiles")
+        .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at")
+        .in("user_id", professionalIds),
+      admin
+        .from("atsrs_files")
+        .select("user_id,created_at")
+        .in("user_id", professionalIds)
+        .eq("account_type", "personal")
+        .eq("category", "document")
+        .order("created_at", { ascending: false }),
+    ]);
+    const { data: linkedProfiles, error: profilesError } = profilesResult;
     if (profilesError) return json(500, { error: "Linked professional profiles could not be loaded." });
+    if (filesResult.error) return json(500, { error: "Personnel document activity could not be loaded." });
     const profileMap = new Map((linkedProfiles || []).map((item) => [item.user_id, item]));
+    const recentSince = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const documentActivity = new Map<string, { count: number; recent: number; latest: string | null }>();
+    (filesResult.data || []).forEach((file) => {
+      const ownerId = String(file.user_id || "");
+      const current = documentActivity.get(ownerId) || { count: 0, recent: 0, latest: null };
+      current.count += 1;
+      const uploadedAt = clean(file.created_at, 40) || null;
+      if (uploadedAt && new Date(uploadedAt).getTime() >= recentSince) current.recent += 1;
+      if (!current.latest && uploadedAt) current.latest = uploadedAt;
+      documentActivity.set(ownerId, current);
+    });
     const personnel = (links || []).map((link) => ({
       ...link,
       profile: profileMap.get(link.professional_user_id) || null,
+      document_count: documentActivity.get(link.professional_user_id)?.count || 0,
+      recent_document_count: documentActivity.get(link.professional_user_id)?.recent || 0,
+      latest_document_uploaded_at: documentActivity.get(link.professional_user_id)?.latest || null,
     }));
     return json(200, { personnel });
   }
@@ -495,6 +520,7 @@ Deno.serve(async (req) => {
         provider: clean(document.provider, 140) || "Provider not listed",
         expiry,
         status: documentStatus(expiry),
+        uploaded_at: clean(file.created_at, 40) || null,
       };
     });
     const counts = documents.reduce((value, document) => {

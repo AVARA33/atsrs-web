@@ -227,6 +227,7 @@ function documentDetails(file: JsonObject) {
     provider: safeText(document.provider, 160),
     issue_date: safeText(document.issue, 20),
     expiry_date: safeText(document.expiry, 20),
+    uploaded_at: safeText(file.created_at, 40),
     mime_type: safeText(file.mime_type, 120),
     size_bytes: Number(file.size_bytes ?? 0),
   };
@@ -844,7 +845,7 @@ async function publicRequest(req: Request, admin: AdminClient) {
   let files: JsonObject[] = [];
   if (selectedFileIds.length) {
     const fileResult = await admin.from("atsrs_files")
-      .select("id,category,file_name,mime_type,size_bytes,storage_path,metadata")
+      .select("id,category,file_name,mime_type,size_bytes,storage_path,metadata,created_at,updated_at")
       .eq("user_id", share.user_id).eq("account_type", share.account_type).in("id", selectedFileIds);
     if (fileResult.error) throw fileResult.error;
     const positions = new Map(selectedFileIds.map((id, index) => [id, index]));

@@ -624,6 +624,10 @@
     if(!isCloudSession()||loadedScope!==scope())return;
     try{
       var rows=await listFiles();
+      var uploadDates={};
+      rows.filter(function(row){return row.category==='document';}).forEach(function(row){uploadDates[row.id]=row.created_at||'';});
+      window.atsrsDocumentUploadDates=uploadDates;
+      document.dispatchEvent(new CustomEvent('atsrs-document-files-updated'));
       ['appraisal','reference','recommendation','coverLetter'].forEach(function(kind){renderReferenceKind(kind,rows);});
       renderCv(rows);
     }catch(error){console.error('ATSRS cloud file render failed',error);}

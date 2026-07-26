@@ -243,6 +243,13 @@ html[data-theme="light"] body .personnel-filterbar select{
     linear-gradient(45deg,transparent 50%,#718596 50%),
     linear-gradient(135deg,#718596 50%,transparent 50%)!important;
 }
+html[data-theme="light"] body .talent-summary-filter select,
+html[data-theme="light"] body .shared-document-summary-tools select{background-color:#fff!important;border-color:#cbd5e1!important;color:#0f172a!important}
+html[data-theme="light"] body .personnel-document-update.is-recent,
+html[data-theme="light"] body .talent-upload-date.is-recent,
+html[data-theme="light"] body .shared-document-summary-link small.is-recent,
+html[data-theme="light"] body .shared-document-detail.shared-upload-date.is-recent b,
+html[data-theme="light"] body .atsrs-upload-date.is-recent{color:#15803d!important}
 
 /* Calm controls: no black filled buttons in light mode. */
 html[data-theme="light"] body :where(
@@ -475,7 +482,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-col
   .atsrs-global-controls .workspace-switcher-copy{max-width:105px}
 }
 
-/* V338: final light-theme contrast and fixed top-right controls. */
+/* V339: final light-theme contrast and fixed top-right controls. */
 html[data-theme="light"]{
   --atsrs-light-page:#f6f8fb;
   --atsrs-light-surface:#ffffff;
@@ -783,7 +790,7 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
   }
 }
 
-/* V338 — Account light mode: one calm, fully light and responsive system. */
+/* V339 — Account light mode: one calm, fully light and responsive system. */
 html[data-theme="light"] body #app #profilePage{
   color:#172033!important;
 }
@@ -1088,7 +1095,7 @@ html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-
   }
 }
 
-/* V338: sharing and download-request surfaces must follow the active light theme. */
+/* V339: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app :where(
   .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
 ){

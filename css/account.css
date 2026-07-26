@@ -842,6 +842,7 @@ body > .atsrs-v64-top-actions,
 #deleteSelectedCertsBtn{width:auto!important;min-width:128px!important;margin:0!important;padding:8px 11px!important;font-size:12px!important;}
 .atsrs-document-register .atsrs-document-select-column{width:38px!important;min-width:38px!important;padding-left:8px!important;padding-right:8px!important;text-align:center!important;}
 .atsrs-document-register input[type="checkbox"]{width:15px!important;height:15px!important;margin:0!important;accent-color:#86efac;cursor:pointer;}
+.atsrs-upload-date{color:#8da0b1;font-size:10px;white-space:nowrap}.atsrs-upload-date.is-recent{color:#35d07f;font-weight:800}.atsrs-upload-date.is-recent b{display:inline-block;margin-right:3px;padding:2px 5px;border:1px solid rgba(53,208,127,.36);border-radius:999px;font-size:8px;letter-spacing:.05em}
 .atsrs-document-sort{display:inline-flex!important;align-items:center!important;gap:7px!important;width:auto!important;min-width:0!important;min-height:28px!important;margin:0!important;padding:3px 5px!important;background:transparent!important;border-color:transparent!important;color:#dbeafe!important;font:inherit!important;}
 .atsrs-document-sort:hover{background:rgba(148,163,184,.05)!important;border-color:rgba(93,119,143,.25)!important;}
 .atsrs-sort-arrows{display:inline-flex;flex-direction:column;gap:0;line-height:7px;color:#5f7387;font-size:7px;}
