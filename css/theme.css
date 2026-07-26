@@ -436,6 +436,11 @@ html[data-theme="light"] #auth .auth-tab.active{
   text-decoration-color:#7ca2b8!important;
   text-decoration-thickness:2px!important;
 }
+html[data-theme="dark"] #auth .auth-tab.active{
+  text-decoration:underline!important;
+  text-decoration-color:#7ca2b8!important;
+  text-decoration-thickness:2px!important;
+}
 html[data-theme="light"] #auth .auth-tab-sep{color:#91a0ac!important}
 html[data-theme="light"] #auth #buildBadge.build-badge,
 html[data-theme="light"] #auth .build-badge{
