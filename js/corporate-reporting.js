@@ -154,6 +154,10 @@
       item.appendChild(details);item.appendChild(state);list.appendChild(item);
     });
   }
+  function publishCompliance(){
+    if(!complianceCache)return;
+    window.dispatchEvent(new CustomEvent('atsrs:corporate-compliance',{detail:complianceCache}));
+  }
   function renderReport(){
     var summaryContainer=byId('corporateReportSummary'),body=byId('corporateReportBody'),generated=byId('corporateReportGenerated');
     if(!body||!reportCache)return;
@@ -182,12 +186,12 @@
   }
   async function loadCompliance(force){
     if(mode()!=='company')return null;
-    if(complianceCache&&!force){renderCompliance();renderDashboard();return complianceCache}
+    if(complianceCache&&!force){renderCompliance();renderDashboard();publishCompliance();return complianceCache}
     if(complianceLoading)return complianceLoading;
     setStatus('corporateComplianceStatus','Loading live Personnel compliance...');
     complianceLoading=actionCall('compliance').then(function(data){
       complianceCache=data.compliance||{summary:{},rows:[]};
-      renderCompliance();renderDashboard();setStatus('corporateComplianceStatus','Live server data updated.');
+      renderCompliance();renderDashboard();publishCompliance();setStatus('corporateComplianceStatus','Live server data updated.');
       return complianceCache;
     }).catch(function(error){
       setStatus('corporateComplianceStatus',error.message||'Compliance data could not be loaded.',true);
@@ -280,6 +284,8 @@
     ownsCompliance:true,
     renderCompliance:renderCompliance,
     renderDashboard:renderDashboard,
+    getCompliance:function(){return complianceCache},
+    loadCompliance:function(){return loadCompliance(false)},
     refreshCompliance:function(){return loadCompliance(true)},
     refreshReport:function(){return loadReport(true)},
     exportReport:exportReport
