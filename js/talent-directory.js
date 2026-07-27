@@ -199,11 +199,9 @@
       phone_country_code:profile.phoneCountryCode||null,
       phone_local:profile.phoneLocal||null,
       phone_number:profile.phoneNumber||null,
-      phone_verified:!!profile.phoneVerified,
       whatsapp_country_code:profile.whatsappCountryCode||null,
       whatsapp_local:profile.whatsappLocal||null,
       whatsapp_number:profile.whatsappNumber||null,
-      whatsapp_verified:!!profile.whatsappVerified,
       zip_code:profile.zipCode||null,
       birth_date:profile.birthDate||null,
       last_active_at:new Date().toISOString(),updated_at:new Date().toISOString()

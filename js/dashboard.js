@@ -54,7 +54,7 @@
 
 /* ===== extracted from inline script id=ATSRS_V119_BUILD_AND_TOPBAR_LOCK ===== */
 (function(){
-  var BUILD='ATSRS V375';
+  var BUILD='ATSRS V376';
   var UPDATE='Last Update: 27 Jul 2026';
   function lockBuild(){
     var b=document.getElementById('buildBadge');
@@ -262,6 +262,90 @@
     el.textContent=verified?'Verified':'Not verified';
     el.classList.toggle('is-verified',!!verified);
   }
+  function updateLocalVerification(kind,verified){
+    var profile=readJson(PROFILE_KEY,{});
+    if(kind==='mobile')profile.phoneVerified=!!verified;
+    else profile.whatsappVerified=!!verified;
+    writeJson(PROFILE_KEY,profile);
+    setVerificationText(kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',verified);
+    var button=document.querySelector('[data-profile-verify="'+kind+'"]');
+    if(button)button.textContent=verified?'Verified':'Verify via WhatsApp';
+  }
+  async function verificationCall(payload){
+    var client=window.supabaseClient;
+    if(!client||!client.auth||!client.functions)throw new Error('ATSRS verification service is unavailable.');
+    var sessionResult=await client.auth.getSession();
+    var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
+    if(!session||!session.access_token)throw new Error('Your session has expired. Please sign in again.');
+    var result=await client.functions.invoke('whatsapp-verification',{
+      body:payload,
+      headers:{Authorization:'Bearer '+session.access_token}
+    });
+    if(result.error){
+      var message='';
+      try{
+        var response=result.error.context;
+        if(response&&typeof response.clone==='function')response=response.clone();
+        if(response&&typeof response.json==='function'){
+          var details=await response.json();
+          message=details&&details.error||details&&details.message||'';
+        }
+      }catch(ignore){}
+      throw new Error(message||'Verification could not be completed.');
+    }
+    if(!result.data||result.data.error)throw new Error(result.data&&result.data.error||'Verification could not be completed.');
+    return result.data;
+  }
+  function verificationModal(kind){
+    var old=byId('atsrsVerificationModal');if(old)old.remove();
+    var modal=document.createElement('div');
+    modal.id='atsrsVerificationModal';
+    modal.className='atsrs-verification-modal';
+    modal.innerHTML='<button class="atsrs-verification-backdrop" type="button" aria-label="Close"></button><section class="atsrs-verification-dialog" role="dialog" aria-modal="true" aria-labelledby="atsrsVerificationTitle"><button class="atsrs-verification-close" type="button" aria-label="Close">&times;</button><span>ATSRS SECURE VERIFICATION</span><h3 id="atsrsVerificationTitle">Enter the WhatsApp code</h3><p>We sent a 6-digit code to the saved number. The code expires in 10 minutes.</p><input id="atsrsVerificationCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-label="6-digit verification code"><div id="atsrsVerificationError" role="alert"></div><div class="atsrs-verification-actions"><button type="button" data-verification-cancel>Cancel</button><button type="button" data-verification-confirm>Verify</button></div></section>';
+    document.body.appendChild(modal);
+    document.body.classList.add('atsrs-verification-open');
+    function close(){modal.remove();document.body.classList.remove('atsrs-verification-open')}
+    modal.querySelector('.atsrs-verification-backdrop').addEventListener('click',close);
+    modal.querySelector('.atsrs-verification-close').addEventListener('click',close);
+    modal.querySelector('[data-verification-cancel]').addEventListener('click',close);
+    var input=modal.querySelector('#atsrsVerificationCode');
+    var error=modal.querySelector('#atsrsVerificationError');
+    var confirm=modal.querySelector('[data-verification-confirm]');
+    input.addEventListener('input',function(){input.value=input.value.replace(/\D/g,'').slice(0,6)});
+    confirm.addEventListener('click',async function(){
+      error.textContent='';
+      if(input.value.length!==6){error.textContent='Enter the 6-digit code.';input.focus();return}
+      confirm.disabled=true;confirm.textContent='Checking...';
+      try{
+        var result=await verificationCall({action:'confirm',kind:kind,code:input.value});
+        updateLocalVerification(kind,!!result.verified);
+        close();
+      }catch(e){error.textContent=e&&e.message||'The code could not be checked.';confirm.disabled=false;confirm.textContent='Verify'}
+    });
+    input.addEventListener('keydown',function(event){if(event.key==='Enter')confirm.click();if(event.key==='Escape')close()});
+    setTimeout(function(){input.focus()},0);
+  }
+  async function startVerification(kind,button){
+    button.disabled=true;var original=button.textContent;button.textContent='Sending...';
+    var completed=false;
+    try{
+      var saved=typeof window.saveProfile==='function'?await window.saveProfile():true;
+      if(saved===false)throw new Error('Save a valid phone number first.');
+      var result=await verificationCall({action:'send',kind:kind});
+      if(result.verified){updateLocalVerification(kind,true);completed=true;return}
+      verificationModal(kind);
+    }catch(e){alert(e&&e.message||'Verification code could not be sent.')}
+    finally{button.disabled=false;if(!completed)button.textContent=original}
+  }
+  async function refreshVerificationStatus(){
+    if(!window.supabaseClient)return;
+    ['mobile','whatsapp'].forEach(async function(kind){
+      try{
+        var result=await verificationCall({action:'status',kind:kind});
+        updateLocalVerification(kind,!!result.verified);
+      }catch(ignore){}
+    });
+  }
   function bindOfficialProfileControls(){
     ensurePhonePickers();
     ['profilePhoneCountryCode','profilePhoneLocal','profileWhatsappCountryCode','profileWhatsappLocal'].forEach(function(id){
@@ -276,8 +360,7 @@
       if(button.__atsrsVerifyBound)return;
       button.__atsrsVerifyBound=true;
       button.addEventListener('click',function(){
-        var target=button.getAttribute('data-profile-verify')==='whatsapp'?'WhatsApp':'mobile phone';
-        alert(target+' verification will be connected after ATSRS adds an approved SMS / WhatsApp OTP provider. The number is saved now, but it will not be marked verified until a real code is confirmed.');
+        startVerification(button.getAttribute('data-profile-verify')==='whatsapp'?'whatsapp':'mobile',button);
       });
     });
   }
@@ -462,6 +545,7 @@
     }
     ensureProfileStatus();
     bindOfficialProfileControls();
+    setTimeout(refreshVerificationStatus,900);
   };
   document.addEventListener('click',function(event){
     if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();

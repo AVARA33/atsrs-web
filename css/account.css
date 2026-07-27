@@ -1544,6 +1544,19 @@ body.personal-mode #profilePhotoCard{display:flex}
 .profile-photo-crop-actions{display:flex;justify-content:flex-end;gap:8px}
 .profile-photo-crop-actions button{width:auto!important;min-height:34px!important;margin:0!important;padding:7px 12px!important;background:transparent!important}
 body.profile-photo-cropping{overflow:hidden}
+.atsrs-verification-modal{position:fixed;inset:0;z-index:16000;display:grid;place-items:center;padding:20px}
+.atsrs-verification-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0!important;background:rgba(1,7,13,.86)!important;backdrop-filter:blur(8px)}
+.atsrs-verification-dialog{position:relative;width:min(410px,100%);padding:22px;border:1px solid #355166;border-radius:18px;background:#091522;box-shadow:0 24px 70px rgba(0,0,0,.48)}
+.atsrs-verification-dialog>span{color:#64d18c;font-size:9px;font-weight:800;letter-spacing:.12em}
+.atsrs-verification-dialog h3{margin:7px 0 8px;color:#edf4f8;font-size:19px}
+.atsrs-verification-dialog p{margin:0 0 16px;color:#8ca0b1;font-size:11px;line-height:1.5}
+.atsrs-verification-dialog input{width:100%;height:48px;margin:0;padding:8px 12px;border:1px solid #355166;border-radius:10px;background:#06111d;color:#fff;font-size:22px;font-weight:800;letter-spacing:.35em;text-align:center}
+.atsrs-verification-close{position:absolute;top:13px;right:13px;width:34px!important;height:34px!important;margin:0!important;padding:0!important;background:transparent!important}
+#atsrsVerificationError{min-height:18px;padding-top:7px;color:#f1a6a6;font-size:10px}
+.atsrs-verification-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.atsrs-verification-actions button{width:auto!important;min-height:35px!important;margin:0!important;padding:7px 13px!important}
+.atsrs-verification-actions [data-verification-confirm]{background:#2f86d6!important;color:#fff!important}
+body.atsrs-verification-open{overflow:hidden}
 #profilePage #accountGeneralTab #saveProfileBtn{
   display:inline-flex!important;
   align-items:center!important;
