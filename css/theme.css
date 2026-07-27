@@ -1545,3 +1545,48 @@ html[data-theme="light"] body.company-mode #app .corporate-compliance-card.is-re
   color:#8a5b00!important;
   -webkit-text-fill-color:#8a5b00!important;
 }
+
+/* One disclosure indicator for every list and ATSRS date field. */
+:root{
+  --atsrs-field-arrow:#91a4b4;
+}
+html[data-theme="light"]{
+  --atsrs-field-arrow:#52667b;
+}
+html body #app select:not([multiple]),
+html body .atsrs-date-picker-dialog select:not([multiple]),
+html body #app .atsrs-date-input{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  padding-right:34px!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,var(--atsrs-field-arrow) 50%),
+    linear-gradient(135deg,var(--atsrs-field-arrow) 50%,transparent 50%)!important;
+  background-position:
+    calc(100% - 15px) 50%,
+    calc(100% - 10px) 50%!important;
+  background-size:5px 5px,5px 5px!important;
+  background-repeat:no-repeat!important;
+}
+html body #app select:not([multiple]):hover,
+html body #app select:not([multiple]):focus,
+html body .atsrs-date-picker-dialog select:not([multiple]):hover,
+html body .atsrs-date-picker-dialog select:not([multiple]):focus,
+html body #app .atsrs-date-input:hover,
+html body #app .atsrs-date-input:focus{
+  background-image:
+    linear-gradient(45deg,transparent 50%,var(--atsrs-field-arrow) 50%),
+    linear-gradient(135deg,var(--atsrs-field-arrow) 50%,transparent 50%)!important;
+}
+html body #app .personnel-filterbar select:not([multiple]){
+  background-image:none!important;
+}
+html body #app .personnel-combobox-toggle::after,
+html body #app .personnel-filter-arrow::after{
+  border-right-color:var(--atsrs-field-arrow)!important;
+  border-bottom-color:var(--atsrs-field-arrow)!important;
+}
+html body #app :where(.work-type-select-arrow,.phone-code-arrow){
+  color:var(--atsrs-field-arrow)!important;
+  -webkit-text-fill-color:var(--atsrs-field-arrow)!important;
+}
