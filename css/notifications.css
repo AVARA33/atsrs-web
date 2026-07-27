@@ -6,6 +6,7 @@
 .atsrs-notification-count.is-empty{background:#243244;color:#aebbd0}
 .atsrs-notification-actions{display:flex;gap:9px;flex-wrap:wrap}
 .atsrs-notification-list{display:grid;gap:10px}
+.atsrs-notification-list.has-overflow{max-height:770px;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-gutter:stable}
 .atsrs-notification-item{display:grid;grid-template-columns:10px 1fr auto;gap:12px;align-items:start;padding:14px;border:1px solid #26384e;border-radius:14px;background:rgba(8,20,34,.72)}
 .atsrs-notification-item.is-unread{border-color:#3d6085;background:rgba(12,30,49,.94)}
 .atsrs-notification-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;background:#6b7280}

@@ -1,7 +1,7 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V366';
+  var BUILD='ATSRS V367';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
@@ -40,10 +40,18 @@
   }
 
   function ensureDashboardPanel(){
-    if(byId('atsrsNotificationPanel'))return;
     var risk=byId('riskList');
-    var anchor=risk&&risk.closest('.panel');
+    var priorityPanel=risk&&risk.closest('.panel');
+    var corporate=mode()==='company';
+    if(priorityPanel)priorityPanel.classList.toggle('hidden',corporate);
+    var snapshot=byId('dashboardPage')&&byId('dashboardPage').querySelector('.dashboard-snapshot-panel');
+    var anchor=corporate?snapshot:priorityPanel;
     if(!anchor)return;
+    var existing=byId('atsrsNotificationPanel');
+    if(existing){
+      if(existing.previousElementSibling!==anchor)anchor.insertAdjacentElement('afterend',existing);
+      return;
+    }
     var panel=document.createElement('div');
     panel.id='atsrsNotificationPanel';
     panel.className='panel atsrs-notification-panel';
@@ -137,6 +145,20 @@
     if(clear)clear.disabled=!count;
   }
 
+  function applyNotificationScroll(list,count){
+    if(!list)return;
+    var shouldScroll=count>7;
+    list.classList.toggle('has-overflow',shouldScroll);
+    list.style.maxHeight='';
+    if(!shouldScroll)return;
+    requestAnimationFrame(function(){
+      var items=Array.from(list.querySelectorAll('.atsrs-notification-item')).slice(0,7);
+      var gap=parseFloat(getComputedStyle(list).rowGap)||10;
+      var height=items.reduce(function(total,item){return total+item.getBoundingClientRect().height;},0)+gap*Math.max(0,items.length-1);
+      if(height>100)list.style.maxHeight=Math.ceil(height)+'px';
+    });
+  }
+
   function corporateNotificationMarkup(item){
     var emailStatus='';
     if(item.emailSentAt){
@@ -177,6 +199,7 @@
     if(count){count.textContent=String(items.length);count.classList.toggle('is-empty',items.length===0);}
     setNotificationActions(false,items.length);
     list.innerHTML=items.length?items.map(corporateNotificationMarkup).join(''):'<div class="atsrs-notification-empty">No Personnel expiry notifications.</div>';
+    applyNotificationScroll(list,items.length);
   }
 
   async function loadNotifications(){
@@ -209,6 +232,7 @@
     var all=byId('atsrsMarkAllRead');if(all)all.disabled=unread===0;
     var clear=byId('atsrsClearNotifications');if(clear)clear.disabled=rows.length===0;
     list.innerHTML=rows.length?rows.map(notificationMarkup).join(''):'<div class="atsrs-notification-empty">No expiry notifications yet.</div>';
+    applyNotificationScroll(list,rows.length);
     list.querySelectorAll('[data-notification-read]').forEach(function(button){button.addEventListener('click',function(){markRead(button.getAttribute('data-notification-read'));});});
     list.querySelectorAll('[data-notification-dismiss]').forEach(function(button){button.addEventListener('click',function(){dismissNotification(button.getAttribute('data-notification-dismiss'),button);});});
   }
