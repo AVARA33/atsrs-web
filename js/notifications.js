@@ -1,7 +1,7 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V376';
+  var BUILD='ATSRS V375';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
