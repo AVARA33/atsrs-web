@@ -1,13 +1,14 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V373';
+  var BUILD='ATSRS V374';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
   var loading=false;
 
   function byId(id){return document.getElementById(id);}
+  function expiryCountLabel(value){return String(value)+' '+(value===1?'expiry':'expiries');}
   function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function mode(){
     var value='';
@@ -57,7 +58,7 @@
     var panel=document.createElement('div');
     panel.id='atsrsNotificationPanel';
     panel.className='panel atsrs-notification-panel';
-    panel.innerHTML='<div class="atsrs-notification-head"><div><span class="pill atsrs-notification-label">EXPIRY NOTIFICATIONS</span></div><div class="atsrs-notification-actions"><span id="atsrsNotificationCount" class="atsrs-notification-count is-empty">0</span><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button><button id="atsrsClearNotifications" type="button" class="secondary">Clear all</button></div></div><p class="sub">Server reminders for documents approaching expiry.</p><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
+    panel.innerHTML='<div class="atsrs-notification-head"><div class="atsrs-notification-title-row"><span class="pill atsrs-notification-label">EXPIRY NOTIFICATIONS</span><span id="atsrsNotificationCount" class="request-count expiry-request-count is-empty">0 expiries</span></div><div class="atsrs-notification-actions"><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button><button id="atsrsClearNotifications" type="button" class="secondary">Clear all</button></div></div><p class="sub">Server reminders for documents approaching expiry.</p><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
     anchor.insertAdjacentElement('afterend',panel);
     byId('atsrsMarkAllRead').addEventListener('click',markAllRead);
     byId('atsrsClearNotifications').addEventListener('click',dismissAllNotifications);
@@ -224,7 +225,7 @@
       return priority(left.status)-priority(right.status);
     });
     var count=byId('atsrsNotificationCount');
-    if(count){count.textContent=String(items.length);count.classList.toggle('is-empty',items.length===0);}
+    if(count){count.textContent=expiryCountLabel(items.length);count.classList.toggle('is-empty',items.length===0);}
     setNotificationActions(false,items.length);
     list.innerHTML=items.length?items.map(corporateNotificationMarkup).join(''):'<div class="atsrs-notification-empty">No Personnel expiry notifications.</div>';
     applyNotificationScroll(list,items.length);
@@ -256,7 +257,7 @@
     var rows=result.data||[];
     var unread=rows.filter(function(row){return !row.read_at;}).length;
     var count=byId('atsrsNotificationCount');
-    count.textContent=String(unread);count.classList.toggle('is-empty',unread===0);
+    count.textContent=expiryCountLabel(unread);count.classList.toggle('is-empty',unread===0);
     var all=byId('atsrsMarkAllRead');if(all)all.disabled=unread===0;
     var clear=byId('atsrsClearNotifications');if(clear)clear.disabled=rows.length===0;
     list.innerHTML=rows.length?rows.map(notificationMarkup).join(''):'<div class="atsrs-notification-empty">No expiry notifications yet.</div>';

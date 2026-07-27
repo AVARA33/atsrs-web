@@ -5,9 +5,12 @@ body.company-mode #dashboardPage .corporate-dashboard-activity-grid>.panel{min-w
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid .atsrs-notification-panel{margin-top:0}
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid .corporate-sent-request-list{grid-template-columns:1fr}
 .atsrs-notification-head{display:flex;min-height:40px;align-items:flex-start;justify-content:space-between;gap:16px}
+.atsrs-notification-title-row{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
 .atsrs-notification-label{margin:0}
-.atsrs-notification-count{min-width:30px;height:30px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:#dc2626;color:#fff;font-weight:800;font-size:13px}
-.atsrs-notification-count.is-empty{background:#243244;color:#aebbd0}
+.expiry-request-count{margin-left:0;background:rgba(239,68,68,.12);color:#f87171}
+.expiry-request-count.is-empty{background:rgba(100,116,139,.15);color:#94a3b8}
+html[data-theme="light"] body #app .expiry-request-count{background:#fff1f2!important;color:#c2414b!important}
+html[data-theme="light"] body #app .expiry-request-count.is-empty{background:#eef2f6!important;color:#64748b!important}
 .atsrs-notification-actions{display:flex;gap:9px;flex-wrap:wrap}
 .atsrs-notification-list{display:grid;gap:10px;margin-top:14px}
 .atsrs-notification-list.has-overflow{max-height:770px;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-gutter:stable}
