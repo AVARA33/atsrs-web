@@ -69,6 +69,14 @@ function complianceDocument(file: Record<string, unknown>) {
   };
 }
 
+function notificationDocumentKey(userId: unknown, title: unknown, expiry: unknown) {
+  return [
+    clean(userId, 50).toLowerCase(),
+    clean(title, 200).toLowerCase(),
+    clean(expiry, 20),
+  ].join("|");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });
@@ -186,7 +194,7 @@ Deno.serve(async (req) => {
       return json(200, action === "report" ? { report: empty } : { compliance: empty });
     }
 
-    const [profileResult, fileResult] = await Promise.all([
+    const [profileResult, fileResult, notificationResult] = await Promise.all([
       admin
         .from("atsrs_talent_profiles")
         .select("user_id,name,surname,position,country,company")
@@ -198,9 +206,47 @@ Deno.serve(async (req) => {
         .eq("account_type", "personal")
         .in("user_id", professionalIds)
         .limit(10000),
+      admin
+        .from("atsrs_notifications")
+        .select("id,user_id,document_type,expiry_date,created_at")
+        .eq("account_type", "personal")
+        .in("user_id", professionalIds)
+        .order("created_at", { ascending: false })
+        .limit(10000),
     ]);
     if (profileResult.error) return json(500, { error: "Personnel profiles could not be loaded." });
     if (fileResult.error) return json(500, { error: "Personnel documents could not be loaded." });
+    if (notificationResult.error) return json(500, { error: "Personnel notification status could not be loaded." });
+
+    const notificationIds = (notificationResult.data || []).map((item) => clean(item.id, 50)).filter(Boolean);
+    const sentOutboxRows: Record<string, unknown>[] = [];
+    for (let offset = 0; offset < notificationIds.length; offset += 100) {
+      const { data: outboxPage, error: outboxError } = await admin
+        .from("atsrs_notification_outbox")
+        .select("notification_id,status,sent_at,created_at")
+        .eq("account_type", "personal")
+        .eq("channel", "email")
+        .eq("status", "sent")
+        .in("notification_id", notificationIds.slice(offset, offset + 100))
+        .order("sent_at", { ascending: false });
+      if (outboxError) return json(500, { error: "Personnel email notification status could not be loaded." });
+      sentOutboxRows.push(...((outboxPage || []) as Record<string, unknown>[]));
+    }
+    const sentAtByNotification = new Map<string, string>();
+    sentOutboxRows.forEach((item) => {
+      const notificationId = clean(item.notification_id, 50);
+      if (!notificationId || sentAtByNotification.has(notificationId)) return;
+      sentAtByNotification.set(notificationId, clean(item.sent_at || item.created_at, 40));
+    });
+    const sentEmailByDocument = new Map<string, { status: string; sent_at: string }>();
+    (notificationResult.data || []).forEach((item) => {
+      const sentAt = sentAtByNotification.get(clean(item.id, 50));
+      if (!sentAt) return;
+      const key = notificationDocumentKey(item.user_id, item.document_type, item.expiry_date);
+      if (!sentEmailByDocument.has(key)) {
+        sentEmailByDocument.set(key, { status: "sent", sent_at: sentAt });
+      }
+    });
 
     const filesByOwner = new Map<string, Record<string, unknown>[]>();
     (fileResult.data || []).forEach((file) => {
@@ -233,7 +279,13 @@ Deno.serve(async (req) => {
         expiring_30_count: expiry.expiring_30,
         expiring_90_count: expiry.expiring_90,
         expired_count: expiry.expired,
-        documents: files.map(complianceDocument),
+        documents: files.map((file) => {
+          const document = complianceDocument(file);
+          const emailNotification = sentEmailByDocument.get(
+            notificationDocumentKey(professionalId, document.title, document.expiry),
+          );
+          return { ...document, email_notification: emailNotification || null };
+        }),
       };
     });
     const summary = rows.reduce((totals, row) => {

@@ -15,6 +15,8 @@
 .atsrs-notification-copy b{display:block;margin-bottom:4px;color:#f4f7fb}
 .atsrs-notification-copy p{margin:0 0 6px;color:#aebbd0;line-height:1.45}
 .atsrs-notification-copy time{font-size:12px;color:#7f91a8}
+.atsrs-notification-email-sent{display:block;margin-top:7px;color:#16a34a;font-size:12px;font-weight:700}
+html[data-theme="dark"] .atsrs-notification-email-sent{color:#86efac}
 .atsrs-notification-item-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px}
 .atsrs-notification-item-actions>button{width:auto!important;margin:0!important}
 .atsrs-notification-dismiss{width:28px!important;height:28px!important;min-width:28px!important;padding:0!important;border:1px solid transparent!important;border-radius:7px!important;background:transparent!important;color:#8fa0b5!important;font-size:20px!important;line-height:1!important}

@@ -1,7 +1,7 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V365';
+  var BUILD='ATSRS V366';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
@@ -138,7 +138,13 @@
   }
 
   function corporateNotificationMarkup(item){
-    return '<article class="atsrs-notification-item is-unread" data-severity="'+esc(item.severity)+'"><span class="atsrs-notification-dot"></span><div class="atsrs-notification-copy"><b>'+esc(item.person)+'</b><p>'+esc(item.document)+(item.expiry?' \u2022 Expiry: '+esc(item.expiry):'')+'</p><time>'+esc(item.status)+'</time></div></article>';
+    var emailStatus='';
+    if(item.emailSentAt){
+      var sentDate=new Date(item.emailSentAt);
+      var sentLabel=Number.isNaN(sentDate.getTime())?item.emailSentAt:sentDate.toLocaleString();
+      emailStatus='<span class="atsrs-notification-email-sent">\u2713 Email notification sent to profile owner \u2022 '+esc(sentLabel)+'</span>';
+    }
+    return '<article class="atsrs-notification-item is-unread" data-severity="'+esc(item.severity)+'"><span class="atsrs-notification-dot"></span><div class="atsrs-notification-copy"><b>'+esc(item.person)+'</b><p>'+esc(item.document)+(item.expiry?' \u2022 Expiry: '+esc(item.expiry):'')+'</p><time>'+esc(item.status)+'</time>'+emailStatus+'</div></article>';
   }
 
   function renderCorporateNotifications(compliance){
@@ -154,7 +160,8 @@
           document:String(document.title||'Document'),
           expiry:String(document.expiry||''),
           status:status,
-          severity:status==='Expired'?'expired':status==='Expires today'||/days remaining$/.test(status)?'urgent':'warning'
+          severity:status==='Expired'?'expired':status==='Expires today'||/days remaining$/.test(status)?'urgent':'warning',
+          emailSentAt:document.email_notification&&document.email_notification.status==='sent'?String(document.email_notification.sent_at||''):''
         });
       });
     });
