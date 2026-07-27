@@ -1234,17 +1234,18 @@ body:not(.personal-mode) .admin-overview-panel{
 body.personal-mode #profilePhotoCard{display:flex}
 #profilePage #accountGeneralTab>.profile-grid{
   display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  column-gap:24px!important;
-  row-gap:10px!important;
-  align-items:start!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  column-gap:18px!important;
+  row-gap:12px!important;
+  align-items:stretch!important;
   justify-content:start!important;
   width:100%!important;
   padding-top:12px;
   border-top:1px solid rgba(51,65,85,.72);
 }
 #profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{
-  grid-column:1/-1;
+  grid-column:1;
+  grid-row:1;
   display:grid;
   grid-template-columns:1fr;
   gap:10px;
@@ -1282,22 +1283,36 @@ body.personal-mode #profilePhotoCard{display:flex}
   margin:0!important;
   box-sizing:border-box!important;
 }
-#profilePage #accountGeneralTab>.profile-grid>.phone-entry{
-  grid-column:auto;
-  width:230px!important;
-}
-#profilePage #accountGeneralTab>.profile-grid>.mobile-phone-entry{
+#profilePage #accountGeneralTab>.profile-grid>.profile-contact-row{
   grid-column:1;
-  justify-self:start;
+  grid-row:2;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  min-width:0;
+  width:100%;
 }
-#profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-entry{
-  grid-column:2;
-  justify-self:start;
+#profilePage #accountGeneralTab>.profile-grid>.profile-contact-row>.phone-entry{
+  flex:0 0 230px;
+  width:230px!important;
+  min-width:0;
 }
-#profilePage #accountGeneralTab>.profile-grid>.phone-entry>.phone-field{
+#profilePage #accountGeneralTab>.profile-grid>.profile-contact-row>.phone-entry>.phone-field{
   height:36px!important;
   min-height:36px!important;
   box-sizing:border-box!important;
+}
+#profilePage #accountGeneralTab>.profile-grid>.work-availability-card{
+  grid-column:2;
+  grid-row:1 / span 2;
+  align-self:stretch;
+  min-width:0;
+  width:100%;
+  margin:0;
+  padding:14px;
+  border:1px solid rgba(51,65,85,.72);
+  border-radius:16px;
+  box-sizing:border-box;
 }
 .phone-field{
   display:grid;
@@ -1579,11 +1594,11 @@ body.profile-photo-cropping{overflow:hidden}
 .work-availability-heading>span{padding-top:8px;color:#7f96a8;font-size:10px;white-space:nowrap}
 .work-availability-grid{
   display:grid;
-  grid-template-columns:220px 220px 300px;
+  grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) minmax(220px,1.35fr);
   grid-template-areas:"status available work";
   align-items:start;
   gap:10px;
-  width:min(100%,760px);
+  width:100%;
 }
 .work-availability-grid>label:first-child{grid-area:status}
 #profileAvailableFromWrap{
@@ -1735,14 +1750,26 @@ html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option[ar
   background:#e7eef3!important;
 }
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
-@media(max-width:1380px){
+@media(max-width:1550px){
   #profilePage #accountGeneralTab>.profile-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-columns:1fr!important;
     width:100%!important;
   }
   #profilePage #accountGeneralTab>.profile-grid>.profile-details-layout{
+    grid-column:1;
+    grid-row:auto;
     grid-template-columns:1fr;
   }
+  #profilePage #accountGeneralTab>.profile-grid>.profile-contact-row{
+    grid-column:1;
+    grid-row:auto;
+  }
+  #profilePage #accountGeneralTab>.profile-grid>.work-availability-card{
+    grid-column:1;
+    grid-row:auto;
+  }
+}
+@media(max-width:1380px){
   .profile-details-primary,
   .profile-details-secondary{
     grid-template-columns:repeat(2,minmax(180px,1fr));
@@ -1765,9 +1792,11 @@ html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option[ar
   .profile-details-secondary{
     grid-template-columns:1fr;
   }
-  #profilePage #accountGeneralTab>.profile-grid>.mobile-phone-entry,
-  #profilePage #accountGeneralTab>.profile-grid>.whatsapp-phone-entry{
-    grid-column:1/-1;
+  #profilePage #accountGeneralTab>.profile-grid>.profile-contact-row{
+    flex-wrap:wrap;
+  }
+  #profilePage #accountGeneralTab>.profile-grid>.profile-contact-row>.phone-entry{
+    flex:1 1 100%;
     width:100%!important;
   }
   .work-availability-heading{display:grid;gap:4px}

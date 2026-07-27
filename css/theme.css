@@ -997,8 +997,8 @@ html[data-theme="light"] body #app #profilePage .admin-overview-refresh{
 }
 html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  column-gap:24px!important;
-  row-gap:10px!important;
+  column-gap:18px!important;
+  row-gap:12px!important;
   padding-top:12px!important;
   border-color:#dce4ed!important;
 }
@@ -1084,7 +1084,7 @@ html[data-theme="light"] body #app #profilePage .inline-verify-btn{
   text-decoration:underline!important;
 }
 html[data-theme="light"] body #app #profilePage .work-availability-card{
-  margin-top:14px!important;
+  margin-top:0!important;
   padding:14px!important;
   border:1px solid #dce4ed!important;
   border-radius:16px!important;
@@ -1247,6 +1247,11 @@ html[data-theme="light"] body .atsrs-date-picker-actions .confirm{
   -webkit-text-fill-color:#17643a!important;
 }
 
+@media(max-width:1550px){
+  html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
+    grid-template-columns:1fr!important;
+  }
+}
 @media(max-width:1180px){
   html[data-theme="light"] body #app #profilePage .profile-general-head{
     grid-template-columns:1fr!important;
@@ -1274,8 +1279,10 @@ html[data-theme="light"] body .atsrs-date-picker-actions .confirm{
   html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
     grid-template-columns:1fr!important;
   }
-  html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid > .phone-entry{
+  html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row{
     grid-column:1!important;
+  }
+  html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry{
     width:100%!important;
   }
   html[data-theme="light"] body #app #profilePage .work-availability-grid{
