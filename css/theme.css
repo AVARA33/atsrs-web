@@ -1460,6 +1460,17 @@ html[data-theme="light"] .personnel-document-update.is-recent{
   color:#18783e!important;
   font-weight:800!important;
 }
+html[data-theme="light"] .personnel-table-status{
+  color:#405b70!important;
+}
+html[data-theme="light"] .personnel-table-status.is-expiry{
+  border-color:#e7c26f!important;
+  color:#a96c00!important;
+}
+html[data-theme="light"] .personnel-table-status.is-current,
+html[data-theme="light"] .personnel-notification-status.is-notified{
+  color:#18783e!important;
+}
 html[data-theme="light"] :where(.talent-head-tools>span,.talent-count){
   color:#4d687d!important;
   font-size:11px!important;

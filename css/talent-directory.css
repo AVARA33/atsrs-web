@@ -28,7 +28,7 @@
 .linked-personnel-list{margin-top:12px;max-height:min(520px,calc(100vh - 400px));min-height:120px;overflow:auto}
 .linked-personnel-empty{display:grid;gap:5px;padding:34px 12px;color:#8499aa;font-size:11px;text-align:center}
 .linked-personnel-empty b{color:#d9e4eb;font-size:13px}
-.linked-personnel-table{--linked-personnel-columns:minmax(250px,1.2fr) minmax(180px,1fr) minmax(210px,1fr) minmax(160px,.8fr) minmax(180px,.85fr) 170px;display:grid;min-width:1220px}
+.linked-personnel-table{--linked-personnel-columns:minmax(220px,1.15fr) minmax(150px,.8fr) minmax(185px,.95fr) minmax(135px,.7fr) minmax(140px,.72fr) minmax(130px,.68fr) minmax(145px,.74fr) 170px;display:grid;min-width:1480px}
 .linked-personnel-row{display:grid;grid-template-columns:var(--linked-personnel-columns);align-items:center;gap:14px;min-height:48px;padding:8px 10px;border-top:1px solid #1d3142;color:#cbd8e1;font-size:11px}
 .linked-personnel-row.is-head{min-height:32px;color:#72899c;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .linked-personnel-row.is-head>span:last-child{text-align:right}
@@ -42,6 +42,12 @@
 .linked-personnel-actions{display:flex!important;flex-wrap:nowrap;grid-auto-flow:column;justify-content:flex-end;gap:6px}
 .linked-personnel-actions button,.talent-add-personnel{width:auto!important;min-height:31px!important;margin:0!important;padding:6px 10px!important;background:transparent!important;border-color:#315067!important;color:#d7e5ee!important;white-space:nowrap}
 .linked-personnel-actions .is-remove{border-color:#59404a!important;color:#d9a3a8!important}
+.personnel-table-status{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px;width:100%!important;min-height:30px!important;margin:0!important;padding:5px 8px!important;border:1px solid transparent!important;border-radius:8px!important;background:transparent!important;color:#94a8b8!important;text-align:left!important;box-shadow:none!important;white-space:nowrap}
+button.personnel-table-status{cursor:pointer}
+.personnel-table-status b{min-width:20px;padding:2px 6px;border-radius:999px;background:rgba(116,139,156,.14);color:inherit!important;font-size:10px!important;text-align:center}
+.personnel-table-status.is-expiry{border-color:rgba(226,153,18,.34)!important;color:#e4a21c!important}
+.personnel-table-status.is-current,.personnel-notification-status.is-notified{color:#56ca7c!important}
+.personnel-table-status.is-empty{color:#8296a7!important}
 .talent-add-personnel.is-remove{border-color:#59404a!important;color:#e29b9f!important;opacity:1!important}
 .linked-personnel-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .linked-personnel-card{display:flex;flex-direction:column;min-height:220px;padding:16px;border:1px solid #24394b;border-radius:14px;background:rgba(5,16,27,.24)}

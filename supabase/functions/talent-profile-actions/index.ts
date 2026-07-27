@@ -238,14 +238,14 @@ Deno.serve(async (req) => {
       if (!notificationId || sentAtByNotification.has(notificationId)) return;
       sentAtByNotification.set(notificationId, clean(item.sent_at || item.created_at, 40));
     });
-    const sentEmailByDocument = new Map<string, { status: string; sent_at: string }>();
+    const sentEmailByDocument = new Map<string, { status: string; sent_at: string; count: number }>();
     (notificationResult.data || []).forEach((item) => {
       const sentAt = sentAtByNotification.get(clean(item.id, 50));
       if (!sentAt) return;
       const key = notificationDocumentKey(item.user_id, item.document_type, item.expiry_date);
-      if (!sentEmailByDocument.has(key)) {
-        sentEmailByDocument.set(key, { status: "sent", sent_at: sentAt });
-      }
+      const existing = sentEmailByDocument.get(key);
+      if (existing) existing.count += 1;
+      else sentEmailByDocument.set(key, { status: "sent", sent_at: sentAt, count: 1 });
     });
 
     const filesByOwner = new Map<string, Record<string, unknown>[]>();
