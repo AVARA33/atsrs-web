@@ -94,6 +94,66 @@
       list.appendChild(card);
     });
   }
+  function renderDashboard(data){
+    var dashboard=data||complianceCache;
+    if(mode()!=='company'||!dashboard)return;
+    var summary=dashboard.summary||{},rows=Array.isArray(dashboard.rows)?dashboard.rows:[],
+        documents=[],todayCount=0,expiring30=0,expiring90=0,expiredCount=0,currentCount=0;
+    rows.forEach(function(row){
+      currentCount+=number(row.current_count);
+      expiring30+=number(row.expiring_30_count);
+      expiring90+=number(row.expiring_90_count);
+      expiredCount+=number(row.expired_count);
+      (Array.isArray(row.documents)?row.documents:[]).forEach(function(file){
+        documents.push({
+          person:(text(row.name)+' '+text(row.surname)).trim()||'Profile',
+          title:text(file.title)||'Document',
+          expiry:text(file.expiry),
+          status:text(file.status)
+        });
+        if(file.status==='Expires today')todayCount+=1;
+      });
+    });
+    expiring30=Math.max(0,expiring30-todayCount);
+    [
+      ['totalPersonnel',summary.personnel],
+      ['totalCerts',summary.documents],
+      ['exp90',expiring90],
+      ['exp30',expiring30],
+      ['expToday',todayCount],
+      ['expired',expiredCount],
+      ['snapValid',currentCount],
+      ['snapRisk',expiring30+expiring90+todayCount+expiredCount]
+    ].forEach(function(item){var element=byId(item[0]);if(element)element.textContent=String(number(item[1]))});
+    var list=byId('riskList');if(!list)return;
+    var risks=documents.filter(function(document){
+      return document.status==='Expired'||document.status==='Expires today'||
+        /days remaining$/.test(document.status)||/^Expires within /.test(document.status);
+    }).sort(function(a,b){
+      var priority=function(value){
+        if(value==='Expired')return -1;
+        if(value==='Expires today')return 0;
+        var match=value.match(/(\d+)/);return match?number(match[1]):9999;
+      };
+      return priority(a.status)-priority(b.status);
+    }).slice(0,5);
+    list.innerHTML='';
+    if(!risks.length){
+      var empty=document.createElement('div'),emptyTitle=document.createElement('b'),emptyState=document.createElement('span');
+      empty.className='risk-item';emptyTitle.textContent='No urgent expiry risk detected.';emptyState.textContent='OK';
+      empty.appendChild(emptyTitle);empty.appendChild(emptyState);list.appendChild(empty);return;
+    }
+    risks.forEach(function(file){
+      var item=document.createElement('div'),details=document.createElement('div'),person=document.createElement('b'),
+          line=document.createElement('span'),state=document.createElement('div');
+      item.className='risk-item';person.textContent=file.person;
+      line.textContent=file.title+(file.expiry?' • '+file.expiry:'');
+      state.textContent=file.status;
+      state.className=file.status==='Expired'||file.status==='Expires today'||/days remaining$/.test(file.status)?'danger':'warning';
+      details.appendChild(person);details.appendChild(document.createElement('br'));details.appendChild(line);
+      item.appendChild(details);item.appendChild(state);list.appendChild(item);
+    });
+  }
   function renderReport(){
     var summaryContainer=byId('corporateReportSummary'),body=byId('corporateReportBody'),generated=byId('corporateReportGenerated');
     if(!body||!reportCache)return;
@@ -122,12 +182,12 @@
   }
   async function loadCompliance(force){
     if(mode()!=='company')return null;
-    if(complianceCache&&!force){renderCompliance();return complianceCache}
+    if(complianceCache&&!force){renderCompliance();renderDashboard();return complianceCache}
     if(complianceLoading)return complianceLoading;
     setStatus('corporateComplianceStatus','Loading live Personnel compliance...');
     complianceLoading=actionCall('compliance').then(function(data){
       complianceCache=data.compliance||{summary:{},rows:[]};
-      renderCompliance();setStatus('corporateComplianceStatus','Live server data updated.');
+      renderCompliance();renderDashboard();setStatus('corporateComplianceStatus','Live server data updated.');
       return complianceCache;
     }).catch(function(error){
       setStatus('corporateComplianceStatus',error.message||'Compliance data could not be loaded.',true);
@@ -180,20 +240,37 @@
     if(typeof oldShow==='function'&&!oldShow.__atsrsCorporateReporting){
       window.showPage=function(){
         var page=text(arguments[0]),result=oldShow.apply(this,arguments);
+        if(page==='dashboard')setTimeout(function(){loadCompliance(false).catch(function(){})},20);
         if(page==='compliance')setTimeout(function(){loadCompliance(false).catch(function(){})},20);
         if(page==='reports')setTimeout(function(){loadReport(false).catch(function(){})},20);
         return result;
       };
       window.showPage.__atsrsCorporateReporting=true;
     }
-    window.addEventListener('atsrs:data-hydrated',function(){complianceCache=null;reportCache=null});
+    var oldRender=window.renderAll;
+    if(typeof oldRender==='function'&&!oldRender.__atsrsCorporateDashboard){
+      window.renderAll=function(){
+        var result=oldRender.apply(this,arguments);
+        if(complianceCache)renderDashboard();
+        return result;
+      };
+      window.renderAll.__atsrsCorporateDashboard=true;
+    }
+    window.addEventListener('atsrs:data-hydrated',function(){
+      complianceCache=null;reportCache=null;
+      if(mode()==='company'&&byId('dashboardPage')&&!byId('dashboardPage').classList.contains('hidden')){
+        setTimeout(function(){loadCompliance(true).catch(function(){})},20);
+      }
+    });
     window.addEventListener('atsrs:resume',function(){
       if(mode()!=='company')return;
+      if(byId('dashboardPage')&&!byId('dashboardPage').classList.contains('hidden'))loadCompliance(true).catch(function(){});
       if(byId('compliancePage')&&!byId('compliancePage').classList.contains('hidden'))loadCompliance(true).catch(function(){});
       if(byId('reportsPage')&&!byId('reportsPage').classList.contains('hidden'))loadReport(true).catch(function(){});
     });
     setTimeout(function(){
       if(mode()!=='company')return;
+      if(byId('dashboardPage')&&!byId('dashboardPage').classList.contains('hidden'))loadCompliance(false).catch(function(){});
       if(byId('compliancePage')&&!byId('compliancePage').classList.contains('hidden'))loadCompliance(false).catch(function(){});
       if(byId('reportsPage')&&!byId('reportsPage').classList.contains('hidden'))loadReport(false).catch(function(){});
     },80);
@@ -202,6 +279,7 @@
   window.atsrsCorporateReporting={
     ownsCompliance:true,
     renderCompliance:renderCompliance,
+    renderDashboard:renderDashboard,
     refreshCompliance:function(){return loadCompliance(true)},
     refreshReport:function(){return loadReport(true)},
     exportReport:exportReport

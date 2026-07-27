@@ -56,6 +56,19 @@ function complianceExpiry(file: Record<string, unknown>) {
   return "current";
 }
 
+function complianceDocument(file: Record<string, unknown>) {
+  const metadata = (file.metadata || {}) as Record<string, unknown>;
+  const document = (metadata.document || {}) as Record<string, unknown>;
+  const expiry = clean(document.expiry, 20);
+  return {
+    title: clean(document.type || file.category, 200) || "Document",
+    provider: clean(document.provider, 200),
+    expiry: expiry || null,
+    status: documentStatus(expiry),
+    uploaded_at: clean(file.created_at, 40) || null,
+  };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });
@@ -220,6 +233,7 @@ Deno.serve(async (req) => {
         expiring_30_count: expiry.expiring_30,
         expiring_90_count: expiry.expiring_90,
         expired_count: expiry.expired,
+        documents: files.map(complianceDocument),
       };
     });
     const summary = rows.reduce((totals, row) => {

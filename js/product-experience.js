@@ -87,9 +87,9 @@
 
   async function pdfLibrary(){
     if(window.atsrsPdfJs)return window.atsrsPdfJs;
-    var moduleUrl=new URL('vendor/pdfjs/pdf.min.mjs?v=363',document.baseURI).href;
+    var moduleUrl=new URL('vendor/pdfjs/pdf.min.mjs?v=364',document.baseURI).href;
     var library=await import(moduleUrl);
-    library.GlobalWorkerOptions.workerSrc=new URL('vendor/pdfjs/pdf.worker.min.mjs?v=363',document.baseURI).href;
+    library.GlobalWorkerOptions.workerSrc=new URL('vendor/pdfjs/pdf.worker.min.mjs?v=364',document.baseURI).href;
     window.atsrsPdfJs=library;
     return library;
   }
