@@ -1661,3 +1661,46 @@ html body #app #profilePage .account-security-list .setting-row>.atsrs-disclosur
   max-width:210px;
   justify-self:end;
 }
+
+/* Native option popups must follow the active theme in Opera/Chromium. */
+html[data-theme="light"] body select:not([multiple]){
+  color-scheme:light!important;
+}
+html[data-theme="light"] body select:not([multiple]) :where(option,optgroup){
+  background-color:#ffffff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="dark"] body select:not([multiple]){
+  color-scheme:dark!important;
+}
+html[data-theme="dark"] body select:not([multiple]) :where(option,optgroup){
+  background-color:#091522!important;
+  color:#edf5fb!important;
+  -webkit-text-fill-color:#edf5fb!important;
+}
+
+/* Candidate modal summary filter stays compact and light-theme neutral. */
+html body .talent-summary-filter>.atsrs-disclosure-shell{
+  flex:0 0 132px;
+  width:132px;
+}
+html body .talent-summary-filter>.atsrs-disclosure-shell>select{
+  width:132px!important;
+  min-height:30px!important;
+  height:30px!important;
+  padding:5px 30px 5px 9px!important;
+  border-radius:8px!important;
+  font-size:10px!important;
+}
+html body .talent-summary-filter>.atsrs-disclosure-shell>.atsrs-disclosure-indicator{
+  right:11px;
+  width:7px;
+  height:7px;
+}
+html[data-theme="light"] body .talent-summary-filter>.atsrs-disclosure-shell>select{
+  background:#ffffff!important;
+  border-color:#cbd5e1!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
