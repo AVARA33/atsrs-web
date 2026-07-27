@@ -157,6 +157,38 @@ function shareIsActive(share: ShareRow | null) {
   );
 }
 
+async function normalizeExpiredRequests(admin: AdminClient, rows: AccessRequestRow[]) {
+  if (!rows.length) return rows;
+  const shareIds = Array.from(new Set(rows.map((row) => row.share_id).filter(Boolean)));
+  const shares = shareIds.length
+    ? await admin.from("atsrs_profile_shares").select(SHARE_SELECT).in("id", shareIds)
+    : { data: [], error: null };
+  if (shares.error) throw shares.error;
+  const sharesById = new Map(
+    (shares.data ?? []).map((share) => [String(share.id), share as ShareRow]),
+  );
+  const nowTime = Date.now();
+  const expiredIds = rows.filter((row) => {
+    const shareActive = shareIsActive(sharesById.get(row.share_id) ?? null);
+    if (["otp_pending", "pending"].includes(row.status)) return !shareActive;
+    if (row.status !== "approved") return false;
+    const accessExpiry = row.access_expires_at
+      ? new Date(row.access_expires_at).getTime()
+      : Number.NaN;
+    return !shareActive || !Number.isFinite(accessExpiry) || accessExpiry <= nowTime;
+  }).map((row) => row.id);
+  if (!expiredIds.length) return rows;
+  const now = new Date(nowTime).toISOString();
+  const update = await admin.from("atsrs_share_access_requests")
+    .update({ status: "expired", access_expires_at: null, updated_at: now })
+    .in("id", expiredIds).in("status", ["otp_pending", "pending", "approved"]);
+  if (update.error) throw update.error;
+  const expiredSet = new Set(expiredIds);
+  return rows.map((row) => expiredSet.has(row.id)
+    ? { ...row, status: "expired", access_expires_at: null, updated_at: now }
+    : row);
+}
+
 function publicShareStatus(row: ShareRow | null) {
   if (!row) return null;
   return {
@@ -353,7 +385,10 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
       .eq("requester_user_id", user.id).not("email_verified_at", "is", null)
       .order("created_at", { ascending: false }).limit(100);
     if (requestsResult.error) throw requestsResult.error;
-    const requestRows = (requestsResult.data ?? []) as AccessRequestRow[];
+    const requestRows = await normalizeExpiredRequests(
+      admin,
+      (requestsResult.data ?? []) as AccessRequestRow[],
+    );
     const ownerIds = Array.from(new Set(requestRows.map((row) => row.owner_id)));
     const fileIds = Array.from(new Set(requestRows.flatMap((row) => row.requested_file_ids ?? [])));
     const profilesByOwner = new Map<string, JsonObject>();
@@ -419,9 +454,13 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
         previewsByFile[fileId] = (previewsByFile[fileId] ?? 0) + 1;
       }
     });
+    const requestRows = await normalizeExpiredRequests(
+      admin,
+      (requestsResult.data ?? []) as AccessRequestRow[],
+    );
     return json(req, 200, {
-      requests: (requestsResult.data ?? []).map((row) => ({
-        ...publicRequestStatus(row as AccessRequestRow),
+      requests: requestRows.map((row) => ({
+        ...publicRequestStatus(row),
         download_count: downloadsByRequest[String(row.id)] ?? 0,
         downloaded_file_ids: downloadedFilesByRequest[String(row.id)] ?? [],
       })),
