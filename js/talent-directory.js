@@ -1,4 +1,4 @@
-/* ATSRS V375 - certificate-qualified candidate directory. */
+/* ATSRS V376 - certificate-qualified candidate directory. */
 (function(){
   'use strict';
   var profiles=[];
@@ -773,6 +773,9 @@
         var selected=checkedValues(workFilter),summary=workFilter.querySelector('summary');
         if(summary)summary.textContent=!selected.length?'All work types':selected.length===1?preferenceLabel(selected):selected.length+' work types';
         render();
+      });
+      document.addEventListener('click',function(event){
+        if(workFilter.open&&!workFilter.contains(event.target))workFilter.removeAttribute('open');
       });
     }
     var oldSave=window.saveProfile;
