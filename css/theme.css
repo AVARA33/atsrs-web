@@ -1549,11 +1549,9 @@ html[data-theme="light"] body.company-mode #app .corporate-compliance-card.is-re
 /* One disclosure indicator for every list and ATSRS date field. */
 :root{
   --atsrs-field-arrow:#91a4b4;
-  --atsrs-field-arrow-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath d='m5 7 4 4 4-4' fill='none' stroke='%2391a4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 html[data-theme="light"]{
   --atsrs-field-arrow:#52667b;
-  --atsrs-field-arrow-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath d='m5 7 4 4 4-4' fill='none' stroke='%2352667b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 html body #app select:not([multiple]),
 html body .atsrs-date-picker-dialog select:not([multiple]),
@@ -1561,10 +1559,7 @@ html body #app .atsrs-date-input{
   appearance:none!important;
   -webkit-appearance:none!important;
   padding-right:34px!important;
-  background-image:var(--atsrs-field-arrow-image)!important;
-  background-position:calc(100% - 9px) 50%!important;
-  background-size:18px 18px!important;
-  background-repeat:no-repeat!important;
+  background-image:none!important;
 }
 html body #app select:not([multiple]):hover,
 html body #app select:not([multiple]):focus,
@@ -1572,7 +1567,7 @@ html body .atsrs-date-picker-dialog select:not([multiple]):hover,
 html body .atsrs-date-picker-dialog select:not([multiple]):focus,
 html body #app .atsrs-date-input:hover,
 html body #app .atsrs-date-input:focus{
-  background-image:var(--atsrs-field-arrow-image)!important;
+  background-image:none!important;
 }
 html body #app .personnel-filterbar select:not([multiple]){
   background-image:none!important;
@@ -1587,11 +1582,21 @@ html body #app :where(.work-type-select-arrow,.phone-code-arrow){
   -webkit-text-fill-color:var(--atsrs-field-arrow)!important;
 }
 html body #app .talent-work-type-filter summary{
+  position:relative;
   padding-right:34px!important;
-  background-image:var(--atsrs-field-arrow-image)!important;
-  background-position:calc(100% - 9px) 50%!important;
-  background-size:18px 18px!important;
-  background-repeat:no-repeat!important;
+  background-image:none!important;
+}
+html body #app .talent-work-type-filter summary::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  right:14px;
+  width:8px;
+  height:8px;
+  border-right:2px solid var(--atsrs-field-arrow);
+  border-bottom:2px solid var(--atsrs-field-arrow);
+  transform:translateY(-70%) rotate(45deg);
+  pointer-events:none;
 }
 html body #app .work-type-select-arrow{
   width:8px;
@@ -1616,4 +1621,43 @@ html body #app .phone-code-arrow{
   color:transparent!important;
   font-size:0!important;
   transform:rotate(45deg);
+}
+html body .atsrs-disclosure-shell{
+  position:relative;
+  display:block;
+  width:100%;
+  min-width:0;
+}
+html body .atsrs-disclosure-shell:has(>.hidden){
+  display:none!important;
+}
+html body .atsrs-disclosure-shell>select,
+html body .atsrs-disclosure-shell>.atsrs-date-input{
+  box-sizing:border-box;
+  width:100%;
+}
+html body .atsrs-disclosure-indicator{
+  position:absolute;
+  z-index:4;
+  top:50%;
+  right:14px;
+  box-sizing:border-box;
+  width:8px;
+  height:8px;
+  border-right:2px solid var(--atsrs-field-arrow);
+  border-bottom:2px solid var(--atsrs-field-arrow);
+  transform:translateY(-70%) rotate(45deg);
+  pointer-events:none;
+}
+html body :where(.atsrs-date-picker-month,.talent-summary-filter,.shared-document-summary-tools,.atsrs-v134-statusbar)>.atsrs-disclosure-shell{
+  display:inline-block;
+  width:auto;
+}
+html body .atsrs-date-picker-month>.atsrs-disclosure-shell>select{
+  width:inherit!important;
+}
+html body #app #profilePage .account-security-list .setting-row>.atsrs-disclosure-shell{
+  width:210px;
+  max-width:210px;
+  justify-self:end;
 }
