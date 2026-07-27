@@ -1,7 +1,7 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V368';
+  var BUILD='ATSRS V369';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
@@ -57,7 +57,7 @@
     var panel=document.createElement('div');
     panel.id='atsrsNotificationPanel';
     panel.className='panel atsrs-notification-panel';
-    panel.innerHTML='<div class="atsrs-notification-head"><div><h3>Expiry notifications</h3><p class="sub">Server reminders for documents approaching expiry.</p></div><div class="atsrs-notification-actions"><span id="atsrsNotificationCount" class="atsrs-notification-count is-empty">0</span><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button><button id="atsrsClearNotifications" type="button" class="secondary">Clear all</button></div></div><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
+    panel.innerHTML='<div class="atsrs-notification-head"><div><span class="pill atsrs-notification-label">EXPIRY NOTIFICATIONS</span><p class="sub">Server reminders for documents approaching expiry.</p></div><div class="atsrs-notification-actions"><span id="atsrsNotificationCount" class="atsrs-notification-count is-empty">0</span><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button><button id="atsrsClearNotifications" type="button" class="secondary">Clear all</button></div></div><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
     anchor.insertAdjacentElement('afterend',panel);
     byId('atsrsMarkAllRead').addEventListener('click',markAllRead);
     byId('atsrsClearNotifications').addEventListener('click',dismissAllNotifications);

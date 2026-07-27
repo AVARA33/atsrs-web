@@ -1,7 +1,7 @@
 /* ATSRS V239 — server-backed expiry notification center */
 .atsrs-notification-panel{margin-top:18px}
 .atsrs-notification-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
-.atsrs-notification-head h3{margin:0 0 5px}
+.atsrs-notification-label{margin:0 0 8px}
 .atsrs-notification-count{min-width:30px;height:30px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:#dc2626;color:#fff;font-weight:800;font-size:13px}
 .atsrs-notification-count.is-empty{background:#243244;color:#aebbd0}
 .atsrs-notification-actions{display:flex;gap:9px;flex-wrap:wrap}
@@ -18,6 +18,10 @@
 .atsrs-notification-copy time{font-size:12px;color:#7f91a8}
 .atsrs-notification-email-sent{display:block;margin-top:7px;color:#16a34a;font-size:12px;font-weight:700}
 html[data-theme="dark"] .atsrs-notification-email-sent{color:#86efac}
+html[data-theme="light"] .atsrs-notification-head .sub{color:#405a70!important}
+html[data-theme="light"] .atsrs-notification-copy b,
+html[data-theme="light"] .atsrs-notification-copy p{color:#172b3d!important}
+html[data-theme="light"] .atsrs-notification-copy time{color:#405a70!important}
 .atsrs-notification-item-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px}
 .atsrs-notification-item-actions>button{width:auto!important;margin:0!important}
 .atsrs-notification-dismiss{width:28px!important;height:28px!important;min-width:28px!important;padding:0!important;border:1px solid transparent!important;border-radius:7px!important;background:transparent!important;color:#8fa0b5!important;font-size:20px!important;line-height:1!important}
