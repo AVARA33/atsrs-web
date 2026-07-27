@@ -1,7 +1,7 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V370';
+  var BUILD='ATSRS V371';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
@@ -51,7 +51,7 @@
     if(!anchor)return;
     var existing=byId('atsrsNotificationPanel');
     if(existing){
-      if(existing.previousElementSibling!==anchor)anchor.insertAdjacentElement('afterend',existing);
+      syncDashboardActivityLayout(existing,corporate,anchor);
       return;
     }
     var panel=document.createElement('div');
@@ -61,6 +61,32 @@
     anchor.insertAdjacentElement('afterend',panel);
     byId('atsrsMarkAllRead').addEventListener('click',markAllRead);
     byId('atsrsClearNotifications').addEventListener('click',dismissAllNotifications);
+    syncDashboardActivityLayout(panel,corporate,anchor);
+  }
+
+  function syncDashboardActivityLayout(panel,corporate,anchor){
+    var dashboard=byId('dashboardPage');
+    var sent=byId('sentRequestsPanel');
+    var access=byId('accessRequestsPanel');
+    var layout=byId('corporateDashboardActivityGrid');
+    if(corporate&&dashboard&&sent){
+      if(!layout){
+        layout=document.createElement('div');
+        layout.id='corporateDashboardActivityGrid';
+        layout.className='corporate-dashboard-activity-grid';
+      }
+      if(layout.previousElementSibling!==anchor)anchor.insertAdjacentElement('afterend',layout);
+      if(panel.parentElement!==layout)layout.appendChild(panel);
+      if(sent.parentElement!==layout)layout.appendChild(sent);
+      return;
+    }
+    if(layout){
+      if(panel.previousElementSibling!==anchor)anchor.insertAdjacentElement('afterend',panel);
+      if(sent&&access)access.insertAdjacentElement('afterend',sent);
+      layout.remove();
+      return;
+    }
+    if(panel.previousElementSibling!==anchor)anchor.insertAdjacentElement('afterend',panel);
   }
 
   function ensureSettingsPanel(){
