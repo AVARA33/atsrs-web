@@ -4,7 +4,7 @@
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid>.panel{min-width:0;margin:0!important;padding:0!important}
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid .atsrs-notification-panel{margin-top:0}
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid .corporate-sent-request-list{grid-template-columns:1fr}
-.atsrs-notification-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.atsrs-notification-head{display:flex;min-height:40px;align-items:flex-start;justify-content:space-between;gap:16px}
 .atsrs-notification-label{margin:0}
 .atsrs-notification-count{min-width:30px;height:30px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:#dc2626;color:#fff;font-weight:800;font-size:13px}
 .atsrs-notification-count.is-empty{background:#243244;color:#aebbd0}
