@@ -1,7 +1,7 @@
 /* ATSRS V241 — email-ready expiry notifications; WhatsApp marked coming soon. */
 (function(){
   'use strict';
-  var BUILD='ATSRS V367';
+  var BUILD='ATSRS V368';
   var UPDATE='Last Update: 27 Jul 2026';
   var client=null;
   var user=null;
@@ -45,7 +45,9 @@
     var corporate=mode()==='company';
     if(priorityPanel)priorityPanel.classList.toggle('hidden',corporate);
     var snapshot=byId('dashboardPage')&&byId('dashboardPage').querySelector('.dashboard-snapshot-panel');
-    var anchor=corporate?snapshot:priorityPanel;
+    var stats=byId('dashboardPage')&&byId('dashboardPage').querySelector('.stats-grid');
+    if(snapshot)snapshot.classList.toggle('hidden',corporate);
+    var anchor=corporate?stats:priorityPanel;
     if(!anchor)return;
     var existing=byId('atsrsNotificationPanel');
     if(existing){
