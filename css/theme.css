@@ -1720,3 +1720,46 @@ html[data-theme="light"] body .talent-summary-filter>.atsrs-disclosure-shell>sel
   color:#172033!important;
   -webkit-text-fill-color:#172033!important;
 }
+/* V379: Keep the document controls compact and readable in light mode. */
+#certificatesPage #certManualPanel .field-wrap,
+#certificatesPage #certManualPanel > select {
+  width: 100%;
+  max-width: 560px !important;
+}
+
+#certificatesPage #certManualPanel .field-wrap > :where(input, select, textarea) {
+  width: 100%;
+  max-width: none !important;
+}
+
+html[data-theme="light"] body #app #certificatesPage #certManualPanel :where(input:not([type="file"]), select, textarea) {
+  color-scheme: light !important;
+  background: #fff !important;
+  border-color: #c8d4de !important;
+  color: #172b3d !important;
+  -webkit-text-fill-color: #172b3d !important;
+  caret-color: #172b3d !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] body #app #certificatesPage #certManualPanel :where(input, textarea)::placeholder {
+  color: #8797a5 !important;
+  -webkit-text-fill-color: #8797a5 !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] body #app #certificatesPage .cert-mode-buttons button {
+  background: #fff !important;
+  border-color: #c8d4de !important;
+  color: #172b3d !important;
+  -webkit-text-fill-color: #172b3d !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] body #app #certificatesPage .cert-mode-buttons button.active {
+  background: #e7efff !important;
+  border-color: #8fb0ff !important;
+  color: #1649c8 !important;
+  -webkit-text-fill-color: #1649c8 !important;
+  box-shadow: inset 0 0 0 1px rgba(22, 73, 200, 0.08) !important;
+}
