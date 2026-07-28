@@ -1,4 +1,4 @@
-/* ATSRS V375: session-aware refresh loading controller + notification assets. */
+/* ATSRS V384: single-flight session-aware refresh loading controller. */
 (function(){
   'use strict';
   var finished=false;
@@ -17,32 +17,33 @@
     var badge=byId('buildBadge');
     if(!badge)return;
     var lines=badge.querySelectorAll('div');
-    if(lines[0]&&lines[0].textContent!=='ATSRS V375')lines[0].textContent='ATSRS V375';
-    if(lines[1]&&lines[1].textContent!=='Last Update: 27 Jul 2026')lines[1].textContent='Last Update: 27 Jul 2026';
+    if(lines[0]&&lines[0].textContent!=='ATSRS V384')lines[0].textContent='ATSRS V384';
+    if(lines[1]&&lines[1].textContent!=='Last Update: 28 Jul 2026')lines[1].textContent='Last Update: 28 Jul 2026';
   }
   function loadV241(){
     lockBuildBadge();
-    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=375'});
-    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=375'});
+    loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=384'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=384'});
   }
   function appIsOpen(){
     var app=byId('app');
     return !!(app && !app.classList.contains('hidden'));
   }
   function finishBoot(){
-    if(finished)return;
-    finished=true;
-    if(observer){observer.disconnect();observer=null;}
-    if(fallbackTimer){clearTimeout(fallbackTimer);fallbackTimer=0;}
     if(document.body){
       document.body.classList.remove('atsrs-session-pending');
       document.body.classList.remove('atsrs-booting');
     }
+    if(finished)return;
+    finished=true;
+    if(observer){observer.disconnect();observer=null;}
+    if(fallbackTimer){clearTimeout(fallbackTimer);fallbackTimer=0;}
   }
   function watchForOpenApp(){
     var app=byId('app');
     if(!app)return;
     if(appIsOpen()){finishBoot();return;}
+    if(observer)return;
     observer=new MutationObserver(function(){if(appIsOpen())finishBoot();});
     observer.observe(app,{attributes:true,attributeFilter:['class']});
   }
@@ -54,7 +55,10 @@
       finishBoot();
       return;
     }
-    client.auth.getSession().then(function(result){
+    var sessionRequest=typeof window.atsrsGetSessionSingleFlight==='function'
+      ?window.atsrsGetSessionSingleFlight(client)
+      :client.auth.getSession();
+    sessionRequest.then(function(result){
       var session=result&&result.data&&result.data.session;
       if(!session||!session.user)finishBoot();
     }).catch(finishBoot);

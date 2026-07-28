@@ -5,10 +5,27 @@
   var nextTaskId=1;
   var wakeTimer=0;
   var recoveryTimer=0;
-  var BUILD='ATSRS V375';
-  var UPDATE='Last Update: 27 Jul 2026';
+  var buildObserver=null;
+  var requestFlights=new Map();
+  var BUILD='ATSRS V384';
+  var UPDATE='Last Update: 28 Jul 2026';
 
   function visible(){return document.visibilityState!=='hidden';}
+  function singleFlight(key,operation){
+    var flightKey=String(key||'default');
+    if(requestFlights.has(flightKey))return requestFlights.get(flightKey);
+    var shared=Promise.resolve().then(operation).finally(function(){
+      if(requestFlights.get(flightKey)===shared)requestFlights.delete(flightKey);
+    });
+    requestFlights.set(flightKey,shared);
+    return shared;
+  }
+  function getSessionSingleFlight(client){
+    if(!client||!client.auth||typeof client.auth.getSession!=='function'){
+      return Promise.resolve({data:{session:null}});
+    }
+    return singleFlight('auth:get-session',function(){return client.auth.getSession();});
+  }
   function clearWake(){if(wakeTimer){clearTimeout(wakeTimer);wakeTimer=0;}}
   function nextDelay(){
     var now=Date.now();
@@ -60,6 +77,13 @@
     if(lines[0].textContent!==BUILD)lines[0].textContent=BUILD;
     if(lines[1].textContent!==UPDATE)lines[1].textContent=UPDATE;
   }
+  function watchBuildBadge(){
+    var badge=document.getElementById('buildBadge');
+    if(!badge||buildObserver)return;
+    setBuildBadge();
+    buildObserver=new MutationObserver(setBuildBadge);
+    buildObserver.observe(badge,{subtree:true,childList:true,characterData:true});
+  }
   function recoverSession(){
     recoveryTimer=0;
     if(!visible()||navigator.onLine===false)return;
@@ -67,7 +91,7 @@
     window.dispatchEvent(new CustomEvent('atsrs:resume'));
     var client=window.supabaseClient;
     if(!client||!client.auth||typeof client.auth.getSession!=='function')return;
-    client.auth.getSession().then(function(result){
+    getSessionSingleFlight(client).then(function(result){
       var session=result&&result.data&&result.data.session;
       if(!session||!session.expires_at||typeof client.auth.refreshSession!=='function')return;
       if((Number(session.expires_at)*1000)-Date.now()<300000){
@@ -92,6 +116,9 @@
   window.atsrsStableInterval=stableInterval;
   window.atsrsClearStableInterval=clearStableInterval;
   window.atsrsSetBuildBadge=setBuildBadge;
+  window.atsrsSingleFlight=singleFlight;
+  window.atsrsGetSessionSingleFlight=getSessionSingleFlight;
+  watchBuildBadge();
   document.addEventListener('visibilitychange',function(){if(visible())resumeTasks();else clearWake();});
   window.addEventListener('pageshow',resumeTasks);
   window.addEventListener('online',resumeTasks);

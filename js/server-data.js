@@ -75,7 +75,11 @@
     if(app)app.classList.add('hidden');
     if(auth)auth.classList.remove('hidden');
     if(msg){msg.style.whiteSpace='pre-line';msg.textContent=cloudErrorMessage(error);}
-    document.body.classList.remove('atsrs-booting');
+    if(typeof window.atsrsFinishBoot==='function')window.atsrsFinishBoot();
+    else{
+      document.body.classList.remove('atsrs-session-pending');
+      document.body.classList.remove('atsrs-booting');
+    }
   }
   function enqueue(operation,onFailure){
     pendingWrites++;
@@ -450,9 +454,11 @@
     if(loadingPromise&&loadingPromise.scope===wantedScope)return loadingPromise;
     var promise=(async function(){
       var rows=await loadWorkspaceRows();
-      rows=await migrateLegacyStorage(rows);
+      var dataMigrationDone=rows.some(function(row){return row&&row.data_key===DATA_MIGRATION_KEY;});
+      var fileMigrationDone=rows.some(function(row){return row&&row.data_key===FILE_MIGRATION_KEY;});
+      if(!dataMigrationDone)rows=await migrateLegacyStorage(rows);
       restoreServerRows(rows);
-      await migrateLegacyFiles(rows);
+      if(!fileMigrationDone)await migrateLegacyFiles(rows);
       clearNativeBusinessData();
       loadedScope=wantedScope;
       window.dispatchEvent(new CustomEvent('atsrs:data-hydrated',{
@@ -518,14 +524,21 @@
   }
   async function listFiles(){
     if(!isCloudSession())return [];
-    var valueUser=user();
-    var result=await client().from(FILE_TABLE)
-      .select('id,category,file_name,mime_type,size_bytes,storage_path,metadata,created_at,updated_at')
-      .eq('user_id',valueUser.id)
-      .eq('account_type',accountType())
-      .order('created_at',{ascending:false});
-    if(result.error)throw result.error;
-    return result.data||[];
+    var wantedScope=scope();
+    var operation=async function(){
+      var valueUser=user();
+      var result=await client().from(FILE_TABLE)
+        .select('id,category,file_name,mime_type,size_bytes,storage_path,metadata,created_at,updated_at')
+        .eq('user_id',valueUser.id)
+        .eq('account_type',accountType())
+        .order('created_at',{ascending:false});
+      if(result.error)throw result.error;
+      return result.data||[];
+    };
+    if(typeof window.atsrsSingleFlight==='function'){
+      return window.atsrsSingleFlight('files:list:'+wantedScope,operation);
+    }
+    return operation();
   }
   async function findFile(id){
     var valueUser=user();
@@ -1035,7 +1048,6 @@
     installFileHandlers();
     if(isCloudSession()){
       ensureWorkspaceData()
-        .then(function(){if(typeof window.renderAll==='function')window.renderAll();})
         .catch(showCloudError);
     }
   }
