@@ -33,7 +33,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/documents.css?v=375">
 <link rel="stylesheet" href="css/references.css?v=375">
 <link rel="stylesheet" href="css/cv-generator.css?v=375">
-<link rel="stylesheet" href="css/account.css?v=375">
+<link rel="stylesheet" href="css/account.css?v=381">
 <link rel="stylesheet" href="css/product-experience.css?v=375">
 <link rel="stylesheet" href="css/date-picker.css?v=375">
 <link rel="stylesheet" href="css/share-profile.css?v=375">
@@ -42,7 +42,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/talent-directory.css?v=377">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
-<link rel="stylesheet" href="css/theme.css?v=380">
+<link rel="stylesheet" href="css/theme.css?v=381">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -770,6 +770,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div class="profile-contact-row">
 <div class="phone-entry mobile-phone-entry">
+<span class="phone-entry-label">Mobile phone</span>
 <div class="phone-field mobile-phone-field" aria-label="Mobile phone number">
   <select id="profilePhoneCountryCode" title="Country calling code">
     <option value="+994" data-country="Azerbaijan">&#127462;&#127487; +994</option>
@@ -823,9 +824,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <input id="profilePhoneLocal" inputmode="tel" autocomplete="tel-national" placeholder="Mobile number">
   <input id="profilePhone" type="hidden">
 </div>
-<div class="phone-verification-note">Mobile verification: <b id="profilePhoneVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="mobile">Verify via WhatsApp</button></div>
+<div class="phone-verification-note"><span>Mobile verification: <b id="profilePhoneVerifiedText">Not verified</b></span><button type="button" class="inline-verify-btn" data-profile-verify="mobile">Verify via WhatsApp</button></div>
 </div>
 <div class="phone-entry whatsapp-phone-entry">
+<span class="phone-entry-label">WhatsApp number</span>
 <div class="phone-field whatsapp-phone-field" aria-label="WhatsApp number">
   <select id="profileWhatsappCountryCode" title="WhatsApp country calling code">
     <option value="+994" data-country="Azerbaijan">&#127462;&#127487; +994</option>
@@ -879,7 +881,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <input id="profileWhatsappLocal" inputmode="tel" autocomplete="tel" placeholder="WhatsApp number">
   <input id="profileWhatsapp" type="hidden">
 </div>
-<div class="phone-verification-note">WhatsApp verification: <b id="profileWhatsappVerifiedText">Not verified</b> <button type="button" class="inline-verify-btn" data-profile-verify="whatsapp">Verify via WhatsApp</button></div>
+<div class="phone-verification-note"><span>WhatsApp verification: <b id="profileWhatsappVerifiedText">Not verified</b></span><button type="button" class="inline-verify-btn" data-profile-verify="whatsapp">Verify via WhatsApp</button></div>
 </div>
 </div>
 <div class="work-availability-card personal-only">

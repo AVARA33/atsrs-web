@@ -1014,6 +1014,7 @@ html[data-theme="light"] body #app #profilePage .profile-details-secondary{
   gap:10px!important;
 }
 html[data-theme="light"] body #app #profilePage .profile-labeled-field > span,
+html[data-theme="light"] body #app #profilePage .phone-entry-label,
 html[data-theme="light"] body #app #profilePage .work-availability-grid > label > span,
 html[data-theme="light"] body #app #profilePage .work-type-field > span{
   color:#5f7087!important;
