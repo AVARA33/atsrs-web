@@ -24,7 +24,14 @@
     if(!client||!client.auth||typeof client.auth.getSession!=='function'){
       return Promise.resolve({data:{session:null}});
     }
-    return singleFlight('auth:get-session',function(){return client.auth.getSession();});
+    if(!client.auth.__atsrsSingleFlightInstalled){
+      var nativeGetSession=client.auth.getSession.bind(client.auth);
+      client.auth.getSession=function(){
+        return singleFlight('auth:get-session',nativeGetSession);
+      };
+      client.auth.__atsrsSingleFlightInstalled=true;
+    }
+    return client.auth.getSession();
   }
   function clearWake(){if(wakeTimer){clearTimeout(wakeTimer);wakeTimer=0;}}
   function nextDelay(){
