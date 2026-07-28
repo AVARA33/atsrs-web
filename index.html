@@ -42,7 +42,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/talent-directory.css?v=377">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
-<link rel="stylesheet" href="css/theme.css?v=379">
+<link rel="stylesheet" href="css/theme.css?v=380">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -551,7 +551,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div id="manualFilePreview" class="preview-box"></div>
 <div id="manualFormAlert" class="form-alert"></div>
-<select id="cPerson"></select>
+<div class="manual-cert-grid">
+<select id="cPerson" class="manual-cert-person"></select>
 <div class="field-wrap">
 <label id="cTypeLabel" class="field-label"></label>
 <input id="cType" data-required="true" autocomplete="off">
@@ -575,6 +576,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="field-wrap">
 <label id="cExpiryLabel" class="field-label"></label>
 <input id="cExpiry" type="date" data-required="true">
+</div>
 </div>
 <button id="addCertBtn" onclick="addCertificate()"></button>
 </div>
