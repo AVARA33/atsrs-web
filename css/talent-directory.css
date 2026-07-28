@@ -244,6 +244,8 @@ button.personnel-table-status{cursor:pointer}
 .talent-summary-list{display:grid;max-height:280px;overflow:auto;border-top:1px solid #203446}
 .talent-summary-list>div{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid #1b2d3d}
 .talent-summary-list span{display:grid;gap:3px}.talent-summary-list b{color:#dce7ef;font-size:12px}.talent-summary-list small{color:#7f95a7;font-size:10px}.talent-summary-list em{color:#9fb1bf;font-size:10px;font-style:normal;text-align:right;white-space:nowrap}
+.talent-summary-list .talent-summary-document-name.is-expiry-warning{color:#fbbf24!important}
+.talent-summary-list .talent-summary-document-name.is-expired{color:#ef4444!important}
 .talent-summary-filter{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0 0 10px;color:#7f95a7;font-size:10px}.talent-summary-filter select{width:auto;min-height:32px;margin:0;background:#07131f!important;border-color:#294055!important;color:#edf5fb!important}.talent-upload-date.is-recent{color:#55d98a!important}.talent-upload-date b{color:inherit!important;font-size:9px!important}
 .talent-privacy-note{margin:18px 0 0;padding-top:14px;border-top:1px solid #213547;color:#879bad;font-size:11px;line-height:1.5}
 .talent-messages-panel{margin-top:16px}.talent-messages-head h3{margin:8px 0 0}.talent-messages-head>button{width:auto!important;min-height:34px!important;margin:0!important;padding:7px 12px!important;background:transparent!important}

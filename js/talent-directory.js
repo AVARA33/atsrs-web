@@ -295,6 +295,12 @@
   }
   function recentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000}
   function uploadDateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):'No uploads'}
+  function summaryExpiryClass(document){
+    var status=String(document&&document.status||'');
+    if(status==='Expired')return ' is-expired';
+    if(status==='Expires today'||status.indexOf('remaining')>=0||status.indexOf('within')>=0)return ' is-expiry-warning';
+    return '';
+  }
   function personnelDocumentMarkup(item){
     var count=Number(item&&item.document_count||0),recent=Number(item&&item.recent_document_count||0),latest=item&&item.latest_document_uploaded_at;
     if(!count)return '<span class="personnel-document-update">No documents</span>';
@@ -661,7 +667,7 @@
           if(filter==='current')return document.status==='Valid'||document.status==='No expiry'||document.status==='Date not confirmed';
           return true;
         });
-        panel.innerHTML='<div class="talent-summary-head"><b>Document Summary</b><span>'+safe(visible.length)+' of '+safe(counts.total||0)+' documents</span></div><div class="talent-summary-stats"><span><b>'+safe(counts.current||0)+'</b> current</span><span><b>'+safe(counts.expiryRisk||0)+'</b> expiry risk</span><span><b>'+safe(counts.expired||0)+'</b> expired</span></div><label class="talent-summary-filter"><span>Show</span><select><option value="all">All documents</option><option value="recent">New uploads (7 days)</option><option value="current">Current</option><option value="attention">Expiry</option><option value="expiry_risk">Expiry risk</option><option value="expired">Expired</option></select></label>'+(visible.length?'<div class="talent-summary-list">'+visible.map(function(document){var recent=recentUpload(document.uploaded_at);return '<div><span><b>'+safe(document.title)+'</b><small>'+safe(document.provider)+'</small><small class="talent-upload-date'+(recent?' is-recent':'')+'">'+(recent?'<b>NEW UPDATE</b> ':'')+'Uploaded '+safe(uploadDateLabel(document.uploaded_at))+'</small></span><em>'+safe(document.status)+(document.expiry?' &middot; '+safe(document.expiry):'')+'</em></div>'}).join('')+'</div>':'<p class="talent-action-message">No documents match this filter.</p>');
+        panel.innerHTML='<div class="talent-summary-head"><b>Document Summary</b><span>'+safe(visible.length)+' of '+safe(counts.total||0)+' documents</span></div><div class="talent-summary-stats"><span><b>'+safe(counts.current||0)+'</b> current</span><span><b>'+safe(counts.expiryRisk||0)+'</b> expiry risk</span><span><b>'+safe(counts.expired||0)+'</b> expired</span></div><label class="talent-summary-filter"><span>Show</span><select><option value="all">All documents</option><option value="recent">New uploads (7 days)</option><option value="current">Current</option><option value="attention">Expiry</option><option value="expiry_risk">Expiry risk</option><option value="expired">Expired</option></select></label>'+(visible.length?'<div class="talent-summary-list">'+visible.map(function(document){var recent=recentUpload(document.uploaded_at),expiryClass=summaryExpiryClass(document);return '<div><span><b class="talent-summary-document-name'+expiryClass+'">'+safe(document.title)+'</b><small>'+safe(document.provider)+'</small><small class="talent-upload-date'+(recent?' is-recent':'')+'">'+(recent?'<b>NEW UPDATE</b> ':'')+'Uploaded '+safe(uploadDateLabel(document.uploaded_at))+'</small></span><em>'+safe(document.status)+(document.expiry?' &middot; '+safe(document.expiry):'')+'</em></div>'}).join('')+'</div>':'<p class="talent-action-message">No documents match this filter.</p>');
         var select=panel.querySelector('.talent-summary-filter select');if(select){select.value=filter;select.onchange=function(){renderSummary(select.value)}}
       }
       renderSummary(initialFilter||'all');
