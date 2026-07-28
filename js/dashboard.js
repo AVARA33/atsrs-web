@@ -87,6 +87,8 @@
 (function(){
   'use strict';
   var PROFILE_KEY='profile';
+  var PROFILE_BACKUP_KEY='profile_backup';
+  var profileRecoveryRunning=false;
   function byId(id){return document.getElementById(id)}
   function safeUserId(){
     try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}
@@ -120,6 +122,77 @@
   }
   function val(id){var e=byId(id); return e?e.value:'';}
   function setVal(id,v){var e=byId(id); if(e)e.value=v||'';}
+  function usefulProfileValue(value){
+    if(Array.isArray(value))return value.length>0;
+    if(value&&typeof value==='object')return Object.keys(value).length>0;
+    return value!==null&&value!==undefined&&String(value).trim()!=='';
+  }
+  function profileCoreScore(profile){
+    profile=profile&&typeof profile==='object'?profile:{};
+    return ['name','surname','country','company','position'].reduce(function(score,field){
+      return score+(usefulProfileValue(profile[field])?1:0);
+    },0);
+  }
+  function mergeMissingProfileFields(current,fallback){
+    current=current&&typeof current==='object'?current:{};
+    fallback=fallback&&typeof fallback==='object'?fallback:{};
+    var merged=Object.assign({},current);
+    Object.keys(fallback).forEach(function(field){
+      if(!usefulProfileValue(merged[field])&&usefulProfileValue(fallback[field]))merged[field]=fallback[field];
+    });
+    return merged;
+  }
+  function lastGoodProfile(){
+    var record=readJson(PROFILE_BACKUP_KEY,{});
+    return record&&record.profile&&typeof record.profile==='object'?record.profile:{};
+  }
+  function storeProfileBackup(profile,reason){
+    if(profileCoreScore(profile)<2)return false;
+    return writeJson(PROFILE_BACKUP_KEY,{
+      profile:Object.assign({},profile),
+      reason:reason||'profile_save',
+      capturedAt:new Date().toISOString()
+    });
+  }
+  function restoreProfileBackup(profile){
+    var backup=lastGoodProfile();
+    if(profileCoreScore(profile)!==0||profileCoreScore(backup)<2)return profile;
+    return mergeMissingProfileFields(profile,backup);
+  }
+  function talentProfileFallback(row){
+    row=row&&typeof row==='object'?row:{};
+    return {
+      name:row.name||'',surname:row.surname||'',position:row.position||'',
+      country:row.country||'',company:row.company||'',
+      phoneCountryCode:row.phone_country_code||'',phoneLocal:row.phone_local||'',
+      phone:row.phone_number||'',whatsappCountryCode:row.whatsapp_country_code||'',
+      whatsappLocal:row.whatsapp_local||'',whatsapp:row.whatsapp_number||'',
+      zipCode:row.zip_code||'',birthDate:row.birth_date||'',
+      visibility:row.profile_visibility||'',availabilityStatus:row.availability_status||'',
+      availableFrom:row.available_from||'',workPreferences:row.work_preferences||[],
+      workPreference:row.work_preference||'',availabilityConfirmedAt:row.availability_confirmed_at||'',
+      avatarUrl:row.avatar_url||''
+    };
+  }
+  async function recoverProfileFromTalent(profile){
+    if(profileCoreScore(profile)>=2)return null;
+    var c=window.supabaseClient,u=window.currentUser;
+    if(!c||!u||!u.id)return null;
+    var result=await c.from('atsrs_talent_profiles')
+      .select('name,surname,position,country,company,phone_country_code,phone_local,phone_number,whatsapp_country_code,whatsapp_local,whatsapp_number,zip_code,birth_date,profile_visibility,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,avatar_url')
+      .eq('user_id',u.id)
+      .maybeSingle();
+    if(result.error){console.warn('ATSRS profile recovery lookup failed',result.error);return null;}
+    var merged=mergeMissingProfileFields(profile,talentProfileFallback(result.data));
+    if(profileCoreScore(merged)<=profileCoreScore(profile))return null;
+    merged.recoveredAt=new Date().toISOString();
+    storeProfileBackup(merged,'talent_profile_recovery');
+    if(!writeJson(PROFILE_KEY,merged))return null;
+    var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'
+      ?await window.atsrsCloudData.flush()
+      :true;
+    return saved?merged:null;
+  }
   var PHONE_COUNTRIES=[
     ['AZ','+994'],['US','+1'],['GB','+44'],['AE','+971'],['SA','+966'],['QA','+974'],['KW','+965'],['BH','+973'],['OM','+968'],['TR','+90'],
     ['GE','+995'],['KZ','+7'],['NO','+47'],['NL','+31'],['DE','+49'],['FR','+33'],['ES','+34'],['IT','+39'],['GR','+30'],['RO','+40'],
@@ -499,6 +572,10 @@
       availabilityConfirmedAt:confirmedAt,
       savedAt:confirmedAt
     };
+    if(profileCoreScore(existing)>=2)storeProfileBackup(existing,'before_profile_save');
+    if(profileCoreScore(data)===0&&profileCoreScore(existing)>=2){
+      data=mergeMissingProfileFields(data,existing);
+    }
     if(!writeJson(PROFILE_KEY,data)){showSaveError();return false;}
     var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'
       ?await window.atsrsCloudData.flush()
@@ -512,7 +589,13 @@
   };
   window.loadProfile=function(){
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
-    var p=readJson(PROFILE_KEY,{});
+    var original=readJson(PROFILE_KEY,{});
+    var p=restoreProfileBackup(original);
+    if(p!==original){
+      p.recoveredAt=new Date().toISOString();
+      writeJson(PROFILE_KEY,p);
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')window.atsrsCloudData.flush();
+    }
     var phone=splitPhone(p.phone||((p.phoneCountryCode||'')+(p.phoneLocal||'')),p.phoneCountryCode||'+994');
     var whatsapp=splitPhone(p.whatsapp||((p.whatsappCountryCode||'')+(p.whatsappLocal||'')),p.whatsappCountryCode||p.phoneCountryCode||'+994');
     setVal('profileName',p.name); setVal('profileSurname',p.surname);
@@ -546,6 +629,18 @@
     ensureProfileStatus();
     bindOfficialProfileControls();
     setTimeout(refreshVerificationStatus,900);
+    if(profileCoreScore(p)<2&&!profileRecoveryRunning){
+      profileRecoveryRunning=true;
+      setTimeout(function(){
+        recoverProfileFromTalent(p).then(function(recovered){
+          if(recovered)window.loadProfile();
+        }).catch(function(error){
+          console.warn('ATSRS profile recovery failed',error);
+        }).finally(function(){
+          profileRecoveryRunning=false;
+        });
+      },0);
+    }
   };
   document.addEventListener('click',function(event){
     if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();

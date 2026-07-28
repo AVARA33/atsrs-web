@@ -321,6 +321,31 @@
       return serverValue;
     }
   }
+  function usefulProfileValue(value){
+    if(Array.isArray(value))return value.length>0;
+    if(value&&typeof value==='object')return Object.keys(value).length>0;
+    return value!==null&&value!==undefined&&String(value).trim()!=='';
+  }
+  function mergeProfileValues(serverValue,localValue){
+    try{
+      var serverProfile=JSON.parse(serverValue);
+      var localProfile=JSON.parse(localValue);
+      if(!serverProfile||typeof serverProfile!=='object'||Array.isArray(serverProfile))return localValue;
+      if(!localProfile||typeof localProfile!=='object'||Array.isArray(localProfile))return serverValue;
+      var merged=Object.assign({},serverProfile);
+      var serverSaved=Date.parse(serverProfile.savedAt||serverProfile.updatedAt||'')||0;
+      var localSaved=Date.parse(localProfile.savedAt||localProfile.updatedAt||'')||0;
+      Object.keys(localProfile).forEach(function(field){
+        var localValue=localProfile[field];
+        if(!usefulProfileValue(localValue))return;
+        if(!usefulProfileValue(merged[field])||localSaved>serverSaved)merged[field]=localValue;
+      });
+      return JSON.stringify(merged);
+    }catch(error){
+      console.warn('ATSRS profile migration merge failed',error);
+      return serverValue;
+    }
+  }
   async function loadWorkspaceRows(){
     var valueUser=user();
     var result=await client().from(DATA_TABLE)
@@ -360,6 +385,8 @@
       if(canonicalRows.has(key)){
         if(/_certs$/.test(key)){
           canonicalRows.set(key,mergeCertificateValues(canonicalRows.get(key),value));
+        }else if(/_profile$/.test(key)){
+          canonicalRows.set(key,mergeProfileValues(canonicalRows.get(key),value));
         }
         return;
       }
