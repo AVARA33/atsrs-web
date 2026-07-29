@@ -22,6 +22,101 @@
   var lastWriteError=null;
   var failedOperations=[];
   var fileRenderTimer=0;
+  var STABLE_ID_NAMESPACE='9fe1439e-5b5a-5c86-9d7c-28a67036e814';
+  var UUID_PATTERN=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  function validUuid(value){
+    return UUID_PATTERN.test(String(value||''));
+  }
+  function uuidBytes(value){
+    return String(value).replace(/-/g,'').match(/.{2}/g).map(function(part){return parseInt(part,16);});
+  }
+  function formatUuid(bytes){
+    var hex=Array.from(bytes,function(value){return value.toString(16).padStart(2,'0');}).join('');
+    return [hex.slice(0,8),hex.slice(8,12),hex.slice(12,16),hex.slice(16,20),hex.slice(20)].join('-');
+  }
+  async function deterministicUuid(seed){
+    var namespace=uuidBytes(STABLE_ID_NAMESPACE);
+    var nameBytes=Array.from(new TextEncoder().encode(String(seed)));
+    var input=new Uint8Array(namespace.length+nameBytes.length);
+    input.set(namespace,0);input.set(nameBytes,namespace.length);
+    var hash=new Uint8Array(await crypto.subtle.digest('SHA-1',input));
+    var bytes=hash.slice(0,16);
+    bytes[6]=(bytes[6]&0x0f)|0x50;
+    bytes[8]=(bytes[8]&0x3f)|0x80;
+    return formatUuid(bytes);
+  }
+  function randomUuid(){
+    if(crypto&&typeof crypto.randomUUID==='function')return crypto.randomUUID();
+    var bytes=new Uint8Array(16);crypto.getRandomValues(bytes);
+    bytes[6]=(bytes[6]&0x0f)|0x40;bytes[8]=(bytes[8]&0x3f)|0x80;
+    return formatUuid(bytes);
+  }
+  function stableDataKind(key){
+    var text=String(key||'');
+    if(/_personal_profile$/.test(text))return 'profile';
+    if(/_company_personnel$/.test(text))return 'personnel';
+    if(/_(personal|company)_certs$/.test(text))return 'certificates';
+    if(/_(personal|company)_projects$/.test(text))return 'projects';
+    return '';
+  }
+  function legacyEntityKey(key,index){
+    return 'workspace_data:'+String(key)+(index===null?':owner':':item:'+(index+1));
+  }
+  async function hydrateStableValue(key,value){
+    var kind=stableDataKind(key);
+    if(!kind)return String(value);
+    var decoded;
+    try{decoded=JSON.parse(String(value));}catch(error){return String(value);}
+    if(kind==='profile'&&decoded&&typeof decoded==='object'&&!Array.isArray(decoded)){
+      if(!validUuid(decoded.atsrsId))decoded.atsrsId=await deterministicUuid(legacyEntityKey(key,null));
+      return JSON.stringify(decoded);
+    }
+    if(!Array.isArray(decoded))return String(value);
+    for(var index=0;index<decoded.length;index++){
+      var item=decoded[index];
+      if(!item||typeof item!=='object'||Array.isArray(item))continue;
+      if(!validUuid(item.atsrsId))item.atsrsId=await deterministicUuid(legacyEntityKey(key,index));
+      if(kind==='personnel'){
+        item.atsrsProjectIds=Array.isArray(item.atsrsProjectIds)
+          ?item.atsrsProjectIds.filter(validUuid):[];
+      }
+      if(kind==='certificates'&&/_personal_certs$/.test(String(key))&&!validUuid(item.atsrsPersonnelId)){
+        item.atsrsPersonnelId=await deterministicUuid(
+          legacyEntityKey(String(key).replace(/_personal_certs$/,'_personal_profile'),null)
+        );
+      }
+    }
+    return JSON.stringify(decoded);
+  }
+  async function hydrateStableRows(rows){
+    for(var index=0;index<(rows||[]).length;index++){
+      var row=rows[index];
+      if(!row||!row.data_key||!row.payload||typeof row.payload.value!=='string')continue;
+      var enriched=await hydrateStableValue(row.data_key,row.payload.value);
+      if(enriched!==row.payload.value)row.payload=Object.assign({},row.payload,{value:enriched});
+    }
+  }
+  function normalizeStableValue(key,value){
+    var kind=stableDataKind(key);
+    if(!kind)return String(value);
+    var decoded;
+    try{decoded=JSON.parse(String(value));}catch(error){return String(value);}
+    if(kind==='profile'&&decoded&&typeof decoded==='object'&&!Array.isArray(decoded)){
+      if(!validUuid(decoded.atsrsId))decoded.atsrsId=randomUuid();
+      return JSON.stringify(decoded);
+    }
+    if(!Array.isArray(decoded))return String(value);
+    decoded.forEach(function(item){
+      if(!item||typeof item!=='object'||Array.isArray(item))return;
+      if(!validUuid(item.atsrsId))item.atsrsId=randomUuid();
+      if(kind==='personnel'){
+        item.atsrsProjectIds=Array.isArray(item.atsrsProjectIds)
+          ?item.atsrsProjectIds.filter(validUuid):[];
+      }
+    });
+    return JSON.stringify(decoded);
+  }
 
   function client(){return window.supabaseClient||null;}
   function user(){
@@ -155,7 +250,7 @@
   function writeBusinessValue(key,value){
     if(!shouldSyncKey(key))return false;
     key=String(key);
-    value=String(value);
+    value=normalizeStableValue(key,value);
     var context=writeContext();
     var hadPrevious=memoryStore.has(key);
     var previousValue=hadPrevious?memoryStore.get(key):null;
@@ -457,6 +552,7 @@
       var dataMigrationDone=rows.some(function(row){return row&&row.data_key===DATA_MIGRATION_KEY;});
       var fileMigrationDone=rows.some(function(row){return row&&row.data_key===FILE_MIGRATION_KEY;});
       if(!dataMigrationDone)rows=await migrateLegacyStorage(rows);
+      await hydrateStableRows(rows);
       restoreServerRows(rows);
       if(!fileMigrationDone)await migrateLegacyFiles(rows);
       clearNativeBusinessData();
@@ -984,6 +1080,11 @@
     unsafeLocalKeys.forEach(function(key){safeLocalKeys.delete(key);});
     clearMigratedLocalFileRows(Array.from(safeLocalKeys));
   }
+
+  window.atsrsStableIds={
+    isValid:validUuid,
+    create:randomUuid
+  };
 
   window.atsrsCloudData={
     ensureLoaded:ensureWorkspaceData,

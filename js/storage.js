@@ -459,8 +459,36 @@ document.getElementById("crewTab"+cap(x)+"Btn").classList.remove("active");
 document.getElementById("crew"+cap(tab)+"Tab").classList.add("active");
 document.getElementById("crewTab"+cap(tab)+"Btn").classList.add("active");
 }
-function crewComplianceStatus(name){
-let certs=getData("certs").filter(c=>c.person===name);
+function validAtsrsId(value){return !!(window.atsrsStableIds&&window.atsrsStableIds.isValid(value))}
+function ensureAtsrsId(item){
+  if(item&&validAtsrsId(item.atsrsId))return item.atsrsId;
+  if(item&&window.atsrsStableIds){item.atsrsId=window.atsrsStableIds.create();return item.atsrsId;}
+  return "";
+}
+function personalOwnerStableId(){
+  try{
+    const profile=JSON.parse(readAppDataKey(localKey("profile")))||{};
+    return validAtsrsId(profile.atsrsId)?profile.atsrsId:"";
+  }catch(error){return "";}
+}
+function selectedPersonnel(select){
+  if(isPersonalMode())return{id:personalOwnerStableId(),name:soloOwnerName()};
+  const option=select&&select.options?select.options[select.selectedIndex]:null;
+  return{id:validAtsrsId(select&&select.value)?select.value:"",name:option?option.textContent.trim():""};
+}
+function exactProjectIds(projectName,vesselName){
+  const project=String(projectName||"").trim(),vessel=String(vesselName||"").trim();
+  if(!project&&!vessel)return[];
+  const matches=getProjects().filter(item=>{
+    if(String(item.project||"").trim()!==project)return false;
+    return !vessel||String(item.vessel||"").trim()===vessel;
+  });
+  return matches.length===1&&validAtsrsId(matches[0].atsrsId)?[matches[0].atsrsId]:[];
+}
+function crewComplianceStatus(personnel){
+let name=((personnel&&personnel.name||"")+" "+(personnel&&personnel.surname||"")).trim();
+let certs=getData("certs").filter(c=>validAtsrsId(personnel&&personnel.atsrsId)&&c.atsrsPersonnelId===personnel.atsrsId);
+if(!certs.length)certs=getData("certs").filter(c=>!validAtsrsId(c.atsrsPersonnelId)&&c.person===name);
 if(!certs.length)return {key:"review",text:tr("review"),cls:"badge-review"};
 let hasExpired=certs.some(c=>status(c.expiry).expired);
 let hasRisk=certs.some(c=>status(c.expiry).risk);
@@ -486,17 +514,17 @@ function saveProjects(d){writeAppDataKey(localKey("projects"),JSON.stringify(d))
 function addProject(){
 let d=getProjects();
 if(!projectNameInput.value.trim()){alert(v12("fill")||tr("fill"));return}
-d.push({project:projectNameInput.value,vessel:vesselNameInput.value,client:clientNameInput.value,team:teamNameInput.value});
+let item={project:projectNameInput.value,vessel:vesselNameInput.value,client:clientNameInput.value,team:teamNameInput.value};ensureAtsrsId(item);d.push(item);
 saveProjects(d);projectNameInput.value=vesselNameInput.value=clientNameInput.value=teamNameInput.value="";renderProjects();
 }
-function deleteProject(i){let d=getProjects();d.splice(i,1);saveProjects(d);renderProjects()}
+function deleteProject(i){let d=getProjects(),project=d[i];if(!project)return;let linked=getData("personnel").some(person=>Array.isArray(person.atsrsProjectIds)&&person.atsrsProjectIds.includes(project.atsrsId));if(linked){alert("Remove this project from assigned personnel before deleting the project.");return}d.splice(i,1);saveProjects(d);renderProjects()}
 function renderProjects(){
 let d=getProjects();projectsTable.innerHTML="";
 d.forEach((x,i)=>projectsTable.innerHTML+=`<tr><td>${x.project||""}</td><td>${x.vessel||""}</td><td>${x.client||""}</td><td>${x.team||""}</td><td><button class="action" onclick="deleteProject(${i})">${tr("delete")}</button></td></tr>`);
 }
 
-function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert(v12("fill")||tr("fill"));return}a.push({name:pName.value,surname:pSurname.value,position:pPosition.value,company:pCompany.value,email:pEmail.value,phone:pPhone.value,nationality:pNationality.value,employeeId:pEmployeeId.value,project:pProject.value,vessel:pVessel.value});saveData("personnel",a);pName.value=pSurname.value=pPosition.value=pCompany.value=pEmail.value=pPhone.value=pNationality.value=pEmployeeId.value=pProject.value=pVessel.value="";renderAll();showPersonnelTab("list")}
-function deletePersonnel(i){let a=getData("personnel");a.splice(i,1);saveData("personnel",a);renderAll()}
+function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert(v12("fill")||tr("fill"));return}let item={name:pName.value,surname:pSurname.value,position:pPosition.value,company:pCompany.value,email:pEmail.value,phone:pPhone.value,nationality:pNationality.value,employeeId:pEmployeeId.value,project:pProject.value,vessel:pVessel.value,atsrsProjectIds:exactProjectIds(pProject.value,pVessel.value)};ensureAtsrsId(item);a.push(item);saveData("personnel",a);pName.value=pSurname.value=pPosition.value=pCompany.value=pEmail.value=pPhone.value=pNationality.value=pEmployeeId.value=pProject.value=pVessel.value="";renderAll();showPersonnelTab("list")}
+function deletePersonnel(i){let a=getData("personnel"),person=a[i];if(!person)return;let linked=getData("certs").some(cert=>validAtsrsId(person.atsrsId)&&cert.atsrsPersonnelId===person.atsrsId);if(linked){alert("Remove this personnel member's certificates before deleting the personnel record.");return}a.splice(i,1);saveData("personnel",a);renderAll()}
 function startCameraScan(){scanBox.classList.remove("hidden");confirmBox.classList.add("hidden");documentPreview.innerText="";cameraInput.click()}
 
 let atsrsTesseractPromise=null;
@@ -658,7 +686,7 @@ if(isPersonalMode()){
 let ready=0,review=0;
 p.forEach((x,i)=>{
 let full=((x.name||"")+" "+(x.surname||"")).trim();
-let st=crewComplianceStatus(full);
+  let st=crewComplianceStatus(x);
 if(st.key==="ready")ready++; if(st.key==="review")review++;
 let hay=[x.name,x.surname,x.position,x.company,x.email,x.phone,x.nationality,x.employeeId,x.project,x.vessel].join(" ").toLowerCase();
 if(q&&!hay.includes(q))return;
@@ -666,7 +694,7 @@ if(company&&x.company!==company)return;
 if(position&&x.position!==position)return;
 if(stf&&st.key!==stf)return;
 personnelTable.innerHTML+=`<tr><td>${x.name||""}</td><td>${x.surname||""}</td><td>${x.position||""}</td><td>${x.company||""}</td><td>${x.email||""}</td><td>${x.phone||""}</td><td><span class="badge ${st.cls}">${st.text}</span></td><td><button class="action" onclick="deletePersonnel(${i})">${tr("delete")}</button></td></tr>`;
-if(!isPersonalMode()){cPerson.innerHTML+=`<option>${full}</option>`;autoPerson.innerHTML+=`<option>${full}</option>`;}
+if(!isPersonalMode()){let stableId=ensureAtsrsId(x);cPerson.innerHTML+=`<option value="${stableId}">${full}</option>`;autoPerson.innerHTML+=`<option value="${stableId}">${full}</option>`;}
 });
 readyCrew.innerText=ready;reviewCrew.innerText=review;
 certTable.innerHTML="";let e90=0,e30=0,ex=0;
@@ -678,7 +706,7 @@ renderProjects();
 
 const countries=["","Azerbaijan","Turkey","Norway","United Kingdom","United States","Canada","Germany","France","Spain","Portugal","Italy","Netherlands","Belgium","Denmark","Sweden","Finland","Poland","Romania","Bulgaria","Georgia","Kazakhstan","United Arab Emirates","Saudi Arabia","Qatar","Kuwait","Oman","Bahrain","India","Pakistan","Philippines","Indonesia","Malaysia","Singapore","China","Japan","South Korea","Australia","New Zealand","South Africa","Equatorial Guinea","Angola","Nigeria","Ghana","Egypt","Morocco","Brazil","Mexico","Argentina"];
 function fillCountries(){profileCountry.innerHTML="";countries.forEach(c=>{let o=document.createElement("option");o.value=c;o.text=c;profileCountry.appendChild(o)})}
-async function saveProfile(){writeAppDataKey(localKey("profile"),JSON.stringify({name:profileName.value,surname:profileSurname.value,phone:profilePhone.value,country:profileCountry.value,company:profileCompany.value,position:profilePosition.value,timezone:profileTimezone.value}));var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==="function"?await window.atsrsCloudData.flush():true;alert(saved?"Profile saved to the ATSRS server.":"Profile was not saved. Check the connection and try again.")}
+async function saveProfile(){let current={};try{current=JSON.parse(readAppDataKey(localKey("profile")))||{}}catch(error){}let next=Object.assign({},current,{name:profileName.value,surname:profileSurname.value,phone:profilePhone.value,country:profileCountry.value,company:profileCompany.value,position:profilePosition.value,timezone:profileTimezone.value});writeAppDataKey(localKey("profile"),JSON.stringify(next));var saved=window.atsrsCloudData&&typeof window.atsrsCloudData.flush==="function"?await window.atsrsCloudData.flush():true;alert(saved?"Profile saved to the ATSRS server.":"Profile was not saved. Check the connection and try again.")}
 function loadProfile(){fillCountries();let p=JSON.parse(readAppDataKey(localKey("profile")))||{};profileName.value=p.name||"";profileSurname.value=p.surname||"";profilePhone.value=p.phone||"";profileCountry.value=p.country||"";profileCompany.value=p.company||"";profilePosition.value=p.position||"";profileTimezone.value=p.timezone||"UTC"}
 function exportLocalData(){let data={profile:JSON.parse(readAppDataKey(localKey("profile")))||{},personnel:getData("personnel"),certificates:getData("certs")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="atsrs-data-export.json";a.click();URL.revokeObjectURL(url)}
 
@@ -1080,9 +1108,9 @@ validateAutoConfirmForm=function(){
 };
 confirmExtractedDocument=async function(){
   if(!validateAutoConfirmForm())return;
-  let person=isPersonalMode()?soloOwnerName():autoPerson.value;
+  let selection=selectedPersonnel(autoPerson),person=selection.name;
   let a=getData('certs');
-  let item={person,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value};
+  let item={person,atsrsPersonnelId:selection.id,type:autoDocType.value,provider:autoProvider.value,expiry:normalizeExpiry('autoExpiry','autoExpiryNA'),docNo:autoDocNo.value,issue:autoIssue.value};ensureAtsrsId(item);
   let uploadedRow=null;
   try{
     const file=window.atsrsPendingCertificateFile;
@@ -1106,9 +1134,10 @@ confirmExtractedDocument=async function(){
   }
 };
 addCertificate=function(){
-  let a=getData('certs'); let person=isPersonalMode()?soloOwnerName():cPerson.value;
+  let a=getData('certs'); let selection=selectedPersonnel(cPerson),person=selection.name;
   if(!validateManualCertificateForm()||!person)return;
-  const item={person,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')};
+  const previous=editCertIndex!==null&&a[editCertIndex]?a[editCertIndex]:{};
+  const item=Object.assign({},previous,{person,atsrsPersonnelId:selection.id,type:cType.value,docNo:(cDocNo?.value||''),country:(cCountry?.value||''),provider:cProvider.value,issue:cIssue.value,expiry:normalizeExpiry('cExpiry','cExpiryNA')});ensureAtsrsId(item);
   if(editCertIndex!==null&&a[editCertIndex]){a[editCertIndex]=item; editCertIndex=null;} else {a.push(item);}
   saveData('certs',a);
   cProvider.value='';cIssue.value='';cExpiry.value=''; if(typeof cDocNo!=='undefined')cDocNo.value=''; if(typeof cCountry!=='undefined')cCountry.value='';
@@ -1126,6 +1155,7 @@ function editCertificate(i){
     cExpiry.disabled=cExpiryNA.checked;
   }
   cExpiry.value=String(x.expiry||'').toUpperCase()==='N/A'?'':(x.expiry||'');
+  if(!isPersonalMode()&&validAtsrsId(x.atsrsPersonnelId))cPerson.value=x.atsrsPersonnelId;
   applyV41RLanguage();
   document.getElementById('certManualPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
