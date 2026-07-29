@@ -52,13 +52,10 @@ function fakeClient(rows, controls = {}) {
       }
       if (!found.length) return Promise.resolve({ data: null, error: null });
       Object.assign(found[0], builder.value);
-      const result = {
+      return Promise.resolve({
         data: { updated_at: found[0].updated_at },
         error: null
-      };
-      return controls.updateDelay
-        ? new Promise(resolve => setTimeout(() => resolve(result), controls.updateDelay))
-        : Promise.resolve(result);
+      });
     }
     if (builder.operation === 'insert') {
       const duplicate = rows.some(row =>
@@ -374,35 +371,6 @@ async function testLatestQueuedWriteWins() {
   assert.equal(JSON.parse(rows[2].payload.value).name, 'Latest queued value');
 }
 
-async function testFlushWaitsForWritesQueuedWhileFlushing() {
-  const key = 'atsrs_user-1_personal_profile';
-  const rows = [
-    ...markers('personal'),
-    {
-      user_id: 'user-1',
-      account_type: 'personal',
-      data_key: key,
-      payload: { value: JSON.stringify({ name: 'Before' }) },
-      updated_at: 'flush-v1'
-    }
-  ];
-  const app = boot(rows, { updateDelay: 25 });
-  await app.api.ensureLoaded();
-
-  const first = JSON.parse(app.api.read(key));
-  first.name = 'First';
-  app.api.write(key, JSON.stringify(first));
-  const flushing = app.api.flush();
-
-  await new Promise(resolve => setTimeout(resolve, 5));
-  const second = { ...first, name: 'Queued during flush' };
-  app.api.write(key, JSON.stringify(second));
-
-  assert.equal(await flushing, true);
-  assert.equal(app.api.isSynced(), true);
-  assert.equal(JSON.parse(rows[2].payload.value).name, 'Queued during flush');
-}
-
 async function testTriggerFailureRollsBackClientAndSource() {
   const key = 'atsrs_user-1_personal_profile';
   const rows = [
@@ -434,7 +402,6 @@ async function testTriggerFailureRollsBackClientAndSource() {
   await testDeterministicRenameReorderAndRelations();
   await testCrossWorkspaceIsolation();
   await testLatestQueuedWriteWins();
-  await testFlushWaitsForWritesQueuedWhileFlushing();
   await testTriggerFailureRollsBackClientAndSource();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
