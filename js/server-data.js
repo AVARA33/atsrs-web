@@ -357,23 +357,29 @@
     event.returnValue='';
   });
   async function flushWrites(){
-    await writeQueue;
-    if(!failedOperations.length)return true;
-    var retry=failedOperations.splice(0);
-    for(var i=0;i<retry.length;i++){
-      var entry=retry[i];
-      var operation=typeof entry==='function'?entry:entry.run;
-      try{
-        await operation();
-      }catch(error){
-        lastWriteError=error;
-        if(entry&&typeof entry.onFailure==='function')entry.onFailure();
-        failedOperations.push(entry);
+    var passes=0;
+    while(passes<12){
+      passes++;
+      var observedQueue=writeQueue;
+      await observedQueue;
+      if(failedOperations.length){
+        var retry=failedOperations.splice(0);
+        for(var i=0;i<retry.length;i++){
+          var entry=retry[i];
+          var operation=typeof entry==='function'?entry:entry.run;
+          try{
+            await operation();
+          }catch(error){
+            lastWriteError=error;
+            if(entry&&typeof entry.onFailure==='function')entry.onFailure();
+            failedOperations.push(entry);
+          }
+        }
       }
-    }
-    if(!failedOperations.length){
-      lastWriteError=null;
-      return true;
+      if(writeQueue===observedQueue&&pendingWrites===0&&!failedOperations.length){
+        lastWriteError=null;
+        return true;
+      }
     }
     showSaveWarning();
     return false;
