@@ -1,6 +1,8 @@
 /* ATSRS workspace switcher. */
 (function(){
   'use strict';
+  var activeSwitch=null;
+  var switchSequence=0;
   function byId(id){return document.getElementById(id);}
   function activeMode(){
     var mode='';
@@ -34,7 +36,14 @@
   }
   function setBusy(busy,message){
     var root=byId('workspaceSwitcher');
-    if(root)root.classList.toggle('busy',!!busy);
+    if(root){
+      root.classList.toggle('busy',!!busy);
+      root.setAttribute('aria-busy',busy?'true':'false');
+    }
+    ['workspaceSwitcherButton','workspacePersonalOption','workspaceCompanyOption','workspaceLogoutBtn'].forEach(function(id){
+      var control=byId(id);
+      if(control)control.disabled=!!busy;
+    });
     if(message!==undefined)setStatus(message,false);
   }
   function render(state,user){
@@ -59,21 +68,39 @@
       option.classList.toggle('active',workspace===mode);
       option.setAttribute('aria-current',workspace===mode?'true':'false');
     });
-    setBusy(false,'');
+    if(!activeSwitch)setBusy(false,'');
   }
   async function chooseWorkspace(mode){
-    if(mode===activeMode()){setOpen(false);return;}
+    if(activeSwitch)return activeSwitch.promise;
+    if(mode===activeMode()){setOpen(false);return true;}
     if(typeof window.atsrsSwitchWorkspace!=='function'){
       setStatus('Workspace switching is not available. Refresh and try again.',true);
-      return;
+      return false;
     }
+    var sequence=++switchSequence;
     setBusy(true,'Saving changes and switching workspace...');
+    var promise=Promise.resolve().then(function(){return window.atsrsSwitchWorkspace(mode);});
+    activeSwitch={mode:mode,sequence:sequence,promise:promise};
     try{
-      var switched=await window.atsrsSwitchWorkspace(mode);
-      if(switched===false)setBusy(false,'Workspace could not be switched.');
+      var switched=await promise;
+      if(!activeSwitch||activeSwitch.sequence!==sequence)return false;
+      if(switched===false){
+        setStatus('Workspace could not be switched. Please try again.',true);
+        return false;
+      }
+      setStatus('',false);
+      setOpen(false);
+      return true;
     }catch(error){
-      setBusy(false,'Workspace could not be switched.');
-      setStatus('Workspace could not be switched. Please try again.',true);
+      if(activeSwitch&&activeSwitch.sequence===sequence){
+        setStatus('Workspace could not be switched. Please try again.',true);
+      }
+      return false;
+    }finally{
+      if(activeSwitch&&activeSwitch.sequence===sequence){
+        activeSwitch=null;
+        setBusy(false);
+      }
     }
   }
   function bind(){
@@ -105,6 +132,7 @@
   }
   window.atsrsWorkspaceSwitcherUpdate=render;
   window.atsrsWorkspaceSwitcherBusy=setBusy;
+  window.atsrsWorkspaceSwitcherChoose=chooseWorkspace;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
   window.addEventListener('load',function(){bind();render();});
 })();

@@ -2127,33 +2127,62 @@ setTimeout(v55DockTopActions,500);
         return false;
       }
     };
-    window.atsrsSwitchWorkspace=async function(mode){
+    var workspaceSwitchPromise=null;
+    var workspaceSwitchTarget='';
+    window.atsrsSwitchWorkspace=function(mode){
       if(mode!=='personal' && mode!=='company') return false;
       var user=window.currentUser||currentUser;
       if(!user || !user.id) throw new Error('Your session has expired. Please sign in again.');
+      workspaceSwitchTarget=mode;
+      if(workspaceSwitchPromise){
+        return workspaceSwitchPromise;
+      }
       var current=''; try{current=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
-      if(current===mode) return true;
-      var state=await readWorkspaceState(user);
-      if(!hasWorkspace(state,mode)) throw new Error('This workspace is not available for your account.');
-      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
-        var saved=await window.atsrsCloudData.flush();
-        if(saved===false||!window.atsrsCloudData.isSynced()){
-          throw new Error('Your latest changes were not saved. Check the connection and try again.');
+      if(current===mode){
+        workspaceSwitchTarget='';
+        return Promise.resolve(true);
+      }
+      workspaceSwitchPromise=(async function(){
+        try{
+          var state=await readWorkspaceState(user);
+          while(true){
+            var desired=workspaceSwitchTarget;
+            if(desired===current)return true;
+            if(!hasWorkspace(state,desired)) throw new Error('This workspace is not available for your account.');
+            if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
+              var saved=await window.atsrsCloudData.flush();
+              if(saved===false||!window.atsrsCloudData.isSynced()){
+                throw new Error('Your latest changes were not saved. Check the connection and try again.');
+              }
+            }
+            /* A newer click that arrived while state/queue work was in flight
+               wins before any workspace state is committed. */
+            if(desired!==workspaceSwitchTarget)continue;
+            applyAccountType(desired);
+            saveLastWorkspace(user,desired);
+            try{
+              localStorage.removeItem('atsrs_workspace_pick_required');
+              localStorage.setItem('atsrs_current_page','intro');
+              localStorage.setItem('atsrs_auth_mode','supabase');
+            }catch(e){}
+            if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
+              window.atsrsCloudData.clearSession();
+            }
+            window.__atsrsSessionOpened=false;
+            window.location.reload();
+            return true;
+          }
+        }catch(error){
+          applyAccountType(current);
+          saveLastWorkspace(user,current);
+          throw error;
         }
-      }
-      if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
-        window.atsrsCloudData.clearSession();
-      }
-      applyAccountType(mode);
-      saveLastWorkspace(user,mode);
-      try{
-        localStorage.removeItem('atsrs_workspace_pick_required');
-        localStorage.setItem('atsrs_current_page','intro');
-        localStorage.setItem('atsrs_auth_mode','supabase');
-      }catch(e){}
-      window.__atsrsSessionOpened=false;
-      window.location.reload();
-      return true;
+      })();
+      workspaceSwitchPromise.finally(function(){
+        workspaceSwitchPromise=null;
+        workspaceSwitchTarget='';
+      }).catch(function(){});
+      return workspaceSwitchPromise;
     };
     try{
       if(window.__atsrsOAuthInvalidCallback){

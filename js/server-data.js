@@ -15,7 +15,9 @@
   var nativeGet=Storage.prototype.getItem;
   var memoryStore=new Map();
   var writeVersions=new Map();
+  var persistedWriteVersions=new Map();
   var rowVersions=new Map();
+  var serverValues=new Map();
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
@@ -177,7 +179,74 @@
       document.body.classList.remove('atsrs-booting');
     }
   }
-  function enqueue(operation,onFailure){
+  function writeErrorCode(error){
+    return String(error&&error.code||error&&error.status||'').toUpperCase();
+  }
+  function isWriteConflict(error){
+    return writeErrorCode(error)==='ATSRS_WRITE_CONFLICT';
+  }
+  function isDuplicateInsert(error){
+    return writeErrorCode(error)==='23505';
+  }
+  function isRetryableWriteError(error){
+    if(isWriteConflict(error))return false;
+    var code=writeErrorCode(error);
+    var status=Number(error&&error.status||0);
+    if(!code)return true;
+    if(/^08/.test(code)||code==='PGRST000'||code==='PGRST001'||code==='PGRST002')return true;
+    return status===408||status===429||status>=500;
+  }
+  function attachWriteContext(error,meta,phase){
+    if(!(error instanceof Error)){
+      var original=error;
+      error=new Error(String(original&&original.message||original||'Unknown write error'));
+      ['code','status','details','hint'].forEach(function(field){
+        if(original&&original[field]!==undefined)error[field]=original[field];
+      });
+    }
+    if(meta&&meta.key&&!error.dataKey)error.dataKey=String(meta.key);
+    if(phase&&!error.phase)error.phase=String(phase);
+    return error;
+  }
+  function logWriteDelay(error,entry){
+    console.warn('ATSRS cloud save delayed; the pending user change is retained.',{
+      dataKey:entry&&entry.key||error&&error.dataKey||'',
+      code:writeErrorCode(error)||'UNKNOWN',
+      phase:error&&error.phase||''
+    });
+  }
+  function logWriteConflict(error,entry){
+    console.warn('ATSRS cloud save conflict; newer server data was preserved.',{
+      dataKey:entry&&entry.key||error&&error.dataKey||'',
+      field:error&&error.field||'',
+      phase:error&&error.phase||''
+    });
+  }
+  function logWriteRejected(error,entry){
+    console.error('ATSRS cloud save was rejected.',{
+      dataKey:entry&&entry.key||error&&error.dataKey||'',
+      code:writeErrorCode(error)||'UNKNOWN',
+      phase:error&&error.phase||'',
+      message:String(error&&error.message||'')
+    });
+  }
+  function classifyFailedEntry(entry,error){
+    error=attachWriteContext(error,entry,'queue');
+    entry.lastError=error;
+    entry.retryable=isRetryableWriteError(error);
+    if(!entry.retryable&&typeof entry.onFailure==='function')entry.onFailure();
+    return error;
+  }
+  function enqueue(operation,onFailure,meta){
+    var entry={
+      run:operation,
+      onFailure:onFailure,
+      key:meta&&meta.key||'',
+      scope:meta&&meta.scope||'',
+      version:meta&&meta.version||0,
+      retryable:true,
+      lastError:null
+    };
     pendingWrites++;
     writeQueue=writeQueue
       .then(operation)
@@ -187,10 +256,12 @@
       })
       .catch(function(error){
         pendingWrites=Math.max(0,pendingWrites-1);
+        error=classifyFailedEntry(entry,error);
         lastWriteError=error;
-        if(typeof onFailure==='function')onFailure();
-        failedOperations.push({run:operation,onFailure:onFailure});
-        console.error('ATSRS cloud save failed',error);
+        failedOperations.push(entry);
+        if(entry.retryable)logWriteDelay(error,entry);
+        else if(isWriteConflict(error))logWriteConflict(error,entry);
+        else logWriteRejected(error,entry);
         showSaveWarning();
         return false;
       });
@@ -211,6 +282,123 @@
     clearTimeout(window.__atsrsCloudWarningTimer);
     window.__atsrsCloudWarningTimer=setTimeout(function(){warning.style.display='none';},7000);
   }
+  function stableJson(value){
+    if(Array.isArray(value))return '['+value.map(stableJson).join(',')+']';
+    if(value&&typeof value==='object'){
+      return '{'+Object.keys(value).sort().map(function(key){
+        return JSON.stringify(key)+':'+stableJson(value[key]);
+      }).join(',')+'}';
+    }
+    return JSON.stringify(value);
+  }
+  function sameValue(left,right){
+    if(left===right)return true;
+    try{return stableJson(JSON.parse(String(left)))===stableJson(JSON.parse(String(right)));}
+    catch(error){return String(left)===String(right);}
+  }
+  function plainObject(value){
+    return !!(value&&typeof value==='object'&&!Array.isArray(value));
+  }
+  function conflictError(key,field){
+    var error=new Error('ATSRS_WRITE_CONFLICT: newer server data overlaps this change.');
+    error.code='ATSRS_WRITE_CONFLICT';
+    error.dataKey=String(key);
+    error.field=String(field||'');
+    return error;
+  }
+  function mergeObjectFields(key,server,base,local,path){
+    var merged=Object.assign({},server);
+    var keys=new Set(Object.keys(base||{}).concat(Object.keys(local||{})));
+    keys.forEach(function(field){
+      var fieldPath=path?path+'.'+field:field;
+      var baseHas=Object.prototype.hasOwnProperty.call(base||{},field);
+      var localHas=Object.prototype.hasOwnProperty.call(local||{},field);
+      var serverHas=Object.prototype.hasOwnProperty.call(server||{},field);
+      var baseValue=baseHas?base[field]:undefined;
+      var localValue=localHas?local[field]:undefined;
+      var serverValue=serverHas?server[field]:undefined;
+      if(stableJson(localValue)===stableJson(baseValue)&&localHas===baseHas)return;
+      var serverChanged=stableJson(serverValue)!==stableJson(baseValue)||serverHas!==baseHas;
+      if(serverChanged&&(
+        stableJson(serverValue)!==stableJson(localValue)||serverHas!==localHas
+      )){
+        if(plainObject(serverValue)&&plainObject(baseValue)&&plainObject(localValue)){
+          merged[field]=mergeObjectFields(key,serverValue,baseValue,localValue,fieldPath);
+          return;
+        }
+        throw conflictError(key,fieldPath);
+      }
+      if(localHas)merged[field]=localValue;
+      else delete merged[field];
+    });
+    return merged;
+  }
+  function entityId(item,index){
+    if(item&&validUuid(item.atsrsId))return 'id:'+String(item.atsrsId);
+    return 'legacy:'+index+':'+stableJson(item);
+  }
+  function mergeEntityArrays(key,server,base,local){
+    var serverPositions=new Map();
+    var basePositions=new Map();
+    server.forEach(function(item,index){serverPositions.set(entityId(item,index),index);});
+    base.forEach(function(item,index){basePositions.set(entityId(item,index),index);});
+    var merged=server.slice();
+    local.forEach(function(item,index){
+      var id=entityId(item,index);
+      var baseIndex=basePositions.get(id);
+      var serverIndex=serverPositions.get(id);
+      if(baseIndex===undefined){
+        if(serverIndex===undefined){
+          serverPositions.set(id,merged.length);
+          merged.push(item);
+        }else if(stableJson(merged[serverIndex])!==stableJson(item)){
+          throw conflictError(key,id);
+        }
+        return;
+      }
+      if(stableJson(item)===stableJson(base[baseIndex]))return;
+      if(serverIndex===undefined)throw conflictError(key,id);
+      merged[serverIndex]=mergeObjectFields(key,merged[serverIndex],base[baseIndex],item,id);
+    });
+    base.forEach(function(item,index){
+      var id=entityId(item,index);
+      if(local.some(function(candidate,localIndex){return entityId(candidate,localIndex)===id;}))return;
+      var serverIndex=serverPositions.get(id);
+      if(serverIndex===undefined)return;
+      if(stableJson(merged[serverIndex])!==stableJson(item))throw conflictError(key,id);
+      merged[serverIndex]=null;
+    });
+    return merged.filter(function(item){return item!==null;});
+  }
+  function rebaseBusinessValue(key,serverValue,baseValue,localValue){
+    if(sameValue(serverValue,baseValue))return String(localValue);
+    if(sameValue(localValue,baseValue))return String(serverValue);
+    var server;
+    var base;
+    var local;
+    try{
+      server=JSON.parse(String(serverValue));
+      base=JSON.parse(String(baseValue));
+      local=JSON.parse(String(localValue));
+    }catch(error){
+      throw conflictError(key,'value');
+    }
+    if(plainObject(server)&&plainObject(base)&&plainObject(local)){
+      return JSON.stringify(mergeObjectFields(key,server,base,local,''));
+    }
+    if(Array.isArray(server)&&Array.isArray(base)&&Array.isArray(local)){
+      return JSON.stringify(mergeEntityArrays(key,server,base,local));
+    }
+    throw conflictError(key,'value');
+  }
+  function emptyMergeBase(value){
+    try{
+      var decoded=JSON.parse(String(value));
+      if(Array.isArray(decoded))return '[]';
+      if(plainObject(decoded))return '{}';
+    }catch(error){}
+    return '';
+  }
   function writeContext(){
     var valueUser=user();
     return valueUser?{user_id:valueUser.id,account_type:accountType()}:null;
@@ -225,55 +413,124 @@
       updated_at:new Date().toISOString()
     };
   }
-  async function upsertStorageValue(key,value,context){
-    if(!context)return;
-    var row=rowForStorage(key,value,context);
-    var expected=rowVersions.get(String(key));
-    var query=expected
-      ?client().from(DATA_TABLE)
-        .update(row)
-        .eq('user_id',context.user_id)
-        .eq('account_type',context.account_type)
-        .eq('data_key',String(key))
-        .eq('updated_at',expected)
-        .select('updated_at')
-        .maybeSingle()
-      :client().from(DATA_TABLE)
-        .insert(row)
-        .select('updated_at')
-        .single();
-    var result=await query;
+  async function loadStorageRow(key,context){
+    var result=await client().from(DATA_TABLE)
+      .select('payload,updated_at')
+      .eq('user_id',context.user_id)
+      .eq('account_type',context.account_type)
+      .eq('data_key',String(key))
+      .maybeSingle();
     if(result.error)throw result.error;
-    if(!result.data)throw new Error('ATSRS_STALE_WRITE: server data changed in another tab.');
-    rowVersions.set(String(key),result.data.updated_at);
+    return result.data||null;
   }
-  async function deleteStorageValue(key,context){
+  async function upsertStorageValue(key,value,context,baseValue){
+    if(!context)return String(value);
+    var candidate=String(value);
+    var mergeBase=baseValue===null||baseValue===undefined?emptyMergeBase(candidate):String(baseValue);
+    for(var attempt=0;attempt<3;attempt++){
+      var row=rowForStorage(key,candidate,context);
+      var expected=rowVersions.get(String(key));
+      var query=expected
+        ?client().from(DATA_TABLE)
+          .update(row)
+          .eq('user_id',context.user_id)
+          .eq('account_type',context.account_type)
+          .eq('data_key',String(key))
+          .eq('updated_at',expected)
+          .select('updated_at')
+          .maybeSingle()
+        :client().from(DATA_TABLE)
+          .insert(row)
+          .select('updated_at')
+          .single();
+      var result=await query;
+      if(result.error){
+        var insertError=attachWriteContext(result.error,{key:key},expected?'cas_update':'insert');
+        if(!expected&&isDuplicateInsert(insertError)){
+          var duplicateLatest=await loadStorageRow(key,context);
+          if(!duplicateLatest||!duplicateLatest.payload||typeof duplicateLatest.payload.value!=='string'){
+            throw insertError;
+          }
+          var duplicateValue=String(duplicateLatest.payload.value);
+          rowVersions.set(String(key),duplicateLatest.updated_at);
+          serverValues.set(String(key),duplicateValue);
+          candidate=rebaseBusinessValue(key,duplicateValue,mergeBase,candidate);
+          mergeBase=duplicateValue;
+          if(sameValue(candidate,duplicateValue))return duplicateValue;
+          continue;
+        }
+        throw insertError;
+      }
+      if(result.data){
+        rowVersions.set(String(key),result.data.updated_at);
+        serverValues.set(String(key),candidate);
+        return candidate;
+      }
+      var latest=await loadStorageRow(key,context);
+      if(!latest||!latest.payload||typeof latest.payload.value!=='string'){
+        throw conflictError(key,'row');
+      }
+      var latestValue=String(latest.payload.value);
+      rowVersions.set(String(key),latest.updated_at);
+      serverValues.set(String(key),latestValue);
+      candidate=rebaseBusinessValue(key,latestValue,mergeBase,candidate);
+      mergeBase=latestValue;
+      if(sameValue(candidate,latestValue))return latestValue;
+    }
+    throw conflictError(key,'retry_limit');
+  }
+  async function deleteStorageValue(key,context,baseValue){
     if(!context)return;
-    var row={
-      user_id:context.user_id,
-      account_type:context.account_type,
-      data_key:String(key),
-      payload:{deleted:true},
-      updated_at:new Date().toISOString()
-    };
-    var expected=rowVersions.get(String(key));
-    var query=expected
-      ?client().from(DATA_TABLE)
-        .update(row)
-        .eq('user_id',context.user_id)
-        .eq('account_type',context.account_type)
-        .eq('data_key',String(key))
-        .eq('updated_at',expected)
-        .select('updated_at')
-        .maybeSingle()
-      :client().from(DATA_TABLE)
-        .insert(row)
-        .select('updated_at')
-        .single();
-    var result=await query;
-    if(result.error)throw result.error;
-    if(!result.data)throw new Error('ATSRS_STALE_WRITE: server data changed in another tab.');
-    rowVersions.set(String(key),result.data.updated_at);
+    for(var attempt=0;attempt<3;attempt++){
+      var row={
+        user_id:context.user_id,
+        account_type:context.account_type,
+        data_key:String(key),
+        payload:{deleted:true},
+        updated_at:new Date().toISOString()
+      };
+      var expected=rowVersions.get(String(key));
+      var query=expected
+        ?client().from(DATA_TABLE)
+          .update(row)
+          .eq('user_id',context.user_id)
+          .eq('account_type',context.account_type)
+          .eq('data_key',String(key))
+          .eq('updated_at',expected)
+          .select('updated_at')
+          .maybeSingle()
+        :client().from(DATA_TABLE)
+          .insert(row)
+          .select('updated_at')
+          .single();
+      var result=await query;
+      if(result.error){
+        var deleteError=attachWriteContext(result.error,{key:key},expected?'delete_cas':'delete_insert');
+        if(!expected&&isDuplicateInsert(deleteError)){
+          var duplicateDeleteLatest=await loadStorageRow(key,context);
+          if(!duplicateDeleteLatest||!duplicateDeleteLatest.payload||typeof duplicateDeleteLatest.payload.value!=='string'){
+            throw deleteError;
+          }
+          if(!sameValue(duplicateDeleteLatest.payload.value,baseValue))throw conflictError(key,'delete');
+          rowVersions.set(String(key),duplicateDeleteLatest.updated_at);
+          serverValues.set(String(key),String(duplicateDeleteLatest.payload.value));
+          continue;
+        }
+        throw deleteError;
+      }
+      if(result.data){
+        rowVersions.set(String(key),result.data.updated_at);
+        serverValues.delete(String(key));
+        return;
+      }
+      var latest=await loadStorageRow(key,context);
+      if(!latest||!latest.payload||typeof latest.payload.value!=='string'){
+        throw conflictError(key,'delete');
+      }
+      if(!sameValue(latest.payload.value,baseValue))throw conflictError(key,'delete');
+      rowVersions.set(String(key),latest.updated_at);
+    }
+    throw conflictError(key,'delete_retry_limit');
   }
   function readBusinessValue(key){
     if(!isCloudSession()||!isManagedBusinessKey(key))return null;
@@ -283,45 +540,70 @@
     if(!shouldSyncKey(key))return false;
     key=String(key);
     value=normalizeStableValue(key,value);
+    if(memoryStore.has(key)&&sameValue(memoryStore.get(key),value))return true;
+    failedOperations=failedOperations.filter(function(entry){
+      return !(entry&&entry.retryable===false&&entry.key===key);
+    });
+    if(!failedOperations.length)lastWriteError=null;
     var context=writeContext();
     var hadPrevious=memoryStore.has(key);
     var previousValue=hadPrevious?memoryStore.get(key):null;
+    var baseValue=serverValues.has(key)?serverValues.get(key):previousValue;
     var version=(writeVersions.get(key)||0)+1;
     writeVersions.set(key,version);
     memoryStore.set(key,value);
     enqueue(
       async function(){
-        await upsertStorageValue(key,value,context);
-        if(writeVersions.get(key)===version)memoryStore.set(key,value);
+        if(writeVersions.get(key)!==version)return;
+        var operationBase=persistedWriteVersions.get(key)===version-1
+          ?previousValue
+          :baseValue;
+        var candidate=serverValues.has(key)
+          ?rebaseBusinessValue(key,serverValues.get(key),operationBase,value)
+          :value;
+        var persisted=await upsertStorageValue(key,candidate,context,serverValues.get(key));
+        persistedWriteVersions.set(key,version);
+        if(writeVersions.get(key)===version)memoryStore.set(key,persisted);
       },
       function(){
         if(writeVersions.get(key)!==version)return;
-        if(hadPrevious)memoryStore.set(key,previousValue);
+        if(serverValues.has(key))memoryStore.set(key,serverValues.get(key));
+        else if(hadPrevious)memoryStore.set(key,previousValue);
         else memoryStore.delete(key);
         if(typeof window.renderAll==='function')setTimeout(window.renderAll,0);
-      }
+      },
+      {key:key,scope:context.user_id+'::'+context.account_type,version:version}
     );
     return true;
   }
   function removeBusinessValue(key){
     if(!shouldSyncKey(key))return false;
     key=String(key);
+    failedOperations=failedOperations.filter(function(entry){
+      return !(entry&&entry.retryable===false&&entry.key===key);
+    });
+    if(!failedOperations.length)lastWriteError=null;
     var context=writeContext();
     var hadPrevious=memoryStore.has(key);
     var previousValue=hadPrevious?memoryStore.get(key):null;
+    var baseValue=serverValues.has(key)?serverValues.get(key):previousValue;
     var version=(writeVersions.get(key)||0)+1;
     writeVersions.set(key,version);
     memoryStore.delete(key);
     enqueue(
       async function(){
-        await deleteStorageValue(key,context);
+        if(writeVersions.get(key)!==version)return;
+        await deleteStorageValue(key,context,baseValue);
+        persistedWriteVersions.set(key,version);
         if(writeVersions.get(key)===version)memoryStore.delete(key);
       },
       function(){
         if(writeVersions.get(key)!==version)return;
-        if(hadPrevious)memoryStore.set(key,previousValue);
+        if(serverValues.has(key))memoryStore.set(key,serverValues.get(key));
+        else if(hadPrevious)memoryStore.set(key,previousValue);
         if(typeof window.renderAll==='function')setTimeout(window.renderAll,0);
-      }
+      },
+      {key:key,scope:context.user_id+'::'+context.account_type,version:version}
     );
     return true;
   }
@@ -357,27 +639,56 @@
     event.returnValue='';
   });
   async function flushWrites(){
-    await writeQueue;
-    if(!failedOperations.length)return true;
-    var retry=failedOperations.splice(0);
-    for(var i=0;i<retry.length;i++){
-      var entry=retry[i];
-      var operation=typeof entry==='function'?entry:entry.run;
-      try{
-        await operation();
-      }catch(error){
-        lastWriteError=error;
-        if(entry&&typeof entry.onFailure==='function')entry.onFailure();
-        failedOperations.push(entry);
+    var passes=0;
+    while(passes<4){
+      passes++;
+      var observedQueue=writeQueue;
+      await observedQueue;
+      if(failedOperations.length){
+        if(failedOperations.some(function(entry){return entry&&entry.retryable===false;})){
+          showSaveWarning();
+          return false;
+        }
+        var retry=failedOperations.splice(0);
+        for(var i=0;i<retry.length;i++){
+          var entry=retry[i];
+          var operation=typeof entry==='function'?entry:entry.run;
+          try{
+            await operation();
+          }catch(error){
+            error=classifyFailedEntry(entry,error);
+            lastWriteError=error;
+            if(entry.retryable)logWriteDelay(error,entry);
+            else if(isWriteConflict(error))logWriteConflict(error,entry);
+            else logWriteRejected(error,entry);
+            failedOperations.push(entry);
+          }
+        }
+      }
+      if(writeQueue===observedQueue&&pendingWrites===0&&!failedOperations.length){
+        lastWriteError=null;
+        return true;
       }
     }
-    if(!failedOperations.length){
-      lastWriteError=null;
-      return true;
+    if(lastWriteError){
+      console.warn('ATSRS cloud save remains pending after a bounded drain.',{
+        dataKey:lastWriteError.dataKey||'',
+        code:writeErrorCode(lastWriteError)||'UNKNOWN',
+        phase:lastWriteError.phase||''
+      });
     }
     showSaveWarning();
     return false;
   }
+  window.addEventListener('online',function(){
+    if(!pendingWrites&&!failedOperations.length)return;
+    flushWrites().catch(function(error){
+      console.warn('ATSRS reconnect save is still pending.',{
+        dataKey:error&&error.dataKey||'',
+        code:writeErrorCode(error)||'UNKNOWN'
+      });
+    });
+  });
 
   function allLocalKeys(){
     var keys=[];
@@ -565,11 +876,20 @@
     Array.from(rowVersions.keys()).forEach(function(key){
       if(prefix&&key.indexOf(prefix)===0)rowVersions.delete(key);
     });
+    Array.from(persistedWriteVersions.keys()).forEach(function(key){
+      if(prefix&&key.indexOf(prefix)===0)persistedWriteVersions.delete(key);
+    });
+    Array.from(serverValues.keys()).forEach(function(key){
+      if(prefix&&key.indexOf(prefix)===0)serverValues.delete(key);
+    });
     (rows||[]).forEach(function(row){
       if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
       if(!isManagedBusinessKey(row.data_key))return;
       var payload=row.payload||{};
-      if(typeof payload.value==='string')memoryStore.set(String(row.data_key),payload.value);
+      if(typeof payload.value==='string'){
+        memoryStore.set(String(row.data_key),payload.value);
+        serverValues.set(String(row.data_key),payload.value);
+      }
       if(row.updated_at)rowVersions.set(String(row.data_key),row.updated_at);
     });
   }
@@ -1134,10 +1454,28 @@
     write:writeBusinessValue,
     remove:removeBusinessValue,
     isSynced:function(){return pendingWrites===0&&!lastWriteError&&!failedOperations.length;},
+    pendingState:function(){
+      return {
+        pendingWrites:pendingWrites,
+        failedOperations:failedOperations.map(function(entry){
+          return {
+            dataKey:entry&&entry.key||'',
+            scope:entry&&entry.scope||'',
+            version:entry&&entry.version||0,
+            retryable:!!(entry&&entry.retryable),
+            code:writeErrorCode(entry&&entry.lastError),
+            message:String(entry&&entry.lastError&&entry.lastError.message||'')
+          };
+        }),
+        loadedScope:loadedScope
+      };
+    },
     clearSession:function(){
       memoryStore.clear();
       writeVersions.clear();
+      persistedWriteVersions.clear();
       rowVersions.clear();
+      serverValues.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;

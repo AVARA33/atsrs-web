@@ -89,6 +89,7 @@
   var PROFILE_KEY='profile';
   var PROFILE_BACKUP_KEY='profile_backup';
   var profileRecoveryRunning=false;
+  var verificationRefreshPromise=null;
   function byId(id){return document.getElementById(id)}
   function safeUserId(){
     try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}
@@ -337,9 +338,12 @@
   }
   function updateLocalVerification(kind,verified){
     var profile=readJson(PROFILE_KEY,{});
-    if(kind==='mobile')profile.phoneVerified=!!verified;
-    else profile.whatsappVerified=!!verified;
-    writeJson(PROFILE_KEY,profile);
+    var field=kind==='mobile'?'phoneVerified':'whatsappVerified';
+    var next=!!verified;
+    if(profile[field]!==next){
+      profile[field]=next;
+      writeJson(PROFILE_KEY,profile);
+    }
     setVerificationText(kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',verified);
     var button=document.querySelector('[data-profile-verify="'+kind+'"]');
     if(button)button.textContent=verified?'Verified':'Verify via WhatsApp';
@@ -411,13 +415,29 @@
     finally{button.disabled=false;if(!completed)button.textContent=original}
   }
   async function refreshVerificationStatus(){
-    if(!window.supabaseClient)return;
-    ['mobile','whatsapp'].forEach(async function(kind){
-      try{
-        var result=await verificationCall({action:'status',kind:kind});
-        updateLocalVerification(kind,!!result.verified);
-      }catch(ignore){}
-    });
+    if(!window.supabaseClient)return false;
+    if(verificationRefreshPromise)return verificationRefreshPromise;
+    verificationRefreshPromise=(async function(){
+      var kinds=['mobile','whatsapp'];
+      var results=await Promise.all(kinds.map(async function(kind){
+        try{
+          var result=await verificationCall({action:'status',kind:kind});
+          return {kind:kind,verified:!!result.verified};
+        }catch(ignore){return null;}
+      }));
+      results.forEach(function(result){
+        if(!result)return;
+        setVerificationText(
+          result.kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',
+          result.verified
+        );
+        var button=document.querySelector('[data-profile-verify="'+result.kind+'"]');
+        if(button)button.textContent=result.verified?'Verified':'Verify via WhatsApp';
+      });
+      return true;
+    })();
+    try{return await verificationRefreshPromise;}
+    finally{verificationRefreshPromise=null;}
   }
   function bindOfficialProfileControls(){
     ensurePhonePickers();
@@ -587,7 +607,24 @@
     }
     showSaveError();return false;
   };
+  function profileHydrationPending(){
+    var user=window.currentUser;
+    return !!(
+      user&&user.id&&user.id!=='local_test_user'&&window.supabaseClient&&
+      window.atsrsCloudData&&typeof window.atsrsCloudData.isLoaded==='function'&&
+      !window.atsrsCloudData.isLoaded()
+    );
+  }
+  function loadProfileWhenReady(){
+    if(profileHydrationPending())return false;
+    window.loadProfile();
+    return true;
+  }
   window.loadProfile=function(){
+    /* Never interpret an empty pre-hydration RAM cache as a missing profile.
+       Recovery writes are allowed only after the authoritative workspace rows
+       have been loaded for the active scope. */
+    if(profileHydrationPending())return false;
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
     var original=readJson(PROFILE_KEY,{});
     var p=restoreProfileBackup(original);
@@ -641,6 +678,7 @@
         });
       },0);
     }
+    return true;
   };
   document.addEventListener('click',function(event){
     if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();
@@ -698,8 +736,9 @@
   if(typeof oldRender==='function') window.renderAll=function(){var r=oldRender.apply(this,arguments); renderCoverLetter(); forceFlagOnly(); return r;};
   var oldShow=window.showPage;
   if(typeof oldShow==='function') window.showPage=function(){var r=oldShow.apply(this,arguments); if(String(arguments[0]||'')==='refs'||byId('refsPage'))setTimeout(renderCoverLetter,40); if(String(arguments[0]||'')==='profile')setTimeout(window.loadProfile,40); forceFlagOnly(); return r;};
-  document.addEventListener('DOMContentLoaded',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
-  window.addEventListener('load',function(){ensureProfileStatus(); window.loadProfile(); renderCoverLetter(); forceFlagOnly();});
+  window.addEventListener('atsrs:data-hydrated',function(){loadProfileWhenReady();});
+  document.addEventListener('DOMContentLoaded',function(){ensureProfileStatus(); loadProfileWhenReady(); renderCoverLetter(); forceFlagOnly();});
+  window.addEventListener('load',function(){ensureProfileStatus(); loadProfileWhenReady(); renderCoverLetter(); forceFlagOnly();});
   atsrsStableInterval(function(){forceFlagOnly(); if(byId('refsPage')&&!byId('refsPage').classList.contains('hidden'))renderCoverLetter();},1500);
 })();
 
