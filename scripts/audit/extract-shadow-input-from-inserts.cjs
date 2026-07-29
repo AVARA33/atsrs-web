@@ -55,18 +55,21 @@ function decodeSqlValue(token, column) {
 const lines = fs.readFileSync(sqlPath, 'utf8').split(/\r?\n/);
 for (const line of lines) {
   const match = line.match(
-    /^INSERT INTO "public"\."([^"]+)" \((.+)\) VALUES \((.*)\);$/,
+    /^INSERT INTO (?:"public"\."([^"]+)"|public\.([A-Za-z0-9_]+)) \((.+)\) VALUES \((.*)\);$/,
   );
-  if (!match || !wanted.has(match[1])) continue;
-  const columns = Array.from(match[2].matchAll(/"([^"]+)"/g), (item) => item[1]);
-  const values = splitValues(match[3]);
+  const table = match && (match[1] || match[2]);
+  if (!match || !wanted.has(table)) continue;
+  const columns = splitValues(match[3]).map((column) =>
+    column.trim().replace(/^"|"$/g, '')
+  );
+  const values = splitValues(match[4]);
   if (columns.length !== values.length) {
-    throw new Error(`Column/value mismatch for ${match[1]}`);
+    throw new Error(`Column/value mismatch for ${table}`);
   }
   const row = Object.fromEntries(
     columns.map((column, index) => [column, decodeSqlValue(values[index], column)]),
   );
-  output[wanted.get(match[1])].push(row);
+  output[wanted.get(table)].push(row);
 }
 
 awaitWrite();
