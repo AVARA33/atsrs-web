@@ -2,6 +2,10 @@
 
 Status: preparation only. Do not execute without the user's explicit approval.
 
+Current gate: **NO-GO** until every blocker in
+`docs/stable-id-preflight-gate.md` is closed and the migration reconciliation
+dry-run lists only `20260729041619`.
+
 Project: `hwtjuqyxzivymofamwxl`
 
 Migration:
@@ -55,6 +59,8 @@ This order is intentional and must not be reversed.
    `supabase migration list --linked`
 3. Preview only:
    `supabase db push --linked --dry-run`
+   Stop unless this lists only
+   `20260729041619_stable_workspace_entity_ids.sql`.
 4. Apply only
    `20260729041619_stable_workspace_entity_ids.sql`. The flag must remain
    `false`.

@@ -1,0 +1,45 @@
+{
+  "captured_at": "2026-07-29T00:00:00+04:00",
+  "mode": "read-only",
+  "domain": "https://atsrs.com/",
+  "dns": {
+    "apex_a": [
+      "185.199.108.153",
+      "185.199.109.153",
+      "185.199.110.153",
+      "185.199.111.153"
+    ],
+    "www_cname": "avara33.github.io"
+  },
+  "hosting": "GitHub Pages",
+  "deployment": {
+    "branch": "main",
+    "sha": "bd12a1bc9c81da2cb975c554980956de3cb7a20c",
+    "workflow_run": 30391732175,
+    "status": "success",
+    "environment_url": "https://atsrs.com/"
+  },
+  "live_release": {
+    "build": "V385",
+    "last_update": "28 Jul 2026",
+    "html_sha256_after_utf8_decode": "FFE501033145A7FA0729F60E7C9BFFDD498C51F58E290555A3A2D8FC99C8C73C",
+    "raw_main_html_hash_match": true,
+    "origin_ip_checks": 4,
+    "origin_ip_matches": 4,
+    "v219_present": false
+  },
+  "cache": {
+    "provider": "GitHub Pages via Fastly",
+    "cache_control": "max-age=600",
+    "cache_bust_result": "V385",
+    "service_worker_registration_in_repository": false
+  },
+  "local_prepared_release": {
+    "build": "V387",
+    "sha": "fcf0b496b1b221c6d9e1495cd5e037314dbf71ae",
+    "commits_ahead_of_origin_main": 5,
+    "pushed": false,
+    "deployed": false
+  },
+  "mutation_performed": false
+}
