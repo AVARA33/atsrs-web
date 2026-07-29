@@ -2127,33 +2127,59 @@ setTimeout(v55DockTopActions,500);
         return false;
       }
     };
-    window.atsrsSwitchWorkspace=async function(mode){
+    var workspaceSwitchPromise=null;
+    var workspaceSwitchTarget='';
+    var workspaceSwitchSequence=0;
+    window.atsrsSwitchWorkspace=function(mode){
       if(mode!=='personal' && mode!=='company') return false;
       var user=window.currentUser||currentUser;
       if(!user || !user.id) throw new Error('Your session has expired. Please sign in again.');
       var current=''; try{current=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
       if(current===mode) return true;
-      var state=await readWorkspaceState(user);
-      if(!hasWorkspace(state,mode)) throw new Error('This workspace is not available for your account.');
-      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
-        var saved=await window.atsrsCloudData.flush();
-        if(saved===false||!window.atsrsCloudData.isSynced()){
-          throw new Error('Your latest changes were not saved. Check the connection and try again.');
+      if(workspaceSwitchPromise){
+        return workspaceSwitchTarget===mode?workspaceSwitchPromise:Promise.resolve(false);
+      }
+      var sequence=++workspaceSwitchSequence;
+      workspaceSwitchTarget=mode;
+      workspaceSwitchPromise=(async function(){
+        try{
+          var state=await readWorkspaceState(user);
+          if(sequence!==workspaceSwitchSequence)return false;
+          if(!hasWorkspace(state,mode)) throw new Error('This workspace is not available for your account.');
+          if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
+            var saved=await window.atsrsCloudData.flush();
+            if(sequence!==workspaceSwitchSequence)return false;
+            if(saved===false||!window.atsrsCloudData.isSynced()){
+              throw new Error('Your latest changes were not saved. Check the connection and try again.');
+            }
+          }
+          if(sequence!==workspaceSwitchSequence)return false;
+          applyAccountType(mode);
+          saveLastWorkspace(user,mode);
+          try{
+            localStorage.removeItem('atsrs_workspace_pick_required');
+            localStorage.setItem('atsrs_current_page','intro');
+            localStorage.setItem('atsrs_auth_mode','supabase');
+          }catch(e){}
+          if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
+            window.atsrsCloudData.clearSession();
+          }
+          window.__atsrsSessionOpened=false;
+          window.location.reload();
+          return true;
+        }catch(error){
+          applyAccountType(current);
+          saveLastWorkspace(user,current);
+          throw error;
         }
-      }
-      if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
-        window.atsrsCloudData.clearSession();
-      }
-      applyAccountType(mode);
-      saveLastWorkspace(user,mode);
-      try{
-        localStorage.removeItem('atsrs_workspace_pick_required');
-        localStorage.setItem('atsrs_current_page','intro');
-        localStorage.setItem('atsrs_auth_mode','supabase');
-      }catch(e){}
-      window.__atsrsSessionOpened=false;
-      window.location.reload();
-      return true;
+      })();
+      workspaceSwitchPromise.finally(function(){
+        if(sequence===workspaceSwitchSequence){
+          workspaceSwitchPromise=null;
+          workspaceSwitchTarget='';
+        }
+      }).catch(function(){});
+      return workspaceSwitchPromise;
     };
     try{
       if(window.__atsrsOAuthInvalidCallback){
