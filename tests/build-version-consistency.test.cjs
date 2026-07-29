@@ -9,17 +9,18 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V390');
+assert.equal(version, 'V391');
 assert.equal(update, '29 Jul 2026');
 
 for (const asset of [
   'stability-runtime.js',
   'server-data.js',
+  'shadow-read.js',
   'storage.js',
   'dashboard.js',
   'workspace-switcher.js'
 ]) {
-  assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=390"`));
+  assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=391"`));
 }
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);
@@ -28,4 +29,4 @@ assert.doesNotMatch(runtime, /ATSRS V385|28 Jul 2026/);
 assert.doesNotMatch(index, /ATSRS V385|Last Update: 28 Jul 2026/);
 assert.match(runbook, /Frontend release: V390/);
 
-console.log('V390 build marker consistency tests passed');
+console.log('V391 build marker consistency tests passed');
