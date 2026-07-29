@@ -2,6 +2,9 @@
 -- The legacy JSON read path remains authoritative during this phase.
 begin;
 
+set local lock_timeout = '5s';
+set local statement_timeout = '30s';
+
 create table if not exists atsrs_private.runtime_flags (
   flag_name text primary key,
   enabled boolean not null default false,
@@ -20,13 +23,13 @@ values ('stable_ids_required', false)
 on conflict (flag_name) do nothing;
 
 alter table public.atsrs_workspace_projects
-  add column source_entity_id uuid;
+  add column if not exists source_entity_id uuid;
 alter table public.atsrs_workspace_personnel
-  add column source_entity_id uuid;
+  add column if not exists source_entity_id uuid;
 alter table public.atsrs_personnel_certificates
-  add column source_entity_id uuid;
+  add column if not exists source_entity_id uuid;
 alter table public.atsrs_project_personnel
-  add column source_entity_id uuid;
+  add column if not exists source_entity_id uuid;
 
 update public.atsrs_workspace_projects
 set source_entity_id = extensions.uuid_generate_v5(
@@ -62,18 +65,49 @@ alter table public.atsrs_personnel_certificates
 alter table public.atsrs_project_personnel
   alter column source_entity_id set not null;
 
-alter table public.atsrs_workspace_projects
-  add constraint atsrs_workspace_projects_source_entity_key
-  unique (workspace_user_id, workspace_account_type, source_entity_id);
-alter table public.atsrs_workspace_personnel
-  add constraint atsrs_workspace_personnel_source_entity_key
-  unique (workspace_user_id, workspace_account_type, source_entity_id);
-alter table public.atsrs_personnel_certificates
-  add constraint atsrs_personnel_certificates_source_entity_key
-  unique (workspace_user_id, workspace_account_type, source_entity_id);
-alter table public.atsrs_project_personnel
-  add constraint atsrs_project_personnel_source_entity_key
-  unique (workspace_user_id, workspace_account_type, source_entity_id);
+do $constraints$
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.atsrs_workspace_projects'::regclass
+      and conname = 'atsrs_workspace_projects_source_entity_key'
+  ) then
+    alter table public.atsrs_workspace_projects
+      add constraint atsrs_workspace_projects_source_entity_key
+      unique (workspace_user_id, workspace_account_type, source_entity_id);
+  end if;
+
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.atsrs_workspace_personnel'::regclass
+      and conname = 'atsrs_workspace_personnel_source_entity_key'
+  ) then
+    alter table public.atsrs_workspace_personnel
+      add constraint atsrs_workspace_personnel_source_entity_key
+      unique (workspace_user_id, workspace_account_type, source_entity_id);
+  end if;
+
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.atsrs_personnel_certificates'::regclass
+      and conname = 'atsrs_personnel_certificates_source_entity_key'
+  ) then
+    alter table public.atsrs_personnel_certificates
+      add constraint atsrs_personnel_certificates_source_entity_key
+      unique (workspace_user_id, workspace_account_type, source_entity_id);
+  end if;
+
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.atsrs_project_personnel'::regclass
+      and conname = 'atsrs_project_personnel_source_entity_key'
+  ) then
+    alter table public.atsrs_project_personnel
+      add constraint atsrs_project_personnel_source_entity_key
+      unique (workspace_user_id, workspace_account_type, source_entity_id);
+  end if;
+end;
+$constraints$;
 
 create or replace function atsrs_private.sync_workspace_normalized_shadow()
 returns trigger
@@ -221,6 +255,15 @@ begin
         and not (item->>'atsrsId' ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
     ) then
       raise exception 'company personnel contains an invalid atsrsId';
+    end if;
+    if not stable_ids_required and exists (
+      select 1
+      from jsonb_array_elements(decoded) entry(item)
+      where nullif(btrim(item->>'atsrsId'), '') is null
+    ) then
+      -- Preserve an old client's authoritative JSON without assigning identity
+      -- from array position. V387 will hydrate stable IDs on the next refresh.
+      return source_row;
     end if;
 
     update public.atsrs_workspace_personnel
@@ -384,6 +427,14 @@ begin
     ) then
       raise exception 'stable ID compatibility refresh required for projects';
     end if;
+    if not stable_ids_required and exists (
+      select 1
+      from jsonb_array_elements(decoded) entry(item)
+      where nullif(btrim(item->>'atsrsId'), '') is null
+    ) then
+      -- Do not bind stable project identity to mutable legacy array order.
+      return source_row;
+    end if;
     update public.atsrs_workspace_projects
     set legacy_source_key = source_prefix || 'stale:' || source_entity_id::text
     where workspace_user_id = source_row.user_id
@@ -455,15 +506,17 @@ begin
     ) then
       raise exception 'stable ID compatibility refresh required for certificates';
     end if;
-    if not stable_ids_required
-       and source_row.data_key like '%\_company\_certs' escape '\'
-       and exists (
-         select 1
-         from jsonb_array_elements(decoded) entry(item)
-         where nullif(btrim(item->>'atsrsPersonnelId'), '') is null
-       ) then
-      -- A cached pre-stable-ID client may still write display names only.
-      -- Preserve the legacy source row and do not guess a relationship.
+    if not stable_ids_required and exists (
+          select 1
+          from jsonb_array_elements(decoded) entry(item)
+          where nullif(btrim(item->>'atsrsId'), '') is null
+             or (
+               source_row.data_key like '%\_company\_certs' escape '\'
+               and nullif(btrim(item->>'atsrsPersonnelId'), '') is null
+             )
+        ) then
+      -- A cached pre-stable-ID client may still write position-based records
+      -- or display names only. Preserve legacy JSON and do not guess identity.
       return source_row;
     end if;
 

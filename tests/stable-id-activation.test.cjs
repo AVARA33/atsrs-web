@@ -43,6 +43,9 @@ function fakeClient(rows, controls = {}) {
       );
     }
     if (builder.operation === 'update') {
+      if (controls.rejectUpdates) {
+        return Promise.resolve({ data: null, error: new Error('trigger rejected write') });
+      }
       if (controls.failNextUpdate) {
         controls.failNextUpdate = false;
         return Promise.resolve({ data: null, error: new Error('offline') });
@@ -276,10 +279,130 @@ async function testAccountSwitchOrdering() {
   assert.equal(app.api.read(personalKey), null);
 }
 
+async function testDeterministicRenameReorderAndRelations() {
+  const key = 'atsrs_user-1_company_personnel';
+  const projectId = '132fd59a-6389-4fe2-8499-040c20966f01';
+  const rows = [
+    ...markers('company'),
+    {
+      user_id: 'user-1',
+      account_type: 'company',
+      data_key: key,
+      payload: {
+        value: JSON.stringify([
+          { name: 'First', atsrsProjectIds: [projectId, 'invalid'] },
+          { name: 'Second', atsrsProjectIds: [] }
+        ])
+      },
+      updated_at: 'company-v1'
+    }
+  ];
+  const app = boot(rows, {}, 'company');
+  await app.api.ensureLoaded();
+  const hydrated = JSON.parse(app.api.read(key));
+  const firstId = hydrated[0].atsrsId;
+  const secondId = hydrated[1].atsrsId;
+  assert.match(firstId, /^[0-9a-f-]{36}$/);
+  assert.match(secondId, /^[0-9a-f-]{36}$/);
+  assert.notEqual(firstId, secondId);
+  assert.deepEqual(Array.from(hydrated[0].atsrsProjectIds), [projectId]);
+
+  hydrated[0].name = 'Renamed';
+  hydrated.reverse();
+  app.api.write(key, JSON.stringify(hydrated));
+  assert.equal(await app.api.flush(), true);
+  const saved = JSON.parse(rows[2].payload.value);
+  assert.equal(saved[0].atsrsId, secondId);
+  assert.equal(saved[1].atsrsId, firstId);
+  assert.equal(saved[1].name, 'Renamed');
+
+  const reloaded = boot(rows, {}, 'company');
+  await reloaded.api.ensureLoaded();
+  const afterReconnect = JSON.parse(reloaded.api.read(key));
+  assert.equal(afterReconnect[0].atsrsId, secondId);
+  assert.equal(afterReconnect[1].atsrsId, firstId);
+}
+
+async function testCrossWorkspaceIsolation() {
+  const key = 'atsrs_user-1_company_personnel';
+  const rows = [
+    ...markers('personal'),
+    ...markers('company'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: { value: JSON.stringify([{ name: 'Wrong workspace' }]) },
+      updated_at: 'personal-v1'
+    },
+    {
+      user_id: 'user-1',
+      account_type: 'company',
+      data_key: key,
+      payload: { value: JSON.stringify([{ name: 'Correct workspace' }]) },
+      updated_at: 'company-v1'
+    }
+  ];
+  const app = boot(rows, {}, 'company');
+  await app.api.ensureLoaded();
+  assert.equal(JSON.parse(app.api.read(key))[0].name, 'Correct workspace');
+}
+
+async function testLatestQueuedWriteWins() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: { value: JSON.stringify({ name: 'Before' }) },
+      updated_at: 'queue-v1'
+    }
+  ];
+  const app = boot(rows);
+  await app.api.ensureLoaded();
+  const first = JSON.parse(app.api.read(key));
+  first.name = 'First queued value';
+  app.api.write(key, JSON.stringify(first));
+  const second = { ...first, name: 'Latest queued value' };
+  app.api.write(key, JSON.stringify(second));
+  assert.equal(await app.api.flush(), true);
+  assert.equal(JSON.parse(rows[2].payload.value).name, 'Latest queued value');
+}
+
+async function testTriggerFailureRollsBackClientAndSource() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: { value: JSON.stringify({ name: 'Before' }) },
+      updated_at: 'trigger-v1'
+    }
+  ];
+  const controls = { rejectUpdates: true };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.name = 'Must roll back';
+  app.api.write(key, JSON.stringify(changed));
+  assert.equal(await app.api.flush(), false);
+  assert.equal(JSON.parse(rows[2].payload.value).name, 'Before');
+  assert.equal(JSON.parse(app.api.read(key)).name, 'Before');
+  assert.ok(app.loggedErrors.some(message => message.includes('trigger rejected write')));
+}
+
 (async () => {
   await testHydrationAndStaleWrite();
   await testOfflineRetry();
   await testAccountSwitchOrdering();
+  await testDeterministicRenameReorderAndRelations();
+  await testCrossWorkspaceIsolation();
+  await testLatestQueuedWriteWins();
+  await testTriggerFailureRollsBackClientAndSource();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
   console.error(error);
