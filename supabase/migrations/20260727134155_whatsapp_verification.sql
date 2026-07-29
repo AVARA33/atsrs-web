@@ -55,5 +55,4 @@ drop trigger if exists protect_talent_profile_verification
   on public.atsrs_talent_profiles;
 create trigger protect_talent_profile_verification
 before insert or update on public.atsrs_talent_profiles
-for each row execute function public.protect_talent_profile_verification();
-
+for each row execute function public.protect_talent_profile_verification();;

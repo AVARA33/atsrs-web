@@ -28,4 +28,4 @@ revoke all on table public.whatsapp_webhook_events from anon, authenticated;
 revoke all on sequence public.whatsapp_webhook_events_id_seq from anon, authenticated;
 
 comment on table public.whatsapp_webhook_events is
-  'Verified raw WhatsApp Cloud API webhook deliveries for server-side processing.';
+  'Verified raw WhatsApp Cloud API webhook deliveries for server-side processing.';;

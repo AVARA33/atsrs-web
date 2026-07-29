@@ -92,3 +92,5 @@ revoke all on function public.atsrs_reserve_ai_scan(uuid) from public, anon, aut
 grant execute on function public.atsrs_reserve_ai_scan(uuid) to service_role;
 
 commit;
+
+;

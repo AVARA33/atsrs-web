@@ -1,4 +1,3 @@
--- Supabase migration history version: 20260729005912
 begin;
 
 create table public.atsrs_workspace_projects (
@@ -341,3 +340,5 @@ create policy atsrs_project_personnel_delete_own
   using ((select auth.uid()) = workspace_user_id);
 
 commit;
+
+;

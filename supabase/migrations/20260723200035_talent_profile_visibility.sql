@@ -24,5 +24,4 @@ using (
     where workspace.user_id = (select auth.uid())
       and workspace.account_type = 'company'
   )
-);
-
+);;

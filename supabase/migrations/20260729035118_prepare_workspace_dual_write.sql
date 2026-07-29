@@ -410,3 +410,4 @@ revoke insert, update, delete
   from authenticated;
 
 commit;
+;

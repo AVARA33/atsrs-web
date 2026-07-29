@@ -26,4 +26,4 @@ alter table public.atsrs_share_events
     'access_revoked',
     'document_access_revoked',
     'document_downloaded'
-  ));
+  ));;

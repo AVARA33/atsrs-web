@@ -158,13 +158,22 @@ All conditions are mandatory:
 
 ## Open blockers
 
-1. Live notification queue logic contains an untracked V242 definition that
-   differs from remote V240 history. It requires a reviewed baseline migration.
-2. Three history-less local migrations have broader live service-role ACLs than
-   their files state. The ACL baseline must be accepted or corrected explicitly.
-3. Migration history reconciliation has not been executed; therefore the
-   required one-migration dry-run is not yet proven.
-4. A full PostgreSQL restore rehearsal is unavailable on this workstation and
-   must run on approved staging.
+Repository-side V242, secure-share, ACL and timestamp reconciliation blockers
+are closed:
 
-Until all four are closed, the production activation decision is **NO-GO**.
+- 28/28 remote versions now have exact local files and pinned canonical hashes;
+- 18 local timestamp aliases are retired;
+- V242 and secure-share live deltas have separate CLI-generated baselines;
+- all three service-role differences are accepted as proven platform/live
+  baseline, with no security correction required;
+- current migration list shows 28 matched remote versions and eight local-only
+  versions.
+
+The one remaining external blocker is a full restore/replay rehearsal on an
+approved isolated staging project. After it passes, a fresh production backup
+must be taken and the seven proven history-only versions may be marked
+`applied`, leaving only `20260729041619` pending. Those history mutations remain
+outside this preparation phase.
+
+Until the staging rehearsal succeeds, the production activation decision is
+**NO-GO**.

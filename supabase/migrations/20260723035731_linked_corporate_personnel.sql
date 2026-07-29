@@ -23,5 +23,4 @@ revoke all on table public.atsrs_talent_personnel_links from public, anon, authe
 grant select, insert, update, delete on table public.atsrs_talent_personnel_links to service_role;
 
 comment on table public.atsrs_talent_personnel_links is
-  'Corporate personnel links created from the ATSRS talent directory. Private profile and document access is granted separately.';
-
+  'Corporate personnel links created from the ATSRS talent directory. Private profile and document access is granted separately.';;

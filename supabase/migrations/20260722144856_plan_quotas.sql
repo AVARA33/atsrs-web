@@ -187,3 +187,5 @@ from auth.users
 on conflict (user_id) do nothing;
 
 commit;
+
+;

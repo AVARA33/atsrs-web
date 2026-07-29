@@ -23,5 +23,4 @@ execute function public.enforce_atsrs_talent_profile_visibility();
 update public.atsrs_talent_profiles
 set discoverable = false
 where profile_visibility <> 'Public'
-  and discoverable = true;
-
+  and discoverable = true;;

@@ -7,6 +7,27 @@ Hash rule: MD5 of SQL after trimming the file and collapsing every whitespace
 run to one space. The hash is a lexical reconciliation signal, not a substitute
 for object-definition verification.
 
+## Repository reconciliation status
+
+- The 28 exact remote migration files were fetched into the repo-external audit
+  directory
+  `C:\Users\user\Documents\GitHub\output\atsrs-migration-reconciliation-fetch-20260729-153500`.
+- All 28 remote files are now represented under their exact remote versions and
+  names in `supabase/migrations`.
+- The 18 reviewed local timestamp aliases were removed. Their Git history is
+  the rollback point.
+- `tests/migration-repository-state.test.cjs` pins the canonical SHA-256 of all
+  28 remote files, rejects every retired alias and verifies the local-only
+  migration set.
+- The table below preserves the original audit evidence. Its old “proposed
+  action” text documents why each repository move was made; the moves are now
+  complete locally and have not changed remote history.
+- A fresh read-only `migration list --linked` reports 28 matched versions and
+  these eight local-only versions:
+  `20260720192356`, `20260721191000`, `20260723140000`,
+  `20260723170000`, `20260726223000`, `20260729041619`,
+  `20260729105130`, `20260729105131`.
+
 ## Remote history and local equivalents
 
 | Remote version | Remote name | Local equivalent | Remote hash | Local hash | Evidence / exact delta | Proposed action | Confidence |
@@ -44,29 +65,34 @@ for object-definition verification.
 
 | Local version | Name | Live definition evidence | Proposed history action | Rollback reference | Status |
 |---|---|---|---|---|---|
-| 20260720192356 | secure_profile_shares | Columns/defaults, constraints, three indexes, comments, RLS and service policy match. Live service-role ACL is broader than the file's explicit grant. | Do not repair until the broader ACL is accepted as platform/default truth; then mark this version `applied` without replaying DDL. | Fresh history export + inverse `reverted` repair only; no schema DDL. | blocked on ACL decision |
+| 20260720192356 | secure_profile_shares | Columns/defaults, constraints, three indexes, comments, RLS and service policy match. Extra `Dxtm` service privileges are proven PostgreSQL/Supabase default ACLs. | Mark `applied` only after staging restore and a fresh production backup; do not replay DDL. | Fresh history export + inverse `reverted` repair only; no schema DDL. | accept live baseline |
 | 20260721191000 | delete_own_expiry_notifications | DELETE grant and exact owner policy verified. | Mark `applied` after fresh snapshot/history export. | Inverse history repair. | proven |
 | 20260723140000 | profile_photos | `avatar_url`, bucket configuration and all four storage policies verified. | Mark `applied` after fresh snapshot/history export. | Inverse history repair. | proven |
-| 20260723170000 | talent_actions_workspace_access | Required service-role SELECT grants verified; live ACL contains additional platform privileges. | Mark `applied` only after ACL baseline decision. | Inverse history repair. | blocked on ACL decision |
-| 20260726223000 | ai_cv_generation_quota | Table/defaults/FK/check/RLS verified; function body MD5s match (`fcaf57…`, `e3b22f…`). Live service-role table ACL is broader than the explicit file grant. | Mark `applied` only after ACL baseline decision. | Inverse history repair. | blocked on ACL decision |
+| 20260723170000 | talent_actions_workspace_access | Required service-role SELECT grants verified; other live table privileges predate this migration or come from platform defaults. | Mark `applied` only after staging restore and fresh backup. | Inverse history repair. | accept live baseline |
+| 20260726223000 | ai_cv_generation_quota | Table/defaults/FK/check/RLS verified; function body MD5s match (`fcaf57…`, `e3b22f…`). Extra service-role `Dxtm` privileges are platform defaults; RPC use is proven in `generate-cv`. | Mark `applied` only after staging restore and fresh backup. | Inverse history repair. | accept live baseline |
 | 20260729041619 | stable_workspace_entity_ids | Not present remotely; runtime flag/table columns absent. | Must remain the single pending executable migration after reconciliation. | Feature flag off; non-destructive forward recovery; verified DB snapshot for data recovery. | pending |
+| 20260729105130 | baseline_v242_detailed_expiry_notifications | Function body is byte-identical to live: length `4869`, MD5 `6580d4330f1f405bdbf14183b41aa37e`; SECURITY DEFINER, empty search path and owner-only EXECUTE verified. | Mark `applied` only after staging proves clean-history reproduction; do not replay on current production. | Inverse history repair; production function remains unchanged. | locally proven baseline |
+| 20260729105131 | baseline_secure_share_live_delta | Live has zero null expiry, required `share_token_hash` contract and both exact indexes. Baseline is repeat-safe and refuses invalid existing rows. | Mark `applied` only after staging restore; do not replay on current production. | Inverse history repair; no production data change. | locally proven baseline |
 
 ## Exact proposed history sequence
 
 No command below is authorized in this phase.
 
-1. Commit a repository-only reconciliation that imports the seven exact remote
-   migration texts and replaces the 18 timestamp aliases with reviewed remote
-   versions.
-2. Generate, using `supabase migration new`, two idempotent baseline files:
-   one for the already-live V242 queue-function delta and one for the
-   already-live secure-share expiry/index delta.
-3. Repeat full schema/ACL/function-body comparison and take a new code ZIP,
-   database snapshot and remote history export.
-4. Only if every definition is exact, mark the five history-less local versions
-   and the two generated baseline versions `applied`. Do not replay their DDL.
-5. Run `migration list` and `db push --dry-run`. The only pending executable
+1. **Completed locally:** import the exact 28 remote files, retire the 18
+   timestamp aliases, and pin their hashes.
+2. **Completed locally:** create the V242 and secure-share baselines with
+   `supabase migration new`.
+3. **External gate:** restore the approved backup to staging and replay the
+   repository migrations. Verify exact schema, data, ACL, function and trigger
+   results.
+4. Take a fresh production code ZIP, database snapshot and migration-history
+   export.
+5. Only if staging and the fresh production definition audit are exact, mark
+   these local-only versions `applied` without replaying DDL:
+   `20260720192356`, `20260721191000`, `20260723140000`,
+   `20260723170000`, `20260726223000`, `20260729105130`,
+   `20260729105131`.
+6. Run `migration list` and `db push --dry-run`. The only pending executable
    version must be `20260729041619`; any other output is a stop condition.
 
-The current audit does not yet authorize step 4 because ACL ownership and the
-untracked V242 drift must first be reconciled.
+No history repair is authorized until the staging gate in step 3 succeeds.

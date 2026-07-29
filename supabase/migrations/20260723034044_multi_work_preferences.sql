@@ -24,4 +24,4 @@ alter table public.atsrs_talent_profiles
 
 create index if not exists atsrs_talent_profiles_work_preferences_idx
   on public.atsrs_talent_profiles using gin (work_preferences)
-  where discoverable = true;
+  where discoverable = true;;

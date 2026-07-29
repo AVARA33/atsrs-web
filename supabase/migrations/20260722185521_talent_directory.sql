@@ -94,3 +94,5 @@ on conflict (user_id) do update set
   company = excluded.company,
   discoverable = true,
   updated_at = now();
+
+;

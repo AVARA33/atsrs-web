@@ -23,4 +23,4 @@ where request.requester_user_id is null
       and workspace.account_type = 'company'
   );
 
-commit;
+commit;;

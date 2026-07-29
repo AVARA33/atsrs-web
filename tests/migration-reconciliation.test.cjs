@@ -29,15 +29,17 @@ assert.deepEqual(
     '20260723140000',
     '20260723170000',
     '20260726223000',
-    '20260729041619'
+    '20260729041619',
+    '20260729105130',
+    '20260729105131'
   ],
   'every local version without remote history must remain explicitly classified'
 );
 
-assert.match(manifest, /18 timestamp aliases/i);
-assert.match(manifest, /seven exact remote\s+migration texts/i);
-assert.match(manifest, /V242 queue-function delta/i);
-assert.match(manifest, /ACL ownership/i);
+assert.match(manifest, /18 reviewed local timestamp aliases/i);
+assert.match(manifest, /exact 28 remote files/i);
+assert.match(manifest, /baseline_v242_detailed_expiry_notifications/i);
+assert.match(manifest, /accept live baseline/i);
 assert.match(plan, /only pending executable[\s\S]+?20260729041619/i);
 assert.match(manifest, /No `migration repair`, `db push` or\s+SQL apply has been executed/i);
 

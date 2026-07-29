@@ -1,13 +1,6 @@
-update public.atsrs_profile_shares
-set expires_at = now() + interval '7 days',
-    updated_at = now()
-where enabled
-  and expires_at is null;
-
 create table if not exists public.atsrs_share_access_requests (
   id uuid primary key default gen_random_uuid(),
   share_id uuid not null references public.atsrs_profile_shares(id) on delete cascade,
-  share_token_hash text not null check (share_token_hash ~ '^[0-9a-f]{64}$'),
   owner_id uuid not null references auth.users(id) on delete cascade,
   requester_name text not null check (char_length(btrim(requester_name)) between 2 and 100),
   requester_company text not null check (char_length(btrim(requester_company)) between 2 and 140),
@@ -49,7 +42,7 @@ create index if not exists atsrs_share_requests_owner_status_idx
 create index if not exists atsrs_share_requests_share_email_idx
   on public.atsrs_share_access_requests (share_id, requester_email, created_at desc);
 create index if not exists atsrs_share_requests_viewer_token_idx
-  on public.atsrs_share_access_requests (share_id, share_token_hash, viewer_token_hash)
+  on public.atsrs_share_access_requests (share_id, viewer_token_hash)
   where viewer_token_hash is not null;
 
 create table if not exists public.atsrs_share_events (
@@ -79,9 +72,6 @@ create index if not exists atsrs_share_events_owner_created_idx
   on public.atsrs_share_events (owner_id, created_at desc);
 create index if not exists atsrs_share_events_share_type_idx
   on public.atsrs_share_events (share_id, event_type, created_at desc);
-create index if not exists atsrs_share_events_request_idx
-  on public.atsrs_share_events (request_id)
-  where request_id is not null;
 
 alter table public.atsrs_share_access_requests enable row level security;
 alter table public.atsrs_share_events enable row level security;
@@ -109,3 +99,5 @@ create policy "Service role manages ATSRS share events"
   to service_role
   using (true)
   with check (true);
+
+;

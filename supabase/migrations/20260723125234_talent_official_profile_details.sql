@@ -13,4 +13,4 @@ comment on column public.atsrs_talent_profiles.phone_country_code is
 comment on column public.atsrs_talent_profiles.phone_verified is
   'True only after ATSRS verification workflow confirms the number.';
 comment on column public.atsrs_talent_profiles.stcw_verified is
-  'True only after ATSRS verification workflow confirms the STCW or seafarer identifier.';
+  'True only after ATSRS verification workflow confirms the STCW or seafarer identifier.';;
