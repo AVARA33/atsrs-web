@@ -89,7 +89,6 @@
   var PROFILE_KEY='profile';
   var PROFILE_BACKUP_KEY='profile_backup';
   var profileRecoveryRunning=false;
-  var verificationRefreshPromise=null;
   function byId(id){return document.getElementById(id)}
   function safeUserId(){
     try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}
@@ -338,12 +337,9 @@
   }
   function updateLocalVerification(kind,verified){
     var profile=readJson(PROFILE_KEY,{});
-    var field=kind==='mobile'?'phoneVerified':'whatsappVerified';
-    var next=!!verified;
-    if(profile[field]!==next){
-      profile[field]=next;
-      writeJson(PROFILE_KEY,profile);
-    }
+    if(kind==='mobile')profile.phoneVerified=!!verified;
+    else profile.whatsappVerified=!!verified;
+    writeJson(PROFILE_KEY,profile);
     setVerificationText(kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',verified);
     var button=document.querySelector('[data-profile-verify="'+kind+'"]');
     if(button)button.textContent=verified?'Verified':'Verify via WhatsApp';
@@ -415,37 +411,13 @@
     finally{button.disabled=false;if(!completed)button.textContent=original}
   }
   async function refreshVerificationStatus(){
-    if(!window.supabaseClient)return false;
-    if(verificationRefreshPromise)return verificationRefreshPromise;
-    verificationRefreshPromise=(async function(){
-      var kinds=['mobile','whatsapp'];
-      var results=await Promise.all(kinds.map(async function(kind){
-        try{
-          var result=await verificationCall({action:'status',kind:kind});
-          return {kind:kind,verified:!!result.verified};
-        }catch(ignore){return null;}
-      }));
-      var profile=readJson(PROFILE_KEY,{});
-      var changed=false;
-      results.forEach(function(result){
-        if(!result)return;
-        var field=result.kind==='mobile'?'phoneVerified':'whatsappVerified';
-        if(profile[field]!==result.verified){
-          profile[field]=result.verified;
-          changed=true;
-        }
-        setVerificationText(
-          result.kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',
-          result.verified
-        );
-        var button=document.querySelector('[data-profile-verify="'+result.kind+'"]');
-        if(button)button.textContent=result.verified?'Verified':'Verify via WhatsApp';
-      });
-      if(changed)writeJson(PROFILE_KEY,profile);
-      return true;
-    })();
-    try{return await verificationRefreshPromise;}
-    finally{verificationRefreshPromise=null;}
+    if(!window.supabaseClient)return;
+    ['mobile','whatsapp'].forEach(async function(kind){
+      try{
+        var result=await verificationCall({action:'status',kind:kind});
+        updateLocalVerification(kind,!!result.verified);
+      }catch(ignore){}
+    });
   }
   function bindOfficialProfileControls(){
     ensurePhonePickers();

@@ -11,9 +11,8 @@ Project: `hwtjuqyxzivymofamwxl`
 Migration:
 `supabase/migrations/20260729041619_stable_workspace_entity_ids.sql`
 
-Frontend release: V389 (`js/server-data.js?v=389`,
-`js/storage.js?v=389`, `js/dashboard.js?v=389`,
-`js/workspace-switcher.js?v=389`)
+Frontend release: V387 (`js/server-data.js?v=387`,
+`js/storage.js?v=387`)
 
 ## Safety model
 
@@ -25,9 +24,9 @@ state:
 - a cached old client can continue writing ordinary legacy payloads;
 - old corporate certificate payloads without a stable personnel ID remain in
   the legacy source and are not guessed into the normalized shadow;
-- the V389 client hydrates deterministic UUIDv5 IDs before rendering and writes
+- the V387 client hydrates deterministic UUIDv5 IDs before rendering and writes
   UUIDs on every later save;
-- concurrent V389 tabs use `updated_at` optimistic concurrency. A stale tab is
+- concurrent V387 tabs use `updated_at` optimistic concurrency. A stale tab is
   rejected instead of silently overwriting a newer row.
 
 The final enforcement switch rejects stable-ID-sensitive payloads that came
@@ -68,10 +67,9 @@ This order is intentional and must not be reversed.
 5. Immediately run the packaged verification query and repeat the row-count,
    checksum, duplicate, orphan, workspace-mismatch, RLS/grant and Advisor
    checks. Roll back if any result differs.
-6. Deploy the frontend commit containing V389.
-7. Confirm the production HTML references `server-data.js?v=389`,
-   `storage.js?v=389`, `dashboard.js?v=389`, and
-   `workspace-switcher.js?v=389`. Verify the returned JavaScript contains
+6. Deploy the frontend commit containing V387.
+7. Confirm the production HTML references both `server-data.js?v=387` and
+   `storage.js?v=387`. Verify the returned JavaScript contains
    `rowVersions`, `hydrateStableRows` and `atsrsProjectIds`.
 8. Hard refresh the test browser. Close/reopen the ATSRS tab and confirm a new
    request is not served from an old cache.
@@ -109,7 +107,7 @@ Any difference is a stop condition. Do not enable the flag or start read-switch.
 
 ## Multi-tab and offline tests
 
-- Open two V389 tabs from the same account. Load the same workspace row in both.
+- Open two V387 tabs from the same account. Load the same workspace row in both.
   Save in tab A, then attempt the stale save in tab B. Tab B must show the save
   warning and must not overwrite tab A.
 - Refresh tab B, repeat the save and confirm it succeeds.
@@ -129,14 +127,14 @@ perform these write tests on real user data.
    enforcement atomically and restores old-client compatibility.
 2. Redeploy the previously recorded production frontend commit and its previous
    cache versions.
-3. Hard refresh and close all V389 tabs.
+3. Hard refresh and close all V387 tabs.
 4. Re-run source/target counts, canonical checksums, duplicate/orphan/mismatch,
    RLS and Advisor checks.
 5. Keep the additive columns and constraints. Do not drop them during an
    incident; dropping them is unnecessary and could destroy normalized data.
 
 If migration application itself fails, its transaction rolls back. Do not
-deploy V389. If the frontend deployment fails, keep the compatibility flag
+deploy V387. If the frontend deployment fails, keep the compatibility flag
 `false` and redeploy the previous frontend.
 
 ## Approval boundary
@@ -144,7 +142,7 @@ deploy V389. If the frontend deployment fails, keep the compatibility flag
 Explicit user approval is required for all three production mutations:
 
 1. applying the stable-ID migration to the live Supabase database;
-2. deploying/pushing V389 frontend code;
+2. deploying/pushing V387 frontend code;
 3. enabling `stable_ids_required` after the compatibility window.
 
 Approval for one item does not imply approval for the other two.
