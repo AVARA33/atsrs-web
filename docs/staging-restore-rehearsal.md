@@ -1,7 +1,27 @@
 # ATSRS staging restore rehearsal
 
-Status: executable package ready; no staging target has been supplied. Never run
-this procedure against project `hwtjuqyxzivymofamwxl`.
+Status: executed successfully on isolated staging project
+`nsbmbbqgekcwmdqmqsao` on 2026-07-29. Never run this procedure against
+production project `hwtjuqyxzivymofamwxl`.
+
+The original
+`atsrs-database-backup-20260729-001024/public-schema.sql` is retained as
+evidence but is marked `INVALID-DO-NOT-RESTORE`: nine function dollar-quote
+terminators lack SQL semicolons. Use only the validated artifacts below:
+
+- raw schema:
+  `output/atsrs-schema-backup-valid-20260729-175416/schema-public-private-atsrs_private.sql`;
+- restore-safe schema:
+  `schema-public-private-atsrs_private.restore-safe.sql`;
+- scoped raw data: `data-scoped-19-tables.sql`;
+- dependency-ordered restore copy:
+  `data-scoped-19-tables.restore-safe.sql`.
+
+The schema restore-safe transform removes exactly 12 complete, top-level
+`ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"` statements. The data
+restore-safe transform only reorders the 17 complete `atsrs_workspace_data`
+INSERT statements so personnel owners precede certificate relations. Both raw
+artifacts remain unchanged, and both transforms have hash/diff manifests.
 
 ## Required external inputs
 
@@ -12,7 +32,8 @@ this procedure against project `hwtjuqyxzivymofamwxl`.
 3. `ATSRS_STAGING_PROJECT_REF` set to the staging ref. The verifier refuses the
    production ref.
 4. An approved auth identity mapping. The scoped backup intentionally excludes
-   passwords, sessions, OTPs and auth secrets.
+   passwords, sessions, OTPs and auth secrets. The completed rehearsal used
+   five synthetic users and stored the local mapping with Windows DPAPI.
 5. A staging Storage bucket or a read-only storage-object inventory for checking
    the 26 database file references. Do not copy production objects without
    explicit authorization.
@@ -41,17 +62,21 @@ All commands below target staging only.
    provider secrets. If UUID preservation cannot be proven, transform a copy of
    the public data dumps with a reviewed old-to-staging UUID map; never edit the
    original backup.
-4. Restore `public-schema.sql` with `ON_ERROR_STOP=1`. Confirm tables,
-   constraints, indexes, functions, triggers, grants and RLS before loading
-   data.
-5. Restore each `data-public-*.sql` file in the manifest inside a controlled
-   transaction. Compare every table count with `backup-manifest.txt`.
+4. Restore the validated restore-safe schema with `ON_ERROR_STOP=1` and
+   `--single-transaction`. Confirm tables, constraints, indexes, functions,
+   triggers, grants and RLS before loading data.
+5. Restore `data-scoped-19-tables.restore-safe.sql` inside a controlled
+   transaction. Keep the normalized-shadow trigger enabled, while temporarily
+   disabling only the reviewed import-conflicting user triggers. Compare every
+   table count with the scoped-data manifest.
 6. Validate all `atsrs_files.storage_path` references against the approved
    staging Storage inventory. Database path checks alone do not prove the object
    exists.
-7. Apply repository migrations to staging in timestamp order. The 28 remote
-   files must match their pinned hashes. The two baseline migrations must run
-   repeatably. Do not run production `migration repair`.
+7. Reconcile history on staging only. The 28 remote files must match their
+   pinned hashes, and the seven proven history-only versions may be marked
+   applied only after schema/data verification. `db push --dry-run
+   --include-all` must then show only `20260729041619`. Never run production
+   `migration repair`.
 8. Run:
 
    ```powershell
@@ -62,11 +87,10 @@ All commands below target staging only.
    `stable-id-verify.sql`.
 9. Re-run the baseline migrations in a transaction that ends with `ROLLBACK`.
    Counts, schema hashes and canonical hashes must remain unchanged.
-10. Deploy the V387 frontend to an isolated staging origin only. Test Personal
-    and Corporate login/account switching, Dashboard, Documents, Personnel,
-    Projects and Compliance. Test a synthetic create/update/delete/reorder,
-    stale multi-tab write and offline/reconnect; clean up the synthetic
-    workspace.
+10. Run the local V387 compatibility tests without deploying a public frontend.
+    Test old/new client payloads, Personal/Corporate account ordering,
+    create/update/delete/reorder, stale multi-tab write and offline/reconnect.
+    Run database scenarios in a transaction that ends in `ROLLBACK`.
 11. Run Security and Performance Advisors. New critical findings must be zero.
 12. Export the staging verification output, migration list, advisor result and
     smoke-test checklist. Do not include personal field values.
@@ -86,7 +110,8 @@ All commands below target staging only.
   `search_path`, no public/anon/authenticated EXECUTE.
 - Broken Storage references: 0.
 - New critical advisor findings: 0.
-- Browser/Edge/Postgres errors introduced by V387: 0.
+- Local frontend/Postgres contract errors introduced by V387: 0.
 
-Without the approved staging project, auth mapping and Storage inventory, the
-restore rehearsal remains the only external blocker.
+The completed rehearsal report is
+`docs/audit/staging-rehearsal-20260729.md`. Storage blobs were deliberately not
+copied; the rehearsal verifies database references only.

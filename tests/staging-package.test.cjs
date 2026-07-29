@@ -6,6 +6,7 @@ const root = path.join(__dirname, '..');
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const script = read('scripts/staging/verify-restore-package.ps1');
 const sql = read('supabase/audit/staging-restore-verify.sql');
+const syntheticSql = read('supabase/audit/staging-stable-id-synthetic-tests.sql');
 const sqlExecutable = sql.replace(/^--.*$/gm, '');
 const sqlKeywords = sqlExecutable.replace(/'(?:''|[^'])*'/g, "''");
 const runbook = read('docs/staging-restore-rehearsal.md');
@@ -30,9 +31,20 @@ assert.doesNotMatch(sqlExecutable, /select\s+\*\s+from/i);
 assert.doesNotMatch(sqlExecutable, /payload\s*(,|from)/i);
 assert.doesNotMatch(sqlKeywords, /\b(insert|update|delete|truncate|alter|drop|create)\b/i);
 
+assert.match(syntheticSql, /^begin;/im);
+assert.match(syntheticSql, /stable_ids_required/i);
+assert.match(syntheticSql, /old-client deterministic ID changed/i);
+assert.match(syntheticSql, /rename\/reorder changed the stable ID set/i);
+assert.match(syntheticSql, /stale optimistic write was not rejected/i);
+assert.match(syntheticSql, /cross-workspace personnel relation was accepted/i);
+assert.match(syntheticSql, /idempotent rerun changed normalized identity state/i);
+assert.match(syntheticSql, /rollback;\s*$/i);
+
 assert.match(runbook, /auth identity mapping/i);
 assert.match(runbook, /Storage bucket/i);
 assert.match(runbook, /Never run[\s\S]+?hwtjuqyxzivymofamwxl/i);
 assert.match(runbook, /New critical advisor findings: 0/i);
+assert.match(runbook, /INVALID-DO-NOT-RESTORE/i);
+assert.match(runbook, /dependency-ordered restore copy/i);
 
 console.log('staging restore package contract tests passed');

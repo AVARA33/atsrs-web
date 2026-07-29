@@ -56,9 +56,13 @@ if (-not (Test-Path -LiteralPath $nodePath -PathType Leaf)) {
 }
 
 $contractTests = @(
+  'tests\build-version-consistency.test.cjs',
   'tests\migration-repository-state.test.cjs',
   'tests\migration-reconciliation.test.cjs',
   'tests\reconciliation-baselines.test.cjs',
+  'tests\restore-safe-schema.test.cjs',
+  'tests\restore-safe-data.test.cjs',
+  'tests\stable-id-activation.test.cjs',
   'tests\stable-id-contract.test.cjs',
   'tests\canonical-checksum.test.cjs',
   'tests\staging-package.test.cjs'
