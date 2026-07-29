@@ -7,8 +7,8 @@
   var recoveryTimer=0;
   var buildObserver=null;
   var requestFlights=new Map();
-  var BUILD='ATSRS V385';
-  var UPDATE='Last Update: 28 Jul 2026';
+  var BUILD='ATSRS '+String(document.documentElement.dataset.atsrsBuild||'').trim();
+  var UPDATE='Last Update: '+String(document.documentElement.dataset.atsrsUpdate||'').trim();
 
   function visible(){return document.visibilityState!=='hidden';}
   function singleFlight(key,operation){
