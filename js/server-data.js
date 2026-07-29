@@ -15,6 +15,7 @@
   var nativeGet=Storage.prototype.getItem;
   var memoryStore=new Map();
   var writeVersions=new Map();
+  var rowVersions=new Map();
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
@@ -226,22 +227,53 @@
   }
   async function upsertStorageValue(key,value,context){
     if(!context)return;
-    var result=await client().from(DATA_TABLE).upsert(
-      rowForStorage(key,value,context),
-      {onConflict:'user_id,account_type,data_key'}
-    );
+    var row=rowForStorage(key,value,context);
+    var expected=rowVersions.get(String(key));
+    var query=expected
+      ?client().from(DATA_TABLE)
+        .update(row)
+        .eq('user_id',context.user_id)
+        .eq('account_type',context.account_type)
+        .eq('data_key',String(key))
+        .eq('updated_at',expected)
+        .select('updated_at')
+        .maybeSingle()
+      :client().from(DATA_TABLE)
+        .insert(row)
+        .select('updated_at')
+        .single();
+    var result=await query;
     if(result.error)throw result.error;
+    if(!result.data)throw new Error('ATSRS_STALE_WRITE: server data changed in another tab.');
+    rowVersions.set(String(key),result.data.updated_at);
   }
   async function deleteStorageValue(key,context){
     if(!context)return;
-    var result=await client().from(DATA_TABLE).upsert({
+    var row={
       user_id:context.user_id,
       account_type:context.account_type,
       data_key:String(key),
       payload:{deleted:true},
       updated_at:new Date().toISOString()
-    },{onConflict:'user_id,account_type,data_key'});
+    };
+    var expected=rowVersions.get(String(key));
+    var query=expected
+      ?client().from(DATA_TABLE)
+        .update(row)
+        .eq('user_id',context.user_id)
+        .eq('account_type',context.account_type)
+        .eq('data_key',String(key))
+        .eq('updated_at',expected)
+        .select('updated_at')
+        .maybeSingle()
+      :client().from(DATA_TABLE)
+        .insert(row)
+        .select('updated_at')
+        .single();
+    var result=await query;
     if(result.error)throw result.error;
+    if(!result.data)throw new Error('ATSRS_STALE_WRITE: server data changed in another tab.');
+    rowVersions.set(String(key),result.data.updated_at);
   }
   function readBusinessValue(key){
     if(!isCloudSession()||!isManagedBusinessKey(key))return null;
@@ -357,12 +389,12 @@
     }catch(e){}
     return keys;
   }
-  function canonicalBusinessKey(key){
+  function canonicalBusinessKey(key,context){
     var valueUser=user();
     if(!valueUser)return '';
     key=String(key||'');
     var currentPrefix='atsrs_'+valueUser.id+'_';
-    var currentMode=accountType();
+    var currentMode=context&&context.account_type?context.account_type:accountType();
     var currentScopePrefix=currentPrefix+currentMode+'_';
     if(key.indexOf(currentScopePrefix)===0)return isFileLikeKey(key)?'':key;
     if(key.indexOf(currentPrefix+'personal_')===0||key.indexOf(currentPrefix+'company_')===0){
@@ -445,23 +477,23 @@
       return serverValue;
     }
   }
-  async function loadWorkspaceRows(){
-    var valueUser=user();
+  async function loadWorkspaceRows(context){
+    context=context||writeContext();
     var result=await client().from(DATA_TABLE)
       .select('data_key,payload,updated_at')
-      .eq('user_id',valueUser.id)
-      .eq('account_type',accountType());
+      .eq('user_id',context.user_id)
+      .eq('account_type',context.account_type);
     if(result.error)throw result.error;
     return result.data||[];
   }
-  async function migrateLegacyStorage(serverRows){
-    var valueUser=user();
+  async function migrateLegacyStorage(serverRows,context){
+    context=context||writeContext();
     var canonicalRows=new Map();
     var deletedKeys=new Set();
     var obsoleteServerKeys=[];
     (serverRows||[]).forEach(function(row){
       if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
-      var canonical=canonicalBusinessKey(row.data_key);
+      var canonical=canonicalBusinessKey(row.data_key,context);
       if(!canonical)return;
       var payload=row.payload||{};
       if(payload.deleted===true){
@@ -477,7 +509,7 @@
       if(canonical!==row.data_key)obsoleteServerKeys.push(row.data_key);
     });
     allLocalKeys().forEach(function(oldKey){
-      var key=canonicalBusinessKey(oldKey);
+      var key=canonicalBusinessKey(oldKey,context);
       if(!key||deletedKeys.has(key))return;
       var value=nativeGet.call(localStorage,oldKey);
       if(value===null)return;
@@ -492,20 +524,20 @@
       canonicalRows.set(key,value);
     });
     var rows=Array.from(canonicalRows.entries()).map(function(entry){
-      return rowForStorage(entry[0],entry[1]);
+      return rowForStorage(entry[0],entry[1],context);
     });
     deletedKeys.forEach(function(key){
       rows.push({
-        user_id:valueUser.id,
-        account_type:accountType(),
+        user_id:context.user_id,
+        account_type:context.account_type,
         data_key:key,
         payload:{deleted:true},
         updated_at:new Date().toISOString()
       });
     });
     rows.push({
-      user_id:valueUser.id,
-      account_type:accountType(),
+      user_id:context.user_id,
+      account_type:context.account_type,
       data_key:DATA_MIGRATION_KEY,
       payload:{completed_at:new Date().toISOString()},
       updated_at:new Date().toISOString()
@@ -518,23 +550,27 @@
     if(obsoleteServerKeys.length){
       var cleanup=await client().from(DATA_TABLE)
         .delete()
-        .eq('user_id',valueUser.id)
-        .eq('account_type',accountType())
+        .eq('user_id',context.user_id)
+        .eq('account_type',context.account_type)
         .in('data_key',Array.from(new Set(obsoleteServerKeys)));
       if(cleanup.error)throw cleanup.error;
     }
-    return loadWorkspaceRows();
+    return loadWorkspaceRows(context);
   }
-  function restoreServerRows(rows){
-    var prefix=managedPrefix();
+  function restoreServerRows(rows,context){
+    var prefix=context?'atsrs_'+context.user_id+'_'+context.account_type+'_':managedPrefix();
     Array.from(memoryStore.keys()).forEach(function(key){
       if(prefix&&key.indexOf(prefix)===0)memoryStore.delete(key);
+    });
+    Array.from(rowVersions.keys()).forEach(function(key){
+      if(prefix&&key.indexOf(prefix)===0)rowVersions.delete(key);
     });
     (rows||[]).forEach(function(row){
       if(!row||!row.data_key||String(row.data_key).indexOf('__cloud_')===0)return;
       if(!isManagedBusinessKey(row.data_key))return;
       var payload=row.payload||{};
       if(typeof payload.value==='string')memoryStore.set(String(row.data_key),payload.value);
+      if(row.updated_at)rowVersions.set(String(row.data_key),row.updated_at);
     });
   }
   function clearNativeBusinessData(){
@@ -544,21 +580,25 @@
   }
   async function ensureWorkspaceData(){
     if(!isCloudSession())throw new Error('No active Supabase session.');
-    var wantedScope=scope();
+    var context=writeContext();
+    var wantedScope=context.user_id+'::'+context.account_type;
     if(loadedScope===wantedScope)return true;
     if(loadingPromise&&loadingPromise.scope===wantedScope)return loadingPromise;
     var promise=(async function(){
-      var rows=await loadWorkspaceRows();
+      var rows=await loadWorkspaceRows(context);
+      if(scope()!==wantedScope)return ensureWorkspaceData();
       var dataMigrationDone=rows.some(function(row){return row&&row.data_key===DATA_MIGRATION_KEY;});
       var fileMigrationDone=rows.some(function(row){return row&&row.data_key===FILE_MIGRATION_KEY;});
-      if(!dataMigrationDone)rows=await migrateLegacyStorage(rows);
+      if(!dataMigrationDone)rows=await migrateLegacyStorage(rows,context);
+      if(scope()!==wantedScope)return ensureWorkspaceData();
       await hydrateStableRows(rows);
-      restoreServerRows(rows);
+      if(scope()!==wantedScope)return ensureWorkspaceData();
+      restoreServerRows(rows,context);
       if(!fileMigrationDone)await migrateLegacyFiles(rows);
       clearNativeBusinessData();
       loadedScope=wantedScope;
       window.dispatchEvent(new CustomEvent('atsrs:data-hydrated',{
-        detail:{scope:wantedScope,accountType:accountType()}
+        detail:{scope:wantedScope,accountType:context.account_type}
       }));
       scheduleFileRender(0);
       return true;
@@ -1097,6 +1137,7 @@
     clearSession:function(){
       memoryStore.clear();
       writeVersions.clear();
+      rowVersions.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;

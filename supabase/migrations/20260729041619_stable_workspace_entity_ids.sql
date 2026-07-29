@@ -2,6 +2,23 @@
 -- The legacy JSON read path remains authoritative during this phase.
 begin;
 
+create table if not exists atsrs_private.runtime_flags (
+  flag_name text primary key,
+  enabled boolean not null default false,
+  updated_at timestamptz not null default now(),
+  constraint atsrs_runtime_flags_name_check
+    check (length(btrim(flag_name)) > 0)
+);
+
+alter table atsrs_private.runtime_flags enable row level security;
+
+revoke all on table atsrs_private.runtime_flags
+  from public, anon, authenticated;
+
+insert into atsrs_private.runtime_flags (flag_name, enabled)
+values ('stable_ids_required', false)
+on conflict (flag_name) do nothing;
+
 alter table public.atsrs_workspace_projects
   add column source_entity_id uuid;
 alter table public.atsrs_workspace_personnel
@@ -72,9 +89,14 @@ declare
   owner_source_id uuid;
   namespace_id constant uuid := '9fe1439e-5b5a-5c86-9d7c-28a67036e814'::uuid;
   missing_dependencies integer;
+  stable_ids_required boolean;
 begin
   source_row := case when tg_op = 'DELETE' then old else new end;
   source_prefix := 'workspace_data:' || source_row.data_key || ':item:';
+  select enabled into stable_ids_required
+  from atsrs_private.runtime_flags
+  where flag_name = 'stable_ids_required';
+  stable_ids_required := coalesce(stable_ids_required, false);
 
   if source_row.data_key like '%\_personal\_profile' escape '\' then
     owner_legacy_key := 'workspace_data:' || source_row.data_key || ':owner';
@@ -104,6 +126,10 @@ begin
     decoded := (source_row.payload->>'value')::jsonb;
     if jsonb_typeof(decoded) <> 'object' then
       raise exception 'personal profile payload must be a JSON object';
+    end if;
+    if stable_ids_required
+       and nullif(btrim(decoded->>'atsrsId'), '') is null then
+      raise exception 'stable ID compatibility refresh required for personal profile';
     end if;
     owner_source_id := coalesce(
       nullif(btrim(decoded->>'atsrsId'), '')::uuid,
@@ -179,6 +205,14 @@ begin
     decoded := (source_row.payload->>'value')::jsonb;
     if jsonb_typeof(decoded) <> 'array' then
       raise exception 'company personnel payload must be a JSON array';
+    end if;
+    if stable_ids_required and exists (
+      select 1
+      from jsonb_array_elements(decoded) entry(item)
+      where nullif(btrim(item->>'atsrsId'), '') is null
+         or jsonb_typeof(item->'atsrsProjectIds') is distinct from 'array'
+    ) then
+      raise exception 'stable ID compatibility refresh required for company personnel';
     end if;
     if exists (
       select 1
@@ -343,6 +377,13 @@ begin
     if jsonb_typeof(decoded) <> 'array' then
       raise exception 'projects payload must be a JSON array';
     end if;
+    if stable_ids_required and exists (
+      select 1
+      from jsonb_array_elements(decoded) entry(item)
+      where nullif(btrim(item->>'atsrsId'), '') is null
+    ) then
+      raise exception 'stable ID compatibility refresh required for projects';
+    end if;
     update public.atsrs_workspace_projects
     set legacy_source_key = source_prefix || 'stale:' || source_entity_id::text
     where workspace_user_id = source_row.user_id
@@ -405,6 +446,25 @@ begin
     decoded := (source_row.payload->>'value')::jsonb;
     if jsonb_typeof(decoded) <> 'array' then
       raise exception 'certificate payload must be a JSON array';
+    end if;
+    if stable_ids_required and exists (
+      select 1
+      from jsonb_array_elements(decoded) entry(item)
+      where nullif(btrim(item->>'atsrsId'), '') is null
+         or nullif(btrim(item->>'atsrsPersonnelId'), '') is null
+    ) then
+      raise exception 'stable ID compatibility refresh required for certificates';
+    end if;
+    if not stable_ids_required
+       and source_row.data_key like '%\_company\_certs' escape '\'
+       and exists (
+         select 1
+         from jsonb_array_elements(decoded) entry(item)
+         where nullif(btrim(item->>'atsrsPersonnelId'), '') is null
+       ) then
+      -- A cached pre-stable-ID client may still write display names only.
+      -- Preserve the legacy source row and do not guess a relationship.
+      return source_row;
     end if;
 
     update public.atsrs_personnel_certificates
