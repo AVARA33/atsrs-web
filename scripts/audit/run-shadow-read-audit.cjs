@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const shadow = require('../../js/shadow-read.js');
+const adapter = require('../../js/normalized-read-adapter.js');
 
 function hash(value) {
   return crypto.createHash('sha256').update(String(value)).digest('hex');
@@ -61,6 +62,7 @@ async function main() {
     non_entity_row_count: workspaceRows.filter((row) => suffixKind(row.data_key) === 'non_entity').length,
     mismatch_count: 0,
     skipped_count: 0,
+    canary_candidate_count: 0,
     entity_totals: {
       personnel: { source: 0, target: 0, mismatches: 0 },
       certificates: { source: 0, target: 0, mismatches: 0 },
@@ -102,12 +104,18 @@ async function main() {
     const owner = normalized.personnel.find(
       (row) => row.source === 'workspace_data_personal_profile',
     );
-    const result = await shadow.compare({
+    const comparisonInput = {
       legacy,
       normalized,
       email: owner?.email || '',
       workspace: { userId, accountType },
+    };
+    const result = await shadow.compare(comparisonInput);
+    const canary = await adapter.evaluate({
+      ...comparisonInput,
+      featureFlag: 'canary',
     });
+    if (canary.normalized_candidate) report.canary_candidate_count += 1;
     report.mismatch_count += result.mismatch_count;
     report.skipped_count += result.skipped_count;
     for (const entity of Object.keys(report.entity_totals)) {
@@ -120,6 +128,9 @@ async function main() {
       source_row_count: rows.length,
       mapped_categories: Array.from(new Set(rows.map((row) => suffixKind(row.data_key)))).sort(),
       status: result.status,
+      normalized_candidate: canary.normalized_candidate,
+      selected_source: canary.selected_source,
+      fallback_reason: canary.fallback_reason,
       mismatch_count: result.mismatch_count,
       skipped_count: result.skipped_count,
       mismatch_fields: Object.fromEntries(
@@ -145,6 +156,7 @@ async function main() {
     non_entity_rows: report.non_entity_row_count,
     mismatch_count: report.mismatch_count,
     skipped_count: report.skipped_count,
+    canary_candidate_count: report.canary_candidate_count,
     status: report.status,
     entity_totals: report.entity_totals,
   }));
