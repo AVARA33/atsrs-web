@@ -246,11 +246,11 @@ function rootFixture(options = {}) {
   assert.equal(runtime.specification.normalized_write, false);
 
   const index = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
-  const shadowScript = index.indexOf('js/shadow-read.js?v=393');
-  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=393');
-  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=393');
-  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=393');
-  const storageScript = index.indexOf('js/storage.js?v=393');
+  const shadowScript = index.indexOf('js/shadow-read.js?v=394');
+  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=394');
+  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=394');
+  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=394');
+  const storageScript = index.indexOf('js/storage.js?v=394');
   assert.ok(
     shadowScript < adapterScript
       && adapterScript < configScript
