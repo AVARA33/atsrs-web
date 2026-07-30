@@ -20,7 +20,7 @@ grant. `stable_ids_required` remains `false`.
 
 `js/normalized-read-adapter.js` has only `legacy` and `canary` modes. Its
 default is `legacy`. It creates the same stable-ID keyed canonical domain model
-from each source and uses the V391 comparator as its gate.
+from each source and uses the V392 comparator as its gate.
 
 A normalized result is only a candidate when all four entity sets have exact
 canonical parity and there are zero skipped records. Mismatch, missing stable
