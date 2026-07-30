@@ -352,6 +352,78 @@
     try{return stableJson(JSON.parse(String(left)))===stableJson(JSON.parse(String(right)));}
     catch(error){return String(left)===String(right);}
   }
+  var BUSINESS_VOLATILE_FIELDS=new Set([
+    'capturedAt','recoveredAt','updated_at','created_at','updatedAt',
+    'createdAt','uploadedAt','client_build','clientBuild','audit_metadata',
+    'auditMetadata'
+  ]);
+  var BUSINESS_TRIM_FIELDS=new Set([
+    'name','surname','position','company','phone','whatsapp','country',
+    'nationality','email','employeeId','source','accessStatus','linkedStatus',
+    'trackerStatus','type','provider','docNo','issue','expiry','project',
+    'vessel','client','team','cloudFileId','fileName','mimeType','person'
+  ]);
+  function semanticBusinessNode(value,key,path){
+    if(Array.isArray(value)){
+      var output=value.map(function(item){
+        return semanticBusinessNode(item,key,path);
+      });
+      if(path==='atsrsProjectIds'){
+        return Array.from(new Set(output.map(function(item){
+          return String(item||'').toLowerCase();
+        }).filter(Boolean))).sort();
+      }
+      if(path===''&&stableDataKind(key)!=='profile'
+        &&output.every(function(item){
+          return item&&typeof item==='object'&&!Array.isArray(item)
+            &&validUuid(item.atsrsId);
+        })){
+        output.sort(function(left,right){
+          return String(left.atsrsId).toLowerCase()
+            .localeCompare(String(right.atsrsId).toLowerCase());
+        });
+      }
+      return output;
+    }
+    if(value&&typeof value==='object'){
+      var result={};
+      Object.keys(value).sort().forEach(function(field){
+        if(BUSINESS_VOLATILE_FIELDS.has(field))return;
+        var fieldValue=value[field];
+        if(BUSINESS_TRIM_FIELDS.has(field)&&typeof fieldValue==='string'){
+          fieldValue=fieldValue.trim();
+          if((field==='issue'||field==='expiry')
+            &&(!fieldValue||/^(N\/A|NA)$/i.test(fieldValue))){
+            fieldValue=null;
+          }else if(!fieldValue){
+            fieldValue=null;
+          }
+        }
+        if((field==='phoneVerified'||field==='whatsappVerified')
+          &&(fieldValue===undefined||fieldValue===null)){
+          fieldValue=false;
+        }
+        if(field==='person'&&stableDataKind(key)==='certificates')return;
+        if(field==='fileSize'&&(!value.cloudFileId||Number(fieldValue)===0))return;
+        if((field==='cloudFileId'||field==='fileName'||field==='mimeType')
+          &&(fieldValue===null||fieldValue===''))return;
+        result[field]=semanticBusinessNode(fieldValue,key,field);
+      });
+      return result;
+    }
+    return value;
+  }
+  function semanticBusinessValue(key,value){
+    try{
+      return stableJson(semanticBusinessNode(JSON.parse(String(value)),key,''));
+    }catch(error){
+      return String(value);
+    }
+  }
+  function sameBusinessValue(key,left,right){
+    if(left===right)return true;
+    return semanticBusinessValue(key,left)===semanticBusinessValue(key,right);
+  }
   function plainObject(value){
     return !!(value&&typeof value==='object'&&!Array.isArray(value));
   }
@@ -732,7 +804,7 @@
     if(!shouldSyncKey(key))return false;
     key=String(key);
     value=normalizeStableValue(key,value);
-    if(memoryStore.has(key)&&sameValue(memoryStore.get(key),value))return true;
+    if(memoryStore.has(key)&&sameBusinessValue(key,memoryStore.get(key),value))return true;
     if(window.atsrsNormalizedReadRuntime
       &&typeof window.atsrsNormalizedReadRuntime.invalidate==='function'){
       window.atsrsNormalizedReadRuntime.invalidate(key);

@@ -24,7 +24,7 @@ assert.match(serverData, /var DATA_TABLE='atsrs_workspace_data'/);
 assert.match(serverData, /function upsertStorageValue/);
 assert.match(serverData, /\.eq\('updated_at',expected\)/);
 assert.match(serverData, /function rebaseBusinessValue/);
-assert.match(serverData, /if\(memoryStore\.has\(key\)&&sameValue\(memoryStore\.get\(key\),value\)\)return true/);
+assert.match(serverData, /if\(memoryStore\.has\(key\)&&sameBusinessValue\(key,memoryStore\.get\(key\),value\)\)return true/);
 assert.match(serverData, /while\(passes<4\)/);
 
 for (const table of normalizedTables) {

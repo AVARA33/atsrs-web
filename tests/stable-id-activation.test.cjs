@@ -233,7 +233,8 @@ function boot(rows, controls = {}, mode = 'personal') {
       primaryWrite: false,
       allowAllScopes: false,
       scopeHashes: [
-        '13243347bab9453c39c1eff996e490bda0085810d40df123f9ece922a7360932'
+        '13243347bab9453c39c1eff996e490bda0085810d40df123f9ece922a7360932',
+        'bf1b1f7b4785f78b0ce888526c028e1f4bb0206502df8df562b255b511978b7e'
       ]
     } : undefined,
     addEventListener() {},
@@ -836,6 +837,88 @@ async function testNormalizedNoOpCreatesNoCommand() {
   assert.equal(controls.commandRevision, 7);
 }
 
+async function testNormalizedSemanticNoOpCreatesNoCommand() {
+  const key = 'atsrs_user-1_company_certs';
+  const personId = '11111111-1111-4111-8111-111111111111';
+  const certificateId = '22222222-2222-4222-8222-222222222222';
+  const baseValue = JSON.stringify([{
+    atsrsId: certificateId,
+    atsrsPersonnelId: personId,
+    person: 'Synthetic Person',
+    type: 'Synthetic Safety',
+    provider: 'Synthetic Provider',
+    docNo: 'SYNTHETIC-1',
+    country: 'TEST',
+    issue: '',
+    expiry: 'N/A'
+  }]);
+  const rows = [
+    ...markers('company'),
+    {
+      user_id: 'user-1',
+      account_type: 'company',
+      data_key: key,
+      payload: { value: baseValue },
+      updated_at: 'rpc-semantic-noop'
+    }
+  ];
+  const controls = { normalizedWrite: true, commandRevision: 9 };
+  const app = boot(rows, controls, 'company');
+  await app.api.ensureLoaded();
+  const overlayValue = JSON.stringify([{
+    type: 'Synthetic Safety',
+    person: 'Renamed display label',
+    provider: 'Synthetic Provider',
+    country: 'TEST',
+    docNo: 'SYNTHETIC-1',
+    expiry: '',
+    issue: 'NA',
+    atsrsPersonnelId: personId,
+    atsrsId: certificateId,
+    cloudFileId: '',
+    fileName: '',
+    mimeType: '',
+    fileSize: 0,
+    uploadedAt: '',
+    capturedAt: 'technical-only'
+  }]);
+  app.api.write(key, overlayValue);
+  assert.equal(await app.api.flush(), true);
+  assert.equal((controls.rpcCalls || []).length, 0);
+  assert.equal(controls.commandRevision, 9);
+  assert.equal(rows[2].payload.value, baseValue);
+}
+
+async function testNormalizedSemanticComparatorKeepsRealChanges() {
+  const key = 'atsrs_user-1_company_certs';
+  const value = [{
+    atsrsId: '22222222-2222-4222-8222-222222222222',
+    atsrsPersonnelId: '11111111-1111-4111-8111-111111111111',
+    person: 'Synthetic Person',
+    type: 'Synthetic Safety',
+    provider: 'Before'
+  }];
+  const rows = [
+    ...markers('company'),
+    {
+      user_id: 'user-1',
+      account_type: 'company',
+      data_key: key,
+      payload: { value: JSON.stringify(value) },
+      updated_at: 'rpc-semantic-change'
+    }
+  ];
+  const controls = { normalizedWrite: true, commandRevision: 11 };
+  const app = boot(rows, controls, 'company');
+  await app.api.ensureLoaded();
+  value[0].provider = 'After';
+  app.api.write(key, JSON.stringify(value));
+  assert.equal(await app.api.flush(), true);
+  assert.equal(controls.rpcCalls.length, 2);
+  assert.equal(controls.commandRevision, 12);
+  assert.equal(JSON.parse(rows[2].payload.value)[0].provider, 'After');
+}
+
 (async () => {
   await testHydrationAndStaleWrite();
   await testOfflineRetry();
@@ -855,6 +938,8 @@ async function testNormalizedNoOpCreatesNoCommand() {
   await testNormalizedCommandStaleBootstrapAndIdempotentResponseLoss();
   await testNormalizedCommandPreservesOverlappingServerField();
   await testNormalizedNoOpCreatesNoCommand();
+  await testNormalizedSemanticNoOpCreatesNoCommand();
+  await testNormalizedSemanticComparatorKeepsRealChanges();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
   console.error(error);

@@ -108,3 +108,46 @@ rollout and remains a separate migration/security scope.
 The Stage 19 package is ready for production activation review while
 `stable_ids_required=false`, legacy mirroring, and the documented rollback
 boundary remain mandatory.
+
+## Semantic no-op forward-fix rehearsal
+
+The authenticated production canary exposed a false change caused by legacy
+payload enrichment: absent empty file fields and volatile timestamps were
+compared as business data. The browser now canonicalizes business fields
+before enqueueing. The database independently canonicalizes each command
+inside the locked transaction.
+
+Three forward-only migrations preserve the already applied command contract:
+
+- `20260730111258` adds business canonicalization and the compatibility
+  wrapper;
+- `20260730112618` makes semantic no-op return an idempotent audit receipt
+  without entering either normalized or legacy write paths;
+- `20260730113050` adds a complete canonical JSON tie-breaker for legacy rows
+  that do not yet have stable IDs, preserving duplicate multiplicity while
+  making array order irrelevant.
+
+The no-op receipt records the privacy-safe request hash and audit envelope,
+returns `changed_keys=0`, and keeps the workspace revision unchanged. Reusing
+the same `operation_id` returns the same receipt; a different envelope with
+that ID remains an idempotency conflict.
+
+Staging tests passed for exact no-op, timestamp/absent-empty metadata no-op,
+reordered payload, replay, real project create/update/delete, stale
+same-revision rejection, and synthetic cleanup. The full transaction was
+rolled back and residue remained zero. A full feature rollback restored the
+original RPC with counts `17/4/25/0/0`; applying the three migrations again
+and rerunning the rehearsal passed. All 19 repository tests passed.
+
+Final staging gates:
+
+- canonical source/target parity: personnel, certificates, projects, and
+  assignments all match;
+- duplicate source IDs and certificate/assignment orphans: `0`;
+- RLS enabled: `4/4`;
+- normalized browser grants: authenticated `SELECT` only; write grants `0`;
+- RPC execute: authenticated only, with fixed empty search path and internal
+  ownership checks;
+- `stable_ids_required=false`;
+- advisor: no new critical security or performance finding;
+- migration head: `20260730113050`.
