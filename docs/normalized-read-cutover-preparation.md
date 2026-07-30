@@ -28,27 +28,39 @@ ID, query failure, offline state, or a disabled/unknown flag falls back to
 legacy. Even after a successful canary the adapter deliberately returns
 `selected_source=legacy_json`; it cannot activate a production cutover.
 
-The adapter is not loaded by `index.html` in this preparation commit, so it
-cannot change browser behavior, network traffic, or application state.
+The browser runtime loads the adapter but installs with no flag and no
+allowlisted workspace. In this default-off state it performs zero normalized
+Data API requests and cannot change UI data. A canary can only be enabled by an
+explicit in-memory boot configuration containing the full SHA-256 of
+`user_id::account_type`; no identifier is stored in the repository or browser
+storage.
+
+When allowlisted, `js/normalized-read-runtime.js` listens after the existing
+legacy hydration completes, reads the four normalized tables through the
+signed-in Supabase client and existing RLS, and runs the canonical comparator.
+It publishes only privacy-safe status counters. The selected UI source remains
+`legacy_json` even on an exact match. A mismatch, offline/API failure, rapid
+workspace change, or stale response fails closed to legacy.
 
 ## Canary and rollback plan
 
-1. Keep the production flag absent/off and the legacy reader authoritative.
+1. Keep the production boot flag absent/off and the legacy reader
+   authoritative. Default-off causes zero normalized queries.
 2. In staging, run the adapter per workspace against authenticated,
    RLS-filtered normalized rows.
 3. Require every workspace to report exact parity, zero skipped records, zero
    duplicate/orphan/workspace mismatch, and no cross-workspace visibility.
-4. Only a later, separately approved release may wire a per-workspace canary
-   flag into the UI adapter. That release must preserve an immediate
-   `legacy` fallback and must not change the writer.
-5. Rollback is flag-off plus the previous frontend commit. No database rollback
-   is part of a read-source rollback.
+4. A later, separately approved release may provide an allowlisted per-workspace
+   boot flag. This canary still cannot select normalized data for the UI.
+5. Rollback is an immediate runtime `rollback()`/flag-off, followed by the
+   previous frontend commit if necessary. It cancels stale comparison results
+   and requires no database rollback.
 
 ## Cutover gate
 
 Production normalized-primary read remains **NO-GO** until a later release:
 
-- wires the adapter behind a default-off per-workspace flag;
+- explicitly enables the already default-off per-workspace canary;
 - passes authenticated owner canary tests against the current staging data;
 - proves Personal/Corporate, multi-tab/offline, loader, desktop and 390x844
   behavior with the candidate actually selected;
