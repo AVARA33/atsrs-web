@@ -1,4 +1,4 @@
-/* ATSRS V402 normalized primary-write rollout configuration.
+/* ATSRS V403 normalized primary-write rollout configuration.
    Scope values are SHA-256(user_id::account_type), never raw identifiers.
    The production default remains OFF until the canary gates pass. */
 (function(root,factory){
@@ -12,6 +12,12 @@
     primaryWrite:false,
     allowAllScopes:false,
     requestTimeoutMs:12000,
+    transientRetries:2,
+    circuitFailureThreshold:2,
+    circuitTransientOpenMs:15000,
+    circuitStaleOpenMs:120000,
+    circuitBusyOpenMs:5000,
+    circuitRateLimitOpenMs:30000,
     scopeHashes:[
       '8dfd4159e74d7afd43a91b41e9cb848aca41a11cdaef4c1c143917ea7e705195',
       'ac91e2cfdf3d2a28a1747ebe0e502529ae9a79ea6500492631e1daacc963b2b5',

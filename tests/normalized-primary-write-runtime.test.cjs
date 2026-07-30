@@ -10,6 +10,12 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 assert.equal(config.enabled, true);
 assert.equal(config.primaryWrite, false);
 assert.equal(config.requestTimeoutMs, 12000);
+assert.equal(config.transientRetries, 2);
+assert.equal(config.circuitFailureThreshold, 2);
+assert.equal(config.circuitTransientOpenMs, 15000);
+assert.equal(config.circuitStaleOpenMs, 120000);
+assert.equal(config.circuitBusyOpenMs, 5000);
+assert.equal(config.circuitRateLimitOpenMs, 30000);
 assert.equal(config.allowAllScopes, false);
 assert.equal(config.scopeHashes.length, 4);
 assert.ok(config.scopeHashes.every((value) => /^[0-9a-f]{64}$/.test(value)));
@@ -20,6 +26,15 @@ assert.match(source, /Promise\.race\(\[Promise\.resolve\(request\),timeout\]\)/)
 assert.match(source, /p_operation_id:operationId/);
 assert.match(source, /p_expected_revision:expected/);
 assert.match(source, /ATSRS_STALE_REVISION/);
+assert.match(source, /request=request\.retry\(false\)/);
+assert.match(source, /function recordCommandFailure\(context,error\)/);
+assert.match(source, /function retryFailedOperations\(\)/);
+assert.match(source, /if\(flushPromise\)return flushPromise/);
+assert.match(source, /ATSRS_CIRCUIT_OPEN/);
+assert.doesNotMatch(
+  source,
+  /if\(!staleRevision&&!workspaceBusy\)throw commandError/
+);
 assert.match(source, /current_revision/);
 assert.match(source, /rebaseBusinessValue/);
 assert.match(source, /ATSRS_WRITE_CONFLICT/);
@@ -30,7 +45,7 @@ assert.doesNotMatch(source, /service_role/i);
 
 assert.match(
   index,
-  /normalized-write-canary-config\.js\?v=402[\s\S]*server-data\.js\?v=402/
+  /normalized-write-canary-config\.js\?v=403[\s\S]*server-data\.js\?v=403/
 );
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 assert.match(app, /selection=typeof selectedPersonnel==='function'/);

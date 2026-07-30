@@ -23,6 +23,8 @@
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
+  var flushPromise=null;
+  var retryFailedPromise=null;
   var pendingWrites=0;
   var lastWriteError=null;
   var failedOperations=[];
@@ -30,6 +32,8 @@
   var STABLE_ID_NAMESPACE='9fe1439e-5b5a-5c86-9d7c-28a67036e814';
   var UUID_PATTERN=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var commandRevisionChannel=null;
+  var commandCircuitChannel=null;
+  var commandCircuits=new Map();
   try{
     if(typeof BroadcastChannel==='function'){
       commandRevisionChannel=new BroadcastChannel('atsrs-normalized-write-revisions-v1');
@@ -44,6 +48,21 @@
       });
     }
   }catch(_channelError){commandRevisionChannel=null;}
+  try{
+    if(typeof BroadcastChannel==='function'){
+      commandCircuitChannel=new BroadcastChannel('atsrs-normalized-write-circuit-v1');
+      commandCircuitChannel.addEventListener('message',function(event){
+        var detail=event&&event.data||{};
+        var openUntil=Number(detail.openUntil);
+        if(!detail.scope||!Number.isFinite(openUntil))return;
+        commandCircuits.set(String(detail.scope),{
+          failures:Number(detail.failures)||0,
+          openUntil:Math.max(0,openUntil),
+          code:String(detail.code||'ATSRS_CIRCUIT_OPEN')
+        });
+      });
+    }
+  }catch(_circuitChannelError){commandCircuitChannel=null;}
 
   function validUuid(value){
     return UUID_PATTERN.test(String(value||''));
@@ -238,13 +257,21 @@
     return writeErrorCode(error)==='23505';
   }
   function isRetryableWriteError(error){
-    if(isWriteConflict(error))return false;
+    if(isWriteConflict(error)||isStaleRevision(error)
+      ||isWorkspaceBusy(error)||isRateLimited(error)){
+      return false;
+    }
     var code=writeErrorCode(error);
     var status=Number(error&&error.status||0);
-    if(code==='ATSRS_TRANSPORT_TIMEOUT')return true;
-    if(!code)return true;
-    if(/^08/.test(code)||code==='PGRST000'||code==='PGRST001'||code==='PGRST002')return true;
-    return status===408||status===429||status>=500;
+    var message=String(error&&error.message||'');
+    if(code==='ATSRS_TRANSPORT_TIMEOUT'||code==='ATSRS_REVISION_TIMEOUT')return true;
+    if(/^08/.test(code)
+      ||code==='PGRST000'||code==='PGRST001'||code==='PGRST002'
+      ||code==='PGRST003')return true;
+    if(status===408||status===502||status===503||status===504||status===520){
+      return true;
+    }
+    return status===0&&/fetch|network|connection|load failed|aborted|timeout|offline/i.test(message);
   }
   function attachWriteContext(error,meta,phase){
     if(!(error instanceof Error)){
@@ -284,6 +311,14 @@
     error=attachWriteContext(error,entry,'queue');
     entry.lastError=error;
     entry.retryable=isRetryableWriteError(error);
+    entry.attempts=(entry.attempts||0)+1;
+    entry.autoRetry=entry.retryable
+      &&entry.attempts===1
+      &&String(error.phase||'').indexOf('normalized_')!==0;
+    entry.nextRetryAt=entry.retryable
+      ?(entry.autoRetry?0:Date.now()
+        +Math.min(30000,1000*Math.pow(2,Math.min(entry.attempts-1,4))))
+      :0;
     if(!entry.retryable&&typeof entry.onFailure==='function')entry.onFailure();
     return error;
   }
@@ -295,7 +330,10 @@
       scope:meta&&meta.scope||'',
       version:meta&&meta.version||0,
       retryable:true,
-      lastError:null
+      lastError:null,
+      attempts:0,
+      nextRetryAt:0,
+      autoRetry:false
     };
     pendingWrites++;
     writeQueue=writeQueue
@@ -315,6 +353,11 @@
         pendingWrites=Math.max(0,pendingWrites-1);
         error=classifyFailedEntry(entry,error);
         lastWriteError=error;
+        failedOperations=failedOperations.filter(function(existing){
+          return !(existing&&existing.key===entry.key
+            &&existing.scope===entry.scope
+            &&Number(existing.version||0)<=Number(entry.version||0));
+        });
         failedOperations.push(entry);
         if(entry.retryable)logWriteDelay(error,entry);
         else if(isWriteConflict(error))logWriteConflict(error,entry);
@@ -579,7 +622,7 @@
   }
   function commandClientBuild(){
     return String(
-      document.documentElement.dataset.atsrsBuild||'V402'
+      document.documentElement.dataset.atsrsBuild||'V403'
     ).slice(0,64);
   }
   async function commandAuditMetadata(){
@@ -602,7 +645,149 @@
     var value=Number(config.requestTimeoutMs);
     return Number.isFinite(value)&&value>=1000&&value<=60000?value:12000;
   }
-  async function executeCommandRpc(args,key){
+  function commandCircuitConfig(){
+    var config=window.__ATSRS_NORMALIZED_WRITE_CANARY__||{};
+    return {
+      transientRetries:Number.isSafeInteger(Number(config.transientRetries))
+        ?Math.max(0,Math.min(2,Number(config.transientRetries))):2,
+      failureThreshold:Number.isSafeInteger(Number(config.circuitFailureThreshold))
+        ?Math.max(1,Math.min(5,Number(config.circuitFailureThreshold))):2,
+      transientOpenMs:Number.isFinite(Number(config.circuitTransientOpenMs))
+        ?Math.max(1000,Math.min(120000,Number(config.circuitTransientOpenMs))):15000,
+      staleOpenMs:Number.isFinite(Number(config.circuitStaleOpenMs))
+        ?Math.max(5000,Math.min(600000,Number(config.circuitStaleOpenMs))):120000,
+      busyOpenMs:Number.isFinite(Number(config.circuitBusyOpenMs))
+        ?Math.max(1000,Math.min(30000,Number(config.circuitBusyOpenMs))):5000,
+      rateLimitOpenMs:Number.isFinite(Number(config.circuitRateLimitOpenMs))
+        ?Math.max(1000,Math.min(120000,Number(config.circuitRateLimitOpenMs))):30000
+    };
+  }
+  function commandCircuitState(context){
+    var scopeKey=commandScope(context);
+    var state=commandCircuits.get(scopeKey);
+    if(!state){
+      state={failures:0,openUntil:0,code:''};
+      commandCircuits.set(scopeKey,state);
+    }
+    return {scopeKey:scopeKey,state:state};
+  }
+  function publishCommandCircuit(scopeKey,state){
+    try{
+      if(commandCircuitChannel){
+        commandCircuitChannel.postMessage({
+          scope:scopeKey,
+          failures:Number(state.failures)||0,
+          openUntil:Number(state.openUntil)||0,
+          code:String(state.code||'')
+        });
+      }
+    }catch(_error){}
+  }
+  function openCommandCircuit(context,error,duration){
+    var entry=commandCircuitState(context);
+    entry.state.openUntil=Math.max(entry.state.openUntil,Date.now()+duration);
+    entry.state.code=writeErrorCode(error)||'ATSRS_CIRCUIT_OPEN';
+    commandCircuits.set(entry.scopeKey,entry.state);
+    publishCommandCircuit(entry.scopeKey,entry.state);
+  }
+  function commandCircuitError(context,key){
+    var entry=commandCircuitState(context);
+    if(entry.state.openUntil<=Date.now())return null;
+    var error=new Error('ATSRS normalized write circuit is temporarily open.');
+    error.code='ATSRS_CIRCUIT_OPEN';
+    error.retryAfterMs=Math.max(0,entry.state.openUntil-Date.now());
+    return attachWriteContext(error,{key:key},'normalized_circuit');
+  }
+  function assertCommandCircuitClosed(context,key){
+    var error=commandCircuitError(context,key);
+    if(error)throw error;
+  }
+  function recordCommandSuccess(context){
+    var entry=commandCircuitState(context);
+    if(!entry.state.failures&&!entry.state.openUntil)return;
+    entry.state={failures:0,openUntil:0,code:''};
+    commandCircuits.set(entry.scopeKey,entry.state);
+    publishCommandCircuit(entry.scopeKey,entry.state);
+  }
+  function recordCommandFailure(context,error){
+    var entry=commandCircuitState(context);
+    var config=commandCircuitConfig();
+    if(isStaleRevision(error)){
+      entry.state.failures=config.failureThreshold;
+      commandCircuits.set(entry.scopeKey,entry.state);
+      openCommandCircuit(context,error,config.staleOpenMs);
+      return;
+    }
+    if(isWorkspaceBusy(error)){
+      entry.state.failures=config.failureThreshold;
+      commandCircuits.set(entry.scopeKey,entry.state);
+      openCommandCircuit(context,error,config.busyOpenMs);
+      return;
+    }
+    if(isRateLimited(error)){
+      entry.state.failures=config.failureThreshold;
+      commandCircuits.set(entry.scopeKey,entry.state);
+      openCommandCircuit(context,error,config.rateLimitOpenMs);
+      return;
+    }
+    if(!isRetryableWriteError(error))return;
+    entry.state.failures=(entry.state.failures||0)+1;
+    commandCircuits.set(entry.scopeKey,entry.state);
+    if(entry.state.failures>=config.failureThreshold){
+      openCommandCircuit(context,error,config.transientOpenMs);
+    }else{
+      publishCommandCircuit(entry.scopeKey,entry.state);
+    }
+  }
+  function transientRetryDelay(attempt){
+    var base=Math.min(4000,250*Math.pow(2,Math.max(0,attempt)));
+    return base+Math.floor(Math.random()*Math.max(1,Math.floor(base/4)));
+  }
+  function waitForTransientRetry(attempt){
+    return new Promise(function(resolve){
+      setTimeout(resolve,transientRetryDelay(attempt));
+    });
+  }
+  function isWorkspaceBusy(error){
+    var code=String(error&&error.code||'');
+    var message=String(error&&error.message||'');
+    return code==='55P03'||message.indexOf('ATSRS_WORKSPACE_BUSY')>=0;
+  }
+  function isRateLimited(error){
+    return Number(error&&error.status||0)===429
+      ||writeErrorCode(error)==='ATSRS_RATE_LIMITED';
+  }
+  function commandLockName(context){
+    return 'atsrs-workspace-command-v1:'
+      +String(context&&context.user_id||'unknown')+':'
+      +String(context&&context.account_type||'personal');
+  }
+  async function withWorkspaceCommandLock(context,key,task){
+    var locks=window.navigator&&window.navigator.locks;
+    if(!locks||typeof locks.request!=='function')return task();
+    var controller=typeof AbortController==='function'?new AbortController():null;
+    var timer=0;
+    if(controller){
+      timer=setTimeout(function(){controller.abort();},commandRequestTimeoutMs()+3000);
+    }
+    try{
+      return await locks.request(
+        commandLockName(context),
+        controller?{mode:'exclusive',signal:controller.signal}:{mode:'exclusive'},
+        task
+      );
+    }catch(error){
+      if(String(error&&error.name||'')==='AbortError'){
+        var lockError=new Error('ATSRS workspace command coordination timed out.');
+        lockError.code='ATSRS_COMMAND_LOCK_TIMEOUT';
+        throw attachWriteContext(lockError,{key:key},'normalized_command_lock');
+      }
+      throw error;
+    }finally{
+      clearTimeout(timer);
+    }
+  }
+  async function executeRpcAttempt(functionName,args,key,phase,timeoutCode){
     var controller=typeof AbortController==='function'?new AbortController():null;
     var timedOut=false;
     var timer=0;
@@ -611,113 +796,193 @@
         timedOut=true;
         if(controller)controller.abort();
         var error=new Error('ATSRS normalized command transport timed out.');
-        error.code='ATSRS_TRANSPORT_TIMEOUT';
-        reject(attachWriteContext(error,{key:key},'normalized_transport'));
+        error.code=timeoutCode;
+        reject(attachWriteContext(error,{key:key},phase));
       },commandRequestTimeoutMs());
     });
     try{
-      var request=client().rpc('atsrs_apply_workspace_command',args);
+      var request=client().rpc(functionName,args);
+      if(request&&typeof request.retry==='function')request=request.retry(false);
       if(controller&&request&&typeof request.abortSignal==='function'){
         request=request.abortSignal(controller.signal);
       }
-      return await Promise.race([Promise.resolve(request),timeout]);
+      var result=await Promise.race([Promise.resolve(request),timeout]);
+      if(result&&result.error){
+        result.error=attachWriteContext(result.error,{key:key},phase);
+        if(result.error.status===undefined&&result.status!==undefined){
+          result.error.status=result.status;
+        }
+      }
+      return result;
     }catch(error){
       if(timedOut||String(error&&error.name||'')==='AbortError'){
         var timeoutError=new Error('ATSRS normalized command transport timed out.');
-        timeoutError.code='ATSRS_TRANSPORT_TIMEOUT';
-        throw attachWriteContext(timeoutError,{key:key},'normalized_transport');
+        timeoutError.code=timeoutCode;
+        throw attachWriteContext(timeoutError,{key:key},phase);
       }
       throw error;
     }finally{
       clearTimeout(timer);
     }
   }
-  async function applyNormalizedCommand(key,value,deleted,context,baseValue,operationId){
+  async function executeRpcWithTransientRetry(
+    functionName,args,key,context,phase,timeoutCode
+  ){
+    assertCommandCircuitClosed(context,key);
+    var retries=commandCircuitConfig().transientRetries;
+    var lastError=null;
+    for(var attempt=0;attempt<=retries;attempt++){
+      try{
+        var result=await executeRpcAttempt(
+          functionName,args,key,phase,timeoutCode
+        );
+        if(!result||!result.error){
+          recordCommandSuccess(context);
+          return result;
+        }
+        lastError=result.error;
+        if(!isRetryableWriteError(lastError)||attempt>=retries){
+          recordCommandFailure(context,lastError);
+          return result;
+        }
+      }catch(error){
+        lastError=attachWriteContext(error,{key:key},phase);
+        if(!isRetryableWriteError(lastError)||attempt>=retries){
+          recordCommandFailure(context,lastError);
+          throw lastError;
+        }
+      }
+      await waitForTransientRetry(attempt);
+    }
+    recordCommandFailure(context,lastError);
+    throw lastError;
+  }
+  async function executeCommandRpc(args,key,context){
+    return executeRpcWithTransientRetry(
+      'atsrs_apply_workspace_command',
+      args,
+      key,
+      context,
+      'normalized_transport',
+      'ATSRS_TRANSPORT_TIMEOUT'
+    );
+  }
+  async function loadFreshCommandRevision(context,key){
+    var result=await executeRpcWithTransientRetry(
+      'atsrs_get_workspace_command_revision',
+      {p_account_type:context.account_type},
+      key,
+      context,
+      'normalized_revision',
+      'ATSRS_REVISION_TIMEOUT'
+    );
+    if(result.error)throw result.error;
+    var revision=Number(result.data);
+    if(!Number.isSafeInteger(revision)||revision<0){
+      var revisionError=new Error('ATSRS_INVALID_REVISION_RESULT');
+      revisionError.code='ATSRS_INVALID_REVISION_RESULT';
+      throw attachWriteContext(
+        revisionError,{key:key},'normalized_revision'
+      );
+    }
+    publishCommandRevision(context,revision);
+    return revision;
+  }
+  async function applyNormalizedCommandUnlocked(
+    key,value,deleted,context,baseValue,operationId
+  ){
     var scopeKey=commandScope(context);
     var expected=commandRevisions.get(scopeKey)||0;
     var candidate=deleted?null:String(value);
     var mergeBase=baseValue===null||baseValue===undefined
       ?emptyMergeBase(candidate):String(baseValue);
-    var auditMetadata=await commandAuditMetadata();
-    for(var attempt=0;attempt<3;attempt++){
-      var operation={data_key:String(key)};
-      if(deleted)operation.deleted=true;
-      else{
-        try{operation.value=JSON.parse(candidate);}
-        catch(error){
-          error.code='ATSRS_INVALID_CLIENT_GRAPH';
-          throw attachWriteContext(error,{key:key},'normalized_parse');
-        }
-      }
-      var result=await executeCommandRpc({
-        p_operation_id:operationId,
-        p_expected_revision:expected,
-        p_account_type:context.account_type,
-        p_client_build:commandClientBuild(),
-        p_operations:[operation],
-        p_audit_metadata:auditMetadata
-      },key);
-      if(result.error){
-        var commandError=attachWriteContext(
-          result.error,{key:key},'normalized_command'
-        );
-        if(!isStaleRevision(commandError))throw commandError;
-        var currentRevision=currentRevisionFromError(commandError);
-        if(currentRevision===null)throw commandError;
-        publishCommandRevision(context,currentRevision);
-        expected=currentRevision;
-        var latest=await loadStorageRow(key,context);
-        if(deleted){
-          if(!latest||!latest.payload
-            ||latest.payload.deleted===true
-            ||typeof latest.payload.value!=='string'){
-            serverValues.delete(String(key));
-            if(latest&&latest.updated_at)rowVersions.set(String(key),latest.updated_at);
-            return null;
+    var freshRevision=await loadFreshCommandRevision(context,key);
+    if(freshRevision!==expected){
+      var freshRow=await loadStorageRow(key,context);
+      if(deleted){
+        if(!freshRow||!freshRow.payload
+          ||freshRow.payload.deleted===true
+          ||typeof freshRow.payload.value!=='string'){
+          serverValues.delete(String(key));
+          if(freshRow&&freshRow.updated_at){
+            rowVersions.set(String(key),freshRow.updated_at);
           }
-          var deleteLatestValue=String(latest.payload.value);
-          rowVersions.set(String(key),latest.updated_at);
-          serverValues.set(String(key),deleteLatestValue);
-          if(!sameValue(deleteLatestValue,mergeBase)){
-            throw conflictError(key,'normalized_delete');
-          }
-          mergeBase=deleteLatestValue;
-          continue;
+          return null;
         }
-        if(!latest||!latest.payload||typeof latest.payload.value!=='string'){
+        var freshDeleteValue=String(freshRow.payload.value);
+        rowVersions.set(String(key),freshRow.updated_at);
+        serverValues.set(String(key),freshDeleteValue);
+        if(!sameValue(freshDeleteValue,mergeBase)){
+          throw conflictError(key,'normalized_delete');
+        }
+        mergeBase=freshDeleteValue;
+      }else{
+        if(!freshRow||!freshRow.payload
+          ||typeof freshRow.payload.value!=='string'){
           throw conflictError(key,'normalized_row');
         }
-        var latestValue=String(latest.payload.value);
-        rowVersions.set(String(key),latest.updated_at);
-        serverValues.set(String(key),latestValue);
-        candidate=rebaseBusinessValue(key,latestValue,mergeBase,candidate);
-        mergeBase=latestValue;
-        if(sameValue(candidate,latestValue))return latestValue;
-        continue;
+        var freshValue=String(freshRow.payload.value);
+        rowVersions.set(String(key),freshRow.updated_at);
+        serverValues.set(String(key),freshValue);
+        candidate=rebaseBusinessValue(key,freshValue,mergeBase,candidate);
+        mergeBase=freshValue;
+        if(sameValue(candidate,freshValue))return freshValue;
       }
-      var response=result.data||{};
-      var committedRevision=Number(response.committed_revision);
-      if(!Number.isSafeInteger(committedRevision)||committedRevision<0){
-        var revisionError=new Error('ATSRS_INVALID_COMMAND_RESULT');
-        revisionError.code='ATSRS_INVALID_COMMAND_RESULT';
-        throw attachWriteContext(revisionError,{key:key},'normalized_result');
-      }
-      publishCommandRevision(context,committedRevision);
-      var committedRow=await loadStorageRow(key,context);
-      if(committedRow&&committedRow.updated_at){
-        rowVersions.set(String(key),committedRow.updated_at);
-      }
-      if(deleted){
-        serverValues.delete(String(key));
-        return null;
-      }
-      var committedValue=committedRow&&committedRow.payload
-        &&typeof committedRow.payload.value==='string'
-        ?String(committedRow.payload.value):candidate;
-      serverValues.set(String(key),committedValue);
-      return committedValue;
+      expected=freshRevision;
     }
-    throw conflictError(key,'normalized_retry_limit');
+    var auditMetadata=await commandAuditMetadata();
+    var operation={data_key:String(key)};
+    if(deleted)operation.deleted=true;
+    else{
+      try{operation.value=JSON.parse(candidate);}
+      catch(error){
+        error.code='ATSRS_INVALID_CLIENT_GRAPH';
+        throw attachWriteContext(error,{key:key},'normalized_parse');
+      }
+    }
+    var result=await executeCommandRpc({
+      p_operation_id:operationId,
+      p_expected_revision:expected,
+      p_account_type:context.account_type,
+      p_client_build:commandClientBuild(),
+      p_operations:[operation],
+      p_audit_metadata:auditMetadata
+    },key,context);
+    if(result.error){
+      throw attachWriteContext(
+        result.error,{key:key},'normalized_command'
+      );
+    }
+    var response=result.data||{};
+    var committedRevision=Number(response.committed_revision);
+    if(!Number.isSafeInteger(committedRevision)||committedRevision<0){
+      var revisionError=new Error('ATSRS_INVALID_COMMAND_RESULT');
+      revisionError.code='ATSRS_INVALID_COMMAND_RESULT';
+      throw attachWriteContext(revisionError,{key:key},'normalized_result');
+    }
+    publishCommandRevision(context,committedRevision);
+    var committedRow=await loadStorageRow(key,context);
+    if(committedRow&&committedRow.updated_at){
+      rowVersions.set(String(key),committedRow.updated_at);
+    }
+    if(deleted){
+      serverValues.delete(String(key));
+      return null;
+    }
+    var committedValue=committedRow&&committedRow.payload
+      &&typeof committedRow.payload.value==='string'
+      ?String(committedRow.payload.value):candidate;
+    serverValues.set(String(key),committedValue);
+    return committedValue;
+  }
+  async function applyNormalizedCommand(
+    key,value,deleted,context,baseValue,operationId
+  ){
+    return withWorkspaceCommandLock(context,key,function(){
+      return applyNormalizedCommandUnlocked(
+        key,value,deleted,context,baseValue,operationId
+      );
+    });
   }
   async function upsertStorageValue(key,value,context,baseValue){
     if(!context)return String(value);
@@ -960,36 +1225,41 @@
     event.preventDefault();
     event.returnValue='';
   });
-  async function flushWrites(){
+  async function flushWritesOnce(){
     var passes=0;
     while(passes<4){
       passes++;
       var observedQueue=writeQueue;
       await observedQueue;
-      if(failedOperations.length){
-        if(failedOperations.some(function(entry){return entry&&entry.retryable===false;})){
-          showSaveWarning();
+      var legacyRetry=[];
+      failedOperations=failedOperations.filter(function(entry){
+        if(entry&&entry.autoRetry===true){
+          entry.autoRetry=false;
+          legacyRetry.push(entry);
           return false;
         }
-        var retry=failedOperations.splice(0);
-        for(var i=0;i<retry.length;i++){
-          var entry=retry[i];
-          var operation=typeof entry==='function'?entry:entry.run;
-          try{
-            await operation();
-          }catch(error){
-            error=classifyFailedEntry(entry,error);
-            lastWriteError=error;
-            if(entry.retryable)logWriteDelay(error,entry);
-            else if(isWriteConflict(error))logWriteConflict(error,entry);
-            else logWriteRejected(error,entry);
-            failedOperations.push(entry);
-          }
+        return true;
+      });
+      for(var retryIndex=0;retryIndex<legacyRetry.length;retryIndex++){
+        var retryEntry=legacyRetry[retryIndex];
+        try{
+          await retryEntry.run();
+        }catch(error){
+          error=classifyFailedEntry(retryEntry,error);
+          lastWriteError=error;
+          if(retryEntry.retryable)logWriteDelay(error,retryEntry);
+          else if(isWriteConflict(error))logWriteConflict(error,retryEntry);
+          else logWriteRejected(error,retryEntry);
+          failedOperations.push(retryEntry);
         }
       }
       if(writeQueue===observedQueue&&pendingWrites===0&&!failedOperations.length){
         lastWriteError=null;
         return true;
+      }
+      if(writeQueue===observedQueue&&pendingWrites===0&&failedOperations.length){
+        showSaveWarning();
+        return false;
       }
     }
     if(lastWriteError){
@@ -1002,9 +1272,47 @@
     showSaveWarning();
     return false;
   }
+  function flushWrites(){
+    if(flushPromise)return flushPromise;
+    flushPromise=flushWritesOnce().finally(function(){flushPromise=null;});
+    return flushPromise;
+  }
+  function failedEntryCircuitOpen(entry){
+    var state=commandCircuits.get(String(entry&&entry.scope||''));
+    return !!(state&&Number(state.openUntil)>Date.now());
+  }
+  function retryFailedOperations(){
+    if(retryFailedPromise)return retryFailedPromise;
+    retryFailedPromise=(async function(){
+      var now=Date.now();
+      var retry=[];
+      failedOperations=failedOperations.filter(function(entry){
+        if(!entry||entry.retryable!==true)return true;
+        if(Number(entry.nextRetryAt||0)>now||failedEntryCircuitOpen(entry))return true;
+        retry.push(entry);
+        return false;
+      });
+      for(var i=0;i<retry.length;i++){
+        var entry=retry[i];
+        try{
+          await entry.run();
+        }catch(error){
+          error=classifyFailedEntry(entry,error);
+          lastWriteError=error;
+          if(entry.retryable)logWriteDelay(error,entry);
+          else if(isWriteConflict(error))logWriteConflict(error,entry);
+          else logWriteRejected(error,entry);
+          failedOperations.push(entry);
+        }
+      }
+      if(!failedOperations.length)lastWriteError=null;
+      return !failedOperations.length;
+    })().finally(function(){retryFailedPromise=null;});
+    return retryFailedPromise;
+  }
   window.addEventListener('online',function(){
     if(!pendingWrites&&!failedOperations.length)return;
-    flushWrites().catch(function(error){
+    retryFailedOperations().then(flushWrites).catch(function(error){
       console.warn('ATSRS reconnect save is still pending.',{
         dataKey:error&&error.dataKey||'',
         code:writeErrorCode(error)||'UNKNOWN'
@@ -1800,6 +2108,13 @@
             message:String(entry&&entry.lastError&&entry.lastError.message||'')
           };
         }),
+        circuits:Array.from(commandCircuits.entries()).map(function(entry){
+          return {
+            scope:entry[0],
+            code:String(entry[1]&&entry[1].code||''),
+            openUntil:Number(entry[1]&&entry[1].openUntil||0)
+          };
+        }),
         loadedScope:loadedScope
       };
     },
@@ -1810,11 +2125,14 @@
       rowVersions.clear();
       serverValues.clear();
       commandRevisions.clear();
+      commandCircuits.clear();
       normalizedWriteScopeCache.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;
       failedOperations=[];
+      flushPromise=null;
+      retryFailedPromise=null;
     },
     openApp:async function(openLocalApp){
       try{

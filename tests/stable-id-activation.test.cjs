@@ -91,9 +91,38 @@ function fakeClient(rows, controls = {}) {
 
   return {
     rpc(name, args) {
+      if (name === 'atsrs_get_workspace_command_revision') {
+        assert.ok(['personal', 'company'].includes(args.p_account_type));
+        controls.revisionReads = Number(controls.revisionReads || 0) + 1;
+        const readRevision = Number(controls.commandRevision || 0);
+        if (controls.advanceRevisionAfterReadOnce) {
+          controls.advanceRevisionAfterReadOnce = false;
+          controls.commandRevision = readRevision + 1;
+        }
+        return {
+          data: readRevision,
+          error: null
+        };
+      }
       assert.equal(name, 'atsrs_apply_workspace_command');
       controls.rpcCalls = controls.rpcCalls || [];
       controls.rpcCalls.push(JSON.parse(JSON.stringify(args)));
+      if (Number(controls.rateLimitFailuresRemaining || 0) > 0) {
+        controls.rateLimitFailuresRemaining--;
+        return {
+          data: null,
+          error: { code: 'ATSRS_RATE_LIMITED', message: 'simulated rate limit' },
+          status: 429
+        };
+      }
+      if (Number(controls.transientFailuresRemaining || 0) > 0) {
+        controls.transientFailuresRemaining--;
+        return {
+          data: null,
+          error: { code: 'PGRST001', message: 'simulated transient network failure' },
+          status: 503
+        };
+      }
       if (controls.hangRpc) {
         let rejectRequest;
         const request = new Promise((_resolve, reject) => {
@@ -248,6 +277,13 @@ function boot(rows, controls = {}, mode = 'personal') {
       primaryWrite: false,
       allowAllScopes: false,
       requestTimeoutMs: controls.requestTimeoutMs || 12000,
+      transientRetries: controls.transientRetries === undefined
+        ? 2 : controls.transientRetries,
+      circuitFailureThreshold: 2,
+      circuitTransientOpenMs: 15000,
+      circuitStaleOpenMs: 120000,
+      circuitBusyOpenMs: 5000,
+      circuitRateLimitOpenMs: 30000,
       scopeHashes: [
         '13243347bab9453c39c1eff996e490bda0085810d40df123f9ece922a7360932',
         'bf1b1f7b4785f78b0ce888526c028e1f4bb0206502df8df562b255b511978b7e'
@@ -753,7 +789,7 @@ async function testTriggerFailureRollsBackClientAndSource() {
   assert.ok(app.loggedErrors.some(message => message.includes('cloud save was rejected')));
 }
 
-async function testNormalizedCommandStaleBootstrapAndIdempotentResponseLoss() {
+async function testNormalizedCommandFreshBootstrapAndIdempotentResponseLoss() {
   const key = 'atsrs_user-1_personal_profile';
   const rows = [
     ...markers('personal'),
@@ -784,10 +820,12 @@ async function testNormalizedCommandStaleBootstrapAndIdempotentResponseLoss() {
   assert.equal(await app.api.flush(), true);
   assert.equal(JSON.parse(rows[2].payload.value).position, 'After');
   assert.equal(controls.commandRevision, 5);
-  assert.equal(controls.rpcCalls.length, 3);
-  assert.equal(controls.rpcCalls[0].p_expected_revision, 0);
-  assert.equal(controls.rpcCalls[1].p_expected_revision, 4);
-  assert.equal(controls.rpcCalls[2].p_operation_id, controls.rpcCalls[1].p_operation_id);
+  assert.equal(controls.rpcCalls.length, 2);
+  assert.equal(controls.rpcCalls[0].p_expected_revision, 4);
+  assert.equal(
+    controls.rpcCalls[1].p_operation_id,
+    controls.rpcCalls[0].p_operation_id,
+  );
   assert.equal(controls.commandReceipts.size, 1);
   assert.equal(app.loggedErrors.length, 0);
 }
@@ -930,7 +968,7 @@ async function testNormalizedSemanticComparatorKeepsRealChanges() {
   value[0].provider = 'After';
   app.api.write(key, JSON.stringify(value));
   assert.equal(await app.api.flush(), true);
-  assert.equal(controls.rpcCalls.length, 2);
+  assert.equal(controls.rpcCalls.length, 1);
   assert.equal(controls.commandRevision, 12);
   assert.equal(JSON.parse(rows[2].payload.value)[0].provider, 'After');
 }
@@ -956,7 +994,8 @@ async function testNormalizedTransportTimeoutCleansUpFlush() {
     normalizedWrite: true,
     commandRevision: 1,
     hangRpc: true,
-    requestTimeoutMs: 1000
+    requestTimeoutMs: 1000,
+    transientRetries: 0
   };
   const app = boot(rows, controls);
   await app.api.ensureLoaded();
@@ -969,6 +1008,121 @@ async function testNormalizedTransportTimeoutCleansUpFlush() {
   assert.equal(JSON.parse(rows[2].payload.value).name, 'Before');
   assert.ok(app.loggedWarnings.some(message =>
     message.includes('cloud save delayed')
+  ));
+}
+
+async function testNormalizedStaleRevisionFailsFastAndOpensCircuit() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'stale-v1'
+    }
+  ];
+  const controls = {
+    normalizedWrite: true,
+    commandRevision: 7,
+    advanceRevisionAfterReadOnce: true
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const changed = JSON.parse(app.api.read(key));
+    changed.position = `Attempt ${attempt}`;
+    app.api.write(key, JSON.stringify(changed));
+    assert.equal(await app.api.flush(), false);
+  }
+  assert.equal(controls.rpcCalls.length, 1);
+  assert.equal(controls.revisionReads, 1);
+  assert.equal(controls.commandRevision, 8);
+  assert.equal(JSON.parse(rows[2].payload.value).position, undefined);
+  assert.ok(app.api.pendingState().circuits.some(entry =>
+    entry.code === '40001' && entry.openUntil > Date.now()
+  ));
+}
+
+async function testNormalizedTransientRetryIsBoundedAndIdempotent() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'transient-v1'
+    }
+  ];
+  const controls = {
+    normalizedWrite: true,
+    commandRevision: 3,
+    transientFailuresRemaining: 2,
+    transientRetries: 2
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.position = 'After bounded retry';
+  app.api.write(key, JSON.stringify(changed));
+  const firstFlush = app.api.flush();
+  const secondFlush = app.api.flush();
+  assert.equal(firstFlush, secondFlush);
+  assert.equal(await firstFlush, true);
+  assert.equal(controls.rpcCalls.length, 3);
+  assert.equal(new Set(controls.rpcCalls.map(call =>
+    call.p_operation_id
+  )).size, 1);
+  assert.equal(controls.commandRevision, 4);
+  assert.equal(JSON.parse(rows[2].payload.value).position, 'After bounded retry');
+}
+
+async function testNormalizedRateLimitFailsWithoutRetryAndOpensCircuit() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'rate-limit-v1'
+    }
+  ];
+  const controls = {
+    normalizedWrite: true,
+    commandRevision: 2,
+    rateLimitFailuresRemaining: 1
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.position = 'Rate limited';
+  app.api.write(key, JSON.stringify(changed));
+  assert.equal(await app.api.flush(), false);
+  assert.equal(controls.rpcCalls.length, 1);
+  assert.equal(controls.commandRevision, 2);
+  assert.equal(JSON.parse(rows[2].payload.value).position, undefined);
+  assert.ok(app.api.pendingState().circuits.some(entry =>
+    entry.code === 'ATSRS_RATE_LIMITED' && entry.openUntil > Date.now()
   ));
 }
 
@@ -988,12 +1142,15 @@ async function testNormalizedTransportTimeoutCleansUpFlush() {
   await testOverlappingStaleFieldPreservesServerAndAllowsRetry();
   await testBoundedStaleRetryStopsWithoutOverwrite();
   await testTriggerFailureRollsBackClientAndSource();
-  await testNormalizedCommandStaleBootstrapAndIdempotentResponseLoss();
+  await testNormalizedCommandFreshBootstrapAndIdempotentResponseLoss();
   await testNormalizedCommandPreservesOverlappingServerField();
   await testNormalizedNoOpCreatesNoCommand();
   await testNormalizedSemanticNoOpCreatesNoCommand();
   await testNormalizedSemanticComparatorKeepsRealChanges();
   await testNormalizedTransportTimeoutCleansUpFlush();
+  await testNormalizedStaleRevisionFailsFastAndOpensCircuit();
+  await testNormalizedTransientRetryIsBoundedAndIdempotent();
+  await testNormalizedRateLimitFailsWithoutRetryAndOpensCircuit();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
   console.error(error);
