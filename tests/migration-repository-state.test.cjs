@@ -80,14 +80,15 @@ const localOnly = [
   '20260726223000_ai_cv_generation_quota.sql',
   '20260729041619_stable_workspace_entity_ids.sql',
   '20260729105130_baseline_v242_detailed_expiry_notifications.sql',
-  '20260729105131_baseline_secure_share_live_delta.sql'
+  '20260729105131_baseline_secure_share_live_delta.sql',
+  '20260730061019_normalized_primary_write_command_contract.sql'
 ];
 for (const name of localOnly) {
   assert.ok(fs.existsSync(path.join(migrationDir, name)), `missing local-only migration ${name}`);
 }
 
 const actual = fs.readdirSync(migrationDir).filter(name => name.endsWith('.sql')).sort();
-assert.equal(actual.length, 36);
+assert.equal(actual.length, 37);
 assert.equal(new Set(actual.map(name => name.slice(0, 14))).size, actual.length);
 assert.ok(actual.indexOf('20260729041619_stable_workspace_entity_ids.sql') <
   actual.indexOf('20260729105130_baseline_v242_detailed_expiry_notifications.sql'));
