@@ -27,6 +27,7 @@ const legacy = {
     name: 'Duplicate',
     surname: 'Name',
     position: index ? '' : 'Engineer',
+    country: index ? 'Norway' : 'Azerbaijan',
     atsrsProjectIds: index ? [] : [ids.project],
     volatileUiNote: `keep-${index}`,
   })),
@@ -108,6 +109,12 @@ function normalizedFromLegacy(value) {
     'legacy UI order must not change when normalized rows are reordered',
   );
   assert.equal(result.read_model.personnel[0].volatileUiNote, 'keep-0');
+  assert.equal(result.read_model.personnel[0].country, 'Azerbaijan');
+  assert.equal(
+    Object.hasOwn(result.read_model.personnel[0], 'nationality'),
+    false,
+    'normalized aliases must not reshape the legacy envelope',
+  );
   assert.equal(result.read_model.certificates[0].fileName, 'keep-0.pdf');
   assert.equal(result.read_model.certificates[1].fileName, 'keep-1.pdf');
   assert.equal(result.read_model.certificates[0].docNo, 'SAME-NUMBER');

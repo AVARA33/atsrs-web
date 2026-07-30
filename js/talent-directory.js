@@ -20,6 +20,11 @@
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
   function mode(){try{return localStorage.getItem('atsrs_use_mode')||window.useMode||'personal'}catch(e){return 'personal'}}
+  function automaticWritesAllowed(){
+    var runtime=window.atsrsNormalizedReadRuntime;
+    return !runtime||typeof runtime.automaticWritesAllowed!=='function'
+      ||runtime.automaticWritesAllowed();
+  }
   function safe(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function friendlyError(error,fallback){
     var text=String(error&&error.message||'').toLowerCase();
@@ -172,6 +177,7 @@
     return result.data;
   }
   async function syncOwnProfile(force){
+    if(!automaticWritesAllowed())return true;
     if(mode()!=='personal'||loading)return false;
     if(!force&&Date.now()-lastSync<240000)return true;
     var c=client(),u=await user(),profile=profileFromForm();
@@ -460,7 +466,9 @@
       var report=reportByUser.get(String(item.professional_user_id||''));
       return report?Object.assign({},item,report,{profile:item.profile}):item;
     });
-    linkedPersonnel.forEach(function(item){if(item.profile)saveWorkspaceLink(item.profile,false)});
+    if(automaticWritesAllowed()){
+      linkedPersonnel.forEach(function(item){if(item.profile)saveWorkspaceLink(item.profile,false)});
+    }
     renderLinkedPersonnel();
     return linkedPersonnel;
   }

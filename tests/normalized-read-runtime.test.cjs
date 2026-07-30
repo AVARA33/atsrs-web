@@ -136,6 +136,7 @@ function rootFixture(options = {}) {
   );
   assert.equal(primaryResult.status, 'match');
   assert.equal(primaryResult.selected_source, 'normalized_overlay');
+  assert.equal(primaryRuntime.automaticWritesAllowed(), false);
   assert.equal(
     JSON.parse(primaryRuntime.read(
       `atsrs_${userId}_${accountType}_personnel`,
@@ -144,6 +145,11 @@ function rootFixture(options = {}) {
     personId,
   );
   primaryRuntime.invalidate();
+  assert.equal(
+    primaryRuntime.automaticWritesAllowed(),
+    false,
+    'automatic writes stay blocked throughout the primary canary navigation',
+  );
   assert.equal(
     primaryRuntime.read(`atsrs_${userId}_${accountType}_personnel`, 'legacy'),
     'legacy',
@@ -287,6 +293,23 @@ function rootFixture(options = {}) {
   assert.match(serverDataSource, /typeof runtime\.read===['"]function['"]/);
   assert.match(serverDataSource, /atsrsNormalizedReadRuntime\.invalidate/);
   assert.match(serverDataSource, /atsrs:cloud-write-complete/);
+  const dashboardSource = fs.readFileSync(
+    path.join(repo, 'js', 'dashboard.js'),
+    'utf8',
+  );
+  assert.match(dashboardSource, /function automaticWritesAllowed/);
+  assert.match(dashboardSource, /writesAllowed\?restoreProfileBackup\(original\):original/);
+  assert.match(dashboardSource, /writesAllowed&&profileCoreScore\(p\)<2/);
+  const talentSource = fs.readFileSync(
+    path.join(repo, 'js', 'talent-directory.js'),
+    'utf8',
+  );
+  assert.match(talentSource, /function automaticWritesAllowed/);
+  assert.match(talentSource, /if\(!automaticWritesAllowed\(\)\)return true/);
+  assert.match(
+    talentSource,
+    /if\(automaticWritesAllowed\(\)\)\{\s*linkedPersonnel\.forEach/,
+  );
 
   console.log('normalized read runtime tests passed');
 })().catch((error) => {

@@ -38,6 +38,7 @@
     running:null,
     lastReport:null,
     currentScope:'',
+    readOnlyCanaryScope:'',
     overrideScope:'',
     overrides:new Map()
   };
@@ -131,6 +132,7 @@
     if(!state.enabled||!state.primaryRead){
       state.running=null;
       state.currentScope='';
+      state.readOnlyCanaryScope='';
       state.overrideScope='';
       state.overrides.clear();
     }
@@ -142,6 +144,7 @@
       primaryRead:state.primaryRead,
       scopeCount:state.scopeHashes.length,
       running:!!state.running,
+      automaticWritesAllowed:state.readOnlyCanaryScope!==state.currentScope,
       overrideScope:state.overrideScope?'active':'',
       lastReport:state.lastReport
     };
@@ -180,6 +183,9 @@
   async function shouldBlockForPrimary(scope){
     return state.primaryRead&&await allowed(safeConfig(state),scope);
   }
+  function automaticWritesAllowed(){
+    return !state.currentScope||state.readOnlyCanaryScope!==state.currentScope;
+  }
   async function run(root,detail){
     var sequence=++state.sequence;
     var config=safeConfig({
@@ -198,11 +204,13 @@
       return unavailable;
     }
     if(!await allowed(config,scope)){
+      if(state.readOnlyCanaryScope===scope)state.readOnlyCanaryScope='';
       var disabled=legacyReport('feature_flag_off');
       publish(root,disabled);
       return disabled;
     }
     state.currentScope=scope;
+    state.readOnlyCanaryScope=config.primaryRead?scope:'';
     if(config.primaryRead&&state.overrideScope===scope&&state.lastReport
       &&state.lastReport.status==='match'){
       return state.lastReport;
@@ -291,6 +299,7 @@
     prepare:function(detail){
       return typeof window!=='undefined'?run(window,detail):Promise.resolve(legacyReport('runtime_unavailable'));
     },
+    automaticWritesAllowed:automaticWritesAllowed,
     shouldBlockForPrimary:shouldBlockForPrimary,
     state:getState,
     specification:{

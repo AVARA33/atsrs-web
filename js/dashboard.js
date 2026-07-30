@@ -90,6 +90,11 @@
   var PROFILE_BACKUP_KEY='profile_backup';
   var profileRecoveryRunning=false;
   var verificationRefreshPromise=null;
+  function automaticWritesAllowed(){
+    var runtime=window.atsrsNormalizedReadRuntime;
+    return !runtime||typeof runtime.automaticWritesAllowed!=='function'
+      ||runtime.automaticWritesAllowed();
+  }
   function byId(id){return document.getElementById(id)}
   function safeUserId(){
     try{return (window.currentUser&&currentUser.id)?currentUser.id:'local_test_user';}
@@ -627,7 +632,8 @@
     if(profileHydrationPending())return false;
     try{ if(typeof window.fillCountries==='function') window.fillCountries(); }catch(e){}
     var original=readJson(PROFILE_KEY,{});
-    var p=restoreProfileBackup(original);
+    var writesAllowed=automaticWritesAllowed();
+    var p=writesAllowed?restoreProfileBackup(original):original;
     if(p!==original){
       p.recoveredAt=new Date().toISOString();
       writeJson(PROFILE_KEY,p);
@@ -666,7 +672,7 @@
     ensureProfileStatus();
     bindOfficialProfileControls();
     setTimeout(refreshVerificationStatus,900);
-    if(profileCoreScore(p)<2&&!profileRecoveryRunning){
+    if(writesAllowed&&profileCoreScore(p)<2&&!profileRecoveryRunning){
       profileRecoveryRunning=true;
       setTimeout(function(){
         recoverProfileFromTalent(p).then(function(recovered){

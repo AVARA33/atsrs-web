@@ -46,6 +46,14 @@
       output[key]=value===true;
     }
   }
+  function assignExistingAlias(output,base,preferredKey,legacyKey,value){
+    if(value===undefined||value===null)return;
+    if(Object.prototype.hasOwnProperty.call(base||{},preferredKey)){
+      output[preferredKey]=value;
+    }else if(legacyKey&&Object.prototype.hasOwnProperty.call(base||{},legacyKey)){
+      output[legacyKey]=value;
+    }
+  }
   function metadataEnvelope(base,metadata){
     return Object.assign(
       {},
@@ -116,7 +124,7 @@
       assignOptional(output,'email',row.email);
       assignOptional(output,'phone',row.phone);
       assignOptional(output,'whatsapp',row.whatsapp);
-      assignOptional(output,'nationality',row.nationality);
+      assignExistingAlias(output,base,'nationality','country',row.nationality);
       assignOptional(output,'employeeId',row.employee_id);
       assignOptional(output,'source',row.source);
       assignOptional(output,'accessStatus',row.access_status);
