@@ -66,9 +66,11 @@ only if parity is exact. No-op writes do not invalidate or query.
    RLS-filtered normalized rows.
 3. Require every workspace to report exact parity, zero skipped records, zero
    duplicate/orphan/workspace mismatch, and no cross-workspace visibility.
-4. The local primary-read preparation keeps `primaryRead=false`. A later,
-   separately approved release may set it for the same allowlisted scopes and
-   select the overlay only after parity.
+4. The primary-read flag is default-off. The explicit
+   `?atsrsNormalizedRead=primary` browser canary sets it only for the current
+   navigation; the existing SHA-256 allowlist and RLS still gate every query.
+   Removing the parameter and refreshing immediately returns to the read-only
+   legacy canary.
 5. Rollback is an immediate runtime `rollback()`/flag-off, followed by the
    previous frontend commit if necessary. It clears installed overlays, cancels
    stale comparison results, returns reads to legacy immediately, and requires

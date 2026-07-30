@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const repo = path.resolve(__dirname, '..');
 const shadow = require(path.join(repo, 'js', 'shadow-read.js'));
@@ -252,11 +253,11 @@ function rootFixture(options = {}) {
   assert.equal(runtime.specification.normalized_write, false);
 
   const index = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
-  const shadowScript = index.indexOf('js/shadow-read.js?v=398');
-  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=398');
-  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=398');
-  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=398');
-  const storageScript = index.indexOf('js/storage.js?v=398');
+  const shadowScript = index.indexOf('js/shadow-read.js?v=399');
+  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=399');
+  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=399');
+  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=399');
+  const storageScript = index.indexOf('js/storage.js?v=399');
   assert.ok(
     shadowScript < adapterScript
       && adapterScript < configScript
@@ -283,6 +284,21 @@ function rootFixture(options = {}) {
   );
   assert.doesNotMatch(configSource, /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
   assert.doesNotMatch(configSource, /@|service_role|token|secret/i);
+  assert.match(configSource, /atsrsNormalizedRead/);
+  assert.match(configSource, /===['"]primary['"]/);
+  assert.match(configSource, /primaryRead=false/);
+  const canaryWindow = {location: {search: '?atsrsNormalizedRead=primary'}};
+  vm.runInNewContext(configSource, {
+    window: canaryWindow,
+    URLSearchParams,
+  });
+  assert.equal(canaryWindow.__ATSRS_NORMALIZED_READ_CANARY__.primaryRead, true);
+  const normalWindow = {location: {search: ''}};
+  vm.runInNewContext(configSource, {
+    window: normalWindow,
+    URLSearchParams,
+  });
+  assert.equal(normalWindow.__ATSRS_NORMALIZED_READ_CANARY__.primaryRead, false);
 
   const serverDataSource = fs.readFileSync(
     path.join(repo, 'js', 'server-data.js'),
