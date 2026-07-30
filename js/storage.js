@@ -2129,6 +2129,27 @@ setTimeout(v55DockTopActions,500);
     };
     var workspaceSwitchPromise=null;
     var workspaceSwitchTarget='';
+    function renderedWorkspaceMode(){
+      try{
+        if(document.body.classList.contains('company-mode'))return 'company';
+        if(document.body.classList.contains('personal-mode'))return 'personal';
+      }catch(e){}
+      return '';
+    }
+    function finishLocalWorkspaceConvergence(user,mode){
+      saveLastWorkspace(user,mode);
+      try{
+        localStorage.removeItem('atsrs_workspace_pick_required');
+        localStorage.setItem('atsrs_current_page','intro');
+        localStorage.setItem('atsrs_auth_mode','supabase');
+      }catch(e){}
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
+        window.atsrsCloudData.clearSession();
+      }
+      window.__atsrsSessionOpened=false;
+      window.location.reload();
+      return true;
+    }
     window.atsrsSwitchWorkspace=function(mode){
       if(mode!=='personal' && mode!=='company') return false;
       var user=window.currentUser||currentUser;
@@ -2139,6 +2160,22 @@ setTimeout(v55DockTopActions,500);
       }
       var current=''; try{current=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
       if(current===mode){
+        if(renderedWorkspaceMode()!==mode){
+          workspaceSwitchPromise=(async function(){
+            if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
+              var saved=await window.atsrsCloudData.flush();
+              if(saved===false||!window.atsrsCloudData.isSynced()){
+                throw new Error('Your latest changes were not saved. Check the connection and try again.');
+              }
+            }
+            return finishLocalWorkspaceConvergence(user,mode);
+          })();
+          workspaceSwitchPromise.finally(function(){
+            workspaceSwitchPromise=null;
+            workspaceSwitchTarget='';
+          }).catch(function(){});
+          return workspaceSwitchPromise;
+        }
         workspaceSwitchTarget='';
         return Promise.resolve(true);
       }

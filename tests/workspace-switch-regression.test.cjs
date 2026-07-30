@@ -67,7 +67,7 @@ function deferred() {
   return { promise, resolve, reject };
 }
 
-function boot(switchWorkspace) {
+function boot(switchWorkspace, options = {}) {
   const ids = [
     'workspaceSwitcher',
     'workspaceSwitcherMenu',
@@ -84,11 +84,14 @@ function boot(switchWorkspace) {
   const localStorage = new FakeStorage();
   const document = {
     readyState: 'loading',
+    body: new FakeElement(),
     getElementById(id) {
       return elements[id] || null;
     },
     addEventListener() {}
   };
+  if (options.sharedMode) localStorage.setItem('atsrs_use_mode', options.sharedMode);
+  if (options.renderedMode) document.body.classList.toggle(`${options.renderedMode}-mode`, true);
   const window = {
     currentUser: { email: 'test@example.invalid' },
     atsrsSwitchWorkspace: switchWorkspace,
@@ -166,6 +169,21 @@ async function testFailurePreservesStateAndRetryWorks() {
   assert.equal(attempts, 2);
 }
 
+async function testSharedWorkspaceNoOpStillConvergesStaleTab() {
+  let calls = 0;
+  const app = boot(async mode => {
+    calls++;
+    return mode === 'company';
+  }, {
+    sharedMode: 'company',
+    renderedMode: 'personal'
+  });
+
+  assert.equal(await app.window.atsrsWorkspaceSwitcherChoose('company'), true);
+  assert.equal(calls, 1);
+  assert.equal(app.elements.workspaceSwitcher.getAttribute('aria-busy'), 'false');
+}
+
 function testStorageReloadRollbackAndSequenceContracts() {
   const storage = fs.readFileSync(path.join(__dirname, '..', 'js', 'storage.js'), 'utf8');
   assert.match(storage, /workspaceSwitchPromise/);
@@ -174,6 +192,9 @@ function testStorageReloadRollbackAndSequenceContracts() {
   assert.match(storage, /return workspaceSwitchPromise/);
   assert.match(storage, /applyAccountType\(current\)/);
   assert.match(storage, /window\.location\.reload\(\)/);
+  assert.match(storage, /function renderedWorkspaceMode\(\)/);
+  assert.match(storage, /if\(current===mode\)\{\s*if\(renderedWorkspaceMode\(\)!==mode\)/);
+  assert.match(storage, /return finishLocalWorkspaceConvergence\(user,mode\)/);
 }
 
 function testHydrationGateAndVerificationRefreshAreReadOnly() {
@@ -194,6 +215,7 @@ function testHydrationGateAndVerificationRefreshAreReadOnly() {
   await testThirtySequentialSwitchesAndLoaderCompletion();
   await testParallelAttemptIsSingleFlightAndRenderCannotUnlockControls();
   await testFailurePreservesStateAndRetryWorks();
+  await testSharedWorkspaceNoOpStillConvergesStaleTab();
   testStorageReloadRollbackAndSequenceContracts();
   testHydrationGateAndVerificationRefreshAreReadOnly();
   console.log('workspace switch regression tests passed');

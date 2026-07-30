@@ -22,7 +22,7 @@
     var root=document.documentElement;
     root.dataset.atsrsShadowReadStatus=String(report&&report.status||'idle');
     root.dataset.atsrsShadowReadMismatchCount=String(report&&report.mismatch_count||0);
-    root.dataset.atsrsShadowReadBuild='V396';
+    root.dataset.atsrsShadowReadBuild='V398';
   }
 
   function validUuid(value){
@@ -509,7 +509,7 @@
         });
         if(sequence!==runSequence)return null;
         lastReport={
-          build:'V396',
+          build:'V398',
           mode:'shadow-read',
           authoritative_source:'legacy_json',
           scope_hash:scopeHash,
@@ -537,7 +537,7 @@
         return lastReport;
       }catch(error){
         lastReport={
-          build:'V396',
+          build:'V398',
           mode:'shadow-read',
           authoritative_source:'legacy_json',
           scope_hash:scopeHash,

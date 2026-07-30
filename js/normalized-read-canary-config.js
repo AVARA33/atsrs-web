@@ -1,4 +1,4 @@
-/* ATSRS V396 default-off primary-read canary allowlist.
+/* ATSRS V398 default-off primary-read canary allowlist.
    Values are SHA-256(user_id::account_type), never raw account identifiers. */
 (function(root,factory){
   var config=factory();

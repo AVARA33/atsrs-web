@@ -6,6 +6,10 @@
   function byId(id){return document.getElementById(id);}
   function activeMode(){
     var mode='';
+    try{
+      if(document.body&&document.body.classList.contains('company-mode'))return 'company';
+      if(document.body&&document.body.classList.contains('personal-mode'))return 'personal';
+    }catch(e){}
     try{mode=localStorage.getItem('atsrs_use_mode')||'';}catch(e){}
     return mode==='company'?'company':'personal';
   }
