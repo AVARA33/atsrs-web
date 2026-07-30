@@ -1,14 +1,21 @@
-/* ATSRS V396 default-off primary-read canary allowlist.
+/* ATSRS V397 URL-gated primary-read canary allowlist.
    Values are SHA-256(user_id::account_type), never raw account identifiers. */
 (function(root,factory){
-  var config=factory();
+  var config=factory(root);
   if(typeof module==='object'&&module.exports)module.exports=config;
   if(root)root.__ATSRS_NORMALIZED_READ_CANARY__=config;
-})(typeof window!=='undefined'?window:null,function(){
+})(typeof window!=='undefined'?window:null,function(root){
   'use strict';
+  var primaryRead=false;
+  try{
+    primaryRead=!!root
+      &&new URLSearchParams(root.location.search).get('atsrsNormalizedRead')==='primary';
+  }catch(_error){
+    primaryRead=false;
+  }
   return {
     enabled:true,
-    primaryRead:false,
+    primaryRead:primaryRead,
     scopeHashes:[
       '8dfd4159e74d7afd43a91b41e9cb848aca41a11cdaef4c1c143917ea7e705195',
       'ac91e2cfdf3d2a28a1747ebe0e502529ae9a79ea6500492631e1daacc963b2b5',
