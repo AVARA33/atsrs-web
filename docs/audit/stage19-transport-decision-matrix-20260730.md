@@ -19,6 +19,16 @@ Authentication completed successfully in every clean-profile run. The failure is
 therefore specific to the PostgREST RPC response path rather than all browser
 POST requests.
 
+The staging API log closes the earlier observability gap: the browser's native
+RPC request did reach PostgREST, and the gateway eventually recorded
+`POST /rest/v1/rpc/atsrs_apply_workspace_command` as HTTP `504`; the matching
+CORS preflight and authentication request were HTTP `200`. Therefore
+`request-sent` is a real server-bound request, not a client-side SDK, extension,
+service-worker, or serialization failure. PostgreSQL logs also contain
+`ATSRS_STALE_REVISION` CAS rejections from the staging test window, but the
+available log fields do not prove that those separate errors caused each `504`.
+The unresolved blocker is now the server-side RPC completion/timeout path.
+
 The first combined run was invalid for B/C comparison because timed-out A requests
 retained PostgREST backend sessions and contaminated the shared workspace lock
 path. Those exact staging RPC sessions were terminated, which rolled back their
