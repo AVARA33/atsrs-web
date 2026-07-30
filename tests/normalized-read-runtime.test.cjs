@@ -253,11 +253,11 @@ function rootFixture(options = {}) {
   assert.equal(runtime.specification.normalized_write, false);
 
   const index = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
-  const shadowScript = index.indexOf('js/shadow-read.js?v=399');
-  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=399');
-  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=399');
-  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=399');
-  const storageScript = index.indexOf('js/storage.js?v=399');
+  const shadowScript = index.indexOf('js/shadow-read.js?v=400');
+  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=400');
+  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=400');
+  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=400');
+  const storageScript = index.indexOf('js/storage.js?v=400');
   assert.ok(
     shadowScript < adapterScript
       && adapterScript < configScript
@@ -273,7 +273,7 @@ function rootFixture(options = {}) {
     'normalized-read-canary-config.js',
   ));
   assert.equal(canaryConfig.enabled, true);
-  assert.equal(canaryConfig.primaryRead, false);
+  assert.equal(canaryConfig.primaryRead, true);
   assert.equal(canaryConfig.scopeHashes.length, 4);
   for (const digest of canaryConfig.scopeHashes) {
     assert.match(digest, /^[0-9a-f]{64}$/);
@@ -285,20 +285,20 @@ function rootFixture(options = {}) {
   assert.doesNotMatch(configSource, /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
   assert.doesNotMatch(configSource, /@|service_role|token|secret/i);
   assert.match(configSource, /atsrsNormalizedRead/);
-  assert.match(configSource, /===['"]primary['"]/);
-  assert.match(configSource, /primaryRead=false/);
-  const canaryWindow = {location: {search: '?atsrsNormalizedRead=primary'}};
-  vm.runInNewContext(configSource, {
-    window: canaryWindow,
-    URLSearchParams,
-  });
-  assert.equal(canaryWindow.__ATSRS_NORMALIZED_READ_CANARY__.primaryRead, true);
+  assert.match(configSource, /!==['"]legacy['"]/);
+  assert.match(configSource, /primaryRead=true/);
   const normalWindow = {location: {search: ''}};
   vm.runInNewContext(configSource, {
     window: normalWindow,
     URLSearchParams,
   });
-  assert.equal(normalWindow.__ATSRS_NORMALIZED_READ_CANARY__.primaryRead, false);
+  assert.equal(normalWindow.__ATSRS_NORMALIZED_READ_CANARY__.primaryRead, true);
+  const rollbackWindow = {location: {search: '?atsrsNormalizedRead=legacy'}};
+  vm.runInNewContext(configSource, {
+    window: rollbackWindow,
+    URLSearchParams,
+  });
+  assert.equal(rollbackWindow.__ATSRS_NORMALIZED_READ_CANARY__.primaryRead, false);
 
   const serverDataSource = fs.readFileSync(
     path.join(repo, 'js', 'server-data.js'),
