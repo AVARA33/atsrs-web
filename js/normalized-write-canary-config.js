@@ -11,6 +11,7 @@
     enabled:true,
     primaryWrite:false,
     allowAllScopes:false,
+    requestTimeoutMs:12000,
     scopeHashes:[
       '8dfd4159e74d7afd43a91b41e9cb848aca41a11cdaef4c1c143917ea7e705195',
       'ac91e2cfdf3d2a28a1747ebe0e502529ae9a79ea6500492631e1daacc963b2b5',

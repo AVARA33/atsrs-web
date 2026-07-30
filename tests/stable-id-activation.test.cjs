@@ -90,10 +90,25 @@ function fakeClient(rows, controls = {}) {
   }
 
   return {
-    async rpc(name, args) {
+    rpc(name, args) {
       assert.equal(name, 'atsrs_apply_workspace_command');
       controls.rpcCalls = controls.rpcCalls || [];
       controls.rpcCalls.push(JSON.parse(JSON.stringify(args)));
+      if (controls.hangRpc) {
+        let rejectRequest;
+        const request = new Promise((_resolve, reject) => {
+          rejectRequest = reject;
+        });
+        request.abortSignal = signal => {
+          signal.addEventListener('abort', () => {
+            const error = new Error('aborted');
+            error.name = 'AbortError';
+            rejectRequest(error);
+          }, { once: true });
+          return request;
+        };
+        return request;
+      }
       controls.commandReceipts = controls.commandReceipts || new Map();
       const prior = controls.commandReceipts.get(args.p_operation_id);
       if (prior) return { data: prior, error: null };
@@ -232,6 +247,7 @@ function boot(rows, controls = {}, mode = 'personal') {
       enabled: true,
       primaryWrite: false,
       allowAllScopes: false,
+      requestTimeoutMs: controls.requestTimeoutMs || 12000,
       scopeHashes: [
         '13243347bab9453c39c1eff996e490bda0085810d40df123f9ece922a7360932',
         'bf1b1f7b4785f78b0ce888526c028e1f4bb0206502df8df562b255b511978b7e'
@@ -919,6 +935,43 @@ async function testNormalizedSemanticComparatorKeepsRealChanges() {
   assert.equal(JSON.parse(rows[2].payload.value)[0].provider, 'After');
 }
 
+async function testNormalizedTransportTimeoutCleansUpFlush() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'rpc-timeout-v1'
+    }
+  ];
+  const controls = {
+    normalizedWrite: true,
+    commandRevision: 1,
+    hangRpc: true,
+    requestTimeoutMs: 1000
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.name = 'After';
+  app.api.write(key, JSON.stringify(changed));
+  const started = Date.now();
+  assert.equal(await app.api.flush(), false);
+  assert.ok(Date.now() - started < 6000);
+  assert.equal(JSON.parse(rows[2].payload.value).name, 'Before');
+  assert.ok(app.loggedWarnings.some(message =>
+    message.includes('cloud save delayed')
+  ));
+}
+
 (async () => {
   await testHydrationAndStaleWrite();
   await testOfflineRetry();
@@ -940,6 +993,7 @@ async function testNormalizedSemanticComparatorKeepsRealChanges() {
   await testNormalizedNoOpCreatesNoCommand();
   await testNormalizedSemanticNoOpCreatesNoCommand();
   await testNormalizedSemanticComparatorKeepsRealChanges();
+  await testNormalizedTransportTimeoutCleansUpFlush();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
   console.error(error);

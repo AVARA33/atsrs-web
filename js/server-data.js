@@ -241,6 +241,7 @@
     if(isWriteConflict(error))return false;
     var code=writeErrorCode(error);
     var status=Number(error&&error.status||0);
+    if(code==='ATSRS_TRANSPORT_TIMEOUT')return true;
     if(!code)return true;
     if(/^08/.test(code)||code==='PGRST000'||code==='PGRST001'||code==='PGRST002')return true;
     return status===408||status===429||status>=500;
@@ -596,6 +597,41 @@
       client_instance_hash:await sha256Hex(instance)
     };
   }
+  function commandRequestTimeoutMs(){
+    var config=window.__ATSRS_NORMALIZED_WRITE_CANARY__||{};
+    var value=Number(config.requestTimeoutMs);
+    return Number.isFinite(value)&&value>=1000&&value<=60000?value:12000;
+  }
+  async function executeCommandRpc(args,key){
+    var controller=typeof AbortController==='function'?new AbortController():null;
+    var timedOut=false;
+    var timer=0;
+    var timeout=new Promise(function(_resolve,reject){
+      timer=setTimeout(function(){
+        timedOut=true;
+        if(controller)controller.abort();
+        var error=new Error('ATSRS normalized command transport timed out.');
+        error.code='ATSRS_TRANSPORT_TIMEOUT';
+        reject(attachWriteContext(error,{key:key},'normalized_transport'));
+      },commandRequestTimeoutMs());
+    });
+    try{
+      var request=client().rpc('atsrs_apply_workspace_command',args);
+      if(controller&&request&&typeof request.abortSignal==='function'){
+        request=request.abortSignal(controller.signal);
+      }
+      return await Promise.race([Promise.resolve(request),timeout]);
+    }catch(error){
+      if(timedOut||String(error&&error.name||'')==='AbortError'){
+        var timeoutError=new Error('ATSRS normalized command transport timed out.');
+        timeoutError.code='ATSRS_TRANSPORT_TIMEOUT';
+        throw attachWriteContext(timeoutError,{key:key},'normalized_transport');
+      }
+      throw error;
+    }finally{
+      clearTimeout(timer);
+    }
+  }
   async function applyNormalizedCommand(key,value,deleted,context,baseValue,operationId){
     var scopeKey=commandScope(context);
     var expected=commandRevisions.get(scopeKey)||0;
@@ -613,14 +649,14 @@
           throw attachWriteContext(error,{key:key},'normalized_parse');
         }
       }
-      var result=await client().rpc('atsrs_apply_workspace_command',{
+      var result=await executeCommandRpc({
         p_operation_id:operationId,
         p_expected_revision:expected,
         p_account_type:context.account_type,
         p_client_build:commandClientBuild(),
         p_operations:[operation],
         p_audit_metadata:auditMetadata
-      });
+      },key);
       if(result.error){
         var commandError=attachWriteContext(
           result.error,{key:key},'normalized_command'

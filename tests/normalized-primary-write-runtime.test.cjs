@@ -9,11 +9,14 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
 assert.equal(config.enabled, true);
 assert.equal(config.primaryWrite, false);
+assert.equal(config.requestTimeoutMs, 12000);
 assert.equal(config.allowAllScopes, false);
 assert.equal(config.scopeHashes.length, 4);
 assert.ok(config.scopeHashes.every((value) => /^[0-9a-f]{64}$/.test(value)));
 
 assert.match(source, /atsrs_apply_workspace_command/);
+assert.match(source, /ATSRS_TRANSPORT_TIMEOUT/);
+assert.match(source, /Promise\.race\(\[Promise\.resolve\(request\),timeout\]\)/);
 assert.match(source, /p_operation_id:operationId/);
 assert.match(source, /p_expected_revision:expected/);
 assert.match(source, /ATSRS_STALE_REVISION/);
