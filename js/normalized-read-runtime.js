@@ -32,16 +32,21 @@
   };
   var state={
     enabled:false,
+    primaryRead:false,
     scopeHashes:[],
     sequence:0,
     running:null,
-    lastReport:null
+    lastReport:null,
+    currentScope:'',
+    overrideScope:'',
+    overrides:new Map()
   };
 
   function safeConfig(input){
     input=input&&typeof input==='object'?input:{};
     return {
       enabled:input.enabled===true,
+      primaryRead:input.primaryRead===true,
       scopeHashes:Array.isArray(input.scopeHashes)
         ?input.scopeHashes.map(function(value){return String(value).toLowerCase();})
         :[]
@@ -102,7 +107,9 @@
     var element=root.document.documentElement;
     element.dataset.atsrsNormalizedReadMode=String(report.mode||'legacy');
     element.dataset.atsrsNormalizedReadStatus=String(report.status||'idle');
-    element.dataset.atsrsNormalizedReadSelected='legacy_json';
+    element.dataset.atsrsNormalizedReadSelected=String(
+      report.selected_source||'legacy_json'
+    );
     element.dataset.atsrsNormalizedReadMismatchCount=String(report.mismatch_count||0);
   }
   function legacyReport(reason){
@@ -118,23 +125,66 @@
   function configure(input){
     var config=safeConfig(input);
     state.enabled=config.enabled;
+    state.primaryRead=config.primaryRead;
     state.scopeHashes=config.scopeHashes;
     state.sequence++;
-    if(!state.enabled)state.running=null;
+    if(!state.enabled||!state.primaryRead){
+      state.running=null;
+      state.currentScope='';
+      state.overrideScope='';
+      state.overrides.clear();
+    }
     return getState();
   }
   function getState(){
     return {
       enabled:state.enabled,
+      primaryRead:state.primaryRead,
       scopeCount:state.scopeHashes.length,
       running:!!state.running,
+      overrideScope:state.overrideScope?'active':'',
       lastReport:state.lastReport
     };
+  }
+  function clearOverrides(){
+    state.overrideScope='';
+    state.overrides.clear();
+  }
+  function installOverrides(userId,accountType,model){
+    var prefix='atsrs_'+userId+'_'+accountType+'_';
+    var next=new Map();
+    if(accountType==='personal'&&model.profile){
+      next.set(prefix+'profile',JSON.stringify(model.profile));
+    }
+    if(accountType==='company'){
+      next.set(prefix+'personnel',JSON.stringify(model.personnel||[]));
+    }
+    next.set(prefix+'certs',JSON.stringify(model.certificates||[]));
+    next.set(prefix+'projects',JSON.stringify(model.projects||[]));
+    state.overrides=next;
+    state.overrideScope=userId+'::'+accountType;
+  }
+  function read(key,legacyValue){
+    key=String(key||'');
+    return state.overrideScope&&state.overrides.has(key)
+      ?state.overrides.get(key)
+      :legacyValue;
+  }
+  function invalidate(){
+    state.sequence++;
+    clearOverrides();
+    state.lastReport=legacyReport('legacy_write_in_progress');
+    if(typeof window!=='undefined')publish(window,state.lastReport);
+    return state.lastReport;
+  }
+  async function shouldBlockForPrimary(scope){
+    return state.primaryRead&&await allowed(safeConfig(state),scope);
   }
   async function run(root,detail){
     var sequence=++state.sequence;
     var config=safeConfig({
       enabled:state.enabled,
+      primaryRead:state.primaryRead,
       scopeHashes:state.scopeHashes
     });
     var user=root&&root.currentUser;
@@ -152,6 +202,11 @@
       publish(root,disabled);
       return disabled;
     }
+    state.currentScope=scope;
+    if(config.primaryRead&&state.overrideScope===scope&&state.lastReport
+      &&state.lastReport.status==='match'){
+      return state.lastReport;
+    }
     var operation=(async function(){
       try{
         var legacy=legacyInput(cloud,user,accountType);
@@ -166,6 +221,7 @@
         }
         var result=await adapter.evaluate({
           featureFlag:'canary',
+          primaryRead:config.primaryRead,
           legacy:legacy,
           normalized:normalized,
           email:user.email||'',
@@ -174,19 +230,27 @@
         var report={
           mode:'canary',
           status:result.normalized_candidate?'match':'fallback',
-          selected_source:'legacy_json',
+          selected_source:result.selected_source,
           fallback_reason:result.fallback_reason,
           mismatch_count:result.parity?result.parity.mismatch_count:0,
           skipped_count:result.parity?result.parity.skipped_count:0,
           normalized_candidate:result.normalized_candidate,
           mutation:false
         };
+        if(result.selected_source==='normalized_overlay'&&result.read_model){
+          installOverrides(user.id,accountType,result.read_model);
+        }else if(sequence===state.sequence){
+          clearOverrides();
+        }
         if(sequence===state.sequence)publish(root,report);
         return report;
       }catch(error){
         var failed=legacyReport('normalized_read_unavailable');
         failed.status='fallback';
-        if(sequence===state.sequence)publish(root,failed);
+        if(sequence===state.sequence){
+          clearOverrides();
+          publish(root,failed);
+        }
         return failed;
       }finally{
         if(state.running===operation)state.running=null;
@@ -202,10 +266,16 @@
     root.addEventListener('atsrs:data-hydrated',function(event){
       run(root,event&&event.detail||{});
     });
+    root.addEventListener('atsrs:cloud-write-complete',function(event){
+      var detail=event&&event.detail||{};
+      if(!state.primaryRead||detail.scope!==state.currentScope)return;
+      invalidate();
+      run(root,{scope:detail.scope,accountType:detail.accountType});
+    });
     return true;
   }
   function rollback(root){
-    configure({enabled:false,scopeHashes:[]});
+    configure({enabled:false,primaryRead:false,scopeHashes:[]});
     var report=legacyReport('feature_flag_off');
     publish(root,report);
     return report;
@@ -213,12 +283,19 @@
 
   var api={
     configure:configure,
+    invalidate:invalidate,
     install:install,
+    read:read,
     rollback:rollback,
     run:run,
+    prepare:function(detail){
+      return typeof window!=='undefined'?run(window,detail):Promise.resolve(legacyReport('runtime_unavailable'));
+    },
+    shouldBlockForPrimary:shouldBlockForPrimary,
     state:getState,
     specification:{
       default_enabled:false,
+      default_primary_read:false,
       selected_source:'legacy_json',
       normalized_write:false,
       feature_scope:'sha256(user_id::account_type)',

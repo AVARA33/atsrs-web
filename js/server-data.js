@@ -252,6 +252,13 @@
       .then(operation)
       .then(function(){
         pendingWrites=Math.max(0,pendingWrites-1);
+        window.dispatchEvent(new CustomEvent('atsrs:cloud-write-complete',{
+          detail:{
+            scope:entry.scope,
+            accountType:String(entry.scope||'').split('::')[1]||'',
+            dataKey:entry.key
+          }
+        }));
         return true;
       })
       .catch(function(error){
@@ -534,13 +541,21 @@
   }
   function readBusinessValue(key){
     if(!isCloudSession()||!isManagedBusinessKey(key))return null;
-    return memoryStore.has(String(key))?memoryStore.get(String(key)):null;
+    var legacyValue=memoryStore.has(String(key))?memoryStore.get(String(key)):null;
+    var runtime=window.atsrsNormalizedReadRuntime;
+    return runtime&&typeof runtime.read==='function'
+      ?runtime.read(key,legacyValue)
+      :legacyValue;
   }
   function writeBusinessValue(key,value){
     if(!shouldSyncKey(key))return false;
     key=String(key);
     value=normalizeStableValue(key,value);
     if(memoryStore.has(key)&&sameValue(memoryStore.get(key),value))return true;
+    if(window.atsrsNormalizedReadRuntime
+      &&typeof window.atsrsNormalizedReadRuntime.invalidate==='function'){
+      window.atsrsNormalizedReadRuntime.invalidate(key);
+    }
     failedOperations=failedOperations.filter(function(entry){
       return !(entry&&entry.retryable===false&&entry.key===key);
     });
@@ -579,6 +594,10 @@
   function removeBusinessValue(key){
     if(!shouldSyncKey(key))return false;
     key=String(key);
+    if(window.atsrsNormalizedReadRuntime
+      &&typeof window.atsrsNormalizedReadRuntime.invalidate==='function'){
+      window.atsrsNormalizedReadRuntime.invalidate(key);
+    }
     failedOperations=failedOperations.filter(function(entry){
       return !(entry&&entry.retryable===false&&entry.key===key);
     });
@@ -916,6 +935,17 @@
       restoreServerRows(rows,context);
       if(!fileMigrationDone)await migrateLegacyFiles(rows);
       clearNativeBusinessData();
+      var normalizedRuntime=window.atsrsNormalizedReadRuntime;
+      if(normalizedRuntime
+        &&typeof normalizedRuntime.shouldBlockForPrimary==='function'
+        &&await normalizedRuntime.shouldBlockForPrimary(wantedScope)
+        &&typeof normalizedRuntime.prepare==='function'){
+        await normalizedRuntime.prepare({
+          scope:wantedScope,
+          accountType:context.account_type
+        });
+        if(scope()!==wantedScope)return ensureWorkspaceData();
+      }
       loadedScope=wantedScope;
       window.dispatchEvent(new CustomEvent('atsrs:data-hydrated',{
         detail:{scope:wantedScope,accountType:context.account_type}

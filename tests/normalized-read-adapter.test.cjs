@@ -15,7 +15,7 @@ const ids = {
   certificate: '22222222-2222-4222-8222-222222222222',
   project: '33333333-3333-4333-8333-333333333333',
 };
-const legacy = {
+  const legacy = {
   profile: null,
   personnel: [{
     atsrsId: ids.person,
@@ -36,6 +36,9 @@ const legacy = {
     project: 'Canary Project',
   }],
 };
+legacy.personnel[0].volatileUiNote = 'preserve-me';
+legacy.certificates[0].fileName = 'safety.pdf';
+legacy.certificates[0].capturedAt = 'volatile-preserved';
 
 function normalizedFromLegacy() {
   const source = shadow.buildSource(legacy, workspace, '');
@@ -102,6 +105,29 @@ function normalizedFromLegacy() {
   assert.equal(canary.selected_source, 'legacy_json');
   assert.equal(canary.cutover_enabled, false);
   assert.deepEqual(canary.legacy_model, canary.normalized_model);
+
+  const primary = await adapter.evaluate({
+    featureFlag: 'canary',
+    primaryRead: true,
+    legacy,
+    normalized,
+    workspace,
+  });
+  assert.equal(primary.mode, 'primary-canary');
+  assert.equal(primary.cutover_enabled, true);
+  assert.equal(primary.selected_source, 'normalized_overlay');
+  assert.equal(primary.normalized_candidate, true);
+  assert.equal(primary.read_model.personnel[0].volatileUiNote, 'preserve-me');
+  assert.equal(primary.read_model.certificates[0].fileName, 'safety.pdf');
+  assert.equal(primary.read_model.certificates[0].capturedAt, 'volatile-preserved');
+  assert.deepEqual(
+    adapter.legacyModel({
+      legacy: primary.read_model,
+      workspace,
+      email: '',
+    }),
+    primary.normalized_model,
+  );
 
   normalized.personnel[0].position = 'Conflicting value';
   const mismatch = await adapter.evaluate({

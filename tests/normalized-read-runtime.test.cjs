@@ -119,6 +119,65 @@ function rootFixture(options = {}) {
     ]);
   }
 
+  const primaryRuntime = (() => {
+    delete require.cache[require.resolve(path.join(repo, 'js', 'normalized-read-runtime.js'))];
+    return require(path.join(repo, 'js', 'normalized-read-runtime.js'));
+  })();
+  const primaryFixture = rootFixture();
+  primaryRuntime.configure({
+    enabled: true,
+    primaryRead: true,
+    scopeHashes: [scopeHash],
+  });
+  assert.equal(await primaryRuntime.shouldBlockForPrimary(scope), true);
+  const primaryResult = await primaryRuntime.run(
+    primaryFixture.root,
+    {scope, accountType},
+  );
+  assert.equal(primaryResult.status, 'match');
+  assert.equal(primaryResult.selected_source, 'normalized_overlay');
+  assert.equal(
+    JSON.parse(primaryRuntime.read(
+      `atsrs_${userId}_${accountType}_personnel`,
+      '[]',
+    ))[0].atsrsId,
+    personId,
+  );
+  primaryRuntime.invalidate();
+  assert.equal(
+    primaryRuntime.read(`atsrs_${userId}_${accountType}_personnel`, 'legacy'),
+    'legacy',
+  );
+
+  const eventRuntime = (() => {
+    delete require.cache[require.resolve(path.join(repo, 'js', 'normalized-read-runtime.js'))];
+    return require(path.join(repo, 'js', 'normalized-read-runtime.js'));
+  })();
+  const eventFixture = rootFixture({delay: 5});
+  eventRuntime.install(eventFixture.root, {
+    enabled: true,
+    primaryRead: true,
+    scopeHashes: [scopeHash],
+  });
+  await eventRuntime.run(eventFixture.root, {scope, accountType});
+  assert.notEqual(
+    eventRuntime.read(`atsrs_${userId}_${accountType}_personnel`, 'legacy'),
+    'legacy',
+  );
+  eventRuntime.invalidate();
+  assert.equal(
+    eventRuntime.read(`atsrs_${userId}_${accountType}_personnel`, 'legacy'),
+    'legacy',
+  );
+  eventFixture.listeners['atsrs:cloud-write-complete']({
+    detail: {scope, accountType},
+  });
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  assert.notEqual(
+    eventRuntime.read(`atsrs_${userId}_${accountType}_personnel`, 'legacy'),
+    'legacy',
+  );
+
   const denied = rootFixture();
   runtime.configure({enabled: true, scopeHashes: ['0'.repeat(64)]});
   const deniedResult = await runtime.run(denied.root, {scope, accountType});
@@ -207,6 +266,7 @@ function rootFixture(options = {}) {
     'normalized-read-canary-config.js',
   ));
   assert.equal(canaryConfig.enabled, true);
+  assert.equal(canaryConfig.primaryRead, false);
   assert.equal(canaryConfig.scopeHashes.length, 4);
   for (const digest of canaryConfig.scopeHashes) {
     assert.match(digest, /^[0-9a-f]{64}$/);
@@ -217,6 +277,16 @@ function rootFixture(options = {}) {
   );
   assert.doesNotMatch(configSource, /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
   assert.doesNotMatch(configSource, /@|service_role|token|secret/i);
+
+  const serverDataSource = fs.readFileSync(
+    path.join(repo, 'js', 'server-data.js'),
+    'utf8',
+  );
+  assert.match(serverDataSource, /normalizedRuntime\.shouldBlockForPrimary/);
+  assert.match(serverDataSource, /normalizedRuntime\.prepare/);
+  assert.match(serverDataSource, /typeof runtime\.read===['"]function['"]/);
+  assert.match(serverDataSource, /atsrsNormalizedReadRuntime\.invalidate/);
+  assert.match(serverDataSource, /atsrs:cloud-write-complete/);
 
   console.log('normalized read runtime tests passed');
 })().catch((error) => {

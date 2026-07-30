@@ -18,15 +18,22 @@ grant. `stable_ids_required` remains `false`.
 
 ## Adapter contract
 
-`js/normalized-read-adapter.js` has only `legacy` and `canary` modes. Its
-default is `legacy`. It creates the same stable-ID keyed canonical domain model
-from each source and uses the V393 comparator as its gate.
+`js/normalized-read-adapter.js` has `legacy`, `canary`, and
+`primary-canary` modes. Both canary capabilities are independently default-off.
+The adapter creates the same stable-ID keyed canonical domain model from each
+source and uses the V393 comparator as its gate.
 
 A normalized result is only a candidate when all four entity sets have exact
 canonical parity and there are zero skipped records. Mismatch, missing stable
 ID, query failure, offline state, or a disabled/unknown flag falls back to
-legacy. Even after a successful canary the adapter deliberately returns
-`selected_source=legacy_json`; it cannot activate a production cutover.
+legacy. The deployed read-only canary deliberately returns
+`selected_source=legacy_json`.
+
+The locally prepared `primaryRead` option may select a normalized canonical
+overlay only after exact parity. It does not replace the legacy envelope:
+volatile/UI-only fields and file metadata that are not represented in the
+normalized schema remain sourced from legacy JSON. This is a reversible
+transition model, not authorization to retire the legacy source.
 
 The browser runtime loads the adapter but installs with no flag and no
 allowlisted workspace. In this default-off state it performs zero normalized
@@ -38,9 +45,17 @@ storage.
 When allowlisted, `js/normalized-read-runtime.js` listens after the existing
 legacy hydration completes, reads the four normalized tables through the
 signed-in Supabase client and existing RLS, and runs the canonical comparator.
-It publishes only privacy-safe status counters. The selected UI source remains
-`legacy_json` even on an exact match. A mismatch, offline/API failure, rapid
-workspace change, or stale response fails closed to legacy.
+It publishes only privacy-safe status counters. With `primaryRead=false`, the
+selected UI source remains `legacy_json` even on an exact match. A mismatch,
+offline/API failure, rapid workspace change, or stale response fails closed to
+legacy.
+
+The local primary-read preparation blocks app opening only for an allowlisted
+primary canary. On exact parity it overlays normalized canonical fields. A real
+legacy write invalidates the overlay before enqueueing, so offline or failed
+writes continue reading the current legacy value. After a successful
+transaction the runtime re-reads normalized rows and reinstalls the overlay
+only if parity is exact. No-op writes do not invalidate or query.
 
 ## Canary and rollback plan
 
@@ -51,17 +66,19 @@ workspace change, or stale response fails closed to legacy.
    RLS-filtered normalized rows.
 3. Require every workspace to report exact parity, zero skipped records, zero
    duplicate/orphan/workspace mismatch, and no cross-workspace visibility.
-4. A later, separately approved release may provide an allowlisted per-workspace
-   boot flag. This canary still cannot select normalized data for the UI.
+4. The local primary-read preparation keeps `primaryRead=false`. A later,
+   separately approved release may set it for the same allowlisted scopes and
+   select the overlay only after parity.
 5. Rollback is an immediate runtime `rollback()`/flag-off, followed by the
-   previous frontend commit if necessary. It cancels stale comparison results
-   and requires no database rollback.
+   previous frontend commit if necessary. It clears installed overlays, cancels
+   stale comparison results, returns reads to legacy immediately, and requires
+   no database rollback.
 
 ## Cutover gate
 
 Production normalized-primary read remains **NO-GO** until a later release:
 
-- explicitly enables the already default-off per-workspace canary;
+- explicitly enables the separately default-off `primaryRead` canary;
 - passes authenticated owner canary tests against the current staging data;
 - proves Personal/Corporate, multi-tab/offline, loader, desktop and 390x844
   behavior with the candidate actually selected;
