@@ -90,6 +90,72 @@ function fakeClient(rows, controls = {}) {
   }
 
   return {
+    async rpc(name, args) {
+      assert.equal(name, 'atsrs_apply_workspace_command');
+      controls.rpcCalls = controls.rpcCalls || [];
+      controls.rpcCalls.push(JSON.parse(JSON.stringify(args)));
+      controls.commandReceipts = controls.commandReceipts || new Map();
+      const prior = controls.commandReceipts.get(args.p_operation_id);
+      if (prior) return { data: prior, error: null };
+      const revision = Number(controls.commandRevision || 0);
+      if (Number(args.p_expected_revision) !== revision) {
+        return {
+          data: null,
+          error: {
+            code: '40001',
+            message: 'ATSRS_STALE_REVISION',
+            details: JSON.stringify({ current_revision: revision })
+          }
+        };
+      }
+      let changed = 0;
+      for (const operation of args.p_operations) {
+        const row = rows.find(item =>
+          item.user_id === 'user-1'
+          && item.account_type === args.p_account_type
+          && item.data_key === operation.data_key
+        );
+        if (operation.deleted) {
+          if (row && row.payload?.deleted !== true) {
+            row.payload = { deleted: true };
+            row.updated_at = `rpc-${revision + 1}`;
+            changed++;
+          }
+          continue;
+        }
+        const serialized = JSON.stringify(operation.value);
+        if (row && row.payload?.value === serialized) continue;
+        if (row) {
+          row.payload = { value: serialized };
+          row.updated_at = `rpc-${revision + 1}`;
+        } else {
+          rows.push({
+            user_id: 'user-1',
+            account_type: args.p_account_type,
+            data_key: operation.data_key,
+            payload: { value: serialized },
+            updated_at: `rpc-${revision + 1}`
+          });
+        }
+        changed++;
+      }
+      if (changed) controls.commandRevision = revision + 1;
+      const result = {
+        status: changed ? 'committed' : 'no_op',
+        operation_id: args.p_operation_id,
+        committed_revision: Number(controls.commandRevision || 0),
+        changed_keys: changed
+      };
+      controls.commandReceipts.set(args.p_operation_id, result);
+      if (controls.failAfterCommitOnce) {
+        controls.failAfterCommitOnce = false;
+        return {
+          data: null,
+          error: { code: 'PGRST000', message: 'simulated response loss' }
+        };
+      }
+      return { data: result, error: null };
+    },
     from() {
       const builder = {
         operation: '',
@@ -140,6 +206,7 @@ function boot(rows, controls = {}, mode = 'personal') {
   localStorage.setItem('atsrs_use_mode', mode);
   const document = {
     readyState: 'loading',
+    documentElement: { dataset: { atsrsBuild: 'V401' } },
     body: { appendChild() {} },
     addEventListener() {},
     dispatchEvent() {},
@@ -160,6 +227,15 @@ function boot(rows, controls = {}, mode = 'personal') {
   const window = {
     currentUser: { id: 'user-1' },
     supabaseClient: fakeClient(rows, controls),
+    location: { search: controls.normalizedWrite ? '?atsrsNormalizedWrite=canary' : '' },
+    __ATSRS_NORMALIZED_WRITE_CANARY__: controls.normalizedWrite ? {
+      enabled: true,
+      primaryWrite: false,
+      allowAllScopes: false,
+      scopeHashes: [
+        '13243347bab9453c39c1eff996e490bda0085810d40df123f9ece922a7360932'
+      ]
+    } : undefined,
     addEventListener() {},
     dispatchEvent() {},
     setTimeout,
@@ -180,6 +256,7 @@ function boot(rows, controls = {}, mode = 'personal') {
     crypto,
     TextEncoder,
     URL,
+    URLSearchParams,
     Blob,
     console: {
       log: console.log,
@@ -659,6 +736,106 @@ async function testTriggerFailureRollsBackClientAndSource() {
   assert.ok(app.loggedErrors.some(message => message.includes('cloud save was rejected')));
 }
 
+async function testNormalizedCommandStaleBootstrapAndIdempotentResponseLoss() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Test',
+          position: 'Before'
+        })
+      },
+      updated_at: 'rpc-v4'
+    }
+  ];
+  const controls = {
+    normalizedWrite: true,
+    commandRevision: 4,
+    failAfterCommitOnce: true
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.position = 'After';
+  app.api.write(key, JSON.stringify(changed));
+  assert.equal(await app.api.flush(), true);
+  assert.equal(JSON.parse(rows[2].payload.value).position, 'After');
+  assert.equal(controls.commandRevision, 5);
+  assert.equal(controls.rpcCalls.length, 3);
+  assert.equal(controls.rpcCalls[0].p_expected_revision, 0);
+  assert.equal(controls.rpcCalls[1].p_expected_revision, 4);
+  assert.equal(controls.rpcCalls[2].p_operation_id, controls.rpcCalls[1].p_operation_id);
+  assert.equal(controls.commandReceipts.size, 1);
+  assert.equal(app.loggedErrors.length, 0);
+}
+
+async function testNormalizedCommandPreservesOverlappingServerField() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'rpc-v1'
+    }
+  ];
+  const controls = { normalizedWrite: true, commandRevision: 1 };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const stale = JSON.parse(app.api.read(key));
+  rows[2].payload.value = JSON.stringify({
+    atsrsId: stale.atsrsId,
+    name: 'Newer server value'
+  });
+  rows[2].updated_at = 'rpc-v2';
+  controls.commandRevision = 2;
+  stale.name = 'Stale client value';
+  app.api.write(key, JSON.stringify(stale));
+  assert.equal(await app.api.flush(), false);
+  assert.equal(JSON.parse(rows[2].payload.value).name, 'Newer server value');
+  assert.ok(app.loggedWarnings.some(message =>
+    message.includes('newer server data was preserved')
+  ));
+}
+
+async function testNormalizedNoOpCreatesNoCommand() {
+  const key = 'atsrs_user-1_personal_profile';
+  const value = JSON.stringify({
+    atsrsId: '11111111-1111-4111-8111-111111111111',
+    name: 'No-op'
+  });
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: { value },
+      updated_at: 'rpc-noop'
+    }
+  ];
+  const controls = { normalizedWrite: true, commandRevision: 7 };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  app.api.write(key, value);
+  assert.equal(await app.api.flush(), true);
+  assert.equal((controls.rpcCalls || []).length, 0);
+  assert.equal(controls.commandRevision, 7);
+}
+
 (async () => {
   await testHydrationAndStaleWrite();
   await testOfflineRetry();
@@ -675,6 +852,9 @@ async function testTriggerFailureRollsBackClientAndSource() {
   await testOverlappingStaleFieldPreservesServerAndAllowsRetry();
   await testBoundedStaleRetryStopsWithoutOverwrite();
   await testTriggerFailureRollsBackClientAndSource();
+  await testNormalizedCommandStaleBootstrapAndIdempotentResponseLoss();
+  await testNormalizedCommandPreservesOverlappingServerField();
+  await testNormalizedNoOpCreatesNoCommand();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
   console.error(error);

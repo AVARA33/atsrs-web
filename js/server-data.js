@@ -18,6 +18,8 @@
   var persistedWriteVersions=new Map();
   var rowVersions=new Map();
   var serverValues=new Map();
+  var commandRevisions=new Map();
+  var normalizedWriteScopeCache=new Map();
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
@@ -27,6 +29,21 @@
   var fileRenderTimer=0;
   var STABLE_ID_NAMESPACE='9fe1439e-5b5a-5c86-9d7c-28a67036e814';
   var UUID_PATTERN=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  var commandRevisionChannel=null;
+  try{
+    if(typeof BroadcastChannel==='function'){
+      commandRevisionChannel=new BroadcastChannel('atsrs-normalized-write-revisions-v1');
+      commandRevisionChannel.addEventListener('message',function(event){
+        var detail=event&&event.data||{};
+        var revision=Number(detail.revision);
+        if(!detail.scope||!Number.isSafeInteger(revision)||revision<0)return;
+        commandRevisions.set(String(detail.scope),Math.max(
+          commandRevisions.get(String(detail.scope))||0,
+          revision
+        ));
+      });
+    }
+  }catch(_channelError){commandRevisionChannel=null;}
 
   function validUuid(value){
     return UUID_PATTERN.test(String(value||''));
@@ -162,6 +179,34 @@
   function shouldSyncKey(key){
     return isCloudSession()&&isManagedBusinessKey(key);
   }
+  async function sha256Hex(value){
+    var bytes=new TextEncoder().encode(String(value));
+    var digest=await crypto.subtle.digest('SHA-256',bytes);
+    return Array.from(new Uint8Array(digest),function(byte){
+      return byte.toString(16).padStart(2,'0');
+    }).join('');
+  }
+  function normalizedWriteCanaryRequested(){
+    try{
+      return new URLSearchParams(window.location.search)
+        .get('atsrsNormalizedWrite')==='canary';
+    }catch(_error){return false;}
+  }
+  async function normalizedPrimaryWriteEnabled(context,key){
+    if(!context||!stableDataKind(key))return false;
+    var config=window.__ATSRS_NORMALIZED_WRITE_CANARY__||{};
+    if(!config.enabled)return false;
+    if(config.primaryWrite&&config.allowAllScopes)return true;
+    if(!config.primaryWrite&&!normalizedWriteCanaryRequested())return false;
+    var scopeKey=context.user_id+'::'+context.account_type;
+    var scopeHash=normalizedWriteScopeCache.get(scopeKey);
+    if(!scopeHash){
+      scopeHash=await sha256Hex(scopeKey);
+      normalizedWriteScopeCache.set(scopeKey,scopeHash);
+    }
+    return Array.isArray(config.scopeHashes)
+      &&config.scopeHashes.indexOf(scopeHash)!==-1;
+  }
   function cloudErrorMessage(error){
     return 'ATSRS server data could not be loaded. Please check the connection and try again.';
   }
@@ -184,6 +229,10 @@
   }
   function isWriteConflict(error){
     return writeErrorCode(error)==='ATSRS_WRITE_CONFLICT';
+  }
+  function isStaleRevision(error){
+    return writeErrorCode(error)==='40001'
+      ||String(error&&error.message||'').indexOf('ATSRS_STALE_REVISION')!==-1;
   }
   function isDuplicateInsert(error){
     return writeErrorCode(error)==='23505';
@@ -430,6 +479,138 @@
     if(result.error)throw result.error;
     return result.data||null;
   }
+  function commandScope(context){
+    return context.user_id+'::'+context.account_type;
+  }
+  function currentRevisionFromError(error){
+    var detail=error&&error.details;
+    if(detail&&typeof detail==='object'){
+      var objectRevision=Number(detail.current_revision);
+      return Number.isSafeInteger(objectRevision)&&objectRevision>=0
+        ?objectRevision:null;
+    }
+    try{
+      var decoded=JSON.parse(String(detail||''));
+      var revision=Number(decoded.current_revision);
+      return Number.isSafeInteger(revision)&&revision>=0?revision:null;
+    }catch(_error){return null;}
+  }
+  function publishCommandRevision(context,revision){
+    var scopeKey=commandScope(context);
+    commandRevisions.set(scopeKey,revision);
+    try{
+      if(commandRevisionChannel){
+        commandRevisionChannel.postMessage({scope:scopeKey,revision:revision});
+      }
+    }catch(_error){}
+  }
+  function commandClientBuild(){
+    return String(
+      document.documentElement.dataset.atsrsBuild||'V401'
+    ).slice(0,64);
+  }
+  async function commandAuditMetadata(){
+    var instance='';
+    try{
+      instance=sessionStorage.getItem('atsrs_client_instance_v1')||'';
+      if(!instance){
+        instance=randomUuid();
+        sessionStorage.setItem('atsrs_client_instance_v1',instance);
+      }
+    }catch(_error){instance=randomUuid();}
+    return {
+      channel:'browser',
+      rollout_stage:normalizedWriteCanaryRequested()?'canary':'default',
+      client_instance_hash:await sha256Hex(instance)
+    };
+  }
+  async function applyNormalizedCommand(key,value,deleted,context,baseValue,operationId){
+    var scopeKey=commandScope(context);
+    var expected=commandRevisions.get(scopeKey)||0;
+    var candidate=deleted?null:String(value);
+    var mergeBase=baseValue===null||baseValue===undefined
+      ?emptyMergeBase(candidate):String(baseValue);
+    var auditMetadata=await commandAuditMetadata();
+    for(var attempt=0;attempt<3;attempt++){
+      var operation={data_key:String(key)};
+      if(deleted)operation.deleted=true;
+      else{
+        try{operation.value=JSON.parse(candidate);}
+        catch(error){
+          error.code='ATSRS_INVALID_CLIENT_GRAPH';
+          throw attachWriteContext(error,{key:key},'normalized_parse');
+        }
+      }
+      var result=await client().rpc('atsrs_apply_workspace_command',{
+        p_operation_id:operationId,
+        p_expected_revision:expected,
+        p_account_type:context.account_type,
+        p_client_build:commandClientBuild(),
+        p_operations:[operation],
+        p_audit_metadata:auditMetadata
+      });
+      if(result.error){
+        var commandError=attachWriteContext(
+          result.error,{key:key},'normalized_command'
+        );
+        if(!isStaleRevision(commandError))throw commandError;
+        var currentRevision=currentRevisionFromError(commandError);
+        if(currentRevision===null)throw commandError;
+        publishCommandRevision(context,currentRevision);
+        expected=currentRevision;
+        var latest=await loadStorageRow(key,context);
+        if(deleted){
+          if(!latest||!latest.payload
+            ||latest.payload.deleted===true
+            ||typeof latest.payload.value!=='string'){
+            serverValues.delete(String(key));
+            if(latest&&latest.updated_at)rowVersions.set(String(key),latest.updated_at);
+            return null;
+          }
+          var deleteLatestValue=String(latest.payload.value);
+          rowVersions.set(String(key),latest.updated_at);
+          serverValues.set(String(key),deleteLatestValue);
+          if(!sameValue(deleteLatestValue,mergeBase)){
+            throw conflictError(key,'normalized_delete');
+          }
+          mergeBase=deleteLatestValue;
+          continue;
+        }
+        if(!latest||!latest.payload||typeof latest.payload.value!=='string'){
+          throw conflictError(key,'normalized_row');
+        }
+        var latestValue=String(latest.payload.value);
+        rowVersions.set(String(key),latest.updated_at);
+        serverValues.set(String(key),latestValue);
+        candidate=rebaseBusinessValue(key,latestValue,mergeBase,candidate);
+        mergeBase=latestValue;
+        if(sameValue(candidate,latestValue))return latestValue;
+        continue;
+      }
+      var response=result.data||{};
+      var committedRevision=Number(response.committed_revision);
+      if(!Number.isSafeInteger(committedRevision)||committedRevision<0){
+        var revisionError=new Error('ATSRS_INVALID_COMMAND_RESULT');
+        revisionError.code='ATSRS_INVALID_COMMAND_RESULT';
+        throw attachWriteContext(revisionError,{key:key},'normalized_result');
+      }
+      publishCommandRevision(context,committedRevision);
+      var committedRow=await loadStorageRow(key,context);
+      if(committedRow&&committedRow.updated_at){
+        rowVersions.set(String(key),committedRow.updated_at);
+      }
+      if(deleted){
+        serverValues.delete(String(key));
+        return null;
+      }
+      var committedValue=committedRow&&committedRow.payload
+        &&typeof committedRow.payload.value==='string'
+        ?String(committedRow.payload.value):candidate;
+      serverValues.set(String(key),committedValue);
+      return committedValue;
+    }
+    throw conflictError(key,'normalized_retry_limit');
+  }
   async function upsertStorageValue(key,value,context,baseValue){
     if(!context)return String(value);
     var candidate=String(value);
@@ -565,6 +746,7 @@
     var previousValue=hadPrevious?memoryStore.get(key):null;
     var baseValue=serverValues.has(key)?serverValues.get(key):previousValue;
     var version=(writeVersions.get(key)||0)+1;
+    var operationId=randomUuid();
     writeVersions.set(key,version);
     memoryStore.set(key,value);
     enqueue(
@@ -576,7 +758,12 @@
         var candidate=serverValues.has(key)
           ?rebaseBusinessValue(key,serverValues.get(key),operationBase,value)
           :value;
-        var persisted=await upsertStorageValue(key,candidate,context,serverValues.get(key));
+        var useNormalized=await normalizedPrimaryWriteEnabled(context,key);
+        var persisted=useNormalized
+          ?await applyNormalizedCommand(
+            key,candidate,false,context,serverValues.get(key),operationId
+          )
+          :await upsertStorageValue(key,candidate,context,serverValues.get(key));
         persistedWriteVersions.set(key,version);
         if(writeVersions.get(key)===version)memoryStore.set(key,persisted);
       },
@@ -607,12 +794,20 @@
     var previousValue=hadPrevious?memoryStore.get(key):null;
     var baseValue=serverValues.has(key)?serverValues.get(key):previousValue;
     var version=(writeVersions.get(key)||0)+1;
+    var operationId=randomUuid();
     writeVersions.set(key,version);
     memoryStore.delete(key);
     enqueue(
       async function(){
         if(writeVersions.get(key)!==version)return;
-        await deleteStorageValue(key,context,baseValue);
+        var useNormalized=await normalizedPrimaryWriteEnabled(context,key);
+        if(useNormalized){
+          await applyNormalizedCommand(
+            key,null,true,context,baseValue,operationId
+          );
+        }else{
+          await deleteStorageValue(key,context,baseValue);
+        }
         persistedWriteVersions.set(key,version);
         if(writeVersions.get(key)===version)memoryStore.delete(key);
       },
@@ -1506,6 +1701,8 @@
       persistedWriteVersions.clear();
       rowVersions.clear();
       serverValues.clear();
+      commandRevisions.clear();
+      normalizedWriteScopeCache.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;
