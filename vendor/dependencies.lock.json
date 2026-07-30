@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "dependencies": {
+    "@supabase/supabase-js": {
+      "version": "2.111.0",
+      "source": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0",
+      "vendoredPath": "vendor/supabase-js-2.111.0.min.js",
+      "sha256": "0c2562701c7ac6da5f79607f1e001c5d7fa1a56a591cf383996c4212267a925d",
+      "integrity": "sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti"
+    }
+  }
+}
