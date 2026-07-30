@@ -576,7 +576,19 @@
     editIndex=i; editKey=certificateKey(x); openManual();
     var fileInput=byId('manualFile'); if(fileInput)fileInput.value='';
     window.atsrsPendingCertificateFile=null;
-    var cp=byId('cPerson'); if(cp&&x.person)cp.value=x.person;
+    var cp=byId('cPerson');
+    if(cp){
+      if(typeof validAtsrsId==='function'&&validAtsrsId(x.atsrsPersonnelId)){
+        cp.value=x.atsrsPersonnelId;
+      }else if(x.person&&cp.options){
+        for(var optionIndex=0;optionIndex<cp.options.length;optionIndex++){
+          if(String(cp.options[optionIndex].textContent||'').trim()===String(x.person).trim()){
+            cp.selectedIndex=optionIndex;
+            break;
+          }
+        }
+      }
+    }
     var t=byId('cType'); if(t)t.value=x.type||'';
     var n=byId('cDocNo'); if(n)n.value=x.docNo||'';
     var co=byId('cCountry'); if(co)co.value=x.country||'';
@@ -607,17 +619,28 @@
       alert('This document changed while it was being edited. Refresh the page and try again.');
       return;
     }
-    var person=(typeof isPersonalMode==='function'&&isPersonalMode())?(typeof soloOwnerName==='function'?soloOwnerName():''):(byId('cPerson')?byId('cPerson').value:'');
-    if(!person)return;
-    var item={
-      person:person,
+    var personSelect=byId('cPerson');
+    var selection=typeof selectedPersonnel==='function'
+      ?selectedPersonnel(personSelect)
+      :{
+        id:'',
+        name:(typeof isPersonalMode==='function'&&isPersonalMode())
+          ?(typeof soloOwnerName==='function'?soloOwnerName():'')
+          :(personSelect&&personSelect.options&&personSelect.selectedIndex>=0
+            ?String(personSelect.options[personSelect.selectedIndex].textContent||'').trim():'')
+      };
+    if(!selection.name||!selection.id)return;
+    var item=Object.assign({},previous||{},{
+      person:selection.name,
+      atsrsPersonnelId:selection.id,
       type:(byId('cType')?byId('cType').value:''),
       docNo:(byId('cDocNo')?byId('cDocNo').value:''),
       country:(byId('cCountry')?byId('cCountry').value:''),
       provider:(byId('cProvider')?byId('cProvider').value:''),
       issue:(byId('cIssue')?byId('cIssue').value:''),
       expiry:(byId('cExpiryNA')&&byId('cExpiryNA').checked)?'N/A':(byId('cExpiry')?byId('cExpiry').value:'')
-    };
+    });
+    if(typeof ensureAtsrsId==='function')ensureAtsrsId(item);
     if(previous){
       item.cloudFileId=previous.cloudFileId||'';
       item.fileName=previous.fileName||'';

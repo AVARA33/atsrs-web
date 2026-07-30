@@ -27,7 +27,15 @@ assert.doesNotMatch(source, /service_role/i);
 
 assert.match(
   index,
-  /normalized-write-canary-config\.js\?v=401[\s\S]*server-data\.js\?v=401/
+  /normalized-write-canary-config\.js\?v=402[\s\S]*server-data\.js\?v=402/
+);
+const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
+assert.match(app, /selection=typeof selectedPersonnel==='function'/);
+assert.match(app, /atsrsPersonnelId:selection\.id/);
+assert.match(app, /ensureAtsrsId\(item\)/);
+assert.doesNotMatch(
+  app,
+  /var person=.*?byId\('cPerson'\).*?\.value[\s\S]{0,200}var item=\{/,
 );
 
 console.log('normalized primary-write browser runtime contracts passed');

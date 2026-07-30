@@ -506,7 +506,7 @@
   }
   function commandClientBuild(){
     return String(
-      document.documentElement.dataset.atsrsBuild||'V401'
+      document.documentElement.dataset.atsrsBuild||'V402'
     ).slice(0,64);
   }
   async function commandAuditMetadata(){

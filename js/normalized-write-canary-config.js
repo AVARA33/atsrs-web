@@ -1,4 +1,4 @@
-/* ATSRS V401 normalized primary-write rollout configuration.
+/* ATSRS V402 normalized primary-write rollout configuration.
    Scope values are SHA-256(user_id::account_type), never raw identifiers.
    The production default remains OFF until the canary gates pass. */
 (function(root,factory){
