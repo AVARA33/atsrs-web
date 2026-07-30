@@ -187,17 +187,36 @@ function rootFixture(options = {}) {
   assert.equal(runtime.specification.normalized_write, false);
 
   const index = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
-  const shadowScript = index.indexOf('js/shadow-read.js?v=392');
-  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=392');
-  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=392');
-  const storageScript = index.indexOf('js/storage.js?v=392');
+  const shadowScript = index.indexOf('js/shadow-read.js?v=393');
+  const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=393');
+  const configScript = index.indexOf('js/normalized-read-canary-config.js?v=393');
+  const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=393');
+  const storageScript = index.indexOf('js/storage.js?v=393');
   assert.ok(
     shadowScript < adapterScript
-      && adapterScript < runtimeScript
+      && adapterScript < configScript
+      && configScript < runtimeScript
       && runtimeScript < storageScript,
-    'normalized read scripts must load after comparator and before app storage',
+    'canary config must load after adapter and before runtime/app storage',
   );
   assert.doesNotMatch(index, /__ATSRS_NORMALIZED_READ_CANARY__\s*=/);
+
+  const canaryConfig = require(path.join(
+    repo,
+    'js',
+    'normalized-read-canary-config.js',
+  ));
+  assert.equal(canaryConfig.enabled, true);
+  assert.equal(canaryConfig.scopeHashes.length, 4);
+  for (const digest of canaryConfig.scopeHashes) {
+    assert.match(digest, /^[0-9a-f]{64}$/);
+  }
+  const configSource = fs.readFileSync(
+    path.join(repo, 'js', 'normalized-read-canary-config.js'),
+    'utf8',
+  );
+  assert.doesNotMatch(configSource, /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
+  assert.doesNotMatch(configSource, /@|service_role|token|secret/i);
 
   console.log('normalized read runtime tests passed');
 })().catch((error) => {

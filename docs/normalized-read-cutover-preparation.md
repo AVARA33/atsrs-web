@@ -20,7 +20,7 @@ grant. `stable_ids_required` remains `false`.
 
 `js/normalized-read-adapter.js` has only `legacy` and `canary` modes. Its
 default is `legacy`. It creates the same stable-ID keyed canonical domain model
-from each source and uses the V392 comparator as its gate.
+from each source and uses the V393 comparator as its gate.
 
 A normalized result is only a candidate when all four entity sets have exact
 canonical parity and there are zero skipped records. Mismatch, missing stable
@@ -44,8 +44,9 @@ workspace change, or stale response fails closed to legacy.
 
 ## Canary and rollback plan
 
-1. Keep the production boot flag absent/off and the legacy reader
-   authoritative. Default-off causes zero normalized queries.
+1. Keep legacy JSON authoritative. The V393 canary configuration contains only
+   SHA-256 workspace scope hashes and enables parallel read-only comparison for
+   those allowlisted scopes.
 2. In staging, run the adapter per workspace against authenticated,
    RLS-filtered normalized rows.
 3. Require every workspace to report exact parity, zero skipped records, zero
