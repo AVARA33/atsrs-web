@@ -7,6 +7,14 @@ const source = fs.readFileSync(
   require('node:path').join(__dirname, '..', 'js', 'server-data.js'),
   'utf8'
 );
+const compatibilityRuntime = require(
+  require('node:path').join(
+    __dirname,
+    '..',
+    'js',
+    'stable-id-compatibility-runtime.js',
+  ),
+);
 
 class FakeStorage {
   constructor() {
@@ -336,6 +344,7 @@ function boot(rows, controls = {}, mode = 'personal') {
       ]
     } : undefined,
     ATSRS_CLIENT_BUILD: controls.clientBuild || 'V405',
+    ATSRSStableIdCompatibilityRuntime: compatibilityRuntime,
     addEventListener(type, handler) {
       if (!eventHandlers.has(type)) eventHandlers.set(type, []);
       eventHandlers.get(type).push(handler);

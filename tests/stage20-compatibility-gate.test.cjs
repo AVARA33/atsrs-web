@@ -43,6 +43,10 @@ const runtime = fs.readFileSync(
   path.join(root, 'js', 'server-data.js'),
   'utf8',
 );
+const compatibilityRuntime = fs.readFileSync(
+  path.join(root, 'js', 'stable-id-compatibility-runtime.js'),
+  'utf8',
+);
 const storage = fs.readFileSync(
   path.join(root, 'js', 'storage.js'),
   'utf8',
@@ -64,7 +68,7 @@ const canary = fs.readFileSync(
 );
 
 assert.equal(config.enabled, false);
-assert.equal(config.clientBuild, 'V405');
+assert.equal(config.clientBuild, 'V406');
 assert.equal(config.cacheMs, 60000);
 assert.equal(config.canaryQueryKey, 'atsrsStableCompatibility');
 assert.equal(config.scopeHashes.length, 4);
@@ -112,15 +116,17 @@ assert.doesNotMatch(
 
 assert.match(runtime, /function assertStableCompatibility/);
 assert.match(runtime, /function stableCompatibilityRequested/);
-assert.match(runtime, /get\(queryKey\)==='canary'/);
-assert.match(runtime, /sha256Hex\(commandScope\(context\)\)/);
+assert.match(runtime, /ATSRSStableIdCompatibilityRuntime/);
+assert.match(runtime, /getScopeHash:function/);
+assert.match(compatibilityRuntime, /get\(queryKey\)==='canary'/);
+assert.match(compatibilityRuntime, /options\.getScopeHash/);
 assert.match(runtime, /atsrs_get_stable_id_compatibility/);
 assert.match(runtime, /ATSRS_STABLE_ID_REFRESH_REQUIRED/);
 assert.match(runtime, /existing server data is safe/);
 assert.match(storage, /'x-atsrs-client-build':atsrsClientBuild/);
 assert.match(
   index,
-  /stable-id-compatibility-config\.js\?v=405[\s\S]*server-data\.js\?v=405/,
+  /stable-id-compatibility-config\.js\?v=406[\s\S]*stable-id-compatibility-runtime\.js\?v=406[\s\S]*server-data\.js\?v=406/,
 );
 
 assert.match(disable, /set kill_switch = true/);

@@ -632,7 +632,7 @@
     return String(
       window.ATSRS_CLIENT_BUILD
         ||document.documentElement.dataset.atsrsBuild
-        ||'V405'
+        ||'V406'
     ).slice(0,64);
   }
   async function commandAuditMetadata(){
@@ -877,25 +877,32 @@
       'ATSRS_TRANSPORT_TIMEOUT'
     );
   }
+  function stableCompatibilityRuntime(){
+    var runtime=window.ATSRSStableIdCompatibilityRuntime;
+    if(!runtime||typeof runtime.requested!=='function'
+      ||typeof runtime.config!=='function'
+      ||typeof runtime.cacheMs!=='function'
+      ||typeof runtime.refreshRequired!=='function'){
+      var error=new Error('ATSRS_COMPATIBILITY_RUNTIME_MISSING');
+      error.code='ATSRS_COMPATIBILITY_RUNTIME_MISSING';
+      throw error;
+    }
+    return runtime;
+  }
   function stableCompatibilityConfig(){
-    return window.__ATSRS_STABLE_ID_COMPATIBILITY__||{};
+    return stableCompatibilityRuntime().config(window);
   }
   async function stableCompatibilityRequested(context){
+    var runtime=stableCompatibilityRuntime();
     var config=stableCompatibilityConfig();
-    if(config.enabled)return true;
-    if(!context||!Array.isArray(config.scopeHashes)
-      ||!config.scopeHashes.length)return false;
-    var queryKey=String(
-      config.canaryQueryKey||'atsrsStableCompatibility'
-    ).slice(0,64);
-    var requested=false;
-    try{
-      requested=new URLSearchParams(window.location.search)
-        .get(queryKey)==='canary';
-    }catch(_error){requested=false;}
-    if(!requested)return false;
-    var scopeHash=await sha256Hex(commandScope(context));
-    return config.scopeHashes.indexOf(scopeHash)>=0;
+    return runtime.requested({
+      config:config,
+      context:context,
+      locationSearch:window.location.search,
+      getScopeHash:function(){
+        return sha256Hex(commandScope(context));
+      }
+    });
   }
   async function assertStableCompatibility(context,key){
     var config=stableCompatibilityConfig();
@@ -903,9 +910,8 @@
       ||!await stableCompatibilityRequested(context))return true;
     var scopeKey=commandScope(context);
     var cached=stableCompatibilityCache.get(scopeKey);
-    var cacheMs=Number(config.cacheMs);
-    cacheMs=Number.isFinite(cacheMs)
-      ?Math.max(1000,Math.min(300000,cacheMs)):60000;
+    var runtime=stableCompatibilityRuntime();
+    var cacheMs=runtime.cacheMs(config);
     if(cached&&cached.expiresAt>Date.now()){
       if(cached.refreshRequired)throw cached.error;
       return true;
@@ -923,7 +929,7 @@
     );
     if(result.error)throw result.error;
     var state=result.data||{};
-    if(state.refresh_required||state.client_compatible===false){
+    if(runtime.refreshRequired(state)){
       var refreshError=new Error('ATSRS_STABLE_ID_REFRESH_REQUIRED');
       refreshError.code='ATSRS_STABLE_ID_REFRESH_REQUIRED';
       refreshError.minimumClientBuild=String(

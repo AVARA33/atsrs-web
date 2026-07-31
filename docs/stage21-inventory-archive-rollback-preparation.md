@@ -2,9 +2,8 @@
 
 Date: 2026-07-31
 
-Status: preparation only. Stage 20 production rollout is complete. This
-document does not authorize an archive move, deletion, global strict enable, or
-data cleanup.
+Status: PASS. Stage 20 remains closed. This document does not authorize an
+archive move, deletion, global strict enable, or data cleanup.
 
 ## Safety boundary
 
@@ -69,11 +68,11 @@ verification passed. The restore-safe schema and scoped data were also restored
 successfully into disposable PostgreSQL 17.10, with counts `17/4/25/0/0` and
 orphan/mismatch `0`.
 
-## Stage 20 state frozen for retention
+## Current state frozen for retention
 
 - deployed build: `V405`
 - deployed repository commit: `10d49bb876647475c1b7e547beac8d620bb6d7e3`
-- compatibility scopes: `4`, all strict-enabled with kill switch off
+- compatibility scopes: `4`; strict-enabled `0`, kill switch on `4`
 - global `stable_ids_required`: `false`
 - legacy JSON mirror/fallback: active
 - canonical normalized target MD5:
@@ -81,9 +80,38 @@ orphan/mismatch `0`.
 - counts: `17/4/25/0/0`
 - duplicate/orphan/workspace mismatch: `0`
 
+## Stage 21 verified package
+
+Package root:
+
+`C:\Users\user\Documents\GitHub\output\atsrs-stage21-retention-20260731-093317`
+
+- repository ZIP SHA-256:
+  `5518AAC1893093DD84A13B3E578305E84FF671B548FF16EADC6A08B4F6190332`
+- Git bundle SHA-256:
+  `BC3433A0AE47301670B8CD29C26FB7B8A0E42D28E308F220F2E1F5371F0D22F1`
+- raw schema SHA-256:
+  `2C90BF46606ED3C5E4934719A54F188BEA5AE73F13008CC7475994C2A0D442C5`
+- restore-safe schema SHA-256:
+  `9C8D1815FBE8DE359B6B384E8AB7FD2BC8A7A4A8C2E68CF507009731FF56F498`
+- scoped data SHA-256:
+  `AD301D137FF6380B989D57931A37FAECB74FF028CE74D77EE09A0E2E290EA8BD`
+- restore result: `17/4/25/0/0`, orphan `0`
+- production/restored canonical MD5:
+  `6c2b7a1b13de46754517c58ec95c1e74`
+
+Storage reconciled against the protected byte backup: `2` buckets, `27`
+objects, `9,812,929` bytes, object inventory MD5
+`3b72ebc3502c50269aca8eb5198ea766`, and `0` SHA mismatch.
+
+The immediate CPU safety proxies remained stable during the read-only work:
+API `0.17/s`, 5xx/504/stale revision `0`, idle transaction and waiting lock
+`0`, deadlock `0`. The connector does not expose an instantaneous CPU number;
+request/rollback/lock/error deltas are therefore the immediate gate.
+
 ## Archive candidate classification
 
-No object is an archive candidate yet. Future classification must use these
+No object is an archive candidate. The verified classification uses these
 states:
 
 - `KEEP_ACTIVE`: required by current reads, writes, mirror, fallback or
@@ -97,6 +125,14 @@ states:
 
 `atsrs_workspace_data`, its rows, and its mirror/fallback logic are currently
 `KEEP_ACTIVE`.
+
+- `KEEP_ACTIVE`: legacy JSON, normalized graph, mirror/fallback, compatibility
+  controls, current database and Storage.
+- `KEEP_RECOVERY`: V385, V387, V390, V405, verified database/Storage backups
+  and rollback SQL.
+- `ARCHIVE_CANDIDATE`: none.
+- `INVALID_DO_NOT_RESTORE`: the 22-byte legacy ZIP and the known malformed old
+  schema artifacts.
 
 ## Four-layer rollback order
 

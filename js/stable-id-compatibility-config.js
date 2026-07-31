@@ -11,7 +11,7 @@
   'use strict';
   return {
     enabled:false,
-    clientBuild:'V405',
+    clientBuild:'V406',
     cacheMs:60000,
     canaryQueryKey:'atsrsStableCompatibility',
     scopeHashes:[
