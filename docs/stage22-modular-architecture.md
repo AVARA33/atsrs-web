@@ -2,7 +2,7 @@
 
 Date: 2026-07-31
 
-Status: two behavior-preserving extraction batches complete.
+Status: PASS and deployed as V406.
 
 ## Boundaries
 
@@ -34,3 +34,17 @@ it does not schedule timers or send requests.
 
 Each candidate requires its own behavior contract and rollback point. No
 cutover, cleanup or persistence ownership change is authorized by this plan.
+
+## Release evidence
+
+- Batch 1 rollback commit: `ab9fd03`
+- Batch 2 rollback commit: `672f66c`
+- Full local contract suite: 28/28 PASS
+- Live build and asset marker: V406
+- Authenticated smoke: 10 sequential Personal/Corporate switches PASS
+- Before/after workspace snapshot MD5:
+  `4081bc53bc29f8d14a6633d483fd4d6c`
+- Before/after counts: `17/4/25/0/0`
+- Duplicate/orphan/waiting-lock/idle-transaction: `0/0/0/0`
+- Live smoke API sample: 100/100 HTTP 200, stale revision 0, 5xx 0
+- Database schema, data, RLS, grants and compatibility flags were not changed.
