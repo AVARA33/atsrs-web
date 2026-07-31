@@ -2,9 +2,9 @@
 
 Date: 2026-07-31
 
-Status: production read-only audit PASS; staging Storage synthetic gate NO-GO
-until the managed Storage baseline is restored or an authenticated Storage API
-test session is available.
+Status: PASS. Production remained read-only. Storage and authenticated RLS
+tests ran only against staging with synthetic users, a synthetic bucket, and
+complete cleanup.
 
 ## Production read-only inventory
 
@@ -15,6 +15,7 @@ test session is available.
 - Normalized authenticated direct write grants: 0.
 - Normalized authenticated table access is SELECT-only.
 - Storage buckets: 2; objects: 27; metadata size total: 9,812,929 bytes.
+  The latest object timestamp is unchanged from the verified Stage 21 backup.
 - One bucket is public by design for profile photos. The private user-files
   bucket remains owner-path controlled.
 - `storage.buckets` and `storage.objects` both have RLS enabled.
@@ -27,6 +28,11 @@ test session is available.
 - Browser JavaScript contains no service-role credential or service-role
   reference. Service-role use is confined to server-side functions through
   environment secrets.
+- `atsrs_files` rows: 26; duplicate paths, missing objects, size mismatches,
+  and unreferenced private objects are all zero.
+- The Stage 21 byte backup still reconciles to 27 files, 9,812,929 bytes and
+  zero SHA-256 mismatch. Current production count, bytes and latest timestamp
+  are unchanged from that verified inventory.
 
 ## SECURITY DEFINER review
 
@@ -47,31 +53,40 @@ test session is available.
 
 Staging project guard: `nsbmbbqgekcwmdqmqsao`.
 
-The database restore intentionally excluded Supabase-managed Storage metadata:
-the staging baseline currently has zero Storage buckets, zero Storage objects,
-no restored ATSRS Storage policies, and `storage.objects` is not owned by the
-Management API login role. Attempts to manufacture that managed baseline were
-rolled back; bucket/object/policy synthetic residue is zero and business counts
-remain 17/4/25.
+The database restore intentionally excludes Supabase-managed Storage bucket
+metadata. The final test therefore used the official Storage API to create a
+temporary private bucket and two temporary authenticated users. Four
+owner-path policies were installed only for that bucket and removed in
+`finally`.
 
-The checked-in synthetic script now fails closed before any row write unless
-the staging baseline has:
-
-1. `storage.objects` RLS enabled;
-2. the private `atsrs-user-files` bucket metadata;
-3. authenticated owner-path SELECT/INSERT/UPDATE/DELETE policies.
-
-When those prerequisites exist, the same transaction proves owner SELECT=1,
-cross-user SELECT/UPDATE/DELETE=0 and anon SELECT=0, then rolls everything back.
+- owner upload/read/update/delete: HTTP 200;
+- uploaded and replaced bytes: SHA-256 match;
+- anonymous read: denied;
+- second-user read/update/delete: denied;
+- normalized direct browser DELETE: HTTP 403;
+- anonymous normalized read: denied;
+- synthetic user visibility in normalized and legacy workspace tables: 0/0;
+- non-admin SECURITY DEFINER overview: no privileged metrics;
+- compatibility/stable-ID canary: default-off, minimum-build, ID-less reject,
+  valid stable write, CAS, replay, mirror, telemetry and rollback all PASS;
+- final synthetic users/buckets/objects/policies: 0/0/0/0;
+- final business counts: 17/4/25/0/0;
+- `stable_ids_required=false`.
 
 ## Gate
 
-Stage 24 is not closed yet. The remaining external gate is one of:
+- Production workspace snapshot:
+  `4081bc53bc29f8d14a6633d483fd4d6c`.
+- Source-target personnel/certificate/project/assignment parity: PASS.
+- Duplicate and orphan counts: zero.
+- Critical database advisors: zero.
+- Full repository contract suite: 31/31 PASS.
+- Production request/transaction proxy remained below the emergency gate:
+  23 commits over 7.045 seconds (about 3.26/s), rollback delta 0,
+  waiting locks 0, idle-in-transaction 0, and long-running queries 0.
+  No direct point-in-time CPU metric was exposed, so request/rollback/lock
+  measurements remain the immediate safety gate.
+- Production data, RLS, grants, Storage objects and configuration were not
+  changed.
 
-- restore the managed Storage bucket/policy baseline into the approved staging
-  project without copying production secrets or object bytes; or
-- run the synthetic object lifecycle through an authenticated staging Storage
-  API session.
-
-Production data, RLS, grants, Storage objects and configuration were not
-changed.
+Stage 24 is closed: PASS.

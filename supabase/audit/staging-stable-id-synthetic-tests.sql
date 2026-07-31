@@ -1,5 +1,3 @@
-\set ON_ERROR_STOP on
-
 begin;
 set local statement_timeout = '30s';
 set local lock_timeout = '5s';

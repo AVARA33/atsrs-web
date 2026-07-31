@@ -212,7 +212,7 @@ begin
       )),
       '{}'::jsonb
     );
-  exception when serialization_failure then
+  exception when raise_exception then
     rejected := sqlerrm = 'ATSRS_STALE_REVISION';
   end;
   if not rejected then

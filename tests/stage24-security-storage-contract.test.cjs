@@ -16,6 +16,18 @@ const synthetic = fs.readFileSync(
   path.join(root, 'supabase', 'audit', 'staging-stage24-storage-rls-synthetic.sql'),
   'utf8'
 );
+const apiSetup = fs.readFileSync(
+  path.join(root, 'supabase', 'audit', 'staging-stage24-storage-api-setup.sql'),
+  'utf8'
+);
+const apiCleanup = fs.readFileSync(
+  path.join(root, 'supabase', 'audit', 'staging-stage24-storage-api-cleanup.sql'),
+  'utf8'
+);
+const apiRunner = fs.readFileSync(
+  path.join(root, 'scripts', 'run-stage24-storage-api-synthetic.ps1'),
+  'utf8'
+);
 
 assert.doesNotMatch(browserSources, /service[_-]?role/i);
 assert.match(profileMigration, /for select to authenticated/i);
@@ -41,5 +53,29 @@ assert.match(synthetic, /requires the authenticated owner-path Storage policies/
 assert.doesNotMatch(synthetic, /create policy/i);
 assert.doesNotMatch(synthetic, /alter table storage\.objects/i);
 assert.doesNotMatch(synthetic, /^\s*commit\s*;/mi);
+
+for (const command of ['select', 'insert', 'update', 'delete']) {
+  assert.match(
+    apiSetup,
+    new RegExp(`for ${command} to authenticated`, 'i')
+  );
+}
+assert.match(apiSetup, /storage\.foldername\(name\)/i);
+assert.match(apiSetup, /auth\.uid\(\)/i);
+assert.match(apiSetup, /with check/i);
+assert.equal(
+  (apiCleanup.match(/drop policy if exists/gi) || []).length,
+  4
+);
+assert.match(apiRunner, /nsbmbbqgekcwmdqmqsao/);
+assert.match(apiRunner, /hwtjuqyxzivymofamwxl/);
+assert.match(apiRunner, /cross_workspace_normalized_rows/);
+assert.match(apiRunner, /cross_workspace_legacy_rows/);
+assert.match(apiRunner, /direct_normalized_delete/);
+assert.match(apiRunner, /hash_v1_match/);
+assert.match(apiRunner, /hash_v2_match/);
+assert.match(apiRunner, /finally\s*\{/);
+assert.match(apiRunner, /\$result \| ConvertTo-Json -Compress/);
+assert.doesNotMatch(apiRunner, /Write-(Host|Output).*(token|key|password)/i);
 
 console.log('Stage 24 security and Storage contracts passed');
