@@ -1,0 +1,195 @@
+-- Stage 19 staging forward-fix: prevent an abandoned PostgREST command from
+-- turning later commands for the same workspace into gateway 504 responses.
+-- Replay is resolved before serialization, while new work uses a transaction-
+-- scoped nonblocking advisory lock plus a NOWAIT revision-row lock.
+begin;
+
+do $preserve_previous$
+begin
+  if to_regprocedure(
+    'atsrs_private.atsrs_apply_workspace_command_pre_lock_v1(uuid,bigint,text,text,jsonb,jsonb)'
+  ) is null then
+    alter function public.atsrs_apply_workspace_command(
+      uuid, bigint, text, text, jsonb, jsonb
+    ) set schema atsrs_private;
+    alter function atsrs_private.atsrs_apply_workspace_command(
+      uuid, bigint, text, text, jsonb, jsonb
+    ) rename to atsrs_apply_workspace_command_pre_lock_v1;
+  end if;
+end;
+$preserve_previous$;
+
+revoke all on function
+  atsrs_private.atsrs_apply_workspace_command_pre_lock_v1(
+    uuid, bigint, text, text, jsonb, jsonb
+  )
+from public, anon, authenticated, service_role;
+
+create or replace function public.atsrs_get_workspace_command_revision(
+  p_account_type text
+)
+returns bigint
+language plpgsql
+stable
+security definer
+set search_path = ''
+set statement_timeout = '2s'
+as $function$
+declare
+  actor_id uuid := (select auth.uid());
+  current_revision bigint;
+begin
+  if actor_id is null then
+    raise exception using errcode = '42501', message = 'ATSRS_AUTH_REQUIRED';
+  end if;
+  if p_account_type not in ('personal', 'company') then
+    raise exception using errcode = '22023',
+      message = 'ATSRS_INVALID_ACCOUNT_TYPE';
+  end if;
+  if not exists (
+    select 1
+    from public.atsrs_workspaces workspace
+    where workspace.user_id = actor_id
+      and workspace.account_type = p_account_type
+  ) then
+    raise exception using errcode = '42501',
+      message = 'ATSRS_WORKSPACE_FORBIDDEN';
+  end if;
+
+  select state.revision
+  into current_revision
+  from atsrs_private.workspace_write_revisions state
+  where state.workspace_user_id = actor_id
+    and state.workspace_account_type = p_account_type;
+
+  return coalesce(current_revision, 0);
+end;
+$function$;
+
+revoke all on function public.atsrs_get_workspace_command_revision(text)
+from public, anon, service_role;
+grant execute on function public.atsrs_get_workspace_command_revision(text)
+to authenticated;
+
+create or replace function public.atsrs_apply_workspace_command(
+  p_operation_id uuid,
+  p_expected_revision bigint,
+  p_account_type text,
+  p_client_build text,
+  p_operations jsonb,
+  p_audit_metadata jsonb default '{}'::jsonb
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+set lock_timeout = '1s'
+set statement_timeout = '8s'
+as $function$
+declare
+  actor_id uuid := (select auth.uid());
+  request_hash text;
+  prior_request_hash text;
+  prior_result jsonb;
+  lock_key bigint;
+begin
+  -- Preserve the exact validation contract in the previous implementation.
+  if actor_id is null
+     or p_operation_id is null
+     or p_expected_revision is null
+     or p_expected_revision < 0
+     or p_account_type not in ('personal', 'company')
+     or jsonb_typeof(p_operations) is distinct from 'array' then
+    return atsrs_private.atsrs_apply_workspace_command_pre_lock_v1(
+      p_operation_id, p_expected_revision, p_account_type, p_client_build,
+      p_operations, p_audit_metadata
+    );
+  end if;
+
+  if not exists (
+    select 1
+    from public.atsrs_workspaces workspace
+    where workspace.user_id = actor_id
+      and workspace.account_type = p_account_type
+  ) then
+    return atsrs_private.atsrs_apply_workspace_command_pre_lock_v1(
+      p_operation_id, p_expected_revision, p_account_type, p_client_build,
+      p_operations, p_audit_metadata
+    );
+  end if;
+
+  request_hash := encode(
+    extensions.digest(
+      convert_to(
+        jsonb_build_object(
+          'account_type', p_account_type,
+          'expected_revision', p_expected_revision,
+          'operations', p_operations
+        )::text,
+        'UTF8'
+      ),
+      'sha256'
+    ),
+    'hex'
+  );
+
+  -- A committed replay never waits behind unrelated new work.
+  select command.request_hash, command.result
+  into prior_request_hash, prior_result
+  from atsrs_private.workspace_write_commands command
+  where command.workspace_user_id = actor_id
+    and command.workspace_account_type = p_account_type
+    and command.operation_id = p_operation_id;
+
+  if prior_request_hash is not null then
+    if prior_request_hash <> request_hash then
+      raise exception using errcode = 'P0001',
+        message = 'ATSRS_IDEMPOTENCY_CONFLICT';
+    end if;
+    return prior_result;
+  end if;
+
+  lock_key := hashtextextended(
+    actor_id::text || ':' || p_account_type,
+    190019::bigint
+  );
+  if not pg_try_advisory_xact_lock(lock_key) then
+    raise exception using errcode = '55P03',
+      message = 'ATSRS_WORKSPACE_BUSY';
+  end if;
+
+  insert into atsrs_private.workspace_write_revisions (
+    workspace_user_id, workspace_account_type, revision
+  )
+  values (actor_id, p_account_type, 0)
+  on conflict (workspace_user_id, workspace_account_type) do nothing;
+
+  begin
+    perform 1
+    from atsrs_private.workspace_write_revisions state
+    where state.workspace_user_id = actor_id
+      and state.workspace_account_type = p_account_type
+    for update nowait;
+  exception
+    when lock_not_available then
+      raise exception using errcode = '55P03',
+        message = 'ATSRS_WORKSPACE_BUSY';
+  end;
+
+  return atsrs_private.atsrs_apply_workspace_command_pre_lock_v1(
+    p_operation_id, p_expected_revision, p_account_type, p_client_build,
+    p_operations, p_audit_metadata
+  );
+end;
+$function$;
+
+revoke all on function public.atsrs_apply_workspace_command(
+  uuid, bigint, text, text, jsonb, jsonb
+) from public, anon, service_role;
+grant execute on function public.atsrs_apply_workspace_command(
+  uuid, bigint, text, text, jsonb, jsonb
+) to authenticated;
+
+notify pgrst, 'reload schema';
+
+commit;

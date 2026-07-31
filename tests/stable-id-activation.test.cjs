@@ -91,6 +91,30 @@ function fakeClient(rows, controls = {}) {
 
   return {
     rpc(name, args) {
+      if (name === 'atsrs_get_stable_id_compatibility') {
+        controls.compatibilityCalls = Number(controls.compatibilityCalls || 0) + 1;
+        if (Number(controls.compatibilityOfflineFailures || 0) > 0) {
+          controls.compatibilityOfflineFailures--;
+          return {
+            data: null,
+            error: { code: 'PGRST001', message: 'simulated offline compatibility check' },
+            status: 503
+          };
+        }
+        const state = controls.compatibilityState || {
+          strict_required: false,
+          client_compatible: true,
+          refresh_required: false,
+          minimum_client_build: 'V405',
+          kill_switch: false
+        };
+        return controls.compatibilityDelay
+          ? new Promise(resolve => setTimeout(() => resolve({
+            data: { ...state },
+            error: null
+          }), controls.compatibilityDelay))
+          : { data: { ...state }, error: null };
+      }
       if (name === 'atsrs_get_workspace_command_revision') {
         assert.ok(['personal', 'company'].includes(args.p_account_type));
         controls.revisionReads = Number(controls.revisionReads || 0) + 1;
@@ -246,11 +270,13 @@ function fakeClient(rows, controls = {}) {
 function boot(rows, controls = {}, mode = 'personal') {
   const loggedErrors = [];
   const loggedWarnings = [];
+  const dispatchedEvents = [];
+  const eventHandlers = new Map();
   const localStorage = new FakeStorage();
   localStorage.setItem('atsrs_use_mode', mode);
   const document = {
     readyState: 'loading',
-    documentElement: { dataset: { atsrsBuild: 'V401' } },
+    documentElement: { dataset: { atsrsBuild: controls.clientBuild || 'V405' } },
     body: { appendChild() {} },
     addEventListener() {},
     dispatchEvent() {},
@@ -271,7 +297,17 @@ function boot(rows, controls = {}, mode = 'personal') {
   const window = {
     currentUser: { id: 'user-1' },
     supabaseClient: fakeClient(rows, controls),
-    location: { search: controls.normalizedWrite ? '?atsrsNormalizedWrite=canary' : '' },
+    location: {
+      search: [
+        controls.normalizedWrite ? 'atsrsNormalizedWrite=canary' : '',
+        controls.compatibilityCanary ? 'atsrsStableCompatibility=canary' : ''
+      ].filter(Boolean).length
+        ? `?${[
+          controls.normalizedWrite ? 'atsrsNormalizedWrite=canary' : '',
+          controls.compatibilityCanary ? 'atsrsStableCompatibility=canary' : ''
+        ].filter(Boolean).join('&')}`
+        : ''
+    },
     __ATSRS_NORMALIZED_WRITE_CANARY__: controls.normalizedWrite ? {
       enabled: true,
       primaryWrite: false,
@@ -279,7 +315,7 @@ function boot(rows, controls = {}, mode = 'personal') {
       requestTimeoutMs: controls.requestTimeoutMs || 12000,
       transientRetries: controls.transientRetries === undefined
         ? 2 : controls.transientRetries,
-      circuitFailureThreshold: 2,
+      circuitFailureThreshold: controls.circuitFailureThreshold || 2,
       circuitTransientOpenMs: 15000,
       circuitStaleOpenMs: 120000,
       circuitBusyOpenMs: 5000,
@@ -289,8 +325,26 @@ function boot(rows, controls = {}, mode = 'personal') {
         'bf1b1f7b4785f78b0ce888526c028e1f4bb0206502df8df562b255b511978b7e'
       ]
     } : undefined,
-    addEventListener() {},
-    dispatchEvent() {},
+    __ATSRS_STABLE_ID_COMPATIBILITY__:
+      controls.compatibilityEnabled || controls.compatibilityCanary ? {
+      enabled: Boolean(controls.compatibilityEnabled),
+      clientBuild: controls.clientBuild || 'V405',
+      cacheMs: 60000,
+      canaryQueryKey: 'atsrsStableCompatibility',
+      scopeHashes: controls.compatibilityScopeHashes || [
+        '13243347bab9453c39c1eff996e490bda0085810d40df123f9ece922a7360932'
+      ]
+    } : undefined,
+    ATSRS_CLIENT_BUILD: controls.clientBuild || 'V405',
+    addEventListener(type, handler) {
+      if (!eventHandlers.has(type)) eventHandlers.set(type, []);
+      eventHandlers.get(type).push(handler);
+    },
+    dispatchEvent(event) {
+      dispatchedEvents.push(event);
+      for (const handler of eventHandlers.get(event.type) || []) handler(event);
+      return true;
+    },
     setTimeout,
     clearTimeout
   };
@@ -324,7 +378,18 @@ function boot(rows, controls = {}, mode = 'personal') {
     clearTimeout
   };
   vm.runInNewContext(source, context, { filename: 'server-data.js' });
-  return { api: window.atsrsCloudData, localStorage, rows, controls, loggedErrors, loggedWarnings };
+  return {
+    api: window.atsrsCloudData,
+    localStorage,
+    rows,
+    controls,
+    loggedErrors,
+    loggedWarnings,
+    dispatchedEvents,
+    emit(type) {
+      for (const handler of eventHandlers.get(type) || []) handler({ type });
+    }
+  };
 }
 
 function markers(mode) {
@@ -1126,6 +1191,262 @@ async function testNormalizedRateLimitFailsWithoutRetryAndOpensCircuit() {
   ));
 }
 
+async function testCompatibilityOldClientRejectsBeforeAnyWrite() {
+  const key = 'atsrs_user-1_personal_profile';
+  const original = JSON.stringify({
+    atsrsId: '11111111-1111-4111-8111-111111111111',
+    name: 'Protected'
+  });
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: { value: original },
+      updated_at: 'compat-old-v1'
+    }
+  ];
+  const controls = {
+    compatibilityEnabled: true,
+    clientBuild: 'V404',
+    compatibilityState: {
+      strict_required: true,
+      client_compatible: false,
+      refresh_required: true,
+      minimum_client_build: 'V405',
+      kill_switch: false
+    }
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.position = 'must not persist';
+  app.api.write(key, JSON.stringify(changed));
+  assert.equal(await app.api.flush(), false);
+  assert.equal(controls.compatibilityCalls, 1);
+  assert.equal(controls.updateCount || 0, 0);
+  assert.equal(controls.rpcCalls?.length || 0, 0);
+  assert.equal(rows[2].payload.value, original);
+  assert.equal(app.api.pendingState().failedOperations[0].retryable, false);
+  const refresh = app.dispatchedEvents.find(event =>
+    event.type === 'atsrs:stable-id-refresh-required'
+  );
+  assert.equal(refresh.detail.minimumClientBuild, 'V405');
+}
+
+async function testCompatibilityCanaryIsDefaultOffAndAllowlisted() {
+  const key = 'atsrs_user-1_personal_profile';
+  const makeRows = () => [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Canary'
+        })
+      },
+      updated_at: 'compat-canary-v1'
+    }
+  ];
+  const state = {
+    strict_required: true,
+    client_compatible: true,
+    refresh_required: false,
+    minimum_client_build: 'V405',
+    kill_switch: false
+  };
+
+  const normal = boot(makeRows(), { compatibilityState: state });
+  await normal.api.ensureLoaded();
+  normal.api.write(key, JSON.stringify({
+    ...JSON.parse(normal.api.read(key)),
+    position: 'normal path'
+  }));
+  assert.equal(await normal.api.flush(), true);
+  assert.equal(normal.controls.compatibilityCalls || 0, 0);
+
+  const allowlisted = boot(makeRows(), {
+    compatibilityCanary: true,
+    compatibilityState: state
+  });
+  await allowlisted.api.ensureLoaded();
+  allowlisted.api.write(key, JSON.stringify({
+    ...JSON.parse(allowlisted.api.read(key)),
+    position: 'allowlisted path'
+  }));
+  assert.equal(await allowlisted.api.flush(), true);
+  assert.equal(allowlisted.controls.compatibilityCalls, 1);
+
+  const denied = boot(makeRows(), {
+    compatibilityCanary: true,
+    compatibilityState: state,
+    compatibilityScopeHashes: [
+      'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+    ]
+  });
+  await denied.api.ensureLoaded();
+  denied.api.write(key, JSON.stringify({
+    ...JSON.parse(denied.api.read(key)),
+    position: 'denied path'
+  }));
+  assert.equal(await denied.api.flush(), true);
+  assert.equal(denied.controls.compatibilityCalls || 0, 0);
+}
+
+async function testCompatibilityOfflineReconnectIsBoundedAndSafe() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'compat-offline-v1'
+    }
+  ];
+  const controls = {
+    compatibilityEnabled: true,
+    normalizedWrite: true,
+    circuitFailureThreshold: 5,
+    compatibilityOfflineFailures: 20,
+    compatibilityState: {
+      strict_required: true,
+      client_compatible: true,
+      refresh_required: false,
+      minimum_client_build: 'V405',
+      kill_switch: false
+    }
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const changed = JSON.parse(app.api.read(key));
+  changed.position = 'after reconnect';
+  app.api.write(key, JSON.stringify(changed));
+  assert.equal(await app.api.flush(), false);
+  const offlineCalls = controls.compatibilityCalls;
+  assert.ok(offlineCalls >= 3 && offlineCalls <= 6);
+  assert.equal(controls.updateCount || 0, 0);
+  assert.equal(JSON.parse(rows[2].payload.value).position, undefined);
+
+  controls.compatibilityOfflineFailures = 0;
+  await new Promise(resolve => setTimeout(resolve, 2300));
+  app.emit('online');
+  await new Promise(resolve => setTimeout(resolve, 100));
+  assert.equal(await app.api.flush(), true);
+  assert.equal(controls.compatibilityCalls, offlineCalls + 1);
+  assert.equal(JSON.parse(rows[2].payload.value).position, 'after reconnect');
+}
+
+async function testCompatibilityConcurrentWritesUseOneGateRead() {
+  const profileKey = 'atsrs_user-1_personal_profile';
+  const certsKey = 'atsrs_user-1_personal_certs';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: profileKey,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Before'
+        })
+      },
+      updated_at: 'compat-concurrent-profile-v1'
+    },
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: certsKey,
+      payload: { value: '[]' },
+      updated_at: 'compat-concurrent-certs-v1'
+    }
+  ];
+  const controls = {
+    compatibilityEnabled: true,
+    compatibilityDelay: 20,
+    compatibilityState: {
+      strict_required: true,
+      client_compatible: true,
+      refresh_required: false,
+      minimum_client_build: 'V405',
+      kill_switch: false
+    }
+  };
+  const app = boot(rows, controls);
+  await app.api.ensureLoaded();
+  const profile = JSON.parse(app.api.read(profileKey));
+  profile.position = 'Queued profile';
+  app.api.write(profileKey, JSON.stringify(profile));
+  app.api.write(certsKey, JSON.stringify([{
+    atsrsId: '22222222-2222-4222-8222-222222222222',
+    atsrsPersonnelId: '11111111-1111-4111-8111-111111111111',
+    type: 'Synthetic'
+  }]));
+  assert.equal(await app.api.flush(), true);
+  assert.equal(controls.compatibilityCalls, 1);
+  assert.equal(JSON.parse(rows[2].payload.value).position, 'Queued profile');
+  assert.equal(JSON.parse(rows[3].payload.value).length, 1);
+}
+
+async function testCompatibilityAcrossTabsPreservesDifferentFields() {
+  const key = 'atsrs_user-1_personal_profile';
+  const rows = [
+    ...markers('personal'),
+    {
+      user_id: 'user-1',
+      account_type: 'personal',
+      data_key: key,
+      payload: {
+        value: JSON.stringify({
+          atsrsId: '11111111-1111-4111-8111-111111111111',
+          name: 'Original',
+          position: '',
+          country: ''
+        })
+      },
+      updated_at: 'compat-tabs-v1'
+    }
+  ];
+  const common = {
+    compatibilityEnabled: true,
+    compatibilityState: {
+      strict_required: true,
+      client_compatible: true,
+      refresh_required: false,
+      minimum_client_build: 'V405',
+      kill_switch: false
+    }
+  };
+  const tabA = boot(rows, { ...common });
+  const tabB = boot(rows, { ...common });
+  await Promise.all([tabA.api.ensureLoaded(), tabB.api.ensureLoaded()]);
+  const a = JSON.parse(tabA.api.read(key));
+  const b = JSON.parse(tabB.api.read(key));
+  a.position = 'Tab A';
+  b.country = 'Tab B';
+  tabA.api.write(key, JSON.stringify(a));
+  assert.equal(await tabA.api.flush(), true);
+  tabB.api.write(key, JSON.stringify(b));
+  assert.equal(await tabB.api.flush(), true);
+  const saved = JSON.parse(rows[2].payload.value);
+  assert.equal(saved.position, 'Tab A');
+  assert.equal(saved.country, 'Tab B');
+  assert.equal(saved.name, 'Original');
+  assert.equal(tabA.controls.compatibilityCalls, 1);
+  assert.equal(tabB.controls.compatibilityCalls, 1);
+}
+
 (async () => {
   await testHydrationAndStaleWrite();
   await testOfflineRetry();
@@ -1151,6 +1472,11 @@ async function testNormalizedRateLimitFailsWithoutRetryAndOpensCircuit() {
   await testNormalizedStaleRevisionFailsFastAndOpensCircuit();
   await testNormalizedTransientRetryIsBoundedAndIdempotent();
   await testNormalizedRateLimitFailsWithoutRetryAndOpensCircuit();
+  await testCompatibilityCanaryIsDefaultOffAndAllowlisted();
+  await testCompatibilityOldClientRejectsBeforeAnyWrite();
+  await testCompatibilityOfflineReconnectIsBoundedAndSafe();
+  await testCompatibilityConcurrentWritesUseOneGateRead();
+  await testCompatibilityAcrossTabsPreservesDifferentFields();
   console.log('stable-id activation client tests passed');
 })().catch(error => {
   console.error(error);

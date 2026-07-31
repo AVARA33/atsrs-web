@@ -85,14 +85,19 @@ const localOnly = [
   '20260730111258_normalized_primary_write_semantic_noop.sql',
   '20260730112618_semantic_noop_direct_receipt_fix.sql',
   '20260730113050_semantic_canonical_array_tiebreaker.sql',
-  '20260731030456_targeted_workspace_command_revision_read.sql'
+  '20260730133558_bound_workspace_command_locking.sql',
+  '20260730154540_contain_workspace_command_retry_storm.sql',
+  '20260730155715_reject_stale_workspace_revision_without_retry.sql',
+  '20260731030456_targeted_workspace_command_revision_read.sql',
+  '20260731034949_stable_id_workspace_compatibility_gate.sql',
+  '20260731035646_fix_stable_id_compatibility_telemetry_bucket.sql'
 ];
 for (const name of localOnly) {
   assert.ok(fs.existsSync(path.join(migrationDir, name)), `missing local-only migration ${name}`);
 }
 
 const actual = fs.readdirSync(migrationDir).filter(name => name.endsWith('.sql')).sort();
-assert.equal(actual.length, 41);
+assert.equal(actual.length, 46);
 assert.equal(new Set(actual.map(name => name.slice(0, 14))).size, actual.length);
 assert.ok(actual.indexOf('20260729041619_stable_workspace_entity_ids.sql') <
   actual.indexOf('20260729105130_baseline_v242_detailed_expiry_notifications.sql'));

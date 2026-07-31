@@ -20,6 +20,7 @@
   var serverValues=new Map();
   var commandRevisions=new Map();
   var normalizedWriteScopeCache=new Map();
+  var stableCompatibilityCache=new Map();
   var loadedScope='';
   var loadingPromise=null;
   var writeQueue=Promise.resolve();
@@ -253,11 +254,16 @@
     return writeErrorCode(error)==='40001'
       ||String(error&&error.message||'').indexOf('ATSRS_STALE_REVISION')!==-1;
   }
+  function isStableCompatibilityRefresh(error){
+    return String(error&&error.message||'')
+      .indexOf('ATSRS_STABLE_ID_REFRESH_REQUIRED')!==-1;
+  }
   function isDuplicateInsert(error){
     return writeErrorCode(error)==='23505';
   }
   function isRetryableWriteError(error){
     if(isWriteConflict(error)||isStaleRevision(error)
+      ||isStableCompatibilityRefresh(error)
       ||isWorkspaceBusy(error)||isRateLimited(error)){
       return false;
     }
@@ -377,7 +383,9 @@
       warning.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:99999;max-width:620px;padding:12px 16px;border:1px solid #ef4444;border-radius:10px;background:#2b1014;color:#fff;font:600 14px/1.35 Arial,sans-serif;box-shadow:0 12px 30px rgba(0,0,0,.35)';
       document.body.appendChild(warning);
     }
-    warning.textContent='Data was not saved to the ATSRS server. Check the connection and try again.';
+    warning.textContent=isStableCompatibilityRefresh(lastWriteError)
+      ?'ATSRS was updated. This change was not sent, and existing server data is safe. Refresh the page before trying again.'
+      :'Data was not saved to the ATSRS server. Check the connection and try again.';
     warning.style.display='block';
     clearTimeout(window.__atsrsCloudWarningTimer);
     window.__atsrsCloudWarningTimer=setTimeout(function(){warning.style.display='none';},7000);
@@ -622,7 +630,9 @@
   }
   function commandClientBuild(){
     return String(
-      document.documentElement.dataset.atsrsBuild||'V404'
+      window.ATSRS_CLIENT_BUILD
+        ||document.documentElement.dataset.atsrsBuild
+        ||'V405'
     ).slice(0,64);
   }
   async function commandAuditMetadata(){
@@ -866,6 +876,82 @@
       'normalized_transport',
       'ATSRS_TRANSPORT_TIMEOUT'
     );
+  }
+  function stableCompatibilityConfig(){
+    return window.__ATSRS_STABLE_ID_COMPATIBILITY__||{};
+  }
+  async function stableCompatibilityRequested(context){
+    var config=stableCompatibilityConfig();
+    if(config.enabled)return true;
+    if(!context||!Array.isArray(config.scopeHashes)
+      ||!config.scopeHashes.length)return false;
+    var queryKey=String(
+      config.canaryQueryKey||'atsrsStableCompatibility'
+    ).slice(0,64);
+    var requested=false;
+    try{
+      requested=new URLSearchParams(window.location.search)
+        .get(queryKey)==='canary';
+    }catch(_error){requested=false;}
+    if(!requested)return false;
+    var scopeHash=await sha256Hex(commandScope(context));
+    return config.scopeHashes.indexOf(scopeHash)>=0;
+  }
+  async function assertStableCompatibility(context,key){
+    var config=stableCompatibilityConfig();
+    if(!context||!stableDataKind(key)
+      ||!await stableCompatibilityRequested(context))return true;
+    var scopeKey=commandScope(context);
+    var cached=stableCompatibilityCache.get(scopeKey);
+    var cacheMs=Number(config.cacheMs);
+    cacheMs=Number.isFinite(cacheMs)
+      ?Math.max(1000,Math.min(300000,cacheMs)):60000;
+    if(cached&&cached.expiresAt>Date.now()){
+      if(cached.refreshRequired)throw cached.error;
+      return true;
+    }
+    var result=await executeRpcWithTransientRetry(
+      'atsrs_get_stable_id_compatibility',
+      {
+        p_account_type:context.account_type,
+        p_client_build:commandClientBuild()
+      },
+      key,
+      context,
+      'stable_id_compatibility',
+      'ATSRS_COMPATIBILITY_TIMEOUT'
+    );
+    if(result.error)throw result.error;
+    var state=result.data||{};
+    if(state.refresh_required||state.client_compatible===false){
+      var refreshError=new Error('ATSRS_STABLE_ID_REFRESH_REQUIRED');
+      refreshError.code='ATSRS_STABLE_ID_REFRESH_REQUIRED';
+      refreshError.minimumClientBuild=String(
+        state.minimum_client_build||''
+      );
+      refreshError=attachWriteContext(
+        refreshError,{key:key},'stable_id_compatibility'
+      );
+      stableCompatibilityCache.set(scopeKey,{
+        refreshRequired:true,
+        error:refreshError,
+        expiresAt:Date.now()+cacheMs
+      });
+      window.dispatchEvent(new CustomEvent(
+        'atsrs:stable-id-refresh-required',
+        {detail:{
+          accountType:context.account_type,
+          minimumClientBuild:refreshError.minimumClientBuild,
+          code:refreshError.code
+        }}
+      ));
+      throw refreshError;
+    }
+    stableCompatibilityCache.set(scopeKey,{
+      refreshRequired:false,
+      expiresAt:Date.now()+cacheMs
+    });
+    return true;
   }
   async function loadFreshCommandRevision(context,key){
     var result=await executeRpcWithTransientRetry(
@@ -1125,6 +1211,7 @@
     enqueue(
       async function(){
         if(writeVersions.get(key)!==version)return;
+        await assertStableCompatibility(context,key);
         var operationBase=persistedWriteVersions.get(key)===version-1
           ?previousValue
           :baseValue;
@@ -1173,6 +1260,7 @@
     enqueue(
       async function(){
         if(writeVersions.get(key)!==version)return;
+        await assertStableCompatibility(context,key);
         var useNormalized=await normalizedPrimaryWriteEnabled(context,key);
         if(useNormalized){
           await applyNormalizedCommand(
@@ -2127,6 +2215,7 @@
       commandRevisions.clear();
       commandCircuits.clear();
       normalizedWriteScopeCache.clear();
+      stableCompatibilityCache.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;

@@ -46,7 +46,12 @@ if (rawPath || safePath) {
     (safe.match(/^ALTER DEFAULT PRIVILEGES FOR ROLE "postgres"/gm) || []).length
   );
   assert.equal(transformSql(safe).removed.length, 0);
-  assert.equal((safe.match(/^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$;$/gm) || []).length, 14);
+  const rawTerminators =
+    (raw.match(/^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$;$/gm) || []).length;
+  const safeTerminators =
+    (safe.match(/^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$;$/gm) || []).length;
+  assert.ok(rawTerminators > 0);
+  assert.equal(safeTerminators, rawTerminators);
   assert.equal((safe.match(/^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$$/gm) || []).length, 0);
   assert.doesNotMatch(safe, /sbp_[A-Za-z0-9]|eyJhbGciOi|PGPASSWORD|service_role_key/i);
 }
