@@ -1,6 +1,6 @@
-/* ATSRS V403 normalized primary-write rollout configuration.
+/* ATSRS V404 normalized primary-write rollout configuration.
    Scope values are SHA-256(user_id::account_type), never raw identifiers.
-   The production default remains OFF until the canary gates pass. */
+   Primary write is enabled only for the verified scope allowlist. */
 (function(root,factory){
   var config=factory();
   if(typeof module==='object'&&module.exports)module.exports=config;
@@ -9,7 +9,7 @@
   'use strict';
   return {
     enabled:true,
-    primaryWrite:false,
+    primaryWrite:true,
     allowAllScopes:false,
     requestTimeoutMs:12000,
     transientRetries:2,

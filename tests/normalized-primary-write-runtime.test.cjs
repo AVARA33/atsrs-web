@@ -8,7 +8,7 @@ const config = require(path.join(root, 'js', 'normalized-write-canary-config.js'
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
 assert.equal(config.enabled, true);
-assert.equal(config.primaryWrite, false);
+assert.equal(config.primaryWrite, true);
 assert.equal(config.requestTimeoutMs, 12000);
 assert.equal(config.transientRetries, 2);
 assert.equal(config.circuitFailureThreshold, 2);
@@ -45,7 +45,7 @@ assert.doesNotMatch(source, /service_role/i);
 
 assert.match(
   index,
-  /normalized-write-canary-config\.js\?v=403[\s\S]*server-data\.js\?v=403/
+  /normalized-write-canary-config\.js\?v=404[\s\S]*server-data\.js\?v=404/
 );
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 assert.match(app, /selection=typeof selectedPersonnel==='function'/);
