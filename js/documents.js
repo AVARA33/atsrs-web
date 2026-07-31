@@ -148,7 +148,7 @@
       '<h3 id="'+titleId+'">'+esc(cfg.title)+'</h3>'+
       '<p class="atsrs-v134-desc">'+esc(cfg.desc)+'</p>'+
       '<input id="v134_'+cfg.kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
-      '<div class="atsrs-v134-statusbar"><button id="v134_'+cfg.kind+'_upload" class="atsrs-v134-upload" type="button">Upload</button><select id="v134_'+cfg.kind+'_filter" class="atsrs-v134-filter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option></select><span id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File</span></div>'+
+      '<div class="atsrs-v134-statusbar"><button id="v134_'+cfg.kind+'_upload" class="atsrs-v134-upload" type="button">Upload</button><select id="v134_'+cfg.kind+'_filter" class="atsrs-v134-filter" disabled aria-busy="true"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option></select><span id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File</span></div>'+
       '<div id="v134_'+cfg.kind+'_list" class="atsrs-v134-list"><div class="atsrs-v134-empty">No files uploaded yet.</div></div>';
     var btn=byId('v134_'+cfg.kind+'_upload');
     var inp=byId('v134_'+cfg.kind+'_input');
@@ -157,7 +157,10 @@
       inp.onchange=function(e){handleUpload(cfg.kind,e);};
     }
     var fil=byId('v134_'+cfg.kind+'_filter');
-    if(fil){ fil.onchange=function(){ render(); }; }
+    if(fil){
+      if(window.atsrsReferenceFilterState)window.atsrsReferenceFilterState.mount(cfg.kind);
+      fil.onchange=function(){ render(); };
+    }
   }
 
   function ensureLayout(){

@@ -18,18 +18,25 @@ for (const asset of [
   'stable-id-compatibility-runtime.js',
   'normalized-write-canary-config.js',
   'workspace-command-policy.js',
-  'server-data.js',
   'shadow-read.js',
   'normalized-read-adapter.js',
   'normalized-read-canary-config.js',
   'normalized-read-runtime.js',
   'storage.js',
   'share-profile.js',
-  'app.js',
   'dashboard.js',
   'workspace-switcher.js'
 ]) {
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=407"`));
+}
+
+for (const asset of [
+  'reference-filter-state.js',
+  'server-data.js',
+  'documents.js',
+  'app.js'
+]) {
+  assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=409"`));
 }
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);

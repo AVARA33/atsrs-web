@@ -1598,6 +1598,9 @@
     var wantedScope=context.user_id+'::'+context.account_type;
     if(loadedScope===wantedScope)return true;
     if(loadingPromise&&loadingPromise.scope===wantedScope)return loadingPromise;
+    if(window.atsrsReferenceFilterState){
+      window.atsrsReferenceFilterState.begin({scope:wantedScope,source:'cloud'});
+    }
     var promise=(async function(){
       var rows=await loadWorkspaceRows(context);
       if(scope()!==wantedScope)return ensureWorkspaceData();
@@ -1762,7 +1765,7 @@
       '<button class="secondary" onclick="atsrsCloudDownload(\''+row.id+'\')">Download</button>'+
       '<button class="action" onclick="atsrsCloudDelete(\''+row.id+'\')">Delete</button></div></div>';
   }
-  function renderReferenceKind(kind,rows){
+  function renderReferenceKind(kind,rows,filterToken){
     var values=rows.filter(function(row){return row.category===kind;});
     var status=document.getElementById('v134_'+kind+'_status');
     var list=document.getElementById('v134_'+kind+'_list');
@@ -1774,7 +1777,9 @@
       status.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')):'No File';
       status.className='atsrs-v134-status '+(values.length?'ready':'empty');
     }
-    if(filter)filter.classList.toggle('active',values.length>0);
+    if(filter&&window.atsrsReferenceFilterState){
+      window.atsrsReferenceFilterState.settle(kind,values.length,filterToken);
+    }
     if(list)list.innerHTML=values.length?values.map(function(row){return referenceRow(kind,row);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
     if(managedStatus){
       managedStatus.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')):'No File';
@@ -1823,13 +1828,16 @@
   }
   async function renderCloudFiles(){
     if(!isCloudSession()||loadedScope!==scope())return;
+    var filterToken=window.atsrsReferenceFilterState
+      ?window.atsrsReferenceFilterState.begin({scope:scope(),source:'cloud'})
+      :null;
     try{
       var rows=await listFiles();
       var uploadDates={};
       rows.filter(function(row){return row.category==='document';}).forEach(function(row){uploadDates[row.id]=row.created_at||'';});
       window.atsrsDocumentUploadDates=uploadDates;
       document.dispatchEvent(new CustomEvent('atsrs-document-files-updated'));
-      ['appraisal','reference','recommendation','coverLetter'].forEach(function(kind){renderReferenceKind(kind,rows);});
+      ['appraisal','reference','recommendation','coverLetter'].forEach(function(kind){renderReferenceKind(kind,rows,filterToken);});
       renderCv(rows);
     }catch(error){console.error('ATSRS cloud file render failed',error);}
   }

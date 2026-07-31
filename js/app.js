@@ -67,7 +67,10 @@
       if(filter){
         filter.classList.add('active');
         filter.style.display='block';
-        filter.disabled = !!(status && /No File/i.test(status.textContent||''));
+        if(window.atsrsReferenceFilterState){
+          var kind=card.dataset.atsrsV134Kind;
+          if(kind)window.atsrsReferenceFilterState.mount(kind);
+        }
       }
     });
     qa('#refsPage #cvCard [class*="slot"],#refsPage #cvCard [id*="slot"],#refsPage #cvCard [id*="Slot"],#refsPage #cvCard [class*="premium"],#refsPage #cvCard [class*="Premium"]').forEach(function(x){x.style.display='none';});
