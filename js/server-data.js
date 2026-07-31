@@ -1780,7 +1780,10 @@
       status.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')):'No File';
       status.className='atsrs-v134-status '+(values.length?'ready':'empty');
     }
-    if(list)list.innerHTML=values.length?values.map(function(row){return referenceRow(kind,row);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
+    if(list){
+      var nextListHtml=values.length?values.map(function(row){return referenceRow(kind,row);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
+      if(list.innerHTML!==nextListHtml)list.innerHTML=nextListHtml;
+    }
     if(managedStatus){
       managedStatus.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')):'No File';
       managedStatus.className='badge '+(values.length?'badge-ready':'badge-missing');

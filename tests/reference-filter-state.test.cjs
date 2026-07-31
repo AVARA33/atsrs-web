@@ -16,6 +16,7 @@ assert.match(documents,/class="atsrs-v134-filter" disabled aria-busy="true"/,'fi
 assert.match(documents,/card\.dataset\.atsrsV134Layout==='stable'/,'reference cards must have an idempotent layout guard');
 assert.match(documents,/if\(!layoutReady\)\{\s*card\.innerHTML=/,'reference cards must not be rebuilt on every render');
 assert.match(documents,/var cloudOwned=window\.atsrsReferenceFilterState/,'cloud ownership must be resolved once per render');
+assert.match(documents,/if\(list\.innerHTML!==nextHtml\)list\.innerHTML=nextHtml/,'local empty states must not be recreated when unchanged');
 assert.equal((account.match(/atsrsReferenceFilterState\.cloudOwns\(\)\)return/g)||[]).length,2,'both legacy IndexedDB renderers must yield to cloud ownership');
 assert.match(server,/atsrsReferenceFilterState\.begin\(\{scope:wantedScope,source:'cloud'\}\)/);
 assert.match(server,/!window\.atsrsReferenceFilterState\.settle\(kind,values\.length,filterToken\)/);
@@ -24,6 +25,7 @@ assert.ok(
     <server.indexOf("status.textContent=values.length"),
   'stale cloud renders must be rejected before any visible status/list write'
 );
+assert.match(server,/if\(list\.innerHTML!==nextListHtml\)list\.innerHTML=nextListHtml/,'cloud empty states must not be recreated when unchanged');
 assert.match(html,/js\/reference-filter-state\.js\?v=410/);
 assert.match(html,/js\/server-data\.js\?v=410/);
 assert.match(html,/js\/documents\.js\?v=410/);

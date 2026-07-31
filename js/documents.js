@@ -245,7 +245,8 @@
         filter.classList.toggle('active',arr.length>0);
       }
       if(list){
-        list.innerHTML=arr.length?arr.map(function(f){return row(cfg.kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
+        var nextHtml=arr.length?arr.map(function(f){return row(cfg.kind,f);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
+        if(list.innerHTML!==nextHtml)list.innerHTML=nextHtml;
       }
     });
   }
