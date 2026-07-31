@@ -78,3 +78,20 @@ this document.
   `847481316686AACEF4565C673373903D6A3818ACDD662D38FBF70EBEB51DCDC6`
   and Git bundle SHA-256
   `62DD725476B682F1D1BA8C65EBCC2C2B4E624EB0773D91C901E70681A3C4893F`.
+
+## Production result
+
+- V407 commit: `ac4d08ab380e9b611447e87e3c476baae32ce49c`.
+- GitHub Pages deployment: PASS; live HTML and `share-profile.js` use V407.
+- Desktop: 1280px, LCP 272 ms, CLS 0, long tasks 0, navigation 459 ms,
+  horizontal overflow zero, console warnings/errors zero.
+- Mobile: exact 390x844, LCP 156 ms, CLS 0, long tasks 0, navigation 187 ms,
+  horizontal overflow zero, boot/session loader completed.
+- Post-deploy request/commit proxy: approximately 4.34/s; rollback delta,
+  waiting locks, idle transactions and deadlocks all zero.
+- Workspace snapshot: 17 rows,
+  `4081bc53bc29f8d14a6633d483fd4d6c`.
+- Normalized counts: personnel 4, certificates 25, projects 0,
+  assignments 0. Source-target matches true; duplicate/orphan zero.
+- Critical database advisors: zero.
+- Rollback was not required. Stage 23 is PASS.
