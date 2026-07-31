@@ -13,6 +13,8 @@
   var viewerIdentity=null;
   var requestContext=null;
   var pendingVerificationId='';
+  var shareRequestsPromise=null;
+  var ownerPanelPromise=null;
 
   function byId(id){return document.getElementById(id);}
   function client(){return window.supabaseClient||null;}
@@ -237,26 +239,47 @@
       card.appendChild(target);card.appendChild(details);list.appendChild(card);
     });
   }
-  async function refreshShareRequests(){
-    if(new URLSearchParams(location.search).get('share')||!client())return;
-    if(!await authToken())return;
-    try{
-      if(accountMode()==='company'){var sentResult=await ownerCall({action:'list_sent_requests'});renderSentRequests(sentResult.requests||[]);return;}
-      var result=await ownerCall({action:'list_requests'});ownerRequests=result.requests||[];renderOwnerRequests(result.analytics||{});
-    }catch(error){console.error('ATSRS access requests failed',error);}
+  function shareRefreshRelevant(){
+    if(document.hidden)return false;
+    var dashboard=byId('dashboardPage');
+    if(dashboard&&!dashboard.classList.contains('hidden'))return true;
+    var sharing=byId('accountSharingTab');
+    if(sharing&&sharing.classList.contains('active'))return true;
+    var access=byId('shareAccessBox');
+    return Boolean(access&&!access.classList.contains('hidden'));
   }
-  window.refreshShareRequests=refreshShareRequests;
-  async function refreshOwnerPanel(){
-    if(new URLSearchParams(location.search).get('share')||!byId('shareProfilePanel')||!client())return;
-    try{
-      var token=await authToken();if(!token)return;
-      if(accountMode()==='company'){await refreshShareRequests();return;}
-      var results=await Promise.all([ownerCall({action:'status'}),listOwnerFiles(),ownerCall({action:'list_requests'})]);
-      activeShare=results[0].share||null;ownerFiles=results[1]||[];ownerRequests=results[2].requests||[];
-      renderOwnerFiles();renderOwnerStatus();renderOwnerRequests(results[2].analytics||{});
-    }catch(error){console.error('ATSRS share profile status failed',error);setStatus('Share status could not be loaded. Check the connection.','revoked');}
+  function refreshShareRequests(options){
+    options=options||{};
+    if(new URLSearchParams(location.search).get('share')||!client())return Promise.resolve(false);
+    if(!options.force&&!shareRefreshRelevant())return Promise.resolve(false);
+    if(shareRequestsPromise)return shareRequestsPromise;
+    shareRequestsPromise=(async function(){
+      if(!await authToken())return false;
+      try{
+        if(accountMode()==='company'){var sentResult=await ownerCall({action:'list_sent_requests'});renderSentRequests(sentResult.requests||[]);return true;}
+        var result=await ownerCall({action:'list_requests'});ownerRequests=result.requests||[];renderOwnerRequests(result.analytics||{});return true;
+      }catch(error){console.error('ATSRS access requests failed',error);return false;}
+    })().finally(function(){shareRequestsPromise=null;});
+    return shareRequestsPromise;
   }
-  window.toggleShareAccess=async function(){var box=byId('shareAccessBox');if(!box)return;box.classList.toggle('hidden');if(!box.classList.contains('hidden')){ownerMessage('Loading your server documents...');await refreshOwnerPanel();ownerMessage(ownerFiles.length?'Choose visible documents and the link expiry.':'');}};
+  window.refreshShareRequests=function(){return refreshShareRequests({force:true});};
+  function refreshOwnerPanel(options){
+    options=options||{};
+    if(new URLSearchParams(location.search).get('share')||!byId('shareProfilePanel')||!client())return Promise.resolve(false);
+    if(!options.force&&!shareRefreshRelevant())return Promise.resolve(false);
+    if(ownerPanelPromise)return ownerPanelPromise;
+    ownerPanelPromise=(async function(){
+      try{
+        var token=await authToken();if(!token)return false;
+        if(accountMode()==='company'){await refreshShareRequests({force:true});return true;}
+        var results=await Promise.all([ownerCall({action:'status'}),listOwnerFiles(),ownerCall({action:'list_requests'})]);
+        activeShare=results[0].share||null;ownerFiles=results[1]||[];ownerRequests=results[2].requests||[];
+        renderOwnerFiles();renderOwnerStatus();renderOwnerRequests(results[2].analytics||{});return true;
+      }catch(error){console.error('ATSRS share profile status failed',error);setStatus('Share status could not be loaded. Check the connection.','revoked');return false;}
+    })().finally(function(){ownerPanelPromise=null;});
+    return ownerPanelPromise;
+  }
+  window.toggleShareAccess=async function(){var box=byId('shareAccessBox');if(!box)return;box.classList.toggle('hidden');if(!box.classList.contains('hidden')){ownerMessage('Loading your server documents...');await refreshOwnerPanel({force:true});ownerMessage(ownerFiles.length?'Choose visible documents and the link expiry.':'');}};
   window.updateShareExpiryChoice=function(){var custom=byId('shareExpiryCustom'),preset=document.querySelector('input[name="shareExpiryPreset"]:checked');if(custom)custom.classList.toggle('hidden',!preset||preset.value!=='custom');};
   function selectedExpiry(){
     var preset=document.querySelector('input[name="shareExpiryPreset"]:checked'),value=preset?preset.value:'7d',date=new Date();
@@ -269,13 +292,13 @@
     var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry();
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
-    try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests();}
+    try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});}
     catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.revokeShareProfileLink=async function(){
     if(!window.confirm('Disable this recruiter link? Preview and every approved download will stop immediately.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Disabling all recruiter access...');
-    try{var result=await ownerCall({action:'revoke'});activeShare=result.share||activeShare;safeSessionSet(OWNER_TOKEN_KEY,'');setKnownLink('');renderOwnerStatus();ownerMessage('The old link and all download permissions are disabled.');await refreshShareRequests();}
+    try{var result=await ownerCall({action:'revoke'});activeShare=result.share||activeShare;safeSessionSet(OWNER_TOKEN_KEY,'');setKnownLink('');renderOwnerStatus();ownerMessage('The old link and all download permissions are disabled.');await refreshShareRequests({force:true});}
     catch(error){ownerMessage(friendlyError(error,'The link could not be disabled. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.copyShareLink=async function(){if(!knownShareUrl)return;try{await navigator.clipboard.writeText(knownShareUrl);}catch(error){var input=byId('shareProfileLink');if(input){input.focus();input.select();document.execCommand('copy');}}var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}};
@@ -283,20 +306,20 @@
   window.toggleSharePreview=window.previewShareProfile;
   window.decideShareRequest=async function(id,decision){
     if(!window.confirm((decision==='approve'?'Approve':'Decline')+' this verified recruiter request?'))return;
-    try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'The request could not be updated. Please try again.'));}
+    try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'The request could not be updated. Please try again.'));}
   };
   window.revokeShareRequestAccess=async function(id){
     if(!window.confirm('Close all active download access for this recruiter? The shared preview link will remain active.'))return;
-    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'Access could not be closed. Please try again.'));}
+    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Access could not be closed. Please try again.'));}
   };
   window.revokeShareDocumentAccess=async function(id,fileId){
     if(!window.confirm('Close download access to this document? Other approved documents will remain available.'))return;
-    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'Document access could not be closed. Please try again.'));}
+    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Document access could not be closed. Please try again.'));}
   };
   window.approveAllShareRequests=async function(){
     if(!window.confirm('Approve every pending recruiter request for 30 minutes?'))return;
     var button=byId('approveAllRequestsBtn');if(button)button.disabled=true;
-    try{var result=await ownerCall({action:'approve_all_pending'});window.alert(result.approved+' request(s) approved.');await refreshShareRequests();}catch(error){window.alert(friendlyError(error,'Requests could not be approved. Please try again.'));}finally{if(button)button.disabled=false;}
+    try{var result=await ownerCall({action:'approve_all_pending'});window.alert(result.approved+' request(s) approved.');await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Requests could not be approved. Please try again.'));}finally{if(button)button.disabled=false;}
   };
 
   function publicStatus(expiry){if(!expiry||String(expiry).toUpperCase()==='N/A')return{label:'No expiry date',className:''};var today=new Date();today.setHours(0,0,0,0);var date=new Date(String(expiry).slice(0,10)+'T00:00:00'),days=Math.round((date-today)/86400000);if(days<0)return{label:'Expired',className:'expired'};if(days===0)return{label:'Expires today',className:'warning'};if(days<=30)return{label:days+' days left',className:'warning'};return{label:'Valid',className:''};}
@@ -423,10 +446,12 @@
     publicToken=new URLSearchParams(location.search).get('share')||'';
     if(publicToken){viewerToken=safeViewerGet(viewerKey('token'));try{viewerIdentity=JSON.parse(safeViewerGet(viewerKey('identity'))||'null');}catch(error){viewerIdentity=null;}loadPublicProfile(publicToken);return;}
     var input=byId('shareProfileLink');if(input){input.value='';input.placeholder='Create a secure link after choosing documents.';}var copy=byId('copyShareBtn');if(copy)copy.disabled=true;var preview=byId('previewShareBtn');if(preview)preview.disabled=true;
-    refreshOwnerPanel();setTimeout(refreshOwnerPanel,1200);atsrsStableInterval(refreshShareRequests,30000);
-    var oldShow=window.showAccountTab;if(typeof oldShow==='function'&&!oldShow.__atsrsSharing){window.showAccountTab=function(tab){var result=oldShow.apply(this,arguments);if(tab==='sharing')setTimeout(refreshOwnerPanel,0);return result;};window.showAccountTab.__atsrsSharing=true;}
+    refreshOwnerPanel();setTimeout(refreshOwnerPanel,1200);atsrsStableInterval(function(){return refreshShareRequests();},30000);
+    var oldShow=window.showAccountTab;if(typeof oldShow==='function'&&!oldShow.__atsrsSharing){window.showAccountTab=function(tab){var result=oldShow.apply(this,arguments);if(tab==='sharing')setTimeout(function(){refreshOwnerPanel({force:true});},0);return result;};window.showAccountTab.__atsrsSharing=true;}
+    var oldPage=window.showPage;if(typeof oldPage==='function'&&!oldPage.__atsrsSharing){window.showPage=function(page){var result=oldPage.apply(this,arguments);if(page==='dashboard')setTimeout(function(){refreshShareRequests({force:true});},0);return result;};window.showPage.__atsrsSharing=true;}
     if(client()&&client().auth&&typeof client().auth.onAuthStateChange==='function')client().auth.onAuthStateChange(function(event,session){if(session&&session.user)refreshOwnerPanel();});
     window.addEventListener('atsrs:resume',refreshShareRequests);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)refreshShareRequests();});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();

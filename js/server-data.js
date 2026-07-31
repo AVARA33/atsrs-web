@@ -620,7 +620,7 @@
     return String(
       window.ATSRS_CLIENT_BUILD
         ||document.documentElement.dataset.atsrsBuild
-        ||'V406'
+        ||'V407'
     ).slice(0,64);
   }
   async function commandAuditMetadata(){

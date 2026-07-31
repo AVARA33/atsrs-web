@@ -171,7 +171,7 @@ window.addEventListener('load',function(){
   }
   if(typeof currentUser!=='undefined'&&currentUser)renderAll();
 });
-let supabaseClient=null;try{if(window.supabase){var atsrsClientBuild=String(window.ATSRS_CLIENT_BUILD||document.documentElement.dataset.atsrsBuild||'V406');supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{flowType:'pkce',detectSessionInUrl:!window.__atsrsOAuthMarkedCallback,persistSession:true,autoRefreshToken:true},global:{headers:{'x-atsrs-client-build':atsrsClientBuild}}});}window.supabaseClient=supabaseClient}catch(e){console.error(e)}
+let supabaseClient=null;try{if(window.supabase){var atsrsClientBuild=String(window.ATSRS_CLIENT_BUILD||document.documentElement.dataset.atsrsBuild||'V407');supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{flowType:'pkce',detectSessionInUrl:!window.__atsrsOAuthMarkedCallback,persistSession:true,autoRefreshToken:true},global:{headers:{'x-atsrs-client-build':atsrsClientBuild}}});}window.supabaseClient=supabaseClient}catch(e){console.error(e)}
 let currentUser=null,timer=null,countdown=0;let lang="en";try{localStorage.setItem("atsrs_lang","en")}catch(e){}
 
 const T={

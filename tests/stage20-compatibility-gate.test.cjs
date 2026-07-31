@@ -68,7 +68,7 @@ const canary = fs.readFileSync(
 );
 
 assert.equal(config.enabled, false);
-assert.equal(config.clientBuild, 'V406');
+assert.equal(config.clientBuild, 'V407');
 assert.equal(config.cacheMs, 60000);
 assert.equal(config.canaryQueryKey, 'atsrsStableCompatibility');
 assert.equal(config.scopeHashes.length, 4);
@@ -126,7 +126,7 @@ assert.match(runtime, /existing server data is safe/);
 assert.match(storage, /'x-atsrs-client-build':atsrsClientBuild/);
 assert.match(
   index,
-  /stable-id-compatibility-config\.js\?v=406[\s\S]*stable-id-compatibility-runtime\.js\?v=406[\s\S]*server-data\.js\?v=406/,
+  /stable-id-compatibility-config\.js\?v=407[\s\S]*stable-id-compatibility-runtime\.js\?v=407[\s\S]*server-data\.js\?v=407/,
 );
 
 assert.match(disable, /set kill_switch = true/);

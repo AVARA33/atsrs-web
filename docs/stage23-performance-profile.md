@@ -2,8 +2,7 @@
 
 Date: 2026-07-31
 
-Status: baseline complete; optimization candidates measured, no behavior or
-database change applied in this profiling batch.
+Status: V407 candidate; polling dedupe and privacy-safe browser metrics added.
 
 ## Client baseline
 
@@ -20,10 +19,10 @@ database change applied in this profiling batch.
 - Authenticated account-switch smoke: 10/10 PASS.
 - Exact 390px local V406 layout gate from the release candidate: PASS.
 
-The in-app browser test surface does not expose Navigation/Resource Timing
-globals to its isolated evaluator, so no synthetic Core Web Vitals are claimed.
-The next browser profiling batch must use an instrumented supported surface and
-record LCP, INP, CLS, transfer size and long tasks before optimizing.
+V407 records privacy-safe LCP, CLS, INP, long-task and navigation values in page
+memory and mirrored numeric `data-atsrs-*` attributes. Nothing is transmitted
+or persisted. The isolated browser evaluator can therefore read the DOM
+attributes without access to application/session state.
 
 ## Production request and database baseline
 
@@ -46,9 +45,9 @@ this document.
 ## Measured client optimization candidates
 
 1. `share-profile.js` installs a 30-second owner request poll for every signed-in
-   app session. It should be profiled for visibility/page gating and
-   single-flight coalescing. Correctness events (`atsrs:resume`, account mode
-   changes and opening the sharing panel) must still refresh immediately.
+   app session. V407 adds visibility/page gating and single-flight coalescing.
+   Correctness events (`atsrs:resume`, account mode changes and opening the
+   sharing panel) still refresh immediately.
 2. Multiple UI modules use sub-second stabilizing intervals. Inventory which
    callbacks mutate unchanged DOM and replace only proven redundant work with
    event-driven or visibility-gated updates.
@@ -60,9 +59,22 @@ this document.
 
 ## Gate for the first optimization
 
-- Baseline and optimized browser runs on desktop and 390x844.
-- LCP, INP, CLS, script transfer, long tasks and request count recorded.
-- Personal/Corporate, account switch, Documents, offline/reconnect and
-  multi-tab regressions PASS.
-- Database counts/checksum unchanged; stale/5xx/locks/storm remain zero.
-- Separate rollback commit and V406 restore point remain available.
+- Full deterministic suite: 30/30 PASS.
+- Desktop local V407: 1280px, horizontal overflow zero, console warnings/errors
+  zero.
+- Mobile local V407: exact 390x844, horizontal overflow zero, LCP 360 ms,
+  CLS 0, long tasks 0, console warnings/errors zero.
+- The polling contract proves hidden/unrelated pages issue zero periodic share
+  requests and three concurrent refreshes coalesce to one request. Explicit
+  user refresh remains immediate.
+- Production pre-deploy data gate: 17/4/25/0/0, source-target canonical entity
+  checksums match, duplicate/orphan zero, RLS 4/4, authenticated table grant is
+  SELECT-only, and `stable_ids_required=false`.
+- Two short database snapshots: request/commit proxy about 4.06/s (below the
+  5/s stop threshold), rollback delta zero, waiting locks zero, idle
+  transactions zero, deadlocks zero.
+- Separate rollback package:
+  `output/atsrs-stage23-prechange-20260731-102705`; code ZIP SHA-256
+  `847481316686AACEF4565C673373903D6A3818ACDD662D38FBF70EBEB51DCDC6`
+  and Git bundle SHA-256
+  `62DD725476B682F1D1BA8C65EBCC2C2B4E624EB0773D91C901E70681A3C4893F`.
