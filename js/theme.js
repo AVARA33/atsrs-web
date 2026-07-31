@@ -25,7 +25,7 @@
     document.documentElement.dataset.theme=theme;
     document.documentElement.style.colorScheme=theme;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',theme==='light'?'#f6f8fb':'#07111d');
+    if(meta)meta.setAttribute('content',theme==='light'?'#f6f8fb':'#04101d');
     if(persist)saveTheme(theme);
     syncButton();
     window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:theme}}));

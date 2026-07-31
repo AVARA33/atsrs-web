@@ -531,6 +531,7 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
     radial-gradient(circle at 16% 24%,rgba(34,197,94,.08),transparent 28%),
     radial-gradient(circle at 78% 38%,rgba(56,189,248,.06),transparent 30%)!important;
 }
+
 #auth:not(.hidden) .build-badge div:nth-child(2){white-space:nowrap!important;}
 
 #auth:not(.hidden) .build-badge{
@@ -921,13 +922,13 @@ body > .atsrs-v64-top-actions,
 #refsPage .atsrs-v134-filter,
 #refsPage .atsrs-v134-filter.active{
   display:inline-block!important;
-  width:118px!important;
-  min-width:118px!important;
-  max-width:118px!important;
+  width:132px!important;
+  min-width:132px!important;
+  max-width:160px!important;
   height:32px!important;
-  padding:5px 8px!important;
+  padding:5px 30px 5px 10px!important;
   margin:0!important;
-  flex:0 0 118px!important;
+  flex:0 0 132px!important;
 }
 #refsPage .atsrs-v134-status{
   display:inline-block!important;

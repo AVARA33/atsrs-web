@@ -1,7 +1,16 @@
 /* ATSRS appearance system. Dark is the default; light is a complete UI theme. */
 html{color-scheme:dark}
+:root{
+  --atsrs-canvas-dark:#04101d;
+  --sidebar-accent:#22c55e;
+  --loading-accent:var(--sidebar-accent);
+}
 html[data-theme="light"],
 html[data-theme="light"] body{color-scheme:light!important}
+html[data-theme="light"]{
+  --sidebar-accent:#2563eb;
+  --loading-accent:var(--sidebar-accent);
+}
 
 /* One stable top-right group prevents the theme control and account switcher overlapping. */
 .atsrs-global-controls{
@@ -144,10 +153,10 @@ html[data-theme="light"] #atsrsBootScreen .atsrs-loader-sub{
   color:#62778a!important;
 }
 html[data-theme="light"] #atsrsBootScreen .atsrs-spinner{
-  filter:drop-shadow(0 0 10px rgba(22,163,74,.14));
+  filter:drop-shadow(0 0 10px color-mix(in srgb,var(--loading-accent) 18%,transparent));
 }
 html[data-theme="light"] #atsrsBootScreen .atsrs-spinner span{
-  background:#16a34a;
+  background:var(--loading-accent);
 }
 html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){
   color:#172b3d!important;
@@ -1790,4 +1799,23 @@ html[data-theme="light"] body #app #certificatesPage .cert-mode-buttons button.a
   color: #1649c8 !important;
   -webkit-text-fill-color: #1649c8 !important;
   box-shadow: inset 0 0 0 1px rgba(22, 73, 200, 0.08) !important;
+}
+
+/* Dark canvas: one stable page color across auth and every workspace route. */
+html:not([data-theme="light"]),
+html:not([data-theme="light"]) body,
+html:not([data-theme="light"]) #app.app,
+html:not([data-theme="light"]) #app.app > .main,
+html:not([data-theme="light"]) #auth.auth,
+html:not([data-theme="light"]) #atsrsBootScreen{
+  background-color:var(--atsrs-canvas-dark)!important;
+  background-image:none!important;
+}
+html:not([data-theme="light"]) #app.app > .main > section{
+  background-color:transparent!important;
+  background-image:none!important;
+}
+html:not([data-theme="light"]) #auth.auth::before{
+  background:none!important;
+  background-image:none!important;
 }

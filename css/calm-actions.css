@@ -20,7 +20,7 @@ input[type="submit"]{
   color:var(--atsrs-action-text)!important;
   box-shadow:none!important;
   text-shadow:none!important;
-  transition:background-color .14s ease,border-color .14s ease,color .14s ease,opacity .14s ease!important;
+  transition:background-color .14s ease,border-color .14s ease,box-shadow .14s ease!important;
 }
 button:hover:not(:disabled),
 input[type="button"]:hover:not(:disabled),
