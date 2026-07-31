@@ -67,7 +67,11 @@ assert.equal(config.enabled, false);
 assert.equal(config.clientBuild, 'V405');
 assert.equal(config.cacheMs, 60000);
 assert.equal(config.canaryQueryKey, 'atsrsStableCompatibility');
-assert.deepEqual(config.scopeHashes, []);
+assert.equal(config.scopeHashes.length, 4);
+assert.equal(new Set(config.scopeHashes).size, 4);
+for (const scopeHash of config.scopeHashes) {
+  assert.match(scopeHash, /^[0-9a-f]{64}$/);
+}
 
 assert.match(migration, /strict_enabled boolean not null default false/);
 assert.match(migration, /minimum_client_build integer not null default 405/);
