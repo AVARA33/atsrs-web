@@ -2,8 +2,9 @@
 
 Date: 2026-07-31
 
-Status: **NO-GO**. No production database, Storage, Edge Function, DNS, secret,
-or business-data mutation was performed.
+Status: **GO**. The reviewed `talent-profile-actions` CORS forward-fix was
+deployed; no production database, Storage, DNS, secret, or business-data
+mutation was performed.
 
 ## Release and rollback baseline
 
@@ -140,11 +141,43 @@ Rollback order:
 
 ## Decision
 
-Stage 25 is **NO-GO** until the Corporate server-data path and login/logout
-rehearsal pass. No rollback was required because Stage 25 deployed nothing and
-changed no production state.
+Stage 25 is **GO**. Corporate Personnel and Compliance, the restorable
+login/logout rehearsal, account switching, integrity, RLS/Storage and runtime
+safety gates passed. No rollback was required.
 
 After the blocker is fixed and the independent verification passes, temporary
 launch monitoring may be removed only when the normal production monitoring
 dashboard and alert thresholds above are active. It is not safe to remove the
 monitor yet.
+
+## Blocker resolution and final verification
+
+- Root cause: the authenticated frontend sends `x-atsrs-client-build`, while
+  the deployed `talent-profile-actions` preflight response did not allow that
+  header. The browser therefore completed `OPTIONS 200` but blocked the actual
+  `POST`.
+- Forward-fix: add only `x-atsrs-client-build` to
+  `Access-Control-Allow-Headers`; authentication, origin restriction and
+  function business logic remain unchanged.
+- Local contract and full regression suites: 32/32 PASS.
+- Staging authenticated synthetic rehearsal: Personnel and Compliance POST
+  PASS; logout, restored login, cleanup and synthetic residue 0 PASS.
+- Production Corporate Personnel: 2 linked profiles loaded.
+- Production Corporate Compliance: 2 personnel and 26 documents loaded.
+- Personal-to-Corporate switch: PASS; workspace error and console errors 0.
+- Post-deploy function window: 11 invocations/15 minutes, 5xx 0%, average CPU
+  1 ms and maximum CPU 29 ms.
+- Project rolling CPU card remained 21% before and after deployment.
+- Post-deploy transaction proxy: 9 commits over about 10.5 seconds
+  (approximately 0.86/s), rollback delta 0, locks 0, idle transactions 0,
+  long-running queries 0 and deadlocks 0.
+- Post-deploy counts remained 17/4/25/0/0; all canonical source/target matches
+  are true, duplicate IDs and relationship orphans are 0.
+- RLS remained 4/4; anon access and authenticated direct DML remained 0.
+- Storage remained 2 buckets, 27 objects and 9,812,929 bytes.
+- Security and performance advisor errors remained 0.
+- `stable_ids_required=false`; legacy JSON mirror/fallback remains available.
+- Rollback source and checksums:
+  `C:\Users\user\Documents\GitHub\output\atsrs-stage25-corporate-fix-20260731-115126`.
+
+The launch monitor remains required and must not be removed yet.
