@@ -244,40 +244,28 @@
       document.body.classList.remove('atsrs-booting');
     }
   }
+  function workspaceCommandPolicy(){
+    var policy=window.ATSRSWorkspaceCommandPolicy;
+    if(!policy)throw new Error('ATSRS workspace command policy is unavailable.');
+    return policy;
+  }
   function writeErrorCode(error){
-    return String(error&&error.code||error&&error.status||'').toUpperCase();
+    return workspaceCommandPolicy().errorCode(error);
   }
   function isWriteConflict(error){
-    return writeErrorCode(error)==='ATSRS_WRITE_CONFLICT';
+    return workspaceCommandPolicy().isWriteConflict(error);
   }
   function isStaleRevision(error){
-    return writeErrorCode(error)==='40001'
-      ||String(error&&error.message||'').indexOf('ATSRS_STALE_REVISION')!==-1;
+    return workspaceCommandPolicy().isStaleRevision(error);
   }
   function isStableCompatibilityRefresh(error){
-    return String(error&&error.message||'')
-      .indexOf('ATSRS_STABLE_ID_REFRESH_REQUIRED')!==-1;
+    return workspaceCommandPolicy().isStableCompatibilityRefresh(error);
   }
   function isDuplicateInsert(error){
-    return writeErrorCode(error)==='23505';
+    return workspaceCommandPolicy().isDuplicateInsert(error);
   }
   function isRetryableWriteError(error){
-    if(isWriteConflict(error)||isStaleRevision(error)
-      ||isStableCompatibilityRefresh(error)
-      ||isWorkspaceBusy(error)||isRateLimited(error)){
-      return false;
-    }
-    var code=writeErrorCode(error);
-    var status=Number(error&&error.status||0);
-    var message=String(error&&error.message||'');
-    if(code==='ATSRS_TRANSPORT_TIMEOUT'||code==='ATSRS_REVISION_TIMEOUT')return true;
-    if(/^08/.test(code)
-      ||code==='PGRST000'||code==='PGRST001'||code==='PGRST002'
-      ||code==='PGRST003')return true;
-    if(status===408||status===502||status===503||status===504||status===520){
-      return true;
-    }
-    return status===0&&/fetch|network|connection|load failed|aborted|timeout|offline/i.test(message);
+    return workspaceCommandPolicy().isRetryable(error);
   }
   function attachWriteContext(error,meta,phase){
     if(!(error instanceof Error)){
@@ -652,25 +640,11 @@
   }
   function commandRequestTimeoutMs(){
     var config=window.__ATSRS_NORMALIZED_WRITE_CANARY__||{};
-    var value=Number(config.requestTimeoutMs);
-    return Number.isFinite(value)&&value>=1000&&value<=60000?value:12000;
+    return workspaceCommandPolicy().requestTimeoutMs(config);
   }
   function commandCircuitConfig(){
     var config=window.__ATSRS_NORMALIZED_WRITE_CANARY__||{};
-    return {
-      transientRetries:Number.isSafeInteger(Number(config.transientRetries))
-        ?Math.max(0,Math.min(2,Number(config.transientRetries))):2,
-      failureThreshold:Number.isSafeInteger(Number(config.circuitFailureThreshold))
-        ?Math.max(1,Math.min(5,Number(config.circuitFailureThreshold))):2,
-      transientOpenMs:Number.isFinite(Number(config.circuitTransientOpenMs))
-        ?Math.max(1000,Math.min(120000,Number(config.circuitTransientOpenMs))):15000,
-      staleOpenMs:Number.isFinite(Number(config.circuitStaleOpenMs))
-        ?Math.max(5000,Math.min(600000,Number(config.circuitStaleOpenMs))):120000,
-      busyOpenMs:Number.isFinite(Number(config.circuitBusyOpenMs))
-        ?Math.max(1000,Math.min(30000,Number(config.circuitBusyOpenMs))):5000,
-      rateLimitOpenMs:Number.isFinite(Number(config.circuitRateLimitOpenMs))
-        ?Math.max(1000,Math.min(120000,Number(config.circuitRateLimitOpenMs))):30000
-    };
+    return workspaceCommandPolicy().circuitConfig(config);
   }
   function commandCircuitState(context){
     var scopeKey=commandScope(context);
@@ -750,8 +724,7 @@
     }
   }
   function transientRetryDelay(attempt){
-    var base=Math.min(4000,250*Math.pow(2,Math.max(0,attempt)));
-    return base+Math.floor(Math.random()*Math.max(1,Math.floor(base/4)));
+    return workspaceCommandPolicy().transientRetryDelay(attempt,Math.random);
   }
   function waitForTransientRetry(attempt){
     return new Promise(function(resolve){
@@ -759,13 +732,10 @@
     });
   }
   function isWorkspaceBusy(error){
-    var code=String(error&&error.code||'');
-    var message=String(error&&error.message||'');
-    return code==='55P03'||message.indexOf('ATSRS_WORKSPACE_BUSY')>=0;
+    return workspaceCommandPolicy().isWorkspaceBusy(error);
   }
   function isRateLimited(error){
-    return Number(error&&error.status||0)===429
-      ||writeErrorCode(error)==='ATSRS_RATE_LIMITED';
+    return workspaceCommandPolicy().isRateLimited(error);
   }
   function commandLockName(context){
     return 'atsrs-workspace-command-v1:'

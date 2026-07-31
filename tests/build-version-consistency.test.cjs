@@ -17,6 +17,7 @@ for (const asset of [
   'stable-id-compatibility-config.js',
   'stable-id-compatibility-runtime.js',
   'normalized-write-canary-config.js',
+  'workspace-command-policy.js',
   'server-data.js',
   'shadow-read.js',
   'normalized-read-adapter.js',

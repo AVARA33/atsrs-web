@@ -15,6 +15,14 @@ const compatibilityRuntime = require(
     'stable-id-compatibility-runtime.js',
   ),
 );
+const workspaceCommandPolicy = require(
+  require('node:path').join(
+    __dirname,
+    '..',
+    'js',
+    'workspace-command-policy.js',
+  ),
+);
 
 class FakeStorage {
   constructor() {
@@ -345,6 +353,7 @@ function boot(rows, controls = {}, mode = 'personal') {
     } : undefined,
     ATSRS_CLIENT_BUILD: controls.clientBuild || 'V405',
     ATSRSStableIdCompatibilityRuntime: compatibilityRuntime,
+    ATSRSWorkspaceCommandPolicy: workspaceCommandPolicy,
     addEventListener(type, handler) {
       if (!eventHandlers.has(type)) eventHandlers.set(type, []);
       eventHandlers.get(type).push(handler);

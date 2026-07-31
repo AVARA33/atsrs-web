@@ -4,6 +4,10 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
+const policy = fs.readFileSync(
+  path.join(root, 'js', 'workspace-command-policy.js'),
+  'utf8',
+);
 const config = require(path.join(root, 'js', 'normalized-write-canary-config.js'));
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
@@ -25,7 +29,7 @@ assert.match(source, /ATSRS_TRANSPORT_TIMEOUT/);
 assert.match(source, /Promise\.race\(\[Promise\.resolve\(request\),timeout\]\)/);
 assert.match(source, /p_operation_id:operationId/);
 assert.match(source, /p_expected_revision:expected/);
-assert.match(source, /ATSRS_STALE_REVISION/);
+assert.match(policy, /ATSRS_STALE_REVISION/);
 assert.match(source, /request=request\.retry\(false\)/);
 assert.match(source, /function recordCommandFailure\(context,error\)/);
 assert.match(source, /function retryFailedOperations\(\)/);
@@ -37,7 +41,8 @@ assert.doesNotMatch(
 );
 assert.match(source, /current_revision/);
 assert.match(source, /rebaseBusinessValue/);
-assert.match(source, /ATSRS_WRITE_CONFLICT/);
+assert.match(policy, /ATSRS_WRITE_CONFLICT/);
+assert.match(source, /ATSRSWorkspaceCommandPolicy/);
 assert.match(source, /BroadcastChannel\('atsrs-normalized-write-revisions-v1'\)/);
 assert.match(source, /rollout_stage:normalizedWriteCanaryRequested\(\)\?'canary':'default'/);
 assert.match(source, /client_instance_hash:await sha256Hex\(instance\)/);
@@ -45,7 +50,7 @@ assert.doesNotMatch(source, /service_role/i);
 
 assert.match(
   index,
-  /normalized-write-canary-config\.js\?v=406[\s\S]*server-data\.js\?v=406/
+  /normalized-write-canary-config\.js\?v=406[\s\S]*workspace-command-policy\.js\?v=406[\s\S]*server-data\.js\?v=406/
 );
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 assert.match(app, /selection=typeof selectedPersonnel==='function'/);
