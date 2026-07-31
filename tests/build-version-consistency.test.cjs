@@ -34,6 +34,12 @@ for (const asset of [
   'reference-filter-state.js',
   'server-data.js',
   'documents.js',
+  'account.js'
+]) {
+  assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=410"`));
+}
+
+for (const asset of [
   'app.js'
 ]) {
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=409"`));

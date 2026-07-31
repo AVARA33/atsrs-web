@@ -1767,18 +1767,18 @@
   }
   function renderReferenceKind(kind,rows,filterToken){
     var values=rows.filter(function(row){return row.category===kind;});
+    if(window.atsrsReferenceFilterState
+      &&!window.atsrsReferenceFilterState.settle(kind,values.length,filterToken)){
+      return false;
+    }
     var status=document.getElementById('v134_'+kind+'_status');
     var list=document.getElementById('v134_'+kind+'_list');
-    var filter=document.getElementById('v134_'+kind+'_filter');
     var managedStatus=document.getElementById(kind+'StatusBadge');
     var managedCount=document.getElementById(kind+'Count');
     var managedList=document.getElementById(kind+'RecordList');
     if(status){
       status.textContent=values.length?(values.length+' File'+(values.length>1?'s':'')):'No File';
       status.className='atsrs-v134-status '+(values.length?'ready':'empty');
-    }
-    if(filter&&window.atsrsReferenceFilterState){
-      window.atsrsReferenceFilterState.settle(kind,values.length,filterToken);
     }
     if(list)list.innerHTML=values.length?values.map(function(row){return referenceRow(kind,row);}).join(''):'<div class="atsrs-v134-empty">No files uploaded yet.</div>';
     if(managedStatus){
@@ -1807,6 +1807,7 @@
         }).join(''):'No cover letter uploaded yet.';
       }
     }
+    return true;
   }
   function renderCv(rows){
     var cv=rows.filter(function(row){return row.category==='cv';})[0]||null;

@@ -101,6 +101,7 @@
   function label(n){return n>0?(n+' File'+(n>1?'s':'')):'No File';}
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV151Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV151Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV151Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
+    if(window.atsrsReferenceFilterState&&window.atsrsReferenceFilterState.cloudOwns&&window.atsrsReferenceFilterState.cloudOwns())return;
     var arr=[]; try{arr=await getAll(kind);}catch(e){console.warn(e);} 
     var status=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');
     if(status){status.textContent=label(arr.length);status.className='atsrs-v134-status '+(arr.length?'ready':'empty');}
@@ -173,6 +174,7 @@
   function label(n){return n?(n+' File'+(n>1?'s':'')):'No File';}
   function row(kind,f){return '<div class="atsrs-v134-row"><div><b title="'+esc(f.name)+'">📄 '+esc(f.name||'File')+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsV152Preview(\''+kind+'\',\''+esc(f.id)+'\')">Preview</button><button class="secondary" onclick="atsrsV152Download(\''+kind+'\',\''+esc(f.id)+'\')">Download</button><button class="action" onclick="atsrsV152Delete(\''+kind+'\',\''+esc(f.id)+'\')">Delete</button></div></div>';}
   async function renderKind(kind){
+    if(window.atsrsReferenceFilterState&&window.atsrsReferenceFilterState.cloudOwns&&window.atsrsReferenceFilterState.cloudOwns())return;
     await migrate(kind);
     var arr=[];try{arr=await all(kind);}catch(e){console.warn('ATSRS V168 read failed',e);}mirrorMeta(kind,arr);
     var st=byId('v134_'+kind+'_status'), list=byId('v134_'+kind+'_list'), filter=byId('v134_'+kind+'_filter');

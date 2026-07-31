@@ -144,12 +144,21 @@
     card.style.order=String(cfg.order);
     card.dataset.atsrsV134Kind=cfg.kind;
     var titleId=cfg.kind==='appraisal'?'appraisalCardTitle':cfg.kind==='reference'?'referenceCardTitle':cfg.kind==='recommendation'?'recommendationCardTitle':'coverLetterCardTitle';
-    card.innerHTML=
-      '<h3 id="'+titleId+'">'+esc(cfg.title)+'</h3>'+
-      '<p class="atsrs-v134-desc">'+esc(cfg.desc)+'</p>'+
-      '<input id="v134_'+cfg.kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
-      '<div class="atsrs-v134-statusbar"><button id="v134_'+cfg.kind+'_upload" class="atsrs-v134-upload" type="button">Upload</button><select id="v134_'+cfg.kind+'_filter" class="atsrs-v134-filter" disabled aria-busy="true"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option></select><span id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File</span></div>'+
-      '<div id="v134_'+cfg.kind+'_list" class="atsrs-v134-list"><div class="atsrs-v134-empty">No files uploaded yet.</div></div>';
+    var layoutReady=card.dataset.atsrsV134Layout==='stable'
+      &&byId(titleId)
+      &&byId('v134_'+cfg.kind+'_input')
+      &&byId('v134_'+cfg.kind+'_filter')
+      &&byId('v134_'+cfg.kind+'_status')
+      &&byId('v134_'+cfg.kind+'_list');
+    if(!layoutReady){
+      card.innerHTML=
+        '<h3 id="'+titleId+'">'+esc(cfg.title)+'</h3>'+
+        '<p class="atsrs-v134-desc">'+esc(cfg.desc)+'</p>'+
+        '<input id="v134_'+cfg.kind+'_input" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" multiple>'+
+        '<div class="atsrs-v134-statusbar"><button id="v134_'+cfg.kind+'_upload" class="atsrs-v134-upload" type="button">Upload</button><select id="v134_'+cfg.kind+'_filter" class="atsrs-v134-filter" disabled aria-busy="true"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="az">A-Z</option><option value="za">Z-A</option></select><span id="v134_'+cfg.kind+'_status" class="atsrs-v134-status empty">No File</span></div>'+
+        '<div id="v134_'+cfg.kind+'_list" class="atsrs-v134-list"><div class="atsrs-v134-empty">No files uploaded yet.</div></div>';
+      card.dataset.atsrsV134Layout='stable';
+    }
     var btn=byId('v134_'+cfg.kind+'_upload');
     var inp=byId('v134_'+cfg.kind+'_input');
     if(btn&&inp){
@@ -209,7 +218,14 @@
 
   function render(){
     setBuild(); ensureLayout();
+    var cloudOwned=window.atsrsReferenceFilterState
+      &&window.atsrsReferenceFilterState.cloudOwns
+      &&window.atsrsReferenceFilterState.cloudOwns();
     CONFIGS.forEach(function(cfg){
+      if(cloudOwned){
+        window.atsrsReferenceFilterState.mount(cfg.kind);
+        return;
+      }
       var arr=readFiles(cfg.kind).slice();
       var filter=byId('v134_'+cfg.kind+'_filter');
       var mode=filter?filter.value:'newest';

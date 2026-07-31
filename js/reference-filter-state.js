@@ -52,7 +52,7 @@
   }
 
   function install(doc){
-    return createAuthority(function(kind,state){
+    var authority=createAuthority(function(kind,state){
       var filter=doc.getElementById('v134_'+kind+'_filter');
       if(!filter)return;
       filter.classList.add('active');
@@ -61,6 +61,13 @@
       filter.dataset.atsrsFilterState=state.pending?'pending':(state.disabled?'empty':'ready');
       filter.dataset.atsrsFilterGeneration=String(state.generation);
     });
+    authority.cloudOwns=function(){
+      var view=doc.defaultView;
+      if(!view)return false;
+      var value=view.currentUser;
+      return !!(value&&value.id&&value.id!=='local_test_user'&&view.supabaseClient);
+    };
+    return authority;
   }
 
   return {createAuthority:createAuthority,install:install,kinds:KINDS.slice()};

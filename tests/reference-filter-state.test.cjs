@@ -6,17 +6,28 @@ const root=path.resolve(__dirname,'..');
 const {createAuthority,kinds}=require(path.join(root,'js','reference-filter-state.js'));
 const app=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const documents=fs.readFileSync(path.join(root,'js','documents.js'),'utf8');
+const account=fs.readFileSync(path.join(root,'js','account.js'),'utf8');
 const server=fs.readFileSync(path.join(root,'js','server-data.js'),'utf8');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 
 assert.deepEqual(kinds,['appraisal','reference','recommendation','coverLetter']);
 assert.doesNotMatch(app,/filter\.disabled\s*=/,'legacy compact renderer must not own disabled state');
 assert.match(documents,/class="atsrs-v134-filter" disabled aria-busy="true"/,'filters must be born disabled during hydration');
+assert.match(documents,/card\.dataset\.atsrsV134Layout==='stable'/,'reference cards must have an idempotent layout guard');
+assert.match(documents,/if\(!layoutReady\)\{\s*card\.innerHTML=/,'reference cards must not be rebuilt on every render');
+assert.match(documents,/var cloudOwned=window\.atsrsReferenceFilterState/,'cloud ownership must be resolved once per render');
+assert.equal((account.match(/atsrsReferenceFilterState\.cloudOwns\(\)\)return/g)||[]).length,2,'both legacy IndexedDB renderers must yield to cloud ownership');
 assert.match(server,/atsrsReferenceFilterState\.begin\(\{scope:wantedScope,source:'cloud'\}\)/);
-assert.match(server,/atsrsReferenceFilterState\.settle\(kind,values\.length,filterToken\)/);
-assert.match(html,/js\/reference-filter-state\.js\?v=409/);
-assert.match(html,/js\/server-data\.js\?v=409/);
-assert.match(html,/js\/documents\.js\?v=409/);
+assert.match(server,/!window\.atsrsReferenceFilterState\.settle\(kind,values\.length,filterToken\)/);
+assert.ok(
+  server.indexOf('!window.atsrsReferenceFilterState.settle(kind,values.length,filterToken)')
+    <server.indexOf("status.textContent=values.length"),
+  'stale cloud renders must be rejected before any visible status/list write'
+);
+assert.match(html,/js\/reference-filter-state\.js\?v=410/);
+assert.match(html,/js\/server-data\.js\?v=410/);
+assert.match(html,/js\/documents\.js\?v=410/);
+assert.match(html,/js\/account\.js\?v=410/);
 assert.match(html,/js\/app\.js\?v=409/);
 
 function recorder(){
