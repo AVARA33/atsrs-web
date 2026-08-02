@@ -571,10 +571,29 @@
     return '<button type="button" class="secondary talent-add-personnel'+(linked?' is-remove':'')+'" data-list-action="personnel">'+
       (linked?'Remove from Personnel':'Add to Personnel')+'</button>';
   }
+  function setListSummaryExpanded(button,expanded){
+    if(button)button.setAttribute('aria-expanded',expanded?'true':'false');
+  }
+  function nextListSummaryToken(panel){
+    var next=Number(panel&&panel.dataset.summaryRequestToken||0)+1;
+    if(panel)panel.dataset.summaryRequestToken=String(next);
+    return next;
+  }
+  function closeListPanel(panel,button){
+    if(!panel)return;
+    nextListSummaryToken(panel);
+    panel.classList.add('hidden');
+    panel.innerHTML='';
+    setListSummaryExpanded(button,false);
+    if(activeActionPanel===panel)activeActionPanel=null;
+  }
   function activateListPanel(panel){
     document.querySelectorAll('.talent-list-action-panel').forEach(function(item){
-      if(item!==panel){item.classList.add('hidden');item.innerHTML=''}
+      var summaryButton=item.parentElement&&item.parentElement.querySelector('[data-list-action="summary"]');
+      if(item!==panel)closeListPanel(item,summaryButton);
     });
+    nextListSummaryToken(panel);
+    setListSummaryExpanded(panel.parentElement&&panel.parentElement.querySelector('[data-list-action="summary"]'),false);
     activeActionPanel=panel;
   }
   function bindCandidateListActions(grid){
@@ -585,9 +604,17 @@
         button.onclick=function(){
           var action=button.dataset.listAction;
           if(action==='view'){openProfile(profile.user_id);return;}
+          if(action==='summary'&&button.getAttribute('aria-expanded')==='true'){
+            closeListPanel(panel,button);
+            return;
+          }
           activateListPanel(panel);
           if(action==='message')showMessageForm(profile);
-          if(action==='summary')showDocumentSummary(profile);
+          if(action==='summary'){
+            var token=nextListSummaryToken(panel);
+            setListSummaryExpanded(button,true);
+            showDocumentSummary(profile,null,{panel:panel,button:button,token:token});
+          }
           if(action==='cv')openTalentCv(profile);
           if(action==='personnel'){
             if(linkedRecord(profile.user_id))removeFromPersonnel(profile.user_id,button);
@@ -604,6 +631,7 @@
     if(status)status.classList.add('hidden');
     updateViewSwitches();
     grid.classList.toggle('is-list',candidateView==='list');
+    activeActionPanel=null;
     if(!visible.length){
       var hasDirectoryProfiles=profiles.length>0||Number(directoryMeta.returned_profiles||0)>0;
       grid.innerHTML=hasDirectoryProfiles
@@ -613,14 +641,15 @@
     }
     if(candidateView==='list'){
       grid.innerHTML='<div class="talent-list-table" role="table"><div class="talent-list-row is-head" role="row"><span>Candidate</span><span>Availability</span><span>Country</span><span>Work type</span><span>Actions</span></div>'+
-        visible.map(function(profile){
+        visible.map(function(profile,index){
           var active=activity(profile),work=availability(profile);
+          var summaryPanelId='candidateSummaryPanel'+index;
           return '<div class="talent-list-row" role="row" data-candidate-row="'+safe(profile.user_id)+'">'+
             '<span class="talent-list-person">'+avatarMarkup(profile)+'<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.position)+'</small></span></span>'+
             '<span class="talent-list-availability"><b>'+safe(work.label)+'</b><small class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</small></span>'+
             '<span>'+safe(profile.country||'Not listed')+'</span><span>'+safe(work.detail)+'</span>'+
-            '<span class="talent-list-actions"><button type="button" class="secondary" data-list-action="view">View Profile</button><button type="button" class="secondary" data-list-action="message">Message</button><button type="button" class="secondary" data-list-action="summary">Summary</button><button type="button" class="secondary" data-list-action="cv">CV</button>'+personnelActionMarkup(profile)+'</span>'+
-            '<div class="talent-action-panel talent-list-action-panel hidden"></div></div>';
+            '<span class="talent-list-actions"><button type="button" class="secondary" data-list-action="view">View Profile</button><button type="button" class="secondary" data-list-action="message">Message</button><button type="button" class="secondary" data-list-action="summary" aria-expanded="false" aria-controls="'+summaryPanelId+'">Summary</button><button type="button" class="secondary" data-list-action="cv">CV</button>'+personnelActionMarkup(profile)+'</span>'+
+            '<div class="talent-action-panel talent-list-action-panel hidden" id="'+summaryPanelId+'"></div></div>';
         }).join('')+'</div>';
       bindCandidateListActions(grid);
       return;
@@ -651,7 +680,8 @@
     if(initialSummaryFilter)showDocumentSummary(profile,initialSummaryFilter);
   }
   function actionPanel(){return activeActionPanel&&activeActionPanel.isConnected?activeActionPanel:byId('talentActionPanel')}
-  function panelMessage(text,error){var panel=actionPanel();if(!panel)return;panel.classList.remove('hidden');panel.innerHTML='<p class="talent-action-message'+(error?' is-error':'')+'">'+safe(text)+'</p>'}
+  function panelMessageFor(panel,text,error){if(!panel)return;panel.classList.remove('hidden');panel.innerHTML='<p class="talent-action-message'+(error?' is-error':'')+'">'+safe(text)+'</p>'}
+  function panelMessage(text,error){panelMessageFor(actionPanel(),text,error)}
   function showMessageForm(profile){
     var panel=actionPanel();if(!panel)return;panel.classList.remove('hidden');
     panel.innerHTML='<form class="talent-message-form"><label>Company name<input name="company" maxlength="140" autocomplete="organization" placeholder="Your company"></label><label>Message<textarea name="message" maxlength="1200" rows="4" placeholder="Introduce the opportunity and how the candidate can contact you."></textarea></label><div class="talent-form-actions"><button type="submit" class="secondary">Send Message</button><span class="talent-message-status" role="status"></span></div></form>';
@@ -661,11 +691,15 @@
       catch(error){if(status)status.textContent=friendlyError(error,'Message could not be sent. Please try again.');button.disabled=false;button.textContent='Send Message'}
     };
   }
-  async function showDocumentSummary(profile,initialFilter){
-    panelMessage('Loading document summary...',false);
+  async function showDocumentSummary(profile,initialFilter,request){
+    var panel=request&&request.panel||actionPanel();if(!panel)return;
+    function requestIsCurrent(){
+      return !request||(panel.isConnected&&panel.dataset.summaryRequestToken===String(request.token)&&request.button.getAttribute('aria-expanded')==='true');
+    }
+    panelMessageFor(panel,'Loading document summary...',false);
     try{
-      var data=await actionCall({action:'summary',target_user_id:profile.user_id}),panel=actionPanel(),counts=data.counts||{},documents=Array.isArray(data.documents)?data.documents:[];
-      if(!panel)return;
+      var data=await actionCall({action:'summary',target_user_id:profile.user_id}),counts=data.counts||{},documents=Array.isArray(data.documents)?data.documents:[];
+      if(!requestIsCurrent())return;
       function renderSummary(filter){
         var visible=documents.filter(function(document){
           if(filter==='recent')return recentUpload(document.uploaded_at);
@@ -679,7 +713,7 @@
         var select=panel.querySelector('.talent-summary-filter select');if(select){select.value=filter;select.onchange=function(){renderSummary(select.value)}}
       }
       renderSummary(initialFilter||'all');
-    }catch(error){panelMessage(friendlyError(error,'Document summary could not be loaded. Please try again.'),true)}
+    }catch(error){if(requestIsCurrent())panelMessageFor(panel,friendlyError(error,'Document summary could not be loaded. Please try again.'),true)}
   }
   async function openTalentCv(profile){
     panelMessage('Preparing CV preview...',false);
