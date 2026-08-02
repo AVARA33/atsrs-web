@@ -1,0 +1,106 @@
+:root{
+  --atsrs-content-width:1560px;
+  --atsrs-data-content-width:2100px;
+}
+
+#app .nav .nav-utility-divider{
+  border-top:1px solid rgba(148,163,184,.22);
+  margin:8px 4px 0;
+}
+#app .nav button.nav-utility{
+  color:var(--atsrs-muted,#a7b5c5);
+  font-size:13px;
+}
+#app #navIntro{
+  order:100;
+}
+
+body.company-mode #navCertificates,
+body.company-mode #navRefs{
+  display:none!important;
+}
+body.personal-mode #navCredentials{
+  display:none!important;
+}
+body.company-mode #dashboardPage .cv-status-card{
+  display:none!important;
+}
+
+.company-credentials-heading{
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  margin:0 0 16px;
+}
+body.company-mode .company-credentials-heading{
+  display:flex;
+}
+.company-credentials-heading h3{
+  margin:8px 0 4px;
+  font-size:24px;
+}
+.company-credentials-heading p{
+  margin:0;
+  max-width:760px;
+}
+.company-credentials-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.company-credentials-tabs button{
+  margin:0!important;
+  width:auto!important;
+  min-width:156px;
+  background:var(--atsrs-panel2,#142235)!important;
+  border:1px solid var(--atsrs-border,#264058)!important;
+  color:var(--atsrs-text,#f3f7fb)!important;
+  box-shadow:none!important;
+}
+.company-credentials-tabs button[aria-selected="true"]{
+  background:linear-gradient(135deg,#0f766e,#22c55e)!important;
+  border-color:rgba(134,239,172,.75)!important;
+  color:#fff!important;
+}
+
+@media(min-width:801px){
+  #app.app:not(.hidden)>.main>section:not(#candidatesPage):not(#personnelPage){
+    width:min(100%,var(--atsrs-content-width));
+    margin-inline:auto;
+  }
+  #app.app:not(.hidden)>.main>#candidatesPage,
+  #app.app:not(.hidden)>.main>#personnelPage{
+    width:min(100%,var(--atsrs-data-content-width));
+    margin-inline:auto;
+  }
+}
+
+@media(max-width:800px){
+  #app .nav .nav-utility-divider{
+    grid-column:1/-1;
+  }
+  .company-credentials-heading,
+  body.company-mode .company-credentials-heading{
+    display:block;
+  }
+  .company-credentials-tabs{
+    display:grid;
+    grid-template-columns:1fr;
+    margin-top:14px;
+  }
+  .company-credentials-tabs button{
+    width:100%!important;
+    min-width:0;
+  }
+}
+
+html[data-theme="light"] .company-credentials-tabs button{
+  background:#f8fafc!important;
+  border-color:#cbd5e1!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"] .company-credentials-tabs button[aria-selected="true"]{
+  background:#e7efff!important;
+  border-color:#8fb0ff!important;
+  color:#1649c8!important;
+}

@@ -143,24 +143,31 @@ setImmediate(async () => {
 
   first.summary.onclick();
   assert.equal(requests.length, 2, 'open after close must fetch once');
-  requests[1].request.resolve({ counts: { total: 0, current: 0, expiryRisk: 0, expired: 0 }, documents: [] });
+  requests[1].request.resolve({ counts: { total: 1, current: 1, expiryRisk: 0, expired: 0 }, documents: [{ title: 'Certificate', provider: 'Provider', status: 'Valid', uploaded_at: null }] });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(requests.length, 3, 'an open summary checks the separately stored CV once');
+  assert.equal(requests[2].payload.action, 'cv');
+  requests[2].request.resolve({ file_name: 'Candidate CV.pdf', url: 'https://example.test/signed' });
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(first.summary.getAttribute('aria-expanded'), 'true');
   assert.equal(first.panel.classList.contains('hidden'), false);
   assert.match(first.panel.innerHTML, /Document Summary/);
+  assert.match(first.panel.innerHTML, /2 of 2 documents/);
+  assert.match(first.panel.innerHTML, /Candidate CV\.pdf/);
+  assert.match(first.panel.innerHTML, /CV on file/);
 
   second.summary.onclick();
-  assert.equal(requests.length, 3, 'switching candidates must fetch only the newly opened candidate');
+  assert.equal(requests.length, 4, 'switching candidates must fetch only the newly opened candidate');
   assert.equal(first.summary.getAttribute('aria-expanded'), 'false');
   assert.equal(first.panel.classList.contains('hidden'), true);
   assert.equal(second.summary.getAttribute('aria-expanded'), 'true');
   assert.equal(second.panel.classList.contains('hidden'), false);
 
-  requests[2].request.reject(new Error('synthetic failure'));
+  requests[3].request.reject(new Error('synthetic failure'));
   await new Promise((resolve) => setImmediate(resolve));
   assert.match(second.panel.innerHTML, /Document summary could not be loaded/);
   second.summary.onclick();
-  assert.equal(requests.length, 3, 'closing an error panel must not retry');
+  assert.equal(requests.length, 4, 'closing an error panel must not retry');
   assert.equal(second.summary.getAttribute('aria-expanded'), 'false');
   assert.equal(second.panel.classList.contains('hidden'), true);
 

@@ -43,6 +43,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=375">
 <link rel="stylesheet" href="css/talent-directory.css?v=383">
+<link rel="stylesheet" href="css/corporate-information-architecture.css?v=413">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
 <link rel="stylesheet" href="css/theme.css?v=408">
@@ -159,15 +160,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="sidebar-head"><div class="brand">ATSRS</div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
 <p id="cabinetText" class="sub"></p>
 <div class="nav">
-<button id="navIntro" class="active" onclick="showPage('intro',this)">ATSRS Updates</button>
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
 <button id="navCandidates" onclick="showPage('candidates',this)">Candidates</button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
+<button id="navCredentials" class="company-only" onclick="showCompanyCredentials('documents')">Company Credentials</button>
 <button id="navCertificates" onclick="showPage('certificates',this)"></button>
 <button id="navRefs" onclick="showPage('refs',this)"></button>
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
+<div class="nav-utility-divider" aria-hidden="true"></div>
+<button id="navIntro" class="nav-utility active" onclick="showPage('intro',this)">Product Updates</button>
 </div>
 </aside>
 
@@ -486,6 +489,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="certificatesPage" class="hidden">
+<div class="company-credentials-heading company-only">
+  <div>
+    <span class="pill">COMPANY CREDENTIALS</span>
+    <h3>Company credentials</h3>
+    <p class="sub">Manage company-owned documents and reference material without mixing them with candidate or Personal files.</p>
+  </div>
+  <div class="company-credentials-tabs" role="tablist" aria-label="Company credentials sections">
+    <button type="button" role="tab" data-company-credentials-tab="documents" onclick="showCompanyCredentials('documents')">Company Documents</button>
+    <button type="button" role="tab" data-company-credentials-tab="references" onclick="showCompanyCredentials('references')">Reference Materials</button>
+  </div>
+</div>
 <div class="panel unified-cert-panel">
 <h3 id="addDocTitle"></h3>
 <p id="addCertFlowNote" class="cert-flow-note"></p>
@@ -610,6 +624,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="refsPage" class="hidden">
+<div class="company-credentials-heading company-only">
+  <div>
+    <span class="pill">COMPANY CREDENTIALS</span>
+    <h3>Company credentials</h3>
+    <p class="sub">Manage company-owned documents and reference material without mixing them with candidate or Personal files.</p>
+  </div>
+  <div class="company-credentials-tabs" role="tablist" aria-label="Company credentials sections">
+    <button type="button" role="tab" data-company-credentials-tab="documents" onclick="showCompanyCredentials('documents')">Company Documents</button>
+    <button type="button" role="tab" data-company-credentials-tab="references" onclick="showCompanyCredentials('references')">Reference Materials</button>
+  </div>
+</div>
 <div class="panel">
 <h3 id="refsTitle">References</h3>
 <p id="refsSub" class="sub">Keep appraisal forms, reference letters and client feedback in one place.</p>
@@ -1216,10 +1241,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/share-profile.js?v=407"></script>
 <script src="js/boot-refresh.js?v=384"></script>
 <script src="js/account-security-live.js?v=375"></script>
-<script src="js/talent-directory.js?v=412"></script>
+<script src="js/talent-directory.js?v=413"></script>
 <script src="js/corporate-reporting.js?v=375"></script>
 <script src="js/admin-overview.js?v=375"></script>
 <script src="js/workspace-switcher.js?v=407"></script>
+<script src="js/corporate-information-architecture.js?v=413"></script>
 <script src="js/theme.js?v=408"></script>
 
 
