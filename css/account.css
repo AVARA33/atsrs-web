@@ -8,7 +8,6 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
 }
 #refsPage .cv-actions{grid-template-columns:repeat(4,max-content)!important;justify-content:start!important;gap:8px!important;}
 #refsPage .cv-actions button{width:auto!important;min-width:0!important;padding:8px 10px!important;font-size:12px!important;box-shadow:none!important;}
-#refsPage .cv-beta-box{display:none!important;}
 @media(max-width:760px){
   #refsPage .atsrs-v134-row,
   #refsPage .atsrs-v146-row{grid-template-columns:1fr!important;height:auto!important;min-height:62px!important;align-items:start!important;gap:5px!important;padding:8px 0!important;}
@@ -684,7 +683,6 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
   background:rgba(8,21,36,.20)!important;
   border-color:rgba(148,163,184,.22)!important;
 }
-#refsPage #cvCard .cv-beta-box,
 #refsPage #cvCard .ref-beta-box,
 #refsPage #cvCard [class*="slot"],
 #refsPage #cvCard [id*="slot"],

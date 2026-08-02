@@ -1,8 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
-import { corsHeaders } from "jsr:@supabase/supabase-js@2/cors";
+import { createClient } from "jsr:@supabase/supabase-js@2.111.0";
+import { corsHeaders } from "jsr:@supabase/supabase-js@2.111.0/cors";
 
 const OPENAI_MODEL = Deno.env.get("OPENAI_CV_MODEL") ?? "gpt-5.6";
+const OPENAI_TIMEOUT_MS = 45_000;
 const CONSENT_VERSION = "2026-07-26";
 
 type CvRequest = {
@@ -171,6 +172,52 @@ function parseWorkspaceValue(payload: unknown) {
   }
 }
 
+function pickStringFields(value: unknown, fields: readonly string[], limit = 300) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const source = value as Record<string, unknown>;
+  const result: Record<string, string> = {};
+  for (const field of fields) {
+    const text = stringValue(source[field], limit);
+    if (text && !text.startsWith("data:")) result[field] = text;
+  }
+  return result;
+}
+
+function aiProfile(value: unknown) {
+  return pickStringFields(value, [
+    "name",
+    "surname",
+    "phone",
+    "phoneLocal",
+    "phoneCountryCode",
+    "whatsapp",
+    "whatsappLocal",
+    "whatsappCountryCode",
+    "country",
+    "company",
+    "position",
+    "zipCode",
+    "address",
+  ]);
+}
+
+function aiDocuments(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, 250).map((document) =>
+    pickStringFields(document, [
+      "type",
+      "provider",
+      "issuer",
+      "country",
+      "issue",
+      "issue_date",
+      "expiry",
+      "expiry_date",
+      "status",
+    ])
+  ).filter((document) => Object.keys(document).length > 0);
+}
+
 function outputText(value: OpenAIResponse) {
   if (typeof value.output_text === "string" && value.output_text.trim()) return value.output_text;
   for (const item of value.output ?? []) {
@@ -190,7 +237,7 @@ Deno.serve(async (req: Request) => {
   const publishableKey = getPublishableKey();
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const openAiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
-  if (!supabaseUrl || !publishableKey || !serviceRoleKey || !openAiKey) {
+  if (!supabaseUrl || !publishableKey) {
     return json(req, 500, { error: "Server configuration is incomplete." });
   }
 
@@ -205,6 +252,9 @@ Deno.serve(async (req: Request) => {
   const authResult = await supabase.auth.getUser(token);
   if (authResult.error || !authResult.data.user) {
     return json(req, 401, { error: "Your session is no longer valid. Sign in again." });
+  }
+  if (!serviceRoleKey || !openAiKey) {
+    return json(req, 500, { error: "Server configuration is incomplete." });
   }
 
   let body: CvRequest;
@@ -259,11 +309,11 @@ Deno.serve(async (req: Request) => {
     if (String(row.data_key).endsWith("_profile")) workspace.profile = parseWorkspaceValue(row.payload);
     if (String(row.data_key).endsWith("_certs")) workspace.documents = parseWorkspaceValue(row.payload);
   }
-  const profile = profileResult.data ?? workspace.profile ?? {};
+  const profile = aiProfile(profileResult.data ?? workspace.profile ?? {});
   const source = {
     account_email: authResult.data.user.email ?? "",
     profile,
-    documents: Array.isArray(workspace.documents) ? workspace.documents.slice(0, 250) : [],
+    documents: aiDocuments(workspace.documents),
     career_input: careerInput,
   };
 
@@ -284,7 +334,7 @@ Deno.serve(async (req: Request) => {
     }
     return json(req, 429, {
       error: quota.plan === "free"
-        ? "Your complimentary AI CV generation has been used. Upgrade to Titanium to create more versions."
+        ? "Your complimentary AI CV generation has been used. Upgrade your plan to create more versions."
         : `Your plan includes ${quota.generation_limit} AI CV generations per month. The monthly limit has been reached.`,
       quota,
     });
@@ -317,6 +367,8 @@ Deno.serve(async (req: Request) => {
   ].join(" ");
 
   let openAiResponse: Response;
+  const openAiAbort = new AbortController();
+  const openAiTimeout = setTimeout(() => openAiAbort.abort(), OPENAI_TIMEOUT_MS);
   try {
     openAiResponse = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -324,6 +376,7 @@ Deno.serve(async (req: Request) => {
         "Authorization": `Bearer ${openAiKey}`,
         "Content-Type": "application/json",
       },
+      signal: openAiAbort.signal,
       body: JSON.stringify({
         model: OPENAI_MODEL,
         instructions,
@@ -337,13 +390,20 @@ Deno.serve(async (req: Request) => {
           },
         },
         store: false,
-        reasoning: { effort: "minimal" },
+        reasoning: { effort: "low" },
         max_output_tokens: 7000,
       }),
     });
-  } catch {
+  } catch (error) {
     await releaseQuota();
-    return json(req, 502, { error: "The AI service could not be reached. Try again." });
+    const timedOut = error instanceof DOMException && error.name === "AbortError";
+    return json(req, timedOut ? 504 : 502, {
+      error: timedOut
+        ? "The AI service took too long to respond. Please try again."
+        : "The AI service could not be reached. Try again.",
+    });
+  } finally {
+    clearTimeout(openAiTimeout);
   }
 
   let openAiBody: OpenAIResponse;

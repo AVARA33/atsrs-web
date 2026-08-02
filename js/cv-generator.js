@@ -3,6 +3,7 @@
   'use strict';
 
   var CONSENT_VERSION='2026-07-26';
+  var GENERATION_TIMEOUT_MS=65000;
   var lastCv=null;
   var generating=false;
 
@@ -177,10 +178,18 @@
       var sessionResult=await client.auth.getSession();
       var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
       if(!session)throw new Error('Your session has expired. Please sign in again.');
-      var result=await client.functions.invoke('generate-cv',{
-        body:body,
-        headers:{Authorization:'Bearer '+session.access_token}
-      });
+      var requestAbort=new AbortController();
+      var requestTimeout=setTimeout(function(){requestAbort.abort()},GENERATION_TIMEOUT_MS);
+      var result;
+      try{
+        result=await client.functions.invoke('generate-cv',{
+          body:body,
+          headers:{Authorization:'Bearer '+session.access_token},
+          signal:requestAbort.signal
+        });
+      }finally{
+        clearTimeout(requestTimeout);
+      }
       if(result.error)throw result.error;
       if(!result.data||!result.data.cv)throw new Error(result.data&&result.data.error||'The AI service returned no CV.');
       lastCv=Object.assign({},result.data.cv,{
