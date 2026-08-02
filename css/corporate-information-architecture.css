@@ -94,12 +94,12 @@ body.company-mode .company-credentials-heading{
   }
 }
 
-html[data-theme="light"] .company-credentials-tabs button{
+html[data-theme="light"] body.company-mode #app.app .main .company-credentials-tabs button{
   background:#f8fafc!important;
   border-color:#cbd5e1!important;
   color:#172b3d!important;
 }
-html[data-theme="light"] .company-credentials-tabs button[aria-selected="true"]{
+html[data-theme="light"] body.company-mode #app.app .main .company-credentials-tabs button[aria-selected="true"]{
   background:#e7efff!important;
   border-color:#8fb0ff!important;
   color:#1649c8!important;
