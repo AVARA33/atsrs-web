@@ -45,14 +45,13 @@ for(const page of [privacy,deletion]){
   );
 }
 
-assert.match(index,/PRIVACY &amp; LEGAL/);
-assert.match(index,/href="\/privacy\.html"/);
-assert.match(index,/href="\/data-deletion\.html"/);
-assert.match(index,/data-atsrs-build="V415"/);
-assert.match(index,/href="css\/product-experience\.css\?v=415"/);
-assert.match(css,/\.legal-resource-grid/);
-assert.match(css,/html\[data-theme="light"\] body #app #introPage \.legal-resource-card/);
-assert.match(css,/html\[data-theme="light"\] body #app #introPage \.legal-resource-card p\{color:#53697b\}/);
-assert.match(css,/@media\(max-width:640px\)[\s\S]*\.legal-resource-grid\{grid-template-columns:1fr\}/);
+assert.doesNotMatch(index,/PRIVACY &amp; LEGAL/);
+assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" href="\/privacy\.html">Privacy Notice<\/a>/);
+assert.match(index,/id="navDataRights" class="nav-utility nav-legal-link" href="\/data-deletion\.html">Data Rights<\/a>/);
+assert.ok(index.indexOf('id="navIntro"') < index.indexOf('id="navPrivacy"'));
+assert.ok(index.indexOf('id="navPrivacy"') < index.indexOf('id="navDataRights"'));
+assert.match(index,/data-atsrs-build="V416"/);
+assert.match(index,/href="css\/product-experience\.css\?v=416"/);
+assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');
