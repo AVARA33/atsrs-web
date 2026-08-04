@@ -10,6 +10,12 @@
     setText('cabinetText',companyMode()?'Corporate Workspace':'Personal Workspace');
   }
 
+  function syncCorporateCopy(){
+    if(!companyMode())return;
+    setText('compliancePageSub','This view checks uploaded document expiry dates only. It does not certify role or project eligibility.');
+    setText('reportsSub','This report checks uploaded document expiry dates only. It does not certify role or project eligibility.');
+  }
+
   function syncPageTitle(){
     var active=document.querySelector('#app .nav button.active');
     if(!active)return;
@@ -79,7 +85,7 @@
     if(appraisalStatus)new MutationObserver(syncCredentials).observe(appraisalStatus,{childList:true,characterData:true,subtree:true});
   }
 
-  function syncAll(){syncSidebar();syncPageTitle();syncAccount();syncCredentials()}
+  function syncAll(){syncSidebar();syncCorporateCopy();syncPageTitle();syncAccount();syncCredentials()}
 
   var oldApplyLanguage=window.applyLanguage;
   if(typeof oldApplyLanguage==='function'){

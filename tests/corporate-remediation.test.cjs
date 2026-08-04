@@ -28,6 +28,8 @@ assert.doesNotMatch(html, /<h3[^>]*>Company credentials<\/h3>/i);
 assert.doesNotMatch(html, /id="compliancePageTitle"/);
 assert.doesNotMatch(html, /id="reportsTitle"/);
 assert.match(html, /does not certify role or project eligibility/);
+assert.match(runtime, /setText\('compliancePageSub','This view checks uploaded document expiry dates only\. It does not certify role or project eligibility\.'\)/);
+assert.match(runtime, /setText\('reportsSub','This report checks uploaded document expiry dates only\. It does not certify role or project eligibility\.'\)/);
 assert.match(app, /No company documents uploaded yet/);
 assert.match(app, /No documents match this filter/);
 
