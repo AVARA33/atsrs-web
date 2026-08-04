@@ -12,44 +12,6 @@
   function mode(){try{return localStorage.getItem('atsrs_use_mode')||window.useMode||'personal'}catch(error){return 'personal'}}
   function text(value){return String(value==null?'':value)}
   function number(value){var parsed=Number(value||0);return Number.isFinite(parsed)?parsed:0}
-  function expiryApi(){
-    if(!window.atsrsExpiryStatus)throw new Error('ATSRS expiry status contract is unavailable.');
-    return window.atsrsExpiryStatus;
-  }
-  function canonicalPayload(payload){
-    var source=payload||{},rows=Array.isArray(source.rows)?source.rows:[];
-    var canonicalRows=rows.map(function(row){
-      var documents=(Array.isArray(row.documents)?row.documents:[]).map(function(file){
-        var result=expiryApi().classify(file&&file.expiry);
-        return Object.assign({},file,{status:result.label,expiry_bucket:result.bucket});
-      });
-      var counts=expiryApi().summarize(documents,function(file){return file&&file.expiry});
-      return Object.assign({},row,{
-        status:counts.review?'review':'clear',
-        document_count:counts.total,
-        current_count:counts.current,
-        expiring_30_count:counts.expiring_1_30,
-        expiring_today_count:counts.expires_today,
-        expiring_90_count:counts.expiring_31_90,
-        expired_count:counts.expired,
-        unconfirmed_count:counts.unconfirmed,
-        documents:documents
-      });
-    });
-    var summary=canonicalRows.reduce(function(totals,row){
-      totals.personnel+=1;
-      totals[row.status]+=1;
-      totals.documents+=number(row.document_count);
-      totals.current+=number(row.current_count);
-      totals.expiring_30+=number(row.expiring_30_count);
-      totals.expiring_today+=number(row.expiring_today_count);
-      totals.expiring_90+=number(row.expiring_90_count);
-      totals.expired+=number(row.expired_count);
-      totals.unconfirmed+=number(row.unconfirmed_count);
-      return totals;
-    },{personnel:0,clear:0,review:0,documents:0,current:0,expiring_30:0,expiring_today:0,expiring_90:0,expired:0,unconfirmed:0});
-    return{generated_at:source.generated_at||new Date().toISOString(),summary:summary,rows:canonicalRows};
-  }
   function setStatus(id,message,isError){
     var element=byId(id);if(!element)return;
     element.textContent=message||'';
@@ -84,8 +46,8 @@
     container.innerHTML='';
     [
       ['Personnel',summary.personnel,'neutral'],
-      ['Documents clear',summary.clear,'ready'],
-      ['Review required',summary.review,'review'],
+      ['Ready',summary.ready,'ready'],
+      ['Needs review',summary.review,'review'],
       ['Documents',summary.documents,'neutral']
     ].forEach(function(item){
       var card=document.createElement('div');
@@ -96,16 +58,7 @@
     });
   }
   function statusLabel(value){
-    return value==='clear'?'Documents clear':'Review required';
-  }
-  function reviewReason(row){
-    var parts=[];
-    if(number(row.expired_count))parts.push(number(row.expired_count)+' expired');
-    if(number(row.expiring_today_count))parts.push(number(row.expiring_today_count)+' expires today');
-    if(number(row.expiring_30_count))parts.push(number(row.expiring_30_count)+' expires in 1–30 days');
-    if(number(row.expiring_90_count))parts.push(number(row.expiring_90_count)+' expires in 31–90 days');
-    if(number(row.unconfirmed_count))parts.push(number(row.unconfirmed_count)+' date not confirmed');
-    return parts.join(' · ');
+    return value==='ready'?'Ready':'Needs review';
   }
   function renderCompliance(){
     var list=byId('companyComplianceGrid'),summaryContainer=byId('corporateComplianceSummary');
@@ -127,10 +80,10 @@
       badge.textContent=statusLabel(row.status);identity.appendChild(name);identity.appendChild(role);head.appendChild(identity);head.appendChild(badge);
       var metrics=document.createElement('div');metrics.className='corporate-compliance-metrics';
       [
+        ['Documents',row.document_count],
         ['Current',row.current_count],
-        ['Expiring in 31–90 days',row.expiring_90_count],
-        ['Expiring in 1–30 days',row.expiring_30_count],
-        ['Expires today',row.expiring_today_count],
+        ['<=30 days',row.expiring_30_count],
+        ['31-90 days',row.expiring_90_count],
         ['Expired',row.expired_count]
       ].forEach(function(item){
         var metric=document.createElement('div'),label=document.createElement('span'),value=document.createElement('b');
@@ -138,18 +91,6 @@
         metric.appendChild(label);metric.appendChild(value);metrics.appendChild(metric);
       });
       card.appendChild(head);card.appendChild(metrics);
-      var reason=document.createElement('div');reason.className='corporate-compliance-reason';
-      var reasonText=document.createElement('span');
-      reasonText.textContent=row.status==='clear'
-        ?'No dated document requires attention.'
-        :reviewReason(row);
-      reason.appendChild(reasonText);
-      var view=document.createElement('button');view.type='button';view.className='secondary';
-      view.textContent='View documents';
-      view.addEventListener('click',function(){
-        if(typeof window.showPage==='function'&&byId('navPersonnel'))window.showPage('personnel',byId('navPersonnel'));
-      });
-      reason.appendChild(view);card.appendChild(reason);
       list.appendChild(card);
     });
   }
@@ -173,6 +114,7 @@
         if(file.status==='Expires today')todayCount+=1;
       });
     });
+    expiring30=Math.max(0,expiring30-todayCount);
     [
       ['totalPersonnel',summary.personnel],
       ['totalCerts',summary.documents],
@@ -220,12 +162,12 @@
     var summaryContainer=byId('corporateReportSummary'),body=byId('corporateReportBody'),generated=byId('corporateReportGenerated');
     if(!body||!reportCache)return;
     summaryCards(summaryContainer,reportCache.summary||{});
-    if(generated)generated.textContent='Last generated: '+new Date(reportCache.generated_at).toLocaleString('en-GB');
+    if(generated)generated.textContent='Generated from live server data: '+new Date(reportCache.generated_at).toLocaleString();
     body.innerHTML='';
     var rows=Array.isArray(reportCache.rows)?reportCache.rows:[];
     if(!rows.length){
       var empty=document.createElement('tr'),cell=document.createElement('td');
-      cell.colSpan=8;cell.textContent='No Company Personnel data is available for this report.';
+      cell.colSpan=7;cell.textContent='No Company Personnel data is available for this report.';
       empty.appendChild(cell);body.appendChild(empty);return;
     }
     rows.forEach(function(row){
@@ -236,7 +178,6 @@
         statusLabel(row.status),
         row.document_count,
         row.expiring_30_count,
-        row.expiring_today_count,
         row.expiring_90_count,
         row.expired_count
       ].forEach(function(value){var td=document.createElement('td');td.textContent=text(value);tr.appendChild(td)});
@@ -249,9 +190,8 @@
     if(complianceLoading)return complianceLoading;
     setStatus('corporateComplianceStatus','Loading live Personnel compliance...');
     complianceLoading=actionCall('compliance').then(function(data){
-      complianceCache=canonicalPayload(data.compliance||{summary:{},rows:[]});
-      reportCache=complianceCache;
-      renderCompliance();renderDashboard();publishCompliance();setStatus('corporateComplianceStatus','Last updated: '+new Date(complianceCache.generated_at).toLocaleString('en-GB'));
+      complianceCache=data.compliance||{summary:{},rows:[]};
+      renderCompliance();renderDashboard();publishCompliance();setStatus('corporateComplianceStatus','Live server data updated.');
       return complianceCache;
     }).catch(function(error){
       setStatus('corporateComplianceStatus',error.message||'Compliance data could not be loaded.',true);
@@ -264,8 +204,8 @@
     if(reportCache&&!force){renderReport();return reportCache}
     if(reportLoading)return reportLoading;
     setStatus('corporateReportStatus','Preparing live server report...');
-    reportLoading=loadCompliance(!!force).then(function(data){
-      reportCache=data;
+    reportLoading=actionCall('report').then(function(data){
+      reportCache=data.report||{summary:{},rows:[]};
       renderReport();setStatus('corporateReportStatus','Report is ready.');
       return reportCache;
     }).catch(function(error){
@@ -281,11 +221,11 @@
   }
   async function exportReport(){
     var report=reportCache||await loadReport(true);if(!report)return;
-    var rows=[['Name','Position','Country','Status','Documents','Current','Expiring in 1–30 days','Expires today','Expiring in 31–90 days','Expired']];
+    var rows=[['Name','Position','Country','Status','Documents','Current','Expiring <=30 days','Expiring 31-90 days','Expired']];
     (report.rows||[]).forEach(function(row){
       rows.push([
         (text(row.name)+' '+text(row.surname)).trim(),row.position,row.country,statusLabel(row.status),
-        row.document_count,row.current_count,row.expiring_30_count,row.expiring_today_count,row.expiring_90_count,row.expired_count
+        row.document_count,row.current_count,row.expiring_30_count,row.expiring_90_count,row.expired_count
       ]);
     });
     var csv='\ufeff'+rows.map(function(row){return row.map(csvCell).join(',')}).join('\r\n');
@@ -295,16 +235,9 @@
   }
   function bind(){
     var complianceButton=byId('refreshCorporateCompliance');
-    if(complianceButton)complianceButton.onclick=function(){
-      complianceButton.disabled=true;complianceButton.textContent='Refreshing…';
-      loadCompliance(true).catch(function(){}).finally(function(){complianceButton.disabled=false;complianceButton.textContent='Refresh'});
-    };
+    if(complianceButton)complianceButton.onclick=function(){loadCompliance(true).catch(function(){})};
     var reportButton=byId('refreshCorporateReport');
-    if(reportButton)reportButton.onclick=function(){
-      reportButton.disabled=true;reportButton.textContent='Refreshing…';
-      var exportControl=byId('exportReportBtn');if(exportControl)exportControl.disabled=true;
-      loadReport(true).catch(function(){}).finally(function(){reportButton.disabled=false;reportButton.textContent='Refresh';if(exportControl)exportControl.disabled=false});
-    };
+    if(reportButton)reportButton.onclick=function(){loadReport(true).catch(function(){})};
     var exportButton=byId('exportReportBtn');
     if(exportButton){exportButton.removeAttribute('onclick');exportButton.onclick=function(){exportReport().catch(function(error){setStatus('corporateReportStatus',error.message,true)})}}
     var oldShow=window.showPage;
@@ -351,7 +284,6 @@
     ownsCompliance:true,
     renderCompliance:renderCompliance,
     renderDashboard:renderDashboard,
-    canonicalPayload:canonicalPayload,
     getCompliance:function(){return complianceCache},
     loadCompliance:function(){return loadCompliance(false)},
     refreshCompliance:function(){return loadCompliance(true)},

@@ -118,27 +118,20 @@ window.addEventListener('load',function(){
   renderAll=function(){
     renderAllBaseV242();
     var certificates=getData('certs');
-    var companyMode=false;
-    try{companyMode=(localStorage.getItem('atsrs_use_mode')||window.useMode)==='company'}catch(ignore){}
-    // Corporate Dashboard is owned by corporate-reporting.js and its single
-    // authorized server snapshot. Never let Personal/local certificate data
-    // temporarily overwrite those metrics during render or hydration.
-    if(!companyMode){
-      var in90=0,in30=0,todayCount=0,expiredCount=0;
-      certificates.forEach(function(item){
-        var value=status(item.expiry);
-        if(value.noExpiry)return;
-        if(value.days<0)expiredCount++;
-        else if(value.days===0)todayCount++;
-        else if(value.days<=30)in30++;
-        else if(value.days<=90)in90++;
-      });
-      if(typeof exp90!=='undefined')exp90.innerText=in90;
-      if(typeof exp30!=='undefined')exp30.innerText=in30;
-      if(typeof expToday!=='undefined')expToday.innerText=todayCount;
-      if(typeof expired!=='undefined')expired.innerText=expiredCount;
-      renderRiskList(certificates);
-    }
+    var in90=0,in30=0,todayCount=0,expiredCount=0;
+    certificates.forEach(function(item){
+      var value=status(item.expiry);
+      if(value.noExpiry)return;
+      if(value.days<0)expiredCount++;
+      else if(value.days===0)todayCount++;
+      else if(value.days<=30)in30++;
+      else if(value.days<=90)in90++;
+    });
+    if(typeof exp90!=='undefined')exp90.innerText=in90;
+    if(typeof exp30!=='undefined')exp30.innerText=in30;
+    if(typeof expToday!=='undefined')expToday.innerText=todayCount;
+    if(typeof expired!=='undefined')expired.innerText=expiredCount;
+    renderRiskList(certificates);
 
     if(typeof certTable!=='undefined'&&certTable){
       Array.prototype.forEach.call(certTable.querySelectorAll('tr'),function(row,index){
