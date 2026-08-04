@@ -27,13 +27,32 @@ assert.match(deletion,/Data rights and deletion/);
 assert.match(deletion,/within 30 days/);
 assert.match(deletion,/Corporate workspace information/);
 assert.match(deletion,/href="\/privacy\.html"/);
+assert.match(deletion,/class="site-header"/);
+assert.match(deletion,/class="summary-grid"/);
+assert.match(deletion,/class="toc"/);
+assert.match(deletion,/class="notice"/);
+assert.match(deletion,/class="contact-card"/);
+
+for(const page of [privacy,deletion]){
+  assert.match(page,/localStorage\.getItem\('atsrs_theme'\)/);
+  assert.match(page,/prefers-color-scheme: light/);
+  assert.match(page,/document\.documentElement\.dataset\.theme=theme/);
+  assert.match(page,/html\[data-theme="light"\]/);
+  assert.doesNotMatch(page,/@media\(prefers-color-scheme:light\)/);
+  assert.ok(
+    page.indexOf("localStorage.getItem('atsrs_theme')") < page.indexOf('<style>'),
+    'Stored theme must be applied before render-blocking styles to prevent a first-paint flash'
+  );
+}
 
 assert.match(index,/PRIVACY &amp; LEGAL/);
 assert.match(index,/href="\/privacy\.html"/);
 assert.match(index,/href="\/data-deletion\.html"/);
-assert.match(index,/data-atsrs-build="V414"/);
-assert.match(index,/href="css\/product-experience\.css\?v=414"/);
+assert.match(index,/data-atsrs-build="V415"/);
+assert.match(index,/href="css\/product-experience\.css\?v=415"/);
 assert.match(css,/\.legal-resource-grid/);
+assert.match(css,/html\[data-theme="light"\] body #app #introPage \.legal-resource-card/);
+assert.match(css,/html\[data-theme="light"\] body #app #introPage \.legal-resource-card p\{color:#53697b\}/);
 assert.match(css,/@media\(max-width:640px\)[\s\S]*\.legal-resource-grid\{grid-template-columns:1fr\}/);
 
 console.log('privacy notice contracts passed');

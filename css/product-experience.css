@@ -31,6 +31,20 @@ body.atsrs-preview-open{overflow:hidden}
 .legal-resource-card h3{margin:17px 0 8px;font-size:18px}
 .legal-resource-card p{margin:0;color:#93a5ba;line-height:1.55}
 .legal-resource-link{display:inline-flex;align-items:center;gap:6px;margin-top:18px;color:#dce9f5;font-size:13px;font-weight:800}
+html[data-theme="light"] body #app #introPage .legal-resource-card{
+  border-color:#d6e0e8;
+  background:#fff;
+  color:#172b3d;
+  box-shadow:0 6px 18px rgba(36,61,80,.045);
+}
+html[data-theme="light"] body #app #introPage .legal-resource-card:hover{
+  border-color:#9fb1c0;
+  background:#fff;
+}
+html[data-theme="light"] body #app #introPage .legal-resource-label{color:#176b3a}
+html[data-theme="light"] body #app #introPage .legal-resource-card h3{color:#172b3d}
+html[data-theme="light"] body #app #introPage .legal-resource-card p{color:#53697b}
+html[data-theme="light"] body #app #introPage .legal-resource-link{color:#263f54}
 .roadmap-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin-top:20px;border:1px solid rgba(96,165,250,.32);border-radius:12px;background:rgba(37,99,235,.12);color:#bfdbfe;font-size:12px;font-weight:900;letter-spacing:.08em}
 .roadmap-status{position:absolute;top:16px;right:16px;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .status-development{color:#fde68a;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28)}
