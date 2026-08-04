@@ -391,7 +391,8 @@
   }
 
   function fixLabels(){
-    setText('addDocTitle','Documents');
+    var corporate=document.body.classList.contains('company-mode');
+    setText('addDocTitle',corporate?'Add company document':'Documents');
     setText('addCertFlowNote','Choose one method: Scan with AI or Manual Upload.');
     setText('certScanModeBtn','Scan with AI');
     setText('certManualModeBtn','Manual Upload');
@@ -408,7 +409,7 @@
     setText('cIssueLabel','Issue Date');
     setText('cExpiryLabel','Expiry');
     setText('addCertBtn',editIndex===null?'Save Document':'Update Document');
-    setText('certRegisterTitle','Document Register');
+    setText('certRegisterTitle',corporate?'Company document register':'Document Register');
     setText('certSortTypeLabel','Certificate');
     setText('thProvider2','Training Center / Provider');
     setText('certSortExpiryLabel','Expiry');
@@ -443,7 +444,7 @@
   function isRecentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000;}
   function uploadDateMarkup(item){
     var value=certificateUploadedAt(item);if(!value)return '<span class="atsrs-upload-date">—</span>';
-    var date=new Date(value),label=Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):String(value);
+    var date=new Date(value),label=Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):String(value);
     return '<span class="atsrs-upload-date'+(isRecentUpload(value)?' is-recent':'')+'">'+(isRecentUpload(value)?'<b>NEW</b> ':'')+esc(label)+'</span>';
   }
 
@@ -756,7 +757,12 @@
         '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
       '</td></tr>';
     });
-    if(!rows.length)html='<tr><td colspan="7" class="atsrs-document-empty">No documents match this filter.</td></tr>';
+    if(!rows.length){
+      var emptyText=!c.length
+        ?(document.body.classList.contains('company-mode')?'No company documents uploaded yet.':'No documents uploaded yet.')
+        :'No documents match this filter.';
+      html='<tr><td colspan="7" class="atsrs-document-empty">'+emptyText+'</td></tr>';
+    }
     byId('certTable').innerHTML=html;
     updateSortHeaders();
     updateRegisterControls(rows.map(function(row){return row.index;}));

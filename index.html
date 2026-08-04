@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V407" data-atsrs-update="31 Jul 2026">
+<html lang="en" data-atsrs-build="V408" data-atsrs-update="4 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -47,6 +47,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
 <link rel="stylesheet" href="css/theme.css?v=408">
 <link rel="stylesheet" href="css/corporate-information-architecture.css?v=414">
+<link rel="stylesheet" href="css/corporate-remediation.css?v=415">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -351,7 +352,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div>
       <span class="pill">COMPANY PERSONNEL</span>
       <h3>Your selected profiles</h3>
-      <p class="sub">Only candidates added by your company appear here. Use this list for fast access, project assignment and future Excel exports.</p>
+      <p class="sub">Only candidates added by your company appear here. Use this list for secure profile review, document access and project assignment.</p>
     </div>
     <div class="talent-head-tools">
       <span id="linkedPersonnelCount">0 linked</span>
@@ -438,7 +439,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div>
       <span class="pill">CANDIDATE DIRECTORY</span>
       <h3>Find ATSRS profiles</h3>
-      <p class="sub">Every Personal user with at least one uploaded certificate appears here. Review a candidate, then add the right person to Company Personnel.</p>
+      <p class="sub">Only eligible Personal profiles that chose to appear in the ATSRS directory are shown. Review a candidate, then add the right person to Company Personnel.</p>
     </div>
     <div class="talent-head-tools">
       <span id="talentDirectoryCount" class="talent-count">0 candidates</span>
@@ -471,8 +472,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <option value="online">Online now</option>
       </select>
     </label>
-    <div class="talent-filter-field">
-      <span>Work type</span>
+    <div class="talent-filter-field" role="group" aria-labelledby="talentWorkTypeLabel">
+      <span id="talentWorkTypeLabel">Work type</span>
       <details id="talentWorkPreferenceFilter" class="work-type-multiselect talent-work-type-filter">
         <summary>All work types</summary>
         <div class="work-type-options">
@@ -492,7 +493,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="company-credentials-heading company-only">
   <div>
     <span class="pill">COMPANY CREDENTIALS</span>
-    <h3>Company credentials</h3>
     <p class="sub">Manage company-owned documents and reference material without mixing them with candidate or Personal files.</p>
   </div>
   <div class="company-credentials-tabs" role="tablist" aria-label="Company credentials sections">
@@ -627,7 +627,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="company-credentials-heading company-only">
   <div>
     <span class="pill">COMPANY CREDENTIALS</span>
-    <h3>Company credentials</h3>
     <p class="sub">Manage company-owned documents and reference material without mixing them with candidate or Personal files.</p>
   </div>
   <div class="company-credentials-tabs" role="tablist" aria-label="Company credentials sections">
@@ -670,10 +669,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <section id="compliancePage" class="hidden">
 <div class="panel">
 <div class="corporate-page-heading">
-  <div><span class="pill">LIVE SERVER DATA</span><h3 id="compliancePageTitle">Personnel Document Overview</h3></div>
+  <div><span class="pill">DOCUMENT DATE STATUS</span><p class="corporate-page-context">Personnel document expiry overview</p></div>
   <button id="refreshCorporateCompliance" type="button" class="secondary">Refresh</button>
 </div>
-<p id="compliancePageSub" class="sub">Status is based only on dates supplied for uploaded documents. ATSRS does not impose a universal document checklist.</p>
+<p id="compliancePageSub" class="sub">This view checks uploaded document expiry dates only. It does not certify role or project eligibility.</p>
 <div id="corporateComplianceSummary" class="corporate-summary-grid" aria-label="Corporate compliance summary"></div>
 <p id="corporateComplianceStatus" class="corporate-data-status" role="status"></p>
 <div id="companyComplianceGrid" class="corporate-compliance-list"></div>
@@ -683,20 +682,20 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <section id="reportsPage" class="hidden">
 <div class="panel">
 <div class="corporate-page-heading">
-  <div><span class="pill">LIVE CORPORATE REPORT</span><h3 id="reportsTitle">Reports</h3></div>
+  <div><span class="pill">DOCUMENT DATE REPORT</span><p class="corporate-page-context">Current Personnel expiry status</p></div>
   <div class="corporate-report-actions">
     <button id="refreshCorporateReport" type="button" class="secondary">Refresh</button>
     <button id="exportReportBtn" type="button" class="secondary">Export CSV</button>
   </div>
 </div>
-<p id="reportsSub" class="sub">Generate a current Personnel document report from ATSRS server data.</p>
+<p id="reportsSub" class="sub">This report checks uploaded document expiry dates only. It does not certify role or project eligibility.</p>
 <div id="corporateReportSummary" class="corporate-summary-grid" aria-label="Corporate report summary"></div>
 <p id="corporateReportGenerated" class="corporate-report-generated"></p>
 <p id="corporateReportStatus" class="corporate-data-status" role="status"></p>
 <div class="corporate-report-table-wrap">
   <table class="corporate-report-table">
-    <thead><tr><th>Profile</th><th>Position</th><th>Status</th><th>Documents</th><th>&le;30 days</th><th>31&ndash;90 days</th><th>Expired</th></tr></thead>
-    <tbody id="corporateReportBody"><tr><td colspan="7">Open Reports to load live server data.</td></tr></tbody>
+    <thead><tr><th>Profile</th><th>Position</th><th>Status</th><th>Documents</th><th>Expiring in 1&ndash;30 days</th><th>Expires today</th><th>Expiring in 31&ndash;90 days</th><th>Expired</th></tr></thead>
+    <tbody id="corporateReportBody"><tr><td colspan="8">Open Reports to load live server data.</td></tr></tbody>
   </table>
 </div>
 </div>
@@ -712,6 +711,16 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="accountTabSharingBtn" onclick="showAccountTab('sharing')">Privacy &amp; Sharing</button>
 </div>
 <div id="accountGeneralTab" class="account-tab active">
+<section id="corporateAccountContext" class="corporate-account-context company-only" aria-labelledby="corporateAccountHeading">
+  <span class="pill">CORPORATE WORKSPACE</span>
+  <h3 id="corporateAccountHeading">Workspace details</h3>
+  <p>Company profile settings are not configured yet. Your workspace identity and security controls remain available without exposing your Personal profile fields here.</p>
+  <dl>
+    <div><dt>Workspace</dt><dd>Corporate Workspace</dd></div>
+    <div><dt>Account owner</dt><dd id="corporateAccountOwnerEmail">Signed-in owner</dd></div>
+  </dl>
+  <button id="corporateAccountSecurityButton" type="button" class="secondary">Open Security</button>
+</section>
 <div class="profile-general-head">
 <div id="profilePhotoCard" class="profile-photo-card personal-only" aria-labelledby="profilePhotoTitle">
   <div id="profilePhotoPreview" class="profile-photo-preview" aria-hidden="true">
@@ -1214,22 +1223,23 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<script src="js/stability-runtime.js?v=407"></script>
-<script src="js/stable-id-compatibility-config.js?v=407"></script>
-<script src="js/stable-id-compatibility-runtime.js?v=407"></script>
-<script src="js/normalized-write-canary-config.js?v=407"></script>
-<script src="js/workspace-command-policy.js?v=407"></script>
+<script src="js/stability-runtime.js?v=408"></script>
+<script src="js/stable-id-compatibility-config.js?v=408"></script>
+<script src="js/stable-id-compatibility-runtime.js?v=408"></script>
+<script src="js/normalized-write-canary-config.js?v=408"></script>
+<script src="js/workspace-command-policy.js?v=408"></script>
 <script src="js/reference-filter-state.js?v=410"></script>
 <script src="js/server-data.js?v=410"></script>
-<script src="js/shadow-read.js?v=407"></script>
-<script src="js/normalized-read-adapter.js?v=407"></script>
-<script src="js/normalized-read-canary-config.js?v=407"></script>
-<script src="js/normalized-read-runtime.js?v=407"></script>
-<script src="js/storage.js?v=407"></script>
+<script src="js/shadow-read.js?v=408"></script>
+<script src="js/normalized-read-adapter.js?v=408"></script>
+<script src="js/normalized-read-canary-config.js?v=408"></script>
+<script src="js/normalized-read-runtime.js?v=408"></script>
+<script src="js/expiry-status.js?v=415"></script>
+<script src="js/storage.js?v=408"></script>
 <script src="js/ui.js?v=375"></script>
 <script src="js/auth.js?v=375"></script>
 <script src="js/login.js?v=375"></script>
-<script src="js/dashboard.js?v=407"></script>
+<script src="js/dashboard.js?v=408"></script>
 <script src="js/avatar.js?v=375"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
@@ -1238,14 +1248,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/app.js?v=409"></script>
 <script src="js/product-experience.js?v=375"></script>
 <script src="js/date-picker.js?v=375"></script>
-<script src="js/share-profile.js?v=407"></script>
+<script src="js/share-profile.js?v=408"></script>
 <script src="js/boot-refresh.js?v=384"></script>
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=413"></script>
 <script src="js/corporate-reporting.js?v=375"></script>
 <script src="js/admin-overview.js?v=375"></script>
-<script src="js/workspace-switcher.js?v=407"></script>
+<script src="js/workspace-switcher.js?v=408"></script>
 <script src="js/corporate-information-architecture.js?v=413"></script>
+<script src="js/corporate-remediation.js?v=415"></script>
 <script src="js/theme.js?v=408"></script>
 
 

@@ -12,9 +12,17 @@
   var personnelSortBy='name';
   var personnelSortDirection='asc';
   var talentMailbox='active';
+  var candidateViewExplicit=false;
+  var personnelViewExplicit=false;
   try{
     candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
     personnelView=localStorage.getItem('atsrs_personnel_view')||'list';
+    candidateViewExplicit=localStorage.getItem('atsrs_candidate_view_explicit')==='true';
+    personnelViewExplicit=localStorage.getItem('atsrs_personnel_view_explicit')==='true';
+    if(window.matchMedia&&window.matchMedia('(max-width: 720px)').matches){
+      if(!candidateViewExplicit)candidateView='cards';
+      if(!personnelViewExplicit)personnelView='cards';
+    }
   }catch(ignore){}
 
   function byId(id){return document.getElementById(id)}
@@ -300,7 +308,7 @@
     return item&&item.status&&item.status!=='linked'?item.status:'public_profile_only';
   }
   function recentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000}
-  function uploadDateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):'No uploads'}
+  function uploadDateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'No uploads'}
   function summaryExpiryClass(document){
     var status=String(document&&document.status||'');
     if(status==='Expired')return ' is-expired';
@@ -636,7 +644,7 @@
       var hasDirectoryProfiles=profiles.length>0||Number(directoryMeta.returned_profiles||0)>0;
       grid.innerHTML=hasDirectoryProfiles
         ?'<div class="talent-empty"><b>No matching candidates</b><span>Try a broader profession, country or name.</span></div>'
-        :'<div class="talent-empty"><b>No certificate-qualified candidates yet</b><span>Every Personal user appears here automatically after uploading at least one certificate.</span></div>';
+        :'<div class="talent-empty"><b>No eligible candidates yet</b><span>Profiles appear only when they meet the ATSRS directory visibility requirements.</span></div>';
       return;
     }
     if(candidateView==='list'){
@@ -769,7 +777,7 @@
         var archiveControl=talentMailbox==='archived'
           ?'<button type="button" class="secondary" data-message-action="restore_message" data-message-id="'+safe(message.id)+'">Restore</button>'
           :'<button type="button" class="secondary" data-message-action="archive_message" data-message-id="'+safe(message.id)+'">Archive</button>';
-        return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString())+'</span></div><p>'+safe(message.body)+'</p><div class="talent-message-actions">'+readButton+archiveControl+'<button type="button" class="talent-message-delete" data-message-action="delete_message" data-message-id="'+safe(message.id)+'">Delete</button></div></article>';
+        return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString('en-GB'))+'</span></div><p>'+safe(message.body)+'</p><div class="talent-message-actions">'+readButton+archiveControl+'<button type="button" class="talent-message-delete" data-message-action="delete_message" data-message-id="'+safe(message.id)+'">Delete</button></div></article>';
       }).join(''):'<div class="access-empty">'+(talentMailbox==='archived'?'No archived messages.':'No messages yet.')+'</div>';
       list.querySelectorAll('[data-message-action]').forEach(function(button){button.onclick=async function(){
         var action=button.dataset.messageAction;
@@ -803,14 +811,16 @@
     document.querySelectorAll('[data-candidate-view]').forEach(function(button){
       button.addEventListener('click',function(){
         candidateView=button.dataset.candidateView||'cards';
-        try{localStorage.setItem('atsrs_candidate_view',candidateView)}catch(ignore){}
+        candidateViewExplicit=true;
+        try{localStorage.setItem('atsrs_candidate_view',candidateView);localStorage.setItem('atsrs_candidate_view_explicit','true')}catch(ignore){}
         render();
       });
     });
     document.querySelectorAll('[data-personnel-view]').forEach(function(button){
       button.addEventListener('click',function(){
         personnelView=button.dataset.personnelView||'list';
-        try{localStorage.setItem('atsrs_personnel_view',personnelView)}catch(ignore){}
+        personnelViewExplicit=true;
+        try{localStorage.setItem('atsrs_personnel_view',personnelView);localStorage.setItem('atsrs_personnel_view_explicit','true')}catch(ignore){}
         renderLinkedPersonnel();
       });
     });
