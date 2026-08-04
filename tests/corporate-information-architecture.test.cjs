@@ -23,7 +23,7 @@ assert.match(html, /id="navCredentials" class="company-only"[^>]*>Company Creden
 assert.match(html, /id="navIntro" class="nav-utility active"[^>]*>Product Updates</);
 assert.match(html, /src="js\/talent-directory\.js\?v=416"/);
 assert.match(html, /src="js\/corporate-information-architecture\.js\?v=413"/);
-assert.match(html, /href="css\/corporate-information-architecture\.css\?v=414"/);
+assert.match(html, /href="css\/corporate-information-architecture\.css\?v=415"/);
 assert.equal((html.match(/data-company-credentials-tab="documents"/g) || []).length, 2);
 assert.equal((html.match(/data-company-credentials-tab="references"/g) || []).length, 2);
 

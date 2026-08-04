@@ -58,9 +58,11 @@ body.company-mode .company-credentials-heading{
   box-shadow:none!important;
 }
 .company-credentials-tabs button[aria-selected="true"]{
-  background:linear-gradient(135deg,#0f766e,#22c55e)!important;
-  border-color:rgba(134,239,172,.75)!important;
-  color:#fff!important;
+  background:var(--atsrs-panel2,#142235)!important;
+  border-color:#94a3b8!important;
+  color:var(--atsrs-text,#f3f7fb)!important;
+  font-weight:900!important;
+  box-shadow:inset 0 -2px 0 #94a3b8!important;
 }
 
 @media(min-width:801px){
@@ -100,7 +102,37 @@ html[data-theme="light"] body.company-mode #app.app .main .company-credentials-t
   color:#172b3d!important;
 }
 html[data-theme="light"] body.company-mode #app.app .main .company-credentials-tabs button[aria-selected="true"]{
-  background:#e7efff!important;
-  border-color:#8fb0ff!important;
-  color:#1649c8!important;
+  background:#f8fafc!important;
+  border-color:#475569!important;
+  color:#172b3d!important;
+  box-shadow:inset 0 -2px 0 #475569!important;
+}
+
+/* Corporate Company Credentials: reference uploads use the neutral action palette. */
+body.company-mode #app.app .main #refsPage .atsrs-v134-upload{
+  background:var(--atsrs-panel2,#142235)!important;
+  border:1px solid var(--atsrs-border,#3b536d)!important;
+  color:var(--atsrs-text,#f3f7fb)!important;
+  -webkit-text-fill-color:var(--atsrs-text,#f3f7fb)!important;
+  box-shadow:none!important;
+  text-decoration:none!important;
+}
+body.company-mode #app.app .main #refsPage .atsrs-v134-upload:hover{
+  background:#1c2c40!important;
+  border-color:#64748b!important;
+  color:var(--atsrs-text,#f3f7fb)!important;
+  -webkit-text-fill-color:var(--atsrs-text,#f3f7fb)!important;
+  text-decoration:none!important;
+}
+html[data-theme="light"] body.company-mode #app.app .main #refsPage .atsrs-v134-upload{
+  background:#f8fafc!important;
+  border-color:#cbd5e1!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+}
+html[data-theme="light"] body.company-mode #app.app .main #refsPage .atsrs-v134-upload:hover{
+  background:#eef2f6!important;
+  border-color:#94a3b8!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
 }
