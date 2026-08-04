@@ -1,45 +1,313 @@
 <!doctype html>
-<html lang="az">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Məxfilik siyasəti | ATSRS</title>
-  <meta name="description" content="ATSRS məxfilik siyasəti">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#07111d">
+  <title>Privacy Notice | ATSRS</title>
+  <meta name="description" content="How ATSRS collects, uses, shares, protects and deletes personal data.">
+  <link rel="canonical" href="https://atsrs.com/privacy.html">
   <style>
-    :root{color-scheme:dark}
+    :root{
+      color-scheme:dark;
+      --bg:#07111d;--surface:#0b1725;--surface-2:#101f31;--line:#203248;
+      --text:#eef4fa;--muted:#a3b4c7;--accent:#53d77a;--link:#7bc3ff;
+      --shadow:0 20px 60px rgba(0,0,0,.22)
+    }
     *{box-sizing:border-box}
-    body{margin:0;background:#07111d;color:#eaf1f8;font:16px/1.7 Arial,sans-serif}
-    main{width:min(820px,calc(100% - 32px));margin:48px auto;padding:40px;background:#0d1b2a;border:1px solid #213547;border-radius:18px}
-    a{color:#65b5ff} h1,h2{line-height:1.25} h1{margin-top:0} h2{margin-top:32px;font-size:21px}
-    .muted{color:#9fb0c2}.back{display:inline-block;margin-bottom:28px}
-    @media(max-width:600px){main{margin:16px auto;padding:24px}}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 Inter,Arial,sans-serif}
+    a{color:var(--link)}
+    a:focus-visible,button:focus-visible{outline:3px solid var(--link);outline-offset:3px}
+    .shell{width:min(1180px,calc(100% - 32px));margin:0 auto}
+    .site-header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(7,17,29,.94);backdrop-filter:blur(14px)}
+    .site-header .shell{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{color:var(--text);font-size:23px;font-weight:800;text-decoration:none;letter-spacing:.04em}
+    .header-links{display:flex;align-items:center;gap:18px}
+    .header-links a{color:var(--muted);font-weight:700;text-decoration:none}
+    .header-links a:hover{color:var(--text)}
+    .hero{padding:64px 0 34px}
+    .eyebrow{display:inline-flex;padding:6px 11px;border:1px solid rgba(83,215,122,.35);border-radius:999px;color:#7cf29d;font-size:12px;font-weight:800;letter-spacing:.08em}
+    h1{max-width:820px;margin:16px 0 12px;font-size:clamp(34px,6vw,60px);line-height:1.04;letter-spacing:-.035em}
+    .hero-copy{max-width:820px;margin:0;color:var(--muted);font-size:17px}
+    .meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:24px;color:var(--muted);font-size:13px}
+    .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 0}
+    .summary-card{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+    .summary-card strong{display:block;margin-bottom:5px;font-size:14px}
+    .summary-card span{color:var(--muted);font-size:13px;line-height:1.5}
+    .layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:30px;padding:28px 0 72px}
+    .toc{position:sticky;top:94px;align-self:start;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+    .toc strong{display:block;margin-bottom:10px;font-size:13px;letter-spacing:.04em}
+    .toc a{display:block;padding:6px 0;color:var(--muted);font-size:13px;text-decoration:none}
+    .toc a:hover{color:var(--text)}
+    .notice{min-width:0;padding:34px;border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:var(--shadow)}
+    section+section{padding-top:30px;margin-top:30px;border-top:1px solid var(--line)}
+    h2{margin:0 0 12px;font-size:24px;line-height:1.25}
+    h3{margin:22px 0 8px;font-size:17px}
+    p{margin:10px 0;color:var(--muted)}
+    ul{margin:10px 0;padding-left:22px;color:var(--muted)}
+    li+li{margin-top:6px}
+    .callout{padding:16px 18px;border-left:3px solid var(--accent);border-radius:8px;background:var(--surface-2)}
+    .callout strong{color:var(--text)}
+    .table-wrap{overflow:auto;margin:16px 0;border:1px solid var(--line);border-radius:14px}
+    table{width:100%;min-width:680px;border-collapse:collapse}
+    th,td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+    th{color:var(--text);background:var(--surface-2);font-size:12px;letter-spacing:.04em}
+    td{color:var(--muted);font-size:13px}
+    tr:last-child td{border-bottom:0}
+    .contact-card{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}
+    .contact-card p{margin:3px 0}
+    .button-link{display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:0 17px;border:1px solid var(--line);border-radius:10px;color:var(--text);font-weight:800;text-decoration:none;background:transparent}
+    .button-link:hover{border-color:var(--accent)}
+    footer{padding:0 0 34px;color:var(--muted);font-size:12px;text-align:center}
+    @media(prefers-color-scheme:light){
+      :root{color-scheme:light;--bg:#f4f7fb;--surface:#fff;--surface-2:#f2f6fa;--line:#d9e2ec;--text:#102033;--muted:#52657a;--accent:#168345;--link:#075ea8;--shadow:0 18px 50px rgba(31,55,78,.08)}
+      .site-header{background:rgba(244,247,251,.94)}
+      .eyebrow{color:#116d3a}
+    }
+    @media(max-width:880px){
+      .summary-grid{grid-template-columns:1fr}
+      .layout{grid-template-columns:1fr}
+      .toc{position:static}
+      .toc nav{columns:2}
+    }
+    @media(max-width:600px){
+      .shell{width:min(100% - 20px,1180px)}
+      .site-header .shell{min-height:60px}
+      .header-links a:not(:last-child){display:none}
+      .hero{padding:42px 0 22px}
+      .layout{padding-top:18px;gap:18px}
+      .toc nav{columns:1}
+      .notice{padding:22px 18px;border-radius:16px}
+      .contact-card{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
-<main>
-  <a class="back" href="/">← ATSRS saytına qayıt</a>
-  <h1>Məxfilik siyasəti</h1>
-  <p class="muted">Son yenilənmə: 27 iyul 2026</p>
+  <header class="site-header">
+    <div class="shell">
+      <a class="brand" href="/" aria-label="ATSRS home">ATSRS</a>
+      <nav class="header-links" aria-label="Legal navigation">
+        <a href="/data-deletion.html">Data deletion</a>
+        <a href="/">Back to platform</a>
+      </nav>
+    </div>
+  </header>
 
-  <p>Bu siyasət ATSRS saytından və ATSRS-in WhatsApp rabitə xidmətlərindən istifadə zamanı məlumatların necə emal edildiyini izah edir.</p>
+  <main class="shell">
+    <div class="hero">
+      <span class="eyebrow">PRIVACY &amp; DATA PROTECTION</span>
+      <h1>Privacy Notice</h1>
+      <p class="hero-copy">This Notice explains how ATSRS handles personal data across Personal and Corporate workspaces, document storage, controlled profile sharing, reminders and optional AI features.</p>
+      <div class="meta">
+        <span><strong>Effective:</strong> 4 August 2026</span>
+        <span><strong>Last reviewed:</strong> 4 August 2026</span>
+        <span><strong>Contact:</strong> <a href="mailto:anaragasiyev@gmail.com">anaragasiyev@gmail.com</a></span>
+      </div>
+      <div class="summary-grid" aria-label="Privacy summary">
+        <div class="summary-card"><strong>Private by default</strong><span>Documents and profile details are not shared with a company unless the user enables visibility or approves access.</span></div>
+        <div class="summary-card"><strong>No sale of personal data</strong><span>ATSRS does not sell personal data or use it for cross-context behavioural advertising.</span></div>
+        <div class="summary-card"><strong>User-controlled AI</strong><span>AI processing starts only when a user actively selects an AI feature and submits information for that purpose.</span></div>
+      </div>
+    </div>
 
-  <h2>Topladığımız məlumatlar</h2>
-  <p>Xidmətin göstərilməsi üçün ad, telefon nömrəsi, e-poçt ünvanı, göndərilən və qəbul edilən mesajlar, təsdiqləmə statusu, texniki jurnal və təhlükəsizlik məlumatları emal edilə bilər.</p>
+    <div class="layout">
+      <aside class="toc" aria-label="Privacy Notice contents">
+        <strong>CONTENTS</strong>
+        <nav>
+          <a href="#scope">1. Scope</a>
+          <a href="#roles">2. Our data-protection roles</a>
+          <a href="#data">3. Data we handle</a>
+          <a href="#purposes">4. Purposes and legal bases</a>
+          <a href="#sharing">5. Sharing and providers</a>
+          <a href="#profiles">6. Profiles and permissions</a>
+          <a href="#ai">7. AI features</a>
+          <a href="#international">8. International transfers</a>
+          <a href="#retention">9. Retention</a>
+          <a href="#security">10. Security</a>
+          <a href="#rights">11. Your rights</a>
+          <a href="#cookies">12. Cookies and local storage</a>
+          <a href="#children">13. Children</a>
+          <a href="#changes">14. Changes</a>
+          <a href="#contact">15. Contact</a>
+        </nav>
+      </aside>
 
-  <h2>İstifadə məqsədləri</h2>
-  <p>Məlumatlar hesab və telefon nömrəsinin təsdiqlənməsi, istifadəçi tərəfindən tələb edilən bildirişlərin göndərilməsi, dəstək müraciətlərinin cavablandırılması, təhlükəsizliyin qorunması və xidmətin təkmilləşdirilməsi üçün istifadə olunur.</p>
+      <article class="notice">
+        <section id="scope">
+          <h2>1. Who this Notice applies to</h2>
+          <p>This Notice applies to visitors to atsrs.com, Personal account holders, Corporate account owners and authorised users, candidates or personnel whose information is managed through ATSRS, people who receive or approve a controlled sharing request, and people who contact ATSRS for support.</p>
+          <p>ATSRS is a professional document, expiry tracking, profile sharing and compliance workflow service. This Notice covers the website, authenticated platform, related email notifications and optional communications features.</p>
+          <div class="callout"><strong>Important:</strong> when a company uses ATSRS to manage candidate or personnel information, that company may have its own privacy notice. The company’s notice should explain its independent purposes, legal bases and employment-related decisions.</div>
+        </section>
 
-  <h2>WhatsApp və xidmət təminatçıları</h2>
-  <p>WhatsApp üzərindən rabitə Meta Platforms şirkətlərinin xidmətləri vasitəsilə həyata keçirilir. Məlumatların təhlükəsiz saxlanması və çatdırılması üçün zəruri texniki xidmət təminatçılarından istifadə edilə bilər. Məlumatlar satılmır.</p>
+        <section id="roles">
+          <h2>2. Our data-protection roles</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Situation</th><th>ATSRS role</th><th>Other responsible party</th></tr></thead>
+              <tbody>
+                <tr><td>Account registration, authentication, platform security, support and service administration</td><td>Controller for the operational data ATSRS determines how and why to use.</td><td>Google may act as an independent controller for Google sign-in under its own notice.</td></tr>
+                <tr><td>A Personal user stores documents, builds a profile, requests AI processing or shares selected information</td><td>Controller for providing the Personal service and protecting the account.</td><td>The user controls what they upload and whom they authorise to receive it.</td></tr>
+                <tr><td>A Corporate customer manages its candidates, personnel or company records</td><td>Processor/service provider acting on the customer’s documented instructions, except for ATSRS security and service-administration data.</td><td>The Corporate customer is normally the controller and is responsible for a lawful basis, notices, accuracy and access permissions.</td></tr>
+                <tr><td>A company independently downloads, imports or uses information after authorised sharing</td><td>ATSRS records and enforces the platform permission workflow.</td><td>The receiving company becomes responsible for its own subsequent use and retention.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-  <h2>Saxlanma və təhlükəsizlik</h2>
-  <p>Məlumatlar yalnız göstərilən məqsədlər üçün lazım olan müddətdə saxlanılır və icazəsiz giriş, dəyişiklik və açıqlanmaya qarşı uyğun texniki tədbirlərlə qorunur.</p>
+        <section id="data">
+          <h2>3. Personal data we handle</h2>
+          <ul>
+            <li><strong>Identity and account data:</strong> name, surname, email address, account type, Google account identifiers, profile photo and authentication records.</li>
+            <li><strong>Professional profile data:</strong> profession, position, employer, nationality, country, availability, work preferences, career history, skills, references, appraisals and CV information.</li>
+            <li><strong>Contact data:</strong> telephone and WhatsApp numbers, country codes, verification status and user-selected notification preferences.</li>
+            <li><strong>Documents and compliance data:</strong> uploaded files, licences, certificates, permits, passports, visas, seaman books, training records, issue and expiry dates, providers, document numbers and status information.</li>
+            <li><strong>Potentially sensitive data:</strong> medical certificates or other documents that may reveal health information, and identity documents that may contain date of birth, nationality or government identifiers.</li>
+            <li><strong>Corporate workspace data:</strong> company details, personnel records, projects, vessels, teams, compliance status, access requests and authorised user activity.</li>
+            <li><strong>Sharing and communication data:</strong> profile visibility, selected document permissions, sharing links, request status, notification delivery and support correspondence.</li>
+            <li><strong>Technical and security data:</strong> IP address where available to infrastructure providers, browser/device information, session and access logs, timestamps, error records, audit events and anti-abuse signals.</li>
+            <li><strong>AI request data:</strong> the document, image, profile fields or instructions deliberately submitted to AI Document Scan or AI CV Generator, plus the generated result and limited usage/quota records.</li>
+          </ul>
+          <p>ATSRS may receive information directly from the individual, from a Corporate customer acting as controller, from Google sign-in, or from another user who has a lawful reason to send an access request. Corporate customers must not upload information they are not authorised to process.</p>
+        </section>
 
-  <h2>Seçimləriniz və məlumatların silinməsi</h2>
-  <p>WhatsApp bildirişlərini dayandırmaq üçün mesajda “STOP” yaza bilərsiniz. Məlumatlarınıza giriş, düzəliş və ya silinmə tələb etmək üçün aşağıdakı əlaqə vasitəsindən istifadə edin. Silinmə barədə ayrıca təlimat <a href="/data-deletion.html">Məlumatların silinməsi</a> səhifəsindədir.</p>
+        <section id="purposes">
+          <h2>4. Why we use data and our legal bases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Purpose</th><th>Typical data</th><th>Legal basis where GDPR/UK GDPR applies</th></tr></thead>
+              <tbody>
+                <tr><td>Create and operate an account; authenticate users; provide storage, expiry tracking, CV and sharing tools.</td><td>Identity, contact, profile, documents and account settings.</td><td>Performance of a contract or steps requested before a contract.</td></tr>
+                <tr><td>Protect accounts, prevent misuse, investigate errors, maintain auditability and enforce permissions.</td><td>Session, access, security and audit data.</td><td>Legitimate interests in secure and reliable service delivery; legal obligation where applicable.</td></tr>
+                <tr><td>Send requested expiry reminders, verification messages, sharing requests and service notices.</td><td>Email, phone/WhatsApp, preferences and delivery status.</td><td>Contract; legitimate interests; consent where required for an optional communications channel.</td></tr>
+                <tr><td>Process a user-requested AI scan or CV generation.</td><td>User-selected document or profile content and generated output.</td><td>Contract/requested service; explicit consent where required for special-category information.</td></tr>
+                <tr><td>Respond to support, privacy and security requests.</td><td>Contact details, correspondence and verification information.</td><td>Contract, legal obligation and legitimate interests.</td></tr>
+                <tr><td>Comply with law, valid legal process, disputes and regulatory duties.</td><td>Only information reasonably necessary for the relevant matter.</td><td>Legal obligation and legitimate interests in establishing or defending legal claims.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>ATSRS does not use uploaded employment or medical documents for unrelated marketing. ATSRS does not make hiring, dismissal, medical fitness or legal-compliance decisions on behalf of users or companies.</p>
+        </section>
 
-  <h2>Əlaqə</h2>
-  <p>Məxfiliklə bağlı suallar üçün: <a href="mailto:anaragasiyev@gmail.com">anaragasiyev@gmail.com</a></p>
-</main>
+        <section id="sharing">
+          <h2>5. When data is shared</h2>
+          <p>ATSRS limits disclosure to what is needed to provide, secure and support the service. Current categories of service providers include:</p>
+          <ul>
+            <li><strong>Supabase:</strong> authentication, database, file storage and server-side functions.</li>
+            <li><strong>Google:</strong> optional Google sign-in.</li>
+            <li><strong>OpenAI:</strong> optional AI Document Scan and AI CV Generator requests initiated by the user.</li>
+            <li><strong>Resend:</strong> transactional email delivery, including service and expiry notifications.</li>
+            <li><strong>GitHub:</strong> public website hosting and delivery.</li>
+            <li><strong>Meta/WhatsApp:</strong> verification or notification delivery only when the relevant WhatsApp feature is enabled and used.</li>
+          </ul>
+          <p>Providers receive only the information reasonably required for their service and are subject to their own legal obligations and applicable contractual safeguards. ATSRS may also disclose limited information when required by law, to protect rights and safety, or as part of a properly structured business transfer with appropriate confidentiality protections.</p>
+          <p>ATSRS does not sell personal data. ATSRS does not permit service providers to use uploaded documents for their own advertising.</p>
+        </section>
+
+        <section id="profiles">
+          <h2>6. Profile visibility and controlled sharing</h2>
+          <p>Personal profiles are private by default. A user may choose a visibility setting, create or enable a controlled profile link, select information for sharing, or approve a company’s document-access request. Preview access and file-download access may be governed by different permissions.</p>
+          <p>Before sharing, users should verify the recipient and review the selected fields and documents. After a recipient lawfully downloads or imports information, that recipient controls its own copy and must provide its own lawful basis, retention rules and security.</p>
+          <p>Corporate users must access candidate and personnel information only for legitimate professional purposes and only through permissions granted to their account.</p>
+        </section>
+
+        <section id="ai">
+          <h2>7. Optional AI features</h2>
+          <p>ATSRS uses AI only when a user deliberately starts an AI feature. AI Document Scan can analyse a selected file to suggest structured document fields. AI CV Generator can use selected profile and career information to draft a CV. Users must review AI output before relying on or saving it.</p>
+          <ul>
+            <li>AI output may be incomplete or inaccurate and is not verification of identity, qualifications, medical fitness or legal compliance.</li>
+            <li>ATSRS does not use AI output to make automated hiring or employment decisions.</li>
+            <li>Users should avoid submitting information that is unnecessary for the requested result.</li>
+            <li>A user submitting another person’s data must have authority and an appropriate legal basis.</li>
+          </ul>
+          <p>Limited technical records may be retained to enforce quotas, prevent abuse and diagnose failures. AI inputs and outputs are handled according to the provider arrangements in force when the request is made.</p>
+        </section>
+
+        <section id="international">
+          <h2>8. International data transfers</h2>
+          <p>ATSRS is intended for international use. Personal data may be processed in countries other than the user’s country when infrastructure, authentication, email, AI or communications providers operate internationally.</p>
+          <p>Where European Economic Area or United Kingdom transfer rules apply, ATSRS seeks to use recognised safeguards such as adequacy decisions, approved standard contractual clauses, the UK International Data Transfer Addendum, or another lawful transfer mechanism. The protections available may vary by destination and provider.</p>
+        </section>
+
+        <section id="retention">
+          <h2>9. How long data is kept</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Record</th><th>Retention approach</th></tr></thead>
+              <tbody>
+                <tr><td>Active account, profile and uploaded content</td><td>For the life of the account or Corporate customer instruction, then targeted for deletion from active systems within 30 days after a verified closure request unless a lawful exception applies.</td></tr>
+                <tr><td>Controlled sharing and access-request records</td><td>While needed to operate the request and for a reasonable audit/security period, normally no longer than 24 months after the last event unless a dispute or legal duty requires longer.</td></tr>
+                <tr><td>Notification and verification delivery records</td><td>Normally up to 12 months for delivery, abuse prevention and troubleshooting, unless a shorter period is sufficient.</td></tr>
+                <tr><td>Security, access and error logs</td><td>Normally up to 12 months, adjusted where necessary for an active security investigation or legal requirement.</td></tr>
+                <tr><td>Support and privacy correspondence</td><td>Normally up to 24 months after closure of the request, or longer if needed for a legal claim or regulatory duty.</td></tr>
+                <tr><td>AI quota and diagnostic records</td><td>Only for the period needed to enforce plan limits, prevent abuse and resolve service failures.</td></tr>
+                <tr><td>Backups</td><td>Deleted active data may remain temporarily in encrypted or access-restricted backups until the applicable provider backup cycle overwrites it. Backups are not used for ordinary business access.</td></tr>
+                <tr><td>Records required by law or legal claims</td><td>For the period required by the applicable law or reasonably necessary to establish, exercise or defend a claim.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>ATSRS may anonymise data so that it can no longer identify a person. Properly anonymised information may be kept for service measurement and reliability analysis.</p>
+        </section>
+
+        <section id="security">
+          <h2>10. Security and incident response</h2>
+          <p>ATSRS applies role-based access controls, authenticated sessions, database row-level security, restricted storage access, controlled sharing, audit records and server-side processing for sensitive operations. Access is limited according to workspace and user permissions.</p>
+          <p>No online service can guarantee absolute security. Users must protect their Google account, device and active sessions, avoid sharing access links with unintended recipients, and report suspected misuse promptly. If a personal-data breach occurs, ATSRS will investigate, contain the incident and notify affected people or authorities when required by applicable law.</p>
+        </section>
+
+        <section id="rights">
+          <h2>11. Your privacy rights</h2>
+          <p>Depending on location and applicable law, a person may have rights to:</p>
+          <ul>
+            <li>receive information about processing and obtain a copy of personal data;</li>
+            <li>correct inaccurate or incomplete information;</li>
+            <li>request deletion or restriction of processing;</li>
+            <li>receive portable data in an available structured format;</li>
+            <li>object to processing based on legitimate interests or direct marketing;</li>
+            <li>withdraw consent without affecting earlier lawful processing;</li>
+            <li>challenge qualifying solely automated decisions; and</li>
+            <li>complain to the competent data-protection authority.</li>
+          </ul>
+          <p>Rights are not absolute. ATSRS may need to verify identity, preserve another person’s rights, comply with law or keep limited evidence of a completed request. When ATSRS processes Corporate workspace data only on a customer’s instructions, ATSRS may direct the request to that Corporate customer or assist it in responding.</p>
+          <div class="contact-card">
+            <div><strong>Request access, correction or deletion</strong><p>Do not send passwords, one-time codes, identity-document scans or authentication tokens by email unless ATSRS provides a secure verification method.</p></div>
+            <a class="button-link" href="/data-deletion.html">View request process</a>
+          </div>
+        </section>
+
+        <section id="cookies">
+          <h2>12. Cookies, sessions and local storage</h2>
+          <p>ATSRS uses essential browser storage and authentication/session technologies to sign users in, protect accounts, remember workspace or interface preferences, maintain user-requested state and support secure platform operation. These technologies are necessary for the service requested by the user.</p>
+          <p>ATSRS currently does not use third-party advertising cookies or cross-site behavioural advertising. If optional analytics or advertising technologies are introduced, ATSRS will update this Notice and provide any consent or rejection controls required by applicable law before non-essential access begins.</p>
+          <p>Blocking essential browser storage may prevent authentication, saved preferences or other platform functions from working correctly.</p>
+        </section>
+
+        <section id="children">
+          <h2>13. Children</h2>
+          <p>ATSRS is a professional service intended for adults and authorised business users. It is not directed to children under 18, and ATSRS does not knowingly request that children create accounts or upload professional identity and employment documents. Contact ATSRS if you believe a child’s data has been submitted without proper authority.</p>
+        </section>
+
+        <section id="changes">
+          <h2>14. Changes to this Notice</h2>
+          <p>ATSRS will review this Notice when services, providers, laws or data uses materially change. The effective date above will be updated. Material changes will be brought to users’ attention through the platform, email or another appropriate channel before a new use begins where required.</p>
+          <p>This Notice is designed to support international transparency requirements, including GDPR and UK GDPR principles where applicable. If local law grants stronger mandatory rights, that law applies to the relevant processing.</p>
+        </section>
+
+        <section id="contact">
+          <h2>15. Contact and complaints</h2>
+          <p>The service operator responsible for ATSRS privacy administration can be contacted at:</p>
+          <div class="contact-card">
+            <div><strong>ATSRS Privacy</strong><p><a href="mailto:anaragasiyev@gmail.com?subject=ATSRS%20Privacy%20Request">anaragasiyev@gmail.com</a></p><p>Use the subject “ATSRS Privacy Request”.</p></div>
+            <a class="button-link" href="mailto:anaragasiyev@gmail.com?subject=ATSRS%20Privacy%20Request">Contact privacy</a>
+          </div>
+          <p>You may also complain to the data-protection authority responsible for your location or for the relevant controller. Contact ATSRS first if you would like us to investigate and try to resolve the concern promptly.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="shell">ATSRS · Privacy Notice · Effective 4 August 2026</footer>
 </body>
 </html>
