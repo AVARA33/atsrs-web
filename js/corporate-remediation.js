@@ -43,19 +43,7 @@
     return document.querySelector('#refsPage [data-atsrs-v134-kind="'+kind+'"]');
   }
 
-  function syncCredentialEmptyStatus(kind){
-    var status=byId('v134_'+kind+'_status');
-    if(!status)return;
-    var empty=/^No File(?:s)?$/i.test(status.textContent.trim());
-    status.classList.toggle('company-credentials-empty-status',companyMode()&&empty);
-    if(empty){
-      var label=companyMode()?'No files':'No File';
-      if(status.textContent!==label)status.textContent=label;
-    }
-  }
-
   function syncCredentials(){
-    ['appraisal','reference','recommendation','coverLetter'].forEach(syncCredentialEmptyStatus);
     if(!companyMode())return;
     setText('refsTitle','Reference Materials');
     setText('refsSub','Company-owned client references, testimonials and retained legacy materials.');
@@ -75,7 +63,7 @@
     var appraisal=referenceCard('appraisal');
     if(appraisal){
       var appraisalStatus=byId('v134_appraisal_status');
-      var hasLegacy=!!(appraisalStatus&&!/^No File(?:s)?$/i.test(appraisalStatus.textContent.trim()));
+      var hasLegacy=!!(appraisalStatus&&!/^No File$/i.test(appraisalStatus.textContent.trim()));
       appraisal.classList.toggle('corporate-legacy-material',hasLegacy);
       appraisal.classList.toggle('hidden',!hasLegacy);
       if(hasLegacy){
@@ -93,8 +81,8 @@
       security.onclick=function(){if(typeof window.showAccountTab==='function')window.showAccountTab('security')};
     }
     syncAll();
-    var refsPage=byId('refsPage');
-    if(refsPage)new MutationObserver(syncCredentials).observe(refsPage,{childList:true,characterData:true,subtree:true});
+    var appraisalStatus=byId('v134_appraisal_status');
+    if(appraisalStatus)new MutationObserver(syncCredentials).observe(appraisalStatus,{childList:true,characterData:true,subtree:true});
   }
 
   function syncAll(){syncSidebar();syncCorporateCopy();syncPageTitle();syncAccount();syncCredentials()}

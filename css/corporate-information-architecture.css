@@ -27,15 +27,13 @@ body.company-mode #dashboardPage .cv-status-card{
 }
 
 .company-credentials-heading{
-  align-items:start;
-  justify-content:start;
-  gap:12px;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
   margin:0 0 16px;
 }
 body.company-mode .company-credentials-heading{
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  justify-items:start;
+  display:flex;
 }
 .company-credentials-heading h3{
   margin:8px 0 4px;
@@ -49,7 +47,6 @@ body.company-mode .company-credentials-heading{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-top:4px;
 }
 .company-credentials-tabs button{
   margin:0!important;
@@ -61,11 +58,9 @@ body.company-mode .company-credentials-heading{
   box-shadow:none!important;
 }
 .company-credentials-tabs button[aria-selected="true"]{
-  background:var(--atsrs-panel2,#142235)!important;
-  border-color:var(--atsrs-text,#f3f7fb)!important;
-  color:var(--atsrs-text,#f3f7fb)!important;
-  font-weight:900!important;
-  box-shadow:inset 0 -2px 0 var(--atsrs-text,#f3f7fb)!important;
+  background:linear-gradient(135deg,#0f766e,#22c55e)!important;
+  border-color:rgba(134,239,172,.75)!important;
+  color:#fff!important;
 }
 
 @media(min-width:801px){
@@ -105,8 +100,7 @@ html[data-theme="light"] body.company-mode #app.app .main .company-credentials-t
   color:#172b3d!important;
 }
 html[data-theme="light"] body.company-mode #app.app .main .company-credentials-tabs button[aria-selected="true"]{
-  background:#f8fafc!important;
-  border-color:#334155!important;
-  color:#172b3d!important;
-  box-shadow:inset 0 -2px 0 #334155!important;
+  background:#e7efff!important;
+  border-color:#8fb0ff!important;
+  color:#1649c8!important;
 }

@@ -43,29 +43,12 @@
     if(typeof window.showPage==='function'&&target)window.showPage(page,target);
   };
 
-  function bindTabKeyboard(){
-    document.querySelectorAll('.company-credentials-tabs').forEach(function(tablist){
-      if(tablist.dataset.keyboardBound==='true')return;
-      tablist.dataset.keyboardBound='true';
-      tablist.addEventListener('keydown',function(event){
-        if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-        var tabs=Array.from(tablist.querySelectorAll('[role="tab"]'));
-        var current=tabs.indexOf(document.activeElement);
-        if(current<0)return;
-        event.preventDefault();
-        var next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
-        tabs[next].focus();
-        tabs[next].click();
-      });
-    });
-  }
-
   function syncCurrentPage(){
     syncCredentialState(localStorage.getItem('atsrs_current_page')||'intro');
   }
 
   window.addEventListener('atsrs:workspace-changed',syncCurrentPage);
   new MutationObserver(syncCurrentPage).observe(document.body,{attributes:true,attributeFilter:['class']});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){bindTabKeyboard();syncCurrentPage()});
-  else {bindTabKeyboard();syncCurrentPage()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncCurrentPage);
+  else syncCurrentPage();
 })();

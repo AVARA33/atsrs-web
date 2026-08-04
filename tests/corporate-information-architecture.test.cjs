@@ -22,8 +22,8 @@ assert.deepEqual(ids, [
 assert.match(html, /id="navCredentials" class="company-only"[^>]*>Company Credentials</);
 assert.match(html, /id="navIntro" class="nav-utility active"[^>]*>Product Updates</);
 assert.match(html, /src="js\/talent-directory\.js\?v=416"/);
-assert.match(html, /src="js\/corporate-information-architecture\.js\?v=418"/);
-assert.match(html, /href="css\/corporate-information-architecture\.css\?v=418"/);
+assert.match(html, /src="js\/corporate-information-architecture\.js\?v=413"/);
+assert.match(html, /href="css\/corporate-information-architecture\.css\?v=414"/);
 assert.equal((html.match(/data-company-credentials-tab="documents"/g) || []).length, 2);
 assert.equal((html.match(/data-company-credentials-tab="references"/g) || []).length, 2);
 
@@ -38,7 +38,6 @@ assert.match(runtime, /credentialPage\(section\)/);
 assert.match(runtime, /localStorage\.getItem\('atsrs_current_page'\)/);
 assert.match(runtime, /page==='certificates'\|\|page==='refs'/);
 assert.match(runtime, /pageTitle'\)[\s\S]*Company Credentials/);
-assert.match(runtime, /\['ArrowLeft','ArrowRight','Home','End'\]/);
 
 assert.match(talent, /action:'summary',target_user_id:profile\.user_id/);
 assert.match(talent, /action:'cv',target_user_id:profile\.user_id/);

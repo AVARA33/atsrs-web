@@ -49,10 +49,6 @@ assert.match(css, /--atsrs-touch-height:44px/);
 assert.match(css, /\.corporate-compliance-metrics\{grid-template-columns:repeat\(5/);
 assert.match(css, /@media\(max-width:720px\)/);
 assert.match(css, /#app button:focus-visible/);
-assert.match(css, /Company Credentials: neutral controls/);
-assert.match(css, /company-credentials-empty-status/);
-assert.match(runtime, /syncCredentialEmptyStatus/);
-assert.match(runtime, /companyMode\(\)\?'No files':'No File'/);
 
 function runTitleHarness(activeId, activeText) {
   const elements = {
