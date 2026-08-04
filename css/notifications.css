@@ -16,6 +16,18 @@ html[data-theme="light"] body #app .expiry-request-count.is-empty{background:#ee
 .atsrs-notification-list.has-overflow{max-height:770px;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-gutter:stable}
 .atsrs-notification-item{display:grid;grid-template-columns:10px 1fr auto;gap:12px;align-items:start;min-height:150px;padding:14px;border:1px solid #26384e;border-radius:14px;background:rgba(8,20,34,.72)}
 .atsrs-notification-item.is-unread{border-color:#3d6085;background:rgba(12,30,49,.94)}
+body.company-mode #dashboardPage .atsrs-notification-item,
+body.company-mode #dashboardPage .atsrs-notification-item.is-unread{
+  border-color:rgba(51,82,108,.62);
+  background:rgba(5,18,29,.72);
+  box-shadow:none;
+}
+html[data-theme="light"] body.company-mode #app #dashboardPage .atsrs-notification-item,
+html[data-theme="light"] body.company-mode #app #dashboardPage .atsrs-notification-item.is-unread{
+  border-color:#d6e0e8;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(36,61,80,.045);
+}
 .atsrs-notification-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;background:#6b7280}
 .atsrs-notification-item[data-severity="notice"] .atsrs-notification-dot{background:#38bdf8}
 .atsrs-notification-item[data-severity="warning"] .atsrs-notification-dot{background:#f59e0b}
