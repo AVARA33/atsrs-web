@@ -35,7 +35,7 @@ assert.match(css, /#profilePage #accountGeneralTab #saveProfileBtn\{[\s\S]*?heig
 assert.doesNotMatch(css, /body\.company-mode/);
 assert.doesNotMatch(css, /linear-gradient|radial-gradient/);
 
-assert.match(index, /href="css\/personal-workspace-surface\.css\?v=430"/);
-assert.match(index, /data-atsrs-build="V432"/);
+assert.match(index, /href="css\/personal-workspace-surface\.css\?v=433"/);
+assert.match(index, /data-atsrs-build="V433"/);
 
 console.log('Personal Workspace shared surface contract tests passed');
