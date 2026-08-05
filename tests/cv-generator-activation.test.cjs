@@ -14,7 +14,7 @@ const edge = fs.readFileSync(
 );
 
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
-assert.match(html, /css\/account\.css\?v=411/);
+assert.match(html, /css\/account\.css\?v=419/);
 assert.match(html, /js\/cv-generator\.js\?v=411/);
 for (const css of [accountCss, cvCss]) {
   assert.doesNotMatch(

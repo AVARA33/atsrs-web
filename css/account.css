@@ -1913,3 +1913,73 @@ html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option[ar
     justify-self:stretch;
   }
 }
+
+/* V419: Personal References CV tools use a compact two-panel workspace. */
+body.personal-mode #refsPage .cv-card{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr)!important;
+  gap:16px!important;
+  align-items:stretch!important;
+  padding:0!important;
+}
+body.personal-mode #refsPage .cv-main-panel,
+body.personal-mode #refsPage .cv-beta-box{
+  min-width:0!important;
+  margin:0!important;
+  padding:18px!important;
+  border:1px solid rgba(148,163,184,.24)!important;
+  border-radius:16px!important;
+  background:rgba(8,21,36,.28)!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel,
+html[data-theme="light"] body.personal-mode #refsPage .cv-beta-box{
+  border-color:#d9e2e9!important;
+  background:#fff!important;
+}
+body.personal-mode #refsPage .cv-main-panel{
+  display:flex!important;
+  flex-direction:column!important;
+}
+body.personal-mode #refsPage .cv-main-panel #cvFileInfo{
+  flex:1 1 auto!important;
+}
+body.personal-mode #refsPage .cv-actions,
+body.personal-mode #refsPage .generated-cv-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+body.personal-mode #refsPage .cv-actions button,
+body.personal-mode #refsPage .generated-cv-actions button,
+body.personal-mode #refsPage #generateCVBtn{
+  width:auto!important;
+  min-width:0!important;
+  min-height:40px!important;
+  padding:9px 13px!important;
+  margin:0!important;
+}
+body.personal-mode #refsPage .cv-beta-box{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+}
+body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
+  align-self:flex-start!important;
+  margin-top:auto!important;
+}
+@media(max-width:720px){
+  body.personal-mode #refsPage .cv-card{
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+  }
+  body.personal-mode #refsPage .cv-main-panel,
+  body.personal-mode #refsPage .cv-beta-box{
+    padding:16px!important;
+  }
+  body.personal-mode #refsPage .cv-actions button,
+  body.personal-mode #refsPage .generated-cv-actions button,
+  body.personal-mode #refsPage #generateCVBtn{
+    min-height:44px!important;
+  }
+}

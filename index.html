@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V418" data-atsrs-update="5 Aug 2026">
+<html lang="en" data-atsrs-build="V419" data-atsrs-update="5 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,7 +36,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/documents.css?v=375">
 <link rel="stylesheet" href="css/references.css?v=408">
 <link rel="stylesheet" href="css/cv-generator.css?v=375">
-<link rel="stylesheet" href="css/account.css?v=411">
+<link rel="stylesheet" href="css/account.css?v=419">
 <link rel="stylesheet" href="css/product-experience.css?v=417">
 <link rel="stylesheet" href="css/date-picker.css?v=375">
 <link rel="stylesheet" href="css/share-profile.css?v=375">
@@ -651,15 +651,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div class="ref-card"><h3 id="appraisalCardTitle">Appraisals</h3><p id="appraisalCardText" class="sub">Upload annual appraisals, performance reviews and evaluation forms.</p><button id="uploadAppraisalBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload</button></div>
   <div class="ref-card"><h3 id="referenceCardTitle">References</h3><p id="referenceCardText" class="sub">Store reference letters and contact-ready career proof.</p><button id="uploadReferenceBtn" class="secondary" onclick="alert(ptr('authLiveNotice'))">Upload</button></div>
   <div class="ref-card cv-card">
-    <div class="cv-card-head"><h3 id="cvCardTitle">CV / Resume</h3><span id="cvStatusBadge" class="badge badge-missing">No CV Uploaded</span></div>
-    <p id="cvCardText" class="sub">Store, manage and share CV versions for employers, agencies and clients.</p>
-    <input id="cvUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleCVUpload(event)">
-    <div id="cvFileInfo" class="preview-box"></div>
-    <div class="cv-actions">
-      <button id="uploadCVBtn" class="secondary" onclick="cvUploadInput.click()">Upload CV</button>
-      <button id="previewCVBtn" class="secondary" onclick="previewCV()">Preview CV</button>
-      <button id="downloadCVBtn" class="secondary" onclick="downloadCV()">Download CV</button>
-      <button id="deleteCVBtn" class="action" onclick="deleteCV()">Delete CV</button>
+    <div class="cv-main-panel">
+      <div class="cv-card-head"><h3 id="cvCardTitle">CV / Resume</h3><span id="cvStatusBadge" class="badge badge-missing">No CV Uploaded</span></div>
+      <p id="cvCardText" class="sub">Store, manage and share CV versions for employers, agencies and clients.</p>
+      <input id="cvUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleCVUpload(event)">
+      <div id="cvFileInfo" class="preview-box"></div>
+      <div class="cv-actions">
+        <button id="uploadCVBtn" class="secondary" onclick="cvUploadInput.click()">Upload CV</button>
+        <button id="previewCVBtn" class="secondary" onclick="previewCV()">Preview CV</button>
+        <button id="downloadCVBtn" class="secondary" onclick="downloadCV()">Download CV</button>
+        <button id="deleteCVBtn" class="action" onclick="deleteCV()">Delete CV</button>
+      </div>
     </div>
     <div class="cv-beta-box">
       <span class="pill" id="cvBetaBadge">AI CV GENERATOR</span>
