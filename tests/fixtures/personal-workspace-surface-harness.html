@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>
+    document.documentElement.dataset.theme = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark';
+  </script>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/login.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/documents.css">
+  <link rel="stylesheet" href="../../css/references.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/product-experience.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/corporate-remediation.css">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=3">
+  <title>Personal Workspace surface test</title>
+</head>
+<body class="personal-mode app-open">
+  <section id="app" class="app">
+    <aside class="sidebar"><div class="brand">ATSRS</div><p class="sub">Personal Workspace</p></aside>
+    <main class="main">
+      <h2 id="pageTitle">Dashboard</h2>
+      <section id="dashboardPage"><div class="panel"><span class="pill">DOCUMENT OVERVIEW</span><h3>Quick overview</h3><div class="grid stats-grid"><div class="card"><p>Uploaded Documents</p><div class="stat">16</div></div><div class="card"><p>Expiry risk</p><div class="stat warning">0</div></div></div></div></section>
+      <section id="certificatesPage" class="hidden"><div class="panel unified-cert-panel"><h3>Add document</h3><div class="cert-mode-buttons"><button>Scan with AI</button><button>Manual Upload</button></div><div class="card"><h3>Document register</h3><button class="secondary">Open document</button></div></div><div id="documentTestModal" class="panel hidden" role="dialog" aria-label="Document preview"><h3>Document preview</h3><button>Close</button></div></section>
+      <section id="refsPage" class="hidden"><div class="panel"><h3>References</h3><div class="ref-grid"><div class="ref-card cv-card"><div class="cv-main-panel"><h3>CV / Resume</h3><button class="secondary">Preview CV</button></div><div class="cv-beta-box"><h3>AI CV Generator</h3><button id="generateCVBtn">Generate ATSRS CV</button></div></div><div class="ref-card"><h3>Appraisals</h3><button class="secondary">Upload</button></div></div></div></section>
+      <section id="profilePage" class="hidden"><div class="panel"><h3>Account</h3><div class="account-tabs"><button class="active">General</button><button>Security</button><button>Privacy &amp; Sharing</button></div><div class="card"><label>Name <input value="Synthetic profile"></label><button>Save</button></div></div></section>
+      <section id="introPage" class="hidden"><div class="product-updates-content"><div class="intro-hero updates-hero"><span class="pill">PRODUCT UPDATES</span><h3>What's new and what's next</h3><p>Release information remains grouped inside the shared workspace surface.</p></div><div class="roadmap-section"><div class="roadmap-grid"><article class="roadmap-card"><h3>ATSRS Profile CV</h3><p>Available now</p></article></div></div></div></section>
+      <section id="privacyPage" class="hidden legal-app-page"><iframe class="legal-app-frame" src="/privacy.html?embedded=1" title="Privacy Notice"></iframe></section>
+      <section id="dataRightsPage" class="hidden legal-app-page"><iframe class="legal-app-frame" src="/data-deletion.html?embedded=1" title="Data Rights"></iframe></section>
+    </main>
+  </section>
+  <script>
+    const query = new URLSearchParams(location.search);
+    const route = query.get('route') || 'dashboard';
+    const titles = { dashboard:'Dashboard', certificates:'Documents', refs:'References', profile:'Account', intro:'Product Updates', privacy:'Privacy Notice', dataRights:'Data Rights' };
+    document.querySelectorAll('main > section').forEach((section) => section.classList.add('hidden'));
+    document.getElementById(route + 'Page').classList.remove('hidden');
+    document.getElementById('pageTitle').textContent = titles[route];
+    if (route === 'certificates' && query.get('state') === 'modal') document.getElementById('documentTestModal').classList.remove('hidden');
+  </script>
+</body>
+</html>

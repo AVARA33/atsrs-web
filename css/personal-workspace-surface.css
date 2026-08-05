@@ -1,0 +1,75 @@
+/* V425: one shared Personal Workspace content surface across every primary route. */
+body.personal-mode #app.app:not(.hidden) > .main{
+  isolation:isolate;
+}
+
+body.personal-mode #app.app:not(.hidden) > .main::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:72px;
+  bottom:16px;
+  left:50%;
+  width:min(calc(100% - 44px),1488px);
+  border:1px solid var(--atsrs-border,#264058);
+  border-radius:20px;
+  background:var(--atsrs-panel2,#0b1825);
+  background-image:none;
+  box-shadow:0 18px 48px rgba(0,0,0,.22);
+  pointer-events:none;
+  transform:translateX(-50%);
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > #pageTitle,
+body.personal-mode #app.app:not(.hidden) > .main > section{
+  position:relative;
+  z-index:1;
+  width:min(100%,1440px);
+  min-width:0;
+  margin-inline:auto;
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > #pageTitle{
+  margin-bottom:16px;
+}
+
+html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main::before{
+  background:#f8fafc;
+  border-color:var(--atsrs-border,#d6e0e8);
+  box-shadow:0 16px 40px rgba(15,23,42,.08);
+}
+
+@media(max-width:800px){
+  body.personal-mode #app.app:not(.hidden) > .main::before{
+    top:70px;
+    bottom:8px;
+    width:calc(100% - 16px);
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,.18);
+  }
+
+  body.personal-mode #app.app:not(.hidden) > .main > #pageTitle,
+  body.personal-mode #app.app:not(.hidden) > .main > section{
+    width:calc(100% - 16px);
+  }
+}
+
+@media(max-width:720px){
+  body.personal-mode #app.app:not(.hidden) > .main > :is(
+    #dashboardPage,
+    #certificatesPage,
+    #refsPage,
+    #profilePage,
+    #introPage,
+    #privacyPage,
+    #dataRightsPage
+  ) :where(button,[role="button"],summary){
+    min-height:44px!important;
+  }
+}
+
+@media(max-width:430px){
+  body.personal-mode #app.app:not(.hidden) > .main::before{
+    border-radius:14px;
+  }
+}
