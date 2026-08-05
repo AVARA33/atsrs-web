@@ -22,7 +22,7 @@ assert.doesNotMatch(
   'Company Credentials ordinary actions must not use the previous green/blue fills, borders or text'
 );
 assert.doesNotMatch(css.slice(uploadStart), /(?:background|border-color|color):[^;]*(?:#ef4444|#dc2626|#f87171)/i);
-assert.match(index, /data-atsrs-build="V429"/);
+assert.match(index, /data-atsrs-build="V430"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 
 console.log('Company Credentials neutral action contracts passed');
