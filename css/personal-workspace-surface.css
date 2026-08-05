@@ -21,7 +21,6 @@ body.personal-mode #app.app:not(.hidden) > .main::before{
 }
 
 body.personal-mode #app.app:not(.hidden) > .main > #pageTitle,
-body.personal-mode #app.app:not(.hidden) > .main > #accountPageHeading,
 body.personal-mode #app.app:not(.hidden) > .main > section{
   position:relative;
   z-index:1;
@@ -30,7 +29,7 @@ body.personal-mode #app.app:not(.hidden) > .main > section{
   margin-inline:auto;
 }
 
-body.personal-mode #app.app:not(.hidden) > .main > :is(#pageTitle,#accountPageHeading){
+body.personal-mode #app.app:not(.hidden) > .main > #pageTitle{
   margin-bottom:16px;
 }
 
@@ -61,7 +60,6 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main::befor
   }
 
   body.personal-mode #app.app:not(.hidden) > .main > #pageTitle,
-  body.personal-mode #app.app:not(.hidden) > .main > #accountPageHeading,
   body.personal-mode #app.app:not(.hidden) > .main > section{
     width:calc(100% - 16px);
   }

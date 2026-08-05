@@ -23,7 +23,6 @@
     <aside class="sidebar"><div class="brand">ATSRS</div><p class="sub">Personal Workspace</p></aside>
     <main class="main">
       <h2 id="pageTitle">Dashboard</h2>
-      <h1 id="accountPageHeading" class="hidden"></h1>
       <section id="dashboardPage"><div class="panel"><span class="pill">DOCUMENT OVERVIEW</span><h3>Quick overview</h3><div class="grid stats-grid"><div class="card"><p>Uploaded Documents</p><div class="stat">16</div></div><div class="card"><p>Expiry risk</p><div class="stat warning">0</div></div></div></div></section>
       <section id="certificatesPage" class="hidden"><div class="panel unified-cert-panel"><h3 id="addDocTitle">Add document</h3><div class="cert-mode-buttons"><button>Scan with AI</button><button>Manual Upload</button></div><div class="card"><h3>Document register</h3><button class="secondary">Open document</button></div></div><div id="documentTestModal" class="panel hidden" role="dialog" aria-label="Document preview"><h3>Document preview</h3><button>Close</button></div></section>
       <section id="refsPage" class="hidden"><div class="panel"><h3 id="refsTitle">References</h3><p id="refsSub">Keep appraisal forms, reference letters and client feedback in one place.</p><div class="ref-grid"><div class="ref-card cv-card"><div class="cv-main-panel"><h3>CV / Resume</h3><button class="secondary">Preview CV</button></div><div class="cv-beta-box"><h4>AI CV Generator</h4><button id="generateCVBtn">Generate ATSRS CV</button></div></div><div class="ref-card"><h3>Appraisals</h3><button class="secondary">Upload</button></div><div class="ref-card"><h3 id="referenceCardTitle">Reference Letters</h3><button class="secondary">Upload</button></div></div></div></section>
@@ -39,19 +38,12 @@
     const titles = { dashboard:'Dashboard', certificates:'Documents', refs:'References', profile:'Account', intro:'Product Updates', privacy:'Privacy Notice', dataRights:'Data Rights' };
     document.querySelectorAll('main > section').forEach((section) => section.classList.add('hidden'));
     document.getElementById(route + 'Page').classList.remove('hidden');
-    const pageTitle = document.getElementById('pageTitle');
-    const accountPageHeading = document.getElementById('accountPageHeading');
-    pageTitle.textContent = titles[route];
-    pageTitle.classList.toggle('hidden', route === 'profile');
-    accountPageHeading.classList.toggle('hidden', route !== 'profile');
-    accountPageHeading.textContent = route === 'profile' ? titles[route] : '';
+    document.getElementById('pageTitle').textContent = titles[route];
     const legalRoute = route === 'privacy' || route === 'dataRights';
     document.body.classList.toggle('atsrs-personal-legal-route', legalRoute);
     if (!legalRoute) {
-      if (route !== 'profile') {
-        pageTitle.setAttribute('role', 'heading');
-        pageTitle.setAttribute('aria-level', '1');
-      }
+      document.getElementById('pageTitle').setAttribute('role', 'heading');
+      document.getElementById('pageTitle').setAttribute('aria-level', '1');
       document.querySelectorAll(`#${route}Page h3`).forEach((heading) => {
         heading.setAttribute('role', 'heading');
         heading.setAttribute('aria-level', '2');

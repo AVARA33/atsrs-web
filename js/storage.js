@@ -455,17 +455,11 @@ function openApp(){
 }
 function syncPersonalHeadingHierarchy(page){
   const personal=isPersonalMode(),legal=personal&&(page==="privacy"||page==="dataRights");
-  const personalAccount=personal&&page==="profile",accountHeading=document.getElementById("accountPageHeading");
   document.body.classList.toggle("atsrs-personal-legal-route",legal);
-  pageTitle.classList.toggle("hidden",personalAccount);
-  if(accountHeading){
-    accountHeading.classList.toggle("hidden",!personalAccount);
-    if(personalAccount)accountHeading.textContent=pageTitle.textContent;
-  }
   pageTitle.removeAttribute("role");pageTitle.removeAttribute("aria-level");
   document.querySelectorAll("#dashboardPage h3,#dashboardPage h4,#certificatesPage h3,#certificatesPage h4,#refsPage h3,#refsPage h4,#profilePage h3,#profilePage h4,#introPage h3,#introPage h4").forEach(h=>{h.removeAttribute("role");h.removeAttribute("aria-level")});
   if(!personal||legal)return;
-  if(!personalAccount){pageTitle.setAttribute("role","heading");pageTitle.setAttribute("aria-level","1")}
+  pageTitle.setAttribute("role","heading");pageTitle.setAttribute("aria-level","1");
   const section=document.getElementById(page+"Page");
   if(!section)return;
   section.querySelectorAll("h3,h4").forEach(h=>{
