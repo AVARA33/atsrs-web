@@ -31,6 +31,14 @@
       window.addEventListener('storage',function(event){
         if(event.key==='atsrs_theme')applyTheme(event.newValue);
       });
+      window.addEventListener('DOMContentLoaded',function(){
+        var link=document.querySelector('[data-legal-target]');
+        if(!link||!embedded||window.parent===window)return;
+        link.addEventListener('click',function(event){
+          event.preventDefault();
+          window.parent.postMessage({type:'atsrs:legal:navigate',page:link.dataset.legalTarget},window.location.origin);
+        });
+      });
     })();
   </script>
   <style>
@@ -49,6 +57,9 @@
     .site-header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(7,17,29,.94);backdrop-filter:blur(14px)}
     .site-header .shell{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
     .brand{color:var(--text);font-size:23px;font-weight:800;text-decoration:none;letter-spacing:.04em}
+    .legal-switch{display:inline-flex;min-height:44px;align-items:center;color:var(--muted);font-weight:700;text-decoration:none;border-bottom:1px solid transparent}
+    .legal-switch:hover{color:var(--text);border-bottom-color:var(--line)}
+    .embedded-legal-nav{display:none;justify-content:flex-end;margin-bottom:8px}
     .header-links{display:flex;align-items:center;gap:18px}
     .header-links a{color:var(--muted);font-weight:700;text-decoration:none}
     .header-links a:hover{color:var(--text)}
@@ -90,6 +101,7 @@
     html[data-theme="light"] .site-header{background:rgba(244,247,251,.94)}
     html[data-theme="light"] .eyebrow{color:#116d3a}
     html[data-embedded="true"] .site-header{display:none}
+    html[data-embedded="true"] .embedded-legal-nav{display:flex}
     html[data-embedded="true"] .hero{padding-top:26px}
     html[data-embedded="true"] .hero h1{display:none}
     @media(max-width:880px){
@@ -113,11 +125,13 @@
   <header class="site-header">
     <div class="shell">
       <a class="brand" href="/" aria-label="ATSRS home">ATSRS</a>
+      <a class="legal-switch" href="/data-deletion.html">Data Rights</a>
     </div>
   </header>
 
   <main class="shell">
     <div class="hero">
+      <div class="embedded-legal-nav"><a class="legal-switch" href="/data-deletion.html" data-legal-target="dataRights">Data Rights</a></div>
       <span class="eyebrow">PRIVACY &amp; DATA PROTECTION</span>
       <h1>Privacy Notice</h1>
       <p class="hero-copy">This Notice explains how ATSRS handles personal data across Personal and Corporate workspaces, document storage, controlled profile sharing, reminders and optional AI features.</p>

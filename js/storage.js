@@ -453,8 +453,20 @@ function openApp(){
   }
   return Promise.resolve(operation());
 }
-function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=btn.innerText;renderAll()}
-function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navDataRights,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
+function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":btn.innerText;renderAll()}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
+if(!window.__atsrsLegalNavigationBound){
+  window.__atsrsLegalNavigationBound=true;
+  window.addEventListener("message",function(event){
+    if(event.origin!==window.location.origin)return;
+    var privacyFrame=document.querySelector("#privacyPage .legal-app-frame");
+    var dataRightsFrame=document.querySelector("#dataRightsPage .legal-app-frame");
+    if(event.source!==(privacyFrame&&privacyFrame.contentWindow)&&event.source!==(dataRightsFrame&&dataRightsFrame.contentWindow))return;
+    var page=event.data&&event.data.type==="atsrs:legal:navigate"?event.data.page:"";
+    if(page!=="privacy"&&page!=="dataRights")return;
+    showPage(page,navPrivacy);
+  });
+}
 function showAccountTab(tab){["general","security","sharing"].forEach(x=>{let panel=document.getElementById("account"+cap(x)+"Tab"),button=document.getElementById("accountTab"+cap(x)+"Btn");if(panel)panel.classList.remove("active");if(button)button.classList.remove("active")});let panel=document.getElementById("account"+cap(tab)+"Tab"),button=document.getElementById("accountTab"+cap(tab)+"Btn");if(panel)panel.classList.add("active");if(button)button.classList.add("active")}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
@@ -932,7 +944,7 @@ function renderManagedFiles(){
  if(typeof autoDocType!=='undefined')autoDocType.placeholder=v49('autoDocTypePlaceholder');
 }
 const restoreCurrentPageBaseV49=restoreCurrentPage;
-restoreCurrentPage=function(){let page=localStorage.getItem('atsrs_current_page')||'intro';let map={intro:navIntro,privacy:navPrivacy,dataRights:navDataRights,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:'intro',map[page]||navIntro);}
+restoreCurrentPage=function(){let page=localStorage.getItem('atsrs_current_page')||'intro';let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:'intro',map[page]||navIntro);}
 const renderAllBaseV49=renderAll;
 renderAll=function(){renderAllBaseV49();renderManagedFiles();}
 const applyLanguageBaseV49=applyLanguage;

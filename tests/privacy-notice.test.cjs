@@ -7,6 +7,7 @@ const privacy=fs.readFileSync(path.join(root,'privacy.html'),'utf8');
 const deletion=fs.readFileSync(path.join(root,'data-deletion.html'),'utf8');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','product-experience.css'),'utf8');
+const storage=fs.readFileSync(path.join(root,'js','storage.js'),'utf8');
 
 assert.match(privacy,/Effective:<\/strong> 4 August 2026/);
 assert.match(privacy,/Our data-protection roles/);
@@ -49,16 +50,28 @@ for(const page of [privacy,deletion]){
 }
 
 assert.doesNotMatch(index,/PRIVACY &amp; LEGAL/);
-assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy Notice<\/button>/);
-assert.match(index,/id="navDataRights" class="nav-utility nav-legal-link" type="button" onclick="showPage\('dataRights',this\)">Data Rights<\/button>/);
+assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy<\/button>/);
+assert.doesNotMatch(index,/id="navDataRights"/);
 assert.ok(index.indexOf('id="navIntro"') < index.indexOf('id="navPrivacy"'));
-assert.ok(index.indexOf('id="navPrivacy"') < index.indexOf('id="navDataRights"'));
 assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="\/privacy\.html\?embedded=1"/);
 assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="\/data-deletion\.html\?embedded=1"/);
 assert.doesNotMatch(privacy,/<nav class="header-links"/);
 assert.doesNotMatch(deletion,/<nav class="header-links"/);
-assert.match(index,/data-atsrs-build="V420"/);
-assert.match(index,/href="css\/product-experience\.css\?v=417"/);
+assert.match(privacy,/<a class="legal-switch" href="\/data-deletion\.html">Data Rights<\/a>/);
+assert.match(privacy,/data-legal-target="dataRights">Data Rights<\/a>/);
+assert.match(deletion,/<a class="legal-switch" href="\/privacy\.html">Privacy Notice<\/a>/);
+assert.match(deletion,/data-legal-target="privacy">Privacy Notice<\/a>/);
+for(const page of [privacy,deletion]){
+  assert.match(page,/window\.parent\.postMessage\([\s\S]*?window\.location\.origin\)/);
+  assert.doesNotMatch(page,/postMessage\([\s\S]*?['"]\*['"]\)/);
+}
+assert.match(storage,/event\.origin!==window\.location\.origin/);
+assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindow\)/);
+assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
+assert.match(storage,/dataRights:navPrivacy/);
+assert.match(index,/data-atsrs-build="V421"/);
+assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
+assert.match(index,/src="js\/storage\.js\?v=421"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');

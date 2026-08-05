@@ -17,9 +17,6 @@
 #app #navPrivacy{
   order:101;
 }
-#app #navDataRights{
-  order:102;
-}
 
 body.company-mode #navCertificates,
 body.company-mode #navRefs{
@@ -114,17 +111,13 @@ html[data-theme="light"] body.company-mode #app.app .main .company-credentials-t
   box-shadow:inset 0 -2px 0 #475569!important;
 }
 
-body.v76-sidebar-collapsed #app .sidebar #navPrivacy::before,
-body.v76-sidebar-collapsed #app .sidebar #navDataRights::before{
+body.v76-sidebar-collapsed #app .sidebar #navPrivacy::before{
   font-size:12px;
   font-weight:900;
   letter-spacing:.04em;
 }
 body.v76-sidebar-collapsed #app .sidebar #navPrivacy::before{
-  content:"PN";
-}
-body.v76-sidebar-collapsed #app .sidebar #navDataRights::before{
-  content:"DR";
+  content:"P";
 }
 
 /* Corporate Company Credentials: reference uploads use the neutral action palette. */
