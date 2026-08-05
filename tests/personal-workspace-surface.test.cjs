@@ -28,11 +28,12 @@ assert.match(css, /width:min\(100%,1440px\)/);
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode[\s\S]*?background:#f8fafc/);
 assert.match(css, /@media\(max-width:800px\)[\s\S]*?width:calc\(100% - 16px\)/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?:is\([\s\S]*?#profilePage[\s\S]*?\) :where\(button,\[role="button"\],summary\)[\s\S]*?height:auto!important[\s\S]*?min-height:44px!important/);
+assert.match(css, /:where\(select,textarea,input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\)\)\{[\s\S]*?min-height:44px!important/);
 assert.match(css, /#profilePage #accountGeneralTab #saveProfileBtn\{[\s\S]*?height:auto!important[\s\S]*?min-height:44px!important/);
 assert.doesNotMatch(css, /body\.company-mode/);
 assert.doesNotMatch(css, /linear-gradient|radial-gradient/);
 
-assert.match(index, /href="css\/personal-workspace-surface\.css\?v=427"/);
-assert.match(index, /data-atsrs-build="V427"/);
+assert.match(index, /href="css\/personal-workspace-surface\.css\?v=428"/);
+assert.match(index, /data-atsrs-build="V428"/);
 
 console.log('Personal Workspace shared surface contract tests passed');
