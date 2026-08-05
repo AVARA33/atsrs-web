@@ -41,6 +41,8 @@ for(const page of [privacy,deletion]){
   assert.match(page,/new URLSearchParams\(window\.location\.search\)\.get\('embedded'\)==='1'/);
   assert.match(page,/window\.addEventListener\('storage'/);
   assert.match(page,/html\[data-embedded="true"\] \.site-header\{display:none\}/);
+  assert.match(page,/html\[data-embedded="true"\] \.hero h1\{display:block\}/);
+  assert.doesNotMatch(page,/html\[data-embedded="true"\] \.hero h1\{display:none\}/);
   assert.match(page,/html\[data-theme="light"\]/);
   assert.doesNotMatch(page,/@media\(prefers-color-scheme:light\)/);
   assert.ok(
@@ -53,8 +55,8 @@ assert.doesNotMatch(index,/PRIVACY &amp; LEGAL/);
 assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy<\/button>/);
 assert.doesNotMatch(index,/id="navDataRights"/);
 assert.ok(index.indexOf('id="navIntro"') < index.indexOf('id="navPrivacy"'));
-assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="\/privacy\.html\?embedded=1&amp;v=422"/);
-assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="\/data-deletion\.html\?embedded=1&amp;v=422"/);
+assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="\/privacy\.html\?embedded=1&amp;v=432"/);
+assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="\/data-deletion\.html\?embedded=1&amp;v=432"/);
 assert.doesNotMatch(privacy,/<nav class="header-links"/);
 assert.doesNotMatch(deletion,/<nav class="header-links"/);
 assert.match(privacy,/<a class="legal-switch" href="\/data-deletion\.html">Data Rights<\/a>/);
@@ -70,7 +72,7 @@ assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindo
 assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
 assert.match(storage,/page==="privacy"\?"Privacy Notice":page==="dataRights"\?"Data Rights"/);
-assert.match(index,/data-atsrs-build="V431"/);
+assert.match(index,/data-atsrs-build="V432"/);
 assert.match(index,/src="js\/corporate-remediation\.js\?v=424"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index,/src="js\/storage\.js\?v=431"/);
