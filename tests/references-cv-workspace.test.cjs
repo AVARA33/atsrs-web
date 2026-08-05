@@ -19,6 +19,6 @@ assert.match(css, /@media\(max-width:720px\)\{[\s\S]*?body\.personal-mode #refsP
 assert.match(css, /body\.personal-mode #refsPage \.cv-actions button,[\s\S]*?min-height:40px!important;/);
 assert.match(css, /body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-actions button,[\s\S]*?min-height:40px!important;/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?min-height:44px!important;/);
-assert.match(html, /href="css\/account\.css\?v=419"/);
+assert.match(html, /href="css\/account\.css\?v=420"/);
 
 console.log('References CV workspace layout contracts passed');
