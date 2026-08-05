@@ -126,6 +126,7 @@ async function run() {
   result.gates.create_and_idempotency = 'PASS';
 
   const sessionA = await verifyLink(createA.data.token, recipientA);
+  result.gates.forwarded_url_otp_protection = 'PASS';
   const profileA = await edge({ action: 'profile', token: createA.data.token, session_token: sessionA });
   assert(profileA.status === 200 && profileA.data.documents.length === 1 && profileA.data.documents[0].id === files[0].id, 'PROFILE_A_SCOPE_FAILED');
   const previewA = await edge({ action: 'preview', token: createA.data.token, session_token: sessionA, document_id: files[0].id });
@@ -136,6 +137,13 @@ async function run() {
   result.gates.otp_preview_download_false = 'PASS';
 
   const sessionB = await verifyLink(createB.data.token, recipientB);
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const allowedOtp = await edge({ action: 'start_otp', token: createB.data.token, email: recipientB }, true);
+    assert(allowedOtp.status === 202, `OTP_RATE_LIMIT_EARLY_${attempt}`);
+  }
+  const limitedOtp = await edge({ action: 'start_otp', token: createB.data.token, email: recipientB }, true);
+  assert(limitedOtp.status === 429, 'OTP_RATE_LIMIT_MISSING');
+  result.gates.otp_rate_limit = 'PASS';
   const requestB = await edge({ action: 'request_download', token: createB.data.token, session_token: sessionB, operation_id: operation(), document_ids: [files[1].id] });
   assert(requestB.status === 200 && requestB.data.request.id, 'DOWNLOAD_REQUEST_FAILED');
   const pendingB = await edge({ action: 'request_status', token: createB.data.token, session_token: sessionB, request_id: requestB.data.request.id });
@@ -150,6 +158,18 @@ async function run() {
   assert(downloadB.status === 200 && /^https:/.test(downloadB.data.download_url), 'DOWNLOAD_AUTH_FAILED');
   await request(downloadB.data.download_url, {}, [200]);
   result.gates.owner_approved_download = 'PASS';
+
+  const expiryEmail = `recipient-expiry-${crypto.randomUUID()}@example.invalid`;
+  const expiryAt = new Date(Date.now() + 10000).toISOString();
+  const expiring = await edge({ action: 'owner_create', operation_id: operation(), recipient_type: 'person', recipient_label: 'Synthetic Expiry', recipient_email: expiryEmail, document_ids: [files[0].id], expires_at: expiryAt, allow_preview: true, allow_download: false }, true);
+  assert(expiring.status === 200 && expiring.data.token, 'EXPIRY_CREATE_FAILED');
+  const expirySession = await verifyLink(expiring.data.token, expiryEmail);
+  await new Promise(resolve => setTimeout(resolve, Math.max(0, new Date(expiryAt).getTime() - Date.now() + 500)));
+  const expiredProfile = await edge({ action: 'profile', token: expiring.data.token, session_token: expirySession });
+  assert(expiredProfile.status === 401, 'EXPIRED_LINK_STILL_OPEN');
+  const unaffectedB = await edge({ action: 'profile', token: createB.data.token, session_token: sessionB });
+  assert(unaffectedB.status === 200 && unaffectedB.data.documents.length === 1, 'EXPIRY_ISOLATION_FAILED');
+  result.gates.independent_expiry = 'PASS';
 
   const concurrentOperation = operation();
   const concurrentPayload = { action: 'owner_create', operation_id: concurrentOperation, recipient_type: 'person', recipient_label: 'Synthetic Concurrent', recipient_email: `concurrent-${crypto.randomUUID()}@example.invalid`, document_ids: [files[0].id], expires_at: new Date(Date.now() + 2 * 86400000).toISOString(), allow_preview: true, allow_download: false };
