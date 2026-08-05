@@ -31,14 +31,12 @@
       window.addEventListener('storage',function(event){
         if(event.key==='atsrs_theme')applyTheme(event.newValue);
       });
-      window.addEventListener('DOMContentLoaded',function(){
-        var link=document.querySelector('[data-legal-target]');
-        if(!link||!embedded||window.parent===window)return;
-        link.addEventListener('click',function(event){
-          event.preventDefault();
-          window.parent.postMessage({type:'atsrs:legal:navigate',page:link.dataset.legalTarget},window.location.origin);
-        });
-      });
+      window.atsrsNavigateLegal=function(event,page){
+        if(!embedded||window.parent===window)return true;
+        event.preventDefault();
+        window.parent.postMessage({type:'atsrs:legal:navigate',page:page},window.location.origin);
+        return false;
+      };
     })();
   </script>
   <style>
@@ -124,7 +122,7 @@
 
   <main class="shell">
     <div class="hero">
-      <div class="embedded-legal-nav"><a class="legal-switch" href="/privacy.html" data-legal-target="privacy">Privacy Notice</a></div>
+      <div class="embedded-legal-nav"><a class="legal-switch" href="/privacy.html" data-legal-target="privacy" onclick="return window.atsrsNavigateLegal(event,'privacy')">Privacy Notice</a></div>
       <span class="eyebrow">PRIVACY &amp; DATA PROTECTION</span>
       <h1>Data rights and deletion</h1>
       <p class="hero-copy">You may ask ATSRS to provide access to, correct, export, restrict or delete personal data, subject to identity verification and applicable legal exceptions.</p>
