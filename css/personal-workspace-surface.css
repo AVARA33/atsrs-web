@@ -64,6 +64,7 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main::befor
     #privacyPage,
     #dataRightsPage
   ) :where(button,[role="button"],summary){
+    height:auto!important;
     min-height:44px!important;
   }
 }
