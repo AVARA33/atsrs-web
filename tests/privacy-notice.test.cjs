@@ -57,7 +57,7 @@ assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="\/
 assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="\/data-deletion\.html\?embedded=1"/);
 assert.doesNotMatch(privacy,/<nav class="header-links"/);
 assert.doesNotMatch(deletion,/<nav class="header-links"/);
-assert.match(index,/data-atsrs-build="V417"/);
+assert.match(index,/data-atsrs-build="V418"/);
 assert.match(index,/href="css\/product-experience\.css\?v=417"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 

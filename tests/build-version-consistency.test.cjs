@@ -9,7 +9,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V417');
+assert.equal(version, 'V418');
 assert.equal(update, '5 Aug 2026');
 
 for (const asset of [
@@ -23,11 +23,12 @@ for (const asset of [
   'normalized-read-canary-config.js',
   'normalized-read-runtime.js',
   'share-profile.js',
-  'dashboard.js',
   'workspace-switcher.js'
 ]) {
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=409"`));
 }
+
+assert.match(index, /src="js\/dashboard\.js\?v=418"/);
 
 for (const asset of [
   'reference-filter-state.js',
@@ -49,4 +50,4 @@ assert.doesNotMatch(runtime, /ATSRS V385|28 Jul 2026/);
 assert.doesNotMatch(index, /ATSRS V385|Last Update: 28 Jul 2026/);
 assert.match(runbook, /Frontend release: V390/);
 
-console.log('V417 build marker consistency tests passed');
+console.log('V418 build marker consistency tests passed');
