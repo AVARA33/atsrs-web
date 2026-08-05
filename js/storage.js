@@ -286,7 +286,7 @@ function applyLanguage(){
   txt("twofaTitle",ptr("twofa"));txt("twofaNote",ptr("twofaNote"));txt("setup2faBtn",ptr("setup"));txt("sessionsTitle",ptr("sessions"));txt("sessionsNote",ptr("sessionsNote"));txt("viewSessionsBtn",ptr("view"));
   txt("notifyTitle",ptr("notifications"));txt("notifyNote",ptr("notificationsNote"));txt("manageNotifyBtn",ptr("manage"));txt("exportDataTitle",ptr("exportData"));txt("exportDataNote",ptr("exportDataNote"));txt("exportDataBtn",ptr("export"));txt("deleteAccountTitle",ptr("deleteAccount"));txt("deleteAccountNote",ptr("deleteAccountNote"));txt("deleteAccountBtn",tr("delete"));
 
-  if(currentUser){let active=document.querySelector(".nav button.active");txt("pageTitle",active?active.innerText:tr("dashboard"));}
+  if(currentUser){let active=document.querySelector(".nav button.active"),page=localStorage.getItem("atsrs_current_page")||"";txt("pageTitle",page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":active?active.innerText:tr("dashboard"));}
   try{applySoloLanguage();}catch(e){console.warn("ATSRS solo language skipped",e)}
   try{applyIntroLanguage();}catch(e){console.warn("ATSRS intro language skipped",e)}
 }
