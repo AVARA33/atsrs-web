@@ -277,7 +277,7 @@ function applyLanguage(){
   ["thProject:project","thVessel:vessel","thClient:client","thTeam:team","thActionProject:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
   txt("complianceOverviewTitle",tr("complianceStatus"));txt("readyCrewText",tr("readyCrew"));txt("reviewCrewText",tr("reviewCrew"));txt("complianceNote",tr("complianceNote"));
 
-  txt("addDocTitle",ptr("addDoc"));txt("scanDocBtn",ptr("scanDoc"));txt("uploadDocBtn",ptr("uploadDoc"));txt("scanInfo",ptr("scanInfo"));txt("confirmInfoTitle",ptr("confirmInfo"));ph("autoDocNo",ptr("docNo"));ph("autoProvider",tr("provider"));txt("confirmInfoBtn",ptr("confirm"));txt("extractNote",ptr("extractNote"));
+  txt("addDocTitle",isPersonalMode()?"Add document":ptr("addDoc"));txt("scanDocBtn",ptr("scanDoc"));txt("uploadDocBtn",ptr("uploadDoc"));txt("scanInfo",ptr("scanInfo"));txt("confirmInfoTitle",ptr("confirmInfo"));ph("autoDocNo",ptr("docNo"));ph("autoProvider",tr("provider"));txt("confirmInfoBtn",ptr("confirm"));txt("extractNote",ptr("extractNote"));
   txt("manualCertTitle",ptr("manualCert"));ph("cProvider",tr("provider"));txt("addCertBtn",tr("addCert"));txt("certRegisterTitle",tr("certRegister"));
   ["certSortTypeLabel:certificate","thProvider2:provider","certSortExpiryLabel:expiry","certSortStatusLabel:status","thAction2:action"].forEach(x=>{let [id,key]=x.split(':');txt(id,tr(key));});
 
@@ -453,7 +453,19 @@ function openApp(){
   }
   return Promise.resolve(operation());
 }
-function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":btn.innerText;renderAll()}
+function syncPersonalHeadingHierarchy(page){
+  const personal=isPersonalMode(),legal=personal&&(page==="privacy"||page==="dataRights");
+  document.body.classList.toggle("atsrs-personal-legal-route",legal);
+  pageTitle.removeAttribute("role");pageTitle.removeAttribute("aria-level");
+  document.querySelectorAll("#dashboardPage h3,#dashboardPage h4,#certificatesPage h3,#certificatesPage h4,#refsPage h3,#refsPage h4,#profilePage h3,#profilePage h4,#introPage h3,#introPage h4").forEach(h=>{h.removeAttribute("role");h.removeAttribute("aria-level")});
+  if(!personal||legal)return;
+  pageTitle.setAttribute("role","heading");pageTitle.setAttribute("aria-level","1");
+  const section=document.getElementById(page+"Page");
+  if(!section)return;
+  section.querySelectorAll("h3").forEach(h=>{h.setAttribute("role","heading");h.setAttribute("aria-level","2")});
+  section.querySelectorAll("h4").forEach(h=>{h.setAttribute("role","heading");h.setAttribute("aria-level","3")});
+}
+function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":btn.innerText;renderAll();syncPersonalHeadingHierarchy(page)}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
 if(!window.__atsrsLegalNavigationBound){
   window.__atsrsLegalNavigationBound=true;
@@ -738,7 +750,7 @@ const V23_TEXT={
 };
 function v23(k){return (V23_TEXT[lang]&&V23_TEXT[lang][k])||V23_TEXT.en[k]||k}
 function applyV23Language(){
-  if(typeof addDocTitle!=="undefined")addDocTitle.innerText=v23("addDoc");
+  if(typeof addDocTitle!=="undefined")addDocTitle.innerText=isPersonalMode()?"Add document":v23("addDoc");
   if(typeof addCertFlowNote!=="undefined")addCertFlowNote.innerText=v23("flowNote");
   if(typeof certScanModeBtn!=="undefined")certScanModeBtn.innerText=v23("scanTab");
   if(typeof certManualModeBtn!=="undefined")certManualModeBtn.innerText=v23("manualTab");
@@ -797,7 +809,7 @@ function validateManualCertificateForm(){
 const applyLanguageBaseV24=applyLanguage;
 applyLanguage=function(){applyLanguageBaseV24();applyV24Language();}
 const V25_TEXT={
-  en:{documents:"Documents",refs:"References",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",docStatus:"Document Overview",docStatusSub:"Uploaded career documents appear here without profession-specific requirements.",heroPersonal:"Your document vault",heroCompany:"Personnel document control center",heroPersonalText:"Store and track the documents relevant to your own profession from one dashboard.",heroCompanyText:"Review Personnel documents and expiry dates without imposing a universal document checklist.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload",uploadReference:"Upload",compliancePageSub:"Company Personnel status is based only on uploaded document dates.",reportsSub:"Generate a current Personnel document report from ATSRS server data.",documentRegister:"Document Register"}
+  en:{documents:"Documents",refs:"References",compliance:"Compliance",reports:"Reports",totalDocuments:"Total Documents",docStatus:"Document Overview",docStatusSub:"Uploaded career documents appear here without profession-specific requirements.",heroPersonal:"Your document vault",heroCompany:"Personnel document control center",heroPersonalText:"Store and track the documents relevant to your own profession from one dashboard.",heroCompanyText:"Review Personnel documents and expiry dates without imposing a universal document checklist.",docNoOptional:"Document / Certificate No (Optional)",countryOptional:"Country / Authority (Optional)",refsTitle:"References",refsSub:"Keep appraisal forms, reference letters and client feedback in one place.",appraisals:"Appraisals",appraisalsText:"Upload annual appraisals, performance reviews and evaluation forms.",references:"References",referenceLetters:"Reference Letters",referencesText:"Store reference letters and contact-ready career proof.",uploadAppraisal:"Upload",uploadReference:"Upload",compliancePageSub:"Company Personnel status is based only on uploaded document dates.",reportsSub:"Generate a current Personnel document report from ATSRS server data.",documentRegister:"Document Register"}
 };
 function v25(k){return (V25_TEXT[lang]&&V25_TEXT[lang][k])||V25_TEXT.en[k]||k}
 function v25Safe(value){return String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -835,7 +847,7 @@ function applyV25Language(){
   if(typeof refsSub!=="undefined")refsSub.innerText=v25('refsSub');
   if(typeof appraisalCardTitle!=="undefined")appraisalCardTitle.innerText=v25('appraisals');
   if(typeof appraisalCardText!=="undefined")appraisalCardText.innerText=v25('appraisalsText');
-  if(typeof referenceCardTitle!=="undefined")referenceCardTitle.innerText=v25('references');
+  if(typeof referenceCardTitle!=="undefined")referenceCardTitle.innerText=isPersonalMode()?v25('referenceLetters'):v25('references');
   if(typeof referenceCardText!=="undefined")referenceCardText.innerText=v25('referencesText');
   if(typeof uploadAppraisalBtn!=="undefined")uploadAppraisalBtn.innerText=v25('uploadAppraisal');
   if(typeof uploadReferenceBtn!=="undefined")uploadReferenceBtn.innerText=v25('uploadReference');
@@ -843,6 +855,7 @@ function applyV25Language(){
   if(typeof compliancePageSub!=="undefined")compliancePageSub.innerText=v25('compliancePageSub');
   if(typeof reportsTitle!=="undefined")reportsTitle.innerText=v25('reports');
   if(typeof reportsSub!=="undefined")reportsSub.innerText=v25('reportsSub');
+  syncPersonalHeadingHierarchy(localStorage.getItem("atsrs_current_page")||"intro");
 }
 const setUseModeBaseV25=setUseMode;setUseMode=function(mode){setUseModeBaseV25(mode);applyV25Mode();applyV25Language();renderAll();}
 const renderAllBaseV25=renderAll;renderAll=function(){renderAllBaseV25();renderV25DocumentStatus();}

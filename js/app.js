@@ -392,7 +392,7 @@
 
   function fixLabels(){
     var corporate=document.body.classList.contains('company-mode');
-    setText('addDocTitle',corporate?'Add company document':'Documents');
+    setText('addDocTitle',corporate?'Add company document':'Add document');
     setText('addCertFlowNote','Choose one method: Scan with AI or Manual Upload.');
     setText('certScanModeBtn','Scan with AI');
     setText('certManualModeBtn','Manual Upload');

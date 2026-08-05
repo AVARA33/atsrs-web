@@ -26,6 +26,8 @@ assert.match(css, /box-shadow:0 18px 48px rgba\(0,0,0,\.22\)/);
 assert.match(css, /> \.main > #pageTitle,[\s\S]*?> \.main > section/);
 assert.match(css, /width:min\(100%,1440px\)/);
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode[\s\S]*?background:#f8fafc/);
+assert.match(css, /body\.personal-mode #refsPage > \.panel > #refsTitle,[\s\S]*?#accountTitle,[\s\S]*?atsrs-personal-legal-route[\s\S]*?display:none!important/);
+assert.match(css, /#refsPage > \.panel > #refsSub,[\s\S]*?#userEmail[\s\S]*?margin-top:0/);
 assert.match(css, /@media\(max-width:800px\)[\s\S]*?width:calc\(100% - 16px\)/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?:is\([\s\S]*?#profilePage[\s\S]*?\) :where\(button,\[role="button"\],summary\)[\s\S]*?height:auto!important[\s\S]*?min-height:44px!important/);
 assert.match(css, /:where\(select,textarea,input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\)\)\{[\s\S]*?min-height:44px!important/);
@@ -33,7 +35,7 @@ assert.match(css, /#profilePage #accountGeneralTab #saveProfileBtn\{[\s\S]*?heig
 assert.doesNotMatch(css, /body\.company-mode/);
 assert.doesNotMatch(css, /linear-gradient|radial-gradient/);
 
-assert.match(index, /href="css\/personal-workspace-surface\.css\?v=428"/);
-assert.match(index, /data-atsrs-build="V428"/);
+assert.match(index, /href="css\/personal-workspace-surface\.css\?v=429"/);
+assert.match(index, /data-atsrs-build="V429"/);
 
 console.log('Personal Workspace shared surface contract tests passed');

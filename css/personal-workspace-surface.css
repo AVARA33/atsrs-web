@@ -33,6 +33,17 @@ body.personal-mode #app.app:not(.hidden) > .main > #pageTitle{
   margin-bottom:16px;
 }
 
+body.personal-mode #refsPage > .panel > #refsTitle,
+body.personal-mode #profilePage > .panel > #accountTitle,
+body.personal-mode.atsrs-personal-legal-route #app.app:not(.hidden) > .main > #pageTitle{
+  display:none!important;
+}
+
+body.personal-mode #refsPage > .panel > #refsSub,
+body.personal-mode #profilePage > .panel > #userEmail{
+  margin-top:0;
+}
+
 html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main::before{
   background:#f8fafc;
   border-color:var(--atsrs-border,#d6e0e8);
