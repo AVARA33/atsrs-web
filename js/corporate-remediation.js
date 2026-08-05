@@ -19,7 +19,8 @@
   function syncPageTitle(){
     var active=document.querySelector('#app .nav button.active');
     if(!active)return;
-    var label=active.textContent.trim();
+    var page=window.localStorage&&window.localStorage.getItem('atsrs_current_page')||'';
+    var label=page==='privacy'?'Privacy Notice':page==='dataRights'?'Data Rights':active.textContent.trim();
     if(companyMode()&&active.id==='navProfile')label='Corporate Account';
     if(label)setText('pageTitle',label);
   }

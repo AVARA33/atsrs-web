@@ -7,6 +7,8 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'corporate-remediation.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'corporate-remediation.js'), 'utf8');
+assert.match(runtime, /window\.localStorage&&window\.localStorage\.getItem\('atsrs_current_page'\)/);
+assert.match(runtime, /page==='privacy'\?'Privacy Notice':page==='dataRights'\?'Data Rights'/);
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 const talent = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 const serverData = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');

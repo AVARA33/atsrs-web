@@ -70,7 +70,8 @@ assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindo
 assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
 assert.match(storage,/page==="privacy"\?"Privacy Notice":page==="dataRights"\?"Data Rights"/);
-assert.match(index,/data-atsrs-build="V423"/);
+assert.match(index,/data-atsrs-build="V424"/);
+assert.match(index,/src="js\/corporate-remediation\.js\?v=424"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index,/src="js\/storage\.js\?v=423"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
