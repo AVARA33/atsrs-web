@@ -67,6 +67,11 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main::befor
     height:auto!important;
     min-height:44px!important;
   }
+
+  body.personal-mode #app.app:not(.hidden) > .main > #profilePage #accountGeneralTab #saveProfileBtn{
+    height:auto!important;
+    min-height:44px!important;
+  }
 }
 
 @media(max-width:430px){
