@@ -462,8 +462,10 @@ function syncPersonalHeadingHierarchy(page){
   pageTitle.setAttribute("role","heading");pageTitle.setAttribute("aria-level","1");
   const section=document.getElementById(page+"Page");
   if(!section)return;
-  section.querySelectorAll("h3").forEach(h=>{h.setAttribute("role","heading");h.setAttribute("aria-level","2")});
-  section.querySelectorAll("h4").forEach(h=>{h.setAttribute("role","heading");h.setAttribute("aria-level","3")});
+  section.querySelectorAll("h3,h4").forEach(h=>{
+    const nestedReferenceHeading=page==="refs"&&h.tagName==="H4";
+    h.setAttribute("role","heading");h.setAttribute("aria-level",nestedReferenceHeading?"3":"2");
+  });
 }
 function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pageTitle.innerText=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":btn.innerText;renderAll();syncPersonalHeadingHierarchy(page)}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}

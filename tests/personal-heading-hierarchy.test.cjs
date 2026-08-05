@@ -24,8 +24,9 @@ assert.doesNotMatch(css, /body\.company-mode[\s\S]*?#refsTitle[\s\S]*?display:no
 
 assert.match(storage, /function syncPersonalHeadingHierarchy\(page\)/);
 assert.match(storage, /pageTitle\.setAttribute\("role","heading"\);pageTitle\.setAttribute\("aria-level","1"\)/);
-assert.match(storage, /section\.querySelectorAll\("h3"\)[\s\S]*?"aria-level","2"/);
-assert.match(storage, /section\.querySelectorAll\("h4"\)[\s\S]*?"aria-level","3"/);
+assert.match(storage, /section\.querySelectorAll\("h3,h4"\)/);
+assert.match(storage, /nestedReferenceHeading=page==="refs"&&h\.tagName==="H4"/);
+assert.match(storage, /"aria-level",nestedReferenceHeading\?"3":"2"/);
 assert.match(storage, /atsrs-personal-legal-route/);
 assert.match(storage, /renderAll\(\);syncPersonalHeadingHierarchy\(page\)/);
 assert.match(storage, /syncPersonalHeadingHierarchy\(localStorage\.getItem\("atsrs_current_page"\)\|\|"intro"\)/);
