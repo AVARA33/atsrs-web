@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Recipient links visual harness</title>
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/recipient-links.css">
+  <style>
+    body{margin:0;padding:24px;background:var(--app-canvas,#071727);color:var(--text,#e7eef6);font-family:Arial,sans-serif}
+    main{max-width:1180px;margin:0 auto}
+    button,input,select{font:inherit}
+    #toggleTheme{margin:0 0 16px}
+  </style>
+</head>
+<body>
+<main>
+  <button id="toggleTheme" type="button">Toggle theme</button>
+  <section class="recipient-sharing-section" aria-labelledby="recipientLinksHeading">
+    <div class="recipient-section-heading">
+      <div>
+        <h4 id="recipientLinksHeading">Recipient links</h4>
+        <p>Create a private link for each person or company, with its own documents, expiry date and access controls.</p>
+      </div>
+      <button id="openModal" type="button">Create recipient link</button>
+    </div>
+    <div class="recipient-entitlement-note">Up to 5 active recipient links are available for this account.</div>
+    <div class="recipient-links-list">
+      <article class="recipient-link-card">
+        <div><b>Synthetic recipient</b><small>person · s***@example.invalid</small></div>
+        <div><span>2 documents</span><small>Preview on · Download on</small></div>
+        <div><span class="recipient-link-status active">active</span><small>Expires 13 Aug 2026</small></div>
+        <div class="recipient-link-actions"><button class="secondary">Copy</button><button class="secondary">Edit access</button><button class="action">Revoke</button></div>
+      </article>
+    </div>
+    <div class="recipient-download-requests">
+      <h5>Pending download requests</h5>
+      <article class="recipient-request-card">
+        <div><b>Synthetic recipient</b><small>2 requested documents · 06 Aug 2026</small></div>
+        <div class="recipient-link-actions"><button class="secondary">Decline</button><button>Approve</button></div>
+      </article>
+    </div>
+  </section>
+</main>
+<div id="recipientLinkModal" class="recipient-link-modal hidden" role="dialog" aria-modal="true" aria-labelledby="recipientLinkModalTitle">
+  <div class="recipient-link-backdrop" data-close></div>
+  <div class="recipient-link-dialog" tabindex="-1">
+    <button type="button" class="recipient-link-close" data-close aria-label="Close">&times;</button>
+    <h2 id="recipientLinkModalTitle">Create recipient link</h2>
+    <p class="sub">The recipient must verify the exact email below before any profile or document details are shown.</p>
+    <div class="recipient-form-grid">
+      <label>Recipient label<input value="Synthetic recipient"></label>
+      <label>Recipient email<input value="synthetic@example.invalid"></label>
+      <label>Expiry<select><option>7 days</option></select></label>
+    </div>
+    <div class="recipient-modal-actions"><button>Create secure link</button><button class="secondary" data-close>Cancel</button></div>
+  </div>
+</div>
+<script>
+  const modal=document.getElementById('recipientLinkModal');
+  document.getElementById('toggleTheme').addEventListener('click',()=>{
+    const root=document.documentElement;
+    root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';
+  });
+  document.getElementById('openModal').addEventListener('click',()=>modal.classList.remove('hidden'));
+  document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>modal.classList.add('hidden')));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')modal.classList.add('hidden')});
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V432" data-atsrs-update="6 Aug 2026">
+<html lang="en" data-atsrs-build="V433" data-atsrs-update="6 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,8 @@ try{
   document.documentElement.style.colorScheme=initialTheme;
   var themeMeta=document.querySelector('meta[name="theme-color"]');
   if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#f3f6f9':'#04101d');
-  if(new URLSearchParams(window.location.search).get('share')){
+  if(new URLSearchParams(window.location.search).get('share')||
+     /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash)){
     document.documentElement.classList.add('atsrs-public-share-mode');
   }
 }catch(error){}
@@ -40,6 +41,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/product-experience.css?v=417">
 <link rel="stylesheet" href="css/date-picker.css?v=375">
 <link rel="stylesheet" href="css/share-profile.css?v=375">
+<link rel="stylesheet" href="css/recipient-links.css?v=433">
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=375">
 <link rel="stylesheet" href="css/talent-directory.css?v=383">
@@ -995,7 +997,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div><span id="shareBadge" class="pill">PRIVACY &amp; SHARING</span><h3 id="shareTitle">Share My ATSRS Profile</h3></div>
       <span class="preview-only-badge">PREVIEW ONLY BY DEFAULT</span>
     </div>
-    <p id="shareSub" class="sub">Create a time-limited recruiter link. Downloads require verified email and your approval.</p>
+    <p id="shareSub" class="sub">Create time-limited links for controlled profile and document sharing.</p>
+    <section class="recipient-sharing-section general-sharing-section" aria-labelledby="generalShareHeading">
+    <div class="recipient-section-heading">
+      <div><h4 id="generalShareHeading">General link</h4><p>One link for general sharing. Everyone receives the same documents and expiry date.</p></div>
+    </div>
     <div id="shareProfileStatus" class="share-live-status">Private. No recruiter link has been created yet.</div>
     <div class="share-actions">
       <button id="manageAccessBtn" onclick="toggleShareAccess()">Configure Share Link</button>
@@ -1033,6 +1039,22 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div id="shareAnalytics" class="share-analytics"></div>
       <div id="shareRequestHistory" class="share-request-list"><div class="access-empty">No access history yet.</div></div>
     </div>
+    </section>
+    <section class="recipient-sharing-section" aria-labelledby="recipientLinksHeading">
+      <div class="recipient-section-heading">
+        <div>
+          <h4 id="recipientLinksHeading">Recipient links</h4>
+          <p>Create a private link for each person or company, with its own documents, expiry date and access controls.</p>
+        </div>
+        <button id="createRecipientLinkBtn" type="button" class="secondary" onclick="openRecipientLinkModal()" disabled>Create recipient link</button>
+      </div>
+      <div id="recipientLinksEntitlement" class="recipient-entitlement-note">Checking availability…</div>
+      <div id="recipientLinksMessage" class="recipient-links-message" role="status" aria-live="polite"></div>
+      <div id="recipientLinksList" class="recipient-links-list" aria-live="polite">
+        <div class="access-empty">No recipient links yet.</div>
+      </div>
+      <div id="recipientDownloadRequests" class="recipient-download-requests" aria-live="polite"></div>
+    </section>
   </div>
 </div>
 </div>
@@ -1046,6 +1068,25 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <a class="shared-profile-brand" href="https://atsrs.com/">ATSRS</a>
       <span class="shared-profile-trust">Secure owner-controlled profile</span>
     </header>
+    <section id="recipientShareVerification" class="recipient-verification hidden" aria-labelledby="recipientVerificationTitle">
+      <span class="shared-profile-kicker">PRIVATE RECIPIENT LINK</span>
+      <h1 id="recipientVerificationTitle">Verify your email</h1>
+      <p>Enter the recipient email address for this private link. No profile or document information is shown before verification.</p>
+      <div id="recipientEmailStep" class="recipient-verification-step">
+        <label for="recipientViewerEmail">Recipient email</label>
+        <input id="recipientViewerEmail" type="email" autocomplete="email" maxlength="254">
+        <button id="recipientSendOtpBtn" type="button" onclick="sendRecipientOtp()">Send verification code</button>
+      </div>
+      <div id="recipientOtpStep" class="recipient-verification-step hidden">
+        <label for="recipientViewerOtp">6-digit code</label>
+        <input id="recipientViewerOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}">
+        <div class="recipient-verification-actions">
+          <button id="recipientVerifyOtpBtn" type="button" onclick="verifyRecipientOtp()">Verify and continue</button>
+          <button type="button" class="secondary" onclick="resetRecipientVerification()">Use another email</button>
+        </div>
+      </div>
+      <div id="recipientVerificationMessage" class="recipient-links-message" role="status" aria-live="polite"></div>
+    </section>
     <section id="sharedProfileLoading" class="shared-profile-loading">
       <div class="atsrs-spinner" aria-hidden="true">
         <span></span><span></span><span></span><span></span>
@@ -1078,6 +1119,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div><h2>Shared profile files</h2><span id="sharedProfileDocumentCount">0 shared files</span></div>
         <div class="shared-profile-head-actions"><span id="sharedProfileExpiry">Preview link active</span><button id="requestAllDocumentsBtn" type="button" onclick="openDownloadRequest('all')">Request All Files</button></div>
       </div>
+      <div id="recipientDownloadStatus" class="recipient-download-status hidden" role="status" aria-live="polite"></div>
       <nav id="sharedProfileSummary" class="shared-document-summary hidden" aria-label="Shared document summary">
         <div class="shared-document-summary-head">
           <div><span class="shared-profile-kicker">QUICK SUMMARY</span><h3>Files at a glance</h3></div>
@@ -1102,6 +1144,55 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </section>
   </div>
 </main>
+
+<div id="recipientLinkModal" class="recipient-link-modal hidden" role="dialog" aria-modal="true" aria-labelledby="recipientLinkModalTitle">
+  <div class="recipient-link-backdrop" data-recipient-modal-close></div>
+  <div class="recipient-link-dialog" tabindex="-1">
+    <button type="button" class="recipient-link-close" data-recipient-modal-close aria-label="Close">&times;</button>
+    <span class="pill">PRIVATE SHARING</span>
+    <h2 id="recipientLinkModalTitle">Create recipient link</h2>
+    <p class="sub">The recipient must verify the exact email below before any profile or document details are shown.</p>
+    <form id="recipientLinkForm" novalidate>
+      <input id="recipientShareId" type="hidden">
+      <input id="recipientShareVersion" type="hidden">
+      <div class="recipient-form-grid">
+        <fieldset class="recipient-type-field">
+          <legend>Recipient type</legend>
+          <label><input type="radio" name="recipientType" value="person" checked> Person</label>
+          <label><input type="radio" name="recipientType" value="company"> Company</label>
+        </fieldset>
+        <label>Recipient or company label<input id="recipientLabel" maxlength="140" required autocomplete="off"></label>
+        <label>Recipient email<input id="recipientEmail" type="email" maxlength="254" required autocomplete="email"></label>
+        <label>Link expiry
+          <select id="recipientExpiryPreset">
+            <option value="24h">24 hours</option>
+            <option value="7d" selected>7 days</option>
+            <option value="30d">30 days</option>
+            <option value="custom">Custom date and time</option>
+          </select>
+        </label>
+        <label id="recipientCustomExpiryLabel" class="hidden">Custom expiry
+          <input id="recipientCustomExpiry" type="datetime-local">
+        </label>
+      </div>
+      <fieldset class="recipient-access-field">
+        <legend>Access controls</legend>
+        <label><input id="recipientAllowPreview" type="checkbox" checked> Preview documents after email verification</label>
+        <label><input id="recipientAllowDownload" type="checkbox"> Allow owner-approved download requests</label>
+      </fieldset>
+      <fieldset class="recipient-documents-field">
+        <legend>Documents</legend>
+        <div id="recipientDocumentChoices" class="share-document-choices"><div class="preview-box">Loading documents…</div></div>
+      </fieldset>
+      <div id="recipientReviewSummary" class="recipient-review-summary"></div>
+      <div id="recipientFormMessage" class="recipient-links-message" role="status" aria-live="polite"></div>
+      <div class="recipient-modal-actions">
+        <button id="recipientSubmitBtn" type="submit">Create secure link</button>
+        <button type="button" class="secondary" data-recipient-modal-close>Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <div id="shareRequestModal" class="share-request-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shareRequestTitle">
   <div class="share-request-backdrop" onclick="closeDownloadRequest()"></div>
@@ -1258,6 +1349,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/product-experience.js?v=375"></script>
 <script src="js/date-picker.js?v=375"></script>
 <script src="js/share-profile.js?v=409"></script>
+<script src="js/recipient-links.js?v=433"></script>
 <script src="js/boot-refresh.js?v=412"></script>
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=416"></script>
