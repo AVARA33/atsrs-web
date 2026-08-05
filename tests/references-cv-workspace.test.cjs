@@ -17,6 +17,7 @@ assert.equal((html.match(/id="generateCVBtn"/g)||[]).length, 1);
 assert.match(css, /body\.personal-mode #refsPage \.cv-card\{[\s\S]*?grid-template-columns:minmax\(0,1\.25fr\) minmax\(280px,\.75fr\)!important;/);
 assert.match(css, /@media\(max-width:720px\)\{[\s\S]*?body\.personal-mode #refsPage \.cv-card\{[\s\S]*?grid-template-columns:1fr!important;/);
 assert.match(css, /body\.personal-mode #refsPage \.cv-actions button,[\s\S]*?min-height:40px!important;/);
+assert.match(css, /body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-actions button,[\s\S]*?min-height:40px!important;/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?min-height:44px!important;/);
 assert.match(html, /href="css\/account\.css\?v=419"/);
 

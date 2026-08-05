@@ -1951,6 +1951,7 @@ body.personal-mode #refsPage .generated-cv-actions{
   gap:8px!important;
 }
 body.personal-mode #refsPage .cv-actions button,
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button,
 body.personal-mode #refsPage .generated-cv-actions button,
 body.personal-mode #refsPage #generateCVBtn{
   width:auto!important;
@@ -1978,6 +1979,7 @@ body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
     padding:16px!important;
   }
   body.personal-mode #refsPage .cv-actions button,
+  body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button,
   body.personal-mode #refsPage .generated-cv-actions button,
   body.personal-mode #refsPage #generateCVBtn{
     min-height:44px!important;
