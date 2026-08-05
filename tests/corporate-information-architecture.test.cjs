@@ -21,13 +21,13 @@ assert.deepEqual(ids, [
 
 assert.match(html, /id="navCredentials" class="company-only"[^>]*>Company Credentials</);
 assert.match(html, /id="navIntro" class="nav-utility active"[^>]*>Product Updates</);
-assert.match(html, /id="navPrivacy" class="nav-utility nav-legal-link" href="\/privacy\.html">Privacy Notice<\/a>/);
-assert.match(html, /id="navDataRights" class="nav-utility nav-legal-link" href="\/data-deletion\.html">Data Rights<\/a>/);
+assert.match(html, /id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy Notice<\/button>/);
+assert.match(html, /id="navDataRights" class="nav-utility nav-legal-link" type="button" onclick="showPage\('dataRights',this\)">Data Rights<\/button>/);
 assert.ok(html.indexOf('id="navIntro"') < html.indexOf('id="navPrivacy"'));
 assert.ok(html.indexOf('id="navPrivacy"') < html.indexOf('id="navDataRights"'));
 assert.match(html, /src="js\/talent-directory\.js\?v=416"/);
 assert.match(html, /src="js\/corporate-information-architecture\.js\?v=413"/);
-assert.match(html, /href="css\/corporate-information-architecture\.css\?v=416"/);
+assert.match(html, /href="css\/corporate-information-architecture\.css\?v=417"/);
 assert.equal((html.match(/data-company-credentials-tab="documents"/g) || []).length, 2);
 assert.equal((html.match(/data-company-credentials-tab="references"/g) || []).length, 2);
 

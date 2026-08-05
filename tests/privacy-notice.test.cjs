@@ -37,6 +37,9 @@ for(const page of [privacy,deletion]){
   assert.match(page,/localStorage\.getItem\('atsrs_theme'\)/);
   assert.match(page,/prefers-color-scheme: light/);
   assert.match(page,/document\.documentElement\.dataset\.theme=theme/);
+  assert.match(page,/new URLSearchParams\(window\.location\.search\)\.get\('embedded'\)==='1'/);
+  assert.match(page,/window\.addEventListener\('storage'/);
+  assert.match(page,/html\[data-embedded="true"\] \.site-header\{display:none\}/);
   assert.match(page,/html\[data-theme="light"\]/);
   assert.doesNotMatch(page,/@media\(prefers-color-scheme:light\)/);
   assert.ok(
@@ -46,12 +49,16 @@ for(const page of [privacy,deletion]){
 }
 
 assert.doesNotMatch(index,/PRIVACY &amp; LEGAL/);
-assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" href="\/privacy\.html">Privacy Notice<\/a>/);
-assert.match(index,/id="navDataRights" class="nav-utility nav-legal-link" href="\/data-deletion\.html">Data Rights<\/a>/);
+assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy Notice<\/button>/);
+assert.match(index,/id="navDataRights" class="nav-utility nav-legal-link" type="button" onclick="showPage\('dataRights',this\)">Data Rights<\/button>/);
 assert.ok(index.indexOf('id="navIntro"') < index.indexOf('id="navPrivacy"'));
 assert.ok(index.indexOf('id="navPrivacy"') < index.indexOf('id="navDataRights"'));
-assert.match(index,/data-atsrs-build="V416"/);
-assert.match(index,/href="css\/product-experience\.css\?v=416"/);
+assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="\/privacy\.html\?embedded=1"/);
+assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="\/data-deletion\.html\?embedded=1"/);
+assert.doesNotMatch(privacy,/<nav class="header-links"/);
+assert.doesNotMatch(deletion,/<nav class="header-links"/);
+assert.match(index,/data-atsrs-build="V417"/);
+assert.match(index,/href="css\/product-experience\.css\?v=417"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');

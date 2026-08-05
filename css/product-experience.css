@@ -1,5 +1,18 @@
 /* ATSRS V268: product updates, read-only dashboard, and in-page file preview. */
 body.atsrs-preview-open{overflow:hidden}
+.legal-app-page{
+  width:100%;
+  min-width:0;
+}
+.legal-app-frame{
+  display:block;
+  width:100%;
+  height:calc(100dvh - 142px);
+  min-height:680px;
+  border:0;
+  border-radius:16px;
+  background:var(--atsrs-bg,#07111d);
+}
 
 /* Replace the old marketing/demo content with an honest in-app roadmap. */
 #introPage>.intro-hero:not(.updates-hero),
@@ -74,6 +87,11 @@ body.atsrs-preview-open{overflow:hidden}
 @media(max-width:640px){
   #introPage .updates-hero,.roadmap-section{padding:18px}
   .roadmap-grid{grid-template-columns:1fr}
+  .legal-app-frame{
+    height:calc(100dvh - 150px);
+    min-height:560px;
+    border-radius:12px;
+  }
   .file-preview-modal{padding:0}
   .file-preview-dialog{width:100vw;height:100dvh;border:0;border-radius:0}
   .file-preview-head{padding:12px}
