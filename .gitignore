@@ -1,0 +1,11 @@
+# Backup payloads and local credentials must never enter source control.
+*.atsrsbak
+*.dump
+*.sql.gz
+backup-output/
+restore-work/
+secrets.clixml
+*.secret
+
+# Supabase CLI local state.
+supabase/.temp/
