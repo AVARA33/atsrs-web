@@ -1,4 +1,4 @@
-/* V435: one flat, readable Personal Workspace surface system in both themes. */
+/* V436: one flat, readable Personal Workspace surface system in both themes. */
 body.personal-mode #app.app:not(.hidden){
   --atsrs-personal-space-1:4px;
   --atsrs-personal-space-2:8px;
@@ -164,6 +164,16 @@ body.personal-mode #app.app:not(.hidden) > .main > :is(
   outline-offset:3px!important;
 }
 
+/* Keep the shell switch touch-safe without changing Corporate or auth. */
+body.personal-mode #atsrsThemeToggle{
+  height:44px!important;
+  min-height:44px!important;
+}
+
+body.personal-mode #atsrsThemeToggle .atsrs-theme-thumb{
+  top:11px;
+}
+
 body.personal-mode #refsPage .atsrs-v134-career-card{
   height:auto!important;
   min-height:0!important;
@@ -177,6 +187,13 @@ body.personal-mode #refsPage .atsrs-v134-career-card :where(h3,.atsrs-v134-desc)
 body.personal-mode #refsPage .atsrs-v134-career-card .atsrs-v134-desc{
   margin-bottom:var(--atsrs-personal-card-gap)!important;
   color:var(--atsrs-personal-muted)!important;
+}
+
+body.personal-mode #refsPage .atsrs-v156-box-title{
+  height:auto!important;
+  min-height:0!important;
+  line-height:1.35!important;
+  overflow:visible!important;
 }
 
 body.personal-mode #refsPage :where(.cv-main-panel,.cv-beta-box){

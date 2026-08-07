@@ -9,7 +9,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V435');
+assert.equal(version, 'V436');
 assert.equal(update, '7 Aug 2026');
 
 for (const asset of [
@@ -44,8 +44,8 @@ assert.match(index, /src="js\/app\.js\?v=430"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=412"/);
 assert.match(index, /src="js\/storage\.js\?v=431"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
-assert.match(index, /href="css\/personal-workspace-surface\.css\?v=435"/);
-assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=435"/);
+assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
+assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=436"/);
 assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 
@@ -55,4 +55,4 @@ assert.doesNotMatch(runtime, /ATSRS V385|28 Jul 2026/);
 assert.doesNotMatch(index, /ATSRS V385|Last Update: 28 Jul 2026/);
 assert.match(runbook, /Frontend release: V390/);
 
-console.log('V435 build marker consistency tests passed');
+console.log('V436 build marker consistency tests passed');
