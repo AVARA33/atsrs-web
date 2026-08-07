@@ -18,24 +18,31 @@ for (const page of [
   assert.match(index, new RegExp(`<section id="${page}"`), `${page} must remain a routed section`);
 }
 
-assert.match(css, /body\.personal-mode #app\.app:not\(\.hidden\) > \.main::before/);
-assert.match(css, /background:var\(--atsrs-panel2,#0b1825\)/);
-assert.match(css, /border:1px solid var\(--atsrs-border,#264058\)/);
-assert.match(css, /border-radius:20px/);
-assert.match(css, /box-shadow:0 18px 48px rgba\(0,0,0,\.22\)/);
+const outerRule = css.match(/body\.personal-mode #app\.app:not\(\.hidden\) > \.main::before\{([^}]*)\}/)?.[1];
+assert.ok(outerRule, 'Personal Workspace outer pseudo-surface rule must exist');
+assert.match(outerRule, /display:none!important/);
+assert.doesNotMatch(outerRule, /(?:background|border|box-shadow):/);
 assert.match(css, /> \.main > #pageTitle,[\s\S]*?> \.main > section/);
 assert.match(css, /width:min\(100%,1440px\)/);
-assert.match(css, /html\[data-theme="light"\] body\.personal-mode[\s\S]*?background:#f8fafc/);
+assert.doesNotMatch(css, /html\[data-theme="light"\] body\.personal-mode[^{}]*> \.main::before\s*\{/);
 assert.match(css, /body\.personal-mode #refsPage > \.panel > #refsTitle,[\s\S]*?#accountTitle,[\s\S]*?atsrs-personal-legal-route[\s\S]*?display:none!important/);
 assert.match(css, /#refsPage > \.panel > #refsSub,[\s\S]*?#userEmail[\s\S]*?margin-top:0/);
+assert.match(css, /#certificatesPage > \.panel,[\s\S]*?#refsPage > \.panel,[\s\S]*?#profilePage > \.panel,[\s\S]*?background:transparent!important/);
+assert.match(css, /#introPage \.updates-hero,[\s\S]*?#introPage \.roadmap-section[\s\S]*?background:transparent!important/);
+assert.match(css, /--atsrs-personal-card-padding:var\(--atsrs-personal-space-4\)/);
+assert.match(css, /--atsrs-personal-line-body:1\.5/);
+assert.match(css, /#refsPage \.atsrs-v134-career-card\{[\s\S]*?height:auto!important[\s\S]*?min-height:0!important/);
+assert.match(css, /#profilePage \.work-availability-grid > label,[\s\S]*?grid-template-rows:auto minmax\(44px,auto\)!important[\s\S]*?height:auto!important/);
+assert.match(css, /#profileAvailabilityStatus\{[\s\S]*?padding-right:36px!important/);
 assert.match(css, /@media\(max-width:800px\)[\s\S]*?width:calc\(100% - 16px\)/);
-assert.match(css, /@media\(max-width:720px\)[\s\S]*?:is\([\s\S]*?#profilePage[\s\S]*?\) :where\(button,\[role="button"\],summary\)[\s\S]*?height:auto!important[\s\S]*?min-height:44px!important/);
+assert.match(css, /:where\(button,\[role="button"\],summary\)\{[\s\S]*?min-height:44px!important[\s\S]*?height:auto!important/);
 assert.match(css, /:where\(select,textarea,input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\)\)\{[\s\S]*?min-height:44px!important/);
 assert.match(css, /#profilePage #accountGeneralTab #saveProfileBtn\{[\s\S]*?height:auto!important[\s\S]*?min-height:44px!important/);
 assert.doesNotMatch(css, /body\.company-mode/);
 assert.doesNotMatch(css, /linear-gradient|radial-gradient/);
 
-assert.match(index, /href="css\/personal-workspace-surface\.css\?v=430"/);
-assert.match(index, /data-atsrs-build="V434"/);
+assert.match(index, /href="css\/personal-workspace-surface\.css\?v=435"/);
+assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=435"/);
+assert.match(index, /data-atsrs-build="V435"/);
 
 console.log('Personal Workspace shared surface contract tests passed');

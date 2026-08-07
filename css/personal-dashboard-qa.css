@@ -10,8 +10,8 @@ body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) > .main 
 body.personal-mode #dashboardPage{
   --dashboard-muted:#b7c4d3;
   --dashboard-error:#fecaca;
-  --dashboard-surface:rgba(11,24,37,.72);
-  --dashboard-border:rgba(54,82,108,.72);
+  --dashboard-surface:var(--atsrs-personal-functional-surface,rgba(11,24,37,.72));
+  --dashboard-border:var(--atsrs-personal-functional-border,rgba(54,82,108,.72));
   width:min(100%,1440px)!important;
   padding:0 0 28px!important;
 }
@@ -62,16 +62,19 @@ body.personal-mode #dashboardPage .stats-grid{
 }
 
 body.personal-mode #dashboardPage .stats-grid > .card{
-  min-height:104px!important;
-  padding:14px!important;
+  min-height:0!important;
+  padding:var(--atsrs-personal-card-padding,16px)!important;
   border:1px solid var(--dashboard-border)!important;
   border-radius:14px!important;
   background:var(--dashboard-surface)!important;
+  display:flex;
+  flex-direction:column;
+  gap:var(--atsrs-personal-space-2,8px);
 }
 
 body.personal-mode #dashboardPage .stats-grid .card p{
-  min-height:32px;
-  margin:0 0 6px!important;
+  min-height:0!important;
+  margin:0!important;
   color:var(--dashboard-muted)!important;
   font-size:12px!important;
   line-height:1.35!important;
@@ -92,7 +95,7 @@ body.personal-mode #dashboardPage .stats-grid .card .stat.is-zero-risk.danger{
 
 body.personal-mode #dashboardPage .dashboard-stat-note{
   display:block;
-  margin-top:5px;
+  margin-top:var(--atsrs-personal-space-1,4px);
   color:var(--dashboard-muted);
   font-size:11px;
   line-height:1.35;
@@ -106,9 +109,9 @@ body.personal-mode #dashboardPage .dashboard-snapshot-panel{
 body.personal-mode #dashboardPage .dashboard-snapshot-panel .snapshot-card{
   display:grid;
   grid-template-columns:auto minmax(0,1fr);
-  gap:8px 18px;
+  gap:var(--atsrs-personal-space-2,8px) var(--atsrs-personal-space-4,16px);
   align-items:center;
-  padding:16px!important;
+  padding:var(--atsrs-personal-card-padding,16px)!important;
   border:1px solid var(--dashboard-border)!important;
   border-radius:14px!important;
   background:var(--dashboard-surface)!important;
@@ -140,19 +143,25 @@ html[data-theme="light"] body.personal-mode #dashboardPage #snapShareHelp{
 
 body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel){
   margin:0 0 12px!important;
-  padding:16px!important;
+  padding:var(--atsrs-personal-card-padding,16px)!important;
   border:1px solid var(--dashboard-border)!important;
   border-radius:14px!important;
   background:var(--dashboard-surface)!important;
+  height:auto!important;
+  min-height:0!important;
+}
+
+body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel) > * + *{
+  margin-top:var(--atsrs-personal-card-gap,12px)!important;
 }
 
 body.personal-mode #dashboardPage .dashboard-priority-alerts-panel .risk-list{
-  margin-top:8px!important;
+  margin-top:var(--atsrs-personal-card-gap,12px)!important;
 }
 
 body.personal-mode #dashboardPage .dashboard-priority-alerts-panel .risk-item{
   min-height:0!important;
-  padding:8px 0 0!important;
+  padding:0!important;
   border:0!important;
 }
 
@@ -168,9 +177,11 @@ body.personal-mode #dashboardPage .atsrs-notification-actions:not(:has(button:no
 body.personal-mode #dashboardPage .atsrs-notification-empty,
 body.personal-mode #dashboardPage .access-empty{
   min-height:0!important;
-  padding:10px 0!important;
+  padding:var(--atsrs-personal-space-2,8px) 0 0!important;
   border:0!important;
   background:transparent!important;
+  line-height:var(--atsrs-personal-line-body,1.5)!important;
+  overflow-wrap:anywhere;
 }
 
 body.personal-mode #dashboardPage .talent-messages-head,
@@ -183,7 +194,7 @@ body.personal-mode #dashboardPage .atsrs-notification-head{
 body.personal-mode #dashboardPage .talent-mailbox-tools{
   display:flex!important;
   flex-wrap:wrap!important;
-  gap:8px!important;
+  gap:var(--atsrs-personal-space-2,8px)!important;
 }
 
 body.personal-mode.atsrs-personal-dashboard-route #sidebarToggleBtn,
@@ -238,8 +249,8 @@ body.personal-mode #dashboardPage :where(button,[role="button"],summary,a,input,
     gap:8px!important;
   }
   body.personal-mode #dashboardPage .stats-grid > .card{
-    min-height:86px!important;
-    padding:11px!important;
+    min-height:0!important;
+    padding:var(--atsrs-personal-card-padding,14px)!important;
   }
   body.personal-mode #dashboardPage .stats-grid .card p{
     min-height:0;

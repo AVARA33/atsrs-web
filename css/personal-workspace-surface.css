@@ -1,23 +1,32 @@
-/* V425: one shared Personal Workspace content surface across every primary route. */
+/* V435: one flat, readable Personal Workspace surface system in both themes. */
+body.personal-mode #app.app:not(.hidden){
+  --atsrs-personal-space-1:4px;
+  --atsrs-personal-space-2:8px;
+  --atsrs-personal-space-3:12px;
+  --atsrs-personal-space-4:16px;
+  --atsrs-personal-space-5:20px;
+  --atsrs-personal-space-6:24px;
+  --atsrs-personal-card-padding:var(--atsrs-personal-space-4);
+  --atsrs-personal-card-gap:var(--atsrs-personal-space-3);
+  --atsrs-personal-line-heading:1.25;
+  --atsrs-personal-line-body:1.5;
+  --atsrs-personal-muted:#b7c4d3;
+  --atsrs-personal-functional-surface:rgba(11,24,37,.72);
+  --atsrs-personal-functional-border:rgba(54,82,108,.72);
+}
+
+html[data-theme="light"] body.personal-mode #app.app:not(.hidden){
+  --atsrs-personal-muted:#465b70;
+  --atsrs-personal-functional-surface:rgba(255,255,255,.82);
+  --atsrs-personal-functional-border:#d6e0e8;
+}
+
 body.personal-mode #app.app:not(.hidden) > .main{
   isolation:isolate;
 }
 
 body.personal-mode #app.app:not(.hidden) > .main::before{
-  content:"";
-  position:absolute;
-  z-index:0;
-  top:72px;
-  bottom:16px;
-  left:50%;
-  width:min(calc(100% - 44px),1488px);
-  border:1px solid var(--atsrs-border,#264058);
-  border-radius:20px;
-  background:var(--atsrs-panel2,#0b1825);
-  background-image:none;
-  box-shadow:0 18px 48px rgba(0,0,0,.22);
-  pointer-events:none;
-  transform:translateX(-50%);
+  display:none!important;
 }
 
 body.personal-mode #app.app:not(.hidden) > .main > #pageTitle,
@@ -33,6 +42,35 @@ body.personal-mode #app.app:not(.hidden) > .main > #pageTitle{
   margin-bottom:16px;
 }
 
+/* Route wrappers are layout only. Functional forms, tables and operation cards stay surfaced. */
+body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel,
+body.personal-mode #app.app:not(.hidden) #refsPage > .panel,
+body.personal-mode #app.app:not(.hidden) #profilePage > .panel,
+body.personal-mode #app.app:not(.hidden) #introPage .updates-hero,
+body.personal-mode #app.app:not(.hidden) #introPage .roadmap-section{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+
+body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel,
+body.personal-mode #app.app:not(.hidden) #refsPage > .panel,
+body.personal-mode #app.app:not(.hidden) #profilePage > .panel{
+  margin:0 0 var(--atsrs-personal-space-5)!important;
+}
+
+body.personal-mode #app.app:not(.hidden) #introPage .updates-hero{
+  margin-bottom:var(--atsrs-personal-space-6)!important;
+}
+
+body.personal-mode #app.app:not(.hidden) #introPage .roadmap-section{
+  margin-top:var(--atsrs-personal-space-6)!important;
+}
+
 body.personal-mode #refsPage > .panel > #refsTitle,
 body.personal-mode #profilePage > .panel > #accountTitle,
 body.personal-mode.atsrs-personal-legal-route #app.app:not(.hidden) > .main > #pageTitle{
@@ -44,61 +82,151 @@ body.personal-mode #profilePage > .panel > #userEmail{
   margin-top:0;
 }
 
-html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main::before{
-  background:#f8fafc;
-  border-color:var(--atsrs-border,#d6e0e8);
-  box-shadow:0 16px 40px rgba(15,23,42,.08);
+body.personal-mode #certificatesPage > .panel:not(.unified-cert-panel) .table-wrap{
+  padding:0!important;
+  border:1px solid var(--atsrs-personal-functional-border)!important;
+  border-radius:14px!important;
+  background:var(--atsrs-personal-functional-surface)!important;
+  box-shadow:none!important;
+}
+
+/* Shared vertical rhythm and wrapping: no text may rely on fixed-height clipping. */
+body.personal-mode #app.app:not(.hidden) > .main > :is(
+  #dashboardPage,
+  #certificatesPage,
+  #refsPage,
+  #profilePage,
+  #introPage,
+  #privacyPage,
+  #dataRightsPage
+) :where(h1,h2,h3,h4,h5,h6,p,label,legend,li,dt,dd,.sub,.small-note,.pill,.badge,.request-count){
+  max-width:100%;
+  line-height:var(--atsrs-personal-line-body);
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > :is(
+  #dashboardPage,
+  #certificatesPage,
+  #refsPage,
+  #profilePage,
+  #introPage,
+  #privacyPage,
+  #dataRightsPage
+) :where(h1,h2,h3,h4,h5,h6){
+  line-height:var(--atsrs-personal-line-heading);
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > :is(
+  #dashboardPage,
+  #certificatesPage,
+  #refsPage,
+  #profilePage,
+  #introPage,
+  #privacyPage,
+  #dataRightsPage
+) :where(button,[role="button"],summary){
+  box-sizing:border-box;
+  min-width:44px!important;
+  min-height:44px!important;
+  height:auto!important;
+  line-height:1.3!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > :is(
+  #dashboardPage,
+  #certificatesPage,
+  #refsPage,
+  #profilePage,
+  #introPage,
+  #privacyPage,
+  #dataRightsPage
+) :where(select,textarea,input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])){
+  box-sizing:border-box;
+  min-width:0;
+  min-height:44px!important;
+  line-height:1.35!important;
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > :is(
+  #dashboardPage,
+  #certificatesPage,
+  #refsPage,
+  #profilePage,
+  #introPage,
+  #privacyPage,
+  #dataRightsPage
+) :where(button,[role="button"],summary,a,input,select,textarea):focus-visible{
+  outline:3px solid var(--sidebar-accent,#22c55e)!important;
+  outline-offset:3px!important;
+}
+
+body.personal-mode #refsPage .atsrs-v134-career-card{
+  height:auto!important;
+  min-height:0!important;
+  padding-block:var(--atsrs-personal-card-padding)!important;
+}
+
+body.personal-mode #refsPage .atsrs-v134-career-card :where(h3,.atsrs-v134-desc){
+  min-height:0!important;
+}
+
+body.personal-mode #refsPage .atsrs-v134-career-card .atsrs-v134-desc{
+  margin-bottom:var(--atsrs-personal-card-gap)!important;
+  color:var(--atsrs-personal-muted)!important;
+}
+
+body.personal-mode #refsPage :where(.cv-main-panel,.cv-beta-box){
+  padding:var(--atsrs-personal-card-padding)!important;
+}
+
+/* Account availability controls expand with zoom and long option labels. */
+body.personal-mode #profilePage .work-availability-grid{
+  grid-template-columns:minmax(190px,1.15fr) minmax(160px,1fr) minmax(200px,1.15fr);
+  gap:var(--atsrs-personal-card-gap);
+}
+
+body.personal-mode #profilePage .work-availability-grid > label,
+body.personal-mode #profilePage .work-type-field{
+  grid-template-rows:auto minmax(44px,auto)!important;
+  gap:var(--atsrs-personal-space-2)!important;
+  height:auto!important;
+  min-height:0!important;
+}
+
+body.personal-mode #profilePage :where(
+  .work-availability-grid input,
+  .work-availability-grid select,
+  .work-type-select,
+  .work-type-select-toggle
+){
+  height:auto!important;
+  min-height:44px!important;
+  line-height:1.35!important;
+}
+
+body.personal-mode #profilePage #profileAvailabilityStatus{
+  padding-right:36px!important;
+}
+
+body.personal-mode #app.app:not(.hidden) > .main > #profilePage #accountGeneralTab #saveProfileBtn{
+  height:auto!important;
+  min-height:44px!important;
 }
 
 @media(max-width:800px){
-  body.personal-mode #app.app:not(.hidden) > .main::before{
-    top:70px;
-    bottom:8px;
-    width:calc(100% - 16px);
-    border-radius:16px;
-    box-shadow:0 12px 30px rgba(0,0,0,.18);
-  }
-
   body.personal-mode #app.app:not(.hidden) > .main > #pageTitle,
   body.personal-mode #app.app:not(.hidden) > .main > section{
     width:calc(100% - 16px);
   }
 }
 
-@media(max-width:720px){
-  body.personal-mode #app.app:not(.hidden) > .main > :is(
-    #dashboardPage,
-    #certificatesPage,
-    #refsPage,
-    #profilePage,
-    #introPage,
-    #privacyPage,
-    #dataRightsPage
-  ) :where(button,[role="button"],summary){
-    height:auto!important;
-    min-height:44px!important;
-  }
-
-  body.personal-mode #app.app:not(.hidden) > .main > :is(
-    #dashboardPage,
-    #certificatesPage,
-    #refsPage,
-    #profilePage,
-    #introPage,
-    #privacyPage,
-    #dataRightsPage
-  ) :where(select,textarea,input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])){
-    min-height:44px!important;
-  }
-
-  body.personal-mode #app.app:not(.hidden) > .main > #profilePage #accountGeneralTab #saveProfileBtn{
-    height:auto!important;
-    min-height:44px!important;
-  }
-}
-
-@media(max-width:430px){
-  body.personal-mode #app.app:not(.hidden) > .main::before{
-    border-radius:14px;
+@media(max-width:560px){
+  body.personal-mode #app.app:not(.hidden){
+    --atsrs-personal-card-padding:14px;
+    --atsrs-personal-card-gap:10px;
   }
 }

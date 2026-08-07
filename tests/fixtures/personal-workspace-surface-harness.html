@@ -16,8 +16,8 @@
   <link rel="stylesheet" href="../../css/product-experience.css">
   <link rel="stylesheet" href="../../css/theme.css">
   <link rel="stylesheet" href="../../css/corporate-remediation.css">
-  <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=5">
-  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css?v=434">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=435">
+  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css?v=435">
   <title>Personal Workspace surface test</title>
 </head>
 <body class="personal-mode app-open">
@@ -42,10 +42,25 @@
         <div id="accessRequestsPanel" class="panel access-requests-panel"><div class="access-panel-head"><div><span class="pill">ACCESS REQUESTS</span><h2>Document Access Requests <span class="request-count">0 pending</span></h2></div></div><p class="sub">Review email-verified download requests. Preview access never requires approval.</p><div class="access-empty">No pending requests.</div></div>
         <div id="talentMessagesPanel" class="panel talent-messages-panel"><div class="talent-messages-head"><div><span class="pill">PROFILE MESSAGES</span><h2>Messages from companies <span class="request-count">0 new</span></h2></div><div class="talent-mailbox-tools"><button id="talentActiveMessages">Inbox</button><button id="talentArchivedMessages">Archived</button><button id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="access-empty">No messages yet.</div></div>
       </section>
-      <section id="certificatesPage" class="hidden"><div class="panel unified-cert-panel"><h3 id="addDocTitle">Add document</h3><div class="cert-mode-buttons"><button>Scan with AI</button><button>Manual Upload</button></div><div class="card"><h3>Document register</h3><button class="secondary">Open document</button></div></div><div id="documentTestModal" class="panel hidden" role="dialog" aria-label="Document preview"><h3>Document preview</h3><button>Close</button></div></section>
-      <section id="refsPage" class="hidden"><div class="panel"><h3 id="refsTitle">References</h3><p id="refsSub">Keep appraisal forms, reference letters and client feedback in one place.</p><div class="ref-grid"><div class="ref-card cv-card"><div class="cv-main-panel"><h3>CV / Resume</h3><button class="secondary">Preview CV</button></div><div class="cv-beta-box"><h4>AI CV Generator</h4><button id="generateCVBtn">Generate ATSRS CV</button></div></div><div class="ref-card"><h3>Appraisals</h3><button class="secondary">Upload</button></div><div class="ref-card"><h3 id="referenceCardTitle">Reference Letters</h3><button class="secondary">Upload</button></div></div></div></section>
-      <section id="profilePage" class="hidden"><div class="panel"><h3 id="accountTitle">Account</h3><p id="userEmail">synthetic@example.invalid</p><div class="account-tabs"><button class="active">General</button><button>Security</button><button>Privacy &amp; Sharing</button></div><div id="accountGeneralTab" class="card"><label>Name <input value="Synthetic profile"></label><button id="saveProfileBtn">Save</button></div></div></section>
-      <section id="introPage" class="hidden"><div class="product-updates-content"><div class="intro-hero updates-hero"><span class="pill">PRODUCT UPDATES</span><h3>What's new and what's next</h3><p>Release information remains grouped inside the shared workspace surface.</p></div><div class="roadmap-section"><div class="roadmap-grid"><article class="roadmap-card"><h3>ATSRS Profile CV</h3><p>Available now</p></article></div></div></div></section>
+      <section id="certificatesPage" class="hidden">
+        <div class="panel unified-cert-panel"><h3 id="addDocTitle">Add document</h3><p class="sub">Choose one method: Scan with AI or Manual Upload.</p><div class="cert-mode-buttons"><button>Scan with AI</button><button>Manual Upload</button></div></div>
+        <div class="panel"><h3>Document register</h3><div class="table-wrap"><table><thead><tr><th>Document</th><th>Provider</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td>Long synthetic document title that must wrap without clipping</td><td>Synthetic provider</td><td>Valid</td><td><button class="secondary">Preview</button></td></tr></tbody></table></div></div>
+        <div id="documentTestModal" class="panel hidden" role="dialog" aria-label="Document preview"><h3>Document preview</h3><p>Preview state stays inside its functional modal.</p><button>Close</button></div>
+      </section>
+      <section id="refsPage" class="hidden"><div class="panel"><h3 id="refsTitle">References</h3><p id="refsSub">Keep appraisal forms, reference letters and client feedback in one place.</p><div class="ref-grid">
+        <div class="ref-card cv-card"><div class="cv-main-panel"><h3>CV / Resume</h3><p>Store, manage and share CV versions without clipping long file names.</p><button class="secondary">Preview CV</button></div><div class="cv-beta-box"><span class="pill">AI CV GENERATOR</span><h4>Generate ATSRS Profile CV</h4><p>Generate a structured CV from saved server-backed profile details.</p><button id="generateCVBtn">Generate ATSRS CV</button></div></div>
+        <div class="ref-card atsrs-v134-career-card"><h3>Appraisals</h3><p class="atsrs-v134-desc">Upload annual appraisals, performance reviews and evaluation forms.</p><button class="secondary atsrs-v134-upload">Upload</button><div class="atsrs-v134-empty">No files uploaded yet.</div></div>
+        <div class="ref-card atsrs-v134-career-card"><h3 id="referenceCardTitle">Reference Letters</h3><p class="atsrs-v134-desc">Store reference letters and contact-ready career proof.</p><button class="secondary atsrs-v134-upload">Upload</button><div class="atsrs-v134-empty">No files uploaded yet.</div></div>
+        <div class="ref-card atsrs-v134-career-card"><h3>Recommendation Letters</h3><p class="atsrs-v134-desc">Store recommendation letters from supervisors, clients and companies.</p><button class="secondary atsrs-v134-upload">Upload</button><div class="atsrs-v134-empty">No files uploaded yet.</div></div>
+        <div class="ref-card atsrs-v134-career-card"><h3>Cover Letter</h3><p class="atsrs-v134-desc">Store cover letter versions next to your CV for faster applications.</p><button class="secondary atsrs-v134-upload">Upload</button><div class="atsrs-v134-empty">No files uploaded yet.</div></div>
+      </div></div></section>
+      <section id="profilePage" class="hidden"><div class="panel"><h3 id="accountTitle">Account</h3><p id="userEmail">synthetic@example.invalid</p>
+        <div class="account-tabs"><button class="active" data-account-tab="general">General</button><button data-account-tab="security">Security</button><button data-account-tab="sharing">Privacy &amp; Sharing</button></div>
+        <div id="accountGeneralTab" class="account-tab active"><div class="profile-grid"><label class="profile-labeled-field"><span>Name</span><input value="Synthetic profile"></label><div class="work-availability-card"><div class="work-availability-heading"><div><span class="pill">WORK AVAILABILITY</span><h4>Let verified companies know when you can start</h4><p>Optional and changeable at any time.</p></div><span>Not confirmed</span></div><div class="work-availability-grid"><label><span>Status</span><select id="profileAvailabilityStatus"><option selected>Available from a date</option></select></label><label id="profileAvailableFromWrap"><span>Available from</span><input type="date" value="2026-09-01"></label><div class="work-type-field"><span>Preferred work type</span><div class="work-type-select"><button class="work-type-select-toggle">Any opportunity</button></div></div></div></div></div><button id="saveProfileBtn">Save</button></div>
+        <div id="accountSecurityTab" class="account-tab"><div class="account-security-list"><div class="setting-row"><div><b>Two-factor authentication</b><div class="small-note">Protect this account with an additional verification step.</div></div><button>Set up</button></div><div class="setting-row"><div><b>Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select><option>Asia/Baku (UTC+4)</option></select></div></div></div>
+        <div id="accountSharingTab" class="account-tab"><div class="share-card"><h3>Share My ATSRS Profile</h3><p>Create time-limited links for controlled profile and document sharing.</p><button>Configure Share Link</button></div></div>
+      </div></section>
+      <section id="introPage" class="hidden"><div class="product-updates-content"><div class="intro-hero updates-hero"><span class="pill">PRODUCT UPDATES</span><h3>What's new and what's next</h3><p>Release information stays honest and directly on the app canvas.</p></div><div class="roadmap-section"><div class="roadmap-heading"><div><span class="roadmap-kicker">PRODUCT ROADMAP</span><h3>Built for simpler document compliance</h3></div><p>Statuses show what is available and what is still being developed.</p></div><div class="roadmap-grid"><article class="roadmap-card"><h3>AI Document Scan</h3><p>Available now</p></article><article class="roadmap-card"><h3>WhatsApp Expiry Alerts</h3><p>In development</p></article><article class="roadmap-card"><h3>Automated Reports</h3><p>Planned</p></article><article class="roadmap-card"><h3>ATSRS Profile CV</h3><p>Available now</p></article></div></div></div></section>
       <section id="privacyPage" class="hidden legal-app-page"><iframe class="legal-app-frame" src="/privacy.html?embedded=1" title="Privacy Notice"></iframe></section>
       <section id="dataRightsPage" class="hidden legal-app-page"><iframe class="legal-app-frame" src="/data-deletion.html?embedded=1" title="Data Rights"></iframe></section>
     </main>
@@ -79,6 +94,12 @@
       });
     }
     if (route === 'certificates' && query.get('state') === 'modal') document.getElementById('documentTestModal').classList.remove('hidden');
+    document.querySelectorAll('[data-account-tab]').forEach((button) => button.addEventListener('click', () => {
+      const selected = button.dataset.accountTab;
+      document.querySelectorAll('[data-account-tab]').forEach((tab) => tab.classList.toggle('active', tab === button));
+      document.querySelectorAll('#profilePage .account-tab').forEach((tab) => tab.classList.remove('active'));
+      document.getElementById(`account${selected[0].toUpperCase()}${selected.slice(1)}Tab`).classList.add('active');
+    }));
     if (route === 'dashboard') {
       const state = query.get('state') || 'empty';
       const notificationList = document.getElementById('atsrsNotificationList');
