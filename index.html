@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V433" data-atsrs-update="6 Aug 2026">
+<html lang="en" data-atsrs-build="V434" data-atsrs-update="7 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,6 +51,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/corporate-information-architecture.css?v=421">
 <link rel="stylesheet" href="css/corporate-remediation.css?v=416">
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=430">
+<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=434">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -301,6 +302,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="dashboardPage" class="hidden">
+<h1 id="dashboardHeading">Dashboard</h1>
 <div class="solo-hero panel">
   <div class="hero-card">
     <span id="soloBadge" class="pill">SOLO CONTROL</span>
@@ -319,13 +321,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
-    <span id="snapshotBadge" class="pill">COMPLIANCE SNAPSHOT</span>
-    <h3 id="snapshotTitle">Quick status</h3>
-    <div class="snapshot-list">
-      <div class="snapshot-item"><b id="snapValidLabel">Valid documents</b><span id="snapValid">0</span></div>
-      <div class="snapshot-item"><b id="snapRiskLabel">Expiry risk</b><span id="snapRisk" class="warning">0</span></div>
-      <div class="snapshot-item"><b id="snapShareLabel">Profile sharing</b><span id="snapShare" class="good">Ready</span></div>
-    </div>
+    <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
+    <div class="dashboard-share-capability"><h2 id="snapshotTitle">Managed in Account</h2><p id="snapShareHelp">Sharing settings are managed in Account.</p></div>
   </div>
 </div>
 <div class="panel dashboard-priority-alerts-panel">
@@ -1359,6 +1356,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/corporate-information-architecture.js?v=413"></script>
 <script src="js/corporate-remediation.js?v=424"></script>
 <script src="js/theme.js?v=408"></script>
+<script src="js/personal-dashboard-qa.js?v=434"></script>
 
 
 

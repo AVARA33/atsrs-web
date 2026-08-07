@@ -9,8 +9,8 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V433');
-assert.equal(update, '6 Aug 2026');
+assert.equal(version, 'V434');
+assert.equal(update, '7 Aug 2026');
 
 for (const asset of [
   'stability-runtime.js',
@@ -54,4 +54,4 @@ assert.doesNotMatch(runtime, /ATSRS V385|28 Jul 2026/);
 assert.doesNotMatch(index, /ATSRS V385|Last Update: 28 Jul 2026/);
 assert.match(runbook, /Frontend release: V390/);
 
-console.log('V433 build marker consistency tests passed');
+console.log('V434 build marker consistency tests passed');

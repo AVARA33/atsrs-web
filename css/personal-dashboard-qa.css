@@ -1,0 +1,263 @@
+/* Personal Dashboard QA candidate. Dashboard-only; no auth, Corporate, or other route changes. */
+body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) > .main::before{
+  display:none!important;
+}
+
+body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) > .main > #pageTitle{
+  display:none!important;
+}
+
+body.personal-mode #dashboardPage{
+  --dashboard-muted:#b7c4d3;
+  --dashboard-error:#fecaca;
+  --dashboard-surface:rgba(11,24,37,.72);
+  --dashboard-border:rgba(54,82,108,.72);
+  width:min(100%,1440px)!important;
+  padding:0 0 28px!important;
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage{
+  --dashboard-muted:#465b70;
+  --dashboard-error:#991b1b;
+  --dashboard-surface:rgba(255,255,255,.78);
+  --dashboard-border:#d6e0e8;
+}
+
+body.personal-mode #dashboardPage #dashboardHeading{
+  margin:0 0 16px;
+  color:var(--atsrs-text,#f8fafc);
+  font-size:clamp(28px,3vw,36px);
+  line-height:1.15;
+  letter-spacing:-.025em;
+}
+
+body.personal-mode #dashboardPage .solo-hero.panel{
+  display:block!important;
+  margin:0 0 16px!important;
+}
+
+body.personal-mode #dashboardPage .hero-card{
+  max-width:760px!important;
+}
+
+body.personal-mode #dashboardPage .hero-card #soloHeroText,
+body.personal-mode #dashboardPage .sub,
+body.personal-mode #dashboardPage .atsrs-notification-empty,
+body.personal-mode #dashboardPage .access-empty{
+  color:var(--dashboard-muted)!important;
+}
+
+body.personal-mode #dashboardPage .atsrs-notification-error{
+  color:var(--dashboard-error)!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-notification-retry{
+  margin-top:10px!important;
+}
+
+body.personal-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin:0 0 16px!important;
+}
+
+body.personal-mode #dashboardPage .stats-grid > .card{
+  min-height:104px!important;
+  padding:14px!important;
+  border:1px solid var(--dashboard-border)!important;
+  border-radius:14px!important;
+  background:var(--dashboard-surface)!important;
+}
+
+body.personal-mode #dashboardPage .stats-grid .card p{
+  min-height:32px;
+  margin:0 0 6px!important;
+  color:var(--dashboard-muted)!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+
+body.personal-mode #dashboardPage .stats-grid .card .stat{
+  font-size:25px!important;
+  line-height:1.1!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+}
+
+body.personal-mode #dashboardPage .stats-grid .card .stat.is-zero-risk,
+body.personal-mode #dashboardPage .stats-grid .card .stat.is-zero-risk.warning,
+body.personal-mode #dashboardPage .stats-grid .card .stat.is-zero-risk.danger{
+  color:var(--dashboard-muted)!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-stat-note{
+  display:block;
+  margin-top:5px;
+  color:var(--dashboard-muted);
+  font-size:11px;
+  line-height:1.35;
+}
+
+body.personal-mode #dashboardPage .dashboard-snapshot-panel{
+  width:min(100%,760px)!important;
+  margin:0 0 16px!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-snapshot-panel .snapshot-card{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:8px 18px;
+  align-items:center;
+  padding:16px!important;
+  border:1px solid var(--dashboard-border)!important;
+  border-radius:14px!important;
+  background:var(--dashboard-surface)!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-snapshot-panel #snapshotBadge{
+  justify-self:start;
+}
+
+body.personal-mode #dashboardPage .dashboard-snapshot-panel #snapshotTitle{
+  margin:0!important;
+  font-size:18px!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-share-capability{
+  min-width:0;
+}
+
+body.personal-mode #dashboardPage #snapShareHelp{
+  margin:4px 0 0;
+  color:var(--dashboard-muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #snapShareHelp{
+  color:#3f5368!important;
+}
+
+body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel){
+  margin:0 0 12px!important;
+  padding:16px!important;
+  border:1px solid var(--dashboard-border)!important;
+  border-radius:14px!important;
+  background:var(--dashboard-surface)!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-priority-alerts-panel .risk-list{
+  margin-top:8px!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-priority-alerts-panel .risk-item{
+  min-height:0!important;
+  padding:8px 0 0!important;
+  border:0!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-priority-alerts-panel .risk-item > span:only-child,
+body.personal-mode #dashboardPage .dashboard-priority-alerts-panel .risk-item > [data-dashboard-decorative-status="true"]{
+  display:none!important;
+}
+
+body.personal-mode #dashboardPage .atsrs-notification-actions:not(:has(button:not(:disabled))){
+  display:none!important;
+}
+
+body.personal-mode #dashboardPage .atsrs-notification-empty,
+body.personal-mode #dashboardPage .access-empty{
+  min-height:0!important;
+  padding:10px 0!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+body.personal-mode #dashboardPage .talent-messages-head,
+body.personal-mode #dashboardPage .access-panel-head,
+body.personal-mode #dashboardPage .atsrs-notification-head{
+  gap:12px!important;
+  align-items:flex-start!important;
+}
+
+body.personal-mode #dashboardPage .talent-mailbox-tools{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+}
+
+body.personal-mode.atsrs-personal-dashboard-route #sidebarToggleBtn,
+body.personal-mode.atsrs-personal-dashboard-route .sidebar .nav button,
+body.personal-mode #dashboardPage :where(button,[role="button"],summary){
+  min-width:44px!important;
+  min-height:44px!important;
+}
+
+body.personal-mode.atsrs-personal-dashboard-route .sidebar .nav button{
+  height:44px!important;
+}
+
+body.personal-mode.atsrs-personal-dashboard-route #sidebarToggleBtn:focus-visible,
+body.personal-mode #dashboardPage :where(button,[role="button"],summary,a,input,select,textarea):focus-visible{
+  outline:3px solid var(--sidebar-accent,#22c55e)!important;
+  outline-offset:3px!important;
+}
+
+@media(max-width:1100px){
+  body.personal-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  body.personal-mode #dashboardPage .dashboard-snapshot-panel .snapshot-card{
+    grid-template-columns:1fr!important;
+  }
+}
+
+@media(max-width:800px){
+  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar{
+    position:relative!important;
+  }
+  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed{
+    padding-bottom:10px!important;
+  }
+  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed .nav,
+  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed .sub{
+    display:none!important;
+  }
+}
+
+@media(max-width:560px){
+  body.personal-mode #dashboardPage{
+    padding-bottom:16px!important;
+  }
+  body.personal-mode #dashboardPage #dashboardHeading{
+    margin-bottom:12px;
+    font-size:28px;
+  }
+  body.personal-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  body.personal-mode #dashboardPage .stats-grid > .card{
+    min-height:86px!important;
+    padding:11px!important;
+  }
+  body.personal-mode #dashboardPage .stats-grid .card p{
+    min-height:0;
+    font-size:11px!important;
+  }
+  body.personal-mode #dashboardPage .stats-grid .card .stat{
+    font-size:22px!important;
+  }
+  body.personal-mode #dashboardPage .dashboard-snapshot-panel .snapshot-card,
+  body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel){
+    padding:14px!important;
+  }
+  body.personal-mode #dashboardPage .talent-messages-head,
+  body.personal-mode #dashboardPage .access-panel-head,
+  body.personal-mode #dashboardPage .atsrs-notification-head{
+    display:block!important;
+  }
+  body.personal-mode #dashboardPage .talent-mailbox-tools{
+    margin-top:10px!important;
+  }
+}

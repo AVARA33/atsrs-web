@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
   <script>
     document.documentElement.dataset.theme = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark';
   </script>
@@ -16,14 +17,31 @@
   <link rel="stylesheet" href="../../css/theme.css">
   <link rel="stylesheet" href="../../css/corporate-remediation.css">
   <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=5">
+  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css?v=434">
   <title>Personal Workspace surface test</title>
 </head>
 <body class="personal-mode app-open">
   <section id="app" class="app">
-    <aside class="sidebar"><div class="brand">ATSRS</div><p class="sub">Personal Workspace</p></aside>
+    <aside class="sidebar"><div class="sidebar-head"><div class="brand">ATSRS</div><button id="sidebarToggleBtn" class="sidebar-toggle" type="button" aria-label="Toggle menu"><span></span><span></span><span></span></button></div><p class="sub">Personal Workspace</p><nav class="nav"><button class="active">Dashboard</button><button>Documents</button><button>References</button><button>Account</button></nav></aside>
     <main class="main">
       <h2 id="pageTitle">Dashboard</h2>
-      <section id="dashboardPage"><div class="panel"><span class="pill">DOCUMENT OVERVIEW</span><h3>Quick overview</h3><div class="grid stats-grid"><div class="card"><p>Uploaded Documents</p><div class="stat">16</div></div><div class="card"><p>Expiry risk</p><div class="stat warning">0</div></div></div></div></section>
+      <section id="dashboardPage">
+        <h1 id="dashboardHeading">Dashboard</h1>
+        <div class="solo-hero panel"><div class="hero-card"><span id="soloBadge" class="pill">DOCUMENT OVERVIEW</span><p id="soloHeroText">Review document totals, expiry risk and profile readiness from one clear view.</p></div></div>
+        <div class="grid stats-grid">
+          <div class="card"><p id="totalCertsText">Uploaded Documents</p><div class="stat" id="totalCerts">16</div></div>
+          <div class="card"><p>Expiring in 31–90 Days</p><div class="stat warning" id="exp90">0</div></div>
+          <div class="card"><p>Expiring in 1–30 Days</p><div class="stat warning" id="exp30">0</div></div>
+          <div class="card"><p>Expires Today</p><div class="stat danger" id="expToday">0</div></div>
+          <div class="card"><p>Expired</p><div class="stat danger" id="expired">0</div></div>
+          <div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">Available ✓</div></div>
+        </div>
+        <div class="panel dashboard-snapshot-panel"><div class="snapshot-card"><span id="snapshotBadge" class="pill">PROFILE SHARING</span><div class="dashboard-share-capability"><h2 id="snapshotTitle">Managed in Account</h2><p id="snapShareHelp">Sharing settings are managed in Account.</p></div></div></div>
+        <div class="panel dashboard-priority-alerts-panel"><h2 id="riskTitle">Priority alerts</h2><p id="riskSub" class="sub">Documents closest to expiry will appear here.</p><div id="riskList" class="risk-list"><div class="risk-item"><b>No urgent expiry risk detected.</b><span>OK</span></div></div></div>
+        <div id="atsrsNotificationPanel" class="panel atsrs-notification-panel"><div class="atsrs-notification-head"><div><span class="pill">EXPIRY NOTIFICATIONS</span><span class="request-count">0 expiries</span></div><div class="atsrs-notification-actions"><button disabled>Mark all read</button><button disabled>Clear all</button></div></div><p class="sub">Server reminders for documents approaching expiry.</p><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">No expiry notifications yet.</div></div></div>
+        <div id="accessRequestsPanel" class="panel access-requests-panel"><div class="access-panel-head"><div><span class="pill">ACCESS REQUESTS</span><h2>Document Access Requests <span class="request-count">0 pending</span></h2></div></div><p class="sub">Review email-verified download requests. Preview access never requires approval.</p><div class="access-empty">No pending requests.</div></div>
+        <div id="talentMessagesPanel" class="panel talent-messages-panel"><div class="talent-messages-head"><div><span class="pill">PROFILE MESSAGES</span><h2>Messages from companies <span class="request-count">0 new</span></h2></div><div class="talent-mailbox-tools"><button id="talentActiveMessages">Inbox</button><button id="talentArchivedMessages">Archived</button><button id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="access-empty">No messages yet.</div></div>
+      </section>
       <section id="certificatesPage" class="hidden"><div class="panel unified-cert-panel"><h3 id="addDocTitle">Add document</h3><div class="cert-mode-buttons"><button>Scan with AI</button><button>Manual Upload</button></div><div class="card"><h3>Document register</h3><button class="secondary">Open document</button></div></div><div id="documentTestModal" class="panel hidden" role="dialog" aria-label="Document preview"><h3>Document preview</h3><button>Close</button></div></section>
       <section id="refsPage" class="hidden"><div class="panel"><h3 id="refsTitle">References</h3><p id="refsSub">Keep appraisal forms, reference letters and client feedback in one place.</p><div class="ref-grid"><div class="ref-card cv-card"><div class="cv-main-panel"><h3>CV / Resume</h3><button class="secondary">Preview CV</button></div><div class="cv-beta-box"><h4>AI CV Generator</h4><button id="generateCVBtn">Generate ATSRS CV</button></div></div><div class="ref-card"><h3>Appraisals</h3><button class="secondary">Upload</button></div><div class="ref-card"><h3 id="referenceCardTitle">Reference Letters</h3><button class="secondary">Upload</button></div></div></div></section>
       <section id="profilePage" class="hidden"><div class="panel"><h3 id="accountTitle">Account</h3><p id="userEmail">synthetic@example.invalid</p><div class="account-tabs"><button class="active">General</button><button>Security</button><button>Privacy &amp; Sharing</button></div><div id="accountGeneralTab" class="card"><label>Name <input value="Synthetic profile"></label><button id="saveProfileBtn">Save</button></div></div></section>
@@ -34,6 +52,13 @@
   </section>
   <script>
     const query = new URLSearchParams(location.search);
+    localStorage.setItem('atsrs_use_mode', 'personal');
+    window.atsrsV76ToggleSidebar = () => document.querySelector('.sidebar').classList.toggle('v76-mobile-closed');
+    window.atsrsRefreshNotifications = () => {
+      document.body.dataset.notificationRetryInvoked = 'true';
+      document.getElementById('atsrsNotificationList').innerHTML = '<div class="atsrs-notification-empty">Loading notifications...</div>';
+    };
+    document.getElementById('sidebarToggleBtn').addEventListener('click', window.atsrsV76ToggleSidebar);
     const route = query.get('route') || 'dashboard';
     const titles = { dashboard:'Dashboard', certificates:'Documents', refs:'References', profile:'Account', intro:'Product Updates', privacy:'Privacy Notice', dataRights:'Data Rights' };
     document.querySelectorAll('main > section').forEach((section) => section.classList.add('hidden'));
@@ -54,6 +79,23 @@
       });
     }
     if (route === 'certificates' && query.get('state') === 'modal') document.getElementById('documentTestModal').classList.remove('hidden');
+    if (route === 'dashboard') {
+      const state = query.get('state') || 'empty';
+      const notificationList = document.getElementById('atsrsNotificationList');
+      const messageList = document.getElementById('talentMessagesList');
+      document.body.dataset.dashboardTestState = state;
+      if (state === 'loading') {
+        notificationList.innerHTML = '<div class="atsrs-notification-empty">Loading notifications...</div>';
+        messageList.innerHTML = '<div class="access-empty">Loading messages...</div>';
+      } else if (state === 'error' || state === 'retry') {
+        notificationList.innerHTML = '<div class="atsrs-notification-empty atsrs-notification-error">Notifications could not be loaded from the server.</div>';
+        messageList.innerHTML = '<div class="access-empty">Messages could not be loaded.</div>';
+      } else if (state === 'populated') {
+        notificationList.innerHTML = '<article class="atsrs-notification-card"><strong>Document expiry reminder</strong><p>One document requires review.</p></article>';
+        messageList.innerHTML = '<article class="talent-message-card"><strong>Message available</strong><p>Open Inbox to review it.</p></article>';
+      }
+    }
   </script>
+  <script src="../../js/personal-dashboard-qa.js?v=434"></script>
 </body>
 </html>
