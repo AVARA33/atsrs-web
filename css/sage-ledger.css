@@ -556,6 +556,45 @@ html body #app.app:not(.hidden) #atsrsGlobalControls>:is(#atsrsThemeToggle,#sage
   outline-offset:1px!important;
 }
 
+/* V448: auth and loading are single-viewport surfaces with no app content below. */
+html body #app.app.hidden{
+  display:none!important;
+}
+html body:is(.auth-open,.atsrs-booting,.atsrs-session-pending){
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:100%!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+html body.auth-open #auth.auth:not(.hidden){
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  height:100dvh!important;
+  min-height:100%!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+html body.auth-open #auth.auth:not(.hidden)>.auth-card{
+  max-height:calc(100dvh - 32px)!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+}
+html body:is(.atsrs-booting,.atsrs-session-pending) #atsrsBootScreen{
+  width:100%!important;
+  height:100%!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+
 /* V444: keep the desktop sidebar fully visible without an internal scrollbar. */
 @media(min-width:801px){
   html body #app.app:not(.hidden)>.sidebar{
