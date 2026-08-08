@@ -12,7 +12,7 @@
 - Personal and Corporate focused comparison: `docs/audit/header-controls-both-accounts-20260808/04-focused-comparison.jpg`
 - Corrected inset evidence: `docs/audit/text-overflow-20260808/04-corrected-desktop.png`, `05-corrected-mobile.png`
 - Corrected light-mode green-control evidence: `docs/audit/light-green-contrast-20260808/01-before-dark-text.png`, `02-after-white-text.png`, `03-live-v441-white-text.png`
-- Full Personal/Corporate green-control audit: `docs/audit/full-green-contrast-audit-20260808/01-corporate-documents-before.png`, `02-personal-documents-before.png`, `03-local-v442-after.png`
+- Full Personal/Corporate green-control audit: `docs/audit/full-green-contrast-audit-20260808/01-corporate-documents-before.png`, `02-personal-documents-before.png`, `03-local-v442-after.png`, `04-live-personal-v442.png`, `06-live-corporate-v442-final.png`
 
 The source and implementation were compared in the same Chrome window at 1707 x 842. Focused checks covered the 112px navigation rail, 84px header, icon family, account controls, 48px readiness heading, readiness score, action column, 84px status band, register typography, borders, colors, and mobile bottom navigation.
 
