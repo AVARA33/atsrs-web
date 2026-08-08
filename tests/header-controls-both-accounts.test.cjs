@@ -11,6 +11,7 @@ assert.doesNotMatch(script, /bell\.classList\.toggle\('hidden',!companyMode\(\)\
 assert.match(script, /controls&&theme&&appVisible/, 'Sage header controls must only decorate the open app');
 assert.match(script, /if\(bell\)bell\.classList\.add\('hidden'\)/, 'notification bell must remain hidden on auth');
 assert.match(script, /restoreAuthThemeTrack\(theme\)/, 'logging out must restore the original auth slider');
+assert.match(script, /dataset\.theme==='dark'\?'sun':'moon'/, 'dark mode must show the sun and light mode must show the moon');
 assert.match(script, /MutationObserver\(decorateHeader\)\.observe\(app,\{attributes:true,attributeFilter:\['class'\]\}\)/, 'header controls must react when auth changes to the open app');
 assert.match(script, /var avatarImage=avatar\.querySelector\('img'\)/, 'header decoration must detect an existing profile photo');
 assert.match(script, /if\(!avatarImage\)\{[\s\S]*?avatar\.textContent=value/, 'initials must only be rendered when no profile photo exists');

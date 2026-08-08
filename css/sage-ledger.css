@@ -530,6 +530,32 @@ html body #app.app:not(.hidden)>.sidebar .nav button.active :is(.sage-nav-icon,.
   text-shadow:none!important;
 }
 
+/* V447: keep app header icons touch-safe without visible square containers. */
+html body #app.app:not(.hidden) #atsrsGlobalControls>:is(#atsrsThemeToggle,#sageNotificationButton){
+  background-color:transparent!important;
+  background-image:none!important;
+  border-color:transparent!important;
+  border-radius:50%!important;
+  box-shadow:none!important;
+}
+html body #app.app:not(.hidden) #atsrsThemeToggle .atsrs-theme-track>:is(.ph-sun,.ph-moon){
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  color:inherit!important;
+  font-size:21px!important;
+  line-height:1!important;
+}
+html body #app.app:not(.hidden) #atsrsGlobalControls>:is(#atsrsThemeToggle,#sageNotificationButton):is(:hover,:focus-visible){
+  background-color:color-mix(in srgb,var(--sage-accent) 9%,transparent)!important;
+  border-color:transparent!important;
+  color:var(--sage-accent-strong)!important;
+}
+html body #app.app:not(.hidden) #atsrsGlobalControls>:is(#atsrsThemeToggle,#sageNotificationButton):focus-visible{
+  outline:2px solid var(--sage-accent)!important;
+  outline-offset:1px!important;
+}
+
 /* V444: keep the desktop sidebar fully visible without an internal scrollbar. */
 @media(min-width:801px){
   html body #app.app:not(.hidden)>.sidebar{

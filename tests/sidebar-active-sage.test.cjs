@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'css', 'sage-ledger.css'), 'utf8');
 const release = styles.slice(styles.indexOf('/* V445:'));
 
-assert.match(index, /css\/sage-ledger\.css\?v=445/, 'V445 sidebar colors must bypass the production cache');
+assert.match(index, /css\/sage-ledger\.css\?v=447/, 'V447 sidebar colors must bypass the production cache');
 assert.match(release, /button\.active :is\(\.sage-nav-icon,\.sage-nav-label\)/, 'active sidebar icons and labels must share one foreground rule');
 assert.match(release, /color:var\(--sage-accent-strong\)!important/, 'active sidebar foreground must use the sage accent token');
 assert.match(release, /-webkit-text-fill-color:var\(--sage-accent-strong\)!important/, 'Chromium text fill must not retain the legacy blue color');
