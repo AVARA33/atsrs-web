@@ -488,7 +488,7 @@ html body #app.app:not(.hidden)>.main>section:not(#dashboardPage) p{font-size:14
   html body #app.app:not(.hidden)>.main>#pageTitle,
   html body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden)>.main>#pageTitle{top:29px!important;left:14px!important;font-size:15px!important}
   html body #app.app:not(.hidden) .atsrs-global-controls{top:16px!important;right:12px!important;gap:6px!important}
-  html body #app.app:not(.hidden) .sage-header-icon-button{display:none!important}
+  html body #app.app:not(.hidden) .sage-header-icon-button{display:grid!important}
   html body #app.app:not(.hidden) .workspace-switcher-copy,
   html body #app.app:not(.hidden) .workspace-switcher-chevron{display:none!important}
   html body #app.app:not(.hidden) .workspace-switcher-button{width:44px!important;padding:0 5px!important}

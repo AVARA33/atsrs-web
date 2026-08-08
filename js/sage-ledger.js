@@ -94,7 +94,7 @@
         });
         controls.insertBefore(bell,theme);
       }
-      bell.classList.toggle('hidden',!companyMode());
+      bell.classList.remove('hidden');
       var track=theme.querySelector('.atsrs-theme-track');
       if(track){
         var themeName=document.documentElement.dataset.theme==='dark'?'sun':'moon';
