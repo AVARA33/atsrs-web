@@ -59,6 +59,7 @@ No unresolved P0, P1, or P2 visual defect remains in the reviewed scope.
 - Selected source captures: `C:/Users/user/AppData/Local/Temp/codex-clipboard-ee3c38a0-cb5f-4a38-abc8-d6f68f937138.png` and `C:/Users/user/AppData/Local/Temp/codex-clipboard-36b8d3b0-a57a-45f3-b2ef-553d5423f065.png`.
 - Implementation capture: `tests/fixtures/compact-sidebar-document-header-harness.html?v=450`, reviewed at 1600 x 900 and 2048 x 1080 in the in-app browser.
 - P1 corrected: Product Updates contained the correct Phosphor sparkle icon, but its 22px icon, 8px gap, and two-line 30px label exceeded the 54px utility row and clipped the icon. The final 4px gap and one-line 12px label keep the icon fully inside the row.
+- P1 corrected: a delayed legacy language pass replaced the decorated Product Updates button with text after initial render. A scoped navigation observer now restores the real Phosphor icon and label only when that legacy rewrite removes the icon.
 - P2 corrected: the document-register header was 75px high and the Uploaded label occupied two lines. The final header is 58.33px, every heading label is one line, and sortable controls retain their 44px touch target.
 - Horizontal overflow at 1600px and 2048px: 0px.
 - Product Updates icon offset inside its row: 8px from the top; label height: 12px.

@@ -9,7 +9,7 @@ const personal = fs.readFileSync(path.join(root, 'css', 'personal-workspace-surf
 const sage = fs.readFileSync(path.join(root, 'js', 'sage-ledger.js'), 'utf8');
 
 assert.match(index, /css\/personal-workspace-surface\.css\?v=446/, 'V446 auth isolation fix must bypass the production cache');
-assert.match(index, /js\/sage-ledger\.js\?v=446/, 'V446 auth header fix must bypass the production cache');
+assert.match(index, /js\/sage-ledger\.js\?v=450/, 'Current auth header runtime must bypass the production cache');
 assert.match(theme, /\.atsrs-theme-toggle\{[\s\S]*?height:28px!important;[\s\S]*?min-height:28px!important/, 'login theme slider must retain its intended 28px track');
 assert.match(personal, /#app\.app:not\(\.hidden\) > \.main > #atsrsGlobalControls > #atsrsThemeToggle\{[\s\S]*?height:44px!important/, '44px touch sizing must remain available inside the open Personal app');
 assert.match(personal, /#app\.app:not\(\.hidden\) > \.main > #atsrsGlobalControls > #atsrsThemeToggle \.atsrs-theme-thumb\{/, 'Personal thumb adjustment must remain scoped to the open app');

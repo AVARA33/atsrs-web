@@ -220,6 +220,14 @@
   function observe(id){var node=byId(id);if(node)new MutationObserver(sync).observe(node,{childList:true,subtree:true,characterData:true})}
   document.addEventListener('DOMContentLoaded',function(){
     ['totalCerts','expired','expToday','exp30','exp90','certTable'].forEach(observe);
+    var navigation=byId('navIntro')&&byId('navIntro').parentElement;
+    if(navigation&&!navigation.__atsrsSageNavigationObserver){
+      navigation.__atsrsSageNavigationObserver=true;
+      new MutationObserver(function(){
+        var updates=byId('navIntro');
+        if(updates&&!updates.querySelector('.sage-nav-icon'))decorateNavigation();
+      }).observe(navigation,{childList:true,subtree:true,characterData:true});
+    }
     var title=byId('pageTitle');if(title)new MutationObserver(decorateHeader).observe(title,{childList:true,characterData:true,subtree:true});
     var app=byId('app');if(app)new MutationObserver(decorateHeader).observe(app,{attributes:true,attributeFilter:['class']});
     var search=byId('sageLedgerSearch');if(search)search.addEventListener('input',syncLedger);
