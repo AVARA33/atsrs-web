@@ -78,7 +78,8 @@
   }
   function decorateHeader(){
     var title=byId('pageTitle');
-    if(title)title.textContent=companyMode()?'Corporate Account':'Personal Account';
+    var accountTitle=companyMode()?'Corporate Account':'Personal Account';
+    if(title&&title.textContent!==accountTitle)title.textContent=accountTitle;
     var controls=byId('atsrsGlobalControls'),theme=byId('atsrsThemeToggle');
     if(controls&&theme){
       var bell=byId('sageNotificationButton');
@@ -203,6 +204,7 @@
   function observe(id){var node=byId(id);if(node)new MutationObserver(sync).observe(node,{childList:true,subtree:true,characterData:true})}
   document.addEventListener('DOMContentLoaded',function(){
     ['totalCerts','expired','expToday','exp30','exp90','certTable'].forEach(observe);
+    var title=byId('pageTitle');if(title)new MutationObserver(decorateHeader).observe(title,{childList:true,characterData:true,subtree:true});
     var search=byId('sageLedgerSearch');if(search)search.addEventListener('input',syncLedger);
     sync();setTimeout(sync,250);setTimeout(sync,900);
   });
