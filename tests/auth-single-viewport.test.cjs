@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'css', 'sage-ledger.css'), 'utf8');
 const release = styles.slice(styles.indexOf('/* V448:'));
 
-assert.match(index, /css\/sage-ledger\.css\?v=448/, 'V448 auth viewport guard must bypass the production cache');
+assert.match(index, /css\/sage-ledger\.css\?v=450/, 'Current sage styles must bypass the production cache');
 assert.match(release, /#app\.app\.hidden\{[\s\S]*?display:none!important/, 'hidden app content must never render below auth');
 assert.match(release, /body:is\(\.auth-open,\.atsrs-booting,\.atsrs-session-pending\)\{[\s\S]*?position:fixed!important;[\s\S]*?overflow:hidden!important/, 'auth and loading states must lock document scrolling');
 assert.match(release, /body\.auth-open #auth\.auth:not\(\.hidden\)\{[\s\S]*?height:100dvh!important;[\s\S]*?max-height:100dvh!important;[\s\S]*?overflow:hidden!important/, 'login must remain one dynamic viewport tall');

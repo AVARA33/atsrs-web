@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'css', 'sage-ledger.css'), 'utf8');
 const release = styles.slice(styles.indexOf('/* V447:'));
 
-assert.match(index, /css\/sage-ledger\.css\?v=448/, 'V448 sage styles must bypass the production cache');
+assert.match(index, /css\/sage-ledger\.css\?v=450/, 'Current sage styles must bypass the production cache');
 assert.match(release, /#app\.app:not\(\.hidden\) #atsrsGlobalControls>:is\(#atsrsThemeToggle,#sageNotificationButton\)/, 'borderless styling must remain inside the open app');
 assert.match(release, /background-color:transparent!important/, 'idle header controls must have no visible fill');
 assert.match(release, /border-color:transparent!important/, 'idle header controls must have no visible box border');

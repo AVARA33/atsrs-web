@@ -595,6 +595,33 @@ html body:is(.atsrs-booting,.atsrs-session-pending) #atsrsBootScreen{
   overscroll-behavior:none!important;
 }
 
+/* V450: keep the Product Updates icon visible and compact document headers. */
+@media(min-width:801px){
+  html body #app.app:not(.hidden)>.sidebar .nav>#navIntro{
+    gap:4px!important;
+    padding-block:4px!important;
+  }
+  html body #app.app:not(.hidden)>.sidebar .nav>#navIntro .sage-nav-icon{
+    flex:0 0 auto!important;
+  }
+  html body #app.app:not(.hidden)>.sidebar .nav>#navIntro .sage-nav-label{
+    max-width:104px!important;
+    white-space:nowrap!important;
+    font-size:10px!important;
+    line-height:1.2!important;
+  }
+}
+html body #app.app:not(.hidden) #certificatesPage .atsrs-document-register thead th{
+  padding:6px 12px!important;
+  white-space:nowrap!important;
+  vertical-align:middle!important;
+  line-height:1.2!important;
+}
+html body #app.app:not(.hidden) #certificatesPage .atsrs-document-register thead .atsrs-document-sort,
+html body #app.app:not(.hidden) #certificatesPage .atsrs-document-register thead .atsrs-document-sort>span:not(.atsrs-sort-arrows){
+  white-space:nowrap!important;
+}
+
 /* V444: keep the desktop sidebar fully visible without an internal scrollbar. */
 @media(min-width:801px){
   html body #app.app:not(.hidden)>.sidebar{

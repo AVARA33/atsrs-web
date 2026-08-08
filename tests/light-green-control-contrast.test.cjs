@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const sage = fs.readFileSync(path.join(root, 'css', 'sage-ledger.css'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
-assert.match(index, /css\/sage-ledger\.css\?v=448/, 'V448 sage styles must bypass the production cache');
+assert.match(index, /css\/sage-ledger\.css\?v=450/, 'Current sage styles must bypass the production cache');
 assert.match(sage, /solid sage controls always use a true white foreground in light mode/);
 assert.match(sage, /\.workspace-switcher-avatar,[\s\S]*-webkit-text-fill-color:#fff!important/, 'The green account avatar needs a white Chromium text fill');
 assert.match(sage, /:not\(\.sage-header-icon-button\):not\(\.atsrs-theme-toggle\)[^{]*\{[\s\S]*?-webkit-text-fill-color:#fff!important/, 'Green action controls need a white Chromium text fill without affecting ivory header controls');
