@@ -34,12 +34,11 @@ assert.match(css, /atsrs-personal-dashboard-route \.sidebar \.nav button/);
 assert.match(css, /:focus-visible\{[\s\S]*?outline:3px solid/);
 assert.match(css, /dashboard-snapshot-panel\{[\s\S]*?width:min\(100%,760px\)!important/);
 assert.match(css, /\.atsrs-notification-actions:not\(:has\(button:not\(:disabled\)\)\)\{\s*display:none!important/);
-assert.match(css, /\.sidebar\.v76-mobile-closed \.nav\{\s*display:flex!important/);
+assert.match(css, /\.sidebar\.v76-mobile-closed \.nav/);
 assert.doesNotMatch(css, /body\.company-mode/);
 
-assert.match(runtime, /visible&&window\.innerWidth<=800/);
-assert.match(runtime, /sidebar\.classList\.remove\('v76-mobile-closed'\)/);
-assert.doesNotMatch(runtime, /sidebar\.classList\.add\('v76-mobile-closed'\)/);
+assert.match(runtime, /window\.innerWidth<=800&&!lastDashboardVisible/);
+assert.match(runtime, /sidebar\.classList\.add\('v76-mobile-closed'\)/);
 assert.match(runtime, /element\.classList\.remove\('warning','danger'\)/);
 assert.match(runtime, /Number\.isFinite\(value\)&&value>0/);
 assert.match(runtime, /value\.textContent='On file'/);
@@ -55,7 +54,8 @@ assert.match(runtime, /window\.addEventListener\('atsrs:data-hydrated',syncDashb
 assert.doesNotMatch(runtime, /fetch\(|supabase|insert\(|update\(|delete\(/i);
 assert.match(runtime, /aria-controls/);
 assert.match(runtime, /aria-expanded/);
-assert.match(runtime, /handleMobileMenuKeydown/);
+assert.match(runtime, /event\.key==='Escape'/);
+assert.match(runtime, /event\.key!=='Tab'/);
 assert.match(runtime, /window\.atsrsRefreshNotifications\(\)/);
 assert.match(runtime, /role',error\?'alert':'status'/);
 assert.match(runtime, /aria-live',error\?'assertive':'polite'/);
@@ -78,7 +78,7 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);
 }
 
-assert.match(index, /css\/personal-dashboard-qa\.css\?v=449/);
-assert.match(index, /js\/personal-dashboard-qa\.js\?v=449/);
+assert.match(index, /css\/personal-dashboard-qa\.css\?v=436/);
+assert.match(index, /js\/personal-dashboard-qa\.js\?v=434/);
 
 console.log('Personal Dashboard QA candidate contracts passed');

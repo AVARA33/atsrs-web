@@ -164,13 +164,13 @@ body.personal-mode #app.app:not(.hidden) > .main > :is(
   outline-offset:3px!important;
 }
 
-/* Keep the open Personal shell switch touch-safe without leaking into auth. */
-body.personal-mode #app.app:not(.hidden) > .main > #atsrsGlobalControls > #atsrsThemeToggle{
+/* Keep the shell switch touch-safe without changing Corporate or auth. */
+body.personal-mode #atsrsThemeToggle{
   height:44px!important;
   min-height:44px!important;
 }
 
-body.personal-mode #app.app:not(.hidden) > .main > #atsrsGlobalControls > #atsrsThemeToggle .atsrs-theme-thumb{
+body.personal-mode #atsrsThemeToggle .atsrs-theme-thumb{
   top:11px;
 }
 

@@ -1,6 +1,6 @@
 /* ATSRS V239 — server-backed expiry notification center */
 .atsrs-notification-panel{margin-top:18px}
-.corporate-dashboard-activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:22px;margin:0 40px 26px!important}
+.corporate-dashboard-activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:22px;margin:0 0 22px}
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid>.panel{min-width:0;margin:0!important;padding:0!important}
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid .atsrs-notification-panel{margin-top:0}
 body.company-mode #dashboardPage .corporate-dashboard-activity-grid .corporate-sent-request-list{grid-template-columns:1fr}
@@ -14,10 +14,7 @@ html[data-theme="light"] body #app .expiry-request-count.is-empty{background:#ee
 .atsrs-notification-actions{display:flex;gap:9px;flex-wrap:wrap}
 .atsrs-notification-list{display:grid;gap:10px;margin-top:14px}
 .atsrs-notification-list.has-overflow{max-height:770px;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-gutter:stable}
-.atsrs-notification-item{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:12px;align-items:start;min-height:150px;padding:18px;border:1px solid #26384e;border-radius:14px;background:rgba(8,20,34,.72)}
-.atsrs-notification-copy,.atsrs-notification-copy b,.atsrs-notification-copy p,
-.corporate-dashboard-activity-grid .access-request-card,
-.corporate-dashboard-activity-grid .access-request-card :is(b,p,small,span){min-width:0;max-width:100%;overflow-wrap:break-word;word-break:normal}
+.atsrs-notification-item{display:grid;grid-template-columns:10px 1fr auto;gap:12px;align-items:start;min-height:150px;padding:14px;border:1px solid #26384e;border-radius:14px;background:rgba(8,20,34,.72)}
 .atsrs-notification-item.is-unread{border-color:#3d6085;background:rgba(12,30,49,.94)}
 body.company-mode #dashboardPage .atsrs-notification-item,
 body.company-mode #dashboardPage .atsrs-notification-item.is-unread{
@@ -65,5 +62,4 @@ html[data-theme="light"] .atsrs-notification-copy time{color:#405a70!important}
 .atsrs-notification-status.is-ok{color:#86efac}
 .atsrs-notification-status.is-error{color:#fca5a5}
 @media(max-width:1100px){.corporate-dashboard-activity-grid{grid-template-columns:1fr}}
-@media(max-width:800px){.corporate-dashboard-activity-grid{gap:16px;margin:0 12px 20px!important}.atsrs-notification-item{padding:16px}}
 @media(max-width:720px){.atsrs-notification-head,.atsrs-notification-field{align-items:stretch;flex-direction:column}.atsrs-notification-item{grid-template-columns:10px 1fr}.atsrs-notification-item-actions{grid-column:2;justify-content:flex-start}.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:none;width:100%}}

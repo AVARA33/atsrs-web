@@ -3,6 +3,7 @@
 
   var DASHBOARD_IDS=['exp90','exp30','expToday','expired','snapRisk'];
   var riskTone={exp90:'warning',exp30:'warning',expToday:'danger',expired:'danger',snapRisk:'warning'};
+  var lastDashboardVisible=false;
   var notificationObserver=null,observedNotificationList=null;
 
   function byId(id){return document.getElementById(id);}
@@ -96,19 +97,24 @@
     if(!sidebar||!toggle)return;
     var nav=sidebar.querySelector('.nav');if(!nav)return;
     if(!nav.id)nav.id='personalDashboardNav';
-    var mobile=window.innerWidth<=800;
-    if(mobile)sidebar.classList.remove('v76-mobile-closed');
+    var mobile=window.innerWidth<=800,open=mobile&&!sidebar.classList.contains('v76-mobile-closed');
     toggle.setAttribute('aria-controls',nav.id);
-    toggle.setAttribute('aria-expanded',String(mobile));
-    toggle.setAttribute('aria-label','Navigation');
+    toggle.setAttribute('aria-expanded',String(open));
+    toggle.setAttribute('aria-label',open?'Close menu':'Open menu');
   }
   function handleMobileMenuKeydown(event){
     if(!dashboardVisible()||window.innerWidth>800)return;
-    var sidebar=document.querySelector('#app .sidebar');
-    if(sidebar&&sidebar.classList.contains('v76-mobile-closed')){
-      sidebar.classList.remove('v76-mobile-closed');
-      syncMobileMenuState();
+    var sidebar=document.querySelector('#app .sidebar'),toggle=byId('sidebarToggleBtn');
+    if(!sidebar||!toggle||sidebar.classList.contains('v76-mobile-closed'))return;
+    if(event.key==='Escape'){
+      event.preventDefault();sidebar.classList.add('v76-mobile-closed');syncMobileMenuState();toggle.focus();return;
     }
+    if(event.key!=='Tab')return;
+    var focusable=Array.from(sidebar.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(element){return element.getClientRects().length;});
+    if(!focusable.length)return;
+    var first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
   }
   function syncRequestCopy(){
     var panel=byId('accessRequestsPanel');if(!panel)return;
@@ -120,10 +126,11 @@
   function syncDashboard(){
     var visible=dashboardVisible();
     document.body.classList.toggle('atsrs-personal-dashboard-route',visible);
-    if(visible&&window.innerWidth<=800){
+    if(visible&&window.innerWidth<=800&&!lastDashboardVisible){
       var sidebar=document.querySelector('#app .sidebar');
-      if(sidebar)sidebar.classList.remove('v76-mobile-closed');
+      if(sidebar)sidebar.classList.add('v76-mobile-closed');
     }
+    lastDashboardVisible=visible;
     syncMobileMenuState();
     if(!visible)return;
     DASHBOARD_IDS.forEach(function(id){syncRiskTone(byId(id));});
