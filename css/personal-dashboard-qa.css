@@ -224,15 +224,12 @@ body.personal-mode #dashboardPage :where(button,[role="button"],summary,a,input,
 }
 
 @media(max-width:800px){
-  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar{
-    position:relative!important;
-  }
+  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar,
   body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed{
-    padding-bottom:10px!important;
+    position:fixed!important;
   }
-  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed .nav,
-  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed .sub{
-    display:none!important;
+  body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden) .sidebar.v76-mobile-closed .nav{
+    display:flex!important;
   }
 }
 

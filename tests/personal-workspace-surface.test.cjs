@@ -42,7 +42,7 @@ assert.doesNotMatch(css, /body\.company-mode/);
 assert.doesNotMatch(css, /linear-gradient|radial-gradient/);
 
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=446"/);
-assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=436"/);
+assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=449"/);
 assert.match(index, /data-atsrs-build="V436"/);
 assert.match(css, /body\.personal-mode #app\.app:not\(\.hidden\) > \.main > #atsrsGlobalControls > #atsrsThemeToggle\{[\s\S]*?min-height:44px!important/);
 assert.doesNotMatch(css, /body\.personal-mode #atsrsThemeToggle/, 'Personal shell sizing must not leak into the login page');
