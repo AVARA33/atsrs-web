@@ -17,6 +17,7 @@
 - Sidebar before correction: `docs/audit/sidebar-v444/02-live-v443-before.png`
 - Sidebar implementation: `docs/audit/sidebar-v444/03-local-personal-v444-full.png`, `04-local-corporate-v444-full.png`
 - Focused sidebar comparison: `docs/audit/sidebar-v444/06-sidebar-comparison.png`
+- Live V444 evidence: `docs/audit/sidebar-v444/07-live-corporate-v444.png`, `08-live-personal-v444.png`
 
 The source and implementation were compared in the same Chrome window at 1707 x 842. Focused checks covered the 112px navigation rail, 84px header, icon family, account controls, 48px readiness heading, readiness score, action column, 84px status band, register typography, borders, colors, and mobile bottom navigation.
 
@@ -45,6 +46,7 @@ The V444 sidebar pass used the selected 2048 x 1228 template capture as source t
 - JavaScript syntax check: passed.
 - V444 Personal sidebar: 900px client height, 900px scroll height, internal scroll false, minimum visible button 54px.
 - V444 Corporate sidebar: 720px client height, 720px scroll height, internal scroll false, minimum visible button 46px.
+- Live V444 Personal and Corporate at 1440 x 900: 900px client height, 900px scroll height, internal scroll false, minimum visible button 54px, console errors 0.
 - Required fidelity surfaces: existing Aptos/Georgia typography retained; Sage tokens, borders and 112px rail retained; local Phosphor icon assets retained; labels and ordering match the current ATSRS navigation contract; no raster or placeholder assets introduced.
 - Regression suite: 53 passed, 0 failed.
 - Login, authentication, loading behavior, and production user data were not changed.
