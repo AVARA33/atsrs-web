@@ -103,8 +103,11 @@
     }
     var avatar=byId('workspaceSwitcherAvatar'),name=byId('workspaceSwitcherName');
     if(avatar){
-      var value=initials(name&&name.textContent);
-      if(avatar.textContent!==value||avatar.children.length)avatar.textContent=value;
+      var avatarImage=avatar.querySelector('img');
+      if(!avatarImage){
+        var value=initials(name&&name.textContent);
+        if(avatar.textContent!==value)avatar.textContent=value;
+      }
     }
     var chevron=document.querySelector('#workspaceSwitcherButton .workspace-switcher-chevron');
     if(chevron&&!chevron.querySelector('.ph')){chevron.textContent='';chevron.appendChild(icon('caret-down'));}
