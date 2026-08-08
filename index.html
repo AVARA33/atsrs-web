@@ -306,7 +306,18 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="solo-hero panel">
   <div class="hero-card">
     <span id="soloBadge" class="pill">SOLO CONTROL</span>
+    <h3 class="sage-dashboard-title personal-only">Your document readiness</h3>
+    <h3 class="sage-dashboard-title company-only">Company readiness</h3>
     <p id="soloHeroText">Upload your certificates and track expiry risk from one clean dashboard.</p>
+  </div>
+  <div class="sage-readiness-score" aria-label="Document readiness score">
+    <span><b id="sageReadinessValue">&mdash;</b>% <small>current</small></span>
+    <i class="sage-readiness-track" aria-hidden="true"><i id="sageReadinessProgress"></i></i>
+    <small id="sageReadinessNote">Calculated from uploaded document dates.</small>
+  </div>
+  <div class="sage-hero-actions">
+    <button type="button" onclick="atsrsSageOpenDocuments()">Resolve next item</button>
+    <button type="button" class="secondary" onclick="atsrsSageOpenDocuments()">Add document</button>
   </div>
 </div>
 
@@ -319,6 +330,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
 <div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">&mdash;</div></div>
 </div>
+<section id="sageDashboardLedger" class="sage-dashboard-ledger">
+  <div class="sage-ledger-heading">
+    <div><span class="pill">DOCUMENT REGISTER</span><h3>Documents</h3></div>
+    <label class="sage-ledger-search"><span class="sr-only">Search dashboard documents</span><input id="sageLedgerSearch" type="search" placeholder="Search documents" autocomplete="off"></label>
+    <button type="button" class="secondary" onclick="atsrsSageOpenDocuments()">Open register</button>
+  </div>
+  <div class="table-wrap"><table class="sage-ledger-table"><thead><tr><th>Document</th><th>Provider</th><th>Expiry</th><th>Status</th><th>Action</th></tr></thead><tbody id="sageDashboardLedgerBody"><tr><td colspan="5">No documents uploaded yet.</td></tr></tbody></table></div>
+  <p class="sage-ledger-note">All dates are shown in your local time. Date status does not certify role or project eligibility.</p>
+</section>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
     <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
@@ -1357,6 +1377,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/corporate-remediation.js?v=424"></script>
 <script src="js/theme.js?v=408"></script>
 <script src="js/personal-dashboard-qa.js?v=434"></script>
+<script src="js/sage-ledger.js?v=434"></script>
 
 
 
@@ -1637,5 +1658,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 
 
+<link rel="stylesheet" href="css/sage-ledger.css?v=434">
 </body>
 </html>

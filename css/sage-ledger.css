@@ -1,0 +1,330 @@
+/* ATSRS V434 Sage Ledger — application-only visual system. Auth and loading are unchanged. */
+#app.app{
+  --sage-bg:#fcfbf7;
+  --sage-rail:#f2f5f0;
+  --sage-soft:#eef4f0;
+  --sage-line:#d9e1dc;
+  --sage-text:#19332e;
+  --sage-muted:#687b75;
+  --sage-accent:#3f7c70;
+  --sage-accent-strong:#2e7467;
+  --sage-good:#3f8c79;
+  --sage-warn:#b97d17;
+  --sage-danger:#c45d45;
+  display:grid!important;
+  grid-template-columns:112px minmax(0,1fr)!important;
+  min-height:100vh;
+  background:var(--sage-bg)!important;
+  color:var(--sage-text)!important;
+  font-family:"Aptos","Segoe UI",Arial,sans-serif!important;
+}
+html[data-theme="dark"] #app.app{
+  --sage-bg:#10201d;
+  --sage-rail:#0c1917;
+  --sage-soft:#172c27;
+  --sage-line:#315048;
+  --sage-text:#f2f5f1;
+  --sage-muted:#a6bab3;
+  --sage-accent:#62ad9d;
+  --sage-accent-strong:#78c5b4;
+  --sage-good:#77c7a4;
+  --sage-warn:#e4b75a;
+  --sage-danger:#e68d72;
+}
+
+#app.app>.sidebar{
+  position:sticky!important;
+  top:0!important;
+  z-index:80!important;
+  width:112px!important;
+  height:100vh!important;
+  padding:0 0 16px!important;
+  overflow-y:auto!important;
+  background:var(--sage-rail)!important;
+  border:0!important;
+  border-right:1px solid var(--sage-line)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+#app .sidebar-head{display:block!important}
+#app .sidebar .brand{
+  display:grid!important;
+  place-items:center!important;
+  width:112px!important;
+  height:84px!important;
+  padding:0!important;
+  color:#fff!important;
+  background:#123b32!important;
+  font:24px/1 Georgia,"Times New Roman",serif!important;
+  letter-spacing:0!important;
+}
+#app .sidebar-toggle,#app #cabinetText{display:none!important}
+#app .nav{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  margin:0!important;
+  padding:24px 0 0!important;
+}
+#app .nav button{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  min-height:68px!important;
+  margin:0!important;
+  padding:10px 7px!important;
+  overflow-wrap:anywhere!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--sage-text)!important;
+  font-size:11px!important;
+  font-weight:650!important;
+  line-height:1.25!important;
+  text-align:center!important;
+  transform:none!important;
+}
+#app .nav button:hover,#app .nav button:focus-visible{
+  color:var(--sage-accent-strong)!important;
+  background:color-mix(in srgb,var(--sage-accent) 7%,var(--sage-bg))!important;
+}
+#app .nav button.active{
+  color:var(--sage-accent-strong)!important;
+  background:color-mix(in srgb,var(--sage-accent) 10%,var(--sage-bg))!important;
+  box-shadow:inset 4px 0 var(--sage-accent)!important;
+}
+#app .nav-utility-divider{height:1px!important;margin:10px 14px!important;background:var(--sage-line)!important}
+#app .nav .nav-utility{min-height:58px!important;color:var(--sage-muted)!important;font-size:10px!important}
+body.personal-mode #navCandidates,body.personal-mode #navPersonnel,body.personal-mode #navCredentials,body.personal-mode #navCompliance,body.personal-mode #navReports{display:none!important}
+body.company-mode #navCertificates,body.company-mode #navRefs{display:none!important}
+
+#app.app>.main{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  padding:112px 44px 52px!important;
+  overflow-x:hidden!important;
+  background:var(--sage-bg)!important;
+  color:var(--sage-text)!important;
+}
+#app #pageTitle{
+  position:absolute!important;
+  top:31px!important;
+  left:44px!important;
+  max-width:calc(100% - 360px)!important;
+  margin:0!important;
+  overflow:hidden!important;
+  color:var(--sage-text)!important;
+  font-size:17px!important;
+  font-weight:650!important;
+  line-height:1.2!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+#app .workspace-switcher{top:18px!important;right:38px!important;color:var(--sage-text)!important}
+#app .workspace-switcher-button{
+  min-height:48px!important;
+  border:1px solid transparent!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  color:var(--sage-text)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+#app .workspace-switcher-button:hover,#app .workspace-switcher.open .workspace-switcher-button{border-color:var(--sage-line)!important;background:var(--sage-soft)!important}
+#app .workspace-switcher-avatar{border:0!important;background:var(--sage-accent)!important;color:#fff!important}
+#app .workspace-switcher-copy strong{color:var(--sage-text)!important;font-size:13px!important}
+#app .workspace-switcher-copy>span{color:var(--sage-muted)!important;font-size:10px!important}
+#app .workspace-switcher-menu{border-color:var(--sage-line)!important;background:var(--sage-bg)!important;color:var(--sage-text)!important;box-shadow:0 18px 44px rgba(13,40,34,.18)!important}
+#app .workspace-option,#app .workspace-logout-button{color:var(--sage-text)!important}
+#app .workspace-option:hover,#app .workspace-logout-button:hover{background:var(--sage-soft)!important;border-color:var(--sage-line)!important}
+#app .workspace-option small,#app .workspace-switcher-menu-label{color:var(--sage-muted)!important}
+#app>.top-actions,#app>.atsrs-global-top-actions{display:none!important}
+
+#app .panel,#app .card,#app .snapshot-card,#app .mini-panel,#app .workflow-card,#app .ref-card{
+  color:var(--sage-text)!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+#app .panel{padding:22px 0!important;margin-bottom:22px!important;border-bottom:1px solid var(--sage-line)!important}
+#app .sub,#app p,#app small,#app .field-label{color:var(--sage-muted)!important}
+#app h2,#app h3,#app h4,#app b,#app strong,#app label{color:var(--sage-text)!important}
+#app h3{letter-spacing:-.015em}
+#app .pill,#app .mode-badge{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--sage-accent-strong)!important;
+  font-size:10px!important;
+  letter-spacing:.11em!important;
+  text-transform:uppercase!important;
+}
+#app button,#app input,#app select,#app textarea,#app summary{min-height:44px}
+#app input,#app select,#app textarea{
+  border:1px solid var(--sage-line)!important;
+  border-radius:6px!important;
+  background:transparent!important;
+  color:var(--sage-text)!important;
+  box-shadow:none!important;
+}
+#app button:focus-visible,#app input:focus-visible,#app select:focus-visible,#app textarea:focus-visible,#app a:focus-visible{outline:3px solid color-mix(in srgb,var(--sage-accent) 28%,transparent)!important;outline-offset:2px!important}
+#app button:not(.workspace-switcher-button):not(.workspace-option):not(.workspace-logout-button):not(.linkbtn){border-radius:5px!important;box-shadow:none!important;transform:none!important}
+#app button:not(.secondary):not(.linkbtn):not(.workspace-switcher-button):not(.workspace-option):not(.workspace-logout-button):not(.talent-view-switch button):not(.account-tabs button):not(.cert-mode-buttons button):not(.nav button){background:var(--sage-accent)!important;color:#fff!important}
+#app button.secondary,#app .account-tabs button,#app .cert-mode-buttons button,#app .talent-view-switch button{border:1px solid var(--sage-line)!important;background:transparent!important;color:var(--sage-text)!important}
+#app button.secondary:hover,#app .account-tabs button:hover,#app .cert-mode-buttons button:hover{border-color:var(--sage-accent)!important;color:var(--sage-accent-strong)!important;background:var(--sage-soft)!important}
+#app table{color:var(--sage-text)!important;background:transparent!important}
+#app th,#app td{padding:14px 12px!important;border-color:var(--sage-line)!important;background:transparent!important}
+#app th{color:var(--sage-muted)!important;font-size:10px!important;letter-spacing:.07em!important;text-transform:uppercase!important}
+
+#app #dashboardPage{max-width:none!important;margin:-28px -44px 0!important}
+#app #dashboardPage .solo-hero.panel{
+  min-height:238px!important;
+  display:grid!important;
+  grid-template-columns:minmax(360px,1.2fr) minmax(260px,.72fr) 220px!important;
+  gap:42px!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:42px 48px!important;
+  border-bottom:1px solid var(--sage-line)!important;
+}
+#app #dashboardPage .hero-card{width:min(720px,100%)!important;padding:0!important;background:transparent!important}
+#app #dashboardPage .sage-dashboard-title{margin:10px 0 16px!important;color:var(--sage-text)!important;font:500 46px/1.05 Georgia,"Times New Roman",serif!important;letter-spacing:-.025em!important}
+#app #dashboardPage .hero-card p{max-width:620px!important;margin:0!important;color:var(--sage-muted)!important;font-size:17px!important;line-height:1.65!important}
+#app .sage-readiness-score{display:grid!important;gap:10px!important;min-width:0!important}
+#app .sage-readiness-score>span{display:flex!important;align-items:baseline!important;gap:5px!important;color:var(--sage-text)!important;font:30px/1 Georgia,"Times New Roman",serif!important}
+#app .sage-readiness-score>span b{font-size:62px!important;font-weight:400!important}
+#app .sage-readiness-score>span small,#app .sage-readiness-score>small{color:var(--sage-muted)!important;font:13px/1.4 "Aptos","Segoe UI",sans-serif!important}
+#app .sage-readiness-track{display:block!important;height:8px!important;overflow:hidden!important;background:var(--sage-soft)!important;border-radius:999px!important}
+#app .sage-readiness-track>i{display:block!important;width:0;height:100%!important;background:var(--sage-accent)!important;border-radius:inherit!important;transition:width .25s ease!important}
+#app .sage-hero-actions{display:flex!important;flex-direction:column!important;gap:10px!important}
+#app .sage-hero-actions button{margin:0!important;min-height:54px!important}
+#app .sage-dashboard-ledger{margin:0!important;padding:28px 40px 18px!important;border-bottom:1px solid var(--sage-line)!important;background:var(--sage-bg)!important}
+#app .sage-ledger-heading{display:grid!important;grid-template-columns:minmax(0,1fr) 300px 130px!important;gap:16px!important;align-items:center!important;padding-bottom:14px!important;border-bottom:1px solid var(--sage-line)!important}
+#app .sage-ledger-heading h3{margin:4px 0 0!important;font:500 28px/1.1 Georgia,"Times New Roman",serif!important}
+#app .sage-ledger-search input{width:100%!important;margin:0!important}
+#app .sage-ledger-heading>button{margin:0!important}
+#app .sage-ledger-table{min-width:760px!important}
+#app .sage-ledger-table td{font-size:12px!important}
+#app .sage-ledger-table tr:last-child td{border-bottom:0!important}
+#app .sage-ledger-table button{width:auto!important;min-width:44px!important;margin:0!important;padding-inline:10px!important}
+#app .sage-ledger-note{margin:12px 0 0!important;color:var(--sage-muted)!important;font-size:11px!important}
+#app #dashboardPage .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0 48px!important;
+  background:var(--sage-soft)!important;
+  border-bottom:1px solid var(--sage-line)!important;
+}
+#app #dashboardPage .stats-grid .card{
+  min-width:0!important;
+  min-height:94px!important;
+  margin:0!important;
+  padding:18px 22px!important;
+  border-right:1px solid var(--sage-line)!important;
+  background:transparent!important;
+}
+#app #dashboardPage .stats-grid .card:last-child{border-right:0!important}
+#app #dashboardPage .stats-grid .card p{margin:0 0 7px!important;color:var(--sage-muted)!important;font-size:11px!important;line-height:1.25!important}
+#app #dashboardPage .stats-grid .stat{color:var(--sage-text)!important;font:500 28px/1 Georgia,"Times New Roman",serif!important}
+#app #dashboardPage .stats-grid .warning{color:var(--sage-warn)!important}
+#app #dashboardPage .stats-grid .danger{color:var(--sage-danger)!important}
+#app #dashboardPage>.panel{
+  margin:0 40px!important;
+  padding:28px 8px!important;
+  border-bottom:1px solid var(--sage-line)!important;
+}
+#app #dashboardPage .dashboard-snapshot-panel .snapshot-card{padding:0!important}
+#app #dashboardPage .snapshot-list{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:0!important;border-block:1px solid var(--sage-line)!important}
+#app #dashboardPage .snapshot-item{min-height:70px!important;padding:16px 18px!important;border:0!important;border-right:1px solid var(--sage-line)!important;background:transparent!important}
+#app #dashboardPage .snapshot-item:last-child{border-right:0!important}
+#app #dashboardPage .risk-list{gap:0!important;border-top:1px solid var(--sage-line)!important}
+#app #dashboardPage .risk-item{min-height:62px!important;align-items:center!important;margin:0!important;padding:12px 8px!important;border:0!important;border-bottom:1px solid var(--sage-line)!important;background:transparent!important}
+#app #dashboardPage .access-request-list{border-top:1px solid var(--sage-line)!important}
+
+#app #certificatesPage>.panel,#app #refsPage>.panel,#app #profilePage>.panel,#app #personnelPage>.panel,#app #candidatesPage>.panel,#app #compliancePage>.panel,#app #reportsPage>.panel{padding-top:0!important}
+#app .unified-cert-panel,#app .talent-directory-panel{border:0!important;background:transparent!important}
+#app .scan-box,#app .import-box,#app .preview-box,#app .company-import-box,#app .profile-photo-card,#app .corporate-account-context,#app .admin-overview-panel{
+  border:1px solid var(--sage-line)!important;
+  border-radius:6px!important;
+  background:var(--sage-soft)!important;
+  box-shadow:none!important;
+}
+#app .ref-grid{gap:1px!important;background:var(--sage-line)!important;border-block:1px solid var(--sage-line)!important}
+#app .ref-card{margin:0!important;padding:22px!important;background:var(--sage-bg)!important}
+#app .talent-directory-grid,#app .linked-personnel-list{gap:1px!important;background:var(--sage-line)!important}
+#app .talent-card,#app .linked-personnel-card{border:0!important;border-radius:0!important;background:var(--sage-bg)!important;box-shadow:none!important}
+#app .corporate-summary-grid{gap:1px!important;background:var(--sage-line)!important;border-block:1px solid var(--sage-line)!important}
+#app .corporate-summary-grid>*{border:0!important;border-radius:0!important;background:var(--sage-soft)!important;box-shadow:none!important}
+#app .account-tabs{border-bottom:1px solid var(--sage-line)!important}
+#app .account-tabs button{border:0!important;border-bottom:3px solid transparent!important;border-radius:0!important}
+#app .account-tabs button.active{border-bottom-color:var(--sage-accent)!important;background:transparent!important;color:var(--sage-accent-strong)!important}
+#app .legal-app-frame{border:0!important;background:var(--sage-bg)!important}
+
+@media(max-width:1180px){
+  #app #dashboardPage .solo-hero.panel{grid-template-columns:1fr 280px!important}
+  #app .sage-hero-actions{grid-column:1/-1;flex-direction:row!important}
+  #app .sage-hero-actions button{min-width:180px!important}
+  #app #dashboardPage .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #app #dashboardPage .stats-grid .card:nth-child(3n){border-right:0!important}
+}
+@media(max-width:800px){
+  #app.app{display:block!important;padding-bottom:74px!important}
+  #app.app>.sidebar{position:fixed!important;top:auto!important;bottom:0!important;left:0!important;right:0!important;z-index:3000!important;width:auto!important;height:74px!important;padding:6px 8px!important;overflow:hidden!important;border:0!important;border-top:1px solid var(--sage-line)!important}
+  #app .sidebar-head,#app #cabinetText,#app .nav-utility-divider,#app .nav .nav-utility{display:none!important}
+  #app .nav{display:flex!important;flex-direction:row!important;gap:2px!important;padding:0!important;overflow-x:auto!important;scrollbar-width:none!important}
+  #app .nav button{flex:1 0 70px!important;width:auto!important;min-width:70px!important;min-height:60px!important;padding:7px 4px!important;font-size:9px!important}
+  #app .nav button.active{box-shadow:inset 0 3px var(--sage-accent)!important}
+  #app.app>.main{padding:96px 16px 30px!important}
+  #app #pageTitle{top:26px!important;left:16px!important;max-width:calc(100% - 190px)!important;font-size:15px!important}
+  #app .workspace-switcher{top:14px!important;right:12px!important}
+  #app .workspace-switcher-copy{display:none!important}
+  #app .workspace-switcher-button{grid-template-columns:34px 12px!important;padding-inline:5px!important}
+  #app #dashboardPage{margin:-22px -16px 0!important}
+  #app #dashboardPage .solo-hero.panel{min-height:0!important;padding:32px 18px!important}
+  #app #dashboardPage .solo-hero.panel{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:22px!important}
+  #app #dashboardPage .sage-dashboard-title{font-size:36px!important}
+  #app #dashboardPage .hero-card p{font-size:15px!important}
+  #app .sage-readiness-score>span b{font-size:52px!important}
+  #app .sage-hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important}
+  #app .sage-hero-actions button{min-width:0!important;padding-inline:8px!important}
+  #app .sage-dashboard-ledger{padding:24px 12px 16px!important}
+  #app .sage-ledger-heading{grid-template-columns:1fr!important}
+  #app .sage-ledger-heading>button{width:100%!important}
+  #app #dashboardPage .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:0!important}
+  #app #dashboardPage .stats-grid .card,#app #dashboardPage .stats-grid .card:nth-child(3n){border-right:1px solid var(--sage-line)!important;border-bottom:1px solid var(--sage-line)!important;padding:15px 16px!important}
+  #app #dashboardPage .stats-grid .card:nth-child(even){border-right:0!important}
+  #app #dashboardPage>.panel{margin:0 12px!important;padding:24px 4px!important}
+  #app #dashboardPage .snapshot-list{grid-template-columns:1fr!important}
+  #app #dashboardPage .snapshot-item{border-right:0!important;border-bottom:1px solid var(--sage-line)!important}
+  #app .table-wrap{margin-inline:-4px!important}
+  #app table{min-width:720px!important}
+}
+@media(max-width:390px){
+  #app.app>.main{padding-inline:12px!important}
+  #app #dashboardPage{margin-inline:-12px!important}
+  #app #dashboardPage .sage-dashboard-title{font-size:33px!important}
+  #app .workspace-switcher-menu{width:min(270px,calc(100vw - 18px))!important}
+}
+
+/* Final cascade lock: older ATSRS themes use highly specific longhands. */
+html body #app.app,html body #app.app>.main{background-color:var(--sage-bg)!important;background-image:none!important;color:var(--sage-text)!important}
+html body #app.app>.sidebar{background-color:var(--sage-rail)!important;background-image:none!important}
+html body #app.app .nav button{background-color:transparent!important;background-image:none!important;color:var(--sage-text)!important}
+html body #app.app .nav button:hover,html body #app.app .nav button:focus-visible{background-color:color-mix(in srgb,var(--sage-accent) 7%,var(--sage-bg))!important;color:var(--sage-accent-strong)!important}
+html body #app.app .nav button.active{background-color:color-mix(in srgb,var(--sage-accent) 10%,var(--sage-bg))!important;color:var(--sage-accent-strong)!important}
+html body #app.app #dashboardPage .solo-hero,html body #app.app #dashboardPage .hero-card,html body #app.app #dashboardPage>.panel{background-color:transparent!important;background-image:none!important}
+html body #app.app #dashboardPage .stats-grid{background-color:var(--sage-soft)!important;background-image:none!important}
+html body #app.app #dashboardPage .stats-grid .card,html body #app.app #dashboardPage .snapshot-item,html body #app.app #dashboardPage .risk-item{background-color:transparent!important;background-image:none!important}
+html[data-theme="light"] body #app.app .sidebar .brand,html:not([data-theme="light"]) body #app.app .sidebar .brand{background-color:#123b32!important;background-image:none!important;color:#fff!important}
+html[data-theme="light"] body #app.app .nav button,html:not([data-theme="light"]) body #app.app .nav button{background-color:transparent!important;background-image:none!important;color:var(--sage-text)!important;border-color:transparent!important;box-shadow:none!important}
+html[data-theme="light"] body #app.app .nav button.active,html:not([data-theme="light"]) body #app.app .nav button.active{background-color:color-mix(in srgb,var(--sage-accent) 10%,var(--sage-bg))!important;color:var(--sage-accent-strong)!important;box-shadow:inset 4px 0 var(--sage-accent)!important}
+html body #app.app>.sidebar .nav button{min-height:68px!important;height:auto!important}
+@media(max-width:800px){html body #app.app>.sidebar .nav button{min-height:60px!important;height:60px!important}}
