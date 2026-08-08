@@ -328,3 +328,184 @@ html[data-theme="light"] body #app.app .nav button,html:not([data-theme="light"]
 html[data-theme="light"] body #app.app .nav button.active,html:not([data-theme="light"]) body #app.app .nav button.active{background-color:color-mix(in srgb,var(--sage-accent) 10%,var(--sage-bg))!important;color:var(--sage-accent-strong)!important;box-shadow:inset 4px 0 var(--sage-accent)!important}
 html body #app.app>.sidebar .nav button{min-height:68px!important;height:auto!important}
 @media(max-width:800px){html body #app.app>.sidebar .nav button{min-height:60px!important;height:60px!important}}
+
+/* V437: exact Sage Ledger shell and Phosphor icon fidelity lock. */
+@media(min-width:801px){
+  html body #app.app:not(.hidden){grid-template-columns:112px minmax(0,1fr)!important}
+  html body #app.app:not(.hidden)>.sidebar{
+    position:sticky!important;top:0!important;left:auto!important;bottom:auto!important;
+    width:112px!important;height:100vh!important;max-height:100vh!important;
+    padding:0 0 18px!important;overflow-y:auto!important;overflow-x:hidden!important;
+  }
+  html body #app.app:not(.hidden)>.main{
+    grid-column:2!important;width:100%!important;margin-left:0!important;padding:84px 0 48px!important;
+  }
+}
+html body #app.app:not(.hidden)>.main::after{
+  content:"";position:absolute;z-index:2;top:83px;left:0;right:0;height:1px;
+  background:var(--sage-line);pointer-events:none;
+}
+html body #app.app:not(.hidden)>.main>#pageTitle,
+html body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden)>.main>#pageTitle{
+  display:block!important;position:absolute!important;z-index:4!important;top:32px!important;left:42px!important;
+  margin:0!important;color:var(--sage-text)!important;font:600 17px/1.2 "Aptos","Segoe UI",sans-serif!important;
+}
+html body #app.app:not(.hidden)>.main>section:not(#dashboardPage):not(.legal-app-page){
+  width:100%!important;max-width:none!important;margin:0!important;padding:34px 42px 48px!important;
+}
+html body #app.app:not(.hidden)>.sidebar .brand{
+  width:112px!important;height:84px!important;font:24px/1 Georgia,"Times New Roman",serif!important;
+  background:#123b32!important;color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important;
+}
+html body #app.app:not(.hidden)>.sidebar .nav{padding-top:74px!important}
+html body.company-mode #app.app:not(.hidden)>.sidebar .nav{padding-top:20px!important}
+html body #app.app:not(.hidden)>.sidebar .nav button{
+  width:112px!important;min-height:94px!important;height:94px!important;padding:8px!important;
+  flex-direction:column!important;justify-content:center!important;gap:8px!important;
+  color:var(--sage-text)!important;font-size:12px!important;font-weight:600!important;line-height:1.25!important;
+}
+html body.company-mode #app.app:not(.hidden)>.sidebar .nav button{min-height:70px!important;height:70px!important}
+html body #app.app:not(.hidden)>.sidebar .nav button.nav-utility{min-height:80px!important;height:80px!important}
+html body.company-mode #app.app:not(.hidden)>.sidebar .nav button.nav-utility{min-height:62px!important;height:62px!important}
+html body #app.app:not(.hidden)>.sidebar .nav button .sage-nav-icon{display:block!important;font-size:22px!important;line-height:1!important}
+html body #app.app:not(.hidden)>.sidebar .nav button .sage-nav-label{display:block!important;max-width:96px!important;white-space:normal!important}
+html body #app.app:not(.hidden)>.sidebar .nav button.active{
+  background:color-mix(in srgb,var(--sage-accent) 9%,var(--sage-bg))!important;
+  color:var(--sage-accent-strong)!important;box-shadow:inset 4px 0 var(--sage-accent)!important;
+}
+body.personal-mode #navCredentials,body.personal-mode #navCandidates,body.personal-mode #navPersonnel,
+body.personal-mode #navCompliance,body.personal-mode #navReports{display:none!important}
+body.company-mode #navCredentials,body.company-mode #sageNavSecurity,body.company-mode #sageNavSharing{display:none!important}
+body.company-mode #navCertificates,body.company-mode #navRefs{display:flex!important}
+
+html body #app.app:not(.hidden) .atsrs-global-controls{
+  position:absolute!important;z-index:120!important;top:20px!important;right:42px!important;left:auto!important;
+  display:flex!important;align-items:center!important;gap:10px!important;width:auto!important;height:44px!important;
+  margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;
+}
+html body #app.app:not(.hidden) .atsrs-global-controls>.atsrs-theme-toggle,
+html body #app.app:not(.hidden) .sage-header-icon-button{
+  position:static!important;display:grid!important;place-items:center!important;flex:0 0 44px!important;
+  width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;margin:0!important;padding:0!important;
+  border:1px solid var(--sage-line)!important;border-radius:9px!important;background:var(--sage-bg)!important;
+  color:var(--sage-text)!important;box-shadow:none!important;
+}
+html body #app.app:not(.hidden) .sage-header-icon-button.hidden{display:none!important}
+html body #app.app:not(.hidden) #atsrsGlobalControls>#atsrsThemeToggle,
+html body #app.app:not(.hidden) #atsrsGlobalControls>#sageNotificationButton{
+  background:var(--sage-bg)!important;background-image:none!important;color:var(--sage-text)!important;
+  border:1px solid var(--sage-line)!important;box-shadow:none!important;
+}
+html body #app.app:not(.hidden) .atsrs-theme-track{position:static!important;display:grid!important;place-items:center!important}
+html body #app.app:not(.hidden) .atsrs-theme-track>.ph,
+html body #app.app:not(.hidden) .sage-header-icon-button>.ph{font-size:21px!important}
+html body #app.app:not(.hidden) .atsrs-theme-sun,
+html body #app.app:not(.hidden) .atsrs-theme-moon,
+html body #app.app:not(.hidden) .atsrs-theme-thumb{display:none!important}
+html body #app.app:not(.hidden) .workspace-switcher{position:static!important;top:auto!important;right:auto!important;margin:0!important}
+html body #app.app:not(.hidden) .workspace-switcher-button{
+  min-height:44px!important;height:44px!important;padding:0 4px!important;display:flex!important;align-items:center!important;gap:10px!important;
+  border:0!important;background:transparent!important;
+}
+html body #app.app:not(.hidden) .workspace-switcher-avatar{
+  width:34px!important;height:34px!important;flex:0 0 34px!important;font-size:12px!important;background:var(--sage-accent)!important;
+}
+html body #app.app:not(.hidden) .workspace-switcher-copy{display:block!important}
+html body #app.app:not(.hidden) .workspace-switcher-copy strong{font-size:15px!important;font-weight:500!important;line-height:1.2!important}
+html body #app.app:not(.hidden) .workspace-switcher-copy>span{display:none!important}
+html body #app.app:not(.hidden) .workspace-switcher-chevron{
+  width:16px!important;height:16px!important;border:0!important;transform:none!important;display:grid!important;place-items:center!important;
+}
+html body #app.app:not(.hidden) .workspace-switcher-chevron>.ph{font-size:16px!important}
+
+html body #app.app:not(.hidden) #dashboardPage{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+html body #app.app:not(.hidden) #dashboardPage>#dashboardHeading{display:none!important}
+html body #app.app:not(.hidden) #dashboardPage .solo-hero.panel{
+  min-height:270px!important;grid-template-columns:minmax(360px,1.2fr) minmax(320px,.85fr) 220px!important;
+  gap:46px!important;padding:56px 48px!important;margin:0!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .sage-dashboard-title{
+  margin:10px 0 18px!important;font:500 48px/1.05 Georgia,"Times New Roman",serif!important;letter-spacing:-.025em!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .hero-card p{
+  max-width:470px!important;color:var(--sage-text)!important;font-size:17px!important;line-height:1.65!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .sage-readiness-score>span{font-size:32px!important}
+html body #app.app:not(.hidden) #dashboardPage .sage-readiness-score>span b{font-size:66px!important}
+html body #app.app:not(.hidden) #dashboardPage .sage-readiness-score>small{font-size:13px!important;color:var(--sage-muted)!important}
+html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions{gap:12px!important}
+html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions button{
+  min-height:56px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
+  width:100%!important;min-width:0!important;max-width:none!important;padding-inline:16px!important;
+  font:700 14px/1.25 "Aptos","Segoe UI",Arial,sans-serif!important;white-space:nowrap!important;
+}
+html body.company-mode #app.app:not(.hidden) #dashboardPage .solo-hero.panel{
+  grid-template-columns:minmax(360px,1.2fr) minmax(320px,.85fr) 230px!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions .secondary{
+  border:0!important;background:transparent!important;color:var(--sage-accent)!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid{
+  min-height:84px!important;padding:0 48px!important;background:var(--sage-soft)!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .card{
+  min-height:84px!important;padding:16px 20px!important;display:flex!important;align-items:center!important;gap:14px!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .card.hidden,
+html body.company-mode #app.app:not(.hidden) #dashboardPage .stats-grid .cv-status-card{display:none!important}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .sage-stat-icon{
+  flex:0 0 auto;font-size:30px!important;color:var(--sage-text)!important;
+}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .sage-stat-copy{display:flex!important;min-width:0!important;flex-direction:column!important;gap:4px!important}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .card p{margin:0!important;color:var(--sage-muted)!important;font-size:11px!important}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .stat{font:600 15px/1.25 "Aptos","Segoe UI",sans-serif!important}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .warning{color:var(--sage-warn)!important}
+html body #app.app:not(.hidden) #dashboardPage .stats-grid .danger{color:var(--sage-danger)!important}
+html body #app.app:not(.hidden) .sage-ledger-heading{grid-template-columns:minmax(0,1fr) 320px 130px!important;gap:22px!important;min-height:64px!important}
+html body #app.app:not(.hidden) .sage-ledger-heading h3{font-size:28px!important}
+html body #app.app:not(.hidden) .sage-ledger-heading>button,
+html body #app.app:not(.hidden) .sage-ledger-table button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important}
+html body #app.app:not(.hidden) .sage-ledger-table td{min-height:72px!important;font-size:13px!important}
+html body #app.app:not(.hidden) .sage-ledger-table td:first-child{white-space:normal!important}
+html body #app.app:not(.hidden) .sage-row-icon{display:inline-block!important;margin-right:10px!important;color:var(--sage-accent)!important;font-size:20px!important;vertical-align:middle!important}
+html body #app.app:not(.hidden) .sage-status-danger{color:var(--sage-danger)!important;background:color-mix(in srgb,var(--sage-danger) 8%,transparent)!important}
+html body #app.app:not(.hidden) .sage-status-warn{color:var(--sage-warn)!important;background:color-mix(in srgb,var(--sage-warn) 8%,transparent)!important}
+html body #app.app:not(.hidden) .sage-status-good{color:var(--sage-good)!important;background:color-mix(in srgb,var(--sage-good) 8%,transparent)!important}
+
+html body #app.app:not(.hidden)>.main>section:not(#dashboardPage) h1,
+html body #app.app:not(.hidden)>.main>section:not(#dashboardPage)>h2{font:500 38px/1.1 Georgia,"Times New Roman",serif!important}
+html body #app.app:not(.hidden)>.main>section:not(#dashboardPage) h3{color:var(--sage-text)!important;line-height:1.3!important}
+html body #app.app:not(.hidden)>.main>section:not(#dashboardPage) p{font-size:14px!important;line-height:1.6!important}
+
+@media(max-width:1180px) and (min-width:801px){
+  html body #app.app:not(.hidden) #dashboardPage .solo-hero.panel{grid-template-columns:1fr 300px!important}
+  html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions{grid-column:1/-1!important;flex-direction:row!important}
+  html body #app.app:not(.hidden) #dashboardPage .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;padding:0!important}
+}
+@media(max-width:800px){
+  html body #app.app:not(.hidden)>.main{padding:76px 0 74px!important}
+  html body #app.app:not(.hidden)>.main::after{top:75px!important}
+  html body #app.app:not(.hidden)>.main>#pageTitle,
+  html body.personal-mode.atsrs-personal-dashboard-route #app.app:not(.hidden)>.main>#pageTitle{top:29px!important;left:14px!important;font-size:15px!important}
+  html body #app.app:not(.hidden) .atsrs-global-controls{top:16px!important;right:12px!important;gap:6px!important}
+  html body #app.app:not(.hidden) .sage-header-icon-button{display:none!important}
+  html body #app.app:not(.hidden) .workspace-switcher-copy,
+  html body #app.app:not(.hidden) .workspace-switcher-chevron{display:none!important}
+  html body #app.app:not(.hidden) .workspace-switcher-button{width:44px!important;padding:0 5px!important}
+  html body #app.app:not(.hidden)>.sidebar{position:fixed!important;top:auto!important;bottom:0!important;left:0!important;right:0!important;width:auto!important;height:70px!important;padding:7px 8px!important}
+  html body #app.app:not(.hidden)>.sidebar .nav{padding:0!important;display:flex!important;overflow-x:auto!important}
+  html body #app.app:not(.hidden)>.sidebar .nav button,
+  html body.company-mode #app.app:not(.hidden)>.sidebar .nav button{
+    flex:1 0 64px!important;width:auto!important;min-width:64px!important;min-height:56px!important;height:56px!important;padding:0!important;gap:0!important;
+  }
+  html body #app.app:not(.hidden)>.sidebar .nav button .sage-nav-label{display:none!important}
+  html body #app.app:not(.hidden) #dashboardPage .solo-hero.panel{min-height:0!important;padding:34px 18px!important}
+  html body #app.app:not(.hidden) #dashboardPage .sage-dashboard-title{font-size:40px!important}
+  html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions{gap:8px!important}
+  html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions button{
+    padding-inline:6px!important;gap:4px!important;font-size:13px!important;white-space:normal!important;text-align:center!important;
+  }
+  html body #app.app:not(.hidden) #dashboardPage .stats-grid{padding:0!important;grid-template-columns:1fr 1fr!important}
+  html body #app.app:not(.hidden) #dashboardPage .stats-grid .card{padding:16px!important}
+  html body #app.app:not(.hidden)>.main>section:not(#dashboardPage):not(.legal-app-page){padding:20px 14px 34px!important}
+}

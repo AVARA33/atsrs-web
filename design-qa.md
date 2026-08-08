@@ -1,35 +1,35 @@
 # Sage Ledger production design QA
 
-## Scope
+## Scope and evidence
 
-- Design source: `docs/audit/competitor-product-audit-20260808/personal-prototype/qa-reference-v4.png` (1487 × 1058)
-- Personal implementation: `docs/audit/sage-ledger-production-qa/implementation-desktop.png` (1425 × 990)
-- Personal mobile implementation: `docs/audit/sage-ledger-production-qa/implementation-mobile-390.png` (375 × 812 browser content area from a 390 × 844 viewport)
-- Corporate implementation: `docs/audit/sage-ledger-production-qa/implementation-corporate-desktop.png` (1425 × 990)
-- Combined full-view evidence: `docs/audit/sage-ledger-production-qa/comparison-desktop.png`
+- Design source: `docs/audit/live-template-compare-20260808/02-template.png`
+- Previous live implementation: `docs/audit/live-template-compare-20260808/01-real.png`
+- Initial comparison: `docs/audit/live-template-compare-20260808/03-side-by-side.png`
+- Corrected Corporate desktop: `docs/audit/live-template-compare-20260808/11-corrected-corporate-desktop-final.jpg`
+- Final combined comparison: `docs/audit/live-template-compare-20260808/12-final-side-by-side.jpg`
+- Corrected 390px Corporate mobile: `docs/audit/live-template-compare-20260808/10-mobile-corporate-final.jpg`
 
-## Comparison and checks
+The source and implementation were compared in the same Chrome window at 1707 x 842. Focused checks covered the 112px navigation rail, 84px header, icon family, account controls, 48px readiness heading, readiness score, action column, 84px status band, register typography, borders, colors, and mobile bottom navigation.
 
-The reference and implementation were compared together at the complete dashboard level. Focused checks covered the navigation rail, header/account switcher, readiness hero, status band, document register, lower dashboard sections, and mobile bottom navigation.
+## Findings and corrections
 
-- The selected Sage Ledger visual direction is preserved: ivory workspace, eucalyptus accents, flat editorial sections, compact navigation, and restrained borders.
-- Dashboard precedes Documents in both Personal and Corporate navigation.
-- Personal and Corporate use the same visual system while retaining their existing product-specific information architecture and runtime behavior.
-- The readiness value is calculated from existing certificate counters; the document register mirrors existing document rows. No synthetic product capability or production data was added.
-- Desktop Personal and Corporate captures have no horizontal document overflow.
-- The existing 390px capture has no horizontal document overflow, and persistent mobile navigation targets are locked to 60px height.
-- Light/dark tokens, keyboard focus visibility, reduced-motion behavior, and long-text wrapping are defined in the production stylesheet.
-- Login/auth/loading markup and styles were not changed. A fresh login load produced zero console errors and warnings.
-- Existing regression suite: 48 passed, 0 failed.
+1. P1 - The prior production version applied only a partial CSS skin. Its sidebar remained 232px, navigation icons were absent, and the header controls overlapped. Fixed by implementing the selected V4 shell and loading the same Phosphor icon family locally.
+2. P1 - Legacy ATSRS selectors overrode the selected background, button, and text colors. Fixed with a scoped final cascade lock using the V4 ivory, eucalyptus, border, text, muted, warning, and danger tokens.
+3. P1 - The dashboard register read incorrect source columns, placing issue date and status in the wrong presentation columns. Fixed by mapping the existing real document fields to Document, Provider, Expiry, Status, and Action.
+4. P2 - Production typography and dimensions did not match the template. Fixed: 112px rail, 84px header, 48px Georgia readiness heading, 66px readiness score, 56px action buttons, 44px header controls, and 230px Corporate action column.
+5. P2 - Corporate mobile action text collided at 390px. Fixed with a two-column 56px action grid, 13px responsive labels, and constrained icon gaps.
 
-## Iteration history
+## Verification
 
-1. P1 — the first implementation did not include the reference's readiness score, actions, or document ledger. Fixed by adding a score derived from real counters and a read-only dashboard mirror of the existing document register.
-2. P2 — legacy high-specificity rules overrode navigation styling and made navigation buttons appear as primary green blocks. Fixed with scoped cascade locks and by excluding navigation controls from the primary-button selector.
-3. P2 — mobile navigation controls measured below the 44px touch-target requirement. Fixed by locking mobile navigation buttons to 60px height.
-4. Harness-only difference — runtime-populated navigation labels and real account values are absent from the script-free QA shell. The production runtime continues to populate these values; no production behavior was removed.
-
-## Result
+- Desktop viewport: 1707 x 842.
+- Mobile viewport: 390 x 844.
+- Horizontal overflow: 0px on reviewed desktop and mobile dashboards.
+- Visible interactive controls below 44px on the reviewed mobile dashboard: 0.
+- Local Personal and Corporate console errors: 0.
+- JavaScript syntax check: passed.
+- Regression suite: 48 passed, 0 failed.
+- Login, authentication, loading behavior, and production user data were not changed.
+- Template sample values and personnel rows were not copied into production; the implementation keeps existing ATSRS data and functionality.
 
 No unresolved P0, P1, or P2 visual defect remains in the reviewed scope.
 
