@@ -522,6 +522,14 @@ html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-doc
   text-shadow:none!important;
 }
 
+/* V445: selected sidebar navigation follows the sage palette in both workspaces. */
+html body #app.app:not(.hidden)>.sidebar .nav button.active,
+html body #app.app:not(.hidden)>.sidebar .nav button.active :is(.sage-nav-icon,.sage-nav-label){
+  color:var(--sage-accent-strong)!important;
+  -webkit-text-fill-color:var(--sage-accent-strong)!important;
+  text-shadow:none!important;
+}
+
 /* V444: keep the desktop sidebar fully visible without an internal scrollbar. */
 @media(min-width:801px){
   html body #app.app:not(.hidden)>.sidebar{
