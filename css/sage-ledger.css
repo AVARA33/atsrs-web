@@ -502,6 +502,18 @@ html body #app.app:not(.hidden) #introPage .roadmap-card{padding:24px!important}
   html body #app.app:not(.hidden) #introPage .roadmap-card{padding:20px!important}
 }
 
+/* V441: solid sage controls always use a true white foreground in light mode. */
+html[data-theme="light"] body #app.app:not(.hidden) .workspace-switcher-avatar,
+html[data-theme="light"] body #app.app:not(.hidden) button:not(.secondary):not(.linkbtn):not(.workspace-switcher-button):not(.workspace-option):not(.workspace-logout-button):not(.talent-view-switch button):not(.account-tabs button):not(.cert-mode-buttons button):not(.nav button):not(.sage-header-icon-button):not(.atsrs-theme-toggle){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  text-shadow:none!important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) button:not(.secondary):not(.linkbtn):not(.workspace-switcher-button):not(.workspace-option):not(.workspace-logout-button):not(.talent-view-switch button):not(.account-tabs button):not(.cert-mode-buttons button):not(.nav button):not(.sage-header-icon-button):not(.atsrs-theme-toggle) :is(span,strong,b,i){
+  color:inherit!important;
+  -webkit-text-fill-color:inherit!important;
+}
+
 @media(max-width:1180px) and (min-width:801px){
   html body #app.app:not(.hidden) #dashboardPage .solo-hero.panel{grid-template-columns:1fr 300px!important}
   html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions{grid-column:1/-1!important;flex-direction:row!important}
