@@ -13,6 +13,16 @@
     node.setAttribute('aria-hidden','true');
     return node;
   }
+  function restoreAuthThemeTrack(theme){
+    var track=theme&&theme.querySelector('.atsrs-theme-track');
+    if(!track||track.querySelector('.atsrs-theme-sun'))return;
+    track.textContent='';
+    var sun=document.createElement('span'),moon=document.createElement('span'),thumb=document.createElement('span');
+    sun.className='atsrs-theme-sun';sun.textContent='\u2600';
+    moon.className='atsrs-theme-moon';moon.textContent='\u263e';
+    thumb.className='atsrs-theme-thumb';
+    track.appendChild(sun);track.appendChild(moon);track.appendChild(thumb);
+  }
   function initials(value){
     return String(value||'ATSRS').trim().split(/\s+/).slice(0,2).map(function(part){return part.charAt(0)}).join('').toUpperCase()||'A';
   }
@@ -80,9 +90,9 @@
     var title=byId('pageTitle');
     var accountTitle=companyMode()?'Corporate Account':'Personal Account';
     if(title&&title.textContent!==accountTitle)title.textContent=accountTitle;
-    var controls=byId('atsrsGlobalControls'),theme=byId('atsrsThemeToggle');
-    if(controls&&theme){
-      var bell=byId('sageNotificationButton');
+    var app=byId('app'),appVisible=!!(app&&!app.classList.contains('hidden'));
+    var controls=byId('atsrsGlobalControls'),theme=byId('atsrsThemeToggle'),bell=byId('sageNotificationButton');
+    if(controls&&theme&&appVisible){
       if(!bell){
         bell=document.createElement('button');
         bell.id='sageNotificationButton';bell.className='sage-header-icon-button';bell.type='button';
@@ -100,6 +110,9 @@
         var themeName=document.documentElement.dataset.theme==='dark'?'sun':'moon';
         if(!track.querySelector('.ph-'+themeName)){track.textContent='';track.appendChild(icon(themeName));}
       }
+    }else{
+      if(bell)bell.classList.add('hidden');
+      restoreAuthThemeTrack(theme);
     }
     var avatar=byId('workspaceSwitcherAvatar'),name=byId('workspaceSwitcherName');
     if(avatar){
@@ -208,6 +221,7 @@
   document.addEventListener('DOMContentLoaded',function(){
     ['totalCerts','expired','expToday','exp30','exp90','certTable'].forEach(observe);
     var title=byId('pageTitle');if(title)new MutationObserver(decorateHeader).observe(title,{childList:true,characterData:true,subtree:true});
+    var app=byId('app');if(app)new MutationObserver(decorateHeader).observe(app,{attributes:true,attributeFilter:['class']});
     var search=byId('sageLedgerSearch');if(search)search.addEventListener('input',syncLedger);
     sync();setTimeout(sync,250);setTimeout(sync,900);
   });
