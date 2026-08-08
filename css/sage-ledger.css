@@ -514,6 +514,14 @@ html[data-theme="light"] body #app.app:not(.hidden) button:not(.secondary):not(.
   -webkit-text-fill-color:inherit!important;
 }
 
+/* V442: document-register sort controls keep a white foreground on sage. */
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-document-sort,
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-document-sort :is(span,i){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  text-shadow:none!important;
+}
+
 @media(max-width:1180px) and (min-width:801px){
   html body #app.app:not(.hidden) #dashboardPage .solo-hero.panel{grid-template-columns:1fr 300px!important}
   html body #app.app:not(.hidden) #dashboardPage .sage-hero-actions{grid-column:1/-1!important;flex-direction:row!important}

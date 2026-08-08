@@ -12,6 +12,7 @@
 - Personal and Corporate focused comparison: `docs/audit/header-controls-both-accounts-20260808/04-focused-comparison.jpg`
 - Corrected inset evidence: `docs/audit/text-overflow-20260808/04-corrected-desktop.png`, `05-corrected-mobile.png`
 - Corrected light-mode green-control evidence: `docs/audit/light-green-contrast-20260808/01-before-dark-text.png`, `02-after-white-text.png`, `03-live-v441-white-text.png`
+- Full Personal/Corporate green-control audit: `docs/audit/full-green-contrast-audit-20260808/01-corporate-documents-before.png`, `02-personal-documents-before.png`, `03-local-v442-after.png`
 
 The source and implementation were compared in the same Chrome window at 1707 x 842. Focused checks covered the 112px navigation rail, 84px header, icon family, account controls, 48px readiness heading, readiness score, action column, 84px status band, register typography, borders, colors, and mobile bottom navigation.
 
@@ -25,6 +26,7 @@ The source and implementation were compared in the same Chrome window at 1707 x 
 6. P1 - The notification bell was restricted to Corporate accounts even though the selected header pattern applies to both workspaces. Fixed so notification, theme, and account controls remain visible in both Personal and Corporate, including the 390px header.
 7. P1 - Corporate notification/request panels reset the dashboard content gutter to zero, and Product Updates lost its internal padding. Fixed with 40px desktop and 12px mobile activity gutters, restored hero/roadmap insets, larger notification-card padding, and defensive natural word wrapping.
 8. P1 - Light mode inherited Chromium's dark `-webkit-text-fill-color` even when solid sage controls declared white text. Fixed by locking both the foreground and text-fill color to white for sage action controls and the account avatar, while excluding the ivory header controls.
+9. P1 - A full light-mode route audit found the four Documents register sort controls still using dark Chromium text fill on sage in both workspaces. Fixed by explicitly locking the sort labels and both arrow states to white without changing the table layout or behavior.
 
 ## Verification
 
