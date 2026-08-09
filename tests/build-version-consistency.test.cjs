@@ -9,8 +9,8 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V436');
-assert.equal(update, '7 Aug 2026');
+assert.equal(version, 'V437');
+assert.equal(update, '9 Aug 2026');
 
 for (const asset of [
   'stability-runtime.js',
@@ -48,6 +48,9 @@ assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
 assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=436"/);
 assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
+assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=437"/);
+assert.match(index, /href="css\/shell-polish\.css\?v=437"/);
+assert.match(index, /src="js\/shell-polish\.js\?v=437"/);
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsUpdate/);
@@ -55,4 +58,4 @@ assert.doesNotMatch(runtime, /ATSRS V385|28 Jul 2026/);
 assert.doesNotMatch(index, /ATSRS V385|Last Update: 28 Jul 2026/);
 assert.match(runbook, /Frontend release: V390/);
 
-console.log('V436 build marker consistency tests passed');
+console.log('V437 build marker consistency tests passed');

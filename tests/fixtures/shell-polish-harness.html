@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS V437 shell polish harness</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/workspace-switcher.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css">
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css">
+</head>
+<body class="personal-mode app-open atsrs-app-visible">
+  <section id="app" class="app">
+    <aside class="sidebar">
+      <div class="sidebar-head"><div class="brand">ATSRS</div></div>
+      <p class="sub">Personal Account</p>
+      <div class="nav">
+        <button id="navDashboard">Dashboard</button>
+        <button id="navCertificates" class="active">Documents</button>
+        <button id="navRefs">References &amp; CV</button>
+        <button id="navProfile">Profile</button>
+        <button id="navCompliance">Security</button>
+        <div class="nav-utility-divider"></div>
+        <button id="navIntro" class="nav-utility">Product Updates</button>
+        <button id="navPrivacy" class="nav-utility">Privacy</button>
+      </div>
+    </aside>
+    <main class="main">
+      <div id="atsrsGlobalControls" class="atsrs-global-controls" aria-label="Display and account controls">
+        <button id="atsrsThemeToggle" class="atsrs-theme-toggle" role="switch" aria-label="Switch to dark mode">
+          <span class="atsrs-theme-track" aria-hidden="true">
+            <span class="atsrs-theme-sun">&#9728;</span>
+            <span class="atsrs-theme-moon">&#9790;</span>
+            <span class="atsrs-theme-thumb"></span>
+          </span>
+        </button>
+        <div id="workspaceSwitcher" class="workspace-switcher">
+          <button class="workspace-switcher-button" type="button"><span class="workspace-switcher-avatar">AA</span><span class="workspace-switcher-copy"><strong>Anar Agasiyev</strong><span>Personal Account</span></span><span class="workspace-switcher-chevron" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <h2 id="pageTitle">Personal Account</h2>
+      <section id="certificatesPage">
+        <div class="panel">
+          <h3>Add document</h3>
+          <p class="sub">Choose one method: Scan with AI or Manual Upload.</p>
+        </div>
+        <div class="panel">
+          <h3>Document Register</h3>
+          <div class="table-wrap">
+            <table class="atsrs-document-register">
+              <thead><tr>
+                <th class="atsrs-document-select-column"><input type="checkbox" aria-label="Select all"></th>
+                <th><button class="atsrs-document-sort"><span>Certificate</span><span class="atsrs-sort-arrows">▲▼</span></button></th>
+                <th>Training Center / Provider</th>
+                <th><button class="atsrs-document-sort"><span>Expiry</span><span class="atsrs-sort-arrows">▲▼</span></button></th>
+                <th><button class="atsrs-document-sort"><span>Uploaded</span><span class="atsrs-sort-arrows">▲▼</span></button></th>
+                <th><button class="atsrs-document-sort"><span>Status</span><span class="atsrs-sort-arrows">▲▼</span></button></th>
+                <th>Action</th>
+              </tr></thead>
+              <tbody><tr><td><input type="checkbox" aria-label="Select STCW"></td><td>STCW</td><td>State Maritime and Port Agency</td><td>2029-05-27</td><td>21 Jul 2026</td><td>Valid</td><td><button>Preview</button></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="atsrsNotificationPanel" class="panel"><span id="atsrsNotificationCount">0 expiries</span></div>
+      </section>
+    </main>
+  </section>
+  <script>
+    window.showPage=function(){};window.atsrsRefreshNotifications=function(){};
+    if(new URLSearchParams(location.search).get('account')==='corporate'){
+      document.body.className='company-mode app-open atsrs-app-visible';
+      document.querySelector('.sidebar .nav').innerHTML=
+        '<button id="navDashboard" class="active">Dashboard</button>'+
+        '<button id="navCandidates">Candidates</button>'+
+        '<button id="navPersonnel">Personnel</button>'+
+        '<button id="navCredentials">Company Credentials</button>'+
+        '<button id="navRefs">References</button>'+
+        '<button id="navCompliance">Compliance</button>'+
+        '<button id="navReports">Reports</button>'+
+        '<button id="navProfile">Company</button>'+
+        '<div class="nav-utility-divider" aria-hidden="true"></div>'+
+        '<button id="navIntro" class="nav-utility">Product Updates</button>'+
+        '<button id="navPrivacy" class="nav-utility nav-legal-link">Privacy</button>';
+    }
+  </script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/shell-polish.js"></script>
+</body>
+</html>
