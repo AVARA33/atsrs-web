@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V442');
+assert.equal(version, 'V443');
 assert.equal(update, '9 Aug 2026');
 
 for (const asset of [
@@ -51,7 +51,7 @@ assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=441"/);
 assert.match(index, /href="css\/shell-polish\.css\?v=441"/);
-assert.match(index, /src="js\/shell-polish\.js\?v=441"/);
+assert.match(index, /src="js\/shell-polish\.js\?v=443"/);
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsUpdate/);
@@ -67,4 +67,4 @@ assert.match(bootRefresh, /visibilitychange/);
 assert.match(bootRefresh, /window\.addEventListener\('pageshow',armFallback\)/);
 assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 
-console.log('V442 build marker consistency tests passed');
+console.log('V443 build marker consistency tests passed');

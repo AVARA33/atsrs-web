@@ -10,7 +10,7 @@ const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-r
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
 assert.match(index,/css\/shell-polish\.css\?v=441/);
-assert.match(index,/js\/shell-polish\.js\?v=441/);
+assert.match(index,/js\/shell-polish\.js\?v=443/);
 assert.match(icons,/\.ph-squares-four:before/);
 assert.match(icons,/\.ph-file:before/);
 assert.match(icons,/\.ph-file-text:before/);
@@ -54,9 +54,12 @@ assert.match(runtime,/navCompliance:'Security'/);
 assert.match(runtime,/navProfile:'Company'/);
 assert.match(runtime,/window\.showPage\('dashboard',dashboard\)/);
 assert.match(runtime,/atsrsNotificationPanel/);
-assert.match(runtime,/window\.queueMicrotask\(flush\)/);
-assert.match(runtime,/Promise\.resolve\(\)\.then\(flush\)/);
+assert.match(runtime,/function wrapNavigationWriter\(name\)/);
+assert.match(runtime,/\['applyLanguage','renderAll','changeLanguage','openApp','showPage'\]\.forEach\(wrapNavigationWriter\)/);
+assert.match(runtime,/observe\(document\.body,\{attributes:true,attributeFilter:\['class'\]\}\)/);
+assert.doesNotMatch(runtime,/queueMicrotask/);
+assert.doesNotMatch(runtime,/observe\(nav,\{childList:true/);
 const navigationQueue=runtime.match(/function queueNavigation\(\)\{[\s\S]*?\n  \}/)?.[0]||'';
 assert.doesNotMatch(navigationQueue,/setTimeout/);
 
-console.log('V441 shell polish contracts passed');
+console.log('V443 shell polish contracts passed');

@@ -1,4 +1,4 @@
-/* ATSRS V441 — stable workspace navigation and authenticated header controls. */
+/* ATSRS V443 — stable workspace navigation and authenticated header controls. */
 (function(){
   'use strict';
 
@@ -100,9 +100,23 @@
   function queueNavigation(){
     if(navSyncQueued)return;
     navSyncQueued=true;
-    var flush=function(){navSyncQueued=false;decorateNavigation()};
-    if(typeof window.queueMicrotask==='function')window.queueMicrotask(flush);
-    else Promise.resolve().then(flush);
+    try{decorateNavigation()}
+    finally{navSyncQueued=false}
+  }
+
+  function wrapNavigationWriter(name){
+    var base=window[name];
+    if(typeof base!=='function'||base.__atsrsShellNavigationWriter)return;
+    var wrapped=function(){
+      var result=base.apply(this,arguments);
+      queueNavigation();
+      if(result&&typeof result.then==='function'){
+        return Promise.resolve(result).finally(queueNavigation);
+      }
+      return result;
+    };
+    wrapped.__atsrsShellNavigationWriter=true;
+    window[name]=wrapped;
   }
 
   function openNotifications(){
@@ -141,22 +155,19 @@
   }
 
   function observe(){
-    var nav=document.querySelector('#app .sidebar .nav');
-    if(nav&&window.MutationObserver){
-      new MutationObserver(queueNavigation).observe(nav,{childList:true,subtree:true,characterData:true});
-    }
     if(document.body&&window.MutationObserver){
       new MutationObserver(function(){
         queueNavigation();
         ensureNotificationButton();
         updateNotificationLabel();
-      }).observe(document.body,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
+      }).observe(document.body,{attributes:true,attributeFilter:['class']});
     }
   }
 
   function boot(){
     decorateNavigation();
     ensureNotificationButton();
+    ['applyLanguage','renderAll','changeLanguage','openApp','showPage'].forEach(wrapNavigationWriter);
     observe();
     window.addEventListener('atsrs:workspace-changed',function(){queueNavigation();ensureNotificationButton()});
     window.addEventListener('atsrs:resume',function(){queueNavigation();ensureNotificationButton();updateNotificationLabel()});

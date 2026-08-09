@@ -78,3 +78,4 @@ V438 acceptance:
 - [x] V440 restores Product Updates and the remaining navigation icon/label wrappers in a microtask, before the browser can paint a transient legacy label.
 - [x] V441 removes colored fills from ordinary signed-in buttons and bounds the initial session loading lock to a five-second real deadline, including background-tab recovery.
 - [x] V442 adds an inline five-second hard unlock before the deferred application bundle, so a stalled dependency cannot leave the loading screen visible indefinitely.
+- [x] V443 removes the navigation microtask observer loop and decorates icons synchronously after the actual language/render/page writers, preventing both flicker and main-thread starvation.
