@@ -1,4 +1,4 @@
-/* V438: scoped shell polish for the signed-in Personal and Corporate workspaces. */
+/* V441: scoped shell polish for the signed-in Personal and Corporate workspaces. */
 
 /* Reuse the selected Phosphor shapes; icon color follows the signed-in shell state. */
 
@@ -24,7 +24,7 @@ html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{
   -webkit-text-fill-color:var(--atsrs-shell-accent)!important;
 }
 
-/* Selected tabs use a quiet sage cue instead of a blue-filled rectangle. */
+/* Selected tabs stay neutral; selection is shown without a colored fill. */
 html body #app.app:not(.hidden) :where(
   .account-tabs button.active,
   .module-tabs button.active,
@@ -33,56 +33,29 @@ html body #app.app:not(.hidden) :where(
   .cert-mode-buttons button.active,
   [data-company-credentials-tab].active
 ){
-  background:var(--atsrs-shell-accent-soft)!important;
-  border-color:var(--atsrs-shell-accent-border)!important;
-  color:var(--atsrs-shell-accent-strong)!important;
-  -webkit-text-fill-color:var(--atsrs-shell-accent-strong)!important;
+  background:transparent!important;
+  border-color:#526276!important;
+  color:inherit!important;
+  -webkit-text-fill-color:currentColor!important;
   box-shadow:none!important;
 }
 
-/* Dark-mode primary actions previously inherited the legacy blue gradient. */
-html[data-theme="dark"] body #app.app:not(.hidden) button:not(
-  .secondary
-):not(
-  .action
-):not(
-  .danger
-):not(
-  .danger-button
-):not(
-  .delete-button
-):not(
-  .nav button
-):not(
-  .atsrs-theme-toggle
-):not(
-  #atsrsNotificationButton
-):not(
-  .workspace-switcher-button
-):not(
-  .workspace-option
-):not(
-  .sidebar-toggle
-):not(
-  .atsrs-document-sort
-):not(
-  .personnel-combobox-toggle
-):not(
-  .work-type-select-toggle
-):not(
-  .work-type-select-option
-):not(
-  .file-preview-close
-):not(
-  .share-request-close
-):not(
-  .recipient-link-close
-){
-  background:var(--atsrs-shell-accent)!important;
-  border-color:var(--atsrs-shell-accent)!important;
-  color:#fff!important;
-  -webkit-text-fill-color:#fff!important;
+/* Ordinary actions remain neutral in both themes; green is reserved for state feedback. */
+html[data-theme] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close){
+  background:transparent!important;
   box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close){
+  border-color:#2c3d52!important;
+  color:#eef4fb!important;
+  -webkit-text-fill-color:#eef4fb!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close){
+  border-color:#d5dee3!important;
+  color:#172b25!important;
+  -webkit-text-fill-color:#172b25!important;
 }
 
 /* Product-update and dashboard utility boxes keep a neutral/sage interior. */

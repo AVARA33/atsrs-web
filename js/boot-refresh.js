@@ -1,9 +1,11 @@
-/* ATSRS V384: single-flight session-aware refresh loading controller. */
+/* ATSRS V441: bounded single-flight session-aware refresh loading controller. */
 (function(){
   'use strict';
   var finished=false;
   var observer=null;
   var fallbackTimer=0;
+  var bootStartedAt=Date.now();
+  var BOOT_DEADLINE_MS=5000;
 
   function byId(id){return document.getElementById(id);}
   function loadAsset(tag,attributes){
@@ -47,6 +49,12 @@
     observer=new MutationObserver(function(){if(appIsOpen())finishBoot();});
     observer.observe(app,{attributes:true,attributeFilter:['class']});
   }
+  function armFallback(){
+    if(finished)return;
+    if(fallbackTimer)clearTimeout(fallbackTimer);
+    var remaining=BOOT_DEADLINE_MS-(Date.now()-bootStartedAt);
+    fallbackTimer=setTimeout(finishBoot,Math.max(0,remaining));
+  }
   function resolveSession(){
     loadV241();
     watchForOpenApp();
@@ -71,5 +79,9 @@
     resolveSession();
   }
   window.addEventListener('atsrs:resume',lockBuildBadge);
-  fallbackTimer=setTimeout(finishBoot,12000);
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState!=='hidden')armFallback();
+  });
+  window.addEventListener('pageshow',armFallback);
+  armFallback();
 })();

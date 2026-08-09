@@ -76,3 +76,4 @@ V438 acceptance:
 - [x] Local Personal and Corporate render with zero root horizontal overflow.
 - [x] V439 keeps exactly one active navigation item when Corporate Company Credentials opens a legacy documents/references section.
 - [x] V440 restores Product Updates and the remaining navigation icon/label wrappers in a microtask, before the browser can paint a transient legacy label.
+- [x] V441 removes colored fills from ordinary signed-in buttons and bounds the initial session loading lock to a five-second real deadline, including background-tab recovery.
