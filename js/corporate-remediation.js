@@ -98,6 +98,8 @@
   }
   window.addEventListener('atsrs:workspace-changed',syncAll);
   window.addEventListener('atsrs:data-hydrated',syncAll);
-  new MutationObserver(syncAll).observe(document.body,{attributes:true,attributeFilter:['class']});
+  if(document.body&&window.MutationObserver){
+    new MutationObserver(syncAll).observe(document.body,{attributes:true,attributeFilter:['class']});
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 })();

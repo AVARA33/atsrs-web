@@ -51,7 +51,9 @@
   }
 
   window.addEventListener('atsrs:workspace-changed',syncCurrentPage);
-  new MutationObserver(syncCurrentPage).observe(document.body,{attributes:true,attributeFilter:['class']});
+  if(document.body&&window.MutationObserver){
+    new MutationObserver(syncCurrentPage).observe(document.body,{attributes:true,attributeFilter:['class']});
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncCurrentPage);
   else syncCurrentPage();
 })();

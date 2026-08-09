@@ -25,7 +25,7 @@ assert.match(html, /id="navPrivacy" class="nav-utility nav-legal-link" type="but
 assert.doesNotMatch(html, /id="navDataRights"/);
 assert.ok(html.indexOf('id="navIntro"') < html.indexOf('id="navPrivacy"'));
 assert.match(html, /src="js\/talent-directory\.js\?v=416"/);
-assert.match(html, /src="js\/corporate-information-architecture\.js\?v=439"/);
+assert.match(html, /src="js\/corporate-information-architecture\.js\?v=444"/);
 assert.match(html, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.equal((html.match(/data-company-credentials-tab="documents"/g) || []).length, 2);
 assert.equal((html.match(/data-company-credentials-tab="references"/g) || []).length, 2);
@@ -46,6 +46,7 @@ assert.match(runtime, /localStorage\.getItem\('atsrs_current_page'\)/);
 assert.match(runtime, /page==='certificates'\|\|page==='refs'/);
 assert.match(runtime, /pageTitle'\)[\s\S]*Company Credentials/);
 assert.match(runtime, /\[byId\('navCertificates'\),byId\('navRefs'\)\][\s\S]*classList\.remove\('active'\)/);
+assert.match(runtime, /if\(document\.body&&window\.MutationObserver\)/);
 
 assert.match(talent, /action:'summary',target_user_id:profile\.user_id/);
 assert.match(talent, /action:'cv',target_user_id:profile\.user_id/);

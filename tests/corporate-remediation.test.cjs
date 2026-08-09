@@ -17,6 +17,7 @@ assert.match(html, /id="corporateAccountContext"[\s\S]*Workspace details/);
 assert.match(runtime, /document\.querySelector\('#app \.nav button\.active'\)/);
 assert.match(runtime, /active\.id==='navProfile'[\s\S]*label='Corporate Account'/);
 assert.match(runtime, /if\(label\)setText\('pageTitle',label\)/);
+assert.match(runtime, /if\(document\.body&&window\.MutationObserver\)/);
 assert.match(css, /body\.company-mode #profilePage>\.panel>#accountTitle/);
 assert.match(css, /body\.company-mode #profilePage #accountGeneralTab>\.profile-grid[\s\S]*display:none!important/);
 assert.match(css, /body\.company-mode #refsPage \.cv-card[\s\S]*display:none!important/);
