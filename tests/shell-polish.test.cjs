@@ -8,9 +8,9 @@ const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const runtime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
-assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=438/);
-assert.match(index,/css\/shell-polish\.css\?v=438/);
-assert.match(index,/js\/shell-polish\.js\?v=438/);
+assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=440/);
+assert.match(index,/css\/shell-polish\.css\?v=440/);
+assert.match(index,/js\/shell-polish\.js\?v=440/);
 assert.match(icons,/\.ph-squares-four:before/);
 assert.match(icons,/\.ph-file:before/);
 assert.match(icons,/\.ph-file-text:before/);
@@ -53,5 +53,9 @@ assert.match(runtime,/navCompliance:'Security'/);
 assert.match(runtime,/navProfile:'Company'/);
 assert.match(runtime,/window\.showPage\('dashboard',dashboard\)/);
 assert.match(runtime,/atsrsNotificationPanel/);
+assert.match(runtime,/window\.queueMicrotask\(flush\)/);
+assert.match(runtime,/Promise\.resolve\(\)\.then\(flush\)/);
+const navigationQueue=runtime.match(/function queueNavigation\(\)\{[\s\S]*?\n  \}/)?.[0]||'';
+assert.doesNotMatch(navigationQueue,/setTimeout/);
 
-console.log('V438 shell polish contracts passed');
+console.log('V440 shell polish contracts passed');

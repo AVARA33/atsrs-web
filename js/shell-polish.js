@@ -1,4 +1,4 @@
-/* ATSRS V438 — stable workspace navigation and authenticated header controls. */
+/* ATSRS V440 — stable workspace navigation and authenticated header controls. */
 (function(){
   'use strict';
 
@@ -100,7 +100,9 @@
   function queueNavigation(){
     if(navSyncQueued)return;
     navSyncQueued=true;
-    setTimeout(function(){navSyncQueued=false;decorateNavigation()},0);
+    var flush=function(){navSyncQueued=false;decorateNavigation()};
+    if(typeof window.queueMicrotask==='function')window.queueMicrotask(flush);
+    else Promise.resolve().then(flush);
   }
 
   function openNotifications(){

@@ -75,3 +75,4 @@ V438 acceptance:
 - [x] Active navigation has transparent fill, sage text and a `3px` left rail in both modes.
 - [x] Local Personal and Corporate render with zero root horizontal overflow.
 - [x] V439 keeps exactly one active navigation item when Corporate Company Credentials opens a legacy documents/references section.
+- [x] V440 restores Product Updates and the remaining navigation icon/label wrappers in a microtask, before the browser can paint a transient legacy label.
