@@ -43,7 +43,7 @@ assert.doesNotMatch(css, /linear-gradient|radial-gradient/);
 
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
 assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=436"/);
-assert.match(index, /data-atsrs-build="V445"/);
+assert.match(index, /data-atsrs-build="V446"/);
 assert.match(css, /body\.personal-mode #atsrsThemeToggle\{[\s\S]*?min-height:44px!important/);
 assert.match(css, /body\.personal-mode #refsPage \.atsrs-v156-box-title\{[\s\S]*?line-height:1\.35!important[\s\S]*?overflow:visible!important/);
 

@@ -404,3 +404,80 @@ body #app.app:not(.hidden) > .main > :is(
   background-image:none!important;
   box-shadow:none!important;
 }
+
+/* V446: the document register uses the page background and fits the desktop viewport. */
+body #app.app:not(.hidden) #certificatesPage .table-wrap{
+  padding:0!important;
+  overflow-x:hidden!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
+  width:100%!important;
+  min-width:0!important;
+  table-layout:fixed!important;
+}
+
+#certificatesPage .atsrs-document-col-select{width:38px}
+#certificatesPage .atsrs-document-col-name{width:34%}
+#certificatesPage .atsrs-document-col-provider{width:25%}
+#certificatesPage .atsrs-document-col-expiry{width:10%}
+#certificatesPage .atsrs-document-col-uploaded{width:9%}
+#certificatesPage .atsrs-document-col-status{width:8%}
+#certificatesPage .atsrs-document-col-actions{width:224px}
+
+#certificatesPage .atsrs-document-register th,
+#certificatesPage .atsrs-document-register td{
+  min-width:0!important;
+  overflow:hidden!important;
+}
+
+#certificatesPage .atsrs-document-name{
+  display:-webkit-box;
+  max-width:100%;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+  line-height:1.35;
+}
+
+#certificatesPage .atsrs-document-register tbody td:nth-child(3){
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+}
+
+#certificatesPage .atsrs-document-register tbody td:is(:nth-child(4),:nth-child(5),:nth-child(6)){
+  white-space:nowrap!important;
+  text-overflow:ellipsis;
+}
+
+#certificatesPage .atsrs-document-row-actions{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.8fr) minmax(0,1fr);
+  gap:6px;
+  width:100%;
+  align-items:center;
+}
+
+body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding-inline:8px!important;
+  white-space:nowrap!important;
+}
+
+@media(max-width:800px){
+  body #app.app:not(.hidden) #certificatesPage .table-wrap{overflow-x:auto!important}
+  body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
+    min-width:920px!important;
+    table-layout:fixed!important;
+  }
+}

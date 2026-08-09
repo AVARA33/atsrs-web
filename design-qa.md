@@ -123,3 +123,34 @@ The supplied screenshots are the visual source for content, controls, typography
 4. No P0, P1 or P2 mismatch remains within the requested wrapper-removal scope.
 
 final result: passed
+
+## V446 document-register fit and flat-surface QA
+
+### Visual sources and implementation evidence
+
+- User source: `docs/qa/v446/source-personal-documents-dark.png`
+- Personal implementation: `docs/qa/v446/implementation-personal-default.png`
+- Corporate implementation: `docs/qa/v446/implementation-corporate-default.png`
+- Full comparison: `docs/qa/v446/comparison-full-personal-dark.png`
+- Focused register comparison: `docs/qa/v446/comparison-focused-register-dark.png`
+
+The requested scope is limited to the Documents register: remove its general-purpose outer card, eliminate desktop horizontal scrolling, and constrain long certificate names to two lines without changing the existing palette or document actions.
+
+### Findings
+
+- Desktop layout: the register uses a fixed seven-column layout at `100%` width. Personal and Corporate both measured `0px` root overflow and `0px` register overflow at desktop widths.
+- Long names: certificate names wrap naturally and are clamped to two lines; measured long-name height is `43px` at the current typography.
+- Surface: the register wrapper is transparent, borderless and shadowless, so the table sits directly on the page background and gains the former card padding.
+- Actions: Preview, Edit and Delete remain visible in a stable three-column action group. The Corporate desktop check measured each action group at `204px` client and scroll width.
+- Colors and typography: existing dark/light tokens, font family, sizes and status colors are unchanged. Light theme was explicitly checked with a transparent wrapper and zero overflow.
+- Responsive safety: at `390 x 844`, the page root remains at zero horizontal overflow. The seven-column register retains an internal scroller below `800px` so controls are not clipped on phones.
+- Console errors: `0` in the inspected Personal light and Corporate dark fixture states.
+
+### Comparison history
+
+1. The source showed a wide outer table surface and a desktop horizontal scrollbar.
+2. The register wrapper was flattened and the columns were assigned deterministic widths.
+3. A first Corporate check exposed inherited minimum button widths; a higher-specificity action rule removed that overflow.
+4. The final Personal and Corporate measurements pass with no P0, P1 or P2 findings in scope.
+
+final result: passed

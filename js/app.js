@@ -751,11 +751,11 @@
     var html='';
     rows.forEach(function(row){
       var x=row.item,i=row.index,st=row.statusData;
-      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td>'+esc(x.type||'')+'</td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td>'+uploadDateMarkup(x)+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td>'+
+      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td>'+uploadDateMarkup(x)+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td><div class="atsrs-document-row-actions">'+
         '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
         '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
         '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
-      '</td></tr>';
+      '</div></td></tr>';
     });
     if(!rows.length){
       var emptyText=!c.length

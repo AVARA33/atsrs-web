@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V445" data-atsrs-update="9 Aug 2026">
+<html lang="en" data-atsrs-build="V446" data-atsrs-update="9 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,7 +53,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=436">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
-<link rel="stylesheet" href="css/shell-polish.css?v=445">
+<link rel="stylesheet" href="css/shell-polish.css?v=446">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -631,7 +631,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <button id="deleteSelectedCertsBtn" type="button" class="secondary danger" disabled>Delete selected</button>
   </div>
 </div>
-<div class="table-wrap"><table class="atsrs-document-register"><thead><tr>
+<div class="table-wrap"><table class="atsrs-document-register"><colgroup>
+  <col class="atsrs-document-col-select">
+  <col class="atsrs-document-col-name">
+  <col class="atsrs-document-col-provider">
+  <col class="atsrs-document-col-expiry">
+  <col class="atsrs-document-col-uploaded">
+  <col class="atsrs-document-col-status">
+  <col class="atsrs-document-col-actions">
+</colgroup><thead><tr>
   <th class="atsrs-document-select-column"><input id="certSelectAll" type="checkbox" aria-label="Select all visible documents"></th>
   <th id="thCertificate2"><button type="button" class="atsrs-document-sort" data-cert-sort="type"><span id="certSortTypeLabel">Certificate</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">&#9650;</i><i class="down">&#9660;</i></span></button></th>
   <th id="thProvider2"></th>
@@ -1353,7 +1361,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/references.js?v=375"></script>
 <script src="js/cv-generator.js?v=411"></script>
 <script src="js/account.js?v=410"></script>
-<script src="js/app.js?v=430"></script>
+<script src="js/app.js?v=446"></script>
 <script src="js/product-experience.js?v=375"></script>
 <script src="js/date-picker.js?v=375"></script>
 <script src="js/share-profile.js?v=409"></script>
