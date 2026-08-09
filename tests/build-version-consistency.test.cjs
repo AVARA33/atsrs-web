@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V448');
+assert.equal(version, 'V449');
 assert.equal(update, '9 Aug 2026');
 
 for (const asset of [
@@ -47,7 +47,7 @@ assert.match(index, /src="js\/boot-refresh\.js\?v=442"/);
 assert.match(index, /src="js\/storage\.js\?v=447"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
-assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=448"/);
+assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=449"/);
 assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /src="js\/corporate-information-architecture\.js\?v=444"/);
@@ -74,4 +74,4 @@ assert.match(bootRefresh, /visibilitychange/);
 assert.match(bootRefresh, /window\.addEventListener\('pageshow',armFallback\)/);
 assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 
-console.log('V448 build marker consistency tests passed');
+console.log('V449 build marker consistency tests passed');

@@ -147,6 +147,11 @@ body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-card > .
   font-weight:800!important;
 }
 
+body.personal-mode #dashboardPage .stats-grid > .expiry-summary-card > .stat.is-zero-risk,
+body.company-mode #dashboardPage .stats-grid > .expiry-summary-card > .stat.is-zero-risk{
+  color:var(--expiry-signal)!important;
+}
+
 body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-uploaded{--expiry-signal:#64748b;--expiry-signal-soft:rgba(100,116,139,.12)}
 body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-90{--expiry-signal:#2563eb;--expiry-signal-soft:rgba(37,99,235,.11)}
 body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-60{--expiry-signal:#b7791f;--expiry-signal-soft:rgba(183,121,31,.12)}
