@@ -81,3 +81,45 @@ V438 acceptance:
 - [x] V443 removes the navigation microtask observer loop and decorates icons synchronously after the actual language/render/page writers, preventing both flicker and main-thread starvation.
 - [x] V444 guards legacy Corporate body observers so signed-in Personal startup cannot emit a null-target MutationObserver console error.
 - [x] V445 restores the Personal Security route to the real Account Security tab and removes large route-wrapper card surfaces across Personal and Corporate while retaining functional inner controls.
+
+## V445 flat route-surface design QA
+
+### Visual sources and implementation evidence
+
+- Source Candidates: `docs/qa/v445/source-candidates-dark.png`
+- Source Personnel: `docs/qa/v445/source-personnel-dark.png`
+- V445 Candidates: `docs/qa/v445/implementation-candidates-dark.png`
+- V445 Personnel: `docs/qa/v445/implementation-personnel-dark.png`
+- Combined Candidates comparison: `docs/qa/v445/comparison-candidates-dark.png`
+- Combined Personnel comparison: `docs/qa/v445/comparison-personnel-dark.png`
+- Additional light-theme evidence: `docs/qa/v445/implementation-candidates-light.png` and `docs/qa/v445/implementation-personnel-light.png`
+
+The supplied screenshots are the visual source for content, controls, typography, tokens and route structure. The requested change is intentionally limited to removing the large outer page card so the route content sits directly on the application background. Functional inner controls, filters, tables and candidate records remain intact.
+
+### Viewport and state
+
+- Live implementation viewport: `2048 x 1228` CSS pixels.
+- Source images: `2560 x 1528`; normalized to `2048 x 1228` only for side-by-side comparison.
+- Combined comparison canvas: `4096 x 1228`, source on the left and V445 on the right.
+- State: authenticated Corporate workspace, dark theme, Candidates List and Personnel List.
+- Route regression state: authenticated Personal Security and Corporate Compliance.
+
+### Findings
+
+- Typography and copy: route titles, section headings, labels, descriptions and table copy are unchanged.
+- Layout: the large bordered/shadowed wrapper is removed. The title, filters and result area now sit directly on the page background with the existing internal section dividers.
+- Functional surfaces: inputs, view toggles, status chips, tables, candidate cards and action buttons retain their existing boundaries and behavior.
+- Colors and tokens: no new palette, button color or active-navigation treatment was introduced. Light and dark themes continue to use the current V445 shell tokens.
+- Icons and assets: the existing Phosphor navigation and control icons are unchanged; no replacement or approximate asset was added.
+- Responsive safety: no root horizontal overflow was observed in the V445 route harness or live desktop captures. Text and action controls remain visible at the inspected viewport.
+- Interactions: Candidates and Personnel navigation, List mode, Personal Security routing and Corporate Compliance routing were exercised successfully.
+- Console errors: `0` in the local route-surface harness and `0` in the inspected live Personnel state.
+
+### Comparison history
+
+1. The source screenshots showed each route inside one large general-purpose card.
+2. V445 removes only that outer surface across Personal and Corporate route pages.
+3. Candidates and Personnel were recaptured in matching dark/List states and combined with their source screenshots for final visual inspection.
+4. No P0, P1 or P2 mismatch remains within the requested wrapper-removal scope.
+
+final result: passed
