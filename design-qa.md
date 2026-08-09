@@ -57,6 +57,46 @@ The source is the user's exact sidebar reference. Its narrow vertical icon-over-
 
 final result: passed
 
+## V450 public product landing and brand-motion QA
+
+### Visual sources and implementation evidence
+
+- Selected Product Design direction: `docs/design/public-landing-option-3-source.png`
+- Implemented dark landing: `docs/design/public-landing-v450-dark.png`
+- Side-by-side review: `docs/design/public-landing-v450-comparison.png`
+- Product imagery: `assets/landing/personal-dashboard.png`, `assets/landing/candidate-directory.png`, and `assets/landing/corporate-personnel.png`
+
+The selected direction established the airy marketing structure. V450 adapts it to the real ATSRS product and existing design language rather than copying source text or introducing unimplemented capabilities.
+
+### Viewports, themes and routes
+
+- Desktop: default in-app browser viewport, light and dark themes.
+- Mobile: `390 x 844`, with `0px` root horizontal overflow and a `68px` public header.
+- Public root: landing visible only when there is no authenticated session.
+- `?view=login`: existing login page visible; landing hidden; zero vertical or horizontal overflow at `390 x 844`.
+- `?view=signup`: existing Personal/Corporate signup choice visible; landing hidden.
+
+### Findings and fixes
+
+- Content accuracy: Personal, Candidate and Corporate are presented as equal platform parts. No seafarer-only positioning, invented integration, mobile application, certification claim or undecided paid price appears.
+- Plan boundaries: exactly four Personal tiers are shown. Free includes one lifetime AI scan, no Candidate directory listing, and no SMS/WhatsApp credits. Candidate listing starts at Bronze.
+- Layout: desktop and 390px checks found no clipped or off-canvas content. Public controls have a minimum 44px interactive height; the mobile header removes the secondary header CTA while preserving Login and the primary hero CTA.
+- Theme: the landing uses the existing saved light/dark preference and provides a scoped theme control without exposing signed-in application controls.
+- Authentication: public CTA routes reuse the production login/signup interface; loading and authentication layouts were not redesigned.
+- Wordmark: primary ATSRS lockups include `Automated Reporting & Tracking System`. The middle `S` occupies a fixed-width slot and alternates with `&` every 10 seconds using a 600ms Y-axis rotation; reduced-motion users receive a stable `S`.
+- Accessibility: one H1, semantic sections, labelled navigation, descriptive screenshots, keyboard focus rings, reduced-motion support and persistent accessible `ATSRS` labels are present.
+- Runtime: the application error listener recorded no public-landing exception. One isolated MutationObserver message emitted by the in-app inspection layer was not associated with the page window or application stack; a fresh page inspection found no landing script error.
+
+### Comparison history
+
+1. The selected source direction was retained as the visual reference.
+2. ATSRS-specific platform, workflow, preview, plan, FAQ and CTA sections replaced generic generated copy.
+3. A first browser pass exposed signed-in global controls over the public header; the public route now suppresses them.
+4. Login initially repeated the expanded product name; the final lockup shows it exactly once and remains one-screen on mobile.
+5. Desktop dark/light, 390px mobile, Login, Signup, theme switching and the 10-second wordmark cycle were rechecked after fixes.
+
+final result: passed
+
 ## V448 expiry-summary signal design QA
 
 ### Visual source and implementation evidence

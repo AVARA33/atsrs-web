@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V449" data-atsrs-update="9 Aug 2026">
+<html lang="en" data-atsrs-build="V450" data-atsrs-update="10 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,6 +54,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=449">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
 <link rel="stylesheet" href="css/shell-polish.css?v=447">
+<link rel="stylesheet" href="css/public-landing.css?v=450">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -110,11 +111,194 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   setTimeout(hardUnlockBoot,5000);
 })();
 </script>
+<section id="landingPage" class="atsrs-public-landing hidden" aria-label="ATSRS product overview">
+  <header class="public-header">
+    <a class="public-wordmark atsrs-animated-wordmark" href="#top" aria-label="ATSRS">ATSRS</a>
+    <nav class="public-nav" aria-label="Public navigation">
+      <a href="#platform">Platform</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#plans">Plans</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="public-header-actions">
+      <button type="button" class="public-theme-toggle" data-public-theme-toggle aria-label="Switch colour theme">
+        <i class="ph ph-sun" aria-hidden="true"></i>
+      </button>
+      <a class="public-login" href="?view=login">Log in</a>
+      <a class="public-cta public-cta-small" href="?view=signup">Create Free Account</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="public-hero public-section">
+      <div class="public-hero-copy">
+        <p class="public-eyebrow">DOCUMENT READINESS, WITHOUT THE NOISE</p>
+        <h1>Your documents. Your readiness. Your next opportunity.</h1>
+        <p class="public-lead">ATSRS brings expiry tracking, controlled sharing and candidate access into one clear international platform for people and companies.</p>
+        <div class="public-hero-actions">
+          <a class="public-cta" href="?view=signup">Create Free Account <span aria-hidden="true">→</span></a>
+          <a class="public-text-link" href="#platform">Explore the platform <span aria-hidden="true">↓</span></a>
+        </div>
+        <ul class="public-trust-list" aria-label="Key product principles">
+          <li><i class="ph ph-check-circle" aria-hidden="true"></i>No card required for Free</li>
+          <li><i class="ph ph-check-circle" aria-hidden="true"></i>You control what is shared</li>
+          <li><i class="ph ph-check-circle" aria-hidden="true"></i>Built for Personal and Corporate use</li>
+        </ul>
+      </div>
+      <div class="public-hero-visual" aria-label="ATSRS interface previews">
+        <figure class="public-product-shot public-product-shot-primary">
+          <img src="assets/landing/personal-dashboard.png" alt="ATSRS Personal dashboard showing document readiness and expiry status" width="1920" height="1080">
+        </figure>
+        <figure class="public-product-shot public-product-shot-secondary">
+          <img src="assets/landing/candidate-directory.png" alt="ATSRS Corporate candidate directory" width="1920" height="1080">
+        </figure>
+        <div class="public-floating-note"><i class="ph ph-bell-ringing" aria-hidden="true"></i><span><strong>Expiry windows</strong>90, 60, 30 days and 1 week</span></div>
+      </div>
+    </section>
+
+    <section id="platform" class="public-section public-platform">
+      <div class="public-section-heading">
+        <p class="public-eyebrow">ONE CONNECTED PLATFORM</p>
+        <h2>Ready for the individual. Useful for the company.</h2>
+        <p>ATSRS keeps each workspace focused while allowing permission-based connections between them.</p>
+      </div>
+      <div class="public-audience-grid">
+        <article>
+          <i class="ph ph-user-circle" aria-hidden="true"></i>
+          <p class="public-kicker">PERSONAL</p>
+          <h3>Keep your record ready</h3>
+          <p>Store documents, confirm expiry dates, build References &amp; CV, manage availability and decide what others may see.</p>
+          <a href="#personal-preview">See Personal workspace <span aria-hidden="true">→</span></a>
+        </article>
+        <article>
+          <i class="ph ph-identification-card" aria-hidden="true"></i>
+          <p class="public-kicker">CANDIDATE</p>
+          <h3>Be found on your terms</h3>
+          <p>Paid Personal plans can appear in the Candidate directory with approved profile details and availability.</p>
+          <a href="#plans">See directory access <span aria-hidden="true">→</span></a>
+        </article>
+        <article>
+          <i class="ph ph-buildings" aria-hidden="true"></i>
+          <p class="public-kicker">CORPORATE</p>
+          <h3>See what needs action</h3>
+          <p>Organise personnel, request documents, review approvals and export the records needed for audits and reporting.</p>
+          <a href="#corporate-preview">See Corporate workspace <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+    </section>
+
+    <section id="personal-preview" class="public-section public-preview-section">
+      <div class="public-preview-copy">
+        <p class="public-eyebrow">SEE ATSRS BEFORE YOU REGISTER</p>
+        <h2>Clear enough to understand at a glance.</h2>
+        <p>Your dashboard separates what is current from what needs attention. Expiry windows remain visible without turning the workspace into a wall of alerts.</p>
+        <ul>
+          <li><i class="ph ph-check" aria-hidden="true"></i>90, 60, 30-day and 1-week expiry windows</li>
+          <li><i class="ph ph-check" aria-hidden="true"></i>Document preview and controlled share links</li>
+          <li><i class="ph ph-check" aria-hidden="true"></i>References, CV and availability in one account</li>
+        </ul>
+        <a class="public-text-link" href="?view=signup">Start with Free <span aria-hidden="true">→</span></a>
+      </div>
+      <figure class="public-wide-shot">
+        <img src="assets/landing/personal-dashboard.png" alt="ATSRS Personal account dashboard preview" loading="lazy" width="1920" height="1080">
+      </figure>
+    </section>
+
+    <section id="how-it-works" class="public-section public-how">
+      <div class="public-section-heading">
+        <p class="public-eyebrow">HOW IT WORKS</p>
+        <h2>A short path from upload to action.</h2>
+      </div>
+      <ol class="public-steps">
+        <li><span>01</span><h3>Add a document</h3><p>Upload manually or use an included AI scan credit to suggest details for your review.</p></li>
+        <li><span>02</span><h3>Confirm the details</h3><p>You remain in control of names, dates, visibility and the final saved record.</p></li>
+        <li><span>03</span><h3>Act before expiry</h3><p>Use clear risk windows and notifications to renew, request or approve what is needed.</p></li>
+        <li><span>04</span><h3>Share with control</h3><p>Create a time-limited link or connect a profile to a company without exposing everything.</p></li>
+      </ol>
+    </section>
+
+    <section id="corporate-preview" class="public-section public-preview-section public-preview-reverse">
+      <div class="public-preview-copy">
+        <p class="public-eyebrow">CORPORATE CONTROL</p>
+        <h2>Personnel readiness without spreadsheet chasing.</h2>
+        <p>Bring selected Candidate profiles into Personnel, see document activity, send requests and keep review history together.</p>
+        <ul>
+          <li><i class="ph ph-check" aria-hidden="true"></i>Candidate directory and selected Personnel</li>
+          <li><i class="ph ph-check" aria-hidden="true"></i>Document request and approval flow</li>
+          <li><i class="ph ph-check" aria-hidden="true"></i>Reports and audit-friendly exports</li>
+        </ul>
+      </div>
+      <figure class="public-wide-shot">
+        <img src="assets/landing/corporate-personnel.png" alt="ATSRS Corporate personnel workspace preview" loading="lazy" width="1920" height="1080">
+      </figure>
+    </section>
+
+    <section class="public-section public-feature-band">
+      <article><i class="ph ph-sparkle" aria-hidden="true"></i><h3>AI-assisted, human confirmed</h3><p>AI suggests document fields; you review every value before it becomes a record.</p></article>
+      <article><i class="ph ph-link" aria-hidden="true"></i><h3>Purpose-built sharing</h3><p>Choose the documents, recipient and duration instead of sending an uncontrolled attachment.</p></article>
+      <article><i class="ph ph-shield-check" aria-hidden="true"></i><h3>Privacy by choice</h3><p>Profile visibility, document access and company connections remain separate decisions.</p></article>
+    </section>
+
+    <section id="plans" class="public-section public-plans">
+      <div class="public-section-heading">
+        <p class="public-eyebrow">PLANS THAT GROW WITH YOU</p>
+        <h2>Start small. Upgrade when the value is clear.</h2>
+        <p>Four Personal plan levels will be offered. Final paid pricing will be published before billing opens.</p>
+      </div>
+      <div class="public-plan-grid">
+        <article class="public-plan">
+          <p class="public-plan-name">FREE</p><h3>Try the core workflow</h3>
+          <ul><li>Manual document upload</li><li>1 lifetime AI scan</li><li>Expiry dashboard</li><li>Personal profile and CV</li><li>No Candidate directory listing</li><li>No SMS or WhatsApp credits</li></ul>
+          <a href="?view=signup">Create Free Account</a>
+        </article>
+        <article class="public-plan public-plan-bronze">
+          <p class="public-plan-name">BRONZE</p><h3>Become opportunity-ready</h3>
+          <ul><li>Everything in Free</li><li>Candidate directory visibility</li><li>Additional AI scan credits</li><li>Controlled share links</li><li>Expiry notifications</li></ul>
+          <a href="?view=signup">Start with Free</a>
+        </article>
+        <article class="public-plan public-plan-silver">
+          <p class="public-plan-name">SILVER</p><h3>For an active career</h3>
+          <ul><li>Everything in Bronze</li><li>Higher AI scan allowance</li><li>More dedicated share links</li><li>Expanded notification allowance</li><li>Priority profile tools</li></ul>
+          <a href="?view=signup">Start with Free</a>
+        </article>
+        <article class="public-plan public-plan-gold">
+          <p class="public-plan-name">GOLD</p><h3>Maximum Personal capacity</h3>
+          <ul><li>Everything in Silver</li><li>Highest AI scan allowance</li><li>Highest sharing allowance</li><li>Highest notification allowance</li><li>Full Personal plan capacity</li></ul>
+          <a href="?view=signup">Start with Free</a>
+        </article>
+      </div>
+      <p class="public-plan-note">Corporate plans and exact credit allowances will be presented separately before paid subscriptions launch.</p>
+    </section>
+
+    <section id="faq" class="public-section public-faq">
+      <div class="public-section-heading"><p class="public-eyebrow">QUESTIONS, ANSWERED</p><h2>Know what you are choosing.</h2></div>
+      <div class="public-faq-grid">
+        <details><summary>Can I inspect ATSRS without registering?</summary><p>Yes. This page explains the available Personal, Candidate and Corporate workflows. Registration is required only when you create a workspace.</p></details>
+        <details><summary>Does AI save document details automatically?</summary><p>No. AI scan suggests fields for review. You confirm or correct every value before saving.</p></details>
+        <details><summary>Who can see my Personal profile?</summary><p>You choose profile visibility. Candidate directory visibility is available from the Bronze plan and does not expose private documents automatically.</p></details>
+        <details><summary>Can a company download every document?</summary><p>No. Preview, download permission, share links and company access are controlled separately.</p></details>
+      </div>
+    </section>
+
+    <section class="public-section public-final-cta">
+      <p class="public-eyebrow">YOUR RECORD, READY WHEN IT MATTERS</p>
+      <h2>See how simple document readiness can feel.</h2>
+      <p>Open a Free Personal account, add your first document and test one AI scan.</p>
+      <div><a class="public-cta" href="?view=signup">Create Free Account <span aria-hidden="true">→</span></a><a class="public-login" href="?view=login">Log in</a></div>
+    </section>
+  </main>
+
+  <footer class="public-footer">
+    <div><span class="public-wordmark atsrs-animated-wordmark" aria-label="ATSRS">ATSRS</span><p>Document readiness for people and companies.</p></div>
+    <div><a href="#platform">Platform</a><a href="#plans">Plans</a><a href="privacy.html">Privacy</a><a href="data-deletion.html">Data rights</a></div>
+    <p>© 2026 ATSRS</p>
+  </footer>
+</section>
 <section id="auth" class="auth">
 
 <div class="auth-card">
 <div class="auth-brand">
-<h1 class="logo">ATSRS</h1>
+<h1 class="logo atsrs-animated-wordmark" aria-label="ATSRS">ATSRS</h1>
 <p id="authSubtitle" class="sub"></p>
 </div>
 
@@ -173,7 +357,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <section id="app" class="app hidden">
 <aside class="sidebar">
-<div class="sidebar-head"><div class="brand">ATSRS</div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
+<div class="sidebar-head"><div class="brand atsrs-animated-wordmark" aria-label="ATSRS">ATSRS</div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
 <p id="cabinetText" class="sub"></p>
 <div class="nav">
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
@@ -1377,6 +1561,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=408"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=447"></script>
+<script src="js/public-landing.js?v=450"></script>
 
 
 
