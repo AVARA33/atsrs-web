@@ -9,8 +9,8 @@ const runtime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
-assert.match(index,/css\/shell-polish\.css\?v=441/);
-assert.match(index,/js\/shell-polish\.js\?v=443/);
+assert.match(index,/css\/shell-polish\.css\?v=445/);
+assert.match(index,/js\/shell-polish\.js\?v=445/);
 assert.match(icons,/\.ph-squares-four:before/);
 assert.match(icons,/\.ph-file:before/);
 assert.match(icons,/\.ph-file-text:before/);
@@ -52,6 +52,11 @@ assert.match(css,/body\.personal-mode #app\.app:not\(\.hidden\) \.sidebar \.nav 
 assert.match(css,/body\.company-mode #app\.app:not\(\.hidden\) \.sidebar \.nav :is\([\s\S]*?#navCertificates[\s\S]*?#navRefs[\s\S]*?display:none!important/);
 assert.match(runtime,/navCompliance:'Security'/);
 assert.match(runtime,/navProfile:'Company'/);
+assert.match(runtime,/function syncNavigationRoutes\(\)/);
+assert.match(runtime,/window\.showPage\('profile',compliance\)/);
+assert.match(runtime,/window\.showAccountTab\('security'\)/);
+assert.match(runtime,/window\.showPage\('compliance',compliance\)/);
+assert.match(css,/route panels are layout wrappers[\s\S]*?#candidatesPage[\s\S]*?#personnelPage[\s\S]*?> \.panel\{[\s\S]*?background:transparent!important/);
 assert.match(runtime,/window\.showPage\('dashboard',dashboard\)/);
 assert.match(runtime,/atsrsNotificationPanel/);
 assert.match(runtime,/function wrapNavigationWriter\(name\)/);
@@ -62,4 +67,4 @@ assert.doesNotMatch(runtime,/observe\(nav,\{childList:true/);
 const navigationQueue=runtime.match(/function queueNavigation\(\)\{[\s\S]*?\n  \}/)?.[0]||'';
 assert.doesNotMatch(navigationQueue,/setTimeout/);
 
-console.log('V443 shell polish contracts passed');
+console.log('V445 shell polish contracts passed');

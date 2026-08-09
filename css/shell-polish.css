@@ -384,3 +384,23 @@ body.company-mode #app.app:not(.hidden) .sidebar .nav :is(
 ){
   display:flex!important;
 }
+
+/* V445: route panels are layout wrappers, not another layer of cards. */
+body #app.app:not(.hidden) > .main > :is(
+  #candidatesPage,
+  #personnelPage,
+  #certificatesPage,
+  #refsPage,
+  #compliancePage,
+  #reportsPage,
+  #profilePage
+) > .panel{
+  margin-bottom:20px!important;
+  padding:0!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}

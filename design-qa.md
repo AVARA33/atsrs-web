@@ -80,3 +80,4 @@ V438 acceptance:
 - [x] V442 adds an inline five-second hard unlock before the deferred application bundle, so a stalled dependency cannot leave the loading screen visible indefinitely.
 - [x] V443 removes the navigation microtask observer loop and decorates icons synchronously after the actual language/render/page writers, preventing both flicker and main-thread starvation.
 - [x] V444 guards legacy Corporate body observers so signed-in Personal startup cannot emit a null-target MutationObserver console error.
+- [x] V445 restores the Personal Security route to the real Account Security tab and removes large route-wrapper card surfaces across Personal and Corporate while retaining functional inner controls.

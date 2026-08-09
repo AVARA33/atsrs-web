@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS V445 route surface harness</title>
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css?v=441">
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/shell-polish.css?v=445">
+</head>
+<body class="personal-mode">
+  <div aria-label="Harness workspace mode">
+    <button id="personalMode" type="button">Personal mode</button>
+    <button id="companyMode" type="button">Corporate mode</button>
+  </div>
+  <section id="app" class="app">
+    <aside class="sidebar"><div class="nav">
+      <button id="navDashboard">Dashboard</button>
+      <button id="navCandidates">Candidates</button>
+      <button id="navPersonnel">Personnel</button>
+      <button id="navCredentials">Company Credentials</button>
+      <button id="navCertificates">Documents</button>
+      <button id="navRefs">References &amp; CV</button>
+      <button id="navCompliance">Compliance</button>
+      <button id="navReports">Reports</button>
+      <button id="navProfile">Profile</button>
+      <button id="navIntro">Product Updates</button>
+      <button id="navPrivacy">Privacy</button>
+    </div></aside>
+    <main class="main">
+      <h2 id="pageTitle">Profile</h2>
+      <section id="profilePage"><div class="panel">
+        <div id="accountGeneralTab" class="account-tab active">General</div>
+        <div id="accountSecurityTab" class="account-tab">Security settings</div>
+        <div id="accountSharingTab" class="account-tab">Sharing</div>
+      </div></section>
+      <section id="compliancePage" class="hidden"><div class="panel">Compliance</div></section>
+      <section id="candidatesPage" class="hidden"><div class="panel talent-directory-panel">Candidates</div></section>
+      <section id="personnelPage" class="hidden"><div class="panel talent-directory-panel">Personnel</div></section>
+    </main>
+  </section>
+  <script>
+    personalMode.onclick=function(){document.body.className='personal-mode';window.dispatchEvent(new Event('atsrs:workspace-changed'))};
+    companyMode.onclick=function(){document.body.className='company-mode';window.dispatchEvent(new Event('atsrs:workspace-changed'))};
+    window.showPage=function(page,button){
+      document.querySelectorAll('.main>section').forEach(function(section){section.classList.add('hidden')});
+      document.getElementById(page+'Page').classList.remove('hidden');
+      document.querySelectorAll('.nav button').forEach(function(item){item.classList.remove('active')});
+      button.classList.add('active');
+      pageTitle.textContent=button.textContent.trim();
+    };
+    window.showAccountTab=function(tab){
+      document.querySelectorAll('.account-tab').forEach(function(panel){panel.classList.remove('active')});
+      document.getElementById('account'+tab.charAt(0).toUpperCase()+tab.slice(1)+'Tab').classList.add('active');
+    };
+  </script>
+  <script src="../../js/shell-polish.js?v=445"></script>
+</body>
+</html>
