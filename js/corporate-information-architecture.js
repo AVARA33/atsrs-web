@@ -14,6 +14,9 @@
     var isCredentials=companyMode()&&(page==='certificates'||page==='refs');
     credentials.classList.toggle('active',isCredentials);
     if(isCredentials){
+      [byId('navCertificates'),byId('navRefs')].forEach(function(legacy){
+        if(legacy)legacy.classList.remove('active');
+      });
       var title=byId('pageTitle');
       if(title)title.textContent='Company Credentials';
     }else if(page==='certificates'||page==='refs'){
