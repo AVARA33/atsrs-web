@@ -19,6 +19,8 @@ assert.doesNotMatch(index, /id="snapValid"|id="snapRisk"/);
 assert.doesNotMatch(index, /id="cvStatusDash"|id="cvStatusDashText"|class="card cv-status-card"/);
 for (const id of ['exp90', 'exp60', 'exp30', 'exp7', 'expired']) assert.match(index, new RegExp(`id="${id}"`));
 for (const label of ['Expiring in 90 Days', 'Expiring in 60 Days', 'Expiring in 30 Days', 'Expiring in 1 Week']) assert.ok(index.includes(label));
+for (const className of ['expiry-summary-uploaded', 'expiry-summary-90', 'expiry-summary-60', 'expiry-summary-30', 'expiry-summary-7', 'expiry-summary-expired']) assert.ok(index.includes(className));
+for (const iconName of ['ph-file-text', 'ph-calendar-dots', 'ph-calendar-x', 'ph-x-circle']) assert.ok(index.includes(iconName));
 
 assert.match(css, /body\.personal-mode\.atsrs-personal-dashboard-route[\s\S]*?> \.main::before\{[\s\S]*?display:none!important/);
 assert.match(css, /body\.personal-mode\.atsrs-personal-dashboard-route[\s\S]*?> \.main > #pageTitle\{[\s\S]*?display:none!important/);
@@ -40,6 +42,14 @@ assert.match(css, /dashboard-snapshot-panel\{[\s\S]*?width:min\(100%,760px\)!imp
 assert.match(css, /\.atsrs-notification-actions:not\(:has\(button:not\(:disabled\)\)\)\{\s*display:none!important/);
 assert.match(css, /\.sidebar\.v76-mobile-closed \.nav/);
 assert.match(css, /body\.company-mode[\s\S]*?#dashboardPage > \.panel[\s\S]*?padding:18px!important/);
+assert.match(css, /option 3[\s\S]*?body:where\(\.personal-mode,\.company-mode\) #dashboardPage \.stats-grid/);
+assert.match(css, /expiry-summary-icon[\s\S]*?border-radius:50%/);
+assert.match(css, /expiry-summary-90\{--expiry-signal:#2563eb/);
+assert.match(css, /expiry-summary-60\{--expiry-signal:#b7791f/);
+assert.match(css, /expiry-summary-30\{--expiry-signal:#c56a00/);
+assert.match(css, /expiry-summary-7\{--expiry-signal:#dc5a11/);
+assert.match(css, /expiry-summary-expired\{--expiry-signal:#c62828/);
+assert.match(css, /html\[data-theme="dark"\][\s\S]*?expiry-summary-90\{--expiry-signal:#73a7ff/);
 assert.match(dashboardCss, /#dashboardPage > \.panel:not\(\.solo-hero\):not\(\.dashboard-snapshot-panel\):not\(#shareProfilePanel\):not\(#personalDashboardPanel\)\{\s*padding:18px!important/);
 
 assert.match(runtime, /window\.innerWidth<=800&&!lastDashboardVisible/);
@@ -90,7 +100,7 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);
 }
 
-assert.match(index, /css\/personal-dashboard-qa\.css\?v=447/);
+assert.match(index, /css\/personal-dashboard-qa\.css\?v=448/);
 assert.match(index, /js\/personal-dashboard-qa\.js\?v=447/);
 
 console.log('Personal Dashboard QA candidate contracts passed');

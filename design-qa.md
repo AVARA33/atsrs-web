@@ -57,6 +57,46 @@ The source is the user's exact sidebar reference. Its narrow vertical icon-over-
 
 final result: passed
 
+## V448 expiry-summary signal design QA
+
+### Visual source and implementation evidence
+
+- Selected design source: `docs/qa/v448/source-option-3.png`
+- Light implementation: `docs/qa/v448/implementation-light.png`
+- Dark implementation: `docs/qa/v448/implementation-dark.png`
+- Full light comparison: `docs/qa/v448/comparison-full-light.png`
+- Focused expiry-card comparison: `docs/qa/v448/comparison-focused-expiry.png`
+
+The selected third design keeps every summary card neutral and applies urgency color only to the compact circular icon and numeric value. The label remains readable neutral text, so color is never the only status indicator.
+
+### Viewport and state
+
+- Browser viewport: `1280 x 720` CSS pixels; captured content width: `1265px` after the vertical scrollbar.
+- Source image: `1708 x 921` pixels.
+- States checked: Personal light, Personal dark, Corporate light and Corporate dark.
+- Summary order: Uploaded, 90 days, 60 days, 30 days, 1 week and Expired.
+
+### Findings
+
+- Layout: six equal columns at desktop, three columns at `<=1100px`, and two columns at `<=560px`.
+- Surfaces: cards remain white/neutral in light mode and dark neutral in dark mode; no urgency-tinted card backgrounds were introduced.
+- Light signals: slate `#64748b`, blue `#2563eb`, muted gold `#b7791f`, amber `#c56a00`, orange `#dc5a11`, red `#c62828`.
+- Dark signals: slate `#a8b5c5`, blue `#73a7ff`, gold `#e5b94c`, amber `#f0a23b`, orange `#ff874d`, red `#ff7373`.
+- Accessibility: labels name each time window, icons differ by state, and the signal color is supplemental. Light-theme gold/orange values are bold large text and meet the large-text contrast threshold; all dark-theme values exceed normal-text contrast.
+- Icons: real Phosphor icons are used (`file-text`, `calendar-dots`, `calendar-x`, `x-circle`); no handcrafted SVG or placeholder asset was added.
+- Scope: the same component rules apply to Personal and Corporate. Authentication, login and loading surfaces are unchanged.
+- Overflow: `0px` root overflow and `0px` card overflow in all four inspected states.
+- Console errors: `0` in the final Corporate dark preview state.
+
+### Comparison history
+
+1. The first implementation pass exposed a CSS custom-property specificity issue that made every card slate.
+2. The default variable was removed from the higher-specificity selector so each semantic category resolves its intended signal color.
+3. Personal and Corporate were recaptured in both themes; the focused comparison confirms the selected neutral-card hierarchy, compact icon circles and progressive urgency palette.
+4. No P0, P1 or P2 mismatch remains within the requested expiry-summary scope.
+
+final result: passed
+
 ## V447 dashboard, theme and document-preview QA
 
 ### Visual sources and implementation evidence

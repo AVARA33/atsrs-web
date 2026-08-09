@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V447" data-atsrs-update="9 Aug 2026">
+<html lang="en" data-atsrs-build="V448" data-atsrs-update="9 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,7 +51,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/corporate-information-architecture.css?v=421">
 <link rel="stylesheet" href="css/corporate-remediation.css?v=416">
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
-<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=447">
+<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=448">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
 <link rel="stylesheet" href="css/shell-polish.css?v=447">
 <script defer src="js/maintenance-guard.js?v=375"></script>
@@ -323,12 +323,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <div class="grid stats-grid">
 <div class="card solo-personnel-card hidden"><p id="totalPersonnelText"></p><div class="stat" id="totalPersonnel">0</div></div>
-<div class="card"><p id="totalCertsText"></p><div class="stat" id="totalCerts">0</div></div>
-<div class="card"><p id="exp90Text">Expiring in 90 Days</p><div class="stat warning" id="exp90">0</div></div>
-<div class="card"><p id="exp60Text">Expiring in 60 Days</p><div class="stat warning" id="exp60">0</div></div>
-<div class="card"><p id="exp30Text">Expiring in 30 Days</p><div class="stat warning" id="exp30">0</div></div>
-<div class="card"><p id="exp7Text">Expiring in 1 Week</p><div class="stat danger" id="exp7">0</div></div>
-<div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
+<div class="card expiry-summary-card expiry-summary-uploaded"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-file-text"></i></span><p id="totalCertsText"></p></div><div class="stat" id="totalCerts">0</div></div>
+<div class="card expiry-summary-card expiry-summary-90"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp90Text">Expiring in 90 Days</p></div><div class="stat warning" id="exp90">0</div></div>
+<div class="card expiry-summary-card expiry-summary-60"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp60Text">Expiring in 60 Days</p></div><div class="stat warning" id="exp60">0</div></div>
+<div class="card expiry-summary-card expiry-summary-30"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp30Text">Expiring in 30 Days</p></div><div class="stat warning" id="exp30">0</div></div>
+<div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div></div>
+<div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div></div>
 </div>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">

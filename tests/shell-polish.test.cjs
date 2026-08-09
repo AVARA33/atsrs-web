@@ -78,4 +78,4 @@ assert.doesNotMatch(runtime,/observe\(nav,\{childList:true/);
 const navigationQueue=runtime.match(/function queueNavigation\(\)\{[\s\S]*?\n  \}/)?.[0]||'';
 assert.doesNotMatch(navigationQueue,/setTimeout/);
 
-console.log('V447 shell polish contracts passed');
+console.log('V448 shell polish contracts passed');
