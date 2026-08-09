@@ -56,3 +56,21 @@ The source is the user's exact sidebar reference. Its narrow vertical icon-over-
 - [x] Verify desktop, `390px`, light, dark, login, focus target size and console output.
 
 final result: passed
+
+## V438 production shell regression audit
+
+Current-run evidence:
+
+- `01-personal-initial.png`: production Personal state exposed Corporate-only navigation, hid the header notification button, and reused the bell for Product Updates.
+- `02-personal-dashboard-selected.png`: navigation changed pages correctly, but the active text state was not applied because it depended on a missing body marker.
+- `03-corporate-dashboard.png`: Corporate restored the header bell after a workspace switch, proving the first-load body-marker dependency.
+- `04-v438-local-personal.png`: Personal shows exactly Dashboard, Documents, References & CV, Profile, Security, Product Updates and Privacy. Header bell is separate and Product Updates uses the sparkle icon.
+- `05-v438-local-corporate.png`: Corporate shows exactly Dashboard, Candidates, Personnel, Company Credentials, Compliance, Reports, Company, Product Updates and Privacy.
+
+V438 acceptance:
+
+- [x] Notification button is visible in the header on first authenticated render and after workspace switches.
+- [x] Product Updates uses `ph-sparkle`; only notification uses `ph-bell`.
+- [x] Personal and Corporate navigation visibility is explicit and does not depend on `.hidden` surviving the rail layout rule.
+- [x] Active navigation has transparent fill, sage text and a `3px` left rail in both modes.
+- [x] Local Personal and Corporate render with zero root horizontal overflow.

@@ -1,4 +1,4 @@
-/* ATSRS V437 — icon-only shell refinement and authenticated notification shortcut. */
+/* ATSRS V438 — stable workspace navigation and authenticated header controls. */
 (function(){
   'use strict';
 
@@ -12,7 +12,7 @@
     navCompliance:'shield-check',
     navReports:'chart-bar',
     navProfile:'user-circle',
-    navIntro:'bell',
+    navIntro:'sparkle',
     navPrivacy:'lock-simple'
   };
 
@@ -26,6 +26,28 @@
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Profile',
+    navIntro:'Product Updates',
+    navPrivacy:'Privacy'
+  };
+
+  var PERSONAL_LABELS={
+    navDashboard:'Dashboard',
+    navCertificates:'Documents',
+    navRefs:'References & CV',
+    navCompliance:'Security',
+    navProfile:'Profile',
+    navIntro:'Product Updates',
+    navPrivacy:'Privacy'
+  };
+
+  var COMPANY_LABELS={
+    navDashboard:'Dashboard',
+    navCandidates:'Candidates',
+    navPersonnel:'Personnel',
+    navCredentials:'Company Credentials',
+    navCompliance:'Compliance',
+    navReports:'Reports',
+    navProfile:'Company',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -46,14 +68,21 @@
     return ICONS[id];
   }
 
+  function expectedLabel(id,current){
+    var labels=document.body.classList.contains('company-mode')?COMPANY_LABELS:PERSONAL_LABELS;
+    return labels[id]||current||DEFAULT_LABELS[id];
+  }
+
   function decorateNavButton(button){
     if(!button||!ICONS[button.id])return;
     var existingLabel=button.querySelector('.atsrs-nav-label');
-    var label=String(existingLabel?existingLabel.textContent:button.textContent||'').trim()||DEFAULT_LABELS[button.id];
+    var current=String(existingLabel?existingLabel.textContent:button.textContent||'').trim();
+    var label=expectedLabel(button.id,current);
     var name=expectedIcon(button.id);
     var existingIcon=button.querySelector('.atsrs-nav-icon');
     if(existingIcon&&existingLabel){
       existingIcon.className='ph ph-'+name+' atsrs-nav-icon';
+      if(existingLabel.textContent!==label)existingLabel.textContent=label;
       return;
     }
     button.textContent='';

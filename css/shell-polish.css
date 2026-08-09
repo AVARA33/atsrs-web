@@ -1,4 +1,4 @@
-/* V437: scoped shell polish for the signed-in Personal and Corporate workspaces. */
+/* V438: scoped shell polish for the signed-in Personal and Corporate workspaces. */
 
 /* Reuse the selected Phosphor shapes; icon color follows the signed-in shell state. */
 
@@ -6,7 +6,7 @@
  * Signed-in color rule: controls may be neutral or sage, never blue-filled.
  * Auth and loading remain outside this scope and retain their production baseline.
  */
-body.atsrs-app-visible #app.app:not(.hidden){
+body #app.app:not(.hidden){
   --atsrs-shell-accent:#4f8b7d;
   --atsrs-shell-accent-strong:#3f7468;
   --atsrs-shell-accent-soft:#edf5f2;
@@ -14,9 +14,9 @@ body.atsrs-app-visible #app.app:not(.hidden){
 }
 
 /* Selection is communicated by the left rail only; no selected-menu box. */
-html body.atsrs-app-visible #app.app:not(.hidden) .sidebar .nav button.active,
-html[data-theme="light"] body.atsrs-app-visible #app.app:not(.hidden) .sidebar .nav button.active,
-html[data-theme="dark"] body.atsrs-app-visible #app.app:not(.hidden) .sidebar .nav button.active{
+html body #app.app:not(.hidden) .sidebar .nav button.active,
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav button.active,
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{
   background:transparent!important;
   border-color:transparent!important;
   box-shadow:inset 3px 0 0 var(--atsrs-shell-accent)!important;
@@ -25,7 +25,7 @@ html[data-theme="dark"] body.atsrs-app-visible #app.app:not(.hidden) .sidebar .n
 }
 
 /* Selected tabs use a quiet sage cue instead of a blue-filled rectangle. */
-html body.atsrs-app-visible #app.app:not(.hidden) :where(
+html body #app.app:not(.hidden) :where(
   .account-tabs button.active,
   .module-tabs button.active,
   .mode-choice button.active,
@@ -41,7 +41,7 @@ html body.atsrs-app-visible #app.app:not(.hidden) :where(
 }
 
 /* Dark-mode primary actions previously inherited the legacy blue gradient. */
-html[data-theme="dark"] body.atsrs-app-visible #app.app:not(.hidden) button:not(
+html[data-theme="dark"] body #app.app:not(.hidden) button:not(
   .secondary
 ):not(
   .action
@@ -86,7 +86,7 @@ html[data-theme="dark"] body.atsrs-app-visible #app.app:not(.hidden) button:not(
 }
 
 /* Product-update and dashboard utility boxes keep a neutral/sage interior. */
-body.atsrs-app-visible #app.app:not(.hidden) :where(.roadmap-icon,.dashboard-view-button){
+body #app.app:not(.hidden) :where(.roadmap-icon,.dashboard-view-button){
   background:var(--atsrs-shell-accent-soft)!important;
   border-color:var(--atsrs-shell-accent-border)!important;
   color:var(--atsrs-shell-accent-strong)!important;
@@ -94,7 +94,7 @@ body.atsrs-app-visible #app.app:not(.hidden) :where(.roadmap-icon,.dashboard-vie
   box-shadow:none!important;
 }
 
-html[data-theme="light"] body.atsrs-app-visible #app.app:not(.hidden) #introPage .updates-hero{
+html[data-theme="light"] body #app.app:not(.hidden) #introPage .updates-hero{
   background:#fff!important;
 }
 
@@ -309,15 +309,15 @@ html body #atsrsNotificationButton{
   box-shadow:none!important;
 }
 
-html body.atsrs-app-visible #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton{display:inline-flex!important}
-html[data-theme] body.atsrs-app-visible #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton{
+html body #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton{display:inline-flex!important}
+html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton{
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
   box-shadow:none!important;
 }
 html body #app.app:not(.hidden) #atsrsNotificationButton .ph{font-size:24px;line-height:1;color:inherit!important}
-html[data-theme] body.atsrs-app-visible #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton:hover{
+html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton:hover{
   background:transparent!important;
 }
 html body #app.app:not(.hidden) #atsrsNotificationButton:focus-visible{
@@ -373,4 +373,41 @@ html body #app.app:not(.hidden) #atsrsNotificationButton:focus-visible{
     flex-basis:56px!important;
     height:56px!important;
   }
+}
+
+/* The rail layout must never expose controls from the other workspace. */
+body.personal-mode #app.app:not(.hidden) .sidebar .nav :is(
+  #navCandidates,
+  #navPersonnel,
+  #navCredentials,
+  #navReports
+),
+body.company-mode #app.app:not(.hidden) .sidebar .nav :is(
+  #navCertificates,
+  #navRefs
+){
+  display:none!important;
+}
+
+body.personal-mode #app.app:not(.hidden) .sidebar .nav :is(
+  #navDashboard,
+  #navCertificates,
+  #navRefs,
+  #navCompliance,
+  #navProfile,
+  #navIntro,
+  #navPrivacy
+),
+body.company-mode #app.app:not(.hidden) .sidebar .nav :is(
+  #navDashboard,
+  #navCandidates,
+  #navPersonnel,
+  #navCredentials,
+  #navCompliance,
+  #navReports,
+  #navProfile,
+  #navIntro,
+  #navPrivacy
+){
+  display:flex!important;
 }

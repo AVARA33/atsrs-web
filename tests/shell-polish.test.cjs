@@ -8,20 +8,21 @@ const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const runtime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
-assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=437/);
-assert.match(index,/css\/shell-polish\.css\?v=437/);
-assert.match(index,/js\/shell-polish\.js\?v=437/);
+assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=438/);
+assert.match(index,/css\/shell-polish\.css\?v=438/);
+assert.match(index,/js\/shell-polish\.js\?v=438/);
 assert.match(icons,/\.ph-squares-four:before/);
 assert.match(icons,/\.ph-file:before/);
 assert.match(icons,/\.ph-file-text:before/);
 assert.match(icons,/\.ph-bell:before/);
+assert.match(icons,/\.ph-sparkle:before/);
 
 for(const pair of [
   ['navDashboard','squares-four'],
   ['navCertificates','file'],
   ['navRefs','file-text'],
   ['navProfile','user-circle'],
-  ['navIntro','bell'],
+  ['navIntro','sparkle'],
   ['navPrivacy','lock-simple']
 ]){
   assert.match(runtime,new RegExp(pair[0]+":'"+pair[1]+"'"));
@@ -36,17 +37,21 @@ assert.match(css,/\.atsrs-nav-label\{[\s\S]*?text-align:center!important[\s\S]*?
 assert.match(css,/#certificatesPage \.atsrs-document-register\{[\s\S]*?min-width:1040px!important/);
 assert.match(css,/\.atsrs-document-sort > span:not\(\.atsrs-sort-arrows\)[\s\S]*?white-space:nowrap!important/);
 assert.match(css,/html body #atsrsNotificationButton\{[\s\S]*?display:none!important/);
-assert.match(css,/body\.atsrs-app-visible #app\.app:not\(\.hidden\) #atsrsGlobalControls > #atsrsNotificationButton\{display:inline-flex!important\}/);
-assert.match(css,/html\[data-theme\] body\.atsrs-app-visible #app\.app:not\(\.hidden\) #atsrsGlobalControls > #atsrsNotificationButton\{[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
+assert.match(css,/body #app\.app:not\(\.hidden\) #atsrsGlobalControls > #atsrsNotificationButton\{display:inline-flex!important\}/);
+assert.match(css,/html\[data-theme\] body #app\.app:not\(\.hidden\) #atsrsGlobalControls > #atsrsNotificationButton\{[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
 assert.match(css,/#atsrsNotificationButton \.ph\{font-size:24px/);
 assert.match(css,/#atsrsGlobalControls > #atsrsThemeToggle[\s\S]*?width:44px!important[\s\S]*?height:44px!important/);
 assert.match(css,/body #atsrsThemeToggle \.atsrs-theme-track\{[\s\S]*?width:42px!important[\s\S]*?height:24px!important/);
 assert.match(css,/html\[data-theme="dark"\] body #atsrsThemeToggle \.atsrs-theme-moon\{[\s\S]*?color:#0f172a!important/);
 assert.match(css,/\.sidebar \.nav button\.active[\s\S]*?background:transparent!important[\s\S]*?box-shadow:inset 3px 0 0 var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/\.cert-mode-buttons button\.active[\s\S]*?background:var\(--atsrs-shell-accent-soft\)!important/);
-assert.match(css,/html\[data-theme="dark"\] body\.atsrs-app-visible #app\.app:not\(\.hidden\) button:not\([\s\S]*?background:var\(--atsrs-shell-accent\)!important/);
+assert.match(css,/html\[data-theme="dark"\] body #app\.app:not\(\.hidden\) button:not\([\s\S]*?background:var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/:where\(\.roadmap-icon,\.dashboard-view-button\)[\s\S]*?background:var\(--atsrs-shell-accent-soft\)!important/);
+assert.match(css,/body\.personal-mode #app\.app:not\(\.hidden\) \.sidebar \.nav :is\([\s\S]*?#navCandidates[\s\S]*?#navCredentials[\s\S]*?display:none!important/);
+assert.match(css,/body\.company-mode #app\.app:not\(\.hidden\) \.sidebar \.nav :is\([\s\S]*?#navCertificates[\s\S]*?#navRefs[\s\S]*?display:none!important/);
+assert.match(runtime,/navCompliance:'Security'/);
+assert.match(runtime,/navProfile:'Company'/);
 assert.match(runtime,/window\.showPage\('dashboard',dashboard\)/);
 assert.match(runtime,/atsrsNotificationPanel/);
 
-console.log('V437 shell polish contracts passed');
+console.log('V438 shell polish contracts passed');
