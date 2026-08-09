@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V446" data-atsrs-update="9 Aug 2026">
+<html lang="en" data-atsrs-build="V447" data-atsrs-update="9 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,12 +33,12 @@ html[data-theme="light"] body{background:#f3f6f9}
   crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/base.css?v=408">
 <link rel="stylesheet" href="css/login.css?v=375">
-<link rel="stylesheet" href="css/dashboard.css?v=375">
+<link rel="stylesheet" href="css/dashboard.css?v=447">
 <link rel="stylesheet" href="css/documents.css?v=375">
 <link rel="stylesheet" href="css/references.css?v=408">
 <link rel="stylesheet" href="css/cv-generator.css?v=375">
 <link rel="stylesheet" href="css/account.css?v=420">
-<link rel="stylesheet" href="css/product-experience.css?v=417">
+<link rel="stylesheet" href="css/product-experience.css?v=447">
 <link rel="stylesheet" href="css/date-picker.css?v=375">
 <link rel="stylesheet" href="css/share-profile.css?v=375">
 <link rel="stylesheet" href="css/recipient-links.css?v=433">
@@ -51,9 +51,9 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/corporate-information-architecture.css?v=421">
 <link rel="stylesheet" href="css/corporate-remediation.css?v=416">
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
-<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=436">
+<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=447">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
-<link rel="stylesheet" href="css/shell-polish.css?v=446">
+<link rel="stylesheet" href="css/shell-polish.css?v=447">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -324,11 +324,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="grid stats-grid">
 <div class="card solo-personnel-card hidden"><p id="totalPersonnelText"></p><div class="stat" id="totalPersonnel">0</div></div>
 <div class="card"><p id="totalCertsText"></p><div class="stat" id="totalCerts">0</div></div>
-<div class="card"><p id="exp90Text"></p><div class="stat warning" id="exp90">0</div></div>
-<div class="card"><p id="exp30Text"></p><div class="stat warning" id="exp30">0</div></div>
-<div class="card"><p id="expTodayText">Expires Today</p><div class="stat danger" id="expToday">0</div></div>
+<div class="card"><p id="exp90Text">Expiring in 90 Days</p><div class="stat warning" id="exp90">0</div></div>
+<div class="card"><p id="exp60Text">Expiring in 60 Days</p><div class="stat warning" id="exp60">0</div></div>
+<div class="card"><p id="exp30Text">Expiring in 30 Days</p><div class="stat warning" id="exp30">0</div></div>
+<div class="card"><p id="exp7Text">Expiring in 1 Week</p><div class="stat danger" id="exp7">0</div></div>
 <div class="card"><p id="expiredText"></p><div class="stat danger" id="expired">0</div></div>
-<div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">&mdash;</div></div>
 </div>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
@@ -1351,7 +1351,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=431"></script>
+<script src="js/storage.js?v=447"></script>
 <script src="js/ui.js?v=375"></script>
 <script src="js/auth.js?v=375"></script>
 <script src="js/login.js?v=375"></script>
@@ -1362,21 +1362,21 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/cv-generator.js?v=411"></script>
 <script src="js/account.js?v=410"></script>
 <script src="js/app.js?v=446"></script>
-<script src="js/product-experience.js?v=375"></script>
+<script src="js/product-experience.js?v=447"></script>
 <script src="js/date-picker.js?v=375"></script>
 <script src="js/share-profile.js?v=409"></script>
 <script src="js/recipient-links.js?v=433"></script>
 <script src="js/boot-refresh.js?v=442"></script>
 <script src="js/account-security-live.js?v=375"></script>
-<script src="js/talent-directory.js?v=416"></script>
-<script src="js/corporate-reporting.js?v=416"></script>
+<script src="js/talent-directory.js?v=447"></script>
+<script src="js/corporate-reporting.js?v=447"></script>
 <script src="js/admin-overview.js?v=375"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=444"></script>
 <script src="js/theme.js?v=408"></script>
-<script src="js/personal-dashboard-qa.js?v=434"></script>
-<script src="js/shell-polish.js?v=445"></script>
+<script src="js/personal-dashboard-qa.js?v=447"></script>
+<script src="js/shell-polish.js?v=447"></script>
 
 
 

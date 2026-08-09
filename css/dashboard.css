@@ -655,7 +655,7 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
   padding:0 0 10px!important;
 }
 #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel):not(#shareProfilePanel):not(#personalDashboardPanel){
-  padding:0!important;
+  padding:18px!important;
   margin:0 0 22px!important;
 }
 #dashboardPage #shareProfilePanel,

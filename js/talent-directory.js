@@ -757,7 +757,7 @@
   function ensureInbox(){
     var dashboard=byId('dashboardPage'),existing=byId('talentMessagesPanel');if(existing||!dashboard)return existing;
     var panel=document.createElement('div');panel.id='talentMessagesPanel';panel.className='panel talent-messages-panel personal-only';
-    panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">PROFILE MESSAGES</span><h3>Messages from companies <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><div class="talent-mailbox-tools"><button type="button" class="secondary is-active" id="talentActiveMessages">Inbox</button><button type="button" class="secondary" id="talentArchivedMessages">Archived</button><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No messages yet.</div></div>';
+    panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">COMPANY MESSAGES</span><h3>Messages to your Candidate profile <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><div class="talent-mailbox-tools" aria-label="Company message folders"><button type="button" class="secondary is-active" id="talentActiveMessages" aria-pressed="true">Active messages</button><button type="button" class="secondary" id="talentArchivedMessages" aria-pressed="false">Archive</button><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div></div><p class="sub talent-messages-explainer">Only messages sent to your ATSRS Candidate profile by signed-in Corporate accounts appear here. Active messages remain here until you archive them. The Archive keeps messages in ATSRS so you can restore or permanently delete them later.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No company messages to your Candidate profile yet.</div></div>';
     dashboard.appendChild(panel);
     byId('refreshTalentMessages').onclick=loadInbox;
     byId('talentActiveMessages').onclick=function(){talentMailbox='active';loadInbox()};
@@ -769,16 +769,18 @@
     var activeButton=byId('talentActiveMessages'),archiveButton=byId('talentArchivedMessages');
     if(activeButton)activeButton.classList.toggle('is-active',talentMailbox==='active');
     if(archiveButton)archiveButton.classList.toggle('is-active',talentMailbox==='archived');
+    if(activeButton)activeButton.setAttribute('aria-pressed',talentMailbox==='active'?'true':'false');
+    if(archiveButton)archiveButton.setAttribute('aria-pressed',talentMailbox==='archived'?'true':'false');
     try{
       var data=await actionCall({action:'inbox',mailbox:talentMailbox}),messages=Array.isArray(data.messages)?data.messages:[],unread=messages.filter(function(message){return !message.read_at}).length;
-      if(count){count.textContent=talentMailbox==='active'?unread+' new':'Archived';count.classList.toggle('is-archived',talentMailbox==='archived')}
+      if(count){count.textContent=talentMailbox==='active'?unread+' new':messages.length+' archived';count.classList.toggle('is-archived',talentMailbox==='archived')}
       list.innerHTML=messages.length?messages.map(function(message){
         var readButton=message.read_at?'':'<button type="button" class="secondary" data-message-action="mark_read" data-message-id="'+safe(message.id)+'">Mark as read</button>';
         var archiveControl=talentMailbox==='archived'
           ?'<button type="button" class="secondary" data-message-action="restore_message" data-message-id="'+safe(message.id)+'">Restore</button>'
           :'<button type="button" class="secondary" data-message-action="archive_message" data-message-id="'+safe(message.id)+'">Archive</button>';
         return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString('en-GB'))+'</span></div><p>'+safe(message.body)+'</p><div class="talent-message-actions">'+readButton+archiveControl+'<button type="button" class="talent-message-delete" data-message-action="delete_message" data-message-id="'+safe(message.id)+'">Delete</button></div></article>';
-      }).join(''):'<div class="access-empty">'+(talentMailbox==='archived'?'No archived messages.':'No messages yet.')+'</div>';
+      }).join(''):'<div class="access-empty">'+(talentMailbox==='archived'?'No archived company messages.':'No company messages to your Candidate profile yet.')+'</div>';
       list.querySelectorAll('[data-message-action]').forEach(function(button){button.onclick=async function(){
         var action=button.dataset.messageAction;
         if(action==='delete_message'&&!window.confirm('Delete this message permanently?'))return;

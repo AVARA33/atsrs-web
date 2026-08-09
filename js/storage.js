@@ -61,9 +61,10 @@ const APP_URL="https://atsrs.com/";
 
 /* ATSRS V242: exclusive expiry bands, read-only dashboard, and file discovery. */
 window.addEventListener('load',function(){
-  T.en.exp90='Expiring in 31–90 Days';
-  T.en.exp30='Expiring in 1–30 Days';
-  T.en.expToday='Expires Today';
+  T.en.exp90='Expiring in 90 Days';
+  T.en.exp60='Expiring in 60 Days';
+  T.en.exp30='Expiring in 30 Days';
+  T.en.exp7='Expiring in 1 Week';
   SOLO_TX.en.soloBadge='DOCUMENT OVERVIEW';
   SOLO_TX.en.soloHeroTitle='Your compliance dashboard';
   SOLO_TX.en.soloHeroText='Review document totals, expiry risk and profile readiness from one clear view.';
@@ -124,18 +125,20 @@ window.addEventListener('load',function(){
     // authorized server snapshot. Never let Personal/local certificate data
     // temporarily overwrite those metrics during render or hydration.
     if(!companyMode){
-      var in90=0,in30=0,todayCount=0,expiredCount=0;
+      var in90=0,in60=0,in30=0,in7=0,expiredCount=0;
       certificates.forEach(function(item){
         var value=status(item.expiry);
         if(value.noExpiry)return;
         if(value.days<0)expiredCount++;
-        else if(value.days===0)todayCount++;
+        else if(value.days<=7)in7++;
         else if(value.days<=30)in30++;
+        else if(value.days<=60)in60++;
         else if(value.days<=90)in90++;
       });
       if(typeof exp90!=='undefined')exp90.innerText=in90;
+      var exp60Element=document.getElementById('exp60');if(exp60Element)exp60Element.innerText=in60;
       if(typeof exp30!=='undefined')exp30.innerText=in30;
-      if(typeof expToday!=='undefined')expToday.innerText=todayCount;
+      var exp7Element=document.getElementById('exp7');if(exp7Element)exp7Element.innerText=in7;
       if(typeof expired!=='undefined')expired.innerText=expiredCount;
       renderRiskList(certificates);
     }
@@ -164,8 +167,9 @@ window.addEventListener('load',function(){
     var set=function(id,value){var element=document.getElementById(id);if(element)element.textContent=value;};
     set('navIntro','ATSRS Updates');
     set('exp90Text',T.en.exp90);
+    set('exp60Text',T.en.exp60);
     set('exp30Text',T.en.exp30);
-    set('expTodayText',T.en.expToday);
+    set('exp7Text',T.en.exp7);
     set('soloBadge',SOLO_TX.en.soloBadge);
     set('soloHeroTitle',SOLO_TX.en.soloHeroTitle);
     set('soloHeroText',SOLO_TX.en.soloHeroText);

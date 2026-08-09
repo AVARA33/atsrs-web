@@ -157,31 +157,35 @@
     var dashboard=data||complianceCache;
     if(mode()!=='company'||!dashboard)return;
     var summary=dashboard.summary||{},rows=Array.isArray(dashboard.rows)?dashboard.rows:[],
-        documents=[],todayCount=0,expiring30=0,expiring90=0,expiredCount=0,currentCount=0;
+        documents=[],expiring7=0,expiring30=0,expiring60=0,expiring90=0,expiredCount=0,currentCount=0;
     rows.forEach(function(row){
       currentCount+=number(row.current_count);
-      expiring30+=number(row.expiring_30_count);
-      expiring90+=number(row.expiring_90_count);
       expiredCount+=number(row.expired_count);
       (Array.isArray(row.documents)?row.documents:[]).forEach(function(file){
+        var expiryResult=expiryApi().classify(file&&file.expiry);
         documents.push({
           person:(text(row.name)+' '+text(row.surname)).trim()||'Profile',
           title:text(file.title)||'Document',
           expiry:text(file.expiry),
           status:text(file.status)
         });
-        if(file.status==='Expires today')todayCount+=1;
+        if(expiryResult.days==null||expiryResult.days<0)return;
+        if(expiryResult.days<=7)expiring7+=1;
+        else if(expiryResult.days<=30)expiring30+=1;
+        else if(expiryResult.days<=60)expiring60+=1;
+        else if(expiryResult.days<=90)expiring90+=1;
       });
     });
     [
       ['totalPersonnel',summary.personnel],
       ['totalCerts',summary.documents],
       ['exp90',expiring90],
+      ['exp60',expiring60],
       ['exp30',expiring30],
-      ['expToday',todayCount],
+      ['exp7',expiring7],
       ['expired',expiredCount],
       ['snapValid',currentCount],
-      ['snapRisk',expiring30+expiring90+todayCount+expiredCount]
+      ['snapRisk',expiring7+expiring30+expiring60+expiring90+expiredCount]
     ].forEach(function(item){var element=byId(item[0]);if(element)element.textContent=String(number(item[1]))});
     var list=byId('riskList');if(!list)return;
     var risks=documents.filter(function(document){

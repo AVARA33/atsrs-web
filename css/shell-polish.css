@@ -3,7 +3,8 @@
 /* Reuse the selected Phosphor shapes; icon color follows the signed-in shell state. */
 
 /*
- * Signed-in color rule: controls may be neutral or sage, never blue-filled.
+ * Signed-in color rule: controls remain unfilled. Light selection and section
+ * labels use blue; dark selection and section labels use sage.
  * Auth and loading remain outside this scope and retain their production baseline.
  */
 body #app.app:not(.hidden){
@@ -11,6 +12,27 @@ body #app.app:not(.hidden){
   --atsrs-shell-accent-strong:#3f7468;
   --atsrs-shell-accent-soft:#edf5f2;
   --atsrs-shell-accent-border:#c9ddd6;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden){
+  --atsrs-shell-accent:#2f6fb2;
+  --atsrs-shell-accent-strong:#245b93;
+  --atsrs-shell-accent-soft:#edf4fb;
+  --atsrs-shell-accent-border:#c8d9eb;
+}
+
+/* Section heading pills follow the workspace theme: green in dark, blue in light. */
+html[data-theme="dark"] body #app.app:not(.hidden) .pill{
+  color:#86efac!important;
+  -webkit-text-fill-color:#86efac!important;
+  border-color:rgba(79,139,125,.58)!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) .pill{
+  color:var(--atsrs-shell-accent-strong)!important;
+  -webkit-text-fill-color:var(--atsrs-shell-accent-strong)!important;
+  border-color:var(--atsrs-shell-accent-border)!important;
+  background:transparent!important;
 }
 
 /* Selection is communicated by the left rail only; no selected-menu box. */
@@ -236,14 +258,20 @@ html[data-theme="light"] body #atsrsThemeToggle .atsrs-theme-track{
 
 body #atsrsThemeToggle .atsrs-theme-sun,
 body #atsrsThemeToggle .atsrs-theme-moon{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
   top:50%!important;
   width:16px!important;
   height:16px!important;
   font-size:11px!important;
+  line-height:1!important;
+  padding:0!important;
+  transform:translateY(-50%)!important;
 }
 
-body #atsrsThemeToggle .atsrs-theme-sun{right:2px!important}
-body #atsrsThemeToggle .atsrs-theme-moon{left:2px!important}
+body #atsrsThemeToggle .atsrs-theme-sun{right:4px!important}
+body #atsrsThemeToggle .atsrs-theme-moon{left:3px!important}
 
 body #atsrsThemeToggle .atsrs-theme-thumb,
 body.personal-mode #atsrsThemeToggle .atsrs-theme-thumb,
@@ -283,6 +311,9 @@ html body #atsrsNotificationButton{
 }
 
 html body #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton{display:inline-flex!important}
+html body #app.app:not(.hidden) #atsrsGlobalControls{
+  gap:8px!important;
+}
 html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls > #atsrsNotificationButton{
   border:0!important;
   border-radius:0!important;

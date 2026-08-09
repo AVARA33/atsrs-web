@@ -57,6 +57,40 @@ The source is the user's exact sidebar reference. Its narrow vertical icon-over-
 
 final result: passed
 
+## V447 dashboard, theme and document-preview QA
+
+### Visual sources and implementation evidence
+
+- Dashboard expiry source: `docs/qa/v447/source-dashboard-expiry.png`
+- Header spacing source: `docs/qa/v447/source-header-spacing.png`
+- Message-panel source: `docs/qa/v447/source-messages.png`
+- Light-theme color source: `docs/qa/v447/source-light-theme-colors.png`
+- Dashboard implementation: `docs/qa/v447/implementation-dashboard-light.png`
+- Header implementation: `docs/qa/v447/implementation-header-light.png`
+- Dashboard comparison: `docs/qa/v447/comparison-dashboard-light.png`
+- Header comparison: `docs/qa/v447/comparison-header-light.png`
+
+### Findings
+
+- Personal Dashboard now has six document cards only: Uploaded Documents, Expiring in 90 Days, 60 Days, 30 Days, 1 Week and Expired. The self-referential CV card is removed.
+- The expiry ranges are mutually exclusive: `61–90`, `31–60`, `8–30`, `0–7` and `<0` days. The Corporate Dashboard uses the same shared buckets when rendering its linked Personnel documents.
+- Dashboard functional panels use `18px` internal padding in Personal and Corporate, so headings, descriptions, empty states and controls no longer touch their borders.
+- Signed-in light mode uses blue for section-heading pills and the selected sidebar rail/text; dark mode keeps the approved sage/green treatment. Semantic document status colors remain unchanged.
+- Notification, theme and account controls have equal `8px` gaps. The light-theme sun is within `0.34px` of the thumb center; the dark-theme moon measured exactly centered and remains a dark glyph on the white thumb.
+- Company messages now identify their real source and lifecycle: signed-in Corporate accounts message a Personal Candidate profile; Active messages can be archived; Archive supports restore and permanent delete.
+- Image and PDF preview stages expose a grab cursor only when their content overflows. Pointer capture keeps drag-to-pan stable; the image QA moved the zoomed document `428.67px` horizontally and `168px` vertically.
+- Personal light and Corporate light shell checks reported no root horizontal overflow. All six dashboard labels remained unclipped in the inspected responsive contract.
+- Automated regression suite: all repository tests passed, including the new preview-pan contract.
+
+### Comparison history
+
+1. The source retained the old CV card, broad expiry ranges, green light-theme headings and uneven header spacing.
+2. V447 replaces those states without changing auth/loading pages or introducing new page routes.
+3. The first dashboard check exposed a higher-specificity legacy `padding:0` rule; the owning Dashboard rule was corrected and remeasured at `18px`.
+4. Sun alignment was tuned from a visible offset to a measured `-0.33px`, while both header gaps remained exactly `8px`.
+
+final result: passed
+
 ## V438 production shell regression audit
 
 Current-run evidence:

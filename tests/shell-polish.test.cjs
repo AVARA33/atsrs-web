@@ -10,8 +10,8 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
-assert.match(index,/css\/shell-polish\.css\?v=446/);
-assert.match(index,/js\/shell-polish\.js\?v=445/);
+assert.match(index,/css\/shell-polish\.css\?v=447/);
+assert.match(index,/js\/shell-polish\.js\?v=447/);
 assert.match(index,/js\/app\.js\?v=446/);
 assert.match(icons,/\.ph-squares-four:before/);
 assert.match(icons,/\.ph-file:before/);
@@ -37,6 +37,9 @@ assert.match(css,/grid-template-columns:112px minmax\(0,1fr\)!important/);
 assert.match(css,/\.sidebar \.nav button,[\s\S]*?flex-direction:column!important/);
 assert.match(css,/\.atsrs-nav-label\{[\s\S]*?text-align:center!important[\s\S]*?white-space:normal!important/);
 assert.match(css,/V446: the document register uses the page background/);
+assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\)\{[\s\S]*?--atsrs-shell-accent:#2f6fb2/);
+assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) \.pill\{[\s\S]*?color:var\(--atsrs-shell-accent-strong\)!important/);
+assert.match(css,/html\[data-theme="dark"\] body #app\.app:not\(\.hidden\) \.pill\{[\s\S]*?color:#86efac!important/);
 assert.match(css,/#certificatesPage \.atsrs-document-register\{[\s\S]*?min-width:0!important[\s\S]*?table-layout:fixed!important/);
 assert.match(css,/#certificatesPage \.table-wrap\{[\s\S]*?overflow-x:hidden!important[\s\S]*?border:0!important/);
 assert.match(css,/\.atsrs-document-name\{[\s\S]*?-webkit-line-clamp:2/);
@@ -75,4 +78,4 @@ assert.doesNotMatch(runtime,/observe\(nav,\{childList:true/);
 const navigationQueue=runtime.match(/function queueNavigation\(\)\{[\s\S]*?\n  \}/)?.[0]||'';
 assert.doesNotMatch(navigationQueue,/setTimeout/);
 
-console.log('V446 shell polish contracts passed');
+console.log('V447 shell polish contracts passed');

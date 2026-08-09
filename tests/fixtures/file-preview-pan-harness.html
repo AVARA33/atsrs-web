@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/product-experience.css?v=447">
+  <title>ATSRS file preview pan harness</title>
+</head>
+<body>
+  <button id="openPreview" type="button">Open image preview</button>
+  <div id="atsrsFilePreviewModal" class="file-preview-modal hidden" role="dialog" aria-modal="true" aria-labelledby="atsrsFilePreviewTitle">
+    <div class="file-preview-backdrop" data-preview-close="true"></div>
+    <div class="file-preview-dialog">
+      <div class="file-preview-head"><h3 id="atsrsFilePreviewTitle">Document preview</h3><div class="file-preview-actions"><button id="atsrsFilePreviewDownload" class="secondary hidden">Download</button><button id="atsrsFilePreviewClose" class="file-preview-close" aria-label="Close">&times;</button></div></div>
+      <div class="file-preview-body">
+        <iframe id="atsrsFilePreviewFrame" title="ATSRS document preview"></iframe>
+        <div id="atsrsPdfPreview" class="file-preview-pdf hidden"><div class="file-preview-pdf-tools"><button id="atsrsPdfZoomOut">&minus;</button><span id="atsrsPdfZoomLabel">100%</span><button id="atsrsPdfZoomIn">+</button><button id="atsrsPdfFit">Fit</button><span id="atsrsPdfStatus"></span></div><div id="atsrsPdfStage" class="file-preview-pdf-stage"><div id="atsrsPdfPages" class="file-preview-pdf-pages"></div></div></div>
+        <div id="atsrsImagePreview" class="file-preview-image hidden"><div class="file-preview-image-tools"><button id="atsrsImageZoomOut">&minus;</button><span id="atsrsImageZoomLabel">100%</span><button id="atsrsImageZoomIn">+</button><button id="atsrsImageFit">Fit</button></div><div id="atsrsImageStage" class="file-preview-image-stage"><div id="atsrsImageCanvas" class="file-preview-image-canvas"><img id="atsrsImageContent" alt="Document preview"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/product-experience.js?v=447"></script>
+  <script>
+    document.getElementById('openPreview').addEventListener('click',function(){
+      window.atsrsOpenFilePreview({url:'../../docs/qa/v446/implementation-personal-default.png',title:'ATSRS document image',mimeType:'image/png'});
+    });
+  </script>
+</body>
+</html>

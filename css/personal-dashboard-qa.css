@@ -151,6 +151,30 @@ body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapsh
   min-height:0!important;
 }
 
+body.personal-mode #app.app:not(.hidden) #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel){
+  padding:18px!important;
+}
+
+body.company-mode #app.app:not(.hidden) #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel){
+  padding:18px!important;
+}
+
+body.personal-mode #app.app:not(.hidden) #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel) > :first-child{
+  margin-top:0!important;
+}
+
+body.company-mode #app.app:not(.hidden) #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel) > :first-child{
+  margin-top:0!important;
+}
+
+body.personal-mode #app.app:not(.hidden) #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel) > :last-child{
+  margin-bottom:0!important;
+}
+
+body.company-mode #app.app:not(.hidden) #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel) > :last-child{
+  margin-bottom:0!important;
+}
+
 body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel) > * + *{
   margin-top:var(--atsrs-personal-card-gap,12px)!important;
 }

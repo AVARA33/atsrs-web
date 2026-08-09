@@ -1,8 +1,8 @@
 (function(){
   'use strict';
 
-  var DASHBOARD_IDS=['exp90','exp30','expToday','expired','snapRisk'];
-  var riskTone={exp90:'warning',exp30:'warning',expToday:'danger',expired:'danger',snapRisk:'warning'};
+  var DASHBOARD_IDS=['exp90','exp60','exp30','exp7','expired','snapRisk'];
+  var riskTone={exp90:'warning',exp60:'warning',exp30:'warning',exp7:'danger',expired:'danger',snapRisk:'warning'};
   var lastDashboardVisible=false;
   var notificationObserver=null,observedNotificationList=null;
 
@@ -31,18 +31,25 @@
       element.classList.add(tone);
     }
   }
-  function syncCvStatus(){
-    var value=byId('cvStatusDash'),label=byId('cvStatusDashText');
-    if(!value)return;
-    var raw=String(value.textContent||'').trim(),available=/available|uploaded|on file/i.test(raw)&&!/not|missing|no cv/i.test(raw);
-    var missing=/missing|not uploaded|no cv/i.test(raw);
-    if(available&&value.textContent!=='On file')value.textContent='On file';
-    else if(missing&&value.textContent!=='Not uploaded')value.textContent='Not uploaded';
-    if(label&&label.textContent!=='CV / Resume')label.textContent='CV / Resume';
-    var note=byId('cvStatusDashNote');
-    if(!note){note=document.createElement('small');note.id='cvStatusDashNote';note.className='dashboard-stat-note';value.insertAdjacentElement('afterend',note);}
-    var noteText=available?'Available in References.':missing?'Upload from References.':'';
-    if(note.textContent!==noteText)note.textContent=noteText;
+  function syncExpiryBands(){
+    var labels={exp90:'Expiring in 90 Days',exp60:'Expiring in 60 Days',exp30:'Expiring in 30 Days',exp7:'Expiring in 1 Week'};
+    Object.keys(labels).forEach(function(id){var label=byId(id+'Text');if(label)label.textContent=labels[id];});
+    if(typeof window.getData!=='function')return;
+    var counts={exp90:0,exp60:0,exp30:0,exp7:0,expired:0};
+    var today=new Date();today.setHours(0,0,0,0);
+    (window.getData('certs')||[]).forEach(function(documentItem){
+      var raw=String(documentItem&&documentItem.expiry||'').trim();
+      if(!raw||raw.toUpperCase()==='N/A')return;
+      var expiry=new Date(raw.slice(0,10)+'T00:00:00');
+      if(Number.isNaN(expiry.getTime()))return;
+      var days=Math.round((expiry-today)/86400000);
+      if(days<0)counts.expired+=1;
+      else if(days<=7)counts.exp7+=1;
+      else if(days<=30)counts.exp30+=1;
+      else if(days<=60)counts.exp60+=1;
+      else if(days<=90)counts.exp90+=1;
+    });
+    Object.keys(counts).forEach(function(id){var value=byId(id);if(value)value.textContent=String(counts[id]);});
   }
   function syncShareCapability(){
     var help=byId('snapShareHelp');
@@ -134,7 +141,7 @@
     syncMobileMenuState();
     if(!visible)return;
     DASHBOARD_IDS.forEach(function(id){syncRiskTone(byId(id));});
-    syncCvStatus();
+    syncExpiryBands();
     syncShareCapability();
     syncPriorityEmptyState();
     syncDecorativeMarks();

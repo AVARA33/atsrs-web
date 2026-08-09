@@ -5,6 +5,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'personal-dashboard-qa.css'), 'utf8');
+const dashboardCss = fs.readFileSync(path.join(root, 'css', 'dashboard.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'personal-dashboard-qa.js'), 'utf8');
 const notifications = fs.readFileSync(path.join(root, 'js', 'notifications.js'), 'utf8');
 const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
@@ -15,6 +16,9 @@ assert.match(index, /id="snapshotTitle">Managed in Account<\/h2>/);
 assert.match(index, /Sharing settings are managed in Account\./);
 assert.doesNotMatch(index, /Ready to share|Sharing status|id="snapShare"|id="snapShareLabel"/);
 assert.doesNotMatch(index, /id="snapValid"|id="snapRisk"/);
+assert.doesNotMatch(index, /id="cvStatusDash"|id="cvStatusDashText"|class="card cv-status-card"/);
+for (const id of ['exp90', 'exp60', 'exp30', 'exp7', 'expired']) assert.match(index, new RegExp(`id="${id}"`));
+for (const label of ['Expiring in 90 Days', 'Expiring in 60 Days', 'Expiring in 30 Days', 'Expiring in 1 Week']) assert.ok(index.includes(label));
 
 assert.match(css, /body\.personal-mode\.atsrs-personal-dashboard-route[\s\S]*?> \.main::before\{[\s\S]*?display:none!important/);
 assert.match(css, /body\.personal-mode\.atsrs-personal-dashboard-route[\s\S]*?> \.main > #pageTitle\{[\s\S]*?display:none!important/);
@@ -35,14 +39,18 @@ assert.match(css, /:focus-visible\{[\s\S]*?outline:3px solid/);
 assert.match(css, /dashboard-snapshot-panel\{[\s\S]*?width:min\(100%,760px\)!important/);
 assert.match(css, /\.atsrs-notification-actions:not\(:has\(button:not\(:disabled\)\)\)\{\s*display:none!important/);
 assert.match(css, /\.sidebar\.v76-mobile-closed \.nav/);
-assert.doesNotMatch(css, /body\.company-mode/);
+assert.match(css, /body\.company-mode[\s\S]*?#dashboardPage > \.panel[\s\S]*?padding:18px!important/);
+assert.match(dashboardCss, /#dashboardPage > \.panel:not\(\.solo-hero\):not\(\.dashboard-snapshot-panel\):not\(#shareProfilePanel\):not\(#personalDashboardPanel\)\{\s*padding:18px!important/);
 
 assert.match(runtime, /window\.innerWidth<=800&&!lastDashboardVisible/);
 assert.match(runtime, /sidebar\.classList\.add\('v76-mobile-closed'\)/);
 assert.match(runtime, /element\.classList\.remove\('warning','danger'\)/);
 assert.match(runtime, /Number\.isFinite\(value\)&&value>0/);
-assert.match(runtime, /value\.textContent='On file'/);
-assert.match(runtime, /value\.textContent='Not uploaded'/);
+assert.doesNotMatch(runtime, /syncCvStatus|On file|Not uploaded|cvStatusDash/);
+assert.match(runtime, /days<=7[\s\S]*?counts\.exp7/);
+assert.match(runtime, /days<=30[\s\S]*?counts\.exp30/);
+assert.match(runtime, /days<=60[\s\S]*?counts\.exp60/);
+assert.match(runtime, /days<=90[\s\S]*?counts\.exp90/);
 assert.match(runtime, /child\.setAttribute\('aria-hidden','true'\)/);
 assert.match(runtime, /\^\[✓✔\]\$[\s\S]*setAttribute\('aria-hidden','true'\)/);
 assert.match(runtime, /email-verified download requests/);
@@ -61,7 +69,7 @@ assert.match(runtime, /role',error\?'alert':'status'/);
 assert.match(runtime, /aria-live',error\?'assertive':'polite'/);
 assert.match(runtime, /aria-busy',loading\?'true':'false'/);
 
-for (const state of ['Loading notifications...', 'No expiry notifications yet.', 'No pending requests.', 'No messages yet.', 'Messages could not be loaded.']) {
+for (const state of ['Loading notifications...', 'No expiry notifications yet.', 'No pending requests.', 'No company messages to your Candidate profile yet.', 'Messages could not be loaded.']) {
   assert.ok(
     index.includes(state) ||
     fs.readFileSync(path.join(root, 'js', 'notifications.js'), 'utf8').includes(state) ||
@@ -74,11 +82,15 @@ assert.match(notifications, /rows\.length\?rows\.map\(notificationMarkup\)/, 'Po
 assert.match(notifications, /Notifications could not be loaded from the server\./, 'Notification error state must remain distinct from empty');
 assert.match(talentDirectory, /id="refreshTalentMessages">Refresh<\/button>/, 'Messages keep their real retry action');
 assert.match(talentDirectory, /Messages could not be loaded\./, 'Messages error state must remain distinct from empty');
+assert.match(talentDirectory, /Only messages sent to your ATSRS Candidate profile by signed-in Corporate accounts appear here\./);
+assert.match(talentDirectory, /Active messages remain here until you archive them\./);
+assert.match(talentDirectory, /The Archive keeps messages in ATSRS so you can restore or permanently delete them later\./);
+assert.match(talentDirectory, /aria-pressed/);
 for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);
 }
 
-assert.match(index, /css\/personal-dashboard-qa\.css\?v=436/);
-assert.match(index, /js\/personal-dashboard-qa\.js\?v=434/);
+assert.match(index, /css\/personal-dashboard-qa\.css\?v=447/);
+assert.match(index, /js\/personal-dashboard-qa\.js\?v=447/);
 
 console.log('Personal Dashboard QA candidate contracts passed');

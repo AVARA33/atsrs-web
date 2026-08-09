@@ -9,7 +9,7 @@
   </script>
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/login.css">
-  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/dashboard.css?v=447">
   <link rel="stylesheet" href="../../css/documents.css">
   <link rel="stylesheet" href="../../css/references.css">
   <link rel="stylesheet" href="../../css/account.css">
@@ -17,7 +17,8 @@
   <link rel="stylesheet" href="../../css/theme.css">
   <link rel="stylesheet" href="../../css/corporate-remediation.css">
   <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=436">
-  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css?v=436">
+  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css?v=447">
+  <link rel="stylesheet" href="../../css/shell-polish.css?v=447">
   <title>Personal Workspace surface test</title>
 </head>
 <body class="personal-mode app-open">
@@ -30,17 +31,17 @@
         <div class="solo-hero panel"><div class="hero-card"><span id="soloBadge" class="pill">DOCUMENT OVERVIEW</span><p id="soloHeroText">Review document totals, expiry risk and profile readiness from one clear view.</p></div></div>
         <div class="grid stats-grid">
           <div class="card"><p id="totalCertsText">Uploaded Documents</p><div class="stat" id="totalCerts">16</div></div>
-          <div class="card"><p>Expiring in 31–90 Days</p><div class="stat warning" id="exp90">0</div></div>
-          <div class="card"><p>Expiring in 1–30 Days</p><div class="stat warning" id="exp30">0</div></div>
-          <div class="card"><p>Expires Today</p><div class="stat danger" id="expToday">0</div></div>
+          <div class="card"><p>Expiring in 90 Days</p><div class="stat warning" id="exp90">0</div></div>
+          <div class="card"><p>Expiring in 60 Days</p><div class="stat warning" id="exp60">0</div></div>
+          <div class="card"><p>Expiring in 30 Days</p><div class="stat warning" id="exp30">0</div></div>
+          <div class="card"><p>Expiring in 1 Week</p><div class="stat danger" id="exp7">0</div></div>
           <div class="card"><p>Expired</p><div class="stat danger" id="expired">0</div></div>
-          <div class="card cv-status-card"><p id="cvStatusDashText">CV Status</p><div class="stat" id="cvStatusDash">Available ✓</div></div>
         </div>
         <div class="panel dashboard-snapshot-panel"><div class="snapshot-card"><span id="snapshotBadge" class="pill">PROFILE SHARING</span><div class="dashboard-share-capability"><h2 id="snapshotTitle">Managed in Account</h2><p id="snapShareHelp">Sharing settings are managed in Account.</p></div></div></div>
         <div class="panel dashboard-priority-alerts-panel"><h2 id="riskTitle">Priority alerts</h2><p id="riskSub" class="sub">Documents closest to expiry will appear here.</p><div id="riskList" class="risk-list"><div class="risk-item"><b>No urgent expiry risk detected.</b><span>OK</span></div></div></div>
         <div id="atsrsNotificationPanel" class="panel atsrs-notification-panel"><div class="atsrs-notification-head"><div><span class="pill">EXPIRY NOTIFICATIONS</span><span class="request-count">0 expiries</span></div><div class="atsrs-notification-actions"><button disabled>Mark all read</button><button disabled>Clear all</button></div></div><p class="sub">Server reminders for documents approaching expiry.</p><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">No expiry notifications yet.</div></div></div>
         <div id="accessRequestsPanel" class="panel access-requests-panel"><div class="access-panel-head"><div><span class="pill">ACCESS REQUESTS</span><h2>Document Access Requests <span class="request-count">0 pending</span></h2></div></div><p class="sub">Review email-verified download requests. Preview access never requires approval.</p><div class="access-empty">No pending requests.</div></div>
-        <div id="talentMessagesPanel" class="panel talent-messages-panel"><div class="talent-messages-head"><div><span class="pill">PROFILE MESSAGES</span><h2>Messages from companies <span class="request-count">0 new</span></h2></div><div class="talent-mailbox-tools"><button id="talentActiveMessages">Inbox</button><button id="talentArchivedMessages">Archived</button><button id="refreshTalentMessages">Refresh</button></div></div><p class="sub">Corporate accounts can contact you without seeing your private email address.</p><div id="talentMessagesList" class="access-empty">No messages yet.</div></div>
+        <div id="talentMessagesPanel" class="panel talent-messages-panel"><div class="talent-messages-head"><div><span class="pill">COMPANY MESSAGES</span><h2>Messages to your Candidate profile <span class="request-count">0 new</span></h2></div><div class="talent-mailbox-tools" aria-label="Company message folders"><button id="talentActiveMessages" aria-pressed="true">Active messages</button><button id="talentArchivedMessages" aria-pressed="false">Archive</button><button id="refreshTalentMessages">Refresh</button></div></div><p class="sub talent-messages-explainer">Only messages sent to your ATSRS Candidate profile by signed-in Corporate accounts appear here. Active messages remain here until you archive them. The Archive keeps messages in ATSRS so you can restore or permanently delete them later.</p><div id="talentMessagesList" class="access-empty">No company messages to your Candidate profile yet.</div></div>
       </section>
       <section id="certificatesPage" class="hidden">
         <div class="panel unified-cert-panel"><h3 id="addDocTitle">Add document</h3><p class="sub">Choose one method: Scan with AI or Manual Upload.</p><div class="cert-mode-buttons"><button>Scan with AI</button><button>Manual Upload</button></div></div>
@@ -117,6 +118,6 @@
       }
     }
   </script>
-  <script src="../../js/personal-dashboard-qa.js?v=434"></script>
+  <script src="../../js/personal-dashboard-qa.js?v=447"></script>
 </body>
 </html>
