@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V441" data-atsrs-update="9 Aug 2026">
+<html lang="en" data-atsrs-build="V442" data-atsrs-update="9 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -89,8 +89,16 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       }
     }catch(e){}
   }
-  window.addEventListener('error',function(){setTimeout(unlockBoot,0);});
-  window.addEventListener('unhandledrejection',function(){setTimeout(unlockBoot,0);});
+  function hardUnlockBoot(){
+    try{
+      if(document && document.body){
+        document.body.classList.remove('atsrs-session-pending');
+        document.body.classList.remove('atsrs-booting');
+      }
+    }catch(e){}
+  }
+  window.addEventListener('error',function(){setTimeout(hardUnlockBoot,0);});
+  window.addEventListener('unhandledrejection',function(){setTimeout(hardUnlockBoot,0);});
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',function(){setTimeout(unlockBoot,450);});
   }else{
@@ -99,6 +107,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   window.addEventListener('load',function(){setTimeout(unlockBoot,650);});
   setTimeout(unlockBoot,1800);
   setTimeout(unlockBoot,3500);
+  setTimeout(hardUnlockBoot,5000);
 })();
 </script>
 <section id="auth" class="auth">
@@ -1349,7 +1358,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/date-picker.js?v=375"></script>
 <script src="js/share-profile.js?v=409"></script>
 <script src="js/recipient-links.js?v=433"></script>
-<script src="js/boot-refresh.js?v=441"></script>
+<script src="js/boot-refresh.js?v=442"></script>
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=416"></script>
 <script src="js/corporate-reporting.js?v=416"></script>
