@@ -257,7 +257,7 @@ function rootFixture(options = {}) {
   const adapterScript = index.indexOf('js/normalized-read-adapter.js?v=409');
   const configScript = index.indexOf('js/normalized-read-canary-config.js?v=409');
   const runtimeScript = index.indexOf('js/normalized-read-runtime.js?v=409');
-  const storageScript = index.indexOf('js/storage.js?v=461');
+  const storageScript = index.indexOf('js/storage.js?v=467');
   assert.ok(
     shadowScript < adapterScript
       && adapterScript < configScript

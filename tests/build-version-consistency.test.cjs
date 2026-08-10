@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V466');
+assert.equal(version, 'V467');
 assert.equal(update, '10 Aug 2026');
 
 for (const asset of [
@@ -44,7 +44,7 @@ for (const asset of [
 
 assert.match(index, /src="js\/app\.js\?v=446"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=442"/);
-assert.match(index, /src="js\/storage\.js\?v=461"/);
+assert.match(index, /src="js\/storage\.js\?v=467"/);
 assert.match(index, /src="js\/auth\.js\?v=459"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
@@ -80,4 +80,4 @@ assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 assert.match(index, /href="css\/theme\.css\?v=462"/);
 assert.match(index, /src="js\/theme\.js\?v=460"/);
 
-console.log('V466 build marker consistency tests passed');
+console.log('V467 build marker consistency tests passed');

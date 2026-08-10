@@ -184,14 +184,16 @@ async function testSharedWorkspaceNoOpStillConvergesStaleTab() {
   assert.equal(app.elements.workspaceSwitcher.getAttribute('aria-busy'), 'false');
 }
 
-function testStorageReloadRollbackAndSequenceContracts() {
+function testStorageInPlaceSwitchRollbackAndSequenceContracts() {
   const storage = fs.readFileSync(path.join(__dirname, '..', 'js', 'storage.js'), 'utf8');
   assert.match(storage, /workspaceSwitchPromise/);
   assert.match(storage, /workspaceSwitchTarget=mode/);
   assert.match(storage, /if\(desired!==workspaceSwitchTarget\)continue/);
   assert.match(storage, /return workspaceSwitchPromise/);
   assert.match(storage, /applyAccountType\(current\)/);
-  assert.match(storage, /window\.location\.reload\(\)/);
+  assert.doesNotMatch(storage, /window\.location\.reload\(\)/);
+  assert.match(storage, /function prepareAuthenticatedRoute\(\)/);
+  assert.match(storage, /return await finishOpen\(user\)/);
   assert.match(storage, /function renderedWorkspaceMode\(\)/);
   assert.match(storage, /if\(current===mode\)\{\s*if\(renderedWorkspaceMode\(\)!==mode\)/);
   assert.match(storage, /return finishLocalWorkspaceConvergence\(user,mode\)/);
@@ -216,7 +218,7 @@ function testHydrationGateAndVerificationRefreshAreReadOnly() {
   await testParallelAttemptIsSingleFlightAndRenderCannotUnlockControls();
   await testFailurePreservesStateAndRetryWorks();
   await testSharedWorkspaceNoOpStillConvergesStaleTab();
-  testStorageReloadRollbackAndSequenceContracts();
+  testStorageInPlaceSwitchRollbackAndSequenceContracts();
   testHydrationGateAndVerificationRefreshAreReadOnly();
   console.log('workspace switch regression tests passed');
 })().catch(error => {

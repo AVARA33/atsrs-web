@@ -1945,7 +1945,21 @@ setTimeout(v55DockTopActions,500);
       if(authMode==='supabase') return false;
       return event==='INITIAL_SESSION' || event==='getSession' || event==='TOKEN_REFRESHED';
     }
+    function prepareAuthenticatedRoute(){
+      window.__atsrsEntryRoute='app';
+      window.__atsrsSuppressAutomaticSessionOpen=false;
+      try{
+        var url=new URL(window.location.href);
+        var requestedView=url.searchParams.get('view');
+        if(requestedView==='login'||requestedView==='signup')url.searchParams.delete('view');
+        window.history.replaceState({},document.title,url.pathname+(url.search||'')+(url.hash||''));
+      }catch(e){}
+      var landingEl=byId('landingPage');
+      if(landingEl)landingEl.classList.add('hidden');
+      document.body.classList.remove('atsrs-public-view');
+    }
     async function finishOpen(user){
+      prepareAuthenticatedRoute();
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
       try{
         if(user && typeof user.email==='string' && user.email.trim()){
@@ -2176,7 +2190,7 @@ setTimeout(v55DockTopActions,500);
       }catch(e){}
       return '';
     }
-    function finishLocalWorkspaceConvergence(user,mode){
+    async function finishLocalWorkspaceConvergence(user,mode){
       saveLastWorkspace(user,mode);
       try{
         localStorage.removeItem('atsrs_workspace_pick_required');
@@ -2187,8 +2201,7 @@ setTimeout(v55DockTopActions,500);
         window.atsrsCloudData.clearSession();
       }
       window.__atsrsSessionOpened=false;
-      window.location.reload();
-      return true;
+      return await finishOpen(user);
     }
     window.atsrsSwitchWorkspace=function(mode){
       if(mode!=='personal' && mode!=='company') return false;
@@ -2246,8 +2259,7 @@ setTimeout(v55DockTopActions,500);
               window.atsrsCloudData.clearSession();
             }
             window.__atsrsSessionOpened=false;
-            window.location.reload();
-            return true;
+            return await finishOpen(user);
           }
         }catch(error){
           applyAccountType(current);
