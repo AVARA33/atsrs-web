@@ -10,13 +10,14 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
-assert.match(index,/css\/shell-polish\.css\?v=465/);
+assert.match(index,/css\/shell-polish\.css\?v=466/);
 assert.match(index,/js\/shell-polish\.js\?v=447/);
 assert.match(index,/js\/app\.js\?v=469/);
 assert.doesNotMatch(index,/<span class="pill">PRODUCT UPDATES<\/span>/);
 assert.match(css,/Shared Product Updates intro uses the page canvas[\s\S]*?#introPage \.updates-hero[\s\S]*?background:transparent!important/);
 assert.match(css,/#introPage \.roadmap-section[\s\S]*?padding:0!important[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
 assert.match(css,/Product Updates is one shared surface[\s\S]*?body:where\(\.personal-mode,\.company-mode\)[\s\S]*?#introPage[\s\S]*?width:min\(100%,1440px\)/);
+assert.match(css,/body:where\(\.personal-mode,\.company-mode\):has\(#navIntro\.active\)[\s\S]*?#pageTitle[\s\S]*?width:min\(100%,1440px\)[\s\S]*?margin:0 auto 16px/);
 assert.match(css,/body:where\(\.personal-mode,\.company-mode\) #introPage \.updates-hero h3,[\s\S]*?\.roadmap-heading h3[\s\S]*?line-height:1\.25/);
 assert.match(css,/@media\(max-width:800px\)[\s\S]*?body:where\(\.personal-mode,\.company-mode\)[\s\S]*?#introPage[\s\S]*?width:calc\(100% - 16px\)/);
 assert.match(icons,/\.ph-squares-four:before/);

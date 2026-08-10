@@ -327,3 +327,38 @@ The Product Updates page is now one shared visual surface. Workspace switching c
 No P0, P1 or P2 mismatch remains within the requested Personal/Corporate parity scope.
 
 final result: passed
+
+## V474 Product Updates title-alignment QA
+
+### Visual truth and rendered evidence
+
+- Source Corporate: docs/qa/v474/source-corporate-light.png
+- Source Personal: docs/qa/v474/source-personal-light.png
+- V474 Corporate implementation: docs/qa/v474/implementation-corporate-light.png
+- V474 Personal implementation: docs/qa/v474/implementation-personal-light.png
+- Full-view Corporate comparison: docs/qa/v474/comparison-corporate-light.png
+- Full-view Personal comparison: docs/qa/v474/comparison-personal-light.png
+
+Source and implementation captures are 2048 x 1228 pixels at a 2048 x 1228 CSS viewport and device scale factor 1. State: authenticated Product Updates route, light theme, Personal and Corporate workspaces.
+
+### Findings and comparison history
+
+1. The source comparison exposed a P2 alignment mismatch: Corporate rendered the route-level Product Updates title against the main page edge while Personal aligned it to the centered Product Updates content column.
+2. V474 applies the same positioned, centered min(100%, 1440px) width and 0 auto 16px margin to the active Product Updates #pageTitle in both account modes.
+3. Post-fix Chrome measurements are equal for both modes: title x=349, width 1440; intro x=349, width 1440; root horizontal overflow 0.
+4. The hero text origin differs by only one subpixel-rounded CSS pixel (y=190 Personal, y=189 Corporate); this is a non-actionable P3 browser rounding difference and does not change visible spacing or wrapping.
+5. Dark-theme desktop measurements retain the same title and intro geometry. The mobile CSS contract applies the same calc(100% - 16px) width to both the title and intro below 800px.
+
+### Required fidelity surfaces
+
+- Fonts and typography: font family, sizes, weights, wrapping and copy remain unchanged.
+- Spacing and layout rhythm: the Corporate title now shares the Personal content axis and vertical margin.
+- Colors and tokens: no palette, border, background, status or theme token changed.
+- Image and icon fidelity: no assets or icons were replaced.
+- Copy and content: all Product Updates headings, descriptions, cards and statuses are unchanged.
+- Interactions: account switching and route selection behavior are unchanged; only route-title geometry changed.
+- Regression: all repository tests pass, including the new title-alignment contract.
+
+No actionable P0, P1 or P2 mismatch remains in the requested scope.
+
+final result: passed

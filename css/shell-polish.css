@@ -109,7 +109,11 @@ body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #introP
 }
 
 body:where(.personal-mode,.company-mode):has(#navIntro.active) #app.app:not(.hidden) > .main > #pageTitle{
-  margin-bottom:16px;
+  position:relative;
+  z-index:1;
+  width:min(100%,1440px);
+  min-width:0;
+  margin:0 auto 16px;
 }
 
 body:where(.personal-mode,.company-mode) #introPage .product-updates-content :where(h3,p){
@@ -128,6 +132,7 @@ body:where(.personal-mode,.company-mode) #introPage .roadmap-heading > p{
 }
 
 @media(max-width:800px){
+  body:where(.personal-mode,.company-mode):has(#navIntro.active) #app.app:not(.hidden) > .main > #pageTitle,
   body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #introPage{
     width:calc(100% - 16px);
   }
