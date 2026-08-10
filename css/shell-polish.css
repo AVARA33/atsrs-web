@@ -89,8 +89,10 @@ body #app.app:not(.hidden) :where(.roadmap-icon,.dashboard-view-button){
   box-shadow:none!important;
 }
 
+/* Shared Product Updates intro uses the page canvas in both Personal and Corporate workspaces. */
+body #app.app:not(.hidden) #introPage .updates-hero,
 html[data-theme="light"] body #app.app:not(.hidden) #introPage .updates-hero{
-  background:#fff!important;
+  margin-bottom:24px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;
 }
 
 #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-icon{
