@@ -72,10 +72,10 @@ assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindo
 assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
 assert.match(storage,/page==="privacy"\?"Privacy Notice":page==="dataRights"\?"Data Rights"/);
-assert.match(index,/data-atsrs-build="V456"/);
+assert.match(index,/data-atsrs-build="V457"/);
 assert.match(index,/src="js\/corporate-remediation\.js\?v=444"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
-assert.match(index,/src="js\/storage\.js\?v=456"/);
+assert.match(index,/src="js\/storage\.js\?v=457"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');
