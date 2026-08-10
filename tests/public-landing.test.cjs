@@ -29,6 +29,11 @@ assert.match(css, /\.atsrs-brand-swap\.show-amp \.atsrs-brand-amp/);
 assert.match(css, /Automated Reporting & Tracking System/);
 assert.match(css, /@media\(max-width:420px\)/);
 assert.match(css, /overflow-x:clip/);
+assert.match(index, /href="data-protection\.html">Data Protection &amp; GDPR<\/a>/);
+assert.match(index, /href="terms\.html">Terms of Use<\/a>/);
+assert.match(index, /href="privacy\.html">Privacy Notice<\/a>/);
+assert.match(index, /href="data-deletion\.html">Data Rights<\/a>/);
+assert.match(index, /href="security\.html">Report a Security Issue<\/a>/);
 
 for (const image of ['personal-dashboard.png', 'candidate-directory.png', 'corporate-personnel.png']) {
   assert.ok(fs.existsSync(path.join(root, 'assets', 'landing', image)), `${image} must exist`);
