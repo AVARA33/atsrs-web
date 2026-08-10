@@ -1,4 +1,4 @@
-/* ATSRS V455 public entry route, shared theme switch and animated brand wordmark. */
+/* ATSRS V456 public entry route, shared theme switch and animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -109,22 +109,5 @@
     return;
   }
   if(callback||publicShare)return;
-
-  var settled=false;
-  function decide(session){
-    if(settled)return;
-    settled=true;
-    if(session&&session.user){hideLanding();return;}
-    showLanding();
-  }
-  var client=window.supabaseClient;
-  if(client&&client.auth){
-    var request=typeof window.atsrsGetSessionSingleFlight==='function'
-      ?window.atsrsGetSessionSingleFlight(client)
-      :client.auth.getSession();
-    Promise.resolve(request).then(function(result){decide(result&&result.data&&result.data.session);}).catch(function(){decide(null);});
-    window.setTimeout(function(){decide(null);},4200);
-  }else{
-    decide(null);
-  }
+  showLanding();
 })();

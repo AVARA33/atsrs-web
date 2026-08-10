@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V455" data-atsrs-update="10 Aug 2026">
+<html lang="en" data-atsrs-build="V456" data-atsrs-update="10 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +9,16 @@
 <title>ATSRS</title>
 <script>
 try{
+  var atsrsEntryParams=new URLSearchParams(window.location.search);
+  var atsrsRequestedView=atsrsEntryParams.get('view');
+  var atsrsEntryCallback=atsrsEntryParams.has('code')||atsrsEntryParams.has('error')||
+    window.location.hash.indexOf('access_token=')>=0||window.location.hash.indexOf('type=recovery')>=0;
+  var atsrsEntryShare=atsrsEntryParams.has('share')||
+    /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash);
+  window.__atsrsEntryRoute=atsrsEntryCallback?'callback':
+    (atsrsEntryShare?'share':
+      ((atsrsRequestedView==='login'||atsrsRequestedView==='signup')?'auth':'landing'));
+  window.__atsrsSuppressAutomaticSessionOpen=window.__atsrsEntryRoute!=='callback';
   var savedTheme=localStorage.getItem('atsrs_theme');
   var initialTheme=savedTheme==='light'?'light':'dark';
   document.documentElement.dataset.theme=initialTheme;
@@ -1540,7 +1550,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=453"></script>
+<script src="js/storage.js?v=456"></script>
 <script src="js/ui.js?v=375"></script>
 <script src="js/auth.js?v=453"></script>
 <script src="js/login.js?v=375"></script>
@@ -1566,7 +1576,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=408"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=447"></script>
-<script src="js/public-landing.js?v=455"></script>
+<script src="js/public-landing.js?v=456"></script>
 
 
 

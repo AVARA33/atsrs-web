@@ -2115,6 +2115,10 @@ setTimeout(v55DockTopActions,500);
       if(authMode==='supabase') await handlePassiveRestore(user,event);
     }
     function queueSession(session,event){
+      if(window.__atsrsSuppressAutomaticSessionOpen &&
+         (event==='INITIAL_SESSION'||event==='TOKEN_REFRESHED'||event==='getSession')){
+        return Promise.resolve(false);
+      }
       if(window.__atsrsOAuthCallback && session && session.user){
         window.__atsrsOAuthSessionReceived=true;
       }
