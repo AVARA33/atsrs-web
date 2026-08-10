@@ -95,6 +95,11 @@ html[data-theme="light"] body #app.app:not(.hidden) #introPage .updates-hero{
   margin-bottom:24px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;
 }
 
+body #app.app:not(.hidden) #introPage .roadmap-section,
+html[data-theme="light"] body #app.app:not(.hidden) #introPage .roadmap-section{
+  margin-top:24px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;overflow:visible!important;
+}
+
 #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-icon{
   display:inline-grid!important;
   place-items:center!important;
