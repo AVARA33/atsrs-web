@@ -109,5 +109,28 @@
     return;
   }
   if(callback||publicShare)return;
-  showLanding();
+  var client=window.supabaseClient;
+  if(!client||!client.auth){
+    showLanding();
+    return;
+  }
+  var sessionRequest=typeof window.atsrsGetSessionSingleFlight==='function'
+    ?window.atsrsGetSessionSingleFlight(client)
+    :client.auth.getSession();
+  Promise.resolve(sessionRequest)
+    .then(function(result){
+      var session=result&&result.data&&result.data.session;
+      if(session&&session.user){
+        window.__atsrsSuppressAutomaticSessionOpen=false;
+        if(typeof window.atsrsResumeSession==='function'){
+          return window.atsrsResumeSession(session,'resume');
+        }
+        return;
+      }
+      showLanding();
+    })
+    .catch(function(error){
+      console.warn('ATSRS landing session check failed',error);
+      showLanding();
+    });
 })();

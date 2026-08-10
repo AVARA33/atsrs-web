@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V468" data-atsrs-update="11 Aug 2026">
+<html lang="en" data-atsrs-build="V469" data-atsrs-update="11 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,7 +18,8 @@ try{
   window.__atsrsEntryRoute=atsrsEntryCallback?'callback':
     (atsrsEntryShare?'share':
       ((atsrsRequestedView==='login'||atsrsRequestedView==='signup')?'auth':'landing'));
-  window.__atsrsSuppressAutomaticSessionOpen=window.__atsrsEntryRoute!=='callback';
+  window.__atsrsSuppressAutomaticSessionOpen=
+    window.__atsrsEntryRoute==='auth'||window.__atsrsEntryRoute==='share';
   var savedTheme=localStorage.getItem('atsrs_theme');
   var initialTheme=savedTheme==='light'?'light':'dark';
   document.documentElement.dataset.theme=initialTheme;
@@ -1576,7 +1577,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=460"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=447"></script>
-<script src="js/public-landing.js?v=459"></script>
+<script src="js/public-landing.js?v=469"></script>
 
 
 
