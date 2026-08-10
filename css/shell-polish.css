@@ -99,6 +99,39 @@ body #app.app:not(.hidden) #introPage .roadmap-section,
 html[data-theme="light"] body #app.app:not(.hidden) #introPage .roadmap-section{
   margin-top:24px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;overflow:visible!important;
 }
+/* Product Updates is one shared surface: switching workspaces must not reflow it. */
+body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #introPage{
+  position:relative;
+  z-index:1;
+  width:min(100%,1440px);
+  min-width:0;
+  margin-inline:auto;
+}
+
+body:where(.personal-mode,.company-mode):has(#navIntro.active) #app.app:not(.hidden) > .main > #pageTitle{
+  margin-bottom:16px;
+}
+
+body:where(.personal-mode,.company-mode) #introPage .product-updates-content :where(h3,p){
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
+body:where(.personal-mode,.company-mode) #introPage .updates-hero h3,
+body:where(.personal-mode,.company-mode) #introPage .roadmap-heading h3{
+  line-height:1.25;
+}
+
+body:where(.personal-mode,.company-mode) #introPage .roadmap-heading > p{
+  line-height:1.5;
+}
+
+@media(max-width:800px){
+  body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #introPage{
+    width:calc(100% - 16px);
+  }
+}
 
 #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-icon{
   display:inline-grid!important;
