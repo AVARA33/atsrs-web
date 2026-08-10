@@ -1,4 +1,4 @@
-/* ATSRS V456 public entry route, shared theme switch and animated brand wordmark. */
+/* ATSRS V459 public entry route, shared theme switch and animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -31,7 +31,7 @@
       suffix.className='atsrs-brand-suffix';
       suffix.textContent='RS';
       wordmark.append(prefix,swap,suffix);
-      wordmark.setAttribute('aria-label','ATSRS — Automated Reporting & Tracking System');
+      wordmark.setAttribute('aria-label','ATSRS — Automated Tracking & Reporting Systems');
     });
   }
   function rotateWordmarks(){
@@ -42,7 +42,7 @@
   }
   prepareWordmarks();
   var authSubtitle=document.getElementById('authSubtitle');
-  if(authSubtitle)authSubtitle.textContent='Automated Reporting & Tracking System';
+  if(authSubtitle)authSubtitle.textContent='Automated Tracking & Reporting Systems';
   if(!reducedMotion)window.setInterval(rotateWordmarks,10000);
 
   function finishPublicBoot(){

@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V458');
+assert.equal(version, 'V459');
 assert.equal(update, '10 Aug 2026');
 
 for (const asset of [
@@ -44,8 +44,8 @@ for (const asset of [
 
 assert.match(index, /src="js\/app\.js\?v=446"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=442"/);
-assert.match(index, /src="js\/storage\.js\?v=457"/);
-assert.match(index, /src="js\/auth\.js\?v=453"/);
+assert.match(index, /src="js\/storage\.js\?v=459"/);
+assert.match(index, /src="js\/auth\.js\?v=459"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
 assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=449"/);
@@ -56,8 +56,8 @@ assert.match(index, /src="js\/corporate-remediation\.js\?v=444"/);
 assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=441"/);
 assert.match(index, /href="css\/shell-polish\.css\?v=447"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=447"/);
-assert.match(index, /href="css\/public-landing\.css\?v=458"/);
-assert.match(index, /src="js\/public-landing\.js\?v=456"/);
+assert.match(index, /href="css\/public-landing\.css\?v=459"/);
+assert.match(index, /src="js\/public-landing\.js\?v=459"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/talent-directory\.js\?v=447"/);
@@ -77,4 +77,4 @@ assert.match(bootRefresh, /visibilitychange/);
 assert.match(bootRefresh, /window\.addEventListener\('pageshow',armFallback\)/);
 assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 
-console.log('V458 build marker consistency tests passed');
+console.log('V459 build marker consistency tests passed');

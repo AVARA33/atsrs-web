@@ -86,7 +86,7 @@
   'use strict';
   const BUILD = 'ATSRS V453';
   const UPDATE = 'Last Update: 10 Aug 2026';
-  const ATSRS_MEANING = 'Automated Reporting & Tracking System';
+  const ATSRS_MEANING = 'Automated Tracking & Reporting Systems';
   function byId(id){ return document.getElementById(id); }
   function applyBuildBadge(){
     const rows = document.querySelectorAll('.build-badge div');

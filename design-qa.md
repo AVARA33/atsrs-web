@@ -118,7 +118,7 @@ The selected direction established the airy marketing structure. V450 adapts it 
 - Layout: desktop and 390px checks found no clipped or off-canvas content. Public controls have a minimum 44px interactive height; the mobile header removes the secondary header CTA while preserving Login and the primary hero CTA.
 - Theme: the landing uses the existing saved light/dark preference and provides a scoped theme control without exposing signed-in application controls.
 - Authentication: public CTA routes reuse the production login/signup interface; loading and authentication layouts were not redesigned.
-- Wordmark: primary ATSRS lockups include `Automated Reporting & Tracking System`. The middle `S` occupies a fixed-width slot and alternates with `&` every 10 seconds using a 600ms Y-axis rotation; reduced-motion users receive a stable `S`.
+- Wordmark: primary ATSRS lockups include `Automated Tracking & Reporting Systems`. The middle `S` occupies a fixed-width slot and alternates with `&` every 10 seconds using a 600ms Y-axis rotation; reduced-motion users receive a stable `S`.
 - Accessibility: one H1, semantic sections, labelled navigation, descriptive screenshots, keyboard focus rings, reduced-motion support and persistent accessible `ATSRS` labels are present.
 - Runtime: the application error listener recorded no public-landing exception. One isolated MutationObserver message emitted by the in-app inspection layer was not associated with the page window or application stack; a fresh page inspection found no landing script error.
 
