@@ -8,6 +8,9 @@ const pricing = fs.readFileSync(path.join(root, 'pricing.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'pricing.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'pricing.js'), 'utf8');
 
+assert.match(pricing, /class="public-home-link" href="\/" aria-label="Home"/);
+assert.match(pricing, /class="public-home-link public-home-mobile" href="\/" aria-label="Home"/);
+
 assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
 for (const plan of ['bronze', 'silver', 'gold']) {
   assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
