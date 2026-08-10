@@ -19,6 +19,8 @@ assert.match(index, /data-public-theme-toggle role="switch"/);
 assert.match(index, /public-theme-track/);
 assert.match(index, /public-theme-thumb/);
 for (const plan of ['FREE', 'BRONZE', 'SILVER', 'GOLD']) assert.match(index, new RegExp(`>${plan}<`));
+assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
+for (const plan of ['bronze', 'silver', 'gold']) assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
 assert.match(index, /1 lifetime AI scan/);
 assert.match(index, /No Candidate directory listing/);
 assert.match(index, /No SMS or WhatsApp credits/);
