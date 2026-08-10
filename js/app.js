@@ -177,12 +177,29 @@
     return status===503||status===504||/Functions(?:Fetch|Relay)Error/i.test(name)||/failed to fetch|failed to send|network|relay/i.test(message);
   }
 
+  async function aiScanAuthorizationHeaders(){
+    var client=window.supabaseClient;
+    if(!client||!client.auth)throw new Error('Your session has expired. Please sign in again.');
+    var sessionResult=typeof window.atsrsGetSessionSingleFlight==='function'
+      ?await window.atsrsGetSessionSingleFlight(client)
+      :await client.auth.getSession();
+    var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
+    if(!session||!session.access_token){
+      var refreshed=await client.auth.refreshSession();
+      session=refreshed&&refreshed.data&&refreshed.data.session;
+    }
+    if(!session||!session.access_token)throw new Error('Your session has expired. Please sign in again.');
+    return {Authorization:'Bearer '+session.access_token};
+  }
+
   async function invokeAiScan(body){
-    var first=await window.supabaseClient.functions.invoke('scan-document',{body:body});
+    var headers=await aiScanAuthorizationHeaders();
+    var first=await window.supabaseClient.functions.invoke('scan-document',{body:body,headers:headers});
     if(!first.error||!retryableFunctionError(first.error))return first;
     setAiScanStatus('The first scan did not finish. Retrying automatically...');
     await new Promise(function(resolve){setTimeout(resolve,650);});
-    return window.supabaseClient.functions.invoke('scan-document',{body:body});
+    headers=await aiScanAuthorizationHeaders();
+    return window.supabaseClient.functions.invoke('scan-document',{body:body,headers:headers});
   }
 
   async function functionErrorMessage(error){
@@ -203,6 +220,7 @@
     if(/sign in|unauthorized|jwt|session/i.test(message))return 'Your session has expired. Please sign in again.';
     if(/network|fetch|connection|timeout|relay/i.test(message))return 'Connection problem. Check your internet and try again.';
     if(/no document details/i.test(message))return 'No document details could be detected. Try a clearer file or enter the details manually.';
+    if(/monthly limit|allowance|processing notice|wait a few seconds|not configured|configuration|ai service/i.test(message))return message;
     return 'The AI scan could not be completed. Please try again.';
   }
 
