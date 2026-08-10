@@ -253,11 +253,6 @@ body #atsrsThemeToggle .atsrs-theme-track{
   transform:translateY(-50%)!important;
 }
 
-html[data-theme] body #atsrsThemeToggle:hover .atsrs-theme-track{
-  border-color:#71879a!important;
-  background:#152638!important;
-}
-
 html[data-theme] body #atsrsThemeToggle::before,
 html[data-theme] body #atsrsThemeToggle::after{display:none!important;content:none!important}
 

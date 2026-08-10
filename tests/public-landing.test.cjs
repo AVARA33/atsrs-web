@@ -44,6 +44,7 @@ assert.match(js, /authSubtitle\.textContent='Automated Tracking & Reporting Syst
 assert.match(css, /font:700 9px\/1\.25/);
 assert.match(css, /font-size:7\.5px/);
 assert.match(storage, /window\.__atsrsSuppressAutomaticSessionOpen=true;[\s\S]*?window\.location\.replace\(window\.location\.pathname\)/);
+assert.doesNotMatch(css, /\.public-theme-toggle:hover \.public-theme-track\{[\s\S]*?(?:background|border-color):/);
 assert.doesNotMatch(css, /Automated Reporting & Tracking System/);
 assert.doesNotMatch(js, /Automated Reporting & Tracking System/);
 assert.doesNotMatch(js, /keepProductName|setTimeout\(keepProductName/);

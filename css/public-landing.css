@@ -1,4 +1,4 @@
-/* ATSRS V461 public product landing, readable brand meaning and shared theme switch. */
+/* ATSRS V462 public product landing, stable theme switch and readable brand meaning. */
 :root{
   --public-bg:#f6f8fb;
   --public-surface:#ffffff;
@@ -91,7 +91,6 @@ html[data-theme] body .atsrs-public-landing .public-theme-toggle::after{display:
 .public-theme-sun,.public-theme-moon{position:absolute;top:50%;z-index:2;display:grid;width:16px;height:16px;place-items:center;color:#8396a8;font-size:11px;line-height:1;transform:translateY(-50%);transition:color .18s ease}
 .public-theme-moon{left:3px}.public-theme-sun{right:4px}
 .public-theme-thumb{position:absolute;top:2px;left:2px;z-index:1;width:18px;height:18px;border-radius:50%;background:#eef4f8;box-shadow:0 2px 7px rgba(0,0,0,.3);transition:transform .2s ease,background-color .2s ease}
-.public-theme-toggle:hover .public-theme-track{border-color:#71879a;background:#152638}
 .public-theme-toggle:focus-visible{outline:0}.public-theme-toggle:focus-visible .public-theme-track{box-shadow:0 0 0 3px color-mix(in srgb,var(--public-accent) 28%,transparent)}
 html[data-theme="dark"] .public-theme-moon{color:#0f172a}
 html[data-theme="light"] .public-theme-track{border-color:#b8c8d4;background:#e8eef3;box-shadow:0 5px 14px rgba(35,61,80,.07)}

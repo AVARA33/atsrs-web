@@ -78,7 +78,6 @@ html[data-theme="light"]{
   border:1px solid #42566a;border-radius:999px;background:#101d2b;box-shadow:0 5px 14px rgba(0,0,0,.14);
   transform:translateY(-50%);transition:border-color .18s ease,background-color .18s ease;
 }
-.atsrs-theme-toggle:hover .atsrs-theme-track{border-color:#71879a;background:#152638}
 .atsrs-theme-toggle:focus-visible .atsrs-theme-track{box-shadow:0 0 0 3px rgba(56,189,248,.16)}
 .atsrs-theme-sun,
 .atsrs-theme-moon{
