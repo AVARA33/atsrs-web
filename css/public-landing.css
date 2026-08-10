@@ -1,4 +1,4 @@
-/* ATSRS V457 public product landing, shared theme switch and vertical-axis brand motion. */
+/* ATSRS V458 public product landing, shared theme switch and vertical-axis brand motion. */
 :root{
   --public-bg:#f6f8fb;
   --public-surface:#ffffff;
@@ -80,6 +80,13 @@ body.atsrs-public-view > #app{display:none!important}
   display:block;border:0!important;border-radius:999px!important;background:transparent!important;color:var(--public-ink)!important;
   box-shadow:none!important;cursor:pointer;
 }
+html[data-theme] body .atsrs-public-landing .public-theme-toggle,
+html[data-theme] body .atsrs-public-landing .public-theme-toggle:hover,
+html[data-theme] body .atsrs-public-landing .public-theme-toggle:active{
+  appearance:none!important;background:transparent!important;border:0!important;box-shadow:none!important;transform:none!important;
+}
+html[data-theme] body .atsrs-public-landing .public-theme-toggle::before,
+html[data-theme] body .atsrs-public-landing .public-theme-toggle::after{display:none!important;content:none!important}
 .public-theme-track{position:absolute;top:50%;left:1px;width:42px;height:24px;overflow:hidden;border:1px solid #42566a;border-radius:999px;background:#101d2b;box-shadow:0 5px 14px rgba(0,0,0,.14);transform:translateY(-50%);transition:border-color .18s ease,background-color .18s ease}
 .public-theme-sun,.public-theme-moon{position:absolute;top:50%;z-index:2;display:grid;width:16px;height:16px;place-items:center;color:#8396a8;font-size:11px;line-height:1;transform:translateY(-50%);transition:color .18s ease}
 .public-theme-moon{left:3px}.public-theme-sun{right:4px}

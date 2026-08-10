@@ -47,6 +47,8 @@ assert.doesNotMatch(js, /button\.innerHTML/);
 assert.match(css, /@media\(max-width:420px\)/);
 assert.match(css, /overflow-x:clip/);
 assert.match(css, /body\.atsrs-public-view > #auth,[\s\S]*?body\.atsrs-public-view > #app\{display:none!important\}/);
+assert.match(css, /html\[data-theme\] body \.atsrs-public-landing \.public-theme-toggle:hover,[\s\S]*?background:transparent!important/);
+assert.match(css, /\.public-theme-toggle::before,[\s\S]*?\.public-theme-toggle::after\{display:none!important;content:none!important\}/);
 assert.match(index, /href="data-protection\.html">Data Protection &amp; GDPR<\/a>/);
 assert.match(index, /href="terms\.html">Terms of Use<\/a>/);
 assert.match(index, /href="privacy\.html">Privacy Notice<\/a>/);
