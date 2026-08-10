@@ -1,4 +1,4 @@
-/* ATSRS V454 public product landing, legal footer and vertical-axis brand motion. */
+/* ATSRS V455 public product landing, shared theme switch and vertical-axis brand motion. */
 :root{
   --public-bg:#f6f8fb;
   --public-surface:#ffffff;
@@ -74,10 +74,20 @@ body.atsrs-public-view .atsrs-global-controls{display:none!important}
 .public-nav a{display:flex;min-height:44px;align-items:center}.public-nav a:hover{color:var(--public-accent)}
 .public-header-actions{justify-self:end;display:flex;align-items:center;gap:10px}
 .public-theme-toggle{
-  width:44px!important;height:44px!important;min-width:44px;padding:0!important;margin:0!important;
-  display:grid;place-items:center;border:1px solid var(--public-line)!important;border-radius:50%!important;
-  background:transparent!important;color:var(--public-ink)!important;font-size:19px;
+  position:relative;width:44px!important;height:44px!important;min-width:44px;padding:0!important;margin:0!important;
+  display:block;border:0!important;border-radius:999px!important;background:transparent!important;color:var(--public-ink)!important;
+  box-shadow:none!important;cursor:pointer;
 }
+.public-theme-track{position:absolute;top:50%;left:1px;width:42px;height:24px;overflow:hidden;border:1px solid #42566a;border-radius:999px;background:#101d2b;box-shadow:0 5px 14px rgba(0,0,0,.14);transform:translateY(-50%);transition:border-color .18s ease,background-color .18s ease}
+.public-theme-sun,.public-theme-moon{position:absolute;top:50%;z-index:2;display:grid;width:16px;height:16px;place-items:center;color:#8396a8;font-size:11px;line-height:1;transform:translateY(-50%);transition:color .18s ease}
+.public-theme-moon{left:3px}.public-theme-sun{right:4px}
+.public-theme-thumb{position:absolute;top:2px;left:2px;z-index:1;width:18px;height:18px;border-radius:50%;background:#eef4f8;box-shadow:0 2px 7px rgba(0,0,0,.3);transition:transform .2s ease,background-color .2s ease}
+.public-theme-toggle:hover .public-theme-track{border-color:#71879a;background:#152638}
+.public-theme-toggle:focus-visible{outline:0}.public-theme-toggle:focus-visible .public-theme-track{box-shadow:0 0 0 3px color-mix(in srgb,var(--public-accent) 28%,transparent)}
+html[data-theme="dark"] .public-theme-moon{color:#0f172a}
+html[data-theme="light"] .public-theme-track{border-color:#b8c8d4;background:#e8eef3;box-shadow:0 5px 14px rgba(35,61,80,.07)}
+html[data-theme="light"] .public-theme-thumb{background:#fff;transform:translateX(18px)}
+html[data-theme="light"] .public-theme-sun{color:#8a5b00}
 .public-login{display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:0 14px;font-weight:750}
 .public-cta{
   display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:12px;padding:0 22px;
@@ -134,4 +144,5 @@ html[data-theme="dark"] .public-cta{color:#041817!important}
   .public-header{min-height:68px;padding:8px 16px;gap:10px}.public-wordmark{font-size:21px}.public-wordmark::after{font-size:5.8px}.public-header-actions{gap:3px}.public-header-actions>.public-cta{display:none}.public-login{padding-inline:9px;font-size:13px}.public-theme-toggle{width:42px!important;height:42px!important;min-width:42px}.public-section{width:min(100% - 32px,1240px);padding-block:70px}.public-hero{min-height:auto;padding-top:70px;gap:42px}.public-hero h1{font-size:clamp(42px,13vw,61px)}.public-hero-visual{min-height:430px}.public-product-shot-primary{inset:4% 0 auto}.public-product-shot-secondary{right:-2%;width:78%}.public-floating-note{left:0;bottom:5%}.public-audience-grid,.public-feature-band,.public-faq-grid{grid-template-columns:1fr}.public-audience-grid article>p:not(.public-kicker){min-height:0}.public-preview-section,.public-plans{width:min(100% - 32px,1350px)}.public-steps{grid-template-columns:1fr}.public-steps li,.public-steps li+li{padding:24px 0;border-right:0!important;border-top:1px solid var(--public-line)}.public-plan-grid{grid-template-columns:1fr}.public-plan h3{min-height:0}.public-final-cta>div{flex-direction:column}.public-footer{grid-template-columns:1fr;align-items:start}.public-footer-primary,.public-footer-legal{justify-content:flex-start}.public-footer-legal a:last-child{margin-left:0}.public-trust-list{display:grid}.public-feature-band article{grid-template-columns:42px 1fr}
 }
 @media(max-width:420px){.public-hero-visual{min-height:350px}.public-floating-note{display:none}.public-product-shot-secondary{bottom:0}.public-hero-actions{align-items:flex-start;flex-direction:column}.public-hero-actions .public-cta{width:100%}}
+@media(max-width:720px){.public-theme-toggle{width:44px!important;height:44px!important;min-width:44px}.public-theme-track{left:1px}}
 @media(prefers-reduced-motion:reduce){.atsrs-brand-face{transition:none!important}.atsrs-brand-swap.show-amp .atsrs-brand-s{opacity:1;transform:none}.atsrs-brand-swap.show-amp .atsrs-brand-amp{opacity:0}.atsrs-public-landing *{scroll-behavior:auto!important}}

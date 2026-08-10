@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V454" data-atsrs-update="10 Aug 2026">
+<html lang="en" data-atsrs-build="V455" data-atsrs-update="10 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +54,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=449">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
 <link rel="stylesheet" href="css/shell-polish.css?v=447">
-<link rel="stylesheet" href="css/public-landing.css?v=454">
+<link rel="stylesheet" href="css/public-landing.css?v=455">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -121,8 +121,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <a href="#faq">FAQ</a>
     </nav>
     <div class="public-header-actions">
-      <button type="button" class="public-theme-toggle" data-public-theme-toggle aria-label="Switch colour theme">
-        <i class="ph ph-sun" aria-hidden="true"></i>
+      <button type="button" class="public-theme-toggle" data-public-theme-toggle role="switch" aria-label="Switch colour theme">
+        <span class="public-theme-track" aria-hidden="true">
+          <i class="ph ph-moon public-theme-moon"></i>
+          <i class="ph ph-sun public-theme-sun"></i>
+          <span class="public-theme-thumb"></span>
+        </span>
       </button>
       <a class="public-login" href="?view=login">Log in</a>
       <a class="public-cta public-cta-small" href="?view=signup">Create Free Account</a>
@@ -1562,7 +1566,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=408"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=447"></script>
-<script src="js/public-landing.js?v=453"></script>
+<script src="js/public-landing.js?v=455"></script>
 
 
 

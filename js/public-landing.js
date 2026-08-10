@@ -1,4 +1,4 @@
-/* ATSRS V453 public entry route and continuous animated brand wordmark. */
+/* ATSRS V455 public entry route, shared theme switch and animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -89,7 +89,7 @@
   document.querySelectorAll('[data-public-theme-toggle]').forEach(function(button){
     function sync(){
       var light=document.documentElement.dataset.theme==='light';
-      button.innerHTML='<i class="ph '+(light?'ph-moon':'ph-sun')+'" aria-hidden="true"></i>';
+      button.setAttribute('aria-checked',light?'true':'false');
       button.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode');
     }
     button.addEventListener('click',function(){

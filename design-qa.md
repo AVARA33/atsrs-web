@@ -57,6 +57,41 @@ The source is the user's exact sidebar reference. Its narrow vertical icon-over-
 
 final result: passed
 
+## V455 public theme-switch design QA
+
+### Visual sources and implementation evidence
+
+- User location reference: `C:/Users/user/AppData/Local/Temp/codex-clipboard-36351a57-24d0-4273-b0ac-0c3b07956de0.png`
+- Existing ATSRS login switch source: `docs/audit/public-switch-v455/source-login-switch.png`
+- Public landing implementation: `docs/audit/public-switch-v455/implementation-light.png`
+- Focused public switch: `docs/audit/public-switch-v455/implementation-public-switch.png`
+- Same-size focused comparison: `docs/audit/public-switch-v455/comparison-switch-focused.png`
+
+### Viewport and state
+
+- Browser-rendered implementation: `1265 x 712` pixels at CSS density `1`.
+- Component comparison: source and implementation were each captured in a `60 x 52` pixel crop around a `44 x 44` touch target.
+- State: public landing header, light theme; dark mode was also exercised interactively.
+
+### Findings
+
+- Fonts and typography: header copy, navigation, CTA type and branding remain unchanged.
+- Spacing and layout rhythm: the new control occupies the same `44 x 44` touch target as Login; its visible track is centered at `42 x 24`. Header alignment and surrounding action spacing remain stable.
+- Colors and visual tokens: the switch reuses the existing ATSRS light/dark track, thumb and icon colors instead of introducing a new control palette.
+- Image quality and asset fidelity: the existing Phosphor sun/moon icons are used; no new raster or approximate icon asset was introduced.
+- Copy and content: navigation and CTA copy are unchanged. Accessible labels update between “Switch to dark mode” and “Switch to light mode”.
+- Interaction: light-to-dark and dark-to-light transitions both work; `aria-checked` changes with the theme.
+- Responsive/accessibility: target size is `44 x 44`, root horizontal overflow is `0`, keyboard focus remains visible, and console errors are `0`.
+
+### Comparison history
+
+1. The public header used a separate circular icon button while Login and signed-in pages used a pill switch.
+2. The first V455 implementation matched the `42 x 24` track but used a `50 x 44` outer target.
+3. The outer target was corrected to the exact Login measurement of `44 x 44` and recaptured.
+4. The final focused source/implementation comparison shows the same component geometry with no actionable P0, P1 or P2 mismatch.
+
+final result: passed
+
 ## V450 public product landing and brand-motion QA
 
 ### Visual sources and implementation evidence
