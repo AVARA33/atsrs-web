@@ -239,7 +239,9 @@ html body.company-mode #atsrsGlobalControls > #atsrsThemeToggle{
 
 body #atsrsThemeToggle .atsrs-theme-track{
   position:absolute!important;
-  inset:10px 1px auto!important;
+  inset:auto!important;
+  top:50%!important;
+  left:1px!important;
   display:block!important;
   width:42px!important;
   height:24px!important;
@@ -248,7 +250,16 @@ body #atsrsThemeToggle .atsrs-theme-track{
   background:#101d2b!important;
   box-shadow:0 5px 14px rgba(0,0,0,.14)!important;
   overflow:hidden!important;
+  transform:translateY(-50%)!important;
 }
+
+html[data-theme] body #atsrsThemeToggle:hover .atsrs-theme-track{
+  border-color:#71879a!important;
+  background:#152638!important;
+}
+
+html[data-theme] body #atsrsThemeToggle::before,
+html[data-theme] body #atsrsThemeToggle::after{display:none!important;content:none!important}
 
 html[data-theme="light"] body #atsrsThemeToggle .atsrs-theme-track{
   border-color:#b8c8d4!important;

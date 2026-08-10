@@ -1,4 +1,4 @@
-/* ATSRS global light and dark appearance control. */
+/* ATSRS V460 global light and dark appearance control. */
 (function(){
   'use strict';
   var KEY='atsrs_theme';
@@ -66,8 +66,8 @@
     if(!button.querySelector('.atsrs-theme-track')){
       button.innerHTML=
         '<span class="atsrs-theme-track" aria-hidden="true">'+
-          '<span class="atsrs-theme-sun">&#9728;</span>'+
-          '<span class="atsrs-theme-moon">&#9790;</span>'+
+          '<i class="ph ph-sun atsrs-theme-sun"></i>'+
+          '<i class="ph ph-moon atsrs-theme-moon"></i>'+
           '<span class="atsrs-theme-thumb"></span>'+
         '</span>';
     }

@@ -10,7 +10,7 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
-assert.match(index,/css\/shell-polish\.css\?v=447/);
+assert.match(index,/css\/shell-polish\.css\?v=460/);
 assert.match(index,/js\/shell-polish\.js\?v=447/);
 assert.match(index,/js\/app\.js\?v=446/);
 assert.match(icons,/\.ph-squares-four:before/);
@@ -54,6 +54,9 @@ assert.match(css,/#atsrsNotificationButton \.ph\{font-size:24px/);
 assert.match(css,/#atsrsGlobalControls > #atsrsThemeToggle[\s\S]*?width:44px!important[\s\S]*?height:44px!important/);
 assert.match(css,/body #atsrsThemeToggle \.atsrs-theme-track\{[\s\S]*?width:42px!important[\s\S]*?height:24px!important/);
 assert.match(css,/html\[data-theme="dark"\] body #atsrsThemeToggle \.atsrs-theme-moon\{[\s\S]*?color:#0f172a!important/);
+assert.match(css,/#atsrsThemeToggle:hover \.atsrs-theme-track\{[\s\S]*?background:#152638!important/);
+assert.match(css,/#atsrsThemeToggle::before,[\s\S]*?#atsrsThemeToggle::after\{display:none!important;content:none!important\}/);
+assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/ph ph-sun atsrs-theme-sun/);
 assert.match(css,/\.sidebar \.nav button\.active[\s\S]*?background:transparent!important[\s\S]*?box-shadow:inset 3px 0 0 var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/\.cert-mode-buttons button\.active[\s\S]*?background:transparent!important/);
 assert.match(css,/Ordinary actions remain neutral[\s\S]*?background:transparent!important/);

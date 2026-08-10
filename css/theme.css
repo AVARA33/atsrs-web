@@ -44,36 +44,42 @@ html[data-theme="light"]{
   z-index:13500!important;
 }
 
-/* Compact familiar switch: no text box, no moving placement. */
+/* V460 shared landing/login/app switch: 44px target around a 42 x 24 pill. */
 .atsrs-theme-toggle{
   position:relative!important;
   display:block!important;
-  flex:0 0 50px!important;
-  width:50px!important;
-  min-width:50px!important;
-  height:28px!important;
-  min-height:28px!important;
+  flex:0 0 44px!important;
+  width:44px!important;
+  min-width:44px!important;
+  height:44px!important;
+  min-height:44px!important;
   margin:0!important;
   padding:0!important;
-  overflow:hidden!important;
-  border:1px solid #42566a!important;
+  overflow:visible!important;
+  border:0!important;
   border-radius:999px!important;
-  background:#101d2b!important;
+  background:transparent!important;
   color:#dbe7ef!important;
-  box-shadow:0 8px 22px rgba(0,0,0,.18)!important;
+  box-shadow:none!important;
   cursor:pointer;
   transform:none!important;
-  transition:border-color .18s ease,background-color .18s ease!important;
 }
 .atsrs-theme-toggle:hover,
 .atsrs-theme-toggle:focus-visible{
-  border-color:#71879a!important;
-  background:#152638!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
   outline:0!important;
   transform:none!important;
 }
-.atsrs-theme-toggle:focus-visible{box-shadow:0 0 0 3px rgba(56,189,248,.16)!important}
-.atsrs-theme-track{position:absolute;inset:0;display:block}
+.atsrs-theme-toggle::before,.atsrs-theme-toggle::after{display:none!important;content:none!important}
+.atsrs-theme-track{
+  position:absolute;top:50%;left:1px;display:block;width:42px;height:24px;overflow:hidden;
+  border:1px solid #42566a;border-radius:999px;background:#101d2b;box-shadow:0 5px 14px rgba(0,0,0,.14);
+  transform:translateY(-50%);transition:border-color .18s ease,background-color .18s ease;
+}
+.atsrs-theme-toggle:hover .atsrs-theme-track{border-color:#71879a;background:#152638}
+.atsrs-theme-toggle:focus-visible .atsrs-theme-track{box-shadow:0 0 0 3px rgba(56,189,248,.16)}
 .atsrs-theme-sun,
 .atsrs-theme-moon{
   position:absolute;
@@ -81,33 +87,34 @@ html[data-theme="light"]{
   z-index:2;
   display:grid;
   place-items:center;
-  width:18px;
-  height:18px;
+  width:16px;
+  height:16px;
   color:#8396a8;
-  font-size:12px;
+  font-size:11px;
   line-height:1;
   transform:translateY(-50%);
   transition:color .18s ease;
 }
 .atsrs-theme-sun{right:4px}
-.atsrs-theme-moon{left:4px}
+.atsrs-theme-moon{left:3px}
 .atsrs-theme-thumb{
   position:absolute;
-  top:3px;
-  left:3px;
+  top:2px;
+  left:2px;
   z-index:1;
-  width:20px;
-  height:20px;
+  width:18px;
+  height:18px;
   border-radius:50%;
   background:#eef4f8;
   box-shadow:0 2px 7px rgba(0,0,0,.3);
   transition:transform .2s ease,background-color .2s ease;
 }
-html[data-theme="dark"] .atsrs-theme-moon{color:#f4f8fb}
+html[data-theme="dark"] .atsrs-theme-moon{color:#0f172a}
 html[data-theme="light"] .atsrs-theme-sun{color:#8a5b00}
+html[data-theme="light"] .atsrs-theme-track{border-color:#b8c8d4;background:#e8eef3;box-shadow:0 5px 14px rgba(35,61,80,.07)}
 html[data-theme="light"] .atsrs-theme-thumb{
   background:#ffffff;
-  transform:translateX(24px);
+  transform:translateX(18px);
 }
 
 /* Professional light palette: calm white surfaces, cool grey borders and restrained accent. */
@@ -402,12 +409,12 @@ html[data-theme="light"] .workspace-logout-button:hover{
 }
 html[data-theme="light"] .workspace-switcher-divider{background:#dbe3e9!important}
 html[data-theme="light"] .atsrs-theme-toggle{
-  background:#e8eef3!important;
-  border-color:#b8c8d4!important;
+  background:transparent!important;
+  border:0!important;
   color:#263f54!important;
-  box-shadow:0 7px 18px rgba(35,61,80,.08)!important;
+  box-shadow:none!important;
 }
-html[data-theme="light"] .atsrs-theme-toggle:hover{background:#dde7ed!important}
+html[data-theme="light"] .atsrs-theme-toggle:hover{background:transparent!important}
 
 /* Login is a first-class light page, not a dark page with a white card. */
 html[data-theme="light"] #auth.auth{
@@ -660,7 +667,7 @@ body > #atsrsGlobalControls > #atsrsThemeToggle{
   position:relative!important;
   inset:auto!important;
   transform:none!important;
-  flex:0 0 50px!important;
+  flex:0 0 44px!important;
 }
 body > #atsrsGlobalControls > #workspaceSwitcher{
   order:2!important;

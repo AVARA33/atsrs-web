@@ -46,9 +46,9 @@ assert.match(theme, /html:not\(\[data-theme="light"\]\) #auth\.auth::before\s*\{
 assert.match(theme, /html\[data-theme="light"\] #auth\.auth\s*\{[\s\S]*?radial-gradient/,'light auth theme must keep its existing background treatment');
 assert.match(themeRuntime, /theme==='light'\?'#f6f8fb':'#04101d'/,'runtime theme color must match the canonical dark canvas');
 assert.match(html, /html\{background:#04101d\}/,'initial paint must match the canonical dark canvas');
-assert.match(html, /css\/theme\.css\?v=408/);
+assert.match(html, /css\/theme\.css\?v=460/);
 assert.match(html, /css\/base\.css\?v=408/);
 assert.match(html, /css\/account\.css\?v=420/);
-assert.match(html, /js\/theme\.js\?v=408/);
+assert.match(html, /js\/theme\.js\?v=460/);
 
 console.log('References visual regression contracts passed');
