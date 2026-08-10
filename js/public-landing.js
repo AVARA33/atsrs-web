@@ -1,4 +1,4 @@
-/* ATSRS V450 public entry route and animated brand wordmark. */
+/* ATSRS V451 public entry route and continuous animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -14,21 +14,30 @@
       if(wordmark.querySelector('.atsrs-brand-swap'))return;
       if((wordmark.textContent||'').trim()!=='ATSRS')return;
       wordmark.textContent='';
-      wordmark.append(document.createTextNode('AT'));
+      var prefix=document.createElement('span');
+      prefix.className='atsrs-brand-prefix';
+      prefix.textContent='AT';
       var swap=document.createElement('span');
       swap.className='atsrs-brand-swap';
       swap.setAttribute('aria-hidden','true');
-      swap.textContent='S';
-      wordmark.append(swap,document.createTextNode('RS'));
+      var letterS=document.createElement('span');
+      letterS.className='atsrs-brand-face atsrs-brand-s';
+      letterS.textContent='S';
+      var ampersand=document.createElement('span');
+      ampersand.className='atsrs-brand-face atsrs-brand-amp';
+      ampersand.textContent='&';
+      swap.append(letterS,ampersand);
+      var suffix=document.createElement('span');
+      suffix.className='atsrs-brand-suffix';
+      suffix.textContent='RS';
+      wordmark.append(prefix,swap,suffix);
       wordmark.setAttribute('aria-label','ATSRS — Automated Reporting & Tracking System');
     });
   }
   function rotateWordmarks(){
     if(reducedMotion)return;
     document.querySelectorAll('.atsrs-brand-swap').forEach(function(swap){
-      swap.classList.add('is-rotating');
-      window.setTimeout(function(){swap.textContent=swap.textContent==='S'?'&':'S';},300);
-      window.setTimeout(function(){swap.classList.remove('is-rotating');},610);
+      swap.classList.toggle('show-amp');
     });
   }
   prepareWordmarks();

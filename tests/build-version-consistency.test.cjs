@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V450');
+assert.equal(version, 'V451');
 assert.equal(update, '10 Aug 2026');
 
 for (const asset of [
@@ -55,8 +55,8 @@ assert.match(index, /src="js\/corporate-remediation\.js\?v=444"/);
 assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=441"/);
 assert.match(index, /href="css\/shell-polish\.css\?v=447"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=447"/);
-assert.match(index, /href="css\/public-landing\.css\?v=450"/);
-assert.match(index, /src="js\/public-landing\.js\?v=450"/);
+assert.match(index, /href="css\/public-landing\.css\?v=451"/);
+assert.match(index, /src="js\/public-landing\.js\?v=451"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/talent-directory\.js\?v=447"/);
@@ -76,4 +76,4 @@ assert.match(bootRefresh, /visibilitychange/);
 assert.match(bootRefresh, /window\.addEventListener\('pageshow',armFallback\)/);
 assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 
-console.log('V450 build marker consistency tests passed');
+console.log('V451 build marker consistency tests passed');

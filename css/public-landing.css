@@ -1,4 +1,4 @@
-/* ATSRS V450 public product landing and stable brand lockup. */
+/* ATSRS V451 public product landing and continuous brand lockup motion. */
 :root{
   --public-bg:#f6f8fb;
   --public-surface:#ffffff;
@@ -57,10 +57,19 @@ body.atsrs-public-view .atsrs-global-controls{display:none!important}
   letter-spacing:.095em;text-transform:uppercase;white-space:nowrap;
 }
 .atsrs-brand-swap{
-  display:inline-grid;place-items:center;min-width:.7em;transform-style:preserve-3d;
-  backface-visibility:hidden;transform-origin:center;transition:transform .6s cubic-bezier(.2,.75,.25,1);
+  position:relative;display:inline-grid;place-items:center;width:.76em;min-width:.76em;
+  line-height:1;vertical-align:baseline;isolation:isolate;
 }
-.atsrs-brand-swap.is-rotating{transform:rotateY(180deg)}
+.atsrs-brand-prefix,.atsrs-brand-suffix{display:inline-block}
+.atsrs-brand-face{
+  grid-area:1/1;display:block;width:100%;text-align:center;transform-origin:50% 52%;
+  transition:transform .68s cubic-bezier(.22,.72,.24,1),opacity .68s linear;
+  will-change:transform,opacity;
+}
+.atsrs-brand-s{opacity:1;transform:rotate(0deg) scale(1)}
+.atsrs-brand-amp{opacity:0;transform:rotate(-88deg) scale(.82)}
+.atsrs-brand-swap.show-amp .atsrs-brand-s{opacity:0;transform:rotate(88deg) scale(.82)}
+.atsrs-brand-swap.show-amp .atsrs-brand-amp{opacity:1;transform:rotate(0deg) scale(1)}
 .public-nav{display:flex;align-items:center;gap:clamp(18px,2.5vw,38px);font-size:14px;font-weight:650;color:var(--public-muted)}
 .public-nav a{display:flex;min-height:44px;align-items:center}.public-nav a:hover{color:var(--public-accent)}
 .public-header-actions{justify-self:end;display:flex;align-items:center;gap:10px}
@@ -125,4 +134,4 @@ html[data-theme="dark"] .public-cta{color:#041817!important}
   .public-header{min-height:68px;padding:8px 16px;gap:10px}.public-wordmark{font-size:21px}.public-wordmark::after{font-size:5.8px}.public-header-actions{gap:3px}.public-header-actions>.public-cta{display:none}.public-login{padding-inline:9px;font-size:13px}.public-theme-toggle{width:42px!important;height:42px!important;min-width:42px}.public-section{width:min(100% - 32px,1240px);padding-block:70px}.public-hero{min-height:auto;padding-top:70px;gap:42px}.public-hero h1{font-size:clamp(42px,13vw,61px)}.public-hero-visual{min-height:430px}.public-product-shot-primary{inset:4% 0 auto}.public-product-shot-secondary{right:-2%;width:78%}.public-floating-note{left:0;bottom:5%}.public-audience-grid,.public-feature-band,.public-faq-grid{grid-template-columns:1fr}.public-audience-grid article>p:not(.public-kicker){min-height:0}.public-preview-section,.public-plans{width:min(100% - 32px,1350px)}.public-steps{grid-template-columns:1fr}.public-steps li,.public-steps li+li{padding:24px 0;border-right:0!important;border-top:1px solid var(--public-line)}.public-plan-grid{grid-template-columns:1fr}.public-plan h3{min-height:0}.public-final-cta>div{flex-direction:column}.public-footer{grid-template-columns:1fr;align-items:start}.public-trust-list{display:grid}.public-feature-band article{grid-template-columns:42px 1fr}
 }
 @media(max-width:420px){.public-hero-visual{min-height:350px}.public-floating-note{display:none}.public-product-shot-secondary{bottom:0}.public-hero-actions{align-items:flex-start;flex-direction:column}.public-hero-actions .public-cta{width:100%}}
-@media(prefers-reduced-motion:reduce){.atsrs-brand-swap{transition:none!important}.atsrs-brand-swap.is-rotating{transform:none!important}.atsrs-public-landing *{scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){.atsrs-brand-face{transition:none!important}.atsrs-brand-swap.show-amp .atsrs-brand-s{opacity:1;transform:none}.atsrs-brand-swap.show-amp .atsrs-brand-amp{opacity:0}.atsrs-public-landing *{scroll-behavior:auto!important}}
