@@ -30,7 +30,7 @@ assert.match(html,/js\/reference-filter-state\.js\?v=410/);
 assert.match(html,/js\/server-data\.js\?v=410/);
 assert.match(html,/js\/documents\.js\?v=410/);
 assert.match(html,/js\/account\.js\?v=410/);
-assert.match(html,/js\/app\.js\?v=468/);
+assert.match(html,/js\/app\.js\?v=469/);
 
 function recorder(){
   const events=[];

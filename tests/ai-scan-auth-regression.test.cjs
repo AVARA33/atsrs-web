@@ -9,10 +9,12 @@ const edge = fs.readFileSync(path.join(root, 'supabase', 'functions', 'scan-docu
 assert.match(app, /async function aiScanAuthorizationHeaders\(\)/);
 assert.match(app, /atsrsGetSessionSingleFlight/);
 assert.match(app, /client\.auth\.refreshSession\(\)/);
+assert.match(app, /session lookup failed; attempting a refresh/);
+assert.match(app, /error\.context\.clone/);
 assert.match(app, /return \{Authorization:'Bearer '\+session\.access_token\}/);
 assert.match(app, /functions\.invoke\('scan-document',\{body:body,headers:headers\}\)/);
 assert.match(app, /monthly limit\|allowance\|processing notice/);
-assert.match(app, /file\.size>10\*1024\*1024/);
-assert.match(edge, /MAX_FILE_BYTES = 10 \* 1024 \* 1024/);
+assert.match(app, /file\.size>15\*1024\*1024/);
+assert.match(edge, /MAX_FILE_BYTES = 15 \* 1024 \* 1024/);
 
 console.log('AI scan authenticated invocation regression tests passed');

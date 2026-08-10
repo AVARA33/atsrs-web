@@ -180,12 +180,22 @@
   async function aiScanAuthorizationHeaders(){
     var client=window.supabaseClient;
     if(!client||!client.auth)throw new Error('Your session has expired. Please sign in again.');
-    var sessionResult=typeof window.atsrsGetSessionSingleFlight==='function'
-      ?await window.atsrsGetSessionSingleFlight(client)
-      :await client.auth.getSession();
+    var sessionResult=null;
+    try{
+      sessionResult=typeof window.atsrsGetSessionSingleFlight==='function'
+        ?await window.atsrsGetSessionSingleFlight(client)
+        :await client.auth.getSession();
+    }catch(sessionError){
+      console.warn('ATSRS AI scan session lookup failed; attempting a refresh.',sessionError);
+    }
     var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
-    if(!session||!session.access_token){
-      var refreshed=await client.auth.refreshSession();
+    if(!session||!session.access_token||sessionResult&&sessionResult.error){
+      var refreshed=null;
+      try{
+        refreshed=await client.auth.refreshSession();
+      }catch(refreshError){
+        console.warn('ATSRS AI scan session refresh failed.',refreshError);
+      }
       session=refreshed&&refreshed.data&&refreshed.data.session;
     }
     if(!session||!session.access_token)throw new Error('Your session has expired. Please sign in again.');
@@ -205,7 +215,8 @@
   async function functionErrorMessage(error){
     try{
       if(error&&error.context&&typeof error.context.json==='function'){
-        var details=await error.context.json();
+        var response=typeof error.context.clone==='function'?error.context.clone():error.context;
+        var details=await response.json();
         if(details&&details.error)return String(details.error);
         if(details&&details.message)return String(details.message);
       }
@@ -215,9 +226,9 @@
 
   function friendlyAiError(error){
     var message=String(error&&error.message||error||'');
-    if(/larger than 10 mb/i.test(message))return 'This file is larger than 10 MB. Use a smaller file.';
+    if(/larger than 15 mb/i.test(message))return 'This file is larger than 15 MB. Use a smaller file.';
     if(/unsupported|pdf|jpg|jpeg|png|webp/i.test(message))return 'Use a PDF, JPG, PNG, or WebP file.';
-    if(/sign in|unauthorized|jwt|session/i.test(message))return 'Your session has expired. Please sign in again.';
+    if(/sign in|unauthorized|jwt|session|auth lock|lock.*timed out/i.test(message))return 'Your session has expired. Please sign in again.';
     if(/network|fetch|connection|timeout|relay/i.test(message))return 'Connection problem. Check your internet and try again.';
     if(/no document details/i.test(message))return 'No document details could be detected. Try a clearer file or enter the details manually.';
     if(/monthly limit|allowance|processing notice|wait a few seconds|not configured|configuration|ai service/i.test(message))return message;
@@ -320,8 +331,8 @@
       setAiScanStatus('Use a PDF, JPG, PNG, or WebP file.',true);
       return;
     }
-    if(file.size>10*1024*1024){
-      setAiScanStatus('This file is larger than 10 MB. Use a smaller file.',true);
+    if(file.size>15*1024*1024){
+      setAiScanStatus('This file is larger than 15 MB. Use a smaller file.',true);
       return;
     }
     if(!window.supabaseClient||!window.currentUser){

@@ -3,7 +3,7 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 import { corsHeaders } from "jsr:@supabase/supabase-js@2/cors";
 
 const OPENAI_MODEL = "gpt-5-mini";
-const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_FILE_BYTES = 15 * 1024 * 1024;
 const ALLOWED_MIME_TYPES = new Set([
   "application/pdf",
   "image/jpeg",
@@ -161,7 +161,7 @@ Deno.serve(async (req: Request) => {
   }
   if (!ALLOWED_MIME_TYPES.has(mimeType)) return json(req, 415, { error: "Use a PDF, JPG, PNG, or WebP file." });
   if (!fileData.startsWith(`data:${mimeType};base64,`)) return json(req, 400, { error: "The document data is invalid." });
-  if (estimatedBytes(fileData) > MAX_FILE_BYTES) return json(req, 413, { error: "The document is larger than 10 MB." });
+  if (estimatedBytes(fileData) > MAX_FILE_BYTES) return json(req, 413, { error: "The document is larger than 15 MB." });
 
   const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },

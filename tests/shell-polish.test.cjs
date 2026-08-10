@@ -12,7 +12,7 @@ const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-r
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
 assert.match(index,/css\/shell-polish\.css\?v=462/);
 assert.match(index,/js\/shell-polish\.js\?v=447/);
-assert.match(index,/js\/app\.js\?v=468/);
+assert.match(index,/js\/app\.js\?v=469/);
 assert.match(icons,/\.ph-squares-four:before/);
 assert.match(icons,/\.ph-file:before/);
 assert.match(icons,/\.ph-file-text:before/);
