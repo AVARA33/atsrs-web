@@ -60,6 +60,9 @@ assert.match(index, /href="terms\.html">Terms of Use<\/a>/);
 assert.match(index, /href="privacy\.html">Privacy Notice<\/a>/);
 assert.match(index, /href="data-deletion\.html">Data Rights<\/a>/);
 assert.match(index, /href="security\.html">Report a Security Issue<\/a>/);
+assert.doesNotMatch(index, /class="public-footer-primary"/);
+assert.match(index, /class="public-footer-legal"[\s\S]*?Data Protection &amp; GDPR[\s\S]*?Data Rights<\/a><\/nav>[\s\S]*?class="public-footer-bottom"/);
+assert.match(css, /\.public-footer-bottom\{grid-column:1\/-1;[\s\S]*?justify-content:space-between/);
 
 for (const image of ['personal-dashboard.png', 'candidate-directory.png', 'corporate-personnel.png']) {
   assert.ok(fs.existsSync(path.join(root, 'assets', 'landing', image)), `${image} must exist`);
