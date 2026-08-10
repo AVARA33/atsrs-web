@@ -378,9 +378,7 @@ async function logout(){
     localStorage.setItem("atsrs_workspace_pick_required","1");
   }catch(e){console.warn("ATSRS logout storage clear failed",e);}
   try{window.__atsrsSessionOpened=false;currentUser=null;window.currentUser=null;}catch(e){}
-  var authEl=document.getElementById("auth"), appEl=document.getElementById("app");
-  if(appEl) appEl.classList.add("hidden");
-  if(authEl) authEl.classList.remove("hidden");
+  window.location.replace(window.location.pathname);
 }
 function localKey(n){
   if(!currentUser || !currentUser.id) return null;
@@ -1767,14 +1765,12 @@ setTimeout(v55DockTopActions,500);
     if(window.atsrsCloudData&&typeof window.atsrsCloudData.clearSession==='function'){
       window.atsrsCloudData.clearSession();
     }
-    showLoginScreen();
     if(signOutError){
-      setText('loginMsg','Logout completed on this device, but the server session could not be closed. Please try Sign In again.');
       console.warn('ATSRS Supabase signOut failed',signOutError);
-    }else{
-      setText('loginMsg','');
     }
     logoutButtons.forEach(function(btn){btn.disabled=false;btn.textContent='Logout';});
+    window.__atsrsSuppressAutomaticSessionOpen=true;
+    window.location.replace(window.location.pathname);
     return true;
   }
   function restoreSession(){
