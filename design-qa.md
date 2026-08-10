@@ -303,3 +303,27 @@ The requested scope is limited to the Documents register: remove its general-pur
 4. The final Personal and Corporate measurements pass with no P0, P1 or P2 findings in scope.
 
 final result: passed
+
+## V473 Product Updates workspace parity QA
+
+### Scope and implementation evidence
+
+- User reference: `C:/Users/user/AppData/Local/Temp/codex-clipboard-400cb537-dc68-4b88-9a2f-ade52ecbaf2d.png`
+- Production build: `V473` (`css/shell-polish.css?v=465`).
+- State: authenticated Personal and Corporate workspaces, Product Updates route.
+
+The Product Updates page is now one shared visual surface. Workspace switching changes account context only; it no longer changes the route width, heading wrapping, description measure or card-grid geometry.
+
+### Findings
+
+- Layout: Personal and Corporate use the same centered `min(100%, 1440px)` route width and the same mobile inset below `800px`.
+- Typography: hero and roadmap headings use the same line height and wrapping rules in both workspaces; paragraph measures no longer inherit Corporate-only limits.
+- Cards: existing roadmap cards, status chips, content order, colors and functionality are unchanged.
+- Surface: cards remain directly on the application background; no general-purpose wrapper card was reintroduced.
+- Responsive safety: the shared route keeps a minimum width of zero and a `calc(100% - 16px)` mobile width, preventing page-level horizontal overflow.
+- Regression: the full repository test suite, dedicated shell-polish contracts and build-marker consistency checks pass.
+- Production verification: the deployed HTML reports `data-atsrs-build="V473"`; the deployed stylesheet contains the shared Personal/Corporate Product Updates selectors.
+
+No P0, P1 or P2 mismatch remains within the requested Personal/Corporate parity scope.
+
+final result: passed
