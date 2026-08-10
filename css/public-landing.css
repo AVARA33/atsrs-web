@@ -1,4 +1,4 @@
-/* ATSRS V452 public product landing, legal footer and continuous brand motion. */
+/* ATSRS V454 public product landing, legal footer and vertical-axis brand motion. */
 :root{
   --public-bg:#f6f8fb;
   --public-surface:#ffffff;
@@ -58,18 +58,18 @@ body.atsrs-public-view .atsrs-global-controls{display:none!important}
 }
 .atsrs-brand-swap{
   position:relative;display:inline-grid;place-items:center;width:.76em;min-width:.76em;
-  line-height:1;vertical-align:baseline;isolation:isolate;
+  line-height:1;vertical-align:baseline;isolation:isolate;perspective:3em;transform-style:preserve-3d;
 }
 .atsrs-brand-prefix,.atsrs-brand-suffix{display:inline-block}
 .atsrs-brand-face{
   grid-area:1/1;display:block;width:100%;text-align:center;transform-origin:50% 52%;
   transition:transform .68s cubic-bezier(.22,.72,.24,1),opacity .68s linear;
-  will-change:transform,opacity;
+  backface-visibility:hidden;will-change:transform,opacity;
 }
-.atsrs-brand-s{opacity:1;transform:rotate(0deg) scale(1)}
-.atsrs-brand-amp{opacity:0;transform:rotate(-88deg) scale(.82)}
-.atsrs-brand-swap.show-amp .atsrs-brand-s{opacity:0;transform:rotate(88deg) scale(.82)}
-.atsrs-brand-swap.show-amp .atsrs-brand-amp{opacity:1;transform:rotate(0deg) scale(1)}
+.atsrs-brand-s{opacity:1;transform:rotateY(0deg) scale(1)}
+.atsrs-brand-amp{opacity:0;transform:rotateY(-88deg) scale(.82)}
+.atsrs-brand-swap.show-amp .atsrs-brand-s{opacity:0;transform:rotateY(88deg) scale(.82)}
+.atsrs-brand-swap.show-amp .atsrs-brand-amp{opacity:1;transform:rotateY(0deg) scale(1)}
 .public-nav{display:flex;align-items:center;gap:clamp(18px,2.5vw,38px);font-size:14px;font-weight:650;color:var(--public-muted)}
 .public-nav a{display:flex;min-height:44px;align-items:center}.public-nav a:hover{color:var(--public-accent)}
 .public-header-actions{justify-self:end;display:flex;align-items:center;gap:10px}
