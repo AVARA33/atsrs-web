@@ -1,4 +1,4 @@
-/* ATSRS V451 public entry route and continuous animated brand wordmark. */
+/* ATSRS V453 public entry route and continuous animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -42,13 +42,7 @@
   }
   prepareWordmarks();
   var authSubtitle=document.getElementById('authSubtitle');
-  if(authSubtitle){
-    var productName='Automated Reporting & Tracking System';
-    var keepProductName=function(){if(authSubtitle.textContent!==productName)authSubtitle.textContent=productName;};
-    keepProductName();
-    window.setTimeout(keepProductName,500);
-    window.setTimeout(keepProductName,1600);
-  }
+  if(authSubtitle)authSubtitle.textContent='Automated Reporting & Tracking System';
   if(!reducedMotion)window.setInterval(rotateWordmarks,10000);
 
   function finishPublicBoot(){

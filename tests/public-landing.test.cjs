@@ -27,6 +27,8 @@ assert.match(js, /prefers-reduced-motion: reduce/);
 assert.match(css, /\.atsrs-brand-swap\.show-amp \.atsrs-brand-s/);
 assert.match(css, /\.atsrs-brand-swap\.show-amp \.atsrs-brand-amp/);
 assert.match(css, /Automated Reporting & Tracking System/);
+assert.match(js, /authSubtitle\.textContent='Automated Reporting & Tracking System'/);
+assert.doesNotMatch(js, /keepProductName|setTimeout\(keepProductName/);
 assert.match(css, /@media\(max-width:420px\)/);
 assert.match(css, /overflow-x:clip/);
 assert.match(index, /href="data-protection\.html">Data Protection &amp; GDPR<\/a>/);
