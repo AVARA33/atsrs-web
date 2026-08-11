@@ -9,6 +9,7 @@ This runbook moves only the ATSRS frontend to Cloudflare Pages. Supabase remains
 - Build command: `npm run build:cloudflare`
 - Build output directory: `dist`
 - Root directory: repository root
+- Preview URL: `https://atsrs-web-preview.pages.dev`
 
 The build intentionally publishes only the public HTML files and the `assets`, `css`, `js` and `vendor` directories. It excludes audits, tests, scripts, backups, Supabase migrations and the GitHub Pages `CNAME` file.
 
@@ -31,3 +32,28 @@ Because the final public origin remains `https://atsrs.com`, the existing applic
 - Do not delete the GitHub Pages configuration or `CNAME` until the Cloudflare deployment has been stable and explicitly approved.
 
 No production user data is copied, altered or deleted during this frontend migration.
+
+## Recorded pre-cutover state
+
+Recorded on 11 August 2026 before any production DNS change:
+
+- `atsrs.com` A records: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+- `www.atsrs.com` CNAME: `avara33.github.io`
+- Public production origin remains GitHub Pages.
+- Cloudflare Pages is preview-only; no custom domain is attached.
+
+This is the rollback target if a later custom-domain cutover has to be reversed.
+
+## Preview verification record
+
+Verified on 11 August 2026:
+
+- Landing, login, pricing, privacy, terms, security and data-protection routes load successfully.
+- Canonical extensionless legal and pricing routes render the expected page titles and headings.
+- No desktop horizontal overflow was detected on the verified public routes.
+- Login uses exactly one viewport height and does not create an extra page scroll.
+- Light and dark theme switching works without console errors.
+- Public-route browser console errors: 0.
+- Local regression suite: 57 passed, 0 failed.
+
+Core Web Vitals were not recorded because the Chrome DevTools performance MCP is not installed on this workstation. Do not treat the checks above as a performance trace.
