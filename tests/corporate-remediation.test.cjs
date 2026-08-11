@@ -20,6 +20,8 @@ assert.match(runtime, /if\(label\)setText\('pageTitle',label\)/);
 assert.match(runtime, /if\(document\.body&&window\.MutationObserver\)/);
 assert.match(css, /body\.company-mode #profilePage>\.panel>#accountTitle/);
 assert.match(css, /body\.company-mode #profilePage #accountGeneralTab>\.profile-grid[\s\S]*display:none!important/);
+assert.match(css, /\.corporate-account-context\{[\s\S]*?padding:0;[\s\S]*?border:0;[\s\S]*?border-radius:0;[\s\S]*?background:transparent;/);
+assert.match(css, /html\[data-theme="light"\] \.corporate-account-context\{background:transparent;border-color:transparent\}/);
 assert.match(css, /body\.company-mode #refsPage \.cv-card[\s\S]*display:none!important/);
 assert.match(css, /data-atsrs-v134-kind="coverLetter"/);
 assert.match(runtime, /Legacy materials \(internal\)/);

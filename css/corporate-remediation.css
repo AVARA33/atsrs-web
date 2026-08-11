@@ -81,10 +81,10 @@ body.company-mode #profilePage>.panel>#userEmail{display:none!important}
 body.company-mode #profilePage #accountTabSharingBtn{display:none!important}
 .corporate-account-context{
   max-width:760px;
-  padding:var(--atsrs-space-6);
-  border:1px solid var(--atsrs-border,#26394c);
-  border-radius:var(--atsrs-radius-card);
-  background:var(--atsrs-panel2,#0b1825);
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
 }
 body.company-mode .corporate-account-context{display:block}
 .corporate-account-context h3{margin:var(--atsrs-space-3) 0 var(--atsrs-space-2)}
@@ -116,7 +116,7 @@ body.company-mode .corporate-account-context{display:block}
   .corporate-compliance-metrics{grid-template-columns:1fr!important}
   .corporate-compliance-reason{align-items:stretch;flex-direction:column}
   .corporate-compliance-reason button{width:100%!important}
-  .corporate-account-context{padding:var(--atsrs-space-4)}
+  .corporate-account-context{padding:0}
   .corporate-account-context dl{grid-template-columns:1fr}
   .corporate-account-context button{width:100%!important}
   .talent-list-actions button,.linked-personnel-actions button,.talent-profile-actions button,.talent-view{min-height:var(--atsrs-touch-height)!important}
@@ -124,4 +124,4 @@ body.company-mode .corporate-account-context{display:block}
 @media(max-width:430px){
   .corporate-summary-grid,.corporate-compliance-metrics{grid-template-columns:1fr!important}
 }
-html[data-theme="light"] .corporate-account-context{background:#f8fafc;border-color:#d6e0e8}
+html[data-theme="light"] .corporate-account-context{background:transparent;border-color:transparent}
