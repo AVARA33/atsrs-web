@@ -362,3 +362,26 @@ Source and implementation captures are 2048 x 1228 pixels at a 2048 x 1228 CSS v
 No actionable P0, P1 or P2 mismatch remains in the requested scope.
 
 final result: passed
+
+## V478 Corporate Account outer-surface QA
+
+### Visual sources and implementation evidence
+
+- User source: `C:/Users/user/AppData/Local/Temp/codex-clipboard-cc0edf2a-f43f-4ba2-8d17-7d26e3694703.png`
+- Matched browser captures: `docs/audit/corporate-account-v478/01-before-dark.jpg` and `02-after-dark.jpg`
+- Theme evidence: `03-after-light.jpg`
+- Responsive evidence: `04-mobile-light.jpg` and `05-mobile-dark.jpg`
+- Source pixels: 3439 x 1368 at approximately 1.5x desktop density.
+- Matched pre/post browser pixels: 2293 x 735 at the same density.
+- Responsive viewport override: 390 x 844; full-page captures are 374 x 1262 light and 374 x 1225 dark.
+
+### Findings and comparison history
+
+1. The source and pre-deploy live capture showed the Workspace details group inside a large general-purpose outer card.
+2. V478 removes only the outer background, border, radius and padding from `.corporate-account-context`.
+3. Post-fix matched dark captures confirm that the two definition cards and Open Security action remain intact.
+4. Live dark/light and 390px checks report transparent outer background, 0px outer border/padding, 0px root horizontal overflow, 44px mobile action height and 0 browser warning/error logs.
+5. Company navigation, General, Open Security, Security and return-to-General interactions pass. No P0, P1 or P2 finding remains in scope.
+
+final result: passed
+
