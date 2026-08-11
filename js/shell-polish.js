@@ -53,6 +53,7 @@
   };
 
   var navSyncQueued=false;
+  var mobileStateInitialized=false;
 
   function byId(id){return document.getElementById(id)}
 
@@ -125,6 +126,12 @@
     var wrapped=function(){
       var result=base.apply(this,arguments);
       queueNavigation();
+      if(name==='showPage'){
+        closeMobileSidebar();
+        stabilizeVisibleRoute();
+        setTimeout(stabilizeVisibleRoute,120);
+      }
+      if(name==='openApp')setTimeout(closeMobileSidebar,0);
       if(result&&typeof result.then==='function'){
         return Promise.resolve(result).finally(queueNavigation);
       }
@@ -132,6 +139,21 @@
     };
     wrapped.__atsrsShellNavigationWriter=true;
     window[name]=wrapped;
+  }
+
+  function closeMobileSidebar(){
+    if(window.innerWidth>800)return;
+    var sidebar=document.querySelector('#app.app:not(.hidden) .sidebar');
+    if(sidebar)sidebar.classList.add('v76-mobile-closed');
+  }
+
+  function stabilizeVisibleRoute(){
+    var intro=byId('introPage'),introButton=byId('navIntro');
+    if(!intro||!introButton||!introButton.classList.contains('active'))return;
+    document.querySelectorAll('#app.app:not(.hidden) > .main > section').forEach(function(section){
+      section.classList.toggle('hidden',section!==intro);
+    });
+    intro.classList.remove('hidden');
   }
 
   function openNotifications(){
@@ -180,12 +202,14 @@
   }
 
   function boot(){
+    if(!mobileStateInitialized){closeMobileSidebar();mobileStateInitialized=true;}
     decorateNavigation();
     ensureNotificationButton();
     ['applyLanguage','renderAll','changeLanguage','openApp','showPage'].forEach(wrapNavigationWriter);
     observe();
-    window.addEventListener('atsrs:workspace-changed',function(){queueNavigation();ensureNotificationButton()});
-    window.addEventListener('atsrs:resume',function(){queueNavigation();ensureNotificationButton();updateNotificationLabel()});
+    window.addEventListener('atsrs:workspace-changed',function(){queueNavigation();ensureNotificationButton();closeMobileSidebar();stabilizeVisibleRoute()});
+    window.addEventListener('atsrs:resume',function(){queueNavigation();ensureNotificationButton();updateNotificationLabel();closeMobileSidebar();stabilizeVisibleRoute()});
+    window.addEventListener('pageshow',function(){closeMobileSidebar();stabilizeVisibleRoute()});
     setTimeout(function(){decorateNavigation();ensureNotificationButton();updateNotificationLabel()},120);
   }
 

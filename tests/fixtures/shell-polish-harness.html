@@ -52,6 +52,15 @@
           <h3>Document Register</h3>
           <div class="table-wrap">
             <table class="atsrs-document-register">
+              <colgroup>
+                <col class="atsrs-document-col-select">
+                <col class="atsrs-document-col-name">
+                <col class="atsrs-document-col-provider">
+                <col class="atsrs-document-col-expiry">
+                <col class="atsrs-document-col-uploaded">
+                <col class="atsrs-document-col-status">
+                <col class="atsrs-document-col-actions">
+              </colgroup>
               <thead><tr>
                 <th class="atsrs-document-select-column"><input type="checkbox" aria-label="Select all"></th>
                 <th><button class="atsrs-document-sort"><span>Certificate</span><span class="atsrs-sort-arrows">▲▼</span></button></th>
@@ -61,7 +70,7 @@
                 <th><button class="atsrs-document-sort"><span>Status</span><span class="atsrs-sort-arrows">▲▼</span></button></th>
                 <th>Action</th>
               </tr></thead>
-              <tbody><tr><td><input type="checkbox" aria-label="Select STCW"></td><td>STCW</td><td>State Maritime and Port Agency</td><td>2029-05-27</td><td>21 Jul 2026</td><td>Valid</td><td><button>Preview</button></td></tr></tbody>
+              <tbody><tr><td class="atsrs-document-select-column"><input type="checkbox" aria-label="Select STCW"></td><td data-label="Document"><span class="atsrs-document-name">STCW</span></td><td data-label="Provider">State Maritime and Port Agency</td><td data-label="Expiry">2029-05-27</td><td data-label="Uploaded">21 Jul 2026</td><td data-label="Status">Valid</td><td data-label="Actions"><div class="atsrs-document-row-actions"><button>Preview</button><button>Edit</button><button>Delete</button></div></td></tr></tbody>
             </table>
           </div>
         </div>

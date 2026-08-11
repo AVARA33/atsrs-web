@@ -108,6 +108,37 @@ body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #introP
   margin-inline:auto;
 }
 
+/* Personal and Corporate routes share the same readable content origin. */
+body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #pageTitle,
+body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > section{
+  position:relative;
+  z-index:1;
+  width:min(100%,1440px);
+  min-width:0;
+  margin-inline:auto;
+}
+
+body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #pageTitle{
+  margin:0 auto 16px;
+}
+
+/*
+ * Corporate routes already carry their own contextual heading inside the
+ * centred content column. Keep the shell heading only for the two deliberately
+ * wide directory views, where Candidates and Personnel need the extra width.
+ */
+body.company-mode:has(#dashboardPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#certificatesPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#refsPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#compliancePage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#reportsPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#profilePage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#introPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#privacyPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#dataRightsPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle{
+  display:none!important;
+}
+
 body:where(.personal-mode,.company-mode):has(#navIntro.active) #app.app:not(.hidden) > .main > #pageTitle{
   position:relative;
   z-index:1;
@@ -195,6 +226,11 @@ body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button .atsrs-nav
     font-size:22px!important;
     line-height:1!important;
     text-align:center!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head .brand::after{
+    display:none!important;
+    content:none!important;
   }
 
   body #app.app:not(.hidden) .sidebar-head #sidebarToggleBtn,
@@ -380,6 +416,11 @@ html body #app.app:not(.hidden) #atsrsNotificationButton:focus-visible{
   outline-offset:2px!important;
 }
 
+html body #app.app:not(.hidden) :where(.sidebar .nav button,#atsrsNotificationButton,#atsrsThemeToggle):focus:not(:focus-visible){
+  outline:0!important;
+  box-shadow:none!important;
+}
+
 /* Header labels stay atomic. Narrow screens scroll the register instead of splitting a word. */
 #certificatesPage .table-wrap{overflow-x:auto!important}
 #certificatesPage .atsrs-document-register{
@@ -504,12 +545,12 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
 }
 
 #certificatesPage .atsrs-document-col-select{width:38px}
-#certificatesPage .atsrs-document-col-name{width:34%}
-#certificatesPage .atsrs-document-col-provider{width:25%}
-#certificatesPage .atsrs-document-col-expiry{width:10%}
-#certificatesPage .atsrs-document-col-uploaded{width:9%}
-#certificatesPage .atsrs-document-col-status{width:8%}
-#certificatesPage .atsrs-document-col-actions{width:224px}
+#certificatesPage .atsrs-document-col-name{width:35%}
+#certificatesPage .atsrs-document-col-provider{width:24%}
+#certificatesPage .atsrs-document-col-expiry{width:112px}
+#certificatesPage .atsrs-document-col-uploaded{width:96px}
+#certificatesPage .atsrs-document-col-status{width:104px}
+#certificatesPage .atsrs-document-col-actions{width:204px}
 
 #certificatesPage .atsrs-document-register th,
 #certificatesPage .atsrs-document-register td{
@@ -536,7 +577,8 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
 
 #certificatesPage .atsrs-document-register tbody td:is(:nth-child(4),:nth-child(5),:nth-child(6)){
   white-space:nowrap!important;
-  text-overflow:ellipsis;
+  overflow:visible!important;
+  text-overflow:clip;
 }
 
 #certificatesPage .atsrs-document-row-actions{
@@ -557,9 +599,76 @@ body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-a
 }
 
 @media(max-width:800px){
-  body #app.app:not(.hidden) #certificatesPage .table-wrap{overflow-x:auto!important}
-  body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
-    min-width:920px!important;
-    table-layout:fixed!important;
+  body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #pageTitle,
+  body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > section{
+    width:calc(100% - 16px);
   }
+
+  body #app.app:not(.hidden) #certificatesPage .table-wrap{overflow:visible!important}
+  body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
+    display:block!important;
+    min-width:0!important;
+    table-layout:auto!important;
+  }
+  #certificatesPage .atsrs-document-register colgroup,
+  #certificatesPage .atsrs-document-register thead{display:none!important}
+  #certificatesPage .atsrs-document-register tbody{
+    display:grid!important;
+    gap:12px!important;
+  }
+  #certificatesPage .atsrs-document-register tbody tr{
+    display:grid!important;
+    grid-template-columns:28px minmax(0,1fr) auto!important;
+    gap:8px 12px!important;
+    padding:14px!important;
+    border:1px solid var(--atsrs-personal-functional-border,rgba(54,82,108,.72))!important;
+    border-radius:12px!important;
+    background:var(--atsrs-personal-functional-surface,rgba(11,24,37,.72))!important;
+  }
+  #certificatesPage .atsrs-document-register tbody td{
+    display:block!important;
+    width:auto!important;
+    padding:0!important;
+    border:0!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+  #certificatesPage .atsrs-document-register tbody td:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  #certificatesPage .atsrs-document-register tbody td:nth-child(2){grid-column:2 / 4;grid-row:1}
+  #certificatesPage .atsrs-document-register tbody td:nth-child(3){grid-column:2 / 4;grid-row:2}
+  #certificatesPage .atsrs-document-register tbody td:nth-child(4){grid-column:2;grid-row:3}
+  #certificatesPage .atsrs-document-register tbody td:nth-child(5){grid-column:2;grid-row:4}
+  #certificatesPage .atsrs-document-register tbody td:nth-child(6){grid-column:3;grid-row:3 / span 2;text-align:right}
+  #certificatesPage .atsrs-document-register tbody td:nth-child(7){grid-column:1 / 4;grid-row:5}
+  #certificatesPage .atsrs-document-register tbody td[data-label]::before{
+    display:block;
+    margin-bottom:3px;
+    color:var(--muted,#8ea2b5);
+    content:attr(data-label);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.06em;
+    line-height:1.2;
+    text-transform:uppercase;
+  }
+  #certificatesPage .atsrs-document-register tbody td:nth-child(2)::before{display:none}
+  #certificatesPage .atsrs-document-register tbody .atsrs-document-empty{
+    grid-column:1 / -1!important;
+    grid-row:auto!important;
+    padding:18px 8px!important;
+    text-align:center!important;
+  }
+  #certificatesPage .atsrs-document-register tbody .atsrs-document-empty::before{display:none!important}
+  #certificatesPage .atsrs-document-row-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #certificatesPage .atsrs-document-name{-webkit-line-clamp:2;line-clamp:2}
+}
+
+/* Empty dashboard states should explain the state without becoming large blank cards. */
+body #app.app:not(.hidden) #dashboardPage :where(.atsrs-notification-empty,.access-empty){
+  min-height:0!important;
+  padding:12px 14px!important;
+}
+body #app.app:not(.hidden) #dashboardPage .panel:has(> .atsrs-notification-empty,> .access-request-list > .access-empty){
+  min-height:0!important;
+  padding-block:14px!important;
 }

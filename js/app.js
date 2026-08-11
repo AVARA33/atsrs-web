@@ -204,12 +204,50 @@
 
   async function invokeAiScan(body){
     var headers=await aiScanAuthorizationHeaders();
-    var first=await window.supabaseClient.functions.invoke('scan-document',{body:body,headers:headers});
+    var first=await invokeAiScanRequest(body,headers);
     if(!first.error||!retryableFunctionError(first.error))return first;
     setAiScanStatus('The first scan did not finish. Retrying automatically...');
     await new Promise(function(resolve){setTimeout(resolve,650);});
     headers=await aiScanAuthorizationHeaders();
-    return window.supabaseClient.functions.invoke('scan-document',{body:body,headers:headers});
+    return invokeAiScanRequest(body,headers);
+  }
+
+  async function invokeAiScanRequest(body,authorizationHeaders){
+    var client=window.supabaseClient;
+    var baseUrl=typeof SUPABASE_URL!=='undefined'?String(SUPABASE_URL||''):String(client&&client.supabaseUrl||'');
+    var publishableKey=typeof SUPABASE_ANON_KEY!=='undefined'?String(SUPABASE_ANON_KEY||''):String(client&&client.supabaseKey||'');
+    if(!baseUrl||!publishableKey)return{data:null,error:new Error('The AI service is not configured.')};
+    var controller=typeof AbortController==='function'?new AbortController():null;
+    var timeout=controller?setTimeout(function(){controller.abort();},90000):null;
+    try{
+      var response=await fetch(baseUrl.replace(/\/$/,'')+'/functions/v1/scan-document',{
+        method:'POST',
+        headers:{
+          'Authorization':authorizationHeaders.Authorization,
+          'apikey':publishableKey,
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(body),
+        signal:controller?controller.signal:undefined
+      });
+      var responseForError=response.clone();
+      var data=null;
+      try{data=await response.json();}catch(parseError){
+        var unreadable=new Error('The AI service returned an unreadable response.');
+        unreadable.context=responseForError;unreadable.status=response.status;
+        return{data:null,error:unreadable};
+      }
+      if(!response.ok){
+        var requestError=new Error(String(data&&data.error||data&&data.message||'The AI scan request failed.'));
+        requestError.context=responseForError;requestError.status=response.status;
+        return{data:null,error:requestError};
+      }
+      return{data:data,error:null};
+    }catch(fetchError){
+      return{data:null,error:fetchError};
+    }finally{
+      if(timeout)clearTimeout(timeout);
+    }
   }
 
   async function functionErrorMessage(error){
@@ -780,7 +818,7 @@
     var html='';
     rows.forEach(function(row){
       var x=row.item,i=row.index,st=row.statusData;
-      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></td><td>'+esc(x.provider||'')+'</td><td>'+esc(x.expiry||'')+'</td><td>'+uploadDateMarkup(x)+'</td><td class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td><div class="atsrs-document-row-actions">'+
+      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td data-label="Document"><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></td><td data-label="Provider">'+esc(x.provider||'')+'</td><td data-label="Expiry">'+esc(x.expiry||'')+'</td><td data-label="Uploaded">'+uploadDateMarkup(x)+'</td><td data-label="Status" class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td data-label="Actions"><div class="atsrs-document-row-actions">'+
         '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
         '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
         '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
