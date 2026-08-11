@@ -13,7 +13,10 @@ const publicFiles = [
   "terms.html",
   "privacy.html",
   "data-deletion.html",
-  "security.html"
+  "security.html",
+  "robots.txt",
+  "llms.txt",
+  "sitemap.xml"
 ];
 
 const publicDirectories = ["assets", "css", "js", "vendor"];

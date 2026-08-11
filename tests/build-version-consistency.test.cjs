@@ -54,7 +54,7 @@ assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /src="js\/corporate-information-architecture\.js\?v=444"/);
 assert.match(index, /src="js\/corporate-remediation\.js\?v=444"/);
-assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=441"/);
+assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=442"/);
 assert.match(index, /href="css\/shell-polish\.css\?v=468"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=448"/);
 assert.match(index, /href="css\/public-landing\.css\?v=468"/);

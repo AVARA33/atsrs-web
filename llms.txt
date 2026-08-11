@@ -1,0 +1,15 @@
+# ATSRS
+
+ATSRS is an international platform for Personal, Candidate and Corporate document-readiness workflows.
+
+## Public product information
+
+- [Platform overview](https://atsrs.com/)
+- [Personal plans](https://atsrs.com/pricing.html)
+- [Data Protection and GDPR](https://atsrs.com/data-protection.html)
+- [Terms of Use](https://atsrs.com/terms.html)
+- [Privacy Notice](https://atsrs.com/privacy.html)
+- [Data Rights](https://atsrs.com/data-deletion.html)
+- [Security](https://atsrs.com/security.html)
+
+Account areas and shared documents may require authentication or recipient verification. Public descriptions must not be treated as certification of a person's role, qualification or project eligibility.

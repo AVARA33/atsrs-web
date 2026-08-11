@@ -9,7 +9,7 @@ const runtime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
 const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
-assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=441/);
+assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
 assert.match(index,/css\/shell-polish\.css\?v=468/);
 assert.match(index,/js\/shell-polish\.js\?v=448/);
 assert.match(index,/js\/app\.js\?v=470/);

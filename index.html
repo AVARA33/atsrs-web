@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#04101d" />
 <meta name="color-scheme" content="dark light" />
 <meta name="referrer" content="no-referrer" />
+<meta name="description" content="ATSRS is an international platform for document expiry tracking, controlled sharing, Personal profiles, Candidate access and Corporate compliance workflows." />
 <title>ATSRS</title>
 <script>
 try{
@@ -38,10 +39,12 @@ html[data-theme="light"]{background:#f3f6f9}
 html[data-theme="light"] body{background:#f3f6f9}
 </style>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
-<script
-  src="vendor/supabase-js-2.111.0.min.js"
+<link
+  rel="preload"
+  as="script"
+  href="vendor/supabase-js-2.111.0.min.js"
   integrity="sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti"
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous">
 <link rel="stylesheet" href="css/base.css?v=408">
 <link rel="stylesheet" href="css/login.css?v=375">
 <link rel="stylesheet" href="css/dashboard.css?v=447">
@@ -63,7 +66,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/corporate-remediation.css?v=478">
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
-<link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
+<link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
 <link rel="stylesheet" href="css/shell-polish.css?v=468">
 <link rel="stylesheet" href="css/public-landing.css?v=468">
 <script defer src="js/maintenance-guard.js?v=375"></script>
@@ -164,10 +167,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </div>
       <div class="public-hero-visual" aria-label="ATSRS interface previews">
         <figure class="public-product-shot public-product-shot-primary">
-          <img src="assets/landing/personal-dashboard.png" alt="ATSRS Personal dashboard showing document readiness and expiry status" width="1920" height="1080">
+          <img src="assets/landing/personal-dashboard.png" alt="ATSRS Personal dashboard showing document readiness and expiry status" width="1265" height="712" loading="eager" decoding="async" fetchpriority="high">
         </figure>
         <figure class="public-product-shot public-product-shot-secondary">
-          <img src="assets/landing/candidate-directory.png" alt="ATSRS Corporate candidate directory" width="1920" height="1080">
+          <img src="assets/landing/candidate-directory.png" alt="ATSRS Corporate candidate directory" width="2048" height="1152" loading="eager" decoding="async">
         </figure>
         <div class="public-floating-note"><i class="ph ph-bell-ringing" aria-hidden="true"></i><span><strong>Expiry windows</strong>90, 60, 30 days and 1 week</span></div>
       </div>
@@ -217,7 +220,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <a class="public-text-link" href="?view=signup">Start with Free <span aria-hidden="true">→</span></a>
       </div>
       <figure class="public-wide-shot">
-        <img src="assets/landing/personal-dashboard.png" alt="ATSRS Personal account dashboard preview" loading="lazy" width="1920" height="1080">
+        <img src="assets/landing/personal-dashboard.png" alt="ATSRS Personal account dashboard preview" loading="lazy" decoding="async" width="1265" height="712">
       </figure>
     </section>
 
@@ -1544,6 +1547,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
+<script
+  src="vendor/supabase-js-2.111.0.min.js"
+  integrity="sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti"
+  crossorigin="anonymous"></script>
 <script src="js/stability-runtime.js?v=409"></script>
 <script src="js/stable-id-compatibility-config.js?v=409"></script>
 <script src="js/stable-id-compatibility-runtime.js?v=409"></script>
