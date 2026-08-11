@@ -16,6 +16,20 @@
     if(!window.atsrsExpiryStatus)throw new Error('ATSRS expiry status contract is unavailable.');
     return window.atsrsExpiryStatus;
   }
+  function dashboardExpiryCounts(documents){
+    var result={current:0,expiring_7:0,expiring_30:0,expiring_60:0,expiring_90:0,expired:0};
+    (Array.isArray(documents)?documents:[]).forEach(function(file){
+      var status=expiryApi().classify(file&&file.expiry);
+      if(status.days==null){result.current+=1;return}
+      if(status.days<0){result.expired+=1;return}
+      if(status.days<=7){result.expiring_7+=1;return}
+      if(status.days<=30){result.expiring_30+=1;return}
+      if(status.days<=60){result.expiring_60+=1;return}
+      if(status.days<=90){result.expiring_90+=1;return}
+      result.current+=1;
+    });
+    return result;
+  }
   function canonicalPayload(payload){
     var source=payload||{},rows=Array.isArray(source.rows)?source.rows:[];
     var canonicalRows=rows.map(function(row){
@@ -24,6 +38,7 @@
         return Object.assign({},file,{status:result.label,expiry_bucket:result.bucket});
       });
       var counts=expiryApi().summarize(documents,function(file){return file&&file.expiry});
+      var dashboardCounts=dashboardExpiryCounts(documents);
       return Object.assign({},row,{
         status:counts.review?'review':'clear',
         document_count:counts.total,
@@ -33,6 +48,12 @@
         expiring_90_count:counts.expiring_31_90,
         expired_count:counts.expired,
         unconfirmed_count:counts.unconfirmed,
+        dashboard_current_count:dashboardCounts.current,
+        dashboard_expiring_7_count:dashboardCounts.expiring_7,
+        dashboard_expiring_30_count:dashboardCounts.expiring_30,
+        dashboard_expiring_60_count:dashboardCounts.expiring_60,
+        dashboard_expiring_90_count:dashboardCounts.expiring_90,
+        dashboard_expired_count:dashboardCounts.expired,
         documents:documents
       });
     });
@@ -46,8 +67,14 @@
       totals.expiring_90+=number(row.expiring_90_count);
       totals.expired+=number(row.expired_count);
       totals.unconfirmed+=number(row.unconfirmed_count);
+      totals.dashboard_current+=number(row.dashboard_current_count);
+      totals.dashboard_expiring_7+=number(row.dashboard_expiring_7_count);
+      totals.dashboard_expiring_30+=number(row.dashboard_expiring_30_count);
+      totals.dashboard_expiring_60+=number(row.dashboard_expiring_60_count);
+      totals.dashboard_expiring_90+=number(row.dashboard_expiring_90_count);
+      totals.dashboard_expired+=number(row.dashboard_expired_count);
       return totals;
-    },{personnel:0,clear:0,review:0,documents:0,current:0,expiring_30:0,expiring_today:0,expiring_90:0,expired:0,unconfirmed:0});
+    },{personnel:0,clear:0,review:0,documents:0,current:0,expiring_30:0,expiring_today:0,expiring_90:0,expired:0,unconfirmed:0,dashboard_current:0,dashboard_expiring_7:0,dashboard_expiring_30:0,dashboard_expiring_60:0,dashboard_expiring_90:0,dashboard_expired:0});
     return{generated_at:source.generated_at||new Date().toISOString(),summary:summary,rows:canonicalRows};
   }
   function setStatus(id,message,isError){
@@ -100,10 +127,11 @@
   }
   function reviewReason(row){
     var parts=[];
-    if(number(row.expired_count))parts.push(number(row.expired_count)+' expired');
-    if(number(row.expiring_today_count))parts.push(number(row.expiring_today_count)+' expires today');
-    if(number(row.expiring_30_count))parts.push(number(row.expiring_30_count)+' expires in 1–30 days');
-    if(number(row.expiring_90_count))parts.push(number(row.expiring_90_count)+' expires in 31–90 days');
+    if(number(row.dashboard_expired_count))parts.push(number(row.dashboard_expired_count)+' expired');
+    if(number(row.dashboard_expiring_7_count))parts.push(number(row.dashboard_expiring_7_count)+' expires in 1 week');
+    if(number(row.dashboard_expiring_30_count))parts.push(number(row.dashboard_expiring_30_count)+' expires in 30 days');
+    if(number(row.dashboard_expiring_60_count))parts.push(number(row.dashboard_expiring_60_count)+' expires in 60 days');
+    if(number(row.dashboard_expiring_90_count))parts.push(number(row.dashboard_expiring_90_count)+' expires in 90 days');
     if(number(row.unconfirmed_count))parts.push(number(row.unconfirmed_count)+' date not confirmed');
     return parts.join(' · ');
   }
@@ -127,11 +155,12 @@
       badge.textContent=statusLabel(row.status);identity.appendChild(name);identity.appendChild(role);head.appendChild(identity);head.appendChild(badge);
       var metrics=document.createElement('div');metrics.className='corporate-compliance-metrics';
       [
-        ['Current',row.current_count],
-        ['Expiring in 31–90 days',row.expiring_90_count],
-        ['Expiring in 1–30 days',row.expiring_30_count],
-        ['Expires today',row.expiring_today_count],
-        ['Expired',row.expired_count]
+        ['Current',row.dashboard_current_count],
+        ['Expiring in 90 days',row.dashboard_expiring_90_count],
+        ['Expiring in 60 days',row.dashboard_expiring_60_count],
+        ['Expiring in 30 days',row.dashboard_expiring_30_count],
+        ['Expiring in 1 week',row.dashboard_expiring_7_count],
+        ['Expired',row.dashboard_expired_count]
       ].forEach(function(item){
         var metric=document.createElement('div'),label=document.createElement('span'),value=document.createElement('b');
         label.textContent=item[0];value.textContent=String(number(item[1]));

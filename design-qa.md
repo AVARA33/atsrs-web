@@ -384,4 +384,3 @@ final result: passed
 5. Company navigation, General, Open Security, Security and return-to-General interactions pass. No P0, P1 or P2 finding remains in scope.
 
 final result: passed
-

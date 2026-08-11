@@ -6,6 +6,7 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'corporate-remediation.css'), 'utf8');
+const shellCss = fs.readFileSync(path.join(root, 'css', 'shell-polish.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'corporate-remediation.js'), 'utf8');
 assert.match(runtime, /window\.localStorage&&window\.localStorage\.getItem\('atsrs_current_page'\)/);
 assert.match(runtime, /page==='privacy'\?'Privacy Notice':page==='dataRights'\?'Data Rights'/);
@@ -51,9 +52,12 @@ assert.match(talent, /matchMedia\('\(max-width: 720px\)'\)/);
 
 assert.match(css, /--atsrs-control-height:40px/);
 assert.match(css, /--atsrs-touch-height:44px/);
-assert.match(css, /\.corporate-compliance-metrics\{grid-template-columns:repeat\(5/);
+assert.match(css, /\.corporate-compliance-metrics\{grid-template-columns:repeat\(6/);
 assert.match(css, /@media\(max-width:720px\)/);
 assert.match(css, /#app button:focus-visible/);
+assert.match(shellCss, /#candidatesPage,#personnelPage[^}]*\.talent-view-switch\{[\s\S]*?background:#fff!important/);
+assert.match(shellCss, /\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#2f6fb2!important/);
+assert.match(shellCss, /html\[data-theme="dark"\][\s\S]*?\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#4f8b7d!important/);
 
 function runTitleHarness(activeId, activeText) {
   const elements = {

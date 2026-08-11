@@ -76,11 +76,6 @@
   }
 
   function bind(){
-    var security=byId('corporateAccountSecurityButton');
-    if(security&&!security.dataset.bound){
-      security.dataset.bound='true';
-      security.onclick=function(){if(typeof window.showAccountTab==='function')window.showAccountTab('security')};
-    }
     syncAll();
     var appraisalStatus=byId('v134_appraisal_status');
     if(appraisalStatus)new MutationObserver(syncCredentials).observe(appraisalStatus,{childList:true,characterData:true,subtree:true});

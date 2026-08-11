@@ -45,7 +45,7 @@
 .corporate-compliance-card.is-review{border-left:3px solid var(--atsrs-status-review)}
 .corporate-compliance-card.is-clear .corporate-compliance-head em{color:var(--atsrs-status-clear)}
 .corporate-compliance-card.is-review .corporate-compliance-head em{color:var(--atsrs-status-review)}
-.corporate-compliance-metrics{grid-template-columns:repeat(5,minmax(110px,1fr))!important}
+.corporate-compliance-metrics{grid-template-columns:repeat(6,minmax(100px,1fr))!important}
 .corporate-compliance-metrics>div{min-width:0}
 .corporate-compliance-metrics span{display:block;min-height:30px;line-height:1.35}
 .corporate-compliance-reason{
