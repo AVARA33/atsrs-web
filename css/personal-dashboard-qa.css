@@ -158,6 +158,11 @@ body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-60{--exp
 body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-30{--expiry-signal:#c56a00;--expiry-signal-soft:rgba(197,106,0,.12)}
 body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-7{--expiry-signal:#dc5a11;--expiry-signal-soft:rgba(220,90,17,.12)}
 body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-expired{--expiry-signal:#c62828;--expiry-signal-soft:rgba(198,40,40,.11)}
+body.company-mode #dashboardPage .corporate-personnel-summary-card{--expiry-signal:#0f766e;--expiry-signal-soft:rgba(15,118,110,.11)}
+
+body.company-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+}
 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .stats-grid > .expiry-summary-card{
   border-color:#2a3d52!important;
@@ -174,6 +179,42 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-30{--expiry-signal:#f0a23b;--expiry-signal-soft:rgba(240,162,59,.13)}
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-7{--expiry-signal:#ff874d;--expiry-signal-soft:rgba(255,135,77,.13)}
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-expired{--expiry-signal:#ff7373;--expiry-signal-soft:rgba(255,115,115,.13)}
+html[data-theme="dark"] body.company-mode #dashboardPage .corporate-personnel-summary-card{--expiry-signal:#6ee7d2;--expiry-signal-soft:rgba(110,231,210,.12)}
+
+body.company-mode #dashboardPage .corporate-dashboard-activity-grid{
+  grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);
+  gap:18px;
+}
+
+body.company-mode #dashboardPage #sentRequestsPanel .access-panel-head{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:flex-start!important;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+body.company-mode #dashboardPage #sentRequestsPanel .access-panel-head > button{
+  margin-left:auto!important;
+}
+
+body.company-mode #dashboardPage #sentRequestsPanel .sent-request-grid{
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+body.company-mode #dashboardPage #sentRequestsPanel .sent-request-grid > div:first-child p{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+
+@media(max-width:1500px){
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
 
 @media(max-width:1100px){
   body:where(.personal-mode,.company-mode) #dashboardPage .stats-grid{
@@ -197,6 +238,15 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage 
     width:32px;
     height:32px;
     font-size:18px;
+  }
+  body.company-mode #dashboardPage .stats-grid > .expiry-summary-expired{
+    grid-column:span 2;
+  }
+}
+
+@media(max-width:1100px){
+  body.company-mode #dashboardPage .corporate-dashboard-activity-grid{
+    grid-template-columns:1fr;
   }
 }
 

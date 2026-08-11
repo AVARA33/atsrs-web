@@ -101,7 +101,7 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);
 }
 
-assert.match(index, /css\/personal-dashboard-qa\.css\?v=449/);
+assert.match(index, /css\/personal-dashboard-qa\.css\?v=450/);
 assert.match(index, /js\/personal-dashboard-qa\.js\?v=447/);
 
 console.log('Personal Dashboard QA candidate contracts passed');
