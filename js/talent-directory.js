@@ -795,7 +795,9 @@
     loading=true;if(status){status.textContent='Loading profiles...';status.classList.remove('hidden')}
     try{
       var result=await actionCall({action:'directory'});
-      profiles=Array.isArray(result.profiles)?result.profiles:[];
+      profiles=(Array.isArray(result.profiles)?result.profiles:[]).filter(function(profile){
+        return !!profile&&profile.discoverable===true&&profile.profile_visibility==='Public';
+      });
       directoryMeta=result.meta&&typeof result.meta==='object'?result.meta:{eligible_profiles:profiles.length,document_owners:profiles.length,returned_profiles:profiles.length};
     }catch(error){
       if(status){status.textContent=friendlyError(error,'Candidate profiles could not be loaded. Please refresh and try again.');status.classList.remove('hidden')}
