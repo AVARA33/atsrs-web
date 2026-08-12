@@ -31,6 +31,15 @@
   function sameDate(a,b){
     return !!(a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate());
   }
+  function paintSelectedDay(dayButton){
+    var isLight=document.documentElement.getAttribute('data-theme')==='light';
+    dayButton.dataset.selected='true';
+    dayButton.style.setProperty('background-color',isLight?'#2f6fd6':'#2f806c','important');
+    dayButton.style.setProperty('border-color',isLight?'#245fb8':'#69bea6','important');
+    dayButton.style.setProperty('color','#ffffff','important');
+    dayButton.style.setProperty('-webkit-text-fill-color','#ffffff','important');
+    dayButton.style.setProperty('box-shadow',isLight?'0 0 0 2px rgba(47,111,214,.20)':'0 0 0 2px rgba(105,190,166,.24)','important');
+  }
   function moveSelectedDate(year,month){
     if(!selectedDate)return;
     var lastDay=new Date(year,month+1,0).getDate();
@@ -166,6 +175,9 @@
         if(sameDate(date,selectedDate)){
           dayButton.classList.add('selected');
           dayButton.setAttribute('aria-pressed','true');
+          paintSelectedDay(dayButton);
+        }else{
+          dayButton.setAttribute('aria-pressed','false');
         }
         days.appendChild(dayButton);
       })(day);
@@ -296,6 +308,10 @@
     document.addEventListener('keydown',function(event){
       if(event.key==='Escape'&&picker&&!picker.classList.contains('hidden'))close();
     });
+    new MutationObserver(function(records){
+      if(!picker||picker.classList.contains('hidden'))return;
+      if(records.some(function(record){return record.attributeName==='data-theme';}))render();
+    }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     window.addEventListener('resize',positionPicker);
     document.addEventListener('scroll',positionPicker,true);
   }

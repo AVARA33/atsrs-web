@@ -233,9 +233,27 @@ dialog.atsrs-date-picker-host{
   -webkit-text-fill-color:#ffffff!important;
   box-shadow:0 0 0 2px rgba(105,190,166,.24)!important;
 }
+/* Attribute and ARIA fallbacks keep the chosen date visible even if a shared
+   component stylesheet rewrites button classes after the picker renders. */
+#atsrsDatePicker .atsrs-date-picker-days button[data-selected="true"],
+#atsrsDatePicker .atsrs-date-picker-days button[aria-pressed="true"]{
+  border-color:#69bea6!important;
+  background-color:#2f806c!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  box-shadow:0 0 0 2px rgba(105,190,166,.24)!important;
+}
 html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button.selected{
   border-color:#245fb8!important;
   background:#2f6fd6!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  box-shadow:0 0 0 2px rgba(47,111,214,.20)!important;
+}
+html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button[data-selected="true"],
+html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button[aria-pressed="true"]{
+  border-color:#245fb8!important;
+  background-color:#2f6fd6!important;
   color:#ffffff!important;
   -webkit-text-fill-color:#ffffff!important;
   box-shadow:0 0 0 2px rgba(47,111,214,.20)!important;
