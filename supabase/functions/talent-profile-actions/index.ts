@@ -26,6 +26,49 @@ function clean(value: unknown, max: number) {
   return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max);
 }
 
+function workspaceProfilePayload(payload: unknown) {
+  if (!payload || typeof payload !== "object") return {} as Record<string, unknown>;
+  const value = (payload as Record<string, unknown>).value;
+  if (value && typeof value === "object") return value as Record<string, unknown>;
+  if (typeof value !== "string") return {} as Record<string, unknown>;
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" ? parsed as Record<string, unknown> : {};
+  } catch (_) {
+    return {} as Record<string, unknown>;
+  }
+}
+
+function currentPersonnelProfile(
+  talentProfile: Record<string, unknown> | null,
+  workspaceRow: Record<string, unknown> | null,
+) {
+  if (!talentProfile && !workspaceRow) return null;
+  const profile = { ...(talentProfile || {}) } as Record<string, unknown>;
+  const source = workspaceProfilePayload(workspaceRow?.payload);
+  const has = (key: string) => Object.prototype.hasOwnProperty.call(source, key);
+  const set = (target: string, sourceKey: string, max: number) => {
+    if (has(sourceKey)) profile[target] = clean(source[sourceKey], max) || null;
+  };
+  set("name", "name", 120);
+  set("surname", "surname", 120);
+  set("position", "position", 160);
+  set("country", "country", 120);
+  set("company", "company", 160);
+  set("avatar_url", "avatarUrl", 4000);
+  set("availability_status", "availabilityStatus", 40);
+  set("available_from", "availableFrom", 20);
+  set("work_preference", "workPreference", 40);
+  set("availability_confirmed_at", "availabilityConfirmedAt", 40);
+  if (has("workPreferences")) {
+    profile.work_preferences = Array.isArray(source.workPreferences)
+      ? source.workPreferences.map((value) => clean(value, 40)).filter(Boolean)
+      : [];
+  }
+  if (workspaceRow?.updated_at) profile.updated_at = clean(workspaceRow.updated_at, 40);
+  return profile;
+}
+
 function documentStatus(expiry: string | null | undefined) {
   if (!expiry) return "No expiry";
   const today = new Date();
@@ -433,11 +476,18 @@ Deno.serve(async (req) => {
     if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
     const professionalIds = (links || []).map((link) => link.professional_user_id);
     if (!professionalIds.length) return json(200, { personnel: [] });
-    const [profilesResult, filesResult] = await Promise.all([
+    const [profilesResult, workspaceProfilesResult, filesResult] = await Promise.all([
       admin
         .from("atsrs_talent_profiles")
-        .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,last_active_at")
+        .select("user_id,name,surname,position,country,company,avatar_url,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at")
         .in("user_id", professionalIds),
+      admin
+        .from("atsrs_workspace_data")
+        .select("user_id,payload,updated_at")
+        .eq("account_type", "personal")
+        .like("data_key", "%_personal_profile")
+        .in("user_id", professionalIds)
+        .order("updated_at", { ascending: false }),
       admin
         .from("atsrs_files")
         .select("user_id,created_at")
@@ -448,8 +498,16 @@ Deno.serve(async (req) => {
     ]);
     const { data: linkedProfiles, error: profilesError } = profilesResult;
     if (profilesError) return json(500, { error: "Linked profiles could not be loaded." });
+    if (workspaceProfilesResult.error) return json(500, { error: "Current Personnel profile details could not be loaded." });
     if (filesResult.error) return json(500, { error: "Personnel document activity could not be loaded." });
     const profileMap = new Map((linkedProfiles || []).map((item) => [item.user_id, item]));
+    const workspaceProfileMap = new Map<string, Record<string, unknown>>();
+    (workspaceProfilesResult.data || []).forEach((row) => {
+      const ownerId = clean(row.user_id, 50);
+      if (ownerId && !workspaceProfileMap.has(ownerId)) {
+        workspaceProfileMap.set(ownerId, row as Record<string, unknown>);
+      }
+    });
     const recentSince = Date.now() - 7 * 24 * 60 * 60 * 1000;
     const documentActivity = new Map<string, { count: number; recent: number; latest: string | null }>();
     (filesResult.data || []).forEach((file) => {
@@ -463,7 +521,10 @@ Deno.serve(async (req) => {
     });
     const personnel = (links || []).map((link) => ({
       ...link,
-      profile: profileMap.get(link.professional_user_id) || null,
+      profile: currentPersonnelProfile(
+        (profileMap.get(link.professional_user_id) || null) as Record<string, unknown> | null,
+        workspaceProfileMap.get(link.professional_user_id) || null,
+      ),
       document_count: documentActivity.get(link.professional_user_id)?.count || 0,
       recent_document_count: documentActivity.get(link.professional_user_id)?.recent || 0,
       latest_document_uploaded_at: documentActivity.get(link.professional_user_id)?.latest || null,

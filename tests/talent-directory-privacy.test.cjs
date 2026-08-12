@@ -20,6 +20,10 @@ assert.match(personnelBlock, /atsrs_talent_personnel_links/,
   'Personnel must remain based on explicit company links');
 assert.doesNotMatch(personnelBlock, /profile_visibility|discoverable/,
   'linked Personnel must not disappear when the owner makes their Candidate profile Private');
+assert.match(personnelBlock, /atsrs_workspace_data/,
+  'Personnel must read the authoritative saved Personal profile instead of relying on a stale directory row');
+assert.match(personnelBlock, /currentPersonnelProfile/,
+  'Personnel cards must overlay current saved profile fields onto their linked directory record');
 assert.match(edge, /if \(!isPublicProfile\)[\s\S]*atsrs_talent_personnel_links[\s\S]*action === "add_to_personnel"/,
   'private profiles must only remain accessible through an existing Personnel link');
 
