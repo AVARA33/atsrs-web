@@ -59,7 +59,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=375">
 <link rel="stylesheet" href="css/talent-directory.css?v=495">
-<link rel="stylesheet" href="css/projects.css?v=495">
+<link rel="stylesheet" href="css/projects.css?v=503">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
 <link rel="stylesheet" href="css/theme.css?v=462">
@@ -68,7 +68,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-<link rel="stylesheet" href="css/shell-polish.css?v=495">
+<link rel="stylesheet" href="css/shell-polish.css?v=503">
 <link rel="stylesheet" href="css/public-landing.css?v=499">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
@@ -670,7 +670,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <h3>Projects and assignments</h3>
       <p class="sub">Create projects, place personnel in the right role and keep assignment dates and history clear.</p>
     </div>
-    <button id="newProjectBtn" type="button">New project</button>
+    <div class="projects-head-tools">
+      <span id="projectsWorkspaceCount" class="talent-count">0 projects</span>
+      <div class="talent-view-switch" role="group" aria-label="Project view">
+        <button type="button" data-project-view="cards">Cards</button>
+        <button type="button" data-project-view="list">List</button>
+      </div>
+      <button id="newProjectBtn" type="button">New project</button>
+    </div>
   </div>
   <div class="projects-toolbar" aria-label="Project filters">
     <label>
@@ -1660,7 +1667,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
 <script src="js/storage.js?v=500"></script>
-<script src="js/projects.js?v=496"></script>
+<script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=375"></script>
 <script src="js/auth.js?v=459"></script>
 <script src="js/login.js?v=375"></script>

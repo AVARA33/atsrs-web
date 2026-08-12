@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 
-assert.match(index,/css\/shell-polish\.css\?v=495/,
+assert.match(index,/css\/shell-polish\.css\?v=503/,
   'the neutral select focus stylesheet must bypass the previous cache');
 assert.match(css,/Select fields keep a visible keyboard focus without the green route accent/);
 assert.match(css,/Select fields keep[\s\S]*?#app\.app:not\(\.hidden\) select:focus-visible,[\s\S]*?outline:0!important;[\s\S]*?border-color:#4e7187!important;[\s\S]*?rgba\(56,189,248,\.12\)/,

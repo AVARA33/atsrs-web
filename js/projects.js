@@ -1,7 +1,13 @@
 (function(){
   'use strict';
 
-  var state={editingProjectId:'',assignmentPersonId:'',membersProjectId:''};
+  var state={editingProjectId:'',assignmentPersonId:'',membersProjectId:'',projectView:'cards'};
+  var projectViewExplicit=false;
+  try{
+    state.projectView=localStorage.getItem('atsrs_project_view')||'cards';
+    projectViewExplicit=localStorage.getItem('atsrs_project_view_explicit')==='true';
+    if(window.matchMedia&&window.matchMedia('(max-width: 720px)').matches&&!projectViewExplicit)state.projectView='cards';
+  }catch(ignore){}
 
   function el(id){return document.getElementById(id)}
   function safe(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -96,6 +102,38 @@
   function memberCount(id,people){
     return people.reduce(function(total,person){return total+(normalizedAssignments(person).some(function(assignment){return assignment.projectId===id&&isAssignmentActive(assignment)})?1:0)},0);
   }
+  function updateProjectViewSwitch(){
+    document.querySelectorAll('[data-project-view]').forEach(function(button){
+      var selected=button.dataset.projectView===state.projectView;
+      button.classList.toggle('active',selected);
+      button.setAttribute('aria-pressed',selected?'true':'false');
+    });
+  }
+  function updateProjectCount(visible,total){
+    var count=el('projectsWorkspaceCount');if(!count)return;
+    count.textContent=visible===total?total+' '+(total===1?'project':'projects'):visible+' of '+total+' projects';
+  }
+  function projectActions(project){
+    var id=projectId(project);
+    return '<div class="project-card-actions"><button type="button" data-project-members="'+safe(id)+'">Manage personnel</button><button type="button" class="secondary" data-project-edit="'+safe(id)+'">Edit</button><button type="button" class="secondary" data-project-archive="'+safe(id)+'">'+(project.archived?'Restore':'Archive')+'</button></div>';
+  }
+  function projectCard(project,people){
+    var id=projectId(project);var status=projectStatus(project);var count=memberCount(id,people);var details=[];
+    if(project.code)details.push('<div><span>Code</span><b>'+safe(project.code)+'</b></div>');
+    if(project.client)details.push('<div><span>Client</span><b>'+safe(project.client)+'</b></div>');
+    if(project.location)details.push('<div><span>Location</span><b>'+safe(project.location)+'</b></div>');
+    if(project.owner)details.push('<div><span>Owner</span><b>'+safe(project.owner)+'</b></div>');
+    return '<article class="project-workspace-card" data-project-card="'+safe(id)+'"><div class="project-card-head"><div><span class="project-status is-'+safe(status)+'">'+safe(statusLabel(status))+'</span><h4>'+safe(projectName(project))+'</h4></div><span class="project-member-count">'+count+' '+(count===1?'person':'people')+'</span></div><div class="project-meta">'+(details.join('')||'<div><span>Details</span><b>Not added yet</b></div>')+'<div><span>Schedule</span><b>'+safe(dateRange(project))+'</b></div></div>'+projectActions(project)+'</article>';
+  }
+  function projectList(visible,people){
+    var rows=visible.map(function(project){
+      var id=projectId(project);var status=projectStatus(project);var count=memberCount(id,people);
+      var secondary=[project.code,project.owner].filter(Boolean).join(' · ')||'No code or owner';
+      var client=[project.client,project.location].filter(Boolean).join(' · ')||'Not added yet';
+      return '<div class="projects-list-row" role="row" data-project-row="'+safe(id)+'"><div class="projects-list-primary" role="cell" data-label="Project"><b>'+safe(projectName(project))+'</b><small>'+safe(secondary)+'</small></div><div role="cell" data-label="Client / location">'+safe(client)+'</div><div role="cell" data-label="Status"><span class="project-status is-'+safe(status)+'">'+safe(statusLabel(status))+'</span></div><div role="cell" data-label="Schedule">'+safe(dateRange(project))+'</div><div role="cell" data-label="Personnel">'+count+' '+(count===1?'person':'people')+'</div><div class="projects-list-actions" role="cell" data-label="Actions">'+projectActions(project)+'</div></div>';
+    }).join('');
+    return '<div class="projects-list-table" role="table" aria-label="Projects"><div class="projects-list-header" role="row"><span role="columnheader">Project</span><span role="columnheader">Client / location</span><span role="columnheader">Status</span><span role="columnheader">Schedule</span><span role="columnheader">Personnel</span><span role="columnheader">Actions</span></div>'+rows+'</div>';
+  }
   function render(){
     var list=el('projectsWorkspaceList');if(!list)return;
     var all=projects();var people=personnel();
@@ -105,20 +143,14 @@
       var haystack=[projectName(project),project.code,project.client,project.location,project.owner].join(' ').toLowerCase();
       return (!search||haystack.indexOf(search)!==-1)&&(!filter||projectStatus(project)===filter);
     });
+    updateProjectViewSwitch();updateProjectCount(visible.length,all.length);
+    list.classList.toggle('is-list',state.projectView==='list');
     if(!visible.length){
       list.innerHTML='<div class="projects-empty"><b>'+(all.length?'No projects match these filters.':'No projects yet.')+'</b><span>'+(all.length?'Change the search or status filter.':'Create the first project, then assign people from Personnel or from the project itself.')+'</span>'+(all.length?'':'<button type="button" data-project-create>New project</button>')+'</div>';
       var emptyCreate=list.querySelector('[data-project-create]');if(emptyCreate)emptyCreate.onclick=openProjectEditor;
       return;
     }
-    list.innerHTML=visible.map(function(project){
-      var id=projectId(project);var status=projectStatus(project);var count=memberCount(id,people);
-      var details=[];
-      if(project.code)details.push('<div><span>Code</span><b>'+safe(project.code)+'</b></div>');
-      if(project.client)details.push('<div><span>Client</span><b>'+safe(project.client)+'</b></div>');
-      if(project.location)details.push('<div><span>Location</span><b>'+safe(project.location)+'</b></div>');
-      if(project.owner)details.push('<div><span>Owner</span><b>'+safe(project.owner)+'</b></div>');
-      return '<article class="project-workspace-card" data-project-card="'+safe(id)+'"><div class="project-card-head"><div><span class="project-status is-'+safe(status)+'">'+safe(statusLabel(status))+'</span><h4>'+safe(projectName(project))+'</h4></div><span class="project-member-count">'+count+' '+(count===1?'person':'people')+'</span></div><div class="project-meta">'+(details.join('')||'<div><span>Details</span><b>Not added yet</b></div>')+'<div><span>Schedule</span><b>'+safe(dateRange(project))+'</b></div></div><div class="project-card-actions"><button type="button" data-project-members="'+safe(id)+'">Manage personnel</button><button type="button" class="secondary" data-project-edit="'+safe(id)+'">Edit</button><button type="button" class="secondary" data-project-archive="'+safe(id)+'">'+(project.archived?'Restore':'Archive')+'</button></div></article>';
-    }).join('');
+    list.innerHTML=state.projectView==='list'?projectList(visible,people):visible.map(function(project){return projectCard(project,people)}).join('');
     list.querySelectorAll('[data-project-members]').forEach(function(button){button.onclick=function(){openProjectMembers(button.dataset.projectMembers)}});
     list.querySelectorAll('[data-project-edit]').forEach(function(button){button.onclick=function(){openProjectEditor(button.dataset.projectEdit)}});
     list.querySelectorAll('[data-project-archive]').forEach(function(button){button.onclick=function(){toggleProjectArchive(button.dataset.projectArchive)}});
@@ -231,6 +263,13 @@
   function bind(){
     var create=el('newProjectBtn');if(!create)return;
     create.addEventListener('click',function(){openProjectEditor()});
+    document.querySelectorAll('[data-project-view]').forEach(function(button){
+      button.addEventListener('click',function(){
+        state.projectView=button.dataset.projectView||'cards';projectViewExplicit=true;
+        try{localStorage.setItem('atsrs_project_view',state.projectView);localStorage.setItem('atsrs_project_view_explicit','true')}catch(ignore){}
+        render();
+      });
+    });
     ['projectSearch','projectStatusFilter'].forEach(function(id){var node=el(id);if(node)node.addEventListener(id==='projectSearch'?'input':'change',render)});
     el('projectEditorForm').addEventListener('submit',saveProject);el('personnelAssignmentForm').addEventListener('submit',savePersonnelAssignments);el('projectMembersForm').addEventListener('submit',saveProjectMembers);
     el('addPersonnelAssignmentRow').addEventListener('click',function(){addAssignmentRow(null,true)});

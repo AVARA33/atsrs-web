@@ -55,7 +55,7 @@ assert.match(css, /--atsrs-touch-height:44px/);
 assert.match(css, /\.corporate-compliance-metrics\{grid-template-columns:repeat\(6/);
 assert.match(css, /@media\(max-width:720px\)/);
 assert.match(css, /#app button:focus-visible/);
-assert.match(shellCss, /#candidatesPage,#personnelPage[^}]*\.talent-view-switch\{[\s\S]*?background:#fff!important/);
+assert.match(shellCss, /#candidatesPage,#personnelPage,#projectsPage[^}]*\.talent-view-switch\{[\s\S]*?background:#fff!important/);
 assert.match(shellCss, /\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#2f6fb2!important/);
 assert.match(shellCss, /html\[data-theme="dark"\][\s\S]*?\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#4f8b7d!important/);
 
