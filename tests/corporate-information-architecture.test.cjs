@@ -8,11 +8,12 @@ const css = fs.readFileSync(path.join(root, 'css', 'corporate-information-archit
 const runtime = fs.readFileSync(path.join(root, 'js', 'corporate-information-architecture.js'), 'utf8');
 const talent = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 
-const ids = [...html.matchAll(/<button id="(nav(?:Dashboard|Candidates|Personnel|Credentials|Compliance|Reports|Profile))"/g)].map((match) => match[1]);
+const ids = [...html.matchAll(/<button id="(nav(?:Dashboard|Candidates|Personnel|Projects|Credentials|Compliance|Reports|Profile))"/g)].map((match) => match[1]);
 assert.deepEqual(ids, [
   'navDashboard',
   'navCandidates',
   'navPersonnel',
+  'navProjects',
   'navCredentials',
   'navCompliance',
   'navReports',
@@ -20,11 +21,12 @@ assert.deepEqual(ids, [
 ], 'Corporate primary navigation order must match the approved IA');
 
 assert.match(html, /id="navCredentials" class="company-only"[^>]*>Company Credentials</);
+assert.match(html, /id="navProjects" class="company-only"[^>]*>Projects</);
 assert.match(html, /id="navIntro" class="nav-utility active"[^>]*>Product Updates</);
 assert.match(html, /id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy<\/button>/);
 assert.doesNotMatch(html, /id="navDataRights"/);
 assert.ok(html.indexOf('id="navIntro"') < html.indexOf('id="navPrivacy"'));
-assert.match(html, /src="js\/talent-directory\.js\?v=450"/);
+assert.match(html, /src="js\/talent-directory\.js\?v=495"/);
 assert.match(html, /src="js\/corporate-information-architecture\.js\?v=444"/);
 assert.match(html, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.equal((html.match(/data-company-credentials-tab="documents"/g) || []).length, 2);

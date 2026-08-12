@@ -354,6 +354,7 @@ useMode=saved;
 let personal=useMode==="personal";
 if(typeof navPersonnel!=="undefined")navPersonnel.classList.toggle("hidden",personal);
 if(typeof navCandidates!=="undefined")navCandidates.classList.toggle("hidden",personal);
+if(typeof navProjects!=="undefined")navProjects.classList.toggle("hidden",personal);
 document.querySelectorAll(".solo-personnel-card").forEach(el=>el.classList.toggle("hidden",personal));
 if(typeof personalDashboardPanel!=="undefined")personalDashboardPanel.classList.toggle("hidden",!personal);
 }
@@ -470,8 +471,8 @@ function syncPersonalHeadingHierarchy(page){
     h.setAttribute("role","heading");h.setAttribute("aria-level",nestedReferenceHeading?"3":"2");
   });
 }
-function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(page==="profile"&&btn&&btn.id==="navProfile")showAccountTab("general");pageTitle.innerText=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":btn.innerText;renderAll();syncPersonalHeadingHierarchy(page)}
-function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
+function showPage(page,btn){if((localStorage.getItem("atsrs_use_mode")||useMode)==="personal"&&(page==="personnel"||page==="candidates"||page==="projects")){page="dashboard";btn=navDashboard;}localStorage.setItem("atsrs_current_page",page);document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(page+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(page==="profile"&&btn&&btn.id==="navProfile")showAccountTab("general");pageTitle.innerText=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":btn.innerText;renderAll();syncPersonalHeadingHierarchy(page)}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,projects:navProjects,certificates:navCertificates,refs:navRefs,compliance:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:"intro",map[page]||navIntro)}
 if(!window.__atsrsLegalNavigationBound){
   window.__atsrsLegalNavigationBound=true;
   window.addEventListener("message",function(event){
@@ -555,8 +556,7 @@ saveProjects(d);projectNameInput.value=vesselNameInput.value=clientNameInput.val
 }
 function deleteProject(i){let d=getProjects(),project=d[i];if(!project)return;let linked=getData("personnel").some(person=>Array.isArray(person.atsrsProjectIds)&&person.atsrsProjectIds.includes(project.atsrsId));if(linked){alert("Remove this project from assigned personnel before deleting the project.");return}d.splice(i,1);saveProjects(d);renderProjects()}
 function renderProjects(){
-let d=getProjects();projectsTable.innerHTML="";
-d.forEach((x,i)=>projectsTable.innerHTML+=`<tr><td>${x.project||""}</td><td>${x.vessel||""}</td><td>${x.client||""}</td><td>${x.team||""}</td><td><button class="action" onclick="deleteProject(${i})">${tr("delete")}</button></td></tr>`);
+let d=getProjects();if(typeof projectsTable!=="undefined"&&projectsTable){projectsTable.innerHTML="";d.forEach((x,i)=>projectsTable.innerHTML+=`<tr><td>${x.project||""}</td><td>${x.vessel||""}</td><td>${x.client||""}</td><td>${x.team||""}</td><td><button class="action" onclick="deleteProject(${i})">${tr("delete")}</button></td></tr>`);}if(window.atsrsProjects&&typeof window.atsrsProjects.render==="function")window.atsrsProjects.render();
 }
 
 function addPersonnel(){let a=getData("personnel");if(!pName.value.trim()){alert(v12("fill")||tr("fill"));return}let item={name:pName.value,surname:pSurname.value,position:pPosition.value,company:pCompany.value,email:pEmail.value,phone:pPhone.value,nationality:pNationality.value,employeeId:pEmployeeId.value,project:pProject.value,vessel:pVessel.value,atsrsProjectIds:exactProjectIds(pProject.value,pVessel.value)};ensureAtsrsId(item);a.push(item);saveData("personnel",a);pName.value=pSurname.value=pPosition.value=pCompany.value=pEmail.value=pPhone.value=pNationality.value=pEmployeeId.value=pProject.value=pVessel.value="";renderAll();showPersonnelTab("list")}

@@ -73,9 +73,9 @@ assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
 assert.match(storage,/page==="privacy"\?"Privacy Notice":page==="dataRights"\?"Data Rights"/);
 assert.match(index,/data-atsrs-build="V478"/);
-assert.match(index,/src="js\/corporate-remediation\.js\?v=444"/);
+assert.match(index,/src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
-assert.match(index,/src="js\/storage\.js\?v=468"/);
+assert.match(index,/src="js\/storage\.js\?v=495"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');

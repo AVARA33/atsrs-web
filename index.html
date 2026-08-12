@@ -58,7 +58,8 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/recipient-links.css?v=433">
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=375">
-<link rel="stylesheet" href="css/talent-directory.css?v=383">
+<link rel="stylesheet" href="css/talent-directory.css?v=495">
+<link rel="stylesheet" href="css/projects.css?v=495">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
 <link rel="stylesheet" href="css/theme.css?v=462">
@@ -67,7 +68,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-<link rel="stylesheet" href="css/shell-polish.css?v=491">
+<link rel="stylesheet" href="css/shell-polish.css?v=495">
 <link rel="stylesheet" href="css/public-landing.css?v=468">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
@@ -382,6 +383,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
 <button id="navCandidates" onclick="showPage('candidates',this)">Candidates</button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
+<button id="navProjects" class="company-only" onclick="showPage('projects',this)">Projects</button>
 <button id="navCredentials" class="company-only" onclick="showCompanyCredentials('documents')">Company Credentials</button>
 <button id="navCertificates" onclick="showPage('certificates',this)"></button>
 <button id="navRefs" onclick="showPage('refs',this)"></button>
@@ -659,6 +661,85 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <span id="readyCrew">0</span><span id="reviewCrew">0</span>
   </div>
 </div>
+</section>
+
+<section id="projectsPage" class="hidden">
+  <div class="projects-page-head">
+    <div>
+      <span class="pill">PROJECT WORKSPACE</span>
+      <h3>Projects and assignments</h3>
+      <p class="sub">Create projects, place personnel in the right role and keep assignment dates and history clear.</p>
+    </div>
+    <button id="newProjectBtn" type="button">New project</button>
+  </div>
+  <div class="projects-toolbar" aria-label="Project filters">
+    <label>
+      <span>Search</span>
+      <input id="projectSearch" type="search" placeholder="Search projects" autocomplete="off">
+    </label>
+    <label>
+      <span>Status</span>
+      <select id="projectStatusFilter">
+        <option value="">All statuses</option>
+        <option value="draft">Draft</option>
+        <option value="active">Active</option>
+        <option value="on_hold">On hold</option>
+        <option value="completed">Completed</option>
+        <option value="archived">Archived</option>
+      </select>
+    </label>
+  </div>
+  <p id="projectsFeedback" class="projects-feedback" role="status" aria-live="polite"></p>
+  <div id="projectsWorkspaceList" class="projects-workspace-list" aria-live="polite"></div>
+
+  <dialog id="projectEditorDialog" class="projects-dialog">
+    <form id="projectEditorForm" method="dialog">
+      <div class="projects-dialog-head">
+        <div><span class="pill">PROJECT DETAILS</span><h3 id="projectEditorTitle">New project</h3></div>
+        <button type="button" class="secondary projects-dialog-close" data-close-project-editor aria-label="Close project editor">Close</button>
+      </div>
+      <input id="projectEditorId" type="hidden">
+      <div class="projects-form-grid">
+        <label><span>Project name</span><input id="projectEditorName" required maxlength="120" autocomplete="off"></label>
+        <label><span>Project code</span><input id="projectEditorCode" maxlength="40" autocomplete="off"></label>
+        <label><span>Client</span><input id="projectEditorClient" maxlength="120" autocomplete="organization"></label>
+        <label><span>Location</span><input id="projectEditorLocation" maxlength="120" autocomplete="off"></label>
+        <label><span>Project owner</span><input id="projectEditorOwner" maxlength="120" autocomplete="off"></label>
+        <label><span>Status</span><select id="projectEditorStatus"><option value="draft">Draft</option><option value="active">Active</option><option value="on_hold">On hold</option><option value="completed">Completed</option></select></label>
+        <label><span>Start date</span><input id="projectEditorStart" type="date"></label>
+        <label><span>End date</span><input id="projectEditorEnd" type="date"></label>
+      </div>
+      <p class="projects-form-note">Project membership does not grant access to private documents. Document access remains a separate approval.</p>
+      <div class="projects-dialog-actions"><button type="button" class="secondary" data-close-project-editor>Cancel</button><button type="submit">Save project</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="personnelAssignmentDialog" class="projects-dialog projects-dialog-wide">
+    <form id="personnelAssignmentForm" method="dialog">
+      <div class="projects-dialog-head">
+        <div><span class="pill">PROJECT ASSIGNMENTS</span><h3 id="personnelAssignmentTitle">Personnel projects</h3></div>
+        <button type="button" class="secondary projects-dialog-close" data-close-personnel-assignments aria-label="Close personnel assignments">Close</button>
+      </div>
+      <input id="personnelAssignmentUserId" type="hidden">
+      <div id="personnelAssignmentRows" class="assignment-editor-list"></div>
+      <button id="addPersonnelAssignmentRow" type="button" class="secondary">Add assignment</button>
+      <p class="projects-form-note">Roles and dates are project records only. Private document access is managed separately.</p>
+      <div class="projects-dialog-actions"><button type="button" class="secondary" data-close-personnel-assignments>Cancel</button><button type="submit">Save assignments</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="projectMembersDialog" class="projects-dialog projects-dialog-wide">
+    <form id="projectMembersForm" method="dialog">
+      <div class="projects-dialog-head">
+        <div><span class="pill">PROJECT PERSONNEL</span><h3 id="projectMembersTitle">Manage personnel</h3></div>
+        <button type="button" class="secondary projects-dialog-close" data-close-project-members aria-label="Close project personnel">Close</button>
+      </div>
+      <input id="projectMembersProjectId" type="hidden">
+      <div id="projectMembersRows" class="project-members-list"></div>
+      <p class="projects-form-note">Removing a person ends the assignment and retains its history.</p>
+      <div class="projects-dialog-actions"><button type="button" class="secondary" data-close-project-members>Cancel</button><button type="submit">Save personnel</button></div>
+    </form>
+  </dialog>
 </section>
 
 <section id="candidatesPage" class="hidden">
@@ -1562,7 +1643,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=468"></script>
+<script src="js/storage.js?v=495"></script>
+<script src="js/projects.js?v=495"></script>
 <script src="js/ui.js?v=375"></script>
 <script src="js/auth.js?v=459"></script>
 <script src="js/login.js?v=375"></script>
@@ -1579,7 +1661,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/recipient-links.js?v=433"></script>
 <script src="js/boot-refresh.js?v=442"></script>
 <script src="js/account-security-live.js?v=375"></script>
-<script src="js/talent-directory.js?v=450"></script>
+<script src="js/talent-directory.js?v=495"></script>
 <script src="js/corporate-reporting.js?v=480"></script>
 <script src="js/admin-overview.js?v=375"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
@@ -1587,7 +1669,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/corporate-remediation.js?v=480"></script>
 <script src="js/theme.js?v=460"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
-<script src="js/shell-polish.js?v=448"></script>
+<script src="js/shell-polish.js?v=495"></script>
 <script src="js/public-landing.js?v=469"></script>
 
 

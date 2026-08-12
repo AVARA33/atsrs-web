@@ -29,7 +29,7 @@ for (const asset of [
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=409"`));
 }
 
-assert.match(index, /src="js\/dashboard\.js\?v=418"/);
+assert.match(index, /src="js\/dashboard\.js\?v=419"/);
 assert.match(index, /href="css\/dashboard\.css\?v=447"/);
 assert.match(index, /href="css\/account\.css\?v=420"/);
 
@@ -44,25 +44,27 @@ for (const asset of [
 
 assert.match(index, /src="js\/app\.js\?v=470"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=442"/);
-assert.match(index, /src="js\/storage\.js\?v=468"/);
+assert.match(index, /src="js\/storage\.js\?v=495"/);
 assert.match(index, /src="js\/auth\.js\?v=459"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
-assert.match(index, /href="css\/corporate-remediation\.css\?v=478"/);
+assert.match(index, /href="css\/corporate-remediation\.css\?v=480"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
 assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=450"/);
 assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /src="js\/corporate-information-architecture\.js\?v=444"/);
-assert.match(index, /src="js\/corporate-remediation\.js\?v=444"/);
+assert.match(index, /src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=442"/);
-assert.match(index, /href="css\/shell-polish\.css\?v=468"/);
-assert.match(index, /src="js\/shell-polish\.js\?v=448"/);
+assert.match(index, /href="css\/shell-polish\.css\?v=495"/);
+assert.match(index, /src="js\/shell-polish\.js\?v=495"/);
 assert.match(index, /href="css\/public-landing\.css\?v=468"/);
 assert.match(index, /src="js\/public-landing\.js\?v=469"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
-assert.match(index, /src="js\/talent-directory\.js\?v=450"/);
-assert.match(index, /src="js\/corporate-reporting\.js\?v=447"/);
+assert.match(index, /src="js\/talent-directory\.js\?v=495"/);
+assert.match(index, /src="js\/corporate-reporting\.js\?v=480"/);
+assert.match(index, /href="css\/projects\.css\?v=495"/);
+assert.match(index, /src="js\/projects\.js\?v=495"/);
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsUpdate/);

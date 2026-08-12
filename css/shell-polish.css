@@ -160,6 +160,7 @@ body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #pageTi
  * content origin.
  */
 body.company-mode:has(#dashboardPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
+body.company-mode:has(#projectsPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
 body.company-mode:has(#privacyPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle,
 body.company-mode:has(#dataRightsPage:not(.hidden)) #app.app:not(.hidden) > .main > #pageTitle{
   display:none!important;
@@ -510,6 +511,7 @@ html body #app.app:not(.hidden) :where(.sidebar .nav button,#atsrsNotificationBu
 body.personal-mode #app.app:not(.hidden) .sidebar .nav :is(
   #navCandidates,
   #navPersonnel,
+  #navProjects,
   #navCredentials,
   #navReports
 ),
@@ -533,6 +535,7 @@ body.company-mode #app.app:not(.hidden) .sidebar .nav :is(
   #navDashboard,
   #navCandidates,
   #navPersonnel,
+  #navProjects,
   #navCredentials,
   #navCompliance,
   #navReports,
@@ -547,6 +550,7 @@ body.company-mode #app.app:not(.hidden) .sidebar .nav :is(
 body #app.app:not(.hidden) > .main > :is(
   #candidatesPage,
   #personnelPage,
+  #projectsPage,
   #certificatesPage,
   #refsPage,
   #compliancePage,

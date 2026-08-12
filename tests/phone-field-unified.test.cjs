@@ -7,7 +7,7 @@ const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const dashboard=fs.readFileSync(path.join(root,'js','dashboard.js'),'utf8');
 
-assert.match(index,/css\/shell-polish\.css\?v=491/);
+assert.match(index,/css\/shell-polish\.css\?v=495/);
 assert.match(index,/js\/dashboard\.js\?v=419/);
 assert.match(css,/Personal contact numbers: one professional field/);
 assert.match(css,/grid-template-columns:minmax\(136px,28%\) minmax\(0,1fr\)!important/);
