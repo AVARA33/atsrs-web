@@ -586,8 +586,8 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
 #certificatesPage .atsrs-document-col-select{width:38px}
 #certificatesPage .atsrs-document-col-name{width:35%}
 #certificatesPage .atsrs-document-col-provider{width:24%}
-#certificatesPage .atsrs-document-col-expiry{width:112px}
-#certificatesPage .atsrs-document-col-uploaded{width:96px}
+#certificatesPage .atsrs-document-col-expiry{width:106px}
+#certificatesPage .atsrs-document-col-uploaded{width:102px}
 #certificatesPage .atsrs-document-col-status{width:104px}
 #certificatesPage .atsrs-document-col-actions{width:204px}
 

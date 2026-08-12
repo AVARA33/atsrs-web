@@ -10,7 +10,7 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
-assert.match(index,/css\/shell-polish\.css\?v=503/);
+assert.match(index,/css\/shell-polish\.css\?v=505/);
 assert.match(index,/js\/shell-polish\.js\?v=495/);
 assert.match(index,/js\/app\.js\?v=470/);
 assert.doesNotMatch(index,/<span class="pill">PRODUCT UPDATES<\/span>/);
@@ -48,6 +48,8 @@ assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\)\{[\s
 assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) \.pill\{[\s\S]*?color:var\(--atsrs-shell-accent-strong\)!important/);
 assert.match(css,/html\[data-theme="dark"\] body #app\.app:not\(\.hidden\) \.pill\{[\s\S]*?color:#86efac!important/);
 assert.match(css,/#certificatesPage \.atsrs-document-register\{[\s\S]*?min-width:0!important[\s\S]*?table-layout:fixed!important/);
+assert.match(css,/\.atsrs-document-col-expiry\{width:106px\}/);
+assert.match(css,/\.atsrs-document-col-uploaded\{width:102px\}/);
 assert.match(css,/#certificatesPage \.table-wrap\{[\s\S]*?overflow-x:hidden!important[\s\S]*?border:0!important/);
 assert.match(css,/\.atsrs-document-name\{[\s\S]*?-webkit-line-clamp:2/);
 assert.match(css,/\.atsrs-document-row-actions\{[\s\S]*?display:grid/);
