@@ -1350,3 +1350,142 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
     grid-template-columns:108px minmax(0,1fr)!important;
   }
 }
+
+/* V490: final production phone control — one balanced field, no inherited 36px shell or focus ring. */
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:24px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry{
+  display:grid!important;
+  grid-template-rows:auto 52px auto!important;
+  gap:8px!important;
+  min-width:0!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
+  grid-template-columns:122px minmax(0,1fr)!important;
+  width:100%!important;
+  height:52px!important;
+  min-height:52px!important;
+  overflow:visible!important;
+  border:1px solid #294158!important;
+  border-radius:16px!important;
+  background:#0c1726!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-picker{
+  height:50px!important;
+  min-height:50px!important;
+  border:0!important;
+  border-radius:15px 0 0 15px!important;
+  background:#111f31!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-display{
+  grid-template-columns:24px minmax(44px,1fr) 14px!important;
+  gap:8px!important;
+  width:100%!important;
+  height:50px!important;
+  min-height:50px!important;
+  padding:0 12px!important;
+  border:0!important;
+  border-right:1px solid #294158!important;
+  border-radius:15px 0 0 15px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-flag{
+  width:24px!important;
+  height:18px!important;
+  border-radius:4px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-picker .phone-code-inline{
+  height:48px!important;
+  min-height:48px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  font-size:15px!important;
+  line-height:48px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-arrow{
+  width:14px!important;
+  height:14px!important;
+  font-size:14px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field > input:not([type="hidden"]){
+  height:50px!important;
+  min-height:50px!important;
+  padding:0 16px!important;
+  border:0!important;
+  border-radius:0 15px 15px 0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:16px!important;
+  line-height:50px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:focus-within,
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus,
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus-visible{
+  outline:0!important;
+  border-color:#58768a!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-menu{
+  top:calc(100% + 8px)!important;
+  width:max-content!important;
+  min-width:122px!important;
+  max-width:230px!important;
+  max-height:220px!important;
+  padding:6px!important;
+  border-radius:12px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-option{
+  grid-template-columns:24px max-content!important;
+  gap:8px!important;
+  height:38px!important;
+  min-height:38px!important;
+  padding:0 10px!important;
+  border-radius:8px!important;
+  font-size:14px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-option:only-child{
+  width:110px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row:has(.phone-code-menu:not(.hidden) .phone-code-option:only-child) > .phone-entry{
+  grid-template-rows:auto 104px auto!important;
+}
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-verification-note{
+  min-height:20px!important;
+  font-size:11px!important;
+  line-height:1.4!important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
+  border-color:#cbd7e2!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-picker{
+  background:#f5f8fb!important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-display{
+  border-right-color:#d6e0e9!important;
+}
+@media(max-width:680px){
+  body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row{
+    grid-template-columns:1fr!important;
+    gap:20px!important;
+  }
+}
+@media(max-width:420px){
+  body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
+    grid-template-columns:116px minmax(0,1fr)!important;
+  }
+  body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-display{
+    grid-template-columns:22px minmax(40px,1fr) 12px!important;
+    gap:7px!important;
+    padding:0 10px!important;
+  }
+  body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-flag{
+    width:22px!important;
+    height:16px!important;
+  }
+}

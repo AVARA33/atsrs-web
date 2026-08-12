@@ -7,7 +7,7 @@ const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const dashboard=fs.readFileSync(path.join(root,'js','dashboard.js'),'utf8');
 
-assert.match(index,/css\/shell-polish\.css\?v=489/);
+assert.match(index,/css\/shell-polish\.css\?v=490/);
 assert.match(index,/js\/dashboard\.js\?v=419/);
 assert.match(css,/Personal contact numbers: one professional field/);
 assert.match(css,/grid-template-columns:minmax\(136px,28%\) minmax\(0,1fr\)!important/);
@@ -35,5 +35,11 @@ assert.match(css,/V488: production phone field/);
 assert.match(css,/grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
 assert.match(css,/\.phone-code-menu\{[\s\S]*width:max-content!important;[\s\S]*min-width:124px!important/);
 assert.match(css,/\.phone-code-option:only-child\{[\s\S]*width:112px!important/);
+assert.match(css,/V490: final production phone control/);
+assert.match(css,/> \.profile-grid > \.profile-contact-row > \.phone-entry > \.phone-field\{/);
+assert.match(css,/grid-template-rows:auto 52px auto!important/);
+assert.match(css,/height:52px!important/);
+assert.match(css,/grid-template-columns:122px minmax\(0,1fr\)!important/);
+assert.match(css,/:has\(\.phone-code-menu:not\(\.hidden\) \.phone-code-option:only-child\)/);
 
 console.log('phone field unified styling checks passed');
