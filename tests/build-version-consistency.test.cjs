@@ -61,7 +61,7 @@ assert.match(index, /href="css\/public-landing\.css\?v=468"/);
 assert.match(index, /src="js\/public-landing\.js\?v=469"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
-assert.match(index, /src="js\/talent-directory\.js\?v=449"/);
+assert.match(index, /src="js\/talent-directory\.js\?v=450"/);
 assert.match(index, /src="js\/corporate-reporting\.js\?v=447"/);
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);
