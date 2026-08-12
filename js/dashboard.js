@@ -294,7 +294,7 @@
     if(!field)return;
     var picker=document.createElement('div');
     picker.className='phone-code-picker';
-    picker.innerHTML='<div class="phone-code-display"><span class="phone-code-flag" aria-hidden="true"></span><input class="phone-code-inline" inputmode="tel" autocomplete="off" aria-label="Country calling code"><span class="phone-code-arrow" aria-hidden="true">&#8964;</span></div><div class="phone-code-menu hidden"><div class="phone-code-list"></div></div>';
+    picker.innerHTML='<div class="phone-code-display"><span class="phone-code-flag" aria-hidden="true"></span><input class="phone-code-inline" inputmode="tel" autocomplete="off" aria-label="Country calling code"><i class="ph ph-caret-down phone-code-arrow" aria-hidden="true"></i></div><div class="phone-code-menu hidden"><div class="phone-code-list"></div></div>';
     field.insertBefore(picker,select);
     select.__atsrsPicker={
       root:picker,

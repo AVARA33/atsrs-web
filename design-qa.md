@@ -384,3 +384,13 @@ final result: passed
 5. Company navigation, General, Open Security, Security and return-to-General interactions pass. No P0, P1 or P2 finding remains in scope.
 
 final result: passed
+
+## V484 unified phone-field QA
+
+- Scope: Personal Profile mobile-phone and WhatsApp-number fields.
+- Preserved the existing ATSRS colour system; only the control structure and spacing changed.
+- Country flag, calling code and caret share one separated leading section inside a single rounded field.
+- Desktop light/dark and 390px mobile layouts checked with no horizontal overflow.
+- Keyboard focus remains visible without the previous green selection ring.
+- Browser console errors: 0.
+- Targeted regression tests: passed.

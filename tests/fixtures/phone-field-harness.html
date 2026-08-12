@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS phone field visual harness</title>
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css">
+  <style>
+    html[data-theme="dark"] body{background:#06111f;color:#edf4f8}
+    html[data-theme="light"] body{background:#f3f6f9;color:#172033}
+    body{margin:0;font-family:Inter,Arial,sans-serif}
+    .qa-shell{width:min(980px,calc(100% - 32px));margin:48px auto}
+    .qa-heading{margin:0 0 28px;font-size:28px}
+    #profilePage #accountGeneralTab .profile-contact-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .qa-field label{display:block;margin-bottom:8px;font-size:13px;font-weight:700}
+    @media(max-width:680px){
+      .qa-shell{width:calc(100% - 28px);margin:28px auto}
+      #profilePage #accountGeneralTab .profile-contact-row{grid-template-columns:1fr;gap:24px}
+    }
+  </style>
+</head>
+<body class="personal-mode">
+  <main class="qa-shell">
+    <h1 class="qa-heading">Profile contact details</h1>
+    <section id="profilePage">
+      <div id="accountGeneralTab">
+        <div class="profile-contact-row">
+          <div class="qa-field phone-entry">
+            <label for="phoneNumber">Mobile phone</label>
+            <div class="phone-field">
+              <div class="phone-code-picker">
+                <div class="phone-code-display">
+                  <span class="phone-code-flag" aria-hidden="true" style="background-image:url('https://flagcdn.com/24x18/az.png')"></span>
+                  <input class="phone-code-inline" value="+994" aria-label="Country calling code">
+                  <i class="ph ph-caret-down phone-code-arrow" aria-hidden="true"></i>
+                </div>
+              </div>
+              <input id="phoneNumber" value="553501515" aria-label="Mobile phone number">
+            </div>
+          </div>
+          <div class="qa-field phone-entry">
+            <label for="whatsAppNumber">WhatsApp number</label>
+            <div class="phone-field">
+              <div class="phone-code-picker">
+                <div class="phone-code-display">
+                  <span class="phone-code-flag" aria-hidden="true" style="background-image:url('https://flagcdn.com/24x18/az.png')"></span>
+                  <input class="phone-code-inline" value="+994" aria-label="Country calling code">
+                  <i class="ph ph-caret-down phone-code-arrow" aria-hidden="true"></i>
+                </div>
+              </div>
+              <input id="whatsAppNumber" value="553501515" aria-label="WhatsApp number">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const theme=new URLSearchParams(location.search).get('theme');
+    if(theme==='light'||theme==='dark') document.documentElement.dataset.theme=theme;
+  </script>
+</body>
+</html>
