@@ -53,8 +53,15 @@
     document.body.classList.remove('atsrs-public-view');
     if(landing)landing.classList.add('hidden');
   }
+  function removeSharedProfile(){
+    var sharedProfile=document.getElementById('sharedProfilePage');
+    if(sharedProfile)sharedProfile.remove();
+    document.documentElement.classList.remove('atsrs-public-share-mode');
+    document.body.classList.remove('atsrs-public-share-view');
+  }
   function showLanding(){
     if(!landing)return;
+    removeSharedProfile();
     if(auth)auth.classList.add('hidden');
     if(app)app.classList.add('hidden');
     document.body.classList.add('atsrs-public-view');
@@ -63,6 +70,7 @@
     document.title='ATSRS — Document readiness for people and companies';
   }
   function showExistingAuth(view){
+    removeSharedProfile();
     hideLanding();
     if(app)app.classList.add('hidden');
     if(auth)auth.classList.remove('hidden');

@@ -5,6 +5,9 @@ html.atsrs-public-share-mode #app{
 html.atsrs-public-share-mode #sharedProfilePage{
   display:block!important;
 }
+html:not(.atsrs-public-share-mode) #sharedProfilePage{
+  display:none!important;
+}
 body.atsrs-public-share-view{
   min-height:100vh;
   overflow:auto!important;

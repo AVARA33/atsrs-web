@@ -54,7 +54,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/account.css?v=420">
 <link rel="stylesheet" href="css/product-experience.css?v=447">
 <link rel="stylesheet" href="css/date-picker.css?v=496">
-<link rel="stylesheet" href="css/share-profile.css?v=375">
+<link rel="stylesheet" href="css/share-profile.css?v=497">
 <link rel="stylesheet" href="css/recipient-links.css?v=433">
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=375">
@@ -69,7 +69,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
 <link rel="stylesheet" href="css/shell-polish.css?v=495">
-<link rel="stylesheet" href="css/public-landing.css?v=468">
+<link rel="stylesheet" href="css/public-landing.css?v=498">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -1366,7 +1366,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </main>
 </section>
 
-<main id="sharedProfilePage" class="shared-profile-page hidden">
+<template id="sharedProfileTemplate">
+<section id="sharedProfilePage" class="shared-profile-page hidden" role="main" aria-label="Shared ATSRS profile">
   <div class="shared-profile-shell">
     <header class="shared-profile-topbar">
       <a class="shared-profile-brand" href="https://atsrs.com/">ATSRS</a>
@@ -1447,7 +1448,22 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </footer>
     </section>
   </div>
-</main>
+</section>
+</template>
+<script>
+(function(){
+  'use strict';
+  window.atsrsMountSharedProfile=function(){
+    var mounted=document.getElementById('sharedProfilePage');
+    if(mounted)return mounted;
+    var template=document.getElementById('sharedProfileTemplate');
+    if(!template||!template.content)return null;
+    document.body.appendChild(template.content.cloneNode(true));
+    return document.getElementById('sharedProfilePage');
+  };
+  if(window.__atsrsEntryRoute==='share')window.atsrsMountSharedProfile();
+})();
+</script>
 
 <div id="recipientLinkModal" class="recipient-link-modal hidden" role="dialog" aria-modal="true" aria-labelledby="recipientLinkModalTitle">
   <div class="recipient-link-backdrop" data-recipient-modal-close></div>
@@ -1670,7 +1686,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=460"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=495"></script>
-<script src="js/public-landing.js?v=469"></script>
+<script src="js/public-landing.js?v=497"></script>
 
 
 
