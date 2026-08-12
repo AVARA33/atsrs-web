@@ -1985,3 +1985,86 @@ body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
     min-height:44px!important;
   }
 }
+
+/* V421: an uploaded Main CV is an active record, not a disabled grey block. */
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-box{
+  padding:12px!important;
+  border:1px solid rgba(148,163,184,.28)!important;
+  border-radius:12px!important;
+  background:#0d1a2b!important;
+  box-shadow:none!important;
+}
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-row{
+  min-height:44px!important;
+  height:auto!important;
+  gap:14px!important;
+}
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-identity{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  min-width:0!important;
+}
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-box-title{
+  flex:0 0 auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:24px!important;
+  margin:0!important;
+  padding:4px 8px!important;
+  border:1px solid rgba(74,222,128,.26)!important;
+  border-radius:999px!important;
+  color:#86efac!important;
+  background:rgba(34,197,94,.10)!important;
+  font-size:10px!important;
+  line-height:1!important;
+}
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-name b{
+  min-width:0!important;
+  color:#93c5fd!important;
+  font-size:13px!important;
+}
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions{
+  gap:8px!important;
+}
+body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button{
+  min-width:72px!important;
+  min-height:40px!important;
+  padding:9px 12px!important;
+  border:1px solid #334a62!important;
+  border-radius:9px!important;
+  color:#e5edf5!important;
+  background:#132338!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-box{
+  border-color:#d6e0e9!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-box-title{
+  border-color:#bbdfc7!important;
+  color:#24834a!important;
+  background:#f2faf4!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-name b{
+  color:#2563a6!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button{
+  border-color:#d4dee7!important;
+  color:#203044!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button:hover{
+  border-color:#9fb2c3!important;
+  background:#f7f9fb!important;
+}
+@media(max-width:720px){
+  body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-identity{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:6px!important;
+  }
+  body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions{
+    gap:8px!important;
+  }
+}

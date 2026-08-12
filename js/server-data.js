@@ -1821,8 +1821,8 @@
     var input=document.getElementById('cvUploadInput');
     if(info){
       info.className='preview-box atsrs-v156-cv-area';
-      info.innerHTML='<div class="atsrs-v156-main-box"><span class="atsrs-v156-box-title">Main CV</span>'+
-        (cv?'<div class="atsrs-v156-main-row"><div class="atsrs-v156-main-name"><b title="'+escapeHtml(cv.file_name)+'">📄 '+escapeHtml(cv.file_name)+' <span class="atsrs-v153-main-badge">MAIN</span></b><span>'+Math.round((cv.size_bytes||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsCloudPreview(\''+cv.id+'\')">Preview</button><button class="secondary" onclick="atsrsCloudDownload(\''+cv.id+'\')">Download</button><button class="action" onclick="atsrsCloudDelete(\''+cv.id+'\')">Delete</button></div></div>':'<div class="atsrs-v156-empty">No Main CV uploaded yet.</div>')+
+      info.innerHTML='<div class="atsrs-v156-main-box">'+
+        (cv?'<div class="atsrs-v156-main-row"><div class="atsrs-v156-main-name"><div class="atsrs-v156-main-identity"><span class="atsrs-v156-box-title">Main CV</span><b title="'+escapeHtml(cv.file_name)+'">'+escapeHtml(cv.file_name)+'</b></div><span>'+Math.round((cv.size_bytes||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsCloudPreview(\''+cv.id+'\')">Preview</button><button class="secondary" onclick="atsrsCloudDownload(\''+cv.id+'\')">Download</button><button class="secondary" onclick="atsrsCloudDelete(\''+cv.id+'\')">Delete</button></div></div>':'<div class="atsrs-v156-empty">No Main CV uploaded yet.</div>')+
         '</div><div class="atsrs-v156-slots-box"><span class="atsrs-v156-box-title">Additional CV Slots</span><div class="atsrs-v156-slot-list"><div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 1</b><span>PRO</span></div><div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 2</b><span>Premium</span></div><div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 3</b><span>Premium</span></div></div></div>';
     }
     if(badge){badge.textContent=cv?'Main CV':'No CV Uploaded';badge.className='badge '+(cv?'badge-ready':'badge-missing');}
