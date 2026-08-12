@@ -1351,45 +1351,45 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   }
 }
 
-/* V490: final production phone control — one balanced field, no inherited 36px shell or focus ring. */
+/* V491: final production phone control — match the 44px profile inputs without losing the unified field. */
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row{
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
   gap:24px!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry{
   display:grid!important;
-  grid-template-rows:auto 52px auto!important;
+  grid-template-rows:auto 44px auto!important;
   gap:8px!important;
   min-width:0!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
   grid-template-columns:122px minmax(0,1fr)!important;
   width:100%!important;
-  height:52px!important;
-  min-height:52px!important;
+  height:44px!important;
+  min-height:44px!important;
   overflow:visible!important;
   border:1px solid #294158!important;
-  border-radius:16px!important;
+  border-radius:10px!important;
   background:#0c1726!important;
   box-shadow:none!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-picker{
-  height:50px!important;
-  min-height:50px!important;
+  height:42px!important;
+  min-height:42px!important;
   border:0!important;
-  border-radius:15px 0 0 15px!important;
+  border-radius:9px 0 0 9px!important;
   background:#111f31!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-display{
   grid-template-columns:24px minmax(44px,1fr) 14px!important;
   gap:8px!important;
   width:100%!important;
-  height:50px!important;
-  min-height:50px!important;
-  padding:0 12px!important;
+  height:42px!important;
+  min-height:42px!important;
+  padding:0 10px!important;
   border:0!important;
   border-right:1px solid #294158!important;
-  border-radius:15px 0 0 15px!important;
+  border-radius:9px 0 0 9px!important;
   background:transparent!important;
   box-shadow:none!important;
 }
@@ -1399,13 +1399,13 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   border-radius:4px!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-picker .phone-code-inline{
-  height:48px!important;
-  min-height:48px!important;
+  height:40px!important;
+  min-height:40px!important;
   padding:0!important;
   border:0!important;
   background:transparent!important;
-  font-size:15px!important;
-  line-height:48px!important;
+  font-size:13.3333px!important;
+  line-height:40px!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-arrow{
   width:14px!important;
@@ -1413,15 +1413,15 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   font-size:14px!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field > input:not([type="hidden"]){
-  height:50px!important;
-  min-height:50px!important;
-  padding:0 16px!important;
+  height:42px!important;
+  min-height:42px!important;
+  padding:0 12px!important;
   border:0!important;
-  border-radius:0 15px 15px 0!important;
+  border-radius:0 9px 9px 0!important;
   background:transparent!important;
   box-shadow:none!important;
-  font-size:16px!important;
-  line-height:50px!important;
+  font-size:13.3333px!important;
+  line-height:42px!important;
 }
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:focus-within,
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus,
