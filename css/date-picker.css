@@ -223,3 +223,20 @@ dialog.atsrs-date-picker-host{
   .atsrs-date-picker-days button,
   .atsrs-date-picker-days .empty{min-height:32px}
 }
+
+/* Keep the chosen day unmistakable after a click. The picker is loaded before
+   several shared button styles, so the picker id deliberately owns this state. */
+#atsrsDatePicker .atsrs-date-picker-days button.selected{
+  border-color:#69bea6!important;
+  background:#2f806c!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  box-shadow:0 0 0 2px rgba(105,190,166,.24)!important;
+}
+html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button.selected{
+  border-color:#245fb8!important;
+  background:#2f6fd6!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  box-shadow:0 0 0 2px rgba(47,111,214,.20)!important;
+}
