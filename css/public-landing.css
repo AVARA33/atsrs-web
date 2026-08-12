@@ -35,8 +35,8 @@ body.atsrs-public-view #atsrsGlobalControls,
 body.atsrs-public-view .atsrs-global-controls{display:none!important}
 body.atsrs-public-view > #auth,
 body.atsrs-public-view > #app{display:none!important}
-html:has(body.auth-open){height:100%;overflow:hidden!important}
-body.auth-open{height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;overflow:hidden!important}
+html:has(body.auth-open > #auth:not(.hidden)){height:100%;overflow:hidden!important}
+body.auth-open:has(> #auth:not(.hidden)){height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;overflow:hidden!important}
 body.auth-open > #auth:not(.hidden){height:100dvh!important;min-height:0!important;max-height:100dvh!important;overflow:hidden!important;box-sizing:border-box!important}
 .atsrs-public-landing *{box-sizing:border-box}
 .atsrs-public-landing a{color:inherit;text-decoration:none}

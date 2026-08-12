@@ -64,6 +64,7 @@
     removeSharedProfile();
     if(auth)auth.classList.add('hidden');
     if(app)app.classList.add('hidden');
+    document.body.classList.remove('auth-open','app-open');
     document.body.classList.add('atsrs-public-view');
     landing.classList.remove('hidden');
     finishPublicBoot();
@@ -74,6 +75,8 @@
     hideLanding();
     if(app)app.classList.add('hidden');
     if(auth)auth.classList.remove('hidden');
+    document.body.classList.remove('app-open');
+    document.body.classList.add('auth-open');
     finishPublicBoot();
     if(typeof window.hideAuthBoxes==='function')window.hideAuthBoxes();
     var loginBox=document.getElementById('loginBox');
