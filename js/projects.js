@@ -51,8 +51,35 @@
     if(region){region.textContent=message;region.classList.toggle('is-error',type==='error')}
   }
   function flush(){
-    if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')return window.atsrsCloudData.flush().catch(function(error){console.warn('ATSRS project sync failed',error)});
-    return Promise.resolve();
+    if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')return window.atsrsCloudData.flush().then(function(synced){return synced!==false}).catch(function(error){console.warn('ATSRS project sync failed',error);return false});
+    return Promise.resolve(true);
+  }
+  function projectWriteFailed(){
+    if(!window.atsrsCloudData||typeof window.atsrsCloudData.pendingState!=='function')return false;
+    try{
+      var pending=window.atsrsCloudData.pendingState();
+      return (pending&&Array.isArray(pending.failedOperations)?pending.failedOperations:[]).some(function(operation){return /_projects$/.test(String(operation&&operation.dataKey||''))});
+    }catch(ignore){return false}
+  }
+  function placeProject(record,identifier,list){
+    list=Array.isArray(list)?list.slice():[];
+    var existing=findProject(identifier||projectId(record),list);
+    if(existing)list[list.indexOf(existing)]=Object.assign({},existing,record);else list.push(record);
+    return list;
+  }
+  async function persistProject(record,identifier){
+    var accepted=window.saveProjects(placeProject(record,identifier,projects()));
+    if(accepted===false)return false;
+    var synced=await flush();
+    if(synced||!projectWriteFailed())return true;
+    if(!window.atsrsCloudData||typeof window.atsrsCloudData.refresh!=='function')return false;
+    try{
+      await window.atsrsCloudData.refresh();
+      accepted=window.saveProjects(placeProject(record,identifier,projects()));
+      if(accepted===false)return false;
+      synced=await flush();
+      return synced||!projectWriteFailed();
+    }catch(error){console.warn('ATSRS project retry failed',error);return false}
   }
   function changed(){window.dispatchEvent(new CustomEvent('atsrs:project-data-changed'));render()}
 
@@ -106,14 +133,23 @@
     setValue('projectEditorId',state.editingProjectId);setValue('projectEditorName',project&&projectName(project));setValue('projectEditorCode',project&&project.code);setValue('projectEditorClient',project&&project.client);setValue('projectEditorLocation',project&&project.location);setValue('projectEditorOwner',project&&project.owner);setValue('projectEditorStatus',project&&project.status||'draft');setValue('projectEditorStart',project&&project.startDate);setValue('projectEditorEnd',project&&project.endDate);
     showDialog(el('projectEditorDialog'));setTimeout(function(){el('projectEditorName').focus()},30);
   }
-  function saveProject(event){
-    event.preventDefault();var all=projects();var id=String(el('projectEditorId').value||'');var existing=findProject(id,all);var stamp=now();
+  async function saveProject(event){
+    event.preventDefault();var all=projects();var id=String(el('projectEditorId').value||'');var existing=findProject(id,all);var stamp=now();var submit=event.submitter||event.currentTarget.querySelector('button[type="submit"]');
     var startDate=String(el('projectEditorStart').value||'');var endDate=String(el('projectEditorEnd').value||'');
     if(startDate&&endDate&&endDate<startDate){notify('Project end date cannot be earlier than its start date.','error');el('projectEditorEnd').focus();return}
     var record=Object.assign({},existing||{},{$schemaVersion:1,atsrsId:id||createId(),project:String(el('projectEditorName').value||'').trim(),code:String(el('projectEditorCode').value||'').trim(),client:String(el('projectEditorClient').value||'').trim(),location:String(el('projectEditorLocation').value||'').trim(),owner:String(el('projectEditorOwner').value||'').trim(),status:String(el('projectEditorStatus').value||'draft'),startDate:startDate,endDate:endDate,updatedAt:stamp});
     if(!record.createdAt)record.createdAt=stamp;
-    if(existing)all[all.indexOf(existing)]=record;else all.push(record);
-    window.saveProjects(all);closeDialog(el('projectEditorDialog'));changed();flush();notify(existing?'Project updated.':'Project created.');
+    if(submit){submit.disabled=true;submit.dataset.originalLabel=submit.textContent;submit.textContent='Saving...'}
+    try{
+      var saved=await persistProject(record,id||record.atsrsId);
+      if(!saved){notify('Project could not be saved. Your details are still open; please try again.','error');return}
+      closeDialog(el('projectEditorDialog'));changed();notify(existing?'Project updated.':'Project created.');
+    }catch(error){
+      console.warn('ATSRS project save failed',error);
+      notify('Project could not be saved. Your details are still open; please try again.','error');
+    }finally{
+      if(submit){submit.disabled=false;submit.textContent=submit.dataset.originalLabel||'Save project';delete submit.dataset.originalLabel}
+    }
   }
   function toggleProjectArchive(identifier){
     var all=projects();var project=findProject(identifier,all);if(!project)return;

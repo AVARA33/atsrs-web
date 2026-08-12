@@ -44,7 +44,7 @@ for (const asset of [
 
 assert.match(index, /src="js\/app\.js\?v=470"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=442"/);
-assert.match(index, /src="js\/storage\.js\?v=495"/);
+assert.match(index, /src="js\/storage\.js\?v=496"/);
 assert.match(index, /src="js\/auth\.js\?v=459"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/corporate-remediation\.css\?v=480"/);
@@ -64,7 +64,7 @@ assert.match(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/talent-directory\.js\?v=495"/);
 assert.match(index, /src="js\/corporate-reporting\.js\?v=480"/);
 assert.match(index, /href="css\/projects\.css\?v=495"/);
-assert.match(index, /src="js\/projects\.js\?v=495"/);
+assert.match(index, /src="js\/projects\.js\?v=496"/);
 
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsBuild/);
 assert.match(runtime, /document\.documentElement\.dataset\.atsrsUpdate/);

@@ -547,7 +547,7 @@ if(!file)return;
 excelPreview.innerText=tr("fileSelected")+": "+file.name+" ("+Math.round(file.size/1024)+" KB). "+tr("importInfo");
 }
 function getProjects(){return JSON.parse(readAppDataKey(localKey("projects")))||[]}
-function saveProjects(d){writeAppDataKey(localKey("projects"),JSON.stringify(d))}
+function saveProjects(d){return writeAppDataKey(localKey("projects"),JSON.stringify(d))}
 function addProject(){
 let d=getProjects();
 if(!projectNameInput.value.trim()){alert(v12("fill")||tr("fill"));return}
