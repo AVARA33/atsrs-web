@@ -61,5 +61,28 @@ html[data-theme="light"] .atsrs-notification-copy time{color:#405a70!important}
 .atsrs-notification-status{font-size:13px;color:#94a3b8}
 .atsrs-notification-status.is-ok{color:#86efac}
 .atsrs-notification-status.is-error{color:#fca5a5}
+
+/* V422: notification feedback follows the light navigation accent, and the
+   timezone affordance stays inside its own field instead of floating alone. */
+#profilePage .atsrs-notification-field>.atsrs-disclosure-shell:has(#atsrsNotificationTimezone){
+  flex:0 0 260px!important;
+  width:260px!important;
+  max-width:260px!important;
+}
+#profilePage .atsrs-notification-field #atsrsNotificationTimezone{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  padding-right:36px!important;
+  background-image:none!important;
+}
+html[data-theme="light"] body #app #profilePage .atsrs-notification-status.is-ok{
+  color:#2563a6!important;
+}
+html[data-theme="light"] body #app #profilePage .atsrs-notification-field #atsrsNotificationTimezone{
+  color:#203044!important;
+  background-color:#fff!important;
+  background-image:none!important;
+}
 @media(max-width:1100px){.corporate-dashboard-activity-grid{grid-template-columns:1fr}}
-@media(max-width:720px){.atsrs-notification-head,.atsrs-notification-field{align-items:stretch;flex-direction:column}.atsrs-notification-item{grid-template-columns:10px 1fr}.atsrs-notification-item-actions{grid-column:2;justify-content:flex-start}.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:none;width:100%}}
+@media(max-width:720px){.atsrs-notification-head,.atsrs-notification-field{align-items:stretch;flex-direction:column}.atsrs-notification-item{grid-template-columns:10px 1fr}.atsrs-notification-item-actions{grid-column:2;justify-content:flex-start}.atsrs-notification-field input[type="tel"],.atsrs-notification-field select{max-width:none;width:100%}#profilePage .atsrs-notification-field>.atsrs-disclosure-shell:has(#atsrsNotificationTimezone){flex-basis:auto!important;width:100%!important;max-width:none!important}#profilePage .atsrs-notification-field #atsrsNotificationTimezone{width:100%!important;max-width:none!important}}
