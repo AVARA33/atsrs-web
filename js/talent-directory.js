@@ -440,10 +440,6 @@
             '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-projects="'+safe(profile.user_id)+'">Projects</button><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
         }).join('')+'</div>';
     }
-    list.querySelectorAll('[data-linked-document-status]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedDocumentStatus,button.dataset.summaryFilter||'all')}});
-    list.querySelectorAll('[data-linked-projects]').forEach(function(button){button.onclick=function(){if(window.atsrsProjects)window.atsrsProjects.openPersonnelAssignments(button.dataset.linkedProjects)}});
-    list.querySelectorAll('[data-linked-open]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedOpen)}});
-    list.querySelectorAll('[data-linked-remove]').forEach(function(button){button.onclick=function(){removeFromPersonnel(button.dataset.linkedRemove,button)}});
   }
   function renderLinkedPersonnel(){
     return renderLinkedPersonnelModern();
@@ -460,8 +456,6 @@
           '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(access)+'</span>'+
           '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
       }).join('')+'</div>';
-    list.querySelectorAll('[data-linked-open]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedOpen)}});
-    list.querySelectorAll('[data-linked-remove]').forEach(function(button){button.onclick=function(){removeFromPersonnel(button.dataset.linkedRemove,button)}});
   }
   async function loadPersonnelLinks(){
     var data=await actionCall({action:'personnel_links'});
@@ -877,8 +871,25 @@
     });
     var linkedList=byId('linkedPersonnelList');
     if(linkedList)linkedList.addEventListener('click',function(event){
-      var button=event.target.closest('[data-personnel-sort]');if(!button)return;
-      var nextSort=button.dataset.personnelSort;
+      var actionButton=event.target.closest('[data-linked-document-status],[data-linked-projects],[data-linked-open],[data-linked-remove]');
+      if(actionButton&&linkedList.contains(actionButton)){
+        event.preventDefault();
+        event.stopPropagation();
+        if(actionButton.dataset.linkedDocumentStatus){
+          openProfile(actionButton.dataset.linkedDocumentStatus,actionButton.dataset.summaryFilter||'all');
+          return;
+        }
+        if(actionButton.dataset.linkedProjects){
+          if(window.atsrsProjects&&typeof window.atsrsProjects.openPersonnelAssignments==='function'){
+            window.atsrsProjects.openPersonnelAssignments(actionButton.dataset.linkedProjects);
+          }else panelMessage('Project assignments are still loading. Please try again.',true);
+          return;
+        }
+        if(actionButton.dataset.linkedOpen){openProfile(actionButton.dataset.linkedOpen);return}
+        if(actionButton.dataset.linkedRemove){removeFromPersonnel(actionButton.dataset.linkedRemove,actionButton);return}
+      }
+      var sortButton=event.target.closest('[data-personnel-sort]');if(!sortButton||!linkedList.contains(sortButton))return;
+      var nextSort=sortButton.dataset.personnelSort;
       if(personnelSortBy===nextSort)personnelSortDirection=personnelSortDirection==='asc'?'desc':'asc';
       else{personnelSortBy=nextSort;personnelSortDirection='asc'}
       renderLinkedPersonnel();

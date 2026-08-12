@@ -36,6 +36,10 @@ assert.match(projects, /role="table"/);
 assert.match(projectsCss, /projects-list-table/);
 assert.match(talent, /data-linked-projects/);
 assert.match(talent, /openPersonnelAssignments/);
+assert.match(talent, /event\.target\.closest\('\[data-linked-document-status\],\[data-linked-projects\],\[data-linked-open\],\[data-linked-remove\]'\)/);
+assert.doesNotMatch(talent, /querySelectorAll\('\[data-linked-projects\]'\)\.forEach/);
+const talentCss = fs.readFileSync(path.join(root, 'css', 'talent-directory.css'), 'utf8');
+assert.match(talentCss, /\.linked-personnel-actions\{[^}]*flex-wrap:nowrap!important/);
 assert.match(shell, /navProjects:'kanban'/);
 
 console.log('Corporate project workflow contract passed.');
