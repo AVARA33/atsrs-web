@@ -417,11 +417,10 @@
       list.innerHTML='<div class="linked-personnel-cards">'+rows.map(function(item){
         var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
         var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
-        var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
         return '<article class="linked-personnel-card">'+
           '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
           '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+personnelDocumentMarkup(item)+
-          '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div><div><dt>Tracking</dt><dd>'+safe(tracking)+'</dd></div></dl>'+
+          '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div></dl>'+
           '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
       }).join('')+'</div>';
     }else{
@@ -449,13 +448,12 @@
     var rows=linkedPersonnel.filter(function(item){return item&&item.profile});
     if(count)count.textContent=rows.length+' linked';
     if(!rows.length){list.innerHTML='<div class="linked-personnel-empty"><b>No personnel added yet.</b><span>Open Candidates, review a candidate profile and choose “Add to Personnel”.</span></div>';return}
-    list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Profile</span><span>Profession</span><span>Access</span><span>Tracking</span><span>Action</span></div>'+
+    list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row"><span>Profile</span><span>Profession</span><span>Access</span><span>Action</span></div>'+
       rows.map(function(item){
         var profile=item.profile,access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
-        var tracking=item.status==='access_granted'?'Active':'Waiting for document access';
         return '<div class="linked-personnel-row" role="row">'+
           '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small></span>'+
-          '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(access)+'</span><span>'+safe(tracking)+'</span>'+
+          '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(access)+'</span>'+
           '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
       }).join('')+'</div>';
     list.querySelectorAll('[data-linked-open]').forEach(function(button){button.onclick=function(){openProfile(button.dataset.linkedOpen)}});
