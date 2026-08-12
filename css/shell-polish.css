@@ -1314,3 +1314,39 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
     grid-template-columns:118px minmax(0,1fr)!important;
   }
 }
+
+/* V489: use the real Phosphor caret only; remove the legacy CSS-drawn overlay. */
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+  grid-template-columns:112px minmax(0,1fr)!important;
+}
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-display{
+  grid-template-columns:22px minmax(39px,1fr) 12px!important;
+  gap:7px!important;
+  padding:0 10px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-arrow{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:12px!important;
+  height:12px!important;
+  margin:0!important;
+  border:0!important;
+  color:#8ea4b7!important;
+  -webkit-text-fill-color:#8ea4b7!important;
+  font-size:12px!important;
+  line-height:1!important;
+  transform:none!important;
+}
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-arrow::before{
+  display:block!important;
+  line-height:1!important;
+}
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
+  min-width:112px!important;
+}
+@media(max-width:420px){
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+    grid-template-columns:108px minmax(0,1fr)!important;
+  }
+}

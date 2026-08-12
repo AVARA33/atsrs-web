@@ -57,6 +57,18 @@ The source is the user's exact sidebar reference. Its narrow vertical icon-over-
 
 final result: passed
 
+## V489 Personal phone-field design QA
+
+- Source: `C:/Users/user/AppData/Local/Temp/codex-clipboard-cacb899d-2466-419c-8e20-010ed0d8c989.png`.
+- Dark implementation: `C:/Users/user/.codex/visualizations/2026/08/07/019fddc9-cc71-7921-bd12-341b1219ed85/v489-phone-field/implementation-dark.png`.
+- Open-menu implementation: `C:/Users/user/.codex/visualizations/2026/08/07/019fddc9-cc71-7921-bd12-341b1219ed85/v489-phone-field/implementation-dropdown.png`.
+- Light implementation: `C:/Users/user/.codex/visualizations/2026/08/07/019fddc9-cc71-7921-bd12-341b1219ed85/v489-phone-field/implementation-light.png`.
+- The duplicate CSS-drawn caret was removed; the component now shows only the Phosphor caret.
+- The calling-code segment is compact, both inputs retain one shared rounded boundary, and the dropdown opens without a green focus ring.
+- Dark and light modes preserve the existing ATSRS palette and the calling-code filtering behavior is unchanged.
+
+final result: passed
+
 ## V455 public theme-switch design QA
 
 ### Visual sources and implementation evidence

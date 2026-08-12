@@ -7,7 +7,7 @@ const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const dashboard=fs.readFileSync(path.join(root,'js','dashboard.js'),'utf8');
 
-assert.match(index,/css\/shell-polish\.css\?v=488/);
+assert.match(index,/css\/shell-polish\.css\?v=489/);
 assert.match(index,/js\/dashboard\.js\?v=419/);
 assert.match(css,/Personal contact numbers: one professional field/);
 assert.match(css,/grid-template-columns:minmax\(136px,28%\) minmax\(0,1fr\)!important/);
@@ -21,6 +21,9 @@ assert.match(dashboard,/ph ph-caret-down phone-code-arrow/);
 assert.match(css,/V485: compact phone controls/);
 assert.match(css,/grid-template-columns:132px minmax\(0,1fr\)!important/);
 assert.match(css,/\.phone-field :focus-visible\{[\s\S]*outline:0!important/);
+assert.match(css,/V489: use the real Phosphor caret only/);
+assert.match(css,/\.phone-code-arrow\{[\s\S]*border:0!important;[\s\S]*font-size:12px!important;[\s\S]*transform:none!important/);
+assert.match(css,/grid-template-columns:112px minmax\(0,1fr\)!important/);
 assert.match(css,/\.phone-code-menu\{[\s\S]*width:132px!important/);
 assert.match(css,/\.phone-code-option\{[\s\S]*height:32px!important/);
 assert.match(css,/\.phone-verification-note\{[\s\S]*grid-template-columns:minmax\(0,1fr\) auto!important/);
