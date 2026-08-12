@@ -977,8 +977,14 @@ html[data-theme="light"] body #app #profilePage .admin-overview-panel{
   box-shadow:none!important;
 }
 html[data-theme="light"] body #app #profilePage .admin-overview-kicker{
-  color:#15803d!important;
-  -webkit-text-fill-color:#15803d!important;
+  color:var(--atsrs-light-blue)!important;
+  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
+}
+html[data-theme="light"] body #app #profilePage .preview-only-badge{
+  border-color:#cfe0ff!important;
+  background:var(--atsrs-light-blue-soft)!important;
+  color:var(--atsrs-light-blue)!important;
+  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
 }
 html[data-theme="light"] body #app #profilePage .admin-overview-heading h4,
 html[data-theme="light"] body #app #profilePage .admin-overview-stat strong{
