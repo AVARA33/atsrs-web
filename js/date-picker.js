@@ -3,6 +3,7 @@
 
   var picker=null;
   var activeInput=null;
+  var activeDialogHost=null;
   var selectedDate=null;
   var viewDate=null;
   var monthNames=Array.from({length:12},function(_,month){
@@ -197,6 +198,13 @@
     viewDate=selectedDate?new Date(selectedDate):new Date();
     viewDate=new Date(viewDate.getFullYear(),viewDate.getMonth(),1);
     ensurePicker();
+    activeDialogHost=input.closest&&input.closest('dialog[open]');
+    if(activeDialogHost){
+      activeDialogHost.appendChild(picker);
+      activeDialogHost.classList.add('atsrs-date-picker-host');
+    }else if(picker.parentNode!==document.body){
+      document.body.appendChild(picker);
+    }
     picker.querySelector('#atsrsDatePickerTitle').textContent=fieldTitle(input);
     picker.classList.remove('hidden');
     document.body.classList.add('atsrs-date-picker-open');
@@ -212,6 +220,11 @@
     if(!picker)return;
     picker.classList.add('hidden');
     document.body.classList.remove('atsrs-date-picker-open');
+    if(activeDialogHost){
+      activeDialogHost.classList.remove('atsrs-date-picker-host');
+      activeDialogHost=null;
+    }
+    if(picker.parentNode!==document.body)document.body.appendChild(picker);
     var returnTarget=activeInput;
     activeInput=null;
     if(returnTarget)setTimeout(function(){returnTarget.focus();},0);

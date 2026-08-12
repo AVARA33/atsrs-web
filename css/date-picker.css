@@ -14,6 +14,9 @@
 .atsrs-date-picker.hidden{
   display:none!important;
 }
+dialog.atsrs-date-picker-host{
+  overflow:visible!important;
+}
 .atsrs-date-picker-backdrop{
   position:fixed;
   inset:0;
