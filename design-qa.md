@@ -385,12 +385,15 @@ final result: passed
 
 final result: passed
 
-## V484 unified phone-field QA
+## V485 unified phone-field QA
 
 - Scope: Personal Profile mobile-phone and WhatsApp-number fields.
 - Preserved the existing ATSRS colour system; only the control structure and spacing changed.
 - Country flag, calling code and caret share one separated leading section inside a single rounded field.
 - Desktop light/dark and 390px mobile layouts checked with no horizontal overflow.
-- Keyboard focus remains visible without the previous green selection ring.
+- The country-code search logic is unchanged: an exact `+994` match shows Azerbaijan only, while deleting digits progressively reveals the other matching countries.
+- The leading country segment and its dropdown are now compact, the caret is centred, and the open one-result menu wraps the matching country without excess empty space.
+- Phone and WhatsApp verification rows retain a clean two-column alignment without touching or crossing their field edges.
+- Keyboard focus remains visible through a neutral field border without the previous green selection ring.
 - Browser console errors: 0.
 - Targeted regression tests: passed.

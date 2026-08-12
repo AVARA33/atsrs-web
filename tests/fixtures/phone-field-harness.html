@@ -38,9 +38,18 @@
                   <input class="phone-code-inline" value="+994" aria-label="Country calling code">
                   <i class="ph ph-caret-down phone-code-arrow" aria-hidden="true"></i>
                 </div>
+                <div class="phone-code-menu hidden">
+                  <div class="phone-code-list">
+                    <button class="phone-code-option" type="button">
+                      <span class="phone-code-flag" aria-hidden="true" style="background-image:url('https://flagcdn.com/24x18/az.png')"></span>
+                      <span>+994</span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <input id="phoneNumber" value="553501515" aria-label="Mobile phone number">
             </div>
+            <div class="phone-verification-note"><span>Mobile verification: <strong>Not verified</strong></span><button class="inline-verify-btn" type="button">Verify via WhatsApp</button></div>
           </div>
           <div class="qa-field phone-entry">
             <label for="whatsAppNumber">WhatsApp number</label>
@@ -51,9 +60,18 @@
                   <input class="phone-code-inline" value="+994" aria-label="Country calling code">
                   <i class="ph ph-caret-down phone-code-arrow" aria-hidden="true"></i>
                 </div>
+                <div class="phone-code-menu hidden">
+                  <div class="phone-code-list">
+                    <button class="phone-code-option" type="button">
+                      <span class="phone-code-flag" aria-hidden="true" style="background-image:url('https://flagcdn.com/24x18/az.png')"></span>
+                      <span>+994</span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <input id="whatsAppNumber" value="553501515" aria-label="WhatsApp number">
             </div>
+            <div class="phone-verification-note"><span>WhatsApp verification: <strong>Not verified</strong></span><button class="inline-verify-btn" type="button">Verify via WhatsApp</button></div>
           </div>
         </div>
       </div>
@@ -62,6 +80,14 @@
   <script>
     const theme=new URLSearchParams(location.search).get('theme');
     if(theme==='light'||theme==='dark') document.documentElement.dataset.theme=theme;
+    document.querySelectorAll('.phone-code-display').forEach((display)=>{
+      display.addEventListener('click',()=>display.parentElement.querySelector('.phone-code-menu').classList.toggle('hidden'));
+    });
+    if(new URLSearchParams(location.search).get('open')==='whatsapp'){
+      const picker=document.querySelectorAll('.phone-code-picker')[1];
+      picker.querySelector('.phone-code-menu').classList.remove('hidden');
+      picker.querySelector('.phone-code-inline').focus();
+    }
   </script>
 </body>
 </html>
