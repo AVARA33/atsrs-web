@@ -1,4 +1,4 @@
-/* ATSRS V517 global Glass and Dark appearance control. */
+/* ATSRS V509 global light and dark appearance control. */
 (function(){
   'use strict';
   var KEY='atsrs_theme';
@@ -15,18 +15,17 @@
     var button=document.getElementById('atsrsThemeToggle');
     if(!button)return;
     var light=currentTheme()==='light';
-    button.setAttribute('aria-label','Switch to '+(light?'Dark':'Glass')+' theme');
-    button.setAttribute('title','Switch to '+(light?'Dark':'Glass')+' theme');
+    button.setAttribute('aria-label','Switch to '+(light?'dark':'light')+' mode');
+    button.setAttribute('title','Switch to '+(light?'dark':'light')+' mode');
     button.setAttribute('aria-checked',light?'true':'false');
-    button.dataset.currentTheme=light?'Glass':'Dark';
   }
 
   function applyTheme(theme,persist){
     theme=theme==='light'?'light':'dark';
     document.documentElement.dataset.theme=theme;
-    document.documentElement.style.colorScheme='dark';
+    document.documentElement.style.colorScheme=theme;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',theme==='light'?'#03101a':'#050606');
+    if(meta)meta.setAttribute('content',theme==='light'?'#edf2f8':'#050606');
     if(persist)saveTheme(theme);
     syncButton();
     window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:theme}}));

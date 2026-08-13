@@ -1750,6 +1750,29 @@ body.atsrs-verification-open{overflow:hidden}
 #app .work-type-select-menu>.work-type-select-option[aria-selected="true"]{
   background:rgba(92,132,160,.22)!important;
 }
+html[data-theme="light"] .work-type-select-toggle{
+  border-color:#cbd5e1!important;
+  background:#fff!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] .work-type-select-menu{
+  border-color:#cbd5e1;
+  background:#fff;
+  box-shadow:0 16px 34px rgba(15,23,42,.16);
+}
+html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option{
+  background:transparent!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option:hover,
+html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option:focus-visible{
+  background:#f1f5f9!important;
+}
+html[data-theme="light"] #app .work-type-select-menu>.work-type-select-option[aria-selected="true"]{
+  background:#e7eef3!important;
+}
 .work-availability-status{min-height:16px;margin-top:7px;color:#eea0a0;font-size:11px}
 @media(max-width:1550px){
   #profilePage #accountGeneralTab>.profile-grid{
@@ -1908,6 +1931,11 @@ body.personal-mode #refsPage .cv-beta-box{
   border-radius:16px!important;
   background:rgba(8,21,36,.28)!important;
 }
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel,
+html[data-theme="light"] body.personal-mode #refsPage .cv-beta-box{
+  border-color:#d9e2e9!important;
+  background:#fff!important;
+}
 body.personal-mode #refsPage .cv-main-panel{
   display:flex!important;
   flex-direction:column!important;
@@ -1956,6 +1984,13 @@ body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
   body.personal-mode #refsPage #generateCVBtn{
     min-height:44px!important;
   }
+}
+
+/* V422: one Main CV marker; blue in light mode and green in dark mode. */
+html[data-theme="light"] body.personal-mode #refsPage #cvStatusBadge.badge-ready{
+  border-color:#c8d9eb!important;
+  color:#245b93!important;
+  background:#eef5fc!important;
 }
 html[data-theme="dark"] body.personal-mode #refsPage #cvStatusBadge.badge-ready{
   border-color:rgba(74,222,128,.26)!important;
@@ -2013,6 +2048,27 @@ body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button{
   color:#e5edf5!important;
   background:#132338!important;
   box-shadow:none!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-box{
+  border-color:#d6e0e9!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-box-title{
+  border-color:#bbdfc7!important;
+  color:#24834a!important;
+  background:#f2faf4!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-name b{
+  color:#2563a6!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button{
+  border-color:#d4dee7!important;
+  color:#203044!important;
+  background:#fff!important;
+}
+html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button:hover{
+  border-color:#9fb2c3!important;
+  background:#f7f9fb!important;
 }
 @media(max-width:720px){
   body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-identity{

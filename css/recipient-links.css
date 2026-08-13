@@ -131,12 +131,14 @@ html[data-theme="light"] .recipient-verification{
   --surface-soft:#f8fafc;
   --border:#d7e0e8;
   --muted:#5f7285;
+  color:#10253a;
 }
 html[data-theme="light"] .recipient-link-card{
   --surface-soft:#f8fafc;
   --border:#d7e0e8;
   --muted:#5f7285;
 }
+html[data-theme="light"] .recipient-request-card{background:#fff;border-color:#dbe4ee}
 
 @media(max-width:720px){
   .recipient-sharing-section{padding:16px}

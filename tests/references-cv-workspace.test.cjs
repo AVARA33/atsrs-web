@@ -5,7 +5,6 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'account.css'), 'utf8');
-const palette = fs.readFileSync(path.join(root, 'css', 'theme-palette-v508.css'), 'utf8');
 const accountJs = fs.readFileSync(path.join(root, 'js', 'account.js'), 'utf8');
 const serverDataJs = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
 
@@ -32,9 +31,11 @@ assert.match(css, /body\.personal-mode #refsPage \.cv-actions button,[\s\S]*?min
 assert.match(css, /body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-actions button,[\s\S]*?min-height:40px!important;/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?min-height:44px!important;/);
 assert.match(css, /V421: an uploaded Main CV is an active record, not a disabled grey block/);
-assert.match(palette, /body\.personal-mode #refsPage :where\(\.atsrs-v156-main-box,\.atsrs-v156-actions button\)[\s\S]*?background:var\(--glass-surface-soft\)!important;/);
-assert.match(palette, /body\.personal-mode #refsPage \.atsrs-v156-main-name b\{color:var\(--brand-cyan\)!important/);
-assert.match(palette, /\.badge-ready[\s\S]*?color:var\(--status-success\)!important/);
-assert.match(html, /href="css\/account\.css\?v=517"/);
+assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-main-box\{[\s\S]*?background:#fff!important;/);
+assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-main-name b\{[\s\S]*?color:#2563a6!important;/);
+assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-actions button\{[\s\S]*?background:#fff!important;/);
+assert.match(css, /V422: one Main CV marker; blue in light mode and green in dark mode/);
+assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage #cvStatusBadge\.badge-ready\{[\s\S]*?color:#245b93!important;[\s\S]*?background:#eef5fc!important;/);
+assert.match(html, /href="css\/account\.css\?v=422"/);
 
 console.log('References CV workspace layout contracts passed');

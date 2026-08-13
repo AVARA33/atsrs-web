@@ -4,7 +4,6 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const css = fs.readFileSync(path.join(root, 'css', 'notifications.css'), 'utf8');
-const palette = fs.readFileSync(path.join(root, 'css', 'theme-palette-v508.css'), 'utf8');
 const boot = fs.readFileSync(path.join(root, 'js', 'boot-refresh.js'), 'utf8');
 
 assert.match(
@@ -13,9 +12,9 @@ assert.match(
   'Corporate expiry cards must use the same neutral dark surface as sent-request cards'
 );
 assert.match(
-  palette,
-  /body\.company-mode #app #dashboardPage :where\(\.atsrs-notification-item,\.atsrs-notification-item\.is-unread\)[\s\S]*?background:var\(--glass-surface-soft\)!important/,
-  'Corporate expiry cards must use the shared Glass functional surface'
+  css,
+  /html\[data-theme="light"\] body\.company-mode #app #dashboardPage \.atsrs-notification-item,\s*html\[data-theme="light"\] body\.company-mode #app #dashboardPage \.atsrs-notification-item\.is-unread\{\s*border-color:#d6e0e8;\s*background:#fff;\s*box-shadow:0 6px 18px rgba\(36,61,80,\.045\);/,
+  'Corporate expiry cards must use the same neutral light surface as sent-request cards'
 );
 assert.doesNotMatch(
   css,
@@ -23,6 +22,6 @@ assert.doesNotMatch(
   'Corporate expiry card surface must not regain a blue fill'
 );
 assert.match(css, /\.atsrs-notification-item\[data-severity="warning"\] \.atsrs-notification-dot\{background:#f59e0b\}/);
-assert.match(boot, /css\/notifications\.css\?v=422/);
+assert.match(boot, /css\/notifications\.css\?v=412/);
 
 console.log('Dashboard expiry card neutral surface regression tests passed');

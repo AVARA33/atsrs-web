@@ -3,9 +3,9 @@
   function apply(theme){
     var next=theme==='light'?'light':'dark';
     document.documentElement.dataset.theme=next;
-    document.documentElement.style.colorScheme='dark';
+    document.documentElement.style.colorScheme=next;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',next==='light'?'#03101a':'#050606');
+    if(meta)meta.setAttribute('content',next==='light'?'#edf2f8':'#050606');
   }
   var saved='';
   try{saved=localStorage.getItem('atsrs_theme')||'';}catch(error){}

@@ -1,71 +1,47 @@
-# ATSRS V517 Glass Theme Design QA
+# ATSRS V516 Light-Mode 3D Logo Design QA
 
-## Visual source and implementation evidence
+## Evidence
 
-- Primary material reference: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a1118ba8-cf4b-403e-be5b-692f7168a7a0.jpg`.
-- Supplied ATSRS Glass logo render: `C:\Users\user\AppData\Local\Temp\codex-clipboard-ea761ca1-0f5b-415a-b1df-782f98faf49d.png`.
-- Same-input comparison: `C:\Users\user\AppData\Local\Temp\atsrs-glass-v517\after\glass-reference-comparison.png`.
-- Browser captures reviewed under `C:\Users\user\AppData\Local\Temp\atsrs-glass-v517\after`.
-- The comparison confirms the intended shared vocabulary: deep blue-black environment, translucent dark surfaces, restrained blue/cyan edge light, high-contrast typography and limited illumination. The product implementation intentionally keeps the prompt's 80% enterprise / 15% glass / 5% illumination balance instead of copying the reference's pink reflection or physical-hand composition.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a2b43b4e-f40c-4683-87d7-3371419f7e5a.png` (1536 x 1024 px dark-mode green lockup used for 3D depth, edge light, ground glow and metallic treatment).
+- Browser-rendered implementation:
+  - `docs/qa/v516/home-light-desktop.png` (984 x 554 px rendered browser capture)
+  - `docs/qa/v516/login-light-desktop.png` (984 x 554 px rendered browser capture)
+  - `docs/qa/v516/login-light-390.png` (300 x 649 px browser-scaled 390 x 844 responsive state)
+- Asset-on-canvas evidence: `docs/qa/v516/asset-on-light.png` (1108 x 384 px).
+- Same-input comparison: `docs/qa/v516/comparison-dark-source-vs-light-login.jpg`.
+- Device scale factor 1. The in-app preview surface scaled the requested responsive viewport; layout and overflow were judged from CSS metrics returned by the browser.
+- States: public Home light and Login light on desktop and narrow mobile.
 
-## Theme architecture
+## Findings
 
-- Existing persisted `light` remains the compatibility value, but its visible name and appearance are Glass.
-- Glass tokens and component mappings are centralized in `css/theme-palette-v508.css`.
-- Production Dark selectors remain isolated and retain their green accent system.
-- Obsolete visual declarations from the former Light layer were removed from component styles instead of being left beneath a second override stack.
-- CSS variables drive presentation. JavaScript is limited to selection, persistence, accessible labels and browser theme metadata.
+No actionable P0, P1 or P2 differences remain.
 
-## Visual findings
+- Fonts and typography: the supplied ATSRS lettering and company line remain raster artwork. Only the first three neutral letters, ATS, are mapped to near-black graphite in light mode. RS retains its blue gradient.
+- Spacing and layout rhythm: Home and Login positions and dimensions remain unchanged from V514/V515. The Login card remains removed and the lockup stays centered.
+- Colors and visual tokens: light mode uses graphite ATS, blue-gradient RS and blue/cyan illustration. Dark mode remains the existing green supplied lockup and is untouched.
+- Image quality and asset fidelity: the light asset copies the dark reference's 3D vocabulary—bright edge light, inner blue depth, specular cyan highlights, ground glow and close halo—without restoring the black rectangular matte. The glow is baked only from colored artwork pixels, so black ATS letters are not surrounded by an artificial blue text shadow.
+- Copy and content: “Applicant Tracking System & Recruitment Solutions” remains present and readable. No UI copy changed.
+- Responsiveness and accessibility: Home stays scrollable; Login fits its mobile viewport; page-level horizontal overflow is 0; the Back to Home control is unchanged.
 
-No actionable P0, P1 or P2 visual issue remains.
+## Comparison History
 
-- Background: layered midnight navy, not flat black and not a bright full-page gradient.
-- Surfaces: major workspace, modal and public navigation use frosted Glass; nested cards use inexpensive translucent fills and borders without nested blur.
-- Active navigation and focus: blue/cyan; active navigation has a narrow indicator and no large filled selection.
-- Status: green success, amber warning and red danger remain semantic.
-- Forms and tables: opaque enough for information density; no transparent table rows or unreadable fields.
-- Sharing: Recipient Links management and modal were explicitly inspected after removing the last white Light surface.
-- Loading: logo-only shine treatment, no spinner and no loading copy.
-- Public and Auth: supplied production blue Glass lockup is used without redrawing or regenerating it.
+1. P2 V515: ATS was recolored blue even though the user expected the first three letters to remain black.
+   - Fix: restrict neutral recoloring to the ATS wordmark region and map it to near-black graphite.
+2. P2 V515: global CSS drop-shadow did not recreate the supplied 3D treatment and also affected lettering.
+   - Fix: preserve and enhance source-blue highlights, then derive close cyan and wide blue glow masks only from colored artwork pixels inside the transparent PNG.
+3. Post-fix evidence: `asset-on-light.png`, `home-light-desktop.png`, `login-light-desktop.png`, `login-light-390.png`, and `comparison-dark-source-vs-light-login.jpg` show black ATS plus source-like blue 3D depth and glow.
 
-## Responsive and interaction QA
+## Interaction and Runtime Checks
 
-- 1366px: Landing, Login, Personal Dashboard, Pricing and Recipient Links passed with horizontal overflow 0.
-- 900px: Personal Dashboard passed with horizontal overflow 0.
-- 390px: Landing, Login, Personal Dashboard, Pricing, Loading and Recipient Links modal passed with horizontal overflow 0.
-- Pricing and Landing vertical scrolling were exercised.
-- Recipient Links modal remains within the viewport, scrollable where needed and retains 44px controls.
-- Theme toggle changes visible/accessibility language between Dark and Glass and updates `meta[name="theme-color"]`.
-- Fresh local Landing console: 0 errors.
+- Home and Login light routes render build V516.
+- Login card computed background remains transparent.
+- Home remains vertically scrollable.
+- Desktop and narrow mobile page-level horizontal overflow: 0.
+- Fresh Login browser console errors: 0.
+- Dark-mode green asset and its selectors were not changed.
 
-## Dark regression
+## Follow-up Polish
 
-- Dark Landing and Personal Dashboard were captured after implementation and compared with the baseline production Dark captures.
-- Green brand accent, black environment, status colours, layout and hierarchy remain visually equivalent.
-- Result: `NO UNINTENDED DARK THEME CHANGES`.
-
-## Automated checks
-
-- Node regression suite: 67 passed, 0 failed.
-- Cloudflare Pages build: passed; 99 output files.
-- `git diff --check`: passed.
-
-## Screenshot set reviewed
-
-- `public-home-glass-1366.png`
-- `public-home-glass-390.png`
-- `login-glass-1366.png`
-- `login-glass-390.png`
-- `personal-dashboard-glass-1366-v2.png`
-- `personal-dashboard-glass-900.png`
-- `personal-dashboard-glass-390.png`
-- `recipient-links-page-glass-1366.png`
-- `recipient-links-glass-1366.png`
-- `recipient-links-glass-390.png`
-- `loading-glass-390.png`
-- `public-home-dark-1366.png`
-- `personal-dashboard-dark-1366.png`
-- Pricing and Privacy captures in the same QA directory.
+- No P3 item is required for this release.
 
 final result: passed

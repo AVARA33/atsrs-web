@@ -14,7 +14,7 @@ assert.doesNotMatch(boot, /atsrs-spinner|atsrs-loader-title|atsrs-loader-sub|Wel
 assert.match(index, /atsrs-auth-lockup[\s\S]*?Applicant Tracking System &amp; Recruitment Solutions/);
 assert.match(index, /public-wordmark atsrs-home-lockup/);
 assert.match(css, /atsrs-lockup-green-transparent\.png/);
-assert.match(css, /atsrs-login-blue\.png/);
+assert.match(css, /atsrs-lockup-blue-transparent\.png/);
 assert.match(css, /html\[data-theme="light"\] #auth \.auth-card[\s\S]*?background:transparent!important/);
 assert.match(css, /html\[data-theme="light"\] #auth \.atsrs-auth-lockup[\s\S]*?filter:saturate\(1\.12\) contrast\(1\.04\)/);
 assert.match(css, /html\[data-theme="light"\] \.atsrs-public-landing \.public-wordmark\.atsrs-home-lockup[\s\S]*?filter:saturate\(1\.12\) contrast\(1\.04\)/);
@@ -23,7 +23,7 @@ assert.match(css, /atsrs-mark-green\.png/);
 assert.match(css, /atsrs-mark-blue\.png/);
 assert.match(css, /@keyframes atsrsLogoShine/);
 assert.match(css, /prefers-reduced-motion:reduce/);
-assert.match(harness, /brand-auth-v513\.css\?v=517/);
+assert.match(harness, /brand-auth-v513\.css\?v=516/);
 assert.doesNotMatch(harness, /atsrs-spinner|Welcome to ATSRS|Getting things ready/);
 assert.match(processor, /graphite = np\.asarray\(\(8, 13, 21\)/);
 assert.match(processor, /neutral & text_region/);
@@ -33,4 +33,4 @@ for (const asset of ['atsrs-lockup-green-transparent.png', 'atsrs-lockup-blue-tr
   assert.ok(fs.statSync(path.join(root, 'assets', 'branding', asset)).size > 100000);
 }
 
-console.log('V517 Glass logo contracts passed');
+console.log('V516 graphite ATS and luminous source-blue logo contracts passed');

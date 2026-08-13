@@ -1,4 +1,4 @@
-/* ATSRS V517: theme-specific dimensional source artwork. */
+/* ATSRS V516: graphite ATS lettering with source-blue luminous artwork. */
 
 #auth .auth-card,
 html[data-theme="light"] #auth .auth-card{
@@ -27,7 +27,7 @@ html[data-theme="light"] #auth .auth-card{
 
 html[data-theme="light"] #auth .atsrs-auth-lockup{
   background-color:transparent;
-  background-image:url("../assets/branding/atsrs-login-blue.png");
+  background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
   box-shadow:none;
   filter:saturate(1.12) contrast(1.04);
 }
@@ -45,9 +45,7 @@ html[data-theme="light"] #auth .atsrs-auth-lockup{
 }
 
 html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
-  overflow:hidden;
-  border-radius:10px;
-  background-image:url("../assets/branding/atsrs-login-blue.png");
+  background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
   filter:saturate(1.12) contrast(1.04);
 }
 

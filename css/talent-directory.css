@@ -282,4 +282,7 @@ button.personnel-table-status{cursor:pointer}
 .corporate-report-table th{color:#cbd5e1;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
 .corporate-report-table tbody tr:last-child td{border-bottom:0}
 .corporate-report-generated,.corporate-report-empty{color:#94a3b8;font-size:.86rem}.corporate-report-empty{padding:1.1rem;text-align:center}
+html[data-theme="light"] .corporate-summary-card,html[data-theme="light"] .corporate-compliance-card,html[data-theme="light"] .corporate-report-table-wrap{border-color:rgba(71,85,105,.2);background:rgba(255,255,255,.8)}
+html[data-theme="light"] .corporate-compliance-metrics>div{background:rgba(226,232,240,.76)}
+html[data-theme="light"] .corporate-report-table th{color:#334155}
 @media(max-width:620px){.corporate-page-heading,.corporate-compliance-head{flex-direction:column}.corporate-report-actions{width:100%}.corporate-report-actions button{flex:1}.corporate-compliance-metrics{grid-template-columns:repeat(2,1fr)}}

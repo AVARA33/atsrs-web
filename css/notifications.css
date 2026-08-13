@@ -9,6 +9,8 @@ body.company-mode #dashboardPage .corporate-dashboard-activity-grid .corporate-s
 .atsrs-notification-label{margin:0}
 .expiry-request-count{margin-left:0;background:rgba(239,68,68,.12);color:#f87171}
 .expiry-request-count.is-empty{background:rgba(100,116,139,.15);color:#94a3b8}
+html[data-theme="light"] body #app .expiry-request-count{background:#fff1f2!important;color:#c2414b!important}
+html[data-theme="light"] body #app .expiry-request-count.is-empty{background:#eef2f6!important;color:#64748b!important}
 .atsrs-notification-actions{display:flex;gap:9px;flex-wrap:wrap}
 .atsrs-notification-list{display:grid;gap:10px;margin-top:14px}
 .atsrs-notification-list.has-overflow{max-height:770px;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-gutter:stable}
@@ -20,6 +22,12 @@ body.company-mode #dashboardPage .atsrs-notification-item.is-unread{
   background:rgba(5,18,29,.72);
   box-shadow:none;
 }
+html[data-theme="light"] body.company-mode #app #dashboardPage .atsrs-notification-item,
+html[data-theme="light"] body.company-mode #app #dashboardPage .atsrs-notification-item.is-unread{
+  border-color:#d6e0e8;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(36,61,80,.045);
+}
 .atsrs-notification-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;background:#6b7280}
 .atsrs-notification-item[data-severity="notice"] .atsrs-notification-dot{background:#38bdf8}
 .atsrs-notification-item[data-severity="warning"] .atsrs-notification-dot{background:#f59e0b}
@@ -29,6 +37,10 @@ body.company-mode #dashboardPage .atsrs-notification-item.is-unread{
 .atsrs-notification-copy time{font-size:12px;color:#7f91a8}
 .atsrs-notification-email-sent{display:block;margin-top:7px;color:#16a34a;font-size:12px;font-weight:700}
 html[data-theme="dark"] .atsrs-notification-email-sent{color:#86efac}
+html[data-theme="light"] .atsrs-notification-panel>.sub{color:#405a70!important}
+html[data-theme="light"] .atsrs-notification-copy b,
+html[data-theme="light"] .atsrs-notification-copy p{color:#172b3d!important}
+html[data-theme="light"] .atsrs-notification-copy time{color:#405a70!important}
 .atsrs-notification-item-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px}
 .atsrs-notification-item-actions>button{width:auto!important;margin:0!important}
 .atsrs-notification-dismiss{width:28px!important;height:28px!important;min-width:28px!important;padding:0!important;border:1px solid transparent!important;border-radius:7px!important;background:transparent!important;color:#8fa0b5!important;font-size:20px!important;line-height:1!important}
@@ -62,6 +74,14 @@ html[data-theme="dark"] .atsrs-notification-email-sent{color:#86efac}
   width:100%!important;
   max-width:none!important;
   padding-right:36px!important;
+  background-image:none!important;
+}
+html[data-theme="light"] body #app #profilePage .atsrs-notification-status.is-ok{
+  color:#2563a6!important;
+}
+html[data-theme="light"] body #app #profilePage .atsrs-notification-field #atsrsNotificationTimezone{
+  color:#203044!important;
+  background-color:#fff!important;
   background-image:none!important;
 }
 @media(max-width:1100px){.corporate-dashboard-activity-grid{grid-template-columns:1fr}}
