@@ -124,4 +124,3 @@ body.company-mode .corporate-account-context{display:block}
 @media(max-width:430px){
   .corporate-summary-grid,.corporate-compliance-metrics{grid-template-columns:1fr!important}
 }
-html[data-theme="light"] .corporate-account-context{background:transparent;border-color:transparent}

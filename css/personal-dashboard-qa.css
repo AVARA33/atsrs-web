@@ -294,10 +294,6 @@ body.personal-mode #dashboardPage #snapShareHelp{
   line-height:1.45;
 }
 
-html[data-theme="light"] body.personal-mode #dashboardPage #snapShareHelp{
-  color:#3f5368!important;
-}
-
 body.personal-mode #dashboardPage > .panel:not(.solo-hero):not(.dashboard-snapshot-panel){
   margin:0 0 12px!important;
   padding:var(--atsrs-personal-card-padding,16px)!important;

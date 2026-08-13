@@ -5,8 +5,6 @@ html{color-scheme:dark}
   --sidebar-accent:#22c55e;
   --loading-accent:var(--sidebar-accent);
 }
-html[data-theme="light"],
-html[data-theme="light"] body{color-scheme:light!important}
 html[data-theme="light"]{
   --sidebar-accent:#2563eb;
   --loading-accent:var(--sidebar-accent);
@@ -109,10 +107,7 @@ html[data-theme="light"]{
   transition:transform .2s ease,background-color .2s ease;
 }
 html[data-theme="dark"] .atsrs-theme-moon{color:#0f172a}
-html[data-theme="light"] .atsrs-theme-sun{color:#8a5b00}
-html[data-theme="light"] .atsrs-theme-track{border-color:#b8c8d4;background:#e8eef3;box-shadow:0 5px 14px rgba(35,61,80,.07)}
 html[data-theme="light"] .atsrs-theme-thumb{
-  background:#ffffff;
   transform:translateX(18px);
 }
 
@@ -137,324 +132,36 @@ html[data-theme="light"] body{
   --atsrs-action-border-hover:#9fb2c1;
   --atsrs-action-text:#223c52;
   --atsrs-action-muted:#65798b;
-  background:
-    radial-gradient(circle at 9% 0%,rgba(34,197,94,.045),transparent 25%),
-    radial-gradient(circle at 91% 5%,rgba(14,165,233,.055),transparent 26%),
-    #f3f6f9!important;
-  color:#172b3d!important;
 }
 html[data-theme="light"] body::before{opacity:.05!important}
-html[data-theme="light"] #atsrsBootScreen{
-  background:
-    radial-gradient(circle at 18% 18%,rgba(34,197,94,.055),transparent 28%),
-    radial-gradient(circle at 78% 35%,rgba(14,165,233,.055),transparent 30%),
-    linear-gradient(135deg,#f8fafc 0%,#f3f7fa 48%,#edf4f8 100%)!important;
-  color:#172b3d!important;
-}
-html[data-theme="light"] #atsrsBootScreen .atsrs-loader-title{
-  color:#172b3d!important;
-  text-shadow:none!important;
-}
-html[data-theme="light"] #atsrsBootScreen .atsrs-loader-sub{
-  color:#62778a!important;
-}
-html[data-theme="light"] #atsrsBootScreen .atsrs-spinner{
-  filter:drop-shadow(0 0 10px color-mix(in srgb,var(--loading-accent) 18%,transparent));
-}
-html[data-theme="light"] #atsrsBootScreen .atsrs-spinner span{
-  background:var(--loading-accent);
-}
-html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){
-  color:#172b3d!important;
-  text-shadow:none!important;
-}
-html[data-theme="light"] :where(p,small,.sub,.small-note,.field-hint,.field-label,.preview-box,.workspace-option small){
-  color:#62778a!important;
-}
-html[data-theme="light"] a{color:#176f9f}
-
-/* Page shells and navigation. */
-html[data-theme="light"] :where(
-  .app,.main,.shared-profile-page,.shared-profile-shell,.shared-profile-content,
-  #introPage,#dashboardPage,#candidatesPage,#personnelPage,#certificatesPage,
-  #refsPage,#compliancePage,#reportsPage,#profilePage
-){
-  background:transparent!important;
-  color:#172b3d!important;
-}
-html[data-theme="light"] .sidebar{
-  background:rgba(255,255,255,.96)!important;
-  border-color:#d9e2e9!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] .brand{color:#172b3d!important}
-html[data-theme="light"] .nav button{
-  background:transparent!important;
-  border-color:transparent!important;
-  color:#405a70!important;
-}
-html[data-theme="light"] .nav button:hover,
-html[data-theme="light"] .nav button.active{
-  background:#edf3f6!important;
-  border-color:#d2dde5!important;
-  color:#172b3d!important;
-}
-
-/* Cards, panels and nested operational surfaces. */
-html[data-theme="light"] :where(
-  .auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,
-  .intro-service-card,.intro-hero,.hero-card,.roadmap-section,.roadmap-card,
-  .scan-box,.upload-simple,.import-box,.company-import-box,.risk-item,.doc-chip,
-  .ref-card,.preview-profile,.share-card,.atsrs-admin-overview,
-  .atsrs-notification-item,.atsrs-notification-settings,.atsrs-access-request,
-  .atsrs-professional-message,.candidate-card,.personnel-card,.talent-card,
-  .linked-personnel-card,.directory-card,.talent-message,.personnel-list,
-  .shared-profile-hero,.shared-document-card,.shared-document-summary,
-  .shared-profile-request-card,.shared-profile-error,.shared-profile-loading,
-  .atsrs-security-card,.atsrs-ai-consent,.atsrs-ai-consent-check,
-  .atsrs-session-card,.date-picker-popover,.profile-photo-crop-dialog,
-  .file-preview-dialog,.file-preview-card,.file-preview-shell,
-  .shared-preview-card,.shared-preview-shell,.v76-audit-card
-){
-  background:#ffffff!important;
-  border-color:#d4dfe7!important;
-  color:#172b3d!important;
-  box-shadow:0 8px 24px rgba(36,61,80,.055)!important;
-}
-html[data-theme="light"] :where(
-  .panel,.card,.snapshot-card,.roadmap-card,.shared-document-card,
-  .talent-card,.linked-personnel-card
-) *{text-shadow:none!important}
-html[data-theme="light"] :where(
-  .snapshot-item,.career-record-row,.access-request-details,.cv-beta-box,
-  .ref-beta-box,.mini-docs em,.approve-flow i,.profile-link-demo
-){
-  background:#f7f9fb!important;
-  border-color:#d9e2e9!important;
-  color:#284258!important;
-}
-
-/* Forms. Explicit specificity defeats legacy dark !important declarations. */
-html[data-theme="light"] body :where(input,select,textarea),
-html[data-theme="light"] body .talent-searchbar :where(input,select),
-html[data-theme="light"] body .personnel-filterbar :where(input,select),
-html[data-theme="light"] body .talent-message-form :where(input,textarea),
-html[data-theme="light"] body #certificatesPage .atsrs-document-filter input{
-  color-scheme:light!important;
-  background-color:#ffffff!important;
-  border-color:#c8d4de!important;
-  color:#172b3d!important;
-  caret-color:#172b3d!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body :where(input,textarea)::placeholder{color:#8797a5!important}
-html[data-theme="light"] body :where(input,select,textarea):hover{
-  background-color:#ffffff!important;
-  border-color:#adc0ce!important;
-}
 html[data-theme="light"] body :where(input,select,textarea):focus{
-  background-color:#ffffff!important;
-  border-color:#4c91b5!important;
-  box-shadow:0 0 0 3px rgba(31,132,180,.11)!important;
   outline:0!important;
-}
-html[data-theme="light"] body select:not([multiple]),
-html[data-theme="light"] body .talent-searchbar select,
-html[data-theme="light"] body .personnel-filterbar select{
-  color-scheme:light!important;
-  background-color:#ffffff!important;
-  background-image:
-    linear-gradient(45deg,transparent 50%,#718596 50%),
-    linear-gradient(135deg,#718596 50%,transparent 50%)!important;
-}
-html[data-theme="light"] body .personnel-filterbar select{
-  background-image:none!important;
 }
 html[data-theme="light"] body #app .personnel-combobox>.personnel-combobox-toggle{
   border:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body .personnel-filterbar select option{
-  color-scheme:light!important;
-  background:#ffffff!important;
-  color:#172b3d!important;
-}
-html[data-theme="light"] body .personnel-combobox-options{
-  color-scheme:light!important;
-  background:#ffffff!important;
-  border-color:#c8d4de!important;
-  box-shadow:0 14px 34px rgba(36,61,80,.16)!important;
-}
-html[data-theme="light"] body .personnel-combobox-options button{
-  background:#ffffff!important;
-  color:#20394d!important;
-  -webkit-text-fill-color:#20394d!important;
-}
-html[data-theme="light"] body .personnel-combobox-options button:hover,
-html[data-theme="light"] body .personnel-combobox-options button:focus{
-  background:#edf4f8!important;
-  color:#102b40!important;
-  -webkit-text-fill-color:#102b40!important;
-}
-html[data-theme="light"] body .personnel-combobox-empty{
-  color:#60778a!important;
-  -webkit-text-fill-color:#60778a!important;
-}
-html[data-theme="light"] body .talent-summary-filter select,
-html[data-theme="light"] body .shared-document-summary-tools select{background-color:#fff!important;border-color:#cbd5e1!important;color:#0f172a!important}
-html[data-theme="light"] body .talent-work-type-filter summary,
-html[data-theme="light"] body .talent-work-type-filter summary:hover,
-html[data-theme="light"] body .talent-work-type-filter summary:focus-visible,
-html[data-theme="light"] body .talent-work-type-filter[open] summary{
-  background-color:#ffffff!important;
-  border-color:#c8d4de!important;
-  color:#172b3d!important;
-  -webkit-text-fill-color:#172b3d!important;
-}
-html[data-theme="light"] body .talent-work-type-filter .work-type-options{
-  background:#ffffff!important;
-  border-color:#c8d4de!important;
-  box-shadow:0 14px 34px rgba(36,61,80,.14)!important;
-}
-html[data-theme="light"] body .talent-work-type-filter .work-type-options label,
-html[data-theme="light"] body .talent-work-type-filter .work-type-options span{
-  color:#172b3d!important;
-  -webkit-text-fill-color:#172b3d!important;
-}
-html[data-theme="light"] body .talent-work-type-filter input{
-  background:#ffffff!important;
-  border-color:#91a4b4!important;
-}
-html[data-theme="light"] body .personnel-document-update.is-recent,
-html[data-theme="light"] body .talent-upload-date.is-recent,
-html[data-theme="light"] body .shared-document-summary-link small.is-recent,
-html[data-theme="light"] body .shared-document-detail.shared-upload-date.is-recent b,
-html[data-theme="light"] body .atsrs-upload-date.is-recent{color:#15803d!important}
-
-/* Calm controls: no black filled buttons in light mode. */
-html[data-theme="light"] body :where(
-  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
-  .dashboard-view-button,.talent-view-switch button,.file-preview-close,
-  .share-request-close,.v76-audit-close,.v76-copy-btn
-){
-  background:#ffffff!important;
-  border-color:#c8d4de!important;
-  color:#263f54!important;
-  box-shadow:none!important;
 }
 html[data-theme="light"] body :where(
   button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
   .dashboard-view-button,.talent-view-switch button
 ):hover{
-  background:#eef3f7!important;
-  border-color:#9fb2c1!important;
-  color:#172b3d!important;
   transform:none!important;
 }
-html[data-theme="light"] body :where(
-  .account-tabs button.active,.module-tabs button.active,.mode-choice button.active,
-  .talent-view-switch button.active,.auth-tab.active
-){
-  background:#e8f1f5!important;
-  border-color:#9eb7c7!important;
-  color:#173b50!important;
-}
-html[data-theme="light"] body button:disabled{
-  background:#edf1f4!important;
-  border-color:#dae2e8!important;
-  color:#8998a4!important;
-}
-html[data-theme="light"] body :where(.action,.danger-button,.delete-button,.workspace-logout-button){
-  background:#fffafa!important;
-  border-color:#e2b6b9!important;
-  color:#aa2d35!important;
-}
-html[data-theme="light"] :where(.good,.copy-ok,.badge-ready){color:#187642!important}
-
-/* Tables and lists. */
-html[data-theme="light"] :where(table,thead,tbody,tr,th,td,.table-wrap){
-  background:transparent!important;
-  color:#263f54!important;
-}
-html[data-theme="light"] :where(th,td,tr,.setting-row){border-color:#dbe3e9!important}
-html[data-theme="light"] tbody tr:hover{background:#f6f8fa!important}
-html[data-theme="light"] :where(.badge,.pill,.mode-badge,.auth-kicker){
-  background:#f4faf6!important;
-  border-color:#b9dbc6!important;
-  color:#197246!important;
-}
-
-/* Stable account selector and theme switch. */
-html[data-theme="light"] .workspace-switcher-button,
-html[data-theme="light"] .workspace-switcher-menu{
-  background:rgba(255,255,255,.98)!important;
-  border-color:#cbd7e0!important;
-  color:#263f54!important;
-  box-shadow:0 10px 28px rgba(35,61,80,.1)!important;
-}
-html[data-theme="light"] .workspace-switcher-avatar{
-  background:#f1f5f8!important;
-  border-color:#bfcfd9!important;
-  color:#263f54!important;
-}
-html[data-theme="light"] .workspace-switcher-copy strong,
-html[data-theme="light"] .workspace-option{color:#263f54!important}
-html[data-theme="light"] .workspace-switcher-copy>span{color:#6c7f8f!important}
-html[data-theme="light"] .workspace-option:hover,
-html[data-theme="light"] .workspace-logout-button:hover{
-  background:#eef3f7!important;
-  border-color:#cbd7e0!important;
-}
-html[data-theme="light"] .workspace-switcher-divider{background:#dbe3e9!important}
 html[data-theme="light"] .atsrs-theme-toggle{
-  background:transparent!important;
   border:0!important;
-  color:#263f54!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] .atsrs-theme-toggle:hover{background:transparent!important}
-
-/* Login is a first-class light page, not a dark page with a white card. */
-html[data-theme="light"] #auth.auth{
-  background:
-    radial-gradient(circle at 16% 18%,rgba(34,197,94,.07),transparent 26%),
-    radial-gradient(circle at 82% 28%,rgba(14,165,233,.08),transparent 28%),
-    linear-gradient(145deg,#f9fbfc,#edf3f6)!important;
-  color:#172b3d!important;
 }
 html[data-theme="light"] #auth.auth::before{
-  background:linear-gradient(120deg,rgba(255,255,255,.5),transparent)!important;
   opacity:.8!important;
-}
-html[data-theme="light"] #auth .auth-card,
-html[data-theme="light"] #auth .auth-intro{
-  background:rgba(255,255,255,.96)!important;
-  border-color:#d3dee6!important;
-  color:#172b3d!important;
-  box-shadow:0 24px 70px rgba(36,61,80,.12)!important;
 }
 html[data-theme="light"] #auth .auth-card{
   border:1px solid #d3dee6!important;
   border-radius:22px!important;
   padding:28px!important;
 }
-html[data-theme="light"] #auth :where(
-  .logo,#authSubtitle,.auth-tab,.auth-tab-caption,#loginMsg,
-  #registerTitle,#resetTitle,#resetInfo
-){
-  color:#172b3d!important;
-  text-shadow:none!important;
-}
 html[data-theme="light"] #auth .auth-tab,
 html[data-theme="light"] #auth .auth-tab.active{
-  background:transparent!important;
   border:0!important;
-  color:#263f54!important;
 }
-html[data-theme="light"] #auth .auth-tab:not(.active){color:#65798b!important}
 html[data-theme="light"] #auth .auth-tab.active{
-  color:#172b3d!important;
   text-decoration:underline!important;
   text-decoration-color:#7ca2b8!important;
   text-decoration-thickness:2px!important;
@@ -464,106 +171,9 @@ html[data-theme="dark"] #auth .auth-tab.active{
   text-decoration-color:#7ca2b8!important;
   text-decoration-thickness:2px!important;
 }
-html[data-theme="light"] #auth .auth-tab-sep{color:#91a0ac!important}
-html[data-theme="light"] #auth #buildBadge.build-badge,
-html[data-theme="light"] #auth .build-badge{
-  background:rgba(255,255,255,.9)!important;
-  border-color:#d3dee6!important;
-  color:#62778a!important;
-}
-html[data-theme="light"] #auth #buildBadge.build-badge div{
-  color:#62778a!important;
-  text-shadow:none!important;
-}
-html[data-theme="light"] :where(.google-choice-area,.signup-social-area){
-  background:transparent!important;
-  color:#172b3d!important;
-}
-html[data-theme="light"] :where(.lang-circle,.lang-menu){
-  background:#ffffff!important;
-  border-color:#cbd7e0!important;
-  color:#263f54!important;
-}
-html[data-theme="light"] .lang-menu button{background:transparent!important;color:#263f54!important}
-html[data-theme="light"] .lang-menu button:hover{background:#eef3f7!important}
-html[data-theme="light"] .build-badge{
-  background:rgba(255,255,255,.84)!important;
-  border-color:#d3dee6!important;
-  color:#6a7e8f!important;
-}
-
-/* Dialogs, overlays and document preview. */
-html[data-theme="light"] :where(
-  .talent-modal-backdrop,.file-preview-backdrop,.share-request-backdrop,
-  .atsrs-security-backdrop,.profile-photo-crop-backdrop,.v76-audit-modal
-){
-  background:rgba(38,54,68,.48)!important;
-}
 html[data-theme="light"] body button.talent-modal-backdrop{
-  background:rgba(18,35,49,.30)!important;
   border:0!important;
-  box-shadow:none!important;
-  backdrop-filter:blur(2px)!important;
-  -webkit-backdrop-filter:blur(2px)!important;
 }
-html[data-theme="light"] :where(.talent-modal-card,.atsrs-security-dialog){
-  background:#ffffff!important;
-  border-color:#cbd7e0!important;
-  color:#172b3d!important;
-  box-shadow:0 24px 70px rgba(36,61,80,.2)!important;
-}
-html[data-theme="light"] :where(.file-preview-head,.shared-preview-head){
-  background:#ffffff!important;
-  border-color:#d3dee6!important;
-  color:#172b3d!important;
-}
-html[data-theme="light"] :where(
-  .file-preview-stage,.file-preview-body,.shared-preview-body,.profile-photo-crop-stage
-){
-  background:#e2e8ed!important;
-}
-html[data-theme="light"] .atsrs-account-toast{
-  background:#ffffff!important;
-  border-color:#cbd7e0!important;
-  color:#263f54!important;
-  box-shadow:0 14px 38px rgba(36,61,80,.16)!important;
-}
-
-/* Final application override: legacy page-specific selectors must not leave dark islands. */
-html[data-theme="light"] body #app :where(
-  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
-  .dashboard-view-button,.talent-view-switch button,.file-preview-close,
-  .share-request-close,.v76-audit-close,.v76-copy-btn
-){
-  background:#ffffff!important;
-  border-color:#c8d4de!important;
-  color:#263f54!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body #app :where(
-  button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
-  .dashboard-view-button,.talent-view-switch button
-):hover{
-  background:#eef3f7!important;
-  border-color:#9fb2c1!important;
-  color:#172b3d!important;
-}
-html[data-theme="light"] body #app :where(
-  .account-tabs button.active,.module-tabs button.active,.mode-choice button.active,
-  .talent-view-switch button.active
-){
-  background:#e8f1f5!important;
-  border-color:#9eb7c7!important;
-  color:#173b50!important;
-}
-html[data-theme="light"] body #app :where(.action,.danger-button,.delete-button){
-  background:#fffafa!important;
-  border-color:#e2b6b9!important;
-  color:#aa2d35!important;
-}
-
-html[data-theme="light"] ::-webkit-scrollbar-track{background:#edf2f5}
-html[data-theme="light"] ::-webkit-scrollbar-thumb{background:#aebdca;border-color:#edf2f5}
 
 @media(max-width:800px){
   .atsrs-global-controls{top:12px;right:12px;gap:8px;max-width:calc(100vw - 24px)}
@@ -599,50 +209,18 @@ html[data-theme="light"]{
   --atsrs-light-shadow:0 2px 8px rgba(15,23,42,.06);
   --atsrs-light-focus:0 0 0 3px rgba(37,99,235,.22);
 }
-html[data-theme="light"] body{
-  background:var(--atsrs-light-page)!important;
-  color:var(--atsrs-light-text)!important;
-}
-html[data-theme="light"] body #app{
-  background:
-    linear-gradient(180deg,var(--atsrs-light-blue-soft) 0,rgba(246,248,251,.94) 230px,var(--atsrs-light-page) 440px)!important;
-  color:var(--atsrs-light-text)!important;
-}
 html[data-theme="light"] body #app .sidebar{
-  background:var(--atsrs-light-surface)!important;
   border-right:1px solid var(--atsrs-light-border)!important;
-}
-html[data-theme="light"] body #app .sidebar :where(.brand,.logo){
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
-}
-html[data-theme="light"] body #app .sidebar :where(.subtitle,.brand-subtitle){
-  color:#64748b!important;
-  -webkit-text-fill-color:#64748b!important;
 }
 html[data-theme="light"] body #app .nav{
   gap:7px!important;
 }
 html[data-theme="light"] body #app .nav button{
   min-height:42px!important;
-  background:transparent!important;
   border:1px solid transparent!important;
-  color:#42556d!important;
-  -webkit-text-fill-color:#42556d!important;
-}
-html[data-theme="light"] body #app .nav button:hover{
-  background:var(--atsrs-light-soft)!important;
-  border-color:var(--atsrs-light-border)!important;
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
 }
 html[data-theme="light"] body #app .nav button.active{
-  background:#eaf2ff!important;
-  border-color:#cfe0ff!important;
-  color:#1d4ed8!important;
-  -webkit-text-fill-color:#1d4ed8!important;
   font-weight:700!important;
-  box-shadow:inset 3px 0 0 #2563eb!important;
 }
 body > #atsrsGlobalControls{
   position:fixed!important;
@@ -676,36 +254,12 @@ body > #atsrsGlobalControls > #workspaceSwitcher{
   flex:0 0 auto!important;
   margin:0!important;
 }
-
-html[data-theme="light"] body #app button{
-  background:var(--atsrs-light-surface)!important;
-  border-color:var(--atsrs-light-border)!important;
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body #app button:hover{
-  background:var(--atsrs-light-soft)!important;
-  border-color:#b8c7d9!important;
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
-}
 html[data-theme="light"] body #app #profilePage .account-tabs button.active,
 html[data-theme="light"] body #app .module-tabs button.active,
 html[data-theme="light"] body #app .mode-choice button.active,
 html[data-theme="light"] body #app .talent-view-switch button.active{
-  background:var(--atsrs-light-blue-soft)!important;
-  border-color:#b9d2ff!important;
-  color:#173b75!important;
-  -webkit-text-fill-color:#173b75!important;
   font-weight:700!important;
   opacity:1!important;
-}
-html[data-theme="light"] body #app :where(.danger-button,.delete-button,.action){
-  background:#fffafa!important;
-  border-color:#e2b6b9!important;
-  color:#a72e36!important;
-  -webkit-text-fill-color:#a72e36!important;
 }
 
 html[data-theme="light"] body #app :where(
@@ -713,18 +267,12 @@ html[data-theme="light"] body #app :where(
   input[type="date"],input[type="number"],textarea,select,
   .atsrs-document-filter input,.talent-searchbar input,.personnel-filterbar input
 ){
-  background:var(--atsrs-light-surface)!important;
-  border-color:var(--atsrs-light-border)!important;
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
   opacity:1!important;
 }
 html[data-theme="light"] body #app :where(
   input[type="text"],input[type="search"],input[type="email"],input[type="tel"],
   input[type="date"],input[type="number"],textarea
 )::placeholder{
-  color:var(--atsrs-light-faint)!important;
-  -webkit-text-fill-color:var(--atsrs-light-faint)!important;
   opacity:1!important;
 }
 
@@ -732,76 +280,29 @@ html[data-theme="light"] body #app #certificatesPage :where(
   table thead th,table thead th button,table thead th button span,
   #thCertificate2,#thProvider2,#thExpiry2,#thStatus2,#thAction2
 ){
-  color:#33465c!important;
-  -webkit-text-fill-color:#33465c!important;
   font-weight:750!important;
   opacity:1!important;
-  text-shadow:none!important;
-}
-html[data-theme="light"] body #app #certificatesPage table tbody :where(td,td span){
-  color:#20384b!important;
-  -webkit-text-fill-color:#20384b!important;
 }
 html[data-theme="light"] body #app #certificatesPage .atsrs-document-filter input{
-  background:var(--atsrs-light-surface)!important;
   border:1px solid #b8c7d2!important;
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
-}
-
-html[data-theme="light"] body #app #refsPage :where(
-  .preview-box,.atsrs-v134-row,.atsrs-v134-empty,.atsrs-v134-list,
-  .reference-item,.appraisal-item,.cv-item
-){
-  background:#f8fafc!important;
-  border-color:#c7d3dc!important;
-  color:#20384b!important;
-}
-html[data-theme="light"] body #app #refsPage :where(button,.secondary){
-  background:var(--atsrs-light-surface)!important;
-  border-color:var(--atsrs-light-border)!important;
-  color:#284256!important;
-  -webkit-text-fill-color:#284256!important;
-}
-
-/* Light product experience: clean white surfaces, readable roadmap states. */
-html[data-theme="light"] body #app #introPage .updates-hero{
-  background:linear-gradient(135deg,#eff6ff 0%,#f6f8fb 72%)!important;
-  border-color:var(--atsrs-light-border)!important;
-  box-shadow:none!important;
 }
 html[data-theme="light"] body #app #introPage .updates-hero h3{
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
   font-weight:750!important;
 }
 html[data-theme="light"] body #app #introPage .updates-hero p{
-  color:var(--atsrs-light-muted)!important;
-  -webkit-text-fill-color:var(--atsrs-light-muted)!important;
   font-size:16px!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-section{
   padding:24px!important;
-  background:var(--atsrs-light-surface)!important;
   border:1px solid var(--atsrs-light-border)!important;
-  box-shadow:var(--atsrs-light-shadow)!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-kicker{
-  color:var(--atsrs-light-blue)!important;
-  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
   font-size:12px!important;
   letter-spacing:.06em!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-heading h3,
 html[data-theme="light"] body #app #introPage .roadmap-card h3{
-  color:var(--atsrs-light-text)!important;
-  -webkit-text-fill-color:var(--atsrs-light-text)!important;
   font-weight:700!important;
-}
-html[data-theme="light"] body #app #introPage .roadmap-heading>p,
-html[data-theme="light"] body #app #introPage .roadmap-card p{
-  color:var(--atsrs-light-muted)!important;
-  -webkit-text-fill-color:var(--atsrs-light-muted)!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-heading>p{
   max-width:420px!important;
@@ -814,30 +315,15 @@ html[data-theme="light"] body #app #introPage .roadmap-grid{
 html[data-theme="light"] body #app #introPage .roadmap-card{
   min-height:210px!important;
   padding:20px!important;
-  background:var(--atsrs-light-surface)!important;
   border:1px solid var(--atsrs-light-border)!important;
-  box-shadow:var(--atsrs-light-shadow)!important;
-}
-html[data-theme="light"] body #app #introPage .roadmap-card:hover{
-  border-color:#b8c7d9!important;
-  box-shadow:0 8px 22px rgba(15,23,42,.09)!important;
-}
-html[data-theme="light"] body #app #introPage .roadmap-card-featured{
-  border-color:#bbe7c8!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-icon{
   width:40px!important;
   height:40px!important;
   margin-top:20px!important;
-  background:var(--atsrs-light-blue-soft)!important;
-  border-color:#cfe0ff!important;
-  color:var(--atsrs-light-blue)!important;
-  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
   border-radius:10px!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-news{
-  color:var(--atsrs-light-green)!important;
-  -webkit-text-fill-color:var(--atsrs-light-green)!important;
   letter-spacing:.06em!important;
 }
 html[data-theme="light"] body #app #introPage .roadmap-status{
@@ -846,28 +332,9 @@ html[data-theme="light"] body #app #introPage .roadmap-status{
   font-size:11px!important;
   letter-spacing:.03em!important;
 }
-html[data-theme="light"] body #app #introPage .status-available{
-  background:var(--atsrs-light-green-soft)!important;
-  border-color:#bbe7c8!important;
-  color:var(--atsrs-light-green)!important;
-  -webkit-text-fill-color:var(--atsrs-light-green)!important;
-}
-html[data-theme="light"] body #app #introPage .status-development{
-  background:var(--atsrs-light-amber-soft)!important;
-  border-color:#f2d39b!important;
-  color:var(--atsrs-light-amber)!important;
-  -webkit-text-fill-color:var(--atsrs-light-amber)!important;
-}
-html[data-theme="light"] body #app #introPage .status-planned{
-  background:var(--atsrs-light-neutral-soft)!important;
-  border-color:#d6dee8!important;
-  color:var(--atsrs-light-neutral)!important;
-  -webkit-text-fill-color:var(--atsrs-light-neutral)!important;
-}
 
 html[data-theme="light"] body #app :where(button,input,select,textarea):focus-visible{
   outline:0!important;
-  box-shadow:var(--atsrs-light-focus)!important;
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
@@ -886,31 +353,20 @@ html[data-theme="light"] body #app :where(button,input,select,textarea):focus-vi
     max-width:calc(100vw - 24px)!important;
   }
 }
-
-/* V349 — Account light mode: one calm, fully light and responsive system. */
-html[data-theme="light"] body #app #profilePage{
-  color:#172033!important;
-}
 html[data-theme="light"] body #app #profilePage > .panel{
   padding:24px!important;
   overflow:visible!important;
   border:1px solid #dce4ed!important;
   border-radius:20px!important;
-  background:#fff!important;
-  box-shadow:0 2px 10px rgba(15,23,42,.06)!important;
 }
 html[data-theme="light"] body #app #profilePage > .panel > h3{
   margin:0 0 6px!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
   font-size:28px!important;
   font-weight:700!important;
   letter-spacing:-.02em!important;
 }
 html[data-theme="light"] body #app #profilePage #userEmail{
   margin-bottom:14px!important;
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
 }
 html[data-theme="light"] body #app #profilePage .account-tabs{
   gap:8px!important;
@@ -921,16 +377,7 @@ html[data-theme="light"] body #app #profilePage .account-tabs button{
   padding:8px 15px!important;
   border:1px solid #dce4ed!important;
   border-radius:10px!important;
-  background:#f8fafc!important;
-  color:#334155!important;
-  -webkit-text-fill-color:#334155!important;
   font-weight:650!important;
-}
-html[data-theme="light"] body #app #profilePage .account-tabs button.active{
-  border-color:#bfd4ff!important;
-  background:#eaf2ff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
 }
 html[data-theme="light"] body #app #profilePage .profile-general-head{
   display:grid!important;
@@ -949,16 +396,6 @@ html[data-theme="light"] body #app #profilePage .profile-photo-preview{
   height:76px!important;
   flex:0 0 76px!important;
   border:1px solid #cbd5e1!important;
-  background:#f8fafc!important;
-}
-html[data-theme="light"] body #app #profilePage .profile-photo-copy h4{
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage .profile-photo-copy p,
-html[data-theme="light"] body #app #profilePage .profile-photo-status{
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
 }
 html[data-theme="light"] body #app #profilePage .admin-overview-panel{
   position:absolute!important;
@@ -973,29 +410,6 @@ html[data-theme="light"] body #app #profilePage .admin-overview-panel{
   justify-self:end!important;
   border:1px solid #dce4ed!important;
   border-radius:14px!important;
-  background:#f8fafc!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body #app #profilePage .admin-overview-kicker{
-  color:var(--atsrs-light-blue)!important;
-  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
-}
-html[data-theme="light"] body #app #profilePage .preview-only-badge{
-  border-color:#cfe0ff!important;
-  background:var(--atsrs-light-blue-soft)!important;
-  color:var(--atsrs-light-blue)!important;
-  -webkit-text-fill-color:var(--atsrs-light-blue)!important;
-}
-html[data-theme="light"] body #app #profilePage .admin-overview-heading h4,
-html[data-theme="light"] body #app #profilePage .admin-overview-stat strong{
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage .admin-overview-secure,
-html[data-theme="light"] body #app #profilePage .admin-overview-stat span,
-html[data-theme="light"] body #app #profilePage .admin-overview-footer{
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
 }
 html[data-theme="light"] body #app #profilePage .admin-overview-stats{
   gap:7px!important;
@@ -1004,27 +418,18 @@ html[data-theme="light"] body #app #profilePage .admin-overview-stats{
 html[data-theme="light"] body #app #profilePage .admin-overview-stat{
   padding:7px 8px!important;
   border:1px solid #dce4ed!important;
-  background:#fff!important;
-}
-html[data-theme="light"] body #app #profilePage .admin-overview-footer{
-  border-color:#dce4ed!important;
 }
 html[data-theme="light"] body #app #profilePage .admin-overview-refresh{
   width:auto!important;
   min-width:68px!important;
   min-height:30px!important;
   padding:5px 10px!important;
-  border-color:#cbd5e1!important;
-  background:#fff!important;
-  color:#334155!important;
-  -webkit-text-fill-color:#334155!important;
 }
 html[data-theme="light"] body #app #profilePage #accountGeneralTab > .profile-grid{
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
   column-gap:18px!important;
   row-gap:12px!important;
   padding-top:12px!important;
-  border-color:#dce4ed!important;
 }
 html[data-theme="light"] body #app #profilePage .profile-details-layout{
   grid-template-columns:1fr!important;
@@ -1038,8 +443,6 @@ html[data-theme="light"] body #app #profilePage .profile-labeled-field > span,
 html[data-theme="light"] body #app #profilePage .phone-entry-label,
 html[data-theme="light"] body #app #profilePage .work-availability-grid > label > span,
 html[data-theme="light"] body #app #profilePage .work-type-field > span{
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
   font-size:11px!important;
   font-weight:600!important;
 }
@@ -1052,10 +455,6 @@ html[data-theme="light"] body #app #profilePage :where(
   min-height:36px!important;
   border:1px solid #cbd5e1!important;
   border-radius:10px!important;
-  background:#fff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-  box-shadow:none!important;
 }
 html[data-theme="light"] body #app #profilePage :where(
   .profile-labeled-field>select,.work-availability-grid select
@@ -1063,39 +462,14 @@ html[data-theme="light"] body #app #profilePage :where(
   padding-top:6px!important;
   padding-bottom:6px!important;
   line-height:20px!important;
-  color-scheme:light!important;
-}
-html[data-theme="light"] body #app #profilePage select option,
-html[data-theme="light"] body #app #profilePage select optgroup{
-  background:#ffffff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-  color-scheme:light!important;
 }
 html[data-theme="light"] body #app #profilePage .phone-field input{
   height:34px!important;
   min-height:34px!important;
-  background:#fff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage .phone-code-picker,
-html[data-theme="light"] body #app #profilePage .phone-code-display{
-  background:#f8fafc!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
 }
 html[data-theme="light"] body #app #profilePage .phone-code-display{
   border-right:1px solid #dce4ed!important;
   border-radius:9px 0 0 9px!important;
-}
-html[data-theme="light"] body #app #profilePage .phone-verification-note{
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
-}
-html[data-theme="light"] body #app #profilePage .phone-verification-note b{
-  color:#b42318!important;
-  -webkit-text-fill-color:#b42318!important;
 }
 html[data-theme="light"] body #app #profilePage .inline-verify-btn{
   width:auto!important;
@@ -1103,9 +477,6 @@ html[data-theme="light"] body #app #profilePage .inline-verify-btn{
   min-height:0!important;
   padding:2px 4px!important;
   border:0!important;
-  background:transparent!important;
-  color:#2563eb!important;
-  -webkit-text-fill-color:#2563eb!important;
   text-decoration:underline!important;
 }
 html[data-theme="light"] body #app #profilePage .work-availability-card{
@@ -1113,29 +484,12 @@ html[data-theme="light"] body #app #profilePage .work-availability-card{
   padding:14px!important;
   border:1px solid #dce4ed!important;
   border-radius:16px!important;
-  background:#f8fafc!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body #app #profilePage .work-availability-heading h4{
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage .work-availability-heading p,
-html[data-theme="light"] body #app #profilePage .work-availability-heading > span{
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
 }
 html[data-theme="light"] body #app #profilePage .work-type-options{
   min-height:42px!important;
   padding:7px 10px!important;
   border:1px solid #cbd5e1!important;
   border-radius:10px!important;
-  background:#fff!important;
-}
-html[data-theme="light"] body #app #profilePage .work-type-options label,
-html[data-theme="light"] body #app #profilePage .work-type-options span{
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
 }
 html[data-theme="light"] body #app #profilePage input[type="checkbox"]{
   accent-color:#2563eb!important;
@@ -1148,128 +502,7 @@ html[data-theme="light"] body #app #profilePage #accountGeneralTab #saveProfileB
   min-width:104px!important;
   min-height:36px!important;
   padding:6px 14px!important;
-  border-color:#94a3b8!important;
-  background:#fff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
   font-weight:700!important;
-  box-shadow:0 1px 2px rgba(37,99,235,.18)!important;
-}
-html[data-theme="light"] body #app #profilePage #accountGeneralTab #saveProfileBtn:hover{
-  border-color:#64748b!important;
-  background:#f1f5f9!important;
-}
-html[data-theme="light"] body #app #profilePage :where(input,select,textarea):-webkit-autofill{
-  -webkit-box-shadow:0 0 0 1000px #fff inset!important;
-  -webkit-text-fill-color:#172033!important;
-  caret-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage :where(input,select,textarea):focus{
-  border-color:#2563eb!important;
-  box-shadow:0 0 0 3px rgba(37,99,235,.16)!important;
-}
-html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row){
-  border-color:#dce4ed!important;
-  background:#fff!important;
-}
-html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row) :where(h4,strong){
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row) :where(p,span){
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
-}
-
-/* Account date fields use the ATSRS calendar appended directly to body. */
-html[data-theme="light"] body .atsrs-date-picker-dialog{
-  border-color:#cbd5e1!important;
-  background:#ffffff!important;
-  color:#172033!important;
-  box-shadow:0 14px 38px rgba(15,23,42,.16),0 2px 8px rgba(15,23,42,.08)!important;
-  color-scheme:light!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-dialog.place-below::before{
-  border-bottom-color:#cbd5e1!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-dialog.place-below::after{
-  border-bottom-color:#ffffff!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-dialog.place-above::before{
-  border-top-color:#cbd5e1!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-dialog.place-above::after{
-  border-top-color:#ffffff!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-nav button{
-  background:transparent!important;
-  color:#42556d!important;
-  -webkit-text-fill-color:#42556d!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-nav button:hover,
-html[data-theme="light"] body .atsrs-date-picker-nav button:focus-visible{
-  border-color:#cbd5e1!important;
-  background:#f1f5f9!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-month select{
-  border-color:#cbd5e1!important;
-  background-color:#ffffff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-  color-scheme:light!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-month select option{
-  background:#ffffff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-  color-scheme:light!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-weekdays span{
-  color:#60748a!important;
-  -webkit-text-fill-color:#60748a!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-days button{
-  background:transparent!important;
-  color:#334155!important;
-  -webkit-text-fill-color:#334155!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-days button:hover,
-html[data-theme="light"] body .atsrs-date-picker-days button:focus-visible{
-  border-color:#cbd5e1!important;
-  background:#f1f5f9!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-days button.today{
-  border-color:#94a3b8!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-days button.selected{
-  border-color:#4f8f68!important;
-  background:#e9f8ee!important;
-  color:#17643a!important;
-  -webkit-text-fill-color:#17643a!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-selection{
-  color:#60748a!important;
-  -webkit-text-fill-color:#60748a!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-actions{
-  border-top-color:#dce4ed!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-actions button{
-  background:transparent!important;
-  color:#42556d!important;
-  -webkit-text-fill-color:#42556d!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-actions button:hover,
-html[data-theme="light"] body .atsrs-date-picker-actions button:focus-visible{
-  background:#f1f5f9!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body .atsrs-date-picker-actions .confirm{
-  border-color:#75aa86!important;
-  background:#e9f8ee!important;
-  color:#17643a!important;
-  -webkit-text-fill-color:#17643a!important;
 }
 
 @media(max-width:1550px){
@@ -1317,184 +550,58 @@ html[data-theme="light"] body .atsrs-date-picker-actions .confirm{
 
 /* V349: sharing and download-request surfaces must follow the active light theme. */
 html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel{
-  background:#ffffff!important;
-  background-image:none!important;
   border:1px solid #d4dfe7!important;
-  color:#172033!important;
-  box-shadow:0 8px 24px rgba(36,61,80,.055)!important;
-}
-html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel :where(
-  h3,b,strong,p,.sub,.share-live-status,.sharing-history-head
-){
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel :where(
-  .share-live-status,.sharing-history-head span,.share-analytics-detail,
-  .access-request-card small,.access-request-card p span
-){
-  color:#60748a!important;
-  -webkit-text-fill-color:#60748a!important;
-}
-html[data-theme="light"] body #app #profilePage #accountSharingTab #shareProfilePanel :where(
-  .sharing-history,.share-permissions,.share-expiry-settings
-){
-  border-color:#dce4ed!important;
-}
-html[data-theme="light"] body #app :where(
-  .access-request-card,.share-document-choice,.share-expiry-settings,.share-analytics>div
-){
-  background:#ffffff!important;
-  border-color:#d6e0e8!important;
-  color:#172033!important;
-  box-shadow:0 6px 18px rgba(36,61,80,.045)!important;
-}
-html[data-theme="light"] body #app .access-request-card.status-pending{
-  border-color:#e7cf9f!important;
-}
-html[data-theme="light"] body #app :where(
-  .access-request-top>div b,.sent-request-target>div b,.access-request-card p,
-  .sent-request-grid p,.access-document-row>span,.share-document-choice b,
-  .share-analytics b
-){
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app :where(
-  .access-request-top>div span,.sent-request-target>div span,.access-request-card small,
-  .access-request-card p span,.sent-request-grid small,.share-document-choice span,
-  .share-expiry-copy span,.sharing-history-head span,.share-analytics span,
-  .share-analytics-detail,.share-manage-message
-){
-  color:#60748a!important;
-  -webkit-text-fill-color:#60748a!important;
-}
-html[data-theme="light"] body #app :where(
-  .sent-request-grid,.access-document-list,.access-document-row,.sharing-history
-){
-  border-color:#dce4ed!important;
-}
-html[data-theme="light"] body #app .access-request-details{
-  background:#f8fafc!important;
-  border-color:#dce4ed!important;
-  color:#42556d!important;
-}
-html[data-theme="light"] body #app .access-empty{
-  background:#fbfcfd!important;
-  border-color:#b8c7d9!important;
-  color:#60748a!important;
-}
-html[data-theme="light"] body #app .corporate-request-count{
-  background:#eaf6ff!important;
-  color:#176f9f!important;
-}
-html[data-theme="light"] body #app .access-status{
-  background:#eef2f6!important;
-  color:#52667b!important;
-}
-html[data-theme="light"] body #app .status-pending .access-status{
-  background:#fff4d6!important;
-  color:#8a5b00!important;
-}
-html[data-theme="light"] body #app .status-approved .access-status{
-  background:#e9f8ee!important;
-  color:#187642!important;
-}
-html[data-theme="light"] body #app :where(
-  .status-declined .access-status,.status-expired .access-status,.status-revoked .access-status
-){
-  background:#fff0f1!important;
-  color:#aa2d35!important;
-}
-html[data-theme="light"] .share-request-dialog{
-  background:#ffffff!important;
-  border-color:#cbd7e0!important;
-  color:#172033!important;
-  box-shadow:0 24px 70px rgba(36,61,80,.2)!important;
-}
-html[data-theme="light"] .share-request-dialog :where(h2,label){
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] .share-request-dialog>p{
-  color:#60748a!important;
-  -webkit-text-fill-color:#60748a!important;
 }
 
 /* V349: Personnel cards and list must remain comfortably readable in light mode. */
 html[data-theme="light"] .linked-personnel-row{
-  border-color:#cbd7e0!important;
-  color:#2b465a!important;
   font-size:12px!important;
   font-weight:500!important;
 }
 html[data-theme="light"] .linked-personnel-row.is-head{
-  color:#405b70!important;
   font-size:10px!important;
   font-weight:800!important;
 }
 html[data-theme="light"] .talent-list-row.is-head{
-  color:#405b70!important;
   font-size:10px!important;
   font-weight:800!important;
 }
 html[data-theme="light"] .linked-personnel-row b{
-  color:#142c3f!important;
   font-size:12px!important;
   font-weight:750!important;
 }
 html[data-theme="light"] .linked-personnel-row small{
-  color:#526d81!important;
   font-size:10px!important;
   font-weight:500!important;
 }
 html[data-theme="light"] .linked-personnel-card-head>span{
-  color:#405f75!important;
   font-size:11px!important;
   font-weight:650!important;
 }
 html[data-theme="light"] .linked-personnel-card h4{
-  color:#142c3f!important;
   font-weight:750!important;
 }
 html[data-theme="light"] .linked-personnel-card>p{
-  color:#3d5c72!important;
   font-size:12px!important;
   font-weight:550!important;
 }
 html[data-theme="light"] .linked-personnel-card dt{
-  color:#4b6579!important;
   font-size:10px!important;
   font-weight:750!important;
 }
 html[data-theme="light"] .linked-personnel-card dd{
-  color:#29475c!important;
   font-size:12px!important;
   font-weight:550!important;
   line-height:1.35!important;
 }
 html[data-theme="light"] .personnel-document-update{
-  color:#4e697d!important;
   font-size:10px!important;
   font-weight:600!important;
 }
 html[data-theme="light"] .personnel-document-update.is-recent{
-  color:#18783e!important;
   font-weight:800!important;
 }
-html[data-theme="light"] .personnel-table-status{
-  color:#405b70!important;
-}
-html[data-theme="light"] .personnel-table-status.is-expiry{
-  border-color:#e7c26f!important;
-  color:#a96c00!important;
-}
-html[data-theme="light"] .personnel-table-status.is-current,
-html[data-theme="light"] .personnel-notification-status.is-notified{
-  color:#18783e!important;
-}
 html[data-theme="light"] :where(.talent-head-tools>span,.talent-count){
-  color:#4d687d!important;
   font-size:11px!important;
   font-weight:650!important;
 }
@@ -1544,44 +651,10 @@ html[data-theme="light"] body.company-mode #app :where(
   .corporate-compliance-head em,
   .access-empty
 ){
-  color:#111827!important;
-  -webkit-text-fill-color:#111827!important;
   opacity:1!important;
 }
 html[data-theme="light"] body.company-mode #app :where(input,textarea)::placeholder{
-  color:#111827!important;
-  -webkit-text-fill-color:#111827!important;
   opacity:1!important;
-}
-html[data-theme="light"] body.company-mode #app :where(
-  .is-error,
-  .error,
-  .error-text,
-  .danger-text,
-  .talent-action-message.is-error,
-  .corporate-data-status.is-error
-){
-  color:#b4232c!important;
-  -webkit-text-fill-color:#b4232c!important;
-}
-html[data-theme="light"] body.company-mode #app :where(
-  .good,
-  .copy-ok,
-  .badge-ready,
-  .is-success
-){
-  color:#187642!important;
-  -webkit-text-fill-color:#187642!important;
-}
-html[data-theme="light"] body.company-mode #app .corporate-summary-card.is-ready b,
-html[data-theme="light"] body.company-mode #app .corporate-compliance-card.is-ready .corporate-compliance-head em{
-  color:#187642!important;
-  -webkit-text-fill-color:#187642!important;
-}
-html[data-theme="light"] body.company-mode #app .corporate-summary-card.is-review b,
-html[data-theme="light"] body.company-mode #app .corporate-compliance-card.is-review .corporate-compliance-head em{
-  color:#8a5b00!important;
-  -webkit-text-fill-color:#8a5b00!important;
 }
 
 /* One disclosure indicator for every list and ATSRS date field. */
@@ -1699,16 +772,6 @@ html body #app #profilePage .account-security-list .setting-row>.atsrs-disclosur
   max-width:210px;
   justify-self:end;
 }
-
-/* Native option popups must follow the active theme in Opera/Chromium. */
-html[data-theme="light"] body select:not([multiple]){
-  color-scheme:light!important;
-}
-html[data-theme="light"] body select:not([multiple]) :where(option,optgroup){
-  background-color:#ffffff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
 html[data-theme="dark"] body select:not([multiple]){
   color-scheme:dark!important;
 }
@@ -1735,12 +798,6 @@ html body .talent-summary-filter>.atsrs-disclosure-shell>.atsrs-disclosure-indic
   right:11px;
   width:7px;
   height:7px;
-}
-html[data-theme="light"] body .talent-summary-filter>.atsrs-disclosure-shell>select{
-  background:#ffffff!important;
-  border-color:#cbd5e1!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
 }
 /* V380: Compact two-column manual document form on wider screens. */
 #certificatesPage #certManualPanel .manual-cert-grid {
@@ -1781,36 +838,8 @@ html[data-theme="light"] body .talent-summary-filter>.atsrs-disclosure-shell>sel
   }
 }
 
-html[data-theme="light"] body #app #certificatesPage #certManualPanel :where(input:not([type="file"]), select, textarea) {
-  color-scheme: light !important;
-  background: #fff !important;
-  border-color: #c8d4de !important;
-  color: #172b3d !important;
-  -webkit-text-fill-color: #172b3d !important;
-  caret-color: #172b3d !important;
-  box-shadow: none !important;
-}
-
 html[data-theme="light"] body #app #certificatesPage #certManualPanel :where(input, textarea)::placeholder {
-  color: #8797a5 !important;
-  -webkit-text-fill-color: #8797a5 !important;
   opacity: 1 !important;
-}
-
-html[data-theme="light"] body #app #certificatesPage .cert-mode-buttons button {
-  background: #fff !important;
-  border-color: #c8d4de !important;
-  color: #172b3d !important;
-  -webkit-text-fill-color: #172b3d !important;
-  box-shadow: none !important;
-}
-
-html[data-theme="light"] body #app #certificatesPage .cert-mode-buttons button.active {
-  background: #e7efff !important;
-  border-color: #8fb0ff !important;
-  color: #1649c8 !important;
-  -webkit-text-fill-color: #1649c8 !important;
-  box-shadow: inset 0 0 0 1px rgba(22, 73, 200, 0.08) !important;
 }
 
 /* Dark canvas: one stable page color across auth and every workspace route. */
@@ -1881,19 +910,6 @@ html:not([data-theme="light"]) #auth.auth::before{
   text-decoration:underline;
   text-decoration-thickness:2px;
   text-underline-offset:4px;
-}
-
-html[data-theme="light"] #auth .auth-home-link{
-  color:#22435d;
-}
-
-html[data-theme="light"] #auth .auth-home-link:hover{
-  background:transparent;
-  color:#15344b;
-}
-
-html[data-theme="light"] #auth .auth-home-link:focus-visible{
-  color:#15344b;
 }
 
 @media(max-width:420px){

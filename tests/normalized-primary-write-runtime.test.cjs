@@ -50,7 +50,7 @@ assert.doesNotMatch(source, /service_role/i);
 
 assert.match(
   index,
-  /normalized-write-canary-config\.js\?v=409[\s\S]*workspace-command-policy\.js\?v=409[\s\S]*reference-filter-state\.js\?v=410[\s\S]*server-data\.js\?v=410/
+  /normalized-write-canary-config\.js\?v=409[\s\S]*workspace-command-policy\.js\?v=409[\s\S]*reference-filter-state\.js\?v=410[\s\S]*server-data\.js\?v=412/
 );
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 assert.match(app, /selection=typeof selectedPersonnel==='function'/);

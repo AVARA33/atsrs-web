@@ -10,6 +10,7 @@ const runtime = fs.readFileSync(path.join(root, 'js', 'personal-dashboard-qa.js'
 const notifications = fs.readFileSync(path.join(root, 'js', 'notifications.js'), 'utf8');
 const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
+const palette = fs.readFileSync(path.join(root, 'css', 'theme-palette-v508.css'), 'utf8');
 
 assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Dashboard<\/h1>/);
 assert.match(index, /id="snapshotTitle">Managed in Account<\/h2>/);
@@ -29,12 +30,7 @@ assert.match(css, /@media\(max-width:1100px\)[\s\S]*?repeat\(3,minmax\(0,1fr\)\)
 assert.match(css, /@media\(max-width:560px\)[\s\S]*?repeat\(2,minmax\(0,1fr\)\)/);
 assert.match(css, /--dashboard-muted:#465b70/);
 assert.match(css, /--dashboard-error:#991b1b/);
-const shareHelpColor = css.match(/html\[data-theme="light"\][\s\S]*?#snapShareHelp\{\s*color:(#[0-9a-f]{6})!important/i)?.[1];
-assert.ok(shareHelpColor, 'Light sharing help must have an explicit contrast-safe colour');
-const channel = value => { const linear=value/255; return linear<=0.04045?linear/12.92:((linear+0.055)/1.055)**2.4; };
-const luminance = hex => { const rgb=[1,3,5].map(index=>parseInt(hex.slice(index,index+2),16)); return 0.2126*channel(rgb[0])+0.7152*channel(rgb[1])+0.0722*channel(rgb[2]); };
-const shareContrast = (1.05)/(luminance(shareHelpColor)+0.05);
-assert.ok(shareContrast>=4.5, `Light sharing help contrast must be >=4.5:1, got ${shareContrast.toFixed(2)}:1`);
+assert.match(palette, /#snapShareHelp\{color:var\(--text-secondary\)!important/,'Glass sharing help must use the shared readable secondary text token');
 assert.match(css, /min-width:44px!important;\s*min-height:44px!important/);
 assert.match(css, /atsrs-personal-dashboard-route \.sidebar \.nav button/);
 assert.match(css, /:focus-visible\{[\s\S]*?outline:3px solid/);
@@ -101,7 +97,7 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);
 }
 
-assert.match(index, /css\/personal-dashboard-qa\.css\?v=450/);
+assert.match(index, /css\/personal-dashboard-qa\.css\?v=517/);
 assert.match(index, /js\/personal-dashboard-qa\.js\?v=447/);
 
 console.log('Personal Dashboard QA candidate contracts passed');

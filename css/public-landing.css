@@ -97,9 +97,7 @@ html[data-theme] body .atsrs-public-landing .public-theme-toggle::after{display:
 .public-theme-thumb{position:absolute;top:2px;left:2px;z-index:1;width:18px;height:18px;border-radius:50%;background:#eef4f8;box-shadow:0 2px 7px rgba(0,0,0,.3);transition:transform .2s ease,background-color .2s ease}
 .public-theme-toggle:focus-visible{outline:0}.public-theme-toggle:focus-visible .public-theme-track{box-shadow:0 0 0 3px color-mix(in srgb,var(--public-accent) 28%,transparent)}
 html[data-theme="dark"] .public-theme-moon{color:#0f172a}
-html[data-theme="light"] .public-theme-track{border-color:#b8c8d4;background:#e8eef3;box-shadow:0 5px 14px rgba(35,61,80,.07)}
-html[data-theme="light"] .public-theme-thumb{background:#fff;transform:translateX(18px)}
-html[data-theme="light"] .public-theme-sun{color:#8a5b00}
+html[data-theme="light"] .public-theme-thumb{transform:translateX(18px)}
 .public-login{display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:0 14px;font-weight:750}
 .public-cta{
   display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:12px;padding:0 22px;

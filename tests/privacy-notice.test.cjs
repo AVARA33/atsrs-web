@@ -43,9 +43,8 @@ for(const page of [privacy,deletion]){
   assert.match(page,/html\[data-embedded="true"\] \.site-header\{display:none\}/);
   assert.match(page,/html\[data-embedded="true"\] \.hero h1\{display:block\}/);
   assert.doesNotMatch(page,/html\[data-embedded="true"\] \.hero h1\{display:none\}/);
-  assert.match(page,/html\[data-theme="light"\]/);
+  assert.match(page,/theme-palette-v508\.css\?v=517/);
   assert.doesNotMatch(page,/@media\(prefers-color-scheme:light\)/);
-  assert.match(page,/html\[data-theme="light"\] \.eyebrow\{color:#245b93;border-color:#c8d9eb\}/);
   assert.ok(
     page.indexOf("localStorage.getItem('atsrs_theme')") < page.indexOf('<style>'),
     'Stored theme must be applied before render-blocking styles to prevent a first-paint flash'
@@ -73,9 +72,9 @@ assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindo
 assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
 assert.match(storage,/page==="privacy"\?"Privacy Notice":page==="dataRights"\?"Data Rights"/);
-assert.match(index,/data-atsrs-build="V516"/);
+assert.match(index,/data-atsrs-build="V517"/);
 assert.match(index,/src="js\/corporate-remediation\.js\?v=480"/);
-assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
+assert.match(index,/href="css\/corporate-information-architecture\.css\?v=517"/);
 assert.match(index,/src="js\/storage\.js\?v=512"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 

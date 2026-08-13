@@ -27,9 +27,9 @@ assert.ok(
 );
 assert.match(server,/if\(list\.innerHTML!==nextListHtml\)list\.innerHTML=nextListHtml/,'cloud empty states must not be recreated when unchanged');
 assert.match(html,/js\/reference-filter-state\.js\?v=410/);
-assert.match(html,/js\/server-data\.js\?v=410/);
+assert.match(html,/js\/server-data\.js\?v=412/);
 assert.match(html,/js\/documents\.js\?v=410/);
-assert.match(html,/js\/account\.js\?v=410/);
+assert.match(html,/js\/account\.js\?v=412/);
 assert.match(html,/js\/app\.js\?v=470/);
 
 function recorder(){

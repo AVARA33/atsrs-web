@@ -115,25 +115,6 @@
 .cv-preview-document .cv-skills{display:flex;flex-wrap:wrap;gap:7px}
 .cv-preview-document .cv-skill{padding:5px 8px;border-radius:6px;background:#edf3f8;color:#173c5d;font-size:12px;font-weight:700}
 
-html[data-theme="light"] .cv-generator-dialog{
-  border-color:#cbd7e4;
-  background:#fff;
-  color:#102038;
-}
-html[data-theme="light"] .cv-generator-head{border-bottom-color:#d7e0e9}
-html[data-theme="light"] .cv-generator-head p{color:#42566d}
-html[data-theme="light"] .cv-generator-close{border-color:#cbd7e4;color:#102038;background:#fff}
-html[data-theme="light"] .cv-generator-form label>span:first-child{color:#14243a}
-html[data-theme="light"] .cv-generator-form input,
-html[data-theme="light"] .cv-generator-form select,
-html[data-theme="light"] .cv-generator-form textarea{
-  border-color:#bac9d8;
-  background:#fff;
-  color:#111827;
-}
-html[data-theme="light"] .cv-ai-consent{border-color:#c6d5e3;background:#f3f7fa}
-html[data-theme="light"] .cv-ai-consent span{color:#24384e!important}
-
 @media(max-width:700px){
   .cv-generator-modal{padding:10px}
   .cv-generator-head,.cv-generator-form{padding-left:16px;padding-right:16px}

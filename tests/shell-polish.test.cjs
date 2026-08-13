@@ -10,7 +10,7 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
-assert.match(index,/css\/shell-polish\.css\?v=506/);
+assert.match(index,/css\/shell-polish\.css\?v=517/);
 assert.match(index,/js\/storage\.js\?v=512/);
 assert.match(index,/class="account-tabs" role="tablist"/);
 assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
@@ -47,8 +47,7 @@ assert.match(css,/grid-template-columns:112px minmax\(0,1fr\)!important/);
 assert.match(css,/\.sidebar \.nav button,[\s\S]*?flex-direction:column!important/);
 assert.match(css,/\.atsrs-nav-label\{[\s\S]*?text-align:center!important[\s\S]*?white-space:normal!important/);
 assert.match(css,/V446: the document register uses the page background/);
-assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\)\{[\s\S]*?--atsrs-shell-accent:#2f6fb2/);
-assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) \.pill\{[\s\S]*?color:var\(--atsrs-shell-accent-strong\)!important/);
+assert.match(fs.readFileSync(path.join(root,'css','theme-palette-v508.css'),'utf8'),/body #app\.app:not\(\.hidden\)\{[\s\S]*?--atsrs-shell-accent:var\(--brand-cyan\)/);
 assert.match(css,/html\[data-theme="dark"\] body #app\.app:not\(\.hidden\) \.pill\{[\s\S]*?color:#86efac!important/);
 assert.match(css,/#certificatesPage \.atsrs-document-register\{[\s\S]*?min-width:0!important[\s\S]*?table-layout:fixed!important/);
 assert.match(css,/\.atsrs-document-col-expiry\{width:106px\}/);
@@ -81,7 +80,7 @@ assert.match(css,/#atsrsThemeToggle::before,[\s\S]*?#atsrsThemeToggle::after\{di
 assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/ph ph-sun atsrs-theme-sun/);
 assert.match(css,/\.sidebar \.nav button\.active[\s\S]*?background:transparent!important[\s\S]*?box-shadow:inset 3px 0 0 var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/\.cert-mode-buttons button\.active[\s\S]*?background:transparent!important/);
-assert.match(css,/Account-page navigation needs an unmistakable current-page state[\s\S]*?data-theme="light"[\s\S]*?#profilePage \.account-tabs button\.active[\s\S]*?color:#245b93!important/);
+assert.match(fs.readFileSync(path.join(root,'css','theme-palette-v508.css'),'utf8'),/\.account-tabs button\.active[\s\S]*?color:var\(--brand-cyan\)!important/);
 assert.match(css,/data-theme="dark"[\s\S]*?#profilePage \.account-tabs button\.active[\s\S]*?color:#86efac!important/);
 assert.match(fs.readFileSync(path.join(root,'js','storage.js'),'utf8'),/button\.setAttribute\("aria-selected","false"\)[\s\S]*?button\.setAttribute\("aria-selected","true"\)/);
 assert.match(css,/Ordinary actions remain neutral[\s\S]*?background:transparent!important/);

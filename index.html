@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V516" data-atsrs-update="14 Aug 2026">
+<html lang="en" data-atsrs-build="V517" data-atsrs-update="14 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,9 +24,9 @@ try{
   var savedTheme=localStorage.getItem('atsrs_theme');
   var initialTheme=savedTheme==='light'?'light':'dark';
   document.documentElement.dataset.theme=initialTheme;
-  document.documentElement.style.colorScheme=initialTheme;
+  document.documentElement.style.colorScheme='dark';
   var themeMeta=document.querySelector('meta[name="theme-color"]');
-  if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#edf2f8':'#050606');
+  if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#03101a':'#050606');
   if(new URLSearchParams(window.location.search).get('share')||
      /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash)){
     document.documentElement.classList.add('atsrs-public-share-mode');
@@ -35,8 +35,8 @@ try{
 </script>
 <style id="atsrs-initial-theme-paint">
 html{background:#050606}
-html[data-theme="light"]{background:#edf2f8}
-html[data-theme="light"] body{background:#edf2f8}
+html[data-theme="light"]{background:#02070d}
+html[data-theme="light"] body{background:#02070d}
 </style>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <link
@@ -50,28 +50,28 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/dashboard.css?v=447">
 <link rel="stylesheet" href="css/documents.css?v=375">
 <link rel="stylesheet" href="css/references.css?v=408">
-<link rel="stylesheet" href="css/cv-generator.css?v=375">
-<link rel="stylesheet" href="css/account.css?v=422">
+<link rel="stylesheet" href="css/cv-generator.css?v=517">
+<link rel="stylesheet" href="css/account.css?v=517">
 <link rel="stylesheet" href="css/product-experience.css?v=447">
-<link rel="stylesheet" href="css/date-picker.css?v=502">
+<link rel="stylesheet" href="css/date-picker.css?v=517">
 <link rel="stylesheet" href="css/share-profile.css?v=497">
-<link rel="stylesheet" href="css/recipient-links.css?v=433">
+<link rel="stylesheet" href="css/recipient-links.css?v=517">
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=375">
-<link rel="stylesheet" href="css/talent-directory.css?v=504">
-<link rel="stylesheet" href="css/projects.css?v=503">
+<link rel="stylesheet" href="css/talent-directory.css?v=517">
+<link rel="stylesheet" href="css/projects.css?v=517">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
-<link rel="stylesheet" href="css/theme.css?v=504">
-<link rel="stylesheet" href="css/corporate-information-architecture.css?v=421">
-<link rel="stylesheet" href="css/corporate-remediation.css?v=480">
+<link rel="stylesheet" href="css/theme.css?v=517">
+<link rel="stylesheet" href="css/corporate-information-architecture.css?v=517">
+<link rel="stylesheet" href="css/corporate-remediation.css?v=517">
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
-<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
+<link rel="stylesheet" href="css/personal-dashboard-qa.css?v=517">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-<link rel="stylesheet" href="css/shell-polish.css?v=506">
-<link rel="stylesheet" href="css/public-landing.css?v=501">
-<link rel="stylesheet" href="css/theme-palette-v508.css?v=509">
-<link rel="stylesheet" href="css/brand-auth-v513.css?v=516">
+<link rel="stylesheet" href="css/shell-polish.css?v=517">
+<link rel="stylesheet" href="css/public-landing.css?v=517">
+<link rel="stylesheet" href="css/theme-palette-v508.css?v=517">
+<link rel="stylesheet" href="css/brand-auth-v513.css?v=517">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -1694,10 +1694,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=480"></script>
-<script src="js/theme.js?v=509"></script>
+<script src="js/theme.js?v=517"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=495"></script>
-<script src="js/public-landing.js?v=511"></script>
+<script src="js/public-landing.js?v=517"></script>
 
 
 

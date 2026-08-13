@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'corporate-remediation.css'), 'utf8');
 const shellCss = fs.readFileSync(path.join(root, 'css', 'shell-polish.css'), 'utf8');
+const palette = fs.readFileSync(path.join(root, 'css', 'theme-palette-v508.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'corporate-remediation.js'), 'utf8');
 assert.match(runtime, /window\.localStorage&&window\.localStorage\.getItem\('atsrs_current_page'\)/);
 assert.match(runtime, /page==='privacy'\?'Privacy Notice':page==='dataRights'\?'Data Rights'/);
@@ -22,7 +23,7 @@ assert.match(runtime, /if\(document\.body&&window\.MutationObserver\)/);
 assert.match(css, /body\.company-mode #profilePage>\.panel>#accountTitle/);
 assert.match(css, /body\.company-mode #profilePage #accountGeneralTab>\.profile-grid[\s\S]*display:none!important/);
 assert.match(css, /\.corporate-account-context\{[\s\S]*?padding:0;[\s\S]*?border:0;[\s\S]*?border-radius:0;[\s\S]*?background:transparent;/);
-assert.match(css, /html\[data-theme="light"\] \.corporate-account-context\{background:transparent;border-color:transparent\}/);
+assert.match(css, /\.corporate-account-context\{[\s\S]*?background:transparent;/);
 assert.match(css, /body\.company-mode #refsPage \.cv-card[\s\S]*display:none!important/);
 assert.match(css, /data-atsrs-v134-kind="coverLetter"/);
 assert.match(runtime, /Legacy materials \(internal\)/);
@@ -55,8 +56,7 @@ assert.match(css, /--atsrs-touch-height:44px/);
 assert.match(css, /\.corporate-compliance-metrics\{grid-template-columns:repeat\(6/);
 assert.match(css, /@media\(max-width:720px\)/);
 assert.match(css, /#app button:focus-visible/);
-assert.match(shellCss, /#candidatesPage,#personnelPage,#projectsPage[^}]*\.talent-view-switch\{[\s\S]*?background:#fff!important/);
-assert.match(shellCss, /\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#2f6fb2!important/);
+assert.match(palette, /\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:var\(--glass-border-active\)!important/);
 assert.match(shellCss, /html\[data-theme="dark"\][\s\S]*?\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#4f8b7d!important/);
 
 function runTitleHarness(activeId, activeText) {
