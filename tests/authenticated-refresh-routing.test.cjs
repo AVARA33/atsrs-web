@@ -7,15 +7,15 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const landing = fs.readFileSync(path.join(root, 'js', 'public-landing.js'), 'utf8');
 const storage = fs.readFileSync(path.join(root, 'js', 'storage.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V510"/);
-assert.match(index, /atsrsExplicitHome=atsrsRequestedView==='home'/);
-assert.match(index, /__atsrsEntryRoute==='auth'\|\|window\.__atsrsEntryRoute==='share'\|\|atsrsExplicitHome/);
+assert.match(index, /data-atsrs-build="V511"/);
+assert.match(index, /__atsrsEntryRoute==='auth'\|\|window\.__atsrsEntryRoute==='share'\|\|window\.__atsrsEntryRoute==='landing'/);
 assert.doesNotMatch(index, /__atsrsEntryRoute!==['"]callback['"]/);
 assert.match(landing, /atsrsGetSessionSingleFlight/);
 assert.match(landing, /session&&session\.user/);
 assert.match(landing, /__atsrsSuppressAutomaticSessionOpen=false/);
 assert.match(landing, /atsrsResumeSession\(session,'resume'\)/);
 assert.match(landing, /if\(!client\|\|!client\.auth\)/);
+assert.match(landing, /if\(callback\|\|publicShare\)return;\s*showLanding\(\);\s*var client=/);
 assert.match(landing, /catch\(function\(error\)[\s\S]*?showLanding\(\)/);
 assert.match(storage, /function prepareAuthenticatedRoute\(\)[\s\S]*?__atsrsEntryRoute='app'/);
 assert.match(storage, /function handlePassiveRestore\(user,event\)/);

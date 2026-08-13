@@ -1,4 +1,4 @@
-/* ATSRS V505 public entry route, shared theme switch and animated brand wordmark. */
+/* ATSRS V511 public entry route, shared theme switch and animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -143,6 +143,7 @@
     return;
   }
   if(callback||publicShare)return;
+  showLanding();
   var client=window.supabaseClient;
   if(!client||!client.auth){
     showLanding();

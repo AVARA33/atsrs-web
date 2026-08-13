@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V510');
+assert.equal(version, 'V511');
 assert.equal(update, '13 Aug 2026');
 
 for (const asset of [
@@ -60,7 +60,7 @@ assert.match(index, /href="css\/shell-polish\.css\?v=506"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=495"/);
 assert.match(index, /href="css\/public-landing\.css\?v=501"/);
 assert.match(index, /href="css\/share-profile\.css\?v=497"/);
-assert.match(index, /src="js\/public-landing\.js\?v=505"/);
+assert.match(index, /src="js\/public-landing\.js\?v=511"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/talent-directory\.js\?v=504"/);
@@ -85,4 +85,4 @@ assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 assert.match(index, /href="css\/theme\.css\?v=504"/);
 assert.match(index, /src="js\/theme\.js\?v=509"/);
 
-console.log('V510 build marker consistency tests passed');
+console.log('V511 build marker consistency tests passed');
