@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V478" data-atsrs-update="11 Aug 2026">
+<html lang="en" data-atsrs-build="V501" data-atsrs-update="13 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -69,7 +69,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
 <link rel="stylesheet" href="css/shell-polish.css?v=506">
-<link rel="stylesheet" href="css/public-landing.css?v=499">
+<link rel="stylesheet" href="css/public-landing.css?v=501">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -163,7 +163,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <ul class="public-trust-list" aria-label="Key product principles">
           <li><i class="ph ph-check-circle" aria-hidden="true"></i>No card required for Free</li>
           <li><i class="ph ph-check-circle" aria-hidden="true"></i>You control what is shared</li>
-          <li><i class="ph ph-check-circle" aria-hidden="true"></i>Built for Personal and Corporate use</li>
+          <li><i class="ph ph-check-circle" aria-hidden="true"></i>Built for Personal, Candidate and Corporate use</li>
         </ul>
       </div>
       <div class="public-hero-visual" aria-label="ATSRS interface previews">
@@ -195,14 +195,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <i class="ph ph-identification-card" aria-hidden="true"></i>
           <p class="public-kicker">CANDIDATE</p>
           <h3>Be found on your terms</h3>
-          <p>Paid Personal plans can appear in the Candidate directory with approved profile details and availability.</p>
+          <p>Bronze and higher Personal plans can choose Public visibility to appear with approved profile and availability details. Private documents stay private unless access is separately approved.</p>
           <a href="#plans">See directory access <span aria-hidden="true">→</span></a>
         </article>
         <article>
           <i class="ph ph-buildings" aria-hidden="true"></i>
           <p class="public-kicker">CORPORATE</p>
           <h3>See what needs action</h3>
-          <p>Organise personnel, request documents, review approvals and export the records needed for audits and reporting.</p>
+          <p>Find permitted profiles, add selected people to Personnel, assign projects, request documents and review expiry status without making private files public.</p>
           <a href="#corporate-preview">See Corporate workspace <span aria-hidden="true">→</span></a>
         </article>
       </div>
@@ -242,12 +242,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div class="public-preview-copy">
         <p class="public-eyebrow">CORPORATE CONTROL</p>
         <h2>Personnel readiness without spreadsheet chasing.</h2>
-        <p>Bring selected Candidate profiles into Personnel, see document activity, send requests and keep review history together.</p>
+        <p>Bring permitted Candidate profiles into Personnel, assign projects, send document requests and keep expiry review history together.</p>
         <ul>
           <li><i class="ph ph-check" aria-hidden="true"></i>Candidate directory and selected Personnel</li>
-          <li><i class="ph ph-check" aria-hidden="true"></i>Document request and approval flow</li>
-          <li><i class="ph ph-check" aria-hidden="true"></i>Reports and audit-friendly exports</li>
+          <li><i class="ph ph-check" aria-hidden="true"></i>Project assignment and availability tracking</li>
+          <li><i class="ph ph-check" aria-hidden="true"></i>Document requests, approvals and expiry reports</li>
         </ul>
+        <a class="public-text-link" href="?view=signup">Create Corporate Account <span aria-hidden="true">&rarr;</span></a>
       </div>
       <figure class="public-wide-shot">
         <img src="assets/landing/corporate-personnel.png" alt="ATSRS Corporate personnel workspace preview" loading="lazy" width="1920" height="1080">
@@ -274,17 +275,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </article>
         <article class="public-plan public-plan-bronze">
           <p class="public-plan-name">BRONZE</p><h3>Become opportunity-ready</h3>
-          <ul><li>Everything in Free</li><li>Candidate directory visibility</li><li>Additional AI scan credits</li><li>Controlled share links</li><li>Expiry notifications</li></ul>
+          <ul><li>Manual document upload</li><li>Candidate directory visibility</li><li>Additional AI scan credits</li><li>Controlled share links</li><li>Expiry notifications</li></ul>
           <a href="pricing.html#bronze">View plan details</a>
         </article>
         <article class="public-plan public-plan-silver">
           <p class="public-plan-name">SILVER</p><h3>For an active career</h3>
-          <ul><li>Everything in Bronze</li><li>Higher AI scan allowance</li><li>More dedicated share links</li><li>Expanded notification allowance</li><li>Priority profile tools</li></ul>
+          <ul><li>Manual document upload</li><li>Candidate directory visibility</li><li>Higher AI scan allowance</li><li>More dedicated share links</li><li>Expanded notification allowance</li></ul>
           <a href="pricing.html#silver">View plan details</a>
         </article>
         <article class="public-plan public-plan-gold">
           <p class="public-plan-name">GOLD</p><h3>Maximum Personal capacity</h3>
-          <ul><li>Everything in Silver</li><li>Highest AI scan allowance</li><li>Highest sharing allowance</li><li>Highest notification allowance</li><li>Full Personal plan capacity</li></ul>
+          <ul><li>Manual document upload</li><li>Candidate directory visibility</li><li>Highest AI scan allowance</li><li>Highest sharing allowance</li><li>Highest notification allowance</li></ul>
           <a href="pricing.html#gold">View plan details</a>
         </article>
       </div>
@@ -1690,10 +1691,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=480"></script>
-<script src="js/theme.js?v=460"></script>
+<script src="js/theme.js?v=501"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
 <script src="js/shell-polish.js?v=495"></script>
-<script src="js/public-landing.js?v=499"></script>
+<script src="js/public-landing.js?v=501"></script>
 
 
 

@@ -1,4 +1,4 @@
-/* ATSRS V460 global light and dark appearance control. */
+/* ATSRS V501 global light and dark appearance control. */
 (function(){
   'use strict';
   var KEY='atsrs_theme';
@@ -31,7 +31,23 @@
     window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:theme}}));
   }
 
+  function isPublicView(){
+    return !!(document.body&&document.body.classList.contains('atsrs-public-view'));
+  }
+
+  function removeControls(){
+    var controls=document.getElementById('atsrsGlobalControls');
+    var workspace=document.getElementById('workspaceSwitcher');
+    if(workspace&&controls&&controls.contains(workspace)){
+      document.body.appendChild(workspace);
+      workspace.hidden=true;
+    }
+    if(controls)controls.remove();
+    if(document.body)document.body.classList.remove('atsrs-app-visible');
+  }
+
   function syncPlacement(){
+    if(isPublicView()){removeControls();return;}
     var app=document.getElementById('app');
     var appVisible=!!(app&&!app.classList.contains('hidden'));
     var controls=document.getElementById('atsrsGlobalControls');
@@ -46,6 +62,7 @@
   }
 
   function ensureControls(){
+    if(isPublicView()){removeControls();return null;}
     var controls=document.getElementById('atsrsGlobalControls');
     if(!controls){
       controls=document.createElement('div');
@@ -138,6 +155,9 @@
   }
 
   window.atsrsSetTheme=function(theme){applyTheme(theme,true);};
+  window.atsrsRemoveThemeControls=removeControls;
+  window.atsrsEnsureThemeControls=ensureControls;
+  window.atsrsSyncThemePlacement=syncPlacement;
   window.addEventListener('storage',function(event){
     if(event.key===KEY)applyTheme(event.newValue==='light'?'light':'dark',false);
   });

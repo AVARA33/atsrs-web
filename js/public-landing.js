@@ -1,4 +1,4 @@
-/* ATSRS V459 public entry route, shared theme switch and animated brand wordmark. */
+/* ATSRS V501 public entry route, shared theme switch and animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -52,6 +52,21 @@
   function hideLanding(){
     document.body.classList.remove('atsrs-public-view');
     if(landing)landing.classList.add('hidden');
+    restoreGlobalControls();
+  }
+
+  function removePublicGlobalControls(){
+    if(typeof window.atsrsRemoveThemeControls==='function'){
+      window.atsrsRemoveThemeControls();
+      return;
+    }
+    var controls=document.getElementById('atsrsGlobalControls');
+    if(controls)controls.remove();
+  }
+
+  function restoreGlobalControls(){
+    if(typeof window.atsrsEnsureThemeControls==='function')window.atsrsEnsureThemeControls();
+    if(typeof window.atsrsSyncThemePlacement==='function')window.atsrsSyncThemePlacement();
   }
   function removeSharedProfile(){
     var sharedProfile=document.getElementById('sharedProfilePage');
@@ -66,6 +81,7 @@
     if(app)app.classList.add('hidden');
     document.body.classList.remove('auth-open','app-open');
     document.body.classList.add('atsrs-public-view');
+    removePublicGlobalControls();
     landing.classList.remove('hidden');
     finishPublicBoot();
     document.title='ATSRS — Document readiness for people and companies';
