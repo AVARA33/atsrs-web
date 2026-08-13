@@ -2107,7 +2107,7 @@ setTimeout(v55DockTopActions,500);
       }catch(error){
         console.warn('ATSRS passive workspace restore failed',error);
         returnToLogin(user,workspaceServiceMessage(error));
-        return true;
+        return false;
       }
     }
     async function continueSession(session,event){
