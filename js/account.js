@@ -239,7 +239,7 @@
   function openFile(f){if(!f||!f.data){alert('CV preview is not available.');return;}var url=dataURLToBlobURL(f.data);var w=window.open(url,'_blank','noopener');if(!w){var a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();}setTimeout(function(){try{if(String(url).indexOf('blob:')===0)URL.revokeObjectURL(url);}catch(e){}},60000);}
   function downloadFile(f){if(!f||!f.data){alert('CV download is not available.');return;}var a=document.createElement('a');a.href=f.data;a.download=f.name||'ATSRS-CV';document.body.appendChild(a);a.click();a.remove();}
   function mainBox(f){
-    var body=f?'<div class="atsrs-v156-main-row"><div class="atsrs-v156-main-name"><div class="atsrs-v156-main-identity"><b title="'+esc(f.name)+'">'+esc(f.name||'Main CV')+'</b></div><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="previewCV()">Preview</button><button class="secondary" onclick="downloadCV()">Download</button><button class="secondary" onclick="deleteCV()">Delete</button></div></div>':'<div class="atsrs-v156-empty">No Main CV uploaded yet.</div>';
+    var body=f?'<div class="atsrs-v156-main-row"><div class="atsrs-v156-main-name"><div class="atsrs-v156-main-identity"><b title="'+esc(f.name)+'">'+esc(f.name||'Main CV')+'</b></div><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="replaceCV()">Replace</button><button class="secondary" onclick="previewCV()">Preview</button><button class="secondary" onclick="downloadCV()">Download</button><button class="secondary" onclick="deleteCV()">Delete</button></div></div>':'<div class="atsrs-v156-empty">No Main CV uploaded yet.</div>';
     return '<div class="atsrs-v156-main-box">'+body+'</div>';
   }
   function slotsBox(){
@@ -264,7 +264,7 @@
       if(info){info.className='preview-box atsrs-v156-cv-area';info.innerHTML=mainBox(m)+slotsBox();}
       var badge=byId('cvStatusBadge'); if(badge){badge.textContent=m?'Main CV':'No CV Uploaded';badge.className='badge '+(m?'badge-ready':'badge-missing');}
       var dash=byId('cvStatusDash'); if(dash){dash.textContent=m?'Available ✓':'Missing ⚠';dash.className='stat '+(m?'good':'missing');}
-      var up=byId('uploadCVBtn'); if(up)up.textContent=m?'Replace Main CV':'Upload Main CV';
+      var up=byId('uploadCVBtn'); if(up){up.textContent='Upload Main CV';up.hidden=!!m;if(up.parentElement)up.parentElement.hidden=!!m;}
       var inp=byId('cvUploadInput'); if(inp)inp.removeAttribute('multiple');
       var prev=byId('previewCVBtn'); if(prev)prev.textContent='Preview Main CV';
       var down=byId('downloadCVBtn'); if(down)down.textContent='Download Main CV';
@@ -283,6 +283,7 @@
       if(files.length>1)alert('Free plan allows only Main CV. Additional CV slots are prepared for paid plans.');
     }catch(err){console.error(err);alert('CV could not be saved. Storage is unavailable or full.');}
   };
+  window.replaceCV=function(){var input=byId('cvUploadInput');if(input){input.value='';input.click();}};
   window.previewCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}openFile(f);};
   window.downloadCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}downloadFile(f);};
   window.deleteCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}await del(f.id);await renderCV();};

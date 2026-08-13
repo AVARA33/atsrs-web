@@ -13,7 +13,12 @@ assert.match(html, /<div class="cv-main-panel">[\s\S]*?id="uploadCVBtn"[\s\S]*?<
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.equal((html.match(/id="uploadCVBtn"/g)||[]).length, 1);
 assert.doesNotMatch(html, /id="(?:previewCVBtn|downloadCVBtn|deleteCVBtn)"/);
-assert.match(accountJs, /onclick="previewCV\(\)"[\s\S]*?onclick="downloadCV\(\)"[\s\S]*?onclick="deleteCV\(\)"/);
+assert.match(accountJs, /onclick="replaceCV\(\)">Replace<\/button>[\s\S]*?onclick="previewCV\(\)"[\s\S]*?onclick="downloadCV\(\)"[\s\S]*?onclick="deleteCV\(\)"/);
+assert.match(serverDataJs, /onclick="replaceCV\(\)">Replace<\/button>[\s\S]*?onclick="atsrsCloudPreview/);
+assert.doesNotMatch(accountJs, /Replace Main CV/);
+assert.doesNotMatch(serverDataJs, /Replace Main CV/);
+assert.match(accountJs, /up\.parentElement\)up\.parentElement\.hidden=!!m/);
+assert.match(serverDataJs, /upload\.parentElement\)upload\.parentElement\.hidden=!!cv/);
 assert.match(accountJs, /atsrs-v156-main-identity"><b title=/);
 assert.doesNotMatch(accountJs, /atsrs-v156-main-identity"><span class="atsrs-v156-box-title">Main CV/);
 assert.match(serverDataJs, /atsrs-v156-main-identity"><b title=/);
