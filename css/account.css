@@ -1986,6 +1986,18 @@ body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
   }
 }
 
+/* V422: one Main CV marker; blue in light mode and green in dark mode. */
+html[data-theme="light"] body.personal-mode #refsPage #cvStatusBadge.badge-ready{
+  border-color:#c8d9eb!important;
+  color:#245b93!important;
+  background:#eef5fc!important;
+}
+html[data-theme="dark"] body.personal-mode #refsPage #cvStatusBadge.badge-ready{
+  border-color:rgba(74,222,128,.26)!important;
+  color:#86efac!important;
+  background:rgba(34,197,94,.10)!important;
+}
+
 /* V421: an uploaded Main CV is an active record, not a disabled grey block. */
 body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-box{
   padding:12px!important;

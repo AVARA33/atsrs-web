@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'account.css'), 'utf8');
 const accountJs = fs.readFileSync(path.join(root, 'js', 'account.js'), 'utf8');
+const serverDataJs = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
 
 assert.match(html, /<div class="ref-card cv-card">\s*<div class="cv-main-panel">/);
 assert.match(html, /<div class="cv-main-panel">[\s\S]*?id="uploadCVBtn"[\s\S]*?<\/div>\s*<div class="cv-beta-box">/);
@@ -13,7 +14,10 @@ assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.equal((html.match(/id="uploadCVBtn"/g)||[]).length, 1);
 assert.doesNotMatch(html, /id="(?:previewCVBtn|downloadCVBtn|deleteCVBtn)"/);
 assert.match(accountJs, /onclick="previewCV\(\)"[\s\S]*?onclick="downloadCV\(\)"[\s\S]*?onclick="deleteCV\(\)"/);
-assert.match(accountJs, /atsrs-v156-main-identity[\s\S]*?atsrs-v156-box-title[\s\S]*?Main CV/);
+assert.match(accountJs, /atsrs-v156-main-identity"><b title=/);
+assert.doesNotMatch(accountJs, /atsrs-v156-main-identity"><span class="atsrs-v156-box-title">Main CV/);
+assert.match(serverDataJs, /atsrs-v156-main-identity"><b title=/);
+assert.doesNotMatch(serverDataJs, /atsrs-v156-main-identity"><span class="atsrs-v156-box-title">Main CV/);
 assert.doesNotMatch(accountJs, /class="action" onclick="deleteCV\(\)"/);
 assert.equal((html.match(/id="generateCVBtn"/g)||[]).length, 1);
 assert.match(css, /body\.personal-mode #refsPage \.cv-card\{[\s\S]*?grid-template-columns:minmax\(0,1\.25fr\) minmax\(280px,\.75fr\)!important;/);
@@ -25,6 +29,8 @@ assert.match(css, /V421: an uploaded Main CV is an active record, not a disabled
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-main-box\{[\s\S]*?background:#fff!important;/);
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-main-name b\{[\s\S]*?color:#2563a6!important;/);
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-actions button\{[\s\S]*?background:#fff!important;/);
-assert.match(html, /href="css\/account\.css\?v=421"/);
+assert.match(css, /V422: one Main CV marker; blue in light mode and green in dark mode/);
+assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage #cvStatusBadge\.badge-ready\{[\s\S]*?color:#245b93!important;[\s\S]*?background:#eef5fc!important;/);
+assert.match(html, /href="css\/account\.css\?v=422"/);
 
 console.log('References CV workspace layout contracts passed');
