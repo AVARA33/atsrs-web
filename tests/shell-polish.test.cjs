@@ -10,7 +10,10 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
-assert.match(index,/css\/shell-polish\.css\?v=505/);
+assert.match(index,/css\/shell-polish\.css\?v=506/);
+assert.match(index,/js\/storage\.js\?v=501/);
+assert.match(index,/class="account-tabs" role="tablist"/);
+assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
 assert.match(index,/js\/shell-polish\.js\?v=495/);
 assert.match(index,/js\/app\.js\?v=470/);
 assert.doesNotMatch(index,/<span class="pill">PRODUCT UPDATES<\/span>/);
@@ -78,6 +81,9 @@ assert.match(css,/#atsrsThemeToggle::before,[\s\S]*?#atsrsThemeToggle::after\{di
 assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/ph ph-sun atsrs-theme-sun/);
 assert.match(css,/\.sidebar \.nav button\.active[\s\S]*?background:transparent!important[\s\S]*?box-shadow:inset 3px 0 0 var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/\.cert-mode-buttons button\.active[\s\S]*?background:transparent!important/);
+assert.match(css,/Account-page navigation needs an unmistakable current-page state[\s\S]*?data-theme="light"[\s\S]*?#profilePage \.account-tabs button\.active[\s\S]*?color:#245b93!important/);
+assert.match(css,/data-theme="dark"[\s\S]*?#profilePage \.account-tabs button\.active[\s\S]*?color:#86efac!important/);
+assert.match(fs.readFileSync(path.join(root,'js','storage.js'),'utf8'),/button\.setAttribute\("aria-selected","false"\)[\s\S]*?button\.setAttribute\("aria-selected","true"\)/);
 assert.match(css,/Ordinary actions remain neutral[\s\S]*?background:transparent!important/);
 assert.doesNotMatch(css,/html\[data-theme="dark"\] body #app\.app:not\(\.hidden\) button:not\([\s\S]*?background:var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/:where\(\.roadmap-icon,\.dashboard-view-button\)[\s\S]*?background:var\(--atsrs-shell-accent-soft\)!important/);

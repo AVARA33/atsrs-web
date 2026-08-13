@@ -485,7 +485,7 @@ if(!window.__atsrsLegalNavigationBound){
     showPage(page,navPrivacy);
   });
 }
-function showAccountTab(tab){["general","security","sharing"].forEach(x=>{let panel=document.getElementById("account"+cap(x)+"Tab"),button=document.getElementById("accountTab"+cap(x)+"Btn");if(panel)panel.classList.remove("active");if(button)button.classList.remove("active")});let panel=document.getElementById("account"+cap(tab)+"Tab"),button=document.getElementById("accountTab"+cap(tab)+"Btn");if(panel)panel.classList.add("active");if(button)button.classList.add("active")}
+function showAccountTab(tab){["general","security","sharing"].forEach(x=>{let panel=document.getElementById("account"+cap(x)+"Tab"),button=document.getElementById("accountTab"+cap(x)+"Btn");if(panel)panel.classList.remove("active");if(button){button.classList.remove("active");button.setAttribute("aria-selected","false")}});let panel=document.getElementById("account"+cap(tab)+"Tab"),button=document.getElementById("accountTab"+cap(tab)+"Btn");if(panel)panel.classList.add("active");if(button){button.classList.add("active");button.setAttribute("aria-selected","true")}}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
 function showPersonnelTab(tab){

@@ -68,7 +68,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-<link rel="stylesheet" href="css/shell-polish.css?v=505">
+<link rel="stylesheet" href="css/shell-polish.css?v=506">
 <link rel="stylesheet" href="css/public-landing.css?v=499">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
@@ -1028,10 +1028,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="panel">
 <h3 id="accountTitle"></h3>
 <p id="userEmail" class="sub"></p>
-<div class="account-tabs">
-<button id="accountTabGeneralBtn" class="active" onclick="showAccountTab('general')"></button>
-<button id="accountTabSecurityBtn" onclick="showAccountTab('security')"></button>
-<button id="accountTabSharingBtn" onclick="showAccountTab('sharing')">Privacy &amp; Sharing</button>
+<div class="account-tabs" role="tablist" aria-label="Account sections">
+<button id="accountTabGeneralBtn" class="active" role="tab" aria-selected="true" onclick="showAccountTab('general')"></button>
+<button id="accountTabSecurityBtn" role="tab" aria-selected="false" onclick="showAccountTab('security')"></button>
+<button id="accountTabSharingBtn" role="tab" aria-selected="false" onclick="showAccountTab('sharing')">Privacy &amp; Sharing</button>
 </div>
 <div id="accountGeneralTab" class="account-tab active">
 <section id="corporateAccountContext" class="corporate-account-context company-only" aria-labelledby="corporateAccountHeading">
@@ -1666,7 +1666,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=500"></script>
+<script src="js/storage.js?v=501"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=375"></script>
 <script src="js/auth.js?v=459"></script>

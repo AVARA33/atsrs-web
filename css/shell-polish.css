@@ -46,9 +46,8 @@ html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{
   -webkit-text-fill-color:var(--atsrs-shell-accent)!important;
 }
 
-/* Selected tabs stay neutral; selection is shown without a colored fill. */
+/* Selected utility tabs stay neutral; selection is shown without a colored fill. */
 html body #app.app:not(.hidden) :where(
-  .account-tabs button.active,
   .module-tabs button.active,
   .mode-choice button.active,
   .talent-view-switch button.active,
@@ -60,6 +59,28 @@ html body #app.app:not(.hidden) :where(
   color:inherit!important;
   -webkit-text-fill-color:currentColor!important;
   box-shadow:none!important;
+}
+
+/*
+ * Account-page navigation needs an unmistakable current-page state.
+ * It follows the approved shell palette: blue in light mode, sage in dark mode.
+ */
+html[data-theme="light"] body #app.app:not(.hidden) #profilePage .account-tabs button.active{
+  background:#edf4fb!important;
+  border-color:#9fbee0!important;
+  color:#245b93!important;
+  -webkit-text-fill-color:#245b93!important;
+  box-shadow:inset 0 -2px 0 #2f6fb2!important;
+  font-weight:800!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #profilePage .account-tabs button.active{
+  background:rgba(79,139,125,.14)!important;
+  border-color:rgba(79,139,125,.72)!important;
+  color:#86efac!important;
+  -webkit-text-fill-color:#86efac!important;
+  box-shadow:inset 0 -2px 0 #4f8b7d!important;
+  font-weight:800!important;
 }
 
 /* Ordinary actions remain neutral in both themes; green is reserved for state feedback. */
