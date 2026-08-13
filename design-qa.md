@@ -1,43 +1,44 @@
-# ATSRS V515 Light-Mode Logo Design QA
+# ATSRS V516 Light-Mode 3D Logo Design QA
 
 ## Evidence
 
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-af9594fd-8a30-498b-a6e6-685e7dc18f8f.png` (1536 x 1024 px blue luminous lockup).
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a2b43b4e-f40c-4683-87d7-3371419f7e5a.png` (1536 x 1024 px dark-mode green lockup used for 3D depth, edge light, ground glow and metallic treatment).
 - Browser-rendered implementation:
-  - `docs/qa/v515/login-light-desktop.png` (1280 x 720 px)
-  - `docs/qa/v515/home-light-desktop.png` (1280 x 720 px)
-  - `docs/qa/v515/login-light-390.png` (390 x 844 px)
-- Same-input focused comparison: `docs/qa/v515/comparison-login-light-focus.jpg`.
-- CSS viewports and screenshots are equal-size at device scale factor 1; no density normalization was required.
-- States: Home light desktop; Login light desktop and 390 px.
-- The source is a dark-canvas brand treatment rather than a complete page. QA therefore evaluates the supplied logo's luminosity, blue tonal depth, text clarity and transparent page integration.
+  - `docs/qa/v516/home-light-desktop.png` (984 x 554 px rendered browser capture)
+  - `docs/qa/v516/login-light-desktop.png` (984 x 554 px rendered browser capture)
+  - `docs/qa/v516/login-light-390.png` (300 x 649 px browser-scaled 390 x 844 responsive state)
+- Asset-on-canvas evidence: `docs/qa/v516/asset-on-light.png` (1108 x 384 px).
+- Same-input comparison: `docs/qa/v516/comparison-dark-source-vs-light-login.jpg`.
+- Device scale factor 1. The in-app preview surface scaled the requested responsive viewport; layout and overflow were judged from CSS metrics returned by the browser.
+- States: public Home light and Login light on desktop and narrow mobile.
 
 ## Findings
 
 No actionable P0, P1 or P2 differences remain.
 
-- Fonts and typography: ATSRS lettering and the full “Applicant Tracking System & Recruitment Solutions” line remain in the supplied raster artwork; no font reconstruction or wrapping was introduced.
-- Spacing and layout rhythm: V514 dimensions and alignment are unchanged. Desktop Login remains centered; Home remains compact at the top-left; mobile fits within 390 px.
-- Colors and visual tokens: the flat V514 navy replacement was changed to a metallic deep-blue-to-cyan range derived from source luminance. Saturation, contrast, highlight and restrained blue drop-shadow restore the supplied luminous character on the light canvas.
-- Image quality and asset fidelity: the asset remains a transparent PNG generated from the supplied source. The logo's cyan edge light, blue depth, ground glow and internal highlights are visible without restoring the rectangular black matte.
-- Copy and content: no visible product or authentication copy changed.
-- Responsiveness and accessibility: page-level horizontal overflow is 0; mobile Login height remains one 844 px viewport; the Login card remains transparent.
+- Fonts and typography: the supplied ATSRS lettering and company line remain raster artwork. Only the first three neutral letters, ATS, are mapped to near-black graphite in light mode. RS retains its blue gradient.
+- Spacing and layout rhythm: Home and Login positions and dimensions remain unchanged from V514/V515. The Login card remains removed and the lockup stays centered.
+- Colors and visual tokens: light mode uses graphite ATS, blue-gradient RS and blue/cyan illustration. Dark mode remains the existing green supplied lockup and is untouched.
+- Image quality and asset fidelity: the light asset copies the dark reference's 3D vocabulary—bright edge light, inner blue depth, specular cyan highlights, ground glow and close halo—without restoring the black rectangular matte. The glow is baked only from colored artwork pixels, so black ATS letters are not surrounded by an artificial blue text shadow.
+- Copy and content: “Applicant Tracking System & Recruitment Solutions” remains present and readable. No UI copy changed.
+- Responsiveness and accessibility: Home stays scrollable; Login fits its mobile viewport; page-level horizontal overflow is 0; the Back to Home control is unchanged.
 
 ## Comparison History
 
-1. P2 reported by user: V514 light mode looked flat because neutral logo pixels were converted to one solid navy value and no page-level luminous treatment remained.
-   - Fix: map neutral source luminance to a metallic blue range and add two restrained blue/cyan drop shadows only in light mode.
-   - Post-fix evidence: `login-light-desktop.png`, `home-light-desktop.png`, `login-light-390.png`, and `comparison-login-light-focus.jpg`.
-2. Post-fix comparison: the logo again has visible cyan highlights, deeper blues and a soft glow while retaining a transparent background.
+1. P2 V515: ATS was recolored blue even though the user expected the first three letters to remain black.
+   - Fix: restrict neutral recoloring to the ATS wordmark region and map it to near-black graphite.
+2. P2 V515: global CSS drop-shadow did not recreate the supplied 3D treatment and also affected lettering.
+   - Fix: preserve and enhance source-blue highlights, then derive close cyan and wide blue glow masks only from colored artwork pixels inside the transparent PNG.
+3. Post-fix evidence: `asset-on-light.png`, `home-light-desktop.png`, `login-light-desktop.png`, `login-light-390.png`, and `comparison-dark-source-vs-light-login.jpg` show black ATS plus source-like blue 3D depth and glow.
 
 ## Interaction and Runtime Checks
 
-- Home and Login light routes render build V515.
+- Home and Login light routes render build V516.
 - Login card computed background remains transparent.
-- Desktop and 390 px horizontal overflow: 0.
-- Home remains vertically scrollable; mobile Login remains one viewport.
+- Home remains vertically scrollable.
+- Desktop and narrow mobile page-level horizontal overflow: 0.
 - Fresh Login browser console errors: 0.
-- Dark-mode selectors and green asset were not modified by V515.
+- Dark-mode green asset and its selectors were not changed.
 
 ## Follow-up Polish
 

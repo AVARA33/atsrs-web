@@ -1,4 +1,4 @@
-/* ATSRS V515: luminous transparent lockups for Home/Login and text-free boot. */
+/* ATSRS V516: graphite ATS lettering with source-blue luminous artwork. */
 
 #auth .auth-card,
 html[data-theme="light"] #auth .auth-card{
@@ -29,9 +29,7 @@ html[data-theme="light"] #auth .atsrs-auth-lockup{
   background-color:transparent;
   background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
   box-shadow:none;
-  filter:saturate(1.22) contrast(1.08) brightness(1.04)
-    drop-shadow(0 7px 7px rgba(9,52,132,.2))
-    drop-shadow(0 0 9px rgba(24,163,235,.22));
+  filter:saturate(1.12) contrast(1.04);
 }
 
 .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
@@ -48,9 +46,7 @@ html[data-theme="light"] #auth .atsrs-auth-lockup{
 
 html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
   background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
-  filter:saturate(1.22) contrast(1.08) brightness(1.04)
-    drop-shadow(0 5px 5px rgba(9,52,132,.18))
-    drop-shadow(0 0 7px rgba(24,163,235,.2));
+  filter:saturate(1.12) contrast(1.04);
 }
 
 .atsrs-public-landing .public-wordmark.atsrs-home-lockup::after{
