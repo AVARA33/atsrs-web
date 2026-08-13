@@ -29,7 +29,7 @@ for (const asset of [
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=409"`));
 }
 
-assert.match(index, /src="js\/dashboard\.js\?v=419"/);
+assert.match(index, /src="js\/dashboard\.js\?v=420"/);
 assert.match(index, /href="css\/dashboard\.css\?v=447"/);
 assert.match(index, /href="css\/account\.css\?v=420"/);
 

@@ -240,12 +240,12 @@
     if(raw.charAt(0)!=='+')raw='+'+raw.replace(/\+/g,'');
     return raw;
   }
-  function syncPhonePicker(select){
+  function syncPhonePicker(select,forceInput){
     if(!select||!select.__atsrsPicker)return;
     var code=select.value||'+994';
     var country=phoneCountryForCode(code);
     applyPhoneFlag(select.__atsrsPicker.flag,country[0]);
-    if(!select.__atsrsPicker.input.matches(':focus'))select.__atsrsPicker.input.value=code;
+    if(forceInput||!select.__atsrsPicker.input.matches(':focus'))select.__atsrsPicker.input.value=code;
   }
   function filterPhoneCountries(query){
     var raw=normalizePhoneCode(query);
@@ -279,7 +279,8 @@
       button.addEventListener('mousedown',function(event){event.preventDefault();});
       button.addEventListener('click',function(){
         select.value=item[1];
-        syncPhonePicker(select);
+        syncPhonePicker(select,true);
+        select.dispatchEvent(new Event('change',{bubbles:true}));
         updatePhoneHidden(select.id.indexOf('Whatsapp')>=0?'profileWhatsapp':'profilePhone');
         menu.classList.add('hidden');
       });

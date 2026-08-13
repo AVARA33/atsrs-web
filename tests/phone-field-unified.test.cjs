@@ -8,7 +8,7 @@ const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const dashboard=fs.readFileSync(path.join(root,'js','dashboard.js'),'utf8');
 
 assert.match(index,/css\/shell-polish\.css\?v=505/);
-assert.match(index,/js\/dashboard\.js\?v=419/);
+assert.match(index,/js\/dashboard\.js\?v=420/);
 assert.match(css,/Personal contact numbers: one professional field/);
 assert.match(css,/grid-template-columns:minmax\(136px,28%\) minmax\(0,1fr\)!important/);
 assert.match(css,/height:48px!important/);
@@ -18,6 +18,8 @@ assert.match(css,/\.phone-field > input:not\(\[type="hidden"\]\)\{/);
 assert.match(css,/html\[data-theme="light"\][\s\S]*\.phone-code-picker\{[\s\S]*background:#f7f9fc!important/);
 assert.match(css,/@media\(max-width:520px\)/);
 assert.match(dashboard,/ph ph-caret-down phone-code-arrow/);
+assert.match(dashboard,/function syncPhonePicker\(select,forceInput\)/);
+assert.match(dashboard,/syncPhonePicker\(select,true\);[\s\S]*select\.dispatchEvent\(new Event\('change',\{bubbles:true\}\)\)/);
 assert.match(css,/V485: compact phone controls/);
 assert.match(css,/grid-template-columns:132px minmax\(0,1fr\)!important/);
 assert.match(css,/\.phone-field :focus-visible\{[\s\S]*outline:0!important/);
