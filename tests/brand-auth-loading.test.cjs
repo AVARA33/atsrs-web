@@ -15,16 +15,18 @@ assert.match(index, /public-wordmark atsrs-home-lockup/);
 assert.match(css, /atsrs-lockup-green-transparent\.png/);
 assert.match(css, /atsrs-lockup-blue-transparent\.png/);
 assert.match(css, /html\[data-theme="light"\] #auth \.auth-card[\s\S]*?background:transparent!important/);
+assert.match(css, /html\[data-theme="light"\] #auth \.atsrs-auth-lockup[\s\S]*?filter:saturate\(1\.22\)[\s\S]*?drop-shadow/);
+assert.match(css, /html\[data-theme="light"\] \.atsrs-public-landing \.public-wordmark\.atsrs-home-lockup[\s\S]*?drop-shadow/);
 assert.match(css, /\.public-wordmark\.atsrs-home-lockup::after[\s\S]*?content:none!important/);
 assert.match(css, /atsrs-mark-green\.png/);
 assert.match(css, /atsrs-mark-blue\.png/);
 assert.match(css, /@keyframes atsrsLogoShine/);
 assert.match(css, /prefers-reduced-motion:reduce/);
-assert.match(harness, /brand-auth-v513\.css\?v=514/);
+assert.match(harness, /brand-auth-v513\.css\?v=515/);
 assert.doesNotMatch(harness, /atsrs-spinner|Welcome to ATSRS|Getting things ready/);
 
 for (const asset of ['atsrs-lockup-green-transparent.png', 'atsrs-lockup-blue-transparent.png', 'atsrs-mark-green.png', 'atsrs-mark-blue.png']) {
   assert.ok(fs.statSync(path.join(root, 'assets', 'branding', asset)).size > 100000);
 }
 
-console.log('V514 transparent Home/Login logo and text-free loading contracts passed');
+console.log('V515 luminous transparent Home/Login logo and text-free loading contracts passed');

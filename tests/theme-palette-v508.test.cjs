@@ -7,7 +7,7 @@ const read=(file)=>fs.readFileSync(path.join(root,file),'utf8');
 const css=read('css/theme-palette-v508.css');
 const index=read('index.html');
 
-assert.match(index,/data-atsrs-build="V514"/);
+assert.match(index,/data-atsrs-build="V515"/);
 assert.match(index,/css\/theme-palette-v508\.css\?v=509/);
 assert.match(index,/js\/theme\.js\?v=509/);
 assert.match(css,/--atsrs-ref-light-bg:#edf2f8/);
