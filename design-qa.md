@@ -434,3 +434,18 @@ final result: passed
 - No P0, P1 or P2 findings remain in the requested colour-only scope.
 
 final result: passed
+
+## V509 light-reference correction QA
+
+- User feedback: V508 light mode remained too visually close to the previous production palette.
+- Source: `C:/Users/user/AppData/Local/Temp/codex-clipboard-5bc4036c-6af4-4308-9384-914522471c49.jpg`.
+- Final desktop implementation: `docs/theme-v509-light-home.png`.
+- Final mobile implementation: `docs/theme-v509-light-home-390.png`.
+- Colour comparison now shows the reference's clearly separated white surfaces over an ice-blue canvas, deep navy headings, stronger blue actions and links, and a cyan supporting accent.
+- Existing ATSRS geometry, content, typography, semantic expiry colours and functional flows remain unchanged.
+- Authenticated Personal uses the same ice-blue canvas, white functional cards and blue left-rail selection state.
+- Desktop and `390 x 844` have zero root horizontal overflow. Mobile Home → Login → Back to Home passes; Login remains exactly one viewport tall.
+- Targeted regression tests: 11 passed, 0 failed.
+- No P0, P1 or P2 findings remain in the corrected light-mode scope.
+
+final result: passed

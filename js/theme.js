@@ -1,4 +1,4 @@
-/* ATSRS V508 global light and dark appearance control. */
+/* ATSRS V509 global light and dark appearance control. */
 (function(){
   'use strict';
   var KEY='atsrs_theme';
@@ -25,7 +25,7 @@
     document.documentElement.dataset.theme=theme;
     document.documentElement.style.colorScheme=theme;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',theme==='light'?'#f5f7fb':'#050606');
+    if(meta)meta.setAttribute('content',theme==='light'?'#edf2f8':'#050606');
     if(persist)saveTheme(theme);
     syncButton();
     window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:theme}}));

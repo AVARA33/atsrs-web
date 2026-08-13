@@ -1,4 +1,4 @@
-/* ATSRS V508 reference-led colour system. Geometry and product structure stay unchanged. */
+/* ATSRS V509 reference-led colour system. Geometry and product structure stay unchanged. */
 :root{
   --atsrs-ref-dark-bg:#050606;
   --atsrs-ref-dark-surface:#0b0d0d;
@@ -8,15 +8,15 @@
   --atsrs-ref-dark-muted:#a8afa9;
   --atsrs-ref-lime:#b8ff19;
   --atsrs-ref-lime-strong:#9fe600;
-  --atsrs-ref-light-bg:#f5f7fb;
+  --atsrs-ref-light-bg:#edf2f8;
   --atsrs-ref-light-surface:#ffffff;
-  --atsrs-ref-light-soft:#e9eef6;
-  --atsrs-ref-light-line:#cfd8e6;
+  --atsrs-ref-light-soft:#dfe8f3;
+  --atsrs-ref-light-line:#c4d2e2;
   --atsrs-ref-light-text:#0b2554;
-  --atsrs-ref-light-muted:#5f6d85;
-  --atsrs-ref-blue:#1473d2;
-  --atsrs-ref-blue-strong:#0a4f9f;
-  --atsrs-ref-cyan:#31b7e8;
+  --atsrs-ref-light-muted:#536680;
+  --atsrs-ref-blue:#167bd3;
+  --atsrs-ref-blue-strong:#0b5ca8;
+  --atsrs-ref-cyan:#20aee5;
 }
 
 /* Dark reference: near-black system surfaces with precise neon-lime signals. */
@@ -120,8 +120,8 @@ html[data-theme="light"]{
   --public-line:var(--atsrs-ref-light-line);
   --public-accent:var(--atsrs-ref-blue);
   --public-accent-strong:var(--atsrs-ref-blue-strong);
-  --public-accent-soft:#e7f2fd;
-  --public-shadow:0 22px 60px rgba(11,37,84,.12);
+  --public-accent-soft:#dceffc;
+  --public-shadow:0 22px 58px rgba(11,37,84,.16);
   --legal-bg:var(--atsrs-ref-light-bg);
   --legal-surface:var(--atsrs-ref-light-surface);
   --legal-soft:var(--atsrs-ref-light-soft);
@@ -135,7 +135,7 @@ html[data-theme="light"]{
 
 html[data-theme="light"] body{
   --atsrs-bg:var(--atsrs-ref-light-bg);
-  --atsrs-bg2:#f9fbfd;
+  --atsrs-bg2:#f7fafe;
   --atsrs-panel:var(--atsrs-ref-light-surface);
   --atsrs-panel2:var(--atsrs-ref-light-soft);
   --atsrs-border:var(--atsrs-ref-light-line);
@@ -153,7 +153,7 @@ html[data-theme="light"] body{
   --v76-muted:var(--atsrs-ref-light-muted);
   --v76-green:var(--atsrs-ref-blue);
   --v76-blue:var(--atsrs-ref-cyan);
-  background:linear-gradient(145deg,#fafbfd 0%,#f2f5fa 58%,#e9eef6 100%)!important;
+  background:var(--atsrs-ref-light-bg)!important;
   color:var(--atsrs-ref-light-text)!important;
 }
 
@@ -164,12 +164,46 @@ html[data-theme="light"] body #app.app:not(.hidden){
   --atsrs-shell-accent-border:#a9c9e9;
 }
 
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main{
+  background:var(--atsrs-ref-light-bg)!important;
+}
+
+html[data-theme="light"] #landingPage.atsrs-public-landing{
+  background:var(--atsrs-ref-light-bg)!important;
+}
+html[data-theme="light"] #landingPage .public-header{
+  background:rgba(255,255,255,.97)!important;
+  border-color:var(--atsrs-ref-light-line)!important;
+  box-shadow:0 8px 28px rgba(11,37,84,.06)!important;
+}
+html[data-theme="light"] #landingPage :where(.public-product-shot,.public-wide-shot,.public-floating-note,.public-plan){
+  background:#fff!important;
+  border-color:var(--atsrs-ref-light-line)!important;
+  box-shadow:var(--public-shadow)!important;
+}
+html[data-theme="light"] #landingPage .public-audience-grid article>i{
+  background:#d9f1fb!important;
+  color:var(--atsrs-ref-blue-strong)!important;
+  box-shadow:inset 0 0 0 1px #b7deef!important;
+}
+html[data-theme="light"] #landingPage :where(.public-eyebrow,.public-kicker,.public-plan-name){
+  color:var(--atsrs-ref-blue-strong)!important;
+}
+html[data-theme="light"] #landingPage :where(.public-text-link,.public-audience-grid a,.public-preview-copy li i,.public-steps span,.public-feature-band i){
+  color:var(--atsrs-ref-blue)!important;
+}
+html[data-theme="light"] :where(.pricing-plan,.pricing-table-wrap){
+  background:#fff!important;
+  border-color:var(--atsrs-ref-light-line)!important;
+  box-shadow:0 16px 40px rgba(11,37,84,.09)!important;
+}
+
 html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){color:var(--atsrs-ref-light-text)!important}
 html[data-theme="light"] :where(p,small,.sub,.small-note,.field-hint,.field-label){color:var(--atsrs-ref-light-muted)!important}
 html[data-theme="light"] :where(.sidebar,.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.roadmap-card,.scan-box,.import-box,.upload-simple,.share-card,.atsrs-admin-overview){
   background:var(--atsrs-ref-light-surface)!important;
   border-color:var(--atsrs-ref-light-line)!important;
-  box-shadow:0 10px 28px rgba(11,37,84,.055)!important;
+  box-shadow:0 12px 30px rgba(11,37,84,.085)!important;
 }
 html[data-theme="light"] .sidebar{background:rgba(255,255,255,.97)!important;box-shadow:none!important}
 html[data-theme="light"] :where(input,select,textarea){background:#fff!important;border-color:#c7d2e2!important;color:var(--atsrs-ref-light-text)!important}
