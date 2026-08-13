@@ -1831,3 +1831,79 @@ html:not([data-theme="light"]) #auth.auth::before{
   background:none!important;
   background-image:none!important;
 }
+
+/* ATSRS V503: stable login composition and direct Home navigation. */
+#auth:not(.hidden) .auth-card{
+  min-height:328px!important;
+}
+
+#auth .auth-home-link{
+  position:absolute;
+  top:18px;
+  left:18px;
+  z-index:40;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid #294158;
+  border-radius:999px;
+  background:rgba(5,16,29,.62);
+  color:#e5edf4;
+  font-size:14px;
+  font-weight:750;
+  line-height:1;
+  letter-spacing:.01em;
+  text-decoration:none;
+  box-shadow:none;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:background-color .18s ease,border-color .18s ease;
+}
+
+#auth .auth-home-link i{
+  flex:0 0 auto;
+  font-size:18px;
+}
+
+#auth .auth-home-link:hover{
+  border-color:#4a6a82;
+  background:rgba(18,39,56,.78);
+  color:#e5edf4;
+}
+
+#auth .auth-home-link:focus-visible{
+  outline:3px solid rgba(134,239,172,.42);
+  outline-offset:3px;
+}
+
+html[data-theme="light"] #auth .auth-home-link{
+  border-color:#c6d5df;
+  background:rgba(255,255,255,.82);
+  color:#22435d;
+}
+
+html[data-theme="light"] #auth .auth-home-link:hover{
+  border-color:#93adbf;
+  background:#fff;
+  color:#22435d;
+}
+
+html[data-theme="light"] #auth .auth-home-link:focus-visible{
+  outline-color:rgba(37,99,166,.38);
+}
+
+@media(max-width:420px){
+  #auth:not(.hidden) .auth-card{
+    min-height:408px!important;
+  }
+
+  #auth .auth-home-link{
+    top:12px;
+    left:12px;
+    padding-inline:12px;
+    font-size:13px;
+  }
+}
