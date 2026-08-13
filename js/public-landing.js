@@ -1,4 +1,4 @@
-/* ATSRS V501 public entry route, shared theme switch and animated brand wordmark. */
+/* ATSRS V502 public entry route, shared theme switch and animated brand wordmark. */
 (function(){
   'use strict';
   var landing=document.getElementById('landingPage');
@@ -150,9 +150,14 @@
       if(session&&session.user){
         window.__atsrsSuppressAutomaticSessionOpen=false;
         if(typeof window.atsrsResumeSession==='function'){
-          return window.atsrsResumeSession(session,'resume');
+          return Promise.resolve(window.atsrsResumeSession(session,'resume'))
+            .then(function(opened){
+              if(opened===false)showLanding();
+              return opened;
+            });
         }
-        return;
+        showLanding();
+        return false;
       }
       showLanding();
     })

@@ -2095,17 +2095,19 @@ setTimeout(v55DockTopActions,500);
       try{
         var state=await readWorkspaceState(user);
         var pHas=hasWorkspace(state,'personal'), cHas=hasWorkspace(state,'company');
-        if(!pHas && !cHas) return;
-        if(pHas && !cHas){ await openExistingWorkspace(user,'personal',state); return; }
-        if(cHas && !pHas){ await openExistingWorkspace(user,'company',state); return; }
+        if(!pHas && !cHas) return false;
+        if(pHas && !cHas) return await openExistingWorkspace(user,'personal',state);
+        if(cHas && !pHas) return await openExistingWorkspace(user,'company',state);
         var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
-        if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return; }
+        if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return true; }
         var lastMode=readLastWorkspace(user);
-        if(lastMode && hasWorkspace(state,lastMode)){ await openExistingWorkspace(user,lastMode,state); return; }
+        if(lastMode && hasWorkspace(state,lastMode)) return await openExistingWorkspace(user,lastMode,state);
         showWorkspaceChoice(user,event||'restore');
+        return true;
       }catch(error){
         console.warn('ATSRS passive workspace restore failed',error);
         returnToLogin(user,workspaceServiceMessage(error));
+        return true;
       }
     }
     async function continueSession(session,event){
@@ -2117,12 +2119,14 @@ setTimeout(v55DockTopActions,500);
       }
       if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
       if(shouldWaitOnLoginScreen(event)) return;
-      if(event==='signin-session'){ await handleSignIn(user,event); return; }
+      if(event==='signin-session'){ await handleSignIn(user,event); return true; }
+      if(event==='resume') return handlePassiveRestore(user,event);
       var intent=currentAuthIntent();
       if(intent==='signup'){ await handleSignUp(user,event); return; }
       if(intent==='signin'){ await handleSignIn(user,event); return; }
       var authMode=''; try{authMode=localStorage.getItem('atsrs_auth_mode')||'';}catch(e){}
-      if(authMode==='supabase') await handlePassiveRestore(user,event);
+      if(authMode==='supabase') return handlePassiveRestore(user,event);
+      return false;
     }
     function queueSession(session,event){
       if(window.__atsrsSuppressAutomaticSessionOpen &&
