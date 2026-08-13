@@ -1,24 +1,55 @@
-/* ATSRS V513: supplied brand lockups for Login and the text-free boot state. */
+/* ATSRS V514: transparent supplied lockups for Home/Login and text-free boot. */
+
+#auth .auth-card,
+html[data-theme="light"] #auth .auth-card{
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
 
 #auth .atsrs-auth-lockup{
   position:relative;
   width:min(100%,420px);
   aspect-ratio:1108 / 384;
   margin:0 auto 22px;
-  overflow:hidden;
-  border-radius:18px;
-  background-color:#000608;
-  background-image:url("../assets/branding/atsrs-login-green.png");
+  background-color:transparent;
+  background-image:url("../assets/branding/atsrs-lockup-green-transparent.png");
   background-position:center;
   background-repeat:no-repeat;
-  background-size:100% 100%;
-  box-shadow:0 18px 48px rgba(0,0,0,.24);
+  background-size:contain;
+  box-shadow:none;
 }
 
 html[data-theme="light"] #auth .atsrs-auth-lockup{
-  background-color:#000b1e;
-  background-image:url("../assets/branding/atsrs-login-blue.png");
-  box-shadow:0 18px 48px rgba(7,35,82,.16);
+  background-color:transparent;
+  background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
+  box-shadow:none;
+}
+
+.atsrs-public-landing .public-wordmark.atsrs-home-lockup{
+  display:block;
+  width:clamp(188px,17vw,218px);
+  min-height:0;
+  aspect-ratio:1108 / 384;
+  background-color:transparent;
+  background-image:url("../assets/branding/atsrs-lockup-green-transparent.png");
+  background-position:left center;
+  background-repeat:no-repeat;
+  background-size:contain;
+}
+
+html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
+  background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
+}
+
+.atsrs-public-landing .public-wordmark.atsrs-home-lockup::after{
+  display:none!important;
+  content:none!important;
 }
 
 #atsrsBootScreen{
@@ -81,6 +112,9 @@ html[data-theme="light"] #atsrsBootScreen .atsrs-boot-mark{
   #auth .atsrs-auth-lockup{
     width:min(100%,330px);
     margin-bottom:18px;
-    border-radius:15px;
+  }
+
+  .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
+    width:168px;
   }
 }

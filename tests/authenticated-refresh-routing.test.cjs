@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const landing = fs.readFileSync(path.join(root, 'js', 'public-landing.js'), 'utf8');
 const storage = fs.readFileSync(path.join(root, 'js', 'storage.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V513"/);
+assert.match(index, /data-atsrs-build="V514"/);
 assert.match(index, /__atsrsEntryRoute==='auth'\|\|window\.__atsrsEntryRoute==='share'\|\|window\.__atsrsEntryRoute==='landing'/);
 assert.doesNotMatch(index, /__atsrsEntryRoute!==['"]callback['"]/);
 assert.match(landing, /atsrsGetSessionSingleFlight/);
