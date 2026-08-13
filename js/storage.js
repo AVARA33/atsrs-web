@@ -2098,15 +2098,14 @@ setTimeout(v55DockTopActions,500);
         if(!pHas && !cHas) return false;
         if(pHas && !cHas) return await openExistingWorkspace(user,'personal',state);
         if(cHas && !pHas) return await openExistingWorkspace(user,'company',state);
-        var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
-        if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return true; }
         var lastMode=readLastWorkspace(user);
         if(lastMode && hasWorkspace(state,lastMode)) return await openExistingWorkspace(user,lastMode,state);
+        var pickRequired=false; try{pickRequired=localStorage.getItem('atsrs_workspace_pick_required')==='1';}catch(e){}
+        if(pickRequired){ showWorkspaceChoice(user,event||'restore'); return true; }
         showWorkspaceChoice(user,event||'restore');
         return true;
       }catch(error){
         console.warn('ATSRS passive workspace restore failed',error);
-        returnToLogin(user,workspaceServiceMessage(error));
         return false;
       }
     }

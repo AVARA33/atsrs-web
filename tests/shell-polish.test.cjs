@@ -11,7 +11,7 @@ const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-r
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
 assert.match(index,/css\/shell-polish\.css\?v=506/);
-assert.match(index,/js\/storage\.js\?v=505/);
+assert.match(index,/js\/storage\.js\?v=512/);
 assert.match(index,/class="account-tabs" role="tablist"/);
 assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
 assert.match(index,/js\/shell-polish\.js\?v=495/);
