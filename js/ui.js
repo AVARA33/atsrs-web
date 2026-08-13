@@ -126,12 +126,22 @@ function ready(fn){ if(document.readyState==='loading') document.addEventListene
     var app=document.getElementById('app');
     return !!(app && !app.classList.contains('hidden'));
   }
+  function publicLandingVisible(){
+    var landing=document.getElementById('landingPage');
+    return !!(document.body &&
+      document.body.classList.contains('atsrs-public-view') &&
+      landing && !landing.classList.contains('hidden'));
+  }
   function removeTempButtons(){
     ['atsrsTopbarTroubleBtn','atsrsTopbarTroublePanel','atsrsTestAutomationBtn','atsrsTestAutomationPanel'].forEach(function(id){
       var n=document.getElementById(id); if(n) n.remove();
     });
   }
   function syncBodyState(){
+    if(publicLandingVisible()){
+      document.body.classList.remove('app-open','auth-open');
+      return;
+    }
     document.body.classList.toggle('app-open', appVisible());
     document.body.classList.toggle('auth-open', !appVisible());
   }
