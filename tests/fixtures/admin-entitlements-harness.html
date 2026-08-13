@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS Admin Entitlements Integration Harness</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/calm-actions.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css">
+  <link rel="stylesheet" href="../../css/admin-entitlements.css">
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+</head>
+<body class="personal-mode">
+  <section id="app" class="app">
+    <aside class="sidebar v76-mobile-closed"><div class="nav"><button id="navAdmin" type="button">Admin</button></div></aside>
+    <main class="main" id="harnessMain"></main>
+  </section>
+  <script>
+    (async function(){
+      var source=await fetch('../../index.html').then(function(response){return response.text()});
+      var parsed=new DOMParser().parseFromString(source,'text/html');
+      var admin=parsed.getElementById('adminPage');admin.classList.remove('hidden');document.getElementById('harnessMain').appendChild(admin);
+      var services=[
+        {key:'ai_document_scans',name:'AI document scans',unit:'scans'},
+        {key:'ai_cv_generations',name:'AI CV generations',unit:'generations'},
+        {key:'candidate_directory_visibility',name:'Candidate directory visibility',unit:'access'},
+        {key:'recipient_share_links',name:'Recipient share links',unit:'active links'},
+        {key:'whatsapp_expiry_reminders',name:'WhatsApp expiry reminders',unit:'credits'},
+        {key:'email_expiry_reminders',name:'Email expiry reminders',unit:'credits'},
+        {key:'stored_documents',name:'Stored documents',unit:'documents'},
+        {key:'cv_slots',name:'CV slots',unit:'CVs'}
+      ];
+      var plans=['free','bronze','silver','titan','gold'];
+      var confirmedDefaults={
+        free:{ai_document_scans:1,ai_cv_generations:1,stored_documents:20,cv_slots:1},
+        titan:{ai_document_scans:100,ai_cv_generations:3,stored_documents:200},
+        gold:{ai_document_scans:500,ai_cv_generations:10,stored_documents:2000}
+      };
+      var defaults=[];plans.forEach(function(plan){services.forEach(function(service){var allowance=confirmedDefaults[plan]&&confirmedDefaults[plan][service.key]||0;if(plan!=='free'&&service.key==='candidate_directory_visibility')allowance=1;defaults.push({plan:plan,service:service.key,allowance:allowance})})});
+      var account={id:'00000000-0000-4000-8000-000000000001',name:'Demo Personal Account',email:'demo.personal@example.com',plan:'titan',status:'active'};
+      var buckets={ai_document_scans:{purchased:10,manual:3,used:4},ai_cv_generations:{purchased:0,manual:0,used:1},candidate_directory_visibility:{purchased:0,manual:0,used:0},recipient_share_links:{purchased:5,manual:0,used:2},whatsapp_expiry_reminders:{purchased:20,manual:5,used:3},email_expiry_reminders:{purchased:0,manual:0,used:8},stored_documents:{purchased:0,manual:0,used:16},cv_slots:{purchased:0,manual:0,used:1}};
+      function snapshot(plan){return{user_id:account.id,assigned_plan:account.plan,selected_plan:plan||account.plan,services:services.map(function(service){var bucket=buckets[service.key],base=defaults.find(function(row){return row.plan===(plan||account.plan)&&row.service===service.key}).allowance;return{key:service.key,name:service.name,unit:service.unit,plan_default:base,purchased:bucket.purchased,manual:bucket.manual,used:bucket.used,available:Math.max(0,base+bucket.purchased+bucket.manual-bucket.used)}})}}
+      window.supabaseClient={rpc:async function(name,args){
+        if(name==='atsrs_admin_entitlements_bootstrap')return{data:{is_admin:true,plans:plans,services:services,defaults:defaults,accounts:[account]},error:null};
+        if(name==='atsrs_admin_account_entitlements')return{data:snapshot(args.p_preview_plan),error:null};
+        if(name==='atsrs_admin_set_account_plan'){account.plan=args.p_plan_key;return{data:snapshot(account.plan),error:null}}
+        if(name==='atsrs_admin_adjust_account_entitlement'){var bucket=buckets[args.p_service_key],key=args.p_source_bucket==='purchased'?'purchased':'manual';bucket[key]=key==='purchased'?Math.max(0,bucket[key]+args.p_delta):bucket[key]+args.p_delta;return{data:snapshot(account.plan),error:null}}
+        if(name==='atsrs_admin_reset_account_entitlement'){buckets[args.p_service_key].manual=0;return{data:snapshot(account.plan),error:null}}
+        if(name==='atsrs_admin_set_plan_entitlement'){var row=defaults.find(function(item){return item.plan===args.p_plan_key&&item.service===args.p_service_key});row.allowance=args.p_allowance;return{data:row,error:null}}
+        return{data:null,error:{message:'Unknown mock RPC '+name}};
+      }};
+      function load(src){return new Promise(function(resolve){var script=document.createElement('script');script.src=src;script.onload=resolve;document.body.appendChild(script)})}
+      await load('../../js/entitlement-calculator.js');await load('../../js/admin-entitlements.js');document.dispatchEvent(new Event('DOMContentLoaded'));document.getElementById('navAdmin').click();
+    })();
+  </script>
+</body>
+</html>

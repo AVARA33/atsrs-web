@@ -36,7 +36,7 @@ type OpenAIResponse = {
 };
 
 type ScanQuota = {
-  plan: "free" | "pro" | "business";
+  plan: "free" | "bronze" | "silver" | "titan" | "gold";
   used: number;
   scan_limit: number;
   remaining: number;

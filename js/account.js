@@ -244,9 +244,9 @@
   }
   function slotsBox(){
     return '<div class="atsrs-v156-slots-box"><span class="atsrs-v156-box-title">Additional CV Slots</span><div class="atsrs-v156-slot-list">'+
-      '<div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 1</b><span>PRO</span></div>'+ 
-      '<div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 2</b><span>Premium</span></div>'+ 
-      '<div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 3</b><span>Premium</span></div>'+ 
+      '<div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 1</b><span>TITAN</span></div>'+
+      '<div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 2</b><span>GOLD</span></div>'+
+      '<div class="atsrs-v156-slot-chip"><b>🔒 Additional CV Slot 3</b><span>GOLD</span></div>'+
       '</div></div>';
   }
   async function renderCV(){

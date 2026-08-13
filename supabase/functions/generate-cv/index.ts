@@ -30,7 +30,7 @@ type OpenAIResponse = {
 };
 
 type CvQuota = {
-  plan: "free" | "pro" | "business";
+  plan: "free" | "bronze" | "silver" | "titan" | "gold";
   used: number;
   generation_limit: number;
   remaining: number;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V506" data-atsrs-update="13 Aug 2026">
+<html lang="en" data-atsrs-build="V507" data-atsrs-update="13 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,6 +52,7 @@ html[data-theme="light"] body{background:#f3f6f9}
 <link rel="stylesheet" href="css/references.css?v=408">
 <link rel="stylesheet" href="css/cv-generator.css?v=375">
 <link rel="stylesheet" href="css/account.css?v=422">
+<link rel="stylesheet" href="css/admin-entitlements.css?v=507">
 <link rel="stylesheet" href="css/product-experience.css?v=447">
 <link rel="stylesheet" href="css/date-picker.css?v=502">
 <link rel="stylesheet" href="css/share-profile.css?v=497">
@@ -397,6 +398,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
 <div class="nav-utility-divider" aria-hidden="true"></div>
+<button id="navAdmin" class="nav-utility personal-only hidden" type="button" onclick="showPage('admin',this)">Admin</button>
 <button id="navIntro" class="nav-utility active" onclick="showPage('intro',this)">Product Updates</button>
 <button id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage('privacy',this)">Privacy</button>
 </div>
@@ -1028,6 +1030,98 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </table>
 </div>
 </div>
+</section>
+
+<section id="adminPage" class="admin-entitlements-page hidden" aria-labelledby="adminEntitlementsTitle">
+  <header class="admin-entitlements-header">
+    <div>
+      <span class="pill">OWNER ONLY</span>
+      <h3 id="adminEntitlementsTitle">Plans &amp; Entitlements</h3>
+      <p>Manage Personal plan defaults and account-specific allowances.</p>
+    </div>
+    <button id="adminEntitlementsRefresh" class="secondary" type="button">Refresh</button>
+  </header>
+  <div class="admin-entitlements-tabs" role="tablist" aria-label="Admin entitlement sections">
+    <button id="adminPlanDefaultsTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="adminPlanDefaultsView">Plan defaults</button>
+    <button id="adminAccountGrantsTab" type="button" role="tab" aria-selected="false" aria-controls="adminAccountGrantsView">Account grants</button>
+  </div>
+  <p id="adminEntitlementsStatus" class="admin-entitlements-status" role="status">Open Admin to load secure server data.</p>
+
+  <div id="adminPlanDefaultsView" class="admin-entitlements-view">
+    <div class="admin-section-heading">
+      <div><h4>Personal plan defaults</h4><p>Changing a value affects accounts assigned to that plan unless an account-specific grant applies.</p></div>
+      <span>Free · Bronze · Silver · Titan · Gold</span>
+    </div>
+    <div id="adminPlanMatrix" class="admin-plan-matrix" aria-live="polite"></div>
+  </div>
+
+  <div id="adminAccountGrantsView" class="admin-entitlements-view hidden">
+    <div class="admin-grants-layout">
+      <aside class="admin-account-search" aria-label="Personal accounts">
+        <label for="adminAccountQuery">Search Personal accounts</label>
+        <div class="admin-search-field"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="adminAccountQuery" type="search" autocomplete="off" placeholder="Name or email"></div>
+        <small id="adminAccountCount">0 accounts</small>
+        <div id="adminAccountList" class="admin-account-list"></div>
+      </aside>
+
+      <div class="admin-account-entitlements">
+        <div class="admin-selected-account">
+          <div><h4 id="adminSelectedAccountName">Select an account</h4><p id="adminSelectedAccountEmail">Account details will appear here.</p></div>
+          <span id="adminSelectedAccountStatus"></span>
+        </div>
+        <div class="admin-account-meta">
+          <div><span>Assigned plan</span><strong id="adminAssignedPlan">—</strong></div>
+          <div><span>Account type</span><strong>Personal</strong></div>
+          <div><span>Grant scope</span><strong>This account only</strong></div>
+        </div>
+        <h4>Effective entitlements</h4>
+        <div class="admin-entitlement-ledger" role="table" aria-label="Effective account entitlements">
+          <div class="admin-ledger-row admin-ledger-head" role="row"><span>Service</span><span>Plan</span><span>Purchased</span><span>Manual</span><span>Used</span><span>Available</span></div>
+          <div id="adminEntitlementRows"></div>
+        </div>
+        <p class="admin-scope-note"><i class="ph ph-shield-check" aria-hidden="true"></i> Account grants never change plan defaults or another account.</p>
+      </div>
+
+      <aside class="admin-adjustment-drawer" aria-labelledby="adminAdjustmentTitle">
+        <h4 id="adminAdjustmentTitle">Adjust account entitlement</h4>
+        <div class="admin-adjustment-target"><span>Selected account</span><strong id="adminAdjustmentAccount">No account selected</strong><small id="adminAdjustmentEmail"></small></div>
+        <label for="adminAccountPlan">Account plan</label>
+        <select id="adminAccountPlan" disabled></select>
+        <small>Select a plan to see that plan's current values. Save separately to assign it.</small>
+        <button id="adminAssignPlan" class="secondary admin-full-button" type="button" disabled>Assign selected plan</button>
+
+        <label for="adminGrantService">Service</label>
+        <select id="adminGrantService" disabled></select>
+        <div class="admin-current-calculation" aria-label="Current entitlement calculation">
+          <div><span>Plan default</span><strong id="adminCalcPlan">0</strong></div>
+          <div><span>Purchased add-on</span><strong id="adminCalcPurchased">+0</strong></div>
+          <div><span>Manual adjustment</span><strong id="adminCalcManual">0</strong></div>
+          <div><span>Used</span><strong id="adminCalcUsed">−0</strong></div>
+          <div class="total"><span>Current available</span><strong id="adminCalcAvailable">0</strong></div>
+        </div>
+
+        <label for="adminGrantSource">Adjustment source</label>
+        <select id="adminGrantSource" disabled><option value="manual">Manual bonus / correction</option><option value="purchased">Purchased add-on</option></select>
+        <span class="admin-field-label">Adjustment type</span>
+        <div class="admin-adjustment-mode"><button id="adminGrantAdd" class="active" type="button" disabled>Add</button><button id="adminGrantRemove" type="button" disabled>Remove</button></div>
+        <label for="adminGrantQuantity">Quantity</label>
+        <div class="admin-quantity-control"><button id="adminGrantDecrease" type="button" aria-label="Decrease quantity" disabled>−</button><input id="adminGrantQuantity" inputmode="numeric" value="1" disabled><button id="adminGrantIncrease" type="button" aria-label="Increase quantity" disabled>+</button></div>
+        <div class="admin-adjustment-preview">
+          <small>Before applying</small>
+          <div><span>This adjustment</span><strong id="adminPreviewDelta">+1</strong></div>
+          <div><span>New source total</span><strong id="adminPreviewSource">+1</strong></div>
+          <div class="total"><span>New available</span><strong id="adminPreviewAvailable">1</strong></div>
+        </div>
+        <label for="adminGrantReason">Reason</label>
+        <select id="adminGrantReason" disabled><option>Owner bonus</option><option>Support correction</option><option>Promotional allowance</option><option>Paid add-on purchase</option></select>
+        <label for="adminGrantNotes">Notes (optional)</label>
+        <textarea id="adminGrantNotes" maxlength="1000" rows="3" disabled></textarea>
+        <button id="adminApplyGrant" class="primary admin-full-button" type="button" disabled>Apply to this account</button>
+        <button id="adminResetGrant" class="secondary admin-full-button" type="button" disabled>Reset manual adjustment</button>
+        <small>Reset removes only the selected service's manual adjustment. Purchased add-ons stay active.</small>
+      </aside>
+    </div>
+  </div>
 </section>
 
 <section id="profilePage" class="hidden">
@@ -1693,6 +1787,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/talent-directory.js?v=504"></script>
 <script src="js/corporate-reporting.js?v=480"></script>
 <script src="js/admin-overview.js?v=375"></script>
+<script src="js/entitlement-calculator.js?v=507"></script>
+<script src="js/admin-entitlements.js?v=507"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=480"></script>

@@ -13,6 +13,7 @@
     navCompliance:'shield-check',
     navReports:'chart-bar',
     navProfile:'user-circle',
+    navAdmin:'gear-six',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
   };
@@ -28,6 +29,7 @@
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Profile',
+    navAdmin:'Admin',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -38,6 +40,7 @@
     navRefs:'References & CV',
     navCompliance:'Security',
     navProfile:'Profile',
+    navAdmin:'Admin',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
