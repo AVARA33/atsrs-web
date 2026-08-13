@@ -409,3 +409,28 @@ final result: passed
 - Keyboard focus remains visible through a neutral field border without the previous green selection ring.
 - Browser console errors: 0.
 - Targeted regression tests: passed.
+
+## V508 reference-led light and dark palette QA
+
+### Scope and visual truth
+
+- Light reference: `C:/Users/user/AppData/Local/Temp/codex-clipboard-5bc4036c-6af4-4308-9384-914522471c49.jpg`.
+- Dark reference: `C:/Users/user/AppData/Local/Temp/codex-clipboard-e03ca747-6480-4f06-8fe0-3b010d50c57f.jpg`.
+- Light implementation: `docs/theme-v508-light-home.png` and `docs/theme-v508-light-home-390.png`.
+- Dark implementation: `docs/theme-v508-dark-home.png` and `docs/theme-v508-dark-home-390.png`.
+- The supplied images are colour-direction references, not ATSRS layout references. Existing production geometry, typography, content and workflow structure remain authoritative.
+
+### Comparison result
+
+- The light implementation carries the reference's cool paper-white canvas, deep navy typography, blue primary actions and restrained cyan supporting accent.
+- The dark implementation carries the reference's near-black/antracite surfaces, soft-white text and precise neon-lime actions, labels, focus and selected-state signals.
+- Semantic expiry warning, danger and status colours remain intact so the palette does not erase product meaning.
+- Public Home, Login, Pricing, legal pages and authenticated Personal shell were inspected in both themes. Login remains one viewport tall with no extra scroll.
+- Desktop and `390 x 844` checks show no root horizontal overflow. Home → Login → Back to Home succeeds at 390px and returns to the public landing immediately.
+- Sidebar selection remains a left rail only, with blue in light mode and lime in dark mode. No filled selected background was introduced.
+- The final dark authenticated shell was corrected from the legacy navy canvas to `#050606`, with `#0b0d0d` functional surfaces and `#2a2f2d` borders.
+- Browser console errors observed during Home/Login visual checks: 0.
+- Targeted regression tests: 11 passed, 0 failed.
+- No P0, P1 or P2 findings remain in the requested colour-only scope.
+
+final result: passed

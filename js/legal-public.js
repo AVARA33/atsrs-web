@@ -5,7 +5,7 @@
     document.documentElement.dataset.theme=next;
     document.documentElement.style.colorScheme=next;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',next==='light'?'#f4f7fb':'#07111d');
+    if(meta)meta.setAttribute('content',next==='light'?'#f5f7fb':'#050606');
   }
   var saved='';
   try{saved=localStorage.getItem('atsrs_theme')||'';}catch(error){}

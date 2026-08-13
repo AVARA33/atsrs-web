@@ -1,0 +1,204 @@
+/* ATSRS V508 reference-led colour system. Geometry and product structure stay unchanged. */
+:root{
+  --atsrs-ref-dark-bg:#050606;
+  --atsrs-ref-dark-surface:#0b0d0d;
+  --atsrs-ref-dark-soft:#111414;
+  --atsrs-ref-dark-line:#2a2f2d;
+  --atsrs-ref-dark-text:#f4f6ef;
+  --atsrs-ref-dark-muted:#a8afa9;
+  --atsrs-ref-lime:#b8ff19;
+  --atsrs-ref-lime-strong:#9fe600;
+  --atsrs-ref-light-bg:#f5f7fb;
+  --atsrs-ref-light-surface:#ffffff;
+  --atsrs-ref-light-soft:#e9eef6;
+  --atsrs-ref-light-line:#cfd8e6;
+  --atsrs-ref-light-text:#0b2554;
+  --atsrs-ref-light-muted:#5f6d85;
+  --atsrs-ref-blue:#1473d2;
+  --atsrs-ref-blue-strong:#0a4f9f;
+  --atsrs-ref-cyan:#31b7e8;
+}
+
+/* Dark reference: near-black system surfaces with precise neon-lime signals. */
+html[data-theme="dark"]{
+  --public-bg:var(--atsrs-ref-dark-bg);
+  --public-surface:var(--atsrs-ref-dark-surface);
+  --public-surface-soft:var(--atsrs-ref-dark-soft);
+  --public-ink:var(--atsrs-ref-dark-text);
+  --public-muted:var(--atsrs-ref-dark-muted);
+  --public-line:var(--atsrs-ref-dark-line);
+  --public-accent:var(--atsrs-ref-lime);
+  --public-accent-strong:var(--atsrs-ref-lime);
+  --public-accent-soft:#182500;
+  --public-shadow:0 24px 68px rgba(0,0,0,.38);
+  --legal-bg:var(--atsrs-ref-dark-bg);
+  --legal-surface:var(--atsrs-ref-dark-surface);
+  --legal-soft:var(--atsrs-ref-dark-soft);
+  --legal-line:var(--atsrs-ref-dark-line);
+  --legal-text:var(--atsrs-ref-dark-text);
+  --legal-muted:var(--atsrs-ref-dark-muted);
+  --legal-accent:var(--atsrs-ref-lime);
+  --legal-link:var(--atsrs-ref-lime);
+  background:var(--atsrs-ref-dark-bg)!important;
+}
+
+html[data-theme="dark"] body{
+  --atsrs-bg:var(--atsrs-ref-dark-bg);
+  --atsrs-bg2:#080a0a;
+  --atsrs-panel:var(--atsrs-ref-dark-surface);
+  --atsrs-panel2:var(--atsrs-ref-dark-soft);
+  --atsrs-border:var(--atsrs-ref-dark-line);
+  --atsrs-text:var(--atsrs-ref-dark-text);
+  --atsrs-muted:var(--atsrs-ref-dark-muted);
+  --atsrs-green:var(--atsrs-ref-lime);
+  --atsrs-green-soft:#d5ff7a;
+  --atsrs-cyan:var(--atsrs-ref-lime);
+  --atsrs-blue:var(--atsrs-ref-lime-strong);
+  --v76-bg:var(--atsrs-ref-dark-bg);
+  --v76-panel:var(--atsrs-ref-dark-surface);
+  --v76-panel2:var(--atsrs-ref-dark-soft);
+  --v76-border:var(--atsrs-ref-dark-line);
+  --v76-text:var(--atsrs-ref-dark-text);
+  --v76-muted:var(--atsrs-ref-dark-muted);
+  --v76-green:var(--atsrs-ref-lime);
+  --v76-blue:var(--atsrs-ref-lime);
+  background:linear-gradient(145deg,#050606 0%,#090b0a 58%,#050606 100%)!important;
+  color:var(--atsrs-ref-dark-text)!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden){
+  --atsrs-shell-accent:var(--atsrs-ref-lime);
+  --atsrs-shell-accent-strong:var(--atsrs-ref-lime-strong);
+  --atsrs-shell-accent-soft:#172200;
+  --atsrs-shell-accent-border:#4d680e;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main{
+  background:var(--atsrs-ref-dark-bg)!important;
+}
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .stats-grid > .expiry-summary-card{
+  background:var(--atsrs-ref-dark-surface)!important;
+  border-color:var(--atsrs-ref-dark-line)!important;
+}
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage > .panel:not(.solo-hero){
+  background:var(--atsrs-ref-dark-surface)!important;
+  border-color:var(--atsrs-ref-dark-line)!important;
+}
+
+html[data-theme="dark"] :where(.sidebar,.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.roadmap-card,.scan-box,.import-box,.upload-simple,.share-card,.atsrs-admin-overview){
+  background:var(--atsrs-ref-dark-surface)!important;
+  border-color:var(--atsrs-ref-dark-line)!important;
+  box-shadow:none!important;
+}
+html[data-theme="dark"] .sidebar{background:#070808!important}
+html[data-theme="dark"] :where(input,select,textarea){background:#080a09!important;border-color:#343a36!important;color:var(--atsrs-ref-dark-text)!important}
+html[data-theme="dark"] :where(input,select,textarea):focus{border-color:var(--atsrs-ref-lime)!important;box-shadow:0 0 0 3px rgba(184,255,25,.15)!important}
+html[data-theme="dark"] :where(.pill,.auth-kicker,.mode-badge){background:transparent!important;border-color:#526d14!important;color:var(--atsrs-ref-lime)!important;-webkit-text-fill-color:var(--atsrs-ref-lime)!important}
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button:hover{background:#101310!important;border-color:transparent!important;color:#d9ff80!important}
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{box-shadow:inset 3px 0 var(--atsrs-ref-lime)!important;color:var(--atsrs-ref-lime)!important;-webkit-text-fill-color:var(--atsrs-ref-lime)!important}
+html[data-theme="dark"] .public-cta{border-color:var(--atsrs-ref-lime)!important;background:var(--atsrs-ref-lime)!important;color:#080a08!important;box-shadow:0 10px 28px rgba(184,255,25,.14)!important}
+html[data-theme="dark"] .public-plan,
+html[data-theme="dark"] .pricing-plan,
+html[data-theme="dark"] .pricing-table-wrap{box-shadow:none!important}
+html[data-theme="dark"] .public-theme-track,
+html[data-theme="dark"] .atsrs-theme-track{border-color:#3c433f;background:#0a0c0b}
+html[data-theme="dark"] .public-theme-thumb,
+html[data-theme="dark"] .atsrs-theme-thumb{background:var(--atsrs-ref-lime)}
+html[data-theme="dark"] .auth{background:#050606!important}
+html[data-theme="dark"] .auth::before{background:radial-gradient(circle at 72% 22%,rgba(184,255,25,.08),transparent 30%)!important}
+html[data-theme="dark"] body.auth-open > #auth.auth:not(.hidden){background:#050606!important}
+html[data-theme="dark"] #atsrsBootScreen{background:#050606!important;color:var(--atsrs-ref-dark-text)!important}
+html[data-theme="dark"] #atsrsBootScreen .atsrs-spinner span{background:var(--atsrs-ref-lime)!important}
+
+/* Light reference: cool paper canvas, navy typography, blue/cyan functional accents. */
+html[data-theme="light"]{
+  --public-bg:var(--atsrs-ref-light-bg);
+  --public-surface:var(--atsrs-ref-light-surface);
+  --public-surface-soft:var(--atsrs-ref-light-soft);
+  --public-ink:var(--atsrs-ref-light-text);
+  --public-muted:var(--atsrs-ref-light-muted);
+  --public-line:var(--atsrs-ref-light-line);
+  --public-accent:var(--atsrs-ref-blue);
+  --public-accent-strong:var(--atsrs-ref-blue-strong);
+  --public-accent-soft:#e7f2fd;
+  --public-shadow:0 22px 60px rgba(11,37,84,.12);
+  --legal-bg:var(--atsrs-ref-light-bg);
+  --legal-surface:var(--atsrs-ref-light-surface);
+  --legal-soft:var(--atsrs-ref-light-soft);
+  --legal-line:var(--atsrs-ref-light-line);
+  --legal-text:var(--atsrs-ref-light-text);
+  --legal-muted:var(--atsrs-ref-light-muted);
+  --legal-accent:var(--atsrs-ref-blue);
+  --legal-link:var(--atsrs-ref-blue-strong);
+  background:var(--atsrs-ref-light-bg)!important;
+}
+
+html[data-theme="light"] body{
+  --atsrs-bg:var(--atsrs-ref-light-bg);
+  --atsrs-bg2:#f9fbfd;
+  --atsrs-panel:var(--atsrs-ref-light-surface);
+  --atsrs-panel2:var(--atsrs-ref-light-soft);
+  --atsrs-border:var(--atsrs-ref-light-line);
+  --atsrs-text:var(--atsrs-ref-light-text);
+  --atsrs-muted:var(--atsrs-ref-light-muted);
+  --atsrs-green:var(--atsrs-ref-blue);
+  --atsrs-green-soft:#4ba8ef;
+  --atsrs-cyan:var(--atsrs-ref-cyan);
+  --atsrs-blue:var(--atsrs-ref-blue);
+  --v76-bg:var(--atsrs-ref-light-bg);
+  --v76-panel:var(--atsrs-ref-light-surface);
+  --v76-panel2:var(--atsrs-ref-light-soft);
+  --v76-border:var(--atsrs-ref-light-line);
+  --v76-text:var(--atsrs-ref-light-text);
+  --v76-muted:var(--atsrs-ref-light-muted);
+  --v76-green:var(--atsrs-ref-blue);
+  --v76-blue:var(--atsrs-ref-cyan);
+  background:linear-gradient(145deg,#fafbfd 0%,#f2f5fa 58%,#e9eef6 100%)!important;
+  color:var(--atsrs-ref-light-text)!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden){
+  --atsrs-shell-accent:var(--atsrs-ref-blue);
+  --atsrs-shell-accent-strong:var(--atsrs-ref-blue-strong);
+  --atsrs-shell-accent-soft:#e7f2fd;
+  --atsrs-shell-accent-border:#a9c9e9;
+}
+
+html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){color:var(--atsrs-ref-light-text)!important}
+html[data-theme="light"] :where(p,small,.sub,.small-note,.field-hint,.field-label){color:var(--atsrs-ref-light-muted)!important}
+html[data-theme="light"] :where(.sidebar,.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.roadmap-card,.scan-box,.import-box,.upload-simple,.share-card,.atsrs-admin-overview){
+  background:var(--atsrs-ref-light-surface)!important;
+  border-color:var(--atsrs-ref-light-line)!important;
+  box-shadow:0 10px 28px rgba(11,37,84,.055)!important;
+}
+html[data-theme="light"] .sidebar{background:rgba(255,255,255,.97)!important;box-shadow:none!important}
+html[data-theme="light"] :where(input,select,textarea){background:#fff!important;border-color:#c7d2e2!important;color:var(--atsrs-ref-light-text)!important}
+html[data-theme="light"] :where(input,select,textarea):focus{border-color:var(--atsrs-ref-blue)!important;box-shadow:0 0 0 3px rgba(20,115,210,.14)!important}
+html[data-theme="light"] :where(.pill,.auth-kicker,.mode-badge){background:transparent!important;border-color:#9ec2e7!important;color:var(--atsrs-ref-blue-strong)!important;-webkit-text-fill-color:var(--atsrs-ref-blue-strong)!important}
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav button{color:#425978!important}
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav button:hover{background:#edf4fb!important;border-color:transparent!important;color:var(--atsrs-ref-blue-strong)!important}
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav button.active{background:transparent!important;box-shadow:inset 3px 0 var(--atsrs-ref-blue)!important;color:var(--atsrs-ref-blue)!important;-webkit-text-fill-color:var(--atsrs-ref-blue)!important}
+html[data-theme="light"] .public-cta{border-color:var(--atsrs-ref-blue-strong)!important;background:var(--atsrs-ref-blue-strong)!important;color:#fff!important;box-shadow:0 10px 28px rgba(10,79,159,.16)!important}
+html[data-theme="light"] .public-theme-track,
+html[data-theme="light"] .atsrs-theme-track{border-color:#b3c1d5;background:#e4eaf3}
+html[data-theme="light"] .public-theme-thumb,
+html[data-theme="light"] .atsrs-theme-thumb{background:#fff}
+html[data-theme="light"] .auth{background:linear-gradient(135deg,#f9fbfd 0%,#eef3f9 52%,#e4ebf5 100%)!important}
+html[data-theme="light"] .auth::before{background:radial-gradient(circle at 76% 28%,rgba(49,183,232,.13),transparent 31%)!important}
+html[data-theme="light"] body.auth-open > #auth.auth:not(.hidden){background:linear-gradient(135deg,#f9fbfd 0%,#eef3f9 52%,#e4ebf5 100%)!important}
+html[data-theme="light"] #atsrsBootScreen{background:linear-gradient(135deg,#fafbfd,#edf2f8)!important;color:var(--atsrs-ref-light-text)!important}
+html[data-theme="light"] #atsrsBootScreen .atsrs-spinner span{background:var(--atsrs-ref-blue)!important}
+
+/* Standalone Privacy/Data Rights pages use short variable names. */
+html[data-theme="dark"] body:has(.site-header){--bg:var(--atsrs-ref-dark-bg);--surface:var(--atsrs-ref-dark-surface);--surface-2:var(--atsrs-ref-dark-soft);--line:var(--atsrs-ref-dark-line);--text:var(--atsrs-ref-dark-text);--muted:var(--atsrs-ref-dark-muted);--accent:var(--atsrs-ref-lime);--link:var(--atsrs-ref-lime)}
+html[data-theme="light"] body:has(.site-header){--bg:var(--atsrs-ref-light-bg);--surface:var(--atsrs-ref-light-surface);--surface-2:var(--atsrs-ref-light-soft);--line:var(--atsrs-ref-light-line);--text:var(--atsrs-ref-light-text);--muted:var(--atsrs-ref-light-muted);--accent:var(--atsrs-ref-blue);--link:var(--atsrs-ref-blue-strong)}
+html[data-theme="dark"] :where(.site-header,.legal-header){background:rgba(5,6,6,.95)!important}
+html[data-theme="light"] :where(.site-header,.legal-header){background:rgba(245,247,251,.95)!important}
+html[data-theme="dark"] :where(.eyebrow,.legal-eyebrow){color:var(--atsrs-ref-lime)!important;border-color:#526d14!important}
+html[data-theme="light"] :where(.eyebrow,.legal-eyebrow){color:var(--atsrs-ref-blue-strong)!important;border-color:#9ec2e7!important}
+
+/* Preserve semantic warning/danger colours and make keyboard focus unmistakable. */
+html[data-theme="dark"] :focus-visible{outline-color:var(--atsrs-ref-lime)!important}
+html[data-theme="light"] :focus-visible{outline-color:var(--atsrs-ref-blue)!important}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}

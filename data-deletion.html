@@ -17,7 +17,7 @@
         theme=nextTheme==='light'?'light':'dark';
         document.documentElement.dataset.theme=theme;
         document.documentElement.style.colorScheme=theme;
-        document.querySelector('meta[name="theme-color"]').setAttribute('content',theme==='light'?'#f4f7fb':'#07111d');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content',theme==='light'?'#f5f7fb':'#050606');
       }
       try{
         var savedTheme=localStorage.getItem('atsrs_theme');
@@ -111,6 +111,7 @@
       .contact-card{grid-template-columns:1fr}
     }
   </style>
+  <link rel="stylesheet" href="css/theme-palette-v508.css?v=508">
 </head>
 <body>
   <header class="site-header">
