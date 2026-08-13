@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS Loading Brand Harness</title>
+  <script>
+    if(new URLSearchParams(location.search).get('theme')==='light')document.documentElement.dataset.theme='light';
+  </script>
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/theme.css?v=504">
+  <link rel="stylesheet" href="../../css/brand-auth-v513.css?v=513">
+</head>
+<body class="atsrs-booting">
+  <div id="atsrsBootScreen" role="status" aria-label="Loading ATSRS">
+    <div class="atsrs-boot-mark" aria-hidden="true"><span class="atsrs-boot-shine"></span></div>
+  </div>
+</body>
+</html>

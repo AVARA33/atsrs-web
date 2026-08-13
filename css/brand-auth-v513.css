@@ -1,0 +1,86 @@
+/* ATSRS V513: supplied brand lockups for Login and the text-free boot state. */
+
+#auth .atsrs-auth-lockup{
+  position:relative;
+  width:min(100%,420px);
+  aspect-ratio:1108 / 384;
+  margin:0 auto 22px;
+  overflow:hidden;
+  border-radius:18px;
+  background-color:#000608;
+  background-image:url("../assets/branding/atsrs-login-green.png");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  box-shadow:0 18px 48px rgba(0,0,0,.24);
+}
+
+html[data-theme="light"] #auth .atsrs-auth-lockup{
+  background-color:#000b1e;
+  background-image:url("../assets/branding/atsrs-login-blue.png");
+  box-shadow:0 18px 48px rgba(7,35,82,.16);
+}
+
+#atsrsBootScreen{
+  background:#000608!important;
+}
+
+html[data-theme="light"] #atsrsBootScreen{
+  background:#000b1e!important;
+  color-scheme:dark;
+}
+
+#atsrsBootScreen .atsrs-boot-mark{
+  position:relative;
+  width:clamp(152px,20vw,196px);
+  aspect-ratio:396 / 400;
+  overflow:hidden;
+  border-radius:30px;
+  background-color:#000608;
+  background-image:url("../assets/branding/atsrs-mark-green.png");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  isolation:isolate;
+}
+
+html[data-theme="light"] #atsrsBootScreen .atsrs-boot-mark{
+  background-color:#000b1e;
+  background-image:url("../assets/branding/atsrs-mark-blue.png");
+}
+
+#atsrsBootScreen .atsrs-boot-shine{
+  position:absolute;
+  z-index:2;
+  top:-22%;
+  bottom:-22%;
+  left:-38%;
+  width:18%;
+  border-radius:999px;
+  background:rgba(255,255,255,.38);
+  box-shadow:0 0 26px 14px rgba(255,255,255,.2);
+  filter:blur(5px);
+  mix-blend-mode:screen;
+  transform:translateX(0) skewX(-16deg);
+  animation:atsrsLogoShine 1.9s cubic-bezier(.4,0,.2,1) infinite;
+  pointer-events:none;
+}
+
+@keyframes atsrsLogoShine{
+  0%,14%{transform:translateX(0) skewX(-16deg);opacity:0;}
+  28%{opacity:.9;}
+  68%{opacity:.6;}
+  82%,100%{transform:translateX(790%) skewX(-16deg);opacity:0;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #atsrsBootScreen .atsrs-boot-shine{animation:none;opacity:0;}
+}
+
+@media(max-width:420px){
+  #auth .atsrs-auth-lockup{
+    width:min(100%,330px);
+    margin-bottom:18px;
+    border-radius:15px;
+  }
+}

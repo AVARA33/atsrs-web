@@ -31,7 +31,7 @@
       suffix.className='atsrs-brand-suffix';
       suffix.textContent='RS';
       wordmark.append(prefix,swap,suffix);
-      wordmark.setAttribute('aria-label','ATSRS — Automated Tracking & Reporting Systems');
+      wordmark.setAttribute('aria-label','ATSRS — Applicant Tracking System & Recruitment Solutions');
     });
   }
   function rotateWordmarks(){
@@ -42,7 +42,7 @@
   }
   prepareWordmarks();
   var authSubtitle=document.getElementById('authSubtitle');
-  if(authSubtitle)authSubtitle.textContent='Automated Tracking & Reporting Systems';
+  if(authSubtitle)authSubtitle.textContent='Applicant Tracking System & Recruitment Solutions';
   if(!reducedMotion)window.setInterval(rotateWordmarks,10000);
 
   function finishPublicBoot(){

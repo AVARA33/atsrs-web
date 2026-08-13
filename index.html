@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V512" data-atsrs-update="13 Aug 2026">
+<html lang="en" data-atsrs-build="V513" data-atsrs-update="13 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -71,6 +71,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/shell-polish.css?v=506">
 <link rel="stylesheet" href="css/public-landing.css?v=501">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=509">
+<link rel="stylesheet" href="css/brand-auth-v513.css?v=513">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -89,13 +90,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 </head>
 <body class="atsrs-booting atsrs-session-pending">
-<div id="atsrsBootScreen" role="status" aria-live="polite">
-  <div class="atsrs-spinner" aria-hidden="true">
-    <span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span>
+<div id="atsrsBootScreen" role="status" aria-label="Loading ATSRS">
+  <div class="atsrs-boot-mark" aria-hidden="true">
+    <span class="atsrs-boot-shine"></span>
   </div>
-  <p class="atsrs-loader-title">Welcome to ATSRS</p>
-  <p class="atsrs-loader-sub">Getting things ready for you...</p>
 </div>
 <script id="atsrs-v178-modular-boot-guard">
 (function(){
@@ -325,8 +323,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <div class="auth-card">
 <div class="auth-brand">
-<h1 class="logo atsrs-animated-wordmark" aria-label="ATSRS">ATSRS</h1>
-<p id="authSubtitle" class="sub"></p>
+  <div class="atsrs-auth-lockup" role="img" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></div>
 </div>
 
 <div id="loginBox">
