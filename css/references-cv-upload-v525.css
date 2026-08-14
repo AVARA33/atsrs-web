@@ -1,0 +1,32 @@
+/* ATSRS V525 — equal Generate and Upload CV actions in the AI CV panel. */
+
+body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  width:min(100%,320px)!important;
+  margin-top:auto!important;
+}
+
+body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #generateCVBtn,
+body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #uploadCvFromGeneratorBtn{
+  align-self:stretch!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:40px!important;
+  margin:0!important;
+  padding:9px 13px!important;
+}
+
+@media(max-width:720px){
+  body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #generateCVBtn,
+  body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #uploadCvFromGeneratorBtn{
+    min-height:44px!important;
+  }
+}
+
+@media(max-width:360px){
+  body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions{
+    grid-template-columns:1fr!important;
+  }
+}
