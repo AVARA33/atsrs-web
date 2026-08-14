@@ -67,7 +67,7 @@ assert.match(index, /src="js\/talent-directory\.js\?v=519"/);
 assert.match(index, /src="js\/corporate-reporting\.js\?v=519"/);
 assert.match(index, /href="css\/workspace-surface-standard-v519\.css\?v=519"/);
 assert.match(index, /href="css\/workspace-heading-standard-v520\.css\?v=520"/);
-assert.match(index, /href="css\/workspace-control-standard-v522\.css\?v=522"/);
+assert.match(index, /href="css\/workspace-control-standard-v522\.css\?v=522-2"/);
 assert.match(index, /href="css\/projects\.css\?v=503"/);
 assert.match(index, /src="js\/projects\.js\?v=503"/);
 
