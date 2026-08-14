@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS V541 document method QA</title>
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/account.css?v=422">
+  <link rel="stylesheet" href="../../css/theme.css?v=537">
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v522.css?v=522-2">
+  <link rel="stylesheet" href="../../css/document-qr-upload-v535.css?v=541">
+  <style>
+    body{margin:0;min-height:100vh}.app{min-height:100vh}.main{margin:0;padding:28px}.panel{max-width:920px}.theme-test{position:fixed;right:14px;top:14px;z-index:4}
+  </style>
+</head>
+<body class="personal-mode">
+  <div id="app" class="app">
+    <main class="main">
+      <section id="certificatesPage">
+        <div class="panel unified-cert-panel">
+          <h3>Add document</h3>
+          <p class="cert-flow-note">Choose one method: Scan with AI, Scan with QR, or Manual Upload.</p>
+          <div class="cert-mode-buttons">
+            <button id="certScanModeBtn" type="button">Scan with AI</button>
+            <button id="certQrModeBtn" type="button">Scan with QR</button>
+            <button id="certManualModeBtn" type="button">Manual Upload</button>
+          </div>
+          <div id="certScanPanel" class="cert-mode-panel">
+            <p class="sub">Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.</p>
+            <div class="document-actions">
+              <button id="uploadDocBtn" class="secondary" type="button">Upload File</button>
+              <button id="cancelScanModeBtn" class="secondary" type="button">Cancel</button>
+            </div>
+          </div>
+          <div id="certManualPanel" class="cert-mode-panel"><p class="sub">Manual Upload panel</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <button class="theme-test" type="button" aria-label="Toggle theme">Theme</button>
+  <script>
+    const buttons={scan:certScanModeBtn,qr:certQrModeBtn,manual:certManualModeBtn};
+    function selectMethod(method){
+      Object.entries(buttons).forEach(([name,button])=>{const active=name===method;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
+      certScanPanel.classList.toggle('active',method==='scan');
+      certManualPanel.classList.toggle('active',method==='manual');
+    }
+    Object.entries(buttons).forEach(([name,button])=>button.addEventListener('click',()=>selectMethod(name)));
+    cancelScanModeBtn.addEventListener('click',()=>selectMethod(''));
+    document.querySelector('.theme-test').addEventListener('click',()=>document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark');
+  </script>
+</body>
+</html>

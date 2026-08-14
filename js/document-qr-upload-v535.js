@@ -139,6 +139,7 @@
     document.body.classList.remove('atsrs-qr-open');
     clearTimers();
     if(cancel)cancelSession();
+    if(typeof window.atsrsSetDocumentMethodState==='function')window.atsrsSetDocumentMethodState('');
     if(returnFocus&&typeof returnFocus.focus==='function')returnFocus.focus();
   }
 
@@ -146,6 +147,7 @@
     if(document.body.classList.contains('company-mode'))return;
     if(!dialog)return;
     returnFocus=document.activeElement;
+    if(typeof window.atsrsSetDocumentMethodState==='function')window.atsrsSetDocumentMethodState('qr');
     dialog.classList.remove('hidden');
     document.body.classList.add('atsrs-qr-open');
     var closeButton=document.getElementById('qrUploadCloseBtn');

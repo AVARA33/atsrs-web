@@ -410,16 +410,38 @@
     }
   }
 
+  function setDocumentMethodState(method){
+    ['scan','qr','manual'].forEach(function(name){
+      var button=byId(name==='scan'?'certScanModeBtn':name==='qr'?'certQrModeBtn':'certManualModeBtn');
+      var selected=name===method;
+      if(button){
+        button.classList.toggle('active',selected);
+        button.setAttribute('aria-pressed',selected?'true':'false');
+      }
+    });
+    var scanPanel=byId('certScanPanel');
+    var manualPanel=byId('certManualPanel');
+    if(scanPanel)scanPanel.classList.toggle('active',method==='scan');
+    if(manualPanel)manualPanel.classList.toggle('active',method==='manual');
+  }
+
+  function closeDocumentMethod(){
+    setDocumentMethodState('');
+    closeAiConsent();
+    var documentInput=byId('documentFile');if(documentInput)documentInput.value='';
+    var selected=byId('certScanModeBtn');if(selected)selected.focus();
+  }
+
   function openAiScan(){
     closeManual();
-    var scan=byId('certScanPanel');if(scan)scan.classList.add('active');
-    var button=byId('certScanModeBtn');if(button)button.classList.add('active');
+    setDocumentMethodState('scan');
     setAiScanStatus('Choose a document to scan. AI suggestions must be reviewed before saving.');
   }
 
   function closeManual(){
     var p=byId('certManualPanel'); if(p)p.classList.remove('active');
     var b=byId('certManualModeBtn'); if(b)b.classList.remove('active');
+    setDocumentMethodState('');
     editIndex=null;
     editKey='';
     if(typeof editCertIndex!=='undefined')editCertIndex=null;
@@ -432,10 +454,7 @@
   function openManual(){
     var existingPanel=byId('certManualPanel');
     if(editIndex===null&&(!existingPanel||!existingPanel.classList.contains('active')))clearForm();
-    var scan=byId('certScanPanel'); if(scan)scan.classList.remove('active');
-    var p=byId('certManualPanel'); if(p)p.classList.add('active');
-    var sb=byId('certScanModeBtn'); if(sb)sb.classList.remove('active');
-    var mb=byId('certManualModeBtn'); if(mb)mb.classList.add('active');
+    setDocumentMethodState('manual');
   }
 
   function ensureCancel(){
@@ -591,9 +610,11 @@
     var manual=byId('certManualModeBtn');
     if(manual){manual.onclick=function(e){if(e)e.preventDefault(); openManual();};}
     var qr=byId('certQrModeBtn');
-    if(qr){qr.onclick=function(e){if(e)e.preventDefault();if(typeof window.openDocumentQrUpload==='function')window.openDocumentQrUpload();};}
+    if(qr){qr.onclick=function(e){if(e)e.preventDefault();setDocumentMethodState('qr');if(typeof window.openDocumentQrUpload==='function')window.openDocumentQrUpload();};}
     var uploadDoc=byId('uploadDocBtn');
     if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent();};}
+    var cancelScan=byId('cancelScanModeBtn');
+    if(cancelScan){cancelScan.onclick=function(e){if(e)e.preventDefault();closeDocumentMethod();};}
     var checkbox=byId('aiConsentCheckbox');
     if(checkbox){checkbox.onchange=function(){var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=!checkbox.checked;};}
     var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.onclick=function(e){if(e)e.preventDefault();continueAiConsent();};
@@ -601,6 +622,8 @@
     var close=byId('aiConsentCloseBtn');if(close)close.onclick=function(e){if(e)e.preventDefault();closeAiConsent();};
     ensureCancel();
   }
+
+  window.atsrsSetDocumentMethodState=setDocumentMethodState;
 
   window.handleDocumentUpload=function(event){
     var files=event&&event.target&&event.target.files;
@@ -873,9 +896,10 @@
   function stableDocuments(){
     cleanTopAndLang(); fixLabels(); wireMethods();ensureRegisterControls();
     if(typeof currentUser!=='undefined' && currentUser) renderCertRows();
-    var scanPanel=byId('certScanPanel'); if(scanPanel)scanPanel.classList.remove('active');
-    var scanBtn=byId('certScanModeBtn'); if(scanBtn)scanBtn.classList.remove('active');
-    if(editIndex===null){var manual=byId('certManualPanel'); if(manual&&!manual.dataset.keepOpen)manual.classList.remove('active'); var mb=byId('certManualModeBtn'); if(mb)mb.classList.remove('active');}
+    if(editIndex===null){
+      var manual=byId('certManualPanel');
+      if(!manual||!manual.dataset.keepOpen)setDocumentMethodState('');
+    }
   }
 
   var oldRender=window.renderAll;
