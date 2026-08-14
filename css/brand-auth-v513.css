@@ -1,6 +1,7 @@
 /* ATSRS V516: graphite ATS lettering with source-blue luminous artwork. */
 
 #auth .auth-card,
+#auth:not(.hidden) .auth-card,
 html[data-theme="light"] #auth .auth-card{
   background:transparent!important;
   background-image:none!important;

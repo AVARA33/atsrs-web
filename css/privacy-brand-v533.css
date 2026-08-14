@@ -27,7 +27,7 @@ html[data-theme="light"] #auth .atsrs-auth-lockup,
 html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
   border:0!important;
   background-color:transparent!important;
-  background-image:url("../assets/branding/atsrs-lockup-light-transparent.png")!important;
+  background-image:url("../assets/branding/atsrs-lockup-light-transparent.png?v=538")!important;
   background-position:center!important;
   background-repeat:no-repeat!important;
   background-size:contain!important;

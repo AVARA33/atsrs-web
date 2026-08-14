@@ -10,7 +10,7 @@ const transparentLightLogo=path.join(root,'assets','branding','atsrs-lockup-ligh
 const transparentLightLogoScript=fs.readFileSync(path.join(root,'scripts','make-light-brand-transparent.py'),'utf8');
 
 assert.match(index,/data-atsrs-build="V534"/);
-assert.match(index,/css\/privacy-brand-v533\.css\?v=537/);
+assert.match(index,/css\/privacy-brand-v533\.css\?v=538/);
 assert.ok(fs.statSync(lightLogo).size>1000000,'approved Light logo source must be shipped unchanged');
 assert.ok(fs.statSync(transparentLightLogo).size>200000,'transparent Light logo must retain high-resolution luminous detail');
 assert.match(css,/#accountSharingTab\.active[\s\S]*?background:var\(--atsrs-ref-dark-bg,#050606\)!important/);
@@ -26,6 +26,9 @@ assert.doesNotMatch(css,/background-size:115% auto!important/);
 assert.doesNotMatch(css,/mix-blend-mode:multiply/);
 assert.match(transparentLightLogoScript,/canvas_size = \(1108, 384\)/);
 assert.match(transparentLightLogoScript,/neutral_shadow/);
+assert.match(transparentLightLogoScript,/SIZE_REFERENCE = BRAND_DIR \/ "atsrs-lockup-green-transparent\.png"/);
+assert.match(transparentLightLogoScript,/def _visual_bounds/);
+assert.match(transparentLightLogoScript,/target_bounds = _visual_bounds\(Image\.open\(SIZE_REFERENCE\)/);
 assert.match(css,/\.roadmap-news,/);
 assert.match(css,/\.status-available/);
 assert.match(css,/html:not\(\[data-theme="light"\]\)[\s\S]*?\.roadmap-news,[\s\S]*?\.status-available/);

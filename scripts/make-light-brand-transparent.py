@@ -8,6 +8,15 @@ ROOT = Path(__file__).resolve().parents[1]
 BRAND_DIR = ROOT / "assets" / "branding"
 SOURCE = BRAND_DIR / "atsrs-lockup-light-v533.png"
 DESTINATION = BRAND_DIR / "atsrs-lockup-light-transparent.png"
+SIZE_REFERENCE = BRAND_DIR / "atsrs-lockup-green-transparent.png"
+
+
+def _visual_bounds(image: Image.Image, alpha_threshold: int = 64):
+    """Return the bounds of artwork users actually perceive, excluding faint halos."""
+    visible_alpha = image.getchannel("A").point(
+        lambda value: 255 if value >= alpha_threshold else 0
+    )
+    return visible_alpha.getbbox()
 
 
 def remove_white_matte(source: Path, destination: Path) -> None:
@@ -74,6 +83,25 @@ def remove_white_matte(source: Path, destination: Path) -> None:
     )
     pixels[neutral_shadow, 3] = 0
     canvas = Image.fromarray(pixels, "RGBA")
+
+    # Match the visible artwork bounds of the approved Dark-mode lockup. Both
+    # files already share the same 1108 x 384 canvas, but the Light source has
+    # more transparent padding. Normalising the alpha bounds prevents a
+    # noticeable size jump when the theme is toggled without changing any CSS
+    # slot dimensions on Home or Login.
+    source_bounds = _visual_bounds(canvas)
+    target_bounds = _visual_bounds(Image.open(SIZE_REFERENCE).convert("RGBA"))
+    if not source_bounds or not target_bounds:
+        raise RuntimeError("Unable to resolve visible logo bounds")
+
+    target_width = target_bounds[2] - target_bounds[0]
+    target_height = target_bounds[3] - target_bounds[1]
+    artwork = canvas.crop(source_bounds).resize(
+        (target_width, target_height),
+        Image.Resampling.LANCZOS,
+    )
+    canvas = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
+    canvas.alpha_composite(artwork, target_bounds[:2])
     canvas.save(destination, optimize=True)
 
 
