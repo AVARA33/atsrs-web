@@ -24,7 +24,7 @@
     navProjects:'Projects',
     navCredentials:'Company Credentials',
     navCertificates:'Documents',
-    navRefs:'References & CV',
+    navRefs:'References',
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Profile',
@@ -35,7 +35,7 @@
   var PERSONAL_LABELS={
     navDashboard:'Dashboard',
     navCertificates:'Documents',
-    navRefs:'References & CV',
+    navRefs:'References',
     navCompliance:'Security',
     navProfile:'Profile',
     navIntro:'Product Updates',

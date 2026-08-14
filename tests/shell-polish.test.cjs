@@ -6,6 +6,9 @@ const root=path.resolve(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const runtime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
+
+assert.match(runtime,/navRefs:'References'/);
+assert.doesNotMatch(runtime,/References & CV/);
 const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
@@ -14,7 +17,7 @@ assert.match(index,/css\/shell-polish\.css\?v=506/);
 assert.match(index,/js\/storage\.js\?v=512/);
 assert.match(index,/class="account-tabs" role="tablist"/);
 assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
-assert.match(index,/js\/shell-polish\.js\?v=495/);
+assert.match(index,/js\/shell-polish\.js\?v=521/);
 assert.match(index,/js\/app\.js\?v=470/);
 assert.doesNotMatch(index,/<span class="pill">PRODUCT UPDATES<\/span>/);
 assert.match(css,/Shared Product Updates intro uses the page canvas[\s\S]*?#introPage \.updates-hero[\s\S]*?background:transparent!important/);
