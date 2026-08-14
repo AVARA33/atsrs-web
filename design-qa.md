@@ -1,48 +1,43 @@
-# ATSRS V529 Complete Workspace Glass Card QA
+# ATSRS V523 Dark Profile Surface Design QA
 
 ## Evidence
 
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-e30173b1-09e3-4720-a976-24cfe5129892.jpg` (736 x 1104 px).
-- Browser-rendered implementation: `tests/artifacts/v529/light-desktop.png`, `dark-desktop.png`, `light-mobile.png` and `dark-mobile.png`.
-- Same-frame comparison: `tests/artifacts/v529/comparison-full.png` contains the reference plus the final Light and Dark desktop implementations.
-- Viewports: 2294 x 735 desktop and 390 x 844 mobile.
+- Source visual truth: user-supplied Profile screenshot `C:\Users\user\AppData\Local\Temp\codex-clipboard-26de874b-e025-4254-a77a-a44fc98177a0.png` (3439 x 1368 px). The user marked the remaining navy Admin Overview and phone-number regions. The source contains account information and is intentionally not copied into the repository.
+- Browser-rendered implementation: `docs/qa/v523-profile-surfaces/implementation-safe.jpg` (1280 x 720 px), rendered from the non-PII V523 Profile control harness.
+- Full-view comparison evidence: the source and implementation were opened together in one temporary local comparison view at a 1280 x 720 browser capture. The temporary comparison and temporary source copy were deleted after review to prevent account information from entering the repository.
+- Viewport/state: Dark Personal Profile, General tab, desktop. Device scale factor 1. The safe responsive harness was also measured at 390 x 844 CSS px.
+- Density normalization: both images were proportionally contained in equal comparison frames. The evaluation target was the marked surface colour/state, not pixel-identical page content or browser chrome.
+- Focused region comparison: not retained because it would duplicate account information. The original marked source was inspected at full resolution; the implementation regions were separately verified through computed colour, border and background-image values.
 
-## Measured Source Tokens
+## Findings
 
-- Light canvas: top median `#CCD3DE`, lower median `#BAC9D9`.
-- Dark canvas: top median `#151D2A`, lower median `#040A14`.
-- Light card medians: `#BFCBD9` and `#C0CDDD` in two representative card regions.
-- Dark card medians: `#141B28` and `#070D18` in two representative card regions.
-- The cards are translucent; canvas colour remains visible through the material.
+No actionable P0, P1 or P2 differences remain for the requested regions.
 
-## Final Implementation
+- Fonts and typography: existing Profile, Admin Overview, field and button typography remains unchanged.
+- Spacing and layout rhythm: Admin Overview dimensions/placement and the combined 44px phone controls remain unchanged. The safe 390px state has zero horizontal overflow and 44px tabs.
+- Colors and visual tokens: Admin Overview, its three stats and Refresh button now use `#0b0d0d` with `#2a2f2d` borders and no navy gradient. Both phone number inputs remain transparent inside the same canonical shell. Refresh hover/focus uses the approved lime accent.
+- Image quality and asset fidelity: no image or brand asset changed.
+- Copy and content: no account, admin, phone or interface copy changed.
+- Light mode: V523 contains no Light selector. The safe Light harness retains its prior white/ice Admin surface and reports zero horizontal overflow.
 
-- Authenticated Light canvas: `#CCD3DE` to `#BAC9D9` with a restrained soft highlight.
-- Authenticated Dark canvas: `#151D2A` to `#040A14` with a restrained navy highlight.
-- Light card layers: `rgba(189,203,220,.62)` to `rgba(202,214,229,.46)`.
-- Dark card layers: `rgba(23,31,46,.56)` to `rgba(11,18,30,.44)`.
-- Backdrop blur: 20px with 122% saturation.
-- Card radius: 18px desktop, 16px at 520px and below.
-- Public Home, Login and Loading selectors are excluded.
+## Comparison History
 
-## Coverage Fixes
+1. P2 before V523: the Admin Overview panel and nested stats retained the old blue/navy treatment.
+   - Fix: mapped the panel, stats, footer divider and Refresh control to the canonical Dark surface/line tokens and removed the gradient.
+2. P2 reported screenshot state: phone number halves appeared as separate navy inputs.
+   - Fix: added an authoritative V523 rule keeping the number input and code picker transparent inside the unified canonical field shell, plus a tokenized divider.
+3. Post-fix evidence: the safe browser capture and computed styles confirm Admin `rgb(11,13,13)` / `rgb(42,47,45)`, transparent phone internals, 44px controls and zero overflow.
 
-V528 did not outrank several legacy per-page `!important` rules. V529 uses deliberate full selectors and corrects the omitted `talent-messages-panel` class. The same material now covers:
+## Interaction and Runtime Checks
 
-- Personal and Corporate Dashboard summary cards and lower functional panels.
-- References CV panel, AI CV panel and the functional Main CV row.
-- Profile Work Availability and owner-only Admin Overview cards.
-- Product Updates roadmap cards.
-- Corporate Projects, Personnel, Candidates, Compliance and Reports cards.
-- Recipient link/request cards.
+- General/Security/Privacy tab selection remains interactive and the selected tab stays lime.
+- Refresh hover/focus state is visible and uses the Dark accent.
+- Safe desktop and 390px page-level horizontal overflow: 0.
+- Focused regression suite: 14 passed, 0 failed.
+- Cloudflare Pages build: passed, 103 files.
 
-## Verification
+## Follow-up Polish
 
-- Light/Dark theme switch: passed.
-- Desktop and 390px card layout: passed.
-- 390px horizontal overflow: 0.
-- Focused regression suite: 15 files passed.
-- Cloudflare Pages build: passed, 108 files.
-- Same-frame comparison: no remaining P0/P1/P2 mismatch in colour, translucency, radius, border, shadow or responsive geometry.
+- No P3 follow-up is required for this scoped correction.
 
 final result: passed
