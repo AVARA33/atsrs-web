@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V530');
+assert.equal(version, 'V529');
 assert.equal(update, '14 Aug 2026');
 
 for (const asset of [
@@ -72,7 +72,7 @@ assert.match(index, /href="css\/workspace-control-standard-v523\.css\?v=523"/);
 assert.match(index, /href="css\/personal-account-routing-v524\.css\?v=524"/);
 assert.match(index, /href="css\/references-cv-upload-v525\.css\?v=525"/);
 assert.match(index, /href="css\/product-updates-light-status-v526\.css\?v=526"/);
-assert.match(index, /href="css\/workspace-card-glass-v530\.css\?v=530"/);
+assert.match(index, /href="css\/workspace-card-glass-v529\.css\?v=529"/);
 assert.match(index, /href="css\/projects\.css\?v=503"/);
 assert.match(index, /src="js\/projects\.js\?v=503"/);
 
@@ -95,4 +95,4 @@ assert.match(index, /src="js\/theme\.js\?v=509"/);
 
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=516"/);
 
-console.log('V530 build marker consistency tests passed');
+console.log('V529 build marker consistency tests passed');

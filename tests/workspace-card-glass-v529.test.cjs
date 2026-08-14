@@ -7,8 +7,8 @@ const index=read('index.html');
 const css=read('css/workspace-card-glass-v529.css');
 const harness=read('tests/fixtures/workspace-card-glass-v529-qa.html');
 
-assert.match(index,/data-atsrs-build="V530"/);
-assert.doesNotMatch(index,/workspace-card-glass-v529\.css\?v=529/);
+assert.match(index,/data-atsrs-build="V529"/);
+assert.match(index,/workspace-card-glass-v529\.css\?v=529/);
 assert.match(css,/--atsrs-v529-light-bg-top:#ccd3de/);
 assert.match(css,/--atsrs-v529-light-bg-bottom:#bac9d9/);
 assert.match(css,/--atsrs-v529-dark-bg-top:#151d2a/);
