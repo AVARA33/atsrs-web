@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/talent-directory.css?v=504">
+  <link rel="stylesheet" href="../../css/projects.css?v=503">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=436">
+  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css?v=450">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css?v=509">
+  <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=519">
+  <title>ATSRS V519 workspace surface harness</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0}.app{display:grid!important;grid-template-columns:112px minmax(0,1fr);min-height:100vh}.sidebar{padding:20px 12px}.main{min-width:0;padding:32px 24px}.hidden{display:none!important}.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.card,.snapshot-card,.dashboard-priority-alerts-panel,.project-workspace-card,.corporate-summary-card,.corporate-compliance-card{padding:16px}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}.audit-stack{display:grid;gap:12px}.corporate-summary-grid{margin:0}.linked-personnel-list{max-height:none}.linked-personnel-actions button{font-size:11px}.corporate-report-table-wrap{margin-top:20px}.sidebar b{display:block;margin-top:10px}.audit-label{margin:28px 0 10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    @media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px 14px}.stats-grid,.audit-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body class="company-mode">
+  <div id="app" class="app">
+    <aside class="sidebar"><strong>ATSRS</strong><b>Dashboard</b><b>Personnel</b><b>Projects</b><b>Compliance</b></aside>
+    <main class="main">
+      <h1>Workspace surface standard</h1>
+      <p>Personal and Corporate functional cards use one consistent surface.</p>
+      <section id="dashboardPage">
+        <div class="stats-grid">
+          <div class="card expiry-summary-card"><b>Uploaded documents</b><div class="stat">16</div></div>
+          <div class="card expiry-summary-card"><b>Expiring in 90 days</b><div class="stat">0</div></div>
+          <div class="card expiry-summary-card"><b>Expiring in 30 days</b><div class="stat">0</div></div>
+          <div class="card expiry-summary-card"><b>Expired</b><div class="stat">0</div></div>
+        </div>
+        <div class="audit-grid">
+          <div class="snapshot-card"><b>Managed in Account</b><p>Sharing settings are managed in Account.</p></div>
+          <div class="dashboard-priority-alerts-panel"><b>Priority alerts</b><p>No urgent expiry risk detected.</p></div>
+        </div>
+      </section>
+
+      <p class="audit-label">Corporate cards</p>
+      <div class="audit-grid">
+        <article class="project-workspace-card"><b>Project workspace</b><p>Active assignment and personnel details.</p><button type="button">Manage personnel</button></article>
+        <div class="audit-stack">
+          <div class="corporate-summary-grid">
+            <div class="corporate-summary-card"><span>Personnel</span><b>2</b></div>
+            <div class="corporate-summary-card"><span>Documents</span><b>26</b></div>
+          </div>
+          <article class="corporate-compliance-card"><b>Compliance overview</b><div class="corporate-compliance-metrics"><div>Current<b>9</b></div><div>Review<b>1</b></div></div></article>
+        </div>
+      </div>
+
+      <p class="audit-label">Personnel list</p>
+      <div class="linked-personnel-list">
+        <div class="linked-personnel-table">
+          <div class="linked-personnel-row is-head"><span>Candidate</span><span>Profession</span><span>Work status</span><span>Project</span><span>Access</span><span>Documents</span><span>Notifications</span><span>Action</span></div>
+          <div class="linked-personnel-row"><span data-label="Candidate"><b>Candidate profile</b><small>Country</small></span><span data-label="Profession">Professional role</span><span data-label="Work status">Available now</span><span data-label="Project">Project A</span><span data-label="Access">Public profile</span><span data-label="Document status">Current</span><span data-label="Notification status">Not notified</span><span class="linked-personnel-actions" data-label="Actions"><button>Projects</button><button>View profile</button><button>Remove</button></span></div>
+        </div>
+      </div>
+
+      <p class="audit-label">Report</p>
+      <div class="corporate-report-table-wrap"><table class="corporate-report-table"><thead><tr><th>Profile</th><th>Position</th><th>Status</th><th>Documents</th><th>1–30 days</th><th>Today</th><th>31–90 days</th><th>Expired</th></tr></thead><tbody><tr><td data-label="Profile">Candidate profile</td><td data-label="Position">Professional role</td><td data-label="Status">Clear</td><td data-label="Documents">16</td><td data-label="Expiring in 1–30 days">0</td><td data-label="Expires today">0</td><td data-label="Expiring in 31–90 days">0</td><td data-label="Expired">0</td></tr></tbody></table></div>
+    </main>
+  </div>
+  <script>if(new URLSearchParams(location.search).get('theme')==='light')document.documentElement.dataset.theme='light'</script>
+</body>
+</html>

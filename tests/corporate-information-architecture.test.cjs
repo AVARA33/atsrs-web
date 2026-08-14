@@ -26,7 +26,7 @@ assert.match(html, /id="navIntro" class="nav-utility active"[^>]*>Product Update
 assert.match(html, /id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy<\/button>/);
 assert.doesNotMatch(html, /id="navDataRights"/);
 assert.ok(html.indexOf('id="navIntro"') < html.indexOf('id="navPrivacy"'));
-assert.match(html, /src="js\/talent-directory\.js\?v=495"/);
+assert.match(html, /src="js\/talent-directory\.js\?v=519"/);
 assert.match(html, /src="js\/corporate-information-architecture\.js\?v=444"/);
 assert.match(html, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.equal((html.match(/data-company-credentials-tab="documents"/g) || []).length, 2);

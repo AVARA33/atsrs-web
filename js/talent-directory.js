@@ -434,10 +434,10 @@
           var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
           var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
           return '<div class="linked-personnel-row" role="row">'+
-            '<span><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small>'+personnelDocumentMarkup(item)+'</span>'+
-            '<span>'+safe(profile.position||'Profession not listed')+'</span><span>'+safe(work.label)+'</span><span>'+safe(project)+'</span><span>'+safe(access)+'</span>'+
-            '<span>'+personnelDocumentStatusMarkup(item)+'</span><span>'+personnelNotificationStatusMarkup(item)+'</span>'+
-            '<span class="linked-personnel-actions"><button type="button" class="secondary" data-linked-projects="'+safe(profile.user_id)+'">Projects</button><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
+            '<span data-label="Candidate"><b>'+safe(profile.name+' '+profile.surname)+'</b><small>'+safe(profile.country||'Country not listed')+'</small>'+personnelDocumentMarkup(item)+'</span>'+
+            '<span data-label="Profession">'+safe(profile.position||'Profession not listed')+'</span><span data-label="Work status">'+safe(work.label)+'</span><span data-label="Project">'+safe(project)+'</span><span data-label="Access">'+safe(access)+'</span>'+
+            '<span data-label="Document status">'+personnelDocumentStatusMarkup(item)+'</span><span data-label="Notification status">'+personnelNotificationStatusMarkup(item)+'</span>'+
+            '<span class="linked-personnel-actions" data-label="Actions"><button type="button" class="secondary" data-linked-projects="'+safe(profile.user_id)+'">Projects</button><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
         }).join('')+'</div>';
     }
   }

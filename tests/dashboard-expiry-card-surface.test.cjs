@@ -22,6 +22,6 @@ assert.doesNotMatch(
   'Corporate expiry card surface must not regain a blue fill'
 );
 assert.match(css, /\.atsrs-notification-item\[data-severity="warning"\] \.atsrs-notification-dot\{background:#f59e0b\}/);
-assert.match(boot, /css\/notifications\.css\?v=412/);
+assert.match(boot, /css\/notifications\.css\?v=422/);
 
 console.log('Dashboard expiry card neutral surface regression tests passed');

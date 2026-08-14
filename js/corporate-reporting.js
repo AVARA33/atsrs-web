@@ -264,15 +264,15 @@
     rows.forEach(function(row){
       var tr=document.createElement('tr');
       [
-        (text(row.name)+' '+text(row.surname)).trim(),
-        text(row.position),
-        statusLabel(row.status),
-        row.document_count,
-        row.expiring_30_count,
-        row.expiring_today_count,
-        row.expiring_90_count,
-        row.expired_count
-      ].forEach(function(value){var td=document.createElement('td');td.textContent=text(value);tr.appendChild(td)});
+        ['Profile',(text(row.name)+' '+text(row.surname)).trim()],
+        ['Position',text(row.position)],
+        ['Status',statusLabel(row.status)],
+        ['Documents',row.document_count],
+        ['Expiring in 1–30 days',row.expiring_30_count],
+        ['Expires today',row.expiring_today_count],
+        ['Expiring in 31–90 days',row.expiring_90_count],
+        ['Expired',row.expired_count]
+      ].forEach(function(column){var td=document.createElement('td');td.dataset.label=column[0];td.textContent=text(column[1]);tr.appendChild(td)});
       body.appendChild(tr);
     });
   }
