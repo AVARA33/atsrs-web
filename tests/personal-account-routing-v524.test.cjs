@@ -8,7 +8,7 @@ const storage = fs.readFileSync(path.join(root, 'js', 'storage.js'), 'utf8');
 const shell = fs.readFileSync(path.join(root, 'js', 'shell-polish.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'personal-account-routing-v524.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V531"/);
+assert.match(index, /data-atsrs-build="V532"/);
 assert.match(index, /personal-account-routing-v524\.css\?v=524/);
 assert.match(index, /storage\.js\?v=524/);
 assert.match(index, /shell-polish\.js\?v=524/);

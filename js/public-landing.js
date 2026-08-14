@@ -74,12 +74,22 @@
     document.documentElement.classList.remove('atsrs-public-share-mode');
     document.body.classList.remove('atsrs-public-share-view');
   }
+  function unlockPublicScroll(){
+    var root=document.documentElement;
+    [root,document.body].forEach(function(element){
+      if(!element)return;
+      ['height','min-height','max-height','overflow','overflow-x','overflow-y'].forEach(function(property){
+        element.style.removeProperty(property);
+      });
+    });
+    document.body.classList.remove('auth-open','app-open','profile-photo-cropping','atsrs-verification-open');
+  }
   function showLanding(){
     if(!landing)return;
     removeSharedProfile();
     if(auth)auth.classList.add('hidden');
     if(app)app.classList.add('hidden');
-    document.body.classList.remove('auth-open','app-open');
+    unlockPublicScroll();
     document.body.classList.add('atsrs-public-view');
     removePublicGlobalControls();
     landing.classList.remove('hidden');
