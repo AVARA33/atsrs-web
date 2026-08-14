@@ -14,18 +14,25 @@
   <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=519">
   <link rel="stylesheet" href="../../css/workspace-heading-standard-v520.css?v=520">
   <link rel="stylesheet" href="../../css/workspace-control-standard-v522.css?v=522-qa3">
-  <title>ATSRS V522 account control harness</title>
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v523.css?v=523-qa1">
+  <title>ATSRS V523 account control harness</title>
   <style>
-    *{box-sizing:border-box}body{margin:0}.app{display:block!important;min-height:100vh}.main{width:min(100% - 32px,1040px);margin:auto;padding:40px 0}.hidden{display:none!important}.panel{padding:0!important}.account-tabs{margin:18px 0 28px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.profile-grid label{display:grid;gap:8px}.profile-contact-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.phone-entry{display:grid;gap:8px}.phone-field{display:grid;grid-template-columns:118px 1fr}.phone-code-picker{display:grid;align-items:center;padding:0 12px}.audit-sharing{grid-column:1/-1;padding:16px}.access-request-card{padding:15px}@media(max-width:620px){.profile-grid,.profile-contact-row{grid-template-columns:1fr}}
+    *{box-sizing:border-box}body{margin:0}.app{display:block!important;min-height:100vh}.main{width:min(100% - 32px,1040px);margin:auto;padding:40px 0}.hidden{display:none!important}.panel{padding:0!important}.audit-head{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}.admin-overview-panel{position:static!important;width:100%!important}.account-tabs{margin:18px 0 28px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.profile-grid label{display:grid;gap:8px}.profile-contact-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.phone-entry{display:grid;gap:8px}.phone-field{display:grid;grid-template-columns:118px 1fr}.phone-code-picker{display:grid;align-items:center;padding:0 12px}.audit-sharing{grid-column:1/-1;padding:16px}.access-request-card{padding:15px}@media(max-width:760px){.audit-head,.profile-grid,.profile-contact-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body class="personal-mode app-open">
   <section id="app" class="app"><main class="main"><section id="profilePage"><div class="panel">
-    <h2>Security</h2>
-    <div class="account-tabs" role="tablist" aria-label="Account sections">
-      <button id="accountTabGeneralBtn" class="active" aria-selected="true">General</button>
-      <button id="accountTabSecurityBtn" aria-selected="false">Security</button>
-      <button id="accountTabSharingBtn" aria-selected="false">Privacy &amp; Sharing</button>
+    <div class="audit-head"><div><h2>Profile</h2>
+      <div class="account-tabs" role="tablist" aria-label="Account sections">
+        <button id="accountTabGeneralBtn" class="active" aria-selected="true">General</button>
+        <button id="accountTabSecurityBtn" aria-selected="false">Security</button>
+        <button id="accountTabSharingBtn" aria-selected="false">Privacy &amp; Sharing</button>
+      </div></div>
+      <aside id="adminOverviewPanel" class="admin-overview-panel" aria-labelledby="adminOverviewTitle">
+        <div class="admin-overview-heading"><div><span class="admin-overview-kicker">ADMIN OVERVIEW</span><h4 id="adminOverviewTitle">ATSRS operations</h4></div><span class="admin-overview-secure"><i></i> Secure server data</span></div>
+        <div class="admin-overview-stats"><div class="admin-overview-stat"><span>Registered users</span><strong>6</strong></div><div class="admin-overview-stat"><span>New in 30 days</span><strong>4</strong></div><div class="admin-overview-stat"><span>Estimated AI credit</span><strong>$4.93</strong></div></div>
+        <div class="admin-overview-footer"><span>$0.07 estimated spend</span><button class="admin-overview-refresh">Refresh</button></div>
+      </aside>
     </div>
     <div id="accountGeneralTab" class="profile-grid">
       <label>Name<input value="Sample"></label><label>Country<select><option selected>Azerbaijan</option></select></label>
