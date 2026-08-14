@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/account.css?v=422">
+  <link rel="stylesheet" href="../../css/share-profile.css?v=497">
+  <link rel="stylesheet" href="../../css/calm-actions.css?v=408">
+  <link rel="stylesheet" href="../../css/theme.css?v=504">
+  <link rel="stylesheet" href="../../css/shell-polish.css?v=506">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css?v=509">
+  <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=519">
+  <link rel="stylesheet" href="../../css/workspace-heading-standard-v520.css?v=520">
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v522.css?v=522-qa3">
+  <title>ATSRS V522 account control harness</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0}.app{display:block!important;min-height:100vh}.main{width:min(100% - 32px,1040px);margin:auto;padding:40px 0}.hidden{display:none!important}.panel{padding:0!important}.account-tabs{margin:18px 0 28px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.profile-grid label{display:grid;gap:8px}.profile-contact-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.phone-entry{display:grid;gap:8px}.phone-field{display:grid;grid-template-columns:118px 1fr}.phone-code-picker{display:grid;align-items:center;padding:0 12px}.audit-sharing{grid-column:1/-1;padding:16px}.access-request-card{padding:15px}@media(max-width:620px){.profile-grid,.profile-contact-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body class="personal-mode app-open">
+  <section id="app" class="app"><main class="main"><section id="profilePage"><div class="panel">
+    <h2>Security</h2>
+    <div class="account-tabs" role="tablist" aria-label="Account sections">
+      <button id="accountTabGeneralBtn" class="active" aria-selected="true">General</button>
+      <button id="accountTabSecurityBtn" aria-selected="false">Security</button>
+      <button id="accountTabSharingBtn" aria-selected="false">Privacy &amp; Sharing</button>
+    </div>
+    <div id="accountGeneralTab" class="profile-grid">
+      <label>Name<input value="Sample"></label><label>Country<select><option selected>Azerbaijan</option></select></label>
+      <div class="profile-contact-row"><label class="phone-entry">Mobile phone<div class="phone-field"><div class="phone-code-picker">+994</div><input value="000000000"></div></label><label>Preferred work type<button class="work-type-select-toggle">Any opportunity</button></label></div>
+      <div class="audit-sharing"><article class="access-request-card"><b>Document access request</b><div class="access-request-details">Approved account request details.</div></article></div>
+    </div>
+  </div></section></main></section>
+  <script>document.querySelectorAll('.account-tabs button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.account-tabs button').forEach(item=>{item.classList.remove('active');item.setAttribute('aria-selected','false')});button.classList.add('active');button.setAttribute('aria-selected','true')}));</script>
+</body>
+</html>

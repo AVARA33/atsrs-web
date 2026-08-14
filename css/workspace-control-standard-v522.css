@@ -1,0 +1,168 @@
+/* V522: one Dark interaction language for selectable controls and account fields. */
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden){
+  --atsrs-control-surface:var(--atsrs-ref-dark-surface,#0b0d0d);
+  --atsrs-control-soft:var(--atsrs-ref-dark-soft,#111414);
+  --atsrs-control-line:var(--atsrs-ref-dark-line,#2a2f2d);
+  --atsrs-control-accent:var(--atsrs-ref-lime,#b8ff19);
+  --atsrs-control-accent-ink:#080a08;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
+  #profilePage .account-tabs button,
+  #certificatesPage .cert-mode-buttons button,
+  #candidatesPage .talent-view-switch button,
+  #personnelPage .talent-view-switch button,
+  #projectsPage .talent-view-switch button,
+  .module-tabs button
+){
+  border-color:var(--atsrs-control-line)!important;
+  background:var(--atsrs-control-surface)!important;
+  background-image:none!important;
+  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  -webkit-text-fill-color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
+  #profilePage .account-tabs button,
+  #certificatesPage .cert-mode-buttons button,
+  #candidatesPage .talent-view-switch button,
+  #personnelPage .talent-view-switch button,
+  #projectsPage .talent-view-switch button,
+  .module-tabs button
+):not(.active):not([aria-selected="true"]):not([aria-pressed="true"]):hover{
+  border-color:var(--atsrs-control-accent)!important;
+  background:rgba(184,255,25,.07)!important;
+  color:var(--atsrs-control-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-control-accent)!important;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
+  #profilePage .account-tabs button.active,
+  #profilePage .account-tabs button[aria-selected="true"],
+  #certificatesPage .cert-mode-buttons button.active,
+  #candidatesPage .talent-view-switch button.active,
+  #candidatesPage .talent-view-switch button[aria-pressed="true"],
+  #personnelPage .talent-view-switch button.active,
+  #personnelPage .talent-view-switch button[aria-pressed="true"],
+  #projectsPage .talent-view-switch button.active,
+  #projectsPage .talent-view-switch button[aria-pressed="true"],
+  .module-tabs button.active,
+  .module-tabs button[aria-selected="true"]
+){
+  border-color:var(--atsrs-control-accent)!important;
+  background:var(--atsrs-control-accent)!important;
+  color:var(--atsrs-control-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-control-accent-ink)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
+  #profilePage .account-tabs button,
+  #certificatesPage .cert-mode-buttons button,
+  #candidatesPage .talent-view-switch button,
+  #personnelPage .talent-view-switch button,
+  #projectsPage .talent-view-switch button,
+  .module-tabs button
+):focus-visible{
+  outline:2px solid var(--atsrs-control-accent)!important;
+  outline-offset:2px!important;
+}
+
+/* The entire account form uses the approved near-black field surface. */
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea,
+  .phone-field,
+  .phone-code-picker,
+  .work-type-select-toggle
+){
+  border-color:var(--atsrs-control-line)!important;
+  background:var(--atsrs-control-surface)!important;
+  background-image:none!important;
+  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountGeneralTab .profile-contact-row .phone-field :where(
+  input:not([type="hidden"]),
+  .phone-code-picker
+){
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountGeneralTab .profile-contact-row .phone-code-display{
+  border-color:var(--atsrs-control-line)!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea,
+  .phone-field,
+  .work-type-select-toggle
+):focus,
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(.phone-field,.phone-code-picker):focus-within{
+  outline:0!important;
+  border-color:var(--atsrs-control-accent)!important;
+  box-shadow:0 0 0 3px rgba(184,255,25,.13)!important;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
+  #profilePage .access-request-card,
+  #profilePage .access-request-details,
+  #profilePage .share-document-choice,
+  #profilePage .share-expiry-settings,
+  #profilePage .recipient-link-card,
+  #profilePage .recipient-request-card,
+  .workspace-switcher-button,
+  .workspace-switcher-menu,
+  .workspace-option
+){
+  border-color:var(--atsrs-control-line)!important;
+  background:var(--atsrs-control-surface)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #profilePage .access-request-details{
+  background:var(--atsrs-control-soft)!important;
+}
+
+/* Account tabs have several legacy !important rules; keep this final, explicit rule authoritative. */
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button,
+html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button{
+  border-color:var(--atsrs-control-line)!important;
+  background:var(--atsrs-control-surface)!important;
+  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  -webkit-text-fill-color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:not(.active):not([aria-selected="true"]):hover,
+html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:not(.active):not([aria-selected="true"]):hover{
+  border-color:var(--atsrs-control-accent)!important;
+  background:rgba(184,255,25,.07)!important;
+  color:var(--atsrs-control-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-control-accent)!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button.active,
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button[aria-selected="true"],
+html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button.active,
+html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button[aria-selected="true"]{
+  border-color:var(--atsrs-control-accent)!important;
+  background:var(--atsrs-control-accent)!important;
+  color:var(--atsrs-control-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-control-accent-ink)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:focus-visible,
+html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:focus-visible{
+  outline:2px solid var(--atsrs-control-accent)!important;
+  outline-offset:2px!important;
+}
