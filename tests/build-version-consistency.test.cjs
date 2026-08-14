@@ -60,7 +60,7 @@ assert.match(index, /href="css\/shell-polish\.css\?v=506"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=524"/);
 assert.match(index, /href="css\/public-landing\.css\?v=532"/);
 assert.match(index, /href="css\/share-profile\.css\?v=497"/);
-assert.match(index, /src="js\/public-landing\.js\?v=532"/);
+assert.match(index, /src="js\/public-landing\.js\?v=536"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/talent-directory\.js\?v=519"/);
