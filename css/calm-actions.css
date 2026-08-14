@@ -184,13 +184,7 @@ button.confirm,
 .lang-menu button,
 .sidebar-toggle,
 .file-preview-close,
-.share-request-close,
-.v76-audit-close,
-.v76-copy-btn,
-#atsrsTestAutomationBtn,
-#atsrsTopbarTroubleBtn,
-#atsrsTestAutomationPanel .qa-actions button,
-#atsrsTopbarTroublePanel .trouble-actions button{
+.share-request-close{
   background:transparent!important;
   background-image:none!important;
   border-color:rgba(93,119,143,.36)!important;

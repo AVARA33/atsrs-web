@@ -40,20 +40,6 @@
     if(Number.isNaN(date.getTime()))return String(value);
     return new Intl.DateTimeFormat('en',{day:'2-digit',month:'short',year:'numeric'}).format(date);
   }
-  function endpoint(){var base=typeof SUPABASE_URL!=='undefined'?SUPABASE_URL:'';return base?base+'/functions/v1/share-profile':'';}
-  function publishableKey(){return typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:'';}
-  function safeSessionGet(key){try{return sessionStorage.getItem(key)||'';}catch(error){return '';}}
-  function safeSessionSet(key,value){try{if(value)sessionStorage.setItem(key,value);else sessionStorage.removeItem(key);}catch(error){}}
-  function safeViewerGet(key){try{return localStorage.getItem(key)||safeSessionGet(key);}catch(error){return safeSessionGet(key);}}
-  function safeViewerSet(key,value){try{if(value)localStorage.setItem(key,value);else localStorage.removeItem(key);}catch(error){}safeSessionSet(key,value);}
-  function viewerKey(suffix){return 'atsrs_share_viewer_'+publicToken.slice(-12)+'_'+suffix;}
-  function shareUrl(token){return token?'https://atsrs.com/?share='+encodeURIComponent(token):'';}
-  function formatDate(value){
-    if(!value)return 'Not provided';
-    var date=new Date(String(value).length===10?String(value)+'T00:00:00':value);
-    if(Number.isNaN(date.getTime()))return String(value);
-    return new Intl.DateTimeFormat('en',{day:'2-digit',month:'short',year:'numeric'}).format(date);
-  }
   function formatDateTime(value){
     if(!value)return 'Not available';
     var date=new Date(value);if(Number.isNaN(date.getTime()))return String(value);

@@ -10,7 +10,7 @@ const ui = fs.readFileSync(path.join(root, 'js', 'ui.js'), 'utf8');
 
 assert.match(index, /<section id="auth" class="auth">[\s\S]*?<a class="auth-home-link" href="\/\?view=home">[\s\S]*?ph ph-arrow-left[\s\S]*?<span>Back to Home<\/span>/);
 assert.match(index, /href="css\/theme\.css\?v=504"/);
-assert.match(index, /src="js\/public-landing\.js\?v=518"/);
+assert.match(index, /src="js\/public-landing\.js\?v=532"/);
 assert.match(index, /src="js\/ui\.js\?v=510"/);
 assert.match(landing, /if\(requestedView==='home'\)[\s\S]*?__atsrsSuppressAutomaticSessionOpen=true[\s\S]*?history\.replaceState[\s\S]*?showLanding\(\)[\s\S]*?return/);
 assert.match(ui, /function publicLandingVisible\(\)[\s\S]*?atsrs-public-view[\s\S]*?!landing\.classList\.contains\('hidden'\)/);

@@ -39,16 +39,17 @@ assert.match(theme, /--sidebar-accent:#22c55e;[\s\S]*?--loading-accent:var\(--si
 assert.match(theme, /html\[data-theme="light"\]\s*\{[\s\S]*?--sidebar-accent:#2563eb;[\s\S]*?--loading-accent:var\(--sidebar-accent\)/,'light loading accent must inherit the blue sidebar accent');
 assert.match(base, /\.atsrs-spinner span\s*\{[\s\S]*?background:var\(--loading-accent\)/,'all shared spinner segments must use the loading accent token');
 assert.doesNotMatch(base, /\.atsrs-spinner span\s*\{[\s\S]*?background:#(?:22c55e|16a34a)/,'spinner segments must not hard-code an accent');
-assert.equal((html.match(/class="atsrs-spinner"/g)||[]).length,2,'boot and shared-profile loading must reuse the shared spinner component');
+assert.equal((html.match(/class="atsrs-spinner"/g)||[]).length,1,'shared-profile loading must retain the shared spinner component');
+assert.match(html,/id="atsrsBootScreen"[\s\S]*class="atsrs-boot-mark"/,'boot loading must use the branded ATSRS mark');
 assert.match(theme, /html:not\(\[data-theme="light"\]\) #auth\.auth,[\s\S]*?#atsrsBootScreen\s*\{[\s\S]*?background-color:var\(--atsrs-canvas-dark\)!important;[\s\S]*?background-image:none!important/,'auth, boot and app canvases must use the canonical token without gradients');
 assert.match(theme, /html:not\(\[data-theme="light"\]\) #app\.app > \.main > section\s*\{[\s\S]*?background-color:transparent!important;[\s\S]*?background-image:none!important/,'route canvases must inherit the canonical dark canvas');
 assert.match(theme, /html:not\(\[data-theme="light"\]\) #auth\.auth::before\s*\{[\s\S]*?background:none!important/,'dark auth glow pseudo-element must be disabled');
 assert.match(theme, /html\[data-theme="light"\] #auth\.auth\s*\{[\s\S]*?radial-gradient/,'light auth theme must keep its existing background treatment');
-assert.match(themeRuntime, /theme==='light'\?'#f6f8fb':'#04101d'/,'runtime theme color must match the canonical dark canvas');
-assert.match(html, /html\{background:#04101d\}/,'initial paint must match the canonical dark canvas');
-assert.match(html, /css\/theme\.css\?v=462/);
+assert.match(themeRuntime, /theme==='light'\?'#edf2f8':'#050606'/,'runtime theme color must match the canonical canvases');
+assert.match(html, /html\{background:#050606\}/,'initial paint must match the canonical dark canvas');
+assert.match(html, /css\/theme\.css\?v=504/);
 assert.match(html, /css\/base\.css\?v=408/);
-assert.match(html, /css\/account\.css\?v=420/);
-assert.match(html, /js\/theme\.js\?v=460/);
+assert.match(html, /css\/account\.css\?v=422/);
+assert.match(html, /js\/theme\.js\?v=509/);
 
 console.log('References visual regression contracts passed');

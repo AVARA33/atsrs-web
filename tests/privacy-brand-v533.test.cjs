@@ -7,7 +7,7 @@ const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','privacy-brand-v533.css'),'utf8');
 const lightLogo=path.join(root,'assets','branding','atsrs-lockup-light-v533.png');
 
-assert.match(index,/data-atsrs-build="V533"/);
+assert.match(index,/data-atsrs-build="V534"/);
 assert.match(index,/css\/privacy-brand-v533\.css\?v=533/);
 assert.ok(fs.statSync(lightLogo).size>1000000,'approved Light logo source must be shipped unchanged');
 assert.match(css,/#accountSharingTab\.active[\s\S]*?background:var\(--atsrs-ref-dark-bg,#050606\)!important/);

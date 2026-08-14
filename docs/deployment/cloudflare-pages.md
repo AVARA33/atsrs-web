@@ -33,16 +33,26 @@ Because the final public origin remains `https://atsrs.com`, the existing applic
 
 No production user data is copied, altered or deleted during this frontend migration.
 
-## Recorded pre-cutover state
+## Recorded pre-cutover state (historical rollback record)
 
 Recorded on 11 August 2026 before any production DNS change:
 
 - `atsrs.com` A records: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
 - `www.atsrs.com` CNAME: `avara33.github.io`
-- Public production origin remains GitHub Pages.
-- Cloudflare Pages is preview-only; no custom domain is attached.
+- At the time of this record, the public production origin remained GitHub Pages.
+- At the time of this record, Cloudflare Pages was preview-only and no custom domain was attached.
 
 This is the rollback target if a later custom-domain cutover has to be reversed.
+
+## Current production state
+
+Verified on 14 August 2026:
+
+- `https://atsrs.com` is served through Cloudflare and reports the same V533 build as the Pages preview.
+- `https://atsrs-web-preview.pages.dev` is the active Cloudflare Pages preview origin.
+- The repository contains no Pages Functions directory, `_worker.js`, `_routes.json`, Wrangler configuration, or repository-owned KV, R2, D1, Durable Object or Queue binding configuration.
+- Supabase remains the application backend for Auth, Postgres, Storage and Edge Functions.
+- A separately managed `atsrs-api` Worker may exist outside this repository. Its routes, bindings and production use cannot be proved from repository evidence, so it must not be removed without owner review in Cloudflare.
 
 ## Preview verification record
 

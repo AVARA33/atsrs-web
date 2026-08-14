@@ -214,7 +214,7 @@ html[data-theme="light"] :where(
   .atsrs-security-card,.atsrs-ai-consent,.atsrs-ai-consent-check,
   .atsrs-session-card,.date-picker-popover,.profile-photo-crop-dialog,
   .file-preview-dialog,.file-preview-card,.file-preview-shell,
-  .shared-preview-card,.shared-preview-shell,.v76-audit-card
+  .shared-preview-card,.shared-preview-shell
 ){
   background:#ffffff!important;
   border-color:#d4dfe7!important;
@@ -336,7 +336,7 @@ html[data-theme="light"] body .atsrs-upload-date.is-recent{color:#15803d!importa
 html[data-theme="light"] body :where(
   button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
   .dashboard-view-button,.talent-view-switch button,.file-preview-close,
-  .share-request-close,.v76-audit-close,.v76-copy-btn
+  .share-request-close
 ){
   background:#ffffff!important;
   border-color:#c8d4de!important;
@@ -495,7 +495,7 @@ html[data-theme="light"] .build-badge{
 /* Dialogs, overlays and document preview. */
 html[data-theme="light"] :where(
   .talent-modal-backdrop,.file-preview-backdrop,.share-request-backdrop,
-  .atsrs-security-backdrop,.profile-photo-crop-backdrop,.v76-audit-modal
+  .atsrs-security-backdrop,.profile-photo-crop-backdrop
 ){
   background:rgba(38,54,68,.48)!important;
 }
@@ -533,7 +533,7 @@ html[data-theme="light"] .atsrs-account-toast{
 html[data-theme="light"] body #app :where(
   button,.secondary,.module-tabs button,.account-tabs button,.mode-choice button,
   .dashboard-view-button,.talent-view-switch button,.file-preview-close,
-  .share-request-close,.v76-audit-close,.v76-copy-btn
+  .share-request-close
 ){
   background:#ffffff!important;
   border-color:#c8d4de!important;

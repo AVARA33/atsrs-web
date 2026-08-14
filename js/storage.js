@@ -320,11 +320,6 @@ async function login(){let email=loginEmail.value.trim(),password=loginPassword.
 async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?atsrsFriendlyAuthError(error,'Reset link could not be sent. Please try again.'):tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
 async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?atsrsFriendlyAuthError(error,'Password could not be updated. Please try again.'):"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
 
-async function register(){let email=regEmail.value.trim(),password=regPassword.value.trim(),password2=regPassword2.value.trim();regMsg.innerText="";if(!email||!password||!password2){regMsg.innerText=tr("fill");return}if(!markEmail(regEmail,regEmailRule)||!validateRegisterFields())return;if(!supabaseClient){regMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});regMsg.innerText=error?atsrsFriendlyAuthError(error,'Account could not be created. Please try again.'):"Confirmation email sent. Check inbox/spam."}catch(e){regMsg.innerText=tr("connection")}}
-async function login(){let email=loginEmail.value.trim(),password=loginPassword.value.trim();loginMsg.innerText="";if(!validateUseMode())return;if(!email||!password){loginMsg.innerText=tr("enterLogin");return}if(!markEmail(loginEmail,loginEmailRule))return;if(!supabaseClient){loginMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){loginMsg.innerText=atsrsFriendlyAuthError(error,'Sign in failed. Please try again.');return}localStorage.setItem("atsrs_use_mode",useMode);currentUser=data.user;window.currentUser=data.user;openApp()}catch(e){loginMsg.innerText=tr("connection")}}
-async function forgotPassword(){let email=resetEmail.value.trim();resetMsg.innerText="";if(!email){resetMsg.innerText=tr("enterLogin");return}if(!markEmail(resetEmail,resetEmailRule))return;if(!supabaseClient){resetMsg.innerText="The sign-in service is temporarily unavailable.";return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});resetMsg.innerText=error?atsrsFriendlyAuthError(error,'Reset link could not be sent. Please try again.'):tr("sent")}catch(e){resetMsg.innerText=tr("connection")}}
-async function updatePassword(){let p1=newPassword.value.trim(),p2=newPassword2.value.trim();if(!p1||!p2){newPassMsg.innerText=tr("fill");return}if(p1!==p2){newPassMsg.innerText=tr("matchRule");return}try{const {error}=await supabaseClient.auth.updateUser({password:p1});newPassMsg.innerText=error?atsrsFriendlyAuthError(error,'Password could not be updated. Please try again.'):"Password updated."}catch(e){newPassMsg.innerText=tr("connection")}}
-
 let useMode="";
 function modeMsg(){
   return "Select Personal or Corporate account to login.";
@@ -915,59 +910,8 @@ const V49_FILE_TEXT={
   en:{appStatusUploaded:"Appraisal Uploaded ✓",appStatusMissing:"No Appraisal Uploaded",refStatusUploaded:"Reference Uploaded ✓",refStatusMissing:"No Reference Uploaded",preview:"Preview",download:"Download",deleteFile:"Delete",generate:"Generate ATSRS File (Beta)",comingSoon:"ATSRS document generator will be connected in a later build.",noFile:"No file uploaded yet.",uploadAppraisal:"Upload",uploadReference:"Upload",appBetaTitle:"Generate ATSRS Appraisal Summary",appBetaText:"Generate an ATSRS appraisal summary from stored career data.",refBetaTitle:"Generate ATSRS Reference Pack",refBetaText:"Generate an ATSRS reference pack from stored career data.",docTypePlaceholder:"Write document type manually",autoDocTypePlaceholder:"Write detected document type manually"}
 };
 function v49(k){return (V49_FILE_TEXT[lang]&&V49_FILE_TEXT[lang][k])||V49_FILE_TEXT.en[k]||k}
-function getManagedFile(kind){let a=getData(kind+'Files');return Array.isArray(a)&&a.length?a[0]:null}
-function saveManagedFile(kind,file){saveData(kind+'Files',file?[file]:[])}
-function handleManagedUpload(kind,event){const file=event.target.files&&event.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=function(){saveManagedFile(kind,{name:file.name,type:file.type||'application/octet-stream',size:file.size,updated:new Date().toISOString(),data:reader.result});renderManagedFiles();renderAll();}; reader.readAsDataURL(file);}
-function previewManagedFile(kind){const f=getManagedFile(kind); if(!f){alert(v49('noFile'));return;} const w=window.open('','_blank'); if(w){w.document.write(`<title>${f.name}</title><iframe src="${f.data}" style="border:0;width:100%;height:100vh"></iframe>`);w.document.close();}}
-function downloadManagedFile(kind){const f=getManagedFile(kind); if(!f){alert(v49('noFile'));return;} const a=document.createElement('a');a.href=f.data;a.download=f.name||('ATSRS-'+kind);document.body.appendChild(a);a.click();a.remove();}
-function deleteManagedFile(kind){const f=getManagedFile(kind); if(!f){alert(v49('noFile'));return;} saveManagedFile(kind,null); const input=document.getElementById(kind+'UploadInput'); if(input)input.value=''; renderManagedFiles(); renderAll();}
-function ensureManagedCard(kind){
- const isApp=kind==='appraisal';
- const card=document.getElementById(isApp?'appraisalCardTitle':'referenceCardTitle')?.closest('.ref-card');
- if(!card || card.dataset.v49Ready==='1')return;
- card.dataset.v49Ready='1';
- const title=document.getElementById(isApp?'appraisalCardTitle':'referenceCardTitle');
- if(title && !title.parentElement.classList.contains('ref-doc-head')){
-   title.outerHTML=`<div class="ref-doc-head"><h3 id="${isApp?'appraisalCardTitle':'referenceCardTitle'}">${title.innerText}</h3><span id="${kind}StatusBadge" class="badge badge-missing">—</span></div>`;
- }
- const oldBtn=document.getElementById(isApp?'uploadAppraisalBtn':'uploadReferenceBtn'); if(oldBtn)oldBtn.remove();
- card.insertAdjacentHTML('beforeend',`
-   <input id="${kind}UploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="hidden" onchange="handleManagedUpload('${kind}',event)" multiple>
-   <div id="${kind}FileInfo" class="preview-box ref-file-info"></div>
-   <div class="ref-doc-actions">
-     <button id="${kind}UploadBtn" class="secondary" onclick="document.getElementById('${kind}UploadInput').click()"></button>
-     <button id="${kind}PreviewBtn" class="secondary" onclick="previewManagedFile('${kind}')"></button>
-     <button id="${kind}DownloadBtn" class="secondary" onclick="downloadManagedFile('${kind}')"></button>
-     <button id="${kind}DeleteBtn" class="action" onclick="deleteManagedFile('${kind}')"></button>
-   </div>
-`);
-}
-function renderManagedFiles(){
- ['appraisal','reference'].forEach(kind=>ensureManagedCard(kind));
- const app=getManagedFile('appraisal'), ref=getManagedFile('reference');
- const pairs=[['appraisal',app],['reference',ref]];
- pairs.forEach(([kind,file])=>{
-  const isApp=kind==='appraisal';
-  const badge=document.getElementById(kind+'StatusBadge'); if(badge){badge.innerText=file?(isApp?v49('appStatusUploaded'):v49('refStatusUploaded')):(isApp?v49('appStatusMissing'):v49('refStatusMissing')); badge.className='badge '+(file?'badge-ready':'badge-missing');}
-  const info=document.getElementById(kind+'FileInfo'); if(info)info.innerText=file?`${file.name} • ${Math.round((file.size||0)/1024)} KB`:'';
-  const up=document.getElementById(kind+'UploadBtn'); if(up)up.innerText=isApp?v49('uploadAppraisal'):v49('uploadReference');
-  const pr=document.getElementById(kind+'PreviewBtn'); if(pr)pr.innerText=v49('preview');
-  const dl=document.getElementById(kind+'DownloadBtn'); if(dl)dl.innerText=v49('download');
-  const del=document.getElementById(kind+'DeleteBtn'); if(del)del.innerText=v49('deleteFile');
-  const bt=document.getElementById(kind+'BetaTitle'); if(bt)bt.innerText=isApp?v49('appBetaTitle'):v49('refBetaTitle');
-  const bx=document.getElementById(kind+'BetaText'); if(bx)bx.innerText=isApp?v49('appBetaText'):v49('refBetaText');
-  const gen=document.getElementById(kind+'GenerateBtn'); if(gen)gen.innerText=v49('generate');
- });
- if(typeof cType!=='undefined')cType.placeholder=v49('docTypePlaceholder');
- if(typeof autoDocType!=='undefined')autoDocType.placeholder=v49('autoDocTypePlaceholder');
-}
 const restoreCurrentPageBaseV49=restoreCurrentPage;
 restoreCurrentPage=function(){let page=localStorage.getItem('atsrs_current_page')||'intro';let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,certificates:navCertificates,refs:navRefs,compliance:navCompliance,security:navCompliance,reports:navReports,profile:navProfile};showPage(map[page]?page:'intro',map[page]||navIntro);}
-const renderAllBaseV49=renderAll;
-renderAll=function(){renderAllBaseV49();renderManagedFiles();}
-const applyLanguageBaseV49=applyLanguage;
-applyLanguage=function(){applyLanguageBaseV49();renderManagedFiles();}
-setTimeout(()=>{try{renderManagedFiles()}catch(e){}},0);
 const V27_TEXT={
   en:{shareBadge:"SHARE PROFILE",shareTitle:"Share My ATSRS Profile",shareSub:"Send one secure profile link instead of attaching documents one by one.",copyLink:"Copy Link",preview:"Preview",manageAccess:"Manage Access",linkCopied:"Link copied.",companyView:"Company view",companyImportText:"A company can review shared documents and import selected records into ATSRS Company later.",importCompany:"Import to Company Profile",importDemoAlert:"Company import will be connected after backend and permissions are ready.",profileVisibility:"Profile Visibility",profileVisibilityNote:"Private hides you from Candidates. Link Only is visible through your active share link. Public lists eligible profiles in Candidates.",sharedProfile:"ATSRS Shared Profile"}
 };
@@ -1416,129 +1360,6 @@ setTimeout(v55DockTopActions,500);
   window.addEventListener('scroll',restoreV34Topbar,{passive:true});
   setTimeout(restoreV34Topbar,0);setTimeout(restoreV34Topbar,500);
 })();
-
-/* ===== extracted from inline script id=v61-topbar-troubleshoot-script ===== */
-(function(){
-  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
-  function shortNode(el){
-    if(!el) return 'NOT FOUND';
-    return el.tagName.toLowerCase()+(el.id?'#'+el.id:'')+(el.className?'.'+String(el.className).trim().replace(/\s+/g,'.'):'');
-  }
-  function cssInfo(el){
-    if(!el) return null;
-    var cs=getComputedStyle(el), r=el.getBoundingClientRect();
-    return {
-      node:shortNode(el),
-      parent:shortNode(el.parentElement),
-      position:cs.position,
-      display:cs.display,
-      top:cs.top,
-      right:cs.right,
-      left:cs.left,
-      zIndex:cs.zIndex,
-      transform:cs.transform,
-      width:cs.width,
-      rectTop:Math.round(r.top),
-      rectRight:Math.round(r.right),
-      rectLeft:Math.round(r.left),
-      rectBottom:Math.round(r.bottom)
-    };
-  }
-  function countSelectors(selector){
-    var matches=[];
-    for(var i=0;i<document.styleSheets.length;i++){
-      var sh=document.styleSheets[i];
-      var rules;
-      try{ rules=sh.cssRules || sh.rules; }catch(e){ continue; }
-      if(!rules) continue;
-      for(var j=0;j<rules.length;j++){
-        var rule=rules[j];
-        var txt=rule.cssText||'';
-        if(txt.indexOf(selector)!==-1) matches.push(txt.slice(0,240));
-      }
-    }
-    return matches;
-  }
-  function ensurePanel(){
-    var p=document.getElementById('atsrsTopbarTroublePanel');
-    if(p) return p;
-    p=document.createElement('div');
-    p.id='atsrsTopbarTroublePanel';
-    p.className='hidden';
-    p.innerHTML='<h3>Topbar Troubleshoot Report</h3><div class="trouble-actions"><button class="trouble-fix" type="button" onclick="atsrsHardFixTopbar()">Apply Hard Fix</button><button class="trouble-close" type="button" onclick="document.getElementById(\'atsrsTopbarTroublePanel\').classList.add(\'hidden\')">Close</button></div><pre id="atsrsTopbarTroubleOutput">Press Troubleshoot.</pre>';
-    document.body.appendChild(p);
-    return p;
-  }
-  window.atsrsHardFixTopbar=function(){
-    var app=document.getElementById('app');
-    var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
-    if(!app||!top){ console.warn('ATSRS layout container was not found.'); return; }
-    if(top.parentElement!==app) app.insertBefore(top, app.firstChild);
-    top.setAttribute('style','position:fixed!important;top:18px!important;right:18px!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;display:flex!important;align-items:center!important;gap:10px!important;transform:none!important;width:auto!important;height:auto!important;');
-    var lang=top.querySelector('.lang-floating,.app-lang-switcher');
-    if(lang) lang.setAttribute('style','position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;z-index:2147483647!important;transform:none!important;display:block!important;');
-    var logout=document.getElementById('topLogoutBtn');
-    if(logout) logout.setAttribute('style','width:auto!important;margin:0!important;background:rgba(239,68,68,.035)!important;color:#fca5a5!important;border:1px solid rgba(248,113,113,.42)!important;padding:10px 13px!important;border-radius:9px!important;font-weight:800!important;box-shadow:none!important;display:block!important;position:relative!important;');
-    var btn=document.getElementById('atsrsTopbarTroubleBtn');
-    if(btn) btn.setAttribute('style','width:auto!important;margin:0!important;padding:10px 13px!important;border-radius:9px!important;border:1px solid rgba(250,204,21,.46)!important;background:rgba(250,204,21,.035)!important;color:#fde68a!important;font-weight:800!important;box-shadow:none!important;display:block!important;position:relative!important;');
-    window.runTopbarTroubleshoot && window.runTopbarTroubleshoot('After Apply Hard Fix');
-  };
-  window.runTopbarTroubleshoot=function(label){
-    var p=ensurePanel(); p.classList.remove('hidden');
-    var out=document.getElementById('atsrsTopbarTroubleOutput');
-    var top=document.querySelector('#app > .top-actions') || document.querySelector('.atsrs-global-top-actions') || document.querySelector('.atsrs-v56-top-actions') || document.querySelector('.top-actions');
-    var lang=document.getElementById('appLangCircle');
-    var logout=document.getElementById('topLogoutBtn');
-    var y0=window.scrollY;
-    var before=top?Math.round(top.getBoundingClientRect().top):null;
-    var report=[];
-    report.push('TEST: '+(label||'Manual troubleshoot'));
-    report.push('Time: '+new Date().toLocaleString());
-    report.push('ScrollY before: '+y0);
-    report.push('Body classes: '+document.body.className);
-    report.push('App hidden: '+(document.getElementById('app')?.classList.contains('hidden')));
-    report.push('');
-    report.push('TOP ACTIONS: '+JSON.stringify(cssInfo(top),null,2));
-    report.push('LANG BUTTON: '+JSON.stringify(cssInfo(lang),null,2));
-    report.push('LOGOUT: '+JSON.stringify(cssInfo(logout),null,2));
-    report.push('');
-    report.push('Topbar parent chain:');
-    var x=top, chain=[]; while(x&&chain.length<8){chain.push(shortNode(x)); x=x.parentElement;} report.push(chain.join('  <-  '));
-    report.push('');
-    report.push('CSS rules containing .top-actions: '+countSelectors('.top-actions').length);
-    countSelectors('.top-actions').slice(-12).forEach(function(r,i){report.push('RULE '+(i+1)+': '+r.replace(/\s+/g,' '));});
-    report.push('');
-    report.push('Running scroll movement test...');
-    out.textContent=report.join('\n');
-    var maxScroll=document.documentElement.scrollHeight-window.innerHeight;
-    var target=Math.min(maxScroll, y0+350);
-    window.scrollTo(0,target);
-    setTimeout(function(){
-      var after=top?Math.round(top.getBoundingClientRect().top):null;
-      var y1=window.scrollY;
-      report.push('');
-      report.push('ScrollY after: '+y1);
-      report.push('Top rectTop before: '+before);
-      report.push('Top rectTop after: '+after);
-      report.push('Delta: '+(after!==null&&before!==null ? (after-before) : 'N/A'));
-      report.push('Expected for fixed topbar: Delta must be 0 or near 0.');
-      report.push('Result: '+((after!==null&&before!==null&&Math.abs(after-before)<=2)?'PASS ✅ topbar is fixed':'FAIL ❌ topbar moves with page'));
-      out.textContent=report.join('\n');
-      window.scrollTo(0,y0);
-    },250);
-  };
-  ready(function(){
-    var top=document.querySelector('#app > .top-actions') || document.querySelector('.top-actions');
-    if(top && !document.getElementById('atsrsTopbarTroubleBtn')){
-      var b=document.createElement('button');
-      b.type='button'; b.id='atsrsTopbarTroubleBtn'; b.textContent='Troubleshoot';
-      b.onclick=function(){ window.runTopbarTroubleshoot && window.runTopbarTroubleshoot(); };
-      top.appendChild(b);
-    }
-    ensurePanel();
-  });
-})();
-
 
 /* ===== ATSRS V180 Create Account V1 - real Supabase register enabled ===== */
 (function(){

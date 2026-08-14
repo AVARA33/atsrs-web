@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V533');
+assert.equal(version, 'V534');
 assert.equal(update, '14 Aug 2026');
 
 for (const asset of [
@@ -96,4 +96,4 @@ assert.match(index, /src="js\/theme\.js\?v=509"/);
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=516"/);
 assert.match(index, /href="css\/privacy-brand-v533\.css\?v=533"/);
 
-console.log('V533 build marker consistency tests passed');
+console.log('V534 build marker consistency tests passed');
