@@ -147,7 +147,6 @@
     byId('atsrsNotificationTimezone').value=data.timezone||'Asia/Baku';
     syncPhoneState();
     setStatus('Settings are stored on the ATSRS server.','ok');
-    window.dispatchEvent(new CustomEvent('atsrs:notification-preferences',{detail:{emailEnabled:data.email_enabled!==false,accountType:mode()}}));
   }
 
   async function savePreferences(){
@@ -160,7 +159,6 @@
     button.disabled=false;
     if(result.error){console.error('ATSRS notification preference save failed',result.error);setStatus('Settings could not be saved. Try again.','error');return;}
     setStatus('Reminder preferences saved on the ATSRS server.','ok');
-    window.dispatchEvent(new CustomEvent('atsrs:notification-preferences',{detail:{emailEnabled:email,accountType:mode()}}));
   }
 
   function notificationMarkup(item){

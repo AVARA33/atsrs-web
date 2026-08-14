@@ -7,9 +7,9 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const landing = fs.readFileSync(path.join(root, 'js', 'public-landing.js'), 'utf8');
 const storage = fs.readFileSync(path.join(root, 'js', 'storage.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V536"/);
+assert.match(index, /data-atsrs-build="V537"/);
 assert.equal((index.match(/js\/public-landing\.js\?v=536/g) || []).length, 1);
-assert.ok(index.indexOf('js/public-landing.js?v=536') < index.indexOf('js/boot-refresh.js?v=536'), 'public route must resolve before the boot fallback can reveal auth');
+assert.ok(index.indexOf('js/public-landing.js?v=536') < index.indexOf('js/boot-refresh.js?v=443'), 'public route must resolve before the boot fallback can reveal auth');
 assert.match(index, /__atsrsEntryRoute==='auth'\|\|window\.__atsrsEntryRoute==='share'\|\|window\.__atsrsEntryRoute==='landing'/);
 assert.doesNotMatch(index, /__atsrsEntryRoute!==['"]callback['"]/);
 assert.match(landing, /atsrsGetSessionSingleFlight/);
