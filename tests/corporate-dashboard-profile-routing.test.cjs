@@ -14,7 +14,8 @@ assert.match(css, /body\.company-mode #dashboardPage \.stats-grid\{[\s\S]*?repea
 assert.match(css, /body\.company-mode #dashboardPage \.stats-grid > \.expiry-summary-expired\{[\s\S]*?grid-column:span 2/);
 assert.match(css, /#sentRequestsPanel \.sent-request-grid\{[\s\S]*?grid-template-columns:1fr/);
 assert.match(css, /#sentRequestsPanel \.access-panel-head > button\{[\s\S]*?margin-left:auto/);
-assert.match(storage, /page==="profile"&&btn&&btn\.id==="navProfile"\)showAccountTab\("general"\)/);
-assert.match(shell, /showPage\('profile',compliance\)[\s\S]*?showAccountTab\('security'\)/);
+assert.match(storage, /requestedPage==="profile"\)showAccountTab\("general"\)/);
+assert.match(storage, /requestedPage==="security"\)showAccountTab\("security"\)/);
+assert.match(shell, /showPage\('security',compliance\)/);
 
 console.log('Corporate dashboard and Personal profile routing regression tests passed');

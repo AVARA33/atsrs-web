@@ -1,0 +1,19 @@
+/* ATSRS V524 — Personal Profile and Security are separate navigation surfaces. */
+
+body.personal-mode[data-atsrs-account-route="profile"] #profilePage #accountTabSecurityBtn{
+  display:none!important;
+}
+
+body.personal-mode[data-atsrs-account-route="security"] #profilePage .account-tabs{
+  display:none!important;
+}
+
+body.personal-mode[data-atsrs-account-route="profile"] #profilePage #accountSecurityTab,
+body.personal-mode[data-atsrs-account-route="security"] #profilePage #accountGeneralTab,
+body.personal-mode[data-atsrs-account-route="security"] #profilePage #accountSharingTab{
+  display:none!important;
+}
+
+body.personal-mode[data-atsrs-account-route="security"] #profilePage #accountSecurityTab.active{
+  display:block!important;
+}

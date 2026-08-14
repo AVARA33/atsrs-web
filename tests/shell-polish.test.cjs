@@ -14,10 +14,10 @@ const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-r
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
 assert.match(index,/css\/shell-polish\.css\?v=506/);
-assert.match(index,/js\/storage\.js\?v=512/);
+assert.match(index,/js\/storage\.js\?v=524/);
 assert.match(index,/class="account-tabs" role="tablist"/);
 assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
-assert.match(index,/js\/shell-polish\.js\?v=521/);
+assert.match(index,/js\/shell-polish\.js\?v=524/);
 assert.match(index,/js\/app\.js\?v=470/);
 assert.doesNotMatch(index,/<span class="pill">PRODUCT UPDATES<\/span>/);
 assert.match(css,/Shared Product Updates intro uses the page canvas[\s\S]*?#introPage \.updates-hero[\s\S]*?background:transparent!important/);
@@ -95,8 +95,7 @@ assert.match(css,/body\.company-mode #app\.app:not\(\.hidden\) \.sidebar \.nav :
 assert.match(runtime,/navCompliance:'Security'/);
 assert.match(runtime,/navProfile:'Company'/);
 assert.match(runtime,/function syncNavigationRoutes\(\)/);
-assert.match(runtime,/window\.showPage\('profile',compliance\)/);
-assert.match(runtime,/window\.showAccountTab\('security'\)/);
+assert.match(runtime,/window\.showPage\('security',compliance\)/);
 assert.match(runtime,/window\.showPage\('compliance',compliance\)/);
 assert.match(css,/route panels are layout wrappers[\s\S]*?#candidatesPage[\s\S]*?#personnelPage[\s\S]*?> \.panel\{[\s\S]*?background:transparent!important/);
 assert.match(runtime,/window\.showPage\('dashboard',dashboard\)/);

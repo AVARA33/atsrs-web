@@ -107,9 +107,7 @@
     if(!compliance)return;
     compliance.onclick=function(){
       if(document.body.classList.contains('personal-mode')){
-        if(typeof window.showPage==='function')window.showPage('profile',compliance);
-        if(typeof window.showAccountTab==='function')window.showAccountTab('security');
-        try{window.localStorage.setItem('atsrs_current_page','profile')}catch(error){}
+        if(typeof window.showPage==='function')window.showPage('security',compliance);
         return;
       }
       if(typeof window.showPage==='function')window.showPage('compliance',compliance);

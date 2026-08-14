@@ -28,7 +28,7 @@ assert.match(storage, /section\.querySelectorAll\("h3,h4"\)/);
 assert.match(storage, /nestedReferenceHeading=page==="refs"&&h\.tagName==="H4"/);
 assert.match(storage, /"aria-level",nestedReferenceHeading\?"3":"2"/);
 assert.match(storage, /atsrs-personal-legal-route/);
-assert.match(storage, /renderAll\(\);syncPersonalHeadingHierarchy\(page\)/);
+assert.match(storage, /renderAll\(\);syncPersonalHeadingHierarchy\(renderedPage\)/);
 assert.match(storage, /syncPersonalHeadingHierarchy\(localStorage\.getItem\("atsrs_current_page"\)\|\|"intro"\)/);
 
 assert.match(corporate, /setText\('accountTitle',corporate\?'Corporate Account':'Account'\)/);
