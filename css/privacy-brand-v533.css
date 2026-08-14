@@ -1,0 +1,51 @@
+/* V533: darker Dark-mode sharing surfaces and the approved Light-mode brand source. */
+
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountSharingTab.active{
+  border-color:var(--atsrs-workspace-line,#2a2f2d)!important;
+  background:var(--atsrs-ref-dark-bg,#050606)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountSharingTab #shareProfilePanel,
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountSharingTab .recipient-sharing-section{
+  border-color:var(--atsrs-workspace-line,#2a2f2d)!important;
+  background:var(--atsrs-workspace-surface,#0b0d0d)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountSharingTab .share-analytics > div,
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountSharingTab :where(.recipient-link-card,.recipient-request-card,.access-request-card){
+  border-color:var(--atsrs-workspace-line,#2a2f2d)!important;
+  background:var(--atsrs-workspace-surface-soft,#111414)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="light"] #auth .atsrs-auth-lockup,
+html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
+  border:0!important;
+  background-color:transparent!important;
+  background-image:url("../assets/branding/atsrs-lockup-light-v533.png")!important;
+  background-position:center 40%!important;
+  background-repeat:no-repeat!important;
+  background-size:115% auto!important;
+  box-shadow:none!important;
+  filter:none!important;
+  mix-blend-mode:multiply;
+  text-shadow:none!important;
+}
+
+html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
+  background-position:center 40%!important;
+}
+
+/* Dark Product Updates: only the user-marked live labels use the selected lime. */
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage :where(
+  .roadmap-news,
+  .status-available
+){
+  color:var(--atsrs-ref-lime,#b8ff19)!important;
+  -webkit-text-fill-color:var(--atsrs-ref-lime,#b8ff19)!important;
+}

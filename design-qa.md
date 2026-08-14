@@ -1,39 +1,39 @@
-# ATSRS V531 Product Updates Design QA
+# ATSRS V533 Design QA
 
 ## Evidence
 
-- Source visual truth: user-supplied Dark Product Updates screenshot `C:\Users\user\AppData\Local\Temp\codex-clipboard-285d3e16-3041-46fa-a1e7-dff6867aada4.png`.
-- Browser-rendered before states: `docs/qa/v531-product-updates-audit/01-light-before.png` and `02-dark-before.png`.
-- Browser-rendered implementation: `docs/qa/v531-product-updates-audit/03-light-after.png` and `04-dark-after.png`.
-- Viewport/state: 2294 x 735 CSS px, Product Updates, Light and Dark.
-- Density normalization: captures use the same browser, viewport, page structure and content. The supplied screenshot was used to validate the reported Dark hierarchy; the current-run before/after captures provide the same-state implementation comparison.
-- Focused region comparison: the six-card grid is large enough for direct icon, title and status inspection, so no additional crop was required.
+- Dark sharing source: `docs/qa/v533-privacy-brand/source-dark-sharing.png`.
+- Light logo source: `docs/qa/v533-privacy-brand/source-light-logo.png`.
+- Implementations: `implementation-dark-sharing.png`, `implementation-light-home.png`, and `implementation-light-login.png` in the same QA folder.
+- Combined comparisons: `comparison-dark-sharing.png` and `comparison-light-logo.png`.
+- Desktop implementation viewport: 1280 x 720 CSS px. Responsive check: 390 x 844 CSS px.
+- Focused source regions were normalized to 1000 px width in the comparison images; implementation captures use 1x CSS density.
 
-## Findings and comparison history
+## Findings and iteration history
 
-1. P2 before fix: featured cards placed icons and titles 16px below adjacent cards because only featured cards had a `roadmap-news` element.
-   - Fix: explicit four-row card grid with stable row assignments for news, icon, title and body copy.
-   - Post-fix evidence: icon and title top positions are identical across all three cards in each row in both themes.
-2. P2 before fix: Dark page title, hero title, roadmap title and six card titles all used lime, weakening hierarchy and producing glare.
-   - Fix: ordinary Dark headings now use `#f4f7fb`; green remains semantic.
-   - Post-fix evidence: all six Dark card titles compute to `rgb(244,247,251)`.
-3. P2 before fix: Dark icon chips added a third broad green layer.
-   - Fix: Dark icon chips use muted blue `#bfdbfe` on a restrained blue surface.
-   - Post-fix evidence: all six icon labels compute to `rgb(191,219,254)`.
+1. P2 before fix: the Dark Privacy & Sharing wrapper, sharing panel and analytics cards retained blue surfaces that were brighter than the approved near-black workspace palette.
+   - Fix: outer surface `#050606`, panel surface `#0b0d0d`, inner cards `#111414`, shared line `#2a2f2d`; gradients and shadows removed.
+   - Post-fix evidence: all three surface levels are distinct, neutral and visibly darker in the combined comparison.
+2. P2 before fix: Light Home/Login did not use the supplied blue/black lockup.
+   - Fix: the exact 1.35 MB supplied raster is used as the Light lockup source with no filter, drop-shadow or box-shadow. Multiply blending removes the white raster field against the Light canvas without introducing a black halo.
+3. P3 follow-up: only the explicitly marked Dark Product Updates labels now use the selected lime `#b8ff19`.
+   - `NEW · AI SCAN LIVE`, `NEW · AI CV LIVE`, and all `Available now` texts compute to `rgb(184, 255, 25)`.
+   - Card titles remain neutral `rgb(244, 247, 251)`; development/planned statuses remain unchanged.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: existing family, sizes, weights, line heights and copy are unchanged; only Dark colour hierarchy changed.
-- Spacing and layout rhythm: card padding, radius and grid size remain stable; icon/title rows are now symmetric.
-- Colors and visual tokens: Light stays unchanged; Dark ordinary headings are neutral while green is reserved for semantic live/available states.
-- Image quality and asset fidelity: no raster, logo or icon asset changed. Existing text icon chips retain their product meaning and geometry.
-- Copy and content: no Product Updates wording or status changed.
+- Typography and copy: unchanged except the requested status-label colors.
+- Spacing and layout: existing V526/V531 geometry is unchanged.
+- Image quality: exact supplied Light logo asset; no generated or approximate asset.
+- Responsive behavior: no horizontal overflow at desktop or 390 px.
+- Theme behavior: Dark surface changes are scoped to Personal Privacy & Sharing; the logo replacement is scoped to Light Home/Login.
 
 ## Runtime checks
 
-- Light/Dark toggle: passed.
-- Six-card alignment: passed in both themes.
-- Page-level horizontal overflow: 0.
-- No navigation, CTA or data behavior changed.
+- Dark sharing fixture: passed, console errors 0.
+- Light Home and Login: passed locally; logo has no filter or shadow.
+- Product Updates Light/Dark toggle: passed; only marked live labels changed.
+- Product Updates horizontal overflow: 0.
+- Focused Node regression tests and Cloudflare build: passed.
 
 final result: passed

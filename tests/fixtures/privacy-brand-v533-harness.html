@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS V533 Privacy and Light Brand QA</title>
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/share-profile.css?v=497">
+  <link rel="stylesheet" href="../../css/recipient-links.css?v=433">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css?v=509">
+  <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=519">
+  <link rel="stylesheet" href="../../css/brand-auth-v513.css?v=516">
+  <link rel="stylesheet" href="../../css/privacy-brand-v533.css?v=533">
+  <style>
+    body{margin:0}.qa-toolbar{position:fixed;right:16px;top:14px;z-index:10;display:flex;gap:8px}.qa-toolbar button{width:auto;margin:0}
+    #app{display:block!important;min-height:100vh}.main{padding:70px 28px 36px}.page{width:min(1240px,100%);margin:auto}
+    #accountSharingTab{display:block!important;padding:12px}.sharing-heading h3{margin-top:8px}.recipient-sharing-section{margin-top:16px}
+    .qa-light-brand{display:none;min-height:100vh;padding:70px 24px;background:#edf2f8}.qa-light-brand #auth{display:block;background:transparent}.qa-light-brand .atsrs-public-landing{min-height:0;background:transparent}.qa-light-brand .atsrs-home-lockup{margin:30px auto}
+    html[data-theme="light"] .qa-dark{display:none}html[data-theme="light"] .qa-light-brand{display:block}
+  </style>
+</head>
+<body class="personal-mode">
+  <div class="qa-toolbar"><button type="button" onclick="setTheme('dark')">Dark cards</button><button type="button" onclick="setTheme('light')">Light logo</button></div>
+  <div id="app" class="app qa-dark">
+    <main class="main"><section id="profilePage" class="page">
+      <h1>Profile</h1><p class="sub">personal@example.com</p>
+      <div id="accountSharingTab" class="account-tab active">
+        <div id="shareProfilePanel" class="share-card personal-only">
+          <div class="sharing-heading"><div><span class="pill">PRIVACY &amp; SHARING</span><h3>Share My ATSRS Profile</h3></div><span class="preview-only-badge">PREVIEW ONLY BY DEFAULT</span></div>
+          <p class="sub">Share one controlled profile link when needed.</p>
+          <section class="recipient-sharing-section general-sharing-section">
+            <div class="recipient-section-heading"><div><h4>General link</h4><p>One link for general sharing. Everyone receives the same documents and expiry date.</p></div></div>
+            <div class="share-live-status">Link active until Aug 20, 2026</div>
+            <div class="share-actions"><button>Configure Share Link</button><button class="secondary">Preview Shared Profile</button></div>
+            <div class="sharing-history"><div class="sharing-history-head"><div><b>Access history</b><span>Verified requests, decisions and recruiter activity.</span></div><button class="secondary">Refresh</button></div>
+              <div class="share-analytics"><div><b>56</b><span>Link opened</span></div><div><b>23</b><span>Documents previewed</span></div><div><b>3</b><span>Download requests</span></div><div><b>3</b><span>Documents downloaded</span></div></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section></main>
+  </div>
+  <section class="qa-light-brand">
+    <div id="auth"><div class="atsrs-auth-lockup" role="img" aria-label="ATSRS Light login logo"></div></div>
+    <div class="atsrs-public-landing"><a class="public-wordmark atsrs-home-lockup" aria-label="ATSRS Light home logo"></a></div>
+  </section>
+  <script>function setTheme(theme){document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme}var requested=new URLSearchParams(location.search).get('theme');setTheme(requested==='light'?'light':'dark')</script>
+</body>
+</html>
