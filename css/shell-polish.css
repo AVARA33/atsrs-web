@@ -357,6 +357,42 @@ body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button .atsrs-nav
   }
 }
 
+/* V538: fixed-size short ATSRS mark for the authenticated workspace rail. */
+body #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark,
+body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark{
+  display:block!important;
+  flex:0 0 60px!important;
+  width:60px!important;
+  min-width:60px!important;
+  max-width:60px!important;
+  height:64px!important;
+  min-height:64px!important;
+  margin:0!important;
+  overflow:hidden!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  background-color:transparent!important;
+  background-image:url("../assets/branding/atsrs-lockup-green-transparent.png?v=538")!important;
+  background-repeat:no-repeat!important;
+  background-position:left center!important;
+  background-size:auto 58px!important;
+  animation:none!important;
+  transition:none!important;
+  transform:none!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark,
+html[data-theme="light"] body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark{
+  background-image:url("../assets/branding/atsrs-lockup-light-transparent.png?v=538")!important;
+}
+
+body #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark::before,
+body #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark::after{
+  display:none!important;
+  content:none!important;
+}
+
 /* A 44px hit area contains the smaller, familiar 42 x 24 visual switch. */
 html body #atsrsGlobalControls > #atsrsThemeToggle,
 html body.personal-mode #atsrsGlobalControls > #atsrsThemeToggle,

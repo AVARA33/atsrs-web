@@ -1,44 +1,55 @@
-**Findings**
+# ATSRS V538 Sidebar Short Mark — Design QA
 
-- No actionable P0/P1/P2 mismatch remains. The Light and Dark lockups now occupy identical visible artwork bounds at the working alpha threshold, and their Home/Login layout boxes do not move during theme changes.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-381c5a00-e6b8-48c6-a76a-4b4aedaf27d2.png`
+- Dark implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-dark-final.png`
+- Light implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-light-final.png`
+- Mobile implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-mobile-390.png`
+- Focused comparison: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-comparison.png`
+- Desktop viewport: 1280 × 720 CSS px, device scale factor 1; implementation captures 1280 × 720 px.
+- Mobile viewport: 390 × 844 CSS px, device scale factor 1; implementation capture 390 × 844 px.
+- Source pixels: 3439 × 1368. The source and implementation represent different pages, so QA compares the requested short-mark crop rather than overall page composition.
+- State: authenticated Personal workspace sidebar, dark and light themes.
 
-**Evidence**
+**Full-view comparison evidence**
 
-- Source visual truth: `docs/qa/v538-login-dark-logo.png`
-- Implementation: `docs/qa/v538-login-light-logo.png`
-- Combined focused comparison: `docs/qa/v538-logo-size-comparison.jpg`
-- Desktop viewport: 1280 x 720 CSS px, device scale factor 1. Both Login logo boxes measured 420 x 145.552 px at x=430, y=228.
-- Mobile viewport: 390 x 844 CSS px, device scale factor 1. Both Login logo boxes measured 330 x 114.365 px at x=30, y=244.
-- Home desktop: both logo boxes measured 217.594 x 75.406 px at x=64, y=10.
-- Asset canvas: 1108 x 384 px for both lockups. Perceived artwork bounds at alpha >= 64 are identical: `(17, 27, 1091, 384)`.
-- Loading marks remain identical 396 x 400 px canvases in both themes.
-- State: Light/Dark theme toggle on public Home and Login.
-- Console errors: 0.
+- The former `AT&RS` text wordmark is absent from the authenticated sidebar.
+- The short `A + person` brand mark occupies the same 60 × 64 px layout box in both themes and remains visible at 390 px.
+- Theme switching changes only the approved green/blue raster asset; layout size, position and surrounding navigation remain stable.
 
-**Required Fidelity Surfaces**
+**Focused region comparison evidence**
 
-- Fonts and typography: unchanged.
-- Spacing and layout rhythm: theme-toggle position and logo boxes are identical; the legacy Dark-only mobile padding override is neutralized.
-- Colors and visual tokens: unchanged; green remains Dark and blue/graphite remains Light.
-- Image quality and asset fidelity: approved raster artwork retained; only transparent padding/visual bounds were normalized.
-- Copy and content: unchanged.
+- The comparison image places the supplied source crop beside the dark and light implementation crops.
+- Shape, person symbol, luminous treatment and compact square silhouette match the supplied brand source.
+- No separator line, company-name lockup, animation, transform or transition remains in the short-mark element.
 
-**Comparison History**
+**Required fidelity surfaces**
 
-- Earlier P2: Light PNG contained more transparent padding, producing a visible size jump. Fixed by normalizing perceived artwork bounds to the Dark lockup.
-- Earlier P2: a higher-specificity mobile rule added padding only in Dark mode, shrinking and shifting the Login logo at 390px. Fixed by applying the unboxed auth-card rule at matching specificity.
-- Post-fix evidence: exact desktop, Home, and 390px layout-box parity; exact perceived asset bounds; no console errors.
+- Fonts and typography: not applicable to the replacement mark; the text wordmark was intentionally removed and surrounding navigation typography is unchanged.
+- Spacing and layout rhythm: fixed 60 × 64 px box, 58 px image height, centered in the existing 112 px rail; no theme-dependent reflow.
+- Colors and visual tokens: approved green asset in dark mode and approved blue/black asset in light mode.
+- Image quality and asset fidelity: existing high-resolution transparent ATSRS lockups are used and clipped to the supplied short mark; no CSS drawing, SVG substitute or generated logo.
+- Copy and content: accessible name remains `ATSRS`; no visible brand copy is added.
 
-**Implementation Checklist**
+**Findings and comparison history**
 
-- [x] Normalize Light artwork bounds to Dark reference.
-- [x] Remove Dark-only mobile auth-card padding conflict.
-- [x] Verify Home and Login in both themes.
-- [x] Verify desktop and 390px breakpoints.
-- [x] Run focused regression tests.
+- [Resolved P2] The first crop exposed a thin separator from the full lockup at the right edge.
+  - Fix: reduced the fixed crop width from 64 px to 60 px while keeping the 58 px mark height.
+  - Post-fix evidence: final dark/light screenshots and focused comparison show only the short mark.
 
-**Follow-up Polish**
+**Primary interactions tested**
 
-- None required for this scoped change.
+- Switched light → dark → light and confirmed the logo box does not change size.
+- Confirmed the theme-specific raster source changes correctly.
+- Confirmed the logo has `animation: none`, `transition: 0s` and `transform: none`.
+- Confirmed the mark remains visible at 390 px.
+- Browser console errors: 0.
+
+**Implementation checklist**
+
+- [x] Replace authenticated sidebar text wordmark with the short icon.
+- [x] Use matching dark and light brand assets.
+- [x] Keep dimensions identical across themes.
+- [x] Remove animation/flicker and full-lockup separator.
+- [x] Verify desktop and 390 px layouts.
 
 final result: passed
