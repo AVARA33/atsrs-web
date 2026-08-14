@@ -1,0 +1,20 @@
+/* V520: shared Dark-mode heading colour for Personal and Corporate pages. */
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main{
+  --atsrs-workspace-heading:var(--atsrs-ref-lime,#b8ff19);
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main :where(h1,h2,h3,h4,h5,h6){
+  color:var(--atsrs-workspace-heading)!important;
+  -webkit-text-fill-color:var(--atsrs-workspace-heading)!important;
+}
+
+/* Preserve semantic status colours inside headings when a status badge is nested in one. */
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main :where(h1,h2,h3,h4,h5,h6) :where(
+  .badge,
+  .request-count,
+  .roadmap-status,
+  .roadmap-news,
+  [data-status]
+){
+  -webkit-text-fill-color:currentColor;
+}
