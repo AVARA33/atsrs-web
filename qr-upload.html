@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -7,13 +7,21 @@
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>ATSRS Phone Upload</title>
+  <script>
+    (function(){
+      var theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';
+      document.documentElement.dataset.theme=theme;
+      document.documentElement.style.colorScheme=theme;
+      var meta=document.querySelector('meta[name="theme-color"]');
+      if(meta)meta.setAttribute('content',theme==='light'?'#edf2f8':'#050606');
+    })();
+  </script>
   <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-  <link rel="stylesheet" href="css/qr-phone-upload-v535.css?v=535">
+  <link rel="stylesheet" href="css/qr-phone-upload-v535.css?v=540">
 </head>
 <body>
   <main class="phone-upload-shell">
     <section class="phone-upload-card" aria-labelledby="phoneUploadTitle">
-      <div class="phone-upload-brand" aria-label="ATSRS">AT&amp;RS</div>
       <span class="phone-upload-kicker">SECURE PHONE UPLOAD</span>
       <h1 id="phoneUploadTitle">Add a document</h1>
       <p id="phoneUploadHelp">Choose a file from your phone or take a new photo. It will be sent only to the Personal account that created this QR code.</p>
@@ -22,8 +30,8 @@
         <button id="takePhotoBtn" type="button"><i class="ph ph-camera" aria-hidden="true"></i><span>Take a photo</span></button>
         <button id="chooseFileBtn" class="secondary" type="button"><i class="ph ph-upload-simple" aria-hidden="true"></i><span>Choose a file</span></button>
       </div>
-      <input id="cameraInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
-      <input id="fileInput" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,.pdf,.jpg,.jpeg,.png,.webp" hidden>
+      <input id="cameraInput" class="phone-upload-input" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" aria-hidden="true" tabindex="-1">
+      <input id="fileInput" class="phone-upload-input" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,.pdf,.jpg,.jpeg,.png,.webp" aria-hidden="true" tabindex="-1">
 
       <div id="phoneUploadStatus" class="phone-upload-status" role="status" aria-live="polite">
         <i class="ph ph-spinner-gap" aria-hidden="true"></i><span>Checking secure upload...</span>
@@ -33,7 +41,6 @@
     </section>
   </main>
   <script src="vendor/supabase-js-2.111.0.min.js" integrity="sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti" crossorigin="anonymous"></script>
-  <script src="js/qr-phone-upload-v535.js?v=535"></script>
+  <script src="js/qr-phone-upload-v535.js?v=540"></script>
 </body>
 </html>
-

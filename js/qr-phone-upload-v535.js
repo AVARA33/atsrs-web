@@ -25,8 +25,27 @@
       body:JSON.stringify(Object.assign({action:action,token:rawToken},payload||{}))
     });
     var data=await response.json().catch(function(){return {};});
-    if(!response.ok)throw new Error(data.error||'Secure upload is unavailable.');
+    if(!response.ok){
+      var error=new Error(data.error||'Secure upload is unavailable.');
+      error.code=data.code||'';
+      throw error;
+    }
     return data;
+  }
+
+  function wait(ms){return new Promise(function(resolve){window.setTimeout(resolve,ms);});}
+
+  async function finalizeWithRetry(){
+    var lastError=null;
+    for(var attempt=0;attempt<7;attempt+=1){
+      try{return await request('finalize');}
+      catch(error){
+        lastError=error;
+        if(error.code!=='QR_UPLOAD_INCOMPLETE')throw error;
+        await wait(350+attempt*200);
+      }
+    }
+    throw lastError||new Error('Upload could not be finalized.');
   }
 
   function normalizeType(file){
@@ -54,7 +73,7 @@
       if(!client)throw new Error('Secure upload client is unavailable.');
       var result=await client.storage.from('atsrs-user-files').uploadToSignedUrl(prepared.path,prepared.signed_token,file,{contentType:mime});
       if(result.error)throw result.error;
-      await request('finalize');
+      await finalizeWithRetry();
       progress.hidden=true;
       status('Upload complete. Return to your computer to finish the document details.','success','ph-check-circle');
     }catch(error){
@@ -75,6 +94,14 @@
         status('This document was already uploaded. You can return to your computer.','success','ph-check-circle');
         return;
       }
+      if(result.session.status==='uploading'){
+        choices.hidden=true;progress.hidden=false;
+        status('Finishing your upload...','','ph-spinner-gap');
+        await finalizeWithRetry();
+        progress.hidden=true;
+        status('Upload complete. Return to your computer to finish the document details.','success','ph-check-circle');
+        return;
+      }
       choices.hidden=false;
       status('Secure connection ready. Choose how to add the document.','','ph-shield-check');
     }catch(error){
@@ -88,4 +115,3 @@
   document.getElementById('fileInput').addEventListener('change',function(event){upload(event.target.files&&event.target.files[0]);event.target.value='';});
   start();
 })();
-

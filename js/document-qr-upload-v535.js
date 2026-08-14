@@ -8,6 +8,7 @@
   var session=null;
   var pollTimer=0;
   var countdownTimer=0;
+  var countdownDeadline=0;
   var returnFocus=null;
 
   function endpoint(){
@@ -48,12 +49,14 @@
   function clearTimers(){
     if(pollTimer)window.clearTimeout(pollTimer);
     if(countdownTimer)window.clearInterval(countdownTimer);
-    pollTimer=0;countdownTimer=0;
+    pollTimer=0;countdownTimer=0;countdownDeadline=0;
   }
 
   function renderCountdown(){
     if(!countdown||!session)return;
-    var remaining=Math.max(0,new Date(session.expires_at).getTime()-Date.now());
+    var serverDeadline=new Date(session.expires_at).getTime();
+    var deadline=countdownDeadline?Math.min(serverDeadline,countdownDeadline):serverDeadline;
+    var remaining=Math.max(0,deadline-Date.now());
     var seconds=Math.ceil(remaining/1000);
     var minutes=Math.floor(seconds/60);
     countdown.textContent=remaining?'Valid for '+minutes+':'+String(seconds%60).padStart(2,'0'):'Expired';
@@ -105,8 +108,10 @@
     if(code)code.innerHTML='<i class="ph ph-spinner-gap" aria-hidden="true"></i>';
     setStatus('Preparing secure QR code...');
     try{
-      var result=await request('create');
+      var theme=document.documentElement.dataset.theme==='light'?'light':'dark';
+      var result=await request('create',{theme:theme});
       session=result.session;
+      countdownDeadline=Date.now()+Math.min(600,Number(result.ttl_seconds)||600)*1000;
       renderQr(result.upload_url);
       setStatus('Ready. Scan the code with your phone.');
       renderCountdown();
@@ -159,4 +164,3 @@
     if(event.key==='Escape'&&dialog&&!dialog.classList.contains('hidden'))close(true);
   });
 })();
-

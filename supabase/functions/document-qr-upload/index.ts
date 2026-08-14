@@ -73,6 +73,10 @@ function safeToken(value: unknown) {
   return TOKEN_PATTERN.test(result) ? result : "";
 }
 
+function safeTheme(value: unknown) {
+  return value === "light" ? "light" : "dark";
+}
+
 function safeFileName(value: unknown) {
   const name = safeText(value, 180).replace(/[^a-zA-Z0-9._ -]/g, "_").replace(/\s+/g, " ");
   return name && name !== "." && name !== ".." ? name : "ATSRS-document";
@@ -139,6 +143,7 @@ Deno.serve(async (req: Request) => {
         .lt("expires_at", new Date().toISOString());
 
       const rawToken = base64Url(crypto.getRandomValues(new Uint8Array(32)));
+      const theme = safeTheme(body.theme);
       const expiresAt = new Date(Date.now() + SESSION_MINUTES * 60_000).toISOString();
       const inserted = await admin.from("atsrs_document_upload_sessions").insert({
         user_id: user.id,
@@ -152,7 +157,8 @@ Deno.serve(async (req: Request) => {
       const origin = allowedOrigin(req) ?? SITE_URL;
       return json(req, 200, {
         session: inserted.data,
-        upload_url: `${origin}/qr-upload.html#token=${rawToken}`,
+        ttl_seconds: SESSION_MINUTES * 60,
+        upload_url: `${origin}/qr-upload.html?theme=${theme}#token=${rawToken}`,
       });
     }
 
