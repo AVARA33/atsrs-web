@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V535" data-atsrs-update="15 Aug 2026">
+<html lang="en" data-atsrs-build="V536" data-atsrs-update="15 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -82,6 +82,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/brand-auth-v513.css?v=538">
 <link rel="stylesheet" href="css/privacy-brand-v533.css?v=538">
 <link rel="stylesheet" href="css/document-qr-upload-v535.css?v=535">
+<link rel="stylesheet" href="css/dashboard-capabilities-v536.css?v=536">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -554,6 +555,108 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div></div>
 <div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div></div>
 </div>
+<section id="dashboardCapabilities" class="dashboard-capabilities" aria-labelledby="dashboardCapabilitiesTitle">
+  <div class="dashboard-capabilities-head">
+    <div>
+      <span class="pill">PLATFORM CAPABILITIES</span>
+      <h2 id="dashboardCapabilitiesTitle">Your ATSRS tools</h2>
+      <p>Available functions and their current status in one view.</p>
+    </div>
+    <span id="dashboardCapabilitiesCount" class="dashboard-capabilities-count" aria-live="polite">0 available</span>
+  </div>
+  <div class="dashboard-capabilities-grid">
+    <article class="dashboard-capability-card personal-only" data-capability="ai-scan">
+      <span class="dashboard-capability-icon"><i class="ph ph-sparkle" aria-hidden="true"></i></span>
+      <div><h3>AI Document Scan</h3><p>Extract document details for review before saving.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="qr-scan">
+      <span class="dashboard-capability-icon"><i class="ph ph-qr-code" aria-hidden="true"></i></span>
+      <div><h3>QR Phone Upload</h3><p>Send a document from your phone by QR handoff.</p></div>
+      <span class="dashboard-capability-status is-live">Ready</span>
+    </article>
+    <article class="dashboard-capability-card" data-capability="manual-upload">
+      <span class="dashboard-capability-icon"><i class="ph ph-upload-simple" aria-hidden="true"></i></span>
+      <div><h3>Manual Document Upload</h3><p>Add PDF or image files with verified document details.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card" data-capability="document-register">
+      <span class="dashboard-capability-icon"><i class="ph ph-files" aria-hidden="true"></i></span>
+      <div><h3>Document Register</h3><p>Filter, preview, edit, download and manage saved files.</p></div>
+      <span class="dashboard-capability-status is-live">Live</span>
+    </article>
+    <article class="dashboard-capability-card" data-capability="expiry-tracking">
+      <span class="dashboard-capability-icon"><i class="ph ph-calendar-check" aria-hidden="true"></i></span>
+      <div><h3>Expiry Tracking</h3><p>Track 90, 60, 30 and 7-day windows plus expired files.</p></div>
+      <span class="dashboard-capability-status is-live">Live</span>
+    </article>
+    <article class="dashboard-capability-card" data-capability="email-alerts">
+      <span class="dashboard-capability-icon"><i class="ph ph-envelope-simple" aria-hidden="true"></i></span>
+      <div><h3>Email Expiry Alerts</h3><p>Server-side reminders for approaching and overdue dates.</p></div>
+      <span id="dashboardEmailAlertStatus" class="dashboard-capability-status is-checking" role="status">Checking</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="ai-cv">
+      <span class="dashboard-capability-icon"><i class="ph ph-file-text" aria-hidden="true"></i></span>
+      <div><h3>ATSRS Profile CV</h3><p>Generate a structured CV from saved profile information.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="profile-sharing">
+      <span class="dashboard-capability-icon"><i class="ph ph-share-network" aria-hidden="true"></i></span>
+      <div><h3>Controlled Profile Sharing</h3><p>Create a time-limited link with selected documents.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="access-approval">
+      <span class="dashboard-capability-icon"><i class="ph ph-shield-check" aria-hidden="true"></i></span>
+      <div><h3>Download Approvals</h3><p>Approve or reject verified document access requests.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="profile-visibility">
+      <span class="dashboard-capability-icon"><i class="ph ph-user-focus" aria-hidden="true"></i></span>
+      <div><h3>Candidate Profile Visibility</h3><p>Control whether your profile is private, link-only or public.</p></div>
+      <span id="dashboardVisibilityStatus" class="dashboard-capability-status">Private</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="references">
+      <span class="dashboard-capability-icon"><i class="ph ph-briefcase" aria-hidden="true"></i></span>
+      <div><h3>References & Appraisals</h3><p>Store CVs, reference letters, appraisals and client feedback.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card personal-only" data-capability="work-availability">
+      <span class="dashboard-capability-icon"><i class="ph ph-calendar-plus" aria-hidden="true"></i></span>
+      <div><h3>Work Availability</h3><p>Share when you can start and your preferred work types.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card" data-capability="account-security">
+      <span class="dashboard-capability-icon"><i class="ph ph-lock-key" aria-hidden="true"></i></span>
+      <div><h3>Account Security & Data</h3><p>Manage sessions, two-factor security and account data export.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card company-only" data-capability="candidate-directory">
+      <span class="dashboard-capability-icon"><i class="ph ph-users-three" aria-hidden="true"></i></span>
+      <div><h3>Candidate Directory</h3><p>Discover eligible public profiles and review current data.</p></div>
+      <span class="dashboard-capability-status is-live">Available now</span>
+    </article>
+    <article class="dashboard-capability-card company-only" data-capability="personnel">
+      <span class="dashboard-capability-icon"><i class="ph ph-identification-card" aria-hidden="true"></i></span>
+      <div><h3>Company Personnel</h3><p>Manage linked profiles, documents and access state.</p></div>
+      <span class="dashboard-capability-status is-live">Live</span>
+    </article>
+    <article class="dashboard-capability-card company-only" data-capability="projects">
+      <span class="dashboard-capability-icon"><i class="ph ph-kanban" aria-hidden="true"></i></span>
+      <div><h3>Projects & Assignments</h3><p>Organise projects and assign linked personnel.</p></div>
+      <span class="dashboard-capability-status is-live">Live</span>
+    </article>
+    <article class="dashboard-capability-card company-only" data-capability="compliance">
+      <span class="dashboard-capability-icon"><i class="ph ph-seal-check" aria-hidden="true"></i></span>
+      <div><h3>Personnel Compliance</h3><p>Review document readiness and expiry risk by person.</p></div>
+      <span class="dashboard-capability-status is-live">Live</span>
+    </article>
+    <article class="dashboard-capability-card company-only" data-capability="reports">
+      <span class="dashboard-capability-icon"><i class="ph ph-chart-bar" aria-hidden="true"></i></span>
+      <div><h3>Compliance Reports</h3><p>Review organisation-level readiness and expiry reporting.</p></div>
+      <span class="dashboard-capability-status is-live">Live</span>
+    </article>
+  </div>
+</section>
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
     <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
@@ -1727,7 +1830,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/date-picker.js?v=502"></script>
 <script src="js/share-profile.js?v=409"></script>
 <script src="js/recipient-links.js?v=433"></script>
-<script src="js/boot-refresh.js?v=443"></script>
+<script src="js/boot-refresh.js?v=536"></script>
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=519"></script>
 <script src="js/corporate-reporting.js?v=519"></script>
@@ -1737,6 +1840,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/corporate-remediation.js?v=480"></script>
 <script src="js/theme.js?v=509"></script>
 <script src="js/personal-dashboard-qa.js?v=447"></script>
+<script src="js/dashboard-capabilities-v536.js?v=536"></script>
 <script src="js/shell-polish.js?v=524"></script>
 
 
