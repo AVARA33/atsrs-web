@@ -1,55 +1,46 @@
-# ATSRS V538 Sidebar Short Mark — Design QA
+# ATSRS Pricing Header Brand QA — V539
 
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-381c5a00-e6b8-48c6-a76a-4b4aedaf27d2.png`
-- Dark implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-dark-final.png`
-- Light implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-light-final.png`
-- Mobile implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-mobile-390.png`
-- Focused comparison: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\sidebar-mark-v538-comparison.png`
-- Desktop viewport: 1280 × 720 CSS px, device scale factor 1; implementation captures 1280 × 720 px.
-- Mobile viewport: 390 × 844 CSS px, device scale factor 1; implementation capture 390 × 844 px.
-- Source pixels: 3439 × 1368. The source and implementation represent different pages, so QA compares the requested short-mark crop rather than overall page composition.
-- State: authenticated Personal workspace sidebar, dark and light themes.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-0f48ff82-e0e1-42f0-9c69-51dae875bfe0.png` (3439 × 1368) plus the existing Home header lockup component and approved brand assets.
+- Implementations: `tests/artifacts/pricing-brand-v539/pricing-dark-desktop.png` and `tests/artifacts/pricing-brand-v539/pricing-light-desktop.png` (1265 × 712 each).
+- Desktop viewport: 1265 × 712 CSS px, device scale factor 1.
+- Mobile viewport: requested 390 × 844; browser content viewport measured 375 CSS px after browser chrome.
+- States: Pricing page, dark and light themes, no hover state.
 
-**Full-view comparison evidence**
+## Full-view comparison evidence
 
-- The former `AT&RS` text wordmark is absent from the authenticated sidebar.
-- The short `A + person` brand mark occupies the same 60 × 64 px layout box in both themes and remains visible at 390 px.
-- Theme switching changes only the approved green/blue raster asset; layout size, position and surrounding navigation remain stable.
+The Pricing header now uses the same Home lockup selector and raster sources instead of the previous text-only wordmark. Dark renders `atsrs-lockup-green-transparent.png`; light renders `atsrs-lockup-light-transparent.png`. Header navigation, hero layout, cards, and page spacing remain unchanged.
 
-**Focused region comparison evidence**
+## Focused region comparison evidence
 
-- The comparison image places the supplied source crop beside the dark and light implementation crops.
-- Shape, person symbol, luminous treatment and compact square silhouette match the supplied brand source.
-- No separator line, company-name lockup, animation, transform or transition remains in the short-mark element.
+- Desktop dark logo box: 217.59 × 75.41 CSS px.
+- Desktop light logo box: 217.59 × 75.41 CSS px.
+- Mobile dark logo box: 168 × 58.22 CSS px.
+- Mobile light logo box: 168 × 58.22 CSS px.
+- Both themes use `background-size: contain`, transparent backgrounds, and visible overflow; the TM mark is not clipped.
+- Mobile document width equals viewport width (375 px), so the change introduces no horizontal overflow.
 
-**Required fidelity surfaces**
+## Required fidelity surfaces
 
-- Fonts and typography: not applicable to the replacement mark; the text wordmark was intentionally removed and surrounding navigation typography is unchanged.
-- Spacing and layout rhythm: fixed 60 × 64 px box, 58 px image height, centered in the existing 112 px rail; no theme-dependent reflow.
-- Colors and visual tokens: approved green asset in dark mode and approved blue/black asset in light mode.
-- Image quality and asset fidelity: existing high-resolution transparent ATSRS lockups are used and clipped to the supplied short mark; no CSS drawing, SVG substitute or generated logo.
-- Copy and content: accessible name remains `ATSRS`; no visible brand copy is added.
+- Fonts and typography: unchanged outside the raster lockup; the logo retains its approved embedded typography.
+- Spacing and layout rhythm: Home dimensions are reused exactly and remain identical between themes.
+- Colors and visual tokens: dark uses the approved green lockup; light uses the approved blue/black lockup.
+- Image quality and asset fidelity: original transparent brand PNGs are reused without stretching, CSS reconstruction, shadow, or masking.
+- Copy and content: accessible label expands ATSRS as “Applicant Tracking System & Recruitment Solutions”; visible Pricing copy is unchanged.
 
-**Findings and comparison history**
+## Findings
 
-- [Resolved P2] The first crop exposed a thin separator from the full lockup at the right edge.
-  - Fix: reduced the fixed crop width from 64 px to 60 px while keeping the 58 px mark height.
-  - Post-fix evidence: final dark/light screenshots and focused comparison show only the short mark.
+No actionable P0, P1, or P2 mismatch remains.
 
-**Primary interactions tested**
+## Comparison history
 
-- Switched light → dark → light and confirmed the logo box does not change size.
-- Confirmed the theme-specific raster source changes correctly.
-- Confirmed the logo has `animation: none`, `transition: 0s` and `transform: none`.
-- Confirmed the mark remains visible at 390 px.
-- Browser console errors: 0.
+- Initial state: Pricing displayed a simple text-only ATSRS wordmark and subtitle, visually inconsistent with Home.
+- Fix: replaced it with the shared `atsrs-home-lockup` component and loaded its approved dark/light brand styles.
+- Post-fix evidence: identical measured boxes in both themes, correct source files, no clipping, no horizontal overflow, and zero local console errors.
 
-**Implementation checklist**
+## Interaction checks
 
-- [x] Replace authenticated sidebar text wordmark with the short icon.
-- [x] Use matching dark and light brand assets.
-- [x] Keep dimensions identical across themes.
-- [x] Remove animation/flicker and full-lockup separator.
-- [x] Verify desktop and 390 px layouts.
+- Theme switch updates the logo source without changing its dimensions.
+- Home, Log in, and Create Free Account links remain present and accessible.
+- Local browser console errors: 0.
 
 final result: passed
