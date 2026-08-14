@@ -10,8 +10,8 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V534');
-assert.equal(update, '14 Aug 2026');
+assert.equal(version, 'V535');
+assert.equal(update, '15 Aug 2026');
 
 for (const asset of [
   'stability-runtime.js',
@@ -43,7 +43,7 @@ for (const asset of [
 assert.match(index, /src="js\/server-data\.js\?v=412"/);
 assert.match(index, /src="js\/account\.js\?v=412"/);
 
-assert.match(index, /src="js\/app\.js\?v=470"/);
+assert.match(index, /src="js\/app\.js\?v=535"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=443"/);
 assert.match(index, /src="js\/storage\.js\?v=524"/);
 assert.match(index, /src="js\/auth\.js\?v=459"/);
@@ -96,4 +96,4 @@ assert.match(index, /src="js\/theme\.js\?v=509"/);
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=538"/);
 assert.match(index, /href="css\/privacy-brand-v533\.css\?v=538"/);
 
-console.log('V534 build marker consistency tests passed');
+console.log('V535 build marker consistency tests passed');

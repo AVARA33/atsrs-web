@@ -8,6 +8,7 @@ const outputDirectory = path.resolve(projectRoot, "dist");
 
 const publicFiles = [
   "index.html",
+  "qr-upload.html",
   "pricing.html",
   "data-protection.html",
   "terms.html",

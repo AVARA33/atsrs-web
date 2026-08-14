@@ -424,6 +424,7 @@
     editKey='';
     if(typeof editCertIndex!=='undefined')editCertIndex=null;
     clearForm();
+    window.atsrsPendingQrDocument=null;
     if(typeof clearManualValidation==='function')clearManualValidation();
     setText('addCertBtn','Save Document');
   }
@@ -460,8 +461,13 @@
   function fixLabels(){
     var corporate=document.body.classList.contains('company-mode');
     setText('addDocTitle',corporate?'Add company document':'Add document');
-    setText('addCertFlowNote','Choose one method: Scan with AI or Manual Upload.');
+    setText('addCertFlowNote',corporate?'Choose one method: Scan with AI or Manual Upload.':'Choose one method: Scan with AI, Scan with QR, or Manual Upload.');
     setText('certScanModeBtn','Scan with AI');
+    var qrButton=byId('certQrModeBtn');
+    if(qrButton){
+      qrButton.innerHTML='<i class="ph ph-qr-code" aria-hidden="true"></i><span>Scan with QR</span>';
+      qrButton.hidden=corporate;
+    }
     setText('certManualModeBtn','Manual Upload');
     setText('scanFlowText','Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.');
     setText('uploadDocBtn','Upload File');
@@ -584,6 +590,8 @@
     if(scan){scan.onclick=function(e){if(e)e.preventDefault(); openAiScan();};}
     var manual=byId('certManualModeBtn');
     if(manual){manual.onclick=function(e){if(e)e.preventDefault(); openManual();};}
+    var qr=byId('certQrModeBtn');
+    if(qr){qr.onclick=function(e){if(e)e.preventDefault();if(typeof window.openDocumentQrUpload==='function')window.openDocumentQrUpload();};}
     var uploadDoc=byId('uploadDocBtn');
     if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent();};}
     var checkbox=byId('aiConsentCheckbox');
@@ -605,6 +613,23 @@
     if(files&&files.length>1)alert('Scan with AI processes one document at a time. The first file will be scanned.');
     var file=files&&files[0];
     if(file)scanDocumentFile(file);
+  };
+
+  window.atsrsReceiveQrDocument=function(row){
+    if(!row||!row.id)return;
+    openManual();
+    window.atsrsPendingCertificateFile=null;
+    window.atsrsPendingQrDocument=row;
+    var fileInput=byId('manualFile');if(fileInput)fileInput.value='';
+    var typeField=byId('cType');
+    if(typeField&&!typeField.value)typeField.value=String(row.file_name||'').replace(/\.[^.]+$/,'').trim();
+    var preview=byId('manualFilePreview');
+    if(preview){
+      preview.textContent='Phone upload ready: '+String(row.file_name||'Document')+' ('+Math.max(1,Math.round(Number(row.size_bytes||0)/1024))+' KB). Complete the details and save.';
+      preview.classList.add('active');
+    }
+    var title=byId('manualCertTitle');if(title)title.textContent='Complete phone upload';
+    var first=byId('cType');if(first)first.focus();
   };
 
   function clearForm(){
@@ -726,10 +751,18 @@
     var saveCompleted=false;
     try{
       var file=window.atsrsPendingCertificateFile;
+      var qrRow=window.atsrsPendingQrDocument;
       if(file){
         if(!window.atsrsCloudData||typeof window.atsrsCloudData.uploadDocument!=='function')throw new Error('ATSRS cloud storage is not ready.');
         uploadedRow=await window.atsrsCloudData.uploadDocument(file,{document:item});
         item.cloudFileId=uploadedRow.id;item.fileName=uploadedRow.file_name;item.mimeType=uploadedRow.mime_type;item.fileSize=uploadedRow.size_bytes;item.uploadedAt=uploadedRow.created_at||new Date().toISOString();
+      }else if(qrRow&&qrRow.id){
+        uploadedRow=qrRow;
+        item.cloudFileId=qrRow.id;item.fileName=qrRow.file_name||'';item.mimeType=qrRow.mime_type||'';item.fileSize=qrRow.size_bytes||0;item.uploadedAt=qrRow.created_at||new Date().toISOString();
+        if(window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
+          await window.atsrsCloudData.updateDocumentMetadata(qrRow.id,{document:item,document_registered:true,upload_source:'qr'});
+          metadataUpdated=true;
+        }
       }else if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
         await window.atsrsCloudData.updateDocumentMetadata(item.cloudFileId,{document:item});
         metadataUpdated=true;

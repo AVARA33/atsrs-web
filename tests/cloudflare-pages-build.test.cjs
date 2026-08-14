@@ -21,7 +21,7 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
   });
 
   const topLevelEntries = fs.readdirSync(output).sort();
-  for (const requiredEntry of ['index.html', 'assets', 'css', 'js', 'vendor']) {
+  for (const requiredEntry of ['index.html', 'qr-upload.html', 'assets', 'css', 'js', 'vendor']) {
     assert.ok(topLevelEntries.includes(requiredEntry), `${requiredEntry} must be deployed`);
   }
 
