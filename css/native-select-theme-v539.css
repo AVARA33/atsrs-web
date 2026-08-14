@@ -1,0 +1,94 @@
+/* ATSRS V539 — theme-correct native and custom disclosure menus. */
+
+html[data-theme="dark"] body{
+  --atsrs-menu-surface:#050606;
+  --atsrs-menu-border:#343a36;
+  --atsrs-menu-text:#f4f6ef;
+  --atsrs-menu-accent:#b8ff19;
+  --atsrs-menu-accent-ink:#080a08;
+}
+
+/* Chromium/Opera native select popup. The solid gradient keeps Windows from
+   replacing the chosen row with its system-blue selection paint. */
+html[data-theme="dark"] body select:not([multiple]){
+  color-scheme:dark!important;
+}
+html[data-theme="dark"] body select:not([multiple]) :where(option,optgroup){
+  background-color:var(--atsrs-menu-surface)!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
+}
+html[data-theme="dark"] body select:not([multiple]) option:where(:checked,:hover,:focus,:active){
+  background-color:var(--atsrs-menu-accent)!important;
+  background-image:linear-gradient(var(--atsrs-menu-accent),var(--atsrs-menu-accent))!important;
+  color:var(--atsrs-menu-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+}
+
+/* ATSRS custom dropdowns follow the same Dark language on every workspace. */
+html[data-theme="dark"] body #app :where(
+  .personnel-combobox-options,
+  .work-type-select-menu,
+  .phone-code-menu,
+  .talent-work-type-filter .work-type-options
+){
+  border-color:var(--atsrs-menu-border)!important;
+  background:var(--atsrs-menu-surface)!important;
+  background-image:none!important;
+  color:var(--atsrs-menu-text)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.38)!important;
+}
+html[data-theme="dark"] body #app :where(
+  .personnel-combobox-options button,
+  .work-type-select-option,
+  .phone-code-option,
+  .talent-work-type-filter .work-type-options label
+){
+  background:transparent!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
+}
+html[data-theme="dark"] body #app :where(
+  .personnel-combobox-options button[aria-selected="true"],
+  .personnel-combobox-options button:hover,
+  .personnel-combobox-options button:focus-visible,
+  .work-type-select-option[aria-selected="true"],
+  .work-type-select-option:hover,
+  .work-type-select-option:focus-visible,
+  .phone-code-option[aria-selected="true"],
+  .phone-code-option:hover,
+  .phone-code-option:focus-visible,
+  .talent-work-type-filter .work-type-options label:has(input:checked),
+  .talent-work-type-filter .work-type-options label:hover,
+  .talent-work-type-filter .work-type-options label:focus-within
+){
+  background:var(--atsrs-menu-accent)!important;
+  color:var(--atsrs-menu-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  outline:0!important;
+}
+html[data-theme="dark"] body #app :where(
+  .personnel-combobox-options button[aria-selected="true"],
+  .personnel-combobox-options button:hover,
+  .personnel-combobox-options button:focus-visible,
+  .work-type-select-option[aria-selected="true"],
+  .work-type-select-option:hover,
+  .work-type-select-option:focus-visible,
+  .phone-code-option[aria-selected="true"],
+  .phone-code-option:hover,
+  .phone-code-option:focus-visible,
+  .talent-work-type-filter .work-type-options label:has(input:checked),
+  .talent-work-type-filter .work-type-options label:hover,
+  .talent-work-type-filter .work-type-options label:focus-within
+) :where(span,strong,small){
+  color:var(--atsrs-menu-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+}
+
+/* Light mode intentionally keeps the approved blue selection language. */
+html[data-theme="light"] body select:not([multiple]) option:where(:checked,:hover,:focus,:active){
+  background-color:#1473d2!important;
+  background-image:linear-gradient(#1473d2,#1473d2)!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}

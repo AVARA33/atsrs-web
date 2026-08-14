@@ -1,46 +1,47 @@
-# ATSRS Pricing Header Brand QA — V539
+# ATSRS Global Select Menu Theme QA — V539
 
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-0f48ff82-e0e1-42f0-9c69-51dae875bfe0.png` (3439 × 1368) plus the existing Home header lockup component and approved brand assets.
-- Implementations: `tests/artifacts/pricing-brand-v539/pricing-dark-desktop.png` and `tests/artifacts/pricing-brand-v539/pricing-light-desktop.png` (1265 × 712 each).
-- Desktop viewport: 1265 × 712 CSS px, device scale factor 1.
-- Mobile viewport: requested 390 × 844; browser content viewport measured 375 CSS px after browser chrome.
-- States: Pricing page, dark and light themes, no hover state.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-9750aafd-2cbc-4ff4-8c8d-2cf9b06b5a04.png` (3440 × 1368 px).
+- Dark implementation screenshot: `C:\Users\user\AppData\Local\Temp\atsrs-v539-dark-select-1718x688.png` (1223 × 688 px browser capture).
+- Light implementation screenshot: `C:\Users\user\AppData\Local\Temp\atsrs-v539-light-select.png` (1280 × 720 px browser capture).
+- Requested desktop CSS viewport: 1718 × 688; browser page reported 1718 × 688 at device scale factor 1. The in-app screenshot surface capped the raster width at 1223 px, so the focused control region was compared instead of treating the full-frame crops as equivalent.
+- State: authenticated-style ATSRS select control; dark and light themes; `Senior ROV Pilot` selected.
 
 ## Full-view comparison evidence
 
-The Pricing header now uses the same Home lockup selector and raster sources instead of the previous text-only wordmark. Dark renders `atsrs-lockup-green-transparent.png`; light renders `atsrs-lockup-light-transparent.png`. Header navigation, hero layout, cards, and page spacing remain unchanged.
+The source shows the Corporate Candidates profession control in Dark mode. The implementation harness loads the production cascade and the new final theme layer. Page geometry and typography were intentionally preserved; this change is limited to disclosure menu colors.
 
 ## Focused region comparison evidence
 
-- Desktop dark logo box: 217.59 × 75.41 CSS px.
-- Desktop light logo box: 217.59 × 75.41 CSS px.
-- Mobile dark logo box: 168 × 58.22 CSS px.
-- Mobile light logo box: 168 × 58.22 CSS px.
-- Both themes use `background-size: contain`, transparent backgrounds, and visible overflow; the TM mark is not clipped.
-- Mobile document width equals viewport width (375 px), so the change introduces no horizontal overflow.
+- Dark closed field computed background: `rgb(8, 10, 9)`; text: `rgb(244, 246, 239)`.
+- Dark native selected option computed background: `rgb(184, 255, 25)`; text: `rgb(8, 10, 8)`.
+- Light closed field computed background: `rgb(255, 255, 255)`.
+- Light native selected option computed background: `rgb(20, 115, 210)`; text: white.
+- Native OS popups are not included in browser screenshots, so their selected-option colors were verified through the browser's computed styles. Custom ATSRS dropdowns use the same black/green tokens directly in their visible DOM.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: unchanged outside the raster lockup; the logo retains its approved embedded typography.
-- Spacing and layout rhythm: Home dimensions are reused exactly and remain identical between themes.
-- Colors and visual tokens: dark uses the approved green lockup; light uses the approved blue/black lockup.
-- Image quality and asset fidelity: original transparent brand PNGs are reused without stretching, CSS reconstruction, shadow, or masking.
-- Copy and content: accessible label expands ATSRS as “Applicant Tracking System & Recruitment Solutions”; visible Pricing copy is unchanged.
+- Fonts and typography: unchanged; existing ATSRS field typography is preserved.
+- Spacing and layout rhythm: unchanged; the theme layer introduces no size, padding, radius, or layout rules.
+- Colors and visual tokens: Dark menu surface is near-black `#050606` and selection is ATSRS green `#b8ff19`; Light selection remains approved blue `#1473d2`.
+- Image quality and asset fidelity: no image assets are involved in this control-state change.
+- Copy and content: unchanged.
 
 ## Findings
 
-No actionable P0, P1, or P2 mismatch remains.
+No actionable P0, P1, or P2 mismatch remains within the requested color scope.
 
 ## Comparison history
 
-- Initial state: Pricing displayed a simple text-only ATSRS wordmark and subtitle, visually inconsistent with Home.
-- Fix: replaced it with the shared `atsrs-home-lockup` component and loaded its approved dark/light brand styles.
-- Post-fix evidence: identical measured boxes in both themes, correct source files, no clipping, no horizontal overflow, and zero local console errors.
+- Initial finding (P1): Dark native option popup used a navy surface and Windows/Chromium blue highlight, conflicting with the Dark green selection language.
+- Fix: added a final global native/custom menu theme layer, including a solid green selection gradient that prevents Chromium on Windows from substituting system blue.
+- Post-fix evidence: computed Dark selected option is `#b8ff19` on `#080a08`; Dark closed control is near-black; Light selected option remains `#1473d2`; focused tests pass.
 
 ## Interaction checks
 
-- Theme switch updates the logo source without changing its dimensions.
-- Home, Log in, and Create Free Account links remain present and accessible.
-- Local browser console errors: 0.
+- Dark selected state: green.
+- Dark menu and custom popup surface: black/near-black.
+- Light selected state: blue.
+- Personal and Corporate selectors share the same final stylesheet.
+- Local browser console warnings/errors: 0.
 
 final result: passed
