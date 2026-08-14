@@ -41,11 +41,11 @@ html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-locku
   background-position:center 40%!important;
 }
 
-/* Dark Product Updates: only the user-marked live labels use the selected lime. */
-html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage :where(
+/* V535: only the user-marked live labels inherit the selected Product Updates lime. */
+html:not([data-theme="light"]) body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage :where(
   .roadmap-news,
   .status-available
 ){
-  color:var(--atsrs-ref-lime,#b8ff19)!important;
-  -webkit-text-fill-color:var(--atsrs-ref-lime,#b8ff19)!important;
+  color:var(--atsrs-shell-accent,var(--atsrs-ref-lime,#b8ff19))!important;
+  -webkit-text-fill-color:var(--atsrs-shell-accent,var(--atsrs-ref-lime,#b8ff19))!important;
 }

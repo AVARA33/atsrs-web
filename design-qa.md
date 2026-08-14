@@ -37,3 +37,39 @@
 - Focused Node regression tests and Cloudflare build: passed.
 
 final result: passed
+
+---
+
+# ATSRS V535 Product Updates Selected-Green QA
+
+## Evidence
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-93966622-d8b1-4e04-b45a-c89eb053d503.png`.
+- Browser-rendered implementation: `C:\Users\user\.codex\visualizations\2026\08\13\019ff9c2-6eb4-74b0-a872-5cdbf37a5016\atsrs-v535-qa\product-updates-v535-dark.png`.
+- Combined comparison: `C:\Users\user\.codex\visualizations\2026\08\13\019ff9c2-6eb4-74b0-a872-5cdbf37a5016\atsrs-v535-qa\product-updates-v535-comparison.png`.
+- Source pixels: 3439 x 1440. Implementation pixels and CSS viewport: 1264 x 839 at 1x density.
+- State: authenticated-style Product Updates fixture, Dark mode; Light-mode theme-toggle regression also checked.
+
+## Findings and comparison history
+
+- No P0, P1 or P2 mismatch remains within the user-marked scope.
+- First comparison passed: both `NEW · ... LIVE` labels and all three `AVAILABLE NOW` labels compute to `rgb(184, 255, 25)`, matching the selected Product Updates accent `#b8ff19`.
+- `IN DEVELOPMENT`, `PLANNED`, card titles, descriptions and icon treatments remain unchanged.
+- No corrective visual loop was required after the first browser capture.
+
+## Required fidelity surfaces
+
+- Fonts and typography: family, size, weight, spacing and capitalization are unchanged; only the requested foreground token changed.
+- Spacing and layout rhythm: no geometry, padding, grid, radius or alignment changes.
+- Colors and visual tokens: selected Dark labels use the same shared accent token as the active Product Updates navigation item. Light mode retains its approved blue status treatment.
+- Image quality and asset fidelity: no image or icon assets were changed.
+- Copy and content: no text changed.
+
+## Runtime checks
+
+- Primary interaction tested: Light/Dark toggle.
+- Dark computed-color scope: 2 news labels and 3 available labels are `#b8ff19`; development/planned labels and six card titles are unaffected.
+- Light computed-color scope: news and available labels remain blue.
+- Browser console errors: 0.
+
+final result: passed

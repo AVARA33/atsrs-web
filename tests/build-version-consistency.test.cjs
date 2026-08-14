@@ -94,6 +94,6 @@ assert.match(index, /href="css\/theme\.css\?v=504"/);
 assert.match(index, /src="js\/theme\.js\?v=509"/);
 
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=516"/);
-assert.match(index, /href="css\/privacy-brand-v533\.css\?v=533"/);
+assert.match(index, /href="css\/privacy-brand-v533\.css\?v=535"/);
 
 console.log('V534 build marker consistency tests passed');

@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','privacy-brand-v533.css'),'utf8')
 const lightLogo=path.join(root,'assets','branding','atsrs-lockup-light-v533.png');
 
 assert.match(index,/data-atsrs-build="V534"/);
-assert.match(index,/css\/privacy-brand-v533\.css\?v=533/);
+assert.match(index,/css\/privacy-brand-v533\.css\?v=535/);
 assert.ok(fs.statSync(lightLogo).size>1000000,'approved Light logo source must be shipped unchanged');
 assert.match(css,/#accountSharingTab\.active[\s\S]*?background:var\(--atsrs-ref-dark-bg,#050606\)!important/);
 assert.match(css,/#accountSharingTab #shareProfilePanel[\s\S]*?background:var\(--atsrs-workspace-surface,#0b0d0d\)!important/);
@@ -21,7 +21,10 @@ assert.match(css,/filter:none!important/);
 assert.doesNotMatch(css,/drop-shadow/);
 assert.match(css,/\.roadmap-news,/);
 assert.match(css,/\.status-available/);
-assert.match(css,/color:var\(--atsrs-ref-lime,#b8ff19\)!important/);
+assert.match(css,/html:not\(\[data-theme="light"\]\)[\s\S]*?\.roadmap-news,[\s\S]*?\.status-available/);
+assert.match(css,/color:var\(--atsrs-shell-accent,var\(--atsrs-ref-lime,#b8ff19\)\)!important/);
 assert.doesNotMatch(css,/\.roadmap-card\s*>\s*h3[^}]*atsrs-ref-lime/s);
+assert.doesNotMatch(css,/:where\([\s\S]*?\.status-development[\s\S]*?\)\s*\{/);
+assert.doesNotMatch(css,/:where\([\s\S]*?\.status-planned[\s\S]*?\)\s*\{/);
 
 console.log('V533 Dark sharing cards and Light logo contracts passed');
