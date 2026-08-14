@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'workspace-control-standard-v522.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V529"/);
+assert.match(index, /data-atsrs-build="V530"/);
 assert.match(index, /workspace-control-standard-v522\.css\?v=522-2/);
 assert.match(css, /--atsrs-control-surface:var\(--atsrs-ref-dark-surface,#0b0d0d\)/);
 assert.match(css, /#profilePage \.account-tabs button\[aria-selected="true"\]/);

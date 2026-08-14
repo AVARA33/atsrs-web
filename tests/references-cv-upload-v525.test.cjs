@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'references-cv-upload-v525.css'), 'utf8');
 const fixture = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'references-cv-upload-v525-harness.html'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V529"/);
+assert.match(index, /data-atsrs-build="V530"/);
 assert.match(index, /references-cv-upload-v525\.css\?v=525/);
 assert.match(index, /class="cv-generator-primary-actions">[\s\S]*?id="generateCVBtn"[\s\S]*?id="uploadCvFromGeneratorBtn"[^>]*onclick="replaceCV\(\)"[^>]*>Upload CV<\/button>/);
 assert.equal((index.match(/id="uploadCvFromGeneratorBtn"/g) || []).length, 1);
