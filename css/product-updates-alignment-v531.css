@@ -1,0 +1,59 @@
+/* ATSRS V531 — Product Updates hierarchy and card alignment. */
+
+/* Reserve the same metadata row in every card so icons, titles and copy align. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:20px 42px auto 1fr!important;
+  align-content:start!important;
+  row-gap:12px!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > .roadmap-news{
+  grid-row:1!important;
+  align-self:center!important;
+  margin:0 112px 0 0!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > .roadmap-icon{
+  grid-row:2!important;
+  margin:0!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > h3{
+  grid-row:3!important;
+  align-self:start!important;
+  margin:0!important;
+  line-height:1.35!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > p{
+  grid-row:4!important;
+  align-self:start!important;
+  margin:0!important;
+}
+
+/* Dark mode mirrors Light's neutral text hierarchy; green is semantic only. */
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage :where(
+  .updates-hero > h3,
+  .roadmap-heading h3,
+  .roadmap-card > h3
+),
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #pageTitle{
+  color:#f4f7fb!important;
+  -webkit-text-fill-color:#f4f7fb!important;
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-icon{
+  background:rgba(37,99,235,.14)!important;
+  border-color:rgba(96,165,250,.38)!important;
+  color:#bfdbfe!important;
+  -webkit-text-fill-color:#bfdbfe!important;
+}
+
+@media(max-width:640px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card{
+    grid-template-rows:20px 40px auto 1fr!important;
+    row-gap:11px!important;
+  }
+}
