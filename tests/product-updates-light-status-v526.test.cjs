@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'product-updates-light-status-v526.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V526"/);
+assert.match(index, /data-atsrs-build="V527"/);
 assert.match(index, /product-updates-light-status-v526\.css\?v=526/);
 assert.equal((index.match(/class="roadmap-status status-available"/g) || []).length, 3);
 assert.equal((index.match(/class="roadmap-news"/g) || []).length, 2);
