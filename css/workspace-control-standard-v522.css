@@ -166,3 +166,29 @@ html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage
   outline:2px solid var(--atsrs-control-accent)!important;
   outline-offset:2px!important;
 }
+
+/* Phone controls also have high-specificity legacy navy rules. Keep their shell unified. */
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field{
+  border-color:var(--atsrs-control-line)!important;
+  background:var(--atsrs-control-surface)!important;
+  background-image:none!important;
+  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field :where(
+  input:not([type="hidden"]),
+  .phone-code-picker,
+  .phone-code-display
+){
+  border-color:transparent!important;
+  background:transparent!important;
+  background-image:none!important;
+  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field:focus-within{
+  border-color:var(--atsrs-control-accent)!important;
+  box-shadow:0 0 0 3px rgba(184,255,25,.13)!important;
+}
