@@ -1868,9 +1868,17 @@ html:not([data-theme="light"]) #auth.auth::before{
   font-size:18px;
 }
 
+#auth .auth-home-link span{
+  text-decoration:none;
+}
+
 #auth .auth-home-link:hover{
   background:transparent;
   color:#fff;
+  text-decoration:none;
+}
+
+#auth .auth-home-link:hover span{
   text-decoration:underline;
   text-underline-offset:4px;
 }
@@ -1878,6 +1886,10 @@ html:not([data-theme="light"]) #auth.auth::before{
 #auth .auth-home-link:focus-visible{
   outline:0;
   color:#fff;
+  text-decoration:none;
+}
+
+#auth .auth-home-link:focus-visible span{
   text-decoration:underline;
   text-decoration-thickness:2px;
   text-underline-offset:4px;

@@ -90,7 +90,7 @@ assert.match(bootRefresh, /visibilitychange/);
 assert.match(bootRefresh, /window\.addEventListener\('pageshow',armFallback\)/);
 assert.doesNotMatch(bootRefresh, /setTimeout\(finishBoot,12000\)/);
 
-assert.match(index, /href="css\/theme\.css\?v=504"/);
+assert.match(index, /href="css\/theme\.css\?v=537"/);
 assert.match(index, /src="js\/theme\.js\?v=509"/);
 
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=516"/);
