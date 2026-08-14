@@ -7,8 +7,8 @@ const index=read('index.html');
 const css=read('css/workspace-card-glass-v528.css');
 const harness=read('tests/fixtures/workspace-card-glass-v528-qa.html');
 
-assert.match(index,/data-atsrs-build="V528"/);
-assert.match(index,/workspace-card-glass-v528\.css\?v=528/);
+assert.match(index,/data-atsrs-build="V529"/);
+assert.doesNotMatch(index,/workspace-card-glass-v528\.css\?v=528/);
 assert.match(css,/--atsrs-v528-light-top:rgba\(206,216,228,\.96\)/);
 assert.match(css,/--atsrs-v528-light-bottom:rgba\(181,196,212,\.94\)/);
 assert.match(css,/--atsrs-v528-dark-top:rgba\(34,42,58,\.96\)/);
@@ -19,4 +19,4 @@ assert.match(css,/#adminOverviewPanel\.admin-overview-panel/);
 assert.doesNotMatch(css,/#landingPage|#auth|#atsrsBootScreen|input:not|select,|textarea/);
 assert.doesNotMatch(css,/> \.main\s*\{/);
 assert.match(harness,/id="themeToggle"/);
-console.log('V528 card-only glass material contracts passed');
+console.log('V528 legacy card-only glass material contracts passed');
