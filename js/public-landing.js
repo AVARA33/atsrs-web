@@ -108,6 +108,11 @@
     }
   }
 
+  function hasRetainedSessionHint(){
+    try{return localStorage.getItem('atsrs_auth_mode')==='supabase';}
+    catch(error){return false;}
+  }
+
   var originalOpenApp=window.openApp;
   if(typeof originalOpenApp==='function'){
     window.openApp=function(){hideLanding();return originalOpenApp.apply(this,arguments);};
@@ -143,7 +148,8 @@
     return;
   }
   if(callback||publicShare)return;
-  showLanding();
+  var retainedSessionHint=hasRetainedSessionHint();
+  if(!retainedSessionHint)showLanding();
   var client=window.supabaseClient;
   if(!client||!client.auth){
     showLanding();

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Authenticated refresh no-flash harness</title>
+  <style>
+    html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#edf2f8}
+    .hidden{display:none!important}
+    #atsrsBootScreen,#app,#landingPage{position:fixed;inset:0;display:grid;place-items:center}
+    #atsrsBootScreen{background:#edf2f8;color:#0b2554}
+    #landingPage{background:#fff;color:#0b2554;font-size:40px}
+    #app{background:#edf2f8;color:#0b2554;font-size:32px}
+  </style>
+</head>
+<body class="atsrs-booting atsrs-session-pending">
+  <div id="atsrsBootScreen">Loading ATSRS</div>
+  <section id="landingPage" class="hidden">PUBLIC HOME FLASH</section>
+  <section id="auth" class="hidden"><div id="loginBox"></div></section>
+  <main id="app" class="hidden">Authenticated app opened</main>
+  <script>
+    window.__oldAuthMode=localStorage.getItem('atsrs_auth_mode');
+    localStorage.setItem('atsrs_auth_mode','supabase');
+    window.__sawLandingFlash=false;
+    (function sample(){
+      var landing=document.getElementById('landingPage');
+      if(landing&&!landing.classList.contains('hidden'))window.__sawLandingFlash=true;
+      if(!window.__resumeOpened)requestAnimationFrame(sample);
+    })();
+    window.supabaseClient={auth:{getSession:function(){
+      return new Promise(function(resolve){
+        setTimeout(function(){resolve({data:{session:{user:{id:'fixture-user'}}}});},350);
+      });
+    }}};
+    window.atsrsGetSessionSingleFlight=function(client){return client.auth.getSession();};
+    window.atsrsResumeSession=function(){
+      document.getElementById('landingPage').classList.add('hidden');
+      document.getElementById('atsrsBootScreen').style.display='none';
+      document.getElementById('app').classList.remove('hidden');
+      document.body.classList.remove('atsrs-session-pending','atsrs-booting');
+      window.__resumeOpened=true;
+      if(window.__oldAuthMode===null)localStorage.removeItem('atsrs_auth_mode');
+      else localStorage.setItem('atsrs_auth_mode',window.__oldAuthMode);
+      return Promise.resolve(true);
+    };
+  </script>
+  <script src="../../js/public-landing.js?v=518"></script>
+</body>
+</html>
