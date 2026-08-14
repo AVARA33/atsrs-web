@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'workspace-heading-standard-v520.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V525"/);
+assert.match(index, /data-atsrs-build="V526"/);
 assert.match(index, /workspace-heading-standard-v520\.css\?v=520/);
 assert.match(css, /html\[data-theme="dark"\] body:where\(\.personal-mode,\.company-mode\)/);
 assert.match(css, /--atsrs-workspace-heading:var\(--atsrs-ref-lime,#b8ff19\)/);

@@ -8,7 +8,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'workspace-surface-standard-v
 const talent = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 const reporting = fs.readFileSync(path.join(root, 'js', 'corporate-reporting.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V525"/);
+assert.match(index, /data-atsrs-build="V526"/);
 assert.match(index, /workspace-surface-standard-v519\.css\?v=519/);
 assert.match(index, /talent-directory\.js\?v=519/);
 assert.match(index, /corporate-reporting\.js\?v=519/);

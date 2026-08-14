@@ -1,0 +1,13 @@
+/* ATSRS V526 — Light Product Updates live statuses use the approved blue accent. */
+
+html[data-theme="light"] body #app #introPage .roadmap-news{
+  color:var(--atsrs-light-blue,#167bd3)!important;
+  -webkit-text-fill-color:var(--atsrs-light-blue,#167bd3)!important;
+}
+
+html[data-theme="light"] body #app #introPage .status-available{
+  border-color:#cfe0ff!important;
+  color:var(--atsrs-light-blue,#167bd3)!important;
+  -webkit-text-fill-color:var(--atsrs-light-blue,#167bd3)!important;
+  background:var(--atsrs-light-blue-soft,#edf5ff)!important;
+}
