@@ -27,18 +27,18 @@ html[data-theme="light"] #auth .atsrs-auth-lockup,
 html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
   border:0!important;
   background-color:transparent!important;
-  background-image:url("../assets/branding/atsrs-lockup-light-v533.png")!important;
-  background-position:center 40%!important;
+  background-image:url("../assets/branding/atsrs-lockup-light-transparent.png")!important;
+  background-position:center!important;
   background-repeat:no-repeat!important;
-  background-size:115% auto!important;
+  background-size:contain!important;
   box-shadow:none!important;
   filter:none!important;
-  mix-blend-mode:multiply;
+  mix-blend-mode:normal!important;
   text-shadow:none!important;
 }
 
 html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-lockup{
-  background-position:center 40%!important;
+  background-position:left center!important;
 }
 
 /* V535: only the user-marked live labels inherit the selected Product Updates lime. */

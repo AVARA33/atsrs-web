@@ -1,75 +1,53 @@
-# ATSRS V533 Design QA
+# ATSRS V537 Light Brand Design QA
 
-## Evidence
+## Comparison target
 
-- Dark sharing source: `docs/qa/v533-privacy-brand/source-dark-sharing.png`.
-- Light logo source: `docs/qa/v533-privacy-brand/source-light-logo.png`.
-- Implementations: `implementation-dark-sharing.png`, `implementation-light-home.png`, and `implementation-light-login.png` in the same QA folder.
-- Combined comparisons: `comparison-dark-sharing.png` and `comparison-light-logo.png`.
-- Desktop implementation viewport: 1280 x 720 CSS px. Responsive check: 390 x 844 CSS px.
-- Focused source regions were normalized to 1000 px width in the comparison images; implementation captures use 1x CSS density.
+- Source visual truth:
+  - `C:\Users\user\AppData\Local\Temp\codex-clipboard-6b8ccd27-c2db-4eb6-99a0-3bf9d119ff81.png` — Dark Home baseline for the unboxed logo treatment and scale, 3439×1368 px.
+  - `C:\Users\user\AppData\Local\Temp\codex-clipboard-22ed9b2a-8d97-463e-91f2-00c11ea70808.png` — supplied Light Login problem reference and approved blue/graphite artwork, 3439×1368 px.
+- Implementation screenshots:
+  - `docs/qa/v537-home-light.png` — desktop Home, 1425×891 px.
+  - `docs/qa/v537-login-light.png` — desktop Login, 1440×900 px.
+  - `docs/qa/v537-home-light-390.png` — 390 CSS px Home viewport; captured content 375×812 px after browser chrome/scrollbar handling.
+  - `docs/qa/v537-login-light-390.png` — 390×844 px Login viewport.
+  - `docs/qa/v537-brand-comparison.jpg` — combined source/baseline and implementation evidence.
+- Density normalization: browser captures and source comparisons were reviewed at CSS scale; the focused brand comparison normalizes panels with contain scaling and does not judge browser chrome.
+- State: logged out; Home and Login; Light mode. Dark Login was captured as the unchanged size/effect baseline.
 
-## Findings and iteration history
+## Findings
 
-1. P2 before fix: the Dark Privacy & Sharing wrapper, sharing panel and analytics cards retained blue surfaces that were brighter than the approved near-black workspace palette.
-   - Fix: outer surface `#050606`, panel surface `#0b0d0d`, inner cards `#111414`, shared line `#2a2f2d`; gradients and shadows removed.
-   - Post-fix evidence: all three surface levels are distinct, neutral and visibly darker in the combined comparison.
-2. P2 before fix: Light Home/Login did not use the supplied blue/black lockup.
-   - Fix: the exact 1.35 MB supplied raster is used as the Light lockup source with no filter, drop-shadow or box-shadow. Multiply blending removes the white raster field against the Light canvas without introducing a black halo.
-3. P3 follow-up: only the explicitly marked Dark Product Updates labels now use the selected lime `#b8ff19`.
-   - `NEW · AI SCAN LIVE`, `NEW · AI CV LIVE`, and all `Available now` texts compute to `rgb(184, 255, 25)`.
-   - Card titles remain neutral `rgb(244, 247, 251)`; development/planned statuses remain unchanged.
-
-## Required fidelity surfaces
-
-- Typography and copy: unchanged except the requested status-label colors.
-- Spacing and layout: existing V526/V531 geometry is unchanged.
-- Image quality: exact supplied Light logo asset; no generated or approximate asset.
-- Responsive behavior: no horizontal overflow at desktop or 390 px.
-- Theme behavior: Dark surface changes are scoped to Personal Privacy & Sharing; the logo replacement is scoped to Light Home/Login.
-
-## Runtime checks
-
-- Dark sharing fixture: passed, console errors 0.
-- Light Home and Login: passed locally; logo has no filter or shadow.
-- Product Updates Light/Dark toggle: passed; only marked live labels changed.
-- Product Updates horizontal overflow: 0.
-- Focused Node regression tests and Cloudflare build: passed.
-
-final result: passed
-
----
-
-# ATSRS V535 Product Updates Selected-Green QA
-
-## Evidence
-
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-93966622-d8b1-4e04-b45a-c89eb053d503.png`.
-- Browser-rendered implementation: `C:\Users\user\.codex\visualizations\2026\08\13\019ff9c2-6eb4-74b0-a872-5cdbf37a5016\atsrs-v535-qa\product-updates-v535-dark.png`.
-- Combined comparison: `C:\Users\user\.codex\visualizations\2026\08\13\019ff9c2-6eb4-74b0-a872-5cdbf37a5016\atsrs-v535-qa\product-updates-v535-comparison.png`.
-- Source pixels: 3439 x 1440. Implementation pixels and CSS viewport: 1264 x 839 at 1x density.
-- State: authenticated-style Product Updates fixture, Dark mode; Light-mode theme-toggle regression also checked.
-
-## Findings and comparison history
-
-- No P0, P1 or P2 mismatch remains within the user-marked scope.
-- First comparison passed: both `NEW · ... LIVE` labels and all three `AVAILABLE NOW` labels compute to `rgb(184, 255, 25)`, matching the selected Product Updates accent `#b8ff19`.
-- `IN DEVELOPMENT`, `PLANNED`, card titles, descriptions and icon treatments remain unchanged.
-- No corrective visual loop was required after the first browser capture.
+- No actionable P0/P1/P2 issues remain.
+- The Light logo is rendered from a transparent 1108:384 canvas with the same `contain` box as Dark mode.
+- Desktop Login measurements are identical in both themes: 420×145.55 CSS px.
+- The white image card, 115% crop and multiply blend are removed. The TM mark remains visible at desktop and 390 px.
+- ATS lettering and the person mark are graphite/black. RS and the illustrated mark retain the supplied blue/cyan luminosity.
+- No black CSS shadow or drop-shadow is applied; the retained floor light is blue.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: family, size, weight, spacing and capitalization are unchanged; only the requested foreground token changed.
-- Spacing and layout rhythm: no geometry, padding, grid, radius or alignment changes.
-- Colors and visual tokens: selected Dark labels use the same shared accent token as the active Product Updates navigation item. Light mode retains its approved blue status treatment.
-- Image quality and asset fidelity: no image or icon assets were changed.
-- Copy and content: no text changed.
+- Fonts and typography: unchanged; no text hierarchy or wrapping was altered.
+- Spacing and layout rhythm: Home header and Login composition retain their existing dimensions; Light and Dark Login logo boxes match exactly.
+- Colors and visual tokens: source blue/cyan and graphite artwork is preserved without multiply blending.
+- Image quality and asset fidelity: high-resolution supplied artwork is converted to a transparent PNG; no CSS/SVG approximation or placeholder is used.
+- Copy and content: unchanged.
 
-## Runtime checks
+## Interaction and runtime checks
 
-- Primary interaction tested: Light/Dark toggle.
-- Dark computed-color scope: 2 news labels and 3 available labels are `#b8ff19`; development/planned labels and six card titles are unaffected.
-- Light computed-color scope: news and available labels remain blue.
+- Home → Log in: passed.
+- Login → Back to Home: passed.
+- Light/Dark theme toggle: passed.
+- Desktop and 390 px responsive visibility: passed; no logo clipping or horizontal overflow observed.
 - Browser console errors: 0.
+- Focused automated tests: 5 passed, 0 failed.
+
+## Comparison history
+
+1. Initial P1: Light asset used a full white presentation canvas at 115% scale, creating a card effect and clipping TM.
+2. Fix: generated `atsrs-lockup-light-transparent.png`, changed rendering to `background-size: contain`, removed multiply blending and kept the existing Dark-mode dimensions.
+3. Post-fix evidence: desktop and 390 px Home/Login captures show an unboxed logo, visible TM and matching Dark-mode scale.
+
+## Follow-up polish
+
+- None required for this scoped change.
 
 final result: passed
