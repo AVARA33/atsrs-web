@@ -1,35 +1,45 @@
-# ATSRS V554 Legal Header Logo Design QA
+# ATSRS V560 Shared Public Header Design QA
 
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-0f21319d-502f-4c53-8d0c-65141679614c.png`
-- Rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\legal-v554-dark.png` and `C:\Users\user\Documents\GitHub\atsrs-web\tests\artifacts\legal-v554-light.png`
-- Browser viewport: 1280 × 720 CSS px at device pixel ratio 1.5
-- Implementation screenshots: 1264 × 712 px browser capture; component geometry 217.59 × 75.41 CSS px
-- State: standalone legal-page header, dark and light themes
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-5ad20e07-fcc3-40e8-805e-8e3f7a4de72f.png`
+- Rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-data-rights-v560-desktop.png`
+- Mobile implementation: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-data-rights-v560-mobile.png`
+- Combined comparison: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-header-comparison-v560.png`
+- Viewports: 1440 × 900 CSS px desktop and 390 × 844 CSS px mobile
+- Pixel dimensions and density: source 3438 × 1367 px; desktop 1440 × 900 px at DPR 1; mobile 390 × 844 px at DPR 1. The header comparison normalizes both header crops to 1440 × 96 px.
+- State: standalone Data Rights page, Dark and Light themes, public navigation visible; login page remains outside this shared-header scope.
 
 ## Full-view comparison evidence
 
-The reference identifies the full ATSRS Home lockup as the required replacement for the plain `ATSRS` header text. The rendered legal pages use the same green transparent lockup in Dark mode and the same blue transparent lockup in Light mode. The header remains balanced with the return link, and no horizontal overflow is introduced.
+The Data Rights page now uses the same ATSRS public header structure, logo lockup, navigation order, theme control, Log in link and Create Free Account action as Home. The desktop capture has no horizontal overflow. At 390 px, the existing responsive Home header rules remain active and the page has no horizontal overflow.
 
-## Focused component comparison evidence
+## Focused region comparison evidence
 
-The logo region was checked directly because the request is limited to that component. All five standalone legal/security pages render the same 1108:384 asset ratio at the same computed size. The TM mark, symbol, ATSRS lettering and tagline are visible without clipping. The supplied production asset is used directly; no approximation or CSS-drawn replacement is present.
+The combined header comparison places the supplied Home header and the rendered legal-page header in one image. Logo aspect ratio, navigation order, control hierarchy and right-side action grouping match. The implementation deliberately reuses the production Home classes and assets instead of approximating them.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: logo typography remains part of the supplied raster lockup; adjacent header text is unchanged.
-- Spacing and layout rhythm: equal 217.59 × 75.41 CSS px desktop geometry across all five pages; mobile width is fixed to 168 px in every legal-page implementation.
-- Colors and visual tokens: green lockup on Dark; blue/black lockup on Light, matching Home theme assets.
-- Image quality and asset fidelity: existing transparent production PNGs are rendered with `background-size: contain`; no stretching, crop or shadow was added.
-- Copy and content: legal-page content and return-link wording are unchanged; the logo link has a descriptive accessible label.
+- Fonts and typography: inherited from the production Home header; weights, hierarchy, wrapping and labels are unchanged.
+- Spacing and layout rhythm: production Home header grid and responsive breakpoints are reused; desktop logo geometry is 218 × 75.55 CSS px and mobile logo width is 168 CSS px.
+- Colors and visual tokens: production Dark/Light header tokens and theme assets are reused; theme toggle persists and changes the legal page palette.
+- Image quality and asset fidelity: the exact production ATSRS transparent lockups are used with no CSS-drawn replacement, crop or new shadow.
+- Copy and content: public navigation labels and actions match Home; legal content remains unchanged.
+
+## Primary interactions and runtime checks
+
+- Theme toggle: passed; Dark switched to Light and persisted after reload.
+- Public Home/section/login/signup links: correct route targets present.
+- Responsive 390 px layout: passed with zero horizontal overflow.
+- Console errors: 0.
+- Focused regression tests: passed.
 
 ## Findings
 
-No actionable P0, P1 or P2 mismatches remain within the requested logo-replacement scope.
+No actionable P0, P1 or P2 mismatch remains in the requested shared-header scope.
 
 ## Comparison history
 
-- Initial implementation: full theme-specific lockups added to all five legal/security headers.
-- Verification: both theme assets rendered at identical geometry with zero horizontal overflow; focused regression tests passed.
+- Initial comparison: no P0/P1/P2 issue found after reusing the exact Home header component and production assets.
+- No visual correction iteration was required.
 
 ## Final result
 

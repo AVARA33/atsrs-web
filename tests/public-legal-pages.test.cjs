@@ -9,10 +9,13 @@ const pages = {
   terms: read('terms.html'),
   privacy: read('privacy.html'),
   rights: read('data-deletion.html'),
-  security: read('security.html')
+  security: read('security.html'),
+  billing: read('billing-terms.html'),
+  refunds: read('refund-policy.html')
 };
 const css = read('css/legal-public.css');
 const runtime = read('js/legal-public.js');
+const headerCss = read('css/public-legal-header.css');
 
 for (const [name, html] of Object.entries({protection: pages.protection, terms: pages.terms, rights: pages.rights, security: pages.security})) {
   assert.match(html, /<meta name="viewport"/i, `${name} must be responsive`);
@@ -21,6 +24,14 @@ for (const [name, html] of Object.entries({protection: pages.protection, terms: 
   assert.match(html, /Privacy Notice/);
   assert.match(html, /Data Rights/);
   assert.match(html, /Report a Security Issue/);
+}
+
+for (const [name, html] of Object.entries(pages)) {
+  assert.match(html, /class="public-header"/, `${name} must reuse the public header`);
+  assert.match(html, /class="public-wordmark atsrs-home-lockup"/, `${name} must reuse the Home lockup`);
+  assert.match(html, /href="\/\?view=home#platform"/, `${name} must retain public navigation`);
+  assert.match(html, /href="\/\?view=login"/, `${name} must retain the Login route`);
+  assert.match(html, /data-public-theme-toggle/, `${name} must retain the public theme control`);
 }
 
 assert.match(pages.privacy, /<h1>Privacy Notice<\/h1>/);
@@ -37,5 +48,7 @@ assert.doesNotMatch(pages.security, /security@atsrs\.com|guaranteed response|saf
 assert.match(css, /min-height:44px/);
 assert.match(css, /@media\(max-width:600px\)/);
 assert.match(runtime, /localStorage\.getItem\('atsrs_theme'\)/);
+assert.match(runtime, /querySelectorAll\('\[data-public-theme-toggle\]'\)/);
+assert.match(headerCss, /html\[data-embedded="true"\] \.legal-public-nav-shell\{display:none\}/);
 
 console.log('Public legal information architecture contracts passed');

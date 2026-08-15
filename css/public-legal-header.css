@@ -1,0 +1,4 @@
+/* Shared ATSRS public header bridge for standalone legal pages. */
+.legal-public-nav-shell{display:contents}
+html[data-embedded="true"] .legal-public-nav-shell{display:none}
+

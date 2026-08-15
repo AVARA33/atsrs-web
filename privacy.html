@@ -129,17 +129,21 @@
     }
   </style>
   <link rel="stylesheet" href="css/theme-palette-v508.css?v=509">
+  <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
+  <link rel="stylesheet" href="css/public-landing.css?v=532">
+  <link rel="stylesheet" href="css/brand-auth-v513.css?v=547">
+  <link rel="stylesheet" href="css/privacy-brand-v533.css?v=538">
+  <link rel="stylesheet" href="css/public-legal-header.css?v=560">
+  <script src="js/legal-public.js?v=560"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="shell">
-      <a class="brand" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="ATSRS Home — Applicant Tracking System &amp; Recruitment Solutions"></a>
-      <div class="header-links">
-        <a href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()">Back to Home</a>
-        <a class="legal-switch" href="/data-deletion.html">Data Rights</a>
-      </div>
-    </div>
-  </header>
+  <div class="atsrs-public-landing legal-public-nav-shell">
+    <header class="public-header">
+      <a class="public-wordmark atsrs-home-lockup" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
+      <nav class="public-nav" aria-label="Public navigation"><a class="public-home-link" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><a href="/?view=home#platform">Platform</a><a href="/?view=home#how-it-works">How it works</a><a href="/?view=home#plans">Plans</a><a href="/?view=home#faq">FAQ</a></nav>
+      <div class="public-header-actions"><a class="public-home-link public-home-mobile" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><button type="button" class="public-theme-toggle" data-public-theme-toggle role="switch" aria-label="Switch colour theme"><span class="public-theme-track" aria-hidden="true"><i class="ph ph-moon public-theme-moon"></i><i class="ph ph-sun public-theme-sun"></i><span class="public-theme-thumb"></span></span></button><a class="public-login" href="/?view=login">Log in</a><a class="public-cta public-cta-small" href="/?view=signup">Create Free Account</a></div>
+    </header>
+  </div>
 
   <main class="shell">
     <div class="hero">
