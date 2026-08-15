@@ -1,4 +1,4 @@
-/* ATSRS V516: graphite ATS lettering with source-blue luminous artwork. */
+/* ATSRS V547: graphite ATS lettering and theme-correct branded loading. */
 
 #auth .auth-card,
 #auth:not(.hidden) .auth-card,
@@ -60,8 +60,10 @@ html[data-theme="light"] .atsrs-public-landing .public-wordmark.atsrs-home-locku
 }
 
 html[data-theme="light"] #atsrsBootScreen{
-  background:#000b1e!important;
-  color-scheme:dark;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(37,99,235,.08),transparent 30%),
+    linear-gradient(135deg,#f8fafc 0%,#f3f7fa 48%,#edf4f8 100%)!important;
+  color-scheme:light;
 }
 
 #atsrsBootScreen .atsrs-boot-mark{
@@ -79,8 +81,10 @@ html[data-theme="light"] #atsrsBootScreen{
 }
 
 html[data-theme="light"] #atsrsBootScreen .atsrs-boot-mark{
-  background-color:#000b1e;
-  background-image:url("../assets/branding/atsrs-mark-blue.png");
+  background-color:transparent;
+  background-image:url("../assets/branding/atsrs-lockup-light-transparent.png");
+  background-position:left center;
+  background-size:auto 100%;
 }
 
 #atsrsBootScreen .atsrs-boot-shine{
