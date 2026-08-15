@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'shell-polish.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V542"/);
+assert.match(index, /data-atsrs-build="V543"/);
 assert.match(index, /css\/shell-polish\.css\?v=538/);
 assert.match(index, /class="brand atsrs-sidebar-mark" role="img" aria-label="ATSRS"><\/div>/);
 assert.doesNotMatch(index, /class="brand atsrs-animated-wordmark"/);

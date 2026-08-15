@@ -29,3 +29,28 @@
 No actionable P0, P1, or P2 mismatch remains within the requested scope.
 
 final result: passed
+
+# ATSRS Product Updates Premium Markers QA — V543
+
+- Scope: AI Document Scan and QR Phone Upload cards in Product Updates.
+- Existing roadmap card geometry, availability statuses and light/dark hierarchy were preserved.
+
+## Implemented behavior
+
+- Both paid-plan value features expose a compact Phosphor star plus `PREMIUM` marker.
+- The premium marker is independent from the right-aligned availability status.
+- Dark mode uses a restrained gold marker; Light mode uses a contrast-safe amber marker.
+- The marker stays on one line and reserves the status area to prevent overlap.
+
+## Browser verification
+
+- Light mode: both markers are visible, aligned and separated from `Available now`.
+- Dark mode: both markers retain clear contrast without changing the approved green status treatment.
+- AI, QR and Manual card icon/title/copy rows remain aligned.
+- Focused regression suite: 16/16 passed.
+
+## Findings
+
+No actionable P0, P1 or P2 mismatch remains within the requested scope.
+
+final result: passed

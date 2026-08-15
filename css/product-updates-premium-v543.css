@@ -1,0 +1,32 @@
+/* V543: premium plan-value markers for monetized Product Updates capabilities. */
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-premium{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:max-content!important;
+  max-width:calc(100% - 112px)!important;
+  color:#f6c453!important;
+  -webkit-text-fill-color:#f6c453!important;
+  white-space:nowrap!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-premium > i{
+  flex:0 0 auto!important;
+  color:currentColor!important;
+  font-size:13px!important;
+  line-height:1!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-premium{
+  color:#9a6700!important;
+  -webkit-text-fill-color:#9a6700!important;
+}
+
+@media(max-width:390px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-premium{
+    gap:4px!important;
+    font-size:9px!important;
+  }
+}
