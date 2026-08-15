@@ -72,7 +72,7 @@ for(const page of [privacy,deletion]){
   assert.match(page,/window\.parent\.postMessage\([\s\S]*?window\.location\.origin\)/);
   assert.doesNotMatch(page,/postMessage\([\s\S]*?['"]\*['"]\)/);
 }
-assert.match(storage,/event\.origin!==window\.location\.origin/);
+assert.match(storage,/event\.origin!==window\.location\.origin&&event\.origin!=="null"/);
 assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindow\)/);
 assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
@@ -82,10 +82,10 @@ assert.match(storage,/window\.fetch\(source,\{credentials:"same-origin",cache:"n
 assert.match(storage,/frame\.srcdoc=html/);
 assert.match(storage,/html=html\.replace\([\s\S]*?var embedded=true;/);
 assert.match(storage,/hydrateLegalFrame\(renderedPage\)/);
-assert.match(index,/data-atsrs-build="V557"/);
+assert.match(index,/data-atsrs-build="V558"/);
 assert.match(index,/src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
-assert.match(index,/src="js\/storage\.js\?v=557"/);
+assert.match(index,/src="js\/storage\.js\?v=558"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');

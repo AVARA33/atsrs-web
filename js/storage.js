@@ -492,7 +492,7 @@ function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page"
 if(!window.__atsrsLegalNavigationBound){
   window.__atsrsLegalNavigationBound=true;
   window.addEventListener("message",function(event){
-    if(event.origin!==window.location.origin)return;
+    if(event.origin!==window.location.origin&&event.origin!=="null")return;
     var privacyFrame=document.querySelector("#privacyPage .legal-app-frame");
     var dataRightsFrame=document.querySelector("#dataRightsPage .legal-app-frame");
     if(event.source!==(privacyFrame&&privacyFrame.contentWindow)&&event.source!==(dataRightsFrame&&dataRightsFrame.contentWindow))return;
