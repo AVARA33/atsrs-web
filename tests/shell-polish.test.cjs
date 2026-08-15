@@ -13,12 +13,12 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
-assert.match(index,/css\/shell-polish\.css\?v=538/);
+assert.match(index,/css\/shell-polish\.css\?v=549/);
 assert.match(index,/js\/storage\.js\?v=524/);
 assert.match(index,/class="account-tabs" role="tablist"/);
 assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
-assert.match(index,/js\/shell-polish\.js\?v=524/);
-assert.match(index,/js\/app\.js\?v=535/);
+assert.match(index,/js\/shell-polish\.js\?v=549/);
+assert.match(index,/js\/app\.js\?v=541/);
 assert.doesNotMatch(index,/<span class="pill">PRODUCT UPDATES<\/span>/);
 assert.match(css,/Shared Product Updates intro uses the page canvas[\s\S]*?#introPage \.updates-hero[\s\S]*?background:transparent!important/);
 assert.match(css,/#introPage \.roadmap-section[\s\S]*?padding:0!important[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);

@@ -7,6 +7,7 @@
   var notificationObserver=null,observedNotificationList=null;
 
   function byId(id){return document.getElementById(id);}
+  function compactSidebarViewport(){return window.innerWidth<=800||(window.innerWidth<=960&&window.innerHeight<=560);}
   function personalMode(){
     var mode='';
     try{mode=localStorage.getItem('atsrs_use_mode')||localStorage.getItem('atsrs_account_type')||window.useMode||'';}catch(error){}
@@ -104,13 +105,13 @@
     if(!sidebar||!toggle)return;
     var nav=sidebar.querySelector('.nav');if(!nav)return;
     if(!nav.id)nav.id='personalDashboardNav';
-    var mobile=window.innerWidth<=800,open=mobile&&!sidebar.classList.contains('v76-mobile-closed');
+    var mobile=compactSidebarViewport(),open=mobile&&!sidebar.classList.contains('v76-mobile-closed');
     toggle.setAttribute('aria-controls',nav.id);
     toggle.setAttribute('aria-expanded',String(open));
     toggle.setAttribute('aria-label',open?'Close menu':'Open menu');
   }
   function handleMobileMenuKeydown(event){
-    if(!dashboardVisible()||window.innerWidth>800)return;
+    if(!dashboardVisible()||!compactSidebarViewport())return;
     var sidebar=document.querySelector('#app .sidebar'),toggle=byId('sidebarToggleBtn');
     if(!sidebar||!toggle||sidebar.classList.contains('v76-mobile-closed'))return;
     if(event.key==='Escape'){
@@ -133,7 +134,7 @@
   function syncDashboard(){
     var visible=dashboardVisible();
     document.body.classList.toggle('atsrs-personal-dashboard-route',visible);
-    if(visible&&window.innerWidth<=800&&!lastDashboardVisible){
+    if(visible&&compactSidebarViewport()&&!lastDashboardVisible){
       var sidebar=document.querySelector('#app .sidebar');
       if(sidebar)sidebar.classList.add('v76-mobile-closed');
     }

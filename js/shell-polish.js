@@ -32,6 +32,10 @@
     navPrivacy:'Privacy'
   };
 
+  function compactSidebarViewport(){
+    return window.innerWidth<=800||(window.innerWidth<=960&&window.innerHeight<=560);
+  }
+
   var PERSONAL_LABELS={
     navDashboard:'Dashboard',
     navCertificates:'Documents',
@@ -143,7 +147,7 @@
   }
 
   function closeMobileSidebar(){
-    if(window.innerWidth>800)return;
+    if(!compactSidebarViewport())return;
     var sidebar=document.querySelector('#app.app:not(.hidden) .sidebar');
     if(sidebar)sidebar.classList.add('v76-mobile-closed');
   }

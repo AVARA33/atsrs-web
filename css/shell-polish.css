@@ -595,6 +595,155 @@ html body #app.app:not(.hidden) :where(.sidebar .nav button,#atsrsNotificationBu
   }
 }
 
+/* V549: keep every workspace destination reachable across phone and tablet sizes. */
+@media(max-width:800px){
+  body #app.app:not(.hidden) .sidebar{
+    width:100%!important;
+    min-width:0!important;
+    padding:10px 12px max(10px,env(safe-area-inset-bottom))!important;
+    overflow:visible!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head{
+    min-height:64px!important;
+    margin:0!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head #sidebarToggleBtn{
+    display:flex!important;
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav{
+    position:static!important;
+    top:auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:4px!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:8px 0 0!important;
+    overflow:visible!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar.v76-mobile-closed .nav{
+    display:none!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav button,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button{
+    display:flex!important;
+    min-width:0!important;
+    min-height:48px!important;
+    padding:8px 10px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
+    grid-column:1 / -1!important;
+    margin-top:4px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav #navIntro{
+    order:0!important;
+  }
+}
+
+@media(max-width:800px) and (orientation:landscape) and (max-height:500px){
+  body #app.app:not(.hidden) .sidebar .nav{
+    max-height:calc(100dvh - 86px)!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    scrollbar-width:none!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav::-webkit-scrollbar{
+    display:none!important;
+  }
+}
+
+/* Large phones can cross the desktop width breakpoint in landscape. */
+@media(min-width:801px) and (max-width:960px) and (orientation:landscape) and (max-height:560px){
+  body #app.app:not(.hidden),
+  body.v76-sidebar-collapsed #app.app:not(.hidden){
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{
+    position:relative!important;
+    inset:auto!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:10px 12px max(10px,env(safe-area-inset-bottom))!important;
+    overflow:visible!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head{
+    min-height:64px!important;
+    margin:0!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head #sidebarToggleBtn{
+    display:flex!important;
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav{
+    position:static!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:4px!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:calc(100dvh - 86px)!important;
+    margin:8px 0 0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar.v76-mobile-closed .nav{
+    display:none!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav button,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button{
+    flex:0 0 auto!important;
+    flex-direction:row!important;
+    min-height:48px!important;
+    height:auto!important;
+    padding:8px 10px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-label,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-label{
+    font-size:11px!important;
+    text-align:left!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
+    grid-column:1 / -1!important;
+    margin-top:4px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav #navIntro{
+    order:0!important;
+  }
+
+  body #app.app:not(.hidden) .main{
+    grid-column:1!important;
+  }
+}
+
 /* The rail layout must never expose controls from the other workspace. */
 body.personal-mode #app.app:not(.hidden) .sidebar .nav :is(
   #navCandidates,

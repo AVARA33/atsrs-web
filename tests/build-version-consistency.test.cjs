@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V548');
+assert.equal(version, 'V549');
 assert.equal(update, '15 Aug 2026');
 
 for (const asset of [
@@ -46,7 +46,7 @@ assert.match(index, /src="js\/account\.js\?v=412"/);
 assert.match(index, /src="js\/app\.js\?v=541"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=443"/);
 assert.match(index, /src="js\/storage\.js\?v=524"/);
-assert.match(index, /src="js\/auth\.js\?v=459"/);
+assert.match(index, /src="js\/auth\.js\?v=549"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/corporate-remediation\.css\?v=480"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
@@ -56,8 +56,9 @@ assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /src="js\/corporate-information-architecture\.js\?v=444"/);
 assert.match(index, /src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=442"/);
-assert.match(index, /href="css\/shell-polish\.css\?v=548"/);
-assert.match(index, /src="js\/shell-polish\.js\?v=524"/);
+assert.match(index, /href="css\/shell-polish\.css\?v=549"/);
+assert.match(index, /src="js\/personal-dashboard-qa\.js\?v=549"/);
+assert.match(index, /src="js\/shell-polish\.js\?v=549"/);
 assert.match(index, /href="css\/public-landing\.css\?v=532"/);
 assert.match(index, /href="css\/share-profile\.css\?v=497"/);
 assert.match(index, /src="js\/public-landing\.js\?v=536"/);
@@ -98,4 +99,4 @@ assert.match(index, /src="js\/theme\.js\?v=509"/);
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=547"/);
 assert.match(index, /href="css\/privacy-brand-v533\.css\?v=538"/);
 
-console.log('V548 build marker consistency tests passed');
+console.log('V549 build marker consistency tests passed');

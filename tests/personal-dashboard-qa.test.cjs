@@ -53,7 +53,8 @@ assert.match(css, /html\[data-theme="dark"\][\s\S]*?expiry-summary-90\{--expiry-
 assert.match(css, /expiry-summary-card > \.stat\.is-zero-risk\{[\s\S]*?color:var\(--expiry-signal\)!important/);
 assert.match(dashboardCss, /#dashboardPage > \.panel:not\(\.solo-hero\):not\(\.dashboard-snapshot-panel\):not\(#shareProfilePanel\):not\(#personalDashboardPanel\)\{\s*padding:18px!important/);
 
-assert.match(runtime, /window\.innerWidth<=800&&!lastDashboardVisible/);
+assert.match(runtime, /compactSidebarViewport\(\)&&!lastDashboardVisible/);
+assert.match(runtime, /window\.innerWidth<=960&&window\.innerHeight<=560/);
 assert.match(runtime, /sidebar\.classList\.add\('v76-mobile-closed'\)/);
 assert.match(runtime, /element\.classList\.remove\('warning','danger'\)/);
 assert.match(runtime, /Number\.isFinite\(value\)&&value>0/);
@@ -102,6 +103,6 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
 }
 
 assert.match(index, /css\/personal-dashboard-qa\.css\?v=450/);
-assert.match(index, /js\/personal-dashboard-qa\.js\?v=447/);
+assert.match(index, /js\/personal-dashboard-qa\.js\?v=549/);
 
 console.log('Personal Dashboard QA candidate contracts passed');
