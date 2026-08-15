@@ -56,8 +56,8 @@ assert.doesNotMatch(index,/PRIVACY &amp; LEGAL/);
 assert.match(index,/id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage\('privacy',this\)">Privacy<\/button>/);
 assert.doesNotMatch(index,/id="navDataRights"/);
 assert.ok(index.indexOf('id="navIntro"') < index.indexOf('id="navPrivacy"'));
-assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="\/privacy\.html\?embedded=1&amp;v=556"/);
-assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="\/data-deletion\.html\?embedded=1&amp;v=556"/);
+assert.match(index,/id="privacyPage" class="hidden legal-app-page"[\s\S]*src="about:blank" data-legal-source="\/privacy\.html\?embedded=1&amp;v=557"/);
+assert.match(index,/id="dataRightsPage" class="hidden legal-app-page"[\s\S]*src="about:blank" data-legal-source="\/data-deletion\.html\?embedded=1&amp;v=557"/);
 assert.doesNotMatch(privacy,/<nav class="header-links"/);
 assert.doesNotMatch(deletion,/<nav class="header-links"/);
 assert.match(privacy,/<a class="legal-switch" href="\/data-deletion\.html">Data Rights<\/a>/);
@@ -77,10 +77,15 @@ assert.match(storage,/event\.source!==\(privacyFrame&&privacyFrame\.contentWindo
 assert.match(storage,/page!=="privacy"&&page!=="dataRights"/);
 assert.match(storage,/dataRights:navPrivacy/);
 assert.match(storage,/page==="privacy"\?"Privacy Notice":page==="dataRights"\?"Data Rights"/);
-assert.match(index,/data-atsrs-build="V555"/);
+assert.match(storage,/function hydrateLegalFrame\(page\)/);
+assert.match(storage,/window\.fetch\(source,\{credentials:"same-origin",cache:"no-store"\}\)/);
+assert.match(storage,/frame\.srcdoc=html/);
+assert.match(storage,/html=html\.replace\([\s\S]*?var embedded=true;/);
+assert.match(storage,/hydrateLegalFrame\(renderedPage\)/);
+assert.match(index,/data-atsrs-build="V557"/);
 assert.match(index,/src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
-assert.match(index,/src="js\/storage\.js\?v=524"/);
+assert.match(index,/src="js\/storage\.js\?v=557"/);
 assert.doesNotMatch(css,/\.legal-resource-grid|\.legal-resource-card|\.legal-section/);
 
 console.log('privacy notice contracts passed');
