@@ -32,6 +32,13 @@ for (const [name, html] of Object.entries(pages)) {
   assert.match(html, /href="\/\?view=home#platform"/, `${name} must retain public navigation`);
   assert.match(html, /href="\/\?view=login"/, `${name} must retain the Login route`);
   assert.match(html, /data-public-theme-toggle/, `${name} must retain the public theme control`);
+  assert.match(html, /<footer class="public-footer">/, `${name} must reuse the Home footer`);
+  assert.match(html, /class="public-footer-legal"/, `${name} must retain the Home legal menu`);
+  assert.match(html, /class="public-footer-bottom"/, `${name} must retain the Home footer bottom row`);
+  assert.match(html, />Billing Terms</, `${name} must include Billing Terms`);
+  assert.match(html, />Refunds</, `${name} must include Refunds`);
+  assert.match(html, />Data Rights</, `${name} must include Data Rights`);
+  assert.match(html, />Report a Security Issue</, `${name} must include the security link`);
 }
 
 assert.match(pages.privacy, /<h1>Privacy Notice<\/h1>/);
