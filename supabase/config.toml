@@ -1,0 +1,7 @@
+project_id = "atsrs-web"
+
+[functions.billing-checkout]
+verify_jwt = true
+
+[functions.billing-webhook]
+verify_jwt = false

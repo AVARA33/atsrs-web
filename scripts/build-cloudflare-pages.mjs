@@ -11,6 +11,8 @@ const publicFiles = [
   "index.html",
   "qr-upload.html",
   "pricing.html",
+  "billing-terms.html",
+  "refund-policy.html",
   "data-protection.html",
   "terms.html",
   "privacy.html",

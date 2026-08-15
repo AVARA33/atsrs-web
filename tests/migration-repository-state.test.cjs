@@ -90,14 +90,15 @@ const localOnly = [
   '20260730155715_reject_stale_workspace_revision_without_retry.sql',
   '20260731030456_targeted_workspace_command_revision_read.sql',
   '20260731034949_stable_id_workspace_compatibility_gate.sql',
-  '20260731035646_fix_stable_id_compatibility_telemetry_bucket.sql'
+  '20260731035646_fix_stable_id_compatibility_telemetry_bucket.sql',
+  '20260815130745_atsrs_billing_foundation.sql'
 ];
 for (const name of localOnly) {
   assert.ok(fs.existsSync(path.join(migrationDir, name)), `missing local-only migration ${name}`);
 }
 
 const actual = fs.readdirSync(migrationDir).filter(name => name.endsWith('.sql')).sort();
-assert.equal(actual.length, 53);
+assert.equal(actual.length, 54);
 assert.equal(new Set(actual.map(name => name.slice(0, 14))).size, actual.length);
 assert.ok(actual.indexOf('20260729041619_stable_workspace_entity_ids.sql') <
   actual.indexOf('20260729105130_baseline_v242_detailed_expiry_notifications.sql'));
