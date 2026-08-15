@@ -1,45 +1,43 @@
-# ATSRS V560 Shared Public Header Design QA
+# ATSRS V562 Canonical Dark Surface Design QA
 
-- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-5ad20e07-fcc3-40e8-805e-8e3f7a4de72f.png`
-- Rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-data-rights-v560-desktop.png`
-- Mobile implementation: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-data-rights-v560-mobile.png`
-- Combined comparison: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-header-comparison-v560.png`
-- Viewports: 1440 × 900 CSS px desktop and 390 × 844 CSS px mobile
-- Pixel dimensions and density: source 3438 × 1367 px; desktop 1440 × 900 px at DPR 1; mobile 390 × 844 px at DPR 1. The header comparison normalizes both header crops to 1440 × 96 px.
-- State: standalone Data Rights page, Dark and Light themes, public navigation visible; login page remains outside this shared-header scope.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-9a73df18-2a9c-4a67-bdde-043b041bd838.png`
+- Rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-v562-data-rights-dark.jpg`
+- Combined comparison: `C:\Users\user\Documents\GitHub\atsrs-web\.codex-v562-dark-surface-comparison.jpg`
+- Verification viewport: 1280 × 720 CSS px at DPR 1
+- Source dimensions: 2560 × 1520 px. Implementation capture: 1280 × 1874 px full page. Comparison columns were normalized for visual review.
+- State: public Home, Pricing, Privacy and Data Rights routes in Dark mode; Data Rights also verified in Light mode.
 
 ## Full-view comparison evidence
 
-The Data Rights page now uses the same ATSRS public header structure, logo lockup, navigation order, theme control, Log in link and Create Free Account action as Home. The desktop capture has no horizontal overflow. At 390 px, the existing responsive Home header rules remain active and the page has no horizontal overflow.
+The supplied screenshot showed legacy navy surfaces inside an otherwise black Dark-mode page. The implementation keeps the established ATSRS layout, typography and lime accent while replacing those source navy surfaces with one neutral black surface system. Light mode remains white and blue.
 
 ## Focused region comparison evidence
 
-The combined header comparison places the supplied Home header and the rendered legal-page header in one image. Logo aspect ratio, navigation order, control hierarchy and right-side action grouping match. The implementation deliberately reuses the production Home classes and assets instead of approximating them.
+The public header, summary cards, contents panel, notices and article panels now share the same neutral Dark palette. Computed browser colors confirm the header is `rgba(5, 6, 6, 0.96)` and representative panels are `rgb(11, 13, 13)`. No route tested has horizontal overflow.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: inherited from the production Home header; weights, hierarchy, wrapping and labels are unchanged.
-- Spacing and layout rhythm: production Home header grid and responsive breakpoints are reused; desktop logo geometry is 218 × 75.55 CSS px and mobile logo width is 168 CSS px.
-- Colors and visual tokens: production Dark/Light header tokens and theme assets are reused; theme toggle persists and changes the legal page palette.
-- Image quality and asset fidelity: the exact production ATSRS transparent lockups are used with no CSS-drawn replacement, crop or new shadow.
-- Copy and content: public navigation labels and actions match Home; legal content remains unchanged.
+- Typography: unchanged.
+- Spacing and layout rhythm: unchanged; no wrapper or shell was added.
+- Dark colors: canonical background `#050606`, panel `#0b0d0d`, soft panel `#111414`, border `#2a2f2d`; ATSRS lime accents preserved.
+- Light colors: existing white and blue palette preserved.
+- Assets and logo behavior: unchanged.
+- Copy and legal content: unchanged.
 
 ## Primary interactions and runtime checks
 
-- Theme toggle: passed; Dark switched to Light and persisted after reload.
-- Public Home/section/login/signup links: correct route targets present.
-- Responsive 390 px layout: passed with zero horizontal overflow.
-- Console errors: 0.
+- Data Rights Dark: passed; black header and neutral panels, zero horizontal overflow.
+- Privacy Dark: passed; black header and neutral panels, zero horizontal overflow.
+- Pricing Dark: passed; black header and neutral plan cards, zero horizontal overflow.
+- Home Dark: passed; black header and neutral cards, zero horizontal overflow.
+- Data Rights Light: passed; white cards and existing light header preserved.
 - Focused regression tests: passed.
-
-## Findings
-
-No actionable P0, P1 or P2 mismatch remains in the requested shared-header scope.
 
 ## Comparison history
 
-- Initial comparison: no P0/P1/P2 issue found after reusing the exact Home header component and production assets.
-- No visual correction iteration was required.
+- P1: legacy blue/navy panels remained on legal routes after the shared-header change.
+- Resolution: removed the legacy source tokens and loaded the canonical theme authority last on every public/legal route.
+- Final comparison: no remaining P0, P1 or P2 mismatch in the requested surface-color scope.
 
 ## Final result
 

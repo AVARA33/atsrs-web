@@ -2,3 +2,8 @@
 .legal-public-nav-shell{display:contents}
 html[data-embedded="true"] .legal-public-nav-shell{display:none}
 
+/* V562: standalone legal routes permanently use the approved neutral Dark palette. */
+html[data-theme="dark"] .legal-public-nav-shell .public-header{
+  border-bottom-color:#2c332e!important;
+  background:rgba(5,6,6,.96)!important;
+}

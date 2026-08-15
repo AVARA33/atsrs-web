@@ -228,6 +228,32 @@ html[data-theme="dark"] body:has(.site-header){--bg:var(--atsrs-ref-dark-bg);--s
 html[data-theme="light"] body:has(.site-header){--bg:var(--atsrs-ref-light-bg);--surface:var(--atsrs-ref-light-surface);--surface-2:var(--atsrs-ref-light-soft);--line:var(--atsrs-ref-light-line);--text:var(--atsrs-ref-light-text);--muted:var(--atsrs-ref-light-muted);--accent:var(--atsrs-ref-blue);--link:var(--atsrs-ref-blue-strong)}
 html[data-theme="dark"] :where(.site-header,.legal-header){background:rgba(5,6,6,.95)!important}
 html[data-theme="light"] :where(.site-header,.legal-header){background:rgba(245,247,251,.95)!important}
+
+/* V562: one final Dark surface authority for every public and authenticated route. */
+html[data-theme="dark"]{
+  --atsrs-workspace-surface:var(--atsrs-ref-dark-surface);
+  --atsrs-workspace-surface-soft:var(--atsrs-ref-dark-soft);
+  --atsrs-workspace-line:var(--atsrs-ref-dark-line);
+}
+html[data-theme="dark"] :where(.public-header,.site-header,.legal-header){
+  border-color:var(--atsrs-ref-dark-line)!important;
+  background:rgba(5,6,6,.96)!important;
+}
+html[data-theme="dark"] :where(
+  .summary-card,.toc,.notice,
+  .legal-summary>div,.legal-toc,
+  .card,.panel,.workflow-card,.snapshot-card,.mini-panel,.roadmap-card,
+  .scan-box,.import-box,.upload-simple,.share-card,.atsrs-admin-overview
+){
+  border-color:var(--atsrs-ref-dark-line)!important;
+  background-color:var(--atsrs-ref-dark-surface)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+html[data-theme="dark"] :where(.callout,.contact-card,.legal-callout,.legal-contact){
+  border-color:var(--atsrs-ref-dark-line)!important;
+  background:var(--atsrs-ref-dark-soft)!important;
+}
 html[data-theme="dark"] :where(.eyebrow,.legal-eyebrow){color:var(--atsrs-ref-lime)!important;border-color:#526d14!important}
 html[data-theme="light"] :where(.eyebrow,.legal-eyebrow){color:var(--atsrs-ref-blue-strong)!important;border-color:#9ec2e7!important}
 

@@ -84,7 +84,7 @@ assert.match(storage,/frame\.srcdoc=html/);
 assert.match(storage,/html=html\.replace\([\s\S]*?var embedded=true;/);
 assert.match(storage,/hydrateLegalFrame\(renderedPage\)/);
 assert.match(publicLegalHeaderCss,/html\[data-embedded="true"\] \.legal-public-nav-shell\{display:none\}/);
-assert.match(index,/data-atsrs-build="V560"/);
+assert.match(index,/data-atsrs-build="V562"/);
 assert.match(index,/src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index,/href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index,/src="js\/storage\.js\?v=559"/);
