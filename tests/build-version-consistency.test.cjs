@@ -10,7 +10,7 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V543');
+assert.equal(version, 'V544');
 assert.equal(update, '15 Aug 2026');
 
 for (const asset of [
@@ -74,6 +74,7 @@ assert.match(index, /href="css\/references-cv-upload-v525\.css\?v=525"/);
 assert.match(index, /href="css\/product-updates-light-status-v526\.css\?v=526"/);
 assert.match(index, /href="css\/product-updates-alignment-v531\.css\?v=531"/);
 assert.match(index, /href="css\/product-updates-premium-v543\.css\?v=543"/);
+assert.match(index, /href="css\/product-updates-theme-parity-v544\.css\?v=544"/);
 assert.match(index, /href="css\/projects\.css\?v=503"/);
 assert.match(index, /src="js\/projects\.js\?v=503"/);
 
@@ -97,4 +98,4 @@ assert.match(index, /src="js\/theme\.js\?v=509"/);
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=538"/);
 assert.match(index, /href="css\/privacy-brand-v533\.css\?v=538"/);
 
-console.log('V543 build marker consistency tests passed');
+console.log('V544 build marker consistency tests passed');

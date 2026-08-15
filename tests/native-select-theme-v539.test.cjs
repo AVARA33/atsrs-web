@@ -8,7 +8,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'native-select-theme-v539.css'), 'utf8');
 
 test('V539 loads the final select-theme layer', () => {
-  assert.match(index, /data-atsrs-build="V543"/);
+  assert.match(index, /data-atsrs-build="V544"/);
   assert.match(index, /native-select-theme-v539\.css\?v=539/);
 });
 

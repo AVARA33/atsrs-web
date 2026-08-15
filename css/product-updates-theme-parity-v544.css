@@ -1,0 +1,111 @@
+/* V544: one Product Updates geometry and typography contract for both themes. */
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero > h3{
+  font-size:clamp(28px,4vw,44px)!important;
+  font-weight:700!important;
+  line-height:1.25!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero > p{
+  max-width:760px!important;
+  font-size:15px!important;
+  line-height:1.7!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading{
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  margin-bottom:18px!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading > div{
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading h3{
+  margin:5px 0 0!important;
+  font-size:22px!important;
+  font-weight:700!important;
+  line-height:1.25!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading > p{
+  flex:0 1 520px!important;
+  width:520px!important;
+  max-width:520px!important;
+  margin:0!important;
+  font-size:16px!important;
+  line-height:1.5!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-grid{
+  gap:14px!important;
+  align-items:stretch!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card{
+  min-height:210px!important;
+  padding:20px!important;
+  border-radius:17px!important;
+  box-sizing:border-box!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > .roadmap-icon{
+  width:42px!important;
+  height:42px!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > h3{
+  font-size:18px!important;
+  font-weight:700!important;
+  line-height:1.35!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > p{
+  font-size:16px!important;
+  line-height:1.55!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-status{
+  top:16px!important;
+  right:16px!important;
+  padding:5px 8px!important;
+  font-size:10px!important;
+  line-height:normal!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-news{
+  font-size:10px!important;
+  line-height:1.4!important;
+}
+
+@media(max-width:900px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:8px!important;
+  }
+
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading > p{
+    flex:0 1 auto!important;
+    width:auto!important;
+    max-width:520px!important;
+  }
+}
+
+@media(max-width:640px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero > h3{
+    font-size:30px!important;
+  }
+
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero > p,
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading > p,
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card > p{
+    font-size:15px!important;
+  }
+}
