@@ -1,4 +1,4 @@
-/* V550: the authenticated sidebar is independent from page scrolling.
+/* V552: the authenticated sidebar is independent from page scrolling.
    Primary destinations may scroll inside the rail; Product Updates and Privacy stay pinned. */
 #app.app:not(.hidden){
   min-height:100dvh!important;
@@ -9,16 +9,28 @@ body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
   position:sticky!important;
   inset-block-start:0!important;
   align-self:start!important;
+  display:flex!important;
+  flex-direction:column!important;
   height:100dvh!important;
   max-height:100dvh!important;
+  box-sizing:border-box!important;
   overflow:hidden!important;
+}
+
+body #app.app:not(.hidden) .sidebar > .sidebar-head,
+body #app.app:not(.hidden) .sidebar > .sub{
+  flex:0 0 auto!important;
 }
 
 body #app.app:not(.hidden) .sidebar > .nav,
 body #app.app:not(.hidden) .sidebar.v76-mobile-closed > .nav{
+  flex:1 1 auto!important;
   display:grid!important;
   grid-template-columns:minmax(0,1fr)!important;
   grid-template-rows:minmax(0,1fr) auto!important;
+  width:100%!important;
+  height:auto!important;
+  max-height:none!important;
   min-height:0!important;
   overflow:hidden!important;
 }
