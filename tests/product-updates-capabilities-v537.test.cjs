@@ -55,3 +55,11 @@ test('Product Updates keeps the established roadmap card design', () => {
   assert.equal((updates.match(/class="roadmap-card/g) || []).length, 20);
   assert.equal((updates.match(/roadmap-status/g) || []).length, 20);
 });
+
+test('In-development capabilities are shown before available and planned work', () => {
+  const development = updates.indexOf('WhatsApp Expiry Alerts');
+  const available = updates.indexOf('AI Document Scan');
+  const planned = updates.indexOf('Automated Scheduled Reports');
+  assert.ok(development >= 0 && development < available);
+  assert.ok(development < planned);
+});
