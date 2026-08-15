@@ -36,7 +36,16 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
   ]) {
     assert.match(headers, new RegExp(requiredHeader), `${requiredHeader} must be deployed`);
   }
-  assert.match(headers, /frame-ancestors 'none'/, 'CSP must prevent clickjacking');
+  assert.match(headers, /frame-ancestors 'none'/, 'Default CSP must prevent clickjacking');
+  for (const legalPath of ['/privacy.html', '/data-deletion.html']) {
+    const escapedPath = legalPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const legalRule = headers.match(new RegExp(`${escapedPath}\\r?\\n([\\s\\S]*?)(?=\\r?\\n\\/|$)`));
+    assert.ok(legalRule, `${legalPath} must have a scoped frame policy`);
+    assert.match(legalRule[1], /! X-Frame-Options/, `${legalPath} must remove the inherited DENY header`);
+    assert.match(legalRule[1], /X-Frame-Options: SAMEORIGIN/, `${legalPath} must permit same-origin embedding only`);
+    assert.match(legalRule[1], /! Content-Security-Policy/, `${legalPath} must replace the inherited CSP`);
+    assert.match(legalRule[1], /frame-ancestors 'self'/, `${legalPath} CSP must permit ATSRS embedding only`);
+  }
   assert.match(headers, /connect-src[^\n]+hwtjuqyxzivymofamwxl\.supabase\.co/, 'CSP must retain Supabase connectivity');
 
   for (const forbiddenEntry of ['.git', '.github', 'CNAME', 'docs', 'scripts', 'supabase', 'tests']) {
