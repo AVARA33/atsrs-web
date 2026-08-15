@@ -1,20 +1,26 @@
-/* V552: the authenticated sidebar is independent from page scrolling.
+/* V553: the authenticated sidebar is independent from page scrolling.
    Primary destinations may scroll inside the rail; Product Updates and Privacy stay pinned. */
 #app.app:not(.hidden){
-  min-height:100dvh!important;
+  min-height:100vh!important;
+  min-height:100svh!important;
 }
 
 body #app.app:not(.hidden) > .sidebar,
 body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
-  position:sticky!important;
-  inset-block-start:0!important;
+  position:fixed!important;
+  inset:0 auto auto 0!important;
   align-self:start!important;
   display:flex!important;
   flex-direction:column!important;
-  height:100dvh!important;
-  max-height:100dvh!important;
+  height:100vh!important;
+  height:100svh!important;
+  max-height:100svh!important;
   box-sizing:border-box!important;
   overflow:hidden!important;
+}
+
+body #app.app:not(.hidden) > .main{
+  grid-column:2!important;
 }
 
 body #app.app:not(.hidden) .sidebar > .sidebar-head,
@@ -106,8 +112,8 @@ body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
 
   body #app.app:not(.hidden) .sidebar > .nav,
   body #app.app:not(.hidden) .sidebar.v76-mobile-closed > .nav{
-    height:calc(100dvh - 70px)!important;
-    max-height:calc(100dvh - 70px)!important;
+    height:calc(100svh - 70px)!important;
+    max-height:calc(100svh - 70px)!important;
     margin:0!important;
   }
 
@@ -171,12 +177,13 @@ body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
 
   body #app.app:not(.hidden) > .sidebar,
   body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
-    position:sticky!important;
-    inset:0 auto auto!important;
+    position:fixed!important;
+    inset:0 auto auto 0!important;
     width:88px!important;
     min-width:88px!important;
-    height:100dvh!important;
-    max-height:100dvh!important;
+    height:100vh!important;
+    height:100svh!important;
+    max-height:100svh!important;
     padding:0 6px max(6px,env(safe-area-inset-bottom))!important;
   }
 
@@ -200,8 +207,8 @@ body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
   body #app.app:not(.hidden) .sidebar.v76-mobile-closed > .nav{
     display:grid!important;
     grid-template-rows:minmax(0,1fr) auto!important;
-    height:calc(100dvh - 70px)!important;
-    max-height:calc(100dvh - 70px)!important;
+    height:calc(100svh - 70px)!important;
+    max-height:calc(100svh - 70px)!important;
     margin:0!important;
     overflow:hidden!important;
   }
