@@ -1,4 +1,4 @@
-/* V553: the authenticated sidebar is independent from page scrolling.
+/* V555: the authenticated sidebar is independent from page scrolling.
    Primary destinations may scroll inside the rail; Product Updates and Privacy stay pinned. */
 #app.app:not(.hidden){
   min-height:100vh!important;
@@ -78,9 +78,19 @@ body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
 }
 
 @media(max-width:800px){
+  html,
+  body{
+    max-width:100%!important;
+    overflow-x:hidden!important;
+  }
+
   body #app.app:not(.hidden),
   body.v76-sidebar-collapsed #app.app:not(.hidden){
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
     grid-template-columns:88px minmax(0,1fr)!important;
+    overflow-x:clip!important;
   }
 
   body #app.app:not(.hidden) > .sidebar,
@@ -97,7 +107,19 @@ body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
 
   body #app.app:not(.hidden) > .main{
     grid-column:2!important;
+    width:auto!important;
+    max-width:100%!important;
     min-width:0!important;
+    margin-inline:0!important;
+    overflow-x:hidden!important;
+  }
+
+  body #app.app:not(.hidden) > .main > #pageTitle,
+  body #app.app:not(.hidden) > .main > section{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
   }
 
   body #app.app:not(.hidden) .sidebar-head{

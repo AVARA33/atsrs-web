@@ -61,6 +61,7 @@
 
   var navSyncQueued=false;
   var mobileStateInitialized=false;
+  var responsiveShellFrame=0;
 
   function byId(id){return document.getElementById(id)}
 
@@ -152,6 +153,25 @@
     if(sidebar)sidebar.classList.add('v76-mobile-closed');
   }
 
+  function syncResponsiveShell(){
+    responsiveShellFrame=0;
+    var app=document.querySelector('#app.app:not(.hidden)');
+    if(!app)return;
+    var compact=compactSidebarViewport();
+    document.body.classList.toggle('atsrs-compact-shell',compact);
+    if(!compact)return;
+    document.body.classList.remove('v76-sidebar-collapsed');
+    closeMobileSidebar();
+    var main=app.querySelector(':scope > .main');
+    if(main)main.scrollLeft=0;
+    if(window.scrollX!==0)window.scrollTo(0,window.scrollY);
+  }
+
+  function queueResponsiveShellSync(){
+    if(responsiveShellFrame)return;
+    responsiveShellFrame=window.requestAnimationFrame(syncResponsiveShell);
+  }
+
   function stabilizeVisibleRoute(){
     var intro=byId('introPage'),introButton=byId('navIntro');
     if(!intro||!introButton||!introButton.classList.contains('active'))return;
@@ -207,14 +227,17 @@
   }
 
   function boot(){
-    if(!mobileStateInitialized){closeMobileSidebar();mobileStateInitialized=true;}
+    if(!mobileStateInitialized){syncResponsiveShell();mobileStateInitialized=true;}
     decorateNavigation();
     ensureNotificationButton();
     ['applyLanguage','renderAll','changeLanguage','openApp','showPage'].forEach(wrapNavigationWriter);
     observe();
     window.addEventListener('atsrs:workspace-changed',function(){queueNavigation();ensureNotificationButton();closeMobileSidebar();stabilizeVisibleRoute()});
-    window.addEventListener('atsrs:resume',function(){queueNavigation();ensureNotificationButton();updateNotificationLabel();closeMobileSidebar();stabilizeVisibleRoute()});
-    window.addEventListener('pageshow',function(){closeMobileSidebar();stabilizeVisibleRoute()});
+    window.addEventListener('atsrs:resume',function(){queueNavigation();ensureNotificationButton();updateNotificationLabel();queueResponsiveShellSync();stabilizeVisibleRoute()});
+    window.addEventListener('pageshow',function(){queueResponsiveShellSync();stabilizeVisibleRoute()});
+    window.addEventListener('resize',queueResponsiveShellSync,{passive:true});
+    window.addEventListener('orientationchange',queueResponsiveShellSync,{passive:true});
+    if(window.visualViewport)window.visualViewport.addEventListener('resize',queueResponsiveShellSync,{passive:true});
     setTimeout(function(){decorateNavigation();ensureNotificationButton();updateNotificationLabel()},120);
   }
 
