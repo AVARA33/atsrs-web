@@ -7,7 +7,7 @@ const index=read('index.html');
 const css=read('css/product-updates-alignment-v531.css');
 const harness=read('tests/fixtures/product-updates-alignment-v531-harness.html');
 
-assert.match(index,/data-atsrs-build="V547"/);
+assert.match(index,/data-atsrs-build="V548"/);
 assert.match(index,/product-updates-alignment-v531\.css\?v=531/);
 assert.match(harness,/product-updates-alignment-v531\.css\?v=531/);
 
