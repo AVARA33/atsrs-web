@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'product-updates-premium-v543.css'), 'utf8');
 const updates = index.match(/<section id="introPage"[\s\S]*?<\/section>/)?.[0] || '';
 
-assert.match(index, /data-atsrs-build="V553"/);
+assert.match(index, /data-atsrs-build="V554"/);
 assert.match(index, /href="css\/product-updates-premium-v543\.css\?v=543"/);
 assert.equal((updates.match(/class="roadmap-news roadmap-premium"/g) || []).length, 4);
 assert.match(updates, /roadmap-premium[\s\S]*?ph ph-star[\s\S]*?PREMIUM[\s\S]*?AI Document Scan/);

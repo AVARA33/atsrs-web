@@ -54,7 +54,12 @@
     .shell{width:min(1180px,calc(100% - 32px));margin:0 auto}
     .site-header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(7,17,29,.94);backdrop-filter:blur(14px)}
     .site-header .shell{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{color:var(--text);font-size:23px;font-weight:800;text-decoration:none;letter-spacing:.04em}
+    .brand{
+      display:block;width:clamp(176px,17vw,218px);min-height:0;aspect-ratio:1108 / 384;flex:0 0 auto;
+      background:transparent url("assets/branding/atsrs-lockup-green-transparent.png") left center/contain no-repeat;
+      text-decoration:none
+    }
+    html[data-theme="light"] .brand{background-image:url("assets/branding/atsrs-lockup-blue-transparent.png");filter:saturate(1.12) contrast(1.04)}
     .legal-switch{display:inline-flex;min-height:44px;align-items:center;color:var(--muted);font-weight:700;text-decoration:none;border-bottom:1px solid transparent}
     .legal-switch:hover{color:var(--text);border-bottom-color:var(--line)}
     .embedded-legal-nav{display:none;justify-content:flex-end;margin-bottom:8px}
@@ -104,6 +109,7 @@
     @media(max-width:600px){
       .shell{width:min(100% - 20px,1180px)}
       .site-header .shell{min-height:60px}
+      .brand{width:168px}
       .hero{padding:42px 0 22px}
       .layout{padding-top:18px;gap:18px}
       .toc nav{columns:1}
@@ -116,7 +122,7 @@
 <body>
   <header class="site-header">
     <div class="shell">
-      <a class="brand" href="/" aria-label="ATSRS home">ATSRS</a>
+      <a class="brand" href="/" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
       <a class="legal-switch" href="/privacy.html">Privacy Notice</a>
     </div>
   </header>
