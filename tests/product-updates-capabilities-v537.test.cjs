@@ -63,3 +63,19 @@ test('In-development capabilities are shown before available and planned work', 
   assert.ok(development >= 0 && development < available);
   assert.ok(development < planned);
 });
+
+test('Premium capabilities are grouped before standard capabilities', () => {
+  const premiumLabels = [
+    'WhatsApp Expiry Alerts',
+    'AI Document Scan',
+    'QR Phone Upload',
+    'ATSRS Profile CV'
+  ];
+  const firstStandard = updates.indexOf('Manual Document Upload');
+
+  assert.ok(firstStandard >= 0);
+  for (const label of premiumLabels) {
+    const position = updates.indexOf(label);
+    assert.ok(position >= 0 && position < firstStandard, `${label} must precede standard capabilities`);
+  }
+});
