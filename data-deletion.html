@@ -34,7 +34,7 @@
       window.atsrsNavigateLegal=function(event,page){
         if(!embedded||window.parent===window)return true;
         event.preventDefault();
-        window.parent.postMessage({type:'atsrs:legal:navigate',page:page},window.location.origin);
+        window.parent.postMessage({type:'atsrs:legal:navigate',page:page},window.parent.location.origin);
         return false;
       };
       window.atsrsLeaveLegalToHome=function(){
