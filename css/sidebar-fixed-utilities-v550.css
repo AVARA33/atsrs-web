@@ -1,0 +1,196 @@
+/* V550: the authenticated sidebar is independent from page scrolling.
+   Primary destinations may scroll inside the rail; Product Updates and Privacy stay pinned. */
+#app.app:not(.hidden){
+  min-height:100dvh!important;
+}
+
+body #app.app:not(.hidden) > .sidebar,
+body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
+  position:sticky!important;
+  inset-block-start:0!important;
+  align-self:start!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+}
+
+body #app.app:not(.hidden) .sidebar > .nav,
+body #app.app:not(.hidden) .sidebar.v76-mobile-closed > .nav{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+body #app.app:not(.hidden) .sidebar .nav-primary{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:2px!important;
+  min-height:0!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  scrollbar-width:none!important;
+}
+
+body #app.app:not(.hidden) .sidebar .nav-primary::-webkit-scrollbar{
+  display:none!important;
+}
+
+body #app.app:not(.hidden) .sidebar .nav-utility-group{
+  position:relative!important;
+  z-index:2!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:2px!important;
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-height:auto!important;
+  height:auto!important;
+  align-self:end!important;
+  padding-block-start:4px!important;
+  background:inherit!important;
+}
+
+body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{
+  width:100%!important;
+  margin:0 0 2px!important;
+}
+
+@media(max-width:800px){
+  body #app.app:not(.hidden),
+  body.v76-sidebar-collapsed #app.app:not(.hidden){
+    grid-template-columns:88px minmax(0,1fr)!important;
+  }
+
+  body #app.app:not(.hidden) > .sidebar,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
+    position:fixed!important;
+    inset:0 auto 0 0!important;
+    z-index:40!important;
+    width:88px!important;
+    min-width:88px!important;
+    padding:0 6px max(6px,env(safe-area-inset-bottom))!important;
+    border-right-width:1px!important;
+    border-bottom:0!important;
+  }
+
+  body #app.app:not(.hidden) > .main{
+    grid-column:2!important;
+    min-width:0!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head{
+    min-height:70px!important;
+    justify-content:center!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head #sidebarToggleBtn,
+  body #app.app:not(.hidden) .sidebar > .sub{
+    display:none!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar > .nav,
+  body #app.app:not(.hidden) .sidebar.v76-mobile-closed > .nav{
+    height:calc(100dvh - 70px)!important;
+    max-height:calc(100dvh - 70px)!important;
+    margin:0!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav-primary,
+  body #app.app:not(.hidden) .sidebar .nav-utility-group{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:1px!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav-utility-group{
+    min-height:auto!important;
+    height:auto!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav button,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button{
+    flex:0 0 52px!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:100%!important;
+    min-width:44px!important;
+    height:52px!important;
+    min-height:44px!important;
+    padding:5px 3px!important;
+    gap:3px!important;
+    text-align:center!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-label,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button .atsrs-nav-label{
+    display:block!important;
+    width:100%!important;
+    font-size:9px!important;
+    line-height:1.12!important;
+    text-align:center!important;
+    white-space:normal!important;
+  }
+}
+
+@media(max-width:480px){
+  body #app.app:not(.hidden),
+  body.v76-sidebar-collapsed #app.app:not(.hidden){
+    grid-template-columns:78px minmax(0,1fr)!important;
+  }
+
+  body #app.app:not(.hidden) > .sidebar,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
+    width:78px!important;
+    min-width:78px!important;
+    padding-inline:4px!important;
+  }
+}
+
+@media(min-width:801px) and (max-width:960px) and (orientation:landscape) and (max-height:560px){
+  body #app.app:not(.hidden),
+  body.v76-sidebar-collapsed #app.app:not(.hidden){
+    grid-template-columns:88px minmax(0,1fr)!important;
+  }
+
+  body #app.app:not(.hidden) > .sidebar,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) > .sidebar{
+    position:sticky!important;
+    inset:0 auto auto!important;
+    width:88px!important;
+    min-width:88px!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    padding:0 6px max(6px,env(safe-area-inset-bottom))!important;
+  }
+
+  body #app.app:not(.hidden) > .main{
+    grid-column:2!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head{
+    min-height:70px!important;
+    height:70px!important;
+    margin:0!important;
+    justify-content:center!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar-head #sidebarToggleBtn,
+  body #app.app:not(.hidden) .sidebar > .sub{
+    display:none!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar > .nav,
+  body #app.app:not(.hidden) .sidebar.v76-mobile-closed > .nav{
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr) auto!important;
+    height:calc(100dvh - 70px)!important;
+    max-height:calc(100dvh - 70px)!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+}

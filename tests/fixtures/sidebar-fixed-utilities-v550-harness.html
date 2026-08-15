@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS V550 fixed sidebar QA</title>
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css?v=442">
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/shell-polish.css?v=549">
+  <link rel="stylesheet" href="../../css/sidebar-fixed-utilities-v550.css?v=550">
+  <style>
+    *{box-sizing:border-box}body{margin:0}.app{display:grid!important;grid-template-columns:112px minmax(0,1fr);min-height:100vh}.main{min-width:0;min-height:220vh;padding:32px;background:#020303}.main p{margin-top:130vh}.hidden{display:none!important}
+  </style>
+</head>
+<body class="personal-mode">
+  <section id="app" class="app">
+    <aside class="sidebar">
+      <div class="sidebar-head"><div class="brand atsrs-sidebar-mark" role="img" aria-label="ATSRS"></div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle"><span></span><span></span><span></span></button></div>
+      <p class="sub">Personal Workspace</p>
+      <div class="nav">
+        <div class="nav-primary">
+          <button><i class="ph ph-squares-four atsrs-nav-icon"></i><span class="atsrs-nav-label">Dashboard</span></button>
+          <button><i class="ph ph-file atsrs-nav-icon"></i><span class="atsrs-nav-label">Documents</span></button>
+          <button><i class="ph ph-file-text atsrs-nav-icon"></i><span class="atsrs-nav-label">References</span></button>
+          <button><i class="ph ph-shield-check atsrs-nav-icon"></i><span class="atsrs-nav-label">Security</span></button>
+          <button><i class="ph ph-user-circle atsrs-nav-icon"></i><span class="atsrs-nav-label">Profile</span></button>
+          <button><i class="ph ph-users atsrs-nav-icon"></i><span class="atsrs-nav-label">Extra route</span></button>
+          <button><i class="ph ph-chart-bar atsrs-nav-icon"></i><span class="atsrs-nav-label">Extra report</span></button>
+        </div>
+        <div class="nav-utility-group">
+          <div class="nav-utility-divider" aria-hidden="true"></div>
+          <button id="navIntro"><i class="ph ph-sparkle atsrs-nav-icon"></i><span class="atsrs-nav-label">Product Updates</span></button>
+          <button id="navPrivacy"><i class="ph ph-lock-simple atsrs-nav-icon"></i><span class="atsrs-nav-label">Privacy</span></button>
+        </div>
+      </div>
+    </aside>
+    <main class="main"><h1>Responsive sidebar test</h1><p id="pageEnd">Page end</p></main>
+  </section>
+</body>
+</html>

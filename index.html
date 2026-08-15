@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V549" data-atsrs-update="15 Aug 2026">
+<html lang="en" data-atsrs-build="V550" data-atsrs-update="15 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,6 +85,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/native-select-theme-v539.css?v=539">
 <link rel="stylesheet" href="css/product-updates-premium-v543.css?v=543">
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
+<link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=550">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -397,6 +398,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="sidebar-head"><div class="brand atsrs-sidebar-mark" role="img" aria-label="ATSRS"></div><button type="button" id="sidebarToggleBtn" class="sidebar-toggle" onclick="atsrsV76ToggleSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
 <p id="cabinetText" class="sub"></p>
 <div class="nav">
+<div class="nav-primary">
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
 <button id="navCandidates" onclick="showPage('candidates',this)">Candidates</button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
@@ -407,9 +409,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
+</div>
+<div class="nav-utility-group">
 <div class="nav-utility-divider" aria-hidden="true"></div>
 <button id="navIntro" class="nav-utility active" onclick="showPage('intro',this)">Product Updates</button>
 <button id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage('privacy',this)">Privacy</button>
+</div>
 </div>
 </aside>
 
