@@ -37,6 +37,10 @@
         window.parent.postMessage({type:'atsrs:legal:navigate',page:page},window.location.origin);
         return false;
       };
+      window.atsrsLeaveLegalToHome=function(){
+        try{localStorage.removeItem('atsrs_current_page');}catch(error){}
+        return true;
+      };
     })();
   </script>
   <style>
@@ -62,7 +66,7 @@
     html[data-theme="light"] .brand{background-image:url("assets/branding/atsrs-lockup-blue-transparent.png");filter:saturate(1.12) contrast(1.04)}
     .legal-switch{display:inline-flex;min-height:44px;align-items:center;color:var(--muted);font-weight:700;text-decoration:none;border-bottom:1px solid transparent}
     .legal-switch:hover{color:var(--text);border-bottom-color:var(--line)}
-    .embedded-legal-nav{display:none;justify-content:flex-end;margin-bottom:8px}
+    .embedded-legal-nav{display:none;justify-content:flex-end;gap:18px;margin-bottom:8px}
     .header-links{display:flex;align-items:center;gap:18px}
     .header-links a{color:var(--muted);font-weight:700;text-decoration:none}
     .header-links a:hover{color:var(--text)}
@@ -129,14 +133,20 @@
 <body>
   <header class="site-header">
     <div class="shell">
-      <a class="brand" href="/" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
-      <a class="legal-switch" href="/data-deletion.html">Data Rights</a>
+      <a class="brand" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="ATSRS Home — Applicant Tracking System &amp; Recruitment Solutions"></a>
+      <div class="header-links">
+        <a href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()">Back to Home</a>
+        <a class="legal-switch" href="/data-deletion.html">Data Rights</a>
+      </div>
     </div>
   </header>
 
   <main class="shell">
     <div class="hero">
-      <div class="embedded-legal-nav"><a class="legal-switch" href="/data-deletion.html" data-legal-target="dataRights" onclick="return window.atsrsNavigateLegal(event,'dataRights')">Data Rights</a></div>
+      <div class="embedded-legal-nav">
+        <a class="legal-switch" href="/?view=home" target="_top" onclick="return window.atsrsLeaveLegalToHome()">Back to Home</a>
+        <a class="legal-switch" href="/data-deletion.html" data-legal-target="dataRights" onclick="return window.atsrsNavigateLegal(event,'dataRights')">Data Rights</a>
+      </div>
       <span class="eyebrow">PRIVACY &amp; DATA PROTECTION</span>
       <h1>Privacy Notice</h1>
       <p class="hero-copy">This Notice explains how ATSRS handles personal data across Personal and Corporate workspaces, document storage, controlled profile sharing, reminders and optional AI features.</p>

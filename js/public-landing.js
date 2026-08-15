@@ -149,6 +149,7 @@
   if(requestedView==='home'){
     window.__atsrsEntryRoute='landing';
     window.__atsrsSuppressAutomaticSessionOpen=true;
+    try{localStorage.removeItem('atsrs_current_page');}catch(error){}
     try{window.history.replaceState({},document.title,window.location.pathname||'/');}catch(error){}
     showLanding();
     return;

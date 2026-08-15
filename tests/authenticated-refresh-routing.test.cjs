@@ -8,13 +8,14 @@ const landing = fs.readFileSync(path.join(root, 'js', 'public-landing.js'), 'utf
 const storage = fs.readFileSync(path.join(root, 'js', 'storage.js'), 'utf8');
 
 assert.match(index, /data-atsrs-build="V555"/);
-assert.equal((index.match(/js\/public-landing\.js\?v=536/g) || []).length, 1);
-assert.ok(index.indexOf('js/public-landing.js?v=536') < index.indexOf('js/boot-refresh.js?v=443'), 'public route must resolve before the boot fallback can reveal auth');
+assert.equal((index.match(/js\/public-landing\.js\?v=556/g) || []).length, 1);
+assert.ok(index.indexOf('js/public-landing.js?v=556') < index.indexOf('js/boot-refresh.js?v=443'), 'public route must resolve before the boot fallback can reveal auth');
 assert.match(index, /__atsrsEntryRoute==='auth'\|\|window\.__atsrsEntryRoute==='share'\|\|window\.__atsrsEntryRoute==='landing'/);
 assert.doesNotMatch(index, /__atsrsEntryRoute!==['"]callback['"]/);
 assert.match(landing, /atsrsGetSessionSingleFlight/);
 assert.match(landing, /session&&session\.user/);
 assert.match(landing, /__atsrsSuppressAutomaticSessionOpen=false/);
+assert.match(landing, /requestedView==='home'[\s\S]*localStorage\.removeItem\('atsrs_current_page'\)[\s\S]*showLanding\(\)/);
 assert.match(landing, /atsrsResumeSession\(session,'resume'\)/);
 assert.match(landing, /if\(!client\|\|!client\.auth\)/);
 assert.match(landing, /function hasRetainedSessionHint\(\)[\s\S]*?atsrs_auth_mode[\s\S]*?supabase/);
