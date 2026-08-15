@@ -7,6 +7,7 @@ const projectRoot = path.resolve(scriptDirectory, "..");
 const outputDirectory = path.resolve(projectRoot, "dist");
 
 const publicFiles = [
+  "_headers",
   "index.html",
   "qr-upload.html",
   "pricing.html",

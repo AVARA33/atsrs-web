@@ -21,9 +21,23 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
   });
 
   const topLevelEntries = fs.readdirSync(output).sort();
-  for (const requiredEntry of ['index.html', 'qr-upload.html', 'assets', 'css', 'js', 'vendor']) {
+  for (const requiredEntry of ['_headers', 'index.html', 'qr-upload.html', 'assets', 'css', 'js', 'vendor']) {
     assert.ok(topLevelEntries.includes(requiredEntry), `${requiredEntry} must be deployed`);
   }
+
+  const headers = fs.readFileSync(path.join(output, '_headers'), 'utf8');
+  for (const requiredHeader of [
+    'Strict-Transport-Security:',
+    'X-Frame-Options: DENY',
+    'X-Content-Type-Options: nosniff',
+    'Referrer-Policy:',
+    'Permissions-Policy:',
+    'Content-Security-Policy:'
+  ]) {
+    assert.match(headers, new RegExp(requiredHeader), `${requiredHeader} must be deployed`);
+  }
+  assert.match(headers, /frame-ancestors 'none'/, 'CSP must prevent clickjacking');
+  assert.match(headers, /connect-src[^\n]+hwtjuqyxzivymofamwxl\.supabase\.co/, 'CSP must retain Supabase connectivity');
 
   for (const forbiddenEntry of ['.git', '.github', 'CNAME', 'docs', 'scripts', 'supabase', 'tests']) {
     assert.ok(!topLevelEntries.includes(forbiddenEntry), `${forbiddenEntry} must not be deployed`);

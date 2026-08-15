@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'product-updates-theme-parity-v544.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V550"/);
+assert.match(index, /data-atsrs-build="V551"/);
 assert.match(index, /href="css\/product-updates-theme-parity-v544\.css\?v=544"/);
 assert.match(css, /\.roadmap-heading > p\{[\s\S]*?width:520px!important;[\s\S]*?font-size:16px!important;[\s\S]*?line-height:1\.5!important/);
 assert.match(css, /\.roadmap-grid\{[\s\S]*?gap:14px!important/);

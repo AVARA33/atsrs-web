@@ -26,11 +26,12 @@ if (-not [string]::IsNullOrWhiteSpace($mirrorRoot)) {
   $mirrorArgument = " -MirrorRoot `"$mirrorRoot`""
 }
 
-$backupAction = New-ScheduledTaskAction -Execute $powershell -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$backupScript`" -ApplyRetention$mirrorArgument"
+$hiddenPowerShellArguments = '-NoLogo -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass'
+$backupAction = New-ScheduledTaskAction -Execute $powershell -Argument "$hiddenPowerShellArguments -File `"$backupScript`" -ApplyRetention$mirrorArgument"
 $backupTrigger = New-ScheduledTaskTrigger -Daily -At '02:15'
-$healthAction = New-ScheduledTaskAction -Execute $powershell -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$healthScript`""
+$healthAction = New-ScheduledTaskAction -Execute $powershell -Argument "$hiddenPowerShellArguments -File `"$healthScript`""
 $healthTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 10)
-$logAction = New-ScheduledTaskAction -Execute $powershell -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$logScript`""
+$logAction = New-ScheduledTaskAction -Execute $powershell -Argument "$hiddenPowerShellArguments -File `"$logScript`""
 $logTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(2) -RepetitionInterval (New-TimeSpan -Minutes 15)
 
 & $healthScript | Out-Null
