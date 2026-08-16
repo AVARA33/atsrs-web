@@ -1699,21 +1699,45 @@
     }
     return insert.data;
   }
-  async function listFiles(){
+  function activeFilePage(){
+    var visible=document.querySelector('main > section:not(.hidden)');
+    if(visible&&visible.id)return String(visible.id).replace(/Page$/,'');
+    try{return String(localStorage.getItem('atsrs_current_page')||'');}
+    catch(error){return '';}
+  }
+  function fileCategoriesForPage(page){
+    page=String(page||activeFilePage());
+    if(page==='certificates')return ['document'];
+    if(page==='refs')return ['appraisal','reference','recommendation','coverLetter','cv'];
+    return [];
+  }
+  async function listFiles(options){
     if(!isCloudSession())return [];
+    options=options&&typeof options==='object'?options:{};
+    var categories=Array.isArray(options.categories)
+      ?options.categories.map(String).filter(Boolean)
+      :[];
+    var offset=Math.max(0,Number(options.offset)||0);
+    var limit=Math.max(0,Number(options.limit)||0);
     var wantedScope=scope();
     var operation=async function(){
       var valueUser=user();
-      var result=await client().from(FILE_TABLE)
+      var query=client().from(FILE_TABLE)
         .select('id,category,file_name,mime_type,size_bytes,storage_path,metadata,created_at,updated_at')
         .eq('user_id',valueUser.id)
         .eq('account_type',accountType())
         .order('created_at',{ascending:false});
+      if(categories.length)query=query.in('category',categories);
+      if(limit)query=query.range(offset,offset+limit-1);
+      var result=await query;
       if(result.error)throw result.error;
       return result.data||[];
     };
     if(typeof window.atsrsSingleFlight==='function'){
-      return window.atsrsSingleFlight('files:list:'+wantedScope,operation);
+      return window.atsrsSingleFlight(
+        'files:list:'+wantedScope+':'+categories.join(',')+':'+offset+':'+limit,
+        operation
+      );
     }
     return operation();
   }
@@ -1853,19 +1877,28 @@
     if(upload){upload.textContent='Upload Main CV';upload.hidden=!!cv;if(upload.parentElement)upload.parentElement.hidden=!!cv;}
     if(input)input.removeAttribute('multiple');
   }
-  async function renderCloudFiles(){
+  async function renderCloudFiles(options){
     if(!isCloudSession()||loadedScope!==scope())return;
+    options=options&&typeof options==='object'?options:{};
+    var categories=Array.isArray(options.categories)
+      ?options.categories.map(String).filter(Boolean)
+      :fileCategoriesForPage(options.page);
+    if(!categories.length&&!options.force)return;
     var filterToken=window.atsrsReferenceFilterState
       ?window.atsrsReferenceFilterState.begin({scope:scope(),source:'cloud'})
       :null;
     try{
-      var rows=await listFiles();
-      var uploadDates={};
-      rows.filter(function(row){return row.category==='document';}).forEach(function(row){uploadDates[row.id]=row.created_at||'';});
-      window.atsrsDocumentUploadDates=uploadDates;
-      document.dispatchEvent(new CustomEvent('atsrs-document-files-updated'));
-      ['appraisal','reference','recommendation','coverLetter'].forEach(function(kind){renderReferenceKind(kind,rows,filterToken);});
-      renderCv(rows);
+      var rows=await listFiles({categories:categories});
+      if(!categories.length||categories.indexOf('document')>=0){
+        var uploadDates={};
+        rows.filter(function(row){return row.category==='document';}).forEach(function(row){uploadDates[row.id]=row.created_at||'';});
+        window.atsrsDocumentUploadDates=uploadDates;
+        document.dispatchEvent(new CustomEvent('atsrs-document-files-updated'));
+      }
+      ['appraisal','reference','recommendation','coverLetter'].forEach(function(kind){
+        if(!categories.length||categories.indexOf(kind)>=0)renderReferenceKind(kind,rows,filterToken);
+      });
+      if(!categories.length||categories.indexOf('cv')>=0)renderCv(rows);
     }catch(error){console.error('ATSRS cloud file render failed',error);}
   }
   function scheduleFileRender(delay){
@@ -1887,7 +1920,7 @@
     }else{
       for(var i=0;i<files.length;i++)await uploadFile(kind,files[i]);
     }
-    await renderCloudFiles();
+    await renderCloudFiles({categories:[kind],force:true});
   }
   function installFileHandlers(){
     if(window.__atsrsCloudFileHandlersInstalled)return;
@@ -1909,7 +1942,7 @@
     window.atsrsCloudPreview=function(id){return openCloudFile(id,false);};
     window.atsrsCloudDownload=function(id){return openCloudFile(id,true);};
     window.atsrsCloudDelete=async function(id){
-      try{await deleteCloudFile(id);await renderCloudFiles();}
+      try{await deleteCloudFile(id);await renderCloudFiles({page:activeFilePage()});}
       catch(error){console.error(error);alert('File could not be deleted from the ATSRS server.');}
     };
     window.atsrsCloudUpdateDate=async function(id,value){
@@ -1956,7 +1989,7 @@
     window.deleteCV=async function(){
       var rows=await listFiles(),cv=rows.find(function(row){return row.category==='cv';});
       if(!cv){alert('No Main CV uploaded yet.');return;}
-      await deleteCloudFile(cv.id);await renderCloudFiles();
+      await deleteCloudFile(cv.id);await renderCloudFiles({categories:['cv'],force:true});
     };
     window.handleManagedUpload=function(kind,event){
       var files=event&&event.target&&event.target.files;
@@ -1983,7 +2016,7 @@
     window.deleteCoverLetter=async function(){
       var rows=await listFiles(),files=rows.filter(function(row){return row.category==='coverLetter';});
       for(var i=0;i<files.length;i++)await deleteCloudFile(files[i].id);
-      await renderCloudFiles();
+      await renderCloudFiles({categories:['coverLetter'],force:true});
     };
     ['renderAll','showPage','applyLanguage'].forEach(function(name){
       var original=window[name];
