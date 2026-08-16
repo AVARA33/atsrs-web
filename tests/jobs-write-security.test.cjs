@@ -4,6 +4,8 @@ const path=require('node:path');
 const test=require('node:test');
 const root=path.join(__dirname,'..');
 const migration=fs.readFileSync(path.join(root,'supabase','migrations','20260816174556_create_owner_managed_jobs.sql'),'utf8');
+const nullableLocationMigration=fs.readFileSync(path.join(root,'supabase','migrations','20260816233000_allow_jobs_unknown_location.sql'),'utf8');
+const sourceDatesMigration=fs.readFileSync(path.join(root,'supabase','migrations','20260816234500_preserve_jobs_source_dates.sql'),'utf8');
 const runtime=fs.readFileSync(path.join(root,'js','jobs-prototype.js'),'utf8');
 
 test('Jobs migration separates grants, RLS and owner authorization',()=>{
@@ -30,7 +32,14 @@ test('Publish time is server owned and source/joining dates stay separate',()=>{
   assert.match(migration,/source_posted_at date/);
   assert.match(migration,/joining_date date/);
   assert.match(runtime,/prefix='Posted '/);
+  assert.match(runtime,/source_posted_at\|\|job\.display_posted_date/);
   assert.match(runtime,/job\.status!=='published'/);
+});
+
+test('Official display and closing dates stay separate from source and publish time',()=>{
+  assert.match(sourceDatesMigration,/add column display_posted_date date/);
+  assert.match(sourceDatesMigration,/add column closing_date date/);
+  assert.match(runtime,/fact\(dl,'Closing date',job\.closing_date\)/);
 });
 
 test('Server text and links use inert DOM APIs',()=>{
@@ -38,4 +47,12 @@ test('Server text and links use inert DOM APIs',()=>{
   assert.match(runtime,/replaceChildren/);
   assert.match(runtime,/\^https\?:\$/);
   assert.doesNotMatch(runtime,/innerHTML|outerHTML|insertAdjacentHTML|document\.write/);
+});
+
+test('Unknown locations remain null without weakening duplicate identity',()=>{
+  assert.match(nullableLocationMigration,/alter column location drop not null/);
+  assert.match(nullableLocationMigration,/new\.location := nullif\(btrim\(new\.location\), ''\)/);
+  assert.match(nullableLocationMigration,/new\.normalized_location := coalesce\(/);
+  assert.doesNotMatch(runtime,/Title, company and location are required/);
+  assert.match(runtime,/Title and company are required/);
 });

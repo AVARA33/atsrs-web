@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=575">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=576-qa2">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
@@ -27,11 +27,11 @@
 <script>
   (function(){
     var adminMode=new URLSearchParams(location.search).get('admin')==='1';
-    var fixture=[{id:'1',title:'<img src=x onerror="window.__xss=1"> ROV Supervisor',company:'Film-Ocean',location:'Aberdeen, UK',equipment:'ROV',summary:'Safe server text',requirements:'Valid offshore certification',recruiter_email:'jobs@example.com',source_type:'linkedin',source_url:'https://linkedin.com/example',status:'published',source_posted_at:'2026-08-16',published_at:new Date(Date.now()-60000).toISOString(),updated_at:new Date().toISOString()}];
+    var fixture=[{id:'1',title:'<img src=x onerror="window.__xss=1"> ROV Supervisor',company:'Film-Ocean',location:'Aberdeen, UK',equipment:'ROV',summary:'Safe server text',requirements:'Valid offshore certification',recruiter_email:'jobs@example.com',recruiter_phone:'+44 1224 000000',source_type:'linkedin',source_url:'https://linkedin.com/example',application_url:'https://example.com/apply',status:'published',source_posted_at:'2026-08-16',published_at:new Date(Date.now()-60000).toISOString(),updated_at:new Date().toISOString()}];
     function query(){var q={select:function(){return q},eq:function(){return q},lte:function(){return q},order:function(){return q},limit:function(){return q},or:function(){return q},then:function(resolve){resolve({data:fixture,error:null})}};return q}
     window.supabaseClient={from:query,auth:{getSession:async function(){return{data:{session:adminMode?{user:{id:'owner'}}:null}}}},rpc:async function(){return{data:adminMode,error:null}}};
   })();
 </script>
-<script src="../../js/jobs-prototype.js?v=575"></script>
+<script src="../../js/jobs-prototype.js?v=576-qa2"></script>
 </body>
 </html>

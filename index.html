@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V564" data-atsrs-update="16 Aug 2026">
+<html lang="en" data-atsrs-build="V576" data-atsrs-update="16 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,7 @@
 <meta name="referrer" content="no-referrer" />
 <meta name="description" content="ATSRS is an international platform for document expiry tracking, controlled sharing, Personal profiles, Candidate access and Corporate compliance workflows." />
 <title>ATSRS</title>
+<link id="atsrsFavicon" rel="icon" type="image/png" sizes="64x64" href="assets/branding/atsrs-favicon-green-v576.png?v=576" />
 <script>
 try{
   var atsrsEntryParams=new URLSearchParams(window.location.search);
@@ -22,14 +23,32 @@ try{
   window.__atsrsSuppressAutomaticSessionOpen=
     window.__atsrsEntryRoute==='auth'||window.__atsrsEntryRoute==='share'||window.__atsrsEntryRoute==='landing';
   var savedTheme=localStorage.getItem('atsrs_theme');
-  var initialTheme=savedTheme==='light'?'light':'dark';
+  var atsrsSystemThemeMedia=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');
+  var initialTheme=savedTheme==='light'||savedTheme==='dark'?savedTheme:
+    (atsrsSystemThemeMedia&&atsrsSystemThemeMedia.matches?'light':'dark');
+  window.atsrsSyncFavicon=function(theme){
+    var favicon=document.getElementById('atsrsFavicon');
+    if(!favicon)return;
+    var href=theme==='light'?
+      'assets/branding/atsrs-favicon-blue-v576.png?v=576':
+      'assets/branding/atsrs-favicon-green-v576.png?v=576';
+    if(favicon.getAttribute('href')!==href)favicon.setAttribute('href',href);
+  };
   document.documentElement.dataset.theme=initialTheme;
   document.documentElement.style.colorScheme=initialTheme;
+  window.atsrsSyncFavicon(initialTheme);
   var themeMeta=document.querySelector('meta[name="theme-color"]');
   if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#edf2f8':'#050606');
   if(new URLSearchParams(window.location.search).get('share')||
      /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash)){
     document.documentElement.classList.add('atsrs-public-share-mode');
+  }
+  if(window.MutationObserver){
+    new MutationObserver(function(records){
+      records.forEach(function(record){
+        if(record.attributeName==='data-theme')window.atsrsSyncFavicon(document.documentElement.dataset.theme);
+      });
+    }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   }
 }catch(error){}
 </script>
@@ -86,7 +105,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=562">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=575">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=576">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1799,7 +1818,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=480"></script>
-<script src="js/theme.js?v=509"></script>
+<script src="js/theme.js?v=576"></script>
 <script src="js/personal-dashboard-qa.js?v=549"></script>
 <script src="js/shell-polish.js?v=567"></script>
 <script src="js/route-feature-loader.js?v=569"></script>

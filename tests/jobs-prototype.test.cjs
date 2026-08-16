@@ -14,9 +14,9 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=575/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=575"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=575'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=576/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=576"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=576'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -43,6 +43,8 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter phone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
+  assert.match(runtime,/action\(actions,'Send email',mailtoHref\(job\),'email'\)/);
+  assert.doesNotMatch(runtime,/['"]tel:/);
   assert.doesNotMatch(index,/Recruiters use ATSRS through subscription plans/);
   assert.doesNotMatch(runtime,/Recruiters use ATSRS through subscription plans/);
 });
@@ -65,4 +67,12 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/jobs-list/);
   assert.match(css,/\.jobs-grid\.jobs-list/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
+});
+
+test('Jobs dark view controls and notice use the neutral palette',()=>{
+  assert.match(css,/#jobsPage \.jobs-notice\{background:#070908!important;border-color:#242a27!important\}/);
+  assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:transparent!important/);
+  assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
+  assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-view-switch button\[aria-pressed="true"\]/);
 });
