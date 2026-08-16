@@ -14,9 +14,9 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs prototype is isolated, navigable and visibly in development',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?IN DEVELOPMENT/);
-  assert.match(index,/jobs-prototype\.css\?v=573/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=573"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=573'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=574/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=574"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=574'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -31,7 +31,10 @@ test('Jobs data is read only and shows supplied recruiter contact',()=>{
   assert.doesNotMatch(runtime,/fetch\(|supabase|insert\(|update\(|delete\(/i);
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter organisation/);
-  assert.match(runtime,/No candidate commission/);
+  assert.doesNotMatch(runtime,/No candidate commission|job-fee-note/);
+  assert.equal((index.match(/No candidate commission\./g)||[]).length,1);
+  assert.match(index,/class="jobs-notice"[\s\S]*No candidate commission\./);
+  assert.doesNotMatch(css,/job-fee-note/);
   assert.equal((runtime.match(/recruiterEmail:/g)||[]).length,10);
   assert.match(runtime,/recruiterFact\('Recruiter email',job\.recruiterEmail,'email'\)/);
   assert.equal((runtime.match(/recruiterPhone:/g)||[]).length,8);
