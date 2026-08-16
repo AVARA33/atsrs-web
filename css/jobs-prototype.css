@@ -3,7 +3,7 @@
 html[data-theme="dark"] #jobsPage{--atsrs-jobs-green-text:#9ad315}
 .jobs-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}
 .jobs-hero h3{margin:12px 0 8px;font-size:clamp(28px,3vw,40px);line-height:1.08}
-html[data-theme="dark"] #jobsPage .jobs-hero h3,html[data-theme="dark"] #jobsPage .job-card-head h2{color:var(--atsrs-jobs-green-text)!important;-webkit-text-fill-color:var(--atsrs-jobs-green-text)!important}
+html[data-theme="dark"] body #app.app:not(.hidden) #jobsPage .jobs-hero h3,html[data-theme="dark"] body #app.app:not(.hidden) #jobsPage .job-card-head h2{color:var(--atsrs-jobs-green-text)!important;-webkit-text-fill-color:var(--atsrs-jobs-green-text)!important}
 .jobs-hero p{margin:0;max-width:760px;color:var(--muted,#94a3b8);font-size:16px;line-height:1.6}
 .jobs-development-badge{color:#f6d45a!important;border-color:rgba(246,212,90,.42)!important;background:rgba(246,212,90,.08)!important}
 .jobs-snapshot{flex:0 0 auto;display:grid;gap:4px;text-align:right;color:var(--muted,#94a3b8)}
