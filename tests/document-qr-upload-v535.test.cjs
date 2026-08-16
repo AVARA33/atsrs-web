@@ -31,7 +31,9 @@ test('phone flow offers camera and file choices with strict limits', () => {
   assert.match(index + read('qr-upload.html'), /Take a photo/);
   assert.match(index + read('qr-upload.html'), /Choose a file/);
   assert.match(phone, /15\*1024\*1024/);
-  assert.match(phone, /uploadToSignedUrl/);
+  assert.match(phone, /uploadPreparedFile/);
+  assert.match(phone, /storage\/v1\/object\/upload\/sign/);
+  assert.doesNotMatch(read('qr-upload.html'), /supabase-js-2\.111\.0\.min\.js/);
   assert.match(phone, /finalizeWithRetry/);
   assert.match(phone, /result\.session\.status==='uploading'/);
   assert.match(phone, /history\.replaceState/);
@@ -62,6 +64,7 @@ test('backend stores only a token hash and binds uploads to Personal', () => {
   assert.match(edge, /\$\{session\.user_id\}\/personal\/document\//);
   assert.match(edge, /MAX_FILE_BYTES = 15 \* 1024 \* 1024/);
   assert.match(edge, /createSignedUploadUrl/);
+  assert.match(edge, /signed_url: signed\.data\.signedUrl/);
   assert.match(edge, /status: "uploaded"/);
 });
 
@@ -77,6 +80,7 @@ test('phone file selection uploads and retries finalize until storage is visible
   const listeners = {};
   let statusText = '';
   let finalizeCalls = 0;
+  let signedUploadCalls = 0;
   const span = { set textContent(value) { statusText = value; } };
   const makeElement = (id) => ({
     id,
@@ -99,10 +103,19 @@ test('phone file selection uploads and retries finalize until storage is visible
     document: { getElementById: (id) => elements[id] },
     history: { replaceState() {} },
     location: { hash: '#token=' + 'A'.repeat(43), pathname: '/qr-upload.html' },
-    fetch: async (_url, options) => {
+    fetch: async (url, options) => {
+      if (String(url).includes('/storage/v1/object/upload/sign/')) {
+        signedUploadCalls += 1;
+        assert.equal(options.method, 'POST');
+        assert.equal(options.headers['x-upsert'], 'false');
+        return response(true, { Key: 'safe/path.pdf' });
+      }
       const action = JSON.parse(options.body).action;
       if (action === 'inspect') return response(true, { session: { status: 'pending' } });
-      if (action === 'prepare') return response(true, { path: 'safe/path.pdf', signed_token: 'signed' });
+      if (action === 'prepare') return response(true, {
+        path: 'safe/path.pdf',
+        signed_url: 'https://hwtjuqyxzivymofamwxl.supabase.co/storage/v1/object/upload/sign/safe/path.pdf?token=signed',
+      });
       if (action === 'finalize') {
         finalizeCalls += 1;
         return finalizeCalls < 3
@@ -114,13 +127,17 @@ test('phone file selection uploads and retries finalize until storage is visible
     window: {
       location: { hash: '#token=' + 'A'.repeat(43), pathname: '/qr-upload.html' },
       setTimeout: (handler) => { Promise.resolve().then(handler); return 1; },
-      supabase: { createClient: () => ({ storage: { from: () => ({ uploadToSignedUrl: async () => ({ error: null }) }) } }) },
+    },
+    FormData: class {
+      constructor() { this.values = []; }
+      append(...args) { this.values.push(args); }
     },
   };
   vm.runInNewContext(phone, context);
   await new Promise((resolve) => setTimeout(resolve, 10));
   listeners['fileInput:change']({ target: { files: [{ name: 'document.pdf', type: 'application/pdf', size: 1024 }], value: '' } });
   await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(signedUploadCalls, 1);
   assert.equal(finalizeCalls, 3);
   assert.match(statusText, /Upload complete/);
 });

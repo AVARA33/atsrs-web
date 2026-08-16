@@ -9,7 +9,6 @@
   var statusBox=document.getElementById('phoneUploadStatus');
   var choices=document.getElementById('phoneUploadChoices');
   var progress=document.getElementById('phoneUploadProgress');
-  var client=window.supabase&&window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
 
   function status(message,type,icon){
     statusBox.classList.toggle('is-success',type==='success');
@@ -34,6 +33,29 @@
   }
 
   function wait(ms){return new Promise(function(resolve){window.setTimeout(resolve,ms);});}
+
+  async function uploadPreparedFile(prepared,file,mime){
+    var signedUrl=String(prepared&&prepared.signed_url||'');
+    var expectedPrefix=SUPABASE_URL+'/storage/v1/object/upload/sign/';
+    if(!signedUrl.startsWith(expectedPrefix))throw new Error('Secure upload could not be prepared.');
+    var body=new FormData();
+    body.append('cacheControl','3600');
+    body.append('',file,file.name||'ATSRS-document');
+    var response=await fetch(signedUrl,{
+      method:'POST',
+      headers:{
+        'apikey':SUPABASE_KEY,
+        'Authorization':'Bearer '+SUPABASE_KEY,
+        'x-upsert':'false'
+      },
+      body:body
+    });
+    if(!response.ok){
+      var data=await response.json().catch(function(){return {};});
+      throw new Error(data.message||data.error||'File could not be uploaded securely.');
+    }
+    return {path:prepared.path,mime_type:mime};
+  }
 
   async function finalizeWithRetry(){
     var lastError=null;
@@ -70,9 +92,7 @@
     status('Uploading securely...','','ph-spinner-gap');
     try{
       var prepared=await request('prepare',{file_name:file.name||'ATSRS-document',mime_type:mime,size_bytes:file.size});
-      if(!client)throw new Error('Secure upload client is unavailable.');
-      var result=await client.storage.from('atsrs-user-files').uploadToSignedUrl(prepared.path,prepared.signed_token,file,{contentType:mime});
-      if(result.error)throw result.error;
+      await uploadPreparedFile(prepared,file,mime);
       await finalizeWithRetry();
       progress.hidden=true;
       status('Upload complete. Return to your computer to finish the document details.','success','ph-check-circle');
@@ -109,9 +129,14 @@
     }
   }
 
-  document.getElementById('takePhotoBtn').addEventListener('click',function(){document.getElementById('cameraInput').click();});
-  document.getElementById('chooseFileBtn').addEventListener('click',function(){document.getElementById('fileInput').click();});
-  document.getElementById('cameraInput').addEventListener('change',function(event){upload(event.target.files&&event.target.files[0]);event.target.value='';});
-  document.getElementById('fileInput').addEventListener('change',function(event){upload(event.target.files&&event.target.files[0]);event.target.value='';});
+  var takePhotoBtn=document.getElementById('takePhotoBtn');
+  var chooseFileBtn=document.getElementById('chooseFileBtn');
+  var cameraInput=document.getElementById('cameraInput');
+  var fileInput=document.getElementById('fileInput');
+  if(!statusBox||!choices||!progress||!takePhotoBtn||!chooseFileBtn||!cameraInput||!fileInput)return;
+  takePhotoBtn.addEventListener('click',function(){cameraInput.click();});
+  chooseFileBtn.addEventListener('click',function(){fileInput.click();});
+  cameraInput.addEventListener('change',function(event){upload(event.target.files&&event.target.files[0]);event.target.value='';});
+  fileInput.addEventListener('change',function(event){upload(event.target.files&&event.target.files[0]);event.target.value='';});
   start();
 })();

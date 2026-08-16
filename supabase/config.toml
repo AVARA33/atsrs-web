@@ -5,3 +5,6 @@ verify_jwt = true
 
 [functions.billing-webhook]
 verify_jwt = false
+
+[functions.document-qr-upload]
+verify_jwt = false

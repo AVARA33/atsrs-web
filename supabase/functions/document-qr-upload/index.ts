@@ -243,7 +243,10 @@ Deno.serve(async (req: Request) => {
       }).eq("id", session.id).eq("status", "pending").select("id").maybeSingle();
       if (claimed.error) throw claimed.error;
       if (!claimed.data) return unavailable(req, 409);
-      return json(req, 200, { path: signed.data.path, signed_token: signed.data.token });
+      return json(req, 200, {
+        path: signed.data.path,
+        signed_url: signed.data.signedUrl,
+      });
     }
 
     if (action === "finalize") {
