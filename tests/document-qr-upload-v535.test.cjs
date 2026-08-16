@@ -11,6 +11,7 @@ const desktop = read('js/document-qr-upload-v535.js');
 const phone = read('js/qr-phone-upload-v535.js');
 const edge = read('supabase/functions/document-qr-upload/index.ts');
 const migration = read('supabase/migrations/20260815123000_personal_document_qr_upload_sessions.sql');
+const finalizationMigration = read('supabase/migrations/20260816211500_atomic_qr_upload_finalization.sql');
 const serverData = read('js/server-data.js');
 const app = read('js/app.js');
 
@@ -67,7 +68,7 @@ test('backend stores only a token hash and binds uploads to Personal', () => {
   assert.match(edge, /MAX_FILE_BYTES = 15 \* 1024 \* 1024/);
   assert.match(edge, /createSignedUploadUrl/);
   assert.match(edge, /signed_url: signed\.data\.signedUrl/);
-  assert.match(edge, /status: "uploaded"/);
+  assert.match(finalizationMigration, /status = 'uploaded'/);
 });
 
 test('anonymous actions require the unguessable token and owner actions verify auth', () => {

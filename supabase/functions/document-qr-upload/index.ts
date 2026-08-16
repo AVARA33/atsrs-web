@@ -266,39 +266,12 @@ Deno.serve(async (req: Request) => {
         return json(req, 400, { error: "Uploaded file is invalid.", code: "QR_FILE_INVALID" });
       }
 
-      const inserted = await admin.from("atsrs_files").insert({
-        user_id: session.user_id,
-        account_type: "personal",
-        category: "document",
-        file_name: session.file_name,
-        mime_type: session.mime_type,
-        size_bytes: actualSize,
-        storage_path: session.storage_path,
-        metadata: {
-          upload_source: "qr",
-          qr_session_id: session.id,
-          document_registered: false,
-        },
-      }).select("id,file_name,mime_type,size_bytes,created_at,metadata").single();
-
-      let file = inserted.data;
-      if (inserted.error) {
-        const existing = await admin.from("atsrs_files")
-          .select("id,file_name,mime_type,size_bytes,created_at,metadata")
-          .eq("storage_path", session.storage_path).eq("user_id", session.user_id).maybeSingle();
-        if (existing.error || !existing.data) throw inserted.error;
-        file = existing.data;
-      }
-
-      const uploadedAt = new Date().toISOString();
-      const completed = await admin.from("atsrs_document_upload_sessions").update({
-        status: "uploaded",
-        file_id: file.id,
-        uploaded_at: uploadedAt,
-        updated_at: uploadedAt,
-      }).eq("id", session.id).eq("status", "uploading").select("id,status").maybeSingle();
-      if (completed.error) throw completed.error;
-      return json(req, 200, { uploaded: true, file });
+      const finalized = await admin.rpc("atsrs_finalize_document_qr_upload", {
+        p_session_id: session.id,
+        p_actual_size: actualSize,
+      });
+      if (finalized.error) throw finalized.error;
+      return json(req, 200, { uploaded: true, file: finalized.data });
     }
 
     return json(req, 400, { error: "Unsupported QR upload action." });

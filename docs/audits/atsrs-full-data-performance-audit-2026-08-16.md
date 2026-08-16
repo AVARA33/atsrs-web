@@ -101,3 +101,22 @@ cleanup decision is made.
 
 After this batch, one primary performance phase remains: write-integrity and
 concurrency hardening.
+
+## Step 7 — write integrity and concurrency hardening
+
+QR document finalization no longer performs the `atsrs_files` insert and upload
+session completion as two independent database requests. A service-only SQL RPC
+now locks the single QR session row, validates its state and file size, creates
+or reuses the unique file metadata row, and marks the session uploaded in one
+transaction. Replayed browser/network requests return the original file row
+without creating a duplicate or changing its completion time.
+
+Storage remains a separate external system, so the Edge Function still verifies
+that the object exists before calling the transaction. The Step 6 reconciliation
+report remains the safe detector for the rare case where Storage succeeds but a
+database request never reaches PostgreSQL. The three previously observed
+QR-linked orphan objects were not deleted or modified by this release.
+
+This completes the seven measured performance and data-integrity phases. Future
+schema work should be feature-driven and measured rather than another broad
+optimization pass.
