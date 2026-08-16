@@ -114,6 +114,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
 test('Jobs view controls and inline notice use the approved palettes',()=>{
   assert.match(css,/\.jobs-notice\{[^}]*width:max-content[^}]*padding:0[^}]*border:0[^}]*background:transparent[^}]*color:#bd6b72/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-notice\{color:#9f3f49\}/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-notice p\{color:#9f3f49!important\}/);
   assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);
