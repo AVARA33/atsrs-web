@@ -10,7 +10,7 @@ const qr = read('js/document-qr-upload-v535.js');
 const controls = read('css/workspace-control-standard-v522.css');
 const theme = read('css/theme.css');
 
-assert.match(index, /data-atsrs-build="V563"/);
+assert.match(index, /data-atsrs-build="V564"/);
 assert.match(index, /id="cancelScanModeBtn"[^>]*>Cancel<\/button>/);
 assert.ok(index.indexOf('id="uploadDocBtn"') < index.indexOf('id="cancelScanModeBtn"'));
 

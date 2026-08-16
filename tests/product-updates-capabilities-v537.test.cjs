@@ -57,12 +57,14 @@ test('Product Updates keeps the established roadmap card design', () => {
   assert.equal((updates.match(/roadmap-status/g) || []).length, 21);
 });
 
-test('In-development capabilities are shown before available and planned work', () => {
-  const development = updates.indexOf('WhatsApp Expiry Alerts');
-  const available = updates.indexOf('AI Document Scan');
+test('Roadmap groups Premium, Planned, In Development, then Available work', () => {
+  const premium = updates.indexOf('ATSRS Profile CV');
   const planned = updates.indexOf('Automated Scheduled Reports');
-  assert.ok(development >= 0 && development < available);
-  assert.ok(development < planned);
+  const development = updates.indexOf('Jobs');
+  const available = updates.indexOf('Manual Document Upload');
+  assert.ok(premium >= 0 && premium < planned);
+  assert.ok(planned < development);
+  assert.ok(development < available);
 });
 
 test('Premium capabilities are grouped before standard capabilities', () => {
