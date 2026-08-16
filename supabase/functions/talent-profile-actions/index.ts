@@ -13,7 +13,14 @@ type Body = {
   message?: string;
   message_id?: string;
   mailbox?: string;
+  professional_user_ids?: string[];
+  page_size?: number;
+  offset?: number;
+  cursor_active_at?: string;
+  cursor_user_id?: string;
 };
+
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function json(status: number, body: Record<string, unknown>) {
   return new Response(JSON.stringify(body), {
@@ -216,13 +223,23 @@ Deno.serve(async (req) => {
   }
 
   if (action === "compliance" || action === "report") {
-    const { data: links, error: linksError } = await admin
+    const requestedProfessionalIds = Array.isArray(body.professional_user_ids)
+      ? Array.from(new Set(body.professional_user_ids
+        .map((value) => clean(value, 50))
+        .filter((value) => UUID_PATTERN.test(value))))
+        .slice(0, 30)
+      : [];
+    let linksQuery = admin
       .from("atsrs_talent_personnel_links")
       .select("professional_user_id,status,updated_at")
       .eq("company_user_id", user.id)
       .eq("status", "linked")
       .order("updated_at", { ascending: false })
       .limit(2000);
+    if (requestedProfessionalIds.length) {
+      linksQuery = linksQuery.in("professional_user_id", requestedProfessionalIds);
+    }
+    const { data: links, error: linksError } = await linksQuery;
     if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
 
     const professionalIds = Array.from(new Set(
@@ -344,138 +361,62 @@ Deno.serve(async (req) => {
   }
 
   if (action === "directory") {
-    const normalizeUserId = (value: unknown) => String(value || "").trim().toLowerCase();
-    const pageSize = 1000;
-    const certifiedUsers = new Set<string>();
-    for (let offset = 0; ; offset += pageSize) {
-      const { data: certificatePage, error: certificatesError } = await admin
-        .from("atsrs_files")
-        .select("user_id")
-        .eq("account_type", "personal")
-        .eq("category", "document")
-        .order("user_id", { ascending: true })
-        .range(offset, offset + pageSize - 1);
-      if (certificatesError) return json(500, { error: "Candidate certificates could not be verified." });
-      (certificatePage || []).forEach((row) => {
-        const ownerId = normalizeUserId(row.user_id);
-        if (ownerId) certifiedUsers.add(ownerId);
-      });
-      if ((certificatePage || []).length < pageSize) break;
+    const pageSize = Math.max(1, Math.min(Number(body.page_size) || 30, 50));
+    const cursorActiveAt = clean(body.cursor_active_at, 40) || null;
+    const cursorUserId = clean(body.cursor_user_id, 50) || null;
+    if ((cursorActiveAt && Number.isNaN(Date.parse(cursorActiveAt))) || (cursorUserId && !UUID_PATTERN.test(cursorUserId))) {
+      return json(400, { error: "The Candidate page cursor is invalid." });
     }
-    if (!certifiedUsers.size) {
-      return json(200, {
-        profiles: [],
-        meta: { eligible_profiles: 0, document_owners: 0, returned_profiles: 0 },
-      });
-    }
-
-    const profileMap = new Map<string, Record<string, unknown>>();
-    for (let offset = 0; ; offset += pageSize) {
-      const { data: profilePage, error: profilesError } = await admin
-        .from("atsrs_talent_profiles")
-        .select("user_id,name,surname,position,country,company,avatar_url,phone_country_code,phone_local,phone_number,phone_verified,whatsapp_country_code,whatsapp_local,whatsapp_number,whatsapp_verified,zip_code,birth_date,available,availability_status,available_from,work_preference,work_preferences,availability_confirmed_at,last_active_at,updated_at,profile_visibility,discoverable")
-        .eq("discoverable", true)
-        .eq("profile_visibility", "Public")
-        .order("user_id", { ascending: true })
-        .range(offset, offset + pageSize - 1);
-      if (profilesError) return json(500, { error: "Candidate profiles could not be loaded." });
-      (profilePage || []).forEach((profile) => {
-        const profileId = normalizeUserId(profile.user_id);
-        if (certifiedUsers.has(profileId)) profileMap.set(profileId, profile as Record<string, unknown>);
-      });
-      if ((profilePage || []).length < pageSize) break;
-    }
-
-    // A certificate upload is the only listing requirement. If the denormalized
-    // talent row has not synced yet, build a safe professional-only fallback from
-    // the user's own workspace profile instead of silently dropping the user.
-    const missingProfileIds = Array.from(certifiedUsers).filter((id) => !profileMap.has(id));
-    const fallbackProfiles: Record<string, unknown>[] = [];
-    for (let offset = 0; offset < missingProfileIds.length; offset += 100) {
-      const idBatch = missingProfileIds.slice(offset, offset + 100);
-      const { data: workspaceProfiles, error: workspaceError } = await admin
-        .from("atsrs_workspace_data")
-        .select("user_id,payload,updated_at")
-        .eq("account_type", "personal")
-        .like("data_key", "%_personal_profile")
-        .in("user_id", idBatch);
-      if (workspaceError) return json(500, { error: "Candidate profile details could not be loaded." });
-      (workspaceProfiles || []).forEach((row) => {
-        const profileId = normalizeUserId(row.user_id);
-        if (!profileId || profileMap.has(profileId)) return;
-        const payload = row.payload && typeof row.payload === "object"
-          ? row.payload as Record<string, unknown>
-          : {};
-        let source: Record<string, unknown> = {};
-        try {
-          const value = payload.value;
-          source = typeof value === "string"
-            ? JSON.parse(value) as Record<string, unknown>
-            : value && typeof value === "object"
-              ? value as Record<string, unknown>
-              : {};
-        } catch (_) {
-          source = {};
-        }
-        const fallbackUpdatedAt = clean(row.updated_at, 40) || new Date().toISOString();
-        const visibility = clean(source.visibility, 20) || "Private";
-        const fallbackProfile = {
-          user_id: profileId,
-          name: clean(source.name, 120) || "ATSRS",
-          surname: clean(source.surname, 120) || "Profile",
-          position: clean(source.position, 160) || "Profile",
-          country: clean(source.country, 120) || "Not listed",
-          company: clean(source.company, 160) || null,
-          avatar_url: clean(source.avatarUrl, 1000) || null,
-          available: false,
-          availability_status: clean(source.availabilityStatus, 40) || "not_set",
-          available_from: clean(source.availableFrom, 20) || null,
-          work_preference: clean(source.workPreference, 40) || "any",
-          work_preferences: Array.isArray(source.workPreferences) ? source.workPreferences : ["any"],
-          availability_confirmed_at: clean(source.availabilityConfirmedAt, 40) || null,
-          last_active_at: fallbackUpdatedAt,
-          updated_at: fallbackUpdatedAt,
-          profile_visibility: visibility,
-          discoverable: visibility === "Public",
-        };
-        fallbackProfiles.push(fallbackProfile);
-        if (fallbackProfile.discoverable) profileMap.set(profileId, fallbackProfile);
-      });
-    }
-    if (fallbackProfiles.length) {
-      const { error: fallbackSyncError } = await admin
-        .from("atsrs_talent_profiles")
-        .upsert(fallbackProfiles, { onConflict: "user_id" });
-      if (fallbackSyncError) return json(500, { error: "Candidate profiles could not be synchronized." });
-    }
-
-    const profiles = Array.from(profileMap.values())
-      .filter((profile) => profile.discoverable === true && profile.profile_visibility === "Public")
-      .sort((left, right) => Date.parse(String(right.last_active_at || right.updated_at || 0)) - Date.parse(String(left.last_active_at || left.updated_at || 0)));
+    const directoryResult = await admin.rpc("atsrs_talent_directory_page", {
+      p_limit: pageSize + 1,
+      p_before_active_at: cursorActiveAt,
+      p_before_user_id: cursorUserId,
+    });
+    if (directoryResult.error) return json(500, { error: "Candidate profiles could not be loaded." });
+    const pageRows = (directoryResult.data || []) as Record<string, unknown>[];
+    const hasMore = pageRows.length > pageSize;
+    const profiles = pageRows.slice(0, pageSize).map((row) => {
+      const profile = { ...row };
+      delete profile.total_count;
+      return profile;
+    });
+    const lastProfile = profiles[profiles.length - 1] || null;
+    const totalCount = Number(pageRows[0]?.total_count || 0);
     console.info("talent-profile-actions directory", {
-      eligible_profiles: certifiedUsers.size,
-      certificate_owners: certifiedUsers.size,
+      eligible_profiles: totalCount,
       returned_profiles: profiles.length,
+      has_more: hasMore,
     });
     return json(200, {
       profiles,
       meta: {
-        eligible_profiles: certifiedUsers.size,
-        document_owners: certifiedUsers.size,
+        eligible_profiles: totalCount,
+        document_owners: totalCount,
         returned_profiles: profiles.length,
+        has_more: hasMore,
+        next_cursor: hasMore && lastProfile ? {
+          active_at: lastProfile.last_active_at,
+          user_id: lastProfile.user_id,
+        } : null,
       },
     });
   }
 
   if (action === "personnel_links") {
-    const { data: links, error: linksError } = await admin
+    const pageSize = Math.max(1, Math.min(Number(body.page_size) || 30, 50));
+    const offset = Math.max(0, Math.floor(Number(body.offset) || 0));
+    const { data: linkPage, error: linksError, count } = await admin
       .from("atsrs_talent_personnel_links")
-      .select("id,professional_user_id,status,source,created_at,updated_at")
+      .select("id,professional_user_id,status,source,created_at,updated_at", { count: "exact" })
       .eq("company_user_id", user.id)
-      .order("updated_at", { ascending: false });
+      .order("updated_at", { ascending: false })
+      .order("id", { ascending: true })
+      .range(offset, offset + pageSize);
     if (linksError) return json(500, { error: "Company Personnel could not be loaded." });
+    const hasMore = (linkPage || []).length > pageSize;
+    const links = (linkPage || []).slice(0, pageSize);
     const professionalIds = (links || []).map((link) => link.professional_user_id);
-    if (!professionalIds.length) return json(200, { personnel: [] });
+    if (!professionalIds.length) return json(200, { personnel: [], meta: { total: count || 0, has_more: false, next_offset: offset } });
     const [profilesResult, workspaceProfilesResult, filesResult] = await Promise.all([
       admin
         .from("atsrs_talent_profiles")
@@ -529,7 +470,14 @@ Deno.serve(async (req) => {
       recent_document_count: documentActivity.get(link.professional_user_id)?.recent || 0,
       latest_document_uploaded_at: documentActivity.get(link.professional_user_id)?.latest || null,
     }));
-    return json(200, { personnel });
+    return json(200, {
+      personnel,
+      meta: {
+        total: count || personnel.length,
+        has_more: hasMore,
+        next_offset: offset + personnel.length,
+      },
+    });
   }
 
   const targetUserId = clean(body.target_user_id, 50);

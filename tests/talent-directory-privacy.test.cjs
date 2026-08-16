@@ -5,13 +5,14 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const edge = fs.readFileSync(path.join(root, 'supabase', 'functions', 'talent-profile-actions', 'index.ts'), 'utf8');
 const client = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
+const directoryProjection = fs.readFileSync(path.join(root, 'supabase', 'migrations', '20260816184500_bounded_talent_directory_page.sql'), 'utf8');
 
-assert.match(edge, /\.eq\("discoverable", true\)\s*\.eq\("profile_visibility", "Public"\)/,
-  'Candidate Directory must only query discoverable Public profiles');
-assert.match(edge, /discoverable: visibility === "Public"/,
-  'fallback profiles must never make Private or Link Only profiles discoverable');
-assert.match(edge, /\.filter\(\(profile\) => profile\.discoverable === true && profile\.profile_visibility === "Public"\)/,
-  'Candidate Directory response must enforce visibility before returning profiles');
+assert.match(edge, /admin\.rpc\("atsrs_talent_directory_page"/,
+  'Candidate Directory must use the bounded server projection');
+assert.match(directoryProjection, /profile\.discoverable = true\s*and profile\.profile_visibility = 'Public'/,
+  'Candidate Directory projection must only return discoverable Public profiles');
+assert.match(directoryProjection, /exists\s*\([\s\S]*from public\.atsrs_files/,
+  'Candidate Directory projection must retain certificate eligibility');
 assert.match(client, /profile\.discoverable===true&&profile\.profile_visibility==='Public'/,
   'the browser must reject non-public profiles returned by a stale server response');
 

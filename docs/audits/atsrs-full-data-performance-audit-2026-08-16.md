@@ -72,3 +72,13 @@ The first route-loading batch removes 87,327 uncompressed bytes from the univers
 The loader deduplicates concurrent requests and preserves the existing public function contracts, so callers do not need route-specific knowledge. CSS remains eager in this low-risk batch to avoid a visible unstyled transition. No database, RLS, entitlement, user row or storage object changes are included.
 
 After this batch, three primary performance phases remain: measured Supabase projections for growing non-file collections, storage/orphan reconciliation, and write-integrity/concurrency hardening.
+
+## Step 5 — bounded Supabase projections
+
+Candidate discovery no longer downloads every Personal document owner and every public profile into an Edge Function before filtering. A service-only SQL projection now performs certificate eligibility with `EXISTS`, uses the observed public-profile/activity index, returns an explicit field list and exposes a deterministic keyset cursor. The browser requests 30 candidates per page and asks for the next page only through **Load more candidates**.
+
+Corporate Personnel is also bounded to 30 links per request with a deterministic database range. Its compliance/report enrichment is restricted to the professional IDs on that page instead of loading the company's complete Personnel report. **Load more personnel** fetches the next 30 records; the number is per signed-in Corporate account, not a global system cap.
+
+The sharing API already had explicit projections and 100/500-row limits, so it was retained. Projects still use the compatibility payload and are intentionally deferred until the authoritative normalized route is proven; splitting that payload here would mix a data migration with a query optimization.
+
+After this batch, two primary performance phases remain: storage/orphan reconciliation and write-integrity/concurrency hardening.
