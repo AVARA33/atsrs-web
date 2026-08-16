@@ -13,8 +13,8 @@ const shellRuntime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8'
 test('Jobs prototype is isolated, navigable and visibly in development',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?IN DEVELOPMENT/);
-  assert.match(index,/jobs-prototype\.css\?v=572/);
-  assert.match(index,/jobs-prototype\.js\?v=572/);
+  assert.match(index,/jobs-prototype\.css\?v=573/);
+  assert.match(index,/jobs-prototype\.js\?v=573/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
@@ -30,7 +30,9 @@ test('Jobs data is read only and shows supplied recruiter contact',()=>{
   assert.match(runtime,/Recruiter organisation/);
   assert.match(runtime,/No candidate commission/);
   assert.equal((runtime.match(/recruiterEmail:/g)||[]).length,10);
-  assert.match(runtime,/recruiterFact\('Recruiter email',job\.recruiterEmail\)/);
+  assert.match(runtime,/recruiterFact\('Recruiter email',job\.recruiterEmail,'email'\)/);
+  assert.equal((runtime.match(/recruiterPhone:/g)||[]).length,8);
+  assert.match(runtime,/recruiterFact\('Recruiter phone',job\.recruiterPhone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
   assert.doesNotMatch(index,/Recruiters use ATSRS through subscription plans/);
   assert.doesNotMatch(runtime,/Recruiters use ATSRS through subscription plans/);
