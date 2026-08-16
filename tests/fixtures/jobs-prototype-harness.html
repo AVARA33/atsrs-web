@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=574">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=575">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
@@ -18,23 +18,20 @@
 <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
 <main>
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
-  <div class="jobs-hero"><div><span class="pill jobs-development-badge">IN DEVELOPMENT</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount">0 opportunities</strong><span>Mailbox snapshot · 16 Aug 2026</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
+  <div class="jobs-hero"><div><span class="pill jobs-development-badge">LIVE JOBS</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount">0 opportunities</strong><span>Server-backed vacancies</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
   <div class="jobs-notice"><i aria-hidden="true">i</i><p><strong>No candidate commission.</strong></p></div>
   <div class="jobs-filters"><label class="jobs-search"><span>Search</span><span class="jobs-search-control"><i aria-hidden="true">⌕</i><input id="jobsSearch" type="search" placeholder="Role, company, location or ROV system"></span></label><label><span>Role</span><select id="jobsRoleFilter"><option value="">All roles</option></select></label><label><span>Location</span><select id="jobsLocationFilter"><option value="">All locations</option></select></label><button id="jobsClearFilters" type="button">Clear filters</button></div>
-  <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div><div id="jobsEmpty" class="jobs-empty hidden"><h2>No matching opportunities</h2></div>
+  <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div><div id="jobsEmpty" class="jobs-empty hidden"><h2>No matching opportunities</h2><p>Clear filters.</p></div><div class="jobs-load-more-wrap"><button id="jobsLoadMore" class="hidden">Load more</button></div>
 </section>
 </main>
-<script src="../../js/jobs-prototype.js?v=574"></script>
 <script>
   (function(){
-    function addNewFixture(){
-      var meta=document.querySelector('.job-card-meta');if(!meta)return;
-      var badge=document.createElement('span');badge.className='job-new-badge';badge.setAttribute('aria-label','New vacancy published within the last 6 hours');
-      var star=document.createElement('i');star.setAttribute('aria-hidden','true');star.textContent='★';
-      var text=document.createElement('span');text.textContent='NEW';badge.append(star,text);meta.prepend(badge);
-    }
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addNewFixture);else addNewFixture();
+    var adminMode=new URLSearchParams(location.search).get('admin')==='1';
+    var fixture=[{id:'1',title:'<img src=x onerror="window.__xss=1"> ROV Supervisor',company:'Film-Ocean',location:'Aberdeen, UK',equipment:'ROV',summary:'Safe server text',requirements:'Valid offshore certification',recruiter_email:'jobs@example.com',source_type:'linkedin',source_url:'https://linkedin.com/example',status:'published',source_posted_at:'2026-08-16',published_at:new Date(Date.now()-60000).toISOString(),updated_at:new Date().toISOString()}];
+    function query(){var q={select:function(){return q},eq:function(){return q},lte:function(){return q},order:function(){return q},limit:function(){return q},or:function(){return q},then:function(resolve){resolve({data:fixture,error:null})}};return q}
+    window.supabaseClient={from:query,auth:{getSession:async function(){return{data:{session:adminMode?{user:{id:'owner'}}:null}}}},rpc:async function(){return{data:adminMode,error:null}}};
   })();
 </script>
+<script src="../../js/jobs-prototype.js?v=575"></script>
 </body>
 </html>
