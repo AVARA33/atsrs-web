@@ -1,4 +1,4 @@
-/* ATSRS V568 — read-only Jobs prototype. No mailbox or server writes. */
+/* ATSRS V569 — read-only Jobs prototype. No mailbox or server writes. */
 (function(){
   'use strict';
   var jobsView='cards';
@@ -22,10 +22,10 @@
   function fact(label,value){return value?'<div class="job-fact"><dt>'+esc(label)+'</dt><dd>'+esc(value)+'</dd></div>':''}
   function card(job){
     return '<article class="job-card" data-job-id="'+esc(job.id)+'">'+
-      '<div class="job-card-head"><div><h2>'+esc(job.title)+'</h2><p class="job-card-company">'+esc(job.company)+'</p></div><span class="job-card-date">Received '+esc(job.received)+'</span></div>'+
+      '<div class="job-card-head"><div><h2>'+esc(job.title)+'</h2><p class="job-card-company"><span>Recruiter</span>'+esc(job.company)+'</p></div><span class="job-card-date">Received '+esc(job.received)+'</span></div>'+
       '<p class="job-card-summary">'+esc(job.summary)+'</p>'+
       '<dl class="job-facts">'+fact('Location',job.location)+fact('Mobilisation',job.mobilisation)+fact('ROV / equipment',job.rov)+fact('Duration',job.duration)+fact('Worksite',job.worksite)+fact('Rate',job.rate)+'</dl>'+
-      '<details><summary>View requirements</summary><div class="job-details"><p><strong>Requirements:</strong> '+esc(job.requirements)+'</p><p><strong>Source:</strong> '+esc(job.source)+' · personal contact details removed</p></div></details></article>';
+      '<details><summary>View requirements and recruiter</summary><div class="job-details"><p><strong>Requirements:</strong> '+esc(job.requirements)+'</p><div class="job-recruiter-info" aria-label="Recruiter information"><p><strong>Recruiter organisation</strong><span>'+esc(job.company)+'</span></p><p><strong>Listing source</strong><span>'+esc(job.source)+'</span></p><p><strong>Contact</strong><span>Available after recruiter verification; personal contact details are not exposed in this prototype.</span></p></div><p class="job-fee-note"><strong>No candidate commission.</strong> ATSRS is designed around recruiter subscriptions, not deductions from a candidate\u2019s placement fee.</p></div></details></article>';
   }
   function updateView(){
     var grid=byId('jobsGrid');if(grid){grid.classList.toggle('jobs-list',jobsView==='list');grid.classList.toggle('jobs-cards',jobsView==='cards')}
