@@ -1,6 +1,8 @@
-/* ATSRS V563 — read-only Jobs prototype. No mailbox or server writes. */
+/* ATSRS V568 — read-only Jobs prototype. No mailbox or server writes. */
 (function(){
   'use strict';
+  var jobsView='cards';
+  try{jobsView=localStorage.getItem('atsrs_jobs_view')==='list'?'list':'cards'}catch(ignore){}
   var JOBS=[
     {id:'accord-supervisor-sep',title:'ROV Supervisor',company:'Accord People',location:'Norfolk, UK',worksite:'Vessel · MS Server',rov:'Super Mohawk',mobilisation:'1–5 Sep 2026',duration:'Approx. 12 operational days, plus mobilisation and demobilisation',received:'14 Aug 2026',summary:'Nearshore UK assignment within 12 nautical miles.',requirements:'GWO certificates, UK Right to Work, and Super Mohawk or Seaeye experience.',source:'Recruiter email'},
     {id:'accord-pilot-sep',title:'ROV Pilot Technician',company:'Accord People',location:'Norfolk, UK',worksite:'Vessel · MS Server',rov:'Super Mohawk',mobilisation:'1–5 Sep 2026',duration:'Approx. 12 operational days, plus mobilisation and demobilisation',received:'14 Aug 2026',summary:'Two Pilot Technician positions on a nearshore UK assignment.',requirements:'GWO certificates, UK Right to Work, and Super Mohawk or Seaeye experience.',source:'Recruiter email'},
@@ -25,13 +27,21 @@
       '<dl class="job-facts">'+fact('Location',job.location)+fact('Mobilisation',job.mobilisation)+fact('ROV / equipment',job.rov)+fact('Duration',job.duration)+fact('Worksite',job.worksite)+fact('Rate',job.rate)+'</dl>'+
       '<details><summary>View requirements</summary><div class="job-details"><p><strong>Requirements:</strong> '+esc(job.requirements)+'</p><p><strong>Source:</strong> '+esc(job.source)+' · personal contact details removed</p></div></details></article>';
   }
+  function updateView(){
+    var grid=byId('jobsGrid');if(grid){grid.classList.toggle('jobs-list',jobsView==='list');grid.classList.toggle('jobs-cards',jobsView==='cards')}
+    document.querySelectorAll('[data-jobs-view]').forEach(function(button){
+      var selected=button.dataset.jobsView===jobsView;
+      button.classList.toggle('active',selected);
+      button.setAttribute('aria-pressed',selected?'true':'false');
+    });
+  }
   function render(){
     var grid=byId('jobsGrid');if(!grid)return;
     var query=String(byId('jobsSearch')&&byId('jobsSearch').value||'').trim().toLowerCase();
     var role=String(byId('jobsRoleFilter')&&byId('jobsRoleFilter').value||'');
     var location=String(byId('jobsLocationFilter')&&byId('jobsLocationFilter').value||'');
     var filtered=JOBS.filter(function(job){var hay=[job.title,job.company,job.location,job.rov,job.summary].join(' ').toLowerCase();return(!query||hay.indexOf(query)!==-1)&&(!role||job.title===role)&&(!location||job.location===location)});
-    grid.innerHTML=filtered.map(card).join('');
+    grid.innerHTML=filtered.map(card).join('');updateView();
     grid.classList.toggle('hidden',!filtered.length);var empty=byId('jobsEmpty');if(empty)empty.classList.toggle('hidden',!!filtered.length);
     var count=byId('jobsVisibleCount');if(count)count.textContent=filtered.length+' opportunit'+(filtered.length===1?'y':'ies');
   }
@@ -40,8 +50,13 @@
     role.insertAdjacentHTML('beforeend',unique('title').map(option).join(''));location.insertAdjacentHTML('beforeend',unique('location').map(option).join(''));
     ['jobsSearch','jobsRoleFilter','jobsLocationFilter'].forEach(function(id){var el=byId(id);if(el)el.addEventListener(id==='jobsSearch'?'input':'change',render)});
     var clear=byId('jobsClearFilters');if(clear)clear.addEventListener('click',function(){byId('jobsSearch').value='';role.value='';location.value='';render()});
+    document.querySelectorAll('[data-jobs-view]').forEach(function(button){button.addEventListener('click',function(){
+      jobsView=button.dataset.jobsView==='list'?'list':'cards';
+      try{localStorage.setItem('atsrs_jobs_view',jobsView)}catch(ignore){}
+      updateView();
+    })});
     render();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-  window.atsrsJobsPrototype={count:JOBS.length,render:render};
+  window.atsrsJobsPrototype={count:JOBS.length,render:render,getView:function(){return jobsView}};
 })();

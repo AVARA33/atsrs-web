@@ -68,7 +68,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-<link rel="stylesheet" href="css/shell-polish.css?v=549">
+<link rel="stylesheet" href="css/shell-polish.css?v=568">
 <link rel="stylesheet" href="css/public-landing.css?v=532">
 <link rel="stylesheet" href="css/workspace-surface-standard-v519.css?v=519">
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=520">
@@ -86,7 +86,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=562">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=563">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=568">
 <script defer src="js/maintenance-guard.js?v=375"></script>
 
 
@@ -554,9 +554,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <h3 id="jobsHeading">Latest opportunities</h3>
       <p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p>
     </div>
-    <div class="jobs-snapshot" aria-label="Jobs data snapshot">
-      <strong id="jobsVisibleCount">0 opportunities</strong>
-      <span>Mailbox snapshot · 16 Aug 2026</span>
+    <div class="jobs-hero-actions">
+      <div class="jobs-snapshot" aria-label="Jobs data snapshot">
+        <strong id="jobsVisibleCount">0 opportunities</strong>
+        <span>Mailbox snapshot · 16 Aug 2026</span>
+      </div>
+      <div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view">
+        <button type="button" data-jobs-view="cards">Cards</button>
+        <button type="button" data-jobs-view="list">List</button>
+      </div>
     </div>
   </div>
 
@@ -1796,7 +1802,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=509"></script>
 <script src="js/personal-dashboard-qa.js?v=549"></script>
 <script src="js/shell-polish.js?v=567"></script>
-<script src="js/jobs-prototype.js?v=563"></script>
+<script src="js/jobs-prototype.js?v=568"></script>
 
 
 

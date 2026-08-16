@@ -13,13 +13,14 @@ const shellRuntime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8'
 test('Jobs prototype is isolated, navigable and visibly in development',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?IN DEVELOPMENT/);
-  assert.match(index,/jobs-prototype\.css\?v=563/);
-  assert.match(index,/jobs-prototype\.js\?v=563/);
+  assert.match(index,/jobs-prototype\.css\?v=568/);
+  assert.match(index,/jobs-prototype\.js\?v=568/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=567/);
+  assert.match(index,/shell-polish\.css\?v=568/);
 });
 
 test('Jobs data is privacy-filtered and read only',()=>{
@@ -35,4 +36,14 @@ test('Jobs supports filtering and responsive zero-overflow layout',()=>{
   assert.match(runtime,/jobsLocationFilter/);
   assert.match(css,/@media\(max-width:600px\)/);
   assert.match(css,/min-width:0/);
+});
+
+test('Jobs supports persistent accessible card and list views',()=>{
+  assert.match(index,/data-jobs-view="cards"/);
+  assert.match(index,/data-jobs-view="list"/);
+  assert.match(runtime,/atsrs_jobs_view/);
+  assert.match(runtime,/aria-pressed/);
+  assert.match(runtime,/jobs-list/);
+  assert.match(css,/\.jobs-grid\.jobs-list/);
+  assert.match(shellCss,/#projectsPage,#jobsPage/);
 });
