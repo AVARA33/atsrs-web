@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=569">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=570">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
@@ -19,11 +19,11 @@
 <main>
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
   <div class="jobs-hero"><div><span class="pill jobs-development-badge">IN DEVELOPMENT</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount">0 opportunities</strong><span>Mailbox snapshot · 16 Aug 2026</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
-  <div class="jobs-notice"><i aria-hidden="true">i</i><p><strong>Recruiter-led, without candidate commission.</strong> Listings are extracted from real recruiter emails, deduplicated and privacy-filtered. ATSRS is designed around recruiter subscriptions and does not deduct a placement commission from candidates. Availability can change; missing recruiter details are never invented.</p></div>
+  <div class="jobs-notice"><i aria-hidden="true">i</i><p><strong>Recruiter-led, without candidate commission.</strong> Vacancy and recruiter information is shown directly from the supplied listing. Recruiters use ATSRS through subscription plans; ATSRS does not deduct a placement commission from candidates.</p></div>
   <div class="jobs-filters"><label class="jobs-search"><span>Search</span><span class="jobs-search-control"><i aria-hidden="true">⌕</i><input id="jobsSearch" type="search" placeholder="Role, company, location or ROV system"></span></label><label><span>Role</span><select id="jobsRoleFilter"><option value="">All roles</option></select></label><label><span>Location</span><select id="jobsLocationFilter"><option value="">All locations</option></select></label><button id="jobsClearFilters" type="button">Clear filters</button></div>
   <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div><div id="jobsEmpty" class="jobs-empty hidden"><h2>No matching opportunities</h2></div>
 </section>
 </main>
-<script src="../../js/jobs-prototype.js?v=569"></script>
+<script src="../../js/jobs-prototype.js?v=570"></script>
 </body>
 </html>
