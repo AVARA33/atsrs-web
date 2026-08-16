@@ -69,6 +69,7 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/jobs-list/);
   assert.match(css,/\.jobs-grid\.jobs-list/);
   assert.match(css,/\.jobs-list \.job-card-head\{display:grid;grid-template-columns:minmax\(0,1fr\) auto/);
+  assert.match(css,/@media\(min-width:901px\)\{\.jobs-list \.job-card-meta\{position:absolute;top:12px;right:15px;z-index:1\}\.jobs-list \.job-contact-info\{padding-top:50px\}\}/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
   assert.doesNotMatch(css,/\.jobs-list \.job-contact-(?:org|source)\{display:none/);
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
