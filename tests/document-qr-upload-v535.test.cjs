@@ -106,7 +106,8 @@ test('phone file selection uploads and retries finalize until storage is visible
     fetch: async (url, options) => {
       if (String(url).includes('/storage/v1/object/upload/sign/')) {
         signedUploadCalls += 1;
-        assert.equal(options.method, 'POST');
+        assert.equal(options.method, 'PUT');
+        assert.equal(options.headers['X-Client-Info'], 'storage-js/2.111.0');
         assert.equal(options.headers['x-upsert'], 'false');
         return response(true, { Key: 'safe/path.pdf' });
       }

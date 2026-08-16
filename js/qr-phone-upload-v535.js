@@ -40,12 +40,13 @@
     if(!signedUrl.startsWith(expectedPrefix))throw new Error('Secure upload could not be prepared.');
     var body=new FormData();
     body.append('cacheControl','3600');
-    body.append('',file,file.name||'ATSRS-document');
+    body.append('',file);
     var response=await fetch(signedUrl,{
-      method:'POST',
+      method:'PUT',
       headers:{
         'apikey':SUPABASE_KEY,
         'Authorization':'Bearer '+SUPABASE_KEY,
+        'X-Client-Info':'storage-js/2.111.0',
         'x-upsert':'false'
       },
       body:body
