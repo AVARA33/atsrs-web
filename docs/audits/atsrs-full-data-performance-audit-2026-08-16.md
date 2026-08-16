@@ -47,6 +47,16 @@ Other stabilizers still exist in account, dashboard, documents, references, stor
 - Use bounded range/keyset pagination for growing lists.
 - Do not duplicate the same authoritative dataset across Supabase and Cloudflare storage without an explicit cache ownership and invalidation contract.
 
+## Production query measurement
+
+The read-only production measurement on 16 August 2026 confirmed that the current tables are still small and individual ATSRS queries are fast. The main avoidable cost in the latest API-log sample was request frequency rather than query duration:
+
+- `atsrs_files` contains 30 live rows and totals about 136 kB after its targeted indexes; its dominant bounded metadata query averaged about 0.25 ms.
+- The latest API-log sample was dominated by `system-status` checks. The client was polling every 30 seconds even when maintenance mode was inactive and even while a tab remained open in the background.
+- Email outbox processing already runs every five minutes and the daily expiry queue runs once at 02:05; those schedules remain unchanged.
+
+The first measured runtime optimization therefore changes maintenance polling, not user-data queries: inactive mode checks every five minutes, active maintenance mode keeps the 30-second recovery check, duplicate in-flight calls are collapsed, and hidden tabs stop polling until visible again. This changes no production data and preserves immediate initial status verification.
+
 ## Release decision
 
 **GO for this narrow client optimization.** It changes no schema, RLS policy, entitlement, production user row or storage object. The next performance batch should focus on route-based script loading and measured Supabase query projections, not a platform migration or a broad rewrite.

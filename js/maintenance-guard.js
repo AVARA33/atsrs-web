@@ -3,6 +3,11 @@
   var endpoint='https://hwtjuqyxzivymofamwxl.supabase.co/functions/v1/system-status';
   var overlay=null;
   var timer=0;
+  var inFlight=null;
+  var lastCheckedAt=0;
+  var idleInterval=300000;
+  var activeInterval=30000;
+  var nextCheckInterval=idleInterval;
 
   function safe(value){
     return String(value==null?'':value).replace(/[&<>"']/g,function(character){
@@ -28,23 +33,48 @@
       '<p>'+safe(status.message||'Some services may be temporarily unavailable. Please try again shortly.')+'</p>'+
       '<button type="button" class="secondary" data-maintenance-retry>Check again</button>'+
       '<span class="atsrs-maintenance-note">Your ATSRS data remains safely stored.</span></div>';
-    overlay.querySelector('[data-maintenance-retry]').onclick=check;
+    overlay.querySelector('[data-maintenance-retry]').onclick=function(){check(true);};
   }
-  async function check(){
-    try{
-      var response=await fetch(endpoint+'?t='+Date.now(),{cache:'no-store',method:'GET'});
-      var status=response.ok?await response.json():{active:false};
-      if(status&&status.active)show(status);else remove();
-    }catch(error){
-      remove();
+  function schedule(delay){
+    clearTimeout(timer);
+    timer=setTimeout(function(){check(false);},delay);
+  }
+  function check(force){
+    if(inFlight)return inFlight;
+    if(document.hidden&&!force){clearTimeout(timer);return Promise.resolve();}
+    var elapsed=Date.now()-lastCheckedAt;
+    if(!force&&lastCheckedAt&&elapsed<nextCheckInterval){
+      schedule(nextCheckInterval-elapsed);
+      return Promise.resolve();
     }
+    inFlight=(async function(){
+      var nextDelay=idleInterval;
+      try{
+        var response=await fetch(endpoint+'?t='+Date.now(),{cache:'no-store',method:'GET'});
+        var status=response.ok?await response.json():{active:false};
+        lastCheckedAt=Date.now();
+        if(status&&status.active){show(status);nextDelay=activeInterval;}else remove();
+      }catch(error){
+        lastCheckedAt=Date.now();
+        remove();
+      }finally{
+        nextCheckInterval=nextDelay;
+        inFlight=null;
+        if(!document.hidden)schedule(nextDelay);
+      }
+    })();
+    return inFlight;
   }
   function start(){
-    check();
-    clearInterval(timer);
-    timer=setInterval(check,30000);
+    check(true);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
   else start();
-  window.addEventListener('atsrs:resume',check);
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){clearTimeout(timer);return;}
+    var elapsed=Date.now()-lastCheckedAt;
+    if(!lastCheckedAt||elapsed>=nextCheckInterval)check(false);
+    else schedule(nextCheckInterval-elapsed);
+  });
+  window.addEventListener('atsrs:resume',function(){check(false);});
 })();

@@ -6,7 +6,7 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const runtime = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
 const migration = fs.readFileSync(
-  path.join(root, 'supabase', 'migrations', '20260816184500_file_metadata_pagination_indexes.sql'),
+  path.join(root, 'supabase', 'migrations', '20260816122807_file_metadata_pagination_indexes.sql'),
   'utf8'
 );
 
