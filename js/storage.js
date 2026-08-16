@@ -1971,7 +1971,7 @@ setTimeout(v55DockTopActions,500);
     }
     function queueSession(session,event){
       if(window.__atsrsSuppressAutomaticSessionOpen &&
-         (event==='INITIAL_SESSION'||event==='TOKEN_REFRESHED'||event==='getSession'||
+         (event==='INITIAL_SESSION'||event==='TOKEN_REFRESHED'||event==='getSession'||event==='resume'||
           (event==='SIGNED_IN'&&window.__atsrsEntryRoute!=='auth'))){
         return Promise.resolve(false);
       }
