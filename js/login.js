@@ -37,5 +37,4 @@
   lockBuildBadge();
   document.addEventListener('DOMContentLoaded', lockBuildBadge);
   window.addEventListener('load', lockBuildBadge);
-  atsrsStableInterval(lockBuildBadge,250);
 })();

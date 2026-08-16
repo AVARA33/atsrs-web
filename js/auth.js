@@ -7,13 +7,19 @@
     const am=document.getElementById('appLangMenu'); if(am)am.classList.add('hidden');
   };
   function forceEnglish(){
-    try{localStorage.setItem('atsrs_lang','en');localStorage.setItem('lang','en')}catch(e){}
-    window.lang='en';
-    document.documentElement.setAttribute('lang','en');
-    document.documentElement.setAttribute('dir','ltr');
-    ['langCircle','appLangCircle'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent='🇬🇧';});
-    ['langMenu','appLangMenu'].forEach(id=>{const m=document.getElementById(id);if(m)m.classList.add('hidden');});
-    document.querySelectorAll('.lang-menu button').forEach(b=>{b.classList.toggle('v76-selected-lang',true);b.setAttribute('aria-current','true')});
+    try{
+      if(localStorage.getItem('atsrs_lang')!=='en')localStorage.setItem('atsrs_lang','en');
+      if(localStorage.getItem('lang')!=='en')localStorage.setItem('lang','en');
+    }catch(e){}
+    if(window.lang!=='en')window.lang='en';
+    if(document.documentElement.getAttribute('lang')!=='en')document.documentElement.setAttribute('lang','en');
+    if(document.documentElement.getAttribute('dir')!=='ltr')document.documentElement.setAttribute('dir','ltr');
+    ['langCircle','appLangCircle'].forEach(id=>{const b=document.getElementById(id);if(b&&b.textContent!=='🇬🇧')b.textContent='🇬🇧';});
+    ['langMenu','appLangMenu'].forEach(id=>{const m=document.getElementById(id);if(m&&!m.classList.contains('hidden'))m.classList.add('hidden');});
+    document.querySelectorAll('.lang-menu button').forEach(b=>{
+      if(!b.classList.contains('v76-selected-lang'))b.classList.add('v76-selected-lang');
+      if(b.getAttribute('aria-current')!=='true')b.setAttribute('aria-current','true');
+    });
   }
   function simplifyModeError(){const err=document.getElementById('modeErrorText')||document.querySelector('.mode-error-text');if(err&&err.id!=='modeErrorText')err.id='modeErrorText'}
   function compactSidebarViewport(){return window.innerWidth<=800||(window.innerWidth<=960&&window.innerHeight<=560);}
@@ -27,7 +33,7 @@
   };
   window.toggleLangMenu=window.atsrsV78EnglishOnlyNotice;
   window.toggleAppLangMenu=window.atsrsV78EnglishOnlyNotice;
-  document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);window.addEventListener('atsrs:resume',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);atsrsStableInterval(v78Apply,1000);
+  document.addEventListener('DOMContentLoaded',v78Apply);window.addEventListener('load',v78Apply);window.addEventListener('atsrs:resume',v78Apply);setTimeout(v78Apply,0);setTimeout(v78Apply,400);
 })();
 
 /* ===== extracted from inline script ===== */

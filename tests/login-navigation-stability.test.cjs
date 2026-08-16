@@ -12,9 +12,9 @@ assert.match(index, /<section id="auth" class="auth">[\s\S]*?<a class="auth-home
 assert.match(index, /href="css\/theme\.css\?v=537"/);
 assert.match(index, /src="js\/public-landing\.js\?v=560"/);
 assert.ok(index.indexOf('js/storage.js?v=559') < index.indexOf('js/public-landing.js?v=560'));
-assert.ok(index.indexOf('js/public-landing.js?v=560') < index.indexOf('js/ui.js?v=510'));
+assert.ok(index.indexOf('js/public-landing.js?v=560') < index.indexOf('js/ui.js?v=568'));
 assert.ok(index.indexOf('js/public-landing.js?v=560') < index.indexOf('js/boot-refresh.js?v=443'));
-assert.match(index, /src="js\/ui\.js\?v=510"/);
+assert.match(index, /src="js\/ui\.js\?v=568"/);
 assert.match(landing, /if\(requestedView==='home'\)[\s\S]*?__atsrsSuppressAutomaticSessionOpen=true[\s\S]*?history\.replaceState[\s\S]*?showLanding\(\)[\s\S]*?return/);
 assert.match(ui, /function publicLandingVisible\(\)[\s\S]*?atsrs-public-view[\s\S]*?!landing\.classList\.contains\('hidden'\)/);
 assert.match(ui, /function syncBodyState\(\)[\s\S]*?if\(publicLandingVisible\(\)\)[\s\S]*?classList\.remove\('app-open','auth-open'\)[\s\S]*?return/);
