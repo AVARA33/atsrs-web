@@ -98,7 +98,7 @@ for (const name of localOnly) {
 }
 
 const actual = fs.readdirSync(migrationDir).filter(name => name.endsWith('.sql')).sort();
-assert.equal(actual.length, 54);
+assert.equal(actual.length, 56);
 assert.equal(new Set(actual.map(name => name.slice(0, 14))).size, actual.length);
 assert.ok(actual.indexOf('20260729041619_stable_workspace_entity_ids.sql') <
   actual.indexOf('20260729105130_baseline_v242_detailed_expiry_notifications.sql'));

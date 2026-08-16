@@ -14,7 +14,7 @@ The proposed direction is valid, with two corrections:
 - `storage.js` is still the authoritative compatibility facade. Existing architecture notes explicitly reject a big-bang split.
 - The normalized Supabase shadow model exists, but some legacy JSON compatibility remains. It should not be removed until route-by-route parity and rollback are proven.
 - Jobs remains a read-only prototype. A production write model, moderation rules, retention policy and RLS contract must be designed before server persistence is enabled.
-- File metadata now supports route-aware category filtering and bounded range reads. Its production SQL index migration is committed but must be applied separately through the controlled Supabase migration workflow.
+- File metadata now supports route-aware category filtering and bounded range reads. The matching production SQL index migration was applied and verified on 16 August 2026; it changed no user rows.
 
 ## Data-flow map
 
