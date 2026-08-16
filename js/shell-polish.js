@@ -13,6 +13,7 @@
     navCompliance:'shield-check',
     navReports:'chart-bar',
     navProfile:'user-circle',
+    navJobs:'briefcase',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
   };
@@ -28,6 +29,7 @@
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Profile',
+    navJobs:'Jobs',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -42,6 +44,7 @@
     navRefs:'References',
     navCompliance:'Security',
     navProfile:'Profile',
+    navJobs:'Jobs',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -55,6 +58,7 @@
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Company',
+    navJobs:'Jobs',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };

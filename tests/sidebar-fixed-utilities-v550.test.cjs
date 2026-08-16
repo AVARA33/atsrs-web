@@ -7,7 +7,7 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'sidebar-fixed-utilities-v550.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'sidebar-fixed-utilities-v550-harness.html'), 'utf8');
 
-assert.match(html, /data-atsrs-build="V562"/);
+assert.match(html, /data-atsrs-build="V563"/);
 assert.match(html, /css\/sidebar-fixed-utilities-v550\.css\?v=561/);
 assert.match(html, /class="nav-primary"[\s\S]*?id="navProfile"[\s\S]*?class="nav-utility-group"[\s\S]*?id="navIntro"[\s\S]*?id="navPrivacy"/);
 assert.match(css, /grid-template-rows:minmax\(0,1fr\) auto!important/);
@@ -31,4 +31,4 @@ assert.match(harness, /personal-mode atsrs-personal-dashboard-route/);
 assert.match(harness, /sidebar v76-mobile-closed/);
 assert.match(harness, /id="navIntro"[\s\S]*?id="navPrivacy"/);
 
-console.log('V562 fixed sidebar and Dashboard mobile contracts passed');
+console.log('V563 fixed sidebar and Dashboard mobile contracts passed');

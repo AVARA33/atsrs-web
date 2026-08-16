@@ -36,6 +36,7 @@ test('Product Updates contains the complete honest capability inventory', () => 
 
   assert.match(updates, /WhatsApp Expiry Alerts[\s\S]*?In development|In development[\s\S]*?WhatsApp Expiry Alerts/i);
   assert.match(updates, /Automated Scheduled Reports[\s\S]*?Planned|Planned[\s\S]*?Automated Scheduled Reports/i);
+  assert.match(updates, /Jobs[\s\S]*?In development|In development[\s\S]*?Jobs/i);
   assert.doesNotMatch(updates, /API Access|Priority Support|Advanced Security/);
 });
 
@@ -52,8 +53,8 @@ test('Dashboard is restored without the capability inventory', () => {
 
 test('Product Updates keeps the established roadmap card design', () => {
   assert.match(updates, /class="roadmap-grid"/);
-  assert.equal((updates.match(/class="roadmap-card/g) || []).length, 20);
-  assert.equal((updates.match(/roadmap-status/g) || []).length, 20);
+  assert.equal((updates.match(/class="roadmap-card/g) || []).length, 21);
+  assert.equal((updates.match(/roadmap-status/g) || []).length, 21);
 });
 
 test('In-development capabilities are shown before available and planned work', () => {

@@ -765,6 +765,7 @@ body.personal-mode #app.app:not(.hidden) .sidebar .nav :is(
   #navRefs,
   #navCompliance,
   #navProfile,
+  #navJobs,
   #navIntro,
   #navPrivacy
 ),
@@ -777,6 +778,7 @@ body.company-mode #app.app:not(.hidden) .sidebar .nav :is(
   #navCompliance,
   #navReports,
   #navProfile,
+  #navJobs,
   #navIntro,
   #navPrivacy
 ){
