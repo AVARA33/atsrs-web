@@ -68,6 +68,7 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/aria-pressed/);
   assert.match(runtime,/jobs-list/);
   assert.match(css,/\.jobs-grid\.jobs-list/);
+  assert.match(css,/\.jobs-list \.job-card-head\{display:grid;grid-template-columns:minmax\(0,1fr\) auto/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
   assert.doesNotMatch(css,/\.jobs-list \.job-contact-(?:org|source)\{display:none/);
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
@@ -81,9 +82,11 @@ test('Jobs supports persistent accessible card and list views',()=>{
 test('Jobs renders only verified source and closing dates with card/list parity',()=>{
   assert.match(runtime,/job\.source_posted_at\|\|job&&job\.display_posted_date/);
   assert.match(runtime,/value\?'Posted '\+value:''/);
+  assert.match(runtime,/fact\(dl,'Posted',dated\.replace\(\/\^Posted\\s\+\/,''\)\)/);
   assert.match(runtime,/fact\(dl,'Closing date',verifiedDate\(job\.closing_date\)\)/);
   assert.doesNotMatch(runtime,/prefix='Received '|Received /);
   assert.doesNotMatch(runtime,/dateLabel\([^)]*published_at/);
+  assert.doesNotMatch(runtime,/job-status job-status-/);
   assert.match(runtime,/Intl\.DateTimeFormat\('en-GB'/);
 });
 
@@ -91,11 +94,13 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/function detailContent\(job\)/);
   assert.match(runtime,/function openDetails\(job,opener\)/);
   assert.match(runtime,/dialog\.showModal\(\)/);
-  assert.match(runtime,/Minimize vacancy details/);
-  assert.match(runtime,/Maximize vacancy details/);
-  assert.match(runtime,/Restore vacancy details/);
+  assert.match(runtime,/aria-label','Minimize job details/);
+  assert.match(runtime,/aria-label','Maximize job details/);
+  assert.match(runtime,/ph ph-arrows-in/);
+  assert.match(runtime,/ph ph-arrows-out/);
+  assert.doesNotMatch(runtime,/job-detail-(?:maximize|close)/);
+  assert.doesNotMatch(runtime,/Restore vacancy details|Close vacancy details|×/);
   assert.match(runtime,/function dismissDetails\(dialog\)/);
-  assert.match(runtime,/classList\.toggle\('is-maximized'\)/);
   assert.match(runtime,/addEventListener\('cancel'/);
   assert.match(runtime,/e\.key!=='Tab'/);
   assert.match(runtime,/dialog\.addEventListener\('close'/);
@@ -103,11 +108,13 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/document\.body\.classList\.add\('jobs-detail-open'\)/);
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
   assert.match(css,/\.job-detail-open,\.job-detail-control\{[^}]*width:44px[^}]*height:44px/);
-  assert.match(css,/\.job-detail-controls\{[^}]*display:flex[^}]*gap:6px/);
-  assert.match(css,/\.job-detail-dialog\.is-maximized\{width:calc\(100vw - 20px\)/);
+  assert.match(css,/\.job-detail-controls\{position:absolute[^}]*right:12px[^}]*bottom:12px[^}]*justify-content:flex-end/);
+  assert.doesNotMatch(css,/job-detail-dialog\.is-maximized|job-detail-maximize|job-detail-close/);
+  assert.match(css,/\.job-detail-open,\.job-detail-control\{[^}]*background:#111411[^}]*box-shadow:none/);
+  assert.match(css,/html\[data-theme="light"\] \.job-detail-open,html\[data-theme="light"\] \.job-detail-control\{background:#eef1f4[^}]*box-shadow:none/);
   assert.match(css,/repeat\(auto-fit,minmax\(190px,1fr\)\)/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[^{]*\{[^}]*\.job-new-badge i\{animation:none\}\.job-detail-dialog\{transition:none\}/);
-  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog,\.job-detail-dialog\.is-maximized\{width:100vw;height:100dvh/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
   assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-view-switch\{border-color:transparent!important/);
 });
 
