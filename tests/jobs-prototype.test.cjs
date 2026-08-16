@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=581/);
+  assert.match(index,/jobs-prototype\.css\?v=5811/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=581"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=581'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
@@ -38,7 +38,7 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.doesNotMatch(runtime,/jobsManageButton|jobs-manage-button/);
   assert.doesNotMatch(runtime,/No candidate commission|job-fee-note/);
   assert.equal((index.match(/No candidate commission\./g)||[]).length,1);
-  assert.match(index,/class="jobs-notice"[\s\S]*No candidate commission\./);
+  assert.match(index,/class="jobs-notice" role="note"[\s\S]*ph-warning[\s\S]*No candidate commission\./);
   assert.doesNotMatch(css,/job-fee-note/);
   assert.doesNotMatch(runtime,/ryan\.webster|ellie\.malim|cheryl\.nicolson/);
   assert.match(runtime,/Recruiter email/);
@@ -111,8 +111,9 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-view-switch\{border-color:transparent!important/);
 });
 
-test('Jobs dark view controls and notice use the neutral palette',()=>{
-  assert.match(css,/#jobsPage \.jobs-notice\{background:#070908!important;border-color:#242a27!important\}/);
+test('Jobs view controls and inline notice use the approved palettes',()=>{
+  assert.match(css,/\.jobs-notice\{[^}]*width:max-content[^}]*padding:0[^}]*border:0[^}]*background:transparent[^}]*color:#bd6b72/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-notice\{color:#9f3f49\}/);
   assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);
