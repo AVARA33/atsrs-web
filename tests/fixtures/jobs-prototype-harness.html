@@ -25,5 +25,16 @@
 </section>
 </main>
 <script src="../../js/jobs-prototype.js?v=574"></script>
+<script>
+  (function(){
+    function addNewFixture(){
+      var meta=document.querySelector('.job-card-meta');if(!meta)return;
+      var badge=document.createElement('span');badge.className='job-new-badge';badge.setAttribute('aria-label','New vacancy published within the last 6 hours');
+      var star=document.createElement('i');star.setAttribute('aria-hidden','true');star.textContent='★';
+      var text=document.createElement('span');text.textContent='NEW';badge.append(star,text);meta.prepend(badge);
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addNewFixture);else addNewFixture();
+  })();
+</script>
 </body>
 </html>

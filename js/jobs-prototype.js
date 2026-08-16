@@ -1,6 +1,8 @@
 /* ATSRS V574 — read-only Jobs prototype. No mailbox or server writes. */
 (function(){
   'use strict';
+  var JOB_NEW_WINDOW_MS=6*60*60*1000;
+  var jobsNewExpiryTimer=null;
   var jobsView='cards';
   try{jobsView=localStorage.getItem('atsrs_jobs_view')==='list'?'list':'cards'}catch(ignore){}
   var JOBS=[
@@ -21,9 +23,20 @@
   function option(value){return '<option value="'+esc(value)+'">'+esc(value)+'</option>'}
   function fact(label,value){return value?'<div class="job-fact"><dt>'+esc(label)+'</dt><dd>'+esc(value)+'</dd></div>':''}
   function recruiterFact(label,value,kind){return value?'<p class="job-contact-'+esc(kind||'item')+'"><strong>'+esc(label)+'</strong><span>'+esc(value)+'</span></p>':''}
-  function card(job){
+  function publishedAtMs(job){
+    if(!job||typeof job.published_at!=='string'||!job.published_at.trim())return NaN;
+    return Date.parse(job.published_at);
+  }
+  function isNewPublishedJob(job,nowMs){
+    var published=publishedAtMs(job),now=Number(nowMs);
+    return Number.isFinite(published)&&Number.isFinite(now)&&published<=now&&now-published<JOB_NEW_WINDOW_MS;
+  }
+  function newBadge(job,nowMs){
+    return isNewPublishedJob(job,nowMs)?'<span class="job-new-badge" aria-label="New vacancy published within the last 6 hours"><i aria-hidden="true">★</i><span>NEW</span></span>':'';
+  }
+  function card(job,nowMs){
     return '<article class="job-card" data-job-id="'+esc(job.id)+'">'+
-      '<div class="job-card-head"><div><h2>'+esc(job.title)+'</h2><p class="job-card-company"><span>Recruiter</span>'+esc(job.company)+'</p></div><span class="job-card-date">Received '+esc(job.received)+'</span></div>'+
+      '<div class="job-card-head"><div><h2>'+esc(job.title)+'</h2><p class="job-card-company"><span>Recruiter</span>'+esc(job.company)+'</p></div><div class="job-card-meta">'+newBadge(job,nowMs)+'<span class="job-card-date">Received '+esc(job.received)+'</span></div></div>'+
       '<div class="job-project-info"><p class="job-card-summary">'+esc(job.summary)+'</p><dl class="job-facts">'+fact('Location',job.location)+fact('Mobilisation',job.mobilisation)+fact('ROV / equipment',job.rov)+fact('Duration',job.duration)+fact('Worksite',job.worksite)+fact('Rate',job.rate)+'</dl><p class="job-requirements"><strong>Requirements</strong><span>'+esc(job.requirements)+'</span></p></div>'+
       '<div class="job-contact-info"><h3 class="job-contact-title">Contact information</h3><div class="job-recruiter-info" aria-label="Recruiter information">'+recruiterFact('Recruiter organisation',job.company,'org')+recruiterFact('Recruiter phone',job.recruiterPhone,'phone')+recruiterFact('Recruiter email',job.recruiterEmail,'email')+recruiterFact('Listing source',job.source,'source')+'</div></div></article>';
   }
@@ -37,11 +50,18 @@
   }
   function render(){
     var grid=byId('jobsGrid');if(!grid)return;
+    if(jobsNewExpiryTimer!==null){clearTimeout(jobsNewExpiryTimer);jobsNewExpiryTimer=null}
+    var nowMs=Date.now();
     var query=String(byId('jobsSearch')&&byId('jobsSearch').value||'').trim().toLowerCase();
     var role=String(byId('jobsRoleFilter')&&byId('jobsRoleFilter').value||'');
     var location=String(byId('jobsLocationFilter')&&byId('jobsLocationFilter').value||'');
     var filtered=JOBS.filter(function(job){var hay=[job.title,job.company,job.location,job.rov,job.summary].join(' ').toLowerCase();return(!query||hay.indexOf(query)!==-1)&&(!role||job.title===role)&&(!location||job.location===location)});
-    grid.innerHTML=filtered.map(card).join('');updateView();
+    grid.innerHTML=filtered.map(function(job){return card(job,nowMs)}).join('');updateView();
+    var nearestExpiry=filtered.reduce(function(nearest,job){
+      var published=publishedAtMs(job),expiry=published+JOB_NEW_WINDOW_MS;
+      return isNewPublishedJob(job,nowMs)&&expiry<nearest?expiry:nearest;
+    },Infinity);
+    if(Number.isFinite(nearestExpiry))jobsNewExpiryTimer=setTimeout(render,Math.max(1,nearestExpiry-nowMs+1));
     grid.classList.toggle('hidden',!filtered.length);var empty=byId('jobsEmpty');if(empty)empty.classList.toggle('hidden',!!filtered.length);
     var count=byId('jobsVisibleCount');if(count)count.textContent=filtered.length+' opportunit'+(filtered.length===1?'y':'ies');
   }
@@ -58,5 +78,5 @@
     render();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-  window.atsrsJobsPrototype={count:JOBS.length,render:render,getView:function(){return jobsView}};
+  window.atsrsJobsPrototype={count:JOBS.length,render:render,getView:function(){return jobsView},isNewPublishedJob:isNewPublishedJob,newWindowMs:JOB_NEW_WINDOW_MS};
 })();
