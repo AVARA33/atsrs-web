@@ -29,6 +29,6 @@ assert.doesNotMatch(source,/setInterval\(/);
 const indicatorHelpers=source.slice(source.indexOf('function publishedMs'),source.indexOf('function badge('));
 assert.doesNotMatch(indicatorHelpers,/localStorage|created_at/);
 assert.match(source,/setAttribute\('aria-label','New vacancy published within the last 6 hours'\)/);
-assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.job-new-badge i\{animation:none\}\}/);
+assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.job-new-badge i\{animation:none\}/);
 
 console.log('Jobs NEW indicator boundary tests passed');

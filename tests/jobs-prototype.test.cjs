@@ -14,9 +14,9 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=5801/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=580"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=580'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=581/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=581"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=581'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -91,13 +91,23 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/function detailContent\(job\)/);
   assert.match(runtime,/function openDetails\(job,opener\)/);
   assert.match(runtime,/dialog\.showModal\(\)/);
+  assert.match(runtime,/Minimize vacancy details/);
+  assert.match(runtime,/Maximize vacancy details/);
+  assert.match(runtime,/Restore vacancy details/);
+  assert.match(runtime,/function dismissDetails\(dialog\)/);
+  assert.match(runtime,/classList\.toggle\('is-maximized'\)/);
+  assert.match(runtime,/addEventListener\('cancel'/);
   assert.match(runtime,/e\.key!=='Tab'/);
   assert.match(runtime,/dialog\.addEventListener\('close'/);
   assert.match(runtime,/opener&&opener\.isConnected/);
   assert.match(runtime,/document\.body\.classList\.add\('jobs-detail-open'\)/);
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
-  assert.match(css,/\.job-detail-open,\.job-detail-close\{[^}]*width:44px[^}]*height:44px/);
-  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
+  assert.match(css,/\.job-detail-open,\.job-detail-control\{[^}]*width:44px[^}]*height:44px/);
+  assert.match(css,/\.job-detail-controls\{[^}]*display:flex[^}]*gap:6px/);
+  assert.match(css,/\.job-detail-dialog\.is-maximized\{width:calc\(100vw - 20px\)/);
+  assert.match(css,/repeat\(auto-fit,minmax\(190px,1fr\)\)/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)[^{]*\{[^}]*\.job-new-badge i\{animation:none\}\.job-detail-dialog\{transition:none\}/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog,\.job-detail-dialog\.is-maximized\{width:100vw;height:100dvh/);
   assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-view-switch\{border-color:transparent!important/);
 });
 
