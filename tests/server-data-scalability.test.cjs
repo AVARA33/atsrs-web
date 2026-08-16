@@ -22,6 +22,25 @@ test('file metadata query supports category filtering and server-side ranges', (
   assert.match(runtime, /categories\.join\(','\).*offset.*limit/s);
 });
 
+test('file metadata uses a short scoped cache with mutation invalidation', () => {
+  assert.match(runtime, /FILE_LIST_CACHE_TTL=30000/);
+  assert.match(runtime, /fileListCacheKey\(wantedScope,categories,offset,limit\)/);
+  assert.match(runtime, /cached&&cached\.expiresAt>Date\.now\(\)/);
+  assert.match(runtime, /function cachedFileById\(id\)/);
+  assert.match(runtime, /if\(cached\)return cached/);
+  assert.match(runtime, /invalidateFileMetadata\(scope\(\)\)/);
+  assert.match(runtime, /fileListCache\.clear\(\)/);
+});
+
+test('file-backed routes page metadata lazily without fetching file bodies', () => {
+  assert.match(runtime, /FILE_PAGE_SIZE=30/);
+  assert.match(runtime, /limit:FILE_PAGE_SIZE\+1/);
+  assert.match(runtime, /renderCloudFiles\(\{page:pageName,categories:categories,force:true,loadMore:true\}\)/);
+  assert.match(runtime, /Load more files/);
+  assert.match(runtime, /createSignedUrl\(/);
+  assert.doesNotMatch(runtime, /renderCloudFiles[\s\S]{0,1200}\.storage\.from\([^)]*\)\.download\(/);
+});
+
 test('database has ordered account and category indexes for file metadata', () => {
   assert.match(migration, /\(user_id, account_type, created_at desc\)/i);
   assert.match(migration, /\(user_id, account_type, category, created_at desc\)/i);

@@ -30,6 +30,10 @@
   var lastWriteError=null;
   var failedOperations=[];
   var fileRenderTimer=0;
+  var FILE_LIST_CACHE_TTL=30000;
+  var FILE_PAGE_SIZE=30;
+  var fileListCache=new Map();
+  var filePageState=new Map();
   var STABLE_ID_NAMESPACE='9fe1439e-5b5a-5c86-9d7c-28a67036e814';
   var UUID_PATTERN=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var commandRevisionChannel=null;
@@ -1697,6 +1701,7 @@
       await client().storage.from(FILE_BUCKET).remove([storagePath]);
       throw insert.error;
     }
+    invalidateFileMetadata(scope());
     return insert.data;
   }
   function activeFilePage(){
@@ -1711,6 +1716,33 @@
     if(page==='refs')return ['appraisal','reference','recommendation','coverLetter','cv'];
     return [];
   }
+  function copyFileRows(rows){
+    return (rows||[]).map(function(row){
+      return Object.assign({},row,{
+        metadata:row&&row.metadata&&typeof row.metadata==='object'
+          ?Object.assign({},row.metadata)
+          :row&&row.metadata
+      });
+    });
+  }
+  function normalizedFileCategories(categories){
+    return (categories||[]).map(String).filter(Boolean).sort();
+  }
+  function fileListCacheKey(valueScope,categories,offset,limit){
+    return [valueScope,normalizedFileCategories(categories).join(','),offset,limit].join(':');
+  }
+  function filePageKey(valueScope,categories){
+    return valueScope+':'+normalizedFileCategories(categories).join(',');
+  }
+  function invalidateFileMetadata(valueScope){
+    var prefix=String(valueScope||scope())+':';
+    Array.from(fileListCache.keys()).forEach(function(key){
+      if(key.indexOf(prefix)===0)fileListCache.delete(key);
+    });
+    Array.from(filePageState.keys()).forEach(function(key){
+      if(key.indexOf(prefix)===0)filePageState.delete(key);
+    });
+  }
   async function listFiles(options){
     if(!isCloudSession())return [];
     options=options&&typeof options==='object'?options:{};
@@ -1720,6 +1752,11 @@
     var offset=Math.max(0,Number(options.offset)||0);
     var limit=Math.max(0,Number(options.limit)||0);
     var wantedScope=scope();
+    var cacheKey=fileListCacheKey(wantedScope,categories,offset,limit);
+    var cached=fileListCache.get(cacheKey);
+    if(!options.bypassCache&&cached&&cached.expiresAt>Date.now()){
+      return copyFileRows(cached.rows);
+    }
     var operation=async function(){
       var valueUser=user();
       var query=client().from(FILE_TABLE)
@@ -1731,7 +1768,12 @@
       if(limit)query=query.range(offset,offset+limit-1);
       var result=await query;
       if(result.error)throw result.error;
-      return result.data||[];
+      var rows=result.data||[];
+      fileListCache.set(cacheKey,{
+        expiresAt:Date.now()+FILE_LIST_CACHE_TTL,
+        rows:copyFileRows(rows)
+      });
+      return copyFileRows(rows);
     };
     if(typeof window.atsrsSingleFlight==='function'){
       return window.atsrsSingleFlight(
@@ -1741,7 +1783,42 @@
     }
     return operation();
   }
+  async function fileMetadataPage(categories,loadMore){
+    var wantedScope=scope();
+    var key=filePageKey(wantedScope,categories);
+    var state=filePageState.get(key);
+    if(!loadMore&&state&&state.expiresAt>Date.now())return state;
+    if(!loadMore||!state)state={rows:[],nextOffset:0,hasMore:true,expiresAt:0};
+    if(loadMore&&!state.hasMore)return state;
+    var page=await listFiles({
+      categories:categories,
+      offset:state.nextOffset,
+      limit:FILE_PAGE_SIZE+1
+    });
+    var visible=page.slice(0,FILE_PAGE_SIZE);
+    var known=new Set(state.rows.map(function(row){return row.id;}));
+    visible.forEach(function(row){
+      if(!known.has(row.id)){state.rows.push(row);known.add(row.id);}
+    });
+    state.nextOffset+=visible.length;
+    state.hasMore=page.length>FILE_PAGE_SIZE;
+    state.expiresAt=Date.now()+FILE_LIST_CACHE_TTL;
+    filePageState.set(key,state);
+    return state;
+  }
+  function cachedFileById(id){
+    var prefix=scope()+':';
+    var now=Date.now();
+    for(var entry of fileListCache.entries()){
+      if(entry[0].indexOf(prefix)!==0||entry[1].expiresAt<=now)continue;
+      var row=entry[1].rows.find(function(candidate){return candidate.id===id;});
+      if(row)return copyFileRows([row])[0];
+    }
+    return null;
+  }
   async function findFile(id){
+    var cached=cachedFileById(id);
+    if(cached)return cached;
     var valueUser=user();
     var result=await client().from(FILE_TABLE)
       .select('id,category,file_name,mime_type,size_bytes,storage_path,metadata')
@@ -1759,6 +1836,7 @@
     if(removed.error)throw removed.error;
     var result=await client().from(FILE_TABLE).delete().eq('id',row.id);
     if(result.error)throw result.error;
+    invalidateFileMetadata(scope());
   }
   async function signedFileUrl(row,download){
     var result=await client().storage.from(FILE_BUCKET).createSignedUrl(
@@ -1877,18 +1955,41 @@
     if(upload){upload.textContent='Upload Main CV';upload.hidden=!!cv;if(upload.parentElement)upload.parentElement.hidden=!!cv;}
     if(input)input.removeAttribute('multiple');
   }
+  function renderFilePaginationControl(pageName,categories,hasMore){
+    var page=document.getElementById(pageName+'Page');
+    if(!page)return;
+    var control=page.querySelector('.atsrs-cloud-file-pagination');
+    if(!hasMore){if(control)control.remove();return;}
+    if(!control){
+      control=document.createElement('div');
+      control.className='atsrs-cloud-file-pagination';
+      control.style.cssText='display:flex;justify-content:center;padding:20px 0 8px;';
+      control.innerHTML='<button type="button" class="secondary">Load more files</button>';
+      page.appendChild(control);
+    }
+    var button=control.querySelector('button');
+    button.onclick=function(){
+      button.disabled=true;
+      button.textContent='Loading…';
+      renderCloudFiles({page:pageName,categories:categories,force:true,loadMore:true})
+        .catch(function(error){console.error(error);})
+        .finally(function(){button.disabled=false;button.textContent='Load more files';});
+    };
+  }
   async function renderCloudFiles(options){
     if(!isCloudSession()||loadedScope!==scope())return;
     options=options&&typeof options==='object'?options:{};
+    var pageName=String(options.page||activeFilePage());
     var categories=Array.isArray(options.categories)
       ?options.categories.map(String).filter(Boolean)
-      :fileCategoriesForPage(options.page);
+      :fileCategoriesForPage(pageName);
     if(!categories.length&&!options.force)return;
     var filterToken=window.atsrsReferenceFilterState
       ?window.atsrsReferenceFilterState.begin({scope:scope(),source:'cloud'})
       :null;
     try{
-      var rows=await listFiles({categories:categories});
+      var pageState=await fileMetadataPage(categories,!!options.loadMore);
+      var rows=pageState.rows;
       if(!categories.length||categories.indexOf('document')>=0){
         var uploadDates={};
         rows.filter(function(row){return row.category==='document';}).forEach(function(row){uploadDates[row.id]=row.created_at||'';});
@@ -1899,6 +2000,7 @@
         if(!categories.length||categories.indexOf(kind)>=0)renderReferenceKind(kind,rows,filterToken);
       });
       if(!categories.length||categories.indexOf('cv')>=0)renderCv(rows);
+      renderFilePaginationControl(pageName,categories,pageState.hasMore);
     }catch(error){console.error('ATSRS cloud file render failed',error);}
   }
   function scheduleFileRender(delay){
@@ -1906,7 +2008,7 @@
     fileRenderTimer=setTimeout(renderCloudFiles,typeof delay==='number'?delay:650);
   }
   async function replaceCv(file){
-    var rows=await listFiles();
+    var rows=await listFiles({categories:['cv']});
     var old=rows.filter(function(row){return row.category==='cv';});
     for(var i=0;i<old.length;i++)await deleteCloudFile(old[i].id);
     await uploadFile('cv',file);
@@ -1961,6 +2063,7 @@
           .maybeSingle();
         if(result.error)throw result.error;
         if(!result.data)throw new Error('The file date update was not confirmed by the server.');
+        invalidateFileMetadata(scope());
       }catch(error){console.error(error);alert('The date could not be saved to the ATSRS server.');}
     };
     window.atsrsV134Preview=function(kind,id){return window.atsrsCloudPreview(id);};
@@ -1977,17 +2080,17 @@
       return handleCloudUpload('cv',files).catch(function(error){console.error(error);alert('CV could not be saved to the ATSRS server.');});
     };
     window.previewCV=async function(){
-      var rows=await listFiles(),cv=rows.find(function(row){return row.category==='cv';});
+      var rows=await listFiles({categories:['cv']}),cv=rows.find(function(row){return row.category==='cv';});
       if(!cv){alert('No Main CV uploaded yet.');return;}
       return openCloudFile(cv.id,false);
     };
     window.downloadCV=async function(){
-      var rows=await listFiles(),cv=rows.find(function(row){return row.category==='cv';});
+      var rows=await listFiles({categories:['cv']}),cv=rows.find(function(row){return row.category==='cv';});
       if(!cv){alert('No Main CV uploaded yet.');return;}
       return openCloudFile(cv.id,true);
     };
     window.deleteCV=async function(){
-      var rows=await listFiles(),cv=rows.find(function(row){return row.category==='cv';});
+      var rows=await listFiles({categories:['cv']}),cv=rows.find(function(row){return row.category==='cv';});
       if(!cv){alert('No Main CV uploaded yet.');return;}
       await deleteCloudFile(cv.id);await renderCloudFiles({categories:['cv'],force:true});
     };
@@ -2004,17 +2107,17 @@
       return handleCloudUpload('coverLetter',files).catch(function(error){console.error(error);alert('Cover Letter could not be saved to the ATSRS server.');});
     };
     window.previewCoverLetter=async function(){
-      var rows=await listFiles(),file=rows.find(function(row){return row.category==='coverLetter';});
+      var rows=await listFiles({categories:['coverLetter']}),file=rows.find(function(row){return row.category==='coverLetter';});
       if(!file){alert('No cover letter uploaded yet.');return;}
       return openCloudFile(file.id,false);
     };
     window.downloadCoverLetter=async function(){
-      var rows=await listFiles(),file=rows.find(function(row){return row.category==='coverLetter';});
+      var rows=await listFiles({categories:['coverLetter']}),file=rows.find(function(row){return row.category==='coverLetter';});
       if(!file){alert('No cover letter uploaded yet.');return;}
       return openCloudFile(file.id,true);
     };
     window.deleteCoverLetter=async function(){
-      var rows=await listFiles(),files=rows.filter(function(row){return row.category==='coverLetter';});
+      var rows=await listFiles({categories:['coverLetter']}),files=rows.filter(function(row){return row.category==='coverLetter';});
       for(var i=0;i<files.length;i++)await deleteCloudFile(files[i].id);
       await renderCloudFiles({categories:['coverLetter'],force:true});
     };
@@ -2260,6 +2363,8 @@
       commandCircuits.clear();
       normalizedWriteScopeCache.clear();
       stableCompatibilityCache.clear();
+      fileListCache.clear();
+      filePageState.clear();
       loadedScope='';
       loadingPromise=null;
       lastWriteError=null;
@@ -2279,6 +2384,8 @@
     flush:flushWrites,
     refresh:async function(){
       loadedScope='';
+      fileListCache.clear();
+      filePageState.clear();
       await ensureWorkspaceData();
       if(typeof window.renderAll==='function')window.renderAll();
       await renderCloudFiles();
@@ -2300,6 +2407,7 @@
         .maybeSingle();
       if(result.error)throw result.error;
       if(!result.data)throw new Error('The document update was not confirmed by the server.');
+      invalidateFileMetadata(scope());
       return result.data;
     },
     openDocument:function(id,download){

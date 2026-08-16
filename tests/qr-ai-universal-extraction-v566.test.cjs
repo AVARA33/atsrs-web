@@ -39,6 +39,6 @@ test('universal extraction distinguishes driving licence metadata and dates', ()
 });
 
 test('updated frontend assets are cache-busted together', () => {
-  assert.match(index, /js\/server-data\.js\?v=566/);
+  assert.match(index, /js\/server-data\.js\?v=568/);
   assert.match(index, /js\/app\.js\?v=566/);
 });
