@@ -14,9 +14,9 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=578/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=578"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=578'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=580/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=580"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=580'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -35,6 +35,7 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/replaceChildren/);
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter organisation/);
+  assert.doesNotMatch(runtime,/jobsManageButton|jobs-manage-button/);
   assert.doesNotMatch(runtime,/No candidate commission|job-fee-note/);
   assert.equal((index.match(/No candidate commission\./g)||[]).length,1);
   assert.match(index,/class="jobs-notice"[\s\S]*No candidate commission\./);
@@ -43,7 +44,8 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter phone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
-  assert.match(runtime,/action\(actions,'Send email',mailtoHref\(job\),'email'\)/);
+  assert.match(runtime,/contact\(contacts,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
+  assert.doesNotMatch(runtime,/Send email/);
   assert.doesNotMatch(runtime,/['"]tel:/);
   assert.doesNotMatch(index,/Recruiters use ATSRS through subscription plans/);
   assert.doesNotMatch(runtime,/Recruiters use ATSRS through subscription plans/);
@@ -71,9 +73,32 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
   assert.match(runtime,/contact\(contacts,'Listing source'/);
   assert.match(runtime,/contact\(contacts,'Application'/);
-  assert.match(runtime,/action\(actions,'Send email'/);
+  assert.doesNotMatch(runtime,/function action\(/);
   assert.match(css,/\.jobs-grid\.jobs-cards\{grid-auto-rows:1fr;align-items:stretch\}/);
   assert.match(css,/\.jobs-cards \.job-card\{height:100%;grid-template-rows:auto 1fr auto\}/);
+});
+
+test('Jobs renders only verified source and closing dates with card/list parity',()=>{
+  assert.match(runtime,/job\.source_posted_at\|\|job&&job\.display_posted_date/);
+  assert.match(runtime,/value\?'Posted '\+value:''/);
+  assert.match(runtime,/fact\(dl,'Closing date',verifiedDate\(job\.closing_date\)\)/);
+  assert.doesNotMatch(runtime,/prefix='Received '|Received /);
+  assert.doesNotMatch(runtime,/dateLabel\([^)]*published_at/);
+  assert.match(runtime,/Intl\.DateTimeFormat\('en-GB'/);
+});
+
+test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
+  assert.match(runtime,/function detailContent\(job\)/);
+  assert.match(runtime,/function openDetails\(job,opener\)/);
+  assert.match(runtime,/dialog\.showModal\(\)/);
+  assert.match(runtime,/e\.key!=='Tab'/);
+  assert.match(runtime,/dialog\.addEventListener\('close'/);
+  assert.match(runtime,/opener&&opener\.isConnected/);
+  assert.match(runtime,/document\.body\.classList\.add\('jobs-detail-open'\)/);
+  assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
+  assert.match(css,/\.job-detail-open,\.job-detail-close\{[^}]*width:44px[^}]*height:44px/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-view-switch\{border-color:transparent!important/);
 });
 
 test('Jobs dark view controls and notice use the neutral palette',()=>{

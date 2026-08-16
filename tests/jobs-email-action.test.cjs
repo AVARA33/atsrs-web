@@ -27,7 +27,10 @@ assert.equal(decodeURIComponent(href.split('&body=')[1]).includes('Ocean Co'),tr
 assert.equal(context.mailtoHref({...valid,recruiter_email:''}),'');
 assert.equal(context.mailtoHref({...valid,recruiter_email:'not-an-email'}),'');
 assert.equal(context.mailtoHref({...valid,recruiter_email:'a@b'}),'');
+assert.match(source,/contact\(contacts,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
+assert.doesNotMatch(source,/Send email/);
+assert.doesNotMatch(source,/function action\(/);
 assert.doesNotMatch(source,/['"]tel:/);
 assert.match(source,/var applicationHref=httpUrl\(job\.application_url\)/);
 
-console.log('Jobs email action tests passed');
+console.log('Jobs clickable recruiter email tests passed');
