@@ -1,4 +1,4 @@
-/* ATSRS V570 — read-only Jobs prototype. No mailbox or server writes. */
+/* ATSRS V571 — read-only Jobs prototype. No mailbox or server writes. */
 (function(){
   'use strict';
   var jobsView='cards';
@@ -26,7 +26,7 @@
       '<div class="job-card-head"><div><h2>'+esc(job.title)+'</h2><p class="job-card-company"><span>Recruiter</span>'+esc(job.company)+'</p></div><span class="job-card-date">Received '+esc(job.received)+'</span></div>'+
       '<p class="job-card-summary">'+esc(job.summary)+'</p>'+
       '<dl class="job-facts">'+fact('Location',job.location)+fact('Mobilisation',job.mobilisation)+fact('ROV / equipment',job.rov)+fact('Duration',job.duration)+fact('Worksite',job.worksite)+fact('Rate',job.rate)+'</dl>'+
-      '<div class="job-details"><p class="job-requirements"><strong>Requirements</strong><span>'+esc(job.requirements)+'</span></p><div class="job-recruiter-info" aria-label="Recruiter information">'+recruiterFact('Recruiter organisation',job.company)+recruiterFact('Listing source',job.source)+'</div><p class="job-fee-note"><strong>No candidate commission.</strong> Recruiters use ATSRS through subscription plans.</p></div></article>';
+      '<div class="job-details"><p class="job-requirements"><strong>Requirements</strong><span>'+esc(job.requirements)+'</span></p><div class="job-recruiter-info" aria-label="Recruiter information">'+recruiterFact('Recruiter organisation',job.company)+recruiterFact('Listing source',job.source)+'</div><p class="job-fee-note"><strong>No candidate commission.</strong></p></div></article>';
   }
   function updateView(){
     var grid=byId('jobsGrid');if(grid){grid.classList.toggle('jobs-list',jobsView==='list');grid.classList.toggle('jobs-cards',jobsView==='cards')}

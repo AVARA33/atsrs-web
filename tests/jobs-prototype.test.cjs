@@ -13,8 +13,8 @@ const shellRuntime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8'
 test('Jobs prototype is isolated, navigable and visibly in development',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?IN DEVELOPMENT/);
-  assert.match(index,/jobs-prototype\.css\?v=570/);
-  assert.match(index,/jobs-prototype\.js\?v=570/);
+  assert.match(index,/jobs-prototype\.css\?v=571/);
+  assert.match(index,/jobs-prototype\.js\?v=571/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
@@ -31,7 +31,8 @@ test('Jobs data is privacy-filtered and read only',()=>{
   assert.match(runtime,/No candidate commission/);
   assert.doesNotMatch(runtime,/recruiterName|recruiterEmail|recruiterPhone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
-  assert.match(index,/Recruiters use ATSRS through subscription plans/);
+  assert.doesNotMatch(index,/Recruiters use ATSRS through subscription plans/);
+  assert.doesNotMatch(runtime,/Recruiters use ATSRS through subscription plans/);
 });
 
 test('Jobs supports filtering and responsive zero-overflow layout',()=>{

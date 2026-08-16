@@ -1,4 +1,4 @@
-/* ATSRS V570 — isolated Jobs prototype. */
+/* ATSRS V571 — isolated Jobs prototype. */
 #jobsPage{width:min(100%,1440px);margin:0 auto;padding:0 0 48px;min-width:0}
 .jobs-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}
 .jobs-hero h3{margin:12px 0 8px;font-size:clamp(28px,3vw,40px);line-height:1.08}
