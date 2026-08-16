@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=580/);
+  assert.match(index,/jobs-prototype\.css\?v=5801/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=580"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=580'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
@@ -98,7 +98,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
   assert.match(css,/\.job-detail-open,\.job-detail-close\{[^}]*width:44px[^}]*height:44px/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
-  assert.match(css,/html\[data-theme="light"\] \.jobs-view-switch\{border-color:transparent!important/);
+  assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-view-switch\{border-color:transparent!important/);
 });
 
 test('Jobs dark view controls and notice use the neutral palette',()=>{
@@ -106,5 +106,5 @@ test('Jobs dark view controls and notice use the neutral palette',()=>{
   assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);
-  assert.match(css,/html\[data-theme="light"\] \.jobs-view-switch button\[aria-pressed="true"\]/);
+  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]/);
 });
