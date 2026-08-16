@@ -82,3 +82,22 @@ Corporate Personnel is also bounded to 30 links per request with a deterministic
 The sharing API already had explicit projections and 100/500-row limits, so it was retained. Projects still use the compatibility payload and are intentionally deferred until the authoritative normalized route is proven; splitting that payload here would mix a data migration with a query optimization.
 
 After this batch, two primary performance phases remain: storage/orphan reconciliation and write-integrity/concurrency hardening.
+
+## Step 6 — Storage and SQL reconciliation
+
+ATSRS now has a service-role-only, aggregate reconciliation report that compares
+`atsrs_files` metadata with the private `atsrs-user-files` bucket. It reports
+missing objects, untracked objects, stale untracked objects, QR-session linkage,
+owner-path mismatches and byte-size mismatches. The same report checks the
+profile-photo bucket for objects whose owning Auth user no longer exists.
+
+The report is deliberately read-only: it exposes no object paths, runs only on
+demand and performs no automatic deletion. The local operations command stores
+an aggregate JSONL result under the protected monitoring directory. A live
+baseline found no metadata rows with missing Storage objects, but did identify
+three QR-linked Storage objects without final `atsrs_files` metadata; one was
+older than 24 hours. Those objects remain untouched until a separate reviewed
+cleanup decision is made.
+
+After this batch, one primary performance phase remains: write-integrity and
+concurrency hardening.
