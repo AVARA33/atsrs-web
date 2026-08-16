@@ -1745,6 +1745,16 @@
     if(result.error)throw result.error;
     return result.data.signedUrl;
   }
+  async function downloadCloudFile(id){
+    var row=await findFile(id);
+    if(!row)throw new Error('Document file was not found on the ATSRS server.');
+    var result=await client().storage.from(FILE_BUCKET).download(row.storage_path);
+    if(result.error)throw result.error;
+    return new File([result.data],row.file_name||'ATSRS-document',{
+      type:row.mime_type||result.data.type||'application/octet-stream',
+      lastModified:Date.now()
+    });
+  }
   async function openCloudFile(id,download){
     try{
       var row=await findFile(id);
@@ -2261,6 +2271,9 @@
     },
     openDocument:function(id,download){
       return openCloudFile(id,!!download);
+    },
+    downloadDocumentFile:function(id){
+      return downloadCloudFile(id);
     },
     deleteDocument:function(id){
       return deleteCloudFile(id);

@@ -48,8 +48,18 @@ const extractionSchema = {
   type: "object",
   additionalProperties: false,
   properties: {
+    document_category: {
+      type: "string",
+      enum: [
+        "identity", "driving_licence", "travel", "education", "training_certificate",
+        "professional_licence", "medical", "insurance", "employment", "contract",
+        "permit", "vehicle", "company", "financial", "other",
+      ],
+    },
     document_type: { type: "string" },
     document_number: { type: "string" },
+    issuing_country: { type: "string" },
+    issuing_authority: { type: "string" },
     country_authority: { type: "string" },
     provider: { type: "string" },
     issue_date: { type: "string" },
@@ -59,8 +69,11 @@ const extractionSchema = {
     warnings: { type: "array", items: { type: "string" } },
   },
   required: [
+    "document_category",
     "document_type",
     "document_number",
+    "issuing_country",
+    "issuing_authority",
     "country_authority",
     "provider",
     "issue_date",
@@ -192,13 +205,20 @@ Deno.serve(async (req: Request) => {
     : { type: "input_image", image_url: fileData, detail: "high" };
 
   const prompt = [
-    "Extract document metadata for a professional compliance document.",
+    "Extract universal metadata from the supplied document, regardless of country, language, industry, or visual layout.",
+    "Recognize identity cards, driving licences, passports and visas, education records, training certificates, professional licences, medical records, insurance documents, employment records, contracts, permits, vehicle documents, company records, financial records, and other official documents.",
+    "Classify the document into the closest document_category. Use other only when no listed category fits.",
     "Read only information visibly present in the supplied file. Never guess or invent values.",
-    "Use the exact certificate or document title where possible.",
+    "Use the exact official document title where possible; for a driving licence use a clear localized title such as Driving Licence.",
+    "document_number is the principal licence, passport, certificate, policy, permit, contract, registration, reference, or serial number. Prefer a field explicitly labelled as the document number.",
+    "issuing_country is only the country or jurisdiction. issuing_authority is the ministry, agency, company, institution, employer, training provider, insurer, or other issuer.",
+    "country_authority is retained for compatibility and should contain the issuing country; provider should contain the issuing authority or provider.",
     "Return dates as YYYY-MM-DD. If a date cannot be read confidently, return an empty string.",
     "issue_date means awarded, issued, completed, or valid-from date.",
     "expiry_date means expires, expiry, valid-until, or valid-to date. Do not swap issue and expiry dates.",
     "Set expiry_not_applicable true only when the document explicitly has no expiry or lifetime validity.",
+    "For driving licences, carefully distinguish date of birth, issue date, and expiry date using printed labels and standard numbered fields; never use date of birth as issue_date or expiry_date.",
+    "For multi-page files, use metadata belonging to the primary document and warn if different documents appear in one file.",
     "Put uncertainty, conflicting dates, unreadable text, or suspected OCR problems in warnings.",
   ].join(" ");
 

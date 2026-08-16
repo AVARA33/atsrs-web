@@ -132,6 +132,8 @@
 
   var aiScanBusy=false;
   var aiConsentGranted=false;
+  var pendingQrAiFile=null;
+  var pendingQrAiRow=null;
 
   function setAiScanStatus(message,isError){
     var scanBox=byId('scanBox');
@@ -294,6 +296,15 @@
     if(!checkbox||!checkbox.checked)return;
     aiConsentGranted=true;
     var panel=byId('aiConsentPanel');if(panel)panel.classList.add('hidden');
+    if(pendingQrAiFile&&pendingQrAiRow){
+      var qrFile=pendingQrAiFile;
+      var qrRow=pendingQrAiRow;
+      pendingQrAiFile=null;
+      pendingQrAiRow=null;
+      aiConsentGranted=false;
+      scanDocumentFile(qrFile,{qrRow:qrRow});
+      return;
+    }
     if(typeof window.showOpenFilePicker==='function'){
       try{
         var handles=await window.showOpenFilePicker({
@@ -325,17 +336,21 @@
 
   function useManualInstead(){
     closeAiConsent();
-    openManual();
+    if(pendingQrAiRow){
+      prepareQrManual(pendingQrAiRow,'Phone upload received. Enter the document details manually and save.');
+      pendingQrAiFile=null;
+      pendingQrAiRow=null;
+    }else openManual();
   }
 
-  function applyAiResult(file,result){
+  function applyAiResult(file,result,options){
     openManual();
     var documentData=result&&result.document&&typeof result.document==='object'?result.document:{};
     var values={
       cType:documentData.document_type,
       cDocNo:documentData.document_number,
-      cCountry:documentData.country_authority,
-      cProvider:documentData.provider,
+      cCountry:documentData.issuing_country||documentData.country_authority,
+      cProvider:documentData.provider||documentData.issuing_authority,
       cIssue:documentData.issue_date,
       cExpiry:documentData.expiry_date
     };
@@ -345,10 +360,13 @@
       noExpiry.checked=!!documentData.expiry_not_applicable;
       noExpiry.dispatchEvent(new Event('change',{bubbles:true}));
     }
-    window.atsrsPendingCertificateFile=file;
+    if(options&&options.qrRow){
+      window.atsrsPendingCertificateFile=null;
+      window.atsrsPendingQrDocument=options.qrRow;
+    }else window.atsrsPendingCertificateFile=file;
     var preview=byId('manualFilePreview');
     if(preview){
-      preview.textContent='AI scan ready: '+file.name+' ('+Math.round(file.size/1024)+' KB)';
+      preview.textContent=(options&&options.qrRow?'Phone upload and AI scan ready: ':'AI scan ready: ')+file.name+' ('+Math.round(file.size/1024)+' KB)';
       preview.classList.add('active');
     }
     var warnings=Array.isArray(documentData.warnings)?documentData.warnings.filter(Boolean):[];
@@ -363,7 +381,7 @@
     setTimeout(function(){var panel=byId('certManualPanel');if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});},60);
   }
 
-  async function scanDocumentFile(file){
+  async function scanDocumentFile(file,options){
     if(aiScanBusy)return;
     if(!supportedAiFile(file)){
       setAiScanStatus('Use a PDF, JPG, PNG, or WebP file.',true);
@@ -399,10 +417,13 @@
       }
       if(!invoked.data||!invoked.data.document)throw new Error('No document details were returned.');
       setAiScanStatus('AI scan completed. Review the detected information before saving.');
-      applyAiResult(file,invoked.data);
+      applyAiResult(file,invoked.data,options);
     }catch(error){
       console.error('ATSRS AI document scan failed',error);
       setAiScanStatus(friendlyAiError(error),true);
+      if(options&&options.qrRow){
+        prepareQrManual(options.qrRow,'The phone upload succeeded, but AI could not read the document. Enter the details manually and save.');
+      }
     }finally{
       aiScanBusy=false;
       buttons.forEach(function(button){button.disabled=false;});
@@ -619,7 +640,11 @@
     if(checkbox){checkbox.onchange=function(){var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=!checkbox.checked;};}
     var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.onclick=function(e){if(e)e.preventDefault();continueAiConsent();};
     var cancel=byId('aiConsentCancelBtn');if(cancel)cancel.onclick=function(e){if(e)e.preventDefault();useManualInstead();};
-    var close=byId('aiConsentCloseBtn');if(close)close.onclick=function(e){if(e)e.preventDefault();closeAiConsent();};
+    var close=byId('aiConsentCloseBtn');if(close)close.onclick=function(e){
+      if(e)e.preventDefault();
+      if(pendingQrAiRow)useManualInstead();
+      else closeAiConsent();
+    };
     ensureCancel();
   }
 
@@ -638,7 +663,7 @@
     if(file)scanDocumentFile(file);
   };
 
-  window.atsrsReceiveQrDocument=function(row){
+  function prepareQrManual(row,message){
     if(!row||!row.id)return;
     openManual();
     window.atsrsPendingCertificateFile=null;
@@ -648,11 +673,31 @@
     if(typeField&&!typeField.value)typeField.value=String(row.file_name||'').replace(/\.[^.]+$/,'').trim();
     var preview=byId('manualFilePreview');
     if(preview){
-      preview.textContent='Phone upload ready: '+String(row.file_name||'Document')+' ('+Math.max(1,Math.round(Number(row.size_bytes||0)/1024))+' KB). Complete the details and save.';
+      preview.textContent=(message||'Phone upload ready. Complete the details and save.')+' '+String(row.file_name||'Document')+' ('+Math.max(1,Math.round(Number(row.size_bytes||0)/1024))+' KB).';
       preview.classList.add('active');
     }
     var title=byId('manualCertTitle');if(title)title.textContent='Complete phone upload';
     var first=byId('cType');if(first)first.focus();
+  }
+
+  window.atsrsReceiveQrDocument=async function(row){
+    if(!row||!row.id)return;
+    if(!window.atsrsCloudData||typeof window.atsrsCloudData.downloadDocumentFile!=='function'){
+      prepareQrManual(row,'Phone upload received. Enter the document details manually and save.');
+      return;
+    }
+    try{
+      openAiScan();
+      setAiScanStatus('Phone upload received. Confirm AI processing to detect the document details.');
+      pendingQrAiRow=row;
+      pendingQrAiFile=await window.atsrsCloudData.downloadDocumentFile(row.id);
+      requestAiConsent();
+    }catch(error){
+      console.error('ATSRS QR document could not be prepared for AI scan',error);
+      pendingQrAiFile=null;
+      pendingQrAiRow=null;
+      prepareQrManual(row,'Phone upload received, but automatic extraction could not start. Enter the details manually and save.');
+    }
   };
 
   function clearForm(){
