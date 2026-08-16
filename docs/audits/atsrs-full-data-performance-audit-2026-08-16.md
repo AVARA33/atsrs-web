@@ -60,3 +60,15 @@ The first measured runtime optimization therefore changes maintenance polling, n
 ## Release decision
 
 **GO for this narrow client optimization.** It changes no schema, RLS policy, entitlement, production user row or storage object. The next performance batch should focus on route-based script loading and measured Supabase query projections, not a platform migration or a broad rewrite.
+
+## Step 4 — route-aware optional scripts
+
+The first route-loading batch removes 87,327 uncompressed bytes from the universal startup path:
+
+- Jobs prototype: loaded only when Jobs is opened.
+- QR upload: QR generator and upload runtime loaded only when Scan with QR is selected.
+- File preview: preview/zoom runtime loaded only when a file is opened.
+
+The loader deduplicates concurrent requests and preserves the existing public function contracts, so callers do not need route-specific knowledge. CSS remains eager in this low-risk batch to avoid a visible unstyled transition. No database, RLS, entitlement, user row or storage object changes are included.
+
+After this batch, three primary performance phases remain: measured Supabase projections for growing non-file collections, storage/orphan reconciliation, and write-integrity/concurrency hardening.

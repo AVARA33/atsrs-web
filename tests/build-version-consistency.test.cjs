@@ -6,6 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'stability-runtime.js'), 'utf8');
 const bootRefresh = fs.readFileSync(path.join(root, 'js', 'boot-refresh.js'), 'utf8');
+const routeFeatureLoader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
 const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-activation.md'), 'utf8');
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
@@ -40,13 +41,13 @@ for (const asset of [
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=410"`));
 }
 
-assert.match(index, /src="js\/server-data\.js\?v=565"/);
+assert.match(index, /src="js\/server-data\.js\?v=568"/);
 assert.match(index, /src="js\/account\.js\?v=412"/);
 
-assert.match(index, /src="js\/app\.js\?v=565"/);
+assert.match(index, /src="js\/app\.js\?v=566"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=443"/);
 assert.match(index, /src="js\/storage\.js\?v=559"/);
-assert.match(index, /src="js\/auth\.js\?v=549"/);
+assert.match(index, /src="js\/auth\.js\?v=568"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/corporate-remediation\.css\?v=480"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
@@ -56,14 +57,16 @@ assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /src="js\/corporate-information-architecture\.js\?v=444"/);
 assert.match(index, /src="js\/corporate-remediation\.js\?v=480"/);
 assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=442"/);
-assert.match(index, /href="css\/shell-polish\.css\?v=549"/);
+assert.match(index, /href="css\/shell-polish\.css\?v=568"/);
 assert.match(index, /src="js\/personal-dashboard-qa\.js\?v=549"/);
-assert.match(index, /src="js\/shell-polish\.js\?v=555"/);
+assert.match(index, /src="js\/shell-polish\.js\?v=567"/);
 assert.match(index, /href="css\/public-landing\.css\?v=532"/);
 assert.match(index, /href="css\/share-profile\.css\?v=497"/);
 assert.match(index, /src="js\/public-landing\.js\?v=560"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
-assert.match(index, /src="js\/product-experience\.js\?v=447"/);
+assert.doesNotMatch(index, /src="js\/product-experience\.js\?v=447"/);
+assert.match(index, /src="js\/route-feature-loader\.js\?v=569"/);
+assert.match(routeFeatureLoader, /loadScript\('js\/product-experience\.js\?v=447'\)/);
 assert.match(index, /src="js\/talent-directory\.js\?v=519"/);
 assert.match(index, /src="js\/corporate-reporting\.js\?v=519"/);
 assert.match(index, /href="css\/workspace-surface-standard-v519\.css\?v=519"/);

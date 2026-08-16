@@ -9,12 +9,15 @@ const css=fs.readFileSync(path.join(root,'css','jobs-prototype.css'),'utf8');
 const storage=fs.readFileSync(path.join(root,'js','storage.js'),'utf8');
 const shellCss=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const shellRuntime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
+const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js'),'utf8');
 
 test('Jobs prototype is isolated, navigable and visibly in development',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?IN DEVELOPMENT/);
   assert.match(index,/jobs-prototype\.css\?v=573/);
-  assert.match(index,/jobs-prototype\.js\?v=573/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=573"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=573'\)/);
+  assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');

@@ -5,10 +5,13 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'product-experience.js'), 'utf8');
+const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'product-experience.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'file-preview-pan-harness.html'), 'utf8');
 
-assert.match(index, /js\/product-experience\.js\?v=447/);
+assert.doesNotMatch(index, /<script src="js\/product-experience\.js\?v=447"><\/script>/);
+assert.match(loader, /loadScript\('js\/product-experience\.js\?v=447'\)/);
+assert.match(loader, /window\.atsrsOpenFilePreview=previewStub/);
 assert.match(index, /css\/product-experience\.css\?v=447/);
 assert.match(runtime, /stage\.scrollWidth>stage\.clientWidth\+1\|\|stage\.scrollHeight>stage\.clientHeight\+1/);
 assert.match(runtime, /addEventListener\('pointerdown'/);
