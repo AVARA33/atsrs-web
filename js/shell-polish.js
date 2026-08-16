@@ -13,7 +13,7 @@
     navCompliance:'shield-check',
     navReports:'chart-bar',
     navProfile:'user-circle',
-    navJobs:'briefcase',
+    navJobs:'briefcase-metal',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
   };
