@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=576-qa2">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=578-qa">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
@@ -14,24 +14,28 @@
     html[data-theme="light"]{--text:#13233c;--muted:#5f7088;color-scheme:light}html[data-theme="light"] body{background:#edf2f8;color:#13233c}html[data-theme="light"] button{background:#fff;color:#13233c;border-color:#cbd5e1}
   </style>
 </head>
-<body>
+<body class="personal-mode">
 <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
-<main>
+<section id="app" class="app"><main class="main">
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
   <div class="jobs-hero"><div><span class="pill jobs-development-badge">LIVE JOBS</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount">0 opportunities</strong><span>Server-backed vacancies</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
   <div class="jobs-notice"><i aria-hidden="true">i</i><p><strong>No candidate commission.</strong></p></div>
   <div class="jobs-filters"><label class="jobs-search"><span>Search</span><span class="jobs-search-control"><i aria-hidden="true">⌕</i><input id="jobsSearch" type="search" placeholder="Role, company, location or ROV system"></span></label><label><span>Role</span><select id="jobsRoleFilter"><option value="">All roles</option></select></label><label><span>Location</span><select id="jobsLocationFilter"><option value="">All locations</option></select></label><button id="jobsClearFilters" type="button">Clear filters</button></div>
   <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div><div id="jobsEmpty" class="jobs-empty hidden"><h2>No matching opportunities</h2><p>Clear filters.</p></div><div class="jobs-load-more-wrap"><button id="jobsLoadMore" class="hidden">Load more</button></div>
 </section>
-</main>
+</main></section>
 <script>
   (function(){
     var adminMode=new URLSearchParams(location.search).get('admin')==='1';
-    var fixture=[{id:'1',title:'<img src=x onerror="window.__xss=1"> ROV Supervisor',company:'Film-Ocean',location:'Aberdeen, UK',equipment:'ROV',summary:'Safe server text',requirements:'Valid offshore certification',recruiter_email:'jobs@example.com',recruiter_phone:'+44 1224 000000',source_type:'linkedin',source_url:'https://linkedin.com/example',application_url:'https://example.com/apply',status:'published',source_posted_at:'2026-08-16',published_at:new Date(Date.now()-60000).toISOString(),updated_at:new Date().toISOString()}];
+    var fixture=[
+      {id:'1',title:'<img src=x onerror="window.__xss=1"> ROV Supervisor',company:'Film-Ocean',location:'Aberdeen, UK',equipment:'ROV',summary:'Safe server text with a longer description used to prove equal card sizing without hiding content.',requirements:'Valid offshore certification and verified equipment experience.',recruiter_name:'Verified Recruiter',recruiter_email:'jobs@example.com',recruiter_phone:'+44 1224 000000',source_type:'linkedin',source_url:'https://linkedin.com/example',application_url:'https://example.com/apply',status:'published',source_posted_at:'2026-08-16T11:26:32.796Z',closing_date:'2026-09-11',published_at:new Date(Date.now()-60000).toISOString(),updated_at:new Date().toISOString()},
+      {id:'2',title:'Workshop Technician',company:'ROVOP',location:'Westhill, UK',summary:'Short verified summary.',source_type:'linkedin',source_url:'https://linkedin.com/example-two',application_url:'https://example.com/apply-two',status:'published',display_posted_date:'2026-08-15',published_at:new Date(Date.now()-120000).toISOString(),updated_at:new Date(Date.now()-1000).toISOString()},
+      {id:'3',title:'Analysis Engineer',company:'DOF',location:'Paradise, Canada',work_type:'Temporary; on-site',duration:'6–12 months',summary:'Engineering analysis role.',requirements:'OrcaFlex proficiency.',source_type:'linkedin',source_url:'https://linkedin.com/example-three',status:'published',published_at:new Date(Date.now()-180000).toISOString(),updated_at:new Date(Date.now()-2000).toISOString()}
+    ];
     function query(){var q={select:function(){return q},eq:function(){return q},lte:function(){return q},order:function(){return q},limit:function(){return q},or:function(){return q},then:function(resolve){resolve({data:fixture,error:null})}};return q}
     window.supabaseClient={from:query,auth:{getSession:async function(){return{data:{session:adminMode?{user:{id:'owner'}}:null}}}},rpc:async function(){return{data:adminMode,error:null}}};
   })();
 </script>
-<script src="../../js/jobs-prototype.js?v=576-qa2"></script>
+<script src="../../js/jobs-prototype.js?v=578-qa"></script>
 </body>
 </html>

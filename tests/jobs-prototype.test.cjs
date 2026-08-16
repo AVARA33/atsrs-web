@@ -14,9 +14,9 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=576/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=576"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=576'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=578/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=578"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=578'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -67,11 +67,18 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/jobs-list/);
   assert.match(css,/\.jobs-grid\.jobs-list/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
+  assert.doesNotMatch(css,/\.jobs-list \.job-contact-(?:org|source)\{display:none/);
+  assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
+  assert.match(runtime,/contact\(contacts,'Listing source'/);
+  assert.match(runtime,/contact\(contacts,'Application'/);
+  assert.match(runtime,/action\(actions,'Send email'/);
+  assert.match(css,/\.jobs-grid\.jobs-cards\{grid-auto-rows:1fr;align-items:stretch\}/);
+  assert.match(css,/\.jobs-cards \.job-card\{height:100%;grid-template-rows:auto 1fr auto\}/);
 });
 
 test('Jobs dark view controls and notice use the neutral palette',()=>{
   assert.match(css,/#jobsPage \.jobs-notice\{background:#070908!important;border-color:#242a27!important\}/);
-  assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:transparent!important/);
+  assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-view-switch button\[aria-pressed="true"\]/);

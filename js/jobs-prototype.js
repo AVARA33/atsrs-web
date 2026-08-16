@@ -1,4 +1,4 @@
-/* ATSRS V576 — server-backed Jobs and owner-only management. */
+/* ATSRS V578 — server-backed Jobs with card/list information parity. */
 (function(){
 'use strict';
 var PAGE=30,NEW_MS=21600000,jobs=[],adminJobs=[],cursor=null,more=false,loading=false,isAdmin=false,selected='',timer=null,view='cards';
@@ -16,7 +16,7 @@ function db(){return window.supabaseClient&&window.supabaseClient.from?window.su
 function publishedMs(job){if(!job||job.status!=='published'||typeof job.published_at!=='string'||!job.published_at.trim())return NaN;return Date.parse(job.published_at)}
 function isNew(job,now){var p=publishedMs(job),n=Number(now);return Number.isFinite(p)&&Number.isFinite(n)&&p<=n&&n-p<NEW_MS}
 function badge(parent,job,now){if(!isNew(job,now))return;var b=el('span','job-new-badge');b.setAttribute('aria-label','New vacancy published within the last 6 hours');var s=el('i','', '★');s.setAttribute('aria-hidden','true');b.append(s,el('span','', 'NEW'));parent.append(b)}
-function dateLabel(job){var value=clean(job.source_posted_at||job.display_posted_date),prefix='Posted ';if(!value){value=clean(job.received_at);prefix='Received '}if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return'';var d=new Date(value+'T00:00:00Z');return Number.isFinite(d.getTime())?prefix+new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(d):''}
+function dateLabel(job){var value=clean(job.source_posted_at||job.display_posted_date),prefix='Posted ';if(!value){value=clean(job.received_at);prefix='Received '}var match=value.match(/^(\d{4}-\d{2}-\d{2})(?:T[0-9:.+-]+Z?)?$/);if(!match)return'';var d=new Date(match[1]+'T00:00:00Z');return Number.isFinite(d.getTime())?prefix+new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(d):''}
 function fact(dl,label,value){if(!clean(value))return;var w=el('div','job-fact');w.append(el('dt','',label),el('dd','',value));dl.append(w)}
 function contact(box,label,value,kind,href){if(!clean(value))return;var p=el('p','job-contact-'+kind);p.append(el('strong','',label));if(href){var a=el('a','',value);a.href=href;if(/^https?:/i.test(href)){a.target='_blank';a.rel='noopener noreferrer'}p.append(a)}else p.append(el('span','',value));box.append(p)}
 function action(box,label,href,kind){if(!href)return;var a=el('a','secondary job-action job-action-'+kind,label);a.href=href;if(/^https?:/i.test(href)){a.target='_blank';a.rel='noopener noreferrer'}box.append(a)}
