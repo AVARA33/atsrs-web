@@ -126,7 +126,7 @@ assert.match(runtime, /existing server data is safe/);
 assert.match(storage, /'x-atsrs-client-build':atsrsClientBuild/);
 assert.match(
   index,
-  /stable-id-compatibility-config\.js\?v=409[\s\S]*stable-id-compatibility-runtime\.js\?v=409[\s\S]*reference-filter-state\.js\?v=410[\s\S]*server-data\.js\?v=412/,
+  /stable-id-compatibility-config\.js\?v=409[\s\S]*stable-id-compatibility-runtime\.js\?v=409[\s\S]*reference-filter-state\.js\?v=410[\s\S]*server-data\.js\?v=565/,
 );
 
 assert.match(disable, /set kill_switch = true/);

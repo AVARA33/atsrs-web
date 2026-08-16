@@ -807,8 +807,13 @@
       if(metadataUpdated&&previous&&previous.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
         try{await window.atsrsCloudData.updateDocumentMetadata(previous.cloudFileId,{document:previous});}catch(rollbackError){console.error('ATSRS metadata rollback failed',rollbackError);}
       }
-      if(uploadedRow&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
+      if(uploadedRow&&!qrRow&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
         try{await window.atsrsCloudData.deleteDocument(uploadedRow.id);}catch(cleanupError){console.error('ATSRS orphan document cleanup failed',cleanupError);}
+      }
+      if(qrRow&&metadataUpdated&&window.atsrsCloudData&&typeof window.atsrsCloudData.updateDocumentMetadata==='function'){
+        try{
+          await window.atsrsCloudData.updateDocumentMetadata(qrRow.id,{document:null,document_registered:false,upload_source:'qr'});
+        }catch(qrRollbackError){console.error('ATSRS QR document rollback failed',qrRollbackError);}
       }
       alert('The document was not saved to the ATSRS server. Check the connection and try again.');
     }finally{

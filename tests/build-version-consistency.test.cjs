@@ -10,8 +10,8 @@ const runbook = fs.readFileSync(path.join(root, 'docs', 'stable-id-production-ac
 
 const version = index.match(/data-atsrs-build="(V\d+)"/)?.[1];
 const update = index.match(/data-atsrs-update="([^"]+)"/)?.[1];
-assert.equal(version, 'V555');
-assert.equal(update, '15 Aug 2026');
+assert.equal(version, 'V562');
+assert.equal(update, '16 Aug 2026');
 
 for (const asset of [
   'stability-runtime.js',
@@ -40,12 +40,12 @@ for (const asset of [
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=410"`));
 }
 
-assert.match(index, /src="js\/server-data\.js\?v=412"/);
+assert.match(index, /src="js\/server-data\.js\?v=565"/);
 assert.match(index, /src="js\/account\.js\?v=412"/);
 
-assert.match(index, /src="js\/app\.js\?v=541"/);
+assert.match(index, /src="js\/app\.js\?v=565"/);
 assert.match(index, /src="js\/boot-refresh\.js\?v=443"/);
-assert.match(index, /src="js\/storage\.js\?v=524"/);
+assert.match(index, /src="js\/storage\.js\?v=559"/);
 assert.match(index, /src="js\/auth\.js\?v=549"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/corporate-remediation\.css\?v=480"/);
@@ -61,7 +61,7 @@ assert.match(index, /src="js\/personal-dashboard-qa\.js\?v=549"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=555"/);
 assert.match(index, /href="css\/public-landing\.css\?v=532"/);
 assert.match(index, /href="css\/share-profile\.css\?v=497"/);
-assert.match(index, /src="js\/public-landing\.js\?v=536"/);
+assert.match(index, /src="js\/public-landing\.js\?v=560"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.match(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/talent-directory\.js\?v=519"/);
@@ -99,4 +99,4 @@ assert.match(index, /src="js\/theme\.js\?v=509"/);
 assert.match(index, /href="css\/brand-auth-v513\.css\?v=547"/);
 assert.match(index, /href="css\/privacy-brand-v533\.css\?v=538"/);
 
-console.log('V555 build marker consistency tests passed');
+console.log('V562 build marker consistency tests passed');

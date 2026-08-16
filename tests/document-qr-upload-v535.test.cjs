@@ -11,6 +11,8 @@ const desktop = read('js/document-qr-upload-v535.js');
 const phone = read('js/qr-phone-upload-v535.js');
 const edge = read('supabase/functions/document-qr-upload/index.ts');
 const migration = read('supabase/migrations/20260815123000_personal_document_qr_upload_sessions.sql');
+const serverData = read('js/server-data.js');
+const app = read('js/app.js');
 
 test('Documents methods use the requested AI, QR, Manual order', () => {
   const methods = index.match(/<div class="cert-mode-buttons">([\s\S]*?)<\/div>/)?.[1] ?? '';
@@ -141,4 +143,15 @@ test('phone file selection uploads and retries finalize until storage is visible
   assert.equal(signedUploadCalls, 1);
   assert.equal(finalizeCalls, 3);
   assert.match(statusText, /Upload complete/);
+});
+
+test('legacy Personal document identities are hydrated before a fresh-revision merge', () => {
+  assert.match(serverData, /var freshValue=await hydrateStableValue\(key,String\(freshRow\.payload\.value\)\)/);
+  assert.match(serverData, /personalCertificateOwnerId/);
+  assert.match(serverData, /item\.atsrsPersonnelId=personalCertificateOwnerId/);
+});
+
+test('a retryable register save failure does not destroy the completed QR upload', () => {
+  assert.match(app, /if\(uploadedRow&&!qrRow&&window\.atsrsCloudData/);
+  assert.match(app, /document_registered:false,upload_source:'qr'/);
 });

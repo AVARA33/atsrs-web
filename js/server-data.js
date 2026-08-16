@@ -147,12 +147,25 @@
       return JSON.stringify(decoded);
     }
     if(!Array.isArray(decoded))return String(value);
+    var personalCertificateOwnerId='';
+    if(kind==='certificates'&&/_personal_certs$/.test(String(key))){
+      var profileKey=String(key).replace(/_personal_certs$/,'_personal_profile');
+      var profileValue=memoryStore.has(profileKey)
+        ?memoryStore.get(profileKey):serverValues.get(profileKey);
+      try{
+        var profile=JSON.parse(String(profileValue||''));
+        if(profile&&validUuid(profile.atsrsId))personalCertificateOwnerId=profile.atsrsId;
+      }catch(_profileError){}
+    }
     decoded.forEach(function(item){
       if(!item||typeof item!=='object'||Array.isArray(item))return;
       if(!validUuid(item.atsrsId))item.atsrsId=randomUuid();
       if(kind==='personnel'){
         item.atsrsProjectIds=Array.isArray(item.atsrsProjectIds)
           ?item.atsrsProjectIds.filter(validUuid):[];
+      }
+      if(personalCertificateOwnerId&&!validUuid(item.atsrsPersonnelId)){
+        item.atsrsPersonnelId=personalCertificateOwnerId;
       }
     });
     return JSON.stringify(decoded);
@@ -983,7 +996,7 @@
           ||typeof freshRow.payload.value!=='string'){
           throw conflictError(key,'normalized_row');
         }
-        var freshValue=String(freshRow.payload.value);
+        var freshValue=await hydrateStableValue(key,String(freshRow.payload.value));
         rowVersions.set(String(key),freshRow.updated_at);
         serverValues.set(String(key),freshValue);
         candidate=rebaseBusinessValue(key,freshValue,mergeBase,candidate);
