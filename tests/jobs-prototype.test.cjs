@@ -15,6 +15,7 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
   assert.match(index,/jobs-prototype\.css\?v=58121/);
+  assert.match(index,/route-feature-loader\.js\?v=58121/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58121"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58121'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
