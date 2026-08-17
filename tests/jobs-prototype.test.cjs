@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58138/);
+  assert.match(index,/jobs-prototype\.css\?v=58139/);
   assert.match(index,/route-feature-loader\.js\?v=58138/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58138"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58138'\)/);
@@ -103,7 +103,8 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
   assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
   assert.match(css,/jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-jobs-green-text\)!important;color:#071006!important\}/);
-  assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:#245b93!important;color:#fff!important\}/);
+  assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important;-webkit-text-fill-color:#fff!important\}/);
+  assert.match(css,/jobs-page-button\.is-current:hover[^\{]*jobs-page-button\.is-current:focus-visible[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important/);
   assert.match(css,/jobs-page-button:hover:not\(:disabled\):not\(\.is-current\)[^\{]*\{background:rgba\(148,163,184,\.1\)!important/);
   assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid rgba\(158,234,115,\.62\);outline-offset:2px\}/);
   assert.match(css,/#jobsPage \.jobs-page-button\{min-width:38px!important;height:38px!important;min-height:38px!important;border:0!important;background:transparent!important;box-shadow:none!important\}/);

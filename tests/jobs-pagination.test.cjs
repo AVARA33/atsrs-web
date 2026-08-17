@@ -110,7 +110,9 @@ test('pagination exposes one shared active page with borderless theme-aware styl
   assert.match(runtime,/b\.classList\.add\('is-current'\);b\.setAttribute\('aria-current','page'\)/);
   assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
   assert.match(css,/jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-jobs-green-text\)!important;color:#071006!important\}/);
-  assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:#245b93!important;color:#fff!important\}/);
+  assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important;-webkit-text-fill-color:#fff!important\}/);
+  assert.match(css,/jobs-page-button\.is-current:hover[^\{]*jobs-page-button\.is-current:focus-visible[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important/);
+  assert.doesNotMatch(css,/jobs-page-button\.is-current[^\{]*\{background:#245b93!important/);
   assert.match(css,/\.jobs-page-button:disabled\{cursor:default;opacity:\.38\}/);
   assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid/);
 });
