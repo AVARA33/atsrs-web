@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58127/);
-  assert.match(index,/route-feature-loader\.js\?v=58127/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58127"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58127'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58128/);
+  assert.match(index,/route-feature-loader\.js\?v=58128/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58128"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58128'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -141,6 +141,7 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
   assert.match(css,/body #jobsPage \.job-detail-open:active,body \.job-detail-dialog \.job-detail-control:active\{[^}]*background:rgba\(148,163,184,\.16\)!important[^}]*transform:none!important/);
   assert.match(css,/body #jobsPage \.job-detail-open:focus-visible,body \.job-detail-dialog \.job-detail-control:focus-visible\{[^}]*outline:2px solid rgba\(158,234,115,\.62\)!important[^}]*background:rgba\(148,163,184,\.1\)!important/);
   assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-open:active[^}]*background:rgba\(36,49,66,\.14\)!important/);
+  assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-open:focus-visible[^}]*outline:2px solid #667085!important[^}]*outline-offset:-2px!important/);
   assert.match(css,/@media\(min-width:901px\)\{\.jobs-list \.job-card-meta\{position:absolute;top:12px;right:15px;z-index:1\}/);
   assert.equal((runtime.match(/el\('button','job-detail-open'\)/g)||[]).length,1);
   assert.equal((runtime.match(/el\('button','job-detail-control job-detail-minimize'\)/g)||[]).length,1);
