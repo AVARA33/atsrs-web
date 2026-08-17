@@ -90,7 +90,9 @@ final result: passed
 - Pass 1: combined local full-view and focused source/implementation comparison found no P0/P1/P2 issue in the isolated Jobs fixture.
 - Production pass 1: P1 theme-colour mismatch found. The full-app `shell-polish.css` neutral-button selector overrode the circle surface and foreground with `!important`, leaving the live control transparent.
 - Fix: exclude only `.job-detail-toggle` from the generic neutral-button selector and bump the shell stylesheet cache marker. The Jobs component remains the sole owner of this control's dark/light visual states.
-- Post-fix evidence: pending production redeploy and live recapture.
+- Production pass 2: dark/light collapsed and expanded controls match the component palette, use outward/inward Phosphor arrows, remain one control per record, and preserve the deliberate-close lifecycle.
+- Production pass 3: the full workspace dark touch-target standard expanded the visible mobile circle to 44px. A scoped, higher-specificity geometry rule now keeps the visible circle at 28px while its transparent pseudo-element preserves the 44px effective hit area.
+- Final live evidence: cache `58135`; 390px dark/light both compute 28×28px, page overflow is 0px, 30 controls render for the 30 visible records, mobile expand/minimize works, focus returns, and the body-lock class clears. Live console errors: 0.
 
 **Implementation Checklist**
 
@@ -104,4 +106,4 @@ final result: passed
 
 - None required for the scoped correction.
 
-final result: blocked
+final result: passed
