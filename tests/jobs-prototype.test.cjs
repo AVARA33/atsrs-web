@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58125/);
-  assert.match(index,/route-feature-loader\.js\?v=58125/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58125"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58125'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58126/);
+  assert.match(index,/route-feature-loader\.js\?v=58126/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58126"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58126'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);

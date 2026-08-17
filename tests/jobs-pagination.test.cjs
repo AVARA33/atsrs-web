@@ -5,6 +5,7 @@ const test=require('node:test');
 const vm=require('node:vm');
 
 const runtime=fs.readFileSync(path.join(__dirname,'..','js','jobs-prototype.js'),'utf8');
+const fixture=fs.readFileSync(path.join(__dirname,'fixtures','jobs-prototype-harness.html'),'utf8');
 
 function runtimeSlice(start,end){
   const from=runtime.indexOf(start),to=runtime.indexOf(end,from);
@@ -44,4 +45,15 @@ test('page query uses a 30-row range and exact filtered total without client acc
   assert.match(runtime,/page=target/);
   assert.match(runtime,/getPage:function\(\)\{return page\}/);
   assert.match(runtime,/getTotal:function\(\)\{return total\}/);
+});
+
+test('full-dataset facets preserve raw values and include role/location found only after row 30',()=>{
+  assert.match(runtime,/var PAGE=30,FACET_PAGE=1000/);
+  assert.match(runtime,/select\('id,title,location'\)/);
+  assert.match(runtime,/\.range\(offset,offset\+FACET_PAGE-1\)/);
+  assert.match(runtime,/while\(batch\.length===FACET_PAGE\)/);
+  assert.match(runtime,/var raw=String\(j\[c\[1\]\]/);
+  assert.doesNotMatch(runtime,/role:clean\(id\('jobsRoleFilter'/);
+  assert.match(fixture,/n===65\?'Final Page Specialist'/);
+  assert.match(fixture,/n===65\?'Remote Arctic'/);
 });
