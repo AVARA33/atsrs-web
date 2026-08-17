@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58136/);
+  assert.match(index,/jobs-prototype\.css\?v=58137/);
   assert.match(index,/route-feature-loader\.js\?v=58136/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58136"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58136'\)/);
@@ -186,7 +186,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(css,/background:#111214!important[^}]*color:#f8fafc!important/);
   assert.match(css,/\.job-detail-toggle::after[^}]*inset:-8px[^}]*border-radius:50%/);
   assert.doesNotMatch(css,/\.ph-square::before|\.ph-minus::before/);
-  assert.match(css,/html\[data-theme="light"\] body #jobsPage \.job-detail-toggle,html\[data-theme="light"\] body \.job-detail-dialog \.job-detail-toggle\{[^}]*background:#2563eb!important[^}]*color:#fff!important/);
+  assert.match(css,/html\[data-theme="light"\] body #jobsPage \.job-detail-toggle,html\[data-theme="light"\] body \.job-detail-dialog \.job-detail-toggle\{[^}]*border-color:#d8e1ee!important[^}]*background:#fff!important[^}]*color:#245b93!important/);
   assert.match(css,/repeat\(auto-fit,minmax\(190px,1fr\)\)/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[^{]*\{[^}]*\.job-new-badge i\{animation:none\}\.job-detail-dialog,\.job-detail-toggle\{transition:none\}/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
@@ -199,7 +199,7 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
   assert.match(css,/body #jobsPage \.job-detail-toggle:hover,body \.job-detail-dialog \.job-detail-toggle:hover\{[^}]*background:#1a1c1e!important/);
   assert.match(css,/body #jobsPage \.job-detail-toggle:active,body \.job-detail-dialog \.job-detail-toggle:active\{[^}]*transform:scale\(\.95\)/);
   assert.match(css,/body #jobsPage \.job-detail-toggle:focus-visible,body \.job-detail-dialog \.job-detail-toggle:focus-visible\{[^}]*outline:2px solid rgba\(248,250,252,\.82\)!important[^}]*outline-offset:2px!important/);
-  assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-toggle:active[^}]*background:#1e40af!important[^}]*transform:scale\(\.95\)/);
+  assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-toggle:active[^}]*background:#e2ecf7!important[^}]*color:#245b93!important[^}]*transform:scale\(\.95\)/);
   assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-toggle:focus-visible[^}]*outline:2px solid #1d4ed8!important[^}]*outline-offset:2px!important/);
   assert.equal((runtime.match(/el\('button','job-detail-toggle'\)/g)||[]).length,1);
   assert.equal((shellCss.match(/:not\(\.job-detail-toggle\)/g)||[]).length,3);
