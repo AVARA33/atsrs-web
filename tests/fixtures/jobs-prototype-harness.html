@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58126-qa">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58127-qa">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
@@ -15,7 +15,7 @@
   </style>
 </head>
 <body class="personal-mode">
-<script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
+<script>var fixtureParams=new URLSearchParams(location.search);document.documentElement.dataset.theme=fixtureParams.get('theme')==='light'?'light':'dark';try{localStorage.setItem('atsrs_jobs_view',fixtureParams.get('view')==='list'?'list':'cards')}catch(ignore){}</script>
 <section id="app" class="app"><main class="main">
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
   <div class="jobs-hero"><div><span class="pill jobs-development-badge">LIVE JOBS</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong><span>Server-backed vacancies</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
@@ -36,6 +36,6 @@
     window.supabaseClient={from:query,auth:{getSession:async function(){return{data:{session:adminMode?{user:{id:'owner'}}:null}}}},rpc:async function(){return{data:adminMode,error:null}}};
   })();
 </script>
-<script src="../../js/jobs-prototype.js?v=58126-qa"></script>
+<script src="../../js/jobs-prototype.js?v=58127-qa"></script>
 </body>
 </html>

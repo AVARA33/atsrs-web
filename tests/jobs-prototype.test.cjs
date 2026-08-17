@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58126/);
-  assert.match(index,/route-feature-loader\.js\?v=58126/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58126"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58126'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58127/);
+  assert.match(index,/route-feature-loader\.js\?v=58127/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58127"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58127'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -121,18 +121,29 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/opener&&opener\.isConnected/);
   assert.match(runtime,/document\.body\.classList\.add\('jobs-detail-open'\)/);
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
-  assert.match(css,/\.job-detail-open,\.job-detail-control\{[^}]*width:44px[^}]*height:44px/);
+  assert.match(css,/body #jobsPage \.job-detail-open,body \.job-detail-dialog \.job-detail-control\{[^}]*width:44px[^}]*height:44px[^}]*margin:0!important/);
   assert.match(css,/\.job-detail-controls\{position:absolute[^}]*right:12px[^}]*bottom:12px[^}]*justify-content:flex-end/);
   assert.doesNotMatch(css,/job-detail-dialog\.is-maximized|job-detail-maximize|job-detail-close/);
-  assert.match(css,/\.job-detail-open,\.job-detail-control\{[^}]*border:0[^}]*border-radius:0[^}]*background:transparent[^}]*box-shadow:none/);
+  assert.match(css,/body #jobsPage \.job-detail-open,body \.job-detail-dialog \.job-detail-control\{[^}]*border:0!important[^}]*border-radius:0!important[^}]*background:transparent!important[^}]*box-shadow:none!important[^}]*transform:none!important/);
   assert.match(css,/\.job-detail-open \.ph-square::before\{[^}]*border:1\.5px solid currentColor/);
   assert.match(css,/\.job-detail-control \.ph-minus::before\{[^}]*height:1\.5px[^}]*background:currentColor/);
-  assert.match(css,/html\[data-theme="light"\] \.job-detail-open,html\[data-theme="light"\] \.job-detail-control\{background:transparent[^}]*box-shadow:none/);
+  assert.match(css,/html\[data-theme="light"\] body #jobsPage \.job-detail-open,html\[data-theme="light"\] body \.job-detail-dialog \.job-detail-control\{background:transparent!important[^}]*box-shadow:none!important/);
   assert.match(css,/repeat\(auto-fit,minmax\(190px,1fr\)\)/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)[^{]*\{[^}]*\.job-new-badge i\{animation:none\}\.job-detail-dialog\{transition:none\}/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
   assert.match(css,/\.job-detail-dialog\[open\]:not\(\.is-leaving\)\{transform:scale\(1\)\}/);
   assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-view-switch\{border-color:transparent!important/);
+});
+
+test('Jobs card and dialog controls share one uniform title-aligned interaction contract',()=>{
+  assert.match(css,/\.jobs-cards \.job-card-meta\{margin-right:-8px\}/);
+  assert.match(css,/body #jobsPage \.job-detail-open:hover,body \.job-detail-dialog \.job-detail-control:hover\{[^}]*background:rgba\(148,163,184,\.1\)!important[^}]*box-shadow:none!important[^}]*transform:none!important/);
+  assert.match(css,/body #jobsPage \.job-detail-open:active,body \.job-detail-dialog \.job-detail-control:active\{[^}]*background:rgba\(148,163,184,\.16\)!important[^}]*transform:none!important/);
+  assert.match(css,/body #jobsPage \.job-detail-open:focus-visible,body \.job-detail-dialog \.job-detail-control:focus-visible\{[^}]*outline:2px solid rgba\(158,234,115,\.62\)!important[^}]*background:rgba\(148,163,184,\.1\)!important/);
+  assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-open:active[^}]*background:rgba\(36,49,66,\.14\)!important/);
+  assert.match(css,/@media\(min-width:901px\)\{\.jobs-list \.job-card-meta\{position:absolute;top:12px;right:15px;z-index:1\}/);
+  assert.equal((runtime.match(/el\('button','job-detail-open'\)/g)||[]).length,1);
+  assert.equal((runtime.match(/el\('button','job-detail-control job-detail-minimize'\)/g)||[]).length,1);
 });
 
 test('Jobs view controls and inline notice use the approved palettes',()=>{
