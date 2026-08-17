@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58130/);
-  assert.match(index,/route-feature-loader\.js\?v=58130/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58130"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58130'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58131/);
+  assert.match(index,/route-feature-loader\.js\?v=58131/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58131"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58131'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -56,7 +56,9 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/jobsSearch/);
   assert.match(runtime,/jobsRoleFilter/);
   assert.match(runtime,/jobsLocationFilter/);
-  assert.match(index,/id="jobsPagination"[^>]*aria-label="Jobs pagination"/);
+  assert.match(index,/id="jobsPaginationTop"[^>]*aria-label="Jobs pagination"[^>]*data-jobs-pagination/);
+  assert.match(index,/id="jobsPaginationBottom"[^>]*aria-label="Jobs pagination"[^>]*data-jobs-pagination/);
+  assert.equal((index.match(/data-jobs-pagination/g)||[]).length,2);
   const jobsSection=index.slice(index.indexOf('<section id="jobsPage"'),index.indexOf('<section id="privacyPage"'));
   assert.doesNotMatch(jobsSection,/jobsLoadMore|Load more/);
   assert.doesNotMatch(runtime,/jobsLoadMore|cursor=null|more=false/);
@@ -71,8 +73,19 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/load\(1\)/);
   assert.match(runtime,/jobs\.length\+' of '\+total/);
   assert.match(runtime,/aria-current','page/);
+  assert.match(runtime,/aria-disabled','true/);
+  assert.match(runtime,/jobs-page-chevron','‹'/);
+  assert.match(runtime,/jobs-page-chevron','›'/);
+  assert.match(runtime,/querySelectorAll\('\[data-jobs-pagination\]'\)/);
+  assert.match(runtime,/renderPaginationNav\(nav,pages\)/);
   assert.match(runtime,/requestAnimationFrame\(focusResults\)/);
-  assert.match(css,/\.jobs-page-button\{[^}]*min-width:44px[^}]*min-height:44px/);
+  assert.match(runtime,/top=id\('jobsPaginationTop'\)/);
+  assert.match(css,/\.jobs-pagination\{[^}]*flex-wrap:nowrap[^}]*justify-content:flex-end[^}]*width:max-content[^}]*margin-left:auto/);
+  assert.match(css,/\.jobs-pagination-top\{margin-top:-10px;margin-bottom:18px\}/);
+  assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
+  assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
+  assert.match(css,/\.jobs-page-edge\{min-width:92px\}/);
+  assert.match(css,/\.jobs-page-edge-label\{display:none\}/);
   assert.match(css,/@media\(max-width:600px\)/);
   assert.match(css,/min-width:0/);
 });

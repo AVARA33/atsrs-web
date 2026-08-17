@@ -14,6 +14,18 @@ function runtimeSlice(start,end){
   return runtime.slice(from,to);
 }
 
+test('30-row page contract handles exact boundary totals',()=>{
+  const context={PAGE:30};
+  vm.runInNewContext(runtimeSlice('function totalPages','function pageItems'),context);
+  assert.equal(context.totalPages(0),0);
+  assert.equal(context.totalPages(19),1);
+  assert.equal(context.totalPages(30),1);
+  assert.equal(context.totalPages(31),2);
+  assert.equal(context.totalPages(60),2);
+  assert.equal(context.totalPages(61),3);
+  assert.equal(context.totalPages(360),12);
+});
+
 test('pagination model covers first, middle and last pages with ellipses',()=>{
   const context={};
   vm.runInNewContext(runtimeSlice('function pageItems','function pageButton'),context);
@@ -79,6 +91,18 @@ test('page query uses a 30-row range and exact filtered total without client acc
   assert.match(runtime,/page=target/);
   assert.match(runtime,/getPage:function\(\)\{return page\}/);
   assert.match(runtime,/getTotal:function\(\)\{return total\}/);
+});
+
+test('top and bottom pagination share one stateful renderer and compact navigation contract',()=>{
+  assert.match(runtime,/function renderPaginationNav\(nav,pages\)/);
+  assert.match(runtime,/querySelectorAll\('\[data-jobs-pagination\]'\)\.forEach/);
+  assert.match(runtime,/load\(target,\{focus:true\}\)/);
+  assert.match(runtime,/id\('jobsPaginationTop'\)/);
+  assert.match(runtime,/hide\(nav,pages<=1\)/);
+  assert.match(runtime,/direction==='previous'/);
+  assert.match(runtime,/direction==='next'/);
+  assert.match(fixture,/id="jobsPaginationTop"[^>]*data-jobs-pagination/);
+  assert.match(fixture,/id="jobsPaginationBottom"[^>]*data-jobs-pagination/);
 });
 
 test('full-dataset facets preserve raw values and include role/location found only after row 30',()=>{
