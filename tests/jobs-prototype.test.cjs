@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58131/);
-  assert.match(index,/route-feature-loader\.js\?v=58131/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58131"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58131'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58132/);
+  assert.match(index,/route-feature-loader\.js\?v=58132/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58132"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58132'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -84,6 +84,8 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(css,/\.jobs-pagination-top\{margin-top:-10px;margin-bottom:18px\}/);
   assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
+  assert.match(css,/body #jobsPage \.jobs-page-button\{height:38px!important;min-height:38px!important\}/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?body #jobsPage \.jobs-page-button\{height:36px!important;min-height:36px!important\}/);
   assert.match(css,/\.jobs-page-edge\{min-width:92px\}/);
   assert.match(css,/\.jobs-page-edge-label\{display:none\}/);
   assert.match(css,/@media\(max-width:600px\)/);
