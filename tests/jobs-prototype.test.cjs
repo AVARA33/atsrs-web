@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58134/);
-  assert.match(index,/route-feature-loader\.js\?v=58134/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58134"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58134'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58135/);
+  assert.match(index,/route-feature-loader\.js\?v=58135/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58135"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58135'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -37,6 +37,7 @@ test('intentional Jobs sidebar navigation alone resets the shared page state',()
   assert.match(runtime,/resetFromSidebar:resetFromSidebar/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/id="navJobs"[^>]*atsrs:jobs-nav/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/shell-polish\.css\?v=569-qa/);
+  assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/workspace-surface-standard-v519\.css\?v=519-qa/);
   const viewHandlerStart=runtime.indexOf("document.querySelectorAll('[data-jobs-view]'",runtime.indexOf('async function boot()'));
   const viewHandlerEnd=runtime.indexOf('isAdmin=await adminCheck()',viewHandlerStart);
   assert.ok(viewHandlerStart>=0&&viewHandlerEnd>viewHandlerStart);
@@ -173,6 +174,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/document\.body\.classList\.add\('jobs-detail-open'\)/);
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
   assert.match(css,/body #jobsPage \.job-detail-toggle,body \.job-detail-dialog \.job-detail-toggle\{[^}]*top:8px[^}]*right:8px[^}]*width:28px[^}]*height:28px[^}]*border-radius:50%!important/);
+  assert.match(css,/#app\.app:not\(\.hidden\)>\.main #jobsPage \.job-detail-toggle[^}]*width:28px!important[^}]*height:28px!important[^}]*min-width:28px!important[^}]*min-height:28px!important/);
   assert.match(css,/\.job-detail-controls\{display:contents\}/);
   assert.doesNotMatch(css,/job-detail-dialog\.is-maximized|job-detail-maximize|job-detail-close/);
   assert.match(css,/background:#111214!important[^}]*color:#f8fafc!important/);
