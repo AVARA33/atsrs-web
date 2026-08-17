@@ -1,0 +1,45 @@
+name: Developer Editor protected checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      change_id:
+        description: Audited ATSRS change ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: developer-editor-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    if: startsWith(github.ref_name, 'developer-editor/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Verify protected workflow context
+        shell: bash
+        run: |
+          test "${GITHUB_REF_NAME#developer-editor/}" != "$GITHUB_REF_NAME"
+          echo '${{ inputs.change_id }}' | grep -E '^[0-9a-f-]{36}$'
+      - name: Syntax and Developer Editor contract tests
+        run: >-
+          node --check developer/developer.js &&
+          node --test tests/developer-editor-contract.test.cjs tests/cloudflare-pages-build.test.cjs
+      - name: Focused product regression
+        run: >-
+          node --test tests/jobs-prototype.test.cjs tests/jobs-pagination.test.cjs
+          tests/projects-workflow.test.cjs tests/references-visual-regression.test.cjs
+      - name: Production build
+        run: npm run build:cloudflare

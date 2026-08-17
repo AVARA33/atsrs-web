@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>ATSRS Developer Editor</title>
+  <link id="developerFavicon" rel="icon" href="../assets/branding/atsrs-favicon-green-v576.png">
+  <link rel="stylesheet" href="developer.css?v=1">
+</head>
+<body>
+  <div id="accessGate" class="gate" role="status">
+    <div class="gate-card">
+      <div class="brand"><img data-theme-mark src="../assets/branding/atsrs-mark-green.png" alt=""><span>ATSRS</span></div>
+      <p class="eyebrow">SECURE DEVELOPER WORKSPACE</p>
+      <h1 id="gateTitle">Verifying access…</h1>
+      <p id="gateMessage">Developer access is checked by the ATSRS server.</p>
+      <a id="loginLink" class="button hidden" href="../?view=login">Log in to ATSRS</a>
+      <button id="mfaButton" class="button hidden" type="button">Verify authenticator</button>
+      <button class="theme-button button secondary" type="button">Switch theme</button>
+    </div>
+  </div>
+
+  <template id="workspaceTemplate">
+  <div id="workspace" class="workspace">
+    <aside class="sidebar">
+      <a class="brand" href="../"><img data-theme-mark src="../assets/branding/atsrs-mark-green.png" alt=""><span>ATSRS</span></a>
+      <div class="workspace-label">Developer Editor</div>
+      <nav aria-label="Developer workspace">
+        <button class="nav is-active" data-panel="overview">Overview</button>
+        <button class="nav" data-panel="changes">Issues / Bugs</button>
+        <button class="nav" data-panel="editor">Code Changes</button>
+        <button class="nav" data-panel="preview">Preview</button>
+        <button class="nav" data-panel="tests">Tests</button>
+        <button class="nav" data-panel="releases">Releases</button>
+        <button class="nav" data-panel="history">History</button>
+        <button id="ownerNav" class="nav hidden" data-panel="owner">Developer Access</button>
+      </nav>
+      <div class="sidebar-foot"><span id="roleBadge">Developer Editor</span><button id="logoutButton" type="button">Log out</button></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div><p class="eyebrow">ISOLATED · AUDITED · REVOCABLE</p><h1>Developer workspace</h1></div>
+        <div class="top-actions"><button class="theme-button button secondary" type="button">Switch theme</button><div class="identity"><span id="identityName">—</span><small id="identityEmail">—</small></div></div>
+      </header>
+      <div id="serviceBanner" class="banner hidden"></div>
+      <section id="panel-overview" class="panel is-active">
+        <div class="section-head"><div><h2>Overview</h2><p>Only approved frontend files can be opened. Every save is committed to an isolated <code>developer-editor/*</code> branch.</p></div><button id="refreshButton" class="button secondary" type="button">Refresh</button></div>
+        <div class="stat-grid">
+          <article><span>Active change</span><strong id="statActive">0</strong></article>
+          <article><span>Waiting approval</span><strong id="statApproval">0</strong></article>
+          <article><span>Failed checks</span><strong id="statFailed">0</strong></article>
+          <article><span>Recently deployed</span><strong id="statDeployed">0</strong></article>
+        </div>
+        <div class="card"><h3>Security boundary</h3><div id="policySummary" class="policy-grid"></div></div>
+      </section>
+
+      <section id="panel-changes" class="panel">
+        <div class="section-head"><div><h2>Issues / Bugs</h2><p>Create one isolated change set per bug.</p></div></div>
+        <form id="changeForm" class="card form-grid">
+          <label>Change title<input name="title" maxlength="140" required placeholder="Fix Jobs maximize icon position"></label>
+          <label>Affected area<input name="affected_area" maxlength="80" required placeholder="Jobs"></label>
+          <label class="wide">Bug being fixed<textarea name="bug_summary" maxlength="1000" required></textarea></label>
+          <label class="wide">Description<textarea name="description" maxlength="2000" required></textarea></label>
+          <div class="wide form-actions"><button class="button" type="submit">Create isolated change</button></div>
+        </form>
+        <div id="changesList" class="list"></div>
+      </section>
+
+      <section id="panel-editor" class="panel">
+        <div class="section-head"><div><h2>Code Changes</h2><p id="activeChangeLabel">Select a change first.</p></div><div class="actions"><button id="syncButton" class="button secondary" type="button">Sync with main</button><button id="diffButton" class="button secondary" type="button">Review diff</button><button id="saveButton" class="button" type="button">Save file</button></div></div>
+        <div class="editor-layout desktop-only">
+          <aside class="file-browser"><input id="fileSearch" type="search" placeholder="Find approved file"><div id="fileList"></div></aside>
+          <div class="code-shell"><div class="code-head"><code id="openPath">No file open</code><span id="riskBadge"></span></div><div class="code-area"><pre id="lineNumbers" aria-hidden="true">1</pre><pre id="codeMirror" aria-hidden="true"></pre><textarea id="codeEditor" spellcheck="false" aria-label="Code editor"></textarea></div></div>
+        </div>
+        <div class="mobile-message">Desktop required for code editing. Status, tests, releases and history remain available on mobile.</div>
+        <div id="diffView" class="card diff-view hidden"></div>
+      </section>
+
+      <section id="panel-preview" class="panel">
+        <div class="section-head"><div><h2>Preview</h2><p>Preview uses safe fixture data in a short-lived sandbox, never private ATSRS user data.</p></div><div class="actions"><select id="previewEntry"><option value="tests/fixtures/jobs-prototype-harness.html">Jobs fixture</option><option value="tests/fixtures/personal-workspace-surface-harness.html">Personal workspace fixture</option><option value="tests/fixtures/workspace-control-v522-harness.html">Control fixture</option></select><button id="previewButton" class="button" type="button">Create preview</button></div></div>
+        <iframe id="previewFrame" class="preview-frame" title="Isolated change preview" sandbox="allow-scripts"></iframe>
+      </section>
+
+      <section id="panel-tests" class="panel">
+        <div class="section-head"><div><h2>Tests</h2><p>Publishing is blocked unless the protected workflow passes for the exact head commit.</p></div><div class="actions"><button id="runChecksButton" class="button" type="button">Run checks</button><button id="checkStatusButton" class="button secondary" type="button">Refresh result</button></div></div>
+        <div id="checksCard" class="card empty">No checks run for the selected change.</div>
+      </section>
+
+      <section id="panel-releases" class="panel">
+        <div class="section-head"><div><h2>Releases</h2><p>LOW_RISK fixes can publish only after scope and checks pass. Higher-risk work waits for Owner approval.</p></div><div class="actions"><button id="approvalButton" class="button secondary" type="button">Request approval</button><button id="publishButton" class="button" type="button">Publish eligible fix</button><button id="rollbackButton" class="button secondary" type="button">Request rollback</button></div></div>
+        <div id="releaseCard" class="card empty">Select a change to review its release status.</div>
+        <div id="ownerDecisionActions" class="card actions hidden"><button id="ownerApprove" class="button" type="button">Approve and publish</button><button id="ownerRequestChanges" class="button secondary" type="button">Request changes</button><button id="ownerReject" class="button secondary" type="button">Reject</button></div>
+      </section>
+
+      <section id="panel-history" class="panel"><div class="section-head"><div><h2>History</h2><p>Change and deployment history is retained after access revocation.</p></div></div><div id="historyList" class="list"></div></section>
+
+      <section id="panel-owner" class="panel">
+        <div class="section-head"><div><h2>Developer Access</h2><p>Owner-only invitation, activation, disable and revocation. All mutations require MFA.</p></div></div>
+        <form id="inviteForm" class="card form-grid"><label>Email<input name="email" type="email" required></label><label>Display name<input name="display_name" required maxlength="120"></label><label>Role<input value="Developer Editor" disabled></label><label>Scope<input value="Approved frontend-safe paths" disabled></label><div class="wide form-actions"><button class="button" type="submit">Invite Developer</button></div></form>
+        <div id="developerList" class="list"></div>
+      </section>
+    </main>
+  </div>
+  </template>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+  <div id="mfaModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="mfaTitle"><div class="modal-card"><h2 id="mfaTitle">Verify authenticator</h2><div id="mfaContent"></div><button id="mfaCancel" class="button secondary" type="button">Cancel</button></div></div>
+  <script src="../vendor/supabase-js-2.111.0.min.js"></script>
+  <script src="developer.js?v=1"></script>
+</body>
+</html>

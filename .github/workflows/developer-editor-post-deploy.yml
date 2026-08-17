@@ -1,0 +1,65 @@
+name: Developer Editor post-deploy verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      change_id:
+        description: Audited ATSRS change ID
+        required: true
+        type: string
+      commit_sha:
+        description: Exact deployed squash commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: developer-editor-post-deploy-${{ inputs.change_id }}
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate deployment identity and build
+        shell: bash
+        run: |
+          echo '${{ inputs.change_id }}' | grep -E '^[0-9a-f-]{36}$'
+          echo '${{ inputs.commit_sha }}' | grep -E '^[0-9a-f]{40}$'
+          test "$(git rev-parse HEAD)" = '${{ inputs.commit_sha }}'
+          npm run build:cloudflare
+      - name: Wait for production assets to match the deployed commit
+        env:
+          SOURCE_SHA: ${{ inputs.commit_sha }}
+        shell: bash
+        run: |
+          git diff-tree --no-commit-id --name-only -r "$SOURCE_SHA" | grep -E '^(index\.html|developer/|css/|js/|assets/)' > /tmp/public-files.txt || true
+          for attempt in $(seq 1 24); do
+            mismatch=0
+            while IFS= read -r file; do
+              test -n "$file" || continue
+              test -f "$file" || continue
+              curl --fail --silent --show-error --no-cache "https://atsrs.com/$file" -o /tmp/atsrs-remote
+              cmp -s "$file" /tmp/atsrs-remote || mismatch=1
+            done < /tmp/public-files.txt
+            if test "$mismatch" = 0; then exit 0; fi
+            sleep 15
+          done
+          echo "Production assets did not converge to $SOURCE_SHA" >&2
+          exit 1
+      - name: Route health
+        run: |
+          curl --fail --silent --show-error --no-cache https://atsrs.com/ -o /tmp/home.html
+          curl --fail --silent --show-error --no-cache https://atsrs.com/developer/ -o /tmp/developer.html
+          grep -q 'ATSRS' /tmp/home.html
+          grep -q 'SECURE DEVELOPER WORKSPACE' /tmp/developer.html
