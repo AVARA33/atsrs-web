@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58139/);
+  assert.match(index,/jobs-prototype\.css\?v=58140/);
   assert.match(index,/route-feature-loader\.js\?v=58138/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58138"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58138'\)/);
@@ -239,6 +239,9 @@ test('Jobs view controls and inline notice use the approved palettes',()=>{
   assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);
-  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button,html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:hover\{[^}]*background:transparent!important/);
-  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\][^}]*\{background:transparent!important[^}]*color:#245b93!important/);
+  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\{[^}]*position:relative!important[^}]*background:transparent!important/);
+  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:hover\{[^}]*background:var\(--atsrs-shell-accent-soft\)!important[^}]*color:var\(--atsrs-shell-accent-strong\)!important/);
+  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\][^}]*\{background:var\(--atsrs-shell-accent-soft\)!important[^}]*color:var\(--atsrs-shell-accent-strong\)!important/);
+  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after[^}]*\{content:"";position:absolute;right:8px;bottom:5px;left:8px;height:2px;border-radius:999px;background:var\(--atsrs-shell-accent\)\}/);
+  assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:focus-visible\{outline:2px solid var\(--atsrs-shell-accent\)!important;outline-offset:2px!important\}/);
 });
