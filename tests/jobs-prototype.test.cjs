@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58137/);
-  assert.match(index,/route-feature-loader\.js\?v=58136/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58136"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58136'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58138/);
+  assert.match(index,/route-feature-loader\.js\?v=58138/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58138"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58138'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -82,10 +82,10 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/PAGE=30/);
   assert.match(runtime,/select\('\*',\{count:'exact'\}\)/);
   assert.match(runtime,/\.range\(from,from\+PAGE-1\)/);
-  assert.match(runtime,/function applyFilters\(query,state\)/);
+  assert.match(runtime,/function applyFilters\(query,state,now\)/);
   assert.match(index,/id="jobsSearch"[^>]*placeholder="Job title or role"/);
   assert.match(index,/id="jobsSearch" type="search"/);
-  assert.match(runtime,/search\.addEventListener\('input'/);
+  assert.match(runtime,/\['jobsSearch','jobsCompanyFilter','jobsRecruiterFilter'\]/);
   assert.match(runtime,/query=query\.ilike\('title','%'\+term\+'%'\)/);
   assert.match(runtime,/load\(1\)/);
   assert.match(runtime,/jobs\.length\+' of '\+total/);
@@ -113,6 +113,26 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(css,/\.jobs-page-edge-label\{display:none\}/);
   assert.match(css,/@media\(max-width:600px\)/);
   assert.match(css,/min-width:0/);
+});
+
+test('Jobs has exactly one non-duplicated accessible secondary filter system',()=>{
+  const fixture=fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8');
+  assert.equal((index.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
+  assert.equal((fixture.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
+  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsActiveFilters','jobsMoreFilters'].forEach(id=>{
+    assert.equal((index.match(new RegExp(`id="${id}"`,'g'))||[]).length,1,`${id} must exist exactly once`);
+  });
+  assert.match(index,/id="jobsCompanyFilter"[^>]*list="jobsCompanyOptions"/);
+  assert.match(index,/id="jobsRecruiterFilter"[^>]*list="jobsRecruiterOptions"/);
+  assert.match(index,/id="jobsNewOnlyFilter"[^>]*role="switch"/);
+  assert.match(runtime,/querySelectorAll\('#jobsSecondaryFilters'\)\.length!==1/);
+  assert.match(runtime,/function uniqueValues\(/);
+  assert.match(runtime,/list\.replaceChildren\(frag\)/);
+  assert.match(runtime,/function clearFilters\(\)/);
+  assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
+  assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
+  assert.match(css,/\.jobs-secondary-filters\{display:grid/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-more-filters\{display:inline-flex/);
 });
 
 test('Jobs supports persistent accessible card and list views',()=>{
@@ -168,7 +188,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/ph ph-arrows-out/);
   assert.doesNotMatch(runtime,/ph ph-(?:minus|square)/);
   assert.doesNotMatch(runtime,/job-detail-(?:maximize|close)/);
-  assert.doesNotMatch(runtime,/Restore vacancy details|Close vacancy details|×/);
+  assert.doesNotMatch(runtime,/Restore vacancy details|Close vacancy details/);
   assert.match(runtime,/function dismissDetails\(dialog\)/);
   assert.match(runtime,/addEventListener\('cancel'/);
   assert.match(runtime,/e\.key!=='Tab'/);

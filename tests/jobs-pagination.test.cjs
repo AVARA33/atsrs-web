@@ -115,9 +115,9 @@ test('pagination exposes one shared active page with borderless theme-aware styl
   assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid/);
 });
 
-test('full-dataset facets preserve raw values and include role/location found only after row 30',()=>{
+test('full-dataset facets preserve raw values and include all primary and secondary options after row 30',()=>{
   assert.match(runtime,/var PAGE=30,FACET_PAGE=1000/);
-  assert.match(runtime,/select\('id,title,location'\)/);
+  assert.match(runtime,/select\('id,title,location,company,recruiter_company,recruiter_name,worksite'\)/);
   assert.match(runtime,/\.range\(offset,offset\+FACET_PAGE-1\)/);
   assert.match(runtime,/while\(batch\.length===FACET_PAGE\)/);
   assert.match(runtime,/var raw=String\(j\[c\[1\]\]/);
@@ -127,4 +127,32 @@ test('full-dataset facets preserve raw values and include role/location found on
   assert.match(fixture,/n===4\?'ROV Pilot'/);
   assert.match(fixture,/n===7\?'Reward Specialist'/);
   assert.match(fixture,/mentions ROV only in vacancy details/);
+});
+
+test('secondary filters are server-side, reset page one and preserve exact NEW logic',()=>{
+  const context={NEW_MS:21600000,worksiteFacetValues:{offshore:['Offshore','Vessel'],onshore:['On-site']}};
+  vm.runInNewContext(runtimeSlice('function clean','function pageItems'),context);
+  const calls=[];
+  const query={
+    eq(field,value){calls.push(['eq',field,value]);return this},
+    ilike(field,value){calls.push(['ilike',field,value]);return this},
+    or(value){calls.push(['or',value]);return this},
+    in(field,value){calls.push(['in',field,Array.from(value)]);return this},
+    gte(field,value){calls.push(['gte',field,value]);return this}
+  };
+  const now=Date.parse('2026-08-18T12:00:00Z');
+  context.applyFilters(query,{role:'ROV Pilot',location:'UK',search:'pilot',company:'Maris Subsea',recruiter:'Ellie Malim',days:7,offshore:true,onshore:true,newOnly:true},now);
+  assert.deepEqual(calls.slice(0,5),[
+    ['eq','title','ROV Pilot'],
+    ['eq','location','UK'],
+    ['eq','company','Maris Subsea'],
+    ['eq','recruiter_name','Ellie Malim'],
+    ['ilike','title','%pilot%']
+  ]);
+  assert.equal(calls.filter(call=>call[0]==='or').length,1);
+  assert.deepEqual(calls.find(call=>call[0]==='in'),['in','worksite',['Offshore','Vessel','On-site']]);
+  assert.deepEqual(calls.find(call=>call[0]==='gte'),['gte','published_at',new Date(now-21600000).toISOString()]);
+  assert.match(runtime,/jobsNewOnlyFilter/);
+  assert.match(runtime,/load\(1\)/);
+  assert.match(runtime,/isNewPublishedJob:isNew,newWindowMs:NEW_MS/);
 });
