@@ -9,6 +9,7 @@
 <meta name="description" content="ATSRS is an international platform for document expiry tracking, controlled sharing, Personal profiles, Candidate access and Corporate compliance workflows." />
 <title>ATSRS</title>
 <link id="atsrsFavicon" rel="icon" type="image/png" sizes="64x64" href="assets/branding/atsrs-favicon-green-v576.png?v=576" />
+<link id="atsrsBootLogoPreload" rel="preload" as="image" fetchpriority="high" />
 <script>
 try{
   var atsrsEntryParams=new URLSearchParams(window.location.search);
@@ -26,6 +27,10 @@ try{
   var atsrsSystemThemeMedia=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');
   var initialTheme=savedTheme==='light'||savedTheme==='dark'?savedTheme:
     (atsrsSystemThemeMedia&&atsrsSystemThemeMedia.matches?'light':'dark');
+  var atsrsBootLogoPreload=document.getElementById('atsrsBootLogoPreload');
+  if(atsrsBootLogoPreload)atsrsBootLogoPreload.href=initialTheme==='light'?
+    'assets/branding/atsrs-lockup-light-transparent.png':
+    'assets/branding/atsrs-mark-green.png';
   window.atsrsSyncFavicon=function(theme){
     var favicon=document.getElementById('atsrsFavicon');
     if(!favicon)return;
@@ -105,7 +110,8 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=562">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=58139">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=58140">
+<link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
