@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58128/);
-  assert.match(index,/route-feature-loader\.js\?v=58128/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58128"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58128'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58129/);
+  assert.match(index,/route-feature-loader\.js\?v=58129/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58129"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58129'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -64,6 +64,10 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/select\('\*',\{count:'exact'\}\)/);
   assert.match(runtime,/\.range\(from,from\+PAGE-1\)/);
   assert.match(runtime,/function applyFilters\(query,state\)/);
+  assert.match(index,/id="jobsSearch"[^>]*placeholder="Job title or role"/);
+  assert.match(index,/id="jobsSearch" type="search"/);
+  assert.match(runtime,/search\.addEventListener\('input'/);
+  assert.match(runtime,/query=query\.ilike\('title','%'\+term\+'%'\)/);
   assert.match(runtime,/load\(1\)/);
   assert.match(runtime,/jobs\.length\+' of '\+total/);
   assert.match(runtime,/aria-current','page/);
