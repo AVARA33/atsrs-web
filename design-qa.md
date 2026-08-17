@@ -87,7 +87,10 @@ final result: passed
 
 **Comparison history**
 
-- Pass 1: combined full-view and focused source/implementation comparison found no remaining P0/P1/P2 issue in the requested control scope. No visual fix was required after this comparison.
+- Pass 1: combined local full-view and focused source/implementation comparison found no P0/P1/P2 issue in the isolated Jobs fixture.
+- Production pass 1: P1 theme-colour mismatch found. The full-app `shell-polish.css` neutral-button selector overrode the circle surface and foreground with `!important`, leaving the live control transparent.
+- Fix: exclude only `.job-detail-toggle` from the generic neutral-button selector and bump the shell stylesheet cache marker. The Jobs component remains the sole owner of this control's dark/light visual states.
+- Post-fix evidence: pending production redeploy and live recapture.
 
 **Implementation Checklist**
 
@@ -101,4 +104,4 @@ final result: passed
 
 - None required for the scoped correction.
 
-final result: passed
+final result: blocked

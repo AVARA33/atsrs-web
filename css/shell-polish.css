@@ -84,18 +84,18 @@ html[data-theme="dark"] body #app.app:not(.hidden) #profilePage .account-tabs bu
 }
 
 /* Ordinary actions remain neutral in both themes; green is reserved for state feedback. */
-html[data-theme] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.talent-view-switch button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close){
+html[data-theme] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.talent-view-switch button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close):not(.job-detail-toggle){
   background:transparent!important;
   box-shadow:none!important;
 }
 
-html[data-theme="dark"] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.talent-view-switch button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close){
+html[data-theme="dark"] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.talent-view-switch button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close):not(.job-detail-toggle){
   border-color:#2c3d52!important;
   color:#eef4fb!important;
   -webkit-text-fill-color:#eef4fb!important;
 }
 
-html[data-theme="light"] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.talent-view-switch button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close){
+html[data-theme="light"] body #app.app:not(.hidden) button:not(.action):not(.danger):not(.danger-button):not(.delete-button):not(.nav button):not(.talent-view-switch button):not(.atsrs-theme-toggle):not(#atsrsNotificationButton):not(.workspace-switcher-button):not(.workspace-option):not(.sidebar-toggle):not(.atsrs-document-sort):not(.personnel-combobox-toggle):not(.work-type-select-toggle):not(.work-type-select-option):not(.file-preview-close):not(.share-request-close):not(.recipient-link-close):not(.job-detail-toggle){
   border-color:#d5dee3!important;
   color:#172b25!important;
   -webkit-text-fill-color:#172b25!important;

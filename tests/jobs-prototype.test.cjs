@@ -24,7 +24,7 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=567/);
-  assert.match(index,/shell-polish\.css\?v=568/);
+  assert.match(index,/shell-polish\.css\?v=569/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
@@ -36,6 +36,7 @@ test('intentional Jobs sidebar navigation alone resets the shared page state',()
   assert.match(runtime,/addEventListener\('atsrs:resume',function\(\)\{load\(page\)\}\)/);
   assert.match(runtime,/resetFromSidebar:resetFromSidebar/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/id="navJobs"[^>]*atsrs:jobs-nav/);
+  assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/shell-polish\.css\?v=569-qa/);
   const viewHandlerStart=runtime.indexOf("document.querySelectorAll('[data-jobs-view]'",runtime.indexOf('async function boot()'));
   const viewHandlerEnd=runtime.indexOf('isAdmin=await adminCheck()',viewHandlerStart);
   assert.ok(viewHandlerStart>=0&&viewHandlerEnd>viewHandlerStart);
@@ -193,6 +194,7 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
   assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-toggle:active[^}]*background:#1e40af!important[^}]*transform:scale\(\.95\)/);
   assert.match(css,/html\[data-theme="light"\][^{]*\.job-detail-toggle:focus-visible[^}]*outline:2px solid #1d4ed8!important[^}]*outline-offset:2px!important/);
   assert.equal((runtime.match(/el\('button','job-detail-toggle'\)/g)||[]).length,1);
+  assert.equal((shellCss.match(/:not\(\.job-detail-toggle\)/g)||[]).length,3);
   assert.doesNotMatch(runtime,/el\('button','job-detail-control job-detail-minimize'\)/);
   assert.match(runtime,/replaceChildren\(opener\)/);
   assert.match(runtime,/e\.key!=='Enter'&&e\.key!==' '/);
