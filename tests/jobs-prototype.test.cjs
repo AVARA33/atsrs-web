@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58132/);
-  assert.match(index,/route-feature-loader\.js\?v=58132/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58132"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58132'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58133/);
+  assert.match(index,/route-feature-loader\.js\?v=58133/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58133"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58133'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -25,6 +25,21 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=567/);
   assert.match(index,/shell-polish\.css\?v=568/);
+});
+
+test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
+  assert.match(index,/id="navJobs"[^>]*showPage\('jobs',this\);window\.dispatchEvent\(new CustomEvent\('atsrs:jobs-nav'\)\)/);
+  assert.match(runtime,/function resetFromSidebar\(\)\{[\s\S]*?page=1;renderPagination\(\)/);
+  assert.match(runtime,/section\.scrollIntoView\(\{block:'start',behavior:'auto'\}\)/);
+  assert.match(runtime,/return load\(1\)/);
+  assert.match(runtime,/addEventListener\('atsrs:jobs-nav',resetFromSidebar\)/);
+  assert.match(runtime,/addEventListener\('atsrs:resume',function\(\)\{load\(page\)\}\)/);
+  assert.match(runtime,/resetFromSidebar:resetFromSidebar/);
+  assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/id="navJobs"[^>]*atsrs:jobs-nav/);
+  const viewHandlerStart=runtime.indexOf("document.querySelectorAll('[data-jobs-view]'",runtime.indexOf('async function boot()'));
+  const viewHandlerEnd=runtime.indexOf('isAdmin=await adminCheck()',viewHandlerStart);
+  assert.ok(viewHandlerStart>=0&&viewHandlerEnd>viewHandlerStart);
+  assert.doesNotMatch(runtime.slice(viewHandlerStart,viewHandlerEnd),/load\(/);
 });
 
 test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{

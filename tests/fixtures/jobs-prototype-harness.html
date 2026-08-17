@@ -4,17 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58132-qa">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58133-qa">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
     .pill{display:inline-flex;padding:7px 11px;border:1px solid;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.05em}
     button{border:1px solid #334155;border-radius:12px;background:#090c0b;color:#f8fafc;font:inherit;font-weight:800;padding:0 15px}
-    .hidden{display:none!important}
+    .hidden{display:none!important}.fixture-jobs-nav{position:fixed;z-index:999;left:0;top:0;width:1px;height:1px;padding:0;opacity:.01;overflow:hidden}
     html[data-theme="light"]{--text:#13233c;--muted:#5f7088;color-scheme:light}html[data-theme="light"] body{background:#edf2f8;color:#13233c}html[data-theme="light"] button{background:#fff;color:#13233c;border-color:#cbd5e1}
   </style>
 </head>
 <body class="personal-mode">
+<button id="navJobs" type="button" class="fixture-jobs-nav" onclick="window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))">Jobs</button>
 <script>var fixtureParams=new URLSearchParams(location.search);document.documentElement.dataset.theme=fixtureParams.get('theme')==='light'?'light':'dark';try{localStorage.setItem('atsrs_jobs_view',fixtureParams.get('view')==='list'?'list':'cards')}catch(ignore){}</script>
 <section id="app" class="app"><main class="main">
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
@@ -36,6 +37,6 @@
     window.supabaseClient={from:query,auth:{getSession:async function(){return{data:{session:adminMode?{user:{id:'owner'}}:null}}}},rpc:async function(){return{data:adminMode,error:null}}};
   })();
 </script>
-<script src="../../js/jobs-prototype.js?v=58132-qa"></script>
+<script src="../../js/jobs-prototype.js?v=58133-qa"></script>
 </body>
 </html>
