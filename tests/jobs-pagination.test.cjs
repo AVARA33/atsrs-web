@@ -5,6 +5,7 @@ const test=require('node:test');
 const vm=require('node:vm');
 
 const runtime=fs.readFileSync(path.join(__dirname,'..','js','jobs-prototype.js'),'utf8');
+const css=fs.readFileSync(path.join(__dirname,'..','css','jobs-prototype.css'),'utf8');
 const fixture=fs.readFileSync(path.join(__dirname,'fixtures','jobs-prototype-harness.html'),'utf8');
 
 function runtimeSlice(start,end){
@@ -103,6 +104,15 @@ test('top and bottom pagination share one stateful renderer and compact navigati
   assert.match(runtime,/direction==='next'/);
   assert.match(fixture,/id="jobsPaginationTop"[^>]*data-jobs-pagination/);
   assert.match(fixture,/id="jobsPaginationBottom"[^>]*data-jobs-pagination/);
+});
+
+test('pagination exposes one shared active page with borderless theme-aware styling',()=>{
+  assert.match(runtime,/b\.classList\.add\('is-current'\);b\.setAttribute\('aria-current','page'\)/);
+  assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
+  assert.match(css,/jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-jobs-green-text\)!important;color:#071006!important\}/);
+  assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:#245b93!important;color:#fff!important\}/);
+  assert.match(css,/\.jobs-page-button:disabled\{cursor:default;opacity:\.38\}/);
+  assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid/);
 });
 
 test('full-dataset facets preserve raw values and include role/location found only after row 30',()=>{

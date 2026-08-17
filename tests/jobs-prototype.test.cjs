@@ -14,17 +14,17 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58135/);
-  assert.match(index,/route-feature-loader\.js\?v=58135/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58135"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58135'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58136/);
+  assert.match(index,/route-feature-loader\.js\?v=58136/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58136"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58136'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=567/);
-  assert.match(index,/shell-polish\.css\?v=569/);
+  assert.match(index,/shell-polish\.css\?v=570/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
@@ -36,7 +36,7 @@ test('intentional Jobs sidebar navigation alone resets the shared page state',()
   assert.match(runtime,/addEventListener\('atsrs:resume',function\(\)\{load\(page\)\}\)/);
   assert.match(runtime,/resetFromSidebar:resetFromSidebar/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/id="navJobs"[^>]*atsrs:jobs-nav/);
-  assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/shell-polish\.css\?v=569-qa/);
+  assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/shell-polish\.css\?v=570-qa/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/workspace-surface-standard-v519\.css\?v=519-qa/);
   const viewHandlerStart=runtime.indexOf("document.querySelectorAll('[data-jobs-view]'",runtime.indexOf('async function boot()'));
   const viewHandlerEnd=runtime.indexOf('isAdmin=await adminCheck()',viewHandlerStart);
@@ -101,9 +101,15 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(css,/\.jobs-pagination-top\{margin-top:-10px;margin-bottom:18px\}/);
   assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
-  assert.match(css,/body #jobsPage \.jobs-page-button\{height:38px!important;min-height:38px!important\}/);
-  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?body #jobsPage \.jobs-page-button\{height:36px!important;min-height:36px!important\}/);
-  assert.match(css,/\.jobs-page-edge\{min-width:92px\}/);
+  assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
+  assert.match(css,/jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-jobs-green-text\)!important;color:#071006!important\}/);
+  assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:#245b93!important;color:#fff!important\}/);
+  assert.match(css,/jobs-page-button:hover:not\(:disabled\):not\(\.is-current\)[^\{]*\{background:rgba\(148,163,184,\.1\)!important/);
+  assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid rgba\(158,234,115,\.62\);outline-offset:2px\}/);
+  assert.match(css,/#jobsPage \.jobs-page-button\{min-width:38px!important;height:38px!important;min-height:38px!important;border:0!important;background:transparent!important;box-shadow:none!important\}/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?#jobsPage \.jobs-page-button\{min-width:36px!important;height:36px!important;min-height:36px!important\}/);
+  assert.match(css,/jobs-page-edge[^\{]*\{min-width:92px!important\}/);
+  assert.match(shellCss,/:not\(\.jobs-page-button\)/);
   assert.match(css,/\.jobs-page-edge-label\{display:none\}/);
   assert.match(css,/@media\(max-width:600px\)/);
   assert.match(css,/min-width:0/);
