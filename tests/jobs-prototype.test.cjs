@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58140/);
+  assert.match(index,/jobs-prototype\.css\?v=58141/);
   assert.match(index,/route-feature-loader\.js\?v=58138/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58138"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58138'\)/);
@@ -98,7 +98,7 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/requestAnimationFrame\(focusResults\)/);
   assert.match(runtime,/top=id\('jobsPaginationTop'\)/);
   assert.match(css,/\.jobs-pagination\{[^}]*flex-wrap:nowrap[^}]*justify-content:flex-end[^}]*width:max-content[^}]*margin-left:auto/);
-  assert.match(css,/\.jobs-pagination-top\{margin-top:-10px;margin-bottom:18px\}/);
+  assert.match(css,/\.jobs-pagination-top\{margin-top:18px;margin-bottom:20px\}/);
   assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
   assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
@@ -133,6 +133,15 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
   assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
   assert.match(css,/\.jobs-secondary-filters\{display:grid/);
+  assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(220px,300px\) minmax\(220px,300px\) minmax\(180px,220px\)/);
+  assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;justify-content:flex-end/);
+  assert.match(css,/\.jobs-secondary-field>span\{font-size:12px/);
+  assert.match(css,/\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:46px/);
+  assert.match(css,/#jobsPage :is\(#jobsOffshoreFilter,#jobsOnshoreFilter\)\.jobs-filter-chip\[aria-pressed="true"\]\{[^}]*var\(--atsrs-jobs-green-text,#9ad315\)/);
+  assert.match(css,/html\[data-theme="light"\][^\{]*#jobsPage :is\(#jobsOffshoreFilter,#jobsOnshoreFilter\)\.jobs-filter-chip\[aria-pressed="true"\]\{[^}]*#245b93/);
+  assert.match(css,/@media\(max-width:600px\)[\s\S]*#jobsPage :is\(#jobsOffshoreFilter,#jobsOnshoreFilter\)\.jobs-filter-chip\{height:40px!important;min-height:40px!important\}/);
+  assert.match(index,/class="jobs-secondary-primary"[\s\S]*class="jobs-secondary-actions"/);
+  assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-more-filters\{display:inline-flex/);
 });
 
