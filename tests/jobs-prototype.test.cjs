@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58129/);
-  assert.match(index,/route-feature-loader\.js\?v=58129/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58129"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58129'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58130/);
+  assert.match(index,/route-feature-loader\.js\?v=58130/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58130"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58130'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -92,8 +92,22 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/contact\(contacts,'Listing source'/);
   assert.match(runtime,/contact\(contacts,'Application'/);
   assert.doesNotMatch(runtime,/function action\(/);
-  assert.match(css,/\.jobs-grid\.jobs-cards\{grid-auto-rows:1fr;align-items:stretch\}/);
-  assert.match(css,/\.jobs-cards \.job-card\{height:100%;grid-template-rows:auto 1fr auto\}/);
+  assert.match(runtime,/body=el\('div','job-card-body'\)/);
+  assert.match(runtime,/body\.append\(project,c\);a\.append\(head,body\)/);
+  assert.match(runtime,/function syncCardOverflow\(\)/);
+  assert.match(runtime,/body\.scrollHeight>body\.clientHeight\+1/);
+  assert.match(runtime,/body\.toggleAttribute\('data-overflow',scrollable\)/);
+  assert.match(runtime,/body\.tabIndex=0/);
+  assert.match(runtime,/requestAnimationFrame\(syncCardOverflow\)/);
+  assert.match(css,/\.jobs-grid\.jobs-cards\{align-items:start\}/);
+  assert.match(css,/\.jobs-cards \.job-card\{height:560px;max-height:560px;grid-template-rows:auto minmax\(0,1fr\);align-content:stretch\}/);
+  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*scrollbar-gutter:stable/);
+  assert.match(css,/\.jobs-list \.job-card-body\{display:contents\}/);
+  assert.match(css,/@media\(max-width:1250px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:580px;max-height:580px\}/);
+  assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:640px;max-height:640px\}/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-cards \.job-card\{height:min\(720px,calc\(100dvh - 24px\)\);max-height:min\(720px,calc\(100dvh - 24px\)\)\}/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-cards \.job-card-body\{scrollbar-color:rgba\(83,102,128,\.34\) transparent\}/);
+  assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(158,234,115,\.34\)/);
 });
 
 test('Jobs renders only verified source and closing dates with card/list parity',()=>{
@@ -123,6 +137,9 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/e\.key!=='Tab'/);
   assert.match(runtime,/dialog\.addEventListener\('close'/);
   assert.match(runtime,/opener&&opener\.isConnected/);
+  assert.match(runtime,/detailPageScrollY=window\.scrollY/);
+  assert.match(runtime,/opener\.focus\(\{preventScroll:true\}\)/);
+  assert.match(runtime,/window\.scrollTo\(0,detailPageScrollY\)/);
   assert.match(runtime,/document\.body\.classList\.add\('jobs-detail-open'\)/);
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
   assert.match(css,/body #jobsPage \.job-detail-open,body \.job-detail-dialog \.job-detail-control\{[^}]*width:44px[^}]*height:44px[^}]*margin:0!important/);

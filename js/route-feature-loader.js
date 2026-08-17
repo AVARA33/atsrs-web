@@ -29,7 +29,7 @@
   }
 
   function loadJobs(){
-    return loadScript('js/jobs-prototype.js?v=58129');
+    return loadScript('js/jobs-prototype.js?v=58130');
   }
 
   function loadQrUpload(){
