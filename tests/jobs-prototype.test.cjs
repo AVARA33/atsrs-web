@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58124/);
-  assert.match(index,/route-feature-loader\.js\?v=58124/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58124"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58124'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58125/);
+  assert.match(index,/route-feature-loader\.js\?v=58125/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58125"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58125'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -52,12 +52,23 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.doesNotMatch(runtime,/Recruiters use ATSRS through subscription plans/);
 });
 
-test('Jobs supports filtering and responsive zero-overflow layout',()=>{
+test('Jobs uses exact-count server pagination and responsive zero-overflow layout',()=>{
   assert.match(runtime,/jobsSearch/);
   assert.match(runtime,/jobsRoleFilter/);
   assert.match(runtime,/jobsLocationFilter/);
-  assert.match(runtime,/jobsLoadMore/);
+  assert.match(index,/id="jobsPagination"[^>]*aria-label="Jobs pagination"/);
+  const jobsSection=index.slice(index.indexOf('<section id="jobsPage"'),index.indexOf('<section id="privacyPage"'));
+  assert.doesNotMatch(jobsSection,/jobsLoadMore|Load more/);
+  assert.doesNotMatch(runtime,/jobsLoadMore|cursor=null|more=false/);
   assert.match(runtime,/PAGE=30/);
+  assert.match(runtime,/select\('\*',\{count:'exact'\}\)/);
+  assert.match(runtime,/\.range\(from,from\+PAGE-1\)/);
+  assert.match(runtime,/function applyFilters\(query,state\)/);
+  assert.match(runtime,/load\(1\)/);
+  assert.match(runtime,/jobs\.length\+' of '\+total/);
+  assert.match(runtime,/aria-current','page/);
+  assert.match(runtime,/requestAnimationFrame\(focusResults\)/);
+  assert.match(css,/\.jobs-page-button\{[^}]*min-width:44px[^}]*min-height:44px/);
   assert.match(css,/@media\(max-width:600px\)/);
   assert.match(css,/min-width:0/);
 });

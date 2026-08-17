@@ -105,7 +105,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=562">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=58124">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=58125">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -575,7 +575,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </div>
     <div class="jobs-hero-actions">
       <div class="jobs-snapshot" aria-label="Jobs data snapshot">
-        <strong id="jobsVisibleCount">0 opportunities</strong>
+        <strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong>
         <span>Server-backed vacancies</span>
       </div>
       <div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view">
@@ -602,7 +602,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
   <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div>
   <div id="jobsEmpty" class="jobs-empty hidden"><i class="ph ph-briefcase" aria-hidden="true"></i><h2>No matching opportunities</h2><p>Clear the filters and try another search.</p></div>
-  <div class="jobs-load-more-wrap"><button id="jobsLoadMore" type="button" class="secondary hidden">Load more</button></div>
+  <nav id="jobsPagination" class="jobs-pagination hidden" aria-label="Jobs pagination"></nav>
 </section>
 
 <section id="privacyPage" class="hidden legal-app-page">
@@ -1821,7 +1821,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=576"></script>
 <script src="js/personal-dashboard-qa.js?v=549"></script>
 <script src="js/shell-polish.js?v=567"></script>
-<script src="js/route-feature-loader.js?v=58124"></script>
+<script src="js/route-feature-loader.js?v=58125"></script>
 
 
 

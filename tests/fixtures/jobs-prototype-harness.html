@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS Jobs Prototype QA</title>
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=5811-qa">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58125-qa">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
     *{box-sizing:border-box}body{margin:0;background:#000;color:var(--text);font:15px/1.45 Arial,sans-serif}main{padding:38px clamp(18px,4vw,56px)}
@@ -18,24 +18,24 @@
 <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
 <section id="app" class="app"><main class="main">
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
-  <div class="jobs-hero"><div><span class="pill jobs-development-badge">LIVE JOBS</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount">0 opportunities</strong><span>Server-backed vacancies</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
+  <div class="jobs-hero"><div><span class="pill jobs-development-badge">LIVE JOBS</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong><span>Server-backed vacancies</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
   <div class="jobs-notice" role="note"><i class="ph ph-warning" aria-hidden="true">⚠</i><p>No candidate commission.</p></div>
   <div class="jobs-filters"><label class="jobs-search"><span>Search</span><span class="jobs-search-control"><i aria-hidden="true">⌕</i><input id="jobsSearch" type="search" placeholder="Role, company, location or ROV system"></span></label><label><span>Role</span><select id="jobsRoleFilter"><option value="">All roles</option></select></label><label><span>Location</span><select id="jobsLocationFilter"><option value="">All locations</option></select></label><button id="jobsClearFilters" type="button">Clear filters</button></div>
-  <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div><div id="jobsEmpty" class="jobs-empty hidden"><h2>No matching opportunities</h2><p>Clear filters.</p></div><div class="jobs-load-more-wrap"><button id="jobsLoadMore" class="hidden">Load more</button></div>
+  <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div><div id="jobsEmpty" class="jobs-empty hidden"><h2>No matching opportunities</h2><p>Clear filters.</p></div><nav id="jobsPagination" class="jobs-pagination hidden" aria-label="Jobs pagination"></nav>
 </section>
 </main></section>
 <script>
   (function(){
     var adminMode=new URLSearchParams(location.search).get('admin')==='1';
-    var fixture=[
+    var seed=[
       {id:'1',title:'<img src=x onerror="window.__xss=1"> ROV Supervisor',company:'Film-Ocean',location:'Aberdeen, UK',equipment:'ROV',summary:'Safe server text with a longer description used to prove equal card sizing without hiding content.',requirements:'Valid offshore certification and verified equipment experience.',recruiter_name:'Verified Recruiter',recruiter_email:'jobs@example.com',recruiter_phone:'+44 1224 000000',source_type:'linkedin',source_url:'https://linkedin.com/example',application_url:'https://example.com/apply',status:'published',source_posted_at:'2026-08-16T11:26:32.796Z',closing_date:'2026-09-11',published_at:new Date(Date.now()-60000).toISOString(),updated_at:new Date().toISOString()},
       {id:'2',title:'Workshop Technician',company:'ROVOP',location:'Westhill, UK',summary:'Short verified summary.',source_type:'linkedin',source_url:'https://linkedin.com/example-two',application_url:'https://example.com/apply-two',status:'published',display_posted_date:'2026-08-15',published_at:new Date(Date.now()-120000).toISOString(),updated_at:new Date(Date.now()-1000).toISOString()},
       {id:'3',title:'Analysis Engineer',company:'DOF',location:'Paradise, Canada',work_type:'Temporary; on-site',duration:'6–12 months',summary:'Engineering analysis role.',requirements:'OrcaFlex proficiency.',source_type:'linkedin',source_url:'https://linkedin.com/example-three',status:'published',published_at:new Date(Date.now()-180000).toISOString(),updated_at:new Date(Date.now()-2000).toISOString()}
-    ];
-    function query(){var q={select:function(){return q},eq:function(){return q},lte:function(){return q},order:function(){return q},limit:function(){return q},or:function(){return q},then:function(resolve){resolve({data:fixture,error:null})}};return q}
+    ],fixture=seed.concat(Array.from({length:62},function(_,i){var n=i+4;return{id:String(n),title:n===65?'Final Page Specialist':'Project Engineer '+n,company:n%2?'Oceaneering':'TechnipFMC',location:n%3?'Aberdeen, UK':'Houston, US',summary:'Verified fixture vacancy '+n+'.',source_type:'linkedin',source_url:'https://linkedin.com/jobs/'+n,application_url:'https://example.com/apply/'+n,status:'published',published_at:new Date(Date.now()-n*60000).toISOString(),updated_at:new Date(Date.now()-n*1000).toISOString()}}));
+    function query(){var selected='*',exact=false,from=0,to=null,limit=null,equals={},search='';var q={select:function(columns,opts){selected=columns||'*';exact=!!(opts&&opts.count==='exact');return q},eq:function(field,value){equals[field]=value;return q},lte:function(){return q},order:function(){return q},limit:function(value){limit=value;return q},range:function(start,end){from=start;to=end;return q},or:function(value){var match=String(value).match(/title\.ilike\."\*([^*]*)\*"/);search=match?match[1].toLowerCase():'';return q},then:function(resolve){var rows=fixture.filter(function(job){return Object.keys(equals).every(function(field){return job[field]===equals[field]})});if(search)rows=rows.filter(function(job){return[job.title,job.company,job.location,job.equipment,job.summary,job.description].join(' ').toLowerCase().includes(search)});var count=rows.length;if(to!==null)rows=rows.slice(from,to+1);else if(limit!==null)rows=rows.slice(0,limit);if(selected==='title,location')rows=rows.map(function(job){return{title:job.title,location:job.location}});resolve({data:rows,error:null,count:exact?count:null})}};return q}
     window.supabaseClient={from:query,auth:{getSession:async function(){return{data:{session:adminMode?{user:{id:'owner'}}:null}}}},rpc:async function(){return{data:adminMode,error:null}}};
   })();
 </script>
-<script src="../../js/jobs-prototype.js?v=581-qa"></script>
+<script src="../../js/jobs-prototype.js?v=58125-qa"></script>
 </body>
 </html>
