@@ -12,9 +12,32 @@
   }
 
   function money(value) {
+    if (value === null || value === undefined || value === '') return '—';
     var amount = Number(value);
     if (!Number.isFinite(amount)) return '—';
     return '$' + amount.toFixed(2);
+  }
+
+  function setMetricText(registeredUsers, newUsers, credit, note) {
+    byId('adminRegisteredUsers').textContent = registeredUsers;
+    byId('adminNewUsers').textContent = newUsers;
+    byId('adminAiCredit').textContent = credit;
+    byId('adminAiUsageNote').textContent = note;
+  }
+
+  function setBusy(isBusy) {
+    if (panel) panel.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+    if (refreshButton) refreshButton.disabled = isBusy;
+  }
+
+  function showLoading() {
+    setMetricText('—', '—', '—', 'Secure metrics are loading…');
+    setBusy(true);
+  }
+
+  function showRefreshError() {
+    setMetricText('—', '—', '—', 'Metrics could not be refreshed. Try again.');
+    if (panel) panel.classList.remove('hidden');
   }
 
   function hidePanel() {
@@ -28,12 +51,13 @@
       return;
     }
 
-    byId('adminRegisteredUsers').textContent = String(row.registered_users ?? 0);
-    byId('adminNewUsers').textContent = String(row.new_users_30d ?? 0);
-    byId('adminAiCredit').textContent = money(row.estimated_credit_usd);
-    byId('adminAiUsageNote').textContent =
+    setMetricText(
+      String(row.registered_users ?? 0),
+      String(row.new_users_30d ?? 0),
+      money(row.estimated_credit_usd),
       money(row.estimated_spend_usd) + ' estimated spend · ' +
-      String(row.tracked_scans ?? 0) + ' scans tracked after setup';
+      String(row.tracked_scans ?? 0) + ' scans tracked after setup'
+    );
     panel.classList.remove('hidden');
   }
 
@@ -52,8 +76,10 @@
     }
     if (!force && loadedUserId === user.id && !panel.classList.contains('hidden')) return;
 
+    var wasVisible = !panel.classList.contains('hidden');
     loading = true;
-    if (refreshButton) refreshButton.disabled = true;
+    if (wasVisible) showLoading();
+    else setBusy(true);
     try {
       var result = await window.supabaseClient.rpc('atsrs_get_admin_overview');
       if (result.error) throw result.error;
@@ -62,10 +88,11 @@
       render(row);
     } catch (error) {
       console.warn('ATSRS admin overview unavailable', error);
-      hidePanel();
+      if (wasVisible || loadedUserId === user.id) showRefreshError();
+      else hidePanel();
     } finally {
       loading = false;
-      if (refreshButton) refreshButton.disabled = false;
+      setBusy(false);
     }
   }
 
@@ -73,6 +100,11 @@
     panel = byId('adminOverviewPanel');
     refreshButton = byId('adminOverviewRefresh');
     if (!panel) return;
+    var usageNote = byId('adminAiUsageNote');
+    if (usageNote) {
+      usageNote.setAttribute('role', 'status');
+      usageNote.setAttribute('aria-live', 'polite');
+    }
     if (refreshButton) refreshButton.addEventListener('click', function () {
       refresh(true);
     });
