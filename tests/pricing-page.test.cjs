@@ -8,29 +8,39 @@ const pricing = fs.readFileSync(path.join(root, 'pricing.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'pricing.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'pricing.js'), 'utf8');
 
-assert.match(pricing, /class="public-home-link" href="\/" aria-label="Home"/);
-assert.match(pricing, /class="public-home-link public-home-mobile" href="\/" aria-label="Home"/);
+assert.match(pricing, /class="public-home-link" href="\/\?view=home" aria-label="Home"/);
+assert.match(pricing, /class="public-home-link public-home-mobile" href="\/\?view=home" aria-label="Home"/);
 
 assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
 for (const plan of ['bronze', 'silver', 'gold']) {
   assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
   assert.match(pricing, new RegExp(`id="${plan}"`));
 }
-assert.match(pricing, /Planned launch prices are shown in USD/);
+assert.match(pricing, /Prices are shown in USD/);
 assert.match(pricing, /Billing is not open yet/);
-assert.match(pricing, /1 lifetime AI scan/);
-assert.match(pricing, /No Candidate directory listing/);
-assert.match(pricing, /No SMS or WhatsApp credits/);
-assert.match(pricing, /Candidate directory visibility/);
-assert.match(pricing, /data-monthly="\$7" data-yearly="\$70"/);
-assert.match(pricing, /data-monthly="\$15" data-yearly="\$150"/);
-assert.match(pricing, /data-monthly="\$29" data-yearly="\$290"/);
-assert.match(pricing, /Billing opens soon/);
+assert.match(pricing, /id="free" class="pricing-plan pricing-plan-free"/);
+assert.match(pricing, /10 Tracked Documents/);
+assert.match(pricing, /100 MB Storage/);
+assert.match(pricing, /50 WhatsApp Expiry Alerts \/ month/);
+assert.doesNotMatch(pricing, /No Candidate directory listing/);
+assert.doesNotMatch(pricing, /No SMS or WhatsApp credits/);
+assert.match(pricing, /data-monthly="\$19\.99" data-yearly="\$192"/);
+assert.match(pricing, /data-monthly="\$39\.99" data-yearly="\$384"/);
+assert.match(pricing, /data-monthly="\$69\.99" data-yearly="\$672"/);
+assert.match(pricing, /id="titan"[\s\S]*?data-monthly="\$119\.99" data-yearly="\$1,152"/);
+assert.equal((pricing.match(/class="pricing-plan pricing-plan-(?:bronze|future)/g) || []).length, 4);
+assert.match(pricing, /RECOMMENDED/);
+assert.match(pricing, /COMING SOON/);
+assert.match(pricing, /Direct Apply/);
+assert.match(pricing, /Original Source Links/);
+assert.match(pricing, /shares the same 15 AI scan monthly allowance/);
 assert.match(pricing, /id="comparison"/);
 assert.match(runtime, /querySelectorAll\('\[data-plan-price\]'\)/);
 assert.match(runtime, /querySelectorAll\('\[data-price-copy\]'\)/);
 assert.match(runtime, /setAttribute\('aria-pressed'/);
-assert.match(css, /grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
-assert.match(css, /@media\(max-width:720px\)[\s\S]*?\.pricing-plan-grid\{grid-template-columns:1fr\}/);
+assert.match(css, /\.pricing-paid-grid\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
+assert.match(css, /@media\(max-width:1180px\)[\s\S]*?\.pricing-paid-grid\{grid-template-columns:1fr 1fr\}/);
+assert.match(css, /@media\(max-width:720px\)[\s\S]*?\.pricing-plan-free,\.pricing-paid-grid\{grid-template-columns:1fr\}/);
 
 console.log('Personal pricing information page contracts passed');
+

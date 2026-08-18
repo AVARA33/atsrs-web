@@ -29,7 +29,7 @@
   }
 
   function loadJobs(){
-    return loadScript('js/jobs-prototype.js?v=58138');
+    return loadScript('js/jobs-prototype.js?v=58150');
   }
 
   function loadQrUpload(){
@@ -79,3 +79,4 @@
 
   window.atsrsRouteFeatures={loadJobs:loadJobs,loadQrUpload:loadQrUpload,loadPreview:loadPreview};
 })();
+
