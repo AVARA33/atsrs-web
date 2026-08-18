@@ -114,7 +114,8 @@ test('pagination exposes one shared active page with borderless theme-aware styl
 
 test('full-dataset facets preserve raw values and include all primary and secondary options after row 30',()=>{
   assert.match(runtime,/client\.rpc\('atsrs_jobs_facets'\)/);
-  assert.match(runtime,/filterJobs=Array\.isArray\(result\.data\)\?result\.data:\[\]/);
+  assert.match(runtime,/filterJobs=result\.error\?await legacyOptions\(client\):\(Array\.isArray\(result\.data\)\?result\.data:\[\]\)/);
+  assert.match(runtime,/missingJobsRpc\(result\.error\)/);
   assert.match(runtime,/var raw=String\(j\[c\[1\]\]/);
   assert.doesNotMatch(runtime,/role:clean\(id\('jobsRoleFilter'/);
   assert.match(fixture,/n===65\?'Final Page Specialist'/);
