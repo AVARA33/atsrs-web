@@ -21,7 +21,7 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
   });
 
   const topLevelEntries = fs.readdirSync(output).sort();
-  for (const requiredEntry of ['_headers', 'index.html', 'qr-upload.html', 'billing-terms.html', 'refund-policy.html', 'assets', 'css', 'js', 'vendor']) {
+  for (const requiredEntry of ['_headers', 'index.html', 'qr-upload.html', 'billing-terms.html', 'refund-policy.html', 'assets', 'css', 'developer', 'js', 'vendor']) {
     assert.ok(topLevelEntries.includes(requiredEntry), `${requiredEntry} must be deployed`);
   }
 
@@ -47,6 +47,8 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
     assert.match(legalRule[1], /frame-ancestors 'self'/, `${legalPath} CSP must permit ATSRS embedding only`);
   }
   assert.match(headers, /connect-src[^\n]+hwtjuqyxzivymofamwxl\.supabase\.co/, 'CSP must retain Supabase connectivity');
+  assert.match(headers, /\/developer\/\*[\s\S]*Cache-Control: no-store/);
+  assert.ok(fs.existsSync(path.join(output, 'developer', 'index.html')), 'Developer workspace must be deployed');
 
   for (const forbiddenEntry of ['.git', '.github', 'CNAME', 'docs', 'scripts', 'supabase', 'tests']) {
     assert.ok(!topLevelEntries.includes(forbiddenEntry), `${forbiddenEntry} must not be deployed`);

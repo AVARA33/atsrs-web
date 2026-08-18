@@ -23,7 +23,7 @@ const publicFiles = [
   "sitemap.xml"
 ];
 
-const publicDirectories = ["assets", "css", "js", "vendor"];
+const publicDirectories = ["assets", "css", "developer", "js", "vendor"];
 const forbiddenOutputEntries = [
   ".git",
   ".github",

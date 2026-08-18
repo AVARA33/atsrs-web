@@ -1,0 +1,59 @@
+name: Developer Editor protected rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      change_id:
+        description: Audited ATSRS change ID
+        required: true
+        type: string
+      source_sha:
+        description: Exact previously deployed squash commit
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: developer-editor-rollback-main
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate audited inputs and source scope
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          CHANGE_ID: ${{ inputs.change_id }}
+        shell: bash
+        run: |
+          echo "$SOURCE_SHA" | grep -E '^[0-9a-f]{40}$'
+          echo "$CHANGE_ID" | grep -E '^[0-9a-f-]{36}$'
+          git cat-file -e "$SOURCE_SHA^{commit}"
+          git diff-tree --no-commit-id --name-only -r "$SOURCE_SHA" > /tmp/atsrs-rollback-files.txt
+          node -e "const fs=require('fs');const files=fs.readFileSync('/tmp/atsrs-rollback-files.txt','utf8').trim().split(/\r?\n/).filter(Boolean);const ok=[/^css\/(jobs-prototype|talent-directory|projects|documents|references|dashboard|account|cv-generator)\.css$/,/^tests\/fixtures\/(jobs-prototype|personal-workspace-surface|workspace-control-v522|workspace-surface-v519)-harness\.html$/,/^tests\/(jobs-prototype|jobs-pagination|projects-workflow|references-visual-regression|workspace-control-standard-v522|workspace-surface-standard-v519)\.test\.cjs$/];if(!files.length||files.some(f=>!ok.some(r=>r.test(f)))){console.error('Rollback scope denied',files);process.exit(1)}"
+      - name: Create isolated revert branch
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          CHANGE_ID: ${{ inputs.change_id }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          branch="developer-editor/rollback/${CHANGE_ID}"
+          git config user.name "ATSRS Developer Editor"
+          git config user.email "developer-editor@atsrs.com"
+          git switch -c "$branch"
+          git revert --no-edit "$SOURCE_SHA"
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" --title "[Developer Editor rollback] $CHANGE_ID" --body "Protected rollback of audited low-risk change $CHANGE_ID. Source commit: $SOURCE_SHA"

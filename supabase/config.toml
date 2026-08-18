@@ -8,3 +8,9 @@ verify_jwt = false
 
 [functions.document-qr-upload]
 verify_jwt = false
+
+[functions.developer-editor-actions]
+verify_jwt = true
+
+[functions.developer-editor-preview]
+verify_jwt = false
