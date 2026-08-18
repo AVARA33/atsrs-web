@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css?v=442">
   <link rel="stylesheet" href="../../css/shell-polish.css?v=570-qa">
   <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=519-qa">
-  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58138-qa">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css?v=58142-qa">
   <link rel="stylesheet" href="../../css/dark-green-text-standard-v58140.css?v=58140-qa">
   <style>
     :root{--text:#f8fafc;--muted:#9aa8bc;--sidebar-accent:#b6ff00;color-scheme:dark}
@@ -21,7 +21,7 @@
 <body class="personal-mode">
 <button id="navJobs" type="button" class="fixture-jobs-nav" onclick="window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))">Jobs</button>
 <script>var fixtureParams=new URLSearchParams(location.search);document.documentElement.dataset.theme=fixtureParams.get('theme')==='light'?'light':'dark';try{localStorage.setItem('atsrs_jobs_view',fixtureParams.get('view')==='list'?'list':'cards')}catch(ignore){}</script>
-<section id="app" class="app"><main class="main">
+<section id="app" class="app not-hidden"><main class="main">
 <section id="jobsPage" class="jobs-page" aria-label="Jobs">
   <div class="jobs-hero"><div><span class="pill jobs-development-badge">LIVE JOBS</span><h3>Latest opportunities</h3><p>Recent recruiter-sourced opportunities, organised for a faster and clearer review.</p></div><div class="jobs-hero-actions"><div class="jobs-snapshot"><strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong><span>Server-backed vacancies</span></div><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button type="button" data-jobs-view="cards">Cards</button><button type="button" data-jobs-view="list">List</button></div></div></div>
   <div class="jobs-notice" role="note"><i class="ph ph-warning" aria-hidden="true">⚠</i><p>No candidate commission.</p></div>
