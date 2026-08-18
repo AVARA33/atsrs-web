@@ -10,7 +10,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'product-experience.css'), 'u
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'file-preview-pan-harness.html'), 'utf8');
 
 assert.doesNotMatch(index, /<script src="js\/product-experience\.js\?v=447"><\/script>/);
-assert.match(loader, /loadScript\('js\/product-experience\.js\?v=447'\)/);
+assert.match(loader, /loadScript\('js\/product-experience\.js\?v=448'\)/);
 assert.match(loader, /window\.atsrsOpenFilePreview=previewStub/);
 assert.match(index, /css\/product-experience\.css\?v=447/);
 assert.match(runtime, /stage\.scrollWidth>stage\.clientWidth\+1\|\|stage\.scrollHeight>stage\.clientHeight\+1/);
@@ -23,6 +23,6 @@ assert.match(runtime, /bindStagePan\(imageStage\)/);
 assert.match(css, /\.file-preview-pdf-stage\.is-pannable[\s\S]*?cursor:grab/);
 assert.match(css, /\.file-preview-image-stage\.is-panning[\s\S]*?cursor:grabbing/);
 assert.match(harness, /implementation-personal-default\.png/);
-assert.match(harness, /js\/product-experience\.js\?v=447/);
+assert.match(harness, /js\/product-experience\.js\?v=448/);
 
 console.log('File preview pan contracts passed');

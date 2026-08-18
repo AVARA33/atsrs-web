@@ -34,6 +34,26 @@
   var pdfRenderVersion=0;
   var pdfOpenVersion=0;
   var lastWheelZoom=0;
+  var zoomMinPercent=50;
+  var zoomMaxPercent=300;
+  var zoomStepPercent=10;
+
+  function clampZoomPercent(percent){
+    return Math.max(zoomMinPercent,Math.min(zoomMaxPercent,percent));
+  }
+
+  function scaleToZoomPercent(scale){
+    return clampZoomPercent(Math.round(scale*100/zoomStepPercent)*zoomStepPercent);
+  }
+
+  function fitZoomScale(idealScale){
+    var snappedPercent=Math.floor((idealScale*100+0.000001)/zoomStepPercent)*zoomStepPercent;
+    return clampZoomPercent(snappedPercent)/100;
+  }
+
+  function steppedZoomScale(scale,direction){
+    return clampZoomPercent(scaleToZoomPercent(scale)+(direction<0?-zoomStepPercent:zoomStepPercent))/100;
+  }
 
   function stageCanPan(stage){
     return !!(stage&&(stage.scrollWidth>stage.clientWidth+1||stage.scrollHeight>stage.clientHeight+1));
@@ -94,7 +114,7 @@
 
   function applyImageScale(scale){
     if(!imageContent||!imageContent.naturalWidth)return;
-    imageScale=Math.max(.08,Math.min(6,scale));
+    imageScale=Math.max(.5,Math.min(3,scale));
     var width=Math.round(imageContent.naturalWidth*imageScale);
     var height=Math.round(imageContent.naturalHeight*imageScale);
     imageContent.style.width=width+'px';
@@ -103,7 +123,7 @@
       imageCanvas.style.width=Math.max(imageStage.clientWidth,width)+'px';
       imageCanvas.style.height=Math.max(imageStage.clientHeight,height)+'px';
     }
-    if(imageZoomLabel)imageZoomLabel.textContent=Math.round(imageScale*100)+'%';
+    if(imageZoomLabel)imageZoomLabel.textContent=scaleToZoomPercent(imageScale)+'%';
     requestAnimationFrame(function(){syncStagePan(imageStage);});
   }
 
@@ -111,16 +131,16 @@
     if(!imageContent||!imageStage||!imageContent.naturalWidth)return;
     var availableWidth=Math.max(1,imageStage.clientWidth-24);
     var availableHeight=Math.max(1,imageStage.clientHeight-24);
-    imageFitScale=Math.min(availableWidth/imageContent.naturalWidth,availableHeight/imageContent.naturalHeight);
+    imageFitScale=fitZoomScale(Math.min(availableWidth/imageContent.naturalWidth,availableHeight/imageContent.naturalHeight));
     imageFitted=true;
     applyImageScale(imageFitScale);
     imageStage.scrollLeft=0;
     imageStage.scrollTop=0;
   }
 
-  function changeImageZoom(multiplier){
+  function changeImageZoom(direction){
     imageFitted=false;
-    applyImageScale(imageScale*multiplier);
+    applyImageScale(steppedZoomScale(imageScale,direction));
   }
 
   function imagePreviewIsOpen(){
@@ -165,7 +185,7 @@
         await page.render(renderOptions).promise;
       }
       if(version!==pdfRenderVersion)return;
-      if(pdfZoomLabel)pdfZoomLabel.textContent=Math.round(pdfScale*100)+'%';
+      if(pdfZoomLabel)pdfZoomLabel.textContent=scaleToZoomPercent(pdfScale)+'%';
       if(pdfStatus)pdfStatus.textContent=pdfDocument.numPages+' page'+(pdfDocument.numPages===1?'':'s');
       requestAnimationFrame(function(){
         if(pdfStage.scrollHeight>pdfStage.clientHeight)pdfStage.scrollTop=scrollRatio*(pdfStage.scrollHeight-pdfStage.clientHeight);
@@ -182,16 +202,16 @@
     if(!pdfDocument||!pdfStage)return;
     var firstPage=await pdfDocument.getPage(1);
     var naturalViewport=firstPage.getViewport({scale:1});
-    pdfFitScale=Math.max(.2,Math.min(3,(pdfStage.clientWidth-42)/naturalViewport.width));
+    pdfFitScale=fitZoomScale((pdfStage.clientWidth-42)/naturalViewport.width);
     pdfScale=pdfFitScale;
     pdfFitted=true;
     await renderPdf();
   }
 
-  function changePdfZoom(multiplier){
+  function changePdfZoom(direction){
     if(!pdfDocument)return;
     pdfFitted=false;
-    pdfScale=Math.max(.2,Math.min(4,pdfScale*multiplier));
+    pdfScale=steppedZoomScale(pdfScale,direction);
     renderPdf();
   }
 
@@ -222,8 +242,8 @@
     var now=Date.now();
     if(now-lastWheelZoom<45)return;
     lastWheelZoom=now;
-    if(pdfPreviewIsOpen())changePdfZoom(event.deltaY<0?1.12:1/1.12);
-    else changeImageZoom(event.deltaY<0?1.12:1/1.12);
+    if(pdfPreviewIsOpen())changePdfZoom(event.deltaY<0?1:-1);
+    else changeImageZoom(event.deltaY<0?1:-1);
   }
 
   function closePreview(){
@@ -296,11 +316,11 @@
   if(downloadButton)downloadButton.addEventListener('click',function(){
     if(activeDownload)Promise.resolve(activeDownload()).catch(function(error){console.error(error);});
   });
-  if(imageZoomOut)imageZoomOut.addEventListener('click',function(){changeImageZoom(1/1.2);});
-  if(imageZoomIn)imageZoomIn.addEventListener('click',function(){changeImageZoom(1.2);});
+  if(imageZoomOut)imageZoomOut.addEventListener('click',function(){changeImageZoom(-1);});
+  if(imageZoomIn)imageZoomIn.addEventListener('click',function(){changeImageZoom(1);});
   if(imageFit)imageFit.addEventListener('click',fitImage);
-  if(pdfZoomOut)pdfZoomOut.addEventListener('click',function(){changePdfZoom(1/1.2);});
-  if(pdfZoomIn)pdfZoomIn.addEventListener('click',function(){changePdfZoom(1.2);});
+  if(pdfZoomOut)pdfZoomOut.addEventListener('click',function(){changePdfZoom(-1);});
+  if(pdfZoomIn)pdfZoomIn.addEventListener('click',function(){changePdfZoom(1);});
   if(pdfFit)pdfFit.addEventListener('click',fitPdf);
   bindStagePan(pdfStage);
   bindStagePan(imageStage);

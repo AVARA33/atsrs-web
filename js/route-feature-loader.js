@@ -38,7 +38,7 @@
   }
 
   function loadPreview(){
-    return loadScript('js/product-experience.js?v=447');
+    return loadScript('js/product-experience.js?v=448');
   }
 
   function report(error){
