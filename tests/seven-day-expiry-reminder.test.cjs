@@ -4,7 +4,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const migration = fs.readFileSync(
-  path.join(root, 'supabase', 'migrations', '20260818105255_add_seven_day_expiry_reminder.sql'),
+  path.join(root, 'supabase', 'migrations', '20260818111441_add_seven_day_expiry_reminder.sql'),
   'utf8'
 );
 const notifications = fs.readFileSync(path.join(root, 'js', 'notifications.js'), 'utf8');
