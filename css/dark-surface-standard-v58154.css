@@ -1,0 +1,81 @@
+/* V58154: final dark-theme surface authority. Light theme remains untouched. */
+html[data-theme="dark"] body{
+  --atsrs-action-surface:#0b0d0c;
+  --atsrs-action-surface-hover:#171a18;
+  --atsrs-action-border:#343936;
+  --atsrs-action-border-hover:#59615c;
+}
+
+html[data-theme="dark"] body :where(
+  .sidebar,.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,
+  .intro-service-card,.intro-hero,.hero-card,.roadmap-section,.roadmap-card,
+  .scan-box,.upload-simple,.import-box,.company-import-box,.risk-item,.doc-chip,
+  .ref-card,.preview-profile,.share-card,.atsrs-admin-overview,
+  .atsrs-notification-item,.atsrs-notification-settings,.atsrs-access-request,
+  .atsrs-professional-message,.candidate-card,.personnel-card,.talent-card,
+  .linked-personnel-card,.directory-card,.talent-message,.personnel-list,
+  .shared-profile-hero,.shared-document-card,.shared-document-summary,
+  .shared-profile-request-card,.shared-profile-error,.shared-profile-loading,
+  .atsrs-security-card,.atsrs-ai-consent,.atsrs-ai-consent-check,
+  .atsrs-session-card,.date-picker-popover,.profile-photo-crop-dialog,
+  .file-preview-card,.file-preview-shell,.shared-preview-card,.shared-preview-shell,
+  .projects-dialog,.jobs-admin-dialog,.talent-modal-card,
+  .cv-generator-dialog,.cv-generator-form
+){
+  border-color:#2a2f2d!important;
+  background-color:#0b0d0d!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body :where(
+  .snapshot-item,.career-record-row,.access-request-details,.cv-beta-box,
+  .ref-beta-box,.mini-docs em,.approve-flow i,.profile-link-demo,
+  .cv-enhancement-consent,.cv-ai-consent
+){
+  border-color:#343936!important;
+  background:#111414!important;
+}
+
+html[data-theme="dark"] body :where(
+  .secondary,.account-tabs button,.module-tabs button,.mode-choice button,
+  .cert-mode-buttons button,.edit-btn,
+  .cv-generator-buttons button,.cv-generator-preview-actions button
+){
+  border-color:#343936!important;
+  background:#0b0d0c!important;
+  color:#eef2ef!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body :where(
+  .secondary,.account-tabs button,.module-tabs button,.mode-choice button,
+  .cert-mode-buttons button,.edit-btn,
+  .cv-generator-buttons button,.cv-generator-preview-actions button
+):hover{
+  border-color:#59615c!important;
+  background:#171a18!important;
+}
+
+html[data-theme="dark"] body :where(.account-tabs button.active,.module-tabs button.active){
+  border-color:#526d14!important;
+  background:#111414!important;
+  color:#b8ff19!important;
+}
+
+html[data-theme="dark"] body :where(
+  .lang-menu,.personnel-combobox-options,.work-type-options,
+  .recipient-modal-card,.atsrs-notification-popover
+){
+  border-color:#2a2f2d!important;
+  background:#0b0d0d!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.42)!important;
+}
+
+html[data-theme="dark"] body .cv-generator-head{
+  border-color:#2a2f2d!important;
+  background:#080a09!important;
+}
+html[data-theme="dark"] body .cv-generator-preview{background:#101311!important}
+html[data-theme="dark"] body .cv-generator-modal{background:rgba(0,0,0,.84)!important}
+
