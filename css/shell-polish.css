@@ -823,12 +823,12 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
 }
 
 #certificatesPage .atsrs-document-col-select{width:38px}
-#certificatesPage .atsrs-document-col-name{width:35%}
-#certificatesPage .atsrs-document-col-provider{width:24%}
+#certificatesPage .atsrs-document-col-name{width:32%}
+#certificatesPage .atsrs-document-col-provider{width:22%}
 #certificatesPage .atsrs-document-col-expiry{width:106px}
-#certificatesPage .atsrs-document-col-uploaded{width:102px}
-#certificatesPage .atsrs-document-col-status{width:104px}
-#certificatesPage .atsrs-document-col-actions{width:204px}
+#certificatesPage .atsrs-document-col-uploaded{width:124px}
+#certificatesPage .atsrs-document-col-status{width:144px}
+#certificatesPage .atsrs-document-col-actions{width:196px}
 
 #certificatesPage .atsrs-document-register th,
 #certificatesPage .atsrs-document-register td{
@@ -853,10 +853,17 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
   overflow-wrap:anywhere;
 }
 
-#certificatesPage .atsrs-document-register tbody td:is(:nth-child(4),:nth-child(5),:nth-child(6)){
+#certificatesPage .atsrs-document-register tbody td:is(:nth-child(4),:nth-child(5)){
   white-space:nowrap!important;
-  overflow:visible!important;
+  overflow:hidden!important;
   text-overflow:clip;
+}
+
+#certificatesPage .atsrs-document-register tbody td:nth-child(6){
+  overflow:hidden!important;
+  overflow-wrap:anywhere;
+  white-space:normal!important;
+  line-height:1.25;
 }
 
 #certificatesPage .atsrs-document-row-actions{
