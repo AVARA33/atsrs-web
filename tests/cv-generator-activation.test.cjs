@@ -10,6 +10,7 @@ const cvCss = fs.readFileSync(path.join(root, 'css', 'cv-generator.css'), 'utf8'
 const runtime = fs.readFileSync(path.join(root, 'js', 'cv-generator.js'), 'utf8');
 const serverData = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
 const account = fs.readFileSync(path.join(root, 'js', 'account.js'), 'utf8');
+const supabaseConfig = fs.readFileSync(path.join(root, 'supabase', 'config.toml'), 'utf8');
 const edge = fs.readFileSync(
   path.join(root, 'supabase', 'functions', 'generate-cv', 'index.ts'),
   'utf8'
@@ -21,6 +22,7 @@ assert.match(html, /js\/cv-generator\.js\?v=414/);
 assert.match(html, /id="cvEnhancementConsent"/);
 assert.match(html, /id="cvEnhancementStatus"/);
 assert.match(html, /id="generateCVBtn"[^>]*>Generate CV<\/button>/);
+assert.match(supabaseConfig, /\[functions\.generate-cv\]\s*verify_jwt\s*=\s*false/);
 for (const css of [accountCss, cvCss]) {
   assert.doesNotMatch(
     css,
