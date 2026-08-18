@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css">
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v522.css">
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v523.css">
+  <link rel="stylesheet" href="../../css/jobs-prototype.css">
+  <link rel="stylesheet" href="../../css/dark-green-text-standard-v58140.css">
+  <link rel="stylesheet" href="../../css/view-switch-standard-v58144.css">
+  <title>ATSRS view switch standard</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0}.app{display:block!important;min-height:100vh}.main{width:min(100% - 32px,900px);margin:auto;padding:36px 0}.sample{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:84px;padding:18px 0;border-bottom:1px solid rgba(148,163,184,.18)}.sample h2{margin:0;font-size:18px}.hidden{display:block!important}@media(max-width:520px){.sample{align-items:flex-start}.sample h2{font-size:15px}}
+  </style>
+</head>
+<body class="personal-mode app-open">
+  <div id="app" class="app"><main class="main">
+    <section id="jobsPage" class="sample"><h2>Jobs</h2><div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view"><button class="active" aria-pressed="true">Cards</button><button aria-pressed="false">List</button></div></section>
+    <section id="candidatesPage" class="sample"><h2>Candidates</h2><div class="talent-view-switch" role="group" aria-label="Candidate view"><button class="active" aria-pressed="true">Cards</button><button aria-pressed="false">List</button></div></section>
+    <section id="personnelPage" class="sample"><h2>Personnel</h2><div class="talent-view-switch" role="group" aria-label="Personnel view"><button class="active" aria-pressed="true">Cards</button><button aria-pressed="false">List</button></div></section>
+    <section id="projectsPage" class="sample"><h2>Projects</h2><div class="talent-view-switch" role="group" aria-label="Project view"><button class="active" aria-pressed="true">Cards</button><button aria-pressed="false">List</button></div></section>
+  </main></div>
+  <script>document.querySelectorAll('.talent-view-switch').forEach(group=>group.addEventListener('click',event=>{const button=event.target.closest('button');if(!button)return;group.querySelectorAll('button').forEach(item=>{item.classList.toggle('active',item===button);item.setAttribute('aria-pressed',String(item===button))})}));</script>
+</body>
+</html>
