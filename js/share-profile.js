@@ -94,9 +94,12 @@
   }
   async function listOwnerFiles(){
     var supabase=client();if(!supabase)return[];
-    var result=await supabase.from('atsrs_files').select('id,category,file_name,mime_type,size_bytes,metadata,created_at').eq('account_type','personal').order('created_at',{ascending:false});
-    if(result.error)throw result.error;return result.data||[];
+    var userResult=await supabase.auth.getUser(),owner=userResult&&userResult.data&&userResult.data.user;
+    if(userResult&&userResult.error)throw userResult.error;if(!owner)return[];
+    var result=await supabase.from('atsrs_files').select('id,category,file_name,mime_type,size_bytes,metadata,created_at').eq('user_id',owner.id).eq('account_type','personal').order('created_at',{ascending:false});
+    if(result.error)throw result.error;return(result.data||[]).filter(isOwnerShareEligibleFile);
   }
+  function isOwnerShareEligibleFile(file){var metadata=file&&file.metadata&&typeof file.metadata==='object'?file.metadata:{};return metadata.document_registered!==false;}
   function ownerFileName(id){var file=ownerFiles.find(function(item){return item.id===id;});return file?documentMeta(file).type:'Document';}
   function syncShareSelectAll(){
     var control=byId('shareSelectAll'),boxes=Array.prototype.slice.call(document.querySelectorAll('#shareDocumentChoices input[type="checkbox"]'));

@@ -145,6 +145,13 @@ function uniqueFileIds(value: unknown) {
   )).slice(0, MAX_SHARED_FILES);
 }
 
+function isShareEligibleFile(file: JsonObject) {
+  const metadata = file.metadata && typeof file.metadata === "object"
+    ? file.metadata as JsonObject
+    : {};
+  return metadata.document_registered !== false;
+}
+
 function escapeHtml(value: unknown) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -603,10 +610,12 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
   const expiresAt = parseExpiry(body.expires_at);
   if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
   if (!expiresAt) return json(req, 400, { error: "Choose a valid link expiry between 10 minutes and one year." });
-  const owned = await admin.from("atsrs_files").select("id").eq("user_id", user.id)
+  const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)
     .eq("account_type", "personal").in("id", fileIds);
   if (owned.error) throw owned.error;
-  const found = new Set((owned.data ?? []).map((row) => String(row.id)));
+  const found = new Set((owned.data ?? []).filter((row) =>
+    isShareEligibleFile(row as JsonObject)
+  ).map((row) => String(row.id)));
   if (!fileIds.every((id) => found.has(id))) return json(req, 403, { error: "One or more selected files are not available." });
 
   const token = randomToken();
@@ -819,10 +828,12 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
     !uniqueFileIds(row.revoked_file_ids).includes(fileId) && !consumedRequestIds.has(row.id)
   ) ?? null;
   if (!access?.access_expires_at) return json(req, 403, { error: "Download access has not been approved or has expired." });
-  const file = await admin.from("atsrs_files").select("id,file_name,storage_path")
+  const file = await admin.from("atsrs_files").select("id,file_name,storage_path,metadata")
     .eq("id", fileId).eq("user_id", share.user_id).eq("account_type", share.account_type).maybeSingle();
   if (file.error) throw file.error;
-  if (!file.data) return json(req, 404, { error: "Document was not found." });
+  if (!file.data || !isShareEligibleFile(file.data as JsonObject)) {
+    return json(req, 404, { error: "Document was not found." });
+  }
   const seconds = Math.max(1, Math.min(
     DOWNLOAD_URL_SECONDS,
     Math.floor((new Date(access.access_expires_at).getTime() - Date.now()) / 1000),
@@ -888,7 +899,9 @@ async function publicRequest(req: Request, admin: AdminClient) {
       .eq("user_id", share.user_id).eq("account_type", share.account_type).in("id", selectedFileIds);
     if (fileResult.error) throw fileResult.error;
     const positions = new Map(selectedFileIds.map((id, index) => [id, index]));
-    files = (fileResult.data ?? []).slice().sort((a, b) =>
+    files = (fileResult.data ?? []).filter((file) =>
+      isShareEligibleFile(file as JsonObject)
+    ).slice().sort((a, b) =>
       (positions.get(String(a.id)) ?? 9999) - (positions.get(String(b.id)) ?? 9999)
     );
   }
