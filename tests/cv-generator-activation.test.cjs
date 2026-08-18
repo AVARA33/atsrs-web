@@ -18,6 +18,7 @@ const edge = fs.readFileSync(
 
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.match(html, /css\/account\.css\?v=422/);
+assert.match(html, /css\/cv-generator\.css\?v=377/);
 assert.match(html, /js\/cv-generator\.js\?v=414/);
 assert.match(html, /id="cvEnhancementConsent"/);
 assert.match(html, /id="cvEnhancementStatus"/);
@@ -66,6 +67,10 @@ assert.match(account, /atsrs:cv-uploaded[\s\S]*?name:f\.name/);
 assert.match(serverData, /atsrs:cv-state[\s\S]*?available:!!cv[\s\S]*?file_name/);
 assert.match(account, /atsrs:cv-state[\s\S]*?available:!!m[\s\S]*?m&&m\.name/);
 assert.doesNotMatch(runtime, /uploaded files are never sent/i);
+assert.match(cvCss, /\.cv-generator-preview-actions\{justify-content:flex-start\}/);
+assert.match(cvCss, /\.cv-generator-preview-actions button\{[\s\S]*?width:auto!important;[\s\S]*?background:#0b0d0c!important/);
+assert.match(cvCss, /\.cv-generator-dialog\{[\s\S]*?background:#080a09/);
+assert.match(cvCss, /html\[data-theme="light"\] \.cv-generator-preview\{background:#e9eef4\}/);
 
 function classList(initial = []) {
   const values = new Set(initial);
