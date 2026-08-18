@@ -6,6 +6,8 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const runtimePath = path.join(root, 'js', 'product-experience.js');
 const runtime = fs.readFileSync(runtimePath, 'utf8');
+const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const routeLoader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
 
 const instrumented = runtime.replace(
   /\}\)\(\);\s*$/,
@@ -45,5 +47,7 @@ assert.equal(zoom.scaleToZoomPercent(1.34), 130, 'displayed zoom uses a standard
 
 assert.doesNotMatch(runtime, /changePdfZoom\(1(?:\.12|\/1\.12|\.2|\/1\.2)\)/);
 assert.doesNotMatch(runtime, /changeImageZoom\(1(?:\.12|\/1\.12|\.2|\/1\.2)\)/);
+assert.match(index, /route-feature-loader\.js\?v=58152/, 'the browser must refresh the loader that selects preview assets');
+assert.match(routeLoader, /product-experience\.js\?v=448/, 'the refreshed loader must request the snapped-zoom runtime');
 
 console.log('File preview zoom contracts passed');
