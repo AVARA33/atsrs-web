@@ -15,10 +15,13 @@ assert.match(index, /window\.atsrsMountSharedProfile=function\(\)[\s\S]*?templat
 assert.match(index, /if\(window\.__atsrsEntryRoute==='share'\)window\.atsrsMountSharedProfile\(\)/);
 assert.match(index, /href="\?view=login"[^>]*>Log in</);
 assert.match(index, /href="\?view=signup"/);
-assert.match(index, /class="public-section public-job-search-section"[\s\S]*?<details class="public-job-search-details">[\s\S]*?<summary>[\s\S]*?>JOB SEARCH<[\s\S]*?>Find your next opportunity</);
-assert.doesNotMatch(index, /<details class="public-job-search-details"\s+open/);
-assert.match(index, /Discover recruiter-sourced opportunities across multiple industries, locations and work types\./);
-assert.match(index, /href="\?view=jobs">Explore Jobs/);
+assert.match(index, /class="public-section public-job-search-section"[\s\S]*?public-eyebrow">JOB SEARCH<[\s\S]*?<h2>Find your next opportunity<\/h2>/);
+assert.doesNotMatch(index, /public-job-search-details|<summary>[\s\S]*?JOB SEARCH/);
+assert.match(index, /Find real opportunities without wasting time searching everywhere\./);
+assert.match(index, /FREE ACCESS[\s\S]*?BRONZE ACCESS[\s\S]*?Unlimited Job Search/);
+assert.match(index, /Recruiter details[\s\S]*?Contact information[\s\S]*?Original source/);
+assert.match(index, /class="public-cta" href="\?view=jobs">Explore Jobs/);
+assert.match(index, /public-jobs-product-preview[\s\S]*?Production Operator Offshore[\s\S]*?Field Service Technician[\s\S]*?ROV Pilot Technician/);
 assert.doesNotMatch(index, /public-audience-grid public-job-search-grid/);
 assert.equal((index.match(/id="jobsPage"/g) || []).length, 1, 'Home CTA must reuse the existing Jobs page');
 assert.match(index, /class="public-home-link" href="#top" aria-label="Home"/);
@@ -94,10 +97,11 @@ assert.doesNotMatch(index, /class="public-footer-brand"/);
 assert.match(index, /class="public-footer-legal"[\s\S]*?Data Protection &amp; GDPR[\s\S]*?Data Rights<\/a><\/nav>[\s\S]*?class="public-footer-bottom"/);
 assert.match(css, /\.public-footer\{display:grid;grid-template-columns:1fr;[\s\S]*?align-items:start/);
 assert.match(css, /\.public-footer-legal\{[\s\S]*?justify-content:center/);
-assert.match(css, /\.public-job-search-section\{border-block:1px solid var\(--public-line\)\}/);
-assert.match(css, /\.public-job-search-details summary\{min-height:44px;cursor:pointer\}/);
-assert.match(css, /\.public-job-search-title\{font-family:Georgia,[\s\S]*?font-size:clamp\(38px,4vw,58px\)/);
-assert.match(css, /\.public-job-search-content\{max-width:760px/);
+assert.match(css, /\.public-job-search-section\{width:min\(1350px,calc\(100% - 40px\)\);border-block:1px solid var\(--public-line\)\}/);
+assert.match(css, /\.public-job-search-heading h2\{[^}]*font-family:Georgia,[^}]*font-size:clamp\(42px,4\.6vw,66px\)/);
+assert.match(css, /\.public-job-search-layout\{display:grid;grid-template-areas:"copy preview" "actions preview";grid-template-columns:minmax\(360px,\.82fr\) minmax\(560px,1\.18fr\)/);
+assert.match(css, /\.public-jobs-product-preview\{[^}]*border:1px solid var\(--public-line\)[^}]*background:var\(--public-surface\)/);
+assert.doesNotMatch(css, /public-job-search-details|public-job-search-content/);
 
 for (const image of ['personal-dashboard.png', 'candidate-directory.png', 'corporate-personnel.png']) {
   assert.ok(fs.existsSync(path.join(root, 'assets', 'landing', image)), `${image} must exist`);

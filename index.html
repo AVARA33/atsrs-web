@@ -94,7 +94,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
 <link rel="stylesheet" href="css/shell-polish.css?v=570">
-<link rel="stylesheet" href="css/public-landing.css?v=58148">
+<link rel="stylesheet" href="css/public-landing.css?v=58149">
 <link rel="stylesheet" href="css/workspace-surface-standard-v519.css?v=519">
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=520">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=522-2">
@@ -250,18 +250,105 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </section>
 
     <section class="public-section public-job-search-section">
-      <details class="public-job-search-details">
-        <summary>
-          <span class="public-job-search-heading">
-            <span class="public-eyebrow">JOB SEARCH</span>
-            <span class="public-job-search-title">Find your next opportunity</span>
-          </span>
-        </summary>
-        <div class="public-job-search-content">
-          <p>Discover recruiter-sourced opportunities across multiple industries, locations and work types. Search and filter by role, location, company, recruiter or recency, then apply at the original source.</p>
-          <a class="public-text-link" href="?view=jobs">Explore Jobs <span aria-hidden="true">→</span></a>
+      <div class="public-job-search-heading">
+        <p class="public-eyebrow">JOB SEARCH</p>
+        <h2>Find your next opportunity</h2>
+      </div>
+
+      <div class="public-job-search-layout">
+        <div class="public-job-search-copy">
+          <p class="public-job-search-lead"><strong>Find real opportunities without wasting time searching everywhere.</strong></p>
+          <p>ATSRS brings recruiter-sourced vacancies together across industries, locations and work types. Review the role, company, location, requirements and vacancy details directly inside ATSRS.</p>
+
+          <div class="public-job-access-grid">
+            <article class="public-job-access-card">
+              <p class="public-job-access-label">FREE ACCESS</p>
+              <h3>Explore a limited selection</h3>
+              <p>Inspect enough vacancy information to independently verify the company and opportunity.</p>
+              <ul>
+                <li><i class="ph ph-check" aria-hidden="true"></i>Job title, company and location</li>
+                <li><i class="ph ph-check" aria-hidden="true"></i>Work type and posted information</li>
+                <li><i class="ph ph-check" aria-hidden="true"></i>Description and requirements</li>
+              </ul>
+              <div class="public-job-restricted">
+                <span><i class="ph ph-lock-key" aria-hidden="true"></i>Full vacancy catalogue</span>
+                <span><i class="ph ph-lock-key" aria-hidden="true"></i>Recruiter, contact and direct source access</span>
+              </div>
+            </article>
+
+            <article class="public-job-access-card public-job-access-bronze">
+              <p class="public-job-access-label">BRONZE ACCESS</p>
+              <h3>Unlimited Job Search</h3>
+              <p>Move faster from discovery to application with the complete ATSRS Jobs experience.</p>
+              <ul>
+                <li><i class="ph ph-check" aria-hidden="true"></i>All vacancies and newest opportunities</li>
+                <li><i class="ph ph-check" aria-hidden="true"></i>Full recruiter and contact details</li>
+                <li><i class="ph ph-check" aria-hidden="true"></i>Direct Apply and original source links</li>
+                <li><i class="ph ph-check" aria-hidden="true"></i>Complete filters and faster access</li>
+              </ul>
+            </article>
+          </div>
+
+          <p class="public-job-value-line">See the opportunity. Verify the company. Reach the source faster.</p>
         </div>
-      </details>
+
+        <div class="public-jobs-product-preview" aria-label="ATSRS Jobs product preview">
+          <div class="public-jobs-preview-topbar">
+            <span><i class="ph ph-briefcase" aria-hidden="true"></i>ATSRS JOBS</span>
+            <strong>Live opportunities</strong>
+          </div>
+          <div class="public-jobs-preview-tools" aria-hidden="true">
+            <span><i class="ph ph-magnifying-glass"></i>Search by job title or role</span>
+            <span>All locations <i class="ph ph-caret-down"></i></span>
+          </div>
+
+          <article class="public-job-preview-card public-job-preview-featured">
+            <div class="public-job-preview-title">
+              <div><span class="public-job-new">NEW</span><h3>Production Operator Offshore</h3><p>Semco Maritime</p></div>
+              <i class="ph ph-arrows-out" aria-hidden="true"></i>
+            </div>
+            <p class="public-job-preview-description">Operate offshore facilities, support safe production activities and maintain clear operating standards across the worksite.</p>
+            <dl class="public-job-preview-meta">
+              <div><dt>LOCATION</dt><dd>Esbjerg, Denmark — offshore</dd></div>
+              <div><dt>WORK TYPE</dt><dd>Offshore rotational</dd></div>
+              <div><dt>POSTED</dt><dd>Recently published</dd></div>
+              <div><dt>WORKSITE</dt><dd>Offshore</dd></div>
+            </dl>
+            <div class="public-job-preview-locked">
+              <span>Recruiter details <i class="ph ph-lock-key" aria-hidden="true"></i></span>
+              <span>Contact information <i class="ph ph-lock-key" aria-hidden="true"></i></span>
+              <span>Original source <i class="ph ph-lock-key" aria-hidden="true"></i></span>
+            </div>
+            <p class="public-job-preview-unlock"><i class="ph ph-lightning" aria-hidden="true"></i>Available with Bronze</p>
+          </article>
+
+          <div class="public-job-preview-grid">
+            <article class="public-job-preview-card public-job-preview-compact">
+              <span class="public-job-new">NEW</span>
+              <h3>Field Service Technician</h3>
+              <p>Integrated Power Services</p>
+              <dl class="public-job-preview-meta">
+                <div><dt>LOCATION</dt><dd>Texas, United States</dd></div>
+                <div><dt>WORK TYPE</dt><dd>Full-time</dd></div>
+              </dl>
+            </article>
+            <article class="public-job-preview-card public-job-preview-compact">
+              <span class="public-job-new">NEW</span>
+              <h3>ROV Pilot Technician</h3>
+              <p>Recruiter-sourced opportunity</p>
+              <dl class="public-job-preview-meta">
+                <div><dt>LOCATION</dt><dd>International</dd></div>
+                <div><dt>WORKSITE</dt><dd>Offshore</dd></div>
+              </dl>
+            </article>
+          </div>
+        </div>
+
+        <div class="public-job-search-actions">
+          <a class="public-cta" href="?view=jobs">Explore Jobs <span aria-hidden="true">→</span></a>
+          <a class="public-text-link" href="pricing.html#bronze">Unlock with Bronze <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
     </section>
 
     <section id="personal-preview" class="public-section public-preview-section">
