@@ -140,6 +140,7 @@ function headers(req: Request) {
   return {
     ...corsHeaders,
     "Access-Control-Allow-Origin": allowedOrigin(req),
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-retry-count, x-atsrs-client-build",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json",
     "Vary": "Origin",

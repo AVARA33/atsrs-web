@@ -38,6 +38,7 @@ assert.match(
 
 assert.match(edge, /jsr:@supabase\/supabase-js@2\.111\.0"/);
 assert.match(edge, /jsr:@supabase\/supabase-js@2\.111\.0\/cors"/);
+assert.match(edge, /Access-Control-Allow-Headers[\s\S]*?x-atsrs-client-build/);
 assert.match(edge, /const OPENAI_TIMEOUT_MS = 45_000;/);
 assert.match(edge, /const openAiAbort = new AbortController\(\)/);
 assert.match(edge, /signal: openAiAbort\.signal/);
