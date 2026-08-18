@@ -157,6 +157,7 @@ button.personnel-table-status{cursor:pointer}
 .talent-list-availability{display:grid;gap:4px}.talent-list-availability>b{color:#a8cde0;font-size:11px}
 .talent-list-actions{display:flex;justify-content:flex-end;gap:5px;white-space:nowrap}
 .talent-list-actions button{width:auto!important;min-height:30px!important;margin:0!important;padding:5px 8px!important;background:transparent!important;border-color:#315067!important;color:#d7e5ee!important;font-size:10px!important}
+.talent-directory-grid.is-list .talent-list-actions .talent-add-personnel{flex:0 0 138px;width:138px!important;min-width:138px!important;max-width:138px!important}
 .talent-list-actions .is-remove{border-color:#59404a!important;color:#e29b9f!important}
 .talent-list-action-panel{grid-column:1/-1;margin:2px 0 5px;padding:14px}
 .talent-card{display:flex;flex-direction:column;min-height:270px;padding:18px;border:1px solid #24394b;border-radius:16px;background:rgba(5,16,27,.3)}
