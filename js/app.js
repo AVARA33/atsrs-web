@@ -924,7 +924,8 @@
     var html='';
     rows.forEach(function(row){
       var x=row.item,i=row.index,st=row.statusData;
-      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td data-label="Document"><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></td><td data-label="Provider">'+esc(x.provider||'')+'</td><td data-label="Expiry">'+esc(x.expiry||'')+'</td><td data-label="Uploaded">'+uploadDateMarkup(x)+'</td><td data-label="Status" class="'+esc(st.cls||'')+'">'+esc(st.txt||'')+'</td><td data-label="Actions"><div class="atsrs-document-row-actions">'+
+      var statusTone=st.expired?'is-expired':(!st.noExpiry&&!st.risk?'is-valid':(Number(st.days)>0&&Number(st.days)<=30?'is-expiring':'is-neutral'));
+      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td data-label="Document"><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></td><td data-label="Provider">'+esc(x.provider||'')+'</td><td data-label="Expiry">'+esc(x.expiry||'')+'</td><td data-label="Uploaded">'+uploadDateMarkup(x)+'</td><td data-label="Status" class="atsrs-document-status '+esc(st.cls||'')+' '+statusTone+'">'+esc(st.txt||'')+'</td><td data-label="Actions"><div class="atsrs-document-row-actions">'+
         '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
         '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
         '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+

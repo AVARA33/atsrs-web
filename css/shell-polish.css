@@ -866,6 +866,21 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{
   line-height:1.25;
 }
 
+html[data-theme="light"] #certificatesPage .atsrs-document-status.is-valid{
+  color:#187642!important;
+  -webkit-text-fill-color:#187642!important;
+}
+
+html[data-theme="light"] #certificatesPage .atsrs-document-status.is-expiring{
+  color:#8a5b00!important;
+  -webkit-text-fill-color:#8a5b00!important;
+}
+
+html[data-theme="light"] #certificatesPage .atsrs-document-status.is-expired{
+  color:#a33a43!important;
+  -webkit-text-fill-color:#a33a43!important;
+}
+
 #certificatesPage .atsrs-document-row-actions{
   display:grid;
   grid-template-columns:minmax(0,1.15fr) minmax(0,.8fr) minmax(0,1fr);
