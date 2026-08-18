@@ -1,0 +1,37 @@
+/* V58148: shared internal alignment for action buttons and button-like links. */
+:root{
+  --atsrs-button-content-gap:7px;
+}
+
+/*
+ * Keep visible button content centred as one unit without changing a control's
+ * existing size, padding, colour, border, radius or interaction styling.
+ * Navigation, menu and select-option controls intentionally retain their
+ * established directional layout below.
+ */
+:where(#auth,#app) button:not(.nav button):not(.lang-menu button):not(.linkbtn):not(.workspace-switcher-button):not(.workspace-option):not(.workspace-logout-button):not(.work-type-select-toggle):not(.work-type-select-option):not(.personnel-combobox-options button):not(.jobs-admin-list-item):not([role="option"]):not([role="menuitem"]){
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--atsrs-button-content-gap);
+  text-align:center;
+  line-height:1.2;
+}
+
+/* Explicitly preserve controls whose content is intentionally directional. */
+:where(#auth,#app) :where(
+  .nav button,
+  .lang-menu button,
+  button.linkbtn,
+  .workspace-switcher-button,
+  .workspace-option,
+  .workspace-logout-button,
+  .work-type-select-toggle,
+  .work-type-select-option,
+  .personnel-combobox-options button,
+  .jobs-admin-list-item,
+  button[role="option"],
+  button[role="menuitem"]
+){
+  text-align:left;
+}
