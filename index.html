@@ -75,7 +75,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/dashboard.css?v=447">
 <link rel="stylesheet" href="css/documents.css?v=375">
 <link rel="stylesheet" href="css/references.css?v=408">
-<link rel="stylesheet" href="css/cv-generator.css?v=377">
+<link rel="stylesheet" href="css/cv-generator.css?v=415">
 <link rel="stylesheet" href="css/account.css?v=422">
 <link rel="stylesheet" href="css/product-experience.css?v=447">
 <link rel="stylesheet" href="css/date-picker.css?v=502">
@@ -1887,59 +1887,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="cv-generator-head">
       <div>
         <span class="pill">AI CV GENERATOR</span>
-        <h2 id="cvGeneratorTitle">Create your ATSRS CV</h2>
-        <p id="cvGeneratorDescription">ATSRS uses your saved profile and document register. Add the career details that are not already in your account.</p>
+        <h2 id="cvGeneratorTitle">Your generated ATSRS CV</h2>
+        <p id="cvGeneratorDescription">Generated directly from your uploaded CV. Generate again creates a fresh professional version without opening a details form.</p>
       </div>
       <button id="closeCvGeneratorBtn" class="cv-generator-close" type="button" aria-label="Close CV generator">&times;</button>
     </div>
-    <div id="cvGeneratorForm" class="cv-generator-form">
-      <div class="cv-generator-grid">
-        <label>
-          <span>Target role</span>
-          <input id="cvTargetRole" type="text" maxlength="120" placeholder="For example: Project Manager">
-        </label>
-        <label>
-          <span>CV language</span>
-          <select id="cvLanguage">
-            <option value="English">English</option>
-            <option value="Azerbaijani">Azerbaijani</option>
-            <option value="Turkish">Turkish</option>
-            <option value="Russian">Russian</option>
-          </select>
-        </label>
-      </div>
-      <label>
-        <span>Professional summary notes</span>
-        <textarea id="cvSummaryNotes" rows="3" maxlength="1800" placeholder="Your years of experience, industries, strongest qualities and career objective."></textarea>
-      </label>
-      <label>
-        <span>Skills</span>
-        <textarea id="cvSkills" rows="2" maxlength="1200" placeholder="Separate skills with commas, for example: Project planning, AutoCAD, team leadership"></textarea>
-      </label>
-      <label>
-        <span>Employment history</span>
-        <textarea id="cvExperience" rows="7" maxlength="7000" placeholder="Company - Position - Start date to End date&#10;Main responsibilities and achievements"></textarea>
-      </label>
-      <label>
-        <span>Education and training</span>
-        <textarea id="cvEducation" rows="4" maxlength="3500" placeholder="Institution - Qualification - Graduation year"></textarea>
-      </label>
-      <label class="cv-ai-consent">
-        <input id="cvAiConsent" type="checkbox">
-        <span id="cvAiConsentText">I agree that the career details above and the profile/document metadata stored in ATSRS will be sent securely to the OpenAI API to prepare this CV. Uploaded document files are not sent.</span>
-      </label>
-      <div id="cvGeneratorStatus" class="cv-generator-status" role="status"></div>
-      <div class="cv-generator-buttons">
-        <button id="cancelCvGeneratorBtn" class="secondary" type="button">Cancel</button>
-        <button id="runCvGeneratorBtn" type="button">Generate CV</button>
-      </div>
-    </div>
     <div id="cvGeneratorPreview" class="cv-generator-preview hidden">
       <div class="cv-generator-preview-actions">
-        <button id="editCvGeneratorBtn" class="secondary" type="button">Edit details</button>
         <button id="regenerateCvBtn" class="secondary" type="button">Generate again</button>
         <button id="savePdfCvBtn" type="button">Print / Save PDF</button>
       </div>
+      <div id="cvGeneratorStatus" class="cv-generator-status" role="status"></div>
       <div id="cvGeneratorPreviewDocument" class="cv-preview-document"></div>
     </div>
   </div>
@@ -1971,7 +1929,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/avatar.js?v=375"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
-<script src="js/cv-generator.js?v=414"></script>
+<script src="js/cv-generator.js?v=415"></script>
 <script src="js/account.js?v=414"></script>
 <script src="js/app.js?v=567"></script>
 <script src="js/date-picker.js?v=502"></script>

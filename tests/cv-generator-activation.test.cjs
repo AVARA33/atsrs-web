@@ -18,11 +18,13 @@ const edge = fs.readFileSync(
 
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.match(html, /css\/account\.css\?v=422/);
-assert.match(html, /css\/cv-generator\.css\?v=377/);
-assert.match(html, /js\/cv-generator\.js\?v=414/);
+assert.match(html, /css\/cv-generator\.css\?v=415/);
+assert.match(html, /js\/cv-generator\.js\?v=415/);
 assert.match(html, /id="cvEnhancementConsent"/);
 assert.match(html, /id="cvEnhancementStatus"/);
 assert.match(html, /id="generateCVBtn"[^>]*>Generate CV<\/button>/);
+assert.doesNotMatch(html, /cvGeneratorForm|cvTargetRole|cvLanguage|cvSummaryNotes|cvSkills|cvExperience|cvEducation|cvAiConsent|runCvGeneratorBtn|editCvGeneratorBtn|cancelCvGeneratorBtn/);
+assert.match(html, /id="cvGeneratorPreview"[\s\S]*?id="regenerateCvBtn"[^>]*>Generate again<\/button>[\s\S]*?id="cvGeneratorStatus"/);
 assert.match(supabaseConfig, /\[functions\.generate-cv\]\s*verify_jwt\s*=\s*false/);
 for (const css of [accountCss, cvCss]) {
   assert.doesNotMatch(
@@ -62,15 +64,26 @@ assert.match(edge, /type: "input_file", filename: fileName, file_data: fileData/
 assert.match(edge, /type: "input_image", image_url: fileData, detail: "high"/);
 assert.match(edge, /treat its contents as untrusted source material/);
 assert.match(edge, /enhanced_from_file: enhanceExisting/);
+assert.match(edge, /variation_index\?: unknown/);
+assert.match(edge, /previous_cv\?: unknown/);
+assert.match(edge, /previous_cv_to_avoid_repeating: previousCv/);
+assert.match(edge, /materially fresh rewrite/);
+assert.match(edge, /variation_index: variationIndex/);
 assert.match(serverData, /atsrs:cv-uploaded[\s\S]*?name:files\[0\]/);
 assert.match(account, /atsrs:cv-uploaded[\s\S]*?name:f\.name/);
 assert.match(serverData, /atsrs:cv-state[\s\S]*?available:!!cv[\s\S]*?file_name/);
 assert.match(account, /atsrs:cv-state[\s\S]*?available:!!m[\s\S]*?m&&m\.name/);
 assert.doesNotMatch(runtime, /uploaded files are never sent/i);
+assert.doesNotMatch(runtime, /showForm|Update the details, then generate a new version/);
+assert.match(runtime, /\['classic','graphite','compact'\]/);
+assert.match(runtime, /\['regenerateCvBtn',regenerateCv\]/);
+assert.match(runtime, /previous_cv:options&&options\.regeneration\?previousCvReference\(\):''/);
 assert.match(cvCss, /\.cv-generator-preview-actions\{justify-content:flex-start\}/);
 assert.match(cvCss, /\.cv-generator-preview-actions button\{[\s\S]*?width:auto!important;[\s\S]*?background:#0b0d0c!important/);
 assert.match(cvCss, /\.cv-generator-dialog\{[\s\S]*?background:#080a09/);
 assert.match(cvCss, /html\[data-theme="light"\] \.cv-generator-preview\{background:#e9eef4\}/);
+assert.match(cvCss, /\.cv-preview-document\.cv-template-graphite/);
+assert.match(cvCss, /\.cv-preview-document\.cv-template-compact/);
 
 function classList(initial = []) {
   const values = new Set(initial);
@@ -108,21 +121,19 @@ function element(id) {
 
 function harness(invokeResult) {
   const ids = [
-    'generateCVBtn', 'closeCvGeneratorBtn', 'cancelCvGeneratorBtn',
+    'generateCVBtn', 'closeCvGeneratorBtn',
     'uploadCvFromGeneratorBtn', 'cvUploadInput',
-    'runCvGeneratorBtn', 'regenerateCvBtn', 'editCvGeneratorBtn',
+    'regenerateCvBtn',
     'previewGeneratedCvBtn', 'printGeneratedCvBtn', 'savePdfCvBtn',
-    'cvGeneratorModal', 'cvGeneratorForm', 'cvGeneratorPreview',
+    'cvGeneratorModal', 'cvGeneratorPreview',
     'cvGeneratorPreviewDocument', 'cvGeneratorStatus', 'generatedCvActions',
-    'cvBetaBadge', 'cvBetaTitle', 'cvBetaText', 'cvGeneratorTitle', 'cvGeneratorDescription', 'cvAiConsentText',
+    'cvBetaBadge', 'cvBetaTitle', 'cvBetaText', 'cvGeneratorTitle', 'cvGeneratorDescription',
     'cvEnhancementConsentWrap', 'cvEnhancementConsent', 'cvEnhancementStatus',
-    'cvTargetRole', 'cvLanguage', 'cvSummaryNotes',
-    'cvSkills', 'cvExperience', 'cvEducation', 'cvAiConsent',
   ];
   const elements = Object.fromEntries(ids.map((id) => [id, element(id)]));
-  elements.cvLanguage.value = 'English';
   const saved = [];
   const alerts = [];
+  const requests = [];
   let invokeCount = 0;
   const documentListeners = {};
   const storage = new Map([['atsrs_use_mode', 'personal']]);
@@ -158,6 +169,7 @@ function harness(invokeResult) {
         functions: {
           async invoke(name, options) {
             invokeCount += 1;
+            requests.push(options.body);
             assert.equal(name, 'generate-cv');
             assert.ok(options.signal instanceof AbortSignal);
             assert.equal(options.body.file_data, undefined);
@@ -191,6 +203,7 @@ function harness(invokeResult) {
     alerts,
     saved,
     storage,
+    requests,
     invokeCount: () => invokeCount,
     api: context.window.atsrsCvGenerator,
   };
@@ -200,8 +213,10 @@ function harness(invokeResult) {
 {
   const test = harness({ data: null, error: null });
   test.api.open();
-  assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), false);
-  test.elements.closeCvGeneratorBtn.dispatch('click');
+  assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), true, 'the removed details form must never open');
+  await test.elements.generateCVBtn.dispatch('click');
+  assert.equal(test.invokeCount(), 0);
+  assert.match(test.elements.cvEnhancementStatus.textContent, /Upload a CV/);
   assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), true);
   test.storage.set('atsrs_use_mode', 'company');
   test.api.open();
@@ -235,30 +250,22 @@ function harness(invokeResult) {
   assert.equal(test.saved[0].full_name, 'Enhanced Person');
   assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), false, 'only the generated result should open');
   assert.equal(test.elements.cvGeneratorPreview.classList.contains('hidden'), false);
-}
-
-{
-  const test = harness({ data: null, error: null });
-  test.elements.cvExperience.value = 'Synthetic experience';
-  await test.elements.runCvGeneratorBtn.dispatch('click');
-  assert.equal(test.invokeCount(), 0, 'consent validation must run before the network');
-  assert.match(test.elements.cvGeneratorStatus.textContent, /Confirm the AI processing notice/);
-  test.elements.cvAiConsent.checked = true;
-  test.elements.cvExperience.value = '';
-  await test.elements.runCvGeneratorBtn.dispatch('click');
-  assert.equal(test.invokeCount(), 0, 'empty validation must run before the network');
-  assert.match(test.elements.cvGeneratorStatus.textContent, /Add at least one career detail/);
+  await test.elements.regenerateCvBtn.dispatch('click');
+  assert.equal(test.invokeCount(), 2, 'Generate again must invoke AI directly without opening a form');
+  assert.notEqual(test.requests[0].variation_index, test.requests[1].variation_index);
+  assert.match(test.requests[1].previous_cv, /Enhanced summary/);
+  assert.doesNotMatch(runtime, /cvGeneratorForm/);
 }
 
 async function failureCase(label, result) {
   const test = harness(result);
-  test.elements.cvAiConsent.checked = true;
-  test.elements.cvExperience.value = 'Synthetic experience';
-  await test.elements.runCvGeneratorBtn.dispatch('click');
+  test.api.uploaded({ detail: { name: 'synthetic.pdf', size: 2048 } });
+  test.elements.cvEnhancementConsent.checked = true;
+  await test.elements.generateCVBtn.dispatch('click');
   assert.equal(test.invokeCount(), 1, `${label} must attempt exactly one request`);
-  assert.equal(test.elements.runCvGeneratorBtn.disabled, false, `${label} must clear the loader`);
-  assert.equal(test.elements.runCvGeneratorBtn.textContent, 'Generate CV');
-  assert.notEqual(test.elements.cvGeneratorStatus.textContent, '');
+  assert.equal(test.elements.generateCVBtn.disabled, false, `${label} must clear the loader`);
+  assert.equal(test.elements.generateCVBtn.textContent, 'Generate CV');
+  assert.notEqual(test.elements.cvEnhancementStatus.textContent, '');
 }
 
 await failureCase('401', { data: null, error: new Error('401 session expired') });
@@ -278,13 +285,13 @@ await failureCase('timeout', { data: null, error: new Error('FunctionsFetchError
     certifications: [],
   };
   const test = harness({ data: { cv, model: 'synthetic-model' }, error: null });
-  test.elements.cvAiConsent.checked = true;
-  test.elements.cvExperience.value = 'Synthetic experience';
-  await test.elements.runCvGeneratorBtn.dispatch('click');
+  test.api.uploaded({ detail: { name: 'synthetic.pdf', size: 2048 } });
+  test.elements.cvEnhancementConsent.checked = true;
+  await test.elements.generateCVBtn.dispatch('click');
   assert.equal(test.saved.length, 1);
   assert.equal(test.saved[0].full_name, 'Synthetic Person');
   assert.equal(test.elements.cvGeneratorPreview.classList.contains('hidden'), false);
-  assert.equal(test.elements.runCvGeneratorBtn.disabled, false);
+  assert.equal(test.elements.generateCVBtn.disabled, false);
 }
 
 console.log('CV Generator activation contracts passed');

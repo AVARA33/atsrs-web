@@ -6,9 +6,9 @@
   var GENERATION_TIMEOUT_MS=65000;
   var lastCv=null;
   var generating=false;
-  var enhancementMode=false;
   var enhancementUploadPending=false;
   var uploadedCv={available:false,name:'',size:0};
+  var CV_TEMPLATES=['classic','graphite','compact'];
 
   function byId(id){return document.getElementById(id)}
   function safe(value){
@@ -62,11 +62,9 @@
   }
   function setGenerating(value){
     generating=!!value;
-    var button=byId('runCvGeneratorBtn');
     var regenerate=byId('regenerateCvBtn');
     var cardButton=byId('generateCVBtn');
-    if(button){button.disabled=generating;button.textContent=generating?'Creating your CV...':'Generate CV'}
-    if(regenerate)regenerate.disabled=generating;
+    if(regenerate){regenerate.disabled=generating;regenerate.textContent=generating?'Generating new version...':'Generate again'}
     if(cardButton){cardButton.disabled=generating;updateCard()}
   }
   function openModal(showPreview){
@@ -76,26 +74,12 @@
     }
     var modal=byId('cvGeneratorModal');
     if(!modal)return;
-    modal.classList.remove('hidden');
-    document.body.style.overflow='hidden';
     var saved=storedCv();
     if(saved&&!lastCv)lastCv=saved;
-    if(showPreview&&lastCv)showCvPreview(lastCv);
-    else showForm();
-  }
-  function setEnhancementMode(value){
-    enhancementMode=!!value;
-    var title=byId('cvGeneratorTitle');
-    var description=byId('cvGeneratorDescription');
-    var consent=byId('cvAiConsentText');
-    if(title)title.textContent=enhancementMode?'Enhance your existing CV':'Create your ATSRS CV';
-    if(description)description.textContent=enhancementMode
-      ?'ATSRS securely reads the CV you just uploaded, then uses your optional notes and saved profile data to prepare an improved professional version.'
-      :'ATSRS uses your saved profile and document register. Add the career details that are not already in your account.';
-    if(consent)consent.textContent=enhancementMode
-      ?'I agree that my uploaded CV, the career details above and saved ATSRS profile/document metadata will be sent securely to the OpenAI API to prepare an improved CV.'
-      :'I agree that the career details above and the profile/document metadata stored in ATSRS will be sent securely to the OpenAI API to prepare this CV. Uploaded document files are not sent.';
-    setGenerating(generating);
+    if(!showPreview||!lastCv)return;
+    modal.classList.remove('hidden');
+    document.body.style.overflow='hidden';
+    showCvPreview(lastCv);
   }
   function beginEnhancement(){
     if(currentMode()!=='personal'){
@@ -132,14 +116,6 @@
     if(modal)modal.classList.add('hidden');
     document.body.style.overflow='';
     setStatus('');
-  }
-  function showForm(){
-    var form=byId('cvGeneratorForm'),preview=byId('cvGeneratorPreview');
-    if(form)form.classList.remove('hidden');
-    if(preview)preview.classList.add('hidden');
-    var stored=profile();
-    var target=byId('cvTargetRole');
-    if(target&&!target.value)target.value=stored.position||'';
   }
   function cleanList(values){
     return (Array.isArray(values)?values:[]).map(function(value){return String(value||'').trim()}).filter(Boolean);
@@ -183,10 +159,9 @@
   }
   function showCvPreview(cv){
     lastCv=cv;
-    var form=byId('cvGeneratorForm'),preview=byId('cvGeneratorPreview'),documentBox=byId('cvGeneratorPreviewDocument');
-    if(form)form.classList.add('hidden');
+    var preview=byId('cvGeneratorPreview'),documentBox=byId('cvGeneratorPreviewDocument');
     if(preview)preview.classList.remove('hidden');
-    if(documentBox)documentBox.innerHTML=cvHtml(cv);
+    if(documentBox){documentBox.className='cv-preview-document cv-template-'+templateName(cv.generation_variant_index);documentBox.innerHTML=cvHtml(cv)}
     updateCard();
   }
   function updateCard(){
@@ -211,17 +186,27 @@
     var uploadButton=byId('uploadCvFromGeneratorBtn');
     if(uploadButton)uploadButton.textContent=hasUpload?'Upload / Replace CV':'Upload CV to enhance';
   }
-  function requestBody(){
+  function variationIndex(){
+    var previous=lastCv||storedCv()||{};
+    var index=Number(previous.generation_variant_index);
+    return Number.isInteger(index)?(index+1)%CV_TEMPLATES.length:0;
+  }
+  function templateName(index){return CV_TEMPLATES[Math.max(0,Number(index)||0)%CV_TEMPLATES.length]}
+  function previousCvReference(){
+    var previous=lastCv||storedCv();
+    if(!previous)return'';
+    try{return JSON.stringify({headline:previous.headline||'',professional_summary:previous.professional_summary||'',core_skills:previous.core_skills||[],experience:previous.experience||[],education:previous.education||[]}).slice(0,12000)}catch(error){return''}
+  }
+  function requestBody(options){
+    var stored=profile();
     return {
-      target_role:(byId('cvTargetRole')&&byId('cvTargetRole').value||'').trim(),
-      language:(byId('cvLanguage')&&byId('cvLanguage').value||'English').trim(),
-      summary_notes:(byId('cvSummaryNotes')&&byId('cvSummaryNotes').value||'').trim(),
-      skills:(byId('cvSkills')&&byId('cvSkills').value||'').split(/[,;\n]/).map(function(value){return value.trim()}).filter(Boolean),
-      experience_text:(byId('cvExperience')&&byId('cvExperience').value||'').trim(),
-      education_text:(byId('cvEducation')&&byId('cvEducation').value||'').trim(),
-      enhance_existing:enhancementMode,
-      consent_accepted:!!(byId('cvAiConsent')&&byId('cvAiConsent').checked),
-      consent_version:CONSENT_VERSION
+      target_role:String(stored.position||'').trim(),
+      language:'English',
+      enhance_existing:true,
+      consent_accepted:!!((byId('cvEnhancementConsent')&&byId('cvEnhancementConsent').checked)||(options&&options.regeneration&&storedCv())),
+      consent_version:CONSENT_VERSION,
+      variation_index:variationIndex(),
+      previous_cv:options&&options.regeneration?previousCvReference():''
     };
   }
   async function errorMessage(error){
@@ -238,15 +223,11 @@
   }
   async function generate(options){
     if(generating)return;
-    var directEnhancement=!!(options&&options.directEnhancement);
-    var report=directEnhancement?setCardStatus:setStatus;
-    var body=requestBody();
+    var fromPreview=!!(options&&options.fromPreview);
+    var report=fromPreview?setStatus:setCardStatus;
+    var body=requestBody(options);
     if(!body.consent_accepted){
       report('Confirm the AI processing notice before generating your CV.','error');
-      return;
-    }
-    if(!body.enhance_existing&&!body.experience_text&&!body.education_text&&!body.summary_notes&&!body.skills.length){
-      report('Add at least one career detail, such as experience, education, skills or summary notes.','error');
       return;
     }
     var client=window.supabaseClient;
@@ -255,7 +236,7 @@
       return;
     }
     setGenerating(true);
-    report(body.enhance_existing?'Reading and improving your uploaded CV...':'Preparing your profile and document information...');
+    report(fromPreview?'Creating a fresh version from your uploaded CV...':'Reading and improving your uploaded CV...');
     try{
       var sessionResult=await client.auth.getSession();
       var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
@@ -276,13 +257,15 @@
       if(!result.data||!result.data.cv)throw new Error(result.data&&result.data.error||'The AI service returned no CV.');
       lastCv=Object.assign({},result.data.cv,{
         generated_at:new Date().toISOString(),
-        generation_model:result.data.model||''
+        generation_model:result.data.model||'',
+        consent_version:CONSENT_VERSION,
+        generation_variant_index:Number.isInteger(Number(result.data.variation_index))?Number(result.data.variation_index):body.variation_index,
+        generation_template:templateName(Number.isInteger(Number(result.data.variation_index))?Number(result.data.variation_index):body.variation_index)
       });
       saveCv(lastCv);
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
-      report(body.enhance_existing?'Your uploaded CV has been enhanced and saved.':'CV generated and saved.','success');
-      if(directEnhancement)openModal(true);
-      else showCvPreview(lastCv);
+      report(fromPreview?'A fresh CV version has been generated and saved.':'Your uploaded CV has been enhanced and saved.','success');
+      openModal(true);
     }catch(error){
       console.error('ATSRS CV generation failed',error);
       report(await errorMessage(error),'error');
@@ -293,16 +276,19 @@
   function primaryAction(){
     var pageState=pageCvState();
     if(pageState.available)uploadedCv={available:true,name:pageState.name||uploadedCv.name,size:uploadedCv.size};
-    if(!uploadedCv.available){setEnhancementMode(false);openModal(false);return}
+    if(!uploadedCv.available){setCardStatus('Upload a CV before generating an AI version.','error');return}
     var consent=byId('cvEnhancementConsent');
     if(!consent||!consent.checked){
       setCardStatus('Confirm the AI processing notice before enhancing your uploaded CV.','error');
       return;
     }
-    setEnhancementMode(true);
-    var modalConsent=byId('cvAiConsent');
-    if(modalConsent)modalConsent.checked=true;
-    return generate({directEnhancement:true});
+    return generate({regeneration:!!storedCv()});
+  }
+  function regenerateCv(){
+    var pageState=pageCvState();
+    if(pageState.available)uploadedCv={available:true,name:pageState.name||uploadedCv.name,size:uploadedCv.size};
+    if(!uploadedCv.available){setStatus('The uploaded CV is no longer available. Upload it again.','error');return}
+    return generate({fromPreview:true,regeneration:true});
   }
   function printCv(){
     var cv=lastCv||storedCv();
@@ -321,10 +307,7 @@
       ['generateCVBtn',primaryAction],
       ['uploadCvFromGeneratorBtn',beginEnhancement],
       ['closeCvGeneratorBtn',closeModal],
-      ['cancelCvGeneratorBtn',closeModal],
-      ['runCvGeneratorBtn',generate],
-      ['regenerateCvBtn',function(){showForm();setStatus('Update the details, then generate a new version.')}],
-      ['editCvGeneratorBtn',showForm],
+      ['regenerateCvBtn',regenerateCv],
       ['previewGeneratedCvBtn',function(){openModal(true)}],
       ['printGeneratedCvBtn',printCv],
       ['savePdfCvBtn',printCv]

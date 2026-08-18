@@ -65,38 +65,9 @@
   line-height:1;
   box-shadow:none;
 }
-.cv-generator-form{display:grid;gap:16px;padding:22px 26px 26px}
-.cv-generator-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
-.cv-generator-form label{display:grid;gap:7px}
-.cv-generator-form label>span:first-child{font-size:13px;font-weight:800;color:#d8e2ee}
-.cv-generator-form input,
-.cv-generator-form select,
-.cv-generator-form textarea{
-  width:100%;
-  margin:0;
-  border:1px solid #3b403d;
-  border-radius:11px;
-  background:#060807;
-  color:#f4f7fb;
-  box-shadow:none;
-}
-.cv-generator-form textarea{resize:vertical;line-height:1.45}
-.cv-ai-consent{
-  display:grid!important;
-  grid-template-columns:auto 1fr;
-  align-items:flex-start;
-  gap:10px!important;
-  padding:13px 14px;
-  border:1px solid #343936;
-  border-radius:12px;
-  background:rgba(255,255,255,.035);
-}
-.cv-ai-consent input{width:18px;height:18px;margin-top:2px}
-.cv-ai-consent span{font-size:13px!important;font-weight:500!important;line-height:1.45;color:#c9d5e3!important}
 .cv-generator-status{min-height:20px;color:#fbbf24;font-size:13px;font-weight:700}
 .cv-generator-status.is-error{color:#fca5a5}
 .cv-generator-status.is-success{color:#86efac}
-.cv-generator-buttons,
 .cv-generator-preview-actions{
   display:flex;
   justify-content:flex-end;
@@ -104,7 +75,6 @@
   gap:9px;
 }
 .cv-generator-preview-actions{justify-content:flex-start}
-.cv-generator-buttons button,
 .cv-generator-preview-actions button{
   width:auto!important;
   min-width:0!important;
@@ -117,10 +87,10 @@
   box-shadow:none!important;
   white-space:nowrap;
 }
-.cv-generator-buttons button:hover,
 .cv-generator-preview-actions button:hover{border-color:#59615c!important;background:#171a18!important}
 .cv-generator-preview{padding:20px 26px 28px;background:#101311}
 .cv-generator-preview-actions{margin-bottom:14px}
+.cv-generator-preview>.cv-generator-status{margin:-4px 0 14px}
 .cv-preview-document{
   width:min(794px,100%);
   min-height:1123px;
@@ -144,6 +114,8 @@
 .cv-preview-document .cv-entry-sub{color:#536377;font-size:12px}
 .cv-preview-document .cv-skills{display:flex;flex-wrap:wrap;gap:7px}
 .cv-preview-document .cv-skill{padding:5px 8px;border-radius:6px;background:#edf3f8;color:#173c5d;font-size:12px;font-weight:700}
+.cv-preview-document.cv-template-graphite{padding:52px 58px;font-family:Arial,sans-serif}.cv-preview-document.cv-template-graphite h1{color:#18211d;font-size:34px}.cv-preview-document.cv-template-graphite .cv-headline{color:#15803d}.cv-preview-document.cv-template-graphite .cv-contact{border-bottom-color:#22c55e;color:#3f4b45}.cv-preview-document.cv-template-graphite h2{border-bottom-color:#c9d6ce;color:#166534;letter-spacing:.04em}.cv-preview-document.cv-template-graphite .cv-skill{border:1px solid #c9d6ce;border-radius:999px;background:#f3f8f4;color:#166534}
+.cv-preview-document.cv-template-compact{padding:46px 54px;font-size:13px;line-height:1.4}.cv-preview-document.cv-template-compact header{text-align:center}.cv-preview-document.cv-template-compact h1{color:#111827;font-size:30px}.cv-preview-document.cv-template-compact .cv-headline{color:#166534;font-size:15px}.cv-preview-document.cv-template-compact .cv-contact{justify-content:center;border-bottom:1px solid #6b7280}.cv-preview-document.cv-template-compact section{margin-top:16px}.cv-preview-document.cv-template-compact h2{border:0;border-left:4px solid #22c55e;padding:2px 0 2px 9px;color:#1f2937;font-size:14px;letter-spacing:.05em}.cv-preview-document.cv-template-compact .cv-entry{margin-bottom:10px}.cv-preview-document.cv-template-compact .cv-skill{padding:3px 8px 3px 0;border-right:1px solid #16a34a;border-radius:0;background:transparent;color:#1f2937}.cv-preview-document.cv-template-compact .cv-skill:last-child{border-right:0}
 
 html[data-theme="light"] .cv-generator-dialog{
   border-color:#cbd7e4;
@@ -153,31 +125,18 @@ html[data-theme="light"] .cv-generator-dialog{
 html[data-theme="light"] .cv-generator-head{border-bottom-color:#d7e0e9}
 html[data-theme="light"] .cv-generator-head p{color:#42566d}
 html[data-theme="light"] .cv-generator-close{border-color:#cbd7e4;color:#102038;background:#fff}
-html[data-theme="light"] .cv-generator-form label>span:first-child{color:#14243a}
-html[data-theme="light"] .cv-generator-form input,
-html[data-theme="light"] .cv-generator-form select,
-html[data-theme="light"] .cv-generator-form textarea{
-  border-color:#bac9d8;
-  background:#fff;
-  color:#111827;
-}
-html[data-theme="light"] .cv-ai-consent{border-color:#c6d5e3;background:#f3f7fa}
-html[data-theme="light"] .cv-ai-consent span{color:#24384e!important}
 html[data-theme="light"] .cv-enhancement-consent{border-color:#c6d5e3;background:#f3f7fa;color:#24384e}
 html[data-theme="light"] .cv-generator-preview{background:#e9eef4}
-html[data-theme="light"] .cv-generator-buttons button,
 html[data-theme="light"] .cv-generator-preview-actions button{
   border-color:#b8c6d4!important;
   background:#fff!important;
   color:#24384e!important;
 }
-html[data-theme="light"] .cv-generator-buttons button:hover,
 html[data-theme="light"] .cv-generator-preview-actions button:hover{border-color:#879bad!important;background:#f3f6f8!important}
 
 @media(max-width:700px){
   .cv-generator-modal{padding:10px}
-  .cv-generator-head,.cv-generator-form{padding-left:16px;padding-right:16px}
-  .cv-generator-grid{grid-template-columns:1fr}
+  .cv-generator-head{padding-left:16px;padding-right:16px}
   .cv-generator-preview{padding:12px}
   .cv-generator-preview-actions{gap:7px}
   .cv-generator-preview-actions button{min-height:36px!important;padding:7px 10px!important;font-size:12px!important}
@@ -191,7 +150,7 @@ html[data-theme="light"] .cv-generator-preview-actions button:hover{border-color
   body.atsrs-printing-cv .cv-generator-dialog{width:100%;border:0;box-shadow:none}
   body.atsrs-printing-cv .cv-generator-head,
   body.atsrs-printing-cv .cv-generator-preview-actions,
-  body.atsrs-printing-cv #cvGeneratorForm{display:none!important}
+  body.atsrs-printing-cv .cv-generator-status{display:none!important}
   body.atsrs-printing-cv .cv-generator-preview{display:block!important;padding:0;background:#fff}
   body.atsrs-printing-cv .cv-preview-document{width:100%;min-height:0;padding:0;box-shadow:none}
 }
