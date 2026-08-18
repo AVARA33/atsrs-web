@@ -1,4 +1,4 @@
-/* ATSRS V465 Personal pricing cycle control. */
+/* ATSRS V466 Personal pricing cycle control. */
 (function(){
   'use strict';
   var buttons=Array.from(document.querySelectorAll('[data-pricing-cycle]'));
@@ -24,3 +24,4 @@
   buttons.forEach(function(button){button.addEventListener('click',function(){applyCycle(button.dataset.pricingCycle);});});
   applyCycle('monthly');
 })();
+

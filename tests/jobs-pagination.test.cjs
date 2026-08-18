@@ -37,18 +37,15 @@ test('pagination model covers first, middle and last pages with ellipses',()=>{
   assert.deepEqual(Array.from(context.pageItems(12,12)),[1,'ellipsis',11,12]);
 });
 
-test('server filter builder keeps role/location exact and searches title tokens only',()=>{
-  const context={};
+test('server feed parameters keep role/location exact and search title tokens only',()=>{
+  const context={PAGE:30,worksiteFacetValues:{offshore:[],onshore:[]}};
   vm.runInNewContext(runtimeSlice('function clean','function pageItems'),context);
-  const calls=[];
-  const query={eq(field,value){calls.push(['eq',field,value]);return this},ilike(field,value){calls.push(['ilike',field,value]);return this}};
-  context.applyFilters(query,{role:'ROV Pilot',location:'Offshore Ireland',search:' Engineer,  SUBSEA-engineer '});
-  assert.deepEqual(calls,[
-    ['eq','title','ROV Pilot'],
-    ['eq','location','Offshore Ireland'],
-    ['ilike','title','%engineer%'],
-    ['ilike','title','%subsea%']
-  ]);
+  const params=context.feedParams(2,{role:'ROV Pilot',location:'Offshore Ireland',search:' Engineer,  SUBSEA-engineer ',company:'',recruiter:'',days:0,offshore:false,onshore:false,newOnly:false});
+  assert.equal(params.p_page,2);
+  assert.equal(params.p_page_size,30);
+  assert.equal(params.p_role,'ROV Pilot');
+  assert.equal(params.p_location,'Offshore Ireland');
+  assert.deepEqual(Array.from(params.p_search_terms),['engineer','subsea']);
   assert.deepEqual(Array.from(context.searchTerms(' rov—PILOT, rov ')),['rov','pilot']);
 });
 
@@ -66,10 +63,8 @@ test('title search removes ROV false positives and combines with location before
     {title:'Logistics Category Buyer',location:'Qatar',description:'ROV equipment purchasing.'}
   ];
   function results(search,location=''){
-    const filters=[];
-    const query={eq(field,value){filters.push(['eq',field,value]);return this},ilike(field,value){filters.push(['ilike',field,value.slice(1,-1).toLowerCase()]);return this}};
-    context.applyFilters(query,{role:'',location,search});
-    return vacancies.filter(job=>filters.every(([kind,field,value])=>kind==='eq'?job[field]===value:String(job[field]||'').toLowerCase().includes(value))).map(job=>job.title);
+    const terms=Array.from(context.searchTerms(search));
+    return vacancies.filter(job=>(!location||job.location===location)&&terms.every(term=>job.title.toLowerCase().includes(term))).map(job=>job.title);
   }
   assert.deepEqual(results('ROV'),['ROV Pilot','ROV Pilot Technician','Senior ROV Pilot']);
   assert.deepEqual(results('rov pilot'),['ROV Pilot','ROV Pilot Technician','Senior ROV Pilot']);
@@ -83,11 +78,11 @@ test('title search removes ROV false positives and combines with location before
   assert.ok(!results('ROV').includes('Logistics Category Buyer'));
 });
 
-test('page query uses a 30-row range and exact filtered total without client accumulation',()=>{
+test('page query uses the entitlement-aware 30-row RPC and exact filtered total',()=>{
   assert.match(runtime,/var PAGE=30/);
-  assert.match(runtime,/select\('\*',\{count:'exact'\}\)/);
-  assert.match(runtime,/var from=\(target-1\)\*PAGE/);
-  assert.match(runtime,/\.range\(from,from\+PAGE-1\)/);
+  assert.match(runtime,/client\.rpc\('atsrs_jobs_feed',feedParams\(target,state\)\)/);
+  assert.match(runtime,/p_page:target,p_page_size:PAGE/);
+  assert.match(runtime,/count=Number\(payload\.total\)\|\|0/);
   assert.doesNotMatch(runtime,/jobs=jobs\.concat|\.limit\(PAGE\).*cursor/);
   assert.match(runtime,/page=target/);
   assert.match(runtime,/getPage:function\(\)\{return page\}/);
@@ -118,10 +113,9 @@ test('pagination exposes one shared active page with borderless theme-aware styl
 });
 
 test('full-dataset facets preserve raw values and include all primary and secondary options after row 30',()=>{
-  assert.match(runtime,/var PAGE=30,FACET_PAGE=1000/);
-  assert.match(runtime,/select\('id,title,location,company,recruiter_company,recruiter_name,worksite'\)/);
-  assert.match(runtime,/\.range\(offset,offset\+FACET_PAGE-1\)/);
-  assert.match(runtime,/while\(batch\.length===FACET_PAGE\)/);
+  assert.match(runtime,/client\.rpc\('atsrs_jobs_facets'\)/);
+  assert.match(runtime,/filterJobs=result\.error\?await legacyOptions\(client\):\(Array\.isArray\(result\.data\)\?result\.data:\[\]\)/);
+  assert.match(runtime,/missingJobsRpc\(result\.error\)/);
   assert.match(runtime,/var raw=String\(j\[c\[1\]\]/);
   assert.doesNotMatch(runtime,/role:clean\(id\('jobsRoleFilter'/);
   assert.match(fixture,/n===65\?'Final Page Specialist'/);
@@ -132,29 +126,19 @@ test('full-dataset facets preserve raw values and include all primary and second
 });
 
 test('secondary filters are server-side, reset page one and preserve exact NEW logic',()=>{
-  const context={NEW_MS:21600000,worksiteFacetValues:{offshore:['Offshore','Vessel'],onshore:['On-site']}};
+  const context={PAGE:30,NEW_MS:21600000,worksiteFacetValues:{offshore:['Offshore','Vessel'],onshore:['On-site']}};
   vm.runInNewContext(runtimeSlice('function clean','function pageItems'),context);
-  const calls=[];
-  const query={
-    eq(field,value){calls.push(['eq',field,value]);return this},
-    ilike(field,value){calls.push(['ilike',field,value]);return this},
-    or(value){calls.push(['or',value]);return this},
-    in(field,value){calls.push(['in',field,Array.from(value)]);return this},
-    gte(field,value){calls.push(['gte',field,value]);return this}
-  };
-  const now=Date.parse('2026-08-18T12:00:00Z');
-  context.applyFilters(query,{role:'ROV Pilot',location:'UK',search:'pilot',company:'Maris Subsea',recruiter:'Ellie Malim',days:7,offshore:true,onshore:true,newOnly:true},now);
-  assert.deepEqual(calls.slice(0,5),[
-    ['eq','title','ROV Pilot'],
-    ['eq','location','UK'],
-    ['eq','company','Maris Subsea'],
-    ['eq','recruiter_name','Ellie Malim'],
-    ['ilike','title','%pilot%']
-  ]);
-  assert.equal(calls.filter(call=>call[0]==='or').length,1);
-  assert.deepEqual(calls.find(call=>call[0]==='in'),['in','worksite',['Offshore','Vessel','On-site']]);
-  assert.deepEqual(calls.find(call=>call[0]==='gte'),['gte','published_at',new Date(now-21600000).toISOString()]);
+  const params=context.feedParams(1,{role:'ROV Pilot',location:'UK',search:'pilot',company:'Maris Subsea',recruiter:'Ellie Malim',days:7,offshore:true,onshore:true,newOnly:true});
+  assert.equal(params.p_role,'ROV Pilot');
+  assert.equal(params.p_location,'UK');
+  assert.equal(params.p_company,'Maris Subsea');
+  assert.equal(params.p_recruiter,'Ellie Malim');
+  assert.deepEqual(Array.from(params.p_search_terms),['pilot']);
+  assert.deepEqual(Array.from(params.p_worksites),['Offshore','Vessel','On-site']);
+  assert.equal(params.p_days,7);
+  assert.equal(params.p_new_only,true);
   assert.match(runtime,/jobsNewOnlyFilter/);
   assert.match(runtime,/load\(1\)/);
   assert.match(runtime,/isNewPublishedJob:isNew,newWindowMs:NEW_MS/);
 });
+

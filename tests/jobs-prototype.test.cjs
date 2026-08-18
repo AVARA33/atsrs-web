@@ -15,9 +15,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
   assert.match(index,/jobs-prototype\.css\?v=58142/);
-  assert.match(index,/route-feature-loader\.js\?v=58138/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58138"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58138'\)/);
+  assert.match(index,/route-feature-loader\.js\?v=58150/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58150"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58150'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -80,13 +80,13 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.doesNotMatch(jobsSection,/jobsLoadMore|Load more/);
   assert.doesNotMatch(runtime,/jobsLoadMore|cursor=null|more=false/);
   assert.match(runtime,/PAGE=30/);
-  assert.match(runtime,/select\('\*',\{count:'exact'\}\)/);
-  assert.match(runtime,/\.range\(from,from\+PAGE-1\)/);
-  assert.match(runtime,/function applyFilters\(query,state,now\)/);
+  assert.match(runtime,/client\.rpc\('atsrs_jobs_feed',feedParams\(target,state\)\)/);
+  assert.match(runtime,/p_page:target,p_page_size:PAGE/);
+  assert.match(runtime,/function feedParams\(target,state\)/);
   assert.match(index,/id="jobsSearch"[^>]*placeholder="Job title or role"/);
   assert.match(index,/id="jobsSearch" type="search"/);
   assert.match(runtime,/\['jobsSearch','jobsCompanyFilter','jobsRecruiterFilter'\]/);
-  assert.match(runtime,/query=query\.ilike\('title','%'\+term\+'%'\)/);
+  assert.match(runtime,/p_search_terms:searchTerms\(state\.search\)/);
   assert.match(runtime,/load\(1\)/);
   assert.match(runtime,/jobs\.length\+' of '\+total/);
   assert.match(runtime,/aria-current','page/);
@@ -254,3 +254,4 @@ test('Jobs view controls and inline notice use the approved palettes',()=>{
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after[^}]*\{content:"";position:absolute;right:8px;bottom:5px;left:8px;height:2px;border-radius:999px;background:var\(--atsrs-shell-accent\)\}/);
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:focus-visible\{outline:2px solid var\(--atsrs-shell-accent\)!important;outline-offset:2px!important\}/);
 });
+
