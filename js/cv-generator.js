@@ -65,7 +65,7 @@
     var button=byId('runCvGeneratorBtn');
     var regenerate=byId('regenerateCvBtn');
     var cardButton=byId('generateCVBtn');
-    if(button){button.disabled=generating;button.textContent=generating?'Creating your CV...':(enhancementMode?'Enhance CV':'Generate CV')}
+    if(button){button.disabled=generating;button.textContent=generating?'Creating your CV...':'Generate CV'}
     if(regenerate)regenerate.disabled=generating;
     if(cardButton){cardButton.disabled=generating;updateCard()}
   }
@@ -207,7 +207,7 @@
     var consentWrap=byId('cvEnhancementConsentWrap');
     if(consentWrap)consentWrap.classList.toggle('hidden',!hasUpload);
     var button=byId('generateCVBtn');
-    if(button)button.textContent=generating?'Enhancing uploaded CV...':(hasUpload?'Enhance uploaded CV':(saved?'Generate New Version':'Generate ATSRS CV'));
+    if(button)button.textContent=generating?'Generating CV...':'Generate CV';
     var uploadButton=byId('uploadCvFromGeneratorBtn');
     if(uploadButton)uploadButton.textContent=hasUpload?'Upload / Replace CV':'Upload CV to enhance';
   }

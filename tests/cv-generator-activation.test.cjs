@@ -17,9 +17,10 @@ const edge = fs.readFileSync(
 
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.match(html, /css\/account\.css\?v=422/);
-assert.match(html, /js\/cv-generator\.js\?v=413/);
+assert.match(html, /js\/cv-generator\.js\?v=414/);
 assert.match(html, /id="cvEnhancementConsent"/);
 assert.match(html, /id="cvEnhancementStatus"/);
+assert.match(html, /id="generateCVBtn"[^>]*>Generate CV<\/button>/);
 for (const css of [accountCss, cvCss]) {
   assert.doesNotMatch(
     css,
@@ -216,7 +217,7 @@ function harness(invokeResult) {
   assert.match(test.elements.cvBetaText.textContent, /synthetic\.pdf is uploaded/);
   assert.equal(test.elements.cvEnhancementConsentWrap.classList.contains('hidden'), false);
   assert.equal(test.elements.cvEnhancementConsent.checked, false, 'a newly uploaded file must require fresh consent');
-  assert.equal(test.elements.generateCVBtn.textContent, 'Enhance uploaded CV');
+  assert.equal(test.elements.generateCVBtn.textContent, 'Generate CV');
   await test.elements.generateCVBtn.dispatch('click');
   assert.equal(test.invokeCount(), 0, 'inline consent must be required before the network');
   assert.match(test.elements.cvEnhancementStatus.textContent, /Confirm the AI processing notice/);
