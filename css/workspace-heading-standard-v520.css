@@ -1,6 +1,6 @@
 /* V520: shared Dark-mode heading colour for Personal and Corporate pages. */
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main{
-  --atsrs-workspace-heading:var(--atsrs-ref-lime,#b8ff19);
+  --atsrs-workspace-heading:var(--atsrs-brand-green,#22c55e);
 }
 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main :where(h1,h2,h3,h4,h5,h6){

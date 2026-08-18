@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58153/);
+  assert.match(index,/jobs-prototype\.css\?v=58156/);
   assert.match(index,/route-feature-loader\.js\?v=58153/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58153"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58153'\)/);
@@ -137,7 +137,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;justify-content:flex-end/);
   assert.match(css,/\.jobs-secondary-field>span\{font-size:12px/);
   assert.match(css,/\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:46px/);
-  assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*var\(--atsrs-jobs-green-text,#9ad315\)/);
+  assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*var\(--atsrs-jobs-green-text,#22c55e\)/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*#245b93/);
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);
   assert.match(index,/class="jobs-secondary-primary"[\s\S]*class="jobs-secondary-actions"/);
@@ -179,7 +179,7 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:640px;max-height:640px\}/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-cards \.job-card\{height:min\(720px,calc\(100dvh - 24px\)\);max-height:min\(720px,calc\(100dvh - 24px\)\)\}/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-cards \.job-card-body\{scrollbar-color:rgba\(83,102,128,\.34\) transparent\}/);
-  assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(158,234,115,\.34\)/);
+  assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(34,197,94,\.34\)/);
 });
 
 test('Jobs renders only verified source and closing dates with card/list parity',()=>{

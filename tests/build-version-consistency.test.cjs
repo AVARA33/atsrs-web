@@ -51,7 +51,7 @@ assert.match(index, /src="js\/auth\.js\?v=568"/);
 assert.match(index, /href="css\/corporate-information-architecture\.css\?v=421"/);
 assert.match(index, /href="css\/corporate-remediation\.css\?v=480"/);
 assert.match(index, /href="css\/personal-workspace-surface\.css\?v=436"/);
-assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=450"/);
+assert.match(index, /href="css\/personal-dashboard-qa\.css\?v=58156"/);
 assert.match(index, /href="css\/recipient-links\.css\?v=433"/);
 assert.match(index, /src="js\/recipient-links\.js\?v=433"/);
 assert.match(index, /src="js\/corporate-information-architecture\.js\?v=444"/);
@@ -70,7 +70,7 @@ assert.match(routeFeatureLoader, /loadScript\('js\/product-experience\.js\?v=447
 assert.match(index, /src="js\/talent-directory\.js\?v=519"/);
 assert.match(index, /src="js\/corporate-reporting\.js\?v=519"/);
 assert.match(index, /href="css\/workspace-surface-standard-v519\.css\?v=519"/);
-assert.match(index, /href="css\/workspace-heading-standard-v520\.css\?v=520"/);
+assert.match(index, /href="css\/workspace-heading-standard-v520\.css\?v=58156"/);
 assert.match(index, /href="css\/workspace-control-standard-v522\.css\?v=522-2"/);
 assert.match(index, /href="css\/workspace-control-standard-v523\.css\?v=523"/);
 assert.match(index, /href="css\/personal-account-routing-v524\.css\?v=524"/);

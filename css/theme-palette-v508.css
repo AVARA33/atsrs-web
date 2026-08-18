@@ -6,6 +6,9 @@
   --atsrs-ref-dark-line:#2a2f2d;
   --atsrs-ref-dark-text:#f4f6ef;
   --atsrs-ref-dark-muted:#a8afa9;
+  /* Canonical ATSRS dark-mode brand standard. */
+  --atsrs-brand-green:#22c55e;
+  --atsrs-brand-green-strong:#16a34a;
   --atsrs-ref-lime:#22c55e;
   --atsrs-ref-lime-strong:#16a34a;
   --atsrs-ref-light-bg:#edf2f8;

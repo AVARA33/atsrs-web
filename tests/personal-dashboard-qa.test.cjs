@@ -50,6 +50,7 @@ assert.match(css, /expiry-summary-30\{--expiry-signal:#c56a00/);
 assert.match(css, /expiry-summary-7\{--expiry-signal:#dc5a11/);
 assert.match(css, /expiry-summary-expired\{--expiry-signal:#c62828/);
 assert.match(css, /html\[data-theme="dark"\][\s\S]*?expiry-summary-90\{--expiry-signal:#73a7ff/);
+assert.match(css, /html\[data-theme="dark"\] body\.company-mode #dashboardPage \.corporate-personnel-summary-card\{--expiry-signal:var\(--atsrs-brand-green,#22c55e\)/);
 assert.match(css, /expiry-summary-card > \.stat\.is-zero-risk\{[\s\S]*?color:var\(--expiry-signal\)!important/);
 assert.match(dashboardCss, /#dashboardPage > \.panel:not\(\.solo-hero\):not\(\.dashboard-snapshot-panel\):not\(#shareProfilePanel\):not\(#personalDashboardPanel\)\{\s*padding:18px!important/);
 
@@ -102,7 +103,7 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);
 }
 
-assert.match(index, /css\/personal-dashboard-qa\.css\?v=450/);
+assert.match(index, /css\/personal-dashboard-qa\.css\?v=58156/);
 assert.match(index, /js\/personal-dashboard-qa\.js\?v=549/);
 
 console.log('Personal Dashboard QA candidate contracts passed');
