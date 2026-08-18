@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58142/);
+  assert.match(index,/jobs-prototype\.css\?v=58151/);
   assert.match(index,/route-feature-loader\.js\?v=58150/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58150"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58150'\)/);
@@ -169,7 +169,9 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/requestAnimationFrame\(syncCardOverflow\)/);
   assert.match(css,/\.jobs-grid\.jobs-cards\{align-items:start\}/);
   assert.match(css,/\.jobs-cards \.job-card\{height:560px;max-height:560px;grid-template-rows:auto minmax\(0,1fr\);align-content:stretch\}/);
-  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*scrollbar-gutter:stable/);
+  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*overscroll-behavior-y:auto[^}]*scrollbar-gutter:stable/);
+  assert.doesNotMatch(css,/\.jobs-cards \.job-card-body\{[^}]*overscroll-behavior:(?:contain|none)/);
+  assert.doesNotMatch(runtime,/addEventListener\(['"]wheel|\.onwheel\s*=/);
   assert.match(css,/\.jobs-list \.job-card-body\{display:contents\}/);
   assert.match(css,/@media\(max-width:1250px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:580px;max-height:580px\}/);
   assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:640px;max-height:640px\}/);
