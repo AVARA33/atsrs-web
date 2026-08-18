@@ -77,7 +77,7 @@ function expiryPresentation(notification: ExpiryNotification | null) {
   if (days === 0) {
     return {
       label: "Action required",
-      timing: "Expires today",
+      timing: "Expiry date reached today",
       accent: "#dc2626",
       background: "#fef2f2",
     };
