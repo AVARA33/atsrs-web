@@ -269,6 +269,7 @@
       var prev=byId('previewCVBtn'); if(prev)prev.textContent='Preview Main CV';
       var down=byId('downloadCVBtn'); if(down)down.textContent='Download Main CV';
       var delb=byId('deleteCVBtn'); if(delb)delb.textContent='Delete Main CV';
+      document.dispatchEvent(new CustomEvent('atsrs:cv-state',{detail:{available:!!m,name:m&&m.name||'',size:m&&m.size||0,source:'local'}}));
     } finally { rendering=false; if(pending){pending=false;Promise.resolve().then(renderCV);} }
   }
   function scheduleRender(){Promise.resolve().then(renderCV);}
@@ -280,7 +281,7 @@
       await clearAllAndPut(row);
       if(event&&event.target)event.target.value='';
       await renderCV();
-      document.dispatchEvent(new CustomEvent('atsrs:cv-uploaded',{detail:{source:'local'}}));
+      document.dispatchEvent(new CustomEvent('atsrs:cv-uploaded',{detail:{source:'local',name:f.name,size:f.size||0}}));
       if(files.length>1)alert('Free plan allows only Main CV. Additional CV slots are prepared for paid plans.');
     }catch(err){console.error(err);alert('CV could not be saved. Storage is unavailable or full.');}
   };

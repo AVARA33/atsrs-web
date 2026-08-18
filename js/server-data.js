@@ -1954,6 +1954,7 @@
     if(dash){dash.textContent=cv?'Available ✓':'Missing ⚠';dash.className='stat '+(cv?'good':'missing');}
     if(upload){upload.textContent='Upload Main CV';upload.hidden=!!cv;if(upload.parentElement)upload.parentElement.hidden=!!cv;}
     if(input)input.removeAttribute('multiple');
+    document.dispatchEvent(new CustomEvent('atsrs:cv-state',{detail:{available:!!cv,name:cv&&cv.file_name||'',size:cv&&cv.size_bytes||0,source:'cloud'}}));
   }
   function renderFilePaginationControl(pageName,categories,hasMore){
     var page=document.getElementById(pageName+'Page');
@@ -2023,7 +2024,7 @@
       for(var i=0;i<files.length;i++)await uploadFile(kind,files[i]);
     }
     await renderCloudFiles({categories:[kind],force:true});
-    if(kind==='cv')document.dispatchEvent(new CustomEvent('atsrs:cv-uploaded',{detail:{source:'cloud'}}));
+    if(kind==='cv')document.dispatchEvent(new CustomEvent('atsrs:cv-uploaded',{detail:{source:'cloud',name:files[0]&&files[0].name||'',size:files[0]&&files[0].size||0}}));
   }
   function installFileHandlers(){
     if(window.__atsrsCloudFileHandlersInstalled)return;

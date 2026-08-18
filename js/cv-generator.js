@@ -8,6 +8,7 @@
   var generating=false;
   var enhancementMode=false;
   var enhancementUploadPending=false;
+  var uploadedCv={available:false,name:'',size:0};
 
   function byId(id){return document.getElementById(id)}
   function safe(value){
@@ -42,12 +43,31 @@
     element.textContent=message||'';
     element.className='cv-generator-status'+(type?' is-'+type:'');
   }
+  function setCardStatus(message,type){
+    var element=byId('cvEnhancementStatus');
+    if(!element)return;
+    element.textContent=message||'';
+    element.className='cv-generator-status'+(type?' is-'+type:'');
+  }
+  function pageCvState(){
+    var badge=byId('cvStatusBadge');
+    var available=!!(badge&&badge.classList&&badge.classList.contains('badge-ready'));
+    var info=byId('cvFileInfo');
+    var name='';
+    if(available&&info&&typeof info.querySelector==='function'){
+      var label=info.querySelector('.atsrs-v156-main-name b');
+      name=label&&String(label.textContent||label.getAttribute&&label.getAttribute('title')||'')||'';
+    }
+    return {available:available,name:name};
+  }
   function setGenerating(value){
     generating=!!value;
     var button=byId('runCvGeneratorBtn');
     var regenerate=byId('regenerateCvBtn');
+    var cardButton=byId('generateCVBtn');
     if(button){button.disabled=generating;button.textContent=generating?'Creating your CV...':(enhancementMode?'Enhance CV':'Generate CV')}
     if(regenerate)regenerate.disabled=generating;
+    if(cardButton){cardButton.disabled=generating;updateCard()}
   }
   function openModal(showPreview){
     if(currentMode()!=='personal'){
@@ -88,12 +108,24 @@
     input.value='';
     input.click();
   }
-  function uploadedForEnhancement(){
-    if(!enhancementUploadPending)return;
+  function uploadedForEnhancement(event){
+    var detail=event&&event.detail||{};
     enhancementUploadPending=false;
-    setEnhancementMode(true);
-    openModal(false);
-    setStatus('CV uploaded. Confirm AI processing, then select Enhance CV.','success');
+    uploadedCv={available:true,name:String(detail.name||uploadedCv.name||'Main CV'),size:Number(detail.size||uploadedCv.size||0)};
+    var consent=byId('cvEnhancementConsent');
+    if(consent)consent.checked=false;
+    updateCard();
+    setCardStatus((uploadedCv.name||'CV')+' uploaded. You can now enhance it with AI.','success');
+  }
+  function cvStateChanged(event){
+    var detail=event&&event.detail||{};
+    uploadedCv={available:!!detail.available,name:String(detail.name||''),size:Number(detail.size||0)};
+    updateCard();
+    if(!uploadedCv.available){
+      var consent=byId('cvEnhancementConsent');
+      if(consent)consent.checked=false;
+      setCardStatus('');
+    }
   }
   function closeModal(){
     var modal=byId('cvGeneratorModal');
@@ -159,12 +191,25 @@
   }
   function updateCard(){
     var saved=storedCv();
+    var pageState=pageCvState();
+    if(pageState.available)uploadedCv={available:true,name:pageState.name||uploadedCv.name,size:uploadedCv.size};
+    var hasUpload=uploadedCv.available;
     var actions=byId('generatedCvActions');
     if(actions)actions.classList.toggle('hidden',!saved);
     var badge=byId('cvBetaBadge');
-    if(badge)badge.textContent=saved?'AI CV READY':'AI CV GENERATOR';
+    if(badge)badge.textContent=saved?'AI CV READY':(hasUpload?'CV READY FOR AI':'AI CV GENERATOR');
+    var title=byId('cvBetaTitle');
+    if(title)title.textContent=hasUpload?'Enhance your uploaded CV':'Generate ATSRS Profile CV';
+    var text=byId('cvBetaText');
+    if(text)text.textContent=hasUpload
+      ?(uploadedCv.name?uploadedCv.name+' is uploaded. ATSRS AI can now improve its structure, wording and ATS readability.':'Your Main CV is uploaded. ATSRS AI can now improve its structure, wording and ATS readability.')
+      :'Turn your saved profile details, career history and document register into a structured CV.';
+    var consentWrap=byId('cvEnhancementConsentWrap');
+    if(consentWrap)consentWrap.classList.toggle('hidden',!hasUpload);
     var button=byId('generateCVBtn');
-    if(button)button.textContent=saved?'Generate New Version':'Generate ATSRS CV';
+    if(button)button.textContent=generating?'Enhancing uploaded CV...':(hasUpload?'Enhance uploaded CV':(saved?'Generate New Version':'Generate ATSRS CV'));
+    var uploadButton=byId('uploadCvFromGeneratorBtn');
+    if(uploadButton)uploadButton.textContent=hasUpload?'Upload / Replace CV':'Upload CV to enhance';
   }
   function requestBody(){
     return {
@@ -191,24 +236,26 @@
     }catch(ignore){}
     return error&&error.message||fallback;
   }
-  async function generate(){
+  async function generate(options){
     if(generating)return;
+    var directEnhancement=!!(options&&options.directEnhancement);
+    var report=directEnhancement?setCardStatus:setStatus;
     var body=requestBody();
     if(!body.consent_accepted){
-      setStatus('Confirm the AI processing notice before generating your CV.','error');
+      report('Confirm the AI processing notice before generating your CV.','error');
       return;
     }
     if(!body.enhance_existing&&!body.experience_text&&!body.education_text&&!body.summary_notes&&!body.skills.length){
-      setStatus('Add at least one career detail, such as experience, education, skills or summary notes.','error');
+      report('Add at least one career detail, such as experience, education, skills or summary notes.','error');
       return;
     }
     var client=window.supabaseClient;
     if(!client||!client.functions){
-      setStatus('The ATSRS AI service is unavailable. Sign in and try again.','error');
+      report('The ATSRS AI service is unavailable. Sign in and try again.','error');
       return;
     }
     setGenerating(true);
-    setStatus(body.enhance_existing?'Reading and improving your uploaded CV...':'Preparing your profile and document information...');
+    report(body.enhance_existing?'Reading and improving your uploaded CV...':'Preparing your profile and document information...');
     try{
       var sessionResult=await client.auth.getSession();
       var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
@@ -233,14 +280,29 @@
       });
       saveCv(lastCv);
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
-      setStatus('CV generated and saved.','success');
-      showCvPreview(lastCv);
+      report(body.enhance_existing?'Your uploaded CV has been enhanced and saved.':'CV generated and saved.','success');
+      if(directEnhancement)openModal(true);
+      else showCvPreview(lastCv);
     }catch(error){
       console.error('ATSRS CV generation failed',error);
-      setStatus(await errorMessage(error),'error');
+      report(await errorMessage(error),'error');
     }finally{
       setGenerating(false);
     }
+  }
+  function primaryAction(){
+    var pageState=pageCvState();
+    if(pageState.available)uploadedCv={available:true,name:pageState.name||uploadedCv.name,size:uploadedCv.size};
+    if(!uploadedCv.available){setEnhancementMode(false);openModal(false);return}
+    var consent=byId('cvEnhancementConsent');
+    if(!consent||!consent.checked){
+      setCardStatus('Confirm the AI processing notice before enhancing your uploaded CV.','error');
+      return;
+    }
+    setEnhancementMode(true);
+    var modalConsent=byId('cvAiConsent');
+    if(modalConsent)modalConsent.checked=true;
+    return generate({directEnhancement:true});
   }
   function printCv(){
     var cv=lastCv||storedCv();
@@ -256,7 +318,7 @@
   }
   function bind(){
     var pairs=[
-      ['generateCVBtn',function(){setEnhancementMode(false);openModal(false)}],
+      ['generateCVBtn',primaryAction],
       ['uploadCvFromGeneratorBtn',beginEnhancement],
       ['closeCvGeneratorBtn',closeModal],
       ['cancelCvGeneratorBtn',closeModal],
@@ -279,4 +341,5 @@
   window.addEventListener('atsrs:data-hydrated',updateCard);
   window.addEventListener('atsrs:resume',updateCard);
   document.addEventListener('atsrs:cv-uploaded',uploadedForEnhancement);
+  document.addEventListener('atsrs:cv-state',cvStateChanged);
 })();

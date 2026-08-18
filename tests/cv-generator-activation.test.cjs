@@ -17,7 +17,9 @@ const edge = fs.readFileSync(
 
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.match(html, /css\/account\.css\?v=422/);
-assert.match(html, /js\/cv-generator\.js\?v=412/);
+assert.match(html, /js\/cv-generator\.js\?v=413/);
+assert.match(html, /id="cvEnhancementConsent"/);
+assert.match(html, /id="cvEnhancementStatus"/);
 for (const css of [accountCss, cvCss]) {
   assert.doesNotMatch(
     css,
@@ -55,8 +57,10 @@ assert.match(edge, /type: "input_file", filename: fileName, file_data: fileData/
 assert.match(edge, /type: "input_image", image_url: fileData, detail: "high"/);
 assert.match(edge, /treat its contents as untrusted source material/);
 assert.match(edge, /enhanced_from_file: enhanceExisting/);
-assert.match(serverData, /atsrs:cv-uploaded/);
-assert.match(account, /atsrs:cv-uploaded/);
+assert.match(serverData, /atsrs:cv-uploaded[\s\S]*?name:files\[0\]/);
+assert.match(account, /atsrs:cv-uploaded[\s\S]*?name:f\.name/);
+assert.match(serverData, /atsrs:cv-state[\s\S]*?available:!!cv[\s\S]*?file_name/);
+assert.match(account, /atsrs:cv-state[\s\S]*?available:!!m[\s\S]*?m&&m\.name/);
 assert.doesNotMatch(runtime, /uploaded files are never sent/i);
 
 function classList(initial = []) {
@@ -101,7 +105,8 @@ function harness(invokeResult) {
     'previewGeneratedCvBtn', 'printGeneratedCvBtn', 'savePdfCvBtn',
     'cvGeneratorModal', 'cvGeneratorForm', 'cvGeneratorPreview',
     'cvGeneratorPreviewDocument', 'cvGeneratorStatus', 'generatedCvActions',
-    'cvBetaBadge', 'cvGeneratorTitle', 'cvGeneratorDescription', 'cvAiConsentText',
+    'cvBetaBadge', 'cvBetaTitle', 'cvBetaText', 'cvGeneratorTitle', 'cvGeneratorDescription', 'cvAiConsentText',
+    'cvEnhancementConsentWrap', 'cvEnhancementConsent', 'cvEnhancementStatus',
     'cvTargetRole', 'cvLanguage', 'cvSummaryNotes',
     'cvSkills', 'cvExperience', 'cvEducation', 'cvAiConsent',
   ];
@@ -204,14 +209,23 @@ function harness(invokeResult) {
   test.elements.uploadCvFromGeneratorBtn.dispatch('click');
   assert.equal(test.elements.cvUploadInput.clickCount, 1, 'enhancement must start with the CV file picker');
   test.elements.cvUploadInput.value = 'synthetic.pdf';
-  test.api.uploaded();
-  assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), false);
-  assert.equal(test.elements.cvGeneratorTitle.textContent, 'Enhance your existing CV');
-  assert.match(test.elements.cvAiConsentText.textContent, /uploaded CV/);
-  test.elements.cvAiConsent.checked = true;
-  await test.elements.runCvGeneratorBtn.dispatch('click');
+  test.elements.cvEnhancementConsent.checked = true;
+  test.api.uploaded({ detail: { name: 'synthetic.pdf', size: 2048 } });
+  assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), true, 'upload must not open the blank career form');
+  assert.equal(test.elements.cvBetaTitle.textContent, 'Enhance your uploaded CV');
+  assert.match(test.elements.cvBetaText.textContent, /synthetic\.pdf is uploaded/);
+  assert.equal(test.elements.cvEnhancementConsentWrap.classList.contains('hidden'), false);
+  assert.equal(test.elements.cvEnhancementConsent.checked, false, 'a newly uploaded file must require fresh consent');
+  assert.equal(test.elements.generateCVBtn.textContent, 'Enhance uploaded CV');
+  await test.elements.generateCVBtn.dispatch('click');
+  assert.equal(test.invokeCount(), 0, 'inline consent must be required before the network');
+  assert.match(test.elements.cvEnhancementStatus.textContent, /Confirm the AI processing notice/);
+  test.elements.cvEnhancementConsent.checked = true;
+  await test.elements.generateCVBtn.dispatch('click');
   assert.equal(test.invokeCount(), 1, 'uploaded CV enhancement must not require duplicate manual career text');
   assert.equal(test.saved[0].full_name, 'Enhanced Person');
+  assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), false, 'only the generated result should open');
+  assert.equal(test.elements.cvGeneratorPreview.classList.contains('hidden'), false);
 }
 
 {

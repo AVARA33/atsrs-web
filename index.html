@@ -75,7 +75,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/dashboard.css?v=447">
 <link rel="stylesheet" href="css/documents.css?v=375">
 <link rel="stylesheet" href="css/references.css?v=408">
-<link rel="stylesheet" href="css/cv-generator.css?v=375">
+<link rel="stylesheet" href="css/cv-generator.css?v=376">
 <link rel="stylesheet" href="css/account.css?v=422">
 <link rel="stylesheet" href="css/product-experience.css?v=447">
 <link rel="stylesheet" href="css/date-picker.css?v=502">
@@ -1267,6 +1267,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span class="pill" id="cvBetaBadge">AI CV GENERATOR</span>
       <h4 id="cvBetaTitle">Generate ATSRS Profile CV</h4>
       <p id="cvBetaText" class="sub">Turn your saved profile details, career history and document register into a structured CV.</p>
+      <label id="cvEnhancementConsentWrap" class="cv-enhancement-consent hidden">
+        <input id="cvEnhancementConsent" type="checkbox">
+        <span>I agree that my uploaded CV will be sent securely to the OpenAI API so ATSRS can improve it.</span>
+      </label>
       <div class="cv-generator-action-grid">
         <button id="generateCVBtn" class="secondary" type="button">Generate ATSRS CV</button>
         <button id="uploadCvFromGeneratorBtn" class="secondary" type="button">Enhance Existing CV</button>
@@ -1275,6 +1279,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <button id="printGeneratedCvBtn" class="secondary" type="button">Print / Save PDF</button>
         </div>
       </div>
+      <div id="cvEnhancementStatus" class="cv-generator-status" role="status"></div>
     </div>
   </div>
 </div>
@@ -1952,7 +1957,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-write-canary-config.js?v=409"></script>
 <script src="js/workspace-command-policy.js?v=409"></script>
 <script src="js/reference-filter-state.js?v=410"></script>
-<script src="js/server-data.js?v=569"></script>
+<script src="js/server-data.js?v=570"></script>
 <script src="js/shadow-read.js?v=409"></script>
 <script src="js/normalized-read-adapter.js?v=409"></script>
 <script src="js/normalized-read-canary-config.js?v=409"></script>
@@ -1968,8 +1973,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/avatar.js?v=375"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
-<script src="js/cv-generator.js?v=412"></script>
-<script src="js/account.js?v=413"></script>
+<script src="js/cv-generator.js?v=413"></script>
+<script src="js/account.js?v=414"></script>
 <script src="js/app.js?v=567"></script>
 <script src="js/date-picker.js?v=502"></script>
 <script src="js/share-profile.js?v=409"></script>
