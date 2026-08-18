@@ -1,0 +1,184 @@
+/* V58144: one Cards/List control across Jobs, Candidates, Personnel and Projects. */
+html[data-theme] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch {
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:3px!important;
+  border:0!important;
+  border-radius:9px!important;
+  box-shadow:none!important;
+}
+
+html[data-theme] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button {
+  position:relative!important;
+  width:auto!important;
+  height:44px!important;
+  min-width:0!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  margin:0!important;
+  padding:7px 8px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  line-height:1!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch {
+  background:#050706!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button {
+  border-radius:6px!important;
+  color:#94a3b8!important;
+  -webkit-text-fill-color:#94a3b8!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:hover:not([aria-pressed="true"]):not(.active) {
+  background:rgba(148,163,184,.08)!important;
+  color:#f8fafc!important;
+  -webkit-text-fill-color:#f8fafc!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:is([aria-pressed="true"],.active) {
+  background:#0c120f!important;
+  color:var(--sidebar-accent)!important;
+  -webkit-text-fill-color:var(--sidebar-accent)!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:is([aria-pressed="true"],.active)::after {
+  content:"";
+  position:absolute;
+  right:8px;
+  bottom:5px;
+  left:8px;
+  height:2px;
+  border-radius:999px;
+  background:var(--sidebar-accent);
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:focus-visible {
+  outline:3px solid rgba(158,234,115,.45)!important;
+  outline-offset:2px!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch {
+  background:transparent!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button {
+  border:1px solid transparent!important;
+  border-radius:10px!important;
+  color:#172033!important;
+  -webkit-text-fill-color:#172033!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:hover:not([aria-pressed="true"]):not(.active) {
+  background:var(--atsrs-shell-accent-soft)!important;
+  color:var(--atsrs-shell-accent-strong)!important;
+  -webkit-text-fill-color:var(--atsrs-shell-accent-strong)!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:is([aria-pressed="true"],.active) {
+  border-color:var(--atsrs-shell-accent-border)!important;
+  background:var(--atsrs-shell-accent-soft)!important;
+  color:var(--atsrs-shell-accent-strong)!important;
+  -webkit-text-fill-color:var(--atsrs-shell-accent-strong)!important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:is([aria-pressed="true"],.active)::after {
+  content:"";
+  position:absolute;
+  right:8px;
+  bottom:5px;
+  left:8px;
+  height:2px;
+  border-radius:999px;
+  background:var(--atsrs-shell-accent);
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:focus-visible {
+  outline:2px solid var(--atsrs-shell-accent)!important;
+  outline-offset:2px!important;
+}
+
+html[data-theme] body #app.app:not(.hidden) :is(
+  #jobsPage,
+  #candidatesPage,
+  #personnelPage,
+  #projectsPage
+) .talent-view-switch button:focus:not(:focus-visible) {
+  outline:none!important;
+}
