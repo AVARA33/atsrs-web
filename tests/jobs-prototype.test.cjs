@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58156/);
-  assert.match(index,/route-feature-loader\.js\?v=58153/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58153"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58153'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58157/);
+  assert.match(index,/route-feature-loader\.js\?v=58157/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58157"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58157'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -120,11 +120,21 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   const fixture=fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8');
   assert.equal((index.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
   assert.equal((fixture.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
-  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsActiveFilters','jobsMoreFilters'].forEach(id=>{
+  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsActiveFilters'].forEach(id=>{
     assert.equal((index.match(new RegExp(`id="${id}"`,'g'))||[]).length,1,`${id} must exist exactly once`);
   });
   assert.match(index,/id="jobsCompanyFilter"[^>]*list="jobsCompanyOptions"/);
   assert.match(index,/id="jobsRecruiterFilter"[^>]*list="jobsRecruiterOptions"/);
+  assert.doesNotMatch(index,/jobsMoreFilters|More filters/);
+  assert.doesNotMatch(runtime,/jobsMoreFilters|\.classList\.toggle\('is-open'/);
+  assert.doesNotMatch(css,/jobs-more-filters|jobs-secondary-filters\.is-open/);
+  assert.equal((index.match(/class="ph ph-caret-down"/g)||[]).length>=2,true);
+  assert.match(runtime,/function setupJobsSelect\(selectId\)/);
+  assert.match(runtime,/role','option'/);
+  assert.match(runtime,/aria-selected/);
+  assert.match(runtime,/e\.key==='ArrowDown'\|\|e\.key==='ArrowUp'/);
+  assert.match(css,/\.jobs-select-option\[data-active="true"\][^\{]*\{background:var\(--atsrs-jobs-green-text,#22c55e\)!important/);
+  assert.match(css,/\.jobs-filters input:focus-visible[^\{]*\{border-color:var\(--atsrs-jobs-green-text,#22c55e\)!important/);
   ['jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>assert.match(index,new RegExp(`id="${id}"[^>]*type="checkbox"`)));
   assert.match(runtime,/querySelectorAll\('#jobsSecondaryFilters'\)\.length!==1/);
   assert.match(runtime,/function uniqueValues\(/);
@@ -144,7 +154,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"/);
   assert.doesNotMatch(index,/jobs-filter-chip|jobs-toggle-track/);
   assert.match(runtime,/control\.matches\('input\[type="checkbox"\]'\)\?control\.checked/);
-  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-more-filters\{display:inline-flex/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
 });
 
 test('Jobs supports persistent accessible card and list views',()=>{

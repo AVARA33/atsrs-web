@@ -111,7 +111,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=58156">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=58156">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=58157">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <link rel="stylesheet" href="css/button-content-standard-v58148.css?v=58148">
@@ -709,36 +709,33 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span>Search</span>
       <span class="jobs-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="jobsSearch" type="search" placeholder="Job title or role" autocomplete="off"></span>
     </label>
-    <label><span>Role</span><select id="jobsRoleFilter"><option value="">All roles</option></select></label>
-    <label><span>Location</span><select id="jobsLocationFilter"><option value="">All locations</option></select></label>
+    <div class="jobs-filter-field"><span id="jobsRoleFilterLabel">Role</span><span class="jobs-select-host"><select id="jobsRoleFilter" aria-labelledby="jobsRoleFilterLabel"><option value="">All roles</option></select></span></div>
+    <div class="jobs-filter-field"><span id="jobsLocationFilterLabel">Location</span><span class="jobs-select-host"><select id="jobsLocationFilter" aria-labelledby="jobsLocationFilterLabel"><option value="">All locations</option></select></span></div>
     <button id="jobsClearFilters" type="button" class="secondary">Clear filters</button>
   </div>
 
-  <button id="jobsMoreFilters" class="jobs-more-filters" type="button" aria-expanded="false" aria-controls="jobsSecondaryFilters">
-    <span>More filters</span><i class="ph ph-sliders-horizontal" aria-hidden="true"></i>
-  </button>
   <section id="jobsSecondaryFilters" class="jobs-secondary-filters" aria-label="Additional job filters">
     <div class="jobs-secondary-primary">
       <label class="jobs-secondary-field">
         <span>Company</span>
-        <input id="jobsCompanyFilter" type="search" list="jobsCompanyOptions" placeholder="All companies" autocomplete="off" aria-label="Filter jobs by company">
+        <span class="jobs-datalist-control"><input id="jobsCompanyFilter" type="search" list="jobsCompanyOptions" placeholder="All companies" autocomplete="off" aria-label="Filter jobs by company"><i class="ph ph-caret-down" aria-hidden="true"></i></span>
         <datalist id="jobsCompanyOptions"></datalist>
       </label>
       <label class="jobs-secondary-field">
         <span>Recruiter</span>
-        <input id="jobsRecruiterFilter" type="search" list="jobsRecruiterOptions" placeholder="All recruiters" autocomplete="off" aria-label="Filter jobs by recruiter">
+        <span class="jobs-datalist-control"><input id="jobsRecruiterFilter" type="search" list="jobsRecruiterOptions" placeholder="All recruiters" autocomplete="off" aria-label="Filter jobs by recruiter"><i class="ph ph-caret-down" aria-hidden="true"></i></span>
         <datalist id="jobsRecruiterOptions"></datalist>
       </label>
-      <label class="jobs-secondary-field jobs-date-filter">
-        <span>Date posted</span>
-        <select id="jobsDateFilter" aria-label="Filter jobs by date posted">
+      <div class="jobs-secondary-field jobs-date-filter">
+        <span id="jobsDateFilterLabel">Date posted</span>
+        <span class="jobs-select-host"><select id="jobsDateFilter" aria-labelledby="jobsDateFilterLabel">
           <option value="">Any time</option>
           <option value="1">Last 24 hours</option>
           <option value="3">Last 3 days</option>
           <option value="7">Last 7 days</option>
           <option value="30">Last 30 days</option>
-        </select>
-      </label>
+        </select></span>
+      </div>
     </div>
       <div class="jobs-secondary-actions">
         <fieldset class="jobs-worksite-filter">
@@ -1991,7 +1988,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=576"></script>
 <script src="js/personal-dashboard-qa.js?v=549"></script>
 <script src="js/shell-polish.js?v=567"></script>
-<script src="js/route-feature-loader.js?v=58153"></script>
+<script src="js/route-feature-loader.js?v=58157"></script>
 
 
 

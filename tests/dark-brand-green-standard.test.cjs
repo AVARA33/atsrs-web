@@ -36,7 +36,7 @@ for (const [asset, version] of [
   ['theme-palette-v508.css', '58156'],
   ['workspace-heading-standard-v520.css', '58156'],
   ['personal-dashboard-qa.css', '58156'],
-  ['jobs-prototype.css', '58156']
+  ['jobs-prototype.css', '58157']
 ]) {
   assert.ok(html.includes(`${asset}?v=${version}`), `${asset} must use the V${version} cache marker`);
 }
