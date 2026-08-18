@@ -20,7 +20,8 @@ try{
     /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash);
   window.__atsrsEntryRoute=atsrsEntryCallback?'callback':
     (atsrsEntryShare?'share':
-      ((atsrsRequestedView==='login'||atsrsRequestedView==='signup')?'auth':'landing'));
+      ((atsrsRequestedView==='login'||atsrsRequestedView==='signup')?'auth':
+        (atsrsRequestedView==='jobs'?'app':'landing')));
   window.__atsrsSuppressAutomaticSessionOpen=
     window.__atsrsEntryRoute==='auth'||window.__atsrsEntryRoute==='share'||window.__atsrsEntryRoute==='landing';
   var savedTheme=localStorage.getItem('atsrs_theme');
@@ -93,7 +94,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=450">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
 <link rel="stylesheet" href="css/shell-polish.css?v=570">
-<link rel="stylesheet" href="css/public-landing.css?v=532">
+<link rel="stylesheet" href="css/public-landing.css?v=58147">
 <link rel="stylesheet" href="css/workspace-surface-standard-v519.css?v=519">
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=520">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=522-2">
@@ -244,6 +245,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <h3>See what needs action</h3>
           <p>Find permitted profiles, add selected people to Personnel, assign projects, request documents and review expiry status without making private files public.</p>
           <a href="#corporate-preview">See Corporate workspace <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <div class="public-audience-grid public-job-search-grid">
+        <article>
+          <i class="ph ph-briefcase" aria-hidden="true"></i>
+          <p class="public-kicker">JOB SEARCH</p>
+          <h3>Find your next opportunity</h3>
+          <p>Discover recruiter-sourced opportunities across multiple industries, locations and work types. Search and filter by role, location, company, recruiter or recency, then apply at the original source.</p>
+          <a href="?view=jobs">Explore Jobs <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -1844,7 +1854,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
 <script src="js/storage.js?v=579"></script>
-<script src="js/public-landing.js?v=560"></script>
+<script src="js/public-landing.js?v=58147"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>

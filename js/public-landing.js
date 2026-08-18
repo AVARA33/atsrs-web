@@ -7,6 +7,7 @@
   var boot=document.getElementById('atsrsBootScreen');
   var params=new URLSearchParams(window.location.search);
   var requestedView=params.get('view');
+  var requestedJobs=requestedView==='jobs';
   var reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function prepareWordmarks(){
@@ -159,11 +160,15 @@
     return;
   }
   if(callback||publicShare)return;
+  if(requestedJobs){
+    try{localStorage.setItem('atsrs_current_page','jobs');}catch(error){}
+  }
   var retainedSessionHint=hasRetainedSessionHint();
-  if(!retainedSessionHint)showLanding();
+  if(!retainedSessionHint&&!requestedJobs)showLanding();
   var client=window.supabaseClient;
   if(!client||!client.auth){
-    showLanding();
+    if(requestedJobs)showExistingAuth('login');
+    else showLanding();
     return;
   }
   var sessionRequest=typeof window.atsrsGetSessionSingleFlight==='function'
@@ -184,10 +189,12 @@
         showLanding();
         return false;
       }
-      showLanding();
+      if(requestedJobs)showExistingAuth('login');
+      else showLanding();
     })
     .catch(function(error){
       console.warn('ATSRS landing session check failed',error);
-      showLanding();
+      if(requestedJobs)showExistingAuth('login');
+      else showLanding();
     });
 })();

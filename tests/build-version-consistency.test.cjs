@@ -60,9 +60,9 @@ assert.match(index, /href="vendor\/phosphor-icons\/phosphor-regular\.css\?v=442"
 assert.match(index, /href="css\/shell-polish\.css\?v=568"/);
 assert.match(index, /src="js\/personal-dashboard-qa\.js\?v=549"/);
 assert.match(index, /src="js\/shell-polish\.js\?v=567"/);
-assert.match(index, /href="css\/public-landing\.css\?v=532"/);
+assert.match(index, /href="css\/public-landing\.css\?v=58147"/);
 assert.match(index, /href="css\/share-profile\.css\?v=497"/);
-assert.match(index, /src="js\/public-landing\.js\?v=560"/);
+assert.match(index, /src="js\/public-landing\.js\?v=58147"/);
 assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.doesNotMatch(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/route-feature-loader\.js\?v=569"/);

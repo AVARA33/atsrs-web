@@ -15,6 +15,10 @@ assert.match(index, /window\.atsrsMountSharedProfile=function\(\)[\s\S]*?templat
 assert.match(index, /if\(window\.__atsrsEntryRoute==='share'\)window\.atsrsMountSharedProfile\(\)/);
 assert.match(index, /href="\?view=login"[^>]*>Log in</);
 assert.match(index, /href="\?view=signup"/);
+assert.match(index, /class="public-audience-grid public-job-search-grid"[\s\S]*?>JOB SEARCH<[\s\S]*?<h3>Find your next opportunity<\/h3>/);
+assert.match(index, /Discover recruiter-sourced opportunities across multiple industries, locations and work types\./);
+assert.match(index, /href="\?view=jobs">Explore Jobs/);
+assert.equal((index.match(/id="jobsPage"/g) || []).length, 1, 'Home CTA must reuse the existing Jobs page');
 assert.match(index, /class="public-home-link" href="#top" aria-label="Home"/);
 assert.match(index, /class="public-home-link public-home-mobile" href="#top" aria-label="Home"/);
 assert.match(index, /window\.__atsrsEntryRoute=atsrsEntryCallback\?'callback'/);
@@ -36,6 +40,9 @@ assert.doesNotMatch(index, /\$\d+|€\d+|£\d+/);
 assert.match(js, /setInterval\(rotateWordmarks,10000\)/);
 assert.match(js, /if\(callback\|\|publicShare\)return;[\s\S]*?atsrsGetSessionSingleFlight[\s\S]*?session&&session\.user[\s\S]*?atsrsResumeSession\(session,'resume'\)[\s\S]*?showLanding\(\)/);
 assert.match(js, /client\.auth\.getSession\(\)/);
+assert.match(js, /requestedJobs=requestedView==='jobs'/);
+assert.match(js, /if\(requestedJobs\)[\s\S]*?localStorage\.setItem\('atsrs_current_page','jobs'\)/);
+assert.match(js, /if\(requestedJobs\)showExistingAuth\('login'\)/);
 assert.match(js, /function removeSharedProfile\(\)[\s\S]*?sharedProfile\.remove\(\)/);
 assert.match(js, /function showLanding\(\)[\s\S]*?removeSharedProfile\(\)/);
 assert.match(js, /function showExistingAuth\(view\)[\s\S]*?removeSharedProfile\(\)/);
@@ -85,6 +92,8 @@ assert.doesNotMatch(index, /class="public-footer-brand"/);
 assert.match(index, /class="public-footer-legal"[\s\S]*?Data Protection &amp; GDPR[\s\S]*?Data Rights<\/a><\/nav>[\s\S]*?class="public-footer-bottom"/);
 assert.match(css, /\.public-footer\{display:grid;grid-template-columns:1fr;[\s\S]*?align-items:start/);
 assert.match(css, /\.public-footer-legal\{[\s\S]*?justify-content:center/);
+assert.match(css, /\.public-job-search-grid article\{grid-column:2\}/);
+assert.match(css, /@media\(max-width:1050px\)\{[\s\S]*?\.public-job-search-grid\{[^}]*grid-template-columns:minmax\(0,1fr\)[^}]*\}[\s\S]*?\.public-job-search-grid article\{grid-column:auto\}/);
 
 for (const image of ['personal-dashboard.png', 'candidate-directory.png', 'corporate-personnel.png']) {
   assert.ok(fs.existsSync(path.join(root, 'assets', 'landing', image)), `${image} must exist`);
