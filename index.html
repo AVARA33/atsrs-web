@@ -100,7 +100,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=522-2">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=523">
 <link rel="stylesheet" href="css/personal-account-routing-v524.css?v=524">
-<link rel="stylesheet" href="css/references-cv-upload-v525.css?v=525">
+<link rel="stylesheet" href="css/references-cv-upload-v525.css?v=58152">
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
 <link rel="stylesheet" href="css/product-updates-alignment-v531.css?v=531">
 <link rel="stylesheet" href="css/brand-auth-v513.css?v=547">
@@ -1258,13 +1258,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span class="pill" id="cvBetaBadge">AI CV GENERATOR</span>
       <h4 id="cvBetaTitle">Generate ATSRS Profile CV</h4>
       <p id="cvBetaText" class="sub">Turn your saved profile details, career history and document register into a structured CV.</p>
-      <div class="cv-generator-primary-actions">
+      <div class="cv-generator-action-grid">
         <button id="generateCVBtn" class="secondary" type="button">Generate ATSRS CV</button>
-        <button id="uploadCvFromGeneratorBtn" class="secondary" type="button" onclick="replaceCV()">Upload CV</button>
-      </div>
-      <div id="generatedCvActions" class="generated-cv-actions hidden">
-        <button id="previewGeneratedCvBtn" class="secondary" type="button">View Generated CV</button>
-        <button id="printGeneratedCvBtn" class="secondary" type="button">Print / Save PDF</button>
+        <button id="uploadCvFromGeneratorBtn" class="secondary" type="button" onclick="replaceCV()">Enhance Existing CV</button>
+        <div id="generatedCvActions" class="generated-cv-actions hidden">
+          <button id="previewGeneratedCvBtn" class="secondary" type="button">View Generated CV</button>
+          <button id="printGeneratedCvBtn" class="secondary" type="button">Print / Save PDF</button>
+        </div>
       </div>
     </div>
   </div>

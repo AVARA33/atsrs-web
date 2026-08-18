@@ -1,32 +1,40 @@
-/* ATSRS V525 — equal Generate and Upload CV actions in the AI CV panel. */
+/* ATSRS Personal References — one coherent AI CV action grid. */
 
-body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions{
+body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid{
   display:grid!important;
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
   gap:8px!important;
-  width:min(100%,320px)!important;
+  width:100%!important;
   margin-top:auto!important;
 }
 
-body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #generateCVBtn,
-body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #uploadCvFromGeneratorBtn{
+body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid .generated-cv-actions:not(.hidden){
+  display:contents!important;
+}
+
+body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid .generated-cv-actions.hidden{
+  display:none!important;
+}
+
+body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid > button,
+body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid .generated-cv-actions > button{
   align-self:stretch!important;
   width:100%!important;
   min-width:0!important;
-  min-height:40px!important;
+  min-height:44px!important;
+  height:44px!important;
   margin:0!important;
   padding:9px 13px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  line-height:1.2!important;
+  white-space:normal!important;
 }
 
-@media(max-width:720px){
-  body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #generateCVBtn,
-  body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions #uploadCvFromGeneratorBtn{
-    min-height:44px!important;
-  }
-}
-
-@media(max-width:360px){
-  body.personal-mode #refsPage .cv-beta-box .cv-generator-primary-actions{
+@media(max-width:480px){
+  body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid{
     grid-template-columns:1fr!important;
   }
 }
