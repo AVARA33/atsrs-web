@@ -10,10 +10,10 @@ const ui = fs.readFileSync(path.join(root, 'js', 'ui.js'), 'utf8');
 
 assert.match(index, /<section id="auth" class="auth">[\s\S]*?<a class="auth-home-link" href="\/\?view=home">[\s\S]*?ph ph-arrow-left[\s\S]*?<span>Back to Home<\/span>/);
 assert.match(index, /href="css\/theme\.css\?v=537"/);
-assert.match(index, /src="js\/public-landing\.js\?v=560"/);
-assert.ok(index.indexOf('js/storage.js?v=579') < index.indexOf('js/public-landing.js?v=560'));
-assert.ok(index.indexOf('js/public-landing.js?v=560') < index.indexOf('js/ui.js?v=568'));
-assert.ok(index.indexOf('js/public-landing.js?v=560') < index.indexOf('js/boot-refresh.js?v=443'));
+assert.match(index, /src="js\/public-landing\.js\?v=58147"/);
+assert.ok(index.indexOf('js/storage.js?v=579') < index.indexOf('js/public-landing.js?v=58147'));
+assert.ok(index.indexOf('js/public-landing.js?v=58147') < index.indexOf('js/ui.js?v=568'));
+assert.ok(index.indexOf('js/public-landing.js?v=58147') < index.indexOf('js/boot-refresh.js?v=443'));
 assert.match(index, /src="js\/ui\.js\?v=568"/);
 assert.match(landing, /if\(requestedView==='home'\)[\s\S]*?__atsrsSuppressAutomaticSessionOpen=true[\s\S]*?history\.replaceState[\s\S]*?showLanding\(\)[\s\S]*?return/);
 assert.match(ui, /function publicLandingVisible\(\)[\s\S]*?atsrs-public-view[\s\S]*?!landing\.classList\.contains\('hidden'\)/);
