@@ -21,7 +21,7 @@ assert.match(index, /Find real opportunities without wasting time searching ever
 assert.match(index, /FREE ACCESS[\s\S]*?BRONZE ACCESS[\s\S]*?Unlimited Job Search/);
 assert.match(index, /Recruiter details[\s\S]*?Contact information[\s\S]*?Original source/);
 assert.match(index, /class="public-cta" href="\?view=jobs">Explore Jobs/);
-assert.match(index, /public-jobs-product-preview[\s\S]*?Production Operator Offshore[\s\S]*?Field Service Technician[\s\S]*?ROV Pilot Technician/);
+assert.match(index, /public-jobs-product-preview[\s\S]*?Software Engineer[\s\S]*?IT \/ Technology[\s\S]*?Registered Nurse[\s\S]*?Healthcare[\s\S]*?ROV Pilot Technician[\s\S]*?Offshore \/ Marine/);
 assert.doesNotMatch(index, /public-audience-grid public-job-search-grid/);
 assert.equal((index.match(/id="jobsPage"/g) || []).length, 1, 'Home CTA must reuse the existing Jobs page');
 assert.match(index, /class="public-home-link" href="#top" aria-label="Home"/);
