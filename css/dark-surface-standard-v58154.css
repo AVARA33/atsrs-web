@@ -58,9 +58,9 @@ html[data-theme="dark"] body :where(
 }
 
 html[data-theme="dark"] body :where(.account-tabs button.active,.module-tabs button.active){
-  border-color:#526d14!important;
+  border-color:#166534!important;
   background:#111414!important;
-  color:#b8ff19!important;
+  color:#22c55e!important;
 }
 
 html[data-theme="dark"] body :where(
@@ -78,4 +78,3 @@ html[data-theme="dark"] body .cv-generator-head{
 }
 html[data-theme="dark"] body .cv-generator-preview{background:#101311!important}
 html[data-theme="dark"] body .cv-generator-modal{background:rgba(0,0,0,.84)!important}
-

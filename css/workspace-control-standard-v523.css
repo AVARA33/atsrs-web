@@ -3,7 +3,7 @@ html[data-theme="dark"] body.personal-mode #app.app:not(.hidden){
   --atsrs-v523-surface:var(--atsrs-ref-dark-surface,#0b0d0d);
   --atsrs-v523-soft:var(--atsrs-ref-dark-soft,#111414);
   --atsrs-v523-line:var(--atsrs-ref-dark-line,#2a2f2d);
-  --atsrs-v523-accent:var(--atsrs-ref-lime,#b8ff19);
+  --atsrs-v523-accent:var(--atsrs-ref-lime,#22c55e);
 }
 
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #adminOverviewPanel.admin-overview-panel{
@@ -31,7 +31,7 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #adminOverviewPanel .admin-overview-refresh:focus-visible{
   border-color:var(--atsrs-v523-accent)!important;
   color:var(--atsrs-v523-accent)!important;
-  background:rgba(184,255,25,.07)!important;
+  background:rgba(34,197,94,.08)!important;
   outline:0!important;
 }
 

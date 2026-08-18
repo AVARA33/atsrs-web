@@ -3,7 +3,7 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
   --atsrs-control-surface:var(--atsrs-ref-dark-surface,#0b0d0d);
   --atsrs-control-soft:var(--atsrs-ref-dark-soft,#111414);
   --atsrs-control-line:var(--atsrs-ref-dark-line,#2a2f2d);
-  --atsrs-control-accent:var(--atsrs-ref-lime,#b8ff19);
+  --atsrs-control-accent:var(--atsrs-ref-lime,#22c55e);
   --atsrs-control-accent-ink:#080a08;
 }
 
@@ -32,7 +32,7 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
   .module-tabs button
 ):not(.active):not([aria-selected="true"]):not([aria-pressed="true"]):hover{
   border-color:var(--atsrs-control-accent)!important;
-  background:rgba(184,255,25,.07)!important;
+  background:rgba(34,197,94,.08)!important;
   color:var(--atsrs-control-accent)!important;
   -webkit-text-fill-color:var(--atsrs-control-accent)!important;
 }
@@ -108,7 +108,7 @@ html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :w
 html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(.phone-field,.phone-code-picker):focus-within{
   outline:0!important;
   border-color:var(--atsrs-control-accent)!important;
-  box-shadow:0 0 0 3px rgba(184,255,25,.13)!important;
+  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }
 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
@@ -145,7 +145,7 @@ html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:not(.active):not([aria-selected="true"]):hover,
 html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:not(.active):not([aria-selected="true"]):hover{
   border-color:var(--atsrs-control-accent)!important;
-  background:rgba(184,255,25,.07)!important;
+  background:rgba(34,197,94,.08)!important;
   color:var(--atsrs-control-accent)!important;
   -webkit-text-fill-color:var(--atsrs-control-accent)!important;
 }
@@ -190,5 +190,5 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
 
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field:focus-within{
   border-color:var(--atsrs-control-accent)!important;
-  box-shadow:0 0 0 3px rgba(184,255,25,.13)!important;
+  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }
