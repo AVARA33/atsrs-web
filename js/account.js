@@ -280,6 +280,7 @@
       await clearAllAndPut(row);
       if(event&&event.target)event.target.value='';
       await renderCV();
+      document.dispatchEvent(new CustomEvent('atsrs:cv-uploaded',{detail:{source:'local'}}));
       if(files.length>1)alert('Free plan allows only Main CV. Additional CV slots are prepared for paid plans.');
     }catch(err){console.error(err);alert('CV could not be saved. Storage is unavailable or full.');}
   };

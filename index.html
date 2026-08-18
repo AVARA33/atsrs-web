@@ -111,7 +111,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=562">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=58151">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=58153">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <link rel="stylesheet" href="css/button-content-standard-v58148.css?v=58148">
@@ -739,17 +739,26 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </select>
       </label>
     </div>
-    <div class="jobs-secondary-actions">
-      <fieldset class="jobs-worksite-filter">
-        <legend class="sr-only">Worksite</legend>
-        <button id="jobsOffshoreFilter" class="jobs-filter-chip" type="button" aria-pressed="false">Offshore</button>
-        <button id="jobsOnshoreFilter" class="jobs-filter-chip" type="button" aria-pressed="false">Onshore</button>
-      </fieldset>
-      <label class="jobs-new-filter" for="jobsNewOnlyFilter">
-        <span>New jobs only</span>
-        <input id="jobsNewOnlyFilter" type="checkbox" role="switch">
-        <span class="jobs-toggle-track" aria-hidden="true"><span></span></span>
-      </label>
+      <div class="jobs-secondary-actions">
+        <fieldset class="jobs-worksite-filter">
+          <legend class="sr-only">Worksite</legend>
+          <label class="jobs-compact-check" for="jobsOffshoreFilter">
+            <input id="jobsOffshoreFilter" type="checkbox">
+            <span class="jobs-check-box" aria-hidden="true"><i class="ph ph-check"></i></span>
+            <span>Offshore</span>
+          </label>
+          <label class="jobs-compact-check" for="jobsOnshoreFilter">
+            <input id="jobsOnshoreFilter" type="checkbox">
+            <span class="jobs-check-box" aria-hidden="true"><i class="ph ph-check"></i></span>
+            <span>Onshore</span>
+          </label>
+        </fieldset>
+        <span class="jobs-secondary-divider" aria-hidden="true"></span>
+        <label class="jobs-compact-check jobs-new-filter" for="jobsNewOnlyFilter">
+          <input id="jobsNewOnlyFilter" type="checkbox">
+          <span class="jobs-check-box" aria-hidden="true"><i class="ph ph-check"></i></span>
+          <span>New jobs only</span>
+        </label>
     </div>
   </section>
   <div id="jobsActiveFilters" class="jobs-active-filters hidden" aria-label="Active job filters"></div>
@@ -1260,7 +1269,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <p id="cvBetaText" class="sub">Turn your saved profile details, career history and document register into a structured CV.</p>
       <div class="cv-generator-action-grid">
         <button id="generateCVBtn" class="secondary" type="button">Generate ATSRS CV</button>
-        <button id="uploadCvFromGeneratorBtn" class="secondary" type="button" onclick="replaceCV()">Enhance Existing CV</button>
+        <button id="uploadCvFromGeneratorBtn" class="secondary" type="button">Enhance Existing CV</button>
         <div id="generatedCvActions" class="generated-cv-actions hidden">
           <button id="previewGeneratedCvBtn" class="secondary" type="button">View Generated CV</button>
           <button id="printGeneratedCvBtn" class="secondary" type="button">Print / Save PDF</button>
@@ -1876,7 +1885,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div>
         <span class="pill">AI CV GENERATOR</span>
         <h2 id="cvGeneratorTitle">Create your ATSRS CV</h2>
-        <p>ATSRS uses your saved profile and document register. Add the career details that are not already in your account.</p>
+        <p id="cvGeneratorDescription">ATSRS uses your saved profile and document register. Add the career details that are not already in your account.</p>
       </div>
       <button id="closeCvGeneratorBtn" class="cv-generator-close" type="button" aria-label="Close CV generator">&times;</button>
     </div>
@@ -1914,7 +1923,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </label>
       <label class="cv-ai-consent">
         <input id="cvAiConsent" type="checkbox">
-        <span>I agree that the career details above and the profile/document metadata stored in ATSRS will be sent securely to the OpenAI API to prepare this CV. Uploaded document files are not sent.</span>
+        <span id="cvAiConsentText">I agree that the career details above and the profile/document metadata stored in ATSRS will be sent securely to the OpenAI API to prepare this CV. Uploaded document files are not sent.</span>
       </label>
       <div id="cvGeneratorStatus" class="cv-generator-status" role="status"></div>
       <div class="cv-generator-buttons">
@@ -1943,7 +1952,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-write-canary-config.js?v=409"></script>
 <script src="js/workspace-command-policy.js?v=409"></script>
 <script src="js/reference-filter-state.js?v=410"></script>
-<script src="js/server-data.js?v=568"></script>
+<script src="js/server-data.js?v=569"></script>
 <script src="js/shadow-read.js?v=409"></script>
 <script src="js/normalized-read-adapter.js?v=409"></script>
 <script src="js/normalized-read-canary-config.js?v=409"></script>
@@ -1959,8 +1968,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/avatar.js?v=375"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
-<script src="js/cv-generator.js?v=411"></script>
-<script src="js/account.js?v=412"></script>
+<script src="js/cv-generator.js?v=412"></script>
+<script src="js/account.js?v=413"></script>
 <script src="js/app.js?v=567"></script>
 <script src="js/date-picker.js?v=502"></script>
 <script src="js/share-profile.js?v=409"></script>
@@ -1976,7 +1985,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=576"></script>
 <script src="js/personal-dashboard-qa.js?v=549"></script>
 <script src="js/shell-polish.js?v=567"></script>
-<script src="js/route-feature-loader.js?v=58152"></script>
+<script src="js/route-feature-loader.js?v=58153"></script>
 
 
 

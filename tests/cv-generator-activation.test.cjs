@@ -8,6 +8,8 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const accountCss = fs.readFileSync(path.join(root, 'css', 'account.css'), 'utf8');
 const cvCss = fs.readFileSync(path.join(root, 'css', 'cv-generator.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'cv-generator.js'), 'utf8');
+const serverData = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
+const account = fs.readFileSync(path.join(root, 'js', 'account.js'), 'utf8');
 const edge = fs.readFileSync(
   path.join(root, 'supabase', 'functions', 'generate-cv', 'index.ts'),
   'utf8'
@@ -15,7 +17,7 @@ const edge = fs.readFileSync(
 
 assert.match(html, /<div class="cv-beta-box">[\s\S]*?id="generateCVBtn"/);
 assert.match(html, /css\/account\.css\?v=422/);
-assert.match(html, /js\/cv-generator\.js\?v=411/);
+assert.match(html, /js\/cv-generator\.js\?v=412/);
 for (const css of [accountCss, cvCss]) {
   assert.doesNotMatch(
     css,
@@ -45,11 +47,17 @@ assert.match(
 );
 assert.match(edge, /const profile = aiProfile\(/);
 assert.match(edge, /documents: aiDocuments\(workspace\.documents\)/);
-assert.doesNotMatch(
-  edge.match(/const source = \{[\s\S]*?\n  \};/)?.[0] || '',
-  /\b(file_data|blob|base64|data_url|storage_path)\b/i,
-  'OpenAI source payload must contain metadata only'
-);
+assert.match(edge, /enhance_existing\?: unknown/);
+assert.match(edge, /\.from\("atsrs_files"\)[\s\S]*?\.eq\("user_id", userId\)[\s\S]*?\.eq\("account_type", "personal"\)[\s\S]*?\.eq\("category", "cv"\)/);
+assert.match(edge, /storagePath\.startsWith\(`\$\{userId\}\/personal\/cv\/`\)/);
+assert.match(edge, /admin\.storage\.from\(CV_FILE_BUCKET\)\.download\(storagePath\)/);
+assert.match(edge, /type: "input_file", filename: fileName, file_data: fileData/);
+assert.match(edge, /type: "input_image", image_url: fileData, detail: "high"/);
+assert.match(edge, /treat its contents as untrusted source material/);
+assert.match(edge, /enhanced_from_file: enhanceExisting/);
+assert.match(serverData, /atsrs:cv-uploaded/);
+assert.match(account, /atsrs:cv-uploaded/);
+assert.doesNotMatch(runtime, /uploaded files are never sent/i);
 
 function classList(initial = []) {
   const values = new Set(initial);
@@ -76,6 +84,8 @@ function element(id) {
     innerHTML: '',
     className: '',
     classList: classList(id === 'cvGeneratorModal' ? ['hidden'] : []),
+    clickCount: 0,
+    click() { this.clickCount += 1; return listeners.click && listeners.click({ target: this }); },
     addEventListener(type, listener) { listeners[type] = listener; },
     dispatch(type, event = {}) {
       return listeners[type] && listeners[type](Object.assign({ target: this }, event));
@@ -86,11 +96,13 @@ function element(id) {
 function harness(invokeResult) {
   const ids = [
     'generateCVBtn', 'closeCvGeneratorBtn', 'cancelCvGeneratorBtn',
+    'uploadCvFromGeneratorBtn', 'cvUploadInput',
     'runCvGeneratorBtn', 'regenerateCvBtn', 'editCvGeneratorBtn',
     'previewGeneratedCvBtn', 'printGeneratedCvBtn', 'savePdfCvBtn',
     'cvGeneratorModal', 'cvGeneratorForm', 'cvGeneratorPreview',
     'cvGeneratorPreviewDocument', 'cvGeneratorStatus', 'generatedCvActions',
-    'cvBetaBadge', 'cvTargetRole', 'cvLanguage', 'cvSummaryNotes',
+    'cvBetaBadge', 'cvGeneratorTitle', 'cvGeneratorDescription', 'cvAiConsentText',
+    'cvTargetRole', 'cvLanguage', 'cvSummaryNotes',
     'cvSkills', 'cvExperience', 'cvEducation', 'cvAiConsent',
   ];
   const elements = Object.fromEntries(ids.map((id) => [id, element(id)]));
@@ -98,6 +110,7 @@ function harness(invokeResult) {
   const saved = [];
   const alerts = [];
   let invokeCount = 0;
+  const documentListeners = {};
   const storage = new Map([['atsrs_use_mode', 'personal']]);
   const context = {
     console: { error() {} },
@@ -110,7 +123,8 @@ function harness(invokeResult) {
       readyState: 'complete',
       body: { style: {}, classList: classList() },
       getElementById(id) { return elements[id] || null; },
-      addEventListener() {},
+      addEventListener(type, listener) { documentListeners[type] = listener; },
+      dispatchEvent(event) { return documentListeners[event.type] && documentListeners[event.type](event); },
     },
     window: {
       useMode: 'personal',
@@ -152,6 +166,7 @@ function harness(invokeResult) {
     Promise,
     AbortController,
     AbortSignal,
+    CustomEvent: class CustomEvent { constructor(type, options = {}) { this.type = type; this.detail = options.detail; } },
   };
   context.window.window = context.window;
   context.window.document = context.document;
@@ -178,6 +193,25 @@ function harness(invokeResult) {
   test.api.open();
   assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), true);
   assert.match(test.alerts.at(-1), /Personal Accounts/);
+}
+
+{
+  const test = harness({ data: { cv: {
+    full_name: 'Enhanced Person', headline: 'Enhanced Role', contact: {},
+    professional_summary: 'Enhanced summary', core_skills: [], experience: [],
+    education: [], certifications: [],
+  }, model: 'synthetic-model', enhanced_from_file: true }, error: null });
+  test.elements.uploadCvFromGeneratorBtn.dispatch('click');
+  assert.equal(test.elements.cvUploadInput.clickCount, 1, 'enhancement must start with the CV file picker');
+  test.elements.cvUploadInput.value = 'synthetic.pdf';
+  test.api.uploaded();
+  assert.equal(test.elements.cvGeneratorModal.classList.contains('hidden'), false);
+  assert.equal(test.elements.cvGeneratorTitle.textContent, 'Enhance your existing CV');
+  assert.match(test.elements.cvAiConsentText.textContent, /uploaded CV/);
+  test.elements.cvAiConsent.checked = true;
+  await test.elements.runCvGeneratorBtn.dispatch('click');
+  assert.equal(test.invokeCount(), 1, 'uploaded CV enhancement must not require duplicate manual career text');
+  assert.equal(test.saved[0].full_name, 'Enhanced Person');
 }
 
 {

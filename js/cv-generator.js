@@ -1,4 +1,4 @@
-/* ATSRS AI CV Generator. Profile and document metadata only; uploaded files are never sent. */
+/* ATSRS AI CV Generator. Uploaded CV content is processed only after explicit consent. */
 (function(){
   'use strict';
 
@@ -6,6 +6,8 @@
   var GENERATION_TIMEOUT_MS=65000;
   var lastCv=null;
   var generating=false;
+  var enhancementMode=false;
+  var enhancementUploadPending=false;
 
   function byId(id){return document.getElementById(id)}
   function safe(value){
@@ -44,7 +46,7 @@
     generating=!!value;
     var button=byId('runCvGeneratorBtn');
     var regenerate=byId('regenerateCvBtn');
-    if(button){button.disabled=generating;button.textContent=generating?'Creating your CV...':'Generate CV'}
+    if(button){button.disabled=generating;button.textContent=generating?'Creating your CV...':(enhancementMode?'Enhance CV':'Generate CV')}
     if(regenerate)regenerate.disabled=generating;
   }
   function openModal(showPreview){
@@ -60,6 +62,38 @@
     if(saved&&!lastCv)lastCv=saved;
     if(showPreview&&lastCv)showCvPreview(lastCv);
     else showForm();
+  }
+  function setEnhancementMode(value){
+    enhancementMode=!!value;
+    var title=byId('cvGeneratorTitle');
+    var description=byId('cvGeneratorDescription');
+    var consent=byId('cvAiConsentText');
+    if(title)title.textContent=enhancementMode?'Enhance your existing CV':'Create your ATSRS CV';
+    if(description)description.textContent=enhancementMode
+      ?'ATSRS securely reads the CV you just uploaded, then uses your optional notes and saved profile data to prepare an improved professional version.'
+      :'ATSRS uses your saved profile and document register. Add the career details that are not already in your account.';
+    if(consent)consent.textContent=enhancementMode
+      ?'I agree that my uploaded CV, the career details above and saved ATSRS profile/document metadata will be sent securely to the OpenAI API to prepare an improved CV.'
+      :'I agree that the career details above and the profile/document metadata stored in ATSRS will be sent securely to the OpenAI API to prepare this CV. Uploaded document files are not sent.';
+    setGenerating(generating);
+  }
+  function beginEnhancement(){
+    if(currentMode()!=='personal'){
+      alert('AI CV Generator is available for Personal Accounts.');
+      return;
+    }
+    var input=byId('cvUploadInput');
+    if(!input){setStatus('The CV upload control is unavailable.','error');return}
+    enhancementUploadPending=true;
+    input.value='';
+    input.click();
+  }
+  function uploadedForEnhancement(){
+    if(!enhancementUploadPending)return;
+    enhancementUploadPending=false;
+    setEnhancementMode(true);
+    openModal(false);
+    setStatus('CV uploaded. Confirm AI processing, then select Enhance CV.','success');
   }
   function closeModal(){
     var modal=byId('cvGeneratorModal');
@@ -140,6 +174,7 @@
       skills:(byId('cvSkills')&&byId('cvSkills').value||'').split(/[,;\n]/).map(function(value){return value.trim()}).filter(Boolean),
       experience_text:(byId('cvExperience')&&byId('cvExperience').value||'').trim(),
       education_text:(byId('cvEducation')&&byId('cvEducation').value||'').trim(),
+      enhance_existing:enhancementMode,
       consent_accepted:!!(byId('cvAiConsent')&&byId('cvAiConsent').checked),
       consent_version:CONSENT_VERSION
     };
@@ -163,7 +198,7 @@
       setStatus('Confirm the AI processing notice before generating your CV.','error');
       return;
     }
-    if(!body.experience_text&&!body.education_text&&!body.summary_notes&&!body.skills.length){
+    if(!body.enhance_existing&&!body.experience_text&&!body.education_text&&!body.summary_notes&&!body.skills.length){
       setStatus('Add at least one career detail, such as experience, education, skills or summary notes.','error');
       return;
     }
@@ -173,7 +208,7 @@
       return;
     }
     setGenerating(true);
-    setStatus('Preparing your profile and document information...');
+    setStatus(body.enhance_existing?'Reading and improving your uploaded CV...':'Preparing your profile and document information...');
     try{
       var sessionResult=await client.auth.getSession();
       var session=sessionResult&&sessionResult.data&&sessionResult.data.session;
@@ -221,7 +256,8 @@
   }
   function bind(){
     var pairs=[
-      ['generateCVBtn',function(){openModal(false)}],
+      ['generateCVBtn',function(){setEnhancementMode(false);openModal(false)}],
+      ['uploadCvFromGeneratorBtn',beginEnhancement],
       ['closeCvGeneratorBtn',closeModal],
       ['cancelCvGeneratorBtn',closeModal],
       ['runCvGeneratorBtn',generate],
@@ -237,9 +273,10 @@
     document.addEventListener('keydown',function(event){if(event.key==='Escape'&&modal&&!modal.classList.contains('hidden'))closeModal()});
     updateCard();
   }
-  window.atsrsCvGenerator={open:openModal,print:printCv,refresh:updateCard};
+  window.atsrsCvGenerator={open:openModal,enhance:beginEnhancement,uploaded:uploadedForEnhancement,print:printCv,refresh:updateCard};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);
   else bind();
   window.addEventListener('atsrs:data-hydrated',updateCard);
   window.addEventListener('atsrs:resume',updateCard);
+  document.addEventListener('atsrs:cv-uploaded',uploadedForEnhancement);
 })();

@@ -2023,6 +2023,7 @@
       for(var i=0;i<files.length;i++)await uploadFile(kind,files[i]);
     }
     await renderCloudFiles({categories:[kind],force:true});
+    if(kind==='cv')document.dispatchEvent(new CustomEvent('atsrs:cv-uploaded',{detail:{source:'cloud'}}));
   }
   function installFileHandlers(){
     if(window.__atsrsCloudFileHandlersInstalled)return;
