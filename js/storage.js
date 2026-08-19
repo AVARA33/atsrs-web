@@ -521,7 +521,11 @@ function ensureAtsrsId(item){
 function personalOwnerStableId(){
   try{
     const profile=JSON.parse(readAppDataKey(localKey("profile")))||{};
-    return validAtsrsId(profile.atsrsId)?profile.atsrsId:"";
+    if(validAtsrsId(profile.atsrsId))return profile.atsrsId;
+    if(!window.atsrsStableIds)return "";
+    profile.atsrsId=window.atsrsStableIds.create();
+    saveData("profile",profile);
+    return profile.atsrsId;
   }catch(error){return "";}
 }
 function selectedPersonnel(select){
