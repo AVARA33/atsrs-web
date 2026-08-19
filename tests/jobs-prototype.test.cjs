@@ -24,7 +24,7 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=567/);
-  assert.match(index,/shell-polish\.css\?v=58161/);
+  assert.match(index,/shell-polish\.css\?v=58162/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
@@ -285,8 +285,10 @@ test('Jobs dropdown separates selected and active green states',()=>{
   assert.match(css,/jobs-select-option\[aria-selected="true"\]:not\(\[data-active\]\)/);
   assert.match(css,/jobs-select-option\[data-active\]/);
   assert.doesNotMatch(css,/V58161:[\s\S]*?jobs-select-option\[data-active="true"\]/);
-  assert.match(index,/shell-polish\.css\?v=58161/);
+  assert.match(index,/shell-polish\.css\?v=58162/);
   assert.match(shellCss,/:not\(\.jobs-select-option\)/);
+  assert.match(shellCss,/:not\(\.personnel-combobox-options button\)/);
+  assert.match(shellCss,/:not\(\.phone-code-option\)/);
   assert.match(runtime,/function clearJobsSelectActive\(control\)/);
   assert.match(runtime,/if\(focus\)setJobsSelectActive[\s\S]*?else clearJobsSelectActive\(control\)/);
 });
