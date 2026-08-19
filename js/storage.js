@@ -79,9 +79,9 @@ window.addEventListener('load',function(){
   var statusBaseV242=status;
   status=function(expiry){
     if(!expiry||String(expiry).toUpperCase()==='N/A')return statusBaseV242(expiry);
-    var today=new Date();today.setHours(0,0,0,0);
-    var expiryDate=new Date(expiry);
-    var days=Math.ceil((expiryDate-today)/86400000);
+    var today=atsrsBakuCalendarDate();
+    var expiryDate=new Date(expiry+'T00:00:00Z');
+    var days=Math.round((expiryDate-today)/86400000);
     if(days===0)return{txt:'Expires today',cls:'danger',expired:false,risk:true,today:true,days:0};
     return statusBaseV242(expiry);
   };
@@ -720,7 +720,12 @@ clearManualValidation();
 renderAll();
 }
 function deleteCert(i){let a=getData("certs");a.splice(i,1);saveData("certs",a);renderAll()}
-function status(expiry){let t=new Date();t.setHours(0,0,0,0);let e=new Date(expiry);let d=Math.ceil((e-t)/(86400000));if(d<0)return{txt:tr("expired"),cls:"danger",expired:true,risk:true,days:d};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true,days:d};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true,days:d};return{txt:tr("valid"),cls:"good",risk:false,days:d}}
+function atsrsBakuCalendarDate(now){
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Baku',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now||new Date());
+  const values={};parts.forEach(part=>{if(part.type!=='literal')values[part.type]=part.value;});
+  return new Date(Date.UTC(Number(values.year),Number(values.month)-1,Number(values.day)));
+}
+function status(expiry){let t=atsrsBakuCalendarDate();let e=new Date(expiry+'T00:00:00Z');let d=Math.round((e-t)/(86400000));if(d<0)return{txt:tr("expired"),cls:"danger",expired:true,risk:true,days:d};if(d<=30)return{txt:tr("exp30s"),cls:"danger",risk:true,days:d};if(d<=90)return{txt:tr("exp90s"),cls:"warning",risk:true,days:d};return{txt:tr("valid"),cls:"good",risk:false,days:d}}
 
 function renderRiskList(certs){
   if(typeof riskList==="undefined"||!riskList)return;
