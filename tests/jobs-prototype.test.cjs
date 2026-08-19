@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58159/);
+  assert.match(index,/jobs-prototype\.css\?v=58161/);
   assert.match(index,/route-feature-loader\.js\?v=58159/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58159"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58159'\)/);
@@ -279,5 +279,11 @@ test('Jobs view controls and inline notice use the approved palettes',()=>{
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\][^}]*\{background:var\(--atsrs-shell-accent-soft\)!important[^}]*border:1px solid var\(--atsrs-shell-accent-border\)!important[^}]*color:var\(--atsrs-shell-accent-strong\)!important/);
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after[^}]*\{content:"";position:absolute;right:8px;bottom:5px;left:8px;height:2px;border-radius:999px;background:var\(--atsrs-shell-accent\)\}/);
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:focus-visible\{outline:2px solid var\(--atsrs-shell-accent\)!important;outline-offset:2px!important\}/);
+});
+
+test('Jobs dropdown separates selected and active green states',()=>{
+  assert.match(css,/jobs-select-option\[aria-selected="true"\]:not\(\[data-active\]\)/);
+  assert.match(css,/jobs-select-option\[data-active\]/);
+  assert.doesNotMatch(css,/V58161:[\s\S]*?jobs-select-option\[data-active="true"\]/);
 });
 
