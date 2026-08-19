@@ -1707,7 +1707,12 @@
   function cvIsMain(row,rows){
     if(row&&row.metadata&&row.metadata.is_main===true)return true;
     var explicit=(rows||[]).some(function(item){return item&&item.metadata&&item.metadata.is_main===true;});
-    return !explicit&&row===(rows||[])[0];
+    if(explicit)return false;
+    var legacy=(rows||[]).filter(function(item){
+      var metadata=item&&item.metadata||{};
+      return metadata.is_main!==false&&metadata.source!=='ai-generated';
+    }).sort(function(left,right){return String(left.created_at||'').localeCompare(String(right.created_at||''));});
+    return row===legacy[0];
   }
   function mainCvRow(rows){return (rows||[]).find(function(row){return cvIsMain(row,rows);})||null;}
   async function updateFileMetadata(row,metadata){
@@ -1733,14 +1738,22 @@
     if(removed.error)throw removed.error;
   }
   async function saveGeneratedCv(file,options){
-    var rows=await listFiles({categories:['cv'],bypassCache:true}),oldMain=mainCvRow(rows),replaceMain=!!(options&&options.replaceMain);
-    var created=await uploadFile('cv',file,{metadata:{is_main:replaceMain,source:'ai-generated',generated_at:new Date().toISOString()}});
-    if(replaceMain&&oldMain){
-      try{await updateFileMetadata(oldMain,{is_main:false});}
-      catch(error){await deleteCloudFile(created.id);throw error;}
-    }
+    var created=await uploadFile('cv',file,{metadata:{is_main:false,source:'ai-generated',source_cv_name:String(options&&options.sourceName||'').slice(0,240),ownership_verification:String(options&&options.ownershipVerification||'').slice(0,40),generated_at:new Date().toISOString()}});
     invalidateFileMetadata(scope());
     return created;
+  }
+  async function setMainCv(id){
+    var rows=await listFiles({categories:['cv'],bypassCache:true}),target=rows.find(function(row){return row.id===id&&row.category==='cv';}),oldMain=mainCvRow(rows);
+    if(!target)throw new Error('The selected CV was not found.');
+    if(oldMain&&oldMain.id===target.id)return target;
+    await updateFileMetadata(target,{is_main:true});
+    if(oldMain){
+      try{await updateFileMetadata(oldMain,{is_main:false});}
+      catch(error){try{await updateFileMetadata(target,{is_main:false});}catch(_rollbackError){}throw error;}
+    }
+    invalidateFileMetadata(scope());
+    await renderCloudFiles({categories:['cv'],force:true});
+    return target;
   }
   function activeFilePage(){
     var visible=document.querySelector('main > section:not(.hidden)');
@@ -1989,7 +2002,7 @@
       info.innerHTML='<div class="atsrs-v156-main-box">'+
         (cv?'<div class="atsrs-v156-main-row"><div class="atsrs-v156-main-name"><div class="atsrs-v156-main-identity"><b title="'+escapeHtml(cv.file_name)+'">'+escapeHtml(cv.file_name)+'</b></div><span>'+Math.round((cv.size_bytes||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="replaceCV()">Replace</button><button class="secondary" onclick="atsrsCloudPreview(\''+cv.id+'\')">Preview</button><button class="secondary" onclick="atsrsCloudDownload(\''+cv.id+'\')">Download</button><button class="secondary" onclick="atsrsCloudDelete(\''+cv.id+'\')">Delete</button></div></div>':'<div class="atsrs-v156-empty">No Main CV uploaded yet.</div>')+
         '</div><div class="atsrs-v156-slots-box"><span class="atsrs-v156-box-title">Additional Profile CVs</span><div class="atsrs-v156-additional-list">'+
-        (additional.length?additional.map(function(row){return'<div class="atsrs-v156-main-row atsrs-v156-additional-row"><div class="atsrs-v156-main-name"><b title="'+escapeHtml(row.file_name)+'">'+escapeHtml(row.file_name)+'</b><span>'+Math.round((row.size_bytes||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsCloudPreview(\''+row.id+'\')">Preview</button><button class="secondary" onclick="atsrsCloudDownload(\''+row.id+'\')">Download</button><button class="secondary" onclick="atsrsCloudDelete(\''+row.id+'\')">Delete</button></div></div>'}).join(''):'<div class="atsrs-v156-empty">No additional CVs.</div>')+
+        (additional.length?additional.map(function(row){return'<div class="atsrs-v156-main-row atsrs-v156-additional-row"><div class="atsrs-v156-main-name"><b title="'+escapeHtml(row.file_name)+'">'+escapeHtml(row.file_name)+'</b><span>'+Math.round((row.size_bytes||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsCloudPreview(\''+row.id+'\')">Preview</button><button class="secondary" onclick="atsrsCloudDownload(\''+row.id+'\')">Download</button><button class="secondary" onclick="atsrsCloudSetMainCv(\''+row.id+'\')">Set as Main</button><button class="secondary" onclick="atsrsCloudDelete(\''+row.id+'\')">Delete</button></div></div>'}).join(''):'<div class="atsrs-v156-empty">No additional CVs.</div>')+
         '</div></div>';
     }
     if(badge){badge.textContent=cv?'Main CV':'No CV Uploaded';badge.className='badge '+(cv?'badge-ready':'badge-missing');}
@@ -2087,6 +2100,10 @@
     },true);
     window.atsrsCloudPreview=function(id){return openCloudFile(id,false);};
     window.atsrsCloudDownload=function(id){return openCloudFile(id,true);};
+    window.atsrsCloudSetMainCv=async function(id){
+      try{await setMainCv(id);}
+      catch(error){console.error(error);alert('The selected CV could not be set as Main CV.');}
+    };
     window.atsrsCloudDelete=async function(id){
       try{await deleteCloudFile(id);await renderCloudFiles({page:activeFilePage()});}
       catch(error){console.error(error);alert('File could not be deleted from the ATSRS server.');}
@@ -2438,6 +2455,7 @@
     uploadAiCvSource:uploadAiCvSource,
     deleteAiCvSource:deleteAiCvSource,
     saveGeneratedCv:saveGeneratedCv,
+    setMainCv:setMainCv,
     uploadDocument:function(file,metadata){
       return uploadFile('document',file,{metadata:metadata||{}});
     },

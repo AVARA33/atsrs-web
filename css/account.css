@@ -352,7 +352,7 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
   border:0!important;
   background:transparent!important;
 }
-#refsPage .atsrs-v156-main-name{min-width:0!important;line-height:1.05!important;}
+#refsPage .atsrs-v156-main-name{min-width:0!important;padding-top:3px!important;line-height:1.05!important;}
 #refsPage .atsrs-v156-main-name b{
   display:block!important;
   white-space:nowrap!important;
@@ -1941,6 +1941,8 @@ html[data-theme="light"] body.personal-mode #refsPage .cv-beta-box{
 body.personal-mode #refsPage .cv-main-panel{
   display:flex!important;
   flex-direction:column!important;
+  grid-column:1!important;
+  grid-row:1!important;
 }
 body.personal-mode #refsPage .cv-main-panel #cvFileInfo{
   flex:1 1 auto!important;
@@ -1966,6 +1968,8 @@ body.personal-mode #refsPage .cv-beta-box{
   display:flex!important;
   flex-direction:column!important;
   justify-content:flex-start!important;
+  grid-column:2!important;
+  grid-row:1!important;
 }
 body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
   align-self:flex-start!important;
@@ -1979,6 +1983,8 @@ body.personal-mode #refsPage .cv-beta-box #generateCVBtn{
   body.personal-mode #refsPage .cv-main-panel,
   body.personal-mode #refsPage .cv-beta-box{
     padding:16px!important;
+    grid-column:1!important;
+    grid-row:auto!important;
   }
   body.personal-mode #refsPage .cv-actions button,
   body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions button,
@@ -2073,12 +2079,18 @@ html[data-theme="light"] body.personal-mode #refsPage .cv-main-panel .atsrs-v156
   background:#f7f9fb!important;
 }
 @media(max-width:720px){
+  body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-row{
+    grid-template-columns:1fr!important;
+    height:auto!important;
+  }
   body.personal-mode #refsPage .cv-main-panel .atsrs-v156-main-identity{
     align-items:flex-start!important;
     flex-direction:column!important;
     gap:6px!important;
   }
   body.personal-mode #refsPage .cv-main-panel .atsrs-v156-actions{
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
     gap:8px!important;
   }
 }

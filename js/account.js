@@ -235,12 +235,12 @@
   }
   async function putRow(row){var db=await openDB();await new Promise(function(resolve,reject){var t=db.transaction(STORE,'readwrite');t.objectStore(STORE).put(row);t.oncomplete=resolve;t.onerror=function(){reject(t.error);};});}
   async function replaceMainRow(row,preserveOld){
-    var rows=await all(),current=rows.find(function(item){return item.isMain;})||rows[0]||null;
+    var rows=await all(),current=rows.find(function(item){return item.isMain;})||rows.find(function(item){return item.source!=='ai-generated'&&item.isMain!==false;})||null;
     if(current){if(preserveOld){current.isMain=false;await putRow(current);}else await del(current.id);}
     await putRow(row);
   }
   async function del(id){var db=await openDB();await new Promise(function(resolve,reject){var t=db.transaction(STORE,'readwrite');t.objectStore(STORE).delete(id);t.oncomplete=resolve;t.onerror=function(){reject(t.error);};});}
-  async function main(){var a=await all();return a.find(function(x){return x.isMain;})||a[0]||null;}
+  async function main(){var a=await all();return a.find(function(x){return x.isMain;})||a.find(function(x){return x.source!=='ai-generated'&&x.isMain!==false;})||null;}
   function dataURLToBlobURL(data){try{var p=String(data||'').split(','), meta=p[0]||'', bin=atob(p[1]||''), mime=(meta.match(/data:([^;]+)/)||[])[1]||'application/octet-stream', len=bin.length, u8=new Uint8Array(len);for(var i=0;i<len;i++)u8[i]=bin.charCodeAt(i);return URL.createObjectURL(new Blob([u8],{type:mime}));}catch(e){return data;}}
   function openFile(f){if(!f||!f.data){alert('CV preview is not available.');return;}var url=dataURLToBlobURL(f.data);var w=window.open(url,'_blank','noopener');if(!w){var a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();}setTimeout(function(){try{if(String(url).indexOf('blob:')===0)URL.revokeObjectURL(url);}catch(e){}},60000);}
   function downloadFile(f){if(!f||!f.data){alert('CV download is not available.');return;}var a=document.createElement('a');a.href=f.data;a.download=f.name||'ATSRS-CV';document.body.appendChild(a);a.click();a.remove();}
@@ -250,7 +250,7 @@
   }
   function slotsBox(rows){
     return '<div class="atsrs-v156-slots-box"><span class="atsrs-v156-box-title">Additional Profile CVs</span><div class="atsrs-v156-additional-list">'+
-      (rows.length?rows.map(function(f){return '<div class="atsrs-v156-main-row atsrs-v156-additional-row"><div class="atsrs-v156-main-name"><b title="'+esc(f.name)+'">'+esc(f.name)+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsLocalCvPreview(\''+f.id+'\')">Preview</button><button class="secondary" onclick="atsrsLocalCvDownload(\''+f.id+'\')">Download</button><button class="secondary" onclick="atsrsLocalCvDelete(\''+f.id+'\')">Delete</button></div></div>'}).join(''):'<div class="atsrs-v156-empty">No additional CVs.</div>')+
+      (rows.length?rows.map(function(f){return '<div class="atsrs-v156-main-row atsrs-v156-additional-row"><div class="atsrs-v156-main-name"><b title="'+esc(f.name)+'">'+esc(f.name)+'</b><span>'+Math.round((f.size||0)/1024)+' KB</span></div><div class="atsrs-v156-actions"><button class="secondary" onclick="atsrsLocalCvPreview(\''+f.id+'\')">Preview</button><button class="secondary" onclick="atsrsLocalCvDownload(\''+f.id+'\')">Download</button><button class="secondary" onclick="atsrsLocalCvSetMain(\''+f.id+'\')">Set as Main</button><button class="secondary" onclick="atsrsLocalCvDelete(\''+f.id+'\')">Delete</button></div></div>'}).join(''):'<div class="atsrs-v156-empty">No additional CVs.</div>')+
       '</div></div>';
   }
   async function renderCV(){
@@ -262,7 +262,7 @@
     try{
       setBuild();
       var arr=[];try{arr=await all();}catch(e){console.warn('V156 CV read failed',e);} 
-      var m=arr.find(function(x){return x.isMain;})||arr[0]||null;
+      var m=arr.find(function(x){return x.isMain;})||arr.find(function(x){return x.source!=='ai-generated'&&x.isMain!==false;})||null;
       if(m&&!m.isMain){m.isMain=true;await putRow(m);}
       var info=byId('cvFileInfo');
       if(info){info.className='preview-box atsrs-v156-cv-area';info.innerHTML=mainBox(m)+slotsBox(arr.filter(function(x){return !m||x.id!==m.id;}));}
@@ -295,8 +295,9 @@
   window.deleteCV=async function(){var f=await main();if(!f){alert('No Main CV uploaded yet.');return;}await del(f.id);await renderCV();};
   window.atsrsLocalCvPreview=async function(id){var rows=await all(),f=rows.find(function(row){return row.id===id;});openFile(f);};
   window.atsrsLocalCvDownload=async function(id){var rows=await all(),f=rows.find(function(row){return row.id===id;});downloadFile(f);};
+  window.atsrsLocalCvSetMain=async function(id){var rows=await all(),target=rows.find(function(row){return row.id===id;}),current=await main();if(!target)return;if(current){current.isMain=false;await putRow(current);}target.isMain=true;await putRow(target);await renderCV();};
   window.atsrsLocalCvDelete=async function(id){await del(id);await renderCV();};
-  window.atsrsLocalCvData={saveGeneratedCv:async function(file,options){var row={id:Date.now()+'_ai_'+Math.random().toString(36).slice(2),scopeKind:scope(),userId:uid(),kind:KIND,name:file.name,type:file.type||'text/html',size:file.size||0,updated:new Date().toISOString(),isMain:!!(options&&options.replaceMain),data:await asDataURL(file)};if(row.isMain)await replaceMainRow(row,true);else await putRow(row);return row;}};
+  window.atsrsLocalCvData={saveGeneratedCv:async function(file,options){var row={id:Date.now()+'_ai_'+Math.random().toString(36).slice(2),scopeKind:scope(),userId:uid(),kind:KIND,name:file.name,type:file.type||'text/html',size:file.size||0,updated:new Date().toISOString(),isMain:false,source:'ai-generated',sourceName:String(options&&options.sourceName||''),ownershipVerification:String(options&&options.ownershipVerification||''),data:await asDataURL(file)};await putRow(row);return row;}};
   window.atsrsV156RenderCV=renderCV;
   ['renderAll','showPage','applyLanguage','renderCVStatus'].forEach(function(n){var old=window[n];if(typeof old==='function'&&!old.__atsrsV156){var wrap=function(){var r=old.apply(this,arguments);scheduleRender();return r;};wrap.__atsrsV156=true;window[n]=wrap;}});
   function armObserver(){var info=byId('cvFileInfo');if(!info||info.__atsrsV156Observer)return;if(!window.MutationObserver)return;var mo=new MutationObserver(function(){if(rendering)return;if(!info.classList.contains('atsrs-v156-cv-area'))scheduleRender();});mo.observe(info,{childList:true,subtree:false,attributes:true,attributeFilter:['class']});info.__atsrsV156Observer=mo;}

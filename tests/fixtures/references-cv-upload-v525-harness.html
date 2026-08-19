@@ -6,33 +6,59 @@
   <link rel="icon" href="data:,">
   <title>ATSRS V525 CV action harness</title>
   <link rel="stylesheet" href="../../css/base.css?v=408">
-  <link rel="stylesheet" href="../../css/account.css?v=422">
+  <link rel="stylesheet" href="../../css/account.css?v=425">
+  <link rel="stylesheet" href="../../css/cv-generator.css?v=416">
   <link rel="stylesheet" href="../../css/theme.css?v=504">
   <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=519">
   <link rel="stylesheet" href="../../css/workspace-heading-standard-v520.css?v=520">
   <link rel="stylesheet" href="../../css/workspace-control-standard-v522.css?v=522-2">
   <link rel="stylesheet" href="../../css/references-cv-upload-v525.css?v=58152">
   <style>
-    body{margin:0;padding:32px;background:#050606;color:#e5edf5}
+    body{min-height:100vh;margin:0;padding:32px;background:#050606;color:#e5edf5}
     html[data-theme="light"] body{background:#edf2f8;color:#172b3d}
-    #app{max-width:1180px;margin:auto}
-    #refsPage .cv-card{max-width:980px}
+    #app{display:block!important;width:100%!important;max-width:1180px;margin:auto}
+    #refsPage{display:block!important;width:100%!important}
+    #refsPage .cv-card{width:100%!important;max-width:980px}
+    #refsPage .cv-main-panel{position:relative!important;visibility:visible!important;opacity:1!important;z-index:2!important}
+    #refsPage .cv-beta-box{position:relative!important;z-index:1!important}
+    html.qa-mobile #app{max-width:390px}
+    html.qa-mobile #refsPage .cv-card{grid-template-columns:1fr!important}
+    html.qa-mobile #refsPage .cv-main-panel,
+    html.qa-mobile #refsPage .cv-beta-box{grid-column:1!important;grid-row:auto!important;padding:16px!important}
+    html.qa-mobile #refsPage .cv-main-panel .atsrs-v156-main-row{grid-template-columns:1fr!important;height:auto!important}
+    html.qa-mobile #refsPage .cv-main-panel .atsrs-v156-actions{justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px!important}
   </style>
 </head>
 <body class="personal-mode">
-  <main id="app" class="app">
+  <main id="app">
     <section id="refsPage">
       <div class="ref-card cv-card">
-        <div class="cv-main-panel"><h3>CV / Resume</h3><p class="sub">Synthetic QA panel.</p></div>
+        <div class="cv-main-panel">
+          <h3>CV / Resume</h3>
+          <p class="sub">Your Main CV changes only through the controls in this card.</p>
+          <div id="cvFileInfo" class="preview-box atsrs-v156-cv-area">
+            <div class="atsrs-v156-main-box">
+              <span class="atsrs-v156-box-title">Main CV</span>
+              <div class="atsrs-v156-main-row">
+                <div class="atsrs-v156-main-name"><div class="atsrs-v156-main-identity"><b>WhatsApp Image 2026-08-19 at 20.10.57.jpeg</b></div><span>186 KB</span></div>
+                <div class="atsrs-v156-actions"><button class="secondary">Replace</button><button class="secondary">Preview</button><button class="secondary">Download</button><button class="secondary">Delete</button></div>
+              </div>
+            </div>
+            <div class="atsrs-v156-slots-box"><span class="atsrs-v156-box-title">Additional Profile CVs</span><div class="atsrs-v156-additional-list"><div class="atsrs-v156-empty">No additional CVs.</div></div></div>
+          </div>
+        </div>
         <div class="cv-beta-box">
           <span class="pill">AI CV GENERATOR</span>
           <h4>Generate ATSRS Profile CV</h4>
-          <p class="sub">Turn saved profile details into a structured CV.</p>
+          <p class="sub">Upload a temporary source CV. Your Profile Main CV will not be changed.</p>
+          <p class="ai-cv-source-status">No CV selected for AI.</p>
           <div class="cv-generator-action-grid">
-            <button id="generateCVBtn" class="secondary" type="button">Generate ATSRS CV</button>
-            <button id="uploadCvFromGeneratorBtn" class="secondary" type="button">Enhance Existing CV</button>
-            <div id="generatedCvActions" class="generated-cv-actions">
-              <button id="previewGeneratedCvBtn" class="secondary" type="button">View Generated CV</button>
+            <button id="uploadCvFromGeneratorBtn" class="secondary" type="button">Upload / Replace CV</button>
+            <button id="generateCVBtn" class="secondary" type="button" disabled>Generate CV</button>
+            <button id="resetCvGeneratorBtn" class="secondary" type="button" disabled>Reset</button>
+            <div id="generatedCvActions" class="generated-cv-actions hidden">
+              <button id="previewGeneratedCvBtn" class="secondary" type="button">Preview Generated CV</button>
+              <button id="downloadGeneratedCvBtn" class="secondary" type="button">Download</button>
               <button id="printGeneratedCvBtn" class="secondary" type="button">Print / Save PDF</button>
             </div>
           </div>
@@ -40,5 +66,12 @@
       </div>
     </section>
   </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('theme') === 'light') {
+      document.documentElement.dataset.theme = 'light';
+    }
+    if (params.get('mobile') === '1') document.documentElement.classList.add('qa-mobile');
+  </script>
 </body>
 </html>

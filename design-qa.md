@@ -43,3 +43,40 @@ No actionable P0, P1 or P2 differences remain for the requested layout change.
 - Cloudflare build: passed, 132 files.
 
 final result: passed
+
+---
+
+# References → CV / Resume design QA
+
+## Visual truth
+
+- Source: authenticated production References page captured before this change.
+- Source artifact: `tests/artifacts/references-cv-production-before.png`.
+- Requested state: a populated Main CV in the left card and an isolated AI-source workflow in the right card.
+- Existing ATSRS card geometry, dark/light palette, typography, radii and control styles were retained.
+
+## Implementation captures
+
+- Dark desktop: `tests/artifacts/references-cv-separation-dark-desktop.png`
+- Light desktop: `tests/artifacts/references-cv-separation-light-desktop.png`
+- Dark narrow component state: `tests/artifacts/references-cv-separation-dark-mobile.png`
+- Light narrow component state: `tests/artifacts/references-cv-separation-light-mobile.png`
+- Side-by-side source/implementation comparison: `tests/artifacts/references-cv-comparison.png`
+
+Desktop captures used the connected Chrome viewport at 1128 × 724 physical pixels. Narrow-state captures used the same browser with the References workspace constrained to 390 CSS pixels and the exact responsive grid rules mirrored by the QA fixture. The production `@media (max-width: 720px)` contract is also covered by the automated layout test.
+
+## Findings and fixes
+
+1. The source card pair was visually coherent but the AI action could be mistaken for a Main CV action. The implementation keeps the two-card layout and adds explicit copy that Main CV changes only from the left card and that the AI source is temporary.
+2. The Main filename/size block sat slightly high relative to its controls. A 3 px top inset aligns it without changing card height.
+3. The first narrow-state capture compressed the filename because four Main CV actions occupied the second grid column. The responsive Main row now becomes a one-column layout and places the action group below the full filename.
+4. Dark and light surfaces, borders, badges and buttons remain within the existing ATSRS design system. No new palette or component language was introduced.
+
+## Final result
+
+- Desktop dark: PASS
+- Desktop light: PASS
+- Narrow dark: PASS
+- Narrow light: PASS
+- Main filename visible without clipping in the narrow state: PASS
+- Main and AI cards visually and semantically separated: PASS
