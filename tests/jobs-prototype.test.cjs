@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58157/);
-  assert.match(index,/route-feature-loader\.js\?v=58157/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58157"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58157'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58158/);
+  assert.match(index,/route-feature-loader\.js\?v=58158/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58158"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58158'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -85,7 +85,7 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/function feedParams\(target,state\)/);
   assert.match(index,/id="jobsSearch"[^>]*placeholder="Job title or role"/);
   assert.match(index,/id="jobsSearch" type="search"/);
-  assert.match(runtime,/\['jobsSearch','jobsCompanyFilter','jobsRecruiterFilter'\]/);
+  assert.match(runtime,/var search=id\('jobsSearch'\);if\(search\)search\.addEventListener\('input',scheduleLoad\)/);
   assert.match(runtime,/p_search_terms:searchTerms\(state\.search\)/);
   assert.match(runtime,/load\(1\)/);
   assert.match(runtime,/jobs\.length\+' of '\+total/);
@@ -123,13 +123,16 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsActiveFilters'].forEach(id=>{
     assert.equal((index.match(new RegExp(`id="${id}"`,'g'))||[]).length,1,`${id} must exist exactly once`);
   });
-  assert.match(index,/id="jobsCompanyFilter"[^>]*list="jobsCompanyOptions"/);
-  assert.match(index,/id="jobsRecruiterFilter"[^>]*list="jobsRecruiterOptions"/);
+  ['jobsRoleFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter'].forEach(id=>{
+    assert.match(index,new RegExp(`class="jobs-select-host"><select id="${id}"`));
+  });
+  assert.doesNotMatch(index,/<datalist|jobs-datalist-control/);
   assert.doesNotMatch(index,/jobsMoreFilters|More filters/);
   assert.doesNotMatch(runtime,/jobsMoreFilters|\.classList\.toggle\('is-open'/);
   assert.doesNotMatch(css,/jobs-more-filters|jobs-secondary-filters\.is-open/);
-  assert.equal((index.match(/class="ph ph-caret-down"/g)||[]).length>=2,true);
   assert.match(runtime,/function setupJobsSelect\(selectId\)/);
+  assert.match(runtime,/\['jobsRoleFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter'\]\.forEach\(setupJobsSelect\)/);
+  assert.match(runtime,/function replaceJobsSelectOptions\(selectId,values,allLabel\)/);
   assert.match(runtime,/role','option'/);
   assert.match(runtime,/aria-selected/);
   assert.match(runtime,/e\.key==='ArrowDown'\|\|e\.key==='ArrowUp'/);
@@ -138,7 +141,8 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   ['jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>assert.match(index,new RegExp(`id="${id}"[^>]*type="checkbox"`)));
   assert.match(runtime,/querySelectorAll\('#jobsSecondaryFilters'\)\.length!==1/);
   assert.match(runtime,/function uniqueValues\(/);
-  assert.match(runtime,/list\.replaceChildren\(frag\)/);
+  assert.match(runtime,/replaceJobsSelectOptions\('jobsCompanyFilter'/);
+  assert.match(runtime,/replaceJobsSelectOptions\('jobsRecruiterFilter'/);
   assert.match(runtime,/function clearFilters\(\)/);
   assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
   assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
@@ -147,6 +151,9 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;justify-content:flex-end/);
   assert.match(css,/\.jobs-secondary-field>span\{font-size:12px/);
   assert.match(css,/\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:46px/);
+  assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer!important/);
+  assert.match(css,/\.jobs-select-option\{[^}]*cursor:pointer!important/);
+  assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check,\.jobs-active-filter\{cursor:pointer\}/);
   assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*var\(--atsrs-jobs-green-text,#22c55e\)/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*#245b93/);
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);

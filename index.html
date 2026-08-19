@@ -111,7 +111,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=58156">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=58157">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=58158">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <link rel="stylesheet" href="css/button-content-standard-v58148.css?v=58148">
@@ -721,16 +721,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
   <section id="jobsSecondaryFilters" class="jobs-secondary-filters" aria-label="Additional job filters">
     <div class="jobs-secondary-primary">
-      <label class="jobs-secondary-field">
-        <span>Company</span>
-        <span class="jobs-datalist-control"><input id="jobsCompanyFilter" type="search" list="jobsCompanyOptions" placeholder="All companies" autocomplete="off" aria-label="Filter jobs by company"><i class="ph ph-caret-down" aria-hidden="true"></i></span>
-        <datalist id="jobsCompanyOptions"></datalist>
-      </label>
-      <label class="jobs-secondary-field">
-        <span>Recruiter</span>
-        <span class="jobs-datalist-control"><input id="jobsRecruiterFilter" type="search" list="jobsRecruiterOptions" placeholder="All recruiters" autocomplete="off" aria-label="Filter jobs by recruiter"><i class="ph ph-caret-down" aria-hidden="true"></i></span>
-        <datalist id="jobsRecruiterOptions"></datalist>
-      </label>
+      <div class="jobs-secondary-field">
+        <span id="jobsCompanyFilterLabel">Company</span>
+        <span class="jobs-select-host"><select id="jobsCompanyFilter" aria-labelledby="jobsCompanyFilterLabel"><option value="">All companies</option></select></span>
+      </div>
+      <div class="jobs-secondary-field">
+        <span id="jobsRecruiterFilterLabel">Recruiter</span>
+        <span class="jobs-select-host"><select id="jobsRecruiterFilter" aria-labelledby="jobsRecruiterFilterLabel"><option value="">All recruiters</option></select></span>
+      </div>
       <div class="jobs-secondary-field jobs-date-filter">
         <span id="jobsDateFilterLabel">Date posted</span>
         <span class="jobs-select-host"><select id="jobsDateFilter" aria-labelledby="jobsDateFilterLabel">
@@ -1951,7 +1949,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/theme.js?v=576"></script>
 <script src="js/personal-dashboard-qa.js?v=549"></script>
 <script src="js/shell-polish.js?v=567"></script>
-<script src="js/route-feature-loader.js?v=58157"></script>
+<script src="js/route-feature-loader.js?v=58158"></script>
 
 
 
