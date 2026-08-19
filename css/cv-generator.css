@@ -66,6 +66,8 @@
   box-shadow:none;
 }
 .cv-generator-status{min-height:20px;color:#fbbf24;font-size:13px;font-weight:700}
+.ai-cv-source-status{margin:10px 0 8px;padding:10px 12px;border:1px dashed #34413a;border-radius:9px;color:#9ca3af;font-size:13px;font-weight:750;overflow-wrap:anywhere}
+.ai-cv-source-status.is-ready{border-style:solid;border-color:#2d6b45;background:rgba(47,191,87,.08);color:#72d68c}
 .cv-generator-status.is-error{color:#fca5a5}
 .cv-generator-status.is-success{color:#86efac}
 .cv-generator-preview-actions{

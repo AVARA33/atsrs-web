@@ -530,6 +530,8 @@ border-bottom:1px solid rgba(51,65,85,.78)!important;
     radial-gradient(circle at 16% 24%,rgba(34,197,94,.08),transparent 28%),
     radial-gradient(circle at 78% 38%,rgba(56,189,248,.06),transparent 30%)!important;
 }
+#refsPage .atsrs-v156-additional-list{display:grid!important;gap:6px!important;}
+#refsPage .atsrs-v156-additional-row{height:auto!important;min-height:36px!important;padding-top:4px!important;border-top:1px solid rgba(51,65,85,.45)!important;}
 
 #auth:not(.hidden) .build-badge div:nth-child(2){white-space:nowrap!important;}
 

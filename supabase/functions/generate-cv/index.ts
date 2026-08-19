@@ -25,6 +25,8 @@ type CvRequest = {
   experience_text?: unknown;
   education_text?: unknown;
   enhance_existing?: unknown;
+  ai_source_path?: unknown;
+  ai_source_name?: unknown;
   variation_index?: unknown;
   previous_cv?: unknown;
   consent_accepted?: unknown;
@@ -354,43 +356,51 @@ Deno.serve(async (req: Request) => {
 
   let uploadedCvContent: Record<string, unknown> | null = null;
   if (enhanceExisting) {
-    const fileResult = await admin.from("atsrs_files")
-      .select("id,file_name,mime_type,size_bytes,storage_path,created_at")
-      .eq("user_id", userId)
-      .eq("account_type", "personal")
-      .eq("category", "cv")
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (fileResult.error) {
-      console.error("ATSRS CV file lookup failed", { userId, error: fileResult.error });
-      return json(req, 500, { error: "Your uploaded CV could not be prepared." });
-    }
-    const file = fileResult.data;
-    if (!file) return json(req, 400, { error: "Upload a CV before selecting Enhance Existing CV." });
-    const mimeType = stringValue(file.mime_type, 160).toLowerCase();
-    const sizeBytes = Math.max(0, Number(file.size_bytes ?? 0));
-    if (!CV_FILE_MIME_TYPES.has(mimeType)) {
-      return json(req, 415, { error: "Use a PDF, Word, text, JPG, PNG or WebP CV for AI enhancement." });
-    }
-    if (!sizeBytes || sizeBytes > MAX_CV_FILE_BYTES) {
-      return json(req, 413, { error: "The CV must be smaller than 15 MB." });
-    }
-    const storagePath = String(file.storage_path ?? "");
-    if (!storagePath.startsWith(`${userId}/personal/cv/`)) {
-      console.error("ATSRS CV storage ownership mismatch", { userId, fileId: file.id });
-      return json(req, 403, { error: "The uploaded CV could not be authorized." });
+    const temporaryPath = stringValue(body.ai_source_path, 900);
+    let storagePath = temporaryPath;
+    let fileName = stringValue(body.ai_source_name, 240) || "ai-cv-source";
+    let mimeType = "";
+    let expectedSize = 0;
+    if (temporaryPath) {
+      if (!temporaryPath.startsWith(`${userId}/personal/ai-cv-source/`)) {
+        return json(req, 403, { error: "The temporary AI CV source could not be authorized." });
+      }
+    } else {
+      // Backward compatibility for older clients during a rolling deployment.
+      const fileResult = await admin.from("atsrs_files")
+        .select("id,file_name,mime_type,size_bytes,storage_path,created_at")
+        .eq("user_id", userId).eq("account_type", "personal").eq("category", "cv")
+        .order("created_at", { ascending: false }).limit(1).maybeSingle();
+      if (fileResult.error) {
+        console.error("ATSRS CV file lookup failed", { userId, error: fileResult.error });
+        return json(req, 500, { error: "Your uploaded CV could not be prepared." });
+      }
+      const file = fileResult.data;
+      if (!file) return json(req, 400, { error: "Upload a CV for AI before generating." });
+      storagePath = String(file.storage_path ?? "");
+      fileName = stringValue(file.file_name, 240) || fileName;
+      mimeType = stringValue(file.mime_type, 160).toLowerCase();
+      expectedSize = Math.max(0, Number(file.size_bytes ?? 0));
+      if (!storagePath.startsWith(`${userId}/personal/cv/`)) {
+        return json(req, 403, { error: "The uploaded CV could not be authorized." });
+      }
     }
     const download = await admin.storage.from(CV_FILE_BUCKET).download(storagePath);
     if (download.error || !download.data) {
-      console.error("ATSRS CV file download failed", { userId, fileId: file.id, error: download.error });
+      console.error("ATSRS CV file download failed", { userId, storagePath, error: download.error });
       return json(req, 500, { error: "Your uploaded CV could not be read." });
     }
     if (!download.data.size || download.data.size > MAX_CV_FILE_BYTES) {
       return json(req, 413, { error: "The CV must be smaller than 15 MB." });
     }
+    if (expectedSize && expectedSize > MAX_CV_FILE_BYTES) {
+      return json(req, 413, { error: "The CV must be smaller than 15 MB." });
+    }
+    mimeType = (mimeType || stringValue(download.data.type, 160)).toLowerCase();
+    if (!CV_FILE_MIME_TYPES.has(mimeType)) {
+      return json(req, 415, { error: "Use a PDF, Word, text, JPG, PNG or WebP CV for AI enhancement." });
+    }
     const fileData = await blobDataUrl(download.data, mimeType);
-    const fileName = stringValue(file.file_name, 240) || "existing-cv";
     uploadedCvContent = mimeType.startsWith("image/")
       ? { type: "input_image", image_url: fileData, detail: "high" }
       : { type: "input_file", filename: fileName, file_data: fileData };
