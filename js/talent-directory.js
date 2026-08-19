@@ -38,6 +38,10 @@
     return !runtime||typeof runtime.automaticWritesAllowed!=='function'
       ||runtime.automaticWritesAllowed();
   }
+  function cloudProfileReady(){
+    var cloud=window.atsrsCloudData;
+    return !cloud||typeof cloud.isLoaded!=='function'||cloud.isLoaded();
+  }
   function safe(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function friendlyError(error,fallback){
     var text=String(error&&error.message||'').toLowerCase();
@@ -191,6 +195,7 @@
   }
   async function syncOwnProfile(force){
     if(!automaticWritesAllowed())return true;
+    if(!cloudProfileReady())return false;
     if(mode()!=='personal'||loading)return false;
     if(!force&&Date.now()-lastSync<240000)return true;
     var c=client(),u=await user(),profile=profileFromForm();
@@ -226,6 +231,19 @@
       last_active_at:new Date().toISOString(),updated_at:new Date().toISOString()
     },{onConflict:'user_id'});
     if(result.error){console.warn('ATSRS talent profile sync failed',result.error);return false}
+    lastSync=Date.now();return true;
+  }
+  async function touchOwnProfile(force){
+    if(!automaticWritesAllowed())return true;
+    if(!cloudProfileReady())return false;
+    if(mode()!=='personal'||loading)return false;
+    if(!force&&Date.now()-lastSync<240000)return true;
+    var c=client(),u=await user();
+    if(!c||!u)return false;
+    var result=await c.from('atsrs_talent_profiles').update({
+      last_active_at:new Date().toISOString()
+    }).eq('user_id',u.id);
+    if(result.error){console.warn('ATSRS talent activity sync failed',result.error);return false}
     lastSync=Date.now();return true;
   }
   function activity(profile){
@@ -956,17 +974,20 @@
       return result;
     };
     setTimeout(function(){
-      if(mode()==='personal'){syncOwnProfile(true);loadInbox();return}
+      if(mode()==='personal'){touchOwnProfile(true);loadInbox();return}
       if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
       else if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)});
     },1200);
+    window.addEventListener('atsrs:data-hydrated',function(){
+      if(mode()==='personal')touchOwnProfile(true);
+    });
     window.addEventListener('atsrs:resume',function(){
-      if(mode()==='personal'){syncOwnProfile(false);loadInbox();return}
+      if(mode()==='personal'){touchOwnProfile(false);loadInbox();return}
       if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
       if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)});
     });
     window.addEventListener('atsrs:profile-photo-changed',function(){if(mode()==='personal')syncOwnProfile(true);else if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory()});
-    setInterval(function(){if(mode()==='personal')syncOwnProfile(false)},300000);
+    setInterval(function(){if(mode()==='personal')touchOwnProfile(false)},300000);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
   window.atsrsTalentAvailability=availability;

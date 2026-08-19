@@ -127,6 +127,39 @@ function notificationDocumentKey(userId: unknown, title: unknown, expiry: unknow
   ].join("|");
 }
 
+async function persistedCertificateFileIds(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+) {
+  const certificateResult = await admin
+    .from("atsrs_personnel_certificates")
+    .select("file_id")
+    .eq("workspace_user_id", userId)
+    .eq("workspace_account_type", "personal")
+    .not("file_id", "is", null)
+    .limit(1000);
+  if (certificateResult.error) return { ids: [] as string[], error: certificateResult.error };
+  const candidateIds = Array.from(new Set(
+    (certificateResult.data || [])
+      .map((row) => clean(row.file_id, 50))
+      .filter((id) => UUID_PATTERN.test(id)),
+  ));
+  if (!candidateIds.length) return { ids: [] as string[], error: null };
+
+  const fileResult = await admin
+    .from("atsrs_files")
+    .select("id")
+    .in("id", candidateIds)
+    .eq("user_id", userId)
+    .eq("account_type", "personal")
+    .eq("category", "document")
+    .limit(1000);
+  return {
+    ids: (fileResult.data || []).map((row) => clean(row.id, 50)).filter(Boolean),
+    error: fileResult.error,
+  };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });
@@ -489,14 +522,9 @@ Deno.serve(async (req) => {
     .eq("user_id", targetUserId)
     .maybeSingle();
   if (!profile) return json(404, { error: "This profile is unavailable." });
-  const { count: certificateCount, error: certificateError } = await admin
-    .from("atsrs_files")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", targetUserId)
-    .eq("account_type", "personal")
-    .eq("category", "document");
-  if (certificateError) return json(500, { error: "Candidate eligibility could not be verified." });
-  if (!certificateCount) return json(404, { error: "This profile has not uploaded a certificate." });
+  const certificateFiles = await persistedCertificateFileIds(admin, targetUserId);
+  if (certificateFiles.error) return json(500, { error: "Candidate eligibility could not be verified." });
+  if (!certificateFiles.ids.length) return json(404, { error: "This profile has not uploaded a certificate." });
 
   const isPublicProfile = profile.discoverable === true && profile.profile_visibility === "Public";
   if (!isPublicProfile) {
@@ -543,6 +571,7 @@ Deno.serve(async (req) => {
     const { data: files, error } = await admin
       .from("atsrs_files")
       .select("category,file_name,metadata,created_at")
+      .in("id", certificateFiles.ids)
       .eq("user_id", targetUserId)
       .eq("account_type", "personal")
       .eq("category", "document")
