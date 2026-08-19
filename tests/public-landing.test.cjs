@@ -33,9 +33,11 @@ assert.match(storage, /event==='SIGNED_IN'&&window\.__atsrsEntryRoute!=='auth'/)
 assert.match(index, /data-public-theme-toggle role="switch"/);
 assert.match(index, /public-theme-track/);
 assert.match(index, /public-theme-thumb/);
-for (const plan of ['FREE', 'BRONZE', 'SILVER', 'GOLD']) assert.match(index, new RegExp(`>${plan}<`));
+for (const plan of ['FREE', 'BRONZE', 'SILVER', 'GOLD', 'TITAN']) assert.match(index, new RegExp(`>${plan}<`));
 assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
-for (const plan of ['bronze', 'silver', 'gold']) assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
+for (const plan of ['bronze', 'silver', 'gold', 'titan']) assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
+assert.match(index, /public-plan-grid[\s\S]*?public-plan public-plan-free[\s\S]*?public-plan-bronze[\s\S]*?public-plan-silver[\s\S]*?public-plan-gold[\s\S]*?public-plan-titan/);
+assert.match(css, /\.public-plan-free\{grid-column:1\/-1;/);
 assert.match(index, /1 lifetime AI scan/);
 assert.match(index, /No Candidate directory listing/);
 assert.match(index, /No SMS or WhatsApp credits/);

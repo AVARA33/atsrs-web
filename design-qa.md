@@ -1,50 +1,45 @@
-**Comparison Target**
+# ATSRS Personal plan layout — Design QA
 
-- Source visual truth: `C:/Users/user/AppData/Local/Temp/codex-clipboard-55b7d143-1f6b-4e88-b52b-4651722626c0.png`.
-- Requested state: the CV career-details form must never appear; `Generate again` must immediately create a fresh result from the uploaded CV.
-- Implementation screenshot: unavailable because the configured trusted in-app Browser service cannot bind.
-- Source viewport: desktop Chromium, approximately 2048 × 1227, dark theme.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-dcd45db4-1dc2-46ee-9ee9-4976765cd56b.png`
+- Implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\plan-layout-dark-desktop-20260819.png`
+- Mobile screenshot: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\plan-layout-dark-mobile-20260819.png`
+- Combined comparison: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\plan-layout-comparison-20260819.png`
+- Desktop viewport: 1600 × 1000 CSS px; screenshot 1584 × 1000 px at 1× density after scrollbar allocation.
+- Mobile viewport: 390 × 844 CSS px; screenshot 374 × 844 px at 1× density after scrollbar allocation.
+- State: public landing, `#plans`, dark theme.
 
-**Findings**
+## Full-view comparison evidence
 
-- [P1] Browser-rendered comparison is blocked.
-  Location: References CV generator result and regeneration flow.
-  Evidence: the source screenshot is available, but the configured trusted Browser path cannot capture the implementation.
-  Impact: exact responsive spacing and the three generated CV layouts cannot receive final visual certification.
-  Fix: restore the trusted Browser RPC path, generate three consecutive CV versions at the same viewport, and compare the captures.
+The supplied production screenshot showed Free, Bronze, Silver and Gold in one four-column row with Titan missing. The revised implementation shows Free as a full-width first row and Bronze, Silver, Gold and Titan as four equal-width cards in the second row. Desktop measurements confirmed a 1350 px Free card and four 326 px paid cards. Mobile measurements confirmed five 343 px cards in a single column with no horizontal overflow.
 
-**Static and Functional Evidence**
+## Focused comparison evidence
 
-- The career-details form and its fields are removed from the HTML, rather than hidden with CSS.
-- Opening the generator without an uploaded CV leaves the modal closed and shows an upload error.
-- `Generate again` calls the generation endpoint directly and keeps the result view active.
-- Consecutive requests rotate among classic, graphite, and compact ATS-friendly presentation variants.
-- Regeneration sends a bounded reference to the prior result so the AI is instructed to vary wording, ordering, verbs, and emphasis without inventing facts.
-- Focused CV activation tests, References upload tests, JavaScript syntax, diff check, and the 132-file Cloudflare build pass.
+The focused plan-region comparison confirms that the existing ATSRS typography, dark surfaces, green accent, plan-specific top borders, button treatment and copy density are preserved. No replacement image or icon assets were required because the changed area contains only native plan-card content and the existing check treatment.
 
-**Required Fidelity Surfaces**
+## Required fidelity surfaces
 
-- Form visibility: deleted from the document and runtime path.
-- Regeneration interaction: one action from the result view; no intermediate form state.
-- Generated variation: three layout classes plus server-side writing directions.
-- Existing design language: dark ATSRS surfaces, green accent token, existing typography, and current modal/result structure are retained.
-- Assets: no new image or icon assets were introduced.
+- Fonts and typography: existing Georgia display headings and system UI text are preserved; Free and paid-plan hierarchy remains consistent.
+- Spacing and layout rhythm: Free is a compact full-width row; the four paid cards align evenly below it. The 1050 px breakpoint becomes two columns and the 720 px breakpoint becomes one column.
+- Colors and visual tokens: existing background, border, muted text and ATSRS green tokens are preserved in light and dark themes. Titan uses the existing neutral Titan top-border token from the pricing page.
+- Image quality and asset fidelity: no image assets were changed or approximated.
+- Copy and content: the plan count is corrected from four to five and Titan links to the existing `pricing.html#titan` detail section.
 
-**Comparison History**
+## Findings
 
-- Initial screenshot showed the old career-details form after selecting `Generate again`.
-- Implementation removes that state, connects regeneration directly to the uploaded CV, and adds deterministic rotation between consecutive outputs.
-- Post-fix visual evidence remains blocked by `ATSRS-BROWSER-TRUSTED-PATH-001`.
+No actionable P0, P1 or P2 differences remain for the requested layout change.
 
-**Implementation Checklist**
+## Comparison history
 
-- Restore the trusted Browser service.
-- Verify first generation and three consecutive regenerations on desktop and mobile.
-- Confirm no form state appears through buttons, API entry points, refresh, or repeated use.
-- Compare all three result layouts for overflow, print output, and dark-theme consistency.
+- Initial source finding: Titan was absent and Free occupied one paid-plan column.
+- Fix: added Titan, moved Free to a full-width first row, added responsive two-column and one-column states, and corrected the plan-count copy.
+- Post-fix evidence: dark desktop screenshot shows the requested 1 + 4 composition; mobile screenshot and measured geometry confirm responsive stacking.
 
-**Follow-up Polish**
+## Primary interactions and console
 
-- None can be classified until rendered evidence is available.
+- Titan and the other paid-plan detail links are present and target their existing pricing anchors.
+- Theme toggle was exercised from light to dark.
+- Browser console error check: no errors.
+- Contract tests: public landing and pricing page passed.
+- Cloudflare build: passed, 132 files.
 
-final result: blocked
+final result: passed

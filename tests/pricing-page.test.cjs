@@ -12,7 +12,7 @@ assert.match(pricing, /class="public-home-link" href="\/\?view=home" aria-label=
 assert.match(pricing, /class="public-home-link public-home-mobile" href="\/\?view=home" aria-label="Home"/);
 
 assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
-for (const plan of ['bronze', 'silver', 'gold']) {
+for (const plan of ['bronze', 'silver', 'gold', 'titan']) {
   assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
   assert.match(pricing, new RegExp(`id="${plan}"`));
 }
