@@ -10,7 +10,7 @@ const js = fs.readFileSync(path.join(root, 'js', 'select-standard.js'), 'utf8');
 
 test('shared dropdown standard loads after the theme layer', () => {
   assert.match(index, /native-select-theme-v539\.css\?v=58160/);
-  assert.match(index, /theme\.js\?v=576[\s\S]*select-standard\.js\?v=58160/);
+  assert.match(index, /theme\.js\?v=577[\s\S]*select-standard\.js\?v=58163/);
 });
 
 test('custom single-select replaces operating-system popup interaction', () => {

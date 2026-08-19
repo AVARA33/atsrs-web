@@ -190,7 +190,7 @@
     }
   }
   function enhance(select){
-    if(!visible(select)||controls.has(select))return;
+    if(!visible(select)||controls.has(select)||select.closest('.jobs-select-host'))return;
     var shell=select.closest('.atsrs-disclosure-shell');
     if(!shell){
       shell=document.createElement('span');

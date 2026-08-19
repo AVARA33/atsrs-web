@@ -111,6 +111,7 @@
   function usesOwnDisclosure(control){
     return !!(
       control.closest('.personnel-filterbar')||
+      control.closest('.jobs-select-host')||
       control.id==='profilePhoneCountryCode'||
       control.id==='profileWhatsappCountryCode'
     );
