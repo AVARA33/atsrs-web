@@ -31,12 +31,12 @@ assert.match(headings, /--atsrs-workspace-heading:var\(--atsrs-brand-green,#22c5
 for (const [asset, version] of [
   ['workspace-control-standard-v522.css', '58155'],
   ['workspace-control-standard-v523.css', '58155'],
-  ['native-select-theme-v539.css', '58155'],
+  ['native-select-theme-v539.css', '58160'],
   ['dark-surface-standard-v58154.css', '58155'],
   ['theme-palette-v508.css', '58156'],
   ['workspace-heading-standard-v520.css', '58156'],
   ['personal-dashboard-qa.css', '58156'],
-  ['jobs-prototype.css', '58157']
+  ['jobs-prototype.css', '58159']
 ]) {
   assert.ok(html.includes(`${asset}?v=${version}`), `${asset} must use the V${version} cache marker`);
 }

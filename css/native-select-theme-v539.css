@@ -1,32 +1,145 @@
-/* ATSRS V539 — theme-correct native and custom disclosure menus. */
+/* ATSRS V58160 — one accessible dropdown language for Personal and Corporate. */
 
-html[data-theme="dark"] body{
+body{
   --atsrs-menu-surface:#050606;
   --atsrs-menu-border:#343a36;
   --atsrs-menu-text:#f4f6ef;
   --atsrs-menu-accent:#22c55e;
   --atsrs-menu-accent-ink:#080a08;
+  --atsrs-menu-selected:rgba(34,197,94,.12);
 }
 
-/* Chromium/Opera native select popup. The solid gradient keeps Windows from
-   replacing the chosen row with its system-blue selection paint. */
+html[data-theme="light"] body{
+  --atsrs-menu-surface:#ffffff;
+  --atsrs-menu-border:#cbd5d1;
+  --atsrs-menu-text:#132019;
+  --atsrs-menu-selected:rgba(34,197,94,.14);
+}
+
+/* Safe native fallback. Supported single-selects are enhanced below so the
+   operating system cannot introduce a blue popup row. */
 html[data-theme="dark"] body select:not([multiple]){
   color-scheme:dark!important;
 }
-html[data-theme="dark"] body select:not([multiple]) :where(option,optgroup){
+body select:not([multiple]) :where(option,optgroup){
   background-color:var(--atsrs-menu-surface)!important;
   color:var(--atsrs-menu-text)!important;
   -webkit-text-fill-color:var(--atsrs-menu-text)!important;
 }
-html[data-theme="dark"] body select:not([multiple]) option:where(:checked,:hover,:focus,:active){
+body select:not([multiple]) option:where(:checked,:hover,:focus,:active){
   background-color:var(--atsrs-menu-accent)!important;
   background-image:linear-gradient(var(--atsrs-menu-accent),var(--atsrs-menu-accent))!important;
   color:var(--atsrs-menu-accent-ink)!important;
   -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
 }
 
-/* ATSRS custom dropdowns follow the same Dark language on every workspace. */
-html[data-theme="dark"] body #app :where(
+/* Shared custom single-select. The source select remains the value/form
+   authority; the transparent combobox trigger replaces only interaction. */
+body .atsrs-custom-select{
+  position:relative!important;
+}
+body .atsrs-custom-select>.atsrs-select-source{
+  pointer-events:none!important;
+  user-select:none!important;
+}
+body .atsrs-custom-select>.atsrs-select-trigger{
+  position:absolute!important;
+  inset:0!important;
+  z-index:6!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:inherit!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  cursor:pointer!important;
+}
+body .atsrs-custom-select>.atsrs-select-trigger:disabled{
+  cursor:not-allowed!important;
+}
+body .atsrs-custom-select:has(>.atsrs-select-trigger:focus-visible)>.atsrs-select-source{
+  border-color:var(--atsrs-menu-accent)!important;
+  outline:2px solid color-mix(in srgb,var(--atsrs-menu-accent) 42%,transparent)!important;
+  outline-offset:2px!important;
+}
+body .atsrs-select-menu{
+  position:fixed!important;
+  z-index:2147483000!important;
+  display:grid!important;
+  gap:2px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  margin:0!important;
+  padding:5px!important;
+  border:1px solid var(--atsrs-menu-border)!important;
+  border-radius:10px!important;
+  background:var(--atsrs-menu-surface)!important;
+  background-image:none!important;
+  color:var(--atsrs-menu-text)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.44)!important;
+  overscroll-behavior:contain;
+}
+body .atsrs-select-menu[hidden]{display:none!important}
+body .atsrs-select-option{
+  display:grid!important;
+  grid-template-columns:18px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:100%!important;
+  min-height:38px!important;
+  margin:0!important;
+  padding:7px 10px!important;
+  border:0!important;
+  border-radius:7px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
+  font:inherit!important;
+  line-height:1.35!important;
+  text-align:left!important;
+  white-space:normal!important;
+  cursor:pointer!important;
+}
+body .atsrs-select-option[aria-selected="true"]:not([data-active]){
+  background:var(--atsrs-menu-selected)!important;
+  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  font-weight:700!important;
+}
+body .atsrs-select-option[data-active],
+body .atsrs-select-option:hover,
+body .atsrs-select-option:focus-visible{
+  background:var(--atsrs-menu-accent)!important;
+  color:var(--atsrs-menu-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  outline:0!important;
+}
+body .atsrs-select-option:disabled{
+  opacity:.48!important;
+  cursor:not-allowed!important;
+}
+body .atsrs-select-option-check{
+  color:var(--atsrs-menu-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent)!important;
+  font-weight:900!important;
+}
+body .atsrs-select-option[data-active] .atsrs-select-option-check,
+body .atsrs-select-option:hover .atsrs-select-option-check{
+  color:var(--atsrs-menu-accent-ink)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+}
+body .personnel-select-shell:has(.atsrs-custom-select)>.personnel-filter-arrow{
+  display:none!important;
+}
+
+/* Existing ATSRS custom menus use the same surfaces and state hierarchy. */
+body #app :where(
   .personnel-combobox-options,
   .work-type-select-menu,
   .phone-code-menu,
@@ -38,7 +151,7 @@ html[data-theme="dark"] body #app :where(
   color:var(--atsrs-menu-text)!important;
   box-shadow:0 16px 34px rgba(0,0,0,.38)!important;
 }
-html[data-theme="dark"] body #app :where(
+body #app :where(
   .personnel-combobox-options button,
   .work-type-select-option,
   .phone-code-option,
@@ -48,17 +161,25 @@ html[data-theme="dark"] body #app :where(
   color:var(--atsrs-menu-text)!important;
   -webkit-text-fill-color:var(--atsrs-menu-text)!important;
 }
-html[data-theme="dark"] body #app :where(
+body #app :where(
   .personnel-combobox-options button[aria-selected="true"],
+  .work-type-select-option[aria-selected="true"],
+  .phone-code-option[aria-selected="true"],
+  .talent-work-type-filter .work-type-options label:has(input:checked)
+){
+  background:var(--atsrs-menu-selected)!important;
+  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
+  font-weight:700!important;
+}
+body #app :where(
   .personnel-combobox-options button:hover,
   .personnel-combobox-options button:focus-visible,
-  .work-type-select-option[aria-selected="true"],
   .work-type-select-option:hover,
   .work-type-select-option:focus-visible,
-  .phone-code-option[aria-selected="true"],
   .phone-code-option:hover,
   .phone-code-option:focus-visible,
-  .talent-work-type-filter .work-type-options label:has(input:checked),
   .talent-work-type-filter .work-type-options label:hover,
   .talent-work-type-filter .work-type-options label:focus-within
 ){
@@ -67,28 +188,16 @@ html[data-theme="dark"] body #app :where(
   -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
   outline:0!important;
 }
-html[data-theme="dark"] body #app :where(
-  .personnel-combobox-options button[aria-selected="true"],
+body #app :where(
   .personnel-combobox-options button:hover,
   .personnel-combobox-options button:focus-visible,
-  .work-type-select-option[aria-selected="true"],
   .work-type-select-option:hover,
   .work-type-select-option:focus-visible,
-  .phone-code-option[aria-selected="true"],
   .phone-code-option:hover,
   .phone-code-option:focus-visible,
-  .talent-work-type-filter .work-type-options label:has(input:checked),
   .talent-work-type-filter .work-type-options label:hover,
   .talent-work-type-filter .work-type-options label:focus-within
 ) :where(span,strong,small){
   color:var(--atsrs-menu-accent-ink)!important;
   -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
-}
-
-/* Light mode intentionally keeps the approved blue selection language. */
-html[data-theme="light"] body select:not([multiple]) option:where(:checked,:hover,:focus,:active){
-  background-color:#1473d2!important;
-  background-image:linear-gradient(#1473d2,#1473d2)!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
 }
