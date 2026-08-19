@@ -14,10 +14,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58158/);
-  assert.match(index,/route-feature-loader\.js\?v=58158/);
-  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58158"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58158'\)/);
+  assert.match(index,/jobs-prototype\.css\?v=58159/);
+  assert.match(index,/route-feature-loader\.js\?v=58159/);
+  assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58159"><\/script>/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58159'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -120,9 +120,13 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   const fixture=fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8');
   assert.equal((index.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
   assert.equal((fixture.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
-  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsActiveFilters'].forEach(id=>{
+  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>{
     assert.equal((index.match(new RegExp(`id="${id}"`,'g'))||[]).length,1,`${id} must exist exactly once`);
   });
+  assert.doesNotMatch(index,/jobsActiveFilters|jobs-active-filters|jobs-active-filter/);
+  assert.doesNotMatch(fixture,/jobsActiveFilters|jobs-active-filters|jobs-active-filter/);
+  assert.doesNotMatch(runtime,/renderActiveFilters|removeSecondary|dateFilterLabel|jobsActiveFilters|jobs-active-filter/);
+  assert.doesNotMatch(css,/\.jobs-active-filters\{display|\.jobs-active-filter\{display/);
   ['jobsRoleFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter'].forEach(id=>{
     assert.match(index,new RegExp(`class="jobs-select-host"><select id="${id}"`));
   });
@@ -146,14 +150,15 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/function clearFilters\(\)/);
   assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
   assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
-  assert.match(css,/\.jobs-secondary-filters\{display:grid/);
-  assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(220px,300px\) minmax\(220px,300px\) minmax\(180px,220px\)/);
-  assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;justify-content:flex-end/);
+  assert.match(css,/\.jobs-secondary-filters\{display:block;width:100%/);
+  assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(220px,300px\) minmax\(220px,300px\) minmax\(180px,220px\) minmax\(280px,1fr\)/);
+  assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;align-self:end;justify-content:flex-start[^}]*min-height:46px/);
+  assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{justify-content:flex-start\}\}/);
   assert.match(css,/\.jobs-secondary-field>span\{font-size:12px/);
   assert.match(css,/\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:46px/);
   assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-select-option\{[^}]*cursor:pointer!important/);
-  assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check,\.jobs-active-filter\{cursor:pointer\}/);
+  assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check\{cursor:pointer\}/);
   assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*var\(--atsrs-jobs-green-text,#22c55e\)/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*#245b93/);
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);
