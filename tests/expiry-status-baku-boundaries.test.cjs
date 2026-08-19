@@ -4,6 +4,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const storage = fs.readFileSync(path.resolve(__dirname, '..', 'js', 'storage.js'), 'utf8');
+assert.match(storage, /exp30s:"Expires within 30 days"/);
+assert.match(storage, /exp90s:"Expires within 90 days"/);
 const helper = storage.match(/function atsrsBakuCalendarDate\(now\)\{[\s\S]*?\n\}/);
 assert.ok(helper, 'Baku calendar-day helper must remain available');
 

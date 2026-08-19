@@ -16,7 +16,7 @@ const selectedFunction = storage.match(
 
 assert.ok(ownerFunction, 'personalOwnerStableId must remain available');
 assert.ok(selectedFunction, 'selectedPersonnel must remain available');
-assert.match(index, /js\/storage\.js\?v=582/);
+assert.match(index, /js\/storage\.js\?v=583/);
 
 function createContext({ profile = null, personal = true, metadata = { full_name: 'Mi Box' } } = {}) {
   const writes = [];
