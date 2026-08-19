@@ -16,13 +16,14 @@ const selectedFunction = storage.match(
 
 assert.ok(ownerFunction, 'personalOwnerStableId must remain available');
 assert.ok(selectedFunction, 'selectedPersonnel must remain available');
-assert.match(index, /js\/storage\.js\?v=580/);
+assert.match(index, /js\/storage\.js\?v=581/);
 
-function createContext({ profile = null, personal = true } = {}) {
+function createContext({ profile = null, personal = true, metadata = { full_name: 'Mi Box' } } = {}) {
   const writes = [];
   const generatedId = '11111111-1111-4111-8111-111111111111';
   const context = {
     JSON,
+    currentUser: { user_metadata: metadata },
     window: {
       atsrsStableIds: {
         create: () => generatedId,
@@ -49,8 +50,15 @@ function createContext({ profile = null, personal = true } = {}) {
   assert.equal(selected.name, 'myxmiboxs@gmail.com');
   assert.deepEqual(writes, [{
     key: 'profile',
-    value: { atsrsId: generatedId }
+    value: { name: 'Mi Box', atsrsId: generatedId }
   }]);
+}
+
+{
+  const { context, generatedId, writes } = createContext({ metadata: {} });
+  const selected = vm.runInContext('selectedPersonnel(null)', context);
+  assert.equal(selected.id, generatedId);
+  assert.equal(writes[0].value.name, 'myxmiboxs@gmail.com');
 }
 
 {
@@ -61,6 +69,15 @@ function createContext({ profile = null, personal = true } = {}) {
   const selected = vm.runInContext('selectedPersonnel(null)', context);
   assert.equal(selected.id, existingId);
   assert.equal(writes.length, 0);
+}
+
+{
+  const existingId = '11111111-1111-4111-8111-111111111111';
+  const { context, writes } = createContext({ profile: { atsrsId: existingId } });
+  const selected = vm.runInContext('selectedPersonnel(null)', context);
+  assert.equal(selected.id, existingId);
+  assert.equal(writes[0].value.name, 'Mi Box');
+  assert.equal(writes[0].value.atsrsId, existingId);
 }
 
 {

@@ -521,10 +521,19 @@ function ensureAtsrsId(item){
 function personalOwnerStableId(){
   try{
     const profile=JSON.parse(readAppDataKey(localKey("profile")))||{};
-    if(validAtsrsId(profile.atsrsId))return profile.atsrsId;
     if(!window.atsrsStableIds)return "";
-    profile.atsrsId=window.atsrsStableIds.create();
-    saveData("profile",profile);
+    let changed=false;
+    if(!String(profile.name||"").trim()){
+      const metadata=currentUser&&currentUser.user_metadata||{};
+      const fullName=String(metadata.full_name||metadata.name||"").trim();
+      profile.name=fullName||soloOwnerName();
+      changed=true;
+    }
+    if(!validAtsrsId(profile.atsrsId)){
+      profile.atsrsId=window.atsrsStableIds.create();
+      changed=true;
+    }
+    if(changed)saveData("profile",profile);
     return profile.atsrsId;
   }catch(error){return "";}
 }
