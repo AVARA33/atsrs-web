@@ -393,6 +393,9 @@ html[data-theme="light"] .workspace-switcher-menu{
   color:#263f54!important;
   box-shadow:0 10px 28px rgba(35,61,80,.1)!important;
 }
+html[data-theme="light"] .workspace-switcher-button{
+  min-height:44px!important;
+}
 html[data-theme="light"] .workspace-switcher-avatar{
   background:#f1f5f8!important;
   border-color:#bfcfd9!important;
