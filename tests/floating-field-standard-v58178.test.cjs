@@ -8,8 +8,8 @@ const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v581
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 const jobs = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5826"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58187/);
+assert.match(index, /data-atsrs-build="V5827"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58188/);
 assert.match(index, /floating-fields\.js\?v=58187/);
 assert.ok(index.indexOf('floating-fields.js?v=58187') > index.indexOf('select-open-position.js'));
 
@@ -42,4 +42,6 @@ for (const id of ['jobsRoleFilter','jobsLocationFilter','crewSearch','crewCompan
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V5826 canonical soft field contracts passed');
+assert.match(css, /grid-template-columns:minmax\(84px,112px\) minmax\(0,1fr\)/);
+
+console.log('V5827 canonical soft field contracts passed');
