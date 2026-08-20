@@ -2501,14 +2501,10 @@ setTimeout(v55DockTopActions,500);
       if(!storedCorrectly){
         throw new Error('Browser site data could not be saved. Please enable cookies/site data and try again.');
       }
+      /* An explicit Google auth action must let the user choose the identity.
+         login_hint suppresses Google's account chooser and can reopen the
+         last ATSRS identity immediately after Logout. */
       var googleQueryParams={prompt:'select_account'};
-      if(intent==='signin'){
-        var loginHint='';
-        try{loginHint=(localStorage.getItem('atsrs_last_google_email')||'').trim().toLowerCase();}catch(e){}
-        if(loginHint && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginHint)){
-          googleQueryParams={login_hint:loginHint};
-        }
-      }
       var oauthOptions={
         redirectTo:redirectUrl(intent,pendingMode,attemptId),
         queryParams:googleQueryParams,
