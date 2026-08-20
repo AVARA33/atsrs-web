@@ -103,11 +103,13 @@
   function ownerFileName(id){var file=ownerFiles.find(function(item){return item.id===id;});return file?documentMeta(file).type:'Document';}
   function syncShareSelectAll(){
     var control=byId('shareSelectAll'),boxes=Array.prototype.slice.call(document.querySelectorAll('#shareDocumentChoices input[type="checkbox"]'));
-    if(!control)return;
     var selected=boxes.filter(function(box){return box.checked;}).length;
-    control.disabled=!boxes.length;
-    control.checked=Boolean(boxes.length)&&selected===boxes.length;
-    control.indeterminate=selected>0&&selected<boxes.length;
+    if(control){
+      control.disabled=!boxes.length;
+      control.checked=Boolean(boxes.length)&&selected===boxes.length;
+      control.indeterminate=selected>0&&selected<boxes.length;
+    }
+    var create=byId('saveShareBtn');if(create)create.disabled=selected===0;
   }
   window.toggleShareSelectAll=function(checked){
     Array.prototype.forEach.call(document.querySelectorAll('#shareDocumentChoices input[type="checkbox"]'),function(box){box.checked=checked;});
@@ -282,7 +284,7 @@
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
     try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});}
-    catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);}finally{if(button)button.disabled=false;}
+    catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);}finally{syncShareSelectAll();}
   };
   window.revokeShareProfileLink=async function(){
     if(!window.confirm('Disable this recruiter link? Preview and every approved download will stop immediately.'))return;

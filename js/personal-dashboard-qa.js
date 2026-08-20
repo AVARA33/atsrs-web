@@ -56,8 +56,8 @@
     var help=byId('snapShareHelp');
     var badge=byId('snapshotBadge'),title=byId('snapshotTitle');
     if(badge&&badge.textContent!=='PROFILE SHARING')badge.textContent='PROFILE SHARING';
-    if(title&&title.textContent!=='Managed in Account')title.textContent='Managed in Account';
-    var helpText='Sharing settings are managed in Account.';
+    if(title&&title.textContent!=='Managed in Profile')title.textContent='Managed in Profile';
+    var helpText='Sharing settings are managed in Profile → Privacy & Sharing.';
     if(help&&help.textContent!==helpText)help.textContent=helpText;
   }
   function syncPriorityEmptyState(){

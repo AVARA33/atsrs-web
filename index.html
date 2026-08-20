@@ -804,7 +804,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="panel dashboard-snapshot-panel">
   <div class="snapshot-card">
     <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
-    <div class="dashboard-share-capability"><h2 id="snapshotTitle">Managed in Account</h2><p id="snapShareHelp">Sharing settings are managed in Account.</p></div>
+    <div class="dashboard-share-capability"><h2 id="snapshotTitle">Managed in Profile</h2><p id="snapShareHelp">Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing.</p></div>
   </div>
 </div>
 <div class="panel dashboard-priority-alerts-panel">
@@ -1596,8 +1596,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="account-security-list">
   <div class="setting-row"><div><b id="twofaTitle"></b><div id="twofaNote" class="small-note"></div></div><button id="setup2faBtn" class="secondary"></button></div>
   <div class="setting-row"><div><b id="sessionsTitle"></b><div id="sessionsNote" class="small-note"></div></div><button id="viewSessionsBtn" class="secondary"></button></div>
-  <div class="setting-row"><div><b>Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select id="profileTimezone"><option value="UTC">UTC (UTC+0)</option><option value="Asia/Baku">Asia/Baku (UTC+4)</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select></div>
-  <div class="setting-row"><div><b id="profileVisibilityTitle">Profile Visibility</b><div id="profileVisibilityNote" class="small-note">Private hides you from Candidates. Link Only is visible through your active share link. Public lists eligible profiles in Candidates.</div></div><select id="profileVisibility"><option value="Private">Private</option><option value="Link Only">Link Only</option><option value="Public">Public</option></select></div>
+  <div class="setting-row"><div><b id="profileTimezoneTitle">Timezone</b><div class="small-note">Used for dates, alerts and account activity.</div></div><select id="profileTimezone" aria-labelledby="profileTimezoneTitle"><option value="UTC">UTC (UTC+0)</option><option value="Asia/Baku">Asia/Baku (UTC+4)</option><option value="Europe/Sofia">Europe/Sofia</option><option value="Europe/London">Europe/London</option><option value="Europe/Oslo">Europe/Oslo</option><option value="Africa/Malabo">Africa/Malabo</option></select></div>
+  <div class="setting-row"><div><b id="profileVisibilityTitle">Profile Visibility</b><div id="profileVisibilityNote" class="small-note">Private hides you from Candidates. Link Only is visible through your active share link. Public lists eligible profiles in Candidates.</div></div><select id="profileVisibility" aria-labelledby="profileVisibilityTitle"><option value="Private">Private</option><option value="Link Only">Link Only</option><option value="Public">Public</option></select></div>
   <div class="setting-row"><div><b id="notifyTitle"></b><div id="notifyNote" class="small-note"></div></div><button id="manageNotifyBtn" class="secondary" onclick="alert(ptr('notifyNotice'))"></button></div>
   <div class="setting-row"><div><b id="exportDataTitle"></b><div id="exportDataNote" class="small-note"></div></div><button id="exportDataBtn" class="secondary" onclick="exportLocalData()"></button></div>
   <div class="setting-row"><div><b id="deleteAccountTitle"></b><div id="deleteAccountNote" class="small-note"></div></div><button id="deleteAccountBtn" class="action"></button></div>
@@ -1639,7 +1639,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </div>
       <div class="share-link-controls">
         <input id="shareProfileLink" readonly placeholder="Secure link will appear here.">
-        <button id="saveShareBtn" type="button" onclick="createShareProfileLink()">Create Secure Link</button>
+        <button id="saveShareBtn" type="button" onclick="createShareProfileLink()" disabled>Create Secure Link</button>
         <button id="copyShareBtn" type="button" class="secondary" onclick="copyShareLink()" disabled>Copy Link</button>
         <button id="revokeShareBtn" type="button" class="action hidden" onclick="revokeShareProfileLink()">Disable Link</button>
       </div>
@@ -1939,7 +1939,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account.js?v=415"></script>
 <script src="js/app.js?v=567"></script>
 <script src="js/date-picker.js?v=502"></script>
-<script src="js/share-profile.js?v=416"></script>
+<script src="js/share-profile.js?v=417"></script>
 <script src="js/recipient-links.js?v=433"></script>
 <script src="js/boot-refresh.js?v=443"></script>
 <script src="js/account-security-live.js?v=375"></script>
@@ -1951,7 +1951,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/corporate-remediation.js?v=480"></script>
 <script src="js/theme.js?v=577"></script>
 <script src="js/select-standard.js?v=58163"></script>
-<script src="js/personal-dashboard-qa.js?v=549"></script>
+<script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=567"></script>
 <script src="js/route-feature-loader.js?v=58163"></script>
 

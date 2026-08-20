@@ -12,8 +12,8 @@ const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
 assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Dashboard<\/h1>/);
-assert.match(index, /id="snapshotTitle">Managed in Account<\/h2>/);
-assert.match(index, /Sharing settings are managed in Account\./);
+assert.match(index, /id="snapshotTitle">Managed in Profile<\/h2>/);
+assert.match(index, /Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing\./);
 assert.doesNotMatch(index, /Ready to share|Sharing status|id="snapShare"|id="snapShareLabel"/);
 assert.doesNotMatch(index, /id="snapValid"|id="snapRisk"/);
 assert.doesNotMatch(index, /id="cvStatusDash"|id="cvStatusDashText"|class="card cv-status-card"/);
@@ -104,6 +104,6 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
 }
 
 assert.match(index, /css\/personal-dashboard-qa\.css\?v=58156/);
-assert.match(index, /js\/personal-dashboard-qa\.js\?v=549/);
+assert.match(index, /js\/personal-dashboard-qa\.js\?v=550/);
 
 console.log('Personal Dashboard QA candidate contracts passed');
