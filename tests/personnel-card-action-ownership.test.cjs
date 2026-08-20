@@ -12,8 +12,8 @@ const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personnel-
 
 assert.match(index, /data-atsrs-build="V5828"/);
 assert.match(index, /css\/talent-directory\.css\?v=575/);
-assert.match(index, /css\/theme\.css\?v=58161/);
-assert.match(index, /css\/workspace-surface-standard-v519\.css\?v=520/);
+assert.match(index, /css\/theme\.css\?v=58162/);
+assert.match(index, /css\/workspace-surface-standard-v519\.css\?v=521/);
 assert.match(index, /js\/talent-directory\.js\?v=574/);
 
 const cardBranch = client.slice(

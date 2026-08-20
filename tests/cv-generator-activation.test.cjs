@@ -8,7 +8,7 @@ const server = fs.readFileSync(path.join(root, 'js', 'server-data.js'), 'utf8');
 const local = fs.readFileSync(path.join(root, 'js', 'account.js'), 'utf8');
 const edge = fs.readFileSync(path.join(root, 'supabase/functions/generate-cv/index.ts'), 'utf8');
 
-assert.match(html, /css\/account\.css\?v=425/);
+assert.match(html, /css\/account\.css\?v=426/);
 assert.match(html, /css\/cv-generator\.css\?v=416/);
 assert.match(html, /js\/server-data\.js\?v=572/);
 assert.match(html, /js\/cv-generator\.js\?v=417/);

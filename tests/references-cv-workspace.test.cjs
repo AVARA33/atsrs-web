@@ -36,6 +36,6 @@ assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage \.cv-main-panel \.atsrs-v156-actions button\{[\s\S]*?background:#fff!important;/);
 assert.match(css, /V422: one Main CV marker; blue in light mode and green in dark mode/);
 assert.match(css, /html\[data-theme="light"\] body\.personal-mode #refsPage #cvStatusBadge\.badge-ready\{[\s\S]*?color:#245b93!important;[\s\S]*?background:#eef5fc!important;/);
-assert.match(html, /href="css\/account\.css\?v=425"/);
+assert.match(html, /href="css\/account\.css\?v=426"/);
 
 console.log('References CV workspace layout contracts passed');
