@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58166/);
+  assert.match(index,/jobs-prototype\.css\?v=58167/);
   assert.match(index,/route-feature-loader\.js\?v=58163/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58163'\)/);
@@ -151,7 +151,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/function clearFilters\(\)/);
   assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
   assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
-  assert.match(css,/\.jobs-secondary-filters\{display:block;width:100%/);
+  assert.match(css,/\.jobs-secondary-filters\{display:block;width:100%;margin:-2px 0 24px\}/);
   assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(220px,300px\) minmax\(220px,300px\) minmax\(180px,220px\) minmax\(280px,1fr\)/);
   assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;align-self:end;justify-content:flex-start[^}]*min-height:46px/);
   assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{justify-content:flex-start\}\}/);
@@ -169,6 +169,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.doesNotMatch(index,/jobs-filter-chip|jobs-toggle-track/);
   assert.match(runtime,/control\.matches\('input\[type="checkbox"\]'\)\?control\.checked/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid;gap:12px;margin:0 0 16px/);
 });
 
 test('Jobs supports persistent accessible card and list views',()=>{
