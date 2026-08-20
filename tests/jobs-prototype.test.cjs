@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58165/);
+  assert.match(index,/jobs-prototype\.css\?v=58166/);
   assert.match(index,/route-feature-loader\.js\?v=58163/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58163'\)/);
@@ -283,11 +283,11 @@ test('Jobs view controls and inline notice use the approved palettes',()=>{
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:focus-visible\{outline:2px solid var\(--atsrs-shell-accent\)!important;outline-offset:2px!important\}/);
 });
 
-test('Jobs dropdown keeps selected and active rows fully neutral',()=>{
-  assert.match(css,/jobs-select-option\[aria-selected="true"\]:not\(\[data-active\]\)/);
+test('Jobs dropdown keeps selected rows completely unfilled',()=>{
+  assert.match(css,/jobs-select-option\[aria-selected="true"\]/);
   assert.match(css,/jobs-select-option\[data-active\]/);
-  assert.match(css,/V58165:[\s\S]*?background:var\(--jobs-filter-hover\)!important;[\s\S]*?box-shadow:none!important/);
-  assert.doesNotMatch(css,/V58165:[\s\S]*?(?:rgba\(34,197,94|var\(--atsrs-(?:jobs-green-text|brand-green))/);
+  assert.match(css,/V58166:[\s\S]*?jobs-select-option\[aria-selected="true"\]\{[\s\S]*?background:transparent!important;[\s\S]*?box-shadow:none!important/);
+  assert.doesNotMatch(css,/V58166:[\s\S]*?jobs-select-option\[aria-selected="true"\][^\{]*\{[^}]*background:(?!transparent)/);
   assert.match(css,/\.jobs-select-menu\{[^}]*scrollbar-color:#5b6470 #111512/);
   assert.match(css,/\.jobs-select-toggle>i\{[^}]*width:16px[^}]*height:16px[^}]*flex:0 0 16px/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:hover>i/);

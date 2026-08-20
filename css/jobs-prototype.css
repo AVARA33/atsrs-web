@@ -75,12 +75,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-view-switch{
 @media(max-width:600px){.jobs-secondary-filters{width:100%}.jobs-secondary-actions{gap:8px}.jobs-worksite-filter{gap:8px}.jobs-compact-check{min-height:36px;padding:6px 8px}.jobs-new-filter{justify-self:stretch}.jobs-secondary-divider{display:none}}
 @media(prefers-reduced-motion:reduce){.job-new-badge i{animation:none}.job-detail-dialog,.job-detail-toggle{transition:none}}
 
-/* V58165: every dropdown row and scrollbar uses neutral surfaces only. */
-html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-select-option[aria-selected="true"]:not([data-active]){
-  background:var(--jobs-filter-hover)!important;
-  box-shadow:none!important;
-  font-weight:800!important;
-}
+/* V58166: selected dropdown rows stay completely unfilled in every state. */
 html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-select-option[data-active],
 html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-select-option:hover,
 html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-select-option:focus-visible{
@@ -89,14 +84,14 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-select-option:focus-
   -webkit-text-fill-color:#f8fafc!important;
   outline:0!important;
 }
-html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-select-option[aria-selected="true"]:not([data-active]){
-  background:var(--jobs-filter-hover)!important;
-  box-shadow:none!important;
-}
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-select-option[data-active],
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-select-option:hover,
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-select-option:focus-visible{
   background:var(--jobs-filter-hover)!important;
   color:#243142!important;
   -webkit-text-fill-color:#243142!important;
+}
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-select-option[aria-selected="true"]{
+  background:transparent!important;
+  box-shadow:none!important;
 }
