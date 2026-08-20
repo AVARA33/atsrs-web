@@ -7,8 +7,11 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 const jobs = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
+const accountCss = fs.readFileSync(path.join(root, 'css', 'account.css'), 'utf8');
+const themeCss = fs.readFileSync(path.join(root, 'css', 'theme.css'), 'utf8');
+const themePaletteCss = fs.readFileSync(path.join(root, 'css', 'theme-palette-v508.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5828"/);
+assert.match(index, /data-atsrs-build="V5829"/);
 assert.match(index, /floating-field-standard-v58178\.css\?v=58189/);
 assert.match(index, /floating-fields\.js\?v=58187/);
 assert.ok(index.indexOf('floating-fields.js?v=58187') > index.indexOf('select-open-position.js'));
@@ -24,6 +27,10 @@ assert.match(css, /background:var\(--atsrs-field-label-surface,var\(--field-bg\)
 assert.match(css, /height:var\(--field-height\)/);
 assert.match(css, /border-radius:var\(--field-radius\)/);
 assert.match(css, /\.atsrs-field-search-icon[\s\S]*right:12px/);
+assert.match(accountCss, /\.atsrs-document-filter:not\(\.atsrs-field-shell\) input/);
+assert.doesNotMatch(accountCss, /#certificatesPage \.atsrs-document-filter input\{[^}]*padding:/);
+assert.match(themeCss, /label:not\(\.atsrs-field-label\)/);
+assert.match(themePaletteCss, /label:not\(\.atsrs-field-label\)/);
 assert.match(css, /--field-search-suffix:54px/);
 assert.match(css, /search-cancel-button\{margin-right:24px\}/);
 assert.doesNotMatch(css, /!important/, 'canonical field CSS must resolve cascade without !important');
@@ -47,4 +54,4 @@ assert.match(css, /grid-template-columns:minmax\(84px,112px\) minmax\(0,1fr\)/);
 assert.match(css, /\.phone-field>select\{[\s\S]*clip-path:inset\(50%\)/);
 assert.match(css, /\.phone-field>input:not\(\[type="hidden"\]\)\{grid-column:2;grid-row:1/);
 
-console.log('V5828 canonical soft field contracts passed');
+console.log('V5829 canonical soft field contracts passed');
