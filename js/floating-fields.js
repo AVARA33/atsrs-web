@@ -10,7 +10,9 @@
   var frameSelector='.atsrs-disclosure-shell,.jobs-select-host,.jobs-search-control,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter';
   var labelFallbacks={
     cPerson:'Personnel',crewSearch:'Search',crewCompanyFilter:'Company',crewPositionFilter:'Profession',crewStatusFilter:'Status',
-    profilePhoneLocal:'Mobile phone',profileWhatsappLocal:'WhatsApp number',certDocumentFilter:'Filter'
+    profilePhoneLocal:'Mobile phone',profileWhatsappLocal:'WhatsApp number',certDocumentFilter:'Filter',
+    v134_appraisal_filter:'Sort appraisals',v134_reference_filter:'Sort references',
+    v134_recommendation_filter:'Sort recommendations',v134_coverLetter_filter:'Sort cover letters'
   };
 
   function clean(value){return String(value==null?'':value).replace(/\s+/g,' ').trim()}
@@ -165,7 +167,7 @@
     if(!proxy)proxy=control;
     proxy.classList.add('atsrs-field-control');
     var frame=frameFor(control);
-    if(frame!==control){frame.classList.add('atsrs-field-control-frame');normalizeLegacyBox(frame,false)}
+    if(frame!==control){frame.classList.add('atsrs-field-control-frame');if(frame!==shell)normalizeLegacyBox(frame,false)}
     if(proxy!==control)normalizeLegacyBox(proxy,true);
     shell.classList.toggle('atsrs-field-textarea',control.tagName==='TEXTAREA');
     shell.classList.toggle('atsrs-field-disabled',!!control.disabled);

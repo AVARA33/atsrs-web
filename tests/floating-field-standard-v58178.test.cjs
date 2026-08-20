@@ -7,10 +7,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5823"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58184/);
-assert.match(index, /floating-fields\.js\?v=58184/);
-assert.ok(index.indexOf('floating-fields.js?v=58184') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5824"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58185/);
+assert.match(index, /floating-fields\.js\?v=58185/);
+assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
@@ -24,6 +24,8 @@ assert.match(runtime, /function normalizeLegacyBox\(node,isControl\)/);
 assert.match(runtime, /style\.setProperty\('border','0','important'\)/);
 assert.match(runtime, /\.talent-work-type-filter > summary/);
 assert.match(runtime, /label\.textContent='Work type'/);
+assert.match(runtime, /v134_appraisal_filter:'Sort appraisals'/);
+assert.match(runtime, /if\(frame!==shell\)normalizeLegacyBox\(frame,false\)/);
 assert.doesNotMatch(runtime, /document\.createElement\('label'\);[\s\S]{0,180}shell\.appendChild\(frame\)/, 'interactive frames must not be nested in generated labels');
 
 assert.match(css, /--atsrs-field-height:44px/);
