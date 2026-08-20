@@ -10,8 +10,8 @@ const switcher = fs.readFileSync(path.join(root, 'css', 'workspace-switcher.css'
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'shell-polish-harness.html'), 'utf8');
 
 test('loads the account switcher theme parity fix through a fresh cache marker', () => {
-  assert.match(index, /href="css\/theme\.css\?v=58162"/);
-  assert.match(harness, /href="\.\.\/\.\.\/css\/theme\.css\?v=58162"/);
+  assert.match(index, /href="css\/theme\.css\?v=58161"/);
+  assert.match(harness, /href="\.\.\/\.\.\/css\/theme\.css\?v=58161"/);
 });
 
 test('light account control uses the same 44px minimum as the dark control contract', () => {
