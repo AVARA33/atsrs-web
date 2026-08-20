@@ -9,7 +9,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'native-select-theme-v539.css
 const js = fs.readFileSync(path.join(root, 'js', 'select-standard.js'), 'utf8');
 
 test('shared dropdown standard loads after the theme layer', () => {
-  assert.match(index, /native-select-theme-v539\.css\?v=58170/);
+  assert.match(index, /native-select-theme-v539\.css\?v=58171/);
   assert.match(index, /theme\.js\?v=577[\s\S]*select-standard\.js\?v=58163/);
 });
 
@@ -22,6 +22,7 @@ test('custom single-select replaces operating-system popup interaction', () => {
   assert.match(js, /Escape/);
   assert.match(js, /dispatchEvent\(new Event\('change'/);
   assert.match(css, /\.atsrs-select-trigger/);
+  assert.match(css, />\.sr-only\{[\s\S]*clip-path:inset\(50%\)!important/);
   assert.match(css, /\.atsrs-select-menu/);
   assert.match(css, /\.atsrs-select-option/);
 });

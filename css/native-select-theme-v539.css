@@ -64,6 +64,20 @@ body .atsrs-custom-select>.atsrs-select-trigger{
   color:transparent!important;
   cursor:pointer!important;
 }
+/* Keep the trigger's accessible name available to assistive technology while
+   preventing legacy global span/button rules from painting it over the value. */
+body .atsrs-custom-select>.atsrs-select-trigger>.sr-only{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  clip-path:inset(50%)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
 body .atsrs-custom-select>.atsrs-select-trigger:disabled{
   cursor:not-allowed!important;
 }
