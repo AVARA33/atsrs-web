@@ -10,8 +10,8 @@ const theme = fs.readFileSync(path.join(root, 'css', 'theme.css'), 'utf8');
 const workspaceCss = fs.readFileSync(path.join(root, 'css', 'workspace-surface-standard-v519.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personnel-card-action-ownership-harness.html'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5814"/);
-assert.match(index, /css\/talent-directory\.css\?v=574/);
+assert.match(index, /data-atsrs-build="V5815"/);
+assert.match(index, /css\/talent-directory\.css\?v=575/);
 assert.match(index, /css\/theme\.css\?v=58161/);
 assert.match(index, /css\/workspace-surface-standard-v519\.css\?v=520/);
 assert.match(index, /js\/talent-directory\.js\?v=574/);
@@ -42,6 +42,8 @@ assert.match(css, /\.linked-personnel-card\{[^}]*min-height:200px/,
   'Personnel cards must keep the compact desktop height contract');
 assert.match(css, /\.linked-personnel-card \.linked-personnel-actions button\{[^}]*min-height:34px!important/,
   'desktop card actions must use the compact control height');
+assert.match(css, /html\[data-theme\] body\.company-mode #app\.app \.linked-personnel-card \.linked-personnel-actions button\{min-height:34px!important\}/,
+  'compact Personnel buttons must override the shared 44px workspace control rule');
 assert.doesNotMatch(css, /\.linked-personnel-actions\{[^}]*min-width:max-content/,
   'shared action rows must not force overflow beyond their owner');
 assert.doesNotMatch(css, /\.linked-personnel-card(?:\s+\.linked-personnel-actions)?\{[^}]*position:absolute/,

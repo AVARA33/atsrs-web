@@ -66,6 +66,7 @@ button.personnel-table-status{cursor:pointer}
 .linked-personnel-card .linked-personnel-actions button:focus-visible{border-color:var(--atsrs-brand-green,#22c55e)!important;outline:2px solid var(--atsrs-brand-green,#22c55e)!important;outline-offset:2px;box-shadow:none!important}
 .linked-personnel-card .linked-personnel-actions button:active{transform:none!important;box-shadow:none!important}
 .linked-personnel-card .linked-personnel-actions button:disabled{cursor:not-allowed;opacity:.55}
+html[data-theme] body.company-mode #app.app .linked-personnel-card .linked-personnel-actions button{min-height:34px!important}
 .talent-searchbar{display:grid;grid-template-columns:minmax(240px,1.5fr) repeat(4,minmax(135px,.7fr));gap:10px;padding:14px 0 18px;border-top:1px solid #1d3042;border-bottom:1px solid #1d3042}
 .talent-searchbar>label,.talent-filter-field{display:grid;gap:6px;color:#8ea2b5;font-size:11px;font-weight:600}
 .talent-searchbar input,.talent-searchbar select{width:100%;min-height:40px;margin:0;background:#091522!important;border:1px solid #26394c!important;color:#edf5fb!important;box-shadow:none!important}
