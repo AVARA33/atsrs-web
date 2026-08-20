@@ -223,7 +223,7 @@ html[data-theme="light"] :where(.pricing-plan,.pricing-table-wrap){
   box-shadow:0 16px 40px rgba(11,37,84,.09)!important;
 }
 
-html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label:not(.atsrs-field-label),legend,th){color:var(--atsrs-ref-light-text)!important}
+html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){color:var(--atsrs-ref-light-text)!important}
 html[data-theme="light"] :where(p,small,.sub,.small-note,.field-hint,.field-label){color:var(--atsrs-ref-light-muted)!important}
 html[data-theme="light"] :where(.sidebar,.auth-card,.auth-intro,.card,.panel,.workflow-card,.snapshot-card,.mini-panel,.roadmap-card,.scan-box,.import-box,.upload-simple,.share-card,.atsrs-admin-overview){
   background:var(--atsrs-ref-light-surface)!important;

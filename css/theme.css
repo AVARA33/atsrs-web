@@ -164,7 +164,7 @@ html[data-theme="light"] #atsrsBootScreen .atsrs-spinner{
 html[data-theme="light"] #atsrsBootScreen .atsrs-spinner span{
   background:var(--loading-accent);
 }
-html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label:not(.atsrs-field-label),legend,th){
+html[data-theme="light"] :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th){
   color:#172b3d!important;
   text-shadow:none!important;
 }
