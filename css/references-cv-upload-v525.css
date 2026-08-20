@@ -16,6 +16,10 @@ body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid .generated-c
   display:none!important;
 }
 
+body.personal-mode #refsPage #cvEnhancementStatus:not(:empty){
+  margin-top:8px;
+}
+
 body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid > button,
 body.personal-mode #refsPage .cv-beta-box .cv-generator-action-grid .generated-cv-actions > button{
   align-self:stretch!important;
