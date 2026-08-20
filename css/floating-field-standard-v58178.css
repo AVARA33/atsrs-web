@@ -16,6 +16,7 @@ html[data-theme="dark"]{
   --atsrs-field-muted:#91a09a;
   --atsrs-field-accent:var(--atsrs-brand-green,#22c55e);
   --atsrs-field-accent-ring:rgba(34,197,94,.16);
+  --atsrs-field-accent-shadow:rgba(34,197,94,.11);
 }
 html[data-theme="light"]{
   --atsrs-field-surface:#fff;
@@ -24,6 +25,7 @@ html[data-theme="light"]{
   --atsrs-field-muted:#526b7e;
   --atsrs-field-accent:var(--atsrs-light-blue,#2563eb);
   --atsrs-field-accent-ring:rgba(37,99,235,.14);
+  --atsrs-field-accent-shadow:rgba(37,99,235,.12);
 }
 
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{
@@ -79,6 +81,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   textarea,
   .atsrs-field-control,
   .atsrs-select-trigger,
+  .talent-work-type-filter > summary,
   .work-type-select-toggle
 ){
   width:100%!important;
@@ -96,7 +99,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   box-shadow:none!important;
   font:inherit!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.atsrs-disclosure-shell){
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
   position:relative!important;
   display:flex!important;
   align-items:center!important;
@@ -120,9 +123,14 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsr
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea textarea{min-height:94px!important;padding-top:14px!important;resize:vertical!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within{
   border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring)!important;
+  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(.talent-work-type-filter[open]){
+  border-color:var(--atsrs-field-accent)!important;
+  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+}
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within > .atsrs-field-label,
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(.talent-work-type-filter[open]) > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus,
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus-visible{outline:0!important;box-shadow:none!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)){
@@ -158,7 +166,7 @@ html body #auth .atsrs-field-shell{
   grid-template:minmax(0,1fr)/minmax(0,1fr)!important;
   gap:0!important;
 }
-html body #app .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.atsrs-disclosure-shell){
+html body #app .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
   width:100%!important;
   height:calc(var(--atsrs-field-height) - 2px)!important;
   min-height:calc(var(--atsrs-field-height) - 2px)!important;
@@ -169,8 +177,8 @@ html body #app .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search
   background:transparent!important;
   box-shadow:none!important;
 }
-html body #app .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle),
-html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle){
+html body #app .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle,.talent-work-type-filter>summary),
+html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle,.talent-work-type-filter>summary){
   width:100%!important;
   height:calc(var(--atsrs-field-height) - 2px)!important;
   min-height:calc(var(--atsrs-field-height) - 2px)!important;

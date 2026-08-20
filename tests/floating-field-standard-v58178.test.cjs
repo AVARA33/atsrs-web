@@ -7,10 +7,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5821"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58182/);
-assert.match(index, /floating-fields\.js\?v=58182/);
-assert.ok(index.indexOf('floating-fields.js?v=58182') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5822"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58183/);
+assert.match(index, /floating-fields\.js\?v=58183/);
+assert.ok(index.indexOf('floating-fields.js?v=58183') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
@@ -22,6 +22,8 @@ assert.match(runtime, /label\.htmlFor=control\.id/);
 assert.match(runtime, /jobsHost\.querySelector\('\.jobs-select-toggle'\)\|\|control/);
 assert.match(runtime, /function normalizeLegacyBox\(node,isControl\)/);
 assert.match(runtime, /style\.setProperty\('border','0','important'\)/);
+assert.match(runtime, /\.talent-work-type-filter > summary/);
+assert.match(runtime, /label\.textContent='Work type'/);
 assert.doesNotMatch(runtime, /document\.createElement\('label'\);[\s\S]{0,180}shell\.appendChild\(frame\)/, 'interactive frames must not be nested in generated labels');
 
 assert.match(css, /--atsrs-field-height:44px/);
@@ -39,6 +41,7 @@ assert.match(css, /@media\(max-width:620px\)/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
 assert.match(css, /grid-template:minmax\(0,1fr\)\/minmax\(0,1fr\)!important/);
 assert.match(css, /html body #app \.atsrs-field-shell[\s\S]*\.jobs-select-toggle/);
+assert.match(css, /0 8px 20px var\(--atsrs-field-accent-shadow\)/);
 
 for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCompanyFilter', 'crewPositionFilter', 'crewStatusFilter']) {
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);

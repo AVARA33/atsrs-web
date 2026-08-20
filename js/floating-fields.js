@@ -7,7 +7,7 @@
   var generatedSequence=0;
   var controlSelector='input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]),select:not([multiple]),textarea';
   var fieldContainers='.field-wrap,.jobs-filter-field,.jobs-secondary-field,.personnel-search-field,.personnel-combobox-field,.personnel-select-field,.talent-search-field,.atsrs-document-filter,.profile-labeled-field,.work-type-field,.talent-summary-filter';
-  var frameSelector='.atsrs-disclosure-shell,.jobs-select-host,.jobs-search-control,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select';
+  var frameSelector='.atsrs-disclosure-shell,.jobs-select-host,.jobs-search-control,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter';
   var labelFallbacks={
     cPerson:'Personnel',crewSearch:'Search',crewCompanyFilter:'Company',crewPositionFilter:'Profession',crewStatusFilter:'Status',
     profilePhoneLocal:'Mobile phone',profileWhatsappLocal:'WhatsApp number',certDocumentFilter:'Filter'
@@ -192,6 +192,16 @@
       var label=labelCandidate(shell,button)||document.createElement('span');
       if(!label.isConnected){label.textContent='Preferred work type';shell.insertBefore(label,shell.firstChild)}
       label.classList.add('atsrs-field-label');button.classList.add('atsrs-field-control');button.closest('.work-type-select').classList.add('atsrs-field-control-frame');updateSurface(shell);
+    });
+    scope.querySelectorAll('.talent-work-type-filter > summary').forEach(function(summary){
+      var shell=summary.closest('.talent-filter-field'),frame=summary.closest('.talent-work-type-filter');
+      if(!shell)return;
+      shell.classList.add('atsrs-field-shell');
+      var label=shell.querySelector(':scope > span')||document.createElement('span');
+      if(!label.isConnected){label.textContent='Work type';shell.insertBefore(label,shell.firstChild)}
+      label.classList.add('atsrs-field-label');
+      summary.classList.add('atsrs-field-control');frame.classList.add('atsrs-field-control-frame');
+      normalizeLegacyBox(frame,false);normalizeLegacyBox(summary,true);updateSurface(shell);
     });
   }
   function scan(root){
