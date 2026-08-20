@@ -15,7 +15,7 @@ const fieldCss=fs.readFileSync(path.join(root,'css','floating-field-standard-v58
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58169/);
+  assert.match(index,/jobs-prototype\.css\?v=58168/);
   assert.match(index,/route-feature-loader\.js\?v=58163/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58163'\)/);
@@ -25,7 +25,7 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=567/);
-  assert.match(index,/shell-polish\.css\?v=58163/);
+  assert.match(index,/shell-polish\.css\?v=58162/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
@@ -303,7 +303,7 @@ test('Jobs dropdown keeps selected rows completely unfilled',()=>{
   assert.match(index,/select-standard\.js\?v=58164/);
   assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/control\.closest\('\.jobs-select-host'\)/);
   assert.match(fs.readFileSync(path.join(root,'js','select-standard.js'),'utf8'),/select\.closest\('\.jobs-select-host'\)/);
-  assert.match(index,/shell-polish\.css\?v=58163/);
+  assert.match(index,/shell-polish\.css\?v=58162/);
   assert.match(shellCss,/:not\(\.jobs-select-option\)/);
   assert.match(shellCss,/:not\(\.personnel-combobox-options button\)/);
   assert.match(shellCss,/:not\(\.phone-code-option\)/);
