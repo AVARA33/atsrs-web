@@ -14,7 +14,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.match(index,/section id="jobsPage"[\s\S]*?LIVE JOBS/);
-  assert.match(index,/jobs-prototype\.css\?v=58163/);
+  assert.match(index,/jobs-prototype\.css\?v=58164/);
   assert.match(index,/route-feature-loader\.js\?v=58163/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58163'\)/);
@@ -157,6 +157,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{justify-content:flex-start\}\}/);
   assert.match(css,/\.jobs-secondary-field>span:first-child\{font-size:12px/);
   assert.match(css,/\.jobs-filters input,\.jobs-filters select,\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:var\(--jobs-filter-height\)/);
+  assert.match(css,/\.jobs-filters #jobsClearFilters\{align-self:end;margin:0!important\}/);
   assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-select-option\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check\{cursor:pointer\}/);
@@ -285,8 +286,8 @@ test('Jobs view controls and inline notice use the approved palettes',()=>{
 test('Jobs dropdown keeps selected green subtle and active rows neutral',()=>{
   assert.match(css,/jobs-select-option\[aria-selected="true"\]:not\(\[data-active\]\)/);
   assert.match(css,/jobs-select-option\[data-active\]/);
-  assert.match(css,/V58163:[\s\S]*?background:var\(--jobs-filter-hover\)!important/);
-  assert.doesNotMatch(css,/V58163:[\s\S]*?background:var\(--atsrs-(?:jobs-green-text|brand-green)/);
+  assert.match(css,/V58164:[\s\S]*?background:var\(--jobs-filter-hover\)!important/);
+  assert.doesNotMatch(css,/V58164:[\s\S]*?background:var\(--atsrs-(?:jobs-green-text|brand-green)/);
   assert.match(css,/\.jobs-select-toggle>i\{[^}]*width:16px[^}]*height:16px[^}]*flex:0 0 16px/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:hover>i/);
   assert.match(index,/theme\.js\?v=577/);

@@ -80,3 +80,46 @@ Desktop captures used the connected Chrome viewport at 1128 × 724 physical pixe
 - Narrow light: PASS
 - Main filename visible without clipping in the narrow state: PASS
 - Main and AI cards visually and semantically separated: PASS
+
+---
+
+# Jobs clear-filter alignment — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-acd8b79b-7fdc-4931-8c6a-2e6a495d2d83.png`
+- Implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\jobs-clear-filter-aligned-local-20260820.png`
+- Mobile screenshot: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\jobs-clear-filter-aligned-mobile-20260820.png`
+- Combined focused comparison: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\jobs-clear-filter-alignment-comparison-20260820.png`
+- Source pixels: 3440 × 1368. Desktop implementation: 2294 × 735 pixels at a 2294 × 735 CSS viewport and 1× capture density. Mobile implementation: 374 × 844 pixels at a 390 × 844 CSS viewport after scrollbar allocation.
+- State: Jobs, cards view, dark theme, default filters.
+
+## Full-view and focused comparison evidence
+
+The source highlighted that `Clear filters` sat seven pixels above the shared control baseline because a global button margin leaked into the Jobs grid. The implementation comparison shows Search, Role, Location and `Clear filters` in the same top grid row, with the action button bottom edge exactly aligned to the 46 px controls. Desktop geometry measured identical 339.177 px bottom coordinates for Location and `Clear filters`. The 390 px responsive capture keeps the intended full-width stacked action and has no horizontal overflow.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS font family, sizes, weights and button copy are unchanged.
+- Spacing and layout rhythm: only the leaked seven-pixel vertical margin was removed; grid tracks, gaps, page width, cards and pagination are unchanged.
+- Colors and visual tokens: existing dark surfaces, borders and green accents are unchanged.
+- Image quality and asset fidelity: no image or icon assets were added, replaced or approximated.
+- Copy and content: `Clear filters` and all Jobs copy remain unchanged.
+
+## Findings
+
+No actionable P0, P1 or P2 differences remain for the requested alignment correction.
+
+## Comparison history
+
+- Earlier finding: `Clear filters` inherited `margin: 7px 0`, lifting it out of the control baseline.
+- Fix: scoped the action to `margin: 0 !important` and `align-self: end` inside `.jobs-filters`.
+- Post-fix evidence: desktop control bottoms match exactly; mobile stacking remains intact with zero horizontal overflow.
+
+## Primary interactions and console
+
+- Location filter changed to `Aberdeen, UK`, then `Clear filters` reset it to the empty value.
+- No active-filter summary component was rendered.
+- Browser console errors: none.
+- Focused Jobs contract tests: 11/11 passed.
+- Cloudflare build: passed, 133 files.
+
+final result: passed
