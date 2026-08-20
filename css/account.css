@@ -1264,20 +1264,20 @@ body.personal-mode #profilePhotoCard{display:flex}
 .profile-details-secondary{
   grid-template-columns:repeat(4,minmax(150px,1fr));
 }
-.profile-labeled-field:not(.atsrs-field-shell){
+.profile-labeled-field{
   display:grid;
   gap:4px;
   min-width:0;
   margin:0;
 }
-.profile-labeled-field:not(.atsrs-field-shell)>span{
+.profile-labeled-field>span{
   color:#9fb2c8;
   font-size:10px;
   font-weight:700;
   line-height:1.2;
 }
-.profile-labeled-field:not(.atsrs-field-shell)>input,
-.profile-labeled-field:not(.atsrs-field-shell)>select{
+.profile-labeled-field>input,
+.profile-labeled-field>select{
   width:100%!important;
   height:36px!important;
   min-height:36px!important;
@@ -1306,7 +1306,7 @@ body.personal-mode #profilePhotoCard{display:flex}
   font-weight:700;
   line-height:1.2;
 }
-#profilePage #accountGeneralTab>.profile-grid>.profile-contact-row>.phone-entry>.phone-field:not(.atsrs-field-shell){
+#profilePage #accountGeneralTab>.profile-grid>.profile-contact-row>.phone-entry>.phone-field{
   height:36px!important;
   min-height:36px!important;
   box-sizing:border-box!important;
@@ -1323,7 +1323,7 @@ body.personal-mode #profilePhotoCard{display:flex}
   border-radius:16px;
   box-sizing:border-box;
 }
-.phone-field:not(.atsrs-field-shell){
+.phone-field{
   display:grid;
   grid-template-columns:104px minmax(0,1fr);
   align-items:center;
@@ -1336,7 +1336,7 @@ body.personal-mode #profilePhotoCard{display:flex}
   background:#0b1523;
   position:relative;
 }
-.phone-field:not(.atsrs-field-shell) input{
+.phone-field input{
   width:100%!important;
   min-width:0!important;
   height:34px!important;
@@ -1347,10 +1347,10 @@ body.personal-mode #profilePhotoCard{display:flex}
   background:transparent!important;
   box-shadow:none!important;
 }
-.phone-field:not(.atsrs-field-shell)>select{
+.phone-field>select{
   display:none!important;
 }
-.phone-field:not(.atsrs-field-shell) input{
+.phone-field input{
   padding:0 12px!important;
 }
 .phone-code-picker{
@@ -1472,7 +1472,7 @@ body.personal-mode #profilePhotoCard{display:flex}
   background:rgba(82,211,255,.10)!important;
   color:#ffffff!important;
 }
-.phone-field:not(.atsrs-field-shell):focus-within{
+.phone-field:focus-within{
   border-color:#4d7189;
   box-shadow:0 0 0 1px rgba(77,113,137,.32);
 }
@@ -1631,8 +1631,8 @@ body.atsrs-verification-open{overflow:hidden}
   grid-area:available;
   margin:0!important;
 }
-.work-type-field:not(.atsrs-field-shell){grid-area:work}
-.work-availability-grid>label,.work-type-field:not(.atsrs-field-shell){
+.work-type-field{grid-area:work}
+.work-availability-grid>label,.work-type-field{
   display:grid;
   grid-template-rows:14px 36px;
   gap:4px;

@@ -84,7 +84,7 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
   select,
   textarea,
   .talent-work-type-filter > summary,
-  .phone-field:not(.atsrs-field-shell),
+  .phone-field,
   .phone-code-picker,
   .work-type-select-toggle
 ){
@@ -98,7 +98,7 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
   input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
   select,
   .talent-work-type-filter > summary,
-  .phone-field:not(.atsrs-field-shell),
+  .phone-field,
   .work-type-select-toggle
 ){
   min-height:44px!important;

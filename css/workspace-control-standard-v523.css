@@ -35,6 +35,16 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
   outline:0!important;
 }
 
+/* Keep both phone-number inputs inside the single canonical field shell. */
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab > .profile-grid > .profile-contact-row .phone-field > input:not([type="hidden"]),
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-picker{
+  border-color:transparent!important;
+  background:transparent!important;
+  background-image:none!important;
+  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
+  box-shadow:none!important;
+}
+
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-display{
   border-right-color:var(--atsrs-v523-line)!important;
 }

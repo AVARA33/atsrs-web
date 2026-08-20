@@ -146,21 +146,17 @@
   function updateSurface(shell){
     if(shell&&shell.isConnected)shell.style.setProperty('--atsrs-field-label-surface',localSurface(shell));
   }
-  function ensureSearchSuffix(shell,control){
-    var text=(labelledText(control)+' '+clean(control.placeholder)).toLowerCase();
-    if(control.type!=='search'&&!/\bsearch\b/.test(text))return;
-    shell.classList.add('atsrs-search-field');
-    control.classList.add('atsrs-search-input');
-    var frame=frameFor(control);
-    var iconHost=frame===control?shell:frame;
-    var icon=iconHost.querySelector('.ph-magnifying-glass,.atsrs-field-search-icon');
-    if(!icon){
-      icon=document.createElement('i');
-      icon.className='ph ph-magnifying-glass';
-      icon.setAttribute('aria-hidden','true');
-    }
-    icon.classList.add('atsrs-field-search-icon');
-    iconHost.appendChild(icon);
+  function normalizeLegacyBox(node,isControl){
+    if(!node||!node.style)return;
+    node.style.setProperty('height','calc(var(--atsrs-field-height) - 2px)','important');
+    node.style.setProperty('min-height','calc(var(--atsrs-field-height) - 2px)','important');
+    node.style.setProperty('margin','0','important');
+    node.style.setProperty('border','0','important');
+    node.style.setProperty('outline','0','important');
+    node.style.setProperty('background','transparent','important');
+    node.style.setProperty('box-shadow','none','important');
+    if(isControl)node.style.setProperty('padding','12px var(--atsrs-field-inline-padding) 4px','important');
+    else node.style.setProperty('padding','0','important');
   }
   function fieldProxy(control,shell){
     var disclosure=control.closest('.atsrs-disclosure-shell');
@@ -171,11 +167,10 @@
     if(!proxy)proxy=control;
     proxy.classList.add('atsrs-field-control');
     var frame=frameFor(control);
-    if(frame!==control)frame.classList.add('atsrs-field-control-frame');
+    if(frame!==control){frame.classList.add('atsrs-field-control-frame');if(frame!==shell)normalizeLegacyBox(frame,false)}
+    if(proxy!==control)normalizeLegacyBox(proxy,true);
     shell.classList.toggle('atsrs-field-textarea',control.tagName==='TEXTAREA');
     shell.classList.toggle('atsrs-field-disabled',!!control.disabled);
-    shell.classList.toggle('atsrs-field-open',!!(control.closest('details[open]')||(proxy.getAttribute&&proxy.getAttribute('aria-expanded')==='true')));
-    ensureSearchSuffix(shell,control);
   }
   function enhance(control){
     if(!eligible(control))return;
@@ -208,7 +203,7 @@
       if(!label.isConnected){label.textContent='Work type';shell.insertBefore(label,shell.firstChild)}
       label.classList.add('atsrs-field-label');
       summary.classList.add('atsrs-field-control');frame.classList.add('atsrs-field-control-frame');
-      shell.classList.toggle('atsrs-field-open',frame.hasAttribute('open'));updateSurface(shell);
+      normalizeLegacyBox(frame,false);normalizeLegacyBox(summary,true);updateSurface(shell);
     });
   }
   function scan(root){
@@ -226,7 +221,7 @@
     refresh();
     if(window.MutationObserver&&document.body){
       observer=new MutationObserver(schedule);
-      observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','aria-label','aria-labelledby','aria-expanded','open']});
+      observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','aria-label','aria-labelledby']});
       new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     }
     window.addEventListener('atsrs:data-hydrated',schedule);
