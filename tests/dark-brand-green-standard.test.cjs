@@ -33,7 +33,7 @@ for (const [asset, version] of [
   ['workspace-control-standard-v523.css', '58155'],
   ['native-select-theme-v539.css', '58168'],
   ['dark-surface-standard-v58154.css', '58155'],
-  ['theme-palette-v508.css', '58168'],
+  ['theme-palette-v508.css', '58169'],
   ['workspace-heading-standard-v520.css', '58156'],
   ['personal-dashboard-qa.css', '58156'],
   ['jobs-prototype.css', '58168']

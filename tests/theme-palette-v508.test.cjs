@@ -8,7 +8,7 @@ const css=read('css/theme-palette-v508.css');
 const index=read('index.html');
 
 assert.match(index,/data-atsrs-build="V5812"/);
-assert.match(index,/css\/theme-palette-v508\.css\?v=58168/);
+assert.match(index,/css\/theme-palette-v508\.css\?v=58169/);
 assert.match(index,/js\/theme\.js\?v=577/);
 assert.match(css,/--atsrs-ref-light-bg:#edf2f8/);
 assert.match(css,/--atsrs-ref-light-text:#0b2554/);
@@ -24,12 +24,13 @@ assert.match(css,/--atsrs-control-height:46px/);
 assert.match(css,/--atsrs-control-focus-border:var\(--atsrs-ref-lime\)/);
 assert.match(css,/--atsrs-control-focus-border:var\(--atsrs-ref-blue\)/);
 assert.match(css,/outline:2px solid var\(--atsrs-control-focus-border\)!important/);
+assert.match(css,/body #app\.app:not\(\.hidden\)[\s\S]*?:focus-visible,[\s\S]*?body #auth[\s\S]*?outline:2px solid var\(--atsrs-control-focus-border\)!important/);
 assert.match(css,/sidebar \.nav button\.active/);
 assert.match(css,/:focus-visible/);
 assert.doesNotMatch(css,/\.main\s*\{[^}]*?(?:width|grid-template-columns|padding)/s,'palette layer must not alter app geometry');
 
 for(const file of ['pricing.html','privacy.html','data-deletion.html','data-protection.html','security.html','terms.html']){
-  assert.match(read(file),/css\/theme-palette-v508\.css\?v=58168/,`${file} must load the shared palette`);
+  assert.match(read(file),/css\/theme-palette-v508\.css\?v=58169/,`${file} must load the shared palette`);
 }
 
 console.log('V509 reference palette contract tests passed');
