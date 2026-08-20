@@ -544,11 +544,14 @@
       list.innerHTML='<div class="linked-personnel-cards">'+rows.map(function(item){
         var profile=item.profile,work=availability(profile),project=personnelProject(profile)||'Unassigned';
         var access=item.status==='access_granted'?'Access granted':item.status==='access_pending'?'Access requested':item.status==='access_revoked'?'Access revoked':'Public profile only';
-        return '<article class="linked-personnel-card">'+
-          '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
-          '<h4>'+safe(profile.name+' '+profile.surname)+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+personnelDocumentMarkup(item)+
-          '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div></dl>'+
-          '<div class="linked-personnel-actions"><button type="button" class="secondary" data-linked-projects="'+safe(profile.user_id)+'">Projects</button><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></div></article>';
+        var personId=safe(profile.user_id),personName=safe(profile.name+' '+profile.surname);
+        return '<article class="linked-personnel-card" data-person-id="'+personId+'">'+
+          '<div class="linked-personnel-card-content">'+
+            '<div class="linked-personnel-card-head">'+avatarMarkup(profile)+'<span>'+safe(access)+'</span></div>'+
+            '<h4>'+personName+'</h4><p>'+safe(profile.position||'Profession not listed')+'</p>'+personnelDocumentMarkup(item)+
+            '<dl><div><dt>Work status</dt><dd>'+safe(work.label)+'</dd></div><div><dt>Project</dt><dd>'+safe(project)+'</dd></div><div><dt>Country</dt><dd>'+safe(profile.country||'Not listed')+'</dd></div></dl>'+
+          '</div>'+
+          '<div class="linked-personnel-actions" role="group" aria-label="Actions for '+personName+'"><button type="button" class="secondary" data-linked-projects="'+personId+'">Projects</button><button type="button" class="secondary" data-linked-open="'+personId+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+personId+'">Remove</button></div></article>';
       }).join('')+'</div>';
     }else{
       list.innerHTML='<div class="linked-personnel-table" role="table"><div class="linked-personnel-row is-head" role="row">'+

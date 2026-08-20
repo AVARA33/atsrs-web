@@ -8,7 +8,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'references-cv-upload-v525.cs
 const fixture = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'references-cv-upload-v525-harness.html'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'cv-generator.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5812"/);
+assert.match(index, /data-atsrs-build="V5813"/);
 assert.match(index, /references-cv-upload-v525\.css\?v=58153/);
 assert.match(index, /class="cv-generator-action-grid">[\s\S]*?id="uploadCvFromGeneratorBtn"[^>]*>Upload \/ Replace CV<\/button>[\s\S]*?id="generateCVBtn"[\s\S]*?id="resetCvGeneratorBtn"[\s\S]*?id="generatedCvActions"[\s\S]*?id="previewGeneratedCvBtn"[\s\S]*?id="printGeneratedCvBtn"/);
 assert.doesNotMatch(index, /id="(?:addGeneratedCvBtn|replaceMainWithGeneratedCvBtn)"/);

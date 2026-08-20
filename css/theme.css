@@ -1460,10 +1460,23 @@ html[data-theme="light"] .linked-personnel-card h4{
   color:#142c3f!important;
   font-weight:750!important;
 }
-html[data-theme="light"] .linked-personnel-card>p{
+html[data-theme="light"] .linked-personnel-card-content>p{
   color:#3d5c72!important;
   font-size:12px!important;
   font-weight:550!important;
+}
+html[data-theme="light"] body #app .linked-personnel-card .linked-personnel-actions{
+  border-top-color:#cbd7e0!important;
+}
+html[data-theme="light"] body #app .linked-personnel-card .linked-personnel-actions button:hover{
+  border-color:var(--atsrs-light-blue,#2563eb)!important;
+  color:#145f93!important;
+}
+html[data-theme="light"] body #app .linked-personnel-card .linked-personnel-actions button:focus-visible{
+  border-color:var(--atsrs-light-blue,#2563eb)!important;
+  outline:2px solid var(--atsrs-light-blue,#2563eb)!important;
+  outline-offset:2px!important;
+  box-shadow:none!important;
 }
 html[data-theme="light"] .linked-personnel-card dt{
   color:#4b6579!important;
@@ -1523,7 +1536,7 @@ html[data-theme="light"] body.company-mode #app :where(
   .linked-personnel-row,
   .linked-personnel-row small,
   .linked-personnel-card-head>span,
-  .linked-personnel-card>p,
+  .linked-personnel-card-content>p,
   .linked-personnel-card dt,
   .linked-personnel-card dd,
   .talent-list-row,

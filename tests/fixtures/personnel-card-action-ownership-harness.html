@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/talent-directory.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css">
+  <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css">
+  <link rel="stylesheet" href="../../css/dark-green-text-standard-v58140.css">
+  <link rel="stylesheet" href="../../css/button-content-standard-v58148.css">
+  <link rel="stylesheet" href="../../css/dark-surface-standard-v58154.css">
+  <title>Personnel card action ownership QA</title>
+  <style>
+    body{margin:0;padding:24px;background:var(--atsrs-bg,#050606)}
+    main{max-width:1900px;margin:auto}
+  </style>
+</head>
+<body class="company-mode">
+<script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
+<main id="app">
+  <section id="personnelPage">
+    <div class="linked-personnel-cards">
+      <article class="linked-personnel-card" data-person-id="person-a">
+        <div class="linked-personnel-card-content">
+          <div class="linked-personnel-card-head"><span class="avatar-fallback">AA</span><span>Access granted</span></div>
+          <h4>Anar Aghasiyev</h4>
+          <p>Senior ROV Pilot Technician / Supervisor</p>
+          <span class="personnel-document-update is-recent"><b>NEW UPDATE</b> Uploaded today</span>
+          <dl><div><dt>Work status</dt><dd>Available from September 2026</dd></div><div><dt>Project</dt><dd>Ultra Deepwater Intervention and Change-Out Programme</dd></div><div><dt>Country</dt><dd>Azerbaijan</dd></div></dl>
+        </div>
+        <div class="linked-personnel-actions" role="group" aria-label="Actions for Anar Aghasiyev"><button type="button" class="secondary" data-linked-projects="person-a">Projects</button><button type="button" class="secondary" data-linked-open="person-a">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="person-a">Remove</button></div>
+      </article>
+      <article class="linked-personnel-card" data-person-id="person-b">
+        <div class="linked-personnel-card-content">
+          <div class="linked-personnel-card-head"><span class="avatar-fallback">FS</span><span>Public profile only</span></div>
+          <h4>Fuad Suleymanov</h4>
+          <p>ROV Senior Pilot</p>
+          <dl><div><dt>Work status</dt><dd>Available now</dd></div><div><dt>Project</dt><dd>Unassigned</dd></div><div><dt>Country</dt><dd>United Kingdom of Great Britain and Northern Ireland</dd></div></dl>
+        </div>
+        <div class="linked-personnel-actions" role="group" aria-label="Actions for Fuad Suleymanov"><button type="button" class="secondary" data-linked-projects="person-b">Projects</button><button type="button" class="secondary" data-linked-open="person-b">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="person-b">Remove</button></div>
+      </article>
+      <article class="linked-personnel-card" data-person-id="person-c">
+        <div class="linked-personnel-card-content">
+          <div class="linked-personnel-card-head"><span class="avatar-fallback">RC</span><span>Access pending</span></div>
+          <h4>Rustam Bayramov Candidate With A Deliberately Long Display Name</h4>
+          <p>Senior ROV Pilot Technician / Supervisor — Offshore Construction and Subsea Operations</p>
+          <dl><div><dt>Work status</dt><dd>Availability not recently confirmed</dd></div><div><dt>Project</dt><dd>Long-duration North Sea inspection, repair and maintenance campaign</dd></div><div><dt>Country</dt><dd>United Arab Emirates</dd></div></dl>
+        </div>
+        <div class="linked-personnel-actions" role="group" aria-label="Actions for Rustam Bayramov Candidate"><button type="button" class="secondary" data-linked-projects="person-c">Projects</button><button type="button" class="secondary" data-linked-open="person-c">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="person-c">Remove</button></div>
+      </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

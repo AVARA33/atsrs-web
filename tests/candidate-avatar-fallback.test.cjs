@@ -100,7 +100,7 @@ assert.match(css, /\.talent-avatar\.is-image-ready \.talent-avatar-initials\{vis
 assert.equal((source.match(/hydrateAvatarFallbacks\(grid\)/g) || []).length, 2, 'Cards and List must hydrate the shared avatar renderer');
 assert.equal((source.match(/hydrateAvatarFallbacks\(list\)/g) || []).length, 1, 'Personnel must hydrate the shared avatar renderer');
 assert.equal((source.match(/hydrateAvatarFallbacks\(modal\)/g) || []).length, 1, 'Candidate modal must hydrate the shared avatar renderer');
-assert.match(index, /css\/talent-directory\.css\?v=572/);
-assert.match(index, /js\/talent-directory\.js\?v=573/);
+assert.match(index, /css\/talent-directory\.css\?v=573/);
+assert.match(index, /js\/talent-directory\.js\?v=574/);
 
 console.log('Candidate avatar fallback regression tests passed');

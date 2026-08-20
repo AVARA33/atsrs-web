@@ -217,5 +217,5 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
   .linked-personnel-row:not(.is-head){grid-template-columns:1fr}
   .linked-personnel-row:not(.is-head) .linked-personnel-actions{grid-column:auto;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px;width:100%}
   .linked-personnel-row:not(.is-head) .linked-personnel-actions::before{grid-column:1/-1}
-  .linked-personnel-actions button{width:100%!important;min-width:0!important;min-height:44px!important;padding-inline:4px!important;font-size:10px!important;white-space:normal!important}
+  .linked-personnel-row:not(.is-head) .linked-personnel-actions button{width:100%!important;min-width:0!important;min-height:44px!important;padding-inline:4px!important;font-size:10px!important;white-space:normal!important}
 }
