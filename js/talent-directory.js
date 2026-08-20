@@ -19,6 +19,9 @@
   var talentMailbox='active';
   var candidateViewExplicit=false;
   var personnelViewExplicit=false;
+  var pendingOwnAvatarSync={queued:false,url:null};
+  var ownAvatarSyncRunning=null;
+  var ownAvatarSyncNeedsFlush=false;
   try{
     candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
     personnelView=localStorage.getItem('atsrs_personnel_view')||'list';
@@ -191,6 +194,77 @@
   async function user(){
     var c=client();if(!c||!c.auth)return null;
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
+  }
+  function retainOwnAvatarSync(url){
+    if(!pendingOwnAvatarSync.queued){pendingOwnAvatarSync.queued=true;pendingOwnAvatarSync.url=url}
+  }
+  async function flushOwnAvatarSync(){
+    if(!pendingOwnAvatarSync.queued)return true;
+    if(!automaticWritesAllowed()||!cloudProfileReady()||mode()!=='personal')return false;
+    if(ownAvatarSyncRunning)return ownAvatarSyncRunning;
+    var desired=pendingOwnAvatarSync.url;
+    pendingOwnAvatarSync.queued=false;
+    ownAvatarSyncRunning=(async function(){
+      var c=client(),u=await user();
+      if(!c||!u){retainOwnAvatarSync(desired);return false}
+      var current=await c.from('atsrs_talent_profiles')
+        .select('avatar_url')
+        .eq('user_id',u.id)
+        .maybeSingle();
+      if(current.error){
+        retainOwnAvatarSync(desired);
+        console.warn('ATSRS talent avatar read failed',current.error);
+        return false;
+      }
+      if(!current.data)return true;
+      var existing=safeAvatar(current.data.avatar_url)||null;
+      if(existing===desired)return true;
+      var updated=await c.from('atsrs_talent_profiles')
+        .update({avatar_url:desired})
+        .eq('user_id',u.id);
+      if(updated.error){
+        retainOwnAvatarSync(desired);
+        console.warn('ATSRS talent avatar sync failed',updated.error);
+        return false;
+      }
+      return true;
+    })();
+    try{return await ownAvatarSyncRunning}
+    catch(error){
+      retainOwnAvatarSync(desired);
+      console.warn('ATSRS talent avatar sync failed',error);
+      return false;
+    }
+    finally{
+      ownAvatarSyncRunning=null;
+      if(ownAvatarSyncNeedsFlush){
+        ownAvatarSyncNeedsFlush=false;
+        setTimeout(flushOwnAvatarSync,0);
+      }
+    }
+  }
+  function queueOwnAvatarSync(value){
+    if(mode()!=='personal')return Promise.resolve(false);
+    var raw=String(value||'').trim(),normalizedAvatar=safeAvatar(raw);
+    if(raw&&!normalizedAvatar)return Promise.resolve(false);
+    pendingOwnAvatarSync.queued=true;
+    pendingOwnAvatarSync.url=normalizedAvatar||null;
+    if(ownAvatarSyncRunning){ownAvatarSyncNeedsFlush=true;return ownAvatarSyncRunning}
+    return flushOwnAvatarSync();
+  }
+  function queueResolvedOwnAvatarIfPresent(){
+    var photo=window.atsrsProfilePhoto;
+    var resolved=photo&&typeof photo.currentUrl==='function'?safeAvatar(photo.currentUrl()):'';
+    return resolved?queueOwnAvatarSync(resolved):Promise.resolve(false);
+  }
+  function handleIdentityPhotoHydrated(event){
+    if(mode()==='personal')return queueOwnAvatarSync(event&&event.detail&&event.detail.url||'');
+    return Promise.resolve(false);
+  }
+  function handleProfilePhotoChanged(event){
+    if(mode()==='personal')return queueOwnAvatarSync(event&&event.detail&&event.detail.url||'');
+    if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
+    return Promise.resolve(false);
   }
   async function actionCall(payload){
     var c=client();if(!c||!c.functions)throw new Error('ATSRS service is unavailable.');
@@ -1001,19 +1075,20 @@
       return result;
     };
     setTimeout(function(){
-      if(mode()==='personal'){touchOwnProfile(true);loadInbox();return}
+      if(mode()==='personal'){touchOwnProfile(true);queueResolvedOwnAvatarIfPresent();loadInbox();return}
       if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
       else if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)});
     },1200);
     window.addEventListener('atsrs:data-hydrated',function(){
-      if(mode()==='personal')touchOwnProfile(true);
+      if(mode()==='personal'){touchOwnProfile(true);queueResolvedOwnAvatarIfPresent();flushOwnAvatarSync()}
     });
     window.addEventListener('atsrs:resume',function(){
-      if(mode()==='personal'){touchOwnProfile(false);loadInbox();return}
+      if(mode()==='personal'){touchOwnProfile(false);queueResolvedOwnAvatarIfPresent();flushOwnAvatarSync();loadInbox();return}
       if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory();
       if(byId('personnelPage')&&!byId('personnelPage').classList.contains('hidden'))loadPersonnelLinks().catch(function(error){console.warn('ATSRS linked personnel load failed',error)});
     });
-    window.addEventListener('atsrs:profile-photo-changed',function(){if(mode()==='personal')syncOwnProfile(true);else if(byId('candidatesPage')&&!byId('candidatesPage').classList.contains('hidden'))loadDirectory()});
+    window.addEventListener('atsrs:identity-photo-hydrated',handleIdentityPhotoHydrated);
+    window.addEventListener('atsrs:profile-photo-changed',handleProfilePhotoChanged);
     setInterval(function(){if(mode()==='personal')touchOwnProfile(false)},300000);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
