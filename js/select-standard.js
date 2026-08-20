@@ -144,8 +144,14 @@
     control.menu.hidden=false;
     control.trigger.setAttribute('aria-expanded','true');
     openControl=control;
-    if(keyboard)paintActive(control,selectedIndex(control),true);else clearActive(control);
     position(control);
+    if(keyboard){
+      paintActive(control,selectedIndex(control),true);
+    }else{
+      var selectedButton=control.menu.querySelector('[data-option-index="'+selectedIndex(control)+'"]');
+      if(selectedButton)selectedButton.scrollIntoView({block:'nearest'});
+      clearActive(control);
+    }
     if(keyboard)control.trigger.focus({preventScroll:true});
   }
   function close(control,focus){
