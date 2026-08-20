@@ -6,8 +6,8 @@ body{
   --atsrs-menu-text:#f4f6ef;
   --atsrs-menu-accent:#22c55e;
   --atsrs-menu-accent-ink:#080a08;
-  --atsrs-menu-selected:rgba(34,197,94,.12);
-  --atsrs-menu-hover:rgba(34,197,94,.08);
+  --atsrs-menu-selected:transparent;
+  --atsrs-menu-hover:rgba(255,255,255,.08);
 }
 
 html[data-theme="light"] body{
@@ -16,8 +16,8 @@ html[data-theme="light"] body{
   --atsrs-menu-text:#0b2554;
   --atsrs-menu-accent:var(--atsrs-control-focus-border,#2563eb);
   --atsrs-menu-accent-ink:#0b2554;
-  --atsrs-menu-selected:rgba(37,99,235,.08);
-  --atsrs-menu-hover:rgba(37,99,235,.07);
+  --atsrs-menu-selected:transparent;
+  --atsrs-menu-hover:rgba(15,23,42,.07);
 }
 
 /* Safe native fallback. Supported single-selects are enhanced below so the
@@ -127,14 +127,14 @@ body .atsrs-select-option{
 }
 body .atsrs-select-option[aria-selected="true"]:not([data-active]){
   background:var(--atsrs-menu-selected)!important;
-  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  box-shadow:none!important;
   font-weight:700!important;
 }
 body .atsrs-select-option[data-active],
 body .atsrs-select-option:hover,
 body .atsrs-select-option:focus-visible{
   background:var(--atsrs-menu-hover)!important;
-  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  box-shadow:none!important;
   color:var(--atsrs-menu-text)!important;
   -webkit-text-fill-color:var(--atsrs-menu-text)!important;
   outline:0!important;
@@ -187,7 +187,7 @@ body #app :where(
   .talent-work-type-filter .work-type-options label:has(input:checked)
 ){
   background:var(--atsrs-menu-selected)!important;
-  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  box-shadow:none!important;
   color:var(--atsrs-menu-text)!important;
   -webkit-text-fill-color:var(--atsrs-menu-text)!important;
   font-weight:700!important;
@@ -203,7 +203,7 @@ body #app :where(
   .talent-work-type-filter .work-type-options label:focus-within
 ){
   background:var(--atsrs-menu-hover)!important;
-  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  box-shadow:none!important;
   color:var(--atsrs-menu-text)!important;
   -webkit-text-fill-color:var(--atsrs-menu-text)!important;
   outline:0!important;

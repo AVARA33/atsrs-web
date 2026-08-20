@@ -29,9 +29,9 @@ dialog.atsrs-date-picker-host{
   width:min(320px,calc(100vw - 24px));
   padding:12px;
   pointer-events:auto;
-  border:1px solid rgba(91,119,142,.48);
+  border:1px solid #343a36;
   border-radius:13px;
-  background:#081521;
+  background:#0b0d0c;
   box-shadow:0 14px 38px rgba(0,0,0,.42),0 2px 8px rgba(0,0,0,.28);
   color:#f8fafc;
 }
@@ -48,19 +48,19 @@ dialog.atsrs-date-picker-host{
 }
 .atsrs-date-picker-dialog.place-below::before{
   top:-8px;
-  border-bottom:8px solid rgba(91,119,142,.48);
+  border-bottom:8px solid #343a36;
 }
 .atsrs-date-picker-dialog.place-below::after{
   top:-7px;
-  border-bottom:8px solid #081521;
+  border-bottom:8px solid #0b0d0c;
 }
 .atsrs-date-picker-dialog.place-above::before{
   bottom:-8px;
-  border-top:8px solid rgba(91,119,142,.48);
+  border-top:8px solid #343a36;
 }
 .atsrs-date-picker-dialog.place-above::after{
   bottom:-7px;
-  border-top:8px solid #081521;
+  border-top:8px solid #0b0d0c;
 }
 .atsrs-date-picker-kicker{
   display:none;
@@ -90,13 +90,13 @@ dialog.atsrs-date-picker-host{
   border-radius:8px!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#aebfcd!important;
+  color:#aeb8b3!important;
   font-size:20px!important;
 }
 .atsrs-date-picker-nav button:hover,
 .atsrs-date-picker-nav button:focus-visible{
-  border-color:rgba(91,119,142,.48)!important;
-  background:rgba(148,163,184,.08)!important;
+  border-color:#454d49!important;
+  background:rgba(255,255,255,.08)!important;
   outline:none;
 }
 .atsrs-date-picker-month{
@@ -113,10 +113,10 @@ dialog.atsrs-date-picker-host{
   min-height:32px!important;
   margin:0!important;
   padding:5px 25px 5px 8px!important;
-  border:1px solid rgba(91,119,142,.34)!important;
+  border:1px solid #343a36!important;
   border-radius:8px!important;
-  background-color:rgba(13,28,43,.72)!important;
-  color:#d9e4ec!important;
+  background-color:#050606!important;
+  color:#e5ebe7!important;
   box-shadow:none!important;
   font-size:12px!important;
   font-weight:800!important;
@@ -127,7 +127,7 @@ dialog.atsrs-date-picker-host{
 .atsrs-date-picker-month select[data-date-year]{width:78px!important}
 .atsrs-date-picker-month select:hover,
 .atsrs-date-picker-month select:focus-visible{
-  border-color:rgba(134,160,183,.62)!important;
+  border-color:#59635e!important;
   outline:2px solid rgba(134,239,172,.35)!important;
   outline-offset:1px!important;
 }
@@ -139,7 +139,7 @@ dialog.atsrs-date-picker-host{
 }
 .atsrs-date-picker-weekdays span{
   padding:4px 0 6px;
-  color:#7890a6;
+  color:#87938d;
   text-align:center;
   font-size:10px;
   font-weight:800;
@@ -156,18 +156,18 @@ dialog.atsrs-date-picker-host{
   border-radius:8px!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#c9d7e3!important;
+  color:#d7dfdb!important;
   font-size:12px!important;
   font-weight:700!important;
 }
 .atsrs-date-picker-days button:hover,
 .atsrs-date-picker-days button:focus-visible{
-  border-color:rgba(148,163,184,.18)!important;
-  background:rgba(148,163,184,.08)!important;
+  border-color:rgba(255,255,255,.14)!important;
+  background:rgba(255,255,255,.08)!important;
   outline:none;
 }
 .atsrs-date-picker-days button.today{
-  border-color:rgba(148,163,184,.52)!important;
+  border-color:#66716b!important;
 }
 .atsrs-date-picker-days button.selected{
   border-color:rgba(134,239,172,.62)!important;
@@ -178,7 +178,7 @@ dialog.atsrs-date-picker-host{
 .atsrs-date-picker-selection{
   min-height:17px;
   margin:7px 0 0;
-  color:#93a9bc;
+  color:#9aa6a0;
   font-size:10px;
   text-align:center;
 }
@@ -188,7 +188,7 @@ dialog.atsrs-date-picker-host{
   gap:5px;
   margin-top:8px;
   padding-top:8px;
-  border-top:1px solid rgba(91,119,142,.22);
+  border-top:1px solid #2a2f2d;
 }
 .atsrs-date-picker-actions button{
   min-height:32px!important;
@@ -197,12 +197,12 @@ dialog.atsrs-date-picker-host{
   border-radius:8px!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#9eb0bf!important;
+  color:#aeb8b3!important;
   font-size:11px!important;
 }
 .atsrs-date-picker-actions button:hover,
 .atsrs-date-picker-actions button:focus-visible{
-  background:rgba(148,163,184,.08)!important;
+  background:rgba(255,255,255,.08)!important;
   color:#e8eef3!important;
   outline:none;
 }

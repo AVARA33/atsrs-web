@@ -90,7 +90,8 @@
       '</div>';
     document.body.appendChild(picker);
     picker.addEventListener('click',onPickerClick);
-    picker.addEventListener('change',onPickerChange);
+    picker.querySelector('[data-date-month]').addEventListener('change',onPickerChange);
+    picker.querySelector('[data-date-year]').addEventListener('change',onPickerChange);
     return picker;
   }
   function positionPicker(){
