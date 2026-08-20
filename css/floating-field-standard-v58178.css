@@ -192,3 +192,10 @@ html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="
 }
 html body #app .atsrs-field-shell .jobs-search-control>input{padding-left:8px!important}
 html body #app .atsrs-field-shell.atsrs-field-textarea textarea{height:auto!important;min-height:94px!important;padding-top:14px!important}
+html[data-theme] body #app.app .atsrs-field-shell:focus-within,
+html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open]){
+  border-color:var(--atsrs-field-accent)!important;
+  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+}
+html[data-theme] body #app.app .atsrs-field-shell:focus-within>.atsrs-field-label,
+html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open])>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
