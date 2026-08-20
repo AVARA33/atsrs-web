@@ -10,8 +10,8 @@ const theme = fs.readFileSync(path.join(root, 'css', 'theme.css'), 'utf8');
 const workspaceCss = fs.readFileSync(path.join(root, 'css', 'workspace-surface-standard-v519.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personnel-card-action-ownership-harness.html'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5813"/);
-assert.match(index, /css\/talent-directory\.css\?v=573/);
+assert.match(index, /data-atsrs-build="V5814"/);
+assert.match(index, /css\/talent-directory\.css\?v=574/);
 assert.match(index, /css\/theme\.css\?v=58161/);
 assert.match(index, /css\/workspace-surface-standard-v519\.css\?v=520/);
 assert.match(index, /js\/talent-directory\.js\?v=574/);
@@ -32,10 +32,16 @@ for (const action of ['projects', 'open', 'remove']) {
 
 assert.match(css, /\.linked-personnel-card\{[^}]*display:grid[^}]*grid-template-rows:minmax\(0,1fr\) auto[^}]*overflow:hidden/,
   'the card border must contain both content and actions in normal grid flow');
-assert.match(css, /\.linked-personnel-card \.linked-personnel-actions\{[^}]*grid-template-columns:max-content minmax\(0,1fr\) max-content[^}]*width:100%/,
-  'the longer View Profile control must receive the flexible middle track');
-assert.match(css, /\.linked-personnel-cards\{[^}]*auto-fit[^}]*min\(100%,340px\)[^}]*align-items:stretch/,
-  'Personnel cards must use deliberate responsive width and equal-height grid stretching');
+assert.match(css, /\.linked-personnel-card \.linked-personnel-actions\{[^}]*grid-template-columns:repeat\(3,max-content\)[^}]*justify-content:end[^}]*width:100%/,
+  'desktop card actions must remain compact and align to the end of their owner');
+assert.match(css, /\.linked-personnel-card \.linked-personnel-actions button\{[^}]*width:auto!important/,
+  'desktop card action labels must not stretch into oversized controls');
+assert.match(css, /\.linked-personnel-cards\{[^}]*auto-fit[^}]*min\(100%,320px\),440px[^}]*align-items:stretch/,
+  'Personnel cards must use a compact responsive width and equal-height grid stretching');
+assert.match(css, /\.linked-personnel-card\{[^}]*min-height:200px/,
+  'Personnel cards must keep the compact desktop height contract');
+assert.match(css, /\.linked-personnel-card \.linked-personnel-actions button\{[^}]*min-height:34px!important/,
+  'desktop card actions must use the compact control height');
 assert.doesNotMatch(css, /\.linked-personnel-actions\{[^}]*min-width:max-content/,
   'shared action rows must not force overflow beyond their owner');
 assert.doesNotMatch(css, /\.linked-personnel-card(?:\s+\.linked-personnel-actions)?\{[^}]*position:absolute/,
