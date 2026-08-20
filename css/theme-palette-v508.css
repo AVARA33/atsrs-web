@@ -20,6 +20,13 @@
   --atsrs-ref-blue:#167bd3;
   --atsrs-ref-blue-strong:#0b5ca8;
   --atsrs-ref-cyan:#20aee5;
+  --atsrs-control-height:46px;
+  --atsrs-control-radius:10px;
+  --atsrs-control-gap:7px;
+  --atsrs-control-padding-x:14px;
+  --atsrs-control-padding-y:0px;
+  --atsrs-control-border-width:1px;
+  --atsrs-control-disabled-opacity:.48;
 }
 
 /* Dark reference: near-black system surfaces with logo-aligned green signals. */
@@ -65,6 +72,14 @@ html[data-theme="dark"] body{
   --v76-muted:var(--atsrs-ref-dark-muted);
   --v76-green:var(--atsrs-ref-lime);
   --v76-blue:var(--atsrs-ref-lime);
+  --atsrs-control-border:var(--atsrs-ref-dark-line);
+  --atsrs-control-background:#080a09;
+  --atsrs-control-text:var(--atsrs-ref-dark-text);
+  --atsrs-control-placeholder:#7f8a82;
+  --atsrs-control-hover-border:#4b5d52;
+  --atsrs-control-focus-border:var(--atsrs-ref-lime);
+  --atsrs-control-focus-ring:rgba(34,197,94,.42);
+  --atsrs-control-label:var(--atsrs-ref-dark-muted);
   background:linear-gradient(145deg,#050606 0%,#090b0a 58%,#050606 100%)!important;
   color:var(--atsrs-ref-dark-text)!important;
 }
@@ -94,8 +109,7 @@ html[data-theme="dark"] :where(.sidebar,.auth-card,.auth-intro,.card,.panel,.wor
   box-shadow:none!important;
 }
 html[data-theme="dark"] .sidebar{background:#070808!important}
-html[data-theme="dark"] :where(input,select,textarea){background:#080a09!important;border-color:#343a36!important;color:var(--atsrs-ref-dark-text)!important}
-html[data-theme="dark"] :where(input,select,textarea):focus{border-color:var(--atsrs-ref-lime)!important;box-shadow:0 0 0 3px rgba(34,197,94,.16)!important}
+html[data-theme="dark"] :where(input,select,textarea){background:var(--atsrs-control-background)!important;border-color:var(--atsrs-control-border)!important;color:var(--atsrs-control-text)!important}
 html[data-theme="dark"] :where(.pill,.auth-kicker,.mode-badge){background:transparent!important;border-color:#166534!important;color:var(--atsrs-ref-lime)!important;-webkit-text-fill-color:var(--atsrs-ref-lime)!important}
 html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button:hover{background:#101310!important;border-color:transparent!important;color:#86efac!important}
 html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{box-shadow:inset 3px 0 var(--atsrs-ref-lime)!important;color:var(--atsrs-ref-lime)!important;-webkit-text-fill-color:var(--atsrs-ref-lime)!important}
@@ -156,6 +170,14 @@ html[data-theme="light"] body{
   --v76-muted:var(--atsrs-ref-light-muted);
   --v76-green:var(--atsrs-ref-blue);
   --v76-blue:var(--atsrs-ref-cyan);
+  --atsrs-control-border:var(--atsrs-ref-light-line);
+  --atsrs-control-background:#fff;
+  --atsrs-control-text:var(--atsrs-ref-light-text);
+  --atsrs-control-placeholder:#6c7d93;
+  --atsrs-control-hover-border:#8fb5d8;
+  --atsrs-control-focus-border:var(--atsrs-ref-blue);
+  --atsrs-control-focus-ring:rgba(22,123,211,.38);
+  --atsrs-control-label:var(--atsrs-ref-light-muted);
   background:var(--atsrs-ref-light-bg)!important;
   color:var(--atsrs-ref-light-text)!important;
 }
@@ -209,8 +231,7 @@ html[data-theme="light"] :where(.sidebar,.auth-card,.auth-intro,.card,.panel,.wo
   box-shadow:0 12px 30px rgba(11,37,84,.085)!important;
 }
 html[data-theme="light"] .sidebar{background:rgba(255,255,255,.97)!important;box-shadow:none!important}
-html[data-theme="light"] :where(input,select,textarea){background:#fff!important;border-color:#c7d2e2!important;color:var(--atsrs-ref-light-text)!important}
-html[data-theme="light"] :where(input,select,textarea):focus{border-color:var(--atsrs-ref-blue)!important;box-shadow:0 0 0 3px rgba(20,115,210,.14)!important}
+html[data-theme="light"] :where(input,select,textarea){background:var(--atsrs-control-background)!important;border-color:var(--atsrs-control-border)!important;color:var(--atsrs-control-text)!important}
 html[data-theme="light"] :where(.pill,.auth-kicker,.mode-badge){background:transparent!important;border-color:#9ec2e7!important;color:var(--atsrs-ref-blue-strong)!important;-webkit-text-fill-color:var(--atsrs-ref-blue-strong)!important}
 html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav button{color:#425978!important}
 html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav button:hover{background:#edf4fb!important;border-color:transparent!important;color:var(--atsrs-ref-blue-strong)!important}
@@ -260,8 +281,50 @@ html[data-theme="dark"] :where(.callout,.contact-card,.legal-callout,.legal-cont
 html[data-theme="dark"] :where(.eyebrow,.legal-eyebrow){color:var(--atsrs-ref-lime)!important;border-color:#166534!important}
 html[data-theme="light"] :where(.eyebrow,.legal-eyebrow){color:var(--atsrs-ref-blue-strong)!important;border-color:#9ec2e7!important}
 
-/* Preserve semantic warning/danger colours and make keyboard focus unmistakable. */
-html[data-theme="dark"] :focus-visible{outline-color:var(--atsrs-ref-lime)!important}
-html[data-theme="light"] :focus-visible{outline-color:var(--atsrs-ref-blue)!important}
+/* Canonical, non-shifting control and keyboard-focus system. */
+html[data-theme] body :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea
+){
+  box-sizing:border-box;
+  border-width:var(--atsrs-control-border-width)!important;
+  border-style:solid!important;
+  border-color:var(--atsrs-control-border)!important;
+  background-color:var(--atsrs-control-background)!important;
+  color:var(--atsrs-control-text)!important;
+  transition:border-color .14s ease,background-color .14s ease,color .14s ease!important;
+}
+html[data-theme] body :where(input,textarea)::placeholder{color:var(--atsrs-control-placeholder)!important;opacity:1}
+html[data-theme] body :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea
+):hover{border-color:var(--atsrs-control-hover-border)!important}
+html[data-theme] body :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea
+):focus{
+  border-color:var(--atsrs-control-focus-border)!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+html[data-theme] body :where(
+  button,
+  a[href],
+  input:not([type="hidden"]),
+  select,
+  textarea,
+  [role="button"],
+  [role="option"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus-visible{
+  outline:2px solid var(--atsrs-control-focus-border)!important;
+  outline-offset:2px!important;
+  box-shadow:none!important;
+}
+html[data-theme] body :where(input,select,textarea,button):disabled{opacity:var(--atsrs-control-disabled-opacity)}
 
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}

@@ -9,7 +9,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'native-select-theme-v539.css
 const js = fs.readFileSync(path.join(root, 'js', 'select-standard.js'), 'utf8');
 
 test('shared dropdown standard loads after the theme layer', () => {
-  assert.match(index, /native-select-theme-v539\.css\?v=58160/);
+  assert.match(index, /native-select-theme-v539\.css\?v=58168/);
   assert.match(index, /theme\.js\?v=577[\s\S]*select-standard\.js\?v=58163/);
 });
 
@@ -26,11 +26,14 @@ test('custom single-select replaces operating-system popup interaction', () => {
   assert.match(css, /\.atsrs-select-option/);
 });
 
-test('selected and interactive rows have distinct ATSRS green states', () => {
+test('selected and interactive rows use theme-aware subtle ATSRS states', () => {
   assert.match(css, /--atsrs-menu-accent:#22c55e/);
   assert.match(css, /--atsrs-menu-selected:rgba\(34,197,94,\.12\)/);
+  assert.match(css, /html\[data-theme="light"\] body\{[\s\S]*--atsrs-menu-accent:#167bd3/);
+  assert.match(css, /--atsrs-menu-hover:rgba\(22,123,211,\.07\)/);
   assert.match(css, /\[aria-selected="true"\]:not\(\[data-active\]\)/);
   assert.match(css, /\.atsrs-select-option\[data-active\]/);
+  assert.doesNotMatch(css, /\.atsrs-select-option\[data-active\][\s\S]*?background:var\(--atsrs-menu-accent\)!important/);
   assert.doesNotMatch(css, /#1473d2|#b8ff19|#9fe600/);
 });
 

@@ -4,16 +4,16 @@ const path=require('node:path');
 
 const root=path.resolve(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
-const css=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
+const css=fs.readFileSync(path.join(root,'css','theme-palette-v508.css'),'utf8');
 
-assert.match(index,/css\/shell-polish\.css\?v=506/,
-  'the neutral select focus stylesheet must bypass the previous cache');
-assert.match(css,/Select fields keep a visible keyboard focus without the green route accent/);
-assert.match(css,/Select fields keep[\s\S]*?#app\.app:not\(\.hidden\) select:focus-visible,[\s\S]*?outline:0!important;[\s\S]*?border-color:#4e7187!important;[\s\S]*?rgba\(56,189,248,\.12\)/,
-  'dark selects must use a quiet blue focus state instead of the green route accent');
-assert.match(css,/html\[data-theme="light"\][\s\S]*?#app\.app:not\(\.hidden\) select:focus-visible,[\s\S]*?border-color:#6f91ad!important;[\s\S]*?rgba\(47,111,178,\.12\)/,
-  'light selects must use the matching quiet blue focus state');
-assert.match(css,/body\.personal-mode #app\.app:not\(\.hidden\) > \.main > :is\([\s\S]*?#profilePage[\s\S]*?\) select:focus-visible\{[\s\S]*?outline:0!important;/,
-  'Personal route focus specificity must override the older green workspace outline');
+assert.match(index,/css\/theme-palette-v508\.css\?v=58168/,
+  'the canonical control palette must bypass the previous cache');
+assert.match(css,/Canonical, non-shifting control and keyboard-focus system/);
+assert.match(css,/html\[data-theme="dark"\] body\{[\s\S]*?--atsrs-control-focus-border:var\(--atsrs-ref-lime\)/,
+  'dark controls must use the ATSRS green focus token');
+assert.match(css,/html\[data-theme="light"\] body\{[\s\S]*?--atsrs-control-focus-border:var\(--atsrs-ref-blue\)/,
+  'light controls must use the ATSRS blue focus token');
+assert.match(css,/:focus-visible\{[\s\S]*?outline:2px solid var\(--atsrs-control-focus-border\)!important;[\s\S]*?box-shadow:none!important/,
+  'keyboard focus must be theme-aware without changing control geometry');
 
-console.log('neutral select focus tests passed');
+console.log('theme-aware select focus tests passed');

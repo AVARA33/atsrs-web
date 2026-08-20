@@ -7,13 +7,17 @@ body{
   --atsrs-menu-accent:#22c55e;
   --atsrs-menu-accent-ink:#080a08;
   --atsrs-menu-selected:rgba(34,197,94,.12);
+  --atsrs-menu-hover:rgba(34,197,94,.08);
 }
 
 html[data-theme="light"] body{
   --atsrs-menu-surface:#ffffff;
-  --atsrs-menu-border:#cbd5d1;
-  --atsrs-menu-text:#132019;
-  --atsrs-menu-selected:rgba(34,197,94,.14);
+  --atsrs-menu-border:#c4d2e2;
+  --atsrs-menu-text:#0b2554;
+  --atsrs-menu-accent:#167bd3;
+  --atsrs-menu-accent-ink:#0b2554;
+  --atsrs-menu-selected:rgba(22,123,211,.08);
+  --atsrs-menu-hover:rgba(22,123,211,.07);
 }
 
 /* Safe native fallback. Supported single-selects are enhanced below so the
@@ -27,10 +31,10 @@ body select:not([multiple]) :where(option,optgroup){
   -webkit-text-fill-color:var(--atsrs-menu-text)!important;
 }
 body select:not([multiple]) option:where(:checked,:hover,:focus,:active){
-  background-color:var(--atsrs-menu-accent)!important;
-  background-image:linear-gradient(var(--atsrs-menu-accent),var(--atsrs-menu-accent))!important;
-  color:var(--atsrs-menu-accent-ink)!important;
-  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  background-color:var(--atsrs-menu-hover)!important;
+  background-image:none!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
 }
 
 /* Shared custom single-select. The source select remains the value/form
@@ -115,9 +119,10 @@ body .atsrs-select-option[aria-selected="true"]:not([data-active]){
 body .atsrs-select-option[data-active],
 body .atsrs-select-option:hover,
 body .atsrs-select-option:focus-visible{
-  background:var(--atsrs-menu-accent)!important;
-  color:var(--atsrs-menu-accent-ink)!important;
-  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  background:var(--atsrs-menu-hover)!important;
+  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
   outline:0!important;
 }
 body .atsrs-select-option:disabled{
@@ -131,8 +136,8 @@ body .atsrs-select-option-check{
 }
 body .atsrs-select-option[data-active] .atsrs-select-option-check,
 body .atsrs-select-option:hover .atsrs-select-option-check{
-  color:var(--atsrs-menu-accent-ink)!important;
-  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  color:var(--atsrs-menu-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-accent)!important;
 }
 body .personnel-select-shell:has(.atsrs-custom-select)>.personnel-filter-arrow{
   display:none!important;
@@ -183,9 +188,10 @@ body #app :where(
   .talent-work-type-filter .work-type-options label:hover,
   .talent-work-type-filter .work-type-options label:focus-within
 ){
-  background:var(--atsrs-menu-accent)!important;
-  color:var(--atsrs-menu-accent-ink)!important;
-  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  background:var(--atsrs-menu-hover)!important;
+  box-shadow:inset 3px 0 var(--atsrs-menu-accent)!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
   outline:0!important;
 }
 body #app :where(
@@ -198,6 +204,6 @@ body #app :where(
   .talent-work-type-filter .work-type-options label:hover,
   .talent-work-type-filter .work-type-options label:focus-within
 ) :where(span,strong,small){
-  color:var(--atsrs-menu-accent-ink)!important;
-  -webkit-text-fill-color:var(--atsrs-menu-accent-ink)!important;
+  color:var(--atsrs-menu-text)!important;
+  -webkit-text-fill-color:var(--atsrs-menu-text)!important;
 }
