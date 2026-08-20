@@ -11,6 +11,9 @@
   z-index:2147483646;
   pointer-events:none;
 }
+.atsrs-date-picker-open .atsrs-select-menu{
+  z-index:2147483647!important;
+}
 .atsrs-date-picker.hidden{
   display:none!important;
 }

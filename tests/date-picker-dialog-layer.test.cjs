@@ -9,13 +9,14 @@ const script = fs.readFileSync(path.join(root, 'js', 'date-picker.js'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'css', 'date-picker.css'), 'utf8');
 
 test('date picker assets use the current cache version', () => {
-  assert.match(index, /css\/date-picker\.css\?v=504/);
-  assert.match(index, /js\/date-picker\.js\?v=504/);
+  assert.match(index, /css\/date-picker\.css\?v=505/);
+  assert.match(index, /js\/date-picker\.js\?v=505/);
 });
 
 test('calendar controls use neutral dark surfaces and direct month/year change handling', () => {
   assert.match(styles, /\.atsrs-date-picker-dialog\{[\s\S]*?border:1px solid #343a36;[\s\S]*?background:#0b0d0c;/);
   assert.match(styles, /\.atsrs-date-picker-month select\{[\s\S]*?background-color:#050606!important;/);
+  assert.match(styles, /\.atsrs-date-picker-open \.atsrs-select-menu\{[\s\S]*?z-index:2147483647!important;/);
   assert.match(styles, /\.atsrs-date-picker-days button:hover,[\s\S]*?background:rgba\(255,255,255,\.08\)!important/);
   assert.match(script, /querySelector\('\[data-date-month\]'\)\.addEventListener\('input',onPickerChange\)/);
   assert.match(script, /querySelector\('\[data-date-year\]'\)\.addEventListener\('input',onPickerChange\)/);
