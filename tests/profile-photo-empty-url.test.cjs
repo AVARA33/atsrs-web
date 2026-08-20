@@ -34,7 +34,7 @@ assert.equal(api.allowedUrl('javascript:alert(1)'), '', 'unsafe avatar schemes m
 assert.equal(api.allowedUrl('https://cdn.example.test/avatar.webp'), 'https://cdn.example.test/avatar.webp');
 assert.equal(api.resolvedUrl({ avatarUrl: '', avatarPath: '', avatarSource: '' }), '',
   'an owner without a photo must not publish the site origin as avatar_url');
-assert.match(index, /data-atsrs-build="V5818"/);
+assert.match(index, /data-atsrs-build="V5819"/);
 assert.match(index, /js\/avatar\.js\?v=376/);
 
 console.log('Profile photo empty URL regression tests passed');

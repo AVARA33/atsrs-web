@@ -147,7 +147,8 @@
   function fieldProxy(control,shell){
     var disclosure=control.closest('.atsrs-disclosure-shell');
     var proxy=disclosure&&disclosure.querySelector('.atsrs-select-trigger');
-    if(!proxy&&control.closest('.jobs-select-host'))proxy=control;
+    var jobsHost=control.closest('.jobs-select-host');
+    if(!proxy&&jobsHost)proxy=jobsHost.querySelector('.jobs-select-toggle')||control;
     if(!proxy&&control.closest('.personnel-combobox'))proxy=control.closest('.personnel-combobox');
     if(!proxy)proxy=control;
     proxy.classList.add('atsrs-field-control');

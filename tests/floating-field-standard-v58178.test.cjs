@@ -7,10 +7,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5818"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58179/);
-assert.match(index, /floating-fields\.js\?v=58179/);
-assert.ok(index.indexOf('floating-fields.js?v=58179') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5819"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58180/);
+assert.match(index, /floating-fields\.js\?v=58180/);
+assert.ok(index.indexOf('floating-fields.js?v=58180') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
@@ -19,11 +19,13 @@ assert.match(runtime, /attributeFilter:\['data-theme'\]/);
 assert.match(runtime, /getComputedStyle\(node\)\.backgroundColor/);
 assert.match(runtime, /--atsrs-field-label-surface/);
 assert.match(runtime, /label\.htmlFor=control\.id/);
+assert.match(runtime, /jobsHost\.querySelector\('\.jobs-select-toggle'\)\|\|control/);
 assert.doesNotMatch(runtime, /document\.createElement\('label'\);[\s\S]{0,180}shell\.appendChild\(frame\)/, 'interactive frames must not be nested in generated labels');
 
 assert.match(css, /--atsrs-field-height:44px/);
 assert.match(css, /--atsrs-field-radius:10px/);
 assert.match(css, /align-self:start!important/);
+assert.match(css, /padding:12px var\(--atsrs-field-inline-padding\) 4px!important/);
 assert.match(css, /\.atsrs-field-shell:not\(\.atsrs-field-textarea\)[\s\S]*height:var\(--atsrs-field-height\)!important/);
 assert.match(css, /html\[data-theme="dark"\][\s\S]*--atsrs-field-accent:var\(--atsrs-brand-green,#22c55e\)/);
 assert.match(css, /html\[data-theme="light"\][\s\S]*--atsrs-field-accent:var\(--atsrs-light-blue,#2563eb\)/);

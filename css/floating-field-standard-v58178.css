@@ -85,7 +85,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   min-width:0!important;
   min-height:calc(var(--atsrs-field-height) - 2px)!important;
   margin:0!important;
-  padding:8px var(--atsrs-field-inline-padding)!important;
+  padding:12px var(--atsrs-field-inline-padding) 4px!important;
   border:0!important;
   border-radius:calc(var(--atsrs-field-radius) - 1px)!important;
   outline:0!important;
