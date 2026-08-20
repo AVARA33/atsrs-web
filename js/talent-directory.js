@@ -50,11 +50,34 @@
     return fallback;
   }
   function safeAvatar(value){
-    try{var parsed=new URL(String(value||''),location.origin);return parsed.protocol==='https:'?parsed.href:''}catch(error){return ''}
+    var text=String(value||'').trim();if(!text)return '';
+    try{var parsed=new URL(text,location.origin);return parsed.protocol==='https:'?parsed.href:''}catch(error){return ''}
+  }
+  function avatarInitials(profile){
+    var first=String(profile&&profile.name||'').trim().charAt(0);
+    var last=String(profile&&profile.surname||'').trim().charAt(0);
+    return (first+last||'?').toUpperCase();
   }
   function avatarMarkup(profile){
-    var url=safeAvatar(profile&&profile.avatar_url),letters=safe((profile&&profile.name||'?').charAt(0)+(profile&&profile.surname||'').charAt(0));
-    return '<div class="talent-avatar" aria-hidden="true">'+(url?'<img src="'+safe(url)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':letters)+'</div>';
+    var url=safeAvatar(profile&&profile.avatar_url),letters=safe(avatarInitials(profile));
+    return '<div class="talent-avatar" aria-hidden="true"><span class="talent-avatar-initials">'+letters+'</span>'+
+      (url?'<img data-avatar-src="'+safe(url)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'')+'</div>';
+  }
+  function hydrateAvatarFallbacks(root){
+    if(!root||typeof root.querySelectorAll!=='function')return;
+    root.querySelectorAll('img[data-avatar-src]').forEach(function(image){
+      var url=safeAvatar(image.getAttribute('data-avatar-src'));
+      image.removeAttribute('data-avatar-src');
+      if(!url){image.remove();return}
+      image.addEventListener('load',function(){
+        if(image.parentElement)image.parentElement.classList.add('is-image-ready');
+      },{once:true});
+      image.addEventListener('error',function(){
+        if(image.parentElement)image.parentElement.classList.remove('is-image-ready');
+        image.remove();
+      },{once:true});
+      image.src=url;
+    });
   }
   function normalized(value){return String(value||'').trim().toLowerCase()}
   function unique(values){return Array.from(new Set(values.filter(Boolean))).sort(function(a,b){return a.localeCompare(b)})}
@@ -467,6 +490,7 @@
             '<span class="linked-personnel-actions" data-label="Actions"><button type="button" class="secondary" data-linked-projects="'+safe(profile.user_id)+'">Projects</button><button type="button" class="secondary" data-linked-open="'+safe(profile.user_id)+'">View Profile</button><button type="button" class="secondary is-remove" data-linked-remove="'+safe(profile.user_id)+'">Remove</button></span></div>';
         }).join('')+'</div>';
     }
+    hydrateAvatarFallbacks(list);
   }
   function renderLinkedPersonnel(){
     return renderLinkedPersonnelModern();
@@ -697,6 +721,7 @@
             '<div class="talent-action-panel talent-list-action-panel hidden" id="'+summaryPanelId+'"></div></div>';
         }).join('')+'</div>';
       bindCandidateListActions(grid);
+      hydrateAvatarFallbacks(grid);
       return;
     }
     grid.innerHTML=visible.map(function(profile){var active=activity(profile),work=availability(profile),readiness=profileReadiness(profile);return '<article class="talent-card">'+
@@ -705,6 +730,7 @@
       '<div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div>'+
       '<dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent')+'</dd></div></dl>'+
       '<button type="button" class="secondary talent-view" data-talent-id="'+safe(profile.user_id)+'">View Profile</button></article>'}).join('');
+    hydrateAvatarFallbacks(grid);
     grid.querySelectorAll('.talent-view').forEach(function(button){button.onclick=function(){openProfile(button.dataset.talentId)}});
   }
   function render(){
@@ -716,6 +742,7 @@
     var modal=document.createElement('div');modal.id='atsrsTalentModal';modal.className='talent-modal';
     modal.innerHTML='<button type="button" class="talent-modal-backdrop" aria-label="Close"></button><div class="talent-modal-card" role="dialog" aria-modal="true" aria-labelledby="talentModalName"><button type="button" class="talent-modal-close" aria-label="Close">&times;</button>'+avatarMarkup(profile)+'<span class="talent-presence is-'+active.key+'"><i></i>'+safe(active.label)+'</span><h3 id="talentModalName">'+safe(profile.name+' '+profile.surname)+'</h3><p class="talent-role">'+safe(profile.position)+'</p><div class="talent-work-status is-'+safe(work.key)+'"><b>'+safe(work.label)+'</b><span>'+safe(work.detail)+'</span></div><dl><div><dt>Country</dt><dd>'+safe(profile.country)+'</dd></div><div><dt>Current workplace</dt><dd>'+safe(profile.company||'Independent')+'</dd></div></dl><h4 class="talent-official-title">Official profile details</h4>'+officialDetailsMarkup(profile)+'<div class="talent-profile-actions"><button type="button" class="secondary" data-talent-action="message">Send Message</button><button type="button" class="secondary" data-talent-action="summary">Document Summary</button><button type="button" class="secondary" data-talent-action="cv">View CV</button><button type="button" class="secondary talent-add-personnel'+(isLinked?' is-remove':'')+'" data-talent-action="personnel">'+(isLinked?'Remove from Personnel':'Add to Personnel')+'</button></div><div class="talent-action-panel hidden" id="talentActionPanel"></div><p class="talent-privacy-note">Contact details remain controlled by ATSRS. Official fields show only the profile data the candidate has provided; document access still requires separate permission.</p></div>';
     document.body.appendChild(modal);
+    hydrateAvatarFallbacks(modal);
     activeActionPanel=modal.querySelector('#talentActionPanel');
     modal.querySelectorAll('.talent-modal-backdrop,.talent-modal-close').forEach(function(button){button.onclick=function(){if(activeActionPanel&&modal.contains(activeActionPanel))activeActionPanel=null;modal.remove()}});
     modal.querySelector('[data-talent-action="message"]').onclick=function(){showMessageForm(profile)};
