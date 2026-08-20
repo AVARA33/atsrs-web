@@ -522,9 +522,6 @@ Deno.serve(async (req) => {
     .eq("user_id", targetUserId)
     .maybeSingle();
   if (!profile) return json(404, { error: "This profile is unavailable." });
-  const certificateFiles = await persistedCertificateFileIds(admin, targetUserId);
-  if (certificateFiles.error) return json(500, { error: "Candidate eligibility could not be verified." });
-  if (!certificateFiles.ids.length) return json(404, { error: "This profile has not uploaded a certificate." });
 
   const isPublicProfile = profile.discoverable === true && profile.profile_visibility === "Public";
   if (!isPublicProfile) {
@@ -533,12 +530,17 @@ Deno.serve(async (req) => {
       .select("id")
       .eq("company_user_id", user.id)
       .eq("professional_user_id", targetUserId)
+      .eq("status", "linked")
       .maybeSingle();
     if (personnelLinkError) return json(500, { error: "Profile access could not be verified." });
     if (!personnelLink || action === "add_to_personnel") {
       return json(404, { error: "This profile is unavailable." });
     }
   }
+
+  const certificateFiles = await persistedCertificateFileIds(admin, targetUserId);
+  if (certificateFiles.error) return json(500, { error: "Candidate eligibility could not be verified." });
+  if (!certificateFiles.ids.length) return json(404, { error: "This profile has not uploaded a certificate." });
 
   if (action === "add_to_personnel") {
     const now = new Date().toISOString();
