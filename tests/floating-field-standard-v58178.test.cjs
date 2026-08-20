@@ -11,7 +11,7 @@ const accountCss = fs.readFileSync(path.join(root, 'css', 'account.css'), 'utf8'
 const themeCss = fs.readFileSync(path.join(root, 'css', 'theme.css'), 'utf8');
 const themePaletteCss = fs.readFileSync(path.join(root, 'css', 'theme-palette-v508.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5829"/);
+assert.match(index, /data-atsrs-build="V5830"/);
 assert.match(index, /floating-field-standard-v58178\.css\?v=58189/);
 assert.match(index, /floating-fields\.js\?v=58187/);
 assert.ok(index.indexOf('floating-fields.js?v=58187') > index.indexOf('select-open-position.js'));
@@ -31,6 +31,7 @@ assert.match(accountCss, /\.atsrs-document-filter:not\(\.atsrs-field-shell\) inp
 assert.doesNotMatch(accountCss, /#certificatesPage \.atsrs-document-filter input\{[^}]*padding:/);
 assert.match(themeCss, /label:not\(\.atsrs-field-label\)/);
 assert.match(themePaletteCss, /label:not\(\.atsrs-field-label\)/);
+assert.match(themePaletteCss, /html\[data-theme="light"\] body\.personal-mode #app\.app:not\(\.hidden\) > \.main\{\s*background:#f6f8fb!important/);
 assert.match(css, /--field-search-suffix:54px/);
 assert.match(css, /search-cancel-button\{margin-right:24px\}/);
 assert.doesNotMatch(css, /!important/, 'canonical field CSS must resolve cascade without !important');
@@ -54,4 +55,4 @@ assert.match(css, /grid-template-columns:minmax\(84px,112px\) minmax\(0,1fr\)/);
 assert.match(css, /\.phone-field>select\{[\s\S]*clip-path:inset\(50%\)/);
 assert.match(css, /\.phone-field>input:not\(\[type="hidden"\]\)\{grid-column:2;grid-row:1/);
 
-console.log('V5829 canonical soft field contracts passed');
+console.log('V5830 canonical soft field contracts passed');

@@ -189,8 +189,11 @@ html[data-theme="light"] body #app.app:not(.hidden){
   --atsrs-shell-accent-border:#a9c9e9;
 }
 
-html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main{
+html[data-theme="light"] body.company-mode #app.app:not(.hidden) > .main{
   background:var(--atsrs-ref-light-bg)!important;
+}
+html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main{
+  background:#f6f8fb!important;
 }
 
 html[data-theme="light"] #landingPage.atsrs-public-landing{
