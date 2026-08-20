@@ -46,6 +46,45 @@ final result: passed
 
 ---
 
+# Jobs dropdown neutral-state — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-19253252-4350-4acc-9a07-5e7a26f75133.png`
+- Implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\jobs-dropdown-neutral-local-20260820.png`
+- Combined focused comparison: `C:\Users\user\Documents\GitHub\atsrs-personal-launch-readiness\tests\artifacts\jobs-dropdown-neutral-comparison-20260820.png`
+- Source pixels: 2560 × 1528. Implementation: 2294 × 791 pixels at a 2294 × 791 CSS viewport and 1× capture density.
+- State: Jobs, dark theme, Company dropdown open, selected row and keyboard-active row both visible.
+
+## Full-view and focused comparison evidence
+
+The source shows the selected `All companies` row with a green-tinted fill, a solid green inset marker and a green scrollbar thumb. The implementation keeps the same dropdown dimensions, typography, spacing and keyboard state, but uses the existing neutral hover surface for both selected and active rows, removes the inset marker, and changes the scrollbar thumb to neutral gray. Computed styles confirmed all five Jobs dropdowns use the same neutral selected state.
+
+## Required fidelity surfaces
+
+- Fonts and typography: dropdown labels, option weights, line heights and wrapping are unchanged.
+- Spacing and layout rhythm: menu width, row padding, radii, scrolling and filter-grid geometry are unchanged.
+- Colors and visual tokens: green selected-row fill, marker and scrollbar are removed; dark and light modes use their existing neutral hover surfaces.
+- Image quality and asset fidelity: no image or icon assets were changed.
+- Copy and content: filter labels and option values are unchanged.
+
+## Findings and comparison history
+
+- Earlier P2: the green selected state and scrollbar competed with the page's primary brand accents.
+- Fix: selected and active rows now share `--jobs-filter-hover`, selected rows have no inset shadow, and the dark scrollbar uses `#5b6470`.
+- Post-fix evidence: dark selected/active rows compute to `rgba(148, 163, 184, 0.12)` with `box-shadow: none`; light rows compute to `rgba(15, 23, 42, 0.07)` with `box-shadow: none`.
+- No actionable P0, P1 or P2 findings remain.
+
+## Primary interactions and console
+
+- Company dropdown opened and keyboard-active movement remained visible.
+- All five selected-option states were inspected.
+- Browser console errors: none.
+- Focused Jobs contract tests: 11/11 passed.
+- Cloudflare build: passed, 133 files.
+
+final result: passed
+
+---
+
 # References → CV / Resume design QA
 
 ## Visual truth
