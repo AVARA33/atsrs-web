@@ -46,6 +46,37 @@ final result: passed
 
 ---
 
+# ATSRS Personal light workspace background — Design QA (V5830)
+
+## Evidence and normalized state
+
+- Source screenshot: `C:\Users\user\AppData\Local\Temp\codex-clipboard-9baad676-f759-4b76-818f-353bc652de19.png`
+- Production implementation: `C:\Users\user\.codex\visualizations\2026\08\21\atsrs-v5830-background-qa\security-light-v5830.png`
+- Combined source/implementation comparison: `C:\Users\user\.codex\visualizations\2026\08\21\atsrs-v5830-background-qa\source-vs-v5830.png`
+- Source browser chrome was removed before comparison. The source app area and implementation were compared at 3440 × 1193 pixels and 1× capture density.
+- State: Personal Account, Security, light theme, desktop viewport. Responsive verification also ran at 390 × 844.
+
+## Full-view and focused comparison evidence
+
+The source showed two visibly different light workspace surfaces: the upper content canvas was `#EEF2F8`, while the lower user-marked target area was `#F6F8FB`. V5830 applies the exact target `#F6F8FB` to the Personal light-mode main workspace, removing the horizontal color seam. The combined comparison confirms the Security content area and the lower canvas now read as one continuous surface.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged.
+- Spacing and layout rhythm: unchanged; desktop and 390 px responsive layouts retain zero horizontal overflow.
+- Colors and visual tokens: only the Personal light-mode main workspace changed from `#EEF2F8` to `#F6F8FB`.
+- Corporate light mode and all dark-mode surfaces: unchanged.
+- Image quality and asset fidelity: no image, icon, or generated asset was added or modified.
+- Copy and content: unchanged.
+
+## Findings and validation
+
+No actionable P0, P1, or P2 visual differences remain for the requested background correction. Production reports build marker V5830, Personal light main background `rgb(246, 248, 251)`, dark main background `rgb(5, 6, 6)`, zero horizontal overflow, and zero browser console errors. The focused contract test and the 137-file Cloudflare build passed.
+
+final result: passed
+
+---
+
 # Jobs dropdown neutral-state — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-19253252-4350-4acc-9a07-5e7a26f75133.png`
