@@ -174,9 +174,9 @@ html[data-theme="light"] body{
   --atsrs-control-background:#fff;
   --atsrs-control-text:var(--atsrs-ref-light-text);
   --atsrs-control-placeholder:#6c7d93;
-  --atsrs-control-hover-border:#8fb5d8;
-  --atsrs-control-focus-border:var(--atsrs-ref-blue);
-  --atsrs-control-focus-ring:rgba(22,123,211,.38);
+  --atsrs-control-hover-border:#93b4ee;
+  --atsrs-control-focus-border:var(--atsrs-light-blue,#2563eb);
+  --atsrs-control-focus-ring:rgba(37,99,235,.32);
   --atsrs-control-label:var(--atsrs-ref-light-muted);
   background:var(--atsrs-ref-light-bg)!important;
   color:var(--atsrs-ref-light-text)!important;

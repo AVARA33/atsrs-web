@@ -14,10 +14,10 @@ html[data-theme="light"] body{
   --atsrs-menu-surface:#ffffff;
   --atsrs-menu-border:#c4d2e2;
   --atsrs-menu-text:#0b2554;
-  --atsrs-menu-accent:#167bd3;
+  --atsrs-menu-accent:var(--atsrs-control-focus-border,#2563eb);
   --atsrs-menu-accent-ink:#0b2554;
-  --atsrs-menu-selected:rgba(22,123,211,.08);
-  --atsrs-menu-hover:rgba(22,123,211,.07);
+  --atsrs-menu-selected:rgba(37,99,235,.08);
+  --atsrs-menu-hover:rgba(37,99,235,.07);
 }
 
 /* Safe native fallback. Supported single-selects are enhanced below so the
