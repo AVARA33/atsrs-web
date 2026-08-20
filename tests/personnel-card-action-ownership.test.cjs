@@ -10,7 +10,7 @@ const theme = fs.readFileSync(path.join(root, 'css', 'theme.css'), 'utf8');
 const workspaceCss = fs.readFileSync(path.join(root, 'css', 'workspace-surface-standard-v519.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personnel-card-action-ownership-harness.html'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5815"/);
+assert.match(index, /data-atsrs-build="V5816"/);
 assert.match(index, /css\/talent-directory\.css\?v=575/);
 assert.match(index, /css\/theme\.css\?v=58161/);
 assert.match(index, /css\/workspace-surface-standard-v519\.css\?v=520/);

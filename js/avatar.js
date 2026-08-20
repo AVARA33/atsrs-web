@@ -37,7 +37,9 @@
     return values.slice(0,2).map(function(value){return String(value).charAt(0).toUpperCase()}).join('')||'A';
   }
   function allowedUrl(value){
-    try{var url=new URL(String(value||''),location.origin);return url.protocol==='https:'?url.href:''}catch(error){return ''}
+    var text=String(value||'').trim();
+    if(!text)return '';
+    try{var url=new URL(text,location.origin);return url.protocol==='https:'?url.href:''}catch(error){return ''}
   }
   function metadataPhoto(user){
     var metadata=user&&user.user_metadata||{};
