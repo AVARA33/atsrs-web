@@ -1,201 +1,97 @@
-/* ATSRS V58178: canonical floating-border field design for Personal and Corporate workspaces. */
+/* ATSRS canonical boxed-field standard. This file owns field visuals site-wide. */
 :root{
-  --atsrs-field-height:44px;
-  --atsrs-field-radius:10px;
-  --atsrs-field-border-width:1px;
-  --atsrs-field-label-size:10px;
-  --atsrs-field-label-offset:12px;
-  --atsrs-field-label-padding:6px;
-  --atsrs-field-inline-padding:12px;
+  --field-height:44px;
+  --field-radius:10px;
+  --field-label-size:10px;
+  --field-label-offset:12px;
+  --field-label-padding:6px;
+  --field-inline-padding:12px;
+  --field-search-suffix:54px;
+  --field-icon-size:16px;
 }
-
 html[data-theme="dark"]{
-  --atsrs-field-surface:var(--atsrs-ref-dark-surface,#0b0d0d);
-  --atsrs-field-line:var(--atsrs-ref-dark-line,#2a2f2d);
-  --atsrs-field-text:var(--atsrs-ref-dark-text,#f4f6ef);
-  --atsrs-field-muted:#91a09a;
-  --atsrs-field-accent:var(--atsrs-brand-green,#22c55e);
-  --atsrs-field-accent-ring:rgba(34,197,94,.16);
-  --atsrs-field-accent-shadow:rgba(34,197,94,.11);
+  --field-bg:var(--atsrs-ref-dark-surface,#0b0d0d);
+  --field-border:#252b28;
+  --field-shadow:0 0 0 1px rgba(126,145,136,.16),0 5px 14px rgba(0,0,0,.22);
+  --field-label:var(--atsrs-brand-green,#22c55e);
+  --field-focus:var(--atsrs-brand-green,#22c55e);
+  --field-focus-shadow:0 0 0 1px rgba(34,197,94,.72),0 6px 16px rgba(34,197,94,.10);
+  --field-text:var(--atsrs-ref-dark-text,#f4f6ef);
+  --field-placeholder:#87948f;
+  --field-icon:#a4b0ab;
+  --field-menu-bg:#090c0b;
+  --field-menu-hover:rgba(34,197,94,.08);
 }
 html[data-theme="light"]{
-  --atsrs-field-surface:#fff;
-  --atsrs-field-line:#aebdca;
-  --atsrs-field-text:#142c3f;
-  --atsrs-field-muted:#526b7e;
-  --atsrs-field-accent:var(--atsrs-light-blue,#2563eb);
-  --atsrs-field-accent-ring:rgba(37,99,235,.14);
-  --atsrs-field-accent-shadow:rgba(37,99,235,.12);
+  --field-bg:#fff;
+  --field-border:#b9c7d4;
+  --field-shadow:0 0 0 1px rgba(83,119,151,.16),0 5px 14px rgba(35,61,86,.10);
+  --field-label:var(--atsrs-light-blue,#2563eb);
+  --field-focus:var(--atsrs-light-blue,#2563eb);
+  --field-focus-shadow:0 0 0 1px rgba(37,99,235,.68),0 6px 16px rgba(37,99,235,.11);
+  --field-text:#142c3f;
+  --field-placeholder:#667b8e;
+  --field-icon:#526b7e;
+  --field-menu-bg:#fff;
+  --field-menu-hover:rgba(37,99,235,.07);
 }
-
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{
-  position:relative!important;
-  display:grid!important;
-  align-self:start!important;
-  align-items:center!important;
-  min-width:0!important;
-  min-height:var(--atsrs-field-height)!important;
-  margin-top:6px!important;
-  border:var(--atsrs-field-border-width) solid var(--atsrs-field-line)!important;
-  border-radius:var(--atsrs-field-radius)!important;
-  background:var(--atsrs-field-surface)!important;
-  background-image:none!important;
-  color:var(--atsrs-field-text)!important;
-  box-shadow:none!important;
-  transition:border-color .16s ease,box-shadow .16s ease!important;
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{
+  position:relative;display:grid;grid-template:minmax(0,1fr)/minmax(0,1fr);align-self:start;align-items:center;gap:0;
+  box-sizing:border-box;min-width:0;min-height:var(--field-height);margin-top:6px;border:1px solid var(--field-border);
+  border-radius:var(--field-radius);background:var(--field-bg);background-image:none;color:var(--field-text);
+  box-shadow:var(--field-shadow);transition:border-color .16s ease,box-shadow .16s ease;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .atsrs-field-label{
-  position:absolute!important;
-  z-index:5!important;
-  top:0!important;
-  left:var(--atsrs-field-label-offset)!important;
-  width:auto!important;
-  max-width:calc(100% - 24px)!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0 var(--atsrs-field-label-padding)!important;
-  transform:translateY(-50%)!important;
-  border:0!important;
-  border-radius:0!important;
-  background:var(--atsrs-field-label-surface)!important;
-  background-image:none!important;
-  color:var(--atsrs-field-muted)!important;
-  font-size:var(--atsrs-field-label-size)!important;
-  font-weight:650!important;
-  line-height:14px!important;
-  letter-spacing:.01em!important;
-  text-transform:none!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  pointer-events:none!important;
-  box-shadow:none!important;
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:not(.atsrs-field-textarea){height:var(--field-height);max-height:var(--field-height)}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell>.atsrs-field-label{
+  position:absolute;z-index:5;top:0;left:var(--field-label-offset);width:auto;max-width:calc(100% - 24px);min-height:0;
+  margin:0;padding:0 var(--field-label-padding);transform:translateY(-50%);border:0;border-radius:0;
+  background:var(--atsrs-field-label-surface,var(--field-bg));background-image:none;color:var(--field-label);
+  font-size:var(--field-label-size);font-weight:700;line-height:14px;letter-spacing:.01em;text-transform:none;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:not(.atsrs-field-textarea){
-  height:var(--atsrs-field-height)!important;
-  max-height:var(--atsrs-field-height)!important;
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle,.talent-work-type-filter>summary){
+  box-sizing:border-box;width:100%;height:calc(var(--field-height) - 2px);min-width:0;min-height:calc(var(--field-height) - 2px);
+  margin:0;padding:12px var(--field-inline-padding) 4px;border:0;border-radius:calc(var(--field-radius) - 1px);outline:0;
+  background:transparent;background-image:none;color:var(--field-text);-webkit-text-fill-color:var(--field-text);box-shadow:none;font:inherit;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
-  select,
-  textarea,
-  .atsrs-field-control,
-  .atsrs-select-trigger,
-  .talent-work-type-filter > summary,
-  .work-type-select-toggle
-){
-  width:100%!important;
-  min-width:0!important;
-  min-height:calc(var(--atsrs-field-height) - 2px)!important;
-  margin:0!important;
-  padding:12px var(--atsrs-field-inline-padding) 4px!important;
-  border:0!important;
-  border-radius:calc(var(--atsrs-field-radius) - 1px)!important;
-  outline:0!important;
-  background:transparent!important;
-  background-image:none!important;
-  color:var(--atsrs-field-text)!important;
-  -webkit-text-fill-color:var(--atsrs-field-text)!important;
-  box-shadow:none!important;
-  font:inherit!important;
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
+  position:relative;display:flex;align-items:center;box-sizing:border-box;width:100%;height:calc(var(--field-height) - 2px);
+  min-width:0;min-height:calc(var(--field-height) - 2px);margin:0;padding:0;border:0;border-radius:calc(var(--field-radius) - 1px);
+  outline:0;background:transparent;background-image:none;box-shadow:none;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
-  position:relative!important;
-  display:flex!important;
-  align-items:center!important;
-  width:100%!important;
-  min-width:0!important;
-  min-height:calc(var(--atsrs-field-height) - 2px)!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:calc(var(--atsrs-field-radius) - 1px)!important;
-  outline:0!important;
-  background:transparent!important;
-  background-image:none!important;
-  box-shadow:none!important;
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,textarea)::placeholder{color:var(--field-placeholder);opacity:1}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within,
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-open{border-color:var(--field-focus);box-shadow:var(--field-focus-shadow)}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus-visible{outline:0;box-shadow:none}
+/* Search suffix: text | native clear | magnifier. */
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-search-field :where(input[type="search"],input.atsrs-search-input){padding-right:var(--field-search-suffix)}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .atsrs-field-search-icon{
+  position:absolute;z-index:3;top:50%;right:12px;display:grid;place-items:center;width:var(--field-icon-size);height:var(--field-icon-size);
+  margin:0;transform:translateY(-50%);color:var(--field-icon);font-size:var(--field-icon-size);line-height:1;opacity:.82;pointer-events:none;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .jobs-search-control > i{margin-left:12px!important;color:var(--atsrs-field-muted)!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .jobs-search-control > input{padding-left:8px!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-disclosure-indicator,.personnel-filter-arrow,.work-type-select-arrow){right:12px!important;color:var(--atsrs-field-muted)!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .atsrs-select-trigger{padding-right:36px!important;text-align:left!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea{align-items:stretch!important;min-height:96px!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea textarea{min-height:94px!important;padding-top:14px!important;resize:vertical!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within{
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell input[type="search"]::-webkit-search-cancel-button{margin-right:24px}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-disclosure-indicator,.personnel-filter-arrow,.work-type-select-arrow,.jobs-select-toggle>i){
+  position:absolute;right:12px;top:50%;width:16px;height:16px;margin:0;transform:translateY(-50%);color:var(--field-icon);opacity:.86;pointer-events:none;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(.talent-work-type-filter[open]){
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
-}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within > .atsrs-field-label,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(.talent-work-type-filter[open]) > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus-visible{outline:0!important;box-shadow:none!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)){
-  border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.12)!important
-}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)) > .atsrs-field-label{color:#ef4444!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where(.is-success,[data-state="success"])) {border-color:#22a95b!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-disabled,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:disabled){opacity:.58!important;cursor:not-allowed!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-source-label{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell input:-webkit-autofill,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell textarea:-webkit-autofill{
-  -webkit-box-shadow:0 0 0 1000px var(--atsrs-field-surface) inset!important;
-  -webkit-text-fill-color:var(--atsrs-field-text)!important;
-  caret-color:var(--atsrs-field-text)!important;
-}
-
-/* Complex field families keep one border around the entire interactive shell. */
-body #app .atsrs-field-shell.phone-field{display:flex!important;padding-top:0!important}
-body #app .atsrs-field-shell.phone-field > .atsrs-field-label{display:block!important}
-body #app .atsrs-field-shell.phone-field :where(.phone-code-picker,input:not([type="hidden"])){border:0!important;background:transparent!important;box-shadow:none!important}
-body #app .atsrs-field-shell .personnel-combobox-toggle{position:absolute!important;right:0!important;top:0!important;width:38px!important;min-height:42px!important;border:0!important;background:transparent!important;box-shadow:none!important}
-
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .atsrs-select-trigger{padding-right:38px;text-align:left}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea{align-items:stretch;min-height:96px}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea textarea{height:auto;min-height:94px;padding-top:14px;resize:vertical}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)){border-color:#ef4444;box-shadow:0 0 0 1px rgba(239,68,68,.7),0 5px 14px rgba(239,68,68,.10)}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error))>.atsrs-field-label{color:#ef4444}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:disabled){opacity:.58;cursor:not-allowed}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-source-label{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell input:-webkit-autofill,
+html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--field-bg) inset;-webkit-text-fill-color:var(--field-text);caret-color:var(--field-text)}
+html body #app .atsrs-field-shell.phone-field{display:grid;grid-template-columns:auto minmax(0,1fr);padding-top:0}
+html body #app .atsrs-field-shell.phone-field>.atsrs-field-label{display:block}
+html body #app .atsrs-field-shell.phone-field :where(.phone-code-picker,input:not([type="hidden"])){border:0;background:transparent;box-shadow:none}
+html body #app .atsrs-field-shell.phone-field .phone-code-picker{width:auto;min-width:84px}
+html body #app .atsrs-field-shell.phone-field .phone-code-display{border-right:1px solid var(--field-border)}
+html body #app .atsrs-field-shell .personnel-combobox-toggle{position:absolute;right:0;top:0;width:38px;min-height:42px;border:0;background:transparent;box-shadow:none}
+html body :where(.jobs-select-menu,.personnel-combobox-options,.work-type-select-menu,.work-type-options,[role="listbox"]){border-color:var(--field-border);background:var(--field-menu-bg);color:var(--field-text)}
+html body :where(.jobs-select-option,.personnel-combobox-option,.work-type-select-option,[role="option"]):where(:hover,[data-active]){background:var(--field-menu-hover)}
 @media(max-width:620px){
-  :root{--atsrs-field-label-size:9px;--atsrs-field-label-offset:10px;--atsrs-field-label-padding:5px;--atsrs-field-inline-padding:10px}
-  body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .atsrs-field-label{max-width:calc(100% - 18px)!important}
+  :root{--field-label-size:9px;--field-label-offset:10px;--field-label-padding:5px;--field-inline-padding:10px}
+  html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell>.atsrs-field-label{max-width:calc(100% - 18px)}
 }
-@media(prefers-reduced-motion:reduce){body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{transition:none!important}}
-
-/* Canonical last-mile reset: legacy wrappers may retain two-row grids or their own 46px borders. */
-html body #app .atsrs-field-shell,
-html body #auth .atsrs-field-shell{
-  grid-template:minmax(0,1fr)/minmax(0,1fr)!important;
-  gap:0!important;
-}
-html body #app .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
-  width:100%!important;
-  height:calc(var(--atsrs-field-height) - 2px)!important;
-  min-height:calc(var(--atsrs-field-height) - 2px)!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  outline:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-html body #app .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle,.talent-work-type-filter>summary),
-html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea,.atsrs-field-control,.atsrs-select-trigger,.jobs-select-toggle,.work-type-select-toggle,.talent-work-type-filter>summary){
-  width:100%!important;
-  height:calc(var(--atsrs-field-height) - 2px)!important;
-  min-height:calc(var(--atsrs-field-height) - 2px)!important;
-  margin:0!important;
-  padding:12px var(--atsrs-field-inline-padding) 4px!important;
-  border:0!important;
-  outline:0!important;
-  border-radius:calc(var(--atsrs-field-radius) - 1px)!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-html body #app .atsrs-field-shell .jobs-search-control>input{padding-left:8px!important}
-html body #app .atsrs-field-shell.atsrs-field-textarea textarea{height:auto!important;min-height:94px!important;padding-top:14px!important}
-html[data-theme] body #app.app .atsrs-field-shell:focus-within,
-html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open]){
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
-}
-html[data-theme] body #app.app .atsrs-field-shell:focus-within>.atsrs-field-label,
-html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open])>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
+@media(prefers-reduced-motion:reduce){html body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{transition:none}}

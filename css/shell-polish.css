@@ -1024,7 +1024,7 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main > :is(
 }
 
 /* Personal contact numbers: one professional field with a dedicated country-code section. */
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   display:grid!important;
   grid-template-columns:minmax(136px,28%) minmax(0,1fr)!important;
   align-items:stretch!important;
@@ -1087,7 +1087,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   font-size:15px!important;
   line-height:1!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field > input:not([type="hidden"]){
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) > input:not([type="hidden"]){
   width:100%!important;
   min-width:0!important;
   height:46px!important;
@@ -1103,7 +1103,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
   font-size:15px!important;
   line-height:46px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   border-color:#5f8299!important;
   box-shadow:0 0 0 2px rgba(56,189,248,.12)!important;
 }
@@ -1113,7 +1113,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   min-width:142px!important;
   border-radius:12px!important;
 }
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   border-color:#cbd5e1!important;
   background:#fff!important;
 }
@@ -1125,17 +1125,17 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
   background:transparent!important;
 }
 html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-picker .phone-code-inline,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field > input:not([type="hidden"]){
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) > input:not([type="hidden"]){
   background:transparent!important;
   color:#172033!important;
   -webkit-text-fill-color:#172033!important;
 }
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   border-color:#6f91ad!important;
   box-shadow:0 0 0 2px rgba(47,111,178,.12)!important;
 }
 @media(max-width:520px){
-  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
     grid-template-columns:minmax(120px,34%) minmax(0,1fr)!important;
   }
   body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-display{
@@ -1151,7 +1151,7 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
 
 /* V485: compact phone controls and keep their open/focus states visually stable. */
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row{column-gap:24px!important}
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   grid-template-columns:132px minmax(0,1fr)!important;
   height:44px!important;min-height:44px!important;border-radius:12px!important;
 }
@@ -1171,15 +1171,15 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   display:block!important;place-self:center end!important;width:14px!important;height:14px!important;
   font-size:14px!important;line-height:14px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field > input:not([type="hidden"]){
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) > input:not([type="hidden"]){
   height:42px!important;min-height:42px!important;padding:0 15px!important;
   border-radius:0 11px 11px 0!important;font-size:15px!important;line-height:42px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field :focus,
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field :focus-visible{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) :focus,
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) :focus-visible{
   outline:0!important;outline-offset:0!important;box-shadow:none!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   border-color:#5f8299!important;box-shadow:0 0 0 1px rgba(95,130,153,.28)!important;
 }
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
@@ -1202,12 +1202,12 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-v
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-verification-note .inline-verify-btn{
   min-width:0!important;white-space:nowrap!important;
 }
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   border-color:#6f91ad!important;box-shadow:0 0 0 1px rgba(111,145,173,.24)!important;
 }
 @media(max-width:680px){body.personal-mode #profilePage #accountGeneralTab .profile-contact-row{row-gap:20px!important}}
 @media(max-width:520px){
-  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{grid-template-columns:124px minmax(0,1fr)!important}
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){grid-template-columns:124px minmax(0,1fr)!important}
   body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{width:124px!important;min-width:124px!important}
 }
 
@@ -1223,7 +1223,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-e
   font-size:12px!important;
   line-height:1.25!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   grid-template-columns:116px minmax(0,1fr)!important;
   height:46px!important;
   min-height:46px!important;
@@ -1253,7 +1253,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   line-height:42px!important;
   font-size:14px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field > input:not([type="hidden"]){
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) > input:not([type="hidden"]){
   height:44px!important;
   min-height:44px!important;
   padding:0 14px!important;
@@ -1261,8 +1261,8 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
   font-size:15px!important;
   line-height:44px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within,
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   border-color:#58768a!important;
   box-shadow:none!important;
 }
@@ -1319,7 +1319,7 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
   body.personal-mode #profilePage #accountGeneralTab .profile-contact-row{gap:20px!important}
 }
 @media(max-width:520px){
-  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
     grid-template-columns:112px minmax(0,1fr)!important;
   }
   body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
@@ -1329,7 +1329,7 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
 }
 
 /* V487: keep phone fields compact, neutral and visually unified in every state. */
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   grid-template-columns:124px minmax(0,1fr)!important;
   overflow:visible!important;
 }
@@ -1366,8 +1366,8 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   border-color:transparent!important;
   box-shadow:none!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within,
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   border-color:#58768a!important;
   outline:0!important;
   box-shadow:none!important;
@@ -1408,7 +1408,7 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
   background:#f7f9fc!important;
 }
 @media(max-width:520px){
-  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
     grid-template-columns:118px minmax(0,1fr)!important;
   }
   body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
@@ -1428,7 +1428,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row > .phone
   gap:7px!important;
   min-width:0!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   grid-template-columns:124px minmax(0,1fr)!important;
   width:100%!important;
   height:46px!important;
@@ -1475,7 +1475,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   font-size:14px!important;
   line-height:1!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field > input:not([type="hidden"]){
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell) > input:not([type="hidden"]){
   width:100%!important;
   height:44px!important;
   min-height:44px!important;
@@ -1487,8 +1487,8 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
   font-size:15px!important;
   line-height:44px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within,
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within{
   outline:0!important;
   border-color:#58768a!important;
   box-shadow:none!important;
@@ -1558,7 +1558,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-v
   font-size:11px!important;
   white-space:nowrap!important;
 }
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   border-color:#cbd7e2!important;
   background:#fff!important;
 }
@@ -1575,13 +1575,13 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
   }
 }
 @media(max-width:420px){
-  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
     grid-template-columns:118px minmax(0,1fr)!important;
   }
 }
 
 /* V489: use the real Phosphor caret only; remove the legacy CSS-drawn overlay. */
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
   grid-template-columns:112px minmax(0,1fr)!important;
 }
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-display{
@@ -1611,7 +1611,7 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   min-width:112px!important;
 }
 @media(max-width:420px){
-  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
+  body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:not(.atsrs-field-shell){
     grid-template-columns:108px minmax(0,1fr)!important;
   }
 }
@@ -1627,7 +1627,7 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   gap:8px!important;
   min-width:0!important;
 }
-body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field:not(.atsrs-field-shell){
   grid-template-columns:122px minmax(0,1fr)!important;
   width:100%!important;
   height:44px!important;
@@ -1677,7 +1677,7 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   height:14px!important;
   font-size:14px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field > input:not([type="hidden"]){
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:not(.atsrs-field-shell) > input:not([type="hidden"]){
   height:42px!important;
   min-height:42px!important;
   padding:0 12px!important;
@@ -1688,9 +1688,9 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   font-size:13.3333px!important;
   line-height:42px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:focus-within,
-body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus,
-body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus-visible{
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:not(.atsrs-field-shell):focus-within,
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:not(.atsrs-field-shell) :focus,
+body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:not(.atsrs-field-shell) :focus-visible{
   outline:0!important;
   border-color:#58768a!important;
   box-shadow:none!important;
@@ -1724,7 +1724,7 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   font-size:11px!important;
   line-height:1.4!important;
 }
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
+html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field:not(.atsrs-field-shell){
   border-color:#cbd7e2!important;
   background:#fff!important;
 }
@@ -1741,7 +1741,7 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab > .p
   }
 }
 @media(max-width:420px){
-  body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field{
+  body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row > .phone-entry > .phone-field:not(.atsrs-field-shell){
     grid-template-columns:116px minmax(0,1fr)!important;
   }
   body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-code-display{

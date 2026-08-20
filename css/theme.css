@@ -1037,56 +1037,12 @@ html[data-theme="light"] body #app #profilePage .profile-details-primary,
 html[data-theme="light"] body #app #profilePage .profile-details-secondary{
   gap:10px!important;
 }
-html[data-theme="light"] body #app #profilePage .profile-labeled-field > span,
-html[data-theme="light"] body #app #profilePage .phone-entry-label,
-html[data-theme="light"] body #app #profilePage .work-availability-grid > label > span,
-html[data-theme="light"] body #app #profilePage .work-type-field > span{
-  color:#5f7087!important;
-  -webkit-text-fill-color:#5f7087!important;
-  font-size:11px!important;
-  font-weight:600!important;
-}
-html[data-theme="light"] body #app #profilePage :where(
-  .profile-labeled-field>input,.profile-labeled-field>select,
-  .work-availability-grid input,.work-availability-grid select,
-  .phone-field
-){
-  height:36px!important;
-  min-height:36px!important;
-  border:1px solid #cbd5e1!important;
-  border-radius:10px!important;
-  background:#fff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] body #app #profilePage :where(
-  .profile-labeled-field>select,.work-availability-grid select
-){
-  padding-top:6px!important;
-  padding-bottom:6px!important;
-  line-height:20px!important;
-  color-scheme:light!important;
-}
 html[data-theme="light"] body #app #profilePage select option,
 html[data-theme="light"] body #app #profilePage select optgroup{
   background:#ffffff!important;
   color:#172033!important;
   -webkit-text-fill-color:#172033!important;
   color-scheme:light!important;
-}
-html[data-theme="light"] body #app #profilePage .phone-field input{
-  height:34px!important;
-  min-height:34px!important;
-  background:#fff!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage .phone-code-picker,
-html[data-theme="light"] body #app #profilePage .phone-code-display{
-  background:#f8fafc!important;
-  color:#172033!important;
-  -webkit-text-fill-color:#172033!important;
 }
 html[data-theme="light"] body #app #profilePage .phone-code-display{
   border-right:1px solid #dce4ed!important;
@@ -1161,15 +1117,6 @@ html[data-theme="light"] body #app #profilePage #accountGeneralTab #saveProfileB
 html[data-theme="light"] body #app #profilePage #accountGeneralTab #saveProfileBtn:hover{
   border-color:#64748b!important;
   background:#f1f5f9!important;
-}
-html[data-theme="light"] body #app #profilePage :where(input,select,textarea):-webkit-autofill{
-  -webkit-box-shadow:0 0 0 1000px #fff inset!important;
-  -webkit-text-fill-color:#172033!important;
-  caret-color:#172033!important;
-}
-html[data-theme="light"] body #app #profilePage :where(input,select,textarea):focus{
-  border-color:#2563eb!important;
-  box-shadow:0 0 0 3px rgba(37,99,235,.16)!important;
 }
 html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row){
   border-color:#dce4ed!important;

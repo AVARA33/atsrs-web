@@ -10,6 +10,7 @@ const storage=fs.readFileSync(path.join(root,'js','storage.js'),'utf8');
 const shellCss=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const shellRuntime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
 const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js'),'utf8');
+const fieldCss=fs.readFileSync(path.join(root,'css','floating-field-standard-v58178.css'),'utf8');
 
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
@@ -143,7 +144,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/e\.key==='ArrowDown'\|\|e\.key==='ArrowUp'/);
   assert.match(css,/\.jobs-select-option\[data-active\][^\{]*[\s\S]*?background:var\(--jobs-filter-hover\)!important/);
   assert.doesNotMatch(css,/\.jobs-select-option\[data-active[^\{]*\{[^}]*background:var\(--atsrs-(?:jobs-green-text|brand-green)/);
-  assert.match(css,/\.jobs-filters input:focus-visible[^\{]*\{border-color:var\(--jobs-filter-focus\)!important/);
+  assert.match(fieldCss,/\.atsrs-field-shell:focus-within[\s\S]*border-color:var\(--field-focus\)/);
   ['jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>assert.match(index,new RegExp(`id="${id}"[^>]*type="checkbox"`)));
   assert.match(runtime,/querySelectorAll\('#jobsSecondaryFilters'\)\.length!==1/);
   assert.match(runtime,/function uniqueValues\(/);
@@ -156,14 +157,14 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(220px,300px\) minmax\(220px,300px\) minmax\(180px,220px\) minmax\(280px,1fr\)/);
   assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;align-self:end;justify-content:flex-start[^}]*min-height:46px/);
   assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{justify-content:flex-start\}\}/);
-  assert.match(css,/\.jobs-secondary-field>span:first-child\{font-size:12px/);
-  assert.match(css,/\.jobs-filters input,\.jobs-filters select,\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:var\(--jobs-filter-height\)/);
+  assert.match(fieldCss,/--field-label-size:10px/);
+  assert.match(fieldCss,/\.atsrs-field-shell:not\(\.atsrs-field-textarea\)\{height:var\(--field-height\)/);
   assert.match(css,/\.jobs-filters #jobsClearFilters\{grid-area:clear\}/);
   assert.match(css,/\.jobs-filters #jobsClearFilters\{align-self:end;margin:0!important\}/);
   assert.match(css,/grid-template-areas:"search role location clear"/);
   assert.match(css,/@media\(max-width:1100px\)[\s\S]*grid-template-areas:"search search search" "role location clear"/);
   assert.match(css,/@media\(max-width:600px\)[\s\S]*grid-template-areas:"search" "role" "location" "clear"/);
-  assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer!important/);
+  assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer/);
   assert.match(css,/\.jobs-select-option\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check\{cursor:pointer\}/);
   assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*var\(--jobs-filter-focus\)/);
@@ -296,10 +297,10 @@ test('Jobs dropdown keeps selected rows completely unfilled',()=>{
   assert.match(css,/V58166:[\s\S]*?jobs-select-option\[aria-selected="true"\]\{[\s\S]*?background:transparent!important;[\s\S]*?box-shadow:none!important/);
   assert.doesNotMatch(css,/V58166:[\s\S]*?jobs-select-option\[aria-selected="true"\][^\{]*\{[^}]*background:(?!transparent)/);
   assert.match(css,/\.jobs-select-menu\{[^}]*scrollbar-color:#5b6470 #111512/);
-  assert.match(css,/\.jobs-select-toggle>i\{[^}]*width:16px[^}]*height:16px[^}]*flex:0 0 16px/);
+  assert.match(fieldCss,/\.jobs-select-toggle>i\)[^{]*\{[^}]*width:16px[^}]*height:16px/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:hover>i/);
   assert.match(index,/theme\.js\?v=577/);
-  assert.match(index,/select-standard\.js\?v=58163/);
+  assert.match(index,/select-standard\.js\?v=58164/);
   assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/control\.closest\('\.jobs-select-host'\)/);
   assert.match(fs.readFileSync(path.join(root,'js','select-standard.js'),'utf8'),/select\.closest\('\.jobs-select-host'\)/);
   assert.match(index,/shell-polish\.css\?v=58162/);

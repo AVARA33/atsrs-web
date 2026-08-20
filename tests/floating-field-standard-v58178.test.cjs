@@ -6,48 +6,40 @@ const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
+const jobs = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5824"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58185/);
-assert.match(index, /floating-fields\.js\?v=58185/);
-assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5825"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58186/);
+assert.match(index, /floating-fields\.js\?v=58186/);
+assert.ok(index.indexOf('floating-fields.js?v=58186') > index.indexOf('select-open-position.js'));
 
-assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
-assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
-assert.match(runtime, /new MutationObserver\(schedule\)/);
-assert.match(runtime, /attributeFilter:\['data-theme'\]/);
+for (const token of ['--field-bg','--field-border','--field-shadow','--field-label','--field-focus','--field-text','--field-placeholder','--field-icon','--field-radius','--field-height']) {
+  assert.ok(css.includes(token), `missing semantic token ${token}`);
+}
+assert.match(css, /html\[data-theme="dark"\][\s\S]*--field-label:var\(--atsrs-brand-green,#22c55e\)/);
+assert.match(css, /html\[data-theme="light"\][\s\S]*--field-label:var\(--atsrs-light-blue,#2563eb\)/);
+assert.match(css, /box-shadow:var\(--field-shadow\)/);
+assert.match(css, /box-shadow:var\(--field-focus-shadow\)/);
+assert.match(css, /background:var\(--atsrs-field-label-surface,var\(--field-bg\)\)/);
+assert.match(css, /height:var\(--field-height\)/);
+assert.match(css, /border-radius:var\(--field-radius\)/);
+assert.match(css, /\.atsrs-field-search-icon[\s\S]*right:12px/);
+assert.match(css, /--field-search-suffix:54px/);
+assert.match(css, /search-cancel-button\{margin-right:24px\}/);
+assert.doesNotMatch(css, /!important/, 'canonical field CSS must resolve cascade without !important');
+
+assert.match(runtime, /function ensureSearchSuffix\(shell,control\)/);
+assert.match(runtime, /iconHost\.appendChild\(icon\)/);
+assert.match(runtime, /shell\.classList\.add\('atsrs-search-field'\)/);
+assert.match(runtime, /attributeFilter:\['class','disabled','aria-label','aria-labelledby','aria-expanded','open'\]/);
 assert.match(runtime, /getComputedStyle\(node\)\.backgroundColor/);
 assert.match(runtime, /--atsrs-field-label-surface/);
-assert.match(runtime, /label\.htmlFor=control\.id/);
-assert.match(runtime, /jobsHost\.querySelector\('\.jobs-select-toggle'\)\|\|control/);
-assert.match(runtime, /function normalizeLegacyBox\(node,isControl\)/);
-assert.match(runtime, /style\.setProperty\('border','0','important'\)/);
-assert.match(runtime, /\.talent-work-type-filter > summary/);
-assert.match(runtime, /label\.textContent='Work type'/);
-assert.match(runtime, /v134_appraisal_filter:'Sort appraisals'/);
-assert.match(runtime, /if\(frame!==shell\)normalizeLegacyBox\(frame,false\)/);
-assert.doesNotMatch(runtime, /document\.createElement\('label'\);[\s\S]{0,180}shell\.appendChild\(frame\)/, 'interactive frames must not be nested in generated labels');
+assert.doesNotMatch(runtime, /normalizeLegacyBox/);
+assert.doesNotMatch(runtime, /style\.setProperty\([^\n]+important/);
+assert.doesNotMatch(jobs, /jobs-search-control i\{position:absolute;left:/);
 
-assert.match(css, /--atsrs-field-height:44px/);
-assert.match(css, /--atsrs-field-radius:10px/);
-assert.match(css, /align-self:start!important/);
-assert.match(css, /padding:12px var\(--atsrs-field-inline-padding\) 4px!important/);
-assert.match(css, /\.atsrs-field-shell:not\(\.atsrs-field-textarea\)[\s\S]*height:var\(--atsrs-field-height\)!important/);
-assert.match(css, /html\[data-theme="dark"\][\s\S]*--atsrs-field-accent:var\(--atsrs-brand-green,#22c55e\)/);
-assert.match(css, /html\[data-theme="light"\][\s\S]*--atsrs-field-accent:var\(--atsrs-light-blue,#2563eb\)/);
-assert.match(css, /transform:translateY\(-50%\)!important/);
-assert.match(css, /background:var\(--atsrs-field-label-surface\)!important/);
-assert.match(css, /\.atsrs-field-shell:focus-within/);
-assert.match(css, /input:-webkit-autofill/);
-assert.match(css, /@media\(max-width:620px\)/);
-assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
-assert.match(css, /grid-template:minmax\(0,1fr\)\/minmax\(0,1fr\)!important/);
-assert.match(css, /html body #app \.atsrs-field-shell[\s\S]*\.jobs-select-toggle/);
-assert.match(css, /0 8px 20px var\(--atsrs-field-accent-shadow\)/);
-assert.match(css, /html\[data-theme\] body #app\.app \.atsrs-field-shell:focus-within/);
-
-for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCompanyFilter', 'crewPositionFilter', 'crewStatusFilter']) {
+for (const id of ['jobsRoleFilter','jobsLocationFilter','crewSearch','crewCompanyFilter','crewPositionFilter','crewStatusFilter']) {
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V58178 site-wide floating field contracts passed');
+console.log('V5825 canonical soft field contracts passed');

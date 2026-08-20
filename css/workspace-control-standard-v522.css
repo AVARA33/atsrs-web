@@ -69,46 +69,8 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
   outline-offset:2px!important;
 }
 
-/* The entire account form uses the approved near-black field surface. */
-html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
-  select,
-  textarea,
-  .phone-field,
-  .phone-code-picker,
-  .work-type-select-toggle
-){
-  border-color:var(--atsrs-control-line)!important;
-  background:var(--atsrs-control-surface)!important;
-  background-image:none!important;
-  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
-  box-shadow:none!important;
-}
-
-html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountGeneralTab .profile-contact-row .phone-field :where(
-  input:not([type="hidden"]),
-  .phone-code-picker
-){
-  border:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-
 html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #accountGeneralTab .profile-contact-row .phone-code-display{
   border-color:var(--atsrs-control-line)!important;
-}
-
-html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
-  select,
-  textarea,
-  .phone-field,
-  .work-type-select-toggle
-):focus,
-html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(.phone-field,.phone-code-picker):focus-within{
-  outline:0!important;
-  border-color:var(--atsrs-control-accent)!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }
 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
@@ -165,30 +127,4 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
 html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:focus-visible{
   outline:2px solid var(--atsrs-control-accent)!important;
   outline-offset:2px!important;
-}
-
-/* Phone controls also have high-specificity legacy navy rules. Keep their shell unified. */
-html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field{
-  border-color:var(--atsrs-control-line)!important;
-  background:var(--atsrs-control-surface)!important;
-  background-image:none!important;
-  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
-  box-shadow:none!important;
-}
-
-html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field :where(
-  input:not([type="hidden"]),
-  .phone-code-picker,
-  .phone-code-display
-){
-  border-color:transparent!important;
-  background:transparent!important;
-  background-image:none!important;
-  color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
-  box-shadow:none!important;
-}
-
-html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:var(--atsrs-control-accent)!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }
