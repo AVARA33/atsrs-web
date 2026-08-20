@@ -21,7 +21,7 @@
   function eligible(control){
     if(!control||control.nodeType!==1||!control.matches(controlSelector))return false;
     if(control.closest('.atsrs-select-menu,.date-pop,.datepicker-popover,[role="listbox"]'))return false;
-    if(control.closest('.hidden,[hidden],[aria-hidden="true"]'))return false;
+    if(control.parentElement&&control.parentElement.closest('.hidden,[hidden],[aria-hidden="true"]'))return false;
     return true;
   }
   function labelValue(node){

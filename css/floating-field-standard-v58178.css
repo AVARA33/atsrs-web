@@ -69,6 +69,10 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .a
   pointer-events:none!important;
   box-shadow:none!important;
 }
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:not(.atsrs-field-textarea){
+  height:var(--atsrs-field-height)!important;
+  max-height:var(--atsrs-field-height)!important;
+}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(
   input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
   select,
