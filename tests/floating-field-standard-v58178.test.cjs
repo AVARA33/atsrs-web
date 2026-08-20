@@ -8,10 +8,10 @@ const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v581
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 const jobs = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5825"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58186/);
-assert.match(index, /floating-fields\.js\?v=58186/);
-assert.ok(index.indexOf('floating-fields.js?v=58186') > index.indexOf('select-open-position.js'));
+assert.match(index, /data-atsrs-build="V5826"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58187/);
+assert.match(index, /floating-fields\.js\?v=58187/);
+assert.ok(index.indexOf('floating-fields.js?v=58187') > index.indexOf('select-open-position.js'));
 
 for (const token of ['--field-bg','--field-border','--field-shadow','--field-label','--field-focus','--field-text','--field-placeholder','--field-icon','--field-radius','--field-height']) {
   assert.ok(css.includes(token), `missing semantic token ${token}`);
@@ -42,4 +42,4 @@ for (const id of ['jobsRoleFilter','jobsLocationFilter','crewSearch','crewCompan
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V5825 canonical soft field contracts passed');
+console.log('V5826 canonical soft field contracts passed');
