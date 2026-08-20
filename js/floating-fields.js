@@ -144,6 +144,18 @@
   function updateSurface(shell){
     if(shell&&shell.isConnected)shell.style.setProperty('--atsrs-field-label-surface',localSurface(shell));
   }
+  function normalizeLegacyBox(node,isControl){
+    if(!node||!node.style)return;
+    node.style.setProperty('height','calc(var(--atsrs-field-height) - 2px)','important');
+    node.style.setProperty('min-height','calc(var(--atsrs-field-height) - 2px)','important');
+    node.style.setProperty('margin','0','important');
+    node.style.setProperty('border','0','important');
+    node.style.setProperty('outline','0','important');
+    node.style.setProperty('background','transparent','important');
+    node.style.setProperty('box-shadow','none','important');
+    if(isControl)node.style.setProperty('padding','12px var(--atsrs-field-inline-padding) 4px','important');
+    else node.style.setProperty('padding','0','important');
+  }
   function fieldProxy(control,shell){
     var disclosure=control.closest('.atsrs-disclosure-shell');
     var proxy=disclosure&&disclosure.querySelector('.atsrs-select-trigger');
@@ -153,7 +165,8 @@
     if(!proxy)proxy=control;
     proxy.classList.add('atsrs-field-control');
     var frame=frameFor(control);
-    if(frame!==control)frame.classList.add('atsrs-field-control-frame');
+    if(frame!==control){frame.classList.add('atsrs-field-control-frame');normalizeLegacyBox(frame,false)}
+    if(proxy!==control)normalizeLegacyBox(proxy,true);
     shell.classList.toggle('atsrs-field-textarea',control.tagName==='TEXTAREA');
     shell.classList.toggle('atsrs-field-disabled',!!control.disabled);
   }
