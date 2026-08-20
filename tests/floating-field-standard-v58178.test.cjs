@@ -7,10 +7,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5819"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58180/);
-assert.match(index, /floating-fields\.js\?v=58180/);
-assert.ok(index.indexOf('floating-fields.js?v=58180') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5820"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58181/);
+assert.match(index, /floating-fields\.js\?v=58181/);
+assert.ok(index.indexOf('floating-fields.js?v=58181') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
@@ -35,6 +35,8 @@ assert.match(css, /\.atsrs-field-shell:focus-within/);
 assert.match(css, /input:-webkit-autofill/);
 assert.match(css, /@media\(max-width:620px\)/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
+assert.match(css, /grid-template:minmax\(0,1fr\)\/minmax\(0,1fr\)!important/);
+assert.match(css, /html body #app \.atsrs-field-shell[\s\S]*\.jobs-select-toggle/);
 
 for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCompanyFilter', 'crewPositionFilter', 'crewStatusFilter']) {
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
