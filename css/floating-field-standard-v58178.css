@@ -87,6 +87,10 @@ html body #app .atsrs-field-shell.phone-field>.atsrs-field-label{display:block}
 html body #app .atsrs-field-shell.phone-field :where(.phone-code-picker,input:not([type="hidden"])){border:0;background:transparent;box-shadow:none}
 html body #app .atsrs-field-shell.phone-field .phone-code-picker{width:100%;min-width:0}
 html body #app .atsrs-field-shell.phone-field .phone-code-display{border-right:1px solid var(--field-border)}
+html body #app .atsrs-field-shell.phone-field>select{
+  position:absolute;width:1px;height:1px;min-height:0;margin:-1px;padding:0;border:0;clip:rect(0,0,0,0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;
+}
+html body #app .atsrs-field-shell.phone-field>input:not([type="hidden"]){grid-column:2;grid-row:1;width:100%;min-width:0}
 html body #app .atsrs-field-shell .personnel-combobox-toggle{position:absolute;right:0;top:0;width:38px;min-height:42px;border:0;background:transparent;box-shadow:none}
 html body :where(.jobs-select-menu,.personnel-combobox-options,.work-type-select-menu,.work-type-options,[role="listbox"]){border-color:var(--field-border);background:var(--field-menu-bg);color:var(--field-text)}
 html body :where(.jobs-select-option,.personnel-combobox-option,.work-type-select-option,[role="option"]):where(:hover,[data-active]){background:var(--field-menu-hover)}
