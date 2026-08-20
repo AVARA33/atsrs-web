@@ -1,0 +1,41 @@
+/* ATSRS V58174 — cache-safe neutral selected and grey hover states. */
+body{
+  --atsrs-menu-selected:transparent!important;
+  --atsrs-menu-hover:rgba(255,255,255,.08)!important;
+}
+html[data-theme="light"] body{
+  --atsrs-menu-selected:transparent!important;
+  --atsrs-menu-hover:rgba(15,23,42,.07)!important;
+}
+body .atsrs-select-option[aria-selected="true"]:not([data-active]){
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body .atsrs-select-option[data-active],
+body .atsrs-select-option:hover,
+body .atsrs-select-option:focus-visible{
+  background:var(--atsrs-menu-hover)!important;
+  box-shadow:none!important;
+}
+body #app :where(
+  .personnel-combobox-options button[aria-selected="true"],
+  .work-type-select-option[aria-selected="true"],
+  .phone-code-option[aria-selected="true"],
+  .talent-work-type-filter .work-type-options label:has(input:checked)
+){
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body #app :where(
+  .personnel-combobox-options button:hover,
+  .personnel-combobox-options button:focus-visible,
+  .work-type-select-option:hover,
+  .work-type-select-option:focus-visible,
+  .phone-code-option:hover,
+  .phone-code-option:focus-visible,
+  .talent-work-type-filter .work-type-options label:hover,
+  .talent-work-type-filter .work-type-options label:focus-within
+){
+  background:var(--atsrs-menu-hover)!important;
+  box-shadow:none!important;
+}
