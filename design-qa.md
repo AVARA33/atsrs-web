@@ -46,6 +46,49 @@ final result: passed
 
 ---
 
+# Jobs active pagination V5846 — Design QA
+
+- Source visual truth: `tests/artifacts/jobs-pagination-v5846/source/jobs-dark-active-before.png`
+- Implementation screenshot: `tests/artifacts/jobs-pagination-v5846/implementation/jobs-dark-active-after.png`
+- Combined comparison: `tests/artifacts/jobs-pagination-v5846/visual-comparison.png`
+- Responsive evidence: `tests/artifacts/jobs-pagination-v5846/implementation/jobs-dark-tablet-768.png` and `tests/artifacts/jobs-pagination-v5846/implementation/jobs-dark-mobile-390.png`
+- Light regression evidence: `tests/artifacts/jobs-pagination-v5846/implementation/jobs-light-active-unchanged.png`
+- Source and desktop implementation: 1265 × 712 pixels at matching 1265 × 712 CSS viewport and 1× density. Tablet: 753 × 882 capture from a 768 × 900 viewport. Mobile: 375 × 812 capture from a 390 × 844 viewport.
+- State: Jobs cards view, page 1 active; dark normal and keyboard-focus states, plus unchanged light state.
+
+## Full-view and focused comparison evidence
+
+The combined comparison shows the former solid 38 × 38 green block beside the refined 34 × 34 active page treatment. The implementation preserves the original 38 px layout track with 2 px inline margins, so adjacent pagination items do not shift. Computed styles confirm neutral `rgb(42,47,45)` top/bottom borders, green `rgb(34,197,94)` left/right borders, dark `rgb(11,13,13)` background and the shared ATSRS side-edge shadow. The pagination control is sufficiently clear in the full-view capture; computed border-side, size, spacing and focus measurements provide the focused-region evidence.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing pagination family, 12 px size, 800 weight and line-height remain unchanged; only the active foreground changes to the shared ATSRS green token.
+- Spacing and layout rhythm: active visual size is 34 × 34 desktop/tablet and 32 × 32 mobile; margins preserve the prior occupied width and the surrounding navigation height.
+- Colors and visual tokens: the active state reuses `--atsrs-field-surface`, `--atsrs-field-focus-block-line`, `--atsrs-field-focus-inline-line`, `--atsrs-field-accent` and `--atsrs-field-focus-shadow`.
+- Image quality and asset fidelity: no images, logos or icons were changed or approximated.
+- Copy and content: page numbers, Previous, Next and ellipsis content remain unchanged.
+
+## Findings
+
+No actionable P0, P1 or P2 differences remain. The active item is lighter, compact and visually related to the approved dark field standard without a solid green fill or uniform neon perimeter.
+
+## Comparison history
+
+- Earlier finding: the current page used a solid bright-green 38 × 38 block with no border or depth treatment.
+- Fix: replaced only the dark active state with shared ATSRS field tokens, reduced its visible dimensions while preserving its layout footprint, and retained an explicit neutral keyboard outline.
+- Post-fix evidence: desktop/tablet/mobile overflow is 0; inactive and edge controls retain their original computed styles; light mode remains the original 38 × 38 blue active state.
+
+## Primary interactions and console
+
+- Keyboard focus lands on `Jobs page 1`; focus-visible outline computes to `2px solid rgba(148,163,184,.72)`.
+- Existing pagination renderer and click logic are unchanged.
+- Browser console errors and warnings: none.
+- Responsive widths checked: desktop, 768 px tablet and 390 px mobile.
+
+final result: passed
+
+---
+
 # ATSRS permanent field design system — Design QA (V5845)
 
 - Dark visual source: authenticated production Profile `Name` focused, captured at `tests/artifacts/atsrs-field-system-v5845/source/profile-name-dark-focused.png`.

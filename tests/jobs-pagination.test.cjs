@@ -101,12 +101,15 @@ test('top and bottom pagination share one stateful renderer and compact navigati
   assert.match(fixture,/id="jobsPaginationBottom"[^>]*data-jobs-pagination/);
 });
 
-test('pagination exposes one shared active page with borderless theme-aware styling',()=>{
+test('pagination exposes one shared active page with compact dark field styling',()=>{
   assert.match(runtime,/b\.classList\.add\('is-current'\);b\.setAttribute\('aria-current','page'\)/);
   assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
-  assert.match(css,/jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-jobs-green-text\)!important;color:#071006!important\}/);
+  assert.match(css,/data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{[^}]*min-width:34px!important[^}]*height:34px!important[^}]*margin:0 2px!important/);
+  assert.match(css,/data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{[^}]*border-color:var\(--atsrs-field-focus-block-line\)!important[^}]*border-right-color:var\(--atsrs-field-focus-inline-line\)!important[^}]*border-left-color:var\(--atsrs-field-focus-inline-line\)!important/);
+  assert.match(css,/data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{[^}]*background:var\(--atsrs-field-surface\)!important[^}]*color:var\(--atsrs-field-accent\)!important[^}]*box-shadow:var\(--atsrs-field-focus-shadow\)!important/);
   assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important;-webkit-text-fill-color:#fff!important\}/);
   assert.match(css,/jobs-page-button\.is-current:hover[^\{]*jobs-page-button\.is-current:focus-visible[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important/);
+  assert.match(css,/@media\(max-width:600px\)[\s\S]*?data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{min-width:32px!important;width:32px!important;height:32px!important/);
   assert.doesNotMatch(css,/jobs-page-button\.is-current[^\{]*\{background:#245b93!important/);
   assert.match(css,/\.jobs-page-button:disabled\{cursor:default;opacity:\.38\}/);
   assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid/);

@@ -104,13 +104,16 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
   assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
-  assert.match(css,/jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-jobs-green-text\)!important;color:#071006!important\}/);
+  assert.match(css,/data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{[^}]*min-width:34px!important[^}]*height:34px!important[^}]*margin:0 2px!important/);
+  assert.match(css,/data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{[^}]*border-color:var\(--atsrs-field-focus-block-line\)!important[^}]*border-right-color:var\(--atsrs-field-focus-inline-line\)!important[^}]*border-left-color:var\(--atsrs-field-focus-inline-line\)!important/);
+  assert.match(css,/data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{[^}]*background:var\(--atsrs-field-surface\)!important[^}]*color:var\(--atsrs-field-accent\)!important[^}]*box-shadow:var\(--atsrs-field-focus-shadow\)!important/);
   assert.match(css,/html\[data-theme="light"\][^\{]*jobs-page-button\.is-current[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important;-webkit-text-fill-color:#fff!important\}/);
   assert.match(css,/jobs-page-button\.is-current:hover[^\{]*jobs-page-button\.is-current:focus-visible[^\{]*\{background:var\(--atsrs-shell-accent\)!important;color:#fff!important/);
   assert.match(css,/jobs-page-button:hover:not\(:disabled\):not\(\.is-current\)[^\{]*\{background:rgba\(148,163,184,\.1\)!important/);
   assert.match(css,/\.jobs-page-button:focus-visible\{outline:2px solid var\(--jobs-filter-focus\);outline-offset:2px\}/);
   assert.match(css,/#jobsPage \.jobs-page-button\{min-width:38px!important;height:38px!important;min-height:38px!important;border:0!important;background:transparent!important;box-shadow:none!important\}/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?#jobsPage \.jobs-page-button\{min-width:36px!important;height:36px!important;min-height:36px!important\}/);
+  assert.match(css,/@media\(max-width:600px\)[\s\S]*?data-theme="dark"[^\{]*jobs-page-button\.is-current[^\{]*\{min-width:32px!important;width:32px!important;height:32px!important/);
   assert.match(css,/jobs-page-edge[^\{]*\{min-width:92px!important\}/);
   assert.match(shellCss,/:not\(\.jobs-page-button\)/);
   assert.match(css,/\.jobs-page-edge-label\{display:none\}/);

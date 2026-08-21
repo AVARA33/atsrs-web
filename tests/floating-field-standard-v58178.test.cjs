@@ -7,7 +7,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5845"/);
+assert.match(index, /data-atsrs-build="V5846"/);
 assert.match(index, /floating-field-standard-v58178\.css\?v=58204/);
 assert.match(index, /floating-fields\.js\?v=58185/);
 assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
@@ -64,4 +64,4 @@ for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCom
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V5845 shared ATSRS field-system and Jobs Search contracts passed');
+console.log('V5846 shared ATSRS field-system and Jobs Search contracts passed');
