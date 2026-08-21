@@ -973,56 +973,6 @@ body #app.app:not(.hidden) #dashboardPage .panel:has(> .atsrs-notification-empty
   padding-block:14px!important;
 }
 
-/* Select fields keep a visible keyboard focus without the green route accent. */
-html body #app.app:not(.hidden) select:focus,
-html body #app.app:not(.hidden) select:focus-visible,
-html body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus,
-html body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus-visible{
-  outline:0!important;
-  outline-offset:0!important;
-  border-color:#4e7187!important;
-  box-shadow:0 0 0 2px rgba(56,189,248,.12)!important;
-}
-html[data-theme="light"] body #app.app:not(.hidden) select:focus,
-html[data-theme="light"] body #app.app:not(.hidden) select:focus-visible,
-html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus,
-html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus-visible{
-  border-color:#6f91ad!important;
-  box-shadow:0 0 0 2px rgba(47,111,178,.12)!important;
-}
-
 /* Personal contact numbers: one professional field with a dedicated country-code section. */
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
   display:grid!important;
