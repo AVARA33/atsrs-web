@@ -1,3 +1,44 @@
+# ATSRS Android header entry — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-52d83cf5-fcdd-4b36-8736-26c1de53b5a5.png`.
+- Light implementation: `C:\Users\user\Documents\GitHub\output\atsrs-android-header-light-1440.png`.
+- Dark implementation: `C:\Users\user\Documents\GitHub\output\atsrs-android-header-dark-1440.png`.
+- Mobile evidence: `C:\Users\user\Documents\GitHub\output\atsrs-android-header-light-390.png` and `C:\Users\user\Documents\GitHub\output\atsrs-android-header-dark-390.png`.
+- Focused source/implementation comparison: `C:\Users\user\Documents\GitHub\output\atsrs-android-header-comparison.png`.
+- Source pixels: 3439 × 1368. Desktop viewport: 1440 × 900 CSS px with 1425 × 891 screenshot output after scrollbar allocation at 1× density. Mobile viewport: 390 × 844 CSS px with 375 × 812 output after scrollbar allocation at 1× density. Tablet geometry was measured at 768 × 900 CSS px.
+- State: public Home header, light and dark themes, desktop/tablet/mobile.
+
+## Full-view and focused comparison evidence
+
+The supplied screenshot marks the open header space between Contact and the theme/account actions. The combined focused comparison shows the Android status capsule occupying that exact visual interval without moving the public navigation or primary account CTA. At 1440 px the capsule compacts to icon plus `Android`; above 1500 px it also shows `Coming soon`. At 390 px it becomes a 44 × 44 Android icon while its accessible name retains the complete status.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS system UI typography and weights are reused; the compact label does not compete with the primary CTA and `Log in` remains on one line.
+- Spacing and layout rhythm: desktop capsule height is 46 px, mobile target is 44 × 44 px, and header/body horizontal overflow is zero at 1440, 768 and 390 px.
+- Colors and visual tokens: the component exclusively reuses public surface, accent, accent-soft, line, ink and muted tokens. Light mode resolves to the ATSRS blue family and dark mode to the ATSRS green family.
+- Image quality and asset fidelity: the existing bundled Phosphor `android-logo` icon is used; no approximate, generated or placeholder asset was introduced.
+- Copy and content: `Android` and `Coming soon` accurately describe the current release state. No debug APK or misleading download URL is exposed.
+
+## Findings and comparison history
+
+- Initial P2: the first 1440 px render compressed `Log in` onto two lines.
+- Fix: the Android sublabel now collapses between 1051 and 1500 px, and both the capsule and login action use non-shrinking, no-wrap layout.
+- Post-fix evidence: `Log in` measures 74.5 × 44 px on one line, the capsule measures 113.8 × 46 px, and header overflow remains false.
+- No actionable P0, P1 or P2 finding remains.
+
+## Primary interactions and console
+
+- Theme switch exercised light → dark; Android surface, border, icon and shadow changed to the correct theme tokens.
+- Responsive checks: 1440 desktop, 768 tablet and 390 mobile.
+- Console errors/warnings: 0.
+- Focused Android/public landing tests: 2/2 passed.
+- Cloudflare Pages build: passed, 141 files.
+
+final result: passed
+
+---
+
 # ATSRS Personal plan layout — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-dcd45db4-1dc2-46ee-9ee9-4976765cd56b.png`
