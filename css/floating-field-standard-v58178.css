@@ -115,8 +115,20 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   background-image:none!important;
   box-shadow:none!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .jobs-search-control > i{margin-left:12px!important;color:var(--atsrs-field-muted)!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .jobs-search-control > input{padding-left:8px!important}
+body #app #jobsPage .atsrs-field-shell .jobs-search-control > i{
+  position:absolute!important;
+  top:50%!important;
+  right:12px!important;
+  left:auto!important;
+  margin:0!important;
+  transform:translateY(-50%)!important;
+  color:var(--atsrs-field-muted)!important;
+  pointer-events:none!important;
+}
+body #app #jobsPage .atsrs-field-shell .jobs-search-control > input{
+  padding-left:var(--atsrs-field-inline-padding)!important;
+  padding-right:40px!important;
+}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-disclosure-indicator,.personnel-filter-arrow,.work-type-select-arrow){right:12px!important;color:var(--atsrs-field-muted)!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .atsrs-select-trigger{padding-right:36px!important;text-align:left!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea{align-items:stretch!important;min-height:96px!important}
@@ -190,7 +202,10 @@ html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="
   background:transparent!important;
   box-shadow:none!important;
 }
-html body #app .atsrs-field-shell .jobs-search-control>input{padding-left:8px!important}
+html body #app #jobsPage .atsrs-field-shell .jobs-search-control>input{
+  padding-left:var(--atsrs-field-inline-padding)!important;
+  padding-right:40px!important;
+}
 html body #app .atsrs-field-shell.atsrs-field-textarea textarea{height:auto!important;min-height:94px!important;padding-top:14px!important}
 html[data-theme] body #app.app .atsrs-field-shell:focus-within,
 html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open]){

@@ -44,8 +44,6 @@ No actionable P0, P1 or P2 differences remain for the requested layout change.
 
 final result: passed
 
----
-
 # Jobs dropdown neutral-state — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-19253252-4350-4acc-9a07-5e7a26f75133.png`
@@ -80,6 +78,53 @@ The source shows the selected `All companies` row with a green-tinted fill, a so
 - Browser console errors: none.
 - Focused Jobs contract tests: 11/11 passed.
 - Cloudflare build: passed, 133 files.
+
+final result: passed
+
+---
+
+# ATSRS Jobs Search focus and icon alignment — Design QA (V5831)
+
+## Evidence and normalized state
+
+- Source visual truth: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-search-focus-v5831\role-focus-light-desktop.png` (the existing Role control focused, menu closed).
+- Rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-search-focus-v5831\search-focus-light-desktop.png` (Search focused while actively typing `ROV`).
+- Combined focused comparison: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-search-focus-v5831\role-vs-search-focus-light-desktop.png`.
+- Additional evidence: `search-focus-dark-desktop.png` and `search-focus-dark-mobile.png` in the same artifact directory.
+- Desktop viewport: 1440 × 900 CSS pixels; each focused filter crop is 1336 × 96 pixels at 1× capture density. Mobile viewport: 390 × 844 CSS pixels at 1× capture density. Tablet layout was measured at 768 × 900 CSS pixels.
+- State: Jobs filters, Role focused versus Search focused/typing; light and dark themes.
+
+## Full-view and focused comparison evidence
+
+The focused desktop comparison shows that Search now uses the same canonical active border, 10 px corner radius, and two-layer focus ring as Role. In light mode both resolve to the blue `--atsrs-field-accent` tokens. In dark mode Search resolves to the existing green token set. The magnifying-glass icon is vertically centered at the far right, 12 px from the inner edge, while the input reserves 40 px of right padding and keeps normal left text padding.
+
+The 390 px dark capture shows the same treatment in the stacked mobile layout with no horizontal overflow. The 768 px tablet measurement also reported zero horizontal overflow.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged; placeholder, typed text, labels, weights, and line heights retain the Jobs field standard.
+- Spacing and layout rhythm: filter grid, control height, 10 px radius, and responsive stacking are unchanged. Only Search icon/text inset geometry changed.
+- Colors and visual tokens: Search reuses the same `--atsrs-field-accent`, `--atsrs-field-accent-ring`, and `--atsrs-field-accent-shadow` focus tokens already used by Role.
+- Image quality and asset fidelity: the existing Phosphor magnifying-glass icon is retained; no generated or approximate asset was introduced.
+- Copy and content: unchanged.
+
+## Findings and comparison history
+
+- Earlier P2: Search used left icon placement, reducing the text start area and visually diverging from the requested `[Job title or role 🔍]` arrangement.
+- Fix: scoped icon positioning to `#jobsPage`, moved it to `right: 12px`, restored canonical left padding, reserved `40px` on the right, and disabled pointer interception.
+- Post-fix evidence: icon is fully inside the input, right gap is 12 px, text/icon overlap is false, and Search/Role focus border, radius, and box-shadow values match.
+- Blur state returns to the normal dark border with `box-shadow: none`.
+- No remaining actionable P0, P1, or P2 differences were found.
+
+## Interactions, responsiveness, and console
+
+- Search click/focus and active typing tested with `ROV` and `Engineer`; filtering remained functional.
+- Search remains a native keyboard-focusable input (`tabIndex: 0`) and its `:focus-within` state uses the shared field focus tokens.
+- Light desktop, dark desktop, 768 px tablet, and 390 px mobile states checked.
+- Horizontal overflow: 0 at all measured widths.
+- Browser console errors: 0 across light, dark, and mobile captures.
+- Focused V5831 contract test: passed. Cloudflare build: passed, 137 files.
+- Existing unrelated Jobs suite baseline remains stale at `select-standard.js?v=58163` while production references `v=58164`; this predates and is outside the scoped visual change.
 
 final result: passed
 

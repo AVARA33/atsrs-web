@@ -7,8 +7,8 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5824"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58185/);
+assert.match(index, /data-atsrs-build="V5831"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58190/);
 assert.match(index, /floating-fields\.js\?v=58185/);
 assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
@@ -35,6 +35,9 @@ assert.match(css, /padding:12px var\(--atsrs-field-inline-padding\) 4px!importan
 assert.match(css, /\.atsrs-field-shell:not\(\.atsrs-field-textarea\)[\s\S]*height:var\(--atsrs-field-height\)!important/);
 assert.match(css, /html\[data-theme="dark"\][\s\S]*--atsrs-field-accent:var\(--atsrs-brand-green,#22c55e\)/);
 assert.match(css, /html\[data-theme="light"\][\s\S]*--atsrs-field-accent:var\(--atsrs-light-blue,#2563eb\)/);
+assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control > i\{[\s\S]*right:12px!important;[\s\S]*left:auto!important;[\s\S]*pointer-events:none!important/);
+assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control > input\{[\s\S]*padding-left:var\(--atsrs-field-inline-padding\)!important;[\s\S]*padding-right:40px!important/);
+assert.match(css, /\.atsrs-field-shell:focus-within\{[\s\S]*border-color:var\(--atsrs-field-accent\)!important;[\s\S]*box-shadow:0 0 0 3px var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)!important/);
 assert.match(css, /transform:translateY\(-50%\)!important/);
 assert.match(css, /background:var\(--atsrs-field-label-surface\)!important/);
 assert.match(css, /\.atsrs-field-shell:focus-within/);
@@ -50,4 +53,4 @@ for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCom
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V58178 site-wide floating field contracts passed');
+console.log('V5831 Jobs search focus and icon alignment contracts passed');
