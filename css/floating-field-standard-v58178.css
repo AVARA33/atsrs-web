@@ -205,10 +205,13 @@ html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="
 html body #app #jobsPage .atsrs-field-shell .jobs-search-control>input{
   padding-left:var(--atsrs-field-inline-padding)!important;
   padding-right:40px!important;
+  border:1px solid var(--jobs-filter-border)!important;
+  border-radius:var(--jobs-filter-radius)!important;
+  background:var(--jobs-filter-bg)!important;
 }
 html[data-theme] body #app.app #jobsPage .jobs-search.atsrs-field-shell .jobs-search-control>input:focus,
 html[data-theme] body #app.app #jobsPage .jobs-search.atsrs-field-shell .jobs-search-control>input:focus-visible{
-  border:0!important;
+  border:1px solid var(--jobs-filter-border)!important;
   outline:0!important;
   outline-offset:0!important;
   box-shadow:none!important;

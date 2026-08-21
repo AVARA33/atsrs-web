@@ -46,6 +46,50 @@ final result: passed
 
 ---
 
+# Jobs Search gray base layer — Design QA (V5836)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`
+- Browser-rendered implementation: `tests/artifacts/jobs-search-gray-base-v5836/search-focused-gray-base-dark.png`
+- Dark mobile implementation: `tests/artifacts/jobs-search-gray-base-v5836/search-focused-gray-base-mobile-dark.png`
+- Light mobile implementation: `tests/artifacts/jobs-search-gray-base-v5836/search-focused-gray-base-mobile-light.png`
+- Combined focused comparison: `tests/artifacts/jobs-search-gray-base-v5836/source-vs-v5836-dark.jpg`
+- Source pixels: 3439 × 1368 at 144 dpi. Desktop implementation: 1425 × 891 at the browser's desktop viewport and 1× CSS capture density. Mobile implementations: 390 × 844 CSS viewport at 1× capture density.
+- State: Jobs filters, Search focused, dark and light themes.
+
+## Full-view and focused comparison evidence
+
+The combined comparison places the source filter region and V5836 browser rendering in one image. Search now retains a neutral inner border while its outer field shell draws the existing green focus border, 3 px ring and green-tinted elevation. This produces the requested gray-plus-green layered appearance without changing Role, Location or any filtering behavior. The desktop full view and both 390 px captures show intact spacing, icon alignment and zero horizontal overflow.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS font family, weights, sizes, line heights and field labels are unchanged.
+- Spacing and layout rhythm: control height, grid tracks, padding, radius and responsive stacking are unchanged; only Search's inner border/background layer was restored.
+- Colors and visual tokens: Search uses the existing `--jobs-filter-border`, `--jobs-filter-radius` and `--jobs-filter-bg` tokens; the existing dark green and light blue focus tokens remain unchanged.
+- Image quality and asset fidelity: no image or icon asset was added, replaced or approximated; the existing magnifying-glass icon remains right-aligned.
+- Copy and content: all Jobs labels, placeholders and page content are unchanged.
+
+## Findings
+
+No actionable P0, P1 or P2 mismatch remains for the requested Search border-layer correction.
+
+## Comparison history
+
+- Earlier finding: Search's inner input border was reset to zero, so only the green outer focus treatment remained and appeared visually softer than the adjacent controls.
+- Fix: restored Search's neutral inner border, radius and background using the existing Jobs filter tokens, including while focused.
+- Post-fix evidence: the focused desktop crop visibly shows the neutral inner edge inside the unchanged green shell/ring; mobile dark and light states remain aligned and overflow-free.
+
+## Primary interactions and checks
+
+- Search clicked and focused in desktop dark, mobile dark and mobile light states.
+- Computed desktop focus state: neutral Search inner border present; green shell border and two-layer focus shadow present; horizontal overflow 0.
+- Focused contract test: PASS.
+- Cloudflare Pages build: PASS, 137 files.
+- Browser console errors observed during the focused fixture checks: 0.
+
+final result: passed
+
+---
+
 # ATSRS Jobs dropdown single-green-focus correction — Design QA (V5833)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`

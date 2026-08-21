@@ -7,8 +7,8 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5835"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58194/);
+assert.match(index, /data-atsrs-build="V5836"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58195/);
 assert.match(index, /floating-fields\.js\?v=58185/);
 assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
@@ -36,8 +36,8 @@ assert.match(css, /\.atsrs-field-shell:not\(\.atsrs-field-textarea\)[\s\S]*heigh
 assert.match(css, /html\[data-theme="dark"\][\s\S]*--atsrs-field-accent:var\(--atsrs-brand-green,#22c55e\)/);
 assert.match(css, /html\[data-theme="light"\][\s\S]*--atsrs-field-accent:var\(--atsrs-light-blue,#2563eb\)/);
 assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control > i\{[\s\S]*right:12px!important;[\s\S]*left:auto!important;[\s\S]*pointer-events:none!important/);
-assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control > input\{[\s\S]*padding-left:var\(--atsrs-field-inline-padding\)!important;[\s\S]*padding-right:40px!important/);
-assert.match(css, /#jobsPage \.jobs-search\.atsrs-field-shell \.jobs-search-control>input:focus,[\s\S]*input:focus-visible\{[\s\S]*border:0!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
+assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control>input\{[\s\S]*padding-left:var\(--atsrs-field-inline-padding\)!important;[\s\S]*padding-right:40px!important;[\s\S]*border:1px solid var\(--jobs-filter-border\)!important;[\s\S]*border-radius:var\(--jobs-filter-radius\)!important;[\s\S]*background:var\(--jobs-filter-bg\)!important/);
+assert.match(css, /#jobsPage \.jobs-search\.atsrs-field-shell \.jobs-search-control>input:focus,[\s\S]*input:focus-visible\{[\s\S]*border:1px solid var\(--jobs-filter-border\)!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
 assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-select-toggle:focus,[\s\S]*\.jobs-select-toggle:focus-visible,[\s\S]*\.jobs-select-toggle\[aria-expanded="true"\]\{[\s\S]*border:0!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
 assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage \.atsrs-field-shell:focus-within,[\s\S]*\.atsrs-field-shell:has\(\.jobs-select-toggle\[aria-expanded="true"\]\)\{[\s\S]*border-color:var\(--atsrs-field-accent\)!important;[\s\S]*box-shadow:0 0 0 3px var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)!important/);
 assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage \.atsrs-field-shell:focus-within>\.atsrs-field-label,[\s\S]*\.atsrs-field-shell:has\(\.jobs-select-toggle\[aria-expanded="true"\]\)>\.atsrs-field-label\{[\s\S]*color:var\(--atsrs-field-accent\)!important/);
@@ -57,4 +57,4 @@ for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCom
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V5835 Jobs filter click-only Search-ring contracts passed');
+console.log('V5836 Jobs Search gray-base and click-only ring contracts passed');
