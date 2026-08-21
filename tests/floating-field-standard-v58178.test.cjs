@@ -7,10 +7,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5837"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58196/);
-assert.match(index, /floating-fields\.js\?v=58185/);
-assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5838"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58197/);
+assert.match(index, /floating-fields\.js\?v=58186/);
+assert.ok(index.indexOf('floating-fields.js?v=58186') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
@@ -20,6 +20,7 @@ assert.match(runtime, /getComputedStyle\(node\)\.backgroundColor/);
 assert.match(runtime, /--atsrs-field-label-surface/);
 assert.match(runtime, /label\.htmlFor=control\.id/);
 assert.match(runtime, /jobsHost\.querySelector\('\.jobs-select-toggle'\)\|\|control/);
+assert.match(runtime, /if\(jobsHost\)\{[\s\S]*border','1px solid var\(--jobs-filter-border\)'[\s\S]*background','var\(--jobs-filter-bg\)'/);
 assert.match(runtime, /function normalizeLegacyBox\(node,isControl\)/);
 assert.match(runtime, /style\.setProperty\('border','0','important'\)/);
 assert.match(runtime, /\.talent-work-type-filter > summary/);
@@ -41,10 +42,9 @@ assert.match(css, /#jobsPage \.jobs-search\.atsrs-field-shell \.jobs-search-cont
 assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-select-toggle:focus,[\s\S]*\.jobs-select-toggle:focus-visible,[\s\S]*\.jobs-select-toggle\[aria-expanded="true"\]\{[\s\S]*border:0!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
 assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage \.atsrs-field-shell:focus-within,[\s\S]*\.atsrs-field-shell:has\(\.jobs-select-toggle\[aria-expanded="true"\]\)\{[\s\S]*border-color:var\(--atsrs-field-accent\)!important;[\s\S]*box-shadow:0 0 0 3px var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)!important/);
 assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage \.atsrs-field-shell:focus-within>\.atsrs-field-label,[\s\S]*\.atsrs-field-shell:has\(\.jobs-select-toggle\[aria-expanded="true"\]\)>\.atsrs-field-label\{[\s\S]*color:var\(--atsrs-field-accent\)!important/);
-assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage\{[\s\S]*--jobs-filter-edge-side:rgba\(34,197,94,\.58\);[\s\S]*--jobs-filter-edge-horizontal:rgba\(148,163,184,\.2\)/);
-assert.match(css, /#jobsPage \.atsrs-field-shell:has\(\.jobs-select-toggle\)\{[\s\S]*border-top-color:var\(--jobs-filter-edge-horizontal\)!important;[\s\S]*border-right-color:var\(--jobs-filter-edge-side\)!important;[\s\S]*border-bottom-color:var\(--jobs-filter-edge-horizontal\)!important;[\s\S]*border-left-color:var\(--jobs-filter-edge-side\)!important/);
-assert.match(css, /#jobsPage \.atsrs-field-shell:has\(\.jobs-select-toggle\):focus-within,[\s\S]*jobs-select-toggle\[aria-expanded="true"\][\s\S]*border-top-color:var\(--jobs-filter-edge-horizontal-active\)!important;[\s\S]*border-right-color:var\(--jobs-filter-edge-side-active\)!important/);
-assert.doesNotMatch(css, /html\[data-theme="light"\][^\{]*jobs-filter-edge/);
+assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage \.atsrs-field-shell:has\(\.jobs-select-toggle\)\{[\s\S]*border-color:var\(--atsrs-field-accent\)!important;[\s\S]*box-shadow:0 0 0 3px var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)!important/);
+assert.match(css, /html\[data-theme="dark"\] body #app\.app #jobsPage \.atsrs-field-shell \.jobs-select-toggle\{[\s\S]*border:1px solid var\(--jobs-filter-border\)!important;[\s\S]*border-radius:var\(--jobs-filter-radius\)!important;[\s\S]*background:var\(--jobs-filter-bg\)!important/);
+assert.doesNotMatch(css, /--jobs-filter-edge-side|--jobs-filter-edge-horizontal/);
 assert.match(css, /\.atsrs-field-shell:focus-within\{[\s\S]*border-color:var\(--atsrs-field-accent\)!important;[\s\S]*box-shadow:0 0 0 3px var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)!important/);
 assert.match(css, /transform:translateY\(-50%\)!important/);
 assert.match(css, /background:var\(--atsrs-field-label-surface\)!important/);
@@ -61,4 +61,4 @@ for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCom
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V5837 Jobs Search reference and dropdown edge-lighting contracts passed');
+console.log('V5838 Jobs Search/dropdown exact dark treatment contracts passed');

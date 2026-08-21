@@ -168,7 +168,13 @@
     proxy.classList.add('atsrs-field-control');
     var frame=frameFor(control);
     if(frame!==control){frame.classList.add('atsrs-field-control-frame');if(frame!==shell)normalizeLegacyBox(frame,false)}
-    if(proxy!==control)normalizeLegacyBox(proxy,true);
+    if(proxy!==control){
+      normalizeLegacyBox(proxy,true);
+      if(jobsHost){
+        proxy.style.setProperty('border','1px solid var(--jobs-filter-border)','important');
+        proxy.style.setProperty('background','var(--jobs-filter-bg)','important');
+      }
+    }
     shell.classList.toggle('atsrs-field-textarea',control.tagName==='TEXTAREA');
     shell.classList.toggle('atsrs-field-disabled',!!control.disabled);
   }
