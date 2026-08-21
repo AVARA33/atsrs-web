@@ -46,41 +46,49 @@ final result: passed
 
 ---
 
-# Jobs Search/dropdown exact treatment — Design QA (V5838)
+# Jobs dark filter edge-lighting — Design QA (V5837)
 
-- Source visual truth: the rendered Search field in the Jobs QA fixture.
-- Search focused: `tests/artifacts/jobs-filter-visual-audit-20260821/03-v5838-search-focused.png`
-- Role open: `tests/artifacts/jobs-filter-visual-audit-20260821/04-v5838-role-open.png`
-- State: Jobs filters in dark mode, comparing the actual computed inner border, outer border and shadow layers.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`
+- Browser-rendered dark default: `tests/artifacts/jobs-filter-edge-lighting-v5837/dark-default.png`
+- Browser-rendered dark Role-open state: `tests/artifacts/jobs-filter-edge-lighting-v5837/dark-role-open.png`
+- Browser-rendered dark mobile: `tests/artifacts/jobs-filter-edge-lighting-v5837/dark-mobile.png`
+- Browser-rendered light control: `tests/artifacts/jobs-filter-edge-lighting-v5837/light-default.png`
+- Combined focused comparison: `tests/artifacts/jobs-filter-edge-lighting-v5837/source-vs-dark-default.jpg`
+- Source pixels: 3439 × 1368 at 144 dpi. Desktop implementation: 1265 × 712 at the in-app browser's desktop viewport and 1× CSS capture density. Mobile implementation: 390 × 844 CSS viewport at 1× capture density.
+- State: Jobs filters; dark default, dark dropdown-open, dark mobile and unchanged light default.
 
 ## Full-view and focused comparison evidence
 
-The first V5837 audit failed: its custom directional glow did not copy Search's real two-layer rendering. V5838 removes that approximation. Search and every Jobs dropdown now resolve to the same outer green border and ring plus the same inner gray border and dark fill.
+The combined image places the source Search treatment above the V5837 filter region. Role, Location, Company, Recruiter and Date posted now use stronger green left/right edges with softer top/bottom edges in the regular dark state. The open Role capture increases only the side emphasis and preserves the subdued horizontal edges, avoiding a uniform neon rectangle. Search remains unchanged.
 
 ## Required fidelity surfaces
 
 - Fonts and typography: existing ATSRS field labels, values, weights, sizes and line heights are unchanged.
-- Spacing and layout rhythm: grid tracks, control padding and 44 px shell height are unchanged.
-- Colors and visual tokens: both Search and Role resolve to an inner `rgb(42,47,45)` border, an outer `rgb(34,197,94)` border, and `rgba(34,197,94,.16) 0 0 0 3px, rgba(34,197,94,.11) 0 8px 20px` shadow.
+- Spacing and layout rhythm: grid tracks, control padding, 44 px shell height, 12 px radius and responsive stacking are unchanged; desktop and 390 px captures show no layout shift.
+- Colors and visual tokens: one Jobs-scoped dark token group controls side edge, horizontal edge and glow strength. Default sides resolve to green at 0.58 alpha while top/bottom resolve to neutral gray at 0.20 alpha; the open state uses green sides at 0.90 and green horizontal edges at 0.24.
 - Image quality and asset fidelity: no image, logo or icon asset changed. The existing Search icon remains inside the input at a measured 12 px right inset.
 - Copy and content: labels, values, placeholder text and Jobs content are unchanged.
 
 ## Findings
 
-The initial V5837 result was not acceptable because Role's inner border was removed at runtime. The final runtime correction restores the exact Search inner border and background on Jobs dropdown proxies.
+No actionable P0, P1 or P2 mismatch remains for the requested dark-mode filter treatment.
 
 ## Comparison history
 
-- Earlier V5837 state: Search and Role used different outer shadows and Role had no inner gray border.
-- V5838 fix: removed the invented directional tokens and copied Search's actual inner/outer layer values; the floating-field runtime now preserves the dropdown inner border instead of forcing `border:0!important`.
-- Post-fix evidence: Search-focused and Role-open outer arrays are byte-for-byte equal; all four inner border sides also match exactly.
+- Earlier state: Search had the intended green edge-lit appearance, while dropdown shells used uniform neutral borders.
+- Fix: added one reusable dark Jobs dropdown-shell treatment with distinct side and horizontal tokens plus restrained hover/open intensification.
+- Post-fix evidence: all five required dropdowns share the same computed per-side colors and shadows; the source/implementation comparison shows the requested family resemblance without changing Search.
 
 ## Primary interactions and checks
 
-- Role opens with `aria-expanded=true`; its menu and filtering interaction remain intact.
-- Light Search, Role, Location, Company, Recruiter and Date posted retain equal `rgb(174,189,202)` borders and `box-shadow:none`.
+- Role, Location, Company, Recruiter and Date posted each opened with `aria-expanded=true` and closed with `aria-expanded=false`.
+- Dark default, dark Role-open, dark 390 px and light default states captured in the in-app browser.
+- All five mobile dropdown shells measured 44 px high; horizontal overflow 0.
+- Light Role retains equal gray borders on all four sides and `box-shadow:none`.
 - Search icon position and Search field rules are unchanged.
-- Focused contract test and Cloudflare build: PASS.
+- Browser console errors observed during the fixture checks: 0.
+- Focused contract test: PASS.
+- Cloudflare Pages build: PASS, 137 files.
 
 final result: passed
 

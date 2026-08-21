@@ -242,22 +242,33 @@ html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talen
 html[data-theme] body #app.app .atsrs-field-shell:focus-within>.atsrs-field-label,
 html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open])>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
 
-/* V5837 — Jobs dropdowns reuse Search's exact dark two-layer field treatment. */
+/* V5837 — Jobs dropdowns inherit Search's dark side-lit field treatment. */
+html[data-theme="dark"] body #app.app #jobsPage{
+  --jobs-filter-edge-side:rgba(34,197,94,.58);
+  --jobs-filter-edge-side-hover:rgba(34,197,94,.72);
+  --jobs-filter-edge-side-active:rgba(34,197,94,.9);
+  --jobs-filter-edge-horizontal:rgba(148,163,184,.2);
+  --jobs-filter-edge-horizontal-active:rgba(34,197,94,.24);
+  --jobs-filter-edge-glow:rgba(34,197,94,.12);
+  --jobs-filter-edge-glow-active:rgba(34,197,94,.2);
+}
 html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle){
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+  border-top-color:var(--jobs-filter-edge-horizontal)!important;
+  border-right-color:var(--jobs-filter-edge-side)!important;
+  border-bottom-color:var(--jobs-filter-edge-horizontal)!important;
+  border-left-color:var(--jobs-filter-edge-side)!important;
+  box-shadow:-4px 0 12px var(--jobs-filter-edge-glow),4px 0 12px var(--jobs-filter-edge-glow)!important;
+  transition:border-color .16s ease,box-shadow .16s ease!important;
 }
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell .jobs-select-toggle{
-  border:1px solid var(--jobs-filter-border)!important;
-  border-radius:var(--jobs-filter-radius)!important;
-  background:var(--jobs-filter-bg)!important;
-  box-shadow:none!important;
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle):hover{
+  border-right-color:var(--jobs-filter-edge-side-hover)!important;
+  border-left-color:var(--jobs-filter-edge-side-hover)!important;
 }
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell .jobs-select-toggle:focus,
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell .jobs-select-toggle:focus-visible,
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell .jobs-select-toggle[aria-expanded="true"]{
-  border:1px solid var(--jobs-filter-border)!important;
-  outline:0!important;
-  outline-offset:0!important;
-  box-shadow:none!important;
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle):focus-within,
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle[aria-expanded="true"]){
+  border-top-color:var(--jobs-filter-edge-horizontal-active)!important;
+  border-right-color:var(--jobs-filter-edge-side-active)!important;
+  border-bottom-color:var(--jobs-filter-edge-horizontal-active)!important;
+  border-left-color:var(--jobs-filter-edge-side-active)!important;
+  box-shadow:-5px 0 14px var(--jobs-filter-edge-glow-active),5px 0 14px var(--jobs-filter-edge-glow-active),0 8px 20px var(--atsrs-field-accent-shadow)!important;
 }
