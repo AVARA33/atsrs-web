@@ -1,15 +1,15 @@
 (function(root){
   'use strict';
 
-  var primaryMailbox='hello@atsrs.com';
   var roles=Object.freeze({
-    general:Object.freeze({email:primaryMailbox,subject:'ATSRS General Enquiry'}),
-    support:Object.freeze({email:primaryMailbox,subject:'ATSRS Account Support'}),
-    privacy:Object.freeze({email:primaryMailbox,subject:'ATSRS Privacy Request'}),
-    security:Object.freeze({email:primaryMailbox,subject:'ATSRS Security Report'}),
-    billing:Object.freeze({email:primaryMailbox,subject:'ATSRS Billing Enquiry'}),
-    legal:Object.freeze({email:primaryMailbox,subject:'ATSRS Legal Enquiry'})
+    general:Object.freeze({email:'contact@atsrs.com',subject:'ATSRS General Enquiry'}),
+    support:Object.freeze({email:'support@atsrs.com',subject:'ATSRS Account Support'}),
+    privacy:Object.freeze({email:'privacy@atsrs.com',subject:'ATSRS Privacy Request'}),
+    security:Object.freeze({email:'security@atsrs.com',subject:'ATSRS Security Report'}),
+    billing:Object.freeze({email:'billing@atsrs.com',subject:'ATSRS Billing Enquiry'}),
+    legal:Object.freeze({email:'legal@atsrs.com',subject:'ATSRS Legal Enquiry'})
   });
+  var primaryMailbox=roles.general.email;
 
   function contactFor(role){
     return roles[role]||roles.general;
