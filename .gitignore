@@ -17,6 +17,7 @@ secrets.clixml
 /apps/android/android/local.properties
 *.jks
 *.keystore
+*signing.properties
 
 # Supabase CLI local state.
 supabase/.temp/

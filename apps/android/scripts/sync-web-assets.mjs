@@ -32,13 +32,24 @@ for (const publicOnlyFile of ["_headers", "robots.txt", "sitemap.xml", "llms.txt
   });
 }
 
+// Public release artifacts must never be nested inside the Android package.
+for (const publicOnlyDirectory of ["downloads", path.join("download", "android")]) {
+  await rm(path.join(destination, publicOnlyDirectory), { recursive: true, force: true });
+}
+
 const indexPath = path.join(destination, "index.html");
 const originalIndex = await readFile(indexPath, "utf8");
 const marker = '<script src="js/atsrs-mobile-runtime.js"></script>';
 if (!originalIndex.includes("</body>")) throw new Error("Android web bundle index is missing </body>");
-const mobileIndex = originalIndex.includes(marker)
-  ? originalIndex
-  : originalIndex.replace("</body>", `${marker}\n</body>`);
+// Public release artifacts are intentionally excluded from the APK. If this
+// entry is ever exposed in the native bundle, send it to the canonical site.
+const canonicalIndex = originalIndex.replaceAll(
+  'href="/download/android/"',
+  'href="https://atsrs.com/download/android/"'
+);
+const mobileIndex = canonicalIndex.includes(marker)
+  ? canonicalIndex
+  : canonicalIndex.replace("</body>", `${marker}\n</body>`);
 await writeFile(indexPath, mobileIndex, "utf8");
 
 await cp(path.join(androidRoot, "src", "atsrs-mobile-runtime.js"), path.join(destination, "js", "atsrs-mobile-runtime.js"));

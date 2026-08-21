@@ -1,13 +1,14 @@
 {
   "name": "@atsrs/android",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Official ATSRS Android application shell",
   "scripts": {
     "web:sync": "node scripts/sync-web-assets.mjs",
     "android:sync": "npm run web:sync && cap sync android",
     "android:open": "cap open android",
     "android:debug": "npm run android:sync && node scripts/gradle.mjs assembleDebug",
+    "android:release": "npm run android:sync && node scripts/gradle.mjs assembleRelease",
     "android:test": "npm run android:sync && node scripts/gradle.mjs testDebugUnitTest lintDebug"
   },
   "dependencies": {

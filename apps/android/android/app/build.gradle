@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
 
+def atsrsSigningProperties = new Properties()
+def atsrsSigningPropertiesPath = System.getenv('ATSRS_SIGNING_PROPERTIES')
+if (atsrsSigningPropertiesPath) {
+    def atsrsSigningFile = file(atsrsSigningPropertiesPath)
+    if (!atsrsSigningFile.exists()) {
+        throw new GradleException('ATSRS_SIGNING_PROPERTIES does not point to a readable file')
+    }
+    atsrsSigningProperties.load(new FileInputStream(atsrsSigningFile))
+}
+
 android {
     namespace = "com.atsrs.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -8,7 +18,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,11 +26,28 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        if (atsrsSigningPropertiesPath) {
+            release {
+                storeFile file(atsrsSigningProperties['storeFile'])
+                storePassword atsrsSigningProperties['storePassword']
+                keyAlias atsrsSigningProperties['keyAlias']
+                keyPassword atsrsSigningProperties['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            if (atsrsSigningPropertiesPath) signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (!atsrsSigningPropertiesPath && graph.allTasks.any { it.name.toLowerCase().contains('release') }) {
+        throw new GradleException('Release builds require ATSRS_SIGNING_PROPERTIES')
     }
 }
 

@@ -2355,6 +2355,9 @@ setTimeout(v55DockTopActions,500);
   }
   function redirectUrl(intent,mode,attemptId){
     try{
+      if(typeof window.atsrsNativeOAuthRedirectUrl==='function'){
+        return window.atsrsNativeOAuthRedirectUrl(intent,mode,attemptId);
+      }
       /* Always return to the canonical SPA root. Mobile browsers can expose
          a transient path when switching between tab, desktop and installed
          display modes; carrying that path into OAuth makes the callback
@@ -2540,7 +2543,11 @@ setTimeout(v55DockTopActions,500);
       }
       var oauthUrl=res&&res.data&&res.data.url;
       if(!oauthUrl) throw new Error('Google sign-in did not return a secure redirect. Please try again.');
-      window.location.assign(oauthUrl);
+      if(typeof window.atsrsNativeOpenOAuth==='function'){
+        await window.atsrsNativeOpenOAuth(oauthUrl);
+      }else{
+        window.location.assign(oauthUrl);
+      }
     }catch(e){
       clearOAuthStartState();
       setLoginMsg(atsrsFriendlyAuthError(e,'Google sign-in failed. Please try again.'));

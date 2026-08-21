@@ -17,3 +17,14 @@
   X-Frame-Options: SAMEORIGIN
   ! Content-Security-Policy
   Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://flagcdn.com https://hwtjuqyxzivymofamwxl.supabase.co https://*.googleusercontent.com; font-src 'self' data:; connect-src 'self' https://cdn.jsdelivr.net https://hwtjuqyxzivymofamwxl.supabase.co wss://hwtjuqyxzivymofamwxl.supabase.co; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' blob:; upgrade-insecure-requests
+
+/downloads/*.apk
+  Content-Type: application/vnd.android.package-archive
+  Content-Disposition: attachment
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/download/android/android-version.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: no-store
+  X-Content-Type-Options: nosniff
