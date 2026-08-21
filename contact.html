@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#07111d">
+  <title>Contact ATSRS</title>
+  <meta name="description" content="Contact ATSRS for general enquiries, account support, privacy requests, security reports and billing or legal questions.">
+  <link rel="canonical" href="https://atsrs.com/contact.html">
+  <link rel="stylesheet" href="css/legal-public.css?v=562">
+  <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
+  <link rel="stylesheet" href="css/public-landing.css?v=532">
+  <link rel="stylesheet" href="css/brand-auth-v513.css?v=547">
+  <link rel="stylesheet" href="css/privacy-brand-v533.css?v=538">
+  <link rel="stylesheet" href="css/public-legal-header.css?v=562">
+  <link rel="stylesheet" href="css/theme-palette-v508.css?v=58170">
+  <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=58206">
+  <link rel="stylesheet" href="css/contact.css?v=5850">
+  <script src="js/legal-public.js?v=560"></script>
+  <script src="js/contact-config.js?v=5850"></script>
+</head>
+<body>
+  <div class="atsrs-public-landing legal-public-nav-shell">
+    <header class="public-header">
+      <a class="public-wordmark atsrs-home-lockup" href="/?view=home" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
+      <nav class="public-nav" aria-label="Public navigation"><a class="public-home-link" href="/?view=home" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><a href="/?view=home#platform">Platform</a><a href="/?view=home#how-it-works">How it works</a><a href="/?view=home#plans">Plans</a><a href="/?view=home#faq">FAQ</a><a href="contact.html" aria-current="page">Contact</a></nav>
+      <div class="public-header-actions"><a class="public-home-link public-home-mobile" href="/?view=home" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><button type="button" class="public-theme-toggle" data-public-theme-toggle role="switch" aria-label="Switch colour theme"><span class="public-theme-track" aria-hidden="true"><i class="ph ph-moon public-theme-moon"></i><i class="ph ph-sun public-theme-sun"></i><span class="public-theme-thumb"></span></span></button><a class="public-login" href="/?view=login">Log in</a><a class="public-cta public-cta-small" href="/?view=signup">Create Free Account</a></div>
+    </header>
+  </div>
+
+  <main class="contact-shell share-public-page">
+    <div class="contact-hero legal-hero">
+      <span class="legal-eyebrow">CONTACT</span>
+      <h1>Contact ATSRS</h1>
+      <p class="legal-lead">Choose the category that best matches your request. All official ATSRS enquiries use the verified ATSRS mailbox shown below.</p>
+    </div>
+
+    <div class="contact-grid">
+      <section class="contact-options" aria-label="ATSRS contact categories">
+        <article class="contact-option"><i class="ph ph-envelope-simple" aria-hidden="true"></i><h2>General enquiries</h2><p>Questions about ATSRS, partnerships or the platform.</p><a data-atsrs-contact-role="general"></a></article>
+        <article class="contact-option"><i class="ph ph-lifebuoy" aria-hidden="true"></i><h2>Account support</h2><p>Help with access, account settings or technical issues.</p><a data-atsrs-contact-role="support"></a></article>
+        <article class="contact-option"><i class="ph ph-shield-check" aria-hidden="true"></i><h2>Privacy enquiries</h2><p>Data rights, privacy questions and deletion requests.</p><a data-atsrs-contact-role="privacy"></a></article>
+        <article class="contact-option"><i class="ph ph-lock-key" aria-hidden="true"></i><h2>Security reports</h2><p>Report suspected vulnerabilities privately and responsibly.</p><a data-atsrs-contact-role="security"></a></article>
+        <article class="contact-option"><i class="ph ph-credit-card" aria-hidden="true"></i><h2>Billing</h2><p>Questions about plans, subscriptions, payments or refunds.</p><a data-atsrs-contact-role="billing"></a></article>
+        <article class="contact-option"><i class="ph ph-scales" aria-hidden="true"></i><h2>Legal</h2><p>Terms, policies and formal legal enquiries.</p><a data-atsrs-contact-role="legal"></a></article>
+      </section>
+
+      <section class="contact-form-panel" aria-labelledby="contactFormTitle">
+        <h2 id="contactFormTitle">Prepare an email</h2>
+        <p class="contact-form-note">This form opens your email application. ATSRS does not store or claim to submit the message from this page.</p>
+        <form id="contactForm" class="contact-form">
+          <label><span>Name</span><input id="contactName" name="name" autocomplete="name" required maxlength="100"></label>
+          <label><span>Email</span><input id="contactEmail" name="email" type="email" autocomplete="email" required maxlength="254"></label>
+          <label><span>Company (optional)</span><input id="contactCompany" name="company" autocomplete="organization" maxlength="140"></label>
+          <label><span>Category</span><select id="contactCategory" name="category" required><option value="general">General enquiry</option><option value="support">Account support</option><option value="privacy">Privacy enquiry</option><option value="security">Security report</option><option value="billing">Billing enquiry</option><option value="legal">Legal enquiry</option></select></label>
+          <label class="contact-field-wide"><span>Message</span><textarea id="contactMessage" name="message" required maxlength="4000"></textarea></label>
+          <div class="contact-actions"><button class="contact-submit" type="submit">Open email application</button><p id="contactFormStatus" class="contact-status" role="status" aria-live="polite"></p></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="public-footer">
+    <nav class="public-footer-legal" aria-label="Legal information"><a href="contact.html" aria-current="page">Contact</a><a href="data-protection.html">Data Protection &amp; GDPR</a><a href="terms.html">Terms of Use</a><a href="privacy.html">Privacy Notice</a><a href="billing-terms.html">Billing Terms</a><a href="refund-policy.html">Refunds</a><a href="data-deletion.html">Data Rights</a></nav>
+    <div class="public-footer-bottom"><p class="public-footer-copyright">© 2026 ATSRS. All rights reserved.</p><a class="public-footer-security" href="security.html">Report a Security Issue</a></div>
+  </footer>
+  <script src="js/floating-fields.js?v=58186"></script>
+  <script src="js/contact-page.js?v=5850"></script>
+</body>
+</html>

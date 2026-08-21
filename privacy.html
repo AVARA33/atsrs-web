@@ -134,12 +134,13 @@
   <link rel="stylesheet" href="css/public-legal-header.css?v=562">
   <link rel="stylesheet" href="css/theme-palette-v508.css?v=58170">
   <script src="js/legal-public.js?v=560"></script>
+  <script src="js/contact-config.js?v=5850"></script>
 </head>
 <body>
   <div class="atsrs-public-landing legal-public-nav-shell">
     <header class="public-header">
       <a class="public-wordmark atsrs-home-lockup" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
-      <nav class="public-nav" aria-label="Public navigation"><a class="public-home-link" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><a href="/?view=home#platform">Platform</a><a href="/?view=home#how-it-works">How it works</a><a href="/?view=home#plans">Plans</a><a href="/?view=home#faq">FAQ</a></nav>
+      <nav class="public-nav" aria-label="Public navigation"><a class="public-home-link" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><a href="/?view=home#platform">Platform</a><a href="/?view=home#how-it-works">How it works</a><a href="/?view=home#plans">Plans</a><a href="/?view=home#faq">FAQ</a><a href="contact.html">Contact</a></nav>
       <div class="public-header-actions"><a class="public-home-link public-home-mobile" href="/?view=home" onclick="return window.atsrsLeaveLegalToHome()" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><button type="button" class="public-theme-toggle" data-public-theme-toggle role="switch" aria-label="Switch colour theme"><span class="public-theme-track" aria-hidden="true"><i class="ph ph-moon public-theme-moon"></i><i class="ph ph-sun public-theme-sun"></i><span class="public-theme-thumb"></span></span></button><a class="public-login" href="/?view=login">Log in</a><a class="public-cta public-cta-small" href="/?view=signup">Create Free Account</a></div>
     </header>
   </div>
@@ -156,7 +157,7 @@
       <div class="meta">
         <span><strong>Effective:</strong> 4 August 2026</span>
         <span><strong>Last reviewed:</strong> 4 August 2026</span>
-        <span><strong>Contact:</strong> <a href="mailto:anaragasiyev@gmail.com">anaragasiyev@gmail.com</a></span>
+        <span><strong>Contact:</strong> <a data-atsrs-contact-role="privacy"></a></span>
       </div>
       <div class="summary-grid" aria-label="Privacy summary">
         <div class="summary-card"><strong>Private by default</strong><span>Documents and profile details are not shared with a company unless the user enables visibility or approves access.</span></div>
@@ -352,8 +353,8 @@
           <h2>15. Contact and complaints</h2>
           <p>The service operator responsible for ATSRS privacy administration can be contacted at:</p>
           <div class="contact-card">
-            <div><strong>ATSRS Privacy</strong><p><a href="mailto:anaragasiyev@gmail.com?subject=ATSRS%20Privacy%20Request">anaragasiyev@gmail.com</a></p><p>Use the subject “ATSRS Privacy Request”.</p></div>
-            <a class="button-link" href="mailto:anaragasiyev@gmail.com?subject=ATSRS%20Privacy%20Request">Contact privacy</a>
+            <div><strong>ATSRS Privacy</strong><p><a data-atsrs-contact-role="privacy"></a></p><p>Use the subject “ATSRS Privacy Request”.</p></div>
+            <a class="button-link" data-atsrs-contact-role="privacy" data-atsrs-contact-label>Contact privacy</a>
           </div>
           <p>You may also complain to the data-protection authority responsible for your location or for the relevant controller. Contact ATSRS first if you would like us to investigate and try to resolve the concern promptly.</p>
         </section>
@@ -362,7 +363,7 @@
   </main>
 
   <footer class="public-footer">
-    <nav class="public-footer-legal" aria-label="Legal information"><a href="data-protection.html">Data Protection &amp; GDPR</a><a href="terms.html">Terms of Use</a><a href="privacy.html" aria-current="page">Privacy Notice</a><a href="billing-terms.html">Billing Terms</a><a href="refund-policy.html">Refunds</a><a href="data-deletion.html">Data Rights</a></nav>
+    <nav class="public-footer-legal" aria-label="Legal information"><a href="contact.html">Contact</a><a href="data-protection.html">Data Protection &amp; GDPR</a><a href="terms.html">Terms of Use</a><a href="privacy.html" aria-current="page">Privacy Notice</a><a href="billing-terms.html">Billing Terms</a><a href="refund-policy.html">Refunds</a><a href="data-deletion.html">Data Rights</a></nav>
     <div class="public-footer-bottom"><p class="public-footer-copyright">© 2026 ATSRS. All rights reserved.</p><a class="public-footer-security" href="security.html">Report a Security Issue</a></div>
   </footer>
 </body>

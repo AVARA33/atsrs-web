@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://atsrs.com/</loc>
-    <lastmod>2026-08-11</lastmod>
+    <lastmod>2026-08-21</lastmod>
+  </url>
+  <url>
+    <loc>https://atsrs.com/contact.html</loc>
+    <lastmod>2026-08-21</lastmod>
   </url>
   <url>
     <loc>https://atsrs.com/terms.html</loc>
