@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS V5845 field visual comparison</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;padding:24px;background:#161918;color:#f4f6ef;font:14px Arial,sans-serif}h1{margin:0 0 18px;font-size:24px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px}.panel{min-width:0;padding:14px;border:1px solid #39413d;border-radius:12px;background:#0b0e0d}.panel h2{margin:0 0 10px;font-size:15px}.panel img{display:block;width:100%;height:auto;border-radius:8px}.dark{color:#86efac}.light{color:#93c5fd}
+  </style>
+</head>
+<body>
+  <h1>ATSRS V5845 shared field visual QA</h1>
+  <div class="pair">
+    <section class="panel"><h2 class="dark">Dark source · Profile Name focused (V5844)</h2><img src="source/profile-name-dark-focused.png" alt="Profile Name source reference"></section>
+    <section class="panel"><h2 class="dark">Dark implementation · Jobs Role open (V5845)</h2><img src="implementation/jobs-dark-desktop-role-open.png" alt="Jobs dark implementation"></section>
+  </div>
+  <div class="pair">
+    <section class="panel"><h2 class="light">Light source · Jobs Role open (V5844)</h2><img src="source/jobs-light-before-role-open.png" alt="Jobs light source reference"></section>
+    <section class="panel"><h2 class="light">Light implementation · Jobs Role open (V5845)</h2><img src="implementation/jobs-light-desktop-role-open.png" alt="Jobs light implementation"></section>
+  </div>
+</body>
+</html>

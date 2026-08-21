@@ -46,6 +46,42 @@ final result: passed
 
 ---
 
+# ATSRS permanent field design system — Design QA (V5845)
+
+- Dark visual source: authenticated production Profile `Name` focused, captured at `tests/artifacts/atsrs-field-system-v5845/source/profile-name-dark-focused.png`.
+- Light visual source: authenticated production Jobs `Role` open, captured at `tests/artifacts/atsrs-field-system-v5845/source/jobs-light-before-role-open.png`.
+- Dark implementation: `tests/artifacts/atsrs-field-system-v5845/implementation/jobs-dark-desktop-role-open.png`.
+- Light implementation: `tests/artifacts/atsrs-field-system-v5845/implementation/jobs-light-desktop-role-open.png`.
+- Source/implementation comparison: `tests/artifacts/atsrs-field-system-v5845/visual-comparison.png`.
+- Responsive evidence: `tests/artifacts/atsrs-field-system-v5845/implementation/jobs-dark-responsive-768-390.png` and `jobs-light-responsive-768-390.png`.
+
+## Root-cause and visual comparison
+
+Profile and Jobs already used the same outer `.atsrs-field-shell`, but Profile also inherited a legacy inner-input focus shadow while Jobs explicitly reset its inner control. The shared shell itself then painted one accent color around all four sides, and page-specific Jobs/Documents rules repeated that uniform perimeter. V5845 makes the shell the sole focus renderer and centralizes theme-aware block-edge, inline-edge and shadow tokens.
+
+- Dark focused/open shell: top and bottom `rgb(42, 47, 45)`; left and right `rgb(34, 197, 94)`; side-only `rgba(34,197,94,.16)` illumination plus the existing depth shadow.
+- Light focused/open shell: all borders `rgb(37, 99, 235)` with the unchanged `rgba(37,99,235,.14)` ring and existing depth shadow.
+- Search, Role, Location, Company, Recruiter and Date posted: 44 px height, 10 px radius and no inner outline/shadow.
+- Search icon and all dropdown chevrons remain right aligned and inside their field bounds.
+
+## Responsive, interaction and accessibility evidence
+
+- Tablet iframe viewport: 751 × 899 CSS px after the 768 px frame border/scrollbar allocation.
+- Mobile iframe viewport: 373 × 843 CSS px after the 390 px frame border/scrollbar allocation.
+- Dark and light at both widths: horizontal overflow `0`, clipped labels `0`, icon collisions `0`, all six field heights `44px`.
+- Keyboard order Search → Role: PASS. Enter opens Role and Escape closes it: PASS.
+- Visible focus is retained on the shared shell; the nested control does not draw a duplicate outline.
+- Browser console errors/warnings: `0`.
+- Focused shared-field/Documents/Profile contracts: 4/4 PASS.
+- Cloudflare Pages build: PASS, 137 files.
+- Known unrelated stale assertions in the broad baseline (`select-standard`, `personal-dashboard-qa`, and `shell-polish` asset versions) remain tracked by `TEST-BASELINE-STALE-001`; no candidate file touches those assets.
+
+No actionable P0, P1 or P2 difference remains for the requested field-system scope.
+
+final result: passed
+
+---
+
 # Profile Work Availability row alignment — Design QA (V5844)
 
 - Source: `C:\Users\user\AppData\Local\Temp\codex-clipboard-c3d92d90-699f-4654-9cff-d1323906ffc1.png`.

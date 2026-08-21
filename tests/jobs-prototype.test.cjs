@@ -6,6 +6,7 @@ const root=path.join(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const runtime=fs.readFileSync(path.join(root,'js','jobs-prototype.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','jobs-prototype.css'),'utf8');
+const fieldCss=fs.readFileSync(path.join(root,'css','floating-field-standard-v58178.css'),'utf8');
 const storage=fs.readFileSync(path.join(root,'js','storage.js'),'utf8');
 const shellCss=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const shellRuntime=fs.readFileSync(path.join(root,'js','shell-polish.js'),'utf8');
@@ -143,7 +144,9 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/e\.key==='ArrowDown'\|\|e\.key==='ArrowUp'/);
   assert.match(css,/\.jobs-select-option\[data-active\][^\{]*[\s\S]*?background:var\(--jobs-filter-hover\)!important/);
   assert.doesNotMatch(css,/\.jobs-select-option\[data-active[^\{]*\{[^}]*background:var\(--atsrs-(?:jobs-green-text|brand-green)/);
-  assert.match(css,/\.jobs-filters input:focus-visible[^\{]*\{border-color:var\(--jobs-filter-focus\)!important/);
+  assert.doesNotMatch(css,/\.jobs-filters input:focus-visible[^\{]*\{border-color:var\(--jobs-filter-focus\)!important/);
+  assert.doesNotMatch(css,/\.jobs-select-toggle:focus-visible[^\{]*\{border-color:var\(--jobs-filter-focus\)!important/);
+  assert.match(fieldCss,/\.atsrs-field-shell:focus-within\{[\s\S]*border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)!important/);
   ['jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>assert.match(index,new RegExp(`id="${id}"[^>]*type="checkbox"`)));
   assert.match(runtime,/querySelectorAll\('#jobsSecondaryFilters'\)\.length!==1/);
   assert.match(runtime,/function uniqueValues\(/);

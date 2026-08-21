@@ -1,4 +1,4 @@
-/* ATSRS V58178: canonical floating-border field design for Personal and Corporate workspaces. */
+/* ATSRS V5845: permanent shared field design for Personal and Corporate workspaces. */
 :root{
   --atsrs-field-height:44px;
   --atsrs-field-radius:10px;
@@ -17,6 +17,10 @@ html[data-theme="dark"]{
   --atsrs-field-accent:var(--atsrs-brand-green,#22c55e);
   --atsrs-field-accent-ring:rgba(34,197,94,.16);
   --atsrs-field-accent-shadow:rgba(34,197,94,.11);
+  --atsrs-field-hover-inline-line:var(--atsrs-control-hover-border,#4b5d52);
+  --atsrs-field-focus-block-line:var(--atsrs-field-line);
+  --atsrs-field-focus-inline-line:var(--atsrs-field-accent);
+  --atsrs-field-focus-shadow:-3px 0 0 var(--atsrs-field-accent-ring),3px 0 0 var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow);
 }
 html[data-theme="light"]{
   --atsrs-field-surface:#fff;
@@ -26,6 +30,9 @@ html[data-theme="light"]{
   --atsrs-field-accent:var(--atsrs-light-blue,#2563eb);
   --atsrs-field-accent-ring:rgba(37,99,235,.14);
   --atsrs-field-accent-shadow:rgba(37,99,235,.12);
+  --atsrs-field-focus-block-line:var(--atsrs-field-accent);
+  --atsrs-field-focus-inline-line:var(--atsrs-field-accent);
+  --atsrs-field-focus-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow);
 }
 
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{
@@ -133,16 +140,22 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .atsrs-select-trigger{padding-right:36px!important;text-align:left!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea{align-items:stretch!important;min-height:96px!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea textarea{min-height:94px!important;padding-top:14px!important;resize:vertical!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within{
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+@media(hover:hover){
+  html[data-theme="dark"] body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:hover:not(:focus-within):not(:has(:is(.talent-work-type-filter[open],[aria-expanded="true"]))){
+    border-right-color:var(--atsrs-field-hover-inline-line)!important;
+    border-left-color:var(--atsrs-field-hover-inline-line)!important;
+  }
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(.talent-work-type-filter[open]){
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within{
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;
+  box-shadow:var(--atsrs-field-focus-shadow)!important;
+}
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])){
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;
+  box-shadow:var(--atsrs-field-focus-shadow)!important;
 }
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within > .atsrs-field-label,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(.talent-work-type-filter[open]) > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])) > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus,
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus-visible{outline:0!important;box-shadow:none!important}
 body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)){
@@ -226,78 +239,24 @@ html[data-theme] body #app.app #jobsPage .atsrs-field-shell .jobs-select-toggle[
   outline-offset:0!important;
   box-shadow:none!important;
 }
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:focus-within,
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle[aria-expanded="true"]){
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
-}
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:focus-within>.atsrs-field-label,
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle[aria-expanded="true"])>.atsrs-field-label{
-  color:var(--atsrs-field-accent)!important;
-}
 html body #app .atsrs-field-shell.atsrs-field-textarea textarea{height:auto!important;min-height:94px!important;padding-top:14px!important}
 html[data-theme] body #app.app .atsrs-field-shell:focus-within,
-html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open]){
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+html[data-theme] body #app.app .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])){
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;
+  box-shadow:var(--atsrs-field-focus-shadow)!important;
 }
 html[data-theme] body #app.app .atsrs-field-shell:focus-within>.atsrs-field-label,
-html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open])>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
+html[data-theme] body #app.app .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"]))>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
 
-/* V5843: Documents copies the exact dark Profile focus treatment in both account modes. */
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell{
-  border:var(--atsrs-field-border-width) solid var(--atsrs-field-line)!important;
-  border-radius:var(--atsrs-field-radius)!important;
-  background:var(--atsrs-field-surface)!important;
-  box-shadow:none!important;
-}
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
-  select,
-  textarea,
-  .atsrs-field-control,
-  .atsrs-select-trigger
-){
-  border:0!important;
-  outline:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell:focus-within{
-  border-color:#22c55e!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.16),0 8px 20px rgba(34,197,94,.11)!important;
-}
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell:focus-within>.atsrs-field-label{
-  color:#22c55e!important;
-}
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
-  select,
-  textarea,
-  .atsrs-field-control,
-  .atsrs-select-trigger
-):focus,
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
-  select,
-  textarea,
-  .atsrs-field-control,
-  .atsrs-select-trigger
-):focus-visible{
-  border:0!important;
-  outline:0!important;
-  outline-offset:0!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
-}
-/* Outrank the earlier workspace-wide focus-visible outlines without affecting other pages. */
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :is(
+/* One shell owns every field focus indication; legacy inner-control rings are suppressed. */
+html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage) .atsrs-field-shell :is(
   input.atsrs-field-control,
   select.atsrs-field-control,
   textarea.atsrs-field-control,
   button.atsrs-field-control,
   .atsrs-select-trigger
 ):focus,
-html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :is(
+html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage) .atsrs-field-shell :is(
   input.atsrs-field-control,
   select.atsrs-field-control,
   textarea.atsrs-field-control,
@@ -307,7 +266,7 @@ html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :is(
   border:0!important;
   outline:0!important;
   outline-offset:0!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
+  box-shadow:none!important;
 }
 
 /* V5844: keep all three Profile work-availability field shells on one row baseline. */
