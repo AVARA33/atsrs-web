@@ -46,7 +46,7 @@ final result: passed
 
 ---
 
-# Documents Profile-focus color parity — Design QA (V5842)
+# Documents Profile-focus color parity — Design QA (V5843)
 
 - Visual source of truth: the authenticated production Profile `Name` field supplied by the user and inspected while focused.
 - Exact Profile input treatment: `box-shadow: 0 0 0 3px rgba(34,197,94,.15)` with no outline.
@@ -55,7 +55,7 @@ final result: passed
 - Corporate Documents capture: `tests/artifacts/documents-profile-focus-v5842/02-corporate-focused.png`.
 - Source/implementation comparison: `tests/artifacts/documents-profile-focus-v5842/03-source-implementation-comparison.png`.
 
-The unrelated Personal workspace `3px` green outline was the extra separated contour visible in Documents. V5842 suppresses that outline only inside dark-mode Documents field shells, then applies the measured Profile values to the focused inner control and shell. Both account modes retain the existing 44 px geometry and have zero horizontal overflow.
+The unrelated Personal workspace `3px` green outline was the extra separated contour visible in Documents. V5843 suppresses that outline with a Documents-scoped selector that outranks the earlier workspace rule, then applies the measured Profile values to the focused inner control and shell. Both account modes retain the existing 44 px geometry and have zero horizontal overflow.
 
 - Personal focused field: exact Profile input shadow, outline `none`, settled Profile shell border/shadow: PASS.
 - Corporate focused field: exact Profile input and shell border/shadow: PASS.
