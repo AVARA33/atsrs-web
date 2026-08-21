@@ -123,6 +123,48 @@ final result: passed
 
 ---
 
+# ATSRS Jobs persistent Search-green field correction — Design QA (V5834)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-filter-focus-v5834\all-fields-search-green-dark-desktop.png`
+- Focused comparison: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-filter-focus-v5834\search-source-vs-all-fields-green.png`
+- Source pixels: 3439 × 1368. Implementation pixels: 1425 × 891 at a 1440 × 900 CSS viewport and 1× capture density.
+- State: Jobs, cards view, dark theme, no field focused.
+
+## Full-view and focused comparison evidence
+
+The marked Search field is the visual source for the green border, three-pixel ring, shadow, radius and floating-label color. The implementation applies those same values simultaneously to Search, Role, Location, Company, Recruiter and Date posted while none of the six controls has focus.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged; field labels and values retain their established sizes, weights and wrapping.
+- Spacing and layout rhythm: unchanged; all six controls preserve their dimensions, grid placement, gaps and 10 px radius.
+- Colors and visual tokens: each dark-theme Jobs shell reports `rgb(34, 197, 94)` border/label color and the exact Search ring/shadow values.
+- Image quality and asset fidelity: no image, logo or icon assets changed.
+- Copy and content: unchanged.
+
+## Findings
+
+No actionable P0, P1 or P2 differences remain for the clarified requirement.
+
+## Comparison history
+
+- Earlier V5833 interpretation: the Search ring was copied only as each dropdown's transient focus state, leaving unfocused dropdowns grey.
+- Clarified fix: removed that state-only interpretation and applied the Search visual treatment persistently to every dark-theme Jobs field shell.
+- Post-fix desktop evidence: six of six unfocused fields have identical green border, ring, shadow, radius and label color.
+- Post-fix mobile evidence: six of six fields match with zero horizontal overflow at 390 × 844.
+- Light-theme evidence: all six unfocused fields remain in the normal light default state; no dark-green rule leaks into light mode.
+
+## Primary interactions
+
+- Search and all five enhanced dropdowns remain functional; the visual change is scoped to the Jobs field shells.
+- Focus/open inner outlines remain removed, so no second nested line is rendered.
+- Focused V5834 contract test and Cloudflare build: passed.
+
+final result: passed
+
+---
+
 # ATSRS Jobs Search single-focus-ring correction — Design QA (V5832)
 
 ## Evidence and normalized state
