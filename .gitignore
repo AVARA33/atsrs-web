@@ -10,5 +10,13 @@ secrets.clixml
 # Generated Cloudflare Pages output. Rebuild with npm run build:cloudflare.
 /dist/
 
+# Android local dependencies, generated web bundle and signing material.
+/apps/android/node_modules/
+/apps/android/www/
+/apps/android/android/.gradle/
+/apps/android/android/local.properties
+*.jks
+*.keystore
+
 # Supabase CLI local state.
 supabase/.temp/

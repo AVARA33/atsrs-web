@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ATSRS</string>
+    <string name="title_activity_main">ATSRS</string>
+    <string name="package_name">com.atsrs.app</string>
+    <string name="custom_url_scheme">com.atsrs.app</string>
+</resources>
