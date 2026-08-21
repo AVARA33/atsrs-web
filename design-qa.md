@@ -44,6 +44,46 @@ No actionable P0, P1 or P2 differences remain for the requested layout change.
 
 final result: passed
 
+---
+
+# ATSRS Jobs dropdown single-green-focus correction — Design QA (V5833)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-filter-focus-v5833\role-focus-closed-dark-desktop.png`
+- Focused source/implementation comparison: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-filter-focus-v5833\source-vs-role-focus-dark.png`
+- Source pixels: 3439 × 1368. Implementation pixels: 1425 × 891 at a 1440 × 900 CSS viewport and 1× capture density.
+- State: Jobs, cards view, dark theme; source Search focused, implementation Role focused and closed.
+
+## Full-view and focused comparison evidence
+
+The focused comparison uses the marked Search field as the visual truth. The implementation Role field now has the same single outer green border/ring, 10 px corner radius and green floating label, with no separate inner green outline. Computed-style checks repeated this result for Search, Role, Location, Company, Recruiter and Date posted.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged; all labels and values retain the existing ATSRS type scale and weights.
+- Spacing and layout rhythm: unchanged; the correction removes only the nested focus outline and does not alter control dimensions, grid tracks, gaps or responsive order.
+- Colors and visual tokens: all six controls now use the shared dark-theme green accent (`rgb(34, 197, 94)`) and the Search shell ring (`0 0 0 3px rgba(34, 197, 94, .16), 0 8px 20px rgba(34, 197, 94, .11)`).
+- Image quality and asset fidelity: no image, logo or icon assets were changed.
+- Copy and content: unchanged.
+
+## Findings
+
+No actionable P0, P1 or P2 differences remain for the requested Jobs filter focus correction.
+
+## Comparison history
+
+- Earlier finding: enhanced Jobs dropdown buttons retained their own 2 px green outline while the shared field shell also rendered the Search-style green ring, creating stacked green lines.
+- Fix: scoped the Jobs dropdown focus/open states to zero inner border, outline, outline offset and box shadow; the shared `.atsrs-field-shell` remains the only focus renderer.
+- Post-fix evidence: all six controls report inner outline `none 0px` and inner shadow `none`; every focused shell reports the same green border, 10 px radius and two-layer Search ring.
+
+## Primary interactions and console
+
+- Search focus and Role, Location, Company, Recruiter and Date posted open/focus states were exercised in the in-app browser.
+- Opening and closing the enhanced Role menu preserved the single shell focus ring and dropdown behavior.
+- Focused V5833 contract test: passed.
+
+final result: passed
+
 # Jobs dropdown neutral-state — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-19253252-4350-4acc-9a07-5e7a26f75133.png`
