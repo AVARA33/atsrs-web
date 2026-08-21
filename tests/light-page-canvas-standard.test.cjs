@@ -10,7 +10,7 @@ const palette = read('css/theme-palette-v508.css');
 const workspace = read('css/workspace-surface-standard-v519.css');
 const themeRuntime = read('js/theme.js');
 
-assert.match(index, /data-atsrs-build="V5849"/);
+assert.match(index, /data-atsrs-build="V5848"/);
 assert.match(index, /theme-palette-v508\.css\?v=5848/);
 assert.match(index, /workspace-surface-standard-v519\.css\?v=5848/);
 assert.match(index, /js\/theme\.js\?v=5848/);
@@ -35,4 +35,4 @@ assert.match(index, /initialTheme==='light'\?'#f6f8fb':'#050606'/);
 assert.match(index, /html\[data-theme="light"\]\{background:#f6f8fb\}/);
 assert.match(index, /html\[data-theme="light"\] body\{background:#f6f8fb\}/);
 assert.match(themeRuntime, /theme==='light'\?'#f6f8fb':'#050606'/);
-console.log('V5849 shared light page canvas contracts passed');
+console.log('V5848 shared light page canvas contracts passed');

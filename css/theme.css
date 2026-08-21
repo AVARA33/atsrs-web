@@ -231,7 +231,42 @@ html[data-theme="light"] :where(
   color:#284258!important;
 }
 
+/* Forms. Explicit specificity defeats legacy dark !important declarations. */
+html[data-theme="light"] body :where(input,select,textarea),
+html[data-theme="light"] body .talent-searchbar :where(input,select),
+html[data-theme="light"] body .personnel-filterbar :where(input,select),
+html[data-theme="light"] body .talent-message-form :where(input,textarea),
+html[data-theme="light"] body #certificatesPage .atsrs-document-filter input{
+  color-scheme:light!important;
+  background-color:#ffffff!important;
+  border-color:#c8d4de!important;
+  color:#172b3d!important;
+  caret-color:#172b3d!important;
+  box-shadow:none!important;
+}
 html[data-theme="light"] body :where(input,textarea)::placeholder{color:#8797a5!important}
+html[data-theme="light"] body :where(input,select,textarea):hover{
+  background-color:#ffffff!important;
+  border-color:#adc0ce!important;
+}
+html[data-theme="light"] body :where(input,select,textarea):focus{
+  background-color:#ffffff!important;
+  border-color:#4c91b5!important;
+  box-shadow:0 0 0 3px rgba(31,132,180,.11)!important;
+  outline:0!important;
+}
+html[data-theme="light"] body select:not([multiple]),
+html[data-theme="light"] body .talent-searchbar select,
+html[data-theme="light"] body .personnel-filterbar select{
+  color-scheme:light!important;
+  background-color:#ffffff!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#718596 50%),
+    linear-gradient(135deg,#718596 50%,transparent 50%)!important;
+}
+html[data-theme="light"] body .personnel-filterbar select{
+  background-image:none!important;
+}
 html[data-theme="light"] body #app .personnel-combobox>.personnel-combobox-toggle{
   border:0!important;
   background:transparent!important;
@@ -829,7 +864,7 @@ html[data-theme="light"] body #app #introPage .status-planned{
   -webkit-text-fill-color:var(--atsrs-light-neutral)!important;
 }
 
-html[data-theme="light"] body #app :where(button,[role="button"],a[href]):focus-visible{
+html[data-theme="light"] body #app :where(button,input,select,textarea):focus-visible{
   outline:0!important;
   box-shadow:var(--atsrs-light-focus)!important;
 }
@@ -1127,6 +1162,10 @@ html[data-theme="light"] body #app #profilePage :where(input,select,textarea):-w
   -webkit-box-shadow:0 0 0 1000px #fff inset!important;
   -webkit-text-fill-color:#172033!important;
   caret-color:#172033!important;
+}
+html[data-theme="light"] body #app #profilePage :where(input,select,textarea):focus{
+  border-color:#2563eb!important;
+  box-shadow:0 0 0 3px rgba(37,99,235,.16)!important;
 }
 html[data-theme="light"] body #app #profilePage :where(.security-item,.settings-list-row){
   border-color:#dce4ed!important;

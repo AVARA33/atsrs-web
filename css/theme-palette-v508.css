@@ -297,8 +297,25 @@ html[data-theme] body :where(
 }
 html[data-theme] body :where(input,textarea)::placeholder{color:var(--atsrs-control-placeholder)!important;opacity:1}
 html[data-theme] body :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea
+):hover{border-color:var(--atsrs-control-hover-border)!important}
+html[data-theme] body :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea
+):focus{
+  border-color:var(--atsrs-control-focus-border)!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+html[data-theme] body :where(
   button,
   a[href],
+  input:not([type="hidden"]),
+  select,
+  textarea,
   [role="button"],
   [role="option"],
   [role="tab"],
@@ -310,15 +327,29 @@ html[data-theme] body :where(
 }
 html[data-theme] body :where(input,select,textarea,button):disabled{opacity:var(--atsrs-control-disabled-opacity)}
 
+/* Win over legacy route-specific focus rules without changing box geometry. */
+html[data-theme] body #app.app:not(.hidden) :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea
+):focus,
+html[data-theme] body #auth :where(input,select,textarea):focus{
+  border-color:var(--atsrs-control-focus-border)!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
 html[data-theme] body #app.app:not(.hidden) :where(
   button,
   a[href],
+  input:not([type="hidden"]),
+  select,
+  textarea,
   [role="button"],
   [role="option"],
   [role="tab"],
   [tabindex]:not([tabindex="-1"])
 ):focus-visible,
-html[data-theme] body #auth :where(button,a[href],[role="button"],[role="tab"]):focus-visible{
+html[data-theme] body #auth :where(button,a[href],input,select,textarea,[role="button"],[role="tab"]):focus-visible{
   outline:2px solid var(--atsrs-control-focus-border)!important;
   outline-offset:2px!important;
   box-shadow:none!important;

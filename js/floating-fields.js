@@ -22,7 +22,7 @@
   }
   function eligible(control){
     if(!control||control.nodeType!==1||!control.matches(controlSelector))return false;
-    if(control.closest('.atsrs-select-menu,.date-pop,.datepicker-popover,.atsrs-date-picker,[role="listbox"]'))return false;
+    if(control.closest('.atsrs-select-menu,.date-pop,.datepicker-popover,[role="listbox"]'))return false;
     if(control.parentElement&&control.parentElement.closest('.hidden,[hidden],[aria-hidden="true"]'))return false;
     return true;
   }
@@ -128,24 +128,35 @@
     if(!clean(label.textContent))label.textContent=text||'Field';
     return label;
   }
-  function isSearch(control){
-    if(control.tagName!=='INPUT')return false;
-    var text=[control.type,control.id,control.name,control.className,control.placeholder,control.getAttribute('aria-label')].join(' ').toLowerCase();
-    return /(^|\s)(search|filter)(\s|$)/.test(text)||/(search|filter)/.test(text);
+  function rgbaVisible(value){
+    var match=String(value||'').match(/rgba?\(([^)]+)\)/i);
+    if(!match)return false;
+    var parts=match[1].split(',').map(Number);
+    return parts.length<4||parts[3]>.02;
   }
-  function addAdornment(shell,control,proxy){
-    if(isSearch(control)){
-      shell.classList.add('atsrs-field-search');
-      var searchIcon=shell.querySelector('.atsrs-field-search-icon,.jobs-search-control>i');
-      if(!searchIcon){searchIcon=document.createElement('i');searchIcon.className='ph ph-magnifying-glass atsrs-field-search-icon';searchIcon.setAttribute('aria-hidden','true');shell.appendChild(searchIcon)}
-      else searchIcon.classList.add('atsrs-field-search-icon');
+  function localSurface(shell){
+    var node=shell.parentElement;
+    while(node&&node!==document.documentElement){
+      var color=getComputedStyle(node).backgroundColor;
+      if(rgbaVisible(color))return color;
+      node=node.parentElement;
     }
-    if(control.tagName==='SELECT'&&proxy===control&&!shell.querySelector('.atsrs-field-chevron,.atsrs-disclosure-indicator,.personnel-filter-arrow,.work-type-select-arrow')){
-      var chevron=document.createElement('i');
-      chevron.className='ph ph-caret-down atsrs-field-chevron';
-      chevron.setAttribute('aria-hidden','true');
-      shell.appendChild(chevron);
-    }
+    return document.documentElement.dataset.theme==='light'?'rgb(237, 242, 248)':'rgb(5, 6, 6)';
+  }
+  function updateSurface(shell){
+    if(shell&&shell.isConnected)shell.style.setProperty('--atsrs-field-label-surface',localSurface(shell));
+  }
+  function normalizeLegacyBox(node,isControl){
+    if(!node||!node.style)return;
+    node.style.setProperty('height','calc(var(--atsrs-field-height) - 2px)','important');
+    node.style.setProperty('min-height','calc(var(--atsrs-field-height) - 2px)','important');
+    node.style.setProperty('margin','0','important');
+    node.style.setProperty('border','0','important');
+    node.style.setProperty('outline','0','important');
+    node.style.setProperty('background','transparent','important');
+    node.style.setProperty('box-shadow','none','important');
+    if(isControl)node.style.setProperty('padding','12px var(--atsrs-field-inline-padding) 4px','important');
+    else node.style.setProperty('padding','0','important');
   }
   function fieldProxy(control,shell){
     var disclosure=control.closest('.atsrs-disclosure-shell');
@@ -156,16 +167,15 @@
     if(!proxy)proxy=control;
     proxy.classList.add('atsrs-field-control');
     var frame=frameFor(control);
-    if(frame!==control)frame.classList.add('atsrs-field-control-frame');
+    if(frame!==control){frame.classList.add('atsrs-field-control-frame');if(frame!==shell)normalizeLegacyBox(frame,false)}
+    if(proxy!==control)normalizeLegacyBox(proxy,true);
     shell.classList.toggle('atsrs-field-textarea',control.tagName==='TEXTAREA');
     shell.classList.toggle('atsrs-field-disabled',!!control.disabled);
-    shell.classList.toggle('atsrs-field-readonly',!!control.readOnly);
-    addAdornment(shell,control,proxy);
   }
   function enhance(control){
     if(!eligible(control))return;
     if(control.dataset.atsrsFloatingField==='1'){
-      var existing=control.closest('.atsrs-field-shell');if(existing)fieldProxy(control,existing);
+      var existing=control.closest('.atsrs-field-shell');if(existing){fieldProxy(control,existing);updateSurface(existing)}
       return;
     }
     var shell=shellFor(control);
@@ -173,6 +183,7 @@
     ensureLabel(shell,control);
     fieldProxy(control,shell);
     control.dataset.atsrsFloatingField='1';
+    updateSurface(shell);
   }
   function enhanceCustom(root){
     var scope=root&&root.querySelectorAll?root:document;
@@ -182,7 +193,7 @@
       shell.classList.add('atsrs-field-shell');
       var label=labelCandidate(shell,button)||document.createElement('span');
       if(!label.isConnected){label.textContent='Preferred work type';shell.insertBefore(label,shell.firstChild)}
-      label.classList.add('atsrs-field-label');button.classList.add('atsrs-field-control');button.closest('.work-type-select').classList.add('atsrs-field-control-frame');
+      label.classList.add('atsrs-field-label');button.classList.add('atsrs-field-control');button.closest('.work-type-select').classList.add('atsrs-field-control-frame');updateSurface(shell);
     });
     scope.querySelectorAll('.talent-work-type-filter > summary').forEach(function(summary){
       var shell=summary.closest('.talent-filter-field'),frame=summary.closest('.talent-work-type-filter');
@@ -192,6 +203,7 @@
       if(!label.isConnected){label.textContent='Work type';shell.insertBefore(label,shell.firstChild)}
       label.classList.add('atsrs-field-label');
       summary.classList.add('atsrs-field-control');frame.classList.add('atsrs-field-control-frame');
+      normalizeLegacyBox(frame,false);normalizeLegacyBox(summary,true);updateSurface(shell);
     });
   }
   function scan(root){
@@ -202,13 +214,15 @@
   }
   function refresh(){
     scheduled=false;scan(document);
+    document.querySelectorAll('.atsrs-field-shell').forEach(updateSurface);
   }
   function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(refresh)}
   function bind(){
     refresh();
     if(window.MutationObserver&&document.body){
       observer=new MutationObserver(schedule);
-      observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','disabled','readonly','aria-hidden','aria-label','aria-labelledby','aria-expanded']});
+      observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','aria-label','aria-labelledby']});
+      new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     }
     window.addEventListener('atsrs:data-hydrated',schedule);
     window.addEventListener('atsrs:field-scan',schedule);
