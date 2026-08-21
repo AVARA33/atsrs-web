@@ -25,6 +25,8 @@ The supplied screenshot marks the open header space between Contact and the them
 - Initial P2: the first 1440 px render compressed `Log in` onto two lines.
 - Fix: the Android sublabel now collapses between 1051 and 1500 px, and both the capsule and login action use non-shrinking, no-wrap layout.
 - Post-fix evidence: `Log in` measures 74.5 × 44 px on one line, the capsule measures 113.8 × 46 px, and header overflow remains false.
+- Live P2: the connected browser exposed a narrower 1265 px content viewport where the full navigation left insufficient room and the signup CTA wrapped to three lines.
+- Live fix: public navigation collapses to the existing Home control from 1350 px down, the signup CTA is explicitly no-wrap, and the header signup action hides at tablet widths while the hero signup CTA remains visible.
 - No actionable P0, P1 or P2 finding remains.
 
 ## Primary interactions and console
