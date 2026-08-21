@@ -7,10 +7,17 @@ const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'js', 'date-picker.js'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'css', 'date-picker.css'), 'utf8');
+const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'date-picker-selection-v5851-harness.html'), 'utf8');
 
 test('date picker assets use the current cache version', () => {
-  assert.match(index, /css\/date-picker\.css\?v=505/);
-  assert.match(index, /js\/date-picker\.js\?v=505/);
+  assert.match(index, /css\/date-picker\.css\?v=5851/);
+  assert.match(index, /js\/date-picker\.js\?v=5851/);
+});
+
+test('visual harness compares the real calendar selection with the real Jobs active page state', () => {
+  assert.match(harness, /jobs-page-button is-current/);
+  assert.match(harness, /type="date" value="2026-08-17"/);
+  assert.match(harness, /\.\.\/\.\.\/js\/date-picker\.js/);
 });
 
 test('calendar controls use neutral dark surfaces and direct month/year change handling', () => {
@@ -25,12 +32,14 @@ test('calendar controls use neutral dark surfaces and direct month/year change h
   assert.doesNotMatch(script, /picker\.addEventListener\('change',onPickerChange\)/);
 });
 
-test('selected calendar day remains visibly highlighted in both themes', () => {
-  assert.match(styles, /#atsrsDatePicker \.atsrs-date-picker-days button\.selected\s*\{[\s\S]*?background:#2f806c!important;[\s\S]*?color:#ffffff!important;/);
-  assert.match(styles, /html\[data-theme="light"\] #atsrsDatePicker \.atsrs-date-picker-days button\.selected\s*\{[\s\S]*?background:#2f6fd6!important;[\s\S]*?color:#ffffff!important;/);
+test('selected calendar day reuses the themed active-pagination edge treatment', () => {
+  assert.match(styles, /button:is\(\.selected,\[data-selected="true"\],\[aria-pressed="true"\]\)\s*\{[\s\S]*?border-top-color:var\(--atsrs-field-line\)!important;[\s\S]*?border-right-color:var\(--atsrs-field-accent\)!important;[\s\S]*?border-bottom-color:var\(--atsrs-field-line\)!important;[\s\S]*?border-left-color:var\(--atsrs-field-accent\)!important;/);
+  assert.match(styles, /background:color-mix\(in srgb,var\(--atsrs-field-accent\) 5%,var\(--atsrs-field-surface\)\)!important;/);
+  assert.match(styles, /box-shadow:-3px 0 0 var\(--atsrs-field-accent-ring\),3px 0 0 var\(--atsrs-field-accent-ring\),0 6px 14px var\(--atsrs-field-accent-shadow\)!important;/);
+  assert.match(styles, /:focus-visible\s*\{[\s\S]*?outline:0!important;[\s\S]*?box-shadow:-4px 0 0 var\(--atsrs-field-accent-ring\),4px 0 0 var\(--atsrs-field-accent-ring\)/);
   assert.match(script, /dayButton\.dataset\.selected='true'/);
-  assert.match(script, /style\.setProperty\('background-color',isLight\?'#2f6fd6':'#2f806c','important'\)/);
-  assert.match(styles, /button\[aria-pressed="true"\][\s\S]*?background-color:#2f806c!important;/);
+  assert.doesNotMatch(script, /style\.setProperty\('(background-color|border-color|box-shadow)'/);
+  assert.doesNotMatch(styles, /background(?:-color)?:#(?:2f6fd6|2f806c)!important/);
 });
 
 test('date picker joins an open modal top layer and restores itself on close', () => {

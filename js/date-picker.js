@@ -31,14 +31,8 @@
   function sameDate(a,b){
     return !!(a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate());
   }
-  function paintSelectedDay(dayButton){
-    var isLight=document.documentElement.getAttribute('data-theme')==='light';
+  function markSelectedDay(dayButton){
     dayButton.dataset.selected='true';
-    dayButton.style.setProperty('background-color',isLight?'#2f6fd6':'#2f806c','important');
-    dayButton.style.setProperty('border-color',isLight?'#245fb8':'#69bea6','important');
-    dayButton.style.setProperty('color','#ffffff','important');
-    dayButton.style.setProperty('-webkit-text-fill-color','#ffffff','important');
-    dayButton.style.setProperty('box-shadow',isLight?'0 0 0 2px rgba(47,111,214,.20)':'0 0 0 2px rgba(105,190,166,.24)','important');
   }
   function moveSelectedDate(year,month){
     if(!selectedDate)return;
@@ -178,7 +172,7 @@
         if(sameDate(date,selectedDate)){
           dayButton.classList.add('selected');
           dayButton.setAttribute('aria-pressed','true');
-          paintSelectedDay(dayButton);
+          markSelectedDay(dayButton);
         }else{
           dayButton.setAttribute('aria-pressed','false');
         }

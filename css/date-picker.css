@@ -227,37 +227,31 @@ dialog.atsrs-date-picker-host{
   .atsrs-date-picker-days .empty{min-height:32px}
 }
 
-/* Keep the chosen day unmistakable after a click. The picker is loaded before
-   several shared button styles, so the picker id deliberately owns this state. */
-#atsrsDatePicker .atsrs-date-picker-days button.selected{
-  border-color:#69bea6!important;
-  background:#2f806c!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-  box-shadow:0 0 0 2px rgba(105,190,166,.24)!important;
+/* Calendar selection shares the active Jobs pagination token contract. The
+   block edges stay quiet while the inline edges carry the themed accent. */
+#atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]){
+  border-style:solid!important;
+  border-width:1px!important;
+  border-top-color:var(--atsrs-field-line)!important;
+  border-right-color:var(--atsrs-field-accent)!important;
+  border-bottom-color:var(--atsrs-field-line)!important;
+  border-left-color:var(--atsrs-field-accent)!important;
+  background:color-mix(in srgb,var(--atsrs-field-accent) 5%,var(--atsrs-field-surface))!important;
+  color:var(--atsrs-field-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-field-accent)!important;
+  box-shadow:-3px 0 0 var(--atsrs-field-accent-ring),3px 0 0 var(--atsrs-field-accent-ring),0 6px 14px var(--atsrs-field-accent-shadow)!important;
 }
-/* Attribute and ARIA fallbacks keep the chosen date visible even if a shared
-   component stylesheet rewrites button classes after the picker renders. */
-#atsrsDatePicker .atsrs-date-picker-days button[data-selected="true"],
-#atsrsDatePicker .atsrs-date-picker-days button[aria-pressed="true"]{
-  border-color:#69bea6!important;
-  background-color:#2f806c!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-  box-shadow:0 0 0 2px rgba(105,190,166,.24)!important;
+#atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]):hover{
+  background:color-mix(in srgb,var(--atsrs-field-accent) 8%,var(--atsrs-field-surface))!important;
 }
-html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button.selected{
-  border-color:#245fb8!important;
-  background:#2f6fd6!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-  box-shadow:0 0 0 2px rgba(47,111,214,.20)!important;
+#atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]):active{
+  background:color-mix(in srgb,var(--atsrs-field-accent) 12%,var(--atsrs-field-surface))!important;
 }
-html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button[data-selected="true"],
-html[data-theme="light"] #atsrsDatePicker .atsrs-date-picker-days button[aria-pressed="true"]{
-  border-color:#245fb8!important;
-  background-color:#2f6fd6!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-  box-shadow:0 0 0 2px rgba(47,111,214,.20)!important;
+#atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]):focus-visible{
+  outline:0!important;
+  box-shadow:-4px 0 0 var(--atsrs-field-accent-ring),4px 0 0 var(--atsrs-field-accent-ring),0 6px 14px var(--atsrs-field-accent-shadow)!important;
+}
+#atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]):disabled{
+  opacity:.52;
+  box-shadow:none!important;
 }
