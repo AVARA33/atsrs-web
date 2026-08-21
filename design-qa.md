@@ -83,6 +83,47 @@ final result: passed
 
 ---
 
+# ATSRS Jobs Search single-focus-ring correction — Design QA (V5832)
+
+## Evidence and normalized state
+
+- Source visual truth: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-search-focus-v5832\role-focus-light-desktop.png`.
+- Rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-search-focus-v5832\search-focus-light-desktop.png`.
+- Combined focused comparison: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-search-focus-v5832\role-vs-search-focus-light-desktop.png`.
+- Desktop viewport: 1440 × 900 CSS pixels; each crop is 1336 × 96 pixels at 1× density. Dark mobile verification: 390 × 844 CSS pixels at 1× density.
+- State: Role focused/menu closed versus Search focused; light theme, plus dark mobile verification.
+
+## Full-view and focused comparison evidence
+
+The combined crop shows one focus treatment around Search, visually matching Role. Computed Search and Role shells match exactly: blue border, 10 px radius, `0 0 0 3px` accent ring, and the same `0 8px 20px` shadow. Search's nested input now computes to `outline: none 0px`, `outline-offset: 0px`, `box-shadow: none`, and `border: 0`, removing the extra two-pixel blue outline that previously stacked over the shell.
+
+Dark mobile uses the same single shell ring in green, the nested input outline remains zero, the icon stays inside the field, and horizontal overflow is zero.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged.
+- Spacing and layout rhythm: unchanged; Search and Role keep the same height and 10 px radius.
+- Colors and visual tokens: unchanged; the remaining shell focus uses the shared Role tokens.
+- Image quality and asset fidelity: the existing Phosphor search icon is unchanged.
+- Copy and content: unchanged.
+
+## Findings and comparison history
+
+- Earlier P1: Search rendered the shared shell ring plus its own `2px` `:focus-visible` outline, producing multiple blue lines.
+- Fix: added a Jobs/Search-only higher-specificity reset for the nested input's focus border, outline, outline offset, and shadow.
+- Post-fix: nested input outline is zero; Search and Role shell styles are an exact computed match. No actionable P0, P1, or P2 findings remain.
+
+## Interactions and console
+
+- Light desktop and dark 390 px mobile focus states verified.
+- Search remains natively focusable and filtering logic is unchanged.
+- Browser console errors: 0.
+- Focused V5832 contract test and 137-file Cloudflare build: passed.
+
+final result: passed
+
+---
+
 # ATSRS Jobs Search focus and icon alignment — Design QA (V5831)
 
 ## Evidence and normalized state
