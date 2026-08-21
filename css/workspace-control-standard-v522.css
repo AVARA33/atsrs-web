@@ -98,18 +98,6 @@ html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage #a
   border-color:var(--atsrs-control-line)!important;
 }
 
-html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(
-  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
-  select,
-  textarea,
-  .phone-field,
-  .work-type-select-toggle
-):focus,
-html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) #profilePage :where(.phone-field,.phone-code-picker):focus-within{
-  outline:0!important;
-  border-color:var(--atsrs-control-accent)!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
-}
 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
   #profilePage .access-request-card,
@@ -186,9 +174,4 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
   background-image:none!important;
   color:var(--atsrs-ref-dark-text,#f4f6ef)!important;
   box-shadow:none!important;
-}
-
-html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:var(--atsrs-control-accent)!important;
-  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }

@@ -973,56 +973,6 @@ body #app.app:not(.hidden) #dashboardPage .panel:has(> .atsrs-notification-empty
   padding-block:14px!important;
 }
 
-/* Select fields keep a visible keyboard focus without the green route accent. */
-html body #app.app:not(.hidden) select:focus,
-html body #app.app:not(.hidden) select:focus-visible,
-html body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus,
-html body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus-visible{
-  outline:0!important;
-  outline-offset:0!important;
-  border-color:#4e7187!important;
-  box-shadow:0 0 0 2px rgba(56,189,248,.12)!important;
-}
-html[data-theme="light"] body #app.app:not(.hidden) select:focus,
-html[data-theme="light"] body #app.app:not(.hidden) select:focus-visible,
-html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus,
-html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main > :is(
-  #dashboardPage,
-  #certificatesPage,
-  #refsPage,
-  #profilePage,
-  #introPage,
-  #privacyPage,
-  #dataRightsPage
-) select:focus-visible{
-  border-color:#6f91ad!important;
-  box-shadow:0 0 0 2px rgba(47,111,178,.12)!important;
-}
-
 /* Personal contact numbers: one professional field with a dedicated country-code section. */
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
   display:grid!important;
@@ -1103,10 +1053,6 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
   font-size:15px!important;
   line-height:46px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:#5f8299!important;
-  box-shadow:0 0 0 2px rgba(56,189,248,.12)!important;
-}
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
   top:calc(100% + 8px)!important;
   width:100%!important;
@@ -1129,10 +1075,6 @@ html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .pro
   background:transparent!important;
   color:#172033!important;
   -webkit-text-fill-color:#172033!important;
-}
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:#6f91ad!important;
-  box-shadow:0 0 0 2px rgba(47,111,178,.12)!important;
 }
 @media(max-width:520px){
   body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field{
@@ -1179,9 +1121,6 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field :focus-visible{
   outline:0!important;outline-offset:0!important;box-shadow:none!important;
 }
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:#5f8299!important;box-shadow:0 0 0 1px rgba(95,130,153,.28)!important;
-}
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
   top:calc(100% + 6px)!important;left:0!important;width:132px!important;min-width:132px!important;
   max-height:210px!important;padding:5px!important;border-radius:10px!important;box-sizing:border-box!important;
@@ -1201,9 +1140,6 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-v
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-verification-note > span,
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-verification-note .inline-verify-btn{
   min-width:0!important;white-space:nowrap!important;
-}
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:#6f91ad!important;box-shadow:0 0 0 1px rgba(111,145,173,.24)!important;
 }
 @media(max-width:680px){body.personal-mode #profilePage #accountGeneralTab .profile-contact-row{row-gap:20px!important}}
 @media(max-width:520px){
@@ -1260,11 +1196,6 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
   border-radius:0 12px 12px 0!important;
   font-size:15px!important;
   line-height:44px!important;
-}
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:#58768a!important;
-  box-shadow:none!important;
 }
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
   top:calc(100% + 6px)!important;
@@ -1364,12 +1295,6 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-c
   outline:0!important;
   outline-offset:0!important;
   border-color:transparent!important;
-  box-shadow:none!important;
-}
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  border-color:#58768a!important;
-  outline:0!important;
   box-shadow:none!important;
 }
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-menu{
@@ -1486,12 +1411,6 @@ body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-f
   box-shadow:none!important;
   font-size:15px!important;
   line-height:44px!important;
-}
-body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within,
-html[data-theme="light"] body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-field:focus-within{
-  outline:0!important;
-  border-color:#58768a!important;
-  box-shadow:none!important;
 }
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-picker:focus-within,
 body.personal-mode #profilePage #accountGeneralTab .profile-contact-row .phone-code-display:focus,
@@ -1688,7 +1607,6 @@ body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-co
   font-size:13.3333px!important;
   line-height:42px!important;
 }
-body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field:focus-within,
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus,
 body.personal-mode #profilePage #accountGeneralTab > .profile-grid > .profile-contact-row .phone-field :focus-visible{
   outline:0!important;

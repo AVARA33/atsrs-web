@@ -2,8 +2,8 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
 .hidden{display:none!important}
-button,input,select{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #334155}
-input,select{background:#0f172a;color:white}
+button{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #334155}
+input,select,textarea{box-sizing:border-box;width:100%}
 button{background:#2563eb;color:white;font-weight:bold;cursor:pointer;border:0}
 button:disabled{background:#64748b;cursor:not-allowed}
 .secondary{background:#475569}.action{background:#dc2626}.linkbtn{background:transparent;color:#93c5fd;text-align:left;padding:6px}
@@ -198,8 +198,6 @@ body{background:radial-gradient(circle at 18% 0%,rgba(34,197,94,.11),transparent
 .sidebar{background:linear-gradient(180deg,rgba(4,12,22,.98),rgba(7,17,29,.96))!important;border-color:#16283a!important}
 .nav button.active{background:linear-gradient(135deg,#0f766e,#22c55e)!important;border-color:rgba(134,239,172,.75)!important;box-shadow:0 12px 28px rgba(34,197,94,.20)!important;color:#f8fafc!important}
 .nav button:hover{border-color:rgba(56,189,248,.36)!important;background:rgba(20,34,53,.76)!important}
-input,select,textarea{background:#081524!important;border-color:#263f58!important;color:#f8fafc!important}
-input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--atsrs-green)!important;box-shadow:0 0 0 3px rgba(34,197,94,.16)!important}
 button{background:linear-gradient(135deg,#2563eb,#0891b2)!important;box-shadow:0 10px 26px rgba(37,99,235,.20)}
 button.secondary,.mode-choice button,.cert-mode-buttons button{background:#26384e!important;border:1px solid #3b536d!important;color:#eef6ff!important;box-shadow:none!important}
 button.secondary:hover,.mode-choice button:hover,.cert-mode-buttons button:hover{background:#2f455d!important;border-color:rgba(56,189,248,.55)!important}
@@ -840,32 +838,6 @@ body.personal-mode #dashboardPage .card{border-color:#264058!important}
 /* V120 Android dark system navigation bar support */
 html, body{background-color:#07111d!important;color-scheme:dark!important;}
 
-/* ATSRS permanent UI rule: select arrows never switch to a white native control. */
-select:not([multiple]){
-  appearance:none!important;
-  -webkit-appearance:none!important;
-  padding-right:34px!important;
-  color-scheme:dark!important;
-  background-color:#081524!important;
-  background-image:
-    linear-gradient(45deg,transparent 50%,#91a4b4 50%),
-    linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;
-  background-position:
-    calc(100% - 15px) 50%,
-    calc(100% - 11px) 50%!important;
-  background-size:4px 4px,4px 4px!important;
-  background-repeat:no-repeat!important;
-}
-select:not([multiple]):hover,
-select:not([multiple]):focus,
-select:not([multiple]):focus-visible,
-select:not([multiple]):active{
-  background-color:#081524!important;
-  background-image:
-    linear-gradient(45deg,transparent 50%,#91a4b4 50%),
-    linear-gradient(135deg,#91a4b4 50%,transparent 50%)!important;
-  color:#f8fafc!important;
-}
 select::-ms-expand{display:none}
 select option{
   background:#081524;

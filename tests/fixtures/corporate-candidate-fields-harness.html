@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Corporate Candidates shared fields V5848</title>
+  <title>Corporate Candidates shared fields</title>
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
   <link rel="stylesheet" href="../../css/talent-directory.css">
-  <link rel="stylesheet" href="../../css/floating-field-standard-v58178.css?v=58205-qa">
+  <link rel="stylesheet" href="../../css/floating-field-standard-v58178.css?v=58206-qa">
   <style>
-    *{box-sizing:border-box}body{margin:0;background:#050606;color:#f4f6ef;font:14px Arial,sans-serif}.app{min-height:100vh;padding:48px}.workspace-section{max-width:1500px;margin:auto}.workspace-section h1{font-size:34px;margin:0 0 36px}.talent-searchbar{display:grid;grid-template-columns:1.7fr repeat(4,minmax(0,1fr));gap:12px}.atsrs-select-trigger{color:var(--atsrs-field-text);text-align:left}.atsrs-select-trigger::before{content:attr(data-value)}.atsrs-select-trigger::after{content:'⌄';float:right;color:var(--atsrs-field-muted)}.work-type-options{position:absolute;z-index:2;top:48px;left:0;right:0;padding:12px;background:var(--atsrs-field-surface);border:1px solid var(--atsrs-field-line);border-radius:10px}.work-type-options label{display:block;padding:7px}@media(max-width:900px){.talent-searchbar{grid-template-columns:1fr 1fr}}@media(max-width:620px){.app{padding:24px 16px}.talent-searchbar{grid-template-columns:1fr}}
+    *{box-sizing:border-box}body{margin:0;background:#050606;color:#f4f6ef;font:14px Arial,sans-serif}html[data-theme="light"] body{background:#eef3f8;color:#142c3f}.app{min-height:100vh;padding:48px}.workspace-section{max-width:1500px;margin:auto}.workspace-section h1{font-size:34px;margin:0 0 36px}.talent-searchbar{display:grid;grid-template-columns:1.7fr repeat(4,minmax(0,1fr));gap:12px}.atsrs-select-trigger{color:var(--atsrs-field-text);text-align:left}.atsrs-select-trigger::before{content:attr(data-value)}.work-type-options{position:absolute;z-index:2;top:48px;left:0;right:0;padding:12px;background:var(--atsrs-field-surface);border:1px solid var(--atsrs-field-line);border-radius:10px}.work-type-options label{display:block;padding:7px}@media(max-width:900px){.talent-searchbar{grid-template-columns:1fr 1fr}}@media(max-width:620px){.app{padding:24px 16px}.talent-searchbar{grid-template-columns:1fr}}
   </style>
 </head>
 <body class="corporate-mode">
@@ -41,8 +42,9 @@
     </div>
   </section>
 </div>
+<script src="../../js/floating-fields.js"></script>
 <script>
-  document.querySelectorAll('.atsrs-field-shell').forEach(shell=>shell.style.setProperty('--atsrs-field-label-surface',getComputedStyle(document.body).backgroundColor));
+  if(new URLSearchParams(location.search).get('theme')==='light')document.documentElement.dataset.theme='light';
   document.querySelectorAll('.atsrs-select-trigger').forEach(button=>button.addEventListener('click',()=>button.setAttribute('aria-expanded',button.getAttribute('aria-expanded')==='true'?'false':'true')));
 </script>
 </body>
