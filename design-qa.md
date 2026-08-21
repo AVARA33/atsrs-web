@@ -46,6 +46,19 @@ final result: passed
 
 ---
 
+# Jobs Search mirrors dropdown controls — Design QA (V5839)
+
+- Search focused: `tests/artifacts/jobs-search-matches-dropdown-v5839/01-search-focused.png`
+- Role open: `tests/artifacts/jobs-search-matches-dropdown-v5839/02-role-open.png`
+- Previous V5837/V5838 dropdown-edge changes were reverted.
+- Search now uses the dropdown control's exact inner layer: transparent background, no inner border, no inner shadow, 42 px control inside a 44 px shell.
+- Focused Search and open Role have byte-for-byte equal shell border and shadow values.
+- Search icon placement and all filter behavior remain unchanged.
+
+final result: passed
+
+---
+
 # Jobs Search gray base layer — Design QA (V5836)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`

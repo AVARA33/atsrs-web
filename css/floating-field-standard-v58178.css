@@ -203,15 +203,17 @@ html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="
   box-shadow:none!important;
 }
 html body #app #jobsPage .atsrs-field-shell .jobs-search-control>input{
+  height:calc(var(--atsrs-field-height) - 2px)!important;
+  min-height:calc(var(--atsrs-field-height) - 2px)!important;
   padding-left:var(--atsrs-field-inline-padding)!important;
   padding-right:40px!important;
-  border:1px solid var(--jobs-filter-border)!important;
-  border-radius:var(--jobs-filter-radius)!important;
-  background:var(--jobs-filter-bg)!important;
+  border:0!important;
+  border-radius:calc(var(--atsrs-field-radius) - 1px)!important;
+  background:transparent!important;
 }
 html[data-theme] body #app.app #jobsPage .jobs-search.atsrs-field-shell .jobs-search-control>input:focus,
 html[data-theme] body #app.app #jobsPage .jobs-search.atsrs-field-shell .jobs-search-control>input:focus-visible{
-  border:1px solid var(--jobs-filter-border)!important;
+  border:0!important;
   outline:0!important;
   outline-offset:0!important;
   box-shadow:none!important;
