@@ -179,6 +179,18 @@ body #app .atsrs-field-shell.phone-field > .atsrs-field-label{display:block!impo
 body #app .atsrs-field-shell.phone-field :where(.phone-code-picker,input:not([type="hidden"])){border:0!important;background:transparent!important;box-shadow:none!important}
 body #app .atsrs-field-shell .personnel-combobox-toggle{position:absolute!important;right:0!important;top:0!important;width:38px!important;min-height:42px!important;border:0!important;background:transparent!important;box-shadow:none!important}
 
+/* Personnel Profession/Project combobox internals must stay inside the one shared shell. */
+html[data-theme] body #app.app:not(.hidden) #personnelPage .atsrs-field-shell .personnel-combobox>input,
+html[data-theme] body #app.app:not(.hidden) #personnelPage .atsrs-field-shell .personnel-combobox>.personnel-combobox-toggle{
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  border:0!important;
+  outline:0!important;
+  outline-offset:0!important;
+  box-shadow:none!important;
+}
+
 @media(max-width:620px){
   :root{--atsrs-field-label-size:9px;--atsrs-field-label-offset:10px;--atsrs-field-label-padding:5px;--atsrs-field-inline-padding:10px}
   body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .atsrs-field-label{max-width:calc(100% - 18px)!important}
@@ -250,6 +262,9 @@ html[data-theme] body #app.app .atsrs-field-shell:has(:is(.talent-work-type-filt
 
 /* One shell owns every field focus indication; legacy inner-control rings are suppressed. */
 html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage,#candidatesPage,#personnelPage,#projectsPage) .atsrs-field-shell :is(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
   input.atsrs-field-control,
   select.atsrs-field-control,
   textarea.atsrs-field-control,
@@ -257,6 +272,9 @@ html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#
   .atsrs-select-trigger
 ):focus,
 html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage,#candidatesPage,#personnelPage,#projectsPage) .atsrs-field-shell :is(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
   input.atsrs-field-control,
   select.atsrs-field-control,
   textarea.atsrs-field-control,

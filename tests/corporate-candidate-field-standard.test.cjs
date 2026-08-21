@@ -9,7 +9,7 @@ const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'ut
 const fixture = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'corporate-candidate-fields-harness.html'), 'utf8');
 
 assert.match(index, /data-atsrs-build="V5848"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=5852/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=5853/);
 for (const id of ['talentSearch', 'talentPositionFilter', 'talentCountryFilter', 'talentAvailabilityFilter', 'talentWorkPreferenceFilter']) {
   assert.match(index, new RegExp(`id="${id}"`), `missing Corporate Candidates filter ${id}`);
 }

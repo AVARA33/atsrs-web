@@ -38,6 +38,8 @@ test('Projects fields retain layout only and remove dark and light legacy visual
 test('legacy global select focus ring is removed and shared shells cover Corporate routes', () => {
   assert.doesNotMatch(shellPolish, /#app\.app:not\(\.hidden\) select:focus/);
   assert.match(shared, /#candidatesPage,#personnelPage,#projectsPage/);
+  assert.match(shared, /#personnelPage \.atsrs-field-shell \.personnel-combobox>input,[\s\S]*\.personnel-combobox>\.personnel-combobox-toggle\{[\s\S]*height:100%!important;[\s\S]*min-height:0!important;[\s\S]*outline:0!important;/);
+  assert.match(shared, /\.atsrs-field-shell :is\([\s\S]*input:not\(\[type="hidden"\]\)[\s\S]*\):focus-visible\{[\s\S]*box-shadow:none!important;/);
   assert.match(shared, /\.atsrs-field-shell[\s\S]*:focus-visible\{[\s\S]*box-shadow:none!important;/);
 });
 
@@ -46,5 +48,5 @@ test('changed stylesheets use fresh production cache markers', () => {
   assert.match(index, /css\/talent-directory\.css\?v=576/);
   assert.match(index, /css\/projects\.css\?v=504/);
   assert.match(index, /css\/shell-polish\.css\?v=58163/);
-  assert.match(index, /css\/floating-field-standard-v58178\.css\?v=5852/);
+  assert.match(index, /css\/floating-field-standard-v58178\.css\?v=5853/);
 });

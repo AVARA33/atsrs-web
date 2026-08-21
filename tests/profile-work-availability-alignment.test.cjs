@@ -8,7 +8,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v581
 const fixture = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'profile-work-availability-alignment-harness.html'), 'utf8');
 
 assert.match(index, /data-atsrs-build="V5848"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=5852/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=5853/);
 assert.match(css, /body\.personal-mode #app\.app #profilePage \.work-availability-grid>\.atsrs-field-shell\{\s*margin-top:0!important/);
 for (const id of ['profileAvailabilityStatus', 'profileAvailableFromWrap', 'profileAvailableFrom', 'profileWorkPreferences', 'profileWorkPreferencesToggle']) {
   assert.match(fixture, new RegExp(`id="${id}"`));
