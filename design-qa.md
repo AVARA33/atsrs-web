@@ -123,6 +123,47 @@ final result: passed
 
 ---
 
+# ATSRS Jobs click-only Search-ring correction — Design QA (V5835)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-filter-focus-v5835\role-clicked-search-ring-dark.png`
+- Focused comparison: `C:\Users\user\Documents\GitHub\atsrs-candidate-document-summary\tests\artifacts\jobs-filter-focus-v5835\search-source-vs-role-click.png`
+- Source pixels: 3439 × 1368. Implementation pixels: 1425 × 891 at a 1440 × 900 CSS viewport and 1× capture density.
+- State: Jobs, cards view, dark theme; source Search clicked/focused, implementation Role clicked/focused with the menu closed after Escape.
+
+## Full-view and focused comparison evidence
+
+All six Jobs fields are neutral when untouched. Clicking Search, Role, Location, Company, Recruiter or Date posted changes only that field to the exact Search green shell border/ring, 10 px radius and green floating label. The enhanced dropdown buttons have no separate inner outline or shadow.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged.
+- Spacing and layout rhythm: unchanged; no dimensions, gaps or responsive order changed.
+- Colors and visual tokens: the clicked field uses the Search values `rgb(34, 197, 94)`, `rgba(34, 197, 94, .16) 0 0 0 3px` and `rgba(34, 197, 94, .11) 0 8px 20px`; untouched fields retain the neutral border and no shadow.
+- Image quality and asset fidelity: no image or icon assets changed.
+- Copy and content: unchanged.
+
+## Findings
+
+No actionable P0, P1 or P2 differences remain for the clarified click-only behavior.
+
+## Comparison history
+
+- V5834 finding: the Search green treatment was mistakenly persistent on all six fields.
+- Fix: removed the persistent selector and scoped the Search treatment to `:focus-within` or an actually open enhanced dropdown.
+- Desktop evidence: all six untouched shells have neutral borders and no shadow; each of five dropdowns matches the clicked Search shell when exercised.
+- Mobile evidence: untouched shells are neutral, clicked Location uses the Search ring, and horizontal overflow is zero at 390 × 844.
+
+## Primary interactions
+
+- Search focus and all five dropdown click/open/close states were exercised.
+- Dropdown behavior and filter values are unchanged.
+- Focused V5835 contract test and Cloudflare build: passed.
+
+final result: passed
+
+---
+
 # ATSRS Jobs persistent Search-green field correction — Design QA (V5834)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a763a0c3-4ee2-4183-92be-cacf1d314645.png`

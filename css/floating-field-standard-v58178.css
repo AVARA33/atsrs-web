@@ -221,11 +221,13 @@ html[data-theme] body #app.app #jobsPage .atsrs-field-shell .jobs-select-toggle[
   outline-offset:0!important;
   box-shadow:none!important;
 }
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell{
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:focus-within,
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle[aria-expanded="true"]){
   border-color:var(--atsrs-field-accent)!important;
   box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
 }
-html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell>.atsrs-field-label{
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:focus-within>.atsrs-field-label,
+html[data-theme="dark"] body #app.app #jobsPage .atsrs-field-shell:has(.jobs-select-toggle[aria-expanded="true"])>.atsrs-field-label{
   color:var(--atsrs-field-accent)!important;
 }
 html body #app .atsrs-field-shell.atsrs-field-textarea textarea{height:auto!important;min-height:94px!important;padding-top:14px!important}
