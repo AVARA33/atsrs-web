@@ -7,8 +7,8 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5846"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=58204/);
+assert.match(index, /data-atsrs-build="V5847"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=58205/);
 assert.match(index, /floating-fields\.js\?v=58185/);
 assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
@@ -59,9 +59,10 @@ assert.match(css, /0 8px 20px var\(--atsrs-field-accent-shadow\)/);
 assert.match(css, /html\[data-theme\] body #app\.app \.atsrs-field-shell:focus-within/);
 assert.doesNotMatch(css, /#jobsPage \.atsrs-field-shell:focus-within/);
 assert.doesNotMatch(css, /#certificatesPage \.atsrs-field-shell:focus-within/);
+assert.match(css, /:is\(#profilePage,#certificatesPage,#jobsPage,#candidatesPage\) \.atsrs-field-shell :is\([\s\S]*input\.atsrs-field-control[\s\S]*\):focus-visible\{[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
 
 for (const id of ['jobsRoleFilter', 'jobsLocationFilter', 'crewSearch', 'crewCompanyFilter', 'crewPositionFilter', 'crewStatusFilter']) {
   assert.match(index, new RegExp(`id="${id}"`), `missing representative workspace control ${id}`);
 }
 
-console.log('V5846 shared ATSRS field-system and Jobs Search contracts passed');
+console.log('V5847 shared ATSRS field-system, Jobs Search and Corporate Candidates contracts passed');

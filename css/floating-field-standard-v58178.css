@@ -1,4 +1,4 @@
-/* ATSRS V5845: permanent shared field design for Personal and Corporate workspaces. */
+/* ATSRS V5847: permanent shared field design for Personal and Corporate workspaces. */
 :root{
   --atsrs-field-height:44px;
   --atsrs-field-radius:10px;
@@ -249,14 +249,14 @@ html[data-theme] body #app.app .atsrs-field-shell:focus-within>.atsrs-field-labe
 html[data-theme] body #app.app .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"]))>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
 
 /* One shell owns every field focus indication; legacy inner-control rings are suppressed. */
-html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage) .atsrs-field-shell :is(
+html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage,#candidatesPage) .atsrs-field-shell :is(
   input.atsrs-field-control,
   select.atsrs-field-control,
   textarea.atsrs-field-control,
   button.atsrs-field-control,
   .atsrs-select-trigger
 ):focus,
-html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage) .atsrs-field-shell :is(
+html[data-theme] body #app.app:not(.hidden) :is(#profilePage,#certificatesPage,#jobsPage,#candidatesPage) .atsrs-field-shell :is(
   input.atsrs-field-control,
   select.atsrs-field-control,
   textarea.atsrs-field-control,

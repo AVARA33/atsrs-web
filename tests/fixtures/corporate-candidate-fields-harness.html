@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Corporate Candidates shared fields V5847</title>
+  <link rel="stylesheet" href="../../css/talent-directory.css">
+  <link rel="stylesheet" href="../../css/floating-field-standard-v58178.css?v=58205-qa">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#050606;color:#f4f6ef;font:14px Arial,sans-serif}.app{min-height:100vh;padding:48px}.workspace-section{max-width:1500px;margin:auto}.workspace-section h1{font-size:34px;margin:0 0 36px}.talent-searchbar{display:grid;grid-template-columns:1.7fr repeat(4,minmax(0,1fr));gap:12px}.atsrs-select-trigger{color:var(--atsrs-field-text);text-align:left}.atsrs-select-trigger::before{content:attr(data-value)}.atsrs-select-trigger::after{content:'⌄';float:right;color:var(--atsrs-field-muted)}.work-type-options{position:absolute;z-index:2;top:48px;left:0;right:0;padding:12px;background:var(--atsrs-field-surface);border:1px solid var(--atsrs-field-line);border-radius:10px}.work-type-options label{display:block;padding:7px}@media(max-width:900px){.talent-searchbar{grid-template-columns:1fr 1fr}}@media(max-width:620px){.app{padding:24px 16px}.talent-searchbar{grid-template-columns:1fr}}
+  </style>
+</head>
+<body class="corporate-mode">
+<div id="app" class="app">
+  <section id="candidatesPage" class="workspace-section">
+    <h1>Corporate Candidates</h1>
+    <div class="talent-searchbar">
+      <label class="talent-search-field atsrs-field-shell">
+        <span class="atsrs-field-label">Search by name</span>
+        <input id="talentSearch" class="atsrs-field-control" type="search" placeholder="Search by name" autocomplete="off">
+      </label>
+      <label class="atsrs-field-shell">
+        <span class="atsrs-field-label">Profession</span>
+        <span class="atsrs-disclosure-shell atsrs-custom-select atsrs-field-control-frame"><button class="atsrs-select-trigger atsrs-field-control" type="button" role="combobox" aria-expanded="false" data-value="All professions"></button></span>
+      </label>
+      <label class="atsrs-field-shell">
+        <span class="atsrs-field-label">Country</span>
+        <span class="atsrs-disclosure-shell atsrs-custom-select atsrs-field-control-frame"><button class="atsrs-select-trigger atsrs-field-control" type="button" role="combobox" aria-expanded="false" data-value="All countries"></button></span>
+      </label>
+      <label class="atsrs-field-shell">
+        <span class="atsrs-field-label">Availability</span>
+        <span class="atsrs-disclosure-shell atsrs-custom-select atsrs-field-control-frame"><button class="atsrs-select-trigger atsrs-field-control" type="button" role="combobox" aria-expanded="false" data-value="All availability"></button></span>
+      </label>
+      <div class="talent-filter-field atsrs-field-shell" role="group" aria-labelledby="talentWorkTypeLabel">
+        <span id="talentWorkTypeLabel" class="atsrs-field-label">Work type</span>
+        <details id="talentWorkPreferenceFilter" class="work-type-multiselect talent-work-type-filter atsrs-field-control-frame">
+          <summary class="atsrs-field-control">All work types</summary>
+          <div class="work-type-options"><label><input type="checkbox"> Freelance</label><label><input type="checkbox"> Contract</label></div>
+        </details>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('.atsrs-field-shell').forEach(shell=>shell.style.setProperty('--atsrs-field-label-surface',getComputedStyle(document.body).backgroundColor));
+  document.querySelectorAll('.atsrs-select-trigger').forEach(button=>button.addEventListener('click',()=>button.setAttribute('aria-expanded',button.getAttribute('aria-expanded')==='true'?'false':'true')));
+</script>
+</body>
+</html>

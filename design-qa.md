@@ -46,6 +46,30 @@ final result: passed
 
 ---
 
+# Corporate Candidates shared field standard — V5847
+
+## Source inspection
+
+- Exact target: Corporate → Candidates filters (`Search by name`, `Profession`, `Country`, `Availability`, `Work type`).
+- Authenticated production source was inspected at the same desktop viewport in light and dark mode before the correction.
+- All five controls already used `.atsrs-field-shell`; the mismatch came from the Candidates page being omitted from the shared legacy inner-ring suppression selector.
+- Light Search focus had the correct shared shell plus an incorrect inner `1.81818px` blue outline.
+- Dark Search focus had the correct faded top/bottom and green left/right shell plus an incorrect inner `1.81818px` green outline.
+
+## Correction and checks
+
+- Added `#candidatesPage` to the existing shared page selector; no Candidate-specific color, border, glow or focus rule was introduced.
+- Shared dark tokens remain the source of the green side emphasis and faded block edges.
+- Shared light tokens remain the source of the blue focus border and ring.
+- Candidate filtering logic, markup, data, cards and page layout are unchanged.
+- Focused Candidate/shared-field/Documents/Profile regression tests: PASS.
+- Cloudflare Pages build: PASS, 137 files.
+- `git diff --check`: PASS.
+
+final result: code and contract QA passed; authenticated post-publish visual confirmation pending
+
+---
+
 # Jobs active pagination V5846 — Design QA
 
 - Source visual truth: `tests/artifacts/jobs-pagination-v5846/source/jobs-dark-active-before.png`
