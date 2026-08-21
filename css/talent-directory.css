@@ -238,7 +238,19 @@ html[data-theme] body.company-mode #app.app .linked-personnel-card .linked-perso
 .talent-empty{grid-column:1/-1;display:grid;gap:5px;padding:34px 0;color:#d7e1e9;text-align:center}
 .talent-empty span{color:#8ea2b5;font-size:12px}
 .talent-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:20px}
-.talent-modal-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(1,7,13,.78);backdrop-filter:blur(7px)}
+.talent-modal-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(1,7,13,.58);backdrop-filter:blur(2px)}
+html[data-theme="dark"] body button.talent-modal-backdrop,
+html[data-theme="dark"] body button.talent-modal-backdrop:hover:not(:disabled),
+html[data-theme="dark"] body button.talent-modal-backdrop:focus,
+html[data-theme="dark"] body button.talent-modal-backdrop:focus-visible,
+html[data-theme="dark"] body button.talent-modal-backdrop:active{
+  background:rgba(1,7,13,.58)!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  backdrop-filter:blur(2px)!important;
+  -webkit-backdrop-filter:blur(2px)!important;
+}
 .talent-modal-card{position:relative;width:min(620px,100%);max-height:min(760px,calc(100vh - 40px));overflow:auto;padding:26px;border:1px solid #355166;border-radius:18px;background:#091522;box-shadow:0 24px 70px rgba(0,0,0,.4)}
 .talent-modal-card h3{margin:18px 0 4px}.talent-modal-card>.talent-presence{position:absolute;top:28px;right:56px}
 .talent-modal-close{position:absolute;top:14px;right:14px;width:32px!important;height:32px!important;padding:0!important;background:transparent!important;border:1px solid #2b4052!important;color:#b8c7d3!important}

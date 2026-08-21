@@ -45,7 +45,7 @@ test('legacy global select focus ring is removed and shared shells cover Corpora
 
 test('changed stylesheets use fresh production cache markers', () => {
   assert.match(index, /css\/account\.css\?v=426/);
-  assert.match(index, /css\/talent-directory\.css\?v=576/);
+  assert.match(index, /css\/talent-directory\.css\?v=577/);
   assert.match(index, /css\/projects\.css\?v=504/);
   assert.match(index, /css\/shell-polish\.css\?v=58163/);
   assert.match(index, /css\/floating-field-standard-v58178\.css\?v=5853/);
