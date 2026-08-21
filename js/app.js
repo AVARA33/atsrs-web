@@ -346,6 +346,11 @@
   function applyAiResult(file,result,options){
     openManual();
     var documentData=result&&result.document&&typeof result.document==='object'?result.document:{};
+    if(window.atsrsDocumentDateValidation){
+      documentData=window.atsrsDocumentDateValidation.validate(documentData);
+    }else{
+      documentData=Object.assign({},documentData,{expiry_date:'',expiry_not_applicable:false,warnings:['Date validation was unavailable. Enter the expiry date manually after checking the document.'],date_validation:{status:'review_required',blocked_fields:['expiry_date']}});
+    }
     var values={
       cType:documentData.document_type,
       cDocNo:documentData.document_number,
@@ -370,11 +375,12 @@
       preview.classList.add('active');
     }
     var warnings=Array.isArray(documentData.warnings)?documentData.warnings.filter(Boolean):[];
+    var dateReview=documentData.date_validation&&documentData.date_validation.status==='review_required';
     var alertBox=byId('manualFormAlert');
     if(alertBox){
       var quota=result&&result.quota;
       var quotaNote=quota&&typeof quota.remaining==='number'?' '+quota.remaining+' of '+quota.scan_limit+' AI scans remain this month.':'';
-      alertBox.textContent=(warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.')+quotaNote;
+      alertBox.textContent=(dateReview?'AI date review required. Conflicting date values were left blank. ':'')+(warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.')+quotaNote;
       alertBox.classList.add('active');
       alertBox.classList.add('atsrs-ai-review-warning');
     }

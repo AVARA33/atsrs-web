@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Documents expiry layout harness</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/floating-field-standard-v58178.css">
+  <style>
+    body{margin:0}.harness-toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px}.harness-toolbar label{display:flex;gap:6px;align-items:center}.harness-toolbar select{width:auto}.harness-readout{font:12px/1.5 monospace;white-space:pre-wrap}.harness-viewport{margin:0 auto;padding:16px}.harness-save{margin-top:12px}.harness-pass{color:#22c55e}.harness-fail{color:#ef4444}
+  </style>
+</head>
+<body>
+  <div class="harness-toolbar">
+    <label>State <select id="state"><option value="qr">QR</option><option value="ai">AI</option><option value="manual">Manual</option><option value="edit">Edit</option></select></label>
+    <label>Theme <select id="theme"><option value="light">Light</option><option value="dark" selected>Dark</option></select></label>
+    <button type="button" data-viewport="desktop">Desktop</button><button type="button" data-viewport="768">768</button><button type="button" data-viewport="390">390</button>
+  </div>
+  <main id="app" class="app harness-viewport">
+    <section id="certificatesPage" class="page active">
+      <div class="panel unified-cert-panel">
+        <div id="fixture"></div>
+        <pre id="readout" class="harness-readout"></pre>
+      </div>
+    </section>
+  </main>
+  <script>
+    const state=document.getElementById('state'),theme=document.getElementById('theme'),fixture=document.getElementById('fixture'),readout=document.getElementById('readout');
+    function render(){
+      const auto=state.value==='qr'||state.value==='ai',inputId=auto?'autoExpiry':'cExpiry',checkId=auto?'autoExpiryNA':'cExpiryNA';
+      fixture.innerHTML=`<div id="${auto?'confirmBox':'certManualPanel'}" class="${auto?'scan-box':'cert-mode-panel active'}"><div class="${auto?'confirm-grid':'manual-cert-grid'}"><div class="field-wrap atsrs-field-shell"><label class="field-label atsrs-field-label" for="issue">Issue Date</label><input id="issue" class="atsrs-field-control" type="date"></div><div class="documents-expiry-group"><div class="field-wrap atsrs-field-shell"><label class="field-label atsrs-field-label" for="${inputId}">Expiry Date</label><input id="${inputId}" class="atsrs-field-control" type="date"></div><label class="na-check"><input id="${checkId}" type="checkbox"><span>Not Applicable</span></label></div></div><button id="save" class="harness-save" type="button">${state.value==='edit'?'Update':'Save'} Document</button></div>`;
+      requestAnimationFrame(measure);
+    }
+    function measure(){
+      const expiry=document.querySelector('.documents-expiry-group>.field-wrap').getBoundingClientRect(),na=document.querySelector('.documents-expiry-group>.na-check').getBoundingClientRect();
+      const group=document.querySelector('.documents-expiry-group').getBoundingClientRect(),shellHeight=expiry.height,gap=na.top-expiry.bottom,intersection=Math.max(0,Math.min(expiry.bottom,na.bottom)-Math.max(expiry.top,na.top))*Math.max(0,Math.min(expiry.right,na.right)-Math.max(expiry.left,na.left));
+      const focusables=[...fixture.querySelectorAll('input,button')].map(el=>el.id);
+      const overflowX=Math.max(0,document.documentElement.scrollWidth-document.documentElement.clientWidth);
+      const pass=shellHeight===44&&gap>=8&&intersection===0&&focusables.join(',')===`issue,${state.value==='qr'||state.value==='ai'?'autoExpiry,autoExpiryNA':'cExpiry,cExpiryNA'},save`&&overflowX===0;
+      readout.className=`harness-readout ${pass?'harness-pass':'harness-fail'}`;
+      readout.textContent=JSON.stringify({state:state.value,theme:theme.value,shellHeight,gap,intersection,tabOrder:focusables.join(' → '),expected:'Issue → Expiry → Not Applicable → Save',overflowX,groupHeight:group.height,pass},null,2);
+    }
+    state.addEventListener('change',render);theme.addEventListener('change',()=>{document.documentElement.dataset.theme=theme.value;requestAnimationFrame(measure)});
+    document.querySelectorAll('[data-viewport]').forEach(button=>button.addEventListener('click',()=>{document.querySelector('.harness-viewport').style.maxWidth=button.dataset.viewport==='desktop'?'1200px':`${button.dataset.viewport}px`;requestAnimationFrame(measure)}));
+    render();
+  </script>
+</body>
+</html>

@@ -1082,10 +1082,25 @@ let editCertIndex=null;
 function ensureExpiryNAControls(){
   const items=[['cExpiry','cExpiryNA','cExpiryNALabel'],['autoExpiry','autoExpiryNA','autoExpiryNALabel']];
   items.forEach(([inputId,checkId,labelId])=>{
-    const input=document.getElementById(inputId); if(!input||document.getElementById(checkId))return;
+    const input=document.getElementById(inputId); if(!input)return;
     const wrap=input.closest('.field-wrap'); if(!wrap)return;
-    wrap.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+    let group=wrap.closest('.documents-expiry-group');
+    if(!group){
+      group=document.createElement('div');
+      group.className='documents-expiry-group';
+      wrap.parentNode.insertBefore(group,wrap);
+      group.appendChild(wrap);
+    }
+    let row=document.getElementById(checkId)?.closest('.na-check');
+    if(!row){
+      group.insertAdjacentHTML('beforeend',`<label class="na-check"><input id="${checkId}" type="checkbox"> <span id="${labelId}">${v41r('notApplicable')}</span></label>`);
+      row=document.getElementById(checkId).closest('.na-check');
+    }else if(row.parentNode!==group){
+      group.appendChild(row);
+    }
     const cb=document.getElementById(checkId);
+    if(cb.dataset.expiryNaBound==='1')return;
+    cb.dataset.expiryNaBound='1';
     cb.addEventListener('change',()=>{
       input.disabled=cb.checked;
       if(cb.checked){input.value='';input.classList.remove('required-missing');}

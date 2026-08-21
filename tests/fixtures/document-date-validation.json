@@ -1,0 +1,47 @@
+[
+  {
+    "name": "captured 06.07.2026 plus 12 months contradiction",
+    "input": {
+      "issue_date": "2026-07-06",
+      "expiry_date": "2027-06-07",
+      "expiry_not_applicable": false,
+      "warnings": ["Examination 06.07.2026 is valid for 12 months until 06.07.2027."],
+      "date_evidence": [
+        { "field": "issue_date", "source_label": "Examination date", "raw_text": "06.07.2026", "normalized_value": "2026-07-06" },
+        { "field": "expiry_date", "source_label": "Valid until", "raw_text": "06.07.2027", "normalized_value": "2027-07-06" }
+      ],
+      "validity_duration": { "value": 12, "unit": "months", "raw_text": "valid for 12 months" }
+    },
+    "expected": { "expiry_date": "", "status": "review_required", "conflict": "duration_conflict", "derived": "2027-07-06" }
+  },
+  {
+    "name": "valid ISO non-regression",
+    "input": { "issue_date": "2026-07-06", "expiry_date": "2027-07-06", "warnings": [], "date_evidence": [], "expiry_not_applicable": false },
+    "expected": { "issue_date": "2026-07-06", "expiry_date": "2027-07-06", "status": "accepted" }
+  },
+  {
+    "name": "explicit ISO expiry evidence",
+    "input": {
+      "issue_date": "2026-07-06", "expiry_date": "2027-07-06", "warnings": [], "expiry_not_applicable": false,
+      "date_evidence": [{ "field": "expiry_date", "source_label": "Expires", "raw_text": "2027-07-06", "normalized_value": "2027-07-06" }]
+    },
+    "expected": { "expiry_date": "2027-07-06", "status": "accepted" }
+  },
+  {
+    "name": "unambiguous evidence fills missing dates and derives duration",
+    "input": {
+      "issue_date": "", "expiry_date": "", "warnings": [], "expiry_not_applicable": false,
+      "date_evidence": [{ "field": "issue_date", "source_label": "Issued", "raw_text": "31.01.2026", "normalized_value": "2026-01-31" }],
+      "validity_duration": { "value": 1, "unit": "months", "raw_text": "valid for 1 month" }
+    },
+    "expected": { "issue_date": "2026-01-31", "expiry_date": "2026-02-28", "status": "accepted", "derived": "2026-02-28" }
+  },
+  {
+    "name": "explicit expiry contradiction blocks autofill",
+    "input": {
+      "issue_date": "2026-07-06", "expiry_date": "2027-06-07", "warnings": [], "expiry_not_applicable": false,
+      "date_evidence": [{ "field": "expiry_date", "source_label": "Expires", "raw_text": "2027-07-06", "normalized_value": "2027-07-06" }]
+    },
+    "expected": { "expiry_date": "", "status": "review_required", "conflict": "explicit_evidence_conflict" }
+  }
+]

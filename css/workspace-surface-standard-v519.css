@@ -1,3 +1,11 @@
+/* Shared light page canvas for every authenticated Personal and Corporate route. */
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden),
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main{
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--atsrs-light-page,#f6f8fb)!important;
+}
+
 /* V519: one dark workspace surface standard for Personal and Corporate. */
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden){
   --atsrs-workspace-surface:var(--atsrs-ref-dark-surface,#0b0d0d);

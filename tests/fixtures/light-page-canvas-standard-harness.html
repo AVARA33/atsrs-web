@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../css/base.css?v=408">
+  <link rel="stylesheet" href="../../css/theme.css?v=58161">
+  <link rel="stylesheet" href="../../css/projects.css?v=503">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css?v=436">
+  <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css?v=5848">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css?v=5848">
+  <title>ATSRS V5848 light page canvas QA</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0}
+    #app.app{display:grid!important;grid-template-columns:220px minmax(0,1fr)!important}
+    .sidebar{padding:24px 16px}.sidebar span{display:block;margin:16px 0}
+    .main{min-width:0;padding:70px 24px 32px}
+    .qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .qa-card{min-height:140px}.qa-card input{margin-top:16px}.qa-long{height:1400px}
+    @media(max-width:800px){#app.app{grid-template-columns:1fr!important}.sidebar{display:none}.main{padding:70px 16px 24px}}
+    @media(max-width:520px){.qa-grid{grid-template-columns:1fr}.main{padding-inline:12px}}
+  </style>
+</head>
+<body class="personal-mode">
+  <div id="app" class="app">
+    <aside class="sidebar"><strong>ATSRS</strong><span>Dashboard</span><span>Documents</span><span>Profile</span></aside>
+    <main class="main">
+      <section id="qaPage">
+        <p class="pill" id="qaAccount"></p><h1 id="qaTitle"></h1>
+        <p class="sub">Shared ATSRS authenticated page-canvas verification.</p>
+        <div class="qa-grid">
+          <article class="card qa-card"><h2>Functional card</h2><p>Card separation must remain visible.</p></article>
+          <article class="project-workspace-card qa-card"><h2>Workspace card</h2><label>Input remains distinct<input value="QA value" aria-label="QA input"></label></article>
+        </div>
+        <div id="qaLength"></div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const params=new URLSearchParams(location.search);
+    document.documentElement.dataset.theme=params.get('theme')==='dark'?'dark':'light';
+    const account=params.get('account')==='corporate'?'corporate':'personal';
+    const route=params.get('route')||'Dashboard';
+    document.body.className=account==='corporate'?'company-mode':'personal-mode';
+    qaAccount.textContent=account==='corporate'?'Corporate Account':'Personal Account';
+    qaTitle.textContent=route;
+    if(params.get('length')==='long')qaLength.className='qa-long';
+  </script>
+</body>
+</html>

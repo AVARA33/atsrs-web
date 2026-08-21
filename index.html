@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5847" data-atsrs-update="21 Aug 2026">
+<html lang="en" data-atsrs-build="V5848" data-atsrs-update="21 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,7 +44,7 @@ try{
   document.documentElement.style.colorScheme=initialTheme;
   window.atsrsSyncFavicon(initialTheme);
   var themeMeta=document.querySelector('meta[name="theme-color"]');
-  if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#edf2f8':'#050606');
+  if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#f6f8fb':'#050606');
   if(new URLSearchParams(window.location.search).get('share')||
      /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash)){
     document.documentElement.classList.add('atsrs-public-share-mode');
@@ -60,8 +60,8 @@ try{
 </script>
 <style id="atsrs-initial-theme-paint">
 html{background:#050606}
-html[data-theme="light"]{background:#edf2f8}
-html[data-theme="light"] body{background:#edf2f8}
+html[data-theme="light"]{background:#f6f8fb}
+html[data-theme="light"] body{background:#f6f8fb}
 </style>
 <!-- ATSRS V178 modularized from real source. CSS/JS extracted without UI changes. -->
 <link
@@ -87,7 +87,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/projects.css?v=503">
 <link rel="stylesheet" href="css/maintenance.css?v=375">
 <link rel="stylesheet" href="css/workspace-switcher.css?v=375">
-<link rel="stylesheet" href="css/theme.css?v=58161">
+<link rel="stylesheet" href="css/theme.css?v=58195">
 <link rel="stylesheet" href="css/corporate-information-architecture.css?v=421">
 <link rel="stylesheet" href="css/corporate-remediation.css?v=480">
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
@@ -95,7 +95,7 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
 <link rel="stylesheet" href="css/shell-polish.css?v=58162">
 <link rel="stylesheet" href="css/public-landing.css?v=58150">
-<link rel="stylesheet" href="css/workspace-surface-standard-v519.css?v=520">
+<link rel="stylesheet" href="css/workspace-surface-standard-v519.css?v=5848">
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=58156">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=58155">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=58155">
@@ -110,8 +110,8 @@ html[data-theme="light"] body{background:#edf2f8}
 <link rel="stylesheet" href="css/product-updates-premium-v543.css?v=543">
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
-<link rel="stylesheet" href="css/theme-palette-v508.css?v=58170">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=58169">
+<link rel="stylesheet" href="css/theme-palette-v508.css?v=5848">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=58170">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <link rel="stylesheet" href="css/button-content-standard-v58148.css?v=58148">
@@ -1927,7 +1927,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=584"></script>
+<script src="js/storage.js?v=585"></script>
 <script src="js/public-landing.js?v=58147"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
@@ -1939,7 +1939,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/references.js?v=375"></script>
 <script src="js/cv-generator.js?v=417"></script>
 <script src="js/account.js?v=415"></script>
-<script src="js/app.js?v=567"></script>
+<script src="js/document-date-validation.js?v=1"></script>
+<script src="js/app.js?v=568"></script>
 <script src="js/date-picker.js?v=505"></script>
 <script src="js/share-profile.js?v=417"></script>
 <script src="js/recipient-links.js?v=433"></script>
@@ -1951,7 +1952,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=480"></script>
-<script src="js/theme.js?v=577"></script>
+<script src="js/theme.js?v=5848"></script>
 <script src="js/select-standard.js?v=58164"></script>
 <script src="js/select-open-position-v58165.js?v=58165"></script>
 <script src="js/floating-fields.js?v=58185"></script>

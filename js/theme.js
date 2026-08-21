@@ -32,7 +32,7 @@
     document.documentElement.dataset.theme=theme;
     document.documentElement.style.colorScheme=theme;
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',theme==='light'?'#edf2f8':'#050606');
+    if(meta)meta.setAttribute('content',theme==='light'?'#f6f8fb':'#050606');
     if(typeof window.atsrsSyncFavicon==='function')window.atsrsSyncFavicon(theme);
     if(persist)saveTheme(theme);
     syncButton();

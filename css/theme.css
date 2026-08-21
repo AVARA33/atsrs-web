@@ -118,14 +118,14 @@ html[data-theme="light"] .atsrs-theme-thumb{
 
 /* Professional light palette: calm white surfaces, cool grey borders and restrained accent. */
 html[data-theme="light"] body{
-  --atsrs-bg:#f3f6f9;
+  --atsrs-bg:var(--atsrs-light-page,#f6f8fb);
   --atsrs-bg2:#f8fafc;
   --atsrs-panel:#ffffff;
   --atsrs-panel2:#f7f9fb;
   --atsrs-border:#d6e0e8;
   --atsrs-text:#172b3d;
   --atsrs-muted:#62778a;
-  --v76-bg:#f3f6f9;
+  --v76-bg:var(--atsrs-light-page,#f6f8fb);
   --v76-panel:#ffffff;
   --v76-panel2:#f7f9fb;
   --v76-border:#d6e0e8;
@@ -137,10 +137,7 @@ html[data-theme="light"] body{
   --atsrs-action-border-hover:#9fb2c1;
   --atsrs-action-text:#223c52;
   --atsrs-action-muted:#65798b;
-  background:
-    radial-gradient(circle at 9% 0%,rgba(34,197,94,.045),transparent 25%),
-    radial-gradient(circle at 91% 5%,rgba(14,165,233,.055),transparent 26%),
-    #f3f6f9!important;
+  background:var(--atsrs-light-page,#f6f8fb)!important;
   color:#172b3d!important;
 }
 html[data-theme="light"] body::before{opacity:.05!important}
@@ -607,8 +604,7 @@ html[data-theme="light"] body{
   color:var(--atsrs-light-text)!important;
 }
 html[data-theme="light"] body #app{
-  background:
-    linear-gradient(180deg,var(--atsrs-light-blue-soft) 0,rgba(246,248,251,.94) 230px,var(--atsrs-light-page) 440px)!important;
+  background:var(--atsrs-light-page)!important;
   color:var(--atsrs-light-text)!important;
 }
 html[data-theme="light"] body #app .sidebar{
@@ -1785,6 +1781,26 @@ html[data-theme="light"] body .talent-summary-filter>.atsrs-disclosure-shell>sel
   max-width: none !important;
 }
 
+/* Shared Personal/Corporate Documents expiry layout: field and optional state own separate rows. */
+#certificatesPage .documents-expiry-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--atsrs-space-2, 8px);
+  width: 100%;
+  min-width: 0;
+  align-self: start;
+}
+
+#certificatesPage .documents-expiry-group > .field-wrap {
+  width: 100%;
+  margin: 0;
+}
+
+#certificatesPage .documents-expiry-group > .na-check {
+  min-height: 20px;
+  margin: 0 0 2px 2px;
+}
+
 @media (max-width: 720px) {
   #certificatesPage #certManualPanel .manual-cert-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1805,6 +1821,11 @@ html[data-theme="light"] body #app #certificatesPage #certManualPanel :where(inp
   -webkit-text-fill-color: #172b3d !important;
   caret-color: #172b3d !important;
   box-shadow: none !important;
+}
+
+html[data-theme="light"] body #app #certificatesPage #certManualPanel .documents-expiry-group > .na-check > input:focus-visible {
+  outline: 0 !important;
+  box-shadow: var(--atsrs-light-focus) !important;
 }
 
 html[data-theme="light"] body #app #certificatesPage #certManualPanel :where(input, textarea)::placeholder {

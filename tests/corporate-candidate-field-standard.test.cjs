@@ -8,7 +8,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v581
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 const fixture = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'corporate-candidate-fields-harness.html'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5847"/);
+assert.match(index, /data-atsrs-build="V5848"/);
 assert.match(index, /floating-field-standard-v58178\.css\?v=58205/);
 for (const id of ['talentSearch', 'talentPositionFilter', 'talentCountryFilter', 'talentAvailabilityFilter', 'talentWorkPreferenceFilter']) {
   assert.match(index, new RegExp(`id="${id}"`), `missing Corporate Candidates filter ${id}`);
@@ -24,4 +24,4 @@ for (const label of ['Search by name', 'Profession', 'Country', 'Availability', 
   assert.match(fixture, new RegExp(`>${label}<`), `missing rendered QA control ${label}`);
 }
 
-console.log('V5847 Corporate Candidates shared field-system contracts passed');
+console.log('V5848 Corporate Candidates shared field-system contracts passed');

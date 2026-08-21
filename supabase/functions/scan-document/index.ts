@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { corsHeaders } from "jsr:@supabase/supabase-js@2/cors";
+import { validateExtractedDocumentDates } from "../_shared/document-date-validation.ts";
 
 const OPENAI_MODEL = "gpt-5-mini";
 const MAX_FILE_BYTES = 15 * 1024 * 1024;
@@ -67,6 +68,30 @@ const extractionSchema = {
     expiry_not_applicable: { type: "boolean" },
     confidence: { type: "number", minimum: 0, maximum: 1 },
     warnings: { type: "array", items: { type: "string" } },
+    date_evidence: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          field: { type: "string", enum: ["issue_date", "expiry_date"] },
+          source_label: { type: "string" },
+          raw_text: { type: "string" },
+          normalized_value: { type: "string" },
+        },
+        required: ["field", "source_label", "raw_text", "normalized_value"],
+      },
+    },
+    validity_duration: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        value: { type: "integer", minimum: 0 },
+        unit: { type: "string", enum: ["days", "months", "years", ""] },
+        raw_text: { type: "string" },
+      },
+      required: ["value", "unit", "raw_text"],
+    },
   },
   required: [
     "document_category",
@@ -81,6 +106,8 @@ const extractionSchema = {
     "expiry_not_applicable",
     "confidence",
     "warnings",
+    "date_evidence",
+    "validity_duration",
   ],
 } as const;
 
@@ -214,6 +241,8 @@ Deno.serve(async (req: Request) => {
     "issuing_country is only the country or jurisdiction. issuing_authority is the ministry, agency, company, institution, employer, training provider, insurer, or other issuer.",
     "country_authority is retained for compatibility and should contain the issuing country; provider should contain the issuing authority or provider.",
     "Return dates as YYYY-MM-DD. If a date cannot be read confidently, return an empty string.",
+    "For every issue or expiry date, preserve the printed field label, exact raw date text, and proposed ISO value in date_evidence. Use an empty normalized_value when the raw date is ambiguous.",
+    "If the document states a validity duration, return its integer value, unit, and exact raw text in validity_duration; otherwise use value 0 and an empty unit and raw_text.",
     "issue_date means awarded, issued, completed, or valid-from date.",
     "expiry_date means expires, expiry, valid-until, or valid-to date. Do not swap issue and expiry dates.",
     "Set expiry_not_applicable true only when the document explicitly has no expiry or lifetime validity.",
@@ -301,7 +330,8 @@ Deno.serve(async (req: Request) => {
   }
   try {
     const extracted = JSON.parse(text) as Record<string, unknown>;
-    return json(req, 200, { document: extracted, model: OPENAI_MODEL, quota });
+    const validated = validateExtractedDocumentDates(extracted);
+    return json(req, 200, { document: validated, model: OPENAI_MODEL, quota });
   } catch {
     return json(req, 502, { error: "The AI result could not be validated. Try scanning again." });
   }
