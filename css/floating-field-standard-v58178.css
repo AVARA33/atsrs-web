@@ -244,7 +244,7 @@ html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talen
 html[data-theme] body #app.app .atsrs-field-shell:focus-within>.atsrs-field-label,
 html[data-theme] body #app.app .talent-filter-field.atsrs-field-shell:has(.talent-work-type-filter[open])>.atsrs-field-label{color:var(--atsrs-field-accent)!important}
 
-/* V5841: Documents uses one Jobs-matched dark field treatment in both account modes. */
+/* V5842: Documents copies the exact dark Profile focus treatment in both account modes. */
 html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell{
   border:var(--atsrs-field-border-width) solid var(--atsrs-field-line)!important;
   border-radius:var(--atsrs-field-radius)!important;
@@ -264,9 +264,28 @@ html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :wher
   box-shadow:none!important;
 }
 html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell:focus-within{
-  border-color:var(--atsrs-field-accent)!important;
-  box-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+  border-color:#22c55e!important;
+  box-shadow:0 0 0 3px rgba(34,197,94,.16),0 8px 20px rgba(34,197,94,.11)!important;
 }
 html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell:focus-within>.atsrs-field-label{
-  color:var(--atsrs-field-accent)!important;
+  color:#22c55e!important;
+}
+html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .atsrs-field-control,
+  .atsrs-select-trigger
+):focus,
+html[data-theme="dark"] body #app.app #certificatesPage .atsrs-field-shell :where(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .atsrs-field-control,
+  .atsrs-select-trigger
+):focus-visible{
+  border:0!important;
+  outline:0!important;
+  outline-offset:0!important;
+  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }
