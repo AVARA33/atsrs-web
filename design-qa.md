@@ -46,6 +46,27 @@ final result: passed
 
 ---
 
+# Profile Work Availability row alignment — Design QA (V5844)
+
+- Source: `C:\Users\user\AppData\Local\Temp\codex-clipboard-c3d92d90-699f-4654-9cff-d1323906ffc1.png`.
+- Desktop implementation: `tests/artifacts/profile-work-availability-v5844/01-desktop-dark.png`.
+- Tablet implementation: `tests/artifacts/profile-work-availability-v5844/02-tablet-dark.png`.
+- Mobile implementation: `tests/artifacts/profile-work-availability-v5844/03-mobile-dark.png`.
+- Source/implementation comparison: `tests/artifacts/profile-work-availability-v5844/04-source-implementation-comparison.png`.
+
+The floating-field standard added a 6 px top margin to the Status and Preferred work type shells, while the ID-scoped Available from shell already reset that margin to zero. V5844 removes the leaked margin from all three Profile Work Availability shells only.
+
+- Desktop shell top coordinates: Status `233px`, Available from `233px`, Preferred work type `233px`: PASS.
+- Desktop label top coordinates: all three `226.67px`: PASS.
+- Tablet responsive wrapping: PASS; no horizontal overflow.
+- Mobile single-column stacking: PASS; consistent 54 px row rhythm and no horizontal overflow.
+- Console errors/warnings: 0.
+- Focused contract tests and Cloudflare Pages build: PASS.
+
+final result: passed
+
+---
+
 # Documents Profile-focus color parity — Design QA (V5843)
 
 - Visual source of truth: the authenticated production Profile `Name` field supplied by the user and inspected while focused.
