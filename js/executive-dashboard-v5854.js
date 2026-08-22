@@ -57,7 +57,7 @@
   function renderPersonal(){
     var items=documents(),data=summary(items),userProfile=profile(),completion=profileCompletion(userProfile);
     setText('dashboardHealthBadge','DOCUMENT HEALTH');setText('dashboardHealthTitle','Document status overview');setText('dashboardHealthSub','A current breakdown of your Personal document register.');
-    setText('dashboardCurrentDocuments',data.current);setText('dashboardProfileCompletion',completion+'%');setText('snapValid',data.current);setText('snapRisk',data.review);setText('dashboardProfileVisibility',userProfile.visibility||'Private');
+    setText('dashboardCurrentDocuments',data.current);setText('dashboardProfileCompletion',completion+'%');
     renderOverallPersonal(data,items);
     var list=byId('dashboardHealthList');if(list){
       list.innerHTML='';
@@ -104,10 +104,18 @@
   }
   function renderTypes(values){
     var list=byId('dashboardDocumentTypes');if(!list)return;
-    var entries=typeEntries(values),visible=entries.slice(0,5),remainder=entries.slice(5).reduce(function(total,item){return total+item.count},0);list.innerHTML='';
+    var entries=typeEntries(values),visible=entries.slice(0,5),remainder=entries.slice(5).reduce(function(total,item){return total+item.count},0),total=values.length;list.innerHTML='';
     if(!visible.length){var empty=document.createElement('div');empty.className='dashboard-native-empty';var title=document.createElement('strong'),copy=document.createElement('span');title.textContent='No document categories yet';copy.textContent='Categories will appear after document data is available.';empty.appendChild(title);empty.appendChild(copy);list.appendChild(empty);return}
     if(remainder)visible.push({label:'Other',count:remainder});
-    visible.forEach(function(item){var row=document.createElement('div');row.className='dashboard-type-item';row.setAttribute('role','listitem');var label=document.createElement('span'),count=document.createElement('b');label.textContent=item.label;count.textContent=String(item.count);row.appendChild(label);row.appendChild(count);list.appendChild(row)});
+    visible.forEach(function(item){
+      var percentage=total?item.count/total*100:0;
+      var row=document.createElement('div');row.className='dashboard-type-item';row.setAttribute('role','listitem');row.style.setProperty('--dashboard-type-share',percentage.toFixed(2)+'%');
+      var copy=document.createElement('div');copy.className='dashboard-type-copy';
+      var label=document.createElement('span');var icon=document.createElement('i');icon.className='ph ph-file-text';icon.setAttribute('aria-hidden','true');label.appendChild(icon);label.appendChild(document.createTextNode(item.label));
+      var count=document.createElement('b');count.textContent=item.count+' ('+percentage.toFixed(1)+'%)';
+      var track=document.createElement('span');track.className='dashboard-type-track';track.setAttribute('aria-hidden','true');var fill=document.createElement('span');track.appendChild(fill);
+      copy.appendChild(label);copy.appendChild(count);row.appendChild(copy);row.appendChild(track);list.appendChild(row);
+    });
   }
   function personalRecent(){
     var api=expiryApi();return documents().map(function(item){var result=api&&typeof api.classify==='function'?api.classify(item&&item.expiry):{label:''};return{title:String(item&&item.type||'Document'),owner:'',uploaded:uploadValue(item),time:uploadTime(item),status:result.label||''}}).filter(function(item){return item.time>0}).sort(function(a,b){return b.time-a.time}).slice(0,5);

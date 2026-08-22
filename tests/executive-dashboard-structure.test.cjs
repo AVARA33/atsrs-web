@@ -9,10 +9,12 @@ const css=fs.readFileSync(path.join(root,'css/executive-dashboard-v5854.css'),'u
 const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-harness.html'),'utf8');
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
-assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5856/);
-assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5856/);
-assert.match(html,/id="dashboardPrimaryGrid"/,'Primary status and alert hierarchy must be static and semantic.');
+assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5857/);
+assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5857/);
+assert.match(html,/id="dashboardPrimaryGrid" class="[^"]*company-only/,'Legacy status and alert hierarchy must be excluded from Personal Dashboard.');
 assert.match(html,/id="dashboardOperationalGrid"/,'Operational document sections must be present.');
+assert.match(html,/id="dashboardDocumentTypesTitle">Document Types/,'Document Types must be the first Personal operational section.');
+assert.doesNotMatch(html,/id="snapshotTitle"|id="snapValid"|id="snapRisk"/,'Removed Personal snapshot content must not remain in the document.');
 assert.match(html,/id="dashboardActivityGrid"/,'Existing notification and request panels need a stable activity region.');
 assert.match(html,/Historical trend unavailable/,'Unavailable historical data must be disclosed instead of fabricated.');
 assert.match(html,/Storage total unavailable/,'Unavailable storage totals must be disclosed instead of fabricated.');
@@ -25,6 +27,7 @@ assert.match(js,/Good morning/,'Dashboard heading must use the real profile gree
 assert.match(js,/Public\/shared profile state/,'Corporate visibility must be represented honestly when the service does not expose it.');
 assert.match(js,/uploadedAt/,'Personal recent activity must use real upload timestamps.');
 assert.match(js,/uploaded_at/,'Corporate recent activity must use real upload timestamps.');
+assert.match(js,/dashboard-type-share/,'Document Types must render real percentage bars from the existing document register.');
 assert.doesNotMatch(js,/Math\.random|faker|mock data|12\.4|20 GB/i,'Dashboard must not fabricate production data.');
 assert.doesNotMatch(js,/fetch\(|supabaseClient|\.from\(/,'Dashboard enhancement must not add backend queries.');
 

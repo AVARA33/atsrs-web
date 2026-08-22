@@ -12,11 +12,12 @@ const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
 assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Welcome back<\/h1>/);
-assert.match(index, /id="snapshotTitle">Managed in Profile<\/h2>/);
-assert.match(index, /Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing\./);
+assert.match(index, /class="solo-hero panel company-only"/);
+assert.match(index, /id="dashboardPrimaryGrid" class="[^"]*company-only/);
+assert.match(index, /id="dashboardDocumentTypesTitle">Document Types<\/h2>/);
+assert.match(index, /class="dashboard-types-period">All documents<\/span>/);
 assert.doesNotMatch(index, /Ready to share|Sharing status|id="snapShare"|id="snapShareLabel"/);
-assert.match(index, /id="snapValid"/);
-assert.match(index, /id="snapRisk"/);
+assert.doesNotMatch(index, /Managed in Profile|id="snapshotTitle"|id="snapValid"|id="snapRisk"/);
 assert.doesNotMatch(index, /id="cvStatusDash"|id="cvStatusDashText"|class="card cv-status-card"/);
 for (const id of ['exp90', 'exp60', 'exp30', 'exp7', 'expired']) assert.match(index, new RegExp(`id="${id}"`));
 for (const label of ['Expiring in 90 Days', 'Expiring in 60 Days', 'Expiring in 30 Days', 'Expiring in 1 Week']) assert.ok(index.includes(label));
@@ -68,8 +69,7 @@ assert.match(runtime, /days<=90[\s\S]*?counts\.exp90/);
 assert.match(runtime, /child\.setAttribute\('aria-hidden','true'\)/);
 assert.match(runtime, /\^\[✓✔\]\$[\s\S]*setAttribute\('aria-hidden','true'\)/);
 assert.match(runtime, /email-verified download requests/);
-assert.match(runtime, /syncShareCapability/);
-assert.doesNotMatch(runtime, /Ready to share|syncShareReadiness|snapShare['"]?\)|snapShare\.textContent/);
+assert.doesNotMatch(runtime, /Ready to share|syncShareReadiness|syncShareCapability|snapShare['"]?\)|snapShare\.textContent/);
 assert.match(runtime, /wrapAndSync\('showPage'\)/);
 assert.match(runtime, /wrapAndSync\('renderAll'\)/);
 assert.match(runtime, /window\.addEventListener\('atsrs:data-hydrated',syncDashboard\)/);
@@ -93,6 +93,7 @@ for (const state of ['Loading notifications...', 'No expiry notifications yet.',
 }
 
 assert.match(notifications, /rows\.length\?rows\.map\(notificationMarkup\)/, 'Populated notification state must retain its real renderer');
+assert.match(notifications, /if\(!corporate\)\{[\s\S]*?existing\.remove\(\);[\s\S]*?return;/, 'Personal Dashboard must not remount the removed expiry-notification panel');
 assert.match(notifications, /Notifications could not be loaded from the server\./, 'Notification error state must remain distinct from empty');
 assert.match(talentDirectory, /id="refreshTalentMessages">Refresh<\/button>/, 'Messages keep their real retry action');
 assert.match(talentDirectory, /Messages could not be loaded\./, 'Messages error state must remain distinct from empty');
