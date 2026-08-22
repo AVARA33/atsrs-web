@@ -9,6 +9,7 @@ const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 const storage = fs.readFileSync(path.join(root, 'js', 'storage.js'), 'utf8');
 const corporate = fs.readFileSync(path.join(root, 'js', 'corporate-remediation.js'), 'utf8');
 
+assert.doesNotMatch(index, /id="addDocTitle"|id="certRegisterTitle"/);
 assert.match(app, /corporate\?'Add company document':'Add document'/);
 assert.doesNotMatch(app, /corporate\?'Add company document':'Documents'/);
 assert.match(storage, /isPersonalMode\(\)\?"Add document":ptr\("addDoc"\)/);
