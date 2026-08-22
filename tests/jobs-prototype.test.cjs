@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=58168/);
-  assert.match(index,/route-feature-loader\.js\?v=58163/);
+  assert.match(index,/jobs-prototype\.css\?v=58171/);
+  assert.match(index,/route-feature-loader\.js\?v=58164/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58163'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58164'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -231,8 +231,8 @@ test('Jobs renders only verified source and closing dates with card/list parity'
 });
 
 test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
-  assert.match(runtime,/function detailContent\(job\)/);
-  assert.match(runtime,/function openDetails\(job,opener\)/);
+  assert.match(runtime,/function detailContent\(job,forceFull\)/);
+  assert.match(runtime,/function openDetails\(job,opener,forceFull\)/);
   assert.match(runtime,/dialog\.showModal\(\)/);
   assert.match(runtime,/expanded\?'Minimize job details':'Expand job details'/);
   assert.match(runtime,/ph-arrows-in':'ph-arrows-out/);
