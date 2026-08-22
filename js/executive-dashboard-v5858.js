@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5861';
+  window.__atsrsExecutiveDashboardVersion='5862';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -106,9 +106,9 @@
     return'current';
   }
   function remainingProgress(result){
-    if(!result||result.days===null)return 10;
+    if(!result||result.days===null)return 6;
     if(result.days<=0)return 100;
-    return Math.max(12,Math.min(100,Math.round(100-(Math.min(result.days,365)/365*88))));
+    return Math.max(4,Math.min(100,Math.round(100/(1+result.days/90))));
   }
   function remainingLabel(result){
     if(!result||result.days===null)return result&&result.dateState==='no_expiry'?'No expiry':'Date not confirmed';
