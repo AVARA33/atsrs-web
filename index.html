@@ -99,7 +99,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=58156">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=58155">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=58155">
-<link rel="stylesheet" href="css/executive-dashboard-v5854.css?v=5858">
+<link rel="stylesheet" href="css/executive-dashboard-v5854.css?v=5857">
 <link rel="stylesheet" href="css/personal-account-routing-v524.css?v=524">
 <link rel="stylesheet" href="css/references-cv-upload-v525.css?v=58153">
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
@@ -790,24 +790,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="dashboardPage" class="hidden">
-<p class="dashboard-command-kicker personal-only">Readiness Command Center</p>
 <h1 id="dashboardHeading">Welcome back</h1>
-<p id="dashboardCommandDate" class="dashboard-command-date personal-only">Your document readiness summary.</p>
-<section id="personalReadinessCommand" class="panel personal-readiness-command personal-only" aria-labelledby="dashboardReadinessTitle">
-  <div class="dashboard-readiness-message">
-    <span class="dashboard-readiness-icon" aria-hidden="true"><i class="ph ph-shield-check"></i></span>
-    <div>
-      <h2 id="dashboardReadinessTitle">Reviewing your readiness…</h2>
-      <p id="dashboardReadinessDetail">ATSRS is checking your Personal document register.</p>
-      <p id="dashboardReadinessNote">Your current data will appear here.</p>
-    </div>
-  </div>
-  <div class="dashboard-readiness-action">
-    <span id="dashboardCommandActionLabel">ACTION REQUIRED</span>
-    <p id="dashboardCommandActionCopy">Review documents that need your attention.</p>
-    <button id="dashboardReadinessAction" type="button">Review documents</button>
-  </div>
-</section>
 <div class="solo-hero panel company-only">
   <div class="hero-card">
     <span id="soloBadge" class="pill">SOLO CONTROL</span>
@@ -829,14 +812,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
   <div class="stat" id="totalPersonnel">0</div>
 </div>
-<div class="card expiry-summary-card expiry-summary-uploaded"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-file-text"></i></span><p id="totalCertsText"></p></div><div class="stat" id="totalCerts">0</div><span id="totalCertsMeta" class="expiry-summary-meta personal-only">Total</span></div>
-<div class="card expiry-summary-card expiry-summary-current"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-check-circle"></i></span><p id="dashboardCurrentDocumentsText">Current Documents</p></div><div class="stat" id="dashboardCurrentDocuments">0</div><span id="dashboardCurrentDocumentsMeta" class="expiry-summary-meta personal-only">0%</span></div>
-<div class="card expiry-summary-card expiry-summary-90"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp90Text">Expiring in 90 Days</p></div><div class="stat warning" id="exp90">0</div><span id="exp90Meta" class="expiry-summary-meta personal-only">0%</span></div>
-<div class="card expiry-summary-card expiry-summary-60"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp60Text">Expiring in 60 Days</p></div><div class="stat warning" id="exp60">0</div><span id="exp60Meta" class="expiry-summary-meta personal-only">0%</span></div>
-<div class="card expiry-summary-card expiry-summary-30"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp30Text">Expiring in 30 Days</p></div><div class="stat warning" id="exp30">0</div><span id="exp30Meta" class="expiry-summary-meta personal-only">0%</span></div>
-<div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div><span id="exp7Meta" class="expiry-summary-meta personal-only">0%</span></div>
-<div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div><span id="expiredMeta" class="expiry-summary-meta personal-only">0%</span></div>
-<div id="dashboardProfileCompletionCard" class="card expiry-summary-card expiry-summary-profile personal-only"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-user-circle"></i></span><p>Profile Complete</p></div><div class="stat" id="dashboardProfileCompletion">0%</div><span class="expiry-summary-meta">Complete</span></div>
+<div class="card expiry-summary-card expiry-summary-uploaded"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-file-text"></i></span><p id="totalCertsText"></p></div><div class="stat" id="totalCerts">0</div></div>
+<div class="card expiry-summary-card expiry-summary-current"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-check-circle"></i></span><p id="dashboardCurrentDocumentsText">Current Documents</p></div><div class="stat" id="dashboardCurrentDocuments">0</div></div>
+<div class="card expiry-summary-card expiry-summary-90"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp90Text">Expiring in 90 Days</p></div><div class="stat warning" id="exp90">0</div></div>
+<div class="card expiry-summary-card expiry-summary-60"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp60Text">Expiring in 60 Days</p></div><div class="stat warning" id="exp60">0</div></div>
+<div class="card expiry-summary-card expiry-summary-30"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp30Text">Expiring in 30 Days</p></div><div class="stat warning" id="exp30">0</div></div>
+<div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div></div>
+<div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div></div>
+<div id="dashboardProfileCompletionCard" class="card expiry-summary-card expiry-summary-profile personal-only"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-user-circle"></i></span><p>Profile Complete</p></div><div class="stat" id="dashboardProfileCompletion">0%</div></div>
 </div>
 
 <div id="dashboardPrimaryGrid" class="dashboard-executive-grid dashboard-primary-grid company-only">
@@ -860,29 +843,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div id="dashboardOperationalGrid" class="dashboard-executive-grid dashboard-operational-grid">
 <section class="panel dashboard-executive-panel dashboard-document-types-panel" aria-labelledby="dashboardDocumentTypesTitle">
   <div class="dashboard-executive-panel-head">
-    <div><h2 id="dashboardDocumentTypesTitle">Document Types</h2><p class="dashboard-panel-intro personal-only">Breakdown of your documents by type.</p></div>
+    <h2 id="dashboardDocumentTypesTitle">Document Types</h2>
     <span class="dashboard-types-period">All documents</span>
   </div>
-  <div class="dashboard-types-columns personal-only" aria-hidden="true"><span>Document Type</span><span>Count</span><span>% of Total</span></div>
   <div id="dashboardDocumentTypes" class="dashboard-types-list" role="list"></div>
-  <button id="dashboardTypesViewAll" type="button" class="secondary dashboard-panel-action personal-only">View all documents</button>
 </section>
 <section class="panel dashboard-executive-panel dashboard-recent-activity-panel" aria-labelledby="dashboardRecentTitle">
-  <div id="dashboardAttentionSummary" class="dashboard-attention-summary personal-only" aria-live="polite">
-    <div class="dashboard-attention-heading"><span id="dashboardAttentionLabel">ATTENTION REQUIRED</span><b id="dashboardAttentionCount">0</b></div>
-    <p>Documents needing your action.</p>
-    <div class="dashboard-attention-item">
-      <span class="dashboard-attention-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span>
-      <div><strong id="dashboardAttentionTitle">No document requires attention</strong><span id="dashboardAttentionMeta">Your current document status will appear here.</span></div>
-      <button id="dashboardAttentionReview" type="button" class="secondary">Review now</button>
-    </div>
-  </div>
   <div class="dashboard-executive-panel-head">
     <div><span class="pill">RECENT ACTIVITY</span><h2 id="dashboardRecentTitle">Recent document activity</h2></div>
   </div>
   <p id="dashboardRecentSub" class="sub"></p>
   <ol id="dashboardRecentList" class="dashboard-recent-list"></ol>
-  <button id="dashboardRecentViewAll" type="button" class="secondary dashboard-panel-action personal-only">View all documents</button>
 </section>
 </div>
 
@@ -2038,7 +2009,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=574"></script>
 <script src="js/corporate-reporting.js?v=519"></script>
-<script src="js/executive-dashboard-v5854.js?v=5858"></script>
+<script src="js/executive-dashboard-v5854.js?v=5857"></script>
 <script src="js/admin-overview.js?v=582"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>

@@ -12,7 +12,7 @@ const bootRefresh = fs.readFileSync(path.join(root, 'js', 'boot-refresh.js'), 'u
 const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
-assert.match(index, /<section id="dashboardPage" class="hidden">\s*<p class="dashboard-command-kicker personal-only">Readiness Command Center<\/p>\s*<h1 id="dashboardHeading">Welcome back<\/h1>/);
+assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Welcome back<\/h1>/);
 assert.match(index, /class="solo-hero panel company-only"/);
 assert.match(index, /id="dashboardPrimaryGrid" class="[^"]*company-only/);
 assert.match(index, /id="dashboardDocumentTypesTitle">Document Types<\/h2>/);

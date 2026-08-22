@@ -24,17 +24,14 @@
   function uploadValue(item){return item&&item.uploadedAt||(item&&item.cloudFileId&&window.atsrsDocumentUploadDates&&window.atsrsDocumentUploadDates[item.cloudFileId])||item&&item.uploaded_at||''}
   function uploadTime(item){var time=new Date(uploadValue(item)).getTime();return Number.isFinite(time)?time:0}
   function dateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):''}
-  function longDate(value){var date=value instanceof Date?value:new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):''}
   function route(page,navId){var nav=byId(navId);if(typeof window.showPage==='function'&&nav)window.showPage(page,nav)}
   function number(value){var parsed=Number(value||0);return Number.isFinite(parsed)?parsed:0}
-  function percentage(value,total){return total?Math.round(number(value)/total*1000)/10:0}
   function setText(id,value){var element=byId(id);if(element)element.textContent=String(value==null?'':value)}
   function useful(value){return value!==undefined&&value!==null&&String(value).trim()!==''}
   function greeting(){
     var hour=new Date().getHours(),period=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
     var name=String(profile().name||'').trim().split(/\s+/)[0];
     setText('dashboardHeading',period+(name?', '+name:'')+'!');
-    setText('dashboardCommandDate',"Here's your readiness summary for "+longDate(new Date())+'.');
   }
   function profileCompletion(data){
     var fields=[data.name,data.surname,data.position,data.country,data.phone||data.phoneLocal,data.birthDate,data.address||data.zipCode,data.availabilityStatus&&data.availabilityStatus!=='not_set'?data.availabilityStatus:''];
@@ -57,56 +54,10 @@
     if(risk){setText('dashboardOverallStatus','Review upcoming expiries');setText('dashboardOverallDetail',risk+' document'+(risk===1?' needs':'s need')+' review.');return}
     setText('dashboardOverallStatus','Documents are current');setText('dashboardOverallDetail','No document expiry risk is currently detected.');
   }
-  function personalWindows(items){
-    var api=expiryApi(),counts={exp90:0,exp60:0,exp30:0,exp7:0,expired:0};
-    items.forEach(function(item){
-      var result=api&&typeof api.classify==='function'?api.classify(item&&item.expiry):null;if(!result)return;
-      if(result.bucket==='expired'){counts.expired+=1;return}
-      if(!Number.isFinite(result.days)||result.days<0||result.days>90)return;
-      if(result.days<=7)counts.exp7+=1;
-      else if(result.days<=30)counts.exp30+=1;
-      else if(result.days<=60)counts.exp60+=1;
-      else counts.exp90+=1;
-    });
-    return counts;
-  }
-  function firstReviewItem(items){
-    var api=expiryApi(),review=null;
-    items.some(function(item){var result=api&&typeof api.classify==='function'?api.classify(item&&item.expiry):null;if(result&&result.review){review={item:item,result:result};return true}return false});
-    return review;
-  }
-  function syncPersonalSummary(data,items,completion){
-    var total=items.length,windows=personalWindows(items);
-    setText('totalCertsText','Uploaded Documents');setText('totalCerts',total);setText('dashboardCurrentDocuments',data.current);setText('dashboardProfileCompletion',completion+'%');
-    setText('exp90',windows.exp90);setText('exp60',windows.exp60);setText('exp30',windows.exp30);setText('exp7',windows.exp7);setText('expiredText','Expired');setText('expired',windows.expired);
-    setText('totalCertsMeta','Total');setText('dashboardCurrentDocumentsMeta',percentage(data.current,total)+'%');setText('exp90Meta',percentage(windows.exp90,total)+'%');setText('exp60Meta',percentage(windows.exp60,total)+'%');setText('exp30Meta',percentage(windows.exp30,total)+'%');setText('exp7Meta',percentage(windows.exp7,total)+'%');setText('expiredMeta',percentage(windows.expired,total)+'%');
-  }
-  function renderCommandCenter(data,items,completion){
-    var review=firstReviewItem(items),risk=number(data.review),expired=number(data.expired),type=review&&String(review.item&&review.item.type||'Document'),expiry=review&&String(review.item&&review.item.expiry||''),readiness=byId('personalReadinessCommand'),attention=byId('dashboardAttentionSummary'),attentionReview=byId('dashboardAttentionReview');
-    if(readiness)readiness.classList.toggle('is-clear',Boolean(items.length&&!risk));
-    if(attention)attention.classList.toggle('is-clear',!risk);
-    if(!items.length){
-      setText('dashboardReadinessTitle','Start your document register.');setText('dashboardReadinessDetail','Add your first document to begin readiness tracking.');setText('dashboardReadinessNote','ATSRS will organise document status and expiry windows here.');
-      setText('dashboardCommandActionLabel','GET STARTED');setText('dashboardCommandActionCopy','Upload a document to create your readiness view.');setText('dashboardReadinessAction','Add first document');
-    }else if(expired){
-      setText('dashboardReadinessTitle',expired===1?"You're almost ready.":'Your readiness needs attention.');setText('dashboardReadinessDetail','Your profile is '+completion+'% complete and '+data.current+' of '+items.length+' documents are current.');setText('dashboardReadinessNote',expired+' expired document'+(expired===1?' needs':'s need')+' your attention.');
-      setText('dashboardCommandActionLabel','ACTION REQUIRED');setText('dashboardCommandActionCopy','Review '+(expired===1?'your expired document':'expired documents')+' to maintain continuous readiness.');setText('dashboardReadinessAction',expired===1?'Review expired document':'Review expired documents');
-    }else if(risk){
-      setText('dashboardReadinessTitle','Plan your next renewal.');setText('dashboardReadinessDetail','Your profile is '+completion+'% complete and '+data.current+' of '+items.length+' documents are current.');setText('dashboardReadinessNote',risk+' document'+(risk===1?' needs':'s need')+' review before expiry.');
-      setText('dashboardCommandActionLabel','REVIEW UPCOMING');setText('dashboardCommandActionCopy','Open your document register and plan the next renewal.');setText('dashboardReadinessAction','Review documents');
-    }else{
-      setText('dashboardReadinessTitle',"You're ready to go.");setText('dashboardReadinessDetail','Your profile is '+completion+'% complete and all '+items.length+' documents are current.');setText('dashboardReadinessNote','No document expiry risk is currently detected.');
-      setText('dashboardCommandActionLabel','ALL CLEAR');setText('dashboardCommandActionCopy','Your document register is ready for your next opportunity.');setText('dashboardReadinessAction','View documents');
-    }
-    setText('dashboardAttentionLabel',risk?'ATTENTION REQUIRED':'ALL CLEAR');setText('dashboardAttentionCount',risk);
-    if(review){setText('dashboardAttentionTitle',type);setText('dashboardAttentionMeta',(review.result.label||'Review required')+(expiry?' · '+expiry:''));}
-    else{setText('dashboardAttentionTitle','No document requires attention');setText('dashboardAttentionMeta','Your current document register has no detected expiry risk.');}
-    if(attentionReview){attentionReview.classList.toggle('hidden',!review);attentionReview.textContent=expired?'Review now':'Open documents';}
-  }
   function renderPersonal(){
     var items=documents(),data=summary(items),userProfile=profile(),completion=profileCompletion(userProfile);
     setText('dashboardHealthBadge','DOCUMENT HEALTH');setText('dashboardHealthTitle','Document status overview');setText('dashboardHealthSub','A current breakdown of your Personal document register.');
-    syncPersonalSummary(data,items,completion);renderCommandCenter(data,items,completion);
+    setText('dashboardCurrentDocuments',data.current);setText('dashboardProfileCompletion',completion+'%');
     renderOverallPersonal(data,items);
     var list=byId('dashboardHealthList');if(list){
       list.innerHTML='';
@@ -116,7 +67,7 @@
       list.appendChild(healthRow('Date not confirmed',data.unconfirmed,'warning','Review incomplete expiry information.'));
     }
     renderTypes(items.map(function(item){return String(item&&item.type||'Document')}));
-    renderRecent(personalRecent(),'Latest activity in your Personal document register.');renderActions(false);syncViewDocuments();
+    renderRecent(personalRecent(),'Latest timestamped uploads in your Personal document register.');renderActions(false);syncViewDocuments();
   }
   function missingCorporateProfiles(rows){return rows.filter(function(row){return !useful(row&&row.name)||!useful(row&&row.position)||!useful(row&&row.country)}).length}
   function corporateDocuments(data){
@@ -156,17 +107,14 @@
     var entries=typeEntries(values),visible=entries.slice(0,5),remainder=entries.slice(5).reduce(function(total,item){return total+item.count},0),total=values.length;list.innerHTML='';
     if(!visible.length){var empty=document.createElement('div');empty.className='dashboard-native-empty';var title=document.createElement('strong'),copy=document.createElement('span');title.textContent='No document categories yet';copy.textContent='Categories will appear after document data is available.';empty.appendChild(title);empty.appendChild(copy);list.appendChild(empty);return}
     if(remainder)visible.push({label:'Other',count:remainder});
-    visible.sort(function(a,b){return b.count-a.count||a.label.localeCompare(b.label)});
     visible.forEach(function(item){
       var percentage=total?item.count/total*100:0;
       var row=document.createElement('div');row.className='dashboard-type-item';row.setAttribute('role','listitem');row.style.setProperty('--dashboard-type-share',percentage.toFixed(2)+'%');
       var copy=document.createElement('div');copy.className='dashboard-type-copy';
       var label=document.createElement('span');var icon=document.createElement('i');icon.className='ph ph-file-text';icon.setAttribute('aria-hidden','true');label.appendChild(icon);label.appendChild(document.createTextNode(item.label));
-      var count=document.createElement('b'),share=null;
-      if(corporate())count.textContent=item.count+' ('+percentage.toFixed(1)+'%)';
-      else{count.textContent=String(item.count);share=document.createElement('span');share.className='dashboard-type-percentage';share.textContent=percentage.toFixed(1)+'%';}
+      var count=document.createElement('b');count.textContent=item.count+' ('+percentage.toFixed(1)+'%)';
       var track=document.createElement('span');track.className='dashboard-type-track';track.setAttribute('aria-hidden','true');var fill=document.createElement('span');track.appendChild(fill);
-      copy.appendChild(label);copy.appendChild(count);if(share)copy.appendChild(share);row.appendChild(copy);row.appendChild(track);list.appendChild(row);
+      copy.appendChild(label);copy.appendChild(count);row.appendChild(copy);row.appendChild(track);list.appendChild(row);
     });
   }
   function personalRecent(){
@@ -189,8 +137,8 @@
     else{setText('dashboardQuickActionsSub','Open the existing Personal workflows from one place.');addAction(area,'Add document','certificates','navCertificates');addAction(area,'Manage profile','profile','navProfile');addAction(area,'Browse jobs','jobs','navJobs');addAction(area,'Privacy & sharing','privacy','navPrivacy');}
   }
   function syncViewDocuments(){
-    var button=byId('dashboardViewDocumentsBtn');if(button&&!button.__atsrsExecutiveBound){button.__atsrsExecutiveBound=true;button.addEventListener('click',function(){var company=corporate();route(company?'personnel':'certificates',company?'navPersonnel':'navCertificates')})}
-    ['dashboardReadinessAction','dashboardAttentionReview','dashboardTypesViewAll','dashboardRecentViewAll'].forEach(function(id){var target=byId(id);if(!target||target.__atsrsExecutiveBound)return;target.__atsrsExecutiveBound=true;target.addEventListener('click',function(){route('certificates','navCertificates')})});
+    var button=byId('dashboardViewDocumentsBtn');if(!button||button.__atsrsExecutiveBound)return;button.__atsrsExecutiveBound=true;
+    button.addEventListener('click',function(){var company=corporate();route(company?'personnel':'certificates',company?'navPersonnel':'navCertificates')});
   }
   function requestCorporateData(){
     if(corporateLoadRequested)return;var reporting=window.atsrsCorporateReporting;if(!reporting||typeof reporting.loadCompliance!=='function')return;corporateLoadRequested=true;
