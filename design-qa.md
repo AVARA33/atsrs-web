@@ -41,6 +41,29 @@ final result: passed
 
 ---
 
+# Android release hero logo — Design QA
+
+- Source visual: `C:\Users\user\AppData\Local\Temp\codex-clipboard-eb8f405b-d411-4a42-a771-04db629766f9.png`.
+- Requested correction: remove the generated `A` placeholder and use the official ATSRS brand mark without theme-dependent substitution.
+- Implementation reference: `/assets/branding/atsrs-favicon-green-v576.png`, the existing official ATSRS green mark.
+
+## Comparison and verification
+
+- The placeholder letter and its synthetic rounded-square background are removed.
+- The hero now renders the real ATSRS mark at 86 × 86 px with preserved aspect ratio.
+- The exact same image URL remains in both light and dark modes.
+- Desktop dark, desktop light, and 390 × 844 responsive states were rendered in the in-app browser.
+- Mobile horizontal overflow: 0 px.
+- Browser console errors/warnings: 0.
+- Focused Android release tests: 8/8 passed.
+- Cloudflare build: passed, 146 files.
+
+No actionable P0, P1, or P2 differences remain for the requested logo correction.
+
+final result: passed
+
+---
+
 # ATSRS Personal plan layout — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-dcd45db4-1dc2-46ee-9ee9-4976765cd56b.png`

@@ -62,6 +62,12 @@ test('Cloudflare production build includes the Android release page and APK', ()
   assert.match(buildScript, /const publicDirectories = \[[^\]]*"download"[^\]]*"downloads"/);
 });
 
+test('Android release hero uses the invariant official ATSRS mark', () => {
+  const page = read('download/android/index.html');
+  assert.match(page, /class="download-icon" src="\/assets\/branding\/atsrs-favicon-green-v576\.png" alt="ATSRS"/);
+  assert.doesNotMatch(page, /class="download-icon"[^>]*>A<\/div>/);
+});
+
 test('Signing credentials remain external and ignored', () => {
   const ignore = read('.gitignore');
   const gradle = read('apps/android/android/app/build.gradle');
