@@ -10,8 +10,8 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5863/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5863/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5864/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5864/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -47,7 +47,7 @@ assert.match(css,/dashboard-document-timeline-layout\{[\s\S]*?grid-template-colu
 assert.match(css,/dashboard-document-timeline-rows\{[\s\S]*?max-height:432px[\s\S]*?overflow-y:auto/,'Only eight 54px document rows may be visible before internal scrolling.');
 assert.match(css,/dashboard-document-list-card\{grid-column:1;\}[\s\S]*?dashboard-document-bars-card\{grid-column:2;\}/,'Uploaded Documents and Time Remaining must occupy separate aligned desktop cards.');
 assert.match(css,/dashboard-document-list-row,[\s\S]*?dashboard-document-bar-row\{[\s\S]*?height:54px[\s\S]*?min-height:54px/,'Document and expiry-bar rows must retain identical fixed heights.');
-assert.match(css,/dashboard-document-bar-rows\{[\s\S]*?scrollbar-width:none/,'The synchronized right card must remain scrollable without a duplicate visible scrollbar.');
+assert.match(css,/dashboard-document-list-rows,[\s\S]*?dashboard-document-bar-rows\{[\s\S]*?scrollbar-width:none/,'Both synchronized cards must remain scrollable without visible scrollbars.');
 assert.match(css,/@media\(max-width:560px\)/,'Mobile layout must be explicit.');
 assert.match(css,/var\(--atsrs-ref-light-surface\)/,'Light mode must reuse ATSRS tokens.');
 assert.match(css,/var\(--atsrs-workspace-surface/,'Dark mode must reuse ATSRS workspace tokens.');

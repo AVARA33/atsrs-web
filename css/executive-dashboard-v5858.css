@@ -88,11 +88,13 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-rows{
   scrollbar-color:var(--atsrs-muted) transparent;
 }
 
+body.personal-mode #dashboardPage .dashboard-document-list-rows,
 body.personal-mode #dashboardPage .dashboard-document-bar-rows{
   padding-right:0;
   scrollbar-width:none;
 }
 
+body.personal-mode #dashboardPage .dashboard-document-list-rows::-webkit-scrollbar,
 body.personal-mode #dashboardPage .dashboard-document-bar-rows::-webkit-scrollbar{
   width:0;
   height:0;
