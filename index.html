@@ -99,7 +99,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=58156">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=58155">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=58155">
-<link rel="stylesheet" href="css/executive-dashboard-v5854.css?v=5854">
+<link rel="stylesheet" href="css/executive-dashboard-v5854.css?v=5855">
 <link rel="stylesheet" href="css/personal-account-routing-v524.css?v=524">
 <link rel="stylesheet" href="css/references-cv-upload-v525.css?v=58153">
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
@@ -794,7 +794,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="solo-hero panel">
   <div class="hero-card">
     <span id="soloBadge" class="pill">SOLO CONTROL</span>
+    <h2 id="soloHeroTitle">Your document dashboard</h2>
     <p id="soloHeroText">Upload your certificates and track expiry risk from one clean dashboard.</p>
+  </div>
+  <div class="dashboard-overall-status" aria-live="polite">
+    <span id="dashboardOverallLabel" class="dashboard-overall-label">OVERALL STATUS</span>
+    <strong id="dashboardOverallStatus">Loading dashboard…</strong>
+    <span id="dashboardOverallDetail">Your current ATSRS data is being reviewed.</span>
   </div>
 </div>
 
@@ -807,23 +813,66 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div class="stat" id="totalPersonnel">0</div>
 </div>
 <div class="card expiry-summary-card expiry-summary-uploaded"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-file-text"></i></span><p id="totalCertsText"></p></div><div class="stat" id="totalCerts">0</div></div>
+<div class="card expiry-summary-card expiry-summary-current"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-check-circle"></i></span><p id="dashboardCurrentDocumentsText">Current Documents</p></div><div class="stat" id="dashboardCurrentDocuments">0</div></div>
 <div class="card expiry-summary-card expiry-summary-90"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp90Text">Expiring in 90 Days</p></div><div class="stat warning" id="exp90">0</div></div>
 <div class="card expiry-summary-card expiry-summary-60"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp60Text">Expiring in 60 Days</p></div><div class="stat warning" id="exp60">0</div></div>
 <div class="card expiry-summary-card expiry-summary-30"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-dots"></i></span><p id="exp30Text">Expiring in 30 Days</p></div><div class="stat warning" id="exp30">0</div></div>
 <div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div></div>
 <div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div></div>
+<div id="dashboardProfileCompletionCard" class="card expiry-summary-card expiry-summary-profile personal-only"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-user-circle"></i></span><p>Profile Complete</p></div><div class="stat" id="dashboardProfileCompletion">0%</div></div>
 </div>
-<div class="panel dashboard-snapshot-panel">
-  <div class="snapshot-card">
-    <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
-    <div class="dashboard-share-capability"><h2 id="snapshotTitle">Managed in Profile</h2><p id="snapShareHelp">Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing.</p></div>
+
+<div id="dashboardPrimaryGrid" class="dashboard-executive-grid dashboard-primary-grid">
+<section class="panel dashboard-executive-panel dashboard-health-panel" aria-labelledby="dashboardHealthTitle">
+  <div class="dashboard-executive-panel-head">
+    <div><span id="dashboardHealthBadge" class="pill">DOCUMENT HEALTH</span><h2 id="dashboardHealthTitle">Document status overview</h2></div>
   </div>
-</div>
-<div class="panel dashboard-priority-alerts-panel">
-  <h3 id="riskTitle">Priority alerts</h3>
+  <p id="dashboardHealthSub" class="sub">A current breakdown of the records in this workspace.</p>
+  <div id="dashboardHealthList" class="dashboard-health-list" role="list"></div>
+</section>
+<section class="panel dashboard-priority-alerts-panel" aria-labelledby="riskTitle">
+  <div class="dashboard-executive-panel-head">
+    <div><span class="pill">ACTION REQUIRED</span><h2 id="riskTitle">Priority alerts</h2></div>
+    <button id="dashboardViewDocumentsBtn" type="button" class="secondary">View documents</button>
+  </div>
   <p id="riskSub" class="sub">Documents closest to expiry will appear here.</p>
   <div id="riskList" class="risk-list"></div>
+</section>
 </div>
+
+<div class="panel dashboard-snapshot-panel personal-only">
+  <div class="snapshot-card">
+    <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
+    <div class="dashboard-share-capability">
+      <h2 id="snapshotTitle">Managed in Profile</h2>
+      <p id="snapShareHelp">Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing.</p>
+      <div class="dashboard-snapshot-metrics" aria-label="Document and visibility summary">
+        <span><b id="snapValid">0</b><small id="snapValidLabel">Current documents</small></span>
+        <span><b id="snapRisk">0</b><small id="snapRiskLabel">Expiry risk</small></span>
+        <span><b id="dashboardProfileVisibility">Private</b><small>Profile visibility</small></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dashboardOperationalGrid" class="dashboard-executive-grid dashboard-operational-grid">
+<section class="panel dashboard-executive-panel dashboard-document-types-panel" aria-labelledby="dashboardDocumentTypesTitle">
+  <div class="dashboard-executive-panel-head">
+    <div><span class="pill">DOCUMENT TYPES</span><h2 id="dashboardDocumentTypesTitle">Document categories</h2></div>
+  </div>
+  <p id="dashboardDocumentTypesSub" class="sub">The most common document types in this workspace.</p>
+  <div id="dashboardDocumentTypes" class="dashboard-types-list" role="list"></div>
+</section>
+<section class="panel dashboard-executive-panel dashboard-recent-activity-panel" aria-labelledby="dashboardRecentTitle">
+  <div class="dashboard-executive-panel-head">
+    <div><span class="pill">RECENT ACTIVITY</span><h2 id="dashboardRecentTitle">Recent document activity</h2></div>
+  </div>
+  <p id="dashboardRecentSub" class="sub"></p>
+  <ol id="dashboardRecentList" class="dashboard-recent-list"></ol>
+</section>
+</div>
+
+<div id="dashboardActivityGrid" class="dashboard-activity-grid">
 <div id="accessRequestsPanel" class="panel access-requests-panel personal-only">
   <div class="access-panel-head">
     <div><span class="pill">ACCESS REQUESTS</span><h3>Document Access Requests <span id="pendingRequestCount" class="request-count">0 pending</span></h3></div>
@@ -846,6 +895,23 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div id="dashboardSentRequests" class="access-request-list corporate-sent-request-list">
     <div class="access-empty">No download requests sent yet.</div>
   </div>
+</div>
+</div>
+
+<div id="dashboardSecondaryGrid" class="dashboard-secondary-grid">
+<section class="panel dashboard-executive-panel dashboard-quick-actions-panel" aria-labelledby="dashboardQuickActionsTitle">
+  <div class="dashboard-executive-panel-head"><div><span class="pill">ACTION CENTRE</span><h2 id="dashboardQuickActionsTitle">Quick actions</h2></div></div>
+  <p id="dashboardQuickActionsSub" class="sub"></p>
+  <div id="dashboardQuickActions" class="dashboard-quick-actions"></div>
+</section>
+<section class="panel dashboard-executive-panel dashboard-trend-panel" aria-labelledby="dashboardTrendTitle">
+  <div class="dashboard-executive-panel-head"><div><span class="pill">DOCUMENT TREND</span><h2 id="dashboardTrendTitle">Document history</h2></div></div>
+  <div class="dashboard-native-empty"><strong>Historical trend unavailable</strong><span>ATSRS does not yet store a dashboard-safe history series for this workspace.</span></div>
+</section>
+<section class="panel dashboard-executive-panel dashboard-storage-panel" aria-labelledby="dashboardStorageTitle">
+  <div class="dashboard-executive-panel-head"><div><span class="pill">STORAGE</span><h2 id="dashboardStorageTitle">Storage usage</h2></div></div>
+  <div class="dashboard-native-empty"><strong>Storage total unavailable</strong><span>No verified per-workspace storage quota metric is currently exposed to the dashboard.</span></div>
+</section>
 </div>
 </section>
 
@@ -1958,7 +2024,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=574"></script>
 <script src="js/corporate-reporting.js?v=519"></script>
-<script src="js/executive-dashboard-v5854.js?v=5854"></script>
+<script src="js/executive-dashboard-v5854.js?v=5855"></script>
 <script src="js/admin-overview.js?v=582"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>

@@ -15,7 +15,8 @@ assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashb
 assert.match(index, /id="snapshotTitle">Managed in Profile<\/h2>/);
 assert.match(index, /Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing\./);
 assert.doesNotMatch(index, /Ready to share|Sharing status|id="snapShare"|id="snapShareLabel"/);
-assert.doesNotMatch(index, /id="snapValid"|id="snapRisk"/);
+assert.match(index, /id="snapValid"/);
+assert.match(index, /id="snapRisk"/);
 assert.doesNotMatch(index, /id="cvStatusDash"|id="cvStatusDashText"|class="card cv-status-card"/);
 for (const id of ['exp90', 'exp60', 'exp30', 'exp7', 'expired']) assert.match(index, new RegExp(`id="${id}"`));
 for (const label of ['Expiring in 90 Days', 'Expiring in 60 Days', 'Expiring in 30 Days', 'Expiring in 1 Week']) assert.ok(index.includes(label));

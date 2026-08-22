@@ -1,26 +1,99 @@
-/* ATSRS executive dashboard hierarchy. Layout only; all visual values use ATSRS tokens. */
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
-  display:grid;
-  grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);
-  gap:12px;
-  margin:0 0 16px;
+/* ATSRS executive dashboard hierarchy. Layout only; ATSRS remains the visual source of truth. */
+body:where(.personal-mode,.company-mode) #dashboardPage .solo-hero.panel{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(240px,.42fr);
+  gap:18px;
+  align-items:center;
 }
 
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+body.personal-mode #dashboardPage .company-only,
+body.company-mode #dashboardPage .personal-only{
+  display:none!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .solo-hero .hero-card h2{
+  margin:8px 0 0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .solo-hero .hero-card p{
+  margin:6px 0 0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-overall-status{
+  display:grid;
+  gap:4px;
+  min-width:0;
+  padding-left:18px;
+  border-left:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-overall-label{
+  color:var(--atsrs-muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.05em;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-overall-status strong{
+  font-size:18px;
+  line-height:1.3;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-overall-status > span:last-child{
+  color:var(--atsrs-muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+body.personal-mode #dashboardPage .stats-grid,
+body.company-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(8,minmax(0,1fr))!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current,
+body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-profile{
+  --expiry-signal:var(--atsrs-ref-blue);
+  --expiry-signal-soft:var(--public-accent-soft);
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current,
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-profile{
+  --expiry-signal:var(--atsrs-brand-green);
+  --expiry-signal-soft:var(--atsrs-shell-accent-soft);
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-activity-grid,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-secondary-grid{
+  display:grid;
+  gap:16px;
+  margin:0 0 16px;
+  align-items:start;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-primary-grid{
+  grid-template-columns:minmax(280px,.76fr) minmax(0,1.24fr);
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-operational-grid{
+  grid-template-columns:minmax(280px,.62fr) minmax(0,1.38fr);
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-activity-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-secondary-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-primary-grid > .panel,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-activity-grid > .panel,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-secondary-grid > .panel{
   min-width:0;
   min-height:0;
   margin:0!important;
-  padding:18px!important;
-  border:1px solid var(--atsrs-workspace-line,var(--atsrs-border))!important;
-  border-radius:14px!important;
-  background:var(--atsrs-workspace-surface,var(--atsrs-panel))!important;
-  background-image:none!important;
-  box-shadow:none!important;
-}
-
-html[data-theme="light"] body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
-  border-color:var(--atsrs-ref-light-line)!important;
-  background:var(--atsrs-ref-light-surface)!important;
 }
 
 body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head{
@@ -28,17 +101,97 @@ body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-pan
   align-items:flex-start;
   justify-content:space-between;
   gap:12px;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 
 body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head h2{
   margin:8px 0 0;
   font-size:18px;
-  line-height:1.25;
+  line-height:1.3;
 }
 
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel > .sub{
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel > .sub,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-priority-alerts-panel > .sub{
   margin:0 0 14px!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-list,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-types-list,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-list{
+  display:grid;
+  gap:0;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-type-item,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px 18px;
+  align-items:start;
+  padding:11px 0;
+  border-top:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage :is(.dashboard-health-item,.dashboard-type-item,.dashboard-recent-item):first-child{
+  padding-top:0;
+  border-top:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item > div,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy{
+  min-width:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item strong,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy strong,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+  display:block;
+  overflow-wrap:anywhere;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-empty,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-native-empty span{
+  color:var(--atsrs-muted);
+  font-size:12px;
+  line-height:1.45;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item > b,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-type-item > b{
+  text-align:right;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+  text-align:right;
+  white-space:nowrap;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-snapshot-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-snapshot-metrics > span{
+  display:grid;
+  gap:3px;
+  min-width:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-snapshot-metrics small{
+  color:var(--atsrs-muted);
+  font-size:11px;
+  line-height:1.35;
 }
 
 body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
@@ -54,72 +207,11 @@ body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions
   text-align:left;
 }
 
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-list{
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-native-empty{
   display:grid;
-  gap:0;
-  margin:0;
-  padding:0;
-  list-style:none;
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:8px 18px;
-  align-items:start;
-  padding:11px 0;
-  border-top:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
-}
-
-html[data-theme="light"] body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
-  border-top-color:var(--atsrs-ref-light-line);
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item:first-child{
-  padding-top:0;
-  border-top:0;
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy{
-  min-width:0;
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy strong,
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
-  display:block;
-  overflow-wrap:anywhere;
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta,
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-empty{
-  color:var(--atsrs-muted);
-  font-size:12px;
-  line-height:1.45;
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
-  text-align:right;
-  white-space:nowrap;
-}
-
-body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current{
-  --expiry-signal:var(--atsrs-ref-blue);
-  --expiry-signal-soft:var(--public-accent-soft);
-}
-
-html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current{
-  --expiry-signal:var(--atsrs-brand-green);
-  --expiry-signal-soft:var(--atsrs-shell-accent-soft);
-}
-
-body.personal-mode #dashboardPage .stats-grid{
-  grid-template-columns:repeat(7,minmax(0,1fr))!important;
-}
-
-body.company-mode #dashboardPage .stats-grid{
-  grid-template-columns:repeat(8,minmax(0,1fr))!important;
+  gap:5px;
+  min-height:88px;
+  align-content:center;
 }
 
 @media(max-width:1600px){
@@ -130,8 +222,18 @@ body.company-mode #dashboardPage .stats-grid{
 }
 
 @media(max-width:1100px){
-  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
-    grid-template-columns:1fr;
+  body:where(.personal-mode,.company-mode) #dashboardPage .solo-hero.panel,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-activity-grid{
+    grid-template-columns:1fr!important;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-secondary-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-overall-status{
+    padding:14px 0 0;
+    border-left:0;
+    border-top:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
   }
   body.personal-mode #dashboardPage .stats-grid,
   body.company-mode #dashboardPage .stats-grid{
@@ -139,26 +241,42 @@ body.company-mode #dashboardPage .stats-grid{
   }
 }
 
-@media(max-width:560px){
-  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
-    padding:14px!important;
-  }
-  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
+@media(max-width:700px){
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-secondary-grid{
     grid-template-columns:1fr;
-  }
-  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
-    grid-template-columns:1fr;
-    gap:4px;
-  }
-  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
-    text-align:left;
-    white-space:normal;
   }
   body.personal-mode #dashboardPage .stats-grid,
   body.company-mode #dashboardPage .stats-grid{
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
   }
-  body:where(.personal-mode,.company-mode) #dashboardPage .stats-grid > .expiry-summary-current{
-    grid-column:span 2;
+}
+
+@media(max-width:560px){
+  html[data-theme] body.personal-mode #app#app.app:not(.hidden) #dashboardPage#dashboardPage .stats-grid,
+  html[data-theme] body.company-mode #app#app.app:not(.hidden) #dashboardPage#dashboardPage .stats-grid,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-snapshot-metrics,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
+    grid-template-columns:1fr!important;
+  }
+  html[data-theme] body:where(.personal-mode,.company-mode) #app#app.app:not(.hidden) #dashboardPage#dashboardPage .stats-grid > .card{
+    grid-column:auto!important;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head{
+    display:grid;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head button{
+    justify-self:start;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-type-item,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-health-item > b,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-type-item > b,
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+    text-align:left;
+    white-space:normal;
   }
 }

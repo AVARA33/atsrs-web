@@ -41,53 +41,50 @@ final result: passed
 
 ---
 
-# ATSRS Executive Dashboard Structure — Design QA (V5854)
+# ATSRS Executive Dashboard Specification Compliance — Design QA (V5855)
 
 ## Evidence
 
 - Structural reference: `C:\Users\user\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\LocalState\sessions\9DE3F0F36A2DFA3537E8F6C862126C7BACB3FB19\transfers\2026-34\atsrs_professional_executive_dashboard.html`
-- Visual source of truth: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\source-live-personal-dark.png`
-- Rendered implementation: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\implementation-personal-dark-desktop.png`
-- Full-view paired comparison: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\comparison-personal-dark-1883x691.png`
-- Focused paired comparison: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\comparison-personal-dark-focus-1200x500.png`
-- Responsive evidence: `implementation-personal-dark-mobile-390.png` and `implementation-corporate-light-tablet-768.png` in the same QA directory.
+- Previous incorrect production render: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\production-corporate-dark-cf4afe0.png`
+- Required eight-state Chrome matrix: `C:\Users\user\Documents\GitHub\output\executive-dashboard-spec-qa-20260822`
+- Same-viewport structural comparison: `reference-vs-implementation.png` in the matrix directory.
 
-Chrome blocked capture of the local `file://` reference, so its HTML was read directly for information hierarchy only. The authenticated live ATSRS dashboard was captured in Chrome and used as the visual source of truth for typography, colors, surfaces, radii, icons, density, and theme treatment.
+The reference HTML was used only for hierarchy, density, KPI placement, grouping and information priority. Existing ATSRS production CSS, components, theme variables and Phosphor icons remained the sole visual source of truth.
 
 ## Normalization and comparison
 
-- Primary state: Personal account, Dashboard, dark mode.
-- Source: 1883 × 1292 pixels; comparable region cropped to 1883 × 691.
-- Implementation: an 1883 CSS-pixel harness frame inside a 2279 × 731 Chrome capture; frame region cropped to 1883 × 691.
-- Paired comparison: source and implementation regions at matching 1883 × 691 pixel size and 1:1 density.
-- Focused comparison: two 1200 × 500 regions at 1:1 density.
+- Structural reference and Corporate light implementation were captured at 2293 × 791.
+- A single 2048 × 900 comparison image places both renders together for visual judgement.
 - The harness excludes the unchanged ATSRS sidebar/header shell. Production adds dashboard content only and does not modify that shell.
 
 ## Required fidelity surfaces
 
 - Fonts and typography: existing ATSRS font stacks, weights, labels, and hierarchy remain inherited; no font family was introduced.
-- Spacing and layout rhythm: KPI density follows existing cards. Quick Actions and Recent Activity use current panel spacing and radii. Desktop uses a 36/64 split; tablet/mobile stack cleanly.
+- Spacing and layout rhythm: KPI density follows existing cards. Status, compliance/health, alerts, categories, activity and secondary panels follow the reference hierarchy using ATSRS panels.
 - Colors and visual tokens: all new surfaces, borders, text, and accents use existing ATSRS theme variables; no new palette or branded color was introduced.
 - Image and icon fidelity: no new illustration, placeholder, handcrafted SVG, emoji, or CSS-drawn asset was introduced. The existing Phosphor icon set is reused.
 - Copy and content: only the reference hierarchy was adapted. Production includes no sample people, fabricated KPIs, fake storage quota, or fake activity.
 
 ## Findings and comparison history
 
-- Initial P2: at 390 px, an existing higher-specificity rule kept the KPI grid in seven compressed columns.
-- Fix: raised only the dashboard-scoped responsive selector specificity while retaining existing ATSRS card dimensions and tokens.
-- Post-fix: Personal and Corporate at 390 px render two 151.333 px columns with horizontal overflow 0. Corporate at 768 px renders three 221.55 px columns with overflow 0.
-- 1920 dark Personal: seven KPI columns, two-column executive region, overflow 0.
+- Initial P1: higher-specificity legacy dashboard rules exposed Corporate KPI content in Personal and Personal profile KPI content in Corporate.
+- Fix: added dashboard-scoped account-mode visibility enforcement; Personal and Corporate now expose only their intended sections.
+- Initial P2: an existing `grid-column: span 2` rule created an implicit second Corporate KPI column at 390 px.
+- Fix: the dashboard-scoped mobile rule resets KPI placement and enforces the specified single-column priority flow.
+- 1920 light/dark Personal and Corporate: eight KPI columns, two-column executive region, overflow 0.
 - 1440 light Personal: four KPI columns, two-column executive region, overflow 0.
 - 768 light Corporate: three KPI columns, stacked executive region, overflow 0.
-- 390 dark Personal and Corporate: two KPI columns, stacked executive region, overflow 0.
-- Accepted constraint: charts and storage usage were omitted because no verified real dashboard source currently exists for those values.
+- 390 light/dark Personal and Corporate: one KPI column, stacked executive region, overflow 0.
+- Historical trend and storage total are explicitly unavailable because no verified production series/quota metric exists; no values are fabricated.
 - No actionable P0, P1, or P2 visual mismatch remains.
 
 ## Interactions, console, and regression checks
 
 - Personal and Corporate quick actions use existing ATSRS secondary buttons and map only to existing routes.
-- Console errors observed during visual passes: 0.
-- Focused executive dashboard, Personal dashboard, Corporate routing, dashboard surface, expiry contract, and auth regression tests: passed.
+- Console errors/warnings across the eight-state Chrome matrix: 0.
+- Executive dashboard structure, Personal dashboard QA, dashboard expiry surface, Corporate dashboard routing, expiry status and Baku boundary tests: passed.
+- Existing broad-suite stale cache/build assertions outside this candidate remain tracked by `TEST-BASELINE-STALE-001`; the dashboard candidate does not rewrite those unrelated contracts.
 - Cloudflare Pages build: passed, 147 files.
 - `git diff --check`: passed.
 
