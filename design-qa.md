@@ -785,3 +785,13 @@ final result: passed
 - Dark: left/right `rgb(34, 197, 94)`; top/bottom `rgb(42, 47, 45)`; surface `rgb(11, 13, 13)`; side glow `rgba(34, 197, 94, 0.16)`.
 - Light: left/right `rgb(37, 99, 235)`; top/bottom `rgb(174, 189, 202)`; surface `rgb(255, 255, 255)`; side glow `rgba(37, 99, 235, 0.14)`.
 
+# Jobs LIVE JOBS badge removal — Design QA
+
+- Scope: Jobs hero only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-41fb5e3d-158e-44b0-8839-ea3946cff7b8.png`.
+- Dark implementation evidence: `tests/artifacts/jobs-live-badge-removed-dark.png`.
+- Light implementation evidence: `tests/artifacts/jobs-live-badge-removed-light.png`.
+- The redundant `LIVE JOBS` badge is absent in both themes; the heading and remaining Jobs layout retain their existing hierarchy and spacing.
+- Browser console errors: 0.
+
+Final result: passed.
