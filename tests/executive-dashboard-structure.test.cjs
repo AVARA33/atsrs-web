@@ -9,8 +9,8 @@ const css=fs.readFileSync(path.join(root,'css/executive-dashboard-v5854.css'),'u
 const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-harness.html'),'utf8');
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
-assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5857/);
-assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5857/);
+assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5858/);
+assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5858/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -19,6 +19,7 @@ assert.match(js,/if\(!corporate\(\)\)[\s\S]*?ensurePersonalToolsGrid\(stats\)[\s
 assert.match(js,/atsrs_my_personal_entitlements/,'Storage capacity must come from the authenticated plan entitlement.');
 assert.match(js,/from\('atsrs_files'\)\.select\('size_bytes'\)/,'Storage usage must sum real authenticated file metadata.');
 assert.match(js,/MutationObserver[\s\S]*?dashboardVisible\(\)[\s\S]*?sync/,'Dashboard tools must initialize when authenticated routing reveals the page.');
+assert.match(js,/beginInitialSync[\s\S]*?setInterval[\s\S]*?attempts>=40/,'Dashboard initialization must tolerate delayed authenticated rendering.');
 assert.match(js,/uploadedAt/,'Personal recent activity must use real upload timestamps.');
 assert.match(js,/uploaded_at/,'Corporate recent activity must use real upload timestamps.');
 assert.doesNotMatch(js,/Math\.random|faker|mock data|12\.4|20 GB/i,'Dashboard must not fabricate production data.');

@@ -2,6 +2,8 @@
 (function(){
   'use strict';
 
+  window.__atsrsExecutiveDashboardVersion='5858';
+
   var corporateDashboard=null;
   var personalStorageLoading=false;
   var personalStorageLoadedAt=0;
@@ -218,6 +220,12 @@
     var personalTools=byId('dashboardPersonalTools');if(personalTools)personalTools.remove();
     ensureExecutiveGrid(stats);renderActions();renderRecent();
   }
+  function beginInitialSync(){
+    var attempts=0,timer=setInterval(function(){
+      attempts+=1;sync();
+      if(byId('dashboardPersonalTools')||byId('dashboardExecutiveGrid')||attempts>=40)clearInterval(timer);
+    },250);
+  }
 
   window.addEventListener('atsrs:corporate-compliance',function(event){corporateDashboard=event&&event.detail||null;sync()});
   document.addEventListener('atsrs-document-files-updated',function(){personalStorageLoadedAt=0;sync();loadPersonalStorage(true);});
@@ -239,5 +247,5 @@
     window.renderAll=function(){var result=oldRender.apply(this,arguments);setTimeout(sync,0);return result};
     window.renderAll.__atsrsExecutiveDashboard=true;
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,120)});else setTimeout(sync,120);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',beginInitialSync);else beginInitialSync();
 })();
