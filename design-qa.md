@@ -41,6 +41,60 @@ final result: passed
 
 ---
 
+# ATSRS Executive Dashboard Structure — Design QA (V5854)
+
+## Evidence
+
+- Structural reference: `C:\Users\user\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\LocalState\sessions\9DE3F0F36A2DFA3537E8F6C862126C7BACB3FB19\transfers\2026-34\atsrs_professional_executive_dashboard.html`
+- Visual source of truth: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\source-live-personal-dark.png`
+- Rendered implementation: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\implementation-personal-dark-desktop.png`
+- Full-view paired comparison: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\comparison-personal-dark-1883x691.png`
+- Focused paired comparison: `C:\Users\user\Documents\GitHub\output\executive-dashboard-qa-20260822\comparison-personal-dark-focus-1200x500.png`
+- Responsive evidence: `implementation-personal-dark-mobile-390.png` and `implementation-corporate-light-tablet-768.png` in the same QA directory.
+
+Chrome blocked capture of the local `file://` reference, so its HTML was read directly for information hierarchy only. The authenticated live ATSRS dashboard was captured in Chrome and used as the visual source of truth for typography, colors, surfaces, radii, icons, density, and theme treatment.
+
+## Normalization and comparison
+
+- Primary state: Personal account, Dashboard, dark mode.
+- Source: 1883 × 1292 pixels; comparable region cropped to 1883 × 691.
+- Implementation: an 1883 CSS-pixel harness frame inside a 2279 × 731 Chrome capture; frame region cropped to 1883 × 691.
+- Paired comparison: source and implementation regions at matching 1883 × 691 pixel size and 1:1 density.
+- Focused comparison: two 1200 × 500 regions at 1:1 density.
+- The harness excludes the unchanged ATSRS sidebar/header shell. Production adds dashboard content only and does not modify that shell.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS font stacks, weights, labels, and hierarchy remain inherited; no font family was introduced.
+- Spacing and layout rhythm: KPI density follows existing cards. Quick Actions and Recent Activity use current panel spacing and radii. Desktop uses a 36/64 split; tablet/mobile stack cleanly.
+- Colors and visual tokens: all new surfaces, borders, text, and accents use existing ATSRS theme variables; no new palette or branded color was introduced.
+- Image and icon fidelity: no new illustration, placeholder, handcrafted SVG, emoji, or CSS-drawn asset was introduced. The existing Phosphor icon set is reused.
+- Copy and content: only the reference hierarchy was adapted. Production includes no sample people, fabricated KPIs, fake storage quota, or fake activity.
+
+## Findings and comparison history
+
+- Initial P2: at 390 px, an existing higher-specificity rule kept the KPI grid in seven compressed columns.
+- Fix: raised only the dashboard-scoped responsive selector specificity while retaining existing ATSRS card dimensions and tokens.
+- Post-fix: Personal and Corporate at 390 px render two 151.333 px columns with horizontal overflow 0. Corporate at 768 px renders three 221.55 px columns with overflow 0.
+- 1920 dark Personal: seven KPI columns, two-column executive region, overflow 0.
+- 1440 light Personal: four KPI columns, two-column executive region, overflow 0.
+- 768 light Corporate: three KPI columns, stacked executive region, overflow 0.
+- 390 dark Personal and Corporate: two KPI columns, stacked executive region, overflow 0.
+- Accepted constraint: charts and storage usage were omitted because no verified real dashboard source currently exists for those values.
+- No actionable P0, P1, or P2 visual mismatch remains.
+
+## Interactions, console, and regression checks
+
+- Personal and Corporate quick actions use existing ATSRS secondary buttons and map only to existing routes.
+- Console errors observed during visual passes: 0.
+- Focused executive dashboard, Personal dashboard, Corporate routing, dashboard surface, expiry contract, and auth regression tests: passed.
+- Cloudflare Pages build: passed, 147 files.
+- `git diff --check`: passed.
+
+final result: passed
+
+---
+
 # Android release hero logo — Design QA
 
 - Source visual: `C:\Users\user\AppData\Local\Temp\codex-clipboard-eb8f405b-d411-4a42-a771-04db629766f9.png`.

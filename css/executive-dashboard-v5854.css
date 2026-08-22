@@ -1,0 +1,164 @@
+/* ATSRS executive dashboard hierarchy. Layout only; all visual values use ATSRS tokens. */
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
+  display:grid;
+  grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);
+  gap:12px;
+  margin:0 0 16px;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+  min-width:0;
+  min-height:0;
+  margin:0!important;
+  padding:18px!important;
+  border:1px solid var(--atsrs-workspace-line,var(--atsrs-border))!important;
+  border-radius:14px!important;
+  background:var(--atsrs-workspace-surface,var(--atsrs-panel))!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+  border-color:var(--atsrs-ref-light-line)!important;
+  background:var(--atsrs-ref-light-surface)!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head h2{
+  margin:8px 0 0;
+  font-size:18px;
+  line-height:1.25;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel > .sub{
+  margin:0 0 14px!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions button{
+  width:100%;
+  min-width:0!important;
+  margin:0!important;
+  text-align:left;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-list{
+  display:grid;
+  gap:0;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px 18px;
+  align-items:start;
+  padding:11px 0;
+  border-top:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+  border-top-color:var(--atsrs-ref-light-line);
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item:first-child{
+  padding-top:0;
+  border-top:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy{
+  min-width:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy strong,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+  display:block;
+  overflow-wrap:anywhere;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-empty{
+  color:var(--atsrs-muted);
+  font-size:12px;
+  line-height:1.45;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+  text-align:right;
+  white-space:nowrap;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current{
+  --expiry-signal:var(--atsrs-ref-blue);
+  --expiry-signal-soft:var(--public-accent-soft);
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current{
+  --expiry-signal:var(--atsrs-brand-green);
+  --expiry-signal-soft:var(--atsrs-shell-accent-soft);
+}
+
+body.personal-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+}
+
+body.company-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(8,minmax(0,1fr))!important;
+}
+
+@media(max-width:1600px){
+  body.personal-mode #dashboardPage .stats-grid,
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:1100px){
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
+    grid-template-columns:1fr;
+  }
+  body.personal-mode #dashboardPage .stats-grid,
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:560px){
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+    padding:14px!important;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
+    grid-template-columns:1fr;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+    text-align:left;
+    white-space:normal;
+  }
+  body.personal-mode #dashboardPage .stats-grid,
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .stats-grid > .expiry-summary-current{
+    grid-column:span 2;
+  }
+}

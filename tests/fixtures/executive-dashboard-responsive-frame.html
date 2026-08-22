@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>ATSRS Dashboard Responsive Frame</title><style>html,body{margin:0;background:#202424}body{display:grid;place-items:start center;padding:20px}iframe{border:0;background:#fff;box-shadow:0 0 0 1px #4b5563}</style></head>
+<body>
+  <iframe id="preview" title="ATSRS responsive dashboard preview"></iframe>
+  <script>
+    const query=new URLSearchParams(location.search),width=Math.max(320,Number(query.get('width')||390)),height=Math.max(568,Number(query.get('height')||844));
+    const preview=document.getElementById('preview');preview.width=String(width);preview.height=String(height);
+    preview.src='executive-dashboard-harness.html?theme='+encodeURIComponent(query.get('theme')||'dark')+'&mode='+encodeURIComponent(query.get('mode')||'personal');
+  </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS Executive Dashboard Harness</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/calm-actions.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css">
+  <link rel="stylesheet" href="../../css/personal-dashboard-qa.css">
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css">
+  <link rel="stylesheet" href="../../css/workspace-surface-standard-v519.css">
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v522.css">
+  <link rel="stylesheet" href="../../css/workspace-control-standard-v523.css">
+  <link rel="stylesheet" href="../../css/button-content-standard-v58148.css">
+  <link rel="stylesheet" href="../../css/dark-surface-standard-v58154.css">
+  <link rel="stylesheet" href="../../css/executive-dashboard-v5854.css">
+  <style>body{margin:0}.app{display:block!important}.main{max-width:none!important;padding:32px!important}.hidden{display:none!important}</style>
+</head>
+<body class="personal-mode">
+  <div id="app" class="app">
+    <main class="main">
+      <section id="dashboardPage">
+        <h1 id="dashboardHeading">Dashboard</h1>
+        <div class="solo-hero panel"><div class="hero-card"><span class="pill">DOCUMENT OVERVIEW</span><p>Review document totals, expiry risk and profile readiness from one clear view.</p></div></div>
+        <div class="grid stats-grid">
+          <div class="card corporate-personnel-summary-card expiry-summary-card hidden"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-users-three"></i></span><p>Total Personnel</p></div><div class="stat" id="totalPersonnel">4</div></div>
+          <div class="card expiry-summary-card expiry-summary-uploaded"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-file-text"></i></span><p>Uploaded Documents</p></div><div class="stat">6</div></div>
+          <div class="card expiry-summary-card expiry-summary-90"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-calendar-dots"></i></span><p>Expiring in 90 Days</p></div><div class="stat">1</div></div>
+          <div class="card expiry-summary-card expiry-summary-60"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-calendar-dots"></i></span><p>Expiring in 60 Days</p></div><div class="stat">0</div></div>
+          <div class="card expiry-summary-card expiry-summary-30"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-calendar-dots"></i></span><p>Expiring in 30 Days</p></div><div class="stat">1</div></div>
+          <div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-calendar-x"></i></span><p>Expiring in 1 Week</p></div><div class="stat">0</div></div>
+          <div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-x-circle"></i></span><p>Expired</p></div><div class="stat">1</div></div>
+        </div>
+        <div class="panel dashboard-snapshot-panel"><div class="snapshot-card"><span class="pill">PROFILE SHARING</span><div><h2>Managed in Profile</h2><p>Sharing settings are managed in Profile.</p></div></div></div>
+        <div class="panel dashboard-priority-alerts-panel"><h3>Priority alerts</h3><p class="sub">Documents closest to expiry will appear here.</p><div class="risk-list"><div class="risk-item"><b>Safety certificate</b><span>Expiry attention</span></div></div></div>
+      </section>
+      <button id="navCertificates" hidden></button><button id="navProfile" hidden></button><button id="navJobs" hidden></button><button id="navPrivacy" hidden></button>
+      <button id="navPersonnel" hidden></button><button id="navCompliance" hidden></button><button id="navReports" hidden></button><button id="navProjects" hidden></button>
+    </main>
+  </div>
+  <script>
+    const params=new URLSearchParams(location.search),isCompany=params.get('mode')==='company';
+    document.documentElement.dataset.theme=params.get('theme')==='light'?'light':'dark';
+    document.body.className=isCompany?'company-mode':'personal-mode';
+    window.useMode=isCompany?'company':'personal';
+    localStorage.setItem('atsrs_use_mode',window.useMode);
+    if(isCompany)document.querySelector('.corporate-personnel-summary-card').classList.remove('hidden');
+    if(isCompany){document.querySelector('.dashboard-snapshot-panel').classList.add('hidden');document.querySelector('.dashboard-priority-alerts-panel').classList.add('hidden');}
+    window.showPage=function(page){window.lastRoute=page;};
+    window.getData=function(){return[
+      {type:'Medical certificate',expiry:'2027-08-01',uploadedAt:'2026-08-21T08:00:00Z'},
+      {type:'Safety training',expiry:'2026-09-24',uploadedAt:'2026-08-20T08:00:00Z'},
+      {type:'Identity record',expiry:'N/A',uploadedAt:'2026-08-18T08:00:00Z'},
+      {type:'Expired training',expiry:'2025-08-01',uploadedAt:'2026-08-10T08:00:00Z'}
+    ]};
+    window.atsrsCorporateReporting={getCompliance:function(){return{
+      summary:{current:2},rows:[{name:'Candidate',surname:'One',documents:[
+        {title:'Medical certificate',status:'Current',uploaded_at:'2026-08-21T08:00:00Z'},
+        {title:'Safety training',status:'Expires within 33 days',uploaded_at:'2026-08-20T08:00:00Z'}
+      ]}]
+    }}};
+  </script>
+  <script src="../../js/expiry-status.js"></script>
+  <script src="../../js/executive-dashboard-v5854.js"></script>
+</body>
+</html>
