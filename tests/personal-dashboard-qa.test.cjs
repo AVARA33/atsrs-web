@@ -11,7 +11,7 @@ const notifications = fs.readFileSync(path.join(root, 'js', 'notifications.js'),
 const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
-assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Welcome back<\/h1>/);
+assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Dashboard<\/h1>/);
 assert.match(index, /id="snapshotTitle">Managed in Profile<\/h2>/);
 assert.match(index, /Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing\./);
 assert.doesNotMatch(index, /Ready to share|Sharing status|id="snapShare"|id="snapShareLabel"/);

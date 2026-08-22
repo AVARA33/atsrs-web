@@ -41,33 +41,6 @@ final result: passed
 
 ---
 
-# Dashboard greeting and full-width layout — Design QA
-
-- Structural reference: `atsrs_professional_executive_dashboard.html`, whose opening content uses a personalized greeting rather than a repeated generic Dashboard title.
-- Prior source comparison: `C:\Users\user\Documents\GitHub\output\executive-dashboard-spec-qa-20260822\reference-vs-implementation.png`.
-- New desktop implementation: `C:\Users\user\Documents\GitHub\output\dashboard-greeting-fullwidth-20260822\personal-dark-desktop.png`.
-- New 390px implementation: `C:\Users\user\Documents\GitHub\output\dashboard-greeting-fullwidth-20260822\personal-dark-390.png`.
-
-## Requested fidelity
-
-- The generic `Dashboard` content heading is replaced with a time-appropriate greeting using the real Personal profile first name.
-- The greeting is plain page content, not a newly designed card.
-- The dashboard alone releases the inherited 1440px content cap and uses the available workspace width.
-- Existing ATSRS cards, colors, typography, borders, status hierarchy and data bindings are unchanged.
-
-## Browser verification
-
-- Personal dark desktop: greeting `Good evening, Anar!`; 1983px dashboard content in a 2047px main region; eight KPI columns; horizontal overflow 0.
-- Personal dark 390px: single-column KPI flow; page width 311px after viewport padding; horizontal overflow 0.
-- Corporate light desktop: real-profile greeting present; full available width; horizontal overflow 0.
-- Console errors/warnings: 0.
-
-No actionable P0, P1 or P2 visual differences remain for this scoped step.
-
-final result: passed
-
----
-
 # ATSRS Executive Dashboard Specification Compliance — Design QA (V5855)
 
 ## Evidence

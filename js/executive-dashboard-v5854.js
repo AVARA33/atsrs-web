@@ -28,11 +28,6 @@
   function number(value){var parsed=Number(value||0);return Number.isFinite(parsed)?parsed:0}
   function setText(id,value){var element=byId(id);if(element)element.textContent=String(value==null?'':value)}
   function useful(value){return value!==undefined&&value!==null&&String(value).trim()!==''}
-  function greeting(){
-    var hour=new Date().getHours(),period=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
-    var name=String(profile().name||'').trim().split(/\s+/)[0];
-    setText('dashboardHeading',period+(name?', '+name:'')+'!');
-  }
   function profileCompletion(data){
     var fields=[data.name,data.surname,data.position,data.country,data.phone||data.phoneLocal,data.birthDate,data.address||data.zipCode,data.availabilityStatus&&data.availabilityStatus!=='not_set'?data.availabilityStatus:''];
     return Math.round(fields.filter(useful).length/fields.length*100);
@@ -138,7 +133,6 @@
   }
   function sync(){
     if(!dashboardVisible())return;
-    greeting();
     if(corporate()){var reporting=window.atsrsCorporateReporting;var cached=corporateDashboard||(reporting&&typeof reporting.getCompliance==='function'&&reporting.getCompliance());renderCorporate(cached||null);if(!cached)requestCorporateData();}
     else renderPersonal();
   }
