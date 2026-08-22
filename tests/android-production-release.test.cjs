@@ -58,9 +58,10 @@ test('Public Android entry is a non-interactive coming-soon badge in both respon
   assert.match(headers, /max-age=31536000, immutable/);
 });
 
-test('Cloudflare production build includes the Android release page and APK', () => {
+test('Cloudflare production build keeps the coming-soon page but excludes the paused APK', () => {
   const buildScript = read('scripts/build-cloudflare-pages.mjs');
-  assert.match(buildScript, /const publicDirectories = \[[^\]]*"download"[^\]]*"downloads"/);
+  assert.match(buildScript, /const publicDirectories = \[[^\]]*"download"/);
+  assert.doesNotMatch(buildScript, /const publicDirectories = \[[^\]]*"downloads"/);
 });
 
 test('Android release hero begins directly with its heading and avoids duplicate branding', () => {
