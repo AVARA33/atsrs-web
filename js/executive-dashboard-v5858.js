@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5860';
+  window.__atsrsExecutiveDashboardVersion='5861';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -89,6 +89,65 @@
     addPersonalAction(actions,'Share Link','ph-link','sharing',openProfileSharing);
     byId('dashboardManageStorage').addEventListener('click',function(){openDocumentMethod('');});
     return grid;
+  }
+  function remainingStatus(expiry){
+    if(window.atsrsExpiryStatus&&typeof window.atsrsExpiryStatus.classify==='function'){
+      return window.atsrsExpiryStatus.classify(expiry);
+    }
+    return{bucket:'current',dateState:'unconfirmed',days:null,label:'Date not confirmed'};
+  }
+  function remainingTone(result){
+    if(!result||result.days===null)return result&&result.dateState==='no_expiry'?'no-expiry':'unconfirmed';
+    if(result.days<0)return'expired';
+    if(result.days<=7)return'critical';
+    if(result.days<=30)return'warning';
+    if(result.days<=90)return'notice';
+    if(result.days<=180)return'mid';
+    return'current';
+  }
+  function remainingProgress(result){
+    if(!result||result.days===null)return 10;
+    if(result.days<=0)return 100;
+    return Math.max(12,Math.min(100,Math.round(100-(Math.min(result.days,365)/365*88))));
+  }
+  function remainingLabel(result){
+    if(!result||result.days===null)return result&&result.dateState==='no_expiry'?'No expiry':'Date not confirmed';
+    if(result.days<0)return'Expired '+Math.abs(result.days)+' days';
+    if(result.days===0)return'Expires today';
+    return result.days+' days left';
+  }
+  function ensurePersonalDocumentTimeline(stats){
+    var layout=byId('dashboardDocumentTimelineLayout');
+    if(layout)return layout;
+    layout=document.createElement('div');layout.id='dashboardDocumentTimelineLayout';layout.className='dashboard-document-timeline-layout';
+    var panel=document.createElement('section');panel.className='panel dashboard-document-timeline-card';panel.setAttribute('aria-labelledby','dashboardDocumentTimelineTitle');
+    panel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentTimelineTitle">Uploaded Documents</h2><p class="sub">Expiry time remaining for each document.</p></div><span id="dashboardDocumentTimelineCount" class="dashboard-document-timeline-count"></span></div><div class="dashboard-document-timeline-columns" aria-hidden="true"><span>Document</span><span>Time remaining</span></div><div id="dashboardDocumentTimelineRows" class="dashboard-document-timeline-rows" tabindex="0" aria-label="Uploaded documents and remaining expiry time"></div>';
+    layout.appendChild(panel);
+    var tools=byId('dashboardPersonalTools');
+    if(tools)tools.insertAdjacentElement('afterend',layout);else stats.insertAdjacentElement('afterend',layout);
+    return layout;
+  }
+  function renderPersonalDocumentTimeline(){
+    var rows=byId('dashboardDocumentTimelineRows'),count=byId('dashboardDocumentTimelineCount');if(!rows)return;
+    var items=documents();rows.innerHTML='';if(count)count.textContent=items.length+' document'+(items.length===1?'':'s');
+    if(!items.length){
+      var empty=document.createElement('p');empty.className='dashboard-document-timeline-empty';empty.textContent='No uploaded documents yet.';rows.appendChild(empty);return;
+    }
+    items.forEach(function(item,index){
+      var result=remainingStatus(item&&item.expiry),tone=remainingTone(result);
+      var row=document.createElement('article');row.className='dashboard-document-timeline-row';row.dataset.tone=tone;row.style.setProperty('--remaining-progress',remainingProgress(result)+'%');
+      var documentCell=document.createElement('div');documentCell.className='dashboard-document-timeline-document';
+      var icon=document.createElement('span');icon.className='dashboard-document-timeline-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<i class="ph ph-file-text"></i>';
+      var copy=document.createElement('div');copy.className='dashboard-document-timeline-copy';
+      var title=document.createElement('strong');title.textContent=String(item&&item.type||item&&item.title||item&&item.name||'Document '+(index+1));
+      var detail=document.createElement('span');detail.textContent=String(item&&item.provider||item&&item.authority||item&&item.country||'Uploaded document');
+      copy.appendChild(title);copy.appendChild(detail);documentCell.appendChild(icon);documentCell.appendChild(copy);
+      var remaining=document.createElement('div');remaining.className='dashboard-document-timeline-remaining';
+      var track=document.createElement('span');track.className='dashboard-document-timeline-track';track.setAttribute('aria-hidden','true');
+      var fill=document.createElement('span');fill.className='dashboard-document-timeline-fill';track.appendChild(fill);
+      var label=document.createElement('span');label.className='dashboard-document-timeline-label';label.textContent=remainingLabel(result);
+      remaining.appendChild(track);remaining.appendChild(label);row.appendChild(documentCell);row.appendChild(remaining);rows.appendChild(row);
+    });
   }
   function formatBytes(value){
     var bytes=Math.max(0,Number(value)||0);
@@ -220,10 +279,11 @@
     if(!corporate()){
       var personalGrid=byId('dashboardExecutiveGrid');
       if(personalGrid)personalGrid.remove();
-      ensurePersonalToolsGrid(stats);loadPersonalStorage(false);
+      ensurePersonalToolsGrid(stats);ensurePersonalDocumentTimeline(stats);renderPersonalDocumentTimeline();loadPersonalStorage(false);
       return;
     }
     var personalTools=byId('dashboardPersonalTools');if(personalTools)personalTools.remove();
+    var personalTimeline=byId('dashboardDocumentTimelineLayout');if(personalTimeline)personalTimeline.remove();
     ensureExecutiveGrid(stats);renderActions();renderRecent();
   }
   function beginInitialSync(){
