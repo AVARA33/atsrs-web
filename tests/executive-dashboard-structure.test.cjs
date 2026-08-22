@@ -10,8 +10,8 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5862/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5862/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5863/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5863/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -21,6 +21,8 @@ assert.match(js,/ensurePersonalDocumentTimeline\(stats\);renderPersonalDocumentT
 assert.match(js,/var items=documents\(\)/,'Document timeline must use the real Personal document register.');
 assert.match(js,/atsrsExpiryStatus\.classify/,'Remaining-time bars must use the shared expiry-status contract.');
 assert.match(js,/100\/\(1\+result\.days\/90\)/,'Remaining-time bars must grow monotonically as the number of days falls.');
+assert.match(js,/dashboardDocumentListRows[\s\S]*?dashboardDocumentBarRows/,'Documents and remaining-time bars must render in separate cards.');
+assert.match(js,/documentRows\.addEventListener\('scroll'[\s\S]*?barRows\.addEventListener\('scroll'/,'The two independent cards must synchronize scrolling in both directions.');
 assert.match(js,/atsrs_my_personal_entitlements/,'Storage capacity must come from the authenticated plan entitlement.');
 assert.match(js,/from\('atsrs_files'\)\.select\('size_bytes'\)/,'Storage usage must sum real authenticated file metadata.');
 assert.match(js,/MutationObserver[\s\S]*?dashboardVisible\(\)[\s\S]*?sync/,'Dashboard tools must initialize when authenticated routing reveals the page.');
@@ -43,6 +45,9 @@ assert.match(css,/dashboard-personal-tools\{[\s\S]*?grid-template-columns:minmax
 assert.match(css,/dashboard-personal-actions\{[\s\S]*?grid-template-columns:repeat\(6,minmax\(106px,1fr\)\)/,'All six quick actions must stay in one row.');
 assert.match(css,/dashboard-document-timeline-layout\{[\s\S]*?grid-template-columns:minmax\(0,3fr\) minmax\(300px,1fr\)/,'Document timeline must remain no wider than the Quick Actions column.');
 assert.match(css,/dashboard-document-timeline-rows\{[\s\S]*?max-height:432px[\s\S]*?overflow-y:auto/,'Only eight 54px document rows may be visible before internal scrolling.');
+assert.match(css,/dashboard-document-list-card\{grid-column:1;\}[\s\S]*?dashboard-document-bars-card\{grid-column:2;\}/,'Uploaded Documents and Time Remaining must occupy separate aligned desktop cards.');
+assert.match(css,/dashboard-document-list-row,[\s\S]*?dashboard-document-bar-row\{[\s\S]*?height:54px[\s\S]*?min-height:54px/,'Document and expiry-bar rows must retain identical fixed heights.');
+assert.match(css,/dashboard-document-bar-rows\{[\s\S]*?scrollbar-width:none/,'The synchronized right card must remain scrollable without a duplicate visible scrollbar.');
 assert.match(css,/@media\(max-width:560px\)/,'Mobile layout must be explicit.');
 assert.match(css,/var\(--atsrs-ref-light-surface\)/,'Light mode must reuse ATSRS tokens.');
 assert.match(css,/var\(--atsrs-workspace-surface/,'Dark mode must reuse ATSRS workspace tokens.');

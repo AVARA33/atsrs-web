@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5862';
+  window.__atsrsExecutiveDashboardVersion='5863';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -120,33 +120,44 @@
     var layout=byId('dashboardDocumentTimelineLayout');
     if(layout)return layout;
     layout=document.createElement('div');layout.id='dashboardDocumentTimelineLayout';layout.className='dashboard-document-timeline-layout';
-    var panel=document.createElement('section');panel.className='panel dashboard-document-timeline-card';panel.setAttribute('aria-labelledby','dashboardDocumentTimelineTitle');
-    panel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentTimelineTitle">Uploaded Documents</h2><p class="sub">Expiry time remaining for each document.</p></div><span id="dashboardDocumentTimelineCount" class="dashboard-document-timeline-count"></span></div><div class="dashboard-document-timeline-columns" aria-hidden="true"><span>Document</span><span>Time remaining</span></div><div id="dashboardDocumentTimelineRows" class="dashboard-document-timeline-rows" tabindex="0" aria-label="Uploaded documents and remaining expiry time"></div>';
-    layout.appendChild(panel);
+    var documentsPanel=document.createElement('section');documentsPanel.className='panel dashboard-document-timeline-card dashboard-document-list-card';documentsPanel.setAttribute('aria-labelledby','dashboardDocumentTimelineTitle');
+    documentsPanel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentTimelineTitle">Uploaded Documents</h2><p class="sub">Your Personal document register.</p></div><span id="dashboardDocumentTimelineCount" class="dashboard-document-timeline-count"></span></div><div class="dashboard-document-timeline-columns" aria-hidden="true"><span>Document</span></div><div id="dashboardDocumentListRows" class="dashboard-document-timeline-rows dashboard-document-list-rows" tabindex="0" aria-label="Uploaded documents"></div>';
+    var remainingPanel=document.createElement('section');remainingPanel.className='panel dashboard-document-timeline-card dashboard-document-bars-card';remainingPanel.setAttribute('aria-labelledby','dashboardDocumentBarsTitle');
+    remainingPanel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentBarsTitle">Time Remaining</h2><p class="sub">Days until each document expires.</p></div></div><div class="dashboard-document-timeline-columns" aria-hidden="true"><span>Expiry timeline</span></div><div id="dashboardDocumentBarRows" class="dashboard-document-timeline-rows dashboard-document-bar-rows" tabindex="0" aria-label="Document expiry time remaining"></div>';
+    layout.appendChild(documentsPanel);layout.appendChild(remainingPanel);
     var tools=byId('dashboardPersonalTools');
     if(tools)tools.insertAdjacentElement('afterend',layout);else stats.insertAdjacentElement('afterend',layout);
+    var documentRows=byId('dashboardDocumentListRows'),barRows=byId('dashboardDocumentBarRows'),scrollSyncing=false;
+    function syncScroll(source,target){
+      if(scrollSyncing)return;scrollSyncing=true;target.scrollTop=source.scrollTop;
+      requestAnimationFrame(function(){scrollSyncing=false;});
+    }
+    documentRows.addEventListener('scroll',function(){syncScroll(documentRows,barRows)},{passive:true});
+    barRows.addEventListener('scroll',function(){syncScroll(barRows,documentRows)},{passive:true});
     return layout;
   }
   function renderPersonalDocumentTimeline(){
-    var rows=byId('dashboardDocumentTimelineRows'),count=byId('dashboardDocumentTimelineCount');if(!rows)return;
-    var items=documents();rows.innerHTML='';if(count)count.textContent=items.length+' document'+(items.length===1?'':'s');
+    var documentRows=byId('dashboardDocumentListRows'),barRows=byId('dashboardDocumentBarRows'),count=byId('dashboardDocumentTimelineCount');if(!documentRows||!barRows)return;
+    var items=documents();documentRows.innerHTML='';barRows.innerHTML='';if(count)count.textContent=items.length+' document'+(items.length===1?'':'s');
     if(!items.length){
-      var empty=document.createElement('p');empty.className='dashboard-document-timeline-empty';empty.textContent='No uploaded documents yet.';rows.appendChild(empty);return;
+      var empty=document.createElement('p');empty.className='dashboard-document-timeline-empty';empty.textContent='No uploaded documents yet.';documentRows.appendChild(empty);
+      var emptyBars=document.createElement('p');emptyBars.className='dashboard-document-timeline-empty';emptyBars.textContent='No expiry data yet.';barRows.appendChild(emptyBars);return;
     }
     items.forEach(function(item,index){
       var result=remainingStatus(item&&item.expiry),tone=remainingTone(result);
-      var row=document.createElement('article');row.className='dashboard-document-timeline-row';row.dataset.tone=tone;row.style.setProperty('--remaining-progress',remainingProgress(result)+'%');
+      var documentRow=document.createElement('article');documentRow.className='dashboard-document-list-row';documentRow.dataset.tone=tone;
       var documentCell=document.createElement('div');documentCell.className='dashboard-document-timeline-document';
       var icon=document.createElement('span');icon.className='dashboard-document-timeline-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<i class="ph ph-file-text"></i>';
       var copy=document.createElement('div');copy.className='dashboard-document-timeline-copy';
       var title=document.createElement('strong');title.textContent=String(item&&item.type||item&&item.title||item&&item.name||'Document '+(index+1));
       var detail=document.createElement('span');detail.textContent=String(item&&item.provider||item&&item.authority||item&&item.country||'Uploaded document');
-      copy.appendChild(title);copy.appendChild(detail);documentCell.appendChild(icon);documentCell.appendChild(copy);
+      copy.appendChild(title);copy.appendChild(detail);documentCell.appendChild(icon);documentCell.appendChild(copy);documentRow.appendChild(documentCell);documentRows.appendChild(documentRow);
+      var barRow=document.createElement('article');barRow.className='dashboard-document-bar-row';barRow.dataset.tone=tone;barRow.style.setProperty('--remaining-progress',remainingProgress(result)+'%');
       var remaining=document.createElement('div');remaining.className='dashboard-document-timeline-remaining';
       var track=document.createElement('span');track.className='dashboard-document-timeline-track';track.setAttribute('aria-hidden','true');
       var fill=document.createElement('span');fill.className='dashboard-document-timeline-fill';track.appendChild(fill);
       var label=document.createElement('span');label.className='dashboard-document-timeline-label';label.textContent=remainingLabel(result);
-      remaining.appendChild(track);remaining.appendChild(label);row.appendChild(documentCell);row.appendChild(remaining);rows.appendChild(row);
+      remaining.appendChild(track);remaining.appendChild(label);barRow.appendChild(remaining);barRows.appendChild(barRow);
     });
   }
   function formatBytes(value){

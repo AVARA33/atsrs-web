@@ -21,7 +21,8 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-layout{
 }
 
 body.personal-mode #dashboardPage .dashboard-document-timeline-card{
-  grid-column:1;
+  display:grid;
+  grid-template-rows:64px 22px minmax(0,1fr);
   min-width:0;
   margin:0!important;
   padding:18px!important;
@@ -31,6 +32,9 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-card{
   background-image:none!important;
   box-shadow:none!important;
 }
+
+body.personal-mode #dashboardPage .dashboard-document-list-card{grid-column:1;}
+body.personal-mode #dashboardPage .dashboard-document-bars-card{grid-column:2;}
 
 html[data-theme="light"] body.personal-mode #dashboardPage .dashboard-document-timeline-card{
   border-color:var(--atsrs-ref-light-line)!important;
@@ -42,7 +46,8 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-head{
   align-items:flex-start;
   justify-content:space-between;
   gap:16px;
-  margin-bottom:16px;
+  min-width:0;
+  margin:0;
 }
 
 body.personal-mode #dashboardPage .dashboard-document-timeline-head h2{
@@ -63,15 +68,9 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-count{
   white-space:nowrap;
 }
 
-body.personal-mode #dashboardPage .dashboard-document-timeline-columns,
-body.personal-mode #dashboardPage .dashboard-document-timeline-row{
-  display:grid;
-  grid-template-columns:minmax(220px,.92fr) minmax(260px,1.08fr);
-  column-gap:24px;
-  align-items:center;
-}
-
 body.personal-mode #dashboardPage .dashboard-document-timeline-columns{
+  display:flex;
+  align-items:flex-start;
   padding:0 10px 8px;
   color:var(--atsrs-muted);
   font-size:10px;
@@ -89,24 +88,40 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-rows{
   scrollbar-color:var(--atsrs-muted) transparent;
 }
 
-body.personal-mode #dashboardPage .dashboard-document-timeline-row{
+body.personal-mode #dashboardPage .dashboard-document-bar-rows{
+  padding-right:0;
+  scrollbar-width:none;
+}
+
+body.personal-mode #dashboardPage .dashboard-document-bar-rows::-webkit-scrollbar{
+  width:0;
+  height:0;
+}
+
+body.personal-mode #dashboardPage .dashboard-document-list-row,
+body.personal-mode #dashboardPage .dashboard-document-bar-row{
   --remaining-color:var(--atsrs-ref-blue,#167bd3);
+  display:flex;
+  align-items:center;
+  box-sizing:border-box;
+  height:54px;
   min-height:54px;
   border-top:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
 }
 
-html[data-theme="light"] body.personal-mode #dashboardPage .dashboard-document-timeline-row{
+html[data-theme="light"] body.personal-mode #dashboardPage .dashboard-document-list-row,
+html[data-theme="light"] body.personal-mode #dashboardPage .dashboard-document-bar-row{
   border-top-color:var(--atsrs-ref-light-line);
 }
 
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="current"]{--remaining-color:#22a06b;}
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="mid"]{--remaining-color:#8b5cf6;}
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="notice"]{--remaining-color:#2563eb;}
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="warning"]{--remaining-color:#f59e0b;}
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="critical"]{--remaining-color:#f97316;}
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="expired"]{--remaining-color:#ef4444;}
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="no-expiry"],
-body.personal-mode #dashboardPage .dashboard-document-timeline-row[data-tone="unconfirmed"]{--remaining-color:#64748b;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="current"]{--remaining-color:#22a06b;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="mid"]{--remaining-color:#8b5cf6;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="notice"]{--remaining-color:#2563eb;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="warning"]{--remaining-color:#f59e0b;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="critical"]{--remaining-color:#f97316;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="expired"]{--remaining-color:#ef4444;}
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="no-expiry"],
+body.personal-mode #dashboardPage :is(.dashboard-document-list-row,.dashboard-document-bar-row)[data-tone="unconfirmed"]{--remaining-color:#64748b;}
 
 body.personal-mode #dashboardPage .dashboard-document-timeline-document{
   display:flex;
@@ -114,6 +129,7 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-document{
   min-width:0;
   gap:10px;
   padding:7px 10px;
+  width:100%;
 }
 
 body.personal-mode #dashboardPage .dashboard-document-timeline-icon{
@@ -154,11 +170,12 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-copy span{
 
 body.personal-mode #dashboardPage .dashboard-document-timeline-remaining{
   display:grid;
-  grid-template-columns:minmax(90px,1fr) minmax(92px,auto);
+  grid-template-columns:minmax(48px,1fr) minmax(76px,auto);
   align-items:center;
-  gap:12px;
+  gap:8px;
   min-width:0;
-  padding:7px 10px 7px 0;
+  padding:7px 8px;
+  width:100%;
 }
 
 body.personal-mode #dashboardPage .dashboard-document-timeline-track{
@@ -486,7 +503,8 @@ body.company-mode #dashboardPage .stats-grid{
   body.personal-mode #dashboardPage .dashboard-document-timeline-layout{
     grid-template-columns:1fr;
   }
-  body.personal-mode #dashboardPage .dashboard-document-timeline-card{
+  body.personal-mode #dashboardPage .dashboard-document-list-card,
+  body.personal-mode #dashboardPage .dashboard-document-bars-card{
     grid-column:1;
   }
 }
@@ -504,16 +522,10 @@ body.company-mode #dashboardPage .stats-grid{
   body.personal-mode #dashboardPage .dashboard-document-timeline-columns{
     display:none;
   }
-  body.personal-mode #dashboardPage .dashboard-document-timeline-row{
-    grid-template-columns:1fr;
-    gap:0;
-    min-height:76px;
-  }
-  body.personal-mode #dashboardPage .dashboard-document-timeline-rows{
-    max-height:608px;
-  }
-  body.personal-mode #dashboardPage .dashboard-document-timeline-remaining{
-    padding:0 10px 9px 50px;
+  body.personal-mode #dashboardPage .dashboard-document-list-row,
+  body.personal-mode #dashboardPage .dashboard-document-bar-row{
+    height:54px;
+    min-height:54px;
   }
   body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
     grid-template-columns:1fr;
