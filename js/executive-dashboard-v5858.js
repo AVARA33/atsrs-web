@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5866';
+  window.__atsrsExecutiveDashboardVersion='5867';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -80,7 +80,7 @@
     var quick=document.createElement('section');quick.className='panel dashboard-personal-tool-card dashboard-personal-actions-card';quick.setAttribute('aria-labelledby','dashboardPersonalActionsTitle');
     quick.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardPersonalActionsTitle">Quick Actions</h2><p class="sub">Frequently used Personal tools and shortcuts.</p></div></div><div id="dashboardPersonalActions" class="dashboard-personal-actions"></div>';
     var storage=document.createElement('section');storage.className='panel dashboard-personal-tool-card dashboard-storage-card';storage.setAttribute('aria-labelledby','dashboardStorageTitle');
-    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><button id="dashboardManageStorage" type="button" class="secondary">Open Documents</button></div><div class="dashboard-storage-visual"><div class="dashboard-storage-chart" role="img" aria-label="Personal storage usage"><canvas id="dashboardStorageChart" width="112" height="112" aria-hidden="true"></canvas><strong id="dashboardStoragePercent">0%</strong></div><div class="dashboard-storage-copy"><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><p>Secure server encrypted archival storage is active.</p></div></div>';
+    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><a id="dashboardManageStorage" href="/pricing.html#comparison" class="secondary" role="button">Manage Storage</a></div><div class="dashboard-storage-visual"><div class="dashboard-storage-chart" role="img" aria-label="Personal storage usage"><canvas id="dashboardStorageChart" width="112" height="112" aria-hidden="true"></canvas><strong id="dashboardStoragePercent">0%</strong></div><div class="dashboard-storage-copy"><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><p>Secure server encrypted archival storage is active.</p></div></div>';
     grid.appendChild(quick);grid.appendChild(storage);stats.insertAdjacentElement('afterend',grid);
     var actions=byId('dashboardPersonalActions');
     addPersonalAction(actions,'Add Document','ph-file-plus','document',function(){openDocumentMethod('');});
@@ -89,7 +89,6 @@
     addPersonalAction(actions,'Manual Upload','ph-upload-simple','upload',function(){openDocumentMethod('manual');});
     addPersonalAction(actions,'Manage Profile','ph-users-three','profile',function(){route('profile','navProfile');});
     addPersonalAction(actions,'Share Link','ph-link','sharing',openProfileSharing);
-    byId('dashboardManageStorage').addEventListener('click',function(){openDocumentMethod('');});
     return grid;
   }
   function remainingStatus(expiry){

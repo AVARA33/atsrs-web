@@ -10,8 +10,8 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5866/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5866/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5867/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5867/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -40,6 +40,7 @@ assert.match(js,/Scan with QR','ph-qr-code','qr'/,'Scan with QR must use the ref
 assert.match(js,/Manual Upload','ph-upload-simple','upload'/,'Manual Upload must use the reference upload icon and green tone.');
 assert.match(js,/Manage Profile','ph-users-three','profile'/,'Manage Profile must use the reference group icon and purple tone.');
 assert.match(js,/Share Link','ph-link','sharing',openProfileSharing/,'The final Quick Action must expose the existing Share Link workflow.');
+assert.match(js,/href="\/pricing\.html#comparison"[\s\S]*?>Manage Storage<\/a>/,'Manage Storage must expose a native link to the Personal plan comparison page.');
 assert.doesNotMatch(js,/addPersonalAction\(actions,'Privacy & Sharing'/,'The legacy Privacy & Sharing Quick Action label must be removed.');
 assert.match(js,/uploadedAt/,'Personal recent activity must use real upload timestamps.');
 assert.match(js,/uploaded_at/,'Corporate recent activity must use real upload timestamps.');
@@ -59,6 +60,9 @@ assert.match(css,/@media\(max-width:560px\)/,'Mobile layout must be explicit.');
 assert.match(css,/var\(--atsrs-ref-light-surface\)/,'Light mode must reuse ATSRS tokens.');
 assert.match(css,/dashboard-storage-chart\{[\s\S]*?--dashboard-storage-accent:var\(--atsrs-brand-green/,'Dark storage chart must reuse the ATSRS green token.');
 assert.match(css,/html\[data-theme="light"\][\s\S]*?--dashboard-storage-accent:var\(--atsrs-ref-blue/,'Light storage chart must reuse the ATSRS blue token.');
+assert.match(css,/html\[data-theme="dark"\][\s\S]*?dashboard-personal-action:hover[\s\S]*?var\(--atsrs-brand-green/,'Dark Quick Action hover must use the ATSRS green interaction language.');
+assert.match(css,/html\[data-theme="light"\][\s\S]*?dashboard-personal-action:hover[\s\S]*?var\(--atsrs-shell-accent-soft/,'Light Quick Action hover must use the Jobs-style ATSRS blue interaction language.');
+assert.match(css,/#dashboardManageStorage\{[\s\S]*?display:inline-flex!important[\s\S]*?text-decoration:none!important/,'Manage Storage must retain a compact button treatment while using native link navigation.');
 assert.match(css,/var\(--atsrs-workspace-surface/,'Dark mode must reuse ATSRS workspace tokens.');
 assert.doesNotMatch(css,/(^|\n)\s*(button|input|select|h1|\*)\s*\{/,'No unscoped global control or typography override is allowed.');
 assert.match(harness,/mode=company|params\.get\('mode'\)/,'Harness must support Corporate visual QA.');
