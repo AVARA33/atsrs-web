@@ -118,6 +118,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/dark-surface-standard-v58154.css?v=58155">
 <link rel="stylesheet" href="css/dropdown-neutral-state-v58174.css?v=58174">
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
+<link rel="stylesheet" href="css/documents-split-pane-v5857.css?v=5857">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1090,8 +1091,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <button type="button" role="tab" data-company-credentials-tab="references" onclick="showCompanyCredentials('references')">Reference Materials</button>
   </div>
 </div>
-<div class="panel unified-cert-panel">
+<div id="documentsWorkspace" class="atsrs-documents-workspace">
+<aside id="documentsAddPanel" class="panel unified-cert-panel atsrs-documents-add-panel" aria-hidden="false" aria-labelledby="addDocTitle">
+<div class="atsrs-documents-panel-head">
 <h3 id="addDocTitle"></h3>
+<button id="closeDocumentsAddPanelBtn" type="button" class="secondary personal-only" aria-label="Close add document panel"><i class="ph ph-x" aria-hidden="true"></i><span>Close</span></button>
+</div>
 <p id="addCertFlowNote" class="cert-flow-note"></p>
 <div class="cert-mode-buttons">
 <button id="certScanModeBtn" type="button" class="active" onclick="showCertMode('scan')"></button>
@@ -1213,10 +1218,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <button id="addCertBtn" onclick="addCertificate()"></button>
 </div>
-</div>
+</aside>
 
-<div class="panel">
-<h3 id="certRegisterTitle"></h3>
+<div class="panel atsrs-documents-register-panel">
+<div class="atsrs-documents-register-heading">
+  <h3 id="certRegisterTitle"></h3>
+  <button id="openDocumentsAddPanelBtn" type="button" class="secondary personal-only" aria-controls="documentsAddPanel" aria-expanded="false"><i class="ph ph-plus" aria-hidden="true"></i><span>Add document</span></button>
+</div>
 <div class="atsrs-document-register-toolbar">
   <label class="atsrs-document-filter" for="certDocumentFilter">
     <span>Filter</span>
@@ -1244,6 +1252,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <th id="thStatus2"><button type="button" class="atsrs-document-sort" data-cert-sort="status"><span id="certSortStatusLabel">Status</span><span class="atsrs-sort-arrows" aria-hidden="true"><i class="up">&#9650;</i><i class="down">&#9660;</i></span></button></th>
   <th id="thAction2"></th>
 </tr></thead><tbody id="certTable"></tbody></table></div>
+</div>
 </div>
 </section>
 
@@ -1968,6 +1977,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=567"></script>
 <script src="js/route-feature-loader.js?v=58163"></script>
+<script src="js/documents-split-pane-v5857.js?v=5857"></script>
 
 
 

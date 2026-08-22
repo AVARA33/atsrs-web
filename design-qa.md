@@ -41,6 +41,51 @@ final result: passed
 
 ---
 
+# Personal Documents split-pane — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-6d3653fc-9086-4b38-8ee9-ce52ed741093.png` (3439 × 1368 px).
+- Normalized source crop: `C:\Users\user\Documents\GitHub\atsrs-android-release\tests\artifacts\documents-split-pane-v5857\00-source-reference-crop.png`.
+- Initial full-width implementation: `C:\Users\user\Documents\GitHub\atsrs-android-release\tests\artifacts\documents-split-pane-v5857\01-initial-full-width.png`.
+- Open right-panel implementation: `C:\Users\user\Documents\GitHub\atsrs-android-release\tests\artifacts\documents-split-pane-v5857\02-open-right-panel.png`.
+- Mobile open-panel implementation: `C:\Users\user\Documents\GitHub\atsrs-android-release\tests\artifacts\documents-split-pane-v5857\03-mobile-open-panel.png`.
+- Combined source/implementation comparison: `C:\Users\user\Documents\GitHub\atsrs-android-release\tests\artifacts\documents-split-pane-v5857\04-source-implementation-comparison.png`.
+- Viewports: desktop 1440 × 900, tablet 768 × 900, mobile 390 × 844 CSS px.
+- States: Personal Documents register at rest; Add document open; close and focus return; mobile focused add flow.
+
+## Full-view and focused comparison evidence
+
+The source uses a wide document register with an Add Document workspace attached on the right. The implementation reproduces that information architecture while retaining the current ATSRS document table, upload modes, fields, typography and theme. At rest the register and workspace both measured 1128.67 px wide. With Add document open, the register measured 624.67 px, the right panel measured 480 px, and the stable gap was 24 px with zero intersection and zero page-level horizontal overflow.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS typography and current Documents copy are reused; no new font or type scale was introduced.
+- Spacing and layout rhythm: the initial register fills the complete existing Documents workspace. Desktop opens a 480 px right panel; tablet opens a 330 px right panel with an 18 px gap; mobile promotes the add flow to the full available content width.
+- Colors and visual tokens: the split-pane stylesheet contains no hex, RGB or RGBA values. It reuses the existing functional-border token, so current light/dark colors remain owned by ATSRS theme files.
+- Image quality and asset fidelity: no new image, logo or illustrative asset was added. Existing Phosphor plus and close icons are reused.
+- Copy and content: existing Scan with AI, Scan with QR, Manual Upload, document fields and register data remain intact. Only Add document and Close controls were added for the split interaction.
+
+## Findings and comparison history
+
+- Initial P2: an existing panel max-width constrained the closed register, so it did not fill the available workspace.
+- Fix: the Personal Documents register now explicitly uses the full width of its existing workspace without changing global panel rules.
+- Post-fix: register width equals workspace width at 1128.67 px; open desktop gap is 24 px; tablet gap is 18 px; desktop/tablet/mobile page overflow is 0 px.
+- Corporate protection: layout selectors are scoped to `body.personal-mode`; Corporate keeps its existing stacked Documents behavior and the shared upload form remains exposed to assistive technology there.
+- No actionable P0, P1 or P2 visual finding remains.
+
+## Primary interactions and console
+
+- Add document opens the right panel and moves focus to the panel heading.
+- Close hides the panel, restores the full register and returns focus to Add document.
+- Escape close behavior is covered by the focused contract test and does not intercept the existing QR dialog.
+- Mobile open state hides only the register view, keeps the full upload flow visible and has zero horizontal overflow.
+- Browser console errors/warnings: 0.
+- Focused split-pane, expiry layout, dark-field parity, QR, floating-field, authenticated scan and Cloudflare Pages build checks passed.
+- Two legacy baseline tests remain stale on the unchanged parent: they expect build V564 and shell-polish v572, while parent HEAD already uses V5848 and v58163. This candidate does not alter those markers.
+
+final result: passed
+
+---
+
 # Android release hero logo — Design QA
 
 - Source visual: `C:\Users\user\AppData\Local\Temp\codex-clipboard-eb8f405b-d411-4a42-a771-04db629766f9.png`.
