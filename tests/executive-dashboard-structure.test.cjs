@@ -10,8 +10,8 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5865/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5865/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5866/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5866/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -28,6 +28,9 @@ assert.match(js,/dashboardDocumentDaysSort[\s\S]*?setTimelineSort\('days'\)/,'Th
 assert.match(js,/var sourceItems=documents\(\),items=sortedTimelineItems\(sourceItems\)/,'Both cards must render from one shared sorted document order.');
 assert.match(js,/atsrs_my_personal_entitlements/,'Storage capacity must come from the authenticated plan entitlement.');
 assert.match(js,/from\('atsrs_files'\)\.select\('size_bytes'\)/,'Storage usage must sum real authenticated file metadata.');
+assert.match(js,/canvas id="dashboardStorageChart"[\s\S]*?dashboardStoragePercent/,'Storage Usage must render a circular chart with its percentage in the centre.');
+assert.match(js,/usedBytes\/limitBytes\*100/,'Storage percentage must be calculated from authenticated usage and the entitlement limit.');
+assert.match(js,/MutationObserver\(redrawStorageChart\)/,'The circular storage chart must redraw when light or dark theme changes.');
 assert.match(js,/MutationObserver[\s\S]*?dashboardVisible\(\)[\s\S]*?sync/,'Dashboard tools must initialize when authenticated routing reveals the page.');
 assert.match(js,/beginInitialSync[\s\S]*?setInterval[\s\S]*?attempts>=40/,'Dashboard initialization must tolerate delayed authenticated rendering.');
 assert.match(js,/manualPanel\.dataset\.keepOpen='quick-action'[\s\S]*?\},220\)[\s\S]*?delete manualPanel\.dataset\.keepOpen/,'Document Quick Actions must survive the Documents route settling pass before opening their requested mode.');
@@ -54,6 +57,8 @@ assert.match(css,/dashboard-document-list-rows,[\s\S]*?dashboard-document-bar-ro
 assert.match(css,/dashboard-document-sort\{[\s\S]*?background:transparent/,'Sort controls must remain compact and inherit the existing Dashboard design.');
 assert.match(css,/@media\(max-width:560px\)/,'Mobile layout must be explicit.');
 assert.match(css,/var\(--atsrs-ref-light-surface\)/,'Light mode must reuse ATSRS tokens.');
+assert.match(css,/dashboard-storage-chart\{[\s\S]*?--dashboard-storage-accent:var\(--atsrs-brand-green/,'Dark storage chart must reuse the ATSRS green token.');
+assert.match(css,/html\[data-theme="light"\][\s\S]*?--dashboard-storage-accent:var\(--atsrs-ref-blue/,'Light storage chart must reuse the ATSRS blue token.');
 assert.match(css,/var\(--atsrs-workspace-surface/,'Dark mode must reuse ATSRS workspace tokens.');
 assert.doesNotMatch(css,/(^|\n)\s*(button|input|select|h1|\*)\s*\{/,'No unscoped global control or typography override is allowed.');
 assert.match(harness,/mode=company|params\.get\('mode'\)/,'Harness must support Corporate visual QA.');

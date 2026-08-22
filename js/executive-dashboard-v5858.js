@@ -2,11 +2,12 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5865';
+  window.__atsrsExecutiveDashboardVersion='5866';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
   var personalStorageLoadedAt=0;
+  var personalStorageChartState={percent:0,label:'0%'};
   var personalTimelineSort={key:null,direction:'asc'};
 
   function byId(id){return document.getElementById(id)}
@@ -79,7 +80,7 @@
     var quick=document.createElement('section');quick.className='panel dashboard-personal-tool-card dashboard-personal-actions-card';quick.setAttribute('aria-labelledby','dashboardPersonalActionsTitle');
     quick.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardPersonalActionsTitle">Quick Actions</h2><p class="sub">Frequently used Personal tools and shortcuts.</p></div></div><div id="dashboardPersonalActions" class="dashboard-personal-actions"></div>';
     var storage=document.createElement('section');storage.className='panel dashboard-personal-tool-card dashboard-storage-card';storage.setAttribute('aria-labelledby','dashboardStorageTitle');
-    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><button id="dashboardManageStorage" type="button" class="secondary">Open Documents</button></div><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><progress id="dashboardStorageProgress" max="100" value="0" aria-label="Personal storage used">0%</progress>';
+    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><button id="dashboardManageStorage" type="button" class="secondary">Open Documents</button></div><div class="dashboard-storage-visual"><div class="dashboard-storage-chart" role="img" aria-label="Personal storage usage"><canvas id="dashboardStorageChart" width="112" height="112" aria-hidden="true"></canvas><strong id="dashboardStoragePercent">0%</strong></div><div class="dashboard-storage-copy"><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><p>Secure server encrypted archival storage is active.</p></div></div>';
     grid.appendChild(quick);grid.appendChild(storage);stats.insertAdjacentElement('afterend',grid);
     var actions=byId('dashboardPersonalActions');
     addPersonalAction(actions,'Add Document','ph-file-plus','document',function(){openDocumentMethod('');});
@@ -201,12 +202,33 @@
     if(bytes<1024)return bytes+' B';
     if(bytes<1048576)return(bytes/1024).toFixed(bytes<10240?1:0)+' KB';
     if(bytes<1073741824)return(bytes/1048576).toFixed(bytes<10485760?1:0)+' MB';
-    return(bytes/1073741824).toFixed(2)+' GB';
+    var gb=bytes/1073741824;
+    return gb.toFixed(gb>=10||Number.isInteger(gb)?0:2)+' GB';
   }
+  function storagePercent(usedBytes,limitBytes){
+    if(!limitBytes)return{value:0,label:'—'};
+    var exact=Math.min(100,Math.max(0,usedBytes/limitBytes*100));
+    return{value:exact,label:exact>0&&exact<.05?'<0.1%':(exact>0&&exact<1?exact.toFixed(1):Math.round(exact))+'%'};
+  }
+  function drawStorageChart(value,label){
+    personalStorageChartState={percent:value,label:label};
+    var canvas=byId('dashboardStorageChart'),text=byId('dashboardStoragePercent'),wrap=canvas&&canvas.parentElement;if(!canvas||!wrap)return;
+    if(text)text.textContent=label;
+    var ratio=Math.max(1,Math.min(2,window.devicePixelRatio||1)),size=Math.max(72,Math.round(canvas.getBoundingClientRect().width||84));
+    canvas.width=size*ratio;canvas.height=size*ratio;
+    var context=canvas.getContext('2d');if(!context)return;
+    var style=getComputedStyle(wrap),track=style.getPropertyValue('--dashboard-storage-track').trim()||'#24302c',accent=style.getPropertyValue('--dashboard-storage-accent').trim()||'#43c95b';
+    context.clearRect(0,0,canvas.width,canvas.height);context.scale(ratio,ratio);
+    var center=size/2,line=Math.max(9,Math.round(size*.12)),radius=center-line/2;
+    context.lineWidth=line;context.lineCap='butt';context.strokeStyle=track;context.beginPath();context.arc(center,center,radius,0,Math.PI*2);context.stroke();
+    if(value>0){context.lineCap='round';context.strokeStyle=accent;context.beginPath();context.arc(center,center,radius,-Math.PI/2,-Math.PI/2+Math.PI*2*(Math.min(100,value)/100));context.stroke();}
+    wrap.setAttribute('aria-label',label+' of Personal storage used');
+  }
+  function redrawStorageChart(){drawStorageChart(personalStorageChartState.percent,personalStorageChartState.label)}
   function storageMessage(message,error){
-    var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan'),progress=byId('dashboardStorageProgress');
+    var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan');
     if(used)used.textContent=message;if(detail)detail.textContent='';if(plan)plan.textContent=error?'Storage information is temporarily unavailable.':'Checking your Personal storage...';
-    if(progress){progress.value=0;progress.setAttribute('aria-label',message);}
+    drawStorageChart(0,error?'—':'0%');
   }
   async function loadPersonalStorage(force){
     if(corporate()||!byId('dashboardStorageUsed'))return;
@@ -225,12 +247,12 @@
       var usedBytes=(results[0].data||[]).reduce(function(total,row){return total+Math.max(0,Number(row&&row.size_bytes)||0);},0);
       var entitlement=Array.isArray(results[1].data)?results[1].data[0]:results[1].data||{};
       var limitBytes=Number(entitlement&&entitlement.storage_bytes_limit)||0;
-      var percent=limitBytes?Math.min(100,Math.round(usedBytes/limitBytes*100)):0;
-      var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan'),progress=byId('dashboardStorageProgress');
+      var percent=storagePercent(usedBytes,limitBytes);
+      var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan');
       if(used)used.textContent=formatBytes(usedBytes);
       if(detail)detail.textContent=limitBytes?' of '+formatBytes(limitBytes)+' used':' stored · no fixed storage limit';
       if(plan)plan.textContent=String(entitlement&&entitlement.plan_name||'Personal')+' plan · secure server storage';
-      if(progress){progress.value=percent;progress.textContent=percent+'%';progress.setAttribute('aria-label',percent+'% of Personal storage used');}
+      drawStorageChart(percent.value,percent.label);
       personalStorageLoadedAt=Date.now();
     }catch(error){console.warn('ATSRS Personal storage usage could not be loaded',error);storageMessage('Storage unavailable',true);}
     finally{personalStorageLoading=false;}
@@ -342,6 +364,8 @@
 
   window.addEventListener('atsrs:corporate-compliance',function(event){corporateDashboard=event&&event.detail||null;sync()});
   document.addEventListener('atsrs-document-files-updated',function(){personalStorageLoadedAt=0;sync();loadPersonalStorage(true);});
+  window.addEventListener('resize',redrawStorageChart,{passive:true});
+  new MutationObserver(redrawStorageChart).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   window.addEventListener('atsrs:data-hydrated',function(){setTimeout(sync,0)});
 
   var dashboardPage=byId('dashboardPage');

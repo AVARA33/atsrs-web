@@ -387,7 +387,7 @@ body.personal-mode #dashboardPage .dashboard-storage-summary{
   display:flex;
   align-items:baseline;
   gap:5px;
-  margin:22px 0 12px;
+  margin:0 0 8px;
 }
 
 body.personal-mode #dashboardPage .dashboard-storage-summary strong{
@@ -400,25 +400,53 @@ body.personal-mode #dashboardPage .dashboard-storage-summary span{
   font-size:12px;
 }
 
-body.personal-mode #dashboardPage #dashboardStorageProgress{
+body.personal-mode #dashboardPage .dashboard-storage-visual{
+  display:grid;
+  grid-template-columns:84px minmax(0,1fr);
+  align-items:center;
+  gap:14px;
+}
+
+body.personal-mode #dashboardPage .dashboard-storage-chart{
+  --dashboard-storage-accent:var(--atsrs-brand-green,#22c55e);
+  --dashboard-storage-track:var(--atsrs-workspace-line,var(--atsrs-border));
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:84px;
+  height:84px;
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage .dashboard-storage-chart{
+  --dashboard-storage-accent:var(--atsrs-ref-blue,#167bd3);
+  --dashboard-storage-track:var(--atsrs-ref-light-line,#dce6f2);
+}
+
+body.personal-mode #dashboardPage .dashboard-storage-chart canvas{
   display:block;
-  width:100%;
-  height:9px;
-  overflow:hidden;
-  border:0;
-  border-radius:999px;
-  background:var(--atsrs-workspace-line,var(--atsrs-border));
-  accent-color:var(--accent);
+  width:84px;
+  height:84px;
 }
 
-body.personal-mode #dashboardPage #dashboardStorageProgress::-webkit-progress-bar{
-  border-radius:999px;
-  background:var(--atsrs-workspace-line,var(--atsrs-border));
+body.personal-mode #dashboardPage .dashboard-storage-chart > strong{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:var(--atsrs-text);
+  font-size:15px;
+  line-height:1;
 }
 
-body.personal-mode #dashboardPage #dashboardStorageProgress::-webkit-progress-value{
-  border-radius:999px;
-  background:var(--accent);
+body.personal-mode #dashboardPage .dashboard-storage-copy{
+  min-width:0;
+}
+
+body.personal-mode #dashboardPage .dashboard-storage-copy > p{
+  margin:0!important;
+  color:var(--atsrs-muted);
+  font-size:11px;
+  line-height:1.45;
 }
 
 body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
