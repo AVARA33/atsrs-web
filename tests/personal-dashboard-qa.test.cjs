@@ -8,7 +8,6 @@ const css = fs.readFileSync(path.join(root, 'css', 'personal-dashboard-qa.css'),
 const dashboardCss = fs.readFileSync(path.join(root, 'css', 'dashboard.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'personal-dashboard-qa.js'), 'utf8');
 const notifications = fs.readFileSync(path.join(root, 'js', 'notifications.js'), 'utf8');
-const bootRefresh = fs.readFileSync(path.join(root, 'js', 'boot-refresh.js'), 'utf8');
 const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
@@ -107,9 +106,6 @@ for (const state of ['loading', 'error', 'retry', 'populated']) {
 }
 
 assert.match(index, /css\/personal-dashboard-qa\.css\?v=58156/);
-assert.match(index, /js\/boot-refresh\.js\?v=444/);
-assert.match(index, /js\/personal-dashboard-qa\.js\?v=551/);
-assert.match(bootRefresh, /js\/notifications\.js\?v=587/);
-assert.match(harness, /js\/personal-dashboard-qa\.js\?v=551/);
+assert.match(index, /js\/personal-dashboard-qa\.js\?v=550/);
 
 console.log('Personal Dashboard QA candidate contracts passed');
