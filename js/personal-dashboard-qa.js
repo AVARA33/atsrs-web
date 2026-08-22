@@ -1,8 +1,8 @@
 (function(){
   'use strict';
 
-  var DASHBOARD_IDS=['exp90','exp60','exp30','exp7','expired'];
-  var riskTone={exp90:'warning',exp60:'warning',exp30:'warning',exp7:'danger',expired:'danger'};
+  var DASHBOARD_IDS=['exp90','exp60','exp30','exp7','expired','snapRisk'];
+  var riskTone={exp90:'warning',exp60:'warning',exp30:'warning',exp7:'danger',expired:'danger',snapRisk:'warning'};
   var lastDashboardVisible=false;
   var notificationObserver=null,observedNotificationList=null;
 
@@ -51,6 +51,14 @@
       else if(days<=90)counts.exp90+=1;
     });
     Object.keys(counts).forEach(function(id){var value=byId(id);if(value)value.textContent=String(counts[id]);});
+  }
+  function syncShareCapability(){
+    var help=byId('snapShareHelp');
+    var badge=byId('snapshotBadge'),title=byId('snapshotTitle');
+    if(badge&&badge.textContent!=='PROFILE SHARING')badge.textContent='PROFILE SHARING';
+    if(title&&title.textContent!=='Managed in Profile')title.textContent='Managed in Profile';
+    var helpText='Sharing settings are managed in Profile → Privacy & Sharing.';
+    if(help&&help.textContent!==helpText)help.textContent=helpText;
   }
   function syncPriorityEmptyState(){
     var list=byId('riskList');if(!list)return;
@@ -135,6 +143,7 @@
     if(!visible)return;
     DASHBOARD_IDS.forEach(function(id){syncRiskTone(byId(id));});
     syncExpiryBands();
+    syncShareCapability();
     syncPriorityEmptyState();
     syncDecorativeMarks();
     syncNotificationSemantics();

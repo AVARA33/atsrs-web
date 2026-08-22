@@ -41,14 +41,9 @@
   }
 
   function ensureDashboardPanel(){
-    var corporate=mode()==='company';
-    var existing=byId('atsrsNotificationPanel');
-    if(!corporate){
-      if(existing)existing.remove();
-      return;
-    }
     var risk=byId('riskList');
     var priorityPanel=risk&&risk.closest('.panel');
+    var corporate=mode()==='company';
     if(priorityPanel)priorityPanel.classList.remove('hidden');
     var snapshot=byId('dashboardPage')&&byId('dashboardPage').querySelector('.dashboard-snapshot-panel');
     var stats=byId('dashboardPage')&&byId('dashboardPage').querySelector('.stats-grid');
@@ -56,6 +51,7 @@
     var activity=byId('dashboardActivityGrid');
     var anchor=activity||(corporate?stats:priorityPanel);
     if(!anchor)return;
+    var existing=byId('atsrsNotificationPanel');
     if(existing){
       syncDashboardActivityLayout(existing,corporate,anchor);
       return;

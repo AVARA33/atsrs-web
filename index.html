@@ -99,7 +99,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=58156">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=58155">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=58155">
-<link rel="stylesheet" href="css/executive-dashboard-v5854.css?v=5857">
+<link rel="stylesheet" href="css/executive-dashboard-v5854.css?v=5856">
 <link rel="stylesheet" href="css/personal-account-routing-v524.css?v=524">
 <link rel="stylesheet" href="css/references-cv-upload-v525.css?v=58153">
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
@@ -791,7 +791,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <section id="dashboardPage" class="hidden">
 <h1 id="dashboardHeading">Welcome back</h1>
-<div class="solo-hero panel company-only">
+<div class="solo-hero panel">
   <div class="hero-card">
     <span id="soloBadge" class="pill">SOLO CONTROL</span>
     <h2 id="soloHeroTitle">Your document dashboard</h2>
@@ -822,7 +822,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div id="dashboardProfileCompletionCard" class="card expiry-summary-card expiry-summary-profile personal-only"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-user-circle"></i></span><p>Profile Complete</p></div><div class="stat" id="dashboardProfileCompletion">0%</div></div>
 </div>
 
-<div id="dashboardPrimaryGrid" class="dashboard-executive-grid dashboard-primary-grid company-only">
+<div id="dashboardPrimaryGrid" class="dashboard-executive-grid dashboard-primary-grid">
 <section class="panel dashboard-executive-panel dashboard-health-panel" aria-labelledby="dashboardHealthTitle">
   <div class="dashboard-executive-panel-head">
     <div><span id="dashboardHealthBadge" class="pill">DOCUMENT HEALTH</span><h2 id="dashboardHealthTitle">Document status overview</h2></div>
@@ -840,12 +840,27 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 </div>
 
+<div class="panel dashboard-snapshot-panel personal-only">
+  <div class="snapshot-card">
+    <span id="snapshotBadge" class="pill">PROFILE SHARING</span>
+    <div class="dashboard-share-capability">
+      <h2 id="snapshotTitle">Managed in Profile</h2>
+      <p id="snapShareHelp">Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing.</p>
+      <div class="dashboard-snapshot-metrics" aria-label="Document and visibility summary">
+        <span><b id="snapValid">0</b><small id="snapValidLabel">Current documents</small></span>
+        <span><b id="snapRisk">0</b><small id="snapRiskLabel">Expiry risk</small></span>
+        <span><b id="dashboardProfileVisibility">Private</b><small>Profile visibility</small></span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="dashboardOperationalGrid" class="dashboard-executive-grid dashboard-operational-grid">
 <section class="panel dashboard-executive-panel dashboard-document-types-panel" aria-labelledby="dashboardDocumentTypesTitle">
   <div class="dashboard-executive-panel-head">
-    <h2 id="dashboardDocumentTypesTitle">Document Types</h2>
-    <span class="dashboard-types-period">All documents</span>
+    <div><span class="pill">DOCUMENT TYPES</span><h2 id="dashboardDocumentTypesTitle">Document categories</h2></div>
   </div>
+  <p id="dashboardDocumentTypesSub" class="sub">The most common document types in this workspace.</p>
   <div id="dashboardDocumentTypes" class="dashboard-types-list" role="list"></div>
 </section>
 <section class="panel dashboard-executive-panel dashboard-recent-activity-panel" aria-labelledby="dashboardRecentTitle">
@@ -2009,7 +2024,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account-security-live.js?v=375"></script>
 <script src="js/talent-directory.js?v=574"></script>
 <script src="js/corporate-reporting.js?v=519"></script>
-<script src="js/executive-dashboard-v5854.js?v=5857"></script>
+<script src="js/executive-dashboard-v5854.js?v=5856"></script>
 <script src="js/admin-overview.js?v=582"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
