@@ -79,6 +79,66 @@ body.personal-mode #dashboardPage .dashboard-document-timeline-columns{
   text-transform:uppercase;
 }
 
+body.personal-mode #dashboardPage .dashboard-document-sort{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  position:relative;
+  z-index:1;
+  width:auto!important;
+  height:14px!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-height:14px!important;
+  margin:0;
+  padding:0!important;
+  border:0!important;
+  border-radius:4px;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:inherit;
+  font:inherit;
+  letter-spacing:inherit;
+  text-transform:inherit;
+  cursor:pointer;
+}
+
+body.personal-mode #dashboardPage #dashboardDocumentNameSort,
+body.personal-mode #dashboardPage #dashboardDocumentDaysSort{
+  box-sizing:border-box!important;
+  height:14px!important;
+  min-height:14px!important;
+  max-height:14px!important;
+  line-height:14px!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-document-sort:hover,
+body.personal-mode #dashboardPage .dashboard-document-sort[aria-pressed="true"]{
+  color:var(--atsrs-accent);
+}
+
+body.personal-mode #dashboardPage .dashboard-document-sort:focus-visible{
+  outline:2px solid var(--atsrs-accent);
+  outline-offset:3px;
+}
+
+body.personal-mode #dashboardPage .dashboard-document-sort-arrows{
+  display:grid;
+  grid-template-rows:5px 5px;
+  align-items:center;
+  font-size:10px;
+  line-height:1;
+}
+
+body.personal-mode #dashboardPage .dashboard-document-sort-arrows i{
+  opacity:.42;
+}
+
+body.personal-mode #dashboardPage .dashboard-document-sort[data-direction="asc"] .ph-caret-up,
+body.personal-mode #dashboardPage .dashboard-document-sort[data-direction="desc"] .ph-caret-down{
+  opacity:1;
+}
+
 body.personal-mode #dashboardPage .dashboard-document-timeline-rows{
   max-height:432px;
   overflow-y:auto;

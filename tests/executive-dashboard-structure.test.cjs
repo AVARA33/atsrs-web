@@ -10,19 +10,22 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5864/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5864/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5865/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5865/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
 assert.match(js,/atsrs:corporate-compliance/,'Corporate updates must follow the existing reporting event.');
 assert.match(js,/if\(!corporate\(\)\)[\s\S]*?ensurePersonalToolsGrid\(stats\)[\s\S]*?loadPersonalStorage/,'Personal Dashboard must place the requested tools directly below the KPI cards.');
 assert.match(js,/ensurePersonalDocumentTimeline\(stats\);renderPersonalDocumentTimeline\(\)/,'Personal Dashboard must render the uploaded-document timeline below Quick Actions.');
-assert.match(js,/var items=documents\(\)/,'Document timeline must use the real Personal document register.');
+assert.match(js,/var sourceItems=documents\(\)/,'Document timeline must use the real Personal document register.');
 assert.match(js,/atsrsExpiryStatus\.classify/,'Remaining-time bars must use the shared expiry-status contract.');
 assert.match(js,/100\/\(1\+result\.days\/90\)/,'Remaining-time bars must grow monotonically as the number of days falls.');
 assert.match(js,/dashboardDocumentListRows[\s\S]*?dashboardDocumentBarRows/,'Documents and remaining-time bars must render in separate cards.');
 assert.match(js,/documentRows\.addEventListener\('scroll'[\s\S]*?barRows\.addEventListener\('scroll'/,'The two independent cards must synchronize scrolling in both directions.');
+assert.match(js,/dashboardDocumentNameSort[\s\S]*?setTimelineSort\('name'\)/,'The document card must expose A-Z and Z-A sorting.');
+assert.match(js,/dashboardDocumentDaysSort[\s\S]*?setTimelineSort\('days'\)/,'The expiry card must expose low-to-high and high-to-low day sorting.');
+assert.match(js,/var sourceItems=documents\(\),items=sortedTimelineItems\(sourceItems\)/,'Both cards must render from one shared sorted document order.');
 assert.match(js,/atsrs_my_personal_entitlements/,'Storage capacity must come from the authenticated plan entitlement.');
 assert.match(js,/from\('atsrs_files'\)\.select\('size_bytes'\)/,'Storage usage must sum real authenticated file metadata.');
 assert.match(js,/MutationObserver[\s\S]*?dashboardVisible\(\)[\s\S]*?sync/,'Dashboard tools must initialize when authenticated routing reveals the page.');
@@ -48,6 +51,7 @@ assert.match(css,/dashboard-document-timeline-rows\{[\s\S]*?max-height:432px[\s\
 assert.match(css,/dashboard-document-list-card\{grid-column:1;\}[\s\S]*?dashboard-document-bars-card\{grid-column:2;\}/,'Uploaded Documents and Time Remaining must occupy separate aligned desktop cards.');
 assert.match(css,/dashboard-document-list-row,[\s\S]*?dashboard-document-bar-row\{[\s\S]*?height:54px[\s\S]*?min-height:54px/,'Document and expiry-bar rows must retain identical fixed heights.');
 assert.match(css,/dashboard-document-list-rows,[\s\S]*?dashboard-document-bar-rows\{[\s\S]*?scrollbar-width:none/,'Both synchronized cards must remain scrollable without visible scrollbars.');
+assert.match(css,/dashboard-document-sort\{[\s\S]*?background:transparent/,'Sort controls must remain compact and inherit the existing Dashboard design.');
 assert.match(css,/@media\(max-width:560px\)/,'Mobile layout must be explicit.');
 assert.match(css,/var\(--atsrs-ref-light-surface\)/,'Light mode must reuse ATSRS tokens.');
 assert.match(css,/var\(--atsrs-workspace-surface/,'Dark mode must reuse ATSRS workspace tokens.');

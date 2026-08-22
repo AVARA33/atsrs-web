@@ -2,11 +2,12 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5864';
+  window.__atsrsExecutiveDashboardVersion='5865';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
   var personalStorageLoadedAt=0;
+  var personalTimelineSort={key:null,direction:'asc'};
 
   function byId(id){return document.getElementById(id)}
   function mode(){
@@ -116,14 +117,45 @@
     if(result.days===0)return'Expires today';
     return result.days+' days left';
   }
+  function timelineName(item,index){
+    return String(item&&item.type||item&&item.title||item&&item.name||'Document '+(index+1));
+  }
+  function sortedTimelineItems(items){
+    var decorated=items.map(function(item,index){return{item:item,index:index,name:timelineName(item,index),status:remainingStatus(item&&item.expiry)}});
+    if(!personalTimelineSort.key)return decorated;
+    var direction=personalTimelineSort.direction==='desc'?-1:1;
+    decorated.sort(function(a,b){
+      if(personalTimelineSort.key==='name')return direction*a.name.localeCompare(b.name,undefined,{numeric:true,sensitivity:'base'});
+      var aDays=a.status&&a.status.days,bDays=b.status&&b.status.days;
+      if(aDays===null&&bDays===null)return a.name.localeCompare(b.name,undefined,{numeric:true,sensitivity:'base'});
+      if(aDays===null)return 1;
+      if(bDays===null)return-1;
+      return direction*(aDays-bDays)||a.name.localeCompare(b.name,undefined,{numeric:true,sensitivity:'base'});
+    });
+    return decorated;
+  }
+  function updateTimelineSortControls(){
+    [['dashboardDocumentNameSort','name'],['dashboardDocumentDaysSort','days']].forEach(function(entry){
+      var button=byId(entry[0]),active=personalTimelineSort.key===entry[1];if(!button)return;
+      button.dataset.direction=active?personalTimelineSort.direction:'none';
+      button.setAttribute('aria-pressed',active?'true':'false');
+      button.setAttribute('aria-label',entry[1]==='name'?(active&&personalTimelineSort.direction==='asc'?'Sort names Z to A':'Sort names A to Z'):(active&&personalTimelineSort.direction==='asc'?'Sort days high to low':'Sort days low to high'));
+    });
+  }
+  function setTimelineSort(key){
+    personalTimelineSort.direction=personalTimelineSort.key===key&&personalTimelineSort.direction==='asc'?'desc':'asc';
+    personalTimelineSort.key=key;renderPersonalDocumentTimeline();
+    var documentRows=byId('dashboardDocumentListRows'),barRows=byId('dashboardDocumentBarRows');
+    if(documentRows)documentRows.scrollTop=0;if(barRows)barRows.scrollTop=0;
+  }
   function ensurePersonalDocumentTimeline(stats){
     var layout=byId('dashboardDocumentTimelineLayout');
     if(layout)return layout;
     layout=document.createElement('div');layout.id='dashboardDocumentTimelineLayout';layout.className='dashboard-document-timeline-layout';
     var documentsPanel=document.createElement('section');documentsPanel.className='panel dashboard-document-timeline-card dashboard-document-list-card';documentsPanel.setAttribute('aria-labelledby','dashboardDocumentTimelineTitle');
-    documentsPanel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentTimelineTitle">Uploaded Documents</h2><p class="sub">Your Personal document register.</p></div><span id="dashboardDocumentTimelineCount" class="dashboard-document-timeline-count"></span></div><div class="dashboard-document-timeline-columns" aria-hidden="true"><span>Document</span></div><div id="dashboardDocumentListRows" class="dashboard-document-timeline-rows dashboard-document-list-rows" tabindex="0" aria-label="Uploaded documents"></div>';
+    documentsPanel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentTimelineTitle">Uploaded Documents</h2><p class="sub">Your Personal document register.</p></div><span id="dashboardDocumentTimelineCount" class="dashboard-document-timeline-count"></span></div><div class="dashboard-document-timeline-columns"><button id="dashboardDocumentNameSort" class="dashboard-document-sort" type="button" data-direction="none" aria-pressed="false"><span>Name</span><span class="dashboard-document-sort-arrows" aria-hidden="true"><i class="ph ph-caret-up"></i><i class="ph ph-caret-down"></i></span></button></div><div id="dashboardDocumentListRows" class="dashboard-document-timeline-rows dashboard-document-list-rows" tabindex="0" aria-label="Uploaded documents"></div>';
     var remainingPanel=document.createElement('section');remainingPanel.className='panel dashboard-document-timeline-card dashboard-document-bars-card';remainingPanel.setAttribute('aria-labelledby','dashboardDocumentBarsTitle');
-    remainingPanel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentBarsTitle">Time Remaining</h2><p class="sub">Days until each document expires.</p></div></div><div class="dashboard-document-timeline-columns" aria-hidden="true"><span>Expiry timeline</span></div><div id="dashboardDocumentBarRows" class="dashboard-document-timeline-rows dashboard-document-bar-rows" tabindex="0" aria-label="Document expiry time remaining"></div>';
+    remainingPanel.innerHTML='<div class="dashboard-document-timeline-head"><div><h2 id="dashboardDocumentBarsTitle">Time Remaining</h2><p class="sub">Days until each document expires.</p></div></div><div class="dashboard-document-timeline-columns"><button id="dashboardDocumentDaysSort" class="dashboard-document-sort" type="button" data-direction="none" aria-pressed="false"><span>Days</span><span class="dashboard-document-sort-arrows" aria-hidden="true"><i class="ph ph-caret-up"></i><i class="ph ph-caret-down"></i></span></button></div><div id="dashboardDocumentBarRows" class="dashboard-document-timeline-rows dashboard-document-bar-rows" tabindex="0" aria-label="Document expiry time remaining"></div>';
     layout.appendChild(documentsPanel);layout.appendChild(remainingPanel);
     var tools=byId('dashboardPersonalTools');
     if(tools)tools.insertAdjacentElement('afterend',layout);else stats.insertAdjacentElement('afterend',layout);
@@ -134,22 +166,25 @@
     }
     documentRows.addEventListener('scroll',function(){syncScroll(documentRows,barRows)},{passive:true});
     barRows.addEventListener('scroll',function(){syncScroll(barRows,documentRows)},{passive:true});
+    byId('dashboardDocumentNameSort').addEventListener('click',function(){setTimelineSort('name')});
+    byId('dashboardDocumentDaysSort').addEventListener('click',function(){setTimelineSort('days')});
+    updateTimelineSortControls();
     return layout;
   }
   function renderPersonalDocumentTimeline(){
     var documentRows=byId('dashboardDocumentListRows'),barRows=byId('dashboardDocumentBarRows'),count=byId('dashboardDocumentTimelineCount');if(!documentRows||!barRows)return;
-    var items=documents();documentRows.innerHTML='';barRows.innerHTML='';if(count)count.textContent=items.length+' document'+(items.length===1?'':'s');
+    var sourceItems=documents(),items=sortedTimelineItems(sourceItems);documentRows.innerHTML='';barRows.innerHTML='';if(count)count.textContent=sourceItems.length+' document'+(sourceItems.length===1?'':'s');
     if(!items.length){
       var empty=document.createElement('p');empty.className='dashboard-document-timeline-empty';empty.textContent='No uploaded documents yet.';documentRows.appendChild(empty);
       var emptyBars=document.createElement('p');emptyBars.className='dashboard-document-timeline-empty';emptyBars.textContent='No expiry data yet.';barRows.appendChild(emptyBars);return;
     }
-    items.forEach(function(item,index){
-      var result=remainingStatus(item&&item.expiry),tone=remainingTone(result);
+    items.forEach(function(entry){
+      var item=entry.item,index=entry.index,result=entry.status,tone=remainingTone(result);
       var documentRow=document.createElement('article');documentRow.className='dashboard-document-list-row';documentRow.dataset.tone=tone;
       var documentCell=document.createElement('div');documentCell.className='dashboard-document-timeline-document';
       var icon=document.createElement('span');icon.className='dashboard-document-timeline-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<i class="ph ph-file-text"></i>';
       var copy=document.createElement('div');copy.className='dashboard-document-timeline-copy';
-      var title=document.createElement('strong');title.textContent=String(item&&item.type||item&&item.title||item&&item.name||'Document '+(index+1));
+      var title=document.createElement('strong');title.textContent=entry.name;
       var detail=document.createElement('span');detail.textContent=String(item&&item.provider||item&&item.authority||item&&item.country||'Uploaded document');
       copy.appendChild(title);copy.appendChild(detail);documentCell.appendChild(icon);documentCell.appendChild(copy);documentRow.appendChild(documentCell);documentRows.appendChild(documentRow);
       var barRow=document.createElement('article');barRow.className='dashboard-document-bar-row';barRow.dataset.tone=tone;barRow.style.setProperty('--remaining-progress',remainingProgress(result)+'%');
@@ -159,6 +194,7 @@
       var label=document.createElement('span');label.className='dashboard-document-timeline-label';label.textContent=remainingLabel(result);
       remaining.appendChild(track);remaining.appendChild(label);barRow.appendChild(remaining);barRows.appendChild(barRow);
     });
+    updateTimelineSortControls();
   }
   function formatBytes(value){
     var bytes=Math.max(0,Number(value)||0);
