@@ -223,6 +223,12 @@
   document.addEventListener('atsrs-document-files-updated',function(){personalStorageLoadedAt=0;sync();loadPersonalStorage(true);});
   window.addEventListener('atsrs:data-hydrated',function(){setTimeout(sync,0)});
 
+  var dashboardPage=byId('dashboardPage');
+  if(dashboardPage&&typeof MutationObserver==='function'){
+    new MutationObserver(function(){if(dashboardVisible())setTimeout(sync,0)}).observe(dashboardPage,{attributes:true,attributeFilter:['class']});
+    new MutationObserver(function(){if(dashboardVisible())setTimeout(sync,0)}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  }
+
   var oldShow=window.showPage;
   if(typeof oldShow==='function'&&!oldShow.__atsrsExecutiveDashboard){
     window.showPage=function(){var result=oldShow.apply(this,arguments);setTimeout(sync,0);return result};
