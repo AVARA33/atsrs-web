@@ -16,22 +16,25 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=58171/);
-  assert.match(index,/route-feature-loader\.js\?v=58164/);
+  assert.match(index,/route-feature-loader\.js\?v=58165/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58164'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58165'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
-  assert.match(index,/shell-polish\.js\?v=567/);
+  assert.match(index,/shell-polish\.js\?v=568/);
   assert.match(index,/shell-polish\.css\?v=58162/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs',this\);window\.dispatchEvent\(new CustomEvent\('atsrs:jobs-nav'\)\)/);
+  assert.match(index,/id="navJobs"[^>]*>JobSearch<\/button>/);
+  assert.match(shellRuntime,/navJobs:'JobSearch'/);
   assert.match(runtime,/function resetFromSidebar\(\)\{[\s\S]*?page=1;renderPagination\(\)/);
-  assert.match(runtime,/section\.scrollIntoView\(\{block:'start',behavior:'auto'\}\)/);
+  assert.match(runtime,/function scrollJobsToTop\(\)\{window\.scrollTo\(\{top:0,left:0,behavior:'auto'\}\)\}/);
+  assert.doesNotMatch(runtime,/section\.scrollIntoView\(\{block:'start',behavior:'auto'\}\)/);
   assert.match(runtime,/return load\(1\)/);
   assert.match(runtime,/addEventListener\('atsrs:jobs-nav',resetFromSidebar\)/);
   assert.match(runtime,/addEventListener\('atsrs:resume',function\(\)\{load\(page\)\}\)/);

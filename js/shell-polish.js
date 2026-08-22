@@ -29,7 +29,7 @@
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Profile',
-    navJobs:'Jobs',
+    navJobs:'JobSearch',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -44,7 +44,7 @@
     navRefs:'References',
     navCompliance:'Security',
     navProfile:'Profile',
-    navJobs:'Jobs',
+    navJobs:'JobSearch',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -58,7 +58,7 @@
     navCompliance:'Compliance',
     navReports:'Reports',
     navProfile:'Company',
-    navJobs:'Jobs',
+    navJobs:'JobSearch',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
