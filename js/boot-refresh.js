@@ -25,7 +25,7 @@
   function loadV241(){
     lockBuildBadge();
     loadAsset('link',{id:'atsrsNotificationsCss',rel:'stylesheet',href:'css/notifications.css?v=422'});
-    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=586'});
+    loadAsset('script',{id:'atsrsNotificationsJs',src:'js/notifications.js?v=385'});
   }
   function appIsOpen(){
     var app=byId('app');

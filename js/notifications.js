@@ -44,12 +44,11 @@
     var risk=byId('riskList');
     var priorityPanel=risk&&risk.closest('.panel');
     var corporate=mode()==='company';
-    if(priorityPanel)priorityPanel.classList.remove('hidden');
+    if(priorityPanel)priorityPanel.classList.toggle('hidden',corporate);
     var snapshot=byId('dashboardPage')&&byId('dashboardPage').querySelector('.dashboard-snapshot-panel');
     var stats=byId('dashboardPage')&&byId('dashboardPage').querySelector('.stats-grid');
     if(snapshot)snapshot.classList.toggle('hidden',corporate);
-    var activity=byId('dashboardActivityGrid');
-    var anchor=activity||(corporate?stats:priorityPanel);
+    var anchor=corporate?stats:priorityPanel;
     if(!anchor)return;
     var existing=byId('atsrsNotificationPanel');
     if(existing){
@@ -60,7 +59,7 @@
     panel.id='atsrsNotificationPanel';
     panel.className='panel atsrs-notification-panel';
     panel.innerHTML='<div class="atsrs-notification-head"><div class="atsrs-notification-title-row"><span class="pill atsrs-notification-label">EXPIRY NOTIFICATIONS</span><span id="atsrsNotificationCount" class="request-count expiry-request-count is-empty">0 expiries</span></div><div class="atsrs-notification-actions"><button id="atsrsMarkAllRead" type="button" class="secondary">Mark all read</button><button id="atsrsClearNotifications" type="button" class="secondary">Clear all</button></div></div><p class="sub">Server reminders for documents approaching expiry.</p><div id="atsrsNotificationList" class="atsrs-notification-list"><div class="atsrs-notification-empty">Loading notifications...</div></div>';
-    if(activity)activity.prepend(panel);else anchor.insertAdjacentElement('afterend',panel);
+    anchor.insertAdjacentElement('afterend',panel);
     byId('atsrsMarkAllRead').addEventListener('click',markAllRead);
     byId('atsrsClearNotifications').addEventListener('click',dismissAllNotifications);
     syncDashboardActivityLayout(panel,corporate,anchor);
@@ -71,14 +70,6 @@
     var sent=byId('sentRequestsPanel');
     var access=byId('accessRequestsPanel');
     var layout=byId('corporateDashboardActivityGrid');
-    var activity=byId('dashboardActivityGrid');
-    if(dashboard&&activity){
-      if(layout)layout.remove();
-      if(panel.parentElement!==activity)activity.prepend(panel);
-      if(corporate&&sent&&sent.parentElement!==activity)activity.appendChild(sent);
-      if(!corporate&&access&&access.parentElement!==activity)activity.appendChild(access);
-      return;
-    }
     if(corporate&&dashboard&&sent){
       if(!layout){
         layout=document.createElement('div');
