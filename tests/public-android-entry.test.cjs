@@ -8,11 +8,14 @@ const css = fs.readFileSync(path.join(root, 'css', 'public-landing.css'), 'utf8'
 
 assert.match(index, /href="contact\.html">Contact<\/a>[\s\S]*?public-android-entry public-android-entry-desktop[\s\S]*?<\/nav>/);
 assert.match(index, /public-header-actions[\s\S]*?public-android-entry public-android-entry-mobile[\s\S]*?data-public-theme-toggle/);
-assert.equal((index.match(/href="\/download\/android\/" aria-label="Download ATSRS for Android"/g) || []).length, 2);
+assert.equal((index.match(/class="public-android-entry [^"]*is-coming-soon"/g) || []).length, 2);
+assert.equal((index.match(/aria-disabled="true" aria-label="ATSRS for Android coming soon"/g) || []).length, 2);
+assert.doesNotMatch(index, /href="\/download\/android\/"/);
 assert.match(index, /class="ph ph-android-logo"/);
-assert.equal((index.match(/<strong>Android<\/strong><small>Download APK<\/small>/g) || []).length, 2);
+assert.equal((index.match(/<strong>Android<\/strong><small>Coming soon<\/small>/g) || []).length, 2);
 assert.match(css, /\.public-android-entry\{[\s\S]*?var\(--public-accent\)[\s\S]*?var\(--public-surface\)/);
 assert.match(css, /html\[data-theme="dark"\] \.public-android-entry/);
+assert.match(css, /\.public-android-entry\.is-coming-soon\{cursor:default\}/);
 assert.match(css, /\.public-cta-small\{[^}]*flex:0 0 auto[^}]*white-space:nowrap/);
 assert.match(css, /\.public-android-entry-mobile\{display:none\}/);
 assert.match(css, /@media\(max-width:1350px\) and \(min-width:721px\)[\s\S]*?\.public-nav\{display:none\}[\s\S]*?\.public-home-mobile,\.public-android-entry-mobile\{display:inline-flex\}/);

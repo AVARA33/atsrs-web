@@ -93,6 +93,13 @@ main {
 
 .download-button:hover { transform: translateY(-2px); }
 
+.download-button-disabled {
+  cursor: default;
+  opacity: .78;
+}
+
+.download-button-disabled:hover { transform: none; }
+
 .download-button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 36%, transparent);
   outline-offset: 3px;

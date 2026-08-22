@@ -48,10 +48,11 @@ test('Android updater enforces ATSRS HTTPS, checksum and anti-downgrade boundari
   assert.match(read('apps/android/src/atsrs-mobile-runtime.js'), /\^\[0-9A-Za-z\]\[0-9A-Za-z\.\+\-\]\{0,31\}\$/);
 });
 
-test('Public Android entry links to the official release page in both responsive slots', () => {
+test('Public Android entry is a non-interactive coming-soon badge in both responsive slots', () => {
   const html = read('index.html');
-  assert.equal((html.match(/href="\/download\/android\/"/g) || []).length, 2);
-  assert.doesNotMatch(html, /ATSRS for Android — coming soon/);
+  assert.equal((html.match(/class="public-android-entry [^"]*is-coming-soon"/g) || []).length, 2);
+  assert.equal((html.match(/<strong>Android<\/strong><small>Coming soon<\/small>/g) || []).length, 2);
+  assert.doesNotMatch(html, /href="\/download\/android\/"/);
   const headers = read('_headers');
   assert.match(headers, /application\/vnd\.android\.package-archive/);
   assert.match(headers, /max-age=31536000, immutable/);
@@ -67,6 +68,9 @@ test('Android release hero begins directly with its heading and avoids duplicate
   assert.match(page, /<section class="download-hero"[^>]*>\s*<h1 id="downloadTitle">ATSRS for Android<\/h1>/);
   assert.doesNotMatch(page, /class="download-icon"/);
   assert.doesNotMatch(page, />Back to Home<\/a>/);
+  assert.match(page, /class="download-button download-button-disabled" aria-disabled="true">Coming Soon<\/span>/);
+  assert.doesNotMatch(page, /href="[^"]+\.apk/);
+  assert.doesNotMatch(page, /class="release-grid"|class="download-details"|class="checksum"/);
 });
 
 test('Android release page preserves Home navigation and canonical theme surfaces', () => {
