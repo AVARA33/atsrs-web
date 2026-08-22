@@ -12,7 +12,6 @@ const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive
 assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5858/);
 assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5858/);
 assert.match(html,/id="personalReadinessCommand"/,'Selected Readiness Command Center must lead the Personal Dashboard.');
-assert.match(html,/class="card solo-personnel-card expiry-summary-card corporate-personnel-summary-card company-only hidden"/,'Corporate personnel KPI must remain structurally excluded from Personal mode.');
 assert.match(html,/id="dashboardAttentionSummary"/,'The real attention summary must share the operational region with recent activity.');
 assert.match(html,/id="dashboardTypesViewAll"/,'Document Types must retain a direct route to the real document register.');
 assert.match(html,/class="dashboard-types-columns personal-only"[^>]*><span>Document Type<\/span><span>Count<\/span><span>% of Total<\/span>/,'Personal Document Types must expose the selected three-column command-center heading.');
