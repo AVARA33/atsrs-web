@@ -48,7 +48,7 @@ test('QR and email capability cards expose visible status labels', () => {
 test('Dashboard is restored without the capability inventory', () => {
   assert.doesNotMatch(dashboard, /dashboardCapabilities|PLATFORM CAPABILITIES|Your ATSRS tools/);
   assert.match(dashboard, /class="grid stats-grid"/);
-  assert.match(dashboard, /class="panel dashboard-snapshot-panel"/);
+  assert.doesNotMatch(dashboard, /dashboard-snapshot-panel|dashboard-priority-alerts-panel|accessRequestsPanel/);
 });
 
 test('Product Updates keeps the established roadmap card design', () => {

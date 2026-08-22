@@ -36,11 +36,9 @@
           <div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-calendar-x"></i></span><p>Expiring in 1 Week</p></div><div class="stat">0</div></div>
           <div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon"><i class="ph ph-x-circle"></i></span><p>Expired</p></div><div class="stat">1</div></div>
         </div>
-        <div class="panel dashboard-snapshot-panel"><div class="snapshot-card"><span class="pill">PROFILE SHARING</span><div><h2>Managed in Profile</h2><p>Sharing settings are managed in Profile.</p></div></div></div>
-        <div class="panel dashboard-priority-alerts-panel"><h3>Priority alerts</h3><p class="sub">Documents closest to expiry will appear here.</p><div class="risk-list"><div class="risk-item"><b>Safety certificate</b><span>Expiry attention</span></div></div></div>
       </section>
-      <button id="navCertificates" hidden></button><button id="navProfile" hidden></button><button id="navJobs" hidden></button><button id="navPrivacy" hidden></button>
-      <button id="navPersonnel" hidden></button><button id="navCompliance" hidden></button><button id="navReports" hidden></button><button id="navProjects" hidden></button>
+      <button id="navCertificates" class="hidden" hidden></button><button id="navProfile" class="hidden" hidden></button><button id="navJobs" class="hidden" hidden></button><button id="navPrivacy" class="hidden" hidden></button>
+      <button id="navPersonnel" class="hidden" hidden></button><button id="navCompliance" class="hidden" hidden></button><button id="navReports" class="hidden" hidden></button><button id="navProjects" class="hidden" hidden></button>
     </main>
   </div>
   <script>
@@ -50,7 +48,6 @@
     window.useMode=isCompany?'company':'personal';
     localStorage.setItem('atsrs_use_mode',window.useMode);
     if(isCompany)document.querySelector('.corporate-personnel-summary-card').classList.remove('hidden');
-    if(isCompany){document.querySelector('.dashboard-snapshot-panel').classList.add('hidden');document.querySelector('.dashboard-priority-alerts-panel').classList.add('hidden');}
     window.showPage=function(page){window.lastRoute=page;};
     window.getData=function(){return[
       {type:'Medical certificate',expiry:'2027-08-01',uploadedAt:'2026-08-21T08:00:00Z'},

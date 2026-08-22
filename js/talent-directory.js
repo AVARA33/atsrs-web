@@ -896,7 +896,12 @@
     }catch(error){panelMessage(friendlyError(error,'CV could not be opened. Please try again.'),true)}
   }
   function ensureInbox(){
-    var dashboard=byId('dashboardPage'),existing=byId('talentMessagesPanel');if(existing||!dashboard)return existing;
+    var dashboard=byId('dashboardPage'),existing=byId('talentMessagesPanel');
+    if(mode()==='personal'){
+      if(existing)existing.remove();
+      return null;
+    }
+    if(existing||!dashboard)return existing;
     var panel=document.createElement('div');panel.id='talentMessagesPanel';panel.className='panel talent-messages-panel personal-only';
     panel.innerHTML='<div class="talent-messages-head"><div><span class="pill">COMPANY MESSAGES</span><h3>Messages to your Candidate profile <span id="talentUnreadCount" class="request-count">0 new</span></h3></div><div class="talent-mailbox-tools" aria-label="Company message folders"><button type="button" class="secondary is-active" id="talentActiveMessages" aria-pressed="true">Active messages</button><button type="button" class="secondary" id="talentArchivedMessages" aria-pressed="false">Archive</button><button type="button" class="secondary" id="refreshTalentMessages">Refresh</button></div></div><p class="sub talent-messages-explainer">Only messages sent to your ATSRS Candidate profile by signed-in Corporate accounts appear here. Active messages remain here until you archive them. The Archive keeps messages in ATSRS so you can restore or permanently delete them later.</p><div id="talentMessagesList" class="talent-messages-list"><div class="access-empty">No company messages to your Candidate profile yet.</div></div>';
     dashboard.appendChild(panel);

@@ -130,7 +130,13 @@
   function sync(){
     if(!dashboardVisible())return;
     var stats=byId('dashboardPage').querySelector('.stats-grid');if(!stats)return;
-    ensureCurrentCard(stats);ensureExecutiveGrid(stats);renderCurrent();renderActions();renderRecent();
+    ensureCurrentCard(stats);renderCurrent();
+    if(!corporate()){
+      var personalGrid=byId('dashboardExecutiveGrid');
+      if(personalGrid)personalGrid.remove();
+      return;
+    }
+    ensureExecutiveGrid(stats);renderActions();renderRecent();
   }
 
   window.addEventListener('atsrs:corporate-compliance',function(event){corporateDashboard=event&&event.detail||null;sync()});

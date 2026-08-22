@@ -41,6 +41,11 @@
   }
 
   function ensureDashboardPanel(){
+    if(mode()!=='company'){
+      var personalPanel=byId('atsrsNotificationPanel');
+      if(personalPanel)personalPanel.remove();
+      return;
+    }
     var risk=byId('riskList');
     var priorityPanel=risk&&risk.closest('.panel');
     var corporate=mode()==='company';
@@ -48,7 +53,7 @@
     var snapshot=byId('dashboardPage')&&byId('dashboardPage').querySelector('.dashboard-snapshot-panel');
     var stats=byId('dashboardPage')&&byId('dashboardPage').querySelector('.stats-grid');
     if(snapshot)snapshot.classList.toggle('hidden',corporate);
-    var anchor=corporate?stats:priorityPanel;
+    var anchor=stats;
     if(!anchor)return;
     var existing=byId('atsrsNotificationPanel');
     if(existing){

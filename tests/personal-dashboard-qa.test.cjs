@@ -12,8 +12,9 @@ const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
 assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Dashboard<\/h1>/);
-assert.match(index, /id="snapshotTitle">Managed in Profile<\/h2>/);
-assert.match(index, /Sharing settings are managed in Profile &rarr; Privacy &amp; Sharing\./);
+assert.doesNotMatch(index, /id="snapshotTitle"|dashboard-snapshot-panel/);
+assert.doesNotMatch(index, /id="riskList"|dashboard-priority-alerts-panel/);
+assert.doesNotMatch(index, /id="accessRequestsPanel"/);
 assert.doesNotMatch(index, /Ready to share|Sharing status|id="snapShare"|id="snapShareLabel"/);
 assert.doesNotMatch(index, /id="snapValid"|id="snapRisk"/);
 assert.doesNotMatch(index, /id="cvStatusDash"|id="cvStatusDashText"|class="card cv-status-card"/);
@@ -38,7 +39,6 @@ assert.ok(shareContrast>=4.5, `Light sharing help contrast must be >=4.5:1, got 
 assert.match(css, /min-width:44px!important;\s*min-height:44px!important/);
 assert.match(css, /atsrs-personal-dashboard-route \.sidebar \.nav button/);
 assert.match(css, /:focus-visible\{[\s\S]*?outline:3px solid/);
-assert.match(css, /dashboard-snapshot-panel\{[\s\S]*?width:min\(100%,760px\)!important/);
 assert.match(css, /\.atsrs-notification-actions:not\(:has\(button:not\(:disabled\)\)\)\{\s*display:none!important/);
 assert.match(css, /\.sidebar\.v76-mobile-closed \.nav/);
 assert.match(css, /body\.company-mode[\s\S]*?#dashboardPage > \.panel[\s\S]*?padding:18px!important/);
@@ -66,7 +66,6 @@ assert.match(runtime, /days<=60[\s\S]*?counts\.exp60/);
 assert.match(runtime, /days<=90[\s\S]*?counts\.exp90/);
 assert.match(runtime, /child\.setAttribute\('aria-hidden','true'\)/);
 assert.match(runtime, /\^\[✓✔\]\$[\s\S]*setAttribute\('aria-hidden','true'\)/);
-assert.match(runtime, /email-verified download requests/);
 assert.match(runtime, /syncShareCapability/);
 assert.doesNotMatch(runtime, /Ready to share|syncShareReadiness|snapShare['"]?\)|snapShare\.textContent/);
 assert.match(runtime, /wrapAndSync\('showPage'\)/);
@@ -82,7 +81,7 @@ assert.match(runtime, /role',error\?'alert':'status'/);
 assert.match(runtime, /aria-live',error\?'assertive':'polite'/);
 assert.match(runtime, /aria-busy',loading\?'true':'false'/);
 
-for (const state of ['Loading notifications...', 'No expiry notifications yet.', 'No pending requests.', 'No company messages to your Candidate profile yet.', 'Messages could not be loaded.']) {
+for (const state of ['Loading notifications...', 'No expiry notifications yet.', 'No company messages to your Candidate profile yet.', 'Messages could not be loaded.']) {
   assert.ok(
     index.includes(state) ||
     fs.readFileSync(path.join(root, 'js', 'notifications.js'), 'utf8').includes(state) ||
@@ -92,12 +91,14 @@ for (const state of ['Loading notifications...', 'No expiry notifications yet.',
 }
 
 assert.match(notifications, /rows\.length\?rows\.map\(notificationMarkup\)/, 'Populated notification state must retain its real renderer');
+assert.match(notifications, /if\(mode\(\)!=='company'\)[\s\S]*?personalPanel\.remove\(\)/, 'Personal Dashboard must not mount expiry notifications.');
 assert.match(notifications, /Notifications could not be loaded from the server\./, 'Notification error state must remain distinct from empty');
 assert.match(talentDirectory, /id="refreshTalentMessages">Refresh<\/button>/, 'Messages keep their real retry action');
 assert.match(talentDirectory, /Messages could not be loaded\./, 'Messages error state must remain distinct from empty');
 assert.match(talentDirectory, /Only messages sent to your ATSRS Candidate profile by signed-in Corporate accounts appear here\./);
 assert.match(talentDirectory, /Active messages remain here until you archive them\./);
 assert.match(talentDirectory, /The Archive keeps messages in ATSRS so you can restore or permanently delete them later\./);
+assert.match(talentDirectory, /if\(mode\(\)==='personal'\)[\s\S]*?existing\.remove\(\)[\s\S]*?return null/, 'Personal Dashboard must not mount the company-message inbox.');
 assert.match(talentDirectory, /aria-pressed/);
 for (const state of ['loading', 'error', 'retry', 'populated']) {
   assert.ok(harness.includes(`state === '${state}'`) || (state === 'retry' && harness.includes("state === 'error' || state === 'retry'")), `Harness must inject ${state} deterministically`);

@@ -10,11 +10,12 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5854/);
-assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5854/);
+assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5855/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
 assert.match(js,/atsrs:corporate-compliance/,'Corporate updates must follow the existing reporting event.');
+assert.match(js,/if\(!corporate\(\)\)[\s\S]*?personalGrid\.remove\(\)[\s\S]*?return/,'Personal Dashboard must keep the area below the KPI cards empty.');
 assert.match(js,/uploadedAt/,'Personal recent activity must use real upload timestamps.');
 assert.match(js,/uploaded_at/,'Corporate recent activity must use real upload timestamps.');
 assert.doesNotMatch(js,/Math\.random|faker|mock data|12\.4|20 GB/i,'Dashboard must not fabricate production data.');
