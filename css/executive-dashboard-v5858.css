@@ -344,6 +344,10 @@ body.personal-mode #dashboardPage .dashboard-personal-action{
   transition:border-color .16s ease,background-color .16s ease,color .16s ease,box-shadow .16s ease,transform .12s ease!important;
 }
 
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) > .main #dashboardPage .dashboard-personal-action:not(:hover):not(:focus-visible){
+  background:var(--atsrs-field-surface,#0b0d0d)!important;
+}
+
 html[data-theme] body.personal-mode #app.app:not(.hidden) > .main #dashboardPage .dashboard-personal-action:is(:hover,:focus-visible){
   outline:0!important;
   border-top-color:var(--atsrs-field-line)!important;

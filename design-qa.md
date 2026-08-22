@@ -795,3 +795,15 @@ final result: passed
 - Browser console errors: 0.
 
 Final result: passed.
+
+# Quick Actions neutral dark surface — Design QA
+
+- Scope: unselected Personal Dashboard Quick Action controls in dark mode only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-4cc9ea50-4f07-4434-907f-7273214a0a21.png`.
+- Combined comparison: `tests/artifacts/quick-actions-neutral-dark-comparison.jpg`.
+- Dark implementation: `tests/artifacts/quick-actions-neutral-dark.png`.
+- Light regression evidence: `tests/artifacts/quick-actions-light-unchanged.png`.
+- Unselected dark controls now use the neutral ATSRS black field surface; icon tones, hover/focus edge treatment, layout and light mode remain unchanged.
+- Browser console errors: 0.
+
+Final result: passed.

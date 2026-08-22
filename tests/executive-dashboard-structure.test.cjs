@@ -10,7 +10,7 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5872/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5873/);
 assert.doesNotMatch(html,/id="soloBadge"|DOCUMENT OVERVIEW/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*?#dashboardHeading\{[\s\S]*?color:var\(--atsrs-ref-dark-text,#f8fafc\)!important/);
 assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5870/);
@@ -67,6 +67,7 @@ assert.match(css,/dashboard-storage-chart\{[\s\S]*?--dashboard-storage-accent:va
 assert.match(css,/html\[data-theme="light"\][\s\S]*?--dashboard-storage-accent:var\(--atsrs-ref-blue/,'Light storage chart must reuse the ATSRS blue token.');
 assert.match(css,/dashboard-personal-action:is\(:hover,:focus-visible\)[\s\S]*?border-top-color:var\(--atsrs-field-line\)[\s\S]*?border-bottom-color:var\(--atsrs-field-line\)[\s\S]*?border-left-color:var\(--atsrs-field-accent\)[\s\S]*?border-right-color:var\(--atsrs-field-accent\)/,'Quick Action hover and keyboard focus must reuse the shared ATSRS field edge geometry in both themes.');
 assert.match(css,/dashboard-personal-action:is\(:hover,:focus-visible\)[\s\S]*?box-shadow:-3px 0 0 var\(--atsrs-field-accent-ring\),3px 0 0 var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)/,'Quick Actions must use the same left/right edge glow as the Jobs Search field reference.');
+assert.match(css,/data-theme="dark"[\s\S]*?dashboard-personal-action:not\(:hover\):not\(:focus-visible\)[\s\S]*?background:var\(--atsrs-field-surface,#0b0d0d\)!important/,'Unselected dark-mode Quick Actions must use the neutral black field surface instead of the legacy blue fill.');
 assert.doesNotMatch(css,/dashboard-personal-action:hover\{[\s\S]*?(?:atsrs-brand-green[^}]*9%|atsrs-shell-accent-soft|0 8px 20px rgba\((?:34,197,94|22,123,211))/,'Legacy full-fill Quick Action hover colors and uniform shadow must be removed before applying the shared edge treatment.');
 assert.match(css,/#dashboardManageStorage\{[\s\S]*?display:inline-flex!important[\s\S]*?text-decoration:none!important/,'Manage Storage must retain a compact button treatment while using native link navigation.');
 assert.match(css,/var\(--atsrs-workspace-surface/,'Dark mode must reuse ATSRS workspace tokens.');
