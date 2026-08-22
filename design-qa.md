@@ -1,3 +1,50 @@
+# Personal Readiness Command Center — Design QA
+
+- Selected visual reference: `C:\Users\user\.codex\generated_images\01a0208f-c1e3-7330-9a16-10b271a5b317\exec-ef826e49-46f2-4c72-b437-7f368df60767.png`.
+- Dark desktop implementation: `C:\Users\user\Documents\GitHub\output\dashboard-readiness-command-center-20260822\implementation-dark-desktop.png`.
+- Light desktop implementation: `C:\Users\user\Documents\GitHub\output\dashboard-readiness-command-center-20260822\implementation-light-desktop.png`.
+- Responsive evidence: `C:\Users\user\Documents\GitHub\output\dashboard-readiness-command-center-20260822\implementation-dark-mobile.png` and `implementation-light-mobile.png`.
+- Same-input comparison: `C:\Users\user\Documents\GitHub\output\dashboard-readiness-command-center-20260822\reference-vs-implementation.png`.
+- Desktop viewport: 1440 × 1024 CSS px. Mobile viewport: 390 × 844 CSS px.
+- State: Personal Dashboard with real-data-shaped document/profile fixtures; dark and light themes.
+
+## Full-view and focused comparison evidence
+
+The selected command-center hierarchy is reproduced: personalized greeting and current date, readiness hero with one primary review action, eight compact live KPI cards, and a balanced Document Types / Attention Required + Recent Activity region. The implementation deliberately replaces the reference's sample totals with values derived from the existing ATSRS Personal profile and document register. No circular chart, fake storage quota, sample person or fabricated activity was introduced.
+
+## Required fidelity surfaces
+
+- Typography: existing ATSRS heading, body and compact uppercase-label system is reused.
+- Layout rhythm: eight equal desktop KPI cards, two-column operational region, stacked mobile hero/operations and two-column mobile KPIs. Horizontal overflow is 0.
+- Theme treatment: light mode uses existing ATSRS blue tokens and dark mode uses existing ATSRS green tokens; panels, dividers and danger states use existing surface/border/status variables.
+- Icons/assets: existing Phosphor shield, document, calendar, status and profile icons are reused. No placeholder, handcrafted SVG or CSS illustration was introduced.
+- Content: greeting, readiness, percentages, expiry windows, attention item, categories and recent activity are calculated from the existing Personal workspace data.
+
+## Findings and fixes
+
+- Initial P1: a later KPI-card flex selector overrode the account-mode visibility rule and exposed the Corporate `Total Personnel` card in Personal mode.
+- Fix: the Personal KPI renderer now excludes `.company-only`; eight of eight intended Personal cards remain visible.
+- Initial P2: the operational region inherited a flat transparent treatment and omitted the selected reference's three-column Document Types header.
+- Fix: both operational panels now use existing ATSRS panel tokens, and Document Types exposes aligned `Document Type`, `Count` and `% of Total` columns.
+- Responsive P2: a higher-specificity legacy rule collapsed mobile KPIs to one column.
+- Fix: the command-center mobile rule now wins at the dashboard scope and produces two 149 px columns at 390 px without overflow.
+- No actionable P0, P1 or P2 finding remains.
+
+## Browser, interaction and regression evidence
+
+- Dark/light desktop and dark/light 390 px states rendered.
+- Desktop: 8 visible KPI cards; two equal operational columns; overflow 0.
+- Mobile: two KPI columns, one-column readiness and operational panels; overflow 0.
+- Dashboard action controls are wired by the focused structural regression contract to the existing Personal Documents route.
+- Browser console errors/warnings: 0.
+- Focused dashboard, accessibility, expiry-surface and Corporate-routing regression tests: passed.
+- Cloudflare Pages build: passed, 147 files.
+- `git diff --check`: passed.
+
+final result: passed
+
+---
+
 # Personal Dashboard Document Types replacement — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-02d4c6c8-6097-459d-9891-00d4f179cc02.png`.
