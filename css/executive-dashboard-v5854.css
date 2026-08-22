@@ -1,4 +1,16 @@
 /* ATSRS executive dashboard hierarchy. Layout only; ATSRS remains the visual source of truth. */
+#app.app:not(.hidden) > .main:has(> #dashboardPage:not(.hidden)){
+  width:100%!important;
+  max-width:none!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main > #dashboardPage#dashboardPage{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
 body:where(.personal-mode,.company-mode) #dashboardPage .solo-hero.panel{
   display:grid!important;
   grid-template-columns:minmax(0,1fr) minmax(240px,.42fr);
