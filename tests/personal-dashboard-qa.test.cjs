@@ -12,6 +12,8 @@ const talentDirectory = fs.readFileSync(path.join(root, 'js', 'talent-directory.
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'personal-workspace-surface-harness.html'), 'utf8');
 
 assert.match(index, /<section id="dashboardPage" class="hidden">\s*<h1 id="dashboardHeading">Dashboard<\/h1>/);
+assert.doesNotMatch(index, /id="soloBadge"|DOCUMENT OVERVIEW/);
+assert.match(css, /body\.personal-mode #dashboardPage #dashboardHeading/);
 assert.doesNotMatch(index, /id="snapshotTitle"|dashboard-snapshot-panel/);
 assert.doesNotMatch(index, /id="riskList"|dashboard-priority-alerts-panel/);
 assert.doesNotMatch(index, /id="accessRequestsPanel"/);

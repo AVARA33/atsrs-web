@@ -1,4 +1,9 @@
 /* ATSRS executive dashboard hierarchy. Layout only; all visual values use ATSRS tokens. */
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) > .main #dashboardPage #dashboardHeading{
+  color:var(--atsrs-ref-dark-text,#f8fafc)!important;
+  -webkit-text-fill-color:var(--atsrs-ref-dark-text,#f8fafc)!important;
+}
+
 body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
   display:grid;
   grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);
