@@ -62,10 +62,11 @@ test('Cloudflare production build includes the Android release page and APK', ()
   assert.match(buildScript, /const publicDirectories = \[[^\]]*"download"[^\]]*"downloads"/);
 });
 
-test('Android release hero uses the invariant official ATSRS mark', () => {
+test('Android release hero begins directly with its heading and avoids duplicate branding', () => {
   const page = read('download/android/index.html');
-  assert.match(page, /class="download-icon" src="\/assets\/branding\/atsrs-favicon-green-v576\.png" alt="ATSRS"/);
-  assert.doesNotMatch(page, /class="download-icon"[^>]*>A<\/div>/);
+  assert.match(page, /<section class="download-hero"[^>]*>\s*<h1 id="downloadTitle">ATSRS for Android<\/h1>/);
+  assert.doesNotMatch(page, /class="download-icon"/);
+  assert.doesNotMatch(page, />Back to Home<\/a>/);
 });
 
 test('Android release page preserves Home navigation and canonical theme surfaces', () => {
@@ -73,13 +74,16 @@ test('Android release page preserves Home navigation and canonical theme surface
   const css = read('css/android-download.css');
   const script = read('js/android-download.js');
   assert.match(page, /class="public-header"/);
-  assert.match(page, /href="\/\?view=home#top"[^>]*>.*Back to Home/s);
+  assert.match(page, /class="public-wordmark atsrs-home-lockup" href="\/\?view=home#top"/);
   assert.match(page, /href="\/\?view=home#platform">Platform<\/a>/);
   assert.match(page, /href="\/\?view=login">Log in<\/a>/);
   assert.match(page, /href="\/\?view=signup">Create Free Account<\/a>/);
-  assert.match(css, /--bg:#fff/);
-  assert.match(css, /html\[data-theme="dark"\][^{]*\{[^}]*--bg:#000/);
-  assert.match(css, /body\{[^}]*background:var\(--bg\)/);
+  assert.match(page, /theme-palette-v508\.css\?v=5848/);
+  assert.match(css, /--bg:\s*#f6f8fb/);
+  assert.match(css, /html\[data-theme="dark"\][^{]*\{[^}]*--bg:\s*#050606/);
+  assert.match(css, /body\s*\{[^}]*background:\s*var\(--bg\)\s*!important/);
+  assert.match(css, /\.android-public-nav-shell \.public-header\s*\{[^}]*background:\s*rgba\(255, 255, 255, \.97\)\s*!important/);
+  assert.match(css, /html\[data-theme="dark"\] \.android-public-nav-shell \.public-header\s*\{[^}]*background:\s*rgba\(5, 6, 6, \.96\)\s*!important/);
   assert.match(script, /localStorage\.setItem\("atsrs_theme",theme\)/);
 });
 
