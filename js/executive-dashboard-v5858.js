@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5858';
+  window.__atsrsExecutiveDashboardVersion='5859';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -54,12 +54,17 @@
     button.addEventListener('click',handler);container.appendChild(button);
   }
   function openDocumentMethod(method){
+    var manualPanel=byId('certManualPanel');
+    if(method&&manualPanel)manualPanel.dataset.keepOpen='quick-action';
     route('certificates','navCertificates');
     if(!method)return;
     setTimeout(function(){
       var id=method==='scan'?'certScanModeBtn':method==='qr'?'certQrModeBtn':'certManualModeBtn';
       var button=byId(id);if(button)button.click();
-    },100);
+    },220);
+    setTimeout(function(){
+      if(manualPanel&&manualPanel.dataset.keepOpen==='quick-action')delete manualPanel.dataset.keepOpen;
+    },500);
   }
   function openProfileSharing(){
     route('profile','navProfile');
@@ -249,4 +254,3 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',beginInitialSync);else beginInitialSync();
 })();
-

@@ -311,12 +311,17 @@
     });
   }
   function logWriteRejected(error,entry){
-    console.error('ATSRS cloud save was rejected.',{
-      dataKey:entry&&entry.key||error&&error.dataKey||'',
-      code:writeErrorCode(error)||'UNKNOWN',
-      phase:error&&error.phase||'',
-      message:String(error&&error.message||'')
-    });
+    var dataKey=entry&&entry.key||error&&error.dataKey||'';
+    var code=writeErrorCode(error)||'UNKNOWN';
+    var phase=error&&error.phase||'';
+    var message=String(error&&error.message||'');
+    console.error(
+      'ATSRS cloud save was rejected.'+
+      ' dataKey='+dataKey+
+      ' code='+code+
+      ' phase='+phase+
+      ' message='+message
+    );
   }
   function classifyFailedEntry(entry,error){
     error=attachWriteContext(error,entry,'queue');
