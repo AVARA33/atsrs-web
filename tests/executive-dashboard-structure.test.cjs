@@ -10,7 +10,8 @@ const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5859/);
+assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5860/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5860/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -21,6 +22,13 @@ assert.match(js,/from\('atsrs_files'\)\.select\('size_bytes'\)/,'Storage usage m
 assert.match(js,/MutationObserver[\s\S]*?dashboardVisible\(\)[\s\S]*?sync/,'Dashboard tools must initialize when authenticated routing reveals the page.');
 assert.match(js,/beginInitialSync[\s\S]*?setInterval[\s\S]*?attempts>=40/,'Dashboard initialization must tolerate delayed authenticated rendering.');
 assert.match(js,/manualPanel\.dataset\.keepOpen='quick-action'[\s\S]*?\},220\)[\s\S]*?delete manualPanel\.dataset\.keepOpen/,'Document Quick Actions must survive the Documents route settling pass before opening their requested mode.');
+assert.match(js,/Add Document','ph-file-plus','document'/,'Add Document must use the reference file-add icon and blue tone.');
+assert.match(js,/Scan with AI','ph-magic-wand','ai'/,'Scan with AI must use the reference wand icon and amber tone.');
+assert.match(js,/Scan with QR','ph-qr-code','qr'/,'Scan with QR must use the reference QR icon and purple tone.');
+assert.match(js,/Manual Upload','ph-upload-simple','upload'/,'Manual Upload must use the reference upload icon and green tone.');
+assert.match(js,/Manage Profile','ph-users-three','profile'/,'Manage Profile must use the reference group icon and purple tone.');
+assert.match(js,/Share Link','ph-link','sharing',openProfileSharing/,'The final Quick Action must expose the existing Share Link workflow.');
+assert.doesNotMatch(js,/addPersonalAction\(actions,'Privacy & Sharing'/,'The legacy Privacy & Sharing Quick Action label must be removed.');
 assert.match(js,/uploadedAt/,'Personal recent activity must use real upload timestamps.');
 assert.match(js,/uploaded_at/,'Corporate recent activity must use real upload timestamps.');
 assert.doesNotMatch(js,/Math\.random|faker|mock data|12\.4|20 GB/i,'Dashboard must not fabricate production data.');

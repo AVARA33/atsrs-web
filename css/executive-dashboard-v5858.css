@@ -78,8 +78,34 @@ body.personal-mode #dashboardPage .dashboard-personal-action{
 }
 
 body.personal-mode #dashboardPage .dashboard-personal-action i{
-  color:var(--accent);
-  font-size:22px;
+  --dashboard-action-color:var(--atsrs-ref-blue,#167bd3);
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  border:1px solid color-mix(in srgb,var(--dashboard-action-color) 18%,transparent);
+  border-radius:10px;
+  background:color-mix(in srgb,var(--dashboard-action-color) 10%,var(--atsrs-workspace-surface,var(--atsrs-panel)));
+  color:var(--dashboard-action-color);
+  font-size:20px;
+  line-height:1;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action[data-tone="ai"] i{
+  --dashboard-action-color:#f59e0b;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action[data-tone="qr"] i,
+body.personal-mode #dashboardPage .dashboard-personal-action[data-tone="profile"] i{
+  --dashboard-action-color:#8b5cf6;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action[data-tone="upload"] i{
+  --dashboard-action-color:#22a06b;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action[data-tone="sharing"] i{
+  --dashboard-action-color:#e11d48;
 }
 
 body.personal-mode #dashboardPage .dashboard-personal-action span{
@@ -303,4 +329,3 @@ body.company-mode #dashboardPage .stats-grid{
     grid-column:span 2;
   }
 }
-

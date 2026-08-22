@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5859';
+  window.__atsrsExecutiveDashboardVersion='5860';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -47,9 +47,10 @@
     button.addEventListener('click',function(){route(page,navId)});
     container.appendChild(button);
   }
-  function addPersonalAction(container,label,icon,handler){
+  function addPersonalAction(container,label,icon,tone,handler){
     var button=document.createElement('button');
     button.type='button';button.className='secondary dashboard-personal-action';
+    button.dataset.tone=tone;
     button.innerHTML='<i class="ph '+icon+'" aria-hidden="true"></i><span>'+label+'</span>';
     button.addEventListener('click',handler);container.appendChild(button);
   }
@@ -80,12 +81,12 @@
     storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><button id="dashboardManageStorage" type="button" class="secondary">Open Documents</button></div><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><progress id="dashboardStorageProgress" max="100" value="0" aria-label="Personal storage used">0%</progress>';
     grid.appendChild(quick);grid.appendChild(storage);stats.insertAdjacentElement('afterend',grid);
     var actions=byId('dashboardPersonalActions');
-    addPersonalAction(actions,'Add Document','ph-plus-circle',function(){openDocumentMethod('');});
-    addPersonalAction(actions,'Scan with AI','ph-sparkle',function(){openDocumentMethod('scan');});
-    addPersonalAction(actions,'Scan with QR','ph-qr-code',function(){openDocumentMethod('qr');});
-    addPersonalAction(actions,'Manual Upload','ph-upload-simple',function(){openDocumentMethod('manual');});
-    addPersonalAction(actions,'Manage Profile','ph-user-circle',function(){route('profile','navProfile');});
-    addPersonalAction(actions,'Privacy & Sharing','ph-shield-check',openProfileSharing);
+    addPersonalAction(actions,'Add Document','ph-file-plus','document',function(){openDocumentMethod('');});
+    addPersonalAction(actions,'Scan with AI','ph-magic-wand','ai',function(){openDocumentMethod('scan');});
+    addPersonalAction(actions,'Scan with QR','ph-qr-code','qr',function(){openDocumentMethod('qr');});
+    addPersonalAction(actions,'Manual Upload','ph-upload-simple','upload',function(){openDocumentMethod('manual');});
+    addPersonalAction(actions,'Manage Profile','ph-users-three','profile',function(){route('profile','navProfile');});
+    addPersonalAction(actions,'Share Link','ph-link','sharing',openProfileSharing);
     byId('dashboardManageStorage').addEventListener('click',function(){openDocumentMethod('');});
     return grid;
   }
