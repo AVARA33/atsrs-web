@@ -42,10 +42,11 @@
     </main>
   </div>
   <script>
-    const params=new URLSearchParams(location.search),isCompany=params.get('mode')==='company';
+    const params=new URLSearchParams(location.search),isCompany=params.get('mode')==='company',storageDelay=Math.max(0,Number(params.get('storageDelay'))||0);
     document.documentElement.dataset.theme=params.get('theme')==='light'?'light':'dark';
     document.body.className=isCompany?'company-mode':'personal-mode';
     window.useMode=isCompany?'company':'personal';
+    window.currentUser={id:'qa-personal-user'};
     localStorage.setItem('atsrs_use_mode',window.useMode);
     if(isCompany)document.querySelector('.corporate-personnel-summary-card').classList.remove('hidden');
     window.showPage=function(page){window.lastRoute=page;};
@@ -63,8 +64,8 @@
     ]};
     window.supabaseClient={
       auth:{getUser:async function(){return{data:{user:{id:'qa-personal-user'}}};}},
-      from:function(){var query={select:function(){return query;},eq:function(){return query;},then:function(resolve){return Promise.resolve({data:[{size_bytes:3145728},{size_bytes:1572864}],error:null}).then(resolve);}};return query;},
-      rpc:async function(){return{data:[{plan_name:params.get('plan')==='titan'?'Titan':'Bronze',storage_bytes_limit:params.get('plan')==='titan'?21474836480:1073741824}],error:null};}
+      from:function(){var query={select:function(){return query;},eq:function(){return query;},then:function(resolve){return new Promise(function(done){setTimeout(function(){done({data:[{size_bytes:3145728},{size_bytes:1572864}],error:null});},storageDelay);}).then(resolve);}};return query;},
+      rpc:async function(){if(storageDelay)await new Promise(function(done){setTimeout(done,storageDelay);});return{data:[{plan_name:params.get('plan')==='titan'?'Titan':'Bronze',storage_bytes_limit:params.get('plan')==='titan'?21474836480:1073741824}],error:null};}
     };
     window.atsrsCorporateReporting={getCompliance:function(){return{
       summary:{current:2},rows:[{name:'Candidate',surname:'One',documents:[

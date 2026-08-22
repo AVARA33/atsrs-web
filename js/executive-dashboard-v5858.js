@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5868';
+  window.__atsrsExecutiveDashboardVersion='5870';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -16,6 +16,18 @@
     catch(error){return 'personal'}
   }
   function corporate(){return mode()==='company'||mode()==='corporate'}
+  function personalStorageSnapshotKey(userId){return userId?'atsrs_dashboard_storage_'+userId:''}
+  function readPersonalStorageSnapshot(userId){
+    var id=String(userId||(window.currentUser&&window.currentUser.id)||'');if(!id)return null;
+    try{
+      var value=JSON.parse(localStorage.getItem(personalStorageSnapshotKey(id))||'null');
+      return value&&value.userId===id?value:null;
+    }catch(error){return null}
+  }
+  function writePersonalStorageSnapshot(userId,value){
+    var id=String(userId||'');if(!id||!value)return;
+    try{localStorage.setItem(personalStorageSnapshotKey(id),JSON.stringify(Object.assign({userId:id,updatedAt:Date.now()},value)))}catch(error){}
+  }
   function dashboardVisible(){var page=byId('dashboardPage');return Boolean(page&&!page.classList.contains('hidden'))}
   function documents(){
     try{return typeof window.getData==='function'?(window.getData('certs')||[]):[]}
@@ -80,7 +92,7 @@
     var quick=document.createElement('section');quick.className='panel dashboard-personal-tool-card dashboard-personal-actions-card';quick.setAttribute('aria-labelledby','dashboardPersonalActionsTitle');
     quick.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardPersonalActionsTitle">Quick Actions</h2><p class="sub">Frequently used Personal tools and shortcuts.</p></div></div><div id="dashboardPersonalActions" class="dashboard-personal-actions"></div>';
     var storage=document.createElement('section');storage.className='panel dashboard-personal-tool-card dashboard-storage-card';storage.setAttribute('aria-labelledby','dashboardStorageTitle');
-    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><a id="dashboardManageStorage" href="/pricing.html#comparison" class="secondary" role="button">Manage Storage</a></div><div class="dashboard-storage-visual"><div class="dashboard-storage-chart" role="img" aria-label="Personal storage usage"><canvas id="dashboardStorageChart" width="112" height="112" aria-hidden="true"></canvas><strong id="dashboardStoragePercent">0%</strong></div><div class="dashboard-storage-copy"><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><p>Secure server encrypted archival storage is active.</p></div></div>';
+    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Personal plan · secure server storage</p></div><a id="dashboardManageStorage" href="/pricing.html#comparison" class="secondary" role="button">Manage Storage</a></div><div class="dashboard-storage-visual"><div class="dashboard-storage-chart" role="img" aria-label="Personal storage usage"><canvas id="dashboardStorageChart" width="112" height="112" aria-hidden="true"></canvas><strong id="dashboardStoragePercent">—</strong></div><div class="dashboard-storage-copy"><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">—</strong><span id="dashboardStorageDetail" aria-live="polite"> stored</span></div><p>Secure server encrypted archival storage is active.</p></div></div>';
     grid.appendChild(quick);grid.appendChild(storage);stats.insertAdjacentElement('afterend',grid);
     var actions=byId('dashboardPersonalActions');
     addPersonalAction(actions,'Add Document','ph-file-plus','document',function(){openDocumentMethod('');});
@@ -89,6 +101,8 @@
     addPersonalAction(actions,'Manual Upload','ph-upload-simple','upload',function(){openDocumentMethod('manual');});
     addPersonalAction(actions,'Manage Profile','ph-users-three','profile',function(){route('profile','navProfile');});
     addPersonalAction(actions,'Share Link','ph-link','sharing',openProfileSharing);
+    var cachedStorage=readPersonalStorageSnapshot();
+    if(cachedStorage)applyPersonalStorageSnapshot(cachedStorage);else drawStorageChart(0,'—');
     return grid;
   }
   function remainingStatus(expiry){
@@ -224,20 +238,24 @@
     wrap.setAttribute('aria-label',label+' of Personal storage used');
   }
   function redrawStorageChart(){drawStorageChart(personalStorageChartState.percent,personalStorageChartState.label)}
-  function storageMessage(message,error){
+  function applyPersonalStorageSnapshot(snapshot){
+    if(!snapshot)return;
     var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan');
-    if(used)used.textContent=message;if(detail)detail.textContent='';if(plan)plan.textContent=error?'Storage information is temporarily unavailable.':'Checking your Personal storage...';
-    drawStorageChart(0,error?'—':'0%');
+    if(used)used.textContent=String(snapshot.usedText||'—');
+    if(detail)detail.textContent=String(snapshot.detailText||' stored');
+    if(plan)plan.textContent=String(snapshot.planText||'Personal plan · secure server storage');
+    drawStorageChart(Number(snapshot.percentValue)||0,String(snapshot.percentLabel||'—'));
   }
   async function loadPersonalStorage(force){
     if(corporate()||!byId('dashboardStorageUsed'))return;
     if(personalStorageLoading||(!force&&Date.now()-personalStorageLoadedAt<30000))return;
     var c=window.supabaseClient;
-    if(!c||!c.auth){storageMessage('Storage unavailable',true);return;}
-    personalStorageLoading=true;storageMessage('Loading...',false);
+    if(!c||!c.auth)return;
+    personalStorageLoading=true;
     try{
       var auth=await c.auth.getUser(),activeUser=auth&&auth.data&&auth.data.user;
       if(!activeUser)throw new Error('No authenticated Personal account.');
+      var cached=readPersonalStorageSnapshot(activeUser.id);if(cached)applyPersonalStorageSnapshot(cached);
       var results=await Promise.all([
         c.from('atsrs_files').select('size_bytes').eq('user_id',activeUser.id).eq('account_type','personal'),
         c.rpc('atsrs_my_personal_entitlements')
@@ -247,13 +265,16 @@
       var entitlement=Array.isArray(results[1].data)?results[1].data[0]:results[1].data||{};
       var limitBytes=Number(entitlement&&entitlement.storage_bytes_limit)||0;
       var percent=storagePercent(usedBytes,limitBytes);
-      var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan');
-      if(used)used.textContent=formatBytes(usedBytes);
-      if(detail)detail.textContent=limitBytes?' of '+formatBytes(limitBytes)+' used':' stored · no fixed storage limit';
-      if(plan)plan.textContent=String(entitlement&&entitlement.plan_name||'Personal')+' plan · secure server storage';
-      drawStorageChart(percent.value,percent.label);
+      var snapshot={
+        usedText:formatBytes(usedBytes),
+        detailText:limitBytes?' of '+formatBytes(limitBytes)+' used':' stored · no fixed storage limit',
+        planText:String(entitlement&&entitlement.plan_name||'Personal')+' plan · secure server storage',
+        percentValue:percent.value,
+        percentLabel:percent.label
+      };
+      applyPersonalStorageSnapshot(snapshot);writePersonalStorageSnapshot(activeUser.id,snapshot);
       personalStorageLoadedAt=Date.now();
-    }catch(error){console.warn('ATSRS Personal storage usage could not be loaded',error);storageMessage('Storage unavailable',true);}
+    }catch(error){console.warn('ATSRS Personal storage usage could not be loaded',error);}
     finally{personalStorageLoading=false;}
   }
   function ensureCurrentCard(stats){

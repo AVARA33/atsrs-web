@@ -11,7 +11,7 @@ const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive
 
 assert.match(html,/css\/executive-dashboard-v5858\.css/);
 assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5868/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5868/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5870/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -41,6 +41,9 @@ assert.match(js,/Manual Upload','ph-upload-simple','upload'/,'Manual Upload must
 assert.match(js,/Manage Profile','ph-users-three','profile'/,'Manage Profile must use the reference group icon and purple tone.');
 assert.match(js,/Share Link','ph-link','sharing',openProfileSharing/,'The final Quick Action must expose the existing Share Link workflow.');
 assert.match(js,/href="\/pricing\.html#comparison"[\s\S]*?>Manage Storage<\/a>/,'Manage Storage must expose a native link to the Personal plan comparison page.');
+assert.doesNotMatch(js,/Checking your Personal storage|Loading\.\.\.|storageMessage\(/,'Storage refresh must not replace the card with a visible loading or error state.');
+assert.match(js,/readPersonalStorageSnapshot[\s\S]*?applyPersonalStorageSnapshot/,'Storage must restore the last authenticated snapshot before its background refresh completes.');
+assert.match(js,/applyPersonalStorageSnapshot\(snapshot\);writePersonalStorageSnapshot\(activeUser\.id,snapshot\)/,'Fresh storage totals must update the card and its per-user snapshot together.');
 assert.doesNotMatch(js,/addPersonalAction\(actions,'Privacy & Sharing'/,'The legacy Privacy & Sharing Quick Action label must be removed.');
 assert.match(js,/uploadedAt/,'Personal recent activity must use real upload timestamps.');
 assert.match(js,/uploaded_at/,'Corporate recent activity must use real upload timestamps.');

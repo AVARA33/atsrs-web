@@ -41,6 +41,45 @@ final result: passed
 
 ---
 
+# Personal Dashboard silent Storage refresh — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-2da21cbf-2bf4-4153-ad40-16f5a01be652.png` (3439 × 1368 px).
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\output\dashboard-storage-background-refresh-qa\implementation-dark-refresh.png` (1264 × 712 px at a 1264 × 712 CSS viewport and 1× density).
+- Combined comparison: `C:\Users\user\Documents\GitHub\output\dashboard-storage-background-refresh-qa\comparison.png`.
+- State: Personal Dashboard, dark mode, authenticated storage snapshot visible while a deliberately delayed 2200 ms refresh runs.
+
+## Full-view and focused comparison evidence
+
+The source and implementation preserve the same dashboard hierarchy, Storage Usage card geometry, circular percentage chart, plan line, used/limit copy and action placement. The implementation uses the existing responsive layout at the narrower QA viewport. The focused storage state remains populated throughout the delayed request; no `Checking`, `Loading`, or `Storage unavailable` copy appears.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS headings, plan copy, storage amount and percentage typography are unchanged.
+- Spacing and layout rhythm: no CSS or card dimensions changed; the same responsive grid and storage-card geometry remain active.
+- Colors and visual tokens: no colors, borders, chart tokens or theme styles changed.
+- Image quality and asset fidelity: no image, logo or icon asset changed.
+- Copy and content: normal plan/storage copy remains visible; only transient loading/error copy was removed from the refresh path.
+
+## Findings and comparison history
+
+- Earlier P2: refresh replaced stable values with visible loading/checking text and reset the chart, causing avoidable content flicker.
+- Fix: restore the last successful snapshot scoped to the authenticated user, refresh Supabase values in the background, and update the card only after a successful response.
+- Post-fix evidence: before, during and after the delayed request the card read `Titan plan · secure server storage`, `4.5 MB of 20 GB used`, and `<0.1%`; visible loading-state matches were zero.
+- Failed background reads preserve the last visible values and only emit the existing diagnostic warning.
+- No actionable P0, P1 or P2 finding remains.
+
+## Primary interactions and console
+
+- Delayed background refresh: passed.
+- Per-user cache restoration: passed.
+- Fresh authenticated totals replacing the snapshot after success: passed.
+- Browser console errors/warnings: 0.
+- Page-level horizontal overflow: 0 in the verified implementation.
+
+final result: passed
+
+---
+
 # ATSRS Executive Dashboard Structure — Design QA (V5854)
 
 ## Evidence
