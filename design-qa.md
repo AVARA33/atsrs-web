@@ -763,3 +763,25 @@ final result: passed
 - Final render shows a stable single-line heading, matching card heights, and one-row action controls.
 
 final result: passed
+
+# Dashboard Quick Action edge hover — Design QA
+
+- Scope: Personal Dashboard Quick Action cards only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-ff042b14-54e1-4106-a765-ff70db7f3ee8.png`.
+- Combined source/dark/light comparison: `tests/artifacts/quick-action-edge-hover-comparison.png`.
+- Result: PASS.
+
+## Visual evidence
+
+- The previous full-card green/blue tint, uniform highlighted border, text recolor and uniform shadow are removed.
+- Dark mode retains the neutral dark surface and uses green left/right edge emphasis with subdued top/bottom borders.
+- Light mode retains the white surface and uses blue left/right edge emphasis with subdued top/bottom borders.
+- Existing per-action icon colors, dimensions, spacing and functionality remain unchanged.
+- Hover and `:focus-visible` share the same edge treatment without a duplicate outline.
+- Browser console errors: 0.
+
+## Computed-style evidence
+
+- Dark: left/right `rgb(34, 197, 94)`; top/bottom `rgb(42, 47, 45)`; surface `rgb(11, 13, 13)`; side glow `rgba(34, 197, 94, 0.16)`.
+- Light: left/right `rgb(37, 99, 235)`; top/bottom `rgb(174, 189, 202)`; surface `rgb(255, 255, 255)`; side glow `rgba(37, 99, 235, 0.14)`.
+
