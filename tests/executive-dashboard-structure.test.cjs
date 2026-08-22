@@ -4,13 +4,13 @@ const path=require('node:path');
 
 const root=path.resolve(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-const js=fs.readFileSync(path.join(root,'js/executive-dashboard-v5854.js'),'utf8');
-const css=fs.readFileSync(path.join(root,'css/executive-dashboard-v5854.css'),'utf8');
+const js=fs.readFileSync(path.join(root,'js/executive-dashboard-v5858.js'),'utf8');
+const css=fs.readFileSync(path.join(root,'css/executive-dashboard-v5858.css'),'utf8');
 const harness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-harness.html'),'utf8');
 const responsiveHarness=fs.readFileSync(path.join(root,'tests/fixtures/executive-dashboard-responsive-frame.html'),'utf8');
 
-assert.match(html,/css\/executive-dashboard-v5854\.css\?v=5858/);
-assert.match(html,/js\/executive-dashboard-v5854\.js\?v=5858/);
+assert.match(html,/css\/executive-dashboard-v5858\.css/);
+assert.match(html,/js\/executive-dashboard-v5858\.js/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');

@@ -1,0 +1,306 @@
+/* ATSRS executive dashboard hierarchy. Layout only; all visual values use ATSRS tokens. */
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
+  display:grid;
+  grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);
+  gap:12px;
+  margin:0 0 16px;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-tools{
+  display:grid;
+  grid-template-columns:minmax(0,3fr) minmax(300px,1fr);
+  gap:12px;
+  margin:0 0 16px;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-tool-card{
+  min-width:0;
+  min-height:178px;
+  margin:0!important;
+  padding:18px!important;
+  border:1px solid var(--atsrs-workspace-line,var(--atsrs-border))!important;
+  border-radius:14px!important;
+  background:var(--atsrs-workspace-surface,var(--atsrs-panel))!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage .dashboard-personal-tool-card{
+  border-color:var(--atsrs-ref-light-line)!important;
+  background:var(--atsrs-ref-light-surface)!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-tool-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-tool-head > div{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  width:auto!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-tool-head h2{
+  margin:0 0 4px;
+  font-size:18px;
+  line-height:1.25;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-tool-head .sub{
+  margin:0!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-actions{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(106px,1fr));
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:2px;
+  scrollbar-width:thin;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action{
+  display:grid!important;
+  place-items:center;
+  align-content:center;
+  gap:8px;
+  width:100%!important;
+  min-width:106px!important;
+  min-height:78px!important;
+  margin:0!important;
+  padding:10px 8px!important;
+  text-align:center!important;
+  white-space:normal!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action i{
+  color:var(--accent);
+  font-size:22px;
+}
+
+body.personal-mode #dashboardPage .dashboard-personal-action span{
+  font-size:11px;
+  line-height:1.25;
+}
+
+body.personal-mode #dashboardPage #dashboardManageStorage{
+  flex:0 0 auto;
+  width:auto!important;
+  max-width:none!important;
+  min-height:36px!important;
+  margin:0!important;
+  padding:7px 10px!important;
+  font-size:11px!important;
+}
+
+body.personal-mode #dashboardPage .dashboard-storage-summary{
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  margin:22px 0 12px;
+}
+
+body.personal-mode #dashboardPage .dashboard-storage-summary strong{
+  font-size:24px;
+  line-height:1;
+}
+
+body.personal-mode #dashboardPage .dashboard-storage-summary span{
+  color:var(--atsrs-muted);
+  font-size:12px;
+}
+
+body.personal-mode #dashboardPage #dashboardStorageProgress{
+  display:block;
+  width:100%;
+  height:9px;
+  overflow:hidden;
+  border:0;
+  border-radius:999px;
+  background:var(--atsrs-workspace-line,var(--atsrs-border));
+  accent-color:var(--accent);
+}
+
+body.personal-mode #dashboardPage #dashboardStorageProgress::-webkit-progress-bar{
+  border-radius:999px;
+  background:var(--atsrs-workspace-line,var(--atsrs-border));
+}
+
+body.personal-mode #dashboardPage #dashboardStorageProgress::-webkit-progress-value{
+  border-radius:999px;
+  background:var(--accent);
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+  min-width:0;
+  min-height:0;
+  margin:0!important;
+  padding:18px!important;
+  border:1px solid var(--atsrs-workspace-line,var(--atsrs-border))!important;
+  border-radius:14px!important;
+  background:var(--atsrs-workspace-surface,var(--atsrs-panel))!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+  border-color:var(--atsrs-ref-light-line)!important;
+  background:var(--atsrs-ref-light-surface)!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel-head h2{
+  margin:8px 0 0;
+  font-size:18px;
+  line-height:1.25;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel > .sub{
+  margin:0 0 14px!important;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions button{
+  width:100%;
+  min-width:0!important;
+  margin:0!important;
+  text-align:left;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-list{
+  display:grid;
+  gap:0;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px 18px;
+  align-items:start;
+  padding:11px 0;
+  border-top:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+  border-top-color:var(--atsrs-ref-light-line);
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item:first-child{
+  padding-top:0;
+  border-top:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy{
+  min-width:0;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy strong,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+  display:block;
+  overflow-wrap:anywhere;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-copy span,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta,
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-empty{
+  color:var(--atsrs-muted);
+  font-size:12px;
+  line-height:1.45;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+  text-align:right;
+  white-space:nowrap;
+}
+
+body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current{
+  --expiry-signal:var(--atsrs-ref-blue);
+  --expiry-signal-soft:var(--public-accent-soft);
+}
+
+html[data-theme="dark"] body:where(.personal-mode,.company-mode) #dashboardPage .expiry-summary-current{
+  --expiry-signal:var(--atsrs-brand-green);
+  --expiry-signal-soft:var(--atsrs-shell-accent-soft);
+}
+
+body.personal-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+}
+
+body.company-mode #dashboardPage .stats-grid{
+  grid-template-columns:repeat(8,minmax(0,1fr))!important;
+}
+
+@media(max-width:1600px){
+  body.personal-mode #dashboardPage .stats-grid,
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:1100px){
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
+    grid-template-columns:1fr;
+  }
+  body.personal-mode #dashboardPage .stats-grid,
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  body.personal-mode #dashboardPage .dashboard-personal-tools{
+    grid-template-columns:minmax(0,2fr) minmax(260px,1fr);
+  }
+}
+
+@media(max-width:800px){
+  body.personal-mode #dashboardPage .dashboard-personal-tools{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:560px){
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-panel{
+    padding:14px!important;
+  }
+  body.personal-mode #dashboardPage .dashboard-personal-tool-card{
+    padding:14px!important;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-quick-actions{
+    grid-template-columns:1fr;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-item{
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-recent-meta{
+    text-align:left;
+    white-space:normal;
+  }
+  body.personal-mode #dashboardPage .stats-grid,
+  body.company-mode #dashboardPage .stats-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body:where(.personal-mode,.company-mode) #dashboardPage .stats-grid > .expiry-summary-current{
+    grid-column:span 2;
+  }
+}
+
