@@ -7,15 +7,37 @@
   <meta name="description" content="Download the official ATSRS Android application directly from atsrs.com.">
   <title>Download ATSRS for Android</title>
   <link rel="icon" href="/assets/branding/atsrs-favicon-blue-v576.png">
-  <link rel="stylesheet" href="/css/android-download.css?v=2">
+  <link rel="stylesheet" href="/vendor/phosphor-icons/phosphor-regular.css?v=442">
+  <link rel="stylesheet" href="/css/public-landing.css?v=5855">
+  <link rel="stylesheet" href="/css/brand-auth-v513.css?v=547">
+  <link rel="stylesheet" href="/css/privacy-brand-v533.css?v=538">
+  <link rel="stylesheet" href="/css/android-download.css?v=3">
 </head>
 <body>
-  <header class="download-header">
-    <a class="download-brand" href="/" aria-label="ATSRS Home"><img class="brand-light" src="/assets/branding/atsrs-lockup-light-transparent.png" alt="ATSRS"><img class="brand-dark" src="/assets/branding/atsrs-lockup-green-transparent.png" alt=""></a>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch theme">◐</button>
-  </header>
+  <div class="atsrs-public-landing android-public-nav-shell">
+    <header class="public-header">
+      <a class="public-wordmark atsrs-home-lockup" href="/?view=home#top" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
+      <nav class="public-nav" aria-label="Public navigation">
+        <a class="public-home-link" href="/?view=home#top" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a>
+        <a href="/?view=home#platform">Platform</a>
+        <a href="/?view=home#how-it-works">How it works</a>
+        <a href="/?view=home#plans">Plans</a>
+        <a href="/?view=home#faq">FAQ</a>
+        <a href="/contact.html">Contact</a>
+        <a class="public-android-entry public-android-entry-desktop" href="/download/android/" aria-current="page" aria-label="Download ATSRS for Android" title="Download ATSRS for Android"><span class="public-android-icon" aria-hidden="true"><i class="ph ph-android-logo"></i></span><span class="public-android-copy"><strong>Android</strong><small>Download APK</small></span></a>
+      </nav>
+      <div class="public-header-actions">
+        <a class="public-home-link public-home-mobile" href="/?view=home#top" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a>
+        <a class="public-android-entry public-android-entry-mobile" href="/download/android/" aria-current="page" aria-label="Download ATSRS for Android" title="Download ATSRS for Android"><span class="public-android-icon" aria-hidden="true"><i class="ph ph-android-logo"></i></span><span class="public-android-copy"><strong>Android</strong><small>Download APK</small></span></a>
+        <button id="themeToggle" type="button" class="public-theme-toggle" data-public-theme-toggle role="switch" aria-label="Switch colour theme"><span class="public-theme-track" aria-hidden="true"><i class="ph ph-moon public-theme-moon"></i><i class="ph ph-sun public-theme-sun"></i><span class="public-theme-thumb"></span></span></button>
+        <a class="public-login" href="/?view=login">Log in</a>
+        <a class="public-cta public-cta-small" href="/?view=signup">Create Free Account</a>
+      </div>
+    </header>
+  </div>
   <main>
     <section class="download-hero" aria-labelledby="downloadTitle">
+      <a class="back-home" href="/?view=home#top"><i class="ph ph-arrow-left" aria-hidden="true"></i>Back to Home</a>
       <img class="download-icon" src="/assets/branding/atsrs-favicon-green-v576.png" alt="ATSRS">
       <p class="eyebrow">OFFICIAL ANDROID RELEASE</p>
       <h1 id="downloadTitle">ATSRS for Android</h1>
@@ -60,6 +82,6 @@
     </section>
   </main>
   <footer><a href="/privacy.html">Privacy</a><a href="/security.html">Security</a><a href="/contact.html">Contact</a><span>© 2026 ATSRS</span></footer>
-  <script src="/js/android-download.js?v=1"></script>
+  <script src="/js/android-download.js?v=2"></script>
 </body>
 </html>

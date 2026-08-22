@@ -68,6 +68,21 @@ test('Android release hero uses the invariant official ATSRS mark', () => {
   assert.doesNotMatch(page, /class="download-icon"[^>]*>A<\/div>/);
 });
 
+test('Android release page preserves Home navigation and canonical theme surfaces', () => {
+  const page = read('download/android/index.html');
+  const css = read('css/android-download.css');
+  const script = read('js/android-download.js');
+  assert.match(page, /class="public-header"/);
+  assert.match(page, /href="\/\?view=home#top"[^>]*>.*Back to Home/s);
+  assert.match(page, /href="\/\?view=home#platform">Platform<\/a>/);
+  assert.match(page, /href="\/\?view=login">Log in<\/a>/);
+  assert.match(page, /href="\/\?view=signup">Create Free Account<\/a>/);
+  assert.match(css, /--bg:#fff/);
+  assert.match(css, /html\[data-theme="dark"\][^{]*\{[^}]*--bg:#000/);
+  assert.match(css, /body\{[^}]*background:var\(--bg\)/);
+  assert.match(script, /localStorage\.setItem\("atsrs_theme",theme\)/);
+});
+
 test('Signing credentials remain external and ignored', () => {
   const ignore = read('.gitignore');
   const gradle = read('apps/android/android/app/build.gradle');
