@@ -3,6 +3,8 @@
   'use strict';
 
   var corporateDashboard=null;
+  var personalStorageLoading=false;
+  var personalStorageLoadedAt=0;
 
   function byId(id){return document.getElementById(id)}
   function mode(){
@@ -42,6 +44,82 @@
     button.type='button';button.className='secondary';button.textContent=label;
     button.addEventListener('click',function(){route(page,navId)});
     container.appendChild(button);
+  }
+  function addPersonalAction(container,label,icon,handler){
+    var button=document.createElement('button');
+    button.type='button';button.className='secondary dashboard-personal-action';
+    button.innerHTML='<i class="ph '+icon+'" aria-hidden="true"></i><span>'+label+'</span>';
+    button.addEventListener('click',handler);container.appendChild(button);
+  }
+  function openDocumentMethod(method){
+    route('certificates','navCertificates');
+    if(!method)return;
+    setTimeout(function(){
+      var id=method==='scan'?'certScanModeBtn':method==='qr'?'certQrModeBtn':'certManualModeBtn';
+      var button=byId(id);if(button)button.click();
+    },100);
+  }
+  function openProfileSharing(){
+    route('profile','navProfile');
+    setTimeout(function(){if(typeof window.showAccountTab==='function')window.showAccountTab('sharing');},80);
+  }
+  function ensurePersonalToolsGrid(stats){
+    var grid=byId('dashboardPersonalTools');
+    if(grid)return grid;
+    grid=document.createElement('div');grid.id='dashboardPersonalTools';grid.className='dashboard-personal-tools';
+    var quick=document.createElement('section');quick.className='panel dashboard-personal-tool-card dashboard-personal-actions-card';quick.setAttribute('aria-labelledby','dashboardPersonalActionsTitle');
+    quick.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardPersonalActionsTitle">Quick Actions</h2><p class="sub">Frequently used Personal tools and shortcuts.</p></div></div><div id="dashboardPersonalActions" class="dashboard-personal-actions"></div>';
+    var storage=document.createElement('section');storage.className='panel dashboard-personal-tool-card dashboard-storage-card';storage.setAttribute('aria-labelledby','dashboardStorageTitle');
+    storage.innerHTML='<div class="dashboard-personal-tool-head"><div><h2 id="dashboardStorageTitle">Storage Usage</h2><p id="dashboardStoragePlan" class="sub">Checking your Personal storage...</p></div><button id="dashboardManageStorage" type="button" class="secondary">Open Documents</button></div><div class="dashboard-storage-summary"><strong id="dashboardStorageUsed">Loading...</strong><span id="dashboardStorageDetail" aria-live="polite"></span></div><progress id="dashboardStorageProgress" max="100" value="0" aria-label="Personal storage used">0%</progress>';
+    grid.appendChild(quick);grid.appendChild(storage);stats.insertAdjacentElement('afterend',grid);
+    var actions=byId('dashboardPersonalActions');
+    addPersonalAction(actions,'Add Document','ph-plus-circle',function(){openDocumentMethod('');});
+    addPersonalAction(actions,'Scan with AI','ph-sparkle',function(){openDocumentMethod('scan');});
+    addPersonalAction(actions,'Scan with QR','ph-qr-code',function(){openDocumentMethod('qr');});
+    addPersonalAction(actions,'Manual Upload','ph-upload-simple',function(){openDocumentMethod('manual');});
+    addPersonalAction(actions,'Manage Profile','ph-user-circle',function(){route('profile','navProfile');});
+    addPersonalAction(actions,'Privacy & Sharing','ph-shield-check',openProfileSharing);
+    byId('dashboardManageStorage').addEventListener('click',function(){openDocumentMethod('');});
+    return grid;
+  }
+  function formatBytes(value){
+    var bytes=Math.max(0,Number(value)||0);
+    if(bytes<1024)return bytes+' B';
+    if(bytes<1048576)return(bytes/1024).toFixed(bytes<10240?1:0)+' KB';
+    if(bytes<1073741824)return(bytes/1048576).toFixed(bytes<10485760?1:0)+' MB';
+    return(bytes/1073741824).toFixed(2)+' GB';
+  }
+  function storageMessage(message,error){
+    var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan'),progress=byId('dashboardStorageProgress');
+    if(used)used.textContent=message;if(detail)detail.textContent='';if(plan)plan.textContent=error?'Storage information is temporarily unavailable.':'Checking your Personal storage...';
+    if(progress){progress.value=0;progress.setAttribute('aria-label',message);}
+  }
+  async function loadPersonalStorage(force){
+    if(corporate()||!byId('dashboardStorageUsed'))return;
+    if(personalStorageLoading||(!force&&Date.now()-personalStorageLoadedAt<30000))return;
+    var c=window.supabaseClient;
+    if(!c||!c.auth){storageMessage('Storage unavailable',true);return;}
+    personalStorageLoading=true;storageMessage('Loading...',false);
+    try{
+      var auth=await c.auth.getUser(),activeUser=auth&&auth.data&&auth.data.user;
+      if(!activeUser)throw new Error('No authenticated Personal account.');
+      var results=await Promise.all([
+        c.from('atsrs_files').select('size_bytes').eq('user_id',activeUser.id).eq('account_type','personal'),
+        c.rpc('atsrs_my_personal_entitlements')
+      ]);
+      if(results[0].error)throw results[0].error;if(results[1].error)throw results[1].error;
+      var usedBytes=(results[0].data||[]).reduce(function(total,row){return total+Math.max(0,Number(row&&row.size_bytes)||0);},0);
+      var entitlement=Array.isArray(results[1].data)?results[1].data[0]:results[1].data||{};
+      var limitBytes=Number(entitlement&&entitlement.storage_bytes_limit)||0;
+      var percent=limitBytes?Math.min(100,Math.round(usedBytes/limitBytes*100)):0;
+      var used=byId('dashboardStorageUsed'),detail=byId('dashboardStorageDetail'),plan=byId('dashboardStoragePlan'),progress=byId('dashboardStorageProgress');
+      if(used)used.textContent=formatBytes(usedBytes);
+      if(detail)detail.textContent=limitBytes?' of '+formatBytes(limitBytes)+' used':' stored · no fixed storage limit';
+      if(plan)plan.textContent=String(entitlement&&entitlement.plan_name||'Personal')+' plan · secure server storage';
+      if(progress){progress.value=percent;progress.textContent=percent+'%';progress.setAttribute('aria-label',percent+'% of Personal storage used');}
+      personalStorageLoadedAt=Date.now();
+    }catch(error){console.warn('ATSRS Personal storage usage could not be loaded',error);storageMessage('Storage unavailable',true);}
+    finally{personalStorageLoading=false;}
   }
   function ensureCurrentCard(stats){
     var card=byId('dashboardCurrentDocumentsCard');
@@ -134,13 +212,15 @@
     if(!corporate()){
       var personalGrid=byId('dashboardExecutiveGrid');
       if(personalGrid)personalGrid.remove();
+      ensurePersonalToolsGrid(stats);loadPersonalStorage(false);
       return;
     }
+    var personalTools=byId('dashboardPersonalTools');if(personalTools)personalTools.remove();
     ensureExecutiveGrid(stats);renderActions();renderRecent();
   }
 
   window.addEventListener('atsrs:corporate-compliance',function(event){corporateDashboard=event&&event.detail||null;sync()});
-  document.addEventListener('atsrs-document-files-updated',sync);
+  document.addEventListener('atsrs-document-files-updated',function(){personalStorageLoadedAt=0;sync();loadPersonalStorage(true);});
   window.addEventListener('atsrs:data-hydrated',function(){setTimeout(sync,0)});
 
   var oldShow=window.showPage;

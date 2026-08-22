@@ -55,6 +55,11 @@
       {type:'Identity record',expiry:'N/A',uploadedAt:'2026-08-18T08:00:00Z'},
       {type:'Expired training',expiry:'2025-08-01',uploadedAt:'2026-08-10T08:00:00Z'}
     ]};
+    window.supabaseClient={
+      auth:{getUser:async function(){return{data:{user:{id:'qa-personal-user'}}};}},
+      from:function(){var query={select:function(){return query;},eq:function(){return query;},then:function(resolve){return Promise.resolve({data:[{size_bytes:3145728},{size_bytes:1572864}],error:null}).then(resolve);}};return query;},
+      rpc:async function(){return{data:[{plan_name:'Bronze',storage_bytes_limit:1073741824}],error:null};}
+    };
     window.atsrsCorporateReporting={getCompliance:function(){return{
       summary:{current:2},rows:[{name:'Candidate',surname:'One',documents:[
         {title:'Medical certificate',status:'Current',uploaded_at:'2026-08-21T08:00:00Z'},

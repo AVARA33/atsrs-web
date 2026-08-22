@@ -693,3 +693,34 @@ No actionable P0, P1 or P2 differences remain for the requested alignment correc
 - Cloudflare build: passed, 133 files.
 
 final result: passed
+
+---
+
+# Personal Dashboard Quick Actions and Storage — Design QA
+
+## Evidence
+
+- Source reference: `C:/Users/user/AppData/Local/Temp/codex-clipboard-45efa7ac-6abb-4923-ad3b-343c18126ccf.png`
+- Implemented screenshot: `C:/Users/user/Documents/GitHub/output/dashboard-quick-storage-20260822/dashboard-quick-storage-dark.png`
+- Combined comparison: `C:/Users/user/Documents/GitHub/output/dashboard-quick-storage-20260822/dashboard-quick-storage-comparison.png`
+- Browser state: Personal account dashboard, desktop, dark and light themes
+- Source pixels: 3439 × 1368
+- Implementation viewport: 2294 × 791
+
+## Comparison
+
+- The Quick Actions and Storage Usage cards sit immediately below the seven KPI cards.
+- Both cards share one desktop grid row. The measured implementation columns are 1071 px and 357 px with equal 178.83 px heights.
+- All six Quick Actions remain in one internal row. The container uses horizontal overflow at narrow widths instead of wrapping a control onto a second line.
+- The implementation preserves ATSRS theme tokens and existing Personal dashboard colors instead of copying the reference application's palette.
+- Storage numbers come from the authenticated Personal user's `atsrs_files` records and plan entitlement. The reference's illustrative 12.4 GB / 20 GB values are not fabricated.
+- Dark and light renders both have zero page-level horizontal overflow.
+- Browser console errors and warnings: 0.
+
+## Iteration history
+
+- Initial render exposed a global button-width rule that compressed the Storage heading into a vertical column.
+- The Storage action button was scoped to intrinsic width and the heading container was allowed to flex normally.
+- Final render shows a stable single-line heading, matching card heights, and one-row action controls.
+
+final result: passed
