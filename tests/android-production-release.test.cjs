@@ -57,6 +57,11 @@ test('Public Android entry links to the official release page in both responsive
   assert.match(headers, /max-age=31536000, immutable/);
 });
 
+test('Cloudflare production build includes the Android release page and APK', () => {
+  const buildScript = read('scripts/build-cloudflare-pages.mjs');
+  assert.match(buildScript, /const publicDirectories = \[[^\]]*"download"[^\]]*"downloads"/);
+});
+
 test('Signing credentials remain external and ignored', () => {
   const ignore = read('.gitignore');
   const gradle = read('apps/android/android/app/build.gradle');
