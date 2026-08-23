@@ -30,7 +30,6 @@ const APP_URL="https://atsrs.com/";
       var startedAt=Number(attempt&&attempt.startedAt)||0;
       var age=Date.now()-startedAt;
       if(!attempt || attempt.id!==attemptId || attempt.intent!==intent || age<0 || age>1200000) return false;
-      if(intent==='signup' && ((mode!=='personal'&&mode!=='company') || attempt.mode!==mode)) return false;
       return true;
     }
     var localAttempt=readAttempt(typeof localStorage!=='undefined'?localStorage:null);
@@ -43,9 +42,6 @@ const APP_URL="https://atsrs.com/";
        single-use authorization code against the browser's PKCE verifier.
        A present-but-mismatched marker remains invalid. */
     if(attemptWasStored && !attemptVerified) return;
-    if(intent==='signup' && !attemptVerified){
-      window.__atsrsOAuthSignupNeedsMode=true;
-    }
     window.__atsrsOAuthInvalidCallback=false;
     window.__atsrsOAuthCallback=true;
     window.__atsrsOAuthAttemptVerified=attemptVerified;
@@ -53,9 +49,6 @@ const APP_URL="https://atsrs.com/";
     window.__atsrsOAuthSessionReceived=false;
     if(callbackError) window.__atsrsOAuthError=callbackError;
     localStorage.setItem('atsrs_google_intent',intent);
-    if(intent==='signup'&&attemptVerified&&(mode==='personal'||mode==='company')){
-      localStorage.setItem('atsrs_pending_account_type',mode);
-    }
   }catch(e){}
 })();
 
@@ -1752,16 +1745,18 @@ setTimeout(v55DockTopActions,500);
       catch(e){return '';}
     }
     function currentAuthIntent(){
-      if(!window.__atsrsOAuthCallback) return '';
       var intent='';
-      try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}
+      var method=authQueryValue('atsrs_method');
+      if(window.__atsrsOAuthCallback){try{intent=localStorage.getItem('atsrs_google_intent')||'';}catch(e){}}
+      if(!intent && method==='email') intent=authQueryValue('atsrs_intent');
+      if(!intent){try{intent=localStorage.getItem('atsrs_auth_intent')||'';}catch(e){}}
       if(intent!=='signin'&&intent!=='signup') intent=authQueryValue('atsrs_intent');
       return (intent==='signin'||intent==='signup')?intent:'';
     }
     function clearOAuthCallbackUrl(){
       try{
         var url=new URL(window.location.href);
-        ['atsrs_intent','atsrs_mode','atsrs_attempt','code','error','error_code','error_description'].forEach(function(name){
+        ['atsrs_intent','atsrs_method','atsrs_mode','atsrs_attempt','code','error','error_code','error_description'].forEach(function(name){
           url.searchParams.delete(name);
         });
         window.history.replaceState({},document.title,url.pathname+(url.search||'')+(url.hash||''));
@@ -1769,6 +1764,8 @@ setTimeout(v55DockTopActions,500);
     }
     function clearTransientAuth(){
       try{localStorage.setItem('atsrs_google_intent','');}catch(e){}
+      try{localStorage.removeItem('atsrs_auth_intent');}catch(e){}
+      try{localStorage.removeItem('atsrs_pending_verification');}catch(e){}
       try{localStorage.removeItem('atsrs_pending_account_type');}catch(e){}
       try{localStorage.removeItem('atsrs_oauth_attempt');}catch(e){}
       try{sessionStorage.removeItem('atsrs_oauth_attempt');}catch(e){}
@@ -1843,6 +1840,7 @@ setTimeout(v55DockTopActions,500);
       }catch(e){}
       clearTransientAuth();
       try{localStorage.removeItem('atsrs_workspace_pick_required');}catch(e){}
+      try{localStorage.removeItem('atsrs_workspace_onboarding');}catch(e){}
       if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
       currentUser=user; window.currentUser=user;
       publishWorkspaceState(window.__atsrsWorkspaceState,user);
@@ -1891,6 +1889,7 @@ setTimeout(v55DockTopActions,500);
       var appEl=byId('app'); if(appEl) appEl.classList.add('hidden');
       var msg=byId('loginMsg'); if(msg) msg.textContent='';
       if(typeof window.atsrsShowCompactChoice==='function') window.atsrsShowCompactChoice('signin-workspace');
+      if(typeof window.atsrsShowUnifiedWorkspaceChoice==='function') window.atsrsShowUnifiedWorkspaceChoice('signin-workspace');
       if(typeof window.atsrsFinishBoot==='function') window.atsrsFinishBoot();
       else{
         document.body.classList.remove('atsrs-session-pending');
@@ -1902,13 +1901,15 @@ setTimeout(v55DockTopActions,500);
       window.currentUser=user;
       clearTransientAuth();
       try{localStorage.setItem('atsrs_auth_mode','supabase');}catch(e){}
+      try{localStorage.setItem('atsrs_workspace_onboarding','1');}catch(e){}
       if(typeof hideAuthBoxes==='function') hideAuthBoxes();
       var loginBox=byId('loginBox'); if(loginBox) loginBox.classList.remove('hidden');
       var authEl=byId('auth'); if(authEl) authEl.classList.remove('hidden');
       var appEl=byId('app'); if(appEl) appEl.classList.add('hidden');
       var msg=byId('loginMsg');
-      if(msg) msg.textContent='Google account verified. Choose the ATSRS account you want to create.';
+      if(msg) msg.textContent='Identity verified. Choose the ATSRS workspace you want to create.';
       if(typeof window.atsrsShowCompactChoice==='function') window.atsrsShowCompactChoice('signup-recovery');
+      if(typeof window.atsrsShowUnifiedWorkspaceChoice==='function') window.atsrsShowUnifiedWorkspaceChoice('signup-recovery');
       if(typeof window.atsrsFinishBoot==='function') window.atsrsFinishBoot();
       else{
         document.body.classList.remove('atsrs-session-pending');
@@ -1917,29 +1918,11 @@ setTimeout(v55DockTopActions,500);
     }
     async function handleSignUp(user,event){
       if(typeof window.atsrsHideCompactChoice==='function') window.atsrsHideCompactChoice();
-      var pendingMode=pendingSignupMode();
-      if(!pendingMode){
-        if(window.__atsrsOAuthSignupNeedsMode){
-          showRecoveredSignupChoice(user);
-          return;
-        }
-        returnToLogin(user,'Sign Up could not be completed.\n\nPlease select Personal or Corporate and try again.');
-        return;
-      }
       try{
         var state=await readWorkspaceState(user);
-        if(hasWorkspace(state,pendingMode)){
-          returnToLogin(user,pendingMode==='personal'
-            ? 'Personal account already exists. Please sign in.'
-            : 'Corporate account already exists. Please sign in.');
-          return;
-        }
-        var created=await createAndOpenWorkspace(user,pendingMode);
-        if(created.duplicate){
-          returnToLogin(user,pendingMode==='personal'
-            ? 'Personal account already exists. Please sign in.'
-            : 'Corporate account already exists. Please sign in.');
-        }
+        var pHas=hasWorkspace(state,'personal'),cHas=hasWorkspace(state,'company');
+        if(pHas||cHas){await handleSignIn(user,event);return;}
+        showRecoveredSignupChoice(user);
       }catch(error){
         console.warn('ATSRS workspace Sign Up failed',error);
         returnToLogin(user,workspaceServiceMessage(error));
@@ -1951,7 +1934,10 @@ setTimeout(v55DockTopActions,500);
         var state=await readWorkspaceState(user);
         var pHas=hasWorkspace(state,'personal'), cHas=hasWorkspace(state,'company');
         if(!pHas && !cHas){
-          returnToLogin(user,'This Google account is not registered. Please Sign Up.');
+          currentUser=user;window.currentUser=user;
+          clearTransientAuth();
+          if(typeof window.atsrsShowNoWorkspaceConfirmation==='function') window.atsrsShowNoWorkspaceConfirmation(user);
+          else returnToLogin(user,'No ATSRS workspace exists for this verified identity. Choose Sign Up to create one.');
           return;
         }
         if(pHas && !cHas){ await openExistingWorkspace(user,'personal',state); return; }
@@ -1970,7 +1956,13 @@ setTimeout(v55DockTopActions,500);
       try{
         var state=await readWorkspaceState(user);
         var pHas=hasWorkspace(state,'personal'), cHas=hasWorkspace(state,'company');
-        if(!pHas && !cHas) return false;
+        if(!pHas && !cHas){
+          var onboarding=false;try{onboarding=localStorage.getItem('atsrs_workspace_onboarding')==='1';}catch(e){}
+          if(onboarding){showRecoveredSignupChoice(user);return true;}
+          currentUser=user;window.currentUser=user;
+          if(typeof window.atsrsShowNoWorkspaceConfirmation==='function'){window.atsrsShowNoWorkspaceConfirmation(user);return true;}
+          return false;
+        }
         if(pHas && !cHas) return await openExistingWorkspace(user,'personal',state);
         if(cHas && !pHas) return await openExistingWorkspace(user,'company',state);
         var lastMode=readLastWorkspace(user);
@@ -2058,6 +2050,11 @@ setTimeout(v55DockTopActions,500);
         returnToLogin(user,workspaceServiceMessage(error));
         return false;
       }
+    };
+    window.atsrsBeginWorkspaceOnboarding=function(user){
+      if(!user||!user.id)return false;
+      showRecoveredSignupChoice(user);
+      return true;
     };
     var workspaceSwitchPromise=null;
     var workspaceSwitchTarget='';
@@ -2364,7 +2361,6 @@ setTimeout(v55DockTopActions,500);
          dependent on the display mode used to start the flow. */
       var url=new URL('/',window.location.origin || 'https://atsrs.com');
       if(intent==='signin'||intent==='signup') url.searchParams.set('atsrs_intent',intent);
-      if(intent==='signup'&&(mode==='personal'||mode==='company')) url.searchParams.set('atsrs_mode',mode);
       if(attemptId) url.searchParams.set('atsrs_attempt',attemptId);
       return url.toString();
     }
@@ -2475,10 +2471,6 @@ setTimeout(v55DockTopActions,500);
         try{localStorage.setItem('atsrs_workspace_pick_required','1');}catch(e){}
       }
       var pendingMode='';
-      try{pendingMode=localStorage.getItem('atsrs_pending_account_type')||'';}catch(e){}
-      if(intent==='signup' && pendingMode!=='personal' && pendingMode!=='company'){
-        throw new Error('Please select Personal or Corporate and try again.');
-      }
       /* A local getSession() can wait behind a stale browser auth lock after
          logout. Sign-in must always be able to start a fresh Google redirect,
          so only account creation needs to inspect/sign out an existing session. */
@@ -2504,7 +2496,7 @@ setTimeout(v55DockTopActions,500);
       var attemptRecord={
         id:attemptId,
         intent:intent||'signin',
-        mode:intent==='signup'?pendingMode:'',
+        mode:'',
         startedAt:Date.now()
       };
       localStorage.setItem('atsrs_google_intent',intent||'signin');
@@ -2612,6 +2604,11 @@ setTimeout(v55DockTopActions,500);
     setLoginMsg('');
     hideCompactChoice();
     return startGoogle(e,'signin');
+  };
+  window.atsrsStartGoogleSignUp=function(e){
+    if(e && e.preventDefault)e.preventDefault();
+    if(typeof window.atsrsResetAuthDecision==='function') window.atsrsResetAuthDecision();
+    setLoginMsg('');hideCompactChoice();return startGoogle(e,'signup');
   };
   window.atsrsPrepareSignUpChoice=function(e){
     if(e && e.preventDefault)e.preventDefault();

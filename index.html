@@ -105,6 +105,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
 <link rel="stylesheet" href="css/product-updates-alignment-v531.css?v=531">
 <link rel="stylesheet" href="css/brand-auth-v513.css?v=547">
+<link rel="stylesheet" href="css/auth-unified.css?v=58143">
 <link rel="stylesheet" href="css/privacy-brand-v533.css?v=538">
 <link rel="stylesheet" href="css/document-qr-upload-v535.css?v=541">
 <link rel="stylesheet" href="css/native-select-theme-v539.css?v=58173">
@@ -492,18 +493,51 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div id="loginBox">
-<div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
+<div id="signupSocialArea" class="signup-social-area" aria-label="ATSRS account options">
   <div class="auth-tabs">
     <button id="googleSigninBtn" type="button" class="auth-tab active" onclick="atsrsAuthTabClick('signin',event)">Sign in</button>
     <span class="auth-tab-sep">/</span>
     <button id="googleSignupBtn" type="button" class="auth-tab" onclick="atsrsAuthTabClick('signup',event)">Sign up</button>
   </div>
-  <p class="auth-tab-caption">with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></p>
+  <div id="authEntryPanel" class="auth-entry-panel">
+    <p id="authEntryTitle" class="auth-entry-title">Welcome back</p>
+    <p id="authEntryText" class="auth-entry-text">Sign in securely to continue to ATSRS.</p>
+    <button id="authGoogleBtn" type="button" class="auth-provider-button"><span class="auth-google-mark" aria-hidden="true">G</span><span>Continue with Google</span></button>
+    <div class="auth-divider" aria-hidden="true"><span>or</span></div>
+    <button id="authEmailRevealBtn" type="button" class="auth-email-reveal">Continue with email</button>
+  </div>
+
+  <form id="authEmailPanel" class="auth-email-panel hidden" novalidate>
+    <label for="authEmail">Email address</label>
+    <input id="authEmail" type="email" autocomplete="email" inputmode="email" required>
+    <label for="authPassword">Password</label>
+    <div class="auth-password-row"><input id="authPassword" type="password" autocomplete="current-password" minlength="8" required><button id="authPasswordToggle" type="button" class="auth-password-toggle" aria-label="Show password">Show</button></div>
+    <p id="authPasswordHint" class="auth-field-hint hidden">Use at least 8 characters.</p>
+    <button id="authEmailSubmitBtn" type="submit" class="auth-primary-button">Sign in</button>
+    <div class="auth-email-actions"><button id="authForgotBtn" type="button">Forgot password?</button><button id="authUseGoogleBtn" type="button">Use Google instead</button></div>
+    <button id="authModeSwapBtn" type="button" class="auth-text-button">Don't have an account? Sign up</button>
+  </form>
+
+  <div id="authVerificationPanel" class="auth-state-panel hidden" role="status">
+    <i class="ph ph-envelope-simple" aria-hidden="true"></i><h2>Check your email</h2>
+    <p id="authVerificationText">We sent a verification link to your email address.</p>
+    <button id="authResendBtn" type="button" class="auth-primary-button">Resend verification email</button>
+    <button id="authChangeEmailBtn" type="button" class="auth-text-button">Wrong email? Change email</button>
+    <button id="authVerificationBackBtn" type="button" class="auth-text-button">Back to sign in</button>
+  </div>
+
+  <div id="authNoWorkspacePanel" class="auth-state-panel hidden" role="status">
+    <i class="ph ph-user-plus" aria-hidden="true"></i><h2>No ATSRS workspace yet</h2>
+    <p>Your identity is verified, but no ATSRS account has been created for it.</p>
+    <button id="authCreateWorkspaceBtn" type="button" class="auth-primary-button">Create ATSRS account</button>
+    <button id="authUseAnotherBtn" type="button" class="auth-text-button">Use another account</button>
+  </div>
 
   <div id="googleChoiceArea" class="hidden google-choice-area">
+    <div class="auth-choice-copy"><h2>Choose your ATSRS workspace</h2><p>This choice creates your first workspace. You can add the other workspace later.</p></div>
     <div id="modeChoiceBox" class="mode-choice">
-      <button type="button" id="personalModeBtn">Personal</button>
-      <button type="button" id="companyModeBtn">Corporate</button>
+      <button type="button" id="personalModeBtn"><strong>Personal Workspace</strong><span>Manage your own documents, certificates and profile.</span></button>
+      <button type="button" id="companyModeBtn"><strong>Corporate Workspace</strong><span>Manage company personnel, projects and compliance.</span></button>
     </div>
   </div>
 </div>
@@ -1919,6 +1953,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
 <script src="js/login.js?v=568"></script>
+<script src="js/auth-unified.js?v=58143"></script>
 <script src="js/dashboard.js?v=420"></script>
 <script src="js/avatar.js?v=376"></script>
 <script src="js/documents.js?v=410"></script>
