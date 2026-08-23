@@ -149,6 +149,9 @@ html[data-theme="dark"] .public-cta{color:#041817!important}
 .public-hero-visual{position:relative;min-height:590px}
 .public-product-shot,.public-wide-shot{margin:0;overflow:hidden;border:1px solid var(--public-line);background:var(--public-surface);box-shadow:var(--public-shadow)}
 .public-product-shot img,.public-wide-shot img{display:block;width:100%;height:auto}
+.public-theme-preview-dark{display:none!important}
+html[data-theme="dark"] .atsrs-public-landing .public-theme-preview-light{display:none!important}
+html[data-theme="dark"] .atsrs-public-landing .public-theme-preview-dark{display:block!important}
 .public-product-shot-primary{position:absolute;inset:8% 0 auto 0;border-radius:18px;transform:rotate(-1.1deg)}
 .public-product-shot-secondary{position:absolute;right:0;bottom:2%;width:66%;border-radius:14px;transform:rotate(1.6deg)}
 .public-floating-note{position:absolute;left:0;bottom:12%;display:flex;align-items:center;gap:12px;max-width:calc(100% - 12px);padding:14px 16px;border:1px solid var(--public-line);border-radius:12px;background:var(--public-surface);box-shadow:0 18px 48px rgba(21,48,65,.18);font-size:12px}

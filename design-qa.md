@@ -796,6 +796,31 @@ final result: passed
 
 Final result: passed.
 
+# Public landing theme-matched product previews — Design QA
+
+- Scope: the real ATSRS interface screenshots shown on the public Home page.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-4d5523f0-5d07-4d44-b1f8-6fa642f75d67.png`.
+- Dark implementation: `C:\Users\user\Documents\GitHub\output\landing-theme-previews-20260823\dark-hero.png`.
+- Light regression evidence: `C:\Users\user\Documents\GitHub\output\landing-theme-previews-20260823\light-hero.png`.
+- Combined source/implementation comparison: `C:\Users\user\Documents\GitHub\output\landing-theme-previews-20260823\reference-vs-implementation.png`.
+
+## Visual comparison
+
+- Dark mode now displays genuine dark ATSRS Personal Dashboard, Corporate Candidates and Corporate Personnel captures.
+- Light mode continues to display the existing light ATSRS captures without recolouring or altering them.
+- The hero preview stack and both lower workspace previews switch as one theme-aware system.
+- Preview geometry, transforms, borders, loading behaviour and surrounding landing-page layout remain unchanged.
+- Page-level horizontal overflow: 0 in both themes.
+
+## Interaction and regression checks
+
+- Browser inspection confirmed four visible `*-dark.png` sources in dark mode and four original light sources in light mode.
+- Theme switching updates the visible preview set immediately without duplicate visible images.
+- Browser console errors and warnings: 0.
+- Focused public-landing contract test, Cloudflare Pages build and `git diff --check` passed.
+
+Final result: passed.
+
 # JobSearch fee notice and pagination separation — Design QA
 
 - Scope: the fee notice and top pagination area on Personal JobSearch only.

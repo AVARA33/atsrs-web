@@ -105,8 +105,25 @@ assert.match(css, /\.public-job-search-layout\{display:grid;grid-template-areas:
 assert.match(css, /\.public-jobs-product-preview\{[^}]*border:1px solid var\(--public-line\)[^}]*background:var\(--public-surface\)/);
 assert.doesNotMatch(css, /public-job-search-details|public-job-search-content/);
 
-for (const image of ['personal-dashboard.png', 'candidate-directory.png', 'corporate-personnel.png']) {
+for (const image of [
+  'personal-dashboard.png',
+  'personal-dashboard-dark.png',
+  'candidate-directory.png',
+  'candidate-directory-dark.png',
+  'corporate-personnel.png',
+  'corporate-personnel-dark.png',
+]) {
   assert.ok(fs.existsSync(path.join(root, 'assets', 'landing', image)), `${image} must exist`);
 }
+
+assert.match(index, /public-theme-preview-light[^>]+personal-dashboard\.png/);
+assert.match(index, /public-theme-preview-dark[^>]+personal-dashboard-dark\.png/);
+assert.match(index, /public-theme-preview-light[^>]+candidate-directory\.png/);
+assert.match(index, /public-theme-preview-dark[^>]+candidate-directory-dark\.png/);
+assert.match(index, /public-theme-preview-light[^>]+corporate-personnel\.png/);
+assert.match(index, /public-theme-preview-dark[^>]+corporate-personnel-dark\.png/);
+assert.match(css, /\.public-theme-preview-dark\{display:none!important\}/);
+assert.match(css, /html\[data-theme="dark"\] \.atsrs-public-landing \.public-theme-preview-light\{display:none!important\}/);
+assert.match(css, /html\[data-theme="dark"\] \.atsrs-public-landing \.public-theme-preview-dark\{display:block!important\}/);
 
 console.log('Public landing and animated wordmark contract tests passed');
