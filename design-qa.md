@@ -796,6 +796,19 @@ final result: passed
 
 Final result: passed.
 
+# Personal Profile summary card — Design QA
+
+- Scope: the single Personal Profile summary card requested for the first staged rebuild step; the adjacent desktop grid column remains deliberately empty for the next card.
+- Source visual truth: the two user-supplied Profile dashboard references from 24 August 2026, limited to the red-highlighted identity card.
+- Dark mode: shared ATSRS dark surfaces, borders, text, muted text and green accent render without overflow.
+- Light mode: the same component switches through shared ATSRS light tokens to a white surface, blue accent and dark text.
+- Desktop geometry at 1440 × 900: card width `814.67px`, height `293.33px`, reserved adjacent column `407.33px`, horizontal overflow `0`.
+- Mobile geometry at 390 × 844: one-column card width `290px`, horizontal overflow `0`; identity and account metadata stack without clipping.
+- Production data contract: profile identity, contact details, member date, last login, avatar and completeness are populated from the authenticated user/profile; the Verified badge is shown only for a confirmed email.
+- Focused contract tests, JavaScript syntax, Cloudflare Pages build and diff validation passed.
+
+Final result: passed.
+
 # Profile active tab neutral surface — Design QA
 
 - Scope: Personal/Corporate Profile account tabs only.

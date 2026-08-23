@@ -718,6 +718,7 @@
     if(window.atsrsProfilePhoto&&typeof window.atsrsProfilePhoto.render==='function'){
       window.atsrsProfilePhoto.render(p);
     }
+    updateProfileSummary(p);
     ensureProfileStatus();
     bindOfficialProfileControls();
     setTimeout(refreshVerificationStatus,900);
@@ -735,6 +736,17 @@
     }
     return true;
   };
+  function profileSummaryDate(value,withTime){if(!value)return '—';var date=new Date(value);if(Number.isNaN(date.getTime()))return '—';var text=date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});return withTime?text+' · '+date.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):text;}
+  function updateProfileSummary(p){
+    p=p||{};var user=window.currentUser||{},name=[p.name,p.surname].filter(Boolean).join(' ')||user.email||'Profile';
+    var phone=p.phone||[(p.phoneCountryCode||''),(p.phoneLocal||'')].filter(Boolean).join(' ')||'Not provided',location=p.address||p.country||'Not provided';
+    var fields=[p.name,p.surname,user.email||p.email,phone==='Not provided'?'':phone,p.country,p.company,p.position,p.birthDate,p.address,p.zipCode],percent=Math.round(fields.filter(function(value){return String(value||'').trim();}).length/fields.length*100);
+    [['profileSummaryName',name],['profileSummaryEmail',user.email||p.email||'Not provided'],['profileSummaryPhone',phone],['profileSummaryLocation',location],['profileSummaryWorkplace',p.company||'Not provided'],['profileSummaryMemberSince',profileSummaryDate(user.created_at,false)],['profileSummaryLastLogin',profileSummaryDate(user.last_sign_in_at,true)],['profileSummaryPercent',percent+'%']].forEach(function(item){var el=byId(item[0]);if(el)el.textContent=item[1];});
+    var role=byId('profileSummaryRole');if(role){role.textContent=p.position||'';role.classList.toggle('hidden',!p.position);}var verified=byId('profileSummaryVerified');if(verified)verified.classList.toggle('hidden',!user.email_confirmed_at);var progress=byId('profileSummaryProgress');if(progress)progress.value=percent;
+    var initials=byId('profileSummaryInitials'),avatar=byId('profileSummaryAvatar'),source=byId('profilePhotoImage');if(initials)initials.textContent=((p.name||user.email||'A').charAt(0)+(p.surname||'').charAt(0)).toUpperCase();
+    if(avatar&&source&&source.src&&!source.classList.contains('hidden')){avatar.src=source.src;avatar.classList.remove('hidden');if(initials)initials.classList.add('hidden');}else if(avatar){avatar.removeAttribute('src');avatar.classList.add('hidden');if(initials)initials.classList.remove('hidden');}
+  }
+  document.addEventListener('click',function(event){if(event.target.closest&&event.target.closest('#profileSummaryEditBtn')){var edit=byId('editProfileBtn');if(edit)edit.click();}});
   document.addEventListener('click',function(event){
     if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();
     if(!event.target.closest||!event.target.closest('#profileWorkPreferences'))setWorkPreferencesMenu(null,false);

@@ -120,6 +120,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/dropdown-neutral-state-v58174.css?v=58174">
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
+<link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5876">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1326,6 +1327,22 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="panel">
 <h3 id="accountTitle"></h3>
 <p class="profile-rebuild-subtitle personal-only">Manage your personal information and visibility settings.</p>
+<div class="profile-summary-stage personal-only">
+  <article class="profile-summary-card" aria-labelledby="profileSummaryName">
+    <div class="profile-summary-identity">
+      <div class="profile-summary-avatar-wrap"><img id="profileSummaryAvatar" class="profile-summary-avatar hidden" alt="Profile photo"><span id="profileSummaryInitials" class="profile-summary-initials" aria-hidden="true">A</span></div>
+      <div class="profile-summary-copy">
+        <div class="profile-summary-title-row"><h4 id="profileSummaryName">Profile</h4><span id="profileSummaryRole" class="profile-summary-role hidden"></span><span id="profileSummaryVerified" class="profile-summary-verified hidden"><i class="ph ph-shield-check" aria-hidden="true"></i> Verified</span></div>
+        <p><i class="ph ph-envelope" aria-hidden="true"></i><span id="profileSummaryEmail">—</span></p><p><i class="ph ph-phone" aria-hidden="true"></i><span id="profileSummaryPhone">—</span></p><p><i class="ph ph-map-pin" aria-hidden="true"></i><span id="profileSummaryLocation">—</span></p><p><i class="ph ph-briefcase" aria-hidden="true"></i><span id="profileSummaryWorkplace">—</span></p>
+      </div>
+    </div>
+    <div class="profile-summary-meta">
+      <dl><div><dt>Member since</dt><dd id="profileSummaryMemberSince">—</dd></div><div><dt>Last login</dt><dd id="profileSummaryLastLogin">—</dd></div></dl>
+      <div class="profile-summary-completeness"><span>Profile completeness</span><div><progress id="profileSummaryProgress" max="100" value="0"></progress><strong id="profileSummaryPercent">0%</strong></div></div>
+      <button id="profileSummaryEditBtn" type="button" class="profile-summary-edit"><i class="ph ph-pencil-simple" aria-hidden="true"></i> Edit profile</button>
+    </div>
+  </article>
+</div>
 <p id="userEmail" class="sub"></p>
 <div class="account-tabs" role="tablist" aria-label="Account sections">
 <button id="accountTabGeneralBtn" class="active" role="tab" aria-selected="true" onclick="showAccountTab('general')"></button>
