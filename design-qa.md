@@ -796,6 +796,20 @@ final result: passed
 
 Final result: passed.
 
+# Profile active tab neutral surface — Design QA
+
+- Scope: Personal/Corporate Profile account tabs only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-2e724c40-59e0-46c3-afc5-cc40166c0444.png`.
+- Combined reference/implementation comparison: `tests/artifacts/profile-active-tab-neutral-comparison.jpg`.
+- Rendered implementation: `tests/artifacts/profile-active-tab-neutral-dark.jpg`.
+- The selected tab now uses the canonical near-black ATSRS field surface instead of a solid green fill.
+- Selection remains unmistakable through the standard green border, green label and restrained 3px focus-style halo.
+- Unselected tabs, layout, tab switching and all unrelated controls remain unchanged.
+- Rendered dark-mode values: background `rgb(11, 13, 13)`, border/text `rgb(34, 197, 94)`, shadow `rgba(34, 197, 94, 0.15) 0 0 0 3px`.
+- General and Privacy & Sharing active-state switching both passed in the browser harness.
+
+Final result: passed.
+
 # Public landing theme-matched product previews — Design QA
 
 - Scope: the real ATSRS interface screenshots shown on the public Home page.

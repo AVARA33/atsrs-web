@@ -38,8 +38,6 @@ html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.h
 }
 
 html[data-theme="dark"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) :where(
-  #profilePage .account-tabs button.active,
-  #profilePage .account-tabs button[aria-selected="true"],
   #certificatesPage .cert-mode-buttons button.active,
   #candidatesPage .talent-view-switch button.active,
   #candidatesPage .talent-view-switch button[aria-pressed="true"],
@@ -155,10 +153,10 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
 html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button.active,
 html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button[aria-selected="true"]{
   border-color:var(--atsrs-control-accent)!important;
-  background:var(--atsrs-control-accent)!important;
-  color:var(--atsrs-control-accent-ink)!important;
-  -webkit-text-fill-color:var(--atsrs-control-accent-ink)!important;
-  box-shadow:none!important;
+  background:var(--atsrs-control-surface)!important;
+  color:var(--atsrs-control-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-control-accent)!important;
+  box-shadow:0 0 0 3px rgba(34,197,94,.15)!important;
 }
 
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button:focus-visible,
