@@ -796,6 +796,32 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch fee notice and pagination separation — Design QA
+
+- Scope: the fee notice and top pagination area on Personal JobSearch only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-16b8400e-b126-4d8f-b4e0-044d878ce445.png`.
+- Dark one-page implementation: `C:\Users\user\Documents\GitHub\output\jobs-fee-pagination-restored-20260823\implementation-dark-one-page.png`.
+- Light one-page implementation: `C:\Users\user\Documents\GitHub\output\jobs-fee-pagination-restored-20260823\implementation-light-one-page.png`.
+- Combined source/corrected comparison: `C:\Users\user\Documents\GitHub\output\jobs-fee-pagination-restored-20260823\comparison-source-corrected.png`.
+
+## Visual comparison
+
+- The fee notice remains in the available left-side space below the filters.
+- Pagination now occupies an independent right-side grid column and cannot be displaced by the fee notice.
+- A Free-plan one-page result displays disabled `Previous`, current page `1`, and disabled `Next` instead of hiding the pagination area.
+- Multi-page results retain normal enabled page navigation.
+- Dark and light themes preserve their existing colors and component styling; no job-card or filter styling changed.
+
+## Interaction and regression checks
+
+- Free-plan server entitlement remains unchanged at the returned 30-item catalogue; no additional jobs are exposed.
+- One-page and multi-page pagination states were exercised in the browser.
+- Page-number, Previous and Next behavior remains unchanged when more than one page exists.
+- Browser console errors and warnings: 0.
+- Focused pagination tests and Cloudflare Pages build passed.
+
+Final result: passed.
+
 # Free-plan job access gate refinement — Design QA
 
 - Scope: locked recruiter/contact/application controls on Personal JobSearch cards.

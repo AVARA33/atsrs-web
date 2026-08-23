@@ -94,7 +94,9 @@ test('top and bottom pagination share one stateful renderer and compact navigati
   assert.match(runtime,/querySelectorAll\('\[data-jobs-pagination\]'\)\.forEach/);
   assert.match(runtime,/load\(target,\{focus:true\}\)/);
   assert.match(runtime,/id\('jobsPaginationTop'\)/);
-  assert.match(runtime,/hide\(nav,pages<=1\)/);
+  assert.match(runtime,/hide\(nav,pages<1\)/);
+  assert.doesNotMatch(runtime,/hide\(nav,pages<=1\)/);
+  assert.match(fixture,/class="jobs-pagination-slot"><nav id="jobsPaginationTop"/);
   assert.match(runtime,/direction==='previous'/);
   assert.match(runtime,/direction==='next'/);
   assert.match(fixture,/id="jobsPaginationTop"[^>]*data-jobs-pagination/);

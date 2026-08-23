@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=58173/);
-  assert.match(index,/route-feature-loader\.js\?v=58166/);
+  assert.match(index,/jobs-prototype\.css\?v=58175/);
+  assert.match(index,/route-feature-loader\.js\?v=58175/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58166'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58175'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -102,7 +102,9 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/requestAnimationFrame\(focusResults\)/);
   assert.match(runtime,/top=id\('jobsPaginationTop'\)/);
   assert.match(css,/\.jobs-pagination\{[^}]*flex-wrap:nowrap[^}]*justify-content:flex-end[^}]*width:max-content[^}]*margin-left:auto/);
-  assert.match(css,/\.jobs-pagination-row\{display:grid;grid-template-columns:minmax\(0,1fr\) auto[^}]*margin-top:28px;margin-bottom:20px\}/);
+  assert.match(index,/class="jobs-results-toolbar"[\s\S]*class="jobs-notice"[\s\S]*class="jobs-pagination-slot"[\s\S]*id="jobsPaginationTop"/);
+  assert.match(css,/\.jobs-results-toolbar\{display:grid;grid-template-columns:minmax\(0,1fr\) minmax\(max-content,auto\)[^}]*margin-top:28px;margin-bottom:20px\}/);
+  assert.match(css,/\.jobs-pagination-slot\{display:flex;min-width:0;justify-content:flex-end\}/);
   assert.match(css,/\.jobs-pagination-top\{margin:0\}/);
   assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
