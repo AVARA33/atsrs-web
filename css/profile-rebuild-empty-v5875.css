@@ -1,0 +1,28 @@
+/* Personal Profile staged rebuild: keep data-bearing legacy DOM intact, but start from a clean canvas. */
+body.personal-mode #profilePage > .panel {
+  width: min(1240px, calc(100% - 40px));
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+body.personal-mode #profilePage > .panel > #accountTitle {
+  margin: 0;
+}
+
+body.personal-mode #profilePage .profile-rebuild-subtitle {
+  display: block !important;
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+body.personal-mode #profilePage > .panel > #userEmail,
+body.personal-mode #profilePage > .panel > .account-tabs,
+body.personal-mode #profilePage > .panel > .account-tab {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  body.personal-mode #profilePage > .panel {
+    width: min(100% - 24px, 1240px);
+  }
+}
