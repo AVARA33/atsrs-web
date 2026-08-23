@@ -29,7 +29,7 @@ assert.match(dashboard, /corporate-personnel-summary-card\{--expiry-signal:var\(
 assert.match(headings, /--atsrs-workspace-heading:var\(--atsrs-brand-green,#22c55e\)/);
 
 for (const [asset, version] of [
-  ['workspace-control-standard-v522.css', '58156'],
+  ['workspace-control-standard-v522.css', '58157'],
   ['workspace-control-standard-v523.css', '58155'],
   ['native-select-theme-v539.css', '58173'],
   ['dark-surface-standard-v58154.css', '58155'],

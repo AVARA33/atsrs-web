@@ -165,6 +165,14 @@ html[data-theme="dark"] body.company-mode #app#app.app:not(.hidden) #profilePage
   outline-offset:2px!important;
 }
 
+/* Keep Profile navigation and centred cards stationary while its tab content changes. */
+html:has(body.personal-mode #app.app:not(.hidden) #profilePage:not(.hidden)){
+  scrollbar-gutter:stable;
+}
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .account-tabs button{
+  font-weight:800!important;
+}
+
 /* Phone controls also have high-specificity legacy navy rules. Keep their shell unified. */
 html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #accountGeneralTab#accountGeneralTab .profile-contact-row .phone-field{
   border-color:var(--atsrs-control-line)!important;
