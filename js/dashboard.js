@@ -462,7 +462,53 @@
         startVerification(button.getAttribute('data-profile-verify')==='whatsapp'?'whatsapp':'mobile',button);
       });
     });
+    var editButton=byId('editProfileBtn');
+    if(editButton&&!editButton.__atsrsProfileEditBound){
+      editButton.__atsrsProfileEditBound=true;
+      editButton.addEventListener('click',function(){setProfileEditMode(true,true)});
+    }
+    var generalTab=byId('accountGeneralTab');
+    if(generalTab&&!generalTab.hasAttribute('data-profile-editing'))setProfileEditMode(false,false);
   }
+  function profileEditableControls(){
+    var root=byId('accountGeneralTab');
+    if(!root)return [];
+    return Array.prototype.slice.call(root.querySelectorAll([
+      '.profile-details-layout input',
+      '.profile-details-layout select',
+      '.profile-contact-row input',
+      '.profile-contact-row select',
+      '.work-availability-grid input',
+      '.work-availability-grid select',
+      '#profileWorkPreferencesToggle',
+      '#profilePhotoInput',
+      '#profilePhotoUploadBtn',
+      '#profilePhotoRemoveBtn',
+      '[data-profile-verify]'
+    ].join(',')));
+  }
+  function setProfileEditMode(editing,focusFirst){
+    var root=byId('accountGeneralTab');
+    if(!root)return;
+    editing=!!editing;
+    root.setAttribute('data-profile-editing',editing?'true':'false');
+    root.classList.toggle('profile-editing',editing);
+    profileEditableControls().forEach(function(control){control.disabled=!editing});
+    var editButton=byId('editProfileBtn'),saveButton=byId('saveProfileBtn');
+    if(editButton){editButton.hidden=editing;editButton.setAttribute('aria-hidden',editing?'true':'false')}
+    if(saveButton){saveButton.hidden=!editing;saveButton.setAttribute('aria-hidden',editing?'false':'true')}
+    if(!editing){
+      var workMenu=byId('profileWorkPreferencesMenu');
+      if(workMenu)workMenu.classList.add('hidden');
+      var workToggle=byId('profileWorkPreferencesToggle');
+      if(workToggle)workToggle.setAttribute('aria-expanded','false');
+    }
+    if(editing&&focusFirst){
+      var first=byId('profileName');
+      if(first)setTimeout(function(){first.focus()},0);
+    }
+  }
+  window.setProfileEditMode=setProfileEditMode;
   function normalizeWorkPreferences(values){
     var allowed=['any','freelance','contract','permanent'];
     var next=(Array.isArray(values)?values:[values]).filter(function(value,index,list){
@@ -610,6 +656,7 @@
     if(saved){
       var confirmed=byId('availabilityConfirmationNote');
       if(confirmed)confirmed.textContent=availabilityStatus==='not_set'?'Not specified':'Confirmed now';
+      setProfileEditMode(false,false);
       showSaved();return true;
     }
     showSaveError();return false;
