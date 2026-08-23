@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=58172/);
+  assert.match(index,/jobs-prototype\.css\?v=58173/);
   assert.match(index,/route-feature-loader\.js\?v=58165/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58165'\)/);
@@ -102,8 +102,8 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/requestAnimationFrame\(focusResults\)/);
   assert.match(runtime,/top=id\('jobsPaginationTop'\)/);
   assert.match(css,/\.jobs-pagination\{[^}]*flex-wrap:nowrap[^}]*justify-content:flex-end[^}]*width:max-content[^}]*margin-left:auto/);
-  assert.match(css,/\.jobs-pagination-top\{margin-top:28px;margin-bottom:20px\}/);
-  assert.match(css,/#jobsPaginationTop\.hidden\+\.jobs-grid\{margin-top:28px\}/);
+  assert.match(css,/\.jobs-pagination-row\{display:grid;grid-template-columns:minmax\(0,1fr\) auto[^}]*margin-top:28px;margin-bottom:20px\}/);
+  assert.match(css,/\.jobs-pagination-top\{margin:0\}/);
   assert.match(css,/\.jobs-pagination-bottom\{margin-top:28px\}/);
   assert.match(css,/\.jobs-page-button\{[^}]*min-width:38px[^}]*height:38px[^}]*min-height:38px/);
   assert.match(css,/\.jobs-page-button\{[^}]*border:0[^}]*background:transparent[^}]*box-shadow:none/);
@@ -184,7 +184,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/control\.matches\('input\[type="checkbox"\]'\)\?control\.checked/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid;gap:12px;margin:0 0 16px/);
-  assert.match(css,/@media\(max-width:600px\)\{\.jobs-secondary-filters\{margin-bottom:0\}\.jobs-pagination-top\{margin-top:20px\}#jobsPaginationTop\.hidden\+\.jobs-grid\{margin-top:20px\}\}/);
+  assert.match(css,/@media\(max-width:600px\)\{\.jobs-secondary-filters\{margin-bottom:0\}\}/);
 });
 
 test('Jobs supports persistent accessible card and list views',()=>{
@@ -286,9 +286,9 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
 });
 
 test('Jobs view controls and inline notice use the approved palettes',()=>{
-  assert.match(css,/\.jobs-notice\{[^}]*width:max-content[^}]*border:1px solid rgba\(34,197,94,\.22\)[^}]*background:rgba\(34,197,94,\.055\)/);
+  assert.match(css,/\.jobs-notice\{[^}]*width:max-content[^}]*border:1px solid rgba\(34,197,94,\.32\)[^}]*background:transparent/);
   assert.match(css,/\.jobs-notice>a:focus-visible\{outline:2px solid currentColor/);
-  assert.match(css,/html\[data-theme="light"\] \.jobs-notice\{border-color:rgba\(37,99,235,\.18\);background:rgba\(37,99,235,\.045\);color:#2563b7\}/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-notice\{border-color:rgba\(37,99,235,\.28\);background:transparent;color:#2563b7\}/);
   assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);

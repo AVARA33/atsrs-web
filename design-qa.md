@@ -796,6 +796,32 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch fee notice relocation — Design QA
+
+- Scope: the existing candidate-fee notice and top pagination row on JobSearch only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-df9324f3-2cf2-40be-bcb6-1a825d56d97a.png`.
+- Dark implementation: `tests/artifacts/jobs-fee-notice-relocated-dark.png`.
+- Light implementation: `tests/artifacts/jobs-fee-notice-relocated-light.png`.
+- Source pixels: 3439 × 1368; implementation viewport: 1265 × 712.
+
+## Visual comparison
+
+- The notice now occupies the previously empty horizontal space below the filters and to the left of the top pagination.
+- The notice and pagination share one responsive grid row; job cards begin immediately below it.
+- The notice interior is transparent in both themes. Only the outer border carries the theme accent: restrained green in dark mode and blue in light mode.
+- Existing icon, copy, billing-terms link, filter controls, pagination behavior, card layout, typography and spacing remain unchanged.
+- Desktop geometry: notice `x=51.20`, `y=345.47`, `w=573.90`, `h=54.67`; pagination `x=887.47`, `y=353.80`, `w=326`, `h=38`.
+- Page-level horizontal overflow: 0 in dark and light modes.
+- The component remained legible in the full-page captures, so a separate focused crop was not required.
+
+## Interaction and regression checks
+
+- The Billing Terms link remains interactive and keeps its existing destination.
+- Top pagination remains aligned and functional; responsive widths stack the notice and pagination without changing their content.
+- Focused JobSearch notice and pagination tests passed. The only failure in the broader legacy Jobs test is the already-tracked stale `shell-polish.css` asset-version assertion and is unrelated to this change.
+
+Final result: passed.
+
 # Quick Actions neutral dark surface — Design QA
 
 - Scope: unselected Personal Dashboard Quick Action controls in dark mode only.
