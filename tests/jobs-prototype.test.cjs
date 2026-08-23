@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=58171/);
+  assert.match(index,/jobs-prototype\.css\?v=58172/);
   assert.match(index,/route-feature-loader\.js\?v=58165/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58165'\)/);
@@ -58,9 +58,9 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter organisation/);
   assert.doesNotMatch(runtime,/jobsManageButton|jobs-manage-button/);
-  assert.doesNotMatch(runtime,/No candidate commission|job-fee-note/);
-  assert.equal((index.match(/No candidate commission\./g)||[]).length,1);
-  assert.match(index,/class="jobs-notice" role="note"[\s\S]*ph-warning[\s\S]*No candidate commission\./);
+  assert.doesNotMatch(runtime,/No candidate placement fee|job-fee-note/);
+  assert.equal((index.match(/No candidate placement fee/g)||[]).length,1);
+  assert.match(index,/class="jobs-notice" role="note"[\s\S]*ph-shield-check[\s\S]*No candidate placement fee[\s\S]*billing-terms\.html#candidate-fees/);
   assert.doesNotMatch(css,/job-fee-note/);
   assert.doesNotMatch(runtime,/ryan\.webster|ellie\.malim|cheryl\.nicolson/);
   assert.match(runtime,/Recruiter email/);
@@ -286,9 +286,9 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
 });
 
 test('Jobs view controls and inline notice use the approved palettes',()=>{
-  assert.match(css,/\.jobs-notice\{[^}]*width:max-content[^}]*padding:0[^}]*border:0[^}]*background:transparent[^}]*color:#bd6b72/);
-  assert.match(css,/html\[data-theme="light"\] \.jobs-notice\{color:#9f3f49\}/);
-  assert.match(css,/html\[data-theme="light"\] \.jobs-notice p\{color:#9f3f49!important\}/);
+  assert.match(css,/\.jobs-notice\{[^}]*width:max-content[^}]*border:1px solid rgba\(34,197,94,\.22\)[^}]*background:rgba\(34,197,94,\.055\)/);
+  assert.match(css,/\.jobs-notice>a:focus-visible\{outline:2px solid currentColor/);
+  assert.match(css,/html\[data-theme="light"\] \.jobs-notice\{border-color:rgba\(37,99,235,\.18\);background:rgba\(37,99,235,\.045\);color:#2563b7\}/);
   assert.match(css,/#jobsPage \.jobs-view-switch\{[^}]*border-color:transparent!important[^}]*background:#050706!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\{[^}]*min-height:44px!important[^}]*border:0!important/);
   assert.match(css,/#jobsPage \.jobs-view-switch button\[aria-pressed="true"\]::after/);

@@ -55,6 +55,10 @@ for (const page of ['billing-terms.html', 'refund-policy.html']) {
   assert.match(pricing, new RegExp(page.replace('.', '\\.')));
 }
 assert.match(terms, /Billing is currently not active/);
+assert.match(terms, /id="candidate-fees"/);
+assert.match(terms, /ATSRS does not charge candidates any commission or placement fee/);
+assert.match(terms, /Optional subscriptions, plan upgrades, add-on storage, AI credits and other paid platform features are separate service charges/);
+assert.match(terms, /This statement applies only to charges made by ATSRS/);
 assert.match(refunds, /No paid checkout is currently active/);
 
 console.log('ATSRS bank-agnostic billing foundation contract passed.');
