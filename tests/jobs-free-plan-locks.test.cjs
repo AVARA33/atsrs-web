@@ -18,11 +18,13 @@ test('Free job access is fail-closed and Bronze/full access is server-driven',()
 
 test('Free cards and details replace premium contact tools with one accessible Bronze gate',()=>{
   assert.match(runtime,/function lockedJobAccess\(\)/);
-  assert.match(runtime,/ph ph-lock-key/);
+  assert.match(runtime,/ph ph-key/);
+  assert.doesNotMatch(runtime,/Available with Bronze|Unlock recruiter contacts and application tools\./);
   assert.match(runtime,/Recruiter details/);
   assert.match(runtime,/Contact information/);
   assert.match(runtime,/Direct Apply/);
   assert.match(runtime,/Original source link/);
+  assert.match(runtime,/Press to unlock/);
   assert.match(runtime,/link\.href='\/pricing\.html#bronze'/);
   assert.match(runtime,/View Bronze plan to unlock recruiter contacts and application tools/);
   assert.match(runtime,/if\(!hasFullJobAccess\(forceFull\)\)contacts\.append\(lockedJobAccess\(\)\)/);

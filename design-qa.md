@@ -796,6 +796,29 @@ final result: passed
 
 Final result: passed.
 
+# Free-plan job access gate refinement — Design QA
+
+- Scope: locked recruiter/contact/application controls on Personal JobSearch cards.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-033c391c-8507-4ec2-b3b3-ead8f22c2be0.png` and `C:\Users\user\AppData\Local\Temp\codex-clipboard-9f989e5d-9d3c-4d25-a76b-51c1ffef009b.png`.
+- Browser fixture: `tests/fixtures/jobs-prototype-harness.html` at desktop width in dark and light modes.
+
+## Visual comparison
+
+- Removed the large repeated “Available with Bronze” header/copy block so the gate is compact.
+- Each of the four locked feature boxes now carries the same key symbol at the left edge.
+- The action label is exactly “Press to unlock”; its existing Bronze pricing destination is unchanged.
+- Dark mode retains restrained green accents on the gate and keys; light mode uses the existing blue theme treatment.
+- Card widths, internal scrolling, job data, filters and surrounding layout remain unchanged.
+
+## Interaction and regression checks
+
+- Semantic snapshot confirmed four key-marked locked items per Free-plan card.
+- The unlock action remains a link to `/pricing.html#bronze` with an explanatory accessible label.
+- Dark and light visual checks passed without duplicate header content or layout overflow.
+- Focused Free-plan lock tests and Cloudflare Pages build passed.
+
+Final result: passed.
+
 # JobSearch fee notice relocation — Design QA
 
 - Scope: the existing candidate-fee notice and top pagination row on JobSearch only.
