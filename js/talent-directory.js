@@ -1097,7 +1097,7 @@
     });
     window.addEventListener('atsrs:identity-photo-hydrated',handleIdentityPhotoHydrated);
     window.addEventListener('atsrs:profile-photo-changed',handleProfilePhotoChanged);
-    setInterval(function(){if(mode()==='personal')touchOwnProfile(false)},300000);
+    atsrsStableInterval(function(){if(mode()==='personal')return touchOwnProfile(false)},300000);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
   window.atsrsTalentAvailability=availability;

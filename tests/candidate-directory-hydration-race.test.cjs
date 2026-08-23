@@ -17,7 +17,7 @@ assert.match(client, /setTimeout\(function\(\)\{\s*if\(mode\(\)==='personal'\)\{
   'startup activity must not perform a full projection overwrite');
 assert.match(client, /atsrs:resume[\s\S]*?touchOwnProfile\(false\)/,
   'resume activity must not perform a full projection overwrite');
-assert.match(client, /setInterval\(function\(\)\{if\(mode\(\)==='personal'\)touchOwnProfile\(false\)/,
+assert.match(client, /atsrsStableInterval\(function\(\)\{if\(mode\(\)==='personal'\)return touchOwnProfile\(false\)/,
   'periodic activity must not perform a full projection overwrite');
 
 assert.match(migration, /authoritative_visibility := source_profile ->> 'visibility'/,

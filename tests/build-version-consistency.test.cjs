@@ -15,7 +15,6 @@ assert.equal(version, 'V564');
 assert.equal(update, '16 Aug 2026');
 
 for (const asset of [
-  'stability-runtime.js',
   'stable-id-compatibility-config.js',
   'stable-id-compatibility-runtime.js',
   'normalized-write-canary-config.js',
@@ -29,6 +28,8 @@ for (const asset of [
 ]) {
   assert.match(index, new RegExp(`src="js/${asset.replace('.', '\\.')}\\?v=409"`));
 }
+
+assert.match(index, /src="js\/stability-runtime\.js\?v=410"/);
 
 assert.match(index, /src="js\/dashboard\.js\?v=420"/);
 assert.match(index, /href="css\/dashboard\.css\?v=447"/);
@@ -67,7 +68,7 @@ assert.match(index, /href="css\/product-experience\.css\?v=447"/);
 assert.doesNotMatch(index, /src="js\/product-experience\.js\?v=447"/);
 assert.match(index, /src="js\/route-feature-loader\.js\?v=569"/);
 assert.match(routeFeatureLoader, /loadScript\('js\/product-experience\.js\?v=447'\)/);
-assert.match(index, /src="js\/talent-directory\.js\?v=519"/);
+assert.match(index, /src="js\/talent-directory\.js\?v=576"/);
 assert.match(index, /src="js\/corporate-reporting\.js\?v=519"/);
 assert.match(index, /href="css\/workspace-surface-standard-v519\.css\?v=519"/);
 assert.match(index, /href="css\/workspace-heading-standard-v520\.css\?v=58156"/);

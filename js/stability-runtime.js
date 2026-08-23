@@ -6,6 +6,8 @@
   var wakeTimer=0;
   var recoveryTimer=0;
   var buildObserver=null;
+  var performanceObservers=[];
+  var performanceObserverTimer=0;
   var requestFlights=new Map();
   var BUILD='ATSRS '+String(document.documentElement.dataset.atsrsBuild||'').trim();
   var UPDATE='Last Update: '+String(document.documentElement.dataset.atsrsUpdate||'').trim();
@@ -36,7 +38,18 @@
         publishPerformanceMetrics();
       });
       observer.observe(Object.assign({type:type,buffered:true},options||{}));
+      performanceObservers.push(observer);
     }catch(_error){}
+  }
+  function stopPerformanceMetrics(){
+    if(performanceObserverTimer){
+      clearTimeout(performanceObserverTimer);
+      performanceObserverTimer=0;
+    }
+    performanceObservers.forEach(function(observer){
+      try{observer.disconnect();}catch(_error){}
+    });
+    performanceObservers.length=0;
   }
   function installPerformanceMetrics(){
     publishPerformanceMetrics();
@@ -65,6 +78,10 @@
         publishPerformanceMetrics();
       },0);
     });
+    // These metrics describe startup responsiveness. Keeping Blink performance
+    // observers attached for an entire authenticated work session adds no product
+    // value and needlessly extends native renderer instrumentation.
+    performanceObserverTimer=setTimeout(stopPerformanceMetrics,60000);
   }
   function singleFlight(key,operation){
     var flightKey=String(key||'default');
@@ -188,5 +205,5 @@
   document.addEventListener('visibilitychange',function(){if(visible())resumeTasks();else clearWake();});
   window.addEventListener('pageshow',resumeTasks);
   window.addEventListener('online',resumeTasks);
-  window.addEventListener('pagehide',clearWake);
+  window.addEventListener('pagehide',function(){clearWake();stopPerformanceMetrics();});
 })();
