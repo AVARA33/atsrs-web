@@ -702,6 +702,16 @@
     setVal('profileCountry',p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
     setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate); setVal('profileAddress',p.address);
+    var identityName=byId('profileIdentityName');
+    if(identityName)identityName.textContent=((p.name||'')+' '+(p.surname||'')).trim()||'Personal profile';
+    var identityRole=byId('profileIdentityRole');
+    if(identityRole)identityRole.textContent=p.position||'Professional';
+    var identityEmail=byId('profileIdentityEmail');
+    if(identityEmail)identityEmail.textContent=(byId('userEmail')&&byId('userEmail').textContent)||'';
+    var identityCountry=byId('profileIdentityCountry');
+    if(identityCountry)identityCountry.textContent=p.country||'Country not specified';
+    var identityWorkplace=byId('profileIdentityWorkplace');
+    if(identityWorkplace)identityWorkplace.textContent=p.company||'Workplace not specified';
     setVerificationText('profilePhoneVerifiedText',!!p.phoneVerified);
     setVerificationText('profileWhatsappVerifiedText',!!p.whatsappVerified);
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');

@@ -14,7 +14,7 @@ assert.match(css, /background:var\(--atsrs-control-accent\)!important/);
 assert.match(css, /#profilePage#profilePage \.account-tabs button\.active,[\s\S]*?background:var\(--atsrs-control-surface\)!important;[\s\S]*?color:var\(--atsrs-control-accent\)!important;[\s\S]*?box-shadow:0 0 0 3px rgba\(34,197,94,\.15\)!important/);
 assert.match(css, /html:has\(body:where\(\.personal-mode,\.company-mode\) #app\.app:not\(\.hidden\) #profilePage:not\(\.hidden\)\)\{[\s\S]*?scrollbar-gutter:stable/);
 assert.match(css, /body:where\(\.personal-mode,\.company-mode\) #app#app\.app:not\(\.hidden\) #profilePage#profilePage \.account-tabs button\{[\s\S]*?font-weight:800!important/);
-assert.match(index, /id="editProfileBtn" type="button">Edit profile<\/button>/);
+assert.match(index, /id="editProfileBtn" type="button" class="profile-compact-edit">[\s\S]*?<span>Edit<\/span><\/button>/);
 assert.match(index, /id="saveProfileBtn"[^>]*hidden>Save profile<\/button>/);
 assert.match(css, /#accountGeneralTab\[data-profile-editing="false"\][\s\S]*?:disabled\{[\s\S]*?opacity:1!important/);
 assert.match(css, /:not\(\.active\)[\s\S]*:hover/);

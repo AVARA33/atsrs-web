@@ -7,7 +7,7 @@ const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const dashboard=fs.readFileSync(path.join(root,'js','dashboard.js'),'utf8');
 
 assert.match(index,/js\/dashboard\.js\?v=421/);
-assert.match(index,/id="editProfileBtn" type="button">Edit profile<\/button>/);
+assert.match(index,/id="editProfileBtn" type="button" class="profile-compact-edit">[\s\S]*?<span>Edit<\/span><\/button>/);
 assert.match(index,/id="saveProfileBtn" type="button" onclick="saveProfile\(\)" hidden>Save profile<\/button>/);
 assert.match(dashboard,/function setProfileEditMode\(editing,focusFirst\)/);
 assert.match(dashboard,/profileEditableControls\(\)\.forEach\(function\(control\)\{control\.disabled=!editing\}\)/);

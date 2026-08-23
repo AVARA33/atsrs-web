@@ -1,0 +1,222 @@
+/* ATSRS Personal Profile — phased rebuild, stage 1.
+   This file owns the General tab's Personal Information surface so legacy
+   profile rules cannot stack visual treatments over the new component. */
+body.personal-mode #profilePage > .panel{
+  width:min(100%,1240px)!important;
+  max-width:1240px!important;
+  margin:0 auto!important;
+}
+body.personal-mode #profilePage #accountTitle{
+  margin:0!important;
+  color:var(--text,#f4f7fb)!important;
+}
+body.personal-mode #profilePage .profile-page-subtitle{
+  margin:6px 0 0!important;
+  color:var(--muted,#9aabbd)!important;
+  font-size:14px!important;
+}
+body.personal-mode #profilePage #userEmail{display:none!important}
+body.personal-mode #profilePage #accountGeneralTab{
+  width:100%!important;
+  max-width:none!important;
+}
+body.personal-mode #profilePage .account-tabs{
+  width:100%!important;
+  max-width:none!important;
+  min-height:48px!important;
+  margin:20px 0!important;
+  padding:0!important;
+  border-bottom:1px solid var(--border,#22303a)!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:10px!important;
+}
+body.personal-mode #profilePage .account-tabs button{
+  width:166px!important;
+  min-width:166px!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:0 18px!important;
+  border-radius:10px 10px 0 0!important;
+}
+body.personal-mode #profilePage #accountTabSecurityBtn{display:none!important}
+body.personal-mode #profilePage .profile-personal-information-card{
+  width:100%!important;
+  max-width:none!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:1px solid var(--border,#22303a)!important;
+  border-radius:14px!important;
+  background:var(--panel,#080d11)!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage .profile-personal-information-head{
+  min-height:52px!important;
+  padding:0 20px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  border-bottom:1px solid var(--border,#22303a)!important;
+}
+body.personal-mode #profilePage .profile-personal-information-head h4{
+  margin:0!important;
+  color:var(--text,#f4f7fb)!important;
+  font-size:16px!important;
+  font-weight:800!important;
+}
+body.personal-mode #profilePage .profile-compact-edit{
+  width:auto!important;
+  min-width:72px!important;
+  height:34px!important;
+  min-height:34px!important;
+  padding:0 12px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  border:1px solid var(--border,#2a3945)!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  color:var(--text,#f4f7fb)!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage .profile-compact-edit:hover,
+body.personal-mode #profilePage .profile-compact-edit:focus-visible{
+  border-color:var(--accent,#22c55e)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#22c55e) 18%,transparent)!important;
+}
+body.personal-mode #profilePage .profile-general-head{
+  margin:0!important;
+  padding:18px 20px!important;
+  display:block!important;
+  border-bottom:1px solid var(--border,#22303a)!important;
+}
+body.personal-mode #profilePage .profile-photo-card{
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  grid-template-columns:126px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:22px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage .profile-photo-preview{
+  width:118px!important;
+  height:118px!important;
+  border-radius:50%!important;
+}
+body.personal-mode #profilePage .profile-photo-copy{min-width:0!important}
+body.personal-mode #profilePage .profile-identity-title-row{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:10px!important;
+  margin-bottom:8px!important;
+}
+body.personal-mode #profilePage .profile-identity-title-row h4{
+  margin:0!important;
+  color:var(--text,#f4f7fb)!important;
+  font-size:19px!important;
+  font-weight:800!important;
+}
+body.personal-mode #profilePage .profile-identity-role{
+  padding:4px 9px!important;
+  border-radius:999px!important;
+  color:var(--accent,#22c55e)!important;
+  background:color-mix(in srgb,var(--accent,#22c55e) 12%,transparent)!important;
+  font-size:12px!important;
+}
+body.personal-mode #profilePage .profile-identity-line{
+  margin:4px 0!important;
+  color:var(--muted,#9aabbd)!important;
+  font-size:13px!important;
+}
+body.personal-mode #profilePage .profile-photo-actions{
+  margin-top:10px!important;
+}
+body.personal-mode #profilePage #accountGeneralTab[data-profile-editing="false"] .profile-photo-actions,
+body.personal-mode #profilePage #accountGeneralTab[data-profile-editing="false"] .profile-photo-status{
+  display:none!important;
+}
+body.personal-mode #profilePage .profile-grid{
+  margin:0!important;
+  padding:18px 20px 20px!important;
+  display:block!important;
+}
+body.personal-mode #profilePage .profile-details-layout{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+body.personal-mode #profilePage .profile-details-group{display:contents!important}
+body.personal-mode #profilePage .profile-labeled-field,
+body.personal-mode #profilePage .phone-entry{
+  min-width:0!important;
+  margin:0!important;
+  padding:10px 12px!important;
+  border:1px solid var(--border,#22303a)!important;
+  border-radius:10px!important;
+  background:var(--surface,#0b1116)!important;
+}
+body.personal-mode #profilePage .profile-labeled-field > span,
+body.personal-mode #profilePage .phone-entry-label{
+  color:var(--muted,#9aabbd)!important;
+  font-size:11px!important;
+}
+body.personal-mode #profilePage .profile-labeled-field input,
+body.personal-mode #profilePage .profile-labeled-field select{
+  width:100%!important;
+  height:30px!important;
+  min-height:30px!important;
+  padding:2px 4px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage .profile-contact-row{
+  margin-top:16px!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+body.personal-mode #profilePage .phone-field{
+  margin-top:6px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.personal-mode #profilePage .phone-verification-note{margin-top:8px!important}
+body.personal-mode #profilePage .work-availability-card,
+body.personal-mode #profilePage #adminOverviewPanel{display:none!important}
+body.personal-mode #profilePage .profile-save-row{
+  min-height:58px!important;
+  margin:0!important;
+  padding:10px 20px!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  gap:12px!important;
+  border-top:1px solid var(--border,#22303a)!important;
+}
+body.personal-mode #profilePage #saveProfileBtn{
+  width:auto!important;
+  min-width:132px!important;
+  min-height:38px!important;
+}
+html[data-theme="light"] body.personal-mode #profilePage .profile-personal-information-card,
+html[data-theme="light"] body.personal-mode #profilePage .profile-labeled-field,
+html[data-theme="light"] body.personal-mode #profilePage .phone-entry{
+  background:var(--panel,#fff)!important;
+}
+@media(max-width:900px){
+  body.personal-mode #profilePage .profile-details-layout{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+  body.personal-mode #profilePage .account-tabs button{width:50%!important;min-width:0!important}
+  body.personal-mode #profilePage .profile-photo-card{grid-template-columns:84px minmax(0,1fr)!important;gap:14px!important}
+  body.personal-mode #profilePage .profile-photo-preview{width:78px!important;height:78px!important}
+  body.personal-mode #profilePage .profile-details-layout,
+  body.personal-mode #profilePage .profile-contact-row{grid-template-columns:1fr!important}
+}
