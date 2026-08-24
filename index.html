@@ -121,7 +121,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5885">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5886">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1358,14 +1358,15 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </article>
   <section class="profile-information-section" aria-labelledby="profile-information-title">
     <div class="profile-information-tabs" role="tablist" aria-label="Profile settings sections">
-      <button class="is-active" type="button" role="tab" aria-selected="true">Personal Information</button>
-      <button type="button" role="tab" aria-selected="false" aria-disabled="true">Privacy</button>
-      <button type="button" role="tab" aria-selected="false" aria-disabled="true">Sharing</button>
-      <button type="button" role="tab" aria-selected="false" aria-disabled="true">Security</button>
+      <button id="profileTabPersonalBtn" class="is-active" type="button" role="tab" aria-selected="true" aria-controls="profileTabPersonalPanel" tabindex="0">Personal Information</button>
+      <button id="profileTabPrivacyBtn" type="button" role="tab" aria-selected="false" aria-controls="profileTabPrivacyPanel" tabindex="-1">Privacy</button>
+      <button id="profileTabSharingBtn" type="button" role="tab" aria-selected="false" aria-controls="profileTabSharingPanel" tabindex="-1">Sharing</button>
+      <button id="profileTabSecurityBtn" type="button" role="tab" aria-selected="false" aria-controls="profileTabSecurityPanel" tabindex="-1">Security</button>
     </div>
-    <article class="profile-information-card" role="tabpanel">
+    <div class="profile-settings-viewport">
+    <article id="profileTabPersonalPanel" class="profile-information-card profile-settings-panel is-active" role="tabpanel" aria-labelledby="profileTabPersonalBtn">
       <h4 id="profile-information-title">Personal Information</h4>
-      <div class="profile-information-grid">
+      <div id="profilePersonalReadView" class="profile-information-grid">
         <div class="profile-information-field"><span>Name</span><strong id="profileStageName">—</strong></div>
         <div class="profile-information-field"><span>Surname</span><strong id="profileStageSurname">—</strong></div>
         <div class="profile-information-field has-icon"><span>Date of birth</span><strong id="profileStageBirthDate">—</strong><i class="ph ph-calendar-blank" aria-hidden="true"></i></div>
@@ -1378,7 +1379,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div class="profile-information-contact"><i class="ph ph-phone" aria-hidden="true"></i><div><span>Mobile phone</span><strong id="profileStagePhone">—</strong></div><em id="profileStagePhoneVerification">Not verified</em><button type="button" data-profile-stage-edit="phone" aria-label="Edit mobile phone"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div>
         <div class="profile-information-contact"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><div><span>WhatsApp number</span><strong id="profileStageWhatsapp">—</strong></div><em id="profileStageWhatsappVerification">Not verified</em><button type="button" data-profile-stage-edit="whatsapp" aria-label="Edit WhatsApp number"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div>
       </div>
+      <div id="profileInlineEditor" class="profile-inline-editor hidden" aria-label="Edit personal information"></div>
     </article>
+    <article id="profileTabPrivacyPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabPrivacyBtn" hidden><h4>Privacy</h4><div id="profilePrivacyControls" class="profile-settings-list"></div></article>
+    <article id="profileTabSharingPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSharingBtn" hidden><h4>Sharing</h4><div id="profileSharingControls" class="profile-settings-list"></div></article>
+    <article id="profileTabSecurityPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden><h4>Security</h4><div id="profileSecurityControls" class="profile-settings-list"></div></article>
+    </div>
   </section>
   <article class="profile-calendar-card" aria-labelledby="profile-calendar-title">
     <div class="profile-calendar-heading"><h4 id="profile-calendar-title"><i class="ph ph-calendar-blank" aria-hidden="true"></i>Calendar</h4><div class="profile-calendar-nav" aria-label="Calendar navigation"><button id="profileCalendarPrev" type="button" aria-label="Previous month"><i class="ph ph-caret-left"></i></button><strong id="profileCalendarMonth">—</strong><button id="profileCalendarNext" type="button" aria-label="Next month"><i class="ph ph-caret-right"></i></button></div></div>
@@ -1651,6 +1657,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </div>
       </div>
     </div>
+    <label>
+      <span>Notice period</span>
+      <input id="profileAvailabilityNoticePeriod" autocomplete="off" placeholder="Not specified">
+    </label>
   </div>
   <div id="workAvailabilityStatus" class="work-availability-status" role="status"></div>
 </div>
@@ -2001,7 +2011,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
 <script src="js/login.js?v=568"></script>
-<script src="js/dashboard.js?v=425"></script>
+<script src="js/dashboard.js?v=426"></script>
 <script src="js/avatar.js?v=376"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
@@ -2027,6 +2037,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/floating-fields.js?v=58185"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=568"></script>
+<script src="js/profile-workspace-v5886.js?v=5886"></script>
 <script src="js/route-feature-loader.js?v=58175"></script>
 
 

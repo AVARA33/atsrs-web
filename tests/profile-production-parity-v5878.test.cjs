@@ -7,8 +7,8 @@ const dashboard=fs.readFileSync('js/dashboard.js','utf8');
 const storage=fs.readFileSync('js/storage.js','utf8');
 
 assert.match(index,/data-atsrs-build="V5878" data-atsrs-update="24 Aug 2026"/);
-assert.match(index,/profile-production-parity-v5878\.css\?v=5885/);
-assert.match(index,/dashboard\.js\?v=425/);
+assert.match(index,/profile-production-parity-v5878\.css\?v=5886/);
+assert.match(index,/dashboard\.js\?v=426/);
 assert.match(index,/corporate-remediation\.js\?v=481/);
 assert.match(index,/id="cancelProfileBtn"[^>]*hidden>Cancel<\/button>/);
 assert.equal((index.match(/data-profile-stage-edit=/g)||[]).length,2);
@@ -21,8 +21,8 @@ assert.match(css,/\.profile-information-tabs button \{[\s\S]*?width: auto !impor
 assert.match(css,/\.profile-calendar-nav button \{[\s\S]*?width: 32px !important;[\s\S]*?height: 32px !important;/);
 assert.match(css,/\.profile-summary-card,[\s\S]*?\.profile-account-status[\s\S]*?box-shadow: none !important;/);
 assert.match(css,/\.profile-information-contact button \{[\s\S]*?width: 24px !important;[\s\S]*?height: 24px !important;/);
-assert.match(css,/#profilePage\.profile-editing > \.panel > \.profile-summary-stage/);
-assert.match(css,/#profilePage\.profile-editing > \.panel > \.account-tab\.active/);
+assert.doesNotMatch(css,/#profilePage\.profile-editing > \.panel > \.profile-summary-stage/);
+assert.match(css,/\.profile-settings-viewport/);
 assert.match(css,/data-atsrs-account-route="profile"[\s\S]*?#pageTitle/);
 assert.match(css,/\.profile-summary-role, \.profile-summary-verified\) \{[\s\S]*?white-space: nowrap;/);
 assert.match(css,/@media \(max-width: 1180px\) \{[\s\S]*?\.profile-summary-stage \{[\s\S]*?grid-template-columns: 1fr;/);

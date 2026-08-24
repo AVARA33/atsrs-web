@@ -623,7 +623,8 @@
     s.textContent='Could not save. Check your connection and try again.';
     s.classList.add('error','active');
   }
-  window.saveProfile=async function(){
+  window.saveProfile=async function(options){
+    options=options||{};
     var availabilityStatus=val('profileAvailabilityStatus')||'not_set';
     var availableFrom=val('profileAvailableFrom');
     var availabilityMessage=byId('workAvailabilityStatus');
@@ -632,8 +633,9 @@
       return false;
     }
     if(availabilityMessage)availabilityMessage.textContent='';
-    var confirmedAt=new Date().toISOString();
     var existing=readJson(PROFILE_KEY,{});
+    var savedAt=new Date().toISOString();
+    var confirmedAt=options.availabilityChanged?savedAt:(existing.availabilityConfirmedAt||'');
     var phoneParts=updatePhoneHidden('profilePhone');
     var whatsappParts=updatePhoneHidden('profileWhatsapp');
     var data={
@@ -653,8 +655,9 @@
       availableFrom:availabilityStatus==='available_from'?availableFrom:'',
       workPreferences:selectedWorkPreferences(),
       workPreference:selectedWorkPreferences()[0]||'any',
+      noticePeriod:val('profileAvailabilityNoticePeriod'),
       availabilityConfirmedAt:confirmedAt,
-      savedAt:confirmedAt
+      savedAt:savedAt
     };
     if(profileCoreScore(existing)>=2)storeProfileBackup(existing,'before_profile_save');
     if(profileCoreScore(data)===0&&profileCoreScore(existing)>=2){
@@ -720,6 +723,7 @@
     setVal('profileTimezone',p.timezone||'UTC'); setVal('profileVisibility',p.visibility||'Private');
     setVal('profileAvailabilityStatus',p.availabilityStatus||'not_set');
     setVal('profileAvailableFrom',p.availableFrom||'');
+    setVal('profileAvailabilityNoticePeriod',p.noticePeriod||p.availabilityNoticePeriod||'');
     setWorkPreferences(p.workPreferences||p.workPreference||'any');
     bindAvailabilityControls();updateAvailabilityControls();
     var confirmed=byId('availabilityConfirmationNote');
@@ -770,23 +774,13 @@
   function bindProfileCalendar(){var prev=byId('profileCalendarPrev'),next=byId('profileCalendarNext');if(prev&&!prev.dataset.bound){prev.dataset.bound='true';prev.addEventListener('click',function(){profileCalendarCursor=new Date(profileCalendarCursor.getFullYear(),profileCalendarCursor.getMonth()-1,1);renderProfileCalendar();});}if(next&&!next.dataset.bound){next.dataset.bound='true';next.addEventListener('click',function(){profileCalendarCursor=new Date(profileCalendarCursor.getFullYear(),profileCalendarCursor.getMonth()+1,1);renderProfileCalendar();});}renderProfileCalendar();}
   function updateProfileStageMfa(){var client=window.supabaseClient;if(!client||!client.auth||!client.auth.mfa||typeof client.auth.mfa.listFactors!=='function'){profileStageSetStatus('profileStageMfaStatus',false,'Enabled','Not enabled');return;}client.auth.mfa.listFactors().then(function(result){var data=result&&result.data||{},factors=[].concat(data.all||[],data.totp||[],data.phone||[]);profileStageSetStatus('profileStageMfaStatus',factors.some(function(item){return item&&item.status==='verified';}),'Enabled','Not enabled');}).catch(function(){profileStageSetStatus('profileStageMfaStatus',false,'Enabled','Not enabled');});}
   function updateProfileStage(p){p=p||{};var accountTitle=byId('accountTitle');if(accountTitle&&document.body&&document.body.classList.contains('personal-mode'))accountTitle.textContent='Profile';var user=window.currentUser||{},phone=p.phone||[(p.phoneCountryCode||''),(p.phoneLocal||'')].filter(Boolean).join(' '),whatsapp=p.whatsapp||[(p.whatsappCountryCode||''),(p.whatsappLocal||'')].filter(Boolean).join(' '),confirmed=byId('profileStageAvailabilityConfirmed');
+    if(window.initPersonalProfileWorkspace)window.initPersonalProfileWorkspace();
     [['profileStageName',p.name],['profileStageSurname',p.surname],['profileStageBirthDate',profileStageDisplayDate(p.birthDate)],['profileStageNationality',p.country],['profileStageCompany',p.company],['profileStagePosition',p.position],['profileStageAddress',p.address],['profileStageZip',p.zipCode],['profileStageCountry',p.country],['profileStagePhone',phone],['profileStageWhatsapp',whatsapp],['profileStageAvailabilityStatus',profileStageAvailabilityLabel(p.availabilityStatus||'not_set')],['profileStageAvailableFrom',profileStageDisplayDate(p.availableFrom)],['profileStageWorkType',profileStageWorkLabel(p.workPreferences||p.workPreference||'any')],['profileStageNoticePeriod',p.noticePeriod||p.availabilityNoticePeriod||'Not specified']].forEach(function(item){profileStageSetText(item[0],item[1]);});
     if(confirmed)confirmed.textContent=p.availabilityConfirmedAt?'Confirmed '+profileStageDisplayDate(p.availabilityConfirmedAt):'Not confirmed';
     profileStageSetStatus('profileStagePhoneVerification',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappVerification',!!p.whatsappVerified,'Verified','Not verified');profileStageSetStatus('profileStageEmailStatus',!!user.email_confirmed_at,'Verified','Not verified');profileStageSetStatus('profileStageMobileStatus',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappStatus',!!p.whatsappVerified,'Verified','Not verified');
-    var certs=readJson('certs',[]),hasId=Array.isArray(certs)&&certs.some(function(cert){var label=[cert&&cert.name,cert&&cert.title,cert&&cert.certificate].filter(Boolean).join(' ');return /(^|\b)(identity\s*card|id\s*card)(\b|$)/i.test(label);});profileStageSetStatus('profileStageIdStatus',hasId,'Verified','Not verified');
+    var identity=window.atsrsIdentityVerification||null,identityVerified=!!(identity&&identity.status==='verified'&&identity.verifiedAt);profileStageSetStatus('profileStageIdStatus',identityVerified,'Verified','Not verified');
     updateProfileStageMfa();bindProfileCalendar();
   }
-  document.addEventListener('click',function(event){
-    if(!event.target.closest)return;
-    var stageEdit=event.target.closest('[data-profile-stage-edit]');
-    if(event.target.closest('#profileSummaryEditBtn')||event.target.closest('#profileStageAvailabilityEditBtn')||stageEdit){
-      var edit=byId('editProfileBtn');if(edit)edit.click();
-      if(stageEdit){
-        var target=stageEdit.dataset.profileStageEdit==='whatsapp'?'profileWhatsappLocal':'profilePhoneLocal';
-        setTimeout(function(){var field=byId(target);if(field)field.focus();},0);
-      }
-    }
-  });
   document.addEventListener('click',function(event){
     if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();
     if(!event.target.closest||!event.target.closest('#profileWorkPreferences'))setWorkPreferencesMenu(null,false);

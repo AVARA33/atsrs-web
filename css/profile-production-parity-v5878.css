@@ -255,27 +255,59 @@ html[data-theme="light"] body.personal-mode #profilePage :is(
   background: #fff !important;
 }
 
-/* The approved summary and the legacy editor never occupy the page together. */
-body.personal-mode #profilePage.profile-editing > .panel > .profile-summary-stage {
-  display: none !important;
+/* The approved workspace remains visible while only its inner panels change. */
+body.personal-mode #profilePage .profile-settings-viewport {
+  height: 294px;
+  min-height: 294px;
+  max-height: 294px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
 }
 
-body.personal-mode #profilePage.profile-editing > .panel > #userEmail {
-  display: block !important;
+body.personal-mode #profilePage .profile-settings-panel {
+  height: 100%;
+  min-height: 0;
+  padding: 18px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  background: var(--surface);
 }
 
-body.personal-mode #profilePage.profile-editing > .panel > .account-tabs {
-  display: flex !important;
-}
-
-body.personal-mode #profilePage.profile-editing > .panel > .account-tab.active {
-  display: block !important;
-}
+body.personal-mode #profilePage .profile-settings-panel[hidden] { display: none !important; }
+body.personal-mode #profilePage .profile-settings-panel > h4 { margin: 0 0 14px; color: var(--accent); }
+body.personal-mode #profilePage .profile-settings-viewport .profile-information-card { border: 0 !important; border-radius: 0 !important; }
+body.personal-mode #profilePage .profile-inline-editor.hidden,
+body.personal-mode #profilePage .work-availability-card.hidden { display: none !important; }
+body.personal-mode #profilePage .profile-inline-editor .profile-grid { display: block !important; }
+body.personal-mode #profilePage .profile-inline-editor .profile-details-layout,
+body.personal-mode #profilePage .profile-inline-editor .profile-contact-row { margin: 0 !important; }
+body.personal-mode #profilePage .profile-inline-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
+body.personal-mode #profilePage .profile-inline-actions button { width: auto !important; min-width: 112px; margin: 0 !important; }
+body.personal-mode #profilePage .profile-settings-list .setting-row { margin: 0 0 10px; }
+body.personal-mode #profilePage #profileSharingControls #shareProfilePanel { margin: 0 !important; max-height: none !important; border: 0 !important; padding: 0 !important; }
+body.personal-mode #profilePage .profile-availability-card.is-editing > :not(.work-availability-card) { display: none !important; }
+body.personal-mode #profilePage .profile-availability-card .work-availability-card { display: block; height: 100%; padding: 0; border: 0; background: transparent; box-shadow: none; overflow-y: auto; }
+body.personal-mode #profilePage .profile-availability-card .work-availability-heading { display: none; }
+body.personal-mode #profilePage .profile-availability-card .work-availability-grid { grid-template-columns: 1fr; gap: 8px; }
+body.personal-mode #profilePage .profile-availability-card .profile-inline-actions { margin-top: 10px; }
+body.personal-mode #profilePage > .panel > .account-tabs,
+body.personal-mode #profilePage > .panel > .account-tab,
+body.personal-mode #profilePage > .panel > #userEmail { display: none !important; }
 
 @media (max-width: 760px) {
+  body.personal-mode #profilePage .profile-settings-viewport { height: 520px; min-height: 520px; max-height: 520px; }
   body.personal-mode #profilePage .profile-account-status-list > div {
     border-left: 0 !important;
   }
+}
+
+@media (max-width: 520px) {
+  body.personal-mode #profilePage .profile-settings-viewport { height: 580px; min-height: 580px; max-height: 580px; }
+  body.personal-mode #profilePage .profile-settings-panel { padding: 14px; }
+  body.personal-mode #profilePage .profile-inline-actions { position: sticky; bottom: 0; padding-top: 10px; background: var(--surface); }
 }
 
 @media (max-width: 1300px) and (min-width: 1181px) {
