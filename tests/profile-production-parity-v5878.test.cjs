@@ -7,7 +7,7 @@ const dashboard=fs.readFileSync('js/dashboard.js','utf8');
 const storage=fs.readFileSync('js/storage.js','utf8');
 
 assert.match(index,/data-atsrs-build="V5878" data-atsrs-update="24 Aug 2026"/);
-assert.match(index,/profile-production-parity-v5878\.css\?v=5884/);
+assert.match(index,/profile-production-parity-v5878\.css\?v=5885/);
 assert.match(index,/dashboard\.js\?v=425/);
 assert.match(index,/corporate-remediation\.js\?v=481/);
 assert.match(index,/id="cancelProfileBtn"[^>]*hidden>Cancel<\/button>/);
@@ -36,6 +36,6 @@ assert.match(storage,/txt\("accountTitle",isPersonalMode\(\)\?"Profile":ptr\("ac
 assert.match(fs.readFileSync('js/corporate-remediation.js','utf8'),/corporate\?'Corporate Account':'Profile'/);
 
 console.log('Personal Profile production parity contracts passed');
-assert.match(css,/body\.personal-mode #navCompliance\{display:none!important\}/);
+assert.match(css,/body\.personal-mode #app\.app:not\(\.hidden\) \.sidebar \.nav #navCompliance\{display:none!important\}/);
 assert.match(storage,/personal&&\(page==="compliance"\|\|page==="security"\)\)\{page="profile";btn=navProfile;\}/);
 assert.match(storage,/showAccountTab\("general"\)/);
