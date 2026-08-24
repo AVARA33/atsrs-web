@@ -22,6 +22,12 @@
       var profile=parsed.querySelector('#profilePage');
       profile.classList.remove('hidden');
       document.querySelector('.main').appendChild(document.importNode(profile,true));
+      async function loadScript(src){return new Promise(function(resolve,reject){
+        var script=document.createElement('script');script.src=src;script.onload=resolve;script.onerror=reject;document.body.appendChild(script);
+      });}
+      await loadScript('/js/select-standard.js');
+      await loadScript('/js/floating-fields.js');
+      await loadScript('/js/profile-workspace-v5886.js');
       document.querySelector('#accountTitle').textContent='Profile';
       document.documentElement.dataset.theme=location.search.indexOf('light')>=0?'light':'dark';
       document.documentElement.style.visibility='visible';

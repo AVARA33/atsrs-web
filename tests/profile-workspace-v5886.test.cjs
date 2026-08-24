@@ -23,13 +23,16 @@ assert.match(js,/nationality\.setAttribute\('data-atsrs-no-field-shell','true'\)
 assert.match(js,/nationalityStrong\.id='profileInlineNationalityValue'/);
 assert.match(js,/nationality\.addEventListener\('input'/);
 assert.match(js,/profile-nationality-caret/);
+assert.match(js,/profileInlineCountryResidence/);
+assert.match(js,/profileInlineCompany/);
+assert.doesNotMatch(js,/profile-country-menu/);
 assert.match(js,/boxes\[3\]\.querySelectorAll\('i'\)\.forEach/);
 assert.doesNotMatch(css,/\.profile-nationality-select > i \{ display: block !important;/);
-assert.match(css,/#profileInlineNationality \{/);
+assert.match(css,/:is\(#profileInlineNationality,#profileInlineCountryResidence,#profileInlineCompany\) \{/);
 assert.match(css,/\.profile-nationality-select \.atsrs-select-trigger/);
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-indicator/);
 assert.match(css,/\.profile-nationality-select > \.profile-nationality-caret/);
-assert.doesNotMatch(css,/\.profile-nationality-select > \.atsrs-disclosure-shell/);
+assert.match(css,/\.profile-nationality-select > \.atsrs-disclosure-shell[\s\S]*?height:100% !important/);
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-shell \{\s*position: absolute !important; inset: 0 !important/);
 assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);

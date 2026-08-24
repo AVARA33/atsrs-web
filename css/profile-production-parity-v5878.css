@@ -273,7 +273,7 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-field-shell > .atsrs-field-label {
   display: none !important;
 }
-html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > #profileInlineNationality {
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > :is(#profileInlineNationality,#profileInlineCountryResidence,#profileInlineCompany) {
   display: block !important; width: 100% !important; min-width: 0 !important; height: 20px !important; min-height: 20px !important;
   margin: 0 !important; padding: 0 20px 0 0 !important; border: 0 !important; outline: 0 !important; border-radius: 0 !important;
   background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
@@ -284,13 +284,13 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important;
   background: transparent !important; box-shadow: none !important;
 }
-html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-custom-select > #profileInlineNationality.atsrs-select-source {
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-custom-select > :is(#profileInlineNationality,#profileInlineCountryResidence,#profileInlineCompany).atsrs-select-source {
   position: static !important; display: block !important; width: 100% !important; height: 20px !important; min-height: 20px !important;
   margin: 0 !important; padding: 0 20px 0 0 !important; border: 0 !important; outline: 0 !important; border-radius: 0 !important;
   background: transparent !important; box-shadow: none !important; color: transparent !important; -webkit-text-fill-color: transparent !important; opacity: 0 !important;
   font: 500 12px/20px Arial,sans-serif !important;
 }
-html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > #profileInlineNationalityValue {
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > :is(#profileInlineNationalityValue,#inlineCountryValue,#profileInlineCompanyValue) {
   display: block !important; width: calc(100% - 20px) !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
   color: var(--text) !important; font: 500 12px/20px Inter,"Segoe UI",sans-serif !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
 }
@@ -303,11 +303,11 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   display: none !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > .profile-nationality-caret {
-  position: absolute !important; z-index: 8 !important; right: 12px !important; bottom: 3px !important; top: auto !important;
+  position: absolute !important; z-index: 8 !important; right: 12px !important; top: 50% !important; bottom: auto !important; transform: translateY(-50%) !important;
   display: block !important; width: 14px !important; height: 14px !important; margin: 0 !important;
   color: var(--muted) !important; font-size: 14px !important; line-height: 14px !important; pointer-events: none !important;
 }
-html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-custom-select:has(>.atsrs-select-trigger:focus-visible) > #profileInlineNationality {
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-custom-select:has(>.atsrs-select-trigger:focus-visible) > :is(#profileInlineNationality,#profileInlineCountryResidence,#profileInlineCompany) {
   border: 0 !important; outline: 0 !important; background: transparent !important; box-shadow: none !important;
 }
 body.personal-mode .atsrs-select-menu .atsrs-select-option[aria-selected="true"] { background: transparent !important; box-shadow: none !important; }
@@ -335,6 +335,13 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid :is(.atsrs-disclosure-shell,.atsrs-select-trigger) {
   min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important;
   background: transparent !important; background-color: transparent !important; background-image: none !important; box-shadow: none !important;
+}
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-nationality-select > .atsrs-disclosure-shell,
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-nationality-select > .atsrs-disclosure-shell > .atsrs-select-trigger {
+  position:absolute !important; inset:0 !important; z-index:3 !important;
+  display:block !important; width:100% !important; height:100% !important; min-width:0 !important; min-height:0 !important;
+  margin:0 !important; padding:0 !important; border:0 !important; border-radius:inherit !important;
+  background:transparent !important; box-shadow:none !important; cursor:pointer !important;
 }
 body.personal-mode #profilePage .profile-inline-contact { min-height: 34px; height: 34px; padding: 7px 10px 3px; grid-template-columns: auto minmax(0,1fr); }
 body.personal-mode #profilePage .profile-inline-contact > div { display: grid; min-width: 0; }
@@ -397,11 +404,6 @@ html[data-theme="light"] body.personal-mode #profilePage #profileInlineEditor .p
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid [contenteditable="true"] { width:100% !important; min-width:0 !important; height:16px !important; min-height:16px !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:0 !important; outline:0 !important; background:transparent !important; box-shadow:none !important; caret-color:var(--text) !important; }
 .profile-birth-picker-host { position: fixed !important; left: -10000px !important; top: 0 !important; width: 1px !important; height: 1px !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .profile-birth-trigger { position: absolute !important; inset: 0 !important; z-index: 3 !important; display: block !important; width: 100% !important; height: 100% !important; min-width: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: inherit !important; background: transparent !important; box-shadow: none !important; cursor: pointer !important; }
-body.personal-mode #profilePage .profile-inline-grid .profile-country-trigger { position:absolute !important; inset:0 !important; z-index:3 !important; display:block !important; width:100% !important; height:100% !important; min-width:0 !important; min-height:0 !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:inherit !important; background:transparent !important; box-shadow:none !important; cursor:pointer !important; }
-.profile-country-menu { position:fixed; z-index:10050; max-height:260px; overflow:auto; padding:6px; border:1px solid var(--line); border-radius:10px; background:var(--surface-2,#111414); box-shadow:0 14px 34px rgba(0,0,0,.4); }
-.profile-country-menu[hidden] { display:none !important; }
-.profile-country-menu button { display:block; width:100%; min-height:34px; padding:7px 10px; border:0; border-radius:7px; background:transparent; color:var(--text); text-align:left; font:500 12px Inter,"Segoe UI",sans-serif; cursor:pointer; }
-.profile-country-menu button:hover,.profile-country-menu button:focus-visible { background:color-mix(in srgb,var(--accent) 12%,transparent); color:var(--accent); outline:0; }
 body:not(.atsrs-date-picker-open) > .atsrs-date-picker { display:none !important; }
 body.personal-mode #profilePage #profileTabPersonalPanel { position: relative; }
 body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
