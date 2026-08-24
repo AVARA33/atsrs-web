@@ -376,7 +376,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   background-image:none !important; box-shadow:none !important;
   color:#fff !important; line-height:1 !important;
 }
-body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > i { font-size:18px !important; line-height:1 !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > i { font-size:22px !important; line-height:1 !important; }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > svg {
   width:22px !important; height:22px !important; fill:none !important; stroke:currentColor !important;
   stroke-width:1.8 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
