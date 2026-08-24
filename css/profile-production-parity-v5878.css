@@ -19,7 +19,7 @@ html[data-theme="light"] body.personal-mode #profilePage {
 }
 
 body.personal-mode #app#app.app:not(.hidden) #profilePage > .panel {
-  max-width: 1240px !important;
+  max-width: 1440px !important;
   margin-inline: auto !important;
   margin-bottom: 0 !important;
   padding: 0 !important;
@@ -40,6 +40,10 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage > .panel > #accountTit
   color: var(--text) !important;
   font-size: 32px !important;
   line-height: normal !important;
+}
+
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage > .panel > #accountTitle {
+  color: #f4f6ef !important;
 }
 
 body.personal-mode #profilePage .profile-rebuild-subtitle {
