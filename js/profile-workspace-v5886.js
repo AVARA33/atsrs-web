@@ -22,10 +22,11 @@
     state.activeTab=name;panel.scrollTop=state.scroll[name]||0;if(focus)next.focus();return true;
   }
   function enterPersonal(focusId){
+    var savedX=window.scrollX,savedY=window.scrollY;
     activate('personal',false);var read=byId('profilePersonalReadView'),editor=byId('profileInlineEditor');if(!editor)return;
     if(window.loadProfile)window.loadProfile();state.personalEditing=true;state.initialDraft=draft();
     if(read)read.classList.add('hidden');editor.classList.remove('hidden');setEnabled(editor,true);byId('profilePage').classList.add('profile-inline-editing');
-    var target=byId(focusId||'profileName');if(target)setTimeout(function(){target.focus({preventScroll:true})},0);
+    var target=byId(focusId||'profileName');if(target)setTimeout(function(){target.focus({preventScroll:true});window.scrollTo(savedX,savedY)},0);
   }
   function finishPersonal(){var read=byId('profilePersonalReadView'),editor=byId('profileInlineEditor');state.personalEditing=false;state.initialDraft='';if(read)read.classList.remove('hidden');if(editor){editor.classList.add('hidden');setEnabled(editor,false)}byId('profilePage').classList.remove('profile-inline-editing')}
   async function savePersonal(){var button=byId('profileInlineSaveBtn');if(button)button.disabled=true;var ok=window.saveProfile?await window.saveProfile({personalChanged:true}):false;if(button)button.disabled=false;if(ok){finishPersonal();activate('personal',false)}return ok}
@@ -37,14 +38,16 @@
   function moveRow(controlId,target){var control=byId(controlId),row=control&&control.closest('.setting-row'),host=byId(target);if(row&&host)host.appendChild(row)}
   function buildPersonalEditor(editor,source){
     source.classList.add('profile-editor-source');
-    var layout=document.createElement('div');layout.className='profile-information-grid profile-inline-grid';
-    function field(label,id,extra){var control=byId(id),box=document.createElement('label');box.className='profile-information-field'+(extra?' '+extra:'');var title=document.createElement('span');title.textContent=label;box.appendChild(title);if(control)box.appendChild(control);layout.appendChild(box);return control}
-    field('Name','profileName');field('Surname','profileSurname');field('Date of birth','profileBirthDate','has-icon');
+    var read=byId('profilePersonalReadView'),layout=read.cloneNode(true);layout.removeAttribute('id');layout.classList.add('profile-inline-grid');layout.querySelectorAll('[id]').forEach(function(node){node.removeAttribute('id')});
+    var boxes=layout.querySelectorAll('.profile-information-field');
+    function field(index,id){var control=byId(id),strong=boxes[index]&&boxes[index].querySelector('strong');if(strong&&control)strong.replaceWith(control);return control}
+    field(0,'profileName');field(1,'profileSurname');field(2,'profileBirthDate');
     var country=byId('profileCountry'),nationality=document.createElement('input');nationality.id='profileInlineNationality';nationality.autocomplete='country-name';nationality.setAttribute('aria-label','Nationality');
-    var nationalityBox=document.createElement('label');nationalityBox.className='profile-information-field';nationalityBox.innerHTML='<span>Nationality</span>';nationalityBox.appendChild(nationality);layout.appendChild(nationalityBox);
-    field('Current workplace','profileCompany');field('Position','profilePosition');field('Physical address','profileAddress','profile-information-address');field('ZIP / Postal code','profileZipCode');field('Country of residence','profileCountry');
-    function contact(label,selector){var original=document.querySelector(selector),box=document.createElement('div');box.className='profile-information-contact profile-inline-contact';var title=document.createElement('span');title.textContent=label;box.appendChild(title);if(original)box.appendChild(original);layout.appendChild(box)}
-    contact('Mobile phone','.mobile-phone-entry .phone-field');contact('WhatsApp number','.whatsapp-phone-entry .phone-field');
+    var nationalityStrong=boxes[3]&&boxes[3].querySelector('strong');if(nationalityStrong)nationalityStrong.replaceWith(nationality);
+    field(4,'profileCompany');field(5,'profilePosition');field(6,'profileAddress');field(7,'profileZipCode');field(8,'profileCountry');
+    var contacts=layout.querySelectorAll('.profile-information-contact');
+    function contact(index,inputId){var input=byId(inputId),strong=contacts[index]&&contacts[index].querySelector('strong');if(strong&&input)strong.replaceWith(input);if(contacts[index])contacts[index].querySelectorAll('button').forEach(function(button){button.remove()})}
+    contact(0,'profilePhoneLocal');contact(1,'profileWhatsappLocal');
     editor.insertBefore(layout,editor.firstChild);
     function syncNationality(){nationality.value=country&&country.value||''}
     if(country)country.addEventListener('change',syncNationality);syncNationality();
