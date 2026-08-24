@@ -288,6 +288,10 @@ body.personal-mode #profilePage .profile-inline-actions { display: flex; justify
 body.personal-mode #profilePage .profile-inline-actions button { width: auto !important; min-width: 112px; margin: 0 !important; }
 body.personal-mode #profilePage .profile-settings-list .setting-row { margin: 0 0 10px; }
 body.personal-mode #profilePage #profileSharingControls #shareProfilePanel { margin: 0 !important; max-height: none !important; border: 0 !important; padding: 0 !important; }
+html[data-theme="dark"] body.personal-mode #profilePage :is(#profileTabSharingPanel, #profileSharingControls, #shareProfilePanel) {
+  background: var(--surface, #0b0d0d) !important;
+  background-image: none !important;
+}
 html[data-theme="dark"] body.personal-mode #profilePage #profileTabSharingPanel :is(
   .recipient-sharing-section,
   .share-permissions,
