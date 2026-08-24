@@ -320,6 +320,8 @@ body.personal-mode #profilePage > .panel > #userEmail { display: none !important
   body.personal-mode #profilePage .profile-settings-viewport { height: 580px; min-height: 580px; max-height: 580px; }
   body.personal-mode #profilePage .profile-settings-panel { padding: 14px; }
   body.personal-mode #profilePage .profile-inline-actions { position: sticky; bottom: 0; padding-top: 10px; background: var(--surface); }
+  body.personal-mode #profilePage .profile-summary-title-row h4 { flex-basis: 100%; }
+  body.personal-mode #profilePage .profile-summary-role { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 }
 
 @media (max-width: 1300px) and (min-width: 1181px) {
