@@ -290,6 +290,9 @@ body.personal-mode #profilePage .profile-inline-grid .profile-information-field 
   width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
   border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 700 12px/20px Arial,sans-serif !important;
 }
+body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell { width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell > .atsrs-field-label { display: none !important; }
+body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell > :is(input,select) { width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 700 12px/20px Arial,sans-serif !important; }
 body.personal-mode #profilePage .profile-inline-contact { min-height: 34px; height: 34px; padding: 7px 10px 3px; grid-template-columns: auto minmax(0,1fr); }
 body.personal-mode #profilePage .profile-inline-contact > div { display: grid; min-width: 0; }
 body.personal-mode #profilePage .profile-inline-contact > div > span { top: -7px; left: 10px; font-size: 10px; }
