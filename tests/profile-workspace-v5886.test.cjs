@@ -13,6 +13,8 @@ const css=fs.readFileSync('css/profile-production-parity-v5878.css','utf8');
 assert.doesNotMatch(html,/profileTab(?:Privacy|Sharing|Security)Btn[^>]+aria-disabled/);
 assert.match(js,/event\.key==='ArrowRight'\|\|event\.key==='ArrowLeft'/);
 assert.match(js,/Discard unsaved profile changes/);
+assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
+assert.match(js,/requestAnimationFrame\(function\(\)\{window\.scrollTo\(savedX,savedY\)\}\)/);
 assert.match(js,/birthPicker\.dataset\.atsrsDatePosition='anchor-above-right'/);
 assert.match(js,/birthPicker\.dataset\.atsrsDateAnchorId='profileInlineBirthDateDisplay'/);
 assert.match(datePicker,/activeInput\.dataset\.atsrsDatePosition==='anchor-above-right'/);
