@@ -311,7 +311,9 @@ body.personal-mode #profilePage .profile-inline-contact input {
 }
 body.personal-mode #profilePage #profileTabPersonalPanel { position: relative; }
 body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
-body.personal-mode #profilePage.profile-inline-editing .profile-inline-actions { position: absolute; top: 10px; right: 16px; z-index: 3; margin: 0; }
+body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions { display: flex; gap: 6px; margin: 0; }
+body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions[hidden] { display: none !important; }
+body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions button { min-width: 0 !important; padding-inline: 12px !important; }
 body.personal-mode #profilePage .profile-inline-editor .profile-details-layout,
 body.personal-mode #profilePage .profile-inline-editor .profile-contact-row { margin: 0 !important; }
 body.personal-mode #profilePage .profile-inline-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
