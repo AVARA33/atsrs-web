@@ -110,6 +110,7 @@
 
   function usesOwnDisclosure(control){
     return !!(
+      control.matches('[data-atsrs-native-select]')||
       control.closest('.personnel-filterbar')||
       control.closest('.jobs-select-host')||
       control.id==='profilePhoneCountryCode'||

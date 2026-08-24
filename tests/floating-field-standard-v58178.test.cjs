@@ -10,7 +10,7 @@ const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'ut
 assert.match(index, /data-atsrs-build="V5848"/);
 assert.match(index, /floating-field-standard-v58178\.css\?v=5853/);
 assert.match(index, /floating-fields\.js\?v=58185/);
-assert.ok(index.indexOf('floating-fields.js?v=58185') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.ok(index.indexOf('floating-fields.js?v=58186') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);

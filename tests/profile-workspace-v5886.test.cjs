@@ -20,6 +20,7 @@ assert.match(dashboard,/nationality:val\('profileInlineNationality'\)\|\|existin
 assert.match(dashboard,/setVal\('profileInlineNationality',p\.nationality\|\|p\.country\)/);
 assert.match(dashboard,/\['profileStageNationality',p\.nationality\|\|p\.country\]/);
 assert.match(js,/nationality\.setAttribute\('data-atsrs-native-select','true'\)/);
+assert.match(js,/nationality\.setAttribute\('data-atsrs-no-field-shell','true'\)/);
 assert.match(js,/boxes\[3\]\.querySelectorAll\('i'\)\.forEach/);
 assert.doesNotMatch(css,/\.profile-nationality-select > i \{ display: block !important;/);
 assert.match(css,/\.profile-nationality-select::after/);
