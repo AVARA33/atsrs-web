@@ -32,7 +32,7 @@ assert.match(storage, /atsrs-personal-legal-route/);
 assert.match(storage, /renderAll\(\);syncPersonalHeadingHierarchy\(renderedPage\)/);
 assert.match(storage, /syncPersonalHeadingHierarchy\(localStorage\.getItem\("atsrs_current_page"\)\|\|"intro"\)/);
 
-assert.match(corporate, /setText\('accountTitle',corporate\?'Corporate Account':'Account'\)/);
+assert.match(corporate, /setText\('accountTitle',corporate\?'Corporate Account':'Profile'\)/);
 assert.match(corporate, /setText\('refsTitle','Reference Materials'\)/);
 
 for (const file of ['privacy.html', 'data-deletion.html']) {
