@@ -128,27 +128,6 @@ body.personal-mode #profilePage .profile-summary-avatar-wrap {
   background-image: none !important;
 }
 
-body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-summary-edit {
-  width: auto !important;
-  height: auto !important;
-  min-width: 0 !important;
-  min-height: 42px !important;
-  margin: 0 !important;
-  padding: 9px 15px !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 10px !important;
-  background: var(--surface-2) !important;
-  background-image: none !important;
-  color: var(--text) !important;
-  box-shadow: none !important;
-  font: 700 13.3333px/normal Arial, sans-serif !important;
-}
-
-body.personal-mode #profilePage .profile-summary-edit:is(:hover, :focus-visible) {
-  border-color: var(--accent) !important;
-  color: var(--accent) !important;
-}
-
 body.personal-mode #profilePage .profile-availability-fields dd,
 body.personal-mode #profilePage .profile-information-field,
 body.personal-mode #profilePage .profile-information-contact {
@@ -330,8 +309,43 @@ html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#p
 html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid #inlineCountryValue {
   color: var(--text) !important; font-family: Inter,"Segoe UI",sans-serif !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
 }
+body.personal-mode #profilePage #profileTabPersonalPanel :is(
+  .profile-information-field > span,
+  .profile-information-contact > div > span
+) {
+  position:absolute !important; top:-7px !important; left:10px !important; z-index:2 !important;
+  margin:0 !important; padding:0 6px !important; background:var(--surface-2) !important; color:var(--muted) !important;
+  font-family:Inter,"Segoe UI",sans-serif !important; font-size:10px !important; font-weight:400 !important; line-height:14px !important;
+  letter-spacing:normal !important; white-space:nowrap !important; transition:color .15s ease !important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel :is(
+  .profile-information-field > span,
+  .profile-information-contact > div > span
+) { background:#fff !important; }
 body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-field:focus-within > span,
 body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-contact:focus-within > div > span { color: var(--accent) !important; }
+html[data-theme="dark"] body.personal-mode #profilePage #profileInlineEditor .profile-inline-grid input:is(
+  :-webkit-autofill,
+  :-webkit-autofill:hover,
+  :-webkit-autofill:focus,
+  :-webkit-autofill:active
+) {
+  -webkit-text-fill-color:var(--text) !important; caret-color:var(--text) !important;
+  -webkit-box-shadow:0 0 0 1000px color-mix(in srgb,var(--accent) 9%,var(--surface-2)) inset !important;
+  box-shadow:0 0 0 1000px color-mix(in srgb,var(--accent) 9%,var(--surface-2)) inset !important;
+  transition:background-color 9999s ease-out 0s !important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #profileInlineEditor .profile-inline-grid input:is(
+  :-webkit-autofill,
+  :-webkit-autofill:hover,
+  :-webkit-autofill:focus,
+  :-webkit-autofill:active
+) {
+  -webkit-text-fill-color:var(--text) !important; caret-color:var(--text) !important;
+  -webkit-box-shadow:0 0 0 1000px color-mix(in srgb,var(--accent) 6%,#fff) inset !important;
+  box-shadow:0 0 0 1000px color-mix(in srgb,var(--accent) 6%,#fff) inset !important;
+  transition:background-color 9999s ease-out 0s !important;
+}
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid [contenteditable="true"] { width:100% !important; min-width:0 !important; height:16px !important; min-height:16px !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:0 !important; outline:0 !important; background:transparent !important; box-shadow:none !important; caret-color:var(--text) !important; }
 .profile-birth-picker-host { position: fixed !important; left: -10000px !important; top: 0 !important; width: 1px !important; height: 1px !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .profile-birth-trigger { position: absolute !important; inset: 0 !important; z-index: 3 !important; display: block !important; width: 100% !important; height: 100% !important; min-width: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: inherit !important; background: transparent !important; box-shadow: none !important; cursor: pointer !important; }
@@ -343,12 +357,42 @@ body.personal-mode #profilePage .profile-inline-grid .profile-country-trigger { 
 body:not(.atsrs-date-picker-open) > .atsrs-date-picker { display:none !important; }
 body.personal-mode #profilePage #profileTabPersonalPanel { position: relative; }
 body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
-body.personal-mode #profilePage .profile-summary-meta { position: relative; }
-body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions { position: absolute; left: 30px; bottom: 30px; display: flex; gap: 6px; margin: 0; }
-body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions[hidden] { display: none !important; }
-body.personal-mode #profilePage #profileSummaryEditBtn[hidden] { display: none !important; }
-body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions button { min-width: 0 !important; padding-inline: 12px !important; }
-@media (max-width: 720px) { body.personal-mode #profilePage .profile-summary-meta > .profile-inline-actions { left: 24px; bottom: 24px; } }
+body.personal-mode #profilePage #profileTabPersonalPanel > .profile-information-actions {
+  position:absolute !important; top:12px !important; right:18px !important; z-index:8 !important;
+  display:flex !important; align-items:center !important; justify-content:flex-end !important;
+  width:auto !important; height:30px !important; margin:0 !important; padding:0 !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel > .profile-information-actions > .profile-inline-actions {
+  display:flex !important; align-items:center !important; gap:6px !important;
+  width:auto !important; height:30px !important; margin:0 !important; padding:0 !important; background:transparent !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel > .profile-information-actions > .profile-inline-actions[hidden],
+body.personal-mode #profilePage #profileSummaryEditBtn[hidden] { display:none !important; }
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action {
+  display:grid !important; place-items:center !important; flex:0 0 30px !important;
+  width:30px !important; min-width:30px !important; max-width:30px !important;
+  height:30px !important; min-height:30px !important; max-height:30px !important;
+  margin:0 !important; padding:0 !important; border:1px solid var(--line) !important; border-radius:8px !important;
+  background:var(--surface-2) !important; background-image:none !important; box-shadow:none !important;
+  color:var(--muted) !important; line-height:1 !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > i { font-size:16px !important; line-height:1 !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-edit:is(:hover,:focus-visible) {
+  border-color:var(--accent) !important; color:var(--accent) !important;
+  background:color-mix(in srgb,var(--accent) 8%,var(--surface-2)) !important;
+  outline:0 !important; box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent) !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-save { color:var(--accent) !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-save:is(:hover,:focus-visible) {
+  border-color:var(--accent) !important; background:color-mix(in srgb,var(--accent) 10%,var(--surface-2)) !important;
+  outline:0 !important; box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent) !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel { color:#f87171 !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel:is(:hover,:focus-visible) {
+  border-color:#ef4444 !important; background:color-mix(in srgb,#ef4444 9%,var(--surface-2)) !important;
+  outline:0 !important; box-shadow:0 0 0 2px color-mix(in srgb,#ef4444 15%,transparent) !important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel { color:#dc2626 !important; }
 body.personal-mode #profilePage .profile-inline-editor .profile-details-layout,
 body.personal-mode #profilePage .profile-inline-editor .profile-contact-row { margin: 0 !important; }
 body.personal-mode #profilePage .profile-inline-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }

@@ -56,19 +56,19 @@
     function syncNationality(){nationality.value=country&&country.value||''}
     if(country)country.addEventListener('change',syncNationality);syncNationality();
   }
-  function makeActions(parent,kind){var actions=document.createElement('div');actions.className='profile-inline-actions';var save=document.createElement('button'),cancel=document.createElement('button');save.type=cancel.type='button';save.textContent='Save Changes';cancel.textContent='Cancel';cancel.className='secondary';if(kind==='personal'){actions.id='profileInlineActions';actions.hidden=true;save.id='profileInlineSaveBtn';cancel.id='profileInlineCancelBtn';save.addEventListener('click',savePersonal);cancel.addEventListener('click',function(){cancelPersonal(true)})}else{save.textContent='Save';save.addEventListener('click',saveAvailability);cancel.addEventListener('click',cancelAvailability)}actions.appendChild(save);actions.appendChild(cancel);(kind==='personal'&&byId('profileSummaryEditBtn')?byId('profileSummaryEditBtn').parentElement:parent).appendChild(actions)}
+  function bindPersonalActions(){var edit=byId('profileSummaryEditBtn'),save=byId('profileInlineSaveBtn'),cancel=byId('profileInlineCancelBtn');if(edit)edit.addEventListener('click',function(){enterPersonal()});if(save)save.addEventListener('click',savePersonal);if(cancel)cancel.addEventListener('click',function(){cancelPersonal(true)})}
+  function makeAvailabilityActions(parent){var actions=document.createElement('div'),save=document.createElement('button'),cancel=document.createElement('button');actions.className='profile-inline-actions';save.type=cancel.type='button';save.textContent='Save';cancel.textContent='Cancel';cancel.className='secondary';save.addEventListener('click',saveAvailability);cancel.addEventListener('click',cancelAvailability);actions.appendChild(save);actions.appendChild(cancel);parent.appendChild(actions)}
   function bindTabs(){var buttons=Array.prototype.slice.call(document.querySelectorAll('.profile-information-tabs [role="tab"]'));buttons.forEach(function(button,index){button.addEventListener('click',function(){activate(tabName(button),false)});button.addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();activate(tabName(button),true)}if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();var delta=event.key==='ArrowRight'?1:-1,next=buttons[(index+delta+buttons.length)%buttons.length];activate(tabName(next),true)}})})}
   function init(){
     if(state.ready||!document.body.classList.contains('personal-mode'))return false;
     var editor=byId('profileInlineEditor'),grid=document.querySelector('#accountGeneralTab .profile-grid');if(!editor||!grid)return false;
-    state.ready=true;editor.appendChild(grid);buildPersonalEditor(editor,grid);makeActions(editor,'personal');setEnabled(editor,false);
-    var availability=document.querySelector('.work-availability-card'),availabilityCard=document.querySelector('.profile-availability-card');if(availability&&availabilityCard){availability.classList.add('hidden');availabilityCard.appendChild(availability);makeActions(availability,'availability');setEnabled(availability,false)}
+    state.ready=true;editor.appendChild(grid);buildPersonalEditor(editor,grid);bindPersonalActions();setEnabled(editor,false);
+    var availability=document.querySelector('.work-availability-card'),availabilityCard=document.querySelector('.profile-availability-card');if(availability&&availabilityCard){availability.classList.add('hidden');availabilityCard.appendChild(availability);makeAvailabilityActions(availability);setEnabled(availability,false)}
     moveRow('profileVisibility','profilePrivacyControls');moveRow('exportDataBtn','profilePrivacyControls');
     ['setup2faBtn','viewSessionsBtn','profileTimezone','manageNotifyBtn','deleteAccountBtn'].forEach(function(id){moveRow(id,'profileSecurityControls')});
     var share=byId('shareProfilePanel'),sharing=byId('profileSharingControls');if(share&&sharing)sharing.appendChild(share);
     var oldEdit=byId('editProfileBtn');if(oldEdit)oldEdit.hidden=true;
     bindTabs();activate('personal',false);
-    byId('profileSummaryEditBtn').addEventListener('click',function(){enterPersonal()});
     byId('profileStageAvailabilityEditBtn').addEventListener('click',enterAvailability);
     document.querySelectorAll('[data-profile-stage-edit]').forEach(function(button){button.addEventListener('click',function(){enterPersonal(button.dataset.profileStageEdit==='whatsapp'?'profileWhatsappLocal':'profilePhoneLocal')})});
     return true;

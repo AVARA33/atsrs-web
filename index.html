@@ -121,7 +121,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5911">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5912">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1340,7 +1340,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="profile-summary-meta">
       <dl><div><dt>Member since</dt><dd id="profileSummaryMemberSince">—</dd></div><div><dt>Last login</dt><dd id="profileSummaryLastLogin">—</dd></div></dl>
       <div class="profile-summary-completeness"><span>Profile completeness</span><div><progress id="profileSummaryProgress" max="100" value="0"></progress><strong id="profileSummaryPercent">0%</strong></div></div>
-      <button id="profileSummaryEditBtn" type="button" class="profile-summary-edit"><i class="ph ph-pencil-simple" aria-hidden="true"></i> Edit profile</button>
     </div>
   </article>
   <article class="profile-availability-card">
@@ -1366,6 +1365,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="profile-settings-viewport">
     <article id="profileTabPersonalPanel" class="profile-information-card profile-settings-panel is-active" role="tabpanel" aria-labelledby="profileTabPersonalBtn">
       <h4 id="profile-information-title">Personal Information</h4>
+      <div class="profile-information-actions" aria-label="Profile edit actions">
+        <button id="profileSummaryEditBtn" type="button" class="profile-information-action profile-information-action-edit" aria-label="Edit profile" title="Edit profile"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button>
+        <div id="profileInlineActions" class="profile-inline-actions" hidden>
+          <button id="profileInlineCancelBtn" type="button" class="profile-information-action profile-information-action-cancel" aria-label="Cancel profile changes" title="Cancel"><i class="ph ph-x" aria-hidden="true"></i></button>
+          <button id="profileInlineSaveBtn" type="button" class="profile-information-action profile-information-action-save" aria-label="Save profile changes" title="Save"><i class="ph ph-check" aria-hidden="true"></i></button>
+        </div>
+      </div>
       <div id="profilePersonalReadView" class="profile-information-grid">
         <div class="profile-information-field"><span>Name</span><strong id="profileStageName">—</strong></div>
         <div class="profile-information-field"><span>Surname</span><strong id="profileStageSurname">—</strong></div>
@@ -2037,7 +2043,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/floating-fields.js?v=58185"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=568"></script>
-<script src="js/profile-workspace-v5886.js?v=5910"></script>
+<script src="js/profile-workspace-v5886.js?v=5912"></script>
 <script src="js/route-feature-loader.js?v=58175"></script>
 
 

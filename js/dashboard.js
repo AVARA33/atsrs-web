@@ -462,13 +462,14 @@
         startVerification(button.getAttribute('data-profile-verify')==='whatsapp'?'whatsapp':'mobile',button);
       });
     });
+    var personalWorkspace=document.body&&document.body.classList.contains('personal-mode');
     var editButton=byId('editProfileBtn');
-    if(editButton&&!editButton.__atsrsProfileEditBound){
+    if(!personalWorkspace&&editButton&&!editButton.__atsrsProfileEditBound){
       editButton.__atsrsProfileEditBound=true;
       editButton.addEventListener('click',function(){setProfileEditMode(true,true)});
     }
     var cancelButton=byId('cancelProfileBtn');
-    if(cancelButton&&!cancelButton.__atsrsProfileCancelBound){
+    if(!personalWorkspace&&cancelButton&&!cancelButton.__atsrsProfileCancelBound){
       cancelButton.__atsrsProfileCancelBound=true;
       cancelButton.addEventListener('click',function(){
         window.loadProfile();
@@ -476,7 +477,7 @@
       });
     }
     var generalTab=byId('accountGeneralTab');
-    if(generalTab&&!generalTab.hasAttribute('data-profile-editing'))setProfileEditMode(false,false);
+    if(!personalWorkspace&&generalTab&&!generalTab.hasAttribute('data-profile-editing'))setProfileEditMode(false,false);
   }
   function profileEditableControls(){
     var root=byId('accountGeneralTab');
@@ -672,7 +673,7 @@
       if(confirmed)confirmed.textContent=availabilityStatus==='not_set'?'Not specified':'Confirmed now';
       updateProfileSummary(data);
       updateProfileStage(data);
-      setProfileEditMode(false,false);
+      if(!document.body.classList.contains('personal-mode'))setProfileEditMode(false,false);
       showSaved();return true;
     }
     showSaveError();return false;
