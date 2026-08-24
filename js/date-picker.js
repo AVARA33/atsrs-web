@@ -94,11 +94,20 @@
     if(!picker||!activeInput||picker.classList.contains('hidden'))return;
     var dialog=picker.querySelector('.atsrs-date-picker-dialog');
     if(!dialog)return;
-    if(activeInput.dataset.atsrsDateLockPosition==='true'&&dialog.dataset.atsrsLockedLeft&&dialog.dataset.atsrsLockedTop){
-      dialog.style.left=dialog.dataset.atsrsLockedLeft;
-      dialog.style.top=dialog.dataset.atsrsLockedTop;
+    if(activeInput.dataset.atsrsDatePosition==='anchor-above-right'){
+      var anchor=document.getElementById(activeInput.dataset.atsrsDateAnchorId||'');
+      if(!anchor)return;
+      var anchorRect=anchor.getBoundingClientRect();
+      var anchoredDialogRect=dialog.getBoundingClientRect();
+      var anchoredLeft=anchorRect.right-anchoredDialogRect.width;
+      var anchoredTop=anchorRect.top-anchoredDialogRect.height-6;
+      dialog.style.left=Math.round(anchoredLeft)+'px';
+      dialog.style.top=Math.round(anchoredTop)+'px';
       dialog.style.right='auto';
       dialog.style.bottom='auto';
+      dialog.style.setProperty('--date-anchor-x',Math.round(anchoredDialogRect.width-24)+'px');
+      dialog.classList.add('place-above');
+      dialog.classList.remove('place-below');
       return;
     }
     var inputRect=activeInput.getBoundingClientRect();
@@ -214,9 +223,6 @@
     viewDate=selectedDate?new Date(selectedDate):new Date();
     viewDate=new Date(viewDate.getFullYear(),viewDate.getMonth(),1);
     ensurePicker();
-    var dialog=picker.querySelector('.atsrs-date-picker-dialog');
-    delete dialog.dataset.atsrsLockedLeft;
-    delete dialog.dataset.atsrsLockedTop;
     activeDialogHost=input.closest&&input.closest('dialog[open]');
     if(activeDialogHost){
       activeDialogHost.appendChild(picker);
@@ -238,9 +244,6 @@
   function close(){
     if(!picker)return;
     picker.classList.add('hidden');
-    var dialog=picker.querySelector('.atsrs-date-picker-dialog');
-    delete dialog.dataset.atsrsLockedLeft;
-    delete dialog.dataset.atsrsLockedTop;
     document.body.classList.remove('atsrs-date-picker-open');
     if(activeDialogHost){
       activeDialogHost.classList.remove('atsrs-date-picker-host');
