@@ -1,10 +1,14 @@
 const fs=require('fs');const assert=require('assert');
 const html=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('css/profile-summary-card-v5876.css','utf8'),js=fs.readFileSync('js/dashboard.js','utf8');
 ['profileSummaryName','profileSummaryEmail','profileSummaryPhone','profileSummaryLocation','profileSummaryWorkplace','profileSummaryMemberSince','profileSummaryLastLogin','profileSummaryProgress','profileSummaryEditBtn'].forEach(id=>assert(html.includes(`id="${id}"`),`missing ${id}`));
+['profileStageAvailabilityStatus','profileStageName','profileStageSurname','profileStageCountry','profileCalendarMonth','profileCalendarDays','profileStageEmailStatus','profileStageMobileStatus','profileStageWhatsappStatus','profileStageMfaStatus','profileStageIdStatus'].forEach(id=>assert(html.includes(`id="${id}"`),`missing ${id}`));
 assert(css.includes('grid-template-columns:minmax(0,2.5fr) minmax(280px,1fr)'),'right-hand slot is not reserved');
 assert(css.includes('profile-summary-title-row{display:flex;align-items:center;flex-wrap:nowrap'),'desktop title badges are not kept in one row');
 assert(css.includes('.profile-summary-role{background:var(--atsrs-ref-dark-bg,#050606);border-color:var(--accent);color:var(--accent)}'),'role badge dark surface contract missing');
 assert(css.includes('@media(max-width:720px)'),'responsive card rule missing');
 assert(js.includes('updateProfileSummary(p)'),'profile summary is not connected to loaded profile data');
+assert(js.includes('updateProfileStage(p)'),'profile stage is not connected to loaded profile data');
+assert(js.includes('renderProfileCalendar()'),'profile calendar is not rendered');
+assert(js.includes("profileStageSetStatus('profileStageIdStatus'"),'ID status is not derived');
 assert(js.includes('user.created_at')&&js.includes('user.last_sign_in_at'),'server-backed account dates missing');
 console.log('Personal Profile summary card contracts passed');

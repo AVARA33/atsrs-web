@@ -796,6 +796,33 @@ final result: passed
 
 Final result: passed.
 
+# Personal Profile staged information layout — Design QA
+
+- Scope: Personal Profile only — profile summary, Work Availability, four-section navigation, Personal Information, Calendar, and Account Status.
+- Primary visual reference: `C:\Users\user\AppData\Local\Temp\codex-clipboard-c4a0f7e4-bcaf-4c21-9822-9270aa63a0a0.png`.
+- Account Status reference: `C:\Users\user\AppData\Local\Temp\codex-clipboard-4dcffe55-e9c1-4c47-afa5-1baf4266a37c.png`.
+- Local preview evidence: `C:\Users\user\AppData\Local\Temp\codex-clipboard-49d41836-09a2-4926-a80e-7f025ad036b2.png`.
+
+## Visual comparison
+
+- The existing ATSRS sidebar and global shell remain unchanged.
+- The profile summary and Work Availability cards form the first responsive row; the right column is reserved for subsequent staged cards.
+- Personal Information, Privacy, Sharing, and Security are stable equal-height navigation controls. Only Personal Information is active in this stage.
+- Personal Information fields use compact floating labels, matching Work Availability control height. Light-mode fields are white and dark-mode fields retain the ATSRS dark surface.
+- Name and Surname are separate fields. Nationality and Country of residence show one country value without duplicate `AZ` chips.
+- Calendar fills the right-side space with a centered heading and responsive month grid.
+- Account Status spans the full content width below both columns. Email, Mobile, WhatsApp, 2FA, and ID card states use aligned status icons followed by their status text; no unrelated management action is shown.
+- No page-level horizontal overflow or unintended overlap is introduced at desktop and responsive widths.
+
+## Interaction and regression checks
+
+- Profile data rendering and existing save/update wiring remain intact.
+- Calendar previous/next controls update the visible month without changing profile data.
+- The staged tabs preserve fixed dimensions when the active state changes.
+- Focused profile tests, JavaScript syntax validation, Cloudflare build, and diff whitespace validation pass.
+
+Final result: passed.
+
 # Personal Profile summary card — Design QA
 
 - Scope: the single Personal Profile summary card requested for the first staged rebuild step; the adjacent desktop grid column remains deliberately empty for the next card.

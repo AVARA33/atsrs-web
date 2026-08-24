@@ -27,6 +27,85 @@
         <div class="profile-summary-completeness"><span>Profile completeness</span><div><progress max="100" value="78"></progress><strong>78%</strong></div></div>
         <button class="profile-summary-edit"><i class="ph ph-pencil-simple"></i>Edit profile</button>
       </div>
+    </article>
+    <article class="profile-availability-card">
+      <div class="profile-availability-heading">
+        <h4><i class="ph ph-calendar-blank"></i>Work Availability</h4>
+        <span>Confirmed now</span>
+      </div>
+      <dl class="profile-availability-fields">
+        <div><dt>Status</dt><dd>Available from a date</dd></div>
+        <div><dt>Available from</dt><dd><i class="ph ph-calendar-blank"></i>Sep 1, 2026</dd></div>
+        <div><dt>Preferred work type</dt><dd>Any opportunity</dd></div>
+        <div><dt>Notice period</dt><dd>2 weeks</dd></div>
+      </dl>
+      <button class="profile-availability-edit">Edit availability</button>
+    </article>
+    <section class="profile-information-section" aria-labelledby="profile-information-title">
+      <div class="profile-information-tabs" role="tablist" aria-label="Profile settings sections">
+        <button class="is-active" type="button" role="tab" aria-selected="true">Personal Information</button>
+        <button type="button" role="tab" aria-selected="false" aria-disabled="true">Privacy</button>
+        <button type="button" role="tab" aria-selected="false" aria-disabled="true">Sharing</button>
+        <button type="button" role="tab" aria-selected="false" aria-disabled="true">Security</button>
+      </div>
+      <article class="profile-information-card" role="tabpanel">
+        <h4 id="profile-information-title">Personal Information</h4>
+        <div class="profile-information-grid">
+          <div class="profile-information-field"><span>Name</span><strong>Anar</strong></div>
+          <div class="profile-information-field"><span>Surname</span><strong>Agasiyev</strong></div>
+          <div class="profile-information-field has-icon"><span>Date of birth</span><strong>May 17, 1988</strong><i class="ph ph-calendar-blank" aria-hidden="true"></i></div>
+          <div class="profile-information-field has-icon"><span>Nationality</span><strong>Azerbaijan</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+          <div class="profile-information-field has-icon"><span>Current workplace</span><strong>Freelancer</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+          <div class="profile-information-field has-icon"><span>Position</span><strong>Senior ROV Pilot</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+          <div class="profile-information-field profile-information-address"><span>Physical address</span><strong><i class="ph ph-map-pin" aria-hidden="true"></i> Rasul Rza 47, Baku, Azerbaijan</strong></div>
+          <div class="profile-information-field"><span>ZIP / Postal code</span><strong>AZ1005</strong></div>
+          <div class="profile-information-field has-icon"><span>Country of residence</span><strong>Azerbaijan</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+          <div class="profile-information-contact">
+            <i class="ph ph-phone" aria-hidden="true"></i>
+            <div><span>Mobile phone</span><strong>🇦🇿&nbsp; +994&nbsp; 55 350 15 15</strong></div>
+            <em><i class="ph ph-check-circle" aria-hidden="true"></i> Verified</em>
+            <button type="button" aria-label="Edit mobile phone"><i class="ph ph-pencil-simple"></i></button>
+          </div>
+          <div class="profile-information-contact">
+            <i class="ph ph-whatsapp-logo" aria-hidden="true"></i>
+            <div><span>WhatsApp number</span><strong>🇦🇿&nbsp; +994&nbsp; 55 350 15 15</strong></div>
+            <em><i class="ph ph-check-circle" aria-hidden="true"></i> Verified</em>
+            <button type="button" aria-label="Edit WhatsApp number"><i class="ph ph-pencil-simple"></i></button>
+          </div>
+        </div>
+      </article>
+    </section>
+    <article class="profile-calendar-card" aria-labelledby="profile-calendar-title">
+      <div class="profile-calendar-heading">
+        <h4 id="profile-calendar-title"><i class="ph ph-calendar-blank" aria-hidden="true"></i>Calendar</h4>
+        <div class="profile-calendar-nav" aria-label="Calendar navigation">
+          <button type="button" aria-label="Previous month"><i class="ph ph-caret-left"></i></button>
+          <strong>August 2026</strong>
+          <button type="button" aria-label="Next month"><i class="ph ph-caret-right"></i></button>
+        </div>
+      </div>
+      <div class="profile-calendar-weekdays" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="profile-calendar-days" role="grid" aria-label="August 2026">
+        <span class="is-outside">27</span><span class="is-outside">28</span><span class="is-outside">29</span><span class="is-outside">30</span><span class="is-outside">31</span><span>1</span><span>2</span>
+        <span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+        <span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span>
+        <span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span>
+        <span class="is-today" aria-current="date">24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span>
+        <span>31</span><span class="is-outside">1</span><span class="is-outside">2</span><span class="is-outside">3</span><span class="is-outside">4</span><span class="is-outside">5</span><span class="is-outside">6</span>
+      </div>
+    </article>
+    <article class="profile-account-status" aria-labelledby="profile-account-status-title">
+      <header class="profile-account-status-heading">
+        <span class="profile-account-status-icon" aria-hidden="true"><i class="ph ph-shield-check"></i></span>
+        <span><strong id="profile-account-status-title">Account Status</strong><small>Your account verification overview</small></span>
+      </header>
+      <dl class="profile-account-status-list">
+        <div><dt>Email</dt><dd><i class="ph-fill ph-check-circle" aria-hidden="true"></i>Verified</dd></div>
+        <div><dt>Mobile</dt><dd><i class="ph-fill ph-check-circle" aria-hidden="true"></i>Verified</dd></div>
+        <div><dt>WhatsApp</dt><dd><i class="ph-fill ph-check-circle" aria-hidden="true"></i>Verified</dd></div>
+        <div><dt>2FA</dt><dd><i class="ph-fill ph-check-circle" aria-hidden="true"></i>Enabled</dd></div>
+        <div><dt>ID card</dt><dd><i class="ph-fill ph-check-circle" aria-hidden="true"></i>Verified</dd></div>
+      </dl>
     </article></div>
   </div></section>
   <script>if(location.search.includes('light'))document.documentElement.dataset.theme='light'</script>

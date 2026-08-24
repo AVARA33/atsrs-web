@@ -120,7 +120,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/dropdown-neutral-state-v58174.css?v=58174">
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
-<link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5876">
+<link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1342,6 +1342,58 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <button id="profileSummaryEditBtn" type="button" class="profile-summary-edit"><i class="ph ph-pencil-simple" aria-hidden="true"></i> Edit profile</button>
     </div>
   </article>
+  <article class="profile-availability-card">
+    <div class="profile-availability-heading">
+      <h4><i class="ph ph-calendar-blank" aria-hidden="true"></i>Work Availability</h4>
+      <span id="profileStageAvailabilityConfirmed">Not confirmed</span>
+    </div>
+    <dl class="profile-availability-fields">
+      <div><dt>Status</dt><dd id="profileStageAvailabilityStatus">Not specified</dd></div>
+      <div><dt>Available from</dt><dd><i class="ph ph-calendar-blank" aria-hidden="true"></i><span id="profileStageAvailableFrom">Not specified</span></dd></div>
+      <div><dt>Preferred work type</dt><dd id="profileStageWorkType">Any opportunity</dd></div>
+      <div><dt>Notice period</dt><dd id="profileStageNoticePeriod">Not specified</dd></div>
+    </dl>
+    <button id="profileStageAvailabilityEditBtn" type="button" class="profile-availability-edit">Edit availability</button>
+  </article>
+  <section class="profile-information-section" aria-labelledby="profile-information-title">
+    <div class="profile-information-tabs" role="tablist" aria-label="Profile settings sections">
+      <button class="is-active" type="button" role="tab" aria-selected="true">Personal Information</button>
+      <button type="button" role="tab" aria-selected="false" aria-disabled="true">Privacy</button>
+      <button type="button" role="tab" aria-selected="false" aria-disabled="true">Sharing</button>
+      <button type="button" role="tab" aria-selected="false" aria-disabled="true">Security</button>
+    </div>
+    <article class="profile-information-card" role="tabpanel">
+      <h4 id="profile-information-title">Personal Information</h4>
+      <div class="profile-information-grid">
+        <div class="profile-information-field"><span>Name</span><strong id="profileStageName">—</strong></div>
+        <div class="profile-information-field"><span>Surname</span><strong id="profileStageSurname">—</strong></div>
+        <div class="profile-information-field has-icon"><span>Date of birth</span><strong id="profileStageBirthDate">—</strong><i class="ph ph-calendar-blank" aria-hidden="true"></i></div>
+        <div class="profile-information-field has-icon"><span>Nationality</span><strong id="profileStageNationality">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+        <div class="profile-information-field has-icon"><span>Current workplace</span><strong id="profileStageCompany">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+        <div class="profile-information-field has-icon"><span>Position</span><strong id="profileStagePosition">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+        <div class="profile-information-field profile-information-address"><span>Physical address</span><strong><i class="ph ph-map-pin" aria-hidden="true"></i> <span id="profileStageAddress">—</span></strong></div>
+        <div class="profile-information-field"><span>ZIP / Postal code</span><strong id="profileStageZip">—</strong></div>
+        <div class="profile-information-field has-icon"><span>Country of residence</span><strong id="profileStageCountry">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+        <div class="profile-information-contact"><i class="ph ph-phone" aria-hidden="true"></i><div><span>Mobile phone</span><strong id="profileStagePhone">—</strong></div><em id="profileStagePhoneVerification">Not verified</em></div>
+        <div class="profile-information-contact"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><div><span>WhatsApp number</span><strong id="profileStageWhatsapp">—</strong></div><em id="profileStageWhatsappVerification">Not verified</em></div>
+      </div>
+    </article>
+  </section>
+  <article class="profile-calendar-card" aria-labelledby="profile-calendar-title">
+    <div class="profile-calendar-heading"><h4 id="profile-calendar-title"><i class="ph ph-calendar-blank" aria-hidden="true"></i>Calendar</h4><div class="profile-calendar-nav" aria-label="Calendar navigation"><button id="profileCalendarPrev" type="button" aria-label="Previous month"><i class="ph ph-caret-left"></i></button><strong id="profileCalendarMonth">—</strong><button id="profileCalendarNext" type="button" aria-label="Next month"><i class="ph ph-caret-right"></i></button></div></div>
+    <div class="profile-calendar-weekdays" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+    <div id="profileCalendarDays" class="profile-calendar-days" role="grid" aria-label="Calendar"></div>
+  </article>
+  <article class="profile-account-status" aria-labelledby="profile-account-status-title">
+    <header class="profile-account-status-heading"><span class="profile-account-status-icon" aria-hidden="true"><i class="ph ph-shield-check"></i></span><span><strong id="profile-account-status-title">Account Status</strong><small>Your account verification overview</small></span></header>
+    <dl class="profile-account-status-list">
+      <div><dt>Email</dt><dd id="profileStageEmailStatus">Not verified</dd></div>
+      <div><dt>Mobile</dt><dd id="profileStageMobileStatus">Not verified</dd></div>
+      <div><dt>WhatsApp</dt><dd id="profileStageWhatsappStatus">Not verified</dd></div>
+      <div><dt>2FA</dt><dd id="profileStageMfaStatus">Not enabled</dd></div>
+      <div><dt>ID card</dt><dd id="profileStageIdStatus">Not verified</dd></div>
+    </dl>
+  </article>
 </div>
 <p id="userEmail" class="sub"></p>
 <div class="account-tabs" role="tablist" aria-label="Account sections">
@@ -1947,7 +1999,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
 <script src="js/login.js?v=568"></script>
-<script src="js/dashboard.js?v=421"></script>
+<script src="js/dashboard.js?v=422"></script>
 <script src="js/avatar.js?v=376"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
