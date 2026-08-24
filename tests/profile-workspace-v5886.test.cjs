@@ -30,7 +30,7 @@ assert.match(css,/\.profile-nationality-select \.atsrs-select-trigger/);
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-indicator/);
 assert.match(css,/\.profile-nationality-select > \.profile-nationality-caret/);
 assert.doesNotMatch(css,/\.profile-nationality-select > \.atsrs-disclosure-shell/);
-assert.match(css,/left: 12px !important; right: 12px !important; bottom: 3px !important/);
+assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-shell \{\s*position: absolute !important; inset: 0 !important/);
 assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);

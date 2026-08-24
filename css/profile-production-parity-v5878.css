@@ -279,8 +279,8 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-disclosure-shell {
-  position: absolute !important; left: 12px !important; right: 12px !important; bottom: 3px !important;
-  display: block !important; width: auto !important; height: 20px !important; min-height: 20px !important;
+  position: absolute !important; inset: 0 !important;
+  display: block !important; width: 100% !important; height: 100% !important; min-height: 100% !important;
   margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important;
   background: transparent !important; box-shadow: none !important;
 }
@@ -295,7 +295,7 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   color: var(--text) !important; font: 500 12px/20px Inter,"Segoe UI",sans-serif !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-select-trigger {
-  width: 100% !important; height: 20px !important; min-height: 20px !important; margin: 0 !important; padding: 0 20px 0 0 !important;
+  width: 100% !important; height: 100% !important; min-height: 100% !important; margin: 0 !important; padding: 0 !important;
   border: 0 !important; outline: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important;
   color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important; text-align: left !important;
 }
