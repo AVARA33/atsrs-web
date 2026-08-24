@@ -22,11 +22,13 @@ assert.match(dashboard,/\['profileStageNationality',p\.nationality\|\|p\.country
 assert.match(js,/nationality\.setAttribute\('data-atsrs-no-field-shell','true'\)/);
 assert.match(js,/nationalityStrong\.id='profileInlineNationalityValue'/);
 assert.match(js,/nationality\.addEventListener\('input'/);
+assert.match(js,/profile-nationality-caret/);
 assert.match(js,/boxes\[3\]\.querySelectorAll\('i'\)\.forEach/);
 assert.doesNotMatch(css,/\.profile-nationality-select > i \{ display: block !important;/);
 assert.match(css,/#profileInlineNationality \{/);
 assert.match(css,/\.profile-nationality-select \.atsrs-select-trigger/);
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-indicator/);
+assert.match(css,/\.profile-nationality-select > \.profile-nationality-caret/);
 assert.doesNotMatch(css,/\.profile-nationality-select > \.atsrs-disclosure-shell/);
 assert.match(css,/left: 12px !important; right: 12px !important; bottom: 3px !important/);
 assert.match(css,/#profileInlineNationalityValue/);
