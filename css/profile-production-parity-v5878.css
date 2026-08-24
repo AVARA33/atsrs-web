@@ -19,6 +19,7 @@ html[data-theme="light"] body.personal-mode #profilePage {
 }
 
 body.personal-mode #app#app.app:not(.hidden) #profilePage > .panel {
+  width: 100% !important;
   max-width: 1440px !important;
   margin-inline: auto !important;
   margin-bottom: 0 !important;
