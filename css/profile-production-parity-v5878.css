@@ -67,7 +67,13 @@ body.personal-mode #profilePage .profile-summary-title-row h4 {
 }
 
 body.personal-mode #profilePage :is(.profile-summary-role, .profile-summary-verified) {
+  flex: 0 0 auto;
   line-height: 1;
+  white-space: nowrap;
+}
+
+body.personal-mode #profilePage .profile-availability-heading h4 {
+  white-space: nowrap;
 }
 
 body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage :is(
@@ -263,6 +269,50 @@ body.personal-mode #profilePage.profile-editing > .panel > .account-tab.active {
 @media (max-width: 760px) {
   body.personal-mode #profilePage .profile-account-status-list > div {
     border-left: 0 !important;
+  }
+}
+
+@media (max-width: 1300px) and (min-width: 1181px) {
+  body.personal-mode #profilePage .profile-summary-identity {
+    gap: 18px;
+    padding: 24px;
+  }
+
+  body.personal-mode #profilePage .profile-summary-avatar-wrap {
+    flex-basis: 100px;
+    width: 100px;
+    height: 100px;
+  }
+
+  body.personal-mode #profilePage .profile-summary-title-row {
+    gap: 6px;
+  }
+
+  body.personal-mode #profilePage .profile-summary-title-row h4 {
+    font-size: 22px;
+  }
+
+  body.personal-mode #profilePage .profile-availability-heading {
+    flex-wrap: wrap;
+  }
+
+  body.personal-mode #profilePage .profile-availability-heading > span {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 1180px) {
+  body.personal-mode #profilePage .profile-summary-stage {
+    grid-template-columns: 1fr;
+  }
+
+  body.personal-mode #profilePage :is(
+    .profile-summary-card,
+    .profile-availability-card,
+    .profile-information-section,
+    .profile-calendar-card
+  ) {
+    grid-column: 1;
   }
 }
 
