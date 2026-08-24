@@ -27,6 +27,7 @@ assert.doesNotMatch(css,/\.profile-nationality-select > i \{ display: block !imp
 assert.match(css,/#profileInlineNationality \{/);
 assert.match(css,/\.profile-nationality-select \.atsrs-select-trigger/);
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-indicator/);
+assert.doesNotMatch(css,/\.profile-nationality-select > \.atsrs-disclosure-shell/);
 assert.match(css,/left: 12px !important; right: 12px !important; bottom: 3px !important/);
 assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
