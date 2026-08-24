@@ -327,6 +327,8 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid :is(input,select,[contenteditable="true"]) {
   color: var(--text) !important; font-family: Inter,"Segoe UI",sans-serif !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
 }
+body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-field:focus-within > span,
+body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-contact:focus-within > div > span { color: var(--accent) !important; }
 body.personal-mode #profilePage #profileTabPersonalPanel { position: relative; }
 body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
 body.personal-mode #profilePage .profile-summary-meta { position: relative; }
