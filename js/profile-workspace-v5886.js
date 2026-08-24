@@ -41,7 +41,7 @@
     if(state.ready||!document.body.classList.contains('personal-mode'))return false;
     var editor=byId('profileInlineEditor'),grid=document.querySelector('#accountGeneralTab .profile-grid');if(!editor||!grid)return false;
     state.ready=true;editor.appendChild(grid);makeActions(editor,'personal');setEnabled(editor,false);
-    var availability=document.querySelector('#accountGeneralTab .work-availability-card'),availabilityCard=document.querySelector('.profile-availability-card');if(availability&&availabilityCard){availability.classList.add('hidden');availabilityCard.appendChild(availability);makeActions(availability,'availability');setEnabled(availability,false)}
+    var availability=document.querySelector('.work-availability-card'),availabilityCard=document.querySelector('.profile-availability-card');if(availability&&availabilityCard){availability.classList.add('hidden');availabilityCard.appendChild(availability);makeActions(availability,'availability');setEnabled(availability,false)}
     moveRow('profileVisibility','profilePrivacyControls');moveRow('exportDataBtn','profilePrivacyControls');
     ['setup2faBtn','viewSessionsBtn','profileTimezone','manageNotifyBtn','deleteAccountBtn'].forEach(function(id){moveRow(id,'profileSecurityControls')});
     var share=byId('shareProfilePanel'),sharing=byId('profileSharingControls');if(share&&sharing)sharing.appendChild(share);

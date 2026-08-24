@@ -18,4 +18,5 @@ assert.match(dashboard,/window\.atsrsIdentityVerification/);
 assert.doesNotMatch(dashboard,/identity\\s\*card\|id\\s\*card/);
 assert.match(css,/\.profile-settings-viewport \{[\s\S]+height: 294px/);
 assert.match(css,/\.profile-settings-panel\[hidden\] \{ display: none !important; \}/);
+assert.match(css,/#profileTabSharingPanel[\s\S]+background: var\(--surface, #0b0d0d\) !important/);
 console.log('Personal Profile workspace V5886 contracts passed');
