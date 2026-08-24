@@ -330,7 +330,8 @@ html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#p
 body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-field:focus-within > span,
 body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-contact:focus-within > div > span { color: var(--accent) !important; }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid [contenteditable="true"] { width:100% !important; min-width:0 !important; height:20px !important; min-height:20px !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:0 !important; outline:0 !important; background:transparent !important; box-shadow:none !important; caret-color:var(--text) !important; }
-body.personal-mode #profilePage .profile-inline-grid #profileInlineBirthPicker#profileInlineBirthPicker { position: absolute !important; inset: 0 !important; z-index: 2 !important; width: 100% !important; height: 100% !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; opacity: 0 !important; cursor: pointer !important; }
+.profile-birth-picker-host { position: fixed !important; left: -10000px !important; top: 0 !important; width: 1px !important; height: 1px !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-field[role="button"] { cursor: pointer; }
 body.personal-mode #profilePage #profileTabPersonalPanel { position: relative; }
 body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
 body.personal-mode #profilePage .profile-summary-meta { position: relative; }
