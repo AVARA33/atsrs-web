@@ -327,6 +327,9 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid :is(input,select,[contenteditable="true"]) {
   color: var(--text) !important; font-family: Inter,"Segoe UI",sans-serif !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
 }
+html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid #inlineCountryValue {
+  color: var(--text) !important; font-family: Inter,"Segoe UI",sans-serif !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
+}
 body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-field:focus-within > span,
 body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-contact:focus-within > div > span { color: var(--accent) !important; }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid [contenteditable="true"] { width:100% !important; min-width:0 !important; height:16px !important; min-height:16px !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:0 !important; outline:0 !important; background:transparent !important; box-shadow:none !important; caret-color:var(--text) !important; }
