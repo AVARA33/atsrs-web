@@ -20,12 +20,15 @@ assert.match(dashboard,/nationality:val\('profileInlineNationality'\)\|\|existin
 assert.match(dashboard,/setVal\('profileInlineNationality',p\.nationality\|\|p\.country\)/);
 assert.match(dashboard,/\['profileStageNationality',p\.nationality\|\|p\.country\]/);
 assert.match(js,/nationality\.setAttribute\('data-atsrs-no-field-shell','true'\)/);
+assert.match(js,/nationalityStrong\.id='profileInlineNationalityValue'/);
+assert.match(js,/nationality\.addEventListener\('input'/);
 assert.match(js,/boxes\[3\]\.querySelectorAll\('i'\)\.forEach/);
 assert.doesNotMatch(css,/\.profile-nationality-select > i \{ display: block !important;/);
 assert.match(css,/#profileInlineNationality \{/);
 assert.match(css,/\.profile-nationality-select \.atsrs-select-trigger/);
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-indicator/);
 assert.match(css,/left: 12px !important; right: 12px !important; bottom: 3px !important/);
+assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
 assert.match(js,/setTimeout\(function\(\)\{window\.scrollTo\(savedX,savedY\)\},0\)/);

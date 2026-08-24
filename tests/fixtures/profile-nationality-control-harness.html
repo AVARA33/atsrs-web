@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Profile nationality control harness</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/native-select-theme-v539.css">
+  <link rel="stylesheet" href="../../css/dropdown-neutral-state-v58174.css">
+  <link rel="stylesheet" href="../../css/floating-field-standard-v58178.css">
+  <link rel="stylesheet" href="../../css/profile-production-parity-v5878.css">
+  <style>
+    body{margin:0;background:#050606;color:#f4f6ef}
+    #profilePage{display:block!important;width:908px;margin:80px auto}
+    .profile-inline-editor{display:block!important}
+  </style>
+</head>
+<body class="personal-mode atsrs-app-visible app-open">
+  <section id="app" class="app">
+    <main id="profilePage">
+      <article class="profile-inline-editor">
+        <div class="profile-inline-grid">
+          <div class="profile-information-field"><span>Name</span><strong>Anar</strong></div>
+          <div class="profile-information-field"><span>Surname</span><strong>Aghasiyev</strong></div>
+          <div class="profile-information-field"><span>Date of birth</span><strong>17 May 1983</strong></div>
+          <div class="profile-information-field has-icon profile-nationality-select">
+            <span>Nationality</span>
+            <strong id="profileInlineNationalityValue">Azerbaijan</strong>
+            <select id="profileInlineNationality" aria-label="Nationality" data-atsrs-no-field-shell="true">
+              <option>Azerbaijan</option><option>Turkey</option><option>Norway</option><option>United Kingdom</option>
+            </select>
+          </div>
+          <div class="profile-information-field"><span>Current workplace</span><strong>Freelancer</strong></div>
+          <div class="profile-information-field"><span>Position</span><strong>Senior ROV Pilot</strong></div>
+        </div>
+      </article>
+    </main>
+  </section>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/select-standard.js"></script>
+  <script src="../../js/floating-fields.js"></script>
+</body>
+</html>
