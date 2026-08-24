@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const dashboard=fs.readFileSync(path.join(root,'js','dashboard.js'),'utf8');
 
-assert.match(index,/js\/dashboard\.js\?v=424/);
+assert.match(index,/js\/dashboard\.js\?v=425/);
 assert.match(index,/id="editProfileBtn" type="button">Edit profile<\/button>/);
 assert.match(index,/id="saveProfileBtn" type="button" onclick="saveProfile\(\)" hidden>Save profile<\/button>/);
 assert.match(index,/id="cancelProfileBtn" type="button" class="secondary" hidden>Cancel<\/button>/);
