@@ -17,7 +17,7 @@ assert.doesNotMatch(js,/Save Changes/);
 assert.equal((html.match(/id="profileSummaryEditBtn"/g)||[]).length,1);
 assert.equal((html.match(/id="profileInlineSaveBtn"/g)||[]).length,1);
 assert.equal((html.match(/id="profileInlineCancelBtn"/g)||[]).length,1);
-assert.match(html,/id="profileTabPersonalPanel"[\s\S]*?class="profile-information-actions"[\s\S]*?aria-label="Edit profile"[\s\S]*?aria-label="Cancel profile changes"[\s\S]*?aria-label="Save profile changes"/);
+assert.match(html,/id="profileTabPersonalPanel"[\s\S]*?class="profile-information-actions"[\s\S]*?aria-label="Save profile changes"[\s\S]*?aria-label="Cancel profile changes"[\s\S]*?aria-label="Edit profile"/);
 assert.match(html,/id="profileSummaryEditBtn"[\s\S]*?<svg viewBox="0 0 32 32"/);
 assert.doesNotMatch(html,/id="profileSummaryEditBtn"[^>]*>[\s\S]{0,100}Edit profile<\/button>/);
 assert.doesNotMatch(dashboard,/closest\('#profileSummaryEditBtn'\)[\s\S]{0,300}edit\.click\(\)/);
