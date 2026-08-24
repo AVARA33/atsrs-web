@@ -281,7 +281,27 @@ body.personal-mode #profilePage .profile-settings-panel > h4 { margin: 0 0 14px;
 body.personal-mode #profilePage .profile-settings-viewport .profile-information-card { border: 0 !important; border-radius: 0 !important; }
 body.personal-mode #profilePage .profile-inline-editor.hidden,
 body.personal-mode #profilePage .work-availability-card.hidden { display: none !important; }
-body.personal-mode #profilePage .profile-inline-editor .profile-grid { display: block !important; }
+body.personal-mode #profilePage .profile-inline-editor .profile-editor-source { display: none !important; }
+body.personal-mode #profilePage .profile-inline-grid { gap: 9px; }
+body.personal-mode #profilePage .profile-inline-grid .profile-information-field { min-height: 34px; height: 34px; padding: 7px 12px 3px; }
+body.personal-mode #profilePage .profile-inline-grid .profile-information-field > :is(input,select) {
+  width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 700 12px/20px Arial,sans-serif !important;
+}
+body.personal-mode #profilePage .profile-inline-contact { min-height: 34px; height: 34px; padding: 7px 10px 3px; grid-template-columns: minmax(0,1fr); }
+body.personal-mode #profilePage .profile-inline-contact > span { position: absolute; top: -7px; left: 10px; font-size: 10px; }
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-inline-contact .phone-field {
+  display: grid !important; grid-template-columns: 104px minmax(0,1fr) !important; align-items: center !important;
+  width: 100% !important; min-width: 0 !important; min-height: 22px !important; height: 22px !important; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important;
+}
+body.personal-mode #profilePage .profile-inline-contact .phone-field > .atsrs-field-label { display: none !important; }
+body.personal-mode #profilePage .profile-inline-contact .phone-field :is(select,input:not([type="hidden"])) {
+  min-width: 0 !important; width: 100% !important; min-height: 22px !important; height: 22px !important; margin: 0 !important; padding: 0 6px !important;
+  border: 0 !important; background: transparent !important; box-shadow: none !important; font: 700 12px/22px Arial,sans-serif !important;
+}
+body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
+body.personal-mode #profilePage.profile-inline-editing .profile-inline-actions { position: absolute; top: 12px; right: 16px; margin: 0; }
 body.personal-mode #profilePage .profile-inline-editor .profile-details-layout,
 body.personal-mode #profilePage .profile-inline-editor .profile-contact-row { margin: 0 !important; }
 body.personal-mode #profilePage .profile-inline-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
