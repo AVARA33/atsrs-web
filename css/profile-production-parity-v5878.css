@@ -372,27 +372,36 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   display:grid !important; place-items:center !important; flex:0 0 30px !important;
   width:30px !important; min-width:30px !important; max-width:30px !important;
   height:30px !important; min-height:30px !important; max-height:30px !important;
-  margin:0 !important; padding:0 !important; border:1px solid var(--line) !important; border-radius:8px !important;
-  background:var(--surface-2) !important; background-image:none !important; box-shadow:none !important;
-  color:var(--muted) !important; line-height:1 !important;
+  margin:0 !important; padding:0 !important; border:0 !important; border-radius:50% !important;
+  background-image:none !important; box-shadow:none !important;
+  color:#fff !important; line-height:1 !important;
 }
-body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > i { font-size:16px !important; line-height:1 !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > i { font-size:18px !important; line-height:1 !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > svg {
+  width:22px !important; height:22px !important; fill:none !important; stroke:currentColor !important;
+  stroke-width:1.8 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-edit {
+  background:transparent !important; color:#fff !important; box-shadow:none !important;
+}
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-edit:is(:hover,:focus-visible) {
-  border-color:var(--accent) !important; color:var(--accent) !important;
-  background:color-mix(in srgb,var(--accent) 8%,var(--surface-2)) !important;
-  outline:0 !important; box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent) !important;
+  color:#fff !important; background:color-mix(in srgb,#fff 8%,transparent) !important;
+  outline:0 !important; box-shadow:none !important;
 }
-body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-save { color:var(--accent) !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-save,
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel {
+  color:#fff !important; background:#090b0b !important; box-shadow:inset 0 0 0 1px color-mix(in srgb,#fff 24%,transparent) !important;
+}
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-save:is(:hover,:focus-visible) {
-  border-color:var(--accent) !important; background:color-mix(in srgb,var(--accent) 10%,var(--surface-2)) !important;
-  outline:0 !important; box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent) !important;
+  background:color-mix(in srgb,#fff 10%,#090b0b) !important; outline:0 !important; box-shadow:inset 0 0 0 1px #fff !important;
 }
-body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel { color:#f87171 !important; }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel:is(:hover,:focus-visible) {
-  border-color:#ef4444 !important; background:color-mix(in srgb,#ef4444 9%,var(--surface-2)) !important;
-  outline:0 !important; box-shadow:0 0 0 2px color-mix(in srgb,#ef4444 15%,transparent) !important;
+  background:color-mix(in srgb,#fff 10%,#090b0b) !important; outline:0 !important; box-shadow:inset 0 0 0 1px #fff !important;
 }
-html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-cancel { color:#dc2626 !important; }
+html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action { color:#111 !important; }
+html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel :is(.profile-information-action-save,.profile-information-action-cancel) {
+  background:#fff !important; box-shadow:inset 0 0 0 1px rgba(17,17,17,.32) !important;
+}
 body.personal-mode #profilePage .profile-inline-editor .profile-details-layout,
 body.personal-mode #profilePage .profile-inline-editor .profile-contact-row { margin: 0 !important; }
 body.personal-mode #profilePage .profile-inline-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
