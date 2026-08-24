@@ -94,6 +94,13 @@
     if(!picker||!activeInput||picker.classList.contains('hidden'))return;
     var dialog=picker.querySelector('.atsrs-date-picker-dialog');
     if(!dialog)return;
+    if(activeInput.dataset.atsrsDateLockPosition==='true'&&dialog.dataset.atsrsLockedLeft&&dialog.dataset.atsrsLockedTop){
+      dialog.style.left=dialog.dataset.atsrsLockedLeft;
+      dialog.style.top=dialog.dataset.atsrsLockedTop;
+      dialog.style.right='auto';
+      dialog.style.bottom='auto';
+      return;
+    }
     var inputRect=activeInput.getBoundingClientRect();
     var dialogRect=dialog.getBoundingClientRect();
     var gap=8;
@@ -207,6 +214,9 @@
     viewDate=selectedDate?new Date(selectedDate):new Date();
     viewDate=new Date(viewDate.getFullYear(),viewDate.getMonth(),1);
     ensurePicker();
+    var dialog=picker.querySelector('.atsrs-date-picker-dialog');
+    delete dialog.dataset.atsrsLockedLeft;
+    delete dialog.dataset.atsrsLockedTop;
     activeDialogHost=input.closest&&input.closest('dialog[open]');
     if(activeDialogHost){
       activeDialogHost.appendChild(picker);
@@ -228,6 +238,9 @@
   function close(){
     if(!picker)return;
     picker.classList.add('hidden');
+    var dialog=picker.querySelector('.atsrs-date-picker-dialog');
+    delete dialog.dataset.atsrsLockedLeft;
+    delete dialog.dataset.atsrsLockedTop;
     document.body.classList.remove('atsrs-date-picker-open');
     if(activeDialogHost){
       activeDialogHost.classList.remove('atsrs-date-picker-host');

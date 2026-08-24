@@ -3,6 +3,7 @@ const fs=require('node:fs');
 const html=fs.readFileSync('index.html','utf8');
 const js=fs.readFileSync('js/profile-workspace-v5886.js','utf8');
 const dashboard=fs.readFileSync('js/dashboard.js','utf8');
+const datePicker=fs.readFileSync('js/date-picker.js','utf8');
 const css=fs.readFileSync('css/profile-production-parity-v5878.css','utf8');
 
 ['Personal','Privacy','Sharing','Security'].forEach(name=>{
@@ -12,6 +13,10 @@ const css=fs.readFileSync('css/profile-production-parity-v5878.css','utf8');
 assert.doesNotMatch(html,/profileTab(?:Privacy|Sharing|Security)Btn[^>]+aria-disabled/);
 assert.match(js,/event\.key==='ArrowRight'\|\|event\.key==='ArrowLeft'/);
 assert.match(js,/Discard unsaved profile changes/);
+assert.match(js,/birthPicker\.dataset\.atsrsDateLockPosition='true'/);
+assert.match(js,/dialog\.dataset\.atsrsLockedLeft=left\+'px'/);
+assert.match(datePicker,/activeInput\.dataset\.atsrsDateLockPosition==='true'/);
+assert.match(datePicker,/dialog\.style\.left=dialog\.dataset\.atsrsLockedLeft/);
 assert.match(js,/function bindPersonalActions\(\)/);
 assert.doesNotMatch(js,/Save Changes/);
 assert.equal((html.match(/id="profileSummaryEditBtn"/g)||[]).length,1);
