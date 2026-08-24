@@ -61,7 +61,8 @@ assert.match(css,/#profileTabSharingPanel[\s\S]+background: var\(--surface, #0b0
 assert.match(css,/profile-inline-grid #inlineCountryValue \{[\s\S]*?font-size: 12px !important;[\s\S]*?font-weight: 500 !important;/);
 assert.match(css,/#profileTabPersonalPanel > \.profile-information-actions \{[\s\S]*?position:absolute !important;[\s\S]*?top:12px !important;[\s\S]*?right:18px !important;/);
 assert.match(css,/\.profile-information-action \{[\s\S]*?width:30px !important;[\s\S]*?height:30px !important;/);
-assert.match(css,/\.profile-information-field:focus-within > span,[\s\S]*?color: var\(--accent\) !important;/);
+assert.match(css,/\.profile-information-field:focus-within > span,[\s\S]*?color: var\(--atsrs-field-accent\) !important;/);
+assert.match(css,/profile-inline-editing \.profile-inline-grid :is\(\.profile-information-field,\.profile-information-contact\):focus-within,[\s\S]*?border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\) !important;[\s\S]*?box-shadow:var\(--atsrs-field-focus-shadow\) !important;/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*?:-webkit-autofill[\s\S]*?color-mix\(in srgb,var\(--accent\) 9%,var\(--surface-2\)\)/);
 assert.match(css,/html\[data-theme="light"\][\s\S]*?:-webkit-autofill[\s\S]*?color-mix\(in srgb,var\(--accent\) 6%,#fff\)/);
 assert.doesNotMatch(css,/\.profile-summary-edit/);

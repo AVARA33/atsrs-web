@@ -377,8 +377,14 @@ html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPane
   .profile-information-field > span,
   .profile-information-contact > div > span
 ) { background:#fff !important; }
-body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-field:focus-within > span,
-body.personal-mode #profilePage.profile-inline-editing .profile-inline-grid .profile-information-contact:focus-within > div > span { color: var(--accent) !important; }
+html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage.profile-inline-editing #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-information-field:focus-within > span,
+html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage.profile-inline-editing #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-information-field:has([aria-expanded="true"]) > span,
+html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage.profile-inline-editing #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-information-contact:focus-within > div > span { color: var(--atsrs-field-accent) !important; }
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage.profile-inline-editing .profile-inline-grid :is(.profile-information-field,.profile-information-contact):focus-within,
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage.profile-inline-editing .profile-inline-grid .profile-information-field:has([aria-expanded="true"]) {
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line) !important;
+  box-shadow:var(--atsrs-field-focus-shadow) !important;
+}
 html[data-theme="dark"] body.personal-mode #profilePage #profileInlineEditor .profile-inline-grid input:is(
   :-webkit-autofill,
   :-webkit-autofill:hover,
