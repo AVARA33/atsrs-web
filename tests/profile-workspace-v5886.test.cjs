@@ -14,6 +14,7 @@ assert.doesNotMatch(html,/profileTab(?:Privacy|Sharing|Security)Btn[^>]+aria-dis
 assert.match(js,/event\.key==='ArrowRight'\|\|event\.key==='ArrowLeft'/);
 assert.match(js,/Discard unsaved profile changes/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
+assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
 assert.match(js,/setTimeout\(function\(\)\{window\.scrollTo\(savedX,savedY\)\},0\)/);
 assert.match(js,/birthPicker\.dataset\.atsrsDatePosition='anchor-above-right'/);
 assert.match(js,/birthPicker\.dataset\.atsrsDateAnchorId='profileInlineBirthDateDisplay'/);
