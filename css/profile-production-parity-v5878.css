@@ -316,6 +316,10 @@ body.personal-mode #profilePage .profile-inline-contact input {
   min-width: 0 !important; width: 100% !important; min-height: 22px !important; height: 22px !important; margin: 0 !important; padding: 0 !important;
   border: 0 !important; background: transparent !important; box-shadow: none !important; font: 500 12px/22px Arial,sans-serif !important;
 }
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-inline-contact input {
+  min-width: 0 !important; width: 100% !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
+}
 body.personal-mode #profilePage #profileTabPersonalPanel { position: relative; }
 body.personal-mode #profilePage.profile-inline-editing #profileTabPersonalPanel { overflow-y: hidden; }
 body.personal-mode #profilePage .profile-summary-meta { position: relative; }
