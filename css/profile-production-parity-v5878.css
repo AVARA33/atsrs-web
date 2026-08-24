@@ -115,7 +115,7 @@ body.personal-mode #profilePage :is(
   .profile-calendar-card,
   .profile-account-status
 ) {
-  box-shadow: 0 16px 38px color-mix(in srgb, var(--text) 7%, transparent) !important;
+  box-shadow: none !important;
 }
 
 body.personal-mode #profilePage .profile-summary-identity {
