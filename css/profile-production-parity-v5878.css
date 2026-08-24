@@ -338,3 +338,4 @@ body.personal-mode #profilePage.profile-editing > .panel > .account-tab.active {
     border-bottom: 1px solid var(--line) !important;
   }
 }
+body.personal-mode #navCompliance{display:none!important}
