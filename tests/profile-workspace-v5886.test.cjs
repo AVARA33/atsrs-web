@@ -24,6 +24,7 @@ assert.match(js,/nationality\.setAttribute\('data-atsrs-no-field-shell','true'\)
 assert.match(js,/boxes\[3\]\.querySelectorAll\('i'\)\.forEach/);
 assert.doesNotMatch(css,/\.profile-nationality-select > i \{ display: block !important;/);
 assert.match(css,/\.profile-nationality-select::after/);
+assert.match(css,/#profileInlineNationality \{/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
 assert.match(js,/setTimeout\(function\(\)\{window\.scrollTo\(savedX,savedY\)\},0\)/);

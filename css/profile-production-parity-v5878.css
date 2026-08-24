@@ -267,6 +267,11 @@ body.personal-mode #profilePage .profile-inline-grid { gap: 9px; }
 body.personal-mode #profilePage .profile-inline-grid select { appearance: none !important; -webkit-appearance: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field:has(select) > i { display: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .profile-nationality-select { position: relative; }
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > #profileInlineNationality {
+  display: block !important; width: 100% !important; min-width: 0 !important; height: 20px !important; min-height: 20px !important;
+  margin: 0 !important; padding: 0 20px 0 0 !important; border: 0 !important; outline: 0 !important; border-radius: 0 !important;
+  background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
+}
 body.personal-mode #profilePage .profile-inline-grid .profile-nationality-select::after {
   content: ""; position: absolute; right: 13px; bottom: 10px; width: 6px; height: 6px;
   border-right: 1px solid var(--muted); border-bottom: 1px solid var(--muted); transform: rotate(45deg); pointer-events: none;
