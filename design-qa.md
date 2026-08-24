@@ -796,6 +796,43 @@ final result: passed
 
 Final result: passed.
 
+# Personal Profile country edit typography — V5911
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-c59dd8e3-b329-4053-a345-99af0bc8974d.png` (3439 × 1368 px).
+- Browser-rendered production implementation: `qa/profile-country-font-v5911.jpg` (2279 × 731 px at a 2279 × 731 CSS viewport and 1× density).
+- Full-view comparison: `qa/profile-country-font-v5911-comparison.jpg`.
+- Focused typography comparison: `qa/profile-country-font-v5911-focus.jpg`.
+- State: authenticated Personal Profile, dark theme, Personal Information in Edit mode on `https://atsrs.com/`.
+
+## Full-view and focused comparison evidence
+
+The full view preserves the existing Profile layout, card geometry, Work Availability column, Calendar and Account Status. The focused comparison shows the reported 16 px `Azerbaijan` value corrected to the same compact value typography used by the other editable fields. Production computed styles now resolve both Country of residence and Name to `500 12px Inter, "Segoe UI", sans-serif`; the country text box is 16 px high and page-level horizontal overflow is zero.
+
+## Required fidelity surfaces
+
+- Fonts and typography: Country of residence now matches all other Edit values at Inter, 12 px, weight 500 and normal line height.
+- Spacing and layout rhythm: only typography was changed; field geometry, padding, grid placement and surrounding card dimensions remain unchanged.
+- Colors and visual tokens: existing ATSRS text, muted-label, surface, border and green focus tokens are preserved.
+- Image quality and asset fidelity: no image, logo or icon asset changed.
+- Copy and content: the real `Azerbaijan` value and every surrounding Profile label remain unchanged.
+
+## Findings and comparison history
+
+- Earlier P2: `#inlineCountryValue` was a generated `div` omitted from the shared input/select/contenteditable typography selector, so the browser inherited a 16 px default while adjacent Edit values were 12 px.
+- Fix: explicitly applied the established Profile Edit typography contract to `#inlineCountryValue` and added a focused regression assertion.
+- Post-fix evidence: production reports Country `12px/500` and Name `12px/500`; the focused combined image shows the values at matching visual scale.
+- No actionable P0, P1 or P2 finding remains.
+
+## Primary interactions and console
+
+- Profile navigation and Edit profile activation: passed.
+- Save/Cancel controls remain in the existing fixed location; no legacy editor appeared.
+- Production asset marker: `profile-production-parity-v5878.css?v=5911` on both `atsrs.com` and the Pages origin.
+- Browser console errors/warnings: 0.
+- Focused Profile tests: 3/3 passed; Cloudflare Pages build passed.
+
+final result: passed
+
 # Personal Profile Workspace V5886 — Design QA
 
 - Source visuals: `C:\Users\user\AppData\Local\Temp\codex-clipboard-81483fe1-1ae9-4aff-ad11-1a2d30fa7a66.png` and `C:\Users\user\AppData\Local\Temp\codex-clipboard-e1dd8d63-c58a-4d35-9c2e-2aa56d73a49d.png` (2048 × 814 px).
