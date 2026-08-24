@@ -285,7 +285,8 @@ body.personal-mode #profilePage .profile-inline-editor { height: 208px; min-heig
 body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid { height: 208px; min-height: 208px; max-height: 208px; }
 body.personal-mode #profilePage .profile-inline-editor .profile-editor-source { display: none !important; }
 body.personal-mode #profilePage .profile-inline-grid { gap: 9px; }
-body.personal-mode #profilePage .profile-inline-grid .profile-information-field > i { display: none !important; }
+body.personal-mode #profilePage .profile-inline-grid select { appearance: none !important; -webkit-appearance: none !important; }
+body.personal-mode #profilePage [data-profile-stage-edit] { display: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field { min-height: 34px; height: 34px; padding: 7px 12px 3px; }
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field > :is(input,select) {
   width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
