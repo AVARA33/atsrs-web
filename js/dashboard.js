@@ -467,6 +467,14 @@
       editButton.__atsrsProfileEditBound=true;
       editButton.addEventListener('click',function(){setProfileEditMode(true,true)});
     }
+    var cancelButton=byId('cancelProfileBtn');
+    if(cancelButton&&!cancelButton.__atsrsProfileCancelBound){
+      cancelButton.__atsrsProfileCancelBound=true;
+      cancelButton.addEventListener('click',function(){
+        window.loadProfile();
+        setProfileEditMode(false,false);
+      });
+    }
     var generalTab=byId('accountGeneralTab');
     if(generalTab&&!generalTab.hasAttribute('data-profile-editing'))setProfileEditMode(false,false);
   }
@@ -493,10 +501,13 @@
     editing=!!editing;
     root.setAttribute('data-profile-editing',editing?'true':'false');
     root.classList.toggle('profile-editing',editing);
+    var page=byId('profilePage');
+    if(page){page.classList.toggle('profile-editing',editing);page.setAttribute('data-profile-view',editing?'edit':'summary');}
     profileEditableControls().forEach(function(control){control.disabled=!editing});
-    var editButton=byId('editProfileBtn'),saveButton=byId('saveProfileBtn');
+    var editButton=byId('editProfileBtn'),saveButton=byId('saveProfileBtn'),cancelButton=byId('cancelProfileBtn');
     if(editButton){editButton.hidden=editing;editButton.setAttribute('aria-hidden',editing?'true':'false')}
     if(saveButton){saveButton.hidden=!editing;saveButton.setAttribute('aria-hidden',editing?'false':'true')}
+    if(cancelButton){cancelButton.hidden=!editing;cancelButton.setAttribute('aria-hidden',editing?'false':'true')}
     if(!editing){
       var workMenu=byId('profileWorkPreferencesMenu');
       if(workMenu)workMenu.classList.add('hidden');
@@ -656,6 +667,8 @@
     if(saved){
       var confirmed=byId('availabilityConfirmationNote');
       if(confirmed)confirmed.textContent=availabilityStatus==='not_set'?'Not specified':'Confirmed now';
+      updateProfileSummary(data);
+      updateProfileStage(data);
       setProfileEditMode(false,false);
       showSaved();return true;
     }
@@ -763,7 +776,17 @@
     var certs=readJson('certs',[]),hasId=Array.isArray(certs)&&certs.some(function(cert){var label=[cert&&cert.name,cert&&cert.title,cert&&cert.certificate].filter(Boolean).join(' ');return /(^|\b)(identity\s*card|id\s*card)(\b|$)/i.test(label);});profileStageSetStatus('profileStageIdStatus',hasId,'Verified','Not verified');
     updateProfileStageMfa();bindProfileCalendar();
   }
-  document.addEventListener('click',function(event){if(event.target.closest&&(event.target.closest('#profileSummaryEditBtn')||event.target.closest('#profileStageAvailabilityEditBtn'))){var edit=byId('editProfileBtn');if(edit)edit.click();}});
+  document.addEventListener('click',function(event){
+    if(!event.target.closest)return;
+    var stageEdit=event.target.closest('[data-profile-stage-edit]');
+    if(event.target.closest('#profileSummaryEditBtn')||event.target.closest('#profileStageAvailabilityEditBtn')||stageEdit){
+      var edit=byId('editProfileBtn');if(edit)edit.click();
+      if(stageEdit){
+        var target=stageEdit.dataset.profileStageEdit==='whatsapp'?'profileWhatsappLocal':'profilePhoneLocal';
+        setTimeout(function(){var field=byId(target);if(field)field.focus();},0);
+      }
+    }
+  });
   document.addEventListener('click',function(event){
     if(!event.target.closest||!event.target.closest('.phone-code-picker'))closePhoneMenus();
     if(!event.target.closest||!event.target.closest('#profileWorkPreferences'))setWorkPreferencesMenu(null,false);

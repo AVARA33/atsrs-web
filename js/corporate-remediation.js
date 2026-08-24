@@ -27,7 +27,7 @@
 
   function syncAccount(){
     var corporate=companyMode();
-    setText('accountTitle',corporate?'Corporate Account':'Account');
+    setText('accountTitle',corporate?'Corporate Account':'Profile');
     var owner=byId('corporateAccountOwnerEmail');
     if(owner){
       var email=window.currentUser&&window.currentUser.email||byId('userEmail')&&byId('userEmail').textContent||'Signed-in owner';

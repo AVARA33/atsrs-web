@@ -1,0 +1,284 @@
+/* Production-only integration for the approved Personal Profile fixture. */
+body.personal-mode #profilePage {
+  --surface: #0c0f0e;
+  --surface-2: #111414;
+  --line: #2a2f2d;
+  --text: #f4f6ef;
+  --muted: #aab5ae;
+  --accent: #22c55e;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+html[data-theme="light"] body.personal-mode #profilePage {
+  --surface: #fff;
+  --surface-2: #f4f7fb;
+  --line: #c8d4de;
+  --text: #172b3d;
+  --muted: #617386;
+  --accent: #2563eb;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage > .panel {
+  max-width: 1240px !important;
+  margin-inline: auto !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.personal-mode[data-atsrs-account-route="profile"] #app#app.app:not(.hidden) > .main > #pageTitle {
+  display: none !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage > .panel > #accountTitle {
+  display: block !important;
+  margin: 0 !important;
+  color: var(--text) !important;
+  font-size: 32px !important;
+  line-height: normal !important;
+}
+
+body.personal-mode #profilePage .profile-rebuild-subtitle {
+  margin: 16px 0 !important;
+  line-height: normal !important;
+}
+
+body.personal-mode #profilePage .profile-summary-stage,
+body.personal-mode #profilePage .profile-summary-stage *,
+body.personal-mode #profilePage .profile-summary-stage *::before,
+body.personal-mode #profilePage .profile-summary-stage *::after {
+  box-sizing: content-box;
+}
+
+body.personal-mode #profilePage .profile-summary-stage :is(button, progress) {
+  box-sizing: border-box;
+}
+
+body.personal-mode #profilePage .profile-summary-stage :is(p, dt, dd, h4, strong, span, em, small) {
+  line-height: normal;
+}
+
+body.personal-mode #profilePage .profile-summary-title-row h4 {
+  line-height: 1.2;
+}
+
+body.personal-mode #profilePage :is(.profile-summary-role, .profile-summary-verified) {
+  line-height: 1;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage :is(
+  .profile-information-card > h4,
+  .profile-calendar-heading h4,
+  .profile-account-status strong,
+  .profile-account-status small,
+  .profile-account-status dt,
+  .profile-account-status dd
+) {
+  line-height: normal !important;
+}
+
+body.personal-mode #profilePage :is(
+  .profile-summary-card,
+  .profile-availability-card,
+  .profile-information-tabs,
+  .profile-information-card,
+  .profile-calendar-card,
+  .profile-account-status
+) {
+  border-color: var(--line) !important;
+  border-style: solid !important;
+  border-width: 1px !important;
+  background: var(--surface) !important;
+  background-image: none !important;
+}
+
+body.personal-mode #profilePage :is(
+  .profile-summary-card,
+  .profile-availability-card,
+  .profile-information-card,
+  .profile-calendar-card,
+  .profile-account-status
+) {
+  box-shadow: 0 16px 38px color-mix(in srgb, var(--text) 7%, transparent) !important;
+}
+
+body.personal-mode #profilePage .profile-summary-identity {
+  border-right: 1px solid var(--line) !important;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-wrap {
+  border: 2px solid color-mix(in srgb, var(--accent) 28%, var(--line)) !important;
+  background: var(--surface-2) !important;
+  background-image: none !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-summary-edit {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 9px 15px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  background: var(--surface-2) !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+  font: 700 13.3333px/normal Arial, sans-serif !important;
+}
+
+body.personal-mode #profilePage .profile-summary-edit:is(:hover, :focus-visible) {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+body.personal-mode #profilePage .profile-availability-fields dd,
+body.personal-mode #profilePage .profile-information-field,
+body.personal-mode #profilePage .profile-information-contact {
+  border: 1px solid var(--line) !important;
+  background: var(--surface-2) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.personal-mode #profilePage .profile-information-field > span,
+body.personal-mode #profilePage .profile-information-contact span {
+  background: var(--surface-2) !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-edit {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 36px !important;
+  margin: auto 0 0 !important;
+  padding: 0 !important;
+  border: 1px solid var(--accent) !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--accent) !important;
+  box-shadow: none !important;
+  font: 700 13.3333px/normal Arial, sans-serif !important;
+}
+
+body.personal-mode #profilePage .profile-availability-edit:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--accent) 9%, transparent) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent) !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-information-tabs button {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 8px 12px !important;
+  border: 0 !important;
+  border-right: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  font: inherit !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+body.personal-mode #profilePage .profile-information-tabs button:last-child {
+  border-right: 0 !important;
+}
+
+body.personal-mode #profilePage .profile-information-tabs button.is-active {
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface)) !important;
+  color: var(--text) !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-calendar-nav button,
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-information-contact button {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-calendar-nav button {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 8px !important;
+  background: var(--surface-2) !important;
+  color: var(--muted) !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-information-contact button {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+}
+
+body.personal-mode #profilePage .profile-account-status-list > div {
+  border-left: 1px solid var(--line) !important;
+}
+
+html[data-theme="light"] body.personal-mode #profilePage :is(
+  .profile-information-field,
+  .profile-information-contact,
+  .profile-information-field > span,
+  .profile-information-contact span,
+  .profile-availability-fields dd
+) {
+  background: #fff !important;
+}
+
+/* The approved summary and the legacy editor never occupy the page together. */
+body.personal-mode #profilePage.profile-editing > .panel > .profile-summary-stage {
+  display: none !important;
+}
+
+body.personal-mode #profilePage.profile-editing > .panel > #userEmail {
+  display: block !important;
+}
+
+body.personal-mode #profilePage.profile-editing > .panel > .account-tabs {
+  display: flex !important;
+}
+
+body.personal-mode #profilePage.profile-editing > .panel > .account-tab.active {
+  display: block !important;
+}
+
+@media (max-width: 760px) {
+  body.personal-mode #profilePage .profile-account-status-list > div {
+    border-left: 0 !important;
+  }
+}
+
+@media (max-width: 720px) {
+  body.personal-mode #profilePage .profile-summary-identity {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  body.personal-mode #profilePage .profile-information-tabs button:nth-child(2) {
+    border-right: 0 !important;
+  }
+
+  body.personal-mode #profilePage .profile-information-tabs button:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line) !important;
+  }
+}

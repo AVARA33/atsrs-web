@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Personal Profile production integration QA</title>
+  <style>html{visibility:hidden}</style>
+</head>
+<body class="personal-mode atsrs-app-visible app-open" data-atsrs-account-route="profile">
+  <section id="app" class="app">
+    <aside class="sidebar" aria-hidden="true"></aside>
+    <main class="main"><h2 id="pageTitle">Profile</h2></main>
+  </section>
+  <script>
+    (async function(){
+      var source=await fetch('/index.html',{cache:'no-store'}).then(function(response){return response.text();});
+      var parsed=new DOMParser().parseFromString(source,'text/html');
+      var links=Array.from(parsed.querySelectorAll('link[rel="stylesheet"]'));
+      await Promise.all(links.map(function(item){return new Promise(function(resolve){
+        var link=document.createElement('link');link.rel='stylesheet';link.href=new URL(item.getAttribute('href'),location.origin+'/').href;link.onload=resolve;link.onerror=resolve;document.head.appendChild(link);
+      });}));
+      var profile=parsed.querySelector('#profilePage');
+      profile.classList.remove('hidden');
+      document.querySelector('.main').appendChild(document.importNode(profile,true));
+      document.querySelector('#accountTitle').textContent='Profile';
+      document.documentElement.dataset.theme=location.search.indexOf('light')>=0?'light':'dark';
+      document.documentElement.style.visibility='visible';
+    })().catch(function(error){document.documentElement.style.visibility='visible';document.body.textContent=error.message;console.error(error);});
+  </script>
+</body>
+</html>
