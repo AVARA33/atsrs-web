@@ -645,6 +645,7 @@
       phoneCountryCode:phoneParts.code,phoneLocal:phoneParts.local,phoneVerified:!!existing.phoneVerified,
       whatsapp:whatsappParts.full,
       whatsappCountryCode:whatsappParts.code,whatsappLocal:whatsappParts.local,whatsappVerified:!!existing.whatsappVerified,
+      nationality:val('profileInlineNationality')||existing.nationality||val('profileCountry'),
       country:val('profileCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
       zipCode:val('profileZipCode'),birthDate:val('profileBirthDate'),address:val('profileAddress'),
@@ -717,6 +718,7 @@
     syncPhonePicker(byId('profileWhatsappCountryCode'));
     updatePhoneHidden('profileWhatsapp');
     setVal('profileCountry',p.country);
+    setVal('profileInlineNationality',p.nationality||p.country);
     setVal('profileCompany',p.company); setVal('profilePosition',p.position);
     setVal('profileZipCode',p.zipCode); setVal('profileBirthDate',p.birthDate); setVal('profileAddress',p.address);
     setVerificationText('profilePhoneVerifiedText',!!p.phoneVerified);
@@ -776,7 +778,7 @@
   function updateProfileStageMfa(){var client=window.supabaseClient;if(!client||!client.auth||!client.auth.mfa||typeof client.auth.mfa.listFactors!=='function'){profileStageSetStatus('profileStageMfaStatus',false,'Enabled','Not enabled');return;}client.auth.mfa.listFactors().then(function(result){var data=result&&result.data||{},factors=[].concat(data.all||[],data.totp||[],data.phone||[]);profileStageSetStatus('profileStageMfaStatus',factors.some(function(item){return item&&item.status==='verified';}),'Enabled','Not enabled');}).catch(function(){profileStageSetStatus('profileStageMfaStatus',false,'Enabled','Not enabled');});}
   function updateProfileStage(p){p=p||{};var accountTitle=byId('accountTitle');if(accountTitle&&document.body&&document.body.classList.contains('personal-mode'))accountTitle.textContent='Profile';var user=window.currentUser||{},phone=p.phone||[(p.phoneCountryCode||''),(p.phoneLocal||'')].filter(Boolean).join(' '),whatsapp=p.whatsapp||[(p.whatsappCountryCode||''),(p.whatsappLocal||'')].filter(Boolean).join(' '),confirmed=byId('profileStageAvailabilityConfirmed');
     if(window.initPersonalProfileWorkspace)window.initPersonalProfileWorkspace();
-    [['profileStageName',p.name],['profileStageSurname',p.surname],['profileStageBirthDate',profileStageDisplayDate(p.birthDate)],['profileStageNationality',p.country],['profileStageCompany',p.company],['profileStagePosition',p.position],['profileStageAddress',p.address],['profileStageZip',p.zipCode],['profileStageCountry',p.country],['profileStagePhone',phone],['profileStageWhatsapp',whatsapp],['profileStageAvailabilityStatus',profileStageAvailabilityLabel(p.availabilityStatus||'not_set')],['profileStageAvailableFrom',profileStageDisplayDate(p.availableFrom)],['profileStageWorkType',profileStageWorkLabel(p.workPreferences||p.workPreference||'any')],['profileStageNoticePeriod',p.noticePeriod||p.availabilityNoticePeriod||'Not specified']].forEach(function(item){profileStageSetText(item[0],item[1]);});
+    [['profileStageName',p.name],['profileStageSurname',p.surname],['profileStageBirthDate',profileStageDisplayDate(p.birthDate)],['profileStageNationality',p.nationality||p.country],['profileStageCompany',p.company],['profileStagePosition',p.position],['profileStageAddress',p.address],['profileStageZip',p.zipCode],['profileStageCountry',p.country],['profileStagePhone',phone],['profileStageWhatsapp',whatsapp],['profileStageAvailabilityStatus',profileStageAvailabilityLabel(p.availabilityStatus||'not_set')],['profileStageAvailableFrom',profileStageDisplayDate(p.availableFrom)],['profileStageWorkType',profileStageWorkLabel(p.workPreferences||p.workPreference||'any')],['profileStageNoticePeriod',p.noticePeriod||p.availabilityNoticePeriod||'Not specified']].forEach(function(item){profileStageSetText(item[0],item[1]);});
     if(confirmed)confirmed.textContent=p.availabilityConfirmedAt?'Confirmed '+profileStageDisplayDate(p.availabilityConfirmedAt):'Not confirmed';
     profileStageSetStatus('profileStagePhoneVerification',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappVerification',!!p.whatsappVerified,'Verified','Not verified');profileStageSetStatus('profileStageEmailStatus',!!user.email_confirmed_at,'Verified','Not verified');profileStageSetStatus('profileStageMobileStatus',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappStatus',!!p.whatsappVerified,'Verified','Not verified');
     var identity=window.atsrsIdentityVerification||null,identityVerified=!!(identity&&identity.status==='verified'&&identity.verifiedAt);profileStageSetStatus('profileStageIdStatus',identityVerified,'Verified','Not verified');
