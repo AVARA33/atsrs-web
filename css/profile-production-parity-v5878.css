@@ -272,6 +272,20 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   margin: 0 !important; padding: 0 20px 0 0 !important; border: 0 !important; outline: 0 !important; border-radius: 0 !important;
   background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
 }
+html[data-theme="dark"] body.personal-mode #profilePage #profileInlineNationality { color-scheme: dark !important; }
+html[data-theme="dark"] body.personal-mode #profilePage #profileInlineNationality option {
+  background: #0b0d0d !important; color: #f4f6ef !important;
+}
+html[data-theme="dark"] body.personal-mode #profilePage #profileInlineNationality option:checked {
+  background: #123e22 !important; color: #46d369 !important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #profileInlineNationality { color-scheme: light !important; }
+html[data-theme="light"] body.personal-mode #profilePage #profileInlineNationality option {
+  background: #ffffff !important; color: #172033 !important;
+}
+html[data-theme="light"] body.personal-mode #profilePage #profileInlineNationality option:checked {
+  background: #e5f0ff !important; color: #1559a6 !important;
+}
 body.personal-mode #profilePage .profile-inline-grid .profile-nationality-select::after {
   content: ""; position: absolute; right: 13px; bottom: 10px; width: 6px; height: 6px;
   border-right: 1px solid var(--muted); border-bottom: 1px solid var(--muted); transform: rotate(45deg); pointer-events: none;
