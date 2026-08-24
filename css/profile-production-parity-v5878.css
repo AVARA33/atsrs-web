@@ -281,6 +281,8 @@ body.personal-mode #profilePage .profile-settings-panel > h4 { margin: 0 0 14px;
 body.personal-mode #profilePage .profile-settings-viewport .profile-information-card { border: 0 !important; border-radius: 0 !important; }
 body.personal-mode #profilePage .profile-inline-editor.hidden,
 body.personal-mode #profilePage .work-availability-card.hidden { display: none !important; }
+body.personal-mode #profilePage .profile-inline-editor { height: 208px; min-height: 208px; max-height: 208px; overflow: visible; }
+body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid { height: 208px; min-height: 208px; max-height: 208px; }
 body.personal-mode #profilePage .profile-inline-editor .profile-editor-source { display: none !important; }
 body.personal-mode #profilePage .profile-inline-grid { gap: 9px; }
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field { min-height: 34px; height: 34px; padding: 7px 12px 3px; }

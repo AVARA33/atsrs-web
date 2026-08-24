@@ -25,7 +25,7 @@
     activate('personal',false);var read=byId('profilePersonalReadView'),editor=byId('profileInlineEditor');if(!editor)return;
     if(window.loadProfile)window.loadProfile();state.personalEditing=true;state.initialDraft=draft();
     if(read)read.classList.add('hidden');editor.classList.remove('hidden');setEnabled(editor,true);byId('profilePage').classList.add('profile-inline-editing');
-    var target=byId(focusId||'profileName');if(target)setTimeout(function(){target.focus()},0);
+    var target=byId(focusId||'profileName');if(target)setTimeout(function(){target.focus({preventScroll:true})},0);
   }
   function finishPersonal(){var read=byId('profilePersonalReadView'),editor=byId('profileInlineEditor');state.personalEditing=false;state.initialDraft='';if(read)read.classList.remove('hidden');if(editor){editor.classList.add('hidden');setEnabled(editor,false)}byId('profilePage').classList.remove('profile-inline-editing')}
   async function savePersonal(){var button=byId('profileInlineSaveBtn');if(button)button.disabled=true;var ok=window.saveProfile?await window.saveProfile({personalChanged:true}):false;if(button)button.disabled=false;if(ok){finishPersonal();activate('personal',false)}return ok}
