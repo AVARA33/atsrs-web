@@ -584,7 +584,7 @@ body.personal-mode #profilePage .profile-availability-card.is-editing .profile-a
 }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-fields > div:focus-within dd {
   border-color:var(--atsrs-field-focus-block-line, color-mix(in srgb,var(--accent) 42%,var(--line))) var(--atsrs-field-focus-inline-line, var(--accent)) !important;
-  background:var(--atsrs-field-focus-bg, color-mix(in srgb,var(--accent) 8%,var(--surface-2))) !important;
+  background:var(--surface-2) !important;
   box-shadow:var(--atsrs-field-focus-shadow, 0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)) !important;
 }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-inline-control:disabled {
