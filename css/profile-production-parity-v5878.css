@@ -182,7 +182,7 @@ body.personal-mode #profilePage .profile-summary-avatar-actions button {
 
 body.personal-mode #profilePage .profile-summary-avatar-edit {
   position: absolute;
-  right: -7px;
+  right: -28px;
   bottom: 30px;
   z-index: 4;
   width: 24px !important;
@@ -197,10 +197,13 @@ body.personal-mode #profilePage .profile-summary-avatar-edit {
 
 body.personal-mode #profilePage .profile-summary-avatar-camera {
   position: absolute;
-  inset: 0;
+  left: 50%;
+  top: 50%;
   z-index: 2;
-  width: 100%;
-  height: 100%;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -209,6 +212,7 @@ body.personal-mode #profilePage .profile-summary-avatar-camera {
   background: rgba(3,10,16,.58);
   color: #fff;
   cursor: pointer;
+  transform: translate(-50%,-50%);
 }
 
 body.personal-mode #profilePage .profile-summary-avatar-camera i {
@@ -237,14 +241,14 @@ body.personal-mode #profilePage .profile-summary-avatar-actions button {
 
 body.personal-mode #profilePage #profileSummaryAvatarCancelBtn {
   position: absolute;
-  right: -8px;
+  right: -34px;
   top: 78%;
   color: var(--text) !important;
 }
 
 body.personal-mode #profilePage #profileSummaryAvatarConfirmBtn {
   position: absolute;
-  right: 6px;
+  right: -28px;
   top: 94%;
   color: var(--accent) !important;
 }
@@ -965,6 +969,10 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-s
 }
 
 body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
   border: 0 !important;
   background: rgba(3,10,16,.58) !important;
 }
