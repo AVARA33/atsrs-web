@@ -736,6 +736,9 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell > :is(.atsrs-select-trigger,.atsrs-date-input) {
   color:transparent !important; caret-color:transparent !important;
 }
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd:has(#profileInlineAvailableFrom) > .atsrs-disclosure-shell > .atsrs-date-input {
+  opacity:0 !important;
+}
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell > .atsrs-disclosure-indicator {
   opacity:0 !important;
 }
