@@ -251,7 +251,7 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-i
   box-shadow: none !important;
   font: inherit !important;
   font-size: 12px !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
 }
 
 body.personal-mode #profilePage .profile-information-tabs button:last-child {
