@@ -133,12 +133,18 @@
   }
   function render(profile,skipHydrate){
     profile=profile||readProfile();
-    var image=byId('profilePhotoImage'),letters=byId('profilePhotoInitials'),remove=byId('profilePhotoRemoveBtn'),url=resolvedUrl(profile);
+    var image=byId('profilePhotoImage'),letters=byId('profilePhotoInitials'),summaryImage=byId('profileSummaryAvatar'),summaryLetters=byId('profileSummaryInitials'),remove=byId('profilePhotoRemoveBtn'),url=resolvedUrl(profile);
     if(letters)letters.textContent=initials(profile);
+    if(summaryLetters)summaryLetters.textContent=initials(profile);
     if(image){
       image.onload=function(){image.classList.remove('hidden');if(letters)letters.classList.add('hidden')};
       image.onerror=function(){image.classList.add('hidden');if(letters)letters.classList.remove('hidden')};
       if(url)image.src=url;else{image.removeAttribute('src');image.classList.add('hidden');if(letters)letters.classList.remove('hidden')}
+    }
+    if(summaryImage){
+      summaryImage.onload=function(){summaryImage.classList.remove('hidden');if(summaryLetters)summaryLetters.classList.add('hidden')};
+      summaryImage.onerror=function(){summaryImage.classList.add('hidden');if(summaryLetters)summaryLetters.classList.remove('hidden')};
+      if(url)summaryImage.src=url;else{summaryImage.removeAttribute('src');summaryImage.classList.add('hidden');if(summaryLetters)summaryLetters.classList.remove('hidden')}
     }
     if(remove)remove.classList.toggle('hidden',!(profile.avatarPath||identityPath));
     if(typeof window.atsrsWorkspaceSwitcherUpdate==='function')window.atsrsWorkspaceSwitcherUpdate();

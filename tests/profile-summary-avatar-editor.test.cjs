@@ -10,6 +10,8 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.doesNotMatch(html,/profileSummaryAvatar(?:Edit|Confirm|Cancel)Btn/);
   assert.match(html,/ph ph-camera/);
   assert.match(js,/camera\.onclick=function\(\)\{input\.click\(\)\}/);
+  assert.match(js,/summaryImage=byId\('profileSummaryAvatar'\)/);
+  assert.match(js,/if\(url\)summaryImage\.src=url/);
   assert.doesNotMatch(js,/(?:edit|confirm|cancel)\.onclick/);
   assert.match(css,/\.profile-summary-avatar-camera \{[\s\S]*?right: -8px;[\s\S]*?bottom: 10px;[\s\S]*?width: 44px;[\s\S]*?height: 44px;[\s\S]*?display: grid;/);
   assert.match(css,/\.profile-summary-avatar-camera:hover \{[\s\S]*?transform: none !important;/);
