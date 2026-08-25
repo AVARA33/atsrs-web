@@ -15,6 +15,7 @@ assert.match(js,/window\.atsrsCloudData\.flush/);
 assert.match(js,/mode==='public'\?'Public':mode==='private'\?'Private':'Link Only'/);
 assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)/);
 assert.match(css,/@media\(max-width:620px\)/);
-assert.match(html,/css\/profile-privacy-v1\.css\?v=1/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=2/);
+assert.match(html,/id="profilePrivacyAudience" data-atsrs-no-field-shell="true"/);
 assert.match(html,/js\/profile-privacy-v1\.js\?v=1/);
 console.log('Profile Privacy V1 contracts passed');

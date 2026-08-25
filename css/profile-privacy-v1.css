@@ -1,6 +1,8 @@
-body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:548px;min-height:548px;max-height:548px}
+body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:640px;min-height:640px;max-height:640px}
 body.personal-mode #profilePage #profileTabPrivacyPanel{padding:16px 22px 14px;overflow-y:auto}
 body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:100%;flex-direction:column;color:var(--text)}
+body.personal-mode #profilePage .profile-privacy-shell,
+body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-privacy-heading{padding-bottom:9px;border-bottom:1px solid color-mix(in srgb,var(--line) 66%,transparent)}
 body.personal-mode #profilePage .profile-privacy-heading h4,
 body.personal-mode #profilePage .profile-privacy-section-heading h5{margin:0;color:var(--accent);font-size:15px;line-height:1.25;font-weight:700}
