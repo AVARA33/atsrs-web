@@ -729,6 +729,7 @@ html[data-theme="light"] body.personal-mode #profilePage .profile-security-grid 
 body.personal-mode #profilePage #profileSharingControls #shareProfilePanel { margin: 0 !important; max-height: none !important; border: 0 !important; padding: 0 !important; }
 body.personal-mode #profilePage #profileSharingControls :is(.sharing-heading,#shareSub) { display:none !important; }
 body.personal-mode #profilePage #profileSharingControls > #shareProfilePanel { display:none !important; }
+body.personal-mode #profilePage #profileTabSharingPanel { box-sizing:border-box !important; height:100% !important; max-height:100% !important; }
 html[data-theme="dark"] body.personal-mode #profilePage :is(#profileTabSharingPanel, #profileSharingControls, #shareProfilePanel) {
   background: var(--surface, #0b0d0d) !important;
   background-image: none !important;
