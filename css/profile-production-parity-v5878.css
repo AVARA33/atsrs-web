@@ -151,9 +151,83 @@ body.personal-mode #profilePage .profile-summary-identity {
 }
 
 body.personal-mode #profilePage .profile-summary-avatar-wrap {
+  position: relative !important;
+  overflow: visible !important;
   border: 2px solid color-mix(in srgb, var(--accent) 28%, var(--line)) !important;
   background: var(--surface-2) !important;
   background-image: none !important;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar,
+body.personal-mode #profilePage .profile-summary-initials {
+  border-radius: 50%;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-edit,
+body.personal-mode #profilePage .profile-summary-avatar-actions button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: 2px solid var(--surface-1);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.28);
+  cursor: pointer;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-edit {
+  position: absolute;
+  right: -2px;
+  bottom: 7px;
+  z-index: 3;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-camera {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: none;
+  place-items: center;
+  background: rgba(3,10,16,.58);
+  color: #fff;
+  cursor: pointer;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-camera i {
+  font-size: 32px;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-actions {
+  position: absolute;
+  right: -42px;
+  bottom: 4px;
+  z-index: 4;
+  display: none;
+  gap: 5px;
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-actions button:last-child {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-edit { display:none; }
+body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-camera { display:grid; }
+body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-actions { display:flex; }
+
+body.personal-mode #profilePage :is(.profile-summary-avatar-edit,.profile-summary-avatar-camera,.profile-summary-avatar-actions button):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 body.personal-mode #profilePage .profile-availability-fields dd,

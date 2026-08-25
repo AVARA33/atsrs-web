@@ -225,7 +225,7 @@
       await saveIdentityMetadata(url,path);
       if(oldPath&&oldPath!==path)await c.storage.from(BUCKET).remove([oldPath]);
       identityUrl=url;identityPath=path;identityUserId=user.id;
-      render(profile,true);closeCrop();status('Profile photo saved.');
+      render(profile,true);closeCrop();setSummaryEditing(false);status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
     }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
     finally{button.disabled=false;button.textContent='Use photo'}
@@ -246,10 +246,20 @@
     }catch(error){console.error('ATSRS profile photo removal failed',error);status('The profile photo could not be removed. Check your connection and try again.',true)}
     finally{button.disabled=false}
   }
+  function setSummaryEditing(editing){
+    var wrap=byId('profileSummaryAvatarWrap');
+    if(wrap)wrap.classList.toggle('is-editing',!!editing);
+  }
   function bind(){
     var upload=byId('profilePhotoUploadBtn'),input=byId('profilePhotoInput'),remove=byId('profilePhotoRemoveBtn');
+    var edit=byId('profileSummaryAvatarEditBtn'),camera=byId('profileSummaryAvatarCameraBtn'),confirm=byId('profileSummaryAvatarConfirmBtn'),cancel=byId('profileSummaryAvatarCancelBtn');
     if(!upload||upload.dataset.bound==='1')return;
-    upload.dataset.bound='1';upload.onclick=function(){input.click()};input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
+    upload.dataset.bound='1';upload.onclick=function(){input.click()};
+    if(edit)edit.onclick=function(){setSummaryEditing(true)};
+    if(camera)camera.onclick=function(){input.click()};
+    if(confirm)confirm.onclick=function(){input.click()};
+    if(cancel)cancel.onclick=function(){setSummaryEditing(false)};
+    input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
     render();
   }
   window.atsrsProfilePhoto={render:render,hydrate:hydrateIdentityPhoto,currentUrl:function(){return resolvedUrl(readProfile())},initials:function(){return initials(readProfile())}};
