@@ -121,7 +121,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5950">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5951">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1382,12 +1382,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div class="profile-information-field"><span>Surname</span><strong id="profileStageSurname">—</strong></div>
         <div class="profile-information-field has-icon"><span>Date of birth</span><strong id="profileStageBirthDate">—</strong><i class="ph ph-calendar-blank" aria-hidden="true"></i></div>
         <div class="profile-information-field has-icon"><span>Nationality</span><strong id="profileStageNationality">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
-        <div class="profile-information-field"><span>City</span><strong id="profileStageCity">—</strong></div>
+        <div class="profile-information-field has-icon"><span>Country</span><strong id="profileStageBirthCountry">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+        <div class="profile-information-field has-icon"><span>City</span><strong id="profileStageCity">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
         <div class="profile-information-field has-icon"><span>Country of residence</span><strong id="profileStageCountry">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
-        <div class="profile-information-field has-icon"><span>Current workplace</span><strong id="profileStageCompany">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
-        <div class="profile-information-field has-icon"><span>Position</span><strong id="profileStagePosition">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
         <div class="profile-information-field profile-information-address"><span>Physical address</span><strong><i class="ph ph-map-pin" aria-hidden="true"></i> <span id="profileStageAddress">—</span></strong></div>
         <div class="profile-information-field"><span>ZIP / Postal code</span><strong id="profileStageZip">—</strong></div>
+        <div class="profile-information-field has-icon"><span>Current workplace</span><strong id="profileStageCompany">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
+        <div class="profile-information-field has-icon"><span>Position</span><strong id="profileStagePosition">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
         <div class="profile-information-field has-icon"><span>Timezone &amp; local time</span><strong id="profileStageTimezone">—</strong><i class="ph ph-caret-down" aria-hidden="true"></i></div>
       </div>
       <div id="profileInlineEditor" class="profile-inline-editor hidden" aria-label="Edit personal information"></div>
@@ -1485,6 +1486,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <select id="profileCountry"></select>
     </label>
     <label class="profile-labeled-field">
+      <span>Country of birth</span>
+      <select id="profileBirthCountry"></select>
+    </label>
+    <label class="profile-labeled-field">
       <span>Current workplace</span>
       <input id="profileCompany" autocomplete="organization">
     </label>
@@ -1508,7 +1513,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </label>
     <label class="profile-labeled-field">
       <span>City</span>
-      <input id="profileCity" autocomplete="address-level2">
+      <select id="profileCity" autocomplete="address-level2"><option value="">Not specified</option></select>
     </label>
   </div>
 </div>
@@ -2015,13 +2020,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=588"></script>
+<script src="js/storage.js?v=589"></script>
 <script src="js/public-landing.js?v=58147"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
 <script src="js/login.js?v=568"></script>
-<script src="js/dashboard.js?v=5925"></script>
+<script src="js/dashboard.js?v=5926"></script>
 <script src="js/avatar.js?v=376"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
@@ -2047,7 +2052,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/floating-fields.js?v=58186"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=568"></script>
-<script src="js/profile-workspace-v5886.js?v=5943"></script>
+<script src="js/profile-workspace-v5886.js?v=5944"></script>
 <script src="js/route-feature-loader.js?v=58175"></script>
 
 
