@@ -121,7 +121,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5853">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5937">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5938">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1345,7 +1345,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <article class="profile-availability-card">
     <div class="profile-availability-heading">
       <h4><i class="ph ph-calendar-blank" aria-hidden="true"></i>Work Availability</h4>
-      <span id="profileStageAvailabilityConfirmed">Not confirmed</span>
+      <div class="profile-availability-actions" aria-label="Work availability edit actions">
+        <div id="profileAvailabilityInlineActions" class="profile-inline-actions" hidden>
+          <button id="profileAvailabilitySaveBtn" type="button" class="profile-information-action profile-information-action-save" aria-label="Save work availability changes" title="Save"><i class="ph ph-check" aria-hidden="true"></i></button>
+          <button id="profileAvailabilityCancelBtn" type="button" class="profile-information-action profile-information-action-cancel" aria-label="Cancel work availability changes" title="Cancel"><i class="ph ph-x" aria-hidden="true"></i></button>
+        </div>
+        <button id="profileStageAvailabilityEditBtn" type="button" class="profile-information-action profile-information-action-edit" aria-label="Edit work availability" title="Edit work availability"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="11" cy="8" r="4"></circle><path d="M3.5 23.5v-3.2c0-4.7 3.4-7.7 7.5-7.7 2.5 0 4.6.8 6 2.3"></path><path d="m17.2 24.9 1-4 7.6-7.6a1.8 1.8 0 0 1 2.6 0l.3.3a1.8 1.8 0 0 1 0 2.6l-7.6 7.6-3.9 1.1Z"></path><path d="m24.5 14.6 2.9 2.9"></path></svg></button>
+      </div>
     </div>
     <dl class="profile-availability-fields">
       <div><dt>Status</dt><dd id="profileStageAvailabilityStatus">Not specified</dd></div>
@@ -1353,7 +1359,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div><dt>Preferred work type</dt><dd id="profileStageWorkType">Any opportunity</dd></div>
       <div><dt>Notice period</dt><dd id="profileStageNoticePeriod">Not specified</dd></div>
     </dl>
-    <button id="profileStageAvailabilityEditBtn" type="button" class="profile-availability-edit">Edit availability</button>
   </article>
   <section class="profile-information-section" aria-labelledby="profile-information-title">
     <div class="profile-information-tabs" role="tablist" aria-label="Profile settings sections">
@@ -2043,7 +2048,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/floating-fields.js?v=58186"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=568"></script>
-<script src="js/profile-workspace-v5886.js?v=5935"></script>
+<script src="js/profile-workspace-v5886.js?v=5936"></script>
 <script src="js/route-feature-loader.js?v=58175"></script>
 
 

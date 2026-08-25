@@ -82,6 +82,34 @@ body.personal-mode #profilePage .profile-availability-heading h4 {
   white-space: nowrap;
 }
 
+body.personal-mode #profilePage .profile-availability-actions {
+  display:flex; align-items:center; justify-content:flex-end; gap:6px;
+  width:auto; height:30px; margin:0; padding:0;
+}
+body.personal-mode #profilePage .profile-availability-actions > .profile-inline-actions {
+  display:flex; align-items:center; gap:6px; width:auto; height:30px;
+  margin:0; padding:0; background:transparent;
+}
+body.personal-mode #profilePage .profile-availability-actions > .profile-inline-actions[hidden] { display:none !important; }
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-actions .profile-information-action {
+  display:grid !important; place-items:center !important; flex:0 0 30px !important;
+  width:30px !important; min-width:30px !important; max-width:30px !important;
+  height:30px !important; min-height:30px !important; max-height:30px !important;
+  margin:0 !important; padding:0 !important; border:0 !important; border-radius:50% !important;
+  background:transparent !important; background-image:none !important; box-shadow:none !important;
+  color:#fff !important; line-height:1 !important;
+}
+body.personal-mode #profilePage .profile-availability-actions .profile-information-action > i { font-size:22px !important; line-height:1 !important; }
+body.personal-mode #profilePage .profile-availability-actions .profile-information-action > svg {
+  width:22px !important; height:22px !important; fill:none !important; stroke:currentColor !important;
+  stroke-width:1.8 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
+}
+body.personal-mode #profilePage .profile-availability-actions .profile-information-action:is(:hover,:focus-visible) {
+  color:#fff !important; background:color-mix(in srgb,#fff 8%,transparent) !important;
+  outline:0 !important; box-shadow:none !important;
+}
+html[data-theme="light"] body.personal-mode #profilePage .profile-availability-actions .profile-information-action { color:#111 !important; }
+
 body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage :is(
   .profile-information-card > h4,
   .profile-calendar-heading h4,
@@ -510,11 +538,10 @@ html[data-theme="dark"] body.personal-mode #profilePage #profileTabSharingPanel 
   select,
   textarea
 ) { background: var(--surface, #0b0d0d) !important; background-image: none !important; }
-body.personal-mode #profilePage .profile-availability-card.is-editing > :not(.work-availability-card) { display: none !important; }
+body.personal-mode #profilePage .profile-availability-card.is-editing > .profile-availability-fields { display: none !important; }
 body.personal-mode #profilePage .profile-availability-card .work-availability-card { display: block; height: 100%; padding: 0; border: 0; background: transparent; box-shadow: none; overflow-y: auto; }
 body.personal-mode #profilePage .profile-availability-card .work-availability-heading { display: none; }
 body.personal-mode #profilePage .profile-availability-card .work-availability-grid { grid-template-columns: 1fr; gap: 8px; }
-body.personal-mode #profilePage .profile-availability-card .profile-inline-actions { margin-top: 10px; }
 body.personal-mode #profilePage > .panel > .account-tabs,
 body.personal-mode #profilePage > .panel > .account-tab,
 body.personal-mode #profilePage > .panel > #userEmail { display: none !important; }
