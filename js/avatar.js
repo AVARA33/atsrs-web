@@ -258,6 +258,12 @@
     }catch(error){console.error('ATSRS profile photo removal failed',error);status('The profile photo could not be removed. Check your connection and try again.',true)}
     finally{button.disabled=false}
   }
+  function openPhotoPicker(){
+    var picker=document.createElement('input');
+    picker.type='file';picker.accept='image/jpeg,image/png,image/webp';picker.className='hidden';
+    picker.addEventListener('change',function(){var file=picker.files&&picker.files[0];picker.remove();if(file)openCrop(file)},{once:true});
+    document.body.appendChild(picker);picker.click();
+  }
   function bind(){
     var upload=byId('profilePhotoUploadBtn'),input=byId('profilePhotoInput'),remove=byId('profilePhotoRemoveBtn');
     if(!delegatedPickerBound){
@@ -265,8 +271,7 @@
       document.addEventListener('click',function(event){
         var trigger=event.target&&event.target.closest&&event.target.closest('#profileSummaryAvatarCameraBtn');
         if(!trigger)return;
-        var picker=byId('profilePhotoInput');if(!picker)return;
-        event.preventDefault();picker.value='';picker.click();
+        event.preventDefault();openPhotoPicker();
       });
     }
     if(!upload||upload.dataset.bound==='1')return;
