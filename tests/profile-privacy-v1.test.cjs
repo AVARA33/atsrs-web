@@ -5,7 +5,8 @@ const js=fs.readFileSync('js/profile-privacy-v1.js','utf8');
 const css=fs.readFileSync('css/profile-privacy-v1.css','utf8');
 
 ['public','custom','private'].forEach(mode=>assert.match(html,new RegExp(`name="profilePrivacyMode" value="${mode}"`)));
-['phone','email','location','availability','position','salary','birthDate','about'].forEach(field=>assert.match(js,new RegExp(`key:'${field}'`)));
+['phone','email','location','availability','position','birthDate','about'].forEach(field=>assert.match(js,new RegExp(`key:'${field}'`)));
+assert.doesNotMatch(js,/title:'Expected salary'/);
 assert.doesNotMatch(html,/id="profilePrivacyAudience"/);
 assert.doesNotMatch(html,/id="profilePrivacyVisibilityTitle"/);
 assert.doesNotMatch(html,/class="profile-privacy-heading"/);
@@ -21,6 +22,7 @@ assert.match(js,/mode==='public'\?'Public':mode==='private'\?'Private':'Link Onl
 assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)/);
 assert.match(css,/@media\(max-width:620px\)/);
 assert.match(css,/profile-privacy-mode-card\{[^}]*min-height:64px;[^}]*padding:7px 14px/);
-assert.match(html,/css\/profile-privacy-v1\.css\?v=7/);
-assert.match(html,/js\/profile-privacy-v1\.js\?v=2/);
+assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)\{height:auto;min-height:0;max-height:none\}/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=8/);
+assert.match(html,/js\/profile-privacy-v1\.js\?v=3/);
 console.log('Profile Privacy V1 contracts passed');

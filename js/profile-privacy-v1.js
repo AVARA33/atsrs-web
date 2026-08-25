@@ -7,7 +7,6 @@
     {key:'location',icon:'ph-map-pin',title:'Location',note:'Display your city and country'},
     {key:'availability',icon:'ph-clock',title:'Availability status',note:'Show your availability to employers'},
     {key:'position',icon:'ph-briefcase',title:'Current position',note:'Display your current job title'},
-    {key:'salary',icon:'ph-currency-dollar',title:'Expected salary',note:'Display your expected salary range'},
     {key:'birthDate',icon:'ph-calendar-blank',title:'Date of birth',note:'Display your date of birth'},
     {key:'about',icon:'ph-user',title:'About me',note:'Display your professional summary'}
   ];
