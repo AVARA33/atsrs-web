@@ -41,6 +41,10 @@ assert.match(css,/\.profile-nationality-select > \.atsrs-disclosure-shell[\s\S]*
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-shell \{\s*position: absolute !important; inset: 0 !important/);
 assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
+assert.match(js,/function stackPersonalEditor\(editor\)/);
+assert.doesNotMatch(js,/read\.classList\.(?:add|remove)\('hidden'\)/);
+assert.match(css,/\.profile-personal-grid-stack > \.profile-inline-editor \{[\s\S]*?position:absolute; inset:0/);
+assert.match(css,/profile-inline-editing #profilePersonalReadView \.profile-information-field > strong \{[\s\S]*?visibility:hidden !important/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
 assert.match(js,/window\.scrollTo\(savedX,savedY\)/);
 assert.match(css,/overflow-anchor:none !important/);

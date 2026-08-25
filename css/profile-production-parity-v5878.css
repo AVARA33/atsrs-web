@@ -325,6 +325,24 @@ body.personal-mode #profilePage .profile-settings-panel > h4 { margin: 0 0 14px;
 body.personal-mode #profilePage .profile-settings-viewport .profile-information-card { border: 0 !important; border-radius: 0 !important; }
 body.personal-mode #profilePage .profile-inline-editor.hidden,
 body.personal-mode #profilePage .work-availability-card.hidden { display: none !important; }
+body.personal-mode #profilePage .profile-personal-grid-stack {
+  position:relative; width:100%; min-width:0;
+}
+body.personal-mode #profilePage .profile-personal-grid-stack > #profilePersonalReadView {
+  position:relative; z-index:1;
+}
+body.personal-mode #profilePage .profile-personal-grid-stack > .profile-inline-editor {
+  position:absolute; inset:0; z-index:2; width:100%; margin:0;
+}
+body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView .profile-information-field > strong {
+  visibility:hidden !important;
+}
+body.personal-mode #profilePage.profile-inline-editing #profileInlineEditor .profile-inline-grid .profile-information-field {
+  background:transparent !important;
+}
+body.personal-mode #profilePage.profile-inline-editing #profileInlineEditor .profile-inline-grid .profile-information-field > span {
+  visibility:hidden !important;
+}
 body.personal-mode #profilePage .profile-inline-editor { height: 208px; min-height: 208px; max-height: 208px; overflow: visible; }
 @media (min-width:981px) {
   body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid,
