@@ -14,6 +14,7 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(css,/\.profile-summary-avatar-camera \{[\s\S]*?right: -8px;[\s\S]*?bottom: 10px;[\s\S]*?width: 44px;[\s\S]*?height: 44px;[\s\S]*?display: grid;/);
   assert.match(css,/\.profile-summary-avatar-camera:hover \{[\s\S]*?transform: none !important;/);
   assert.match(css,/#profileSummaryAvatarCameraBtn \{[\s\S]*?background: transparent !important;[\s\S]*?color: #fff !important;[\s\S]*?box-shadow: none !important;/);
+  assert.match(css,/html\[data-theme="light"\][\s\S]*?#profileSummaryAvatarCameraBtn i \{[\s\S]*?color: #fff !important;/);
   assert.doesNotMatch(css,/profile-summary-avatar-actions/);
   assert.doesNotMatch(css,/\.profile-summary-avatar-wrap\.is-editing/);
 });

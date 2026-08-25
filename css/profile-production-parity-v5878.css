@@ -904,3 +904,8 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSu
   color: #fff !important;
   box-shadow: none !important;
 }
+
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn,
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn i {
+  color: #fff !important;
+}
