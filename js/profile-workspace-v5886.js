@@ -133,7 +133,6 @@
     var editor=byId('profileInlineEditor'),grid=document.querySelector('#accountGeneralTab .profile-grid');if(!editor||!grid)return false;
     state.ready=true;editor.appendChild(grid);buildPersonalEditor(editor,grid);bindPersonalActions();setPersonalControls(false);setEnabled(editor,false);
     var availability=document.querySelector('.work-availability-card');if(availability){availability.classList.add('hidden');setEnabled(availability,false)}buildAvailabilityEditor();
-    moveRow('profileVisibility','profilePrivacyControls');moveRow('exportDataBtn','profilePrivacyControls');
     ['setup2faBtn','viewSessionsBtn'].forEach(function(id){moveRow(id,'profileSecurityControls')});moveSecurityContacts();moveRow('deleteAccountBtn','profileSecurityControls');decorateSecurityControls();
     var share=byId('shareProfilePanel'),sharing=byId('profileSharingControls');if(share&&sharing)sharing.appendChild(share);
     var oldEdit=byId('editProfileBtn');if(oldEdit)oldEdit.hidden=true;
