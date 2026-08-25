@@ -217,6 +217,14 @@
     var c=client();if(!c)return null;
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
+  async function syncDirectoryAvatar(userId,url){
+    var c=client();if(!c||!userId)return true;
+    var result=await c.from('atsrs_talent_profiles')
+      .update({avatar_url:url||null})
+      .eq('user_id',userId);
+    if(result.error)throw result.error;
+    return true;
+  }
   async function uploadCropped(attempt){
     if(!attempt||attempt.saving)return;
     attempt.saving=true;attempt.useButton.disabled=true;attempt.useButton.textContent='Saving...';status('');
@@ -235,6 +243,7 @@
         var saved=await window.atsrsCloudData.flush();if(saved===false)throw new Error('The profile photo could not be saved to ATSRS.');
       }
       await saveIdentityMetadata(url,path);
+      await syncDirectoryAvatar(user.id,url);
       identityUrl=url;identityPath=path;identityUserId=user.id;
       render(profile,true);closeCrop(attempt);status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
@@ -251,11 +260,12 @@
     if(!path)return;
     button.disabled=true;status('Removing...');
     try{
-      var c=client();if(c){var result=await c.storage.from(BUCKET).remove([path]);if(result.error)throw result.error}
+      var c=client(),user=await getCurrentUser();if(c){var result=await c.storage.from(BUCKET).remove([path]);if(result.error)throw result.error}
       profile.avatarUrl='';profile.avatarPath='';profile.avatarSource='';profile.updatedAt=new Date().toISOString();
       if(!writeProfile(profile))throw new Error('The profile photo could not be removed.');
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
       await saveIdentityMetadata('','');
+      if(user)await syncDirectoryAvatar(user.id,'');
       identityUrl='';identityPath='';identityUserId=(window.currentUser&&window.currentUser.id)||'';
       render(profile,true);status('Profile photo removed.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:'',path:''}}));

@@ -20,10 +20,13 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(js,/async function getCurrentUser\(\)/);
   assert.match(js,/user=await getCurrentUser\(\)/);
   assert.doesNotMatch(js,/try\{currentUser=result\.data\.user\}/);
+  assert.match(js,/async function syncDirectoryAvatar\(userId,url\)[\s\S]*?from\('atsrs_talent_profiles'\)[\s\S]*?update\(\{avatar_url:url\|\|null\}\)[\s\S]*?eq\('user_id',userId\)/);
+  assert.match(js,/await saveIdentityMetadata\('',''\);[\s\S]*?if\(user\)await syncDirectoryAvatar\(user\.id,''\)/);
   const uploadStart=js.indexOf('async function uploadCropped(attempt){');
   const uploadEnd=js.indexOf('\n  async function removePhoto()',uploadStart);
   const uploadFunction=js.slice(uploadStart,uploadEnd);
   assert.ok(uploadStart>=0&&uploadEnd>uploadStart,'uploadCropped function must be present');
+  assert.match(uploadFunction,/await syncDirectoryAvatar\(user\.id,url\)/);
   assert.doesNotMatch(uploadFunction,/activeCropAttempt!==attempt/);
   assert.doesNotMatch(js,/ATSRS avatar (?:save gate|lifecycle)/);
   assert.match(js,/canvasBlob\(attempt\)/);
