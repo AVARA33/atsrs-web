@@ -68,6 +68,7 @@ assert.match(css,/\.profile-availability-card\.is-editing \.profile-availability
 assert.match(css,/\.profile-availability-card\.is-editing \.profile-availability-fields > div:focus-within dt \{[\s\S]*?var\(--atsrs-field-accent/);
 assert.match(css,/\.profile-availability-card\.is-editing \.profile-availability-fields > div:focus-within dd \{[\s\S]*?var\(--atsrs-field-focus-bg/);
 assert.match(css,/\.profile-availability-card:not\(\.is-editing\) \.profile-availability-fields dd > \.atsrs-disclosure-shell \{[\s\S]*?display:none !important/);
+assert.match(css,/#profileInlineAvailabilityNoticePeriod \{[\s\S]*?height:20px !important;[\s\S]*?border:0 !important/);
 assert.match(html,/id="profileTabPersonalPanel"[\s\S]*?class="profile-information-actions"[\s\S]*?aria-label="Save profile changes"[\s\S]*?aria-label="Cancel profile changes"[\s\S]*?aria-label="Edit profile"/);
 assert.match(html,/id="profileSummaryEditBtn"[\s\S]*?<svg viewBox="0 0 32 32"/);
 assert.doesNotMatch(html,/id="profileSummaryEditBtn"[^>]*>[\s\S]{0,100}Edit profile<\/button>/);
