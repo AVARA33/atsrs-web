@@ -16,6 +16,7 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.doesNotMatch(editableControls,/#profilePhotoInput/,'the camera file input must remain enabled outside profile edit mode');
   assert.match(js,/summaryImage=byId\('profileSummaryAvatar'\)/);
   assert.match(js,/if\(url\)summaryImage\.src=url/);
+  assert.match(js,/render\(profile,true\);closeCrop\(\);status\('Profile photo saved\.'\);[\s\S]*?if\(oldPath&&oldPath!==path\)\{[\s\S]*?previous profile photo cleanup failed/);
   assert.doesNotMatch(js,/(?:edit|confirm|cancel)\.onclick/);
   assert.match(css,/\.profile-summary-avatar-camera \{[\s\S]*?right: -8px;[\s\S]*?bottom: 10px;[\s\S]*?width: 44px;[\s\S]*?height: 44px;[\s\S]*?display: grid;/);
   assert.match(css,/\.profile-summary-avatar-camera:hover \{[\s\S]*?transform: none !important;/);

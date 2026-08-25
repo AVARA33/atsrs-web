@@ -230,10 +230,15 @@
         var saved=await window.atsrsCloudData.flush();if(saved===false)throw new Error('The profile photo could not be saved to ATSRS.');
       }
       await saveIdentityMetadata(url,path);
-      if(oldPath&&oldPath!==path)await c.storage.from(BUCKET).remove([oldPath]);
       identityUrl=url;identityPath=path;identityUserId=user.id;
       render(profile,true);closeCrop();status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
+      if(oldPath&&oldPath!==path){
+        try{
+          var removed=await c.storage.from(BUCKET).remove([oldPath]);
+          if(removed.error)console.warn('ATSRS previous profile photo cleanup failed',removed.error);
+        }catch(cleanupError){console.warn('ATSRS previous profile photo cleanup failed',cleanupError)}
+      }
     }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
     finally{button.disabled=false;button.textContent='Use photo'}
   }
