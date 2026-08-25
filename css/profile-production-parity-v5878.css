@@ -187,6 +187,7 @@ body.personal-mode #profilePage .profile-summary-avatar-camera {
 
 body.personal-mode #profilePage .profile-summary-avatar-camera i {
   font-size: 32px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.72));
 }
 
 body.personal-mode #profilePage .profile-summary-avatar-camera:hover {
@@ -899,5 +900,7 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSu
   min-width: 44px !important;
   min-height: 44px !important;
   border: 0 !important;
-  background: rgba(3,10,16,.58) !important;
+  background: transparent !important;
+  color: #fff !important;
+  box-shadow: none !important;
 }
