@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const html=fs.readFileSync('index.html','utf8');
+const css=fs.readFileSync('css/profile-sharing-v1.css','utf8');
+const js=fs.readFileSync('js/profile-sharing-v1.js','utf8');
+
+assert.match(html,/id="profileSharingV1"/);
+['anyone','recruiters','recipient'].forEach(value=>assert.match(html,new RegExp(`name="profileSharingAudience" value="${value}"`)));
+assert.match(html,/id="profileSharingExpiry"/);
+assert.match(html,/id="profileSharingActiveList"/);
+assert.doesNotMatch(html,/id="profileSharingV1"[\s\S]*?<h[1-6][^>]*>Sharing<\/h[1-6]>/);
+assert.doesNotMatch(html,/id="profileSharingV1"[\s\S]*?Create share links to let others/);
+assert.doesNotMatch(html,/id="profileSharingV1"[\s\S]*?Create Share Link/);
+assert.match(css,/profile-sharing-v1\{[^}]*height:100%/);
+assert.match(css,/grid-template-rows:104px minmax\(0,1fr\)/);
+assert.match(css,/@media\(max-width:760px\)/);
+assert.match(js,/window\.copyShareLink/);
+assert.match(js,/window\.previewShareProfile/);
+assert.match(js,/window\.revokeShareProfileLink/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=1/);
+assert.match(html,/js\/profile-sharing-v1\.js\?v=1/);
+console.log('Profile Sharing V1 contracts passed');

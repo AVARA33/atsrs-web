@@ -123,6 +123,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
 <link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5978">
 <link rel="stylesheet" href="css/profile-privacy-v1.css?v=16">
+<link rel="stylesheet" href="css/profile-sharing-v1.css?v=1">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1404,7 +1405,21 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </section>
       </div>
     </article>
-    <article id="profileTabSharingPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSharingBtn" hidden><div id="profileSharingControls" class="profile-settings-list"></div></article>
+    <article id="profileTabSharingPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSharingBtn" hidden>
+      <div id="profileSharingV1" class="profile-sharing-v1">
+        <section class="profile-sharing-setup" aria-label="Create a share link">
+          <fieldset class="profile-sharing-audience"><legend>Who can view</legend><div class="profile-sharing-audience-grid">
+            <label><input type="radio" name="profileSharingAudience" value="anyone" checked><i class="ph ph-globe" aria-hidden="true"></i><span><strong>Anyone with the link</strong><small>Anyone who has the link</small></span></label>
+            <label><input type="radio" name="profileSharingAudience" value="recruiters"><i class="ph ph-users" aria-hidden="true"></i><span><strong>Recruiters only</strong><small>ATSRS verified recruiters</small></span></label>
+            <label><input type="radio" name="profileSharingAudience" value="recipient"><i class="ph ph-user" aria-hidden="true"></i><span><strong>Specific recipient</strong><small>Send to a specific person</small></span></label>
+          </div></fieldset>
+          <label class="profile-sharing-expiry"><span>Link expires in</span><select id="profileSharingExpiry"><option value="24h">24 hours</option><option value="3d">3 days</option><option value="7d" selected>7 days</option><option value="custom">Custom</option></select><small id="profileSharingExpiryDate"></small></label>
+          <section class="profile-sharing-included" aria-label="Information included"><strong>Information included</strong><div class="profile-sharing-included-icons" aria-hidden="true"><i class="ph ph-phone"></i><i class="ph ph-envelope"></i><i class="ph ph-map-pin"></i><i class="ph ph-briefcase"></i><i class="ph ph-calendar-blank"></i><span>+2</span></div><button id="profileSharingDetailsBtn" type="button">View details <i class="ph ph-caret-right" aria-hidden="true"></i></button></section>
+        </section>
+        <section class="profile-sharing-links" aria-labelledby="profileSharingLinksTitle"><header><strong id="profileSharingLinksTitle">Active share links</strong><span id="profileSharingLinksCount">0</span></header><div id="profileSharingActiveList" class="profile-sharing-active-list"></div></section>
+      </div>
+      <div id="profileSharingControls" class="profile-settings-list"></div>
+    </article>
     <article id="profileTabSecurityPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden><div class="profile-security-heading"><i class="ph ph-shield-check" aria-hidden="true"></i><div><h4>Security</h4><p>Manage your account security and access settings.</p></div></div><div id="profileSecurityControls" class="profile-settings-list profile-security-grid"></div><div id="profileSecurityContactSource" hidden><div class="profile-information-contact"><i class="ph ph-phone" aria-hidden="true"></i><div><span>Mobile phone</span><strong id="profileStagePhone">—</strong></div><button id="profileStagePhoneVerification" class="profile-contact-verify" type="button" data-profile-verify="mobile" aria-label="Verify mobile phone">Verify</button><button type="button" data-profile-stage-edit="phone" aria-label="Edit mobile phone"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div><div class="profile-information-contact"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><div><span>WhatsApp number</span><strong id="profileStageWhatsapp">—</strong></div><button id="profileStageWhatsappVerification" class="profile-contact-verify" type="button" data-profile-verify="whatsapp" aria-label="Verify WhatsApp number">Verify</button><button type="button" data-profile-stage-edit="whatsapp" aria-label="Edit WhatsApp number"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div></div></article>
     </div>
   </section>
@@ -2064,6 +2079,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/shell-polish.js?v=568"></script>
 <script src="js/profile-workspace-v5886.js?v=5954"></script>
 <script src="js/profile-privacy-v1.js?v=6"></script>
+<script src="js/profile-sharing-v1.js?v=1"></script>
 <script src="js/route-feature-loader.js?v=58176"></script>
 
 
