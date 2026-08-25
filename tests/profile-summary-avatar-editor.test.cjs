@@ -13,6 +13,8 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(html,/ph ph-camera/);
   assert.match(js,/function openPhotoPicker\(\)\{[\s\S]*?document\.createElement\('input'\)[\s\S]*?picker\.remove\(\)[\s\S]*?\{once:true\}[\s\S]*?picker\.click\(\)/);
   assert.match(js,/closest\('#profileSummaryAvatarCameraBtn'\)[\s\S]*?openPhotoPicker\(\)/);
+  assert.match(js,/closest\('#profilePhotoUseBtn'\)[\s\S]*?uploadCropped\(\)/);
+  assert.doesNotMatch(js,/byId\('profilePhotoUseBtn'\)\.onclick/);
   const editableControls=dashboard.match(/function profileEditableControls\(\)\{[\s\S]*?\n  \}/)[0];
   assert.doesNotMatch(editableControls,/#profilePhotoInput/,'the camera file input must remain enabled outside profile edit mode');
   assert.match(js,/summaryImage=byId\('profileSummaryAvatar'\)/);

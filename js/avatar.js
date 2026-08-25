@@ -164,7 +164,6 @@
     document.body.appendChild(modal);
     modal.querySelectorAll('[data-crop-cancel],.profile-photo-crop-backdrop').forEach(function(button){button.onclick=closeCrop});
     byId('profilePhotoZoom').addEventListener('input',function(){if(cropState){cropState.zoom=Number(this.value)||1;drawCrop()}});
-    byId('profilePhotoUseBtn').onclick=uploadCropped;
     var canvas=byId('profilePhotoCropCanvas'),dragging=false,lastX=0,lastY=0;
     canvas.addEventListener('pointerdown',function(event){dragging=true;lastX=event.clientX;lastY=event.clientY;canvas.setPointerCapture(event.pointerId)});
     canvas.addEventListener('pointermove',function(event){
@@ -269,6 +268,8 @@
     if(!delegatedPickerBound){
       delegatedPickerBound=true;
       document.addEventListener('click',function(event){
+        var usePhoto=event.target&&event.target.closest&&event.target.closest('#profilePhotoUseBtn');
+        if(usePhoto){event.preventDefault();uploadCropped();return}
         var trigger=event.target&&event.target.closest&&event.target.closest('#profileSummaryAvatarCameraBtn');
         if(!trigger)return;
         event.preventDefault();openPhotoPicker();
