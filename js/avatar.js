@@ -192,6 +192,7 @@
     image.onload=function(){
       cropState={image:image,sourceUrl:url,x:0,y:0,zoom:1};
       ensureCropModal().classList.remove('hidden');document.body.classList.add('profile-photo-cropping');
+      var useButton=byId('profilePhotoUseBtn');if(useButton){useButton.disabled=false;useButton.textContent='Use photo'}
       byId('profilePhotoZoom').value='1';drawCrop();
     };
     image.onerror=function(){URL.revokeObjectURL(url);status('This image could not be opened.',true)};
@@ -233,10 +234,9 @@
       render(profile,true);closeCrop();status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
       if(oldPath&&oldPath!==path){
-        try{
-          var removed=await c.storage.from(BUCKET).remove([oldPath]);
+        c.storage.from(BUCKET).remove([oldPath]).then(function(removed){
           if(removed.error)console.warn('ATSRS previous profile photo cleanup failed',removed.error);
-        }catch(cleanupError){console.warn('ATSRS previous profile photo cleanup failed',cleanupError)}
+        }).catch(function(cleanupError){console.warn('ATSRS previous profile photo cleanup failed',cleanupError)});
       }
     }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
     finally{button.disabled=false;button.textContent='Use photo'}
