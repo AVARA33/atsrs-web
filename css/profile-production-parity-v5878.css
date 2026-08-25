@@ -319,7 +319,20 @@ body.personal-mode #profilePage .profile-settings-viewport .profile-information-
 body.personal-mode #profilePage .profile-inline-editor.hidden,
 body.personal-mode #profilePage .work-availability-card.hidden { display: none !important; }
 body.personal-mode #profilePage .profile-inline-editor { height: 208px; min-height: 208px; max-height: 208px; overflow: visible; }
-body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid { height: 208px; min-height: 208px; max-height: 208px; }
+@media (min-width:981px) {
+  body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid,
+  body.personal-mode #profilePage #profilePersonalReadView.profile-information-grid {
+    height:208px; min-height:208px; max-height:208px; align-content:space-between;
+    grid-auto-rows:34px;
+  }
+}
+@media (max-width:980px) {
+  body.personal-mode #profilePage .profile-inline-editor,
+  body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid,
+  body.personal-mode #profilePage #profilePersonalReadView.profile-information-grid {
+    height:auto; min-height:0; max-height:none; align-content:start; grid-auto-rows:34px;
+  }
+}
 body.personal-mode #profilePage .profile-inline-editor .profile-editor-source { display: none !important; }
 body.personal-mode #profilePage .profile-inline-grid { gap: 9px; }
 body.personal-mode #profilePage .profile-inline-grid select { appearance: none !important; -webkit-appearance: none !important; }
@@ -561,6 +574,9 @@ body.personal-mode #profilePage .profile-information-section { grid-column:1/-1;
 body.personal-mode #profilePage .profile-calendar-card { display:none !important; }
 body.personal-mode #profilePage .profile-information-grid { grid-template-columns:repeat(8,minmax(0,1fr)); }
 body.personal-mode #profilePage .profile-information-grid .profile-information-field { grid-column:span 2; }
+body.personal-mode #profilePage #profilePersonalReadView .profile-information-field {
+  min-height:34px; height:34px; padding:7px 12px 3px;
+}
 body.personal-mode #profilePage .profile-security-grid .profile-security-contact-card {
   display:grid !important; grid-template-columns:24px minmax(0,1fr) auto auto; grid-template-rows:auto;
   grid-column:auto !important; box-sizing:border-box; align-items:center; gap:9px; min-height:76px; margin:0 !important; padding:9px 11px !important;
