@@ -908,6 +908,8 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSu
 }
 
 html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn,
-html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn i {
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn i,
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn i::before {
   color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }
