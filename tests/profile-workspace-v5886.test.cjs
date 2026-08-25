@@ -42,8 +42,8 @@ assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-shell \{\s*pos
 assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
-assert.match(js,/function restoreScrollPosition\(x,y\)\{\[0,50,150,350\]/);
-assert.match(js,/restoreScrollPosition\(savedX,savedY\)/);
+assert.match(js,/window\.scrollTo\(savedX,savedY\)/);
+assert.match(css,/overflow-anchor:none !important/);
 assert.match(js,/birthPicker\.dataset\.atsrsDatePosition='anchor-above-right'/);
 assert.match(js,/birthPicker\.dataset\.atsrsDateAnchorId='profileInlineBirthDateDisplay'/);
 assert.match(datePicker,/activeInput\.dataset\.atsrsDatePosition==='anchor-above-right'/);

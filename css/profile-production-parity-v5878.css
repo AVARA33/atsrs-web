@@ -314,6 +314,13 @@ body.personal-mode #profilePage .profile-settings-panel {
 }
 
 body.personal-mode #profilePage .profile-settings-panel[hidden] { display: none !important; }
+body.personal-mode #profilePage,
+body.personal-mode #profilePage #profileTabPersonalPanel,
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-card,
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-grid,
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-inline-grid {
+  overflow-anchor:none !important;
+}
 body.personal-mode #profilePage .profile-settings-panel > h4 { margin: 0 0 14px; color: var(--accent); }
 body.personal-mode #profilePage .profile-settings-viewport .profile-information-card { border: 0 !important; border-radius: 0 !important; }
 body.personal-mode #profilePage .profile-inline-editor.hidden,
