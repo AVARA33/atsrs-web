@@ -796,6 +796,20 @@ final result: passed
 
 Final result: passed.
 
+# Profile field stability and hover parity — Design QA
+
+- Scope: Personal Information normal/Edit/Cancel transition and Work Availability field interactions.
+- Production assets: Profile CSS `5957`; Profile workspace script `5952`.
+- Personal Information uses one persistent field DOM; the cloned editor grid and generated input shells were removed.
+- Residence label-to-field offset remained `-6.33px` before and after Edit; field and label geometry were unchanged at a fixed scroll position.
+- All 12 Personal Information field rectangles were identical between normal and Edit states in light mode; input wrapper count was `0` and visible editor controls had transparent backgrounds.
+- JobSearch hover border behavior is applied to both Personal Information and Work Availability fields, with the existing dark green and light blue theme tokens.
+- Work Availability Edit preserved all four field rectangles and did not autofocus any field; focus remained on the clicked Edit action.
+- Browser console errors: 0.
+- Focused Profile contracts and Cloudflare Pages build passed.
+
+Final result: passed.
+
 # Profile location fields and stable editor — Design QA
 
 - Reference: user-provided Profile screenshots and the approved Personal Information field order.
