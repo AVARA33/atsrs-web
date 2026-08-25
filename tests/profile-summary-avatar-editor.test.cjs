@@ -13,8 +13,9 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(html,/ph ph-camera/);
   assert.match(js,/function openPhotoPicker\(\)\{[\s\S]*?document\.createElement\('input'\)[\s\S]*?picker\.remove\(\)[\s\S]*?\{once:true\}[\s\S]*?picker\.click\(\)/);
   assert.match(js,/closest\('#profileSummaryAvatarCameraBtn'\)[\s\S]*?openPhotoPicker\(\)/);
-  assert.match(js,/closest\('#profilePhotoUseBtn'\)[\s\S]*?uploadCropped\(\)/);
-  assert.doesNotMatch(js,/byId\('profilePhotoUseBtn'\)\.onclick/);
+  assert.match(js,/byId\('profilePhotoUseBtn'\)\.onclick=function\(event\)\{event\.preventDefault\(\);uploadCropped\(this\)\}/);
+  assert.match(js,/function closeCrop\(\)\{[\s\S]*?modal\.remove\(\)/);
+  assert.doesNotMatch(js,/closest\('#profilePhotoUseBtn'\)/);
   assert.match(js,/useButton\.disabled=false;useButton\.textContent='Use photo'/);
   assert.doesNotMatch(js,/await c\.storage\.from\(BUCKET\)\.remove\(\[oldPath\]\)/);
   const editableControls=dashboard.match(/function profileEditableControls\(\)\{[\s\S]*?\n  \}/)[0];

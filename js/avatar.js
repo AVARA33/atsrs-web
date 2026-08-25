@@ -163,6 +163,7 @@
       '<div class="profile-photo-crop-actions"><button type="button" class="secondary" data-crop-cancel>Cancel</button><button type="button" class="secondary" id="profilePhotoUseBtn">Use photo</button></div></section>';
     document.body.appendChild(modal);
     modal.querySelectorAll('[data-crop-cancel],.profile-photo-crop-backdrop').forEach(function(button){button.onclick=closeCrop});
+    byId('profilePhotoUseBtn').onclick=function(event){event.preventDefault();uploadCropped(this)};
     byId('profilePhotoZoom').addEventListener('input',function(){if(cropState){cropState.zoom=Number(this.value)||1;drawCrop()}});
     var canvas=byId('profilePhotoCropCanvas'),dragging=false,lastX=0,lastY=0;
     canvas.addEventListener('pointerdown',function(event){dragging=true;lastX=event.clientX;lastY=event.clientY;canvas.setPointerCapture(event.pointerId)});
@@ -199,7 +200,7 @@
     image.src=url;
   }
   function closeCrop(){
-    var modal=byId('profilePhotoCropModal');if(modal)modal.classList.add('hidden');
+    var modal=byId('profilePhotoCropModal');if(modal)modal.remove();
     document.body.classList.remove('profile-photo-cropping');
     if(cropState&&cropState.sourceUrl)URL.revokeObjectURL(cropState.sourceUrl);
     cropState=null;
@@ -212,8 +213,8 @@
     var c=client();if(!c)return null;
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
-  async function uploadCropped(){
-    var button=byId('profilePhotoUseBtn');if(!cropState||!button)return;
+  async function uploadCropped(button){
+    button=button||byId('profilePhotoUseBtn');if(!cropState||!button)return;
     button.disabled=true;button.textContent='Saving...';status('');
     try{
       var c=client(),user=await currentUser(),blob=await canvasBlob();
@@ -268,8 +269,6 @@
     if(!delegatedPickerBound){
       delegatedPickerBound=true;
       document.addEventListener('click',function(event){
-        var usePhoto=event.target&&event.target.closest&&event.target.closest('#profilePhotoUseBtn');
-        if(usePhoto){event.preventDefault();uploadCropped();return}
         var trigger=event.target&&event.target.closest&&event.target.closest('#profileSummaryAvatarCameraBtn');
         if(!trigger)return;
         event.preventDefault();openPhotoPicker();
