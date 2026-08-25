@@ -513,7 +513,7 @@ html[data-theme="light"] body .profile-photo-crop-modal > .profile-photo-crop-ba
 }
 html[data-theme="dark"] body .profile-photo-crop-modal > .profile-photo-crop-backdrop,
 html[data-theme="dark"] body .profile-photo-crop-modal > .profile-photo-crop-backdrop:is(:hover,:focus,:focus-visible,:active){
-  background:rgba(1,7,13,.46)!important;
+  background:rgba(1,7,13,.28)!important;
   border:0!important;
   box-shadow:none!important;
   backdrop-filter:blur(2px)!important;

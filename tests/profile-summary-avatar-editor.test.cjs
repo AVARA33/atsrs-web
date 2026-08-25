@@ -23,5 +23,5 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.doesNotMatch(css,/\.profile-summary-avatar-wrap\.is-editing/);
   assert.match(theme,/html\[data-theme="light"\] \.profile-photo-crop-modal\{[\s\S]*?background:transparent!important;/);
   assert.match(theme,/\.profile-photo-crop-backdrop:is\(:hover,:focus,:focus-visible,:active\)\{[\s\S]*?background:rgba\(38,54,68,\.28\)!important;[\s\S]*?backdrop-filter:blur\(2px\)!important;[\s\S]*?transition:none!important;/);
-  assert.match(theme,/html\[data-theme="dark"\][\s\S]*?\.profile-photo-crop-backdrop:is\(:hover,:focus,:focus-visible,:active\)\{[\s\S]*?background:rgba\(1,7,13,\.46\)!important;[\s\S]*?backdrop-filter:blur\(2px\)!important;/);
+  assert.match(theme,/html\[data-theme="dark"\][\s\S]*?\.profile-photo-crop-backdrop:is\(:hover,:focus,:focus-visible,:active\)\{[\s\S]*?background:rgba\(1,7,13,\.28\)!important;[\s\S]*?backdrop-filter:blur\(2px\)!important;/);
 });
