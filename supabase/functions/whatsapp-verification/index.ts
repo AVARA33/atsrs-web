@@ -8,7 +8,7 @@ function cors(req: Request) {
   const origin = req.headers.get("origin") || "";
   return {
     "Access-Control-Allow-Origin": allowedOrigins.has(origin) ? origin : "https://atsrs.com",
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-atsrs-client-build",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Vary": "Origin",
   };
