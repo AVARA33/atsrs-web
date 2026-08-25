@@ -7,7 +7,8 @@ assert(css.includes('profile-summary-title-row{display:flex;align-items:center;f
 assert(css.includes('.profile-summary-role{background:var(--atsrs-ref-dark-bg,#050606);border-color:var(--accent);color:var(--accent)}'),'role badge dark surface contract missing');
 assert(css.includes('@media(max-width:720px)'),'responsive card rule missing');
 assert(js.includes('updateProfileSummary(p)'),'profile summary is not connected to loaded profile data');
-assert.match(js,/location=\[p\.address,p\.city,p\.country\][^;]*\.join\(', '\)\|\|'Not provided'/,'profile summary location must combine address, city, and country');
+assert.match(js,/function profileSummaryCity\(p\)/,'profile summary must resolve a city fallback');
+assert.match(js,/location=\[p\.address,profileSummaryCity\(p\),p\.country\][^;]*\.join\(', '\)\|\|'Not provided'/,'profile summary location must combine address, city, and country');
 assert(js.includes('updateProfileStage(p)'),'profile stage is not connected to loaded profile data');
 assert(!html.includes('profileCalendarMonth')&&!html.includes('profileCalendarDays'),'removed calendar markup returned');
 assert(parityCss.includes('.profile-information-section { grid-column:1/-1; }'),'personal information does not fill the former calendar slot');
