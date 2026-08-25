@@ -70,6 +70,8 @@ assert.match(css,/\.profile-availability-actions \{[\s\S]*?height:30px/);
 assert.match(css,/\.profile-availability-card\.is-editing \.profile-availability-read-value \{[\s\S]*?display:flex !important;[\s\S]*?pointer-events:none/);
 assert.match(css,/dd:has\(#profileInlineAvailabilityNoticePeriod\) \.profile-availability-read-value \{[\s\S]*?display:none !important/);
 assert.match(css,/\.profile-availability-card\.is-editing[\s\S]*?\.atsrs-select-trigger,\.atsrs-date-input\)[\s\S]*?color:transparent !important; caret-color:transparent !important/);
+assert.match(css,/\.profile-availability-inline-control\.atsrs-select-source \{[\s\S]*?display:none !important/);
+assert.match(css,/\.atsrs-disclosure-shell > \.atsrs-disclosure-indicator \{[\s\S]*?opacity:0 !important/);
 assert.match(css,/\.profile-availability-card\.is-editing \.profile-availability-fields > div:focus-within dt \{[\s\S]*?var\(--atsrs-field-accent/);
 assert.match(css,/\.profile-availability-card\.is-editing \.profile-availability-fields > div:focus-within dd \{[\s\S]*?var\(--atsrs-field-focus-bg/);
 assert.match(css,/\.profile-availability-card:not\(\.is-editing\) \.profile-availability-fields dd > \.atsrs-disclosure-shell \{[\s\S]*?display:none !important/);
