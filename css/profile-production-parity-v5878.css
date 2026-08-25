@@ -945,3 +945,21 @@ body.personal-mode #profilePage > .panel > #userEmail { display: none !important
   }
 }
 body.personal-mode #app.app:not(.hidden) .sidebar .nav #navCompliance{display:none!important}
+
+/* Keep avatar edit controls smaller than the global 44px application button target. */
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarEditBtn,
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-summary-avatar-actions button {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileSummaryAvatarCameraBtn {
+  border: 0 !important;
+  background: rgba(3,10,16,.58) !important;
+}
