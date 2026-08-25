@@ -796,6 +796,20 @@ final result: passed
 
 Final result: passed.
 
+# Profile Sharing V1 — Design QA
+
+- Source visual: `C:\Users\user\AppData\Local\Temp\codex-clipboard-e34d742b-e7da-49fa-bf89-6e6090ba782c.png`.
+- Production comparison: ATSRS Profile → Sharing, light and dark themes.
+- User-directed adaptation: Sharing title/subtitle and Create Share Link button are intentionally omitted pending button placement.
+- Outer viewport: `1109 × 295`; panel: `1107 × 294`; Sharing UI: `1060 × 270`.
+- No horizontal or vertical overflow; legacy Sharing UI is hidden and no other tab panel is visible concurrently.
+- Audience selection and expiry selection work; expiry also synchronizes with the existing production sharing state.
+- Existing ATSRS surface, border, focus, dark green, light blue, typography and Phosphor icon tokens are reused.
+- At 760 px and below, controls collapse to one column and the existing mobile profile viewport handles vertical overflow.
+- P0/P1/P2 findings: none. P3: Create Share Link button placement is intentionally deferred.
+
+Final result: passed.
+
 # Profile field stability and hover parity — Design QA
 
 - Scope: Personal Information normal/Edit/Cancel transition and Work Availability field interactions.
