@@ -24,6 +24,7 @@ assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)/);
 assert.match(css,/@media\(max-width:620px\)/);
 assert.match(css,/profile-privacy-mode-card\{[^}]*min-height:64px;[^}]*padding:7px 14px/);
 assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)\{height:auto;min-height:0;max-height:none\}/);
-assert.match(html,/css\/profile-privacy-v1\.css\?v=8/);
+assert.match(css,/profile-privacy-mode-grid\{[^}]*grid-template-columns:repeat\(3,calc\(\(100% - 27px\)\/4\)\);[^}]*justify-content:start;[^}]*gap:9px/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=9/);
 assert.match(html,/js\/profile-privacy-v1\.js\?v=4/);
 console.log('Profile Privacy V1 contracts passed');

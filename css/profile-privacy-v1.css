@@ -4,7 +4,7 @@ body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:1
 body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-privacy-visibility{padding:0 0 12px;border-bottom:1px solid var(--line)}
-body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,calc((100% - 27px)/4));justify-content:start;gap:9px}
 body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:12px;min-height:64px;padding:7px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
 body.personal-mode #profilePage .profile-privacy-mode-card:hover{border-color:color-mix(in srgb,var(--accent) 54%,var(--line));background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
 body.personal-mode #profilePage .profile-privacy-mode-card.is-selected{border-color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 58%,transparent)}
@@ -36,7 +36,7 @@ html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-c
 html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-icon{background:#f4f7fb}
 @media(max-width:980px){
   body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:auto;min-height:0;max-height:none}
-  body.personal-mode #profilePage .profile-privacy-mode-grid{gap:10px}
+  body.personal-mode #profilePage .profile-privacy-mode-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
   body.personal-mode #profilePage .profile-privacy-mode-card{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:9px}
   body.personal-mode #profilePage .profile-privacy-mode-icon{width:32px;height:32px}
   body.personal-mode #profilePage .profile-privacy-matrix-head,
