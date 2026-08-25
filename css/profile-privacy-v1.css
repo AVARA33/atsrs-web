@@ -3,10 +3,7 @@ body.personal-mode #profilePage #profileTabPrivacyPanel{padding:16px 22px 14px;o
 body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:100%;flex-direction:column;color:var(--text)}
 body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
-body.personal-mode #profilePage .profile-privacy-heading{padding-bottom:9px;border-bottom:1px solid color-mix(in srgb,var(--line) 66%,transparent)}
-body.personal-mode #profilePage .profile-privacy-heading h4,
 body.personal-mode #profilePage .profile-privacy-section-heading h5{margin:0;color:var(--accent);font-size:15px;line-height:1.25;font-weight:700}
-body.personal-mode #profilePage .profile-privacy-heading p,
 body.personal-mode #profilePage .profile-privacy-section-heading p{margin:3px 0 0;color:var(--muted);font-size:12px;line-height:1.35}
 body.personal-mode #profilePage .profile-privacy-visibility{padding:10px 0 12px;border-bottom:1px solid var(--line)}
 body.personal-mode #profilePage .profile-privacy-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}

@@ -7,6 +7,7 @@ const css=fs.readFileSync('css/profile-privacy-v1.css','utf8');
 ['public','custom','private'].forEach(mode=>assert.match(html,new RegExp(`name="profilePrivacyMode" value="${mode}"`)));
 ['phone','email','location','availability','position','salary','birthDate','about'].forEach(field=>assert.match(js,new RegExp(`key:'${field}'`)));
 assert.match(html,/id="profilePrivacyAudience"/);
+assert.doesNotMatch(html,/class="profile-privacy-heading"/);
 assert.match(html,/id="profilePrivacyRows"/);
 assert.match(html,/id="profilePrivacyResetBtn"/);
 assert.match(html,/id="profilePrivacySaveBtn"/);
