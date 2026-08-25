@@ -330,6 +330,17 @@ body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView 
 body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView .profile-inline-input-controlled > .profile-inline-control { display:block !important; }
 body.personal-mode #profilePage:not(.profile-inline-editing) #profilePersonalReadView .profile-inline-select-controlled > :is(.atsrs-disclosure-shell,.atsrs-custom-select) { display:none !important; }
 body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView .profile-inline-select-controlled > :is(.atsrs-disclosure-shell,.atsrs-custom-select) { display:block !important; }
+@media (hover:hover) {
+  html[data-theme="dark"] body.personal-mode #profilePage #profilePersonalReadView .profile-information-field:hover:not(:focus-within),
+  html[data-theme="dark"] body.personal-mode #profilePage .profile-availability-fields dd:hover:not(:focus-within) {
+    border-right-color:var(--atsrs-field-hover-inline-line,var(--atsrs-control-hover-border,#4b5d52)) !important;
+    border-left-color:var(--atsrs-field-hover-inline-line,var(--atsrs-control-hover-border,#4b5d52)) !important;
+  }
+  html[data-theme="light"] body.personal-mode #profilePage #profilePersonalReadView .profile-information-field:hover:not(:focus-within),
+  html[data-theme="light"] body.personal-mode #profilePage .profile-availability-fields dd:hover:not(:focus-within) {
+    border-color:var(--atsrs-control-hover-border,#93b4ee) !important;
+  }
+}
 body.personal-mode #profilePage .profile-inline-editor { height: 208px; min-height: 208px; max-height: 208px; overflow: visible; }
 @media (min-width:981px) {
   body.personal-mode #profilePage .profile-inline-editor .profile-inline-grid,
