@@ -9,7 +9,7 @@ const storage=fs.readFileSync('js/storage.js','utf8');
 assert.match(index,/data-atsrs-build="V5878" data-atsrs-update="24 Aug 2026"/);
 assert.match(index,/profile-production-parity-v5878\.css\?v=5975/);
 assert.match(css,/\.profile-information-tabs button \{[\s\S]*?font-weight: 600 !important;/);
-assert.match(index,/dashboard\.js\?v=5927/);
+assert.match(index,/dashboard\.js\?v=5928/);
 assert.match(index,/corporate-remediation\.js\?v=481/);
 assert.match(index,/id="cancelProfileBtn"[^>]*hidden>Cancel<\/button>/);
 assert.equal((index.match(/data-profile-stage-edit=/g)||[]).length,2);
