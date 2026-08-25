@@ -218,7 +218,7 @@ body.personal-mode #profilePage .profile-summary-avatar-camera i {
 body.personal-mode #profilePage .profile-summary-avatar-actions {
   position: absolute;
   right: -11px;
-  top: 78px;
+  top: 102px;
   z-index: 4;
   display: none;
   flex-direction: column;
