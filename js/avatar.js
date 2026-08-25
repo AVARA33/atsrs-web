@@ -9,6 +9,7 @@
   var identityUserId='';
   var identityPromise=null;
   var delegatedPickerBound=false;
+  var uploadInFlight=false;
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
@@ -163,7 +164,11 @@
       '<div class="profile-photo-crop-actions"><button type="button" class="secondary" data-crop-cancel>Cancel</button><button type="button" class="secondary" id="profilePhotoUseBtn">Use photo</button></div></section>';
     document.body.appendChild(modal);
     modal.querySelectorAll('[data-crop-cancel],.profile-photo-crop-backdrop').forEach(function(button){button.onclick=closeCrop});
-    byId('profilePhotoUseBtn').onclick=function(event){event.preventDefault();uploadCropped(this)};
+    modal.addEventListener('click',function(event){
+      var button=event.target&&event.target.closest&&event.target.closest('#profilePhotoUseBtn');
+      if(!button)return;
+      event.preventDefault();event.stopPropagation();uploadCropped(button);
+    },true);
     byId('profilePhotoZoom').addEventListener('input',function(){if(cropState){cropState.zoom=Number(this.value)||1;drawCrop()}});
     var canvas=byId('profilePhotoCropCanvas'),dragging=false,lastX=0,lastY=0;
     canvas.addEventListener('pointerdown',function(event){dragging=true;lastX=event.clientX;lastY=event.clientY;canvas.setPointerCapture(event.pointerId)});
@@ -193,7 +198,8 @@
     image.onload=function(){
       cropState={image:image,sourceUrl:url,x:0,y:0,zoom:1};
       ensureCropModal().classList.remove('hidden');document.body.classList.add('profile-photo-cropping');
-      var useButton=byId('profilePhotoUseBtn');if(useButton){useButton.disabled=false;useButton.textContent='Use photo'}
+      uploadInFlight=false;
+      var useButton=byId('profilePhotoUseBtn');if(useButton){useButton.removeAttribute('disabled');useButton.removeAttribute('aria-disabled');useButton.textContent='Use photo'}
       byId('profilePhotoZoom').value='1';drawCrop();
     };
     image.onerror=function(){URL.revokeObjectURL(url);status('This image could not be opened.',true)};
@@ -214,8 +220,8 @@
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
   async function uploadCropped(button){
-    button=button||byId('profilePhotoUseBtn');if(!cropState||!button)return;
-    button.disabled=true;button.textContent='Saving...';status('');
+    button=button||byId('profilePhotoUseBtn');if(!cropState||!button||uploadInFlight)return;
+    uploadInFlight=true;button.setAttribute('aria-disabled','true');button.textContent='Saving...';status('');
     try{
       var c=client(),user=await currentUser(),blob=await canvasBlob();
       if(!c||!user||!blob)throw new Error('Your session is unavailable. Sign in again.');
@@ -240,7 +246,7 @@
         }).catch(function(cleanupError){console.warn('ATSRS previous profile photo cleanup failed',cleanupError)});
       }
     }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
-    finally{button.disabled=false;button.textContent='Use photo'}
+    finally{uploadInFlight=false;button.removeAttribute('aria-disabled');button.textContent='Use photo'}
   }
   async function removePhoto(){
     var button=byId('profilePhotoRemoveBtn'),profile=readProfile(),path=profile.avatarPath||identityPath||'';

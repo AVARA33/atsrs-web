@@ -13,10 +13,10 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(html,/ph ph-camera/);
   assert.match(js,/function openPhotoPicker\(\)\{[\s\S]*?document\.createElement\('input'\)[\s\S]*?picker\.remove\(\)[\s\S]*?\{once:true\}[\s\S]*?picker\.click\(\)/);
   assert.match(js,/closest\('#profileSummaryAvatarCameraBtn'\)[\s\S]*?openPhotoPicker\(\)/);
-  assert.match(js,/byId\('profilePhotoUseBtn'\)\.onclick=function\(event\)\{event\.preventDefault\(\);uploadCropped\(this\)\}/);
+  assert.match(js,/modal\.addEventListener\('click',[\s\S]*?closest\('#profilePhotoUseBtn'\)[\s\S]*?uploadCropped\(button\);[\s\S]*?\},true\)/);
   assert.match(js,/function closeCrop\(\)\{[\s\S]*?modal\.remove\(\)/);
-  assert.doesNotMatch(js,/closest\('#profilePhotoUseBtn'\)/);
-  assert.match(js,/useButton\.disabled=false;useButton\.textContent='Use photo'/);
+  assert.match(js,/uploadInFlight=false;[\s\S]*?useButton\.removeAttribute\('disabled'\)/);
+  assert.doesNotMatch(js,/profilePhotoUseBtn[\s\S]{0,600}\.disabled=true/);
   assert.doesNotMatch(js,/await c\.storage\.from\(BUCKET\)\.remove\(\[oldPath\]\)/);
   const editableControls=dashboard.match(/function profileEditableControls\(\)\{[\s\S]*?\n  \}/)[0];
   assert.doesNotMatch(editableControls,/#profilePhotoInput/,'the camera file input must remain enabled outside profile edit mode');
