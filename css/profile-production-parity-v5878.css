@@ -218,16 +218,30 @@ body.personal-mode #profilePage .profile-summary-avatar-camera i {
 body.personal-mode #profilePage .profile-summary-avatar-actions {
   position: absolute;
   right: -11px;
-  bottom: -35px;
+  top: 78px;
   z-index: 4;
   display: none;
   flex-direction: column;
-  gap: 5px;
+  gap: 1px;
 }
 
-body.personal-mode #profilePage .profile-summary-avatar-actions button:last-child {
-  background: var(--surface-2);
-  color: var(--text);
+body.personal-mode #profilePage .profile-summary-avatar-actions button {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.personal-mode #profilePage #profileSummaryAvatarCancelBtn {
+  color: var(--text) !important;
+}
+
+body.personal-mode #profilePage #profileSummaryAvatarConfirmBtn {
+  color: var(--accent) !important;
 }
 
 body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-camera { display:grid; }

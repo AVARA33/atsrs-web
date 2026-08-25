@@ -16,6 +16,7 @@ test('summary avatar exposes an accessible edit and upload flow',()=>{
   assert.match(js,/cancel\.onclick=function\(\)\{setSummaryEditing\(false\)\}/);
   assert.ok(html.indexOf('profileSummaryAvatarCancelBtn')<html.indexOf('profileSummaryAvatarConfirmBtn'));
   assert.match(css,/\.profile-summary-avatar-actions \{[\s\S]*?flex-direction: column;/);
+  assert.match(css,/\.profile-summary-avatar-actions button \{[\s\S]*?width: 24px !important;[\s\S]*?border: 0 !important;/);
   assert.doesNotMatch(css,/\.profile-summary-avatar-wrap\.is-editing \.profile-summary-avatar-edit \{ display:none; \}/);
   assert.match(css,/\.profile-summary-avatar-wrap\.is-editing \.profile-summary-avatar-camera \{ display:grid; \}/);
 });
