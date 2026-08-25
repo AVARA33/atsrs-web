@@ -225,7 +225,13 @@
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
   async function uploadCropped(attempt){
-    if(!attempt||activeCropAttempt!==attempt||attempt.saving)return;
+    console.info('ATSRS avatar save gate',{
+      attemptId:attempt&&attempt.id,
+      activeId:activeCropAttempt&&activeCropAttempt.id,
+      sameAttempt:activeCropAttempt===attempt,
+      saving:!!(attempt&&attempt.saving)
+    });
+    if(!attempt||attempt.saving)return;
     attempt.saving=true;attempt.useButton.disabled=true;attempt.useButton.textContent='Saving...';status('');traceAvatar('save-entered',attempt);
     try{
       var c=client(),user=await currentUser(),blob=await canvasBlob(attempt);
