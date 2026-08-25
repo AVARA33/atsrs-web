@@ -1,7 +1,7 @@
 /* ATSRS V581 — Jobs detail window controls and responsive reading surface. */
 (function(){
 'use strict';
-var PAGE=30,FACET_PAGE=1000,NEW_MS=21600000,jobs=[],filterJobs=[],adminJobs=[],worksiteFacetValues={offshore:[],onshore:[]},page=1,total=0,loading=false,loadToken=0,isAdmin=false,jobsAccess='limited',selected='',timer=null,searchTimer=null,view='cards',detailOpener=null,detailControlHome=null,detailJob=null,detailForceFull=false,detailTimer=null,detailPageScrollY=0;
+var PAGE=30,FACET_PAGE=1000,NEW_MS=86400000,jobs=[],filterJobs=[],adminJobs=[],worksiteFacetValues={offshore:[],onshore:[]},page=1,total=0,loading=false,loadToken=0,isAdmin=false,jobsAccess='limited',selected='',timer=null,searchTimer=null,view='cards',detailOpener=null,detailControlHome=null,detailJob=null,detailForceFull=false,detailTimer=null,detailPageScrollY=0;
 var jobsSelectControls={},jobsSelectDocumentBound=false;
 try{view=localStorage.getItem('atsrs_jobs_view')==='list'?'list':'cards'}catch(ignore){}
 function id(x){return document.getElementById(x)}
@@ -16,7 +16,7 @@ function mailtoHref(job){var email=validEmail(job&&job.recruiter_email);if(!emai
 function db(){return window.supabaseClient&&window.supabaseClient.from?window.supabaseClient:null}
 function publishedMs(job){if(!job||job.status!=='published'||typeof job.published_at!=='string'||!job.published_at.trim())return NaN;return Date.parse(job.published_at)}
 function isNew(job,now){var p=publishedMs(job),n=Number(now);return Number.isFinite(p)&&Number.isFinite(n)&&p<=n&&n-p<NEW_MS}
-function badge(parent,job,now){if(!isNew(job,now))return;var b=el('span','job-new-badge');b.setAttribute('aria-label','New vacancy published within the last 6 hours');var s=el('i','', '★');s.setAttribute('aria-hidden','true');b.append(s,el('span','', 'NEW'));parent.append(b)}
+function badge(parent,job,now){if(!isNew(job,now))return;var b=el('span','job-new-badge');b.setAttribute('aria-label','New vacancy published within the last 24 hours');var s=el('i','', '★');s.setAttribute('aria-hidden','true');b.append(s,el('span','', 'NEW'));parent.append(b)}
 function verifiedDate(value){var match=clean(value).match(/^(\d{4})-(\d{2})-(\d{2})(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?$/);if(!match)return'';var y=Number(match[1]),m=Number(match[2]),day=Number(match[3]),d=new Date(Date.UTC(y,m-1,day));if(d.getUTCFullYear()!==y||d.getUTCMonth()!==m-1||d.getUTCDate()!==day)return'';return new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(d)}
 function dateLabel(job){var value=verifiedDate(job&&job.source_posted_at||job&&job.display_posted_date);return value?'Posted '+value:''}
 function fact(dl,label,value){if(!clean(value))return;var w=el('div','job-fact');w.append(el('dt','',label),el('dd','',value));dl.append(w)}
