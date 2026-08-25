@@ -4,7 +4,7 @@ body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:1
 body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,max-content);justify-content:start;gap:8px}
-body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:22px auto;align-items:center;gap:6px;min-width:94px;min-height:34px;padding:4px 22px 4px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
+body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:22px auto;align-items:center;gap:6px;min-width:94px;min-height:34px;padding:4px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
 body.personal-mode #profilePage .profile-privacy-mode-card:hover{border-color:color-mix(in srgb,var(--accent) 54%,var(--line));background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
 body.personal-mode #profilePage .profile-privacy-mode-card.is-selected{border-color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 58%,transparent)}
 body.personal-mode #profilePage .profile-privacy-mode-card > input{position:absolute;opacity:0;pointer-events:none}
@@ -13,8 +13,6 @@ body.personal-mode #profilePage .profile-privacy-mode-icon i{font-size:15px}
 body.personal-mode #profilePage .profile-privacy-mode-card strong{display:block;margin:0;font-size:12px;color:var(--text)}
 body.personal-mode #profilePage .profile-privacy-mode-card.is-selected strong{color:var(--accent)}
 body.personal-mode #profilePage .profile-privacy-mode-card small{display:none}
-body.personal-mode #profilePage .profile-privacy-selected{position:absolute;right:8px;top:7px;color:var(--accent);font-size:18px;opacity:0}
-body.personal-mode #profilePage .profile-privacy-mode-card.is-selected .profile-privacy-selected{opacity:1}
 body.personal-mode #profilePage .profile-privacy-information{padding-top:0}
 body.personal-mode #profilePage .profile-privacy-matrix{margin-top:0}
 body.personal-mode #profilePage .profile-privacy-matrix-head,
@@ -36,7 +34,7 @@ html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-i
   body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:auto;min-height:0;max-height:none}
   body.personal-mode #profilePage #profileTabPrivacyPanel{height:auto;overflow-y:visible}
   body.personal-mode #profilePage .profile-privacy-mode-grid{grid-template-columns:repeat(3,max-content);gap:8px}
-  body.personal-mode #profilePage .profile-privacy-mode-card{grid-template-columns:22px auto;gap:6px;padding:4px 22px 4px 8px}
+  body.personal-mode #profilePage .profile-privacy-mode-card{grid-template-columns:22px auto;gap:6px;padding:4px 8px}
   body.personal-mode #profilePage .profile-privacy-mode-icon{width:22px;height:22px}
   body.personal-mode #profilePage .profile-privacy-matrix-head,
   body.personal-mode #profilePage .profile-privacy-matrix-row{grid-template-columns:minmax(220px,1fr) repeat(3,minmax(92px,.38fr))}
