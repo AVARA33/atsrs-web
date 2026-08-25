@@ -543,20 +543,23 @@ body.personal-mode #profilePage .profile-availability-card .profile-availability
   border:0; outline:0; appearance:none; background:transparent; color:var(--text);
   box-shadow:none; font:inherit; font-size:12px; line-height:20px;
 }
-body.personal-mode #profilePage .profile-availability-card:not(.is-editing) .profile-availability-fields dd > .atsrs-disclosure-shell {
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card:not(.is-editing) .profile-availability-fields dd > .atsrs-disclosure-shell {
   display:none !important;
+}
+body.personal-mode #profilePage .profile-availability-card:not(.is-editing) .profile-availability-read-value {
+  flex:0 1 auto; min-width:0; white-space:nowrap;
 }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-read-value { display:none !important; }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-inline-control:not([hidden]) { display:block; }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-fields dd {
   position:relative; overflow:visible; cursor:text;
 }
-body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell {
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell {
   position:absolute !important; inset:0 !important; display:block !important;
   width:100% !important; height:100% !important; margin:0 !important; padding:0 !important;
   border:0 !important; background:transparent !important; box-shadow:none !important;
 }
-body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell > :is(.atsrs-select-trigger,.atsrs-date-input) {
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell > :is(.atsrs-select-trigger,.atsrs-date-input) {
   width:100% !important; min-width:0 !important; height:100% !important; min-height:0 !important;
   margin:0 !important; padding:0 12px !important; border:0 !important; border-radius:inherit !important;
   background:transparent !important; color:var(--text) !important; box-shadow:none !important;
