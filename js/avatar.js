@@ -257,7 +257,7 @@
     upload.dataset.bound='1';upload.onclick=function(){input.click()};
     if(edit)edit.onclick=function(){setSummaryEditing(true)};
     if(camera)camera.onclick=function(){input.click()};
-    if(confirm)confirm.onclick=function(){input.click()};
+    if(confirm)confirm.onclick=function(){setSummaryEditing(false)};
     if(cancel)cancel.onclick=function(){setSummaryEditing(false)};
     input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
     render();

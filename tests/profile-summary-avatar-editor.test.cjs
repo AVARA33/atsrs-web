@@ -13,9 +13,13 @@ test('summary avatar exposes an accessible edit and upload flow',()=>{
   assert.match(html,/ph ph-camera/);
   assert.match(js,/setSummaryEditing\(true\)/);
   assert.match(js,/camera\.onclick=function\(\)\{input\.click\(\)\}/);
+  assert.match(js,/confirm\.onclick=function\(\)\{setSummaryEditing\(false\)\}/);
+  assert.doesNotMatch(js,/confirm\.onclick=function\(\)\{input\.click\(\)\}/);
   assert.match(js,/cancel\.onclick=function\(\)\{setSummaryEditing\(false\)\}/);
   assert.ok(html.indexOf('profileSummaryAvatarCancelBtn')<html.indexOf('profileSummaryAvatarConfirmBtn'));
-  assert.match(css,/\.profile-summary-avatar-actions \{[\s\S]*?flex-direction: column;/);
+  assert.match(css,/\.profile-summary-avatar-actions \{[\s\S]*?inset: 0;[\s\S]*?pointer-events: none;/);
+  assert.match(css,/#profileSummaryAvatarCancelBtn \{[\s\S]*?right: -8px;[\s\S]*?top: 78%;/);
+  assert.match(css,/#profileSummaryAvatarConfirmBtn \{[\s\S]*?right: 6px;[\s\S]*?top: 94%;/);
   assert.match(css,/\.profile-summary-avatar-actions button \{[\s\S]*?width: 24px !important;[\s\S]*?border: 0 !important;/);
   assert.match(css,/#app#app\.app:not\(\.hidden\) #profilePage#profilePage #profileSummaryAvatarEditBtn,[\s\S]*?width: 24px !important;/);
   assert.doesNotMatch(css,/\.profile-summary-avatar-wrap\.is-editing \.profile-summary-avatar-edit \{ display:none; \}/);

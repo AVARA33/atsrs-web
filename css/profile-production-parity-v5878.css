@@ -217,12 +217,10 @@ body.personal-mode #profilePage .profile-summary-avatar-camera i {
 
 body.personal-mode #profilePage .profile-summary-avatar-actions {
   position: absolute;
-  right: -11px;
-  top: 102px;
+  inset: 0;
   z-index: 4;
   display: none;
-  flex-direction: column;
-  gap: 1px;
+  pointer-events: none;
 }
 
 body.personal-mode #profilePage .profile-summary-avatar-actions button {
@@ -234,18 +232,25 @@ body.personal-mode #profilePage .profile-summary-avatar-actions button {
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  pointer-events: auto;
 }
 
 body.personal-mode #profilePage #profileSummaryAvatarCancelBtn {
+  position: absolute;
+  right: -8px;
+  top: 78%;
   color: var(--text) !important;
 }
 
 body.personal-mode #profilePage #profileSummaryAvatarConfirmBtn {
+  position: absolute;
+  right: 6px;
+  top: 94%;
   color: var(--accent) !important;
 }
 
 body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-camera { display:grid; }
-body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-actions { display:flex; }
+body.personal-mode #profilePage .profile-summary-avatar-wrap.is-editing .profile-summary-avatar-actions { display:block; }
 
 body.personal-mode #profilePage :is(.profile-summary-avatar-edit,.profile-summary-avatar-camera,.profile-summary-avatar-actions button):focus-visible {
   outline: 2px solid var(--accent);
