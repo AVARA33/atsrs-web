@@ -23,10 +23,11 @@ assert.match(js,/mode==='public'\?'Public':mode==='private'\?'Private':'Link Onl
 assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)/);
 assert.match(css,/@media\(max-width:620px\)/);
 assert.match(css,/profile-privacy-mode-card\{[^}]*min-height:34px;[^}]*padding:4px 22px 4px 8px/);
-assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)\{height:auto;min-height:0;max-height:none\}/);
+assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)\{height:294px;min-height:294px;max-height:294px\}/);
+assert.match(css,/profile-privacy-matrix-row\{min-height:36px;/);
 assert.match(css,/profile-privacy-mode-grid\{[^}]*grid-template-columns:repeat\(3,max-content\);[^}]*justify-content:start;[^}]*gap:8px/);
 assert.match(css,/profile-privacy-mode-card small\{display:none\}/);
 assert.match(html,/profile-privacy-matrix-head[^>]*><div class="profile-privacy-mode-grid"/);
-assert.match(html,/css\/profile-privacy-v1\.css\?v=11/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=12/);
 assert.match(html,/js\/profile-privacy-v1\.js\?v=4/);
 console.log('Profile Privacy V1 contracts passed');
