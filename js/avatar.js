@@ -68,7 +68,6 @@
     if(result.error)throw result.error;
     if(result.data&&result.data.user){
       window.currentUser=result.data.user;
-      try{currentUser=result.data.user}catch(ignore){}
     }
     return true;
   }
@@ -220,7 +219,7 @@
   function canvasBlob(attempt){
     return new Promise(function(resolve){attempt.canvas.toBlob(resolve,'image/webp',.88)});
   }
-  async function currentUser(){
+  async function getCurrentUser(){
     var c=client();if(!c)return null;
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
@@ -234,7 +233,7 @@
     if(!attempt||attempt.saving)return;
     attempt.saving=true;attempt.useButton.disabled=true;attempt.useButton.textContent='Saving...';status('');traceAvatar('save-entered',attempt);
     try{
-      var c=client(),user=await currentUser(),blob=await canvasBlob(attempt);
+      var c=client(),user=await getCurrentUser(),blob=await canvasBlob(attempt);
       if(!c||!user||!blob)throw new Error('Your session is unavailable. Sign in again.');
       var path=user.id+'/avatar-'+Date.now()+'.webp';
       var uploaded=await c.storage.from(BUCKET).upload(path,blob,{contentType:'image/webp',cacheControl:'3600',upsert:false});

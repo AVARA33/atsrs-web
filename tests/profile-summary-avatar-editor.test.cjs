@@ -18,6 +18,9 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(js,/function uploadCropped\(attempt\)\{[\s\S]*?attempt\.saving=true[\s\S]*?finally\{attempt\.saving=false/);
   assert.match(js,/console\.info\('ATSRS avatar save gate',[\s\S]*?sameAttempt:activeCropAttempt===attempt/);
   assert.match(js,/if\(!attempt\|\|attempt\.saving\)return/);
+  assert.match(js,/async function getCurrentUser\(\)/);
+  assert.match(js,/user=await getCurrentUser\(\)/);
+  assert.doesNotMatch(js,/try\{currentUser=result\.data\.user\}/);
   const uploadStart=js.indexOf('async function uploadCropped(attempt){');
   const uploadEnd=js.indexOf('\n  async function removePhoto()',uploadStart);
   const uploadFunction=js.slice(uploadStart,uploadEnd);
