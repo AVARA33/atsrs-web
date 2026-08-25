@@ -64,6 +64,7 @@ assert.match(js,/profileInlineAvailabilityNoticePeriod/);
 assert.match(js,/function setInlineSelectValue\(select,value\)/);
 assert.match(js,/async function refreshAvailabilityEditor\(\)\{if\(window\.loadProfile\)await Promise\.resolve\(window\.loadProfile\(\)\);syncAvailabilityEditor\(\)\}/);
 assert.match(js,/async function enterAvailability\(\)/);
+assert.match(js,/focusTarget=first&&first\.closest\('\.atsrs-disclosure-shell'\)[\s\S]*?\.querySelector\('\.atsrs-select-trigger'\)\|\|first/);
 assert.match(js,/async function cancelAvailability\(\)\{await refreshAvailabilityEditor\(\);finishAvailability\(\)\}/);
 assert.doesNotMatch(js,/availabilityCard\.appendChild\(availability\)/);
 assert.match(css,/\.profile-availability-actions \{[\s\S]*?height:30px/);
