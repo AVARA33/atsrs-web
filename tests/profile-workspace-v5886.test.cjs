@@ -45,6 +45,7 @@ assert.match(js,/function setPersonalControls\(enabled\)/);
 assert.doesNotMatch(js,/read\.classList\.(?:add|remove)\('hidden'\)/);
 assert.match(js,/shell\.replaceWith\(control\)/);
 assert.match(css,/profile-inline-editing #profilePersonalReadView \.profile-inline-input-controlled > strong \{[\s\S]*?display:none !important/);
+assert.match(css,/#profilePersonalReadView \.profile-inline-input-controlled > \.profile-inline-control:is\(:focus,:focus-visible\) \{[\s\S]*?outline:0 !important/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
 assert.match(js,/window\.scrollTo\(savedX,savedY\)/);
 assert.match(css,/overflow-anchor:none !important/);

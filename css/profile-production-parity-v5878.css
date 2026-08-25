@@ -328,6 +328,9 @@ body.personal-mode #profilePage .work-availability-card.hidden { display: none !
 body.personal-mode #profilePage #profilePersonalReadView .profile-inline-control { display:none !important; }
 body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView .profile-inline-input-controlled > strong { display:none !important; }
 body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView .profile-inline-input-controlled > .profile-inline-control { display:block !important; }
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage.profile-inline-editing #profileTabPersonalPanel#profileTabPersonalPanel #profilePersonalReadView .profile-inline-input-controlled > .profile-inline-control:is(:focus,:focus-visible) {
+  outline:0 !important; outline-offset:0 !important;
+}
 body.personal-mode #profilePage:not(.profile-inline-editing) #profilePersonalReadView .profile-inline-select-controlled > :is(.atsrs-disclosure-shell,.atsrs-custom-select) { display:none !important; }
 body.personal-mode #profilePage.profile-inline-editing #profilePersonalReadView .profile-inline-select-controlled > :is(.atsrs-disclosure-shell,.atsrs-custom-select) { display:block !important; }
 @media (hover:hover) {
