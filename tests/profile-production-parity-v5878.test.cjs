@@ -7,11 +7,13 @@ const dashboard=fs.readFileSync('js/dashboard.js','utf8');
 const storage=fs.readFileSync('js/storage.js','utf8');
 
 assert.match(index,/data-atsrs-build="V5878" data-atsrs-update="24 Aug 2026"/);
-assert.match(index,/profile-production-parity-v5878\.css\?v=5936/);
-assert.match(index,/dashboard\.js\?v=5923/);
+assert.match(index,/profile-production-parity-v5878\.css\?v=5937/);
+assert.match(index,/dashboard\.js\?v=5924/);
 assert.match(index,/corporate-remediation\.js\?v=481/);
 assert.match(index,/id="cancelProfileBtn"[^>]*hidden>Cancel<\/button>/);
 assert.equal((index.match(/data-profile-stage-edit=/g)||[]).length,2);
+assert.match(index,/id="profileStagePhoneVerification"[^>]+class="profile-contact-verify"[^>]+data-profile-verify="mobile"[^>]*>[\s\S]*?Verify<\/button>/);
+assert.match(index,/id="profileStageWhatsappVerification"[^>]+class="profile-contact-verify"[^>]+data-profile-verify="whatsapp"[^>]*>[\s\S]*?Verify<\/button>/);
 
 assert.match(css,/#profilePage > \.panel \{[\s\S]*?padding: 0 !important;[\s\S]*?border: 0 !important;[\s\S]*?background: transparent !important;/);
 assert.match(css,/#profilePage > \.panel \{[\s\S]*?width: 100% !important;[\s\S]*?max-width: 1440px !important;/);
@@ -21,6 +23,7 @@ assert.match(css,/\.profile-information-tabs button \{[\s\S]*?width: auto !impor
 assert.match(css,/\.profile-calendar-nav button \{[\s\S]*?width: 32px !important;[\s\S]*?height: 32px !important;/);
 assert.match(css,/\.profile-summary-card,[\s\S]*?\.profile-account-status[\s\S]*?box-shadow: none !important;/);
 assert.match(css,/\.profile-information-contact button \{[\s\S]*?width: 24px !important;[\s\S]*?height: 24px !important;/);
+assert.match(css,/button\.profile-contact-verify \{[\s\S]*?width: auto !important;[\s\S]*?color: var\(--accent\) !important;/);
 assert.doesNotMatch(css,/#profilePage\.profile-editing > \.panel > \.profile-summary-stage/);
 assert.match(css,/\.profile-settings-viewport/);
 assert.match(css,/data-atsrs-account-route="profile"[\s\S]*?#pageTitle/);
@@ -30,6 +33,9 @@ assert.match(css,/@media \(max-width: 1180px\) \{[\s\S]*?\.profile-summary-stage
 assert.match(dashboard,/page\.classList\.toggle\('profile-editing',editing\)/);
 assert.match(dashboard,/cancelButton\.addEventListener\('click',function\(\)\{/);
 assert.match(dashboard,/updateProfileSummary\(data\);\s*updateProfileStage\(data\);/);
+assert.match(dashboard,/function updateVerificationButtons\(kind,verified\)/);
+assert.match(dashboard,/profileStagePhoneVerification',!!p\.phoneVerified,'Verified','Verify'/);
+assert.match(dashboard,/profileStageWhatsappVerification',!!p\.whatsappVerified,'Verified','Verify'/);
 assert.match(dashboard,/classList\.contains\('personal-mode'\)\)accountTitle\.textContent='Profile'/);
 assert.doesNotMatch(dashboard,/classList\.contains\('personal-mode'\)\)setText\(/);
 assert.match(storage,/txt\("accountTitle",isPersonalMode\(\)\?"Profile":ptr\("account"\)\)/);

@@ -351,8 +351,22 @@
       writeJson(PROFILE_KEY,profile);
     }
     setVerificationText(kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',verified);
-    var button=document.querySelector('[data-profile-verify="'+kind+'"]');
-    if(button)button.textContent=verified?'Verified':'Verify via WhatsApp';
+    updateVerificationButtons(kind,verified);
+  }
+  function updateVerificationButtons(kind,verified){
+    document.querySelectorAll('[data-profile-verify="'+kind+'"]').forEach(function(button){
+      var staged=button.classList.contains('profile-contact-verify');
+      button.textContent='';
+      if(staged&&verified){
+        var icon=document.createElement('i');
+        icon.className='ph-fill ph-check-circle';
+        icon.setAttribute('aria-hidden','true');
+        button.appendChild(icon);
+      }
+      button.appendChild(document.createTextNode(verified?'Verified':staged?'Verify':'Verify via WhatsApp'));
+      button.classList.toggle('is-unverified',!verified);
+      if(staged)button.setAttribute('aria-label',(verified?'Verified ':'Verify ')+(kind==='whatsapp'?'WhatsApp number':'mobile phone'));
+    });
   }
   async function verificationCall(payload){
     var client=window.supabaseClient;
@@ -437,8 +451,7 @@
           result.kind==='mobile'?'profilePhoneVerifiedText':'profileWhatsappVerifiedText',
           result.verified
         );
-        var button=document.querySelector('[data-profile-verify="'+result.kind+'"]');
-        if(button)button.textContent=result.verified?'Verified':'Verify via WhatsApp';
+        updateVerificationButtons(result.kind,result.verified);
       });
       return true;
     })();
@@ -772,7 +785,7 @@
   function profileStageDisplayDate(value){if(!value)return 'Not specified';var parts=String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);var date=parts?new Date(Number(parts[1]),Number(parts[2])-1,Number(parts[3])):new Date(value);return Number.isNaN(date.getTime())?'Not specified':date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
   function profileStageAvailabilityLabel(value){return ({available_now:'Available now',available_from:'Available from a date',open_to_offers:'Open to offers',not_available:'Not available',not_set:'Not specified'})[value]||'Not specified';}
   function profileStageWorkLabel(value){var labels={any:'Any opportunity',offshore:'Offshore',onshore:'Onshore',remote:'Remote',hybrid:'Hybrid'};if(Array.isArray(value))return value.map(function(item){return labels[item]||item;}).join(', ')||labels.any;return labels[value]||value||labels.any;}
-  function profileStageSetStatus(id,ok,positive,negative){var el=byId(id);if(!el)return;el.textContent='';var icon=document.createElement('i');icon.className=ok?'ph-fill ph-check-circle':'ph ph-x-circle';icon.setAttribute('aria-hidden','true');el.appendChild(icon);el.appendChild(document.createTextNode(ok?positive:negative));el.classList.toggle('is-unverified',!ok);}
+  function profileStageSetStatus(id,ok,positive,negative){var el=byId(id);if(!el)return;el.textContent='';var isVerifyAction=el.matches('[data-profile-verify]');if(ok||!isVerifyAction){var icon=document.createElement('i');icon.className=ok?'ph-fill ph-check-circle':'ph ph-x-circle';icon.setAttribute('aria-hidden','true');el.appendChild(icon);}el.appendChild(document.createTextNode(ok?positive:negative));el.classList.toggle('is-unverified',!ok);if(isVerifyAction)el.setAttribute('aria-label',(ok?'Verified ':'Verify ')+(el.getAttribute('data-profile-verify')==='whatsapp'?'WhatsApp number':'mobile phone'));}
   function renderProfileCalendar(){var month=byId('profileCalendarMonth'),days=byId('profileCalendarDays');if(!month||!days)return;var year=profileCalendarCursor.getFullYear(),monthIndex=profileCalendarCursor.getMonth(),first=new Date(year,monthIndex,1),mondayOffset=(first.getDay()+6)%7,today=new Date();month.textContent=first.toLocaleDateString('en-GB',{month:'long',year:'numeric'});days.textContent='';for(var index=0;index<42;index++){var date=new Date(year,monthIndex,index-mondayOffset+1),cell=document.createElement('span');cell.textContent=String(date.getDate());if(date.getMonth()!==monthIndex)cell.classList.add('is-outside');if(date.getFullYear()===today.getFullYear()&&date.getMonth()===today.getMonth()&&date.getDate()===today.getDate()){cell.classList.add('is-today');cell.setAttribute('aria-current','date');}days.appendChild(cell);}}
   function bindProfileCalendar(){var prev=byId('profileCalendarPrev'),next=byId('profileCalendarNext');if(prev&&!prev.dataset.bound){prev.dataset.bound='true';prev.addEventListener('click',function(){profileCalendarCursor=new Date(profileCalendarCursor.getFullYear(),profileCalendarCursor.getMonth()-1,1);renderProfileCalendar();});}if(next&&!next.dataset.bound){next.dataset.bound='true';next.addEventListener('click',function(){profileCalendarCursor=new Date(profileCalendarCursor.getFullYear(),profileCalendarCursor.getMonth()+1,1);renderProfileCalendar();});}renderProfileCalendar();}
   function updateProfileStageMfa(){var client=window.supabaseClient;if(!client||!client.auth||!client.auth.mfa||typeof client.auth.mfa.listFactors!=='function'){profileStageSetStatus('profileStageMfaStatus',false,'Enabled','Not enabled');return;}client.auth.mfa.listFactors().then(function(result){var data=result&&result.data||{},factors=[].concat(data.all||[],data.totp||[],data.phone||[]);profileStageSetStatus('profileStageMfaStatus',factors.some(function(item){return item&&item.status==='verified';}),'Enabled','Not enabled');}).catch(function(){profileStageSetStatus('profileStageMfaStatus',false,'Enabled','Not enabled');});}
@@ -780,7 +793,7 @@
     if(window.initPersonalProfileWorkspace)window.initPersonalProfileWorkspace();
     [['profileStageName',p.name],['profileStageSurname',p.surname],['profileStageBirthDate',profileStageDisplayDate(p.birthDate)],['profileStageNationality',p.nationality||p.country],['profileStageCompany',p.company],['profileStagePosition',p.position],['profileStageAddress',p.address],['profileStageZip',p.zipCode],['profileStageCountry',p.country],['profileStagePhone',phone],['profileStageWhatsapp',whatsapp],['profileStageAvailabilityStatus',profileStageAvailabilityLabel(p.availabilityStatus||'not_set')],['profileStageAvailableFrom',profileStageDisplayDate(p.availableFrom)],['profileStageWorkType',profileStageWorkLabel(p.workPreferences||p.workPreference||'any')],['profileStageNoticePeriod',p.noticePeriod||p.availabilityNoticePeriod||'Not specified']].forEach(function(item){profileStageSetText(item[0],item[1]);});
     if(confirmed)confirmed.textContent=p.availabilityConfirmedAt?'Confirmed '+profileStageDisplayDate(p.availabilityConfirmedAt):'Not confirmed';
-    profileStageSetStatus('profileStagePhoneVerification',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappVerification',!!p.whatsappVerified,'Verified','Not verified');profileStageSetStatus('profileStageEmailStatus',!!user.email_confirmed_at,'Verified','Not verified');profileStageSetStatus('profileStageMobileStatus',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappStatus',!!p.whatsappVerified,'Verified','Not verified');
+    profileStageSetStatus('profileStagePhoneVerification',!!p.phoneVerified,'Verified','Verify');profileStageSetStatus('profileStageWhatsappVerification',!!p.whatsappVerified,'Verified','Verify');profileStageSetStatus('profileStageEmailStatus',!!user.email_confirmed_at,'Verified','Not verified');profileStageSetStatus('profileStageMobileStatus',!!p.phoneVerified,'Verified','Not verified');profileStageSetStatus('profileStageWhatsappStatus',!!p.whatsappVerified,'Verified','Not verified');
     var identity=window.atsrsIdentityVerification||null,identityVerified=!!(identity&&identity.status==='verified'&&identity.verifiedAt);profileStageSetStatus('profileStageIdStatus',identityVerified,'Verified','Not verified');
     updateProfileStageMfa();bindProfileCalendar();
   }

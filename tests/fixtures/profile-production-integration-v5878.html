@@ -28,6 +28,16 @@
       await loadScript('/js/select-standard.js');
       await loadScript('/js/floating-fields.js');
       await loadScript('/js/profile-workspace-v5886.js');
+      window.currentUser={id:'local_test_user',email:'qa@atsrs.test'};
+      window.atsrsStableInterval=function(){};
+      window.supabaseClient={
+        auth:{getSession:async function(){return{data:{session:{access_token:'fixture-token'}}};}},
+        functions:{invoke:async function(_name,options){return{data:options.body&&options.body.action==='status'?{verified:false}:{verified:false},error:null};}},
+        from:function(){return{select:function(){return{eq:function(){return{maybeSingle:async function(){return{data:null,error:null};}};}};}};}
+      };
+      await loadScript('/js/dashboard.js');
+      window.saveProfile=async function(){return true;};
+      window.loadProfile();
       document.querySelector('#accountTitle').textContent='Profile';
       document.documentElement.dataset.theme=location.search.indexOf('light')>=0?'light':'dark';
       document.documentElement.style.visibility='visible';

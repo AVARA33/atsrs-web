@@ -209,6 +209,36 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-c
   color: var(--muted) !important;
 }
 
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-information-contact button.profile-contact-verify {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 2px !important;
+  border-radius: 5px !important;
+  color: var(--accent) !important;
+  font: 500 12px/24px Inter,"Segoe UI",sans-serif !important;
+  white-space: nowrap !important;
+}
+
+body.personal-mode #profilePage .profile-information-contact button.profile-contact-verify > i {
+  flex: 0 0 auto !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+body.personal-mode #profilePage .profile-information-contact button.profile-contact-verify:is(:hover,:focus-visible) {
+  background: color-mix(in srgb,var(--accent) 9%,transparent) !important;
+  color: var(--accent) !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent) !important;
+}
+
 body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-information-contact button {
   width: 24px !important;
   height: 24px !important;
