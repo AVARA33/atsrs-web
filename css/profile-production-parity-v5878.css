@@ -187,6 +187,8 @@ body.personal-mode #profilePage .profile-summary-avatar-camera {
 
 body.personal-mode #profilePage .profile-summary-avatar-camera i {
   font-size: 32px;
+  -webkit-text-stroke: 1px rgba(0,0,0,.88);
+  paint-order: stroke fill;
   filter: drop-shadow(0 1px 2px rgba(0,0,0,.72));
 }
 
