@@ -22,7 +22,7 @@ assert.match(dashboard,/\['profileStageNationality',p\.nationality\|\|p\.country
 assert.match(js,/select\.setAttribute\('data-atsrs-no-field-shell','true'\)/);
 assert.match(js,/customSelect\(3,[\s\S]*?'profileInlineNationalityValue'/);
 assert.match(js,/select\.addEventListener\('input'/);
-assert.match(js,/profile-nationality-caret/);
+assert.doesNotMatch(js,/profile-nationality-caret/);
 assert.match(js,/profileInlineCountryResidence/);
 assert.match(js,/profileInlineCompany/);
 assert.match(js,/profileInlineBirthCountry/);
@@ -41,10 +41,10 @@ assert.match(css,/\.profile-nationality-select > \.atsrs-disclosure-shell[\s\S]*
 assert.match(css,/\.profile-nationality-select \.atsrs-disclosure-shell \{\s*position: absolute !important; inset: 0 !important/);
 assert.match(css,/#profileInlineNationalityValue/);
 assert.match(js,/function finishPersonal\(\)\{var savedX=window\.scrollX,savedY=window\.scrollY/);
-assert.match(js,/function stackPersonalEditor\(editor\)/);
+assert.match(js,/function setPersonalControls\(enabled\)/);
 assert.doesNotMatch(js,/read\.classList\.(?:add|remove)\('hidden'\)/);
-assert.match(css,/\.profile-personal-grid-stack > \.profile-inline-editor \{[\s\S]*?position:absolute; inset:0/);
-assert.match(css,/profile-inline-editing #profilePersonalReadView \.profile-information-field > strong \{[\s\S]*?visibility:hidden !important/);
+assert.match(js,/shell\.replaceWith\(control\)/);
+assert.match(css,/profile-inline-editing #profilePersonalReadView \.profile-inline-input-controlled > strong \{[\s\S]*?display:none !important/);
 assert.match(js,/summaryEdit\.focus\(\{preventScroll:true\}\)/);
 assert.match(js,/window\.scrollTo\(savedX,savedY\)/);
 assert.match(css,/overflow-anchor:none !important/);
