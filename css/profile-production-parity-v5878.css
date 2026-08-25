@@ -582,7 +582,7 @@ html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePag
 }
 html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-actions .profile-information-action,
 html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action {
-  color:#172033 !important; border-color:transparent !important; background:transparent !important;
+  color:var(--atsrs-shell-accent-strong,#245b93) !important; border-color:transparent !important; background:transparent !important;
 }
 html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-actions .profile-information-action:is(:hover,:focus-visible),
 html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action:is(:hover,:focus-visible) {

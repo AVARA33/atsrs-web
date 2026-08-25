@@ -124,6 +124,6 @@ assert.match(css,/\.profile-information-field:focus-within > span,[\s\S]*?color:
 assert.match(css,/profile-inline-editing \.profile-inline-grid :is\(\.profile-information-field,\.profile-information-contact\):focus-within,[\s\S]*?border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\) !important;[\s\S]*?box-shadow:var\(--atsrs-field-focus-shadow\) !important;/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*?:-webkit-autofill[\s\S]*?color-mix\(in srgb,var\(--accent\) 9%,var\(--surface-2\)\)/);
 assert.match(css,/html\[data-theme="light"\][\s\S]*?:-webkit-autofill[\s\S]*?color-mix\(in srgb,var\(--accent\) 6%,#fff\)/);
-assert.match(css,/html\[data-theme="light"\][\s\S]*?\.profile-availability-actions \.profile-information-action,[\s\S]*?#profileTabPersonalPanel#profileTabPersonalPanel \.profile-information-action \{[\s\S]*?color:#172033 !important/);
+assert.match(css,/html\[data-theme="light"\][\s\S]*?\.profile-availability-actions \.profile-information-action,[\s\S]*?#profileTabPersonalPanel#profileTabPersonalPanel \.profile-information-action \{[\s\S]*?color:var\(--atsrs-shell-accent-strong,#245b93\) !important/);
 assert.doesNotMatch(css,/\.profile-summary-edit/);
 console.log('Personal Profile workspace V5886 contracts passed');
