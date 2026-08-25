@@ -182,7 +182,8 @@ body.personal-mode #profilePage .profile-summary-avatar-actions button {
 
 body.personal-mode #profilePage .profile-summary-avatar-edit {
   position: absolute;
-  right: -28px;
+  left: -26px;
+  right: auto;
   bottom: 30px;
   z-index: 4;
   width: 24px !important;
@@ -219,6 +220,10 @@ body.personal-mode #profilePage .profile-summary-avatar-camera i {
   font-size: 32px;
 }
 
+body.personal-mode #profilePage .profile-summary-avatar-camera:hover {
+  transform: translate(-50%,-50%) !important;
+}
+
 body.personal-mode #profilePage .profile-summary-avatar-actions {
   position: absolute;
   inset: 0;
@@ -241,14 +246,16 @@ body.personal-mode #profilePage .profile-summary-avatar-actions button {
 
 body.personal-mode #profilePage #profileSummaryAvatarCancelBtn {
   position: absolute;
-  right: -34px;
+  left: -32px;
+  right: auto;
   top: 78%;
   color: var(--text) !important;
 }
 
 body.personal-mode #profilePage #profileSummaryAvatarConfirmBtn {
   position: absolute;
-  right: -28px;
+  left: -26px;
+  right: auto;
   top: 94%;
   color: var(--accent) !important;
 }
