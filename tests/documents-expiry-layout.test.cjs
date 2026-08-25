@@ -22,7 +22,7 @@ assert.match(theme,/#certificatesPage \.documents-expiry-group > \.na-check\s*\{
 assert.match(theme,/html\[data-theme="light"\] body #app #certificatesPage #certManualPanel \.documents-expiry-group > \.na-check > input:focus-visible\s*\{[^}]*box-shadow: var\(--atsrs-light-focus\) !important;/s);
 assert.match(floating,/\.atsrs-field-shell:not\(\.atsrs-field-textarea\)\{\s*height:var\(--atsrs-field-height\)!important;\s*max-height:var\(--atsrs-field-height\)!important/);
 assert.doesNotMatch(theme,/\.atsrs-field-shell:not\(\.atsrs-field-textarea\)/);
-assert.match(index,/css\/theme\.css\?v=58196/);
+assert.match(index,/css\/theme\.css\?v=58197/);
 assert.match(index,/js\/storage\.js\?v=585/);
 
 for(const state of ['qr','ai','manual','edit'])assert.match(harness,new RegExp(`value="${state}"`));

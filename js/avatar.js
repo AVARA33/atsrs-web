@@ -8,6 +8,7 @@
   var identityPath='';
   var identityUserId='';
   var identityPromise=null;
+  var delegatedPickerBound=false;
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
@@ -254,10 +255,17 @@
   }
   function bind(){
     var upload=byId('profilePhotoUploadBtn'),input=byId('profilePhotoInput'),remove=byId('profilePhotoRemoveBtn');
-    var camera=byId('profileSummaryAvatarCameraBtn');
+    if(!delegatedPickerBound){
+      delegatedPickerBound=true;
+      document.addEventListener('click',function(event){
+        var trigger=event.target&&event.target.closest&&event.target.closest('#profileSummaryAvatarCameraBtn');
+        if(!trigger)return;
+        var picker=byId('profilePhotoInput');if(!picker)return;
+        event.preventDefault();picker.value='';picker.click();
+      });
+    }
     if(!upload||upload.dataset.bound==='1')return;
     upload.dataset.bound='1';upload.onclick=function(){input.click()};
-    if(camera)camera.onclick=function(){input.value='';input.click()};
     input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
     render();
   }

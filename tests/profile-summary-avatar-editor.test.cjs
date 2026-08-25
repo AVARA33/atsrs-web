@@ -10,7 +10,7 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(html,/id="profileSummaryAvatarCameraBtn"/);
   assert.doesNotMatch(html,/profileSummaryAvatar(?:Edit|Confirm|Cancel)Btn/);
   assert.match(html,/ph ph-camera/);
-  assert.match(js,/camera\.onclick=function\(\)\{input\.value='';input\.click\(\)\}/);
+  assert.match(js,/document\.addEventListener\('click',[\s\S]*?closest\('#profileSummaryAvatarCameraBtn'\)[\s\S]*?picker\.value='';picker\.click\(\)/);
   assert.match(js,/summaryImage=byId\('profileSummaryAvatar'\)/);
   assert.match(js,/if\(url\)summaryImage\.src=url/);
   assert.doesNotMatch(js,/(?:edit|confirm|cancel)\.onclick/);
@@ -22,5 +22,6 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.doesNotMatch(css,/profile-summary-avatar-actions/);
   assert.doesNotMatch(css,/\.profile-summary-avatar-wrap\.is-editing/);
   assert.match(theme,/html\[data-theme="light"\] \.profile-photo-crop-modal\{[\s\S]*?background:transparent!important;/);
-  assert.match(theme,/html\[data-theme="light"\] \.profile-photo-crop-backdrop\{[\s\S]*?background:rgba\(38,54,68,\.28\)!important;[\s\S]*?backdrop-filter:blur\(2px\)!important;/);
+  assert.match(theme,/\.profile-photo-crop-backdrop:is\(:hover,:focus,:focus-visible,:active\)\{[\s\S]*?background:rgba\(38,54,68,\.28\)!important;[\s\S]*?backdrop-filter:blur\(2px\)!important;[\s\S]*?transition:none!important;/);
+  assert.match(theme,/html\[data-theme="dark"\][\s\S]*?\.profile-photo-crop-backdrop:is\(:hover,:focus,:focus-visible,:active\)\{[\s\S]*?background:rgba\(1,7,13,\.46\)!important;[\s\S]*?backdrop-filter:blur\(2px\)!important;/);
 });

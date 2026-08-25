@@ -502,10 +502,23 @@ html[data-theme="light"] :where(
 html[data-theme="light"] .profile-photo-crop-modal{
   background:transparent!important;
 }
-html[data-theme="light"] .profile-photo-crop-backdrop{
+html[data-theme="light"] body .profile-photo-crop-modal > .profile-photo-crop-backdrop,
+html[data-theme="light"] body .profile-photo-crop-modal > .profile-photo-crop-backdrop:is(:hover,:focus,:focus-visible,:active){
   background:rgba(38,54,68,.28)!important;
+  border:0!important;
+  box-shadow:none!important;
   backdrop-filter:blur(2px)!important;
   -webkit-backdrop-filter:blur(2px)!important;
+  transition:none!important;
+}
+html[data-theme="dark"] body .profile-photo-crop-modal > .profile-photo-crop-backdrop,
+html[data-theme="dark"] body .profile-photo-crop-modal > .profile-photo-crop-backdrop:is(:hover,:focus,:focus-visible,:active){
+  background:rgba(1,7,13,.46)!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:blur(2px)!important;
+  -webkit-backdrop-filter:blur(2px)!important;
+  transition:none!important;
 }
 html[data-theme="light"] body button.talent-modal-backdrop{
   background:rgba(18,35,49,.30)!important;
