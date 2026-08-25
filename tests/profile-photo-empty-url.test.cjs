@@ -35,6 +35,6 @@ assert.equal(api.allowedUrl('https://cdn.example.test/avatar.webp'), 'https://cd
 assert.equal(api.resolvedUrl({ avatarUrl: '', avatarPath: '', avatarSource: '' }), '',
   'an owner without a photo must not publish the site origin as avatar_url');
 assert.match(index, /data-atsrs-build="V5878"/);
-assert.match(index, /js\/avatar\.js\?v=388/);
+assert.match(index, /js\/avatar\.js\?v=389/);
 
 console.log('Profile photo empty URL regression tests passed');

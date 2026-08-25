@@ -3,16 +3,21 @@
   'use strict';
   var BUCKET='atsrs-profile-photos';
   var MAX_BYTES=5*1024*1024;
-  var cropState=null;
+  var activeCropAttempt=null;
+  var cropAttemptSequence=0;
   var identityUrl='';
   var identityPath='';
   var identityUserId='';
   var identityPromise=null;
   var delegatedPickerBound=false;
-  var uploadInFlight=false;
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
+  function traceAvatar(stage,attempt){
+    var entry={stage:stage,attempt:attempt&&attempt.id||0,time:Date.now()};
+    window.__atsrsAvatarTrace=(window.__atsrsAvatarTrace||[]).concat(entry).slice(-20);
+    console.info('ATSRS avatar lifecycle',entry);
+  }
   function profileKey(){
     try{return typeof window.localKey==='function'?window.localKey('profile'):'atsrs_'+((window.currentUser&&window.currentUser.id)||'local_test_user')+'_profile'}
     catch(error){return 'atsrs_local_test_user_profile'}
@@ -152,9 +157,8 @@
     if(typeof window.atsrsWorkspaceSwitcherUpdate==='function')window.atsrsWorkspaceSwitcherUpdate();
     if(!skipHydrate)hydrateIdentityPhoto();
   }
-  function ensureCropModal(){
-    var modal=byId('profilePhotoCropModal');if(modal)return modal;
-    modal=document.createElement('div');modal.id='profilePhotoCropModal';modal.className='profile-photo-crop-modal hidden';
+  function createCropModal(attempt){
+    var modal=document.createElement('div');modal.id='profilePhotoCropModal';modal.className='profile-photo-crop-modal';
     modal.innerHTML='<button type="button" class="profile-photo-crop-backdrop" aria-label="Cancel"></button>'+
       '<section class="profile-photo-crop-dialog" role="dialog" aria-modal="true" aria-labelledby="profilePhotoCropTitle">'+
       '<div class="profile-photo-crop-head"><div><span>PROFILE PHOTO</span><h3 id="profilePhotoCropTitle">Position and crop</h3></div><button type="button" class="secondary" data-crop-cancel aria-label="Close">&times;</button></div>'+
@@ -162,32 +166,32 @@
       '<div class="profile-photo-crop-stage"><canvas id="profilePhotoCropCanvas" width="512" height="512"></canvas></div>'+
       '<label class="profile-photo-zoom"><span>Zoom</span><input id="profilePhotoZoom" type="range" min="1" max="3" step=".01" value="1"></label>'+
       '<div class="profile-photo-crop-actions"><button type="button" class="secondary" data-crop-cancel>Cancel</button><button type="button" class="secondary" id="profilePhotoUseBtn">Use photo</button></div></section>';
+    attempt.modal=modal;
+    attempt.canvas=modal.querySelector('#profilePhotoCropCanvas');
+    attempt.zoomControl=modal.querySelector('#profilePhotoZoom');
+    attempt.useButton=modal.querySelector('#profilePhotoUseBtn');
     document.body.appendChild(modal);
-    modal.querySelectorAll('[data-crop-cancel],.profile-photo-crop-backdrop').forEach(function(button){button.onclick=closeCrop});
-    modal.addEventListener('click',function(event){
-      var button=event.target&&event.target.closest&&event.target.closest('#profilePhotoUseBtn');
-      if(!button)return;
-      event.preventDefault();event.stopPropagation();uploadCropped(button);
-    },true);
-    byId('profilePhotoZoom').addEventListener('input',function(){if(cropState){cropState.zoom=Number(this.value)||1;drawCrop()}});
-    var canvas=byId('profilePhotoCropCanvas'),dragging=false,lastX=0,lastY=0;
+    modal.querySelectorAll('[data-crop-cancel],.profile-photo-crop-backdrop').forEach(function(button){button.onclick=function(){closeCrop(attempt)}});
+    attempt.useButton.onclick=function(event){event.preventDefault();uploadCropped(attempt)};
+    attempt.zoomControl.addEventListener('input',function(){attempt.zoom=Number(this.value)||1;drawCrop(attempt)});
+    var canvas=attempt.canvas,dragging=false,lastX=0,lastY=0;
     canvas.addEventListener('pointerdown',function(event){dragging=true;lastX=event.clientX;lastY=event.clientY;canvas.setPointerCapture(event.pointerId)});
     canvas.addEventListener('pointermove',function(event){
-      if(!dragging||!cropState)return;
+      if(!dragging||activeCropAttempt!==attempt)return;
       var rect=canvas.getBoundingClientRect(),ratioX=canvas.width/Math.max(rect.width,1),ratioY=canvas.height/Math.max(rect.height,1);
-      cropState.x+=(event.clientX-lastX)*ratioX;cropState.y+=(event.clientY-lastY)*ratioY;
-      lastX=event.clientX;lastY=event.clientY;drawCrop();
+      attempt.x+=(event.clientX-lastX)*ratioX;attempt.y+=(event.clientY-lastY)*ratioY;
+      lastX=event.clientX;lastY=event.clientY;drawCrop(attempt);
     });
     canvas.addEventListener('pointerup',function(){dragging=false});
     return modal;
   }
-  function drawCrop(){
-    var canvas=byId('profilePhotoCropCanvas');if(!canvas||!cropState)return;
-    var ctx=canvas.getContext('2d'),image=cropState.image,base=Math.max(512/image.width,512/image.height),scale=base*cropState.zoom;
+  function drawCrop(attempt){
+    var canvas=attempt&&attempt.canvas;if(!canvas||activeCropAttempt!==attempt)return;
+    var ctx=canvas.getContext('2d'),image=attempt.image,base=Math.max(512/image.width,512/image.height),scale=base*attempt.zoom;
     var width=image.width*scale,height=image.height*scale,maxX=Math.max(0,(width-512)/2),maxY=Math.max(0,(height-512)/2);
-    cropState.x=Math.max(-maxX,Math.min(maxX,cropState.x));
-    cropState.y=Math.max(-maxY,Math.min(maxY,cropState.y));
-    var x=(512-width)/2+cropState.x,y=(512-height)/2+cropState.y;
+    attempt.x=Math.max(-maxX,Math.min(maxX,attempt.x));
+    attempt.y=Math.max(-maxY,Math.min(maxY,attempt.y));
+    var x=(512-width)/2+attempt.x,y=(512-height)/2+attempt.y;
     ctx.clearRect(0,0,512,512);ctx.fillStyle='#07131f';ctx.fillRect(0,0,512,512);ctx.drawImage(image,x,y,width,height);
   }
   function openCrop(file){
@@ -196,34 +200,35 @@
     if(file.size>MAX_BYTES){status('The image must be smaller than 5 MB.',true);return}
     var image=new Image(),url=URL.createObjectURL(file);
     image.onload=function(){
-      cropState={image:image,sourceUrl:url,x:0,y:0,zoom:1};
-      ensureCropModal().classList.remove('hidden');document.body.classList.add('profile-photo-cropping');
-      uploadInFlight=false;
-      var useButton=byId('profilePhotoUseBtn');if(useButton){useButton.removeAttribute('disabled');useButton.removeAttribute('aria-disabled');useButton.textContent='Use photo'}
-      byId('profilePhotoZoom').value='1';drawCrop();
+      if(activeCropAttempt)closeCrop(activeCropAttempt);
+      var attempt={id:++cropAttemptSequence,image:image,sourceUrl:url,x:0,y:0,zoom:1,saving:false,revoked:false};
+      activeCropAttempt=attempt;createCropModal(attempt);document.body.classList.add('profile-photo-cropping');
+      traceAvatar('crop-opened',attempt);drawCrop(attempt);
     };
     image.onerror=function(){URL.revokeObjectURL(url);status('This image could not be opened.',true)};
     image.src=url;
   }
-  function closeCrop(){
-    var modal=byId('profilePhotoCropModal');if(modal)modal.remove();
+  function closeCrop(attempt){
+    attempt=attempt||activeCropAttempt;if(!attempt)return;
+    if(attempt.modal)attempt.modal.remove();
     document.body.classList.remove('profile-photo-cropping');
-    if(cropState&&cropState.sourceUrl)URL.revokeObjectURL(cropState.sourceUrl);
-    cropState=null;
+    if(attempt.sourceUrl&&!attempt.revoked){URL.revokeObjectURL(attempt.sourceUrl);attempt.revoked=true}
+    if(activeCropAttempt===attempt)activeCropAttempt=null;
+    traceAvatar('crop-closed',attempt);
     var input=byId('profilePhotoInput');if(input)input.value='';
   }
-  function canvasBlob(){
-    return new Promise(function(resolve){byId('profilePhotoCropCanvas').toBlob(resolve,'image/webp',.88)});
+  function canvasBlob(attempt){
+    return new Promise(function(resolve){attempt.canvas.toBlob(resolve,'image/webp',.88)});
   }
   async function currentUser(){
     var c=client();if(!c)return null;
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
-  async function uploadCropped(button){
-    button=button||byId('profilePhotoUseBtn');if(!cropState||!button||uploadInFlight)return;
-    uploadInFlight=true;button.setAttribute('aria-disabled','true');button.textContent='Saving...';status('');
+  async function uploadCropped(attempt){
+    if(!attempt||activeCropAttempt!==attempt||attempt.saving)return;
+    attempt.saving=true;attempt.useButton.disabled=true;attempt.useButton.textContent='Saving...';status('');traceAvatar('save-entered',attempt);
     try{
-      var c=client(),user=await currentUser(),blob=await canvasBlob();
+      var c=client(),user=await currentUser(),blob=await canvasBlob(attempt);
       if(!c||!user||!blob)throw new Error('Your session is unavailable. Sign in again.');
       var path=user.id+'/avatar-'+Date.now()+'.webp';
       var uploaded=await c.storage.from(BUCKET).upload(path,blob,{contentType:'image/webp',cacheControl:'3600',upsert:false});
@@ -238,15 +243,15 @@
       }
       await saveIdentityMetadata(url,path);
       identityUrl=url;identityPath=path;identityUserId=user.id;
-      render(profile,true);closeCrop();status('Profile photo saved.');
+      render(profile,true);closeCrop(attempt);status('Profile photo saved.');traceAvatar('save-complete',attempt);
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
       if(oldPath&&oldPath!==path){
         c.storage.from(BUCKET).remove([oldPath]).then(function(removed){
           if(removed.error)console.warn('ATSRS previous profile photo cleanup failed',removed.error);
         }).catch(function(cleanupError){console.warn('ATSRS previous profile photo cleanup failed',cleanupError)});
       }
-    }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
-    finally{uploadInFlight=false;button.removeAttribute('aria-disabled');button.textContent='Use photo'}
+    }catch(error){traceAvatar('save-failed',attempt);console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
+    finally{attempt.saving=false;if(attempt.useButton&&attempt.useButton.isConnected){attempt.useButton.disabled=false;attempt.useButton.textContent='Use photo'}}
   }
   async function removePhoto(){
     var button=byId('profilePhotoRemoveBtn'),profile=readProfile(),path=profile.avatarPath||identityPath||'';
