@@ -7,7 +7,7 @@ const dashboard=fs.readFileSync('js/dashboard.js','utf8');
 const storage=fs.readFileSync('js/storage.js','utf8');
 
 assert.match(index,/data-atsrs-build="V5878" data-atsrs-update="24 Aug 2026"/);
-assert.match(index,/profile-production-parity-v5878\.css\?v=5949/);
+assert.match(index,/profile-production-parity-v5878\.css\?v=5950/);
 assert.match(index,/dashboard\.js\?v=5925/);
 assert.match(index,/corporate-remediation\.js\?v=481/);
 assert.match(index,/id="cancelProfileBtn"[^>]*hidden>Cancel<\/button>/);

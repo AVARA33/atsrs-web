@@ -589,7 +589,7 @@ body.personal-mode #profilePage .profile-security-card-meta strong.is-enabled { 
 body.personal-mode #profilePage .profile-security-card.is-danger .profile-security-card-meta strong { color:#ef5350; }
 body.personal-mode #profilePage .profile-security-card-action {
   grid-column:3; grid-row:2; display:inline-flex; align-items:center; justify-content:center; gap:5px;
-  width:auto !important; min-width:62px; min-height:27px; margin:0; padding:5px 9px;
+  width:auto !important; min-width:62px; height:27px !important; min-height:27px !important; margin:0; padding:5px 9px !important;
   border:1px solid var(--line); border-radius:8px; background:transparent; color:var(--text);
   font:inherit; font-size:9px; font-weight:700; cursor:pointer;
 }
