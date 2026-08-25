@@ -552,7 +552,7 @@ body.personal-mode #profilePage .profile-information-grid { grid-template-column
 body.personal-mode #profilePage .profile-information-grid .profile-information-field { grid-column:span 2; }
 body.personal-mode #profilePage .profile-security-grid .profile-security-contact-card {
   display:grid !important; grid-template-columns:24px minmax(0,1fr) auto auto; grid-template-rows:auto;
-  align-items:center; gap:9px; min-height:82px; margin:0 !important; padding:11px 12px !important;
+  grid-column:auto !important; box-sizing:border-box; align-items:center; gap:9px; min-height:82px; margin:0 !important; padding:11px 12px !important;
   border:1px solid var(--line) !important; border-radius:10px !important; background:var(--surface-2) !important;
 }
 body.personal-mode #profilePage .profile-security-contact-card > i { grid-column:1; color:var(--muted); font-size:17px; }

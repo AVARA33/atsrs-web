@@ -72,6 +72,7 @@ assert.match(js,/decorateSecurityCard\('viewSessionsBtn','ph-monitor'/);
 assert.match(js,/decorateSecurityCard\('deleteAccountBtn','ph-trash'/);
 assert.match(css,/\.profile-security-grid \{[\s\S]*?grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
 assert.match(css,/\.profile-security-grid \.profile-security-card\.is-danger \{[\s\S]*?grid-column:1\/-1/);
+assert.match(css,/\.profile-security-grid \.profile-security-contact-card \{[\s\S]*?grid-column:auto !important; box-sizing:border-box/);
 assert.match(js,/profileAvailabilityInlineActions/);
 assert.match(js,/function buildAvailabilityEditor\(\)/);
 assert.match(js,/profileInlineAvailabilityStatus/);
