@@ -24,5 +24,6 @@ assert.match(css,/profile-sharing-expiry>\.atsrs-disclosure-shell\{[^}]*height:3
 assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,150px\)\)/);
 assert.doesNotMatch(html,/Information included/);
 assert.doesNotMatch(html,/View details/);
-assert.match(html,/js\/profile-sharing-v1\.js\?v=1/);
+assert.doesNotMatch(html,/profileSharingExpiryDate/);
+assert.match(html,/js\/profile-sharing-v1\.js\?v=2/);
 console.log('Profile Sharing V1 contracts passed');
