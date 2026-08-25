@@ -122,6 +122,8 @@ assert.doesNotMatch(dashboard,/identity\\s\*card\|id\\s\*card/);
 assert.match(css,/\.profile-settings-viewport \{[\s\S]+height: 294px/);
 assert.match(css,/\.profile-settings-panel\[hidden\] \{ display: none !important; \}/);
 assert.match(css,/#profileTabSharingPanel[\s\S]+background: var\(--surface, #0b0d0d\) !important/);
+assert.doesNotMatch(html,/id="profileTabSharingPanel"[^>]*>[\s\S]{0,80}<h4>Sharing<\/h4>/);
+assert.match(css,/#profileSharingControls :is\(\.sharing-heading,#shareSub\) \{ display:none !important; \}/);
 assert.match(css,/profile-inline-grid #inlineCountryValue \{[\s\S]*?font-size: 12px !important;[\s\S]*?font-weight: 500 !important;/);
 assert.match(css,/#profileTabPersonalPanel > \.profile-information-actions \{[\s\S]*?position:absolute !important;[\s\S]*?top:12px !important;[\s\S]*?right:18px !important;/);
 assert.match(css,/\.profile-information-action \{[\s\S]*?width:30px !important;[\s\S]*?height:30px !important;/);

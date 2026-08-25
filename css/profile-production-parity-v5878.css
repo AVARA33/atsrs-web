@@ -727,6 +727,7 @@ body.personal-mode #profilePage .profile-security-card.is-danger .profile-securi
 }
 html[data-theme="light"] body.personal-mode #profilePage .profile-security-grid .profile-security-card { background:#fff !important; }
 body.personal-mode #profilePage #profileSharingControls #shareProfilePanel { margin: 0 !important; max-height: none !important; border: 0 !important; padding: 0 !important; }
+body.personal-mode #profilePage #profileSharingControls :is(.sharing-heading,#shareSub) { display:none !important; }
 html[data-theme="dark"] body.personal-mode #profilePage :is(#profileTabSharingPanel, #profileSharingControls, #shareProfilePanel) {
   background: var(--surface, #0b0d0d) !important;
   background-image: none !important;
