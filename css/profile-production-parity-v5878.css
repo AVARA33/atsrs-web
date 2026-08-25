@@ -549,7 +549,12 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 body.personal-mode #profilePage .profile-availability-card:not(.is-editing) .profile-availability-read-value {
   flex:0 1 auto; min-width:0; white-space:nowrap;
 }
-body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-read-value { display:none !important; }
+body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-read-value {
+  display:flex !important; pointer-events:none; position:relative; z-index:1;
+}
+body.personal-mode #profilePage .profile-availability-card.is-editing dd:has(#profileInlineAvailabilityNoticePeriod) .profile-availability-read-value {
+  display:none !important;
+}
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-inline-control:not([hidden]) { display:block; }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-fields dd {
   position:relative; overflow:visible; cursor:text;
@@ -564,6 +569,12 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   margin:0 !important; padding:0 12px !important; border:0 !important; border-radius:inherit !important;
   background:transparent !important; color:var(--text) !important; box-shadow:none !important;
   font:inherit !important; font-size:12px !important; text-align:left !important;
+}
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell > :is(.atsrs-select-trigger,.atsrs-date-input) {
+  color:transparent !important; caret-color:transparent !important;
+}
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-card.is-editing .profile-availability-fields dd > .atsrs-disclosure-shell > .atsrs-select-trigger .atsrs-disclosure-indicator {
+  opacity:0 !important;
 }
 body.personal-mode #profilePage .profile-availability-card.is-editing .profile-availability-fields > div:focus-within dt {
   color:var(--atsrs-field-accent, var(--accent)) !important;
