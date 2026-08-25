@@ -16,7 +16,6 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   assert.match(js,/attempt\.useButton\.onclick=function\(event\)\{event\.preventDefault\(\);uploadCropped\(attempt\)\}/);
   assert.match(js,/function closeCrop\(attempt\)\{[\s\S]*?attempt\.modal\.remove\(\)/);
   assert.match(js,/function uploadCropped\(attempt\)\{[\s\S]*?attempt\.saving=true[\s\S]*?finally\{attempt\.saving=false/);
-  assert.match(js,/console\.info\('ATSRS avatar save gate',[\s\S]*?sameAttempt:activeCropAttempt===attempt/);
   assert.match(js,/if\(!attempt\|\|attempt\.saving\)return/);
   assert.match(js,/async function getCurrentUser\(\)/);
   assert.match(js,/user=await getCurrentUser\(\)/);
@@ -26,6 +25,7 @@ test('summary avatar exposes a camera-only upload flow',()=>{
   const uploadFunction=js.slice(uploadStart,uploadEnd);
   assert.ok(uploadStart>=0&&uploadEnd>uploadStart,'uploadCropped function must be present');
   assert.doesNotMatch(uploadFunction,/activeCropAttempt!==attempt/);
+  assert.doesNotMatch(js,/ATSRS avatar (?:save gate|lifecycle)/);
   assert.match(js,/canvasBlob\(attempt\)/);
   assert.doesNotMatch(js,/var cropState=|var uploadInFlight=/);
   assert.doesNotMatch(js,/await c\.storage\.from\(BUCKET\)\.remove\(\[oldPath\]\)/);

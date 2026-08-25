@@ -13,11 +13,6 @@
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
-  function traceAvatar(stage,attempt){
-    var entry={stage:stage,attempt:attempt&&attempt.id||0,time:Date.now()};
-    window.__atsrsAvatarTrace=(window.__atsrsAvatarTrace||[]).concat(entry).slice(-20);
-    console.info('ATSRS avatar lifecycle',entry);
-  }
   function profileKey(){
     try{return typeof window.localKey==='function'?window.localKey('profile'):'atsrs_'+((window.currentUser&&window.currentUser.id)||'local_test_user')+'_profile'}
     catch(error){return 'atsrs_local_test_user_profile'}
@@ -202,7 +197,7 @@
       if(activeCropAttempt)closeCrop(activeCropAttempt);
       var attempt={id:++cropAttemptSequence,image:image,sourceUrl:url,x:0,y:0,zoom:1,saving:false,revoked:false};
       activeCropAttempt=attempt;createCropModal(attempt);document.body.classList.add('profile-photo-cropping');
-      traceAvatar('crop-opened',attempt);drawCrop(attempt);
+      drawCrop(attempt);
     };
     image.onerror=function(){URL.revokeObjectURL(url);status('This image could not be opened.',true)};
     image.src=url;
@@ -213,7 +208,6 @@
     document.body.classList.remove('profile-photo-cropping');
     if(attempt.sourceUrl&&!attempt.revoked){URL.revokeObjectURL(attempt.sourceUrl);attempt.revoked=true}
     if(activeCropAttempt===attempt)activeCropAttempt=null;
-    traceAvatar('crop-closed',attempt);
     var input=byId('profilePhotoInput');if(input)input.value='';
   }
   function canvasBlob(attempt){
@@ -224,14 +218,8 @@
     var result=await c.auth.getUser();return result&&result.data&&result.data.user||null;
   }
   async function uploadCropped(attempt){
-    console.info('ATSRS avatar save gate',{
-      attemptId:attempt&&attempt.id,
-      activeId:activeCropAttempt&&activeCropAttempt.id,
-      sameAttempt:activeCropAttempt===attempt,
-      saving:!!(attempt&&attempt.saving)
-    });
     if(!attempt||attempt.saving)return;
-    attempt.saving=true;attempt.useButton.disabled=true;attempt.useButton.textContent='Saving...';status('');traceAvatar('save-entered',attempt);
+    attempt.saving=true;attempt.useButton.disabled=true;attempt.useButton.textContent='Saving...';status('');
     try{
       var c=client(),user=await getCurrentUser(),blob=await canvasBlob(attempt);
       if(!c||!user||!blob)throw new Error('Your session is unavailable. Sign in again.');
@@ -248,14 +236,14 @@
       }
       await saveIdentityMetadata(url,path);
       identityUrl=url;identityPath=path;identityUserId=user.id;
-      render(profile,true);closeCrop(attempt);status('Profile photo saved.');traceAvatar('save-complete',attempt);
+      render(profile,true);closeCrop(attempt);status('Profile photo saved.');
       window.dispatchEvent(new CustomEvent('atsrs:profile-photo-changed',{detail:{url:url,path:path}}));
       if(oldPath&&oldPath!==path){
         c.storage.from(BUCKET).remove([oldPath]).then(function(removed){
           if(removed.error)console.warn('ATSRS previous profile photo cleanup failed',removed.error);
         }).catch(function(cleanupError){console.warn('ATSRS previous profile photo cleanup failed',cleanupError)});
       }
-    }catch(error){traceAvatar('save-failed',attempt);console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
+    }catch(error){console.error('ATSRS profile photo save failed',error);status('The profile photo could not be saved. Check your connection and try again.',true)}
     finally{attempt.saving=false;if(attempt.useButton&&attempt.useButton.isConnected){attempt.useButton.disabled=false;attempt.useButton.textContent='Use photo'}}
   }
   async function removePhoto(){
