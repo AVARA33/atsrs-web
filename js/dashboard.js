@@ -503,7 +503,6 @@
       '.work-availability-grid input',
       '.work-availability-grid select',
       '#profileWorkPreferencesToggle',
-      '#profilePhotoInput',
       '#profilePhotoUploadBtn',
       '#profilePhotoRemoveBtn',
       '[data-profile-verify]'

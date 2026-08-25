@@ -5,12 +5,15 @@ const fs=require('node:fs');
 test('summary avatar exposes a camera-only upload flow',()=>{
   const html=fs.readFileSync('index.html','utf8');
   const js=fs.readFileSync('js/avatar.js','utf8');
+  const dashboard=fs.readFileSync('js/dashboard.js','utf8');
   const css=fs.readFileSync('css/profile-production-parity-v5878.css','utf8');
   const theme=fs.readFileSync('css/theme.css','utf8');
   assert.match(html,/id="profileSummaryAvatarCameraBtn"/);
   assert.doesNotMatch(html,/profileSummaryAvatar(?:Edit|Confirm|Cancel)Btn/);
   assert.match(html,/ph ph-camera/);
   assert.match(js,/document\.addEventListener\('click',[\s\S]*?closest\('#profileSummaryAvatarCameraBtn'\)[\s\S]*?picker\.value='';picker\.click\(\)/);
+  const editableControls=dashboard.match(/function profileEditableControls\(\)\{[\s\S]*?\n  \}/)[0];
+  assert.doesNotMatch(editableControls,/#profilePhotoInput/,'the camera file input must remain enabled outside profile edit mode');
   assert.match(js,/summaryImage=byId\('profileSummaryAvatar'\)/);
   assert.match(js,/if\(url\)summaryImage\.src=url/);
   assert.doesNotMatch(js,/(?:edit|confirm|cancel)\.onclick/);
