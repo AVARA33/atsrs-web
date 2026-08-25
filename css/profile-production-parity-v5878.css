@@ -337,6 +337,14 @@ body.personal-mode #profilePage .profile-inline-editor .profile-editor-source { 
 body.personal-mode #profilePage .profile-inline-grid { gap: 9px; }
 body.personal-mode #profilePage .profile-inline-grid select { appearance: none !important; -webkit-appearance: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field:has(select) > i { display: none !important; }
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-field > i,
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-nationality-caret,
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-birth-trigger {
+  display:none !important;
+}
+body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-field.has-icon {
+  padding-right:12px !important;
+}
 body.personal-mode #profilePage .profile-inline-grid .profile-nationality-select { position: relative; }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-field-shell {
   position: static !important; display: contents !important;
@@ -377,6 +385,11 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   position: absolute !important; z-index: 8 !important; right: 12px !important; top: 50% !important; bottom: auto !important; transform: translateY(-50%) !important;
   display: block !important; width: 14px !important; height: 14px !important; margin: 0 !important;
   color: var(--muted) !important; font-size: 14px !important; line-height: 14px !important; pointer-events: none !important;
+}
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage #profileTabPersonalPanel .profile-information-field > i,
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage #profileTabPersonalPanel .profile-nationality-caret,
+html[data-theme] body.personal-mode #app#app #profilePage#profilePage #profileTabPersonalPanel .profile-birth-trigger {
+  display:none !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-custom-select:has(>.atsrs-select-trigger:focus-visible) > :is(#profileInlineNationality,#profileInlineBirthCountry,#profileInlineCity,#profileInlineCountryResidence,#profileInlineCompany,#profileInlineTimezone) {
   border: 0 !important; outline: 0 !important; background: transparent !important; box-shadow: none !important;
