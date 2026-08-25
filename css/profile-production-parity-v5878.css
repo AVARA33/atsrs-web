@@ -97,7 +97,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   height:30px !important; min-height:30px !important; max-height:30px !important;
   margin:0 !important; padding:0 !important; border:0 !important; border-radius:50% !important;
   background:transparent !important; background-image:none !important; box-shadow:none !important;
-  color:#fff !important; line-height:1 !important;
+  line-height:1 !important;
 }
 body.personal-mode #profilePage .profile-availability-actions .profile-information-action > i { font-size:22px !important; line-height:1 !important; }
 body.personal-mode #profilePage .profile-availability-actions .profile-information-action > svg {
@@ -105,7 +105,7 @@ body.personal-mode #profilePage .profile-availability-actions .profile-informati
   stroke-width:1.8 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
 }
 body.personal-mode #profilePage .profile-availability-actions .profile-information-action:is(:hover,:focus-visible) {
-  color:#fff !important; background:color-mix(in srgb,#fff 8%,transparent) !important;
+  background:color-mix(in srgb,currentColor 8%,transparent) !important;
   outline:0 !important; box-shadow:none !important;
 }
 html[data-theme="light"] body.personal-mode #profilePage .profile-availability-actions .profile-information-action { color:#111 !important; }
@@ -548,7 +548,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   height:30px !important; min-height:30px !important; max-height:30px !important;
   margin:0 !important; padding:0 !important; border:0 !important; border-radius:50% !important;
   background-image:none !important; box-shadow:none !important;
-  color:#fff !important; line-height:1 !important;
+  line-height:1 !important;
 }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > i { font-size:22px !important; line-height:1 !important; }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action > svg {
@@ -556,15 +556,15 @@ body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-ac
   stroke-width:1.8 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
 }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-edit {
-  background:transparent !important; color:#fff !important; box-shadow:none !important;
+  background:transparent !important; box-shadow:none !important;
 }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-edit:is(:hover,:focus-visible) {
-  color:#fff !important; background:color-mix(in srgb,#fff 8%,transparent) !important;
+  background:color-mix(in srgb,currentColor 8%,transparent) !important;
   outline:0 !important; box-shadow:none !important;
 }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action-save,
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action-cancel {
-  color:#fff !important; background:transparent !important; box-shadow:none !important;
+  background:transparent !important; box-shadow:none !important;
 }
 body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action-save:is(:hover,:focus-visible) {
   background:color-mix(in srgb,#fff 8%,transparent) !important; outline:0 !important; box-shadow:none !important;
@@ -575,6 +575,19 @@ body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-ac
 html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel .profile-information-action { color:#111 !important; }
 html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel :is(.profile-information-action-save,.profile-information-action-cancel) {
   background:transparent !important; box-shadow:none !important;
+}
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-actions .profile-information-action,
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action {
+  color:#fff !important;
+}
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-actions .profile-information-action,
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action {
+  color:#172033 !important; border-color:transparent !important; background:transparent !important;
+}
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-availability-actions .profile-information-action:is(:hover,:focus-visible),
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-information-action:is(:hover,:focus-visible) {
+  color:var(--atsrs-shell-accent-strong,#245b93) !important;
+  background:var(--atsrs-shell-accent-soft,rgba(22,123,211,.08)) !important;
 }
 body.personal-mode #profilePage .profile-inline-editor .profile-details-layout,
 body.personal-mode #profilePage .profile-inline-editor .profile-contact-row { margin: 0 !important; }
