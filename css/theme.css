@@ -499,6 +499,14 @@ html[data-theme="light"] :where(
 ){
   background:rgba(38,54,68,.48)!important;
 }
+html[data-theme="light"] .profile-photo-crop-modal{
+  background:transparent!important;
+}
+html[data-theme="light"] .profile-photo-crop-backdrop{
+  background:rgba(38,54,68,.28)!important;
+  backdrop-filter:blur(2px)!important;
+  -webkit-backdrop-filter:blur(2px)!important;
+}
 html[data-theme="light"] body button.talent-modal-backdrop{
   background:rgba(18,35,49,.30)!important;
   border:0!important;

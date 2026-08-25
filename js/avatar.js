@@ -257,7 +257,7 @@
     var camera=byId('profileSummaryAvatarCameraBtn');
     if(!upload||upload.dataset.bound==='1')return;
     upload.dataset.bound='1';upload.onclick=function(){input.click()};
-    if(camera)camera.onclick=function(){input.click()};
+    if(camera)camera.onclick=function(){input.value='';input.click()};
     input.onchange=function(){openCrop(input.files&&input.files[0])};remove.onclick=removePhoto;
     render();
   }
