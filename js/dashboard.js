@@ -665,6 +665,7 @@
       avatarPath:existing.avatarPath||'',
       avatarSource:existing.avatarSource||'',
       timezone:val('profileTimezone')||'UTC',visibility:val('profileVisibility')||'Private',
+      privacySettings:existing.privacySettings||null,
       availabilityStatus:availabilityStatus,
       availableFrom:availabilityStatus==='available_from'?availableFrom:'',
       workPreferences:selectedWorkPreferences(),

@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const html=fs.readFileSync('index.html','utf8');
+const js=fs.readFileSync('js/profile-privacy-v1.js','utf8');
+const css=fs.readFileSync('css/profile-privacy-v1.css','utf8');
+
+['public','custom','private'].forEach(mode=>assert.match(html,new RegExp(`name="profilePrivacyMode" value="${mode}"`)));
+['phone','email','location','availability','position','salary','birthDate','about'].forEach(field=>assert.match(js,new RegExp(`key:'${field}'`)));
+assert.match(html,/id="profilePrivacyAudience"/);
+assert.match(html,/id="profilePrivacyRows"/);
+assert.match(html,/id="profilePrivacyResetBtn"/);
+assert.match(html,/id="profilePrivacySaveBtn"/);
+assert.match(js,/privacySettings=clone\(draft\)/);
+assert.match(js,/window\.atsrsCloudData\.flush/);
+assert.match(js,/mode==='public'\?'Public':mode==='private'\?'Private':'Link Only'/);
+assert.match(css,/:has\(#profileTabPrivacyPanel\.is-active\)/);
+assert.match(css,/@media\(max-width:620px\)/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=1/);
+assert.match(html,/js\/profile-privacy-v1\.js\?v=1/);
+console.log('Profile Privacy V1 contracts passed');

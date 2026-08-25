@@ -1,0 +1,73 @@
+body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:548px;min-height:548px;max-height:548px}
+body.personal-mode #profilePage #profileTabPrivacyPanel{padding:16px 22px 14px;overflow-y:auto}
+body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:100%;flex-direction:column;color:var(--text)}
+body.personal-mode #profilePage .profile-privacy-heading{padding-bottom:9px;border-bottom:1px solid color-mix(in srgb,var(--line) 66%,transparent)}
+body.personal-mode #profilePage .profile-privacy-heading h4,
+body.personal-mode #profilePage .profile-privacy-section-heading h5{margin:0;color:var(--accent);font-size:15px;line-height:1.25;font-weight:700}
+body.personal-mode #profilePage .profile-privacy-heading p,
+body.personal-mode #profilePage .profile-privacy-section-heading p{margin:3px 0 0;color:var(--muted);font-size:12px;line-height:1.35}
+body.personal-mode #profilePage .profile-privacy-visibility{padding:10px 0 12px;border-bottom:1px solid var(--line)}
+body.personal-mode #profilePage .profile-privacy-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+body.personal-mode #profilePage .profile-privacy-audience{display:grid;min-width:230px;gap:3px;color:var(--muted);font-size:10px;font-weight:600}
+body.personal-mode #profilePage .profile-privacy-audience select{width:100%;height:34px;padding:0 34px 0 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--text);font:600 12px/1 Inter,"Segoe UI",sans-serif}
+body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:9px}
+body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:12px;min-height:78px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
+body.personal-mode #profilePage .profile-privacy-mode-card:hover{border-color:color-mix(in srgb,var(--accent) 54%,var(--line));background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
+body.personal-mode #profilePage .profile-privacy-mode-card.is-selected{border-color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 58%,transparent)}
+body.personal-mode #profilePage .profile-privacy-mode-card > input{position:absolute;opacity:0;pointer-events:none}
+body.personal-mode #profilePage .profile-privacy-mode-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:8px;background:var(--surface-2);color:var(--text)}
+body.personal-mode #profilePage .profile-privacy-mode-icon i{font-size:24px}
+body.personal-mode #profilePage .profile-privacy-mode-card strong{display:block;margin-bottom:3px;font-size:14px;color:var(--text)}
+body.personal-mode #profilePage .profile-privacy-mode-card.is-selected strong{color:var(--accent)}
+body.personal-mode #profilePage .profile-privacy-mode-card small{display:block;color:var(--muted);font-size:11px;line-height:1.35}
+body.personal-mode #profilePage .profile-privacy-selected{position:absolute;right:8px;top:7px;color:var(--accent);font-size:18px;opacity:0}
+body.personal-mode #profilePage .profile-privacy-mode-card.is-selected .profile-privacy-selected{opacity:1}
+body.personal-mode #profilePage .profile-privacy-information{padding-top:12px}
+body.personal-mode #profilePage .profile-privacy-matrix{margin-top:7px}
+body.personal-mode #profilePage .profile-privacy-matrix-head,
+body.personal-mode #profilePage .profile-privacy-matrix-row{display:grid;grid-template-columns:minmax(320px,1fr) repeat(3,minmax(124px,.42fr));align-items:center}
+body.personal-mode #profilePage .profile-privacy-matrix-head{min-height:30px;color:var(--muted);font-size:10px;text-align:center}
+body.personal-mode #profilePage .profile-privacy-matrix-head > span{text-align:left;padding-left:6px}
+body.personal-mode #profilePage .profile-privacy-matrix-head strong{display:grid;color:var(--muted);font-size:11px;line-height:1.2}
+body.personal-mode #profilePage .profile-privacy-matrix-head small{font-size:9px;font-weight:500}
+body.personal-mode #profilePage .profile-privacy-matrix-row{min-height:38px;border-top:1px solid var(--line)}
+body.personal-mode #profilePage .profile-privacy-field-copy{display:flex;align-items:center;gap:12px;padding:4px 8px}
+body.personal-mode #profilePage .profile-privacy-field-copy > i{width:24px;color:var(--muted);font-size:20px;text-align:center}
+body.personal-mode #profilePage .profile-privacy-field-copy strong{display:block;color:var(--text);font-size:12px;line-height:1.15}
+body.personal-mode #profilePage .profile-privacy-field-copy small{display:block;margin-top:2px;color:var(--muted);font-size:10px;line-height:1.15}
+body.personal-mode #profilePage .profile-privacy-radio{display:grid;height:38px;place-items:center;cursor:pointer}
+body.personal-mode #profilePage .profile-privacy-radio input{width:18px;height:18px;margin:0;accent-color:var(--accent);cursor:pointer}
+body.personal-mode #profilePage #profilePrivacyRows.is-locked{opacity:.5;pointer-events:none}
+body.personal-mode #profilePage .profile-privacy-actions{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+body.personal-mode #profilePage .profile-privacy-actions button{display:inline-flex;min-height:34px;align-items:center;justify-content:center;gap:8px;border-radius:7px;font-size:12px;font-weight:700}
+body.personal-mode #profilePage #profilePrivacyResetBtn{min-width:160px}
+body.personal-mode #profilePage #profilePrivacySaveBtn{min-width:230px;background:var(--accent);color:#06110a;border-color:var(--accent)}
+body.personal-mode #profilePage #profilePrivacyStatus{color:var(--accent);font-size:11px;text-align:center}
+body.personal-mode #profilePage #profilePrivacyStatus.is-error{color:#ef4444}
+html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-card{background:#fff}
+html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-icon,
+html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-audience select{background:#f4f7fb}
+html[data-theme="light"] body.personal-mode #profilePage #profilePrivacySaveBtn{color:#fff}
+@media(max-width:980px){
+  body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:690px;min-height:690px;max-height:690px}
+  body.personal-mode #profilePage .profile-privacy-mode-grid{gap:10px}
+  body.personal-mode #profilePage .profile-privacy-mode-card{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:9px}
+  body.personal-mode #profilePage .profile-privacy-mode-icon{width:32px;height:32px}
+  body.personal-mode #profilePage .profile-privacy-matrix-head,
+  body.personal-mode #profilePage .profile-privacy-matrix-row{grid-template-columns:minmax(220px,1fr) repeat(3,minmax(92px,.38fr))}
+}
+@media(max-width:620px){
+  body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:760px;min-height:760px;max-height:760px}
+  body.personal-mode #profilePage #profileTabPrivacyPanel{padding:14px}
+  body.personal-mode #profilePage .profile-privacy-section-heading{align-items:stretch;flex-direction:column;gap:8px}
+  body.personal-mode #profilePage .profile-privacy-audience{min-width:0}
+  body.personal-mode #profilePage .profile-privacy-mode-grid{grid-template-columns:1fr}
+  body.personal-mode #profilePage .profile-privacy-mode-card{min-height:66px}
+  body.personal-mode #profilePage .profile-privacy-matrix{overflow-x:auto}
+  body.personal-mode #profilePage .profile-privacy-matrix-head,
+  body.personal-mode #profilePage .profile-privacy-matrix-row{min-width:620px;grid-template-columns:260px repeat(3,120px)}
+  body.personal-mode #profilePage .profile-privacy-actions{grid-template-columns:1fr 1fr}
+  body.personal-mode #profilePage #profilePrivacyStatus{grid-column:1/-1;grid-row:1}
+  body.personal-mode #profilePage #profilePrivacyResetBtn,
+  body.personal-mode #profilePage #profilePrivacySaveBtn{min-width:0}
+}
