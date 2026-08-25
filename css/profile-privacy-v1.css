@@ -5,7 +5,7 @@ body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-privacy-visibility{padding:0 0 12px;border-bottom:1px solid var(--line)}
 body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:12px;min-height:78px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
+body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:12px;min-height:64px;padding:7px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
 body.personal-mode #profilePage .profile-privacy-mode-card:hover{border-color:color-mix(in srgb,var(--accent) 54%,var(--line));background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
 body.personal-mode #profilePage .profile-privacy-mode-card.is-selected{border-color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 58%,transparent)}
 body.personal-mode #profilePage .profile-privacy-mode-card > input{position:absolute;opacity:0;pointer-events:none}
@@ -46,7 +46,7 @@ html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-i
   body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:760px;min-height:760px;max-height:760px}
   body.personal-mode #profilePage #profileTabPrivacyPanel{padding:14px}
   body.personal-mode #profilePage .profile-privacy-mode-grid{grid-template-columns:1fr}
-  body.personal-mode #profilePage .profile-privacy-mode-card{min-height:66px}
+  body.personal-mode #profilePage .profile-privacy-mode-card{min-height:64px}
   body.personal-mode #profilePage .profile-privacy-matrix{overflow-x:auto}
   body.personal-mode #profilePage .profile-privacy-matrix-head,
   body.personal-mode #profilePage .profile-privacy-matrix-row{min-width:620px;grid-template-columns:260px repeat(3,120px)}
