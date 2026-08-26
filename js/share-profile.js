@@ -99,6 +99,17 @@
     var result=await supabase.from('atsrs_files').select('id,category,file_name,mime_type,size_bytes,metadata,created_at').eq('user_id',owner.id).eq('account_type','personal').order('created_at',{ascending:false});
     if(result.error)throw result.error;return(result.data||[]).filter(isOwnerShareEligibleFile);
   }
+  async function validateShareToken(token){
+    if(!token)return false;
+    try{var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:{apikey:publishableKey()},cache:'no-store'});return response.ok;}catch(error){return false;}
+  }
+  async function createValidatedShare(fileIds,expiresAt){
+    var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});
+    if(result.token&&await validateShareToken(result.token))return result;
+    result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});
+    if(!result.token||!await validateShareToken(result.token))throw new Error('The secure link could not be verified.');
+    return result;
+  }
   function isOwnerShareEligibleFile(file){var metadata=file&&file.metadata&&typeof file.metadata==='object'?file.metadata:{};return metadata.document_registered!==false;}
   function ownerFileName(id){var file=ownerFiles.find(function(item){return item.id===id;});return file?documentMeta(file).type:'Document';}
   function syncShareSelectAll(){
@@ -286,7 +297,7 @@
     var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry();
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return false;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
-    try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
+    try{var result=await createValidatedShare(fileIds,expiresAt);activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
     catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);return false;}finally{syncShareSelectAll();}
   };
   window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
@@ -296,8 +307,8 @@
     try{var result=await ownerCall({action:'revoke'});activeShare=result.share||activeShare;safeSessionSet(OWNER_TOKEN_KEY,'');setKnownLink('');renderOwnerStatus();ownerMessage('The old link and all download permissions are disabled.');await refreshShareRequests({force:true});}
     catch(error){ownerMessage(friendlyError(error,'The link could not be disabled. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
-  window.copyShareLink=async function(){if(!knownShareUrl)return;try{await navigator.clipboard.writeText(knownShareUrl);}catch(error){var input=byId('shareProfileLink');if(input){input.focus();input.select();document.execCommand('copy');}}var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}};
-  window.previewShareProfile=function(){if(knownShareUrl)window.location.assign(knownShareUrl);};
+  window.copyShareLink=async function(){if(!knownShareUrl)return false;var token='';try{token=new URL(knownShareUrl).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){setKnownLink('');activeShare=null;ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}try{await navigator.clipboard.writeText(knownShareUrl);}catch(error){var input=byId('shareProfileLink');if(input){input.focus();input.select();document.execCommand('copy');}}var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};
+  window.previewShareProfile=async function(){if(!knownShareUrl)return false;var token='';try{token=new URL(knownShareUrl).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){setKnownLink('');activeShare=null;ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}window.location.assign(knownShareUrl);return true;};
   window.toggleSharePreview=window.previewShareProfile;
   window.decideShareRequest=async function(id,decision){
     if(!window.confirm((decision==='approve'?'Approve':'Decline')+' this verified recruiter request?'))return;
@@ -407,7 +418,7 @@
   }
   async function loadPublicProfile(token){
     document.body.classList.add('atsrs-public-share-view');document.body.classList.remove('atsrs-session-pending','atsrs-booting');var page=byId('sharedProfilePage');if(page)page.classList.remove('hidden');
-    try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:headers}),data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');renderPublicProfile(data);}
+    try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:headers,cache:'no-store'});if(!response.ok){await new Promise(function(resolve){setTimeout(resolve,450)});response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:headers,cache:'no-store'})}var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');renderPublicProfile(data);}
     catch(error){console.error('ATSRS public profile failed',error);showPublicError(friendlyError(error,'This shared profile is unavailable.'));}
   }
   function setRequestStep(step){['shareIdentityStep','shareOtpStep','shareVerifiedStep'].forEach(function(id){var element=byId(id);if(element)element.classList.toggle('hidden',id!==step);});}
