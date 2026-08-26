@@ -79,6 +79,24 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('James Drew', 'Select Offshore', 'Recruitment Specialist — Marine & Offshore Engineering', 'London, United Kingdom', 'https://uk.linkedin.com/in/james-drew-61aa476a', '2026-08-27T18:15:00+04:00'),
+  ('Diana Khristichenko', 'Select Offshore', 'Recruitment Consultant — Offshore & Maritime', 'United Kingdom', 'https://uk.linkedin.com/in/diana-khristichenko-4bab3127a', '2026-08-27T18:15:00+04:00'),
+  ('Chris Furneaux', 'Select Offshore', 'Recruitment Specialist — Marine & Offshore', 'Billericay, United Kingdom', 'https://uk.linkedin.com/in/chris-furneaux-5367574a', '2026-08-27T18:15:00+04:00'),
+  ('Joseph Dee', 'UTM Consultants', 'Recruitment Consultant', 'Bristol, United Kingdom', 'https://uk.linkedin.com/in/joseph-dee-b6b950231', '2026-08-27T18:15:00+04:00'),
+  ('Derek Cowan', 'JDR Cable Systems', 'Senior HR Professional', 'Thornaby-on-Tees, United Kingdom', 'https://uk.linkedin.com/in/derek-cowan-mcipd-468b8928', '2026-08-27T18:15:00+04:00'),
+  ('Mark Braybrooke', 'JDR Cable Systems', 'Resourcing Specialist', 'Ely, United Kingdom', 'https://uk.linkedin.com/in/mark-braybrooke-9ba54324', '2026-08-27T18:15:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Ross MacKay', 'Orion Group', 'Recruitment Manager — Oil & Gas', 'Houston, Texas, United States', 'https://www.linkedin.com/in/rossmackayoilgasrecruiter', '2026-08-27T18:10:00+04:00'),
   ('Ian H.', 'Orion Group', 'Specialist Recruiter — Oil & Gas', 'London, United Kingdom', 'https://uk.linkedin.com/in/ian-h-47460410', '2026-08-27T18:10:00+04:00'),
   ('Amara Nwaogazie', 'Atlas Professionals', 'Recruitment Coordinator', 'Aberdeen, United Kingdom', 'https://uk.linkedin.com/in/amaranwaogazieatlasprofessionals', '2026-08-27T18:10:00+04:00'),
