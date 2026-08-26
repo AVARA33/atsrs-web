@@ -78,6 +78,24 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Belqadri Taufik', 'Halliburton', 'Global Talent Acquisition — Southeast Asia & Central Asia', 'Kuala Lumpur, Malaysia', 'https://www.linkedin.com/in/belqadri-taufik-130818/', '2026-08-27T16:00:00+04:00'),
+  ('Sadiqur Rahman', 'Halliburton', 'Global Talent Acquisition Manager / Lead — MENA', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/sadiqurrahman/', '2026-08-27T16:00:00+04:00'),
+  ('Gabriela Manes', 'Halliburton', 'Tech Recruiter / Talent Acquisition Analyst', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/gabrielamanes/', '2026-08-27T16:00:00+04:00'),
+  ('Abril Navarro', 'Halliburton', 'Talent Acquisition Recruiter Specialist — Argentina', 'Argentina', 'https://www.linkedin.com/in/abril-navarro-959132164/', '2026-08-27T16:00:00+04:00'),
+  ('Ankur Singh', 'Halliburton', 'Senior Human Resources Specialist — Talent Acquisition', 'United Arab Emirates', 'https://www.linkedin.com/in/anksin/', '2026-08-27T16:00:00+04:00'),
+  ('Carmen Ogle', 'MSIG Specialty Marine', 'Talent Acquisition Lead', 'Randstad, Netherlands', 'https://www.linkedin.com/in/carmen-ogle-352b6733/', '2026-08-27T16:00:00+04:00'),
+  ('Michael Auer', 'Fluor Corporation', 'Executive Talent Acquisition', 'Houston, United States', 'https://www.linkedin.com/in/michael-auer-37a83412/', '2026-08-27T16:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('D Pili', 'SLB', 'Senior Recruiter — Global Talent Acquisition', 'United Arab Emirates', 'https://www.linkedin.com/in/d-pili-ba453233/', '2026-08-27T15:00:00+04:00'),
   ('Nancy Laeng', 'SLB', 'RPO Recruiter', 'Malaysia', 'https://www.linkedin.com/in/nancy-laeng-81036140/', '2026-08-27T15:00:00+04:00'),
   ('Billal Adel Boussadia', 'SLB', 'New Energy Talent Management & Talent Acquisition Manager', 'Calgary, Canada', 'https://www.linkedin.com/in/billal-adel-boussadia-6355545b/', '2026-08-27T15:00:00+04:00'),
