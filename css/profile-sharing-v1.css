@@ -47,3 +47,4 @@ html[data-theme="dark"] .profile-sharing-document-dialog{background:#080b0a!impo
 html[data-theme="dark"] .profile-sharing-document-dialog>form{background:#080b0a!important}
 html[data-theme="dark"] .profile-sharing-document-choice,html[data-theme="dark"] .profile-sharing-document-select-all{background:#0b0f0d!important}
 @media(max-width:760px){body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:auto minmax(150px,1fr);padding-top:40px}body.personal-mode #profilePage .profile-sharing-links-heading-floating{top:auto;right:0;bottom:calc(100% - 40px)}.profile-sharing-expiry-main{align-items:flex-start!important}.profile-sharing-expiry-main>.profile-sharing-create-button{margin-top:0!important}}
+.profile-sharing-custom-expiry.is-collapsed{display:none!important}
