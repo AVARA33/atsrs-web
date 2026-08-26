@@ -5,7 +5,8 @@ body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-privacy-shell{position:relative}
 body.personal-mode #profilePage .profile-privacy-actions{position:absolute;z-index:3;top:0;right:0}
-body.personal-mode #profilePage .profile-privacy-actions [hidden]{display:none!important}
+body.personal-mode #profilePage .profile-privacy-actions #profilePrivacyEditBtn[hidden],
+body.personal-mode #profilePage .profile-privacy-actions #profilePrivacyInlineActions[hidden]{display:none!important}
 body.personal-mode #profilePage .profile-privacy-shell:not(.is-editing) .profile-privacy-mode-card,
 body.personal-mode #profilePage .profile-privacy-shell:not(.is-editing) .profile-privacy-radio{cursor:default}
 body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,max-content);justify-content:start;gap:8px}
