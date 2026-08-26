@@ -76,6 +76,23 @@ on conflict (linkedin_url) do update set
   verified_at = excluded.verified_at,
   updated_at = now();
 
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Kim Monteiro', 'Brunel', 'Talent Acquisition & Recruitment Professional', 'Rio de Janeiro, Brazil', 'https://br.linkedin.com/in/kim-monteiro-headhunter', '2026-08-27T18:05:00+04:00'),
+  ('Cindy King', 'Brunel', 'Recruiting Manager', 'United States', 'https://www.linkedin.com/in/cindy-king-5912bb3', '2026-08-27T18:05:00+04:00'),
+  ('Joy Bolton', 'Brunel', 'Recruitment Consultant — Global Recruitment Centre', 'Greater Manchester, United Kingdom', 'https://uk.linkedin.com/in/joy-bolton-72833528', '2026-08-27T18:05:00+04:00'),
+  ('Louis Wainwright', 'Airswift', 'Contract Recruitment Consultant — IT', 'Sale, United Kingdom', 'https://uk.linkedin.com/in/louis-wainwright-0b8a26203', '2026-08-27T18:05:00+04:00'),
+  ('Eve Fenwick', 'Airswift', 'IT Recruitment Consultant', 'Manchester, United Kingdom', 'https://uk.linkedin.com/in/eve-fenwick', '2026-08-27T18:05:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
   ('Gabriella Coli', 'NES Fircroft', 'Senior Recruitment Consultant', 'Brazil', 'https://www.linkedin.com/in/gabriella-coli-4446483b/', '2026-08-27T17:50:00+04:00'),
