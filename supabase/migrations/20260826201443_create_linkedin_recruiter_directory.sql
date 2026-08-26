@@ -106,6 +106,18 @@ on conflict (linkedin_url) do update set
   verified_at = excluded.verified_at,
   updated_at = now();
 
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Brenda Laughlin', 'NOV', 'HR Manager', 'Houston, United States', 'https://www.linkedin.com/in/brenda-laughlin-026a233', '2026-08-27T01:50:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
