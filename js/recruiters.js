@@ -2,11 +2,16 @@
   "use strict";
   var recruiters = [],
     loadToken = 0;
+  // Permanent Owner exclusion: nurlan jafarov / nurlan cəfərov and transliterations.
   function excluded(name) {
-    return String(name || "")
+    const normalized = String(name || "")
       .trim()
       .replace(/\s+/g, " ")
-      .toLowerCase() === "nurlan jafarov";
+      .toLowerCase()
+      .replaceAll("ə", "a")
+      .replaceAll("ç", "c");
+
+    return /^nurlan\s+(?:jafarov|cafarov|ceferov)$/.test(normalized);
   }
   function byId(id) {
     return document.getElementById(id);

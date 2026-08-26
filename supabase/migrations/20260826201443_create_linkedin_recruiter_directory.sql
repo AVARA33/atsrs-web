@@ -14,7 +14,10 @@ create table if not exists public.atsrs_recruiters (
   constraint atsrs_recruiters_linkedin_url check (linkedin_url ~* '^https://([a-z]{2}\.|www\.)?linkedin\.com/in/'),
   constraint atsrs_recruiters_source_check check (source = 'linkedin'),
   constraint atsrs_recruiters_status_check check (status in ('active', 'inactive')),
-  constraint atsrs_recruiters_nurlan_jafarov_exclusion check (lower(regexp_replace(btrim(name), '\s+', ' ', 'g')) <> 'nurlan jafarov'),
+  constraint atsrs_recruiters_nurlan_jafarov_exclusion check (
+    translate(lower(regexp_replace(btrim(name), '\s+', ' ', 'g')), 'əç', 'ac')
+      !~ '^nurlan (jafarov|cafarov|ceferov)$'
+  ),
   constraint atsrs_recruiters_linkedin_url_unique unique (linkedin_url)
 );
 
