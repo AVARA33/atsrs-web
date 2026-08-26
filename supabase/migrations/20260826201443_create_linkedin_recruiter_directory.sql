@@ -78,6 +78,25 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Robert Caldwell', 'Airswift', 'Senior Recruitment Consultant', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/robert-caldwell-resourcer/', '2026-08-27T17:40:00+04:00'),
+  ('Beatriz Rodrigues', 'Airswift', 'Senior Delivery Consultant / US & Canada Recruiter', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/beatriz-rodrigues-9575b2186/', '2026-08-27T17:40:00+04:00'),
+  ('Niamh Gorse', 'Airswift', 'Recruitment Consultant', 'Carlisle, United Kingdom', 'https://www.linkedin.com/in/niamh-gorse-863523218/', '2026-08-27T17:40:00+04:00'),
+  ('Andrews Paulino', 'Airswift', 'Senior Delivery Consultant / Oil & Gas Recruiter', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/andrews-paulino-4b7355241/', '2026-08-27T17:40:00+04:00'),
+  ('Mariana Luz', 'Airswift', 'Recruiter / Delivery Centre Lead — Europe & Africa', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/mariana-luz-a1b88619a/', '2026-08-27T17:40:00+04:00'),
+  ('Angelo Mercado', 'Airswift', 'Principal Recruiter', 'Qatar', 'https://www.linkedin.com/in/angelo-mercado-1b259a32/', '2026-08-27T17:40:00+04:00'),
+  ('Nathalia Barbosa', 'Airswift', 'Senior Delivery Consultant / Recruiter', 'United States', 'https://www.linkedin.com/in/nathaliagbarbosa/', '2026-08-27T17:40:00+04:00'),
+  ('Barry O''Sullivan', 'Advance Global Recruitment', 'Crewing Manager', 'Georgetown, Guyana', 'https://www.linkedin.com/in/barry-o-sullivan-3b515539/', '2026-08-27T17:40:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Ishwarya Sathish', 'TASNEEF-RINA Business Assurance', 'Recruitment Officer', 'United Arab Emirates', 'https://www.linkedin.com/in/ishwarya-sathish-chrp-22660589/', '2026-08-27T17:30:00+04:00'),
   ('Diana Lisa Cavallina', 'RINA', 'Senior Talent Recruiter', 'Rome, Italy', 'https://www.linkedin.com/in/diana-lisa-cavallina-8a920493/', '2026-08-27T17:30:00+04:00'),
   ('Meghan Robbins', 'RINA', 'Talent Acquisition Specialist', 'London, United Kingdom', 'https://www.linkedin.com/in/meghanrobbins/', '2026-08-27T17:30:00+04:00'),
