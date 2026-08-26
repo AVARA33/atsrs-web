@@ -234,6 +234,8 @@
       .trim()
       .toLowerCase();
     var selectedCompany = String(byId("recruitersCompany").value || "").trim();
+    var vacancies = byId("recruitersVacancies").value;
+    var sort = byId("recruitersSort").value;
     var visible = recruiters.filter(function (recruiter) {
       var haystack = [
         recruiter.name,
@@ -246,7 +248,12 @@
       var matchesQuery = !query || haystack.indexOf(query) >= 0;
       var matchesCompany =
         !selectedCompany || normalized(recruiter.company) === normalized(selectedCompany);
-      return matchesQuery && matchesCompany;
+      return matchesQuery && matchesCompany && (!vacancies || recruiter.vacancyCount > 0);
+    });
+    visible.sort(function (a, b) {
+      if (sort === "vacancies" && b.vacancyCount !== a.vacancyCount)
+        return b.vacancyCount - a.vacancyCount;
+      return a.name.localeCompare(b.name);
     });
     grid.textContent = "";
     visible.forEach(function (recruiter) {
@@ -263,9 +270,13 @@
     if (!byId("recruitersPage")) return;
     byId("recruitersSearch").addEventListener("input", render);
     byId("recruitersCompany").addEventListener("change", render);
+    byId("recruitersVacancies").addEventListener("change", render);
+    byId("recruitersSort").addEventListener("change", render);
     byId("recruitersClearFilters").addEventListener("click", function () {
       byId("recruitersSearch").value = "";
       byId("recruitersCompany").value = "";
+      byId("recruitersVacancies").value = "";
+      byId("recruitersSort").value = "name";
       render();
     });
     loadRecruiters();

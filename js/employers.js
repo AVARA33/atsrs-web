@@ -171,7 +171,9 @@
     var query = String(byId("employersSearch").value || "")
         .trim()
         .toLowerCase(),
-      sector = byId("employersSector").value;
+      sector = byId("employersSector").value,
+      vacancies = byId("employersVacancies").value,
+      sort = byId("employersSort").value;
     var visible = companies.filter(function (company) {
       var data = verified[company.name] || {},
         haystack = [company.name, data.summary || "", data.sector || ""]
@@ -180,8 +182,14 @@
           .toLowerCase();
       return (
         (!query || haystack.indexOf(query) >= 0) &&
-        (!sector || data.sector === sector)
+        (!sector || data.sector === sector) &&
+        (!vacancies || company.vacancyCount > 0)
       );
+    });
+    visible.sort(function (a, b) {
+      if (sort === "vacancies" && b.vacancyCount !== a.vacancyCount)
+        return b.vacancyCount - a.vacancyCount;
+      return a.name.localeCompare(b.name);
     });
     grid.textContent = "";
     visible.forEach(function (company) {
@@ -238,9 +246,13 @@
       });
     byId("employersSearch").addEventListener("input", render);
     sector.addEventListener("change", render);
+    byId("employersVacancies").addEventListener("change", render);
+    byId("employersSort").addEventListener("change", render);
     byId("employersClearFilters").addEventListener("click", function () {
       byId("employersSearch").value = "";
       sector.value = "";
+      byId("employersVacancies").value = "";
+      byId("employersSort").value = "name";
       render();
     });
     loadCompanies();
