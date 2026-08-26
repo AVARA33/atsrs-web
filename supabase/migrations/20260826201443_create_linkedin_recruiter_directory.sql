@@ -79,6 +79,20 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Iris Turban', 'Halliburton', 'Talent Acquisition & University Relations', 'Mexico', 'https://mx.linkedin.com/in/iris-turban1106', '2026-08-27T18:35:00+04:00'),
+  ('Nicola Cantlay', 'Halliburton', 'HR Operations Partner', 'United Kingdom', 'https://uk.linkedin.com/in/nicola-cantlay-58266a48', '2026-08-27T18:35:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Shoshana Benavides', 'TechnipFMC', 'Talent Acquisition — Energy', 'Houston, Texas, United States', 'https://www.linkedin.com/in/julia-shoshana-pilloff', '2026-08-27T18:30:00+04:00'),
   ('Lisa Bryant', 'TechnipFMC', 'HR & Talent Acquisition Professional', 'Houston, Texas, United States', 'https://www.linkedin.com/in/lisanbryant', '2026-08-27T18:30:00+04:00'),
   ('Devender Bundela', 'TechnipFMC', 'Talent Acquisition & HR Business Partner', 'Noida, India', 'https://in.linkedin.com/in/devender-bundela-01b92a144', '2026-08-27T18:30:00+04:00'),
