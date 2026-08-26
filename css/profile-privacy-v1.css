@@ -4,8 +4,8 @@ body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:1
 body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-privacy-shell{position:relative}
-body.personal-mode #profilePage .profile-privacy-actions{position:absolute;z-index:3;top:-7px;right:0;display:flex;align-items:center}
-body.personal-mode #profilePage .profile-privacy-shell.is-editing #profilePrivacyEditBtn{display:none}
+body.personal-mode #profilePage .profile-privacy-actions{position:absolute;z-index:3;top:0;right:0}
+body.personal-mode #profilePage .profile-privacy-actions [hidden]{display:none!important}
 body.personal-mode #profilePage .profile-privacy-shell:not(.is-editing) .profile-privacy-mode-card,
 body.personal-mode #profilePage .profile-privacy-shell:not(.is-editing) .profile-privacy-radio{cursor:default}
 body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,max-content);justify-content:start;gap:8px}
