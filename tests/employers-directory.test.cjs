@@ -16,7 +16,7 @@ assert.match(html, /id="navEmployers"[^>]*>Companies</);
 assert.match(html, /id="navRecruiters"[^>]*>Recruiters</);
 assert.match(html, /id="employersPage"/);
 assert.match(html, /id="recruitersPage"/);
-assert.match(html, /css\/employers\.css\?v=3/);
+assert.match(html, /css\/employers\.css\?v=4/);
 assert.match(html, /js\/employers\.js\?v=4/);
 assert.match(html, /js\/recruiters\.js\?v=2/);
 assert.match(html, /js\/storage\.js\?v=591/);
@@ -38,5 +38,6 @@ assert.match(recruitersJs, /Share my profile/);
 assert.match(css, /\.employers-grid/);
 assert.match(css, /\.employer-card::before/);
 assert.match(css, /#recruitersPage \.employers-search-control input:focus/);
+assert.match(css, /:is\(#recruitersPage, #employersPage\) \.employers-search-control:focus-within/);
 
 console.log('Employers directory contracts passed');
