@@ -39,7 +39,9 @@ body.personal-mode #profilePage .profile-privacy-radio input:focus-visible{outli
 body.personal-mode #profilePage #profilePrivacyRows.is-locked{pointer-events:none}
 html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-shell{--profile-privacy-choice-accent:#2f6fed}
 html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-card{background:#fff}
-html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-card.is-selected{border-color:var(--profile-privacy-choice-accent);background:color-mix(in srgb,var(--profile-privacy-choice-accent) 9%,#fff)}
+html[data-theme] body.personal-mode #profilePage .profile-privacy-mode-card.is-selected,
+html[data-theme] body.personal-mode #profilePage .profile-privacy-mode-card.is-selected:hover{border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;background:var(--surface-2)!important;box-shadow:var(--atsrs-field-focus-shadow)!important}
+html[data-theme] body.personal-mode #profilePage .profile-privacy-mode-card.is-selected :is(strong,.profile-privacy-mode-icon){color:var(--atsrs-field-accent)!important}
 html[data-theme="light"] body.personal-mode #profilePage .profile-privacy-mode-icon{background:#f4f7fb}
 @media(max-width:980px){
   body.personal-mode #profilePage .profile-settings-viewport:has(#profileTabPrivacyPanel.is-active){height:auto;min-height:0;max-height:none}

@@ -29,7 +29,7 @@ assert.match(css,/profile-privacy-matrix-row\{min-height:36px;/);
 assert.match(css,/profile-privacy-mode-grid\{[^}]*grid-template-columns:repeat\(3,max-content\);[^}]*justify-content:start;[^}]*gap:8px/);
 assert.match(css,/profile-privacy-mode-card small\{display:none\}/);
 assert.match(html,/profile-privacy-matrix-head[^>]*><div class="profile-privacy-mode-grid"/);
-assert.match(html,/css\/profile-privacy-v1\.css\?v=26/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=27/);
 assert.match(css,/data-theme="dark"[^}]*profile-privacy-mode-card:hover:not\(:focus-within\)\{[^}]*--atsrs-control-hover-border/);
 assert.match(css,/profile-privacy-mode-card:focus-within\{[^}]*--atsrs-field-focus-shadow/);
 assert.doesNotMatch(css,/profile-privacy-mode-card:is\(\.is-selected,:focus-within\)/);
@@ -38,7 +38,8 @@ assert.match(css,/profile-privacy-radio input\{[^}]*accent-color:var\(--profile-
 assert.match(css,/data-theme="light"[^}]*profile-privacy-shell\{--profile-privacy-choice-accent:#2f6fed\}/);
 assert.doesNotMatch(css,/appearance:none/);
 assert.match(css,/profile-privacy-mode-card\.is-selected\{[^}]*border-color:/);
-assert.match(css,/data-theme="light"[^}]*profile-privacy-mode-card\.is-selected\{[^}]*background:color-mix/);
+assert.match(css,/data-theme[^}]*profile-privacy-mode-card\.is-selected[^}]*\{[^}]*border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)!important/);
+assert.match(css,/profile-privacy-mode-card\.is-selected :is\(strong,\.profile-privacy-mode-icon\)\{color:var\(--atsrs-field-accent\)!important/);
 assert.match(js,/function renderFieldsForMode\(\)/);
 assert.match(js,/draft\.mode==='custom'\?draft\.fields\[key\]:draft\.mode/);
 assert.doesNotMatch(js,/draft\.fields\[key\]=draft\.mode/);
