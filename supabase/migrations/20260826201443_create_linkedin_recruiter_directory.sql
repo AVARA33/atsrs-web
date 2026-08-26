@@ -73,6 +73,24 @@ on conflict (linkedin_url) do update set
   verified_at = excluded.verified_at,
   updated_at = now();
 
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Sally Spaull', 'PR Offshore Services Ltd', 'Senior Offshore Recruiter — ROV, Survey & Inspection', 'Lowestoft, United Kingdom', 'https://www.linkedin.com/in/sally-spaull-2b807920/', '2026-08-27T01:00:00+04:00'),
+  ('Zarli H.', 'Archer Offshore', 'Offshore Recruiter — Trades & Inspection', 'Southampton, United Kingdom', 'https://www.linkedin.com/in/zarli-htet/', '2026-08-27T01:00:00+04:00'),
+  ('Kirsty Emma Tipping', 'Archer', 'Talent Acquisition Lead', 'Norway', 'https://www.linkedin.com/in/kirsty-emma-tipping/', '2026-08-27T01:00:00+04:00'),
+  ('Eirik Haugland', 'BSA Offshore AS', 'CEO and Partner', 'Bergen, Norway', 'https://www.linkedin.com/in/eirik-haugland-8632a635/', '2026-08-27T01:00:00+04:00'),
+  ('Siobhan Pirie', 'ROVOP', 'Recruitment Advisor', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/siobhan-pirie-certrp/', '2026-08-27T01:00:00+04:00'),
+  ('Vanessa Queiroz', 'SBM Offshore', 'Talent Acquisition Specialist', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/vanessa-queiroz-6763aa46/', '2026-08-27T01:00:00+04:00'),
+  ('Tor Faafeng', 'Maritim / Industri / Offshore', 'Senior Recruitment Manager', 'Norway', 'https://www.linkedin.com/in/tor-faafeng/', '2026-08-27T01:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
 update public.atsrs_recruiters
 set company = 'Atlas Professionals',
     role_title = 'Human Resources Recruiter',
