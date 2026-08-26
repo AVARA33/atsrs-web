@@ -79,6 +79,21 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Emmanuel Ogunleye', 'Select Offshore', 'Recruitment Consultant — Offshore', 'Colchester, United Kingdom', 'https://uk.linkedin.com/in/emmanuel-ogunleye-1845b0235', '2026-08-27T19:05:00+04:00'),
+  ('Jana Fatková', 'Siemens', 'Senior Talent Acquisition Partner & AI Ambassador', 'Prague, Czechia', 'https://cz.linkedin.com/in/fatkovajana', '2026-08-27T19:05:00+04:00'),
+  ('Clyde D''Mello', 'Baker Hughes', 'Global Talent Acquisition & Human Resources Leader', 'Houston, Texas, United States', 'https://www.linkedin.com/in/clydedmello', '2026-08-27T19:05:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Mike Hardiman', 'AMS', 'Talent Acquisition & Recruiting Professional', 'Albuquerque–Santa Fe, United States', 'https://www.linkedin.com/in/recruiterhardiman', '2026-08-27T19:00:00+04:00'),
   ('Archana Kale', 'AMS', 'HR Operations & Talent Acquisition Professional', 'Pune, India', 'https://in.linkedin.com/in/archana-kale-a23502145', '2026-08-27T19:00:00+04:00')
 on conflict (linkedin_url) do update set
