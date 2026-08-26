@@ -11,7 +11,7 @@ const jobs = html.indexOf('id="navJobs"');
 const employers = html.indexOf('id="navEmployers"');
 const recruiters = html.indexOf('id="navRecruiters"');
 const documents = html.indexOf('id="navCertificates"');
-assert.ok(jobs >= 0 && employers > jobs && recruiters > employers && documents > recruiters, 'Companies and Recruiters must sit between JobSearch and Documents in Personal navigation');
+assert.ok(jobs >= 0 && recruiters > jobs && employers > recruiters && documents > employers, 'Recruiters and Companies must sit between JobSearch and Documents in Personal navigation');
 assert.match(html, /id="navEmployers"[^>]*>Companies</);
 assert.match(html, /id="navRecruiters"[^>]*>Recruiters</);
 assert.match(html, /id="employersPage"/);
