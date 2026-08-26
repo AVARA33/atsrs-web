@@ -77,6 +77,13 @@
   var jobsPage=document.getElementById('jobsPage');
   if(jobsPage&&!jobsPage.classList.contains('hidden'))loadJobs().catch(report);
 
+  window.atsrsOpenJobsDirectory=function(page,button){
+    if(typeof window.showPage==='function')window.showPage(page,button);
+    return loadJobs().then(function(){
+      window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'));
+    }).catch(report);
+  };
+
   window.atsrsRouteFeatures={loadJobs:loadJobs,loadQrUpload:loadQrUpload,loadPreview:loadPreview};
 })();
 
