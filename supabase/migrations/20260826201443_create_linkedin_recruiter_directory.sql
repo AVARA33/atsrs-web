@@ -130,6 +130,18 @@ on conflict (linkedin_url) do update set
   verified_at = excluded.verified_at,
   updated_at = now();
 
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Simon Halliday', 'Weatherford', 'Technical Talent Acquisition Director', 'United Arab Emirates', 'https://ae.linkedin.com/in/simonhalliday75', '2026-08-27T02:10:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
