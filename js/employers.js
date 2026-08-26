@@ -220,6 +220,9 @@
       })
       .sort(function (a, b) {
         return a.localeCompare(b);
+      })
+      .map(function (name) {
+        return { name: name };
       });
     render();
   }

@@ -323,3 +323,16 @@ html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage)
   outline: 0 !important;
   box-shadow: none !important;
 }
+html[data-theme] body #app.app:not(.hidden) #employersPage .employers-toolbar {
+  align-items: end !important;
+}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employers-sector {
+  align-self: end !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employers-sector select {
+  min-height: 44px !important;
+  height: 44px !important;
+}
