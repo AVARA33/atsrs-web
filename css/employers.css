@@ -149,6 +149,14 @@
 html[data-theme="light"] .employer-card-copy h4 {
   color: #13233c!important;
 }
+html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) > .main :is(#employersPage,#recruitersPage) .employer-card-copy h4 {
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main :is(#employersPage,#recruitersPage) .employer-card-copy h4 {
+  color:#13233c!important;
+  -webkit-text-fill-color:#13233c!important;
+}
 .employer-detail-label {
   margin-top: 4px;
   color: var(--text);
