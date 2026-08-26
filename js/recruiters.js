@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   var recruiters = [],
-    directoryRecruiters = [];
+    loadToken = 0;
   function excluded(name) {
     return String(name || "")
       .trim()
@@ -140,43 +140,63 @@
   function db() {
     return window.supabaseClient || null;
   }
-  async function loadDirectoryRecruiters() {
+  function normalized(value) {
+    return String(value || "")
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLowerCase();
+  }
+  function companyOptions() {
+    var select = byId("recruitersCompany");
+    if (!select) return;
+    var selected = select.value;
+    var companies = new Map();
+    recruiters.forEach(function (recruiter) {
+      var company = String(recruiter.company || "").trim();
+      if (!company) return;
+      var key = normalized(company);
+      var current = companies.get(key) || { name: company, count: 0 };
+      current.count += 1;
+      companies.set(key, current);
+    });
+    var all = document.createElement("option");
+    all.value = "";
+    all.textContent = "All companies (" + recruiters.length + ")";
+    var options = Array.from(companies.values()).sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
+    select.replaceChildren(all);
+    options.forEach(function (company) {
+      var option = document.createElement("option");
+      option.value = company.name;
+      option.textContent = company.name + " (" + company.count + ")";
+      select.appendChild(option);
+    });
+    if (options.some(function (company) { return company.name === selected; }))
+      select.value = selected;
+  }
+  async function loadRecruiters() {
     var client = db();
     if (!client || !client.from) return;
+    var token = ++loadToken;
     try {
       var result = await client
         .from("atsrs_recruiters")
         .select("name,company,role_title,location,linkedin_url")
         .eq("status", "active")
         .order("name", { ascending: true });
-      if (!result.error && Array.isArray(result.data))
-        directoryRecruiters = result.data.filter(function (recruiter) {
+      if (token !== loadToken) return;
+      if (result.error) throw result.error;
+      recruiters = Array.isArray(result.data)
+        ? result.data.filter(function (recruiter) {
           return recruiter && recruiter.name && !excluded(recruiter.name);
-        });
-    } catch (_error) {}
-  }
-  function sync() {
-    var select = byId("jobsRecruiterFilter");
-    if (!select) return;
-    var jobsRecruiters = Array.from(select.options)
-      .map(function (option) {
-        return String(option.value || "").trim();
-      })
-      .filter(function (name) {
-        return name && !excluded(name);
-      })
-      .map(function (name) {
-        return { name: name };
-      });
-    var merged = new Map();
-    jobsRecruiters.concat(directoryRecruiters).forEach(function (recruiter) {
-      var key = recruiter.name.trim().toLowerCase();
-      merged.set(key, Object.assign({}, merged.get(key) || {}, recruiter));
-    });
-    recruiters = Array.from(merged.values()).sort(function (a, b) {
-      return a.name.localeCompare(b.name);
-    });
-    render();
+        })
+        : [];
+      companyOptions();
+      render();
+    } catch (error) {
+      console.warn("ATSRS recruiter directory could not be loaded", error);
+    }
   }
   function render() {
     var grid = byId("recruitersGrid");
@@ -184,6 +204,7 @@
     var query = String(byId("recruitersSearch").value || "")
       .trim()
       .toLowerCase();
+    var selectedCompany = String(byId("recruitersCompany").value || "").trim();
     var visible = recruiters.filter(function (recruiter) {
       var haystack = [
         recruiter.name,
@@ -193,7 +214,10 @@
       ]
         .join(" ")
         .toLowerCase();
-      return !query || haystack.indexOf(query) >= 0;
+      var matchesQuery = !query || haystack.indexOf(query) >= 0;
+      var matchesCompany =
+        !selectedCompany || normalized(recruiter.company) === normalized(selectedCompany);
+      return matchesQuery && matchesCompany;
     });
     grid.textContent = "";
     visible.forEach(function (recruiter) {
@@ -202,22 +226,21 @@
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
     byId("recruitersVisibleCount").textContent =
       visible.length + " of " + recruiters.length + " recruiters";
+    var snapshot = byId("recruitersVisibleCount").nextElementSibling;
+    if (snapshot)
+      snapshot.textContent = selectedCompany || "Verified LinkedIn directory";
   }
   function install() {
     if (!byId("recruitersPage")) return;
     byId("recruitersSearch").addEventListener("input", render);
+    byId("recruitersCompany").addEventListener("change", render);
     byId("recruitersClearFilters").addEventListener("click", function () {
       byId("recruitersSearch").value = "";
+      byId("recruitersCompany").value = "";
       render();
     });
-    loadDirectoryRecruiters().then(sync);
-    var select = byId("jobsRecruiterFilter");
-    if (select) new MutationObserver(sync).observe(select, { childList: true });
-    window.addEventListener("atsrs:resume", sync);
-    window.addEventListener("atsrs:jobs-nav", function () {
-      var refresh = window.atsrsJobs && window.atsrsJobs.refreshDirectoryOptions;
-      if (typeof refresh === "function") Promise.resolve(refresh()).then(sync);
-    });
+    loadRecruiters();
+    window.addEventListener("atsrs:resume", loadRecruiters);
   }
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", install, { once: true });
