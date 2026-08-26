@@ -87,7 +87,8 @@ values
   ('Lucy Petrie', 'HPR (UK)', 'Senior Personnel Coordinator', 'Inverurie, Scotland, United Kingdom', 'https://uk.linkedin.com/in/lucy-petrie-a4672353', '2026-08-27T22:00:00+04:00'),
   ('Diane Ritchie', 'HPR (UK)', 'Personnel Coordinator', 'Aberdeenshire, Scotland, United Kingdom', 'https://uk.linkedin.com/in/diane-ritchie-hpruk', '2026-08-27T22:00:00+04:00'),
   ('Emma Duncan', 'HPR (UK)', 'Senior Personnel Coordinator', 'Greater Aberdeen Area, United Kingdom', 'https://uk.linkedin.com/in/emma-duncan-46a6927a', '2026-08-27T22:00:00+04:00'),
-  ('Michele Stuart', 'HPR (UK)', 'Personnel Coordinator', 'Inverurie, Scotland, United Kingdom', 'https://uk.linkedin.com/in/michele-stuart-673191285', '2026-08-27T22:00:00+04:00')
+  ('Michele Stuart', 'HPR (UK)', 'Personnel Coordinator', 'Inverurie, Scotland, United Kingdom', 'https://uk.linkedin.com/in/michele-stuart-673191285', '2026-08-27T22:00:00+04:00'),
+  ('Emil Tjoflot Aase', 'LEVEL Offshore', 'Resource Coordinator — ROV Pilot/Technicians', 'Haugesund, Norway', 'https://www.linkedin.com/in/emil-tjoflot-aase-7a9907113', '2026-08-27T22:30:00+04:00')
 on conflict (linkedin_url) do update set
   name = excluded.name,
   company = excluded.company,
