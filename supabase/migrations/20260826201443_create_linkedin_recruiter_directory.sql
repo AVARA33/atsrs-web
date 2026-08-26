@@ -78,6 +78,23 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Ishwarya Sathish', 'TASNEEF-RINA Business Assurance', 'Recruitment Officer', 'United Arab Emirates', 'https://www.linkedin.com/in/ishwarya-sathish-chrp-22660589/', '2026-08-27T17:30:00+04:00'),
+  ('Diana Lisa Cavallina', 'RINA', 'Senior Talent Recruiter', 'Rome, Italy', 'https://www.linkedin.com/in/diana-lisa-cavallina-8a920493/', '2026-08-27T17:30:00+04:00'),
+  ('Meghan Robbins', 'RINA', 'Talent Acquisition Specialist', 'London, United Kingdom', 'https://www.linkedin.com/in/meghanrobbins/', '2026-08-27T17:30:00+04:00'),
+  ('Arianna Lodigiani', 'RINA', 'Talent Acquisition Specialist', 'Milan, Italy', 'https://www.linkedin.com/in/arianna-lodigiani-0580293b/', '2026-08-27T17:30:00+04:00'),
+  ('Cristiano Memè', 'RINA', 'HR Talent Recruiter', 'Rome, Italy', 'https://www.linkedin.com/in/cristiano-mem%C3%A8-hr/', '2026-08-27T17:30:00+04:00'),
+  ('Federica Sanfilippo', 'RINA', 'Talent Recruiter', 'Italy', 'https://www.linkedin.com/in/federica-sanfilippo-55a7292a7/', '2026-08-27T17:30:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Elaine Kearns', 'Expro', 'Recruiter — ESSA', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/elaine-kearns-55989a212/', '2026-08-27T17:20:00+04:00'),
   ('Anna Andrea N.', 'NOV', 'Head of Talent Acquisition', 'Kuala Lumpur, Malaysia', 'https://www.linkedin.com/in/annanadaraja/', '2026-08-27T17:20:00+04:00'),
   ('Antu Antoney', 'NOV', 'Senior Talent Acquisition Specialist', 'Kochi, India', 'https://www.linkedin.com/in/antu-antoney/', '2026-08-27T17:20:00+04:00'),
