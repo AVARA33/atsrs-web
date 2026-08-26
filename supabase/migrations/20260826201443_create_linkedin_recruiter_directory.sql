@@ -79,6 +79,24 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Ross MacKay', 'Orion Group', 'Recruitment Manager — Oil & Gas', 'Houston, Texas, United States', 'https://www.linkedin.com/in/rossmackayoilgasrecruiter', '2026-08-27T18:10:00+04:00'),
+  ('Ian H.', 'Orion Group', 'Specialist Recruiter — Oil & Gas', 'London, United Kingdom', 'https://uk.linkedin.com/in/ian-h-47460410', '2026-08-27T18:10:00+04:00'),
+  ('Amara Nwaogazie', 'Atlas Professionals', 'Recruitment Coordinator', 'Aberdeen, United Kingdom', 'https://uk.linkedin.com/in/amaranwaogazieatlasprofessionals', '2026-08-27T18:10:00+04:00'),
+  ('Tim Barlow', 'Atlas Professionals', 'Personnel Coordinator', 'Newquay, United Kingdom', 'https://uk.linkedin.com/in/tim-barlow-726261282', '2026-08-27T18:10:00+04:00'),
+  ('Ryne Ferguson', 'Petroplan', 'Senior Recruitment Consultant — Chemicals', 'Houston, Texas, United States', 'https://www.linkedin.com/in/ryne-ferguson', '2026-08-27T18:10:00+04:00'),
+  ('Adrian Davidson', 'Orion Group', 'Recruitment Manager — Oil & Gas', 'Inverness, United Kingdom', 'https://uk.linkedin.com/in/adriandavidsonrecruiter', '2026-08-27T18:10:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Kim Monteiro', 'Brunel', 'Talent Acquisition & Recruitment Professional', 'Rio de Janeiro, Brazil', 'https://br.linkedin.com/in/kim-monteiro-headhunter', '2026-08-27T18:05:00+04:00'),
   ('Cindy King', 'Brunel', 'Recruiting Manager', 'United States', 'https://www.linkedin.com/in/cindy-king-5912bb3', '2026-08-27T18:05:00+04:00'),
   ('Joy Bolton', 'Brunel', 'Recruitment Consultant — Global Recruitment Centre', 'Greater Manchester, United Kingdom', 'https://uk.linkedin.com/in/joy-bolton-72833528', '2026-08-27T18:05:00+04:00'),
