@@ -1,6 +1,10 @@
 body.personal-mode #profilePage #profileTabSharingPanel{padding:12px 16px!important;overflow:hidden!important}
 body.personal-mode #profilePage .profile-sharing-v1,body.personal-mode #profilePage .profile-sharing-v1 *{box-sizing:border-box}
-body.personal-mode #profilePage .profile-sharing-v1{display:grid;height:100%;min-height:0;grid-template-rows:108px minmax(0,1fr);gap:10px;color:var(--text)}
+body.personal-mode #profilePage .profile-sharing-v1{position:relative;display:grid;height:100%;min-height:0;grid-template-rows:108px minmax(0,1fr);gap:10px;color:var(--text)}
+body.personal-mode #profilePage .profile-sharing-actions{position:absolute;z-index:4;top:0;right:0}
+body.personal-mode #profilePage .profile-sharing-actions #profileSharingInlineActions[hidden]{display:none!important}
+body.personal-mode #profilePage .profile-sharing-v1:not(.is-editing) .profile-sharing-setup{pointer-events:none}
+body.personal-mode #profilePage .profile-sharing-v1:not(.is-editing) .profile-sharing-setup input{cursor:default}
 body.personal-mode #profilePage .profile-sharing-setup{display:grid;grid-template-columns:minmax(0,466px) 230px;justify-content:start;gap:14px;min-height:0;padding:0;border:0;border-radius:0;background:transparent}
 body.personal-mode #profilePage .profile-sharing-audience,body.personal-mode #profilePage .profile-sharing-expiry{min-width:0;margin:0;padding:0;border:0}body.personal-mode #profilePage .profile-sharing-audience legend,body.personal-mode #profilePage .profile-sharing-expiry>legend{display:block;margin:0 0 7px;padding:0;color:var(--text);font-size:10px;font-weight:700}
 body.personal-mode #profilePage .profile-sharing-audience-grid{display:grid;grid-template-columns:repeat(3,minmax(0,150px));justify-content:start;gap:8px}

@@ -18,6 +18,12 @@
 /js/profile-privacy-v1.js
   Cache-Control: no-store, no-cache, must-revalidate
 
+/css/profile-sharing-v1.css
+  Cache-Control: no-store, no-cache, must-revalidate
+
+/js/profile-sharing-v1.js
+  Cache-Control: no-store, no-cache, must-revalidate
+
 /js/profile-workspace-v5886.js
   Cache-Control: no-store, no-cache, must-revalidate
 

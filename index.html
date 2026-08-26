@@ -123,7 +123,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
 <link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5978">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
-  <link rel="stylesheet" href="css/profile-sharing-v1.css?v=5">
+  <link rel="stylesheet" href="css/profile-sharing-v1.css?v=6">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1414,6 +1414,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     </article>
     <article id="profileTabSharingPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSharingBtn" hidden>
       <div id="profileSharingV1" class="profile-sharing-v1">
+        <div class="profile-availability-actions profile-sharing-actions" aria-label="Sharing edit actions">
+          <div id="profileSharingInlineActions" class="profile-inline-actions" hidden>
+            <button id="profileSharingSaveBtn" type="button" class="profile-information-action profile-information-action-save" aria-label="Save sharing changes" title="Save"><i class="ph ph-check" aria-hidden="true"></i></button>
+            <button id="profileSharingCancelBtn" type="button" class="profile-information-action profile-information-action-cancel" aria-label="Cancel sharing changes" title="Cancel"><i class="ph ph-x" aria-hidden="true"></i></button>
+          </div>
+          <button id="profileSharingEditBtn" type="button" class="profile-information-action profile-information-action-edit" aria-label="Edit sharing settings" title="Edit sharing settings"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="11" cy="8" r="4"></circle><path d="M3.5 23.5v-3.2c0-4.7 3.4-7.7 7.5-7.7 2.5 0 4.6.8 6 2.3"></path><path d="m17.2 24.9 1-4 7.6-7.6a1.8 1.8 0 0 1 2.6 0l.3.3a1.8 1.8 0 0 1 0 2.6l-7.6 7.6-3.9 1.1Z"></path><path d="m24.5 14.6 2.9 2.9"></path></svg></button>
+        </div>
         <section class="profile-sharing-setup" aria-label="Create a share link">
           <fieldset class="profile-sharing-audience"><legend>Who can view</legend><div class="profile-sharing-audience-grid">
             <label><input type="radio" name="profileSharingAudience" value="anyone" checked><i class="ph ph-globe" aria-hidden="true"></i><span><strong>Anyone with the link</strong><small>Anyone who has the link</small></span></label>
@@ -2090,7 +2097,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/shell-polish.js?v=568"></script>
 <script src="js/profile-workspace-v5886.js?v=5955"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
-<script src="js/profile-sharing-v1.js?v=3"></script>
+<script src="js/profile-sharing-v1.js?v=4"></script>
 <script src="js/route-feature-loader.js?v=58176"></script>
 
 
