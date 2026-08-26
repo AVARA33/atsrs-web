@@ -931,10 +931,13 @@ async function publicRequest(req: Request, admin: AdminClient) {
       });
     }
   }
-  const documents = await Promise.all(files.map(async (file) => {
+  const documentResults = await Promise.all(files.map(async (file) => {
     const details = documentDetails(file);
     const preview = await admin.storage.from(FILE_BUCKET).createSignedUrl(String(file.storage_path), PREVIEW_URL_SECONDS);
-    if (preview.error) throw preview.error;
+    // A stale database row must not make the entire shared profile unavailable.
+    // The owner can remove or re-upload that document separately; only files
+    // that still have a readable Storage object belong in the public payload.
+    if (preview.error || !preview.data?.signedUrl) return null;
     const downloaded = viewerRequests.find((row) =>
       row.requested_file_ids.includes(details.id) && downloadedByRequest.get(row.id)?.has(details.id)
     );
@@ -951,6 +954,7 @@ async function publicRequest(req: Request, admin: AdminClient) {
       download_expires_at: approved?.access_expires_at ?? null,
     };
   }));
+  const documents = documentResults.filter((document) => document !== null);
   const now = new Date().toISOString();
   await admin.from("atsrs_profile_shares").update({
     view_count: Number(share.view_count ?? 0) + 1,

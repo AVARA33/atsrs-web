@@ -16,6 +16,7 @@ assert.match(edge, /function isShareEligibleFile\(file: JsonObject\)/);
 assert.match(edge, /select\("id,metadata"\)[\s\S]*?\.eq\("user_id", user\.id\)[\s\S]*?isShareEligibleFile/, 'link creation must reject unfinished files at the server boundary');
 assert.match(edge, /select\("id,file_name,storage_path,metadata"\)[\s\S]*?!isShareEligibleFile\(file\.data as JsonObject\)/, 'download must re-check share eligibility');
 assert.match(edge, /fileResult\.data \?\? \[\]\)\.filter\(\(file\) =>[\s\S]*?isShareEligibleFile/, 'public profile rendering must hide stale unfinished files');
+assert.match(edge, /if \(preview\.error \|\| !preview\.data\?\.signedUrl\) return null;[\s\S]*?documentResults\.filter\(\(document\) => document !== null\)/, 'a stale Storage object must be skipped instead of breaking the entire shared profile');
 assert.match(html, /js\/share-profile\.js\?v=420/);
 
 console.log('Share profile ownership and registration contracts passed');
