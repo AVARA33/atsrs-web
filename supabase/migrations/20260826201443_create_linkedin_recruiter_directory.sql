@@ -79,6 +79,20 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Linda Boone', 'DOF Group', 'Human Resources Professional', 'Houston, Texas, United States', 'https://www.linkedin.com/in/linda-boone', '2026-08-27T18:25:00+04:00'),
+  ('Joost Bremmer', 'Boskalis', 'Talent & Staffing Specialist', 'Papendrecht, Netherlands', 'https://nl.linkedin.com/in/talentstaffingspecialist', '2026-08-27T18:25:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Andreea Călina', 'Saipem', 'HR Development — Recruitment', 'Ploiești, Romania', 'https://ro.linkedin.com/in/calina-andreea', '2026-08-27T18:20:00+04:00'),
   ('Claudine Aina Garcia', 'Saipem', 'Recruitment Officer', 'Doha, Qatar', 'https://qa.linkedin.com/in/claudine-aina-garcia-204078272', '2026-08-27T18:20:00+04:00'),
   ('Cristina Coroian', 'Saipem', 'HR Manager / Europe HR Focal Point', 'Bucharest, Romania', 'https://ro.linkedin.com/in/cristina-coroian-b9339866', '2026-08-27T18:20:00+04:00'),
