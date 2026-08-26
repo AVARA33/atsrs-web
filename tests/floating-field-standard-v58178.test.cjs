@@ -7,10 +7,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'floating-field-standard-v58178.css'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'js', 'floating-fields.js'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5848"/);
-assert.match(index, /floating-field-standard-v58178\.css\?v=5853/);
-assert.match(index, /floating-fields\.js\?v=58185/);
-assert.ok(index.indexOf('floating-fields.js?v=58186') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
+assert.match(index, /data-atsrs-build="V5878"/);
+assert.match(index, /floating-field-standard-v58178\.css\?v=5854/);
+assert.match(index, /floating-fields\.js\?v=58187/);
+assert.ok(index.indexOf('floating-fields.js?v=58187') > index.indexOf('select-open-position.js'), 'field runtime must run after select enhancement');
 
 assert.match(runtime, /input:not\(\[type="hidden"\]\):not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\):not\(\[type="file"\]\)/);
 assert.match(runtime, /control\.parentElement&&control\.parentElement\.closest\('\.hidden,\[hidden\],\[aria-hidden="true"\]'\)/);
@@ -40,9 +40,9 @@ assert.match(css, /--atsrs-field-focus-inline-line:var\(--atsrs-field-accent\)/)
 assert.match(css, /--atsrs-field-hover-inline-line:var\(--atsrs-control-hover-border,#4b5d52\)/);
 assert.match(css, /--atsrs-field-focus-shadow:-3px 0 0 var\(--atsrs-field-accent-ring\),3px 0 0 var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)/);
 assert.match(css, /html\[data-theme="light"\][\s\S]*--atsrs-field-focus-shadow:0 0 0 3px var\(--atsrs-field-accent-ring\),0 8px 20px var\(--atsrs-field-accent-shadow\)/);
-assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control > i\{[\s\S]*right:12px!important;[\s\S]*left:auto!important;[\s\S]*pointer-events:none!important/);
-assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-search-control>input\{[\s\S]*height:calc\(var\(--atsrs-field-height\) - 2px\)!important;[\s\S]*min-height:calc\(var\(--atsrs-field-height\) - 2px\)!important;[\s\S]*padding-left:var\(--atsrs-field-inline-padding\)!important;[\s\S]*padding-right:40px!important;[\s\S]*border:0!important;[\s\S]*border-radius:calc\(var\(--atsrs-field-radius\) - 1px\)!important;[\s\S]*background:transparent!important/);
-assert.match(css, /#jobsPage \.jobs-search\.atsrs-field-shell \.jobs-search-control>input:focus,[\s\S]*input:focus-visible\{[\s\S]*border:0!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
+assert.match(css, /\.atsrs-search-field\.atsrs-field-shell \.atsrs-search-control > i\{[\s\S]*right:12px!important;[\s\S]*left:auto!important;[\s\S]*pointer-events:none!important/);
+assert.match(css, /\.atsrs-search-field\.atsrs-field-shell \.atsrs-search-control>input\{[\s\S]*height:calc\(var\(--atsrs-field-height\) - 2px\)!important;[\s\S]*min-height:calc\(var\(--atsrs-field-height\) - 2px\)!important;[\s\S]*padding-left:var\(--atsrs-field-inline-padding\)!important;[\s\S]*padding-right:40px!important;[\s\S]*border:0!important;[\s\S]*border-radius:calc\(var\(--atsrs-field-radius\) - 1px\)!important;[\s\S]*background:transparent!important/);
+assert.match(css, /\.atsrs-search-field\.atsrs-field-shell \.atsrs-search-control>input:focus,[\s\S]*input:focus-visible\{[\s\S]*border:0!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
 assert.match(css, /#jobsPage \.atsrs-field-shell \.jobs-select-toggle:focus,[\s\S]*\.jobs-select-toggle:focus-visible,[\s\S]*\.jobs-select-toggle\[aria-expanded="true"\]\{[\s\S]*border:0!important;[\s\S]*outline:0!important;[\s\S]*outline-offset:0!important;[\s\S]*box-shadow:none!important/);
 assert.match(css, /\.atsrs-field-shell:focus-within\{[\s\S]*border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)!important;[\s\S]*box-shadow:var\(--atsrs-field-focus-shadow\)!important/);
 assert.match(css, /@media\(hover:hover\)[\s\S]*\.atsrs-field-shell:hover:not\(:focus-within\)[\s\S]*border-right-color:var\(--atsrs-field-hover-inline-line\)!important;[\s\S]*border-left-color:var\(--atsrs-field-hover-inline-line\)!important/);

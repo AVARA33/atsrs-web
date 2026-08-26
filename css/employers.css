@@ -52,37 +52,12 @@
   border-radius: 16px;
   background: var(--surface);
 }
-.employers-search,
 .employers-sector {
   display: grid;
   gap: 7px;
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
-}
-.employers-search-control {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 0 13px;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  background: var(--surface-2);
-}
-.employers-search-control:focus-within {
-  border-color: var(--atsrs-field-accent, #2563eb);
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--atsrs-field-accent, #2563eb) 18%, transparent);
-}
-.employers-search-control input {
-  width: 100%;
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  color: var(--text);
-  padding: 0 !important;
 }
 .employers-sector select {
   min-height: 44px;
@@ -307,7 +282,7 @@
 html[data-theme="light"] .employer-card { background: rgba(255,255,255,.96); color: #13233c; border-color: #d8e1ee; box-shadow: 0 10px 25px rgba(15,23,42,.09); }
 html[data-theme="light"] .employer-card::before { background: #2563eb; box-shadow: 2px 0 12px rgba(37,99,235,.2); }
 html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employer-card:focus-within { border-color: rgba(37,99,235,.52); box-shadow: 0 15px 32px rgba(15,23,42,.14), 0 0 0 1px rgba(37,99,235,.1); }
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-toolbar > .jobs-search {
+html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-toolbar > .atsrs-search-field {
   grid-area: auto !important;
   align-self: end !important;
   width: 100% !important;

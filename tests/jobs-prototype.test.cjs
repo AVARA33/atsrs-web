@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=58175/);
-  assert.match(index,/route-feature-loader\.js\?v=58175/);
+  assert.match(index,/jobs-prototype\.css\?v=58176/);
+  assert.match(index,/route-feature-loader\.js\?v=58177/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58176'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58177'\)/);
   assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -309,8 +309,8 @@ test('Jobs dropdown keeps selected rows completely unfilled',()=>{
   assert.match(css,/\.jobs-select-menu\{[^}]*scrollbar-color:#5b6470 #111512/);
   assert.match(css,/\.jobs-select-toggle>i\{[^}]*width:16px[^}]*height:16px[^}]*flex:0 0 16px/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:hover>i/);
-  assert.match(index,/theme\.js\?v=577/);
-  assert.match(index,/select-standard\.js\?v=58163/);
+  assert.match(index,/theme\.js\?v=5849/);
+  assert.match(index,/select-standard\.js\?v=58164/);
   assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/control\.closest\('\.jobs-select-host'\)/);
   assert.match(fs.readFileSync(path.join(root,'js','select-standard.js'),'utf8'),/select\.closest\('\.jobs-select-host'\)/);
   assert.match(index,/shell-polish\.css\?v=58162/);

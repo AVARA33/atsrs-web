@@ -106,7 +106,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   box-shadow:none!important;
   font:inherit!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
+body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.atsrs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
   position:relative!important;
   display:flex!important;
   align-items:center!important;
@@ -122,7 +122,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   background-image:none!important;
   box-shadow:none!important;
 }
-body #app #jobsPage .atsrs-field-shell .jobs-search-control > i{
+body #app .atsrs-search-field.atsrs-field-shell .atsrs-search-control > i{
   position:absolute!important;
   top:50%!important;
   right:12px!important;
@@ -132,7 +132,7 @@ body #app #jobsPage .atsrs-field-shell .jobs-search-control > i{
   color:var(--atsrs-field-muted)!important;
   pointer-events:none!important;
 }
-body #app #jobsPage .atsrs-field-shell .jobs-search-control > input{
+body #app .atsrs-search-field.atsrs-field-shell .atsrs-search-control > input{
   padding-left:var(--atsrs-field-inline-padding)!important;
   padding-right:40px!important;
 }
@@ -203,7 +203,7 @@ html body #auth .atsrs-field-shell{
   grid-template:minmax(0,1fr)/minmax(0,1fr)!important;
   gap:0!important;
 }
-html body #app .atsrs-field-shell :where(.atsrs-field-control-frame,.jobs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
+html body #app .atsrs-field-shell :where(.atsrs-field-control-frame,.atsrs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
   width:100%!important;
   height:calc(var(--atsrs-field-height) - 2px)!important;
   min-height:calc(var(--atsrs-field-height) - 2px)!important;
@@ -227,7 +227,7 @@ html body #auth .atsrs-field-shell :where(input:not([type="hidden"]):not([type="
   background:transparent!important;
   box-shadow:none!important;
 }
-html body #app #jobsPage .atsrs-field-shell .jobs-search-control>input{
+html body #app .atsrs-search-field.atsrs-field-shell .atsrs-search-control>input{
   height:calc(var(--atsrs-field-height) - 2px)!important;
   min-height:calc(var(--atsrs-field-height) - 2px)!important;
   padding-left:var(--atsrs-field-inline-padding)!important;
@@ -236,8 +236,8 @@ html body #app #jobsPage .atsrs-field-shell .jobs-search-control>input{
   border-radius:calc(var(--atsrs-field-radius) - 1px)!important;
   background:transparent!important;
 }
-html[data-theme] body #app.app #jobsPage .jobs-search.atsrs-field-shell .jobs-search-control>input:focus,
-html[data-theme] body #app.app #jobsPage .jobs-search.atsrs-field-shell .jobs-search-control>input:focus-visible{
+html[data-theme] body #app.app .atsrs-search-field.atsrs-field-shell .atsrs-search-control>input:focus,
+html[data-theme] body #app.app .atsrs-search-field.atsrs-field-shell .atsrs-search-control>input:focus-visible{
   border:0!important;
   outline:0!important;
   outline-offset:0!important;

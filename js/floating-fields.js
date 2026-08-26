@@ -7,7 +7,7 @@
   var generatedSequence=0;
   var controlSelector='input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]),select:not([multiple]),textarea';
   var fieldContainers='.field-wrap,.jobs-filter-field,.jobs-secondary-field,.personnel-search-field,.personnel-combobox-field,.personnel-select-field,.talent-search-field,.atsrs-document-filter,.profile-labeled-field,.work-type-field,.talent-summary-filter';
-  var frameSelector='.atsrs-disclosure-shell,.jobs-select-host,.jobs-search-control,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter';
+  var frameSelector='.atsrs-disclosure-shell,.jobs-select-host,.atsrs-search-control,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter';
   var labelFallbacks={
     cPerson:'Personnel',crewSearch:'Search',crewCompanyFilter:'Company',crewPositionFilter:'Profession',crewStatusFilter:'Status',
     profilePhoneLocal:'Mobile phone',profileWhatsappLocal:'WhatsApp number',certDocumentFilter:'Filter',
