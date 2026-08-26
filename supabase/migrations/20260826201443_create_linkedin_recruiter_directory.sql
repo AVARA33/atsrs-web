@@ -78,6 +78,22 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Mohamad Chehade', 'Weatherford', 'Senior Recruiter MENA / Talent Acquisition', 'Abu Dhabi, United Arab Emirates', 'https://www.linkedin.com/in/mohamad-chehade-chrp-crp-16ba93173/', '2026-08-27T17:00:00+04:00'),
+  ('Marion D.', 'Weatherford', 'Senior Recruiter — Middle East', 'United Kingdom', 'https://www.linkedin.com/in/mariondonagheyhays/', '2026-08-27T17:00:00+04:00'),
+  ('Moussa Al-Khayyat', 'Weatherford', 'Senior Recruiter', 'Dammam, Saudi Arabia', 'https://www.linkedin.com/in/moussa-al-khayyat-9505481b2/', '2026-08-27T17:00:00+04:00'),
+  ('Asad Al Balushi', 'BESIX', 'Talent Acquisition Partner', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/asad-al-balushi/', '2026-08-27T17:00:00+04:00'),
+  ('Supranee Silkosessak', 'Tata Consultancy Services', 'Talent Acquisition Lead — Technology', 'Bangkok, Thailand', 'https://www.linkedin.com/in/supranee-silkosessak-a685316/', '2026-08-27T17:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Belqadri Taufik', 'Halliburton', 'Global Talent Acquisition — Southeast Asia & Central Asia', 'Kuala Lumpur, Malaysia', 'https://www.linkedin.com/in/belqadri-taufik-130818/', '2026-08-27T16:00:00+04:00'),
   ('Sadiqur Rahman', 'Halliburton', 'Global Talent Acquisition Manager / Lead — MENA', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/sadiqurrahman/', '2026-08-27T16:00:00+04:00'),
   ('Gabriela Manes', 'Halliburton', 'Tech Recruiter / Talent Acquisition Analyst', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/gabrielamanes/', '2026-08-27T16:00:00+04:00'),
