@@ -78,6 +78,27 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Brian Lie', 'LEVEL Offshore', 'Recruitment Specialist', 'Stavanger, Norway', 'https://no.linkedin.com/in/brianlie', '2026-08-27T22:00:00+04:00'),
+  ('Kaj-Stian Apeland', 'LEVEL Offshore', 'Resource Coordinator — Survey & Inspection', 'Haugesund, Norway', 'https://no.linkedin.com/in/kaj-stian-apeland-059a92235', '2026-08-27T22:00:00+04:00'),
+  ('Andreas Gilje Heiberg', 'LEVEL Offshore', 'Resource Coordinator — UK Deck Personnel', 'Haugesund, Norway', 'https://no.linkedin.com/in/andreas-gilje-heiberg-622bb1306', '2026-08-27T22:00:00+04:00'),
+  ('Kaia Leirvik Haga', 'LEVEL Offshore', 'Resource Coordinator — Scandinavian Deck Personnel & Medics', 'Haugesund, Norway', 'https://no.linkedin.com/in/kaia-leirvik-haga-742635153', '2026-08-27T22:00:00+04:00'),
+  ('Eva Dobreva', 'LEVEL Offshore', 'Operation Manager — Shift Supervisors & Offshore Managers', 'Stavanger/Sandnes, Norway', 'https://no.linkedin.com/in/eva-dobreva-ab070777', '2026-08-27T22:00:00+04:00'),
+  ('Phil Hargreaves FIRP', 'HPR (UK)', 'Personnel Operations Supervisor', 'Greater Aberdeen Area, United Kingdom', 'https://uk.linkedin.com/in/philhargreaves-hpr-recruitingsubseapersonnel', '2026-08-27T22:00:00+04:00'),
+  ('Lucy Petrie', 'HPR (UK)', 'Senior Personnel Coordinator', 'Inverurie, Scotland, United Kingdom', 'https://uk.linkedin.com/in/lucy-petrie-a4672353', '2026-08-27T22:00:00+04:00'),
+  ('Diane Ritchie', 'HPR (UK)', 'Personnel Coordinator', 'Aberdeenshire, Scotland, United Kingdom', 'https://uk.linkedin.com/in/diane-ritchie-hpruk', '2026-08-27T22:00:00+04:00'),
+  ('Emma Duncan', 'HPR (UK)', 'Senior Personnel Coordinator', 'Greater Aberdeen Area, United Kingdom', 'https://uk.linkedin.com/in/emma-duncan-46a6927a', '2026-08-27T22:00:00+04:00'),
+  ('Michele Stuart', 'HPR (UK)', 'Personnel Coordinator', 'Inverurie, Scotland, United Kingdom', 'https://uk.linkedin.com/in/michele-stuart-673191285', '2026-08-27T22:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Madeleine París', 'A.P. Moller - Maersk', 'Talent Acquisition Specialist', 'Heredia, Costa Rica', 'https://cr.linkedin.com/in/madeleine-par%C3%ADs', '2026-08-27T01:30:00+04:00')
 on conflict (linkedin_url) do update set
   name = excluded.name,
@@ -613,6 +634,11 @@ set company = 'Atlas Professionals',
     verified_at = '2026-08-27T00:30:00+04:00',
     updated_at = now()
 where name = 'Lesley Mathieson';
+
+-- Keep the newer canonical TechnipFMC profile and retire the legacy slash-only duplicate.
+update public.atsrs_recruiters
+set status = 'inactive', updated_at = now()
+where id = '5ba2b50f-c9f7-4e2f-bb09-08dcd9b494a5';
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values

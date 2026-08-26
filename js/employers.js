@@ -41,6 +41,26 @@
         careers: "https://www.fugro.com/careers",
         contact: "https://www.fugro.com/contact",
       },
+      "LEVEL Offshore": {
+        mark: "LVL",
+        summary:
+          "Specialist staffing and recruitment provider for offshore and subsea personnel.",
+        sector: "Offshore staffing",
+        tags: ["Subsea", "Offshore", "Recruitment"],
+        website: "https://www.leveloffshore.no/",
+        careers: "https://leveloffshoreno.recman.page/jobs?sort=newest",
+        contact: "https://www.leveloffshore.no/contact",
+      },
+      "HPR (UK)": {
+        mark: "HPR",
+        summary:
+          "Specialist contract and permanent recruitment for offshore construction, oil and gas, and renewables.",
+        sector: "Offshore staffing",
+        tags: ["ROV", "Marine", "Recruitment"],
+        website: "https://hpruk.com/",
+        careers: "https://hpruk.com/vacancies/",
+        contact: "https://hpruk.com/contact-us/",
+      },
     },
     companies = [],
     loadToken = 0;
@@ -208,6 +228,9 @@
       if (token !== loadToken) return;
       if (result.error) throw result.error;
       var names = new Map();
+      Object.keys(verified).forEach(function (name) {
+        names.set(normalized(name), { name: name, vacancyCount: 0 });
+      });
       (Array.isArray(result.data) ? result.data : []).forEach(function (row) {
         var name = clean(row && (row.recruiter_company || row.company));
         if (!name) return;
