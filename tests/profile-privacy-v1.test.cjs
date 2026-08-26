@@ -29,7 +29,7 @@ assert.match(css,/profile-privacy-matrix-row\{min-height:36px;/);
 assert.match(css,/profile-privacy-mode-grid\{[^}]*grid-template-columns:repeat\(3,max-content\);[^}]*justify-content:start;[^}]*gap:8px/);
 assert.match(css,/profile-privacy-mode-card small\{display:none\}/);
 assert.match(html,/profile-privacy-matrix-head[^>]*><div class="profile-privacy-mode-grid"/);
-assert.match(html,/css\/profile-privacy-v1\.css\?v=25/);
+assert.match(html,/css\/profile-privacy-v1\.css\?v=26/);
 assert.match(css,/data-theme="dark"[^}]*profile-privacy-mode-card:hover:not\(:focus-within\)\{[^}]*--atsrs-control-hover-border/);
 assert.match(css,/profile-privacy-mode-card:focus-within\{[^}]*--atsrs-field-focus-shadow/);
 assert.doesNotMatch(css,/profile-privacy-mode-card:is\(\.is-selected,:focus-within\)/);

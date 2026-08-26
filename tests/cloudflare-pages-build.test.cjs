@@ -47,6 +47,12 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
     assert.match(legalRule[1], /frame-ancestors 'self'/, `${legalPath} CSP must permit ATSRS embedding only`);
   }
   assert.match(headers, /connect-src[^\n]+hwtjuqyxzivymofamwxl\.supabase\.co/, 'CSP must retain Supabase connectivity');
+  const headerBlocks = headers.split(/\r?\n\r?\n/);
+  for (const currentProfileAsset of ['/', '/index.html', '/css/profile-privacy-v1.css', '/js/profile-privacy-v1.js', '/js/profile-workspace-v5886.js']) {
+    const rule = headerBlocks.find(block => block.split(/\r?\n/, 1)[0] === currentProfileAsset);
+    assert.ok(rule, `${currentProfileAsset} must have a cache rule`);
+    assert.match(rule, /Cache-Control: no-store, no-cache, must-revalidate/, `${currentProfileAsset} must not reuse an old Profile variant`);
+  }
 
   for (const forbiddenEntry of ['.git', '.github', 'CNAME', 'docs', 'scripts', 'supabase', 'tests']) {
     assert.ok(!topLevelEntries.includes(forbiddenEntry), `${forbiddenEntry} must not be deployed`);
