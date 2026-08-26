@@ -42,9 +42,21 @@
         contact: "https://www.fugro.com/contact",
       },
     },
-    companies = [];
+    companies = [],
+    loadToken = 0;
   function byId(id) {
     return document.getElementById(id);
+  }
+  function clean(value) {
+    return String(value || "").trim();
+  }
+  function normalized(value) {
+    return clean(value).replace(/\s+/g, " ").toLowerCase();
+  }
+  function db() {
+    return window.supabaseClient && window.supabaseClient.rpc
+      ? window.supabaseClient
+      : null;
   }
   function initials(name) {
     return (
@@ -176,24 +188,30 @@
     byId("employersVisibleCount").textContent =
       visible.length + " of " + companies.length + " companies";
   }
-  function sync() {
-    var select = byId("jobsCompanyFilter");
-    if (!select) return;
-    companies = Array.from(select.options)
-      .map(function (option) {
-        return String(option.value || "").trim();
-      })
-      .filter(Boolean)
-      .filter(function (name, index, list) {
-        return list.indexOf(name) === index;
-      })
-      .sort(function (a, b) {
-        return a.localeCompare(b);
-      })
-      .map(function (name) {
-        return { name: name };
+  async function loadCompanies() {
+    var client = db();
+    if (!client) return;
+    var token = ++loadToken;
+    try {
+      var result = await client.rpc("atsrs_jobs_facets");
+      if (token !== loadToken) return;
+      if (result.error) throw result.error;
+      var names = new Map();
+      (Array.isArray(result.data) ? result.data : []).forEach(function (row) {
+        var name = clean(row && (row.recruiter_company || row.company));
+        if (name && !names.has(normalized(name))) names.set(normalized(name), name);
       });
-    render();
+      companies = Array.from(names.values())
+        .sort(function (a, b) { return a.localeCompare(b); })
+        .map(function (name) { return { name: name }; });
+      var message = byId("employersMessage");
+      if (message) message.textContent = "";
+      render();
+    } catch (error) {
+      console.warn("ATSRS company directory could not be loaded", error);
+      var message = byId("employersMessage");
+      if (message) message.textContent = "Companies are temporarily unavailable. Please try again.";
+    }
   }
   function install() {
     if (!byId("employersPage")) return;
@@ -219,14 +237,8 @@
       sector.value = "";
       render();
     });
-    sync();
-    var select = byId("jobsCompanyFilter");
-    if (select) new MutationObserver(sync).observe(select, { childList: true });
-    window.addEventListener("atsrs:resume", sync);
-    window.addEventListener("atsrs:jobs-nav", function () {
-      var refresh = window.atsrsJobs && window.atsrsJobs.refreshDirectoryOptions;
-      if (typeof refresh === "function") Promise.resolve(refresh()).then(sync);
-    });
+    loadCompanies();
+    window.addEventListener("atsrs:resume", loadCompanies);
   }
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", install, { once: true });
