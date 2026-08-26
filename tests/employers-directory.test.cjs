@@ -26,7 +26,7 @@ assert.match(js, /https:\/\/www\.oceaneering\.com\/careers\//);
 assert.match(js, /https:\/\/www\.dof\.com\/vacancies/);
 assert.match(js, /https:\/\/www\.fugro\.com\/careers/);
 assert.doesNotMatch(js, /mailto:/, 'The directory must not send unsolicited email');
-assert.match(js, /showPage\('profile'/);
+assert.match(js, /showPage\(["']profile["']/);
 assert.match(js, /profileTabSharingBtn/);
 assert.match(js, /jobsCompanyFilter/);
 assert.match(js, /View jobs/);
