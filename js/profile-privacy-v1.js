@@ -17,7 +17,7 @@
   function normalizeMode(value){return value==='public'||value==='private'?value:'custom'}
   function normalizeAudience(value){return value==='everyone'||value==='only_me'?value:'recruiters'}
   function normalizeFields(value){var fields={};Object.keys(DEFAULT_FIELDS).forEach(function(key){var current=value&&value[key];fields[key]=current==='public'||current==='private'?current:'recruiters'});return fields}
-  function fromProfile(profile){var saved=profile&&profile.privacySettings||{},legacy=profile&&profile.visibility||'Private';return {mode:normalizeMode(saved.mode||(legacy==='Public'?'public':legacy==='Private'?'private':'custom')),audience:normalizeAudience(saved.audience||(legacy==='Public'?'everyone':legacy==='Private'?'only_me':'recruiters')),fields:normalizeFields(saved.fields||DEFAULT_FIELDS)}}
+  function fromProfile(profile){var saved=profile&&profile.privacySettings||{},legacy=profile&&profile.visibility||'Private',legacyMode=legacy==='Public'?'public':legacy==='Private'?'private':'custom',savedMode=normalizeMode(saved.mode||legacyMode),mode=visibilityValue(savedMode)===legacy?savedMode:legacyMode;return {mode:mode,audience:normalizeAudience(mode==='public'?'everyone':mode==='private'?'only_me':saved.audience||'recruiters'),fields:normalizeFields(saved.fields||DEFAULT_FIELDS)}}
   function clone(value){return JSON.parse(JSON.stringify(value))}
   function visibilityValue(mode){return mode==='public'?'Public':mode==='private'?'Private':'Link Only'}
   function renderFieldsForMode(){if(!draft)return;Object.keys(DEFAULT_FIELDS).forEach(function(key){var value=draft.mode==='custom'?draft.fields[key]:draft.mode;var input=document.querySelector('input[name="privacy_'+key+'"][value="'+value+'"]');if(input)input.checked=true})}

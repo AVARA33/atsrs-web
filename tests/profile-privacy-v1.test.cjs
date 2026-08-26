@@ -40,5 +40,6 @@ assert.match(js,/function renderFieldsForMode\(\)/);
 assert.match(js,/draft\.mode==='custom'\?draft\.fields\[key\]:draft\.mode/);
 assert.doesNotMatch(js,/draft\.fields\[key\]=draft\.mode/);
 assert.match(js,/if\(draft\.mode==='custom'\)/);
-assert.match(html,/js\/profile-privacy-v1\.js\?v=7/);
+assert.match(html,/js\/profile-privacy-v1\.js\?v=8/);
+assert.match(js,/visibilityValue\(savedMode\)===legacy\?savedMode:legacyMode/);
 console.log('Profile Privacy V1 contracts passed');
