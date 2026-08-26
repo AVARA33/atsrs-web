@@ -25,7 +25,7 @@ assert.match(css,/@media\(max-width:760px\)/);
 assert.match(js,/window\.copyShareLink/);
 assert.match(js,/window\.previewShareProfile/);
 assert.match(js,/window\.revokeShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=18/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=19/);
 assert.match(css,/profile-sharing-expiry-check/);
 assert.match(css,/profile-sharing-v1 \*\{box-sizing:border-box\}/);
 assert.match(css,/profile-sharing-expiry-options label\.is-selected \.profile-sharing-expiry-check/);

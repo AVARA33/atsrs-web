@@ -29,7 +29,7 @@ body.personal-mode #profilePage .profile-sharing-links>header{justify-content:sp
 
 /* V17: keep the setup compact and reserve the lower half for the active-link list. */
 body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:76px minmax(0,1fr);gap:0}
-body.personal-mode #profilePage .profile-sharing-links-heading-floating{position:absolute;z-index:3;top:56px;right:0;display:flex;align-items:center;gap:6px;color:var(--text)}
+body.personal-mode #profilePage .profile-sharing-links-heading-floating{position:absolute;z-index:3;top:70px;right:0;display:flex;align-items:center;gap:6px;color:var(--text)}
 body.personal-mode #profilePage .profile-sharing-links-heading-floating>strong{font-size:11px}
 body.personal-mode #profilePage .profile-sharing-links-heading-floating>span{display:grid;min-width:18px;height:18px;place-items:center;border-radius:9px;background:var(--surface-2);font-size:9px}
 body.personal-mode #profilePage .profile-sharing-expiry-main{display:flex;align-items:center;gap:12px;min-width:0}
