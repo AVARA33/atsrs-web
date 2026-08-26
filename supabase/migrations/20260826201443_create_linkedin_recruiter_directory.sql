@@ -93,6 +93,19 @@ set company = 'Atlas Professionals',
     updated_at = now()
 where company = 'Atlas NextWave';
 
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Andreea Eugenia Coconasu', 'AECOM', 'Talent Acquisition Partner', 'Bucharest, Romania', 'https://ro.linkedin.com/in/andreea-eugenia-coconasu-8b636a119', '2026-08-27T01:40:00+04:00'),
+  ('Alina-Mihaela Popescu', 'AECOM', 'Senior Talent Acquisition Partner — UK&I, MEA, India, Spain & Poland', 'Bucharest, Romania', 'https://ro.linkedin.com/in/alina-mihaela-popescu-60853713', '2026-08-27T01:40:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
