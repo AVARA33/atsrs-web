@@ -336,3 +336,8 @@ html[data-theme] body #app.app:not(.hidden) #employersPage .employers-sector sel
   min-height: 44px !important;
   height: 44px !important;
 }
+html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-toolbar > .jobs-search {
+  grid-area: auto !important;
+  align-self: end !important;
+  width: 100% !important;
+}
