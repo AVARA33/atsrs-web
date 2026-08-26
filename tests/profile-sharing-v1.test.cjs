@@ -12,12 +12,14 @@ assert.doesNotMatch(html,/id="profileSharingV1"[\s\S]*?<h[1-6][^>]*>Sharing<\/h[
 assert.doesNotMatch(html,/id="profileSharingV1"[\s\S]*?Create share links to let others/);
 assert.doesNotMatch(html,/id="profileSharingV1"[\s\S]*?Create Share Link/);
 assert.match(css,/profile-sharing-v1\{[^}]*height:100%/);
-assert.match(css,/grid-template-rows:104px minmax\(0,1fr\)/);
+assert.match(css,/grid-template-rows:78px minmax\(0,1fr\)/);
+assert.match(css,/profile-sharing-setup\{[^}]*padding:0;[^}]*border:0;[^}]*background:transparent/);
+assert.doesNotMatch(css,/:is\(\.profile-sharing-setup,\.profile-sharing-audience-grid/);
 assert.match(css,/@media\(max-width:760px\)/);
 assert.match(js,/window\.copyShareLink/);
 assert.match(js,/window\.previewShareProfile/);
 assert.match(js,/window\.revokeShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=3/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=4/);
 assert.match(html,/id="profileSharingExpiry" data-atsrs-no-field-shell="true"/);
 assert.match(css,/profile-sharing-v1 \*\{box-sizing:border-box\}/);
 assert.match(css,/profile-sharing-expiry>\.atsrs-disclosure-shell\{[^}]*height:35px!important;[^}]*background:var\(--surface\)!important/);
