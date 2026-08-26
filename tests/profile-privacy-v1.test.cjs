@@ -44,6 +44,8 @@ assert.match(js,/function scheduleStoredRefresh\(\)/);
 assert.match(js,/\[0,100,300,750,1500,3000\]/);
 assert.match(html,/profilePrivacyEditBtn/);
 assert.match(html,/profile-availability-actions profile-privacy-actions/);
+assert.ok(html.indexOf('id="profilePrivacySaveBtn"')<html.indexOf('id="profilePrivacyCancelBtn"'));
+assert.ok(html.indexOf('id="profilePrivacyCancelBtn"')<html.indexOf('id="profilePrivacyEditBtn"'));
 assert.match(html,/profilePrivacyCancelBtn/);
 assert.match(html,/profilePrivacySaveBtn/);
 assert.doesNotMatch(js,/function scheduleSave/);
