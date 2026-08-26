@@ -1,3 +1,4 @@
+.profile-sharing-document-select-all{display:flex;align-items:center;justify-content:flex-end;gap:6px;padding:8px 14px 0;color:var(--muted);font-size:10px;font-weight:700}.profile-sharing-document-select-all input{width:16px!important;height:16px!important;min-height:16px!important;margin:0!important;accent-color:var(--atsrs-field-accent)}
 body.personal-mode #profilePage #profileTabSharingPanel{padding:12px 16px!important;overflow:hidden!important}
 body.personal-mode #profilePage .profile-sharing-v1,body.personal-mode #profilePage .profile-sharing-v1 *{box-sizing:border-box}
 body.personal-mode #profilePage .profile-sharing-v1{position:relative;display:grid;height:100%;min-height:0;grid-template-rows:108px minmax(0,1fr);gap:10px;color:var(--text)}
