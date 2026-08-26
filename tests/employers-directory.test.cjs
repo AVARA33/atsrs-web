@@ -16,7 +16,7 @@ assert.match(html, /id="navEmployers"[^>]*>Companies</);
 assert.match(html, /id="navRecruiters"[^>]*>Recruiters</);
 assert.match(html, /id="employersPage"/);
 assert.match(html, /id="recruitersPage"/);
-assert.match(html, /css\/employers\.css\?v=7/);
+assert.match(html, /css\/employers\.css\?v=8/);
 assert.match(html, /class="jobs-search-control"[^>]*>[\s\S]*?id="employersSearch"/);
 assert.match(html, /class="jobs-search-control"[^>]*>[\s\S]*?id="recruitersSearch"/);
 assert.equal((html.match(/atsrs:jobs-nav/g) || []).length >= 3, true);
@@ -43,8 +43,6 @@ assert.match(js, /refreshDirectoryOptions/);
 assert.match(js, /return \{ name: name \}/);
 assert.match(css, /\.employers-grid/);
 assert.match(css, /\.employer-card::before/);
-assert.match(css, /#recruitersPage \.employers-search-control input:focus/);
-assert.match(css, /#employersPage \.employers-sector/);
 assert.match(css, /:is\(#recruitersPage, #employersPage\) \.employers-search-control:focus-within/);
 
 console.log('Employers directory contracts passed');

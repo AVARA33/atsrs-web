@@ -307,35 +307,6 @@
 html[data-theme="light"] .employer-card { background: rgba(255,255,255,.96); color: #13233c; border-color: #d8e1ee; box-shadow: 0 10px 25px rgba(15,23,42,.09); }
 html[data-theme="light"] .employer-card::before { background: #2563eb; box-shadow: 2px 0 12px rgba(37,99,235,.2); }
 html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employer-card:focus-within { border-color: rgba(37,99,235,.52); box-shadow: 0 15px 32px rgba(15,23,42,.14), 0 0 0 1px rgba(37,99,235,.1); }
-#recruitersPage .employers-search-control input:focus, #recruitersPage .employers-search-control input:focus-visible { border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent !important; }
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control, html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control:focus-within { border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent !important; }
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control > i { flex: 0 0 auto; border: 0 !important; outline: 0 !important; box-shadow: none !important; }
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control,
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control:focus-within {
-  border: 1px solid var(--line) !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: var(--surface-2) !important;
-}
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control input:focus,
-html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control input:focus-visible {
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-}
-html[data-theme] body #app.app:not(.hidden) #employersPage .employers-toolbar {
-  align-items: end !important;
-}
-html[data-theme] body #app.app:not(.hidden) #employersPage .employers-sector {
-  align-self: end !important;
-  min-height: 44px !important;
-  height: 44px !important;
-  margin: 0 !important;
-}
-html[data-theme] body #app.app:not(.hidden) #employersPage .employers-sector select {
-  min-height: 44px !important;
-  height: 44px !important;
-}
 html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-toolbar > .jobs-search {
   grid-area: auto !important;
   align-self: end !important;
