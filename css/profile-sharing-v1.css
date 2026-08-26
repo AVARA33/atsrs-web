@@ -29,12 +29,12 @@ body.personal-mode #profilePage .profile-sharing-links>header{justify-content:sp
 
 /* V17: keep the setup compact and reserve the lower half for the active-link list. */
 body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:76px minmax(0,1fr);gap:0}
-body.personal-mode #profilePage .profile-sharing-links-heading-floating{position:absolute;z-index:3;top:35px;right:0;display:flex;align-items:center;gap:6px;color:var(--text)}
+body.personal-mode #profilePage .profile-sharing-links-heading-floating{position:absolute;z-index:3;top:56px;right:0;display:flex;align-items:center;gap:6px;color:var(--text)}
 body.personal-mode #profilePage .profile-sharing-links-heading-floating>strong{font-size:11px}
 body.personal-mode #profilePage .profile-sharing-links-heading-floating>span{display:grid;min-width:18px;height:18px;place-items:center;border-radius:9px;background:var(--surface-2);font-size:9px}
 body.personal-mode #profilePage .profile-sharing-expiry-main{display:flex;align-items:center;gap:12px;min-width:0}
-body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-sharing-expiry-main>.profile-sharing-create-button{flex:0 0 auto;width:auto!important;height:32px!important;min-height:32px!important;margin:0!important;padding:5px 11px!important;border:1px solid var(--atsrs-field-focus-inline-line)!important;border-radius:7px!important;background:var(--atsrs-field-surface,var(--surface))!important;color:var(--atsrs-field-accent)!important;-webkit-text-fill-color:var(--atsrs-field-accent)!important;box-shadow:var(--atsrs-field-focus-shadow)!important}
-body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-sharing-expiry-main>.profile-sharing-create-button:hover:not(:disabled){filter:none;background:var(--surface-2)!important}
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-sharing-expiry-main>.profile-sharing-create-button{flex:0 0 auto;width:auto!important;height:32px!important;min-height:32px!important;margin:0!important;padding:5px 11px!important;border:1px solid var(--line)!important;border-radius:7px!important;background:var(--surface)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;box-shadow:none!important}
+body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-sharing-expiry-main>.profile-sharing-create-button:hover:not(:disabled){filter:none;border-color:var(--atsrs-field-focus-inline-line)!important;background:var(--surface-2)!important;color:var(--atsrs-field-accent)!important;-webkit-text-fill-color:var(--atsrs-field-accent)!important}
 body.personal-mode #profilePage .profile-sharing-v1:not(.is-editing) .profile-sharing-expiry-main>.profile-sharing-create-button{pointer-events:auto}
 body.personal-mode #profilePage .profile-sharing-links{display:grid;grid-template-rows:14px minmax(0,1fr);min-height:0;overflow:hidden}
 body.personal-mode #profilePage .profile-sharing-create-status{min-height:14px;padding:0 4px}
@@ -44,4 +44,4 @@ body.personal-mode #profilePage .profile-sharing-empty{height:100%;min-height:70
 html[data-theme="dark"] .profile-sharing-document-dialog{background:#080b0a!important}
 html[data-theme="dark"] .profile-sharing-document-dialog>form{background:#080b0a!important}
 html[data-theme="dark"] .profile-sharing-document-choice,html[data-theme="dark"] .profile-sharing-document-select-all{background:#0b0f0d!important}
-@media(max-width:760px){body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:auto minmax(150px,1fr);padding-top:40px}body.personal-mode #profilePage .profile-sharing-links-heading-floating{top:35px;right:0}.profile-sharing-expiry-main{align-items:flex-start!important}.profile-sharing-expiry-main>.profile-sharing-create-button{margin-top:0!important}}
+@media(max-width:760px){body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:auto minmax(150px,1fr);padding-top:40px}body.personal-mode #profilePage .profile-sharing-links-heading-floating{top:auto;right:0;bottom:calc(100% - 40px)}.profile-sharing-expiry-main{align-items:flex-start!important}.profile-sharing-expiry-main>.profile-sharing-create-button{margin-top:0!important}}
