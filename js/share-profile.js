@@ -281,11 +281,12 @@
   }
   window.createShareProfileLink=async function(){
     var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry();
-    if(!fileIds.length){ownerMessage('Select at least one server document.',true);return;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return;}
+    if(!fileIds.length){ownerMessage('Select at least one server document.',true);return false;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
-    try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});}
-    catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);}finally{syncShareSelectAll();}
+    try{var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
+    catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);return false;}finally{syncShareSelectAll();}
   };
+  window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
   window.revokeShareProfileLink=async function(){
     if(!window.confirm('Disable this recruiter link? Preview and every approved download will stop immediately.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Disabling all recruiter access...');
