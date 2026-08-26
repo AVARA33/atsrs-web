@@ -88,6 +88,11 @@ on conflict (linkedin_url) do update set
   verified_at = excluded.verified_at,
   updated_at = now();
 
+update public.atsrs_recruiters
+set company = 'Atlas Professionals',
+    updated_at = now()
+where company = 'Atlas NextWave';
+
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
