@@ -10,7 +10,6 @@
     {key:'birthDate',icon:'ph-calendar-blank',title:'Date of birth',note:'Display your date of birth'}
   ];
   var draft=null;
-  var saveTimer=0;
   function byId(id){return document.getElementById(id)}
   function profileKey(){try{return typeof window.localKey==='function'?window.localKey('profile'):''}catch(error){return ''}}
   function readProfile(){try{var key=profileKey();if(!key)return {};var raw=window.atsrsCloudData&&window.atsrsCloudData.isManagedKey(key)?window.atsrsCloudData.read(key):localStorage.getItem(key);return raw?JSON.parse(raw):{}}catch(error){return {}}}
@@ -27,7 +26,7 @@
   function render(settings){draft=clone(settings);document.querySelectorAll('input[name="profilePrivacyMode"]').forEach(function(input){input.checked=input.value===draft.mode});renderFieldsForMode();applyModeEffects()}
   function readDraft(){if(!draft)return;var mode=document.querySelector('input[name="profilePrivacyMode"]:checked');draft.mode=normalizeMode(mode&&mode.value);draft.audience=draft.mode==='public'?'everyone':draft.mode==='private'?'only_me':'recruiters';if(draft.mode==='custom')Object.keys(DEFAULT_FIELDS).forEach(function(key){var input=document.querySelector('input[name="privacy_'+key+'"]:checked');draft.fields[key]=input?input.value:DEFAULT_FIELDS[key]});applyModeEffects()}
   async function save(){readDraft();var profile=readProfile();profile.privacySettings=clone(draft);profile.visibility=visibilityValue(draft.mode);profile.savedAt=new Date().toISOString();var legacy=byId('profileVisibility');if(legacy)legacy.value=profile.visibility;if(!writeProfile(profile))return false;if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')return await window.atsrsCloudData.flush();return true}
-  function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(function(){save().catch(function(error){console.warn('ATSRS privacy settings could not be saved',error)})},350)}
+  function scheduleSave(){save().catch(function(error){console.warn('ATSRS privacy settings could not be saved',error)})}
   function bind(){renderRows();document.querySelectorAll('input[name="profilePrivacyMode"]').forEach(function(input){input.addEventListener('change',function(){if(!draft)return;draft.mode=normalizeMode(input.value);draft.audience=draft.mode==='public'?'everyone':draft.mode==='private'?'only_me':'recruiters';renderFieldsForMode();applyModeEffects();scheduleSave()})});render(fromProfile(readProfile()));window.addEventListener('atsrs:cloud-data-loaded',function(){render(fromProfile(readProfile()))})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
