@@ -205,14 +205,15 @@
       var result = results[0], facets = results[1];
       if (token !== loadToken) return;
       if (result.error) throw result.error;
+      var facetRows = Array.isArray(facets.data) ? facets.data : [];
       var vacancyCounts = new Map();
       if (!facets.error)
-        (Array.isArray(facets.data) ? facets.data : []).forEach(function (row) {
+        facetRows.forEach(function (row) {
           var key = normalized(row && row.recruiter_name);
           if (key) vacancyCounts.set(key, (vacancyCounts.get(key) || 0) + 1);
         });
       else console.warn("ATSRS recruiter vacancy counts could not be loaded", facets.error);
-      recruiters = Array.isArray(result.data)
+      var directoryRecruiters = Array.isArray(result.data)
         ? result.data.filter(function (recruiter) {
           return recruiter && recruiter.name && !excluded(recruiter.name);
         }).map(function (recruiter) {
@@ -221,6 +222,25 @@
           });
         })
         : [];
+      var recruiterMap = new Map();
+      directoryRecruiters.forEach(function (recruiter) {
+        recruiterMap.set(normalized(recruiter.name), recruiter);
+      });
+      if (!facets.error)
+        facetRows.forEach(function (row) {
+          var name = String(row && row.recruiter_name || "").trim();
+          var key = normalized(name);
+          if (!key || excluded(name) || recruiterMap.has(key)) return;
+          recruiterMap.set(key, {
+            name: name,
+            company: String(row.recruiter_company || row.company || "").trim(),
+            role_title: "Recruiter on a published ATSRS vacancy",
+            location: String(row.location || "").trim(),
+            linkedin_url: "",
+            vacancyCount: vacancyCounts.get(key) || 0,
+          });
+        });
+      recruiters = Array.from(recruiterMap.values());
       companyOptions();
       render();
     } catch (error) {

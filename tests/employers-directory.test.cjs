@@ -24,7 +24,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSear
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/employers\.js\?v=10/);
-assert.match(html, /js\/recruiters\.js\?v=8/);
+assert.match(html, /js\/recruiters\.js\?v=9/);
 assert.match(html, /id="recruitersCompany"[^>]*>[\s\S]*?All companies/);
 assert.match(html, /id="employersVacancies"[^>]*>[\s\S]*?Active vacancies only/);
 assert.match(html, /id="recruitersVacancies"[^>]*>[\s\S]*?Active vacancies only/);
@@ -52,6 +52,8 @@ assert.match(recruitersJs, /Share my profile/);
 assert.match(recruitersJs, /atsrs_recruiters/);
 assert.match(recruitersJs, /rpc\("atsrs_jobs_facets"\)/);
 assert.match(recruitersJs, /vacancyCounts\.get\(normalized\(recruiter\.name\)\)/);
+assert.match(recruitersJs, /recruiterMap\.has\(key\)/);
+assert.match(recruitersJs, /Recruiter on a published ATSRS vacancy/);
 assert.match(recruitersJs, /b\.vacancyCount - a\.vacancyCount/);
 assert.match(recruitersJs, /All companies \(" \+ recruiters\.length \+ "\)/);
 assert.match(recruitersJs, /matchesCompany/);
