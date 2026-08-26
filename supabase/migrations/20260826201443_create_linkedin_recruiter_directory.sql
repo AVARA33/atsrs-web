@@ -79,6 +79,27 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Rosie Cole', 'GE Vernova', 'US Talent Acquisition Lead', 'Chicago, Illinois, United States', 'https://www.linkedin.com/in/rosiecole', '2026-08-27T18:50:00+04:00'),
+  ('Daniel Manner', 'GE Vernova', 'Talent Acquisition Professional', 'Chicago, Illinois, United States', 'https://www.linkedin.com/in/danielmanner', '2026-08-27T18:50:00+04:00'),
+  ('Silvia Sava', 'GE Vernova', 'Senior Talent Acquisition Partner — Central Europe', 'Bucharest, Romania', 'https://ro.linkedin.com/in/silvia-sava', '2026-08-27T18:50:00+04:00'),
+  ('Denisse Acosta', 'A.P. Moller - Maersk', 'Recruitment Specialist / HR Generalist', 'Downey, California, United States', 'https://www.linkedin.com/in/denisseacosta', '2026-08-27T18:50:00+04:00'),
+  ('Xenia Cunningham', 'A.P. Moller - Maersk', 'Recruitment & Talent Acquisition Professional', 'Salt Lake City, Utah, United States', 'https://www.linkedin.com/in/erin-m-cunningham', '2026-08-27T18:50:00+04:00'),
+  ('Jeanine Zucca', 'GE Vernova', 'Talent Advisor / Recruiter', 'Albany, New York, United States', 'https://www.linkedin.com/in/jeaninezuccata', '2026-08-27T18:50:00+04:00'),
+  ('Tessa Nguyen', 'GE Vernova', 'Talent Acquisition Partner — Early Talent', 'South Carolina, United States', 'https://www.linkedin.com/in/tessamnguyen', '2026-08-27T18:50:00+04:00'),
+  ('Tom Scholey', 'GE Vernova', 'Talent Acquisition Partner — Europe', 'United Kingdom', 'https://uk.linkedin.com/in/tom-scholey-622b2395', '2026-08-27T18:50:00+04:00'),
+  ('Sonia Macsim-Grunfeld', 'Siemens Gamesa', 'Senior Talent Acquisition Partner', 'Romania', 'https://ro.linkedin.com/in/sonia-grunfeld', '2026-08-27T18:50:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Sonia Gómez Marrasé', 'Ørsted', 'Talent Acquisition Consultant', 'Copenhagen, Denmark', 'https://dk.linkedin.com/in/soniagomeztalentacquisitionrecruiter', '2026-08-27T18:45:00+04:00'),
   ('Helle Mørk Guldborg', 'Vestas', 'Talent Acquisition Partner', 'Copenhagen, Denmark', 'https://dk.linkedin.com/in/helle-m%C3%B8rk-guldborg-919427aa', '2026-08-27T18:45:00+04:00'),
   ('Derek Murphy-Johnson', 'Vestas', 'Talent Acquisition Leader', 'Copenhagen, Denmark', 'https://dk.linkedin.com/in/hrderek', '2026-08-27T18:45:00+04:00'),
