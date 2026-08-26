@@ -148,6 +148,10 @@
     var select = byId("jobsRecruiterFilter");
     if (select) new MutationObserver(sync).observe(select, { childList: true });
     window.addEventListener("atsrs:resume", sync);
+    window.addEventListener("atsrs:jobs-nav", function () {
+      var refresh = window.atsrsJobs && window.atsrsJobs.refreshDirectoryOptions;
+      if (typeof refresh === "function") Promise.resolve(refresh()).then(sync);
+    });
   }
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", install, { once: true });
