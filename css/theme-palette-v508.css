@@ -296,6 +296,10 @@ html[data-theme] body :where(
   transition:border-color .14s ease,background-color .14s ease,color .14s ease!important;
 }
 html[data-theme] body :where(input,textarea)::placeholder{color:var(--atsrs-control-placeholder)!important;opacity:1}
+html[data-theme="dark"] body.personal-mode #app input[type="search"]::placeholder{
+  color:#65716a!important;
+  opacity:.68!important;
+}
 html[data-theme] body :where(
   input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]),
   select,

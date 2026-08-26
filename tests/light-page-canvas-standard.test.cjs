@@ -11,7 +11,7 @@ const workspace = read('css/workspace-surface-standard-v519.css');
 const themeRuntime = read('js/theme.js');
 
 assert.match(index, /data-atsrs-build="V5848"/);
-assert.match(index, /theme-palette-v508\.css\?v=5848/);
+assert.match(index, /theme-palette-v508\.css\?v=5849/);
 assert.match(index, /workspace-surface-standard-v519\.css\?v=5848/);
 assert.match(index, /js\/theme\.js\?v=5848/);
 assert.equal((theme.match(/--atsrs-light-page:#f6f8fb/g) || []).length, 1);

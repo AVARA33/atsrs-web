@@ -5,6 +5,7 @@ const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=(file)=>fs.readFileSync(path.join(root,file),'utf8');
 const css=read('css/theme-palette-v508.css');
+assert.match(css,/body\.personal-mode #app input\[type="search"\]::placeholder/);
 const index=read('index.html');
 
 assert.match(index,/data-atsrs-build="V5824"/);
