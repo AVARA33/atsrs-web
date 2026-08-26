@@ -3,6 +3,11 @@ body.personal-mode #profilePage #profileTabPrivacyPanel{height:100%;min-height:0
 body.personal-mode #profilePage .profile-privacy-shell{display:flex;min-height:100%;flex-direction:column;color:var(--text)}
 body.personal-mode #profilePage .profile-privacy-shell,
 body.personal-mode #profilePage .profile-privacy-shell *{box-sizing:border-box}
+body.personal-mode #profilePage .profile-privacy-shell{position:relative}
+body.personal-mode #profilePage .profile-privacy-actions{position:absolute;z-index:3;top:-7px;right:0;display:flex;align-items:center}
+body.personal-mode #profilePage .profile-privacy-shell.is-editing #profilePrivacyEditBtn{display:none}
+body.personal-mode #profilePage .profile-privacy-shell:not(.is-editing) .profile-privacy-mode-card,
+body.personal-mode #profilePage .profile-privacy-shell:not(.is-editing) .profile-privacy-radio{cursor:default}
 body.personal-mode #profilePage .profile-privacy-mode-grid{display:grid;grid-template-columns:repeat(3,max-content);justify-content:start;gap:8px}
 body.personal-mode #profilePage .profile-privacy-mode-card{position:relative;display:grid;grid-template-columns:22px auto;align-items:center;gap:6px;min-width:94px;min-height:34px;padding:4px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer;transition:border-color .16s ease,background .16s ease}
 body.personal-mode #profilePage .profile-privacy-mode-card:hover{border-color:color-mix(in srgb,var(--atsrs-field-accent,var(--accent)) 54%,var(--line));background:color-mix(in srgb,var(--atsrs-field-accent,var(--accent)) 3%,var(--surface))}
