@@ -78,6 +78,25 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Elaine Kearns', 'Expro', 'Recruiter — ESSA', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/elaine-kearns-55989a212/', '2026-08-27T17:20:00+04:00'),
+  ('Anna Andrea N.', 'NOV', 'Head of Talent Acquisition', 'Kuala Lumpur, Malaysia', 'https://www.linkedin.com/in/annanadaraja/', '2026-08-27T17:20:00+04:00'),
+  ('Antu Antoney', 'NOV', 'Senior Talent Acquisition Specialist', 'Kochi, India', 'https://www.linkedin.com/in/antu-antoney/', '2026-08-27T17:20:00+04:00'),
+  ('Constance Mbah', 'NOV', 'Talent Acquisition Specialist', 'Houston, United States', 'https://www.linkedin.com/in/constance-mbah-402266196/', '2026-08-27T17:20:00+04:00'),
+  ('Jaireese Black', 'CB&I', 'Senior Manager — Talent Acquisition', 'Houston, United States', 'https://www.linkedin.com/in/jaireeseblack/', '2026-08-27T17:20:00+04:00'),
+  ('Abhinav Khanna', 'Mindlance', 'Recruitment Team Lead', 'United States', 'https://www.linkedin.com/in/abhinav-khanna-913623118/', '2026-08-27T17:20:00+04:00'),
+  ('David M.', 'Seequent', 'Talent Acquisition Specialist', 'United Kingdom', 'https://www.linkedin.com/in/david-m-0aaab1142/', '2026-08-27T17:20:00+04:00'),
+  ('Lesley Lister', 'Bureau Veritas Group', 'Recruitment Partner — UK & Europe', 'United Kingdom', 'https://www.linkedin.com/in/lesley-lister-45a41698/', '2026-08-27T17:20:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Gulnaz H.', 'AGR', 'Senior Talent Acquisition Specialist', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/gulnazhaidarovna/', '2026-08-27T17:10:00+04:00'),
   ('Rufaidah Simah', 'Grab', 'Talent Acquisition Specialist', 'Malaysia', 'https://www.linkedin.com/in/rufaidah-simah/', '2026-08-27T17:10:00+04:00'),
   ('John Stewart', 'Granite Recruitment', 'Lead Recruiter', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/link2john/', '2026-08-27T17:10:00+04:00'),
