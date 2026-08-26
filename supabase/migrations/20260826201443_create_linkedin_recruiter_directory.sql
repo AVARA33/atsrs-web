@@ -79,6 +79,24 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Andreea Călina', 'Saipem', 'HR Development — Recruitment', 'Ploiești, Romania', 'https://ro.linkedin.com/in/calina-andreea', '2026-08-27T18:20:00+04:00'),
+  ('Claudine Aina Garcia', 'Saipem', 'Recruitment Officer', 'Doha, Qatar', 'https://qa.linkedin.com/in/claudine-aina-garcia-204078272', '2026-08-27T18:20:00+04:00'),
+  ('Cristina Coroian', 'Saipem', 'HR Manager / Europe HR Focal Point', 'Bucharest, Romania', 'https://ro.linkedin.com/in/cristina-coroian-b9339866', '2026-08-27T18:20:00+04:00'),
+  ('Elena Biasia', 'Saipem', 'Talent Acquisition & HR Business Partner', 'Milan, Italy', 'https://it.linkedin.com/in/elena-biasia-48945b218', '2026-08-27T18:20:00+04:00'),
+  ('Sandrine Pradié', 'Saipem', 'HR Business Partner & International Mobility', 'Montigny-le-Bretonneux, France', 'https://fr.linkedin.com/in/sandrine-pradi%C3%A9-2630b3150', '2026-08-27T18:20:00+04:00'),
+  ('Snehajith Allath', 'Saipem', 'Business Support Organization & Services Manager', 'Indonesia', 'https://id.linkedin.com/in/sjithu', '2026-08-27T18:20:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('James Drew', 'Select Offshore', 'Recruitment Specialist — Marine & Offshore Engineering', 'London, United Kingdom', 'https://uk.linkedin.com/in/james-drew-61aa476a', '2026-08-27T18:15:00+04:00'),
   ('Diana Khristichenko', 'Select Offshore', 'Recruitment Consultant — Offshore & Maritime', 'United Kingdom', 'https://uk.linkedin.com/in/diana-khristichenko-4bab3127a', '2026-08-27T18:15:00+04:00'),
   ('Chris Furneaux', 'Select Offshore', 'Recruitment Specialist — Marine & Offshore', 'Billericay, United Kingdom', 'https://uk.linkedin.com/in/chris-furneaux-5367574a', '2026-08-27T18:15:00+04:00'),
