@@ -78,6 +78,24 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Gabriella Coli', 'NES Fircroft', 'Senior Recruitment Consultant', 'Brazil', 'https://www.linkedin.com/in/gabriella-coli-4446483b/', '2026-08-27T17:50:00+04:00'),
+  ('Matthew P.', 'NES Fircroft', 'Senior Recruitment Consultant — EMEA Power & Energy', 'Manchester, United Kingdom', 'https://www.linkedin.com/in/matthew-p-7a7742123/', '2026-08-27T17:50:00+04:00'),
+  ('Henry Shears', 'NES Fircroft', 'Principal Recruitment Consultant', 'Thornaby-on-Tees, United Kingdom', 'https://www.linkedin.com/in/henry-shears-a44a2b158/', '2026-08-27T17:50:00+04:00'),
+  ('Rob Little', 'NES Fircroft', 'Senior Recruitment Consultant', 'Carlisle, United Kingdom', 'https://www.linkedin.com/in/rob-little-21b80236/', '2026-08-27T17:50:00+04:00'),
+  ('Verna Trinidad', 'NES Fircroft', 'Senior Recruitment Consultant', 'Muntinlupa, Philippines', 'https://www.linkedin.com/in/verna-trinidad-04261b24/', '2026-08-27T17:50:00+04:00'),
+  ('Ivernel B.', 'NES Fircroft', 'Recruitment Consultant — Subsea & Offshore Projects', 'France', 'https://www.linkedin.com/in/ivernel-bavinguila/', '2026-08-27T17:50:00+04:00'),
+  ('Elena B.', 'NES Fircroft', 'Recruitment Team Lead / Senior Recruiter', 'Kranj, Slovenia', 'https://www.linkedin.com/in/elenaberce/', '2026-08-27T17:50:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Robert Caldwell', 'Airswift', 'Senior Recruitment Consultant', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/robert-caldwell-resourcer/', '2026-08-27T17:40:00+04:00'),
   ('Beatriz Rodrigues', 'Airswift', 'Senior Delivery Consultant / US & Canada Recruiter', 'Rio de Janeiro, Brazil', 'https://www.linkedin.com/in/beatriz-rodrigues-9575b2186/', '2026-08-27T17:40:00+04:00'),
   ('Niamh Gorse', 'Airswift', 'Recruitment Consultant', 'Carlisle, United Kingdom', 'https://www.linkedin.com/in/niamh-gorse-863523218/', '2026-08-27T17:40:00+04:00'),
