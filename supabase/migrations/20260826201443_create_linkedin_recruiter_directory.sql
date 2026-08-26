@@ -75,6 +75,34 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Pooja R.', 'TechnipFMC', 'Process Lead — Talent Acquisition', 'Noida, India', 'https://www.linkedin.com/in/pooja-r-732028102/', '2026-08-27T12:00:00+04:00'),
+  ('Eman AlHajri', 'TechnipFMC', 'Senior Regional Talent Acquisition — Middle East, Asia & India', 'Saudi Arabia', 'https://www.linkedin.com/in/eman-alhajri/', '2026-08-27T12:00:00+04:00'),
+  ('Shadab Alam', 'TechnipFMC', 'Senior Talent Acquisition Specialist', 'United Arab Emirates', 'https://www.linkedin.com/in/shadab-alam-374ab63b/', '2026-08-27T12:00:00+04:00'),
+  ('Shoshana Benavides', 'TechnipFMC', 'Talent Acquisition Partner — Americas', 'Houston, United States', 'https://www.linkedin.com/in/julia-shoshana-pilloff/', '2026-08-27T12:00:00+04:00'),
+  ('Claudia Carvajal', 'TechnipFMC', 'Recruiter — UK Onshore', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/claudiacarvajal/', '2026-08-27T12:00:00+04:00'),
+  ('Lee Buchan', 'AMS / Baker Hughes', 'Talent Acquisition Business Partnering Manager', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/lee-buchan-33338a35/', '2026-08-27T12:00:00+04:00'),
+  ('Mayada Hassan', 'NES Fircroft / Baker Hughes', 'Senior Talent Acquisition Consultant', 'Egypt', 'https://www.linkedin.com/in/mayada-hassan-968769133/', '2026-08-27T12:00:00+04:00'),
+  ('Nomaan Nafees', 'Baker Hughes', 'Talent Acquisition Recruiter', 'United Arab Emirates', 'https://www.linkedin.com/in/nomaan-nafees-11683a49/', '2026-08-27T12:00:00+04:00'),
+  ('Hardik Shah', 'AMS / Baker Hughes', 'Talent Acquisition Recruiter', 'Mumbai, India', 'https://www.linkedin.com/in/hardik-shah-694b5364/', '2026-08-27T12:00:00+04:00'),
+  ('Shiva Ghade', 'AMS / Baker Hughes', 'Senior Recruiter — Americas', 'Mira-Bhayandar, India', 'https://www.linkedin.com/in/shiva-ghade-4853a1101/', '2026-08-27T12:00:00+04:00'),
+  ('Alia Medhat', 'Baker Hughes', 'Senior Talent Acquisition — MENAT', 'Egypt', 'https://www.linkedin.com/in/alia-medhat-823883105/', '2026-08-27T12:00:00+04:00'),
+  ('Zdenek Breburda', 'Siemens', 'Talent Acquisition Partner', 'Prague, Czechia', 'https://www.linkedin.com/in/zdenekb/', '2026-08-27T12:00:00+04:00'),
+  ('Kamilla Jus', 'Siemens', 'Talent Acquisition Team Leader', 'Czechia', 'https://www.linkedin.com/in/kamilla-jus-361275142/', '2026-08-27T12:00:00+04:00'),
+  ('Matthew Riesz', 'Siemens Healthineers', 'Senior Talent Acquisition Recruiter', 'Westborough, United States', 'https://www.linkedin.com/in/matthewriesz/', '2026-08-27T12:00:00+04:00'),
+  ('Tomas Tietz', 'Siemens', 'Head of Talent Acquisition — Austria', 'Prague, Czechia', 'https://www.linkedin.com/in/tomastietz/', '2026-08-27T12:00:00+04:00'),
+  ('Christel Y. Lilly', 'Siemens', 'Senior Talent Acquisition Partner', 'Florida, United States', 'https://www.linkedin.com/in/christellilly/', '2026-08-27T12:00:00+04:00'),
+  ('Ahmed Elghatas', 'Siemens Energy', 'Regional Head of Talent Acquisition — Middle East & Africa', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/ahmed-elghatas/', '2026-08-27T12:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Sally Spaull', 'PR Offshore Services Ltd', 'Senior Offshore Recruiter — ROV, Survey & Inspection', 'Lowestoft, United Kingdom', 'https://www.linkedin.com/in/sally-spaull-2b807920/', '2026-08-27T01:00:00+04:00'),
   ('Zarli H.', 'Archer Offshore', 'Offshore Recruiter — Trades & Inspection', 'Southampton, United Kingdom', 'https://www.linkedin.com/in/zarli-htet/', '2026-08-27T01:00:00+04:00'),
   ('Kirsty Emma Tipping', 'Archer', 'Talent Acquisition Lead', 'Norway', 'https://www.linkedin.com/in/kirsty-emma-tipping/', '2026-08-27T01:00:00+04:00'),
