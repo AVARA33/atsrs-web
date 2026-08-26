@@ -78,6 +78,73 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('D Pili', 'SLB', 'Senior Recruiter — Global Talent Acquisition', 'United Arab Emirates', 'https://www.linkedin.com/in/d-pili-ba453233/', '2026-08-27T15:00:00+04:00'),
+  ('Nancy Laeng', 'SLB', 'RPO Recruiter', 'Malaysia', 'https://www.linkedin.com/in/nancy-laeng-81036140/', '2026-08-27T15:00:00+04:00'),
+  ('Billal Adel Boussadia', 'SLB', 'New Energy Talent Management & Talent Acquisition Manager', 'Calgary, Canada', 'https://www.linkedin.com/in/billal-adel-boussadia-6355545b/', '2026-08-27T15:00:00+04:00'),
+  ('Anton Rublevskyi', 'SLB', 'Talent Acquisition Manager — Europe', 'Bucharest, Romania', 'https://www.linkedin.com/in/anton-rublevskyi/', '2026-08-27T15:00:00+04:00'),
+  ('Doğa Küçükersan', 'SLB', 'Recruiting & Staffing Assistant', 'Ankara, Türkiye', 'https://www.linkedin.com/in/dogakucukersan/', '2026-08-27T15:00:00+04:00'),
+  ('Abdullah Al Homod', 'SLB', 'Talent Acquisition Recruiter', 'Dhahran, Saudi Arabia', 'https://www.linkedin.com/in/abdullah-al-homod-1b546a83/', '2026-08-27T15:00:00+04:00'),
+  ('Gulshat N.', 'Intertasco', 'HR Recruiter — Oil & Gas', 'Almaty, Kazakhstan', 'https://www.linkedin.com/in/nyssambayevag/', '2026-08-27T15:00:00+04:00'),
+  ('Roji John', 'Masdar', 'Senior Talent Acquisition Specialist', 'United Arab Emirates', 'https://www.linkedin.com/in/roji-john-842ba317/', '2026-08-27T15:00:00+04:00'),
+  ('Fauzan Cahya Bachtiar', 'PT Supraco Indonesia', 'Recruiter — Oil, Gas & Energy', 'Jakarta, Indonesia', 'https://www.linkedin.com/in/fauzancb/', '2026-08-27T15:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Sorina Andrei', 'AECOM', 'Talent Acquisition Partner', 'Germany', 'https://www.linkedin.com/in/sorina-andrei-b97a69222/', '2026-08-27T14:00:00+04:00'),
+  ('Mark Pereira', 'AECOM', 'Talent Acquisition Advisor', 'Mississauga, Canada', 'https://www.linkedin.com/in/titansfan/', '2026-08-27T14:00:00+04:00'),
+  ('Huzaifa Ansari', 'AECOM', 'Talent Acquisition Advisor', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/huzaifa-ansari-45b615120/', '2026-08-27T14:00:00+04:00'),
+  ('Tanzim Moin', 'BAUER Geotechnical Solutions Middle East', 'Talent Acquisition Specialist', 'Abu Dhabi, United Arab Emirates', 'https://www.linkedin.com/in/tanzimmoin/', '2026-08-27T14:00:00+04:00'),
+  ('Gwynne Ellis Peterson', 'ENTRUST Solutions Group', 'Senior Talent Acquisition Specialist', 'Denver, United States', 'https://www.linkedin.com/in/gwynne-ellis/', '2026-08-27T14:00:00+04:00'),
+  ('Tessa Sluyter', 'Oyster Personnel', 'International / Maritime Recruitment Manager', 'The Hague, Netherlands', 'https://www.linkedin.com/in/tessasluyter/', '2026-08-27T14:00:00+04:00'),
+  ('Kyung Hoon Bang', 'LSP Renewables', 'Senior Recruitment Consultant', 'Seoul, South Korea', 'https://www.linkedin.com/in/kaybbang/', '2026-08-27T14:00:00+04:00'),
+  ('Michelle Birnie-Mackintosh', 'Brunel', 'Senior Recruiter', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/michelle-birnie-mackintosh-6a30a924/', '2026-08-27T14:00:00+04:00'),
+  ('Ben Callander', 'Brunel', 'Recruitment Consultant', 'Warrington, United Kingdom', 'https://www.linkedin.com/in/ben-callander-532567223/', '2026-08-27T14:00:00+04:00'),
+  ('Renan Paiva', 'Brunel', 'Senior Recruiter', 'Brazil', 'https://www.linkedin.com/in/paivarenan/', '2026-08-27T14:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
+  ('Gerry Doran', 'Wood', 'Recruiter', 'Glasgow, United Kingdom', 'https://www.linkedin.com/in/gerry-doran-b9ba5b54/', '2026-08-27T13:00:00+04:00'),
+  ('Gladwin Nadesan', 'Wood', 'Senior Talent Acquisition Advisor', 'Abu Dhabi, United Arab Emirates', 'https://www.linkedin.com/in/gladwin-timothy/', '2026-08-27T13:00:00+04:00'),
+  ('Azan Najeeb', 'Wood', 'Talent Acquisition Manager — MEAC', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/azan-najeeb-a37bba97/', '2026-08-27T13:00:00+04:00'),
+  ('Alina Shams', 'Euro Mechanical', 'Talent Acquisition Manager', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/shamsalina/', '2026-08-27T13:00:00+04:00'),
+  ('Tracy Colby', 'GHD', 'Talent Acquisition Business Partner', 'Calgary, Canada', 'https://www.linkedin.com/in/tracycolby/', '2026-08-27T13:00:00+04:00'),
+  ('Lee Morley', 'Evolve Technical Recruitment', 'Talent Acquisition Specialist — Energy & Infrastructure', 'United Kingdom', 'https://www.linkedin.com/in/lee-morley-9501707/', '2026-08-27T13:00:00+04:00'),
+  ('Holly Angus', 'EthosEnergy', 'Senior Manager Talent Acquisition — Global', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/holly-angus-44437616/', '2026-08-27T13:00:00+04:00'),
+  ('Andrew Lyons', 'Costain Group', 'Talent Acquisition Specialist — Water', 'Warwick, United Kingdom', 'https://www.linkedin.com/in/andrew-m-lyons/', '2026-08-27T13:00:00+04:00'),
+  ('Gursh Chahal', 'Worley', 'Talent Acquisition Specialist', 'Stevenage, United Kingdom', 'https://www.linkedin.com/in/gurshchahal/', '2026-08-27T13:00:00+04:00'),
+  ('Mohsan Aslam', 'Worley', 'Talent Acquisition Manager — UK & Nordics', 'Manchester, United Kingdom', 'https://www.linkedin.com/in/mohsan-aslam-54686960/', '2026-08-27T13:00:00+04:00'),
+  ('Faye Inglis', 'Worley', 'Senior Talent Acquisition Specialist', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/faye-inglis-amcipd-b89a2212/', '2026-08-27T13:00:00+04:00'),
+  ('Addie Burson', 'Worley', 'Talent Acquisition Advisor / Recruiter', 'United States', 'https://www.linkedin.com/in/addie-burson-shrm-cp-67a56616a/', '2026-08-27T13:00:00+04:00'),
+  ('Preetha Hubert', 'Worley', 'Talent Acquisition Advisor', 'Doha, Qatar', 'https://www.linkedin.com/in/preetha-hubert-88954241/', '2026-08-27T13:00:00+04:00'),
+  ('Kathryn McLeod', 'Worley', 'Talent Acquisition Director — Americas & Global Major Projects', 'Houston, United States', 'https://www.linkedin.com/in/kathrynmcleod/', '2026-08-27T13:00:00+04:00'),
+  ('Prabhakar Padhi', 'Kent', 'Lead Talent Acquisition Specialist', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/prabhakarpadhi/', '2026-08-27T13:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Pooja R.', 'TechnipFMC', 'Process Lead — Talent Acquisition', 'Noida, India', 'https://www.linkedin.com/in/pooja-r-732028102/', '2026-08-27T12:00:00+04:00'),
   ('Eman AlHajri', 'TechnipFMC', 'Senior Regional Talent Acquisition — Middle East, Asia & India', 'Saudi Arabia', 'https://www.linkedin.com/in/eman-alhajri/', '2026-08-27T12:00:00+04:00'),
   ('Shadab Alam', 'TechnipFMC', 'Senior Talent Acquisition Specialist', 'United Arab Emirates', 'https://www.linkedin.com/in/shadab-alam-374ab63b/', '2026-08-27T12:00:00+04:00'),
