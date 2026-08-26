@@ -145,6 +145,14 @@
   margin: 0;
   font-size: 20px;
 }
+.employer-detail-label {
+  margin-top: 4px;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 .employer-card-copy p {
   margin: 0;
   color: var(--muted);
@@ -188,11 +196,11 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 38px;
-  padding: 0 12px;
-  border-radius: 10px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
 }
 .employer-actions a {

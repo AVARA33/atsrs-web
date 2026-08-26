@@ -94,35 +94,6 @@
       }
     }, 0);
   }
-  function share(company) {
-    try {
-      sessionStorage.setItem(
-        "atsrs_employer_share_target",
-        JSON.stringify({ name: company.name, contact: company.contact || "" }),
-      );
-    } catch (_error) {}
-    if (typeof window.showPage === "function")
-      window.showPage("profile", byId("navProfile"));
-    setTimeout(function () {
-      var sharing = byId("profileTabSharingBtn");
-      if (sharing) sharing.click();
-      var edit = byId("profileSharingEditBtn");
-      if (edit) edit.click();
-      var recipient = document.querySelector(
-        'input[name="profileSharingAudience"][value="recipient"]',
-      );
-      if (recipient && !recipient.disabled) {
-        recipient.checked = true;
-        recipient.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-      var status = byId("profileSharingCreateStatus");
-      if (status)
-        status.textContent =
-          "Create a secure link for " +
-          company.name +
-          ", then copy it to the company’s verified contact route.";
-    }, 0);
-  }
   function card(company) {
     var data = verified[company.name] || {},
       article = document.createElement("article");
@@ -145,11 +116,14 @@
       (data.website ? "Official public sources" : "Active in JobSearch");
     var title = document.createElement("h4");
     title.textContent = company.name;
+    var detailLabel = document.createElement("strong");
+    detailLabel.className = "employer-detail-label";
+    detailLabel.textContent = data.summary ? "Activity" : "ATSRS listing";
     var summary = document.createElement("p");
     summary.textContent =
       data.summary ||
-      "Company represented by one or more published ATSRS vacancies.";
-    copy.append(source, title, summary);
+      "Published company vacancies are available in ATSRS JobSearch.";
+    copy.append(source, title, detailLabel, summary);
     head.append(mark, copy);
     var tags = document.createElement("div");
     tags.className = "employer-tags";
@@ -173,11 +147,6 @@
           goToJobs(company.name);
         }),
       );
-    actions.append(
-      action("Share my profile", "share-network", function () {
-        share(Object.assign({ name: company.name }, data));
-      }),
-    );
     article.append(head, tags, actions);
     return article;
   }
