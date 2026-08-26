@@ -93,6 +93,9 @@
       "</span>";
     return link;
   }
+  function vacancyLabel(count) {
+    return count + " active " + (count === 1 ? "vacancy" : "vacancies");
+  }
   function card(recruiter) {
     var name = recruiter.name;
     var article = document.createElement("article");
@@ -121,6 +124,12 @@
       : "Recruiter listed on one or more published ATSRS vacancies.";
     copy.append(source, title, summary);
     head.append(mark, copy);
+    var tags = document.createElement("div");
+    tags.className = "employer-tags";
+    var vacancyTag = document.createElement("span");
+    vacancyTag.className = "employer-tag employer-vacancy-count";
+    vacancyTag.textContent = vacancyLabel(recruiter.vacancyCount || 0);
+    tags.appendChild(vacancyTag);
     var actions = document.createElement("div");
     actions.className = "employer-actions";
     if (recruiter.linkedin_url)
@@ -139,7 +148,7 @@
         share(name);
       }),
     );
-    article.append(head, actions);
+    article.append(head, tags, actions);
     return article;
   }
   function db() {
@@ -182,19 +191,34 @@
   }
   async function loadRecruiters() {
     var client = db();
-    if (!client || !client.from) return;
+    if (!client || !client.from || !client.rpc) return;
     var token = ++loadToken;
     try {
-      var result = await client
-        .from("atsrs_recruiters")
-        .select("name,company,role_title,location,linkedin_url")
-        .eq("status", "active")
-        .order("name", { ascending: true });
+      var results = await Promise.all([
+        client
+          .from("atsrs_recruiters")
+          .select("name,company,role_title,location,linkedin_url")
+          .eq("status", "active")
+          .order("name", { ascending: true }),
+        client.rpc("atsrs_jobs_facets"),
+      ]);
+      var result = results[0], facets = results[1];
       if (token !== loadToken) return;
       if (result.error) throw result.error;
+      var vacancyCounts = new Map();
+      if (!facets.error)
+        (Array.isArray(facets.data) ? facets.data : []).forEach(function (row) {
+          var key = normalized(row && row.recruiter_name);
+          if (key) vacancyCounts.set(key, (vacancyCounts.get(key) || 0) + 1);
+        });
+      else console.warn("ATSRS recruiter vacancy counts could not be loaded", facets.error);
       recruiters = Array.isArray(result.data)
         ? result.data.filter(function (recruiter) {
           return recruiter && recruiter.name && !excluded(recruiter.name);
+        }).map(function (recruiter) {
+          return Object.assign({}, recruiter, {
+            vacancyCount: vacancyCounts.get(normalized(recruiter.name)) || 0,
+          });
         })
         : [];
       companyOptions();

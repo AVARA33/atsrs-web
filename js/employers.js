@@ -95,6 +95,9 @@
     button.addEventListener("click", handler);
     return button;
   }
+  function vacancyLabel(count) {
+    return count + " active " + (count === 1 ? "vacancy" : "vacancies");
+  }
   function goToJobs(name) {
     if (typeof window.showPage === "function")
       window.showPage("jobs", byId("navJobs"));
@@ -139,9 +142,9 @@
     head.append(mark, copy);
     var tags = document.createElement("div");
     tags.className = "employer-tags";
-    (data.tags || ["Published vacancies"]).forEach(function (value) {
+    [vacancyLabel(company.vacancyCount || 0)].concat(data.tags || []).forEach(function (value, index) {
       var tag = document.createElement("span");
-      tag.className = "employer-tag";
+      tag.className = "employer-tag" + (index === 0 ? " employer-vacancy-count" : "");
       tag.textContent = value;
       tags.appendChild(tag);
     });
@@ -199,11 +202,14 @@
       var names = new Map();
       (Array.isArray(result.data) ? result.data : []).forEach(function (row) {
         var name = clean(row && (row.recruiter_company || row.company));
-        if (name && !names.has(normalized(name))) names.set(normalized(name), name);
+        if (!name) return;
+        var key = normalized(name);
+        var company = names.get(key) || { name: name, vacancyCount: 0 };
+        company.vacancyCount += 1;
+        names.set(key, company);
       });
       companies = Array.from(names.values())
-        .sort(function (a, b) { return a.localeCompare(b); })
-        .map(function (name) { return { name: name }; });
+        .sort(function (a, b) { return a.name.localeCompare(b.name); });
       var message = byId("employersMessage");
       if (message) message.textContent = "";
       render();
