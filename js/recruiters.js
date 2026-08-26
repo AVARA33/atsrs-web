@@ -140,10 +140,19 @@
           "linkedin-logo",
         ),
       );
-    actions.append(
-      action("View jobs & contact", "address-book", function () {
+    var jobsAction = action(
+      recruiter.vacancyCount > 0 ? "View jobs & contact" : "No active jobs",
+      "address-book",
+      function () {
         goToJobs(name);
-      }),
+      },
+    );
+    if (!(recruiter.vacancyCount > 0)) {
+      jobsAction.disabled = true;
+      jobsAction.setAttribute("aria-disabled", "true");
+    }
+    actions.append(
+      jobsAction,
       action("Share my profile", "share-network", function () {
         share(name);
       }),

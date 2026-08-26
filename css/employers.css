@@ -143,11 +143,11 @@
 }
 .employer-card-copy h4 {
   margin: 0;
-  color: #fff;
+  color: #fff!important;
   font-size: 20px;
 }
 html[data-theme="light"] .employer-card-copy h4 {
-  color: #13233c;
+  color: #13233c!important;
 }
 .employer-detail-label {
   margin-top: 4px;
@@ -223,6 +223,13 @@ html[data-theme="light"] .employer-card-copy h4 {
 }
 .employer-actions button {
   margin-left: auto;
+}
+.employer-actions button:disabled {
+  cursor: not-allowed;
+  border-color: var(--line);
+  background: var(--surface-2);
+  color: var(--muted);
+  opacity: .55;
 }
 .employer-verified {
   padding-top: 11px;

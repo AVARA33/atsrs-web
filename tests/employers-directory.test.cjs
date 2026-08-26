@@ -16,7 +16,7 @@ assert.match(html, /id="navEmployers"[^>]*>Companies</);
 assert.match(html, /id="navRecruiters"[^>]*>Recruiters</);
 assert.match(html, /id="employersPage"/);
 assert.match(html, /id="recruitersPage"/);
-assert.match(html, /css\/employers\.css\?v=16/);
+assert.match(html, /css\/employers\.css\?v=17/);
 assert.doesNotMatch(html, /id="(?:employers|recruiters)Heading"/, 'Directory pages must not repeat the white page title as a large green heading');
 assert.equal((html.match(/class="atsrs-search-control"/g) || []).length, 3, 'All three directory searches use the canonical control');
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearch"/);
@@ -24,7 +24,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSear
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/employers\.js\?v=10/);
-assert.match(html, /js\/recruiters\.js\?v=9/);
+assert.match(html, /js\/recruiters\.js\?v=10/);
 assert.match(html, /id="recruitersCompany"[^>]*>[\s\S]*?All companies/);
 assert.match(html, /id="recruitersSearch"[^>]*placeholder="Recruiter or company"/);
 assert.match(html, /id="employersVacancies"[^>]*>[\s\S]*?Active vacancies only/);
@@ -49,6 +49,8 @@ assert.doesNotMatch(js, /Share my profile|atsrs_employer_share_target|profileTab
 assert.match(storage, /employers:navEmployers/g);
 assert.match(storage, /recruiters:navRecruiters/g);
 assert.match(recruitersJs, /View jobs & contact/);
+assert.match(recruitersJs, /jobsAction\.disabled = true/);
+assert.match(recruitersJs, /No active jobs/);
 assert.match(recruitersJs, /Share my profile/);
 assert.match(recruitersJs, /atsrs_recruiters/);
 assert.match(recruitersJs, /rpc\("atsrs_jobs_facets"\)/);
@@ -67,6 +69,7 @@ assert.match(css, /\.employer-detail-label/);
 assert.match(css, /\.employer-vacancy-count/);
 assert.match(css, /\.employer-card-copy h4[\s\S]*?color: #fff/);
 assert.match(css, /html\[data-theme="light"\] \.employer-card-copy h4/);
+assert.match(css, /\.employer-actions button:disabled/);
 assert.doesNotMatch(css, /employers-search/, 'Legacy directory search styling must stay removed');
 
 console.log('Employers directory contracts passed');
