@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Employers directory harness</title>
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../../css/employers.css">
+  <style>
+    :root{--surface:#fff;--surface-2:#f6f8fb;--line:#dfe4ea;--text:#172033;--muted:#697386;--atsrs-field-accent:#2563eb}*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:var(--text);font-family:Inter,Arial,sans-serif}main{padding:28px}button,select,input{font:inherit}.pill{display:inline-flex;padding:6px 9px;border-radius:999px;background:#e9f0ff;color:#2563eb;font-size:11px;font-weight:800}.hidden{display:none!important}
+  </style>
+</head>
+<body>
+<main>
+<section id="employersPage" class="employers-page" aria-labelledby="employersHeading">
+  <header class="employers-hero"><div><span class="pill">OFFICIAL COMPANY DIRECTORY</span><h3 id="employersHeading">Employers</h3><p>Explore official employer websites, careers pages and contact routes relevant to offshore and subsea work.</p></div><div class="employers-snapshot"><strong id="employersVisibleCount">0 employers</strong><span>Official public sources</span></div></header>
+  <div class="employers-toolbar"><label class="employers-search"><span>Search employers</span><span class="employers-search-control"><i class="ph ph-magnifying-glass"></i><input id="employersSearch" type="search" placeholder="Company or specialism"></span></label><label class="employers-sector"><span>Sector</span><select id="employersSector"><option value="">All sectors</option></select></label><button id="employersClearFilters" type="button">Clear filters</button></div>
+  <div class="employers-notice"><i class="ph ph-shield-check"></i><div><strong>Use official application routes</strong><span>ATSRS lists public company sources and is not acting as the employer or recruitment agent.</span></div></div>
+  <div id="employersMessage" class="employers-message"></div><div id="employersGrid" class="employers-grid"></div><div id="employersEmpty" class="employers-empty hidden"></div>
+</section>
+</main>
+<script>window.showPage=function(){};</script>
+<script src="../../js/employers.js"></script>
+</body>
+</html>

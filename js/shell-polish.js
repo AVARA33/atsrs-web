@@ -14,6 +14,7 @@
     navReports:'chart-bar',
     navProfile:'user-circle',
     navJobs:'briefcase-metal',
+    navEmployers:'buildings',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
   };
@@ -30,6 +31,7 @@
     navReports:'Reports',
     navProfile:'Profile',
     navJobs:'JobSearch',
+    navEmployers:'Employers',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -45,6 +47,7 @@
     navCompliance:'Security',
     navProfile:'Profile',
     navJobs:'JobSearch',
+    navEmployers:'Employers',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };

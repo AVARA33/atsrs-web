@@ -113,6 +113,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=5848">
 <link rel="stylesheet" href="css/jobs-prototype.css?v=58175">
+<link rel="stylesheet" href="css/employers.css?v=1">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <link rel="stylesheet" href="css/button-content-standard-v58148.css?v=58148">
@@ -561,6 +562,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="nav-primary">
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
 <button id="navJobs" onclick="showPage('jobs',this);window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))">JobSearch</button>
+<button id="navEmployers" class="personal-only" onclick="showPage('employers',this)">Employers</button>
 <button id="navCandidates" onclick="showPage('candidates',this)">Candidates</button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
 <button id="navProjects" class="company-only" onclick="showPage('projects',this)">Projects</button>
@@ -791,6 +793,37 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div id="jobsGrid" class="jobs-grid" aria-live="polite"></div>
   <div id="jobsEmpty" class="jobs-empty hidden"><i class="ph ph-briefcase" aria-hidden="true"></i><h2>No matching opportunities</h2><p>Clear the filters and try another search.</p></div>
   <nav id="jobsPaginationBottom" class="jobs-pagination jobs-pagination-bottom hidden" aria-label="Jobs pagination" data-jobs-pagination></nav>
+</section>
+
+<section id="employersPage" class="hidden employers-page" aria-labelledby="employersHeading">
+  <header class="employers-hero">
+    <div>
+      <span class="pill">OFFICIAL COMPANY DIRECTORY</span>
+      <h3 id="employersHeading">Employers</h3>
+      <p>Explore official employer websites, careers pages and contact routes relevant to offshore and subsea work.</p>
+    </div>
+    <div class="employers-snapshot" aria-label="Employers directory status">
+      <strong id="employersVisibleCount" aria-live="polite">0 employers</strong>
+      <span>Official public sources</span>
+    </div>
+  </header>
+
+  <div class="employers-toolbar" aria-label="Employer filters">
+    <label class="employers-search">
+      <span>Search employers</span>
+      <span class="employers-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="employersSearch" type="search" placeholder="Company or specialism" autocomplete="off"></span>
+    </label>
+    <label class="employers-sector"><span>Sector</span><select id="employersSector"><option value="">All sectors</option></select></label>
+    <button id="employersClearFilters" type="button" class="secondary">Clear filters</button>
+  </div>
+
+  <div class="employers-notice" role="note">
+    <i class="ph ph-shield-check" aria-hidden="true"></i>
+    <div><strong>Use official application routes</strong><span>ATSRS lists public company sources and is not acting as the employer or recruitment agent.</span></div>
+  </div>
+  <div id="employersMessage" class="employers-message" role="status" aria-live="polite"></div>
+  <div id="employersGrid" class="employers-grid" aria-live="polite"></div>
+  <div id="employersEmpty" class="employers-empty hidden"><i class="ph ph-buildings" aria-hidden="true"></i><h2>No matching employers</h2><p>Clear the filters and try another search.</p></div>
 </section>
 
 <section id="privacyPage" class="hidden legal-app-page">
@@ -2065,13 +2098,14 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=589"></script>
+<script src="js/storage.js?v=590"></script>
 <script src="js/public-landing.js?v=58147"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
 <script src="js/login.js?v=568"></script>
 <script src="js/dashboard.js?v=5929"></script>
+<script src="js/employers.js?v=1"></script>
 <script src="js/avatar.js?v=393"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>
@@ -2096,7 +2130,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/select-open-position-v58165.js?v=58165"></script>
 <script src="js/floating-fields.js?v=58186"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
-<script src="js/shell-polish.js?v=568"></script>
+<script src="js/shell-polish.js?v=569"></script>
 <script src="js/profile-workspace-v5886.js?v=5955"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
 <script src="js/profile-sharing-v1.js?v=18"></script>
