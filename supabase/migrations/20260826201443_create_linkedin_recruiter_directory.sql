@@ -79,6 +79,21 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('María José Hornig Mateluna', 'Siemens Gamesa', 'HR Business Partner', 'Santiago, Chile', 'https://cl.linkedin.com/in/mar%C3%ADa-jos%C3%A9-hornig-mateluna-06a769224', '2026-08-27T18:55:00+04:00'),
+  ('Harinath Reddy', 'A.P. Moller - Maersk', 'Talent Acquisition Professional', 'Bengaluru, India', 'https://in.linkedin.com/in/harinath-reddy-hr', '2026-08-27T18:55:00+04:00'),
+  ('Aleksandra Ziajka', 'A.P. Moller - Maersk', 'Talent Acquisition Partner', 'Kraków, Poland', 'https://pl.linkedin.com/in/adebska', '2026-08-27T18:55:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Rosie Cole', 'GE Vernova', 'US Talent Acquisition Lead', 'Chicago, Illinois, United States', 'https://www.linkedin.com/in/rosiecole', '2026-08-27T18:50:00+04:00'),
   ('Daniel Manner', 'GE Vernova', 'Talent Acquisition Professional', 'Chicago, Illinois, United States', 'https://www.linkedin.com/in/danielmanner', '2026-08-27T18:50:00+04:00'),
   ('Silvia Sava', 'GE Vernova', 'Senior Talent Acquisition Partner — Central Europe', 'Bucharest, Romania', 'https://ro.linkedin.com/in/silvia-sava', '2026-08-27T18:50:00+04:00'),
