@@ -1,6 +1,7 @@
 (function(){
   'use strict';
   var state={ready:false,activeTab:'personal',personalEditing:false,availabilityEditing:false,initialDraft:'',initialBirthDisplay:'',initialBirthIso:'',scroll:{}};
+  var PROFILE_TAB_STORAGE_KEY='atsrs_profile_active_tab';
   function byId(id){return document.getElementById(id)}
   function controls(root){return root?Array.prototype.slice.call(root.querySelectorAll('input,select,textarea,button')):[]}
   function setEnabled(root,enabled){controls(root).forEach(function(el){if(el.type!=='hidden')el.disabled=!enabled})}
@@ -62,6 +63,8 @@
   function availabilityDateText(value){if(!value)return 'Not specified';var parts=value.split('-'),date=new Date(Number(parts[0]),Number(parts[1])-1,Number(parts[2]));return new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(date)}
   function timezoneEditorText(select){var label=selectedText(select),zone=select&&select.value||'UTC';try{return label+' · '+new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date())}catch(error){return label}}
   function tabName(button){return button&&button.id?button.id.replace('profileTab','').replace('Btn','').toLowerCase():'personal'}
+  function savedTab(){try{var value=sessionStorage.getItem(PROFILE_TAB_STORAGE_KEY);return /^(personal|privacy|sharing|security)$/.test(value||'')?value:'personal'}catch(error){return 'personal'}}
+  function rememberTab(name){try{sessionStorage.setItem(PROFILE_TAB_STORAGE_KEY,name)}catch(error){}}
   function activate(name,focus){
     if(dirty()&&!window.confirm('Discard unsaved profile changes?'))return false;
     if(state.personalEditing)cancelPersonal(false);
@@ -74,7 +77,7 @@
     if(current)state.scroll[state.activeTab]=current.scrollTop;
     buttons.forEach(function(button){var active=button===next;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',active?'true':'false');button.tabIndex=active?0:-1});
     panels.forEach(function(item){var active=item===panel;item.hidden=!active;item.classList.toggle('is-active',active)});
-    state.activeTab=name;panel.scrollTop=state.scroll[name]||0;if(focus)next.focus();return true;
+    state.activeTab=name;rememberTab(name);panel.scrollTop=state.scroll[name]||0;if(focus)next.focus();return true;
   }
   function enterPersonal(focusId){
     var savedX=window.scrollX,savedY=window.scrollY;
@@ -136,7 +139,7 @@
     ['setup2faBtn','viewSessionsBtn'].forEach(function(id){moveRow(id,'profileSecurityControls')});moveSecurityContacts();moveRow('deleteAccountBtn','profileSecurityControls');decorateSecurityControls();
     var share=byId('shareProfilePanel'),sharing=byId('profileSharingControls');if(share&&sharing)sharing.appendChild(share);
     var oldEdit=byId('editProfileBtn');if(oldEdit)oldEdit.hidden=true;
-    bindTabs();activate('personal',false);
+    bindTabs();activate(savedTab(),false);
     bindAvailabilityActions();
     document.querySelectorAll('[data-profile-stage-edit]').forEach(function(button){button.addEventListener('click',function(){enterPersonal(button.dataset.profileStageEdit==='whatsapp'?'profileWhatsappLocal':'profilePhoneLocal')})});
     return true;
