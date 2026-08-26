@@ -452,7 +452,7 @@
     publicToken=new URLSearchParams(location.search).get('share')||'';
     if(publicToken){viewerToken=safeViewerGet(viewerKey('token'));try{viewerIdentity=JSON.parse(safeViewerGet(viewerKey('identity'))||'null');}catch(error){viewerIdentity=null;}loadPublicProfile(publicToken);return;}
     var input=byId('shareProfileLink');if(input){input.value='';input.placeholder='Create a secure link after choosing documents.';}var copy=byId('copyShareBtn');if(copy)copy.disabled=true;var preview=byId('previewShareBtn');if(preview)preview.disabled=true;
-    refreshOwnerPanel();setTimeout(refreshOwnerPanel,1200);atsrsStableInterval(function(){return refreshShareRequests();},30000);
+    refreshOwnerPanel({force:true});setTimeout(function(){refreshOwnerPanel({force:true});},1200);atsrsStableInterval(function(){return refreshShareRequests();},30000);
     var oldShow=window.showAccountTab;if(typeof oldShow==='function'&&!oldShow.__atsrsSharing){window.showAccountTab=function(tab){var result=oldShow.apply(this,arguments);if(tab==='sharing')setTimeout(function(){refreshOwnerPanel({force:true});},0);return result;};window.showAccountTab.__atsrsSharing=true;}
     var oldPage=window.showPage;if(typeof oldPage==='function'&&!oldPage.__atsrsSharing){window.showPage=function(page){var result=oldPage.apply(this,arguments);if(page==='dashboard')setTimeout(function(){refreshShareRequests({force:true});},0);return result;};window.showPage.__atsrsSharing=true;}
     if(client()&&client().auth&&typeof client().auth.onAuthStateChange==='function')client().auth.onAuthStateChange(function(event,session){if(session&&session.user)refreshOwnerPanel();});

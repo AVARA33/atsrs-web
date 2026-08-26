@@ -78,6 +78,7 @@ assert.doesNotMatch(js,/dialog\.showModal\(\)/);
 assert.match(js,/create\.disabled=!editing\|\|!value/);
 assert.match(js,/if\(!editing\|\|button&&button\.disabled\)return/);
 assert.match(js,/Save the sharing settings to finish/);
+assert.match(shareJs,/refreshOwnerPanel\(\{force:true\}\);setTimeout\(function\(\)\{refreshOwnerPanel\(\{force:true\}\);\},1200\)/);
 assert.match(css,/profile-sharing-document-dialog::backdrop/);
 assert.match(css,/profile-sharing-create-button/);
 assert.match(css,/profile-sharing-expiry-main>\.profile-sharing-create-button\{[^}]*height:48px!important;[^}]*min-height:48px!important/);
