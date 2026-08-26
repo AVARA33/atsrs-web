@@ -78,6 +78,21 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Gulnaz H.', 'AGR', 'Senior Talent Acquisition Specialist', 'Dubai, United Arab Emirates', 'https://www.linkedin.com/in/gulnazhaidarovna/', '2026-08-27T17:10:00+04:00'),
+  ('Rufaidah Simah', 'Grab', 'Talent Acquisition Specialist', 'Malaysia', 'https://www.linkedin.com/in/rufaidah-simah/', '2026-08-27T17:10:00+04:00'),
+  ('John Stewart', 'Granite Recruitment', 'Lead Recruiter', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/link2john/', '2026-08-27T17:10:00+04:00'),
+  ('Hafida Bendouhou', 'Petrofac', 'Human Resources / Talent Acquisition & Resourcing Advisor', 'Algiers, Algeria', 'https://www.linkedin.com/in/hafida-bendouhou-333975163/', '2026-08-27T17:10:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Mohamad Chehade', 'Weatherford', 'Senior Recruiter MENA / Talent Acquisition', 'Abu Dhabi, United Arab Emirates', 'https://www.linkedin.com/in/mohamad-chehade-chrp-crp-16ba93173/', '2026-08-27T17:00:00+04:00'),
   ('Marion D.', 'Weatherford', 'Senior Recruiter — Middle East', 'United Kingdom', 'https://www.linkedin.com/in/mariondonagheyhays/', '2026-08-27T17:00:00+04:00'),
   ('Moussa Al-Khayyat', 'Weatherford', 'Senior Recruiter', 'Dammam, Saudi Arabia', 'https://www.linkedin.com/in/moussa-al-khayyat-9505481b2/', '2026-08-27T17:00:00+04:00'),
