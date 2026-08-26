@@ -123,7 +123,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
 <link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5978">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
-  <link rel="stylesheet" href="css/profile-sharing-v1.css?v=4">
+  <link rel="stylesheet" href="css/profile-sharing-v1.css?v=5">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1420,7 +1420,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
             <label><input type="radio" name="profileSharingAudience" value="recruiters"><i class="ph ph-users" aria-hidden="true"></i><span><strong>Recruiters only</strong><small>ATSRS verified recruiters</small></span></label>
             <label><input type="radio" name="profileSharingAudience" value="recipient"><i class="ph ph-user" aria-hidden="true"></i><span><strong>Specific recipient</strong><small>Send to a specific person</small></span></label>
           </div></fieldset>
-          <label class="profile-sharing-expiry"><span>Link expires in</span><select id="profileSharingExpiry" data-atsrs-no-field-shell="true"><option value="24h">24 hours</option><option value="3d">3 days</option><option value="7d" selected>7 days</option><option value="custom">Custom</option></select></label>
+          <fieldset class="profile-sharing-expiry"><legend>Link expires in</legend><div class="profile-sharing-expiry-options">
+            <label><input type="radio" name="profileSharingExpiry" value="24h"><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>24 hours</span></label>
+            <label><input type="radio" name="profileSharingExpiry" value="3d"><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>3 days</span></label>
+            <label><input type="radio" name="profileSharingExpiry" value="7d" checked><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>7 days</span></label>
+            <label><input type="radio" name="profileSharingExpiry" value="custom"><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>Custom</span></label>
+          </div><label id="profileSharingCustomExpiryWrap" class="profile-sharing-custom-expiry" hidden><input id="profileSharingCustomExpiry" type="date" data-atsrs-date-position="anchor-below-right" aria-label="Custom share link expiry date"><i class="ph ph-calendar-blank" aria-hidden="true"></i></label></fieldset>
         </section>
         <section class="profile-sharing-links" aria-labelledby="profileSharingLinksTitle"><header><strong id="profileSharingLinksTitle">Active share links</strong><span id="profileSharingLinksCount">0</span></header><div id="profileSharingActiveList" class="profile-sharing-active-list"></div></section>
       </div>
@@ -2085,7 +2090,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/shell-polish.js?v=568"></script>
 <script src="js/profile-workspace-v5886.js?v=5955"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
-<script src="js/profile-sharing-v1.js?v=2"></script>
+<script src="js/profile-sharing-v1.js?v=3"></script>
 <script src="js/route-feature-loader.js?v=58176"></script>
 
 
