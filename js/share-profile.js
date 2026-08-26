@@ -150,8 +150,11 @@
       if(revoke)revoke.classList.remove('hidden');if(create)create.textContent='Refresh Secure Link';
     }else if(activeShare){setStatus('Sharing is disabled or expired. Existing download permissions are closed.','revoked');if(revoke)revoke.classList.add('hidden');if(create)create.textContent='Create Secure Link';}
     else{setStatus('Private. No recruiter link has been created yet.','');if(revoke)revoke.classList.add('hidden');if(create)create.textContent='Create Secure Link';}
-    var token=safeSessionGet(OWNER_TOKEN_KEY);setKnownLink(activeShare&&activeShare.active&&token?shareUrl(token):'');
+    var token=safeSessionGet(OWNER_TOKEN_KEY);
+    if(token&&activeShare&&activeShare.token_hint&&token.slice(-8)!==activeShare.token_hint){safeSessionSet(OWNER_TOKEN_KEY,'');token='';}
+    setKnownLink(activeShare&&activeShare.active&&token?shareUrl(token):'');
   }
+  window.atsrsGetActiveShareStatus=function(){return activeShare?Object.assign({},activeShare):null;};
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared files':names.join(', ');}
   function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}
   function activeRequestFileIds(request){var revoked=new Set(request.revoked_file_ids||[]),downloaded=new Set(request.downloaded_file_ids||[]);return(request.requested_file_ids||[]).filter(function(id){return !revoked.has(id)&&!downloaded.has(id);});}

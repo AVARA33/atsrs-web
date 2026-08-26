@@ -123,7 +123,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
 <link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5978">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
-<link rel="stylesheet" href="css/profile-sharing-v1.css?v=14">
+<link rel="stylesheet" href="css/profile-sharing-v1.css?v=15">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1432,9 +1432,9 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
             <label><input type="radio" name="profileSharingExpiry" value="3d"><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>3 days</span></label>
             <label><input type="radio" name="profileSharingExpiry" value="7d" checked><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>7 days</span></label>
             <label><input type="radio" name="profileSharingExpiry" value="custom"><span class="profile-sharing-expiry-check"><i class="ph ph-check" aria-hidden="true"></i></span><span>Custom</span></label>
-          </div><label id="profileSharingCustomExpiryWrap" class="profile-sharing-custom-expiry" hidden><input id="profileSharingCustomExpiry" type="date" data-atsrs-date-position="anchor-below-right" aria-label="Custom share link expiry date"><i class="ph ph-calendar-blank" aria-hidden="true"></i></label></fieldset>
+          </div><label id="profileSharingCustomExpiryWrap" class="profile-sharing-custom-expiry" hidden><input id="profileSharingCustomExpiry" type="date" data-atsrs-date-position="anchor-below-right" aria-label="Custom share link expiry date"><i class="ph ph-calendar-blank" aria-hidden="true"></i></label><button id="profileSharingCreateBtn" type="button" class="profile-sharing-create-button"><i class="ph ph-plus" aria-hidden="true"></i><span>Create Link</span></button></fieldset>
         </section>
-        <section class="profile-sharing-links" aria-labelledby="profileSharingLinksTitle"><header><span class="profile-sharing-links-heading"><strong id="profileSharingLinksTitle">Active share links</strong><span id="profileSharingLinksCount">0</span></span><button id="profileSharingCreateBtn" type="button" class="profile-sharing-create-button"><i class="ph ph-plus" aria-hidden="true"></i><span>Create Link</span></button></header><div id="profileSharingCreateStatus" class="profile-sharing-create-status" role="status" aria-live="polite"></div><div id="profileSharingActiveList" class="profile-sharing-active-list"></div></section>
+        <section class="profile-sharing-links" aria-labelledby="profileSharingLinksTitle"><header><span class="profile-sharing-links-heading"><strong id="profileSharingLinksTitle">Active share links</strong><span id="profileSharingLinksCount">0</span></span></header><div id="profileSharingCreateStatus" class="profile-sharing-create-status" role="status" aria-live="polite"></div><div id="profileSharingActiveList" class="profile-sharing-active-list"></div></section>
         <dialog id="profileSharingDocumentDialog" class="profile-sharing-document-dialog" aria-labelledby="profileSharingDocumentDialogTitle"><form method="dialog"><header><div><strong id="profileSharingDocumentDialogTitle">Uploaded documents</strong><small>Select which Documents-page files this link may show.</small></div><button id="profileSharingDocumentCloseBtn" type="button" aria-label="Close document selection"><i class="ph ph-x" aria-hidden="true"></i></button></header><label class="profile-sharing-document-select-all"><input id="profileSharingDocumentSelectAll" type="checkbox"><span>Select all</span></label><div id="profileSharingDocumentChoices" class="profile-sharing-document-choices"></div><footer><button id="profileSharingDocumentCancelBtn" type="button" class="profile-sharing-dialog-cancel">Cancel</button><button id="profileSharingDocumentConfirmBtn" type="button" class="profile-sharing-dialog-confirm"><i class="ph ph-link" aria-hidden="true"></i>Create Link</button></footer></form></dialog>
       </div>
       <div id="profileSharingControls" class="profile-settings-list"></div>
@@ -2079,7 +2079,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/document-date-validation.js?v=1"></script>
 <script src="js/app.js?v=568"></script>
 <script src="js/date-picker.js?v=5918"></script>
-<script src="js/share-profile.js?v=417"></script>
+<script src="js/share-profile.js?v=418"></script>
 <script src="js/recipient-links.js?v=433"></script>
 <script src="js/boot-refresh.js?v=444"></script>
 <script src="js/account-security-live.js?v=375"></script>
@@ -2098,7 +2098,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/shell-polish.js?v=568"></script>
 <script src="js/profile-workspace-v5886.js?v=5955"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
-<script src="js/profile-sharing-v1.js?v=13"></script>
+<script src="js/profile-sharing-v1.js?v=14"></script>
 <script src="js/route-feature-loader.js?v=58176"></script>
 
 
