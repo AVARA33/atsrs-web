@@ -310,3 +310,16 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
 #recruitersPage .employers-search-control input:focus, #recruitersPage .employers-search-control input:focus-visible { border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent !important; }
 html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control, html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control:focus-within { border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent !important; }
 html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control > i { flex: 0 0 auto; border: 0 !important; outline: 0 !important; box-shadow: none !important; }
+html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control,
+html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control:focus-within {
+  border: 1px solid var(--line) !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: var(--surface-2) !important;
+}
+html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control input:focus,
+html[data-theme] body #app.app:not(.hidden) :is(#recruitersPage, #employersPage) .employers-search-control input:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}

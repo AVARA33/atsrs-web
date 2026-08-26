@@ -113,7 +113,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=5848">
 <link rel="stylesheet" href="css/jobs-prototype.css?v=58175">
-<link rel="stylesheet" href="css/employers.css?v=4">
+<link rel="stylesheet" href="css/employers.css?v=5">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
 <link rel="stylesheet" href="css/button-content-standard-v58148.css?v=58148">
@@ -562,8 +562,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="nav-primary">
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
 <button id="navJobs" onclick="showPage('jobs',this);window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))">JobSearch</button>
-<button id="navRecruiters" class="personal-only" onclick="showPage('recruiters',this)">Recruiters</button>
-<button id="navEmployers" class="personal-only" onclick="showPage('employers',this)">Companies</button>
+<button id="navRecruiters" class="personal-only" onclick="window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'));showPage('recruiters',this)">Recruiters</button>
+<button id="navEmployers" class="personal-only" onclick="window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'));showPage('employers',this)">Companies</button>
 <button id="navCandidates" onclick="showPage('candidates',this)">Candidates</button>
 <button id="navPersonnel" onclick="showPage('personnel',this)"></button>
 <button id="navProjects" class="company-only" onclick="showPage('projects',this)">Projects</button>
@@ -812,7 +812,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div class="employers-toolbar" aria-label="Company filters">
     <label class="employers-search">
       <span>Search companies</span>
-      <span class="employers-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="employersSearch" type="search" placeholder="Company or specialism" autocomplete="off"></span>
+      <span class="employers-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="employersSearch" type="search" placeholder="Company or specialism" autocomplete="off" data-atsrs-no-field-shell="true"></span>
     </label>
     <label class="employers-sector"><span>Sector</span><select id="employersSector"><option value="">All sectors</option></select></label>
     <button id="employersClearFilters" type="button" class="secondary">Clear filters</button>
@@ -833,7 +833,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="employers-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 recruiters</strong><span>From published vacancies</span></div>
   </header>
   <div class="employers-toolbar" aria-label="Recruiter filters">
-    <label class="employers-search"><span>Search recruiters</span><span class="employers-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="recruitersSearch" type="search" placeholder="Recruiter name" autocomplete="off"></span></label>
+    <label class="employers-search"><span>Search recruiters</span><span class="employers-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="recruitersSearch" type="search" placeholder="Recruiter name" autocomplete="off" data-atsrs-no-field-shell="true"></span></label>
     <button id="recruitersClearFilters" type="button" class="secondary">Clear search</button>
   </div>
   <div class="employers-notice" role="note"><i class="ph ph-shield-check" aria-hidden="true"></i><div><strong>Contact through verified vacancy details</strong><span>Contact information remains governed by JobSearch access rules. ATSRS does not send your profile automatically.</span></div></div>
