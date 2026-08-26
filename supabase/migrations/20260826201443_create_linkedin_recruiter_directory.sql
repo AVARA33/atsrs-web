@@ -79,6 +79,24 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Shoshana Benavides', 'TechnipFMC', 'Talent Acquisition — Energy', 'Houston, Texas, United States', 'https://www.linkedin.com/in/julia-shoshana-pilloff', '2026-08-27T18:30:00+04:00'),
+  ('Lisa Bryant', 'TechnipFMC', 'HR & Talent Acquisition Professional', 'Houston, Texas, United States', 'https://www.linkedin.com/in/lisanbryant', '2026-08-27T18:30:00+04:00'),
+  ('Devender Bundela', 'TechnipFMC', 'Talent Acquisition & HR Business Partner', 'Noida, India', 'https://in.linkedin.com/in/devender-bundela-01b92a144', '2026-08-27T18:30:00+04:00'),
+  ('Kuldeep Patel', 'TechnipFMC', 'Talent Acquisition Specialist', 'Noida, India', 'https://in.linkedin.com/in/kuldeep0607patel', '2026-08-27T18:30:00+04:00'),
+  ('Shalini Singh', 'TechnipFMC', 'Talent Acquisition Professional', 'Hyderabad, India', 'https://in.linkedin.com/in/shalinayasingh', '2026-08-27T18:30:00+04:00'),
+  ('Kenneth Strand Liland', 'SLB', 'Global Business Services Talent Acquisition Manager', 'Bucharest, Romania', 'https://ro.linkedin.com/in/kenneth-strand-liland-04140174', '2026-08-27T18:30:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Linda Boone', 'DOF Group', 'Human Resources Professional', 'Houston, Texas, United States', 'https://www.linkedin.com/in/linda-boone', '2026-08-27T18:25:00+04:00'),
   ('Joost Bremmer', 'Boskalis', 'Talent & Staffing Specialist', 'Papendrecht, Netherlands', 'https://nl.linkedin.com/in/talentstaffingspecialist', '2026-08-27T18:25:00+04:00')
 on conflict (linkedin_url) do update set
