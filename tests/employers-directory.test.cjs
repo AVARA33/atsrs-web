@@ -16,7 +16,7 @@ assert.match(html, /id="navEmployers"[^>]*>Companies</);
 assert.match(html, /id="navRecruiters"[^>]*>Recruiters</);
 assert.match(html, /id="employersPage"/);
 assert.match(html, /id="recruitersPage"/);
-assert.match(html, /css\/employers\.css\?v=9/);
+assert.match(html, /css\/employers\.css\?v=10/);
 assert.equal((html.match(/class="atsrs-search-control"/g) || []).length, 3, 'All three directory searches use the canonical control');
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearch"/);
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSearch"/);
