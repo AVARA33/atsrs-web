@@ -16,7 +16,7 @@ assert.match(html, /id="navEmployers"[^>]*>Companies</);
 assert.match(html, /id="navRecruiters"[^>]*>Recruiters</);
 assert.match(html, /id="employersPage"/);
 assert.match(html, /id="recruitersPage"/);
-assert.match(html, /css\/employers\.css\?v=15/);
+assert.match(html, /css\/employers\.css\?v=16/);
 assert.doesNotMatch(html, /id="(?:employers|recruiters)Heading"/, 'Directory pages must not repeat the white page title as a large green heading');
 assert.equal((html.match(/class="atsrs-search-control"/g) || []).length, 3, 'All three directory searches use the canonical control');
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearch"/);
@@ -64,6 +64,8 @@ assert.match(css, /\.employers-grid/);
 assert.match(css, /\.employer-card::before/);
 assert.match(css, /\.employer-detail-label/);
 assert.match(css, /\.employer-vacancy-count/);
+assert.match(css, /\.employer-card-copy h4[\s\S]*?color: #fff/);
+assert.match(css, /html\[data-theme="light"\] \.employer-card-copy h4/);
 assert.doesNotMatch(css, /employers-search/, 'Legacy directory search styling must stay removed');
 
 console.log('Employers directory contracts passed');
