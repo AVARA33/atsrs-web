@@ -1,6 +1,13 @@
 (function () {
   "use strict";
-  var recruiters = [];
+  var recruiters = [],
+    directoryRecruiters = [];
+  function excluded(name) {
+    return String(name || "")
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLowerCase() === "nurlan jafarov";
+  }
   function byId(id) {
     return document.getElementById(id);
   }
@@ -68,7 +75,21 @@
     button.addEventListener("click", handler);
     return button;
   }
-  function card(name) {
+  function buttonLink(url, label, icon) {
+    var link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.innerHTML =
+      '<i class="ph ph-' +
+      icon +
+      '" aria-hidden="true"></i><span>' +
+      label +
+      "</span>";
+    return link;
+  }
+  function card(recruiter) {
+    var name = recruiter.name;
     var article = document.createElement("article");
     article.className = "employer-card";
     article.tabIndex = 0;
@@ -82,17 +103,29 @@
     copy.className = "employer-card-copy";
     var source = document.createElement("span");
     source.className = "employer-source";
-    source.innerHTML =
-      '<i class="ph ph-briefcase" aria-hidden="true"></i> Active in JobSearch';
+    source.innerHTML = recruiter.linkedin_url
+      ? '<i class="ph ph-linkedin-logo" aria-hidden="true"></i> Verified LinkedIn profile'
+      : '<i class="ph ph-briefcase" aria-hidden="true"></i> Active in JobSearch';
     var title = document.createElement("h4");
     title.textContent = name;
     var summary = document.createElement("p");
-    summary.textContent =
-      "Recruiter listed on one or more published ATSRS vacancies.";
+    summary.textContent = recruiter.linkedin_url
+      ? [recruiter.role_title, recruiter.company, recruiter.location]
+          .filter(Boolean)
+          .join(" · ")
+      : "Recruiter listed on one or more published ATSRS vacancies.";
     copy.append(source, title, summary);
     head.append(mark, copy);
     var actions = document.createElement("div");
     actions.className = "employer-actions";
+    if (recruiter.linkedin_url)
+      actions.append(
+        buttonLink(
+          recruiter.linkedin_url,
+          "View LinkedIn profile",
+          "linkedin-logo",
+        ),
+      );
     actions.append(
       action("View jobs & contact", "address-book", function () {
         goToJobs(name);
@@ -104,20 +137,45 @@
     article.append(head, actions);
     return article;
   }
+  function db() {
+    return window.supabaseClient || null;
+  }
+  async function loadDirectoryRecruiters() {
+    var client = db();
+    if (!client || !client.from) return;
+    try {
+      var result = await client
+        .from("atsrs_recruiters")
+        .select("name,company,role_title,location,linkedin_url")
+        .eq("status", "active")
+        .order("name", { ascending: true });
+      if (!result.error && Array.isArray(result.data))
+        directoryRecruiters = result.data.filter(function (recruiter) {
+          return recruiter && recruiter.name && !excluded(recruiter.name);
+        });
+    } catch (_error) {}
+  }
   function sync() {
     var select = byId("jobsRecruiterFilter");
     if (!select) return;
-    recruiters = Array.from(select.options)
+    var jobsRecruiters = Array.from(select.options)
       .map(function (option) {
         return String(option.value || "").trim();
       })
-      .filter(Boolean)
-      .filter(function (name, index, list) {
-        return list.indexOf(name) === index;
+      .filter(function (name) {
+        return name && !excluded(name);
       })
-      .sort(function (a, b) {
-        return a.localeCompare(b);
+      .map(function (name) {
+        return { name: name };
       });
+    var merged = new Map();
+    jobsRecruiters.concat(directoryRecruiters).forEach(function (recruiter) {
+      var key = recruiter.name.trim().toLowerCase();
+      merged.set(key, Object.assign({}, merged.get(key) || {}, recruiter));
+    });
+    recruiters = Array.from(merged.values()).sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
     render();
   }
   function render() {
@@ -126,12 +184,20 @@
     var query = String(byId("recruitersSearch").value || "")
       .trim()
       .toLowerCase();
-    var visible = recruiters.filter(function (name) {
-      return !query || name.toLowerCase().indexOf(query) >= 0;
+    var visible = recruiters.filter(function (recruiter) {
+      var haystack = [
+        recruiter.name,
+        recruiter.company || "",
+        recruiter.role_title || "",
+        recruiter.location || "",
+      ]
+        .join(" ")
+        .toLowerCase();
+      return !query || haystack.indexOf(query) >= 0;
     });
     grid.textContent = "";
-    visible.forEach(function (name) {
-      grid.appendChild(card(name));
+    visible.forEach(function (recruiter) {
+      grid.appendChild(card(recruiter));
     });
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
     byId("recruitersVisibleCount").textContent =
@@ -144,7 +210,7 @@
       byId("recruitersSearch").value = "";
       render();
     });
-    sync();
+    loadDirectoryRecruiters().then(sync);
     var select = byId("jobsRecruiterFilter");
     if (select) new MutationObserver(sync).observe(select, { childList: true });
     window.addEventListener("atsrs:resume", sync);

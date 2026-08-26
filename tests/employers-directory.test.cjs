@@ -24,7 +24,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSear
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/employers\.js\?v=6/);
-assert.match(html, /js\/recruiters\.js\?v=3/);
+assert.match(html, /js\/recruiters\.js\?v=4/);
 assert.match(html, /js\/storage\.js\?v=591/);
 assert.match(html, /js\/shell-polish\.js\?v=570/);
 assert.match(js, /https:\/\/careers\.subsea7\.com/);
@@ -42,6 +42,9 @@ assert.match(recruitersJs, /jobsRecruiterFilter/);
 assert.match(recruitersJs, /View jobs & contact/);
 assert.match(recruitersJs, /Share my profile/);
 assert.match(recruitersJs, /refreshDirectoryOptions/);
+assert.match(recruitersJs, /atsrs_recruiters/);
+assert.match(recruitersJs, /View LinkedIn profile/);
+assert.match(recruitersJs, /nurlan jafarov/);
 assert.match(js, /refreshDirectoryOptions/);
 assert.match(js, /return \{ name: name \}/);
 assert.match(css, /\.employers-grid/);
