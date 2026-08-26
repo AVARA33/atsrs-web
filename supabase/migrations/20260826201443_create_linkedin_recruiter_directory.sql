@@ -79,6 +79,23 @@ on conflict (linkedin_url) do update set
 insert into public.atsrs_recruiters
   (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Sonia Gómez Marrasé', 'Ørsted', 'Talent Acquisition Consultant', 'Copenhagen, Denmark', 'https://dk.linkedin.com/in/soniagomeztalentacquisitionrecruiter', '2026-08-27T18:45:00+04:00'),
+  ('Helle Mørk Guldborg', 'Vestas', 'Talent Acquisition Partner', 'Copenhagen, Denmark', 'https://dk.linkedin.com/in/helle-m%C3%B8rk-guldborg-919427aa', '2026-08-27T18:45:00+04:00'),
+  ('Derek Murphy-Johnson', 'Vestas', 'Talent Acquisition Leader', 'Copenhagen, Denmark', 'https://dk.linkedin.com/in/hrderek', '2026-08-27T18:45:00+04:00'),
+  ('Alex Madsen', 'Vestas', 'Talent Acquisition Partner — Manufacturing NCE', 'Vejle, Denmark', 'https://dk.linkedin.com/in/alex-madsen-0815b4a6', '2026-08-27T18:45:00+04:00'),
+  ('Nina Ramsland Worts', 'Equinor', 'Senior Talent Acquisition Consultant', 'Stavanger, Norway', 'https://no.linkedin.com/in/nina-worts', '2026-08-27T18:45:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters
+  (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Kersten Metz', 'Baker Hughes', 'Global Executive Recruiting Director', 'Houston, Texas, United States', 'https://www.linkedin.com/in/kerstenmetz', '2026-08-27T18:40:00+04:00'),
   ('Harry Cornell', 'Shell', 'Recruiter / Talent Acquisition Partner', 'Chelmsford, United Kingdom', 'https://uk.linkedin.com/in/harry-cornell-assoc-cipd', '2026-08-27T18:40:00+04:00'),
   ('Nicole Appleby Schlegel', 'Shell', 'Talent Acquisition Professional', 'Houston, Texas, United States', 'https://www.linkedin.com/in/nicolejschlegel', '2026-08-27T18:40:00+04:00'),
