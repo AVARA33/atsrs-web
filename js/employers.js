@@ -272,6 +272,16 @@
         careers: "https://oceanbotics.com/careers/",
         contact: "https://oceanbotics.com/fusion_element/contact/",
       },
+      "Kraken Robotics": {
+        mark: "KR",
+        summary:
+          "Global marine technology company developing synthetic-aperture sonar, subsea LiDAR, autonomous systems and deep-sea power solutions.",
+        sector: "Marine robotics & sensing",
+        tags: ["Subsea", "Robotics", "Survey"],
+        website: "https://www.krakenrobotics.com/",
+        careers: "https://www.krakenrobotics.com/careers/",
+        contact: "https://www.krakenrobotics.com/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
