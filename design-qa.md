@@ -796,6 +796,32 @@ final result: passed
 
 Final result: passed.
 
+# Notification dropdown reference match — Design QA
+
+- Scope: the authenticated ATSRS header notification dropdown in Personal accounts.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a9d2c1cf-e345-4b45-a117-5e59cc4b7724.png`.
+- Production implementation: `https://atsrs.com/?route=profile&tab=sharing`.
+- Reference structure retained: prominent header, compact notification rows, icon tile, title, secondary context, timestamp, unread indicator, and a footer action.
+
+## Visual comparison
+
+- The dropdown uses the ATSRS design system instead of copying unrelated header controls from the reference.
+- Five 74-pixel rows fit before internal scrolling begins; the surrounding Profile page does not shift or grow.
+- Dark mode uses the existing black/green ATSRS palette; light mode uses white/blue tokens.
+- `Clear all` and `View all notifications` retain the theme accent even when Chrome text-fill rules are active.
+- The zero-count badge remains hidden, while unread requests show the existing theme-specific badge and row indicator.
+
+## Interaction and regression checks
+
+- Notification rows remain semantic buttons and preserve request navigation to Profile → Sharing.
+- `Clear all` keeps the existing notification-dismissal behavior; it was not activated during production QA.
+- Focused notification-routing and Profile Sharing tests passed.
+- Cloudflare Pages production build passed.
+- Production parity confirmed for `shell-polish.css?v=5877` and `shell-polish.js?v=577`.
+- Live dark-mode visual inspection passed with the active download-request notification rendered in the dropdown.
+
+Final result: passed.
+
 # Compact notification cards — Design QA
 
 - Source visual truth: `C:/Users/user/AppData/Local/Temp/codex-clipboard-b79285cc-03a0-4db4-a817-d162721c02a8.png`.
@@ -1073,5 +1099,34 @@ Final result: passed.
 - Light regression evidence: `tests/artifacts/quick-actions-light-unchanged.png`.
 - Unselected dark controls now use the neutral ATSRS black field surface; icon tones, hover/focus edge treatment, layout and light mode remain unchanged.
 - Browser console errors: 0.
+
+Final result: passed.
+
+# Notification dropdown exact reference revision — Design QA
+
+- Scope: authenticated Personal-account notification dropdown; this supersedes the earlier compact-card experiment.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a9d2c1cf-e345-4b45-a117-5e59cc4b7724.png`.
+- Dark implementation evidence: `tests/artifacts/notification-dropdown-reference-dark.png`.
+- Light implementation evidence: `tests/artifacts/notification-dropdown-reference-light.png`.
+- Reference and implementation viewport: desktop, with the dropdown open below the header bell.
+
+## Visual comparison
+
+- Panel width is 620 pixels, with an 82-pixel header, five 100-pixel notification rows, and a 66-pixel footer.
+- A measured caret is positioned directly under the notification bell instead of being approximated at a fixed page coordinate.
+- Each row has a 58-pixel tinted icon tile, prominent title, secondary requester/company copy, verified email, right-aligned time and unread dot.
+- Dividers, radius, shadow, spacing and hierarchy follow the supplied desktop reference.
+- Dark mode uses the ATSRS black/green palette; light mode uses white/blue. Header action, icon, unread dot and footer action retain their theme accent.
+- The popover is viewport-fixed, so all five rows and the footer overlay the page without being clipped by the main content scroll container.
+- Additional notifications remain inside the 500-pixel list scroll area instead of increasing the page height.
+
+## Interaction and regression checks
+
+- Notification rows remain semantic buttons and preserve their Profile → Sharing request routing.
+- `Clear all` retains ATSRS dismissal semantics and was not activated during visual QA.
+- Zero-count badge behavior remains unchanged; five fixture requests render a badge value of 5.
+- Dark and light fixture captures passed at 2294 × 791; console warnings/errors: 0.
+- Focused notification-routing and Profile Sharing tests passed.
+- Cloudflare Pages build passed.
 
 Final result: passed.

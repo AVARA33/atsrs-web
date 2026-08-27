@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../../css/theme.css?v=58161">
   <link rel="stylesheet" href="../../css/personal-workspace-surface.css">
   <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
-  <link rel="stylesheet" href="../../css/shell-polish.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css?v=5880">
   <link rel="stylesheet" href="../../css/theme-palette-v508.css?v=509">
   <link rel="stylesheet" href="../../css/dark-green-text-standard-v58140.css?v=58140-qa">
 </head>
@@ -83,6 +83,13 @@
   </section>
   <script>
     window.showPage=function(){};window.atsrsRefreshNotifications=function(){};
+    window.atsrsGetOwnerShareRequests=function(){return [
+      {id:'qa-request-1',status:'pending',requester_name:'Anar Aghasiyev',requester_company:'HBA LLC',requester_email:'anaragasiyev@gmail.com'},
+      {id:'qa-request-2',status:'pending',requester_name:'John Smith',requester_company:'Subsea7',requester_email:'john.smith@example.com'},
+      {id:'qa-request-3',status:'pending',requester_name:'Catherine Buenaagua',requester_company:'Oceanic Marine',requester_email:'catherine@example.com'},
+      {id:'qa-request-4',status:'pending',requester_name:'Charl Venter',requester_company:'Offshore Energy',requester_email:'charl@example.com'},
+      {id:'qa-request-5',status:'pending',requester_name:'Holly Bulmer',requester_company:'Marine Resources',requester_email:'holly@example.com'}
+    ]};
     window.atsrsV76ToggleSidebar=function(){document.querySelector('.sidebar')?.classList.toggle('v76-mobile-closed')};
     document.getElementById('sidebarToggleBtn').addEventListener('click',window.atsrsV76ToggleSidebar);
     if(new URLSearchParams(location.search).get('account')==='corporate'){
@@ -102,6 +109,6 @@
     }
   </script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/shell-polish.js"></script>
+  <script src="../../js/shell-polish.js?v=578"></script>
 </body>
 </html>
