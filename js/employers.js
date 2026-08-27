@@ -192,6 +192,16 @@
         careers: "https://kystdesign.no/career/",
         contact: "https://kystdesign.no/contact/",
       },
+      "Subsea Global Solutions": {
+        mark: "SGS",
+        summary:
+          "Global provider of commercial diving, underwater inspection, repair, maintenance and ROV services for marine and offshore assets.",
+        sector: "Underwater services",
+        tags: ["Subsea", "Marine", "ROV"],
+        website: "https://www.subseaglobalsolutions.com/",
+        careers: "https://careers.subseaglobalsolutions.com/",
+        contact: "https://www.subseaglobalsolutions.com/contact-us",
+      },
     },
     companies = [],
     loadToken = 0;
