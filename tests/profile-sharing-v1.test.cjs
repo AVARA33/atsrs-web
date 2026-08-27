@@ -26,7 +26,7 @@ assert.match(js,/window\.copyShareLink/);
 assert.match(js,/button\.innerHTML='<i class="ph ph-check"[^']*Copied'/);
 assert.match(js,/window\.previewShareProfile/);
 assert.match(js,/window\.revokeShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=32/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=33/);
 assert.match(css,/\.profile-sharing-row-actions>button\{[^}]*height:22px!important;[^}]*max-height:22px!important/);
 assert.match(css,/profile-sharing-expiry-check/);
 assert.match(css,/profile-sharing-v1 \*\{box-sizing:border-box\}/);
@@ -115,6 +115,7 @@ assert.match(js,/shareRequests=requests\.filter\(function\(request\)\{return req
 assert.doesNotMatch(js,/request\.share_id===share\.id&&request\.status==='pending'/);
 assert.match(js,/request\.status==='approved'\?'Approved'/);
 assert.match(css,/profile-sharing-request-state\.status-approved/);
+assert.match(css,/html\[data-theme="dark"\][^{]*profile-sharing-link-request[\s\S]*?background:var\(--surface,#0b0f0d\)!important/);
 assert.match(js,/decideShareRequest\(request\.id,'approve'/);
 assert.match(js,/setTimeout\(applyEmailRoute,350\)/);
 assert.match(css,/profile-sharing-link-request\{/);
