@@ -916,22 +916,16 @@ html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePa
   color: #fff !important;
   -webkit-text-fill-color: #fff !important;
 }
-body.profile-security-contact-open { overflow:hidden !important; }
-.profile-security-contact-editor { position:fixed; inset:0; z-index:10050; display:grid; place-items:center; padding:16px; }
-.profile-security-contact-backdrop { position:absolute; inset:0; width:100%; height:100%; border:0; background:rgba(2,7,8,.72); backdrop-filter:blur(5px); }
-.profile-security-contact-dialog { position:relative; width:min(420px,calc(100vw - 24px)); box-sizing:border-box; border:1px solid var(--line); border-radius:16px; background:var(--surface); color:var(--text); box-shadow:0 24px 70px rgba(0,0,0,.38); padding:22px; }
-.profile-security-contact-dialog header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
-.profile-security-contact-dialog header span { display:block; margin-bottom:5px; color:var(--accent); font-size:10px; font-weight:800; letter-spacing:.14em; }
-.profile-security-contact-dialog h3 { margin:0; font-size:20px; }
-.profile-security-contact-dialog > p { margin:10px 0 18px; color:var(--muted); font-size:13px; line-height:1.5; }
-.profile-security-contact-close { width:36px; height:36px; flex:0 0 36px; padding:0; border:1px solid var(--line); border-radius:10px; background:transparent; color:var(--text); font-size:21px; }
-.profile-security-contact-fields { display:grid; grid-template-columns:145px minmax(0,1fr); gap:10px; }
+.profile-security-contact-card.is-editing { grid-template-rows:auto auto !important; }
+.profile-security-contact-card.is-editing > button { visibility:hidden; pointer-events:none; }
+.profile-security-contact-editor { grid-column:1/-1; grid-row:2; min-width:0; padding-top:8px; border-top:1px solid var(--line); }
+.profile-security-contact-fields { display:grid; grid-template-columns:118px minmax(0,1fr); gap:8px; }
 .profile-security-contact-fields label { display:grid; gap:6px; }
 .profile-security-contact-fields label > span { color:var(--muted); font-size:11px; font-weight:700; }
-.profile-security-contact-fields :is(select,input) { width:100%; height:44px; box-sizing:border-box; border:1px solid var(--line); border-radius:10px; background:var(--surface-2); color:var(--text); padding:0 12px; }
+.profile-security-contact-fields :is(select,input) { width:100%; height:38px; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; background:var(--surface); color:var(--text); padding:0 10px; }
 .profile-security-contact-fields :is(select,input):focus { outline:0; border-color:var(--atsrs-field-focus-inline-line,var(--accent)); box-shadow:var(--atsrs-field-focus-shadow); }
-.profile-security-contact-status { min-height:18px; margin:10px 0 0 !important; color:var(--danger,#e05a61) !important; font-size:12px !important; }
-.profile-security-contact-dialog footer { display:flex; justify-content:flex-end; gap:9px; margin-top:14px; }
-.profile-security-contact-dialog footer button { min-height:38px; padding:0 15px; border-radius:10px; }
-html[data-theme="light"] .profile-security-contact-dialog header span { color:var(--atsrs-shell-accent-strong,#245b93); }
-@media (max-width:520px) { .profile-security-contact-dialog { padding:18px; } .profile-security-contact-fields { grid-template-columns:1fr; } }
+.profile-security-contact-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px; }
+.profile-security-contact-footer > div { display:flex; gap:7px; }
+.profile-security-contact-footer button { min-height:30px; padding:0 10px; border-radius:8px; }
+.profile-security-contact-status { min-height:16px; margin:0 !important; color:var(--danger,#e05a61) !important; font-size:11px !important; }
+@media (max-width:520px) { .profile-security-contact-fields { grid-template-columns:102px minmax(0,1fr); } .profile-security-contact-footer { align-items:flex-end; flex-direction:column; } }
