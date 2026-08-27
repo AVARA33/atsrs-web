@@ -78,6 +78,20 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Hannah Rodger', 'Elevate Offshore', 'Account Manager — Offshore Subsea Recruitment', 'Great Yarmouth, United Kingdom', 'https://www.linkedin.com/in/hannahrodger1/', '2026-08-27T16:00:00+04:00'),
+  ('Jodie Blakeway', 'Elevate Offshore', 'Offshore Recruitment Account Manager', 'Newquay, United Kingdom', 'https://www.linkedin.com/in/jodie-blakeway-0b891883/', '2026-08-27T16:00:00+04:00'),
+  ('Sean Donovan', 'Elevate Offshore', 'Offshore Survey Recruitment Consultant', 'Truro, United Kingdom', 'https://www.linkedin.com/in/sean-donovan-66019b22b/', '2026-08-27T16:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Luke Stapley', 'Archer', 'Offshore Recruitment Consultant', 'Fareham, United Kingdom', 'https://www.linkedin.com/in/luke-stapley-7279b81a3/', '2026-08-27T15:30:00+04:00'),
   ('Tom O''Connor', 'Archer', 'Offshore Recruitment Consultant', 'Fareham, United Kingdom', 'https://www.linkedin.com/in/tom-o-connor-0a355118a/', '2026-08-27T15:30:00+04:00'),
   ('Hallum Russell', 'Archer', 'Offshore Recruitment Consultant — ROV, Survey & Inspection', 'Gosport, United Kingdom', 'https://www.linkedin.com/in/hallum-russell-20402326b/', '2026-08-27T15:30:00+04:00')
