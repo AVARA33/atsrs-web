@@ -798,6 +798,36 @@ Final result: passed.
 
 ---
 
+# Notification dropdown narrow right-rail placement — Design QA (V5885)
+
+- User placement reference: `C:\Users\user\AppData\Local\Temp\codex-clipboard-b6fe95e9-39d5-4162-ae93-b084819a5a4d.png`.
+- Prior reference hierarchy: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a9d2c1cf-e345-4b45-a117-5e59cc4b7724.png`.
+- Same-viewport production before/after comparison: `tests/artifacts/notification-dropdown-narrow-right/production-before-after-comparison.png`.
+- Production dark evidence: `tests/artifacts/notification-dropdown-narrow-right/production-final-dashboard-dark.png`.
+- Production light evidence: `tests/artifacts/notification-dropdown-narrow-right/production-final-dashboard-light.png`.
+- Populated local dark/light evidence: `tests/artifacts/notification-dropdown-narrow-right/implementation-dark-local.png` and `implementation-light-local.png`.
+
+## Visual comparison
+
+- The previous 420 px dropdown began at x=1835 while the Dashboard cards ended at x=1915, producing an 80 px overlap.
+- The revised desktop dropdown is 340 px wide and is nudged 16 px farther right from the signed-in header controls alignment. At the same 2294 px viewport it begins at x=1931 while the Dashboard card region ends at x=1915, leaving a 16 px clear gap and 0 px overlap.
+- The caret remains under the bell, the dropdown remains 10 px below it, and the existing 64 px header, 88 px notification rows, 44 px icon tiles, 56 px footer, 12 px radius and 560 px maximum height are unchanged.
+- The existing mobile contract is preserved: below 443 px the dropdown uses `calc(100vw - 24px)` with 12 px side margins and no horizontal overflow.
+- Dark and light themes retain the approved ATSRS surfaces and accents. No fake production notification was added; production was verified in its real empty state and the existing fixture was used only to check populated-row density.
+
+## Interaction and parity checks
+
+- Bell click opens the dropdown and a second click closes it.
+- Outside click closes it.
+- Production build marker `V5885`, stylesheet asset `5885`, and script asset `583` were confirmed on `atsrs.com`.
+- Production geometry: width 340 px, Dashboard card gap 16 px, right viewport gap 23 px, overlap 0 px, and page horizontal overflow 0 px.
+- Focused notification contract, JavaScript syntax, Cloudflare Pages build, and diff whitespace checks passed.
+- The older broad `shell-polish` test still contains its pre-existing stale stylesheet-version assertion (`568`) and is unrelated to this placement change.
+
+final result: passed
+
+---
+
 # Profile Sharing requester row controls — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-15f0ecdf-167e-46be-8188-9ea1e2a0ca0c.png` (3439 × 1369 px).
