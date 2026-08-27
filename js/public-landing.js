@@ -146,7 +146,8 @@
   });
 
   var callback=params.has('code')||params.has('error')||window.location.hash.indexOf('access_token=')>=0||window.location.hash.indexOf('type=recovery')>=0;
-  var publicShare=params.has('share')||/^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash);
+  var publicShare=params.has('share')||(params.has('share_request')&&params.has('resume'))||
+    /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash);
   if(requestedView==='home'){
     window.__atsrsEntryRoute='landing';
     window.__atsrsSuppressAutomaticSessionOpen=true;

@@ -8,6 +8,7 @@ const migration = fs.readFileSync(
   'utf8',
 );
 const html = fs.readFileSync('index.html', 'utf8');
+const publicLanding = fs.readFileSync('js/public-landing.js', 'utf8');
 
 assert.match(migration, /drop index if exists public\.atsrs_share_events_one_download_per_request_file_idx/);
 assert.doesNotMatch(backend, /consumedRequestIds/);
@@ -31,5 +32,8 @@ assert.match(frontend, /body=Object\.assign\(\{token:publicToken,request_id:publ
 assert.doesNotMatch(frontend, /All Files Downloaded/);
 assert.match(html, /js\/share-profile\.js\?v=429/);
 assert.match(html, /atsrsEntryParams\.has\('share_request'\).*atsrsEntryParams\.has\('resume'\)/);
+assert.match(html, /if\(atsrsEntryShare\)\{[\s\S]*?atsrs-public-share-mode/);
+assert.match(publicLanding, /params\.has\('share_request'\).*params\.has\('resume'\)/);
+assert.match(publicLanding, /if\(callback\|\|publicShare\)return/);
 
 console.log('repeat share download contracts passed');

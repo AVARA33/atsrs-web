@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5880" data-atsrs-update="27 Aug 2026">
+<html lang="en" data-atsrs-build="V5881" data-atsrs-update="27 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,8 +45,7 @@ try{
   window.atsrsSyncFavicon(initialTheme);
   var themeMeta=document.querySelector('meta[name="theme-color"]');
   if(themeMeta)themeMeta.setAttribute('content',initialTheme==='light'?'#f6f8fb':'#050606');
-  if(new URLSearchParams(window.location.search).get('share')||
-     /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(window.location.hash)){
+  if(atsrsEntryShare){
     document.documentElement.classList.add('atsrs-public-share-mode');
   }
   if(window.MutationObserver){
@@ -2142,7 +2141,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
 <script src="js/storage.js?v=592"></script>
-<script src="js/public-landing.js?v=58147"></script>
+<script src="js/public-landing.js?v=5881"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
