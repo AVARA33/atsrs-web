@@ -86,6 +86,7 @@ body.atsrs-preview-open{overflow:hidden}
 .file-preview-image-stage{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;background:#292d33}
 .file-preview-image-canvas{display:grid;place-items:center;min-width:100%;min-height:100%}
 .file-preview-image-canvas img{display:block;max-width:none;max-height:none;object-fit:contain;user-select:none;-webkit-user-drag:none}
+html[data-theme="dark"] .file-preview-dialog,html[data-theme="dark"] .file-preview-head,html[data-theme="dark"] .file-preview-body,html[data-theme="dark"] :is(.file-preview-pdf,.file-preview-image),html[data-theme="dark"] :is(.file-preview-pdf-tools,.file-preview-image-tools){border-color:#2a2f2d!important;background:#0b0d0d!important;background-image:none!important;color:#eef2ef!important;box-shadow:none!important}html[data-theme="dark"] :is(.file-preview-pdf-stage,.file-preview-image-stage){background:#111414!important}html[data-theme="dark"] :is(.file-preview-pdf-tools,.file-preview-image-tools) button{border-color:#343936!important;background:#0b0d0c!important;color:#eef2ef!important}html[data-theme="dark"] :is(.file-preview-pdf-tools,.file-preview-image-tools) button:hover{border-color:#59615c!important;background:#171a18!important}
 
 @media(max-width:900px){.roadmap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.roadmap-heading{align-items:flex-start;flex-direction:column;gap:8px}}
 @media(max-width:640px){

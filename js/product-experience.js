@@ -8,6 +8,7 @@
   var pdfZoomOut=document.getElementById('atsrsPdfZoomOut');
   var pdfZoomIn=document.getElementById('atsrsPdfZoomIn');
   var pdfFit=document.getElementById('atsrsPdfFit');
+  var pdfRotate=document.getElementById('atsrsPdfRotate');
   var pdfZoomLabel=document.getElementById('atsrsPdfZoomLabel');
   var pdfStatus=document.getElementById('atsrsPdfStatus');
   var imagePreview=document.getElementById('atsrsImagePreview');
@@ -17,6 +18,7 @@
   var imageZoomOut=document.getElementById('atsrsImageZoomOut');
   var imageZoomIn=document.getElementById('atsrsImageZoomIn');
   var imageFit=document.getElementById('atsrsImageFit');
+  var imageRotate=document.getElementById('atsrsImageRotate');
   var imageZoomLabel=document.getElementById('atsrsImageZoomLabel');
   var title=document.getElementById('atsrsFilePreviewTitle');
   var closeButton=document.getElementById('atsrsFilePreviewClose');
@@ -26,11 +28,13 @@
   var imageScale=1;
   var imageFitScale=1;
   var imageFitted=true;
+  var imageRotation=0;
   var pdfDocument=null;
   var pdfLoadingTask=null;
   var pdfScale=1;
   var pdfFitScale=1;
   var pdfFitted=true;
+  var pdfRotation=0;
   var pdfRenderVersion=0;
   var pdfOpenVersion=0;
   var lastWheelZoom=0;
@@ -117,13 +121,17 @@
     imageScale=Math.max(.5,Math.min(3,scale));
     var width=Math.round(imageContent.naturalWidth*imageScale);
     var height=Math.round(imageContent.naturalHeight*imageScale);
+    var quarterTurn=imageRotation%180!==0;
+    var boundWidth=quarterTurn?height:width;
+    var boundHeight=quarterTurn?width:height;
     imageContent.style.width=width+'px';
     imageContent.style.height=height+'px';
+    imageContent.style.transform='rotate('+imageRotation+'deg)';
     if(imageCanvas&&imageStage){
-      imageCanvas.style.width=Math.max(imageStage.clientWidth,width)+'px';
-      imageCanvas.style.height=Math.max(imageStage.clientHeight,height)+'px';
+      imageCanvas.style.width=Math.max(imageStage.clientWidth,boundWidth)+'px';
+      imageCanvas.style.height=Math.max(imageStage.clientHeight,boundHeight)+'px';
     }
-    if(imageZoomLabel)imageZoomLabel.textContent=scaleToZoomPercent(imageScale)+'%';
+    if(imageZoomLabel)imageZoomLabel.textContent=(imageFitted?100:clampZoomPercent(Math.round(imageScale/imageFitScale*100/zoomStepPercent)*zoomStepPercent))+'%';
     requestAnimationFrame(function(){syncStagePan(imageStage);});
   }
 
@@ -131,7 +139,10 @@
     if(!imageContent||!imageStage||!imageContent.naturalWidth)return;
     var availableWidth=Math.max(1,imageStage.clientWidth-24);
     var availableHeight=Math.max(1,imageStage.clientHeight-24);
-    imageFitScale=fitZoomScale(Math.min(availableWidth/imageContent.naturalWidth,availableHeight/imageContent.naturalHeight));
+    var quarterTurn=imageRotation%180!==0;
+    var naturalWidth=quarterTurn?imageContent.naturalHeight:imageContent.naturalWidth;
+    var naturalHeight=quarterTurn?imageContent.naturalWidth:imageContent.naturalHeight;
+    imageFitScale=Math.min(availableWidth/naturalWidth,availableHeight/naturalHeight);
     imageFitted=true;
     applyImageScale(imageFitScale);
     imageStage.scrollLeft=0;
@@ -139,9 +150,12 @@
   }
 
   function changeImageZoom(direction){
+    var current=imageFitted?100:clampZoomPercent(Math.round(imageScale/imageFitScale*100/zoomStepPercent)*zoomStepPercent);
     imageFitted=false;
-    applyImageScale(steppedZoomScale(imageScale,direction));
+    applyImageScale(imageFitScale*clampZoomPercent(current+(direction<0?-zoomStepPercent:zoomStepPercent))/100);
   }
+
+  function rotateImage(){imageRotation=(imageRotation+90)%360;if(imageFitted)fitImage();else applyImageScale(imageScale);}
 
   function imagePreviewIsOpen(){
     return !!(modal&&imagePreview&&!modal.classList.contains('hidden')&&!imagePreview.classList.contains('hidden'));
@@ -167,7 +181,7 @@
       for(var pageNumber=1;pageNumber<=pdfDocument.numPages;pageNumber+=1){
         if(version!==pdfRenderVersion)return;
         var page=await pdfDocument.getPage(pageNumber);
-        var viewport=page.getViewport({scale:pdfScale});
+        var viewport=page.getViewport({scale:pdfScale,rotation:pdfRotation});
         var canvas=document.createElement('canvas');
         var context=canvas.getContext('2d',{alpha:false});
         canvas.className='file-preview-pdf-page';
@@ -185,7 +199,7 @@
         await page.render(renderOptions).promise;
       }
       if(version!==pdfRenderVersion)return;
-      if(pdfZoomLabel)pdfZoomLabel.textContent=scaleToZoomPercent(pdfScale)+'%';
+      if(pdfZoomLabel)pdfZoomLabel.textContent=(pdfFitted?100:clampZoomPercent(Math.round(pdfScale/pdfFitScale*100/zoomStepPercent)*zoomStepPercent))+'%';
       if(pdfStatus)pdfStatus.textContent=pdfDocument.numPages+' page'+(pdfDocument.numPages===1?'':'s');
       requestAnimationFrame(function(){
         if(pdfStage.scrollHeight>pdfStage.clientHeight)pdfStage.scrollTop=scrollRatio*(pdfStage.scrollHeight-pdfStage.clientHeight);
@@ -201,19 +215,26 @@
   async function fitPdf(){
     if(!pdfDocument||!pdfStage)return;
     var firstPage=await pdfDocument.getPage(1);
-    var naturalViewport=firstPage.getViewport({scale:1});
-    pdfFitScale=fitZoomScale((pdfStage.clientWidth-42)/naturalViewport.width);
+    var naturalViewport=firstPage.getViewport({scale:1,rotation:pdfRotation});
+    var availableWidth=Math.max(1,pdfStage.clientWidth-42);
+    var availableHeight=Math.max(1,pdfStage.clientHeight-42);
+    pdfFitScale=Math.min(availableWidth/naturalViewport.width,availableHeight/naturalViewport.height);
     pdfScale=pdfFitScale;
     pdfFitted=true;
     await renderPdf();
+    pdfStage.scrollLeft=0;
+    pdfStage.scrollTop=0;
   }
 
   function changePdfZoom(direction){
     if(!pdfDocument)return;
+    var current=pdfFitted?100:clampZoomPercent(Math.round(pdfScale/pdfFitScale*100/zoomStepPercent)*zoomStepPercent);
     pdfFitted=false;
-    pdfScale=steppedZoomScale(pdfScale,direction);
+    pdfScale=pdfFitScale*clampZoomPercent(current+(direction<0?-zoomStepPercent:zoomStepPercent))/100;
     renderPdf();
   }
+
+  function rotatePdf(){if(!pdfDocument)return;pdfRotation=(pdfRotation+90)%360;if(pdfFitted)fitPdf();else renderPdf();}
 
   async function openPdf(options){
     if(!pdfPreview||!pdfPages)return;
@@ -223,6 +244,7 @@
     pdfPages.innerHTML='';
     pdfScale=1;
     pdfFitted=true;
+    pdfRotation=0;
     var library=await pdfLibrary();
     var response=await fetch(options.url||'',{credentials:'omit',cache:'no-store',mode:'cors'});
     if(!response.ok)throw new Error('Document download failed ('+response.status+').');
@@ -261,6 +283,7 @@
     if(pdfStage){pdfStage.classList.remove('is-pannable','is-panning');pdfStage.scrollLeft=0;pdfStage.scrollTop=0;}
     if(pdfPreview)pdfPreview.classList.add('hidden');
     if(imageContent){imageContent.removeAttribute('src');imageContent.style.width='';imageContent.style.height='';}
+    imageRotation=0;
     if(imageStage){imageStage.classList.remove('is-pannable','is-panning');imageStage.scrollLeft=0;imageStage.scrollTop=0;}
     if(imagePreview)imagePreview.classList.add('hidden');
     if(frame)frame.classList.remove('hidden');
@@ -293,6 +316,7 @@
     if(imageMode&&imageContent){
       frame.src='about:blank';
       imageContent.alt=options.title||'Document preview';
+      imageRotation=0;
       imageContent.onload=function(){requestAnimationFrame(fitImage);};
       imageContent.src=options.url||'';
     }else if(pdfMode){
@@ -319,9 +343,11 @@
   if(imageZoomOut)imageZoomOut.addEventListener('click',function(){changeImageZoom(-1);});
   if(imageZoomIn)imageZoomIn.addEventListener('click',function(){changeImageZoom(1);});
   if(imageFit)imageFit.addEventListener('click',fitImage);
+  if(imageRotate)imageRotate.addEventListener('click',rotateImage);
   if(pdfZoomOut)pdfZoomOut.addEventListener('click',function(){changePdfZoom(-1);});
   if(pdfZoomIn)pdfZoomIn.addEventListener('click',function(){changePdfZoom(1);});
   if(pdfFit)pdfFit.addEventListener('click',fitPdf);
+  if(pdfRotate)pdfRotate.addEventListener('click',rotatePdf);
   bindStagePan(pdfStage);
   bindStagePan(imageStage);
   document.addEventListener('wheel',handlePreviewWheel,{capture:true,passive:false});

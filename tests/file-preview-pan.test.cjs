@@ -10,9 +10,9 @@ const css = fs.readFileSync(path.join(root, 'css', 'product-experience.css'), 'u
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'file-preview-pan-harness.html'), 'utf8');
 
 assert.doesNotMatch(index, /<script src="js\/product-experience\.js\?v=447"><\/script>/);
-assert.match(loader, /loadScript\('js\/product-experience\.js\?v=448'\)/);
+assert.match(loader, /loadScript\('js\/product-experience\.js\?v=449'\)/);
 assert.match(loader, /window\.atsrsOpenFilePreview=previewStub/);
-assert.match(index, /css\/product-experience\.css\?v=447/);
+assert.match(index, /css\/product-experience\.css\?v=448/);
 assert.match(runtime, /stage\.scrollWidth>stage\.clientWidth\+1\|\|stage\.scrollHeight>stage\.clientHeight\+1/);
 assert.match(runtime, /addEventListener\('pointerdown'/);
 assert.match(runtime, /setPointerCapture/);
