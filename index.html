@@ -79,7 +79,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/account.css?v=426">
 <link rel="stylesheet" href="css/product-experience.css?v=448">
 <link rel="stylesheet" href="css/date-picker.css?v=5851">
-<link rel="stylesheet" href="css/share-profile.css?v=514">
+<link rel="stylesheet" href="css/share-profile.css?v=515">
 <link rel="stylesheet" href="css/recipient-links.css?v=433">
 <link rel="stylesheet" href="css/calm-actions.css?v=408">
 <link rel="stylesheet" href="css/account-security-live.css?v=376">
@@ -2044,13 +2044,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <h2 id="shareRequestTitle">Request document download</h2>
     <p id="shareRequestSummary">The owner will review your request. Approval lasts for 30 minutes and never beyond the link expiry.</p>
     <div id="shareIdentityStep">
-      <label>Full name<input id="shareRequesterName" autocomplete="name" maxlength="100"></label>
-      <label>Company<input id="shareRequesterCompany" autocomplete="organization" maxlength="140"></label>
-      <label>Work email<input id="shareRequesterEmail" type="email" autocomplete="email" maxlength="254"></label>
+      <label class="share-request-field atsrs-field-shell"><span class="atsrs-field-label">Full name</span><input id="shareRequesterName" autocomplete="name" maxlength="100"></label>
+      <label class="share-request-field atsrs-field-shell"><span class="atsrs-field-label">Company</span><input id="shareRequesterCompany" autocomplete="organization" maxlength="140"></label>
+      <label class="share-request-field atsrs-field-shell"><span class="atsrs-field-label">Work email</span><input id="shareRequesterEmail" type="email" autocomplete="email" maxlength="254"></label>
       <button id="sendShareOtpBtn" type="button" onclick="sendShareRequestOtp()">Send verification code</button>
     </div>
     <div id="shareOtpStep" class="hidden">
-      <label>6-digit code<input id="shareRequesterOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}"></label>
+      <label class="share-request-field atsrs-field-shell"><span class="atsrs-field-label">6-digit code</span><input id="shareRequesterOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}"></label>
       <button id="verifyShareOtpBtn" type="button" onclick="verifyShareRequestOtp()">Verify &amp; Submit</button>
       <button type="button" class="secondary" onclick="resetShareVerification()">Use another email</button>
     </div>
