@@ -796,6 +796,25 @@ final result: passed
 
 Final result: passed.
 
+# Compact notification cards — Design QA
+
+- Source visual truth: `C:/Users/user/AppData/Local/Temp/codex-clipboard-b79285cc-03a0-4db4-a817-d162721c02a8.png`.
+- Implementation evidence: `C:/Users/user/Documents/GitHub/atsrs-web/design-qa-notification-cards.png`.
+- Viewport: 2294 × 791 CSS pixels at device density 1; focused implementation crop: 385 × 195 pixels.
+- State: authenticated Personal account, dark theme, notification popover open with one pending download request.
+- Full-view evidence: the mobile reference establishes separate rounded notification cards, compact stacked copy and an unread state; ATSRS intentionally retains its desktop frame and theme tokens.
+- Focused evidence: the live card measures 332 × 54.8 pixels inside a 350-pixel popover. The list is capped at 326 pixels, so five cards fit before internal scrolling.
+- Typography: existing ATSRS hierarchy remains legible and truncation-safe.
+- Spacing: 7-pixel card gaps and 9-pixel list padding keep the cards distinct without excessive height.
+- Colors: dark mode uses neutral black and green; light mode uses white cards and the existing blue interaction token.
+- Icons/assets: the existing Phosphor library supplies the request and certificate icons; no placeholder or custom-drawn asset was introduced.
+- Copy: requester name, request type, company, verified email and unread state remain visible.
+- Interaction verification: the bell opens the popover, the pending request renders as one card, existing request-routing and clear-all contracts pass, and the browser console has zero warnings or errors.
+- Comparison history: the former full-width divided rows were replaced by individual compact cards with an icon, unread marker and five-card scroll cap.
+- P3 follow-up: use a consented requester avatar if ATSRS later stores one for this request context.
+
+Final result: passed.
+
 # Profile Sharing V1 — Design QA
 
 - Source visual: `C:\Users\user\AppData\Local\Temp\codex-clipboard-e34d742b-e7da-49fa-bf89-6e6090ba782c.png`.
