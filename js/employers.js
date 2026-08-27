@@ -282,6 +282,16 @@
         careers: "https://www.krakenrobotics.com/careers/",
         contact: "https://www.krakenrobotics.com/contact/",
       },
+      "Cellula Robotics": {
+        mark: "CR",
+        summary:
+          "Canadian marine technology company designing modular long-range autonomous underwater vehicles for subsea survey, science, energy and security missions.",
+        sector: "Autonomous underwater systems",
+        tags: ["AUV", "Subsea", "Robotics"],
+        website: "https://cellula.com/",
+        careers: "https://cellula.com/careers/",
+        contact: "https://cellula.com/contact-cellula-robotics/",
+      },
     },
     companies = [],
     loadToken = 0;
