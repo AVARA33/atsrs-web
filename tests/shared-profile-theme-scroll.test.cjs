@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'share-profile.css'), 'utf8');
 
-assert.match(index, /css\/share-profile\.css\?v=509/);
+assert.match(index, /css\/share-profile\.css\?v=516/);
 assert.match(css, /html\.atsrs-public-share-mode body[\s\S]*?overflow-y:auto!important/);
 assert.match(css, /\.shared-profile-page\{[\s\S]*?height:100dvh;[\s\S]*?overflow-y:auto/);
 assert.match(css, /\.shared-document-summary\{[\s\S]*?padding:15px 18px 5px/);

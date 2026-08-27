@@ -294,6 +294,28 @@ async function loadShareByToken(admin: AdminClient, token: string) {
   return shareIsActive(share) ? share : null;
 }
 
+function shareResumeValue(row: AccessRequestRow) {
+  return `atsrs:share-resume:v1:${row.id}:${row.share_id}:${row.requester_email}:${row.viewer_token_hash ?? ""}`;
+}
+
+async function loadResumeRequest(admin: AdminClient, secretKey: string, requestId: string, resume: string) {
+  if (!UUID_PATTERN.test(requestId) || !/^[a-f0-9]{64}$/.test(resume)) return null;
+  const result = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT).eq("id", requestId).maybeSingle();
+  if (result.error) throw result.error;
+  const row = result.data as AccessRequestRow | null;
+  if (!row?.email_verified_at || !row.viewer_token_hash) return null;
+  const expected = await hmacHex(secretKey, shareResumeValue(row));
+  return expected === resume ? row : null;
+}
+
+async function loadShareById(admin: AdminClient, shareId: string) {
+  if (!UUID_PATTERN.test(shareId)) return null;
+  const result = await admin.from("atsrs_profile_shares").select(SHARE_SELECT).eq("id", shareId).eq("enabled", true).maybeSingle();
+  if (result.error) throw result.error;
+  const share = result.data as ShareRow | null;
+  return shareIsActive(share) ? share : null;
+}
+
 function requestedFiles(share: ShareRow, value: unknown, requestAll: boolean) {
   const shared = uniqueFileIds(share.selected_file_ids);
   if (requestAll) return shared;
@@ -358,16 +380,20 @@ async function notifyOwner(admin: AdminClient, row: AccessRequestRow) {
   );
 }
 
-async function notifyDecision(row: AccessRequestRow, approved: boolean) {
+async function notifyDecision(row: AccessRequestRow, approved: boolean, secretKey: string) {
   const subject = approved ? "Your ATSRS download request was approved" : "Your ATSRS download request was declined";
   const timing = approved && row.access_expires_at
     ? `Download access is available until ${new Date(row.access_expires_at).toUTCString()}, and never beyond the original share-link expiry.`
     : "The profile owner did not grant download access for this request.";
+  const resume = approved ? await hmacHex(secretKey, shareResumeValue(row)) : "";
+  const returnUrl = approved
+    ? `${SITE_URL}/?share_request=${encodeURIComponent(row.id)}&resume=${encodeURIComponent(resume)}`
+    : "";
   await sendEmail(
     row.requester_email,
     subject,
-    `<div style="font-family:Arial,sans-serif;max-width:620px;margin:auto;color:#172033"><h2>${approved ? "Download access approved" : "Request update"}</h2><p>Hello ${escapeHtml(row.requester_name)},</p><p>${escapeHtml(timing)}</p>${approved ? `<p>Open the original ATSRS profile link in the same browser and select Download.</p>` : ""}<p style="color:#64748b;font-size:12px">ATSRS never sends document attachments by email.</p></div>`,
-    `${approved ? "Approved." : "Declined."} ${timing}${approved ? " Open the original ATSRS profile link in the same browser." : ""}`,
+    `<div style="background:#f1f5f9;padding:28px 12px;font-family:Arial,sans-serif;color:#172033"><div style="max-width:620px;margin:auto;background:#fff;border:1px solid #dbe4ee;border-radius:18px;overflow:hidden"><div style="padding:18px 24px;background:#08111f;color:#fff;font-weight:800;letter-spacing:.08em">ATSRS</div><div style="padding:26px 24px"><p style="margin:0 0 8px;color:#16a34a;font-size:12px;font-weight:800;letter-spacing:.1em">${approved ? "DOWNLOAD APPROVED" : "REQUEST UPDATE"}</p><h2 style="margin:0 0 14px;font-size:24px">${approved ? "Your files are ready" : "Download request declined"}</h2><p style="line-height:1.6">Hello ${escapeHtml(row.requester_name)},</p><p style="line-height:1.6">${escapeHtml(timing)}</p>${approved ? `<a href="${returnUrl}" style="display:inline-block;margin:12px 0 8px;padding:12px 18px;border-radius:10px;background:#16a34a;color:#fff;text-decoration:none;font-weight:700">Open shared files</a>` : ""}<p style="color:#64748b;font-size:12px;line-height:1.5">ATSRS never sends document attachments by email.</p></div></div></div>`,
+    `${approved ? "Approved." : "Declined."} ${timing}${approved ? ` Open shared files: ${returnUrl}` : ""}`,
   );
 }
 
@@ -380,7 +406,7 @@ function parseExpiry(value: unknown) {
   return date.toISOString();
 }
 
-async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) {
+async function ownerRequest(req: Request, admin: AdminClient, secretKey: string, body: JsonObject) {
   const user = await authenticatedUser(admin, req);
   if (!user) return json(req, 401, { error: "Authentication required." });
   const action = safeText(body.action, 40);
@@ -531,9 +557,7 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
       return json(req, 409, { error: "The share link has expired. This request can no longer be approved." });
     }
     const now = new Date();
-    const accessExpires = decision === "approve"
-      ? new Date(Math.min(now.getTime() + DOWNLOAD_URL_SECONDS * 1000, new Date(share!.expires_at!).getTime())).toISOString()
-      : null;
+    const accessExpires = decision === "approve" ? share!.expires_at : null;
     const status = decision === "approve" ? "approved" : "declined";
     const update = await admin.from("atsrs_share_access_requests").update({
       status, access_expires_at: accessExpires, decided_at: now.toISOString(), updated_at: now.toISOString(),
@@ -541,7 +565,7 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
     if (update.error) throw update.error;
     const updated = update.data as AccessRequestRow;
     if (share) await insertEvent(admin, share, decision === "approve" ? "request_approved" : "request_declined", { request_id: updated.id });
-    try { await notifyDecision(updated, decision === "approve"); } catch (error) { console.warn("ATSRS decision email skipped", error); }
+    try { await notifyDecision(updated, decision === "approve", secretKey); } catch (error) { console.warn("ATSRS decision email skipped", error); }
     return json(req, 200, { request: publicRequestStatus(updated) });
   }
 
@@ -607,7 +631,7 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
       .eq("owner_id", user.id).eq("share_id", existing!.id).eq("status", "pending").limit(50);
     if (pending.error) throw pending.error;
     const now = new Date();
-    const accessExpires = new Date(Math.min(now.getTime() + DOWNLOAD_URL_SECONDS * 1000, new Date(existing!.expires_at!).getTime())).toISOString();
+    const accessExpires = existing!.expires_at;
     const updatedRows: AccessRequestRow[] = [];
     for (const item of pending.data ?? []) {
       const update = await admin.from("atsrs_share_access_requests").update({
@@ -617,7 +641,7 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
         const updated = update.data as AccessRequestRow;
         updatedRows.push(updated);
         await insertEvent(admin, existing!, "request_approved", { request_id: updated.id });
-        try { await notifyDecision(updated, true); } catch (error) { console.warn("ATSRS approval email skipped", error); }
+        try { await notifyDecision(updated, true, secretKey); } catch (error) { console.warn("ATSRS approval email skipped", error); }
       }
     }
     return json(req, 200, { approved: updatedRows.length });
@@ -832,29 +856,25 @@ async function createVerifiedRequest(req: Request, admin: AdminClient, share: Sh
   return json(req, 200, { request: publicRequestStatus(created) });
 }
 
-async function downloadDocument(req: Request, admin: AdminClient, share: ShareRow, body: JsonObject) {
+async function downloadDocument(req: Request, admin: AdminClient, share: ShareRow, body: JsonObject, resumeRequest: AccessRequestRow | null = null) {
   const fileId = safeText(body.file_id, 40);
   const viewerToken = safeText(body.viewer_token, 160) || req.headers.get("x-atsrs-viewer-token") || "";
   if (!UUID_PATTERN.test(fileId) || !uniqueFileIds(share.selected_file_ids).includes(fileId)) return json(req, 404, { error: "Document is not shared." });
-  const identity = await findViewerIdentity(admin, share, viewerToken);
-  if (!identity?.row) return json(req, 401, { error: "Your verified recruiter session has expired." });
-  const approved = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
-    .eq("share_id", share.id).eq("share_token_hash", share.token_hash).eq("viewer_token_hash", identity.tokenHash).eq("status", "approved")
-    .contains("requested_file_ids", [fileId]).gt("access_expires_at", new Date().toISOString())
-    .order("access_expires_at", { ascending: false }).limit(20);
-  if (approved.error) throw approved.error;
-  const approvedRows = (approved.data ?? []) as AccessRequestRow[];
-  const approvedIds = approvedRows.map((row) => row.id);
-  let consumedRequestIds = new Set<string>();
-  if (approvedIds.length) {
-    const consumed = await admin.from("atsrs_share_events").select("request_id")
-      .eq("share_id", share.id).eq("file_id", fileId).eq("event_type", "document_downloaded")
-      .in("request_id", approvedIds);
-    if (consumed.error) throw consumed.error;
-    consumedRequestIds = new Set((consumed.data ?? []).map((event) => String(event.request_id)));
+  let approvedRows: AccessRequestRow[] = [];
+  if (resumeRequest) {
+    if (resumeRequest.share_id === share.id && resumeRequest.status === "approved" && resumeRequest.access_expires_at && new Date(resumeRequest.access_expires_at).getTime() > Date.now() && resumeRequest.requested_file_ids.includes(fileId)) approvedRows = [resumeRequest];
+  } else {
+    const identity = await findViewerIdentity(admin, share, viewerToken);
+    if (!identity?.row) return json(req, 401, { error: "Your verified recruiter session has expired." });
+    const approved = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
+      .eq("share_id", share.id).eq("share_token_hash", share.token_hash).eq("viewer_token_hash", identity.tokenHash).eq("status", "approved")
+      .contains("requested_file_ids", [fileId]).gt("access_expires_at", new Date().toISOString())
+      .order("access_expires_at", { ascending: false }).limit(20);
+    if (approved.error) throw approved.error;
+    approvedRows = (approved.data ?? []) as AccessRequestRow[];
   }
   const access = approvedRows.find((row) =>
-    !uniqueFileIds(row.revoked_file_ids).includes(fileId) && !consumedRequestIds.has(row.id)
+    !uniqueFileIds(row.revoked_file_ids).includes(fileId)
   ) ?? null;
   if (!access?.access_expires_at) return json(req, 403, { error: "Download access has not been approved or has expired." });
   const file = await admin.from("atsrs_files").select("id,file_name,storage_path,metadata")
@@ -870,7 +890,7 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
   ));
   const signed = await admin.storage.from(FILE_BUCKET).createSignedUrl(file.data.storage_path, seconds, { download: file.data.file_name });
   if (signed.error) throw signed.error;
-  const consumed = await admin.from("atsrs_share_events").insert({
+  const downloadEvent = await admin.from("atsrs_share_events").insert({
     share_id: share.id,
     owner_id: share.user_id,
     request_id: access.id,
@@ -878,22 +898,20 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
     event_type: "document_downloaded",
     event_data: {},
   });
-  if (consumed.error) {
-    if (consumed.error.code === "23505") return json(req, 409, { error: "This approved document has already been downloaded." });
-    throw consumed.error;
-  }
+  if (downloadEvent.error) throw downloadEvent.error;
   return json(req, 200, { download_url: signed.data.signedUrl, expires_in: seconds });
 }
 
 async function publicAction(req: Request, admin: AdminClient, secretKey: string, body: JsonObject) {
   const token = safeText(body.token, 160);
-  const share = await loadShareByToken(admin, token);
+  const resumeRequest = await loadResumeRequest(admin, secretKey, safeText(body.request_id, 40), safeText(body.resume, 80));
+  const share = resumeRequest ? await loadShareById(admin, resumeRequest.share_id) : await loadShareByToken(admin, token);
   if (!share) return json(req, 404, { error: "Shared profile was not found or is no longer active." });
   const action = safeText(body.action, 40);
   if (action === "start_verification") return startVerification(req, admin, secretKey, share, body);
   if (action === "verify_otp") return verifyOtp(req, admin, secretKey, share, body);
   if (action === "create_request") return createVerifiedRequest(req, admin, share, body);
-  if (action === "download") return downloadDocument(req, admin, share, body);
+  if (action === "download") return downloadDocument(req, admin, share, body, resumeRequest);
   if (action === "track_preview") {
     const fileId = safeText(body.file_id, 40);
     if (!UUID_PATTERN.test(fileId) || !uniqueFileIds(share.selected_file_ids).includes(fileId)) return json(req, 404, { error: "Document is not shared." });
@@ -903,9 +921,12 @@ async function publicAction(req: Request, admin: AdminClient, secretKey: string,
   return json(req, 400, { error: "Unsupported public action." });
 }
 
-async function publicRequest(req: Request, admin: AdminClient) {
-  const token = new URL(req.url).searchParams.get("token")?.trim() ?? "";
-  const share = await loadShareByToken(admin, token);
+async function publicRequest(req: Request, admin: AdminClient, secretKey: string) {
+  const requestUrl = new URL(req.url);
+  const token = requestUrl.searchParams.get("token")?.trim() ?? "";
+  const quietRefresh = requestUrl.searchParams.get("refresh") === "1";
+  const resumeRequest = await loadResumeRequest(admin, secretKey, requestUrl.searchParams.get("request_id")?.trim() ?? "", requestUrl.searchParams.get("resume")?.trim() ?? "");
+  const share = resumeRequest ? await loadShareById(admin, resumeRequest.share_id) : await loadShareByToken(admin, token);
   if (!share) return json(req, 404, { error: "Shared profile was not found or is no longer active." });
   const workspace = await admin.from("atsrs_workspace_data").select("data_key,payload")
     .eq("user_id", share.user_id).eq("account_type", share.account_type);
@@ -938,9 +959,11 @@ async function publicRequest(req: Request, admin: AdminClient) {
   let tokenHash = "";
   if (TOKEN_PATTERN.test(viewerToken)) tokenHash = await sha256Hex(viewerToken);
   let approvedRows: AccessRequestRow[] = [];
-  let viewerRequests: AccessRequestRow[] = [];
+  let viewerRequests: AccessRequestRow[] = resumeRequest ? [resumeRequest] : [];
   const downloadedByRequest = new Map<string, Set<string>>();
-  if (tokenHash) {
+  if (resumeRequest) {
+    approvedRows = viewerRequests.filter((row) => row.status === "approved" && row.access_expires_at && new Date(row.access_expires_at).getTime() > Date.now());
+  } else if (tokenHash) {
     const requestResult = await admin.from("atsrs_share_access_requests").select(REQUEST_SELECT)
       .eq("share_id", share.id).eq("share_token_hash", share.token_hash).eq("viewer_token_hash", tokenHash).order("created_at", { ascending: false });
     if (requestResult.error) throw requestResult.error;
@@ -967,11 +990,8 @@ async function publicRequest(req: Request, admin: AdminClient) {
     // The owner can remove or re-upload that document separately; only files
     // that still have a readable Storage object belong in the public payload.
     if (preview.error || !preview.data?.signedUrl) return null;
-    const downloaded = viewerRequests.find((row) =>
-      row.requested_file_ids.includes(details.id) && downloadedByRequest.get(row.id)?.has(details.id)
-    );
     const approved = approvedRows.find((row) =>
-      row.requested_file_ids.includes(details.id) && !uniqueFileIds(row.revoked_file_ids).includes(details.id) && !downloadedByRequest.get(row.id)?.has(details.id)
+      row.requested_file_ids.includes(details.id) && !uniqueFileIds(row.revoked_file_ids).includes(details.id)
     );
     const pending = viewerRequests.find((row) => row.status === "pending" && row.requested_file_ids.includes(details.id));
     const declined = viewerRequests.find((row) => row.status === "declined" && row.requested_file_ids.includes(details.id));
@@ -979,17 +999,19 @@ async function publicRequest(req: Request, admin: AdminClient) {
     return {
       ...details,
       preview_url: preview.data.signedUrl,
-      download_status: downloaded ? "downloaded" : approved ? "approved" : pending ? "pending" : declined ? "declined" : previouslyRequested ? "approval_expired" : "available_on_request",
+      download_status: approved ? "approved" : pending ? "pending" : declined ? "declined" : previouslyRequested ? "approval_expired" : "available_on_request",
       download_expires_at: approved?.access_expires_at ?? null,
     };
   }));
   const documents = documentResults.filter((document) => document !== null);
-  const now = new Date().toISOString();
-  await admin.from("atsrs_profile_shares").update({
-    view_count: Number(share.view_count ?? 0) + 1,
-    last_viewed_at: now,
-  }).eq("id", share.id);
-  await insertEvent(admin, share, "link_opened");
+  if (!quietRefresh) {
+    const now = new Date().toISOString();
+    await admin.from("atsrs_profile_shares").update({
+      view_count: Number(share.view_count ?? 0) + 1,
+      last_viewed_at: now,
+    }).eq("id", share.id);
+    await insertEvent(admin, share, "link_opened");
+  }
   return json(req, 200, {
     profile: {
       name: safeText(profileValue.name, 100), surname: safeText(profileValue.surname, 100),
@@ -1002,7 +1024,7 @@ async function publicRequest(req: Request, admin: AdminClient) {
       ...publicRequestStatus(row),
       downloaded_file_ids: Array.from(downloadedByRequest.get(row.id) ?? []),
     })),
-    access: { preview_only: true, share_expires_at: share.expires_at, download_window_minutes: 30 },
+    access: { preview_only: true, share_expires_at: share.expires_at, download_access_expires_at: share.expires_at, repeat_downloads: true },
   });
 }
 
@@ -1014,7 +1036,7 @@ Deno.serve(async (req: Request) => {
   if (!supabaseUrl || !secretKey) return json(req, 500, { error: "Server configuration is incomplete." });
   const admin = createClient(supabaseUrl, secretKey, { auth: { persistSession: false, autoRefreshToken: false } });
   try {
-    if (req.method === "GET") return await publicRequest(req, admin);
+    if (req.method === "GET") return await publicRequest(req, admin, secretKey);
     if (req.method === "POST") {
       let body: JsonObject;
       try { body = await req.json() as JsonObject; } catch { return json(req, 400, { error: "Invalid request body." }); }
@@ -1022,7 +1044,7 @@ Deno.serve(async (req: Request) => {
       const publicActions = ["start_verification", "verify_otp", "create_request", "download", "track_preview"];
       return publicActions.includes(action)
         ? await publicAction(req, admin, secretKey, body)
-        : await ownerRequest(req, admin, body);
+        : await ownerRequest(req, admin, secretKey, body);
     }
     return json(req, 405, { error: "Method not allowed." });
   } catch (error) {

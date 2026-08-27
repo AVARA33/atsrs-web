@@ -8,6 +8,8 @@
   var ownerRequests=[];
   var knownShareUrl='';
   var publicToken='';
+  var publicResumeRequest='';
+  var publicResumeToken='';
   var publicDocuments=[];
   var lastPublicProfileData=null;
   var viewerToken='';
@@ -16,6 +18,7 @@
   var pendingVerificationId='';
   var shareRequestsPromise=null;
   var ownerPanelPromise=null;
+  var publicProfilePromise=null;
 
   function byId(id){return document.getElementById(id);}
   function client(){return window.supabaseClient||null;}
@@ -39,7 +42,7 @@
   function shareLinkById(id){var share=shareById(id),token=ownerTokens()[id]||'';return share&&share.active&&token&&(!share.token_hint||token.slice(-8)===share.token_hint)?shareUrl(token):'';}
   function safeViewerGet(key){try{return localStorage.getItem(key)||safeSessionGet(key);}catch(error){return safeSessionGet(key);}}
   function safeViewerSet(key,value){try{if(value)localStorage.setItem(key,value);else localStorage.removeItem(key);}catch(error){}safeSessionSet(key,value);}
-  function viewerKey(suffix){return 'atsrs_share_viewer_'+publicToken.slice(-12)+'_'+suffix;}
+  function viewerKey(suffix){return 'atsrs_share_viewer_'+(publicToken||publicResumeRequest).slice(-12)+'_'+suffix;}
   function shareUrl(token){return token?'https://atsrs.com/?share='+encodeURIComponent(token):'';}
   function formatDate(value){
     if(!value)return 'Not provided';
@@ -90,7 +93,7 @@
     var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'Share request failed.');return data;
   }
   async function publicCall(body){
-    body=Object.assign({token:publicToken},body||{});
+    body=Object.assign({token:publicToken,request_id:publicResumeRequest,resume:publicResumeToken},body||{});
     var headers={apikey:publishableKey(),'Content-Type':'application/json'};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;
     if(accountMode()==='company'){
       var accessToken=await authToken();
@@ -178,7 +181,7 @@
   window.atsrsGetOwnerShareRequests=function(){return ownerRequests.map(function(request){return Object.assign({},request);});};
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared files':names.join(', ');}
   function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}
-  function activeRequestFileIds(request){var revoked=new Set(request.revoked_file_ids||[]),downloaded=new Set(request.downloaded_file_ids||[]);return(request.requested_file_ids||[]).filter(function(id){return !revoked.has(id)&&!downloaded.has(id);});}
+  function activeRequestFileIds(request){var revoked=new Set(request.revoked_file_ids||[]);return(request.requested_file_ids||[]).filter(function(id){return !revoked.has(id);});}
   function makeButton(text,className,onClick){var button=document.createElement('button');button.type='button';button.textContent=text;if(className)button.className=className;button.addEventListener('click',onClick);return button;}
   function renderRequestCard(request,history){
     var card=document.createElement('article');card.className='access-request-card status-'+request.status;
@@ -194,7 +197,7 @@
     var details=document.createElement('div');details.className='access-request-details hidden';
     var detailSummary=document.createElement('div');detailSummary.className='access-request-summary';detailSummary.textContent='Verified work email · '+request.requester_email+(request.access_expires_at?' · Access until '+formatDateTime(request.access_expires_at):'')+(request.download_count?' · '+request.download_count+' document download(s) completed':'');details.appendChild(detailSummary);
     var revokedIds=new Set(request.revoked_file_ids||[]),downloadedIds=new Set(request.downloaded_file_ids||[]),documentList=document.createElement('div');documentList.className='access-document-list';
-    (request.requested_file_ids||[]).forEach(function(fileId){var row=document.createElement('div');row.className='access-document-row';var label=document.createElement('span');label.textContent=ownerFileName(fileId);var state=document.createElement('small'),downloaded=downloadedIds.has(fileId),revoked=revokedIds.has(fileId)||request.status!=='approved';state.textContent=downloaded?'Downloaded':(revoked?'Access closed':'Active');state.className=revoked||downloaded?'closed':'';row.appendChild(label);row.appendChild(state);if(requestHasActiveAccess(request)&&!revoked&&!downloaded){row.appendChild(makeButton('Revoke','access-revoke-document',function(){window.revokeShareDocumentAccess(request.id,fileId);}));}documentList.appendChild(row);});details.appendChild(documentList);
+    (request.requested_file_ids||[]).forEach(function(fileId){var row=document.createElement('div');row.className='access-document-row';var label=document.createElement('span');label.textContent=ownerFileName(fileId);var state=document.createElement('small'),downloaded=downloadedIds.has(fileId),revoked=revokedIds.has(fileId)||request.status!=='approved';state.textContent=revoked?'Access closed':(downloaded?'Active · downloaded':'Active');state.className=revoked?'closed':'';row.appendChild(label);row.appendChild(state);if(requestHasActiveAccess(request)&&!revoked){row.appendChild(makeButton('Revoke','access-revoke-document',function(){window.revokeShareDocumentAccess(request.id,fileId);}));}documentList.appendChild(row);});details.appendChild(documentList);
     var actions=document.createElement('div');actions.className='access-request-actions';
     if(request.status==='pending'){
       actions.appendChild(makeButton('Approve','',function(){window.decideShareRequest(request.id,'approve');}));
@@ -335,7 +338,7 @@
     try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Document access could not be closed. Please try again.'));}
   };
   window.approveAllShareRequests=async function(){
-    if(!window.confirm('Approve every pending recruiter request for 30 minutes?'))return;
+    if(!window.confirm('Approve every pending recruiter request until its share link expires?'))return;
     var button=byId('approveAllRequestsBtn');if(button)button.disabled=true;
     try{var result=await ownerCall({action:'approve_all_pending'});window.alert(result.approved+' request(s) approved.');await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Requests could not be approved. Please try again.'));}finally{if(button)button.disabled=false;}
   };
@@ -363,9 +366,9 @@
   function startBrowserDownload(url,fileName){var link=document.createElement('a');link.href=url;link.download=fileName||'';link.rel='noopener';link.style.display='none';document.body.appendChild(link);link.click();setTimeout(function(){link.remove();},1000);}
   async function downloadPublicDocument(documentData,button,quiet){
     if(button)button.disabled=true;
-    try{var result=await publicCall({action:'download',file_id:documentData.id,viewer_token:viewerToken});documentData.download_status='downloaded';startBrowserDownload(result.download_url,documentData.file_name);if(button){button.textContent='Downloaded';button.disabled=true;}if(!quiet)setTimeout(function(){loadPublicProfile(publicToken);},250);return true;}
+    try{var result=await publicCall({action:'download',file_id:documentData.id,viewer_token:viewerToken});startBrowserDownload(result.download_url,documentData.file_name);if(button){button.textContent='Downloaded';setTimeout(function(){button.textContent='Download';button.disabled=false;},1200);}if(!quiet)setTimeout(function(){loadPublicProfile(publicToken,{quiet:true});},250);return true;}
     catch(error){if(!quiet)window.alert(friendlyError(error,'Download access is unavailable. Please try again.'));return false;}
-    finally{if(button&&documentData.download_status!=='downloaded')button.disabled=false;}
+    finally{if(button&&button.textContent!=='Downloaded')button.disabled=false;}
   }
   async function downloadAllApproved(button){
     var available=publicDocuments.filter(function(item){return item.download_status==='approved';});if(!available.length)return;
@@ -387,7 +390,7 @@
     var actions=document.createElement('div');actions.className='shared-document-actions';var preview=document.createElement('button');preview.type='button';preview.textContent='Preview';
     preview.addEventListener('click',function(){publicCall({action:'track_preview',file_id:documentData.id}).catch(function(){});if(typeof window.atsrsOpenFilePreview==='function')window.atsrsOpenFilePreview({url:documentData.preview_url,title:documentData.document_type||documentData.file_name||'ATSRS document',mimeType:documentData.mime_type||''});else window.location.assign(documentData.preview_url);});
     var access=document.createElement('button');access.type='button';access.className='secondary';
-    if(documentData.download_status==='approved'){access.textContent='Download · 30 min';access.addEventListener('click',function(){downloadPublicDocument(documentData,access);});}
+    if(documentData.download_status==='approved'){access.textContent='Download';access.addEventListener('click',function(){downloadPublicDocument(documentData,access);});}
     else if(documentData.download_status==='pending'){access.textContent='Request pending';access.disabled=true;}
     else if(documentData.download_status==='downloaded'){access.textContent='Downloaded';access.disabled=true;}
     else if(documentData.download_status==='declined'){access.textContent='Request declined';access.disabled=true;}
@@ -418,26 +421,26 @@
       section.appendChild(heading);section.appendChild(sectionGrid);grid.appendChild(section);
     });
     var all=byId('requestAllDocumentsBtn');if(all){
-      var approvedFiles=publicDocuments.filter(function(item){return item.download_status==='approved';}),availableFiles=publicDocuments.filter(function(item){return item.download_status==='available_on_request';}),downloadedFiles=publicDocuments.filter(function(item){return item.download_status==='downloaded';}),pendingFiles=publicDocuments.filter(function(item){return item.download_status==='pending';});
+      var approvedFiles=publicDocuments.filter(function(item){return item.download_status==='approved';}),availableFiles=publicDocuments.filter(function(item){return item.download_status==='available_on_request';}),pendingFiles=publicDocuments.filter(function(item){return item.download_status==='pending';});
       all.onclick=null;all.disabled=false;
       if(approvedFiles.length){all.textContent=approvedFiles.length===publicDocuments.length?'Download All':'Download remaining ('+approvedFiles.length+')';all.onclick=function(){downloadAllApproved(all);};}
-      else if(downloadedFiles.length===publicDocuments.length&&publicDocuments.length){all.textContent='All Files Downloaded';all.disabled=true;}
       else if(availableFiles.length){all.textContent=availableFiles.length===publicDocuments.length?'Request All Files':'Request remaining ('+availableFiles.length+')';all.onclick=function(){window.openDownloadRequest(availableFiles.length===publicDocuments.length?'all':availableFiles.map(function(item){return item.id;}));};}
       else if(pendingFiles.length){all.textContent='Request Pending';all.disabled=true;}
       else{all.textContent='Download request closed';all.disabled=true;}
     }
     byId('sharedProfileLoading').classList.add('hidden');byId('sharedProfileError').classList.add('hidden');byId('sharedProfileContent').classList.remove('hidden');
   }
-  async function loadPublicProfile(token){
+  async function loadPublicProfile(token,options){
+    options=options||{};if(publicProfilePromise)return publicProfilePromise;
     document.body.classList.add('atsrs-public-share-view');document.body.classList.remove('atsrs-session-pending','atsrs-booting');var page=byId('sharedProfilePage');if(page)page.classList.remove('hidden');
-    try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:headers,cache:'no-store'});if(!response.ok){await new Promise(function(resolve){setTimeout(resolve,450)});response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:headers,cache:'no-store'})}var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');renderPublicProfile(data);}
-    catch(error){console.error('ATSRS public profile failed',error);showPublicError(friendlyError(error,'This shared profile is unavailable.'));}
+    publicProfilePromise=(async function(){try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var params=new URLSearchParams();if(token)params.set('token',token);if(publicResumeRequest)params.set('request_id',publicResumeRequest);if(publicResumeToken)params.set('resume',publicResumeToken);if(options.quiet)params.set('refresh','1');var url=endpoint()+'?'+params.toString();var response=await fetch(url,{headers:headers,cache:'no-store'});if(!response.ok&&!options.quiet){await new Promise(function(resolve){setTimeout(resolve,450)});response=await fetch(url,{headers:headers,cache:'no-store'})}var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');renderPublicProfile(data);return data;}
+    catch(error){console.error('ATSRS public profile failed',error);if(!options.quiet)showPublicError(friendlyError(error,'This shared profile is unavailable.'));return null;}finally{publicProfilePromise=null;}})();return publicProfilePromise;
   }
   function setRequestStep(step){['shareIdentityStep','shareOtpStep','shareVerifiedStep'].forEach(function(id){var element=byId(id);if(element)element.classList.toggle('hidden',id!==step);});}
   window.openDownloadRequest=function(target){
     var isAll=target==='all',ids=isAll?publicDocuments.map(function(item){return item.id;}):(Array.isArray(target)?target:[target]),label=isAll?'all shared files':(Array.isArray(target)?'the remaining '+ids.length+' files':publicDocumentName(target));
     requestContext={request_all:isAll,file_ids:ids,label:label};pendingVerificationId='';requestMessage('');
-    var summary=byId('shareRequestSummary');if(summary)summary.textContent='Requesting '+label+'. The owner will review your verified request. Approval lasts for 30 minutes and never beyond the link expiry.';
+    var summary=byId('shareRequestSummary');if(summary)summary.textContent='Requesting '+label+'. The owner will review your verified request. Once approved, downloads remain available until the share link expires.';
     var modal=byId('shareRequestModal');if(modal)modal.classList.remove('hidden');
     if(viewerToken&&viewerIdentity){var identity=byId('shareVerifiedIdentity');if(identity)identity.textContent=viewerIdentity.name+' · '+viewerIdentity.company+' · '+viewerIdentity.email;setRequestStep('shareVerifiedStep');}
     else setRequestStep('shareIdentityStep');
@@ -461,8 +464,8 @@
     catch(error){requestMessage(friendlyError(error,'The request could not be sent. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   function install(){
-    publicToken=new URLSearchParams(location.search).get('share')||'';
-    if(publicToken){viewerToken=safeViewerGet(viewerKey('token'));try{viewerIdentity=JSON.parse(safeViewerGet(viewerKey('identity'))||'null');}catch(error){viewerIdentity=null;}loadPublicProfile(publicToken);return;}
+    var publicParams=new URLSearchParams(location.search);publicToken=publicParams.get('share')||'';publicResumeRequest=publicParams.get('share_request')||'';publicResumeToken=publicParams.get('resume')||'';
+    if(publicToken||(publicResumeRequest&&publicResumeToken)){viewerToken=safeViewerGet(viewerKey('token'));try{viewerIdentity=JSON.parse(safeViewerGet(viewerKey('identity'))||'null');}catch(error){viewerIdentity=null;}loadPublicProfile(publicToken);atsrsStableInterval(function(){if(document.hidden||!publicDocuments.some(function(item){return item.download_status==='pending';}))return;return loadPublicProfile(publicToken,{quiet:true});},5000);document.addEventListener('visibilitychange',function(){if(!document.hidden)loadPublicProfile(publicToken,{quiet:true});});window.addEventListener('focus',function(){loadPublicProfile(publicToken,{quiet:true});});window.addEventListener('atsrs:resume',function(){loadPublicProfile(publicToken,{quiet:true});});return;}
     var input=byId('shareProfileLink');if(input){input.value='';input.placeholder='Create a secure link after choosing documents.';}var copy=byId('copyShareBtn');if(copy)copy.disabled=true;var preview=byId('previewShareBtn');if(preview)preview.disabled=true;
     refreshOwnerPanel({force:true});setTimeout(function(){refreshOwnerPanel({force:true});},1200);atsrsStableInterval(function(){return refreshShareRequests();},30000);
     var oldShow=window.showAccountTab;if(typeof oldShow==='function'&&!oldShow.__atsrsSharing){window.showAccountTab=function(tab){var result=oldShow.apply(this,arguments);if(tab==='sharing')setTimeout(function(){refreshOwnerPanel({force:true});},0);return result;};window.showAccountTab.__atsrsSharing=true;}
