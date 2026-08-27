@@ -47,7 +47,7 @@
 .developer-page .developer-admin-overview .admin-overview-heading h4{font-size:11px;white-space:nowrap}
 .developer-page .developer-admin-overview .admin-overview-secure{display:none}
 .developer-page .developer-admin-overview .admin-overview-stats{
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(5,minmax(0,1fr));
   gap:5px;
   margin:0;
 }

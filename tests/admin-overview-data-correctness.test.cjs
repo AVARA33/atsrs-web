@@ -5,11 +5,11 @@ const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
-const migration = read('supabase/migrations/20260827222000_registration_overview_windows.sql');
+const migration = read('supabase/migrations/20260827193352_registration_overview_today.sql');
 const browserSource = read('js/admin-overview.js');
 const index = read('index.html');
 
-assert.match(index, /<script src="js\/admin-overview\.js\?v=5901"><\/script>/);
+assert.match(index, /<script src="js\/admin-overview\.js\?v=5903"><\/script>/);
 assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5875/);
 const developerStart = index.indexOf('<section id="developerPage"');
 const developerEnd = index.indexOf('</section>', developerStart);
@@ -27,6 +27,8 @@ assert.match(migration, /not coalesce\(auth_user\.is_anonymous, false\)/);
 assert.match(migration, /email_confirmed_at is not null[\s\S]*phone_confirmed_at is not null/);
 assert.match(migration, /from auth\.identities as identity[\s\S]*identity\.user_id = auth_user\.id/);
 assert.match(migration, /atsrs_metrics_excluded/);
+assert.match(migration, /new_users_today bigint/);
+assert.match(migration, /date_trunc\('day', now\(\) at time zone 'Asia\/Baku'\) at time zone 'Asia\/Baku'/);
 assert.match(migration, /created_at >= now\(\) - interval '7 days'/);
 assert.match(migration, /created_at >= now\(\) - interval '14 days'/);
 assert.match(migration, /created_at >= now\(\) - interval '30 days'/);
@@ -59,6 +61,7 @@ const elements = {
   adminOverviewPanel: element(true),
   adminOverviewRefresh: element(),
   adminRegisteredUsers: element(),
+  adminNewUsersToday: element(),
   adminNewUsers7d: element(),
   adminNewUsers14d: element(),
   adminNewUsers30d: element(),
@@ -76,6 +79,7 @@ let routedPage = '';
 let rpc = async () => ({ data: [{
   is_admin: true,
   registered_users: 6,
+  new_users_today: 1,
   new_users_7d: 1,
   new_users_14d: 2,
   new_users_30d: 3,
@@ -113,6 +117,7 @@ vm.runInNewContext(browserSource, context);
   assert.equal(elements.adminOverviewPanel.classList.contains('hidden'), false);
   assert.equal(elements.navDeveloper.classList.contains('hidden'), false);
   assert.equal(elements.adminRegisteredUsers.textContent, '6');
+  assert.equal(elements.adminNewUsersToday.textContent, '1');
   assert.equal(elements.adminNewUsers7d.textContent, '1');
   assert.equal(elements.adminNewUsers14d.textContent, '2');
   assert.equal(elements.adminNewUsers30d.textContent, '3');
@@ -132,12 +137,14 @@ vm.runInNewContext(browserSource, context);
   releaseRpc({ data: [{
     is_admin: true,
     registered_users: 7,
+    new_users_today: 1,
     new_users_7d: 2,
     new_users_14d: 3,
     new_users_30d: 4,
   }], error: null });
   await refreshPromise;
   assert.equal(elements.adminRegisteredUsers.textContent, '7');
+  assert.equal(elements.adminNewUsersToday.textContent, '1');
   assert.equal(elements.adminNewUsers7d.textContent, '2');
   assert.equal(elements.adminNewUsers14d.textContent, '3');
   assert.equal(elements.adminNewUsers30d.textContent, '4');

@@ -18,8 +18,9 @@
     return document.getElementById(id);
   }
 
-  function setMetricText(registeredUsers, newUsers7d, newUsers14d, newUsers30d, note) {
+  function setMetricText(registeredUsers, newUsersToday, newUsers7d, newUsers14d, newUsers30d, note) {
     byId('adminRegisteredUsers').textContent = registeredUsers;
+    byId('adminNewUsersToday').textContent = newUsersToday;
     byId('adminNewUsers7d').textContent = newUsers7d;
     byId('adminNewUsers14d').textContent = newUsers14d;
     byId('adminNewUsers30d').textContent = newUsers30d;
@@ -32,12 +33,12 @@
   }
 
   function showLoading() {
-    setMetricText('—', '—', '—', '—', 'Secure registration metrics are loading…');
+    setMetricText('—', '—', '—', '—', '—', 'Secure registration metrics are loading…');
     setBusy(true);
   }
 
   function showRefreshError() {
-    setMetricText('—', '—', '—', '—', 'Registration metrics could not be refreshed. Try again.');
+    setMetricText('—', '—', '—', '—', '—', 'Registration metrics could not be refreshed. Try again.');
     if (panel) panel.classList.remove('hidden');
   }
 
@@ -180,6 +181,7 @@
     observeAuthorizedDeveloperRoute();
     setMetricText(
       String(row.registered_users ?? 0),
+      String(row.new_users_today ?? 0),
       String(row.new_users_7d ?? 0),
       String(row.new_users_14d ?? 0),
       String(row.new_users_30d ?? 0),
