@@ -11,7 +11,7 @@ assert.match(shell,/showAccountTab\('sharing'\)/);
 assert.match(shell,/profile-sharing-link-request\[data-request-id=/);
 assert.match(css,/\.atsrs-notification-popover\{/);
 assert.match(css,/\.atsrs-notification-badge\{/);
-assert.match(html,/css\/shell-polish\.css\?v=5876/);
+assert.match(html,/css\/shell-polish\.css\?v=5877/);
 assert.match(html,/js\/shell-polish\.js\?v=577/);
 assert.match(shell,/params\.set\('tab','sharing'\)/);
 assert.match(shell,/byId\('navProfile'\)/);
