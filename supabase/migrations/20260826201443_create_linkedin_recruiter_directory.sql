@@ -78,6 +78,21 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Christian Hahn', 'Siemens Healthineers', 'Senior Recruiter', 'Livermore, United States', 'https://www.linkedin.com/in/chahn/', '2026-08-27T17:15:00+04:00'),
+  ('Amy McMahon', 'Siemens Healthineers', 'Senior Talent Acquisition Advisor', 'Wayne, United States', 'https://www.linkedin.com/in/amyvoelkl/', '2026-08-27T17:15:00+04:00'),
+  ('Frank Reineri', 'Siemens Healthineers', 'Senior Recruiter', 'Cologne/Bonn Region, Germany', 'https://www.linkedin.com/in/frank-reineri-3ab06b191/', '2026-08-27T17:15:00+04:00'),
+  ('Sangita Guha', 'Siemens Healthineers', 'Talent Acquisition Professional', 'Pune, India', 'https://www.linkedin.com/in/sangita-guha-1b61411a3/', '2026-08-27T17:15:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Deepa G.', 'Petrofac', 'Talent Acquisition and Recruitment Operations Leader', 'Sharjah, United Arab Emirates', 'https://www.linkedin.com/in/deepagomathinayagam/', '2026-08-27T17:00:00+04:00'),
   ('Preeya Shetty', 'Petrofac', 'Talent Acquisition Professional', 'Maharashtra, India', 'https://www.linkedin.com/in/preeya-shetty-assoc-cipd-b5ab4756/', '2026-08-27T17:00:00+04:00'),
   ('Nithya Sree', 'Petrofac', 'Talent Acquisition Professional', 'Chennai, India', 'https://www.linkedin.com/in/nithya-sree-393588225/', '2026-08-27T17:00:00+04:00'),
