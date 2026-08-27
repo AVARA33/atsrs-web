@@ -11,7 +11,7 @@ assert.match(shell,/showAccountTab\('sharing'\)/);
 assert.match(shell,/profile-sharing-link-request\[data-request-id=/);
 assert.match(css,/\.atsrs-notification-popover\{/);
 assert.match(css,/\.atsrs-notification-badge\{/);
-assert.match(html,/css\/shell-polish\.css\?v=5874/);
+assert.match(html,/css\/shell-polish\.css\?v=5875/);
 assert.match(html,/js\/shell-polish\.js\?v=575/);
 assert.match(css,/\.atsrs-shell-notification-list\{[^}]*max-height:326px[^}]*overflow:auto/);
 assert.match(css,/\.atsrs-shell-notification-item\{[^}]*grid-template-columns:34px minmax\(0,1fr\) auto!important/);
