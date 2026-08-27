@@ -9,7 +9,7 @@ const migration = read('supabase/migrations/20260827222000_registration_overview
 const browserSource = read('js/admin-overview.js');
 const index = read('index.html');
 
-assert.match(index, /<script src="js\/admin-overview\.js\?v=5895"><\/script>/);
+assert.match(index, /<script src="js\/admin-overview\.js\?v=5897"><\/script>/);
 assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5875/);
 const developerStart = index.indexOf('<section id="developerPage"');
 const developerEnd = index.indexOf('</section>', developerStart);
@@ -67,8 +67,12 @@ const elements = {
   developerRegistrationsPanel: element(true),
   developerRegistrationRows: Object.assign(element(), { innerHTML: '', appendChild() {} }),
   developerRegistrationCount: element(),
+  developerPage: element(),
+  navDashboard: element(),
 };
 let domReady;
+let authStateHandler;
+let routedPage = '';
 let rpc = async () => ({ data: [{
   is_admin: true,
   registered_users: 6,
@@ -81,15 +85,21 @@ let detailRpc = async () => ({ data: [], error: null });
 const context = {
   console: { warn() {} },
   setTimeout() {},
+  URLSearchParams,
   document: {
     getElementById: (id) => elements[id] || null,
     createElement: () => Object.assign(element(), { append() {}, appendChild() {} }),
     addEventListener(name, handler) { if (name === 'DOMContentLoaded') domReady = handler; },
   },
   window: {
+    location: { search: '' },
+    showPage(page) { routedPage = page; },
     addEventListener() {},
     supabaseClient: {
-      auth: { getSession: async () => ({ data: { session: { user: { id: 'admin-user' } } } }) },
+      auth: {
+        getSession: async () => ({ data: { session: { user: { id: 'admin-user' } } } }),
+        onAuthStateChange(handler) { authStateHandler = handler; },
+      },
       rpc: (name, ...args) => name === 'atsrs_get_developer_registrations' ? detailRpc(...args) : rpc(name, ...args),
     },
   },
@@ -140,6 +150,12 @@ vm.runInNewContext(browserSource, context);
   assert.equal(elements.adminRegisteredUsers.textContent, '—');
   assert.equal(elements.adminAiUsageNote.textContent, 'Registration metrics could not be refreshed. Try again.');
   assert.equal(elements.adminOverviewRefresh.disabled, false);
+
+  authStateHandler('SIGNED_IN', { user: { id: 'non-admin-user' } });
+  assert.equal(context.window.__atsrsDeveloperAccess, false);
+  assert.equal(elements.navDeveloper.classList.contains('hidden'), true);
+  assert.equal(elements.developerRegistrationsPanel.classList.contains('hidden'), true);
+  assert.equal(routedPage, 'dashboard');
 
   console.log('Admin overview data-correctness tests passed');
 })().catch((error) => {

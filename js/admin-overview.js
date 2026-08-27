@@ -8,6 +8,9 @@
   var loadedUserId = '';
   var developerNav = null;
   var registrationsPanel = null;
+  var developerRouteRestored = false;
+  window.__atsrsDeveloperAccess = false;
+  window.__atsrsDeveloperAccessUserId = '';
 
   function byId(id) {
     return document.getElementById(id);
@@ -37,10 +40,22 @@
   }
 
   function hidePanel() {
+    window.__atsrsDeveloperAccess = false;
+    window.__atsrsDeveloperAccessUserId = '';
     if (panel) panel.classList.add('hidden');
     if (registrationsPanel) registrationsPanel.classList.add('hidden');
     if (developerNav) developerNav.classList.add('hidden');
     loadedUserId = '';
+    developerRouteRestored = false;
+    var developerPage = byId('developerPage');
+    var requestedDeveloper = false;
+    try { requestedDeveloper = new URLSearchParams(window.location.search).get('route') === 'developer'; }
+    catch (ignore) {}
+    if ((requestedDeveloper || (developerPage && !developerPage.classList.contains('hidden'))) &&
+        typeof window.showPage === 'function') {
+      var dashboardNav = byId('navDashboard');
+      if (dashboardNav) window.showPage('dashboard', dashboardNav);
+    }
   }
 
   function formatDate(value) {
@@ -105,6 +120,8 @@
       return;
     }
 
+    window.__atsrsDeveloperAccess = true;
+    window.__atsrsDeveloperAccessUserId = loadedUserId;
     setMetricText(
       String(row.registered_users ?? 0),
       String(row.new_users_7d ?? 0),
@@ -114,6 +131,10 @@
     );
     panel.classList.remove('hidden');
     if (developerNav) developerNav.classList.remove('hidden');
+    if (!developerRouteRestored && new URLSearchParams(window.location.search).get('route') === 'developer') {
+      developerRouteRestored = true;
+      if (typeof window.showPage === 'function' && developerNav) window.showPage('developer', developerNav);
+    }
   }
 
   async function refresh(force) {
@@ -173,6 +194,16 @@
     refresh(false);
     setTimeout(function () { refresh(false); }, 700);
     setTimeout(function () { refresh(false); }, 1800);
+    if (window.supabaseClient && window.supabaseClient.auth &&
+        typeof window.supabaseClient.auth.onAuthStateChange === 'function') {
+      window.supabaseClient.auth.onAuthStateChange(function (_event, session) {
+        var nextUserId = session && session.user ? String(session.user.id || '') : '';
+        if (!nextUserId || nextUserId !== window.__atsrsDeveloperAccessUserId) {
+          hidePanel();
+          setTimeout(function () { refresh(true); }, 0);
+        }
+      });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);

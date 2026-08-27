@@ -1,4 +1,5 @@
 /* ATSRS V5895 — private owner registration and access-window monitor. */
+#app .nav #navDeveloper.hidden{display:none!important}
 .developer-page{
   width:min(1180px,100%);
   margin:0 auto;
@@ -7,7 +8,6 @@
 .developer-page-heading{margin:0 0 18px}
 .developer-page-heading h1{margin:5px 0 6px;font-size:clamp(26px,3vw,36px);line-height:1.08}
 .developer-page-heading p{margin:0;color:var(--muted,#94a3b8)}
-.developer-page .developer-admin-overview{margin:0 0 18px;width:100%}
 .developer-registrations{
   overflow:hidden;
   border:1px solid rgba(148,163,184,.2);
@@ -16,15 +16,50 @@
   box-shadow:0 18px 44px rgba(0,0,0,.16);
 }
 .developer-registrations-head{
-  display:flex;
+  display:grid;
+  grid-template-columns:minmax(180px,auto) minmax(460px,1fr) auto;
   align-items:center;
-  justify-content:space-between;
   gap:18px;
   padding:20px 22px;
   border-bottom:1px solid rgba(148,163,184,.16);
 }
 .developer-registrations-head h2{margin:4px 0 0;font-size:20px}
 .developer-registrations-head>span{color:#86efac;font-weight:700;font-size:12px}
+.developer-page .developer-admin-overview{
+  position:static!important;
+  inset:auto!important;
+  display:grid;
+  grid-template-columns:minmax(124px,.7fr) minmax(360px,2.3fr) auto;
+  align-items:center;
+  gap:10px;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:7px 8px!important;
+  border:1px solid rgba(53,89,108,.72);
+  border-radius:12px;
+  background:#060b09;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+.developer-page .developer-admin-overview.hidden{display:none!important}
+.developer-page .developer-admin-overview .admin-overview-heading{min-width:0}
+.developer-page .developer-admin-overview .admin-overview-heading h4{font-size:11px;white-space:nowrap}
+.developer-page .developer-admin-overview .admin-overview-secure{display:none}
+.developer-page .developer-admin-overview .admin-overview-stats{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px;
+  margin:0;
+}
+.developer-page .developer-admin-overview .admin-overview-stat{padding:6px 7px;background:#020504}
+.developer-page .developer-admin-overview .admin-overview-stat strong{font-size:15px}
+.developer-page .developer-admin-overview .admin-overview-footer{
+  display:block!important;
+  padding:0;
+  border:0;
+}
+.developer-page .developer-admin-overview .admin-overview-footer>span{display:none}
+.developer-page .developer-admin-overview .admin-overview-refresh{min-height:29px;padding:5px 8px}
 .developer-registration-table{width:100%}
 .developer-registration-row{
   display:grid;
@@ -55,6 +90,14 @@ html[data-theme="light"] .developer-registrations{
 }
 html[data-theme="light"] .developer-registrations-head,
 html[data-theme="light"] .developer-registration-row{border-color:#e5eaf1}
+html[data-theme="light"] .developer-page .developer-admin-overview{
+  border-color:#dbe4ef;
+  background:#f8fafc;
+}
+html[data-theme="light"] .developer-page .developer-admin-overview .admin-overview-stat{
+  border-color:#dbe4ef;
+  background:#fff;
+}
 html[data-theme="light"] .developer-registrations-head>span,
 html[data-theme="light"] .developer-access-status.trial,
 html[data-theme="light"] .developer-time-remaining.trial,
@@ -63,9 +106,18 @@ html[data-theme="light"] .developer-time-remaining.full{color:#2563eb}
 html[data-theme="light"] .developer-registration-row strong{color:#0f172a}
 html[data-theme="light"] .developer-registration-row>span{color:#526176}
 
+@media(max-width:1100px){
+  .developer-registrations-head{grid-template-columns:1fr auto}
+  .developer-page .developer-admin-overview{grid-column:1/-1;grid-row:2}
+}
+
 @media(max-width:760px){
   .developer-page{padding-top:8px}
   .developer-registrations-head{align-items:flex-start;padding:17px 16px}
+  .developer-page .developer-admin-overview{grid-template-columns:1fr auto}
+  .developer-page .developer-admin-overview .admin-overview-heading{grid-column:1}
+  .developer-page .developer-admin-overview .admin-overview-stats{grid-column:1/-1;grid-row:2;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .developer-page .developer-admin-overview .admin-overview-footer{grid-column:2;grid-row:1}
   .developer-registration-columns{display:none}
   .developer-registration-row{grid-template-columns:1fr 1fr;gap:7px 12px;padding:14px 16px}
   .developer-registration-row strong{grid-column:1/-1}
