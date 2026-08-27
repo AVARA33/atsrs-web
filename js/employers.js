@@ -152,6 +152,16 @@
         careers: "https://www.teledyne.com/careers",
         contact: "https://www.teledynemarine.com/contact-us",
       },
+      "Saab Seaeye": {
+        mark: "SS",
+        summary:
+          "Designer and manufacturer of electric underwater robotic systems for offshore, marine science and defence missions.",
+        sector: "ROV & engineering",
+        tags: ["ROV", "Subsea", "Robotics"],
+        website: "https://www.saabseaeye.com/",
+        careers: "https://www.saabseaeye.com/careers",
+        contact: "https://www.saabseaeye.com/rov_/contact/contact-us",
+      },
     },
     companies = [],
     loadToken = 0;
