@@ -993,7 +993,7 @@ html[data-theme="dark"] .share-request-dialog h2{color:#f2f5f3}
 html[data-theme="dark"] .share-request-dialog>p{color:#9aa7a0}
 html[data-theme="dark"] .share-request-dialog label{color:#c4cdc8}
 html[data-theme="dark"] .share-request-dialog input{border-color:#343b37;background:#121514;color:#f2f5f3;box-shadow:none}
-html[data-theme="dark"] .share-request-dialog input:focus,html[data-theme="dark"] .share-request-dialog input:focus-visible{border-color:#36c85b!important;background:#0e110f!important;box-shadow:0 0 0 3px rgba(54,200,91,.14)!important}
+html[data-theme="dark"] body #shareRequestModal .share-request-dialog input:focus,html[data-theme="dark"] body #shareRequestModal .share-request-dialog input:focus-visible{border-color:#87938d!important;outline:0!important;background:#0e110f!important;box-shadow:0 0 0 3px rgba(194,205,199,.1)!important}
 html[data-theme="dark"] .share-request-dialog button.secondary{border-color:#343b37!important;background:#101311!important;color:#e8eeea!important}
 html[data-theme="dark"] .share-request-close{border-color:#343b37!important;background:#101311!important;color:#e8eeea!important}
 html[data-theme="dark"] .share-verified-identity{color:#bde7cc}
