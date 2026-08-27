@@ -81,24 +81,24 @@
       if(manualPanel&&manualPanel.dataset.keepOpen==='quick-action')delete manualPanel.dataset.keepOpen;
     },500);
   }
-  function openProfileSharing(){
-    route('profile','navProfile');
-    setTimeout(function(){if(typeof window.showAccountTab==='function')window.showAccountTab('sharing');},80);
-  }
-  function openProfilePersonalInformation(){
+  function openProfileWorkspace(tab){
     try{
       var url=new URL(window.location.href);
-      ['route','tab','request','share_id'].forEach(function(key){url.searchParams.delete(key)});
+      ['request','share_id','intent'].forEach(function(key){url.searchParams.delete(key)});
+      url.searchParams.set('route','profile');
+      url.searchParams.set('tab',tab);
       window.history.replaceState(null,'',url.pathname+(url.searchParams.toString()?'?'+url.searchParams.toString():'')+url.hash);
     }catch(error){}
     route('profile','navProfile');
     [0,80,220].forEach(function(delay){
       setTimeout(function(){
         if(typeof window.showAccountTab==='function')window.showAccountTab('general');
-        if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('personal',false);
+        if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab(tab,false);
       },delay);
     });
   }
+  function openProfileSharing(){openProfileWorkspace('sharing')}
+  function openProfilePersonalInformation(){openProfileWorkspace('personal')}
   function ensurePersonalToolsGrid(stats){
     var grid=byId('dashboardPersonalTools');
     if(grid)return grid;

@@ -13,7 +13,7 @@ assert.match(html,/css\/executive-dashboard-v5858\.css/);
 assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5873/);
 assert.doesNotMatch(html,/id="soloBadge"|DOCUMENT OVERVIEW/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*?#dashboardHeading\{[\s\S]*?color:var\(--atsrs-ref-dark-text,#f8fafc\)!important/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5871/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5882/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -41,7 +41,10 @@ assert.match(js,/Scan with AI','ph-magic-wand','ai'/,'Scan with AI must use the 
 assert.match(js,/Scan with QR','ph-qr-code','qr'/,'Scan with QR must use the reference QR icon and purple tone.');
 assert.match(js,/Manual Upload','ph-upload-simple','upload'/,'Manual Upload must use the reference upload icon and green tone.');
 assert.match(js,/Manage Profile','ph-users-three','profile'/,'Manage Profile must use the reference group icon and purple tone.');
-assert.match(js,/function openProfilePersonalInformation\(\)[\s\S]*?showAccountTab\('general'\)[\s\S]*?showProfileWorkspaceTab\('personal',false\)/,'Manage Profile must always open Profile Personal Information, even when Sharing was previously active.');
+assert.match(js,/function openProfileWorkspace\(tab\)[\s\S]*?searchParams\.set\('route','profile'\)[\s\S]*?searchParams\.set\('tab',tab\)[\s\S]*?showAccountTab\('general'\)[\s\S]*?showProfileWorkspaceTab\(tab,false\)/,'Profile Quick Actions must share only a target-aware route helper that keeps the new Profile workspace visible.');
+assert.match(js,/function openProfileSharing\(\)\{openProfileWorkspace\('sharing'\)\}/,'Share Link must always open the new Profile Sharing workspace.');
+assert.match(js,/function openProfilePersonalInformation\(\)\{openProfileWorkspace\('personal'\)\}/,'Manage Profile must always open Personal Information.');
+assert.doesNotMatch(js,/openProfileSharing\(\)[\s\S]{0,240}showAccountTab\('sharing'\)/,'Share Link must not activate the hidden legacy account Sharing tab.');
 assert.match(js,/Manage Profile','ph-users-three','profile',openProfilePersonalInformation/,'Manage Profile must use its dedicated Personal Information route.');
 assert.match(js,/Share Link','ph-link','sharing',openProfileSharing/,'The final Quick Action must expose the existing Share Link workflow.');
 assert.match(js,/href="\/pricing\.html#comparison"[\s\S]*?>Manage Storage<\/a>/,'Manage Storage must expose a native link to the Personal plan comparison page.');
