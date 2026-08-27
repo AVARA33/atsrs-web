@@ -13,7 +13,7 @@ assert.match(html,/css\/executive-dashboard-v5858\.css/);
 assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5873/);
 assert.doesNotMatch(html,/id="soloBadge"|DOCUMENT OVERVIEW/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*?#dashboardHeading\{[\s\S]*?color:var\(--atsrs-ref-dark-text,#f8fafc\)!important/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5870/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5871/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
@@ -41,6 +41,8 @@ assert.match(js,/Scan with AI','ph-magic-wand','ai'/,'Scan with AI must use the 
 assert.match(js,/Scan with QR','ph-qr-code','qr'/,'Scan with QR must use the reference QR icon and purple tone.');
 assert.match(js,/Manual Upload','ph-upload-simple','upload'/,'Manual Upload must use the reference upload icon and green tone.');
 assert.match(js,/Manage Profile','ph-users-three','profile'/,'Manage Profile must use the reference group icon and purple tone.');
+assert.match(js,/function openProfilePersonalInformation\(\)[\s\S]*?showAccountTab\('general'\)[\s\S]*?showProfileWorkspaceTab\('personal',false\)/,'Manage Profile must always open Profile Personal Information, even when Sharing was previously active.');
+assert.match(js,/Manage Profile','ph-users-three','profile',openProfilePersonalInformation/,'Manage Profile must use its dedicated Personal Information route.');
 assert.match(js,/Share Link','ph-link','sharing',openProfileSharing/,'The final Quick Action must expose the existing Share Link workflow.');
 assert.match(js,/href="\/pricing\.html#comparison"[\s\S]*?>Manage Storage<\/a>/,'Manage Storage must expose a native link to the Personal plan comparison page.');
 assert.doesNotMatch(js,/Checking your Personal storage|Loading\.\.\.|storageMessage\(/,'Storage refresh must not replace the card with a visible loading or error state.');

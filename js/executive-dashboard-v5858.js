@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  window.__atsrsExecutiveDashboardVersion='5870';
+  window.__atsrsExecutiveDashboardVersion='5871';
 
   var corporateDashboard=null;
   var personalStorageLoading=false;
@@ -85,6 +85,20 @@
     route('profile','navProfile');
     setTimeout(function(){if(typeof window.showAccountTab==='function')window.showAccountTab('sharing');},80);
   }
+  function openProfilePersonalInformation(){
+    try{
+      var url=new URL(window.location.href);
+      ['route','tab','request','share_id'].forEach(function(key){url.searchParams.delete(key)});
+      window.history.replaceState(null,'',url.pathname+(url.searchParams.toString()?'?'+url.searchParams.toString():'')+url.hash);
+    }catch(error){}
+    route('profile','navProfile');
+    [0,80,220].forEach(function(delay){
+      setTimeout(function(){
+        if(typeof window.showAccountTab==='function')window.showAccountTab('general');
+        if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('personal',false);
+      },delay);
+    });
+  }
   function ensurePersonalToolsGrid(stats){
     var grid=byId('dashboardPersonalTools');
     if(grid)return grid;
@@ -99,7 +113,7 @@
     addPersonalAction(actions,'Scan with AI','ph-magic-wand','ai',function(){openDocumentMethod('scan');});
     addPersonalAction(actions,'Scan with QR','ph-qr-code','qr',function(){openDocumentMethod('qr');});
     addPersonalAction(actions,'Manual Upload','ph-upload-simple','upload',function(){openDocumentMethod('manual');});
-    addPersonalAction(actions,'Manage Profile','ph-users-three','profile',function(){route('profile','navProfile');});
+    addPersonalAction(actions,'Manage Profile','ph-users-three','profile',openProfilePersonalInformation);
     addPersonalAction(actions,'Share Link','ph-link','sharing',openProfileSharing);
     var cachedStorage=readPersonalStorageSnapshot();
     if(cachedStorage)applyPersonalStorageSnapshot(cachedStorage);else drawStorageChart(0,'—');
