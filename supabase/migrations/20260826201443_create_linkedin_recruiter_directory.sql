@@ -115,6 +115,19 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Ujjawal Sah', 'Wood', 'HR Administrator — Global Recruitment Support', 'Gurugram, India', 'https://in.linkedin.com/in/ujjawal-sah-hr', '2026-08-28T09:20:00+04:00'),
+  ('Onam Sukhija', 'Wood', 'HR Operations — EMEA Employee Lifecycle', 'Gurugram, India', 'https://in.linkedin.com/in/onam-sukhija-9743a9282', '2026-08-28T09:20:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Madeleine París', 'A.P. Moller - Maersk', 'Talent Acquisition Specialist', 'Heredia, Costa Rica', 'https://cr.linkedin.com/in/madeleine-par%C3%ADs', '2026-08-27T01:30:00+04:00')
 on conflict (linkedin_url) do update set
   name = excluded.name,
