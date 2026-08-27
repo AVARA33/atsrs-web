@@ -292,6 +292,16 @@
         careers: "https://cellula.com/careers/",
         contact: "https://cellula.com/contact-cellula-robotics/",
       },
+      "Greensea IQ": {
+        mark: "GI",
+        summary:
+          "Marine intelligence and robotics company developing autonomous ocean systems and software for defense, transportation, energy and science applications.",
+        sector: "Marine autonomy & robotics",
+        tags: ["ROV", "Robotics", "Marine"],
+        website: "https://greenseaiq.com/",
+        careers: "https://greenseaiq.com/careers/",
+        contact: "https://greenseaiq.com/contact-us/",
+      },
     },
     companies = [],
     loadToken = 0;
