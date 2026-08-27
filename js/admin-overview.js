@@ -47,6 +47,7 @@
     if (developerNav) developerNav.classList.add('hidden');
     loadedUserId = '';
     developerRouteRestored = false;
+    window.__atsrsRequestedDeveloperRoute = false;
     var developerPage = byId('developerPage');
     var requestedDeveloper = false;
     try { requestedDeveloper = new URLSearchParams(window.location.search).get('route') === 'developer'; }
@@ -131,8 +132,11 @@
     );
     panel.classList.remove('hidden');
     if (developerNav) developerNav.classList.remove('hidden');
-    if (!developerRouteRestored && new URLSearchParams(window.location.search).get('route') === 'developer') {
+    if (!developerRouteRestored &&
+        (window.__atsrsRequestedDeveloperRoute === true ||
+         new URLSearchParams(window.location.search).get('route') === 'developer')) {
       developerRouteRestored = true;
+      window.__atsrsRequestedDeveloperRoute = false;
       if (typeof window.showPage === 'function' && developerNav) window.showPage('developer', developerNav);
     }
   }
