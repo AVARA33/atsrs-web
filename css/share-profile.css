@@ -1020,3 +1020,5 @@ html[data-theme="dark"] .share-verified-identity{color:#bde7cc}
   .corporate-sent-request-list{grid-template-columns:1fr}
   .sent-request-grid{grid-template-columns:1fr}
 }
+.share-request-sent-toast{position:fixed;z-index:12000;right:20px;bottom:20px;display:flex;align-items:center;gap:8px;min-height:38px;padding:8px 13px;border:1px solid rgba(148,163,184,.28);border-radius:9px;background:#101312;color:#f8fafc;font-size:12px;font-weight:800;box-shadow:0 14px 38px rgba(0,0,0,.34);opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .18s ease,transform .18s ease}.share-request-sent-toast i{color:#22c55e;font-size:16px}.share-request-sent-toast.is-visible{opacity:1;transform:translateY(0)}
+@media(max-width:560px){.share-request-sent-toast{right:12px;bottom:12px;left:12px;justify-content:center}}

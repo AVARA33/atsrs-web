@@ -75,6 +75,7 @@
   function fileGroup(file){return isReferenceFile(file)?'references':'documents';}
   function ownerMessage(text,isError){var element=byId('shareManageMsg');if(!element)return;element.textContent=text||'';element.classList.toggle('error',Boolean(isError));}
   function requestMessage(text,isError){var element=byId('shareRequestMessage');if(!element)return;element.textContent=text||'';element.classList.toggle('error',Boolean(isError));}
+  function showRequestSentToast(){var toast=byId('shareRequestSentToast');if(!toast){toast=document.createElement('div');toast.id='shareRequestSentToast';toast.className='share-request-sent-toast';toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');document.body.appendChild(toast);}toast.innerHTML='<i class="ph ph-check-circle" aria-hidden="true"></i><span>Request sent</span>';toast.classList.add('is-visible');clearTimeout(showRequestSentToast.timer);showRequestSentToast.timer=setTimeout(function(){toast.classList.remove('is-visible')},2800);}
   function setStatus(text,state){var element=byId('shareProfileStatus');if(!element)return;element.textContent=text;element.className='share-live-status'+(state?' '+state:'');}
   function setKnownLink(url){
     knownShareUrl=url||'';
@@ -451,12 +452,12 @@
   };
   window.verifyShareRequestOtp=async function(){
     var button=byId('verifyShareOtpBtn'),otp=(byId('shareRequesterOtp').value||'').trim();if(button)button.disabled=true;requestMessage('Verifying your email...');
-    try{var result=await publicCall({action:'verify_otp',request_id:pendingVerificationId,otp:otp});viewerToken=result.viewer_token||'';safeViewerSet(viewerKey('token'),viewerToken);safeViewerSet(viewerKey('identity'),JSON.stringify(viewerIdentity||{}));requestMessage('Verified. Your request is waiting for the profile owner.');setTimeout(function(){window.closeDownloadRequest();loadPublicProfile(publicToken);},900);}
+    try{var result=await publicCall({action:'verify_otp',request_id:pendingVerificationId,otp:otp});viewerToken=result.viewer_token||'';safeViewerSet(viewerKey('token'),viewerToken);safeViewerSet(viewerKey('identity'),JSON.stringify(viewerIdentity||{}));requestMessage('Verified. Your request is waiting for the profile owner.');showRequestSentToast();setTimeout(function(){window.closeDownloadRequest();loadPublicProfile(publicToken);},900);}
     catch(error){requestMessage(friendlyError(error,'The code could not be verified. Check it and try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.sendVerifiedShareRequest=async function(){
     if(!requestContext)return;var button=byId('sendVerifiedShareRequestBtn');if(button)button.disabled=true;requestMessage('Sending your verified request...');
-    try{await publicCall({action:'create_request',viewer_token:viewerToken,file_ids:requestContext.file_ids,request_all:requestContext.request_all});requestMessage('Request sent. The profile owner has been notified.');setTimeout(function(){window.closeDownloadRequest();loadPublicProfile(publicToken);},800);}
+    try{await publicCall({action:'create_request',viewer_token:viewerToken,file_ids:requestContext.file_ids,request_all:requestContext.request_all});requestMessage('Request sent. The profile owner has been notified.');showRequestSentToast();setTimeout(function(){window.closeDownloadRequest();loadPublicProfile(publicToken);},800);}
     catch(error){requestMessage(friendlyError(error,'The request could not be sent. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   function install(){

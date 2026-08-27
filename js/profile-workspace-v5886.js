@@ -145,5 +145,6 @@
     return true;
   }
   window.initPersonalProfileWorkspace=init;
+  window.showProfileWorkspaceTab=function(name,focus){return /^(personal|privacy|sharing|security)$/.test(name||'')?activate(name,focus===true):false;};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

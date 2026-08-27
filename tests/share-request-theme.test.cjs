@@ -5,6 +5,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const css = fs.readFileSync(path.join(root, 'css', 'share-profile.css'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const shareJs = fs.readFileSync(path.join(root, 'js', 'share-profile.js'), 'utf8');
 
 assert.doesNotMatch(css, /\.share-request-dialog\{[^}]*linear-gradient/, 'request dialog must not use the legacy blue gradient');
 assert.match(css, /\.share-request-dialog\{[^}]*background:#fff/, 'light request dialog must use a white surface');
@@ -15,8 +16,10 @@ assert.match(css, /\.share-request-dialog \.share-request-field\.atsrs-field-she
 assert.match(css, /\.share-request-dialog \.share-request-field>input:-webkit-autofill[^}]*1000px var\(--atsrs-field-surface\) inset/, 'browser autofill must not replace the canonical light field surface');
 assert.match(css, /\.share-request-dialog \.share-request-field>input:-webkit-autofill[^}]*-webkit-text-fill-color:var\(--atsrs-field-text\)!important/, 'browser autofill must retain canonical text contrast');
 assert.match(index, /class="share-request-field atsrs-field-shell"><span class="atsrs-field-label">Full name<\/span>/, 'request fields must use the same shell structure as canonical search controls');
-assert.match(index, /css\/share-profile\.css\?v=515/, 'the browser must receive the refreshed request dialog theme');
+assert.match(index, /css\/share-profile\.css\?v=516/, 'the browser must receive the refreshed request dialog theme');
 assert.match(index, />Send verification code<\/button>/, 'the first request action must describe the OTP step accurately');
+assert.match(shareJs,/showRequestSentToast\(\)/, 'successful requests must show compact confirmation feedback');
+assert.match(css,/\.share-request-sent-toast\{[^}]*position:fixed[^}]*opacity:0/, 'request confirmation must use a transient toast');
 assert.doesNotMatch(index, />Verify Email &amp; Send Request<\/button>/, 'the OTP action must not claim that the request is already sent');
 
 console.log('Share request theme contracts passed');
