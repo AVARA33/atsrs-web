@@ -1178,6 +1178,7 @@ Final result: passed.
 - Mobile evidence: `tests/artifacts/notification-dropdown-after-390-dark.png` and `tests/artifacts/notification-dropdown-after-390-light.png`.
 - Production evidence: `tests/artifacts/notification-dropdown-production-dark.png` and `tests/artifacts/notification-dropdown-production-light.png`.
 - Right-aligned desktop evidence: `tests/artifacts/notification-dropdown-right-aligned-dark.png`.
+- Live Dashboard placement evidence: `tests/artifacts/notification-dropdown-production-dashboard-right.png`.
 
 ## Visual comparison
 
