@@ -78,6 +78,21 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Deepa G.', 'Petrofac', 'Talent Acquisition and Recruitment Operations Leader', 'Sharjah, United Arab Emirates', 'https://www.linkedin.com/in/deepagomathinayagam/', '2026-08-27T17:00:00+04:00'),
+  ('Preeya Shetty', 'Petrofac', 'Talent Acquisition Professional', 'Maharashtra, India', 'https://www.linkedin.com/in/preeya-shetty-assoc-cipd-b5ab4756/', '2026-08-27T17:00:00+04:00'),
+  ('Nithya Sree', 'Petrofac', 'Talent Acquisition Professional', 'Chennai, India', 'https://www.linkedin.com/in/nithya-sree-393588225/', '2026-08-27T17:00:00+04:00'),
+  ('Carolyn Milne', 'Petrofac', 'HR and Workforce Recruitment Manager', 'Aberdeen, United Kingdom', 'https://www.linkedin.com/in/carolyn-milne-07704043/', '2026-08-27T17:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Ryan Pattison', 'JDR Cable Systems', 'Resourcing Specialist', 'Blyth, United Kingdom', 'https://www.linkedin.com/in/ryan-pattison-a80579203/', '2026-08-27T16:45:00+04:00'),
   ('Stephanie Foley', 'JDR Cable Systems', 'Resourcing Specialist', 'Jarrow, United Kingdom', 'https://www.linkedin.com/in/stephanie-foley-7517103b/', '2026-08-27T16:45:00+04:00'),
   ('Jewel Shepherd-Fields', 'JDR Cable Systems', 'Human Resources Professional', 'Tomball, United States', 'https://www.linkedin.com/in/jewel-shepherd-fields-85817a12/', '2026-08-27T16:45:00+04:00')
