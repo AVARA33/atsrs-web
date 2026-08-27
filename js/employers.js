@@ -172,6 +172,16 @@
         careers: "https://www.smd.co.uk/careers/",
         contact: "https://www.smd.co.uk/contact-us/",
       },
+      Seatools: {
+        mark: "ST",
+        summary:
+          "Subsea technology company developing custom ROVs, monitoring, control, trenching and offshore installation systems.",
+        sector: "Subsea technology",
+        tags: ["ROV", "Subsea", "Engineering"],
+        website: "https://www.seatools.com/",
+        careers: "https://career.seatools.com/",
+        contact: "https://www.seatools.com/contact/",
+      },
     },
     companies = [],
     loadToken = 0;

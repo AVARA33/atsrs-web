@@ -29,7 +29,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearc
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSearch"/);
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
-assert.match(html, /js\/employers\.js\?v=17/);
+assert.match(html, /js\/employers\.js\?v=18/);
 assert.match(html, /js\/recruiters\.js\?v=10/);
 assert.match(html, /id="recruitersCompany"[^>]*>[\s\S]*?All companies/);
 assert.match(html, /id="recruitersSearch"[^>]*placeholder="Recruiter or company"/);
