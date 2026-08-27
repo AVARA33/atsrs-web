@@ -78,6 +78,20 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Luke Stapley', 'Archer', 'Offshore Recruitment Consultant', 'Fareham, United Kingdom', 'https://www.linkedin.com/in/luke-stapley-7279b81a3/', '2026-08-27T15:30:00+04:00'),
+  ('Tom O''Connor', 'Archer', 'Offshore Recruitment Consultant', 'Fareham, United Kingdom', 'https://www.linkedin.com/in/tom-o-connor-0a355118a/', '2026-08-27T15:30:00+04:00'),
+  ('Hallum Russell', 'Archer', 'Offshore Recruitment Consultant — ROV, Survey & Inspection', 'Gosport, United Kingdom', 'https://www.linkedin.com/in/hallum-russell-20402326b/', '2026-08-27T15:30:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Brian Lie', 'LEVEL Offshore', 'Recruitment Specialist', 'Stavanger, Norway', 'https://no.linkedin.com/in/brianlie', '2026-08-27T22:00:00+04:00'),
   ('Kaj-Stian Apeland', 'LEVEL Offshore', 'Resource Coordinator — Survey & Inspection', 'Haugesund, Norway', 'https://no.linkedin.com/in/kaj-stian-apeland-059a92235', '2026-08-27T22:00:00+04:00'),
   ('Andreas Gilje Heiberg', 'LEVEL Offshore', 'Resource Coordinator — UK Deck Personnel', 'Haugesund, Norway', 'https://no.linkedin.com/in/andreas-gilje-heiberg-622bb1306', '2026-08-27T22:00:00+04:00'),
