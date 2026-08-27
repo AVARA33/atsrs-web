@@ -14,6 +14,7 @@ body #app.app:not(.hidden){
   --atsrs-shell-accent-border:#c9ddd6;
 }
 html[data-theme="light"] body #app.app:not(.hidden) #atsrsNotificationButton .atsrs-notification-badge{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html body #app.app:not(.hidden) #atsrsNotificationButton .atsrs-notification-badge[hidden]{display:none!important}
 
 html[data-theme="light"] body #app.app:not(.hidden){
   --atsrs-shell-accent:#2f6fb2;
