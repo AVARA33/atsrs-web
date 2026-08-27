@@ -232,6 +232,16 @@
         careers: "https://videoray.com/about-us/careers/",
         contact: "https://videoray.com/contact-us/",
       },
+      "Deep Trekker": {
+        mark: "DT",
+        summary:
+          "Canadian underwater robotics manufacturer building portable ROVs and inspection crawlers for energy, maritime, infrastructure, defence and ocean-science missions.",
+        sector: "Underwater robotics",
+        tags: ["ROV", "Robotics", "Inspection"],
+        website: "https://www.deeptrekker.com/",
+        careers: "https://www.deeptrekker.com/company/careers",
+        contact: "https://www.deeptrekker.com/contact-us",
+      },
     },
     companies = [],
     loadToken = 0;
