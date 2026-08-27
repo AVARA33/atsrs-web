@@ -3,6 +3,7 @@
 
   var OWNER_TOKEN_KEY='atsrs_share_profile_token';
   var activeShare=null;
+  var activeShares=[];
   var ownerFiles=[];
   var ownerRequests=[];
   var knownShareUrl='';
@@ -30,6 +31,10 @@
   function publishableKey(){return typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:'';}
   function safeSessionGet(key){try{return sessionStorage.getItem(key)||'';}catch(error){return '';}}
   function safeSessionSet(key,value){try{if(value)sessionStorage.setItem(key,value);else sessionStorage.removeItem(key);}catch(error){}}
+  function ownerTokens(){try{return JSON.parse(safeSessionGet(OWNER_TOKEN_KEY+'_map')||'{}')||{};}catch(error){return{};}}
+  function setOwnerToken(id,token){var tokens=ownerTokens();if(token)tokens[id]=token;else delete tokens[id];safeSessionSet(OWNER_TOKEN_KEY+'_map',JSON.stringify(tokens));}
+  function shareById(id){return activeShares.find(function(share){return share.id===id;})||null;}
+  function shareLinkById(id){var share=shareById(id),token=ownerTokens()[id]||'';return share&&share.active&&token&&(!share.token_hint||token.slice(-8)===share.token_hint)?shareUrl(token):'';}
   function safeViewerGet(key){try{return localStorage.getItem(key)||safeSessionGet(key);}catch(error){return safeSessionGet(key);}}
   function safeViewerSet(key,value){try{if(value)localStorage.setItem(key,value);else localStorage.removeItem(key);}catch(error){}safeSessionSet(key,value);}
   function viewerKey(suffix){return 'atsrs_share_viewer_'+publicToken.slice(-12)+'_'+suffix;}
@@ -103,10 +108,10 @@
     if(!token)return false;
     try{var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:{apikey:publishableKey()},cache:'no-store'});return response.ok;}catch(error){return false;}
   }
-  async function createValidatedShare(fileIds,expiresAt){
-    var result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});
+  async function createValidatedShare(fileIds,expiresAt,audience){
+    var request={action:'create',file_ids:fileIds,expires_at:expiresAt,audience:audience};
+    var result=await ownerCall(request);
     if(result.token&&await validateShareToken(result.token))return result;
-    result=await ownerCall({action:'create',file_ids:fileIds,expires_at:expiresAt});
     if(!result.token||!await validateShareToken(result.token))throw new Error('The secure link could not be verified.');
     return result;
   }
@@ -166,6 +171,7 @@
     setKnownLink(activeShare&&activeShare.active&&token?shareUrl(token):'');
   }
   window.atsrsGetActiveShareStatus=function(){return activeShare?Object.assign({},activeShare):null;};
+  window.atsrsGetActiveShares=function(){return activeShares.filter(function(share){return share&&share.active;}).map(function(share){return Object.assign({},share,{share_url:shareLinkById(share.id)});});};
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared files':names.join(', ');}
   function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}
   function activeRequestFileIds(request){var revoked=new Set(request.revoked_file_ids||[]),downloaded=new Set(request.downloaded_file_ids||[]);return(request.requested_file_ids||[]).filter(function(id){return !revoked.has(id)&&!downloaded.has(id);});}
@@ -278,7 +284,7 @@
         var token=await authToken();if(!token)return false;
         if(accountMode()==='company'){await refreshShareRequests({force:true});return true;}
         var results=await Promise.all([ownerCall({action:'status'}),listOwnerFiles(),ownerCall({action:'list_requests'})]);
-        activeShare=results[0].share||null;ownerFiles=results[1]||[];ownerRequests=results[2].requests||[];
+        activeShares=Array.isArray(results[0].shares)?results[0].shares:(results[0].share?[results[0].share]:[]);activeShare=results[0].share||activeShares[0]||null;ownerFiles=results[1]||[];ownerRequests=results[2].requests||[];
         renderOwnerFiles();renderOwnerStatus();renderOwnerRequests(results[2].analytics||{});return true;
       }catch(error){console.error('ATSRS share profile status failed',error);setStatus('Share status could not be loaded. Check the connection.','revoked');return false;}
     })().finally(function(){ownerPanelPromise=null;});
@@ -294,21 +300,21 @@
     return Number.isNaN(date.getTime())?'':date.toISOString();
   }
   window.createShareProfileLink=async function(){
-    var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry();
+    var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry(),audienceInput=document.querySelector('input[name="profileSharingAudience"]:checked'),audience=audienceInput?audienceInput.value:'anyone';
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return false;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
-    try{var result=await createValidatedShare(fileIds,expiresAt);activeShare=result.share||null;if(result.token)safeSessionSet(OWNER_TOKEN_KEY,result.token);setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();setKnownLink(result.share_url||shareUrl(result.token||''));ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshShareRequests({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
+    try{var result=await createValidatedShare(fileIds,expiresAt,audience);activeShare=result.share||null;if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);if(result.token)setOwnerToken(activeShare.id,result.token);}setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
     catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);return false;}finally{syncShareSelectAll();}
   };
   window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
-  window.revokeShareProfileLink=async function(){
+  window.revokeShareProfileLink=async function(shareId){
     if(!window.confirm('Disable this recruiter link? Preview and every approved download will stop immediately.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Disabling all recruiter access...');
-    try{var result=await ownerCall({action:'revoke'});activeShare=result.share||activeShare;safeSessionSet(OWNER_TOKEN_KEY,'');setKnownLink('');renderOwnerStatus();ownerMessage('The old link and all download permissions are disabled.');await refreshShareRequests({force:true});}
+    try{var result=await ownerCall({action:'revoke',share_id:shareId||activeShare&&activeShare.id});var revoked=result.share||null;if(revoked){activeShares=activeShares.map(function(share){return share.id===revoked.id?revoked:share;});setOwnerToken(revoked.id,'');}activeShare=activeShares.find(function(share){return share.active;})||null;setKnownLink(activeShare?shareLinkById(activeShare.id):'');renderOwnerStatus();ownerMessage('The selected link and its download permissions are disabled.');await refreshShareRequests({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));}
     catch(error){ownerMessage(friendlyError(error,'The link could not be disabled. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
-  window.copyShareLink=async function(){if(!knownShareUrl)return false;var token='';try{token=new URL(knownShareUrl).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){setKnownLink('');activeShare=null;ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}try{await navigator.clipboard.writeText(knownShareUrl);}catch(error){var input=byId('shareProfileLink');if(input){input.focus();input.select();document.execCommand('copy');}}var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};
-  window.previewShareProfile=function(){if(!knownShareUrl)return false;var opened=window.open(knownShareUrl,'_blank','noopener');if(!opened){ownerMessage('Your browser blocked the new tab. Allow pop-ups for ATSRS and try again.',true);return false;}return true;};
+  window.copyShareLink=async function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url)return false;var token='';try{token=new URL(url).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){if(shareId)setOwnerToken(shareId,'');else setKnownLink('');ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}try{await navigator.clipboard.writeText(url);}catch(error){var input=byId('shareProfileLink');if(input){input.value=url;input.focus();input.select();document.execCommand('copy');}}var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};
+  window.previewShareProfile=function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url)return false;var opened=window.open(url,'_blank','noopener');if(!opened){ownerMessage('Your browser blocked the new tab. Allow pop-ups for ATSRS and try again.',true);return false;}return true;};
   window.toggleSharePreview=window.previewShareProfile;
   window.decideShareRequest=async function(id,decision){
     if(!window.confirm((decision==='approve'?'Approve':'Decline')+' this verified recruiter request?'))return;

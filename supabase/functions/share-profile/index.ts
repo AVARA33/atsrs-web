@@ -18,6 +18,7 @@ type ShareRow = {
   id: string;
   user_id: string;
   account_type: string;
+  audience: "anyone" | "recruiters" | "recipient";
   token_hash: string;
   token_hint: string;
   selected_file_ids: string[];
@@ -53,7 +54,7 @@ type AccessRequestRow = {
   updated_at: string;
 };
 
-const SHARE_SELECT = "id,user_id,account_type,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
+const SHARE_SELECT = "id,user_id,account_type,audience,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
 const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requester_user_id,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
 
 function getSupabaseSecretKey() {
@@ -200,6 +201,7 @@ function publicShareStatus(row: ShareRow | null) {
   if (!row) return null;
   return {
     id: row.id,
+    audience: row.audience ?? "anyone",
     active: shareIsActive(row),
     token_hint: row.token_hint,
     selected_file_ids: row.selected_file_ids ?? [],
@@ -376,11 +378,16 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
   if (!user) return json(req, 401, { error: "Authentication required." });
   const action = safeText(body.action, 40);
   const existingResult = await admin.from("atsrs_profile_shares").select(SHARE_SELECT)
-    .eq("user_id", user.id).eq("account_type", "personal").maybeSingle();
+    .eq("user_id", user.id).eq("account_type", "personal")
+    .order("created_at", { ascending: false });
   if (existingResult.error) throw existingResult.error;
-  const existing = existingResult.data as ShareRow | null;
+  const existingShares = (existingResult.data ?? []) as ShareRow[];
+  const existing = existingShares.find(shareIsActive) ?? existingShares[0] ?? null;
 
-  if (action === "status") return json(req, 200, { share: publicShareStatus(existing) });
+  if (action === "status") return json(req, 200, {
+    shares: existingShares.map(publicShareStatus),
+    share: publicShareStatus(existing),
+  });
 
   if (action === "list_sent_requests") {
     const workspace = await admin.from("atsrs_workspaces").select("user_id")
@@ -482,15 +489,19 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
   }
 
   if (action === "revoke") {
-    if (!existing) return json(req, 200, { share: null });
+    const shareId = safeText(body.share_id, 40);
+    const target = UUID_PATTERN.test(shareId)
+      ? existingShares.find((share) => share.id === shareId) ?? null
+      : existing;
+    if (!target) return json(req, 200, { share: null });
     const now = new Date().toISOString();
     const update = await admin.from("atsrs_profile_shares")
-      .update({ enabled: false, updated_at: now }).eq("id", existing.id).eq("user_id", user.id)
+      .update({ enabled: false, updated_at: now }).eq("id", target.id).eq("user_id", user.id)
       .select(SHARE_SELECT).single();
     if (update.error) throw update.error;
     await admin.from("atsrs_share_access_requests")
       .update({ status: "expired", access_expires_at: null, updated_at: now })
-      .eq("share_id", existing.id).in("status", ["otp_pending", "pending", "approved"]);
+      .eq("share_id", target.id).in("status", ["otp_pending", "pending", "approved"]);
     return json(req, 200, { share: publicShareStatus(update.data as ShareRow) });
   }
 
@@ -608,6 +619,9 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
   if (action !== "create") return json(req, 400, { error: "Unsupported action." });
   const fileIds = uniqueFileIds(body.file_ids);
   const expiresAt = parseExpiry(body.expires_at);
+  const audienceText = safeText(body.audience, 20);
+  const audience = (["anyone", "recruiters", "recipient"].includes(audienceText)
+    ? audienceText : "anyone") as ShareRow["audience"];
   if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
   if (!expiresAt) return json(req, 400, { error: "Choose a valid link expiry between 10 minutes and one year." });
   const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)
@@ -621,9 +635,10 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
   const token = randomToken();
   const tokenHash = await sha256Hex(token);
   const now = new Date().toISOString();
-  const upsert = await admin.from("atsrs_profile_shares").upsert({
+  const payload = {
     user_id: user.id,
     account_type: "personal",
+    audience,
     token_hash: tokenHash,
     token_hint: token.slice(-8),
     selected_file_ids: fileIds,
@@ -632,9 +647,16 @@ async function ownerRequest(req: Request, admin: AdminClient, body: JsonObject) 
     view_count: 0,
     last_viewed_at: null,
     updated_at: now,
-  }, { onConflict: "user_id,account_type" }).select(SHARE_SELECT).single();
-  if (upsert.error) throw upsert.error;
-  const share = upsert.data as ShareRow;
+  };
+  const reusable = audience === "recipient"
+    ? null
+    : existingShares.find((share) => share.audience === audience) ?? null;
+  const saved = reusable
+    ? await admin.from("atsrs_profile_shares").update(payload).eq("id", reusable.id)
+      .eq("user_id", user.id).select(SHARE_SELECT).single()
+    : await admin.from("atsrs_profile_shares").insert(payload).select(SHARE_SELECT).single();
+  if (saved.error) throw saved.error;
+  const share = saved.data as ShareRow;
   await admin.from("atsrs_share_access_requests")
     .update({ status: "expired", access_expires_at: null, updated_at: now })
     .eq("share_id", share.id).in("status", ["otp_pending", "pending", "approved"]);
