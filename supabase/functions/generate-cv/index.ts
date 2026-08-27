@@ -427,8 +427,16 @@ Deno.serve(async (req: Request) => {
   }
   const profileSource = (profileResult.data ?? workspace.profile ?? {}) as Record<string, unknown>;
   const profile = aiProfile(profileSource);
+  const ownerIdentity = accountIdentity(profileSource, authResult.data.user.email ?? "");
+  if (!ownerIdentity.fullName) {
+    return json(req, 422, {
+      error: "Add your first name and surname to your ATSRS profile before generating a CV.",
+      code: "profile_identity_missing",
+    });
+  }
   const source: Record<string, unknown> = {
     account_email: authResult.data.user.email ?? "",
+    account_owner_full_name: ownerIdentity.fullName,
     profile,
     documents: aiDocuments(workspace.documents),
     career_input: careerInput,
@@ -480,10 +488,7 @@ Deno.serve(async (req: Request) => {
         code: "identity_uncertain",
       });
     }
-    const ownership = verifyCvOwnership(
-      accountIdentity(profileSource, authResult.data.user.email ?? ""),
-      extractedIdentity,
-    );
+    const ownership = verifyCvOwnership(ownerIdentity, extractedIdentity);
     console.info("ATSRS CV ownership verification", {
       userId,
       result: ownership.result,
@@ -540,6 +545,7 @@ Deno.serve(async (req: Request) => {
     "Create a concise, professional, ATS-friendly CV in the language requested by the user.",
     "Use only facts present in the supplied ATSRS data and user career input.",
     "Never invent employers, dates, education, achievements, duties, skills, licences, document numbers, or contact details.",
+    "The output full_name must exactly equal account_owner_full_name from the trusted ATSRS account data.",
     "You may improve grammar and rewrite user-provided responsibilities as clear action-oriented bullet points without changing their meaning.",
     "If a field is not supported by the source, return an empty string or empty array.",
     "Do not include birth date, age, marital status, religion, gender, nationality assumptions, document numbers, or sensitive identity information.",
@@ -640,6 +646,10 @@ Deno.serve(async (req: Request) => {
     await releaseQuota();
     return json(req, 502, { error: "The AI CV result could not be validated. Try again." });
   }
+  // The uploaded CV is untrusted source material. Keep the generated document
+  // bound to the authenticated ATSRS profile even if the provider echoes a
+  // different or differently formatted name.
+  cv.full_name = ownerIdentity.fullName;
   const usage = openAiBody.usage ?? {};
   const usageResult = await admin.from("atsrs_ai_usage").insert({
     user_id: userId,

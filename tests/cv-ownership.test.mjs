@@ -45,6 +45,9 @@ assert.ok(verifyPosition > 0 && verifyPosition < quotaPosition, 'ownership must 
 assert.ok(verifyPosition < generationPosition, 'ownership must be enforced before CV generation');
 assert.match(edge, /if \(!temporaryPath\)[\s\S]*?Upload a CV from the AI CV card/);
 assert.match(edge, /if \(!ownership\.allow\)[\s\S]*?identity_mismatch/);
+assert.match(edge, /account_owner_full_name:\s*ownerIdentity\.fullName/);
+assert.match(edge, /cv\.full_name\s*=\s*ownerIdentity\.fullName/);
+assert.match(edge, /output full_name must exactly equal account_owner_full_name/);
 assert.doesNotMatch(edge, /latest CV|most recently uploaded/i);
 
 console.log('CV ownership verification contracts passed');
