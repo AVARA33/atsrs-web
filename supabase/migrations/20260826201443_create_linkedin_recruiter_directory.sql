@@ -78,6 +78,20 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Ryan Pattison', 'JDR Cable Systems', 'Resourcing Specialist', 'Blyth, United Kingdom', 'https://www.linkedin.com/in/ryan-pattison-a80579203/', '2026-08-27T16:45:00+04:00'),
+  ('Stephanie Foley', 'JDR Cable Systems', 'Resourcing Specialist', 'Jarrow, United Kingdom', 'https://www.linkedin.com/in/stephanie-foley-7517103b/', '2026-08-27T16:45:00+04:00'),
+  ('Jewel Shepherd-Fields', 'JDR Cable Systems', 'Human Resources Professional', 'Tomball, United States', 'https://www.linkedin.com/in/jewel-shepherd-fields-85817a12/', '2026-08-27T16:45:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Paul Sanderson', 'Siemens Gamesa', 'Talent Acquisition Team Lead', 'Newcastle upon Tyne, United Kingdom', 'https://www.linkedin.com/in/paulsandersonrec/', '2026-08-27T16:30:00+04:00'),
   ('Manjunath Nanjundappa', 'Siemens Gamesa', 'Talent Acquisition Leader', 'Bengaluru, India', 'https://www.linkedin.com/in/manjunath-nanjundappa-2b8b9395/', '2026-08-27T16:30:00+04:00'),
   ('Sabrina Picard', 'Siemens Gamesa', 'Recruitment Manager', 'Le Havre, France', 'https://www.linkedin.com/in/sabrina-picard/', '2026-08-27T16:30:00+04:00')
