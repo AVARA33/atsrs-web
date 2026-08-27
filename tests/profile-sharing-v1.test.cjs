@@ -36,7 +36,7 @@ assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,150px\)\)/);
 assert.doesNotMatch(html,/Information included/);
 assert.doesNotMatch(html,/View details/);
 assert.match(js,/syncCustomDate\(\)/);
-assert.match(html,/js\/profile-sharing-v1\.js\?v=20/);
+assert.match(html,/js\/profile-sharing-v1\.js\?v=21/);
 assert.match(js,/function syncCreateAvailability\(\)/);
 assert.match(js,/value==='custom'&&!\(custom&&custom\.value\)/);
 assert.match(js,/wrap\.dataset\.collapsed='true';renderExpiry\(\)/);
@@ -98,6 +98,7 @@ assert.match(css,/profile-sharing-active-list\{min-height:0;overflow:auto;border
 assert.match(js,/atsrsGetOwnerShareRequests/);
 assert.match(js,/profile-sharing-link-request/);
 assert.match(js,/decideShareRequest\(request\.id,'approve'/);
+assert.match(js,/setTimeout\(applyEmailRoute,350\)/);
 assert.match(css,/profile-sharing-link-request\{/);
 assert.match(css,/html\[data-theme="dark"\] \.profile-sharing-document-dialog\{background:#080b0a!important\}/);
 console.log('Profile Sharing V1 contracts passed');
