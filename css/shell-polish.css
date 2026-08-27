@@ -517,6 +517,15 @@ html body #app.app:not(.hidden) :where(.sidebar .nav button,#atsrsNotificationBu
   box-shadow:none!important;
 }
 
+/* Compact notification cards: five visible, then internal scroll. */
+.atsrs-notification-popover{width:min(350px,calc(100vw - 24px));max-height:420px}
+.atsrs-shell-notification-list{display:grid;gap:7px;max-height:326px;padding:9px;overflow:auto;overscroll-behavior:contain}
+html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item{grid-template-columns:34px minmax(0,1fr) auto!important;align-items:center!important;gap:9px!important;width:100%!important;min-height:56px!important;margin:0!important;padding:8px 9px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface-2)!important;color:var(--text)!important;box-shadow:none!important;text-align:left!important}
+html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item:hover{border-color:var(--atsrs-action-border-hover,var(--line))!important;background:color-mix(in srgb,var(--surface-2) 88%,var(--text) 12%)!important;transform:none!important}
+.atsrs-shell-notification-icon{display:grid;width:34px;height:34px;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--atsrs-field-accent,var(--accent));font-size:15px}
+.atsrs-shell-notification-copy{display:grid;gap:2px;min-width:0}.atsrs-shell-notification-copy strong,.atsrs-shell-notification-copy span,.atsrs-shell-notification-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.atsrs-shell-notification-item>time{align-self:start;color:var(--atsrs-field-accent,var(--accent));font-size:8px;font-weight:800}.atsrs-shell-notification-item.is-request{border-left:1px solid var(--line)!important}.atsrs-shell-notification-item.is-request::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:var(--atsrs-field-accent,var(--accent))}.atsrs-shell-notification-item.is-request{position:relative}.atsrs-shell-notification-item.is-request::after{top:8px;right:8px}.atsrs-shell-notification-empty{border:1px dashed var(--line);border-radius:10px}
+html[data-theme="light"] body #app.app:not(.hidden) .atsrs-shell-notification-item{background:#fff!important}html[data-theme="light"] body #app.app:not(.hidden) .atsrs-shell-notification-item:hover{border-color:#abc2dc!important;background:#edf4fb!important}.atsrs-shell-notification-list{scrollbar-width:thin;scrollbar-color:var(--atsrs-field-accent,var(--accent)) transparent}
+
 /* Header labels stay atomic. Narrow screens scroll the register instead of splitting a word. */
 #certificatesPage .table-wrap{overflow-x:auto!important}
 #certificatesPage .atsrs-document-register{
