@@ -26,7 +26,7 @@ assert.match(js,/window\.copyShareLink/);
 assert.match(js,/button\.innerHTML='<i class="ph ph-check"[^']*Copied'/);
 assert.match(js,/window\.previewShareProfile/);
 assert.match(js,/window\.revokeShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=35/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=36/);
 assert.match(css,/:is\(\.profile-sharing-row-actions,\.profile-sharing-link-request-actions\)>button\{[^}]*height:22px!important;[^}]*min-height:22px!important;[^}]*max-height:22px!important/);
 assert.match(css,/profile-sharing-expiry-check/);
 assert.match(css,/profile-sharing-v1 \*\{box-sizing:border-box\}/);
@@ -125,5 +125,7 @@ assert.match(css,/html\[data-theme="light"\][^{]*\.profile-sharing-row-status\{c
 assert.match(css,/profile-sharing-link-request-actions button\{[^}]*min-width:0!important;[^}]*height:22px!important;[^}]*max-height:22px!important;[^}]*padding:0 6px!important/);
 assert.match(css,/profile-sharing-request-state\{[^}]*min-width:0;[^}]*height:22px;[^}]*max-height:22px;[^}]*padding:0 6px/);
 assert.match(css,/html\[data-theme="dark"\][^{]*profile-sharing-row\.is-email-focus[\s\S]*?background:var\(--surface,#0b0f0d\)!important/);
+assert.match(css,/profile-sharing-link-request-actions>button:not\(\.is-danger\)\{[^}]*border-color:color-mix\([^}]*color:var\(--atsrs-field-accent,#22c55e\)!important/);
+assert.match(css,/profile-sharing-link-request-actions>button\.is-danger\{[^}]*border-color:color-mix\(in srgb,#ef4444 58%,var\(--line\)\)!important;[^}]*color:#ef4444!important/);
 assert.match(css,/html\[data-theme="dark"\] \.profile-sharing-document-dialog\{background:#080b0a!important\}/);
 console.log('Profile Sharing V1 contracts passed');
