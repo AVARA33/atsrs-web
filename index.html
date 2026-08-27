@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5892" data-atsrs-update="27 Aug 2026">
+<html lang="en" data-atsrs-build="V5894" data-atsrs-update="27 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -206,7 +206,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </span>
       </button>
       <a class="public-login" href="?view=login">Log in</a>
-      <a class="public-cta public-cta-small" href="?view=login">Log in</a>
+      <a class="public-cta public-cta-small" href="?view=signup">Create Free Account</a>
     </div>
   </header>
 
@@ -217,11 +217,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <h1>Your documents. Your readiness. Your next opportunity.</h1>
         <p class="public-lead">ATSRS brings expiry tracking, controlled sharing and candidate access into one clear international platform for people and companies.</p>
         <div class="public-hero-actions">
-          <a class="public-cta" href="?view=login">Log in <span aria-hidden="true">→</span></a>
+          <a class="public-cta" href="?view=signup">Create Free Account <span aria-hidden="true">→</span></a>
           <a class="public-text-link" href="#platform">Explore the platform <span aria-hidden="true">↓</span></a>
         </div>
         <ul class="public-trust-list" aria-label="Key product principles">
-          <li><i class="ph ph-check-circle" aria-hidden="true"></i>Secure Personal account access</li>
+          <li><i class="ph ph-check-circle" aria-hidden="true"></i>No card required for Free</li>
           <li><i class="ph ph-check-circle" aria-hidden="true"></i>You control what is shared</li>
           <li><i class="ph ph-check-circle" aria-hidden="true"></i>Built for Personal, Candidate and Corporate use</li>
         </ul>
@@ -406,7 +406,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <li><i class="ph ph-check" aria-hidden="true"></i>Document preview and controlled share links</li>
           <li><i class="ph ph-check" aria-hidden="true"></i>References, CV and availability in one account</li>
         </ul>
-        <a class="public-text-link" href="?view=login">Log in <span aria-hidden="true">→</span></a>
+        <a class="public-text-link" href="?view=signup">Start with Free <span aria-hidden="true">→</span></a>
       </div>
       <figure class="public-wide-shot">
         <img class="public-theme-preview public-theme-preview-light" src="assets/landing/personal-dashboard.png" alt="ATSRS Personal account dashboard preview" loading="lazy" decoding="async" width="1265" height="712">
@@ -461,7 +461,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <article class="public-plan public-plan-free">
           <div class="public-plan-free-summary"><p class="public-plan-name">FREE</p><h3>Try the core workflow</h3></div>
           <ul><li>Manual document upload</li><li>1 lifetime AI scan</li><li>Expiry dashboard</li><li>Personal profile and CV</li><li>No Candidate directory listing</li><li>No SMS or WhatsApp credits</li></ul>
-          <a href="?view=login">Log in</a>
+          <a href="?view=signup">Start with Free</a>
         </article>
         <article class="public-plan public-plan-bronze">
           <p class="public-plan-name">BRONZE</p><h3>Become opportunity-ready</h3>
@@ -500,8 +500,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <section class="public-section public-final-cta">
       <p class="public-eyebrow">YOUR RECORD, READY WHEN IT MATTERS</p>
       <h2>See how simple document readiness can feel.</h2>
-      <p>Sign in to your Personal account to manage documents, profile sharing and expiry tracking.</p>
-      <div><a class="public-cta" href="?view=login">Log in <span aria-hidden="true">→</span></a></div>
+      <p>Open a Free Personal account, add your first document and test one AI scan.</p>
+      <div><a class="public-cta" href="?view=signup">Create Free Account <span aria-hidden="true">→</span></a><a class="public-login" href="?view=login">Log in</a></div>
     </section>
   </main>
 
@@ -526,6 +526,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div id="signupSocialArea" class="signup-social-area" aria-label="Google account options">
   <div class="auth-tabs">
     <button id="googleSigninBtn" type="button" class="auth-tab active" onclick="atsrsAuthTabClick('signin',event)">Sign in</button>
+    <span class="auth-tab-sep">/</span>
+    <button id="googleSignupBtn" type="button" class="auth-tab" onclick="atsrsAuthTabClick('signup',event)">Sign up</button>
   </div>
   <p class="auth-tab-caption">with <span class="google-word"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span></p>
 
@@ -2165,7 +2167,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account-security-live.js?v=376"></script>
 <script src="js/talent-directory.js?v=576"></script>
 <script src="js/corporate-reporting.js?v=519"></script>
-<script src="js/executive-dashboard-v5858.js?v=5883"></script>
+<script src="js/executive-dashboard-v5858.js?v=5884"></script>
 <script src="js/admin-overview.js?v=583"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>

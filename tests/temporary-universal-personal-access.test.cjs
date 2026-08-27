@@ -10,6 +10,6 @@ assert.match(sql,/drop trigger if exists atsrs_grant_verified_signup_trial_on_co
 assert.match(sql,/case when p_user_id is null then 'free' else 'business' end/i,'Every authenticated Personal account must temporarily receive full entitlements.');
 assert.match(sql,/select false, null::text, null::timestamptz, null::timestamptz, 0::bigint/i,'The UI trial status must be disabled.');
 assert.doesNotMatch(index,/Start (?:7-day|1-month) trial/i,'The public site must not advertise a trial during manual launch access.');
-assert.doesNotMatch(index,/id="googleSignupBtn"/i,'The auth card must expose login only.');
+assert.match(index,/id="googleSignupBtn"[\s\S]+?>Sign up<\/button>/i,'Ordinary pre-trial registration must remain available.');
 
 console.log('temporary-universal-personal-access: PASS');
