@@ -10,6 +10,14 @@ const browserSource = read('js/admin-overview.js');
 const index = read('index.html');
 
 assert.match(index, /<script src="js\/admin-overview\.js\?v=582"><\/script>/);
+assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5874/);
+const dashboardStart = index.indexOf('<section id="dashboardPage"');
+const dashboardEnd = index.indexOf('</section>', dashboardStart);
+const adminPanel = index.indexOf('id="adminOverviewPanel"');
+assert.ok(dashboardStart >= 0 && adminPanel > dashboardStart && adminPanel < dashboardEnd,
+  'The owner-only registration overview must live on Dashboard.');
+assert.equal(index.indexOf('id="adminOverviewPanel"', adminPanel + 1), -1,
+  'There must be exactly one owner-only registration overview.');
 
 assert.match(migration, /^--[\s\S]*\nbegin;/);
 assert.match(migration, /from auth\.users as auth_user/);

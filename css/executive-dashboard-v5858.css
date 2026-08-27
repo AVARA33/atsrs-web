@@ -4,6 +4,86 @@ html[data-theme="dark"] body.personal-mode #app.app:not(.hidden) > .main #dashbo
   -webkit-text-fill-color:var(--atsrs-ref-dark-text,#f8fafc)!important;
 }
 
+body.personal-mode #dashboardPage #adminOverviewPanel.dashboard-admin-overview{
+  position:static;
+  display:block;
+  width:100%;
+  max-width:none;
+  margin:0 0 16px;
+  padding:14px 16px;
+  border:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
+  border-radius:14px;
+  background:var(--atsrs-workspace-surface,var(--atsrs-panel));
+  background-image:none;
+  box-shadow:none;
+}
+
+body.personal-mode #dashboardPage #adminOverviewPanel.dashboard-admin-overview.hidden{
+  display:none!important;
+}
+
+body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-heading h4,
+body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat strong{
+  color:var(--atsrs-ref-dark-text,#f8fafc);
+}
+
+body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stats{
+  gap:8px;
+  margin:10px 0 8px;
+}
+
+body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat{
+  padding:10px 12px;
+  border-color:var(--atsrs-workspace-line,var(--atsrs-border));
+  background:color-mix(in srgb,var(--atsrs-workspace-surface,var(--atsrs-panel)) 88%,#000 12%);
+}
+
+body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat span{
+  font-size:10px;
+}
+
+body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat strong{
+  margin-top:5px;
+  font-size:22px;
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel.dashboard-admin-overview{
+  border-color:var(--atsrs-ref-light-line,#d7e0e8);
+  background:var(--atsrs-ref-light-surface,#fff);
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-kicker{
+  color:var(--atsrs-ref-blue,#167bd3);
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-heading h4,
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat strong{
+  color:var(--atsrs-ref-light-text,#10233e);
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-secure,
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat span,
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-footer{
+  color:var(--atsrs-ref-light-muted,#62758b);
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat{
+  border-color:var(--atsrs-ref-light-line,#d7e0e8);
+  background:var(--atsrs-ref-light-soft,#f7f9fc);
+}
+
+html[data-theme="light"] body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-refresh{
+  border-color:var(--atsrs-ref-light-line,#d7e0e8);
+  background:var(--atsrs-ref-light-surface,#fff);
+  color:var(--atsrs-ref-blue,#167bd3);
+}
+
+@media(max-width:720px){
+  body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stats{
+    grid-template-columns:1fr;
+  }
+}
+
 body:where(.personal-mode,.company-mode) #dashboardPage .dashboard-executive-grid{
   display:grid;
   grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);

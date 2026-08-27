@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5886" data-atsrs-update="27 Aug 2026">
+<html lang="en" data-atsrs-build="V5887" data-atsrs-update="27 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -98,7 +98,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=58156">
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=58159">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=58155">
-<link rel="stylesheet" href="css/executive-dashboard-v5858.css?v=5873">
+<link rel="stylesheet" href="css/executive-dashboard-v5858.css?v=5874">
 <link rel="stylesheet" href="css/personal-account-routing-v524.css?v=524">
 <link rel="stylesheet" href="css/references-cv-upload-v525.css?v=58153">
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
@@ -898,6 +898,33 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div></div>
 <div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div></div>
 </div>
+<aside id="adminOverviewPanel" class="admin-overview-panel dashboard-admin-overview hidden" aria-labelledby="adminOverviewTitle">
+  <div class="admin-overview-heading">
+    <div>
+      <span class="admin-overview-kicker">OWNER ONLY</span>
+      <h4 id="adminOverviewTitle">Registration overview</h4>
+    </div>
+    <span class="admin-overview-secure"><i></i> Secure server data</span>
+  </div>
+  <div class="admin-overview-stats">
+    <div class="admin-overview-stat">
+      <span>Registered users</span>
+      <strong id="adminRegisteredUsers">—</strong>
+    </div>
+    <div class="admin-overview-stat">
+      <span>New in 30 days</span>
+      <strong id="adminNewUsers">—</strong>
+    </div>
+    <div class="admin-overview-stat">
+      <span>Estimated AI credit</span>
+      <strong id="adminAiCredit">—</strong>
+    </div>
+  </div>
+  <div class="admin-overview-footer">
+    <span id="adminAiUsageNote">Secure metrics are loading…</span>
+    <button id="adminOverviewRefresh" type="button" class="admin-overview-refresh">Refresh</button>
+  </div>
+</aside>
 <div id="sentRequestsPanel" class="panel access-requests-panel company-only">
   <div class="access-panel-head">
     <div>
@@ -1560,33 +1587,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div id="profilePhotoStatus" class="profile-photo-status" role="status"></div>
   </div>
 </div>
-<aside id="adminOverviewPanel" class="admin-overview-panel hidden" aria-labelledby="adminOverviewTitle">
-  <div class="admin-overview-heading">
-    <div>
-      <span class="admin-overview-kicker">ADMIN OVERVIEW</span>
-      <h4 id="adminOverviewTitle">ATSRS operations</h4>
-    </div>
-    <span class="admin-overview-secure"><i></i> Secure server data</span>
-  </div>
-  <div class="admin-overview-stats">
-    <div class="admin-overview-stat">
-      <span>Registered users</span>
-      <strong id="adminRegisteredUsers">—</strong>
-    </div>
-    <div class="admin-overview-stat">
-      <span>New in 30 days</span>
-      <strong id="adminNewUsers">—</strong>
-    </div>
-    <div class="admin-overview-stat">
-      <span>Estimated AI credit</span>
-      <strong id="adminAiCredit">—</strong>
-    </div>
-  </div>
-  <div class="admin-overview-footer">
-    <span id="adminAiUsageNote">Secure metrics are loading…</span>
-    <button id="adminOverviewRefresh" type="button" class="admin-overview-refresh">Refresh</button>
-  </div>
-</aside>
 </div>
 <div class="profile-grid">
 <div class="profile-details-layout">
