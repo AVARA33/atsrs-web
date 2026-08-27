@@ -142,6 +142,16 @@
           "https://recruiting.ultipro.com/FOR1013FET/JobBoard/ef7c2aa4-79a3-4d81-8101-e9c85075c8e5",
         contact: "https://f-e-t.com/contact/",
       },
+      "Teledyne Marine": {
+        mark: "TM",
+        summary:
+          "Marine technology group delivering subsea imaging, instruments, interconnect, seismic and autonomous vehicle systems.",
+        sector: "Subsea technology",
+        tags: ["Subsea", "Survey", "Marine technology"],
+        website: "https://www.teledynemarine.com/",
+        careers: "https://www.teledyne.com/careers",
+        contact: "https://www.teledynemarine.com/contact-us",
+      },
     },
     companies = [],
     loadToken = 0;
