@@ -222,6 +222,16 @@
         careers: "https://www.tmtrov.com/get-in-touch/careers/",
         contact: "https://www.tmtrov.com/get-in-touch/",
       },
+      VideoRay: {
+        mark: "VR",
+        summary:
+          "Underwater robotics manufacturer developing portable mission-specialist ROV systems for defence, inspection, research and offshore operations.",
+        sector: "Underwater robotics",
+        tags: ["ROV", "Robotics", "Subsea"],
+        website: "https://videoray.com/",
+        careers: "https://videoray.com/about-us/careers/",
+        contact: "https://videoray.com/contact-us/",
+      },
     },
     companies = [],
     loadToken = 0;
