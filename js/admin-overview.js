@@ -11,17 +11,11 @@
     return document.getElementById(id);
   }
 
-  function money(value) {
-    if (value === null || value === undefined || value === '') return '—';
-    var amount = Number(value);
-    if (!Number.isFinite(amount)) return '—';
-    return '$' + amount.toFixed(2);
-  }
-
-  function setMetricText(registeredUsers, newUsers, credit, note) {
+  function setMetricText(registeredUsers, newUsers7d, newUsers14d, newUsers30d, note) {
     byId('adminRegisteredUsers').textContent = registeredUsers;
-    byId('adminNewUsers').textContent = newUsers;
-    byId('adminAiCredit').textContent = credit;
+    byId('adminNewUsers7d').textContent = newUsers7d;
+    byId('adminNewUsers14d').textContent = newUsers14d;
+    byId('adminNewUsers30d').textContent = newUsers30d;
     byId('adminAiUsageNote').textContent = note;
   }
 
@@ -31,12 +25,12 @@
   }
 
   function showLoading() {
-    setMetricText('—', '—', '—', 'Secure metrics are loading…');
+    setMetricText('—', '—', '—', '—', 'Secure registration metrics are loading…');
     setBusy(true);
   }
 
   function showRefreshError() {
-    setMetricText('—', '—', '—', 'Metrics could not be refreshed. Try again.');
+    setMetricText('—', '—', '—', '—', 'Registration metrics could not be refreshed. Try again.');
     if (panel) panel.classList.remove('hidden');
   }
 
@@ -53,10 +47,10 @@
 
     setMetricText(
       String(row.registered_users ?? 0),
+      String(row.new_users_7d ?? 0),
+      String(row.new_users_14d ?? 0),
       String(row.new_users_30d ?? 0),
-      money(row.estimated_credit_usd),
-      money(row.estimated_spend_usd) + ' estimated spend · ' +
-      String(row.tracked_scans ?? 0) + ' scans tracked after setup'
+      'Confirmed registrations only'
     );
     panel.classList.remove('hidden');
   }
@@ -81,7 +75,7 @@
     if (wasVisible) showLoading();
     else setBusy(true);
     try {
-      var result = await window.supabaseClient.rpc('atsrs_get_admin_overview');
+      var result = await window.supabaseClient.rpc('atsrs_get_registration_overview');
       if (result.error) throw result.error;
       var row = Array.isArray(result.data) ? result.data[0] : result.data;
       loadedUserId = user.id;

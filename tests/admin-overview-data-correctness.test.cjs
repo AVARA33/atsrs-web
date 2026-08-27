@@ -5,12 +5,12 @@ const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
-const migration = read('supabase/migrations/20260817215213_admin_overview_data_correctness.sql');
+const migration = read('supabase/migrations/20260827222000_registration_overview_windows.sql');
 const browserSource = read('js/admin-overview.js');
 const index = read('index.html');
 
-assert.match(index, /<script src="js\/admin-overview\.js\?v=582"><\/script>/);
-assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5874/);
+assert.match(index, /<script src="js\/admin-overview\.js\?v=583"><\/script>/);
+assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5875/);
 const dashboardStart = index.indexOf('<section id="dashboardPage"');
 const dashboardEnd = index.indexOf('</section>', dashboardStart);
 const adminPanel = index.indexOf('id="adminOverviewPanel"');
@@ -26,16 +26,14 @@ assert.match(migration, /not coalesce\(auth_user\.is_anonymous, false\)/);
 assert.match(migration, /email_confirmed_at is not null[\s\S]*phone_confirmed_at is not null/);
 assert.match(migration, /from auth\.identities as identity[\s\S]*identity\.user_id = auth_user\.id/);
 assert.match(migration, /atsrs_metrics_excluded/);
+assert.match(migration, /created_at >= now\(\) - interval '7 days'/);
+assert.match(migration, /created_at >= now\(\) - interval '14 days'/);
 assert.match(migration, /created_at >= now\(\) - interval '30 days'/);
 assert.doesNotMatch(migration, /atsrs_workspaces/);
-assert.match(migration, /count\(\*\) filter \(where usage\.event_type = 'scan_document'\)/);
-assert.match(migration, /usage\.estimated_cost_usd = 0[\s\S]*usage\.input_tokens \+ usage\.output_tokens > 0/);
-assert.match(migration, /v_unpriced_usage = 0/);
-assert.match(migration, /metrics_verified_at is not null[\s\S]*metrics_verification_source/);
-assert.match(migration, /else null::numeric/);
+assert.doesNotMatch(migration, /credit|billing|spend|atsrs_ai_usage/i);
 assert.match(migration, /set search_path = ''/);
-assert.match(migration, /revoke all on function public\.atsrs_get_admin_overview\(\) from public, anon/);
-assert.match(migration, /grant execute on function public\.atsrs_get_admin_overview\(\) to authenticated/);
+assert.match(migration, /revoke all on function public\.atsrs_get_registration_overview\(\) from public, anon/);
+assert.match(migration, /grant execute on function public\.atsrs_get_registration_overview\(\) to authenticated/);
 assert.match(migration, /to_regprocedure\('atsrs_private\.atsrs_request_has_aal2\(\)'\)/);
 assert.match(migration, /commit;\s*$/);
 
@@ -60,18 +58,18 @@ const elements = {
   adminOverviewPanel: element(true),
   adminOverviewRefresh: element(),
   adminRegisteredUsers: element(),
-  adminNewUsers: element(),
-  adminAiCredit: element(),
+  adminNewUsers7d: element(),
+  adminNewUsers14d: element(),
+  adminNewUsers30d: element(),
   adminAiUsageNote: element(),
 };
 let domReady;
 let rpc = async () => ({ data: [{
   is_admin: true,
   registered_users: 6,
+  new_users_7d: 1,
+  new_users_14d: 2,
   new_users_30d: 3,
-  estimated_credit_usd: null,
-  estimated_spend_usd: null,
-  tracked_scans: 0,
 }], error: null });
 
 const context = {
@@ -97,9 +95,10 @@ vm.runInNewContext(browserSource, context);
 
   assert.equal(elements.adminOverviewPanel.classList.contains('hidden'), false);
   assert.equal(elements.adminRegisteredUsers.textContent, '6');
-  assert.equal(elements.adminNewUsers.textContent, '3');
-  assert.equal(elements.adminAiCredit.textContent, '—');
-  assert.equal(elements.adminAiUsageNote.textContent, '— estimated spend · 0 scans tracked after setup');
+  assert.equal(elements.adminNewUsers7d.textContent, '1');
+  assert.equal(elements.adminNewUsers14d.textContent, '2');
+  assert.equal(elements.adminNewUsers30d.textContent, '3');
+  assert.equal(elements.adminAiUsageNote.textContent, 'Confirmed registrations only');
   assert.equal(elements.adminAiUsageNote.attributes.role, 'status');
   assert.equal(elements.adminAiUsageNote.attributes['aria-live'], 'polite');
 
@@ -110,20 +109,20 @@ vm.runInNewContext(browserSource, context);
   assert.equal(elements.adminOverviewRefresh.disabled, true);
   assert.equal(elements.adminOverviewPanel.attributes['aria-busy'], 'true');
   assert.equal(elements.adminRegisteredUsers.textContent, '—');
-  assert.equal(elements.adminAiUsageNote.textContent, 'Secure metrics are loading…');
+  assert.equal(elements.adminAiUsageNote.textContent, 'Secure registration metrics are loading…');
 
   releaseRpc({ data: [{
     is_admin: true,
     registered_users: 7,
+    new_users_7d: 2,
+    new_users_14d: 3,
     new_users_30d: 4,
-    estimated_credit_usd: 4.5,
-    estimated_spend_usd: 0.5,
-    tracked_scans: 2,
   }], error: null });
   await refreshPromise;
   assert.equal(elements.adminRegisteredUsers.textContent, '7');
-  assert.equal(elements.adminNewUsers.textContent, '4');
-  assert.equal(elements.adminAiCredit.textContent, '$4.50');
+  assert.equal(elements.adminNewUsers7d.textContent, '2');
+  assert.equal(elements.adminNewUsers14d.textContent, '3');
+  assert.equal(elements.adminNewUsers30d.textContent, '4');
   assert.equal(elements.adminOverviewRefresh.disabled, false);
   assert.equal(elements.adminOverviewPanel.attributes['aria-busy'], 'false');
 
@@ -131,7 +130,7 @@ vm.runInNewContext(browserSource, context);
   await context.window.atsrsAdminOverview.refresh();
   assert.equal(elements.adminOverviewPanel.classList.contains('hidden'), false);
   assert.equal(elements.adminRegisteredUsers.textContent, '—');
-  assert.equal(elements.adminAiUsageNote.textContent, 'Metrics could not be refreshed. Try again.');
+  assert.equal(elements.adminAiUsageNote.textContent, 'Registration metrics could not be refreshed. Try again.');
   assert.equal(elements.adminOverviewRefresh.disabled, false);
 
   console.log('Admin overview data-correctness tests passed');

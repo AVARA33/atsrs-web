@@ -28,6 +28,7 @@ body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stat stron
 }
 
 body.personal-mode #dashboardPage #adminOverviewPanel .admin-overview-stats{
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:8px;
   margin:10px 0 8px;
 }
