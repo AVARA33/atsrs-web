@@ -100,6 +100,21 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Gavin Beaton', 'Orion Group', 'Group Recruitment Director', 'Inverness, Scotland, United Kingdom', 'https://uk.linkedin.com/in/gavinbeaton', '2026-08-28T09:00:00+04:00'),
+  ('Gary Chapman', 'Orion Group', 'Recruitment Manager — International Oil & Gas', 'Manchester, United Kingdom', 'https://uk.linkedin.com/in/gary-chapman-b15909b', '2026-08-28T09:00:00+04:00'),
+  ('Shiela Corral', 'Vestas', 'Talent Acquisition / Sourcing Specialist', 'Metro Manila, Philippines', 'https://ph.linkedin.com/in/shielacorral', '2026-08-28T09:00:00+04:00'),
+  ('Shane Stec', 'Vestas', 'Director — DEI Talent Acquisition Programs', 'United States', 'https://www.linkedin.com/in/shanestec', '2026-08-28T09:00:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Madeleine París', 'A.P. Moller - Maersk', 'Talent Acquisition Specialist', 'Heredia, Costa Rica', 'https://cr.linkedin.com/in/madeleine-par%C3%ADs', '2026-08-27T01:30:00+04:00')
 on conflict (linkedin_url) do update set
   name = excluded.name,
