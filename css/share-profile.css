@@ -422,6 +422,46 @@ html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-tools 
   background:#ffffff!important;
   color:#172b3d!important;
 }
+html[data-theme="light"].atsrs-public-share-mode body .atsrs-select-menu{
+  border-color:#c8d4de!important;
+  background:#ffffff!important;
+  background-image:none!important;
+  color:#172b3d!important;
+  box-shadow:0 14px 34px rgba(36,61,80,.16)!important;
+}
+html[data-theme="light"].atsrs-public-share-mode body .atsrs-select-option{
+  background:transparent!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+}
+html[data-theme="light"].atsrs-public-share-mode body .atsrs-select-option:is([data-active],:hover,:focus-visible){
+  background:#edf3f6!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-list{
+  scrollbar-color:#8aa1b5 #edf3f6;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-list::-webkit-scrollbar-track{
+  background:#edf3f6;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-list::-webkit-scrollbar-thumb{
+  background:#8aa1b5;
+}
+html[data-theme="light"].atsrs-public-share-mode :is(
+  .shared-profile-kicker,.shared-document-category,.shared-document-summary-status,
+  .shared-document-summary-link small,.shared-document-status,
+  .shared-document-detail.shared-upload-date.is-recent b
+){
+  color:#2563eb!important;
+  -webkit-text-fill-color:#2563eb!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-status{
+  background:rgba(37,99,235,.09)!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-link:hover b{
+  color:#2563eb!important;
+}
 #shareProfilePanel{
   max-height:none!important;
 }
