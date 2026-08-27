@@ -11,7 +11,7 @@ const runtime = fs.readFileSync(path.join(root, 'js', 'pricing.js'), 'utf8');
 assert.match(pricing, /class="public-home-link" href="\/\?view=home" aria-label="Home"/);
 assert.match(pricing, /class="public-home-link public-home-mobile" href="\/\?view=home" aria-label="Home"/);
 
-assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
+assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start 7-day trial<\/a>/);
 for (const plan of ['bronze', 'silver', 'gold', 'titan']) {
   assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
   assert.match(pricing, new RegExp(`id="${plan}"`));

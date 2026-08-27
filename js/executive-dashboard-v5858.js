@@ -272,17 +272,22 @@
       var cached=readPersonalStorageSnapshot(activeUser.id);if(cached)applyPersonalStorageSnapshot(cached);
       var results=await Promise.all([
         c.from('atsrs_files').select('size_bytes').eq('user_id',activeUser.id).eq('account_type','personal'),
-        c.rpc('atsrs_my_personal_entitlements')
+        c.rpc('atsrs_my_personal_entitlements'),
+        c.rpc('atsrs_my_personal_trial')
       ]);
-      if(results[0].error)throw results[0].error;if(results[1].error)throw results[1].error;
+      if(results[0].error)throw results[0].error;if(results[1].error)throw results[1].error;if(results[2].error)throw results[2].error;
       var usedBytes=(results[0].data||[]).reduce(function(total,row){return total+Math.max(0,Number(row&&row.size_bytes)||0);},0);
       var entitlement=Array.isArray(results[1].data)?results[1].data[0]:results[1].data||{};
+      var trial=Array.isArray(results[2].data)?results[2].data[0]:results[2].data||{};
       var limitBytes=Number(entitlement&&entitlement.storage_bytes_limit)||0;
       var percent=storagePercent(usedBytes,limitBytes);
+      var trialDays=trial&&trial.is_trial?Math.max(1,Math.ceil((Number(trial.seconds_remaining)||0)/86400)):0;
       var snapshot={
         usedText:formatBytes(usedBytes),
         detailText:limitBytes?' of '+formatBytes(limitBytes)+' used':' stored · no fixed storage limit',
-        planText:String(entitlement&&entitlement.plan_name||'Personal')+' plan · secure server storage',
+        planText:trialDays
+          ?String(trial.plan_name||entitlement&&entitlement.plan_name||'Full access')+' trial · '+trialDays+' day'+(trialDays===1?'':'s')+' left · then Free'
+          :String(entitlement&&entitlement.plan_name||'Personal')+' plan · secure server storage',
         percentValue:percent.value,
         percentLabel:percent.label
       };

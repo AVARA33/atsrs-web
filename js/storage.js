@@ -1532,7 +1532,7 @@ setTimeout(v55DockTopActions,500);
         setText('regMsg','This email may already be registered. Try Login or Forgot Password.');
         return true;
       }
-      setText('regMsg',needsEmailConfirm ? 'Account created. Confirmation email sent. Check inbox/spam.' : 'Account created. You can now continue.');
+      setText('regMsg',needsEmailConfirm ? 'Account created. Confirm your email to start your 7-day full-access trial.' : 'Account created. Your 7-day full-access trial is active.');
       return true;
     }catch(e){setText('regMsg',atsrsFriendlyAuthError(e,typeof tr==='function'?tr('connection'):'Connection failed.'));return false;}
     finally{setRegisterBusy(false);}
@@ -2319,7 +2319,7 @@ setTimeout(v55DockTopActions,500);
       });
       if(res.error){setMsg('regMsg',atsrsFriendlyAuthError(res.error,'Account could not be created. Please try again.'));return false;}
       try{localStorage.setItem('atsrs_pending_email',email);localStorage.setItem('atsrs_use_mode',m);}catch(_e){}
-      setMsg('regMsg',(res.data && res.data.session)?'Account created. You can now continue.':'Account created. Confirmation email sent. Check inbox/spam.');
+      setMsg('regMsg',(res.data && res.data.session)?'Account created. Your 7-day full-access trial is active.':'Account created. Confirm your email to start your 7-day full-access trial.');
       return true;
     }catch(e){
       var fetchResult=await directFetchTest();

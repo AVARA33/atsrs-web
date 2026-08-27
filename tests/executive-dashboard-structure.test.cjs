@@ -13,7 +13,7 @@ assert.match(html,/css\/executive-dashboard-v5858\.css/);
 assert.match(html,/css\/executive-dashboard-v5858\.css\?v=5873/);
 assert.doesNotMatch(html,/id="soloBadge"|DOCUMENT OVERVIEW/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*?#dashboardHeading\{[\s\S]*?color:var\(--atsrs-ref-dark-text,#f8fafc\)!important/);
-assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5882/);
+assert.match(html,/js\/executive-dashboard-v5858\.js\?v=5883/);
 
 assert.match(js,/atsrsExpiryStatus\.summarize/,'Personal current documents must use the shared expiry contract.');
 assert.match(js,/atsrsCorporateReporting\.getCompliance/,'Corporate dashboard must reuse the existing compliance source.');
