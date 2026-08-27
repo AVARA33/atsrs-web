@@ -1930,8 +1930,7 @@ setTimeout(v55DockTopActions,500);
         var state=await readWorkspaceState(user);
         if(hasWorkspace(state,pendingMode)){
           /* Google already authenticated this identity. An existing workspace
-             should open as a normal sign-in; the trial ledger independently
-             guarantees that a second trial is never granted. */
+             should open as a normal sign-in instead of blocking on Sign Up. */
           await openExistingWorkspace(user,pendingMode,state);
           return;
         }
