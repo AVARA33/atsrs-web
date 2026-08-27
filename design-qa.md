@@ -1176,6 +1176,7 @@ Final result: passed.
 - Desktop evidence: `tests/artifacts/notification-dropdown-after-1440-dark.png` and `tests/artifacts/notification-dropdown-after-1440-light.png`.
 - Tablet evidence: `tests/artifacts/notification-dropdown-after-768-dark.png` and `tests/artifacts/notification-dropdown-after-768-light.png`.
 - Mobile evidence: `tests/artifacts/notification-dropdown-after-390-dark.png` and `tests/artifacts/notification-dropdown-after-390-light.png`.
+- Production evidence: `tests/artifacts/notification-dropdown-production-dark.png` and `tests/artifacts/notification-dropdown-production-light.png`.
 
 ## Visual comparison
 
@@ -1193,5 +1194,6 @@ Final result: passed.
 - Additional notifications remain inside the list scroll region rather than increasing the dropdown height.
 - Browser console errors: 0 in desktop, tablet and mobile QA fixtures.
 - Focused notification routing test, JavaScript syntax check, diff check and Cloudflare Pages build passed.
+- Production parity passed: the live dropdown is 420 pixels wide, begins 10 pixels below the bell, has no horizontal overflow, and preserves toggle, outside-click and Escape dismissal.
 
 Final result: passed.
