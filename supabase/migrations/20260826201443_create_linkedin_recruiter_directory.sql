@@ -128,6 +128,19 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Eliete Bardela', 'DOF Group', 'Senior Benefits Analyst — Human Resources', 'Macaé, Brazil', 'https://br.linkedin.com/in/eliete-bardela-6b322176', '2026-08-28T09:40:00+04:00'),
+  ('Laís Barroso', 'DOF Group', 'Recruitment and Selection Analyst', 'Rio de Janeiro, Brazil', 'https://br.linkedin.com/in/la%C3%ADs-barroso-aaba7a93', '2026-08-28T09:40:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Madeleine París', 'A.P. Moller - Maersk', 'Talent Acquisition Specialist', 'Heredia, Costa Rica', 'https://cr.linkedin.com/in/madeleine-par%C3%ADs', '2026-08-27T01:30:00+04:00')
 on conflict (linkedin_url) do update set
   name = excluded.name,
