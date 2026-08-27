@@ -194,7 +194,21 @@
   function requestNotificationItem(request){
     var button=document.createElement('button');button.type='button';button.className='atsrs-shell-notification-item is-request';
     var icon=document.createElement('i'),copy=document.createElement('span'),title=document.createElement('strong'),detail=document.createElement('span'),email=document.createElement('small'),time=document.createElement('time');icon.className='ph ph-download-simple atsrs-shell-notification-icon';icon.setAttribute('aria-hidden','true');copy.className='atsrs-shell-notification-copy';title.textContent=request.requester_name||'Verified requester';detail.textContent='Download request · '+(request.requester_company||'Company not provided');email.textContent=request.requester_email||'';time.textContent='New';copy.appendChild(title);copy.appendChild(detail);copy.appendChild(email);button.appendChild(icon);button.appendChild(copy);button.appendChild(time);
-    button.addEventListener('click',function(){var popover=byId('atsrsNotificationPopover');if(popover)popover.hidden=true;if(typeof window.showPage==='function'&&typeof navProfile!=='undefined')window.showPage('profile',navProfile);if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('sharing',false);if(typeof window.showAccountTab==='function')window.showAccountTab('sharing');setTimeout(function(){if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('sharing',false);var target=document.querySelector('.profile-sharing-link-request[data-request-id="'+CSS.escape(request.id)+'"]');if(target){target.classList.add('is-email-focus');target.scrollIntoView({behavior:'smooth',block:'center'});var approve=target.querySelector('button:not(.is-danger)');if(approve)approve.focus();}},240)});return button;
+    button.addEventListener('click',function(event){
+      event.preventDefault();event.stopPropagation();
+      var popover=byId('atsrsNotificationPopover');if(popover)popover.hidden=true;
+      var params=new URLSearchParams(location.search);params.set('route','profile');params.set('tab','sharing');params.set('request',request.id);params.set('intent','approve');history.replaceState(null,'',location.pathname+'?'+params.toString());
+      var profileButton=byId('navProfile');if(typeof window.showPage==='function'&&profileButton)window.showPage('profile',profileButton);
+      function reveal(){
+        if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('sharing',false);
+        if(typeof window.showAccountTab==='function')window.showAccountTab('sharing');
+        var target=document.querySelector('.profile-sharing-link-request[data-request-id="'+CSS.escape(request.id)+'"]');
+        if(target){target.classList.add('is-email-focus');target.scrollIntoView({behavior:'smooth',block:'center'});var approve=target.querySelector('button:not(.is-danger)');if(approve)approve.focus();return true}
+        return false;
+      }
+      [0,120,320,700,1400,2400].forEach(function(delay){setTimeout(reveal,delay)});
+      if(typeof window.refreshShareRequests==='function')Promise.resolve(window.refreshShareRequests()).then(reveal).catch(function(){});
+    });return button;
   }
 
   function renderNotificationPopover(){
