@@ -131,6 +131,17 @@
         careers: "https://www.macartney.com/about-us/career/vacancies/",
         contact: "https://www.macartney.com/contact/",
       },
+      "Forum Energy Technologies": {
+        mark: "FET",
+        summary:
+          "Global energy technology manufacturer serving subsea, drilling, completions and production operations.",
+        sector: "Subsea technology",
+        tags: ["ROV", "Drilling", "Engineering"],
+        website: "https://f-e-t.com/",
+        careers:
+          "https://recruiting.ultipro.com/FOR1013FET/JobBoard/ef7c2aa4-79a3-4d81-8101-e9c85075c8e5",
+        contact: "https://f-e-t.com/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
