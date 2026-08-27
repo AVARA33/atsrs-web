@@ -651,12 +651,14 @@
     var confirmedAt=options.availabilityChanged?savedAt:(existing.availabilityConfirmedAt||'');
     var phoneParts=updatePhoneHidden('profilePhone');
     var whatsappParts=updatePhoneHidden('profileWhatsapp');
+    var existingPhone=String(existing.phone||((existing.phoneCountryCode||'')+(existing.phoneLocal||'')));
+    var existingWhatsapp=String(existing.whatsapp||((existing.whatsappCountryCode||'')+(existing.whatsappLocal||'')));
     var data={
       atsrsId:existing.atsrsId||'',
       name:val('profileName'),surname:val('profileSurname'),phone:phoneParts.full,
-      phoneCountryCode:phoneParts.code,phoneLocal:phoneParts.local,phoneVerified:!!existing.phoneVerified,
+      phoneCountryCode:phoneParts.code,phoneLocal:phoneParts.local,phoneVerified:options.contactChanged==='mobile'&&existingPhone!==phoneParts.full?false:!!existing.phoneVerified,
       whatsapp:whatsappParts.full,
-      whatsappCountryCode:whatsappParts.code,whatsappLocal:whatsappParts.local,whatsappVerified:!!existing.whatsappVerified,
+      whatsappCountryCode:whatsappParts.code,whatsappLocal:whatsappParts.local,whatsappVerified:options.contactChanged==='whatsapp'&&existingWhatsapp!==whatsappParts.full?false:!!existing.whatsappVerified,
       nationality:val('profileInlineNationality')||existing.nationality||val('profileCountry'),
       country:val('profileCountry'),birthCountry:val('profileBirthCountry'),
       company:val('profileCompany'),position:val('profilePosition'),
