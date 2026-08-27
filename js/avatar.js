@@ -38,6 +38,22 @@
     }
     return values.slice(0,2).map(function(value){return String(value).charAt(0).toUpperCase()}).join('')||'A';
   }
+  function ensureRequiredProfileIdentity(profile,user){
+    profile=profile&&typeof profile==='object'&&!Array.isArray(profile)?profile:{};
+    if(String(profile.name||'').trim())return profile;
+    var metadata=user&&user.user_metadata||{};
+    var given=String(metadata.given_name||'').trim();
+    var family=String(metadata.family_name||'').trim();
+    var full=String(metadata.full_name||metadata.name||'').trim();
+    if(!given&&full){
+      var parts=full.split(/\s+/).filter(Boolean);
+      given=parts.shift()||'';
+      if(!family&&parts.length)family=parts.join(' ');
+    }
+    if(given)profile.name=given;
+    if(!String(profile.surname||'').trim()&&family)profile.surname=family;
+    return profile;
+  }
   function allowedUrl(value){
     var text=String(value||'').trim();
     if(!text)return '';
@@ -236,7 +252,7 @@
       if(uploaded.error)throw uploaded.error;
       var publicData=c.storage.from(BUCKET).getPublicUrl(path),url=publicData&&publicData.data&&publicData.data.publicUrl;
       if(!url)throw new Error('The profile photo URL could not be created.');
-      var profile=readProfile(),oldPath=profile.avatarPath||'';
+      var profile=ensureRequiredProfileIdentity(readProfile(),user),oldPath=profile.avatarPath||'';
       profile.avatarUrl=url;profile.avatarPath=path;profile.avatarSource='upload';profile.updatedAt=new Date().toISOString();
       if(!writeProfile(profile))throw new Error('The profile photo could not be saved.');
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'){
