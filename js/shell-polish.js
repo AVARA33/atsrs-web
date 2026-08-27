@@ -269,8 +269,8 @@
   function syncNotificationPopoverCaret(){
     var controls=byId('atsrsGlobalControls'),button=byId('atsrsNotificationButton'),popover=byId('atsrsNotificationPopover');
     if(!controls||!button||!popover)return;
-    var buttonRect=button.getBoundingClientRect();
-    var panelWidth=Math.min(420,Math.max(0,window.innerWidth-24)),desiredLeft=buttonRect.right-panelWidth,clampedLeft=Math.max(12,Math.min(desiredLeft,window.innerWidth-12-panelWidth)),caretLeft=Math.max(18,Math.min(panelWidth-30,(buttonRect.left+(buttonRect.width/2))-clampedLeft-6));
+    var controlsRect=controls.getBoundingClientRect(),buttonRect=button.getBoundingClientRect();
+    var panelWidth=Math.min(420,Math.max(0,window.innerWidth-24)),desiredLeft=controlsRect.right-panelWidth,clampedLeft=Math.max(12,Math.min(desiredLeft,window.innerWidth-12-panelWidth)),caretLeft=Math.max(18,Math.min(panelWidth-30,(buttonRect.left+(buttonRect.width/2))-clampedLeft-6));
     popover.style.setProperty('--atsrs-notification-left',Math.round(clampedLeft)+'px');
     popover.style.setProperty('--atsrs-notification-top',Math.round(buttonRect.bottom+10)+'px');
     popover.style.setProperty('--atsrs-notification-caret-left',Math.round(caretLeft)+'px');

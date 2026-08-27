@@ -1177,11 +1177,12 @@ Final result: passed.
 - Tablet evidence: `tests/artifacts/notification-dropdown-after-768-dark.png` and `tests/artifacts/notification-dropdown-after-768-light.png`.
 - Mobile evidence: `tests/artifacts/notification-dropdown-after-390-dark.png` and `tests/artifacts/notification-dropdown-after-390-light.png`.
 - Production evidence: `tests/artifacts/notification-dropdown-production-dark.png` and `tests/artifacts/notification-dropdown-production-light.png`.
+- Right-aligned desktop evidence: `tests/artifacts/notification-dropdown-right-aligned-dark.png`.
 
 ## Visual comparison
 
 - Desktop panel geometry is exactly 420 × 560 pixels, with a 64-pixel header, five 88-pixel rows, 44 × 44-pixel icon tiles, 8 × 8-pixel unread dots and a 56-pixel footer.
-- The floating panel is positioned from the live bell rectangle and retains the measured caret beneath the bell; it is not a modal, sidebar, full-width bar or centered page panel.
+- The floating panel uses the open space to the right by aligning its right edge with the account-controls group, while the measured caret remains directly beneath the bell; it is not a modal, sidebar, full-width bar or centered page panel.
 - Light mode uses the reference white surface and restrained green notification actions; dark mode uses the ATSRS dark surface and green actions.
 - Existing request data is rendered in the reference hierarchy without adding fake production notifications.
 - At 768 pixels the panel remains 420 pixels wide. At 390 pixels it is 366 pixels wide, leaving 12-pixel margins on both sides.
