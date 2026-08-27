@@ -12,7 +12,7 @@ assert.match(shell,/profile-sharing-link-request\[data-request-id=/);
 assert.match(css,/\.atsrs-notification-popover\{/);
 assert.match(css,/\.atsrs-notification-badge\{/);
 assert.match(html,/css\/shell-polish\.css\?v=5885/);
-assert.match(html,/js\/shell-polish\.js\?v=582/);
+assert.match(html,/js\/shell-polish\.js\?v=583/);
 assert.match(shell,/params\.set\('tab','sharing'\)/);
 assert.match(shell,/byId\('navProfile'\)/);
 assert.match(shell,/\[0,120,320,700,1400,2400\]/);
@@ -29,7 +29,8 @@ assert.match(css,/html\[data-theme="light"\] \.atsrs-notification-badge\{backgro
 assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) \.atsrs-notification-popover-mark-all,[^}]*color:#16a34a!important/);
 assert.match(shell,/syncNotificationPopoverCaret/);
 assert.match(shell,/desktopPanelWidth=340/);
-assert.match(shell,/desiredLeft=controlsRect\.right-panelWidth/);
+assert.match(shell,/desktopRightNudge=16/);
+assert.match(shell,/desiredLeft=controlsRect\.right-panelWidth\+desktopRightNudge/);
 assert.match(shell,/atsrs-shell-notification-icon/);
 assert.match(shell,/event\.key==='Escape'/);
 assert.match(shell,/atsrs-notification-popover-mark-all/);
