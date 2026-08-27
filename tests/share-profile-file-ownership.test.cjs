@@ -22,5 +22,6 @@ assert.match(edge, /route=profile&tab=sharing&request=/, 'owner email must deep-
 assert.match(edge, />Review request<\/a>/, 'owner email must provide a clear review action');
 assert.match(edge, />Approve all files<\/a>/, 'owner email must provide a safe approve-all intent');
 assert.match(edge, /Verified email<\/td>/, 'owner email must separate verified requester identity');
+assert.match(edge, /function publicRequestStatus[\s\S]*?share_id: row\.share_id/, 'owner request responses must retain the share id used to place requester details in the correct link row');
 
 console.log('Share profile ownership and registration contracts passed');

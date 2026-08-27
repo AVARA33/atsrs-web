@@ -216,6 +216,7 @@ function publicShareStatus(row: ShareRow | null) {
 function publicRequestStatus(row: AccessRequestRow) {
   return {
     id: row.id,
+    share_id: row.share_id,
     requester_name: row.requester_name,
     requester_company: row.requester_company,
     requester_email: row.requester_email,
