@@ -81,6 +81,46 @@
         careers: "https://proffshoreservices.com/",
         contact: "https://proffshoreservices.com/",
       },
+      "N-Sea": {
+        mark: "NS",
+        summary:
+          "Integrated subsea services provider for survey, offshore cables, IRM, construction and decommissioning.",
+        sector: "Marine & subsea",
+        tags: ["Subsea", "Survey", "Offshore wind"],
+        website: "https://n-sea.com/",
+        careers: "https://n-sea.com/careers/",
+        contact: "https://n-sea.com/contact/",
+      },
+      "Reach Subsea": {
+        mark: "RS",
+        summary:
+          "Subsea services, survey and positioning specialist supporting offshore energy and ocean-space projects.",
+        sector: "Marine & subsea",
+        tags: ["Subsea", "Survey", "ROV"],
+        website: "https://reachsubsea.no/",
+        careers: "https://reachsubsea.no/careers/",
+        contact: "https://reachsubsea.no/contact/",
+      },
+      Sonardyne: {
+        mark: "SY",
+        summary:
+          "Marine technology company providing underwater positioning, navigation, communications and monitoring systems.",
+        sector: "Subsea technology",
+        tags: ["Marine", "Survey", "Technology"],
+        website: "https://www.sonardyne.com/",
+        careers: "https://www.sonardyne.com/about-us/join-sonardyne/",
+        contact: "https://www.sonardyne.com/support/",
+      },
+      EIVA: {
+        mark: "EI",
+        summary:
+          "Engineering company delivering software and hardware for maritime survey and subsea construction.",
+        sector: "Subsea technology",
+        tags: ["Survey", "Software", "Marine"],
+        website: "https://www.eiva.com/",
+        careers: "https://www.eiva.com/about/career",
+        contact: "https://www.eiva.com/contact",
+      },
     },
     companies = [],
     loadToken = 0;
