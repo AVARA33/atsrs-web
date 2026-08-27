@@ -191,14 +191,28 @@
     intro.classList.remove('hidden');
   }
 
+  function requestNotificationItem(request){
+    var button=document.createElement('button');button.type='button';button.className='atsrs-shell-notification-item is-request';
+    var title=document.createElement('strong'),detail=document.createElement('span'),email=document.createElement('small');title.textContent='Download request · '+(request.requester_name||'Verified requester');detail.textContent=request.requester_company||'Company not provided';email.textContent=request.requester_email||'';button.appendChild(title);button.appendChild(detail);button.appendChild(email);
+    button.addEventListener('click',function(){var popover=byId('atsrsNotificationPopover');if(popover)popover.hidden=true;if(typeof window.showPage==='function'&&typeof navProfile!=='undefined')window.showPage('profile',navProfile);if(typeof window.showAccountTab==='function')window.showAccountTab('sharing');setTimeout(function(){var target=document.querySelector('.profile-sharing-link-request[data-request-id="'+CSS.escape(request.id)+'"]');if(target){target.classList.add('is-email-focus');target.scrollIntoView({behavior:'smooth',block:'center'});var approve=target.querySelector('button:not(.is-danger)');if(approve)approve.focus();}},180)});return button;
+  }
+
+  function renderNotificationPopover(){
+    var popover=byId('atsrsNotificationPopover'),list=byId('atsrsShellNotificationList'),badge=byId('atsrsNotificationBadge');if(!popover||!list)return;
+    list.textContent='';var requests=typeof window.atsrsGetOwnerShareRequests==='function'?window.atsrsGetOwnerShareRequests().filter(function(item){return item.status==='pending'}):[];
+    requests.forEach(function(request){list.appendChild(requestNotificationItem(request))});
+    var serverItems=Array.prototype.slice.call(document.querySelectorAll('#atsrsNotificationList .atsrs-notification-item')).slice(0,5);
+    serverItems.forEach(function(item){var copy=item.querySelector('.atsrs-notification-copy'),button=document.createElement('button');button.type='button';button.className='atsrs-shell-notification-item';button.innerHTML=copy?copy.innerHTML:item.innerHTML;button.addEventListener('click',function(){popover.hidden=true;var dashboard=byId('navDashboard');if(typeof window.showPage==='function'&&dashboard)window.showPage('dashboard',dashboard);setTimeout(function(){var panel=byId('atsrsNotificationPanel');if(panel)panel.scrollIntoView({behavior:'smooth',block:'center'})},120)});list.appendChild(button)});
+    if(!list.children.length){var empty=document.createElement('div');empty.className='atsrs-shell-notification-empty';empty.textContent='No new notifications.';list.appendChild(empty)}
+    if(badge){badge.textContent=String(requests.length);badge.hidden=!requests.length}
+  }
+
   function openNotifications(){
-    var dashboard=byId('navDashboard');
-    if(typeof window.showPage==='function'&&dashboard)window.showPage('dashboard',dashboard);
+    var popover=byId('atsrsNotificationPopover');if(!popover)return;popover.hidden=!popover.hidden;
+    if(popover.hidden)return;
+    if(typeof window.refreshShareRequests==='function')window.refreshShareRequests();
     if(typeof window.atsrsRefreshNotifications==='function')window.atsrsRefreshNotifications();
-    setTimeout(function(){
-      var panel=byId('atsrsNotificationPanel');
-      if(panel)panel.scrollIntoView({behavior:'smooth',block:'center'});
-    },160);
+    setTimeout(renderNotificationPopover,180);
   }
 
   function updateNotificationLabel(){
@@ -220,9 +234,12 @@
       button.id='atsrsNotificationButton';
       button.type='button';
       button.appendChild(icon('bell'));
+      var badge=document.createElement('span');badge.id='atsrsNotificationBadge';badge.className='atsrs-notification-badge';badge.hidden=true;button.appendChild(badge);
       button.addEventListener('click',openNotifications);
     }
     if(button.parentElement!==controls||button.nextElementSibling!==theme)controls.insertBefore(button,theme);
+    var popover=byId('atsrsNotificationPopover');if(!popover){popover=document.createElement('section');popover.id='atsrsNotificationPopover';popover.className='atsrs-notification-popover';popover.hidden=true;popover.innerHTML='<header><strong>Notifications</strong><button type="button" aria-label="Close notifications">×</button></header><div id="atsrsShellNotificationList" class="atsrs-shell-notification-list"></div>';controls.appendChild(popover);popover.querySelector('header button').addEventListener('click',function(){popover.hidden=true})}
+    renderNotificationPopover();
     updateNotificationLabel();
   }
 
@@ -244,6 +261,7 @@
     observe();
     window.addEventListener('atsrs:workspace-changed',function(){queueNavigation();ensureNotificationButton();closeMobileSidebar();stabilizeVisibleRoute()});
     window.addEventListener('atsrs:resume',function(){queueNavigation();ensureNotificationButton();updateNotificationLabel();queueResponsiveShellSync();stabilizeVisibleRoute()});
+    window.addEventListener('atsrs:share-requests-updated',renderNotificationPopover);
     window.addEventListener('pageshow',function(){queueResponsiveShellSync();stabilizeVisibleRoute()});
     window.addEventListener('resize',queueResponsiveShellSync,{passive:true});
     window.addEventListener('orientationchange',queueResponsiveShellSync,{passive:true});
