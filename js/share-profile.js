@@ -174,7 +174,7 @@
     setKnownLink(activeShare&&activeShare.active&&token?shareUrl(token):'');
   }
   window.atsrsGetActiveShareStatus=function(){return activeShare?Object.assign({},activeShare):null;};
-  window.atsrsGetActiveShares=function(){return activeShares.filter(function(share){return share&&share.active;}).map(function(share){return Object.assign({},share,{share_url:shareLinkById(share.id)});});};
+  window.atsrsGetActiveShares=function(){return activeShares.filter(function(share){return share&&share.active;}).slice().sort(function(left,right){var rightTime=new Date(right.updated_at||right.created_at||0).getTime()||0,leftTime=new Date(left.updated_at||left.created_at||0).getTime()||0;return rightTime-leftTime;}).map(function(share){return Object.assign({},share,{share_url:shareLinkById(share.id)});});};
   window.atsrsGetOwnerShareRequests=function(){return ownerRequests.map(function(request){return Object.assign({},request);});};
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared files':names.join(', ');}
   function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}

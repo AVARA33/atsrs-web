@@ -56,6 +56,7 @@ assert.match(shareJs,/atsrsGetActiveShareStatus/);
 assert.match(shareJs,/function validateShareToken\(token\)/);
 assert.match(shareJs,/function createValidatedShare\(fileIds,expiresAt,audience\)/);
 assert.match(shareJs,/window\.atsrsGetActiveShares/);
+assert.match(shareJs,/atsrsGetActiveShares=function\(\)[\s\S]*?right\.updated_at\|\|right\.created_at[\s\S]*?return rightTime-leftTime/,'Active share links must render newest or most recently recreated first.');
 assert.match(shareJs,/audience:audience/);
 assert.match(shareJs,/share_id:shareId/);
 assert.match(js,/window\.copyShareLink\(share\.id\)/);
