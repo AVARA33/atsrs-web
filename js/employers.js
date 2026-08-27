@@ -242,6 +242,16 @@
         careers: "https://www.deeptrekker.com/company/careers",
         contact: "https://www.deeptrekker.com/contact-us",
       },
+      "Blueye Robotics": {
+        mark: "BR",
+        summary:
+          "Norwegian underwater technology company developing compact professional ROVs and cloud tools for inspection, defence, aquaculture and marine research.",
+        sector: "Underwater robotics",
+        tags: ["ROV", "Robotics", "Marine technology"],
+        website: "https://www.blueyerobotics.com/",
+        careers: "https://blueye.recruitee.com/",
+        contact: "https://www.blueyerobotics.com/contact",
+      },
     },
     companies = [],
     loadToken = 0;
