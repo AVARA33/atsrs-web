@@ -16,7 +16,8 @@ assert.match(css, /\.share-request-dialog \.share-request-field\.atsrs-field-she
 assert.match(css, /\.share-request-dialog \.share-request-field>input:-webkit-autofill[^}]*1000px var\(--atsrs-field-surface\) inset/, 'browser autofill must not replace the canonical light field surface');
 assert.match(css, /\.share-request-dialog \.share-request-field>input:-webkit-autofill[^}]*-webkit-text-fill-color:var\(--atsrs-field-text\)!important/, 'browser autofill must retain canonical text contrast');
 assert.match(index, /class="share-request-field atsrs-field-shell"><span class="atsrs-field-label">Full name<\/span>/, 'request fields must use the same shell structure as canonical search controls');
-assert.match(index, /css\/share-profile\.css\?v=516/, 'the browser must receive the refreshed request dialog theme');
+assert.match(index, /css\/share-profile\.css\?v=517/, 'the browser must receive the refreshed request dialog theme');
+assert.match(css,/html\[data-theme="light"\] \.share-request-message:not\(\.error\)\{[^}]*color:var\(--atsrs-ref-blue,#167bd3\)!important/,'light-mode OTP status text must use the ATSRS blue accent.');
 assert.match(index, />Send verification code<\/button>/, 'the first request action must describe the OTP step accurately');
 assert.match(shareJs,/showRequestSentToast\(\)/, 'successful requests must show compact confirmation feedback');
 assert.match(css,/\.share-request-sent-toast\{[^}]*position:fixed[^}]*opacity:0/, 'request confirmation must use a transient toast');

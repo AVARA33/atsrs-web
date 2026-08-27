@@ -990,8 +990,9 @@ body.company-mode #accountTabSharingBtn{display:none!important}
 .share-request-dialog button{margin:10px 0 0}
 .share-request-dialog button.secondary{border-color:#cbd8e4!important;background:#fff!important;color:#29445d!important}
 .share-request-close{position:absolute;top:12px;right:12px;width:38px!important;height:38px;padding:0!important;border:1px solid #d4dee8!important;border-radius:10px!important;background:#f5f8fb!important;color:#29445d!important;font-size:23px!important}
-.share-request-message{min-height:18px;margin-top:12px;color:#86efac;font-size:11px}
+.share-request-message{min-height:18px;margin-top:12px;color:var(--atsrs-field-accent,#2563eb);font-size:11px}
 .share-request-message.error{color:#fca5a5}
+html[data-theme="light"] .share-request-message:not(.error){color:var(--atsrs-ref-blue,#167bd3)!important;-webkit-text-fill-color:var(--atsrs-ref-blue,#167bd3)!important}
 .share-verified-identity{padding:13px;border:1px solid rgba(34,197,94,.25);border-radius:12px;background:rgba(34,197,94,.07);color:#bde7cc;font-size:12px;line-height:1.5}
 html[data-theme="dark"] .share-request-dialog{border-color:#2b312e;background:#0b0d0d;color:#eef2ef;box-shadow:0 30px 90px rgba(0,0,0,.58)}
 html[data-theme="dark"] .share-request-dialog h2{color:#f2f5f3}
