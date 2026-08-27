@@ -807,6 +807,7 @@ Final result: passed.
 
 - The requester name, company and verified email occupy the left blank column marked in the source screenshot.
 - The same requester strip shows the requested document count beneath the verified email.
+- Requester details remain visible after a decision; pending rows show Approve/Decline, while decided rows show their status.
 - Approve and Decline occupy the right blank column marked in the source screenshot.
 - The final metadata order is Active followed by time remaining; Active is blue in light mode and green in dark mode.
 - Copy, Open and Revoke stay in their existing action column.

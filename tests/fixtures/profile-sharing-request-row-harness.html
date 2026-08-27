@@ -32,8 +32,9 @@
     </section>
   </main>
   <script>
+    const qaStatus=new URLSearchParams(location.search).get('status')||'pending';
     window.atsrsGetActiveShares=function(){return[{id:'share-1',audience:'recipient',active:true,expires_at:new Date(Date.now()+7*86400000).toISOString()}]};
-    window.atsrsGetOwnerShareRequests=function(){return[{id:'request-1',share_id:'share-1',status:'pending',requester_name:'Test Requester',requester_company:'Example Offshore Ltd',requester_email:'requester@example.com',request_all:true,requested_file_ids:['file-1','file-2']}]};
+    window.atsrsGetOwnerShareRequests=function(){return[{id:'request-1',share_id:'share-1',status:qaStatus,requester_name:'Test Requester',requester_company:'Example Offshore Ltd',requester_email:'requester@example.com',request_all:true,requested_file_ids:['file-1','file-2']}]};
     window.copyShareLink=async function(){return true};window.previewShareProfile=function(){};window.revokeShareProfileLink=function(){};window.decideShareRequest=function(){};
   </script>
   <script src="../../js/profile-sharing-v1.js"></script>
