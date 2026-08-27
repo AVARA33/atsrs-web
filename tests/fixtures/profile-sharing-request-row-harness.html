@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS sharing request row QA</title>
+  <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')||'dark'</script>
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+  <style>
+    :root{--surface:#0b0f0d;--surface-2:#101714;--line:#23302a;--border:#23302a;--text:#f8fafc;--muted:#96a49d;--atsrs-field-accent:#22c55e;--atsrs-field-focus-inline-line:#22c55e;--atsrs-field-focus-block-line:#53635b;--atsrs-field-focus-shadow:none;--atsrs-action-border-hover:#33443b;--atsrs-action-surface-hover:#152019}
+    html[data-theme="light"]{--surface:#fff;--surface-2:#f3f6fb;--line:#dce4ee;--border:#dce4ee;--text:#172033;--muted:#64748b;--atsrs-field-accent:#2563eb;--atsrs-field-focus-inline-line:#2563eb;--atsrs-field-focus-block-line:#9eb8ee;--atsrs-action-border-hover:#bdcce0;--atsrs-action-surface-hover:#eef4ff}
+    *{box-sizing:border-box}body{margin:0;background:#050806;color:var(--text);font-family:Arial,sans-serif}html[data-theme="light"] body{background:#f4f7fb}.qa-shell{min-height:100vh;padding:80px 42px}.qa-frame{width:min(1540px,calc(100vw - 84px));margin:auto;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+    .qa-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.qa-title h1{margin:0;font-size:22px}.qa-title span{color:var(--muted);font-size:13px}
+    #profileSharingActiveList{border-top:1px solid var(--line)}
+  </style>
+  <link rel="stylesheet" href="../../css/profile-sharing-v1.css">
+</head>
+<body class="personal-mode">
+  <main id="app" class="app">
+    <section id="profilePage">
+      <div class="qa-shell">
+        <div class="qa-frame">
+          <div class="qa-title"><h1>Active share links</h1><span id="profileSharingLinksCount">0</span></div>
+          <div id="profileSharingV1" class="profile-sharing-v1">
+            <div class="profile-sharing-links">
+              <div id="profileSharingCreateStatus" class="profile-sharing-create-status"></div>
+              <div id="profileSharingActiveList" class="profile-sharing-active-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.atsrsGetActiveShares=function(){return[{id:'share-1',audience:'recipient',active:true,expires_at:new Date(Date.now()+7*86400000).toISOString()}]};
+    window.atsrsGetOwnerShareRequests=function(){return[{id:'request-1',share_id:'share-1',status:'pending',requester_name:'Test Requester',requester_company:'Example Offshore Ltd',requester_email:'requester@example.com',request_all:true,requested_file_ids:['file-1','file-2']}]};
+    window.copyShareLink=async function(){return true};window.previewShareProfile=function(){};window.revokeShareProfileLink=function(){};window.decideShareRequest=function(){};
+  </script>
+  <script src="../../js/profile-sharing-v1.js"></script>
+</body>
+</html>

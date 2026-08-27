@@ -796,6 +796,32 @@ final result: passed
 
 Final result: passed.
 
+# Profile Sharing requester decision row — Design QA
+
+- Scope: the active Profile Sharing link row only; the notification dropdown was deliberately left unchanged.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-15f0ecdf-167e-46be-8188-9ea1e2a0ca0c.png`.
+- Comparison evidence: `C:\Users\user\AppData\Local\Temp\atsrs-sharing-row-comparison.png`.
+- Local fixture: `tests/fixtures/profile-sharing-request-row-harness.html`, checked in dark and light themes.
+
+## Visual and interaction comparison
+
+- The requester name, company and verified email occupy the left blank column marked in the source screenshot.
+- Approve and Decline occupy the right blank column marked in the source screenshot.
+- The final metadata order is Active followed by time remaining; Active is blue in light mode and green in dark mode.
+- Copy, Open and Revoke stay in their existing action column.
+- Decision buttons are 24 pixels high and remain inside the link row rather than extending below it.
+- Multiple pending requests stack as matched requester/decision pairs without changing the existing active-link scroll behavior.
+- A request route focuses the matching row and its Approve button after the Sharing view renders.
+
+## Verification
+
+- Dark and light visual fixture checks passed; console warnings/errors: 0.
+- Profile Sharing focused test passed.
+- Share-profile ownership regression test passed.
+- Cloudflare production build passed.
+
+Final result: passed.
+
 # Notification dropdown reference match — Design QA
 
 - Scope: the authenticated ATSRS header notification dropdown in Personal accounts.
