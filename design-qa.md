@@ -796,6 +796,44 @@ final result: passed
 
 Final result: passed.
 
+---
+
+# Profile Sharing requester row controls — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-15f0ecdf-167e-46be-8188-9ea1e2a0ca0c.png` (3439 × 1369 px).
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\atsrs-web\qa-request-row-dark.png` (2293 × 791 px at 1× density).
+- Focused paired comparison: `C:\Users\user\Documents\GitHub\atsrs-web\qa-request-row-comparison.png`.
+- State: Profile → Sharing, dark theme, pending verified download request.
+
+## Full-view and focused comparison evidence
+
+The annotated source reserves the left middle cell for requester identity and the right middle cell for Approve/Decline. The focused combined image confirms that the implementation fills those cells with requester name, company, verified email, requested-file count and compact decision controls while retaining the established link actions at the right. The pending e-mail focus row now remains black with only the existing green left accent.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS 8–9 px compact row typography is retained; no new font is introduced.
+- Spacing and layout rhythm: Approve and Decline resolve to 22 px height with 6 px horizontal padding, exactly matching Copy/Open/Revoke. The row stays on one line.
+- Colors and visual tokens: dark surfaces resolve to `rgb(11, 15, 13)`; green is limited to semantic accent, status and approval border/text.
+- Image quality and asset fidelity: existing Phosphor icons are reused; no new image asset or approximation is introduced.
+- Copy and content: requester name, company, verified email and requested-file count occupy the intended information cell; Approve and Decline occupy the decision cell.
+
+## Findings and comparison history
+
+- Earlier P2: Approve/Decline were 24 px high with a forced 72 px minimum width, making them visibly larger than the 22 px link actions.
+- Fix: removed the forced width and matched height, padding, radius, font size and box sizing to the established link controls.
+- Earlier P2: the e-mail-focused share row retained a green-tinted fill in dark mode.
+- Fix: dark focus state now uses the normal black surface while preserving the left green accent.
+- Post-fix browser measurements: Approve and Decline are 22 px high with `0 6px` padding; Copy/Open/Revoke are also 22 px high with `0 6px` padding.
+- No actionable P0, P1 or P2 finding remains.
+
+## Primary interactions and console
+
+- Pending request content and all five action labels are present in the semantic DOM snapshot.
+- No decision button was activated during QA, so production request state was not mutated.
+- Focused Profile Sharing and ownership contract tests passed; Cloudflare Pages build passed; `git diff --check` passed.
+
+final result: passed
+
 # Profile Sharing requester decision row — Design QA
 
 - Scope: the active Profile Sharing link row only; the notification dropdown was deliberately left unchanged.
