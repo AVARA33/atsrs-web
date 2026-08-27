@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ATSRS V538 sidebar mark harness</title>
+  <script>
+    window.__notificationQaErrors=[];
+    localStorage.removeItem('atsrs_dismissed_request_notifications');
+    document.documentElement.dataset.qaConsoleErrors='0';
+    window.addEventListener('error',function(event){window.__notificationQaErrors.push(String(event.message||event.error||'runtime error'));document.documentElement.dataset.qaConsoleErrors=String(window.__notificationQaErrors.length)});
+    window.addEventListener('unhandledrejection',function(event){window.__notificationQaErrors.push(String(event.reason||'unhandled rejection'));document.documentElement.dataset.qaConsoleErrors=String(window.__notificationQaErrors.length)});
+  </script>
   <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='dark'?'dark':'light';</script>
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/dashboard.css">
@@ -12,7 +19,7 @@
   <link rel="stylesheet" href="../../css/theme.css?v=58161">
   <link rel="stylesheet" href="../../css/personal-workspace-surface.css">
   <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
-  <link rel="stylesheet" href="../../css/shell-polish.css?v=5880">
+  <link rel="stylesheet" href="../../css/shell-polish.css?v=5884">
   <link rel="stylesheet" href="../../css/theme-palette-v508.css?v=509">
   <link rel="stylesheet" href="../../css/dark-green-text-standard-v58140.css?v=58140-qa">
 </head>
@@ -109,6 +116,16 @@
     }
   </script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/shell-polish.js?v=578"></script>
+  <script src="../../js/shell-polish.js?v=580"></script>
+  <script>
+    if(new URLSearchParams(location.search).get('notification')==='open'){
+      let attempts=0;
+      const openNotifications=window.setInterval(function(){
+        const button=document.getElementById('atsrsNotificationButton');
+        if(button){window.clearInterval(openNotifications);button.click()}
+        else if(++attempts>20)window.clearInterval(openNotifications);
+      },80);
+    }
+  </script>
 </body>
 </html>

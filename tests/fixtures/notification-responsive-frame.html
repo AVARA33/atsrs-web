@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS notification responsive frame</title>
+  <style>
+    html,body{margin:0;min-height:100%;background:#d7dde5}
+    body{display:grid;place-items:start center;padding:0;box-sizing:border-box}
+    iframe{display:block;border:0;background:#fff;box-shadow:0 12px 36px rgba(15,23,42,.18)}
+  </style>
+</head>
+<body>
+  <iframe id="notificationFrame" title="ATSRS notification responsive QA"></iframe>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const width = Math.max(320, Math.min(1440, Number(params.get('width')) || 390));
+    const height = Math.max(640, Math.min(1000, Number(params.get('height')) || 760));
+    const theme = params.get('theme') === 'light' ? 'light' : 'dark';
+    const frame = document.getElementById('notificationFrame');
+    frame.style.width = width + 'px';
+    frame.style.height = height + 'px';
+    frame.src = 'shell-polish-harness.html?theme=' + encodeURIComponent(theme) + '&notification=open';
+    frame.addEventListener('load',function(){
+      window.setTimeout(function(){
+        const doc=frame.contentDocument;
+        const panel=doc.getElementById('atsrsNotificationPopover');
+        const surface=panel&&panel.querySelector('.atsrs-notification-popover-surface');
+        const header=surface&&surface.querySelector('header');
+        const row=doc.querySelector('.atsrs-shell-notification-item');
+        const footer=surface&&surface.querySelector('.atsrs-notification-popover-view-all');
+        const rect=function(node){if(!node)return null;const box=node.getBoundingClientRect();return {left:Math.round(box.left),top:Math.round(box.top),right:Math.round(box.right),bottom:Math.round(box.bottom),width:Math.round(box.width),height:Math.round(box.height)}};
+        document.body.dataset.notificationMetrics=JSON.stringify({viewport:{width:frame.contentWindow.innerWidth,height:frame.contentWindow.innerHeight},panel:rect(panel),surface:rect(surface),header:rect(header),row:rect(row),footer:rect(footer),overflowX:doc.documentElement.scrollWidth-frame.contentWindow.innerWidth,consoleErrors:Number(doc.documentElement.dataset.qaConsoleErrors||'0')});
+      },500);
+    });
+  </script>
+</body>
+</html>

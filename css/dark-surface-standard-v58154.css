@@ -65,7 +65,7 @@ html[data-theme="dark"] body :where(.account-tabs button.active,.module-tabs but
 
 html[data-theme="dark"] body :where(
   .lang-menu,.personnel-combobox-options,.work-type-options,
-  .recipient-modal-card,.atsrs-notification-popover
+  .recipient-modal-card
 ){
   border-color:#2a2f2d!important;
   background:#0b0d0d!important;

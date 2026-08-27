@@ -512,72 +512,71 @@ html body #app.app:not(.hidden) #atsrsNotificationButton:focus-visible{
 }
 html body #app.app:not(.hidden) #atsrsNotificationButton{position:relative!important}
 .atsrs-notification-badge{position:absolute;top:-3px;right:-3px;display:grid;min-width:18px;height:18px;padding:0 4px;place-items:center;border:2px solid var(--surface,#fff);border-radius:10px;background:#22c55e;color:#fff;font-size:10px;font-weight:900;box-shadow:0 0 11px rgba(34,197,94,.72)}
-html[data-theme="light"] .atsrs-notification-badge{background:#2563eb;color:#fff;box-shadow:0 0 9px rgba(37,99,235,.42)}
+html[data-theme="light"] .atsrs-notification-badge{background:#16a34a;color:#fff;box-shadow:0 0 9px rgba(22,163,74,.34)}
 .atsrs-notification-popover{
-  --atsrs-notification-caret-right:238px;
-  --atsrs-notification-top:87px;
-  --atsrs-notification-right:24px;
+  --atsrs-notification-left:0px;
+  --atsrs-notification-top:0px;
+  --atsrs-notification-caret-left:24px;
   position:fixed;
   top:var(--atsrs-notification-top);
-  right:var(--atsrs-notification-right);
+  left:var(--atsrs-notification-left);
+  right:auto;
   z-index:2500;
-  width:min(620px,calc(100vw - 32px));
-  max-height:min(700px,calc(100vh - 88px));
+  width:420px;
+  min-width:420px;
+  max-width:420px;
   padding:0;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--surface);
-  box-shadow:0 28px 80px rgba(2,8,18,.32);
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
   overflow:visible;
 }
-.atsrs-notification-popover::before{content:"";position:absolute;top:-9px;right:var(--atsrs-notification-caret-right);z-index:1;width:16px;height:16px;border-top:1px solid var(--line);border-left:1px solid var(--line);background:var(--surface);transform:rotate(45deg)}
+.atsrs-notification-popover::before{content:"";position:absolute;top:-6px;left:var(--atsrs-notification-caret-left);z-index:2;width:12px;height:12px;border-top:1px solid var(--line);border-left:1px solid var(--line);background:var(--surface);transform:rotate(45deg)}
 .atsrs-notification-popover[hidden]{display:none!important}
-.atsrs-notification-popover>header{position:relative;z-index:2;display:flex;min-height:82px;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:1px solid var(--line);border-radius:14px 14px 0 0;background:var(--surface)}
-.atsrs-notification-popover>header strong{font-size:22px;font-weight:800;letter-spacing:-.02em}
-.atsrs-notification-popover>header .atsrs-notification-popover-close{width:auto!important;height:auto!important;min-height:36px!important;padding:5px 0!important;border:0!important;background:transparent!important;color:var(--atsrs-field-accent,var(--accent))!important;-webkit-text-fill-color:var(--atsrs-field-accent,var(--accent))!important;font-size:15px;font-weight:800;box-shadow:none!important}
-.atsrs-notification-popover>header .atsrs-notification-popover-close:hover{text-decoration:underline;transform:none!important}
-.atsrs-shell-notification-list{display:grid;gap:0;max-height:500px;padding:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--atsrs-field-accent,var(--accent)) transparent}
-html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item{position:relative;display:grid!important;grid-template-columns:58px minmax(0,1fr) 76px!important;align-items:center!important;gap:16px!important;width:100%!important;height:auto!important;min-height:100px!important;margin:0!important;padding:18px 30px!important;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;color:var(--text)!important;box-shadow:none!important;text-align:left!important}
+.atsrs-notification-popover-surface{display:grid;grid-template-rows:64px minmax(0,1fr) 56px;width:100%;max-height:min(560px,calc(100vh - var(--atsrs-notification-top) - 12px));overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.atsrs-notification-popover> .atsrs-notification-popover-surface > header{position:relative;z-index:3;display:flex;height:64px;min-height:64px;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:var(--surface)}
+.atsrs-notification-popover> .atsrs-notification-popover-surface > header strong{font-size:18px;font-weight:700;line-height:24px;letter-spacing:0}
+.atsrs-notification-popover-actions{display:flex;align-items:center;gap:14px;min-width:0}
+.atsrs-notification-popover-mark-all{width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;margin:0!important;padding:4px 0!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--atsrs-field-accent,var(--accent))!important;-webkit-text-fill-color:var(--atsrs-field-accent,var(--accent))!important;font-size:14px!important;font-weight:600!important;line-height:20px!important;box-shadow:none!important;white-space:nowrap}
+.atsrs-notification-popover-mark-all:hover{opacity:.78;transform:none!important;text-decoration:none}
+.atsrs-notification-popover-mark-all:disabled{opacity:.48!important;cursor:default!important}
+.atsrs-notification-popover-settings{display:grid!important;width:24px!important;height:32px!important;min-width:24px!important;min-height:32px!important;margin:0!important;padding:0!important;place-items:center;border:0!important;border-radius:6px!important;background:transparent!important;color:var(--muted)!important;-webkit-text-fill-color:var(--muted)!important;box-shadow:none!important}
+.atsrs-notification-popover-settings .ph{font-size:20px;line-height:1}
+.atsrs-notification-popover-settings:hover{background:var(--surface-2)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;transform:none!important}
+.atsrs-shell-notification-list{display:grid;grid-auto-rows:88px;gap:0;min-height:0;max-height:440px;padding:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--atsrs-field-accent,var(--accent)) transparent}
+html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item{position:relative;display:grid!important;grid-template-columns:44px minmax(0,1fr) 54px!important;align-items:center!important;gap:14px!important;width:100%!important;height:88px!important;min-height:88px!important;margin:0!important;padding:0 20px!important;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;color:var(--text)!important;box-shadow:none!important;text-align:left!important;overflow:hidden!important}
+html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item:last-child{border-bottom:0!important}
 html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item:hover{background:var(--surface-2)!important;box-shadow:none!important;transform:none!important}
-.atsrs-shell-notification-icon{display:grid;width:58px;height:58px;place-items:center;border:0;border-radius:12px;background:rgba(34,197,94,.14);color:#22c55e!important;-webkit-text-fill-color:#22c55e!important;font-size:28px}
-.atsrs-shell-notification-copy{display:grid;gap:4px;min-width:0}
-.atsrs-shell-notification-copy strong{font-size:15.5px;font-weight:800;line-height:1.28}
-.atsrs-shell-notification-copy span,.atsrs-shell-notification-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:13px;line-height:1.35}
-.atsrs-shell-notification-copy small{font-size:11.5px}
-.atsrs-shell-notification-item>time{align-self:start;padding-top:4px;color:var(--muted);font-size:12px;font-weight:600;text-align:right}
-.atsrs-shell-notification-item.is-request::after{content:"";position:absolute;right:30px;bottom:24px;width:10px;height:10px;border-radius:50%;background:var(--atsrs-field-accent,var(--accent));box-shadow:0 0 8px rgba(34,197,94,.48)}
-.atsrs-shell-notification-empty{margin:18px;padding:28px 18px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13px;text-align:center}
-.atsrs-notification-popover-view-all{display:block!important;width:100%!important;height:66px!important;min-height:66px!important;padding:0 24px!important;border:0!important;border-radius:0 0 14px 14px!important;background:var(--surface)!important;color:var(--atsrs-field-accent,var(--accent))!important;-webkit-text-fill-color:var(--atsrs-field-accent,var(--accent))!important;font-size:15px;font-weight:800;box-shadow:none!important}
+html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item:focus-visible{outline:2px solid var(--atsrs-field-accent,var(--accent))!important;outline-offset:-3px!important}
+.atsrs-shell-notification-icon{display:grid;width:44px;height:44px;min-width:44px;place-items:center;border:0;border-radius:10px;background:rgba(34,197,94,.12);color:#22c55e!important;-webkit-text-fill-color:#22c55e!important;font-size:22px;line-height:1}
+.atsrs-shell-notification-item.is-people .atsrs-shell-notification-icon{background:rgba(59,130,246,.12);color:#3b82f6!important;-webkit-text-fill-color:#3b82f6!important}
+.atsrs-shell-notification-item.is-warning .atsrs-shell-notification-icon{background:rgba(245,158,11,.14);color:#f59e0b!important;-webkit-text-fill-color:#f59e0b!important}
+.atsrs-shell-notification-item.is-upload .atsrs-shell-notification-icon{background:rgba(139,92,246,.13);color:#8b5cf6!important;-webkit-text-fill-color:#8b5cf6!important}
+.atsrs-shell-notification-item.is-info .atsrs-shell-notification-icon{background:rgba(148,163,184,.13);color:#94a3b8!important;-webkit-text-fill-color:#94a3b8!important}
+.atsrs-shell-notification-copy{display:grid;gap:3px;min-width:0;overflow:hidden}
+.atsrs-shell-notification-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:700;line-height:20px}
+.atsrs-shell-notification-copy span,.atsrs-shell-notification-copy small{display:-webkit-box;min-width:0;overflow:hidden;color:var(--muted);font-size:13px;font-weight:400;line-height:19px;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.atsrs-shell-notification-meta{display:grid;align-self:stretch;align-items:center;justify-items:end;min-width:54px;padding:17px 0}
+.atsrs-shell-notification-meta time{align-self:start;color:var(--muted);font-size:12.5px;font-weight:400;line-height:18px;text-align:right;white-space:nowrap}
+.atsrs-shell-notification-unread{align-self:end;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:none}
+.atsrs-shell-notification-empty{align-self:center;margin:14px;padding:20px 16px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13px;text-align:center}
+.atsrs-notification-popover-view-all{display:block!important;width:100%!important;height:56px!important;min-height:56px!important;margin:0!important;padding:0 20px!important;border:0!important;border-top:1px solid var(--line)!important;border-radius:0!important;background:var(--surface)!important;color:var(--atsrs-field-accent,var(--accent))!important;-webkit-text-fill-color:var(--atsrs-field-accent,var(--accent))!important;font-size:14px!important;font-weight:600!important;line-height:20px!important;box-shadow:none!important}
 .atsrs-notification-popover-view-all:hover{background:var(--surface-2)!important;transform:none!important}
-html[data-theme="dark"] .atsrs-notification-popover,html[data-theme="dark"] .atsrs-notification-popover::before,html[data-theme="dark"] .atsrs-notification-popover>header,html[data-theme="dark"] .atsrs-notification-popover-view-all{background:#11181d!important}
-html[data-theme="light"] .atsrs-notification-popover,html[data-theme="light"] .atsrs-notification-popover::before,html[data-theme="light"] .atsrs-notification-popover>header,html[data-theme="light"] .atsrs-notification-popover-view-all{background:#fff!important}
-html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-notification-popover>header .atsrs-notification-popover-close,html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-notification-popover-view-all{color:#22c55e!important;-webkit-text-fill-color:#22c55e!important}
-html[data-theme="light"] body #app.app:not(.hidden) .atsrs-notification-popover>header .atsrs-notification-popover-close,html[data-theme="light"] body #app.app:not(.hidden) .atsrs-notification-popover-view-all{color:#2563eb!important;-webkit-text-fill-color:#2563eb!important}
-html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-shell-notification-item.is-request::after{background:#22c55e!important;box-shadow:0 0 8px rgba(34,197,94,.48)!important}
+html[data-theme="dark"] .atsrs-notification-popover::before,html[data-theme="dark"] .atsrs-notification-popover-surface,html[data-theme="dark"] .atsrs-notification-popover> .atsrs-notification-popover-surface > header,html[data-theme="dark"] .atsrs-notification-popover-view-all{background:#11181d!important}
+html[data-theme="light"] .atsrs-notification-popover::before,html[data-theme="light"] .atsrs-notification-popover-surface,html[data-theme="light"] .atsrs-notification-popover> .atsrs-notification-popover-surface > header,html[data-theme="light"] .atsrs-notification-popover-view-all{background:#fff!important}
+html[data-theme="dark"] .atsrs-notification-popover-surface,html[data-theme="dark"] .atsrs-notification-popover> .atsrs-notification-popover-surface > header,html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-shell-notification-item,html[data-theme="dark"] .atsrs-notification-popover-view-all{border-color:rgba(148,163,184,.18)!important}
+html[data-theme="light"] .atsrs-notification-popover-surface,html[data-theme="light"] .atsrs-notification-popover> .atsrs-notification-popover-surface > header,html[data-theme="light"] body #app.app:not(.hidden) .atsrs-shell-notification-item,html[data-theme="light"] .atsrs-notification-popover-view-all{border-color:#e2e8f0!important}
+html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-notification-popover-mark-all,html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-notification-popover-view-all{color:#22c55e!important;-webkit-text-fill-color:#22c55e!important}
+html[data-theme="light"] body #app.app:not(.hidden) .atsrs-notification-popover-mark-all,html[data-theme="light"] body #app.app:not(.hidden) .atsrs-notification-popover-view-all{color:#16a34a!important;-webkit-text-fill-color:#16a34a!important}
 html[data-theme="light"] body #app.app:not(.hidden) .atsrs-shell-notification-item:hover{background:#f3f7fb!important;box-shadow:none!important}
-html[data-theme="light"] body #app.app:not(.hidden) .atsrs-shell-notification-icon{background:#e9f2ff;color:#2563eb!important;-webkit-text-fill-color:#2563eb!important}
-html[data-theme="light"] body #app.app:not(.hidden) .atsrs-shell-notification-item.is-request::after{background:#2563eb;box-shadow:0 0 8px rgba(37,99,235,.35)}
 
 html body #app.app:not(.hidden) :where(.sidebar .nav button,#atsrsNotificationButton,#atsrsThemeToggle):focus:not(:focus-visible){
   outline:0!important;
   box-shadow:none!important;
 }
 
-@media(max-width:720px){
-  .atsrs-notification-popover{right:8px;width:calc(100vw - 16px);max-height:calc(100vh - 78px)}
-  .atsrs-notification-popover::before{display:none}
-  .atsrs-notification-popover>header{min-height:68px;padding:0 20px}
-  .atsrs-notification-popover>header strong{font-size:19px}
-  .atsrs-notification-popover>header .atsrs-notification-popover-close{font-size:13px}
-  .atsrs-shell-notification-list{max-height:420px}
-  html[data-theme] body #app.app:not(.hidden) .atsrs-shell-notification-item{grid-template-columns:48px minmax(0,1fr) 58px!important;gap:12px!important;min-height:86px!important;padding:14px 20px!important}
-  .atsrs-shell-notification-icon{width:48px;height:48px;font-size:23px}
-  .atsrs-shell-notification-copy strong{font-size:14px}
-  .atsrs-shell-notification-copy span{font-size:12px}
-  .atsrs-shell-notification-copy small{font-size:10.5px}
-  .atsrs-shell-notification-item>time{font-size:10.5px}
-  .atsrs-shell-notification-item.is-request::after{right:20px;bottom:20px;width:8px;height:8px}
-  .atsrs-notification-popover-view-all{height:58px!important;min-height:58px!important;font-size:14px}
+@media(max-width:443px){
+  .atsrs-notification-popover{width:calc(100vw - 24px);min-width:0;max-width:420px}
 }
 
 /* Header labels stay atomic. Narrow screens scroll the register instead of splitting a word. */

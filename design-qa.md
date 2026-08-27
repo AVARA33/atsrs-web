@@ -1168,31 +1168,30 @@ Final result: passed.
 
 Final result: passed.
 
-# Notification dropdown exact reference revision — Design QA
+# Notification dropdown 420px reference match — Design QA
 
-- Scope: authenticated Personal-account notification dropdown; this supersedes the earlier compact-card experiment.
+- Scope: authenticated Personal-account notification dropdown attached only to the header bell.
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a9d2c1cf-e345-4b45-a117-5e59cc4b7724.png`.
-- Dark implementation evidence: `tests/artifacts/notification-dropdown-reference-dark.png`.
-- Light implementation evidence: `tests/artifacts/notification-dropdown-reference-light.png`.
-- Reference and implementation viewport: desktop, with the dropdown open below the header bell.
+- Combined comparison: `tests/artifacts/notification-dropdown-reference-comparison.png`.
+- Desktop evidence: `tests/artifacts/notification-dropdown-after-1440-dark.png` and `tests/artifacts/notification-dropdown-after-1440-light.png`.
+- Tablet evidence: `tests/artifacts/notification-dropdown-after-768-dark.png` and `tests/artifacts/notification-dropdown-after-768-light.png`.
+- Mobile evidence: `tests/artifacts/notification-dropdown-after-390-dark.png` and `tests/artifacts/notification-dropdown-after-390-light.png`.
 
 ## Visual comparison
 
-- Panel width is 620 pixels, with an 82-pixel header, five 100-pixel notification rows, and a 66-pixel footer.
-- A measured caret is positioned directly under the notification bell instead of being approximated at a fixed page coordinate.
-- Each row has a 58-pixel tinted icon tile, prominent title, secondary requester/company copy, verified email, right-aligned time and unread dot.
-- Dividers, radius, shadow, spacing and hierarchy follow the supplied desktop reference.
-- Dark mode uses the ATSRS black/green palette; light mode uses white/blue. Header action, icon, unread dot and footer action retain their theme accent.
-- The popover is viewport-fixed, so all five rows and the footer overlay the page without being clipped by the main content scroll container.
-- Additional notifications remain inside the 500-pixel list scroll area instead of increasing the page height.
+- Desktop panel geometry is exactly 420 × 560 pixels, with a 64-pixel header, five 88-pixel rows, 44 × 44-pixel icon tiles, 8 × 8-pixel unread dots and a 56-pixel footer.
+- The floating panel is positioned from the live bell rectangle and retains the measured caret beneath the bell; it is not a modal, sidebar, full-width bar or centered page panel.
+- Light mode uses the reference white surface and restrained green notification actions; dark mode uses the ATSRS dark surface and green actions.
+- Existing request data is rendered in the reference hierarchy without adding fake production notifications.
+- At 768 pixels the panel remains 420 pixels wide. At 390 pixels it is 366 pixels wide, leaving 12-pixel margins on both sides.
+- Horizontal overflow is 0 at desktop, tablet and mobile widths.
 
 ## Interaction and regression checks
 
-- Notification rows remain semantic buttons and preserve their Profile → Sharing request routing.
-- `Clear all` retains ATSRS dismissal semantics and was not activated during visual QA.
-- Zero-count badge behavior remains unchanged; five fixture requests render a badge value of 5.
-- Dark and light fixture captures passed at 2294 × 791; console warnings/errors: 0.
-- Focused notification-routing and Profile Sharing tests passed.
-- Cloudflare Pages build passed.
+- Bell click opens the panel; a second click, outside click and Escape each close it.
+- `aria-expanded`, dialog labelling, focus-visible behavior and unread badge state remain synchronized.
+- Additional notifications remain inside the list scroll region rather than increasing the dropdown height.
+- Browser console errors: 0 in desktop, tablet and mobile QA fixtures.
+- Focused notification routing test, JavaScript syntax check, diff check and Cloudflare Pages build passed.
 
 Final result: passed.
