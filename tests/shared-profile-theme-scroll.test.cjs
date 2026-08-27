@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'share-profile.css'), 'utf8');
 
-assert.match(index, /css\/share-profile\.css\?v=505/);
+assert.match(index, /css\/share-profile\.css\?v=506/);
 assert.match(css, /html\.atsrs-public-share-mode body[\s\S]*?overflow-y:auto!important/);
 assert.match(css, /\.shared-profile-page\{[\s\S]*?height:100dvh;[\s\S]*?overflow-y:auto/);
 assert.match(css, /\.shared-document-summary\{[\s\S]*?padding:15px 18px 5px/);
@@ -19,5 +19,6 @@ assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode \.shared-
 assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode body \.atsrs-select-menu[\s\S]*?background:#ffffff!important/);
 assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode \.shared-document-summary-list[\s\S]*?scrollbar-color:#8aa1b5 #edf3f6/);
 assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode :is\([\s\S]*?\.shared-document-summary-status[\s\S]*?color:#2563eb!important/);
+assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode \.shared-profile-note[\s\S]*?border-left-color:#2563eb!important/);
 
 console.log('shared profile theme and scroll assertions passed');

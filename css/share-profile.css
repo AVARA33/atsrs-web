@@ -459,6 +459,10 @@ html[data-theme="light"].atsrs-public-share-mode :is(
 html[data-theme="light"].atsrs-public-share-mode .shared-document-status{
   background:rgba(37,99,235,.09)!important;
 }
+html[data-theme="light"].atsrs-public-share-mode .shared-profile-note{
+  border-left-color:#2563eb!important;
+  background:rgba(37,99,235,.055)!important;
+}
 html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-link:hover b{
   color:#2563eb!important;
 }
