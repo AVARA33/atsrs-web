@@ -806,6 +806,7 @@ Final result: passed.
 ## Visual and interaction comparison
 
 - The requester name, company and verified email occupy the left blank column marked in the source screenshot.
+- The same requester strip shows the requested document count beneath the verified email.
 - Approve and Decline occupy the right blank column marked in the source screenshot.
 - The final metadata order is Active followed by time remaining; Active is blue in light mode and green in dark mode.
 - Copy, Open and Revoke stay in their existing action column.
