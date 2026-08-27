@@ -182,6 +182,16 @@
         careers: "https://career.seatools.com/",
         contact: "https://www.seatools.com/contact/",
       },
+      Kystdesign: {
+        mark: "KD",
+        summary:
+          "Norwegian subsea technology company designing and manufacturing work-class ROVs, TMS units and custom underwater systems.",
+        sector: "ROV & subsea technology",
+        tags: ["ROV", "Subsea", "Engineering"],
+        website: "https://kystdesign.no/",
+        careers: "https://kystdesign.no/career/",
+        contact: "https://kystdesign.no/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
