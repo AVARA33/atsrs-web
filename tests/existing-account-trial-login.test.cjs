@@ -8,7 +8,7 @@ const gate=fs.readFileSync(path.resolve(__dirname,'../supabase/migrations/202608
 
 assert.match(storage,/if\(hasWorkspace\(state,pendingMode\)\)\{[\s\S]+?await openExistingWorkspace\(user,pendingMode,state\)/i,'An authenticated existing account must open instead of stopping on an already-exists message.');
 assert.match(storage,/mode==='company' && ctx==='signup'[\s\S]+?Corporate Account is in development/i,'Corporate signup must be stopped before OAuth starts.');
-assert.match(index,/Register \/ Start 1-month trial/i,'Registration and existing-account sign-in must be clearly separated.');
+assert.match(index,/Register \/ Start 7-day trial/i,'Registration and existing-account sign-in must be clearly separated.');
 assert.match(gate,/account_type = 'personal'[\s\S]+?atsrs_admin_users/i,'Corporate workspace access must be limited to the owner/admin allowlist in the database.');
 
 console.log('existing-account-trial-login: PASS');

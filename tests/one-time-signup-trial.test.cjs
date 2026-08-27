@@ -12,9 +12,9 @@ assert.match(migration,/new\.email_confirmed_at is null/i,'Unverified addresses 
 assert.match(migration,/after insert on auth\.users/i,'Verified OAuth signups must receive the trial at first registration.');
 assert.match(migration,/after update of email_confirmed_at on auth\.users/i,'Email signups must receive the trial only after confirmation.');
 assert.match(migration,/on conflict \(email_fingerprint\) do nothing/i,'Deleting and recreating an account must not grant the same mailbox another trial.');
-const extension=fs.readFileSync(path.resolve(__dirname,'../supabase/migrations/20260827235000_one_month_full_access_signup_trial.sql'),'utf8');
-assert.match(extension,/'business',[\s\S]+?'trialing',[\s\S]+?interval '1 month'/i,'The one-time trial must use full TITAN entitlements for one month.');
-assert.match(extension,/update public\.atsrs_subscriptions[\s\S]+?trial_started_at \+ interval '1 month'/i,'Active trials must receive the same one-month duration.');
+const restoration=fs.readFileSync(path.resolve(__dirname,'../supabase/migrations/20260827235900_restore_seven_day_signup_trial.sql'),'utf8');
+assert.match(restoration,/'business',[\s\S]+?'trialing',[\s\S]+?interval '7 days'/i,'The one-time trial must use full TITAN entitlements for exactly seven days.');
+assert.match(restoration,/update public\.atsrs_subscriptions[\s\S]+?trial_started_at \+ interval '7 days'/i,'Active trials must keep the intended seven-day duration.');
 assert.match(migration,/subscription\.status = 'trialing'[\s\S]+?subscription\.trial_ends_at > now\(\)/i,'Every entitlement lookup must time-gate the trial.');
 assert.match(migration,/create or replace function public\.atsrs_my_personal_trial\(\)/i,'The signed-in UI must be able to display remaining trial time.');
 assert.match(migration,/v_plan := private\.atsrs_personal_plan_key\(p_user_id\)/i,'AI CV usage must fall back to Free when the trial expires.');
