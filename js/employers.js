@@ -61,6 +61,26 @@
         careers: "https://hpruk.com/vacancies/",
         contact: "https://hpruk.com/contact-us/",
       },
+      "Archer Offshore": {
+        mark: "AO",
+        summary:
+          "Global offshore recruitment specialist for ROV, survey, diving, marine, inspection and offshore wind personnel.",
+        sector: "Offshore staffing",
+        tags: ["ROV", "Marine", "Recruitment"],
+        website: "https://www.archeroffshore.co.uk/",
+        careers: "https://www.archeroffshore.co.uk/#contractors",
+        contact: "https://www.archeroffshore.co.uk/#contact",
+      },
+      "PR Offshore Services Ltd": {
+        mark: "PRO",
+        summary:
+          "Specialist global recruitment agency for ROV, inspection, survey and offshore energy personnel.",
+        sector: "Offshore staffing",
+        tags: ["ROV", "Survey", "Recruitment"],
+        website: "https://proffshoreservices.com/",
+        careers: "https://proffshoreservices.com/",
+        contact: "https://proffshoreservices.com/",
+      },
     },
     companies = [],
     loadToken = 0;
