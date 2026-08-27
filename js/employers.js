@@ -121,6 +121,16 @@
         careers: "https://www.eiva.com/about/career",
         contact: "https://www.eiva.com/contact",
       },
+      MacArtney: {
+        mark: "MA",
+        summary:
+          "Global supplier of underwater technology systems for subsea, offshore energy, marine survey and ocean science.",
+        sector: "Subsea technology",
+        tags: ["Subsea", "Survey", "Engineering"],
+        website: "https://www.macartney.com/",
+        careers: "https://www.macartney.com/about-us/career/vacancies/",
+        contact: "https://www.macartney.com/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
