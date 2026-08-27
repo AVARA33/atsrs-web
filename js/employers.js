@@ -162,6 +162,16 @@
         careers: "https://www.saabseaeye.com/careers",
         contact: "https://www.saabseaeye.com/rov_/contact/contact-us",
       },
+      "Soil Machine Dynamics (SMD)": {
+        mark: "SMD",
+        summary:
+          "Subsea engineering company designing remotely operated and autonomous vehicles, trenchers and power-control systems.",
+        sector: "ROV & engineering",
+        tags: ["ROV", "Subsea", "Trenching"],
+        website: "https://www.smd.co.uk/",
+        careers: "https://www.smd.co.uk/careers/",
+        contact: "https://www.smd.co.uk/contact-us/",
+      },
     },
     companies = [],
     loadToken = 0;
