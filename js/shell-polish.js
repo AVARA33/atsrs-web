@@ -16,6 +16,7 @@
     navJobs:'briefcase-metal',
     navEmployers:'buildings',
     navRecruiters:'address-book',
+    navDeveloper:'code',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
   };
@@ -34,6 +35,7 @@
     navJobs:'JobSearch',
     navEmployers:'Companies',
     navRecruiters:'Recruiters',
+    navDeveloper:'Developer',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -51,6 +53,7 @@
     navJobs:'JobSearch',
     navEmployers:'Companies',
     navRecruiters:'Recruiters',
+    navDeveloper:'Developer',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };
@@ -65,6 +68,7 @@
     navReports:'Reports',
     navProfile:'Company',
     navJobs:'JobSearch',
+    navDeveloper:'Developer',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
   };

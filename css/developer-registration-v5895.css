@@ -1,0 +1,73 @@
+/* ATSRS V5895 — private owner registration and access-window monitor. */
+.developer-page{
+  width:min(1180px,100%);
+  margin:0 auto;
+  padding:18px 0 40px;
+}
+.developer-page-heading{margin:0 0 18px}
+.developer-page-heading h1{margin:5px 0 6px;font-size:clamp(26px,3vw,36px);line-height:1.08}
+.developer-page-heading p{margin:0;color:var(--muted,#94a3b8)}
+.developer-page .developer-admin-overview{margin:0 0 18px;width:100%}
+.developer-registrations{
+  overflow:hidden;
+  border:1px solid rgba(148,163,184,.2);
+  border-radius:16px;
+  background:#0b0f0d;
+  box-shadow:0 18px 44px rgba(0,0,0,.16);
+}
+.developer-registrations-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:20px 22px;
+  border-bottom:1px solid rgba(148,163,184,.16);
+}
+.developer-registrations-head h2{margin:4px 0 0;font-size:20px}
+.developer-registrations-head>span{color:#86efac;font-weight:700;font-size:12px}
+.developer-registration-table{width:100%}
+.developer-registration-row{
+  display:grid;
+  grid-template-columns:minmax(220px,1.6fr) minmax(120px,.7fr) minmax(120px,.65fr) minmax(140px,.8fr);
+  gap:16px;
+  align-items:center;
+  min-height:58px;
+  padding:10px 22px;
+  border-bottom:1px solid rgba(148,163,184,.12);
+}
+.developer-registration-columns{min-height:42px;color:#94a3b8;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.developer-registration-rows{max-height:480px;overflow-y:auto;scrollbar-color:#22c55e rgba(148,163,184,.12);scrollbar-width:thin}
+.developer-registration-rows .developer-registration-row:last-child{border-bottom:0}
+.developer-registration-row strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f8fafc;font-size:13px}
+.developer-registration-row>span{color:#a8b3c4;font-size:12px}
+.developer-access-status,.developer-time-remaining{font-weight:750}
+.developer-access-status.trial,.developer-time-remaining.trial{color:#4ade80}
+.developer-access-status.full,.developer-time-remaining.full{color:#86efac}
+.developer-access-status.free,.developer-time-remaining.free{color:#93c5fd}
+.developer-access-status.expired,.developer-time-remaining.expired{color:#fb7185}
+.developer-access-status.incomplete,.developer-time-remaining.incomplete{color:#fbbf24}
+.developer-registration-empty{margin:0;padding:28px 22px;color:#94a3b8;text-align:center}
+
+html[data-theme="light"] .developer-registrations{
+  border-color:#dbe4ef;
+  background:#fff;
+  box-shadow:0 16px 38px rgba(15,23,42,.08);
+}
+html[data-theme="light"] .developer-registrations-head,
+html[data-theme="light"] .developer-registration-row{border-color:#e5eaf1}
+html[data-theme="light"] .developer-registrations-head>span,
+html[data-theme="light"] .developer-access-status.trial,
+html[data-theme="light"] .developer-time-remaining.trial,
+html[data-theme="light"] .developer-access-status.full,
+html[data-theme="light"] .developer-time-remaining.full{color:#2563eb}
+html[data-theme="light"] .developer-registration-row strong{color:#0f172a}
+html[data-theme="light"] .developer-registration-row>span{color:#526176}
+
+@media(max-width:760px){
+  .developer-page{padding-top:8px}
+  .developer-registrations-head{align-items:flex-start;padding:17px 16px}
+  .developer-registration-columns{display:none}
+  .developer-registration-row{grid-template-columns:1fr 1fr;gap:7px 12px;padding:14px 16px}
+  .developer-registration-row strong{grid-column:1/-1}
+  .developer-registration-row .developer-time-remaining{text-align:right}
+}

@@ -6,6 +6,8 @@
   var refreshButton = null;
   var loading = false;
   var loadedUserId = '';
+  var developerNav = null;
+  var registrationsPanel = null;
 
   function byId(id) {
     return document.getElementById(id);
@@ -36,7 +38,65 @@
 
   function hidePanel() {
     if (panel) panel.classList.add('hidden');
+    if (registrationsPanel) registrationsPanel.classList.add('hidden');
+    if (developerNav) developerNav.classList.add('hidden');
     loadedUserId = '';
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '—';
+    return new Intl.DateTimeFormat(undefined, { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+  }
+
+  function accessCopy(row) {
+    if (!row.workspace_ready) return { label: 'Setup incomplete', time: 'Not started', tone: 'incomplete' };
+    if (row.access_status === 'trial') {
+      var days = Math.max(0, Number(row.days_remaining) || 0);
+      return { label: 'Full access', time: days + (days === 1 ? ' day left' : ' days left'), tone: 'trial' };
+    }
+    if (row.access_status === 'expired') return { label: 'Free', time: '0 days left', tone: 'expired' };
+    if (row.access_status === 'full') return { label: 'Full access', time: 'Existing account', tone: 'full' };
+    return { label: 'Free', time: 'No active window', tone: 'free' };
+  }
+
+  function renderRegistrations(rows) {
+    var host = byId('developerRegistrationRows');
+    var count = byId('developerRegistrationCount');
+    if (!host || !registrationsPanel) return;
+    var items = Array.isArray(rows) ? rows : [];
+    host.innerHTML = '';
+    items.forEach(function (row) {
+      var access = accessCopy(row || {});
+      var item = document.createElement('div');
+      item.className = 'developer-registration-row';
+      item.setAttribute('role', 'row');
+      var email = document.createElement('strong');
+      email.setAttribute('role', 'cell');
+      email.textContent = row.email || 'Unknown email';
+      var registered = document.createElement('span');
+      registered.setAttribute('role', 'cell');
+      registered.textContent = formatDate(row.registered_at);
+      var status = document.createElement('span');
+      status.setAttribute('role', 'cell');
+      status.className = 'developer-access-status ' + access.tone;
+      status.textContent = access.label;
+      var remaining = document.createElement('span');
+      remaining.setAttribute('role', 'cell');
+      remaining.className = 'developer-time-remaining ' + access.tone;
+      remaining.textContent = access.time;
+      item.append(email, registered, status, remaining);
+      host.appendChild(item);
+    });
+    if (!items.length) {
+      var empty = document.createElement('p');
+      empty.className = 'developer-registration-empty';
+      empty.textContent = 'No registrations found.';
+      host.appendChild(empty);
+    }
+    if (count) count.textContent = items.length + (items.length === 1 ? ' account' : ' accounts');
+    registrationsPanel.classList.remove('hidden');
   }
 
   function render(row) {
@@ -53,6 +113,7 @@
       'Confirmed registrations only'
     );
     panel.classList.remove('hidden');
+    if (developerNav) developerNav.classList.remove('hidden');
   }
 
   async function refresh(force) {
@@ -80,6 +141,11 @@
       var row = Array.isArray(result.data) ? result.data[0] : result.data;
       loadedUserId = user.id;
       render(row);
+      if (row && row.is_admin === true) {
+        var detailResult = await window.supabaseClient.rpc('atsrs_get_developer_registrations');
+        if (detailResult.error) throw detailResult.error;
+        renderRegistrations(detailResult.data);
+      }
     } catch (error) {
       console.warn('ATSRS admin overview unavailable', error);
       if (wasVisible || loadedUserId === user.id) showRefreshError();
@@ -93,6 +159,8 @@
   function init() {
     panel = byId('adminOverviewPanel');
     refreshButton = byId('adminOverviewRefresh');
+    developerNav = byId('navDeveloper');
+    registrationsPanel = byId('developerRegistrationsPanel');
     if (!panel) return;
     var usageNote = byId('adminAiUsageNote');
     if (usageNote) {

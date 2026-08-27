@@ -9,13 +9,14 @@ const migration = read('supabase/migrations/20260827222000_registration_overview
 const browserSource = read('js/admin-overview.js');
 const index = read('index.html');
 
-assert.match(index, /<script src="js\/admin-overview\.js\?v=583"><\/script>/);
+assert.match(index, /<script src="js\/admin-overview\.js\?v=5895"><\/script>/);
 assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5875/);
-const dashboardStart = index.indexOf('<section id="dashboardPage"');
-const dashboardEnd = index.indexOf('</section>', dashboardStart);
+const developerStart = index.indexOf('<section id="developerPage"');
+const developerEnd = index.indexOf('</section>', developerStart);
 const adminPanel = index.indexOf('id="adminOverviewPanel"');
-assert.ok(dashboardStart >= 0 && adminPanel > dashboardStart && adminPanel < dashboardEnd,
-  'The owner-only registration overview must live on Dashboard.');
+assert.ok(developerStart >= 0 && adminPanel > developerStart && adminPanel < developerEnd,
+  'The owner-only registration overview must live on Developer.');
+assert.match(index, /id="navDeveloper"[^>]+hidden/);
 assert.equal(index.indexOf('id="adminOverviewPanel"', adminPanel + 1), -1,
   'There must be exactly one owner-only registration overview.');
 
@@ -62,6 +63,10 @@ const elements = {
   adminNewUsers14d: element(),
   adminNewUsers30d: element(),
   adminAiUsageNote: element(),
+  navDeveloper: element(true),
+  developerRegistrationsPanel: element(true),
+  developerRegistrationRows: Object.assign(element(), { innerHTML: '', appendChild() {} }),
+  developerRegistrationCount: element(),
 };
 let domReady;
 let rpc = async () => ({ data: [{
@@ -71,19 +76,21 @@ let rpc = async () => ({ data: [{
   new_users_14d: 2,
   new_users_30d: 3,
 }], error: null });
+let detailRpc = async () => ({ data: [], error: null });
 
 const context = {
   console: { warn() {} },
   setTimeout() {},
   document: {
     getElementById: (id) => elements[id] || null,
+    createElement: () => Object.assign(element(), { append() {}, appendChild() {} }),
     addEventListener(name, handler) { if (name === 'DOMContentLoaded') domReady = handler; },
   },
   window: {
     addEventListener() {},
     supabaseClient: {
       auth: { getSession: async () => ({ data: { session: { user: { id: 'admin-user' } } } }) },
-      rpc: (...args) => rpc(...args),
+      rpc: (name, ...args) => name === 'atsrs_get_developer_registrations' ? detailRpc(...args) : rpc(name, ...args),
     },
   },
 };
@@ -94,6 +101,7 @@ vm.runInNewContext(browserSource, context);
   await new Promise((resolve) => setImmediate(resolve));
 
   assert.equal(elements.adminOverviewPanel.classList.contains('hidden'), false);
+  assert.equal(elements.navDeveloper.classList.contains('hidden'), false);
   assert.equal(elements.adminRegisteredUsers.textContent, '6');
   assert.equal(elements.adminNewUsers7d.textContent, '1');
   assert.equal(elements.adminNewUsers14d.textContent, '2');

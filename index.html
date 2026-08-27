@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5894" data-atsrs-update="27 Aug 2026">
+<html lang="en" data-atsrs-build="V5895" data-atsrs-update="27 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -99,6 +99,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/workspace-control-standard-v522.css?v=58159">
 <link rel="stylesheet" href="css/workspace-control-standard-v523.css?v=58155">
 <link rel="stylesheet" href="css/executive-dashboard-v5858.css?v=5875">
+<link rel="stylesheet" href="css/developer-registration-v5895.css?v=5895">
 <link rel="stylesheet" href="css/personal-account-routing-v524.css?v=524">
 <link rel="stylesheet" href="css/references-cv-upload-v525.css?v=58153">
 <link rel="stylesheet" href="css/product-updates-light-status-v526.css?v=526">
@@ -597,6 +598,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 <div class="nav-utility-group">
 <div class="nav-utility-divider" aria-hidden="true"></div>
+<button id="navDeveloper" class="nav-utility hidden" type="button" onclick="showPage('developer',this)">Developer</button>
 <button id="navIntro" class="nav-utility active" onclick="showPage('intro',this)">Product Updates</button>
 <button id="navPrivacy" class="nav-utility nav-legal-link" type="button" onclick="showPage('privacy',this)">Privacy</button>
 </div>
@@ -874,6 +876,45 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <iframe class="legal-app-frame" src="about:blank" data-legal-source="/data-deletion.html?embedded=1&amp;v=560" title="Data Rights"></iframe>
 </section>
 
+<section id="developerPage" class="hidden developer-page" aria-labelledby="developerPageTitle">
+  <header class="developer-page-heading">
+    <span class="admin-overview-kicker">OWNER ONLY</span>
+    <h1 id="developerPageTitle">Developer</h1>
+    <p>Private registration and access-window monitoring.</p>
+  </header>
+  <aside id="adminOverviewPanel" class="admin-overview-panel developer-admin-overview hidden" aria-labelledby="adminOverviewTitle">
+    <div class="admin-overview-heading">
+      <div>
+        <span class="admin-overview-kicker">REGISTRATIONS</span>
+        <h4 id="adminOverviewTitle">Registration overview</h4>
+      </div>
+      <span class="admin-overview-secure"><i></i> Secure server data</span>
+    </div>
+    <div class="admin-overview-stats">
+      <div class="admin-overview-stat"><span>Registered users</span><strong id="adminRegisteredUsers">—</strong></div>
+      <div class="admin-overview-stat"><span>New in 7 days</span><strong id="adminNewUsers7d">—</strong></div>
+      <div class="admin-overview-stat"><span>New in 14 days</span><strong id="adminNewUsers14d">—</strong></div>
+      <div class="admin-overview-stat"><span>New in 30 days</span><strong id="adminNewUsers30d">—</strong></div>
+    </div>
+    <div class="admin-overview-footer">
+      <span id="adminAiUsageNote">Secure metrics are loading…</span>
+      <button id="adminOverviewRefresh" type="button" class="admin-overview-refresh">Refresh</button>
+    </div>
+  </aside>
+  <section id="developerRegistrationsPanel" class="developer-registrations hidden" aria-labelledby="developerRegistrationsTitle">
+    <div class="developer-registrations-head">
+      <div><span class="admin-overview-kicker">ACCESS WINDOWS</span><h2 id="developerRegistrationsTitle">Registered accounts</h2></div>
+      <span id="developerRegistrationCount">0 accounts</span>
+    </div>
+    <div class="developer-registration-table" role="table" aria-label="Registered accounts and access time remaining">
+      <div class="developer-registration-row developer-registration-columns" role="row">
+        <span role="columnheader">Gmail</span><span role="columnheader">Registered</span><span role="columnheader">Access</span><span role="columnheader">Time remaining</span>
+      </div>
+      <div id="developerRegistrationRows" class="developer-registration-rows"></div>
+    </div>
+  </section>
+</section>
+
 <section id="dashboardPage" class="hidden">
 <h1 id="dashboardHeading">Dashboard</h1>
 <div class="solo-hero panel">
@@ -898,37 +939,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="card expiry-summary-card expiry-summary-7"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-calendar-x"></i></span><p id="exp7Text">Expiring in 1 Week</p></div><div class="stat danger" id="exp7">0</div></div>
 <div class="card expiry-summary-card expiry-summary-expired"><div class="expiry-summary-head"><span class="expiry-summary-icon" aria-hidden="true"><i class="ph ph-x-circle"></i></span><p id="expiredText"></p></div><div class="stat danger" id="expired">0</div></div>
 </div>
-<aside id="adminOverviewPanel" class="admin-overview-panel dashboard-admin-overview hidden" aria-labelledby="adminOverviewTitle">
-  <div class="admin-overview-heading">
-    <div>
-      <span class="admin-overview-kicker">OWNER ONLY</span>
-      <h4 id="adminOverviewTitle">Registration overview</h4>
-    </div>
-    <span class="admin-overview-secure"><i></i> Secure server data</span>
-  </div>
-  <div class="admin-overview-stats">
-    <div class="admin-overview-stat">
-      <span>Registered users</span>
-      <strong id="adminRegisteredUsers">—</strong>
-    </div>
-    <div class="admin-overview-stat">
-      <span>New in 7 days</span>
-      <strong id="adminNewUsers7d">—</strong>
-    </div>
-    <div class="admin-overview-stat">
-      <span>New in 14 days</span>
-      <strong id="adminNewUsers14d">—</strong>
-    </div>
-    <div class="admin-overview-stat">
-      <span>New in 30 days</span>
-      <strong id="adminNewUsers30d">—</strong>
-    </div>
-  </div>
-  <div class="admin-overview-footer">
-    <span id="adminAiUsageNote">Secure metrics are loading…</span>
-    <button id="adminOverviewRefresh" type="button" class="admin-overview-refresh">Refresh</button>
-  </div>
-</aside>
 <div id="sentRequestsPanel" class="panel access-requests-panel company-only">
   <div class="access-panel-head">
     <div>
@@ -2168,7 +2178,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/talent-directory.js?v=576"></script>
 <script src="js/corporate-reporting.js?v=519"></script>
 <script src="js/executive-dashboard-v5858.js?v=5884"></script>
-<script src="js/admin-overview.js?v=583"></script>
+<script src="js/admin-overview.js?v=5895"></script>
 <script src="js/workspace-switcher.js?v=409"></script>
 <script src="js/corporate-information-architecture.js?v=444"></script>
 <script src="js/corporate-remediation.js?v=481"></script>
@@ -2177,7 +2187,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/select-open-position-v58165.js?v=58165"></script>
 <script src="js/floating-fields.js?v=58187"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
-<script src="js/shell-polish.js?v=583"></script>
+<script src="js/shell-polish.js?v=5895"></script>
 <script src="js/profile-workspace-v5886.js?v=5956"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
 <script src="js/profile-sharing-v1.js?v=28"></script>
