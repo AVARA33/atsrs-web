@@ -122,7 +122,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5854">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5980">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5981">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=36">
 <script defer src="js/maintenance-guard.js?v=564"></script>
@@ -1555,7 +1555,50 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </div>
       <div id="profileSharingControls" class="profile-settings-list"></div>
     </article>
-    <article id="profileTabSecurityPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden><div class="profile-security-heading"><i class="ph ph-shield-check" aria-hidden="true"></i><div><h4>Security</h4><p>Manage your account security and access settings.</p></div></div><div id="profileSecurityControls" class="profile-settings-list profile-security-grid"></div><div id="profileSecurityContactSource" hidden><div class="profile-information-contact"><i class="ph ph-phone" aria-hidden="true"></i><div><span>Mobile phone</span><strong id="profileStagePhone">—</strong></div><button id="profileStagePhoneVerification" class="profile-contact-verify" type="button" data-profile-verify="mobile" aria-label="Verify mobile phone">Verify</button><button type="button" data-profile-stage-edit="phone" aria-label="Edit mobile phone"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div><div class="profile-information-contact"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><div><span>WhatsApp number</span><strong id="profileStageWhatsapp">—</strong></div><button id="profileStageWhatsappVerification" class="profile-contact-verify" type="button" data-profile-verify="whatsapp" aria-label="Verify WhatsApp number">Verify</button><button type="button" data-profile-stage-edit="whatsapp" aria-label="Edit WhatsApp number"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div></div></article>
+    <article id="profileTabSecurityPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden>
+      <div class="profile-security-heading"><i class="ph ph-shield-check" aria-hidden="true"></i><div><h4>Security</h4><p>Manage your account security and access settings.</p></div></div>
+      <section id="profileSecurityVerification" class="profile-security-verification" aria-labelledby="profileSecurityVerificationTitle" data-channel="whatsapp" data-state="ready">
+        <header class="profile-security-verification-heading"><i class="ph ph-phone-call" aria-hidden="true"></i><div><h5 id="profileSecurityVerificationTitle">Contact Verification</h5><p>Keep your contact details verified to secure your account and receive important updates.</p></div></header>
+        <div class="profile-security-verification-flow">
+          <section class="profile-security-step profile-security-step-channel" aria-labelledby="profileSecurityStepOneTitle">
+            <header><span>1</span><div><strong id="profileSecurityStepOneTitle">Choose channel</strong><small>Select how you want to receive the code.</small></div></header>
+            <div class="profile-security-channel-grid" role="radiogroup" aria-label="Verification channel">
+              <button id="profileSecurityMobileChannel" type="button" role="radio" aria-checked="false" data-security-channel="mobile"><i class="ph ph-phone" aria-hidden="true"></i><span>Mobile</span></button>
+              <button id="profileSecurityWhatsappChannel" type="button" role="radio" aria-checked="true" data-security-channel="whatsapp"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><span>WhatsApp</span><i class="ph-fill ph-check-circle profile-security-channel-check" aria-hidden="true"></i></button>
+            </div>
+            <div class="profile-security-saved-contact"><small id="profileSecuritySavedLabel">Saved WhatsApp number</small><div><strong id="profileSecuritySavedNumber">Not provided</strong><span id="profileSecuritySavedStatus">Not verified</span><button id="profileSecurityEditContact" type="button" aria-label="Edit saved contact"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div></div>
+            <div id="profileSecurityInlineEditorHost"></div>
+          </section>
+          <section class="profile-security-step profile-security-step-send" aria-labelledby="profileSecurityStepTwoTitle">
+            <header><span>2</span><div><strong id="profileSecurityStepTwoTitle">Send code</strong><small>We'll send a 6-digit code to your contact.</small></div></header>
+            <p id="profileSecuritySendCopy">We'll send a 6-digit code to your WhatsApp.</p>
+            <strong id="profileSecuritySendTarget">Not provided</strong>
+            <button id="profileSecuritySendCode" type="button"><span>Send verification code</span><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></button>
+            <p id="profileSecuritySendStatus" class="profile-security-live-status" role="status" aria-live="polite"></p>
+          </section>
+          <section class="profile-security-step profile-security-step-confirm" aria-labelledby="profileSecurityStepThreeTitle">
+            <header><span>3</span><div><strong id="profileSecurityStepThreeTitle">Confirm</strong><small>Enter the code to verify your contact.</small></div></header>
+            <label for="profileSecurityCode1">Enter the 6-digit code</label>
+            <div class="profile-security-code" role="group" aria-label="6-digit verification code">
+              <input id="profileSecurityCode1" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Digit 1" disabled>
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 2" disabled>
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 3" disabled>
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 4" disabled>
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 5" disabled>
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 6" disabled>
+            </div>
+            <button id="profileSecurityConfirmCode" type="button" disabled>Confirm code</button>
+            <p id="profileSecurityConfirmStatus" class="profile-security-live-status" role="status" aria-live="polite"></p>
+          </section>
+          <aside id="profileSecurityVerificationResult" class="profile-security-verification-result" aria-live="polite"><i class="ph ph-shield-check" aria-hidden="true"></i><strong>Ready to verify</strong><small>Select a channel and send a code.</small></aside>
+        </div>
+      </section>
+      <div id="profileSecurityControls" class="profile-settings-list profile-security-grid"></div>
+      <div id="profileSecurityContactSource" hidden>
+        <div class="profile-information-contact"><i class="ph ph-phone" aria-hidden="true"></i><div><span>Mobile phone</span><strong id="profileStagePhone">—</strong></div><button id="profileStagePhoneVerification" class="profile-contact-verify" type="button" data-profile-verify="mobile" aria-label="Verify mobile phone">Verify</button></div>
+        <div class="profile-information-contact"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><div><span>WhatsApp number</span><strong id="profileStageWhatsapp">—</strong></div><button id="profileStageWhatsappVerification" class="profile-contact-verify" type="button" data-profile-verify="whatsapp" aria-label="Verify WhatsApp number">Verify</button></div>
+      </div>
+    </article>
     </div>
   </section>
   <article class="profile-account-status" aria-labelledby="profile-account-status-title">
@@ -2161,7 +2204,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
 <script src="js/login.js?v=568"></script>
-<script src="js/dashboard.js?v=5929"></script>
+<script src="js/dashboard.js?v=5930"></script>
 <script src="js/employers.js?v=30"></script>
 <script src="js/recruiters.js?v=10"></script>
 <script src="js/avatar.js?v=394"></script>
@@ -2189,7 +2232,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/floating-fields.js?v=58187"></script>
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/shell-polish.js?v=5895"></script>
-<script src="js/profile-workspace-v5886.js?v=5958"></script>
+<script src="js/profile-workspace-v5886.js?v=5959"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
 <script src="js/profile-sharing-v1.js?v=28"></script>
 <script src="js/route-feature-loader.js?v=58179"></script>

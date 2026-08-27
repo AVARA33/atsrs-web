@@ -434,6 +434,28 @@
     }catch(e){alert(e&&e.message||'Verification code could not be sent.')}
     finally{button.disabled=false;if(!completed)button.textContent=original}
   }
+  window.atsrsContactVerification={
+    send:async function(kind){
+      kind=kind==='mobile'?'mobile':'whatsapp';
+      var saved=typeof window.saveProfile==='function'?await window.saveProfile():true;
+      if(saved===false)throw new Error('Save a valid phone number first.');
+      var result=await verificationCall({action:'send',kind:kind});
+      if(result.verified)updateLocalVerification(kind,true);
+      return result;
+    },
+    confirm:async function(kind,code){
+      kind=kind==='mobile'?'mobile':'whatsapp';
+      var result=await verificationCall({action:'confirm',kind:kind,code:String(code||'')});
+      updateLocalVerification(kind,!!result.verified);
+      return result;
+    },
+    status:async function(kind){
+      kind=kind==='mobile'?'mobile':'whatsapp';
+      var result=await verificationCall({action:'status',kind:kind});
+      updateLocalVerification(kind,!!result.verified);
+      return result;
+    }
+  };
   async function refreshVerificationStatus(){
     if(!window.supabaseClient)return false;
     if(verificationRefreshPromise)return verificationRefreshPromise;
