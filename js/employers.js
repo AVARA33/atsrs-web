@@ -202,6 +202,16 @@
         careers: "https://careers.subseaglobalsolutions.com/",
         contact: "https://www.subseaglobalsolutions.com/contact-us",
       },
+      "Subsea Technology & Rentals (STR)": {
+        mark: "STR",
+        summary:
+          "Global subsea technology company supplying rental equipment, engineering solutions and operational support for offshore energy and marine projects.",
+        sector: "Subsea equipment & technology",
+        tags: ["Subsea", "Survey", "Offshore energy"],
+        website: "https://www.str-subsea.com/",
+        careers: "https://www.str-subsea.com/careers/",
+        contact: "https://www.str-subsea.com/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
