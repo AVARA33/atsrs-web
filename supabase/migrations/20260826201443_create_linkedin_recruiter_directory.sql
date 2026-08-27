@@ -78,6 +78,20 @@ on conflict (linkedin_url) do update set
 
 insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
 values
+  ('Lianne Dowie', 'Shell', 'Talent Acquisition Manager / Talent Attraction Specialist', 'London, United Kingdom', 'https://www.linkedin.com/in/lianne-dowie/', '2026-08-27T16:15:00+04:00'),
+  ('Ashwath Kumar', 'Shell', 'Recruitment Specialist', 'Bengaluru, India', 'https://www.linkedin.com/in/ashwath-recruitment-specialist/', '2026-08-27T16:15:00+04:00'),
+  ('Jess Garvey', 'Shell', 'Head of Resourcing — Trading & Supply', 'London, United Kingdom', 'https://www.linkedin.com/in/jess-garvey-a0734213/', '2026-08-27T16:15:00+04:00')
+on conflict (linkedin_url) do update set
+  name = excluded.name,
+  company = excluded.company,
+  role_title = excluded.role_title,
+  location = excluded.location,
+  status = 'active',
+  verified_at = excluded.verified_at,
+  updated_at = now();
+
+insert into public.atsrs_recruiters (name, company, role_title, location, linkedin_url, verified_at)
+values
   ('Hannah Rodger', 'Elevate Offshore', 'Account Manager — Offshore Subsea Recruitment', 'Great Yarmouth, United Kingdom', 'https://www.linkedin.com/in/hannahrodger1/', '2026-08-27T16:00:00+04:00'),
   ('Jodie Blakeway', 'Elevate Offshore', 'Offshore Recruitment Account Manager', 'Newquay, United Kingdom', 'https://www.linkedin.com/in/jodie-blakeway-0b891883/', '2026-08-27T16:00:00+04:00'),
   ('Sean Donovan', 'Elevate Offshore', 'Offshore Survey Recruitment Consultant', 'Truro, United Kingdom', 'https://www.linkedin.com/in/sean-donovan-66019b22b/', '2026-08-27T16:00:00+04:00')
