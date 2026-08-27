@@ -13,6 +13,15 @@ body.atsrs-public-share-view{
   overflow:auto!important;
   background:#030b13;
 }
+html.atsrs-public-share-mode,
+html.atsrs-public-share-mode body,
+html.atsrs-public-share-mode body.atsrs-public-share-view{
+  height:auto!important;
+  min-height:100%;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:auto;
+}
 .shared-profile-page{
   min-height:100vh;
   padding:28px 20px 40px;
@@ -317,6 +326,65 @@ body.atsrs-public-share-view{
   font-size:11px;
   line-height:1.6;
   text-align:center;
+}
+
+/* Public shared profiles follow the selected ATSRS theme and always page-scroll. */
+html[data-theme="dark"].atsrs-public-share-mode,
+html[data-theme="dark"].atsrs-public-share-mode body.atsrs-public-share-view,
+html[data-theme="dark"].atsrs-public-share-mode .shared-profile-page{
+  background:#050606!important;
+  background-image:none!important;
+  color:#eef2ef!important;
+}
+html[data-theme="dark"].atsrs-public-share-mode :is(
+  .shared-profile-hero,.shared-document-card,.shared-document-summary,
+  .shared-profile-loading,.shared-profile-error
+){
+  border-color:#2a2f2d!important;
+  background:#0b0d0d!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+html[data-theme="dark"].atsrs-public-share-mode :is(
+  .shared-document-actions button,.shared-document-actions a,
+  .shared-profile-head-actions button,.shared-profile-error .secondary
+){
+  border-color:#343936!important;
+  background:#0b0d0c!important;
+  color:#eef2ef!important;
+  -webkit-text-fill-color:#eef2ef!important;
+  box-shadow:none!important;
+}
+html[data-theme="dark"].atsrs-public-share-mode :is(
+  .shared-document-actions button,.shared-document-actions a,
+  .shared-profile-head-actions button,.shared-profile-error .secondary
+):hover{
+  border-color:#59615c!important;
+  background:#171a18!important;
+}
+html[data-theme="light"].atsrs-public-share-mode,
+html[data-theme="light"].atsrs-public-share-mode body.atsrs-public-share-view,
+html[data-theme="light"].atsrs-public-share-mode .shared-profile-page{
+  background:#f6f8fb!important;
+  background-image:none!important;
+  color:#172b3d!important;
+}
+html[data-theme="light"].atsrs-public-share-mode :is(
+  .shared-document-actions button,.shared-document-actions a,
+  .shared-profile-head-actions button,.shared-profile-error .secondary
+){
+  border-color:#c8d4de!important;
+  background:#ffffff!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"].atsrs-public-share-mode :is(
+  .shared-document-actions button,.shared-document-actions a,
+  .shared-profile-head-actions button,.shared-profile-error .secondary
+):hover{
+  border-color:#9fb2c1!important;
+  background:#edf3f6!important;
 }
 #shareProfilePanel{
   max-height:none!important;
