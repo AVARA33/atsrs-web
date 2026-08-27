@@ -172,12 +172,14 @@
   }
   window.atsrsGetActiveShareStatus=function(){return activeShare?Object.assign({},activeShare):null;};
   window.atsrsGetActiveShares=function(){return activeShares.filter(function(share){return share&&share.active;}).map(function(share){return Object.assign({},share,{share_url:shareLinkById(share.id)});});};
+  window.atsrsGetOwnerShareRequests=function(){return ownerRequests.map(function(request){return Object.assign({},request);});};
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared files':names.join(', ');}
   function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}
   function activeRequestFileIds(request){var revoked=new Set(request.revoked_file_ids||[]),downloaded=new Set(request.downloaded_file_ids||[]);return(request.requested_file_ids||[]).filter(function(id){return !revoked.has(id)&&!downloaded.has(id);});}
   function makeButton(text,className,onClick){var button=document.createElement('button');button.type='button';button.textContent=text;if(className)button.className=className;button.addEventListener('click',onClick);return button;}
   function renderRequestCard(request,history){
     var card=document.createElement('article');card.className='access-request-card status-'+request.status;
+    card.dataset.requestId=request.id||'';card.dataset.shareId=request.share_id||'';
     var top=document.createElement('div');top.className='access-request-top';
     var identity=document.createElement('div'),name=document.createElement('b'),company=document.createElement('span');
     name.textContent=request.requester_name+' · '+request.requester_company;company.textContent=request.requester_email;
@@ -205,6 +207,7 @@
     var approveAll=byId('approveAllRequestsBtn');if(approveAll)approveAll.classList.toggle('hidden',pending.length<2);
     var dashboard=byId('dashboardAccessRequests');if(dashboard){dashboard.innerHTML='';if(!pending.length)dashboard.innerHTML='<div class="access-empty">No pending requests.</div>';else pending.forEach(function(item){dashboard.appendChild(renderRequestCard(item,false));});}
     var history=byId('shareRequestHistory');if(history){history.innerHTML='';if(!ownerRequests.length)history.innerHTML='<div class="access-empty">No access history yet.</div>';else ownerRequests.forEach(function(item){history.appendChild(renderRequestCard(item,true));});}
+    window.dispatchEvent(new CustomEvent('atsrs:share-requests-updated'));
     var metrics=byId('shareAnalytics');if(metrics){metrics.innerHTML='';[
       ['Link opened',analytics.link_opened||0],['Documents previewed',analytics.document_previewed||0],['Download requests',analytics.download_requested||0],['Documents downloaded',analytics.document_downloaded||0]
     ].forEach(function(item){var box=document.createElement('div');var value=document.createElement('b'),label=document.createElement('span');value.textContent=String(item[1]);label.textContent=item[0];box.appendChild(value);box.appendChild(label);metrics.appendChild(box);});
