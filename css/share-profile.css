@@ -23,8 +23,14 @@ html.atsrs-public-share-mode body.atsrs-public-share-view{
   overscroll-behavior-y:auto;
 }
 .shared-profile-page{
+  box-sizing:border-box;
+  width:100%;
+  height:100dvh;
   min-height:100vh;
   padding:28px 20px 40px;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
   background:
     radial-gradient(circle at 12% 8%,rgba(34,197,94,.10),transparent 27%),
     radial-gradient(circle at 88% 28%,rgba(45,112,154,.08),transparent 30%),
@@ -33,6 +39,8 @@ html.atsrs-public-share-mode body.atsrs-public-share-view{
 }
 .shared-profile-shell{
   width:min(1020px,100%);
+  max-width:100%;
+  min-width:0;
   margin:0 auto;
 }
 .shared-profile-topbar{
@@ -326,6 +334,17 @@ html.atsrs-public-share-mode body.atsrs-public-share-view{
   font-size:11px;
   line-height:1.6;
   text-align:center;
+}
+
+@media(max-width:1100px){
+  .shared-document-summary-list{grid-template-columns:1fr}
+  .shared-document-summary-link b,
+  .shared-document-summary-link small{
+    overflow:visible;
+    text-overflow:clip;
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
 }
 
 /* Public shared profiles follow the selected ATSRS theme and always page-scroll. */
