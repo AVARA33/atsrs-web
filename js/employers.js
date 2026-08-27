@@ -252,6 +252,16 @@
         careers: "https://blueye.recruitee.com/",
         contact: "https://www.blueyerobotics.com/contact",
       },
+      "SEAMOR Marine": {
+        mark: "SM",
+        summary:
+          "Canadian manufacturer of modular inspection-class ROV systems for offshore energy, aquaculture, infrastructure, search and rescue, and scientific exploration.",
+        sector: "ROV manufacturing",
+        tags: ["ROV", "Subsea", "Marine technology"],
+        website: "https://seamor.com/",
+        careers: "https://seamor.com/careers/",
+        contact: "https://seamor.com/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
