@@ -19,6 +19,8 @@ assert.match(js, /days left/);
 assert.match(js, /developerNav\.classList\.remove\('hidden'\)/);
 assert.match(js, /get\('route'\) === 'developer'/);
 assert.match(js, /window\.showPage\('developer', developerNav\)/);
+assert.match(js, /stabilizeAuthorizedDeveloperRoute/);
+assert.match(js, /section\.classList\.toggle\('hidden', section !== developerPage\)/);
 assert.match(css, /\.developer-registration-rows\{max-height:480px;overflow-y:auto/);
 assert.match(css, /grid-template-columns:minmax\(180px,auto\) minmax\(460px,1fr\) auto/);
 assert.match(css, /\.developer-page \.developer-admin-overview\{[\s\S]*?position:static!important/);
