@@ -212,6 +212,16 @@
         careers: "https://www.str-subsea.com/careers/",
         contact: "https://www.str-subsea.com/contact/",
       },
+      "Total Marine Technology": {
+        mark: "TMT",
+        summary:
+          "Australian marine technology company engineering ROVs, subsea tooling and intervention solutions for demanding offshore and harsh-environment operations.",
+        sector: "ROV & subsea engineering",
+        tags: ["ROV", "Subsea", "Engineering"],
+        website: "https://www.tmtrov.com/",
+        careers: "https://www.tmtrov.com/get-in-touch/careers/",
+        contact: "https://www.tmtrov.com/get-in-touch/",
+      },
     },
     companies = [],
     loadToken = 0;
