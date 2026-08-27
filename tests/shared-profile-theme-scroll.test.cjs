@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'share-profile.css'), 'utf8');
 
-assert.match(index, /css\/share-profile\.css\?v=502/);
+assert.match(index, /css\/share-profile\.css\?v=503/);
 assert.match(css, /html\.atsrs-public-share-mode body[\s\S]*?overflow-y:auto!important/);
 assert.match(css, /\.shared-profile-page\{[\s\S]*?height:100dvh;[\s\S]*?overflow-y:auto/);
 assert.match(css, /\.shared-document-summary\{[\s\S]*?padding:15px 18px 5px/);
@@ -14,5 +14,7 @@ assert.match(css, /\.shared-document-summary-list\{display:grid;grid-template-co
 assert.match(css, /html\[data-theme="dark"\]\.atsrs-public-share-mode \.shared-profile-page[\s\S]*?background:#050606!important/);
 assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode \.shared-profile-page[\s\S]*?background:#f6f8fb!important/);
 assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode :is\([\s\S]*?\.shared-profile-head-actions button[\s\S]*?background:#ffffff!important/);
+assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode \.shared-profile-meta span[\s\S]*?background:#f4f7f9!important/);
+assert.match(css, /html\[data-theme="light"\]\.atsrs-public-share-mode \.shared-document-summary-tools select[\s\S]*?background-color:#ffffff!important/);
 
 console.log('shared profile theme and scroll assertions passed');

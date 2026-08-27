@@ -404,6 +404,24 @@ html[data-theme="light"].atsrs-public-share-mode :is(
   border-color:#9fb2c1!important;
   background:#edf3f6!important;
 }
+html[data-theme="light"].atsrs-public-share-mode .shared-profile-meta span{
+  border-color:#c8d4de!important;
+  background:#f4f7f9!important;
+  color:#405a70!important;
+  -webkit-text-fill-color:#405a70!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-tools select{
+  color-scheme:light!important;
+  border-color:#c8d4de!important;
+  background-color:#ffffff!important;
+  color:#172b3d!important;
+  -webkit-text-fill-color:#172b3d!important;
+  box-shadow:none!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-tools select option{
+  background:#ffffff!important;
+  color:#172b3d!important;
+}
 #shareProfilePanel{
   max-height:none!important;
 }
