@@ -12,7 +12,9 @@ assert.match(css, /html\[data-theme="dark"\] \.share-request-dialog\{[^}]*backgr
 assert.match(css, /\.share-request-dialog input:focus[^}]*border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)!important/, 'request inputs must use the canonical field borders');
 assert.match(css, /\.share-request-dialog input:focus[^}]*box-shadow:var\(--atsrs-field-focus-shadow\)!important/, 'request inputs must use the exact canonical search shadow');
 assert.match(css, /\.share-request-dialog input\{[^}]*background:var\(--atsrs-field-surface,#fff\)/, 'request inputs must use the canonical theme surface instead of the legacy blue background');
-assert.match(index, /css\/share-profile\.css\?v=513/, 'the browser must receive the refreshed request dialog theme');
+assert.match(css, /\.share-request-dialog input:-webkit-autofill[^}]*1000px var\(--atsrs-field-surface\) inset/, 'browser autofill must not replace the canonical light field surface');
+assert.match(css, /\.share-request-dialog input:-webkit-autofill[^}]*-webkit-text-fill-color:var\(--atsrs-field-text\)!important/, 'browser autofill must retain canonical text contrast');
+assert.match(index, /css\/share-profile\.css\?v=514/, 'the browser must receive the refreshed request dialog theme');
 assert.match(index, />Send verification code<\/button>/, 'the first request action must describe the OTP step accurately');
 assert.doesNotMatch(index, />Verify Email &amp; Send Request<\/button>/, 'the OTP action must not claim that the request is already sent');
 
