@@ -122,7 +122,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5854">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5981">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5982">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=36">
 <script defer src="js/maintenance-guard.js?v=564"></script>
@@ -1556,6 +1556,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div id="profileSharingControls" class="profile-settings-list"></div>
     </article>
     <article id="profileTabSecurityPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden>
+      <div class="profile-security-primary">
       <div class="profile-security-heading"><i class="ph ph-shield-check" aria-hidden="true"></i><div><h4>Security</h4><p>Manage your account security and access settings.</p></div></div>
       <section id="profileSecurityVerification" class="profile-security-verification" aria-labelledby="profileSecurityVerificationTitle" data-channel="whatsapp" data-state="ready">
         <header class="profile-security-verification-heading"><i class="ph ph-phone-call" aria-hidden="true"></i><div><h5 id="profileSecurityVerificationTitle">Contact Verification</h5><p>Keep your contact details verified to secure your account and receive important updates.</p></div></header>
@@ -1593,6 +1594,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <aside id="profileSecurityVerificationResult" class="profile-security-verification-result" aria-live="polite"><i class="ph ph-shield-check" aria-hidden="true"></i><strong>Ready to verify</strong><small>Select a channel and send a code.</small></aside>
         </div>
       </section>
+      </div>
       <div id="profileSecurityControls" class="profile-settings-list profile-security-grid"></div>
       <div id="profileSecurityContactSource" hidden>
         <div class="profile-information-contact"><i class="ph ph-phone" aria-hidden="true"></i><div><span>Mobile phone</span><strong id="profileStagePhone">—</strong></div><button id="profileStagePhoneVerification" class="profile-contact-verify" type="button" data-profile-verify="mobile" aria-label="Verify mobile phone">Verify</button></div>
