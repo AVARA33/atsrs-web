@@ -262,6 +262,16 @@
         careers: "https://seamor.com/careers/",
         contact: "https://seamor.com/contact/",
       },
+      Oceanbotics: {
+        mark: "OB",
+        summary:
+          "US underwater robotics manufacturer building rapidly deployable professional ROVs and mission software for defence, rescue, offshore energy and marine research.",
+        sector: "Underwater robotics",
+        tags: ["ROV", "Robotics", "Offshore energy"],
+        website: "https://oceanbotics.com/",
+        careers: "https://oceanbotics.com/careers/",
+        contact: "https://oceanbotics.com/fusion_element/contact/",
+      },
     },
     companies = [],
     loadToken = 0;
