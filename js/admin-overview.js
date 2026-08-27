@@ -202,10 +202,11 @@
         typeof window.supabaseClient.auth.onAuthStateChange === 'function') {
       window.supabaseClient.auth.onAuthStateChange(function (_event, session) {
         var nextUserId = session && session.user ? String(session.user.id || '') : '';
-        if (!nextUserId || nextUserId !== window.__atsrsDeveloperAccessUserId) {
+        var authorizedUserId = window.__atsrsDeveloperAccessUserId;
+        if (!nextUserId || (authorizedUserId && nextUserId !== authorizedUserId)) {
           hidePanel();
-          setTimeout(function () { refresh(true); }, 0);
         }
+        setTimeout(function () { refresh(true); }, 0);
       });
     }
   }
