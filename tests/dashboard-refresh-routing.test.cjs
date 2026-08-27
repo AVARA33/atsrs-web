@@ -7,7 +7,7 @@ const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
 const index = read('index.html');
 const storage = read('js/storage.js');
 
-assert.match(index, /data-atsrs-build="V5900"/);
+assert.match(index, /data-atsrs-build="V5901"/);
 assert.match(index, /js\/storage\.js\?v=600/);
 assert.match(storage, /requestedPage==="dashboard"\|\|requestedPage==="developer"/);
 assert.match(storage, /page==="developer"&&window\.__atsrsDeveloperAccess!==true/);

@@ -9,7 +9,7 @@ const migration = read('supabase/migrations/20260827222000_registration_overview
 const browserSource = read('js/admin-overview.js');
 const index = read('index.html');
 
-assert.match(index, /<script src="js\/admin-overview\.js\?v=5900"><\/script>/);
+assert.match(index, /<script src="js\/admin-overview\.js\?v=5901"><\/script>/);
 assert.match(index, /css\/executive-dashboard-v5858\.css\?v=5875/);
 const developerStart = index.indexOf('<section id="developerPage"');
 const developerEnd = index.indexOf('</section>', developerStart);

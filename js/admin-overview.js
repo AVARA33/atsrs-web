@@ -9,6 +9,8 @@
   var developerNav = null;
   var registrationsPanel = null;
   var developerRouteRestored = false;
+  var developerRouteObserver = null;
+  var developerRouteSyncQueued = false;
   window.__atsrsDeveloperAccess = false;
   window.__atsrsDeveloperAccessUserId = '';
 
@@ -99,6 +101,27 @@
     if (title) title.textContent = 'Developer';
   }
 
+  function queueAuthorizedDeveloperRouteSync() {
+    if (developerRouteSyncQueued) return;
+    developerRouteSyncQueued = true;
+    setTimeout(function () {
+      developerRouteSyncQueued = false;
+      stabilizeAuthorizedDeveloperRoute();
+    }, 0);
+  }
+
+  function observeAuthorizedDeveloperRoute() {
+    if (developerRouteObserver || typeof MutationObserver !== 'function') return;
+    var main = document.querySelector('main.main');
+    if (!main) return;
+    developerRouteObserver = new MutationObserver(queueAuthorizedDeveloperRouteSync);
+    developerRouteObserver.observe(main, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
   function openAuthorizedDeveloperRoute() {
     if (typeof window.showPage === 'function' && developerNav) {
       window.showPage('developer', developerNav);
@@ -154,6 +177,7 @@
 
     window.__atsrsDeveloperAccess = true;
     window.__atsrsDeveloperAccessUserId = loadedUserId;
+    observeAuthorizedDeveloperRoute();
     setMetricText(
       String(row.registered_users ?? 0),
       String(row.new_users_7d ?? 0),
