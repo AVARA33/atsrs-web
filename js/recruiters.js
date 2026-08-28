@@ -143,23 +143,23 @@
     tags.append(vacancyIcon, vacancyCopy);
     var actions = document.createElement("div");
     actions.className = "employer-actions";
+    var linkedinAction;
     if (recruiter.linkedin_url) {
-      var linkedinAction = buttonLink(
+      linkedinAction = buttonLink(
         recruiter.linkedin_url,
-        "View LinkedIn profile",
+        "LinkedIn profile",
         "linkedin-logo",
       );
-      linkedinAction.className = "employer-action-linkedin";
-      actions.append(linkedinAction);
+    } else {
+      linkedinAction = action("LinkedIn profile", "linkedin-logo", function () {});
+      linkedinAction.disabled = true;
+      linkedinAction.setAttribute("aria-disabled", "true");
     }
-    var shareAction = action("Share my profile", "share-network", function () {
-      share(name);
-    });
-    shareAction.className = "employer-action-share";
-    actions.append(shareAction);
+    linkedinAction.className = "employer-action-linkedin";
+    actions.append(linkedinAction);
     var jobsAction = action(
-      recruiter.vacancyCount > 0 ? "View jobs & contact" : "No active jobs",
-      recruiter.vacancyCount > 0 ? "arrow-right" : "address-book",
+      "View offers on ATSRS",
+      "arrow-right",
       function () {
         goToJobs(name);
       },
@@ -172,6 +172,11 @@
       jobsAction.setAttribute("aria-disabled", "true");
     }
     actions.append(jobsAction);
+    var shareAction = action("Share my profile", "share-network", function () {
+      share(name);
+    });
+    shareAction.className = "employer-action-share";
+    actions.append(shareAction);
     article.append(head, tags, actions);
     return article;
   }
