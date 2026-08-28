@@ -141,17 +141,24 @@ html[data-theme="dark"] #jobsPage .job-card{background:#070707;border-color:#252
 .jobs-cards .job-requirements{font-size:12px;line-height:1.45}
 .jobs-cards .job-contact-static strong{font-size:10px}
 .jobs-cards .job-contact-static>span{font-size:13px;line-height:1.36}
-html[data-theme="dark"] #jobsPage .job-contact-clickable{
-  border-top-color:var(--atsrs-field-line);
-  border-right-color:var(--atsrs-field-accent);
-  border-bottom-color:var(--atsrs-field-line);
-  border-left-color:var(--atsrs-field-accent);
+html[data-theme] #jobsPage .job-contact-clickable{
+  border:var(--atsrs-field-border-width) solid;
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line);
+  border-radius:var(--atsrs-field-radius);
   background:color-mix(in srgb,var(--atsrs-field-accent) 5%,var(--atsrs-field-surface));
-  box-shadow:-3px 0 0 var(--atsrs-field-accent-ring),3px 0 0 var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)
+  box-shadow:var(--atsrs-field-focus-shadow)
 }
-html[data-theme="dark"] #jobsPage .job-contact-clickable:hover{
+@media(hover:hover){
+  html[data-theme] #jobsPage .job-contact-clickable:hover:not(:focus-within){
+    background:color-mix(in srgb,var(--atsrs-field-accent) 9%,var(--atsrs-field-surface));
+    box-shadow:var(--atsrs-field-focus-shadow)
+  }
+}
+html[data-theme] #jobsPage .job-contact-clickable:focus-within{
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line);
   background:color-mix(in srgb,var(--atsrs-field-accent) 9%,var(--atsrs-field-surface));
-  box-shadow:-4px 0 0 var(--atsrs-field-accent-ring),4px 0 0 var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)
+  outline:0;
+  box-shadow:var(--atsrs-field-focus-shadow)
 }
 
 /* V5919: short cards anchor recruiter actions to the card foot; long cards keep them at the scroll end. */
