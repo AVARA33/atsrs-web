@@ -145,18 +145,18 @@ html[data-theme] #jobsPage .job-contact-clickable{
   border:var(--atsrs-field-border-width) solid;
   border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line);
   border-radius:var(--atsrs-field-radius);
-  background:color-mix(in srgb,var(--atsrs-field-accent) 5%,var(--atsrs-field-surface));
+  background:var(--atsrs-field-surface);
   box-shadow:var(--atsrs-field-focus-shadow)
 }
 @media(hover:hover){
   html[data-theme] #jobsPage .job-contact-clickable:hover:not(:focus-within){
-    background:color-mix(in srgb,var(--atsrs-field-accent) 9%,var(--atsrs-field-surface));
+    background:var(--atsrs-field-surface);
     box-shadow:var(--atsrs-field-focus-shadow)
   }
 }
 html[data-theme] #jobsPage .job-contact-clickable:focus-within{
   border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line);
-  background:color-mix(in srgb,var(--atsrs-field-accent) 9%,var(--atsrs-field-surface));
+  background:var(--atsrs-field-surface);
   outline:0;
   box-shadow:var(--atsrs-field-focus-shadow)
 }
