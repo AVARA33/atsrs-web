@@ -47,9 +47,9 @@ const context = {
 
 vm.runInNewContext(source, context);
 
-assert.equal(observers.length, 4, 'startup metrics install four observers');
-const lifetime = timers.find((timer) => timer.delay === 60000);
-assert.ok(lifetime, 'observer lifetime is bounded to 60 seconds');
+assert.equal(observers.length, 2, 'startup metrics install only lightweight paint observers');
+const lifetime = timers.find((timer) => timer.delay === 10000);
+assert.ok(lifetime, 'observer lifetime is bounded to 10 seconds');
 lifetime.callback();
 assert.ok(observers.every((observer) => observer.disconnected), 'all observers disconnect after startup');
 

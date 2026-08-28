@@ -9,10 +9,10 @@ const source = fs.readFileSync(
 
 assert.match(source, /largest-contentful-paint/);
 assert.match(source, /layout-shift/);
-assert.match(source, /durationThreshold:40/);
-assert.match(source, /longtask/);
+assert.doesNotMatch(source, /observePerformance\('event'/);
+assert.doesNotMatch(source, /observePerformance\('longtask'/);
 assert.match(source, /atsrsPerformanceSnapshot/);
-assert.match(source, /performanceObserverTimer=setTimeout\(stopPerformanceMetrics,60000\)/);
+assert.match(source, /performanceObserverTimer=setTimeout\(stopPerformanceMetrics,10000\)/);
 assert.match(source, /observer\.disconnect\(\)/);
 assert.match(source, /pagehide[^\n]+stopPerformanceMetrics/);
 assert.match(source, /dataset\.atsrsLcp/);

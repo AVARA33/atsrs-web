@@ -59,15 +59,11 @@
     observePerformance('layout-shift',function(entry){
       if(!entry.hadRecentInput)performanceMetrics.cls+=Number(entry.value)||0;
     });
-    observePerformance('event',function(entry){
-      if(entry.interactionId){
-        performanceMetrics.inp=Math.max(performanceMetrics.inp,entry.duration||0);
-      }
-    },{durationThreshold:40});
-    observePerformance('longtask',function(entry){
-      performanceMetrics.longTaskCount+=1;
-      performanceMetrics.longTaskMs+=Number(entry.duration)||0;
-    });
+    // Avoid the Chromium event and long-task instrumentation here. ATSRS has
+    // several authenticated workspaces with frequent DOM reconciliation. In
+    // Chromium-based browsers those native observers can remain attached to a
+    // very busy renderer and have caused STATUS_ACCESS_VIOLATION tab crashes.
+    // LCP and CLS are sufficient for the small, privacy-safe startup snapshot.
     window.addEventListener('load',function(){
       setTimeout(function(){
         try{
@@ -78,10 +74,9 @@
         publishPerformanceMetrics();
       },0);
     });
-    // These metrics describe startup responsiveness. Keeping Blink performance
-    // observers attached for an entire authenticated work session adds no product
-    // value and needlessly extends native renderer instrumentation.
-    performanceObserverTimer=setTimeout(stopPerformanceMetrics,60000);
+    // These metrics describe startup responsiveness only. Disconnect promptly
+    // so they never follow the user into the long-running application session.
+    performanceObserverTimer=setTimeout(stopPerformanceMetrics,10000);
   }
   function singleFlight(key,operation){
     var flightKey=String(key||'default');
@@ -127,17 +122,22 @@
     wakeTimer=0;
     if(!visible()){return;}
     var now=Date.now();
+    var dueTask=null;
     tasks.forEach(function(task){
-      if(task.running||task.next>now)return;
-      task.running=true;
-      try{
-        var result=task.callback();
-        if(result&&typeof result.then==='function'){
-          Promise.resolve(result).then(function(){finishTask(task);},function(error){console.error(error);finishTask(task);});
-        }else finishTask(task);
-      }catch(error){console.error(error);finishTask(task);}
+      if(!dueTask&&!task.running&&task.next<=now)dueTask=task;
     });
-    schedule();
+    if(!dueTask){schedule();return;}
+    // Run at most one reconciler per wake. A number of legacy UI guards share
+    // the same five-second cadence; executing all of them in one renderer turn
+    // creates a large mutation burst. The scheduler wakes again after 80ms for
+    // the next due task, keeping the UI responsive without dropping any work.
+    dueTask.running=true;
+    try{
+      var result=dueTask.callback();
+      if(result&&typeof result.then==='function'){
+        Promise.resolve(result).then(function(){finishTask(dueTask);},function(error){console.error(error);finishTask(dueTask);});
+      }else finishTask(dueTask);
+    }catch(error){console.error(error);finishTask(dueTask);}
   }
   function stableInterval(callback,delay){
     if(typeof callback!=='function')throw new TypeError('ATSRS scheduler requires a function.');
