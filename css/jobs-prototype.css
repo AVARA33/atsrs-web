@@ -125,3 +125,7 @@ html[data-theme="light"] body .job-detail-dialog .job-detail-toggle:focus-visibl
 /* V5915: passive details lead; related actions form one aligned row. */
 .jobs-cards .job-contact-static{grid-column:1/-1}
 .jobs-cards .job-contact-clickable{width:100%}
+.jobs-cards .job-contact-email{grid-column:1/-1}
+
+/* V5916: dark-mode vacancy surfaces stay neutral black, never green-tinted. */
+html[data-theme="dark"] #jobsPage .job-card{background:#070707;border-color:#252525}
