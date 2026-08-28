@@ -222,12 +222,16 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-cards \.job-card\{height:min\(720px,calc\(100dvh - 24px\)\);max-height:min\(720px,calc\(100dvh - 24px\)\)\}/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-cards \.job-card-body\{scrollbar-color:rgba\(83,102,128,\.34\) transparent\}/);
   assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(34,197,94,\.34\)/);
-  assert.match(css,/\.jobs-cards \.job-recruiter-info\{grid-auto-rows:64px\}/);
-  assert.match(css,/\.jobs-cards \.job-recruiter-info p\{[^}]*height:64px[^}]*min-height:64px[^}]*max-height:64px[^}]*overflow:hidden/);
+  assert.match(css,/\.jobs-cards \.job-recruiter-info\{grid-auto-rows:auto\}/);
+  assert.match(css,/\.jobs-cards \.job-recruiter-info p\.job-contact-clickable\{[^}]*height:64px[^}]*min-height:64px[^}]*max-height:64px[^}]*overflow:hidden/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info>p>span,\.jobs-cards \.job-recruiter-info \.job-contact-link-text\{[^}]*-webkit-line-clamp:2/);
   assert.match(css,/\.job-requirements strong,\.job-recruiter-info strong\{[^}]*font-size:11px[^}]*line-height:1\.15/);
   assert.match(css,/\.job-recruiter-info p\{[^}]*font-size:13px[^}]*line-height:1\.25/);
   assert.match(runtime,/p\.classList\.add\('job-contact-clickable'\)/);
+  assert.match(runtime,/p\.classList\.add\('job-contact-static'\)/);
+  assert.match(css,/\.job-contact-static\{padding:2px 0;border:0;border-radius:0;background:transparent\}/);
+  assert.match(css,/\.job-contact-static strong\{color:#72839c;font-size:9px;line-height:1\.15;letter-spacing:\.05em\}/);
+  assert.match(css,/\.job-contact-static>span\{color:var\(--text,#f8fafc\);font-size:12px;line-height:1\.32\}/);
   assert.match(runtime,/job-contact-link-icon/);
   assert.match(css,/\.job-contact-link::before\{content:"";position:absolute;inset:0/);
   assert.match(css,/\.job-contact-clickable\{[^}]*border-color:rgba\(34,197,94,\.3\)[^}]*background:rgba\(34,197,94,\.04\)/);
