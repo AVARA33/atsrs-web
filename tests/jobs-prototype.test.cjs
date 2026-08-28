@@ -225,6 +225,8 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(css,/\.jobs-cards \.job-recruiter-info\{grid-auto-rows:64px\}/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info p\{[^}]*height:64px[^}]*min-height:64px[^}]*max-height:64px[^}]*overflow:hidden/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info :is\(span,a\)\{[^}]*-webkit-line-clamp:2/);
+  assert.match(css,/\.job-requirements strong,\.job-recruiter-info strong\{[^}]*font-size:10px[^}]*line-height:1\.2/);
+  assert.match(css,/\.job-recruiter-info p\{[^}]*font-size:12px[^}]*line-height:1\.3/);
 });
 
 test('Jobs renders only verified source and closing dates with card/list parity',()=>{
