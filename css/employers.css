@@ -311,3 +311,219 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) > .main :is(#e
 html[data-theme="light"] .employer-card { background: rgba(255,255,255,.96); color: #13233c; border-color: #d8e1ee; box-shadow: 0 10px 25px rgba(15,23,42,.09); }
 html[data-theme="light"] .employer-card::before { background: #2563eb; box-shadow: 2px 0 12px rgba(37,99,235,.2); }
 html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employer-card:focus-within { border-color: rgba(37,99,235,.52); box-shadow: 0 15px 32px rgba(15,23,42,.14), 0 0 0 1px rgba(37,99,235,.1); }
+
+/* Recruiter directory — compact contact-ready cards (V5924). */
+#recruitersPage .employers-grid {
+  gap: 18px;
+}
+#recruitersPage .employer-card {
+  grid-template-rows: auto 1fr auto;
+  gap: 0;
+  min-height: 286px;
+  padding: 26px 22px 18px 27px;
+  border-radius: 15px;
+  background: #080a09;
+}
+#recruitersPage .employer-card::before {
+  width: 4px;
+  box-shadow: none;
+}
+#recruitersPage .employer-card-head {
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #202522;
+}
+#recruitersPage .employer-mark {
+  flex-basis: 64px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #303734;
+  border-radius: 10px;
+  background: #090c0b;
+  color: #48d46b;
+  font-size: 22px;
+}
+#recruitersPage .employer-card-copy {
+  align-self: center;
+  gap: 6px;
+}
+#recruitersPage .employer-card-copy h4 {
+  font-size: 20px;
+  line-height: 1.2;
+}
+#recruitersPage .employer-card-copy p {
+  font-size: 13px;
+  line-height: 1.45;
+}
+#recruitersPage .employer-source {
+  color: #48d46b;
+  font-size: 11px;
+}
+#recruitersPage .employer-tags {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 18px 2px;
+  border-bottom: 1px solid #202522;
+}
+#recruitersPage .employer-tags > i {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, .08);
+  color: #48d46b;
+  font-size: 20px;
+}
+#recruitersPage .employer-vacancy-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+#recruitersPage .employer-tag {
+  width: max-content;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+#recruitersPage .employer-vacancy-count {
+  color: #48d46b;
+  font-size: 12px;
+}
+#recruitersPage .employer-vacancy-hint {
+  color: #aab3ae;
+  font-size: 12px;
+}
+#recruitersPage .employer-actions {
+  display: grid;
+  grid-template-columns: minmax(138px, 1fr) minmax(138px, 1fr) minmax(160px, 1.12fr);
+  align-items: center;
+  gap: 12px;
+  padding-top: 17px;
+}
+#recruitersPage .employer-actions > :only-child {
+  grid-column: 1 / -1;
+}
+#recruitersPage .employer-actions:not(:has(.employer-action-linkedin)) {
+  grid-template-columns: minmax(138px, 1fr) minmax(160px, 1.12fr);
+}
+#recruitersPage .employer-actions a,
+#recruitersPage .employer-actions button {
+  width: 100%;
+  min-height: 42px;
+  margin: 0;
+  padding: 0 13px;
+  border: 1px solid #2c3430;
+  border-radius: 9px;
+  background: #090c0b;
+  color: #f4f7f5;
+  font-size: 12px;
+  white-space: nowrap;
+}
+#recruitersPage .employer-actions .employer-action-linkedin {
+  justify-content: flex-start;
+  border-color: transparent;
+  background: transparent;
+  padding-left: 4px;
+}
+#recruitersPage .employer-actions .employer-action-jobs.is-active {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  border-color: #4bdd6d !important;
+  background: #4bdd6d !important;
+  color: #061109 !important;
+  box-shadow: 0 9px 22px rgba(34, 197, 94, .16) !important;
+}
+#recruitersPage .employer-actions .employer-action-jobs.is-active:hover,
+#recruitersPage .employer-actions .employer-action-jobs.is-active:focus-visible {
+  border-color: #70e58b !important;
+  background: #70e58b !important;
+  color: #061109 !important;
+}
+#recruitersPage .employer-actions .employer-action-jobs:disabled {
+  display: none;
+}
+html[data-theme="light"] #recruitersPage .employer-card {
+  background: #fff;
+}
+html[data-theme="light"] #recruitersPage .employer-card-head,
+html[data-theme="light"] #recruitersPage .employer-tags {
+  border-color: #e2e8f0;
+}
+html[data-theme="light"] #recruitersPage .employer-mark {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #2563eb;
+}
+html[data-theme="light"] #recruitersPage .employer-source,
+html[data-theme="light"] #recruitersPage .employer-vacancy-count,
+html[data-theme="light"] #recruitersPage .employer-tags > i {
+  color: #2563eb;
+}
+html[data-theme="light"] #recruitersPage .employer-tags > i {
+  background: rgba(37, 99, 235, .08);
+}
+html[data-theme="light"] #recruitersPage .employer-vacancy-hint {
+  color: #64748b;
+}
+html[data-theme="light"] #recruitersPage .employer-actions a,
+html[data-theme="light"] #recruitersPage .employer-actions button {
+  border-color: #cbd5e1;
+  background: #fff;
+  color: #172033;
+}
+html[data-theme="light"] #recruitersPage .employer-actions .employer-action-linkedin {
+  border-color: transparent;
+  background: transparent;
+}
+html[data-theme="light"] #recruitersPage .employer-actions .employer-action-jobs.is-active {
+  border-color: #2563eb !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  box-shadow: 0 9px 20px rgba(37, 99, 235, .18) !important;
+}
+@media (max-width: 1180px) {
+  #recruitersPage .employer-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  #recruitersPage .employer-actions:not(:has(.employer-action-linkedin)) {
+    grid-template-columns: 1fr 1fr;
+  }
+  #recruitersPage .employer-actions .employer-action-jobs.is-active {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 620px) {
+  #recruitersPage .employer-card {
+    min-height: 0;
+    padding: 21px 16px 16px 20px;
+  }
+  #recruitersPage .employer-card-head {
+    gap: 14px;
+  }
+  #recruitersPage .employer-mark {
+    flex-basis: 54px;
+    width: 54px;
+    height: 54px;
+    font-size: 19px;
+  }
+  #recruitersPage .employer-actions {
+    grid-template-columns: 1fr;
+  }
+  #recruitersPage .employer-actions:not(:has(.employer-action-linkedin)) {
+    grid-template-columns: 1fr;
+  }
+  #recruitersPage .employer-actions .employer-action-jobs.is-active {
+    grid-column: auto;
+  }
+  #recruitersPage .employer-actions .employer-action-linkedin {
+    justify-content: center;
+    border-color: #2c3430;
+  }
+  html[data-theme="light"] #recruitersPage .employer-actions .employer-action-linkedin {
+    border-color: #cbd5e1;
+  }
+}

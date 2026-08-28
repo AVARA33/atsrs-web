@@ -126,37 +126,52 @@
     head.append(mark, copy);
     var tags = document.createElement("div");
     tags.className = "employer-tags";
+    var vacancyIcon = document.createElement("i");
+    vacancyIcon.className = "ph ph-briefcase";
+    vacancyIcon.setAttribute("aria-hidden", "true");
+    var vacancyCopy = document.createElement("div");
+    vacancyCopy.className = "employer-vacancy-copy";
     var vacancyTag = document.createElement("span");
     vacancyTag.className = "employer-tag employer-vacancy-count";
     vacancyTag.textContent = vacancyLabel(recruiter.vacancyCount || 0);
-    tags.appendChild(vacancyTag);
+    var vacancyHint = document.createElement("span");
+    vacancyHint.className = "employer-vacancy-hint";
+    vacancyHint.textContent = recruiter.vacancyCount > 0
+      ? "Active on published jobs"
+      : "No active jobs at the moment";
+    vacancyCopy.append(vacancyTag, vacancyHint);
+    tags.append(vacancyIcon, vacancyCopy);
     var actions = document.createElement("div");
     actions.className = "employer-actions";
-    if (recruiter.linkedin_url)
-      actions.append(
-        buttonLink(
-          recruiter.linkedin_url,
-          "View LinkedIn profile",
-          "linkedin-logo",
-        ),
+    if (recruiter.linkedin_url) {
+      var linkedinAction = buttonLink(
+        recruiter.linkedin_url,
+        "View LinkedIn profile",
+        "linkedin-logo",
       );
+      linkedinAction.className = "employer-action-linkedin";
+      actions.append(linkedinAction);
+    }
+    var shareAction = action("Share my profile", "share-network", function () {
+      share(name);
+    });
+    shareAction.className = "employer-action-share";
+    actions.append(shareAction);
     var jobsAction = action(
       recruiter.vacancyCount > 0 ? "View jobs & contact" : "No active jobs",
-      "address-book",
+      recruiter.vacancyCount > 0 ? "arrow-right" : "address-book",
       function () {
         goToJobs(name);
       },
     );
+    jobsAction.className = recruiter.vacancyCount > 0
+      ? "employer-action-jobs is-active"
+      : "employer-action-jobs";
     if (!(recruiter.vacancyCount > 0)) {
       jobsAction.disabled = true;
       jobsAction.setAttribute("aria-disabled", "true");
     }
-    actions.append(
-      jobsAction,
-      action("Share my profile", "share-network", function () {
-        share(name);
-      }),
-    );
+    actions.append(jobsAction);
     article.append(head, tags, actions);
     return article;
   }
