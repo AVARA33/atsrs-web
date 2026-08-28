@@ -121,3 +121,7 @@ html[data-theme="light"] body .job-detail-dialog .job-detail-toggle:focus-visibl
 .job-contact-clickable{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04)}
 .job-contact-static strong{color:#72839c;font-size:9px;line-height:1.15;letter-spacing:.05em}
 .job-contact-static>span{color:var(--text,#f8fafc);font-size:12px;line-height:1.32}
+
+/* V5915: passive details lead; related actions form one aligned row. */
+.jobs-cards .job-contact-static{grid-column:1/-1}
+.jobs-cards .job-contact-clickable{width:100%}
