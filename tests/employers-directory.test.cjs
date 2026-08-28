@@ -22,7 +22,7 @@ assert.doesNotMatch(html, /Find ATSRS JobSearch recruiters/);
 assert.match(html, /RECRUITERS &amp; COMPANIES/);
 assert.match(html, /Explore recruiters with a Personal account/);
 assert.match(html, /Explore companies with a Personal account/);
-assert.match(html, /css\/employers\.css\?v=22/);
+assert.match(html, /css\/employers\.css\?v=23/);
 assert.doesNotMatch(html, /id="(?:employers|recruiters)Heading"/, 'Directory pages must not repeat the white page title as a large green heading');
 assert.equal((html.match(/class="atsrs-search-control"/g) || []).length, 3, 'All three directory searches use the canonical control');
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearch"/);
@@ -92,7 +92,7 @@ assert.match(css, /\.employer-action-share[\s\S]*?grid-column: 1 \/ -1/);
 assert.match(css, /\.employer-action-jobs:disabled[\s\S]*?display: inline-flex/);
 assert.match(css, /#recruitersPage \.employer-vacancy-hint/);
 assert.match(css, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
-assert.match(fs.readFileSync('css/shell-polish.css', 'utf8'), /:not\(\.employer-action-jobs\.is-active\)/);
+assert.match(fs.readFileSync('css/shell-polish.css', 'utf8'), /:not\(\.employer-action-jobs\):not\(\.employer-action-share\):not\(\.employer-action-linkedin\)/);
 assert.doesNotMatch(css, /employers-search/, 'Legacy directory search styling must stay removed');
 
 console.log('Employers directory contracts passed');
