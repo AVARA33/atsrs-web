@@ -424,6 +424,26 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
 #recruitersPage .employer-actions .employer-action-share {
   grid-column: 1 / -1;
 }
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled) {
+  border-color: rgba(72, 212, 107, .58) !important;
+  background: #090c0b !important;
+  color: #e8f8ec !important;
+  box-shadow: inset 0 0 0 1px rgba(72, 212, 107, .05) !important;
+}
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled) > i {
+  color: #48d46b;
+}
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled):hover,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled):focus-visible {
+  border-color: #48d46b !important;
+  background: rgba(72, 212, 107, .11) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(72, 212, 107, .13) !important;
+}
 html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active {
   flex-direction: row-reverse;
   justify-content: space-between;
@@ -431,6 +451,10 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
   background: #4bdd6d !important;
   color: #061109 !important;
   box-shadow: 0 9px 22px rgba(34, 197, 94, .16) !important;
+}
+html[data-theme] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active > i {
+  color: inherit;
 }
 html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active:hover,
 html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active:focus-visible {
@@ -442,6 +466,13 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
   display: inline-flex;
   opacity: .48;
   cursor: not-allowed;
+}
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > button:disabled {
+  border-color: #29312d !important;
+  background: #0a0d0c !important;
+  color: #7f8983 !important;
+  box-shadow: none !important;
 }
 html[data-theme="light"] #recruitersPage .employer-card {
   background: #fff;
@@ -471,6 +502,33 @@ html[data-theme="light"] #recruitersPage .employer-actions button {
   border-color: #cbd5e1;
   background: #fff;
   color: #172033;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled) {
+  border-color: rgba(37, 99, 235, .5) !important;
+  background: #fff !important;
+  color: #1e40af !important;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .04) !important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled) > i {
+  color: #2563eb;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled):hover,
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled):focus-visible {
+  border-color: #2563eb !important;
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12) !important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > button:disabled {
+  border-color: #d8dee8 !important;
+  background: #f8fafc !important;
+  color: #94a3b8 !important;
+  box-shadow: none !important;
 }
 html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active {
   border-color: #2563eb !important;
