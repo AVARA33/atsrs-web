@@ -499,10 +499,12 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .employer-ac
 @media (max-width: 620px) {
   #recruitersPage .employer-card {
     min-height: 0;
+    min-width: 0;
     padding: 21px 16px 16px 20px;
   }
   #recruitersPage .employer-card-head {
     gap: 14px;
+    min-width: 0;
   }
   #recruitersPage .employer-mark {
     flex-basis: 54px;
@@ -511,10 +513,11 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .employer-ac
     font-size: 19px;
   }
   #recruitersPage .employer-actions {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
   }
   #recruitersPage .employer-actions:not(:has(.employer-action-linkedin)) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   #recruitersPage .employer-actions .employer-action-jobs.is-active {
     grid-column: auto;
@@ -522,6 +525,20 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .employer-ac
   #recruitersPage .employer-actions .employer-action-linkedin {
     justify-content: center;
     border-color: #2c3430;
+  }
+  #recruitersPage .employer-actions a,
+  #recruitersPage .employer-actions button {
+    min-width: 0;
+  }
+  #recruitersPage .employer-source {
+    width: auto;
+    max-width: 100%;
+    flex-wrap: wrap;
+    line-height: 1.35;
+  }
+  #recruitersPage .employer-card-copy :is(h4, p) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   html[data-theme="light"] #recruitersPage .employer-actions .employer-action-linkedin {
     border-color: #cbd5e1;
