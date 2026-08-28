@@ -86,6 +86,7 @@ assert.match(css, /-webkit-text-fill-color:#fff!important/);
 assert.match(css, /\.employer-actions button:disabled/);
 assert.match(css, /#recruitersPage \.employer-actions \.employer-action-jobs\.is-active/);
 assert.match(css, /#recruitersPage \.employer-vacancy-hint/);
+assert.match(fs.readFileSync('css/shell-polish.css', 'utf8'), /:not\(\.employer-action-jobs\.is-active\)/);
 assert.doesNotMatch(css, /employers-search/, 'Legacy directory search styling must stay removed');
 
 console.log('Employers directory contracts passed');
