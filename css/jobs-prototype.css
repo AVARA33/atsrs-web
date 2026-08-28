@@ -164,3 +164,19 @@ html[data-theme] #jobsPage .job-contact-clickable:focus-within{
 /* V5919: short cards anchor recruiter actions to the card foot; long cards keep them at the scroll end. */
 .jobs-cards .job-card-body{grid-template-rows:auto minmax(min-content,1fr)}
 .jobs-cards .job-contact-info{align-content:end}
+
+/* V5922: resting tap icons animate once only on the card being explored. */
+.job-contact-link-icon.ph-hand-tap{transform-origin:50% 88%}
+.job-contact-clickable:hover .job-contact-link-icon.ph-hand-tap{transform:none}
+@keyframes jobs-contact-hand-tap{
+  0%,100%{transform:translateY(0) scale(1) rotate(0)}
+  35%{transform:translateY(2px) scale(.88) rotate(-7deg)}
+  62%{transform:translateY(-1px) scale(1.08) rotate(3deg)}
+}
+@media(hover:hover){
+  .jobs-cards .job-card:hover .job-contact-link-icon.ph-hand-tap,
+  .jobs-cards .job-card:focus-within .job-contact-link-icon.ph-hand-tap{animation:jobs-contact-hand-tap .46s ease-out 1}
+}
+@media(prefers-reduced-motion:reduce){
+  .jobs-cards .job-card .job-contact-link-icon.ph-hand-tap{animation:none!important;transition:none}
+}
