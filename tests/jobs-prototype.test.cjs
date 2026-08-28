@@ -222,6 +222,9 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-cards \.job-card\{height:min\(720px,calc\(100dvh - 24px\)\);max-height:min\(720px,calc\(100dvh - 24px\)\)\}/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-cards \.job-card-body\{scrollbar-color:rgba\(83,102,128,\.34\) transparent\}/);
   assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(34,197,94,\.34\)/);
+  assert.match(css,/\.jobs-cards \.job-recruiter-info\{grid-auto-rows:64px\}/);
+  assert.match(css,/\.jobs-cards \.job-recruiter-info p\{[^}]*height:64px[^}]*min-height:64px[^}]*max-height:64px[^}]*overflow:hidden/);
+  assert.match(css,/\.jobs-cards \.job-recruiter-info :is\(span,a\)\{[^}]*-webkit-line-clamp:2/);
 });
 
 test('Jobs renders only verified source and closing dates with card/list parity',()=>{
