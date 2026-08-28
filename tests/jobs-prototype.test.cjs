@@ -212,11 +212,14 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/body\.tabIndex=0/);
   assert.match(runtime,/requestAnimationFrame\(syncCardOverflow\)/);
   assert.match(css,/\.jobs-grid\.jobs-cards\{align-items:start\}/);
-  assert.match(css,/\.jobs-cards \.job-card\{height:auto;max-height:none;grid-template-rows:auto auto;align-content:start\}/);
-  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*padding-right:0[^}]*overflow:visible/);
+  assert.match(css,/\.jobs-cards \.job-card\{height:560px;max-height:560px;grid-template-rows:auto minmax\(0,1fr\);align-content:stretch\}/);
+  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*overscroll-behavior-y:auto[^}]*scrollbar-gutter:stable/);
+  assert.doesNotMatch(css,/\.jobs-cards \.job-card-body\{[^}]*overscroll-behavior:(?:contain|none)/);
   assert.doesNotMatch(runtime,/addEventListener\(['"]wheel|\.onwheel\s*=/);
   assert.match(css,/\.jobs-list \.job-card-body\{display:contents\}/);
-  assert.doesNotMatch(css,/\.jobs-cards \.job-card\{height:(?:560px|580px|640px|min\(720px)/);
+  assert.match(css,/@media\(max-width:1250px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:580px;max-height:580px\}/);
+  assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:640px;max-height:640px\}/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-cards \.job-card\{height:min\(720px,calc\(100dvh - 24px\)\);max-height:min\(720px,calc\(100dvh - 24px\)\)\}/);
   assert.match(css,/html\[data-theme="light"\] \.jobs-cards \.job-card-body\{scrollbar-color:rgba\(83,102,128,\.34\) transparent\}/);
   assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(34,197,94,\.34\)/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info\{grid-auto-rows:64px\}/);
