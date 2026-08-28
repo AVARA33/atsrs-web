@@ -1,0 +1,34 @@
+/* V5926: final cascade layer for the recruiter directory primary action. */
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active {
+  border-color: #4bdd6d !important;
+  background: #4bdd6d !important;
+  color: #061109 !important;
+  box-shadow: 0 9px 22px rgba(34, 197, 94, .16) !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active:hover,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active:focus-visible {
+  border-color: #70e58b !important;
+  background: #70e58b !important;
+  color: #061109 !important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active {
+  border-color: #2563eb !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  box-shadow: 0 9px 20px rgba(37, 99, 235, .18) !important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active:hover,
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-jobs.is-active:focus-visible {
+  border-color: #1d4ed8 !important;
+  background: #1d4ed8 !important;
+  color: #fff !important;
+}

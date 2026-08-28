@@ -31,6 +31,7 @@ assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/employers\.js\?v=30/);
 assert.match(html, /js\/recruiters\.js\?v=11/);
+assert.match(html, /css\/recruiter-action-emphasis-v5926\.css\?v=5926/);
 assert.match(html, /id="recruitersCompany"[^>]*>[\s\S]*?All companies/);
 assert.match(html, /id="recruitersSearch"[^>]*placeholder="Recruiter or company"/);
 assert.match(html, /id="employersVacancies"[^>]*>[\s\S]*?Active vacancies only/);
