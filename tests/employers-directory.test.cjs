@@ -22,7 +22,7 @@ assert.doesNotMatch(html, /Find ATSRS JobSearch recruiters/);
 assert.match(html, /RECRUITERS &amp; COMPANIES/);
 assert.match(html, /Explore recruiters with a Personal account/);
 assert.match(html, /Explore companies with a Personal account/);
-assert.match(html, /css\/employers\.css\?v=19/);
+assert.match(html, /css\/employers\.css\?v=20/);
 assert.doesNotMatch(html, /id="(?:employers|recruiters)Heading"/, 'Directory pages must not repeat the white page title as a large green heading');
 assert.equal((html.match(/class="atsrs-search-control"/g) || []).length, 3, 'All three directory searches use the canonical control');
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearch"/);
