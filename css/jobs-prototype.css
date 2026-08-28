@@ -129,3 +129,6 @@ html[data-theme="light"] body .job-detail-dialog .job-detail-toggle:focus-visibl
 
 /* V5916: dark-mode vacancy surfaces stay neutral black, never green-tinted. */
 html[data-theme="dark"] #jobsPage .job-card{background:#070707;border-color:#252525}
+
+/* V5917: keep the two vacancy actions paired at every card breakpoint. */
+.jobs-cards .job-recruiter-info{grid-template-columns:repeat(2,minmax(0,1fr))}
