@@ -61,14 +61,16 @@ body.personal-mode #refsPage .atsrs-v156-slots-box{display:none!important;margin
 body.personal-mode #refsPage .atsrs-references-controls{
   order:5!important;grid-column:1/-1!important;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;gap:20px!important;border-bottom:1px solid #26302c!important;
 }
-body.personal-mode #refsPage .atsrs-reference-tabs{display:flex!important;align-items:center!important;gap:2px!important;overflow-x:auto!important;}
-body.personal-mode #refsPage .atsrs-reference-tabs button{display:flex!important;align-items:center!important;gap:7px!important;padding:12px 11px!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:transparent!important;color:#aab3af!important;font-size:13px!important;font-weight:650!important;white-space:nowrap!important;box-shadow:none!important;}
+body.personal-mode #refsPage .atsrs-reference-tabs{display:flex!important;align-items:flex-end!important;gap:2px!important;overflow-x:auto!important;padding-top:9px!important;}
+body.personal-mode #refsPage .atsrs-reference-tabs button{display:flex!important;align-items:center!important;gap:7px!important;padding:12px 11px!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:transparent!important;color:#aab3af!important;font-size:13px!important;font-weight:650!important;white-space:nowrap!important;box-shadow:none!important;transform:translateY(0)!important;transition:transform .18s ease,color .18s ease,border-color .18s ease!important;}
+body.personal-mode #refsPage .atsrs-reference-tabs button>span{white-space:nowrap!important;}
 body.personal-mode #refsPage .atsrs-reference-tabs button small{display:none!important;min-width:17px!important;padding:1px 5px!important;border-radius:999px!important;background:#18201c!important;font-size:9px!important;}
-body.personal-mode #refsPage .atsrs-reference-tabs button.is-active{border-bottom-color:#55d06a!important;color:#55d06a!important;}
+body.personal-mode #refsPage .atsrs-reference-tabs button.is-active{border-bottom-color:#55d06a!important;color:#55d06a!important;transform:translateY(-8px)!important;}
 body.personal-mode #refsPage .atsrs-reference-tools{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:10px!important;padding-bottom:8px!important;flex:0 0 auto!important;}
 body.personal-mode #refsPage .atsrs-reference-search{position:relative!important;display:block!important;flex:0 0 270px!important;width:270px!important;}
-body.personal-mode #refsPage .atsrs-reference-search i{position:absolute!important;left:12px!important;top:50%!important;transform:translateY(-50%)!important;color:#78847e!important;font-size:16px!important;pointer-events:none!important;}
-body.personal-mode #refsPage .atsrs-reference-search input{width:100%!important;height:38px!important;padding:8px 12px 8px 38px!important;border:1px solid #2a3530!important;border-radius:8px!important;background:#080a09!important;color:#eef3f0!important;font-size:12px!important;outline:0!important;}
+/* ATSRS product rule: search icons sit at the trailing (right) edge. */
+body.personal-mode #refsPage .atsrs-reference-search i{position:absolute!important;right:12px!important;left:auto!important;top:50%!important;transform:translateY(-50%)!important;color:#78847e!important;font-size:16px!important;pointer-events:none!important;}
+body.personal-mode #refsPage .atsrs-reference-search input{width:100%!important;height:38px!important;padding:8px 38px 8px 12px!important;border:1px solid #2a3530!important;border-radius:8px!important;background:#080a09!important;color:#eef3f0!important;font-size:12px!important;outline:0!important;}
 body.personal-mode #refsPage .atsrs-reference-search input:focus{border-color:#50c966!important;box-shadow:0 0 0 2px rgba(80,201,102,.12)!important;}
 body.personal-mode #refsPage .atsrs-reference-filter-wrap{position:relative!important;}
 body.personal-mode #refsPage .atsrs-reference-filter-button,
