@@ -33,7 +33,7 @@ body.personal-mode #refsPage #cvCardText{order:4!important;margin:12px 0 0 auto!
 body.personal-mode #refsPage #cvFileInfo{margin:0!important;padding:0!important;min-height:0!important;background:transparent!important;border:0!important;box-shadow:none!important;}
 body.personal-mode #refsPage .atsrs-v156-main-box{padding:0!important;border:0!important;background:transparent!important;}
 body.personal-mode #refsPage .atsrs-v156-main-row{
-  min-height:70px!important;height:auto!important;padding:10px 0!important;border-top:1px solid #25302c!important;border-bottom:1px solid #25302c!important;background:transparent!important;grid-template-columns:minmax(0,1fr) auto!important;
+  min-height:70px!important;height:auto!important;padding:10px 0!important;border-top:1px solid #25302c!important;border-right:0!important;border-bottom:1px solid #25302c!important;border-left:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;grid-template-columns:minmax(0,1fr) auto!important;
 }
 body.personal-mode #refsPage .atsrs-main-cv-icon{font-size:26px!important;color:#e3e9e6!important;margin-right:12px!important;}
 body.personal-mode #refsPage .atsrs-v156-main-name b{font-size:13px!important;color:#eef2f0!important;}
@@ -57,11 +57,6 @@ body.personal-mode #refsPage #aiCvSourceStatus{min-height:38px!important;margin:
 body.personal-mode #refsPage .cv-generator-action-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;}
 body.personal-mode #refsPage #resetCvGeneratorBtn{grid-column:1/-1!important;}
 body.personal-mode #refsPage .atsrs-v156-slots-box{display:none!important;margin-top:8px!important;}
-body.personal-mode #refsPage .show-additional-cvs .atsrs-v156-slots-box{display:block!important;}
-body.personal-mode #refsPage .atsrs-cv-slots-toggle{display:inline-flex!important;align-items:center!important;gap:7px!important;align-self:flex-start!important;width:auto!important;height:24px!important;min-height:24px!important;margin:5px 0 0!important;padding:0!important;border:0!important;background:transparent!important;color:#8f9a95!important;font-size:11px!important;}
-body.personal-mode #refsPage .atsrs-cv-slots-toggle:hover{color:#55d06a!important;}
-body.personal-mode #refsPage .atsrs-cv-slots-toggle i:last-child{transition:transform .18s ease;}
-body.personal-mode #refsPage .atsrs-cv-slots-toggle[aria-expanded="true"] i:last-child{transform:rotate(180deg);}
 
 body.personal-mode #refsPage .atsrs-references-controls{
   order:5!important;grid-column:1/-1!important;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;gap:20px!important;border-bottom:1px solid #26302c!important;

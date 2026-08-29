@@ -105,15 +105,6 @@
         if(current.join('|')!==preferred.join('|'))preferred.forEach(function(label){var button=qa('button',actions).find(function(item){return item.textContent.trim()===label;});if(button)actions.appendChild(button);});
       }
     });
-    var slots=q('.atsrs-v156-slots-box',cv);
-    if(slots&&!q('.atsrs-cv-slots-toggle',cv)){
-      var rows=qa('.atsrs-v156-additional-row',slots).length;
-      var toggle=document.createElement('button');
-      toggle.type='button';toggle.className='atsrs-cv-slots-toggle';toggle.setAttribute('aria-expanded','false');
-      toggle.innerHTML=icon('files')+'<span>'+rows+' additional CV'+(rows===1?'':'s')+'</span>'+icon('caret-down');
-      toggle.addEventListener('click',function(){var open=cv.classList.toggle('show-additional-cvs');toggle.setAttribute('aria-expanded',String(open));});
-      slots.insertAdjacentElement('beforebegin',toggle);
-    }
   }
 
   function decorateRows(page){
