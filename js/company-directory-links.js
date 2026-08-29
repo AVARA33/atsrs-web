@@ -1189,10 +1189,10 @@
     "about": "https://www.taptapsend.com/en/about-us"
   },
   "TAR": {
-    "website": "https://jobs.ashbyhq.com/tar",
-    "careers": "https://jobs.ashbyhq.com/tar",
-    "contact": "https://jobs.ashbyhq.com/tar",
-    "about": "https://jobs.ashbyhq.com/tar"
+    "website": "https://www.tar.com/",
+    "careers": "https://www.tar.com/careers",
+    "contact": "https://www.tar.com/contact",
+    "about": "https://www.tar.com/about"
   },
   "Tassal Group": {
     "website": "https://tassalgroup.com.au/",
