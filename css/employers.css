@@ -571,6 +571,17 @@ html[data-theme="light"] #employersPage .employer-actions .employer-action-jobs 
   border-color: transparent;
   background: transparent;
 }
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-actions .employer-action-jobs {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .employer-actions .employer-action-jobs {
+  color: #48d46b !important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #employersPage .employer-actions .employer-action-jobs {
+  color: #2563eb !important;
+}
 #employersPage .employer-actions button:disabled {
   border-color: #2b332f;
   background: #090c0b;
