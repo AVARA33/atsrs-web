@@ -20,6 +20,6 @@ assert.match(css, /background:linear-gradient\(180deg,color-mix\(in srgb,var\(--
 assert.match(css, /html\[data-theme="light"\] \.pricing-paid-grid \.pricing-plan \.pricing-plan-status\{[\s\S]*?color:var\(--pricing-plan-accent-text\)!important/);
 assert.match(css, /html\[data-theme="light"\] \.pricing-paid-grid \.pricing-plan \.public-plan-name\{color:var\(--pricing-plan-accent-text\)!important\}/);
 assert.doesNotMatch(css, /html\[data-theme="dark"\][^{]*\.pricing-paid-grid/);
-assert.match(page, /css\/pricing\.css\?v=5960/);
+assert.match(page, /css\/pricing\.css\?v=5961/);
 
 console.log('Pricing card header theme-parity assertions passed.');
