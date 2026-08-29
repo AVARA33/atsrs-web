@@ -1,22 +1,20 @@
-/* Recruiters actions mirror the selected-field treatment used by JobSearch. */
+/* Recruiters rest neutral; JobSearch field color appears only on interaction. */
 html[data-theme] body #app.app:not(.hidden) #recruitersPage
   .employer-actions > :is(a, button):not(:disabled),
 html[data-theme] body #app.app:not(.hidden) #recruitersPage
   .employer-actions .employer-action-share.is-shared:disabled {
-  border: var(--atsrs-field-border-width) solid !important;
-  border-color: var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line) !important;
+  border: 1px solid #2c3430 !important;
   border-radius: var(--atsrs-field-radius) !important;
-  background: var(--atsrs-field-surface) !important;
-  color: var(--atsrs-field-accent) !important;
-  box-shadow: var(--atsrs-field-focus-shadow) !important;
+  background: #090c0b !important;
+  color: #f4f7f5 !important;
+  box-shadow: none !important;
   opacity: 1 !important;
+  transition: border-color .16s ease, background-color .16s ease, color .16s ease, box-shadow .16s ease !important;
 }
 
 html[data-theme] body #app.app:not(.hidden) #recruitersPage
-  .employer-actions > :is(a, button):not(:disabled) > i,
-html[data-theme] body #app.app:not(.hidden) #recruitersPage
-  .employer-actions .employer-action-share.is-shared:disabled > i {
-  color: var(--atsrs-field-accent) !important;
+  .employer-actions > :is(a, button):not(:disabled) > i {
+  color: #aab3ae !important;
 }
 
 html[data-theme] body #app.app:not(.hidden) #recruitersPage
@@ -30,6 +28,25 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage
   cursor: default !important;
 }
 
+html[data-theme] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-share.is-shared:disabled > i {
+  color: var(--atsrs-field-accent) !important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled),
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-share.is-shared:disabled {
+  border-color: #cbd5e1 !important;
+  background: #fff !important;
+  color: #172033 !important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled) > i {
+  color: #64748b !important;
+}
+
 @media (hover:hover) {
   html[data-theme] body #app.app:not(.hidden) #recruitersPage
     .employer-actions > :is(a, button):not(:disabled):hover {
@@ -37,6 +54,11 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage
     background: var(--atsrs-field-surface) !important;
     color: var(--atsrs-field-accent) !important;
     box-shadow: var(--atsrs-field-focus-shadow) !important;
+  }
+
+  html[data-theme] body #app.app:not(.hidden) #recruitersPage
+    .employer-actions > :is(a, button):not(:disabled):hover > i {
+    color: var(--atsrs-field-accent) !important;
   }
 }
 
@@ -47,4 +69,9 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage
   color: var(--atsrs-field-accent) !important;
   outline: 0 !important;
   box-shadow: var(--atsrs-field-focus-shadow) !important;
+}
+
+html[data-theme] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions > :is(a, button):not(:disabled):focus-visible > i {
+  color: var(--atsrs-field-accent) !important;
 }
