@@ -5,6 +5,7 @@ const html = fs.readFileSync('index.html', 'utf8');
 const js = fs.readFileSync('js/employers.js', 'utf8');
 const recruitersJs = fs.readFileSync('js/recruiters.js', 'utf8');
 const css = fs.readFileSync('css/employers.css', 'utf8');
+const recruiterActionCss = fs.readFileSync('css/recruiter-action-emphasis-v5926.css', 'utf8');
 const storage = fs.readFileSync('js/storage.js', 'utf8');
 
 const jobs = html.indexOf('id="navJobs"');
@@ -31,7 +32,7 @@ assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/employers\.js\?v=30/);
 assert.match(html, /js\/recruiters\.js\?v=14/);
-assert.match(html, /css\/recruiter-action-emphasis-v5926\.css\?v=5926/);
+assert.match(html, /css\/recruiter-action-emphasis-v5926\.css\?v=5936/);
 assert.match(html, /id="recruitersCompany"[^>]*>[\s\S]*?All companies/);
 assert.match(html, /id="recruitersSearch"[^>]*placeholder="Recruiter or company"/);
 assert.match(html, /id="employersVacancies"[^>]*>[\s\S]*?Active vacancies only/);
@@ -93,6 +94,9 @@ assert.match(css, /\.employer-action-jobs:disabled[\s\S]*?display: inline-flex/)
 assert.match(css, /rgba\(72, 212, 107, \.58\)/);
 assert.match(css, /rgba\(37, 99, 235, \.5\)/);
 assert.match(css, /#recruitersPage \.employer-vacancy-hint/);
+assert.match(recruiterActionCss, /employer-action-share\.is-shared:disabled/);
+assert.match(recruiterActionCss, /background: #4bdd6d !important/);
+assert.match(recruiterActionCss, /background: #2563eb !important/);
 assert.match(css, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
 assert.match(fs.readFileSync('css/shell-polish.css', 'utf8'), /:not\(\.employer-action-jobs\):not\(\.employer-action-share\):not\(\.employer-action-linkedin\)/);
 assert.doesNotMatch(css, /employers-search/, 'Legacy directory search styling must stay removed');

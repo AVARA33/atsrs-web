@@ -32,3 +32,34 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
   background: #1d4ed8 !important;
   color: #fff !important;
 }
+
+/* A completed recruiter share is a confirmed status, not an unavailable action. */
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-share.is-shared:disabled {
+  border-color: #4bdd6d !important;
+  background: #4bdd6d !important;
+  color: #061109 !important;
+  box-shadow: 0 9px 22px rgba(34, 197, 94, .16) !important;
+  cursor: default !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-share.is-shared:disabled > i {
+  color: #061109 !important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-share.is-shared:disabled {
+  border-color: #2563eb !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  box-shadow: 0 9px 20px rgba(37, 99, 235, .18) !important;
+  cursor: default !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
+  .employer-actions .employer-action-share.is-shared:disabled > i {
+  color: #fff !important;
+}
