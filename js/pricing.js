@@ -1,7 +1,17 @@
-/* ATSRS V466 Personal pricing cycle control. */
+/* ATSRS V467 Personal pricing cycle control. */
 (function(){
   'use strict';
   var buttons=Array.from(document.querySelectorAll('[data-pricing-cycle]'));
+  var cycleStorageKey='atsrs_pricing_cycle';
+  function storedCycle(){
+    try{
+      var value=localStorage.getItem(cycleStorageKey);
+      return value==='yearly'?'yearly':'monthly';
+    }catch(_error){return 'monthly';}
+  }
+  function rememberCycle(cycle){
+    try{localStorage.setItem(cycleStorageKey,cycle);}catch(_error){}
+  }
   function applyCycle(cycle){
     var yearly=cycle==='yearly';
     buttons.forEach(function(button){
@@ -21,7 +31,11 @@
       cell.textContent=yearly?cell.dataset.yearly:cell.dataset.monthly;
     });
   }
-  buttons.forEach(function(button){button.addEventListener('click',function(){applyCycle(button.dataset.pricingCycle);});});
-  applyCycle('monthly');
+  buttons.forEach(function(button){button.addEventListener('click',function(){
+    var cycle=button.dataset.pricingCycle==='yearly'?'yearly':'monthly';
+    rememberCycle(cycle);
+    applyCycle(cycle);
+  });});
+  applyCycle(storedCycle());
 })();
 
