@@ -488,18 +488,27 @@
   function goToJobs(name) {
     if (typeof window.showPage === "function")
       window.showPage("jobs", byId("navJobs"));
-    setTimeout(function () {
+    function applyCompanyFilter() {
       var select = byId("jobsCompanyFilter");
-      if (select) {
+      if (select && Array.from(select.options).some(function (option) {
+        return option.value === name;
+      })) {
         select.value = name;
         select.dispatchEvent(new Event("change", { bubbles: true }));
+        return true;
       }
-    }, 0);
+      return false;
+    }
+    [0, 300, 900].forEach(function (delay) {
+      setTimeout(function () {
+        if (applyCompanyFilter()) return;
+      }, delay);
+    });
   }
   function goToRecruiters(name) {
     if (typeof window.showPage === "function")
       window.showPage("recruiters", byId("navRecruiters"));
-    setTimeout(function () {
+    function applyRecruiterCompanyFilter() {
       var select = byId("recruitersCompany"),
         search = byId("recruitersSearch"),
         hasCompany = select && Array.from(select.options).some(function (option) {
@@ -511,7 +520,13 @@
         select.dispatchEvent(new Event("change", { bubbles: true }));
       else if (search)
         search.dispatchEvent(new Event("input", { bubbles: true }));
-    }, 0);
+      return Boolean(hasCompany);
+    }
+    [0, 300, 900].forEach(function (delay) {
+      setTimeout(function () {
+        if (applyRecruiterCompanyFilter()) return;
+      }, delay);
+    });
   }
   function ensureCompanyProfileDialog() {
     var dialog = byId("employerProfileDialog");

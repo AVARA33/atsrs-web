@@ -29,7 +29,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearc
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSearch"/);
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
-assert.match(html, /js\/employers\.js\?v=37/);
+assert.match(html, /js\/employers\.js\?v=38/);
 assert.match(html, /js\/recruiters\.js\?v=15/);
 assert.match(html, /css\/employers\.css\?v=33/);
 assert.match(html, /css\/recruiter-action-emphasis-v5926\.css\?v=5938/);
@@ -113,6 +113,7 @@ assert.match(js, /action\("Careers", "briefcase"/);
 assert.match(js, /action\("Contact", "envelope"/);
 assert.match(js, /action\("About", "info"/);
 assert.match(js, /function goToRecruiters\(name\)/);
+assert.match(js, /\[0, 300, 900\]\.forEach/);
 assert.match(js, /function openCompanyProfile\(company, data\)/);
 assert.doesNotMatch(js, /unavailableAction\("(?:Website|Careers|Contact|About)"/);
 assert.match(css, /#employersPage \.employer-card \{[\s\S]*?grid-template-columns: 108px minmax\(0, 1fr\) 128px;[\s\S]*?min-height: 270px;/);
