@@ -1,4 +1,4 @@
-/* ATSRS V5967 Personal pricing and plan comparison page. */
+/* ATSRS V5968 Personal pricing and plan comparison page. */
 html,body{margin:0;min-height:100%;background:var(--public-bg)}
 .pricing-shell{min-height:100vh}
 .pricing-main{width:min(1380px,calc(100% - 40px));margin:0 auto;padding:90px 0 110px}
@@ -11,7 +11,7 @@ html,body{margin:0;min-height:100%;background:var(--public-bg)}
 .pricing-paid-heading{margin-bottom:24px}.pricing-paid-heading h2{margin:8px 0 0;color:var(--public-ink);font:500 clamp(32px,3vw,45px)/1.08 Georgia,"Times New Roman",serif}
 .pricing-paid-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .pricing-plan{display:flex;min-width:0;flex-direction:column;padding:30px;scroll-margin-top:100px;border:1px solid var(--public-line);border-radius:16px;background:var(--public-surface)}
-.pricing-plan-free{display:grid;min-height:345px;grid-template-columns:minmax(0,1.1fr) minmax(320px,1fr) 220px;align-items:center;gap:36px;padding:38px}.pricing-plan-free .pricing-plan-summary>p:not(.public-plan-name){max-width:610px;margin:12px 0 0;color:var(--public-muted);line-height:1.55}.pricing-plan-free ul{grid-template-columns:1fr 1fr;margin:0}.pricing-plan-free-cta{display:grid;align-self:stretch;align-content:center;gap:24px}.pricing-plan-free .pricing-price{max-width:none;margin-top:0}.pricing-plan-free .pricing-action{width:100%}
+.pricing-plan-free{display:grid;min-height:320px;grid-template-columns:minmax(0,1.1fr) minmax(320px,1fr) 220px;align-items:center;gap:36px;padding:26px 38px}.pricing-plan-free .pricing-plan-summary>p:not(.public-plan-name){max-width:610px;margin:12px 0 0;color:var(--public-muted);line-height:1.55}.pricing-plan-free ul{grid-template-columns:1fr 1fr;margin:0}.pricing-plan-free-cta{display:grid;align-self:stretch;align-content:center;gap:24px}.pricing-plan-free .pricing-price{max-width:none;margin-top:0}.pricing-plan-free .pricing-action{width:100%}
 .pricing-plan-bronze{--pricing-plan-accent:#a96d36;position:relative;border-top:4px solid var(--pricing-plan-accent)}.pricing-plan-silver{--pricing-plan-accent:#8a9baa;border-top:4px solid var(--pricing-plan-accent)}.pricing-plan-gold{--pricing-plan-accent:#c99b2d;border-top:4px solid var(--pricing-plan-accent)}.pricing-plan-titan{--pricing-plan-accent:var(--public-muted);border-top:4px solid var(--pricing-plan-accent)}
 .pricing-plan-status{align-self:flex-start;margin:0 0 16px;padding:6px 9px;border:1px solid var(--public-line);border-radius:999px;color:var(--public-accent);font-size:10px;font-weight:900;letter-spacing:.1em}.pricing-plan-future .pricing-plan-status{color:var(--public-muted)}
 .pricing-plan h2{min-height:62px;margin:0;color:var(--public-ink);font:500 27px/1.08 Georgia,"Times New Roman",serif}
