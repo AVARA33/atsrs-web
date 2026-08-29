@@ -98,6 +98,12 @@
         else if(text==='Delete')button.innerHTML=icon('trash')+'<span>Delete</span>';
         else if(text==='Set as Main')button.innerHTML=icon('star')+'<span>Set as Main</span>';
       });
+      var mainRow=actions.closest('.atsrs-v156-main-row:not(.atsrs-v156-additional-row)');
+      if(mainRow){
+        var preferred=['Preview','Download','Replace','Delete'];
+        var current=qa('button',actions).map(function(button){return button.textContent.trim();});
+        if(current.join('|')!==preferred.join('|'))preferred.forEach(function(label){var button=qa('button',actions).find(function(item){return item.textContent.trim()===label;});if(button)actions.appendChild(button);});
+      }
     });
     var slots=q('.atsrs-v156-slots-box',cv);
     if(slots&&!q('.atsrs-cv-slots-toggle',cv)){
