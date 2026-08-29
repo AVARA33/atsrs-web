@@ -415,6 +415,19 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close:focus-v
 #certificatesPage #certManualPanel > .sub{margin:0 0 16px!important;color:#aebac1!important}
 #certificatesPage #certScanPanel .document-actions,
 #certificatesPage #certManualPanel .document-actions{margin:0 0 16px!important}
+#certificatesPage #certScanPanel #documentPreview:empty{display:none!important}
+#certificatesPage #certScanPanel .atsrs-field-shell:has(> #ocrRawText){display:none!important}
+#certificatesPage #certScanPanel #ocrProgress.active{
+  min-height:0!important;
+  margin:12px 0 0!important;
+  padding:11px 13px!important;
+  border:1px solid #2c383d!important;
+  border-radius:8px!important;
+  background:#0d1215!important;
+  color:#acbac2!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+}
 
 /* Bring the existing QR flow into the same modal language. */
 #certificatesPage .atsrs-qr-dialog{z-index:2147483520!important}
