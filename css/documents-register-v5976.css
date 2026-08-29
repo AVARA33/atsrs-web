@@ -127,13 +127,14 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .unified-cert-panel
 
 #certificatesPage .cert-mode-buttons{
   display:grid!important;
-  grid-template-columns:1.2fr .92fr 1fr!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:10px!important;
   margin:0!important;
 }
 
 body #app.app:not(.hidden) #certificatesPage .cert-mode-buttons > button{
   min-width:0!important;
+  max-width:none!important;
   width:100%!important;
   min-height:56px!important;
   margin:0!important;

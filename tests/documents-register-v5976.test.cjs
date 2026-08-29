@@ -5,12 +5,12 @@ const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/documents-register-v5976.css', 'utf8');
 const app = fs.readFileSync('js/app.js', 'utf8');
 
-assert.match(html, /data-atsrs-build="V5980"/);
+assert.match(html, /data-atsrs-build="V5981"/);
 assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=5980/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=5981/);
 assert.match(html, /id="documentMethodBackdrop"/);
 assert.match(html, /id="certScanPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
 assert.match(html, /id="certManualPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
@@ -28,7 +28,8 @@ assert.match(app, /event\.key!==\'Escape\'/);
 assert.match(app, /methodBackdrop\.addEventListener\('click'/);
 
 assert.match(css, /#certificatesPage \.atsrs-documents-summary/);
-assert.match(css, /grid-template-columns:1\.2fr \.92fr 1fr!important/);
+assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)!important/);
+assert.match(css, /max-width:none!important;[\s\S]*?width:100%!important/);
 assert.match(css, /#certificatesPage \.atsrs-document-type-icon/);
 assert.match(css, /#certificatesPage \.atsrs-document-filter::before\{[\s\S]*?right:13px/);
 assert.match(css, /padding:0 42px 0 12px!important/);
