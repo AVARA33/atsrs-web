@@ -170,11 +170,11 @@
     var title = document.createElement("h4");
     title.textContent = name;
     var summary = document.createElement("p");
-    summary.textContent = recruiter.linkedin_url
-      ? [recruiter.role_title, recruiter.company, recruiter.location]
-          .filter(Boolean)
-          .join(" · ")
-      : "Recruiter listed on one or more published ATSRS vacancies.";
+    summary.textContent = [
+      recruiter.role_title || "Recruiter",
+      recruiter.company,
+      recruiter.location,
+    ].filter(Boolean).join(" · ");
     copy.append(source, title, summary);
     head.append(mark, copy);
     var tags = document.createElement("div");
@@ -323,8 +323,8 @@
           recruiterMap.set(key, {
             name: name,
             company: String(row.recruiter_company || row.company || "").trim(),
-            role_title: "Recruiter on a published ATSRS vacancy",
-            location: String(row.location || "").trim(),
+            role_title: "Recruiter",
+            location: "",
             linkedin_url: "",
             vacancyCount: vacancyCounts.get(key) || 0,
           });
