@@ -312,6 +312,328 @@ html[data-theme="light"] .employer-card { background: rgba(255,255,255,.96); col
 html[data-theme="light"] .employer-card::before { background: #2563eb; box-shadow: 2px 0 12px rgba(37,99,235,.2); }
 html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employer-card:focus-within { border-color: rgba(37,99,235,.52); box-shadow: 0 15px 32px rgba(15,23,42,.14), 0 0 0 1px rgba(37,99,235,.1); }
 
+/* Companies directory — logo-led official source cards (V5943). */
+#employersPage .employers-grid {
+  gap: 24px;
+}
+#employersPage .employer-card {
+  grid-template-columns: 108px minmax(0, 1fr) 128px;
+  grid-template-rows: minmax(112px, auto) auto 44px;
+  column-gap: 24px;
+  row-gap: 11px;
+  min-height: 270px;
+  padding: 24px 24px 18px;
+  border-color: #28302c;
+  border-radius: 14px;
+  background: #080b09;
+  box-shadow: none;
+}
+#employersPage .employer-card::before {
+  width: 4px;
+  background: #48d46b;
+  box-shadow: none;
+}
+#employersPage .employer-card:hover,
+#employersPage .employer-card:focus-within {
+  transform: translateY(-1px);
+  border-color: rgba(72, 212, 107, .58);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, .24);
+}
+#employersPage .employer-card-head {
+  display: contents;
+}
+#employersPage .employer-mark {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: 104px;
+  height: 104px;
+  overflow: hidden;
+  border: 1px solid #303834;
+  border-radius: 6px;
+  background: #0b1210;
+  color: #48d46b;
+  font-size: 25px;
+  letter-spacing: .025em;
+}
+#employersPage .employer-logo {
+  display: block;
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+}
+#employersPage .employer-mark-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+#employersPage .employer-mark.has-official-logo .employer-mark-fallback {
+  display: none;
+}
+#employersPage .employer-card-copy {
+  grid-column: 2;
+  grid-row: 1;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding-top: 0;
+}
+#employersPage .employer-source {
+  color: #b9c5bf;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+#employersPage .employer-source > i {
+  color: #48d46b;
+  font-size: 14px;
+}
+#employersPage .employer-card-copy h4 {
+  margin-top: 7px;
+  font-size: 22px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+#employersPage .employer-sector-label {
+  color: #d8dfdb;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+#employersPage .employer-card-copy p {
+  max-width: 390px;
+  color: #aab3ae;
+  font-size: 13px;
+  line-height: 1.38;
+}
+#employersPage .employer-vacancy-panel {
+  grid-column: 3;
+  grid-row: 1;
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px 0 0 18px;
+  border-left: 1px solid #303733;
+}
+#employersPage .employer-vacancy-panel > span:first-child {
+  color: #d9e0dc;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+#employersPage .employer-vacancy-panel > strong {
+  color: #f7faf8;
+  font-size: 30px;
+  line-height: 1;
+}
+#employersPage .employer-vacancy-panel > span:last-child {
+  color: #8f9a94;
+  font-size: 11px;
+  line-height: 1.3;
+}
+#employersPage .employer-tags {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-content: center;
+  min-height: 38px;
+  padding: 9px 0 8px;
+  border-top: 1px solid #282f2b;
+  border-bottom: 1px solid #282f2b;
+}
+#employersPage .employer-tag {
+  padding: 5px 9px;
+  border-color: #3a433e;
+  border-radius: 5px;
+  background: #090c0b;
+  color: #c5cec9;
+  font-size: 11px;
+  font-weight: 500;
+}
+#employersPage .employer-actions {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 128px)) minmax(120px, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+#employersPage .employer-actions a,
+#employersPage .employer-actions button {
+  width: 100%;
+  min-height: 38px;
+  margin: 0;
+  padding: 0 12px;
+  border: 1px solid #37413c;
+  border-radius: 5px;
+  background: #090c0b;
+  color: #f0f5f2;
+  font-size: 12px;
+}
+#employersPage .employer-actions :is(a, button) > i {
+  color: #48d46b;
+  font-size: 15px;
+}
+#employersPage .employer-actions :is(a, button):hover,
+#employersPage .employer-actions :is(a, button):focus-visible {
+  border-color: #48d46b;
+  background: rgba(72, 212, 107, .08);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(72, 212, 107, .12);
+}
+#employersPage .employer-actions .employer-action-jobs {
+  grid-column: 4;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  gap: 10px;
+  border-color: transparent;
+  background: transparent;
+  color: #48d46b;
+}
+#employersPage .employer-actions .employer-action-jobs:hover,
+#employersPage .employer-actions .employer-action-jobs:focus-visible {
+  border-color: #37413c;
+  background: #090c0b;
+  color: #62df7e;
+}
+html[data-theme="light"] #employersPage .employer-card {
+  border-color: #d8e1ee;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, .07);
+}
+html[data-theme="light"] #employersPage .employer-card::before {
+  background: #2563eb;
+}
+html[data-theme="light"] #employersPage .employer-mark {
+  border-color: #d6dfeb;
+  background: #f8fafc;
+  color: #2563eb;
+}
+html[data-theme="light"] #employersPage .employer-source {
+  color: #64748b;
+}
+html[data-theme="light"] #employersPage .employer-source > i {
+  color: #2563eb;
+}
+html[data-theme="light"] #employersPage .employer-sector-label {
+  color: #334155;
+}
+html[data-theme="light"] #employersPage .employer-card-copy p,
+html[data-theme="light"] #employersPage .employer-vacancy-panel > span:last-child {
+  color: #64748b;
+}
+html[data-theme="light"] #employersPage .employer-vacancy-panel {
+  border-color: #e2e8f0;
+}
+html[data-theme="light"] #employersPage .employer-vacancy-panel > span:first-child {
+  color: #475569;
+}
+html[data-theme="light"] #employersPage .employer-vacancy-panel > strong {
+  color: #13233c;
+}
+html[data-theme="light"] #employersPage .employer-tags {
+  border-color: #e2e8f0;
+}
+html[data-theme="light"] #employersPage .employer-tag {
+  border-color: #cbd5e1;
+  background: #fff;
+  color: #475569;
+}
+html[data-theme="light"] #employersPage .employer-actions a,
+html[data-theme="light"] #employersPage .employer-actions button {
+  border-color: #cbd5e1;
+  background: #fff;
+  color: #172033;
+}
+html[data-theme="light"] #employersPage .employer-actions :is(a, button) > i,
+html[data-theme="light"] #employersPage .employer-actions .employer-action-jobs {
+  color: #2563eb;
+}
+html[data-theme="light"] #employersPage .employer-actions :is(a, button):hover,
+html[data-theme="light"] #employersPage .employer-actions :is(a, button):focus-visible {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+html[data-theme="light"] #employersPage .employer-actions .employer-action-jobs {
+  border-color: transparent;
+  background: transparent;
+}
+@media (max-width: 1180px) {
+  #employersPage .employer-card {
+    grid-template-columns: 82px minmax(0, 1fr) 108px;
+    column-gap: 17px;
+    padding-inline: 20px;
+  }
+  #employersPage .employer-mark {
+    width: 78px;
+    height: 78px;
+  }
+  #employersPage .employer-logo {
+    width: 58px;
+    height: 58px;
+  }
+  #employersPage .employer-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  #employersPage .employer-actions .employer-action-jobs {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}
+@media (max-width: 620px) {
+  #employersPage .employer-card {
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    gap: 13px;
+    min-height: 0;
+    padding: 18px 16px 16px 20px;
+  }
+  #employersPage .employer-mark {
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+  }
+  #employersPage .employer-logo {
+    width: 44px;
+    height: 44px;
+  }
+  #employersPage .employer-card-copy h4 {
+    font-size: 19px;
+  }
+  #employersPage .employer-vacancy-panel {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0 0;
+    border-top: 1px solid #303733;
+    border-left: 0;
+  }
+  #employersPage .employer-vacancy-panel > strong {
+    font-size: 24px;
+  }
+  #employersPage .employer-tags {
+    grid-row: 3;
+  }
+  #employersPage .employer-actions {
+    grid-row: 4;
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+  }
+  #employersPage .employer-actions .employer-action-jobs {
+    grid-column: 1 / -1;
+  }
+}
+
 /* Recruiter directory — compact contact-ready cards (V5924). */
 #recruitersPage .employers-grid {
   gap: 18px;

@@ -331,6 +331,14 @@
         .join("") || "CO"
     );
   }
+  function officialLogoUrl(website) {
+    if (!website) return "";
+    try {
+      return new URL("/favicon.ico", website).href;
+    } catch (_error) {
+      return "";
+    }
+  }
   function buttonLink(url, label, icon) {
     var link = document.createElement("a");
     link.href = url;
@@ -380,7 +388,25 @@
     head.className = "employer-card-head";
     var mark = document.createElement("div");
     mark.className = "employer-mark";
-    mark.textContent = data.mark || initials(company.name);
+    var markFallback = document.createElement("span");
+    markFallback.className = "employer-mark-fallback";
+    markFallback.textContent = data.mark || initials(company.name);
+    mark.appendChild(markFallback);
+    var logoUrl = officialLogoUrl(data.website);
+    if (logoUrl) {
+      var logo = document.createElement("img");
+      logo.className = "employer-logo";
+      logo.src = logoUrl;
+      logo.alt = "";
+      logo.setAttribute("aria-hidden", "true");
+      logo.addEventListener("load", function () {
+        mark.classList.add("has-official-logo");
+      });
+      logo.addEventListener("error", function () {
+        logo.remove();
+      });
+      mark.prepend(logo);
+    }
     var copy = document.createElement("div");
     copy.className = "employer-card-copy";
     var source = document.createElement("span");
@@ -392,23 +418,40 @@
       (data.website ? "Official public sources" : "Active in JobSearch");
     var title = document.createElement("h4");
     title.textContent = company.name;
-    var detailLabel = document.createElement("strong");
-    detailLabel.className = "employer-detail-label";
-    detailLabel.textContent = data.summary ? "Activity" : "ATSRS listing";
+    var sectorLabel = document.createElement("strong");
+    sectorLabel.className = "employer-sector-label";
+    sectorLabel.textContent = data.sector || "ATSRS company listing";
     var summary = document.createElement("p");
     summary.textContent =
       data.summary ||
       "Published company vacancies are available in ATSRS JobSearch.";
-    copy.append(source, title, detailLabel, summary);
+    copy.append(source, title, sectorLabel, summary);
     head.append(mark, copy);
+    var vacancy = document.createElement("div");
+    vacancy.className = "employer-vacancy-panel";
+    var vacancyKicker = document.createElement("span");
+    vacancyKicker.textContent = "Active vacancies";
+    var vacancyNumber = document.createElement("strong");
+    vacancyNumber.textContent = String(company.vacancyCount || 0);
+    var vacancyHint = document.createElement("span");
+    vacancyHint.textContent = company.vacancyCount > 0
+      ? "Available in ATSRS"
+      : "No active jobs";
+    vacancy.append(vacancyKicker, vacancyNumber, vacancyHint);
     var tags = document.createElement("div");
     tags.className = "employer-tags";
-    [vacancyLabel(company.vacancyCount || 0)].concat(data.tags || []).forEach(function (value, index) {
+    (data.tags || []).forEach(function (value) {
       var tag = document.createElement("span");
-      tag.className = "employer-tag" + (index === 0 ? " employer-vacancy-count" : "");
+      tag.className = "employer-tag";
       tag.textContent = value;
       tags.appendChild(tag);
     });
+    if (!data.tags || !data.tags.length) {
+      var listingTag = document.createElement("span");
+      listingTag.className = "employer-tag";
+      listingTag.textContent = "ATSRS listing";
+      tags.appendChild(listingTag);
+    }
     var actions = document.createElement("div");
     actions.className = "employer-actions";
     if (data.website)
@@ -417,13 +460,14 @@
         buttonLink(data.careers, "Careers", "briefcase"),
         buttonLink(data.contact, "Contact", "arrow-square-out"),
       );
-    else
-      actions.append(
-        action("View jobs", "briefcase", function () {
-          goToJobs(company.name);
-        }),
-      );
-    article.append(head, tags, actions);
+    if (company.vacancyCount > 0) {
+      var jobsAction = action("View jobs", "arrow-right", function () {
+        goToJobs(company.name);
+      });
+      jobsAction.className = "employer-action-jobs";
+      actions.append(jobsAction);
+    }
+    article.append(head, vacancy, tags, actions);
     return article;
   }
   function render() {
