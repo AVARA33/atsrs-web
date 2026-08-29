@@ -397,6 +397,7 @@
         tags: company.tags || [],
       },
       verified[company.name] || {},
+      (window.atsrsCompanyDirectoryLinks || {})[company.name] || {},
     );
   }
   function jobCategories(row) {
@@ -505,80 +506,6 @@
       }, delay);
     });
   }
-  function goToRecruiters(name) {
-    if (typeof window.showPage === "function")
-      window.showPage("recruiters", byId("navRecruiters"));
-    function applyRecruiterCompanyFilter() {
-      var select = byId("recruitersCompany"),
-        search = byId("recruitersSearch"),
-        hasCompany = select && Array.from(select.options).some(function (option) {
-          return option.value === name;
-        });
-      if (select) select.value = hasCompany ? name : "";
-      if (search) search.value = hasCompany ? "" : name;
-      if (hasCompany && select)
-        select.dispatchEvent(new Event("change", { bubbles: true }));
-      else if (search)
-        search.dispatchEvent(new Event("input", { bubbles: true }));
-      return Boolean(hasCompany);
-    }
-    [0, 300, 900].forEach(function (delay) {
-      setTimeout(function () {
-        if (applyRecruiterCompanyFilter()) return;
-      }, delay);
-    });
-  }
-  function ensureCompanyProfileDialog() {
-    var dialog = byId("employerProfileDialog");
-    if (dialog) return dialog;
-    dialog = document.createElement("dialog");
-    dialog.id = "employerProfileDialog";
-    dialog.className = "employer-profile-dialog";
-    dialog.innerHTML =
-      '<div class="employer-profile-dialog-head"><div><span>ATSRS COMPANY PROFILE</span><h3 id="employerProfileTitle"></h3></div><button type="button" data-employer-profile-close aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button></div>' +
-      '<p id="employerProfileSummary" class="employer-profile-summary"></p>' +
-      '<div class="employer-profile-facts"><div><span>Sector</span><strong id="employerProfileSector"></strong></div><div><span>Active vacancies</span><strong id="employerProfileVacancies"></strong></div><div><span>Source</span><strong id="employerProfileSource"></strong></div></div>' +
-      '<div id="employerProfileTags" class="employer-tags"></div>' +
-      '<div class="employer-profile-dialog-actions"><button type="button" data-employer-profile-recruiters><i class="ph ph-address-book" aria-hidden="true"></i>Contact routes</button><button type="button" data-employer-profile-jobs><i class="ph ph-briefcase" aria-hidden="true"></i>View jobs</button></div>';
-    document.body.appendChild(dialog);
-    dialog.querySelector("[data-employer-profile-close]").addEventListener("click", function () {
-      dialog.close();
-    });
-    dialog.addEventListener("click", function (event) {
-      if (event.target === dialog) dialog.close();
-    });
-    return dialog;
-  }
-  function openCompanyProfile(company, data) {
-    var dialog = ensureCompanyProfileDialog();
-    byId("employerProfileTitle").textContent = company.name;
-    byId("employerProfileSummary").textContent = data.summary ||
-      "Company information is based on active vacancies published in ATSRS JobSearch.";
-    byId("employerProfileSector").textContent = data.sector || "Active vacancies";
-    byId("employerProfileVacancies").textContent = vacancyLabel(company.vacancyCount || 0);
-    byId("employerProfileSource").textContent = data.website
-      ? "Verified official public source"
-      : "Published ATSRS vacancies";
-    var tags = byId("employerProfileTags");
-    tags.textContent = "";
-    (data.tags || []).forEach(function (value) {
-      var tag = document.createElement("span");
-      tag.className = "employer-tag";
-      tag.textContent = value;
-      tags.appendChild(tag);
-    });
-    var jobs = dialog.querySelector("[data-employer-profile-jobs]");
-    jobs.disabled = !(company.vacancyCount > 0);
-    jobs.onclick = function () {
-      dialog.close();
-      goToJobs(company.name);
-    };
-    dialog.querySelector("[data-employer-profile-recruiters]").onclick = function () {
-      dialog.close();
-      goToRecruiters(company.name);
-    };
-    dialog.showModal();
-  }
   function card(company) {
     var data = companyData(company),
       article = document.createElement("article");
@@ -656,26 +583,10 @@
     var actions = document.createElement("div");
     actions.className = "employer-actions";
     actions.append(
-      data.website
-        ? buttonLink(data.website, "Website", "arrow-square-out")
-        : action("Company info", "buildings", function () {
-            openCompanyProfile(company, data);
-          }),
-      data.careers
-        ? buttonLink(data.careers, "Careers", "briefcase")
-        : action("Careers", "briefcase", function () {
-            goToJobs(company.name);
-          }),
-      data.contact
-        ? buttonLink(data.contact, "Contact", "envelope")
-        : action("Contact", "envelope", function () {
-            goToRecruiters(company.name);
-          }),
-      data.about || data.website
-        ? buttonLink(data.about || data.website, "About", "info")
-        : action("About", "info", function () {
-            openCompanyProfile(company, data);
-          }),
+      buttonLink(data.website, "Website", "arrow-square-out"),
+      buttonLink(data.careers, "Careers", "briefcase"),
+      buttonLink(data.contact, "Contact", "envelope"),
+      buttonLink(data.about, "About", "info"),
     );
     if (company.vacancyCount > 0) {
       var jobsAction = action("View jobs", "arrow-right", function () {
