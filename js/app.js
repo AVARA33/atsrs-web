@@ -379,7 +379,12 @@
     var alertBox=byId('manualFormAlert');
     if(alertBox){
       var quota=result&&result.quota;
-      var quotaNote=quota&&typeof quota.remaining==='number'?' '+quota.remaining+' of '+quota.scan_limit+' AI scans remain this month.':'';
+      var quotaNote='';
+      if(quota&&typeof quota.remaining==='number'){
+        quotaNote=quota.plan==='free'
+          ?' Your one-time Free AI Document Scan has now been used.'
+          :' '+quota.remaining+' of '+quota.scan_limit+' AI scans remain this month.';
+      }
       alertBox.textContent=(dateReview?'AI date review required. Conflicting date values were left blank. ':'')+(warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.')+quotaNote;
       alertBox.classList.add('active');
       alertBox.classList.add('atsrs-ai-review-warning');

@@ -42,7 +42,7 @@ type ScanQuota = {
   scan_limit: number;
   remaining: number;
   allowed: boolean;
-  reason: "reserved" | "monthly_limit" | "cooldown";
+  reason: "reserved" | "lifetime_limit" | "monthly_limit" | "cooldown";
 };
 
 const extractionSchema = {
@@ -218,6 +218,12 @@ Deno.serve(async (req: Request) => {
     if (quota.reason === "cooldown") {
       return json(req, 429, {
         error: "Please wait a few seconds before starting another AI Scan.",
+        quota,
+      });
+    }
+    if (quota.reason === "lifetime_limit") {
+      return json(req, 429, {
+        error: "Your Free plan includes one lifetime AI Document Scan. This allowance has already been used.",
         quota,
       });
     }
