@@ -5,12 +5,12 @@ const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/documents-register-v5976.css', 'utf8');
 const app = fs.readFileSync('js/app.js', 'utf8');
 
-assert.match(html, /data-atsrs-build="V5981"/);
+assert.match(html, /data-atsrs-build="V5982"/);
 assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=5981/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=5982/);
 assert.match(html, /id="documentMethodBackdrop"/);
 assert.match(html, /id="certScanPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
 assert.match(html, /id="certManualPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
@@ -26,6 +26,9 @@ assert.match(app, /Number\(st\.days\)>0&&Number\(st\.days\)<=90\?'is-expiring'/)
 assert.match(app, /document\.body\.classList\.toggle\('atsrs-document-method-open',modalOpen\)/);
 assert.match(app, /event\.key!==\'Escape\'/);
 assert.match(app, /methodBackdrop\.addEventListener\('click'/);
+assert.match(app, /function updateDocumentListScroll\(visibleCount\)/);
+assert.match(app, /Number\(visibleCount\)>10/);
+assert.match(app, /updateDocumentListScroll\(rows\.length\)/);
 
 assert.match(css, /#certificatesPage \.atsrs-documents-summary/);
 assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)!important/);
@@ -40,5 +43,12 @@ assert.match(css, /box-shadow:0 0 0 100vmax rgba\(0,3,4,\.55\)/);
 assert.match(css, /#certScanPanel\.cert-mode-panel\.active[\s\S]*?display:block!important/);
 assert.match(css, /background:rgba\(0,3,4,\.72\)/);
 assert.match(css, /\.atsrs-field-shell:has\(> #ocrRawText\)\{display:none!important\}/);
+assert.match(css, /\.table-wrap\.atsrs-document-list-scroll/);
+assert.match(css, /max-height:var\(--atsrs-document-list-max-height,616px\)!important/);
+assert.match(css, /position:sticky!important/);
+assert.match(css, /table tbody \.atsrs-document-status\.is-valid/);
+assert.match(css, /#deleteSelectedCertsBtn\{[\s\S]*?background:#fff5f6!important/);
+assert.match(css, /\.atsrs-document-sort\{[\s\S]*?background:transparent!important/);
+assert.match(css, /#certManualPanel > \.sub\{color:#5c6b74!important/);
 
 console.log('Documents register V5976 checks passed.');

@@ -211,6 +211,18 @@ html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-fi
 #certificatesPage #deleteSelectedCertsBtn:disabled{opacity:.42!important}
 
 body #app.app:not(.hidden) #certificatesPage .table-wrap{overflow-x:auto!important}
+body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll{
+  max-height:var(--atsrs-document-list-max-height,616px)!important;
+  overflow-x:auto!important;
+  overflow-y:auto!important;
+  scrollbar-gutter:stable;
+}
+body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll .atsrs-document-register thead th{
+  position:sticky!important;
+  top:0!important;
+  z-index:4!important;
+  background:#101416!important;
+}
 body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{min-width:1040px!important}
 #certificatesPage .atsrs-document-col-select{width:48px}
 #certificatesPage .atsrs-document-col-name{width:30%}
@@ -228,6 +240,17 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{min-width:
   color:#e6ecef!important;
   font-size:12px!important;
   font-weight:750!important;
+}
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-sort{
+  width:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
 #certificatesPage .atsrs-document-register tbody tr{background:#060809!important}
 #certificatesPage .atsrs-document-register tbody tr:hover{background:#0b0f10!important}
@@ -318,6 +341,10 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) #certificatesP
 html[data-theme="light"] #certificatesPage .atsrs-documents-title-block h2{color:#152027!important;-webkit-text-fill-color:#152027!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-summary-item > span{color:#56656f}
 html[data-theme="light"] #certificatesPage .atsrs-document-summary-item > strong{color:#152027}
+html[data-theme="light"] #certificatesPage .atsrs-document-summary-item.is-expiring > i,
+html[data-theme="light"] #certificatesPage .atsrs-document-summary-item.is-expiring > small{color:#8a6500!important}
+html[data-theme="light"] #certificatesPage .atsrs-document-summary-item.is-no-expiry > i,
+html[data-theme="light"] #certificatesPage .atsrs-document-summary-item.is-no-expiry > small{color:#b4232c!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-intake-copy,
 html[data-theme="light"] #certificatesPage .atsrs-document-intake-copy .cert-flow-note{color:#5a6973!important}
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .cert-mode-buttons > button{
@@ -326,23 +353,41 @@ html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .cert-mode
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .cert-mode-buttons > button.active,
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .cert-mode-buttons > button:hover{border-color:#2d9141!important;background:#f7fbf8!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-filter input{border-color:#ccd6dc!important;background:#fff!important;color:#1b2830!important}
+html[data-theme="light"] #certificatesPage #certSelectionCount{color:#5b6a74!important}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage #deleteSelectedCertsBtn{
+  border-color:#e0b8bc!important;
+  background:#fff5f6!important;
+  color:#a62935!important;
+  -webkit-text-fill-color:#a62935!important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage #deleteSelectedCertsBtn:disabled{
+  border-color:#d6dfe4!important;
+  background:#eef2f4!important;
+  color:#73828b!important;
+  -webkit-text-fill-color:#73828b!important;
+}
 html[data-theme="light"] #certificatesPage .atsrs-document-register thead{background:#f2f5f7!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-register thead th{color:#25343d!important}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll .atsrs-document-register thead th{background:#f2f5f7!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-register tbody tr{background:#fff!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-register tbody tr:hover{background:#f7faf8!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-register tbody td{color:#33434c!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-name{color:#162129!important}
 html[data-theme="light"] #certificatesPage .atsrs-upload-date{color:#647785!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-status.is-valid{border-color:#addbb5!important;background:#edf8ef!important;color:#187642!important;-webkit-text-fill-color:#187642!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-status.is-expiring{border-color:#e2cc84!important;background:#fff9e7!important;color:#805b00!important;-webkit-text-fill-color:#805b00!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-status.is-neutral{border-color:#cbd6dc!important;background:#f4f7f9!important;color:#536873!important;-webkit-text-fill-color:#536873!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-green{color:#247b37!important;background:#eaf6ed!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-blue{color:#315fae!important;background:#edf3ff!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-violet{color:#6f4ca5!important;background:#f3effb!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-amber{color:#8a5914!important;background:#fff4e3!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-red{color:#a33945!important;background:#fff0f2!important}
-html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-gold{color:#806500!important;background:#fff9d9!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-status.is-valid{border-color:#addbb5!important;background:#edf8ef!important;color:#187642!important;-webkit-text-fill-color:#187642!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-status.is-expiring{border-color:#e2cc84!important;background:#fff9e7!important;color:#805b00!important;-webkit-text-fill-color:#805b00!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-status.is-expired{border-color:#e3b2b7!important;background:#fff1f2!important;color:#a62935!important;-webkit-text-fill-color:#a62935!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-status.is-neutral{border-color:#cbd6dc!important;background:#f4f7f9!important;color:#536873!important;-webkit-text-fill-color:#536873!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-type-icon.is-green{color:#247b37!important;background:#eaf6ed!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-type-icon.is-blue{color:#315fae!important;background:#edf3ff!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-type-icon.is-violet{color:#6f4ca5!important;background:#f3effb!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-type-icon.is-amber{color:#8a5914!important;background:#fff4e3!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-type-icon.is-red{color:#a33945!important;background:#fff0f2!important}
+html[data-theme="light"] body #app #certificatesPage table tbody .atsrs-document-type-icon.is-gold{color:#806500!important;background:#fff9d9!important}
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button{border-color:#cdd7dc!important;background:#fff!important;color:#27343b!important}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button.atsrs-v172-delete,
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button.atsrs-v172-delete > i{color:#b4232c!important;-webkit-text-fill-color:#b4232c!important}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll{scrollbar-color:#aebac2 #eef2f4}
 
 /* Documents method dialogs: keep the register visible behind a neutral dark overlay. */
 body.atsrs-document-method-open,
@@ -448,6 +493,8 @@ html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage #certManua
 html[data-theme="light"] #certificatesPage .atsrs-qr-dialog-card{border-color:#cdd7dc!important;background:#fff!important;color:#1c2930!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-modal-head{border-bottom-color:#dde4e8}
 html[data-theme="light"] #certificatesPage .atsrs-document-modal-head h3{color:#172229!important}
+html[data-theme="light"] #certificatesPage #certScanPanel > .sub,
+html[data-theme="light"] #certificatesPage #certManualPanel > .sub{color:#5c6b74!important;-webkit-text-fill-color:#5c6b74!important}
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close{border-color:#cdd7dc!important;background:#f8fafb!important;color:#27343b!important}
 
 @media(max-width:1180px){

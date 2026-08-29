@@ -610,6 +610,20 @@
     put('documentSummaryNoExpiry',counts.noExpiry);put('documentSummaryNoExpiryPercent',percent(counts.noExpiry));
   }
 
+  function updateDocumentListScroll(visibleCount){
+    var tableBody=byId('certTable');
+    var wrap=tableBody&&tableBody.closest?tableBody.closest('.table-wrap'):null;
+    var table=tableBody&&tableBody.closest?tableBody.closest('table'):null;
+    if(!wrap||!table)return;
+    var shouldScroll=Number(visibleCount)>10;
+    wrap.classList.toggle('atsrs-document-list-scroll',shouldScroll);
+    if(!shouldScroll){wrap.style.removeProperty('--atsrs-document-list-max-height');return;}
+    var header=table.querySelector('thead');
+    var rows=Array.prototype.slice.call(tableBody.querySelectorAll('tr'),0,10);
+    var height=(header?header.getBoundingClientRect().height:0)+rows.reduce(function(total,row){return total+row.getBoundingClientRect().height;},0);
+    wrap.style.setProperty('--atsrs-document-list-max-height',Math.ceil(height)+'px');
+  }
+
   function updateRegisterControls(visibleIndices){
     var count=byId('certSelectionCount');
     var remove=byId('deleteSelectedCertsBtn');
@@ -1011,6 +1025,7 @@
       html='<tr><td colspan="7" class="atsrs-document-empty">'+emptyText+'</td></tr>';
     }
     byId('certTable').innerHTML=html;
+    updateDocumentListScroll(rows.length);
     updateSortHeaders();
     updateRegisterControls(rows.map(function(row){return row.index;}));
   }
