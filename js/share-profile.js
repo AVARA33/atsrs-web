@@ -119,12 +119,13 @@
     try{await navigator.clipboard.writeText(value);return true;}catch(error){}
     var area=document.createElement('textarea');area.value=value;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();var copied=false;try{copied=document.execCommand('copy');}catch(error){}area.remove();return copied;
   }
-  function recruiterMailto(recipient,shareUrl){
+  function recruiterGmailComposeUrl(recipient,shareUrl){
     var email=verifiedEmail(recipient&&recipient.email);if(!email||!shareUrl)return'';
     var name=String(recipient&&recipient.name||'Recruiter').trim()||'Recruiter';
     var subject='ATSRS profile shared with '+name;
     var body='Hello '+name+',\n\nI am sharing my ATSRS profile through this secure link. The link expires in 24 hours:\n\n'+shareUrl+'\n\nKind regards,';
-    return'mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    var params=new URLSearchParams({view:'cm',fs:'1',to:email,su:subject,body:body});
+    return'https://mail.google.com/mail/?'+params.toString();
   }
   async function createValidatedShare(fileIds,expiresAt,audience){
     var request={action:'create',file_ids:fileIds,expires_at:expiresAt,audience:audience};
@@ -334,15 +335,16 @@
     var result=await ownerCall({action:'create_recruiter_email_share',recruiter_id:recruiterId});
     var token=String(result&&result.token||''),url=String(result&&result.share_url||shareUrl(token)||'');
     if(!token||!url||!await validateShareToken(token))throw new Error('The 24-hour profile link could not be verified.');
-    var recipient=result.recipient||{},email=verifiedEmail(recipient.email),mailto=recruiterMailto(recipient,url);
-    if(!email||!mailto)throw new Error('This recruiter no longer has a verified professional email.');
+    var recipient=result.recipient||{},email=verifiedEmail(recipient.email),composeUrl=recruiterGmailComposeUrl(recipient,url);
+    if(!email||!composeUrl)throw new Error('This recruiter no longer has a verified professional email.');
     activeShare=result.share||null;
     if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);setOwnerToken(activeShare.id,token);}
     setKnownLink(url);renderOwnerStatus();
     var copied=await copyText(url);
     ownerMessage(copied?'24-hour recruiter link copied. Email draft is opening.':'24-hour recruiter link created. Email draft is opening.');
     window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));
-    window.location.href=mailto;
+    var composeWindow=window.open(composeUrl,'_blank');
+    if(composeWindow){try{composeWindow.opener=null;}catch(error){}}else window.location.href=composeUrl;
     return{share_url:url,recipient:recipient,copied:copied,email_sent:false};
   };
   window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
