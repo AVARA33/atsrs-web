@@ -1,6 +1,26 @@
 (function () {
   "use strict";
   var verified = {
+      Airswift: {
+        mark: "A",
+        summary:
+          "Global workforce solutions and consulting services for the energy industry.",
+        sector: "Workforce Solutions",
+        tags: ["Energy Services", "Workforce Solutions"],
+        website: "https://www.airswift.com/",
+        careers: "https://www.airswift.com/employee/",
+        contact: "https://www.airswift.com/contact/",
+      },
+      Boskalis: {
+        mark: "B",
+        summary:
+          "Leading global provider of dredging, maritime and offshore services.",
+        sector: "Offshore & Marine Services",
+        tags: ["Offshore Services", "Marine Construction", "Dredging"],
+        website: "https://boskalis.com/",
+        careers: "https://careers.boskalis.com/",
+        contact: "https://boskalis.com/contact",
+      },
       Subsea7: {
         mark: "S7",
         summary:
