@@ -327,6 +327,8 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
   border-radius: 14px;
   background: #080b09;
   box-shadow: none;
+  content-visibility: auto;
+  contain-intrinsic-block-size: 270px;
 }
 #employersPage .employer-card::before {
   width: 4px;

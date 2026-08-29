@@ -355,7 +355,9 @@
       "Greensea IQ": "assets/company-logos/greensea-iq.png"
     },
     companies = [],
-    loadToken = 0;
+    loadToken = 0,
+    loadInFlight = false,
+    lastLoadedAt = 0;
   var categoryRules = [
     { label: "ROV & Robotics", pattern: /\b(rov|robot(?:ics)?|autonomous|auv|unmanned)\b/i },
     { label: "Subsea & Offshore", pattern: /\b(subsea|offshore|underwater|diving|deepwater)\b/i },
@@ -526,6 +528,9 @@
       logo.className = "employer-logo";
       logo.src = logoUrl;
       logo.alt = "";
+      logo.loading = "lazy";
+      logo.decoding = "async";
+      logo.fetchPriority = "low";
       logo.setAttribute("aria-hidden", "true");
       logo.addEventListener("load", function () {
         mark.classList.add("has-official-logo");
@@ -625,9 +630,11 @@
       return a.name.localeCompare(b.name);
     });
     grid.textContent = "";
+    var fragment = document.createDocumentFragment();
     visible.forEach(function (company) {
-      grid.appendChild(card(company));
+      fragment.appendChild(card(company));
     });
+    grid.appendChild(fragment);
     byId("employersEmpty").classList.toggle("hidden", visible.length > 0);
     byId("employersVisibleCount").textContent =
       visible.length + " of " + companies.length + " companies";
@@ -635,6 +642,9 @@
   async function loadCompanies() {
     var client = db();
     if (!client) return;
+    if (loadInFlight) return;
+    if (lastLoadedAt && Date.now() - lastLoadedAt < 300000) return;
+    loadInFlight = true;
     var token = ++loadToken;
     try {
       var result = await client.rpc("atsrs_jobs_facets");
@@ -660,10 +670,13 @@
       var message = byId("employersMessage");
       if (message) message.textContent = "";
       render();
+      lastLoadedAt = Date.now();
     } catch (error) {
       console.warn("ATSRS company directory could not be loaded", error);
       var message = byId("employersMessage");
       if (message) message.textContent = "Companies are temporarily unavailable. Please try again.";
+    } finally {
+      loadInFlight = false;
     }
   }
   function refreshSectorOptions() {
