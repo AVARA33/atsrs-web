@@ -7,6 +7,7 @@ const sharing = fs.readFileSync('js/share-profile.js', 'utf8');
 const sharingUi = fs.readFileSync('js/profile-sharing-v1.js', 'utf8');
 const edge = fs.readFileSync('supabase/functions/share-profile/index.ts', 'utf8');
 const migration = fs.readFileSync('supabase/migrations/20260829031507_recruiter_email_sharing.sql', 'utf8');
+const serviceGrant = fs.readFileSync('supabase/migrations/20260829033000_grant_recruiter_email_share_service_access.sql', 'utf8');
 
 assert.match(index, /data-atsrs-build="V5933"/);
 assert.match(index, /js\/recruiters\.js\?v=13/);
@@ -34,6 +35,7 @@ assert.match(edge, /email_sent: false/);
 assert.match(migration, /professional_email text/);
 assert.match(migration, /recipient_recruiter_id uuid/);
 assert.match(migration, /recipient_email text/);
+assert.match(serviceGrant, /grant select on table public\.atsrs_recruiters to service_role/);
 assert.match(sharingUi, /share\.recipient_name/);
 assert.match(sharingUi, /share\.recipient_email/);
 
