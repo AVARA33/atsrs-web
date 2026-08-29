@@ -175,7 +175,7 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
   content:'\E30C';
   position:absolute;
   z-index:2;
-  left:13px;
+  right:13px;
   top:50%;
   transform:translateY(-50%);
   color:#8c9aa4;
@@ -186,7 +186,7 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
 #certificatesPage .atsrs-document-filter input{
   height:42px!important;
   min-height:42px!important;
-  padding:0 42px!important;
+  padding:0 42px 0 12px!important;
   border:1px solid #30393e!important;
   border-radius:8px!important;
   background:#090c0e!important;
@@ -195,7 +195,7 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
 html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-filter input.atsrs-field-control{
   height:42px!important;
   min-height:42px!important;
-  padding:0 42px!important;
+  padding:0 42px 0 12px!important;
 }
 #certificatesPage .atsrs-document-bulk-actions{gap:12px!important}
 #certificatesPage #certSelectionCount{color:#aab6be!important;font-size:12px!important}
