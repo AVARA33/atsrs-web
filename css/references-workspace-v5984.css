@@ -68,6 +68,8 @@ body.personal-mode #refsPage .atsrs-reference-tabs button small{display:none!imp
 body.personal-mode #refsPage .atsrs-reference-tabs button.is-active{border-bottom-color:#55d06a!important;color:#55d06a!important;transform:translateY(-8px)!important;}
 body.personal-mode #refsPage .atsrs-reference-tools{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:10px!important;padding-bottom:8px!important;flex:0 0 auto!important;}
 body.personal-mode #refsPage .atsrs-reference-search{position:relative!important;display:block!important;flex:0 0 270px!important;width:270px!important;}
+body.personal-mode #refsPage .atsrs-reference-search.atsrs-field-shell{padding:0!important;border:0!important;border-radius:8px!important;background:transparent!important;box-shadow:none!important;outline:0!important;}
+body.personal-mode #refsPage .atsrs-reference-search .atsrs-field-label{display:none!important;}
 /* ATSRS product rule: search icons sit at the trailing (right) edge. */
 body.personal-mode #refsPage .atsrs-reference-search i{position:absolute!important;right:12px!important;left:auto!important;top:50%!important;transform:translateY(-50%)!important;color:#78847e!important;font-size:16px!important;pointer-events:none!important;}
 body.personal-mode #refsPage .atsrs-reference-search input{width:100%!important;height:38px!important;padding:8px 38px 8px 12px!important;border:1px solid #2a3530!important;border-radius:8px!important;background:#080a09!important;color:#eef3f0!important;font-size:12px!important;outline:0!important;}
@@ -121,6 +123,7 @@ html[data-theme="light"] body.personal-mode #refsPage :where(.cv-main-panel,.cv-
 html[data-theme="light"] body.personal-mode #refsPage :where(.atsrs-v156-main-row,.atsrs-reference-table-head,.atsrs-v134-row){border-color:#dfe6e2!important;}
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-reference-table-head{background:#f3f6f4!important;color:#69756f!important;}
 html[data-theme="light"] body.personal-mode #refsPage :where(.atsrs-reference-search input,.atsrs-reference-filter-button,.atsrs-reference-upload-button,.atsrs-v156-actions button,.cv-actions button,.cv-generator-action-grid>button,.atsrs-v134-actions button,#aiCvSourceStatus){background:#fff!important;border-color:#ced8d2!important;color:#1d2822!important;}
+html[data-theme="light"] body.personal-mode #refsPage .atsrs-reference-search.atsrs-field-shell{background:transparent!important;border:0!important;box-shadow:none!important;}
 html[data-theme="light"] body.personal-mode #refsPage :where(.atsrs-v156-main-name b,.atsrs-ref-document b){color:#17211c!important;}
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-v134-row:hover{background:#f6f9f7!important;}
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-reference-filter-menu{background:#fff!important;border-color:#d2dbd6!important;}
