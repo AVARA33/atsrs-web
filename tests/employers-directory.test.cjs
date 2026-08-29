@@ -31,7 +31,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSear
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/route-feature-loader\.js\?v=5971/);
-assert.match(html, /js\/company-directory-links\.js\?v=3/);
+assert.match(html, /js\/company-directory-links\.js\?v=4/);
 assert.match(html, /js\/company-logo-assets\.js\?v=1/);
 assert.match(html, /js\/employers\.js\?v=42/);
 assert.match(html, /js\/recruiters\.js\?v=16/);
@@ -55,6 +55,8 @@ assert.match(js, /tags: \["Energy Services", "Workforce Solutions"\]/);
 assert.match(js, /tags: \["Offshore Services", "Marine Construction", "Dredging"\]/);
 assert.match(js, /https:\/\/www\.airswift\.com\/contact\//);
 assert.match(js, /https:\/\/boskalis\.com\/contact/);
+assert.equal((fs.readFileSync('js/company-directory-links.js', 'utf8').match(/https:\/\/acteon\.com\/about\/our-company\/about-acteon/g) || []).length, 2);
+assert.doesNotMatch(fs.readFileSync('js/company-directory-links.js', 'utf8'), /acteon\.com\/about-us/);
 assert.match(js, /Object\.keys\(verified\)\.forEach/);
 assert.doesNotMatch(js, /mailto:/, 'The directory must not send unsolicited email');
 assert.match(js, /jobsCompanyFilter/);

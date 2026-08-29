@@ -10,7 +10,7 @@
     "website": "https://www.acteon.com/",
     "careers": "https://careers.acteon.com/",
     "contact": "https://www.acteon.com/contact-us/",
-    "about": "https://www.acteon.com/about-us/"
+    "about": "https://acteon.com/about/our-company/about-acteon"
   },
   "50Hertz Transmission GmbH": {
     "website": "https://www.50hertz.com/",
@@ -760,7 +760,7 @@
     "website": "https://www.acteon.com/",
     "careers": "https://careers.acteon.com/",
     "contact": "https://www.acteon.com/contact-us/",
-    "about": "https://www.acteon.com/about-us/"
+    "about": "https://acteon.com/about/our-company/about-acteon"
   },
   "Mermaid Subsea Services (Co) Ltd": {
     "website": "https://mermaidsubsea.co.uk/",
