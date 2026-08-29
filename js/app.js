@@ -589,7 +589,7 @@
     rows.forEach(function(row){
       var st=row.statusData||{};
       if(st.noExpiry||String(row.item&&row.item.expiry||'').toUpperCase()==='N/A')counts.noExpiry++;
-      else if(!st.expired&&Number(st.days)>0&&Number(st.days)<=90)counts.expiring++;
+      else if(st.expired||Number(st.days)<=90)counts.expiring++;
       else if(!st.expired)counts.valid++;
     });
     var total=rows.length;

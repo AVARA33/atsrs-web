@@ -40,6 +40,7 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage{
 #certificatesPage .atsrs-documents-title-block h2{
   margin:0!important;
   color:var(--document-text)!important;
+  -webkit-text-fill-color:var(--document-text)!important;
   font-size:34px!important;
   font-weight:760!important;
   letter-spacing:-.035em!important;
@@ -191,6 +192,11 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
   background:#090c0e!important;
   color:#eef3f5!important;
 }
+html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-filter input.atsrs-field-control{
+  height:42px!important;
+  min-height:42px!important;
+  padding:0 42px!important;
+}
 #certificatesPage .atsrs-document-bulk-actions{gap:12px!important}
 #certificatesPage #certSelectionCount{color:#aab6be!important;font-size:12px!important}
 #certificatesPage #deleteSelectedCertsBtn{
@@ -308,7 +314,7 @@ html[data-theme="light"] body.personal-mode #app.app:not(.hidden) #certificatesP
   --document-muted:#64727c;
   --document-green:#23843a;
 }
-html[data-theme="light"] #certificatesPage .atsrs-documents-title-block h2{color:#152027!important}
+html[data-theme="light"] #certificatesPage .atsrs-documents-title-block h2{color:#152027!important;-webkit-text-fill-color:#152027!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-summary-item > span{color:#56656f}
 html[data-theme="light"] #certificatesPage .atsrs-document-summary-item > strong{color:#152027}
 html[data-theme="light"] #certificatesPage .atsrs-document-intake-copy,
