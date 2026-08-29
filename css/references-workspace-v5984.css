@@ -32,6 +32,13 @@ body.personal-mode #refsPage #cvStatusBadge{display:none!important;}
 body.personal-mode #refsPage #cvCardText{order:4!important;margin:12px 0 0 auto!important;font-size:11px!important;color:#98a29e!important;text-align:right!important;}
 body.personal-mode #refsPage #cvFileInfo{margin:0!important;padding:0!important;min-height:0!important;background:transparent!important;border:0!important;box-shadow:none!important;}
 body.personal-mode #refsPage .atsrs-v156-main-box{padding:0!important;border:0!important;background:transparent!important;}
+html body.personal-mode #app #refsPage[data-references-workspace="v5984"] .cv-main-panel .atsrs-v156-main-box{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
 body.personal-mode #refsPage .atsrs-v156-main-row{
   min-height:70px!important;height:auto!important;padding:10px 0!important;border-top:1px solid #25302c!important;border-right:0!important;border-bottom:1px solid #25302c!important;border-left:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;grid-template-columns:minmax(0,1fr) auto!important;
 }
