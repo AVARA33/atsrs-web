@@ -30,6 +30,7 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="employersSearc
 assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSearch"/);
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
+assert.match(html, /js\/route-feature-loader\.js\?v=5971/);
 assert.match(html, /js\/company-directory-links\.js\?v=3/);
 assert.match(html, /js\/company-logo-assets\.js\?v=1/);
 assert.match(html, /js\/employers\.js\?v=42/);
@@ -87,6 +88,7 @@ assert.match(recruitersJs, /matchesCompany/);
 assert.doesNotMatch(recruitersJs, /atsrs:jobs-nav|refreshDirectoryOptions/, 'Recruiter totals must not depend on JobSearch page timing');
 assert.match(recruitersJs, /new MutationObserver\(syncDirectoryVisibility\)/);
 assert.match(recruitersJs, /if \(!directoryVisible\(\)\) \{[\s\S]*?grid\.replaceChildren\(\)/);
+assert.match(fs.readFileSync('js/route-feature-loader.js', 'utf8'), /if\(String\(page\|\|''\)!=='jobs'\)return Promise\.resolve\(\)/);
 assert.match(recruitersJs, /LinkedIn profile/);
 assert.match(recruitersJs, /Active on published jobs/);
 assert.match(recruitersJs, /employer-action-jobs is-active/);

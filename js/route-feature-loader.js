@@ -79,6 +79,7 @@
 
   window.atsrsOpenJobsDirectory=function(page,button){
     if(typeof window.showPage==='function')window.showPage(page,button);
+    if(String(page||'')!=='jobs')return Promise.resolve();
     return loadJobs().then(function(){
       window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'));
     }).catch(report);
