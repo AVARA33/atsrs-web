@@ -572,6 +572,9 @@ html[data-theme="light"] #employersPage .employer-actions .employer-action-jobs 
   background: transparent;
 }
 html[data-theme] body #app.app:not(.hidden) #employersPage .employer-actions .employer-action-jobs {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
   border-color: transparent !important;
   background: transparent !important;
   box-shadow: none !important;
