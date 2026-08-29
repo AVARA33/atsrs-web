@@ -30,6 +30,7 @@ type ShareRow = {
   expires_at: string | null;
   view_count: number | string;
   last_viewed_at: string | null;
+  revoked_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -58,7 +59,7 @@ type AccessRequestRow = {
   updated_at: string;
 };
 
-const SHARE_SELECT = "id,user_id,account_type,audience,recipient_recruiter_id,recipient_name,recipient_company,recipient_email,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
+const SHARE_SELECT = "id,user_id,account_type,audience,recipient_recruiter_id,recipient_name,recipient_company,recipient_email,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,revoked_at,created_at,updated_at";
 const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requester_user_id,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
 
 function getSupabaseSecretKey() {
@@ -203,6 +204,8 @@ async function normalizeExpiredRequests(admin: AdminClient, rows: AccessRequestR
 
 function publicShareStatus(row: ShareRow | null) {
   if (!row) return null;
+  const active = shareIsActive(row);
+  const status = active ? "active" : row.revoked_at ? "revoked" : "expired";
   return {
     id: row.id,
     audience: row.audience ?? "anyone",
@@ -210,7 +213,10 @@ function publicShareStatus(row: ShareRow | null) {
     recipient_name: row.recipient_name,
     recipient_company: row.recipient_company,
     recipient_email: row.recipient_email,
-    active: shareIsActive(row),
+    active,
+    enabled: row.enabled,
+    status,
+    revoked_at: row.revoked_at,
     token_hint: row.token_hint,
     selected_file_ids: row.selected_file_ids ?? [],
     expires_at: row.expires_at,
@@ -486,6 +492,7 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
       expires_at: expiresAt,
       view_count: 0,
       last_viewed_at: null,
+      revoked_at: null,
       updated_at: now.toISOString(),
     };
     const saved = await admin.from("atsrs_profile_shares").insert(payload)
@@ -624,13 +631,17 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     if (!target) return json(req, 200, { share: null });
     const now = new Date().toISOString();
     const update = await admin.from("atsrs_profile_shares")
-      .update({ enabled: false, updated_at: now }).eq("id", target.id).eq("user_id", user.id)
+      .update({ enabled: false, revoked_at: now, updated_at: now }).eq("id", target.id).eq("user_id", user.id)
       .select(SHARE_SELECT).single();
     if (update.error) throw update.error;
     await admin.from("atsrs_share_access_requests")
       .update({ status: "expired", access_expires_at: null, updated_at: now })
       .eq("share_id", target.id).in("status", ["otp_pending", "pending", "approved"]);
-    return json(req, 200, { share: publicShareStatus(update.data as ShareRow) });
+    return json(req, 200, {
+      share: publicShareStatus(update.data as ShareRow),
+      email_sent: false,
+      recipient_notified: false,
+    });
   }
 
   if (action === "decide_request") {
