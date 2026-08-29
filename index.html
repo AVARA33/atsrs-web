@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5978" data-atsrs-update="29 Aug 2026">
+<html lang="en" data-atsrs-build="V5979" data-atsrs-update="29 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -126,7 +126,7 @@ html[data-theme="light"] body{background:#f6f8fb}
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=39">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
-<link rel="stylesheet" href="css/documents-register-v5976.css?v=5978">
+<link rel="stylesheet" href="css/documents-register-v5976.css?v=5979">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1222,10 +1222,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="panel unified-cert-panel">
 <div class="atsrs-document-intake-copy"><span>Choose one method:</span><p id="addCertFlowNote" class="cert-flow-note"></p></div>
 <div class="cert-mode-buttons">
-<button id="certScanModeBtn" type="button" class="active" onclick="showCertMode('scan')"></button>
+<button id="certScanModeBtn" type="button" onclick="showCertMode('scan')"></button>
 <button id="certQrModeBtn" type="button"><i class="ph ph-qr-code" aria-hidden="true"></i><span>Scan with QR</span></button>
 <button id="certManualModeBtn" type="button" onclick="showCertMode('manual')"></button>
 </div>
+
+<div id="documentMethodBackdrop" class="atsrs-document-method-backdrop hidden" aria-hidden="true"></div>
 
 <div id="qrUploadDialog" class="atsrs-qr-dialog hidden" role="dialog" aria-modal="true" aria-labelledby="qrUploadTitle" aria-describedby="qrUploadHelp">
   <div class="atsrs-qr-dialog-backdrop" data-qr-close></div>
@@ -1251,7 +1253,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 
-<div id="certScanPanel" class="cert-mode-panel active">
+<div id="certScanPanel" class="cert-mode-panel" role="dialog" aria-modal="true" aria-labelledby="certScanModalTitle" aria-describedby="scanFlowText">
+<div class="atsrs-document-modal-head">
+  <div><span>DOCUMENT INTAKE</span><h3 id="certScanModalTitle">Scan with AI</h3></div>
+  <button id="closeCertScanModalBtn" type="button" class="secondary atsrs-document-modal-close" aria-label="Close Scan with AI"><i class="ph ph-x" aria-hidden="true"></i></button>
+</div>
 <p id="scanFlowText" class="sub"></p>
 <div class="document-actions">
 <button id="uploadDocBtn" class="secondary" type="button"></button>
@@ -1303,8 +1309,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 </div>
 
-<div id="certManualPanel" class="cert-mode-panel">
-<h3 id="manualCertTitle"></h3>
+<div id="certManualPanel" class="cert-mode-panel" role="dialog" aria-modal="true" aria-labelledby="manualCertTitle" aria-describedby="manualFlowText">
+<div class="atsrs-document-modal-head">
+  <div><span>DOCUMENT INTAKE</span><h3 id="manualCertTitle"></h3></div>
+  <button id="closeCertManualModalBtn" type="button" class="secondary atsrs-document-modal-close" aria-label="Close Manual Upload"><i class="ph ph-x" aria-hidden="true"></i></button>
+</div>
 <p id="manualFlowText" class="sub"></p>
 <div class="document-actions">
 <button id="manualUploadBtn" class="secondary" onclick="manualFile.click()"></button>
@@ -2239,7 +2248,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/cv-generator.js?v=418"></script>
 <script src="js/account.js?v=415"></script>
 <script src="js/document-date-validation.js?v=1"></script>
-<script src="js/app.js?v=569"></script>
+<script src="js/app.js?v=570"></script>
 <script src="js/date-picker.js?v=5918"></script>
 <script src="js/share-profile.js?v=434"></script>
 <script src="js/recipient-links.js?v=433"></script>

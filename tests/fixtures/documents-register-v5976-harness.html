@@ -52,9 +52,21 @@
       <div class="panel unified-cert-panel">
         <div class="atsrs-document-intake-copy"><span>Choose one method:</span><p class="cert-flow-note">Scan with AI, Scan with QR,<br>or Manual Upload.</p></div>
         <div class="cert-mode-buttons">
-          <button class="active"><i class="ph ph-magic-wand"></i><span>Scan with AI</span></button>
-          <button><i class="ph ph-qr-code"></i><span>Scan with QR</span></button>
-          <button><i class="ph ph-upload-simple"></i><span>Manual Upload</span></button>
+          <button id="certScanModeBtn"><i class="ph ph-magic-wand"></i><span>Scan with AI</span></button>
+          <button id="certQrModeBtn"><i class="ph ph-qr-code"></i><span>Scan with QR</span></button>
+          <button id="certManualModeBtn"><i class="ph ph-upload-simple"></i><span>Manual Upload</span></button>
+        </div>
+        <div id="documentMethodBackdrop" class="atsrs-document-method-backdrop hidden" aria-hidden="true"></div>
+        <div id="certScanPanel" class="cert-mode-panel" role="dialog" aria-modal="true" aria-labelledby="certScanModalTitle">
+          <div class="atsrs-document-modal-head"><div><span>DOCUMENT INTAKE</span><h3 id="certScanModalTitle">Scan with AI</h3></div><button id="closeCertScanModalBtn" class="secondary atsrs-document-modal-close" aria-label="Close Scan with AI"><i class="ph ph-x"></i></button></div>
+          <p class="sub">Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.</p>
+          <div class="document-actions"><button class="secondary">Choose document</button><button class="secondary" data-close-method>Cancel</button></div>
+        </div>
+        <div id="certManualPanel" class="cert-mode-panel" role="dialog" aria-modal="true" aria-labelledby="manualCertTitle">
+          <div class="atsrs-document-modal-head"><div><span>DOCUMENT INTAKE</span><h3 id="manualCertTitle">Manual Upload</h3></div><button id="closeCertManualModalBtn" class="secondary atsrs-document-modal-close" aria-label="Close Manual Upload"><i class="ph ph-x"></i></button></div>
+          <p class="sub">Upload one or more files, then enter the document details before saving.</p>
+          <div class="manual-cert-grid"><div class="field-wrap"><label class="field-label">Document type</label><input placeholder="e.g. Offshore medical"></div><div class="field-wrap"><label class="field-label">Provider</label><input placeholder="Training provider"></div><div class="field-wrap"><label class="field-label">Expiry</label><input type="date"></div></div>
+          <div class="document-actions"><button class="secondary">Choose files</button><button class="secondary" data-close-method>Cancel</button></div>
         </div>
       </div>
       <div class="panel">
@@ -83,6 +95,21 @@ const rows=[
 ['ph-lifebuoy','is-gold','Further Offshore Emergency Training (FOET) with Emergency Breathing System','Occupational Training International','2028-03-26','Valid','is-valid']
 ];
 qaRows.innerHTML=rows.map((r,i)=>`<tr><td><input type="checkbox" aria-label="Select ${r[2]}"></td><td><div class="atsrs-document-identity"><span class="atsrs-document-type-icon ${r[1]}"><i class="ph ${r[0]}"></i></span><span class="atsrs-document-name">${r[2]}</span></div></td><td>${r[3]}</td><td>${r[4]}</td><td><span class="atsrs-upload-date">21 Aug 2026</span></td><td><span class="atsrs-document-status ${r[6]}">${r[5]}</span></td><td><div class="atsrs-document-row-actions"><button title="Preview"><i class="ph ph-eye"></i><span>Preview</span></button><button title="Edit"><i class="ph ph-pencil-simple"></i><span>Edit</span></button><button class="atsrs-v172-delete" title="Delete"><i class="ph ph-trash"></i><span>Delete</span></button></div></td></tr>`).join('');
+const backdrop=document.getElementById('documentMethodBackdrop');
+function setMethod(method){
+  document.body.classList.toggle('atsrs-document-method-open',Boolean(method));
+  document.body.dataset.documentMethod=method||'';
+  backdrop.classList.toggle('hidden',!method);
+  certScanPanel.classList.toggle('active',method==='scan');
+  certManualPanel.classList.toggle('active',method==='manual');
+}
+certScanModeBtn.onclick=()=>setMethod('scan');
+certManualModeBtn.onclick=()=>setMethod('manual');
+closeCertScanModalBtn.onclick=()=>setMethod('');
+closeCertManualModalBtn.onclick=()=>setMethod('');
+backdrop.onclick=()=>setMethod('');
+document.querySelectorAll('[data-close-method]').forEach(button=>button.onclick=()=>setMethod(''));
+document.addEventListener('keydown',event=>{if(event.key==='Escape')setMethod('');});
 </script>
 </body>
 </html>

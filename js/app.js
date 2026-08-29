@@ -455,6 +455,14 @@
     var manualPanel=byId('certManualPanel');
     if(scanPanel)scanPanel.classList.toggle('active',method==='scan');
     if(manualPanel)manualPanel.classList.toggle('active',method==='manual');
+    var modalOpen=method==='scan'||method==='manual';
+    var backdrop=byId('documentMethodBackdrop');
+    document.body.classList.toggle('atsrs-document-method-open',modalOpen);
+    document.body.dataset.documentMethod=modalOpen?method:'';
+    if(backdrop){
+      backdrop.classList.toggle('hidden',!modalOpen);
+      backdrop.setAttribute('aria-hidden',modalOpen?'false':'true');
+    }
   }
 
   function closeDocumentMethod(){
@@ -468,6 +476,7 @@
     closeManual();
     setDocumentMethodState('scan');
     setAiScanStatus('Choose a document to scan. AI suggestions must be reviewed before saving.');
+    window.setTimeout(function(){var close=byId('closeCertScanModalBtn');if(close)close.focus();},0);
   }
 
   function closeManual(){
@@ -487,6 +496,7 @@
     var existingPanel=byId('certManualPanel');
     if(editIndex===null&&(!existingPanel||!existingPanel.classList.contains('active')))clearForm();
     setDocumentMethodState('manual');
+    window.setTimeout(function(){var close=byId('closeCertManualModalBtn');if(close)close.focus();},0);
   }
 
   function ensureCancel(){
@@ -675,6 +685,27 @@
     if(uploadDoc){uploadDoc.onclick=function(e){if(e)e.preventDefault(); requestAiConsent();};}
     var cancelScan=byId('cancelScanModeBtn');
     if(cancelScan){cancelScan.onclick=function(e){if(e)e.preventDefault();closeDocumentMethod();};}
+    var closeScan=byId('closeCertScanModalBtn');
+    if(closeScan){closeScan.onclick=function(e){if(e)e.preventDefault();closeDocumentMethod();};}
+    var closeManualModal=byId('closeCertManualModalBtn');
+    if(closeManualModal){closeManualModal.onclick=function(e){if(e)e.preventDefault();closeManual();};}
+    var methodBackdrop=byId('documentMethodBackdrop');
+    if(methodBackdrop&&!methodBackdrop.dataset.bound){
+      methodBackdrop.dataset.bound='true';
+      methodBackdrop.addEventListener('click',function(){
+        if(document.body.dataset.documentMethod==='manual')closeManual();
+        else closeDocumentMethod();
+      });
+    }
+    if(!document.documentElement.dataset.documentModalEscapeBound){
+      document.documentElement.dataset.documentModalEscapeBound='true';
+      document.addEventListener('keydown',function(event){
+        if(event.key!=='Escape'||!document.body.classList.contains('atsrs-document-method-open'))return;
+        event.preventDefault();
+        if(document.body.dataset.documentMethod==='manual')closeManual();
+        else closeDocumentMethod();
+      });
+    }
     var checkbox=byId('aiConsentCheckbox');
     if(checkbox){checkbox.onchange=function(){var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=!checkbox.checked;};}
     var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.onclick=function(e){if(e)e.preventDefault();continueAiConsent();};

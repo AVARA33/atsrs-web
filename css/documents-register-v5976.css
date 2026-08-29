@@ -343,6 +343,99 @@ html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-red{colo
 html[data-theme="light"] #certificatesPage .atsrs-document-type-icon.is-gold{color:#806500!important;background:#fff9d9!important}
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button{border-color:#cdd7dc!important;background:#fff!important;color:#27343b!important}
 
+/* Documents method dialogs: keep the register visible behind a neutral dark overlay. */
+body.atsrs-document-method-open,
+body.atsrs-qr-open{overflow:hidden!important}
+.atsrs-document-method-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:2147483500;
+  background:rgba(0,3,4,.72);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+.atsrs-document-method-backdrop.hidden{display:none!important}
+body #app.app:not(.hidden) #certificatesPage #certScanPanel.cert-mode-panel,
+body #app.app:not(.hidden) #certificatesPage #certManualPanel.cert-mode-panel{
+  display:none!important;
+  position:fixed!important;
+  z-index:2147483510!important;
+  top:50%!important;
+  left:50%!important;
+  width:min(720px,calc(100vw - 32px))!important;
+  max-height:min(84vh,760px)!important;
+  margin:0!important;
+  padding:24px!important;
+  overflow:auto!important;
+  transform:translate(-50%,-50%)!important;
+  border:1px solid #343d42!important;
+  border-radius:14px!important;
+  background:#080b0d!important;
+  color:#eef3f5!important;
+  box-shadow:0 0 0 100vmax rgba(0,3,4,.55),0 28px 90px rgba(0,0,0,.72),0 0 0 1px rgba(77,196,93,.06)!important;
+}
+body #app.app:not(.hidden) #certificatesPage #certScanPanel.cert-mode-panel.active,
+body #app.app:not(.hidden) #certificatesPage #certManualPanel.cert-mode-panel.active{display:block!important}
+#certificatesPage .atsrs-document-modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px;
+  margin:0 0 18px;
+  padding:0 0 16px;
+  border-bottom:1px solid #242c30;
+}
+#certificatesPage .atsrs-document-modal-head > div > span{
+  display:block;
+  margin-bottom:5px;
+  color:#59cd69;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+#certificatesPage .atsrs-document-modal-head h3{margin:0!important;color:#f4f7f8!important;font-size:22px!important;line-height:1.2!important}
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:38px!important;
+  min-width:38px!important;
+  height:38px!important;
+  min-height:38px!important;
+  padding:0!important;
+  border:1px solid #343d42!important;
+  border-radius:8px!important;
+  background:#0c1012!important;
+  color:#e9eef0!important;
+}
+#certificatesPage .atsrs-document-modal-close i{font-size:19px}
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close:hover,
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close:focus-visible{border-color:#4cb85b!important;color:#62d871!important}
+#certificatesPage #certScanPanel > .sub,
+#certificatesPage #certManualPanel > .sub{margin:0 0 16px!important;color:#aebac1!important}
+#certificatesPage #certScanPanel .document-actions,
+#certificatesPage #certManualPanel .document-actions{margin:0 0 16px!important}
+
+/* Bring the existing QR flow into the same modal language. */
+#certificatesPage .atsrs-qr-dialog{z-index:2147483520!important}
+#certificatesPage .atsrs-qr-dialog-backdrop{background:rgba(0,3,4,.72)!important;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#certificatesPage .atsrs-qr-dialog-card{
+  border:1px solid #343d42!important;
+  border-radius:14px!important;
+  background:#080b0d!important;
+  color:#eef3f5!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.72),0 0 0 1px rgba(77,196,93,.06)!important;
+}
+
+html[data-theme="light"] .atsrs-document-method-backdrop,
+html[data-theme="light"] #certificatesPage .atsrs-qr-dialog-backdrop{background:rgba(16,24,28,.48)!important}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage #certScanPanel.cert-mode-panel,
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage #certManualPanel.cert-mode-panel,
+html[data-theme="light"] #certificatesPage .atsrs-qr-dialog-card{border-color:#cdd7dc!important;background:#fff!important;color:#1c2930!important}
+html[data-theme="light"] #certificatesPage .atsrs-document-modal-head{border-bottom-color:#dde4e8}
+html[data-theme="light"] #certificatesPage .atsrs-document-modal-head h3{color:#172229!important}
+html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close{border-color:#cdd7dc!important;background:#f8fafb!important;color:#27343b!important}
+
 @media(max-width:1180px){
   #certificatesPage .atsrs-documents-heading{align-items:flex-start;flex-direction:column;gap:18px}
   #certificatesPage .atsrs-documents-title-block{min-width:0;padding-right:0;border-right:0}
@@ -371,4 +464,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage td:last-ch
   #certificatesPage .atsrs-document-identity{align-items:flex-start}
   #certificatesPage .atsrs-document-row-actions{justify-content:stretch!important}
   body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button{width:100%!important}
+  body #app.app:not(.hidden) #certificatesPage #certScanPanel.cert-mode-panel,
+  body #app.app:not(.hidden) #certificatesPage #certManualPanel.cert-mode-panel{width:calc(100vw - 24px)!important;max-height:calc(100dvh - 24px)!important;padding:18px!important;border-radius:11px!important}
+  #certificatesPage .atsrs-document-modal-head{margin-bottom:14px;padding-bottom:13px}
 }
