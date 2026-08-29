@@ -205,7 +205,8 @@ async function normalizeExpiredRequests(admin: AdminClient, rows: AccessRequestR
 function publicShareStatus(row: ShareRow | null) {
   if (!row) return null;
   const active = shareIsActive(row);
-  const status = active ? "active" : row.revoked_at ? "revoked" : "expired";
+  const expired = Date.parse(row.expires_at ?? "") <= Date.now();
+  const status = active ? "active" : row.revoked_at ? "revoked" : expired ? "expired" : "inactive";
   return {
     id: row.id,
     audience: row.audience ?? "anyone",
