@@ -303,6 +303,37 @@
         contact: "https://greenseaiq.com/contact-us/",
       },
     },
+    companyLogos = {
+      "Subsea7": "assets/company-logos/subsea7.ico",
+      "Oceaneering": "assets/company-logos/oceaneering.png",
+      "DOF Group": "assets/company-logos/dof-group.png",
+      "Fugro": "assets/company-logos/fugro.ico",
+      "LEVEL Offshore": "assets/company-logos/level-offshore.ico",
+      "HPR (UK)": "assets/company-logos/hpr-uk.png",
+      "Archer Offshore": "assets/company-logos/archer-offshore.png",
+      "PR Offshore Services Ltd": "assets/company-logos/pr-offshore-services-ltd.ico",
+      "N-Sea": "assets/company-logos/n-sea.ico",
+      "Reach Subsea": "assets/company-logos/reach-subsea.png",
+      "Sonardyne": "assets/company-logos/sonardyne.png",
+      "EIVA": "assets/company-logos/eiva.ico",
+      "MacArtney": "assets/company-logos/macartney.png",
+      "Forum Energy Technologies": "assets/company-logos/forum-energy-technologies.png",
+      "Teledyne Marine": "assets/company-logos/teledyne-marine.ico",
+      "Saab Seaeye": "assets/company-logos/saab-seaeye.png",
+      "Seatools": "assets/company-logos/seatools.jpg",
+      "Kystdesign": "assets/company-logos/kystdesign.svg",
+      "Subsea Global Solutions": "assets/company-logos/subsea-global-solutions.png",
+      "Subsea Technology & Rentals (STR)": "assets/company-logos/subsea-technology-rentals-str.ico",
+      "Total Marine Technology": "assets/company-logos/total-marine-technology.svg",
+      "VideoRay": "assets/company-logos/videoray.png",
+      "Deep Trekker": "assets/company-logos/deep-trekker.png",
+      "Blueye Robotics": "assets/company-logos/blueye-robotics.ico",
+      "SEAMOR Marine": "assets/company-logos/seamor-marine.png",
+      "Oceanbotics": "assets/company-logos/oceanbotics.png",
+      "Kraken Robotics": "assets/company-logos/kraken-robotics.png",
+      "Cellula Robotics": "assets/company-logos/cellula-robotics.png",
+      "Greensea IQ": "assets/company-logos/greensea-iq.png"
+    },
     companies = [],
     loadToken = 0;
   function byId(id) {
@@ -330,14 +361,6 @@
         })
         .join("") || "CO"
     );
-  }
-  function officialLogoUrl(website) {
-    if (!website) return "";
-    try {
-      return new URL("/favicon.ico", website).href;
-    } catch (_error) {
-      return "";
-    }
   }
   function buttonLink(url, label, icon) {
     var link = document.createElement("a");
@@ -392,7 +415,7 @@
     markFallback.className = "employer-mark-fallback";
     markFallback.textContent = data.mark || initials(company.name);
     mark.appendChild(markFallback);
-    var logoUrl = officialLogoUrl(data.website);
+    var logoUrl = companyLogos[company.name] || "";
     if (logoUrl) {
       var logo = document.createElement("img");
       logo.className = "employer-logo";
