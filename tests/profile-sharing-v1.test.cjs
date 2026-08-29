@@ -26,7 +26,7 @@ assert.match(js,/window\.copyShareLink/);
 assert.match(js,/button\.innerHTML='<i class="ph ph-check"[^']*Copied'/);
 assert.match(js,/window\.previewShareProfile/);
 assert.match(js,/window\.revokeShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=38/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=39/);
 assert.match(css,/:is\(\.profile-sharing-row-actions,\.profile-sharing-link-request-actions\)>button\{[^}]*height:22px!important;[^}]*min-height:22px!important;[^}]*max-height:22px!important/);
 assert.match(css,/profile-sharing-expiry-check/);
 assert.match(css,/profile-sharing-v1 \*\{box-sizing:border-box\}/);
@@ -103,7 +103,7 @@ assert.match(css,/profile-sharing-v1:not\(\.is-editing\) \.profile-sharing-setup
 assert.match(css,/profile-sharing-v1:not\(\.is-editing\) \.profile-sharing-expiry-main>\.profile-sharing-create-button\{pointer-events:auto\}/);
 assert.match(html,/profile-sharing-links-heading-floating/);
 assert.match(html,/profile-sharing-expiry-main/);
-assert.match(css,/profile-sharing-active-list\{min-height:0;overflow:auto;border-top:1px solid var\(--line\)\}/);
+assert.match(css,/profile-sharing-active-list\{display:block;min-height:0;overflow:auto;border-top:1px solid var\(--line\)\}/);
 assert.match(js,/atsrsGetOwnerShareRequests/);
 assert.match(js,/profile-sharing-link-request/);
 assert.match(js,/profile-sharing-row-requester/);
