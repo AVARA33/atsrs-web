@@ -387,6 +387,18 @@
     button.addEventListener("click", handler);
     return button;
   }
+  function unavailableAction(label, icon) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.disabled = true;
+    button.innerHTML =
+      '<i class="ph ph-' +
+      icon +
+      '" aria-hidden="true"></i><span>' +
+      label +
+      "</span>";
+    return button;
+  }
   function vacancyLabel(count) {
     return count + " active " + (count === 1 ? "vacancy" : "vacancies");
   }
@@ -477,12 +489,17 @@
     }
     var actions = document.createElement("div");
     actions.className = "employer-actions";
-    if (data.website)
-      actions.append(
-        buttonLink(data.website, "Website", "globe"),
-        buttonLink(data.careers, "Careers", "briefcase"),
-        buttonLink(data.contact, "Contact", "arrow-square-out"),
-      );
+    actions.append(
+      data.website
+        ? buttonLink(data.website, "Website", "arrow-square-out")
+        : unavailableAction("Website", "arrow-square-out"),
+      data.careers
+        ? buttonLink(data.careers, "Careers", "briefcase")
+        : unavailableAction("Careers", "briefcase"),
+      data.contact
+        ? buttonLink(data.contact, "Contact", "envelope")
+        : unavailableAction("Contact", "envelope"),
+    );
     if (company.vacancyCount > 0) {
       var jobsAction = action("View jobs", "arrow-right", function () {
         goToJobs(company.name);
