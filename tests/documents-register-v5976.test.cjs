@@ -4,13 +4,14 @@ const fs = require('node:fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/documents-register-v5976.css', 'utf8');
 const app = fs.readFileSync('js/app.js', 'utf8');
+const serverData = fs.readFileSync('js/server-data.js', 'utf8');
 
-assert.match(html, /data-atsrs-build="V5982"/);
+assert.match(html, /data-atsrs-build="V5983"/);
 assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=5982/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=5983/);
 assert.match(html, /id="documentMethodBackdrop"/);
 assert.match(html, /id="certScanPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
 assert.match(html, /id="certManualPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
@@ -27,8 +28,10 @@ assert.match(app, /document\.body\.classList\.toggle\('atsrs-document-method-ope
 assert.match(app, /event\.key!==\'Escape\'/);
 assert.match(app, /methodBackdrop\.addEventListener\('click'/);
 assert.match(app, /function updateDocumentListScroll\(visibleCount\)/);
-assert.match(app, /Number\(visibleCount\)>10/);
+assert.match(app, /Number\(visibleCount\)>7/);
+assert.match(app, /querySelectorAll\('tr'\),0,7/);
 assert.match(app, /updateDocumentListScroll\(rows\.length\)/);
+assert.match(serverData, /if\(pageName==='certificates'\)\{if\(control\)control\.remove\(\);return;\}/);
 
 assert.match(css, /#certificatesPage \.atsrs-documents-summary/);
 assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)!important/);
@@ -44,7 +47,8 @@ assert.match(css, /#certScanPanel\.cert-mode-panel\.active[\s\S]*?display:block!
 assert.match(css, /background:rgba\(0,3,4,\.72\)/);
 assert.match(css, /\.atsrs-field-shell:has\(> #ocrRawText\)\{display:none!important\}/);
 assert.match(css, /\.table-wrap\.atsrs-document-list-scroll/);
-assert.match(css, /max-height:var\(--atsrs-document-list-max-height,616px\)!important/);
+assert.match(css, /max-height:var\(--atsrs-document-list-max-height,445px\)!important/);
+assert.match(css, /\.main:has\(#certificatesPage:not\(\.hidden\)\)[\s\S]*?height:100dvh!important;[\s\S]*?overflow:hidden!important/);
 assert.match(css, /position:sticky!important/);
 assert.match(css, /table tbody \.atsrs-document-status\.is-valid/);
 assert.match(css, /#deleteSelectedCertsBtn\{[\s\S]*?background:#fff5f6!important/);

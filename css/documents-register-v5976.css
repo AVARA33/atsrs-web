@@ -15,6 +15,35 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage{
   max-width:none!important;
 }
 
+@media(min-width:801px){
+  body.personal-mode:has(#certificatesPage:not(.hidden)){
+    overflow:hidden!important;
+  }
+  body.personal-mode #app.app:not(.hidden) > .main:has(#certificatesPage:not(.hidden)){
+    height:100dvh!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+  }
+  body.personal-mode #app.app:not(.hidden) #certificatesPage:not(.hidden){
+    display:flex!important;
+    flex-direction:column!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  body.personal-mode #app.app:not(.hidden) #certificatesPage > .atsrs-documents-heading,
+  body.personal-mode #app.app:not(.hidden) #certificatesPage > .unified-cert-panel{
+    flex:0 0 auto!important;
+  }
+  body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    margin-bottom:0!important;
+    overflow:hidden!important;
+  }
+}
+
 #certificatesPage .atsrs-documents-heading{
   display:flex;
   align-items:flex-end;
@@ -212,7 +241,7 @@ html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-fi
 
 body #app.app:not(.hidden) #certificatesPage .table-wrap{overflow-x:auto!important}
 body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll{
-  max-height:var(--atsrs-document-list-max-height,616px)!important;
+  max-height:var(--atsrs-document-list-max-height,445px)!important;
   overflow-x:auto!important;
   overflow-y:auto!important;
   scrollbar-gutter:stable;

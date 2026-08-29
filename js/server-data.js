@@ -2020,6 +2020,7 @@
     var page=document.getElementById(pageName+'Page');
     if(!page)return;
     var control=page.querySelector('.atsrs-cloud-file-pagination');
+    if(pageName==='certificates'){if(control)control.remove();return;}
     if(!hasMore){if(control)control.remove();return;}
     if(!control){
       control=document.createElement('div');
