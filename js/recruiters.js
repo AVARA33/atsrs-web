@@ -71,6 +71,31 @@
   function hasVerifiedEmail(recruiter) {
     return !!(recruiter && recruiter.email_verification_status === "verified");
   }
+  function activeRecruiterShare(recruiterId) {
+    if (typeof window.atsrsGetActiveRecruiterShares !== "function") return null;
+    return window.atsrsGetActiveRecruiterShares().find(function (share) {
+      return share.recipient_recruiter_id === recruiterId;
+    }) || null;
+  }
+  function syncShareAction(button, recruiter) {
+    if (!button || !hasVerifiedEmail(recruiter)) return;
+    var active = activeRecruiterShare(recruiter.id);
+    button.disabled = Boolean(active);
+    button.setAttribute("aria-disabled", active ? "true" : "false");
+    button.classList.toggle("is-shared", Boolean(active));
+    button.innerHTML = active
+      ? '<i class="ph ph-check-circle" aria-hidden="true"></i><span>Profile shared · 24h active</span>'
+      : '<i class="ph ph-share-network" aria-hidden="true"></i><span>Share my profile</span>';
+    button.title = active
+      ? "An active 24-hour link already exists. Revoke it in Profile → Sharing before sharing again."
+      : "Create a 24-hour ATSRS link and open an email draft";
+  }
+  function syncVisibleShareActions() {
+    document.querySelectorAll("#recruitersGrid .employer-action-share[data-recruiter-id]").forEach(function (button) {
+      var recruiter = recruiters.find(function (item) { return item.id === button.dataset.recruiterId; });
+      if (recruiter) syncShareAction(button, recruiter);
+    });
+  }
   async function shareRecruiter(recruiter, button) {
     if (!hasVerifiedEmail(recruiter) || typeof window.atsrsCreateRecruiterEmailShare !== "function") {
       share(recruiter.name);
@@ -88,11 +113,12 @@
       });
     } catch (error) {
       console.error("ATSRS recruiter email share failed", error);
+      if (typeof window.atsrsRefreshOwnerShares === "function") await window.atsrsRefreshOwnerShares();
       window.alert(error && error.message || "The recruiter email draft could not be prepared. Please try again.");
     } finally {
-      button.disabled = false;
       button.removeAttribute("aria-busy");
-      button.innerHTML = original;
+      if (hasVerifiedEmail(recruiter)) syncShareAction(button, recruiter);
+      else { button.disabled = false; button.innerHTML = original; }
     }
   }
   function action(label, icon, handler) {
@@ -205,7 +231,8 @@
     shareAction.className = "employer-action-share";
     if (hasVerifiedEmail(recruiter)) {
       shareAction.dataset.emailRoute = "verified";
-      shareAction.title = "Create a 24-hour ATSRS link and open an email draft";
+      shareAction.dataset.recruiterId = recruiter.id;
+      syncShareAction(shareAction, recruiter);
     } else {
       shareAction.title = "Choose what to include in a secure profile link";
     }
@@ -363,6 +390,7 @@
     });
     loadRecruiters();
     window.addEventListener("atsrs:resume", loadRecruiters);
+    window.addEventListener("atsrs:share-link-updated", syncVisibleShareActions);
   }
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", install, { once: true });

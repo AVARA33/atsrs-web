@@ -442,9 +442,34 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     if (!recruiter || !recipientEmail) {
       return json(req, 404, { error: "This recruiter does not have a verified professional email." });
     }
+    const now = new Date();
+    const expiredResult = await admin.from("atsrs_profile_shares")
+      .update({ enabled: false, updated_at: now.toISOString() })
+      .eq("user_id", user.id)
+      .eq("account_type", "personal")
+      .eq("recipient_recruiter_id", recruiterId)
+      .eq("enabled", true)
+      .lte("expires_at", now.toISOString());
+    if (expiredResult.error) throw expiredResult.error;
+    const activeResult = await admin.from("atsrs_profile_shares").select(SHARE_SELECT)
+      .eq("user_id", user.id)
+      .eq("account_type", "personal")
+      .eq("recipient_recruiter_id", recruiterId)
+      .eq("enabled", true)
+      .gt("expires_at", now.toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (activeResult.error) throw activeResult.error;
+    if (activeResult.data) {
+      return json(req, 409, {
+        error: "Your profile is already shared with this recruiter. Revoke the active link before sharing again.",
+        share: publicShareStatus(activeResult.data as ShareRow),
+        already_active: true,
+      });
+    }
     const token = randomToken();
     const tokenHash = await sha256Hex(token);
-    const now = new Date();
     const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
     const payload = {
       user_id: user.id,
@@ -465,6 +490,12 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     };
     const saved = await admin.from("atsrs_profile_shares").insert(payload)
       .select(SHARE_SELECT).single();
+    if (saved.error?.code === "23505") {
+      return json(req, 409, {
+        error: "Your profile is already shared with this recruiter. Revoke the active link before sharing again.",
+        already_active: true,
+      });
+    }
     if (saved.error) throw saved.error;
     const share = saved.data as ShareRow;
     return json(req, 200, {

@@ -191,6 +191,7 @@
   }
   window.atsrsGetActiveShareStatus=function(){return activeShare?Object.assign({},activeShare):null;};
   window.atsrsGetActiveShares=function(){return activeShares.filter(function(share){return share&&share.active;}).slice().sort(function(left,right){var rightTime=new Date(right.updated_at||right.created_at||0).getTime()||0,leftTime=new Date(left.updated_at||left.created_at||0).getTime()||0;return rightTime-leftTime;}).map(function(share){return Object.assign({},share,{share_url:shareLinkById(share.id)});});};
+  window.atsrsGetActiveRecruiterShares=function(){return window.atsrsGetActiveShares().filter(function(share){return share.audience==='recipient'&&share.recipient_recruiter_id;});};
   window.atsrsGetOwnerShareRequests=function(){return ownerRequests.map(function(request){return Object.assign({},request);});};
   function requestNames(request){var names=(request.requested_file_ids||[]).map(ownerFileName);return request.request_all?'All shared files':names.join(', ');}
   function requestHasActiveAccess(request){return request.status==='approved'&&request.access_expires_at&&new Date(request.access_expires_at).getTime()>Date.now();}
@@ -307,7 +308,7 @@
         if(accountMode()==='company'){await refreshShareRequests({force:true});return true;}
         var results=await Promise.all([ownerCall({action:'status'}),listOwnerFiles(),ownerCall({action:'list_requests'})]);
         activeShares=Array.isArray(results[0].shares)?results[0].shares:(results[0].share?[results[0].share]:[]);activeShare=results[0].share||activeShares[0]||null;ownerFiles=results[1]||[];ownerRequests=results[2].requests||[];
-        renderOwnerFiles();renderOwnerStatus();renderOwnerRequests(results[2].analytics||{});return true;
+        renderOwnerFiles();renderOwnerStatus();renderOwnerRequests(results[2].analytics||{});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;
       }catch(error){console.error('ATSRS share profile status failed',error);setStatus('Share status could not be loaded. Check the connection.','revoked');return false;}
     })().finally(function(){ownerPanelPromise=null;});
     return ownerPanelPromise;
@@ -348,6 +349,7 @@
     return{share_url:url,recipient:recipient,copied:copied,email_sent:false};
   };
   window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
+  window.atsrsRefreshOwnerShares=function(){return refreshOwnerPanel({force:true});};
   window.revokeShareProfileLink=async function(shareId){
     if(!window.confirm('Disable this recruiter link? Preview and every approved download will stop immediately.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Disabling all recruiter access...');
