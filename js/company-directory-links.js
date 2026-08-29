@@ -926,7 +926,7 @@
   },
   "Pioneer Subsea": {
     "website": "https://pioneersubsea.co.uk/",
-    "careers": "https://pioneersubsea.co.uk/careers/",
+    "careers": "https://pioneersubsea.co.uk/jobs/",
     "contact": "https://pioneersubsea.co.uk/contact-us/",
     "about": "https://pioneersubsea.co.uk/about-us/"
   },
