@@ -447,10 +447,10 @@ html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage
 html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active {
   flex-direction: row-reverse;
   justify-content: space-between;
-  border-color: #4bdd6d !important;
-  background: #4bdd6d !important;
-  color: #061109 !important;
-  box-shadow: 0 9px 22px rgba(34, 197, 94, .16) !important;
+  border-color: #2c3430 !important;
+  background: #090c0b !important;
+  color: #48d46b !important;
+  box-shadow: none !important;
 }
 html[data-theme] body #app.app:not(.hidden) #recruitersPage
   .employer-actions .employer-action-jobs.is-active > i {
@@ -458,9 +458,10 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage
 }
 html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active:hover,
 html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active:focus-visible {
-  border-color: #70e58b !important;
-  background: #70e58b !important;
-  color: #061109 !important;
+  border-color: var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line) !important;
+  background: var(--atsrs-field-surface) !important;
+  color: var(--atsrs-field-accent) !important;
+  box-shadow: var(--atsrs-field-focus-shadow) !important;
 }
 #recruitersPage .employer-actions .employer-action-jobs:disabled {
   display: inline-flex;
@@ -531,10 +532,10 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage
   box-shadow: none !important;
 }
 html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active {
-  border-color: #2563eb !important;
-  background: #2563eb !important;
-  color: #fff !important;
-  box-shadow: 0 9px 20px rgba(37, 99, 235, .18) !important;
+  border-color: #cbd5e1 !important;
+  background: #fff !important;
+  color: var(--atsrs-field-accent) !important;
+  box-shadow: none !important;
 }
 @media (max-width: 1180px) {
   #recruitersPage .employer-actions {
