@@ -1,7 +1,9 @@
 (function () {
   "use strict";
   var recruiters = [],
-    loadToken = 0;
+    loadToken = 0,
+    loadInFlight = false,
+    lastLoadedAt = 0;
   // Permanent Owner exclusion: nurlan jafarov / nurlan cəfərov and transliterations.
   function excluded(name) {
     const normalized = String(name || "")
@@ -281,6 +283,9 @@
   async function loadRecruiters() {
     var client = db();
     if (!client || !client.from || !client.rpc) return;
+    if (loadInFlight) return;
+    if (lastLoadedAt && Date.now() - lastLoadedAt < 300000) return;
+    loadInFlight = true;
     var token = ++loadToken;
     try {
       var results = await Promise.all([
@@ -331,10 +336,27 @@
         });
       recruiters = Array.from(recruiterMap.values());
       companyOptions();
-      render();
+      if (directoryVisible()) render();
+      lastLoadedAt = Date.now();
     } catch (error) {
       console.warn("ATSRS recruiter directory could not be loaded", error);
+    } finally {
+      loadInFlight = false;
     }
+  }
+  function directoryVisible() {
+    var page = byId("recruitersPage");
+    return !!page && !page.classList.contains("hidden");
+  }
+  function syncDirectoryVisibility() {
+    var grid = byId("recruitersGrid");
+    if (!grid) return;
+    if (!directoryVisible()) {
+      grid.replaceChildren();
+      return;
+    }
+    if (recruiters.length) render();
+    loadRecruiters();
   }
   function render() {
     var grid = byId("recruitersGrid");
@@ -388,8 +410,13 @@
       byId("recruitersSort").value = "name";
       render();
     });
-    loadRecruiters();
-    window.addEventListener("atsrs:resume", loadRecruiters);
+    var page = byId("recruitersPage");
+    new MutationObserver(syncDirectoryVisibility).observe(page, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    syncDirectoryVisibility();
+    window.addEventListener("atsrs:resume", syncDirectoryVisibility);
     window.addEventListener("atsrs:share-link-updated", syncVisibleShareActions);
   }
   if (document.readyState === "loading")

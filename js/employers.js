@@ -640,6 +640,20 @@
     byId("employersVisibleCount").textContent =
       visible.length + " of " + companies.length + " companies";
   }
+  function directoryVisible() {
+    var page = byId("employersPage");
+    return !!page && !page.classList.contains("hidden");
+  }
+  function syncDirectoryVisibility() {
+    var grid = byId("employersGrid");
+    if (!grid) return;
+    if (!directoryVisible()) {
+      grid.replaceChildren();
+      return;
+    }
+    if (companies.length) render();
+    loadCompanies();
+  }
   async function loadCompanies() {
     var client = db();
     if (!client) return;
@@ -670,7 +684,7 @@
       refreshSectorOptions();
       var message = byId("employersMessage");
       if (message) message.textContent = "";
-      render();
+      if (directoryVisible()) render();
       lastLoadedAt = Date.now();
     } catch (error) {
       console.warn("ATSRS company directory could not be loaded", error);
@@ -714,8 +728,13 @@
       byId("employersSort").value = "name";
       render();
     });
-    loadCompanies();
-    window.addEventListener("atsrs:resume", loadCompanies);
+    var page = byId("employersPage");
+    new MutationObserver(syncDirectoryVisibility).observe(page, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    syncDirectoryVisibility();
+    window.addEventListener("atsrs:resume", syncDirectoryVisibility);
   }
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", install, { once: true });
