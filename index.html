@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5975" data-atsrs-update="29 Aug 2026">
+<html lang="en" data-atsrs-build="V5976" data-atsrs-update="29 Aug 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -126,6 +126,7 @@ html[data-theme="light"] body{background:#f6f8fb}
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=39">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
+<link rel="stylesheet" href="css/documents-register-v5976.css?v=5976">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1188,6 +1189,26 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="certificatesPage" class="hidden">
+<div class="atsrs-documents-heading personal-only">
+  <div class="atsrs-documents-title-block">
+    <span>DOCUMENTS</span>
+    <h2>Certificate Register</h2>
+  </div>
+  <div class="atsrs-documents-summary" aria-label="Document status summary">
+    <div class="atsrs-document-summary-item is-valid">
+      <i class="ph ph-shield-check" aria-hidden="true"></i>
+      <span>Valid</span><strong id="documentSummaryValid">0</strong><small id="documentSummaryValidPercent">0%</small>
+    </div>
+    <div class="atsrs-document-summary-item is-expiring">
+      <i class="ph ph-clock" aria-hidden="true"></i>
+      <span>Expiring Soon</span><strong id="documentSummaryExpiring">0</strong><small id="documentSummaryExpiringPercent">0%</small>
+    </div>
+    <div class="atsrs-document-summary-item is-no-expiry">
+      <i class="ph ph-calendar-x" aria-hidden="true"></i>
+      <span>No Expiry / N/A</span><strong id="documentSummaryNoExpiry">0</strong><small id="documentSummaryNoExpiryPercent">0%</small>
+    </div>
+  </div>
+</div>
 <div class="company-credentials-heading company-only">
   <div>
     <span class="pill">COMPANY CREDENTIALS</span>
@@ -1199,7 +1220,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 </div>
 <div class="panel unified-cert-panel">
-<p id="addCertFlowNote" class="cert-flow-note"></p>
+<div class="atsrs-document-intake-copy"><span>Choose one method:</span><p id="addCertFlowNote" class="cert-flow-note"></p></div>
 <div class="cert-mode-buttons">
 <button id="certScanModeBtn" type="button" class="active" onclick="showCertMode('scan')"></button>
 <button id="certQrModeBtn" type="button"><i class="ph ph-qr-code" aria-hidden="true"></i><span>Scan with QR</span></button>
@@ -2218,7 +2239,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/cv-generator.js?v=418"></script>
 <script src="js/account.js?v=415"></script>
 <script src="js/document-date-validation.js?v=1"></script>
-<script src="js/app.js?v=568"></script>
+<script src="js/app.js?v=569"></script>
 <script src="js/date-picker.js?v=5918"></script>
 <script src="js/share-profile.js?v=434"></script>
 <script src="js/recipient-links.js?v=433"></script>

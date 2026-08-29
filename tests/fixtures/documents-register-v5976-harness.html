@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS Documents V5976 QA</title>
+  <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='light'?'light':'dark';</script>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/personal-workspace-surface.css">
+  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../../css/shell-polish.css">
+  <link rel="stylesheet" href="../../css/theme-palette-v508.css">
+  <link rel="stylesheet" href="../../css/documents-register-v5976.css">
+</head>
+<body class="personal-mode app-open atsrs-app-visible">
+<section id="app" class="app">
+  <aside class="sidebar">
+    <div class="sidebar-head"><div class="brand atsrs-sidebar-mark" role="img" aria-label="ATSRS"></div></div>
+    <div class="nav">
+      <button><i class="ph ph-squares-four"></i><span>Dashboard</span></button>
+      <button><i class="ph ph-briefcase"></i><span>JobSearch</span></button>
+      <button><i class="ph ph-address-book"></i><span>Recruiters</span></button>
+      <button><i class="ph ph-buildings"></i><span>Companies</span></button>
+      <button id="navCertificates" class="active"><i class="ph ph-file"></i><span>Documents</span></button>
+      <button><i class="ph ph-file-text"></i><span>References</span></button>
+      <button><i class="ph ph-user-circle"></i><span>Profile</span></button>
+      <div class="nav-utility-divider"></div>
+      <button class="nav-utility"><i class="ph ph-code"></i><span>Developer</span></button>
+      <button class="nav-utility"><i class="ph ph-sparkle"></i><span>Product Updates</span></button>
+      <button class="nav-utility"><i class="ph ph-lock"></i><span>Privacy</span></button>
+    </div>
+  </aside>
+  <main class="main">
+    <div id="atsrsGlobalControls" class="atsrs-global-controls" aria-label="Display and account controls">
+      <button class="secondary" aria-label="Notifications"><i class="ph ph-bell"></i></button>
+      <button id="atsrsThemeToggle" class="atsrs-theme-toggle" role="switch" aria-label="Switch to light mode"><span class="atsrs-theme-track"><i class="ph ph-moon"></i><i class="ph ph-sun"></i><span class="atsrs-theme-thumb"></span></span></button>
+      <div class="workspace-switcher"><button class="workspace-switcher-button"><span class="workspace-switcher-avatar">AA</span><span class="workspace-switcher-copy"><strong>Anar Agasiyev</strong><span>Personal Account</span></span></button></div>
+    </div>
+    <h2 id="pageTitle">Documents</h2>
+    <section id="certificatesPage">
+      <div class="atsrs-documents-heading personal-only">
+        <div class="atsrs-documents-title-block"><span>DOCUMENTS</span><h2>Certificate Register</h2></div>
+        <div class="atsrs-documents-summary">
+          <div class="atsrs-document-summary-item is-valid"><i class="ph ph-shield-check"></i><span>Valid</span><strong>17</strong><small>65%</small></div>
+          <div class="atsrs-document-summary-item is-expiring"><i class="ph ph-clock"></i><span>Expiring Soon</span><strong>2</strong><small>8%</small></div>
+          <div class="atsrs-document-summary-item is-no-expiry"><i class="ph ph-calendar-x"></i><span>No Expiry / N/A</span><strong>7</strong><small>27%</small></div>
+        </div>
+      </div>
+      <div class="panel unified-cert-panel">
+        <div class="atsrs-document-intake-copy"><span>Choose one method:</span><p class="cert-flow-note">Scan with AI, Scan with QR,<br>or Manual Upload.</p></div>
+        <div class="cert-mode-buttons">
+          <button class="active"><i class="ph ph-magic-wand"></i><span>Scan with AI</span></button>
+          <button><i class="ph ph-qr-code"></i><span>Scan with QR</span></button>
+          <button><i class="ph ph-upload-simple"></i><span>Manual Upload</span></button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="atsrs-document-register-toolbar">
+          <label class="atsrs-document-filter"><span>Filter</span><input type="search" placeholder="Filter documents..."></label>
+          <div class="atsrs-document-bulk-actions"><span id="certSelectionCount">0 selected</span><button id="deleteSelectedCertsBtn" disabled>Delete selected</button></div>
+        </div>
+        <div class="table-wrap"><table class="atsrs-document-register">
+          <colgroup><col class="atsrs-document-col-select"><col class="atsrs-document-col-name"><col class="atsrs-document-col-provider"><col class="atsrs-document-col-expiry"><col class="atsrs-document-col-uploaded"><col class="atsrs-document-col-status"><col class="atsrs-document-col-actions"></colgroup>
+          <thead><tr><th><input type="checkbox" aria-label="Select all"></th><th>Certificate</th><th>Training Center / Provider</th><th>Expiry</th><th>Uploaded</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="qaRows"></tbody>
+        </table></div>
+      </div>
+    </section>
+  </main>
+</section>
+<script>
+const rows=[
+['ph-file-text','is-green','Certificate of alcohol and narcotic addiction examination','National Prime Hospital','2027-06-07','Valid','is-valid'],
+['ph-file-text','is-blue','Company Letter / Authorization Letter','Offshore Professional Solutions FZCO','N/A','No Expiry','is-neutral'],
+['ph-shield-check','is-violet','Certificate (ISPS / STCW - Ship Security-related familiarization / MSA ROV Senior Pilot Technician)','State Maritime and Port Agency (Ministry of Digital Development and Transport of the Republic of Azerbaijan)','N/A','No Expiry','is-neutral'],
+['ph-anchor','is-amber',"Seafarer's Identification & Record Book (Seaman's Record Book)",'Bahamas Maritime Authority','2031-12-13','Valid','is-valid'],
+['ph-file-text','is-green','Sertifikat / Certificate (STCW)','State Maritime and Port Agency (Dövlət Dəniz və Liman Agentliyi)','2029-05-27','Valid','is-valid'],
+['ph-first-aid-kit','is-red','Digital COVID Certificate / Vaccine Certificate','The State Agency on Mandatory Health Insurance','N/A','No Expiry','is-neutral'],
+['ph-lifebuoy','is-blue','OPITO Shallow Water Compressed Air Emergency Breathing System Initial Deployment Training Certificate','Occupational Training International','2028-03-26','Valid','is-valid'],
+['ph-lifebuoy','is-gold','Further Offshore Emergency Training (FOET) with Emergency Breathing System','Occupational Training International','2028-03-26','Valid','is-valid']
+];
+qaRows.innerHTML=rows.map((r,i)=>`<tr><td><input type="checkbox" aria-label="Select ${r[2]}"></td><td><div class="atsrs-document-identity"><span class="atsrs-document-type-icon ${r[1]}"><i class="ph ${r[0]}"></i></span><span class="atsrs-document-name">${r[2]}</span></div></td><td>${r[3]}</td><td>${r[4]}</td><td><span class="atsrs-upload-date">21 Aug 2026</span></td><td><span class="atsrs-document-status ${r[6]}">${r[5]}</span></td><td><div class="atsrs-document-row-actions"><button title="Preview"><i class="ph ph-eye"></i><span>Preview</span></button><button title="Edit"><i class="ph ph-pencil-simple"></i><span>Edit</span></button><button class="atsrs-v172-delete" title="Delete"><i class="ph ph-trash"></i><span>Delete</span></button></div></td></tr>`).join('');
+</script>
+</body>
+</html>

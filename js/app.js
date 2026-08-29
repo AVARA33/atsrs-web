@@ -513,13 +513,15 @@
     var corporate=document.body.classList.contains('company-mode');
     setText('addDocTitle',corporate?'Add company document':'Add document');
     setText('addCertFlowNote',corporate?'Choose one method: Scan with AI or Manual Upload.':'Choose one method: Scan with AI, Scan with QR, or Manual Upload.');
-    setText('certScanModeBtn','Scan with AI');
+    var scanButton=byId('certScanModeBtn');
+    if(scanButton)scanButton.innerHTML='<i class="ph ph-magic-wand" aria-hidden="true"></i><span>Scan with AI</span>';
     var qrButton=byId('certQrModeBtn');
     if(qrButton){
       qrButton.innerHTML='<i class="ph ph-qr-code" aria-hidden="true"></i><span>Scan with QR</span>';
       qrButton.hidden=corporate;
     }
-    setText('certManualModeBtn','Manual Upload');
+    var manualButton=byId('certManualModeBtn');
+    if(manualButton)manualButton.innerHTML='<i class="ph ph-upload-simple" aria-hidden="true"></i><span>Manual Upload</span>';
     setText('scanFlowText','Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.');
     setText('uploadDocBtn','Upload File');
     setText('scanInfo','AI will fill the document details after the upload.');
@@ -570,6 +572,32 @@
     var value=certificateUploadedAt(item);if(!value)return '<span class="atsrs-upload-date">—</span>';
     var date=new Date(value),label=Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):String(value);
     return '<span class="atsrs-upload-date'+(isRecentUpload(value)?' is-recent':'')+'">'+(isRecentUpload(value)?'<b>NEW</b> ':'')+esc(label)+'</span>';
+  }
+
+  function documentIconData(item){
+    var value=String(item&&item.type||'').toLocaleLowerCase();
+    if(/passport|identity|seaman|record book/.test(value))return{icon:'ph-anchor',tone:'is-amber'};
+    if(/medical|health|covid|vaccine|first aid/.test(value))return{icon:'ph-first-aid-kit',tone:'is-red'};
+    if(/security|isps|stcw|safety/.test(value))return{icon:'ph-shield-check',tone:'is-violet'};
+    if(/letter|authori[sz]ation|reference/.test(value))return{icon:'ph-file-text',tone:'is-blue'};
+    if(/breathing|diving|offshore|foet|bosiet/.test(value))return{icon:'ph-lifebuoy',tone:'is-gold'};
+    return{icon:'ph-file-text',tone:'is-green'};
+  }
+
+  function updateDocumentSummary(rows){
+    var counts={valid:0,expiring:0,noExpiry:0};
+    rows.forEach(function(row){
+      var st=row.statusData||{};
+      if(st.noExpiry||String(row.item&&row.item.expiry||'').toUpperCase()==='N/A')counts.noExpiry++;
+      else if(!st.expired&&Number(st.days)>0&&Number(st.days)<=90)counts.expiring++;
+      else if(!st.expired)counts.valid++;
+    });
+    var total=rows.length;
+    function put(id,value){var el=byId(id);if(el)el.textContent=String(value);}
+    function percent(value){return total?Math.round(value/total*100)+'%':'0%';}
+    put('documentSummaryValid',counts.valid);put('documentSummaryValidPercent',percent(counts.valid));
+    put('documentSummaryExpiring',counts.expiring);put('documentSummaryExpiringPercent',percent(counts.expiring));
+    put('documentSummaryNoExpiry',counts.noExpiry);put('documentSummaryNoExpiryPercent',percent(counts.noExpiry));
   }
 
   function updateRegisterControls(visibleIndices){
@@ -929,17 +957,20 @@
     if(!byId('certTable') || typeof getData!=='function' || typeof status!=='function')return;
     var c=getData('certs')||[];
     selectedCertIndices.forEach(function(index){if(index<0||index>=c.length)selectedCertIndices.delete(index);});
-    var rows=c.map(function(item,index){return{item:item,index:index,statusData:status(item.expiry)};});
+    var allRows=c.map(function(item,index){return{item:item,index:index,statusData:status(item.expiry)};});
+    updateDocumentSummary(allRows);
+    var rows=allRows;
     if(registerFilter)rows=rows.filter(function(row){return certificateSearchText(row.item,row.statusData).indexOf(registerFilter)!==-1;});
     if(registerSort.key)rows.sort(function(a,b){var result=compareCertificateRows(a,b,registerSort.key);return result===0?a.index-b.index:result*registerSort.direction;});
     var html='';
     rows.forEach(function(row){
       var x=row.item,i=row.index,st=row.statusData;
-      var statusTone=st.expired?'is-expired':(!st.noExpiry&&!st.risk?'is-valid':(Number(st.days)>0&&Number(st.days)<=30?'is-expiring':'is-neutral'));
-      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td data-label="Document"><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></td><td data-label="Provider">'+esc(x.provider||'')+'</td><td data-label="Expiry">'+esc(x.expiry||'')+'</td><td data-label="Uploaded">'+uploadDateMarkup(x)+'</td><td data-label="Status" class="atsrs-document-status '+esc(st.cls||'')+' '+statusTone+'">'+esc(st.txt||'')+'</td><td data-label="Actions"><div class="atsrs-document-row-actions">'+
-        '<button class="secondary" onclick="atsrsV172PreviewCert('+i+')">Preview</button>'+
-        '<button class="secondary" onclick="atsrsV172EditCert('+i+')">Edit</button>'+
-        '<button class="secondary atsrs-v172-delete" onclick="deleteCert('+i+')">Delete</button>'+
+      var icon=documentIconData(x);
+      var statusTone=st.expired?'is-expired':(!st.noExpiry&&!st.risk?'is-valid':(Number(st.days)>0&&Number(st.days)<=90?'is-expiring':'is-neutral'));
+      html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td data-label="Document"><div class="atsrs-document-identity"><span class="atsrs-document-type-icon '+icon.tone+'"><i class="ph '+icon.icon+'" aria-hidden="true"></i></span><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></div></td><td data-label="Provider">'+esc(x.provider||'')+'</td><td data-label="Expiry">'+esc(x.expiry||'N/A')+'</td><td data-label="Uploaded">'+uploadDateMarkup(x)+'</td><td data-label="Status"><span class="atsrs-document-status '+esc(st.cls||'')+' '+statusTone+'">'+esc(st.txt||'')+'</span></td><td data-label="Actions"><div class="atsrs-document-row-actions">'+
+        '<button class="secondary" title="Preview" aria-label="Preview '+esc(x.type||'document')+'" onclick="atsrsV172PreviewCert('+i+')"><i class="ph ph-eye" aria-hidden="true"></i><span>Preview</span></button>'+
+        '<button class="secondary" title="Edit" aria-label="Edit '+esc(x.type||'document')+'" onclick="atsrsV172EditCert('+i+')"><i class="ph ph-pencil-simple" aria-hidden="true"></i><span>Edit</span></button>'+
+        '<button class="secondary atsrs-v172-delete" title="Delete" aria-label="Delete '+esc(x.type||'document')+'" onclick="deleteCert('+i+')"><i class="ph ph-trash" aria-hidden="true"></i><span>Delete</span></button>'+
       '</div></td></tr>';
     });
     if(!rows.length){
