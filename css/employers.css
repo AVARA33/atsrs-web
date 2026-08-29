@@ -470,7 +470,7 @@ html[data-theme] body #app.app:not(.hidden) #employersPage .employer-tag {
   grid-column: 1 / -1;
   grid-row: 3;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 128px)) minmax(120px, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(110px, auto);
   align-items: center;
   gap: 10px;
   margin: 0;
@@ -501,7 +501,7 @@ html[data-theme] body #app.app:not(.hidden) #employersPage .employer-tag {
   box-shadow: 0 0 0 3px rgba(72, 212, 107, .12);
 }
 #employersPage .employer-actions .employer-action-jobs {
-  grid-column: 4;
+  grid-column: 5;
   justify-self: end;
   width: auto;
   min-width: 120px;
@@ -627,7 +627,7 @@ html[data-theme="light"] #employersPage .employer-actions button:disabled {
     height: 58px;
   }
   #employersPage .employer-actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   #employersPage .employer-actions .employer-action-jobs {
     grid-column: 1 / -1;

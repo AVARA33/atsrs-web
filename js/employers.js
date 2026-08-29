@@ -356,6 +356,31 @@
     },
     companies = [],
     loadToken = 0;
+  var categoryRules = [
+    { label: "ROV & Robotics", pattern: /\b(rov|robot(?:ics)?|autonomous|auv|unmanned)\b/i },
+    { label: "Subsea & Offshore", pattern: /\b(subsea|offshore|underwater|diving|deepwater)\b/i },
+    { label: "Marine & Survey", pattern: /\b(marine|maritime|vessel|survey(?:or|ing)?|hydrograph|geophys|dredg|metocean|sonar|mbes|qinsy|eiva|navipac)\b/i },
+    { label: "Energy & Utilities", pattern: /\b(energy|oil|gas|power|utility|utilities|renewable|wind|solar|battery|nuclear)\b/i },
+    { label: "Facilities & Maintenance", pattern: /\b(facilit(?:y|ies)|maintenance|hvac|building engineer|property|reliability technician)\b/i },
+    { label: "Technology & Data", pattern: /\b(software|data|digital|cloud|cyber|information technology|\bit\b|artificial intelligence|\bai\b|systems engineer|developer|network|electronics?)\b/i },
+    { label: "Manufacturing & Quality", pattern: /\b(manufactur|production|quality|machinist|fabricat|welding|inspection|process engineer)\b/i },
+    { label: "Construction & Projects", pattern: /\b(construction|commissioning|installation|project manager|project engineer|piping|civil engineer|structural engineer)\b/i },
+    { label: "Engineering", pattern: /\b(engineer|engineering|technical|technician|mechanic|electrical|designer|cad)\b/i },
+    { label: "Supply Chain & Logistics", pattern: /\b(supply|procurement|logistics|buyer|purchasing|warehouse|inventory|material planner)\b/i },
+    { label: "People & Recruitment", pattern: /\b(recruit|talent|human resources|\bhr\b|people partner|workforce)\b/i },
+    { label: "Legal & Compliance", pattern: /\b(legal|lawyer|counsel|paralegal|compliance|regulatory|governance)\b/i },
+    { label: "Finance & Commercial", pattern: /\b(finance|financial|account|commercial|business development|sales|contract manager|cost controller|controller|fp&a|underwriter|business control)\b/i },
+    { label: "Science & Environment", pattern: /\b(science|scientist|environment|sustainability|geotechnical|chemist|laboratory|research)\b/i },
+    { label: "Architecture & Design", pattern: /\b(architect|architectural|architecture)\b/i },
+    { label: "Government & Policy", pattern: /\b(government|policy|public affairs|national security|government relations)\b/i },
+    { label: "Retail & E-commerce", pattern: /\b(e-?commerce|merchandis|retail)\b/i },
+    { label: "Healthcare", pattern: /\b(health|nurse|nursing|clinical|medical)\b/i },
+    { label: "Hospitality", pattern: /\b(hotel|hospitality|chef|steward)\b/i },
+    { label: "Education & Training", pattern: /\b(university|education|training|instructor|teaching)\b/i },
+    { label: "Administration", pattern: /\b(administrative|administrator|office assistant)\b/i },
+    { label: "Food & Agriculture", pattern: /\b(agronom|agriculture|crop|seed|farmer|food|broiler)\b/i },
+    { label: "Operations", pattern: /\b(operations?|operator|supervisor|coordinator|manager|field service)\b/i },
+  ];
   function byId(id) {
     return document.getElementById(id);
   }
@@ -364,6 +389,44 @@
   }
   function normalized(value) {
     return clean(value).replace(/\s+/g, " ").toLowerCase();
+  }
+  function companyData(company) {
+    return Object.assign(
+      {
+        sector: company.sector || "Active vacancies",
+        tags: company.tags || [],
+      },
+      verified[company.name] || {},
+    );
+  }
+  function jobCategories(row) {
+    var signal = [row && row.title, row && row.worksite, row && row.work_type, row && row.equipment]
+      .map(clean)
+      .filter(Boolean)
+      .join(" ");
+    return categoryRules
+      .filter(function (rule) { return rule.pattern.test(signal); })
+      .map(function (rule) { return rule.label; });
+  }
+  function addCategorySignals(company, row) {
+    if (!company.categoryScores) company.categoryScores = new Map();
+    var matches = jobCategories(row);
+    if (!matches.length) matches = ["Other roles"];
+    matches.forEach(function (label) {
+      company.categoryScores.set(label, (company.categoryScores.get(label) || 0) + 1);
+    });
+  }
+  function finalizeCategorySignals(company) {
+    if (verified[company.name]) return company;
+    company.tags = Array.from((company.categoryScores || new Map()).entries())
+      .sort(function (a, b) {
+        return b[1] - a[1] || a[0].localeCompare(b[0]);
+      })
+      .slice(0, 3)
+      .map(function (entry) { return entry[0]; });
+    company.sector = company.tags[0] || "Active vacancies";
+    delete company.categoryScores;
+    return company;
   }
   function db() {
     return window.supabaseClient && window.supabaseClient.rpc
@@ -434,7 +497,7 @@
     }, 0);
   }
   function card(company) {
-    var data = verified[company.name] || {},
+    var data = companyData(company),
       article = document.createElement("article");
     article.className = "employer-card";
     article.tabIndex = 0;
@@ -519,6 +582,9 @@
       data.contact
         ? buttonLink(data.contact, "Contact", "envelope")
         : unavailableAction("Contact", "envelope"),
+      data.about || data.website
+        ? buttonLink(data.about || data.website, "About", "info")
+        : unavailableAction("About", "info"),
     );
     if (company.vacancyCount > 0) {
       var jobsAction = action("View jobs", "arrow-right", function () {
@@ -540,7 +606,7 @@
       vacancies = byId("employersVacancies").value,
       sort = byId("employersSort").value;
     var visible = companies.filter(function (company) {
-      var data = verified[company.name] || {},
+      var data = companyData(company),
         haystack = [company.name, data.summary || "", data.sector || ""]
           .concat(data.tags || [])
           .join(" ")
@@ -582,10 +648,13 @@
         var key = normalized(name);
         var company = names.get(key) || { name: name, vacancyCount: 0 };
         company.vacancyCount += 1;
+        addCategorySignals(company, row);
         names.set(key, company);
       });
       companies = Array.from(names.values())
+        .map(finalizeCategorySignals)
         .sort(function (a, b) { return a.name.localeCompare(b.name); });
+      refreshSectorOptions();
       var message = byId("employersMessage");
       if (message) message.textContent = "";
       render();
@@ -595,23 +664,29 @@
       if (message) message.textContent = "Companies are temporarily unavailable. Please try again.";
     }
   }
+  function refreshSectorOptions() {
+    var sector = byId("employersSector"),
+      selected = sector.value;
+    sector.textContent = "";
+    var all = document.createElement("option");
+    all.value = "";
+    all.textContent = "All sectors";
+    sector.appendChild(all);
+    Array.from(new Set(companies.map(function (company) {
+      return companyData(company).sector;
+    }).filter(Boolean))).sort().forEach(function (value) {
+      var option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      sector.appendChild(option);
+    });
+    sector.value = Array.from(sector.options).some(function (option) {
+      return option.value === selected;
+    }) ? selected : "";
+  }
   function install() {
     if (!byId("employersPage")) return;
     var sector = byId("employersSector");
-    Array.from(
-      new Set(
-        Object.keys(verified).map(function (name) {
-          return verified[name].sector;
-        }),
-      ),
-    )
-      .sort()
-      .forEach(function (value) {
-        var option = document.createElement("option");
-        option.value = value;
-        option.textContent = value;
-        sector.appendChild(option);
-      });
     byId("employersSearch").addEventListener("input", render);
     sector.addEventListener("change", render);
     byId("employersVacancies").addEventListener("change", render);

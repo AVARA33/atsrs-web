@@ -7,7 +7,7 @@ const history = fs.readFileSync('js/profile-sharing-v1.js', 'utf8');
 const edge = fs.readFileSync('supabase/functions/share-profile/index.ts', 'utf8');
 const migration = fs.readFileSync('supabase/migrations/20260829045619_add_profile_share_revoked_at.sql', 'utf8');
 
-assert.match(index, /data-atsrs-build="V5949"/);
+assert.match(index, /data-atsrs-build="V5950"/);
 assert.match(index, />Share history</);
 assert.match(share, /No email will be sent/);
 assert.match(share, /no email was sent/);
