@@ -50,4 +50,8 @@ assert.ok(followUp, 'the remaining due reconciler is deferred to a later turn');
 followUp.callback();
 assert.equal(calls, 2, 'the deferred reconciler still runs');
 
+assert.match(source, /oncePerResume:requestedDelay<5000/, 'sub-five-second legacy guards are marked as one-shot reconciliation tasks');
+assert.match(source, /task\.oncePerResume\?Infinity:Date\.now\(\)\+task\.delay/, 'a completed legacy guard is parked until the next page resume');
+assert.doesNotMatch(source, /task\.next=Date\.now\(\)\+task\.delay;\s*schedule\(\)/, 'legacy guards must not repeat forever');
+
 console.log('stability scheduler burst budget passed');

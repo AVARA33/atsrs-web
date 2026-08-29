@@ -47,14 +47,10 @@ const context = {
 
 vm.runInNewContext(source, context);
 
-assert.equal(observers.length, 2, 'startup metrics install only lightweight paint observers');
-const lifetime = timers.find((timer) => timer.delay === 10000);
-assert.ok(lifetime, 'observer lifetime is bounded to 10 seconds');
-lifetime.callback();
-assert.ok(observers.every((observer) => observer.disconnected), 'all observers disconnect after startup');
+assert.equal(observers.length, 0, 'authenticated shell installs no native performance observers');
 
 listeners.get('window:pagehide')();
-assert.ok(observers.every((observer) => observer.disconnected), 'pagehide leaves no observer attached');
+assert.equal(observers.length, 0, 'pagehide leaves no observer attached');
 
 assert.match(
   fs.readFileSync(path.join(__dirname, '..', 'js', 'talent-directory.js'), 'utf8'),

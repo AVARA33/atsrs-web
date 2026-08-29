@@ -7,12 +7,12 @@ const source = fs.readFileSync(
   'utf8',
 );
 
-assert.match(source, /largest-contentful-paint/);
-assert.match(source, /layout-shift/);
+assert.doesNotMatch(source, /observePerformance\('largest-contentful-paint'/);
+assert.doesNotMatch(source, /observePerformance\('layout-shift'/);
 assert.doesNotMatch(source, /observePerformance\('event'/);
 assert.doesNotMatch(source, /observePerformance\('longtask'/);
 assert.match(source, /atsrsPerformanceSnapshot/);
-assert.match(source, /performanceObserverTimer=setTimeout\(stopPerformanceMetrics,10000\)/);
+assert.doesNotMatch(source, /performanceObserverTimer=setTimeout\(stopPerformanceMetrics/);
 assert.match(source, /observer\.disconnect\(\)/);
 assert.match(source, /pagehide[^\n]+stopPerformanceMetrics/);
 assert.match(source, /dataset\.atsrsLcp/);

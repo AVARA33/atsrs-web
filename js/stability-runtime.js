@@ -53,17 +53,10 @@
   }
   function installPerformanceMetrics(){
     publishPerformanceMetrics();
-    observePerformance('largest-contentful-paint',function(entry){
-      performanceMetrics.lcp=Math.max(performanceMetrics.lcp,entry.startTime||0);
-    });
-    observePerformance('layout-shift',function(entry){
-      if(!entry.hadRecentInput)performanceMetrics.cls+=Number(entry.value)||0;
-    });
-    // Avoid the Chromium event and long-task instrumentation here. ATSRS has
-    // several authenticated workspaces with frequent DOM reconciliation. In
-    // Chromium-based browsers those native observers can remain attached to a
-    // very busy renderer and have caused STATUS_ACCESS_VIOLATION tab crashes.
-    // LCP and CLS are sufficient for the small, privacy-safe startup snapshot.
+    // Chromium crash dumps from ATSRS sessions identify the foreground renderer
+    // on hybrid Intel graphics. Do not attach native PerformanceObserver streams
+    // to the long-lived authenticated shell; navigation timing below provides
+    // the startup signal we need without keeping Blink instrumentation alive.
     window.addEventListener('load',function(){
       setTimeout(function(){
         try{
@@ -74,9 +67,6 @@
         publishPerformanceMetrics();
       },0);
     });
-    // These metrics describe startup responsiveness only. Disconnect promptly
-    // so they never follow the user into the long-running application session.
-    performanceObserverTimer=setTimeout(stopPerformanceMetrics,10000);
   }
   function singleFlight(key,operation){
     var flightKey=String(key||'default');
@@ -115,7 +105,11 @@
   }
   function finishTask(task){
     task.running=false;
-    task.next=Date.now()+task.delay;
+    task.runs+=1;
+    // The short legacy intervals are visual reconciliation guards, not data
+    // polling. Run each once per visible page lifecycle instead of mutating the
+    // full authenticated DOM every five seconds forever.
+    task.next=task.oncePerResume?Infinity:Date.now()+task.delay;
     schedule();
   }
   function runDue(){
@@ -142,8 +136,9 @@
   function stableInterval(callback,delay){
     if(typeof callback!=='function')throw new TypeError('ATSRS scheduler requires a function.');
     var id=nextTaskId++;
-    var safeDelay=Math.max(5000,Number(delay)||5000);
-    tasks.set(id,{callback:callback,delay:safeDelay,next:Date.now()+safeDelay,running:false});
+    var requestedDelay=Number(delay)||5000;
+    var safeDelay=Math.max(5000,requestedDelay);
+    tasks.set(id,{callback:callback,delay:safeDelay,next:Date.now()+safeDelay,running:false,runs:0,oncePerResume:requestedDelay<5000});
     schedule();
     return id;
   }
