@@ -114,6 +114,18 @@
     if(!token)return false;
     try{var response=await fetch(endpoint()+'?token='+encodeURIComponent(token),{headers:{apikey:publishableKey()},cache:'no-store'});return response.ok;}catch(error){return false;}
   }
+  function verifiedEmail(value){var email=String(value||'').trim().toLowerCase();return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)?email:'';}
+  async function copyText(value){
+    try{await navigator.clipboard.writeText(value);return true;}catch(error){}
+    var area=document.createElement('textarea');area.value=value;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();var copied=false;try{copied=document.execCommand('copy');}catch(error){}area.remove();return copied;
+  }
+  function recruiterMailto(recipient,shareUrl){
+    var email=verifiedEmail(recipient&&recipient.email);if(!email||!shareUrl)return'';
+    var name=String(recipient&&recipient.name||'Recruiter').trim()||'Recruiter';
+    var subject='ATSRS profile shared with '+name;
+    var body='Hello '+name+',\n\nI am sharing my ATSRS profile through this secure link. The link expires in 24 hours:\n\n'+shareUrl+'\n\nKind regards,';
+    return'mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  }
   async function createValidatedShare(fileIds,expiresAt,audience){
     var request={action:'create',file_ids:fileIds,expires_at:expiresAt,audience:audience};
     var result=await ownerCall(request);
@@ -314,6 +326,24 @@
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
     try{var result=await createValidatedShare(fileIds,expiresAt,audience);activeShare=result.share||null;if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);if(result.token)setOwnerToken(activeShare.id,result.token);}setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
     catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);return false;}finally{syncShareSelectAll();}
+  };
+  window.atsrsCreateRecruiterEmailShare=async function(recruiter){
+    recruiter=recruiter&&typeof recruiter==='object'?recruiter:{};
+    var recruiterId=String(recruiter.id||'').trim();
+    if(!/^[0-9a-f-]{36}$/i.test(recruiterId))throw new Error('This recruiter is not ready for verified email sharing.');
+    var result=await ownerCall({action:'create_recruiter_email_share',recruiter_id:recruiterId});
+    var token=String(result&&result.token||''),url=String(result&&result.share_url||shareUrl(token)||'');
+    if(!token||!url||!await validateShareToken(token))throw new Error('The 24-hour profile link could not be verified.');
+    var recipient=result.recipient||{},email=verifiedEmail(recipient.email),mailto=recruiterMailto(recipient,url);
+    if(!email||!mailto)throw new Error('This recruiter no longer has a verified professional email.');
+    activeShare=result.share||null;
+    if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);setOwnerToken(activeShare.id,token);}
+    setKnownLink(url);renderOwnerStatus();
+    var copied=await copyText(url);
+    ownerMessage(copied?'24-hour recruiter link copied. Email draft is opening.':'24-hour recruiter link created. Email draft is opening.');
+    window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));
+    window.location.href=mailto;
+    return{share_url:url,recipient:recipient,copied:copied,email_sent:false};
   };
   window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
   window.revokeShareProfileLink=async function(shareId){

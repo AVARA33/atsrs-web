@@ -14,3 +14,8 @@ verify_jwt = false
 
 [functions.whatsapp-verification]
 verify_jwt = true
+
+[functions.share-profile]
+# Public profile previews use token-based access; owner actions still verify the
+# signed-in user's bearer token inside the function.
+verify_jwt = false

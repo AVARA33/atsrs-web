@@ -68,6 +68,33 @@
           ", then copy it to the recruiter’s verified contact route.";
     }, 0);
   }
+  function hasVerifiedEmail(recruiter) {
+    return !!(recruiter && recruiter.email_verification_status === "verified");
+  }
+  async function shareRecruiter(recruiter, button) {
+    if (!hasVerifiedEmail(recruiter) || typeof window.atsrsCreateRecruiterEmailShare !== "function") {
+      share(recruiter.name);
+      return;
+    }
+    var original = button.innerHTML;
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    button.innerHTML = '<i class="ph ph-spinner-gap" aria-hidden="true"></i><span>Preparing 24h link…</span>';
+    try {
+      await window.atsrsCreateRecruiterEmailShare({
+        id: recruiter.id,
+        name: recruiter.name,
+        company: recruiter.company,
+      });
+    } catch (error) {
+      console.error("ATSRS recruiter email share failed", error);
+      window.alert(error && error.message || "The recruiter email draft could not be prepared. Please try again.");
+    } finally {
+      button.disabled = false;
+      button.removeAttribute("aria-busy");
+      button.innerHTML = original;
+    }
+  }
   function action(label, icon, handler) {
     var button = document.createElement("button");
     button.type = "button";
@@ -173,9 +200,15 @@
     }
     actions.append(jobsAction);
     var shareAction = action("Share my profile", "share-network", function () {
-      share(name);
+      shareRecruiter(recruiter, shareAction);
     });
     shareAction.className = "employer-action-share";
+    if (hasVerifiedEmail(recruiter)) {
+      shareAction.dataset.emailRoute = "verified";
+      shareAction.title = "Create a 24-hour ATSRS link and open an email draft";
+    } else {
+      shareAction.title = "Choose what to include in a secure profile link";
+    }
     actions.append(shareAction);
     article.append(head, tags, actions);
     return article;
@@ -226,7 +259,7 @@
       var results = await Promise.all([
         client
           .from("atsrs_recruiters")
-          .select("name,company,role_title,location,linkedin_url")
+          .select("id,name,company,role_title,location,linkedin_url,email_verification_status")
           .eq("status", "active")
           .order("name", { ascending: true }),
         client.rpc("atsrs_jobs_facets"),

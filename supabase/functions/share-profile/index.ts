@@ -19,6 +19,10 @@ type ShareRow = {
   user_id: string;
   account_type: string;
   audience: "anyone" | "recruiters" | "recipient";
+  recipient_recruiter_id: string | null;
+  recipient_name: string | null;
+  recipient_company: string | null;
+  recipient_email: string | null;
   token_hash: string;
   token_hint: string;
   selected_file_ids: string[];
@@ -54,7 +58,7 @@ type AccessRequestRow = {
   updated_at: string;
 };
 
-const SHARE_SELECT = "id,user_id,account_type,audience,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
+const SHARE_SELECT = "id,user_id,account_type,audience,recipient_recruiter_id,recipient_name,recipient_company,recipient_email,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,created_at,updated_at";
 const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requester_user_id,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
 
 function getSupabaseSecretKey() {
@@ -202,6 +206,10 @@ function publicShareStatus(row: ShareRow | null) {
   return {
     id: row.id,
     audience: row.audience ?? "anyone",
+    recipient_recruiter_id: row.recipient_recruiter_id,
+    recipient_name: row.recipient_name,
+    recipient_company: row.recipient_company,
+    recipient_email: row.recipient_email,
     active: shareIsActive(row),
     token_hint: row.token_hint,
     selected_file_ids: row.selected_file_ids ?? [],
@@ -416,6 +424,62 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
   if (existingResult.error) throw existingResult.error;
   const existingShares = (existingResult.data ?? []) as ShareRow[];
   const existing = existingShares.find(shareIsActive) ?? existingShares[0] ?? null;
+
+  if (action === "create_recruiter_email_share") {
+    const recruiterId = safeText(body.recruiter_id, 40);
+    if (!UUID_PATTERN.test(recruiterId)) {
+      return json(req, 400, { error: "Choose a valid ATSRS recruiter." });
+    }
+    const recruiterResult = await admin.from("atsrs_recruiters")
+      .select("id,name,company,professional_email,email_verification_status,status")
+      .eq("id", recruiterId)
+      .eq("status", "active")
+      .eq("email_verification_status", "verified")
+      .maybeSingle();
+    if (recruiterResult.error) throw recruiterResult.error;
+    const recruiter = recruiterResult.data as JsonObject | null;
+    const recipientEmail = safeEmail(recruiter?.professional_email);
+    if (!recruiter || !recipientEmail) {
+      return json(req, 404, { error: "This recruiter does not have a verified professional email." });
+    }
+    const token = randomToken();
+    const tokenHash = await sha256Hex(token);
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+    const payload = {
+      user_id: user.id,
+      account_type: "personal",
+      audience: "recipient",
+      recipient_recruiter_id: recruiterId,
+      recipient_name: safeText(recruiter.name, 180),
+      recipient_company: safeText(recruiter.company, 180),
+      recipient_email: recipientEmail,
+      token_hash: tokenHash,
+      token_hint: token.slice(-8),
+      selected_file_ids: [],
+      enabled: true,
+      expires_at: expiresAt,
+      view_count: 0,
+      last_viewed_at: null,
+      updated_at: now.toISOString(),
+    };
+    const saved = await admin.from("atsrs_profile_shares").insert(payload)
+      .select(SHARE_SELECT).single();
+    if (saved.error) throw saved.error;
+    const share = saved.data as ShareRow;
+    return json(req, 200, {
+      share: publicShareStatus(share),
+      token,
+      share_url: `${SITE_URL}/?share=${encodeURIComponent(token)}`,
+      recipient: {
+        id: recruiterId,
+        name: share.recipient_name,
+        company: share.recipient_company,
+        email: recipientEmail,
+      },
+      email_sent: false,
+    });
+  }
 
   if (action === "status") return json(req, 200, {
     shares: existingShares.map(publicShareStatus),
