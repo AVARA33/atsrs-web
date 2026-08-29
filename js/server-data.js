@@ -1941,7 +1941,11 @@
     });
   }
   function referenceRow(kind,row){
-    return '<div class="atsrs-v134-row"><div><b title="'+escapeHtml(row.file_name)+'">📄 '+escapeHtml(row.file_name||'File')+'</b><span>'+Math.round((row.size_bytes||0)/1024)+' KB</span></div>'+
+    var categoryLabels={appraisal:'Annual Appraisal',reference:'Reference Letter',recommendation:'Recommendation',coverLetter:'Cover Letter'};
+    var date=String(row.created_at||'').slice(0,10);
+    var size=Math.round((row.size_bytes||0)/1024)+' KB';
+    return '<div class="atsrs-v134-row" data-ref-name="'+escapeHtml(row.file_name||'File')+'" data-ref-category="'+escapeHtml(categoryLabels[kind]||'Document')+'" data-ref-date="'+escapeHtml(date)+'" data-ref-size="'+escapeHtml(size)+'"><div class="atsrs-ref-document"><i class="ph ph-file-text" aria-hidden="true"></i><div><b title="'+escapeHtml(row.file_name)+'">'+escapeHtml(row.file_name||'File')+'</b><span>Uploaded '+escapeHtml(date||'—')+'</span></div></div>'+
+      '<span class="atsrs-ref-category">'+escapeHtml(categoryLabels[kind]||'Document')+'</span><span class="atsrs-ref-date">'+escapeHtml(date||'—')+'</span><span class="atsrs-ref-size">'+escapeHtml(size)+'</span>'+
       '<div class="atsrs-v134-actions"><button class="secondary" onclick="atsrsCloudPreview(\''+row.id+'\')">Preview</button>'+
       '<button class="secondary" onclick="atsrsCloudDownload(\''+row.id+'\')">Download</button>'+
       '<button class="action" onclick="atsrsCloudDelete(\''+row.id+'\')">Delete</button></div></div>';
