@@ -19,9 +19,9 @@ for (const plan of ['bronze', 'silver', 'gold', 'titan']) {
 assert.match(pricing, /Prices are shown in USD/);
 assert.match(pricing, /Billing is not open yet/);
 assert.match(pricing, /id="free" class="pricing-plan pricing-plan-free"/);
-assert.match(pricing, /10 Tracked Documents/);
-assert.match(pricing, /100 MB Storage/);
-assert.match(pricing, /50 WhatsApp Expiry Alerts \/ month/);
+assert.match(pricing, /Core document and expiry workflow/);
+assert.match(pricing, /Recruiter and Company directories/);
+assert.match(pricing, /Controlled 24-hour recruiter sharing/);
 assert.doesNotMatch(pricing, /No Candidate directory listing/);
 assert.doesNotMatch(pricing, /No SMS or WhatsApp credits/);
 assert.match(pricing, /data-monthly="\$19\.99" data-yearly="\$192"/);
@@ -33,7 +33,13 @@ assert.match(pricing, /RECOMMENDED/);
 assert.match(pricing, /COMING SOON/);
 assert.match(pricing, /Direct Apply/);
 assert.match(pricing, /Original Source Links/);
-assert.match(pricing, /shares the same 15 AI scan monthly allowance/);
+assert.match(pricing, /AI CV Generations/);
+assert.match(pricing, /Recruiter Directory/);
+assert.match(pricing, /Official Company Directory/);
+assert.match(pricing, /Tracked Documents<\/th><td>10<\/td><td>200<\/td><td>700<\/td><td>1,500<\/td><td>2,000<\/td>/);
+assert.match(pricing, /Storage<\/th><td>100 MB<\/td><td>1 GB<\/td><td>5 GB<\/td><td>10 GB<\/td><td>20 GB<\/td>/);
+assert.match(pricing, /WhatsApp Expiry Alerts<\/th><td>50 \/ month<\/td><td>150 \/ month<\/td><td>300 \/ month<\/td><td>750 \/ month<\/td><td>Unlimited<\/td>/);
+assert.match(pricing, /Silver, Gold and Titan limits are planned/);
 assert.match(pricing, /id="comparison"/);
 assert.match(runtime, /querySelectorAll\('\[data-plan-price\]'\)/);
 assert.match(runtime, /querySelectorAll\('\[data-price-copy\]'\)/);
@@ -41,6 +47,7 @@ assert.match(runtime, /setAttribute\('aria-pressed'/);
 assert.match(css, /\.pricing-paid-grid\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
 assert.match(css, /@media\(max-width:1180px\)[\s\S]*?\.pricing-paid-grid\{grid-template-columns:1fr 1fr\}/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?\.pricing-plan-free,\.pricing-paid-grid\{grid-template-columns:1fr\}/);
+assert.match(css, /\.pricing-table-group th/);
 
 console.log('Personal pricing information page contracts passed');
 
