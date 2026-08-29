@@ -8,7 +8,7 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V5936"/);
+assert.match(index, /data-atsrs-build="V5937"/);
 assert.match(index, /href="css\/jobs-prototype\.css\?v=5923"/);
 assert.match(index, /src="js\/route-feature-loader\.js\?v=5922"/);
 assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=5922'\)/);
