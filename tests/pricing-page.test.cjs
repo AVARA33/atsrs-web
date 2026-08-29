@@ -63,6 +63,9 @@ assert.match(pricing, /Tracked Documents<\/th><td>10<\/td><td>200<\/td><td>700<\
 assert.match(pricing, /Storage<\/th><td>100 MB<\/td><td>1000 MB<\/td><td>2 GB<\/td><td>5 GB<\/td><td>10 GB<\/td>/);
 assert.match(pricing, /WhatsApp Expiry Alerts<\/th><td>50 \/ month<\/td><td>150 \/ month<\/td><td>300 \/ month<\/td><td>750 \/ month<\/td><td>Unlimited<\/td>/);
 assert.match(pricing, /Silver, Gold and Titan limits are planned/);
+assert.match(pricing, /Need more than your plan includes\?/);
+assert.match(pricing, /Additional credits can be purchased for Tracked Documents, Storage, AI Document Scans, AI CV Generations and WhatsApp Expiry Alerts without changing your plan/);
+assert.match(pricing, /Add-on prices will be shown before purchase when billing opens/);
 assert.match(pricing, /id="comparison"/);
 assert.match(runtime, /querySelectorAll\('\[data-plan-price\]'\)/);
 assert.match(runtime, /querySelectorAll\('\[data-price-copy\]'\)/);
@@ -71,6 +74,7 @@ assert.match(css, /\.pricing-paid-grid\{display:grid;grid-template-columns:repea
 assert.match(css, /@media\(max-width:1180px\)[\s\S]*?\.pricing-paid-grid\{grid-template-columns:1fr 1fr\}/);
 assert.match(css, /@media\(max-width:720px\)[\s\S]*?\.pricing-plan-free,\.pricing-paid-grid\{grid-template-columns:1fr\}/);
 assert.match(css, /\.pricing-table-group th/);
+assert.match(css, /\.pricing-addon-notice\{/);
 
 console.log('Personal pricing information page contracts passed');
 
