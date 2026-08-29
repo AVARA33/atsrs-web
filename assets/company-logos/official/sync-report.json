@@ -1,0 +1,105 @@
+{
+  "generatedAt": "2026-08-29T12:05:15.422Z",
+  "companies": 229,
+  "mapped": 215,
+  "failedDomains": [
+    {
+      "domain": "atlasprofessionals.com",
+      "companies": [
+        "Atlas Professionals"
+      ],
+      "error": "fetch failed"
+    },
+    {
+      "domain": "callawaygolf.com",
+      "companies": [
+        "Callaway Golf"
+      ],
+      "error": "429"
+    },
+    {
+      "domain": "hilton.com",
+      "companies": [
+        "Hilton"
+      ],
+      "error": "404"
+    },
+    {
+      "domain": "henrymayo.com",
+      "companies": [
+        "Henry Mayo Newhall Hospital"
+      ],
+      "error": "403"
+    },
+    {
+      "domain": "introba.com",
+      "companies": [
+        "Introba Consulting Limited"
+      ],
+      "error": "404"
+    },
+    {
+      "domain": "kippsocal.org",
+      "companies": [
+        "KIPP SoCal Public Schools"
+      ],
+      "error": "fetch failed"
+    },
+    {
+      "domain": "ldc.com",
+      "companies": [
+        "Louis Dreyfus Company"
+      ],
+      "error": "403"
+    },
+    {
+      "domain": "mermaidsubsea.co.uk",
+      "companies": [
+        "Mermaid Subsea Services (Co) Ltd"
+      ],
+      "error": "fetch failed"
+    },
+    {
+      "domain": "flex.com",
+      "companies": [
+        "Flex"
+      ],
+      "error": "fetch failed"
+    },
+    {
+      "domain": "chicago.gov",
+      "companies": [
+        "City of Chicago"
+      ],
+      "error": "This operation was aborted"
+    },
+    {
+      "domain": "gascade.de",
+      "companies": [
+        "GASCADE"
+      ],
+      "error": "This operation was aborted"
+    },
+    {
+      "domain": "teamrecruitment.co.uk",
+      "companies": [
+        "Team Recruitment"
+      ],
+      "error": "404"
+    },
+    {
+      "domain": "usoncology.com",
+      "companies": [
+        "The US Oncology Network / Texas Oncology"
+      ],
+      "error": "403"
+    },
+    {
+      "domain": "orionworld.com",
+      "companies": [
+        "Orion Group"
+      ],
+      "error": "404"
+    }
+  ]
+}

@@ -522,7 +522,8 @@
     markFallback.className = "employer-mark-fallback";
     markFallback.textContent = data.mark || initials(company.name);
     mark.appendChild(markFallback);
-    var logoUrl = companyLogos[company.name] || "";
+    var logoUrl = companyLogos[company.name] ||
+      (window.atsrsCompanyLogoAssets || {})[company.name] || "";
     if (logoUrl) {
       var logo = document.createElement("img");
       logo.className = "employer-logo";

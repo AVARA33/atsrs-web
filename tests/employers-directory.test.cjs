@@ -3,6 +3,7 @@ const fs = require('node:fs');
 
 const html = fs.readFileSync('index.html', 'utf8');
 const js = fs.readFileSync('js/employers.js', 'utf8');
+const logoAssets = fs.readFileSync('js/company-logo-assets.js', 'utf8');
 const recruitersJs = fs.readFileSync('js/recruiters.js', 'utf8');
 const css = fs.readFileSync('css/employers.css', 'utf8');
 const recruiterActionCss = fs.readFileSync('css/recruiter-action-emphasis-v5926.css', 'utf8');
@@ -30,7 +31,8 @@ assert.match(html, /class="atsrs-search-control"[^>]*>[\s\S]*?id="recruitersSear
 assert.match(html, /atsrsOpenJobsDirectory\('recruiters',this\)/);
 assert.match(html, /atsrsOpenJobsDirectory\('employers',this\)/);
 assert.match(html, /js\/company-directory-links\.js\?v=3/);
-assert.match(html, /js\/employers\.js\?v=40/);
+assert.match(html, /js\/company-logo-assets\.js\?v=1/);
+assert.match(html, /js\/employers\.js\?v=41/);
 assert.match(html, /js\/recruiters\.js\?v=15/);
 assert.match(html, /css\/employers\.css\?v=34/);
 assert.match(html, /css\/recruiter-action-emphasis-v5926\.css\?v=5938/);
@@ -95,7 +97,9 @@ assert.match(css, /\.employer-vacancy-count/);
 assert.match(css, /\.employer-card-copy h4[\s\S]*?color: #fff/);
 assert.match(css, /html\[data-theme="light"\] \.employer-card-copy h4/);
 assert.match(css, /#employersPage,#recruitersPage/);
-assert.match(js, /companyLogos\[company\.name\] \|\| ""/);
+assert.match(js, /companyLogos\[company\.name\] \|\|[\s\S]*?window\.atsrsCompanyLogoAssets/);
+assert.match(js, /window\.atsrsCompanyLogoAssets/);
+assert.ok((logoAssets.match(/assets\/company-logos\/official\//g) || []).length >= 200, 'At least 200 companies must have synced official logo assets');
 assert.match(js, /assets\/company-logos\/blueye-robotics\.ico/);
 assert.doesNotMatch(js, /new URL\("\/favicon\.ico"/);
 assert.match(js, /employer-mark-fallback/);
