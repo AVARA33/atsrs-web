@@ -2,10 +2,17 @@
 #app.app:not(.hidden) .sidebar .sidebar-quick-links{
   position:relative;
   display:grid;
+  order:102;
   grid-template-columns:repeat(3,1fr);
   gap:2px;
   width:100%;
   padding:3px 1px 0;
+}
+
+/* This is only an internal route target. It must never render as a fourth
+   sidebar item; the three links below Privacy are the visible controls. */
+#app.app:not(.hidden) .sidebar #navResource{
+  display:none!important;
 }
 
 #app.app:not(.hidden) .sidebar .sidebar-quick-links a{
