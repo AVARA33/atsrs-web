@@ -35,7 +35,31 @@ body:has(#navIntro.active) #introPage{margin:0!important;padding:0!important}bod
 .mission-release-list{display:grid;gap:0}.mission-release-list button{display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;align-items:start!important;gap:13px!important;width:100%!important;min-height:103px!important;padding:12px 0!important;border:0!important;background:transparent!important;color:#f5f5f5!important;text-align:left!important;box-shadow:none!important}.mission-release-list button>i{color:var(--mission-green);font-size:30px}.mission-release-list button>span{display:grid;gap:8px}.mission-release-list strong{display:flex;align-items:center;gap:10px;font-size:15px}.mission-release-list em{padding:3px 9px;border:1px solid rgba(86,215,93,.28);border-radius:999px;background:rgba(86,215,93,.09);color:var(--mission-green);font-size:9px;font-style:normal;letter-spacing:.08em}.mission-release-list small{width:354px;color:#9ca1a8;font-size:13px;line-height:20px}
 .mission-status-summary{display:grid;margin-top:5px;padding-top:12px;border-top:1px solid rgba(255,255,255,.11)}.mission-status-summary>div{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:14px;min-height:66px}.mission-status-ring{width:27px;height:27px;border:2px solid;border-radius:50%}.mission-status-ring.is-live{border-color:var(--mission-green)}.mission-status-ring.is-building{border-color:var(--mission-yellow)}.mission-status-ring.is-planned{border-color:#aab1bc}.mission-status-summary p{display:grid;gap:2px;margin:0!important}.mission-status-summary p strong{font-size:14px}.mission-status-summary p small{color:#8f9893;font-size:11px}.mission-status-summary b{font-size:28px}.mission-status-summary>div:nth-child(1)>b{color:var(--mission-green)}.mission-status-summary>div:nth-child(2)>b{color:var(--mission-yellow)}.mission-status-summary>div:nth-child(3)>b{color:#aab1bc}
 }
-html[data-theme="light"] .updates-mission{color:#132b56}html[data-theme="light"] .mission-orbit-title{background:#f6f8fb}html[data-theme="light"] .updates-mission-brief>h3{color:#132b56!important;-webkit-text-fill-color:#132b56!important}
+html[data-theme="light"] body:has(#navIntro.active){background:#f6f8fb!important}
+html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden){background:#f6f8fb!important}
+html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.sidebar{border-right-color:#d9e2ef!important;background:#fff!important}
+html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main{background:radial-gradient(ellipse 480px 520px at 34% 43%,rgba(54,111,207,.055),transparent 72%),#f6f8fb!important}
+html[data-theme="light"] body:has(#navIntro.active) .sidebar-head::after,html[data-theme="light"] body:has(#navIntro.active) .sidebar .nav button{color:#19345f!important}
+html[data-theme="light"] body:has(#navIntro.active) .nav-utility-divider{background:#d9e2ef!important}
+html[data-theme="light"] body:has(#navIntro.active) .sidebar-quick-links span{color:#536b8d!important}
+html[data-theme="light"] body:has(#navIntro.active) #workspaceSwitcherButton{border-color:#d8e1ee!important;background:#fff!important}
+html[data-theme="light"] body:has(#navIntro.active) #workspaceSwitcherLabel{color:#6b7d99!important}
+html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle{border-bottom-color:#dce4ef!important;color:#132b56!important}
+html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle::after{color:#697b96!important}
+html[data-theme="light"] .updates-mission{color:#132b56}
+html[data-theme="light"] .mission-orbit-title{background:#f6f8fb}
+html[data-theme="light"] .mission-node,html[data-theme="light"] .mission-roadmap-item{color:#17345f}
+html[data-theme="light"] .mission-node i{color:#2f6dcc;filter:drop-shadow(0 0 5px rgba(47,109,204,.18))}
+html[data-theme="light"] .mission-core{background:radial-gradient(ellipse at center,rgba(255,255,255,.98),rgba(237,243,250,.95) 68%,transparent 69%)!important;color:#132b56!important}
+html[data-theme="light"] .mission-core small,html[data-theme="light"] .mission-roadmap-reports small,html[data-theme="light"] .mission-roadmap-android small{color:#657792}
+html[data-theme="light"] .mission-launchers button{border-color:rgba(47,109,204,.55)!important;background:rgba(255,255,255,.88)!important;color:#132b56!important}
+html[data-theme="light"] .mission-launchers button>i{color:#2f6dcc}
+html[data-theme="light"] .mission-launchers small{color:#667a98}
+html[data-theme="light"] .updates-mission-brief>h3{color:#132b56!important;-webkit-text-fill-color:#132b56!important}
+html[data-theme="light"] .updates-mission-brief>p,html[data-theme="light"] .mission-release-list small{color:#60728d!important}
+html[data-theme="light"] .mission-release-list button{color:#132b56!important}
+html[data-theme="light"] .mission-status-summary{border-top-color:#d7e1ee}
+html[data-theme="light"] .mission-status-summary p small{color:#697b96}
 @media(min-width:1200px){
   body:has(#navIntro.active) #app.app:not(.hidden)>.main>#atsrsGlobalControls{position:fixed!important;top:18px!important;right:27px!important;display:flex!important;align-items:center!important;gap:8px!important;width:auto!important}
   body:has(#navIntro.active) #app.app:not(.hidden)>.main>#atsrsGlobalControls>#atsrsNotificationButton{display:inline-flex!important;order:0!important}
