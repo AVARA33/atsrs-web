@@ -133,6 +133,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/pricing.css?v=5994">
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
+<link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6002">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -798,11 +799,16 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <section id="jobsPage" class="hidden jobs-page" aria-label="JobSearch">
   <div class="jobs-hero">
-    <div>
-      <h3 id="jobsHeading">Explore opportunities worldwide</h3>
-      <p>Search vacancies across industries, countries and work arrangements in one international catalogue.</p>
+    <div class="jobs-hero-copy">
+      <div class="jobs-hero-icon" aria-hidden="true"><i class="ph ph-globe-hemisphere-west"></i></div>
+      <div class="jobs-hero-content">
+        <span class="jobs-hero-eyebrow">Global opportunity catalogue</span>
+        <h3 id="jobsHeading">International JobSearch</h3>
+        <p>Search opportunities across borders with location-aware results, recruiter details and country-specific requirements.</p>
+      </div>
     </div>
-    <div class="jobs-hero-actions">
+    <div class="jobs-hero-map" aria-hidden="true"></div>
+    <div class="jobs-hero-actions" aria-label="JobSearch results controls">
       <div class="jobs-snapshot" aria-label="Jobs data snapshot">
         <strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong>
         <span>Server-backed vacancies</span>
