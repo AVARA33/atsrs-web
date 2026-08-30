@@ -1,5 +1,5 @@
 /* ATSRS V5969 Personal pricing and plan comparison page. */
-html,body{margin:0;min-height:100%;background:var(--public-bg)}
+html:has(body.pricing-page-root),body.pricing-page-root{margin:0;min-height:100%;background:var(--public-bg)}
 .pricing-shell{min-height:100vh}
 .pricing-main{width:min(1380px,calc(100% - 40px));margin:0 auto;padding:90px 0 110px}
 .pricing-hero{max-width:850px;margin:0 auto 52px;text-align:center}
