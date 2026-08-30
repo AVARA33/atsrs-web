@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6005/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6007/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -17,7 +17,7 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(updates,/mission-orbit-title-next">NEXT/);
   assert.doesNotMatch(updates,/class="roadmap-card/);
   assert.doesNotMatch(updates,/class="updates-status-board/);
-  assert.match(css,/margin-left:16px/);
+  assert.match(css,/margin-inline:auto/);
   assert.match(css,/#atsrsGlobalControls>#workspaceSwitcher\{position:relative/);
 });
 
