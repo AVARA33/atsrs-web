@@ -134,7 +134,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6004">
-<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6003">
+<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6004">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -727,6 +727,24 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="product-updates-content">
   <div class="updates-mission" aria-label="ATSRS product mission control">
     <div class="updates-mission-dial" aria-label="Live and upcoming ATSRS capabilities">
+      <svg class="mission-orbit-svg" viewBox="0 0 744 830" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <filter id="missionGreenGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse class="orbit orbit-live" cx="372" cy="329.5" rx="363.5" ry="322.5"/>
+        <ellipse class="orbit orbit-inner" cx="372" cy="304.5" rx="208.5" ry="156.5"/>
+        <path class="orbit orbit-building" d="M18 482 C104 708 640 708 726 482"/>
+        <path class="orbit orbit-next" d="M16 576 C64 804 680 804 728 576"/>
+        <g class="core-rings">
+          <ellipse cx="372" cy="324" rx="148" ry="128"/><ellipse cx="372" cy="324" rx="142" ry="122"/><ellipse cx="372" cy="324" rx="136" ry="116"/><ellipse cx="372" cy="324" rx="130" ry="110"/><ellipse cx="372" cy="324" rx="124" ry="104"/><ellipse cx="372" cy="324" rx="118" ry="98"/>
+        </g>
+        <g class="mission-connectors">
+          <path d="M372 148V171"/><path d="M286 181L275 198"/><path d="M458 181L469 198"/><path d="M195 246L177 255"/><path d="M549 246L567 255"/><path d="M164 335H139"/><path d="M580 335H605"/><path d="M195 403L177 394"/><path d="M549 403L567 394"/>
+          <path d="M372 452V475H274V489M372 475H470V489"/>
+        </g>
+        <g class="mission-dots"><circle cx="372" cy="148" r="4"/><circle cx="286" cy="181" r="4"/><circle cx="458" cy="181" r="4"/><circle cx="195" cy="246" r="4"/><circle cx="549" cy="246" r="4"/><circle cx="164" cy="335" r="4"/><circle cx="580" cy="335" r="4"/><circle cx="195" cy="403" r="4"/><circle cx="549" cy="403" r="4"/><circle cx="372" cy="452" r="4"/></g>
+        <g class="planned-dots"><circle cx="16" cy="576" r="4"/><circle cx="728" cy="576" r="4"/><circle cx="238" cy="639" r="4"/><circle cx="506" cy="639" r="4"/></g>
+      </svg>
       <span class="mission-orbit-title mission-orbit-title-live">LIVE</span>
 
       <div class="mission-node mission-node-candidates"><i class="ph ph-users-three" aria-hidden="true"></i><span>Candidate Directory &amp;<br>Company Personnel</span></div>
