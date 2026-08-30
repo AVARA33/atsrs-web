@@ -1,0 +1,328 @@
+/* V6001: professional Product Updates workspace with verified live-status groups. */
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage{
+  --updates-accent:#49c96c;
+  --updates-accent-strong:#67df86;
+  --updates-accent-soft:rgba(73,201,108,.10);
+  --updates-blue:#70a7ff;
+  --updates-blue-soft:rgba(72,126,242,.12);
+  --updates-amber:#f1be54;
+  --updates-text:#f2f5f3;
+  --updates-muted:#9eaaa4;
+  --updates-border:#252b28;
+  --updates-card:#0a0d0b;
+  --updates-card-raised:#0d110f;
+  --updates-surface:#070907;
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage{
+  --updates-accent:#2868c7;
+  --updates-accent-strong:#1e5db8;
+  --updates-accent-soft:rgba(40,104,199,.08);
+  --updates-blue:#2868c7;
+  --updates-blue-soft:rgba(40,104,199,.08);
+  --updates-amber:#9a6700;
+  --updates-text:#132b56;
+  --updates-muted:#61708a;
+  --updates-border:#d8e0ea;
+  --updates-card:#ffffff;
+  --updates-card-raised:#ffffff;
+  --updates-surface:#f6f8fb;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .product-updates-content{
+  display:grid;
+  gap:20px;
+  width:100%;
+  padding-bottom:48px;
+  color:var(--updates-text);
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr)!important;
+  gap:28px!important;
+  min-height:230px!important;
+  margin:0!important;
+  padding:34px!important;
+  overflow:hidden!important;
+  border:1px solid var(--updates-border)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 88% 12%,rgba(73,201,108,.17),transparent 30%),
+    linear-gradient(135deg,#0b100d 0%,#070907 62%,#0a120d 100%)!important;
+  box-shadow:0 20px 50px rgba(0,0,0,.18)!important;
+}
+
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero{
+  background:
+    radial-gradient(circle at 88% 12%,rgba(40,104,199,.15),transparent 32%),
+    linear-gradient(135deg,#ffffff 0%,#f8faff 65%,#f1f6ff 100%)!important;
+  box-shadow:0 18px 45px rgba(31,69,122,.08)!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero::before{
+  content:"";
+  position:absolute;
+  right:-80px;
+  bottom:-120px;
+  width:300px;
+  height:300px;
+  border:1px solid color-mix(in srgb,var(--updates-accent) 28%,transparent);
+  border-radius:50%;
+  box-shadow:0 0 0 42px color-mix(in srgb,var(--updates-accent) 5%,transparent),0 0 0 84px color-mix(in srgb,var(--updates-accent) 3%,transparent);
+  pointer-events:none;
+}
+
+.updates-hero-copy,.updates-release-note{position:relative;z-index:1}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero .roadmap-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--updates-accent-strong)!important;
+  font-size:11px!important;
+  letter-spacing:.18em!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero h3{
+  max-width:760px!important;
+  margin:14px 0 14px!important;
+  color:var(--updates-text)!important;
+  -webkit-text-fill-color:var(--updates-text)!important;
+  font-size:clamp(34px,4.2vw,56px)!important;
+  font-weight:720!important;
+  letter-spacing:-.035em!important;
+  line-height:1.04!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero .updates-hero-copy>p{
+  max-width:720px!important;
+  margin:0!important;
+  color:var(--updates-muted)!important;
+  font-size:16px!important;
+  line-height:1.65!important;
+}
+
+.updates-release-note{
+  align-self:stretch;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+  padding:24px;
+  border:1px solid color-mix(in srgb,var(--updates-accent) 28%,var(--updates-border));
+  border-radius:18px;
+  background:color-mix(in srgb,var(--updates-card) 88%,transparent);
+  backdrop-filter:blur(10px);
+}
+.updates-release-label{display:flex;align-items:center;gap:7px;color:var(--updates-accent-strong);font-size:10px;font-weight:850;letter-spacing:.13em}
+.updates-release-label i{font-size:16px}
+.updates-release-note strong{margin:14px 0 8px;color:var(--updates-text);font-size:20px;line-height:1.25}
+.updates-release-note p{margin:0;color:var(--updates-muted);font-size:14px;line-height:1.55}
+.updates-release-date{margin-top:17px;color:var(--updates-muted);font-size:11px;font-weight:700}
+
+.updates-status-board{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(145px,190px)) minmax(240px,1fr);
+  align-items:center;
+  gap:0;
+  min-height:78px;
+  padding:12px 18px;
+  border:1px solid var(--updates-border);
+  border-radius:17px;
+  background:var(--updates-card);
+}
+.updates-status-board>div{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:8px;min-height:38px;padding:0 18px;border-right:1px solid var(--updates-border)}
+.updates-status-board>div:first-child{padding-left:4px}
+.updates-status-board strong{color:var(--updates-text);font-size:22px}
+.updates-status-board>div>span:last-child{color:var(--updates-muted);font-size:12px;font-weight:700}
+.updates-status-dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 0 5px rgba(148,163,184,.08)}
+.updates-status-dot.is-live{background:var(--updates-accent);box-shadow:0 0 0 5px var(--updates-accent-soft)}
+.updates-status-dot.is-building{background:var(--updates-amber);box-shadow:0 0 0 5px rgba(241,190,84,.10)}
+.updates-status-dot.is-planned{background:#8a9690}
+.updates-status-board>p{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0!important;color:var(--updates-muted)!important;font-size:12px!important}
+.updates-status-board>p i{color:var(--updates-accent-strong);font-size:18px}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-section{
+  display:grid!important;
+  gap:34px!important;
+  margin:0!important;
+  padding:0!important;
+}
+.updates-capability-group{display:grid;gap:16px;min-width:0;padding-top:8px}
+.updates-capability-group+.updates-capability-group{padding-top:32px;border-top:1px solid var(--updates-border)}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading{
+  align-items:end!important;
+  gap:28px!important;
+  margin:0!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading h3{
+  margin:7px 0 0!important;
+  color:var(--updates-text)!important;
+  -webkit-text-fill-color:var(--updates-text)!important;
+  font-size:26px!important;
+  letter-spacing:-.02em!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading>p{
+  color:var(--updates-muted)!important;
+  font-size:14px!important;
+  line-height:1.55!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-kicker{color:var(--updates-accent-strong)!important}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-featured-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:52px minmax(0,1fr)!important;
+  grid-template-rows:22px auto 1fr!important;
+  column-gap:14px!important;
+  row-gap:6px!important;
+  align-content:start!important;
+  min-height:190px!important;
+  padding:20px!important;
+  overflow:hidden!important;
+  border:1px solid var(--updates-border)!important;
+  border-radius:17px!important;
+  background:linear-gradient(150deg,var(--updates-card-raised),var(--updates-card))!important;
+  box-shadow:none!important;
+  transition:border-color .2s ease,transform .2s ease,background .2s ease!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card:hover{
+  transform:translateY(-2px)!important;
+  border-color:color-mix(in srgb,var(--updates-accent) 44%,var(--updates-border))!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card-featured{
+  border-color:color-mix(in srgb,var(--updates-accent) 34%,var(--updates-border))!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--updates-accent-soft) 55%,var(--updates-card-raised)),var(--updates-card) 62%)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card-release{
+  min-height:225px!important;
+  padding:24px!important;
+  grid-template-columns:58px minmax(0,1fr)!important;
+  grid-template-rows:24px auto 1fr auto!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card-release::after{
+  content:"";
+  position:absolute;
+  right:-35px;
+  bottom:-55px;
+  width:140px;
+  height:140px;
+  border:1px solid color-mix(in srgb,var(--updates-accent) 12%,transparent);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card>.roadmap-news{
+  grid-column:2!important;
+  grid-row:1!important;
+  align-self:center!important;
+  width:max-content!important;
+  max-width:calc(100% - 116px)!important;
+  margin:0!important;
+  color:var(--updates-accent-strong)!important;
+  -webkit-text-fill-color:var(--updates-accent-strong)!important;
+  font-size:9px!important;
+  font-weight:850!important;
+  letter-spacing:.12em!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card:not(:has(.roadmap-news))>.roadmap-icon{grid-row:1 / span 2!important}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card>.roadmap-icon{
+  grid-column:1!important;
+  grid-row:1 / span 2!important;
+  display:grid!important;
+  place-items:center!important;
+  width:46px!important;
+  height:46px!important;
+  margin:0!important;
+  border:1px solid color-mix(in srgb,var(--updates-accent) 30%,var(--updates-border))!important;
+  border-radius:13px!important;
+  background:var(--updates-accent-soft)!important;
+  color:var(--updates-accent-strong)!important;
+  -webkit-text-fill-color:var(--updates-accent-strong)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card>.roadmap-icon i{font-size:22px!important}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card>h3{
+  grid-column:2!important;
+  grid-row:2!important;
+  margin:0!important;
+  color:var(--updates-text)!important;
+  -webkit-text-fill-color:var(--updates-text)!important;
+  font-size:17px!important;
+  font-weight:750!important;
+  letter-spacing:-.01em!important;
+  line-height:1.28!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card>p{
+  grid-column:1 / -1!important;
+  grid-row:3!important;
+  margin:10px 0 0!important;
+  color:var(--updates-muted)!important;
+  font-size:14px!important;
+  line-height:1.55!important;
+}
+.roadmap-detail{grid-column:1 / -1;grid-row:4;display:flex;align-items:center;gap:7px;margin-top:9px;color:var(--updates-accent-strong);font-size:11px;font-weight:750}
+.roadmap-detail::before{content:"";width:14px;height:1px;background:currentColor}
+
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-status{
+  top:16px!important;
+  right:16px!important;
+  z-index:2;
+  padding:5px 8px!important;
+  border-radius:999px!important;
+  font-size:9px!important;
+  font-weight:850!important;
+  letter-spacing:.07em!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .status-available{
+  border-color:color-mix(in srgb,var(--updates-accent) 30%,transparent)!important;
+  background:var(--updates-accent-soft)!important;
+  color:var(--updates-accent-strong)!important;
+  -webkit-text-fill-color:var(--updates-accent-strong)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .status-development{
+  border-color:rgba(241,190,84,.28)!important;background:rgba(241,190,84,.10)!important;color:var(--updates-amber)!important;-webkit-text-fill-color:var(--updates-amber)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .status-planned{
+  border-color:var(--updates-border)!important;background:rgba(128,142,134,.08)!important;color:var(--updates-muted)!important;-webkit-text-fill-color:var(--updates-muted)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-premium{
+  color:var(--updates-amber)!important;
+  -webkit-text-fill-color:var(--updates-amber)!important;
+}
+
+@media(max-width:1100px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero{grid-template-columns:1fr!important}
+  .updates-release-note{max-width:none}
+  .updates-status-board{grid-template-columns:repeat(3,1fr)}
+  .updates-status-board>p{grid-column:1/-1;justify-content:flex-start;padding:12px 4px 0;border-top:1px solid var(--updates-border)}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+@media(max-width:720px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero{padding:22px!important;border-radius:18px!important}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .updates-hero h3{font-size:36px!important}
+  .updates-release-note{padding:18px}
+  .updates-status-board{grid-template-columns:1fr;padding:8px 14px}
+  .updates-status-board>div{grid-template-columns:auto auto 1fr;padding:10px 4px;border-right:0;border-bottom:1px solid var(--updates-border)}
+  .updates-status-board>p{grid-column:auto;border-top:0;padding:12px 4px}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading{align-items:flex-start!important;flex-direction:column!important;gap:8px!important}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-heading>p{width:auto!important;max-width:620px!important}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage :is(.roadmap-grid,.updates-featured-grid){grid-template-columns:1fr!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card{transition:none!important}
+}

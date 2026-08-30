@@ -132,6 +132,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/account-resources-v5990.css?v=5990">
 <link rel="stylesheet" href="css/pricing.css?v=5994">
 <link rel="stylesheet" href="css/contact.css?v=5850">
+<link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -722,38 +723,74 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div class="product-updates-content">
-  <div class="intro-hero updates-hero">
-    <h3>What's new and what's next</h3>
-    <p>Live ATSRS releases, upcoming tools and transparent plan limits in one place.</p>
+  <header class="intro-hero updates-hero">
+    <div class="updates-hero-copy">
+      <span class="roadmap-kicker">PRODUCT UPDATES</span>
+      <h3>One clear view of what ATSRS can do today.</h3>
+      <p>See the live tools available in your workspace, the latest releases and the capabilities we are still building. Every status reflects the product as it works now.</p>
+    </div>
+    <aside class="updates-release-note" aria-label="Latest ATSRS release">
+      <span class="updates-release-label"><i class="ph ph-sparkle" aria-hidden="true"></i> LATEST RELEASE</span>
+      <strong>International JobSearch</strong>
+      <p>Browse worldwide vacancies by region, country and city, then narrow the catalogue by role, company, recruiter and posting date.</p>
+      <span class="updates-release-date">Updated 31 Aug 2026</span>
+    </aside>
+  </header>
+
+  <div class="updates-status-board" aria-label="Product roadmap summary">
+    <div><span class="updates-status-dot is-live"></span><strong>18</strong><span>Available now</span></div>
+    <div><span class="updates-status-dot is-building"></span><strong>1</strong><span>In development</span></div>
+    <div><span class="updates-status-dot is-planned"></span><strong>2</strong><span>Planned next</span></div>
+    <p><i class="ph ph-check-circle" aria-hidden="true"></i> Statuses are reviewed against the live product.</p>
   </div>
 
   <div class="roadmap-section">
-    <div class="roadmap-heading">
-      <div><span class="roadmap-kicker">PRODUCT ROADMAP</span><h3>Built for simpler document compliance</h3></div>
-      <p>Statuses are shown honestly so you always know what is available and what is still being developed.</p>
+    <div class="updates-capability-group updates-latest-group" role="region" aria-labelledby="updatesLatestTitle">
+      <div class="roadmap-heading">
+        <div><span class="roadmap-kicker">LATEST RELEASES</span><h3 id="updatesLatestTitle">New ways to discover and connect</h3></div>
+        <p>Search internationally, verify the source and keep every action inside your signed-in ATSRS workspace.</p>
+      </div>
+      <div class="roadmap-grid updates-featured-grid" aria-label="Latest ATSRS releases">
+        <article class="roadmap-card roadmap-card-featured roadmap-card-release"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">NEW RELEASE</span><div class="roadmap-icon"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></div><h3>International JobSearch</h3><p>Explore all vacancy types by region, country and city with role, company, recruiter and date filters that stay in the URL.</p><span class="roadmap-detail">Worldwide catalogue · Card and list views</span></article>
+        <article class="roadmap-card roadmap-card-featured roadmap-card-release"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">NEW RELEASE</span><div class="roadmap-icon"><i class="ph ph-identification-card" aria-hidden="true"></i></div><h3>Recruiter Directory</h3><p>Find recruiters connected to ATSRS vacancies, review their active offers and prepare a controlled profile share.</p><span class="roadmap-detail">Verified public source routes</span></article>
+        <article class="roadmap-card roadmap-card-featured roadmap-card-release"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">NEW RELEASE</span><div class="roadmap-icon"><i class="ph ph-buildings" aria-hidden="true"></i></div><h3>Company Directory</h3><p>Open official company websites, careers pages, contact routes and the vacancies currently listed on ATSRS.</p><span class="roadmap-detail">Official public company sources</span></article>
+        <article class="roadmap-card roadmap-card-featured roadmap-card-release"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">NEW RELEASE</span><div class="roadmap-icon"><i class="ph ph-squares-four" aria-hidden="true"></i></div><h3>In-account Plans, FAQ &amp; Contact</h3><p>Review plan details, common questions and support options without leaving your account or losing the signed-in workspace.</p><span class="roadmap-detail">Accessible from sidebar quick links</span></article>
+      </div>
     </div>
-    <div class="roadmap-grid" aria-label="ATSRS feature status">
-      <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon">WA</div><h3>WhatsApp Expiry Alerts</h3><p>Approved WhatsApp reminders for documents approaching expiry or already overdue.</p></article>
-      <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon">AI</div><h3>AI Document Scan</h3><p>Upload a PDF or image, let AI suggest the document details, then review every field before saving.</p></article>
-      <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon">QR</div><h3>QR Phone Upload</h3><p>Scan a secure QR code, then take a photo or choose a file on your phone for your Personal profile.</p></article>
-      <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon">CV</div><h3>ATSRS Profile CV</h3><p>Generate a structured CV from saved profile details, career information and the document register.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon">AR</div><h3>Automated Scheduled Reports</h3><p>Automatically prepare and deliver recurring compliance reports for people and companies.</p></article>
-      <article class="roadmap-card roadmap-card-jobs"><span class="roadmap-status status-development">In development</span><div class="roadmap-icon">JB</div><h3>Jobs</h3><p>Review recruiter-sourced opportunities in one structured, privacy-conscious ATSRS workspace.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">MU</div><h3>Manual Document Upload</h3><p>Add PDF or image files manually and complete the verified document details before saving.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">DR</div><h3>Document Register</h3><p>Filter, preview, edit, download and manage saved documents from one structured register.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">EX</div><h3>Expiry Tracking</h3><p>Track 90, 60, 30 and 7-day expiry windows together with already expired documents.</p></article>
-      <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">EMAIL ALERTS LIVE</span><div class="roadmap-icon">EM</div><h3>Email Expiry Alerts</h3><p>Receive server-side reminders for documents approaching expiry and documents already overdue.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">RF</div><h3>CV, References &amp; Appraisals</h3><p>Store and manage a main CV, reference letters, appraisals and client feedback in one place.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">SH</div><h3>Controlled Profile Sharing</h3><p>Create a controlled profile link with selected documents and a defined access period.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">DA</div><h3>Download Approvals</h3><p>Review, approve or reject verified requests to download shared profile documents.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">PV</div><h3>Candidate Profile Visibility</h3><p>Keep a profile private, share it by link or make an eligible profile visible to companies.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">AV</div><h3>Work Availability</h3><p>Show verified companies when you can start and which work opportunities you prefer.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">SC</div><h3>Account Security &amp; Data</h3><p>Manage two-factor security, active sessions, notifications, data export and account controls.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">CD</div><h3>Candidate Directory</h3><p>Companies can discover eligible public profiles and review current candidate information.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">CP</div><h3>Company Personnel</h3><p>Manage linked personnel profiles, documents, access status and row actions in one workspace.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">PJ</div><h3>Projects &amp; Assignments</h3><p>Create projects, use card or list views and assign linked personnel to project work.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">PC</div><h3>Personnel Compliance</h3><p>Review document readiness and expiry risk for linked personnel using the same expiry windows.</p></article>
-      <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon">CR</div><h3>Compliance Reports</h3><p>Review organisation-level document readiness and expiry reporting in the Corporate workspace.</p></article>
+
+    <div class="updates-capability-group" role="region" aria-labelledby="updatesPersonalTitle">
+      <div class="roadmap-heading roadmap-heading-compact">
+        <div><span class="roadmap-kicker">DOCUMENTS &amp; CAREER PROFILE</span><h3 id="updatesPersonalTitle">Core tools available in Personal</h3></div>
+        <p>From upload to expiry control, CV preparation and secure sharing.</p>
+      </div>
+      <div class="roadmap-grid" aria-label="Personal workspace capabilities">
+        <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon"><i class="ph ph-magic-wand" aria-hidden="true"></i></div><h3>AI Document Scan</h3><p>Upload a PDF or image, review the AI-suggested document details and approve every field before saving.</p></article>
+        <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon"><i class="ph ph-qr-code" aria-hidden="true"></i></div><h3>QR Phone Upload</h3><p>Scan a secure QR code and send a camera photo or file from your phone directly to Documents.</p></article>
+        <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon"><i class="ph ph-file-doc" aria-hidden="true"></i></div><h3>ATSRS Profile CV</h3><p>Generate one structured ATSRS CV from the saved profile, career information and document register.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-upload-simple" aria-hidden="true"></i></div><h3>Manual Document Upload</h3><p>Add a PDF or image manually and complete the document details before saving it to the register.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-files" aria-hidden="true"></i></div><h3>Certificate Register</h3><p>Search, preview, edit, download and manage certificates with clear Valid, Expiry Attention and No Expiry states.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-calendar-check" aria-hidden="true"></i></div><h3>Expiry Tracking</h3><p>Track 90, 60, 30 and 7-day windows together with already expired and no-expiry documents.</p></article>
+        <article class="roadmap-card roadmap-card-featured"><span class="roadmap-status status-available">Available now</span><span class="roadmap-news">EMAIL ALERTS LIVE</span><div class="roadmap-icon"><i class="ph ph-envelope-simple" aria-hidden="true"></i></div><h3>Email Expiry Alerts</h3><p>Receive server-side reminders for documents approaching expiry and documents already overdue.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-folder-open" aria-hidden="true"></i></div><h3>CV, References &amp; Appraisals</h3><p>Manage the Main CV, appraisals, reference letters, recommendations and cover letters in one workspace.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-share-network" aria-hidden="true"></i></div><h3>Controlled Profile Sharing</h3><p>Choose the audience, recipient and access period before creating a controlled profile link.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-download-simple" aria-hidden="true"></i></div><h3>Download Approvals</h3><p>Review, approve or reject verified requests to download documents from a shared profile.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-user-focus" aria-hidden="true"></i></div><h3>Profile Visibility &amp; Work Availability</h3><p>Control who can see the profile and show verified companies when and how you are available to work.</p></article>
+      </div>
+    </div>
+
+    <div class="updates-capability-group" role="region" aria-labelledby="updatesBusinessTitle">
+      <div class="roadmap-heading roadmap-heading-compact">
+        <div><span class="roadmap-kicker">CORPORATE &amp; ROADMAP</span><h3 id="updatesBusinessTitle">Compliance at team scale</h3></div>
+        <p>Live company workflows followed by the capabilities still being developed.</p>
+      </div>
+      <div class="roadmap-grid" aria-label="Corporate and upcoming capabilities">
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-users-three" aria-hidden="true"></i></div><h3>Candidate Directory &amp; Company Personnel</h3><p>Discover eligible profiles, manage linked personnel and review their document access in one company workspace.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-kanban" aria-hidden="true"></i></div><h3>Projects &amp; Assignments</h3><p>Create projects, switch between card and list views and assign linked personnel to active work.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-available">Available now</span><div class="roadmap-icon"><i class="ph ph-chart-line-up" aria-hidden="true"></i></div><h3>Personnel Compliance &amp; Reports</h3><p>Review organisation-level readiness and expiry risk for linked personnel using the same status windows.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-development">In development</span><span class="roadmap-news roadmap-premium" title="Premium plan benefit"><i class="ph ph-star" aria-hidden="true"></i><span>PREMIUM</span></span><div class="roadmap-icon"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i></div><h3>WhatsApp Expiry Alerts</h3><p>Approved WhatsApp reminders for documents approaching expiry or already overdue.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon"><i class="ph ph-clock-countdown" aria-hidden="true"></i></div><h3>Automated Scheduled Reports</h3><p>Prepare and deliver recurring compliance reports automatically for people and companies.</p></article>
+        <article class="roadmap-card"><span class="roadmap-status status-planned">Planned</span><div class="roadmap-icon"><i class="ph ph-android-logo" aria-hidden="true"></i></div><h3>ATSRS Android App</h3><p>Bring the essential Personal workspace, document status and alerts to a dedicated mobile app.</p></article>
+      </div>
     </div>
   </div>
 
