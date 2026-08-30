@@ -22,6 +22,7 @@ assert.doesNotMatch(resourceCss,/account-resource-heading>div:first-child>span/,
 assert.match(css,/\.sidebar-quick-links button:hover/);
 assert.match(css,/content:attr\(data-label\)/);
 assert.match(css,/background:transparent!important/);
+assert.match(css,/html\[data-theme="dark"\][\s\S]*\.sidebar-quick-links button:hover[\s\S]*background:transparent!important/);
 assert.match(css,/html\[data-theme="light"\]/);
 assert.doesNotMatch(fs.readFileSync('js/theme.js','utf8'),/atsrsAuthenticatedResourceNav/);
 console.log('sidebar quick links: PASS');

@@ -15,8 +15,9 @@
   place-items:center;
   width:100%;
   min-width:0;
-  height:32px;
+  height:32px!important;
   min-height:32px!important;
+  flex:0 0 32px!important;
   padding:0!important;
   border:0!important;
   border-radius:6px!important;
@@ -37,6 +38,14 @@
   background:transparent!important;
   color:#62dc79;
   transform:translateY(-1px);
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick-links button:hover,
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick-links button:hover{
+  border:0!important;
+  border-left:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
 
 #app.app:not(.hidden) .sidebar .sidebar-quick-links button.is-active{
