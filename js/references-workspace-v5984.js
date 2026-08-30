@@ -137,6 +137,15 @@
     qa('.atsrs-v134-row',target).forEach(function(row){row.hidden=!!term&&!row.textContent.toLowerCase().includes(term);});
   }
 
+  function applyTabTheme(){
+    var page=q('#refsPage');if(!page)return;
+    var light=document.documentElement.getAttribute('data-theme')==='light';
+    qa('.atsrs-reference-tabs button',page).forEach(function(button){
+      var color=light?(button.classList.contains('is-active')?'#3774cc':'rgba(55,116,204,.42)'):(button.classList.contains('is-active')?'#55d06a':'rgba(85,208,106,.42)');
+      button.style.setProperty('border-bottom-color',color,'important');
+    });
+  }
+
   function applyActiveState(){
     var page=q('#refsPage');if(!page)return;
     KINDS.forEach(function(kind){
@@ -145,6 +154,7 @@
       if(button){button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;}
     });
     var input=q('.atsrs-reference-search input',page);if(input)input.value='';
+    applyTabTheme();
     applySearch();
   }
 
@@ -166,6 +176,8 @@
   window.addEventListener('load',function(){run();setTimeout(run,500);setTimeout(run,1400);});
   document.addEventListener('atsrs:cv-state',schedule);
   var observer=new MutationObserver(schedule);
+  var themeObserver=new MutationObserver(applyTabTheme);
+  themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   var attach=function(){var page=q('#refsPage');if(page){observer.observe(page,{childList:true,subtree:true});run();}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attach);else attach();
 })();
