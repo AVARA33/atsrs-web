@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6013/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6014/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -20,6 +20,7 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(css,/margin-inline:auto/);
   assert.doesNotMatch(css,/grid-template-columns:1(?:50|75)px minmax/);
   assert.match(css,/@media\(min-width:1280px\) and \(max-width:1359px\)/);
+  assert.match(css,/#navIntro \.atsrs-nav-label\{white-space:nowrap/);
 });
 
 test('mission control keeps honest status totals and working launch modules',()=>{
