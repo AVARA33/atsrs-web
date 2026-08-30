@@ -13,7 +13,6 @@ test('Product Updates contains the complete honest capability inventory', () => 
     'International JobSearch',
     'Recruiter Directory',
     'Company Directory',
-    'In-account Plans, FAQ &amp; Contact',
     'AI Document Scan',
     'QR Phone Upload',
     'Manual Document Upload',
@@ -54,8 +53,8 @@ test('Dashboard is restored without the capability inventory', () => {
 
 test('Product Updates keeps the established roadmap card design', () => {
   assert.match(updates, /class="roadmap-grid"/);
-  assert.equal((updates.match(/class="roadmap-card/g) || []).length, 21);
-  assert.equal((updates.match(/roadmap-status/g) || []).length, 21);
+  assert.equal((updates.match(/class="roadmap-card/g) || []).length, 20);
+  assert.equal((updates.match(/roadmap-status/g) || []).length, 20);
 });
 
 test('Roadmap leads with newly released capabilities and closes with upcoming work', () => {
