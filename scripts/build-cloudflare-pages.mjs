@@ -10,6 +10,7 @@ const publicFiles = [
   "_headers",
   "index.html",
   "contact.html",
+  "faq.html",
   "qr-upload.html",
   "pricing.html",
   "billing-terms.html",
