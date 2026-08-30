@@ -6,6 +6,8 @@ const test = require('node:test');
 const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const updates = index.match(/<section id="introPage"[\s\S]*?<\/section>/)?.[0] || '';
+const roadmapStart = updates.indexOf('<div class="roadmap-grid');
+const roadmap = roadmapStart >= 0 ? updates.slice(roadmapStart) : updates;
 const dashboard = index.match(/<section id="dashboardPage"[\s\S]*?<section id="refsPage"/)?.[0] || '';
 
 test('Product Updates contains the complete honest capability inventory', () => {
@@ -58,10 +60,10 @@ test('Product Updates keeps the established roadmap card design', () => {
 });
 
 test('Roadmap leads with newly released capabilities and closes with upcoming work', () => {
-  const latest = updates.indexOf('International JobSearch');
-  const available = updates.indexOf('Manual Document Upload');
-  const development = updates.indexOf('WhatsApp Expiry Alerts');
-  const planned = updates.indexOf('Automated Scheduled Reports');
+  const latest = roadmap.indexOf('International JobSearch');
+  const available = roadmap.indexOf('Manual Document Upload');
+  const development = roadmap.indexOf('WhatsApp Expiry Alerts');
+  const planned = roadmap.indexOf('Automated Scheduled Reports');
   assert.ok(latest >= 0 && latest < available);
   assert.ok(available < development);
   assert.ok(development < planned);
@@ -74,10 +76,10 @@ test('Premium capabilities are grouped before standard capabilities', () => {
     'QR Phone Upload',
     'ATSRS Profile CV'
   ];
-  const whatsapp = updates.indexOf('WhatsApp Expiry Alerts');
+  const whatsapp = roadmap.indexOf('WhatsApp Expiry Alerts');
   for (const label of premiumLabels) {
-    const position = updates.indexOf(label);
+    const position = roadmap.indexOf(label);
     assert.ok(position >= 0, `${label} must be present`);
   }
-  assert.ok(whatsapp > updates.indexOf('Manual Document Upload'));
+  assert.ok(whatsapp > roadmap.indexOf('Manual Document Upload'));
 });

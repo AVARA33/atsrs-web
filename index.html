@@ -134,6 +134,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6002">
+<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6003">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -724,6 +725,59 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div class="product-updates-content">
+  <div class="updates-mission" aria-label="ATSRS product mission control">
+    <div class="updates-mission-dial" aria-label="Live and upcoming ATSRS capabilities">
+      <span class="mission-orbit-title mission-orbit-title-live">LIVE</span>
+
+      <div class="mission-node mission-node-candidates"><i class="ph ph-users-three" aria-hidden="true"></i><span>Candidate Directory &amp;<br>Company Personnel</span></div>
+      <div class="mission-node mission-node-projects"><i class="ph ph-clipboard-text" aria-hidden="true"></i><span>Projects &amp;<br>Assignments</span></div>
+      <div class="mission-node mission-node-compliance"><i class="ph ph-shield-check" aria-hidden="true"></i><span>Personnel Compliance<br>&amp; Reports</span></div>
+      <div class="mission-node mission-node-sharing"><i class="ph ph-share-network" aria-hidden="true"></i><span>Controlled<br>Profile Sharing</span></div>
+      <div class="mission-node mission-node-register"><i class="ph ph-certificate" aria-hidden="true"></i><span>Certificate<br>Register</span></div>
+      <div class="mission-node mission-node-cv"><i class="ph ph-identification-card" aria-hidden="true"></i><span>ATSRS<br>Profile CV</span></div>
+      <div class="mission-node mission-node-qr"><i class="ph ph-qr-code" aria-hidden="true"></i><span>QR Phone<br>Upload</span></div>
+      <div class="mission-node mission-node-email"><i class="ph ph-envelope-simple" aria-hidden="true"></i><span>Email Expiry<br>Alerts</span></div>
+      <div class="mission-node mission-node-ai"><i class="ph ph-magic-wand" aria-hidden="true"></i><span>AI Document<br>Scan</span></div>
+
+      <button class="mission-core" type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))" aria-label="Open International JobSearch">
+        <img src="assets/branding/atsrs-mark-green.png" alt="">
+        <strong>International JobSearch</strong>
+        <span><i class="ph ph-calendar-blank" aria-hidden="true"></i> 31 Aug 2026</span>
+        <small>Core release hub</small>
+      </button>
+
+      <div class="mission-launchers" aria-label="New directory launch modules">
+        <button type="button" onclick="window.atsrsOpenJobsDirectory('recruiters',document.getElementById('navRecruiters'))"><i class="ph ph-user" aria-hidden="true"></i><span><strong>Recruiter<br>Directory</strong><small>Launch module</small></span></button>
+        <button type="button" onclick="window.atsrsOpenJobsDirectory('employers',document.getElementById('navEmployers'))"><i class="ph ph-buildings" aria-hidden="true"></i><span><strong>Company<br>Directory</strong><small>Launch module</small></span></button>
+      </div>
+
+      <span class="mission-orbit-title mission-orbit-title-building">BUILDING</span>
+      <div class="mission-roadmap-item mission-roadmap-building"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><span><strong>WhatsApp Expiry Alerts</strong><small>In development</small></span></div>
+      <span class="mission-orbit-title mission-orbit-title-next">NEXT</span>
+      <div class="mission-roadmap-item mission-roadmap-reports"><i class="ph ph-calendar-dots" aria-hidden="true"></i><span><strong>Automated Scheduled<br>Reports</strong><small>Planned</small></span></div>
+      <div class="mission-roadmap-item mission-roadmap-android"><i class="ph ph-device-mobile" aria-hidden="true"></i><span><strong>ATSRS<br>Android App</strong><small>Planned</small></span></div>
+    </div>
+
+    <aside class="updates-mission-brief" aria-labelledby="missionBriefTitle">
+      <span class="mission-kicker">MISSION CONTROL DIAL</span>
+      <h3 id="missionBriefTitle">Three newest releases.<br>One connected mission.</h3>
+      <span class="mission-rule" aria-hidden="true"></span>
+      <p>Our mission is to connect jobseekers, recruiters and companies through trusted, compliant and intelligent tools. The latest releases strengthen that mission—improving visibility, control and speed across your workflow.</p>
+
+      <div class="mission-release-list" aria-label="Newest ATSRS releases">
+        <button type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><span><strong>International JobSearch <em>LIVE</em></strong><small>Expands your reach across borders to discover global opportunities with trusted, verified connections.</small></span></button>
+        <button type="button" onclick="window.atsrsOpenJobsDirectory('recruiters',document.getElementById('navRecruiters'))"><i class="ph ph-user" aria-hidden="true"></i><span><strong>Recruiter Directory <em>LIVE</em></strong><small>Access a verified network of recruiters to build relationships that move your career forward.</small></span></button>
+        <button type="button" onclick="window.atsrsOpenJobsDirectory('employers',document.getElementById('navEmployers'))"><i class="ph ph-buildings" aria-hidden="true"></i><span><strong>Company Directory <em>LIVE</em></strong><small>Explore company profiles and insights to find employers that match your ambitions.</small></span></button>
+      </div>
+
+      <div class="mission-status-summary" aria-label="Product status summary">
+        <div><span class="mission-status-ring is-live"></span><p><strong>Available now</strong><small>Live and ready to use</small></p><b>17</b></div>
+        <div><span class="mission-status-ring is-building"></span><p><strong>In development</strong><small>Actively being built</small></p><b>1</b></div>
+        <div><span class="mission-status-ring is-planned"></span><p><strong>Planned</strong><small>Scheduled for future release</small></p><b>2</b></div>
+      </div>
+    </aside>
+  </div>
+
   <header class="intro-hero updates-hero">
     <div class="updates-hero-copy">
       <span class="roadmap-kicker">PRODUCT UPDATES</span>
