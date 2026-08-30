@@ -522,7 +522,7 @@
   function fixLabels(){
     var corporate=document.body.classList.contains('company-mode');
     setText('addDocTitle',corporate?'Add company document':'Add document');
-    setText('addCertFlowNote',corporate?'Choose one method: Scan with AI or Manual Upload.':'Choose one method: Scan with AI, Scan with QR, or Manual Upload.');
+    setText('addCertFlowNote',corporate?'Scan with AI or Manual Upload.':'Scan with AI, Scan with QR, or Manual Upload.');
     var scanButton=byId('certScanModeBtn');
     if(scanButton)scanButton.innerHTML='<i class="ph ph-magic-wand" aria-hidden="true"></i><span>Scan with AI</span>';
     var qrButton=byId('certQrModeBtn');
