@@ -9,12 +9,6 @@
   padding:3px 1px 0;
 }
 
-/* This is only an internal route target. It must never render as a fourth
-   sidebar item; the three links below Privacy are the visible controls. */
-#app.app:not(.hidden) .sidebar #navResource{
-  display:none!important;
-}
-
 #app.app:not(.hidden) .sidebar .sidebar-quick-links a{
   position:relative;
   display:inline-grid;
