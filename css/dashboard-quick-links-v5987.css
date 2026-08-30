@@ -9,7 +9,7 @@
   padding:3px 1px 0;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]{
   position:relative;
   display:inline-grid;
   place-items:center;
@@ -28,40 +28,40 @@
   transition:color .16s ease,transform .16s ease;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button .ph{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"] .ph{
   font-size:18px;
   line-height:1;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button:hover{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:hover{
   border:0!important;
   background:transparent!important;
   color:#62dc79;
   transform:translateY(-1px);
 }
 
-html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick-links button:hover,
-html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick-links button:hover{
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick-links [role="button"]:hover,
+html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick-links [role="button"]:hover{
   border:0!important;
   border-left:0!important;
   background:transparent!important;
   box-shadow:none!important;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button.is-active{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"].is-active{
   border:0!important;
   background:transparent!important;
   color:#62dc79;
   box-shadow:none!important;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button:focus-visible{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:focus-visible{
   outline:2px solid rgba(67,201,91,.72)!important;
   outline-offset:2px;
   color:#62dc79;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button::after{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]::after{
   content:attr(data-label);
   position:absolute;
   left:50%;
@@ -82,33 +82,33 @@ html[data-theme="light"] body #app.app:not(.hidden) .sidebar .nav .sidebar-quick
   transition:opacity .14s ease,transform .14s ease;
 }
 
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button:hover::after,
-#app.app:not(.hidden) .sidebar .sidebar-quick-links button:focus-visible::after{
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:hover::after,
+#app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:focus-visible::after{
   opacity:1;
   transform:translate(-50%,0);
 }
 
-html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links button{
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]{
   border:0!important;
   background:transparent!important;
   color:#52677a;
 }
 
-html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links button:hover,
-html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links button:focus-visible{
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:hover,
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:focus-visible{
   border:0!important;
   background:transparent!important;
   color:#2563eb;
 }
 
-html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links button.is-active{
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"].is-active{
   border:0!important;
   background:transparent!important;
   color:#2563eb;
   box-shadow:none!important;
 }
 
-html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links button::after{
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]::after{
   border-color:#d4dee7;
   background:#17243a;
   color:#fff;
@@ -116,6 +116,6 @@ html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links but
 
 @media(max-width:800px){
   #app.app:not(.hidden) .sidebar .sidebar-quick-links{padding-inline:0;gap:1px}
-  #app.app:not(.hidden) .sidebar .sidebar-quick-links button{height:30px;min-height:30px!important;border-radius:7px!important}
-  #app.app:not(.hidden) .sidebar .sidebar-quick-links button .ph{font-size:16px}
+  #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]{height:30px;min-height:30px!important;border-radius:7px!important}
+  #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"] .ph{font-size:16px}
 }
