@@ -2,6 +2,7 @@ const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8');
 const css=fs.readFileSync('css/dashboard-quick-links-v5987.css','utf8');
+const resourceCss=fs.readFileSync('css/account-resources-v5990.css','utf8');
 assert.match(html,/dashboard-quick-links-v5987\.css/);
 assert.match(html,/id="sidebarQuickLinks"/);
 assert.match(html,/ph-list-checks/);
@@ -15,6 +16,8 @@ assert.ok(html.indexOf('id="navPrivacy"')<html.indexOf('id="sidebarQuickLinks"')
 assert.match(css,/\.sidebar-quick-links\{[\s\S]*order:102/);
 assert.doesNotMatch(html,/id="navResource"/);
 assert.doesNotMatch(html,/>Account resources<\/button>/);
+assert.doesNotMatch(html,/account resources/i,'The obsolete Account resources label must not return to the interface');
+assert.doesNotMatch(resourceCss,/account-resource-heading>div:first-child>span/,'Do not retain a hidden style hook for the removed heading label');
 assert.match(css,/\.sidebar-quick-links a:hover/);
 assert.match(css,/html\[data-theme="light"\]/);
 assert.doesNotMatch(fs.readFileSync('js/theme.js','utf8'),/atsrsAuthenticatedResourceNav/);

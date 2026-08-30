@@ -1,7 +1,6 @@
 .account-resource-page{display:flex;min-height:0;height:calc(100vh - 118px);flex-direction:column;gap:14px;overflow:hidden}
 .account-resource-page.hidden{display:none!important}
 .account-resource-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:2px 2px 0}
-.account-resource-heading>div:first-child>span{display:block;margin-bottom:5px;color:var(--accent,#54cf68);font-size:11px;font-weight:900;letter-spacing:.14em}
 .account-resource-heading h3{margin:0;color:var(--text,#f5f7f5);font-size:clamp(27px,2.7vw,38px);line-height:1.05}
 .account-resource-heading p{margin:8px 0 0;color:var(--muted,#9eaaa3);font-size:14px}
 .account-resource-session{display:flex;align-items:center;gap:8px;min-height:36px;padding:0 13px;border:1px solid var(--atsrs-workspace-line,var(--atsrs-border));border-radius:999px;background:var(--atsrs-workspace-panel,#0b100d);color:var(--muted,#9eaaa3);font-size:12px;white-space:nowrap}
