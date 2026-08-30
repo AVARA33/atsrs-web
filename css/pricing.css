@@ -34,6 +34,19 @@ html[data-theme="light"] .pricing-paid-grid .pricing-plan .pricing-plan-status{
   color:var(--pricing-plan-accent-text)!important;
 }
 html[data-theme="light"] .pricing-paid-grid .pricing-plan .public-plan-name{color:var(--pricing-plan-accent-text)!important}
+html[data-theme="dark"] .pricing-paid-grid .pricing-plan{
+  --pricing-plan-accent-text:color-mix(in srgb,var(--pricing-plan-accent) 74%,#f7faf7);
+  border-color:color-mix(in srgb,var(--pricing-plan-accent) 42%,var(--public-line));
+  border-top-color:var(--pricing-plan-accent)!important;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--pricing-plan-accent) 16%,var(--public-surface)) 0,color-mix(in srgb,var(--pricing-plan-accent) 7%,var(--public-surface)) 150px,var(--public-surface) 220px)!important;
+  box-shadow:0 16px 38px color-mix(in srgb,var(--pricing-plan-accent) 8%,transparent);
+}
+html[data-theme="dark"] .pricing-paid-grid .pricing-plan .pricing-plan-status{
+  border-color:color-mix(in srgb,var(--pricing-plan-accent) 48%,var(--public-line));
+  background:color-mix(in srgb,var(--pricing-plan-accent) 12%,var(--public-surface));
+  color:var(--pricing-plan-accent-text)!important;
+}
+html[data-theme="dark"] .pricing-paid-grid .pricing-plan .public-plan-name{color:var(--pricing-plan-accent-text)!important}
 @media(max-width:1180px){.pricing-plan-free{height:auto;grid-template-columns:1fr 1fr;grid-template-rows:auto}.pricing-plan-free-cta{grid-column:1/-1;grid-template-columns:1fr minmax(220px,260px);align-items:end}.pricing-paid-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:720px){.pricing-main{width:min(100% - 32px,1380px);padding:65px 0 80px}.pricing-hero{text-align:left}.pricing-hero h1{font-size:clamp(40px,12vw,58px)}.pricing-billing{display:flex;width:max-content}.pricing-notice{align-items:flex-start;border-radius:12px}.pricing-free-section{margin-bottom:55px}.pricing-plan-free,.pricing-paid-grid{grid-template-columns:1fr}.pricing-plan-free{min-height:0;gap:8px;padding:28px}.pricing-plan-free ul{grid-template-columns:1fr;margin:20px 0 28px}.pricing-plan-free-cta{grid-column:auto;grid-template-columns:1fr;gap:20px}.pricing-plan-free .pricing-action{width:100%}.pricing-plan h2{min-height:0}.pricing-final{align-items:flex-start;flex-direction:column}.pricing-final .public-cta{width:100%}}
 
