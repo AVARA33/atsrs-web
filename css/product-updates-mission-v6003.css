@@ -51,6 +51,7 @@ html[data-theme="light"] .mission-orbit-title{background:#f6f8fb}
 html[data-theme="light"] .mission-node,html[data-theme="light"] .mission-roadmap-item{color:#17345f}
 html[data-theme="light"] .mission-node i{color:#2f6dcc;filter:drop-shadow(0 0 5px rgba(47,109,204,.18))}
 html[data-theme="light"] .mission-core{background:radial-gradient(ellipse at center,rgba(255,255,255,.98),rgba(237,243,250,.95) 68%,transparent 69%)!important;color:#132b56!important}
+html[data-theme="light"] .mission-core img{content:url('../assets/branding/atsrs-favicon-blue-v576.png?v=576')}
 html[data-theme="light"] .mission-core small,html[data-theme="light"] .mission-roadmap-reports small,html[data-theme="light"] .mission-roadmap-android small{color:#657792}
 html[data-theme="light"] .mission-launchers button{border-color:rgba(47,109,204,.55)!important;background:rgba(255,255,255,.88)!important;color:#132b56!important}
 html[data-theme="light"] .mission-launchers button>i{color:#2f6dcc}
