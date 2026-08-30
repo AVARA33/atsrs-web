@@ -9,6 +9,7 @@ const outputDirectory = path.resolve(projectRoot, "dist");
 const publicFiles = [
   "_headers",
   "index.html",
+  "contact.html",
   "qr-upload.html",
   "pricing.html",
   "billing-terms.html",
@@ -83,6 +84,9 @@ async function validateOutput() {
   const outputFiles = await listFiles(outputDirectory);
   if (!outputFiles.includes("index.html")) {
     throw new Error("Cloudflare output is missing index.html");
+  }
+  if (!outputFiles.includes("contact.html")) {
+    throw new Error("Cloudflare output is missing contact.html");
   }
 
   const secretPattern = /(?:service[_-]?role|supabase[_-]?service|BEGIN [A-Z ]*PRIVATE KEY)/i;
