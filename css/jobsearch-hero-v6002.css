@@ -120,15 +120,24 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
 #jobsPage .jobs-snapshot span{color:#91a198;font-size:11px}
 
 html[data-theme="light"] #jobsPage .jobs-hero{
-  border-color:rgba(43,111,178,.32);
+  border-color:rgba(56,116,185,.22);
   background:
-    radial-gradient(circle at 22% 45%,rgba(41,112,191,.11),transparent 34%),
-    linear-gradient(135deg,#07111d 0%,#07100d 60%,#07100b 100%);
-  box-shadow:0 18px 44px rgba(29,51,79,.16),inset 0 1px 0 rgba(255,255,255,.035);
+    radial-gradient(circle at 22% 45%,rgba(72,139,224,.12),transparent 34%),
+    linear-gradient(135deg,#ffffff 0%,#f5f9ff 55%,#f2faF3 100%);
+  box-shadow:0 18px 44px rgba(29,51,79,.1),inset 0 1px 0 rgba(255,255,255,.85);
 }
 
-html[data-theme="light"] #jobsPage .jobs-hero-icon{border-color:rgba(106,176,245,.4);background:rgba(37,111,185,.1);color:#78b9ff}
-html[data-theme="light"] #jobsPage .jobs-hero-eyebrow{color:#7ab8f7}
+html[data-theme="light"] #jobsPage .jobs-hero::after{border-color:rgba(55,126,205,.14)}
+html[data-theme="light"] #jobsPage .jobs-hero-icon{border-color:rgba(59,130,246,.3);background:linear-gradient(145deg,rgba(96,165,250,.15),rgba(255,255,255,.72));color:#2f73c8;box-shadow:inset 0 0 22px rgba(59,130,246,.07)}
+html[data-theme="light"] #jobsPage .jobs-hero-eyebrow{color:#2d69b2}
+html[data-theme="light"] #jobsPage .jobs-hero h3,
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-hero h3{color:#132b56!important;-webkit-text-fill-color:#132b56!important}
+html[data-theme="light"] #jobsPage .jobs-hero p,
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-hero p{color:#566a83!important;-webkit-text-fill-color:#566a83!important}
+html[data-theme="light"] #jobsPage .jobs-hero-map{opacity:.2;filter:saturate(.9) contrast(.9)}
+html[data-theme="light"] #jobsPage .jobs-hero-actions{border-color:rgba(46,94,148,.18);background:rgba(255,255,255,.88);box-shadow:0 12px 30px rgba(37,65,101,.1)}
+html[data-theme="light"] #jobsPage .jobs-snapshot strong{color:#17345e}
+html[data-theme="light"] #jobsPage .jobs-snapshot span{color:#667991}
 
 @media(max-width:1050px){
   #jobsPage .jobs-hero{grid-template-columns:minmax(0,1fr) minmax(300px,.72fr)}
