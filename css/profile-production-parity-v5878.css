@@ -932,11 +932,11 @@ html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePa
 
 /* Security workspace: compact three-step contact verification from the approved reference. */
 body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] {
-  height:auto; min-height:0; max-height:none; overflow:visible; border:0; border-radius:0; background:transparent;
+  height:294px; min-height:294px; max-height:294px; overflow:hidden;
 }
 body.personal-mode #profilePage #profileTabSecurityPanel {
   --profile-security-accent:#35c85a;
-  height:auto; min-height:0; padding:0; overflow:visible; background:transparent;
+  height:100%; min-height:0; padding:0; overflow-x:hidden; overflow-y:auto; scrollbar-gutter:stable; background:transparent;
 }
 html[data-theme="light"] body.personal-mode #profilePage #profileTabSecurityPanel { --profile-security-accent:var(--atsrs-shell-accent-strong,#167bd3); }
 body.personal-mode #profilePage .profile-security-primary {
@@ -1044,12 +1044,15 @@ body.personal-mode #profilePage .profile-security-card.is-danger .profile-securi
   body.personal-mode #profilePage .profile-security-verification-result { min-height:180px; }
 }
 @media (max-width:760px) {
-  body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] { height:auto; min-height:0; max-height:none; }
+  body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] { height:520px; min-height:520px; max-height:520px; }
   body.personal-mode #profilePage .profile-security-verification-flow { grid-template-columns:1fr; }
   body.personal-mode #profilePage .profile-security-step { min-height:0; border-right:0; border-bottom:1px solid var(--line); }
   body.personal-mode #profilePage .profile-security-verification-result { min-height:150px; }
   body.personal-mode #profilePage .profile-security-grid { grid-template-columns:1fr; }
   body.personal-mode #profilePage .profile-security-grid .profile-security-card.is-danger { grid-column:1; }
+}
+@media (max-width:520px) {
+  body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] { height:580px; min-height:580px; max-height:580px; }
 }
 @media (max-width:420px) {
   body.personal-mode #profilePage .profile-security-primary { padding:12px; }
