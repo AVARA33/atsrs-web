@@ -1,0 +1,17 @@
+const fs=require('node:fs');
+const assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8');
+const css=fs.readFileSync('css/dashboard-quick-links-v5987.css','utf8');
+assert.match(html,/dashboard-quick-links-v5987\.css/);
+assert.match(html,/id="sidebarQuickLinks"/);
+assert.match(html,/ph-list-checks/);
+assert.match(html,/ph-question/);
+assert.match(html,/ph-headset/);
+assert.match(html,/href="\/pricing\.html"/);
+assert.match(html,/href="\/\?view=home#faq"/);
+assert.match(html,/href="\/contact\.html"/);
+assert.match(html,/aria-label="Quick Links"/);
+assert.match(css,/\.sidebar-quick-links a:hover/);
+assert.match(css,/html\[data-theme="light"\]/);
+assert.doesNotMatch(fs.readFileSync('js/theme.js','utf8'),/atsrsAuthenticatedResourceNav/);
+console.log('sidebar quick links: PASS');

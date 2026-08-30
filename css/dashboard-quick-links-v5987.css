@@ -1,0 +1,96 @@
+/* Authenticated sidebar access to Plans, FAQ and Contact. */
+#app.app:not(.hidden) .sidebar .sidebar-quick-links{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+  width:100%;
+  padding:3px 4px 0;
+}
+
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a{
+  position:relative;
+  display:inline-grid;
+  place-items:center;
+  width:100%;
+  min-width:0;
+  height:32px;
+  padding:0;
+  border:1px solid var(--atsrs-workspace-line,var(--atsrs-border));
+  border-radius:8px;
+  background:#080c0a;
+  color:#cbd5cf;
+  text-decoration:none;
+  transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease;
+}
+
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a .ph{
+  font-size:18px;
+  line-height:1;
+}
+
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a:hover{
+  border-color:rgba(67,201,91,.58);
+  background:#111813;
+  color:#62dc79;
+  transform:translateY(-1px);
+}
+
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a:focus-visible{
+  outline:3px solid rgba(67,201,91,.34);
+  outline-offset:2px;
+  border-color:#43c95b;
+  color:#62dc79;
+}
+
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a::after{
+  content:attr(data-label);
+  position:absolute;
+  left:calc(100% + 8px);
+  top:50%;
+  z-index:60;
+  padding:6px 8px;
+  border:1px solid rgba(148,163,184,.24);
+  border-radius:7px;
+  background:#111713;
+  color:#f5f7f5;
+  font-size:11px;
+  font-weight:700;
+  line-height:1;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-3px,-50%);
+  transition:opacity .14s ease,transform .14s ease;
+}
+
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a:hover::after,
+#app.app:not(.hidden) .sidebar .sidebar-quick-links a:focus-visible::after{
+  opacity:1;
+  transform:translate(0,-50%);
+}
+
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links a{
+  border-color:#d4dee7;
+  background:#fff;
+  color:#52677a;
+}
+
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links a:hover,
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links a:focus-visible{
+  border-color:#6f9ee8;
+  background:#edf4ff;
+  color:#2563eb;
+}
+
+html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links a::after{
+  border-color:#d4dee7;
+  background:#17243a;
+  color:#fff;
+}
+
+@media(max-width:800px){
+  #app.app:not(.hidden) .sidebar .sidebar-quick-links{padding-inline:1px;gap:2px}
+  #app.app:not(.hidden) .sidebar .sidebar-quick-links a{height:30px;border-radius:7px}
+  #app.app:not(.hidden) .sidebar .sidebar-quick-links a .ph{font-size:16px}
+}
