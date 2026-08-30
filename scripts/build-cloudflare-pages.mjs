@@ -35,6 +35,14 @@ const forbiddenOutputEntries = [
   "tests"
 ];
 
+const oauthProductionContract = Object.freeze({
+  canonicalOrigin: "https://atsrs.com",
+  supabaseOrigin: "https://hwtjuqyxzivymofamwxl.supabase.co",
+  googleCallback: "https://hwtjuqyxzivymofamwxl.supabase.co/auth/v1/callback",
+  privacyUrl: "https://atsrs.com/privacy.html",
+  termsUrl: "https://atsrs.com/terms.html"
+});
+
 function assertSafeOutputDirectory() {
   const relativeOutput = path.relative(projectRoot, outputDirectory);
   if (relativeOutput !== "dist" || relativeOutput.startsWith("..") || path.isAbsolute(relativeOutput)) {
@@ -56,6 +64,37 @@ async function copyPublicEntry(relativePath) {
   const sourcePath = await assertSourceExists(relativePath);
   const destinationPath = path.resolve(outputDirectory, relativePath);
   await cp(sourcePath, destinationPath, { recursive: true, force: true });
+}
+
+async function validateOAuthProductionSource() {
+  const storage = await readFile(path.join(projectRoot, "js", "storage.js"), "utf8");
+  const cname = (await readFile(path.join(projectRoot, "CNAME"), "utf8")).trim();
+  const privacy = await readFile(path.join(projectRoot, "privacy.html"), "utf8");
+  const terms = await readFile(path.join(projectRoot, "terms.html"), "utf8");
+
+  const requiredSourceFragments = [
+    `const SUPABASE_URL="${oauthProductionContract.supabaseOrigin}"`,
+    `const APP_URL="${oauthProductionContract.canonicalOrigin}/"`,
+    "provider:'google'",
+    "prompt:'select_account'"
+  ];
+  for (const fragment of requiredSourceFragments) {
+    if (!storage.includes(fragment)) {
+      throw new Error(`OAuth production contract changed or is missing: ${fragment}`);
+    }
+  }
+  if (cname !== "atsrs.com") {
+    throw new Error(`OAuth production contract requires CNAME atsrs.com, received: ${cname || "empty"}`);
+  }
+  if (!/<h1>Privacy Notice<\/h1>/i.test(privacy)) {
+    throw new Error(`Google OAuth privacy URL is no longer backed by the expected public page: ${oauthProductionContract.privacyUrl}`);
+  }
+  if (!/<h1>Terms of Use<\/h1>/i.test(terms)) {
+    throw new Error(`Google OAuth terms URL is no longer backed by the expected public page: ${oauthProductionContract.termsUrl}`);
+  }
+  if (storage.includes("hwtjuqyxziyvmofamwxl.supabase.co")) {
+    throw new Error("Deprecated mistyped Supabase OAuth domain reintroduced");
+  }
 }
 
 async function listFiles(directory, prefix = "") {
@@ -103,6 +142,7 @@ async function validateOutput() {
 
 async function build() {
   assertSafeOutputDirectory();
+  await validateOAuthProductionSource();
   await rm(outputDirectory, { recursive: true, force: true });
   await mkdir(outputDirectory, { recursive: true });
 
