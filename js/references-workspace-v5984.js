@@ -176,7 +176,11 @@
   window.addEventListener('load',function(){run();setTimeout(run,500);setTimeout(run,1400);});
   document.addEventListener('atsrs:cv-state',schedule);
   var observer=new MutationObserver(schedule);
-  var themeObserver=new MutationObserver(applyTabTheme);
+  var themeObserver=new MutationObserver(function(){
+    applyTabTheme();
+    setTimeout(applyTabTheme,80);
+    setTimeout(applyTabTheme,320);
+  });
   themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   var attach=function(){var page=q('#refsPage');if(page){observer.observe(page,{childList:true,subtree:true});run();}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attach);else attach();
