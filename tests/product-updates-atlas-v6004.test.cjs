@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6012/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6012/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6013/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6013/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -24,20 +24,22 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(css,/html\[data-theme="light"\] \.atlas-stats-grid>div/);
   assert.match(css,/release-atlas-texture-light-v6010\.png/);
   assert.match(updates,/class="atlas-route-lines"/);
+  assert.match(updates,/class="updates-atlas-detail atlas-pricing-showcase"/);
   assert.match(js,/setLineDash\(\[4,7\]\)/);
   assert.match(js,/routeAlpha=isLight\?\.58:\.92/);
   assert.match(js,/ResizeObserver\)new ResizeObserver\(scheduleRoutes\)\.observe\(canvas\)/);
   assert.match(js,/warmupCount>=16/);
+  assert.match(js,/setInterval\(function\(\)\{showPlan\(planIndex\+1\)\},8000\)/);
+  assert.match(js,/name:'BRONZE'/);
+  assert.match(js,/name:'TITAN'/);
   assert.match(css,/\.is-building :is\(span,strong\)\{color:var\(--atlas-yellow\)!important\}/);
   assert.match(css,/white-space:nowrap!important/);
   assert.match(css,/release-atlas-texture-v6004\.png/);
   assert.match(css,/@media\(max-width:760px\)/);
-  assert.match(updates,/class="updates-atlas-detail updates-atlas-stats"/);
-  assert.doesNotMatch(updates.slice(updates.indexOf('updates-atlas-stats'),updates.indexOf('</aside>',updates.indexOf('updates-atlas-stats'))),/Worldwide JobSearch/);
-  assert.match(updates,/Product status/);
-  assert.match(updates,/Live<\/span><strong>5/);
-  assert.match(updates,/Building<\/span><strong>1/);
-  assert.match(updates,/Next<\/span><strong>2/);
+  assert.doesNotMatch(updates,/Product status/);
+  assert.doesNotMatch(updates,/Live<\/span><strong>5/);
+  assert.match(updates,/PERSONAL PLANS/);
+  assert.match(css,/\.atlas-plan-card\.is-gold/);
 });
 
 test('Atlas interactions are data-driven and retain working launch actions',()=>{
