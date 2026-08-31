@@ -13,7 +13,7 @@ const appRuntime=fs.readFileSync(path.join(root,'js','app.js'),'utf8');
 const icons=fs.readFileSync(path.join(root,'vendor','phosphor-icons','phosphor-regular.css'),'utf8');
 
 assert.match(index,/vendor\/phosphor-icons\/phosphor-regular\.css\?v=442/);
-assert.match(index,/css\/shell-polish\.css\?v=568/);
+assert.match(index,/css\/shell-polish\.css\?v=5931/);
 assert.match(index,/js\/storage\.js\?v=559/);
 assert.match(index,/class="account-tabs" role="tablist"/);
 assert.match(index,/accountTabGeneralBtn[^>]+aria-selected="true"/);
@@ -46,7 +46,8 @@ for(const pair of [
 const navIconBlock=css.match(/\.atsrs-nav-icon\{[^}]+\}/)?.[0]||'';
 assert.match(navIconBlock,/color:inherit!important/);
 assert.doesNotMatch(navIconBlock,/#[0-9a-f]{3,8}/i);
-assert.match(css,/grid-template-columns:112px minmax\(0,1fr\)!important/);
+assert.match(css,/grid-template-columns:132px minmax\(0,1fr\)!important/);
+assert.match(css,/#navIntro \.atsrs-nav-label[\s\S]*?white-space:nowrap!important/);
 assert.match(css,/\.sidebar \.nav button,[\s\S]*?flex-direction:column!important/);
 assert.match(css,/\.atsrs-nav-label\{[\s\S]*?text-align:center!important[\s\S]*?white-space:normal!important/);
 assert.match(css,/V446: the document register uses the page background/);

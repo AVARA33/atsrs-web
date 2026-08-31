@@ -92,7 +92,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/personal-workspace-surface.css?v=436">
 <link rel="stylesheet" href="css/personal-dashboard-qa.css?v=58156">
 <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=442">
-    <link rel="stylesheet" href="css/shell-polish.css?v=5930">
+    <link rel="stylesheet" href="css/shell-polish.css?v=5931">
 <link rel="stylesheet" href="css/public-landing.css?v=5858">
 <link rel="stylesheet" href="css/workspace-surface-standard-v519.css?v=5848">
 <link rel="stylesheet" href="css/workspace-heading-standard-v520.css?v=58156">
@@ -135,7 +135,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6024">
-<link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6013">
+<link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6014">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -727,13 +727,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <div class="product-updates-content">
   <section class="updates-atlas" aria-label="ATSRS release atlas">
-    <header class="updates-atlas-toolbar">
-      <div class="updates-atlas-view" role="group" aria-label="Release view">
-        <button class="active" type="button" data-atlas-view="atlas">Atlas</button>
-        <button type="button" data-atlas-view="list">List</button>
-      </div>
-    </header>
-
     <div class="updates-atlas-layout">
       <div class="updates-atlas-canvas" data-atlas-mode="atlas">
         <div class="atlas-coordinate atlas-coordinate-top" aria-hidden="true"><span>90°W</span><span>60°W</span><span>30°W</span><span>0°</span><span>30°E</span><span>60°E</span><span>90°E</span></div>
@@ -745,7 +738,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div class="atlas-zone atlas-zone-building"><i class="ph ph-hammer"></i><span><strong>BUILDING</strong><small>Build point</small></span></div>
         <div class="atlas-zone atlas-zone-next"><i class="ph ph-flag-checkered"></i><span><strong>NEXT</strong><small>Next point</small></span></div>
 
-        <button class="atlas-marker is-live is-selected marker-jobs" type="button" data-release="jobs"><i class="ph ph-globe-hemisphere-west"></i><span>Worldwide JobSearch</span></button>
+        <button class="atlas-marker is-live marker-jobs" type="button" data-release="jobs"><i class="ph ph-globe-hemisphere-west"></i><span>Worldwide JobSearch</span></button>
         <button class="atlas-marker is-live marker-recruiters" type="button" data-release="recruiters"><i class="ph ph-user"></i><span>Recruiter Directory</span></button>
         <button class="atlas-marker is-live marker-companies" type="button" data-release="companies"><i class="ph ph-buildings"></i><span>Company Directory</span></button>
         <button class="atlas-marker is-live marker-ai" type="button" data-release="ai"><i class="ph ph-magic-wand"></i><span>AI Document Scan</span></button>
@@ -753,6 +746,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <button class="atlas-marker is-building marker-whatsapp" type="button" data-release="whatsapp"><i class="ph ph-whatsapp-logo"></i><span>WhatsApp Expiry Alerts</span></button>
         <button class="atlas-marker is-next marker-reports" type="button" data-release="reports"><i class="ph ph-calendar-dots"></i><span>Automated Scheduled Reports</span></button>
         <button class="atlas-marker is-next marker-android" type="button" data-release="android"><i class="ph ph-device-mobile"></i><span>ATSRS Android App</span></button>
+
+        <aside class="atlas-release-card" aria-live="polite" aria-hidden="true" hidden>
+          <div class="atlas-release-card-head"><i class="ph ph-info" aria-hidden="true"></i><span data-release-card-status></span></div>
+          <h3 data-release-card-title></h3>
+          <p class="atlas-release-card-meta" data-release-card-meta></p>
+          <p class="atlas-release-card-copy" data-release-card-copy></p>
+        </aside>
 
         <div class="updates-atlas-list" aria-label="All product releases"></div>
 
@@ -765,8 +765,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <aside class="updates-atlas-detail atlas-pricing-showcase" aria-label="ATSRS Personal plan showcase">
         <span class="atlas-stats-kicker">PERSONAL PLANS</span>
         <div class="atlas-plan-carousel" aria-live="polite"></div>
+        <div class="atlas-plan-navigation" role="group" aria-label="Browse Personal plans">
+          <button class="atlas-plan-arrow" type="button" data-plan-direction="previous" aria-label="Show previous Personal plan"><i class="ph ph-arrow-left" aria-hidden="true"></i></button>
+          <a class="atlas-plan-link" href="/pricing.html#bronze">Compare all plans <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+          <button class="atlas-plan-arrow" type="button" data-plan-direction="next" aria-label="Show next Personal plan"><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+        </div>
         <div class="atlas-plan-controls" role="group" aria-label="Choose a Personal plan"></div>
-        <a class="atlas-plan-link" href="/pricing.html#bronze">Compare all plans <i class="ph ph-arrow-right"></i></a>
       </aside>
     </div>
   </section>
@@ -2423,7 +2427,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/route-feature-loader.js?v=5996"></script>
 <script src="js/references-workspace-v5984.js?v=59844"></script>
 <script src="js/account-resources-v5990.js?v=5999"></script>
-<script src="js/product-updates-atlas-v6004.js?v=6013"></script>
+<script src="js/product-updates-atlas-v6004.js?v=6017"></script>
 
 
 

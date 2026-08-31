@@ -263,12 +263,12 @@ body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button .atsrs-nav
 @media(min-width:801px){
   body #app.app:not(.hidden),
   body.v76-sidebar-collapsed #app.app:not(.hidden){
-    grid-template-columns:112px minmax(0,1fr)!important;
+    grid-template-columns:132px minmax(0,1fr)!important;
   }
 
   body #app.app:not(.hidden) .sidebar,
   body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar{
-    width:112px!important;
+    width:132px!important;
     padding:0 8px 10px!important;
     overflow:hidden!important;
   }
@@ -356,6 +356,11 @@ body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button .atsrs-nav
 
   body #app.app:not(.hidden) .sidebar .nav #navIntro{
     order:0!important;
+  }
+
+  body #app.app:not(.hidden) .sidebar .nav #navIntro .atsrs-nav-label,
+  body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav #navIntro .atsrs-nav-label{
+    white-space:nowrap!important;
   }
 }
 

@@ -28,6 +28,7 @@
   }
   function startPlans(){clearInterval(planTimer);planTimer=setInterval(function(){showPlan(planIndex+1)},8000)}
   if(planControls){plans.forEach(function(plan,index){var button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Show '+plan.name+' plan');button.addEventListener('click',function(){showPlan(index);startPlans()});planControls.appendChild(button)});showPlan(0);startPlans()}
+  root.querySelectorAll('[data-plan-direction]').forEach(function(button){button.addEventListener('click',function(){showPlan(planIndex+(button.dataset.planDirection==='previous'?-1:1));startPlans()})});
   var pricingShowcase=root.querySelector('.atlas-pricing-showcase');if(pricingShowcase){pricingShowcase.addEventListener('pointerenter',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('pointerleave',startPlans);pricingShowcase.addEventListener('focusin',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('focusout',startPlans)}
   var canvas=root.querySelector('.updates-atlas-canvas');
   var routeCanvas=root.querySelector('.atlas-route-lines');
@@ -56,12 +57,29 @@
     context.globalAlpha=1;context.shadowBlur=0;
   }
   function scheduleRoutes(){cancelAnimationFrame(routeFrame);routeFrame=requestAnimationFrame(drawRoutes)}
+  var releaseCard=root.querySelector('.atlas-release-card'),releaseCardTimer=0;
+  function typeReleaseCopy(text){
+    if(!releaseCard)return;clearInterval(releaseCardTimer);var copy=releaseCard.querySelector('[data-release-card-copy]'),index=0;copy.textContent='';
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){copy.textContent=text;return}
+    releaseCardTimer=setInterval(function(){copy.textContent=text.slice(0,++index);if(index>=text.length)clearInterval(releaseCardTimer)},18);
+  }
+  function openReleaseCard(item){
+    if(!releaseCard)return;releaseCard.hidden=false;releaseCard.setAttribute('aria-hidden','false');releaseCard.classList.remove('is-visible');
+    releaseCard.querySelector('.atlas-release-card-head>i').className='ph '+item.icon;
+    releaseCard.querySelector('[data-release-card-status]').textContent=item.statusLabel;
+    releaseCard.querySelector('[data-release-card-title]').textContent=item.title;
+    releaseCard.querySelector('[data-release-card-meta]').textContent=item.category+' · '+item.availability+' · '+item.date;
+    requestAnimationFrame(function(){releaseCard.classList.add('is-visible')});typeReleaseCopy(item.description);
+  }
+  function closeReleaseCard(){if(!releaseCard)return;clearInterval(releaseCardTimer);releaseCard.classList.remove('is-visible');releaseCard.hidden=true;releaseCard.setAttribute('aria-hidden','true')}
   function select(key){
     var item=releases[key];if(!item)return;
     root.querySelectorAll('.atlas-marker').forEach(function(marker){marker.classList.toggle('is-selected',marker.dataset.release===key)});
+    openReleaseCard(item);
   }
+  function clearSelection(){root.querySelectorAll('.atlas-marker.is-selected').forEach(function(marker){marker.classList.remove('is-selected')});closeReleaseCard()}
   root.querySelectorAll('.atlas-marker').forEach(function(marker){marker.addEventListener('click',function(){select(marker.dataset.release)})});
-  root.querySelectorAll('[data-atlas-view]').forEach(function(button){button.addEventListener('click',function(){root.querySelectorAll('[data-atlas-view]').forEach(function(item){item.classList.toggle('active',item===button)});canvas.dataset.atlasMode=button.dataset.atlasView;scheduleRoutes()})});
+  root.addEventListener('click',function(event){if(!event.target.closest('[data-release],.atlas-release-card'))clearSelection()});
   var zoom=1,zoomOutput=root.querySelector('.atlas-zoom output');
   root.querySelectorAll('[data-atlas-zoom]').forEach(function(button){button.addEventListener('click',function(){var action=button.dataset.atlasZoom;zoom=action==='fit'?1:Math.max(.8,Math.min(1.3,zoom+(action==='in'?.1:-.1)));canvas.style.setProperty('--atlas-zoom',zoom.toFixed(2));zoomOutput.textContent=Math.round(zoom*100)+'%'})});
   var list=root.querySelector('.updates-atlas-list');
@@ -78,5 +96,5 @@
   scheduleRoutes();
   setTimeout(scheduleRoutes,250);setTimeout(scheduleRoutes,1000);
   var warmupCount=0,warmupTimer=setInterval(function(){scheduleRoutes();warmupCount+=1;if(warmupCount>=16)clearInterval(warmupTimer)},500);
-  select('jobs');
+  clearSelection();
 })();

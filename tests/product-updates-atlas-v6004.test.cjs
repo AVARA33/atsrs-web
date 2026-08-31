@@ -9,15 +9,15 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6013/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6013/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6014/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6017/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
   assert.equal((updates.match(/class="atlas-marker is-building/g)||[]).length,1);
   assert.equal((updates.match(/class="atlas-marker is-next/g)||[]).length,2);
-  assert.match(updates,/data-atlas-view="atlas"/);
-  assert.match(updates,/data-atlas-view="list"/);
+  assert.doesNotMatch(updates,/data-atlas-view=/);
+  assert.doesNotMatch(updates,/>Atlas<|>List</);
   assert.match(css,/grid-template-columns:minmax\(0,1fr\) 308px/);
   assert.match(css,/width:min\(100%,1440px\)!important/);
   assert.match(css,/width:max-content!important;max-width:230px!important/);
