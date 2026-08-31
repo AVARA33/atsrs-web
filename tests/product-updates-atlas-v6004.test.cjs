@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6019/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6022/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6020/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6023/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -44,6 +44,7 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(css,/\.atlas-plan-card\.is-gold/);
   assert.match(css,/@keyframes atlasPlanShine/);
   assert.match(css,/\.atlas-plan-card::after/);
+  assert.match(css,/animation:atlasPlanShine 2\.2s/);
   assert.match(css,/\.atlas-marker span\{color:#245f9f!important/);
 });
 
@@ -55,4 +56,5 @@ test('Atlas interactions are data-driven and retain working launch actions',()=>
   assert.match(js,/querySelectorAll\('\.atlas-marker'\)/);
   assert.match(js,/context\.lineTo\(elbowX,elbowY\)/);
   assert.match(js,/openReleaseCard\(item,selectedMarker\)/);
+  assert.match(js,/Math\.min\(canvasBox\.height-280,markerBox\.top-canvasBox\.top-72\)/);
 });

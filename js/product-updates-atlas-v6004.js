@@ -81,10 +81,10 @@
     releaseCard.querySelector('[data-release-card-title]').textContent=item.title;
     releaseCard.querySelector('[data-release-card-meta]').textContent=item.category+' · '+item.availability+' · '+item.date;
     if(window.innerWidth>760&&marker){
-      var canvasBox=canvas.getBoundingClientRect(),markerBox=marker.getBoundingClientRect(),cardWidth=Math.min(360,canvasBox.width-56),cardHeight=releaseCard.offsetHeight||230;
+      var canvasBox=canvas.getBoundingClientRect(),markerBox=marker.getBoundingClientRect(),cardWidth=Math.min(360,canvasBox.width-56);
       var placeRight=markerBox.left-canvasBox.left<canvasBox.width*.58;
       var left=placeRight?Math.min(canvasBox.width-cardWidth-28,markerBox.right-canvasBox.left+72):Math.max(28,markerBox.left-canvasBox.left-cardWidth-72);
-      var top=Math.max(28,Math.min(canvasBox.height-cardHeight-76,markerBox.top-canvasBox.top-72));
+      var top=Math.max(28,Math.min(canvasBox.height-280,markerBox.top-canvasBox.top-72));
       releaseCard.style.left=left+'px';releaseCard.style.top=top+'px';releaseCard.style.right='auto';releaseCard.style.bottom='auto';
     }else{releaseCard.style.removeProperty('left');releaseCard.style.removeProperty('top');releaseCard.style.removeProperty('right');releaseCard.style.removeProperty('bottom')}
     requestAnimationFrame(function(){releaseCard.classList.add('is-visible');scheduleRoutes()});typeReleaseCopy(item.description);
