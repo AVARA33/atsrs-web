@@ -134,7 +134,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
-<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6016">
+<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6017">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -730,6 +730,16 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <svg class="mission-orbit-svg" viewBox="0 0 744 830" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <filter id="missionGreenGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="missionConnectorGlow" x="-90%" y="-90%" width="280%" height="280%"><feGaussianBlur stdDeviation="1.1" result="connectorBlur"/><feMerge><feMergeNode in="connectorBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <linearGradient id="missionConnectorProjects" gradientUnits="userSpaceOnUse" x1="372" y1="121" x2="372" y2="148"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorCandidates" gradientUnits="userSpaceOnUse" x1="271" y1="159" x2="286" y2="181"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorCompliance" gradientUnits="userSpaceOnUse" x1="473" y1="159" x2="458" y2="181"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorSharing" gradientUnits="userSpaceOnUse" x1="170" y1="238" x2="195" y2="246"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorRegister" gradientUnits="userSpaceOnUse" x1="574" y1="238" x2="549" y2="246"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorCv" gradientUnits="userSpaceOnUse" x1="138" y1="339" x2="164" y2="335"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorQr" gradientUnits="userSpaceOnUse" x1="606" y1="339" x2="580" y2="335"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorEmail" gradientUnits="userSpaceOnUse" x1="172" y1="416" x2="195" y2="403"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
+          <linearGradient id="missionConnectorAi" gradientUnits="userSpaceOnUse" x1="572" y1="416" x2="549" y2="403"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
         </defs>
         <ellipse class="orbit orbit-live" cx="372" cy="329.5" rx="363.5" ry="322.5"/>
         <ellipse class="orbit orbit-inner" cx="372" cy="304.5" rx="208.5" ry="156.5"/>
@@ -739,8 +749,16 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <ellipse cx="372" cy="324" rx="148" ry="128"/><ellipse cx="372" cy="324" rx="142" ry="122"/><ellipse cx="372" cy="324" rx="136" ry="116"/><ellipse cx="372" cy="324" rx="130" ry="110"/><ellipse cx="372" cy="324" rx="124" ry="104"/><ellipse cx="372" cy="324" rx="118" ry="98"/>
         </g>
         <g class="mission-connectors">
-          <path d="M372 148V171"/><path d="M286 181L275 198"/><path d="M458 181L469 198"/><path d="M195 246L177 255"/><path d="M549 246L567 255"/><path d="M164 335H139"/><path d="M580 335H605"/><path d="M195 403L177 394"/><path d="M549 403L567 394"/>
-          <path d="M372 452V475H274V489M372 475H470V489"/>
+          <path class="mission-connector mission-connector-projects" d="M372 121V148"/>
+          <path class="mission-connector mission-connector-candidates" d="M271 159L286 181"/>
+          <path class="mission-connector mission-connector-compliance" d="M473 159L458 181"/>
+          <path class="mission-connector mission-connector-sharing" d="M170 238L195 246"/>
+          <path class="mission-connector mission-connector-register" d="M574 238L549 246"/>
+          <path class="mission-connector mission-connector-cv" d="M138 339L164 335"/>
+          <path class="mission-connector mission-connector-qr" d="M606 339L580 335"/>
+          <path class="mission-connector mission-connector-email" d="M172 416L195 403"/>
+          <path class="mission-connector mission-connector-ai" d="M572 416L549 403"/>
+          <path class="mission-launch-connector" d="M372 452V475H274V489M372 475H470V489"/>
         </g>
         <g class="mission-dots"><circle cx="372" cy="148" r="4"/><circle cx="286" cy="181" r="4"/><circle cx="458" cy="181" r="4"/><circle cx="195" cy="246" r="4"/><circle cx="549" cy="246" r="4"/><circle cx="164" cy="335" r="4"/><circle cx="580" cy="335" r="4"/><circle cx="195" cy="403" r="4"/><circle cx="549" cy="403" r="4"/><circle cx="372" cy="452" r="4"/></g>
         <g class="planned-dots"><circle cx="16" cy="576" r="4"/><circle cx="728" cy="576" r="4"/><circle cx="238" cy="639" r="4"/><circle cx="506" cy="639" r="4"/></g>

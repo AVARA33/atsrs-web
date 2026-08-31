@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6016/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6017/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -18,6 +18,11 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.doesNotMatch(updates,/class="roadmap-card/);
   assert.doesNotMatch(updates,/class="updates-status-board/);
   assert.match(css,/margin-inline:auto/);
+  assert.match(updates,/id="missionConnectorGlow"/);
+  assert.match(updates,/class="mission-connector mission-connector-projects" d="M372 121V148"/);
+  assert.match(updates,/class="mission-connector mission-connector-email" d="M172 416L195 403"/);
+  assert.match(updates,/class="mission-launch-connector"/);
+  assert.match(css,/\.mission-connectors \.mission-connector\{stroke-width:1\.35;filter:url\(#missionConnectorGlow\)\}/);
   assert.doesNotMatch(css,/grid-template-columns:1(?:50|75)px minmax/);
   assert.match(css,/padding:24px 22px 22px!important/);
   assert.equal((css.match(/width:min\(100%,1222px\)!important/g)||[]).length,2);
