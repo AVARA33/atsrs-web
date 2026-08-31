@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6018/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6021/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6019/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6022/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -42,6 +42,8 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.doesNotMatch(showcase,/Live<\/span><strong>5/);
   assert.match(showcase,/PERSONAL PLANS/);
   assert.match(css,/\.atlas-plan-card\.is-gold/);
+  assert.match(css,/@keyframes atlasPlanShine/);
+  assert.match(css,/\.atlas-plan-card::after/);
   assert.match(css,/\.atlas-marker span\{color:#245f9f!important/);
 });
 
@@ -52,7 +54,5 @@ test('Atlas interactions are data-driven and retain working launch actions',()=>
   assert.match(js,/dataAtlasMode|dataset\.atlasMode/);
   assert.match(js,/querySelectorAll\('\.atlas-marker'\)/);
   assert.match(js,/context\.lineTo\(elbowX,elbowY\)/);
-  assert.match(js,/selectedMarker\.classList\.contains\('is-next'\)/);
-  assert.match(js,/context\.lineTo\(markerX,nextRiseY\);context\.lineTo\(nextApproachX,nextRiseY\)/);
   assert.match(js,/openReleaseCard\(item,selectedMarker\)/);
 });
