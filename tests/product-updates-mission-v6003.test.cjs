@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6017/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6018/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -19,8 +19,11 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.doesNotMatch(updates,/class="updates-status-board/);
   assert.match(css,/margin-inline:auto/);
   assert.match(updates,/id="missionConnectorGlow"/);
+  assert.match(updates,/class="orbit orbit-inner" cx="372" cy="357" rx="208\.5" ry="208\.5"/);
   assert.match(updates,/class="mission-connector mission-connector-projects" d="M372 121V148"/);
-  assert.match(updates,/class="mission-connector mission-connector-email" d="M172 416L195 403"/);
+  assert.match(updates,/class="mission-connector mission-connector-candidates" d="M244 159L258 181"/);
+  assert.match(updates,/class="mission-connector mission-connector-email" d="M145 425L171 417"/);
+  assert.match(updates,/class="mission-dots">[\s\S]*cx="258" cy="181"[\s\S]*cx="171" cy="417"/);
   assert.match(updates,/class="mission-launch-connector"/);
   assert.match(css,/\.mission-connectors \.mission-connector\{stroke-width:1\.35;filter:url\(#missionConnectorGlow\)\}/);
   assert.doesNotMatch(css,/grid-template-columns:1(?:50|75)px minmax/);
@@ -43,4 +46,24 @@ test('mission control keeps honest status totals and working launch modules',()=
   assert.match(updates,/atsrsOpenJobsDirectory\('employers'/);
   assert.match(css,/@media\(max-width:760px\)/);
   assert.match(css,/data-theme="light"/);
+});
+
+test('capability connector dots remain anchored to the live orbit',()=>{
+  const orbit=updates.match(/class="orbit orbit-inner" cx="([\d.]+)" cy="([\d.]+)" rx="([\d.]+)" ry="([\d.]+)"/);
+  assert.ok(orbit);
+  const cx=Number(orbit[1]);
+  const cy=Number(orbit[2]);
+  const rx=Number(orbit[3]);
+  const ry=Number(orbit[4]);
+  assert.equal(rx,ry);
+  const dotGroup=updates.match(/<g class="mission-dots">([\s\S]*?)<\/g>/);
+  assert.ok(dotGroup);
+  const dots=[...dotGroup[1].matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="4"\/>/g)]
+    .slice(0,9)
+    .map(([,x,y])=>[Number(x),Number(y)]);
+  assert.equal(dots.length,9);
+  for(const [x,y] of dots){
+    const drift=Math.abs(Math.hypot(x-cx,y-cy)-rx);
+    assert.ok(drift<2,`connector dot ${x},${y} drifted ${drift.toFixed(2)}px from the live orbit`);
+  }
 });
