@@ -74,3 +74,4 @@ html[data-theme="light"] .launch-join-dots circle{fill:#f6fbff;stroke:#2f6dcc;fi
 @media(max-width:1199px){.updates-mission{display:grid;grid-template-columns:1fr;gap:20px}.updates-mission-dial{position:relative;width:min(744px,100%);height:830px;margin:auto}.mission-orbit-svg{position:absolute;inset:0;width:100%;height:100%}.updates-mission-brief{max-width:744px;margin:auto;padding:24px}.mission-node,.mission-core,.mission-launchers,.mission-roadmap-item{position:absolute}}
 @media(max-width:760px){.updates-mission-dial{display:none}.updates-mission-brief{padding:20px 0}.updates-mission-brief>h3{font-size:30px!important}.mission-release-list button{width:100%!important}.mission-status-summary{display:grid}}
 .mission-orbit-title-next{top:735px!important}
+.mission-connector-projects,.mission-connector-cv,.mission-connector-qr{stroke-width:1.7!important}
