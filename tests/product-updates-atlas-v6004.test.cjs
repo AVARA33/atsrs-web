@@ -10,7 +10,7 @@ const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf
 
 test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(index,/product-updates-atlas-v6010\.css\?v=6021/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6024/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6025/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -32,6 +32,10 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(js,/setInterval\(function\(\)\{showPlan\(planIndex\+1\)\},10000\)/);
   assert.match(js,/name:'BRONZE'/);
   assert.match(js,/name:'TITAN'/);
+  assert.match(js,/title:'Active Job Seekers'/);
+  assert.match(js,/title:'Frequent Career Activity'/);
+  assert.match(js,/title:'Intensive Career Management'/);
+  assert.match(js,/title:'Maximum Personal Capacity'/);
   assert.match(css,/\.is-building :is\(span,strong\)\{color:var\(--atlas-yellow\)!important\}/);
   assert.match(css,/white-space:nowrap!important/);
   assert.match(updates,/>All plans <i class="ph ph-arrow-up-right"/);
