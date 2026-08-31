@@ -1,6 +1,7 @@
 /* ATSRS Product Updates — scalable release atlas. */
 body:has(#navIntro.active) .updates-mission{display:none!important}
 body:has(#navIntro.active) .product-updates-content{display:block!important}
+@media(min-width:1200px){body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle,body:has(#navIntro.active) #introPage{width:min(100%,1440px)!important;max-width:1440px!important}}
 .updates-atlas{--atlas-bg:#020607;--atlas-panel:#070b0a;--atlas-line:#1a211f;--atlas-text:#f4f6f5;--atlas-muted:#929b97;--atlas-green:#62ea65;--atlas-yellow:#eadc35;--atlas-next:#aab4c4;width:100%;color:var(--atlas-text)}
 .updates-atlas-toolbar{display:flex;align-items:center;justify-content:flex-end;min-height:42px;padding:0 8px 10px;border-bottom:1px solid var(--atlas-line)}
 .updates-atlas-toolbar>div:first-child{display:flex;align-items:baseline;gap:18px}.updates-atlas-toolbar strong{font-size:18px}.updates-atlas-toolbar span{color:var(--atlas-muted);font-size:13px}
