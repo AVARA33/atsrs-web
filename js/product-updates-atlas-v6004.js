@@ -32,7 +32,7 @@
   var pricingShowcase=root.querySelector('.atlas-pricing-showcase');if(pricingShowcase){pricingShowcase.addEventListener('pointerenter',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('pointerleave',startPlans);pricingShowcase.addEventListener('focusin',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('focusout',startPlans)}
   var canvas=root.querySelector('.updates-atlas-canvas');
   var routeCanvas=root.querySelector('.atlas-route-lines');
-  var routeFrame=0;
+  var routeFrame=0,selectedMarker=null;
   function drawRoutes(){
     if(!routeCanvas||canvas.dataset.atlasMode==='list')return;
     var bounds=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
@@ -54,6 +54,17 @@
         context.setLineDash([]);context.globalAlpha=1;context.beginPath();context.arc(endX,endY,isLight?2.4:3,0,Math.PI*2);context.fill();context.setLineDash([4,7]);context.globalAlpha=routeAlpha;
       });
     });
+    if(selectedMarker&&releaseCard&&!releaseCard.hidden){
+      var markerBox=selectedMarker.getBoundingClientRect(),cardBox=releaseCard.getBoundingClientRect();
+      var markerX=markerBox.left-bounds.left+markerBox.width/2,markerY=markerBox.top-bounds.top;
+      var cardOnRight=cardBox.left>markerBox.left,cardX=(cardOnRight?cardBox.left:cardBox.right)-bounds.left;
+      var cardY=cardBox.top-bounds.top+Math.min(54,cardBox.height*.3),direction=cardOnRight?1:-1;
+      var elbowX=markerX+(38*direction),elbowY=Math.min(markerY-28,cardY);
+      var connectorColor=selectedMarker.classList.contains('is-building')?getComputedStyle(root).getPropertyValue('--atlas-yellow').trim():selectedMarker.classList.contains('is-next')?getComputedStyle(root).getPropertyValue('--atlas-next').trim():getComputedStyle(root).getPropertyValue('--atlas-green').trim();
+      context.save();context.setLineDash([]);context.strokeStyle=connectorColor;context.fillStyle=connectorColor;context.globalAlpha=.92;context.lineWidth=1.6;context.lineCap='round';context.lineJoin='round';context.shadowColor=connectorColor;context.shadowBlur=5;
+      context.beginPath();context.moveTo(markerX,markerY);context.lineTo(elbowX,elbowY);context.lineTo(cardX-(8*direction),elbowY);context.lineTo(cardX,cardY);context.stroke();
+      context.beginPath();context.arc(markerX,markerY,3,0,Math.PI*2);context.fill();context.restore();
+    }
     context.globalAlpha=1;context.shadowBlur=0;
   }
   function scheduleRoutes(){cancelAnimationFrame(routeFrame);routeFrame=requestAnimationFrame(drawRoutes)}
@@ -63,19 +74,26 @@
     if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){copy.textContent=text;return}
     releaseCardTimer=setInterval(function(){copy.textContent=text.slice(0,++index);if(index>=text.length)clearInterval(releaseCardTimer)},18);
   }
-  function openReleaseCard(item){
+  function openReleaseCard(item,marker){
     if(!releaseCard)return;releaseCard.hidden=false;releaseCard.setAttribute('aria-hidden','false');releaseCard.classList.remove('is-visible');
     releaseCard.querySelector('.atlas-release-card-head>i').className='ph '+item.icon;
     releaseCard.querySelector('[data-release-card-status]').textContent=item.statusLabel;
     releaseCard.querySelector('[data-release-card-title]').textContent=item.title;
     releaseCard.querySelector('[data-release-card-meta]').textContent=item.category+' · '+item.availability+' · '+item.date;
-    requestAnimationFrame(function(){releaseCard.classList.add('is-visible')});typeReleaseCopy(item.description);
+    if(window.innerWidth>760&&marker){
+      var canvasBox=canvas.getBoundingClientRect(),markerBox=marker.getBoundingClientRect(),cardWidth=Math.min(360,canvasBox.width-56),cardHeight=releaseCard.offsetHeight||230;
+      var placeRight=markerBox.left-canvasBox.left<canvasBox.width*.58;
+      var left=placeRight?Math.min(canvasBox.width-cardWidth-28,markerBox.right-canvasBox.left+72):Math.max(28,markerBox.left-canvasBox.left-cardWidth-72);
+      var top=Math.max(28,Math.min(canvasBox.height-cardHeight-76,markerBox.top-canvasBox.top-72));
+      releaseCard.style.left=left+'px';releaseCard.style.top=top+'px';releaseCard.style.right='auto';releaseCard.style.bottom='auto';
+    }else{releaseCard.style.removeProperty('left');releaseCard.style.removeProperty('top');releaseCard.style.removeProperty('right');releaseCard.style.removeProperty('bottom')}
+    requestAnimationFrame(function(){releaseCard.classList.add('is-visible');scheduleRoutes()});typeReleaseCopy(item.description);
   }
-  function closeReleaseCard(){if(!releaseCard)return;clearInterval(releaseCardTimer);releaseCard.classList.remove('is-visible');releaseCard.hidden=true;releaseCard.setAttribute('aria-hidden','true')}
+  function closeReleaseCard(){if(!releaseCard)return;clearInterval(releaseCardTimer);releaseCard.classList.remove('is-visible');releaseCard.hidden=true;releaseCard.setAttribute('aria-hidden','true');selectedMarker=null;scheduleRoutes()}
   function select(key){
     var item=releases[key];if(!item)return;
     root.querySelectorAll('.atlas-marker').forEach(function(marker){marker.classList.toggle('is-selected',marker.dataset.release===key)});
-    openReleaseCard(item);
+    selectedMarker=root.querySelector('.atlas-marker[data-release="'+key+'"]');openReleaseCard(item,selectedMarker);
   }
   function clearSelection(){root.querySelectorAll('.atlas-marker.is-selected').forEach(function(marker){marker.classList.remove('is-selected')});closeReleaseCard()}
   root.querySelectorAll('.atlas-marker').forEach(function(marker){marker.addEventListener('click',function(){select(marker.dataset.release)})});

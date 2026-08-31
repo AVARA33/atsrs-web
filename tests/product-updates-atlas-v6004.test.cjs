@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6014/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6017/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6015/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6018/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -34,6 +34,7 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(js,/name:'TITAN'/);
   assert.match(css,/\.is-building :is\(span,strong\)\{color:var\(--atlas-yellow\)!important\}/);
   assert.match(css,/white-space:nowrap!important/);
+  assert.match(updates,/>All plans <i class="ph ph-arrow-up-right"/);
   assert.match(css,/release-atlas-texture-v6004\.png/);
   assert.match(css,/@media\(max-width:760px\)/);
   const showcase=updates.slice(updates.indexOf('atlas-pricing-showcase'),updates.indexOf('</aside>',updates.indexOf('atlas-pricing-showcase')));
@@ -49,4 +50,6 @@ test('Atlas interactions are data-driven and retain working launch actions',()=>
   assert.match(js,/atsrsOpenJobsDirectory\('employers'/);
   assert.match(js,/dataAtlasMode|dataset\.atlasMode/);
   assert.match(js,/querySelectorAll\('\.atlas-marker'\)/);
+  assert.match(js,/context\.lineTo\(elbowX,elbowY\)/);
+  assert.match(js,/openReleaseCard\(item,selectedMarker\)/);
 });
