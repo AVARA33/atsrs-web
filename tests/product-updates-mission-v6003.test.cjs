@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6014/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6015/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -19,6 +19,11 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.doesNotMatch(updates,/class="updates-status-board/);
   assert.match(css,/margin-inline:auto/);
   assert.doesNotMatch(css,/grid-template-columns:1(?:50|75)px minmax/);
+  assert.match(css,/padding:24px 22px 22px!important/);
+  assert.equal((css.match(/width:min\(100%,1222px\)!important/g)||[]).length,2);
+  assert.match(css,/product-updates-content\{display:flex!important;justify-content:center!important/);
+  assert.doesNotMatch(css,/min-height:1058px/);
+  assert.doesNotMatch(css,/translateX\(-(?:18|61|98)px\) scale/);
   assert.match(css,/@media\(min-width:1280px\) and \(max-width:1359px\)/);
   assert.match(css,/#navIntro \.atsrs-nav-label\{white-space:nowrap/);
 });
