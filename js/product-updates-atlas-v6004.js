@@ -25,16 +25,17 @@
       var zone=root.querySelector('.atlas-zone-'+group[0]);if(!zone)return;
       var zoneBox=zone.getBoundingClientRect(),startX=zoneBox.right-bounds.left-2,startY=zoneBox.top-bounds.top+zoneBox.height/2;
       var color=getComputedStyle(root).getPropertyValue(group[1]).trim(),markers=root.querySelectorAll('.atlas-marker.is-'+group[0]);
-      context.strokeStyle=color;context.fillStyle=color;context.lineWidth=1.25;context.globalAlpha=.58;context.setLineDash([4,7]);context.lineCap='round';
+      var isLight=document.documentElement.dataset.theme==='light',routeAlpha=isLight?.58:.92;
+      context.strokeStyle=color;context.fillStyle=color;context.lineWidth=isLight?1.25:1.75;context.globalAlpha=routeAlpha;context.setLineDash([4,7]);context.lineCap='round';context.shadowColor=color;context.shadowBlur=isLight?0:4;
       markers.forEach(function(marker,index){
         var icon=marker.querySelector('i'),target=(icon||marker).getBoundingClientRect();
         var endX=target.left-bounds.left+target.width/2,endY=target.top-bounds.top+target.height/2;
         var bendX=startX+Math.max(42,(endX-startX)*.42),spread=(index-(markers.length-1)/2)*10;
         context.beginPath();context.moveTo(startX,startY);context.bezierCurveTo(bendX,startY+spread,bendX,endY,endX,endY);context.stroke();
-        context.setLineDash([]);context.globalAlpha=.9;context.beginPath();context.arc(endX,endY,2.4,0,Math.PI*2);context.fill();context.setLineDash([4,7]);context.globalAlpha=.58;
+        context.setLineDash([]);context.globalAlpha=1;context.beginPath();context.arc(endX,endY,isLight?2.4:3,0,Math.PI*2);context.fill();context.setLineDash([4,7]);context.globalAlpha=routeAlpha;
       });
     });
-    context.globalAlpha=1;
+    context.globalAlpha=1;context.shadowBlur=0;
   }
   function scheduleRoutes(){cancelAnimationFrame(routeFrame);routeFrame=requestAnimationFrame(drawRoutes)}
   function select(key){
@@ -48,8 +49,16 @@
   var list=root.querySelector('.updates-atlas-list');
   Object.keys(releases).forEach(function(key){var item=releases[key],button=document.createElement('button');button.type='button';button.dataset.release=key;button.innerHTML='<i class="ph '+item.icon+'"></i><strong>'+item.title+'</strong><span>'+item.statusLabel+'</span><small>'+item.description+'</small>';button.addEventListener('click',function(){select(key)});list.appendChild(button)});
   window.addEventListener('resize',scheduleRoutes,{passive:true});
+  window.addEventListener('pageshow',scheduleRoutes);
+  window.addEventListener('hashchange',scheduleRoutes);
+  window.addEventListener('popstate',scheduleRoutes);
+  document.addEventListener('visibilitychange',scheduleRoutes);
+  if(window.ResizeObserver)new ResizeObserver(scheduleRoutes).observe(canvas);
   new MutationObserver(scheduleRoutes).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  var page=root.closest('#introPage');if(page)new MutationObserver(scheduleRoutes).observe(page,{attributes:true,attributeFilter:['class','style','hidden']});
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(scheduleRoutes);
   scheduleRoutes();
+  setTimeout(scheduleRoutes,250);setTimeout(scheduleRoutes,1000);
+  var warmupCount=0,warmupTimer=setInterval(function(){scheduleRoutes();warmupCount+=1;if(warmupCount>=16)clearInterval(warmupTimer)},500);
   select('jobs');
 })();
