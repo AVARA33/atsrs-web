@@ -10,11 +10,11 @@ const runtime = fs.readFileSync(path.join(root, 'js', 'pricing.js'), 'utf8');
 
 assert.match(pricing, /class="public-home-link" href="\/\?view=home" aria-label="Home"/);
 assert.match(pricing, /class="public-home-link public-home-mobile" href="\/\?view=home" aria-label="Home"/);
-assert.match(index, /css\/pricing\.css\?v=5997/);
-assert.match(pricing, /css\/pricing\.css\?v=5997/);
+assert.match(index, /css\/pricing\.css\?v=5998/);
+assert.match(pricing, /css\/pricing\.css\?v=5998/);
 assert.match(css, /\.pricing-billing\{[^}]*padding:0;[^}]*border:0;[^}]*background:transparent\}/);
 assert.match(css, /\.pricing-billing button\.active\{[^}]*background:var\(--public-accent\)!important;[^}]*color:#fff!important;[^}]*box-shadow:/);
-assert.match(css, /#resourcePage \.pricing-billing button\.active\{[^}]*background:var\(--public-accent\)!important/);
+assert.match(css, /#resourcePage #accountResourceContent \.pricing-billing button\.active\{[^}]*background:var\(--public-accent\)!important/);
 
 assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
 for (const title of ['Active Job Seekers', 'Frequent Career Activity', 'Intensive Career Management', 'Maximum Personal Capacity']) {
