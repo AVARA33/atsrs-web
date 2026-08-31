@@ -4,7 +4,7 @@
 html[data-theme="dark"] body:has(#navIntro.active){background:var(--mission-black)!important}
 body:has(#navIntro.active) #app.app:not(.hidden){background:var(--mission-black)!important;min-height:100vh!important}
 body:has(#navIntro.active) #app.app:not(.hidden)>.main{grid-column:2!important;width:auto!important;min-width:0!important;padding:24px 22px 22px!important;background:radial-gradient(ellipse 480px 520px at 34% 43%,rgba(31,121,42,.035),transparent 72%),var(--mission-black)!important;overflow-x:hidden!important;overflow-y:auto!important}
-body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle{display:flex!important;align-items:baseline!important;gap:20px!important;width:min(100%,1222px)!important;height:61px!important;margin:0 auto!important;padding:8px 9px 18px!important;border-bottom:1px solid rgba(255,255,255,.09)!important;color:#f6f6f6!important;font-size:28px!important;font-weight:750!important;line-height:34px!important}
+body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle{display:flex!important;align-items:baseline!important;gap:20px!important;width:min(100%,1222px)!important;height:61px!important;margin:0 auto!important;padding:8px 9px 18px!important;border-bottom:0!important;color:#f6f6f6!important;font-size:28px!important;font-weight:750!important;line-height:34px!important}
 body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle::after{content:"Live ATSRS releases, upcoming tools and transparent plan limits in one place.";color:#93979f;font-size:13px;font-weight:400;white-space:nowrap}
 body:has(#navIntro.active) #app.app:not(.hidden)>.sidebar #navIntro,body:has(#navIntro.active) #app.app:not(.hidden)>.sidebar #navIntro .atsrs-nav-label{white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important}
 body:has(#navIntro.active) #introPage{width:min(100%,1222px)!important;margin:0 auto!important;padding:0!important}body:has(#navIntro.active) #introPage>.intro-hero,body:has(#navIntro.active) #introPage>.intro-service-grid,body:has(#navIntro.active) #introPage>.atsrs-anime-stage{display:none!important}body:has(#navIntro.active) .product-updates-content{display:flex!important;justify-content:center!important;padding:0!important}body:has(#navIntro.active) .product-updates-content>.updates-hero,body:has(#navIntro.active) .product-updates-content>.updates-status-board,body:has(#navIntro.active) .product-updates-content>.roadmap-section{display:none!important}
@@ -22,7 +22,7 @@ body:has(#navIntro.active) #introPage{width:min(100%,1222px)!important;margin:0 
 html[data-theme="light"] body:has(#navIntro.active){background:#f6f8fb!important}
 html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden){background:#f6f8fb!important}
 html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main{background:radial-gradient(ellipse 480px 520px at 34% 43%,rgba(54,111,207,.055),transparent 72%),#f6f8fb!important}
-html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle{border-bottom-color:#dce4ef!important;color:#132b56!important}
+html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle{color:#132b56!important}
 html[data-theme="light"] body:has(#navIntro.active) #app.app:not(.hidden)>.main>#pageTitle::after{color:#697b96!important}
 html[data-theme="light"] .updates-mission{color:#132b56}
 html[data-theme="light"] .mission-orbit-title{background:#f6f8fb}
