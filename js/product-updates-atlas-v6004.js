@@ -45,15 +45,10 @@
       var zoneBox=zone.getBoundingClientRect(),startX=zoneBox.right-bounds.left-2,startY=zoneBox.top-bounds.top+zoneBox.height/2;
       var color=getComputedStyle(root).getPropertyValue(group[1]).trim(),markers=root.querySelectorAll('.atlas-marker.is-'+group[0]);
       var isLight=document.documentElement.dataset.theme==='light',routeAlpha=isLight?.58:.92;
-      context.strokeStyle=color;context.fillStyle=color;context.lineWidth=group[0]==='next'?(isLight?1.6:2):(isLight?1.25:1.75);context.globalAlpha=routeAlpha;context.setLineDash([4,7]);context.lineCap='round';context.shadowColor=color;context.shadowBlur=isLight?0:4;
+      context.strokeStyle=color;context.fillStyle=color;context.lineWidth=isLight?1.25:1.75;context.globalAlpha=routeAlpha;context.setLineDash([4,7]);context.lineCap='round';context.shadowColor=color;context.shadowBlur=isLight?0:4;
       markers.forEach(function(marker,index){
         var icon=marker.querySelector('i'),target=(icon||marker).getBoundingClientRect();
         var endX=target.left-bounds.left+target.width/2,endY=target.top-bounds.top+target.height/2;
-        if(group[0]==='next'){
-          var nextStartX=zoneBox.left-bounds.left+zoneBox.width/2,nextStartY=zoneBox.bottom-bounds.top-1,nextBendY=nextStartY+18;
-          context.beginPath();context.moveTo(nextStartX,nextStartY);context.lineTo(nextStartX,nextBendY);context.lineTo(endX,nextBendY);context.lineTo(endX,endY);context.stroke();
-          context.setLineDash([]);context.globalAlpha=1;context.beginPath();context.arc(endX,endY,isLight?2.4:3,0,Math.PI*2);context.fill();context.setLineDash([4,7]);context.globalAlpha=routeAlpha;return;
-        }
         var bendX=startX+Math.max(42,(endX-startX)*.42),spread=(index-(markers.length-1)/2)*10;
         context.beginPath();context.moveTo(startX,startY);context.bezierCurveTo(bendX,startY+spread,bendX,endY,endX,endY);context.stroke();
         context.setLineDash([]);context.globalAlpha=1;context.beginPath();context.arc(endX,endY,isLight?2.4:3,0,Math.PI*2);context.fill();context.setLineDash([4,7]);context.globalAlpha=routeAlpha;
