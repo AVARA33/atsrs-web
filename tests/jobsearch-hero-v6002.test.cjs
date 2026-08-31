@@ -9,7 +9,7 @@ const css=fs.readFileSync(path.join(root,'css','jobsearch-hero-v6002.css'),'utf8
 
 test('JobSearch uses the international catalogue hero without release-only copy',()=>{
   const jobs=index.slice(index.indexOf('<section id="jobsPage"'),index.indexOf('<section id="employersPage"'));
-  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6005/);
+  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6006/);
   assert.match(jobs,/class="jobs-hero-icon"[\s\S]*ph-globe-hemisphere-west/);
   assert.match(jobs,/Global opportunity catalogue/);
   assert.match(jobs,/<h3 id="jobsHeading">International JobSearch<\/h3>/);
@@ -30,11 +30,14 @@ test('JobSearch hero keeps live results controls and responsive map treatment',(
   assert.match(index,/data-jobs-view="cards"/);
   assert.match(index,/data-jobs-view="list"/);
   assert.match(index,/class="jobs-secondary-actions"[\s\S]*class="talent-view-switch jobs-view-switch"/);
-  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-region-nav\{[\s\S]*?position:absolute[\s\S]*?bottom:18px/);
-  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-snapshot\{[\s\S]*?right:30px[\s\S]*?bottom:9px[\s\S]*?height:34px[\s\S]*?background:rgba\(5,10,7,\.6\)/);
+  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-region-nav\{[\s\S]*?position:absolute[\s\S]*?right:30px[\s\S]*?bottom:58px/);
+  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-snapshot\{[\s\S]*?right:30px[\s\S]*?bottom:14px[\s\S]*?height:34px[\s\S]*?border-radius:999px[\s\S]*?background:rgba\(5,10,7,\.6\)/);
   assert.match(css,/#jobsPage \.jobs-hero > \.jobs-region-nav button\{[\s\S]*?background:rgba\(5,10,7,\.62\)!important/);
   assert.match(css,/#jobsPage \.jobs-secondary-actions \.jobs-view-switch\{[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
   assert.match(css,/international-job-map-v1\.png/);
   assert.match(css,/@media\(max-width:760px\)/);
   assert.match(css,/@media\(max-width:520px\)/);
+  assert.match(css,/@media\(max-width:1050px\)\{[\s\S]*?\.jobs-region-nav\{[\s\S]*?grid-template-columns:repeat\(4,max-content\)/);
+  assert.match(css,/@media\(max-width:760px\)\{[\s\S]*?scrollbar-width:thin/);
+  assert.match(css,/@media\(max-width:600px\)\{[\s\S]*?#jobsPage \.jobs-secondary-primary\{grid-template-columns:1fr\}/);
 });

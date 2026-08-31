@@ -4,9 +4,9 @@
   display:grid;
   grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);
   align-items:stretch;
-  min-height:254px;
+  min-height:274px;
   margin:8px 0 24px;
-  padding:28px 30px 82px;
+  padding:28px 30px 108px;
   border:1px solid rgba(74,212,95,.28);
   border-radius:18px;
   background:
@@ -102,12 +102,12 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
 #jobsPage .jobs-hero > .jobs-region-nav{
   position:absolute;
   z-index:4;
-  right:232px;
-  bottom:18px;
+  right:30px;
+  bottom:58px;
   left:30px;
   display:flex;
   flex-wrap:nowrap;
-  gap:8px;
+  gap:6px;
   width:auto;
   min-width:0;
   margin:0;
@@ -119,6 +119,8 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
 #jobsPage .jobs-hero > .jobs-region-nav::-webkit-scrollbar{display:none}
 
 #jobsPage .jobs-hero > .jobs-region-nav button{
+  padding-right:9px!important;
+  padding-left:9px!important;
   border-color:rgba(139,226,76,.22)!important;
   background:rgba(5,10,7,.62)!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
@@ -130,7 +132,7 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
   position:absolute;
   z-index:4;
   right:30px;
-  bottom:9px;
+  bottom:14px;
   display:flex;
   align-items:center;
   justify-content:flex-end;
@@ -139,7 +141,7 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
   min-width:184px;
   padding:0 12px;
   border:1px solid rgba(139,226,76,.2);
-  border-radius:11px;
+  border-radius:999px;
   background:rgba(5,10,7,.6);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 8px 22px rgba(0,0,0,.14);
   text-align:right;
@@ -150,13 +152,33 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
 #jobsPage .jobs-snapshot strong{color:#f8fafc;font-size:14px;line-height:1.25}
 #jobsPage .jobs-snapshot span{color:#91a198;font-size:11px}
 
+html[data-theme] body #app.app:not(.hidden) #jobsPage #jobsClearFilters{
+  justify-self:start;
+  width:auto!important;
+  min-width:124px;
+  padding-right:14px!important;
+  padding-left:14px!important;
+  border-color:rgba(148,163,184,.24)!important;
+  background:transparent!important;
+  color:#aebac8!important;
+  -webkit-text-fill-color:#aebac8!important;
+  box-shadow:none!important;
+}
+
+html[data-theme] body #app.app:not(.hidden) #jobsPage #jobsClearFilters:hover{
+  border-color:rgba(139,226,76,.38)!important;
+  color:var(--jobs-filter-focus)!important;
+  -webkit-text-fill-color:var(--jobs-filter-focus)!important;
+}
+
 html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{
   display:flex;
   flex:0 0 auto;
   gap:8px!important;
-  margin-left:auto;
-  padding:0!important;
+  margin-left:4px;
+  padding:0 0 0 12px!important;
   border:0!important;
+  border-left:1px solid rgba(148,163,184,.22)!important;
   background:transparent!important;
   box-shadow:none!important;
 }
@@ -169,8 +191,8 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .j
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
-  color:#94a3b8!important;
-  -webkit-text-fill-color:#94a3b8!important;
+  color:#b6c2d0!important;
+  -webkit-text-fill-color:#b6c2d0!important;
   box-shadow:none!important;
 }
 
@@ -205,11 +227,11 @@ html[data-theme="light"] #jobsPage .jobs-hero h3,
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-hero h3{color:#132b56!important;-webkit-text-fill-color:#132b56!important}
 html[data-theme="light"] #jobsPage .jobs-hero p,
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-hero p{color:#566a83!important;-webkit-text-fill-color:#566a83!important}
-html[data-theme="light"] #jobsPage .jobs-hero-map{opacity:.2;filter:saturate(.9) contrast(.9)}
+html[data-theme="light"] #jobsPage .jobs-hero-map{opacity:.55;filter:invert(1) hue-rotate(180deg) saturate(1.35) contrast(.92)}
 html[data-theme="light"] #jobsPage .jobs-hero > .jobs-region-nav button{
-  border-color:#c8d6e4!important;
-  background:rgba(255,255,255,.7)!important;
-  color:#2b4c70!important;
+  border-color:#b8cadc!important;
+  background:rgba(255,255,255,.86)!important;
+  color:#24486e!important;
 }
 html[data-theme="light"] #jobsPage .jobs-hero > .jobs-region-nav button:hover,
 html[data-theme="light"] #jobsPage .jobs-hero > .jobs-region-nav button.is-active{
@@ -220,9 +242,21 @@ html[data-theme="light"] #jobsPage .jobs-hero > .jobs-region-nav button.is-activ
 html[data-theme="light"] #jobsPage .jobs-snapshot strong{color:#17345e}
 html[data-theme="light"] #jobsPage .jobs-snapshot span{color:#667991}
 html[data-theme="light"] #jobsPage .jobs-hero > .jobs-snapshot{
-  border-color:rgba(72,139,224,.24);
-  background:rgba(255,255,255,.68);
+  border-color:rgba(72,139,224,.34);
+  background:rgba(255,255,255,.86);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 8px 22px rgba(37,65,101,.08);
+}
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{
+  border-left-color:#c9d7e5!important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch button{
+  color:#536980!important;
+  -webkit-text-fill-color:#536980!important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage #jobsClearFilters{
+  border-color:#cbd7e4!important;
+  color:#5c7087!important;
+  -webkit-text-fill-color:#5c7087!important;
 }
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch button[aria-pressed="true"],
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch button.active{
@@ -240,33 +274,55 @@ html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-ac
 }
 
 @media(max-width:1050px){
-  #jobsPage .jobs-hero{grid-template-columns:minmax(0,1fr) minmax(300px,.72fr);padding-bottom:80px}
+  #jobsPage .jobs-hero{grid-template-columns:minmax(0,1fr) minmax(300px,.72fr);min-height:316px;padding-bottom:144px}
   #jobsPage .jobs-hero-map{width:50%;opacity:.62}
   #jobsPage .jobs-hero-copy{grid-template-columns:76px minmax(0,1fr);gap:18px}
   #jobsPage .jobs-hero-icon{width:76px;height:76px;border-radius:17px}
   #jobsPage .jobs-hero-icon i{font-size:38px}
-  #jobsPage .jobs-hero > .jobs-region-nav{right:206px;left:24px}
+  #jobsPage .jobs-hero > .jobs-region-nav{right:24px;bottom:56px;left:24px;display:grid;grid-template-columns:repeat(4,max-content);align-content:end;justify-content:start;overflow:visible}
+  #jobsPage .jobs-hero > .jobs-region-nav button{justify-self:start}
   #jobsPage .jobs-hero > .jobs-snapshot{right:24px;min-width:166px}
   #jobsPage .jobs-secondary-actions{flex-wrap:wrap}
 }
 
 @media(max-width:760px){
-  #jobsPage .jobs-hero{display:flex;align-items:stretch;flex-direction:column;min-height:0;padding:22px;gap:20px}
-  #jobsPage .jobs-hero-copy{grid-template-columns:64px minmax(0,1fr);gap:16px}
-  #jobsPage .jobs-hero-icon{width:64px;height:64px;border-radius:15px}
-  #jobsPage .jobs-hero-icon i{font-size:32px}
-  #jobsPage .jobs-hero-map{top:auto;right:-32px;bottom:0;width:78%;height:58%;opacity:.2}
-  #jobsPage .jobs-hero > .jobs-region-nav{position:relative;right:auto;bottom:auto;left:auto;width:100%;margin:0;order:2}
-  #jobsPage .jobs-hero > .jobs-snapshot{position:relative;right:auto;bottom:auto;justify-content:flex-start;min-width:0;padding:0 12px;text-align:left;order:3}
-  html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{margin-left:0}
+  #jobsPage .jobs-hero{display:flex;align-items:stretch;flex-direction:column;min-height:0;padding:20px;gap:16px}
+  #jobsPage .jobs-hero-copy{grid-template-columns:52px minmax(0,1fr);gap:13px;align-items:start}
+  #jobsPage .jobs-hero-icon{width:52px;height:52px;border-radius:14px}
+  #jobsPage .jobs-hero-icon i{font-size:27px}
+  html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero h3{font-size:26px!important;line-height:1.08}
+  html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{font-size:13.5px!important;line-height:1.48}
+  #jobsPage .jobs-hero-map{top:auto;right:-28px;bottom:0;width:72%;height:46%;opacity:.15}
+  html[data-theme="light"] #jobsPage .jobs-hero-map{opacity:.2}
+  #jobsPage .jobs-hero > .jobs-region-nav{position:relative;right:auto;bottom:auto;left:auto;display:flex;flex-wrap:nowrap;width:100%;margin:0;padding:0 0 7px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(139,226,76,.46) transparent;order:2}
+  #jobsPage .jobs-hero > .jobs-region-nav::-webkit-scrollbar{display:block;height:3px}
+  #jobsPage .jobs-hero > .jobs-region-nav::-webkit-scrollbar-thumb{border-radius:999px;background:rgba(139,226,76,.46)}
+  #jobsPage .jobs-hero > .jobs-snapshot{position:relative;right:auto;bottom:auto;align-self:flex-end;justify-content:center;width:max-content;min-width:0;padding:0 12px;text-align:center;order:3}
+  html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{margin-left:0;padding-left:10px!important}
 }
 
 @media(max-width:520px){
-  #jobsPage .jobs-hero{padding:18px;border-radius:15px}
-  #jobsPage .jobs-hero-copy{display:block}
-  #jobsPage .jobs-hero-icon{width:52px;height:52px;margin-bottom:18px;border-radius:13px}
-  #jobsPage .jobs-hero-icon i{font-size:27px}
+  #jobsPage .jobs-hero{padding:16px;border-radius:15px}
+  #jobsPage .jobs-hero-copy{display:grid;grid-template-columns:46px minmax(0,1fr);gap:11px}
+  #jobsPage .jobs-hero-icon{width:46px;height:46px;margin:0;border-radius:12px}
+  #jobsPage .jobs-hero-icon i{font-size:24px}
+  html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero h3{font-size:24px!important}
+  #jobsPage .jobs-hero-eyebrow{font-size:10.5px;letter-spacing:.075em}
   html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{width:auto}
+}
+
+@media(max-width:600px){
+  #jobsPage .jobs-secondary-primary{grid-template-columns:1fr}
+  #jobsPage .jobs-secondary-actions{grid-column:auto;width:100%;flex-direction:column}
+  html[data-theme] body #app.app:not(.hidden) #jobsPage #jobsClearFilters{justify-self:stretch;width:100%!important}
+  html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{
+    align-self:flex-end;
+    margin-top:2px;
+    padding:7px 0 0!important;
+    border-left:0!important;
+    border-top:1px solid rgba(148,163,184,.22)!important;
+  }
+  html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .jobs-view-switch{border-top-color:#c9d7e5!important}
 }
 
 @media(prefers-reduced-motion:reduce){#jobsPage .jobs-hero *{scroll-behavior:auto}}
