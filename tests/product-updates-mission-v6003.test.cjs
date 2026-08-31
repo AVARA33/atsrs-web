@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6023/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6024/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -36,7 +36,8 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(css,/\.mission-orbit-title-next\{top:735px!important\}/);
   assert.match(updates,/class="mission-connector mission-connector-projects" d="M372 121V148"/);
   assert.match(updates,/id="missionConnectorProjects"[\s\S]*?stop-opacity="\.32"[\s\S]*?stop-opacity="\.72"[\s\S]*?stop-opacity="1"/);
-  assert.match(css,/\.mission-connector-projects,\.mission-connector-cv,\.mission-connector-qr\{stroke-width:1\.7!important\}/);
+  assert.match(updates,/class="mission-visible-arrows"[\s\S]*?class="is-top"[\s\S]*?class="is-left"[\s\S]*?class="is-right"/);
+  assert.match(css,/\.mission-visible-arrows\{position:absolute;inset:0;z-index:5;pointer-events:none\}/);
   assert.match(updates,/class="mission-connector mission-connector-candidates" d="M244 159L258 181"/);
   assert.match(updates,/class="mission-connector mission-connector-email" d="M145 425L171 417"/);
   assert.match(updates,/class="mission-dots">[\s\S]*cx="258" cy="181"[\s\S]*cx="171" cy="417"/);
