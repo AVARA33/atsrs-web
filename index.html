@@ -133,7 +133,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/pricing.css?v=5994">
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
-<link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6004">
+<link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6005">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6014">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
@@ -811,28 +811,20 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       </div>
     </div>
     <div class="jobs-hero-map" aria-hidden="true"></div>
-    <div class="jobs-hero-actions" aria-label="JobSearch results controls">
-      <div class="jobs-snapshot" aria-label="Jobs data snapshot">
-        <strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong>
-        <span>Server-backed vacancies</span>
-      </div>
-      <div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view">
-        <button type="button" data-jobs-view="cards">Cards</button>
-        <button type="button" data-jobs-view="list">List</button>
-      </div>
+    <nav id="jobsRegionNav" class="jobs-region-nav" aria-label="Browse jobs by region">
+      <button type="button" data-jobs-region="">Worldwide</button>
+      <button type="button" data-jobs-region="europe-central-asia">Europe &amp; Central Asia</button>
+      <button type="button" data-jobs-region="middle-east">Middle East</button>
+      <button type="button" data-jobs-region="africa">Africa</button>
+      <button type="button" data-jobs-region="asia-pacific">Asia-Pacific</button>
+      <button type="button" data-jobs-region="north-america">North America</button>
+      <button type="button" data-jobs-region="latin-america-caribbean">Latin America &amp; Caribbean</button>
+      <button type="button" data-jobs-region="remote-worldwide">Remote / Worldwide</button>
+    </nav>
+    <div class="jobs-snapshot" aria-label="Jobs data snapshot">
+      <strong id="jobsVisibleCount" aria-live="polite">0 of 0 opportunities</strong>
     </div>
   </div>
-
-  <nav id="jobsRegionNav" class="jobs-region-nav" aria-label="Browse jobs by region">
-    <button type="button" data-jobs-region="">Worldwide</button>
-    <button type="button" data-jobs-region="europe-central-asia">Europe &amp; Central Asia</button>
-    <button type="button" data-jobs-region="middle-east">Middle East</button>
-    <button type="button" data-jobs-region="africa">Africa</button>
-    <button type="button" data-jobs-region="asia-pacific">Asia-Pacific</button>
-    <button type="button" data-jobs-region="north-america">North America</button>
-    <button type="button" data-jobs-region="latin-america-caribbean">Latin America &amp; Caribbean</button>
-    <button type="button" data-jobs-region="remote-worldwide">Remote / Worldwide</button>
-  </nav>
   <p id="jobsGeographyTrail" class="jobs-geography-trail" aria-live="polite">All jobs · Worldwide</p>
 
   <div class="jobs-filters" aria-label="Job filters">
@@ -887,6 +879,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <span class="jobs-check-box" aria-hidden="true"><i class="ph ph-check"></i></span>
           <span>New jobs only</span>
         </label>
+        <div class="talent-view-switch jobs-view-switch" role="group" aria-label="Jobs view">
+          <button type="button" data-jobs-view="cards">Cards</button>
+          <button type="button" data-jobs-view="list">List</button>
+        </div>
       </div>
     </div>
   </section>
