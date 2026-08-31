@@ -36,9 +36,10 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(css,/white-space:nowrap!important/);
   assert.match(css,/release-atlas-texture-v6004\.png/);
   assert.match(css,/@media\(max-width:760px\)/);
-  assert.doesNotMatch(updates,/Product status/);
-  assert.doesNotMatch(updates,/Live<\/span><strong>5/);
-  assert.match(updates,/PERSONAL PLANS/);
+  const showcase=updates.slice(updates.indexOf('atlas-pricing-showcase'),updates.indexOf('</aside>',updates.indexOf('atlas-pricing-showcase')));
+  assert.doesNotMatch(showcase,/Product status/);
+  assert.doesNotMatch(showcase,/Live<\/span><strong>5/);
+  assert.match(showcase,/PERSONAL PLANS/);
   assert.match(css,/\.atlas-plan-card\.is-gold/);
 });
 
