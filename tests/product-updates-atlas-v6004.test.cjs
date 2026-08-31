@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6015/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6018/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6016/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6019/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -26,6 +26,7 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(updates,/class="atlas-route-lines"/);
   assert.match(updates,/class="updates-atlas-detail atlas-pricing-showcase"/);
   assert.match(js,/setLineDash\(\[4,7\]\)/);
+  assert.match(js,/group\[0\]==='next'/);
   assert.match(js,/routeAlpha=isLight\?\.58:\.92/);
   assert.match(js,/ResizeObserver\)new ResizeObserver\(scheduleRoutes\)\.observe\(canvas\)/);
   assert.match(js,/warmupCount>=16/);
@@ -42,6 +43,8 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.doesNotMatch(showcase,/Live<\/span><strong>5/);
   assert.match(showcase,/PERSONAL PLANS/);
   assert.match(css,/\.atlas-plan-card\.is-gold/);
+  assert.match(css,/\.atlas-zone-next\{top:510px!important;left:45%!important\}/);
+  assert.match(css,/\.atlas-marker span\{color:#245f9f!important/);
 });
 
 test('Atlas interactions are data-driven and retain working launch actions',()=>{
