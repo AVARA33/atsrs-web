@@ -105,6 +105,7 @@ assert.match(js,/decorateSecurityCard\('deleteAccountBtn','ph-trash'/);
 assert.match(css,/\.profile-security-verification-flow \{[\s\S]*?grid-template-columns:minmax\(350px,1\.05fr\)[\s\S]*?minmax\(0,2fr\)/);
 assert.match(html,/class="profile-security-send-inline"[\s\S]*?id="profileSecuritySendCode"/);
 assert.doesNotMatch(html,/profile-security-step-send/);
+assert.doesNotMatch(html,/profileSecurityStepOneTitle|>Choose channel</);
 assert.match(css,/\.profile-security-grid \{ grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
 assert.match(css,/\.profile-security-grid \.profile-security-card\.is-danger \{ grid-column:auto/);
 assert.match(js,/profileAvailabilityInlineActions/);
