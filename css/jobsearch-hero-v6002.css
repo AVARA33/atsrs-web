@@ -227,7 +227,7 @@ html[data-theme="light"] #jobsPage .jobs-hero h3,
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-hero h3{color:#132b56!important;-webkit-text-fill-color:#132b56!important}
 html[data-theme="light"] #jobsPage .jobs-hero p,
 html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-hero p{color:#566a83!important;-webkit-text-fill-color:#566a83!important}
-html[data-theme="light"] #jobsPage .jobs-hero-map{opacity:.55;filter:invert(1) hue-rotate(180deg) saturate(1.35) contrast(.92)}
+html[data-theme="light"] #jobsPage .jobs-hero-map{opacity:.58;filter:invert(1) hue-rotate(306deg) saturate(1.45) contrast(.94)}
 html[data-theme="light"] #jobsPage .jobs-hero > .jobs-region-nav button{
   border-color:#b8cadc!important;
   background:rgba(255,255,255,.86)!important;
