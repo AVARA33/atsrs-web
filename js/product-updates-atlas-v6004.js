@@ -26,7 +26,7 @@
     planControls.querySelectorAll('button').forEach(function(button,i){var active=i===planIndex;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false')});
     var link=root.querySelector('.atlas-plan-link');if(link)link.href='/pricing.html#'+plan.key;
   }
-  function startPlans(){clearInterval(planTimer);planTimer=setInterval(function(){showPlan(planIndex+1)},8000)}
+  function startPlans(){clearInterval(planTimer);planTimer=setInterval(function(){showPlan(planIndex+1)},10000)}
   if(planControls){plans.forEach(function(plan,index){var button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Show '+plan.name+' plan');button.addEventListener('click',function(){showPlan(index);startPlans()});planControls.appendChild(button)});showPlan(0);startPlans()}
   root.querySelectorAll('[data-plan-direction]').forEach(function(button){button.addEventListener('click',function(){showPlan(planIndex+(button.dataset.planDirection==='previous'?-1:1));startPlans()})});
   var pricingShowcase=root.querySelector('.atlas-pricing-showcase');if(pricingShowcase){pricingShowcase.addEventListener('pointerenter',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('pointerleave',startPlans);pricingShowcase.addEventListener('focusin',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('focusout',startPlans)}
@@ -58,7 +58,8 @@
       var markerBox=selectedMarker.getBoundingClientRect(),cardBox=releaseCard.getBoundingClientRect();
       var markerX=markerBox.left-bounds.left+markerBox.width/2,markerY=markerBox.top-bounds.top;
       var cardOnRight=cardBox.left>markerBox.left,cardX=(cardOnRight?cardBox.left:cardBox.right)-bounds.left;
-      var cardY=cardBox.top-bounds.top+Math.min(54,cardBox.height*.3),direction=cardOnRight?1:-1;
+      var cardTop=cardBox.top-bounds.top,cardBottom=cardBox.bottom-bounds.top;
+      var cardY=Math.max(cardTop+40,Math.min(cardBottom-40,markerY-58)),direction=cardOnRight?1:-1;
       var elbowX=markerX+(38*direction),elbowY=Math.min(markerY-28,cardY);
       var connectorColor=selectedMarker.classList.contains('is-building')?getComputedStyle(root).getPropertyValue('--atlas-yellow').trim():selectedMarker.classList.contains('is-next')?getComputedStyle(root).getPropertyValue('--atlas-next').trim():getComputedStyle(root).getPropertyValue('--atlas-green').trim();
       context.save();context.setLineDash([]);context.strokeStyle=connectorColor;context.fillStyle=connectorColor;context.globalAlpha=.92;context.lineWidth=1.8;context.lineCap='round';context.lineJoin='round';context.shadowColor=connectorColor;context.shadowBlur=5;

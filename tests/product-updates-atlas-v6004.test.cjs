@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6020/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6023/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6021/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6024/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -29,7 +29,7 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(js,/routeAlpha=isLight\?\.58:\.92/);
   assert.match(js,/ResizeObserver\)new ResizeObserver\(scheduleRoutes\)\.observe\(canvas\)/);
   assert.match(js,/warmupCount>=16/);
-  assert.match(js,/setInterval\(function\(\)\{showPlan\(planIndex\+1\)\},8000\)/);
+  assert.match(js,/setInterval\(function\(\)\{showPlan\(planIndex\+1\)\},10000\)/);
   assert.match(js,/name:'BRONZE'/);
   assert.match(js,/name:'TITAN'/);
   assert.match(css,/\.is-building :is\(span,strong\)\{color:var\(--atlas-yellow\)!important\}/);
@@ -44,7 +44,7 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(css,/\.atlas-plan-card\.is-gold/);
   assert.match(css,/@keyframes atlasPlanShine/);
   assert.match(css,/\.atlas-plan-card::after/);
-  assert.match(css,/animation:atlasPlanShine 2\.2s/);
+  assert.match(css,/animation:atlasPlanShine 2\.8s[^}]* 4s 1 both/);
   assert.match(css,/\.atlas-marker span\{color:#245f9f!important/);
 });
 
@@ -57,4 +57,5 @@ test('Atlas interactions are data-driven and retain working launch actions',()=>
   assert.match(js,/context\.lineTo\(elbowX,elbowY\)/);
   assert.match(js,/openReleaseCard\(item,selectedMarker\)/);
   assert.match(js,/Math\.min\(canvasBox\.height-280,markerBox\.top-canvasBox\.top-72\)/);
+  assert.match(js,/Math\.max\(cardTop\+40,Math\.min\(cardBottom-40,markerY-58\)\)/);
 });
