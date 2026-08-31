@@ -10,10 +10,10 @@
 .account-resource-tabs button i{font-size:18px}.account-resource-tabs button:hover{border-color:rgba(67,201,91,.5);color:var(--text,#f5f7f5)}
 .account-resource-tabs button.is-active{border-color:rgba(67,201,91,.7);background:rgba(67,201,91,.1);color:var(--accent,#54cf68);box-shadow:inset 0 -2px 0 var(--accent,#54cf68)}
 .account-resource-tabs button:focus-visible{outline:3px solid rgba(67,201,91,.3);outline-offset:2px}
-.account-resource-frame-shell{position:relative;min-height:0;flex:1;border:1px solid var(--atsrs-workspace-line,var(--atsrs-border));border-radius:16px;background:var(--atsrs-workspace-panel,#080c0a);overflow:hidden}
+.account-resource-frame-shell{position:relative;min-height:max(480px,calc(100vh - 280px));flex:1;border:1px solid var(--atsrs-workspace-line,var(--atsrs-border));border-radius:16px;background:var(--atsrs-workspace-panel,#080c0a);overflow:hidden}
 .account-resource-content{--legal-line:var(--atsrs-workspace-line,var(--atsrs-border));--legal-surface:var(--atsrs-workspace-panel,#0b100d);--legal-muted:var(--muted,#9eaaa3);--legal-text:var(--text,#f5f7f5);--legal-accent:var(--accent,#54cf68);--legal-link:var(--accent,#54cf68);--legal-shadow:none;display:block;width:100%;height:100%;overflow:auto;background:transparent}
 .account-resource-page:has(.account-resource-content[data-resource="plans"]){height:auto;min-height:calc(100vh - 118px);overflow:visible}
-.account-resource-page:has(.account-resource-content[data-resource="plans"]) .account-resource-frame-shell{min-height:max(480px,calc(100vh - 280px));flex:0 0 auto;overflow:visible}
+.account-resource-page:has(.account-resource-content[data-resource="plans"]) .account-resource-frame-shell{flex:0 0 auto;overflow:visible}
 .account-resource-content[data-resource="plans"]{height:auto;overflow:visible}
 .account-resource-content>.pricing-main,.account-resource-content>.contact-shell,.account-resource-content>.account-faq-shell{width:min(100% - 34px,1650px);margin:0 auto;padding:20px 0 64px}
 .account-resource-content .pricing-hero{padding-top:2px}.account-resource-content .contact-hero{padding-top:0}
