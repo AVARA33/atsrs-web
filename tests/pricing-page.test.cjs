@@ -12,6 +12,12 @@ assert.match(pricing, /class="public-home-link" href="\/\?view=home" aria-label=
 assert.match(pricing, /class="public-home-link public-home-mobile" href="\/\?view=home" aria-label="Home"/);
 
 assert.match(index, /public-plan-name">FREE[\s\S]*?href="\?view=signup">Start with Free<\/a>/);
+for (const title of ['Active Job Seekers', 'Frequent Career Activity', 'Intensive Career Management', 'Maximum Personal Capacity']) {
+  assert.match(index, new RegExp(`<h3>${title}<\\/h3>`));
+  assert.match(pricing, new RegExp(`<h2>${title}<\\/h2>`));
+}
+assert.doesNotMatch(index, /Become opportunity-ready|For frequent career activity|For intensive career management|Maximum Personal capacity/);
+assert.doesNotMatch(pricing, /Built for active job seekers|For frequent career activity|For intensive career management|Maximum Personal capacity/);
 for (const plan of ['bronze', 'silver', 'gold', 'titan']) {
   assert.match(index, new RegExp(`href="pricing\\.html#${plan}">View plan details</a>`));
   assert.match(pricing, new RegExp(`id="${plan}"`));
