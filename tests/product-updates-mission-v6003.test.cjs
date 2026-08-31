@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6021/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6022/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -28,6 +28,9 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(updates,/class="building-dots">\s*<circle cx="238" cy="637" r="4"\/>\s*<circle cx="506" cy="637" r="4"\/>/);
   assert.match(updates,/class="next-dots">\s*<circle cx="16" cy="576" r="4"\/>\s*<circle cx="728" cy="576" r="4"\/>/);
   assert.match(updates,/assets\/branding\/atsrs-favicon-green-v576\.png/);
+  assert.match(updates,/<g class="core-rings">\s*<ellipse cx="372" cy="324" rx="148" ry="128"\/>\s*<\/g>/);
+  assert.match(updates,/<strong>Worldwide JobSearch<\/strong>\s*<small>Core release hub<\/small>/);
+  assert.doesNotMatch(updates,/31 Aug 2026|ph-calendar-blank/);
   assert.match(updates,/class="orbit orbit-next orbit-next-secondary" d="M16 576 C69 798 675 798 728 576"/);
   assert.match(css,/\.orbit-next-secondary\{stroke:rgba\(148,154,164,\.22\)\}/);
   assert.match(css,/\.mission-orbit-title-next\{top:735px!important\}/);
@@ -36,6 +39,8 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(updates,/class="mission-connector mission-connector-email" d="M145 425L171 417"/);
   assert.match(updates,/class="mission-dots">[\s\S]*cx="258" cy="181"[\s\S]*cx="171" cy="417"/);
   assert.match(updates,/class="mission-launch-connector"/);
+  assert.match(updates,/class="mission-launch-connector" d="M372 452V475H274V477M372 475H470V477"/);
+  assert.match(updates,/class="launch-join-dots">\s*<circle cx="274" cy="477" r="3\.6"\/>\s*<circle cx="470" cy="477" r="3\.6"\/>/);
   assert.match(css,/\.mission-connectors \.mission-connector\{stroke-width:1\.35;filter:url\(#missionConnectorGlow\)\}/);
   assert.match(css,/data-theme="light"\] \.orbit-live\{stroke:#2f6dcc\}/);
   assert.match(css,/data-theme="light"\] \.mission-connectors \.mission-connector\{stroke:#5b8fdd!important/);

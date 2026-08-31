@@ -1,5 +1,6 @@
 /* ATSRS V5811 — compact inline Jobs candidate-fee notice. */
 #jobsPage{--jobs-filter-height:var(--atsrs-control-height,46px);--jobs-filter-radius:12px;--jobs-filter-gap:var(--atsrs-control-gap,7px);--jobs-filter-border:var(--atsrs-control-border,rgba(148,163,184,.25));--jobs-filter-bg:var(--atsrs-control-background,#080b0a);--jobs-filter-text:var(--atsrs-control-text,#f8fafc);--jobs-filter-label:var(--atsrs-control-label,#94a3b8);--jobs-filter-focus:var(--atsrs-control-focus-border,#22c55e);--jobs-filter-hover:rgba(148,163,184,.12);width:min(100%,1440px);margin:0 auto;padding:0 0 48px;min-width:0}
+body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{display:none!important}
 html[data-theme="dark"] #jobsPage{--atsrs-jobs-green-text:var(--atsrs-brand-green,#22c55e)}
 .jobs-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}
 .jobs-hero h3{margin:12px 0 8px;font-size:clamp(28px,3vw,40px);line-height:1.08}

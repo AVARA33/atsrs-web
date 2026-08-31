@@ -24,7 +24,7 @@ test('status summary matches the capability card inventory', () => {
 });
 
 test('new live directories and geography search are described precisely', () => {
-  for (const label of ['International JobSearch', 'Recruiter Directory', 'Company Directory']) {
+  for (const label of ['Worldwide JobSearch', 'Recruiter Directory', 'Company Directory']) {
     assert.match(updates, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
   assert.match(updates, /region, country and city/);

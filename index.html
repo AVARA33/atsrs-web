@@ -112,7 +112,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/product-updates-theme-parity-v544.css?v=544">
 <link rel="stylesheet" href="css/sidebar-fixed-utilities-v550.css?v=561">
 <link rel="stylesheet" href="css/theme-palette-v508.css?v=5849">
-<link rel="stylesheet" href="css/jobs-prototype.css?v=5996">
+<link rel="stylesheet" href="css/jobs-prototype.css?v=5997">
 <link rel="stylesheet" href="css/employers.css?v=34">
 <link rel="stylesheet" href="css/view-switch-standard-v58144.css?v=58144">
 <link rel="stylesheet" href="css/dark-green-text-standard-v58140.css?v=58140">
@@ -134,7 +134,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
-<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6021">
+<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6022">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -750,7 +750,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <path class="orbit orbit-next orbit-next-secondary" d="M16 576 C69 798 675 798 728 576"/>
         <path class="orbit orbit-next" d="M16 576 C64 804 680 804 728 576"/>
         <g class="core-rings">
-          <ellipse cx="372" cy="324" rx="148" ry="128"/><ellipse cx="372" cy="324" rx="142" ry="122"/><ellipse cx="372" cy="324" rx="136" ry="116"/><ellipse cx="372" cy="324" rx="130" ry="110"/><ellipse cx="372" cy="324" rx="124" ry="104"/><ellipse cx="372" cy="324" rx="118" ry="98"/>
+          <ellipse cx="372" cy="324" rx="148" ry="128"/>
         </g>
         <g class="mission-connectors">
           <path class="mission-connector mission-connector-projects" d="M372 121V148"/>
@@ -762,9 +762,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <path class="mission-connector mission-connector-qr" d="M607 335H580"/>
           <path class="mission-connector mission-connector-email" d="M145 425L171 417"/>
           <path class="mission-connector mission-connector-ai" d="M599 425L573 417"/>
-          <path class="mission-launch-connector" d="M372 452V475H274V489M372 475H470V489"/>
+          <path class="mission-launch-connector" d="M372 452V475H274V477M372 475H470V477"/>
         </g>
         <g class="mission-dots"><circle cx="372" cy="148" r="4"/><circle cx="258" cy="181" r="4"/><circle cx="486" cy="181" r="4"/><circle cx="189" cy="256" r="4"/><circle cx="555" cy="256" r="4"/><circle cx="164" cy="335" r="4"/><circle cx="580" cy="335" r="4"/><circle cx="171" cy="417" r="4"/><circle cx="573" cy="417" r="4"/><circle cx="372" cy="452" r="4"/></g>
+        <g class="launch-join-dots"><circle cx="274" cy="477" r="3.6"/><circle cx="470" cy="477" r="3.6"/></g>
         <g class="stage-join-dots"><circle cx="18" cy="482" r="3.2"/><circle cx="726" cy="482" r="3.2"/></g>
         <g class="building-dots"><circle cx="238" cy="637" r="4"/><circle cx="506" cy="637" r="4"/></g>
         <g class="next-dots"><circle cx="16" cy="576" r="4"/><circle cx="728" cy="576" r="4"/></g>
@@ -781,10 +782,9 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div class="mission-node mission-node-email"><i class="ph ph-envelope-simple" aria-hidden="true"></i><span>Email Expiry<br>Alerts</span></div>
       <div class="mission-node mission-node-ai"><i class="ph ph-magic-wand" aria-hidden="true"></i><span>AI Document<br>Scan</span></div>
 
-      <button class="mission-core" type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))" aria-label="Open International JobSearch">
+      <button class="mission-core" type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))" aria-label="Open Worldwide JobSearch">
         <img src="assets/branding/atsrs-favicon-green-v576.png" alt="">
-        <strong>International JobSearch</strong>
-        <span><i class="ph ph-calendar-blank" aria-hidden="true"></i> 31 Aug 2026</span>
+        <strong>Worldwide JobSearch</strong>
         <small>Core release hub</small>
       </button>
 
@@ -807,7 +807,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <p>Our mission is to connect jobseekers, recruiters and companies through trusted, compliant and intelligent tools. The latest releases strengthen that mission—improving visibility, control and speed across your workflow.</p>
 
       <div class="mission-release-list" aria-label="Newest ATSRS releases">
-        <button type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><span><strong>International JobSearch <em>LIVE</em></strong><small>Expands your reach across borders to discover global opportunities with trusted, verified connections.</small></span></button>
+        <button type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><span><strong>Worldwide JobSearch <em>LIVE</em></strong><small>Expands your reach across borders to discover global opportunities with trusted, verified connections.</small></span></button>
         <button type="button" onclick="window.atsrsOpenJobsDirectory('recruiters',document.getElementById('navRecruiters'))"><i class="ph ph-user" aria-hidden="true"></i><span><strong>Recruiter Directory <em>LIVE</em></strong><small>Access a verified network of recruiters to build relationships that move your career forward.</small></span></button>
         <button type="button" onclick="window.atsrsOpenJobsDirectory('employers',document.getElementById('navEmployers'))"><i class="ph ph-buildings" aria-hidden="true"></i><span><strong>Company Directory <em>LIVE</em></strong><small>Explore company profiles and insights to find employers that match your ambitions.</small></span></button>
       </div>
@@ -830,7 +830,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div class="jobs-hero-icon" aria-hidden="true"><i class="ph ph-globe-hemisphere-west"></i></div>
       <div class="jobs-hero-content">
         <span class="jobs-hero-eyebrow">Global opportunity catalogue</span>
-        <h3 id="jobsHeading">International JobSearch</h3>
+        <h3 id="jobsHeading">Worldwide JobSearch</h3>
         <p>Search opportunities across borders with location-aware results, recruiter details and country-specific requirements.</p>
       </div>
     </div>

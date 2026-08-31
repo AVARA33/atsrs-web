@@ -12,7 +12,7 @@ const dashboard = index.match(/<section id="dashboardPage"[\s\S]*?<section id="r
 
 test('Product Updates contains the complete honest capability inventory', () => {
   const available = [
-    'International JobSearch',
+    'Worldwide JobSearch',
     'Recruiter Directory',
     'Company Directory',
     'AI Document Scan',
@@ -37,7 +37,7 @@ test('Product Updates contains the complete honest capability inventory', () => 
 
   assert.match(updates, /WhatsApp Expiry Alerts[\s\S]*?In development|In development[\s\S]*?WhatsApp Expiry Alerts/i);
   assert.match(updates, /Automated Scheduled Reports[\s\S]*?Planned|Planned[\s\S]*?Automated Scheduled Reports/i);
-  assert.match(updates, /status-available">Available now<\/span>[\s\S]*?International JobSearch/);
+  assert.match(updates, /status-available">Available now<\/span>[\s\S]*?Worldwide JobSearch/);
   assert.match(updates, /ATSRS Android App[\s\S]*?Planned|Planned[\s\S]*?ATSRS Android App/i);
   assert.doesNotMatch(updates, /API Access|Priority Support|Advanced Security/);
 });
@@ -60,7 +60,7 @@ test('Product Updates keeps the established roadmap card design', () => {
 });
 
 test('Roadmap leads with newly released capabilities and closes with upcoming work', () => {
-  const latest = roadmap.indexOf('International JobSearch');
+  const latest = roadmap.indexOf('Worldwide JobSearch');
   const available = roadmap.indexOf('Manual Document Upload');
   const development = roadmap.indexOf('WhatsApp Expiry Alerts');
   const planned = roadmap.indexOf('Automated Scheduled Reports');
