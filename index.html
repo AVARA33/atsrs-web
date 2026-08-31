@@ -135,6 +135,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6024">
+<link rel="stylesheet" href="css/product-updates-atlas-v6004.css?v=6005">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -725,6 +726,55 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 
 <div class="product-updates-content">
+  <section class="updates-atlas" aria-label="ATSRS release atlas">
+    <header class="updates-atlas-toolbar">
+      <div class="updates-atlas-view" role="group" aria-label="Release view">
+        <button class="active" type="button" data-atlas-view="atlas">Atlas</button>
+        <button type="button" data-atlas-view="list">List</button>
+      </div>
+    </header>
+
+    <div class="updates-atlas-layout">
+      <div class="updates-atlas-canvas" data-atlas-mode="atlas">
+        <div class="atlas-coordinate atlas-coordinate-top" aria-hidden="true"><span>90°W</span><span>60°W</span><span>30°W</span><span>0°</span><span>30°E</span><span>60°E</span><span>90°E</span></div>
+        <div class="atlas-coordinate atlas-coordinate-side" aria-hidden="true"><span>60°N</span><span>30°N</span><span>0°</span><span>30°S</span><span>60°S</span></div>
+        <div class="atlas-map-texture" aria-hidden="true"></div>
+
+        <div class="atlas-zone atlas-zone-live"><strong>LIVE</strong><span>Released and ready to use.</span></div>
+        <div class="atlas-zone atlas-zone-building"><strong>BUILDING</strong><span>In development and coming soon.</span></div>
+        <div class="atlas-zone atlas-zone-next"><strong>NEXT</strong><span>Planned for a future release.</span></div>
+
+        <button class="atlas-marker is-live is-selected marker-jobs" type="button" data-release="jobs"><i class="ph ph-globe-hemisphere-west"></i><span>Worldwide JobSearch</span></button>
+        <button class="atlas-marker is-live marker-recruiters" type="button" data-release="recruiters"><i class="ph ph-user"></i><span>Recruiter Directory</span></button>
+        <button class="atlas-marker is-live marker-companies" type="button" data-release="companies"><i class="ph ph-buildings"></i><span>Company Directory</span></button>
+        <button class="atlas-marker is-live marker-ai" type="button" data-release="ai"><i class="ph ph-magic-wand"></i><span>AI Document Scan</span></button>
+        <button class="atlas-marker is-live marker-qr" type="button" data-release="qr"><i class="ph ph-qr-code"></i><span>QR Phone Upload</span></button>
+        <button class="atlas-marker is-building marker-whatsapp" type="button" data-release="whatsapp"><i class="ph ph-whatsapp-logo"></i><span>WhatsApp Expiry Alerts</span></button>
+        <button class="atlas-marker is-next marker-reports" type="button" data-release="reports"><i class="ph ph-calendar-dots"></i><span>Automated Scheduled Reports</span></button>
+        <button class="atlas-marker is-next marker-android" type="button" data-release="android"><i class="ph ph-device-mobile"></i><span>ATSRS Android App</span></button>
+
+        <div class="updates-atlas-list" aria-label="All product releases"></div>
+
+        <footer class="updates-atlas-summary">
+          <span><b>5</b> Live</span><span><b>1</b> Building</span><span><b>2</b> Next</span><span>Total <b>8</b></span>
+          <div class="atlas-zoom" role="group" aria-label="Atlas zoom"><button type="button" data-atlas-zoom="fit" aria-label="Fit atlas"><i class="ph ph-corners-out"></i></button><button type="button" data-atlas-zoom="out" aria-label="Zoom out">−</button><output>100%</output><button type="button" data-atlas-zoom="in" aria-label="Zoom in">+</button></div>
+        </footer>
+      </div>
+
+      <aside class="updates-atlas-detail updates-atlas-stats" aria-label="Product release statistics">
+        <span class="atlas-stats-kicker">RELEASE OVERVIEW</span>
+        <h3>Product status</h3>
+        <p>Current availability across the ATSRS product roadmap.</p>
+        <div class="atlas-stats-grid">
+          <div class="is-live"><span>Live</span><strong>5</strong><small>Ready to use</small></div>
+          <div class="is-building"><span>Building</span><strong>1</strong><small>In development</small></div>
+          <div class="is-next"><span>Next</span><strong>2</strong><small>Planned releases</small></div>
+          <div class="is-total"><span>Total</span><strong>8</strong><small>Tracked updates</small></div>
+        </div>
+        <div class="atlas-stats-foot"><i class="ph ph-chart-donut"></i><span><strong>63%</strong> of tracked releases are live now.</span></div>
+      </aside>
+    </div>
+  </section>
   <div class="updates-mission" aria-label="ATSRS product mission control">
     <div class="updates-mission-dial" aria-label="Live and upcoming ATSRS capabilities">
       <svg class="mission-orbit-svg" viewBox="0 0 744 830" preserveAspectRatio="none" aria-hidden="true">
@@ -2378,6 +2428,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/route-feature-loader.js?v=5996"></script>
 <script src="js/references-workspace-v5984.js?v=59844"></script>
 <script src="js/account-resources-v5990.js?v=5999"></script>
+<script src="js/product-updates-atlas-v6004.js?v=6005"></script>
 
 
 

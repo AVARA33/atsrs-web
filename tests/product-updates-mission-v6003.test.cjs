@@ -6,6 +6,7 @@ const root=path.resolve(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.css'),'utf8');
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
+const mission=updates.slice(updates.indexOf('<div class="updates-mission"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
   assert.match(index,/product-updates-mission-v6003\.css\?v=6024/);
@@ -30,7 +31,7 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(updates,/assets\/branding\/atsrs-favicon-green-v576\.png/);
   assert.match(updates,/<g class="core-rings">\s*<ellipse cx="372" cy="324" rx="148" ry="128"\/>\s*<\/g>/);
   assert.match(updates,/<strong>Worldwide JobSearch<\/strong>\s*<small>Core release hub<\/small>/);
-  assert.doesNotMatch(updates,/31 Aug 2026|ph-calendar-blank/);
+  assert.doesNotMatch(mission,/31 Aug 2026|ph-calendar-blank/);
   assert.match(updates,/class="orbit orbit-next orbit-next-secondary" d="M16 576 C69 798 675 798 728 576"/);
   assert.match(css,/\.orbit-next-secondary\{stroke:rgba\(148,154,164,\.22\)\}/);
   assert.match(css,/\.mission-orbit-title-next\{top:735px!important\}/);
