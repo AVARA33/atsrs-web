@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'css','product-updates-mission-v6003.cs
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the screenshot-matched mission control layout',()=>{
-  assert.match(index,/product-updates-mission-v6003\.css\?v=6019/);
+  assert.match(index,/product-updates-mission-v6003\.css\?v=6021/);
   assert.match(updates,/class="updates-mission"/);
   assert.match(updates,/MISSION CONTROL DIAL/);
   assert.match(updates,/Three newest releases[\s\S]*One connected mission/);
@@ -22,8 +22,15 @@ test('Product Updates exposes the screenshot-matched mission control layout',()=
   assert.match(updates,/class="orbit orbit-live" d="M18 482 C28 210 153 7 372 7 C591 7 716 210 726 482"/);
   assert.match(updates,/class="orbit orbit-inner" d="M171 417 A208\.5 208\.5 0 1 1 573 417" data-orbit-cx="372" data-orbit-cy="357" data-orbit-radius="208\.5"/);
   assert.match(updates,/class="orbit orbit-building" d="M18 482 C104 708 640 708 726 482"/);
+  assert.match(updates,/id="missionBuildingGradient"/);
+  assert.match(updates,/class="orbit orbit-building orbit-building-secondary" d="M18 482 C112 698 632 698 726 482"/);
+  assert.match(updates,/class="stage-join-dots">\s*<circle cx="18" cy="482" r="3\.2"\/>\s*<circle cx="726" cy="482" r="3\.2"\/>/);
+  assert.match(updates,/class="building-dots">\s*<circle cx="238" cy="637" r="4"\/>\s*<circle cx="506" cy="637" r="4"\/>/);
+  assert.match(updates,/class="next-dots">\s*<circle cx="16" cy="576" r="4"\/>\s*<circle cx="728" cy="576" r="4"\/>/);
+  assert.match(updates,/assets\/branding\/atsrs-favicon-green-v576\.png/);
   assert.match(updates,/class="orbit orbit-next orbit-next-secondary" d="M16 576 C69 798 675 798 728 576"/);
   assert.match(css,/\.orbit-next-secondary\{stroke:rgba\(148,154,164,\.22\)\}/);
+  assert.match(css,/\.mission-orbit-title-next\{top:735px!important\}/);
   assert.match(updates,/class="mission-connector mission-connector-projects" d="M372 121V148"/);
   assert.match(updates,/class="mission-connector mission-connector-candidates" d="M244 159L258 181"/);
   assert.match(updates,/class="mission-connector mission-connector-email" d="M145 425L171 417"/);

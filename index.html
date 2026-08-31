@@ -134,7 +134,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/contact.css?v=5850">
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
-<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6019">
+<link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6021">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -731,6 +731,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <defs>
           <filter id="missionGreenGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           <filter id="missionConnectorGlow" x="-90%" y="-90%" width="280%" height="280%"><feGaussianBlur stdDeviation="1.1" result="connectorBlur"/><feMerge><feMergeNode in="connectorBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="missionYellowGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.5" result="yellowBlur"/><feMerge><feMergeNode in="yellowBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <linearGradient id="missionBuildingGradient" gradientUnits="userSpaceOnUse" x1="18" y1="482" x2="726" y2="482"><stop offset="0" stop-color="#e1d623" stop-opacity=".08"/><stop offset=".27" stop-color="#eee54a" stop-opacity=".78"/><stop offset=".43" stop-color="#e1d623" stop-opacity=".30"/><stop offset=".48" stop-color="#e1d623" stop-opacity=".05"/><stop offset=".52" stop-color="#e1d623" stop-opacity=".05"/><stop offset=".57" stop-color="#e1d623" stop-opacity=".30"/><stop offset=".73" stop-color="#eee54a" stop-opacity=".78"/><stop offset="1" stop-color="#e1d623" stop-opacity=".08"/></linearGradient>
           <linearGradient id="missionConnectorProjects" gradientUnits="userSpaceOnUse" x1="372" y1="121" x2="372" y2="148"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
           <linearGradient id="missionConnectorCandidates" gradientUnits="userSpaceOnUse" x1="244" y1="159" x2="258" y2="181"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
           <linearGradient id="missionConnectorCompliance" gradientUnits="userSpaceOnUse" x1="500" y1="159" x2="486" y2="181"><stop offset="0" stop-color="#62ea65" stop-opacity=".08"/><stop offset=".62" stop-color="#78ee7e" stop-opacity=".54"/><stop offset="1" stop-color="#9af39f" stop-opacity=".96"/></linearGradient>
@@ -743,6 +745,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         </defs>
         <path class="orbit orbit-live" d="M18 482 C28 210 153 7 372 7 C591 7 716 210 726 482"/>
         <path class="orbit orbit-inner" d="M171 417 A208.5 208.5 0 1 1 573 417" data-orbit-cx="372" data-orbit-cy="357" data-orbit-radius="208.5"/>
+        <path class="orbit orbit-building orbit-building-secondary" d="M18 482 C112 698 632 698 726 482"/>
         <path class="orbit orbit-building" d="M18 482 C104 708 640 708 726 482"/>
         <path class="orbit orbit-next orbit-next-secondary" d="M16 576 C69 798 675 798 728 576"/>
         <path class="orbit orbit-next" d="M16 576 C64 804 680 804 728 576"/>
@@ -762,7 +765,9 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <path class="mission-launch-connector" d="M372 452V475H274V489M372 475H470V489"/>
         </g>
         <g class="mission-dots"><circle cx="372" cy="148" r="4"/><circle cx="258" cy="181" r="4"/><circle cx="486" cy="181" r="4"/><circle cx="189" cy="256" r="4"/><circle cx="555" cy="256" r="4"/><circle cx="164" cy="335" r="4"/><circle cx="580" cy="335" r="4"/><circle cx="171" cy="417" r="4"/><circle cx="573" cy="417" r="4"/><circle cx="372" cy="452" r="4"/></g>
-        <g class="planned-dots"><circle cx="16" cy="576" r="4"/><circle cx="728" cy="576" r="4"/><circle cx="238" cy="639" r="4"/><circle cx="506" cy="639" r="4"/></g>
+        <g class="stage-join-dots"><circle cx="18" cy="482" r="3.2"/><circle cx="726" cy="482" r="3.2"/></g>
+        <g class="building-dots"><circle cx="238" cy="637" r="4"/><circle cx="506" cy="637" r="4"/></g>
+        <g class="next-dots"><circle cx="16" cy="576" r="4"/><circle cx="728" cy="576" r="4"/></g>
       </svg>
       <span class="mission-orbit-title mission-orbit-title-live">LIVE</span>
 
@@ -777,7 +782,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div class="mission-node mission-node-ai"><i class="ph ph-magic-wand" aria-hidden="true"></i><span>AI Document<br>Scan</span></div>
 
       <button class="mission-core" type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))" aria-label="Open International JobSearch">
-        <img src="assets/branding/atsrs-mark-green.png" alt="">
+        <img src="assets/branding/atsrs-favicon-green-v576.png" alt="">
         <strong>International JobSearch</strong>
         <span><i class="ph ph-calendar-blank" aria-hidden="true"></i> 31 Aug 2026</span>
         <small>Core release hub</small>
