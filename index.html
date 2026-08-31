@@ -135,7 +135,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6024">
-<link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6010">
+<link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6011">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -739,10 +739,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <div class="atlas-coordinate atlas-coordinate-top" aria-hidden="true"><span>90°W</span><span>60°W</span><span>30°W</span><span>0°</span><span>30°E</span><span>60°E</span><span>90°E</span></div>
         <div class="atlas-coordinate atlas-coordinate-side" aria-hidden="true"><span>60°N</span><span>30°N</span><span>0°</span><span>30°S</span><span>60°S</span></div>
         <div class="atlas-map-texture" aria-hidden="true"></div>
+        <canvas class="atlas-route-lines" aria-hidden="true"></canvas>
 
-        <div class="atlas-zone atlas-zone-live"><strong>LIVE</strong><span>Released and ready to use.</span></div>
-        <div class="atlas-zone atlas-zone-building"><strong>BUILDING</strong><span>In development and coming soon.</span></div>
-        <div class="atlas-zone atlas-zone-next"><strong>NEXT</strong><span>Planned for a future release.</span></div>
+        <div class="atlas-zone atlas-zone-live"><i class="ph ph-broadcast"></i><span><strong>LIVE</strong><small>Release point</small></span></div>
+        <div class="atlas-zone atlas-zone-building"><i class="ph ph-hammer"></i><span><strong>BUILDING</strong><small>Build point</small></span></div>
+        <div class="atlas-zone atlas-zone-next"><i class="ph ph-flag-checkered"></i><span><strong>NEXT</strong><small>Next point</small></span></div>
 
         <button class="atlas-marker is-live is-selected marker-jobs" type="button" data-release="jobs"><i class="ph ph-globe-hemisphere-west"></i><span>Worldwide JobSearch</span></button>
         <button class="atlas-marker is-live marker-recruiters" type="button" data-release="recruiters"><i class="ph ph-user"></i><span>Recruiter Directory</span></button>
@@ -2428,7 +2429,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/route-feature-loader.js?v=5996"></script>
 <script src="js/references-workspace-v5984.js?v=59844"></script>
 <script src="js/account-resources-v5990.js?v=5999"></script>
-<script src="js/product-updates-atlas-v6004.js?v=6010"></script>
+<script src="js/product-updates-atlas-v6004.js?v=6011"></script>
 
 
 
