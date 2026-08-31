@@ -61,8 +61,13 @@
       var cardY=cardBox.top-bounds.top+Math.min(54,cardBox.height*.3),direction=cardOnRight?1:-1;
       var elbowX=markerX+(38*direction),elbowY=Math.min(markerY-28,cardY);
       var connectorColor=selectedMarker.classList.contains('is-building')?getComputedStyle(root).getPropertyValue('--atlas-yellow').trim():selectedMarker.classList.contains('is-next')?getComputedStyle(root).getPropertyValue('--atlas-next').trim():getComputedStyle(root).getPropertyValue('--atlas-green').trim();
-      context.save();context.setLineDash([]);context.strokeStyle=connectorColor;context.fillStyle=connectorColor;context.globalAlpha=.92;context.lineWidth=1.6;context.lineCap='round';context.lineJoin='round';context.shadowColor=connectorColor;context.shadowBlur=5;
-      context.beginPath();context.moveTo(markerX,markerY);context.lineTo(elbowX,elbowY);context.lineTo(cardX-(8*direction),elbowY);context.lineTo(cardX,cardY);context.stroke();
+      context.save();context.setLineDash([]);context.strokeStyle=connectorColor;context.fillStyle=connectorColor;context.globalAlpha=.92;context.lineWidth=1.8;context.lineCap='round';context.lineJoin='round';context.shadowColor=connectorColor;context.shadowBlur=5;
+      context.beginPath();context.moveTo(markerX,markerY);
+      if(selectedMarker.classList.contains('is-next')){
+        var nextRiseY=markerY-28,nextApproachX=cardX-(34*direction);
+        context.lineTo(markerX,nextRiseY);context.lineTo(nextApproachX,nextRiseY);context.lineTo(nextApproachX,cardY);context.lineTo(cardX,cardY);
+      }else{context.lineTo(elbowX,elbowY);context.lineTo(cardX-(8*direction),elbowY);context.lineTo(cardX,cardY)}
+      context.stroke();
       context.beginPath();context.arc(markerX,markerY,3,0,Math.PI*2);context.fill();context.restore();
     }
     context.globalAlpha=1;context.shadowBlur=0;
@@ -84,7 +89,7 @@
       var canvasBox=canvas.getBoundingClientRect(),markerBox=marker.getBoundingClientRect(),cardWidth=Math.min(360,canvasBox.width-56),cardHeight=releaseCard.offsetHeight||230;
       var placeRight=markerBox.left-canvasBox.left<canvasBox.width*.58;
       var left=placeRight?Math.min(canvasBox.width-cardWidth-28,markerBox.right-canvasBox.left+72):Math.max(28,markerBox.left-canvasBox.left-cardWidth-72);
-      var top=Math.max(28,Math.min(canvasBox.height-cardHeight-76,markerBox.top-canvasBox.top-72));
+      var top=marker.classList.contains('is-next')?Math.max(28,Math.min(canvasBox.height-cardHeight-76,260)):Math.max(28,Math.min(canvasBox.height-cardHeight-76,markerBox.top-canvasBox.top-72));
       releaseCard.style.left=left+'px';releaseCard.style.top=top+'px';releaseCard.style.right='auto';releaseCard.style.bottom='auto';
     }else{releaseCard.style.removeProperty('left');releaseCard.style.removeProperty('top');releaseCard.style.removeProperty('right');releaseCard.style.removeProperty('bottom')}
     requestAnimationFrame(function(){releaseCard.classList.add('is-visible');scheduleRoutes()});typeReleaseCopy(item.description);

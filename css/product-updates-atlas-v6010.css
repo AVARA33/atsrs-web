@@ -36,4 +36,5 @@ html[data-theme="light"] body #app.app:not(.hidden) #introPage .atlas-marker.is-
 @media(max-width:760px){.atlas-release-card{right:14px;bottom:78px;left:14px;width:auto}}
 @media(prefers-reduced-motion:reduce){.atlas-release-card{transition:none}.atlas-release-card-copy::after{animation:none}}
 .atlas-plan-navigation .atlas-plan-link{white-space:nowrap!important}.atlas-release-card{right:auto;bottom:auto}
+.atlas-release-card{box-sizing:border-box;min-height:230px}
 html[data-theme="light"] #introPage .updates-atlas .atlas-marker span{color:#245f9f!important;-webkit-text-fill-color:#245f9f!important}html[data-theme="light"] #introPage .updates-atlas .atlas-marker.is-building span{color:#765d00!important;-webkit-text-fill-color:#765d00!important}
