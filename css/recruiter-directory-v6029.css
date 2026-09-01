@@ -248,44 +248,62 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage :is(#recruit
 #recruitersPage .employers-notice span { font-size:11px; }
 
 #recruitersPage .employers-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr));
   align-items:stretch;
-  gap:12px 14px;
+  gap:10px 12px;
 }
 #recruitersPage .employer-card {
   grid-template-rows:auto auto auto;
   align-self:stretch;
   height:auto;
-  min-height:220px;
-  padding:12px 16px 10px 22px;
-  border-radius:12px;
+  min-height:158px;
+  padding:9px 11px 8px 17px;
+  border-radius:10px;
 }
-#recruitersPage .employer-card-head { gap:13px; padding-bottom:7px; }
+#recruitersPage .employer-card-head { gap:9px; padding-bottom:5px; }
 #recruitersPage .employer-mark {
-  flex-basis:52px;
-  width:52px;
-  height:52px;
-  font-size:20px;
+  flex-basis:42px;
+  width:42px;
+  height:42px;
+  font-size:17px;
 }
-#recruitersPage .employer-card-copy { gap:2px; }
-#recruitersPage .employer-card-copy h4 { font-size:18px; }
-#recruitersPage .employer-card-copy p { font-size:11.5px; line-height:1.3; }
-#recruitersPage .employer-source { font-size:9px; }
+#recruitersPage .employer-card-copy { gap:1px; }
+#recruitersPage .employer-card-copy h4 { font-size:15px; line-height:1.15; }
+#recruitersPage .employer-card-copy p { overflow:hidden; font-size:9.5px; line-height:1.25; text-overflow:ellipsis; white-space:nowrap; }
+#recruitersPage .employer-source { font-size:8px; }
 #recruitersPage .employer-tags {
-  grid-template-columns:34px minmax(0,1fr);
-  gap:9px;
-  padding:6px 2px;
+  grid-template-columns:27px minmax(0,1fr);
+  gap:7px;
+  padding:4px 2px;
 }
-#recruitersPage .employer-tags > i { width:32px; height:32px; font-size:16px; }
+#recruitersPage .employer-tags > i { width:26px; height:26px; font-size:13px; }
 #recruitersPage .employer-vacancy-copy { gap:1px; }
 #recruitersPage .employer-vacancy-count,
-#recruitersPage .employer-vacancy-hint { font-size:10px; }
-#recruitersPage .employer-actions { gap:5px; padding-top:6px; }
+#recruitersPage .employer-vacancy-hint { font-size:8.5px; }
+#recruitersPage .employer-actions {
+  display:flex;
+  align-items:center;
+  flex-wrap:nowrap;
+  gap:4px;
+  padding-top:5px;
+}
+#recruitersPage .employer-actions .employer-action-share { grid-column:auto; }
 #recruitersPage .employer-actions a,
 #recruitersPage .employer-actions button {
-  min-height:29px;
-  height:29px;
-  border-radius:6px;
-  font-size:10px;
+  flex:1 1 0;
+  width:auto !important;
+  min-width:0;
+  min-height:25px;
+  height:25px;
+  gap:3px;
+  padding:0 4px;
+  border-radius:5px;
+  font-size:7.5px;
+}
+#recruitersPage .employer-actions :is(a,button) > i { flex:0 0 auto; font-size:10px; }
+html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active {
+  flex-direction:row;
+  justify-content:center;
 }
 
 html[data-theme="light"] #recruitersPage .recruiters-hero {
@@ -307,6 +325,10 @@ html[data-theme="light"] #recruitersPage .recruiters-trust-strip { border-color:
 html[data-theme="light"] #recruitersPage .recruiters-trust-strip span { color:#24486f; }
 html[data-theme="light"] #recruitersPage .recruiters-trust-strip span + span { border-left-color:rgba(47,115,200,.2); }
 html[data-theme="light"] #recruitersPage .recruiters-trust-strip i { color:#2f73c8; }
+
+@media(max-width:1220px) {
+  #recruitersPage .employers-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
 
 @media(max-width:1050px) {
   #recruitersPage .recruiters-hero { grid-template-columns:minmax(330px,.9fr) minmax(0,1.1fr); padding:24px; }
