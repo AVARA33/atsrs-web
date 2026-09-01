@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Product Updates unboxed endpoint labels QA</title>
+  <link rel="stylesheet" href="../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../css/product-updates-v6001.css?v=6001">
+  <link rel="stylesheet" href="../css/product-updates-atlas-v6010.css?v=6035">
+  <style>*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020607;color:#f4f6f5;font-family:Arial,sans-serif}body{padding:18px}#navIntro{display:none}#introPage{width:min(100%,1440px);margin:auto}.updates-atlas{display:block!important}</style>
+</head>
+<body>
+  <button id="navIntro" class="active" aria-hidden="true"></button>
+  <section id="introPage"></section>
+  <script>
+    fetch('../index.html').then(r=>r.text()).then(source=>{
+      const doc=new DOMParser().parseFromString(source,'text/html');
+      const atlas=doc.querySelector('.updates-atlas');
+      document.getElementById('introPage').append(atlas);
+    });
+  </script>
+</body>
+</html>
