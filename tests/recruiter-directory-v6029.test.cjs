@@ -5,7 +5,9 @@ const html=fs.readFileSync('index.html','utf8');
 const css=fs.readFileSync('css/recruiter-directory-v6029.css','utf8');
 const js=fs.readFileSync('js/recruiters.js','utf8');
 
-assert.match(html,/css\/recruiter-directory-v6029\.css\?v=6036/);
+assert.match(html,/css\/recruiter-directory-v6029\.css\?v=6037/);
+assert.match(css,/body:where\(\.personal-mode,\.company-mode\).*\.employer-action-linkedin,\.employer-action-jobs,\.employer-action-share/);
+assert.match(css,/max-height:32px !important/);
 assert.match(html,/js\/recruiters\.js\?v=19/);
 assert.match(html,/class="employers-hero recruiters-hero"/);
 assert.match(html,/Global recruiter network/);

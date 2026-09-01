@@ -310,6 +310,11 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage :is(#recruit
   border-radius:6px;
   font-size:9px;
 }
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #recruitersPage .employer-actions :is(.employer-action-linkedin,.employer-action-jobs,.employer-action-share) {
+  height:32px !important;
+  min-height:32px !important;
+  max-height:32px !important;
+}
 #recruitersPage .employer-actions :is(a,button) > i { flex:0 0 auto; font-size:10px; }
 html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions > button:disabled {
   border-color:#36413b !important;
