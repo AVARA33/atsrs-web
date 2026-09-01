@@ -126,6 +126,7 @@ html[data-theme="light"] body{background:#f6f8fb}
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=39">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
+<link rel="stylesheet" href="css/recruiter-directory-v6029.css?v=6030">
 <link rel="stylesheet" href="css/documents-register-v5976.css?v=5983">
 <link rel="stylesheet" href="css/references-workspace-v5984.css?v=59848">
 <link rel="stylesheet" href="css/dashboard-quick-links-v5987.css?v=6000">
@@ -1009,9 +1010,18 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="recruitersPage" class="hidden employers-page" aria-label="Recruiters">
-  <header class="employers-hero">
-    <div><span class="pill">ATSRS JOBS RECRUITER DIRECTORY</span><p>Find recruiters connected to ATSRS Jobs, review their vacancies and prepare a controlled profile link.</p></div>
-    <div class="employers-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 recruiters</strong><span>Verified LinkedIn directory</span></div>
+  <header class="employers-hero recruiters-hero">
+    <div class="recruiters-hero-copy">
+      <span class="recruiters-hero-eyebrow">Global recruiter network</span>
+      <h1>Recruiter Directory</h1>
+      <p>Verified hiring professionals, connected to opportunities across ATSRS.</p>
+      <div class="recruiters-hero-actions">
+        <button id="recruitersExploreAll" type="button"><i class="ph ph-users-three" aria-hidden="true"></i><span id="recruitersExploreAllLabel">Explore all</span></button>
+        <button id="recruitersActiveVacancies" type="button"><i class="ph ph-briefcase" aria-hidden="true"></i><span>Active vacancies</span></button>
+      </div>
+    </div>
+    <div class="recruiters-hero-visual" aria-hidden="true"></div>
+    <div class="employers-snapshot recruiters-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 verified</strong><span id="recruitersCompanyCount">0 companies</span></div>
   </header>
   <div class="employers-toolbar" aria-label="Recruiter filters">
     <label class="atsrs-search-field"><span>Search</span><span class="atsrs-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="recruitersSearch" type="search" placeholder="Recruiter or company" autocomplete="off"></span></label>
@@ -2395,7 +2405,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/company-directory-links.js?v=4"></script>
 <script src="js/company-logo-assets.js?v=1"></script>
 <script src="js/employers.js?v=42"></script>
-<script src="js/recruiters.js?v=16"></script>
+<script src="js/recruiters.js?v=17"></script>
 <script src="js/avatar.js?v=394"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>

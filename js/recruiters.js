@@ -391,11 +391,23 @@
       grid.appendChild(card(recruiter));
     });
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
-    byId("recruitersVisibleCount").textContent =
-      visible.length + " of " + recruiters.length + " recruiters";
-    var snapshot = byId("recruitersVisibleCount").nextElementSibling;
-    if (snapshot)
-      snapshot.textContent = selectedCompany || "Verified LinkedIn directory";
+    byId("recruitersVisibleCount").textContent = visible.length + " verified";
+    var companyCount = new Set(visible.map(function (recruiter) {
+      return normalized(recruiter.company);
+    }).filter(Boolean)).size;
+    var snapshot = byId("recruitersCompanyCount");
+    if (snapshot) snapshot.textContent = companyCount + " " + (companyCount === 1 ? "company" : "companies");
+    var exploreLabel = byId("recruitersExploreAllLabel");
+    if (exploreLabel) exploreLabel.textContent = "Explore all " + recruiters.length;
+  }
+  function resetFilters(activeOnly) {
+    byId("recruitersSearch").value = "";
+    byId("recruitersCompany").value = "";
+    byId("recruitersVacancies").value = activeOnly ? "active" : "";
+    byId("recruitersSort").value = "name";
+    render();
+    var target = byId("recruitersGrid");
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   function install() {
     if (!byId("recruitersPage")) return;
@@ -403,13 +415,9 @@
     byId("recruitersCompany").addEventListener("change", render);
     byId("recruitersVacancies").addEventListener("change", render);
     byId("recruitersSort").addEventListener("change", render);
-    byId("recruitersClearFilters").addEventListener("click", function () {
-      byId("recruitersSearch").value = "";
-      byId("recruitersCompany").value = "";
-      byId("recruitersVacancies").value = "";
-      byId("recruitersSort").value = "name";
-      render();
-    });
+    byId("recruitersClearFilters").addEventListener("click", function () { resetFilters(false); });
+    byId("recruitersExploreAll").addEventListener("click", function () { resetFilters(false); });
+    byId("recruitersActiveVacancies").addEventListener("click", function () { resetFilters(true); });
     var page = byId("recruitersPage");
     new MutationObserver(syncDirectoryVisibility).observe(page, {
       attributes: true,
