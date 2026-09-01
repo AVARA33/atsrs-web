@@ -5,7 +5,7 @@ const html=fs.readFileSync('index.html','utf8');
 const css=fs.readFileSync('css/recruiter-directory-v6029.css','utf8');
 const js=fs.readFileSync('js/recruiters.js','utf8');
 
-assert.match(html,/css\/recruiter-directory-v6029\.css\?v=6035/);
+assert.match(html,/css\/recruiter-directory-v6029\.css\?v=6036/);
 assert.match(html,/js\/recruiters\.js\?v=19/);
 assert.match(html,/class="employers-hero recruiters-hero"/);
 assert.match(html,/Global recruiter network/);
@@ -26,7 +26,7 @@ assert.match(css,/#recruitersPage \.recruiters-trust-strip \{/);
 assert.match(css,/#recruitersPage \.employers-grid \{[\s\S]*?grid-template-columns:repeat\(3,minmax\(0,1fr\)\);/);
 assert.match(css,/#recruitersPage \.employer-card \{[\s\S]*?height:auto;[\s\S]*?min-height:172px;/);
 assert.match(css,/#recruitersPage \.employer-actions \{[\s\S]*?display:flex;[\s\S]*?flex-wrap:nowrap;/);
-assert.match(css,/#recruitersPage \.employer-actions a,[\s\S]*?flex:1 1 0;[\s\S]*?height:32px;[\s\S]*?font-size:9px;/);
+assert.match(css,/#recruitersPage \.employer-actions a,[\s\S]*?flex:1 1 0;[\s\S]*?height:32px !important;[\s\S]*?font-size:9px;/);
 assert.match(css,/#recruitersPage \.recruiters-trust-strip \{[\s\S]*?background:transparent;[\s\S]*?backdrop-filter:none;/);
 assert.match(css,/#recruitersPage \.recruiters-pagination \{/);
 assert.match(js,/function resetFilters\(activeOnly\)/);

@@ -303,8 +303,8 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage :is(#recruit
   flex:1 1 0;
   width:auto !important;
   min-width:0;
-  min-height:32px;
-  height:32px;
+  min-height:32px !important;
+  height:32px !important;
   gap:2px;
   padding:0 4px;
   border-radius:6px;
