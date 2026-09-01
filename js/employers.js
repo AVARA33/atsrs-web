@@ -828,8 +828,6 @@
       refreshSectorOptions();
       refreshLocationOptions();
       refreshSizeOptions();
-      var browseLabel = byId("employersBrowseAllLabel");
-      if (browseLabel) browseLabel.textContent = "Browse " + companies.length + " companies";
       var message = byId("employersMessage");
       if (message) message.textContent = "";
       if (directoryVisible()) render();
@@ -915,26 +913,6 @@
     byId("employersLocation").addEventListener("change", resetAndRender);
     byId("employersSize").addEventListener("change", resetAndRender);
     byId("employersSort").addEventListener("change", resetAndRender);
-    byId("employersBrowseAll").addEventListener("click", function () {
-      byId("employersSearch").value = "";
-      sector.value = "";
-      byId("employersLocation").value = "";
-      byId("employersSize").value = "";
-      hiringOnly = false;
-      byId("employersHiringNow").classList.remove("active");
-      byId("employersHiringNow").setAttribute("aria-pressed", "false");
-      companyPage = 1;
-      render();
-      byId("employersGrid").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-    byId("employersHiringNow").addEventListener("click", function () {
-      hiringOnly = !hiringOnly;
-      this.classList.toggle("active", hiringOnly);
-      this.setAttribute("aria-pressed", String(hiringOnly));
-      companyPage = 1;
-      render();
-      byId("employersGrid").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
     byId("employersClearFilters").addEventListener("click", function () {
       byId("employersSearch").value = "";
       sector.value = "";
@@ -942,8 +920,6 @@
       byId("employersSize").value = "";
       byId("employersSort").value = "verified";
       hiringOnly = false;
-      byId("employersHiringNow").classList.remove("active");
-      byId("employersHiringNow").setAttribute("aria-pressed", "false");
       companyPage = 1;
       render();
     });
