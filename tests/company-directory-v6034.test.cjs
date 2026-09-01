@@ -7,6 +7,8 @@ assert.match(html, /Companies on ATSRS/);
 assert.match(html, /id="employersLocation"/);
 assert.match(html, /id="employersSize"/);
 assert.match(html, /id="employersPagination"/);
+assert.doesNotMatch(html, /id="employersBrowseAll"/);
+assert.doesNotMatch(html, /id="employersHiringNow"/);
 assert.match(js, /COMPANY_PAGE_SIZE = 30/);
 assert.match(js, /Saudi Aramco/);
 assert.match(js, /renderPagination/);
