@@ -53,9 +53,12 @@ html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilter
 #employersPage .employers-pagination-top{margin:10px 0 8px auto}
 #employersPage .employers-pagination-bottom{margin:20px 0 0 auto}
 #employersPage .employers-pagination .jobs-page-button{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:auto!important;min-width:38px;height:38px!important;min-height:38px!important;padding:0 10px;border:0!important;border-radius:9px!important;background:transparent!important;color:#9aa59f!important;box-shadow:none!important;font-size:11px;font-weight:800}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employers-pagination .jobs-page-button{min-width:38px!important;width:auto!important;height:38px!important;min-height:38px!important;padding:0 10px!important;border-radius:9px!important;font-size:12px!important}
 #employersPage .employers-pagination .jobs-page-edge{min-width:92px}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employers-pagination .jobs-page-edge{min-width:92px!important}
 #employersPage .employers-pagination .jobs-page-button:hover:not(:disabled):not(.is-current){background:rgba(72,212,107,.08)!important;color:#f3f8f5!important}
 #employersPage .employers-pagination .jobs-page-button.is-current{min-width:34px!important;width:34px!important;height:34px!important;min-height:34px!important;margin:0 2px!important;padding:0 8px!important;border-style:solid!important;border-width:1px!important;border-color:var(--atsrs-field-line)!important;border-right-color:var(--atsrs-field-accent)!important;border-left-color:var(--atsrs-field-accent)!important;background:var(--atsrs-field-surface)!important;color:var(--atsrs-field-accent)!important;-webkit-text-fill-color:var(--atsrs-field-accent)!important;box-shadow:-3px 0 0 var(--atsrs-field-accent-ring),3px 0 0 var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employers-pagination .jobs-page-button.is-current{min-width:34px!important;width:34px!important;height:34px!important;min-height:34px!important}
 #employersPage .employers-pagination .jobs-page-button:disabled{opacity:.56}
 #employersPage .employers-pagination .jobs-page-ellipsis{display:grid;place-items:center;min-width:20px;height:38px;color:#6f7d75}
 html[data-theme="light"] #employersPage .employers-pagination .jobs-page-button{color:#60748f!important}
