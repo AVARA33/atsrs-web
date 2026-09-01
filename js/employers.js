@@ -746,24 +746,35 @@
     });
     return button;
   }
+  function pageItems(current, count) {
+    if (count <= 7) return Array.from({ length: count }, function (_, index) { return index + 1; });
+    var keep = Array.from(new Set([1, count, current - 1, current, current + 1].filter(function (page) {
+      return page >= 1 && page <= count;
+    }))).sort(function (a, b) { return a - b; });
+    var items = [];
+    keep.forEach(function (page, index) {
+      if (index && page - keep[index - 1] > 1) items.push("ellipsis");
+      items.push(page);
+    });
+    return items;
+  }
   function renderPagination(pageCount) {
     document.querySelectorAll("[data-employers-pagination]").forEach(function (nav) {
       nav.replaceChildren();
       nav.classList.toggle("hidden", pageCount <= 1);
       if (pageCount <= 1) return;
       nav.appendChild(pageButton("Previous", companyPage - 1, companyPage === 1, false, "previous"));
-      for (var page = 1; page <= pageCount; page += 1) {
-        if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - companyPage) > 1) {
-          if (page === 3 || page === pageCount - 2) {
-            var gap = document.createElement("span");
-            gap.className = "jobs-page-ellipsis";
-            gap.textContent = "…";
-            nav.appendChild(gap);
-          }
-          continue;
+      pageItems(companyPage, pageCount).forEach(function (item) {
+        if (item === "ellipsis") {
+          var gap = document.createElement("span");
+          gap.className = "jobs-page-ellipsis";
+          gap.textContent = "…";
+          gap.setAttribute("aria-hidden", "true");
+          nav.appendChild(gap);
+        } else {
+          nav.appendChild(pageButton(String(item), item, false, item === companyPage));
         }
-        nav.appendChild(pageButton(String(page), page, false, page === companyPage));
-      }
+      });
       nav.appendChild(pageButton("Next", companyPage + 1, companyPage === pageCount, false, "next"));
     });
   }
