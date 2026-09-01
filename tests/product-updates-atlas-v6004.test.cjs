@@ -9,7 +9,7 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6021/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6022/);
   assert.match(index,/product-updates-atlas-v6004\.js\?v=6025/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
@@ -23,6 +23,7 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(css,/width:max-content!important;max-width:230px!important/);
   assert.match(css,/html\[data-theme="light"\] \.atlas-stats-grid>div/);
   assert.match(css,/release-atlas-texture-light-v6010\.png/);
+  assert.match(css,/html\[data-theme="dark"\] \.atlas-map-texture\{opacity:\.9;filter:brightness\(1\.32\) contrast\(1\.08\) saturate\(1\.08\)\}/);
   assert.match(updates,/class="atlas-route-lines"/);
   assert.match(updates,/class="updates-atlas-detail atlas-pricing-showcase"/);
   assert.match(js,/setLineDash\(\[4,7\]\)/);
