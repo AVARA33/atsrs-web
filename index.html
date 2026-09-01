@@ -136,7 +136,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/product-updates-v6001.css?v=6001">
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6024">
-<link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6027">
+<link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6033">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -744,7 +744,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
         <button class="atlas-marker is-live marker-companies" type="button" data-release="companies"><i class="ph ph-buildings"></i><span>Company Directory</span></button>
         <button class="atlas-marker is-live marker-ai" type="button" data-release="ai"><i class="ph ph-magic-wand"></i><span>AI Document Scan</span></button>
         <button class="atlas-marker is-live marker-qr" type="button" data-release="qr"><i class="ph ph-qr-code"></i><span>QR Phone Upload</span></button>
+        <button class="atlas-marker is-live marker-email" type="button" data-release="email"><i class="ph ph-envelope-simple"></i><span>Email Notification Expiry Alert</span></button>
+        <button class="atlas-marker is-live marker-tracking" type="button" data-release="tracking"><i class="ph ph-file-magnifying-glass"></i><span>Document Tracking</span></button>
+        <button class="atlas-marker is-live marker-sharing" type="button" data-release="sharing"><i class="ph ph-share-network"></i><span>Share Profile Link</span></button>
         <button class="atlas-marker is-building marker-whatsapp" type="button" data-release="whatsapp"><i class="ph ph-whatsapp-logo"></i><span>WhatsApp Expiry Alerts</span></button>
+        <button class="atlas-marker is-building marker-corporate" type="button" data-release="corporate"><i class="ph ph-identification-card"></i><span>Corporate Account</span></button>
         <button class="atlas-marker is-next marker-reports" type="button" data-release="reports"><i class="ph ph-calendar-dots"></i><span>Automated Scheduled Reports</span></button>
         <button class="atlas-marker is-next marker-android" type="button" data-release="android"><i class="ph ph-device-mobile"></i><span>ATSRS Android App</span></button>
 
@@ -755,10 +759,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <p class="atlas-release-card-copy" data-release-card-copy></p>
         </aside>
 
-        <div class="updates-atlas-list" aria-label="All product releases"></div>
+        <div class="updates-atlas-list" aria-label="All product releases">
+          <div class="updates-atlas-list-items"></div>
+          <nav class="updates-atlas-pagination" aria-label="Product updates pages"></nav>
+        </div>
 
         <footer class="updates-atlas-summary">
-          <span><b>5</b> Live</span><span><b>1</b> Building</span><span><b>2</b> Next</span><span>Total <b>8</b></span>
+          <span><b data-atlas-count="live">8</b> Live</span><span><b data-atlas-count="building">2</b> Building</span><span><b data-atlas-count="next">2</b> Next</span><span>Total <b data-atlas-count="total">12</b></span>
           <div class="atlas-zoom" role="group" aria-label="Atlas zoom"><button type="button" data-atlas-zoom="fit" aria-label="Fit atlas"><i class="ph ph-corners-out"></i></button><button type="button" data-atlas-zoom="out" aria-label="Zoom out">−</button><output>100%</output><button type="button" data-atlas-zoom="in" aria-label="Zoom in">+</button></div>
         </footer>
       </div>
@@ -2442,7 +2449,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/route-feature-loader.js?v=5996"></script>
 <script src="js/references-workspace-v5984.js?v=59844"></script>
 <script src="js/account-resources-v5990.js?v=5999"></script>
-<script src="js/product-updates-atlas-v6004.js?v=6027"></script>
+<script src="js/product-updates-atlas-v6004.js?v=6033"></script>
 
 
 
