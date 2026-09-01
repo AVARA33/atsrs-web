@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Product Updates delayed plan vibration QA</title>
+  <link rel="stylesheet" href="../vendor/phosphor-icons/phosphor-regular.css">
+  <link rel="stylesheet" href="../css/product-updates-v6001.css?v=6001">
+  <link rel="stylesheet" href="../css/product-updates-atlas-v6010.css?v=6036">
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020607;color:#f4f6f5;font-family:Arial,sans-serif}
+    body{display:grid;place-items:center;padding:30px}#navIntro{display:none}.updates-atlas{display:block!important;width:360px}
+    .updates-atlas-detail{min-height:680px;border:1px solid #1b2721;border-radius:14px}.atlas-pricing-showcase{width:100%}
+  </style>
+</head>
+<body>
+  <button id="navIntro" class="active" aria-hidden="true"></button>
+  <main id="preview" aria-label="Product Updates Personal plan animation preview"></main>
+  <script>
+    fetch('../index.html').then(response=>response.text()).then(source=>{
+      const documentCopy=new DOMParser().parseFromString(source,'text/html');
+      const atlas=document.createElement('section');
+      atlas.className='updates-atlas';
+      atlas.append(documentCopy.querySelector('.atlas-pricing-showcase'));
+      document.getElementById('preview').append(atlas);
+      const behavior=document.createElement('script');
+      behavior.src='../js/product-updates-atlas-v6004.js?v=6036';
+      document.body.append(behavior);
+    });
+  </script>
+</body>
+</html>
