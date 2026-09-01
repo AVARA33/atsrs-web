@@ -126,7 +126,7 @@ html[data-theme="light"] body{background:#f6f8fb}
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=39">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
-<link rel="stylesheet" href="css/recruiter-directory-v6029.css?v=6033">
+<link rel="stylesheet" href="css/recruiter-directory-v6029.css?v=6034">
 <link rel="stylesheet" href="css/documents-register-v5976.css?v=5983">
 <link rel="stylesheet" href="css/references-workspace-v5984.css?v=59848">
 <link rel="stylesheet" href="css/dashboard-quick-links-v5987.css?v=6000">
@@ -1042,7 +1042,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span><i class="ph ph-lock-key" aria-hidden="true"></i>Profile sharing controlled</span>
     </div>
     <div class="recruiters-hero-visual" aria-hidden="true"></div>
-    <div class="employers-snapshot recruiters-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 verified</strong><span id="recruitersCompanyCount">0 companies</span></div>
+    <div class="employers-snapshot recruiters-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 of 0 companies</strong><span id="recruitersCompanyCount"></span></div>
   </header>
   <div class="employers-toolbar" aria-label="Recruiter filters">
     <label class="atsrs-search-field"><span>Search</span><span class="atsrs-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="recruitersSearch" type="search" placeholder="Recruiter or company" autocomplete="off"></span></label>
@@ -1054,6 +1054,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <div class="employers-notice" role="note"><i class="ph ph-shield-check" aria-hidden="true"></i><div><strong>Contact through verified vacancy details</strong><span>Contact information remains governed by JobSearch access rules. ATSRS does not send your profile automatically.</span></div></div>
   <div id="recruitersGrid" class="employers-grid" aria-live="polite"></div>
   <div id="recruitersEmpty" class="employers-empty hidden"><i class="ph ph-user-list" aria-hidden="true"></i><h2>No matching recruiters</h2><p>Clear the search and try another name.</p></div>
+  <nav id="recruitersPagination" class="employers-pagination recruiters-pagination hidden" aria-label="Recruiter companies pagination"></nav>
 </section>
 
 <section id="privacyPage" class="hidden legal-app-page">
@@ -2426,7 +2427,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/company-directory-links.js?v=4"></script>
 <script src="js/company-logo-assets.js?v=1"></script>
 <script src="js/employers.js?v=6038"></script>
-<script src="js/recruiters.js?v=17"></script>
+<script src="js/recruiters.js?v=18"></script>
 <script src="js/avatar.js?v=394"></script>
 <script src="js/documents.js?v=410"></script>
 <script src="js/references.js?v=375"></script>

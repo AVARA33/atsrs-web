@@ -3,7 +3,9 @@
   var recruiters = [],
     loadToken = 0,
     loadInFlight = false,
-    lastLoadedAt = 0;
+    lastLoadedAt = 0,
+    recruiterPage = 1;
+  var RECRUITER_COMPANY_PAGE_SIZE = 30;
   // Permanent Owner exclusion: nurlan jafarov / nurlan cəfərov and transliterations.
   function excluded(name) {
     const normalized = String(name || "")
@@ -251,6 +253,10 @@
       .replace(/\s+/g, " ")
       .toLowerCase();
   }
+  function recruiterCompanyKey(recruiter) {
+    var company = normalized(recruiter && recruiter.company);
+    return company || "__recruiter__" + normalized(recruiter && recruiter.name);
+  }
   function companyOptions() {
     var select = byId("recruitersCompany");
     if (!select) return;
@@ -386,35 +392,97 @@
         return b.vacancyCount - a.vacancyCount;
       return a.name.localeCompare(b.name);
     });
-    grid.textContent = "";
+    var companyKeys = [];
+    var seenCompanies = new Set();
     visible.forEach(function (recruiter) {
+      var key = recruiterCompanyKey(recruiter);
+      if (seenCompanies.has(key)) return;
+      seenCompanies.add(key);
+      companyKeys.push(key);
+    });
+    var companyCount = companyKeys.length;
+    var pageCount = Math.max(1, Math.ceil(companyCount / RECRUITER_COMPANY_PAGE_SIZE));
+    recruiterPage = Math.min(recruiterPage, pageCount);
+    var pageCompanyKeys = new Set(companyKeys.slice(
+      (recruiterPage - 1) * RECRUITER_COMPANY_PAGE_SIZE,
+      recruiterPage * RECRUITER_COMPANY_PAGE_SIZE,
+    ));
+    var pageRecruiters = visible.filter(function (recruiter) {
+      return pageCompanyKeys.has(recruiterCompanyKey(recruiter));
+    });
+    grid.textContent = "";
+    pageRecruiters.forEach(function (recruiter) {
       grid.appendChild(card(recruiter));
     });
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
-    byId("recruitersVisibleCount").textContent = visible.length + " verified";
-    var companyCount = new Set(visible.map(function (recruiter) {
-      return normalized(recruiter.company);
-    }).filter(Boolean)).size;
+    var companiesShown = Math.min(recruiterPage * RECRUITER_COMPANY_PAGE_SIZE, companyCount);
+    byId("recruitersVisibleCount").textContent = companiesShown + " of " + companyCount + " companies";
     var snapshot = byId("recruitersCompanyCount");
-    if (snapshot) snapshot.textContent = companyCount + " " + (companyCount === 1 ? "company" : "companies");
+    if (snapshot) snapshot.textContent = "";
+    renderPagination(pageCount);
     var exploreLabel = byId("recruitersExploreAllLabel");
     if (exploreLabel) exploreLabel.textContent = "Explore all " + recruiters.length;
+  }
+  function pageButton(label, targetPage, disabled, current, direction) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "jobs-page-button" + (direction ? " jobs-page-edge" : "");
+    button.disabled = !!disabled;
+    if (current) {
+      button.classList.add("is-current");
+      button.setAttribute("aria-current", "page");
+    }
+    if (direction === "previous") button.innerHTML = '<span class="jobs-page-chevron" aria-hidden="true">‹</span><span class="jobs-page-edge-label">Previous</span>';
+    else if (direction === "next") button.innerHTML = '<span class="jobs-page-edge-label">Next</span><span class="jobs-page-chevron" aria-hidden="true">›</span>';
+    else button.textContent = label;
+    button.addEventListener("click", function () {
+      if (disabled || current) return;
+      recruiterPage = targetPage;
+      render();
+      var target = byId("recruitersGrid");
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return button;
+  }
+  function renderPagination(pageCount) {
+    var nav = byId("recruitersPagination");
+    if (!nav) return;
+    nav.replaceChildren();
+    nav.classList.toggle("hidden", pageCount <= 1);
+    if (pageCount <= 1) return;
+    nav.appendChild(pageButton("Previous", recruiterPage - 1, recruiterPage === 1, false, "previous"));
+    for (var page = 1; page <= pageCount; page += 1) {
+      if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - recruiterPage) > 1) {
+        if (page === 3 || page === pageCount - 2) {
+          var gap = document.createElement("span");
+          gap.className = "jobs-page-ellipsis";
+          gap.textContent = "…";
+          nav.appendChild(gap);
+        }
+        continue;
+      }
+      nav.appendChild(pageButton(String(page), page, false, page === recruiterPage));
+    }
+    nav.appendChild(pageButton("Next", recruiterPage + 1, recruiterPage === pageCount, false, "next"));
   }
   function resetFilters(activeOnly) {
     byId("recruitersSearch").value = "";
     byId("recruitersCompany").value = "";
     byId("recruitersVacancies").value = activeOnly ? "active" : "";
     byId("recruitersSort").value = "name";
+    recruiterPage = 1;
     render();
     var target = byId("recruitersGrid");
     if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   function install() {
     if (!byId("recruitersPage")) return;
-    byId("recruitersSearch").addEventListener("input", render);
-    byId("recruitersCompany").addEventListener("change", render);
-    byId("recruitersVacancies").addEventListener("change", render);
-    byId("recruitersSort").addEventListener("change", render);
+    ["recruitersSearch", "recruitersCompany", "recruitersVacancies", "recruitersSort"].forEach(function (id) {
+      byId(id).addEventListener(id === "recruitersSearch" ? "input" : "change", function () {
+        recruiterPage = 1;
+        render();
+      });
+    });
     byId("recruitersClearFilters").addEventListener("click", function () { resetFilters(false); });
     byId("recruitersExploreAll").addEventListener("click", function () { resetFilters(false); });
     byId("recruitersActiveVacancies").addEventListener("click", function () { resetFilters(true); });
