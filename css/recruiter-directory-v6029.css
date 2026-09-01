@@ -341,19 +341,19 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
   justify-content:center;
   gap:5px;
   width:auto !important;
-  min-width:36px;
-  height:34px !important;
-  min-height:34px !important;
-  padding:0 9px;
+  min-width:38px;
+  height:38px !important;
+  min-height:38px !important;
+  padding:0 10px;
   border:0 !important;
-  border-radius:8px !important;
+  border-radius:9px !important;
   background:transparent !important;
   color:#9aa59f !important;
   box-shadow:none !important;
   font-size:11px;
   font-weight:800;
 }
-#recruitersPage .recruiters-pagination .jobs-page-edge { min-width:86px; }
+#recruitersPage .recruiters-pagination .jobs-page-edge { min-width:92px; }
 #recruitersPage .recruiters-pagination .jobs-page-button:hover:not(:disabled):not(.is-current) { background:rgba(72,212,107,.08) !important; color:#f3f8f5 !important; }
 #recruitersPage .recruiters-pagination .jobs-page-button.is-current {
   min-width:34px !important;
@@ -373,7 +373,7 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
   box-shadow:-3px 0 0 var(--atsrs-field-accent-ring),3px 0 0 var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow) !important;
 }
 #recruitersPage .recruiters-pagination .jobs-page-button:disabled { opacity:.56; }
-#recruitersPage .recruiters-pagination .jobs-page-ellipsis { display:grid; place-items:center; min-width:18px; height:34px; color:#6f7d75; }
+#recruitersPage .recruiters-pagination .jobs-page-ellipsis { display:grid; place-items:center; min-width:20px; height:38px; color:#6f7d75; }
 
 html[data-theme="light"] #recruitersPage .recruiters-hero {
   border-color:rgba(48,111,184,.24);
