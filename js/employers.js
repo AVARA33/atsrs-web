@@ -727,13 +727,18 @@
       visible.length + " verified · official sources";
     renderPagination(pageCount);
   }
-  function pageButton(label, targetPage, disabled, current) {
+  function pageButton(label, targetPage, disabled, current, direction) {
     var button = document.createElement("button");
     button.type = "button";
-    button.className = "jobs-page-button" + (current ? " active" : "");
-    button.textContent = label;
+    button.className = "jobs-page-button" + (direction ? " jobs-page-edge" : "");
+    if (direction === "previous") button.innerHTML = '<span class="jobs-page-chevron" aria-hidden="true">‹</span><span class="jobs-page-edge-label">Previous</span>';
+    else if (direction === "next") button.innerHTML = '<span class="jobs-page-edge-label">Next</span><span class="jobs-page-chevron" aria-hidden="true">›</span>';
+    else button.textContent = label;
     button.disabled = !!disabled;
-    if (current) button.setAttribute("aria-current", "page");
+    if (current) {
+      button.classList.add("is-current");
+      button.setAttribute("aria-current", "page");
+    }
     button.addEventListener("click", function () {
       companyPage = targetPage;
       render();
@@ -742,25 +747,25 @@
     return button;
   }
   function renderPagination(pageCount) {
-    var nav = byId("employersPagination");
-    if (!nav) return;
-    nav.replaceChildren();
-    nav.classList.toggle("hidden", pageCount <= 1);
-    if (pageCount <= 1) return;
-    nav.appendChild(pageButton("Previous", companyPage - 1, companyPage === 1));
-    for (var page = 1; page <= pageCount; page += 1) {
-      if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - companyPage) > 1) {
-        if (page === 3 || page === pageCount - 2) {
-          var gap = document.createElement("span");
-          gap.className = "jobs-page-gap";
-          gap.textContent = "…";
-          nav.appendChild(gap);
+    document.querySelectorAll("[data-employers-pagination]").forEach(function (nav) {
+      nav.replaceChildren();
+      nav.classList.toggle("hidden", pageCount <= 1);
+      if (pageCount <= 1) return;
+      nav.appendChild(pageButton("Previous", companyPage - 1, companyPage === 1, false, "previous"));
+      for (var page = 1; page <= pageCount; page += 1) {
+        if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - companyPage) > 1) {
+          if (page === 3 || page === pageCount - 2) {
+            var gap = document.createElement("span");
+            gap.className = "jobs-page-ellipsis";
+            gap.textContent = "…";
+            nav.appendChild(gap);
+          }
+          continue;
         }
-        continue;
+        nav.appendChild(pageButton(String(page), page, false, page === companyPage));
       }
-      nav.appendChild(pageButton(String(page), page, false, page === companyPage));
-    }
-    nav.appendChild(pageButton("Next", companyPage + 1, companyPage === pageCount));
+      nav.appendChild(pageButton("Next", companyPage + 1, companyPage === pageCount, false, "next"));
+    });
   }
   function directoryVisible() {
     var page = byId("employersPage");

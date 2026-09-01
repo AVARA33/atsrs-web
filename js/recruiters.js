@@ -395,12 +395,6 @@
         return b.vacancyCount - a.vacancyCount;
       return a.name.localeCompare(b.name);
     });
-    var seenCompanies = new Set();
-    visible.forEach(function (recruiter) {
-      var key = recruiterCompanyKey(recruiter);
-      seenCompanies.add(key);
-    });
-    var companyCount = seenCompanies.size;
     var pageCount = Math.max(1, Math.ceil(visible.length / RECRUITER_PAGE_SIZE));
     recruiterPage = Math.min(recruiterPage, pageCount);
     var pageStart = (recruiterPage - 1) * RECRUITER_PAGE_SIZE;
@@ -412,8 +406,6 @@
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
     var recruitersShown = Math.min(pageStart + pageRecruiters.length, visible.length);
     byId("recruitersVisibleCount").textContent = recruitersShown + " of " + visible.length + " recruiters";
-    var snapshot = byId("recruitersCompanyCount");
-    if (snapshot) snapshot.textContent = companyCount + " companies";
     renderPagination(pageCount);
     var exploreLabel = byId("recruitersExploreAllLabel");
     if (exploreLabel) exploreLabel.textContent = "Explore all " + recruiters.length;
@@ -440,25 +432,25 @@
     return button;
   }
   function renderPagination(pageCount) {
-    var nav = byId("recruitersPagination");
-    if (!nav) return;
-    nav.replaceChildren();
-    nav.classList.toggle("hidden", pageCount <= 1);
-    if (pageCount <= 1) return;
-    nav.appendChild(pageButton("Previous", recruiterPage - 1, recruiterPage === 1, false, "previous"));
-    for (var page = 1; page <= pageCount; page += 1) {
-      if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - recruiterPage) > 1) {
-        if (page === 3 || page === pageCount - 2) {
-          var gap = document.createElement("span");
-          gap.className = "jobs-page-ellipsis";
-          gap.textContent = "…";
-          nav.appendChild(gap);
+    document.querySelectorAll("[data-recruiters-pagination]").forEach(function (nav) {
+      nav.replaceChildren();
+      nav.classList.toggle("hidden", pageCount <= 1);
+      if (pageCount <= 1) return;
+      nav.appendChild(pageButton("Previous", recruiterPage - 1, recruiterPage === 1, false, "previous"));
+      for (var page = 1; page <= pageCount; page += 1) {
+        if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - recruiterPage) > 1) {
+          if (page === 3 || page === pageCount - 2) {
+            var gap = document.createElement("span");
+            gap.className = "jobs-page-ellipsis";
+            gap.textContent = "…";
+            nav.appendChild(gap);
+          }
+          continue;
         }
-        continue;
+        nav.appendChild(pageButton(String(page), page, false, page === recruiterPage));
       }
-      nav.appendChild(pageButton(String(page), page, false, page === recruiterPage));
-    }
-    nav.appendChild(pageButton("Next", recruiterPage + 1, recruiterPage === pageCount, false, "next"));
+      nav.appendChild(pageButton("Next", recruiterPage + 1, recruiterPage === pageCount, false, "next"));
+    });
   }
   function resetFilters(activeOnly) {
     byId("recruitersSearch").value = "";

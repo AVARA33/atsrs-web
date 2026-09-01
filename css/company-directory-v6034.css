@@ -48,7 +48,19 @@ html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilter
 #employersPage .employer-actions a,#employersPage .employer-actions button{height:36px!important;min-height:36px!important;font-size:11px!important}
 #employersPage .employer-actions :is(a:nth-child(3),a:nth-child(4)){display:none!important}
 #employersPage .employer-actions .employer-action-jobs{grid-column:auto!important;justify-content:center!important;width:100%!important;min-width:0!important;border:1px solid rgba(72,212,107,.35)!important;background:rgba(72,212,107,.06)!important}
-#employersPage .employers-pagination{display:flex;justify-content:center;gap:8px;margin-top:6px}
+#employersPage .directory-pagination-slot{display:flex;justify-content:flex-end;min-width:0}
+#employersPage .employers-pagination{display:flex;align-items:center;justify-content:flex-end;width:max-content;max-width:100%;gap:7px;margin-left:auto}
+#employersPage .employers-pagination-top{margin:10px 0 8px auto}
+#employersPage .employers-pagination-bottom{margin:20px 0 0 auto}
+#employersPage .employers-pagination .jobs-page-button{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:auto!important;min-width:36px;height:34px!important;min-height:34px!important;padding:0 9px;border:0!important;border-radius:8px!important;background:transparent!important;color:#9aa59f!important;box-shadow:none!important;font-size:11px;font-weight:800}
+#employersPage .employers-pagination .jobs-page-edge{min-width:86px}
+#employersPage .employers-pagination .jobs-page-button:hover:not(:disabled):not(.is-current){background:rgba(72,212,107,.08)!important;color:#f3f8f5!important}
+#employersPage .employers-pagination .jobs-page-button.is-current{border:1px solid rgba(72,212,107,.48)!important;background:rgba(72,212,107,.08)!important;color:#48d46b!important}
+#employersPage .employers-pagination .jobs-page-button:disabled{opacity:.56}
+#employersPage .employers-pagination .jobs-page-ellipsis{display:grid;place-items:center;min-width:18px;height:34px;color:#6f7d75}
+html[data-theme="light"] #employersPage .employers-pagination .jobs-page-button{color:#60748f!important}
+html[data-theme="light"] #employersPage .employers-pagination .jobs-page-button:hover:not(:disabled):not(.is-current){background:rgba(47,115,200,.08)!important;color:#245f9f!important}
+html[data-theme="light"] #employersPage .employers-pagination .jobs-page-button.is-current{border-color:rgba(47,115,200,.45)!important;background:rgba(47,115,200,.08)!important;color:#245f9f!important}
 html[data-theme="light"] #employersPage .company-directory-hero{border-color:#b9cee8;background:#f8fbff;box-shadow:0 22px 55px rgba(35,76,120,.1)}
 html[data-theme="light"] #employersPage .company-hero-copy{background:#f8fbff}
 html[data-theme="light"] #employersPage .company-hero-copy h1{color:#17335f!important;-webkit-text-fill-color:#17335f!important}

@@ -126,7 +126,7 @@ html[data-theme="light"] body{background:#f6f8fb}
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=39">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
-<link rel="stylesheet" href="css/recruiter-directory-v6029.css?v=6037">
+<link rel="stylesheet" href="css/recruiter-directory-v6029.css?v=6040">
 <link rel="stylesheet" href="css/documents-register-v5976.css?v=5983">
 <link rel="stylesheet" href="css/references-workspace-v5984.css?v=59848">
 <link rel="stylesheet" href="css/dashboard-quick-links-v5987.css?v=6000">
@@ -137,7 +137,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6024">
 <link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6036">
-<link rel="stylesheet" href="css/company-directory-v6034.css?v=6039">
+<link rel="stylesheet" href="css/company-directory-v6034.css?v=6040">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -1020,9 +1020,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </div>
 
   <div id="employersMessage" class="employers-message" role="status" aria-live="polite"></div>
+  <div class="directory-pagination-slot"><nav id="employersPaginationTop" class="jobs-pagination employers-pagination employers-pagination-top hidden" aria-label="Companies pagination" data-employers-pagination></nav></div>
   <div id="employersGrid" class="employers-grid" aria-live="polite"></div>
   <div id="employersEmpty" class="employers-empty hidden"><i class="ph ph-buildings" aria-hidden="true"></i><h2>No matching companies</h2><p>Clear the filters and try another search.</p></div>
-  <nav id="employersPagination" class="employers-pagination hidden" aria-label="Companies pagination"></nav>
+  <nav id="employersPaginationBottom" class="jobs-pagination employers-pagination employers-pagination-bottom hidden" aria-label="Companies pagination" data-employers-pagination></nav>
 </section>
 
 <section id="recruitersPage" class="hidden employers-page" aria-label="Recruiters">
@@ -1042,7 +1043,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <span><i class="ph ph-lock-key" aria-hidden="true"></i>Profile sharing controlled</span>
     </div>
     <div class="recruiters-hero-visual" aria-hidden="true"></div>
-    <div class="employers-snapshot recruiters-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 of 0 companies</strong><span id="recruitersCompanyCount"></span></div>
+    <div class="employers-snapshot recruiters-snapshot" aria-label="Recruiters directory status"><strong id="recruitersVisibleCount" aria-live="polite">0 of 0 recruiters</strong></div>
   </header>
   <div class="employers-toolbar" aria-label="Recruiter filters">
     <label class="atsrs-search-field"><span>Search</span><span class="atsrs-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="recruitersSearch" type="search" placeholder="Recruiter or company" autocomplete="off"></span></label>
@@ -1052,9 +1053,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <button id="recruitersClearFilters" type="button" class="secondary">Clear filters</button>
   </div>
   <div class="employers-notice" role="note"><i class="ph ph-shield-check" aria-hidden="true"></i><div><strong>Contact through verified vacancy details</strong><span>Contact information remains governed by JobSearch access rules. ATSRS does not send your profile automatically.</span></div></div>
+  <div class="directory-pagination-slot"><nav id="recruitersPaginationTop" class="jobs-pagination employers-pagination recruiters-pagination recruiters-pagination-top hidden" aria-label="Recruiter pagination" data-recruiters-pagination></nav></div>
   <div id="recruitersGrid" class="employers-grid" aria-live="polite"></div>
   <div id="recruitersEmpty" class="employers-empty hidden"><i class="ph ph-user-list" aria-hidden="true"></i><h2>No matching recruiters</h2><p>Clear the search and try another name.</p></div>
-  <nav id="recruitersPagination" class="employers-pagination recruiters-pagination hidden" aria-label="Recruiter pagination"></nav>
+  <nav id="recruitersPaginationBottom" class="jobs-pagination employers-pagination recruiters-pagination recruiters-pagination-bottom hidden" aria-label="Recruiter pagination" data-recruiters-pagination></nav>
 </section>
 
 <section id="privacyPage" class="hidden legal-app-page">
