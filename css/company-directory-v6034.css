@@ -1,0 +1,73 @@
+/* ATSRS Companies Directory V6034 — verified employer network. */
+body:has(#employersPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{display:none!important}
+#employersPage.employers-page{gap:24px;width:100%;max-width:1720px;margin:0 auto;padding:0 0 42px}
+#employersPage .company-directory-hero{position:relative;display:grid;grid-template-columns:minmax(560px,.92fr) minmax(620px,1.08fr);align-items:stretch;gap:28px;min-height:442px;padding:0;overflow:hidden;border:1px solid rgba(72,212,107,.32);border-radius:19px;background:#030706;box-shadow:0 24px 70px rgba(0,0,0,.2)}
+#employersPage .company-hero-copy{position:relative;z-index:2;display:flex;flex-direction:column;min-width:0;padding:62px 0 25px 48px}
+#employersPage .company-hero-eyebrow{color:#48df70;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+#employersPage .company-hero-copy h1{margin:20px 0 12px!important;color:#f7faf8!important;-webkit-text-fill-color:#f7faf8!important;font-size:54px!important;line-height:1.02!important;letter-spacing:-.035em!important}
+#employersPage .company-hero-copy>p{max-width:520px;margin:0!important;color:#edf2ef!important;font-size:22px!important;line-height:1.45!important}
+#employersPage .company-hero-actions{display:flex;align-items:center;gap:16px;margin-top:31px}
+html[data-theme] body #app.app:not(.hidden) #employersPage .company-hero-actions button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:12px!important;width:auto!important;min-height:60px!important;margin:0!important;padding:0 25px!important;border:1px solid rgba(72,212,107,.45)!important;border-radius:15px!important;background:rgba(3,12,7,.7)!important;color:#f6faf7!important;font-size:16px!important;font-weight:800!important;box-shadow:none!important}
+html[data-theme] body #app.app:not(.hidden) #employersPage .company-hero-actions button:first-child{border-color:#48df70!important;background:#4cdd63!important;color:#061008!important}
+#employersPage .company-hero-actions button i{font-size:23px}
+#employersPage .company-trust-strip{display:flex;align-items:center;gap:0;width:max-content;max-width:calc(100% + 250px);margin-top:auto;padding:13px 5px;border:1px solid rgba(72,212,107,.18);border-radius:13px;background:rgba(3,10,7,.66);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#employersPage .company-trust-strip>span{display:flex;align-items:center;gap:10px;min-height:29px;padding:0 21px;border-left:1px solid rgba(255,255,255,.14);color:#e9efeb;font-size:13px;white-space:nowrap}
+#employersPage .company-trust-strip>span:first-child{border-left:0}
+#employersPage .company-trust-strip i{color:#48df70;font-size:23px}
+#employersPage .company-trust-strip strong{font-weight:500}
+#employersPage .company-hero-network{position:relative;min-width:0;overflow:hidden;background:#020605}
+#employersPage .company-network-backdrop{position:absolute;inset:-24px -40px -22px -50px;background:url('../assets/recruiters/recruiter-directory-orbit-v1.png') center/cover no-repeat;opacity:.24;filter:contrast(1.15) saturate(1.1)}
+#employersPage .company-network-core{position:absolute;z-index:2;top:50%;left:51%;display:grid;place-items:center;width:152px;height:152px;border:1px solid rgba(72,223,112,.5);border-radius:34px;background:rgba(9,29,16,.88);color:#55e16d;box-shadow:0 0 0 24px rgba(72,223,112,.035),0 0 0 48px rgba(72,223,112,.025),0 0 48px rgba(72,223,112,.19);transform:translate(-50%,-50%)}
+#employersPage .company-network-core .ph-shield{font-size:118px}
+#employersPage .company-network-core .ph-buildings{position:absolute;font-size:47px}
+#employersPage .company-network-logo{position:absolute;z-index:3;display:grid;place-items:center;width:92px;height:92px;padding:13px;overflow:hidden;border:1px solid rgba(72,212,107,.35);border-radius:13px;background:rgba(10,18,13,.9);box-shadow:0 8px 30px rgba(0,0,0,.35),0 0 22px rgba(72,212,107,.09)}
+#employersPage .company-network-logo img{display:block;width:100%;height:100%;object-fit:contain}
+#employersPage .company-network-aramco{top:28px;left:18%}#employersPage .company-network-sabic{top:28px;right:14%}#employersPage .company-network-neom{top:170px;right:7%}#employersPage .company-network-maaden{bottom:29px;left:18%}#employersPage .company-network-stc{right:13%;bottom:29px}
+#employersPage .employers-toolbar{grid-template-columns:minmax(300px,1.65fr) repeat(4,minmax(150px,.9fr)) 116px;align-items:end;gap:14px;padding:0;border:0;border-radius:0;background:transparent}
+#employersPage .employers-toolbar :is(.atsrs-search-field,.employers-sector){display:grid;gap:7px;color:#a9b3ad;font-size:12px;font-weight:700}
+#employersPage .employers-toolbar :is(input,select),html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilters{height:50px!important;min-height:50px!important;border:1px solid #29322d!important;border-radius:11px!important;background:rgba(9,13,11,.88)!important;color:#edf2ef!important;box-shadow:none!important}
+#employersPage .employers-toolbar input{padding:0 45px 0 16px!important}
+#employersPage .employers-toolbar select{padding:0 39px 0 14px!important}
+html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilters{top:0!important;width:116px!important;padding:0 13px!important;font-size:13px!important}
+#employersPage .employers-message:empty{display:none}
+#employersPage .employers-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 24px}
+#employersPage .employer-card{grid-template-columns:108px minmax(0,1fr)!important;grid-template-rows:auto auto auto!important;column-gap:20px!important;row-gap:8px!important;min-height:232px!important;padding:26px 26px 18px!important;border:1px solid rgba(135,151,142,.25)!important;border-radius:14px!important;background:rgba(7,11,9,.82)!important;box-shadow:0 15px 34px rgba(0,0,0,.18)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#employersPage .employer-card::before{width:0!important}
+#employersPage .employer-card-head{display:contents!important}
+#employersPage .employer-mark{grid-column:1!important;grid-row:1!important;width:108px!important;height:108px!important;padding:12px!important;border-color:rgba(72,212,107,.24)!important;border-radius:13px!important;background:#f8faf9!important}
+#employersPage .employer-logo{width:82px!important;height:82px!important}
+#employersPage .employer-card-copy{grid-column:2!important;grid-row:1!important;align-content:start!important;gap:5px!important;padding:0!important}
+#employersPage .employer-source{color:#48df70!important;font-size:11px!important;font-weight:900!important;letter-spacing:.045em!important;text-transform:uppercase!important}
+#employersPage .employer-card-copy h4{margin:4px 0 0!important;font-size:21px!important;line-height:1.13!important}
+#employersPage .employer-sector-label{color:#edf2ef!important;font-size:13px!important}
+#employersPage .employer-card-copy p{display:none}
+#employersPage .employer-vacancy-panel{grid-column:2!important;grid-row:2!important;display:flex!important;align-items:center!important;gap:8px!important;padding:0!important;border:0!important}
+#employersPage .employer-vacancy-panel>span:first-child{color:#48df70!important;font-size:12px!important;font-weight:600!important;text-transform:none!important;letter-spacing:0!important}
+#employersPage .employer-vacancy-panel>span:first-child i{margin-right:8px;color:#3be266;font-size:11px;vertical-align:-1px}
+#employersPage .employer-vacancy-panel>strong{display:none!important}
+#employersPage .employer-vacancy-panel>span:last-child{display:none!important}
+#employersPage .employer-tags{display:none!important}
+#employersPage .employer-actions{grid-column:1/-1!important;grid-row:3!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin-top:8px!important;padding-top:12px!important;border-top:1px solid rgba(255,255,255,.1)!important}
+#employersPage .employer-actions a,#employersPage .employer-actions button{height:36px!important;min-height:36px!important;font-size:11px!important}
+#employersPage .employer-actions :is(a:nth-child(3),a:nth-child(4)){display:none!important}
+#employersPage .employer-actions .employer-action-jobs{grid-column:auto!important;justify-content:center!important;width:100%!important;min-width:0!important;border:1px solid rgba(72,212,107,.35)!important;background:rgba(72,212,107,.06)!important}
+#employersPage .employers-pagination{justify-content:center;margin-top:6px}
+#employersPage .company-hero-actions button.active{outline:2px solid rgba(72,223,112,.45);outline-offset:3px}
+html[data-theme="light"] #employersPage .company-directory-hero{border-color:#b9cee8;background:#f8fbff;box-shadow:0 22px 55px rgba(35,76,120,.1)}
+html[data-theme="light"] #employersPage .company-hero-copy h1{color:#17335f!important;-webkit-text-fill-color:#17335f!important}
+html[data-theme="light"] #employersPage .company-hero-copy>p{color:#526b8d!important}
+html[data-theme="light"] #employersPage .company-hero-eyebrow{color:#2f73c8}
+html[data-theme="light"] #employersPage .company-trust-strip{border-color:#c8d8ec;background:rgba(255,255,255,.82)}
+html[data-theme="light"] #employersPage .company-trust-strip>span{border-color:#d7e2ef;color:#23466f}
+html[data-theme="light"] #employersPage .company-trust-strip i{color:#2f73c8}
+html[data-theme="light"] #employersPage .company-hero-network{background:#edf5ff}
+html[data-theme="light"] #employersPage .company-network-backdrop{filter:hue-rotate(165deg) saturate(.7) brightness(1.7);opacity:.24}
+html[data-theme="light"] #employersPage .company-network-logo{border-color:#b8cde6;background:rgba(255,255,255,.9);box-shadow:0 9px 24px rgba(35,76,120,.11)}
+html[data-theme="light"] #employersPage .company-network-core{border-color:#7da9df;background:rgba(234,244,255,.92);color:#2f73c8;box-shadow:0 0 0 24px rgba(47,115,200,.035),0 0 0 48px rgba(47,115,200,.022),0 0 40px rgba(47,115,200,.12)}
+html[data-theme="light"] #employersPage .employers-toolbar :is(input,select),html[data-theme="light"] body #app.app:not(.hidden) #employersPage #employersClearFilters{border-color:#cbd9e9!important;background:#fff!important;color:#18345d!important}
+html[data-theme="light"] #employersPage .employer-card{border-color:#d3deeb!important;background:rgba(255,255,255,.88)!important;box-shadow:0 12px 28px rgba(37,73,112,.09)!important}
+html[data-theme="light"] #employersPage .employer-sector-label{color:#3f5879!important}
+html[data-theme="light"] #employersPage .employer-actions{border-color:#dce5ef!important}
+@media(max-width:1420px){#employersPage .company-directory-hero{grid-template-columns:minmax(500px,.92fr) minmax(520px,1.08fr)}#employersPage .company-hero-copy{padding-left:34px}#employersPage .company-hero-copy h1{font-size:46px!important}#employersPage .company-trust-strip>span{padding-inline:14px}#employersPage .employers-toolbar{grid-template-columns:minmax(280px,1.5fr) repeat(2,minmax(150px,1fr))}#employersPage .employers-toolbar>:nth-child(4),#employersPage .employers-toolbar>:nth-child(5){grid-row:2}html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilters{grid-row:2}.employers-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:980px){#employersPage .company-directory-hero{grid-template-columns:1fr;min-height:0}#employersPage .company-hero-copy{padding:42px 28px 28px}#employersPage .company-hero-network{min-height:360px}#employersPage .company-trust-strip{width:100%;max-width:100%;margin-top:30px;overflow-x:auto}#employersPage .employers-toolbar{grid-template-columns:1fr 1fr}html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilters{grid-row:auto;width:100%!important}.employers-grid{grid-template-columns:1fr!important}}
+@media(max-width:620px){#employersPage .company-hero-copy h1{font-size:38px!important}#employersPage .company-hero-copy>p{font-size:17px!important}#employersPage .company-hero-actions{align-items:stretch;flex-direction:column}html[data-theme] body #app.app:not(.hidden) #employersPage .company-hero-actions button{width:100%!important}#employersPage .company-hero-network{min-height:310px}#employersPage .company-network-logo{width:70px;height:70px;padding:9px}#employersPage .company-network-core{width:120px;height:120px}#employersPage .company-network-core .ph-shield{font-size:90px}#employersPage .company-network-core .ph-buildings{font-size:35px}#employersPage .employers-toolbar{grid-template-columns:1fr}#employersPage .employer-card{grid-template-columns:82px minmax(0,1fr)!important;padding:20px!important}#employersPage .employer-mark{width:82px!important;height:82px!important}#employersPage .employer-logo{width:62px!important;height:62px!important}}

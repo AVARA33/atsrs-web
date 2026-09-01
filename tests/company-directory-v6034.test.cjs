@@ -1,0 +1,15 @@
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const html = fs.readFileSync('index.html', 'utf8');
+const js = fs.readFileSync('js/employers.js', 'utf8');
+const css = fs.readFileSync('css/company-directory-v6034.css', 'utf8');
+assert.match(html, /Companies on ATSRS/);
+assert.match(html, /id="employersLocation"/);
+assert.match(html, /id="employersSize"/);
+assert.match(html, /id="employersPagination"/);
+assert.match(js, /COMPANY_PAGE_SIZE = 30/);
+assert.match(js, /Saudi Aramco/);
+assert.match(js, /renderPagination/);
+assert.doesNotMatch(js, /employersVacancies/);
+assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+console.log('company-directory-v6034: ok');
