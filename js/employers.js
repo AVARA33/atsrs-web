@@ -322,8 +322,73 @@
         careers: "https://greenseaiq.com/careers/",
         contact: "https://greenseaiq.com/contact-us/",
       },
+      "Saudi Aramco": {
+        mark: "SA",
+        summary: "Integrated energy and chemicals company with global operations.",
+        sector: "Energy · Oil & Gas",
+        tags: ["Energy", "Oil & Gas"],
+        website: "https://www.aramco.com/",
+        careers: "https://www.aramco.com/en/careers",
+        contact: "https://www.aramco.com/en/contact",
+        location: "Middle East",
+        size: "enterprise",
+        featuredRank: 1,
+      },
+      SABIC: {
+        mark: "SA",
+        summary: "Global chemicals and manufacturing company serving multiple industries.",
+        sector: "Chemicals · Manufacturing",
+        tags: ["Chemicals", "Manufacturing"],
+        website: "https://www.sabic.com/",
+        careers: "https://www.sabic.com/en/careers",
+        contact: "https://www.sabic.com/en/contact",
+        location: "Middle East",
+        size: "enterprise",
+        featuredRank: 2,
+      },
+      stc: {
+        mark: "stc",
+        summary: "Digital infrastructure and telecommunications services provider.",
+        sector: "Technology · Telecommunications",
+        tags: ["Technology", "Telecommunications"],
+        website: "https://www.stc.com.sa/",
+        careers: "https://www.stc.com.sa/content/stcgroupwebsite/sa/en/people-and-careers.html",
+        contact: "https://www.stc.com.sa/content/stc/sa/en/personal/home.html",
+        location: "Middle East",
+        size: "enterprise",
+        featuredRank: 3,
+      },
+      NEOM: {
+        mark: "NE",
+        summary: "Large-scale regional development with technology and infrastructure opportunities.",
+        sector: "Development · Infrastructure",
+        tags: ["Development", "Infrastructure"],
+        website: "https://www.neom.com/",
+        careers: "https://careers.neom.com/",
+        contact: "https://www.neom.com/en-us/contact-us",
+        location: "Middle East",
+        size: "enterprise",
+        featuredRank: 4,
+      },
+      "Ma'aden": {
+        mark: "MA",
+        summary: "Mining and minerals company operating across industrial value chains.",
+        sector: "Mining · Materials",
+        tags: ["Mining", "Materials"],
+        website: "https://www.maaden.com.sa/",
+        careers: "https://careers.maaden.com/",
+        contact: "https://www.maaden.com.sa/en/contact-us",
+        location: "Middle East",
+        size: "enterprise",
+        featuredRank: 5,
+      },
     },
     companyLogos = {
+      "Saudi Aramco": "assets/company-logos/saudi-aramco.jpg",
+      SABIC: "assets/company-logos/sabic-reference.jpg",
+      NEOM: "assets/company-logos/neom.png",
+      "Ma'aden": "assets/company-logos/maaden.svg",
+      stc: "assets/company-logos/stc.jpg",
       "Subsea7": "assets/company-logos/subsea7.ico",
       "Oceaneering": "assets/company-logos/oceaneering.png",
       "DOF Group": "assets/company-logos/dof-group.png",
@@ -357,7 +422,10 @@
     companies = [],
     loadToken = 0,
     loadInFlight = false,
-    lastLoadedAt = 0;
+    lastLoadedAt = 0,
+    companyPage = 1,
+    hiringOnly = false;
+  var COMPANY_PAGE_SIZE = 30;
   var categoryRules = [
     { label: "ROV & Robotics", pattern: /\b(rov|robot(?:ics)?|autonomous|auv|unmanned)\b/i },
     { label: "Subsea & Offshore", pattern: /\b(subsea|offshore|underwater|diving|deepwater)\b/i },
@@ -564,7 +632,8 @@
     var vacancy = document.createElement("div");
     vacancy.className = "employer-vacancy-panel";
     var vacancyKicker = document.createElement("span");
-    vacancyKicker.textContent = "Active vacancies";
+    vacancyKicker.innerHTML = '<i class="ph ph-circle" aria-hidden="true"></i>' +
+      (company.vacancyCount > 0 ? "Hiring now" : "Official careers source");
     var vacancyNumber = document.createElement("strong");
     vacancyNumber.textContent = String(company.vacancyCount || 0);
     var vacancyHint = document.createElement("span");
@@ -611,7 +680,8 @@
         .trim()
         .toLowerCase(),
       sector = byId("employersSector").value,
-      vacancies = byId("employersVacancies").value,
+      location = byId("employersLocation").value,
+      size = byId("employersSize").value,
       sort = byId("employersSort").value;
     var visible = companies.filter(function (company) {
       var data = companyData(company),
@@ -622,23 +692,75 @@
       return (
         (!query || haystack.indexOf(query) >= 0) &&
         (!sector || data.sector === sector) &&
-        (!vacancies || company.vacancyCount > 0)
+        (!location || (data.location || "Worldwide") === location) &&
+        (!size || data.size === size) &&
+        (!hiringOnly || company.vacancyCount > 0)
       );
     });
     visible.sort(function (a, b) {
       if (sort === "vacancies" && b.vacancyCount !== a.vacancyCount)
         return b.vacancyCount - a.vacancyCount;
+      if (sort === "verified") {
+        var rankA = companyData(a).featuredRank || 9999,
+          rankB = companyData(b).featuredRank || 9999;
+        if (rankA !== rankB) return rankA - rankB;
+        var logoA = companyLogos[a.name] ? 0 : 1,
+          logoB = companyLogos[b.name] ? 0 : 1;
+        if (logoA !== logoB) return logoA - logoB;
+      }
       return a.name.localeCompare(b.name);
     });
+    var pageCount = Math.max(1, Math.ceil(visible.length / COMPANY_PAGE_SIZE));
+    companyPage = Math.min(companyPage, pageCount);
+    var pageCompanies = visible.slice(
+      (companyPage - 1) * COMPANY_PAGE_SIZE,
+      companyPage * COMPANY_PAGE_SIZE,
+    );
     grid.textContent = "";
     var fragment = document.createDocumentFragment();
-    visible.forEach(function (company) {
+    pageCompanies.forEach(function (company) {
       fragment.appendChild(card(company));
     });
     grid.appendChild(fragment);
     byId("employersEmpty").classList.toggle("hidden", visible.length > 0);
     byId("employersVisibleCount").textContent =
-      visible.length + " of " + companies.length + " companies";
+      visible.length + " verified · official sources";
+    renderPagination(pageCount);
+  }
+  function pageButton(label, targetPage, disabled, current) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "jobs-page-button" + (current ? " active" : "");
+    button.textContent = label;
+    button.disabled = !!disabled;
+    if (current) button.setAttribute("aria-current", "page");
+    button.addEventListener("click", function () {
+      companyPage = targetPage;
+      render();
+      byId("employersGrid").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return button;
+  }
+  function renderPagination(pageCount) {
+    var nav = byId("employersPagination");
+    if (!nav) return;
+    nav.replaceChildren();
+    nav.classList.toggle("hidden", pageCount <= 1);
+    if (pageCount <= 1) return;
+    nav.appendChild(pageButton("Previous", companyPage - 1, companyPage === 1));
+    for (var page = 1; page <= pageCount; page += 1) {
+      if (pageCount > 7 && page > 2 && page < pageCount - 1 && Math.abs(page - companyPage) > 1) {
+        if (page === 3 || page === pageCount - 2) {
+          var gap = document.createElement("span");
+          gap.className = "jobs-page-gap";
+          gap.textContent = "…";
+          nav.appendChild(gap);
+        }
+        continue;
+      }
+      nav.appendChild(pageButton(String(page), page, false, page === companyPage));
+    }
+    nav.appendChild(pageButton("Next", companyPage + 1, companyPage === pageCount));
   }
   function directoryVisible() {
     var page = byId("employersPage");
@@ -680,8 +802,18 @@
       });
       companies = Array.from(names.values())
         .map(finalizeCategorySignals)
-        .sort(function (a, b) { return a.name.localeCompare(b.name); });
+        .sort(function (a, b) {
+          var rankA = companyData(a).featuredRank || 9999,
+            rankB = companyData(b).featuredRank || 9999;
+          if (rankA !== rankB) return rankA - rankB;
+          return a.name.localeCompare(b.name);
+        })
+        .slice(0, 96);
       refreshSectorOptions();
+      refreshLocationOptions();
+      refreshSizeOptions();
+      var browseLabel = byId("employersBrowseAllLabel");
+      if (browseLabel) browseLabel.textContent = "Browse " + companies.length + " companies";
       var message = byId("employersMessage");
       if (message) message.textContent = "";
       if (directoryVisible()) render();
@@ -700,7 +832,7 @@
     sector.textContent = "";
     var all = document.createElement("option");
     all.value = "";
-    all.textContent = "All sectors";
+    all.textContent = "All industries";
     sector.appendChild(all);
     Array.from(new Set(companies.map(function (company) {
       return companyData(company).sector;
@@ -714,18 +846,89 @@
       return option.value === selected;
     }) ? selected : "";
   }
+  function refreshLocationOptions() {
+    var location = byId("employersLocation"),
+      selected = location.value;
+    location.textContent = "";
+    var all = document.createElement("option");
+    all.value = "";
+    all.textContent = "All locations";
+    location.appendChild(all);
+    Array.from(new Set(companies.map(function (company) {
+      return companyData(company).location || "Worldwide";
+    }))).sort().forEach(function (value) {
+      var option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      location.appendChild(option);
+    });
+    location.value = Array.from(location.options).some(function (option) {
+      return option.value === selected;
+    }) ? selected : "";
+  }
+  function refreshSizeOptions() {
+    var size = byId("employersSize"),
+      selected = size.value,
+      labels = { enterprise: "Enterprise", "mid-market": "Mid-market", small: "Small company" };
+    size.textContent = "";
+    var all = document.createElement("option");
+    all.value = "";
+    all.textContent = "All sizes";
+    size.appendChild(all);
+    Array.from(new Set(companies.map(function (company) {
+      return companyData(company).size;
+    }).filter(Boolean))).sort().forEach(function (value) {
+      var option = document.createElement("option");
+      option.value = value;
+      option.textContent = labels[value] || value;
+      size.appendChild(option);
+    });
+    size.value = Array.from(size.options).some(function (option) {
+      return option.value === selected;
+    }) ? selected : "";
+  }
   function install() {
     if (!byId("employersPage")) return;
     var sector = byId("employersSector");
-    byId("employersSearch").addEventListener("input", render);
-    sector.addEventListener("change", render);
-    byId("employersVacancies").addEventListener("change", render);
-    byId("employersSort").addEventListener("change", render);
+    function resetAndRender() {
+      companyPage = 1;
+      render();
+    }
+    byId("employersSearch").addEventListener("input", resetAndRender);
+    sector.addEventListener("change", resetAndRender);
+    byId("employersLocation").addEventListener("change", resetAndRender);
+    byId("employersSize").addEventListener("change", resetAndRender);
+    byId("employersSort").addEventListener("change", resetAndRender);
+    byId("employersBrowseAll").addEventListener("click", function () {
+      byId("employersSearch").value = "";
+      sector.value = "";
+      byId("employersLocation").value = "";
+      byId("employersSize").value = "";
+      hiringOnly = false;
+      byId("employersHiringNow").classList.remove("active");
+      byId("employersHiringNow").setAttribute("aria-pressed", "false");
+      companyPage = 1;
+      render();
+      byId("employersGrid").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    byId("employersHiringNow").addEventListener("click", function () {
+      hiringOnly = !hiringOnly;
+      this.classList.toggle("active", hiringOnly);
+      this.setAttribute("aria-pressed", String(hiringOnly));
+      companyPage = 1;
+      render();
+      byId("employersGrid").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     byId("employersClearFilters").addEventListener("click", function () {
       byId("employersSearch").value = "";
       sector.value = "";
-      byId("employersVacancies").value = "";
-      byId("employersSort").value = "name";
+      byId("employersLocation").value = "";
+      byId("employersSize").value = "";
+      byId("employersSort").value = "verified";
+      hiringOnly = false;
+      byId("employersHiringNow").classList.remove("active");
+      byId("employersHiringNow").setAttribute("aria-pressed", "false");
+      companyPage = 1;
       render();
     });
     var page = byId("employersPage");

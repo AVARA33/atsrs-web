@@ -137,6 +137,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/jobsearch-hero-v6002.css?v=6010">
 <link rel="stylesheet" href="css/product-updates-mission-v6003.css?v=6024">
 <link rel="stylesheet" href="css/product-updates-atlas-v6010.css?v=6033">
+<link rel="stylesheet" href="css/company-directory-v6034.css?v=6039">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -985,35 +986,43 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </section>
 
 <section id="employersPage" class="hidden employers-page" aria-label="Companies">
-  <header class="employers-hero">
-    <div>
-      <span class="pill">OFFICIAL COMPANY DIRECTORY</span>
-      <p>Explore official company websites, careers pages and contact routes relevant to offshore and subsea work.</p>
+  <header class="employers-hero company-directory-hero">
+    <div class="company-hero-copy">
+      <span class="company-hero-eyebrow">Verified employer directory</span>
+      <h1>Companies on ATSRS</h1>
+      <p>One trusted place to explore employers,<br>official channels and current vacancies.</p>
+      <div class="company-hero-actions">
+        <button id="employersBrowseAll" type="button"><i class="ph ph-buildings" aria-hidden="true"></i><span id="employersBrowseAllLabel">Browse 96 companies</span></button>
+        <button id="employersHiringNow" type="button" aria-pressed="false"><i class="ph ph-lightning" aria-hidden="true"></i><span>Hiring now</span></button>
+      </div>
+      <div class="company-trust-strip" aria-label="Company directory trust signals">
+        <span><i class="ph ph-shield-check" aria-hidden="true"></i><strong id="employersVisibleCount" aria-live="polite">96 verified · official sources</strong></span>
+        <span><i class="ph ph-identification-card" aria-hidden="true"></i>Verified profiles</span>
+        <span><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i>Direct applications</span>
+        <span><i class="ph ph-chart-bar" aria-hidden="true"></i>Live vacancy signals</span>
+      </div>
     </div>
-    <div class="employers-snapshot" aria-label="Companies directory status">
-      <strong id="employersVisibleCount" aria-live="polite">0 companies</strong>
-      <span>Official public sources</span>
+    <div class="company-hero-network" aria-label="Verified employer network">
+      <img class="company-network-reference" src="assets/company-directory/companies-reference-2000x790.png" alt="Employer network featuring Aramco, SABIC, NEOM, Ma'aden and stc">
     </div>
   </header>
 
   <div class="employers-toolbar" aria-label="Company filters">
     <label class="atsrs-search-field">
       <span>Search</span>
-      <span class="atsrs-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="employersSearch" type="search" placeholder="Company or specialism" autocomplete="off"></span>
+      <span class="atsrs-search-control"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="employersSearch" type="search" placeholder="Company name or keyword" autocomplete="off"></span>
     </label>
-    <label class="employers-sector"><span>Sector</span><select id="employersSector"><option value="">All sectors</option></select></label>
-    <label class="employers-sector"><span>Vacancies</span><select id="employersVacancies"><option value="">All companies</option><option value="active">Active vacancies only</option></select></label>
-    <label class="employers-sector"><span>Sort</span><select id="employersSort"><option value="name">Company name</option><option value="vacancies">Most vacancies</option></select></label>
+    <label class="employers-sector"><span>Industry</span><select id="employersSector"><option value="">All industries</option></select></label>
+    <label class="employers-sector"><span>Location</span><select id="employersLocation"><option value="">All locations</option></select></label>
+    <label class="employers-sector"><span>Company size</span><select id="employersSize"><option value="">All sizes</option></select></label>
+    <label class="employers-sector"><span>Sort</span><select id="employersSort"><option value="verified">Verified first</option><option value="name">Company name</option><option value="vacancies">Most vacancies</option></select></label>
     <button id="employersClearFilters" type="button" class="secondary">Clear filters</button>
   </div>
 
-  <div class="employers-notice" role="note">
-    <i class="ph ph-shield-check" aria-hidden="true"></i>
-    <div><strong>Use official application routes</strong><span>ATSRS lists public company sources and is not acting as the employer or recruitment agent.</span></div>
-  </div>
   <div id="employersMessage" class="employers-message" role="status" aria-live="polite"></div>
   <div id="employersGrid" class="employers-grid" aria-live="polite"></div>
   <div id="employersEmpty" class="employers-empty hidden"><i class="ph ph-buildings" aria-hidden="true"></i><h2>No matching companies</h2><p>Clear the filters and try another search.</p></div>
+  <nav id="employersPagination" class="employers-pagination hidden" aria-label="Companies pagination"></nav>
 </section>
 
 <section id="recruitersPage" class="hidden employers-page" aria-label="Recruiters">
@@ -2416,7 +2425,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/dashboard.js?v=5930"></script>
 <script src="js/company-directory-links.js?v=4"></script>
 <script src="js/company-logo-assets.js?v=1"></script>
-<script src="js/employers.js?v=43"></script>
+<script src="js/employers.js?v=6038"></script>
 <script src="js/recruiters.js?v=17"></script>
 <script src="js/avatar.js?v=394"></script>
 <script src="js/documents.js?v=410"></script>

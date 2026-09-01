@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS Companies V6038 QA</title>
+  <link rel="stylesheet" href="../css/employers.css?v=34">
+  <link rel="stylesheet" href="../css/company-directory-v6034.css?v=6039">
+  <style>
+    :root{--text:#f7faf8;--muted:#a8b1ac;--line:#26312b}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020403;color:var(--text);font-family:Inter,Arial,sans-serif}button,input,select{font:inherit}.qa-shell{display:grid;grid-template-columns:140px minmax(0,1fr);min-height:100vh}.qa-sidebar{position:fixed;inset:0 auto 0 0;width:140px;border-right:1px solid #222925;background:#020403;display:flex;flex-direction:column;align-items:center;padding:16px 10px 14px;z-index:10}.qa-brand{width:58px;height:58px;object-fit:contain;margin-bottom:13px}.qa-nav{display:grid;width:100%;gap:3px}.qa-nav span{display:grid;place-items:center;min-height:56px;color:#f4f7f5;font-size:12px;font-weight:700}.qa-nav span.active{border-left:3px solid #45df68;color:#45df68}.qa-nav i{font-style:normal;font-size:20px}.qa-utilities{margin-top:auto;width:100%;border-top:1px solid #222925;padding-top:9px}.qa-main{grid-column:2;min-width:0;padding:70px 0 50px}.qa-top{position:fixed;top:20px;right:74px;z-index:8;display:flex;align-items:center;gap:18px;color:#f4f7f5;font-size:13px}.qa-top b{padding:10px 14px;border:1px solid #29322d;border-radius:18px;background:#080c0a}.atsrs-search-field,.atsrs-search-control{display:grid;position:relative}.atsrs-search-control i{position:absolute;right:15px;top:16px}.atsrs-search-control input,select{width:100%}.employers-page{display:grid!important}.employers-grid{display:grid}.employer-card{display:grid}.employer-card-head{display:grid}.employer-card-copy{display:grid}.employer-vacancy-panel{display:grid}.employer-actions{display:grid}.employer-mark{display:grid;place-items:center}.employer-logo{display:block;object-fit:contain}.employer-actions a{display:flex;align-items:center;justify-content:center;border:1px solid #29322d;border-radius:8px;color:#edf2ef;text-decoration:none}.jobs-page-button{min-width:38px;height:38px;border:1px solid #29322d;border-radius:9px;background:#090d0b;color:#edf2ef}.jobs-page-button.active{border-color:#48df70;color:#48df70}
+  </style>
+</head>
+<body>
+<div class="qa-shell">
+  <aside class="qa-sidebar"><img class="qa-brand" src="../assets/branding/atsrs-mark-green.png" alt="ATSRS"><div class="qa-nav"><span><i>⌂</i>Dashboard</span><span><i>▣</i>JobSearch</span><span><i>◎</i>Recruiters</span><span class="active"><i>▥</i>Companies</span><span><i>□</i>Documents</span><span><i>▤</i>References</span><span><i>○</i>Profile</span></div><div class="qa-utilities"><div class="qa-nav"><span>⌁ Developer</span><span>✣ Product Updates</span><span>▢ Privacy</span></div></div></aside>
+  <div class="qa-top"><span>♧</span><span>◉⌄</span><b>Anar Agasiyev<br><small>Personal Account</small></b></div>
+  <main class="qa-main" id="app">
+    <section id="employersPage" class="employers-page" aria-label="Companies">
+      <header class="employers-hero company-directory-hero">
+        <div class="company-hero-copy">
+          <span class="company-hero-eyebrow">Verified employer directory</span>
+          <h1>Companies on ATSRS</h1>
+          <p>One trusted place to explore employers,<br>official channels and current vacancies.</p>
+          <div class="company-hero-actions"><button><span>▥</span>Browse 96 companies</button><button><span>ϟ</span>Hiring now</button></div>
+          <div class="company-trust-strip"><span>♢ <strong>96 verified · official sources</strong></span><span>▱ Verified profiles</span><span>➤ Direct applications</span><span>▥ Live vacancy signals</span></div>
+        </div>
+        <div class="company-hero-network"><img class="company-network-reference" src="../assets/company-directory/companies-reference-2000x790.png" alt="Employer network"></div>
+      </header>
+      <div class="employers-toolbar">
+        <label class="atsrs-search-field"><span>Search</span><span class="atsrs-search-control"><input placeholder="Company name or keyword"><i>⌕</i></span></label>
+        <label class="employers-sector"><span>Industry</span><select><option>All industries</option></select></label>
+        <label class="employers-sector"><span>Location</span><select><option>All locations</option></select></label>
+        <label class="employers-sector"><span>Company size</span><select><option>All sizes</option></select></label>
+        <label class="employers-sector"><span>Sort</span><select><option>Verified first</option></select></label>
+        <button id="employersClearFilters">Clear filters</button>
+      </div>
+      <div class="employers-grid">
+        <article class="employer-card"><div class="employer-card-head"><div class="employer-mark"><img class="employer-logo" src="../assets/company-logos/saudi-aramco.jpg" alt="Saudi Aramco"></div><div class="employer-card-copy"><span class="employer-source">Verified company</span><h4>Saudi Aramco</h4><span class="employer-sector-label">Energy · Oil &amp; Gas</span></div></div><div class="employer-vacancy-panel"><span><i>●</i> Hiring now</span><strong>1</strong><span>vacancy</span></div><div class="employer-actions"><a href="#">Website</a><a class="employer-action-jobs" href="#">Careers</a></div></article>
+        <article class="employer-card"><div class="employer-card-head"><div class="employer-mark"><img class="employer-logo" src="../assets/company-logos/sabic-reference.jpg" alt="SABIC"></div><div class="employer-card-copy"><span class="employer-source">Verified company</span><h4>SABIC</h4><span class="employer-sector-label">Chemicals · Manufacturing</span></div></div><div class="employer-vacancy-panel"><span><i>●</i> Hiring now</span><strong>1</strong><span>vacancy</span></div><div class="employer-actions"><a href="#">Website</a><a class="employer-action-jobs" href="#">Careers</a></div></article>
+        <article class="employer-card"><div class="employer-card-head"><div class="employer-mark"><img class="employer-logo" src="../assets/company-logos/stc.jpg" alt="stc"></div><div class="employer-card-copy"><span class="employer-source">Verified company</span><h4>stc</h4><span class="employer-sector-label">Technology · Telecommunications</span></div></div><div class="employer-vacancy-panel"><span><i>●</i> Hiring now</span><strong>1</strong><span>vacancy</span></div><div class="employer-actions"><a href="#">Website</a><a class="employer-action-jobs" href="#">Careers</a></div></article>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
