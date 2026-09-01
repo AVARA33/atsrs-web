@@ -247,11 +247,15 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage :is(#recruit
 #recruitersPage .employers-notice strong { font-size:12px; }
 #recruitersPage .employers-notice span { font-size:11px; }
 
-#recruitersPage .employers-grid { gap:10px 14px; }
+#recruitersPage .employers-grid {
+  align-items:stretch;
+  gap:12px 14px;
+}
 #recruitersPage .employer-card {
   grid-template-rows:auto auto auto;
-  height:198px;
-  min-height:198px;
+  align-self:stretch;
+  height:auto;
+  min-height:220px;
   padding:12px 16px 10px 22px;
   border-radius:12px;
 }
