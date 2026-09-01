@@ -173,8 +173,8 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-act
   align-items:center;
   gap:7px;
   width:auto;
-  min-width:0;
-  justify-content:center;
+  min-width:210px;
+  justify-content:flex-end;
   padding:8px 13px;
   border-color:rgba(72,212,107,.35);
   border-radius:10px;
