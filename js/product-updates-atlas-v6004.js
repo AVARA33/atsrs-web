@@ -27,7 +27,7 @@
     var current=planCarousel.querySelector('.atlas-plan-card');var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!current||instant||reduceMotion){planCarousel.innerHTML=planCardMarkup(plan,false)}else{
       current.classList.remove('is-entering');current.classList.add('is-leaving');planCarousel.insertAdjacentHTML('beforeend',planCardMarkup(plan,true));
-      var incoming=planCarousel.lastElementChild;planTransitionTimer=setTimeout(function(){if(current&&current.isConnected)current.remove();if(incoming&&incoming.isConnected)incoming.classList.remove('is-entering')},620);
+      var incoming=planCarousel.lastElementChild;planTransitionTimer=setTimeout(function(){if(current&&current.isConnected)current.remove();if(incoming&&incoming.isConnected)incoming.classList.remove('is-entering')},920);
     }
     planControls.querySelectorAll('button').forEach(function(button,i){var active=i===planIndex;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false')});
     var link=root.querySelector('.atlas-plan-link');if(link)link.href='/pricing.html#'+plan.key;
