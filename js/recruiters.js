@@ -5,7 +5,7 @@
     loadInFlight = false,
     lastLoadedAt = 0,
     recruiterPage = 1;
-  var RECRUITER_COMPANY_PAGE_SIZE = 30;
+  var RECRUITER_PAGE_SIZE = 30;
   // Permanent Owner exclusion: nurlan jafarov / nurlan cəfərov and transliterations.
   function excluded(name) {
     const normalized = String(name || "")
@@ -179,6 +179,7 @@
       recruiter.company,
       recruiter.location,
     ].filter(Boolean).join(" · ");
+    summary.title = summary.textContent;
     copy.append(source, title, summary);
     head.append(mark, copy);
     var tags = document.createElement("div");
@@ -215,12 +216,14 @@
     linkedinAction.className = "employer-action-linkedin";
     actions.append(linkedinAction);
     var jobsAction = action(
-      "View offers on ATSRS",
+      "View offers",
       "arrow-right",
       function () {
         goToJobs(name);
       },
     );
+    jobsAction.setAttribute("aria-label", "View offers on ATSRS");
+    jobsAction.title = "View offers on ATSRS";
     jobsAction.className = recruiter.vacancyCount > 0
       ? "employer-action-jobs is-active"
       : "employer-action-jobs";
@@ -392,33 +395,25 @@
         return b.vacancyCount - a.vacancyCount;
       return a.name.localeCompare(b.name);
     });
-    var companyKeys = [];
     var seenCompanies = new Set();
     visible.forEach(function (recruiter) {
       var key = recruiterCompanyKey(recruiter);
-      if (seenCompanies.has(key)) return;
       seenCompanies.add(key);
-      companyKeys.push(key);
     });
-    var companyCount = companyKeys.length;
-    var pageCount = Math.max(1, Math.ceil(companyCount / RECRUITER_COMPANY_PAGE_SIZE));
+    var companyCount = seenCompanies.size;
+    var pageCount = Math.max(1, Math.ceil(visible.length / RECRUITER_PAGE_SIZE));
     recruiterPage = Math.min(recruiterPage, pageCount);
-    var pageCompanyKeys = new Set(companyKeys.slice(
-      (recruiterPage - 1) * RECRUITER_COMPANY_PAGE_SIZE,
-      recruiterPage * RECRUITER_COMPANY_PAGE_SIZE,
-    ));
-    var pageRecruiters = visible.filter(function (recruiter) {
-      return pageCompanyKeys.has(recruiterCompanyKey(recruiter));
-    });
+    var pageStart = (recruiterPage - 1) * RECRUITER_PAGE_SIZE;
+    var pageRecruiters = visible.slice(pageStart, pageStart + RECRUITER_PAGE_SIZE);
     grid.textContent = "";
     pageRecruiters.forEach(function (recruiter) {
       grid.appendChild(card(recruiter));
     });
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
-    var companiesShown = Math.min(recruiterPage * RECRUITER_COMPANY_PAGE_SIZE, companyCount);
-    byId("recruitersVisibleCount").textContent = companiesShown + " of " + companyCount + " companies";
+    var recruitersShown = Math.min(pageStart + pageRecruiters.length, visible.length);
+    byId("recruitersVisibleCount").textContent = recruitersShown + " of " + visible.length + " recruiters";
     var snapshot = byId("recruitersCompanyCount");
-    if (snapshot) snapshot.textContent = "";
+    if (snapshot) snapshot.textContent = companyCount + " companies";
     renderPagination(pageCount);
     var exploreLabel = byId("recruitersExploreAllLabel");
     if (exploreLabel) exploreLabel.textContent = "Explore all " + recruiters.length;
