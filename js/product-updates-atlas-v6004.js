@@ -17,17 +17,23 @@
     {key:'gold',accent:'#c99b2d',name:'GOLD',status:'COMING SOON',title:'Intensive Career Management',price:'$69.99',period:'/ month',note:'Planned price',features:['5 GB Secure Storage','1,500 Tracked Documents','Unlimited Email + 750 WhatsApp expiry alerts / month','150 AI document scans + 7 AI CV generations / month','Full JobSearch vacancy catalogue','Immediate access to newest vacancies','Recruiter details and verified contact routes','Direct Apply and original source links','Recruiter and official company directories','24-hour recipient-specific profile sharing']},
     {key:'titan',accent:'#8d79b8',name:'TITAN',status:'COMING SOON',title:'Maximum Personal Capacity',price:'$119.99',period:'/ month',note:'Planned price',features:['10 GB Secure Storage','2,000 Tracked Documents','Unlimited Email and WhatsApp expiry alerts','500 AI document scans + 10 AI CV generations / month','Full JobSearch vacancy catalogue','Immediate access to newest vacancies','Recruiter details and verified contact routes','Direct Apply and original source links','Recruiter and official company directories','24-hour recipient-specific profile sharing']}
   ];
-  var planCarousel=root.querySelector('.atlas-plan-carousel'),planControls=root.querySelector('.atlas-plan-controls'),planIndex=0,planTimer=0;
-  function showPlan(index){
+  var planCarousel=root.querySelector('.atlas-plan-carousel'),planControls=root.querySelector('.atlas-plan-controls'),planIndex=0,planTimer=0,planTransitionTimer=0;
+  function planCardMarkup(plan,entering){return '<article class="atlas-plan-card is-'+plan.key+(entering?' is-entering':'')+'"><header><span>'+plan.status+'</span><p>'+plan.name+'</p></header><h3>'+plan.title+'</h3><div class="atlas-plan-price"><strong>'+plan.price+'</strong><span>'+plan.period+'</span><small>'+plan.note+'</small></div><ul>'+plan.features.map(function(feature){return '<li>'+feature+'</li>'}).join('')+'</ul></article>'}
+  function showPlan(index,instant){
     if(!planCarousel||!planControls)return;
     planIndex=(index+plans.length)%plans.length;var plan=plans[planIndex];
     var showcase=root.querySelector('.atlas-pricing-showcase');if(showcase)showcase.style.setProperty('--plan-accent',plan.accent);
-    planCarousel.innerHTML='<article class="atlas-plan-card is-'+plan.key+'"><header><span>'+plan.status+'</span><p>'+plan.name+'</p></header><h3>'+plan.title+'</h3><div class="atlas-plan-price"><strong>'+plan.price+'</strong><span>'+plan.period+'</span><small>'+plan.note+'</small></div><ul>'+plan.features.map(function(feature){return '<li>'+feature+'</li>'}).join('')+'</ul></article>';
+    clearTimeout(planTransitionTimer);planCarousel.querySelectorAll('.atlas-plan-card.is-leaving').forEach(function(card){card.remove()});
+    var current=planCarousel.querySelector('.atlas-plan-card');var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!current||instant||reduceMotion){planCarousel.innerHTML=planCardMarkup(plan,false)}else{
+      current.classList.remove('is-entering');current.classList.add('is-leaving');planCarousel.insertAdjacentHTML('beforeend',planCardMarkup(plan,true));
+      var incoming=planCarousel.lastElementChild;planTransitionTimer=setTimeout(function(){if(current&&current.isConnected)current.remove();if(incoming&&incoming.isConnected)incoming.classList.remove('is-entering')},620);
+    }
     planControls.querySelectorAll('button').forEach(function(button,i){var active=i===planIndex;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false')});
     var link=root.querySelector('.atlas-plan-link');if(link)link.href='/pricing.html#'+plan.key;
   }
   function startPlans(){clearInterval(planTimer);planTimer=setInterval(function(){showPlan(planIndex+1)},10000)}
-  if(planControls){plans.forEach(function(plan,index){var button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Show '+plan.name+' plan');button.addEventListener('click',function(){showPlan(index);startPlans()});planControls.appendChild(button)});showPlan(0);startPlans()}
+  if(planControls){plans.forEach(function(plan,index){var button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Show '+plan.name+' plan');button.addEventListener('click',function(){showPlan(index);startPlans()});planControls.appendChild(button)});showPlan(0,true);startPlans()}
   root.querySelectorAll('[data-plan-direction]').forEach(function(button){button.addEventListener('click',function(){showPlan(planIndex+(button.dataset.planDirection==='previous'?-1:1));startPlans()})});
   var pricingShowcase=root.querySelector('.atlas-pricing-showcase');if(pricingShowcase){pricingShowcase.addEventListener('pointerenter',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('pointerleave',startPlans);pricingShowcase.addEventListener('focusin',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('focusout',startPlans)}
   var canvas=root.querySelector('.updates-atlas-canvas');

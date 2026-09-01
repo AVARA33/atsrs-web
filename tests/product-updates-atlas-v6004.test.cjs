@@ -9,8 +9,8 @@ const js=fs.readFileSync(path.join(root,'js','product-updates-atlas-v6004.js'),'
 const updates=index.slice(index.indexOf('<section id="introPage"'),index.indexOf('<section id="jobsPage"'));
 
 test('Product Updates exposes the scalable release atlas',()=>{
-  assert.match(index,/product-updates-atlas-v6010\.css\?v=6024/);
-  assert.match(index,/product-updates-atlas-v6004\.js\?v=6025/);
+  assert.match(index,/product-updates-atlas-v6010\.css\?v=6025/);
+  assert.match(index,/product-updates-atlas-v6004\.js\?v=6026/);
   assert.match(updates,/class="updates-atlas"/);
   assert.equal((updates.match(/class="atlas-marker/g)||[]).length,8);
   assert.equal((updates.match(/class="atlas-marker is-live/g)||[]).length,5);
@@ -50,6 +50,10 @@ test('Product Updates exposes the scalable release atlas',()=>{
   assert.match(css,/\.atlas-plan-card\.is-gold/);
   assert.match(css,/@keyframes atlasPlanShine/);
   assert.match(css,/\.atlas-plan-card::after/);
+  assert.match(css,/@keyframes atlasPlanRollIn/);
+  assert.match(css,/@keyframes atlasPlanRollOut/);
+  assert.match(js,/planCardMarkup\(plan,true\)/);
+  assert.match(js,/showPlan\(0,true\)/);
   assert.match(css,/animation:atlasPlanShine 2\.8s[^}]* 4s 1 both/);
   assert.match(css,/\.atlas-marker span\{color:#245f9f!important/);
 });
