@@ -29,7 +29,10 @@ assert.match(resourceCss,/\.account-resource-frame-shell\{position:relative;min-
 assert.match(storage,/querySelectorAll\("#app > main\.main > section"\)/,'Page navigation must only hide top-level app pages');
 assert.doesNotMatch(storage,/querySelectorAll\("main > section"\)/,'Page navigation must not hide sections imported inside Plans');
 assert.match(css,/\.sidebar-quick-links \[role="button"\]:hover/);
-assert.match(css,/content:attr\(data-label\)/);
+assert.match(css,/grid-template-rows:18px 32px/);
+assert.match(css,/\.sidebar-quick-links::before\{/);
+assert.match(css,/:has\(\[data-resource="plans"\]:is\(:hover,:focus-visible\)\)::before\{content:"Plans & Pricing";opacity:1\}/);
+assert.match(css,/\.sidebar-quick-links \[role="button"\]::after\{[\s\S]*display:none!important/);
 assert.match(css,/background:transparent!important/);
 assert.match(css,/html\[data-theme="dark"\][\s\S]*\.sidebar-quick-links \[role="button"\]:hover[\s\S]*background:transparent!important/);
 assert.match(fs.readFileSync('js/account-resources-v5990.js','utf8'),/event\.key!=='Enter'&&event\.key!==' '/);
