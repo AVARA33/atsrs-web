@@ -123,6 +123,7 @@ body.personal-mode #refsPage .atsrs-v134-actions button.action{width:34px!import
 body.personal-mode #refsPage .atsrs-v134-empty{display:grid!important;place-items:center!important;min-height:160px!important;padding:28px!important;color:#7f8b85!important;font-size:12px!important;}
 
 html[data-theme="light"] body.personal-mode #refsPage[data-references-workspace="v5984"] #refsTitle{color:#17211c!important;}
+html[data-theme="light"] body.personal-mode #app #refsPage #cvCardTitle{color:var(--atsrs-light-blue,#2563eb)!important;-webkit-text-fill-color:var(--atsrs-light-blue,#2563eb)!important;}
 html[data-theme="light"] body.personal-mode #refsPage[data-references-workspace="v5984"] #refsSub,
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-references-summary{color:#66736c!important;}
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-references-summary>div{border-color:#d8e0dc!important;}
