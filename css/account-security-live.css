@@ -1,3 +1,36 @@
+/* Security dialogs are mounted on body, outside the workspace theme scope. */
+#atsrsSecurityModal {
+  --security-surface:#0b0d0d;
+  --security-soft:#111414;
+  --security-line:#2a2f2d;
+  --security-text:#edf3ef;
+  --security-muted:#a4b0aa;
+  --security-accent:#35c85a;
+  --security-overlay:rgba(0,0,0,.72);
+}
+html[data-theme="light"] #atsrsSecurityModal {
+  --security-surface:#fff;
+  --security-soft:#f6f8fb;
+  --security-line:#cbd7e0;
+  --security-text:#172b3d;
+  --security-muted:#526575;
+  --security-accent:#167bd3;
+  --security-overlay:rgba(18,35,49,.30);
+}
+#atsrsSecurityModal .atsrs-security-backdrop { background:var(--security-overlay); }
+#atsrsSecurityModal .atsrs-security-dialog { background:var(--security-surface)!important; border-color:var(--security-line)!important; color:var(--security-text)!important; }
+#atsrsSecurityModal :is(h3,.atsrs-security-form label,.atsrs-session-card b) { color:var(--security-text); }
+#atsrsSecurityModal :is(.atsrs-security-dialog p,.atsrs-session-card span,.atsrs-mfa-secret) { color:var(--security-muted); }
+#atsrsSecurityModal :is(.atsrs-session-card,.atsrs-security-consent) { background:var(--security-soft); border-color:var(--security-line); color:var(--security-text)!important; }
+#atsrsSecurityModal .atsrs-security-consent span { color:var(--security-text)!important; }
+#atsrsSecurityModal .atsrs-mfa-secret { border-color:var(--security-line); }
+#atsrsSecurityModal :is(.atsrs-security-close,.atsrs-security-actions button,.atsrs-security-form input) { background:var(--security-surface)!important; border-color:var(--security-line)!important; color:var(--security-text)!important; }
+#atsrsSecurityModal :is(.atsrs-security-close,.atsrs-security-actions button):hover { border-color:var(--security-accent)!important; }
+#atsrsSecurityModal :is(button,input):focus-visible { outline:2px solid var(--security-accent); outline-offset:2px; }
+#atsrsSecurityModal .atsrs-security-actions button.action { border-color:#d94b4b!important; color:#d94b4b!important; }
+#atsrsSecurityModal .atsrs-security-message { color:var(--security-muted)!important; }
+#atsrsSecurityModal .atsrs-security-message.is-error { color:#e45b65!important; }
+#atsrsSecurityModal .atsrs-security-message.is-ok { color:var(--security-accent)!important; }
 .atsrs-account-toast {
   position: fixed;
   right: 22px;

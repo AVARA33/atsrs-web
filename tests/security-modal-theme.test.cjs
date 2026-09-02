@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const css=fs.readFileSync('css/account-security-live.css','utf8');
+const html=fs.readFileSync('index.html','utf8');
+assert.match(html,/account-security-live\.css\?v=6001/);
+assert.match(css,/#atsrsSecurityModal \{[^}]*--security-surface:#0b0d0d;/);
+assert.match(css,/html\[data-theme="light"\] #atsrsSecurityModal \{[^}]*--security-surface:#fff;/);
+assert.match(css,/#atsrsSecurityModal \.atsrs-security-dialog \{[^}]*background:var\(--security-surface\)!important/);
+assert.match(css,/#atsrsSecurityModal \.atsrs-security-backdrop \{ background:var\(--security-overlay\)/);
+assert.match(css,/#atsrsSecurityModal :is\(\.atsrs-security-close,\.atsrs-security-actions button,\.atsrs-security-form input\)/);
+console.log('Security modal theme contracts passed');
