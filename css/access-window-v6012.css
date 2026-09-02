@@ -1,0 +1,9 @@
+/* Stable-width access timer: quiet, readable and identical across routes. */
+#atsrsGlobalControls #atsrsAccessCountdown{display:inline-flex;align-items:center;justify-content:center;flex:0 0 178px;min-height:32px;padding:5px 10px;box-sizing:border-box;border:1px solid #275136;border-radius:8px;background:#0b130e;color:#74dc91;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:.02em}
+html[data-theme="light"] #atsrsGlobalControls #atsrsAccessCountdown{background:#f5f8ff;border-color:#d8e3fa;color:#315ee8}
+.atsrs-plan-lock-icon{flex-shrink:0;font-size:12px!important}
+[data-plan-locked]{cursor:pointer}
+.developer-time-remaining{font-variant-numeric:tabular-nums;white-space:nowrap}
+.developer-access-dates{display:block;margin-top:5px;font-size:10px;font-weight:400;color:var(--muted,#8292a8);white-space:normal;line-height:1.5}
+@media(max-width:600px){#atsrsGlobalControls #atsrsAccessCountdown{flex-basis:143px;font-size:10px;padding:4px 6px;min-height:28px}.developer-registration-row{gap:10px}.developer-time-remaining{font-size:11px!important}}
+@media(max-width:520px){#atsrsGlobalControls #atsrsAccessCountdown{flex-basis:128px;font-size:10px}#atsrsGlobalControls .workspace-switcher-copy{display:none}#atsrsGlobalControls .workspace-switcher-button{grid-template-columns:34px 12px!important;min-width:0!important}}

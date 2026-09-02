@@ -433,6 +433,9 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
   const existing = existingShares.find(shareIsActive) ?? existingShares[0] ?? null;
 
   if (action === "create_recruiter_email_share") {
+    const entitlement = await admin.rpc("atsrs_service_access_state", { p_user_id: user.id });
+    if (entitlement.error) throw entitlement.error;
+    if (!entitlement.data?.full_access) return json(req, 403, { error: "Bronze or higher is required for recruiter sharing." });
     const recruiterId = safeText(body.recruiter_id, 40);
     if (!UUID_PATTERN.test(recruiterId)) {
       return json(req, 400, { error: "Choose a valid ATSRS recruiter." });
@@ -999,7 +1002,11 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
   if (!file.data || !isShareEligibleFile(file.data as JsonObject)) {
     return json(req, 404, { error: "Document was not found." });
   }
+  const fileAccess = await admin.rpc("atsrs_service_file_access", { p_user_id: share.user_id, p_file_id: fileId });
+  if (fileAccess.error) throw fileAccess.error;
+  if (!fileAccess.data?.allowed) return json(req, 403, { error: "This document is locked by its owner's plan." });
   const seconds = Math.max(1, Math.min(
+    fileAccess.data.ttl_seconds,
     DOWNLOAD_URL_SECONDS,
     Math.floor((new Date(access.access_expires_at).getTime() - Date.now()) / 1000),
     Math.floor((new Date(share.expires_at!).getTime() - Date.now()) / 1000),
@@ -1101,7 +1108,10 @@ async function publicRequest(req: Request, admin: AdminClient, secretKey: string
   }
   const documentResults = await Promise.all(files.map(async (file) => {
     const details = documentDetails(file);
-    const preview = await admin.storage.from(FILE_BUCKET).createSignedUrl(String(file.storage_path), PREVIEW_URL_SECONDS);
+    const fileAccess = await admin.rpc("atsrs_service_file_access", { p_user_id: share.user_id, p_file_id: details.id });
+    if (fileAccess.error) throw fileAccess.error;
+    if (!fileAccess.data?.allowed) return null;
+    const preview = await admin.storage.from(FILE_BUCKET).createSignedUrl(String(file.storage_path), Math.min(PREVIEW_URL_SECONDS, fileAccess.data.ttl_seconds));
     // A stale database row must not make the entire shared profile unavailable.
     // The owner can remove or re-upload that document separately; only files
     // that still have a readable Storage object belong in the public payload.

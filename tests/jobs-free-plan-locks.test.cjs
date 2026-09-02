@@ -12,7 +12,7 @@ test('Free job access is fail-closed and Bronze/full access is server-driven',()
   assert.match(runtime,/jobsAccess='limited'/);
   assert.match(runtime,/jobsAccess=payload\.access==='full'\?'full':'limited'/);
   assert.match(runtime,/jobsAccess='limited';jobs=\[\]/);
-  assert.match(runtime,/function hasFullJobAccess\(forceFull\)\{return!!forceFull\|\|isAdmin\|\|jobsAccess==='full'\}/);
+  assert.match(runtime,/function hasFullJobAccess\(forceFull\)\{return!!forceFull\|\|isAdmin\|\|\(jobsAccess==='full'&&\(!window.atsrsAccess\|\|window.atsrsAccess.full\(\)\)\)\}/);
   assert.doesNotMatch(runtime,/localStorage[^\n]*jobsAccess|sessionStorage[^\n]*jobsAccess/);
 });
 

@@ -1681,6 +1681,7 @@
   }
   async function uploadFile(category,file,details){
     if(!isCloudSession())throw new Error('No active Supabase session.');
+    if(accountType()==='personal'&&window.atsrsAccess)await window.atsrsAccess.assertUpload();
     var valueUser=user();
     var mode=accountType();
     var id=uniqueId();
@@ -1895,15 +1896,17 @@
     invalidateFileMetadata(scope());
   }
   async function signedFileUrl(row,download){
+    var access=window.atsrsAccess?await window.atsrsAccess.assertFile(row.id):null;
     var result=await client().storage.from(FILE_BUCKET).createSignedUrl(
       row.storage_path,
-      300,
+      access?access.ttl_seconds:300,
       download?{download:row.file_name}:undefined
     );
     if(result.error)throw result.error;
     return result.data.signedUrl;
   }
   async function downloadCloudFile(id){
+    if(window.atsrsAccess)await window.atsrsAccess.assertFile(id);
     var row=await findFile(id);
     if(!row)throw new Error('Document file was not found on the ATSRS server.');
     var result=await client().storage.from(FILE_BUCKET).download(row.storage_path);
@@ -1933,7 +1936,7 @@
           onDownload:function(){return openCloudFile(id,true);}
         });
       }
-    }catch(error){console.error(error);alert('File could not be opened from the ATSRS server.');}
+    }catch(error){console.error(error);alert(error.message||'File could not be opened from the ATSRS server.');}
   }
   function escapeHtml(value){
     return String(value||'').replace(/[&<>"']/g,function(char){

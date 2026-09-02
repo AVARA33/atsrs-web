@@ -11,6 +11,8 @@
   var developerRouteRestored = false;
   var developerRouteObserver = null;
   var developerRouteSyncQueued = false;
+  var accessServerTime = 0;
+  var accessAnchoredAt = 0;
   window.__atsrsDeveloperAccess = false;
   window.__atsrsDeveloperAccessUserId = '';
 
@@ -70,6 +72,10 @@
   }
 
   function accessCopy(row) {
+    if (row.access) {
+      var a = row.access;
+      return { label: a.full_access ? 'Full access' : 'Free', time: a.permanent ? 'Unlimited' : a.ends_at ? '' : a.full_access ? 'Paid plan' : '0d 00h 00m 00s', tone: a.full_access ? 'full' : 'free' };
+    }
     if (!row.workspace_ready) return { label: 'Setup incomplete', time: 'Not started', tone: 'incomplete' };
     if (row.access_status === 'trial') {
       var days = Math.max(0, Number(row.days_remaining) || 0);
@@ -157,6 +163,14 @@
       remaining.setAttribute('role', 'cell');
       remaining.className = 'developer-time-remaining ' + access.tone;
       remaining.textContent = access.time;
+      if (row.access && row.access.ends_at && !row.access.permanent) {
+        remaining.dataset.endsAt = row.access.ends_at;
+        remaining.dataset.countdown = 'true';
+        var dates = document.createElement('small');
+        dates.className = 'developer-access-dates';
+        dates.textContent = 'Start: ' + new Date(row.access.started_at).toLocaleString() + ' · End: ' + new Date(row.access.ends_at).toLocaleString();
+        status.appendChild(dates);
+      }
       item.append(email, registered, status, remaining);
       host.appendChild(item);
     });
@@ -168,6 +182,21 @@
     }
     if (count) count.textContent = items.length + (items.length === 1 ? ' account' : ' accounts');
     registrationsPanel.classList.remove('hidden');
+    tickAccessWindows();
+  }
+
+  function tickAccessWindows() {
+    if (!window.atsrsAccess || !accessServerTime) return;
+    var now = accessServerTime + Math.max(0, performance.now() - accessAnchoredAt);
+    document.querySelectorAll('#developerRegistrationRows [data-countdown]').forEach(function (node) {
+      var left = Date.parse(node.dataset.endsAt) - now;
+      node.textContent = window.atsrsAccess.formatRemaining(left);
+      if (left <= 0) {
+        node.classList.remove('full'); node.classList.add('free');
+        var status = node.previousElementSibling;
+        if (status && status.firstChild && status.firstChild.nodeType === 3) status.firstChild.textContent = 'Free';
+      }
+    });
   }
 
   function render(row) {
@@ -224,9 +253,11 @@
       loadedUserId = user.id;
       render(row);
       if (row && row.is_admin === true) {
-        var detailResult = await window.supabaseClient.rpc('atsrs_get_developer_registrations');
+        var detailResult = await window.supabaseClient.rpc('atsrs_get_developer_access_windows');
         if (detailResult.error) throw detailResult.error;
-        renderRegistrations(detailResult.data);
+        accessServerTime = Date.parse(detailResult.data.server_now);
+        accessAnchoredAt = performance.now();
+        renderRegistrations(detailResult.data.rows);
       }
     } catch (error) {
       console.warn('ATSRS admin overview unavailable', error);
@@ -253,6 +284,8 @@
       refresh(true);
     });
     refresh(false);
+    setInterval(tickAccessWindows, 1000);
+    setInterval(function () { if (!document.hidden && window.__atsrsDeveloperAccess) refresh(true); }, 60000);
     setTimeout(function () { refresh(false); }, 700);
     setTimeout(function () { refresh(false); }, 1800);
     if (window.supabaseClient && window.supabaseClient.auth &&

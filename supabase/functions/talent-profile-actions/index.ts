@@ -604,7 +604,7 @@ Deno.serve(async (req) => {
   if (action === "cv") {
     const { data: cv, error } = await admin
       .from("atsrs_files")
-      .select("file_name,mime_type,storage_path")
+      .select("id,file_name,mime_type,storage_path")
       .eq("user_id", targetUserId)
       .eq("account_type", "personal")
       .eq("category", "cv")
@@ -613,7 +613,9 @@ Deno.serve(async (req) => {
       .maybeSingle();
     if (error) return json(500, { error: "CV could not be loaded." });
     if (!cv) return json(404, { error: "This profile has not added a CV yet." });
-    const signed = await admin.storage.from("atsrs-user-files").createSignedUrl(cv.storage_path, 300);
+    const fileAccess = await admin.rpc("atsrs_service_file_access", { p_user_id: targetUserId, p_file_id: cv.id });
+    if (fileAccess.error || !fileAccess.data?.allowed) return json(403, { error: "This CV is locked by its owner's plan." });
+    const signed = await admin.storage.from("atsrs-user-files").createSignedUrl(cv.storage_path, fileAccess.data.ttl_seconds);
     if (signed.error || !signed.data?.signedUrl) return json(500, { error: "CV preview could not be prepared." });
     return json(200, { file_name: cv.file_name, mime_type: cv.mime_type, url: signed.data.signedUrl });
   }

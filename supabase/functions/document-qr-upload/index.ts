@@ -229,6 +229,9 @@ Deno.serve(async (req: Request) => {
       }
 
       const objectId = crypto.randomUUID();
+      const allowance = await admin.rpc("atsrs_service_upload_access", { p_user_id: session.user_id, p_bytes: sizeBytes, p_category: "document" });
+      if (allowance.error) throw allowance.error;
+      if (!allowance.data) return json(req, 403, { error: "Your plan upload limit has been reached.", code: "PLAN_UPLOAD_LIMIT" });
       const storagePath = `${session.user_id}/personal/document/${objectId}-${fileName}`;
       const signed = await admin.storage.from(FILE_BUCKET).createSignedUploadUrl(storagePath);
       if (signed.error) throw signed.error;
