@@ -158,9 +158,9 @@
       var documents = document.createElement('span');
       documents.setAttribute('role', 'cell');
       documents.className = 'developer-document-count';
-      documents.title = 'Stored uploads, including CVs and references. Locked files are included.';
-      documents.textContent = row.uploaded_file_count != null && Number.isFinite(Number(row.uploaded_file_count))
-        ? String(Math.max(0, Math.floor(Number(row.uploaded_file_count)))) : '—';
+      documents.title = 'Documents register only. CVs: ' + (Number(row.cv_count) || 0) + '. Total stored files: ' + (Number(row.uploaded_file_count) || 0) + '. Locked documents are included.';
+      documents.textContent = row.document_count != null && Number.isFinite(Number(row.document_count))
+        ? String(Math.max(0, Math.floor(Number(row.document_count)))) : '—';
       documents.setAttribute('aria-label', 'Uploaded documents: ' + documents.textContent);
       var status = document.createElement('span');
       status.setAttribute('role', 'cell');

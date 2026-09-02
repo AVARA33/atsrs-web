@@ -1891,8 +1891,10 @@
     if(!row)return;
     var removed=await client().storage.from(FILE_BUCKET).remove([row.storage_path]);
     if(removed.error)throw removed.error;
-    var result=await client().from(FILE_TABLE).delete().eq('id',row.id);
+    var result=await client().from(FILE_TABLE).delete().eq('id',row.id)
+      .eq('user_id',user().id).eq('account_type',accountType()).select('id').maybeSingle();
     if(result.error)throw result.error;
+    if(!result.data)throw new Error('Server file deletion was not confirmed. Please retry.');
     invalidateFileMetadata(scope());
   }
   async function signedFileUrl(row,download){

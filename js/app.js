@@ -954,12 +954,13 @@
     var a=(typeof getData==='function'?getData('certs'):[])||[],item=a[i];
     if(!item)return;
     try{
+      if(item.cloudFileId){
+        if(!window.atsrsCloudData||typeof window.atsrsCloudData.deleteDocument!=='function')throw new Error('Server deletion is unavailable.');
+        await window.atsrsCloudData.deleteDocument(item.cloudFileId);
+      }
       a.splice(i,1);
       if(typeof saveData==='function')saveData('certs',a);
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document details could not be deleted.');
-      if(item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
-        await window.atsrsCloudData.deleteDocument(item.cloudFileId);
-      }
       selectedCertIndices.clear();
       if(typeof renderAll==='function')window.renderAll();
     }catch(error){
@@ -977,19 +978,26 @@
     if(remove){remove.disabled=true;remove.textContent='Deleting...';}
     var removed=indices.map(function(index){return a[index];});
     try{
-      var remaining=a.filter(function(_,index){return indices.indexOf(index)===-1;});
-      if(typeof saveData==='function')saveData('certs',remaining);
-      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document register changes could not be saved.');
       var cleanupFailures=0;
+      var deletedItems=new Set();
       for(var i=0;i<removed.length;i++){
         var item=removed[i];
-        if(item&&item.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.deleteDocument==='function'){
-          try{await window.atsrsCloudData.deleteDocument(item.cloudFileId);}catch(cleanupError){cleanupFailures++;console.error('ATSRS selected document cleanup failed',cleanupError);}
+        try{
+          if(item&&item.cloudFileId){
+            if(!window.atsrsCloudData||typeof window.atsrsCloudData.deleteDocument!=='function')throw new Error('Server deletion is unavailable.');
+            await window.atsrsCloudData.deleteDocument(item.cloudFileId);
+          }
+          deletedItems.add(item);
+        }catch(cleanupError){
+          cleanupFailures++;console.error('ATSRS selected document cleanup failed',cleanupError);
         }
       }
+      var remaining=a.filter(function(item){return !deletedItems.has(item);});
+      if(typeof saveData==='function')saveData('certs',remaining);
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document register changes could not be saved.');
       selectedCertIndices.clear();
       if(typeof renderAll==='function')window.renderAll();else renderCertRows();
-      if(cleanupFailures)alert('The documents were removed from the register, but '+cleanupFailures+' server file'+(cleanupFailures===1?' needs':'s need')+' cleanup. Please try again later.');
+      if(cleanupFailures)alert(cleanupFailures+' document'+(cleanupFailures===1?' could':'s could')+' not be deleted from the server and remain in the list. Please retry.');
     }catch(error){
       console.error('ATSRS selected document delete failed',error);
       alert('The selected documents could not be deleted from the ATSRS server.');
