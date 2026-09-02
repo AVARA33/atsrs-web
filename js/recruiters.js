@@ -416,12 +416,16 @@
       await window.atsrsOpenJobsDirectory("recruiters", byId("navRecruiters"));
     else if (typeof window.showPage === "function")
       window.showPage("recruiters", byId("navRecruiters"));
-    await loadRecruiters();
-    var targetRecruiter = recruiters.find(function (item) {
-      return String(item.id || "") === String(recruiterId || "");
-    }) || recruiters.find(function (item) {
-      return normalized(item.name) === normalized(recruiterName);
-    });
+    var targetRecruiter = null;
+    for (var attempt = 0; attempt < 24 && !targetRecruiter; attempt += 1) {
+      await loadRecruiters();
+      targetRecruiter = recruiters.find(function (item) {
+        return String(item.id || "") === String(recruiterId || "");
+      }) || recruiters.find(function (item) {
+        return normalized(item.name) === normalized(recruiterName);
+      });
+      if (!targetRecruiter) await new Promise(function (resolve) { setTimeout(resolve, 150); });
+    }
     if (!targetRecruiter) return false;
     byId("recruitersSearch").value = targetRecruiter.name;
     byId("recruitersCompany").value = "";
@@ -433,7 +437,7 @@
       var selector = targetRecruiter.id
         ? '[data-recruiter-id="' + CSS.escape(String(targetRecruiter.id)) + '"]'
         : '[data-recruiter-name="' + CSS.escape(targetRecruiter.name) + '"]';
-      var card = byId("recruitersGrid").querySelector(selector);
+      var grid = byId("recruitersGrid"), card = grid && grid.querySelector(selector);
       if (!card) return;
       card.scrollIntoView({ behavior: "smooth", block: "center" });
       card.focus({ preventScroll: true });
