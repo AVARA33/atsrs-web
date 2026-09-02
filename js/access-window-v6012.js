@@ -28,7 +28,8 @@
       var result = await client.rpc('atsrs_my_access_state');
       if (result.error) throw result.error;
       if (token !== requestId || !result.data || result.data.user_id !== userId) return state;
-      state = result.data; serverTime = Date.parse(state.server_now); anchoredAt = performance.now(); expired = false;
+      state = result.data; serverTime = Date.parse(state.server_now); anchoredAt = performance.now();
+      expired = !!(state.ends_at && !state.permanent && Date.parse(state.ends_at) <= serverTime);
       publish(); return state;
     } catch (error) { console.warn('Account access could not be refreshed.', error); return state; }
     finally { busy = false; if (queuedRefresh) { queuedRefresh = false; setTimeout(refresh, 0); } }

@@ -35,4 +35,5 @@ test('clock uses server anchor, no client persisted entitlement or second-by-sec
  assert.match(js,/Date.parse\(state.server_now\)/); assert.match(js,/performance.now\(\) - anchoredAt/);
  assert.doesNotMatch(js,/localStorage|Date.now\(\)/); assert.match(js,/60000/);
  assert.match(js,/token !== requestId/);
+ assert.match(js,/expired = !!\(state.ends_at && !state.permanent && Date.parse\(state.ends_at\) <= serverTime\)/);
 });
