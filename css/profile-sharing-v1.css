@@ -55,6 +55,16 @@ html[data-theme="dark"] .profile-sharing-document-choice,html[data-theme="dark"]
 @media(max-width:760px){body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:auto minmax(150px,1fr);padding-top:40px}body.personal-mode #profilePage .profile-sharing-links-heading-floating{top:auto;right:0;bottom:calc(100% - 40px)}.profile-sharing-expiry-main{align-items:flex-start!important}.profile-sharing-expiry-main>.profile-sharing-create-button{margin-top:0!important}}
 .profile-sharing-custom-expiry.is-collapsed{display:none!important}
 
+/* Recruiter-directed sharing is created from Recruiter Directory; this tab is history and request management only. */
+body.personal-mode #profilePage .profile-sharing-v1{display:block;height:100%;min-height:0}
+body.personal-mode #profilePage .profile-sharing-history-only{display:grid;height:100%;min-height:0;grid-template-rows:34px minmax(0,1fr);overflow:hidden;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+body.personal-mode #profilePage .profile-sharing-history-only>header{display:flex;align-items:center;justify-content:flex-end;height:34px;padding:0 10px;border-bottom:1px solid var(--line)}
+body.personal-mode #profilePage .profile-sharing-history-only .profile-sharing-links-heading{display:flex;align-items:center;gap:6px}
+body.personal-mode #profilePage .profile-sharing-history-only .profile-sharing-links-heading>strong{font-size:10px}
+body.personal-mode #profilePage .profile-sharing-history-only .profile-sharing-links-heading>span{display:grid;min-width:18px;height:18px;place-items:center;border-radius:9px;background:var(--surface-2);color:var(--atsrs-field-accent,#22c55e);font-size:9px}
+body.personal-mode #profilePage .profile-sharing-history-only .profile-sharing-active-list{min-height:0;overflow:auto;border-top:0}
+.employer-card.is-directory-focus{border-color:var(--atsrs-field-accent,#22c55e)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--atsrs-field-accent,#22c55e) 30%,transparent),0 0 24px color-mix(in srgb,var(--atsrs-field-accent,#22c55e) 18%,transparent)!important}
+
 /* Keep link actions inside their row even when global button sizing is loaded later. */
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-sharing-row{min-height:38px!important;padding-block:2px!important}
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage :is(.profile-sharing-row-actions,.profile-sharing-link-request-actions)>button{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:22px!important;min-height:22px!important;max-height:22px!important;margin:0!important;padding:0 6px!important;border-radius:5px!important;font-size:8px!important;line-height:1!important;box-sizing:border-box!important}
@@ -69,7 +79,8 @@ body.personal-mode #profilePage .profile-sharing-link-request{grid-template-colu
 body.personal-mode #profilePage .profile-sharing-no-request{color:var(--muted);font-size:8px}
 body.personal-mode #profilePage .profile-sharing-row-actions{justify-content:flex-end;flex-wrap:wrap;min-width:max-content}
 body.personal-mode #profilePage .profile-sharing-row-actions>button.is-approve{border-color:color-mix(in srgb,var(--atsrs-field-accent,#22c55e) 58%,var(--line))!important;color:var(--atsrs-field-accent,#22c55e)!important}
-body.personal-mode #profilePage .profile-sharing-row-actions>button.is-decline,body.personal-mode #profilePage .profile-sharing-row-actions>button.is-revoke{border-color:color-mix(in srgb,#ef4444 58%,var(--line))!important;color:#ef4444!important}
+body.personal-mode #profilePage .profile-sharing-row-actions>button.is-decline,body.personal-mode #profilePage .profile-sharing-row-actions>button.is-revoke,body.personal-mode #profilePage .profile-sharing-row-actions>button.is-delete{border-color:color-mix(in srgb,#ef4444 58%,var(--line))!important;color:#ef4444!important}
+body.personal-mode #profilePage .profile-sharing-row-actions>button.is-edit{color:var(--text)!important}
 @media(max-width:1100px){body.personal-mode #profilePage .profile-sharing-row{grid-template-columns:minmax(145px,.9fr) minmax(210px,1.2fr) 62px minmax(92px,.55fr) auto}}
 @media(max-width:760px){body.personal-mode #profilePage .profile-sharing-row{grid-template-columns:1fr auto!important}.profile-sharing-row-requester{grid-column:1/-1}.profile-sharing-row-actions{grid-column:1/-1;justify-content:flex-start!important}.profile-sharing-row-actions>button{flex:0 0 auto!important}}
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-sharing-link-request-actions>button:not(.is-danger){border-color:color-mix(in srgb,var(--atsrs-field-accent,#22c55e) 58%,var(--line))!important;background:var(--surface,#0b0f0d)!important;color:var(--atsrs-field-accent,#22c55e)!important;-webkit-text-fill-color:var(--atsrs-field-accent,#22c55e)!important}

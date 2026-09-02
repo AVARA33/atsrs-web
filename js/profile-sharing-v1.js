@@ -53,7 +53,9 @@
         if(request.status==='pending'){actions.appendChild(action('Approve','ph-check',function(){if(typeof window.decideShareRequest==='function')window.decideShareRequest(request.id,'approve')},false,'approve'));actions.appendChild(action('Decline','ph-x',function(){if(typeof window.decideShareRequest==='function')window.decideShareRequest(request.id,'decline')},true,'decline'))}
       });
       if(!shareRequests.length){var noRequest=document.createElement('span');noRequest.className='profile-sharing-no-request';noRequest.textContent='No download request';requesterCell.appendChild(noRequest)}
-      if(share.active)actions.appendChild(action('Revoke','ph-prohibit',function(){if(typeof window.revokeShareProfileLink==='function')window.revokeShareProfileLink(share.id)},true,'revoke'));
+      if(share.recipient_recruiter_id)actions.appendChild(action('View recruiter','ph-user-focus',function(){if(typeof window.focusRecruiterCard==='function')window.focusRecruiterCard(share.recipient_recruiter_id,recipientName)},false,'recruiter'));
+      actions.appendChild(action('Edit','ph-pencil-simple',function(){if(typeof window.editShareProfileLink==='function')window.editShareProfileLink(share.id)},false,'edit'));
+      actions.appendChild(action('Delete','ph-trash',function(){if(typeof window.deleteShareProfileLink==='function')window.deleteShareProfileLink(share.id)},true,'delete'));
       host.appendChild(row);
     });count.textContent=String(shares.length);focusEmailRequest();
   }

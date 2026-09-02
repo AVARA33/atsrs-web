@@ -159,6 +159,7 @@
     article.className = "employer-card";
     article.tabIndex = 0;
     article.dataset.recruiterName = name;
+    if (recruiter.id) article.dataset.recruiterId = recruiter.id;
     var head = document.createElement("div");
     head.className = "employer-card-head";
     var mark = document.createElement("div");
@@ -410,6 +411,37 @@
     var exploreLabel = byId("recruitersExploreAllLabel");
     if (exploreLabel) exploreLabel.textContent = "Explore all " + recruiters.length;
   }
+  window.focusRecruiterCard = async function (recruiterId, recruiterName) {
+    if (typeof window.atsrsOpenJobsDirectory === "function")
+      await window.atsrsOpenJobsDirectory("recruiters", byId("navRecruiters"));
+    else if (typeof window.showPage === "function")
+      window.showPage("recruiters", byId("navRecruiters"));
+    await loadRecruiters();
+    var targetRecruiter = recruiters.find(function (item) {
+      return String(item.id || "") === String(recruiterId || "");
+    }) || recruiters.find(function (item) {
+      return normalized(item.name) === normalized(recruiterName);
+    });
+    if (!targetRecruiter) return false;
+    byId("recruitersSearch").value = targetRecruiter.name;
+    byId("recruitersCompany").value = "";
+    byId("recruitersVacancies").value = "";
+    byId("recruitersSort").value = "name";
+    recruiterPage = 1;
+    render();
+    requestAnimationFrame(function () {
+      var selector = targetRecruiter.id
+        ? '[data-recruiter-id="' + CSS.escape(String(targetRecruiter.id)) + '"]'
+        : '[data-recruiter-name="' + CSS.escape(targetRecruiter.name) + '"]';
+      var card = byId("recruitersGrid").querySelector(selector);
+      if (!card) return;
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.focus({ preventScroll: true });
+      card.classList.add("is-directory-focus");
+      setTimeout(function () { card.classList.remove("is-directory-focus"); }, 2200);
+    });
+    return true;
+  };
   function pageButton(label, targetPage, disabled, current, direction) {
     var button = document.createElement("button");
     button.type = "button";
