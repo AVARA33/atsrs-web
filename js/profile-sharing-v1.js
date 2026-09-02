@@ -3,9 +3,9 @@
   var SHARING_SETUP_STORAGE_KEY='atsrs_profile_sharing_setup',SHARING_SETUP_METADATA_KEY='atsrs_profile_sharing_setup',savedSetup=null,editing=false,loadingSetup=false;
   function byId(id){return document.getElementById(id)}
   function expiryValue(){var input=document.querySelector('input[name="profileSharingExpiry"]:checked');return input?input.value:''}
-  function audienceValue(){var input=document.querySelector('input[name="profileSharingAudience"]:checked');return input?input.value:'anyone'}
+  function audienceValue(){var input=document.querySelector('input[name="profileSharingAudience"]:checked');return input?input.value:'recipient'}
   function currentSetup(){var custom=byId('profileSharingCustomExpiry');return{audience:audienceValue(),expiry:expiryValue(),customDate:custom?custom.value:''}}
-  function validSetup(value){return!!value&&['anyone','recruiters','recipient'].includes(value.audience)&&['','24h','3d','7d','custom'].includes(value.expiry)}
+  function validSetup(value){return!!value&&value.audience==='recipient'&&['','24h','3d','7d','custom'].includes(value.expiry)}
   function readSetup(){try{var value=JSON.parse(localStorage.getItem(SHARING_SETUP_STORAGE_KEY)||'null');return validSetup(value)?value:null}catch(_error){return null}}
   function writeSetup(value){try{localStorage.setItem(SHARING_SETUP_STORAGE_KEY,JSON.stringify(value))}catch(_error){}}
   function client(){return window.supabaseClient&&window.supabaseClient.auth?window.supabaseClient:null}

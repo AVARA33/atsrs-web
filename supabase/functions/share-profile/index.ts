@@ -768,9 +768,7 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
   if (action !== "create") return json(req, 400, { error: "Unsupported action." });
   const fileIds = uniqueFileIds(body.file_ids);
   const expiresAt = parseExpiry(body.expires_at);
-  const audienceText = safeText(body.audience, 20);
-  const audience = (["anyone", "recruiters", "recipient"].includes(audienceText)
-    ? audienceText : "anyone") as ShareRow["audience"];
+  const audience = "recipient" as ShareRow["audience"];
   if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
   if (!expiresAt) return json(req, 400, { error: "Choose a valid link expiry between 10 minutes and one year." });
   const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)
