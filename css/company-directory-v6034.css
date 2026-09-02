@@ -13,7 +13,7 @@ body:has(#employersPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{dis
 #employersPage .company-trust-strip i{color:#48df70;font-size:17px}
 #employersPage .company-trust-strip strong{font-weight:500}
 #employersPage .company-hero-network{position:relative;min-width:0;height:100%;overflow:hidden;background:#020605}
-#employersPage .company-network-reference{position:absolute;top:-43px;left:-500px;display:block;width:1230px;max-width:none;height:auto;clip-path:inset(43px 43px 169px 603px);object-fit:contain;object-position:0 0;pointer-events:none;user-select:none}
+#employersPage .company-network-reference{position:absolute;top:-43px;left:-500px;display:block;width:1230px;max-width:none;height:auto;clip-path:inset(43px 43px 169px 664px);object-fit:contain;object-position:0 0;pointer-events:none;user-select:none}
 #employersPage .employers-toolbar{display:grid;grid-template-columns:minmax(0,499fr) minmax(0,274fr) minmax(0,263fr) minmax(0,260fr) minmax(0,245fr) 110px;align-items:end;gap:14px;padding:8px 0 0;border:0;border-radius:0;background:transparent}
 #employersPage .employers-toolbar :is(.atsrs-search-field,.employers-sector){display:grid;gap:7px;color:#a9b3ad;font-size:12px;font-weight:700}
 #employersPage .employers-toolbar :is(input,select),html[data-theme] body #app.app:not(.hidden) #employersPage #employersClearFilters{height:50px!important;min-height:50px!important;border:1px solid #29322d!important;border-radius:11px!important;background:rgba(9,13,11,.88)!important;color:#edf2ef!important;box-shadow:none!important}

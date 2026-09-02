@@ -14,7 +14,7 @@ assert.match(html, /id="employersLocation"/);
 assert.match(html, /id="employersSize"/);
 assert.match(html, /id="employersPaginationTop"[^>]*data-employers-pagination/);
 assert.match(html, /id="employersPaginationBottom"[^>]*data-employers-pagination/);
-assert.match(html, /css\/company-directory-v6034\.css\?v=6049/);
+assert.match(html, /css\/company-directory-v6034\.css\?v=6050/);
 assert.match(html, /js\/employers\.js\?v=6046/);
 
 assert.match(css, /max-width:1440px/);
