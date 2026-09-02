@@ -5,7 +5,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
-assert.match(html, /data-atsrs-build="V6005"/);
+assert.match(html, /data-atsrs-build="V6006"/);
 assert.match(html, /fetch\('\/\?atsrs_release_check='/);
 assert.match(html, /cache:'no-store'/);
 assert.match(html, /credentials:'same-origin'/);
