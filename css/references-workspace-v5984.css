@@ -136,6 +136,14 @@ html body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs
 html[data-theme="light"] body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button{border-bottom-color:rgba(55,116,204,.42)!important;}
 html[data-theme="light"] body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button.is-active{border-bottom-color:#3774cc!important;}
 html[data-theme="light"] body.personal-mode #refsPage :where(.atsrs-reference-search input,.atsrs-reference-filter-button,.atsrs-reference-upload-button,.atsrs-v156-actions button,.cv-actions button,.cv-generator-action-grid>button,.atsrs-v134-actions button,#aiCvSourceStatus){background:#fff!important;border-color:#ced8d2!important;color:#1d2822!important;}
+html[data-theme="light"] body.personal-mode #app #refsPage[data-references-workspace="v5984"] #aiCvSourceStatus,
+html[data-theme="light"] body.personal-mode #app #refsPage[data-references-workspace="v5984"] #aiCvSourceStatus.is-ready{
+  background:#fff!important;
+  border-color:#ced8d2!important;
+  color:#1d2822!important;
+  -webkit-text-fill-color:#1d2822!important;
+  box-shadow:none!important;
+}
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-reference-search.atsrs-field-shell{background:transparent!important;border:0!important;box-shadow:none!important;}
 html[data-theme="light"] body.personal-mode #refsPage :where(.atsrs-v156-main-name b,.atsrs-ref-document b){color:#17211c!important;}
 html[data-theme="light"] body.personal-mode #refsPage .atsrs-v134-row:hover{background:#f6f9f7!important;}
