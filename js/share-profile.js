@@ -325,6 +325,7 @@
   }
   window.createShareProfileLink=async function(){
     var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry(),audienceInput=document.querySelector('input[name="profileSharingAudience"]:checked'),audience=audienceInput?audienceInput.value:'anyone';
+    if(audience==='recipient'){ownerMessage('Choose a verified recruiter from Recruiter Directory to create a recipient link.',true);return false;}
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return false;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
     try{var result=await createValidatedShare(fileIds,expiresAt,audience);activeShare=result.share||null;if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);if(result.token)setOwnerToken(activeShare.id,result.token);}setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
@@ -351,10 +352,16 @@
   };
   window.atsrsPrepareProfileShare=async function(){await refreshOwnerPanel({force:true});return selectedOwnerFiles().length;};
   window.atsrsRefreshOwnerShares=function(){return refreshOwnerPanel({force:true});};
+  window.atsrsUpdateCurrentShareExpiry=async function(){
+    if(!activeShare||!activeShare.active)return true;
+    var expiresAt=selectedExpiry();if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
+    try{var result=await ownerCall({action:'update_expiry',share_id:activeShare.id,expires_at:expiresAt});var updated=result.share||null;if(!updated)return false;activeShares=activeShares.map(function(share){return share.id===updated.id?updated:share;});activeShare=updated;renderOwnerStatus();await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
+    catch(error){ownerMessage(friendlyError(error,'The link expiry could not be updated. Please try again.'),true);return false;}
+  };
   window.revokeShareProfileLink=async function(shareId){
     if(!window.confirm('Revoke this recruiter link? Preview and every approved download will stop immediately. No email will be sent.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Disabling all recruiter access...');
-    try{var result=await ownerCall({action:'revoke',share_id:shareId||activeShare&&activeShare.id});var revoked=result.share||null;if(revoked){activeShares=activeShares.map(function(share){return share.id===revoked.id?revoked:share;});setOwnerToken(revoked.id,'');}activeShare=activeShares.find(function(share){return share.active;})||null;setKnownLink(activeShare?shareLinkById(activeShare.id):'');renderOwnerStatus();ownerMessage('Link revoked. Recruiter access stopped immediately and no email was sent.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));}
+    try{var result=await ownerCall({action:'revoke',share_id:shareId||activeShare&&activeShare.id}),deletedId=String(result.share_id||shareId||activeShare&&activeShare.id||'');activeShares=activeShares.filter(function(share){return share.id!==deletedId;});setOwnerToken(deletedId,'');activeShare=activeShares.find(function(share){return share.active;})||null;setKnownLink(activeShare?shareLinkById(activeShare.id):'');renderOwnerStatus();ownerMessage('Link deleted. Recruiter access stopped immediately and no email was sent.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));}
     catch(error){ownerMessage(friendlyError(error,'The link could not be disabled. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.copyShareLink=async function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url){var missingCopy='This older link cannot be copied because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingCopy,true);window.alert(missingCopy);return false;}var token='';try{token=new URL(url).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){if(shareId)setOwnerToken(shareId,'');else setKnownLink('');ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}try{await navigator.clipboard.writeText(url);}catch(error){var input=byId('shareProfileLink');if(input){input.value=url;input.focus();input.select();document.execCommand('copy');}}ownerMessage('Secure link copied.');var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};

@@ -629,20 +629,31 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     const target = UUID_PATTERN.test(shareId)
       ? existingShares.find((share) => share.id === shareId) ?? null
       : existing;
-    if (!target) return json(req, 200, { share: null });
-    const now = new Date().toISOString();
-    const update = await admin.from("atsrs_profile_shares")
-      .update({ enabled: false, revoked_at: now, updated_at: now }).eq("id", target.id).eq("user_id", user.id)
-      .select(SHARE_SELECT).single();
-    if (update.error) throw update.error;
-    await admin.from("atsrs_share_access_requests")
-      .update({ status: "expired", access_expires_at: null, updated_at: now })
-      .eq("share_id", target.id).in("status", ["otp_pending", "pending", "approved"]);
+    if (!target) return json(req, 200, { deleted: false, share_id: null });
+    const removed = await admin.from("atsrs_profile_shares")
+      .delete().eq("id", target.id).eq("user_id", user.id).select("id").single();
+    if (removed.error) throw removed.error;
     return json(req, 200, {
-      share: publicShareStatus(update.data as ShareRow),
+      deleted: true,
+      share_id: String(removed.data.id),
       email_sent: false,
       recipient_notified: false,
     });
+  }
+
+  if (action === "update_expiry") {
+    const shareId = safeText(body.share_id, 40);
+    const expiresAt = parseExpiry(body.expires_at);
+    if (!UUID_PATTERN.test(shareId) || !expiresAt) {
+      return json(req, 400, { error: "Choose a valid active link and expiry." });
+    }
+    const updated = await admin.from("atsrs_profile_shares")
+      .update({ expires_at: expiresAt, updated_at: new Date().toISOString() })
+      .eq("id", shareId).eq("user_id", user.id).eq("enabled", true)
+      .select(SHARE_SELECT).maybeSingle();
+    if (updated.error) throw updated.error;
+    if (!updated.data) return json(req, 404, { error: "Active share link was not found." });
+    return json(req, 200, { share: publicShareStatus(updated.data as ShareRow) });
   }
 
   if (action === "decide_request") {
@@ -760,6 +771,9 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
   const audienceText = safeText(body.audience, 20);
   const audience = (["anyone", "recruiters", "recipient"].includes(audienceText)
     ? audienceText : "anyone") as ShareRow["audience"];
+  if (audience === "recipient") {
+    return json(req, 400, { error: "Choose a verified recruiter from Recruiter Directory to create a recipient link." });
+  }
   if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
   if (!expiresAt) return json(req, 400, { error: "Choose a valid link expiry between 10 minutes and one year." });
   const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)
