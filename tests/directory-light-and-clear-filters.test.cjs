@@ -26,4 +26,6 @@ assert.match(css, /html\[data-theme="light"\][^{]*\.company-hero-light-wide\{dis
 assert.match(css, /\.company-light-lines\{filter:brightness\(1\.35\) invert\(1\) hue-rotate\(290deg\) saturate\(\.9\)\}/, 'Faint grid must be lifted before inversion, not clipped to white afterwards');
 assert.match(css, /\.company-light-brands\{filter:invert\(1\) hue-rotate\(180deg\)/);
 assert.equal((html.match(/<clipPath id="company-(?:wide|narrow)-brand-marks">/g) || []).length, 2);
+const brandClips = html.match(/<clipPath id="company-(?:wide|narrow)-brand-marks">[\s\S]*?<\/clipPath>/g).join('');
+assert.equal((brandClips.match(/rx="(?:9|14)"/g) || []).length, 12, 'Preserve whole rounded card interiors, not rectangular white patches behind logos');
 console.log('Directory light palette and clear-filter scroll regressions passed');
