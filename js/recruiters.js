@@ -499,7 +499,7 @@
       nav.appendChild(pageButton("Next", recruiterPage + 1, recruiterPage === pageCount, false, "next"));
     });
   }
-  function resetFilters(activeOnly) {
+  function resetFilters(activeOnly, scrollToCards) {
     byId("recruitersSearch").value = "";
     byId("recruitersCompany").value = "";
     byId("recruitersVacancies").value = activeOnly ? "active" : "";
@@ -507,7 +507,7 @@
     recruiterPage = 1;
     render();
     var target = byId("recruitersGrid");
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (target && scrollToCards) target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   function install() {
     if (!byId("recruitersPage")) return;
@@ -517,9 +517,9 @@
         render();
       });
     });
-    byId("recruitersClearFilters").addEventListener("click", function () { resetFilters(false); });
-    byId("recruitersExploreAll").addEventListener("click", function () { resetFilters(false); });
-    byId("recruitersActiveVacancies").addEventListener("click", function () { resetFilters(true); });
+    byId("recruitersClearFilters").addEventListener("click", function () { resetFilters(false, false); });
+    byId("recruitersExploreAll").addEventListener("click", function () { resetFilters(false, true); });
+    byId("recruitersActiveVacancies").addEventListener("click", function () { resetFilters(true, true); });
     var page = byId("recruitersPage");
     new MutationObserver(syncDirectoryVisibility).observe(page, {
       attributes: true,

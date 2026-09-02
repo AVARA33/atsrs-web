@@ -32,7 +32,7 @@ assert.match(css,/#recruitersPage \.employer-actions \{[\s\S]*?display:flex;[\s\
 assert.match(css,/#recruitersPage \.employer-actions a,[\s\S]*?flex:1 1 0;[\s\S]*?height:32px !important;[\s\S]*?font-size:9px;/);
 assert.match(css,/#recruitersPage \.recruiters-trust-strip \{[\s\S]*?background:transparent;[\s\S]*?backdrop-filter:none;/);
 assert.match(css,/#recruitersPage \.recruiters-pagination \{/);
-assert.match(js,/function resetFilters\(activeOnly\)/);
+assert.match(js,/function resetFilters\(activeOnly, scrollToCards\)/);
 assert.match(js,/recruitersExploreAll/);
 assert.match(js,/"Explore all " \+ recruiters\.length/);
 assert.match(js,/recruitersActiveVacancies/);
