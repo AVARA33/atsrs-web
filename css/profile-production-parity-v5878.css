@@ -1102,80 +1102,229 @@ body.profile-security-code-open{overflow:hidden}.profile-security-code-modal[hid
   html[data-theme="light"] body.personal-mode #profilePage .profile-security-primary { background:transparent; }
   body.personal-mode #profilePage .profile-security-verification-heading {
     align-items:center;
-    gap:9px;
-    padding:8px 13px;
+    justify-content:space-between;
+    gap:10px;
+    min-height:42px;
+    padding:7px 14px;
   }
-  body.personal-mode #profilePage .profile-security-verification-heading > i { margin:0; font-size:17px; }
+  body.personal-mode #profilePage .profile-security-verification-heading > i { margin:0; color:var(--profile-security-accent); font-size:18px; }
   body.personal-mode #profilePage .profile-security-verification-heading h5 { font-size:12px; }
   body.personal-mode #profilePage .profile-security-verification-heading p { margin-top:2px; font-size:8px; line-height:1.3; }
   body.personal-mode #profilePage .profile-security-verification-flow {
-    grid-template-columns:minmax(300px,1.05fr) minmax(0,2fr);
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-rows:minmax(0,1fr) 62px;
+    height:100%;
+    min-height:0;
   }
   body.personal-mode #profilePage .profile-security-step,
   body.personal-mode #profilePage .profile-security-verification-result {
-    min-height:167px;
-    padding:10px 12px;
+    min-height:0;
+    padding:10px 14px;
+  }
+  body.personal-mode #profilePage .profile-security-step {
+    border-right:1px solid var(--line);
+    border-bottom:0;
+  }
+  body.personal-mode #profilePage .profile-security-step > header,
+  body.personal-mode #profilePage .profile-security-verification-result > header {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-height:32px;
+  }
+  body.personal-mode #profilePage .profile-security-step > header > span,
+  body.personal-mode #profilePage .profile-security-verification-result > header > span {
+    display:inline-flex;
+    flex:0 0 25px;
+    align-items:center;
+    justify-content:center;
+    width:25px;
+    height:25px;
+    border:1px solid color-mix(in srgb,var(--profile-security-accent) 52%,var(--line));
+    border-radius:50%;
+    background:color-mix(in srgb,var(--profile-security-accent) 10%,transparent);
+    color:var(--profile-security-accent);
+    font-size:9px;
+    font-weight:850;
+  }
+  body.personal-mode #profilePage .profile-security-step > header strong,
+  body.personal-mode #profilePage .profile-security-verification-result > header strong {
+    display:block;
+    margin:0;
+    color:var(--text);
+    font-size:10px;
+    line-height:1.2;
+  }
+  body.personal-mode #profilePage .profile-security-step > header small,
+  body.personal-mode #profilePage .profile-security-verification-result > header small {
+    display:block;
+    max-width:none;
+    margin:2px 0 0;
+    color:var(--muted);
+    font-size:7px;
+    line-height:1.25;
+    text-align:left;
   }
   body.personal-mode #profilePage .profile-security-channel-grid {
-    gap:7px;
-    margin:0 0 7px;
+    grid-template-columns:1fr;
+    gap:5px;
+    margin:7px 0 0;
   }
   body.personal-mode #profilePage .profile-security-channel-grid > button {
-    height:34px;
-    min-height:34px;
+    height:31px;
+    min-height:31px;
     gap:7px;
-    padding:0 9px;
+    justify-content:flex-start;
+    padding:0 10px;
     border-radius:8px;
     font-size:9px;
   }
+  html[data-theme="dark"] body.personal-mode #profilePage .profile-security-channel-grid > button {
+    position:relative;
+    border-color:transparent !important;
+    background:transparent !important;
+    color:var(--muted) !important;
+    box-shadow:none !important;
+  }
+  html[data-theme="dark"] body.personal-mode #profilePage .profile-security-channel-grid > button:is(:hover,:focus-visible) {
+    background:#0a0e0c !important;
+    color:var(--profile-security-accent) !important;
+  }
+  html[data-theme="dark"] body.personal-mode #profilePage .profile-security-channel-grid > button.is-selected {
+    border-color:transparent !important;
+    background:#0c120f !important;
+    color:var(--profile-security-accent) !important;
+  }
+  html[data-theme="dark"] body.personal-mode #profilePage .profile-security-channel-grid > button.is-selected::after {
+    content:"";
+    position:absolute;
+    right:9px;
+    bottom:3px;
+    left:9px;
+    height:2px;
+    border-radius:999px;
+    background:var(--profile-security-accent);
+  }
+  html[data-theme="light"] body.personal-mode #profilePage .profile-security-channel-grid > button {
+    position:relative;
+    border-color:transparent !important;
+    background:transparent !important;
+    color:var(--muted) !important;
+    box-shadow:none !important;
+  }
+  html[data-theme="light"] body.personal-mode #profilePage .profile-security-channel-grid > button:is(:hover,:focus-visible),
+  html[data-theme="light"] body.personal-mode #profilePage .profile-security-channel-grid > button.is-selected {
+    border-color:var(--atsrs-shell-accent-border) !important;
+    background:var(--atsrs-shell-accent-soft) !important;
+    color:var(--atsrs-shell-accent-strong) !important;
+  }
+  html[data-theme="light"] body.personal-mode #profilePage .profile-security-channel-grid > button.is-selected::after {
+    content:"";
+    position:absolute;
+    right:9px;
+    bottom:3px;
+    left:9px;
+    height:2px;
+    border-radius:999px;
+    background:var(--atsrs-shell-accent);
+  }
   body.personal-mode #profilePage .profile-security-channel-grid > button > i:first-child { font-size:16px; }
   body.personal-mode #profilePage .profile-security-channel-check { top:5px; right:5px; font-size:12px; }
-  body.personal-mode #profilePage .profile-security-saved-contact > small { font-size:8px; }
-  body.personal-mode #profilePage .profile-security-saved-contact > div { gap:6px; margin-top:3px; }
-  body.personal-mode #profilePage .profile-security-saved-contact strong { font-size:10px; }
+  body.personal-mode #profilePage .profile-security-saved-contact { margin-top:7px; }
+  body.personal-mode #profilePage .profile-security-saved-contact > small { font-size:7px; }
+  body.personal-mode #profilePage .profile-security-saved-contact > div { gap:5px; margin-top:2px; }
+  body.personal-mode #profilePage .profile-security-saved-contact strong {
+    flex:0 1 auto;
+    font-size:12px;
+    letter-spacing:.01em;
+  }
   body.personal-mode #profilePage .profile-security-saved-contact span { min-height:18px; padding:0 6px; font-size:7px; }
   body.personal-mode #profilePage #profileSecurityEditContact {
-    flex-basis:22px;
-    width:22px;
-    height:22px;
-    min-width:22px;
-    min-height:22px;
+    flex:0 0 20px;
+    width:20px;
+    height:20px;
+    min-width:20px;
+    min-height:20px;
+    margin-left:auto;
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-size:10px;
   }
   body.personal-mode #profilePage .profile-security-send-inline {
-    gap:6px 9px;
-    margin-top:7px;
-    padding-top:6px;
+    display:block;
+    margin-top:6px;
+    padding-top:5px;
   }
+  body.personal-mode #profilePage .profile-security-send-inline > div { display:none; }
   body.personal-mode #profilePage .profile-security-send-inline p { font-size:7px; }
   body.personal-mode #profilePage .profile-security-send-inline strong { margin-top:2px; font-size:9px; }
   body.personal-mode #profilePage .profile-security-send-inline #profileSecuritySendCode {
-    min-width:122px !important;
-    height:27px !important;
-    min-height:27px !important;
-    padding:0 8px !important;
-    font-size:7px !important;
+    width:100% !important;
+    min-width:0 !important;
+    height:30px !important;
+    min-height:30px !important;
+    margin:0 !important;
+    padding:0 9px !important;
+    font-size:8px !important;
+  }
+  body.personal-mode #profilePage .profile-security-verification-result {
+    display:flex;
+    align-items:stretch;
+    justify-content:flex-start;
+    flex-direction:column;
+    text-align:left;
+  }
+  body.personal-mode #profilePage .profile-security-verification-result > i {
+    align-self:center;
+    margin-top:8px;
+    color:var(--profile-security-accent);
+    font-size:25px;
+  }
+  body.personal-mode #profilePage .profile-security-verification-result > strong {
+    align-self:center;
+    margin-top:4px;
+    color:var(--profile-security-accent);
+    font-size:9px;
+  }
+  body.personal-mode #profilePage .profile-security-verification-result > small {
+    align-self:center;
+    max-width:none;
+    margin-top:2px;
+    font-size:7px;
+    text-align:center;
   }
   body.personal-mode #profilePage .profile-security-verification-flow > .profile-security-grid {
-    gap:8px;
-    padding:10px 12px;
+    grid-column:1/-1;
+    grid-row:2;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-content:stretch;
+    gap:0;
+    margin:0;
+    padding:0;
+    border-top:1px solid var(--line);
   }
   body.personal-mode #profilePage .profile-security-verification-flow > .profile-security-grid .profile-security-card {
     min-height:0;
     height:100%;
-    padding:10px;
-    column-gap:7px;
-    row-gap:5px;
+    padding:8px 12px;
+    border:0;
+    border-right:1px solid var(--line);
+    border-radius:0;
+    background:transparent !important;
+    column-gap:6px;
+    row-gap:3px;
   }
+  body.personal-mode #profilePage .profile-security-verification-flow > .profile-security-grid .profile-security-card:last-child { border-right:0; }
   body.personal-mode #profilePage .profile-security-card-icon { font-size:17px; }
-  body.personal-mode #profilePage .profile-security-copy b { font-size:10px; }
-  body.personal-mode #profilePage .profile-security-copy .small-note { margin-top:3px; font-size:8px; line-height:1.3; }
+  body.personal-mode #profilePage .profile-security-copy b { font-size:9px; }
+  body.personal-mode #profilePage .profile-security-copy .small-note { margin-top:2px; font-size:7px; line-height:1.25; }
   body.personal-mode #profilePage .profile-security-card-meta,
   body.personal-mode #profilePage .profile-security-card-meta strong { gap:5px; font-size:8px; }
   body.personal-mode #profilePage .profile-security-card-action {
-    min-width:58px;
-    height:27px !important;
-    min-height:27px !important;
-    padding:4px 7px !important;
-    font-size:8px;
+    min-width:52px;
+    height:25px !important;
+    min-height:25px !important;
+    padding:3px 6px !important;
+    font-size:7px;
   }
 }

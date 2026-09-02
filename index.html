@@ -122,7 +122,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5854">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5988">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5990">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=46">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
@@ -1773,13 +1773,17 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <article id="profileTabSecurityPanel" class="profile-settings-panel" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden>
       <div class="profile-security-primary">
       <section id="profileSecurityVerification" class="profile-security-verification" aria-labelledby="profileSecurityVerificationTitle" data-channel="whatsapp" data-state="ready">
-        <header class="profile-security-verification-heading"><i class="ph ph-phone-call" aria-hidden="true"></i><div><h5 id="profileSecurityVerificationTitle">Contact Verification</h5><p>Keep your contact details verified to secure your account and receive important updates.</p></div></header>
+        <header class="profile-security-verification-heading"><i class="ph ph-shield-check" aria-hidden="true"></i><div><h5 id="profileSecurityVerificationTitle">Contact verification</h5><p>Secure your account by verifying your contact in three simple steps.</p></div></header>
         <div class="profile-security-verification-flow">
-          <section class="profile-security-step profile-security-step-channel" aria-label="Verification channel and code delivery">
+          <section class="profile-security-step profile-security-step-channel" aria-label="Choose verification channel">
+            <header><span>1</span><div><strong>Choose channel</strong><small>Select how you want to verify.</small></div></header>
             <div class="profile-security-channel-grid" role="radiogroup" aria-label="Verification channel">
               <button id="profileSecurityMobileChannel" type="button" role="radio" aria-checked="false" data-security-channel="mobile"><i class="ph ph-phone" aria-hidden="true"></i><span>Mobile</span></button>
               <button id="profileSecurityWhatsappChannel" type="button" role="radio" aria-checked="true" data-security-channel="whatsapp"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><span>WhatsApp</span><i class="ph-fill ph-check-circle profile-security-channel-check" aria-hidden="true"></i></button>
             </div>
+          </section>
+          <section class="profile-security-step profile-security-step-send" aria-label="Send verification code">
+            <header><span>2</span><div><strong>Send code</strong><small>We'll send a 6-digit verification code.</small></div></header>
             <div class="profile-security-saved-contact"><small id="profileSecuritySavedLabel">Saved WhatsApp number</small><div><strong id="profileSecuritySavedNumber">Not provided</strong><span id="profileSecuritySavedStatus">Not verified</span><button id="profileSecurityEditContact" type="button" aria-label="Edit saved contact"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div></div>
             <div id="profileSecurityInlineEditorHost"></div>
             <div class="profile-security-send-inline">
@@ -1787,6 +1791,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
               <button id="profileSecuritySendCode" type="button"><span>Send verification code</span><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></button>
               <p id="profileSecuritySendStatus" class="profile-security-live-status" role="status" aria-live="polite"></p>
             </div>
+          </section>
+          <section id="profileSecurityVerificationResult" class="profile-security-verification-result" aria-live="polite">
+            <header><span>3</span><div><strong>Verified status</strong><small>Complete verification to secure your account.</small></div></header>
+            <i class="ph ph-shield-check" aria-hidden="true"></i><strong>Ready to verify</strong><small>Select a channel and send a code.</small>
           </section>
           <div id="profileSecurityControls" class="profile-settings-list profile-security-grid"></div>
         </div>
