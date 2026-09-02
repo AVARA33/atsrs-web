@@ -35,7 +35,7 @@ html[data-theme="light"]{
   --atsrs-field-focus-shadow:0 0 0 3px var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow);
 }
 
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell{
   position:relative!important;
   display:grid!important;
   align-self:start!important;
@@ -51,7 +51,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{
   box-shadow:none!important;
   transition:border-color .16s ease,box-shadow .16s ease!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .atsrs-field-label{
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell > .atsrs-field-label{
   position:absolute!important;
   z-index:5!important;
   top:0!important;
@@ -78,11 +78,11 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .a
   pointer-events:none!important;
   box-shadow:none!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:not(.atsrs-field-textarea){
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:not(.atsrs-field-textarea){
   height:var(--atsrs-field-height)!important;
   max-height:var(--atsrs-field-height)!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell :where(
   input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
   select,
   textarea,
@@ -106,7 +106,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :whe
   box-shadow:none!important;
   font:inherit!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-field-control-frame,.atsrs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell :where(.atsrs-field-control-frame,.atsrs-search-control,.jobs-select-host,.personnel-combobox,.personnel-select-shell,.phone-field,.work-type-select,.talent-work-type-filter,.atsrs-disclosure-shell){
   position:relative!important;
   display:flex!important;
   align-items:center!important;
@@ -136,38 +136,38 @@ body #app .atsrs-search-field.atsrs-field-shell .atsrs-search-control > input{
   padding-left:var(--atsrs-field-inline-padding)!important;
   padding-right:40px!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(.atsrs-disclosure-indicator,.personnel-filter-arrow,.work-type-select-arrow){right:12px!important;color:var(--atsrs-field-muted)!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell .atsrs-select-trigger{padding-right:36px!important;text-align:left!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea{align-items:stretch!important;min-height:96px!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-textarea textarea{min-height:94px!important;padding-top:14px!important;resize:vertical!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell :where(.atsrs-disclosure-indicator,.personnel-filter-arrow,.work-type-select-arrow){right:12px!important;color:var(--atsrs-field-muted)!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell .atsrs-select-trigger{padding-right:36px!important;text-align:left!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell.atsrs-field-textarea{align-items:stretch!important;min-height:96px!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell.atsrs-field-textarea textarea{min-height:94px!important;padding-top:14px!important;resize:vertical!important}
 @media(hover:hover){
-  html[data-theme="dark"] body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:hover:not(:focus-within):not(:has(:is(.talent-work-type-filter[open],[aria-expanded="true"]))){
+  html[data-theme="dark"] body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:hover:not(:focus-within):not(:has(:is(.talent-work-type-filter[open],[aria-expanded="true"]))){
     border-right-color:var(--atsrs-field-hover-inline-line)!important;
     border-left-color:var(--atsrs-field-hover-inline-line)!important;
   }
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within{
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:focus-within{
   border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;
   box-shadow:var(--atsrs-field-focus-shadow)!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])){
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])){
   border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;
   box-shadow:var(--atsrs-field-focus-shadow)!important;
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:focus-within > .atsrs-field-label,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])) > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell :where(input,select,textarea,button):focus-visible{outline:0!important;box-shadow:none!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)){
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:focus-within > .atsrs-field-label,
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:has(:is(.talent-work-type-filter[open],[aria-expanded="true"])) > .atsrs-field-label{color:var(--atsrs-field-accent)!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell :where(input,select,textarea,button):focus,
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell :where(input,select,textarea,button):focus-visible{outline:0!important;box-shadow:none!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)){
   border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.12)!important
 }
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)) > .atsrs-field-label{color:#ef4444!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:where(.is-success,[data-state="success"])) {border-color:#22a95b!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell.atsrs-field-disabled,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell:has(:disabled){opacity:.58!important;cursor:not-allowed!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-source-label{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell input:-webkit-autofill,
-body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell textarea:-webkit-autofill{
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:has(:where([aria-invalid="true"],.error,.is-error)) > .atsrs-field-label{color:#ef4444!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:has(:where(.is-success,[data-state="success"])) {border-color:#22a95b!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell.atsrs-field-disabled,
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell:has(:disabled){opacity:.58!important;cursor:not-allowed!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-source-label{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell input:-webkit-autofill,
+body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell textarea:-webkit-autofill{
   -webkit-box-shadow:0 0 0 1000px var(--atsrs-field-surface) inset!important;
   -webkit-text-fill-color:var(--atsrs-field-text)!important;
   caret-color:var(--atsrs-field-text)!important;
@@ -193,9 +193,9 @@ html[data-theme] body #app.app:not(.hidden) #personnelPage .atsrs-field-shell .p
 
 @media(max-width:620px){
   :root{--atsrs-field-label-size:9px;--atsrs-field-label-offset:10px;--atsrs-field-label-padding:5px;--atsrs-field-inline-padding:10px}
-  body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell > .atsrs-field-label{max-width:calc(100% - 18px)!important}
+  body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell > .atsrs-field-label{max-width:calc(100% - 18px)!important}
 }
-@media(prefers-reduced-motion:reduce){body :where(#app,#auth,.share-public-page,dialog,.modal) .atsrs-field-shell{transition:none!important}}
+@media(prefers-reduced-motion:reduce){body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .atsrs-field-shell{transition:none!important}}
 
 /* Canonical last-mile reset: legacy wrappers may retain two-row grids or their own 46px borders. */
 html body #app .atsrs-field-shell,

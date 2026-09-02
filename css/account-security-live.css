@@ -24,13 +24,25 @@ html[data-theme="light"] #atsrsSecurityModal {
 #atsrsSecurityModal :is(.atsrs-session-card,.atsrs-security-consent) { background:var(--security-soft); border-color:var(--security-line); color:var(--security-text)!important; }
 #atsrsSecurityModal .atsrs-security-consent span { color:var(--security-text)!important; }
 #atsrsSecurityModal .atsrs-mfa-secret { border-color:var(--security-line); }
-#atsrsSecurityModal :is(.atsrs-security-close,.atsrs-security-actions button,.atsrs-security-form input) { background:var(--security-surface)!important; border-color:var(--security-line)!important; color:var(--security-text)!important; }
+#atsrsSecurityModal :is(.atsrs-security-close,.atsrs-security-actions button) { background:var(--security-surface)!important; border-color:var(--security-line)!important; color:var(--security-text)!important; }
 #atsrsSecurityModal :is(.atsrs-security-close,.atsrs-security-actions button):hover { border-color:var(--security-accent)!important; }
-#atsrsSecurityModal :is(button,input):focus-visible { outline:2px solid var(--security-accent); outline-offset:2px; }
+#atsrsSecurityModal button:focus-visible { outline:2px solid var(--security-accent); outline-offset:2px; }
 #atsrsSecurityModal .atsrs-security-actions button.action { border-color:#d94b4b!important; color:#d94b4b!important; }
 #atsrsSecurityModal .atsrs-security-message { color:var(--security-muted)!important; }
 #atsrsSecurityModal .atsrs-security-message.is-error { color:#e45b65!important; }
 #atsrsSecurityModal .atsrs-security-message.is-ok { color:var(--security-accent)!important; }
+/* Use the shared field shell as the only border and focus indicator. */
+html[data-theme] body #atsrsSecurityModal .atsrs-field-shell { grid-template:minmax(0,1fr)/minmax(0,1fr)!important; gap:0!important; }
+html[data-theme] body #atsrsSecurityModal .atsrs-field-shell:focus-within {
+  border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line)!important;
+  outline:0!important; box-shadow:var(--atsrs-field-focus-shadow)!important;
+}
+html[data-theme] body #atsrsSecurityModal .atsrs-field-shell input,
+html[data-theme] body #atsrsSecurityModal .atsrs-field-shell input:focus,
+html[data-theme] body #atsrsSecurityModal .atsrs-field-shell input:focus-visible {
+  height:calc(var(--atsrs-field-height) - 2px)!important;
+  border:0!important; outline:0!important; box-shadow:none!important; background:transparent!important;
+}
 .atsrs-account-toast {
   position: fixed;
   right: 22px;

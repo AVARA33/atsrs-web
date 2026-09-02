@@ -4,7 +4,7 @@ const html=fs.readFileSync('index.html','utf8');
 const security=fs.readFileSync('js/account-security-live.js','utf8');
 
 assert.match(html,/js\/account-security-live\.js\?v=376/);
-assert.match(html,/css\/account-security-live\.css\?v=6001/);
+assert.match(html,/css\/account-security-live\.css\?v=6002/);
 const securityCss=fs.readFileSync('css/account-security-live.css','utf8');
 assert.match(securityCss,/html\[data-theme="light"\] \.atsrs-security-consent/);
 assert.match(securityCss,/html\[data-theme="light"\] \.atsrs-security-consent span/);
