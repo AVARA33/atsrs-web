@@ -6,6 +6,36 @@
     "contact": "https://www.jll.com/en-us/contact",
     "about": "https://www.jll.com/en-us/about-jll"
   },
+  "Saudi Aramco": {
+    "website": "https://www.aramco.com/",
+    "careers": "https://www.aramco.com/en/careers",
+    "contact": "https://www.aramco.com/en/contact-us",
+    "about": "https://www.aramco.com/en/about-us"
+  },
+  "SABIC": {
+    "website": "https://www.sabic.com/",
+    "careers": "https://www.sabic.com/en/careers",
+    "contact": "https://www.sabic.com/en/contact",
+    "about": "https://www.sabic.com/en/about"
+  },
+  "stc": {
+    "website": "https://www.stc.com.sa/",
+    "careers": "https://careers.stc.com.sa/?locale=en_US",
+    "contact": "https://www.stc.com.sa/en/personal/support/contact-us/customer-care.html",
+    "about": "https://www.stc.com.sa/content/dam/stc/stc-annual-report-2024/about-stc.html"
+  },
+  "NEOM": {
+    "website": "https://www.neom.com/",
+    "careers": "https://careers.neom.com/",
+    "contact": "https://www.neom.com/en-us/get-in-touch",
+    "about": "https://www.neom.com/en-us/about"
+  },
+  "Ma'aden": {
+    "website": "https://www.maaden.com/",
+    "careers": "https://careers.maaden.com/",
+    "contact": "https://www.maaden.com/connect-engage",
+    "about": "https://www.maaden.com/discover-us/about-maaden"
+  },
   "Avery Dennison": {
     "website": "https://www.averydennison.com/",
     "careers": "https://www.averydennison.com/en/home/careers/overview.html",
