@@ -223,6 +223,7 @@
 
     var menu=document.createElement('div');
     menu.className='atsrs-select-menu';
+    menu.dataset.sourceSelect=select.id||'';
     menu.id='atsrsSelectMenu'+(++sequence);
     menu.setAttribute('role','listbox');
     menu.hidden=true;

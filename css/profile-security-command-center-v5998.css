@@ -1,4 +1,13 @@
 /* Reference layout only: retain the shared panel dimensions and live security handlers. */
+/* The country-code popup is portalled to body, outside the Security panel. */
+body.personal-mode .atsrs-select-menu[data-source-select="profileSecurityContactCode"] .atsrs-select-option {
+  grid-template-columns:12px minmax(0,1fr)!important;
+  gap:4px!important; min-height:30px!important; padding:6px!important;
+  font-size:11px!important; line-height:16px!important; white-space:nowrap!important;
+}
+body.personal-mode .atsrs-select-menu[data-source-select="profileSecurityContactCode"] .atsrs-select-option :is(.atsrs-select-option-label,.atsrs-select-option-check) {
+  font-size:11px!important; line-height:16px!important; white-space:nowrap!important;
+}
 body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center { padding:20px 24px; }
 body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
   display:grid; grid-template-columns:minmax(260px,.38fr) minmax(0,.62fr); gap:36px;

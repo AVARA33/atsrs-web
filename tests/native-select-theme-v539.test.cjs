@@ -13,7 +13,8 @@ const openPositionJs = fs.readFileSync(path.join(root, 'js', 'select-open-positi
 test('shared dropdown standard loads after the theme layer', () => {
   assert.match(index, /native-select-theme-v539\.css\?v=58173/);
   assert.match(index, /dropdown-neutral-state-v58174\.css\?v=58174/);
-  assert.match(index, /theme\.js\?v=577[\s\S]*select-standard\.js\?v=58164/);
+  assert.match(index, /theme\.js\?v=\d+[\s\S]*select-standard\.js\?v=58166/);
+  assert.match(js, /menu\.dataset\.sourceSelect=select\.id\|\|''/);
   assert.match(index, /select-open-position-v58165\.js\?v=58165/);
 });
 
