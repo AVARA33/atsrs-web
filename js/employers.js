@@ -517,8 +517,10 @@
     );
   }
   function buttonLink(url, label, icon) {
+    var safeUrl = safeExternalUrl(url);
+    if (!safeUrl) return unavailableAction(label, icon);
     var link = document.createElement("a");
-    link.href = url;
+    link.href = safeUrl;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.innerHTML =
@@ -528,6 +530,18 @@
       label +
       "</span>";
     return link;
+  }
+  function safeExternalUrl(value) {
+    var url = clean(value);
+    if (!url || !/^https?:\/\//i.test(url)) return "";
+    try {
+      var parsed = new URL(url, window.location.href);
+      return parsed.protocol === "https:" || parsed.protocol === "http:"
+        ? parsed.href
+        : "";
+    } catch (ignore) {
+      return "";
+    }
   }
   function action(label, icon, handler) {
     var button = document.createElement("button");
@@ -561,10 +575,12 @@
       window.showPage("jobs", byId("navJobs"));
     function applyCompanyFilter() {
       var select = byId("jobsCompanyFilter");
-      if (select && Array.from(select.options).some(function (option) {
-        return option.value === name;
-      })) {
-        select.value = name;
+      var requested = normalized(name);
+      var option = select && Array.from(select.options).find(function (candidate) {
+        return normalized(candidate.value || candidate.textContent) === requested;
+      });
+      if (select && option) {
+        select.value = option.value;
         select.dispatchEvent(new Event("change", { bubbles: true }));
         return true;
       }

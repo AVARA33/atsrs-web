@@ -6,6 +6,108 @@
     "contact": "https://www.jll.com/en-us/contact",
     "about": "https://www.jll.com/en-us/about-jll"
   },
+  "Avery Dennison": {
+    "website": "https://www.averydennison.com/",
+    "careers": "https://www.averydennison.com/en/home/careers/overview.html",
+    "contact": "https://www.averydennison.com/en/home/contact-us.html",
+    "about": "https://www.averydennison.com/en/home/about-us.html"
+  },
+  "Catch22": {
+    "website": "https://www.catch-22.org.uk/",
+    "careers": "https://www.catch-22.org.uk/jobs-and-placements/",
+    "contact": "https://www.catch-22.org.uk/contact/",
+    "about": "https://www.catch-22.org.uk/about-us/"
+  },
+  "Eurofins": {
+    "website": "https://www.eurofins.com/",
+    "careers": "https://careers.eurofins.com/",
+    "contact": "https://www.eurofins.com/contact-us/",
+    "about": "https://www.eurofins.com/about-us/"
+  },
+  "Eurofins USA Environment Testing": {
+    "website": "https://www.eurofins.com/en-us/environment-testing/",
+    "careers": "https://careers.eurofins.com/",
+    "contact": "https://www.eurofinsus.com/environment-testing/contact-us/",
+    "about": "https://www.eurofins.com/about-us/"
+  },
+  "Fairmont (Accor)": {
+    "website": "https://www.fairmont.com/",
+    "careers": "https://careers.accor.com/",
+    "contact": "https://help.accor.com/s/contact?language=en_US&partner_id=fairmont",
+    "about": "https://www.fairmont.com/en/our-story.html"
+  },
+  "Intuitive": {
+    "website": "https://www.intuitive.com/en-us",
+    "careers": "https://careers.intuitive.com/en",
+    "contact": "https://www.intuitive.com/en-us/about-us/contact",
+    "about": "https://www.intuitive.com/en-us/about-us/company"
+  },
+  "JACOBS DOUWE EGBERTS": {
+    "website": "https://www.jdepeets.com/",
+    "careers": "https://careers.jdepeets.com/",
+    "contact": "https://www.jdepeets.com/contact-us/",
+    "about": "https://www.jdepeets.com/about-us/"
+  },
+  "Jetstar Airways Pty Ltd": {
+    "website": "https://www.jetstar.com/au/en/home",
+    "careers": "https://www.jetstar.com/au/en/about-us/careers",
+    "contact": "https://www.jetstar.com/au/en/contact-us",
+    "about": "https://www.jetstar.com/au/en/about-us"
+  },
+  "Qantas Group / Qantas Airways Limited": {
+    "website": "https://www.qantas.com/corporate",
+    "careers": "https://careers.qantas.com/",
+    "contact": "https://www.qantas.com/en-au/help/contact-us",
+    "about": "https://www.qantas.com/en-au/about-us"
+  },
+  "SEEK": {
+    "website": "https://www.seek.com.au/",
+    "careers": "https://au.seek.com/about/careers",
+    "contact": "https://help.au.seek.com/",
+    "about": "https://au.seek.com/about"
+  },
+  "Senior Aerospace Thermal Engineering": {
+    "website": "https://www.seniorplc.com/",
+    "careers": "https://careers.smartrecruiters.com/SeniorPlc1",
+    "contact": "https://www.seniorplc.com/site-services/contact-us.aspx",
+    "about": "https://www.seniorplc.com/about-us/"
+  },
+  "ServiceNow": {
+    "website": "https://www.servicenow.com/",
+    "careers": "https://careers.servicenow.com/",
+    "contact": "https://www.servicenow.com/contact-us.locations.html",
+    "about": "https://www.servicenow.com/company.html"
+  },
+  "SIXT USA": {
+    "website": "https://www.sixt.com/",
+    "careers": "https://www.sixt.jobs/us",
+    "contact": "https://www.sixt.com/help-center/",
+    "about": "https://about.sixt.com/"
+  },
+  "Svitzer": {
+    "website": "https://svitzer.com/",
+    "careers": "https://svitzer.com/careers/",
+    "contact": "https://svitzer.com/contact/",
+    "about": "https://svitzer.com/who-we-are/about-us/"
+  },
+  "Taylor and Francis": {
+    "website": "https://taylorandfrancis.com/",
+    "careers": "https://taylorandfrancis.com/about/careers/",
+    "contact": "https://taylorandfrancis.com/help/",
+    "about": "https://taylorandfrancis.com/about/"
+  },
+  "TOMRA": {
+    "website": "https://www.tomra.com/",
+    "careers": "https://www.tomra.com/careers",
+    "contact": "https://www.tomra.com/contact-us",
+    "about": "https://www.tomra.com/about-tomra"
+  },
+  "Version 1": {
+    "website": "https://www.version1.com/",
+    "careers": "https://www.version1.com/careers/",
+    "contact": "https://www.version1.com/contact-us/",
+    "about": "https://www.version1.com/about-us/"
+  },
   "2H Offshore Group / Acteon": {
     "website": "https://www.acteon.com/",
     "careers": "https://careers.acteon.com/",
@@ -1059,7 +1161,7 @@
   "SGS": {
     "website": "https://www.sgs.com/",
     "careers": "https://www.sgs.com/en/our-company/careers-at-sgs",
-    "contact": "https://www.sgs.com/en/contact-form?",
+    "contact": "https://www.sgs.com/en/contact-form",
     "about": "https://www.sgs.com/en/our-company/about-sgs"
   },
   "Sila Nanotechnologies, Inc.": {
