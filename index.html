@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V5994" data-atsrs-update="30 Aug 2026">
+<html lang="en" data-atsrs-build="V5995" data-atsrs-update="2 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,41 @@
 <meta name="referrer" content="no-referrer" />
 <meta name="description" content="ATSRS is an international platform for document expiry tracking, controlled sharing, Personal profiles, Candidate access and Corporate compliance workflows." />
 <title>ATSRS</title>
+<script>
+(function(){
+  'use strict';
+  var currentBuild=document.documentElement.getAttribute('data-atsrs-build')||'';
+  var checking=false;
+  var lastCheckedAt=0;
+  var minimumCheckInterval=30000;
+
+  function serverBuildFrom(html){
+    var match=String(html||'').match(/<html[^>]+data-atsrs-build=["']([^"']+)["']/i);
+    return match&&match[1]||'';
+  }
+  function refreshFromServer(serverBuild){
+    var url=new URL(window.location.href);
+    url.searchParams.set('_atsrs_release',serverBuild+'-'+Date.now());
+    window.location.replace(url.toString());
+  }
+  async function checkLatestRelease(force){
+    var now=Date.now();
+    if(checking||(!force&&now-lastCheckedAt<minimumCheckInterval))return;
+    checking=true;
+    lastCheckedAt=now;
+    try{
+      var response=await fetch('/?atsrs_release_check='+now,{cache:'no-store',credentials:'same-origin',headers:{'Accept':'text/html'}});
+      if(!response.ok)return;
+      var serverBuild=serverBuildFrom(await response.text());
+      if(serverBuild&&currentBuild&&serverBuild!==currentBuild)refreshFromServer(serverBuild);
+    }catch(error){}finally{checking=false;}
+  }
+  window.addEventListener('pageshow',function(event){checkLatestRelease(!!event.persisted);});
+  window.addEventListener('focus',function(){checkLatestRelease(false);});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')checkLatestRelease(false);});
+  window.atsrsCheckLatestRelease=function(){return checkLatestRelease(true);};
+})();
+</script>
 <link id="atsrsFavicon" rel="icon" type="image/png" sizes="64x64" href="assets/branding/atsrs-favicon-green-v576.png?v=576" />
 <link id="atsrsBootLogoPreload" rel="preload" as="image" fetchpriority="high" />
 <script>
@@ -122,7 +157,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/floating-field-standard-v58178.css?v=5854">
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
-<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5990">
+<link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=5991">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=46">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">

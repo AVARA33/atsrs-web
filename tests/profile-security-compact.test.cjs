@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const html=fs.readFileSync('index.html','utf8');
 const css=fs.readFileSync('css/profile-production-parity-v5878.css','utf8');
 
-assert.match(html,/profile-production-parity-v5878\.css\?v=5990/);
+assert.match(html,/profile-production-parity-v5878\.css\?v=5991/);
 assert.match(css,/Compact desktop security workspace: one clean frame, no nested scrolling/);
 assert.match(css,/@media \(min-width:761px\) \{[\s\S]*?\.profile-settings-viewport\[data-active-tab="security"\] \{[\s\S]*?height:294px;[\s\S]*?min-height:294px;[\s\S]*?max-height:294px;[\s\S]*?overflow:hidden;/);
 assert.match(css,/#profileTabSecurityPanel \{[\s\S]*?padding:10px 12px;[\s\S]*?overflow:hidden;[\s\S]*?scrollbar-gutter:auto;/);

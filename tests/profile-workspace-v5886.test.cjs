@@ -91,7 +91,7 @@ assert.match(dashboard,/phoneVerified:options\.contactChanged==='mobile'&&existi
 assert.match(dashboard,/whatsappVerified:options\.contactChanged==='whatsapp'&&existingWhatsapp!==whatsappParts\.full\?false/);
 assert.match(css,/\.profile-security-contact-editor \{ margin-top:10px/);
 assert.doesNotMatch(css,/\.profile-security-contact-editor \{ position:fixed/);
-assert.match(html,/css\/profile-production-parity-v5878\.css\?v=5990/);
+assert.match(html,/css\/profile-production-parity-v5878\.css\?v=5991/);
 assert.match(html,/js\/profile-workspace-v5886\.js\?v=5960/);
 assert.match(html,/id="profileStageCity"/);
 assert.match(html,/id="profileStageTimezone"/);
