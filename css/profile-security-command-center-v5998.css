@@ -1,0 +1,89 @@
+/* Reference layout only: retain the shared panel dimensions and live security handlers. */
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center { padding:20px 24px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
+  display:grid; grid-template-columns:minmax(260px,.38fr) minmax(0,.62fr); gap:36px;
+  width:100%; height:100%; min-height:0; padding:0; border:0; border-radius:0; background:transparent;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification {
+  display:block; height:100%; min-height:0; overflow:auto; border:0; border-radius:0; background:transparent;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-heading { min-height:0; padding:0 0 24px; border:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-heading h5 { color:var(--profile-security-accent); font-size:16px; line-height:1.25; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-heading p { margin:3px 0 0; font-size:11px; line-height:1.35; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-flow { display:block; height:auto; min-height:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-step { min-height:0; padding:0; border:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-step-channel > header { min-height:0; margin-bottom:8px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-step-channel > header strong { font-size:11px; font-weight:500; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-channel-grid { grid-template-columns:1fr 1fr; gap:0; margin:0 0 24px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-channel-grid > button { height:31px; min-height:31px; justify-content:center; padding:0 10px; font-size:11px; border-radius:6px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-channel-check { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-saved-contact { margin:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-saved-contact > small { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-saved-contact > div { margin:0; gap:8px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-saved-contact strong { font-size:16px; flex:0 1 auto; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-saved-contact span { font-size:9px; min-height:20px; padding:0 6px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center #profileSecurityEditContact { flex:0 0 20px; width:20px; height:20px; min-width:20px; min-height:20px; margin-left:auto; border:1px solid var(--line); border-radius:6px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-result { display:block; min-height:0; margin:8px 0 0; padding:0; text-align:left; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-result > i,
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-result > strong { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-result > small { display:block; max-width:none; margin:0; font-size:10px; line-height:1.3; text-align:left; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-send-inline { display:block; margin-top:22px; padding:0; border:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-send-inline > div { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center #profileSecuritySendCode { width:100%!important; height:32px!important; min-height:32px!important; margin:0!important; font-size:11px!important; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center #profileSecuritySendCode > i { order:-1; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center #profileSecuritySendStatus { font-size:10px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center #profileSecuritySendStatus:empty { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid {
+  display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(3,minmax(0,1fr));
+  gap:0; height:100%; min-height:0; margin:0; padding:0; border:0;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid .profile-security-card {
+  grid-column:1; grid-template-columns:28px minmax(0,1fr) auto 112px; grid-template-rows:auto;
+  align-items:center; column-gap:14px; row-gap:0; min-height:0; height:auto; margin:0; padding:10px 0;
+  border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent!important;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid .profile-security-card:last-child { border-bottom:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-icon { grid-column:1; grid-row:1; align-self:center; font-size:24px; color:var(--profile-security-accent); }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card.is-danger .profile-security-card-icon { color:var(--danger,#ef5350); }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-copy { grid-column:2; grid-row:1; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-copy b { font-size:14px; font-weight:500; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-copy .small-note { margin-top:4px; font-size:11px; line-height:1.35; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-meta { grid-column:3; grid-row:1; font-size:10px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-meta strong { font-size:10px; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-meta > span,
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .is-danger .profile-security-card-meta { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action { grid-column:4; grid-row:1; width:112px!important; min-width:0; height:34px!important; min-height:34px!important; padding:0 8px!important; font-size:11px!important; white-space:nowrap; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action > i { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification.is-editing .profile-security-saved-contact,
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification.is-editing .profile-security-verification-result,
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification.is-editing .profile-security-send-inline { display:none; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-contact-editor { margin:0; padding-top:8px; }
+/* Keep theme accents above the global button reset, without changing button geometry. */
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabSecurityPanel.profile-security-command-center :is(#profileSecuritySendCode,.profile-security-channel-grid > button.is-selected) {
+  color:var(--profile-security-accent)!important; -webkit-text-fill-color:var(--profile-security-accent)!important;
+}
+html[data-theme="dark"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-channel-grid > button.is-selected {
+  background:#0c120f!important; border-color:var(--line)!important;
+}
+html[data-theme="light"] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-channel-grid > button.is-selected {
+  background:var(--atsrs-shell-accent-soft)!important; border-color:var(--atsrs-shell-accent-border)!important;
+}
+html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabSecurityPanel.profile-security-command-center .is-danger .profile-security-card-action {
+  border-color:var(--danger,#ef5350)!important; color:var(--danger,#ef5350)!important; -webkit-text-fill-color:var(--danger,#ef5350)!important;
+}
+@media(max-width:1000px) and (min-width:761px) {
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary { grid-template-columns:minmax(230px,.4fr) minmax(0,.6fr); gap:20px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid .profile-security-card { grid-template-columns:22px minmax(0,1fr) 88px; column-gap:8px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-meta { display:none; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action { grid-column:3; width:88px!important; }
+}
+@media(max-width:760px) {
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center { padding:16px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); gap:16px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification { height:auto; overflow:visible; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-heading { padding-bottom:12px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid { border-top:1px solid var(--line); }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid .profile-security-card { grid-template-columns:22px minmax(0,1fr) 88px; column-gap:8px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-meta { display:none; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action { grid-column:3; width:88px!important; }
+}

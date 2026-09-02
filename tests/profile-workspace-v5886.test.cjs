@@ -71,7 +71,7 @@ assert.match(html,/class="profile-availability-actions"[\s\S]*?aria-label="Save 
 assert.match(js,/function bindAvailabilityActions\(\)/);
 assert.match(js,/\['setup2faBtn','viewSessionsBtn'\]\.forEach/);
 assert.match(js,/moveRow\('deleteAccountBtn','profileSecurityControls'\)/);
-assert.match(html,/id="profileSecurityControls" class="profile-settings-list profile-security-grid"[\s\S]*?<\/div>\s*<\/div>\s*<\/section>\s*<div id="profileSecurityCodeModal"/);
+assert.match(html,/<\/section>\s*<div id="profileSecurityControls" class="profile-settings-list profile-security-grid"><\/div>\s*<div id="profileSecurityCodeModal"/);
 assert.match(html,/id="profileSecurityVerificationResult" class="profile-security-verification-result"/);
 assert.match(js,/openSecurityCodeModal\(\)/);
 assert.match(js,/closeSecurityCodeModal\(\)/);
@@ -105,7 +105,7 @@ assert.match(js,/decorateSecurityCard\('deleteAccountBtn','ph-trash'/);
 assert.match(css,/@media \(min-width:761px\) \{[\s\S]*?\.profile-security-verification-flow \{[\s\S]*?grid-template-columns:repeat\(3,minmax\(0,1fr\)\);[\s\S]*?grid-template-rows:minmax\(0,1fr\) 62px;/);
 assert.match(html,/class="profile-security-send-inline"[\s\S]*?id="profileSecuritySendCode"/);
 assert.match(html,/profile-security-step-send/);
-assert.match(html,/>Choose channel</);
+assert.match(html,/>Secure Command Center</);
 assert.match(css,/\.profile-security-grid \{ grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
 assert.match(css,/\.profile-security-grid \.profile-security-card\.is-danger \{ grid-column:auto/);
 assert.match(js,/profileAvailabilityInlineActions/);
