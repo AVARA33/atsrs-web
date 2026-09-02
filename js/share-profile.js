@@ -357,10 +357,9 @@
     try{var result=await ownerCall({action:'update_expiry',share_id:activeShare.id,expires_at:expiresAt});var updated=result.share||null;if(!updated)return false;activeShares=activeShares.map(function(share){return share.id===updated.id?updated:share;});activeShare=updated;renderOwnerStatus();await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
     catch(error){ownerMessage(friendlyError(error,'The link expiry could not be updated. Please try again.'),true);return false;}
   };
-  window.editShareProfileLink=async function(shareId){
+  window.editShareProfileLink=async function(shareId,requestedExpiry){
     var share=activeShares.find(function(item){return item.id===shareId;});if(!share)return false;
-    var choice=window.prompt('Set link expiry: 24h, 3d, 7d, or YYYY-MM-DD','7d');if(choice===null)return false;choice=String(choice).trim().toLowerCase();
-    var expiresAt='',date=new Date();if(choice==='24h')date=new Date(Date.now()+86400000);else if(choice==='3d')date=new Date(Date.now()+3*86400000);else if(choice==='7d')date=new Date(Date.now()+7*86400000);else if(/^\d{4}-\d{2}-\d{2}$/.test(choice))date=new Date(choice+'T23:59:59');else{ownerMessage('Use 24h, 3d, 7d, or a date in YYYY-MM-DD format.',true);return false;}expiresAt=Number.isNaN(date.getTime())?'':date.toISOString();if(!expiresAt){ownerMessage('Choose a valid link expiry.',true);return false;}
+    var expiresAt=String(requestedExpiry||'');if(!expiresAt||Number.isNaN(new Date(expiresAt).getTime())){ownerMessage('Choose a valid link expiry.',true);return false;}
     try{var result=await ownerCall({action:'update_expiry',share_id:shareId,expires_at:expiresAt}),updated=result.share||null;if(!updated)return false;activeShares=activeShares.map(function(item){return item.id===updated.id?updated:item;});if(activeShare&&activeShare.id===updated.id)activeShare=updated;renderOwnerStatus();await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));ownerMessage('Link expiry updated.');return true;}
     catch(error){ownerMessage(friendlyError(error,'The link expiry could not be updated. Please try again.'),true);return false;}
   };
