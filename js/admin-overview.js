@@ -46,6 +46,7 @@
 
   function hidePanel() {
     window.__atsrsDeveloperAccess = false;
+    if(window.atsrsRefreshJobMonitor) window.atsrsRefreshJobMonitor();
     window.__atsrsDeveloperAccessUserId = '';
     if (panel) panel.classList.add('hidden');
     if (registrationsPanel) registrationsPanel.classList.add('hidden');
@@ -265,6 +266,7 @@
         accessServerTime = Date.parse(detailResult.data.server_now);
         accessAnchoredAt = performance.now();
         renderRegistrations(detailResult.data.rows);
+        if(window.atsrsRefreshJobMonitor) await window.atsrsRefreshJobMonitor();
       }
     } catch (error) {
       console.warn('ATSRS admin overview unavailable', error);

@@ -1,0 +1,12 @@
+#jobIngestionMonitor{margin-top:20px;padding:20px;border:1px solid var(--border,#26362b);border-radius:12px;background:var(--panel,#0b100d);color:var(--text,#e5ede8)}
+#jobIngestionMonitor h2{font-size:18px;margin:0 0 8px}
+.job-monitor-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+#jobIngestionMonitor a{color:var(--accent,#57c75e)}
+.job-monitor-table caption{text-align:left;padding:16px 0;font-weight:600}
+html[data-theme="light"] #jobIngestionMonitor a,body.light #jobIngestionMonitor a{color:#315efb}
+#jobIngestionMonitor p{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.job-monitor-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.job-monitor-metrics>div{border:1px solid var(--border,#26362b);border-radius:8px;padding:12px}
+.job-monitor-metrics span,.job-monitor-metrics strong{display:block}.job-monitor-metrics span{font-size:12px}.job-monitor-metrics strong{font-size:18px;margin-top:6px}
+.job-monitor-table{overflow-x:auto}.job-monitor-table table{width:100%;border-collapse:collapse;font-size:12px}.job-monitor-table th,.job-monitor-table td{text-align:left;padding:10px;white-space:nowrap;border-bottom:1px solid var(--border,#26362b)}
+html[data-theme="light"] #jobIngestionMonitor,body.light #jobIngestionMonitor{background:#fff;color:#19345c;border-color:#dbe4ef}
