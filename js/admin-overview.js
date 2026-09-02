@@ -155,6 +155,13 @@
       var registered = document.createElement('span');
       registered.setAttribute('role', 'cell');
       registered.textContent = formatDate(row.registered_at);
+      var documents = document.createElement('span');
+      documents.setAttribute('role', 'cell');
+      documents.className = 'developer-document-count';
+      documents.title = 'Stored uploads, including CVs and references. Locked files are included.';
+      documents.textContent = row.uploaded_file_count != null && Number.isFinite(Number(row.uploaded_file_count))
+        ? String(Math.max(0, Math.floor(Number(row.uploaded_file_count)))) : '—';
+      documents.setAttribute('aria-label', 'Uploaded documents: ' + documents.textContent);
       var status = document.createElement('span');
       status.setAttribute('role', 'cell');
       status.className = 'developer-access-status ' + access.tone;
@@ -171,7 +178,7 @@
         dates.textContent = 'Start: ' + new Date(row.access.started_at).toLocaleString() + ' · End: ' + new Date(row.access.ends_at).toLocaleString();
         status.appendChild(dates);
       }
-      item.append(email, registered, status, remaining);
+      item.append(email, registered, documents, status, remaining);
       host.appendChild(item);
     });
     if (!items.length) {

@@ -16,6 +16,16 @@ assert.ok(index.indexOf('id="adminOverviewPanel"') > index.indexOf('class="devel
 assert.doesNotMatch(index.slice(index.indexOf('id="dashboardPage"')), /id="adminOverviewPanel"/);
 assert.match(js, /atsrs_get_developer_access_windows/);
 assert.match(js, /formatRemaining\(left\)/);
+assert.match(js, /row.uploaded_file_count/);
+assert.match(js, /item.append\(email, registered, documents, status, remaining\)/);
+assert.match(index, /role="columnheader">Documents<\/span>/);
+assert.match(css, /developer-document-count/);
+assert.match(css, /scrollbar-color:#3b82f6 #edf2fa/);
+assert.match(css, /html\[data-theme="light"\] #developerPage \.admin-overview-stat strong/);
+const countsMigration=fs.readFileSync(path.join(root,'supabase/migrations/20260902223611_developer_uploaded_file_counts.sql'),'utf8');
+assert.match(countsMigration,/perform 1 from public\.atsrs_get_developer_registrations\(\)/);
+assert.match(countsMigration,/coalesce\(f.file_count,0\)/);
+assert.match(countsMigration,/select user_id,count\(\*\) as file_count from public\.atsrs_files group by user_id/);
 assert.match(js, /developerNav\.classList\.remove\('hidden'\)/);
 assert.match(js, /get\('route'\) === 'developer'/);
 assert.match(js, /window\.showPage\('developer', developerNav\)/);

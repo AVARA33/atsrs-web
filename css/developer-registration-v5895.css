@@ -63,7 +63,7 @@
 .developer-registration-table{width:100%}
 .developer-registration-row{
   display:grid;
-  grid-template-columns:minmax(220px,1.6fr) minmax(120px,.7fr) minmax(120px,.65fr) minmax(140px,.8fr);
+  grid-template-columns:minmax(200px,1.5fr) minmax(105px,.7fr) minmax(85px,.45fr) minmax(120px,.8fr) minmax(150px,.9fr);
   gap:16px;
   align-items:center;
   min-height:58px;
@@ -76,6 +76,8 @@
 .developer-registration-row strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f8fafc;font-size:13px}
 .developer-registration-row>span{color:#a8b3c4;font-size:12px}
 .developer-access-status,.developer-time-remaining{font-weight:750}
+.developer-registration-row .developer-document-count{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:#4ade80}
+html[data-theme="light"] .developer-registration-row .developer-document-count{color:#2563eb}
 .developer-access-status.trial,.developer-time-remaining.trial{color:#4ade80}
 .developer-access-status.full,.developer-time-remaining.full{color:#86efac}
 .developer-access-status.free,.developer-time-remaining.free{color:#93c5fd}
@@ -106,12 +108,31 @@ html[data-theme="light"] .developer-time-remaining.full{color:#2563eb}
 html[data-theme="light"] .developer-registration-row strong{color:#0f172a}
 html[data-theme="light"] .developer-registration-row>span{color:#526176}
 
+/* Light-mode accents match JobSearch; dark-mode greens stay unchanged. */
+html[data-theme="light"] #developerPage .admin-overview-kicker,
+html[data-theme="light"] #developerPage .developer-registrations-head h2,
+html[data-theme="light"] #developerPage .admin-overview-heading h4,
+html[data-theme="light"] #developerPage .admin-overview-stat strong,
+html[data-theme="light"] #developerPage .developer-registrations-head>span,
+html[data-theme="light"] #developerPage .developer-document-count,
+html[data-theme="light"] #developerPage .developer-access-status.full,
+html[data-theme="light"] #developerPage .developer-access-status.trial,
+html[data-theme="light"] #developerPage .developer-time-remaining.full,
+html[data-theme="light"] #developerPage .developer-time-remaining.trial{color:#2563eb!important;-webkit-text-fill-color:#2563eb!important}
+html[data-theme="light"],
+html[data-theme="light"] #developerPage,
+html[data-theme="light"] #developerPage *{scrollbar-color:#3b82f6 #edf2fa}
+html[data-theme="light"]::-webkit-scrollbar-thumb,
+html[data-theme="light"] #developerPage ::-webkit-scrollbar-thumb{background:#3b82f6!important}
+html[data-theme="light"]::-webkit-scrollbar-track,
+html[data-theme="light"] #developerPage ::-webkit-scrollbar-track{background:#edf2fa!important}
+
 @media(max-width:1100px){
   .developer-registrations-head{grid-template-columns:1fr auto}
   .developer-page .developer-admin-overview{grid-column:1/-1;grid-row:2}
 }
 
-@media(max-width:760px){
+@media(max-width:1024px){
   .developer-page{padding-top:8px}
   .developer-registrations-head{align-items:flex-start;padding:17px 16px}
   .developer-page .developer-admin-overview{grid-template-columns:1fr auto}
