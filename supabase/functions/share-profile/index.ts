@@ -771,9 +771,6 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
   const audienceText = safeText(body.audience, 20);
   const audience = (["anyone", "recruiters", "recipient"].includes(audienceText)
     ? audienceText : "anyone") as ShareRow["audience"];
-  if (audience === "recipient") {
-    return json(req, 400, { error: "Choose a verified recruiter from Recruiter Directory to create a recipient link." });
-  }
   if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
   if (!expiresAt) return json(req, 400, { error: "Choose a valid link expiry between 10 minutes and one year." });
   const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)

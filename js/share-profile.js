@@ -325,7 +325,6 @@
   }
   window.createShareProfileLink=async function(){
     var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry(),audienceInput=document.querySelector('input[name="profileSharingAudience"]:checked'),audience=audienceInput?audienceInput.value:'anyone';
-    if(audience==='recipient'){ownerMessage('Choose a verified recruiter from Recruiter Directory to create a recipient link.',true);return false;}
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return false;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
     try{var result=await createValidatedShare(fileIds,expiresAt,audience);activeShare=result.share||null;if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);if(result.token)setOwnerToken(activeShare.id,result.token);}setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
