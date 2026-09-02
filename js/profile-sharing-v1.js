@@ -1,5 +1,6 @@
 (function(){
   'use strict';
+  var copiedUntil=Object.create(null);
   var SHARING_SETUP_STORAGE_KEY='atsrs_profile_sharing_setup',SHARING_SETUP_METADATA_KEY='atsrs_profile_sharing_setup',savedSetup=null,editing=false,editingShareId='',loadingSetup=false;
   function byId(id){return document.getElementById(id)}
   function expiryValue(){var input=document.querySelector('input[name="profileSharingExpiry"]:checked');return input?input.value:''}
@@ -60,10 +61,12 @@
       if(!share.recipient_recruiter_id){
         var copyButton=action('Share link','ph-copy',async function(event){
           var button=event.currentTarget;button.disabled=true;button.setAttribute('aria-busy','true');
-          try{var copied=typeof window.copyShareLink==='function'&&await window.copyShareLink(share.id);if(copied){button.innerHTML='<i class="ph ph-check" aria-hidden="true"></i> Copied';createStatus('Link copied. You can paste it into a chat.');setTimeout(function(){if(button.isConnected)button.innerHTML='<i class="ph ph-copy" aria-hidden="true"></i> Share link'},2000)}else createStatus('The link could not be copied. Check that it is active and available in this browser.',true)}
+          try{var copied=typeof window.copyShareLink==='function'&&await window.copyShareLink(share.id);if(copied){copiedUntil[share.id]=Date.now()+5000;button.innerHTML='<i class="ph ph-check" aria-hidden="true"></i> Copied!';createStatus('Link copied. You can paste it into a chat.');setTimeout(function(){if(copiedUntil[share.id]>Date.now())return;delete copiedUntil[share.id];var current=document.querySelector('.profile-sharing-row[data-share-id="'+share.id+'"] .is-copy');if(current)current.innerHTML='<i class="ph ph-copy" aria-hidden="true"></i> Share link'},5100)}else createStatus('The link could not be copied. Check that it is active and available in this browser.',true)}
           catch(error){createStatus('The link could not be copied. Please try again.',true)}
           finally{button.disabled=false;button.removeAttribute('aria-busy')}
         },false,'copy');
+        copyButton.setAttribute('aria-live','polite');
+        if(copiedUntil[share.id]>Date.now())copyButton.innerHTML='<i class="ph ph-check" aria-hidden="true"></i> Copied!';
         copyButton.disabled=state!=='active'||!!share.revoked_at||!!share.expires_at&&new Date(share.expires_at).getTime()<=Date.now();
         copyButton.title=copyButton.disabled?'This link is no longer active':'Copy this existing link';actions.appendChild(copyButton);
       }
