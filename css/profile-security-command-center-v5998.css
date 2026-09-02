@@ -1,4 +1,9 @@
 /* Reference layout only: retain the shared panel dimensions and live security handlers. */
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-contact-footer > div { flex-shrink:0; }
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-contact-footer button {
+  width:auto!important; min-width:60px!important; flex:0 0 auto!important;
+  padding:0 10px!important; white-space:nowrap!important; word-break:normal!important;
+}
 /* The country-code popup is portalled to body, outside the Security panel. */
 body.personal-mode .atsrs-select-menu[data-source-select="profileSecurityContactCode"] .atsrs-select-option {
   grid-template-columns:12px minmax(0,1fr)!important;

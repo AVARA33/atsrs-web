@@ -17,7 +17,8 @@ assert.match(css,/\.profile-security-channel-grid > button \{[\s\S]*?height:31px
 assert.match(html,/profile-security-step-channel[\s\S]*?>Contact verification</);
 assert.match(html,/>Secure Command Center</);
 assert.doesNotMatch(html,/>Choose channel<|>Verified status</);
-assert.match(html,/profile-security-command-center-v5998\.css\?v=5999/);
+assert.match(html,/profile-security-command-center-v5998\.css\?v=6000/);
+assert.match(commandCss,/\.profile-security-contact-footer button \{[^}]*min-width:60px!important;[^}]*white-space:nowrap!important;/);
 assert.match(commandCss,/\[data-source-select="profileSecurityContactCode"\] \.atsrs-select-option \{[^}]*font-size:11px!important;[^}]*white-space:nowrap!important;/);
 assert.match(commandCss,/grid-template-columns:minmax\(260px,\.38fr\) minmax\(0,\.62fr\)/);
 assert.match(commandCss,/\.profile-security-grid \{[\s\S]*?grid-template-rows:repeat\(3,minmax\(0,1fr\)\)/);
