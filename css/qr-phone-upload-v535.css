@@ -30,5 +30,6 @@ p{color:var(--muted);line-height:1.6;}
 }
 :root[data-theme="light"] .phone-upload-card{box-shadow:0 24px 70px rgba(35,64,91,.18)}
 :root[data-theme="light"] .phone-upload-choices button{color:#fff}
+:root[data-theme="light"] .phone-upload-choices #chooseFileBtn{color:var(--accent)}
 :root[data-theme="light"] .phone-upload-progress{background:#dce5ef}
 @media(prefers-reduced-motion:reduce){.phone-upload-status .ph-spinner-gap,.phone-upload-progress span{animation:none}}
