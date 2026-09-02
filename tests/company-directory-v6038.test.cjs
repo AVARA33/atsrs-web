@@ -15,13 +15,15 @@ assert.match(html, /id="employersLocation"/);
 assert.match(html, /id="employersSize"/);
 assert.match(html, /id="employersPaginationTop"[^>]*data-employers-pagination/);
 assert.match(html, /id="employersPaginationBottom"[^>]*data-employers-pagination/);
-assert.match(html, /css\/company-directory-v6034\.css\?v=6055/);
-assert.match(html, /js\/employers\.js\?v=6046/);
+assert.match(html, /css\/company-directory-v6034\.css\?v=6056/);
+assert.match(html, /js\/employers\.js\?v=6047/);
 
 assert.match(css, /max-width:1440px/);
 assert.match(css, /height:274px;min-height:274px/);
 assert.match(css, /grid-template-columns:44% 56%/);
 assert.match(css, /\.company-hero-backdrop\{[^}]*object-fit:cover;object-position:center/);
+assert.match(css, /html\[data-theme="light"\] #employersPage \.company-hero-backdrop\{[^}]*filter:invert\(1\) hue-rotate\(180deg\)[^}]*opacity:\.9/);
+assert.match(css, /html\[data-theme="light"\] #employersPage \.company-directory-hero\{[^}]*background:#f8fbff/);
 assert.match(css, /companies-grid-left-v3\.png\?v=1/);
 assert.match(css, /background-size:auto 100%/);
 assert.match(css, /margin:8px auto 0/);
