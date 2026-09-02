@@ -52,7 +52,8 @@ html[data-theme="light"] #employersPage .company-network-reference{filter:invert
 /* Light-only blue network. Clip the unchanged brand colors in source coordinates,
    so resizing/cropping cannot shift the logo layer away from its original image. */
 #employersPage .company-hero-light{display:none;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
-#employersPage .company-light-lines{filter:invert(1) hue-rotate(290deg) saturate(.72) brightness(1.08)}
+/* Lift the faint source grid before inversion; brightening after inversion clips it to white. */
+#employersPage .company-light-lines{filter:brightness(1.35) invert(1) hue-rotate(290deg) saturate(.9)}
 #employersPage .company-light-brands{filter:invert(1) hue-rotate(180deg) saturate(.72) brightness(1.08)}
 html[data-theme="light"] #employersPage .company-hero-backdrop{visibility:hidden}
 html[data-theme="light"] #employersPage .company-hero-light-wide{display:block}

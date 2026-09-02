@@ -23,7 +23,7 @@ assert.equal(fields.recruitersVacancies.value, 'active');
 assert.match(js, /byId\("recruitersClearFilters"\)[^\n]*resetFilters\(false, false\)/);
 assert.match(css, /\.company-hero-light\{display:none/);
 assert.match(css, /html\[data-theme="light"\][^{]*\.company-hero-light-wide\{display:block/);
-assert.match(css, /\.company-light-lines\{filter:invert\(1\) hue-rotate\(290deg\)/);
+assert.match(css, /\.company-light-lines\{filter:brightness\(1\.35\) invert\(1\) hue-rotate\(290deg\) saturate\(\.9\)\}/, 'Faint grid must be lifted before inversion, not clipped to white afterwards');
 assert.match(css, /\.company-light-brands\{filter:invert\(1\) hue-rotate\(180deg\)/);
 assert.equal((html.match(/<clipPath id="company-(?:wide|narrow)-brand-marks">/g) || []).length, 2);
 console.log('Directory light palette and clear-filter scroll regressions passed');
