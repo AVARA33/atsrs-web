@@ -9,14 +9,15 @@
     return !!(state && state.full_access && (state.permanent || !state.ends_at || Date.parse(state.ends_at) > now));
   }
   if (typeof module !== 'undefined' && module.exports) { module.exports = { formatRemaining: formatRemaining, fullAt: fullAt }; return; }
-  var state = null, serverTime = 0, anchoredAt = 0, requestId = 0, userId = '', busy = false, expired = false;
+  var state = null, serverTime = 0, anchoredAt = 0, requestId = 0, userId = '', busy = false, queuedRefresh = false, expired = false;
   var buttonStates = new WeakMap();
   function now() { return serverTime + Math.max(0, performance.now() - anchoredAt); }
   function full() { return fullAt(state, now()); }
   function publish() { document.dispatchEvent(new CustomEvent('atsrs:access-changed', { detail: state })); decorate(); tick(); }
   async function refresh() {
     var client = window.supabaseClient;
-    if (!client || busy) return state;
+    if (!client) return state;
+    if (busy) { queuedRefresh = true; return state; }
     busy = true;
     var token = ++requestId;
     try {
@@ -30,7 +31,7 @@
       state = result.data; serverTime = Date.parse(state.server_now); anchoredAt = performance.now(); expired = false;
       publish(); return state;
     } catch (error) { console.warn('Account access could not be refreshed.', error); return state; }
-    finally { busy = false; }
+    finally { busy = false; if (queuedRefresh) { queuedRefresh = false; setTimeout(refresh, 0); } }
   }
   function tick() {
     var bell = document.getElementById('atsrsNotificationButton');
