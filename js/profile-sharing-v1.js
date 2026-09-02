@@ -57,6 +57,16 @@
       });
       if(!shareRequests.length){var noRequest=document.createElement('span');noRequest.className='profile-sharing-no-request';noRequest.textContent='No download request';requesterCell.appendChild(noRequest)}
       if(share.recipient_recruiter_id)actions.appendChild(action('View recruiter','ph-user-focus',function(){if(typeof window.focusRecruiterCard==='function')window.focusRecruiterCard(share.recipient_recruiter_id,recipientName)},false,'recruiter'));
+      if(!share.recipient_recruiter_id){
+        var copyButton=action('Share link','ph-copy',async function(event){
+          var button=event.currentTarget;button.disabled=true;button.setAttribute('aria-busy','true');
+          try{var copied=typeof window.copyShareLink==='function'&&await window.copyShareLink(share.id);if(copied){button.innerHTML='<i class="ph ph-check" aria-hidden="true"></i> Copied';createStatus('Link copied. You can paste it into a chat.');setTimeout(function(){if(button.isConnected)button.innerHTML='<i class="ph ph-copy" aria-hidden="true"></i> Share link'},2000)}else createStatus('The link could not be copied. Check that it is active and available in this browser.',true)}
+          catch(error){createStatus('The link could not be copied. Please try again.',true)}
+          finally{button.disabled=false;button.removeAttribute('aria-busy')}
+        },false,'copy');
+        copyButton.disabled=state!=='active'||!!share.revoked_at||!!share.expires_at&&new Date(share.expires_at).getTime()<=Date.now();
+        copyButton.title=copyButton.disabled?'This link is no longer active':'Copy this existing link';actions.appendChild(copyButton);
+      }
       actions.appendChild(action('Edit','ph-pencil-simple',function(){editHistoryShare(share)},false,'edit'));
       actions.appendChild(action('Delete','ph-trash',function(){if(typeof window.deleteShareProfileLink==='function')window.deleteShareProfileLink(share.id)},true,'delete'));
       host.appendChild(row);
