@@ -522,6 +522,26 @@ html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage #certManua
 html[data-theme="light"] #certificatesPage .atsrs-qr-dialog-card{border-color:#cdd7dc!important;background:#fff!important;color:#1c2930!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-modal-head{border-bottom-color:#dde4e8}
 html[data-theme="light"] #certificatesPage .atsrs-document-modal-head h3{color:#172229!important}
+/* Light-mode intake labels and native-accessible register selections. */
+html[data-theme="light"] #certificatesPage .atsrs-document-modal-head > div > span{color:#2563eb!important}
+html[data-theme="light"] #certificatesPage :is(#certSelectAll,input[data-cert-select]){
+  appearance:none!important;-webkit-appearance:none!important;
+  width:15px!important;height:15px!important;min-height:15px!important;
+  padding:0!important;margin:0!important;border:1px solid #94a3b8!important;
+  border-radius:3px!important;background:#fff!important;box-shadow:none!important;
+  cursor:pointer;vertical-align:middle;accent-color:#2563eb;color-scheme:light;
+}
+html[data-theme="light"] #certificatesPage :is(#certSelectAll,input[data-cert-select]):checked{
+  border-color:#2563eb!important;background-color:#2563eb!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3 8 3 3 7-7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+  background-size:13px 13px!important;background-position:center!important;background-repeat:no-repeat!important;
+}
+html[data-theme="light"] #certificatesPage #certSelectAll:indeterminate{
+  border-color:#2563eb!important;background-color:#2563eb!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8h8' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")!important;
+  background-size:13px 13px!important;background-position:center!important;background-repeat:no-repeat!important;
+}
+html[data-theme="light"] #certificatesPage :is(#certSelectAll,input[data-cert-select]):focus-visible{outline:2px solid #2563eb!important;outline-offset:2px}
 html[data-theme="light"] #certificatesPage #certScanPanel > .sub,
 html[data-theme="light"] #certificatesPage #certManualPanel > .sub{color:#5c6b74!important;-webkit-text-fill-color:#5c6b74!important}
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-document-modal-close{border-color:#cdd7dc!important;background:#f8fafb!important;color:#27343b!important}
