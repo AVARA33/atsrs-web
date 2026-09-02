@@ -4,6 +4,8 @@ const vm = require('node:vm');
 const js = fs.readFileSync('js/recruiters.js', 'utf8');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/company-directory-v6034.css', 'utf8');
+assert.match(js, /all\.textContent = "All companies";/);
+assert.doesNotMatch(js, /All companies \(/);
 const reset = js.match(/  function resetFilters\(activeOnly, scrollToCards\) \{[\s\S]*?\n  \}/)[0];
 const fields = Object.fromEntries(['recruitersSearch', 'recruitersCompany', 'recruitersVacancies', 'recruitersSort'].map(id => [id, {value: 'filtered'}]));
 let renders = 0, scrolls = 0;

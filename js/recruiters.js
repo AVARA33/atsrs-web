@@ -276,7 +276,7 @@
     });
     var all = document.createElement("option");
     all.value = "";
-    all.textContent = "All companies (" + recruiters.length + ")";
+    all.textContent = "All companies";
     var options = Array.from(companies.values()).sort(function (a, b) {
       return a.name.localeCompare(b.name);
     });
