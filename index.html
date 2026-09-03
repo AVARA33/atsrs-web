@@ -59,7 +59,9 @@ try{
         (atsrsRequestedView==='jobs'?'app':'landing')));
   window.__atsrsSuppressAutomaticSessionOpen=
     window.__atsrsEntryRoute==='auth'||window.__atsrsEntryRoute==='share'||window.__atsrsEntryRoute==='landing';
-  var savedTheme=localStorage.getItem('atsrs_theme');
+  if(atsrsEntryShare)document.documentElement.classList.add('atsrs-public-share-mode');
+  var savedTheme=null;
+  try{savedTheme=localStorage.getItem('atsrs_theme');}catch(storageError){}
   var atsrsSystemThemeMedia=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');
   var initialTheme=savedTheme==='light'||savedTheme==='dark'?savedTheme:
     (atsrsSystemThemeMedia&&atsrsSystemThemeMedia.matches?'light':'dark');
@@ -2255,6 +2257,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <section id="sharedProfileError" class="shared-profile-error hidden">
       <h1>Link unavailable</h1>
       <p>This shared profile is unavailable or the owner has disabled access.</p>
+      <button type="button" onclick="window.location.reload()">Try again</button>
       <a class="secondary" href="https://atsrs.com/">Open ATSRS</a>
     </section>
     <section id="sharedProfileContent" class="hidden">
@@ -2491,7 +2494,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/document-date-validation.js?v=1"></script>
 <script src="js/app.js?v=6015"></script>
 <script src="js/date-picker.js?v=5918"></script>
-<script src="js/share-profile.js?v=440"></script>
+<script src="js/share-profile.js?v=441"></script>
 <script src="js/recipient-links.js?v=433"></script>
 <script src="js/boot-refresh.js?v=444"></script>
 <script src="js/account-security-live.js?v=376"></script>

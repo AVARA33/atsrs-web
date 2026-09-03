@@ -21,6 +21,19 @@
   var publicProfilePromise=null;
 
   function byId(id){return document.getElementById(id);}
+  async function fetchPublicProfile(url,headers){
+    var controller=new AbortController();
+    var timer=setTimeout(function(){controller.abort();},15000);
+    try{
+      var response=await fetch(url,{headers:headers,cache:'no-store',signal:controller.signal});
+      var data=await response.json();
+      if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');
+      return data;
+    }catch(error){
+      if(error.name==='AbortError')throw new Error('Connection timeout');
+      throw error;
+    }finally{clearTimeout(timer);}
+  }
   function client(){return window.supabaseClient||null;}
   function accountMode(){try{return localStorage.getItem('atsrs_use_mode')||window.useMode||'personal';}catch(error){return window.useMode||'personal';}}
   function friendlyError(error,fallback){
@@ -481,7 +494,7 @@
   async function loadPublicProfile(token,options){
     options=options||{};if(publicProfilePromise)return publicProfilePromise;
     document.body.classList.add('atsrs-public-share-view');document.body.classList.remove('atsrs-session-pending','atsrs-booting');var page=byId('sharedProfilePage');if(page)page.classList.remove('hidden');
-    publicProfilePromise=(async function(){try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var params=new URLSearchParams();if(token)params.set('token',token);if(publicResumeRequest)params.set('request_id',publicResumeRequest);if(publicResumeToken)params.set('resume',publicResumeToken);if(options.quiet)params.set('refresh','1');var url=endpoint()+'?'+params.toString();var response=await fetch(url,{headers:headers,cache:'no-store'});if(!response.ok&&!options.quiet){await new Promise(function(resolve){setTimeout(resolve,450)});response=await fetch(url,{headers:headers,cache:'no-store'})}var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.error||'This shared profile is unavailable.');renderPublicProfile(data);return data;}
+    publicProfilePromise=(async function(){try{var headers={apikey:publishableKey()};if(viewerToken)headers['x-atsrs-viewer-token']=viewerToken;var params=new URLSearchParams();if(token)params.set('token',token);if(publicResumeRequest)params.set('request_id',publicResumeRequest);if(publicResumeToken)params.set('resume',publicResumeToken);if(options.quiet)params.set('refresh','1');var url=endpoint()+'?'+params.toString();var data=await fetchPublicProfile(url,headers);renderPublicProfile(data);return data;}
     catch(error){console.error('ATSRS public profile failed',error);if(!options.quiet)showPublicError(friendlyError(error,'This shared profile is unavailable.'));return null;}finally{publicProfilePromise=null;}})();return publicProfilePromise;
   }
   function setRequestStep(step){['shareIdentityStep','shareOtpStep','shareVerifiedStep'].forEach(function(id){var element=byId(id);if(element)element.classList.toggle('hidden',id!==step);});}
