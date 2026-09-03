@@ -13,5 +13,3 @@
 .home-video-panel p{font-size:13px!important;line-height:1.6!important;margin:12px 0!important}
 .home-video-panel a{font-size:13px!important}
 @media(max-width:600px){.home-video-trigger{gap:10px}.home-video-trigger strong{font-size:14px}.home-video-panel{padding:10px}.home-video-panel video{max-height:65vh}}
-
-.public-steps .home-video-trigger{gap:8px}.public-steps .home-video-trigger img{width:36px!important;height:48px!important}.public-steps .home-video-play{width:28px;height:28px;font-size:14px}.public-steps .home-video-trigger strong{font-size:13px}.public-steps .home-video-trigger small{font-size:11px;font-weight:400}
