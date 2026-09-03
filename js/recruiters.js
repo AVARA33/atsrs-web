@@ -410,8 +410,6 @@
     var recruitersShown = Math.min(pageStart + pageRecruiters.length, visible.length);
     byId("recruitersVisibleCount").textContent = recruitersShown + " of " + visible.length + " recruiters";
     renderPagination(pageCount);
-    var exploreLabel = byId("recruitersExploreAllLabel");
-    if (exploreLabel) exploreLabel.textContent = "Explore all " + recruiters.length;
   }
   window.focusRecruiterCard = async function (recruiterId, recruiterName) {
     if (typeof window.atsrsOpenJobsDirectory === "function")
@@ -520,8 +518,6 @@
       });
     });
     byId("recruitersClearFilters").addEventListener("click", function () { resetFilters(false, false); });
-    byId("recruitersExploreAll").addEventListener("click", function () { resetFilters(false, true); });
-    byId("recruitersActiveVacancies").addEventListener("click", function () { resetFilters(true, true); });
     var page = byId("recruitersPage");
     new MutationObserver(syncDirectoryVisibility).observe(page, {
       attributes: true,

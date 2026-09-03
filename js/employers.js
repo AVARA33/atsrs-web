@@ -744,7 +744,7 @@
     byId("employersVisibleCount").textContent =
       visible.length + " verified · official sources";
     var pageCounter = byId("employersPageCount");
-    if (pageCounter) pageCounter.textContent = pageCompanies.length + " of " + visible.length + " companies";
+    if (pageCounter) pageCounter.textContent = Math.min((companyPage - 1) * COMPANY_PAGE_SIZE + pageCompanies.length, visible.length) + " of " + visible.length + " companies";
     renderPagination(pageCount);
   }
   function pageButton(label, targetPage, disabled, current, direction) {
