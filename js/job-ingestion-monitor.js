@@ -8,19 +8,33 @@
  window.atsrsRefreshJobMonitor=async function(){
   var host=document.getElementById('jobIngestionMonitor'),request=++generation;
   if(!host)return;
-  host.replaceChildren();
-  if(!window.__atsrsDeveloperAccess){host.classList.add('hidden');return;}
+  if(!window.__atsrsDeveloperAccess){host.replaceChildren();host.classList.add('hidden');return;}
   var owner=window.__atsrsDeveloperAccessUserId;
-  host.classList.remove('hidden');cell(host,'p','Loading server statistics…');
+  var previousButton=host.querySelector('button'),hadContent=!!previousButton;
+  var restoreFocus=!!previousButton&&document.activeElement===previousButton;
+  host.classList.remove('hidden');
+  host.setAttribute('aria-busy','true');
+  if(previousButton)previousButton.disabled=true;
+  if(!hadContent){host.replaceChildren();cell(host,'p','Loading server statistics…');}
   var result;
   try{result=await window.supabaseClient.rpc('atsrs_get_hr_cost_summary');}
   catch(e){result={error:true};}
   if(request!==generation||!window.__atsrsDeveloperAccess||owner!==window.__atsrsDeveloperAccessUserId)return;
-  host.replaceChildren();
+  host.setAttribute('aria-busy','false');
+  if(previousButton)previousButton.disabled=false;
+  if(hadContent&&(result.error||!result.data)){
+   previousButton.title='Refresh failed. Previous statistics retained; try again.';
+   return;
+  }
+  // Build off-screen and swap once; never collapse the existing report while awaiting RPC.
+  var target=host,oldTable=target.querySelector('.job-monitor-table');
+  var tableScroll=oldTable?oldTable.scrollLeft:0;
+  host=document.createElement('div');
+  function commit(){target.replaceChildren(...host.children);var t=target.querySelector('.job-monitor-table');if(t)t.scrollLeft=tableScroll;if(restoreFocus)refresh.focus({preventScroll:true});}
   var header=cell(host,'div','');header.className='job-monitor-header';
   cell(header,'h2','AI balance & HR activity');
   var refresh=cell(header,'button','Refresh');refresh.type='button';refresh.className='btn';refresh.onclick=window.atsrsRefreshJobMonitor;
-  if(result.error||!result.data){cell(host,'p','Statistics unavailable. Refresh to retry.');return;}
+  if(result.error||!result.data){cell(host,'p','Statistics unavailable. Refresh to retry.');commit();return;}
   var d=result.data, b=d.balance;
   var metrics=cell(host,'div','');metrics.className='job-monitor-metrics';
   [['Shared API balance · last verified',b?'$'+Number(b.amount_usd).toFixed(2):'Unavailable'],['HR today · calculated',money(d.today_cost)],['HR this month · calculated',money(d.month_cost)],['HR monthly limit',money(d.monthly_limit)],['Reserved · unresolved',money(d.unresolved_reserve)],['AI Scan cost','Not connected']].forEach(function(p){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]);});
@@ -33,5 +47,6 @@
   var head=cell(cell(table,'thead',''),'tr','');['Date','HR cost (USD)','Reserved (USD)','AI calls','New jobs','Updated jobs','Run errors'].forEach(function(t){var th=cell(head,'th',t);th.scope='col';});
   var body=cell(table,'tbody','');
   (d.daily||[]).forEach(function(r){var tr=cell(body,'tr','');[r.day,money(r.cost),money(r.reserved),r.calls,r.published,r.updated,r.errors].forEach(function(t){cell(tr,'td',t);});});
+  commit();
  };
 })();
