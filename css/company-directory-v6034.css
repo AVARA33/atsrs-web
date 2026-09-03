@@ -1,4 +1,10 @@
 /* ATSRS Companies Directory V6038 — screenshot-faithful employer directory. */
+/* Live page count: transparent company-style tile, independent of banner layout. */
+#employersPage .company-page-count{position:absolute;right:12px;bottom:9px;z-index:5;display:flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid rgba(72,212,107,.35);border-radius:8px;background:transparent;box-shadow:none;color:#f4f8f5;font-size:12px;line-height:1.25;white-space:nowrap;pointer-events:none}
+#employersPage .company-page-count strong{font-size:inherit;color:inherit}
+#employersPage .company-page-count i{color:#48d46b;font-size:15px}
+html[data-theme="light"] #employersPage .company-page-count{background:transparent;border-color:rgba(47,115,200,.38);color:#17345e}
+html[data-theme="light"] #employersPage .company-page-count i{color:#2f73c8}
 body:has(#employersPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{display:none!important}
 #employersPage.employers-page{display:grid;gap:24px;width:min(100%,1440px);max-width:1440px;margin:8px auto 0;padding:0 0 42px}
 #employersPage.employers-page.hidden{display:none!important}
