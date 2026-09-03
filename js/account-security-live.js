@@ -49,6 +49,14 @@
   async function persistProfile(){if(typeof window.saveProfile==='function')return await window.saveProfile();return false}
   async function verifiedTotp(){var result=await getClient().auth.mfa.listFactors();if(result.error)throw result.error;var factors=result.data&&result.data.totp||[];return factors.filter(function(f){return f.status==='verified'})}
   function setMfaStatus(enabled){var status=byId('profileStageMfaStatus');if(status)status.textContent=enabled?'Enabled':'Not enabled'}
+  function mfaErrorMessage(error){
+    var code=error&&error.code||'';
+    if(code==='mfa_ip_address_mismatch')return 'Your network address changed during verification. Stay on the same connection and try again with a new authenticator code.';
+    if(code==='mfa_challenge_expired')return 'The verification request expired. Enter the current authenticator code and try again.';
+    if(code==='mfa_verification_failed')return 'The authenticator code was not accepted. Check the ATSRS entry and automatic date/time on your phone, then try a new code.';
+    if(code==='over_request_rate_limit'||error&&error.status===429)return 'Too many verification attempts. Wait a moment before trying again.';
+    return 'Verification could not be completed. Check your connection and try again.';
+  }
   async function openMfa(){
     try{
       var factors=await verifiedTotp();if(factors.length){
@@ -68,7 +76,7 @@
   }
   async function verifyMfa(factorId){
     var code=(byId('atsrsMfaCode').value||'').replace(/\D/g,''),button=byId('atsrsVerifyMfa');if(code.length!==6){message('Enter the six-digit code.','error');return}
-    busy(button,true,'Verifying...');try{var challenge=await getClient().auth.mfa.challenge({factorId:factorId});if(challenge.error)throw challenge.error;var verified=await getClient().auth.mfa.verify({factorId:factorId,challengeId:challenge.data.id,code:code});if(verified.error)throw verified.error;setMfaStatus(true);mfaRequired=false;closeModal();toast('Authenticator enabled.','ok')}catch(e){console.error('ATSRS authenticator verification failed',e);message('The code could not be verified. Check it and try again.','error')}finally{busy(button,false)}
+    busy(button,true,'Verifying...');try{var challenge=await getClient().auth.mfa.challenge({factorId:factorId});if(challenge.error)throw challenge.error;var verified=await getClient().auth.mfa.verify({factorId:factorId,challengeId:challenge.data.id,code:code});if(verified.error)throw verified.error;setMfaStatus(true);mfaRequired=false;closeModal();toast('Authenticator enabled.','ok')}catch(e){message(mfaErrorMessage(e),'error')}finally{busy(button,false)}
   }
   async function removeMfa(factorId){var button=byId('atsrsRemoveMfa');busy(button,true,'Removing...');try{var result=await getClient().auth.mfa.unenroll({factorId:factorId});if(result.error)throw result.error;setMfaStatus(false);message('Authenticator removed.','ok');toast('Two-factor authentication removed.','ok')}catch(e){message(e.message||'Authenticator could not be removed. Sign in with your second factor first.','error')}finally{busy(button,false)}}
   async function openSessions(){
@@ -87,10 +95,20 @@
     busy(button,true,'Deleting...');try{var result=await getClient().functions.invoke('delete-account',{body:{email:email,confirmation:'DELETE MY ATSRS ACCOUNT'}});if(result.error)throw result.error;if(!result.data||result.data.deleted!==true)throw new Error(result.data&&result.data.error||'Deletion was not confirmed by the server.');try{localStorage.clear()}catch(e){}location.reload()}catch(e){message(e.message||'Account deletion could not be completed.','error');busy(button,false)}
   }
   async function enforceMfa(){
-    var c=getClient();if(!c||!c.auth||!c.auth.mfa)return;
-    try{var aal=await c.auth.mfa.getAuthenticatorAssuranceLevel();if(aal.error)return;var data=aal.data||{};if(data.currentLevel!=='aal1'||data.nextLevel!=='aal2')return;var factors=await verifiedTotp();if(!factors.length)return;var factor=factors[0];var challenge=await c.auth.mfa.challenge({factorId:factor.id});if(challenge.error)throw challenge.error;
+    var c=getClient();if(!c||!c.auth||!c.auth.mfa||mfaRequired)return;
+    try{var aal=await c.auth.mfa.getAuthenticatorAssuranceLevel();if(aal.error)return;var data=aal.data||{};if(data.currentLevel!=='aal1'||data.nextLevel!=='aal2')return;var factors=await verifiedTotp();if(!factors.length||mfaRequired)return;var factor=factors[0];
       openModal('<h3>Authenticator verification</h3><p>Enter the six-digit code from your authenticator app to continue to ATSRS.</p><div class="atsrs-security-form"><label>Six-digit code<input id="atsrsMfaLoginCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></label><div class="atsrs-security-actions"><button type="button" id="atsrsVerifyMfaLogin">Verify</button></div><p id="atsrsSecurityMessage" class="atsrs-security-message"></p></div>',true);
-      byId('atsrsVerifyMfaLogin').onclick=async function(){var code=(byId('atsrsMfaLoginCode').value||'').replace(/\D/g,''),button=byId('atsrsVerifyMfaLogin');if(code.length!==6){message('Enter the six-digit code.','error');return}busy(button,true,'Verifying...');var result=await c.auth.mfa.verify({factorId:factor.id,challengeId:challenge.data.id,code:code});if(result.error){message('The code could not be verified. Check it and try again.','error');busy(button,false);return}mfaRequired=false;closeModal();toast('Identity verified.','ok')};
+      byId('atsrsVerifyMfaLogin').onclick=async function(){
+        var code=(byId('atsrsMfaLoginCode').value||'').replace(/\D/g,''),button=byId('atsrsVerifyMfaLogin');
+        if(button.disabled)return;
+        if(code.length!==6){message('Enter the six-digit code.','error');return}
+        message('');busy(button,true,'Verifying...');
+        try{
+          var challenge=await c.auth.mfa.challenge({factorId:factor.id});if(challenge.error)throw challenge.error;
+          var result=await c.auth.mfa.verify({factorId:factor.id,challengeId:challenge.data.id,code:code});if(result.error)throw result.error;
+          mfaRequired=false;closeModal();toast('Identity verified.','ok');
+        }catch(e){message(mfaErrorMessage(e),'error')}finally{busy(button,false)}
+      };
     }catch(e){console.warn('ATSRS MFA check failed',e)}
   }
   function bind(){
