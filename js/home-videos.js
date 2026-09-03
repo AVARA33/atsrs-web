@@ -12,6 +12,24 @@
   const root = document.getElementById('landingPage');
   if (!root) return;
   const players = [];
+  function closePlayer(entry) {
+    entry.video?.pause();
+    entry.panel.hidden = true;
+    entry.button.setAttribute('aria-expanded', 'false');
+    entry.play.textContent = '\u25b6';
+  }
+  let scrollFrame = 0;
+  window.addEventListener('scroll', () => {
+    if (scrollFrame) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      players.forEach(entry => {
+        if (entry.panel.hidden || !entry.video || entry.video.webkitDisplayingFullscreen || document.fullscreenElement) return;
+        const rect = entry.video.getBoundingClientRect();
+        if (rect.bottom <= 0 || rect.top >= window.innerHeight || rect.right <= 0 || rect.left >= window.innerWidth) closePlayer(entry);
+      });
+    });
+  }, {passive:true, capture:true});
   topics.forEach(([selector, name, title, duration, description]) => {
     const host = root.querySelector(selector);
     if (!host) return;
@@ -33,7 +51,7 @@
     let video;
     button.addEventListener('click', () => {
       const opening = panel.hidden;
-      players.forEach(p => { if (p.video) p.video.pause(); });
+      players.forEach(p => { if (p !== entry) closePlayer(p); });
       if (opening && !video) {
         video = document.createElement('video'); video.controls = true; video.playsInline = true; video.preload = 'none';
         video.poster = `assets/videos/${name}.jpg`; video.src = `assets/videos/${name}.mp4`;
@@ -42,15 +60,18 @@
         const fallback = document.createElement('a'); fallback.href = video.src; fallback.textContent = 'Open video';
         panel.append(video, note, fallback);
         entry.video = video;
-        video.addEventListener('play', () => players.forEach(p => { if (p.video && p.video !== video) p.video.pause(); }));
+        video.addEventListener('play', () => players.forEach(p => { if (p !== entry) closePlayer(p); }));
       }
       panel.hidden = !opening; button.setAttribute('aria-expanded', String(opening));
       play.textContent = opening ? '×' : '▶';
-      if (opening) video.play().catch(() => { /* Native play control remains available. */ });
+      if (opening) {
+        video.scrollIntoView({block:'nearest', behavior:'instant'});
+        video.play().catch(() => { /* Native play control remains available. */ });
+      } else closePlayer(entry);
     });
-    const entry = {video:null}; players.push(entry);
+    const entry = {video:null, panel, button, play}; players.push(entry);
     box.append(button,panel); host.append(box);
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) players.forEach(p => p.video?.pause()); });
-  new MutationObserver(() => { if (root.classList.contains('hidden')) players.forEach(p => p.video?.pause()); }).observe(root,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(() => { if (root.classList.contains('hidden')) players.forEach(closePlayer); }).observe(root,{attributes:true,attributeFilter:['class']});
 })();
