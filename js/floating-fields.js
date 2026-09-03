@@ -3,6 +3,7 @@
   'use strict';
 
   var observer=null;
+  var observerOptions={childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','aria-label','aria-labelledby']};
   var scheduled=false;
   var generatedSequence=0;
   var controlSelector='input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]),select:not([multiple]),textarea';
@@ -214,15 +215,23 @@
     enhanceCustom(root);
   }
   function refresh(){
-    scheduled=false;scan(document);
-    document.querySelectorAll('.atsrs-field-shell').forEach(updateSurface);
+    scheduled=false;
+    // Our class/label writes must not schedule another full-document scan.
+    // Reconnect even if an individual field fails, so later UI changes work.
+    if(observer)observer.disconnect();
+    try{
+      scan(document);
+      document.querySelectorAll('.atsrs-field-shell').forEach(updateSurface);
+    }finally{
+      if(observer&&document.body)observer.observe(document.body,observerOptions);
+    }
   }
   function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(refresh)}
   function bind(){
     refresh();
     if(window.MutationObserver&&document.body){
       observer=new MutationObserver(schedule);
-      observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','aria-label','aria-labelledby']});
+      observer.observe(document.body,observerOptions);
       new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     }
     window.addEventListener('atsrs:data-hydrated',schedule);
