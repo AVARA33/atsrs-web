@@ -2,6 +2,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'jsr:@supabase/supabase-js@2.111.0';
 import { MODEL, clean, postingUrl, checkDetail, verifiedClassification, sourceContent } from './policy.mjs';
 import { postingContact } from './directory.mjs';
+import { checkScope, listingSweep } from './scope.mjs';
 
 const schema = {type:'object',additionalProperties:false,properties:{is_vacancy:{type:'boolean'},summary_quote:{type:'string'}},required:['is_vacancy','summary_quote']};
 async function hash(value: unknown) {
@@ -30,17 +31,18 @@ Deno.serve(async req=>{
   if(!key)throw new Error('OpenAI API key is not configured');
   const sources=checked(await db.from('atsrs_job_sources').select('*').eq('enabled',true).order('last_checked_at',{nullsFirst:true})).data||[];
   const started=Date.now();
+  await checkScope(db,checked,started);
   const sourceErrors:string[]=[];
-  // Fair allocation: at most two AI calls per board, twenty per run.
+  // Rotate all connected boards fairly; continue full pagination across bounded runs.
   for(const source of sources){
    if(Date.now()-started>100000)break;
    const board=source.board;
    try {
     const base=`https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(board)}/postings`;
-    const fresh=await getJson(base+'?limit=100&offset=0');
-    const sweep=source.scan_offset?await getJson(base+`?limit=100&offset=${source.scan_offset}`):fresh;
-    const entries=new Map<string,any>((fresh.content||[]).concat(sweep.content||[]).map((p:any)=>[String(p.id),p]));
-    const previous=checked(await db.from('atsrs_job_ingestion_queue').select('external_id,listing_hash').eq('board',board).in('external_id',Array.from(entries.keys()))).data||[];
+    const sweep=await listingSweep(base,source.scan_offset,getJson,()=>Date.now()-started<75000);
+    const entries=sweep.entries as Map<string,any>;
+    const previous:any[]=[];const ids=Array.from(entries.keys());
+    for(let offset=0;offset<ids.length;offset+=100){previous.push(...(checked(await db.from('atsrs_job_ingestion_queue').select('external_id,listing_hash').eq('board',board).in('external_id',ids.slice(offset,offset+100))).data||[]));}
     const hashes=new Map(previous.map((v:any)=>[v.external_id,v.listing_hash]));
     const changed=[];
     for(const [id,p] of entries){
@@ -50,11 +52,12 @@ Deno.serve(async req=>{
      changed.push({board,external_id:id,payload:p,listing_hash:digest,state:'pending'});
      stats.discovered++;
     }
-    if(changed.length)checked(await db.from('atsrs_job_ingestion_queue').upsert(changed,{onConflict:'board,external_id'}));
-    checked(await db.from('atsrs_job_sources').update({last_checked_at:new Date().toISOString(),last_error:null,total_found:fresh.totalFound,
-     scan_offset:source.scan_offset+100>=fresh.totalFound?0:source.scan_offset+100}).eq('board',board));
+    for(let offset=0;offset<changed.length;offset+=100)checked(await db.from('atsrs_job_ingestion_queue').upsert(changed.slice(offset,offset+100),{onConflict:'board,external_id'}));
+    checked(await db.from('atsrs_job_sources').update({last_checked_at:new Date().toISOString(),last_error:null,total_found:sweep.total,
+     scan_offset:sweep.nextOffset,...(sweep.complete?{last_full_scan_at:new Date().toISOString()}:{})}).eq('board',board));
+    checked(await db.from('atsrs_hr_source_scope').update({last_checked_at:new Date().toISOString(),last_error:null}).contains('boards',[board]));
     // Revalidate the oldest managed postings without spending AI tokens.
-    const rechecks=checked(await db.from('atsrs_job_ingestion_queue').select('*').eq('board',board).eq('state','published').order('checked_at').limit(10)).data||[];
+    const rechecks=checked(await db.from('atsrs_job_ingestion_queue').select('*').eq('board',board).eq('state','published').order('checked_at').limit(2)).data||[];
     for(const old of rechecks){
      if(Date.now()-started>100000)break;
      const res=await fetch(base+'/'+old.external_id,{signal:AbortSignal.timeout(10000),redirect:'error'});
@@ -81,7 +84,7 @@ Deno.serve(async req=>{
       const currentDigest=await hash(active.jobAd.sections);
       if(old.payload?._detail_hash!==currentDigest){
        // Reprocess changed details even when the listing metadata did not change.
-       if(old.job_id)checked(await db.from('atsrs_jobs').update({status:'archived'}).eq('id',old.job_id));
+       // A changed description is not evidence of closure. Preserve the published row until replacement succeeds.
        checked(await db.from('atsrs_job_ingestion_queue').update({state:'pending',checked_at:new Date().toISOString()}).eq('board',board).eq('external_id',old.external_id));
        continue;
       }
@@ -89,7 +92,7 @@ Deno.serve(async req=>{
       checked(await db.from('atsrs_job_ingestion_queue').update({checked_at:new Date().toISOString()}).eq('board',board).eq('external_id',old.external_id));
      }
     }
-    const pending=checked(await db.from('atsrs_job_ingestion_queue').select('*').eq('board',board).eq('state','pending').order('discovered_at').limit(2)).data||[];
+    const pending=checked(await db.from('atsrs_job_ingestion_queue').select('*').eq('board',board).eq('state','pending').order('discovered_at').limit(3)).data||[];
     for(const q of pending){
      if(Date.now()-started>100000)break;
      const d=await getJson(base+'/'+q.external_id);

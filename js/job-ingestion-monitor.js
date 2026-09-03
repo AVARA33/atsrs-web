@@ -27,7 +27,8 @@
    return;
   }
   // Build off-screen and swap once; never collapse the existing report while awaiting RPC.
-  var target=host,oldTable=target.querySelector('.job-monitor-table');
+  var target=host,oldTable=target.querySelector('.job-monitor-table'),oldCoverage=target.querySelector('details');
+  var coverageOpen=!!oldCoverage&&oldCoverage.open;
   var tableScroll=oldTable?oldTable.scrollLeft:0;
   host=document.createElement('div');
   function commit(){target.replaceChildren(...host.children);var t=target.querySelector('.job-monitor-table');if(t)t.scrollLeft=tableScroll;if(restoreFocus)refresh.focus({preventScroll:true});}
@@ -40,13 +41,26 @@
   [['Shared API balance · last verified',b?'$'+Number(b.amount_usd).toFixed(2):'Unavailable'],['HR today · calculated',money(d.today_cost)],['HR this month · calculated',money(d.month_cost)],['HR monthly limit',money(d.monthly_limit)],['Reserved · unresolved',money(d.unresolved_reserve)],['AI Scan cost','Not connected']].forEach(function(p){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]);});
   cell(host,'p','Shared balance is not live'+(b?' — verified '+date(b.checked_at)+' (Baku)':'')+'. Refresh does not recheck the OpenAI balance. AI Scan and HR use the same balance.');
   var link=cell(host,'a','Check current balance in OpenAI');link.href='https://platform.openai.com/settings/organization/billing/overview';link.target='_blank';link.rel='noopener noreferrer';
-  cell(host,'p','HR statistics refreshed '+date(d.refreshed_at)+' (Baku). '+(d.enabled?'Enabled':'Paused')+' · Mon–Fri, 09:00–17:00 Baku · hourly.');
+  cell(host,'p','HR statistics refreshed '+date(d.refreshed_at)+' (Baku). '+(d.enabled?'Enabled':'Paused')+' · Mon–Fri, 09:00–17:00 Baku · bounded batches every 5 minutes.');
   cell(host,'p','HR costs are calculated from recorded tokens, not an invoice or total account spend. Reservations are separate. AI Scan costs are not included.');
   var wrap=cell(host,'div','');wrap.className='job-monitor-table';var table=cell(wrap,'table','');
   cell(table,'caption','Daily HR statistics · last 30 days · Baku time');
   var head=cell(cell(table,'thead',''),'tr','');['Date','HR cost (USD)','Reserved (USD)','AI calls','New jobs','Updated jobs','Run errors'].forEach(function(t){var th=cell(head,'th',t);th.scope='col';});
   var body=cell(table,'tbody','');
   (d.daily||[]).forEach(function(r){var tr=cell(body,'tr','');[r.day,money(r.cost),money(r.reserved),r.calls,r.published,r.updated,r.errors].forEach(function(t){cell(tr,'td',t);});});
+  if(d.coverage){
+   var c=d.coverage,scope=c.scope||[],sources=c.sources||[],connected=scope.filter(function(s){return s.connector_state==='connected';}).length;
+   var details=cell(host,'details','');details.open=coverageOpen;
+   cell(details,'summary','Daily source coverage · '+scope.length+' name records · '+connected+' connected · '+(scope.length-connected)+' need integration/review');
+   cell(details,'p',sources.filter(function(s){return s.enabled;}).length+' active feeds · '+c.pending+' queued postings · '+c.review+' require review. A daily plan is not proof that all vacancies have been imported.');
+   var box=cell(details,'div','');box.className='job-monitor-table';
+   var coverageTable=cell(box,'table',''),h=cell(cell(coverageTable,'thead',''),'tr','');
+   ['Company / alias','Connection','Last check (Baku)','Last full listing scan','Details'].forEach(function(t){cell(h,'th',t);});
+   var tb=cell(coverageTable,'tbody','');
+   scope.forEach(function(s){var tr=cell(tb,'tr','');var matches=sources.filter(function(b){return (s.boards||[]).indexOf(b.board)>=0;});var full=matches.length&&matches.every(function(b){return b.last_full_scan_at;})?matches.map(function(b){return b.last_full_scan_at;}).sort()[0]:null;
+    [s.name,s.connector_state==='connected'?'Connected':s.connector_state==='needs_connector'?'Needs connector':s.connector_state==='missing_source'?'Missing careers URL':'Needs review',s.last_checked_at?date(s.last_checked_at):'Not checked',full?date(full):'Not completed',s.last_error||matches.map(function(b){return b.last_error;}).filter(Boolean).join('; ')||'—'].forEach(function(v){cell(tr,'td',v);});
+   });
+  }
   commit();
  };
 })();
