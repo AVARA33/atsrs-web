@@ -16,6 +16,38 @@ test('refresh renders server costs and labels balance snapshot honestly',async()
  const button=s.host.children[0].children.find(n=>n.tag==='button');await button.onclick();assert.equal(calls,2);
 });
 test('non-owner does not request statistics',async()=>{let called=false;const s=setup(async()=>{called=true;});s.window.__atsrsDeveloperAccess=false;await s.window.atsrsRefreshJobMonitor();assert.equal(called,false);});
+
+test('directory cards and dated columns refresh from server data and preserve zeroes',async()=>{
+ let recruiters=72;
+ const s=setup(async()=>({data:{today_recruiters_added:recruiters,today_companies_added:51,daily:[
+  {day:'2026-09-03',recruiters_added:recruiters,companies_added:51},
+  {day:'2026-09-02',recruiters_added:0,companies_added:0}
+ ]}}));
+ await s.window.atsrsRefreshJobMonitor();
+ const verify=()=>{
+  const cards=s.host.querySelector('.job-monitor-metrics').children;
+  assert.equal(cards.find(n=>n.children[0].textContent==='HR today · new recruiters').children[1].textContent,String(recruiters));
+  assert.equal(cards.find(n=>n.children[0].textContent==='HR today · new companies').children[1].textContent,'51');
+  const table=s.host.querySelector('table'),headers=table.querySelector('thead').children[0].children.map(n=>n.textContent);
+  const rows=table.querySelector('tbody').children;
+  const r=headers.indexOf('New recruiters'),c=headers.indexOf('New companies');
+  assert.ok(r>=0&&c>=0);
+  assert.equal(rows[0].children[r].textContent,String(recruiters));
+  assert.equal(rows[0].children[c].textContent,'51');
+  assert.equal(rows[1].children[r].textContent,'0');
+  assert.equal(rows[1].children[c].textContent,'0');
+ };
+ verify();recruiters=73;await s.host.querySelector('button').onclick();verify();
+});
+
+test('missing directory metrics are unavailable rather than fabricated zeroes',async()=>{
+ const s=setup(async()=>({data:{daily:[{day:'2026-09-03'}]}}));
+ await s.window.atsrsRefreshJobMonitor();
+ const card=s.host.querySelector('.job-monitor-metrics').children.find(n=>n.children[0].textContent==='HR today · new recruiters');
+ assert.equal(card.children[1].textContent,'Unavailable');
+ const table=s.host.querySelector('table'),headers=table.querySelector('thead').children[0].children.map(n=>n.textContent);
+ assert.equal(table.querySelector('tbody').children[0].children[headers.indexOf('New recruiters')].textContent,'—');
+});
 test('daily budget shows server limits, available amount and pause time without inventing old limits',async()=>{
  const s=setup(async()=>({data:{daily_limit:.5,daily_remaining:.01,today_cost:.49,today_reserved:0,monthly_limit:15,daily_budget_paused:true,reservation_per_call:.02,daily_reset_at:'2026-09-03T20:00:00Z',daily:[{day:'2026-09-03',daily_limit:.5,cost:.49,reserved:0,remaining:.01,calls:99,published:80,updated:1,paused_at:'2026-09-03T09:00:00Z',pause_reason:'daily',errors:0}]}}));
  await s.window.atsrsRefreshJobMonitor();const text=s.text(s.host);assert.match(text,/HR daily limit/);assert.match(text,/Daily limit \(USD\)/);assert.match(text,/\$0.5000/);assert.match(text,/\$0.0100/);assert.match(text,/insufficient daily headroom/);assert.match(text,/Budget paused at/);assert.match(text,/New jobs/);
