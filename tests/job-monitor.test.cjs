@@ -16,6 +16,10 @@ test('refresh renders server costs and labels balance snapshot honestly',async()
  const button=s.host.children[0].children.find(n=>n.tag==='button');await button.onclick();assert.equal(calls,2);
 });
 test('non-owner does not request statistics',async()=>{let called=false;const s=setup(async()=>{called=true;});s.window.__atsrsDeveloperAccess=false;await s.window.atsrsRefreshJobMonitor();assert.equal(called,false);});
+test('daily budget shows server limits, available amount and pause time without inventing old limits',async()=>{
+ const s=setup(async()=>({data:{daily_limit:.5,daily_remaining:.01,today_cost:.49,today_reserved:0,monthly_limit:15,daily_budget_paused:true,reservation_per_call:.02,daily_reset_at:'2026-09-03T20:00:00Z',daily:[{day:'2026-09-03',daily_limit:.5,cost:.49,reserved:0,remaining:.01,calls:99,published:80,updated:1,paused_at:'2026-09-03T09:00:00Z',pause_reason:'daily',errors:0}]}}));
+ await s.window.atsrsRefreshJobMonitor();const text=s.text(s.host);assert.match(text,/HR daily limit/);assert.match(text,/Daily limit \(USD\)/);assert.match(text,/\$0.5000/);assert.match(text,/\$0.0100/);assert.match(text,/insufficient daily headroom/);assert.match(text,/Budget paused at/);assert.match(text,/New jobs/);
+});
 test('source coverage distinguishes planned names from connected feeds and preserves disclosure',async()=>{
  const s=setup(async()=>({data:{daily:[],coverage:{scope:[{name:'Connected Co',connector_state:'connected',boards:['One']},{name:'Waiting Co',connector_state:'needs_connector',boards:[]}],sources:[{board:'One',enabled:true}],pending:200,review:3}}}));
  await s.window.atsrsRefreshJobMonitor();assert.match(s.text(s.host),/2 name records · 1 connected · 1 need integration/);assert.match(s.text(s.host),/Needs connector/);assert.match(s.text(s.host),/Not completed/);

@@ -38,16 +38,17 @@
   if(result.error||!result.data){cell(host,'p','Statistics unavailable. Refresh to retry.');commit();return;}
   var d=result.data, b=d.balance;
   var metrics=cell(host,'div','');metrics.className='job-monitor-metrics';
-  [['Shared API balance · last verified',b?'$'+Number(b.amount_usd).toFixed(2):'Unavailable'],['HR today · calculated',money(d.today_cost)],['HR this month · calculated',money(d.month_cost)],['HR monthly limit',money(d.monthly_limit)],['Reserved · unresolved',money(d.unresolved_reserve)],['AI Scan cost','Not connected']].forEach(function(p){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]);});
+  [['Shared API balance · last verified',b?'$'+Number(b.amount_usd).toFixed(2):'Unavailable'],['HR daily limit',money(d.daily_limit)],['HR today · used',money(d.today_cost)],['HR today · remaining',money(d.daily_remaining)],['HR today · reserved',money(d.today_reserved)],['HR this month · calculated',money(d.month_cost)],['HR monthly limit',money(d.monthly_limit)],['Month reserved · unresolved',money(d.unresolved_reserve)],['AI Scan cost','Not connected']].forEach(function(p){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]);});
   cell(host,'p','Shared balance is not live'+(b?' — verified '+date(b.checked_at)+' (Baku)':'')+'. Refresh does not recheck the OpenAI balance. AI Scan and HR use the same balance.');
   var link=cell(host,'a','Check current balance in OpenAI');link.href='https://platform.openai.com/settings/organization/billing/overview';link.target='_blank';link.rel='noopener noreferrer';
   cell(host,'p','HR statistics refreshed '+date(d.refreshed_at)+' (Baku). '+(d.enabled?'Enabled':'Paused')+' · Mon–Fri, 09:00–17:00 Baku · bounded batches every 5 minutes.');
   cell(host,'p','HR costs are calculated from recorded tokens, not an invoice or total account spend. Reservations are separate. AI Scan costs are not included.');
+  if(d.daily_reset_at)cell(host,'p','Daily allowance resets '+date(d.daily_reset_at)+' (Baku); unused allowance does not roll over. Remaining subtracts both used cost and reservations. '+(d.daily_budget_paused?'New paid AI calls are paused: insufficient daily headroom. ':'')+'Each new call requires '+money(d.reservation_per_call)+' of budget headroom.');
   var wrap=cell(host,'div','');wrap.className='job-monitor-table';var table=cell(wrap,'table','');
   cell(table,'caption','Daily HR statistics · last 30 days · Baku time');
-  var head=cell(cell(table,'thead',''),'tr','');['Date','HR cost (USD)','Reserved (USD)','AI calls','New jobs','Updated jobs','Run errors'].forEach(function(t){var th=cell(head,'th',t);th.scope='col';});
+  var head=cell(cell(table,'thead',''),'tr','');['Date','Daily limit (USD)','Used (USD)','Reserved (USD)','Remaining (USD)','AI calls','New jobs','Updated jobs','Budget paused at (Baku)','Run errors'].forEach(function(t){var th=cell(head,'th',t);th.scope='col';});
   var body=cell(table,'tbody','');
-  (d.daily||[]).forEach(function(r){var tr=cell(body,'tr','');[r.day,money(r.cost),money(r.reserved),r.calls,r.published,r.updated,r.errors].forEach(function(t){cell(tr,'td',t);});});
+  (d.daily||[]).forEach(function(r){var tr=cell(body,'tr','');[r.day,r.daily_limit==null?'—':money(r.daily_limit),money(r.cost),money(r.reserved),r.remaining==null?'—':money(r.remaining),r.calls,r.published,r.updated,r.paused_at?date(r.paused_at)+' · '+r.pause_reason:'—',r.errors].forEach(function(t){cell(tr,'td',t);});});
   if(d.coverage){
    var c=d.coverage,scope=c.scope||[],sources=c.sources||[],connected=scope.filter(function(s){return s.connector_state==='connected';}).length;
    var details=cell(host,'details','');details.open=coverageOpen;
