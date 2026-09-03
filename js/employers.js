@@ -420,6 +420,7 @@
       "Greensea IQ": "assets/company-logos/greensea-iq.png"
     },
     companies = [],
+    serverCompanies = new Map(),
     loadToken = 0,
     loadInFlight = false,
     lastLoadedAt = 0,
@@ -466,6 +467,7 @@
         sector: company.sector || "Active vacancies",
         tags: company.tags || [],
       },
+      serverCompanies.get(normalized(company.name)) || {},
       verified[company.name] || {},
       (window.atsrsCompanyDirectoryLinks || {})[company.name] || {},
     );
@@ -816,13 +818,22 @@
     loadInFlight = true;
     var token = ++loadToken;
     try {
-      var result = await client.rpc("atsrs_jobs_facets");
+      var results = await Promise.all([client.rpc("atsrs_jobs_facets"), client.from("atsrs_hr_companies").select("name,careers_url").order("name")]);
+      var result = results[0], directory = results[1];
       if (token !== loadToken) return;
       if (result.error) throw result.error;
       var names = new Map();
       Object.keys(verified).forEach(function (name) {
         names.set(normalized(name), { name: name, vacancyCount: 0 });
       });
+      if(!directory.error){
+        serverCompanies = new Map();
+        (directory.data || []).forEach(function(row){
+          var key=normalized(row.name);
+          serverCompanies.set(key,{careers:row.careers_url});
+          if(!names.has(key))names.set(key,{name:row.name,vacancyCount:0});
+        });
+      }
       (Array.isArray(result.data) ? result.data : []).forEach(function (row) {
         var name = clean(row && (row.recruiter_company || row.company));
         if (!name) return;
@@ -839,8 +850,7 @@
             rankB = companyData(b).featuredRank || 9999;
           if (rankA !== rankB) return rankA - rankB;
           return a.name.localeCompare(b.name);
-        })
-        .slice(0, 96);
+        });
       refreshSectorOptions();
       refreshLocationOptions();
       refreshSizeOptions();

@@ -1,6 +1,7 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'jsr:@supabase/supabase-js@2.111.0';
 import { MODEL, clean, postingUrl, checkDetail, verifiedClassification, sourceContent } from './policy.mjs';
+import { postingContact } from './directory.mjs';
 
 const schema = {type:'object',additionalProperties:false,properties:{is_vacancy:{type:'boolean'},summary_quote:{type:'string'}},required:['is_vacancy','summary_quote']};
 async function hash(value: unknown) {
@@ -68,6 +69,15 @@ Deno.serve(async req=>{
       checked(await db.from('atsrs_job_ingestion_queue').update({state:'closed',checked_at:new Date().toISOString()}).eq('board',board).eq('external_id',old.external_id));stats.archived++;continue;
      }
      if(!checkDetail(active,board,old.external_id)){
+      if(old.job_id){
+       const evidencePage=await fetch(active.postingUrl,{signal:AbortSignal.timeout(10000),redirect:'error'});
+       const evidenceHtml=await evidencePage.text();
+       if(evidencePage.ok&&postingUrl(evidencePage.url,board,old.external_id)&&evidenceHtml.includes(old.external_id)){
+        const contact=postingContact(active,evidenceHtml);
+        const linked=checked(await db.rpc('atsrs_sync_hr_directory',{p_run:run,p_job:old.job_id,p_board:board,p_contact:contact.name,p_contact_state:contact.state})).data;
+        stats.companies_added+=linked?.company_added?1:0;stats.recruiters_added+=linked?.recruiter_added?1:0;
+       }
+      }
       const currentDigest=await hash(active.jobAd.sections);
       if(old.payload?._detail_hash!==currentDigest){
        // Reprocess changed details even when the listing metadata did not change.
@@ -113,7 +123,6 @@ Deno.serve(async req=>{
      const candidates=checked(await db.from('atsrs_jobs').select('id,source_url,application_url').or(`source_url.like.%/${q.external_id}%,application_url.like.%/${q.external_id}%`).limit(10)).data||[];
      const existing=candidates.find((v:any)=>postingUrl(v.source_url,board,q.external_id)||postingUrl(v.application_url,board,q.external_id));
      const company=clean(d.company.name,160);
-     const companyExists=checked(await db.from('atsrs_jobs').select('id').eq('company',company).limit(1)).data?.length;
      const record={title:clean(d.name,180),company,location:clean(d.location.fullLocation||d.location.city,180),country:clean(d.location.country,100)||null,
       work_type:clean(d.typeOfEmployment?.label,80)||null,summary:verdict.summary_quote,description:fullContent.description,
       requirements:fullContent.requirements,source_type:'manual',source_url:d.postingUrl,application_url:d.applyUrl,
@@ -122,8 +131,11 @@ Deno.serve(async req=>{
      const saved=checked(existing?await db.from('atsrs_jobs').update(record).eq('id',existing.id).select('id').single():await db.from('atsrs_jobs').insert(record).select('id').single()).data;
      if(!saved)throw new Error('Job save did not return an ID');
      if(existing)stats.updated++;else stats.published++;
-     if(!companyExists)stats.companies_added++;
      checked(await db.from('atsrs_job_ingestion_queue').update({state:'published',payload:{...q.payload,_detail_hash:await hash(d.jobAd.sections)},processed_hash:q.listing_hash,job_id:saved.id,checked_at:new Date().toISOString(),reason:null}).eq('board',board).eq('external_id',q.external_id));
+     const contact=postingContact(d,html);
+     const directory=checked(await db.rpc('atsrs_sync_hr_directory',{p_run:run,p_job:saved.id,p_board:board,p_contact:contact.name,p_contact_state:contact.state})).data;
+     stats.companies_added+=directory?.company_added?1:0;
+     stats.recruiters_added+=directory?.recruiter_added?1:0;
     }
    }catch(e){sourceErrors.push(board+': '+String((e as Error).message));checked(await db.from('atsrs_job_sources').update({last_error:String((e as Error).message).slice(0,200)}).eq('board',board));if((e as Error).message==='AI_ACCOUNT_BLOCKED')throw e;}
   }

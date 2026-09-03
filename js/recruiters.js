@@ -171,7 +171,7 @@
     source.className = "employer-source";
     source.innerHTML = recruiter.linkedin_url
       ? '<i class="ph ph-linkedin-logo" aria-hidden="true"></i> Verified LinkedIn profile'
-      : '<i class="ph ph-briefcase" aria-hidden="true"></i> Active in JobSearch';
+      : '<i class="ph ph-briefcase" aria-hidden="true"></i> '+(recruiter.profile_source_url?'Official job contact':'Active in JobSearch');
     var title = document.createElement("h4");
     title.textContent = name;
     var summary = document.createElement("p");
@@ -209,6 +209,8 @@
         "LinkedIn profile",
         "linkedin-logo",
       );
+    } else if (recruiter.profile_source_url && /^https:\/\//i.test(recruiter.profile_source_url)) {
+      linkedinAction = buttonLink(recruiter.profile_source_url,"Contact source","arrow-square-out");
     } else {
       linkedinAction = action("LinkedIn profile", "linkedin-logo", function () {});
       linkedinAction.disabled = true;
@@ -301,7 +303,7 @@
       var results = await Promise.all([
         client
           .from("atsrs_recruiters")
-          .select("id,name,company,role_title,location,linkedin_url,email_verification_status")
+          .select("id,name,company,role_title,location,linkedin_url,email_verification_status,profile_source_url")
           .eq("status", "active")
           .order("name", { ascending: true }),
         client.rpc("atsrs_jobs_facets"),
@@ -313,7 +315,7 @@
       var vacancyCounts = new Map();
       if (!facets.error)
         facetRows.forEach(function (row) {
-          var key = normalized(row && row.recruiter_name);
+          var key = normalized(row && row.recruiter_name)+'|'+normalized(row && (row.recruiter_company||row.company));
           if (key) vacancyCounts.set(key, (vacancyCounts.get(key) || 0) + 1);
         });
       else console.warn("ATSRS recruiter vacancy counts could not be loaded", facets.error);
@@ -322,19 +324,19 @@
           return recruiter && recruiter.name && !excluded(recruiter.name);
         }).map(function (recruiter) {
           return Object.assign({}, recruiter, {
-            vacancyCount: vacancyCounts.get(normalized(recruiter.name)) || 0,
+            vacancyCount: vacancyCounts.get(normalized(recruiter.name)+'|'+normalized(recruiter.company)) || 0,
           });
         })
         : [];
       var recruiterMap = new Map();
       directoryRecruiters.forEach(function (recruiter) {
-        recruiterMap.set(normalized(recruiter.name), recruiter);
+        recruiterMap.set(normalized(recruiter.name)+'|'+normalized(recruiter.company), recruiter);
       });
       if (!facets.error)
         facetRows.forEach(function (row) {
           var name = String(row && row.recruiter_name || "").trim();
-          var key = normalized(name);
-          if (!key || excluded(name) || recruiterMap.has(key)) return;
+          var key = normalized(name)+'|'+normalized(row.recruiter_company||row.company);
+          if (!name || excluded(name) || recruiterMap.has(key)) return;
           recruiterMap.set(key, {
             name: name,
             company: String(row.recruiter_company || row.company || "").trim(),
