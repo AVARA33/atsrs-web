@@ -158,6 +158,8 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-act
   bottom:0;
   width:67%;
   background:url("../assets/recruiters/recruiter-directory-orbit-v1.png") center right/cover no-repeat;
+  /* Omit the obsolete count baked into the bottom of the decorative image. */
+  clip-path:inset(0 0 16% 0);
   opacity:.96;
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 18%,#000 100%);
   mask-image:linear-gradient(90deg,transparent 0%,#000 18%,#000 100%);
@@ -185,7 +187,7 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-act
 
 #recruitersPage .recruiters-snapshot strong { font-size:12px; white-space:nowrap; }
 #recruitersPage .recruiters-snapshot strong { color:#f4f8f5; }
-#recruitersPage .recruiters-snapshot strong::before { content:"✓"; margin-right:7px; color:#48d46b; }
+#recruitersPage .recruiters-snapshot > i { color:#48d46b; font-size:15px; }
 
 #recruitersPage .employers-toolbar {
   grid-template-columns:minmax(300px,1fr) repeat(3,minmax(170px,.55fr)) auto;
@@ -404,7 +406,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .recruiters-
 html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button:first-child { border-color:#3f83d2 !important; background:#3f83d2 !important; color:#fff !important; }
 html[data-theme="light"] #recruitersPage .recruiters-snapshot { border-color:#aac5e3; background:transparent; }
 html[data-theme="light"] #recruitersPage .recruiters-snapshot strong { color:#17345e; }
-html[data-theme="light"] #recruitersPage .recruiters-snapshot strong::before { color:#2f73c8; }
+html[data-theme="light"] #recruitersPage .recruiters-snapshot > i { color:#2f73c8; }
 html[data-theme="light"] #recruitersPage .employers-notice > i { color:#2f73c8; }
 html[data-theme="light"] #recruitersPage .recruiters-trust-strip { border-color:rgba(47,115,200,.32); background:transparent; }
 html[data-theme="light"] #recruitersPage .recruiters-trust-strip span { color:#163a63; }

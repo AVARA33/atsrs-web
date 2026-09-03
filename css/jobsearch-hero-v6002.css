@@ -150,6 +150,8 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
 }
 
 #jobsPage .jobs-snapshot strong{color:#f8fafc;font-size:14px;line-height:1.25}
+#jobsPage .jobs-snapshot > i{margin-right:7px;color:#48d46b;font-size:15px}
+html[data-theme="light"] #jobsPage .jobs-snapshot > i{color:#2f73c8}
 #jobsPage .jobs-snapshot span{color:#91a198;font-size:11px}
 
 html[data-theme] body #app.app:not(.hidden) #jobsPage #jobsClearFilters{
