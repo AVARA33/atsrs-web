@@ -717,5 +717,9 @@ window.ATSRS_AZ_MESSAGES = {
   "Not verified": "Təsdiqlənməyib",
   "Verified": "Təsdiqlənib",
   "Active": "Aktiv",
-  "Any opportunity": "İstənilən iş imkanı"
+  "Any opportunity": "İstənilən iş imkanı",
+  "Location": "Məkan",
+  "Timezone & local time": "Saat qurşağı və yerli vaxt",
+  "Not enabled": "Aktiv edilməyib",
+  "Enabled": "Aktivdir"
 };
