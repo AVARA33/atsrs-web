@@ -37,7 +37,7 @@
   function tick() {
     var bell = document.getElementById('atsrsNotificationButton');
     var badge = document.getElementById('atsrsAccessCountdown');
-    if (!state) { if (badge) badge.remove(); return; }
+    if (!state || state.permanent) { if (badge) badge.remove(); return; }
     if (!badge && bell) { badge = document.createElement('span'); badge.id = 'atsrsAccessCountdown'; badge.setAttribute('role', 'timer'); badge.setAttribute('aria-live', 'off'); bell.before(badge); }
     if (badge) {
       var text = state.permanent ? 'Unlimited' : state.ends_at ? formatRemaining(Date.parse(state.ends_at) - now()) : full() ? 'Full access' : 'Free plan';

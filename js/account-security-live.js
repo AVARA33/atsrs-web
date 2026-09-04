@@ -22,6 +22,15 @@
     modal.querySelector('.atsrs-security-backdrop').onclick=function(){if(!mfaRequired)closeModal()};
     modal.addEventListener('keydown',function(event){
       if(event.key==='Escape'&&!mfaRequired){event.preventDefault();closeModal();return}
+      var codeField=event.target&&event.target.id;
+      if((event.key==='Enter'||event.code==='NumpadEnter')&&(codeField==='atsrsMfaCode'||codeField==='atsrsMfaLoginCode')){
+        if(event.isComposing)return;
+        event.preventDefault();
+        if(event.repeat)return;
+        var verifyButton=byId(codeField==='atsrsMfaCode'?'atsrsVerifyMfa':'atsrsVerifyMfaLogin');
+        if(verifyButton&&!verifyButton.disabled)verifyButton.click();
+        return;
+      }
       if(event.key!=='Tab')return;
       var items=Array.prototype.slice.call(modal.querySelectorAll('button:not([disabled]),input:not([disabled]),[href],[tabindex]:not([tabindex="-1"])')).filter(function(item){return item.offsetParent!==null});
       if(!items.length)return;var first=items[0],last=items[items.length-1];
