@@ -5,11 +5,11 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage'].map(id => document.getElementById(id)).filter(Boolean);
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = '#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#manualFilePreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
+  const skip = '#profileSummaryName,#profileSummaryRole,#profileSummaryEmail,#profileSummaryPhone,#profileSummaryLocation,#profileSummaryWorkplace,#profilePersonalReadView strong,#profileStageMfaStatus,#profileSharingDocumentChoices,#profileSharingActiveList,#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#manualFilePreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
