@@ -55,6 +55,8 @@
   const dirty = new Set();
   const observer = new MutationObserver(mutations => {
     for (const mutation of mutations) {
+      const element = mutation.target.nodeType === 1 ? mutation.target : mutation.target.parentElement;
+      if (element?.closest('.atsrs-locale-control')) continue;
       const scope = scopes.find(root => root.contains(mutation.target));
       if (scope) dirty.add(scope);
     }
@@ -69,6 +71,12 @@
     observer.disconnect();
     dirty.clear();
     roots.forEach(render);
+    document.querySelectorAll('.atsrs-locale-control summary').forEach(summary => {
+      summary.setAttribute('aria-label', locale === 'az' ? 'Dil seçimi: Azərbaycan dili' : 'Language: English');
+      const flag = summary.querySelector('img');
+      const src = `assets/flags/${locale}.svg`;
+      if (flag.getAttribute('src') !== src) flag.setAttribute('src', src);
+    });
     document.querySelectorAll('.atsrs-locale-control button').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.locale === locale));
     });
@@ -80,22 +88,44 @@
     try { localStorage.setItem(key, locale); } catch (_) {}
     apply();
   }
+  function closeMenus() {
+    document.querySelectorAll('details.atsrs-locale-control').forEach(control => { control.open = false; });
+  }
   function mount(host) {
     if (!host) return;
-    const control = document.createElement('div');
+    const control = document.createElement('details');
     control.className = 'atsrs-locale-control';
-    control.setAttribute('role', 'group');
-    control.setAttribute('aria-label', 'Dil / Language');
-    for (const [code, label] of [['az', 'AZ'], ['en', 'EN']]) {
+    const summary = document.createElement('summary');
+    const flag = document.createElement('img');
+    flag.alt = ''; flag.width = 26; flag.height = 18;
+    summary.append(flag);
+    const menu = document.createElement('div');
+    menu.className = 'atsrs-locale-options';
+    for (const [code, label] of [['az', 'Azərbaycan dili'], ['en', 'English']]) {
       const button = document.createElement('button');
-      button.type = 'button'; button.textContent = label; button.lang = code;
-      button.dataset.locale = code;
-      button.setAttribute('aria-label', code === 'az' ? 'Azərbaycan dili' : 'English');
-      button.addEventListener('click', () => setLocale(code));
-      control.append(button);
+      button.type = 'button'; button.lang = code; button.dataset.locale = code;
+      const icon = document.createElement('img');
+      icon.src = `assets/flags/${code}.svg`; icon.alt = ''; icon.width = 26; icon.height = 18;
+      button.append(icon, document.createTextNode(label));
+      button.addEventListener('click', () => { setLocale(code); closeMenus(); summary.focus(); });
+      menu.append(button);
     }
+    control.append(summary, menu);
     host.prepend(control);
   }
+  document.addEventListener('click', event => {
+    document.querySelectorAll('details.atsrs-locale-control').forEach(control => {
+      if (!control.contains(event.target)) control.open = false;
+    });
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    document.querySelectorAll('details.atsrs-locale-control[open]').forEach(control => {
+      control.open = false; control.querySelector('summary').focus();
+    });
+  });
+  window.addEventListener('popstate', closeMenus);
+  window.addEventListener('hashchange', closeMenus);
   mount(document.querySelector('.public-header-actions'));
   mount(document.querySelector('#auth .auth-card'));
   window.atsrsI18n = Object.freeze({ getLocale: () => locale });

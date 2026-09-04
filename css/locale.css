@@ -1,11 +1,14 @@
-.atsrs-locale-control{display:inline-flex;align-items:center;gap:3px;border:1px solid var(--border,#35463a);border-radius:9px;padding:3px;flex-shrink:0}
-.atsrs-locale-control button{appearance:none;background:transparent;color:inherit;border:0;border-radius:6px;min-width:36px;min-height:32px;padding:5px 7px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;line-height:1.2}
-.atsrs-locale-control button[aria-pressed="true"]{background:#258443;color:#fff}
-html[data-theme="light"] .atsrs-locale-control button[aria-pressed="true"]{background:#167bd3;color:#fff}
-.atsrs-locale-control button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
-#auth .auth-card>.atsrs-locale-control{display:flex;width:max-content;margin:0 0 16px auto}
-@media(max-width:680px){.public-header-actions{flex-wrap:wrap}.atsrs-locale-control button{min-width:30px}}
-#auth .atsrs-locale-control button[aria-pressed="true"]{background:#258443!important;color:#fff!important}
-html[data-theme="light"] #auth .atsrs-locale-control button[aria-pressed="true"]{background:#167bd3!important;color:#fff!important}
-.atsrs-locale-control button[aria-pressed="true"]{background:#258443!important;color:#fff!important}
-html[data-theme="light"] .atsrs-locale-control button[aria-pressed="true"]{background:#167bd3!important;color:#fff!important}
+.atsrs-locale-control{position:relative;display:inline-block;flex-shrink:0;color:#eaf1eb}
+.atsrs-locale-control summary{display:flex!important;align-items:center;justify-content:center;list-style:none;cursor:pointer;width:42px;height:42px;border:1px solid #35463a;border-radius:50%;background:#121a15}
+.atsrs-locale-control summary::-webkit-details-marker{display:none}
+.atsrs-locale-control img{display:block;width:26px;height:18px;object-fit:cover;border-radius:2px;flex-shrink:0}
+.atsrs-locale-options{position:absolute;right:0;top:calc(100% + 8px);z-index:1000;min-width:190px;padding:6px;border:1px solid #35463a;border-radius:12px;background:#121a15;box-shadow:0 10px 30px #0003}
+.atsrs-locale-control:not([open]) .atsrs-locale-options{display:none!important}
+.atsrs-locale-control .atsrs-locale-options button{display:flex!important;align-items:center;gap:10px;width:100%;min-height:42px;padding:9px!important;border:0!important;border-radius:7px!important;cursor:pointer;background:transparent!important;color:inherit!important;font:inherit;text-align:left;box-shadow:none!important}
+.atsrs-locale-control .atsrs-locale-options button[aria-pressed="true"]{background:#258443!important;color:#fff!important}
+.atsrs-locale-control summary:focus-visible,.atsrs-locale-options button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+html[data-theme="light"] .atsrs-locale-control{color:#0b2554}
+html[data-theme="light"] .atsrs-locale-control summary,html[data-theme="light"] .atsrs-locale-options{background:#fff;border-color:#d5dfeb}
+html[data-theme="light"] .atsrs-locale-control .atsrs-locale-options button[aria-pressed="true"]{background:#167bd3!important;color:#fff!important}
+#auth .auth-card>.atsrs-locale-control{display:block;width:max-content;margin:0 0 16px auto}
+@media(max-width:680px){.public-header-actions{flex-wrap:wrap}}
