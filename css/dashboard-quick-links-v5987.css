@@ -115,3 +115,7 @@ html[data-theme="light"] #app.app:not(.hidden) .sidebar .sidebar-quick-links::be
   #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]{height:30px;min-height:30px!important;border-radius:7px!important}
   #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"] .ph{font-size:16px}
 }
+
+#app.app:not(.hidden) .sidebar[lang="az"] .sidebar-quick-links:has([data-resource="contact"]:is(:hover,:focus-visible))::before{content:"Dəstək"}
+#app.app:not(.hidden) .sidebar[lang="az"] .sidebar-quick-links:has([data-resource="faq"]:is(:hover,:focus-visible))::before{content:"Tez-tez verilən suallar"}
+#app.app:not(.hidden) .sidebar[lang="az"] .sidebar-quick-links:has([data-resource="plans"]:is(:hover,:focus-visible))::before{content:"Planlar və qiymətlər"}

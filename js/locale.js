@@ -5,7 +5,7 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage'].map(id => document.getElementById(id)).filter(Boolean);
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
