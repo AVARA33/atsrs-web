@@ -304,7 +304,7 @@
     });
   }
   function upgradeAll(root){
-    if(root&&root.matches&&root.matches('input[type="date"]'))upgrade(root);
+    if(root&&root.nodeType===1&&root.localName==='input'&&(root.getAttribute('type')||'').toLowerCase()==='date')upgrade(root);
     var scope=root&&root.querySelectorAll?root:document;
     Array.prototype.forEach.call(scope.querySelectorAll('input[type="date"]'),upgrade);
   }

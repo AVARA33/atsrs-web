@@ -110,7 +110,7 @@
 
   function usesOwnDisclosure(control){
     return !!(
-      control.matches('[data-atsrs-native-select]')||
+      control.hasAttribute('data-atsrs-native-select')||
       control.closest('.personnel-filterbar')||
       control.closest('.jobs-select-host')||
       control.id==='profilePhoneCountryCode'||
@@ -120,8 +120,8 @@
 
   function upgradeDisclosure(control){
     if(!control||control.dataset.atsrsDisclosureReady==='true'||usesOwnDisclosure(control))return;
-    var isSelect=control.matches('select:not([multiple])');
-    var isDate=control.matches('.atsrs-date-input');
+    var isSelect=control.localName==='select'&&!control.hasAttribute('multiple');
+    var isDate=control.classList.contains('atsrs-date-input');
     if(!isSelect&&!isDate)return;
     var shell=document.createElement('span');
     shell.className='atsrs-disclosure-shell';
@@ -135,7 +135,7 @@
   }
 
   function upgradeDisclosures(root){
-    if(root&&root.matches)upgradeDisclosure(root);
+    if(root&&root.nodeType===1)upgradeDisclosure(root);
     var scope=root&&root.querySelectorAll?root:document;
     Array.prototype.forEach.call(
       scope.querySelectorAll('select:not([multiple]),.atsrs-date-input'),

@@ -20,7 +20,7 @@
   }
   function visible(select){
     return !!(select&&select.isConnected&&!select.multiple&&Number(select.size||0)<=1
-      &&!select.matches('[data-atsrs-native-select],.jobs-native-select')
+      &&!select.hasAttribute('data-atsrs-native-select')&&!select.classList.contains('jobs-native-select')
       &&!select.closest('.jobs-select-host')
       &&select.id!=='profilePhoneCountryCode'&&select.id!=='profileWhatsappCountryCode');
   }
@@ -248,7 +248,7 @@
     sync(control);
   }
   function scan(root){
-    if(root&&root.matches&&root.matches('select'))enhance(root);
+    if(root&&root.nodeType===1&&root.localName==='select')enhance(root);
     var scope=root&&root.querySelectorAll?root:document;
     scope.querySelectorAll('select:not([multiple])').forEach(enhance);
   }

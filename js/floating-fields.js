@@ -21,9 +21,24 @@
     if(window.CSS&&typeof window.CSS.escape==='function')return window.CSS.escape(value);
     return String(value).replace(/["\\]/g,'\\$&');
   }
+  // Avoid Chromium SelectorQuery::Matches in repeated field decoration.
+  function simpleMatch(element,selector){
+    return selector.split(',').some(function(part){
+      part=part.trim();
+      if(part.charAt(0)==='.')return element.classList.contains(part.slice(1));
+      if(part==='label[for]')return element.localName==='label'&&element.hasAttribute('for');
+      return element.localName===part;
+    });
+  }
+  function isFieldControl(control){
+    if(!control||control.nodeType!==1)return false;
+    if(control.localName==='textarea')return true;
+    if(control.localName==='select')return !control.hasAttribute('multiple');
+    return control.localName==='input'&&!['hidden','checkbox','radio','range','file','button','submit','reset'].includes((control.getAttribute('type')||'').toLowerCase());
+  }
   function eligible(control){
-    if(!control||control.nodeType!==1||!control.matches(controlSelector))return false;
-    if(control.matches('[data-atsrs-no-field-shell]'))return false;
+    if(!control||control.nodeType!==1||!isFieldControl(control))return false;
+    if(control.hasAttribute('data-atsrs-no-field-shell'))return false;
     if(control.closest('.atsrs-select-menu,.date-pop,.datepicker-popover,[role="listbox"]'))return false;
     if(control.parentElement&&control.parentElement.closest('.hidden,[hidden],[aria-hidden="true"]'))return false;
     return true;
@@ -64,11 +79,11 @@
   }
   function labelCandidate(shell,control){
     var direct=Array.from(shell.children||[]).find(function(child){
-      if(child===control||child.matches('input,select,textarea,button'))return false;
-      if(child.matches(frameSelector)||child.querySelector(controlSelector))return false;
-      if(child.matches('.small-note,.phone-verification-note,.personnel-combobox-options,.work-type-select-menu'))return false;
-      if(child.matches('label,.field-label,.phone-entry-label'))return true;
-      return child.matches('span,b')&&!!labelValue(child);
+      if(child===control||simpleMatch(child,'input,select,textarea,button'))return false;
+      if(simpleMatch(child,frameSelector)||child.querySelector(controlSelector))return false;
+      if(simpleMatch(child,'.small-note,.phone-verification-note,.personnel-combobox-options,.work-type-select-menu'))return false;
+      if(simpleMatch(child,'label,.field-label,.phone-entry-label'))return true;
+      return simpleMatch(child,'span,b')&&!!labelValue(child);
     });
     return direct||null;
   }
@@ -95,13 +110,13 @@
       return phone;
     }
     var nested=control.closest('label');
-    if(nested&&!nested.matches('.jobs-compact-check,.share-document-choice,.share-expiry-option,.share-select-all,.cv-enhancement-consent,.atsrs-ai-consent-check,.assignment-primary,.project-member-select'))return nested;
+    if(nested&&!simpleMatch(nested,'.jobs-compact-check,.share-document-choice,.share-expiry-option,.share-select-all,.cv-enhancement-consent,.atsrs-ai-consent-check,.assignment-primary,.project-member-select'))return nested;
     var container=control.closest(fieldContainers);
     if(container)return container;
     var frame=frameFor(control);
     var parent=frame.parentElement;
     if(parent&&parent.children.length<=3){
-      var external=Array.from(parent.children).find(function(child){return child!==frame&&child.matches('label[for],.field-label')&&labelValue(child)});
+      var external=Array.from(parent.children).find(function(child){return child!==frame&&simpleMatch(child,'label[for],.field-label')&&labelValue(child)});
       if(external){
         var generated=createShell(control,frame);
         external.classList.remove('atsrs-field-source-label');
@@ -210,7 +225,7 @@
   }
   function scan(root){
     var scope=root&&root.querySelectorAll?root:document;
-    if(root&&root.matches&&eligible(root))enhance(root);
+    if(root&&root.nodeType===1&&eligible(root))enhance(root);
     scope.querySelectorAll(controlSelector).forEach(enhance);
     enhanceCustom(root);
   }
