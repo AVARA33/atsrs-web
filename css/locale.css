@@ -22,3 +22,4 @@ body:not(.atsrs-app-visible) #atsrsGlobalControls .atsrs-locale-control{display:
 /* Flag-only trigger; retain a comfortable invisible hit area. */
 .atsrs-locale-control summary{width:32px;height:32px;padding:5px;gap:0;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important}
 .atsrs-locale-control summary::after{display:none!important}
+.atsrs-locale-control .atsrs-locale-options button{justify-content:flex-start!important;text-align:left!important}
