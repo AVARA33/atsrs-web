@@ -31,3 +31,19 @@ test('failed server writes never report success or discard old receipts',async()
  assert.deepEqual(b.legacy(),[id]);assert.equal(b.api.has(id),false);
  await assert.rejects(b.api.mark([{id}]),/offline/);assert.equal(b.api.has(id),false);
 });
+
+test('unread status stays unknown until server receipts arrive and is scoped to checked IDs',async()=>{
+ const b=browser(new Set(['alice:'+id]));
+ assert.equal(b.api.ready([{id}]),false);
+ const loading=b.api.sync(true);
+ assert.equal(b.api.ready([{id}]),false);
+ await loading;
+ assert.equal(b.api.ready([{id}]),true);
+ assert.equal(b.api.has(id),true);
+ assert.equal(b.api.ready([{id:'22345678-1234-4234-8234-123456789012'}]),false);
+});
+test('failed initial read does not classify notifications as unread',async()=>{
+ const b=browser(new Set());b.offline();await b.api.sync(true);
+ assert.equal(b.api.ready([{id}]),false);
+ assert.equal(b.api.failed(),true);
+});

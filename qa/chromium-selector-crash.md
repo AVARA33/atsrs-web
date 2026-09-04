@@ -23,3 +23,11 @@ This removes a plausible application trigger of the identified native crash path
 - Existing field values and native control semantics are retained. Asset versions and lazy jobs loader are updated together.
 
 Source reference: https://chromium.googlesource.com/chromium/src/+/refs/tags/152.0.7977.83/third_party/blink/renderer/core/css/selector_checker.cc
+
+## Follow-up: 2026-09-04 05:40 Baku
+
+The owner reproduced a Chrome crash after repeated reloads; Opera did not crash in that test. The new local Chrome dump reports 0xc0000005 in 152.0.7977.83 at RVA 0x3a30453. The same exact public PDB resolves this to v8::internal::Factory::JSFunctionBuilder::Build + 0x323, with factory.cc line 5377. This is a different fault location from SelectorChecker::MatchSelector. Stack-memory candidates include Runtime_NewClosure_Tenured, ArrayForEach and promise/microtask handling; they do not identify the responsible JavaScript file. A stack-memory scan is not a reliable full unwind.
+
+Six subsequent reloads through the connected Chrome tab returned the ATSRS jobs heading successfully. This bounded check does not negate the user's reproduction. The earlier selector change is a mitigation, not a confirmed resolution of all crashes. The underlying memory failure remains unresolved; no extension, hardware, server or individual site script has been established as the root cause. No additional speculative changes to the JavaScript engine, security settings or browser extensions were made.
+
+The separate notification badge flash is explained by rendering pending requests before their server read receipts arrive. The follow-up patch waits for per-request receipt hydration, displays a loading/error state instead of assuming unread, and re-runs a sync requested while an earlier sync is in flight. Confirmed read receipts remain server-backed and scoped to the authenticated account.

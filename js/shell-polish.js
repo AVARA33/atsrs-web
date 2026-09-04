@@ -246,14 +246,15 @@
   function renderNotificationPopover(){
     var popover=byId('atsrsNotificationPopover'),list=byId('atsrsShellNotificationList'),badge=byId('atsrsNotificationBadge');if(!popover||!list)return;
     var readSync=window.atsrsNotificationReads;
-    list.textContent='';var requests=typeof window.atsrsGetOwnerShareRequests==='function'?window.atsrsGetOwnerShareRequests().filter(function(item){return item.status==='pending'&&!(readSync&&readSync.has(item.id))}):[];
+    list.textContent='';var ownerRequests=typeof window.atsrsGetOwnerShareRequests==='function'?window.atsrsGetOwnerShareRequests().filter(function(item){return item.status==='pending'}):[];
+    var readsReady=readSync&&readSync.ready(ownerRequests),requests=readsReady?ownerRequests.filter(function(item){return !readSync.has(item.id)}):[];
     requests.forEach(function(request){list.appendChild(requestNotificationItem(request))});
     var serverItems=Array.prototype.slice.call(document.querySelectorAll('#atsrsNotificationList .atsrs-notification-item'));
     serverItems.forEach(function(item){list.appendChild(serverNotificationItem(item,popover))});
-    if(!list.children.length){var empty=document.createElement('div');empty.className='atsrs-shell-notification-empty';empty.textContent='No new notifications.';list.appendChild(empty)}
+    if(!list.children.length){var empty=document.createElement('div');empty.className='atsrs-shell-notification-empty';empty.textContent=ownerRequests.length&&!readsReady?(readSync&&readSync.failed()?'Notifications could not be synced. Reopen to retry.':'Loading notifications…'):'No new notifications.';list.appendChild(empty)}
     var unreadCount=requests.length+serverItems.filter(function(item){return item.classList.contains('is-unread')}).length;
-    if(badge){badge.textContent=String(unreadCount);badge.hidden=unreadCount===0}
-    var markAll=popover.querySelector('.atsrs-notification-popover-mark-all');if(markAll)markAll.disabled=unreadCount===0;
+    if(badge){badge.textContent=String(unreadCount);badge.hidden=unreadCount===0||(ownerRequests.length>0&&!readsReady)}
+    var markAll=popover.querySelector('.atsrs-notification-popover-mark-all');if(markAll)markAll.disabled=unreadCount===0||(ownerRequests.length>0&&!readsReady);
   }
 
   async function markNotificationPopoverRead(){
