@@ -128,6 +128,7 @@
   window.addEventListener('hashchange', closeMenus);
   mount(document.querySelector('.public-header-actions'));
   mount(document.querySelector('#auth .auth-card'));
+  mount(document.getElementById('atsrsGlobalControls'));
   window.atsrsI18n = Object.freeze({ getLocale: () => locale });
   window.addEventListener('storage', event => { if (event.key === key) setLocale(event.newValue === 'en' ? 'en' : 'az'); });
   apply();

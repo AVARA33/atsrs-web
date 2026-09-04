@@ -10,7 +10,8 @@
   }
   if (typeof module !== 'undefined' && module.exports) { module.exports = { formatRemaining: formatRemaining, fullAt: fullAt }; return; }
   var state = null, serverTime = 0, anchoredAt = 0, requestId = 0, userId = '', busy = false, queuedRefresh = false, expired = false;
-  var buttonStates = new WeakMap();
+  var buttonStates = new WeakMap(), hidePermanentBadge = false;
+  var hiddenBadgeAccount = '375cfb6770fd5297a9d076c101b7357db0bcd5d9dc4b1c13cca8d5219ff8bf4e';
   function now() { return serverTime + Math.max(0, performance.now() - anchoredAt); }
   function full() { return fullAt(state, now()); }
   function publish() { document.dispatchEvent(new CustomEvent('atsrs:access-changed', { detail: state })); decorate(); tick(); }
@@ -24,6 +25,8 @@
       var session = await client.auth.getSession();
       var user = session.data && session.data.session && session.data.session.user;
       if (!user) { state = null; userId = ''; publish(); return null; }
+      var digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(user.email || '').trim().toLowerCase()));
+      hidePermanentBadge = Array.from(new Uint8Array(digest)).map(function(b){return b.toString(16).padStart(2,'0')}).join('') === hiddenBadgeAccount;
       if (userId !== user.id) { state = null; userId = user.id; decorate(); }
       var result = await client.rpc('atsrs_my_access_state');
       if (result.error) throw result.error;
@@ -37,7 +40,7 @@
   function tick() {
     var bell = document.getElementById('atsrsNotificationButton');
     var badge = document.getElementById('atsrsAccessCountdown');
-    if (!state || state.permanent) { if (badge) badge.remove(); return; }
+    if (!state || (state.permanent && hidePermanentBadge)) { if (badge) badge.remove(); return; }
     if (!badge && bell) { badge = document.createElement('span'); badge.id = 'atsrsAccessCountdown'; badge.setAttribute('role', 'timer'); badge.setAttribute('aria-live', 'off'); bell.before(badge); }
     if (badge) {
       var text = state.permanent ? 'Unlimited' : state.ends_at ? formatRemaining(Date.parse(state.ends_at) - now()) : full() ? 'Full access' : 'Free plan';
