@@ -5,11 +5,11 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage'].map(id => document.getElementById(id)).filter(Boolean);
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy';
+  const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
@@ -20,6 +20,10 @@
     if (normalized.startsWith('All jobs · ')) result = normalized.split(' · ').map(part => messages[part] || part).join(' · ');
     const page = normalized.match(/^Go to page (\d+)$/);
     if (page) result = `${page[1]}-ci səhifəyə keç`;
+    const recruiterCount = normalized.match(/^(\d+) of (\d+) recruiters$/);
+    if (recruiterCount) result = `Mütəxəssislər: ${recruiterCount[1]} / ${recruiterCount[2]}`;
+    const vacancies = normalized.match(/^(\d+) active vacanc(?:y|ies)$/);
+    if (vacancies) result = `${vacancies[1]} aktiv vakansiya`;
     const daysLeft = normalized.match(/^(\d+) days left$/);
     if (daysLeft) result = `${daysLeft[1]} gün qalıb`;
     const expired = normalized.match(/^Expired (\d+) days$/);
@@ -59,7 +63,7 @@
       if (!element || element.closest(skip)) continue;
       // Preserve third-party role, company, recruiter and location values.
       const option = element.closest('option');
-      if (option && option.value && !['jobsRegionFilter','jobsDateFilter'].includes(option.parentElement.id)) continue;
+      if (option && option.value && !['jobsRegionFilter','jobsDateFilter','recruitersVacancies','recruitersSort'].includes(option.parentElement.id)) continue;
       const custom = element.closest('.jobs-select-option');
       if (custom && custom.parentElement.children[0] !== custom && !custom.closest('.jobs-date-filter,.jobs-region-filter')) continue;
       const trigger = element.closest('.jobs-select-toggle');
