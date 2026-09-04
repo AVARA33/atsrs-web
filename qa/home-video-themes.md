@@ -11,3 +11,5 @@ The renderer copies each original AAC audio stream and verifies the audio packet
 Future production must output both themes from one source timeline. The repository AGENTS.md and marketing production AGENTS.md record this requirement.
 
 Light revision 2 uses the site blue #167bd3 for brand buttons, graphics and UI labels, navy #0b2554 for main text and #536680 for secondary text. Semantic expiry/success status colours and external employer buttons are retained. Light asset URLs carry ?v=2 to bypass cached first-edition green files.
+
+Light revision 3 follows the owner correction: every green element, including dashboard status icons, is blue. A final green-dominant pixel remap is applied at source render time; this is baked into the light MP4 only. Light URLs use ?v=3.

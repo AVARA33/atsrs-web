@@ -13,7 +13,7 @@
   if (!root) return;
   const players = [];
   const theme = () => document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
-  const media = (name, ext) => `assets/videos/${name}${theme() === 'light' ? '-light' : ''}.${ext}${theme() === 'light' ? '?v=2' : ''}`;
+  const media = (name, ext) => `assets/videos/${name}${theme() === 'light' ? '-light' : ''}.${ext}${theme() === 'light' ? '?v=3' : ''}`;
   function syncTheme(entry) {
     entry.thumbnail.src = media(entry.name, 'jpg');
     if (!entry.video || entry.theme === theme()) return;
