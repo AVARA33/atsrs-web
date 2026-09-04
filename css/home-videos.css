@@ -13,3 +13,10 @@
 .home-video-panel p{font-size:13px!important;line-height:1.6!important;margin:12px 0!important}
 .home-video-panel a{font-size:13px!important}
 @media(max-width:600px){.home-video-trigger{gap:10px}.home-video-trigger strong{font-size:14px}.home-video-panel{padding:10px}.home-video-panel video{max-height:65vh}}
+/* Light-mode framing; the video pixels and native controls remain untouched. */
+html[data-theme="light"] .home-video-trigger{background:#fff!important;border-color:#dde6df!important;color:#193426!important;box-shadow:0 4px 18px rgba(25,52,38,.04)!important}
+html[data-theme="light"] .home-video-trigger:hover{background:#f7fbf8!important;border-color:#9fbea8!important}
+html[data-theme="light"] .home-video-panel{background:#fff;border-color:#e1e8e3;box-shadow:0 10px 30px rgba(25,52,38,.06);color:#263b30}
+html[data-theme="light"] .home-video-panel video{background:#fff;box-shadow:0 0 0 1px rgba(25,52,38,.06)}
+html[data-theme="light"] .home-video-panel p{color:#53665b}
+html[data-theme="light"] .home-video-panel a{color:#277342}
