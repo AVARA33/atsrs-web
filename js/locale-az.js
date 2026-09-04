@@ -304,5 +304,6 @@ window.ATSRS_AZ_MESSAGES = {
   "Next page": "Növbəti səhifə",
   "No matching opportunities": "Uyğun vakansiya tapılmadı",
   "Clear the filters and try another search.": "Filtrləri təmizləyin və başqa axtarış edin.",
-  "Jobs are temporarily unavailable. Please try again.": "Vakansiyalar müvəqqəti olaraq əlçatan deyil. Yenidən cəhd edin."
+  "Jobs are temporarily unavailable. Please try again.": "Vakansiyalar müvəqqəti olaraq əlçatan deyil. Yenidən cəhd edin.",
+  "Plans & Pricing": "Planlar və qiymətlər"
 };

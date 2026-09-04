@@ -10,7 +10,7 @@
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
   const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select';
-  const attributes = ['title', 'aria-label', 'placeholder', 'alt'];
+  const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
     const normalized = normalize(source);
