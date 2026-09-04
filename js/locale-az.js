@@ -416,7 +416,7 @@ window.ATSRS_AZ_MESSAGES = {
   "Total Personnel": "Ümumi işçi sayı",
   "Total Documents": "Ümumi sənəd sayı",
   "Global recruiter network": "Beynəlxalq işə qəbul şəbəkəsi",
-  "Recruiter Directory": "Rekrutorlar kataloqu",
+  "Recruiter Directory": "Rekrutor kataloqu",
   "Verified hiring professionals, connected to opportunities across ATSRS.": "ATSRS-dəki iş imkanları ilə əlaqəli, yoxlanılmış rekrutorlar.",
   "Recruiter directory trust controls": "Kataloqun etibarlılıq göstəriciləri",
   "LinkedIn verified": "LinkedIn ilə yoxlanılıb",
