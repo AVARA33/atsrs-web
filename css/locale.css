@@ -17,3 +17,5 @@ html[data-theme="light"] .atsrs-locale-control{--locale-bg:#fff;--locale-border:
 @media(max-width:680px){.public-header-actions{flex-wrap:wrap}}
 @media(pointer:coarse){.atsrs-locale-control summary{height:40px}.atsrs-locale-control .atsrs-locale-options button{min-height:44px}}
 @media(prefers-reduced-motion:reduce){.atsrs-locale-control summary,.atsrs-locale-control summary::after{transition:none}}
+
+body:not(.atsrs-app-visible) #atsrsGlobalControls .atsrs-locale-control{display:none!important}

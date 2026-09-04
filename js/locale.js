@@ -132,6 +132,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountAccountPicker, {once:true});
   else mountAccountPicker();
   window.addEventListener('atsrs:resume', mountAccountPicker);
+  window.atsrsMountAccountLanguage = mountAccountPicker;
   window.atsrsI18n = Object.freeze({ getLocale: () => locale });
   window.addEventListener('storage', event => { if (event.key === key) setLocale(event.newValue === 'en' ? 'en' : 'az'); });
   apply();

@@ -106,6 +106,7 @@
 
     var workspace=document.getElementById('workspaceSwitcher');
     if(workspace)controls.appendChild(workspace);
+    if(typeof window.atsrsMountAccountLanguage==='function')window.atsrsMountAccountLanguage();
   }
 
   function usesOwnDisclosure(control){
