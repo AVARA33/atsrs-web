@@ -92,7 +92,7 @@
     document.querySelectorAll('details.atsrs-locale-control').forEach(control => { control.open = false; });
   }
   function mount(host) {
-    if (!host) return;
+    if (!host || Array.from(host.children).some(child => child.classList.contains('atsrs-locale-control'))) return;
     const control = document.createElement('details');
     control.className = 'atsrs-locale-control';
     const summary = document.createElement('summary');
@@ -128,7 +128,10 @@
   window.addEventListener('hashchange', closeMenus);
   mount(document.querySelector('.public-header-actions'));
   mount(document.querySelector('#auth .auth-card'));
-  mount(document.getElementById('atsrsGlobalControls'));
+  function mountAccountPicker() { mount(document.getElementById('atsrsGlobalControls')); apply(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountAccountPicker, {once:true});
+  else mountAccountPicker();
+  window.addEventListener('atsrs:resume', mountAccountPicker);
   window.atsrsI18n = Object.freeze({ getLocale: () => locale });
   window.addEventListener('storage', event => { if (event.key === key) setLocale(event.newValue === 'en' ? 'en' : 'az'); });
   apply();
