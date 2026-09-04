@@ -175,7 +175,12 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   window.addEventListener('load',function(){run();setTimeout(run,500);setTimeout(run,1400);});
   document.addEventListener('atsrs:cv-state',schedule);
-  var observer=new MutationObserver(schedule);
+  var observer=new MutationObserver(function(mutations){
+    if(mutations.some(function(mutation){
+      if(mutation.target.closest&&mutation.target.closest('.atsrs-references-summary'))return false;
+      return Array.from(mutation.addedNodes).concat(Array.from(mutation.removedNodes)).some(function(node){return node.nodeType===1;});
+    }))schedule();
+  });
   var themeObserver=new MutationObserver(function(){
     applyTabTheme();
     setTimeout(applyTabTheme,80);
