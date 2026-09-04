@@ -1,6 +1,6 @@
 Dashboard	İdarəetmə paneli
 JobSearch	İş axtarışı
-Recruiters	İşə qəbul mütəxəssisləri
+Recruiters	İşəgötürənlər
 Companies	Şirkətlər
 Documents	Sənədlər
 References	Tövsiyələr
@@ -14,7 +14,7 @@ Quick Links	Sürətli keçidlər
 Toggle menu	Menyunu aç və ya bağla
 Global opportunity catalogue	Qlobal vakansiya kataloqu
 Worldwide JobSearch	Beynəlxalq iş axtarışı
-Search opportunities across borders with location-aware results, recruiter details and country-specific requirements.	Məkan, işə qəbul mütəxəssisləri və ölkələr üzrə tələbləri nəzərə alaraq dünyanın müxtəlif yerlərində iş imkanları axtarın.
+Search opportunities across borders with location-aware results, recruiter details and country-specific requirements.	Məkan, işəgötürənlər və ölkələr üzrə tələbləri nəzərə alaraq dünyanın müxtəlif yerlərində iş imkanları axtarın.
 Browse jobs by region	Region üzrə vakansiyalara bax
 Jobs data snapshot	Vakansiya sayı
 Worldwide	Bütün dünya
@@ -41,9 +41,9 @@ All cities / locations	Bütün şəhərlər / məkanlar
 Clear filters	Filtrləri təmizlə
 Additional job filters	Əlavə vakansiya filtrləri
 Company	Şirkət
-Recruiter	İşə qəbul mütəxəssisi
+Recruiter	İşəgötürən
 All companies	Bütün şirkətlər
-All recruiters	Bütün işə qəbul mütəxəssisləri
+All recruiters	Bütün işəgötürənlər
 Date posted	Dərc tarixi
 Any time	İstənilən vaxt
 Last 24 hours	Son 24 saat
