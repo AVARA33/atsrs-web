@@ -32,3 +32,9 @@ html[data-theme="light"] .account-resource-tabs button.is-active{border-color:#6
 
 html[data-theme="light"] .account-resource-content{--legal-surface:#ffffff;--legal-line:#d8e2ef;--legal-text:#0b2554;--legal-muted:#536680;--legal-accent:#167bd3;--legal-link:#167bd3}
 html[data-theme="light"] .account-resource-content .contact-submit{background:#167bd3;color:#fff;border-color:#167bd3}
+.account-resource-content .account-faq-grid details{background:var(--legal-surface);border-color:var(--legal-line);color:var(--legal-text)}
+.account-resource-content .account-faq-grid summary{color:var(--legal-text)}
+.account-resource-content .account-faq-grid details p{color:var(--legal-muted)}
+.account-resource-content .account-faq-eyebrow{color:var(--legal-accent)}
+html[data-theme="light"] .account-resource-content{--public-surface:#fff;--public-surface-soft:#f3f6fb;--public-ink:#0b2554;--public-muted:#536680;--public-line:#d8e2ef;--public-accent:#167bd3}
+html[data-theme="light"] .account-resource-session i{color:#167bd3}
