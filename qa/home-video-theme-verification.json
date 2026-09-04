@@ -1,0 +1,44 @@
+[
+  {
+    "name": "workspace",
+    "frames": 2339,
+    "fps": 24,
+    "audio_identical": true,
+    "light_bytes": 5590461
+  },
+  {
+    "name": "jobs",
+    "frames": 899,
+    "fps": 24,
+    "audio_identical": true,
+    "light_bytes": 2922352
+  },
+  {
+    "name": "directory",
+    "frames": 1206,
+    "fps": 24,
+    "audio_identical": true,
+    "light_bytes": 1949041
+  },
+  {
+    "name": "storage",
+    "frames": 254,
+    "fps": 24,
+    "audio_identical": true,
+    "light_bytes": 547044
+  },
+  {
+    "name": "workflow",
+    "frames": 986,
+    "fps": 24,
+    "audio_identical": true,
+    "light_bytes": 2130886
+  },
+  {
+    "name": "dashboard",
+    "frames": 421,
+    "fps": 24,
+    "audio_identical": true,
+    "light_bytes": 846028
+  }
+]

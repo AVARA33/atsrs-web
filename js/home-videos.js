@@ -12,6 +12,26 @@
   const root = document.getElementById('landingPage');
   if (!root) return;
   const players = [];
+  const theme = () => document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+  const media = (name, ext) => `assets/videos/${name}${theme() === 'light' ? '-light' : ''}.${ext}`;
+  function syncTheme(entry) {
+    entry.thumbnail.src = media(entry.name, 'jpg');
+    if (!entry.video || entry.theme === theme()) return;
+    const video = entry.video, position = video.currentTime || 0, resume = !video.paused && !entry.panel.hidden;
+    video.pause();
+    entry.theme = theme();
+    video.poster = media(entry.name, 'jpg');
+    video.src = media(entry.name, 'mp4');
+    entry.fallback.href = video.src;
+    video.preload = 'metadata';
+    video.onloadedmetadata = () => {
+      video.currentTime = Math.min(position, Number.isFinite(video.duration) ? video.duration : position);
+      if (resume && !entry.panel.hidden) video.play().catch(() => {});
+      video.onloadedmetadata = null;
+    };
+    video.load();
+  }
+  new MutationObserver(() => players.forEach(syncTheme)).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
   function closePlayer(entry) {
     entry.video?.pause();
     entry.panel.hidden = true;
@@ -40,7 +60,7 @@
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-controls', `home-video-${name}`);
     const thumbnail = document.createElement('img');
-    thumbnail.src = `assets/videos/${name}.jpg`; thumbnail.alt = ''; thumbnail.loading = 'lazy';
+    thumbnail.src = media(name, 'jpg'); thumbnail.alt = ''; thumbnail.loading = 'lazy';
     const label = document.createElement('span');
     const heading = document.createElement('strong'); heading.textContent = title;
     const meta = document.createElement('small'); meta.textContent = `Watch video · ${duration} · English audio`;
@@ -54,12 +74,12 @@
       players.forEach(p => { if (p !== entry) closePlayer(p); });
       if (opening && !video) {
         video = document.createElement('video'); video.controls = true; video.playsInline = true; video.preload = 'none';
-        video.poster = `assets/videos/${name}.jpg`; video.src = `assets/videos/${name}.mp4`;
+        video.poster = media(name, 'jpg'); video.src = media(name, 'mp4');
         video.setAttribute('aria-label', title);
         const note = document.createElement('p'); note.textContent = description;
         const fallback = document.createElement('a'); fallback.href = video.src; fallback.textContent = 'Open video';
         panel.append(video, note, fallback);
-        entry.video = video;
+        entry.video = video; entry.theme = theme(); entry.fallback = fallback;
         video.addEventListener('play', () => players.forEach(p => { if (p !== entry) closePlayer(p); }));
       }
       panel.hidden = !opening; button.setAttribute('aria-expanded', String(opening));
@@ -69,7 +89,7 @@
         video.play().catch(() => { /* Native play control remains available. */ });
       } else closePlayer(entry);
     });
-    const entry = {video:null, panel, button, play}; players.push(entry);
+    const entry = {name, thumbnail, video:null, panel, button, play}; players.push(entry);
     box.append(button,panel); host.append(box);
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) players.forEach(p => p.video?.pause()); });
