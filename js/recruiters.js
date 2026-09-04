@@ -370,6 +370,18 @@
     if (recruiters.length) render();
     loadRecruiters();
   }
+  function updateRecruiterCount(shown, total) {
+    var counter = byId("recruitersVisibleCount");
+    if (!counter) return;
+    counter.dataset.shown = String(shown);
+    counter.dataset.total = String(total);
+    var az = window.atsrsI18n && window.atsrsI18n.getLocale() === "az";
+    counter.textContent = az ? shown + " / " + total + " rekruter" : shown + " of " + total + " recruiters";
+  }
+  window.addEventListener("atsrs:locale-changed", function () {
+    var counter = byId("recruitersVisibleCount");
+    if (counter && counter.dataset.shown !== undefined) updateRecruiterCount(Number(counter.dataset.shown), Number(counter.dataset.total));
+  });
   function render() {
     var grid = byId("recruitersGrid");
     if (!grid) return;
@@ -408,7 +420,7 @@
     });
     byId("recruitersEmpty").classList.toggle("hidden", visible.length > 0);
     var recruitersShown = Math.min(pageStart + pageRecruiters.length, visible.length);
-    byId("recruitersVisibleCount").textContent = recruitersShown + " of " + visible.length + " recruiters";
+    updateRecruiterCount(recruitersShown, visible.length);
     renderPagination(pageCount);
   }
   window.focusRecruiterCard = async function (recruiterId, recruiterName) {
