@@ -38,3 +38,5 @@ html[data-theme="light"] .account-resource-content .contact-submit{background:#1
 .account-resource-content .account-faq-eyebrow{color:var(--legal-accent)}
 html[data-theme="light"] .account-resource-content{--public-surface:#fff;--public-surface-soft:#f3f6fb;--public-ink:#0b2554;--public-muted:#536680;--public-line:#d8e2ef;--public-accent:#167bd3}
 html[data-theme="light"] .account-resource-session i{color:#167bd3}
+
+html[data-theme="light"] body #app #resourcePage #accountResourceContent .contact-submit{background:#167bd3!important;color:#fff!important;border-color:#167bd3!important}
