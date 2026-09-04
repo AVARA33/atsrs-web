@@ -25,7 +25,7 @@
     const verifiedCount = normalized.match(/^(\d+) verified · official sources$/);
     if (verifiedCount) result = `${verifiedCount[1]} yoxlanılmış şirkət · rəsmi mənbələr`;
     const recruiterCount = normalized.match(/^(\d+) of (\d+) recruiters$/);
-    if (recruiterCount) result = `${recruiterCount[2]} rekrutordan ${recruiterCount[1]} nəfər göstərilir`;
+    if (recruiterCount) result = `${recruiterCount[1]} / ${recruiterCount[2]} rekrutor`;
     const vacancies = normalized.match(/^(\d+) active vacanc(?:y|ies)$/);
     if (vacancies) result = `${vacancies[1]} aktiv vakansiya`;
     const daysLeft = normalized.match(/^(\d+) days left$/);
