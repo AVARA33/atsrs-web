@@ -1,4 +1,4 @@
-.atsrs-locale-control{--locale-bg:#121a15;--locale-border:#ffffff20;--locale-hover:#ffffff09;--locale-selected:#62c477;position:relative;display:inline-block;flex-shrink:0;color:#eaf1eb}
+.atsrs-locale-control{--locale-bg:#101010;--locale-border:#ffffff20;--locale-hover:#ffffff09;--locale-selected:#62c477;position:relative;display:inline-block;flex-shrink:0;color:#eaf1eb}
 .atsrs-locale-control summary{display:flex!important;align-items:center;justify-content:center;gap:7px;list-style:none;cursor:pointer;box-sizing:border-box;width:52px;height:32px;padding:0 8px;border:1px solid var(--locale-border);border-radius:8px;background:transparent;transition:background .15s,border-color .15s}
 .atsrs-locale-control summary::-webkit-details-marker{display:none}
 .atsrs-locale-control summary::after{content:"";width:5px;height:5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);opacity:.6;transition:transform .15s}

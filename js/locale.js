@@ -5,14 +5,21 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage'].map(id => document.getElementById(id)).filter(Boolean);
+  const sidebar = document.querySelector('#app .sidebar');
+  if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word';
+  const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
     const normalized = normalize(source);
     let result = Object.prototype.hasOwnProperty.call(messages, normalized) ? messages[normalized] : undefined;
+    const count = normalized.match(/^(\d+) of (\d+) opportunit(?:y|ies)$/);
+    if (count) result = `Vakansiyalar: ${count[1]} / ${count[2]}`;
+    if (normalized.startsWith('All jobs · ')) result = normalized.split(' · ').map(part => messages[part] || part).join(' · ');
+    const page = normalized.match(/^Go to page (\d+)$/);
+    if (page) result = `${page[1]}-ci səhifəyə keç`;
     const video = normalized.match(/^Watch video · ([\d:]+) · English audio$/);
     if (video) result = `Videoya bax · ${video[1]} · İngilis dilində səsləndirmə`;
     return result === undefined ? source : source.replace(/\S[\s\S]*\S|\S/, result);
@@ -36,6 +43,16 @@
     while ((node = walker.nextNode())) {
       const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
       if (!element || element.closest(skip)) continue;
+      // Preserve third-party role, company, recruiter and location values.
+      const option = element.closest('option');
+      if (option && option.value && !['jobsRegionFilter','jobsDateFilter'].includes(option.parentElement.id)) continue;
+      const custom = element.closest('.jobs-select-option');
+      if (custom && custom.parentElement.children[0] !== custom && !custom.closest('.jobs-date-filter,.jobs-region-filter')) continue;
+      const trigger = element.closest('.jobs-select-toggle');
+      if (trigger) {
+        const select = trigger.parentElement.querySelector('select');
+        if (select && select.value && !['jobsRegionFilter','jobsDateFilter'].includes(select.id)) continue;
+      }
       if (node.nodeType === Node.TEXT_NODE) {
         update(node, 'text', () => node.nodeValue, value => { node.nodeValue = value; });
       } else {
