@@ -19,3 +19,6 @@ html[data-theme="light"] .atsrs-locale-control{--locale-bg:#fff;--locale-border:
 @media(prefers-reduced-motion:reduce){.atsrs-locale-control summary,.atsrs-locale-control summary::after{transition:none}}
 
 body:not(.atsrs-app-visible) #atsrsGlobalControls .atsrs-locale-control{display:none!important}
+/* Flag-only trigger; retain a comfortable invisible hit area. */
+.atsrs-locale-control summary{width:32px;height:32px;padding:5px;gap:0;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important}
+.atsrs-locale-control summary::after{display:none!important}
