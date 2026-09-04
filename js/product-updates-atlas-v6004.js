@@ -48,10 +48,18 @@
     planControls.querySelectorAll('button').forEach(function(button,i){var active=i===planIndex;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false')});
     var link=root.querySelector('.atlas-plan-link');if(link)link.href='/pricing.html#'+plan.key;
   }
-  function startPlans(){clearInterval(planTimer);planTimer=setInterval(function(){showPlan(planIndex+1)},10000)}
+  var plansVisible=false;
+  function plansAreVisible(){return !document.hidden&&root.getClientRects().length>0}
+  function startPlans(){clearInterval(planTimer);if(!plansAreVisible())return;planTimer=setInterval(function(){if(plansAreVisible())showPlan(planIndex+1);else syncPlanVisibility()},10000)}
+  function syncPlanVisibility(){var visible=plansAreVisible();if(visible&&!plansVisible){showPlan(0,true);startPlans()}else if(!visible){clearInterval(planTimer);clearTimeout(planVibrationTimer);clearTimeout(planVibrationEndTimer)}plansVisible=visible}
   if(planControls){plans.forEach(function(plan,index){var button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Show '+plan.name+' plan');button.addEventListener('click',function(){showPlan(index);startPlans()});planControls.appendChild(button)});showPlan(0,true);startPlans()}
   root.querySelectorAll('[data-plan-direction]').forEach(function(button){button.addEventListener('click',function(){showPlan(planIndex+(button.dataset.planDirection==='previous'?-1:1));startPlans()})});
   var pricingShowcase=root.querySelector('.atlas-pricing-showcase');if(pricingShowcase){pricingShowcase.addEventListener('pointerenter',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('pointerleave',startPlans);pricingShowcase.addEventListener('focusin',function(){clearInterval(planTimer)});pricingShowcase.addEventListener('focusout',startPlans)}
+  var planVisibilityObserver=new MutationObserver(syncPlanVisibility);
+  [document.getElementById('app'),document.getElementById('introPage')].forEach(function(node){if(node)planVisibilityObserver.observe(node,{attributes:true,attributeFilter:['class','style','hidden']})});
+  document.addEventListener('visibilitychange',syncPlanVisibility);
+  window.addEventListener('pageshow',syncPlanVisibility);
+  syncPlanVisibility();
   var canvas=root.querySelector('.updates-atlas-canvas');
   var routeCanvas=root.querySelector('.atlas-route-lines');
   var routeFrame=0,selectedMarker=null;
