@@ -1,15 +1,15 @@
-/* Phase 1: public homepage and authentication presentation only. */
+/* Scoped Azerbaijani interface presentation; stored user content stays unchanged. */
 (() => {
   'use strict';
   const messages = window.ATSRS_AZ_MESSAGES || {};
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage'].map(id => document.getElementById(id)).filter(Boolean);
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select';
+  const skip = 'script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
@@ -20,6 +20,20 @@
     if (normalized.startsWith('All jobs · ')) result = normalized.split(' · ').map(part => messages[part] || part).join(' · ');
     const page = normalized.match(/^Go to page (\d+)$/);
     if (page) result = `${page[1]}-ci səhifəyə keç`;
+    const daysLeft = normalized.match(/^(\d+) days left$/);
+    if (daysLeft) result = `${daysLeft[1]} gün qalıb`;
+    const expired = normalized.match(/^Expired (\d+) days$/);
+    if (expired) result = `Müddəti ${expired[1]} gün əvvəl bitib`;
+    const documents = normalized.match(/^(\d+) documents?$/);
+    if (documents) result = `${documents[1]} sənəd`;
+    const requests = normalized.match(/^(\d+) requests?$/);
+    if (requests) result = `${requests[1]} sorğu`;
+    const storage = normalized.match(/^of ([\d.]+ [KMGT]?B) used$/);
+    if (storage) result = `/ ${storage[1]} istifadə olunub`;
+    const percent = normalized.match(/^([<\d.%]+) of Personal storage used$/);
+    if (percent) result = `Şəxsi yaddaşın ${percent[1]}-i istifadə olunub`;
+    const plan = normalized.match(/^(.*?) plan · secure server storage$/);
+    if (plan) result = `${plan[1] === 'Personal' ? 'Şəxsi' : plan[1]} plan · təhlükəsiz server yaddaşı`;
     const video = normalized.match(/^Watch video · ([\d:]+) · English audio$/);
     if (video) result = `Videoya bax · ${video[1]} · İngilis dilində səsləndirmə`;
     return result === undefined ? source : source.replace(/\S[\s\S]*\S|\S/, result);
