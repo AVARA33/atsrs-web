@@ -9,3 +9,5 @@ Desktop deliveries: C:/Users/user/Desktop/ATSRS Cinema/Dark and Light - Homepage
 The renderer copies each original AAC audio stream and verifies the audio packet hash and video frame count for every pair. UI theme changes select the corresponding MP4 and poster. A playing video restores its position after the alternate source loads; controls, volume and captions/content stay on the same element.
 
 Future production must output both themes from one source timeline. The repository AGENTS.md and marketing production AGENTS.md record this requirement.
+
+Light revision 2 uses the site blue #167bd3 for brand buttons, graphics and UI labels, navy #0b2554 for main text and #536680 for secondary text. Semantic expiry/success status colours and external employer buttons are retained. Light asset URLs carry ?v=2 to bypass cached first-edition green files.

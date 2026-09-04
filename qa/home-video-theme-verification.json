@@ -4,41 +4,41 @@
     "frames": 2339,
     "fps": 24,
     "audio_identical": true,
-    "light_bytes": 5590461
+    "light_bytes": 5828385
   },
   {
     "name": "jobs",
     "frames": 899,
     "fps": 24,
     "audio_identical": true,
-    "light_bytes": 2922352
+    "light_bytes": 3103479
   },
   {
     "name": "directory",
     "frames": 1206,
     "fps": 24,
     "audio_identical": true,
-    "light_bytes": 1949041
+    "light_bytes": 1990088
   },
   {
     "name": "storage",
     "frames": 254,
     "fps": 24,
     "audio_identical": true,
-    "light_bytes": 547044
+    "light_bytes": 588110
   },
   {
     "name": "workflow",
     "frames": 986,
     "fps": 24,
     "audio_identical": true,
-    "light_bytes": 2130886
+    "light_bytes": 2260879
   },
   {
     "name": "dashboard",
     "frames": 421,
     "fps": 24,
     "audio_identical": true,
-    "light_bytes": 846028
+    "light_bytes": 879337
   }
 ]
