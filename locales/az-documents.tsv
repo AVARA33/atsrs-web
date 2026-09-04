@@ -1,0 +1,64 @@
+Certificate Register	Sertifikat reyestri
+Document Register	Sənəd reyestri
+Document status summary	Sənədlərin vəziyyəti üzrə xülasə
+Valid	Qüvvədədir
+Expiry Attention	Bitmə müddətinə diqqət
+No Expiry / N/A	Müddətsiz / Tətbiq edilmir
+Choose one method:	Üsul seçin:
+Scan with AI, Scan with QR, or Manual Upload.	Süni intellektlə skan, QR kodla skan və ya əllə yükləmə.
+Scan with AI or Manual Upload.	Süni intellektlə skan və ya əllə yükləmə.
+DOCUMENT INTAKE	SƏNƏDİN ƏLAVƏ EDİLMƏSİ
+Upload a PDF, JPG, PNG, or WebP file. AI will suggest document details for your review.	PDF, JPG, PNG və ya WebP faylı yükləyin. Süni intellekt yoxlamağınız üçün sənəd məlumatlarını təklif edəcək.
+Upload File	Fayl yüklə
+AI will fill the document details after the upload.	Yükləmədən sonra süni intellekt sənəd məlumatlarını dolduracaq.
+Upload a file and enter document details manually.	Faylı yükləyin və sənəd məlumatlarını əllə daxil edin.
+Certificate	Sertifikat
+Document / Certificate No (Optional)	Sənəd / sertifikat nömrəsi (istəyə bağlı)
+Document No (Optional)	Sənəd nömrəsi (istəyə bağlı)
+Country / Authority (Optional)	Ölkə / səlahiyyətli qurum (istəyə bağlı)
+Training Center / Provider	Təlim mərkəzi / verən qurum
+Issue Date	Verilmə tarixi
+Expiry	Bitmə tarixi
+Save Document	Sənədi saxla
+Update Document	Sənədi yenilə
+Status	Vəziyyət
+Action	Əməliyyat
+Actions	Əməliyyatlar
+Document	Sənəd
+Provider	Verən qurum
+Uploaded	Yüklənmə tarixi
+Filter	Filtr
+Filter documents...	Sənədləri axtar...
+Delete selected	Seçilənləri sil
+Select all visible documents	Görünən bütün sənədləri seç
+Preview	Önizləmə
+Edit	Düzəliş et
+Delete	Sil
+No documents uploaded yet.	Hələ sənəd yüklənməyib.
+No company documents uploaded yet.	Hələ şirkət sənədi yüklənməyib.
+No documents match this filter.	Bu filtrə uyğun sənəd yoxdur.
+Close Scan with AI	Süni intellektlə skan pəncərəsini bağla
+Close Manual Upload	Əllə yükləmə pəncərəsini bağla
+PHONE UPLOAD	TELEFONDAN YÜKLƏMƏ
+Close QR upload	QR yükləmə pəncərəsini bağla
+Scan this code with your phone. Take a photo or choose a file, then confirm AI extraction on this device.	Bu kodu telefonunuzla skan edin. Şəkil çəkin və ya fayl seçin, sonra bu cihazda süni intellektlə məlumat çıxarışını təsdiqləyin.
+QR code for secure phone upload	Telefondan təhlükəsiz yükləmə üçün QR kod
+Secure one-time upload	Təhlükəsiz birdəfəlik yükləmə
+Preparing secure QR code...	Təhlükəsiz QR kod hazırlanır...
+New QR code	Yeni QR kod
+Before AI scan	Süni intellektlə skandan əvvəl
+Confirm document processing	Sənədin emalını təsdiqləyin
+Close AI consent notice	Razılıq bildirişini bağla
+The document you select will be securely sent to the OpenAI API so AI can suggest its details. The file may contain personal or sensitive information. OpenAI API data is not used for model training by default, but limited temporary safety processing may occur.	Süni intellektin məlumatları təklif etməsi üçün seçdiyiniz sənəd təhlükəsiz şəkildə OpenAI API-yə göndəriləcək. Faylda şəxsi və ya həssas məlumatlar ola bilər. OpenAI API məlumatları standart olaraq model təlimində istifadə edilmir, lakin təhlükəsizlik məqsədilə məhdud müvəqqəti emal oluna bilər.
+Only the document selected for this scan is sent. Other ATSRS documents are not sent.	Yalnız bu skan üçün seçilən sənəd göndərilir. Digər ATSRS sənədləri göndərilmir.
+AI suggestions can be incomplete or incorrect. Review every field before saving.	Süni intellektin təklifləri natamam və ya səhv ola bilər. Saxlamazdan əvvəl hər sahəni yoxlayın.
+Manual Upload remains available if you do not want to use AI.	Süni intellektdən istifadə etmək istəmirsinizsə, əllə yükləmə mümkündür.
+I understand and agree that my selected document will be sent to the OpenAI API for AI-assisted data extraction.	Seçdiyim sənədin süni intellektlə məlumat çıxarışı üçün OpenAI API-yə göndəriləcəyini anlayır və buna razılıq verirəm.
+Continue with AI	Süni intellektlə davam et
+Use Manual Upload	Əllə yükləmədən istifadə et
+COMPANY CREDENTIALS	ŞİRKƏT SƏNƏDLƏRİ
+Company Documents	Şirkət sənədləri
+Reference Materials	İstinad materialları
+Company credentials sections	Şirkət sənədləri bölmələri
+Manage company-owned documents and reference material without mixing them with candidate or Personal files.	Şirkətə məxsus sənədləri və istinad materiallarını namizəd və şəxsi fayllarla qarışdırmadan idarə edin.
+Company document register	Şirkət sənədləri reyestri

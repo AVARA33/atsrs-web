@@ -5,29 +5,33 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage'].map(id => document.getElementById(id)).filter(Boolean);
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = '#recruitersVisibleCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
+  const skip = '#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#manualFilePreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
     const normalized = normalize(source);
     let result = Object.prototype.hasOwnProperty.call(messages, normalized) ? messages[normalized] : undefined;
     const count = normalized.match(/^(\d+) of (\d+) opportunit(?:y|ies)$/);
-    if (count) result = `Vakansiyalar: ${count[1]} / ${count[2]}`;
+    if (count) result = `${count[1]} / ${count[2]} vakansiya`;
     if (normalized.startsWith('All jobs · ')) result = normalized.split(' · ').map(part => messages[part] || part).join(' · ');
     const page = normalized.match(/^Go to page (\d+)$/);
     if (page) result = `${page[1]}-ci səhifəyə keç`;
     const companyCount = normalized.match(/^(\d+) of (\d+) companies$/);
-    if (companyCount) result = `Şirkətlər: ${companyCount[1]} / ${companyCount[2]}`;
+    if (companyCount) result = `${companyCount[1]} / ${companyCount[2]} şirkət`;
     const verifiedCount = normalized.match(/^(\d+) verified · official sources$/);
     if (verifiedCount) result = `${verifiedCount[1]} yoxlanılmış şirkət · rəsmi mənbələr`;
     const recruiterCount = normalized.match(/^(\d+) of (\d+) recruiters$/);
     if (recruiterCount) result = `${recruiterCount[1]} / ${recruiterCount[2]} rekrutor`;
     const vacancies = normalized.match(/^(\d+) active vacanc(?:y|ies)$/);
     if (vacancies) result = `${vacancies[1]} aktiv vakansiya`;
+    const selected = normalized.match(/^(\d+) selected$/);
+    if (selected) result = `${selected[1]} seçilib`;
+    const qrTime = normalized.match(/^Valid for ([\d:]+)$/);
+    if (qrTime) result = `Qüvvədədir: ${qrTime[1]}`;
     const daysLeft = normalized.match(/^(\d+) days left$/);
     if (daysLeft) result = `${daysLeft[1]} gün qalıb`;
     const expired = normalized.match(/^Expired (\d+) days$/);
@@ -126,6 +130,11 @@
     locale = value;
     try { localStorage.setItem(key, locale); } catch (_) {}
     apply();
+    for (const [id, en, az] of [['jobsVisibleCount','opportunities','vakansiya'],['employersPageCount','companies','şirkət']]) {
+      const counter = document.getElementById(id);
+      const numbers = counter && counter.textContent.match(/\d+/g);
+      if (numbers && numbers.length === 2) counter.textContent = locale === 'az' ? `${numbers[0]} / ${numbers[1]} ${az}` : `${numbers[0]} of ${numbers[1]} ${en}`;
+    }
     window.dispatchEvent(new Event('atsrs:locale-changed'));
   }
   function closeMenus() {

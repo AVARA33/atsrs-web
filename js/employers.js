@@ -744,7 +744,10 @@
     byId("employersVisibleCount").textContent =
       visible.length + " verified · official sources";
     var pageCounter = byId("employersPageCount");
-    if (pageCounter) pageCounter.textContent = Math.min((companyPage - 1) * COMPANY_PAGE_SIZE + pageCompanies.length, visible.length) + " of " + visible.length + " companies";
+    if (pageCounter) {
+      var shown = Math.min((companyPage - 1) * COMPANY_PAGE_SIZE + pageCompanies.length, visible.length);
+      pageCounter.textContent = window.atsrsI18n && window.atsrsI18n.getLocale() === "az" ? shown + " / " + visible.length + " şirkət" : shown + " of " + visible.length + " companies";
+    }
     renderPagination(pageCount);
   }
   function pageButton(label, targetPage, disabled, current, direction) {
