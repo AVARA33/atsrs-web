@@ -11,7 +11,7 @@
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = '#profileSummaryName,#profileSummaryRole,#profileSummaryEmail,#profileSummaryPhone,#profileSummaryLocation,#profileSummaryWorkplace,#profilePersonalReadView strong,#profileSharingDocumentChoices,#profileSharingActiveList,#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#manualFilePreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
+  const skip = '#profileSummaryName,#profileSummaryRole,#profileSummaryEmail,#profileSummaryPhone,#profileSummaryLocation,#profileSummaryWorkplace,#profilePersonalReadView strong,#profileSharingDocumentChoices,#profileSharingActiveList,#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
@@ -62,6 +62,8 @@
     if (renderingPages) result = `${renderingPages[1]} səhifə hazırlanır...`;
     const renderedPages = normalized.match(/^(\d+) pages?$/);
     if (renderedPages) result = `${renderedPages[1]} səhifə`;
+    const documentAction = normalized.match(/^(Preview|Edit|Delete|Select) (.+)$/);
+    if (documentAction) result = `${{Preview:'Önbaxış',Edit:'Düzəliş et',Delete:'Sil',Select:'Seç'}[documentAction[1]]}: ${documentAction[2]}`;
     return result === undefined ? source : source.replace(/\S[\s\S]*\S|\S/, result);
   }
   function update(node, field, read, write) {
