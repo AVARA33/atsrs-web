@@ -14,6 +14,7 @@
   }
   function applyCycle(cycle){
     var yearly=cycle==='yearly';
+    var az=window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az';
     buttons.forEach(function(button){
       var active=button.dataset.pricingCycle===cycle;
       button.classList.toggle('active',active);
@@ -23,12 +24,12 @@
       var amount=price.querySelector('strong');
       var period=price.querySelector('span');
       var note=price.querySelector('small');
-      if(amount)amount.textContent=yearly?price.dataset.yearly:price.dataset.monthly;
+      if(amount)amount.textContent=az?(yearly?price.dataset.yearlyAzn:price.dataset.monthlyAzn):(yearly?price.dataset.yearly:price.dataset.monthly);
       if(period)period.textContent=yearly?price.dataset.yearlyPeriod:price.dataset.monthlyPeriod;
-      if(note)note.textContent=yearly?price.dataset.yearlyNote:price.dataset.monthlyNote;
+      if(note)note.textContent=az&&yearly?price.dataset.yearlyNoteAzn:(yearly?price.dataset.yearlyNote:price.dataset.monthlyNote);
     });
     document.querySelectorAll('[data-price-copy]').forEach(function(cell){
-      cell.textContent=yearly?cell.dataset.yearly:cell.dataset.monthly;
+      cell.textContent=az?(yearly?cell.dataset.yearlyAzn:cell.dataset.monthlyAzn):(yearly?cell.dataset.yearly:cell.dataset.monthly);
     });
   }
   buttons.forEach(function(button){button.addEventListener('click',function(){
@@ -37,5 +38,6 @@
     applyCycle(cycle);
   });});
   applyCycle(storedCycle());
+  window.addEventListener('atsrs:locale-changed',function(){applyCycle(storedCycle());});
 })();
 
