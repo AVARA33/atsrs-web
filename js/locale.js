@@ -5,7 +5,7 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
   const pricingShell = document.querySelector('.pricing-shell');
   if (pricingShell) scopes.push(pricingShell);
   const sidebar = document.querySelector('#app .sidebar');
@@ -54,6 +54,14 @@
     if (plan) result = `${plan[1] === 'Personal' ? 'Şəxsi' : plan[1]} plan · təhlükəsiz server yaddaşı`;
     const video = normalized.match(/^Watch video · ([\d:]+) · English audio$/);
     if (video) result = `Videoya bax · ${video[1]} · İngilis dilində səsləndirmə`;
+    const selectedFile = normalized.match(/^Selected:\s*(.+)$/);
+    if (selectedFile) result = `Seçilib: ${selectedFile[1]}`;
+    const currentFile = normalized.match(/^Current file:\s*(.+)$/);
+    if (currentFile) result = `Cari fayl: ${currentFile[1]}`;
+    const renderingPages = normalized.match(/^Rendering (\d+) pages?\.\.\.$/);
+    if (renderingPages) result = `${renderingPages[1]} səhifə hazırlanır...`;
+    const renderedPages = normalized.match(/^(\d+) pages?$/);
+    if (renderedPages) result = `${renderedPages[1]} səhifə`;
     return result === undefined ? source : source.replace(/\S[\s\S]*\S|\S/, result);
   }
   function update(node, field, read, write) {

@@ -112,6 +112,10 @@
   var registerSort={key:'',direction:1};
   var selectedCertIndices=new Set();
   function byId(id){return document.getElementById(id);}
+  function uiText(source){
+    var locale=window.atsrsI18n&&window.atsrsI18n.getLocale?window.atsrsI18n.getLocale():'en';
+    return locale==='az'&&window.ATSRS_AZ_MESSAGES&&window.ATSRS_AZ_MESSAGES[source]||source;
+  }
   function setText(id,value){var el=byId(id); if(el) el.textContent=value;}
   function q(sel,root){return (root||document).querySelector(sel);}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -742,7 +746,7 @@
       return;
     }
     aiConsentGranted=false;
-    if(files&&files.length>1)alert('Scan with AI processes one document at a time. The first file will be scanned.');
+    if(files&&files.length>1)alert(uiText('Scan with AI processes one document at a time. The first file will be scanned.'));
     var file=files&&files[0];
     if(file)scanDocumentFile(file);
   };
@@ -810,17 +814,17 @@
 
   window.atsrsV172PreviewCert=function(i){
     var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
-    if(!x){alert('Document not found.');return;}
+    if(!x){alert(uiText('Document not found.'));return;}
     if(x.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.openDocument==='function'){
       return window.atsrsCloudData.openDocument(x.cloudFileId,false).catch(function(error){
-        console.error(error);alert('The document file could not be opened from the ATSRS server.');
+        console.error(error);alert(uiText('The document file could not be opened from the ATSRS server.'));
       });
     }
-    alert('Document: '+(x.type||'-')+'\nProvider: '+(x.provider||'-')+'\nExpiry: '+(x.expiry||'-')+'\nStatus: '+((typeof status==='function'&&x.expiry)?status(x.expiry).txt:'-'));
+    alert((window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?'Sənəd: ':'Document: ')+(x.type||'-')+'\n'+(window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?'Verən qurum: ':'Provider: ')+(x.provider||'-')+'\n'+(window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?'Bitmə tarixi: ':'Expiry: ')+(x.expiry||'-')+'\n'+(window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?'Vəziyyət: ':'Status: ')+((typeof status==='function'&&x.expiry)?status(x.expiry).txt:'-'));
   };
   window.atsrsV172EditCert=function(i){
     var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
-    if(!x){alert('Document not found.');return;}
+    if(!x){alert(uiText('Document not found.'));return;}
     editIndex=i; editKey=certificateKey(x); openManual();
     var fileInput=byId('manualFile'); if(fileInput)fileInput.value='';
     window.atsrsPendingCertificateFile=null;
@@ -864,7 +868,7 @@
     }
     var previous=editing&&targetIndex!==null?a[targetIndex]:null;
     if(editing&&!previous){
-      alert('This document changed while it was being edited. Refresh the page and try again.');
+      alert(uiText('This document changed while it was being edited. Refresh the page and try again.'));
       return;
     }
     var personSelect=byId('cPerson');
@@ -944,7 +948,7 @@
           await window.atsrsCloudData.updateDocumentMetadata(qrRow.id,{document:null,document_registered:false,upload_source:'qr'});
         }catch(qrRollbackError){console.error('ATSRS QR document rollback failed',qrRollbackError);}
       }
-      alert('The document was not saved to the ATSRS server. Check the connection and try again.');
+      alert(uiText('The document was not saved to the ATSRS server. Check the connection and try again.'));
     }finally{
       if(button){button.disabled=false;button.textContent=saveCompleted?'Save Document':(oldText||'Save Document');}
     }
@@ -965,7 +969,7 @@
       if(typeof renderAll==='function')window.renderAll();
     }catch(error){
       console.error('ATSRS document delete failed',error);
-      alert('The document could not be deleted from the ATSRS server.');
+      alert(uiText('The document could not be deleted from the ATSRS server.'));
     }
   };
 
@@ -973,7 +977,10 @@
     var a=(typeof getData==='function'?getData('certs'):[])||[];
     var indices=Array.from(selectedCertIndices).filter(function(index){return Number.isInteger(index)&&index>=0&&index<a.length;}).sort(function(left,right){return right-left;});
     if(!indices.length)return;
-    if(!window.confirm('Delete '+indices.length+' selected document'+(indices.length===1?'':'s')+'? This permanently removes the selected files.'))return;
+    var deletePrompt=window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'
+      ?indices.length+' seçilmiş sənəd silinsin? Bu əməliyyat seçilmiş faylları birdəfəlik siləcək.'
+      :'Delete '+indices.length+' selected document'+(indices.length===1?'':'s')+'? This permanently removes the selected files.';
+    if(!window.confirm(deletePrompt))return;
     var remove=byId('deleteSelectedCertsBtn');
     if(remove){remove.disabled=true;remove.textContent='Deleting...';}
     var removed=indices.map(function(index){return a[index];});
@@ -997,10 +1004,12 @@
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function'&&!(await window.atsrsCloudData.flush()))throw new Error('Document register changes could not be saved.');
       selectedCertIndices.clear();
       if(typeof renderAll==='function')window.renderAll();else renderCertRows();
-      if(cleanupFailures)alert(cleanupFailures+' document'+(cleanupFailures===1?' could':'s could')+' not be deleted from the server and remain in the list. Please retry.');
+      if(cleanupFailures)alert(window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'
+        ?cleanupFailures+' sənəd serverdən silinə bilmədi və siyahıda qaldı. Yenidən cəhd edin.'
+        :cleanupFailures+' document'+(cleanupFailures===1?' could':'s could')+' not be deleted from the server and remain in the list. Please retry.');
     }catch(error){
       console.error('ATSRS selected document delete failed',error);
-      alert('The selected documents could not be deleted from the ATSRS server.');
+      alert(uiText('The selected documents could not be deleted from the ATSRS server.'));
       renderCertRows();
     }
   }
