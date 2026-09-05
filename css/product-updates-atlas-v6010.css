@@ -63,3 +63,5 @@ html[data-theme="light"] #introPage .updates-atlas .atlas-marker{background:rgba
 #introPage .updates-atlas .atlas-marker span{text-shadow:0 1px 7px rgba(0,0,0,.88)}
 html[data-theme="light"] #introPage .updates-atlas .atlas-marker{background:transparent!important;box-shadow:none!important}
 html[data-theme="light"] #introPage .updates-atlas .atlas-marker span{text-shadow:0 1px 5px rgba(255,255,255,.95)}
+
+html body #app.app:not(.hidden) .atlas-pricing-showcase>.atlas-currency-picker.atsrs-field-shell{position:absolute!important;top:24px!important;right:24px!important;left:auto!important;width:112px!important;min-width:112px!important;margin:0!important;z-index:4!important}
