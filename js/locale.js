@@ -63,7 +63,7 @@
     const renderedPages = normalized.match(/^(\d+) pages?$/);
     if (renderedPages) result = `${renderedPages[1]} səhifə`;
     const documentAction = normalized.match(/^(Preview|Edit|Delete|Select) (.+)$/);
-    if (documentAction) result = `${{Preview:'Önbaxış',Edit:'Düzəliş et',Delete:'Sil',Select:'Seç'}[documentAction[1]]}: ${documentAction[2]}`;
+    if (documentAction && result === undefined) result = `${{Preview:'Önbaxış',Edit:'Düzəliş et',Delete:'Sil',Select:'Seç'}[documentAction[1]]}: ${documentAction[2]}`;
     return result === undefined ? source : source.replace(/\S[\s\S]*\S|\S/, result);
   }
   function update(node, field, read, write) {
