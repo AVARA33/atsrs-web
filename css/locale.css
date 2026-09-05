@@ -8,16 +8,6 @@
 .atsrs-locale-options{position:absolute;right:0;top:calc(100% + 6px);z-index:1000;min-width:176px;padding:4px;border:1px solid var(--locale-border);border-radius:10px;background:var(--locale-bg);box-shadow:0 8px 24px #0002}
 .atsrs-locale-control:not([open]) .atsrs-locale-options{display:none!important}
 .atsrs-locale-control .atsrs-locale-options button{display:flex!important;align-items:center;gap:8px;box-sizing:border-box;width:100%;min-height:36px;margin:0!important;padding:8px!important;border:0!important;border-radius:6px!important;cursor:pointer;background:transparent!important;color:inherit!important;font-family:inherit!important;font-size:12px!important;font-weight:500!important;line-height:1.3!important;text-align:left;box-shadow:none!important;white-space:nowrap}
-
-/* Keep every Azerbaijani glyph in one complete system typeface. Some legacy
-   display fonts do not contain Ə/ə and silently substitute a mismatched glyph. */
-html[lang="az"] body,
-html[lang="az"] h1,html[lang="az"] h2,html[lang="az"] h3,html[lang="az"] h4,html[lang="az"] h5,html[lang="az"] h6,
-html[lang="az"] p,html[lang="az"] span,html[lang="az"] strong,html[lang="az"] small,
-html[lang="az"] label,html[lang="az"] button,html[lang="az"] input,html[lang="az"] select,html[lang="az"] textarea,
-html[lang="az"] a,html[lang="az"] li,html[lang="az"] dt,html[lang="az"] dd,html[lang="az"] th,html[lang="az"] td{
-  font-family:"Segoe UI",Arial,sans-serif!important;
-}
 .atsrs-locale-control .atsrs-locale-options button:hover{background:var(--locale-hover)!important}
 .atsrs-locale-control .atsrs-locale-options button[aria-pressed="true"]{color:var(--locale-selected)!important}
 .atsrs-locale-control .atsrs-locale-options button[aria-pressed="true"]::after{content:"";width:4px;height:8px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin-left:auto;margin-right:3px}
