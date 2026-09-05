@@ -808,11 +808,8 @@
   function syncDirectoryVisibility() {
     var grid = byId("employersGrid");
     if (!grid) return;
-    if (!directoryVisible()) {
-      grid.replaceChildren();
-      return;
-    }
-    if (companies.length) render();
+    if (!directoryVisible()) return;
+    if (companies.length && !grid.children.length) render();
     loadCompanies();
   }
   async function loadCompanies() {
@@ -823,7 +820,10 @@
     loadInFlight = true;
     var token = ++loadToken;
     try {
-      var results = await Promise.all([client.rpc("atsrs_jobs_facets"), client.from("atsrs_hr_companies").select("name,careers_url").order("name")]);
+      var facetsRequest = window.atsrsSharedRequest
+        ? window.atsrsSharedRequest("directory:jobs-facets", function () { return client.rpc("atsrs_jobs_facets"); })
+        : client.rpc("atsrs_jobs_facets");
+      var results = await Promise.all([facetsRequest, client.from("atsrs_hr_companies").select("name,careers_url").order("name")]);
       var result = results[0], directory = results[1];
       if (token !== loadToken) return;
       if (result.error) throw result.error;
@@ -961,6 +961,10 @@
     });
     syncDirectoryVisibility();
     window.addEventListener("atsrs:resume", syncDirectoryVisibility);
+    window.addEventListener("atsrs:jobs-changed", function () {
+      lastLoadedAt = 0;
+      if (directoryVisible()) loadCompanies();
+    });
   }
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", install, { once: true });

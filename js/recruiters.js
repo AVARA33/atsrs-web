@@ -306,7 +306,9 @@
           .select("id,name,company,role_title,location,linkedin_url,email_verification_status,profile_source_url")
           .eq("status", "active")
           .order("name", { ascending: true }),
-        client.rpc("atsrs_jobs_facets"),
+        window.atsrsSharedRequest
+          ? window.atsrsSharedRequest("directory:jobs-facets", function () { return client.rpc("atsrs_jobs_facets"); })
+          : client.rpc("atsrs_jobs_facets"),
       ]);
       var result = results[0], facets = results[1];
       if (token !== loadToken) return;
@@ -363,11 +365,8 @@
   function syncDirectoryVisibility() {
     var grid = byId("recruitersGrid");
     if (!grid) return;
-    if (!directoryVisible()) {
-      grid.replaceChildren();
-      return;
-    }
-    if (recruiters.length) render();
+    if (!directoryVisible()) return;
+    if (recruiters.length && !grid.children.length) render();
     loadRecruiters();
   }
   function updateRecruiterCount(shown, total) {
@@ -537,6 +536,10 @@
     });
     syncDirectoryVisibility();
     window.addEventListener("atsrs:resume", syncDirectoryVisibility);
+    window.addEventListener("atsrs:jobs-changed", function () {
+      lastLoadedAt = 0;
+      if (directoryVisible()) loadRecruiters();
+    });
     window.addEventListener("atsrs:share-link-updated", syncVisibleShareActions);
   }
   if (document.readyState === "loading")
