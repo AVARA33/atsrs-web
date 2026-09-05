@@ -50,7 +50,7 @@ html[data-theme="dark"] .pricing-paid-grid .pricing-plan .public-plan-name{color
 @media(max-width:720px){.pricing-main{width:min(100% - 32px,1380px);padding:65px 0 80px}.pricing-hero{text-align:left}.pricing-hero h1{font-size:clamp(40px,12vw,58px)}.pricing-billing{display:flex;width:max-content}.pricing-notice{align-items:flex-start;border-radius:12px}.pricing-free-section{margin-bottom:22px}.pricing-plan-free,.pricing-paid-grid{grid-template-columns:1fr}.pricing-plan-free{min-height:0;gap:8px;padding:28px}.pricing-plan-free ul{grid-template-columns:1fr;margin:20px 0 28px}.pricing-plan-free-cta{grid-column:auto;grid-template-columns:1fr;gap:20px}.pricing-plan-free .pricing-action{width:100%}.pricing-plan h2{min-height:0}.pricing-final{align-items:flex-start;flex-direction:column}.pricing-final .public-cta{width:100%}}
 
 .pricing-hero{position:relative}
-.pricing-currency-picker{position:static;display:flex;width:min(100%,920px);margin:0 auto 28px;align-items:center;gap:10px;color:var(--public-text);font-size:16px;font-weight:900;letter-spacing:.04em}
+.pricing-currency-picker{position:static;display:flex;width:min(100%,920px);margin:0 auto 12px;align-items:center;gap:10px;color:var(--public-text);font-size:16px;font-weight:900;letter-spacing:.04em}
 .pricing-currency-picker select{height:38px;min-width:92px;border:1px solid var(--public-line);border-radius:10px;background:var(--public-surface);color:var(--public-text);padding:0 30px 0 12px;font:inherit;cursor:pointer}
-html body #app.app:not(.hidden) .pricing-main>.pricing-currency-picker.atsrs-field-shell{width:min(100%,920px)!important;margin:0 auto 28px!important;align-self:center!important}
-@media(max-width:760px){.pricing-currency-picker{width:100%;margin-bottom:18px}}
+html body #app.app:not(.hidden) .pricing-main>.pricing-currency-picker.atsrs-field-shell{width:min(100%,920px)!important;margin:0 auto 12px!important;align-self:center!important}
+@media(max-width:760px){.pricing-currency-picker{width:100%;margin-bottom:10px}}
