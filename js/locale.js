@@ -5,7 +5,7 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
   const pricingShell = document.querySelector('.pricing-shell');
   if (pricingShell) scopes.push(pricingShell);
   const sidebar = document.querySelector('#app .sidebar');
