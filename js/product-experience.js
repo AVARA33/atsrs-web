@@ -37,6 +37,7 @@
   var pdfRotation=0;
   var pdfRenderVersion=0;
   var pdfOpenVersion=0;
+  var pdfRenderTimer=0;
   var lastWheelZoom=0;
   var zoomMinPercent=50;
   var zoomMaxPercent=300;
@@ -131,7 +132,10 @@
       imageCanvas.style.width=Math.max(imageStage.clientWidth,boundWidth)+'px';
       imageCanvas.style.height=Math.max(imageStage.clientHeight,boundHeight)+'px';
     }
-    if(imageZoomLabel)imageZoomLabel.textContent=(imageFitted?100:clampZoomPercent(Math.round(imageScale/imageFitScale*100/zoomStepPercent)*zoomStepPercent))+'%';
+    var zoomPercent=imageFitted?100:clampZoomPercent(Math.round(imageScale/imageFitScale*100/zoomStepPercent)*zoomStepPercent);
+    if(imageZoomLabel)imageZoomLabel.textContent=zoomPercent+'%';
+    if(imageZoomOut)imageZoomOut.disabled=zoomPercent<=zoomMinPercent;
+    if(imageZoomIn)imageZoomIn.disabled=zoomPercent>=zoomMaxPercent;
     requestAnimationFrame(function(){syncStagePan(imageStage);});
   }
 
@@ -199,7 +203,7 @@
         await page.render(renderOptions).promise;
       }
       if(version!==pdfRenderVersion)return;
-      if(pdfZoomLabel)pdfZoomLabel.textContent=(pdfFitted?100:clampZoomPercent(Math.round(pdfScale/pdfFitScale*100/zoomStepPercent)*zoomStepPercent))+'%';
+      syncPdfZoomControls();
       if(pdfStatus)pdfStatus.textContent=pdfDocument.numPages+' page'+(pdfDocument.numPages===1?'':'s');
       requestAnimationFrame(function(){
         if(pdfStage.scrollHeight>pdfStage.clientHeight)pdfStage.scrollTop=scrollRatio*(pdfStage.scrollHeight-pdfStage.clientHeight);
@@ -210,6 +214,26 @@
       console.error('ATSRS PDF render failed',error);
       if(pdfStatus)pdfStatus.textContent='Preview could not be rendered.';
     }
+  }
+
+  function pdfZoomPercent(){
+    return pdfFitted?100:clampZoomPercent(Math.round(pdfScale/pdfFitScale*100/zoomStepPercent)*zoomStepPercent);
+  }
+
+  function syncPdfZoomControls(){
+    var percent=pdfZoomPercent();
+    if(pdfZoomLabel)pdfZoomLabel.textContent=percent+'%';
+    if(pdfZoomOut)pdfZoomOut.disabled=percent<=zoomMinPercent;
+    if(pdfZoomIn)pdfZoomIn.disabled=percent>=zoomMaxPercent;
+  }
+
+  function queuePdfRender(){
+    if(pdfRenderTimer)window.clearTimeout(pdfRenderTimer);
+    syncPdfZoomControls();
+    pdfRenderTimer=window.setTimeout(function(){
+      pdfRenderTimer=0;
+      renderPdf();
+    },70);
   }
 
   async function fitPdf(){
@@ -231,10 +255,10 @@
     var current=pdfFitted?100:clampZoomPercent(Math.round(pdfScale/pdfFitScale*100/zoomStepPercent)*zoomStepPercent);
     pdfFitted=false;
     pdfScale=pdfFitScale*clampZoomPercent(current+(direction<0?-zoomStepPercent:zoomStepPercent))/100;
-    renderPdf();
+    queuePdfRender();
   }
 
-  function rotatePdf(){if(!pdfDocument)return;pdfRotation=(pdfRotation+90)%360;if(pdfFitted)fitPdf();else renderPdf();}
+  function rotatePdf(){if(!pdfDocument)return;pdfRotation=(pdfRotation+90)%360;if(pdfFitted)fitPdf();else queuePdfRender();}
 
   async function openPdf(options){
     if(!pdfPreview||!pdfPages)return;
@@ -275,6 +299,7 @@
     if(frame)frame.src='about:blank';
     pdfRenderVersion+=1;
     pdfOpenVersion+=1;
+    if(pdfRenderTimer){window.clearTimeout(pdfRenderTimer);pdfRenderTimer=0;}
     if(pdfLoadingTask&&typeof pdfLoadingTask.destroy==='function')pdfLoadingTask.destroy().catch(function(){});
     else if(pdfDocument&&typeof pdfDocument.destroy==='function')pdfDocument.destroy().catch(function(){});
     pdfLoadingTask=null;
