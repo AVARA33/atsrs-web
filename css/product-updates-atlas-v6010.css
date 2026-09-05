@@ -65,3 +65,4 @@ html[data-theme="light"] #introPage .updates-atlas .atlas-marker{background:tran
 html[data-theme="light"] #introPage .updates-atlas .atlas-marker span{text-shadow:0 1px 5px rgba(255,255,255,.95)}
 
 html body #app.app:not(.hidden) .atlas-pricing-showcase>.atlas-currency-picker.atsrs-field-shell{position:absolute!important;top:24px!important;right:24px!important;left:auto!important;width:112px!important;min-width:112px!important;margin:0!important;z-index:4!important}
+html body #app.app:not(.hidden) .atlas-pricing-showcase>.atlas-plan-carousel{margin-top:34px!important}
