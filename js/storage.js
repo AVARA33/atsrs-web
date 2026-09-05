@@ -737,6 +737,9 @@ function renderRiskList(certs){
 function renderAll(){
 if(!currentUser)return;
 let p=getData("personnel"),c=getData("certs");
+let renderSignature=JSON.stringify({mode:isPersonalMode()?"personal":"corporate",language:typeof lang==="string"?lang:"en",personnel:p,certificates:c,projects:getProjects(),search:(crewSearch?.value||""),company:(crewCompanyFilter?.value||""),position:(crewPositionFilter?.value||""),status:(crewStatusFilter?.value||"")});
+if(renderAll.atsrsSignature===renderSignature)return;
+renderAll.atsrsSignature=renderSignature;
 totalPersonnel.innerText=p.length;totalCerts.innerText=c.length;
 fillCrewFilters(p);
 let q=(crewSearch?.value||"").toLowerCase();
