@@ -10,6 +10,8 @@
   if (pricingShell) scopes.push(pricingShell);
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
+  const globalControls = document.getElementById('atsrsGlobalControls');
+  if (globalControls) scopes.push(globalControls);
   const records = new WeakMap();
   const skip = '#profileSummaryName,#profileSummaryRole,#profileSummaryEmail,#profileSummaryPhone,#profileSummaryLocation,#profileSummaryWorkplace,#profilePersonalReadView strong,#profileSharingDocumentChoices,#profileSharingActiveList,#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
@@ -64,6 +66,13 @@
     if (renderedPages) result = `${renderedPages[1]} səhifə`;
     const documentAction = normalized.match(/^(Preview|Edit|Delete|Select) (.+)$/);
     if (documentAction && result === undefined) result = `${{Preview:'Önbaxış',Edit:'Düzəliş et',Delete:'Sil',Select:'Seç'}[documentAction[1]]}: ${documentAction[2]}`;
+    const sortBy = normalized.match(/^Sort by (.+?)(?:, (ascending|descending))?$/);
+    if (sortBy && result === undefined) result = `${sortBy[1]} üzrə sırala${sortBy[2] ? `, ${sortBy[2] === 'ascending' ? 'artan' : 'azalan'} sıra` : ''}`;
+    const notificationCount = normalized.match(/^Notifications, (.+)$/);
+    if (notificationCount && result === undefined) result = `Bildirişlər, ${notificationCount[1]}`;
+    if (result === undefined && /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/.test(normalized)) {
+      result = normalized.replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/g, month => ({Jan:'Yan',Feb:'Fev',Mar:'Mar',Apr:'Apr',May:'May',Jun:'İyn',Jul:'İyl',Aug:'Avq',Sep:'Sen',Oct:'Okt',Nov:'Noy',Dec:'Dek'})[month]);
+    }
     return result === undefined ? source : source.replace(/\S[\s\S]*\S|\S/, result);
   }
   function update(node, field, read, write) {
@@ -130,6 +139,7 @@
     observer.disconnect();
     dirty.clear();
     roots.forEach(render);
+    ['profileInlineBirthPicker'].forEach(id => { const node = document.getElementById(id); if (node) render(node); });
     document.querySelectorAll('.atsrs-locale-control summary').forEach(summary => {
       summary.setAttribute('aria-label', locale === 'az' ? 'Dil seçimi: Azərbaycan dili' : 'Language: English');
       const flag = summary.querySelector('img');
@@ -199,6 +209,13 @@
   window.addEventListener('atsrs:resume', mountAccountPicker);
   window.atsrsMountAccountLanguage = mountAccountPicker;
   window.atsrsI18n = Object.freeze({ getLocale: () => locale });
+  if (!window.__atsrsLocaleDialogsWrapped) {
+    window.__atsrsLocaleDialogsWrapped = true;
+    const nativeAlert = window.alert.bind(window);
+    const nativeConfirm = window.confirm.bind(window);
+    window.alert = message => nativeAlert(locale === 'az' ? translated(String(message ?? '')) : message);
+    window.confirm = message => nativeConfirm(locale === 'az' ? translated(String(message ?? '')) : message);
+  }
   window.addEventListener('storage', event => { if (event.key === key) setLocale(event.newValue === 'en' ? 'en' : 'az'); });
   apply();
 })();
