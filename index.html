@@ -14,9 +14,12 @@
   var currentBuild=document.documentElement.getAttribute('data-atsrs-build')||'';
   var checking=false;
   var lastCheckedAt=0;
-  var minimumCheckInterval=15000;
+  var minimumCheckInterval=120000;
   var signatureKey='atsrs_server_release_signature';
   var knownServerSignature='';
+  var pendingRelease='';
+  var hasUnsavedChanges=false;
+  var lastInteractionAt=0;
   try{knownServerSignature=localStorage.getItem(signatureKey)||'';}catch(error){}
 
   function serverBuildFrom(html){
@@ -37,6 +40,18 @@
     url.searchParams.set('_atsrs_release',serverBuild+'-'+Date.now());
     window.location.replace(url.toString());
   }
+  function isDataEntry(target){
+    if(!target||!target.closest)return false;
+    if(target.closest('#jobsPage .jobs-filters,#recruitersPage .employers-filters,#employersPage .employers-filters'))return false;
+    return !!target.closest('form,#certManualPanel,#profilePage,#refsPage,[contenteditable="true"],dialog,[role="dialog"]');
+  }
+  function refreshIsSafe(){
+    if(hasUnsavedChanges||Date.now()-lastInteractionAt<30000)return false;
+    return !document.querySelector('dialog[open],.modal.active,.file-preview-modal:not(.hidden),#certManualPanel.active');
+  }
+  function applyPendingReleaseWhenSafe(){
+    if(pendingRelease&&refreshIsSafe())refreshFromServer(pendingRelease);
+  }
   async function checkLatestRelease(force){
     var now=Date.now();
     if(checking||(!force&&now-lastCheckedAt<minimumCheckInterval))return;
@@ -48,7 +63,8 @@
       var html=await response.text(),serverBuild=serverBuildFrom(html),signature=releaseSignature(html);
       if((serverBuild&&currentBuild&&serverBuild!==currentBuild)||(knownServerSignature&&signature!==knownServerSignature)){
         rememberSignature(signature);
-        refreshFromServer(serverBuild||signature);
+        pendingRelease=serverBuild||signature;
+        applyPendingReleaseWhenSafe();
         return;
       }
       rememberSignature(signature);
@@ -57,7 +73,11 @@
   window.addEventListener('pageshow',function(event){checkLatestRelease(!!event.persisted);});
   window.addEventListener('focus',function(){checkLatestRelease(false);});
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')checkLatestRelease(false);});
-  window.setInterval(function(){if(document.visibilityState==='visible')checkLatestRelease(false);},minimumCheckInterval);
+  document.addEventListener('pointerdown',function(){lastInteractionAt=Date.now();},{capture:true,passive:true});
+  document.addEventListener('keydown',function(){lastInteractionAt=Date.now();},{capture:true});
+  document.addEventListener('input',function(event){lastInteractionAt=Date.now();if(event.isTrusted&&isDataEntry(event.target))hasUnsavedChanges=true;},{capture:true});
+  document.addEventListener('change',function(event){lastInteractionAt=Date.now();if(event.isTrusted&&isDataEntry(event.target))hasUnsavedChanges=true;},{capture:true});
+  window.setInterval(function(){if(document.visibilityState==='visible')checkLatestRelease(false);applyPendingReleaseWhenSafe();},minimumCheckInterval);
   window.atsrsCheckLatestRelease=function(){return checkLatestRelease(true);};
 })();
 </script>
