@@ -138,6 +138,7 @@
   function apply(roots = scopes) {
     observer.disconnect();
     dirty.clear();
+    document.documentElement.lang = locale;
     roots.forEach(render);
     ['profileInlineBirthPicker'].forEach(id => { const node = document.getElementById(id); if (node) render(node); });
     document.querySelectorAll('.atsrs-locale-control summary').forEach(summary => {
