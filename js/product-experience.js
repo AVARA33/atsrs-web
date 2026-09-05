@@ -233,7 +233,7 @@
     pdfRenderTimer=window.setTimeout(function(){
       pdfRenderTimer=0;
       renderPdf();
-    },70);
+    },250);
   }
 
   async function fitPdf(){
