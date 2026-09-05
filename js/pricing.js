@@ -39,5 +39,6 @@
   });});
   applyCycle(storedCycle());
   window.addEventListener('atsrs:locale-changed',function(){applyCycle(storedCycle());});
+  if(window.atsrsPricingCurrency)window.atsrsPricingCurrency.mount(document);
 })();
 
