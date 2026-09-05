@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6016" data-atsrs-update="3 Sep 2026">
+<html lang="en" data-atsrs-build="V6067" data-atsrs-update="5 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,11 +14,23 @@
   var currentBuild=document.documentElement.getAttribute('data-atsrs-build')||'';
   var checking=false;
   var lastCheckedAt=0;
-  var minimumCheckInterval=30000;
+  var minimumCheckInterval=15000;
+  var signatureKey='atsrs_server_release_signature';
+  var knownServerSignature='';
+  try{knownServerSignature=localStorage.getItem(signatureKey)||'';}catch(error){}
 
   function serverBuildFrom(html){
     var match=String(html||'').match(/<html[^>]+data-atsrs-build=["']([^"']+)["']/i);
     return match&&match[1]||'';
+  }
+  function releaseSignature(html){
+    var value=String(html||''),hash=2166136261;
+    for(var index=0;index<value.length;index+=1){hash^=value.charCodeAt(index);hash=Math.imul(hash,16777619);}
+    return (hash>>>0).toString(36)+'-'+value.length;
+  }
+  function rememberSignature(signature){
+    knownServerSignature=signature;
+    try{localStorage.setItem(signatureKey,signature);}catch(error){}
   }
   function refreshFromServer(serverBuild){
     var url=new URL(window.location.href);
@@ -33,13 +45,19 @@
     try{
       var response=await fetch('/?atsrs_release_check='+now,{cache:'no-store',credentials:'same-origin',headers:{'Accept':'text/html'}});
       if(!response.ok)return;
-      var serverBuild=serverBuildFrom(await response.text());
-      if(serverBuild&&currentBuild&&serverBuild!==currentBuild)refreshFromServer(serverBuild);
+      var html=await response.text(),serverBuild=serverBuildFrom(html),signature=releaseSignature(html);
+      if((serverBuild&&currentBuild&&serverBuild!==currentBuild)||(knownServerSignature&&signature!==knownServerSignature)){
+        rememberSignature(signature);
+        refreshFromServer(serverBuild||signature);
+        return;
+      }
+      rememberSignature(signature);
     }catch(error){}finally{checking=false;}
   }
   window.addEventListener('pageshow',function(event){checkLatestRelease(!!event.persisted);});
   window.addEventListener('focus',function(){checkLatestRelease(false);});
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')checkLatestRelease(false);});
+  window.setInterval(function(){if(document.visibilityState==='visible')checkLatestRelease(false);},minimumCheckInterval);
   window.atsrsCheckLatestRelease=function(){return checkLatestRelease(true);};
 })();
 </script>
