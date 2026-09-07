@@ -263,6 +263,63 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{min-width:
   border-top:1px solid var(--document-divider);
 }
 #certificatesPage .atsrs-document-pagination.hidden{display:none!important}
+#certificatesPage .atsrs-document-pagination .jobs-page-button{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  box-sizing:border-box!important;
+  width:auto!important;
+  min-width:38px!important;
+  height:38px!important;
+  min-height:38px!important;
+  margin:0!important;
+  padding:0 10px!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#a7b4c7!important;
+  -webkit-text-fill-color:#a7b4c7!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  box-shadow:none!important;
+}
+#certificatesPage .atsrs-document-pagination .jobs-page-edge{min-width:92px!important}
+#certificatesPage .atsrs-document-pagination .jobs-page-button:hover:not(:disabled):not(.is-current){
+  background:rgba(148,163,184,.1)!important;
+  color:#f8fafc!important;
+  -webkit-text-fill-color:#f8fafc!important;
+}
+#certificatesPage .atsrs-document-pagination .jobs-page-button.is-current{
+  width:34px!important;
+  min-width:34px!important;
+  height:34px!important;
+  min-height:34px!important;
+  margin:0 2px!important;
+  padding:0 8px!important;
+  border:1px solid var(--atsrs-field-line)!important;
+  border-right-color:var(--atsrs-field-accent)!important;
+  border-left-color:var(--atsrs-field-accent)!important;
+  background:var(--atsrs-field-surface)!important;
+  color:var(--atsrs-field-accent)!important;
+  -webkit-text-fill-color:var(--atsrs-field-accent)!important;
+  box-shadow:-3px 0 0 var(--atsrs-field-accent-ring),3px 0 0 var(--atsrs-field-accent-ring),0 8px 20px var(--atsrs-field-accent-shadow)!important;
+}
+#certificatesPage .atsrs-document-pagination .jobs-page-button:disabled{cursor:default!important;opacity:.45!important}
+#certificatesPage .atsrs-document-pagination .jobs-page-ellipsis{display:grid;place-items:center;min-width:20px;height:38px;color:#72839c}
+html[data-theme="light"] #certificatesPage .atsrs-document-pagination .jobs-page-button{
+  color:#536680!important;
+  -webkit-text-fill-color:#536680!important;
+}
+html[data-theme="light"] #certificatesPage .atsrs-document-pagination .jobs-page-button:hover:not(:disabled):not(.is-current){
+  background:var(--atsrs-shell-accent-soft)!important;
+  color:var(--atsrs-shell-accent-strong)!important;
+  -webkit-text-fill-color:var(--atsrs-shell-accent-strong)!important;
+}
+html[data-theme="light"] #certificatesPage .atsrs-document-pagination .jobs-page-button.is-current{
+  background:color-mix(in srgb,var(--atsrs-field-accent) 5%,var(--atsrs-field-surface))!important;
+}
 
 @media(min-width:801px){
   body.personal-mode:has(#certificatesPage:not(.hidden)){overflow:auto!important}
