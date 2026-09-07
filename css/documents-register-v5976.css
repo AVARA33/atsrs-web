@@ -252,7 +252,7 @@ body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scr
   z-index:4!important;
   background:#101416!important;
 }
-body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{min-width:1040px!important}
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{min-width:1040px!important;table-layout:fixed!important}
 
 #certificatesPage .atsrs-document-pagination{
   display:flex;
@@ -342,6 +342,7 @@ html[data-theme="light"] #certificatesPage .atsrs-document-pagination .jobs-page
 #certificatesPage .atsrs-document-col-uploaded{width:112px}
 #certificatesPage .atsrs-document-col-status{width:126px}
 #certificatesPage .atsrs-document-col-actions{width:132px}
+#certificatesPage .atsrs-document-register thead th:last-child{text-align:center!important}
 
 #certificatesPage .atsrs-document-register thead{background:#101416!important}
 #certificatesPage .atsrs-document-register thead th{
@@ -419,7 +420,7 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-sort{
 
 #certificatesPage .atsrs-document-row-actions{
   display:flex!important;
-  justify-content:flex-end;
+  justify-content:center;
   gap:7px!important;
 }
 body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button{
