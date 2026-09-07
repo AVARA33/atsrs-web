@@ -109,7 +109,7 @@
   var editIndex=null;
   var editKey='';
   var registerFilter='';
-  var registerSort={key:'',direction:1};
+  var registerSort={key:'uploaded',direction:-1};
   var selectedCertIndices=new Set();
   var historicalCardCleanupInFlight=false;
   function byId(id){return document.getElementById(id);}
@@ -153,12 +153,13 @@
   async function scrubHistoricalCardRecords(records){
     if(historicalCardCleanupInFlight||!Array.isArray(records)||!window.atsrsPaymentCardSafety)return;
     var targets=[];
-    records.forEach(function(item,index){var result=protectedCardRecord(item);if(result.isPaymentCard&&(String(item&&item.docNo||'')!==String(result.record.docNo||'')||!!(item&&item.cloudFileId)))targets.push({index:index,original:item,protected:result.record});});
+    records.forEach(function(item,index){var result=protectedCardRecord(item);if(result.isPaymentCard&&(String(item&&item.docNo||'')!==String(result.record.docNo||'')||!!(item&&item.cloudFileId)||!(item&&item.uploadedAt)))targets.push({index:index,original:item,protected:result.record});});
     if(!targets.length)return;
     historicalCardCleanupInFlight=true;
     try{
       for(var target of targets){
         var next=target.protected;
+        if(!next.uploadedAt)next.uploadedAt=new Date().toISOString();
         if(target.original&&target.original.cloudFileId&&await deleteCardFileWithRetry(target.original.cloudFileId)){
           next.cloudFileId='';next.fileName='';next.mimeType='';next.fileSize=0;next.uploadedAt='';
         }
@@ -987,7 +988,7 @@
       item.mimeType=previous.mimeType||'';
       item.fileSize=previous.fileSize||0;
       item.uploadedAt=previous.uploadedAt||'';
-    }
+    }else item.uploadedAt=new Date().toISOString();
     var button=byId('addCertBtn'),oldText=button&&button.textContent;
     if(button){button.disabled=true;button.textContent='Saving to server...';}
     var uploadedRow=null;
