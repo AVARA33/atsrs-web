@@ -686,10 +686,11 @@
     if(!shouldScroll){wrap.style.removeProperty('--atsrs-document-list-max-height');return;}
     var header=table.querySelector('thead');
     var rows=Array.prototype.slice.call(tableBody.querySelectorAll('tr'),0,7);
-    var panel=wrap.closest('.panel');
     var wrapTop=wrap.getBoundingClientRect().top;
-    var panelBottom=panel?panel.getBoundingClientRect().bottom:window.innerHeight;
-    var available=Math.max(0,Math.floor(Math.min(window.innerHeight,panelBottom)-wrapTop-2));
+    // The panel's flex height depends on this table. Measuring the panel here
+    // creates a feedback loop that can collapse the list to zero after reload.
+    // The viewport is the stable boundary for the remaining table space.
+    var available=Math.max(0,Math.floor(window.innerHeight-wrapTop-2));
     var height=header?header.getBoundingClientRect().height:0;
     var fitted=0;
     rows.some(function(row){
