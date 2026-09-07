@@ -1132,7 +1132,7 @@ const clearManualValidationBaseV41R=clearManualValidation;
 clearManualValidation=function(){clearManualValidationBaseV41R(); if(typeof cExpiryNA!=='undefined'&&cExpiryNA.checked)cExpiry.classList.remove('required-missing');}
 validateManualCertificateForm=function(){
   clearManualValidation(); let ok=true;
-  if(!cType.value){cType.classList.add('required-missing');ok=false;}
+  if(!String(cType.value||'').trim()){cType.classList.add('required-missing');ok=false;}
   if(!expiryNAValue('cExpiryNA')&&!cExpiry.value){cExpiry.classList.add('required-missing');ok=false;}
   if(!ok&&typeof manualFormAlert!=='undefined'){manualFormAlert.innerText=v41r('requiredMsg');manualFormAlert.classList.add('active');}
   return ok;
@@ -1140,7 +1140,7 @@ validateManualCertificateForm=function(){
 validateAutoConfirmForm=function(){
   clearAutoValidation(); let ok=true;
   if(!isPersonalMode()&&!autoPerson.value){autoPerson.classList.add('required-missing');ok=false;}
-  if(!autoDocType.value){autoDocType.classList.add('required-missing');ok=false;}
+  if(!String(autoDocType.value||'').trim()){autoDocType.classList.add('required-missing');ok=false;}
   if(!expiryNAValue('autoExpiryNA')&&!autoExpiry.value){autoExpiry.classList.add('required-missing');ok=false;}
   if(!ok&&typeof autoFormAlert!=='undefined'){autoFormAlert.innerText=v41r('requiredMsg');autoFormAlert.classList.add('active');}
   return ok;
