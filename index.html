@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6071" data-atsrs-update="7 Sep 2026">
+<html lang="en" data-atsrs-build="V6072" data-atsrs-update="7 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -90,6 +90,9 @@
 try{
   var atsrsEntryParams=new URLSearchParams(window.location.search);
   var atsrsRequestedView=atsrsEntryParams.get('view');
+  var atsrsRequestedRoute=atsrsEntryParams.get('route');
+  var atsrsKnownAppRoutes={intro:1,dashboard:1,jobs:1,recruiters:1,employers:1,certificates:1,refs:1,profile:1,privacy:1,dataRights:1,compliance:1,security:1,reports:1,developer:1,resource:1,candidates:1,personnel:1,projects:1};
+  var atsrsRequestedApp=atsrsRequestedView==='jobs'||!!atsrsKnownAppRoutes[atsrsRequestedRoute];
   var atsrsEntryCallback=atsrsEntryParams.has('code')||atsrsEntryParams.has('error')||
     window.location.hash.indexOf('access_token=')>=0||window.location.hash.indexOf('type=recovery')>=0;
   var atsrsEntryShare=atsrsEntryParams.has('share')||(atsrsEntryParams.has('share_request')&&atsrsEntryParams.has('resume'))||
@@ -97,7 +100,7 @@ try{
   window.__atsrsEntryRoute=atsrsEntryCallback?'callback':
     (atsrsEntryShare?'share':
       ((atsrsRequestedView==='login'||atsrsRequestedView==='signup')?'auth':
-        (atsrsRequestedView==='jobs'?'app':'landing')));
+        (atsrsRequestedApp?'app':'landing')));
   window.__atsrsSuppressAutomaticSessionOpen=
     window.__atsrsEntryRoute==='auth'||window.__atsrsEntryRoute==='share'||window.__atsrsEntryRoute==='landing';
   if(atsrsEntryShare)document.documentElement.classList.add('atsrs-public-share-mode');
@@ -2524,7 +2527,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
 <script src="js/storage.js?v=605"></script>
-<script src="js/public-landing.js?v=5881"></script>
+<script src="js/public-landing.js?v=5882"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>

@@ -7,7 +7,9 @@
   var boot=document.getElementById('atsrsBootScreen');
   var params=new URLSearchParams(window.location.search);
   var requestedView=params.get('view');
-  var requestedJobs=requestedView==='jobs';
+  var requestedRoute=params.get('route');
+  var knownAppRoutes={intro:1,dashboard:1,jobs:1,recruiters:1,employers:1,certificates:1,refs:1,profile:1,privacy:1,dataRights:1,compliance:1,security:1,reports:1,developer:1,resource:1,candidates:1,personnel:1,projects:1};
+  var requestedApp=requestedView==='jobs'||!!knownAppRoutes[requestedRoute];
   var reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function prepareWordmarks(){
@@ -161,14 +163,14 @@
     return;
   }
   if(callback||publicShare)return;
-  if(requestedJobs){
+  if(requestedView==='jobs'){
     try{localStorage.setItem('atsrs_current_page','jobs');}catch(error){}
   }
   var retainedSessionHint=hasRetainedSessionHint();
-  if(!retainedSessionHint&&!requestedJobs)showLanding();
+  if(!retainedSessionHint&&!requestedApp)showLanding();
   var client=window.supabaseClient;
   if(!client||!client.auth){
-    if(requestedJobs)showExistingAuth('login');
+    if(requestedApp)showExistingAuth('login');
     else showLanding();
     return;
   }
@@ -190,12 +192,12 @@
         showLanding();
         return false;
       }
-      if(requestedJobs)showExistingAuth('login');
+      if(requestedApp)showExistingAuth('login');
       else showLanding();
     })
     .catch(function(error){
       console.warn('ATSRS landing session check failed',error);
-      if(requestedJobs)showExistingAuth('login');
+      if(requestedApp)showExistingAuth('login');
       else showLanding();
     });
 })();
