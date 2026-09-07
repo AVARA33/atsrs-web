@@ -686,9 +686,26 @@
     if(!shouldScroll){wrap.style.removeProperty('--atsrs-document-list-max-height');return;}
     var header=table.querySelector('thead');
     var rows=Array.prototype.slice.call(tableBody.querySelectorAll('tr'),0,7);
-    var height=(header?header.getBoundingClientRect().height:0)+rows.reduce(function(total,row){return total+row.getBoundingClientRect().height;},0);
-    wrap.style.setProperty('--atsrs-document-list-max-height',Math.ceil(height)+'px');
+    var panel=wrap.closest('.panel');
+    var wrapTop=wrap.getBoundingClientRect().top;
+    var panelBottom=panel?panel.getBoundingClientRect().bottom:window.innerHeight;
+    var available=Math.max(0,Math.floor(Math.min(window.innerHeight,panelBottom)-wrapTop-2));
+    var height=header?header.getBoundingClientRect().height:0;
+    var fitted=0;
+    rows.some(function(row){
+      var next=height+row.getBoundingClientRect().height;
+      if(Math.ceil(next)+2>available)return true;
+      height=next;fitted++;return false;
+    });
+    if(!fitted&&rows[0])height=Math.min(available,height+rows[0].getBoundingClientRect().height);
+    wrap.style.setProperty('--atsrs-document-list-max-height',Math.max(0,Math.min(available,Math.ceil(height)+2))+'px');
   }
+
+  window.addEventListener('resize',function(){
+    var tableBody=byId('certTable');
+    if(!tableBody||!tableBody.closest('#certificatesPage:not(.hidden)'))return;
+    window.requestAnimationFrame(function(){updateDocumentListScroll(tableBody.querySelectorAll('tr').length);});
+  });
 
   function updateRegisterControls(visibleIndices){
     var count=byId('certSelectionCount');

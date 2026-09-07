@@ -245,10 +245,6 @@ body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scr
   overflow-x:auto!important;
   overflow-y:auto!important;
   scrollbar-gutter:stable;
-  scroll-padding-bottom:12px;
-}
-body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll .atsrs-document-register{
-  margin-bottom:12px!important;
 }
 body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll .atsrs-document-register thead th{
   position:sticky!important;
