@@ -25,6 +25,7 @@
       if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applySelectedPrivacyLanguage,{once:true});
       else applySelectedPrivacyLanguage();
       window.addEventListener('storage',function(event){if(event.key==='atsrs_locale')window.location.reload();});
+      window.addEventListener('atsrs:locale-changed',function(){window.location.reload();});
       var theme='dark';
       var embedded=new URLSearchParams(window.location.search).get('embedded')==='1';
       if(embedded)document.documentElement.dataset.embedded='true';
@@ -414,5 +415,7 @@
     <nav class="public-footer-legal" aria-label="Legal information"><a href="contact.html">Contact</a><a href="data-protection.html">Data Protection &amp; GDPR</a><a href="terms.html">Terms of Use</a><a href="privacy.html" aria-current="page">Privacy Notice</a><a href="billing-terms.html">Billing Terms</a><a href="refund-policy.html">Refunds</a><a href="data-deletion.html">Data Rights</a></nav>
     <div class="public-footer-bottom"><p class="public-footer-copyright">© 2026 ATSRS. All rights reserved.</p><a class="public-footer-security" href="security.html">Report a Security Issue</a></div>
   </footer>
+  <script src="js/locale-az.js?v=23"></script>
+  <script src="js/locale.js?v=26"></script>
 </body>
 </html>

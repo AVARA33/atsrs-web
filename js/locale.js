@@ -8,6 +8,9 @@
   const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
   const pricingShell = document.querySelector('.pricing-shell');
   if (pricingShell) scopes.push(pricingShell);
+  document.querySelectorAll('.legal-public-nav-shell,.legal-shell,.contact-shell,.share-public-page,body > .public-footer').forEach(scope => {
+    if (!scopes.includes(scope)) scopes.push(scope);
+  });
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
