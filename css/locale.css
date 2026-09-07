@@ -13,12 +13,12 @@
 .atsrs-locale-control .atsrs-locale-options button[aria-pressed="true"]::after{content:"";width:4px;height:8px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin-left:auto;margin-right:3px}
 .atsrs-locale-control summary:focus-visible,.atsrs-locale-options button:focus-visible{outline:2px solid var(--locale-selected);outline-offset:2px}
 html[data-theme="light"] .atsrs-locale-control{--locale-bg:#fff;--locale-border:#0b255420;--locale-hover:#167bd30a;--locale-selected:#167bd3;color:#0b2554}
-#auth .auth-card>.atsrs-locale-control{display:block;width:max-content;margin:0 0 12px auto}
 @media(max-width:680px){.public-header-actions{flex-wrap:wrap}}
 @media(pointer:coarse){.atsrs-locale-control summary{height:40px}.atsrs-locale-control .atsrs-locale-options button{min-height:44px}}
 @media(prefers-reduced-motion:reduce){.atsrs-locale-control summary,.atsrs-locale-control summary::after{transition:none}}
 
 body:not(.atsrs-app-visible) #atsrsGlobalControls .atsrs-locale-control{display:none!important}
+body.auth-open:not(.atsrs-public-view) #atsrsGlobalControls .atsrs-locale-control{display:inline-block!important}
 /* Flag-only trigger; retain a comfortable invisible hit area. */
 .atsrs-locale-control summary{width:32px;height:32px;padding:5px;gap:0;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important}
 .atsrs-locale-control summary::after{display:none!important}

@@ -170,8 +170,7 @@
   if(!retainedSessionHint&&!requestedApp)showLanding();
   var client=window.supabaseClient;
   if(!client||!client.auth){
-    if(requestedApp)showExistingAuth('login');
-    else showLanding();
+    showLanding();
     return;
   }
   var sessionRequest=typeof window.atsrsGetSessionSingleFlight==='function'
@@ -192,12 +191,10 @@
         showLanding();
         return false;
       }
-      if(requestedApp)showExistingAuth('login');
-      else showLanding();
+      showLanding();
     })
     .catch(function(error){
       console.warn('ATSRS landing session check failed',error);
-      if(requestedApp)showExistingAuth('login');
-      else showLanding();
+      showLanding();
     });
 })();

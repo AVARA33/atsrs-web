@@ -195,7 +195,6 @@
   window.addEventListener('popstate', closeMenus);
   window.addEventListener('hashchange', closeMenus);
   mount(document.querySelector('.public-header-actions'));
-  mount(document.querySelector('#auth .auth-card'));
   function mountAccountPicker() { mount(document.getElementById('atsrsGlobalControls')); apply(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountAccountPicker, {once:true});
   else mountAccountPicker();
