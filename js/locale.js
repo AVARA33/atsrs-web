@@ -90,7 +90,7 @@
       if (!element || element.closest(skip)) continue;
       // Preserve third-party role, company, recruiter and location values.
       const option = element.closest('option');
-      if (option && option.value && !['jobsRegionFilter','jobsDateFilter','recruitersVacancies','recruitersSort','employersSort','employersSize'].includes(option.parentElement.id)) continue;
+      if (option && option.value && !['jobsRegionFilter','jobsDateFilter','recruitersVacancies','recruitersSort','employersSort','employersSize','contactCategory'].includes(option.parentElement.id)) continue;
       const custom = element.closest('.jobs-select-option');
       if (custom && custom.parentElement.children[0] !== custom && !custom.closest('.jobs-date-filter,.jobs-region-filter')) continue;
       const trigger = element.closest('.jobs-select-toggle');

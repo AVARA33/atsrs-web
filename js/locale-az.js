@@ -333,6 +333,7 @@ window.ATSRS_AZ_MESSAGES = {
   "Security report": "Təhlükəsizlik bildirişi",
   "Billing enquiry": "Ödənişlə bağlı müraciət",
   "Legal enquiry": "Hüquqi müraciət",
+  "ATSRS service operator:": "ATSRS xidmətinin operatoru:",
   "Contact ATSRS without leaving your signed-in workspace.": "Hesabınızdan çıxmadan ATSRS ilə əlaqə saxlayın.",
   "Review ATSRS plans without leaving your signed-in workspace.": "Hesabınızdan çıxmadan ATSRS planlarına baxın.",
   "Find clear answers while your ATSRS session remains active.": "Hesabınızdan çıxmadan suallarınıza cavab tapın.",
