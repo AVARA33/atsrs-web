@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6068" data-atsrs-update="7 Sep 2026">
+<html lang="en" data-atsrs-build="V6069" data-atsrs-update="7 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,7 +27,10 @@
     return match&&match[1]||'';
   }
   function releaseSignature(html){
-    var value=String(html||''),hash=2166136261;
+    var value=String(html||'')
+      .replace(/\/cdn-cgi\/l\/email-protection#[a-f0-9]+/gi,'/cdn-cgi/l/email-protection')
+      .replace(/\sdata-cfemail=["'][a-f0-9]+["']/gi,'')
+      .replace(/<span class=["']__cf_email__["'][^>]*>[\s\S]*?<\/span>/gi,'[email protected]'),hash=2166136261;
     for(var index=0;index<value.length;index+=1){hash^=value.charCodeAt(index);hash=Math.imul(hash,16777619);}
     return (hash>>>0).toString(36)+'-'+value.length;
   }
