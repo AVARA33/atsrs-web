@@ -26,7 +26,7 @@
   host.setAttribute('aria-busy','true');
   if(previousButton)previousButton.disabled=true;
   if(!hadContent){host.replaceChildren();cell(host,'p','Loading server statistics…');}
-  inFlight=(async function(){try{return await window.supabaseClient.rpc('atsrs_get_hr_cost_summary');}catch(e){return {error:true};}})();
+  inFlight=(async function(){try{return await window.supabaseClient.rpc('atsrs_get_hr_dashboard_summary');}catch(e){return {error:e};}})();
   var result=await inFlight;inFlight=null;
   if(request!==generation||!window.__atsrsDeveloperAccess||owner!==window.__atsrsDeveloperAccessUserId)return;
   host.setAttribute('aria-busy','false');
