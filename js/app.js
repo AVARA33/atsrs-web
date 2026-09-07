@@ -111,6 +111,7 @@
   var registerFilter='';
   var registerSort={key:'',direction:1};
   var selectedCertIndices=new Set();
+  var historicalCardCleanupInFlight=false;
   function byId(id){return document.getElementById(id);}
   function uiText(source){
     var locale=window.atsrsI18n&&window.atsrsI18n.getLocale?window.atsrsI18n.getLocale():'en';
@@ -125,6 +126,48 @@
     return 'fields:'+[
       item.docNo,item.type,item.provider,item.person,item.issue,item.fileName
     ].map(function(value){return String(value==null?'':value).trim().toLowerCase();}).join('|');
+  }
+
+  function protectedCardRecord(item){
+    var safety=window.atsrsPaymentCardSafety;
+    return safety?safety.sanitizeRecord(item):{record:Object.assign({},item||{}),isPaymentCard:false};
+  }
+
+  async function deleteCardFileWithRetry(fileId){
+    if(!fileId)return true;
+    if(!window.atsrsCloudData||typeof window.atsrsCloudData.deleteDocument!=='function')return false;
+    for(var attempt=0;attempt<3;attempt++){
+      try{await window.atsrsCloudData.deleteDocument(fileId);return true;}
+      catch(error){if(attempt<2)await new Promise(function(resolve){setTimeout(resolve,250*(attempt+1));});}
+    }
+    return false;
+  }
+
+  function scheduleCardFileCleanup(fileId){
+    if(!fileId)return;
+    setTimeout(function retryCleanup(){
+      deleteCardFileWithRetry(fileId).then(function(deleted){if(!deleted)setTimeout(retryCleanup,30000);});
+    },1000);
+  }
+
+  async function scrubHistoricalCardRecords(records){
+    if(historicalCardCleanupInFlight||!Array.isArray(records)||!window.atsrsPaymentCardSafety)return;
+    var targets=[];
+    records.forEach(function(item,index){var result=protectedCardRecord(item);if(result.isPaymentCard&&(String(item&&item.docNo||'')!==String(result.record.docNo||'')||!!(item&&item.cloudFileId)))targets.push({index:index,original:item,protected:result.record});});
+    if(!targets.length)return;
+    historicalCardCleanupInFlight=true;
+    try{
+      for(var target of targets){
+        var next=target.protected;
+        if(target.original&&target.original.cloudFileId&&await deleteCardFileWithRetry(target.original.cloudFileId)){
+          next.cloudFileId='';next.fileName='';next.mimeType='';next.fileSize=0;next.uploadedAt='';
+        }
+        records[target.index]=next;
+      }
+      if(typeof saveData==='function')saveData('certs',records);
+      if(window.atsrsCloudData&&typeof window.atsrsCloudData.flush==='function')await window.atsrsCloudData.flush();
+    }catch(error){console.error('ATSRS historical card-data cleanup failed',error);}
+    finally{historicalCardCleanupInFlight=false;}
   }
 
   function cleanTopAndLang(){
@@ -347,9 +390,15 @@
     }else openManual();
   }
 
-  function applyAiResult(file,result,options){
+  async function applyAiResult(file,result,options){
     openManual();
     var documentData=result&&result.document&&typeof result.document==='object'?result.document:{};
+    var cardSafety=window.atsrsPaymentCardSafety;
+    if(!cardSafety)throw new Error('ATSRS payment-card safety is unavailable.');
+    var cardResult=cardSafety.sanitizeExtractedDocument(documentData);
+    cardResult.isPaymentCard=cardResult.isPaymentCard||result&&result.payment_card_detected===true;
+    window.atsrsPendingPaymentCard=cardResult.isPaymentCard;
+    documentData=cardResult.document;
     if(window.atsrsDocumentDateValidation){
       documentData=window.atsrsDocumentDateValidation.validate(documentData);
     }else{
@@ -371,11 +420,20 @@
     }
     if(options&&options.qrRow){
       window.atsrsPendingCertificateFile=null;
-      window.atsrsPendingQrDocument=options.qrRow;
-    }else window.atsrsPendingCertificateFile=file;
+      if(cardResult.isPaymentCard){
+        if(!window.atsrsCloudData||typeof window.atsrsCloudData.deleteDocument!=='function'){
+          var unavailableError=new Error('ATSRS card-image cleanup is unavailable.');unavailableError.code='ATSRS_CARD_IMAGE_CLEANUP_FAILED';throw unavailableError;
+        }
+        try{await window.atsrsCloudData.deleteDocument(options.qrRow.id);}
+        catch(deleteError){window.atsrsPendingQrDocument=options.qrRow;scheduleCardFileCleanup(options.qrRow.id);deleteError.code='ATSRS_CARD_IMAGE_CLEANUP_FAILED';throw deleteError;}
+        window.atsrsPendingQrDocument=null;
+      }else window.atsrsPendingQrDocument=options.qrRow;
+    }else window.atsrsPendingCertificateFile=cardResult.isPaymentCard?null:file;
     var preview=byId('manualFilePreview');
     if(preview){
-      preview.textContent=(options&&options.qrRow?'Phone upload and AI scan ready: ':'AI scan ready: ')+file.name+' ('+Math.round(file.size/1024)+' KB)';
+      preview.textContent=cardResult.isPaymentCard
+        ?uiText('Bank card detected. The image was not stored; only the masked last four digits can be saved.')
+        :(options&&options.qrRow?'Phone upload and AI scan ready: ':'AI scan ready: ')+file.name+' ('+Math.round(file.size/1024)+' KB)';
       preview.classList.add('active');
     }
     var warnings=Array.isArray(documentData.warnings)?documentData.warnings.filter(Boolean):[];
@@ -389,7 +447,8 @@
           ?' Your one-time Free AI Document Scan has now been used.'
           :' '+quota.remaining+' of '+quota.scan_limit+' AI scans remain this month.';
       }
-      alertBox.textContent=(dateReview?'AI date review required. Conflicting date values were left blank. ':'')+(warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.')+quotaNote;
+      var cardNotice=cardResult.isPaymentCard?uiText('ATSRS does not retain full bank card details because they are sensitive. Only the last four digits will be saved, and the card image will not be stored.')+' ':'';
+      alertBox.textContent=cardNotice+(dateReview?'AI date review required. Conflicting date values were left blank. ':'')+(warnings.length?'AI note: '+warnings.join(' '):'AI scan completed. Please review the fields before saving.')+quotaNote;
       alertBox.classList.add('active');
       alertBox.classList.add('atsrs-ai-review-warning');
     }
@@ -432,11 +491,11 @@
       }
       if(!invoked.data||!invoked.data.document)throw new Error('No document details were returned.');
       setAiScanStatus('AI scan completed. Review the detected information before saving.');
-      applyAiResult(file,invoked.data,options);
+      await applyAiResult(file,invoked.data,options);
     }catch(error){
       console.error('ATSRS AI document scan failed',error);
       setAiScanStatus(friendlyAiError(error),true);
-      if(options&&options.qrRow){
+      if(options&&options.qrRow&&(!error||error.code!=='ATSRS_CARD_IMAGE_CLEANUP_FAILED')){
         prepareQrManual(options.qrRow,'The phone upload succeeded, but AI could not read the document. Enter the details manually and save.');
       }
     }finally{
@@ -733,6 +792,19 @@
       if(pendingQrAiRow)useManualInstead();
       else closeAiConsent();
     };
+    var typeField=byId('cType'),numberField=byId('cDocNo');
+    function showManualCardNotice(){
+      var safety=window.atsrsPaymentCardSafety;if(!safety)return;
+      var result=safety.sanitizeRecord({type:typeField&&typeField.value,docNo:numberField&&numberField.value});
+      if(!result.isPaymentCard)return;
+      var notice=byId('manualFormAlert');
+      if(notice){notice.textContent=uiText('ATSRS does not retain full bank card details because they are sensitive. Only the last four digits will be saved, and the card image will not be stored.');notice.classList.add('active','atsrs-ai-review-warning');}
+    }
+    if(typeField&&!typeField.dataset.cardSafetyBound){typeField.dataset.cardSafetyBound='true';typeField.addEventListener('change',showManualCardNotice);typeField.addEventListener('blur',showManualCardNotice);}
+    if(numberField&&!numberField.dataset.cardSafetyBound){
+      numberField.dataset.cardSafetyBound='true';
+      numberField.addEventListener('blur',function(){var safety=window.atsrsPaymentCardSafety;if(!safety)return;var result=safety.sanitizeRecord({type:typeField&&typeField.value,docNo:numberField.value});if(result.isPaymentCard){showManualCardNotice();numberField.value=result.record.docNo;}});
+    }
     ensureCancel();
   }
 
@@ -755,6 +827,7 @@
     if(!row||!row.id)return;
     openManual();
     window.atsrsPendingCertificateFile=null;
+    window.atsrsPendingPaymentCard=false;
     window.atsrsPendingQrDocument=row;
     var fileInput=byId('manualFile');if(fileInput)fileInput.value='';
     var typeField=byId('cType');
@@ -810,11 +883,13 @@
       if(el){el.classList.remove('active');el.textContent='';}
     });
     window.atsrsPendingCertificateFile=null;
+    window.atsrsPendingPaymentCard=false;
   }
 
   window.atsrsV172PreviewCert=function(i){
     var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
     if(!x){alert(uiText('Document not found.'));return;}
+    if(protectedCardRecord(x).isPaymentCard){scrubHistoricalCardRecords(a);alert(uiText('Bank card images are not retained because they contain sensitive information.'));return;}
     if(x.cloudFileId&&window.atsrsCloudData&&typeof window.atsrsCloudData.openDocument==='function'){
       return window.atsrsCloudData.openDocument(x.cloudFileId,false).catch(function(error){
         console.error(error);alert(uiText('The document file could not be opened from the ATSRS server.'));
@@ -825,7 +900,11 @@
   window.atsrsV172EditCert=function(i){
     var a=(typeof getData==='function'?getData('certs'):[])||[]; var x=a[i];
     if(!x){alert(uiText('Document not found.'));return;}
-    editIndex=i; editKey=certificateKey(x); openManual();
+    var originalKey=certificateKey(x);
+    var protectedResult=protectedCardRecord(x);
+    if(protectedResult.isPaymentCard){x=protectedResult.record;scrubHistoricalCardRecords(a);}
+    editIndex=i; editKey=originalKey; openManual();
+    window.atsrsPendingPaymentCard=protectedResult.isPaymentCard;
     var fileInput=byId('manualFile'); if(fileInput)fileInput.value='';
     window.atsrsPendingCertificateFile=null;
     var cp=byId('cPerson');
@@ -892,6 +971,15 @@
       issue:(byId('cIssue')?byId('cIssue').value:''),
       expiry:(byId('cExpiryNA')&&byId('cExpiryNA').checked)?'N/A':(byId('cExpiry')?byId('cExpiry').value:'')
     });
+    if(window.atsrsPendingPaymentCard===true)item.paymentCard=true;
+    var cardSafety=window.atsrsPaymentCardSafety;
+    if(!cardSafety){alert(uiText('The document was not saved because payment-card protection is unavailable. Refresh the page and try again.'));return;}
+    var cardResult=cardSafety.sanitizeRecord(item);
+    item=cardResult.record;
+    if(cardResult.isPaymentCard){
+      var docNoField=byId('cDocNo');if(docNoField)docNoField.value=item.docNo;
+      alert(uiText('ATSRS does not retain full bank card details because they are sensitive. Only the last four digits will be saved, and the card image will not be stored.'));
+    }
     if(typeof ensureAtsrsId==='function')ensureAtsrsId(item);
     if(previous){
       item.cloudFileId=previous.cloudFileId||'';
@@ -908,6 +996,21 @@
     try{
       var file=window.atsrsPendingCertificateFile;
       var qrRow=window.atsrsPendingQrDocument;
+      if(cardResult.isPaymentCard){
+        file=null;
+        window.atsrsPendingCertificateFile=null;
+        if(qrRow&&qrRow.id){
+          if(!window.atsrsCloudData||typeof window.atsrsCloudData.deleteDocument!=='function')throw new Error('ATSRS card-image cleanup is unavailable.');
+          await window.atsrsCloudData.deleteDocument(qrRow.id);
+          qrRow=null;
+          window.atsrsPendingQrDocument=null;
+        }
+        if(item.cloudFileId){
+          if(!window.atsrsCloudData||typeof window.atsrsCloudData.deleteDocument!=='function')throw new Error('ATSRS card-image cleanup is unavailable.');
+          await window.atsrsCloudData.deleteDocument(item.cloudFileId);
+          item.cloudFileId='';item.fileName='';item.mimeType='';item.fileSize=0;item.uploadedAt='';
+        }
+      }
       if(file){
         if(!window.atsrsCloudData||typeof window.atsrsCloudData.uploadDocument!=='function')throw new Error('ATSRS cloud storage is not ready.');
         uploadedRow=await window.atsrsCloudData.uploadDocument(file,{document:item});
@@ -931,7 +1034,7 @@
       }
       saveCompleted=true;
       selectedCertIndices.clear();
-      editIndex=null;editKey='';closeManual();
+      editIndex=null;editKey='';window.atsrsPendingPaymentCard=false;closeManual();
       if(window.atsrsCloudData&&typeof window.atsrsCloudData.refresh==='function'){
         try{await window.atsrsCloudData.refresh();}catch(refreshError){console.warn('ATSRS post-save refresh failed',refreshError);if(typeof renderAll==='function')renderAll();}
       }else if(typeof renderAll==='function')renderAll();
@@ -1018,6 +1121,7 @@
     if(typeof currentUser==='undefined' || !currentUser)return;
     if(!byId('certTable') || typeof getData!=='function' || typeof status!=='function')return;
     var c=getData('certs')||[];
+    scrubHistoricalCardRecords(c);
     selectedCertIndices.forEach(function(index){if(index<0||index>=c.length)selectedCertIndices.delete(index);});
     var allRows=c.map(function(item,index){return{item:item,index:index,statusData:status(item.expiry)};});
     updateDocumentSummary(allRows);

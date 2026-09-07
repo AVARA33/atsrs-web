@@ -45,6 +45,70 @@ type ScanQuota = {
   reason: "reserved" | "lifetime_limit" | "monthly_limit" | "cooldown";
 };
 
+const PAN_PATTERN = /(?:\d[\s.\-–—]*){12,18}\d/g;
+
+function isCardDocument(value: unknown) {
+  const text = String(value ?? "").trim().toLowerCase();
+  if (/^(mastercard|maestro|amex|american express)$/.test(text)) return true;
+  const cardWord = /(card|kart)/.test(text);
+  const paymentWord = /(bank|payment|credit|debit|debet|visa|mastercard|maestro|amex|american express|odenis|ödəniş|kredit)/.test(text);
+  return (cardWord && paymentWord) || /(visa\s+(debit|credit)|(debit|credit)\s+(visa|mastercard|maestro))/.test(text);
+}
+
+function panDigits(value: unknown) {
+  return String(value ?? "").replace(/\D/g, "");
+}
+
+function passesLuhn(value: unknown) {
+  const number = panDigits(value);
+  if (number.length < 13 || number.length > 19) return false;
+  let sum = 0;
+  let alternate = false;
+  for (let index = number.length - 1; index >= 0; index -= 1) {
+    let digit = Number(number[index]);
+    if (alternate) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+    sum += digit;
+    alternate = !alternate;
+  }
+  return sum % 10 === 0;
+}
+
+function maskedPan(value: unknown) {
+  const number = panDigits(value);
+  return number.length >= 4 ? `•••• •••• •••• ${number.slice(-4)}` : "";
+}
+
+function redactPans(value: unknown) {
+  return String(value ?? "").replace(PAN_PATTERN, (candidate) =>
+    passesLuhn(candidate) ? maskedPan(candidate) : candidate
+  ).replace(/\b(CVV2?|CVC2?|CID|PIN)\s*[:#-]?\s*\d{3,6}\b/gi, "$1 [removed]");
+}
+
+function redactSensitiveNode(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(redactSensitiveNode);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value as Record<string, unknown>).map(([key, child]) => [key, redactSensitiveNode(child)]));
+  }
+  return typeof value === "string" ? redactPans(value) : value;
+}
+
+function nodeContainsPan(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(nodeContainsPan);
+  if (value && typeof value === "object") return Object.values(value as Record<string, unknown>).some(nodeContainsPan);
+  return typeof value === "string" && (value.match(PAN_PATTERN) ?? []).some(passesLuhn);
+}
+
+function sanitizePaymentCardResult(extracted: Record<string, unknown>) {
+  const cardType = isCardDocument(extracted.document_type);
+  const panCandidate = nodeContainsPan(extracted);
+  const output = redactSensitiveNode(extracted) as Record<string, unknown>;
+  if (cardType || panCandidate) output.document_number = maskedPan(output.document_number);
+  return { document: output, paymentCardDetected: cardType || panCandidate };
+}
+
 const extractionSchema = {
   type: "object",
   additionalProperties: false,
@@ -244,6 +308,7 @@ Deno.serve(async (req: Request) => {
     "Read only information visibly present in the supplied file. Never guess or invent values.",
     "Use the exact official document title where possible; for a driving licence use a clear localized title such as Driving Licence.",
     "document_number is the principal licence, passport, certificate, policy, permit, contract, registration, reference, or serial number. Prefer a field explicitly labelled as the document number.",
+    "For a bank, debit, credit, or payment card, never return the full card number, CVV/CVC, PIN, magnetic-stripe data, or chip data. Return document_number only as masked groups plus the final four digits, for example •••• •••• •••• 1234.",
     "issuing_country is only the country or jurisdiction. issuing_authority is the ministry, agency, company, institution, employer, training provider, insurer, or other issuer.",
     "country_authority is retained for compatibility and should contain the issuing country; provider should contain the issuing authority or provider.",
     "Return dates as YYYY-MM-DD. If a date cannot be read confidently, return an empty string.",
@@ -335,9 +400,10 @@ Deno.serve(async (req: Request) => {
     return json(req, 502, { error: "The AI scan did not finish. Please try once more." });
   }
   try {
-    const extracted = JSON.parse(text) as Record<string, unknown>;
+    const sanitized = sanitizePaymentCardResult(JSON.parse(text) as Record<string, unknown>);
+    const extracted = sanitized.document;
     const validated = validateExtractedDocumentDates(extracted);
-    return json(req, 200, { document: validated, model: OPENAI_MODEL, quota });
+    return json(req, 200, { document: validated, payment_card_detected: sanitized.paymentCardDetected, model: OPENAI_MODEL, quota });
   } catch {
     return json(req, 502, { error: "The AI result could not be validated. Try scanning again." });
   }
