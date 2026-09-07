@@ -1998,9 +1998,15 @@ setTimeout(v55DockTopActions,500);
         return;
       }
       if(window.__atsrsSessionOpened && window.currentUser && window.currentUser.id===user.id) return;
-      if(shouldWaitOnLoginScreen(event)) return;
+      /* A direct app route is authenticated intent in its own right. During a
+         hard refresh the Supabase session can arrive before the local auth-mode
+         marker, so waiting for that marker incorrectly leaves returning users
+         on the login screen. Public, auth and shared routes keep their existing
+         guarded behaviour. */
+      var directAppEntry=window.__atsrsEntryRoute==='app';
+      if(!directAppEntry && shouldWaitOnLoginScreen(event)) return;
       if(event==='signin-session'){ await handleSignIn(user,event); return true; }
-      if(event==='resume') return handlePassiveRestore(user,event);
+      if(event==='resume' || directAppEntry) return handlePassiveRestore(user,event);
       var intent=currentAuthIntent();
       if(intent==='signup'){ await handleSignUp(user,event); return; }
       if(intent==='signin'){ await handleSignIn(user,event); return; }
