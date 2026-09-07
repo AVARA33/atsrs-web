@@ -366,6 +366,13 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-sort{
 }
 #certificatesPage .atsrs-document-register tbody tr{background:#060809!important}
 #certificatesPage .atsrs-document-register tbody tr:hover{background:#0b0f10!important}
+#certificatesPage #cType::placeholder,
+#certificatesPage #autoDocType::placeholder{
+  color:var(--document-muted)!important;
+  -webkit-text-fill-color:var(--document-muted)!important;
+  opacity:.62!important;
+  font-weight:500!important;
+}
 #certificatesPage .atsrs-document-register tbody td{
   min-height:62px!important;
   padding:10px!important;

@@ -797,19 +797,7 @@
     var methodBackdrop=byId('documentMethodBackdrop');
     if(methodBackdrop&&!methodBackdrop.dataset.bound){
       methodBackdrop.dataset.bound='true';
-      methodBackdrop.addEventListener('click',function(){
-        if(document.body.dataset.documentMethod==='manual')closeManual();
-        else closeDocumentMethod();
-      });
-    }
-    if(!document.documentElement.dataset.documentModalEscapeBound){
-      document.documentElement.dataset.documentModalEscapeBound='true';
-      document.addEventListener('keydown',function(event){
-        if(event.key!=='Escape'||!document.body.classList.contains('atsrs-document-method-open'))return;
-        event.preventDefault();
-        if(document.body.dataset.documentMethod==='manual')closeManual();
-        else closeDocumentMethod();
-      });
+      methodBackdrop.addEventListener('click',function(event){event.preventDefault();});
     }
     var checkbox=byId('aiConsentCheckbox');
     if(checkbox){checkbox.onchange=function(){var proceed=byId('aiConsentContinueBtn');if(proceed)proceed.disabled=!checkbox.checked;};}
