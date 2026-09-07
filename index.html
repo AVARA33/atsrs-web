@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6077" data-atsrs-update="7 Sep 2026">
+<html lang="en" data-atsrs-build="V6078" data-atsrs-update="7 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -244,6 +244,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/locale-az.js?v=22" defer></script>
 <script src="js/locale.js?v=26" defer></script>
 </head>
+<body class="atsrs-session-pending atsrs-booting">
 
   <!--email_off-->
 <div id="atsrsBootScreen" role="status" aria-label="Loading ATSRS">
@@ -268,8 +269,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       }
     }catch(e){}
   }
-  window.addEventListener('error',function(){setTimeout(hardUnlockBoot,0);});
-  window.addEventListener('unhandledrejection',function(){setTimeout(hardUnlockBoot,0);});
+  /* A non-critical asset or module error must not expose the login screen while
+     the retained Supabase session is still being restored. The bounded boot
+     controller releases this state earlier when the real destination is ready. */
+  window.addEventListener('error',function(){setTimeout(hardUnlockBoot,5000);});
+  window.addEventListener('unhandledrejection',function(){setTimeout(hardUnlockBoot,5000);});
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',function(){setTimeout(unlockBoot,450);});
   }else{
