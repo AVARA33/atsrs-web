@@ -110,6 +110,8 @@
   var editKey='';
   var registerFilter='';
   var registerSort={key:'uploaded',direction:-1};
+  var registerPage=1;
+  var REGISTER_PAGE_SIZE=30;
   var selectedCertIndices=new Set();
   var historicalCardCleanupInFlight=false;
   function byId(id){return document.getElementById(id);}
@@ -676,38 +678,6 @@
     put('documentSummaryNoExpiry',counts.noExpiry);put('documentSummaryNoExpiryPercent',percent(counts.noExpiry));
   }
 
-  function updateDocumentListScroll(visibleCount){
-    var tableBody=byId('certTable');
-    var wrap=tableBody&&tableBody.closest?tableBody.closest('.table-wrap'):null;
-    var table=tableBody&&tableBody.closest?tableBody.closest('table'):null;
-    if(!wrap||!table)return;
-    var shouldScroll=Number(visibleCount)>7;
-    wrap.classList.toggle('atsrs-document-list-scroll',shouldScroll);
-    if(!shouldScroll){wrap.style.removeProperty('--atsrs-document-list-max-height');return;}
-    var header=table.querySelector('thead');
-    var rows=Array.prototype.slice.call(tableBody.querySelectorAll('tr'),0,7);
-    var wrapTop=wrap.getBoundingClientRect().top;
-    // The panel's flex height depends on this table. Measuring the panel here
-    // creates a feedback loop that can collapse the list to zero after reload.
-    // The viewport is the stable boundary for the remaining table space.
-    var available=Math.max(0,Math.floor(window.innerHeight-wrapTop-2));
-    var height=header?header.getBoundingClientRect().height:0;
-    var fitted=0;
-    rows.some(function(row){
-      var next=height+row.getBoundingClientRect().height;
-      if(Math.ceil(next)+2>available)return true;
-      height=next;fitted++;return false;
-    });
-    if(!fitted&&rows[0])height=Math.min(available,height+rows[0].getBoundingClientRect().height);
-    wrap.style.setProperty('--atsrs-document-list-max-height',Math.max(0,Math.min(available,Math.ceil(height)+2))+'px');
-  }
-
-  window.addEventListener('resize',function(){
-    var tableBody=byId('certTable');
-    if(!tableBody||!tableBody.closest('#certificatesPage:not(.hidden)'))return;
-    window.requestAnimationFrame(function(){updateDocumentListScroll(tableBody.querySelectorAll('tr').length);});
-  });
-
   function updateRegisterControls(visibleIndices){
     var count=byId('certSelectionCount');
     var remove=byId('deleteSelectedCertsBtn');
@@ -736,7 +706,7 @@
     var filter=byId('certDocumentFilter');
     if(filter&&!filter.dataset.bound){
       filter.dataset.bound='true';
-      filter.addEventListener('input',function(){registerFilter=String(filter.value||'').trim().toLocaleLowerCase();renderCertRows();});
+      filter.addEventListener('input',function(){registerFilter=String(filter.value||'').trim().toLocaleLowerCase();registerPage=1;renderCertRows();});
     }
     document.querySelectorAll('[data-cert-sort]').forEach(function(button){
       if(button.dataset.bound)return;
@@ -745,6 +715,7 @@
         var key=button.getAttribute('data-cert-sort');
         if(registerSort.key===key)registerSort.direction*=-1;
         else registerSort={key:key,direction:1};
+        registerPage=1;
         renderCertRows();
       });
     });
@@ -770,6 +741,42 @@
     }
     var remove=byId('deleteSelectedCertsBtn');
     if(remove&&!remove.dataset.bound){remove.dataset.bound='true';remove.addEventListener('click',deleteSelectedCertificates);}
+  }
+
+  function documentPageItems(current,count){
+    if(count<=7)return Array.from({length:count},function(_,index){return index+1;});
+    var keep=Array.from(new Set([1,count,current-1,current,current+1].filter(function(value){return value>=1&&value<=count;}))).sort(function(left,right){return left-right;}),items=[];
+    keep.forEach(function(value,index){if(index&&value-keep[index-1]>1)items.push('ellipsis');items.push(value);});
+    return items;
+  }
+
+  function renderDocumentPagination(totalRows){
+    var nav=byId('certificatesPagination');
+    if(!nav)return;
+    var pages=Math.max(1,Math.ceil(totalRows/REGISTER_PAGE_SIZE));
+    registerPage=Math.max(1,Math.min(registerPage,pages));
+    nav.replaceChildren();
+    nav.classList.toggle('hidden',pages<=1);
+    if(pages<=1)return;
+    function button(label,target,disabled,current,direction){
+      var control=document.createElement('button');
+      control.type='button';control.className='jobs-page-button'+(direction?' jobs-page-edge':'');
+      control.disabled=disabled;
+      if(disabled)control.setAttribute('aria-disabled','true');
+      if(current){control.classList.add('is-current');control.setAttribute('aria-current','page');}
+      if(direction==='previous')control.innerHTML='<span class="jobs-page-chevron" aria-hidden="true">‹</span><span class="jobs-page-edge-label">'+esc(label)+'</span>';
+      else if(direction==='next')control.innerHTML='<span class="jobs-page-edge-label">'+esc(label)+'</span><span class="jobs-page-chevron" aria-hidden="true">›</span>';
+      else control.textContent=label;
+      control.addEventListener('click',function(){if(disabled||current)return;registerPage=target;renderCertRows();var toolbar=byId('certDocumentFilter');if(toolbar)toolbar.closest('.panel').scrollIntoView({block:'start'});});
+      return control;
+    }
+    var previous=uiText('Previous'),next=uiText('Next');
+    nav.append(button(previous,registerPage-1,registerPage===1,false,'previous'));
+    documentPageItems(registerPage,pages).forEach(function(item){
+      if(item==='ellipsis'){var dots=document.createElement('span');dots.className='jobs-page-ellipsis';dots.textContent='…';dots.setAttribute('aria-hidden','true');nav.append(dots);}
+      else nav.append(button(String(item),item,false,item===registerPage,''));
+    });
+    nav.append(button(next,registerPage+1,registerPage===pages,false,'next'));
   }
 
   function wireMethods(){
@@ -1149,6 +1156,10 @@
     var rows=allRows;
     if(registerFilter)rows=rows.filter(function(row){return certificateSearchText(row.item,row.statusData).indexOf(registerFilter)!==-1;});
     if(registerSort.key)rows.sort(function(a,b){var result=compareCertificateRows(a,b,registerSort.key);return result===0?a.index-b.index:result*registerSort.direction;});
+    var filteredCount=rows.length;
+    var pageCount=Math.max(1,Math.ceil(filteredCount/REGISTER_PAGE_SIZE));
+    registerPage=Math.max(1,Math.min(registerPage,pageCount));
+    rows=rows.slice((registerPage-1)*REGISTER_PAGE_SIZE,registerPage*REGISTER_PAGE_SIZE);
     var html='';
     rows.forEach(function(row){
       var x=row.item,i=row.index,st=row.statusData;
@@ -1167,7 +1178,10 @@
       html='<tr><td colspan="7" class="atsrs-document-empty">'+emptyText+'</td></tr>';
     }
     byId('certTable').innerHTML=html;
-    updateDocumentListScroll(rows.length);
+    var tableWrap=byId('certTable').closest('.table-wrap');
+    tableWrap.classList.remove('atsrs-document-list-scroll');
+    tableWrap.style.removeProperty('--atsrs-document-list-max-height');
+    renderDocumentPagination(filteredCount);
     updateSortHeaders();
     updateRegisterControls(rows.map(function(row){return row.index;}));
   }

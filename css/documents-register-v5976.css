@@ -253,6 +253,31 @@ body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scr
   background:#101416!important;
 }
 body #app.app:not(.hidden) #certificatesPage .atsrs-document-register{min-width:1040px!important}
+
+#certificatesPage .atsrs-document-pagination{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:18px 16px 20px;
+  border-top:1px solid var(--document-divider);
+}
+#certificatesPage .atsrs-document-pagination.hidden{display:none!important}
+
+@media(min-width:801px){
+  body.personal-mode:has(#certificatesPage:not(.hidden)){overflow:auto!important}
+  body.personal-mode #app.app:not(.hidden) > .main:has(#certificatesPage:not(.hidden)){
+    height:auto!important;
+    max-height:none!important;
+    overflow:auto!important;
+  }
+  body.personal-mode #app.app:not(.hidden) #certificatesPage:not(.hidden){
+    display:block!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{overflow:visible!important}
+}
 #certificatesPage .atsrs-document-col-select{width:48px}
 #certificatesPage .atsrs-document-col-name{width:30%}
 #certificatesPage .atsrs-document-col-provider{width:25%}
