@@ -15,6 +15,9 @@
 .account-resource-page:has(.account-resource-content[data-resource="plans"]){height:auto;min-height:calc(100vh - 118px);overflow:visible}
 .account-resource-page:has(.account-resource-content[data-resource="plans"]) .account-resource-frame-shell{flex:0 0 auto;overflow:visible}
 .account-resource-content[data-resource="plans"]{height:auto;overflow:visible}
+.account-resource-page:has(.account-resource-content[data-resource="contact"]){height:auto;min-height:calc(100vh - 118px);overflow:visible}
+.account-resource-page:has(.account-resource-content[data-resource="contact"]) .account-resource-frame-shell{min-height:0;flex:0 0 auto;border:0;border-radius:0;background:transparent;overflow:visible}
+.account-resource-content[data-resource="contact"]{height:auto;overflow:visible;background:transparent}
 .account-resource-content>.pricing-main,.account-resource-content>.contact-shell,.account-resource-content>.account-faq-shell{width:min(100% - 34px,1650px);margin:0 auto;padding:20px 0 64px}
 .account-resource-content .pricing-hero{padding-top:2px}.account-resource-content .contact-hero{padding-top:0}
 .account-resource-content .account-faq-hero{margin-bottom:22px}.account-resource-content .account-faq-hero h1{margin:5px 0 8px;font-size:34px}.account-resource-content .account-faq-hero p{margin:0;color:var(--muted,#a6b0aa);line-height:1.6}
