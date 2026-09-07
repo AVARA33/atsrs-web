@@ -245,6 +245,10 @@ body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scr
   overflow-x:auto!important;
   overflow-y:auto!important;
   scrollbar-gutter:stable;
+  scroll-padding-bottom:12px;
+}
+body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll .atsrs-document-register{
+  margin-bottom:12px!important;
 }
 body #app.app:not(.hidden) #certificatesPage .table-wrap.atsrs-document-list-scroll .atsrs-document-register thead th{
   position:sticky!important;
@@ -291,6 +295,9 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-sort{
   font-size:12.5px!important;
   line-height:1.3!important;
   vertical-align:middle!important;
+}
+#certificatesPage .atsrs-document-register tbody tr:last-child td{
+  border-bottom:0!important;
 }
 #certificatesPage .atsrs-document-identity{display:flex;align-items:center;gap:12px;min-width:0}
 #certificatesPage .atsrs-document-type-icon{
