@@ -261,12 +261,20 @@
       loadedUserId = user.id;
       render(row);
       if (row && row.is_admin === true) {
-        var detailResult = await window.supabaseClient.rpc('atsrs_get_developer_access_windows');
-        if (detailResult.error) throw detailResult.error;
-        accessServerTime = Date.parse(detailResult.data.server_now);
-        accessAnchoredAt = performance.now();
-        renderRegistrations(detailResult.data.rows);
-        if(window.atsrsRefreshJobMonitor) await window.atsrsRefreshJobMonitor();
+        // These reports are independent. Fetch them together so the HR table is not
+        // blocked behind the account list, and let the monitor reuse its five-minute cache.
+        var reportTasks = [window.supabaseClient.rpc('atsrs_get_developer_access_windows')];
+        if(window.atsrsRefreshJobMonitor) reportTasks.push(window.atsrsRefreshJobMonitor(force));
+        var reportResults = await Promise.allSettled(reportTasks);
+        var detailTask = reportResults[0];
+        if (detailTask.status === 'fulfilled' && !detailTask.value.error) {
+          var detailResult = detailTask.value;
+          accessServerTime = Date.parse(detailResult.data.server_now);
+          accessAnchoredAt = performance.now();
+          renderRegistrations(detailResult.data.rows);
+        } else {
+          console.warn('ATSRS developer account report unavailable', detailTask.status === 'rejected' ? detailTask.reason : detailTask.value.error);
+        }
       }
     } catch (error) {
       console.warn('ATSRS admin overview unavailable', error);
@@ -294,7 +302,10 @@
     });
     refresh(false);
     setInterval(tickAccessWindows, 1000);
-    setInterval(function () { if (!document.hidden && window.__atsrsDeveloperAccess) refresh(true); }, 60000);
+    setInterval(function () {
+      var page = byId('developerPage');
+      if (!document.hidden && window.__atsrsDeveloperAccess && page && !page.classList.contains('hidden')) refresh(true);
+    }, 5 * 60 * 1000);
     setTimeout(function () { refresh(false); }, 700);
     setTimeout(function () { refresh(false); }, 1800);
     if (window.supabaseClient && window.supabaseClient.auth &&
@@ -305,13 +316,13 @@
         if (!nextUserId || (authorizedUserId && nextUserId !== authorizedUserId)) {
           hidePanel();
         }
-        setTimeout(function () { refresh(true); }, 0);
+        setTimeout(function () { refresh(loadedUserId !== nextUserId); }, 0);
       });
     }
   }
 
   document.addEventListener('DOMContentLoaded', init);
-  window.addEventListener('atsrs:resume', function () { refresh(true); });
+  window.addEventListener('atsrs:resume', function () { refresh(false); });
   window.addEventListener('focus', function () { refresh(false); });
   window.atsrsAdminOverview = { refresh: function () { return refresh(true); } };
 })();
