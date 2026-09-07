@@ -99,6 +99,7 @@
     finishPublicBoot();
     document.title='ATSRS — Document readiness for people and companies';
   }
+  window.atsrsShowLanding=showLanding;
   function showExistingAuth(view){
     removeSharedProfile();
     hideLanding();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6080" data-atsrs-update="8 Sep 2026">
+<html lang="en" data-atsrs-build="V6081" data-atsrs-update="8 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -264,6 +264,13 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   function hardUnlockBoot(){
     try{
       if(document && document.body){
+        if(window.__atsrsEntryRoute==='app'){
+          var app=document.getElementById('app');
+          if(!app||app.classList.contains('hidden')){
+            if(typeof window.atsrsShowLanding==='function')window.atsrsShowLanding();
+            return;
+          }
+        }
         document.body.classList.remove('atsrs-session-pending');
         document.body.classList.remove('atsrs-booting');
       }
@@ -272,8 +279,8 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   /* A non-critical asset or module error must not expose the login screen while
      the retained Supabase session is still being restored. The bounded boot
      controller releases this state earlier when the real destination is ready. */
-  window.addEventListener('error',function(){setTimeout(hardUnlockBoot,5000);});
-  window.addEventListener('unhandledrejection',function(){setTimeout(hardUnlockBoot,5000);});
+  window.addEventListener('error',function(){setTimeout(hardUnlockBoot,15000);});
+  window.addEventListener('unhandledrejection',function(){setTimeout(hardUnlockBoot,15000);});
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',function(){setTimeout(unlockBoot,450);});
   }else{
@@ -282,7 +289,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   window.addEventListener('load',function(){setTimeout(unlockBoot,650);});
   setTimeout(unlockBoot,1800);
   setTimeout(unlockBoot,3500);
-  setTimeout(hardUnlockBoot,5000);
+  setTimeout(hardUnlockBoot,15000);
 })();
 </script>
 <section id="landingPage" class="atsrs-public-landing hidden" aria-label="ATSRS product overview">
@@ -2531,7 +2538,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
 <script src="js/storage.js?v=606"></script>
-<script src="js/public-landing.js?v=5883"></script>
+<script src="js/public-landing.js?v=5884"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
 <script src="js/auth.js?v=568"></script>
@@ -2550,7 +2557,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/date-picker.js?v=6060"></script>
 <script src="js/share-profile.js?v=441"></script>
 <script src="js/recipient-links.js?v=433"></script>
-<script src="js/boot-refresh.js?v=444"></script>
+<script src="js/boot-refresh.js?v=445"></script>
 <script src="js/account-security-live.js?v=379"></script>
 <script src="js/talent-directory.js?v=576"></script>
 <script src="js/corporate-reporting.js?v=519"></script>

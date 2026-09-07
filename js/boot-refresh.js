@@ -5,7 +5,7 @@
   var observer=null;
   var fallbackTimer=0;
   var bootStartedAt=Date.now();
-  var BOOT_DEADLINE_MS=5000;
+  var BOOT_DEADLINE_MS=15000;
 
   function byId(id){return document.getElementById(id);}
   function loadAsset(tag,attributes){
@@ -53,14 +53,21 @@
     if(finished)return;
     if(fallbackTimer)clearTimeout(fallbackTimer);
     var remaining=BOOT_DEADLINE_MS-(Date.now()-bootStartedAt);
-    fallbackTimer=setTimeout(finishBoot,Math.max(0,remaining));
+    fallbackTimer=setTimeout(function(){
+      if(window.__atsrsEntryRoute==='app'&&!appIsOpen()&&typeof window.atsrsShowLanding==='function'){
+        window.atsrsShowLanding();
+        return;
+      }
+      finishBoot();
+    },Math.max(0,remaining));
   }
   function resolveSession(){
     loadV241();
     watchForOpenApp();
     var client=window.supabaseClient;
     if(!client||!client.auth||typeof client.auth.getSession!=='function'){
-      finishBoot();
+      if(window.__atsrsEntryRoute==='app'&&typeof window.atsrsShowLanding==='function')window.atsrsShowLanding();
+      else finishBoot();
       return;
     }
     var sessionRequest=typeof window.atsrsGetSessionSingleFlight==='function'
@@ -68,8 +75,14 @@
       :client.auth.getSession();
     sessionRequest.then(function(result){
       var session=result&&result.data&&result.data.session;
-      if(!session||!session.user)finishBoot();
-    }).catch(finishBoot);
+      if(!session||!session.user){
+        if(window.__atsrsEntryRoute==='app'&&typeof window.atsrsShowLanding==='function')window.atsrsShowLanding();
+        else finishBoot();
+      }
+    }).catch(function(){
+      if(window.__atsrsEntryRoute==='app'&&typeof window.atsrsShowLanding==='function')window.atsrsShowLanding();
+      else finishBoot();
+    });
   }
 
   window.atsrsFinishBoot=finishBoot;
