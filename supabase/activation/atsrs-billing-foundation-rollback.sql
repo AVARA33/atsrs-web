@@ -4,6 +4,11 @@
 
 begin;
 
+drop function if exists atsrs_private.atsrs_apply_verified_payment_event(
+  text, text, text, timestamptz, text, text, text, integer, text, text
+);
+drop table if exists atsrs_private.atsrs_payment_reconciliation_cases;
+drop table if exists atsrs_private.atsrs_payment_refunds;
 drop table if exists atsrs_private.atsrs_billing_audit_log;
 drop table if exists atsrs_private.atsrs_payment_webhook_events;
 drop table if exists atsrs_private.atsrs_payment_transactions;

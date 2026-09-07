@@ -3,6 +3,15 @@ project_id = "atsrs-web"
 [functions.billing-checkout]
 verify_jwt = true
 
+[functions.billing-quote]
+verify_jwt = true
+
+[functions.billing-account]
+verify_jwt = true
+
+[functions.billing-refund-request]
+verify_jwt = true
+
 [functions.billing-webhook]
 verify_jwt = false
 

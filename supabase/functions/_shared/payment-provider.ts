@@ -1,5 +1,5 @@
 export type BillingCycle = "monthly" | "yearly";
-export type AtsrsPlanKey = "bronze" | "silver" | "gold";
+export type AtsrsPlanKey = "bronze" | "silver" | "gold" | "titan";
 
 export type CheckoutRequest = {
   transactionId: string;
@@ -18,11 +18,43 @@ export type CheckoutResult = {
   redirectUrl: string;
 };
 
+export type ProviderPaymentState = {
+  providerOrderReference: string;
+  providerPaymentReference?: string;
+  merchantTransactionId: string;
+  paymentStatus: NonNullable<VerifiedWebhook["paymentStatus"]>;
+  amountMinor: number;
+  currency: string;
+  customerReference: string;
+  environment: "test" | "live";
+  occurredAt: string;
+};
+
+export type RefundRequest = {
+  transactionId: string;
+  providerPaymentReference: string;
+  idempotencyKey: string;
+  amountMinor: number;
+  currency: string;
+};
+
+export type RefundResult = {
+  providerRefundReference: string;
+  status: "processing" | "succeeded";
+};
+
 export type VerifiedWebhook = {
   eventReference: string;
   eventType: string;
   providerOrderReference?: string;
   providerPaymentReference?: string;
+  merchantTransactionId?: string;
+  amountMinor?: number;
+  currency?: string;
+  merchantAccountReference?: string;
+  customerReference?: string;
+  environment?: "test" | "live";
+  occurredAt?: string;
   paymentStatus?: "pending" | "authorized" | "paid" | "failed" | "canceled" | "expired" | "partially_refunded" | "refunded";
   safeFailureCode?: string;
 };
@@ -31,6 +63,8 @@ export interface PaymentProvider {
   readonly key: string;
   createCheckout(request: CheckoutRequest): Promise<CheckoutResult>;
   verifyWebhook(rawBody: Uint8Array, headers: Headers): Promise<VerifiedWebhook>;
+  getPayment(providerOrderReference: string): Promise<ProviderPaymentState>;
+  createRefund(request: RefundRequest): Promise<RefundResult>;
 }
 
 // Bank adapters are intentionally not guessed. A provider is returned only
@@ -41,7 +75,7 @@ export function resolvePaymentProvider(_configuredProvider: string): PaymentProv
 }
 
 export function isPlanKey(value: unknown): value is AtsrsPlanKey {
-  return value === "bronze" || value === "silver" || value === "gold";
+  return value === "bronze" || value === "silver" || value === "gold" || value === "titan";
 }
 
 export function isBillingCycle(value: unknown): value is BillingCycle {

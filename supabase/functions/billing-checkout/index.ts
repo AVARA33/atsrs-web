@@ -5,6 +5,7 @@ import {
   isPlanKey,
   resolvePaymentProvider,
 } from "../_shared/payment-provider.ts";
+import { verifyBillingQuote } from "../_shared/billing-quote.ts";
 
 const SITE_ORIGINS = new Set(["https://atsrs.com", "https://www.atsrs.com"]);
 
@@ -26,7 +27,7 @@ function allowedOrigin(request: Request) {
 function headers(request: Request) {
   return {
     "Access-Control-Allow-Origin": allowedOrigin(request) ?? "https://atsrs.com",
-    "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
+    "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info, idempotency-key",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Cache-Control": "no-store",
     "Content-Type": "application/json; charset=utf-8",
@@ -38,6 +39,10 @@ function headers(request: Request) {
 
 function json(request: Request, status: number, body: Record<string, unknown>) {
   return new Response(JSON.stringify(body), { status, headers: headers(request) });
+}
+
+function isUuid(value: unknown): value is string {
+  return typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 }
 
 Deno.serve(async (request: Request) => {
@@ -77,6 +82,10 @@ Deno.serve(async (request: Request) => {
   if (!isPlanKey(body.plan) || !isBillingCycle(body.cycle)) {
     return json(request, 400, { error: "Select a valid paid plan and billing cycle.", code: "BILLING_PLAN_INVALID" });
   }
+  const purchaseIntentKey = request.headers.get("idempotency-key") ?? body.purchase_intent_key;
+  if (!isUuid(purchaseIntentKey)) {
+    return json(request, 400, { error: "A valid purchase intent is required.", code: "PURCHASE_INTENT_REQUIRED" });
+  }
 
   const providerKey = (Deno.env.get("ATSRS_PAYMENT_PROVIDER") ?? "").trim().toLowerCase();
   const provider = resolvePaymentProvider(providerKey);
@@ -88,7 +97,7 @@ Deno.serve(async (request: Request) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
   const planResult = await admin.schema("atsrs_private").from("atsrs_billing_plans")
-    .select("plan_key,currency,monthly_amount_minor,yearly_amount_minor,checkout_enabled")
+    .select("plan_key,currency,monthly_amount_minor,yearly_amount_minor,checkout_enabled,catalog_version")
     .eq("plan_key", body.plan).maybeSingle();
   if (planResult.error || !planResult.data?.checkout_enabled) {
     return json(request, 409, { error: "This plan is not available for checkout.", code: "PLAN_CHECKOUT_DISABLED" });
@@ -97,8 +106,15 @@ Deno.serve(async (request: Request) => {
   const amountMinor = body.cycle === "monthly"
     ? planResult.data.monthly_amount_minor
     : planResult.data.yearly_amount_minor;
+  const quoteSecret = Deno.env.get("ATSRS_BILLING_QUOTE_SECRET") ?? "";
+  const quote = quoteSecret.length >= 32 ? await verifyBillingQuote(body.quote_token, quoteSecret) : null;
+  if (!quote || quote.userId !== user.id || quote.planKey !== body.plan ||
+      quote.billingCycle !== body.cycle || quote.amountMinor !== amountMinor ||
+      quote.currency !== planResult.data.currency || quote.catalogVersion !== planResult.data.catalog_version) {
+    return json(request, 409, { error: "The checkout price has expired or changed.", code: "BILLING_QUOTE_INVALID" });
+  }
   const transactionId = crypto.randomUUID();
-  const idempotencyKey = crypto.randomUUID();
+  const idempotencyKey = purchaseIntentKey;
   const inserted = await admin.schema("atsrs_private").from("atsrs_payment_transactions").insert({
     id: transactionId,
     user_id: user.id,
@@ -108,8 +124,26 @@ Deno.serve(async (request: Request) => {
     amount_minor: amountMinor,
     provider: provider.key,
     idempotency_key: idempotencyKey,
-  });
+    purchase_intent_key: purchaseIntentKey,
+    quote_version: planResult.data.catalog_version,
+  }).select("id,plan_key,billing_cycle,status,provider_order_reference").maybeSingle();
   if (inserted.error) {
+    if (inserted.error.code === "23505") {
+      const existing = await admin.schema("atsrs_private").from("atsrs_payment_transactions")
+        .select("id,plan_key,billing_cycle,status,provider_order_reference")
+        .eq("user_id", user.id).eq("purchase_intent_key", purchaseIntentKey).maybeSingle();
+      if (existing.error || !existing.data) {
+        return json(request, 409, { error: "The existing checkout could not be recovered.", code: "PURCHASE_INTENT_CONFLICT" });
+      }
+      if (existing.data.plan_key !== body.plan || existing.data.billing_cycle !== body.cycle) {
+        return json(request, 409, { error: "This purchase intent belongs to a different checkout.", code: "PURCHASE_INTENT_REUSED" });
+      }
+      return json(request, 200, {
+        transaction_id: existing.data.id,
+        status: existing.data.status,
+        resumed: true,
+      });
+    }
     console.error("Unable to create billing transaction", inserted.error.code);
     return json(request, 500, { error: "Checkout could not be started.", code: "TRANSACTION_CREATE_FAILED" });
   }
@@ -126,11 +160,27 @@ Deno.serve(async (request: Request) => {
       successUrl: `https://atsrs.com/pricing.html?payment=success&transaction=${transactionId}`,
       cancelUrl: `https://atsrs.com/pricing.html?payment=cancelled&transaction=${transactionId}`,
     });
-    await admin.schema("atsrs_private").from("atsrs_payment_transactions").update({
+    const finalized = await admin.schema("atsrs_private").from("atsrs_payment_transactions").update({
       status: "pending",
       provider_order_reference: checkout.providerOrderReference,
       updated_at: new Date().toISOString(),
-    }).eq("id", transactionId).eq("user_id", user.id);
+    }).eq("id", transactionId).eq("user_id", user.id).eq("status", "initiated").select("id").maybeSingle();
+    if (finalized.error || !finalized.data) {
+      console.error("Unable to persist provider order reference", finalized.error?.code ?? "NO_ROW");
+      await admin.schema("atsrs_private").from("atsrs_payment_transactions").update({
+        reconciliation_required: true,
+        failure_code: "PROVIDER_ORDER_PERSIST_FAILED",
+        updated_at: new Date().toISOString(),
+      }).eq("id", transactionId);
+      return json(request, 503, { error: "Checkout is being reconciled. No new attempt is needed.", code: "CHECKOUT_RECONCILIATION_REQUIRED", transaction_id: transactionId });
+    }
+    await admin.schema("atsrs_private").from("atsrs_billing_audit_log").insert({
+      actor_user_id: user.id,
+      action: "checkout_created",
+      entity_type: "payment",
+      entity_reference: transactionId,
+      safe_details: { plan: body.plan, cycle: body.cycle, quote_version: planResult.data.catalog_version },
+    });
     return json(request, 200, { redirect_url: checkout.redirectUrl, transaction_id: transactionId });
   } catch (error) {
     await admin.schema("atsrs_private").from("atsrs_payment_transactions").update({

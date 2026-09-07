@@ -37,41 +37,31 @@ Deno.serve(async (request: Request) => {
   });
 
   const payloadHash = await sha256Hex(rawBody);
-  const stored = await admin.schema("atsrs_private").from("atsrs_payment_webhook_events").upsert({
-    provider: provider.key,
-    provider_event_reference: event.eventReference,
-    payload_sha256: payloadHash,
-    signature_verified: true,
-    status: "received",
-    attempt_count: 0,
-  }, { onConflict: "provider,provider_event_reference", ignoreDuplicates: true });
-  if (stored.error) {
-    console.error("Unable to store billing webhook", stored.error.code);
-    return json(500, { error: "Webhook could not be recorded." });
+  if (!event.providerOrderReference || !event.paymentStatus) {
+    return json(400, { error: "Webhook event is incomplete." });
   }
-
-  if (event.providerOrderReference && event.paymentStatus) {
-    const update: Record<string, unknown> = {
-      status: event.paymentStatus,
-      updated_at: new Date().toISOString(),
-    };
-    if (event.providerPaymentReference) update.provider_payment_reference = event.providerPaymentReference;
-    if (event.safeFailureCode) update.failure_code = event.safeFailureCode.slice(0, 120);
-    if (event.paymentStatus === "paid") update.paid_at = new Date().toISOString();
-    const payment = await admin.schema("atsrs_private").from("atsrs_payment_transactions")
-      .update(update).eq("provider", provider.key)
-      .eq("provider_order_reference", event.providerOrderReference);
-    if (payment.error) {
-      console.error("Unable to apply billing webhook", payment.error.code);
-      return json(500, { error: "Webhook could not be applied." });
-    }
+  const occurredAt = event.occurredAt && !Number.isNaN(Date.parse(event.occurredAt))
+    ? new Date(event.occurredAt).toISOString()
+    : new Date().toISOString();
+  const applied = await admin.schema("atsrs_private").rpc("atsrs_apply_verified_payment_event", {
+    p_provider: provider.key,
+    p_event_reference: event.eventReference,
+    p_payload_sha256: payloadHash,
+    p_event_at: occurredAt,
+    p_order_reference: event.providerOrderReference,
+    p_payment_reference: event.providerPaymentReference ?? null,
+    p_status: event.paymentStatus,
+    p_amount_minor: event.amountMinor ?? null,
+    p_currency: event.currency?.toUpperCase() ?? null,
+    p_safe_failure_code: event.safeFailureCode?.slice(0, 120) ?? null,
+  });
+  if (applied.error) {
+    console.error("Unable to atomically apply billing webhook", applied.error.code);
+    return json(500, { error: "Webhook could not be applied." });
   }
-
-  await admin.schema("atsrs_private").from("atsrs_payment_webhook_events").update({
-    status: "processed",
-    processed_at: new Date().toISOString(),
-    attempt_count: 1,
-  }).eq("provider", provider.key).eq("provider_event_reference", event.eventReference);
-
-  return json(200, { received: true });
+  const result = applied.data?.result ?? "unknown";
+  if (result === "unmatched" || result === "mismatch") {
+    return json(409, { received: true, result });
+  }
+  return json(200, { received: true, result });
 });
