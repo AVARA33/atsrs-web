@@ -10,6 +10,16 @@
   <link rel="canonical" href="https://atsrs.com/privacy.html">
   <script>
     (function(){
+      var selectedLocale='az';
+      try{selectedLocale=localStorage.getItem('atsrs_locale')==='en'?'en':'az';}catch(error){}
+      if(selectedLocale==='az'){
+        var azTarget='/privacy-az.html'+window.location.search+window.location.hash;
+        window.location.replace(azTarget);
+        return;
+      }
+      window.addEventListener('storage',function(event){
+        if(event.key==='atsrs_locale'&&event.newValue!=='en')window.location.replace('/privacy-az.html'+window.location.search+window.location.hash);
+      });
       var theme='dark';
       var embedded=new URLSearchParams(window.location.search).get('embedded')==='1';
       if(embedded)document.documentElement.dataset.embedded='true';
