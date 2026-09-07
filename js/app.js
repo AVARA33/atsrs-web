@@ -160,8 +160,10 @@
       for(var target of targets){
         var next=target.protected;
         if(!next.uploadedAt)next.uploadedAt=new Date().toISOString();
-        if(target.original&&target.original.cloudFileId&&await deleteCardFileWithRetry(target.original.cloudFileId)){
-          next.cloudFileId='';next.fileName='';next.mimeType='';next.fileSize=0;next.uploadedAt='';
+        if(target.original&&target.original.cloudFileId){
+          var historicalFileId=target.original.cloudFileId;
+          next.cloudFileId='';next.fileName='';next.mimeType='';next.fileSize=0;
+          if(!(await deleteCardFileWithRetry(historicalFileId)))scheduleCardFileCleanup(historicalFileId);
         }
         records[target.index]=next;
       }
