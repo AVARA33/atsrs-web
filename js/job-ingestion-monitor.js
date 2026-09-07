@@ -26,7 +26,12 @@
   host.setAttribute('aria-busy','true');
   if(previousButton)previousButton.disabled=true;
   if(!hadContent){host.replaceChildren();cell(host,'p','Loading server statistics…');}
-  inFlight=(async function(){try{return await window.supabaseClient.rpc('atsrs_get_hr_dashboard_summary');}catch(e){return {error:e};}})();
+  inFlight=(async function(){try{
+   var responses=await Promise.all([window.supabaseClient.rpc('atsrs_get_hr_dashboard_summary'),window.supabaseClient.rpc('atsrs_get_hr_queue_preview')]);
+   var summary=responses[0],queue=responses[1];
+   if(summary&&summary.data&&queue&&queue.data&&!queue.error){summary.data.coverage=summary.data.coverage||{};Object.assign(summary.data.coverage,queue.data);}
+   return summary;
+  }catch(e){return {error:e};}})();
   var result=await inFlight;inFlight=null;
   if(request!==generation||!window.__atsrsDeveloperAccess||owner!==window.__atsrsDeveloperAccessUserId)return;
   host.setAttribute('aria-busy','false');
@@ -49,7 +54,7 @@
   function commit(){target.replaceChildren(...builder.children);var t=target.querySelector('.job-monitor-table');if(t)t.scrollLeft=tableScroll;if(restoreFocus)refresh.focus({preventScroll:true});}
   var header=cell(builder,'div','');header.className='job-monitor-header';
   cell(header,'h2','AI balance & HR activity');
-  var refresh=cell(header,'button','Refresh');refresh.type='button';refresh.className='btn';refresh.onclick=function(){window.atsrsRefreshJobMonitor(true);};
+  var refresh=cell(header,'button','Refresh');refresh.type='button';refresh.className='btn';refresh.onclick=function(){return window.atsrsRefreshJobMonitor(true);};
   if(result.error||!result.data){cell(builder,'p','Statistics unavailable. Refresh to retry.');commit();return;}
   var d=result.data, b=d.balance;
   var metrics=cell(builder,'div','');metrics.className='job-monitor-metrics';
@@ -78,6 +83,14 @@
    scope.forEach(function(s){var tr=cell(tb,'tr','');var matches=sources.filter(function(b){return (s.boards||[]).indexOf(b.board)>=0;});var full=matches.length&&matches.every(function(b){return b.last_full_scan_at;})?matches.map(function(b){return b.last_full_scan_at;}).sort()[0]:null;
     [s.name,s.connector_state==='connected'?'Connected':s.connector_state==='needs_connector'?'Needs connector':s.connector_state==='missing_source'?'Missing careers URL':'Needs review',s.last_checked_at?date(s.last_checked_at):'Not checked',full?date(full):'Not completed',s.last_error||matches.map(function(b){return b.last_error;}).filter(Boolean).join('; ')||'—'].forEach(function(v){cell(tr,'td',v);});
    });
+   var queue=c.queue_preview||[];
+   cell(details,'h3','Pending publication queue');
+   cell(details,'p',(c.pending_recent||0)+' date-verified recent · '+(c.pending_no_date||0)+' awaiting detail-page date · showing the next '+queue.length+' records. The closest valid source date is processed first within each underrepresented specialty.');
+   var queueBox=cell(details,'div','');queueBox.className='job-monitor-table';
+   var queueTable=cell(queueBox,'table',''),queueHead=cell(cell(queueTable,'thead',''),'tr','');
+   ['Specialty','Job','Company','Source date','Discovered (Baku)','Provider','Queue ID'].forEach(function(t){cell(queueHead,'th',t);});
+   var queueBody=cell(queueTable,'tbody','');
+   queue.forEach(function(q){var tr=cell(queueBody,'tr','');[q.specialty,q.title,q.company,q.source_date||'Detail check required',q.discovered_at?date(q.discovered_at):'—',q.provider,q.board+':'+q.external_id].forEach(function(v){cell(tr,'td',v);});});
   }
   commit();
   }

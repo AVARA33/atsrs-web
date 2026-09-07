@@ -3,9 +3,9 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../js/job-ingestion-monitor.js'),'utf8');
-function setup(rpc){
+function setup(rpc,queueRpc=async()=>({data:{}})){
  class Node{constructor(tag){this.tag=tag;this.children=[];this.textContent='';this.classList={add(){},remove(){}};}appendChild(n){this.children.push(n);}replaceChildren(...nodes){this.children=nodes;}setAttribute(){}focus(){}querySelector(q){for(const n of this.children){if(n.tag===q||(q==='.'+n.className))return n;const nested=n.querySelector(q);if(nested)return nested;}return null;}}
- const host=new Node('section'),window={__atsrsDeveloperAccess:true,__atsrsDeveloperAccessUserId:'owner',supabaseClient:{rpc}};
+ const host=new Node('section'),window={__atsrsDeveloperAccess:true,__atsrsDeveloperAccessUserId:'owner',supabaseClient:{rpc:name=>name==='atsrs_get_hr_queue_preview'?queueRpc(name):rpc(name)}};
  vm.runInNewContext(source,{window,document:{getElementById:()=>host,createElement:t=>new Node(t)}});
  const text=n=>[n.textContent,...n.children.map(text)].join(' ');
  return {window,host,text};
@@ -56,6 +56,10 @@ test('source coverage distinguishes planned names from connected feeds and prese
  const s=setup(async()=>({data:{daily:[],coverage:{scope:[{name:'Connected Co',connector_state:'connected',boards:['One']},{name:'Waiting Co',connector_state:'needs_connector',boards:[]}],sources:[{board:'One',enabled:true}],pending:200,review:3}}}));
  await s.window.atsrsRefreshJobMonitor();assert.match(s.text(s.host),/2 name records · 1 connected · 1 need integration/);assert.match(s.text(s.host),/Needs connector/);assert.match(s.text(s.host),/Not completed/);
  s.host.querySelector('details').open=true;await s.window.atsrsRefreshJobMonitor();assert.equal(s.host.querySelector('details').open,true);
+});
+test('pending publication queue renders the owner-only preview',async()=>{
+ const s=setup(async()=>({data:{daily:[],coverage:{scope:[],sources:[],pending:2,review:0}}}),async()=>({data:{pending_recent:1,pending_no_date:1,queue_preview:[{specialty:'ROV',title:'ROV Pilot',company:'Marine Co',source_date:'2026-09-01',discovered_at:'2026-09-07T06:00:00Z',provider:'workable',board:'marine',external_id:'42'}]}}));
+ await s.window.atsrsRefreshJobMonitor();const text=s.text(s.host);assert.match(text,/Pending publication queue/);assert.match(text,/ROV Pilot/);assert.match(text,/marine:42/);
 });
 test('logout while request is in flight prevents data appearing',async()=>{let resolve;const s=setup(()=>new Promise(r=>resolve=r));const pending=s.window.atsrsRefreshJobMonitor();s.window.__atsrsDeveloperAccess=false;await s.window.atsrsRefreshJobMonitor();resolve({data:{balance:{amount_usd:7.82}}});await pending;assert.equal(s.host.children.length,0);});
 test('network errors offer a retry without showing invented zeroes',async()=>{const s=setup(async()=>{throw Error('offline');});await s.window.atsrsRefreshJobMonitor();assert.match(s.text(s.host),/unavailable/);assert.doesNotMatch(s.text(s.host),/\$0/);});
