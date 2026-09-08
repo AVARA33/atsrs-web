@@ -198,10 +198,10 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
 #certificatesPage .atsrs-document-folder-tab-wrap{display:flex;align-items:stretch;flex:0 0 auto;position:relative}
 #certificatesPage .atsrs-document-folder-tab{display:flex;align-items:center;gap:8px;flex:0 0 auto;width:auto;min-width:0;height:40px;padding:0 14px;border:1px solid #283138;border-bottom:0;border-radius:9px 9px 0 0;background:#0d1114;color:#aeb8bf;font-weight:700;white-space:nowrap;box-shadow:none;transition:transform .14s ease,background .14s ease,border-color .14s ease}
 #certificatesPage .atsrs-document-folder-tab b{display:grid;place-items:center;min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:#182026;color:#8f9da6;font-size:11px}
-#certificatesPage .atsrs-document-folder-tab.active{height:44px;margin-top:-4px;margin-bottom:-1px;border-color:var(--accent,#25c763);background:var(--document-surface);color:#f2f7f4;box-shadow:inset 0 3px var(--accent,#25c763),0 -5px 14px rgba(0,0,0,.2);position:relative;z-index:2}
+#certificatesPage .atsrs-document-folder-tab.active{height:40px;margin:0 0 -1px;border-color:var(--accent,#25c763);background:#151b18;color:#f2f7f4;box-shadow:inset 0 3px var(--accent,#25c763),0 0 0 1px rgba(37,199,99,.2),0 8px 18px rgba(0,0,0,.34);position:relative;z-index:2}
 #certificatesPage .atsrs-document-folder-tab.active b{background:rgba(37,199,99,.16);color:#5fe58e}
-#certificatesPage .atsrs-document-folder-add{display:grid;place-items:center;flex:0 0 34px;width:34px!important;min-width:34px!important;max-width:34px!important;height:34px!important;min-height:34px!important;margin:0 0 4px 3px!important;padding:0!important;border:1px solid #303a40!important;border-radius:7px!important;color:#b7c2c8!important;background:#111619!important;box-shadow:none!important}
-#certificatesPage .atsrs-document-folder-add:hover,#certificatesPage .atsrs-document-folder-add:focus-visible{border-color:var(--accent,#25c763)!important;color:#fff!important;background:#17201b!important}
+#certificatesPage .atsrs-document-folder-add{display:grid;place-items:center;flex:0 0 32px;width:32px!important;min-width:32px!important;max-width:32px!important;height:32px!important;min-height:32px!important;margin:0 0 4px 3px!important;padding:0!important;border:0!important;border-radius:50%!important;color:#b7c2c8!important;background:transparent!important;box-shadow:none!important}
+#certificatesPage .atsrs-document-folder-add:hover,#certificatesPage .atsrs-document-folder-add:focus-visible{color:#fff!important;background:#1b2226!important;outline:0!important}
 #certificatesPage .atsrs-document-folder-delete,#certificatesPage .atsrs-document-folder-edit{display:none;position:absolute;top:3px;width:20px;height:20px;padding:0;border:0;border-radius:50%;background:#20272b;color:#aeb8bf;z-index:3}
 #certificatesPage .atsrs-document-folder-delete{right:3px}
 #certificatesPage .atsrs-document-folder-edit{right:25px}
@@ -210,9 +210,9 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
 #certificatesPage #moveSelectedCertsFolder{height:40px;min-width:165px;padding:0 34px 0 12px;border:1px solid #30383d;border-radius:8px;background:#111518;color:#dfe5e8}
 #certificatesPage #moveSelectedCertsFolder:disabled{opacity:.42}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-bar{background:#eef3f5}
-html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab,html[data-theme="light"] #certificatesPage .atsrs-document-folder-add{border-color:#cbd6dc;background:#e7edf0;color:#45545d}
-html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab.active{border-color:var(--accent,#25a957);background:#fff;color:#16231b;box-shadow:inset 0 3px var(--accent,#25a957),0 -5px 14px rgba(30,55,42,.08)}
-html[data-theme="light"] #certificatesPage .atsrs-document-folder-add:hover,html[data-theme="light"] #certificatesPage .atsrs-document-folder-add:focus-visible{background:#fff!important;color:#168849!important}
+html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab{border-color:#cbd6dc;background:#e7edf0;color:#45545d}
+html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab.active{border-color:var(--accent,#25a957);background:#fff;color:#16231b;box-shadow:inset 0 3px var(--accent,#25a957),0 0 0 1px rgba(37,169,87,.16),0 8px 18px rgba(30,55,42,.14)}
+html[data-theme="light"] #certificatesPage .atsrs-document-folder-add{color:#45545d!important;background:transparent!important}html[data-theme="light"] #certificatesPage .atsrs-document-folder-add:hover,html[data-theme="light"] #certificatesPage .atsrs-document-folder-add:focus-visible{background:#dce5e9!important;color:#168849!important}
 html[data-theme="light"] #certificatesPage #moveSelectedCertsFolder{border-color:#cbd6dc;background:#fff;color:#24333b}
 @media(max-width:760px){#certificatesPage .atsrs-document-folder-bar{padding-left:10px;padding-right:10px}#certificatesPage #moveSelectedCertsFolder{width:100%}}
 

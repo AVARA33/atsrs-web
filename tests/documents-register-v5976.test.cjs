@@ -6,12 +6,12 @@ const css = fs.readFileSync('css/documents-register-v5976.css', 'utf8');
 const app = fs.readFileSync('js/app.js', 'utf8');
 const serverData = fs.readFileSync('js/server-data.js', 'utf8');
 
-assert.match(html, /data-atsrs-build="V6092"/);
+assert.match(html, /data-atsrs-build="V6093"/);
 assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=6025/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=6026/);
 
 assert.match(html, /id="documentFolderBar"/);
 assert.match(html, /id="moveSelectedCertsFolder"/);
