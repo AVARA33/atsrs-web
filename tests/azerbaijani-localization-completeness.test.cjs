@@ -19,7 +19,7 @@ function visibleTexts(file) {
 }
 
 for (const page of legalPages) {
-  assert.match(fs.readFileSync(page, 'utf8'), /js\/legal-az-content\.js\?v=2/);
+  assert.match(fs.readFileSync(page, 'utf8'), /js\/legal-az-content\.js\?v=3/);
   const missing = [...new Set(visibleTexts(page).filter(text => !Object.hasOwn(messages, text)))];
   assert.deepEqual(missing, [], `${page} has untranslated visible strings: ${missing.join(' | ')}`);
 }
