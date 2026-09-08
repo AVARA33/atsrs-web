@@ -2,9 +2,9 @@
 (function(){
  'use strict';
  var generation=0,inFlight=null,CACHE_TTL=5*60*1000,CACHE_PREFIX='atsrs_developer_hr_summary_v1:';
- function cell(parent,tag,text){var n=document.createElement(tag);n.textContent=String(text==null?'—':text);parent.appendChild(n);return n;}
+ function cell(parent,tag,text){var n=document.createElement(tag),value=String(text==null?'—':text);n.textContent=window.atsrsI18n?window.atsrsI18n.translate(value):value;parent.appendChild(n);return n;}
  function money(v){return v==null?'Unavailable':'$'+Number(v).toFixed(4);}
- function date(v){return new Date(v).toLocaleString('en-GB',{timeZone:'Asia/Baku'});}
+ function date(v){return new Date(v).toLocaleString(window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB',{timeZone:'Asia/Baku'});}
  function cacheKey(){return CACHE_PREFIX+String(window.__atsrsDeveloperAccessUserId||'');}
  function readCache(){
   try{var parsed=JSON.parse(sessionStorage.getItem(cacheKey())||'null');return parsed&&parsed.data&&Number.isFinite(parsed.savedAt)?parsed:null;}

@@ -393,9 +393,10 @@
       warning.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:99999;max-width:620px;padding:12px 16px;border:1px solid #ef4444;border-radius:10px;background:#2b1014;color:#fff;font:600 14px/1.35 Arial,sans-serif;box-shadow:0 12px 30px rgba(0,0,0,.35)';
       document.body.appendChild(warning);
     }
+    var az=window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az';
     warning.textContent=isStableCompatibilityRefresh(lastWriteError)
-      ?'ATSRS was updated. This change was not sent, and existing server data is safe. Refresh the page before trying again.'
-      :'Data was not saved to the ATSRS server. Check the connection and try again.';
+      ?(az?'ATSRS yenilənib. Bu dəyişiklik göndərilmədi və serverdəki mövcud məlumatlar təhlükəsizdir. Yenidən cəhd etməzdən əvvəl səhifəni yeniləyin.':'ATSRS was updated. This change was not sent, and existing server data is safe. Refresh the page before trying again.')
+      :(az?'Məlumat ATSRS serverində saxlanmadı. Bağlantını yoxlayın və yenidən cəhd edin.':'Data was not saved to the ATSRS server. Check the connection and try again.');
     warning.style.display='block';
     clearTimeout(window.__atsrsCloudWarningTimer);
     window.__atsrsCloudWarningTimer=setTimeout(function(){warning.style.display='none';},7000);

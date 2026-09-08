@@ -252,7 +252,7 @@ test('Jobs renders only verified source and closing dates with card/list parity'
   assert.doesNotMatch(runtime,/prefix='Received '|Received /);
   assert.doesNotMatch(runtime,/dateLabel\([^)]*published_at/);
   assert.doesNotMatch(runtime,/job-status job-status-/);
-  assert.match(runtime,/Intl\.DateTimeFormat\('en-GB'/);
+  assert.match(runtime,/Intl\.DateTimeFormat\(\(window\.atsrsLocaleCode/);
 });
 
 test('Jobs detail overlay is shared, accessible and safely rendered',()=>{

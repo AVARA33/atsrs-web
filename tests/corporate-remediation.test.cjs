@@ -40,8 +40,8 @@ assert.match(runtime, /setText\('reportsSub','This report checks uploaded docume
 assert.match(app, /No company documents uploaded yet/);
 assert.match(app, /No documents match this filter/);
 
-assert.match(talent, /toLocaleDateString\('en-GB'/);
-assert.match(talent, /toLocaleString\('en-GB'\)/);
+assert.match(talent, /toLocaleDateString\(\(window\.atsrsLocaleCode/);
+assert.match(talent, /toLocaleString\(\(window\.atsrsLocaleCode/);
 assert.doesNotMatch(talent, /toLocaleString\(\)/);
 assert.doesNotMatch(talent, /Every Personal user appears here automatically/);
 assert.match(html, /Only eligible Personal profiles that chose to appear/);

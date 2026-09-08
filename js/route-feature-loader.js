@@ -37,7 +37,7 @@
   }
 
   function loadJobs(){
-    return loadScript('js/jobs-prototype.js?v=6068');
+    return loadScript('js/jobs-prototype.js?v=6069');
   }
 
   function loadRecruiters(){
@@ -68,7 +68,7 @@
 
   function report(error){
     console.error(error);
-    if(typeof window.alert==='function')window.alert('This feature could not be loaded. Check your connection and try again.');
+    if(typeof window.alert==='function')window.alert(window.atsrsI18n&&window.atsrsI18n.getLocale()==='az'?'Bu funksiya yüklənmədi. İnternet bağlantısını yoxlayıb yenidən cəhd edin.':'This feature could not be loaded. Check your connection and try again.');
   }
 
   var qrStub=function(){

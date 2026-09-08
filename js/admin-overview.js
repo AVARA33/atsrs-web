@@ -69,7 +69,7 @@
     if (!value) return '—';
     var date = new Date(value);
     if (Number.isNaN(date.getTime())) return '—';
-    return new Intl.DateTimeFormat(undefined, { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+    return new Intl.DateTimeFormat(window.atsrsLocaleCode ? window.atsrsLocaleCode() : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
   }
 
   function accessCopy(row) {
@@ -176,7 +176,8 @@
         remaining.dataset.countdown = 'true';
         var dates = document.createElement('small');
         dates.className = 'developer-access-dates';
-        dates.textContent = 'Start: ' + new Date(row.access.started_at).toLocaleString() + ' · End: ' + new Date(row.access.ends_at).toLocaleString();
+        var dateLocale = window.atsrsLocaleCode ? window.atsrsLocaleCode() : 'en-GB';
+        dates.textContent = 'Start: ' + new Date(row.access.started_at).toLocaleString(dateLocale) + ' · End: ' + new Date(row.access.ends_at).toLocaleString(dateLocale);
         status.appendChild(dates);
       }
       item.append(email, registered, documents, status, remaining);

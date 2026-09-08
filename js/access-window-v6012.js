@@ -3,7 +3,8 @@
   'use strict';
   function formatRemaining(ms) {
     var seconds = Math.max(0, Math.ceil(ms / 1000));
-    return Math.floor(seconds / 86400) + 'd ' + String(Math.floor(seconds / 3600) % 24).padStart(2, '0') + 'h ' + String(Math.floor(seconds / 60) % 60).padStart(2, '0') + 'm ' + String(seconds % 60).padStart(2, '0') + 's';
+    var az = typeof window !== 'undefined' && window.atsrsI18n && window.atsrsI18n.getLocale() === 'az';
+    return Math.floor(seconds / 86400) + (az ? 'g ' : 'd ') + String(Math.floor(seconds / 3600) % 24).padStart(2, '0') + (az ? 's ' : 'h ') + String(Math.floor(seconds / 60) % 60).padStart(2, '0') + (az ? 'd ' : 'm ') + String(seconds % 60).padStart(2, '0') + (az ? 'san' : 's');
   }
   function fullAt(state, now) {
     return !!(state && state.full_access && (state.permanent || !state.ends_at || Date.parse(state.ends_at) > now));

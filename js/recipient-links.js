@@ -10,7 +10,7 @@
   function uuid(){return crypto.randomUUID();}
   function escapeHtml(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function message(text,error,target){var el=byId(target||'recipientLinksMessage');if(!el)return;el.textContent=text||'';el.classList.toggle('error',Boolean(error));}
-  function formatDate(value){var date=new Date(value);return Number.isNaN(date.getTime())?'Not available':new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);}
+  function formatDate(value){var date=new Date(value);return Number.isNaN(date.getTime())?'Not available':new Intl.DateTimeFormat((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB'),{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);}
   function publicMode(){return /^#recipient=[A-Za-z0-9_-]{40,128}$/.test(location.hash);}
   async function token(){var client=window.supabaseClient;if(!client)return'';var result=await client.auth.getSession();return result&&result.data&&result.data.session?result.data.session.access_token||'':'';}
   async function call(body,owner){

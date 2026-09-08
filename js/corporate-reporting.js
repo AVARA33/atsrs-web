@@ -253,7 +253,7 @@
     var summaryContainer=byId('corporateReportSummary'),body=byId('corporateReportBody'),generated=byId('corporateReportGenerated');
     if(!body||!reportCache)return;
     summaryCards(summaryContainer,reportCache.summary||{});
-    if(generated)generated.textContent='Last generated: '+new Date(reportCache.generated_at).toLocaleString('en-GB');
+    if(generated)generated.textContent='Last generated: '+new Date(reportCache.generated_at).toLocaleString((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB'));
     body.innerHTML='';
     var rows=Array.isArray(reportCache.rows)?reportCache.rows:[];
     if(!rows.length){
@@ -284,7 +284,7 @@
     complianceLoading=actionCall('compliance').then(function(data){
       complianceCache=canonicalPayload(data.compliance||{summary:{},rows:[]});
       reportCache=complianceCache;
-      renderCompliance();renderDashboard();publishCompliance();setStatus('corporateComplianceStatus','Last updated: '+new Date(complianceCache.generated_at).toLocaleString('en-GB'));
+      renderCompliance();renderDashboard();publishCompliance();setStatus('corporateComplianceStatus','Last updated: '+new Date(complianceCache.generated_at).toLocaleString((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB')));
       return complianceCache;
     }).catch(function(error){
       setStatus('corporateComplianceStatus',error.message||'Compliance data could not be loaded.',true);

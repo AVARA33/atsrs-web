@@ -702,7 +702,7 @@
   function isRecentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000;}
   function uploadDateMarkup(item){
     var value=certificateUploadedAt(item);if(!value)return '<span class="atsrs-upload-date">—</span>';
-    var date=new Date(value),label=Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):String(value);
+    var date=new Date(value),label=Number.isFinite(date.getTime())?date.toLocaleDateString((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB'),{day:'2-digit',month:'short',year:'numeric'}):String(value);
     return '<span class="atsrs-upload-date'+(isRecentUpload(value)?' is-recent':'')+'">'+(isRecentUpload(value)?'<b>NEW</b> ':'')+esc(label)+'</span>';
   }
 

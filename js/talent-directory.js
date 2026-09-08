@@ -431,7 +431,7 @@
     return item&&item.status&&item.status!=='linked'?item.status:'public_profile_only';
   }
   function recentUpload(value){var time=new Date(value||'').getTime();return Number.isFinite(time)&&time>=Date.now()-7*86400000}
-  function uploadDateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'No uploads'}
+  function uploadDateLabel(value){var date=new Date(value||'');return Number.isFinite(date.getTime())?date.toLocaleDateString((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB'),{day:'2-digit',month:'short',year:'numeric'}):'No uploads'}
   function summaryExpiryClass(document){
     var status=String(document&&document.status||'');
     if(status==='Expired')return ' is-expired';
@@ -925,7 +925,7 @@
         var archiveControl=talentMailbox==='archived'
           ?'<button type="button" class="secondary" data-message-action="restore_message" data-message-id="'+safe(message.id)+'">Restore</button>'
           :'<button type="button" class="secondary" data-message-action="archive_message" data-message-id="'+safe(message.id)+'">Archive</button>';
-        return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString('en-GB'))+'</span></div><p>'+safe(message.body)+'</p><div class="talent-message-actions">'+readButton+archiveControl+'<button type="button" class="talent-message-delete" data-message-action="delete_message" data-message-id="'+safe(message.id)+'">Delete</button></div></article>';
+        return '<article class="talent-message'+(message.read_at?'':' is-unread')+'"><div><b>'+safe(message.sender_company)+'</b><span>'+safe(message.sender_email)+' &middot; '+safe(new Date(message.created_at).toLocaleString((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB')))+'</span></div><p>'+safe(message.body)+'</p><div class="talent-message-actions">'+readButton+archiveControl+'<button type="button" class="talent-message-delete" data-message-action="delete_message" data-message-id="'+safe(message.id)+'">Delete</button></div></article>';
       }).join(''):'<div class="access-empty">'+(talentMailbox==='archived'?'No archived company messages.':'No company messages to your Candidate profile yet.')+'</div>';
       list.querySelectorAll('[data-message-action]').forEach(function(button){button.onclick=async function(){
         var action=button.dataset.messageAction;

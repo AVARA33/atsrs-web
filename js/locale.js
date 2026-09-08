@@ -5,12 +5,14 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'introPage', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
+  const dynamicScopeIds = new Set(['atsrsNotificationPopover', 'atsrsNotificationPanel', 'profileInlineBirthPicker']);
+  const scopes = ['landingPage', 'auth', 'introPage', 'jobsPage', 'resourcePage', 'developerPage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal', ...dynamicScopeIds].map(id => document.getElementById(id)).filter(Boolean);
   const pricingShell = document.querySelector('.pricing-shell');
   if (pricingShell) scopes.push(pricingShell);
   document.querySelectorAll('.legal-public-nav-shell,.legal-shell,.contact-shell,.share-public-page,body > .public-footer').forEach(scope => {
     if (!scopes.includes(scope)) scopes.push(scope);
   });
+  document.querySelectorAll('.account-faq-shell,.atsrs-public-landing > .public-header').forEach(scope => { if (!scopes.includes(scope)) scopes.push(scope); });
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
@@ -31,6 +33,10 @@
     if (verifiedCount) result = `${verifiedCount[1]} yoxlanılmış şirkət · rəsmi mənbələr`;
     const recruiterCount = normalized.match(/^(\d+) of (\d+) recruiters$/);
     if (recruiterCount) result = `${recruiterCount[1]} / ${recruiterCount[2]} rekruter`;
+    const accounts = normalized.match(/^(\d+) accounts?$/);
+    if (accounts) result = `${accounts[1]} hesab`;
+    const relative = normalized.match(/^(\d+)([mhd]) ago$/);
+    if (relative) result = `${relative[1]} ${{m:'dəqiqə',h:'saat',d:'gün'}[relative[2]]} əvvəl`;
     const vacancies = normalized.match(/^(\d+) active vacanc(?:y|ies)$/);
     if (vacancies) result = `${vacancies[1]} aktiv vakansiya`;
     const references = normalized.match(/^(\d+) (appraisals|reference letters|recommendations|cover letters)$/);
@@ -43,6 +49,14 @@
     if (qrTime) result = `Qüvvədədir: ${qrTime[1]}`;
     const daysLeft = normalized.match(/^(\d+) days left$/);
     if (daysLeft) result = `${daysLeft[1]} gün qalıb`;
+    const oneDayLeft = normalized.match(/^(\d+) day left$/);
+    if (oneDayLeft) result = `${oneDayLeft[1]} gün qalıb`;
+    const accessDates = normalized.match(/^Start: (.+) · End: (.+)$/);
+    if (accessDates) result = `Başlanğıc: ${accessDates[1]} · Son: ${accessDates[2]}`;
+    const uploadedDocuments = normalized.match(/^Uploaded documents: (.+)$/);
+    if (uploadedDocuments) result = `Yüklənmiş sənədlər: ${uploadedDocuments[1]}`;
+    const accountCount = normalized.match(/^(\d+) account$/);
+    if (accountCount) result = `${accountCount[1]} hesab`;
     const expired = normalized.match(/^Expired (\d+) days$/);
     if (expired) result = `Müddəti ${expired[1]} gün əvvəl bitib`;
     const documents = normalized.match(/^(\d+) documents?$/);
@@ -133,10 +147,29 @@
   function observe() {
     scopes.forEach(scope => observer.observe(scope, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: attributes }));
   }
+  function addScope(scope) {
+    if (!scope || scopes.includes(scope)) return;
+    scopes.push(scope);
+    apply([scope]);
+  }
   function apply(roots = scopes) {
     observer.disconnect();
     dirty.clear();
     roots.forEach(render);
+    const titleSource = document.title;
+    if (locale === 'az') {
+      const titleMap = {
+        'ATSRS — Document readiness for people and companies':'ATSRS — Şəxslər və şirkətlər üçün sənəd hazırlığı',
+        'FAQ | ATSRS':'Tez-tez verilən suallar | ATSRS',
+        'Terms of Use | ATSRS':'İstifadə şərtləri | ATSRS',
+        'Subscription & Billing Terms | ATSRS':'Abunəlik və ödəniş şərtləri | ATSRS',
+        'Refund & Cancellation Policy | ATSRS':'Geri ödəniş və ləğv qaydaları | ATSRS',
+        'Data Protection & GDPR | ATSRS':'Məlumatların qorunması və GDPR | ATSRS',
+        'Data Rights | ATSRS':'Məlumatlarla bağlı hüquqlar | ATSRS',
+        'Security Reporting Policy | ATSRS':'Təhlükəsizlik bildirişi qaydaları | ATSRS'
+      };
+      if (titleMap[titleSource]) document.title = titleMap[titleSource];
+    }
     document.querySelectorAll('.atsrs-locale-control summary').forEach(summary => {
       summary.setAttribute('aria-label', locale === 'az' ? 'Dil seçimi: Azərbaycan dili' : 'Language: English');
       const flag = summary.querySelector('img');
@@ -146,20 +179,25 @@
     document.querySelectorAll('.atsrs-locale-control button').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.locale === locale));
     });
+    syncCounters();
     observe();
+  }
+  function syncCounters() {
+    for (const [id, en, az] of [['jobsVisibleCount','opportunities','vakansiya'],['employersPageCount','companies','şirkət'],['recruitersVisibleCount','recruiters','rekruter']]) {
+      const counter = document.getElementById(id);
+      const numbers = counter && counter.textContent.match(/\d+/g);
+      if (numbers && numbers.length === 2) counter.textContent = locale === 'az' ? `${numbers[0]} / ${numbers[1]} ${az}` : `${numbers[0]} of ${numbers[1]} ${en}`;
+    }
   }
   function setLocale(value) {
     if (!['az', 'en'].includes(value)) return;
     locale = value;
     try { localStorage.setItem(key, locale); } catch (_) {}
     apply();
-    for (const [id, en, az] of [['jobsVisibleCount','opportunities','vakansiya'],['employersPageCount','companies','şirkət']]) {
-      const counter = document.getElementById(id);
-      const numbers = counter && counter.textContent.match(/\d+/g);
-      if (numbers && numbers.length === 2) counter.textContent = locale === 'az' ? `${numbers[0]} / ${numbers[1]} ${az}` : `${numbers[0]} of ${numbers[1]} ${en}`;
-    }
+    syncCounters();
     window.dispatchEvent(new Event('atsrs:locale-changed'));
   }
+  window.atsrsLocaleCode = () => locale === 'az' ? 'az-AZ' : 'en-GB';
   function closeMenus() {
     document.querySelectorAll('details.atsrs-locale-control').forEach(control => { control.open = false; });
   }
@@ -204,7 +242,14 @@
   else mountAccountPicker();
   window.addEventListener('atsrs:resume', mountAccountPicker);
   window.atsrsMountAccountLanguage = mountAccountPicker;
-  window.atsrsI18n = Object.freeze({ getLocale: () => locale });
+  window.atsrsI18n = Object.freeze({ getLocale: () => locale, translate: source => locale === 'az' ? translated(source) : source, addScope });
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) for (const node of mutation.addedNodes) {
+      if (node.nodeType !== 1) continue;
+      if (dynamicScopeIds.has(node.id)) addScope(node);
+      dynamicScopeIds.forEach(id => addScope(node.querySelector && node.querySelector('#' + id)));
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
   window.addEventListener('storage', event => { if (event.key === key) setLocale(event.newValue === 'en' ? 'en' : 'az'); });
   apply();
 })();
