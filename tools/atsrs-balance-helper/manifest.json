@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "ATSRS Balance Helper",
+  "version": "0.1.2",
+  "permissions": ["storage"],
+  "description": "Read the visible OpenAI balance on an explicit click in the owner Developer panel. No cookies, keys, payments or server uploads.",
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["https://atsrs.com/*"], "js": ["atsrs.js"], "run_at": "document_idle" },
+    { "matches": ["https://platform.openai.com/settings/organization/billing/overview*"], "js": ["balance-parser.js", "billing.js"], "run_at": "document_idle" }
+  ]
+}
