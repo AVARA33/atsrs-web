@@ -113,6 +113,60 @@
   var registerPage=1;
   var REGISTER_PAGE_SIZE=30;
   var selectedCertIndices=new Set();
+  var activeDocumentFolder='all';
+  var DOCUMENT_FOLDERS_KEY='documentFolders';
+
+  function getDocumentFolders(){
+    var folders=typeof getData==='function'?getData(DOCUMENT_FOLDERS_KEY):[];
+    return (Array.isArray(folders)?folders:[]).filter(function(folder){return folder&&folder.id&&folder.name;});
+  }
+  function saveDocumentFolders(folders){if(typeof saveData==='function')saveData(DOCUMENT_FOLDERS_KEY,folders||[]);}
+  function folderText(en,az){return window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?az:en;}
+  function newDocumentFolder(){
+    var name=String(window.prompt(folderText('Folder name','Qovluğun adı'))||'').trim();if(!name)return;
+    var folders=getDocumentFolders();
+    if(folders.some(function(folder){return folder.name.toLocaleLowerCase()===name.toLocaleLowerCase();})){alert(folderText('A folder with this name already exists.','Bu adda qovluq artıq mövcuddur.'));return;}
+    var id='folder-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);
+    folders.push({id:id,name:name});saveDocumentFolders(folders);activeDocumentFolder=id;registerPage=1;renderCertRows();
+  }
+  function deleteDocumentFolder(id){
+    var folders=getDocumentFolders(),folder=folders.find(function(entry){return entry.id===id;});if(!folder)return;
+    if(!window.confirm(folderText('Delete folder "'+folder.name+'"? Its documents will move to Unfiled.','"'+folder.name+'" qovluğu silinsin? Sənədlər Qovluqsuz bölməsinə keçəcək.')))return;
+    var certs=getData('certs')||[];certs.forEach(function(item){if(item.folderId===id)delete item.folderId;});saveData('certs',certs);
+    saveDocumentFolders(folders.filter(function(entry){return entry.id!==id;}));activeDocumentFolder='all';selectedCertIndices.clear();renderCertRows();
+  }
+  function renameDocumentFolder(id){
+    var folders=getDocumentFolders(),folder=folders.find(function(entry){return entry.id===id;});if(!folder)return;
+    var name=String(window.prompt(folderText('Folder name','Qovluğun adı'),folder.name)||'').trim();if(!name||name===folder.name)return;
+    if(folders.some(function(entry){return entry.id!==id&&entry.name.toLocaleLowerCase()===name.toLocaleLowerCase();})){alert(folderText('A folder with this name already exists.','Bu adda qovluq artıq mövcuddur.'));return;}
+    folder.name=name;saveDocumentFolders(folders);renderCertRows();
+  }
+  function renderDocumentFolders(){
+    var bar=byId('documentFolderBar');if(!bar)return;
+    var folders=getDocumentFolders(),certs=getData('certs')||[];
+    if(activeDocumentFolder!=='all'&&activeDocumentFolder!=='unfiled'&&!folders.some(function(folder){return folder.id===activeDocumentFolder;}))activeDocumentFolder='all';
+    bar.replaceChildren();
+    function tab(id,label,count){
+      var wrap=document.createElement('div');wrap.className='atsrs-document-folder-tab-wrap';
+      var button=document.createElement('button');button.type='button';button.className='atsrs-document-folder-tab';button.classList.toggle('active',activeDocumentFolder===id);button.setAttribute('aria-pressed',activeDocumentFolder===id?'true':'false');
+      button.innerHTML='<i class="ph '+(id==='all'?'ph-files':id==='unfiled'?'ph-folder-dashed':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
+      button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
+      if(id!=='all'&&id!=='unfiled'){
+        var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id);};wrap.appendChild(edit);
+        var remove=document.createElement('button');remove.type='button';remove.className='atsrs-document-folder-delete';remove.title=folderText('Delete folder','Qovluğu sil');remove.setAttribute('aria-label',remove.title+' '+label);remove.innerHTML='<i class="ph ph-x"></i>';remove.onclick=function(event){event.stopPropagation();deleteDocumentFolder(id);};wrap.appendChild(remove);
+      }
+      bar.appendChild(wrap);
+    }
+    tab('all',folderText('All documents','Bütün sənədlər'),certs.length);
+    tab('unfiled',folderText('Unfiled','Qovluqsuz'),certs.filter(function(item){return !item.folderId;}).length);
+    folders.forEach(function(folder){tab(folder.id,folder.name,certs.filter(function(item){return item.folderId===folder.id;}).length);});
+    var add=document.createElement('button');add.type='button';add.className='atsrs-document-folder-add';add.title=folderText('New folder','Yeni qovluq');add.setAttribute('aria-label',add.title);add.innerHTML='<i class="ph ph-plus" aria-hidden="true"></i>';add.onclick=newDocumentFolder;bar.appendChild(add);
+  }
+  function moveSelectedCertificates(folderId){
+    if(!folderId)return;var certs=getData('certs')||[];
+    selectedCertIndices.forEach(function(index){if(certs[index]){if(folderId==='unfiled')delete certs[index].folderId;else certs[index].folderId=folderId;}});
+    saveData('certs',certs);selectedCertIndices.clear();registerPage=1;renderCertRows();
+  }
   var historicalCardCleanupInFlight=false;
   function byId(id){return document.getElementById(id);}
   function uiText(source){
@@ -684,6 +738,13 @@
     var selectedCount=selectedCertIndices.size;
     if(count)count.textContent=selectedCount+' selected';
     if(remove){remove.disabled=selectedCount===0;remove.textContent=selectedCount?'Delete selected ('+selectedCount+')':'Delete selected';}
+    var mover=byId('moveSelectedCertsFolder');
+    if(mover){
+      mover.disabled=selectedCount===0;mover.replaceChildren();
+      var placeholder=document.createElement('option');placeholder.value='';placeholder.textContent=folderText('Move to folder…','Qovluğa köçür…');mover.appendChild(placeholder);
+      var unfiled=document.createElement('option');unfiled.value='unfiled';unfiled.textContent=folderText('Unfiled','Qovluqsuz');mover.appendChild(unfiled);
+      getDocumentFolders().forEach(function(folder){var option=document.createElement('option');option.value=folder.id;option.textContent=folder.name;mover.appendChild(option);});
+    }
     var all=byId('certSelectAll');
     if(all){
       var selectedVisible=visibleIndices.filter(function(index){return selectedCertIndices.has(index);}).length;
@@ -741,6 +802,8 @@
     }
     var remove=byId('deleteSelectedCertsBtn');
     if(remove&&!remove.dataset.bound){remove.dataset.bound='true';remove.addEventListener('click',deleteSelectedCertificates);}
+    var mover=byId('moveSelectedCertsFolder');
+    if(mover&&!mover.dataset.bound){mover.dataset.bound='true';mover.addEventListener('change',function(){var target=mover.value;mover.value='';moveSelectedCertificates(target);});}
   }
 
   function documentPageItems(current,count){
@@ -985,7 +1048,8 @@
       country:(byId('cCountry')?byId('cCountry').value:''),
       provider:(byId('cProvider')?byId('cProvider').value:''),
       issue:(byId('cIssue')?byId('cIssue').value:''),
-      expiry:(byId('cExpiryNA')&&byId('cExpiryNA').checked)?'N/A':(byId('cExpiry')?byId('cExpiry').value:'')
+      expiry:(byId('cExpiryNA')&&byId('cExpiryNA').checked)?'N/A':(byId('cExpiry')?byId('cExpiry').value:''),
+      folderId:(previous&&previous.folderId)||(activeDocumentFolder!=='all'&&activeDocumentFolder!=='unfiled'?activeDocumentFolder:'')
     });
     if(window.atsrsPendingPaymentCard===true)item.paymentCard=true;
     var cardSafety=window.atsrsPaymentCardSafety;
@@ -1142,6 +1206,9 @@
     var allRows=c.map(function(item,index){return{item:item,index:index,statusData:status(item.expiry)};});
     updateDocumentSummary(allRows);
     var rows=allRows;
+    renderDocumentFolders();
+    if(activeDocumentFolder==='unfiled')rows=rows.filter(function(row){return !row.item.folderId;});
+    else if(activeDocumentFolder!=='all')rows=rows.filter(function(row){return row.item.folderId===activeDocumentFolder;});
     if(registerFilter)rows=rows.filter(function(row){return certificateSearchText(row.item,row.statusData).indexOf(registerFilter)!==-1;});
     if(registerSort.key)rows.sort(function(a,b){var result=compareCertificateRows(a,b,registerSort.key);return result===0?a.index-b.index:result*registerSort.direction;});
     var filteredCount=rows.length;

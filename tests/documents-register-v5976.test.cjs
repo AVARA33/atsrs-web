@@ -6,12 +6,20 @@ const css = fs.readFileSync('css/documents-register-v5976.css', 'utf8');
 const app = fs.readFileSync('js/app.js', 'utf8');
 const serverData = fs.readFileSync('js/server-data.js', 'utf8');
 
-assert.match(html, /data-atsrs-build="V6087"/);
+assert.match(html, /data-atsrs-build="V6090"/);
 assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=6023/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=6025/);
+
+assert.match(html, /id="documentFolderBar"/);
+assert.match(html, /id="moveSelectedCertsFolder"/);
+assert.match(app, /activeDocumentFolder='all'/);
+assert.match(app, /function newDocumentFolder\(\)/);
+assert.match(app, /function moveSelectedCertificates\(folderId\)/);
+assert.match(app, /if\(item\.folderId===id\)delete item\.folderId/);
+assert.match(css, /\.atsrs-document-folder-tab\.active/);
 assert.match(html, /id="certificatesPagination"/);
 assert.match(html, /id="documentMethodBackdrop"/);
 assert.match(html, /id="certScanPanel"[^>]+role="dialog"[^>]+aria-modal="true"/);
