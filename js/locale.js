@@ -5,7 +5,7 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const scopes = ['landingPage', 'auth', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
+  const scopes = ['landingPage', 'auth', 'introPage', 'jobsPage', 'resourcePage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal'].map(id => document.getElementById(id)).filter(Boolean);
   const pricingShell = document.querySelector('.pricing-shell');
   if (pricingShell) scopes.push(pricingShell);
   document.querySelectorAll('.legal-public-nav-shell,.legal-shell,.contact-shell,.share-public-page,body > .public-footer').forEach(scope => {
@@ -90,7 +90,7 @@
       if (!element || element.closest(skip)) continue;
       // Preserve third-party role, company, recruiter and location values.
       const option = element.closest('option');
-      if (option && option.value && !['jobsRegionFilter','jobsDateFilter','recruitersVacancies','recruitersSort','employersSort','employersSize','contactCategory'].includes(option.parentElement.id)) continue;
+      if (option && option.value && !['jobsRegionFilter','jobsDateFilter','recruitersVacancies','recruitersSort','employersSort','employersSize','contactCategory','profileInlineCompany','profileInlineAvailabilityStatus','profileInlineWorkPreference','profileAvailabilityStatus','profileWorkPreference'].includes(option.parentElement.id)) continue;
       const custom = element.closest('.jobs-select-option');
       if (custom && custom.parentElement.children[0] !== custom && !custom.closest('.jobs-date-filter,.jobs-region-filter')) continue;
       const trigger = element.closest('.jobs-select-toggle');
@@ -106,6 +106,10 @@
     }
     // Inputs are excluded from text traversal, but their hints are translatable.
     scope.querySelectorAll('input[placeholder]').forEach(input => update(input, 'placeholder', () => input.getAttribute('placeholder'), value => input.setAttribute('placeholder', value)));
+    scope.querySelectorAll('[aria-label]').forEach(element => update(element, 'aria-label', () => element.getAttribute('aria-label'), value => element.setAttribute('aria-label', value)));
+    if (scope.id === 'profilePage') scope.querySelectorAll('#profilePersonalReadView strong,#profilePersonalReadView span,[id^="profileStage"]').forEach(element => {
+      if (normalize(element.textContent) === 'Not specified' || records.get(element)?.text?.source === 'Not specified') update(element, 'text', () => element.textContent, value => { element.textContent = value; });
+    });
     scope.querySelectorAll('.auth-tab-caption').forEach(caption => {
       caption.style.display = 'flex';
       caption.style.justifyContent = 'center';

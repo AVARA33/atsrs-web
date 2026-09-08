@@ -961,5 +961,65 @@ window.ATSRS_AZ_MESSAGES = {
   "The selected documents could not be deleted from the ATSRS server.": "Seçilmiş sənədlər ATSRS serverindən silinə bilmədi.",
   "Document register changes could not be saved.": "Sənəd reyestrindəki dəyişikliklər saxlanıla bilmədi."
   ,"Scan with AI processes one document at a time. The first file will be scanned.": "AI ilə skan zamanı hər dəfə bir sənəd emal olunur. İlk fayl skan ediləcək.",
-  "Deleting...": "Silinir..."
+  "Deleting...": "Silinir...",
+  "Live ATSRS releases, upcoming tools and transparent plan limits in one place.": "ATSRS yenilikləri, hazırlanmaqda olan alətlər və aydın plan limitləri bir səhifədə.",
+  "LIVE": "AKTİVDİR",
+  "BUILDING": "HAZIRLANIR",
+  "NEXT": "NÖVBƏTİ",
+  "Release point": "İstifadəyə verilib",
+  "Build point": "Hazırlanma mərhələsi",
+  "Next point": "Növbəti mərhələ",
+  "Live": "Aktivdir",
+  "Recruiter Directory": "Rekrutor kataloqu",
+  "Company Directory": "Şirkətlər kataloqu",
+  "AI Document Scan": "AI ilə sənəd skanı",
+  "Email Notification Expiry Alert": "Bitmə tarixi üçün e-poçt bildirişi",
+  "Document Tracking": "Sənədlərin izlənməsi",
+  "Share Profile Link": "Profil keçidini paylaş",
+  "Automated Scheduled Reports": "Avtomatik planlaşdırılmış hesabatlar",
+  "ATSRS Android App": "ATSRS Android tətbiqi",
+  "Personal Plans": "Şəxsi planlar",
+  "PERSONAL PLANS": "ŞƏXSİ PLANLAR",
+  "Recommended": "Tövsiyə olunur",
+  "All plans": "Bütün planlar",
+  "Available now": "Hazırda mövcuddur",
+  "Self-employed": "Fərdi işləyən",
+  "Choose date of birth": "Doğum tarixini seç",
+  "Date of birth": "Doğum tarixi",
+  "Open date of birth calendar": "Doğum tarixi təqvimini aç",
+  "Region": "Region",
+  "Location": "Məkan",
+  "Posted": "Dərc olunub",
+  "Work type": "İş növü",
+  "Requirements": "Tələblər",
+  "Application": "Müraciət",
+  "Contact information": "Əlaqə məlumatları"
+  ,"All accounts": "Bütün hesablar"
+  ,"Premium accounts": "Premium hesablar"
+  ,"Company accounts": "Şirkət hesabları"
+  ,"In development": "Hazırlanır"
+  ,"In progress": "Davam edir"
+  ,"Job Search": "İş axtarışı"
+  ,"Directory": "Kataloq"
+  ,"Notifications": "Bildirişlər"
+  ,"Profile Sharing": "Profil paylaşımı"
+  ,"Corporate Workspace": "Korporativ iş sahəsi"
+  ,"Reports": "Hesabatlar"
+  ,"Discover opportunities across borders with trusted companies, verified recruiters and location-aware results.": "Etibarlı şirkətlər, təsdiqlənmiş rekrutorlar və məkanı nəzərə alan nəticələrlə beynəlxalq vakansiyaları kəşf edin."
+  ,"Access a verified recruiter network and build relationships that move your career forward.": "Təsdiqlənmiş rekrutor şəbəkəsinə qoşulun və karyeranızı irəli aparan əlaqələr qurun."
+  ,"Explore company profiles and insights to find employers that match your ambitions.": "Məqsədlərinizə uyğun işəgötürənləri tapmaq üçün şirkət profillərinə və məlumatlarına baxın."
+  ,"Extract and review document details with AI-assisted scanning before saving.": "Saxlamazdan əvvəl AI dəstəkli skanla sənəd məlumatlarını çıxarın və yoxlayın."
+  ,"Upload a document from your phone through a secure QR handoff.": "Təhlükəsiz QR keçidi ilə sənədi telefonunuzdan yükləyin."
+  ,"Receive automatic email reminders before tracked documents reach their expiry date.": "İzlənilən sənədlərin bitmə tarixindən əvvəl avtomatik e-poçt xatırlatmaları alın."
+  ,"Monitor document status, renewal timing and expiry progress from one controlled workspace.": "Sənədlərin vəziyyətini, yenilənmə vaxtını və bitmə müddətini vahid iş sahəsindən izləyin."
+  ,"Create a controlled profile link and share your verified ATSRS details with a selected recipient.": "İdarə olunan profil keçidi yaradın və təsdiqlənmiş ATSRS məlumatlarınızı seçilmiş şəxslə paylaşın."
+  ,"Receive approved WhatsApp reminders before important documents expire.": "Vacib sənədlərin müddəti bitməzdən əvvəl WhatsApp xatırlatmaları alın."
+  ,"Manage personnel, assignments, compliance and official company workflows through one corporate account.": "Personalı, tapşırıqları, uyğunluğu və rəsmi şirkət proseslərini vahid korporativ hesabdan idarə edin."
+  ,"Prepare and deliver recurring compliance reports on a defined schedule.": "Dövri uyğunluq hesabatlarını müəyyən edilmiş cədvəl üzrə hazırlayın və təqdim edin."
+  ,"Access the ATSRS workspace from a dedicated Android application.": "Xüsusi Android tətbiqi ilə ATSRS iş sahəsinə daxil olun."
+  ,"REGION": "REGİON"
+  ,"REQUIREMENTS": "TƏLƏBLƏR"
+  ,"APPLICATION": "MÜRACİƏT"
+  ,"Building": "Hazırlanır"
+  ,"Total": "Cəmi"
 };

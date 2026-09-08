@@ -162,8 +162,9 @@
     var page=q('#refsPage');var grid=page&&q('.ref-grid',page);if(!page||!grid||mutating)return;
     mutating=true;
     try{
-      var title=q('#refsTitle',page);if(title&&title.textContent!=='References')title.textContent='References';
-      var sub=q('#refsSub',page);if(sub&&sub.textContent!=='Manage your career proof materials in one place.')sub.textContent='Manage your career proof materials in one place.';
+      var az=window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az';
+      var title=q('#refsTitle',page),titleText=az?'Tövsiyələr':'References';if(title&&title.textContent!==titleText)title.textContent=titleText;
+      var sub=q('#refsSub',page),subText=az?'Karyeranızı təsdiqləyən materialları bir yerdə idarə edin.':'Manage your career proof materials in one place.';if(sub&&sub.textContent!==subText)sub.textContent=subText;
       ensureControls(grid);
       KINDS.forEach(function(kind){ensureTableHead(card(kind));});
       decorateCv(page);decorateRows(page);updateSummary(page);applyActiveState();
@@ -173,6 +174,7 @@
 
   function schedule(){if(scheduled||mutating)return;scheduled=true;requestAnimationFrame(function(){scheduled=false;run();});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  window.addEventListener('atsrs:locale-changed',run);
   window.addEventListener('load',function(){run();setTimeout(run,500);setTimeout(run,1400);});
   document.addEventListener('atsrs:cv-state',schedule);
   var observer=new MutationObserver(function(mutations){
