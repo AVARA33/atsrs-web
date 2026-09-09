@@ -220,7 +220,7 @@ html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab:hover{back
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab:not(.active)::after{background:#cbd6dc}
 html[data-theme="light"] body #app.app:not(.hidden) #certificatesPage .atsrs-document-folder-tab.active{border-color:#168849!important;border-bottom-color:#eef8f1!important;background:#eef8f1!important;color:#16231b!important;box-shadow:-4px 0 9px rgba(31,48,61,.09),4px 0 9px rgba(31,48,61,.09),inset 0 1px 0 rgba(25,52,92,.05)!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-add{color:#45545d!important;background:transparent!important}html[data-theme="light"] #certificatesPage .atsrs-document-folder-add:hover,html[data-theme="light"] #certificatesPage .atsrs-document-folder-add:focus-visible{background:transparent!important;color:#168849!important}
-.atsrs-document-folder-rename{position:fixed;z-index:10050;width:224px;padding:10px;border:1px solid #2b373c;border-radius:10px;background:#111719;box-shadow:0 14px 38px rgba(0,0,0,.42);box-sizing:border-box}
+.atsrs-document-folder-rename{position:fixed;z-index:10050;width:224px;padding:10px;border:1px solid #343a36;border-radius:10px;background:#0b0d0d;color:#eef2ef;box-shadow:0 18px 40px rgba(0,0,0,.45);box-sizing:border-box}
 .atsrs-document-folder-rename input{display:block;width:100%;height:34px;padding:0 10px;border:1px solid #3b4a50;border-radius:7px;background:#090d0f;color:#f1f5f3;font:600 13px/1.2 inherit;box-sizing:border-box;outline:0}
 .atsrs-document-folder-rename input:focus{border-color:#25c763;box-shadow:0 0 0 2px rgba(37,199,99,.14)}
 .atsrs-document-folder-rename-error{min-height:14px;margin:5px 1px 0;color:#ff626f;font-size:10px;line-height:14px}
@@ -228,7 +228,7 @@ html[data-theme="light"] #certificatesPage .atsrs-document-folder-add{color:#455
 .atsrs-document-folder-rename-actions button{min-width:58px;height:29px;margin:0;padding:0 10px;border:1px solid #344248;border-radius:7px;background:transparent;color:#c6d0d4;font-size:11px;font-weight:700}
 .atsrs-document-folder-rename-actions button.primary{border-color:#25c763;background:#25c763;color:#06140b}
 .atsrs-document-folder-rename-actions button:hover{border-color:#5a6c74;color:#fff}.atsrs-document-folder-rename-actions button.primary:hover{border-color:#52dc83;background:#52dc83;color:#06140b}
-html[data-theme="light"] .atsrs-document-folder-rename{border-color:#c6d2d9;background:#fff;box-shadow:0 14px 38px rgba(31,48,61,.18)}
+html[data-theme="light"] .atsrs-document-folder-rename{border-color:#cbd8e6;background:#fff;color:#243142;box-shadow:0 18px 40px rgba(40,58,78,.2)}
 html[data-theme="light"] .atsrs-document-folder-rename input{border-color:#b8c6ce;background:#f7fafb;color:#17252d}
 html[data-theme="light"] .atsrs-document-folder-rename input:focus{border-color:#168849;box-shadow:0 0 0 2px rgba(22,136,73,.13)}
 html[data-theme="light"] .atsrs-document-folder-rename-actions button{border-color:#b8c6ce;color:#3d4d56}html[data-theme="light"] .atsrs-document-folder-rename-actions button.primary{border-color:#168849;background:#168849;color:#fff}
