@@ -11,7 +11,7 @@ assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=6096/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=6099/);
 
 assert.match(html, /id="documentFolderBar"/);
 assert.match(html, /id="moveSelectedCertsFolder"/);
