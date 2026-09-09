@@ -168,7 +168,7 @@
         item.atsrsProjectIds=Array.isArray(item.atsrsProjectIds)
           ?item.atsrsProjectIds.filter(validUuid):[];
       }
-      if(personalCertificateOwnerId&&!validUuid(item.atsrsPersonnelId)){
+      if(personalCertificateOwnerId){
         item.atsrsPersonnelId=personalCertificateOwnerId;
       }
     });
