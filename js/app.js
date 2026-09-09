@@ -154,7 +154,7 @@
     var remove=document.createElement('button');remove.type='button';remove.className='atsrs-document-folder-delete';remove.title=folderText('Delete folder','Qovluğu sil');remove.setAttribute('aria-label',remove.title+' '+folder.name);remove.innerHTML='<i class="ph ph-trash" aria-hidden="true"></i>';
     var cancel=document.createElement('button');cancel.type='button';cancel.textContent=folderText('Cancel','Ləğv et');
     var save=document.createElement('button');save.type='submit';save.className='primary';save.textContent=folderText('Save','Saxla');
-    var actionButtons=document.createElement('div');actionButtons.className='atsrs-document-folder-rename-action-buttons';actionButtons.append(cancel,save);
+    var actionButtons=document.createElement('div');actionButtons.className='atsrs-document-folder-rename-action-buttons';actionButtons.append(save,cancel);
     actions.append(remove,actionButtons);editor.append(field,error,actions);document.body.appendChild(editor);
     var rect=(anchor||document.body).getBoundingClientRect();
     var left=Math.min(Math.max(10,rect.left),window.innerWidth-editor.offsetWidth-10);
