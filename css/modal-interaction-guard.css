@@ -1,0 +1,10 @@
+.atsrs-modal-attention{
+  animation:atsrs-modal-attention-pulse .7s ease!important;
+}
+@keyframes atsrs-modal-attention-pulse{
+  0%,100%{border-color:inherit;box-shadow:inherit}
+  18%,72%{border-color:#ef4444!important;box-shadow:0 0 0 2px rgba(239,68,68,.28),0 18px 40px rgba(0,0,0,.45)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .atsrs-modal-attention{animation-duration:.01ms!important;box-shadow:0 0 0 2px rgba(239,68,68,.35)!important}
+}
