@@ -6,6 +6,11 @@
  function money(v){return v==null?'Unavailable':'$'+Number(v).toFixed(4);}
  function date(v){return new Date(v).toLocaleString(window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB',{timeZone:'Asia/Baku'});}
  function cacheKey(){return CACHE_PREFIX+String(window.__atsrsDeveloperAccessUserId||'');}
+ function reconcileBalanceRefreshButton(host){
+  var helper=host&&host.querySelector('[data-atsrs-balance-helper]');if(!helper)return;
+  var native=host.querySelector('.job-monitor-balance-refresh:not([data-atsrs-balance-helper])');if(native)native.remove();
+  helper.classList.add('job-monitor-balance-refresh');helper.removeAttribute('style');
+ }
  function readCache(){
   try{var parsed=JSON.parse(sessionStorage.getItem(cacheKey())||'null');return parsed&&parsed.data&&Number.isFinite(parsed.savedAt)?parsed:null;}
   catch(ignore){return null;}
@@ -14,6 +19,8 @@
  window.atsrsRefreshJobMonitor=async function(force){
   var host=document.getElementById('jobIngestionMonitor');
   if(!host)return;
+  if(typeof MutationObserver!=='undefined'&&!host.__atsrsBalanceButtonObserver){host.__atsrsBalanceButtonObserver=new MutationObserver(function(){reconcileBalanceRefreshButton(host);});host.__atsrsBalanceButtonObserver.observe(host,{childList:true,subtree:true});}
+  reconcileBalanceRefreshButton(host);
   if(!window.__atsrsDeveloperAccess){host.replaceChildren();host.classList.add('hidden');return;}
   var owner=window.__atsrsDeveloperAccessUserId;
   host.classList.remove('hidden');
