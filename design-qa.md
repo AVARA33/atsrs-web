@@ -798,6 +798,32 @@ Final result: passed.
 
 ---
 
+# Documents folder tabs — Chrome reference match
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-73dab9f0-0078-49e5-b902-da77613741f2.png`.
+- Implementation inspected in the user's authenticated Chrome profile at `https://atsrs.com/?route=certificates` after stylesheet release `v=6101`.
+- State: Personal Documents, dark theme, `All documents` selected, `Unfiled` inactive, add-folder control visible.
+
+## Visual comparison
+
+- Folder tabs now use the same fixed 210 × 42 px base geometry, matching Chrome's consistent tab widths instead of shrinking to label length.
+- The selected tab keeps the same vertical position and height as inactive tabs; a raised surface and side shadow provide foreground depth without moving it upward.
+- The selected surface visually joins the document content area across the tab-strip divider.
+- Inactive tabs retain a light separator comparable to Chrome's inactive-tab dividers.
+- The add-folder control is a bare plus immediately after the final tab, with no box, border, radius or hover fill.
+- Dark and light selectors use the existing ATSRS document surfaces and text colors.
+
+## Interaction and regression checks
+
+- Existing folder selection semantics remain unchanged (`aria-pressed`/checked state verified in Chrome).
+- Folder creation, rename-on-hover controls and document filtering logic were not changed.
+- Focused document-register test passed and `git diff --check` passed.
+- No files outside the document tab stylesheet, its cache version, test assertion and this QA record were changed.
+
+Final result: passed.
+
+---
+
 # Notification dropdown narrow right-rail placement — Design QA (V5885)
 
 - User placement reference: `C:\Users\user\AppData\Local\Temp\codex-clipboard-b6fe95e9-39d5-4162-ae93-b084819a5a4d.png`.
