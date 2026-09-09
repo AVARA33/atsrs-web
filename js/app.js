@@ -135,11 +135,33 @@
     var certs=getData('certs')||[];certs.forEach(function(item){if(item.folderId===id)delete item.folderId;});saveData('certs',certs);
     saveDocumentFolders(folders.filter(function(entry){return entry.id!==id;}));activeDocumentFolder='all';selectedCertIndices.clear();renderCertRows();
   }
-  function renameDocumentFolder(id){
+  function closeDocumentFolderRename(){
+    var editor=document.querySelector('.atsrs-document-folder-rename');
+    if(editor)editor.remove();
+  }
+  function renameDocumentFolder(id,anchor){
     var folders=getDocumentFolders(),folder=folders.find(function(entry){return entry.id===id;});if(!folder)return;
-    var name=String(window.prompt(folderText('Folder name','Qovluğun adı'),folder.name)||'').trim();if(!name||name===folder.name)return;
-    if(folders.some(function(entry){return entry.id!==id&&entry.name.toLocaleLowerCase()===name.toLocaleLowerCase();})){alert(folderText('A folder with this name already exists.','Bu adda qovluq artıq mövcuddur.'));return;}
-    folder.name=name;saveDocumentFolders(folders);renderCertRows();
+    closeDocumentFolderRename();
+    var editor=document.createElement('form');editor.className='atsrs-document-folder-rename';editor.setAttribute('role','dialog');editor.setAttribute('aria-label',folderText('Rename folder','Qovluğun adını dəyiş'));
+    var input=document.createElement('input');input.type='text';input.value=folder.name;input.maxLength=48;input.setAttribute('aria-label',folderText('Folder name','Qovluğun adı'));input.autocomplete='off';
+    var error=document.createElement('p');error.className='atsrs-document-folder-rename-error';error.setAttribute('aria-live','polite');
+    var actions=document.createElement('div');actions.className='atsrs-document-folder-rename-actions';
+    var cancel=document.createElement('button');cancel.type='button';cancel.textContent=folderText('Cancel','Ləğv et');
+    var save=document.createElement('button');save.type='submit';save.className='primary';save.textContent=folderText('Save','Saxla');
+    actions.append(cancel,save);editor.append(input,error,actions);document.body.appendChild(editor);
+    var rect=(anchor||document.body).getBoundingClientRect();
+    var left=Math.min(Math.max(10,rect.left),window.innerWidth-editor.offsetWidth-10);
+    editor.style.left=left+'px';editor.style.top=Math.min(rect.bottom+6,window.innerHeight-editor.offsetHeight-10)+'px';
+    cancel.onclick=closeDocumentFolderRename;
+    editor.onsubmit=function(event){
+      event.preventDefault();var name=String(input.value||'').trim();
+      if(!name){error.textContent=folderText('Enter a folder name.','Qovluğun adını yazın.');input.focus();return;}
+      if(folders.some(function(entry){return entry.id!==id&&entry.name.toLocaleLowerCase()===name.toLocaleLowerCase();})){error.textContent=folderText('A folder with this name already exists.','Bu adda qovluq artıq mövcuddur.');input.focus();input.select();return;}
+      if(name!==folder.name){folder.name=name;saveDocumentFolders(folders);}
+      closeDocumentFolderRename();renderCertRows();
+    };
+    editor.onkeydown=function(event){if(event.key==='Escape'){event.preventDefault();closeDocumentFolderRename();}};
+    input.focus();input.select();
   }
   function renderDocumentFolders(){
     var bar=byId('documentFolderBar');if(!bar)return;
@@ -152,7 +174,7 @@
       button.innerHTML='<i class="ph '+(id==='all'?'ph-files':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
       if(id!=='all'){
-        var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id);};wrap.appendChild(edit);
+        var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id,wrap);};wrap.appendChild(edit);
       }
       bar.appendChild(wrap);
     }
