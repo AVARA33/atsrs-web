@@ -8,8 +8,8 @@ function attachBalanceButton() {
   // its translated label: changing the interface language must not remove the
   // balance refresh control.
   if (!box || !label || !amount) return;
-  const button = document.createElement('button');
-  button.type='button'; button.dataset.atsrsBalanceHelper='true';
+  const button = box.querySelector('.job-monitor-balance-refresh') || document.createElement('button');
+  button.type='button'; button.dataset.atsrsBalanceHelper='true'; button.onclick=null;
   button.title='Check OpenAI balance in the background';
   const icon = document.createElementNS('http://www.w3.org/2000/svg','svg');
   icon.setAttribute('viewBox','0 0 24 24'); icon.setAttribute('width','15'); icon.setAttribute('height','15');
@@ -17,7 +17,7 @@ function attachBalanceButton() {
   icon.setAttribute('stroke-linecap','round'); icon.setAttribute('stroke-linejoin','round'); icon.setAttribute('aria-hidden','true');
   const path = document.createElementNS('http://www.w3.org/2000/svg','path');
   path.setAttribute('d','M20 7v5h-5 M19.3 12a7.5 7.5 0 1 0-1.8 5 M20 12l-2.5-5');
-  icon.append(path); button.append(icon);
+  icon.append(path); button.replaceChildren(icon);
   button.setAttribute('aria-label','Refresh API balance only');
   button.style.cssText='position:absolute;right:8px;top:8px;display:grid;place-items:center;width:26px;min-width:26px;height:26px;min-height:26px;padding:0;border-radius:50%;border:0;background:transparent;box-shadow:none;color:inherit;cursor:pointer;transition:opacity .15s;';
   box.style.position='relative'; label.style.cssText+=';display:block;padding-right:30px;';
