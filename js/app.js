@@ -156,7 +156,7 @@
       }
       bar.appendChild(wrap);
     }
-    tab('all',folderText('All documents','Bütün sənədlər'),certs.length);
+    tab('all','All',certs.length);
     tab('unfiled',folderText('Unfiled','Qovluqsuz'),certs.filter(function(item){return !item.folderId;}).length);
     folders.forEach(function(folder){tab(folder.id,folder.name,certs.filter(function(item){return item.folderId===folder.id;}).length);});
     var add=document.createElement('button');add.type='button';add.className='atsrs-document-folder-add';add.title=folderText('New folder','Yeni qovluq');add.setAttribute('aria-label',add.title);add.innerHTML='<i class="ph ph-plus" aria-hidden="true"></i>';add.onclick=newDocumentFolder;bar.appendChild(add);
@@ -172,7 +172,7 @@
     saveData('certs',certs);registerPage=1;renderCertRows();
   }
   function certificateFolderOptions(item){
-    var options='<option value="">'+esc(folderText('Move to folder…','Qovluğa köçür…'))+'</option>';
+    var options='<option value="" selected disabled hidden></option>';
     options+='<option value="unfiled" '+(!item.folderId?'disabled':'')+'>'+esc(folderText('Unfiled','Qovluqsuz'))+'</option>';
     getDocumentFolders().forEach(function(folder){options+='<option value="'+esc(folder.id)+'" '+(item.folderId===folder.id?'disabled':'')+'>'+esc(folder.name)+'</option>';});
     return options;
