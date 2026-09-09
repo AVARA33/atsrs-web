@@ -146,12 +146,14 @@
     closeDocumentFolderRename();
     var backdrop=document.createElement('div');backdrop.className='atsrs-document-folder-rename-backdrop';backdrop.setAttribute('aria-hidden','true');backdrop.addEventListener('pointerdown',function(event){event.preventDefault();event.stopPropagation();});backdrop.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();});document.body.appendChild(backdrop);
     var editor=document.createElement('form');editor.className='atsrs-document-folder-rename';editor.setAttribute('role','dialog');editor.setAttribute('aria-modal','true');editor.setAttribute('aria-label',folderText('Rename folder','Qovluğun adını dəyiş'));
-    var input=document.createElement('input');input.type='text';input.value=folder.name;input.maxLength=48;input.setAttribute('aria-label',folderText('Folder name','Qovluğun adı'));input.autocomplete='off';
+    var field=document.createElement('label');field.className='atsrs-document-folder-rename-field';
+    var fieldLabel=document.createElement('span');fieldLabel.className='atsrs-document-folder-rename-label';fieldLabel.textContent=folderText('Folder name','Qovluğun adı');
+    var input=document.createElement('input');input.type='text';input.value=folder.name;input.maxLength=48;input.setAttribute('aria-label',folderText('Folder name','Qovluğun adı'));input.setAttribute('data-atsrs-no-field-shell','');input.autocomplete='off';field.append(fieldLabel,input);
     var error=document.createElement('p');error.className='atsrs-document-folder-rename-error';error.setAttribute('aria-live','polite');
     var actions=document.createElement('div');actions.className='atsrs-document-folder-rename-actions';
     var cancel=document.createElement('button');cancel.type='button';cancel.textContent=folderText('Cancel','Ləğv et');
     var save=document.createElement('button');save.type='submit';save.className='primary';save.textContent=folderText('Save','Saxla');
-    actions.append(cancel,save);editor.append(input,error,actions);document.body.appendChild(editor);
+    actions.append(cancel,save);editor.append(field,error,actions);document.body.appendChild(editor);
     var rect=(anchor||document.body).getBoundingClientRect();
     var left=Math.min(Math.max(10,rect.left),window.innerWidth-editor.offsetWidth-10);
     editor.style.left=left+'px';editor.style.top=Math.min(rect.bottom+6,window.innerHeight-editor.offsetHeight-10)+'px';
