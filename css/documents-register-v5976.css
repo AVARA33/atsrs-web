@@ -370,14 +370,12 @@ html[data-theme="light"] #certificatesPage .atsrs-document-pagination .jobs-page
 #certificatesPage .atsrs-document-col-status{width:126px}
 #certificatesPage .atsrs-document-col-actions{width:176px}
 #certificatesPage .atsrs-document-register thead th:last-child{text-align:center!important}
-#certificatesPage .atsrs-document-row-move{position:relative;display:grid;place-items:center;width:36px;height:36px;flex:0 0 36px;border:1px solid #30393e;border-radius:8px;background:#090c0e;color:#dfe6ea;overflow:hidden}
-#certificatesPage .atsrs-document-row-move:hover,#certificatesPage .atsrs-document-row-move:focus-within{border-color:var(--atsrs-field-accent,#59d36b);color:var(--atsrs-field-accent,#59d36b)}
-#certificatesPage .atsrs-document-row-move > i{font-size:18px;pointer-events:none}
-#certificatesPage .atsrs-document-row-move > select{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;background-image:none!important;color:transparent!important;opacity:0!important;appearance:none!important;-webkit-appearance:none!important;-moz-appearance:none!important;font-size:13px!important;cursor:pointer}
-#certificatesPage .atsrs-document-row-move > select::-ms-expand{display:none}
-#certificatesPage .atsrs-document-row-move > select option{font-size:13px;color:#172027;background:#fff}
-html[data-theme="light"] #certificatesPage .atsrs-document-row-move{border-color:#cbd6dc;background:#fff;color:#30414b}
-html[data-theme="light"] #certificatesPage .atsrs-document-row-move:hover,html[data-theme="light"] #certificatesPage .atsrs-document-row-move:focus-within{border-color:var(--atsrs-field-accent);color:var(--atsrs-field-accent)}
+.atsrs-document-folder-move-menu{position:fixed;z-index:10040;display:grid;min-width:170px;max-width:260px;padding:5px;border:1px solid #303a40;border-radius:8px;background:#111619;box-shadow:0 12px 30px rgba(0,0,0,.36)}
+body .atsrs-document-folder-move-menu .atsrs-document-folder-move-option{display:block!important;width:100%!important;min-height:32px!important;margin:0!important;padding:7px 10px!important;border:0!important;border-radius:5px!important;background:transparent!important;color:#edf2f4!important;text-align:left!important;font-size:13px!important;font-weight:600!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:none!important}
+body .atsrs-document-folder-move-menu .atsrs-document-folder-move-option:hover,body .atsrs-document-folder-move-menu .atsrs-document-folder-move-option:focus-visible{background:#20282c!important;color:#69d878!important;outline:0!important}
+html[data-theme="light"] .atsrs-document-folder-move-menu{border-color:#cdd7dc;background:#fff;box-shadow:0 12px 30px rgba(30,47,58,.18)}
+html[data-theme="light"] body .atsrs-document-folder-move-menu .atsrs-document-folder-move-option{color:#27343b!important}
+html[data-theme="light"] body .atsrs-document-folder-move-menu .atsrs-document-folder-move-option:hover,html[data-theme="light"] body .atsrs-document-folder-move-menu .atsrs-document-folder-move-option:focus-visible{background:#edf3f0!important;color:#168849!important}
 
 #certificatesPage .atsrs-document-register thead{background:#101416!important}
 #certificatesPage .atsrs-document-register thead th{
@@ -507,6 +505,7 @@ body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-a
   color:#edf2f4!important;
 }
 #certificatesPage .atsrs-document-row-actions > button > i{font-size:17px}
+#certificatesPage .atsrs-document-row-actions > button.atsrs-document-row-move > i{font-size:17px}
 #certificatesPage .atsrs-document-row-actions > button > span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button:hover,
 body #app.app:not(.hidden) #certificatesPage td:last-child .atsrs-document-row-actions > button:focus-visible{border-color:#4caf5c!important;color:#69d878!important}
