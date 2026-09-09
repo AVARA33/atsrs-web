@@ -118,7 +118,11 @@
 
   function getDocumentFolders(){
     var folders=typeof getData==='function'?getData(DOCUMENT_FOLDERS_KEY):[];
-    return (Array.isArray(folders)?folders:[]).filter(function(folder){return folder&&folder.id&&folder.name;});
+    var seen=new Set();
+    return (Array.isArray(folders)?folders:[]).filter(function(folder){
+      if(!folder||!folder.id||!folder.name||seen.has(String(folder.id)))return false;
+      seen.add(String(folder.id));return true;
+    });
   }
   function saveDocumentFolders(folders){if(typeof saveData==='function')saveData(DOCUMENT_FOLDERS_KEY,folders||[]);}
   function toggleDocumentFolderPin(id){
@@ -163,9 +167,12 @@
     var error=document.createElement('p');error.className='atsrs-document-folder-rename-error';error.setAttribute('aria-live','polite');
     var actions=document.createElement('div');actions.className='atsrs-document-folder-rename-actions';
     var remove=document.createElement('button');remove.type='button';remove.className='atsrs-document-folder-delete';remove.title=folderText('Delete folder','Qovluğu sil');remove.setAttribute('aria-label',remove.title+' '+folder.name);remove.innerHTML='<i class="ph ph-trash" aria-hidden="true"></i>';
-    var cancel=document.createElement('button');cancel.type='button';cancel.textContent=folderText('Cancel','Ləğv et');
-    var save=document.createElement('button');save.type='submit';save.className='primary';save.textContent=folderText('Save','Saxla');
-    var actionButtons=document.createElement('div');actionButtons.className='atsrs-document-folder-rename-action-buttons';actionButtons.append(save,cancel);
+    var save=document.createElement('button');save.type='submit';save.className='primary atsrs-document-folder-save';save.title=folderText('Save','Saxla');save.setAttribute('aria-label',save.title);save.innerHTML='<i class="ph ph-floppy-disk" aria-hidden="true"></i>';
+    var cancel=document.createElement('button');cancel.type='button';cancel.className='atsrs-document-folder-cancel';cancel.title=folderText('Cancel','Ləğv et');cancel.setAttribute('aria-label',cancel.title);cancel.innerHTML='<i class="ph ph-x" aria-hidden="true"></i>';
+    var pin=document.createElement('button');pin.type='button';pin.className='atsrs-document-folder-rename-pin';
+    function syncRenamePin(){pin.classList.toggle('is-pinned',!!folder.pinned);pin.title=folder.pinned?folderText('Unpin folder','Qovluğu pin-dən çıxar'):folderText('Pin folder','Qovluğu pin et');pin.setAttribute('aria-label',pin.title+' '+folder.name);pin.setAttribute('aria-pressed',folder.pinned?'true':'false');pin.innerHTML='<svg viewBox="0 0 256 256" aria-hidden="true"><path d="M224 104l-32 32-24-24-56 56v32l-16 16-56-56 16-16h32l56-56-24-24 32-32z"></path></svg>';}
+    syncRenamePin();pin.onclick=function(){folder.pinned=!folder.pinned;saveDocumentFolders(folders);syncRenamePin();};
+    var actionButtons=document.createElement('div');actionButtons.className='atsrs-document-folder-rename-action-buttons';actionButtons.append(save,cancel,pin);
     actions.append(remove,actionButtons);editor.append(field,error,actions);document.body.appendChild(editor);
     var rect=(anchor||document.body).getBoundingClientRect();
     var left=Math.min(Math.max(10,rect.left),window.innerWidth-editor.offsetWidth-10);

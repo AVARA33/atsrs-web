@@ -524,18 +524,31 @@
     });
     return merged;
   }
-  function entityId(item,index){
+  function entityId(item,index,key){
     if(item&&validUuid(item.atsrsId))return 'id:'+String(item.atsrsId);
+    if(/_documentFolders$/.test(String(key||''))&&item&&item.id){
+      return 'folder:'+String(item.id);
+    }
     return 'legacy:'+index+':'+stableJson(item);
   }
   function mergeEntityArrays(key,server,base,local){
+    function uniqueFolders(items){
+      if(!/_documentFolders$/.test(String(key||'')))return items;
+      var seen=new Set();
+      return items.filter(function(item,index){
+        var id=entityId(item,index,key);
+        if(seen.has(id))return false;
+        seen.add(id);return true;
+      });
+    }
+    server=uniqueFolders(server);base=uniqueFolders(base);local=uniqueFolders(local);
     var serverPositions=new Map();
     var basePositions=new Map();
-    server.forEach(function(item,index){serverPositions.set(entityId(item,index),index);});
-    base.forEach(function(item,index){basePositions.set(entityId(item,index),index);});
+    server.forEach(function(item,index){serverPositions.set(entityId(item,index,key),index);});
+    base.forEach(function(item,index){basePositions.set(entityId(item,index,key),index);});
     var merged=server.slice();
     local.forEach(function(item,index){
-      var id=entityId(item,index);
+      var id=entityId(item,index,key);
       var baseIndex=basePositions.get(id);
       var serverIndex=serverPositions.get(id);
       if(baseIndex===undefined){
@@ -552,8 +565,8 @@
       merged[serverIndex]=mergeObjectFields(key,merged[serverIndex],base[baseIndex],item,id);
     });
     base.forEach(function(item,index){
-      var id=entityId(item,index);
-      if(local.some(function(candidate,localIndex){return entityId(candidate,localIndex)===id;}))return;
+      var id=entityId(item,index,key);
+      if(local.some(function(candidate,localIndex){return entityId(candidate,localIndex,key)===id;}))return;
       var serverIndex=serverPositions.get(id);
       if(serverIndex===undefined)return;
       if(stableJson(merged[serverIndex])!==stableJson(item))throw conflictError(key,id);

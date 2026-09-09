@@ -248,7 +248,8 @@ html[data-theme] body .atsrs-document-folder-rename.atsrs-document-folder-rename
 .atsrs-document-folder-rename-error{min-height:14px;margin:5px 1px 0;color:#ff626f;font-size:10px;line-height:14px}
 .atsrs-document-folder-rename-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:3px}
 .atsrs-document-folder-rename-action-buttons{display:flex;gap:6px;order:1}
-.atsrs-document-folder-rename-actions button{min-width:68px;height:29px;margin:0;padding:0 10px;border:1px solid #344248;border-radius:7px;background:transparent;color:#c6d0d4;font-size:11px;font-weight:700;white-space:nowrap}
+.atsrs-document-folder-rename-actions button{display:grid;place-items:center;min-width:29px;width:29px;height:29px;margin:0;padding:0;border:1px solid #344248;border-radius:7px;background:transparent;color:#c6d0d4;font-size:14px;font-weight:700;white-space:nowrap}
+.atsrs-document-folder-rename-pin svg{display:block;width:13px;height:13px}.atsrs-document-folder-rename-pin path{fill:transparent;stroke:currentColor;stroke-width:18;stroke-linejoin:round}.atsrs-document-folder-rename-pin.is-pinned path{fill:currentColor;stroke:currentColor}
 .atsrs-document-folder-rename-actions .atsrs-document-folder-delete{display:grid;place-items:center;min-width:29px;width:29px;padding:0;border-color:#693139;color:#ff626f;order:2;margin-left:auto}
 .atsrs-document-folder-rename-actions .atsrs-document-folder-delete:hover,.atsrs-document-folder-rename-actions .atsrs-document-folder-delete:focus-visible{border-color:#ff626f;background:rgba(255,98,111,.08);color:#ff7a86;outline:0}
 .atsrs-document-folder-rename-actions button.primary{border-color:#25c763;background:#25c763;color:#06140b}
