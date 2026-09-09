@@ -8,8 +8,8 @@ function attachBalanceButton() {
   // its translated label: changing the interface language must not remove the
   // balance refresh control.
   if (!box || !label || !amount) return;
-  const button = document.createElement('button');
-  button.type='button'; button.dataset.atsrsBalanceHelper='true';
+  const button = box.querySelector('.job-monitor-balance-refresh') || document.createElement('button');
+  button.type='button'; button.dataset.atsrsBalanceHelper='true'; button.onclick=null;
   button.title='Check OpenAI balance in the background';
   const icon = document.createElementNS('http://www.w3.org/2000/svg','svg');
   icon.setAttribute('viewBox','0 0 24 24'); icon.setAttribute('width','15'); icon.setAttribute('height','15');
