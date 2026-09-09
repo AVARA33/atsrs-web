@@ -153,7 +153,6 @@
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
       if(id!=='all'&&id!=='unfiled'){
         var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id);};wrap.appendChild(edit);
-        var remove=document.createElement('button');remove.type='button';remove.className='atsrs-document-folder-delete';remove.title=folderText('Delete folder','Qovluğu sil');remove.setAttribute('aria-label',remove.title+' '+label);remove.innerHTML='<i class="ph ph-x"></i>';remove.onclick=function(event){event.stopPropagation();deleteDocumentFolder(id);};wrap.appendChild(remove);
       }
       bar.appendChild(wrap);
     }
