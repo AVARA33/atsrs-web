@@ -765,13 +765,6 @@
     var selectedCount=selectedCertIndices.size;
     if(count)count.textContent=selectedCount+' selected';
     if(remove){remove.disabled=selectedCount===0;remove.textContent=selectedCount?'Delete selected ('+selectedCount+')':'Delete selected';}
-    var mover=byId('moveSelectedCertsFolder');
-    if(mover){
-      mover.disabled=selectedCount===0;mover.replaceChildren();
-      var placeholder=document.createElement('option');placeholder.value='';placeholder.textContent=folderText('Move to folder…','Qovluğa köçür…');mover.appendChild(placeholder);
-      var allFolder=document.createElement('option');allFolder.value='all';allFolder.textContent='All';mover.appendChild(allFolder);
-      getDocumentFolders().forEach(function(folder){var option=document.createElement('option');option.value=folder.id;option.textContent=folder.name;mover.appendChild(option);});
-    }
     var all=byId('certSelectAll');
     if(all){
       var selectedVisible=visibleIndices.filter(function(index){return selectedCertIndices.has(index);}).length;
@@ -829,8 +822,6 @@
     }
     var remove=byId('deleteSelectedCertsBtn');
     if(remove&&!remove.dataset.bound){remove.dataset.bound='true';remove.addEventListener('click',deleteSelectedCertificates);}
-    var mover=byId('moveSelectedCertsFolder');
-    if(mover&&!mover.dataset.bound){mover.dataset.bound='true';mover.addEventListener('change',function(){var target=mover.value;mover.value='';moveSelectedCertificates(target);});}
     if(table&&!table.dataset.folderMoveBound){table.dataset.folderMoveBound='true';table.addEventListener('click',function(event){var trigger=event.target&&event.target.closest?event.target.closest('[data-cert-folder-trigger]'):null;if(!trigger)return;event.stopPropagation();openDocumentFolderMoveMenu(trigger,Number(trigger.getAttribute('data-cert-folder-trigger')));});}
   }
 
