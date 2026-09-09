@@ -121,6 +121,10 @@
     return (Array.isArray(folders)?folders:[]).filter(function(folder){return folder&&folder.id&&folder.name;});
   }
   function saveDocumentFolders(folders){if(typeof saveData==='function')saveData(DOCUMENT_FOLDERS_KEY,folders||[]);}
+  function toggleDocumentFolderPin(id){
+    var folders=getDocumentFolders(),folder=folders.find(function(entry){return entry.id===id;});if(!folder)return;
+    folder.pinned=!folder.pinned;saveDocumentFolders(folders);renderCertRows();
+  }
   function reorderDocumentFolder(draggedId,targetId,placeAfter){
     var folders=getDocumentFolders(),from=folders.findIndex(function(folder){return folder.id===draggedId;});
     if(from<0||draggedId===targetId)return;
@@ -183,7 +187,7 @@
     var folders=getDocumentFolders(),certs=getData('certs')||[];
     if(activeDocumentFolder!=='all'&&!folders.some(function(folder){return folder.id===activeDocumentFolder;}))activeDocumentFolder='all';
     bar.replaceChildren();
-    function tab(id,label,count){
+    function tab(id,label,count,folder){
       var wrap=document.createElement('div');wrap.className='atsrs-document-folder-tab-wrap';
       var button=document.createElement('button');button.type='button';button.className='atsrs-document-folder-tab';button.classList.toggle('active',activeDocumentFolder===id);button.setAttribute('aria-pressed',activeDocumentFolder===id?'true':'false');
       button.innerHTML='<i class="ph '+(id==='all'?'ph-files':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
@@ -195,11 +199,12 @@
         wrap.ondrop=function(event){event.preventDefault();var draggedId=event.dataTransfer.getData('text/plain'),rect=wrap.getBoundingClientRect();reorderDocumentFolder(draggedId,id,event.clientX>rect.left+rect.width/2);};
         wrap.ondragend=function(){bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-dragging','is-drop-before','is-drop-after');});};
         var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id,wrap);};wrap.appendChild(edit);
+        var pin=document.createElement('button');pin.type='button';pin.className='atsrs-document-folder-pin';pin.classList.toggle('is-pinned',!!(folder&&folder.pinned));pin.title=folder&&folder.pinned?folderText('Unpin folder','Qovluğu pin-dən çıxar'):folderText('Pin folder','Qovluğu pin et');pin.setAttribute('aria-label',pin.title+' '+label);pin.setAttribute('aria-pressed',folder&&folder.pinned?'true':'false');pin.innerHTML='<svg viewBox="0 0 256 256" aria-hidden="true"><path d="M224 104l-32 32-24-24-56 56v32l-16 16-56-56 16-16h32l56-56-24-24 32-32z"></path></svg>';pin.onclick=function(event){event.preventDefault();event.stopPropagation();toggleDocumentFolderPin(id);};wrap.appendChild(pin);
       }
       bar.appendChild(wrap);
     }
     tab('all','All',certs.length);
-    folders.forEach(function(folder){tab(folder.id,folder.name,certs.filter(function(item){return item.folderId===folder.id;}).length);});
+    folders.slice().sort(function(a,b){return Number(!!b.pinned)-Number(!!a.pinned);}).forEach(function(folder){tab(folder.id,folder.name,certs.filter(function(item){return item.folderId===folder.id;}).length,folder);});
     var add=document.createElement('button');add.type='button';add.className='atsrs-document-folder-add';add.title=folderText('New folder','Yeni qovluq');add.setAttribute('aria-label',add.title);add.innerHTML='<i class="ph ph-plus" aria-hidden="true"></i>';add.onclick=newDocumentFolder;bar.appendChild(add);
   }
   function moveSelectedCertificates(folderId){
