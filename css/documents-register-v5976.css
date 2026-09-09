@@ -209,6 +209,9 @@ body #app.app:not(.hidden) #certificatesPage .atsrs-document-folder-tab.active{h
 #certificatesPage .atsrs-document-folder-edit:hover,#certificatesPage .atsrs-document-folder-edit:focus-visible{background:transparent!important;color:#5fe58e;opacity:1;outline:0!important}
 #certificatesPage .atsrs-document-folder-tab-wrap:has(.atsrs-document-folder-edit) .atsrs-document-folder-tab{padding-right:25px!important}
 #certificatesPage .atsrs-document-folder-tab-wrap:has(.atsrs-document-folder-edit) .atsrs-document-folder-tab b{position:absolute;right:3px;bottom:3px;min-width:18px;height:17px;padding:0 4px;font-size:9px}
+html body.personal-mode #app.app:not(.hidden) > .main > #certificatesPage .atsrs-document-folder-tab{height:38px!important;min-height:38px!important;max-height:38px!important;margin:0!important}
+html body.personal-mode #app.app:not(.hidden) > .main > #certificatesPage .atsrs-document-folder-edit{width:14px!important;min-width:14px!important;max-width:14px!important;height:14px!important;min-height:14px!important;max-height:14px!important;margin:0!important;padding:0!important}
+html body.personal-mode #app.app:not(.hidden) > .main > #certificatesPage .atsrs-document-folder-add{width:30px!important;min-width:30px!important;max-width:30px!important;height:36px!important;min-height:36px!important;max-height:36px!important;margin:0 0 0 2px!important;padding:0!important}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-edit{color:#53636c}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-edit:hover,html[data-theme="light"] #certificatesPage .atsrs-document-folder-edit:focus-visible{background:transparent!important;color:#168849;opacity:1}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-bar{background:#e8eef2}
