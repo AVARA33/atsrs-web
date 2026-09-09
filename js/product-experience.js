@@ -119,7 +119,9 @@
 
   function applyImageScale(scale){
     if(!imageContent||!imageContent.naturalWidth)return;
-    imageScale=Math.max(.5,Math.min(3,scale));
+    var minimumScale=Math.max(.0001,imageFitScale*zoomMinPercent/100);
+    var maximumScale=Math.max(minimumScale,imageFitScale*zoomMaxPercent/100);
+    imageScale=Math.max(minimumScale,Math.min(maximumScale,scale));
     var width=Math.round(imageContent.naturalWidth*imageScale);
     var height=Math.round(imageContent.naturalHeight*imageScale);
     var quarterTurn=imageRotation%180!==0;
