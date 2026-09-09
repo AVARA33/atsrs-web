@@ -453,7 +453,7 @@ function openApp(){
   return Promise.resolve(operation());
 }
 function syncPersonalHeadingHierarchy(page){
-  const personal=isPersonalMode(),legal=personal&&(page==="privacy"||page==="dataRights");
+  const personal=isPersonalMode(),legal=personal&&(page==="privacy"||page==="dataRights"||page==="billing");
   document.body.classList.toggle("atsrs-personal-legal-route",legal);
   pageTitle.removeAttribute("role");pageTitle.removeAttribute("aria-level");
   document.querySelectorAll("#dashboardPage h3,#dashboardPage h4,#certificatesPage h3,#certificatesPage h4,#refsPage h3,#refsPage h4,#profilePage h3,#profilePage h4,#introPage h3,#introPage h4").forEach(h=>{h.removeAttribute("role");h.removeAttribute("aria-level")});
@@ -467,7 +467,7 @@ function syncPersonalHeadingHierarchy(page){
   });
 }
 function hydrateLegalFrame(page){
-  if(page!=="privacy"&&page!=="dataRights")return;
+  if(page!=="privacy"&&page!=="dataRights"&&page!=="billing")return;
   var frame=document.querySelector("#"+page+"Page .legal-app-frame");
   if(!frame||frame.dataset.legalState==="loading"||frame.dataset.legalState==="ready")return;
   var source=frame.getAttribute("data-legal-source");
@@ -475,14 +475,14 @@ function hydrateLegalFrame(page){
   frame.dataset.legalState="loading";
   frame.onload=function(){frame.dataset.legalState="ready";};
   frame.onerror=function(){
-    var title=page==="privacy"?"Privacy Notice":"Data Rights";
+    var title=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":"Subscription and Billing Terms";
     frame.srcdoc='<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:24px;background:#07111d;color:#eef4fa;font:16px/1.5 Arial,sans-serif}a{color:#7bc3ff}</style></head><body><p>'+title+' could not be loaded.</p><p><a href="'+source+'" target="_top">Open '+title+'</a></p></body></html>';
     frame.dataset.legalState="error";
   };
   frame.src=source;
 }
-function showPage(page,btn){let personal=(localStorage.getItem("atsrs_use_mode")||useMode)==="personal";if(personal&&page==="developer"&&window.__atsrsDeveloperAccess!==true){page="dashboard";btn=navDashboard;}if(personal&&(page==="personnel"||page==="candidates"||page==="projects")){page="dashboard";btn=navDashboard;}if(personal&&(page==="compliance"||page==="security")){page="profile";btn=navProfile;}let requestedPage=page,renderedPage=page;localStorage.setItem("atsrs_current_page",requestedPage);let routeUrl=new URL(location.href);routeUrl.searchParams.set("route",requestedPage);if(requestedPage!=="resource"){routeUrl.searchParams.delete("resource");document.querySelectorAll("#sidebarQuickLinks [data-resource]").forEach(link=>{link.classList.remove("active","is-active");link.removeAttribute("aria-current")});}if(requestedPage!=="profile")["tab","request","share_id","intent"].forEach(key=>routeUrl.searchParams.delete(key));history.replaceState({},"",routeUrl.pathname+routeUrl.search+routeUrl.hash);document.body.dataset.atsrsAccountRoute=personal&&requestedPage==="profile"?requestedPage:"";document.querySelectorAll("#app > main.main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(renderedPage+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(personal&&requestedPage==="profile")showAccountTab("general");pageTitle.innerText=requestedPage==="privacy"?"Privacy Notice":requestedPage==="dataRights"?"Data Rights":btn.innerText;hydrateLegalFrame(renderedPage);renderAll();syncPersonalHeadingHierarchy(renderedPage)}
-function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,projects:navProjects,certificates:navCertificates,refs:navRefs,compliance:navCompliance,security:navCompliance,reports:navReports,profile:navProfile,jobs:navJobs,employers:navEmployers,recruiters:navRecruiters};showPage(map[page]?page:"intro",map[page]||navIntro)}
+function showPage(page,btn){let personal=(localStorage.getItem("atsrs_use_mode")||useMode)==="personal";if(personal&&page==="developer"&&window.__atsrsDeveloperAccess!==true){page="dashboard";btn=navDashboard;}if(personal&&(page==="personnel"||page==="candidates"||page==="projects")){page="dashboard";btn=navDashboard;}if(personal&&(page==="compliance"||page==="security")){page="profile";btn=navProfile;}let requestedPage=page,renderedPage=page;localStorage.setItem("atsrs_current_page",requestedPage);let routeUrl=new URL(location.href);routeUrl.searchParams.set("route",requestedPage);if(requestedPage!=="resource"){routeUrl.searchParams.delete("resource");document.querySelectorAll("#sidebarQuickLinks [data-resource]").forEach(link=>{link.classList.remove("active","is-active");link.removeAttribute("aria-current")});}if(requestedPage!=="profile")["tab","request","share_id","intent"].forEach(key=>routeUrl.searchParams.delete(key));history.replaceState({},"",routeUrl.pathname+routeUrl.search+routeUrl.hash);document.body.dataset.atsrsAccountRoute=personal&&requestedPage==="profile"?requestedPage:"";document.querySelectorAll("#app > main.main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(renderedPage+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(personal&&requestedPage==="profile")showAccountTab("general");pageTitle.innerText=requestedPage==="privacy"?"Privacy Notice":requestedPage==="dataRights"?"Data Rights":requestedPage==="billing"?"Subscription and Billing Terms":btn.innerText;hydrateLegalFrame(renderedPage);renderAll();syncPersonalHeadingHierarchy(renderedPage)}
+function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,billing:navJobs,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,projects:navProjects,certificates:navCertificates,refs:navRefs,compliance:navCompliance,security:navCompliance,reports:navReports,profile:navProfile,jobs:navJobs,employers:navEmployers,recruiters:navRecruiters};showPage(map[page]?page:"intro",map[page]||navIntro)}
 if(!window.__atsrsLegalNavigationBound){
   window.__atsrsLegalNavigationBound=true;
   window.addEventListener("message",function(event){

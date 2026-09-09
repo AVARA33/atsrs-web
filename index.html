@@ -1078,7 +1078,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <div class="jobs-notice" role="note">
       <i class="ph ph-shield-check" aria-hidden="true"></i>
       <div><strong>No candidate placement fee</strong><span>ATSRS does not charge candidates commission or placement fees.</span></div>
-      <a href="billing-terms.html#candidate-fees">View billing terms <span aria-hidden="true">→</span></a>
+      <a href="billing-terms.html#candidate-fees" onclick="event.preventDefault();showPage('billing',navJobs)">View billing terms <span aria-hidden="true">→</span></a>
     </div>
     <div class="jobs-pagination-slot">
       <nav id="jobsPaginationTop" class="jobs-pagination jobs-pagination-top hidden" aria-label="Jobs pagination" data-jobs-pagination></nav>
@@ -1182,6 +1182,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 
 <section id="dataRightsPage" class="hidden legal-app-page">
   <iframe class="legal-app-frame" src="about:blank" data-legal-source="/data-deletion.html?embedded=1&amp;v=560" title="Data Rights"></iframe>
+</section>
+
+<section id="billingPage" class="hidden legal-app-page">
+  <iframe class="legal-app-frame" src="about:blank" data-legal-source="/billing-terms.html?embedded=1&amp;v=560#candidate-fees" title="Subscription and Billing Terms"></iframe>
 </section>
 
 <section id="developerPage" class="hidden developer-page" aria-labelledby="developerPageTitle">
@@ -2541,7 +2545,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/normalized-read-canary-config.js?v=409"></script>
 <script src="js/normalized-read-runtime.js?v=409"></script>
 <script src="js/expiry-status.js?v=416"></script>
-<script src="js/storage.js?v=609"></script>
+<script src="js/storage.js?v=610"></script>
 <script src="js/public-landing.js?v=5884"></script>
 <script src="js/projects.js?v=503"></script>
 <script src="js/ui.js?v=568"></script>
