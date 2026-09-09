@@ -18,7 +18,7 @@
   }
 
   function activeModal(){
-    var candidates=Array.prototype.slice.call(document.querySelectorAll('dialog[open],[role="dialog"][aria-modal="true"]')).filter(visible);
+    var candidates=Array.prototype.slice.call(document.querySelectorAll('dialog[open],[role="dialog"][aria-modal="true"],.atsrs-document-folder-rename')).filter(visible);
     if(!candidates.length)return null;
     candidates.sort(function(a,b){
       var az=parseInt(getComputedStyle(a).zIndex,10)||0,bz=parseInt(getComputedStyle(b).zIndex,10)||0;
