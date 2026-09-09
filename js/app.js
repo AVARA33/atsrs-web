@@ -148,17 +148,17 @@
     bar.replaceChildren();
     function tab(id,label,count){
       var wrap=document.createElement('div');wrap.className='atsrs-document-folder-tab-wrap';
-      var button=document.createElement('button');button.type='button';button.className='action atsrs-document-folder-tab';button.classList.toggle('active',activeDocumentFolder===id);button.setAttribute('aria-pressed',activeDocumentFolder===id?'true':'false');
+      var button=document.createElement('button');button.type='button';button.className='atsrs-document-folder-tab';button.classList.toggle('active',activeDocumentFolder===id);button.setAttribute('aria-pressed',activeDocumentFolder===id?'true':'false');
       button.innerHTML='<i class="ph '+(id==='all'?'ph-files':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
       if(id!=='all'){
-        var edit=document.createElement('button');edit.type='button';edit.className='action atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id);};wrap.appendChild(edit);
+        var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id);};wrap.appendChild(edit);
       }
       bar.appendChild(wrap);
     }
     tab('all','All',certs.length);
     folders.forEach(function(folder){tab(folder.id,folder.name,certs.filter(function(item){return item.folderId===folder.id;}).length);});
-    var add=document.createElement('button');add.type='button';add.className='action atsrs-document-folder-add';add.title=folderText('New folder','Yeni qovluq');add.setAttribute('aria-label',add.title);add.innerHTML='<i class="ph ph-plus" aria-hidden="true"></i>';add.onclick=newDocumentFolder;bar.appendChild(add);
+    var add=document.createElement('button');add.type='button';add.className='atsrs-document-folder-add';add.title=folderText('New folder','Yeni qovluq');add.setAttribute('aria-label',add.title);add.innerHTML='<i class="ph ph-plus" aria-hidden="true"></i>';add.onclick=newDocumentFolder;bar.appendChild(add);
   }
   function moveSelectedCertificates(folderId){
     if(!folderId)return;var certs=getData('certs')||[];
