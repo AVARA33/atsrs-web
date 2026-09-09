@@ -12,7 +12,7 @@ assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
 assert.match(html, /css\/documents-register-v5976\.css\?v=6102/);
-assert.match(html, /js\/app\.js\?v=6102/);
+assert.match(html, /js\/app\.js\?v=6103/);
 
 assert.match(html, /id="documentFolderBar"/);
 assert.match(html, /id="moveSelectedCertsFolder"/);
