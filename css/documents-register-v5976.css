@@ -205,11 +205,13 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
 #certificatesPage .atsrs-document-folder-tab.active b{background:rgba(37,199,99,.16);color:#5fe58e}
 #certificatesPage .atsrs-document-folder-add{display:grid;place-items:center;align-self:flex-end;flex:0 0 34px;width:34px!important;min-width:34px!important;max-width:34px!important;height:42px!important;min-height:42px!important;margin:0 0 0 2px!important;padding:0!important;border:0!important;border-radius:0!important;color:#b7c2c8!important;background:transparent!important;box-shadow:none!important}
 #certificatesPage .atsrs-document-folder-add:hover,#certificatesPage .atsrs-document-folder-add:focus-visible{color:#fff!important;background:transparent!important;outline:0!important}
-#certificatesPage .atsrs-document-folder-edit{display:grid;place-items:center;position:absolute;right:8px;top:11px;width:22px;height:22px;padding:0;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#aeb8bf;opacity:.72;z-index:3}
+#certificatesPage .atsrs-document-folder-edit{display:grid;place-items:center;position:absolute;right:5px;top:7px;width:18px;height:18px;padding:0;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#aeb8bf;font-size:13px!important;opacity:.72;z-index:3}
 #certificatesPage .atsrs-document-folder-edit:hover,#certificatesPage .atsrs-document-folder-edit:focus-visible{background:transparent!important;color:#5fe58e;opacity:1;outline:0!important}
 #certificatesPage .atsrs-document-folder-tab-wrap:has(.atsrs-document-folder-edit) .atsrs-document-folder-tab{padding-right:38px!important}
+#certificatesPage .atsrs-document-folder-tab-wrap:has(.atsrs-document-folder-edit)::after{content:'';position:absolute;right:-2px;bottom:9px;width:1px;height:22px;background:#2a3236;z-index:4}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-edit{color:#53636c}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-edit:hover,html[data-theme="light"] #certificatesPage .atsrs-document-folder-edit:focus-visible{background:transparent!important;color:#168849;opacity:1}
+html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab-wrap:has(.atsrs-document-folder-edit)::after{background:#cbd6dc}
 #certificatesPage #moveSelectedCertsFolder{height:40px;min-width:165px;padding:0 34px 0 12px;border:1px solid #30383d;border-radius:8px;background:#111518;color:#dfe5e8}
 #certificatesPage #moveSelectedCertsFolder:disabled{opacity:.42}
 html[data-theme="light"] #certificatesPage .atsrs-document-folder-bar{background:#e8eef2}

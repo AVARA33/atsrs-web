@@ -144,31 +144,30 @@
   function renderDocumentFolders(){
     var bar=byId('documentFolderBar');if(!bar)return;
     var folders=getDocumentFolders(),certs=getData('certs')||[];
-    if(activeDocumentFolder!=='all'&&activeDocumentFolder!=='unfiled'&&!folders.some(function(folder){return folder.id===activeDocumentFolder;}))activeDocumentFolder='all';
+    if(activeDocumentFolder!=='all'&&!folders.some(function(folder){return folder.id===activeDocumentFolder;}))activeDocumentFolder='all';
     bar.replaceChildren();
     function tab(id,label,count){
       var wrap=document.createElement('div');wrap.className='atsrs-document-folder-tab-wrap';
       var button=document.createElement('button');button.type='button';button.className='atsrs-document-folder-tab';button.classList.toggle('active',activeDocumentFolder===id);button.setAttribute('aria-pressed',activeDocumentFolder===id?'true':'false');
-      button.innerHTML='<i class="ph '+(id==='all'?'ph-files':id==='unfiled'?'ph-folder-dashed':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
+      button.innerHTML='<i class="ph '+(id==='all'?'ph-files':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
-      if(id!=='all'&&id!=='unfiled'){
+      if(id!=='all'){
         var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id);};wrap.appendChild(edit);
       }
       bar.appendChild(wrap);
     }
     tab('all','All',certs.length);
-    tab('unfiled',folderText('Unfiled','Qovluqsuz'),certs.filter(function(item){return !item.folderId;}).length);
     folders.forEach(function(folder){tab(folder.id,folder.name,certs.filter(function(item){return item.folderId===folder.id;}).length);});
     var add=document.createElement('button');add.type='button';add.className='atsrs-document-folder-add';add.title=folderText('New folder','Yeni qovluq');add.setAttribute('aria-label',add.title);add.innerHTML='<i class="ph ph-plus" aria-hidden="true"></i>';add.onclick=newDocumentFolder;bar.appendChild(add);
   }
   function moveSelectedCertificates(folderId){
     if(!folderId)return;var certs=getData('certs')||[];
-    selectedCertIndices.forEach(function(index){if(certs[index]){if(folderId==='unfiled')delete certs[index].folderId;else certs[index].folderId=folderId;}});
+    selectedCertIndices.forEach(function(index){if(certs[index]){if(folderId==='all')delete certs[index].folderId;else certs[index].folderId=folderId;}});
     saveData('certs',certs);selectedCertIndices.clear();registerPage=1;renderCertRows();
   }
   function moveCertificateToFolder(index,folderId){
     var certs=getData('certs')||[];if(!certs[index]||!folderId)return;
-    if(folderId==='unfiled')delete certs[index].folderId;else certs[index].folderId=folderId;
+    if(folderId==='all')delete certs[index].folderId;else certs[index].folderId=folderId;
     saveData('certs',certs);registerPage=1;renderCertRows();
   }
   var documentFolderMoveMenu=null;
@@ -181,7 +180,7 @@
     closeDocumentFolderMoveMenu();
     var item=(getData('certs')||[])[index];if(!item)return;
     var targets=[];
-    if(item.folderId)targets.push({id:'unfiled',name:folderText('Unfiled','Qovluqsuz')});
+    if(item.folderId)targets.push({id:'all',name:'All'});
     getDocumentFolders().forEach(function(folder){if(folder.id!==item.folderId)targets.push({id:folder.id,name:folder.name});});
     if(!targets.length)return;
     var menu=document.createElement('div');menu.className='atsrs-document-folder-move-menu';menu.setAttribute('role','menu');menu.trigger=trigger;
@@ -770,7 +769,7 @@
     if(mover){
       mover.disabled=selectedCount===0;mover.replaceChildren();
       var placeholder=document.createElement('option');placeholder.value='';placeholder.textContent=folderText('Move to folder…','Qovluğa köçür…');mover.appendChild(placeholder);
-      var unfiled=document.createElement('option');unfiled.value='unfiled';unfiled.textContent=folderText('Unfiled','Qovluqsuz');mover.appendChild(unfiled);
+      var allFolder=document.createElement('option');allFolder.value='all';allFolder.textContent='All';mover.appendChild(allFolder);
       getDocumentFolders().forEach(function(folder){var option=document.createElement('option');option.value=folder.id;option.textContent=folder.name;mover.appendChild(option);});
     }
     var all=byId('certSelectAll');
@@ -1078,7 +1077,7 @@
       provider:(byId('cProvider')?byId('cProvider').value:''),
       issue:(byId('cIssue')?byId('cIssue').value:''),
       expiry:(byId('cExpiryNA')&&byId('cExpiryNA').checked)?'N/A':(byId('cExpiry')?byId('cExpiry').value:''),
-      folderId:(previous&&previous.folderId)||(activeDocumentFolder!=='all'&&activeDocumentFolder!=='unfiled'?activeDocumentFolder:'')
+      folderId:(previous&&previous.folderId)||(activeDocumentFolder!=='all'?activeDocumentFolder:'')
     });
     if(window.atsrsPendingPaymentCard===true)item.paymentCard=true;
     var cardSafety=window.atsrsPaymentCardSafety;
@@ -1236,8 +1235,7 @@
     updateDocumentSummary(allRows);
     var rows=allRows;
     renderDocumentFolders();
-    if(activeDocumentFolder==='unfiled')rows=rows.filter(function(row){return !row.item.folderId;});
-    else if(activeDocumentFolder!=='all')rows=rows.filter(function(row){return row.item.folderId===activeDocumentFolder;});
+    if(activeDocumentFolder!=='all')rows=rows.filter(function(row){return row.item.folderId===activeDocumentFolder;});
     if(registerFilter)rows=rows.filter(function(row){return certificateSearchText(row.item,row.statusData).indexOf(registerFilter)!==-1;});
     if(registerSort.key)rows.sort(function(a,b){var result=compareCertificateRows(a,b,registerSort.key);return result===0?a.index-b.index:result*registerSort.direction;});
     var filteredCount=rows.length;
