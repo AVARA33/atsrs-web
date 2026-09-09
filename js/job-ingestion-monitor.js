@@ -9,7 +9,7 @@
  function reconcileBalanceRefreshButton(host){
   var helper=host&&host.querySelector('[data-atsrs-balance-helper]');if(!helper)return;
   var native=host.querySelector('.job-monitor-balance-refresh:not([data-atsrs-balance-helper])');if(native)native.remove();
-  helper.classList.add('job-monitor-balance-refresh');helper.removeAttribute('style');
+  helper.classList.add('job-monitor-balance-refresh');
  }
  function readCache(){
   try{var parsed=JSON.parse(sessionStorage.getItem(cacheKey())||'null');return parsed&&parsed.data&&Number.isFinite(parsed.savedAt)?parsed:null;}
