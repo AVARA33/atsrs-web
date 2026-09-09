@@ -3,6 +3,10 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../js/job-ingestion-monitor.js'),'utf8');
+const monitorCss=fs.readFileSync(require('node:path').join(__dirname,'../css/job-ingestion-monitor.css'),'utf8');
+assert.match(source,/\.job-monitor-balance-refresh:not\(\[data-atsrs-balance-helper\]\)/);
+assert.doesNotMatch(source,/helper\.removeAttribute\('style'\)/);
+assert.match(monitorCss,/button\[data-atsrs-balance-helper\][^{]*\{[^}]*width:26px!important[^}]*height:26px!important/);
 function setup(rpc,queueRpc=async()=>({data:{}})){
  class Node{constructor(tag){this.tag=tag;this.children=[];this.textContent='';this.classList={add(){},remove(){}};}appendChild(n){this.children.push(n);}replaceChildren(...nodes){this.children=nodes;}setAttribute(){}focus(){}querySelector(q){for(const n of this.children){if(n.tag===q||(q==='.'+n.className))return n;const nested=n.querySelector(q);if(nested)return nested;}return null;}}
  const host=new Node('section'),window={__atsrsDeveloperAccess:true,__atsrsDeveloperAccessUserId:'owner',supabaseClient:{rpc:name=>name==='atsrs_get_hr_queue_preview'?queueRpc(name):rpc(name)}};
