@@ -196,6 +196,13 @@ body.personal-mode #app.app:not(.hidden) #certificatesPage > .panel:last-child{
 
 #certificatesPage .atsrs-document-folder-bar{display:flex;align-items:flex-end;justify-content:flex-start;gap:2px;min-height:44px;padding:0 12px;overflow-x:auto;overflow-y:hidden;border-bottom:1px solid var(--document-divider);background:#101416}
 #certificatesPage .atsrs-document-folder-tab-wrap{display:flex;align-items:flex-end;flex:0 0 auto;height:44px;position:relative}
+#certificatesPage .atsrs-document-folder-tab-wrap[draggable="true"]{cursor:grab}
+#certificatesPage .atsrs-document-folder-tab-wrap[draggable="true"]:active{cursor:grabbing}
+#certificatesPage .atsrs-document-folder-tab-wrap.is-dragging{opacity:.45}
+#certificatesPage .atsrs-document-folder-tab-wrap.is-drop-before::before,#certificatesPage .atsrs-document-folder-tab-wrap.is-drop-after::after{content:'';position:absolute;top:5px;bottom:4px;width:2px;border-radius:2px;background:#25c763;z-index:5}
+#certificatesPage .atsrs-document-folder-tab-wrap.is-drop-before::before{left:-1px}
+#certificatesPage .atsrs-document-folder-tab-wrap.is-drop-after::after{right:-1px}
+html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab-wrap.is-drop-before::before,html[data-theme="light"] #certificatesPage .atsrs-document-folder-tab-wrap.is-drop-after::after{background:#167bd3}
 #certificatesPage .atsrs-document-folder-tab{display:flex!important;align-items:center!important;gap:7px!important;flex:0 0 142px!important;width:142px!important;min-width:142px!important;max-width:142px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0 11px!important;border:1px solid transparent!important;border-radius:8px 8px 0 0!important;background:transparent!important;color:#9ca8af!important;font-size:13px!important;font-weight:700!important;white-space:nowrap!important;box-sizing:border-box!important;position:relative;transition:background .14s ease,color .14s ease,border-color .14s ease,box-shadow .14s ease}
 #certificatesPage .atsrs-document-folder-tab span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 #certificatesPage .atsrs-document-folder-tab:hover{background:#171c1f!important;color:#e5ece8!important}

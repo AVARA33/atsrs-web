@@ -121,6 +121,13 @@
     return (Array.isArray(folders)?folders:[]).filter(function(folder){return folder&&folder.id&&folder.name;});
   }
   function saveDocumentFolders(folders){if(typeof saveData==='function')saveData(DOCUMENT_FOLDERS_KEY,folders||[]);}
+  function reorderDocumentFolder(draggedId,targetId,placeAfter){
+    var folders=getDocumentFolders(),from=folders.findIndex(function(folder){return folder.id===draggedId;});
+    if(from<0||draggedId===targetId)return;
+    var moved=folders.splice(from,1)[0],target=folders.findIndex(function(folder){return folder.id===targetId;});
+    if(target<0)return;
+    folders.splice(target+(placeAfter?1:0),0,moved);saveDocumentFolders(folders);renderCertRows();
+  }
   function folderText(en,az){return window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?az:en;}
   function newDocumentFolder(){
     var name=String(window.prompt(folderText('Folder name','Qovluğun adı'))||'').trim();if(!name)return;
@@ -182,6 +189,11 @@
       button.innerHTML='<i class="ph '+(id==='all'?'ph-files':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
       if(id!=='all'){
+        wrap.draggable=true;wrap.dataset.folderId=id;wrap.setAttribute('aria-label',folderText('Drag to reorder folder ','Sıralamaq üçün qovluğu sürükləyin ')+label);
+        wrap.ondragstart=function(event){wrap.classList.add('is-dragging');event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',id);};
+        wrap.ondragover=function(event){event.preventDefault();event.dataTransfer.dropEffect='move';var rect=wrap.getBoundingClientRect(),after=event.clientX>rect.left+rect.width/2;bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-drop-before','is-drop-after');});wrap.classList.add(after?'is-drop-after':'is-drop-before');};
+        wrap.ondrop=function(event){event.preventDefault();var draggedId=event.dataTransfer.getData('text/plain'),rect=wrap.getBoundingClientRect();reorderDocumentFolder(draggedId,id,event.clientX>rect.left+rect.width/2);};
+        wrap.ondragend=function(){bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-dragging','is-drop-before','is-drop-after');});};
         var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id,wrap);};wrap.appendChild(edit);
       }
       bar.appendChild(wrap);
