@@ -131,9 +131,9 @@
   }
   function deleteDocumentFolder(id){
     var folders=getDocumentFolders(),folder=folders.find(function(entry){return entry.id===id;});if(!folder)return;
-    if(!window.confirm(folderText('Delete folder "'+folder.name+'"? Its documents will move to Unfiled.','"'+folder.name+'" qovluğu silinsin? Sənədlər Qovluqsuz bölməsinə keçəcək.')))return;
+    if(!window.confirm(folderText('Delete folder "'+folder.name+'"? Its documents will remain in All.','"'+folder.name+'" qovluğu silinsin? Sənədlər All bölməsində qalacaq.')))return;
     var certs=getData('certs')||[];certs.forEach(function(item){if(item.folderId===id)delete item.folderId;});saveData('certs',certs);
-    saveDocumentFolders(folders.filter(function(entry){return entry.id!==id;}));activeDocumentFolder='all';selectedCertIndices.clear();renderCertRows();
+    saveDocumentFolders(folders.filter(function(entry){return entry.id!==id;}));activeDocumentFolder='all';selectedCertIndices.clear();closeDocumentFolderRename();renderCertRows();
   }
   function closeDocumentFolderRename(){
     var editor=document.querySelector('.atsrs-document-folder-rename');
@@ -151,13 +151,16 @@
     var input=document.createElement('input');input.type='text';input.value=folder.name;input.maxLength=48;input.setAttribute('aria-label',folderText('Folder name','Qovluğun adı'));input.setAttribute('data-atsrs-no-field-shell','');input.autocomplete='off';field.append(fieldLabel,input);
     var error=document.createElement('p');error.className='atsrs-document-folder-rename-error';error.setAttribute('aria-live','polite');
     var actions=document.createElement('div');actions.className='atsrs-document-folder-rename-actions';
+    var remove=document.createElement('button');remove.type='button';remove.className='atsrs-document-folder-delete';remove.title=folderText('Delete folder','Qovluğu sil');remove.setAttribute('aria-label',remove.title+' '+folder.name);remove.innerHTML='<i class="ph ph-trash" aria-hidden="true"></i>';
     var cancel=document.createElement('button');cancel.type='button';cancel.textContent=folderText('Cancel','Ləğv et');
     var save=document.createElement('button');save.type='submit';save.className='primary';save.textContent=folderText('Save','Saxla');
-    actions.append(cancel,save);editor.append(field,error,actions);document.body.appendChild(editor);
+    var actionButtons=document.createElement('div');actionButtons.className='atsrs-document-folder-rename-action-buttons';actionButtons.append(cancel,save);
+    actions.append(remove,actionButtons);editor.append(field,error,actions);document.body.appendChild(editor);
     var rect=(anchor||document.body).getBoundingClientRect();
     var left=Math.min(Math.max(10,rect.left),window.innerWidth-editor.offsetWidth-10);
     editor.style.left=left+'px';editor.style.top=Math.min(rect.bottom+6,window.innerHeight-editor.offsetHeight-10)+'px';
     cancel.onclick=closeDocumentFolderRename;
+    remove.onclick=function(){deleteDocumentFolder(id);};
     editor.onsubmit=function(event){
       event.preventDefault();var name=String(input.value||'').trim();
       if(!name){error.textContent=folderText('Enter a folder name.','Qovluğun adını yazın.');input.focus();return;}

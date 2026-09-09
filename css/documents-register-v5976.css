@@ -229,8 +229,11 @@ html[data-theme="light"] #certificatesPage .atsrs-document-folder-add{color:#455
 html[data-theme] body .atsrs-document-folder-rename.atsrs-document-folder-rename input:focus,
 html[data-theme] body .atsrs-document-folder-rename.atsrs-document-folder-rename input:focus-visible{border-color:#3b4a50!important;outline:0!important;box-shadow:none!important}
 .atsrs-document-folder-rename-error{min-height:14px;margin:5px 1px 0;color:#ff626f;font-size:10px;line-height:14px}
-.atsrs-document-folder-rename-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:3px}
+.atsrs-document-folder-rename-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:3px}
+.atsrs-document-folder-rename-action-buttons{display:flex;gap:6px}
 .atsrs-document-folder-rename-actions button{min-width:58px;height:29px;margin:0;padding:0 10px;border:1px solid #344248;border-radius:7px;background:transparent;color:#c6d0d4;font-size:11px;font-weight:700}
+.atsrs-document-folder-rename-actions .atsrs-document-folder-delete{display:grid;place-items:center;min-width:29px;width:29px;padding:0;border-color:#693139;color:#ff626f}
+.atsrs-document-folder-rename-actions .atsrs-document-folder-delete:hover,.atsrs-document-folder-rename-actions .atsrs-document-folder-delete:focus-visible{border-color:#ff626f;background:rgba(255,98,111,.08);color:#ff7a86;outline:0}
 .atsrs-document-folder-rename-actions button.primary{border-color:#25c763;background:#25c763;color:#06140b}
 .atsrs-document-folder-rename-actions button:hover{border-color:#5a6c74;color:#fff}.atsrs-document-folder-rename-actions button.primary:hover{border-color:#52dc83;background:#52dc83;color:#06140b}
 html[data-theme="light"] .atsrs-document-folder-rename{border-color:#cbd8e6;background:#fff;color:#243142;box-shadow:0 18px 40px rgba(40,58,78,.2)}
@@ -239,6 +242,7 @@ html[data-theme="light"] .atsrs-document-folder-rename input{border-color:#b8c6c
 html[data-theme="light"] body .atsrs-document-folder-rename.atsrs-document-folder-rename input:focus,
 html[data-theme="light"] body .atsrs-document-folder-rename.atsrs-document-folder-rename input:focus-visible{border-color:#b8c6ce!important;outline:0!important;box-shadow:none!important}
 html[data-theme="light"] .atsrs-document-folder-rename-actions button{border-color:#b8c6ce;color:#3d4d56}html[data-theme="light"] .atsrs-document-folder-rename-actions button.primary{border-color:#168849;background:#168849;color:#fff}
+html[data-theme="light"] .atsrs-document-folder-rename-actions .atsrs-document-folder-delete{border-color:#e1a8ae;background:transparent;color:#c72d3b}
 @media(max-width:760px){#certificatesPage .atsrs-document-folder-bar{padding-left:10px;padding-right:10px}}
 
 #certificatesPage .atsrs-document-register-toolbar{
