@@ -95,7 +95,7 @@
     if (value !== next) write(next);
   }
   function render(scope) {
-    scope.lang = locale;
+    if (scopes.includes(scope)) scope.lang = locale;
     for (const attribute of attributes) update(scope, attribute, () => scope.getAttribute(attribute), value => scope.setAttribute(attribute, value));
     const walker = document.createTreeWalker(scope, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
     let node;
@@ -133,12 +133,22 @@
   }
   let scheduled = false;
   const dirty = new Set();
+  function queueDirty(node, scope) {
+    let candidate = node && node.nodeType === Node.ELEMENT_NODE ? node : node && node.parentElement;
+    if (!candidate || !scope.contains(candidate)) candidate = scope;
+    for (const root of dirty) if (root === candidate || root.contains(candidate)) return;
+    for (const root of Array.from(dirty)) if (candidate.contains(root)) dirty.delete(root);
+    dirty.add(candidate);
+  }
   const observer = new MutationObserver(mutations => {
     for (const mutation of mutations) {
       const element = mutation.target.nodeType === 1 ? mutation.target : mutation.target.parentElement;
       if (element?.closest('.atsrs-locale-control')) continue;
       const scope = scopes.find(root => root.contains(mutation.target));
-      if (scope) dirty.add(scope);
+      if (!scope) continue;
+      if (mutation.type === 'childList') {
+        for (const node of mutation.addedNodes) queueDirty(node, scope);
+      } else queueDirty(mutation.target, scope);
     }
     if (scheduled || !dirty.size) return;
     scheduled = true;
