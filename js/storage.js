@@ -473,13 +473,23 @@ function hydrateLegalFrame(page){
   var source=frame.getAttribute("data-legal-source");
   if(!source)return;
   frame.dataset.legalState="loading";
-  frame.onload=function(){frame.dataset.legalState="ready";};
-  frame.onerror=function(){
+  var targetHash=new URL(source,location.origin).hash;
+  frame.onload=function(){
+    frame.dataset.legalState="ready";
+    if(targetHash){try{frame.contentWindow.location.hash=targetHash;}catch(error){}}
+  };
+  window.fetch(source,{credentials:"same-origin",cache:"no-store"}).then(function(response){
+    if(!response.ok)throw new Error("Legal page request failed");
+    return response.text();
+  }).then(function(html){
+    html=html.replace(/<html\b([^>]*)>/i,'<html$1 data-embedded="true">');
+    html=html.replace(/var embedded=new URLSearchParams\(window\.location\.search\)\.get\('embedded'\)==='1';/,'var embedded=true;');
+    frame.srcdoc=html;
+  }).catch(function(){
     var title=page==="privacy"?"Privacy Notice":page==="dataRights"?"Data Rights":"Subscription and Billing Terms";
     frame.srcdoc='<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:24px;background:#07111d;color:#eef4fa;font:16px/1.5 Arial,sans-serif}a{color:#7bc3ff}</style></head><body><p>'+title+' could not be loaded.</p><p><a href="'+source+'" target="_top">Open '+title+'</a></p></body></html>';
     frame.dataset.legalState="error";
-  };
-  frame.src=source;
+  });
 }
 function showPage(page,btn){let personal=(localStorage.getItem("atsrs_use_mode")||useMode)==="personal";if(personal&&page==="developer"&&window.__atsrsDeveloperAccess!==true){page="dashboard";btn=navDashboard;}if(personal&&(page==="personnel"||page==="candidates"||page==="projects")){page="dashboard";btn=navDashboard;}if(personal&&(page==="compliance"||page==="security")){page="profile";btn=navProfile;}let requestedPage=page,renderedPage=page;localStorage.setItem("atsrs_current_page",requestedPage);let routeUrl=new URL(location.href);routeUrl.searchParams.set("route",requestedPage);if(requestedPage!=="resource"){routeUrl.searchParams.delete("resource");document.querySelectorAll("#sidebarQuickLinks [data-resource]").forEach(link=>{link.classList.remove("active","is-active");link.removeAttribute("aria-current")});}if(requestedPage!=="profile")["tab","request","share_id","intent"].forEach(key=>routeUrl.searchParams.delete(key));history.replaceState({},"",routeUrl.pathname+routeUrl.search+routeUrl.hash);document.body.dataset.atsrsAccountRoute=personal&&requestedPage==="profile"?requestedPage:"";document.querySelectorAll("#app > main.main > section").forEach(s=>s.classList.add("hidden"));document.getElementById(renderedPage+"Page").classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(personal&&requestedPage==="profile")showAccountTab("general");pageTitle.innerText=requestedPage==="privacy"?"Privacy Notice":requestedPage==="dataRights"?"Data Rights":requestedPage==="billing"?"Subscription and Billing Terms":btn.innerText;hydrateLegalFrame(renderedPage);renderAll();syncPersonalHeadingHierarchy(renderedPage)}
 function restoreCurrentPage(){let page=localStorage.getItem("atsrs_current_page")||"intro";let map={intro:navIntro,privacy:navPrivacy,dataRights:navPrivacy,billing:navJobs,dashboard:navDashboard,candidates:navCandidates,personnel:navPersonnel,projects:navProjects,certificates:navCertificates,refs:navRefs,compliance:navCompliance,security:navCompliance,reports:navReports,profile:navProfile,jobs:navJobs,employers:navEmployers,recruiters:navRecruiters};showPage(map[page]?page:"intro",map[page]||navIntro)}
