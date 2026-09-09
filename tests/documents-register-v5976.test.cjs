@@ -11,13 +11,16 @@ assert.match(html, /class="atsrs-documents-heading personal-only"/);
 assert.match(html, /id="documentSummaryValid"/);
 assert.match(html, /id="documentSummaryExpiring"/);
 assert.match(html, /id="documentSummaryNoExpiry"/);
-assert.match(html, /css\/documents-register-v5976\.css\?v=6101/);
+assert.match(html, /css\/documents-register-v5976\.css\?v=6102/);
+assert.match(html, /js\/app\.js\?v=6102/);
 
 assert.match(html, /id="documentFolderBar"/);
 assert.match(html, /id="moveSelectedCertsFolder"/);
 assert.match(app, /activeDocumentFolder='all'/);
 assert.match(app, /function newDocumentFolder\(\)/);
 assert.match(app, /function moveSelectedCertificates\(folderId\)/);
+assert.match(app, /function moveCertificateToFolder\(index,folderId\)/);
+assert.match(app, /data-cert-folder-move/);
 assert.match(app, /if\(item\.folderId===id\)delete item\.folderId/);
 assert.match(css, /\.atsrs-document-folder-tab\.active/);
 assert.match(html, /id="certificatesPagination"/);

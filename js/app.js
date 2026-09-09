@@ -167,6 +167,17 @@
     selectedCertIndices.forEach(function(index){if(certs[index]){if(folderId==='unfiled')delete certs[index].folderId;else certs[index].folderId=folderId;}});
     saveData('certs',certs);selectedCertIndices.clear();registerPage=1;renderCertRows();
   }
+  function moveCertificateToFolder(index,folderId){
+    var certs=getData('certs')||[];if(!certs[index]||!folderId)return;
+    if(folderId==='unfiled')delete certs[index].folderId;else certs[index].folderId=folderId;
+    saveData('certs',certs);registerPage=1;renderCertRows();
+  }
+  function certificateFolderOptions(item){
+    var options='<option value="">'+esc(folderText('Move to folder…','Qovluğa köçür…'))+'</option>';
+    options+='<option value="unfiled" '+(!item.folderId?'disabled':'')+'>'+esc(folderText('Unfiled','Qovluqsuz'))+'</option>';
+    getDocumentFolders().forEach(function(folder){options+='<option value="'+esc(folder.id)+'" '+(item.folderId===folder.id?'disabled':'')+'>'+esc(folder.name)+'</option>';});
+    return options;
+  }
   var historicalCardCleanupInFlight=false;
   function byId(id){return document.getElementById(id);}
   function uiText(source){
@@ -804,6 +815,7 @@
     if(remove&&!remove.dataset.bound){remove.dataset.bound='true';remove.addEventListener('click',deleteSelectedCertificates);}
     var mover=byId('moveSelectedCertsFolder');
     if(mover&&!mover.dataset.bound){mover.dataset.bound='true';mover.addEventListener('change',function(){var target=mover.value;mover.value='';moveSelectedCertificates(target);});}
+    if(table&&!table.dataset.folderMoveBound){table.dataset.folderMoveBound='true';table.addEventListener('change',function(event){var select=event.target&&event.target.closest?event.target.closest('[data-cert-folder-move]'):null;if(!select||!select.value)return;moveCertificateToFolder(Number(select.getAttribute('data-cert-folder-move')),select.value);});}
   }
 
   function documentPageItems(current,count){
@@ -1222,6 +1234,7 @@
       var statusTone=st.expired?'is-expired':(!st.noExpiry&&!st.risk?'is-valid':(Number(st.days)>0&&Number(st.days)<=90?'is-expiring':'is-neutral'));
       html+='<tr><td class="atsrs-document-select-column"><input type="checkbox" data-cert-select="'+i+'" aria-label="Select '+esc(x.type||'document')+'" '+(selectedCertIndices.has(i)?'checked':'')+'></td><td data-label="Document"><div class="atsrs-document-identity"><span class="atsrs-document-type-icon '+icon.tone+'"><i class="ph '+icon.icon+'" aria-hidden="true"></i></span><span class="atsrs-document-name" title="'+esc(x.type||'')+'">'+esc(x.type||'')+'</span></div></td><td data-label="Provider">'+esc(x.provider||'')+'</td><td data-label="Expiry">'+esc(x.expiry||'N/A')+'</td><td data-label="Uploaded">'+uploadDateMarkup(x)+'</td><td data-label="Status"><span class="atsrs-document-status '+esc(st.cls||'')+' '+statusTone+'">'+esc(st.txt||'')+'</span></td><td data-label="Actions"><div class="atsrs-document-row-actions">'+
         '<button class="secondary" data-access-file-id="'+esc(x.cloudFileId||'')+'" title="Preview" aria-label="Preview '+esc(x.type||'document')+'" onclick="atsrsV172PreviewCert('+i+')"><i class="ph ph-eye" aria-hidden="true"></i><span>Preview</span></button>'+
+        '<label class="atsrs-document-row-move" title="'+esc(folderText('Move to folder','Qovluğa köçür'))+'"><i class="ph ph-folder-simple-arrow-right" aria-hidden="true"></i><select data-cert-folder-move="'+i+'" aria-label="'+esc(folderText('Move '+(x.type||'document')+' to folder',''+(x.type||'Sənəd')+' sənədini qovluğa köçür'))+'">'+certificateFolderOptions(x)+'</select></label>'+
         '<button class="secondary" data-access-file-id="'+esc(x.cloudFileId||'')+'" title="Edit" aria-label="Edit '+esc(x.type||'document')+'" onclick="atsrsV172EditCert('+i+')"><i class="ph ph-pencil-simple" aria-hidden="true"></i><span>Edit</span></button>'+
         '<button class="secondary atsrs-v172-delete" title="Delete" aria-label="Delete '+esc(x.type||'document')+'" onclick="deleteCert('+i+')"><i class="ph ph-trash" aria-hidden="true"></i><span>Delete</span></button>'+
       '</div></td></tr>';
