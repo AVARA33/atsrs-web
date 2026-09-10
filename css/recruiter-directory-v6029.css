@@ -247,7 +247,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage :is(#recruit
 #recruitersPage .employers-notice span { font-size:11px; }
 
 #recruitersPage .employers-grid {
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
   align-items:stretch;
   gap:10px 12px;
 }
@@ -429,10 +429,6 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
 html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-button { color:#60748f !important; }
 html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-button:hover:not(:disabled):not(.is-current) { background:rgba(47,115,200,.08) !important; color:#245f9f !important; }
 html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-button.is-current { background:color-mix(in srgb,var(--atsrs-field-accent) 5%,var(--atsrs-field-surface)) !important; }
-
-@media(max-width:1220px) {
-  #recruitersPage .employers-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-}
 
 @media(max-width:1050px) {
   #recruitersPage .recruiters-hero { grid-template-columns:minmax(330px,.9fr) minmax(0,1.1fr); padding:24px; }
