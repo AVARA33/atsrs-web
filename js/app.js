@@ -132,6 +132,8 @@
   function reorderDocumentFolder(draggedId,targetId,placeAfter){
     var folders=getDocumentFolders(),from=folders.findIndex(function(folder){return folder.id===draggedId;});
     if(from<0||draggedId===targetId)return;
+    var dragged=folders[from],targetFolder=folders.find(function(folder){return folder.id===targetId;});
+    if(!dragged||dragged.pinned||!targetFolder||targetFolder.pinned)return;
     var moved=folders.splice(from,1)[0],target=folders.findIndex(function(folder){return folder.id===targetId;});
     if(target<0)return;
     folders.splice(target+(placeAfter?1:0),0,moved);saveDocumentFolders(folders);renderCertRows();
@@ -182,7 +184,7 @@
     var cancel=document.createElement('button');cancel.type='button';cancel.className='atsrs-document-folder-cancel';cancel.title=folderText('Cancel','Ləğv et');cancel.setAttribute('aria-label',cancel.title);cancel.innerHTML='<i class="ph ph-x" aria-hidden="true"></i>';
     var pin=document.createElement('button');pin.type='button';pin.className='atsrs-document-folder-rename-pin';
     function syncRenamePin(){pin.classList.toggle('is-pinned',!!folder.pinned);pin.title=folder.pinned?folderText('Unpin folder','Qovluğu pin-dən çıxar'):folderText('Pin folder','Qovluğu pin et');pin.setAttribute('aria-label',pin.title+' '+folder.name);pin.setAttribute('aria-pressed',folder.pinned?'true':'false');pin.innerHTML='<svg viewBox="0 0 256 256" aria-hidden="true"><path d="M224 104l-32 32-24-24-56 56v32l-16 16-56-56 16-16h32l56-56-24-24 32-32z"></path></svg>';}
-    syncRenamePin();pin.onclick=function(){folder.pinned=!folder.pinned;saveDocumentFolders(folders);syncRenamePin();};
+    syncRenamePin();pin.onclick=function(){folder.pinned=!folder.pinned;saveDocumentFolders(folders);closeDocumentFolderRename();renderCertRows();};
     var actionButtons=document.createElement('div');actionButtons.className='atsrs-document-folder-rename-action-buttons';actionButtons.append(save,cancel,pin);
     actions.append(remove,actionButtons);editor.append(field,error,actions);document.body.appendChild(editor);
     var rect=(anchor||document.body).getBoundingClientRect();
@@ -211,11 +213,14 @@
       button.innerHTML='<i class="ph '+(id==='all'?'ph-files':documentFolderIcon(label))+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
       if(id!=='all'){
-        wrap.draggable=true;wrap.dataset.folderId=id;wrap.setAttribute('aria-label',folderText('Drag to reorder folder ','Sıralamaq üçün qovluğu sürükləyin ')+label);
-        wrap.ondragstart=function(event){wrap.classList.add('is-dragging');event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',id);};
-        wrap.ondragover=function(event){event.preventDefault();event.dataTransfer.dropEffect='move';var rect=wrap.getBoundingClientRect(),after=event.clientX>rect.left+rect.width/2;bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-drop-before','is-drop-after');});wrap.classList.add(after?'is-drop-after':'is-drop-before');};
-        wrap.ondrop=function(event){event.preventDefault();var draggedId=event.dataTransfer.getData('text/plain'),rect=wrap.getBoundingClientRect();reorderDocumentFolder(draggedId,id,event.clientX>rect.left+rect.width/2);};
-        wrap.ondragend=function(){bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-dragging','is-drop-before','is-drop-after');});};
+        wrap.draggable=!(folder&&folder.pinned);wrap.dataset.folderId=id;
+        if(wrap.draggable){
+          wrap.setAttribute('aria-label',folderText('Drag to reorder folder ','Sıralamaq üçün qovluğu sürükləyin ')+label);
+          wrap.ondragstart=function(event){wrap.classList.add('is-dragging');event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',id);};
+          wrap.ondragover=function(event){event.preventDefault();event.dataTransfer.dropEffect='move';var rect=wrap.getBoundingClientRect(),after=event.clientX>rect.left+rect.width/2;bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-drop-before','is-drop-after');});wrap.classList.add(after?'is-drop-after':'is-drop-before');};
+          wrap.ondrop=function(event){event.preventDefault();var draggedId=event.dataTransfer.getData('text/plain'),rect=wrap.getBoundingClientRect();reorderDocumentFolder(draggedId,id,event.clientX>rect.left+rect.width/2);};
+          wrap.ondragend=function(){bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-dragging','is-drop-before','is-drop-after');});};
+        }
         var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id,wrap);};wrap.appendChild(edit);
       }
       bar.appendChild(wrap);
