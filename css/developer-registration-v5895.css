@@ -75,7 +75,7 @@
 .developer-registration-rows .developer-registration-row:last-child{border-bottom:0}
 .developer-registration-row strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f8fafc;font-size:13px}
 .developer-registration-row>span{color:#a8b3c4;font-size:12px}
-.developer-access-status,.developer-time-remaining{font-weight:750}
+.developer-access-status,.developer-time-remaining{font-weight:700}
 .developer-registration-row .developer-document-count{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:#4ade80}
 html[data-theme="light"] .developer-registration-row .developer-document-count{color:#2563eb}
 .developer-access-status.trial,.developer-time-remaining.trial{color:#4ade80}

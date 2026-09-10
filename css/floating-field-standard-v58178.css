@@ -68,7 +68,7 @@ body :where(#app,#auth,.share-public-page,dialog,.modal,#atsrsSecurityModal) .at
   background-image:none!important;
   color:var(--atsrs-field-muted)!important;
   font-size:var(--atsrs-field-label-size)!important;
-  font-weight:650!important;
+  font-weight:600!important;
   line-height:14px!important;
   letter-spacing:.01em!important;
   text-transform:none!important;

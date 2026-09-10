@@ -48,7 +48,7 @@
   background:rgba(17,34,51,.78);
   color:#dceaf3;
   font-size:13px;
-  font-weight:850;
+  font-weight:800;
   letter-spacing:.02em;
   overflow:hidden;
 }
@@ -64,14 +64,14 @@
   overflow:hidden;
   color:#f1f6fa;
   font-size:12px;
-  font-weight:750;
+  font-weight:700;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 .workspace-switcher-copy>span{
   color:#88a0b3;
   font-size:10px;
-  font-weight:650;
+  font-weight:600;
 }
 .workspace-switcher-chevron{
   width:7px;
@@ -133,7 +133,7 @@
   transform:none!important;
 }
 .workspace-option>span:first-child{display:grid;gap:3px;min-width:0}
-.workspace-option strong{font-size:12px;font-weight:750}
+.workspace-option strong{font-size:12px;font-weight:700}
 .workspace-option small{color:#7890a3;font-size:9px;line-height:1.3}
 .workspace-option-check{
   visibility:hidden;
@@ -152,7 +152,7 @@
   justify-content:flex-start;
   color:#cbd8e2!important;
   font-size:12px!important;
-  font-weight:750!important;
+  font-weight:700!important;
 }
 .workspace-switcher-status{
   display:none;

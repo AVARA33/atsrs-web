@@ -754,7 +754,7 @@ html[data-theme="light"] body #app #certificatesPage :where(
 ){
   color:#33465c!important;
   -webkit-text-fill-color:#33465c!important;
-  font-weight:750!important;
+  font-weight:700!important;
   opacity:1!important;
   text-shadow:none!important;
 }
@@ -793,7 +793,7 @@ html[data-theme="light"] body #app #introPage .updates-hero{
 html[data-theme="light"] body #app #introPage .updates-hero h3{
   color:var(--atsrs-light-text)!important;
   -webkit-text-fill-color:var(--atsrs-light-text)!important;
-  font-weight:750!important;
+  font-weight:700!important;
 }
 html[data-theme="light"] body #app #introPage .updates-hero p{
   color:var(--atsrs-light-muted)!important;
@@ -944,7 +944,7 @@ html[data-theme="light"] body #app #profilePage .account-tabs button{
   background:#f8fafc!important;
   color:#334155!important;
   -webkit-text-fill-color:#334155!important;
-  font-weight:650!important;
+  font-weight:600!important;
 }
 html[data-theme="light"] body #app #profilePage .account-tabs button.active{
   border-color:#bfd4ff!important;
@@ -1461,7 +1461,7 @@ html[data-theme="light"] .talent-list-row.is-head{
 html[data-theme="light"] .linked-personnel-row b{
   color:#142c3f!important;
   font-size:12px!important;
-  font-weight:750!important;
+  font-weight:700!important;
 }
 html[data-theme="light"] .linked-personnel-row small{
   color:#526d81!important;
@@ -1471,16 +1471,16 @@ html[data-theme="light"] .linked-personnel-row small{
 html[data-theme="light"] .linked-personnel-card-head>span{
   color:#405f75!important;
   font-size:11px!important;
-  font-weight:650!important;
+  font-weight:600!important;
 }
 html[data-theme="light"] .linked-personnel-card h4{
   color:#142c3f!important;
-  font-weight:750!important;
+  font-weight:700!important;
 }
 html[data-theme="light"] .linked-personnel-card-content>p{
   color:#3d5c72!important;
   font-size:12px!important;
-  font-weight:550!important;
+  font-weight:500!important;
 }
 html[data-theme="light"] body #app .linked-personnel-card .linked-personnel-actions{
   border-top-color:#cbd7e0!important;
@@ -1498,12 +1498,12 @@ html[data-theme="light"] body #app .linked-personnel-card .linked-personnel-acti
 html[data-theme="light"] .linked-personnel-card dt{
   color:#4b6579!important;
   font-size:10px!important;
-  font-weight:750!important;
+  font-weight:700!important;
 }
 html[data-theme="light"] .linked-personnel-card dd{
   color:#29475c!important;
   font-size:12px!important;
-  font-weight:550!important;
+  font-weight:500!important;
   line-height:1.35!important;
 }
 html[data-theme="light"] .personnel-document-update{
@@ -1529,7 +1529,7 @@ html[data-theme="light"] .personnel-notification-status.is-notified{
 html[data-theme="light"] :where(.talent-head-tools>span,.talent-count){
   color:#4d687d!important;
   font-size:11px!important;
-  font-weight:650!important;
+  font-weight:600!important;
 }
 
 /* V349: Corporate light mode uses near-black neutral copy across every workspace page. */
@@ -1911,7 +1911,7 @@ html:not([data-theme="light"]) #auth.auth::before{
   background:transparent;
   color:#e5edf4;
   font-size:14px;
-  font-weight:750;
+  font-weight:700;
   line-height:1;
   letter-spacing:.01em;
   text-decoration:none;

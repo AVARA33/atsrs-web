@@ -117,7 +117,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   background:color-mix(in srgb,var(--updates-card) 88%,transparent);
   backdrop-filter:blur(10px);
 }
-.updates-release-label{display:flex;align-items:center;gap:7px;color:var(--updates-accent-strong);font-size:10px;font-weight:850;letter-spacing:.13em}
+.updates-release-label{display:flex;align-items:center;gap:7px;color:var(--updates-accent-strong);font-size:10px;font-weight:800;letter-spacing:.13em}
 .updates-release-label i{font-size:16px}
 .updates-release-note strong{margin:14px 0 8px;color:var(--updates-text);font-size:20px;line-height:1.25}
 .updates-release-note p{margin:0;color:var(--updates-muted);font-size:14px;line-height:1.55}
@@ -235,7 +235,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   color:var(--updates-accent-strong)!important;
   -webkit-text-fill-color:var(--updates-accent-strong)!important;
   font-size:9px!important;
-  font-weight:850!important;
+  font-weight:800!important;
   letter-spacing:.12em!important;
 }
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-card:not(:has(.roadmap-news))>.roadmap-icon{grid-row:1 / span 2!important}
@@ -261,7 +261,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   color:var(--updates-text)!important;
   -webkit-text-fill-color:var(--updates-text)!important;
   font-size:17px!important;
-  font-weight:750!important;
+  font-weight:700!important;
   letter-spacing:-.01em!important;
   line-height:1.28!important;
 }
@@ -273,7 +273,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   font-size:14px!important;
   line-height:1.55!important;
 }
-.roadmap-detail{grid-column:1 / -1;grid-row:4;display:flex;align-items:center;gap:7px;margin-top:9px;color:var(--updates-accent-strong);font-size:11px;font-weight:750}
+.roadmap-detail{grid-column:1 / -1;grid-row:4;display:flex;align-items:center;gap:7px;margin-top:9px;color:var(--updates-accent-strong);font-size:11px;font-weight:700}
 .roadmap-detail::before{content:"";width:14px;height:1px;background:currentColor}
 
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .roadmap-status{
@@ -283,7 +283,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   padding:5px 8px!important;
   border-radius:999px!important;
   font-size:9px!important;
-  font-weight:850!important;
+  font-weight:800!important;
   letter-spacing:.07em!important;
 }
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) #introPage .status-available{

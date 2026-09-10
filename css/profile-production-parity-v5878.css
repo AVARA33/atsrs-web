@@ -6,7 +6,7 @@ body.personal-mode #profilePage {
   --text: #f4f6ef;
   --muted: #aab5ae;
   --accent: #22c55e;
-  font-family: Inter, "Segoe UI", sans-serif;
+  font-family:var(--atsrs-font-sans);
 }
 
 html[data-theme="light"] body.personal-mode #profilePage {
@@ -227,7 +227,7 @@ body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage .profile-a
   background-image: none !important;
   color: var(--accent) !important;
   box-shadow: none !important;
-  font: 700 13.3333px/normal Arial, sans-serif !important;
+  font: 700 13.3333px/normal var(--atsrs-font-sans) !important;
 }
 
 body.personal-mode #profilePage .profile-availability-edit:is(:hover, :focus-visible) {
@@ -295,7 +295,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   padding: 0 2px !important;
   border-radius: 5px !important;
   color: var(--accent) !important;
-  font: 500 12px/24px Inter,"Segoe UI",sans-serif !important;
+  font: 500 12px/24px var(--atsrs-font-sans) !important;
   white-space: nowrap !important;
 }
 
@@ -426,7 +426,7 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > :is(#profileInlineNationality,#profileInlineBirthCountry,#profileInlineCity,#profileInlineCountryResidence,#profileInlineCompany,#profileInlineTimezone) {
   display: block !important; width: 100% !important; min-width: 0 !important; height: 20px !important; min-height: 20px !important;
   margin: 0 !important; padding: 0 20px 0 0 !important; border: 0 !important; outline: 0 !important; border-radius: 0 !important;
-  background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
+  background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-disclosure-shell {
   position: absolute !important; inset: 0 !important;
@@ -438,16 +438,16 @@ html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-n
   position: static !important; display: block !important; width: 100% !important; height: 20px !important; min-height: 20px !important;
   margin: 0 !important; padding: 0 20px 0 0 !important; border: 0 !important; outline: 0 !important; border-radius: 0 !important;
   background: transparent !important; box-shadow: none !important; color: transparent !important; -webkit-text-fill-color: transparent !important; opacity: 0 !important;
-  font: 500 12px/20px Arial,sans-serif !important;
+  font: 500 12px/20px var(--atsrs-font-sans) !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select > :is(#profileInlineNationalityValue,#profileInlineBirthCountryValue,#profileInlineCityValue,#inlineCountryValue,#profileInlineCompanyValue,#profileInlineTimezoneValue) {
   display: block !important; width: calc(100% - 20px) !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
-  color: var(--text) !important; font: 500 12px/20px Inter,"Segoe UI",sans-serif !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
+  color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-select-trigger {
   width: 100% !important; height: 100% !important; min-height: 100% !important; margin: 0 !important; padding: 0 !important;
   border: 0 !important; outline: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important;
-  color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important; text-align: left !important;
+  color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important; text-align: left !important;
 }
 html[data-theme] body.personal-mode #app#app #profilePage#profilePage .profile-nationality-select .atsrs-disclosure-indicator {
   display: none !important;
@@ -474,7 +474,7 @@ body.personal-mode #profilePage .profile-information-address strong > i { displa
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field { min-height: 34px; height: 34px; padding: 7px 12px 3px; }
 body.personal-mode #profilePage .profile-inline-grid .profile-information-field > :is(input,select) {
   width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
-  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
+  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important;
 }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage.profile-inline-editing .profile-inline-grid .profile-information-field > input,
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage.profile-inline-editing .profile-inline-grid .profile-information-field .atsrs-field-shell > input {
@@ -489,7 +489,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 }
 body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell { width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
 body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell > .atsrs-field-label { display: none !important; }
-body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell > :is(input,select) { width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important; }
+body.personal-mode #profilePage .profile-inline-grid .atsrs-field-shell > :is(input,select) { width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important; }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .atsrs-field-shell {
   width: 100% !important; min-width: 0 !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
   border: 0 !important; border-radius: 0 !important; background: transparent !important; background-image: none !important; box-shadow: none !important;
@@ -514,21 +514,21 @@ body.personal-mode #profilePage .profile-inline-contact > div { display: grid; m
 body.personal-mode #profilePage .profile-inline-contact > div > span { top: -7px; left: 10px; font-size: 10px; }
 body.personal-mode #profilePage .profile-inline-contact input {
   min-width: 0 !important; width: 100% !important; min-height: 22px !important; height: 22px !important; margin: 0 !important; padding: 0 !important;
-  border: 0 !important; background: transparent !important; box-shadow: none !important; font: 500 12px/22px Arial,sans-serif !important;
+  border: 0 !important; background: transparent !important; box-shadow: none !important; font: 500 12px/22px var(--atsrs-font-sans) !important;
 }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-inline-contact input {
   min-width: 0 !important; width: 100% !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important;
-  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important;
+  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important;
 }
 html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid .profile-inline-contact [contenteditable="true"] {
   min-width: 0 !important; width: 100% !important; min-height: 20px !important; height: 20px !important; margin: 0 !important; padding: 0 !important; outline: 0 !important;
-  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px Arial,sans-serif !important; white-space: nowrap; overflow: hidden;
+  border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--text) !important; font: 500 12px/20px var(--atsrs-font-sans) !important; white-space: nowrap; overflow: hidden;
 }
 html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid :is(input,select,[contenteditable="true"]) {
-  color: var(--text) !important; font-family: Inter,"Segoe UI",sans-serif !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
+  color: var(--text) !important; font-family: var(--atsrs-font-sans) !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
 }
 html[data-theme] body.personal-mode #app#app#app.app:not(.hidden) #profilePage#profilePage#profilePage #profileTabPersonalPanel#profileTabPersonalPanel .profile-inline-grid #inlineCountryValue {
-  color: var(--text) !important; font-family: Inter,"Segoe UI",sans-serif !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
+  color: var(--text) !important; font-family: var(--atsrs-font-sans) !important; font-size: 12px !important; font-weight: 500 !important; line-height: normal !important;
 }
 body.personal-mode #profilePage #profileTabPersonalPanel :is(
   .profile-information-field > span,
@@ -536,7 +536,7 @@ body.personal-mode #profilePage #profileTabPersonalPanel :is(
 ) {
   position:absolute !important; top:-7px !important; left:10px !important; z-index:2 !important;
   margin:0 !important; padding:0 6px !important; background:var(--surface-2) !important; color:var(--muted) !important;
-  font-family:Inter,"Segoe UI",sans-serif !important; font-size:10px !important; font-weight:400 !important; line-height:14px !important;
+  font-family:var(--atsrs-font-sans) !important; font-size:10px !important; font-weight:400 !important; line-height:14px !important;
   letter-spacing:normal !important; white-space:nowrap !important; transition:color .15s ease !important;
 }
 html[data-theme="light"] body.personal-mode #profilePage #profileTabPersonalPanel :is(
@@ -978,7 +978,7 @@ body.personal-mode #profilePage .profile-security-step > header small { display:
 body.personal-mode #profilePage .profile-security-channel-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0 10px; }
 body.personal-mode #profilePage .profile-security-channel-grid > button {
   position:relative; display:flex; align-items:center; gap:10px; justify-content:center; width:100%; min-width:0; height:58px; min-height:58px; margin:0; padding:0 12px;
-  border:1px solid var(--line); border-radius:9px; background:transparent !important; color:var(--text); box-shadow:none !important; font:inherit; font-size:10px; font-weight:750; cursor:pointer;
+  border:1px solid var(--line); border-radius:9px; background:transparent !important; color:var(--text); box-shadow:none !important; font:inherit; font-size:10px; font-weight:700; cursor:pointer;
 }
 body.personal-mode #profilePage .profile-security-channel-grid > button > i:first-child { color:var(--muted); font-size:20px; }
 body.personal-mode #profilePage .profile-security-channel-grid > button:is(:hover,:focus-visible) { border-color:var(--profile-security-accent); outline:0; background:color-mix(in srgb,var(--profile-security-accent) 6%,transparent); }
@@ -1145,7 +1145,7 @@ body.profile-security-code-open{overflow:hidden}.profile-security-code-modal[hid
     background:color-mix(in srgb,var(--profile-security-accent) 10%,transparent);
     color:var(--profile-security-accent);
     font-size:9px;
-    font-weight:850;
+    font-weight:800;
   }
   body.personal-mode #profilePage .profile-security-step > header strong,
   body.personal-mode #profilePage .profile-security-verification-result > header strong {

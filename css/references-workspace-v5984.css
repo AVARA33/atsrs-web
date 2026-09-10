@@ -50,7 +50,7 @@ body.personal-mode #refsPage .atsrs-v156-actions button,
 body.personal-mode #refsPage .cv-actions button,
 body.personal-mode #refsPage .cv-generator-action-grid>button,
 body.personal-mode #refsPage .generated-cv-actions>button{
-  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;min-height:38px!important;padding:8px 12px!important;border:1px solid #2b3732!important;border-radius:8px!important;background:#090c0b!important;color:#eef3f0!important;font-size:12px!important;font-weight:650!important;box-shadow:none!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;min-height:38px!important;padding:8px 12px!important;border:1px solid #2b3732!important;border-radius:8px!important;background:#090c0b!important;color:#eef3f0!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;
 }
 body.personal-mode #refsPage .atsrs-v156-actions button:hover,
 body.personal-mode #refsPage .cv-actions button:hover,
@@ -69,7 +69,7 @@ body.personal-mode #refsPage .atsrs-references-controls{
   order:5!important;grid-column:1/-1!important;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;gap:20px!important;border-bottom:1px solid #26302c!important;
 }
 body.personal-mode #refsPage .atsrs-reference-tabs{display:flex!important;align-items:flex-end!important;gap:2px!important;overflow-x:auto!important;padding-top:9px!important;}
-body.personal-mode #refsPage .atsrs-reference-tabs button{display:flex!important;align-items:center!important;gap:7px!important;padding:12px 11px!important;border:0!important;border-bottom:2px solid rgba(85,208,106,.42)!important;border-radius:0!important;background:transparent!important;color:#aab3af!important;font-size:13px!important;font-weight:650!important;white-space:nowrap!important;box-shadow:none!important;transform:translateY(0)!important;transition:transform .18s ease,color .18s ease,border-color .18s ease!important;}
+body.personal-mode #refsPage .atsrs-reference-tabs button{display:flex!important;align-items:center!important;gap:7px!important;padding:12px 11px!important;border:0!important;border-bottom:2px solid rgba(85,208,106,.42)!important;border-radius:0!important;background:transparent!important;color:#aab3af!important;font-size:13px!important;font-weight:600!important;white-space:nowrap!important;box-shadow:none!important;transform:translateY(0)!important;transition:transform .18s ease,color .18s ease,border-color .18s ease!important;}
 body.personal-mode #refsPage .atsrs-reference-tabs button>span{white-space:nowrap!important;}
 body.personal-mode #refsPage .atsrs-reference-tabs button small{display:none!important;min-width:17px!important;padding:1px 5px!important;border-radius:999px!important;background:#18201c!important;font-size:9px!important;}
 body.personal-mode #refsPage .atsrs-reference-tabs button.is-active{border-bottom-color:#55d06a!important;color:#55d06a!important;transform:translateY(-8px)!important;}
@@ -83,7 +83,7 @@ body.personal-mode #refsPage .atsrs-reference-search input{width:100%!important;
 body.personal-mode #refsPage .atsrs-reference-search input:focus{border-color:#50c966!important;box-shadow:0 0 0 2px rgba(80,201,102,.12)!important;}
 body.personal-mode #refsPage .atsrs-reference-filter-wrap{position:relative!important;}
 body.personal-mode #refsPage .atsrs-reference-filter-button,
-body.personal-mode #refsPage .atsrs-reference-upload-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;height:38px!important;padding:0 14px!important;border:1px solid #2a3530!important;border-radius:8px!important;background:#080a09!important;color:#eef3f0!important;font-size:12px!important;font-weight:650!important;box-shadow:none!important;white-space:nowrap!important;}
+body.personal-mode #refsPage .atsrs-reference-upload-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;height:38px!important;padding:0 14px!important;border:1px solid #2a3530!important;border-radius:8px!important;background:#080a09!important;color:#eef3f0!important;font-size:12px!important;font-weight:600!important;box-shadow:none!important;white-space:nowrap!important;}
 body.personal-mode #refsPage .atsrs-reference-filter-button{width:104px!important;min-width:104px!important;}
 body.personal-mode #refsPage .atsrs-reference-upload-button{width:176px!important;min-width:176px!important;}
 body.personal-mode #refsPage .atsrs-reference-upload-button{border-color:#246c32!important;color:#5bd86f!important;}
@@ -103,7 +103,7 @@ body.personal-mode #refsPage .atsrs-v134-career-card>.atsrs-v134-statusbar,
 body.personal-mode #refsPage .atsrs-v134-max-icon{display:none!important;}
 body.personal-mode #refsPage .atsrs-reference-table-head,
 body.personal-mode #refsPage .atsrs-v134-row{display:grid!important;grid-template-columns:minmax(280px,2fr) minmax(130px,1fr) 120px 85px minmax(220px,auto)!important;align-items:center!important;gap:18px!important;}
-body.personal-mode #refsPage .atsrs-reference-table-head{height:48px!important;padding:0 18px!important;border-bottom:1px solid #26302c!important;background:#0e1210!important;color:#89958f!important;font-size:10px!important;font-weight:650!important;text-transform:uppercase!important;letter-spacing:.05em!important;}
+body.personal-mode #refsPage .atsrs-reference-table-head{height:48px!important;padding:0 18px!important;border-bottom:1px solid #26302c!important;background:#0e1210!important;color:#89958f!important;font-size:10px!important;font-weight:600!important;text-transform:uppercase!important;letter-spacing:.05em!important;}
 body.personal-mode #refsPage .atsrs-v134-list,
 body.personal-mode #refsPage .atsrs-v134-list:has(.atsrs-v134-row){height:auto!important;min-height:160px!important;max-height:340px!important;margin:0!important;padding:0!important;overflow:auto!important;background:transparent!important;border:0!important;}
 body.personal-mode #refsPage .atsrs-v134-row{min-height:66px!important;height:auto!important;max-height:none!important;margin:0!important;padding:10px 18px!important;border:0!important;border-bottom:1px solid #222b27!important;border-radius:0!important;background:transparent!important;color:#eef3f0!important;}

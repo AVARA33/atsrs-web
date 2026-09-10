@@ -1,7 +1,7 @@
 :root{color-scheme:dark;--legal-bg:#050606;--legal-surface:#090b0a;--legal-soft:#0d100e;--legal-line:#2c332e;--legal-text:#f2f4f2;--legal-muted:#b7c0ba;--legal-accent:#b8ff19;--legal-link:#8dc8ff;--legal-shadow:0 20px 60px rgba(0,0,0,.28)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--legal-bg)}
-body{margin:0;background:var(--legal-bg);color:var(--legal-text);font:15px/1.7 Inter,Arial,sans-serif}
+body{margin:0;background:var(--legal-bg);color:var(--legal-text);font:15px/1.7 var(--atsrs-font-sans)}
 a{color:var(--legal-link)}
 a:focus-visible{outline:3px solid var(--legal-link);outline-offset:3px}
 .legal-shell{width:min(1160px,calc(100% - 32px));margin:0 auto}
@@ -24,10 +24,10 @@ html[data-theme="light"] .legal-brand{
   background-image:url("../assets/branding/atsrs-lockup-blue-transparent.png");
   filter:saturate(1.12) contrast(1.04);
 }
-.legal-home{display:inline-flex;min-height:44px;align-items:center;color:var(--legal-muted);font-weight:750;text-decoration:none}
+.legal-home{display:inline-flex;min-height:44px;align-items:center;color:var(--legal-muted);font-weight:700;text-decoration:none}
 .legal-home:hover{color:var(--legal-text)}
 .legal-hero{padding:68px 0 34px}
-.legal-eyebrow{display:inline-flex;padding:6px 11px;border:1px solid color-mix(in srgb,var(--legal-accent) 38%,transparent);border-radius:999px;color:var(--legal-accent);font-size:12px;font-weight:850;letter-spacing:.08em}
+.legal-eyebrow{display:inline-flex;padding:6px 11px;border:1px solid color-mix(in srgb,var(--legal-accent) 38%,transparent);border-radius:999px;color:var(--legal-accent);font-size:12px;font-weight:800;letter-spacing:.08em}
 h1{max-width:850px;margin:16px 0 12px;font-size:clamp(36px,6vw,62px);line-height:1.04;letter-spacing:-.035em}
 .legal-lead{max-width:850px;margin:0;color:var(--legal-muted);font-size:17px}
 .legal-meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:24px;color:var(--legal-muted);font-size:13px}

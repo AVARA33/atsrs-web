@@ -2,7 +2,7 @@
 :root[data-theme="light"]{color-scheme:light;--bg:#edf2f8;--surface:#f8fbff;--soft:#edf3fa;--line:#c8d4de;--text:#172b3d;--muted:#617386;--accent:#2563eb;}
 *{box-sizing:border-box;}
 [hidden]{display:none!important;}
-html,body{min-height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+html,body{min-height:100%;margin:0;background:var(--bg);color:var(--text);font-family:var(--atsrs-font-sans);}
 body{min-height:100dvh;}
 button{font:inherit;}
 .phone-upload-shell{min-height:100dvh;display:grid;place-items:center;padding:20px;}
@@ -11,7 +11,7 @@ button{font:inherit;}
 h1{font-size:clamp(30px,8vw,42px);line-height:1.05;margin:10px 0 12px;}
 p{color:var(--muted);line-height:1.6;}
 .phone-upload-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 16px;}
-.phone-upload-choices button{min-height:56px;border:1px solid var(--accent);border-radius:13px;background:var(--accent);color:#080a08;font-weight:850;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;cursor:pointer;}
+.phone-upload-choices button{min-height:56px;border:1px solid var(--accent);border-radius:13px;background:var(--accent);color:#080a08;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;cursor:pointer;}
 .phone-upload-choices button.secondary{border-color:var(--line);background:var(--soft);color:var(--text);}
 .phone-upload-choices button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
 .phone-upload-input{position:fixed!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;opacity:.01!important;pointer-events:none!important;}

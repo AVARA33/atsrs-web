@@ -188,7 +188,7 @@ html.atsrs-public-share-mode body.atsrs-public-share-view{
 .shared-document-summary-link b{font-size:12px}
 .shared-document-summary-link small{margin-top:3px;color:#71889b;font-size:10px}
 .shared-document-summary-link small.is-recent{color:#55d98a;font-weight:700}
-.shared-document-summary-status{color:#6ee7a1;font-size:10px;font-weight:750;white-space:nowrap}
+.shared-document-summary-status{color:#6ee7a1;font-size:10px;font-weight:700;white-space:nowrap}
 .shared-document-summary-status.warning{color:#fbbf24}
 .shared-document-summary-status.expired{color:#f87171}
 .shared-document-summary-status.is-new{color:#55d98a}

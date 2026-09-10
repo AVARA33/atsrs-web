@@ -29,7 +29,7 @@ body {
   margin: 0;
   background: var(--bg) !important;
   color: var(--text);
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family:var(--atsrs-font-sans);
 }
 
 .android-public-nav-shell {
@@ -64,7 +64,7 @@ main {
 
 .download-hero h1 {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family:var(--atsrs-font-display);
   font-size: clamp(48px, 8vw, 84px);
   line-height: 1;
 }
