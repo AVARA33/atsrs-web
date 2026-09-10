@@ -217,7 +217,6 @@
         wrap.ondrop=function(event){event.preventDefault();var draggedId=event.dataTransfer.getData('text/plain'),rect=wrap.getBoundingClientRect();reorderDocumentFolder(draggedId,id,event.clientX>rect.left+rect.width/2);};
         wrap.ondragend=function(){bar.querySelectorAll('.atsrs-document-folder-tab-wrap').forEach(function(item){item.classList.remove('is-dragging','is-drop-before','is-drop-after');});};
         var edit=document.createElement('button');edit.type='button';edit.className='atsrs-document-folder-edit';edit.title=folderText('Rename folder','Qovluğun adını dəyiş');edit.setAttribute('aria-label',edit.title+' '+label);edit.innerHTML='<i class="ph ph-pencil-simple"></i>';edit.onclick=function(event){event.stopPropagation();renameDocumentFolder(id,wrap);};wrap.appendChild(edit);
-        var pin=document.createElement('button');pin.type='button';pin.className='atsrs-document-folder-pin';pin.classList.toggle('is-pinned',!!(folder&&folder.pinned));pin.title=folder&&folder.pinned?folderText('Unpin folder','Qovluğu pin-dən çıxar'):folderText('Pin folder','Qovluğu pin et');pin.setAttribute('aria-label',pin.title+' '+label);pin.setAttribute('aria-pressed',folder&&folder.pinned?'true':'false');pin.innerHTML='<svg viewBox="0 0 256 256" aria-hidden="true"><path d="M224 104l-32 32-24-24-56 56v32l-16 16-56-56 16-16h32l56-56-24-24 32-32z"></path></svg>';pin.onclick=function(event){event.preventDefault();event.stopPropagation();toggleDocumentFolderPin(id);};wrap.appendChild(pin);
       }
       bar.appendChild(wrap);
     }
