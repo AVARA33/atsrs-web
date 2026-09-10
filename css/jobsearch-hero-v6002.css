@@ -118,7 +118,9 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero p{
 
 #jobsPage .jobs-hero > .jobs-region-nav::-webkit-scrollbar{display:none}
 
-#jobsPage .jobs-hero > .jobs-region-nav button{
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero > .jobs-region-nav button{
+  height:34px!important;
+  min-height:34px!important;
   padding-right:9px!important;
   padding-left:9px!important;
   border-color:rgba(139,226,76,.22)!important;

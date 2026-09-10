@@ -30,7 +30,8 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 for (const name of cssFiles.filter((name) => {
   return fs.readFileSync(path.join(cssDir, name), 'utf8').includes('var(--atsrs-font-');
 })) {
-  if (html.includes(`css/${name}?v=`)) assert.match(html, new RegExp(`css/${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\?v=6096`), `${name} cache key is stale`);
+  const match = html.match(new RegExp(`css/${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\?v=(\\d+)`));
+  if (match) assert.ok(Number(match[1]) >= 6096, `${name} cache key is stale`);
 }
 
 console.log('typography-system-v6096: PASS');

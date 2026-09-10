@@ -3,6 +3,7 @@ const fs=require('node:fs');
 
 const html=fs.readFileSync('index.html','utf8');
 const shell=fs.readFileSync('css/shell-polish.css','utf8');
+const jobsHero=fs.readFileSync('css/jobsearch-hero-v6002.css','utf8');
 const sharing=fs.readFileSync('js/profile-sharing-v1.js','utf8');
 
 assert.match(html,/width=device-width, initial-scale=1\.0, viewport-fit=cover/);
@@ -13,5 +14,7 @@ assert.doesNotMatch(shell,/@media\(max-width:443px\)[\s\S]*?\.atsrs-notification
 assert.match(html,/js\/profile-sharing-v1\.js\?v=6095/);
 assert.match(sharing,/await c\.auth\.getSession\(\)/);
 assert.match(sharing,/if\(!\(sessionResult\.data&&sessionResult\.data\.session\)\)return savedSetup/);
+assert.match(html,/css\/jobsearch-hero-v6002\.css\?v=6097/);
+assert.match(jobsHero,/html\[data-theme\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-hero > \.jobs-region-nav button\{[\s\S]*?height:34px!important;[\s\S]*?min-height:34px!important;/);
 
 console.log('Responsive stability V6095 contracts passed.');
