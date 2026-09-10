@@ -46,6 +46,47 @@ Deno.serve(async req=>{
   const sourceErrors:string[]=[];
   let dofCache:Map<string,any>|null=null;
   async function loadDof(){return dofCache??(dofCache=dofEntries(await getJson(DOF_FEED)));}
+  // Recheck archived vacancies against their exact official endpoints. A local
+  // age or a temporary source outage is never closure evidence.
+  const restorationBatch=checked(await db.from('atsrs_job_ingestion_queue').select('*').eq('state','recheck').order('checked_at',{nullsFirst:true}).limit(30)).data||[];
+  await Promise.allSettled(restorationBatch.map(async(old:any)=>{
+   const board=old.board;const source:any=sourceByBoard.get(board);const now=new Date().toISOString();
+   if(!source){checked(await db.from('atsrs_job_ingestion_queue').update({state:'review',reason:'Connected official source is unavailable',checked_at:now}).eq('board',board).eq('external_id',old.external_id));stats.reviewed++;return;}
+   try {
+    const generalized=source.provider&&source.provider!=='smartrecruiters';
+    let active:any;
+    if(generalized){active=(await detail(source,old)).d;}
+    else if(board==='DOF'){
+     active=(await loadDof()).get(old.external_id);
+     if(!active)throw new Error('Official feed absence is not verified closure');
+    }else{
+     const base=`https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(board)}/postings/${old.external_id}`;
+     const response=await fetch(base,{signal:AbortSignal.timeout(10000),redirect:'error'});
+     if(response.status===404||response.status===410){
+      checked(await db.from('atsrs_job_ingestion_queue').update({state:'closed',reason:`Official source HTTP ${response.status}`,checked_at:now}).eq('board',board).eq('external_id',old.external_id));stats.archived++;return;
+     }
+     if(!response.ok)throw new Error(`Temporary source HTTP ${response.status}`);
+     active=await response.json();
+    }
+    if(active.active===false){
+     checked(await db.from('atsrs_job_ingestion_queue').update({state:'closed',reason:'Official source reports vacancy closed',checked_at:now}).eq('board',board).eq('external_id',old.external_id));stats.archived++;return;
+    }
+    const problem=checkDetail(active,board,old.external_id,source);
+    if(problem)throw new Error(problem);
+    if(!old.job_id)throw new Error('Archived vacancy is not linked to a job record');
+    checked(await db.from('atsrs_jobs').update({status:'published',expires_at:null}).eq('id',old.job_id));
+    checked(await db.from('atsrs_job_ingestion_queue').update({state:'published',reason:null,checked_at:now,recheck_attempts:0}).eq('board',board).eq('external_id',old.external_id));
+    stats.updated++;
+   }catch(e){
+    const error=String((e as Error).message).slice(0,200);
+    if(/(?:Source|Job page) HTTP (?:404|410)/.test(error)){
+     checked(await db.from('atsrs_job_ingestion_queue').update({state:'closed',reason:error,checked_at:now}).eq('board',board).eq('external_id',old.external_id));stats.archived++;return;
+    }
+    const attempts=Number(old.recheck_attempts||0)+1;
+    checked(await db.from('atsrs_job_ingestion_queue').update({state:attempts>=3?'review':'recheck',reason:(attempts>=3?'Recheck needs manual review: ':'Recheck retry: ')+error,checked_at:now,recheck_attempts:attempts}).eq('board',board).eq('external_id',old.external_id));
+    if(attempts>=3)stats.reviewed++;
+   }
+  }));
   // Rotate all connected boards fairly; continue full pagination across bounded runs.
   for(const source of sources){
    if(Date.now()-started>15000)break;
@@ -115,7 +156,7 @@ Deno.serve(async req=>{
        checked(await db.from('atsrs_job_ingestion_queue').update({state:'pending',checked_at:new Date().toISOString()}).eq('board',board).eq('external_id',old.external_id));
        continue;
       }
-      if(old.job_id)checked(await db.from('atsrs_jobs').update({expires_at:new Date(Date.now()+72*3600000).toISOString()}).eq('id',old.job_id));
+      if(old.job_id)checked(await db.from('atsrs_jobs').update({expires_at:null}).eq('id',old.job_id));
       checked(await db.from('atsrs_job_ingestion_queue').update({checked_at:new Date().toISOString()}).eq('board',board).eq('external_id',old.external_id));
      }
     }
@@ -170,15 +211,12 @@ Deno.serve(async req=>{
      // Stable source ID lookup also catches jobs imported before this pipeline.
      const candidates=generalized?[...(checked(await db.from('atsrs_jobs').select('id,status,source_url,application_url').eq('source_url',d.postingUrl).limit(10)).data||[]),...(checked(await db.from('atsrs_jobs').select('id,status,source_url,application_url').eq('application_url',d.applyUrl).limit(10)).data||[])]:checked(await db.from('atsrs_jobs').select('id,status,source_url,application_url').or(`source_url.like.%/${q.external_id}%,application_url.like.%/${q.external_id}%`).limit(10)).data||[];
      const existing=generalized?candidates[0]:candidates.find((v:any)=>postingUrl(v.source_url,board,q.external_id)||postingUrl(v.application_url,board,q.external_id));
-     if(existing&&existing.status!=='published'){
-      checked(await db.from('atsrs_job_ingestion_queue').update({state:'review',reason:'Archived job requires explicit restoration authority'}).eq('board',board).eq('external_id',q.external_id));stats.reviewed++;continue;
-     }
      const company=clean(d.company.name,160);
      const record={title:clean(d.name,180),company,location:clean(d.location.fullLocation||d.location.city,180),country:clean(d.location.country,100)||null,
       work_type:clean(d.typeOfEmployment?.label,80)||null,summary:verdict.summary_quote,description:fullContent.description,
       requirements:fullContent.requirements,source_type:'manual',source_url:d.postingUrl,application_url:d.applyUrl,
       external_id:`${generalized?source.provider:board==='DOF'?'workable':'smartrecruiters'}:${board}:${q.external_id}`,source_posted_at:d.releasedDate||null,
-      status:'published',expires_at:new Date(Date.now()+72*3600000).toISOString()};
+      status:'published',expires_at:null};
      const saved=checked(existing?await db.from('atsrs_jobs').update(record).eq('id',existing.id).select('id').single():await db.from('atsrs_jobs').insert(record).select('id').single()).data;
      if(!saved)throw new Error('Job save did not return an ID');
      if(existing)stats.updated++;else stats.published++;

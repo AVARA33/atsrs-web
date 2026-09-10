@@ -5,27 +5,38 @@ const test = require('node:test');
 
 const root = path.join(__dirname, '..');
 const migration = fs.readFileSync(
-  path.join(root, 'supabase', 'migrations', '20260820120409_auto_expire_archive_jobs.sql'),
+  path.join(root, 'supabase', 'migrations', '20260910132209_revalidate_archived_jobs_from_sources.sql'),
   'utf8'
 );
+const processingMigration = fs.readFileSync(
+  path.join(root, 'supabase', 'migrations', '20260910132832_process_archived_job_rechecks.sql'),
+  'utf8'
+);
+const ingestion = fs.readFileSync(path.join(root, 'supabase', 'functions', 'job-ingestion', 'index.ts'), 'utf8');
 
-test('published jobs always receive a bounded server expiry', () => {
-  assert.match(migration, /status <> 'published' or expires_at is not null/);
+test('vacancies without a source closing date do not receive a local expiry', () => {
+  assert.match(migration, /drop constraint if exists atsrs_jobs_published_expiry_required/);
   assert.match(migration, /p_closing_date \+ 1/);
-  assert.match(migration, /p_published_at \+ interval '30 days'/);
-  assert.match(migration, /new\.expires_at := coalesce/);
+  assert.match(migration, /else null::timestamptz/);
+  assert.match(migration, /status = 'published'[\s\S]*closing_date is null[\s\S]*expires_at is not null/);
+  assert.match(ingestion, /status:'published',expires_at:null/);
 });
 
-test('existing published jobs are backfilled before validation', () => {
-  const update = migration.indexOf('update public.atsrs_jobs');
-  const validate = migration.indexOf('validate constraint atsrs_jobs_published_expiry_required');
-  assert.ok(update >= 0 && validate > update);
-  assert.match(migration, /where status = 'published'[\s\S]*expires_at is null/);
+test('archived source-linked jobs are queued for official revalidation', () => {
+  assert.match(migration, /state in \('pending', 'published', 'review', 'closed', 'recheck'\)/);
+  assert.match(migration, /set state = 'recheck'[\s\S]*j\.status = 'archived'/);
+  assert.match(ingestion, /\.eq\('state','recheck'\)[\s\S]*\.limit\(30\)/);
+  assert.match(ingestion, /active\.active===false[\s\S]*state:'closed'/);
+  assert.match(ingestion, /status:'published',expires_at:null[\s\S]*state:'published'/);
+  assert.match(ingestion, /attempts>=3\?'review':'recheck'/);
+  assert.match(processingMigration, /recheck_attempts integer not null default 0/);
+  assert.match(processingMigration, /'atsrs-hr-archive-recheck'[\s\S]*'\*\/2 \* \* \* \*'/);
+  assert.match(processingMigration, /select public\.atsrs_dispatch_job_ingestion\(\)/);
 });
 
-test('expired jobs are archived on a recurring server schedule', () => {
+test('only verified source closing dates may drive the private archive helper', () => {
   assert.match(migration, /create or replace function atsrs_private\.archive_expired_jobs/);
-  assert.match(migration, /status = 'archived'[\s\S]*expires_at <= now\(\)/);
-  assert.match(migration, /'atsrs-archive-expired-jobs'[\s\S]*'\*\/15 \* \* \* \*'/);
-  assert.match(migration, /create index if not exists atsrs_jobs_live_expiry_idx/);
+  assert.match(migration, /status = 'archived'[\s\S]*closing_date is not null[\s\S]*closing_date </);
+  assert.match(migration, /cron\.unschedule/);
+  assert.doesNotMatch(migration, /cron\.schedule/);
 });
