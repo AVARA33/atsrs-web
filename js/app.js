@@ -137,6 +137,17 @@
     folders.splice(target+(placeAfter?1:0),0,moved);saveDocumentFolders(folders);renderCertRows();
   }
   function folderText(en,az){return window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?az:en;}
+  function documentFolderIcon(label){
+    var name=String(label||'').toLocaleLowerCase();
+    if(/bank|finance|payment|wallet|card/.test(name))return 'ph-bank';
+    if(/driv|licen|car|vehicle|auto/.test(name))return 'ph-car';
+    if(/medical|health|clinic|hospital|doctor|medicine/.test(name))return 'ph-first-aid-kit';
+    if(/passport|identity|\bid\b|visa|travel/.test(name))return 'ph-identification-card';
+    if(/work|job|career|employ/.test(name))return 'ph-briefcase';
+    if(/school|education|course|training/.test(name))return 'ph-graduation-cap';
+    if(/company|business|corporate/.test(name))return 'ph-buildings';
+    return 'ph-folder';
+  }
   function newDocumentFolder(){
     var name=String(window.prompt(folderText('Folder name','Qovluğun adı'))||'').trim();if(!name)return;
     var folders=getDocumentFolders();
@@ -197,7 +208,7 @@
     function tab(id,label,count,folder){
       var wrap=document.createElement('div');wrap.className='atsrs-document-folder-tab-wrap';
       var button=document.createElement('button');button.type='button';button.className='atsrs-document-folder-tab';button.classList.toggle('active',activeDocumentFolder===id);button.setAttribute('aria-pressed',activeDocumentFolder===id?'true':'false');
-      button.innerHTML='<i class="ph '+(id==='all'?'ph-files':'ph-folder')+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
+      button.innerHTML='<i class="ph '+(id==='all'?'ph-files':documentFolderIcon(label))+'" aria-hidden="true"></i><span>'+esc(label)+'</span><b>'+count+'</b>';
       button.onclick=function(){activeDocumentFolder=id;registerPage=1;selectedCertIndices.clear();renderCertRows();};wrap.appendChild(button);
       if(id!=='all'){
         wrap.draggable=true;wrap.dataset.folderId=id;wrap.setAttribute('aria-label',folderText('Drag to reorder folder ','Sıralamaq üçün qovluğu sürükləyin ')+label);
