@@ -538,7 +538,7 @@ html[data-theme="light"] .atsrs-notification-badge{background:#16a34a;color:#fff
 }
 .atsrs-notification-popover::before{content:"";position:absolute;top:-6px;left:var(--atsrs-notification-caret-left);z-index:2;width:12px;height:12px;border-top:1px solid var(--line);border-left:1px solid var(--line);background:var(--surface);transform:rotate(45deg)}
 .atsrs-notification-popover[hidden]{display:none!important}
-.atsrs-notification-popover-surface{display:grid;grid-template-rows:64px minmax(0,1fr) 56px;width:100%;max-height:min(560px,calc(100vh - var(--atsrs-notification-top) - 12px));overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.atsrs-notification-popover-surface{display:grid;grid-template-rows:64px minmax(0,1fr) 56px;width:100%;max-height:min(560px,calc(100vh - var(--atsrs-notification-top) - 12px));max-height:min(560px,calc(100dvh - var(--atsrs-notification-top) - max(12px,env(safe-area-inset-bottom))));overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.1)}
 .atsrs-notification-popover> .atsrs-notification-popover-surface > header{position:relative;z-index:3;display:flex;height:64px;min-height:64px;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:var(--surface)}
 .atsrs-notification-popover> .atsrs-notification-popover-surface > header strong{font-size:18px;font-weight:700;line-height:24px;letter-spacing:0}
 .atsrs-notification-popover-actions{display:flex;align-items:center;gap:14px;min-width:0}
@@ -581,7 +581,13 @@ html body #app.app:not(.hidden) :where(.sidebar .nav button,#atsrsNotificationBu
 }
 
 @media(max-width:443px){
-  .atsrs-notification-popover{width:calc(100vw - 24px);min-width:0;max-width:420px}
+  .atsrs-notification-popover{
+    left:max(12px,env(safe-area-inset-left))!important;
+    right:max(12px,env(safe-area-inset-right))!important;
+    width:auto;
+    min-width:0;
+    max-width:none;
+  }
 }
 
 /* Header labels stay atomic. Narrow screens scroll the register instead of splitting a word. */
