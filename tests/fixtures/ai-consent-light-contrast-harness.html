@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/account.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <title>AI consent contrast QA</title>
+  <script>document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='dark'?'dark':'light';</script>
+</head>
+<body>
+  <main id="certificatesPage" style="display:block;max-width:760px;margin:40px auto">
+    <section class="atsrs-ai-consent">
+      <div class="atsrs-ai-consent-head"><div><span class="atsrs-ai-consent-kicker">Before AI scan</span><h4>Confirm document processing</h4></div></div>
+      <p>The document you select will be securely sent for AI-assisted processing.</p>
+      <label class="atsrs-ai-consent-check">
+        <input type="checkbox" checked>
+        <span>I understand and agree that my selected document will be sent to the OpenAI API for AI-assisted data extraction.</span>
+      </label>
+    </section>
+  </main>
+</body>
+</html>
