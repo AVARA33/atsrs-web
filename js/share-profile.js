@@ -410,6 +410,17 @@
   function detail(label,value,className){var wrap=document.createElement('div');wrap.className='shared-document-detail'+(className?' '+className:'');var key=document.createElement('span'),text=document.createElement('b');key.textContent=label;text.textContent=value||'Not provided';wrap.appendChild(key);wrap.appendChild(text);return wrap;}
   function publicDocumentName(id){var file=publicDocuments.find(function(item){return item.id===id;});return file?(file.document_type||file.file_name):'Document';}
   function publicDocumentDomId(id){return 'shared-document-'+String(id||'file').replace(/[^a-zA-Z0-9_-]/g,'-');}
+  function selectPublicDocumentCard(id,options){
+    options=options||{};var domId=publicDocumentDomId(id),card=byId(domId);if(!card)return false;
+    document.querySelectorAll('.shared-document-card.is-summary-target').forEach(function(item){item.classList.remove('is-summary-target');item.removeAttribute('aria-current');});
+    document.querySelectorAll('.shared-document-summary-link.is-active').forEach(function(item){item.classList.remove('is-active');item.removeAttribute('aria-current');});
+    card.classList.add('is-summary-target');card.setAttribute('aria-current','true');card.tabIndex=-1;
+    var link=document.querySelector('.shared-document-summary-link[href="#'+domId+'"]');if(link){link.classList.add('is-active');link.setAttribute('aria-current','location');}
+    if(options.updateHash&&window.history&&typeof window.history.replaceState==='function')window.history.replaceState(null,'','#'+domId);
+    card.scrollIntoView({behavior:options.behavior||'auto',block:'center',inline:'nearest'});
+    try{card.focus({preventScroll:true});}catch(ignore){}
+    return true;
+  }
   function renderPublicSummary(){
     var summary=byId('sharedProfileSummary'),list=byId('sharedProfileSummaryList'),count=byId('sharedProfileSummaryCount');if(!summary||!list)return;
     var filter=byId('sharedProfileSummaryFilter'),selected=filter&&filter.value||'all';
@@ -420,7 +431,7 @@
       var statusData=publicStatus(item.expiry_date),status=document.createElement('span');link.href='#'+publicDocumentDomId(item.id);link.className='shared-document-summary-link';number.className='shared-document-summary-number';number.textContent=String(index+1).padStart(2,'0');
       name.textContent=item.document_type||item.file_name||'ATSRS document';provider.textContent=fileCategoryLabel(item)+(item.provider?' · '+item.provider:'');copy.appendChild(name);copy.appendChild(provider);status.className='shared-document-summary-status'+(statusData.className?' '+statusData.className:'');status.textContent=statusData.label;
       var recent=recentPublicUpload(item.uploaded_at);provider.textContent+=' · Uploaded '+publicUploadLabel(item.uploaded_at);provider.className=recent?'is-recent':'';if(recent){status.classList.add('is-new');status.textContent='NEW UPDATE';}
-      link.appendChild(number);link.appendChild(copy);link.appendChild(status);link.addEventListener('click',function(){setTimeout(function(){var card=byId(publicDocumentDomId(item.id));if(card){card.classList.remove('summary-focus');void card.offsetWidth;card.classList.add('summary-focus');}},0);});row.appendChild(link);list.appendChild(row);
+      link.appendChild(number);link.appendChild(copy);link.appendChild(status);link.addEventListener('click',function(event){event.preventDefault();selectPublicDocumentCard(item.id,{updateHash:true,behavior:'smooth'});});row.appendChild(link);list.appendChild(row);
     });
     if(filter&&!filter.dataset.bound){filter.dataset.bound='true';filter.addEventListener('change',renderPublicSummary);}
   }
@@ -481,6 +492,7 @@
       var sectionGrid=document.createElement('div');sectionGrid.className='shared-document-grid';files.forEach(function(item){sectionGrid.appendChild(renderPublicDocument(item));});
       section.appendChild(heading);section.appendChild(sectionGrid);grid.appendChild(section);
     });
+    if(location.hash&&location.hash.indexOf('#shared-document-')===0){requestAnimationFrame(function(){var card=byId(location.hash.slice(1));if(card){var id=publicDocuments.find(function(item){return publicDocumentDomId(item.id)===card.id;});if(id)selectPublicDocumentCard(id.id,{behavior:'auto'});}});}
     var all=byId('requestAllDocumentsBtn');if(all){
       var approvedFiles=publicDocuments.filter(function(item){return item.download_status==='approved';}),availableFiles=publicDocuments.filter(function(item){return item.download_status==='available_on_request';}),pendingFiles=publicDocuments.filter(function(item){return item.download_status==='pending';});
       all.onclick=null;all.disabled=false;
