@@ -40,7 +40,10 @@ export function successFactorsEntries(html,base,s) {
   const title=text(entity(m[2]));if(!title||!allowedUrl(url.href,s))continue;
   const match=url.pathname.match(/\/(\d+)\/?$/);const id=match?.[1];if(id)entries.set(id,normalized(s,id,title,url.href));
  }
- const totals=[...html.matchAll(/Showing\s+\d+\s+to\s+\d+\s+of\s+(\d+)\s+Jobs/gi)].map(m=>Number(m[1]));
+ const totals=[
+  ...[...html.matchAll(/Showing\s+\d+\s+to\s+\d+\s+of\s+(\d+)\s+Jobs/gi)].map(m=>Number(m[1])),
+  ...[...html.matchAll(/Results\s+\d+\s*[–-]\s*\d+\s+of\s+(\d+)/gi)].map(m=>Number(m[1]))
+ ];
  const total=totals.length?Math.max(...totals):entries.size;
  return {entries,total};
 }

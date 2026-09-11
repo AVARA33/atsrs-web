@@ -15,6 +15,15 @@ test('SuccessFactors listing parser keeps every unique official job with a stabl
  assert.equal(parsed.entries.get('1167712355').function.id,'rov_roc');
 });
 
+test('SuccessFactors listing parser reads both supported result-count labels',()=>{
+ const source={board:'technipfmc',source_config:{company:'TechnipFMC',prefixes:['https://careers.technipfmc.com/']}};
+ const html=`Results 1 – 25 of 183 Page 1 of 8
+   <a href="/job/Macae-ROV-OPERATOR-I/1412623700/">ROV OPERATOR I</a>`;
+ const parsed=successFactorsEntries(html,'https://careers.technipfmc.com/search/',source);
+ assert.equal(parsed.total,183);
+ assert.equal(parsed.entries.size,1);
+});
+
 test('SuccessFactors detail parser returns the card fields and direct application URL',()=>{
  const html=`<span itemprop="title">ROV Supervisor</span>
  <span data-careersite-propertyid="location"><span class="jobGeoLocation">Aberdeen, GB</span></span>
