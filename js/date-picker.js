@@ -67,8 +67,8 @@
         '<div class="atsrs-date-picker-nav">'+
           '<button type="button" data-date-prev="true" aria-label="Previous month">&lsaquo;</button>'+
           '<div id="atsrsDatePickerMonth" class="atsrs-date-picker-month" role="group" aria-label="Choose month and year">'+
-            '<select data-date-month="true" aria-label="Month"></select>'+
-            '<select data-date-year="true" aria-label="Year"></select>'+
+            '<select data-date-month="true" data-atsrs-native-select="true" aria-label="Month"></select>'+
+            '<select data-date-year="true" data-atsrs-native-select="true" aria-label="Year"></select>'+
           '</div>'+
           '<button type="button" data-date-next="true" aria-label="Next month">&rsaquo;</button>'+
         '</div>'+

@@ -11,13 +11,14 @@ const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'date-picke
 
 test('date picker assets use the current cache version', () => {
   assert.match(index, /css\/date-picker\.css\?v=5851/);
-  assert.match(index, /js\/date-picker\.js\?v=5851/);
+  assert.match(index, /js\/date-picker\.js\?v=6095/);
 });
 
 test('visual harness compares the real calendar selection with the real Jobs active page state', () => {
   assert.match(harness, /jobs-page-button is-current/);
   assert.match(harness, /type="date" value="2026-08-17"/);
   assert.match(harness, /\.\.\/\.\.\/js\/date-picker\.js/);
+  assert.match(harness, /\.\.\/\.\.\/js\/select-standard\.js/);
 });
 
 test('calendar controls use neutral dark surfaces and direct month/year change handling', () => {
@@ -30,6 +31,11 @@ test('calendar controls use neutral dark surfaces and direct month/year change h
   assert.match(script, /querySelector\('\[data-date-month\]'\)\.addEventListener\('change',onPickerChange\)/);
   assert.match(script, /querySelector\('\[data-date-year\]'\)\.addEventListener\('change',onPickerChange\)/);
   assert.doesNotMatch(script, /picker\.addEventListener\('change',onPickerChange\)/);
+});
+
+test('calendar month and year remain native selects inside QR and document modals', () => {
+  assert.match(script, /<select data-date-month="true" data-atsrs-native-select="true" aria-label="Month">/);
+  assert.match(script, /<select data-date-year="true" data-atsrs-native-select="true" aria-label="Year">/);
 });
 
 test('selected calendar day reuses the themed active-pagination edge treatment', () => {
