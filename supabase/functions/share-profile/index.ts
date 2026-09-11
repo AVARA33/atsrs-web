@@ -158,6 +158,50 @@ function isShareEligibleFile(file: JsonObject) {
   return metadata.document_registered !== false;
 }
 
+function fileMetadata(file: JsonObject) {
+  return file.metadata && typeof file.metadata === "object"
+    ? file.metadata as JsonObject
+    : {};
+}
+
+function currentMainCv(files: JsonObject[]) {
+  const eligible = files.filter((file) => isShareEligibleFile(file));
+  const explicit = eligible.find((file) => fileMetadata(file).is_main === true);
+  if (explicit) return explicit;
+  return eligible.filter((file) => {
+    const metadata = fileMetadata(file);
+    return metadata.is_main !== false && metadata.source !== "ai-generated";
+  }).sort((left, right) =>
+    String(left.created_at ?? "").localeCompare(String(right.created_at ?? ""))
+  )[0] ?? null;
+}
+
+async function refreshSharedMainCv(admin: AdminClient, share: ShareRow) {
+  const selectedIds = uniqueFileIds(share.selected_file_ids);
+  if (!selectedIds.length || share.account_type !== "personal") return selectedIds;
+  const selected = await admin.from("atsrs_files").select("id,category")
+    .eq("user_id", share.user_id).eq("account_type", share.account_type).in("id", selectedIds);
+  if (selected.error) throw selected.error;
+  const sharedCvIds = new Set((selected.data ?? []).filter((file) => file.category === "cv").map((file) => String(file.id)));
+  if (!sharedCvIds.size) return selectedIds;
+  const cvs = await admin.from("atsrs_files")
+    .select("id,category,metadata,created_at,updated_at")
+    .eq("user_id", share.user_id).eq("account_type", share.account_type).eq("category", "cv");
+  if (cvs.error) throw cvs.error;
+  const main = currentMainCv((cvs.data ?? []) as JsonObject[]);
+  const mainId = safeText(main?.id, 40);
+  if (!UUID_PATTERN.test(mainId)) return selectedIds;
+  const resolved = Array.from(new Set(selectedIds.map((id) => sharedCvIds.has(id) ? mainId : id)));
+  if (resolved.join(",") !== selectedIds.join(",")) {
+    const update = await admin.from("atsrs_profile_shares").update({
+      selected_file_ids: resolved,
+      updated_at: new Date().toISOString(),
+    }).eq("id", share.id).eq("user_id", share.user_id);
+    if (update.error) throw update.error;
+  }
+  return resolved;
+}
+
 function escapeHtml(value: unknown) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -1030,6 +1074,7 @@ async function publicAction(req: Request, admin: AdminClient, secretKey: string,
   const resumeRequest = await loadResumeRequest(admin, secretKey, safeText(body.request_id, 40), safeText(body.resume, 80));
   const share = resumeRequest ? await loadShareById(admin, resumeRequest.share_id) : await loadShareByToken(admin, token);
   if (!share) return json(req, 404, { error: "Shared profile was not found or is no longer active." });
+  share.selected_file_ids = await refreshSharedMainCv(admin, share);
   const action = safeText(body.action, 40);
   if (action === "start_verification") return startVerification(req, admin, secretKey, share, body);
   if (action === "verify_otp") return verifyOtp(req, admin, secretKey, share, body);
@@ -1051,6 +1096,7 @@ async function publicRequest(req: Request, admin: AdminClient, secretKey: string
   const resumeRequest = await loadResumeRequest(admin, secretKey, requestUrl.searchParams.get("request_id")?.trim() ?? "", requestUrl.searchParams.get("resume")?.trim() ?? "");
   const share = resumeRequest ? await loadShareById(admin, resumeRequest.share_id) : await loadShareByToken(admin, token);
   if (!share) return json(req, 404, { error: "Shared profile was not found or is no longer active." });
+  share.selected_file_ids = await refreshSharedMainCv(admin, share);
   const workspace = await admin.from("atsrs_workspace_data").select("data_key,payload")
     .eq("user_id", share.user_id).eq("account_type", share.account_type);
   if (workspace.error) throw workspace.error;
