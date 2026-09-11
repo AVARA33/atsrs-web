@@ -57,6 +57,33 @@ html.atsrs-public-share-mode body.atsrs-public-share-view{
   letter-spacing:.08em;
   text-decoration:none;
 }
+.shared-profile-topbar-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:14px;
+}
+.shared-profile-home-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:7px 12px;
+  border:1px solid rgba(67,101,128,.58);
+  border-radius:9px;
+  background:rgba(7,19,31,.52);
+  color:#dce7ef;
+  font-size:11px;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.shared-profile-home-link:hover,
+.shared-profile-home-link:focus-visible{
+  border-color:#22c55e;
+  color:#86efac;
+}
 .shared-profile-trust{
   display:inline-flex;
   align-items:center;
@@ -180,9 +207,9 @@ html.atsrs-public-share-mode body.atsrs-public-share-view{
 .shared-document-summary-head>span,.shared-document-summary-tools>span{color:#7f94a7;font-size:11px}
 .shared-document-summary-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px}.shared-document-summary-tools label{color:#71889b;font-size:10px}.shared-document-summary-tools select{width:auto;min-height:32px;margin:0;padding:5px 28px 5px 9px;border:1px solid rgba(67,101,128,.58);border-radius:8px;background:#07131f;color:#dce7ef;font-size:10px}
 .atsrs-public-share-view .atsrs-select-menu .atsrs-select-option{min-height:30px!important;padding:6px 8px!important;font-size:10px!important;line-height:1.2!important}.atsrs-public-share-view #sharedProfileSummaryFilter :is(option,optgroup){font-size:10px!important}
-.shared-document-summary-list{display:grid;grid-template-columns:1fr;max-height:384px;margin:0;padding:0 8px 0 0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#40566a transparent;list-style:none}
+.shared-document-summary-list{display:grid;grid-template-columns:1fr;max-height:384px;margin:0;padding:0 10px 0 8px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#40566a transparent;list-style:none}
 .shared-document-summary-list::-webkit-scrollbar{width:7px}.shared-document-summary-list::-webkit-scrollbar-track{background:transparent}.shared-document-summary-list::-webkit-scrollbar-thumb{border-radius:999px;background:#40566a}
-.shared-document-summary-link{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:9px;min-width:0;padding:10px 0;border-bottom:1px solid rgba(67,101,128,.26);color:#dce7ef;text-decoration:none}
+.shared-document-summary-link{display:grid;grid-template-columns:32px minmax(0,1fr) max-content;align-items:center;gap:10px;min-width:0;padding:10px 8px;border-bottom:1px solid rgba(67,101,128,.26);color:#dce7ef;text-decoration:none}
 .shared-document-summary-number{color:#5f778b;font-size:10px;font-weight:800;letter-spacing:.08em}
 .shared-document-summary-link b,.shared-document-summary-link small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shared-document-summary-link b{font-size:12px}
@@ -387,12 +414,37 @@ html[data-theme="dark"].atsrs-public-share-mode .shared-profile-meta span{
   -webkit-text-fill-color:#d7e0db!important;
   box-shadow:none!important;
 }
+html[data-theme="dark"].atsrs-public-share-mode .shared-profile-home-link{
+  border-color:#343936!important;
+  background:#0b0d0c!important;
+  color:#eef2ef!important;
+  -webkit-text-fill-color:#eef2ef!important;
+}
+html[data-theme="dark"].atsrs-public-share-mode .shared-profile-home-link:is(:hover,:focus-visible){
+  border-color:#22c55e!important;
+  color:#86efac!important;
+  -webkit-text-fill-color:#86efac!important;
+}
 html[data-theme="light"].atsrs-public-share-mode,
 html[data-theme="light"].atsrs-public-share-mode body.atsrs-public-share-view,
 html[data-theme="light"].atsrs-public-share-mode .shared-profile-page{
   background:#f6f8fb!important;
   background-image:none!important;
   color:#172b3d!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-profile-brand{
+  color:#167bd3!important;
+  -webkit-text-fill-color:#167bd3!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-profile-home-link{
+  border-color:#c8d4de!important;
+  background:#ffffff!important;
+  color:#0b5ca8!important;
+  -webkit-text-fill-color:#0b5ca8!important;
+}
+html[data-theme="light"].atsrs-public-share-mode .shared-profile-home-link:is(:hover,:focus-visible){
+  border-color:#167bd3!important;
+  background:#f3f8fd!important;
 }
 html[data-theme="dark"].atsrs-public-share-mode .shared-document-card.is-summary-target{
   border-color:#22c55e!important;
@@ -751,11 +803,21 @@ html[data-theme="light"].atsrs-public-share-mode .shared-document-summary-link:h
   .shared-profile-avatar{flex-basis:58px;width:58px;height:58px;font-size:15px}
   .shared-profile-page{padding:20px 14px 30px}
   .shared-profile-topbar{margin-bottom:22px}
+  .shared-profile-topbar-actions{gap:8px}
   .shared-profile-trust{font-size:10px}
+  .shared-profile-home-link{min-height:32px;padding:6px 9px;font-size:10px}
   .shared-profile-hero{grid-template-columns:1fr;padding:24px}
   .shared-profile-meta{justify-content:flex-start}
   .shared-document-grid{grid-template-columns:1fr}
   .shared-profile-section-head{align-items:flex-start;flex-direction:column}
+}
+
+@media(max-width:520px){
+  .shared-profile-topbar{align-items:flex-start}
+  .shared-profile-topbar-actions{align-items:flex-end;flex-direction:column}
+  .shared-document-summary{padding-right:10px;padding-left:10px}
+  .shared-document-summary-list{padding-right:6px;padding-left:4px}
+  .shared-document-summary-link{grid-template-columns:24px minmax(0,1fr) max-content;gap:7px;padding-right:6px;padding-left:4px}
 }
 
 /* ATSRS V246: owner-controlled recruiter requests and timed downloads. */
