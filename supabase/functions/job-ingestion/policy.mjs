@@ -24,7 +24,9 @@ export function postingUrl(value, board, id, source) {
 }
 export function newPostingProblem(d, now = Date.now()) {
   const posted = Date.parse(d.releasedDate || '');
-  if (!Number.isFinite(posted) || posted > now || now - posted > 14 * 86400000) return 'Missing or older than 14 days official posting date';
+  const closes = Date.parse(d.validThrough || '');
+  const verifiedOpenWindow = d.active === true && Number.isFinite(closes) && closes > now;
+  if ((!Number.isFinite(posted) || posted > now || now - posted > 14 * 86400000) && !verifiedOpenWindow) return 'Missing or older than 14 days official posting date';
   if (/\b(expression of interest|talent pool|future opportunit|general application|register your interest)/i.test(d.name || '')) return 'Talent pool or expression of interest, not a specific vacancy';
   return null;
 }

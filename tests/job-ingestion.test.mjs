@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {clean,postingUrl,checkDetail,usageCost,verifiedClassification,sourceContent} from '../supabase/functions/job-ingestion/policy.mjs';
+import {clean,postingUrl,checkDetail,newPostingProblem,usageCost,verifiedClassification,sourceContent} from '../supabase/functions/job-ingestion/policy.mjs';
 test('additional salary, shifts and relocation facts are retained without AI rewriting',()=>{
  const r=sourceContent({jobDescription:{text:'<p>Review laboratory records.</p>'},additionalInformation:{text:'<p>$18–$20 per hour.</p><p>Relocation to Mississauga expected in 2026.</p><p>Monday–Friday 8am–5pm.</p>'},qualifications:{text:'<p>HS diploma.</p>'}});
  assert.equal(r.error,null);
@@ -37,4 +37,10 @@ test('pricing includes cached tokens; worst bounded request is below reservation
  assert.equal(usageCost(1000000,1000000,0),.02);
  // 16K input bytes + conservative instruction/schema overhead; no tools/images.
  assert.ok(usageCost(20000,0,1000)<.02);
+});
+test('an older listing is accepted only while its official future application window is verified open',()=>{
+ const now=Date.parse('2026-09-11T12:00:00Z');
+ assert.equal(newPostingProblem({name:'ROV Pilot',active:true,releasedDate:'2026-04-01',validThrough:'2026-10-01'},now),null);
+ assert.match(newPostingProblem({name:'ROV Pilot',active:true,releasedDate:'2026-04-01'},now),/older than 14 days/);
+ assert.match(newPostingProblem({name:'ROV Pilot',active:false,releasedDate:'2026-04-01',validThrough:'2026-10-01'},now),/older than 14 days/);
 });
