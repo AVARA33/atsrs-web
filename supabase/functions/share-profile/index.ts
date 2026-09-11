@@ -8,6 +8,7 @@ const DOWNLOAD_URL_SECONDS = 1800;
 const OTP_TTL_MINUTES = 10;
 const MAX_OTP_ATTEMPTS = 5;
 const MAX_SHARED_FILES = 50;
+const CONFIDENTIALITY_NOTICE = "Confidentiality note: These documents are shared with you for recruitment, employment or compliance review. Please keep them confidential, use them only for that purpose, and do not share them with anyone else without the document owner's permission. If this email reached you by mistake, please let the sender know and delete it.";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TOKEN_PATTERN = /^[A-Za-z0-9_-]{40,128}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -451,8 +452,8 @@ async function notifyDecision(row: AccessRequestRow, approved: boolean, secretKe
   await sendEmail(
     row.requester_email,
     subject,
-    `<div style="background:#f1f5f9;padding:28px 12px;font-family:Arial,sans-serif;color:#172033"><div style="max-width:620px;margin:auto;background:#fff;border:1px solid #dbe4ee;border-radius:18px;overflow:hidden"><div style="padding:18px 24px;background:#08111f;color:#fff;font-weight:800;letter-spacing:.08em">ATSRS</div><div style="padding:26px 24px"><p style="margin:0 0 8px;color:#16a34a;font-size:12px;font-weight:800;letter-spacing:.1em">${approved ? "DOWNLOAD APPROVED" : "REQUEST UPDATE"}</p><h2 style="margin:0 0 14px;font-size:24px">${approved ? "Your files are ready" : "Download request declined"}</h2><p style="line-height:1.6">Hello ${escapeHtml(row.requester_name)},</p><p style="line-height:1.6">${escapeHtml(timing)}</p>${approved ? `<a href="${returnUrl}" style="display:inline-block;margin:12px 0 8px;padding:12px 18px;border-radius:10px;background:#16a34a;color:#fff;text-decoration:none;font-weight:700">Open shared files</a>` : ""}<p style="color:#64748b;font-size:12px;line-height:1.5">ATSRS never sends document attachments by email.</p></div></div></div>`,
-    `${approved ? "Approved." : "Declined."} ${timing}${approved ? ` Open shared files: ${returnUrl}` : ""}`,
+    `<div style="background:#f1f5f9;padding:28px 12px;font-family:Arial,sans-serif;color:#172033"><div style="max-width:620px;margin:auto;background:#fff;border:1px solid #dbe4ee;border-radius:18px;overflow:hidden"><div style="padding:18px 24px;background:#08111f;color:#fff;font-weight:800;letter-spacing:.08em">ATSRS</div><div style="padding:26px 24px"><p style="margin:0 0 8px;color:#16a34a;font-size:12px;font-weight:800;letter-spacing:.1em">${approved ? "DOWNLOAD APPROVED" : "REQUEST UPDATE"}</p><h2 style="margin:0 0 14px;font-size:24px">${approved ? "Your files are ready" : "Download request declined"}</h2><p style="line-height:1.6">Hello ${escapeHtml(row.requester_name)},</p><p style="line-height:1.6">${escapeHtml(timing)}</p>${approved ? `<a href="${returnUrl}" style="display:inline-block;margin:12px 0 8px;padding:12px 18px;border-radius:10px;background:#16a34a;color:#fff;text-decoration:none;font-weight:700">Open shared files</a><p style="margin:18px 0 0;padding-top:14px;border-top:1px solid #e2e8f0;color:#64748b;font-size:12px;line-height:1.55">${escapeHtml(CONFIDENTIALITY_NOTICE)}</p>` : ""}<p style="color:#64748b;font-size:12px;line-height:1.5">ATSRS never sends document attachments by email.</p></div></div></div>`,
+    `${approved ? "Approved." : "Declined."} ${timing}${approved ? ` Open shared files: ${returnUrl}\n\n${CONFIDENTIALITY_NOTICE}` : ""}`,
   );
 }
 

@@ -136,7 +136,8 @@
     var email=verifiedEmail(recipient&&recipient.email);if(!email||!shareUrl)return'';
     var name=String(recipient&&recipient.name||'Recruiter').trim()||'Recruiter';
     var subject='ATSRS profile shared with '+name;
-    var body='Hello '+name+',\n\nI am sharing my ATSRS profile through this secure link. The link expires in 24 hours:\n\n'+shareUrl+'\n\nKind regards,';
+    var confidentialityNotice='Confidentiality note: These documents are shared with you for recruitment, employment or compliance review. Please keep them confidential, use them only for that purpose, and do not share them with anyone else without the document owner\'s permission. If this email reached you by mistake, please let the sender know and delete it.';
+    var body='Hello '+name+',\n\nI am sharing my ATSRS profile through this secure link. The link expires in 24 hours:\n\n'+shareUrl+'\n\n'+confidentialityNotice+'\n\nKind regards,';
     var params=new URLSearchParams({view:'cm',fs:'1',to:email,su:subject,body:body});
     return'https://mail.google.com/mail/?'+params.toString();
   }
