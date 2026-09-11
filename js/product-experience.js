@@ -180,9 +180,9 @@
     if(!pdfDocument||!pdfPages||!pdfStage)return;
     var version=++pdfRenderVersion;
     var scrollRatio=pdfStage.scrollHeight>pdfStage.clientHeight?pdfStage.scrollTop/(pdfStage.scrollHeight-pdfStage.clientHeight):0;
-    pdfPages.innerHTML='';
     if(pdfStatus)pdfStatus.textContent='Rendering '+pdfDocument.numPages+' page'+(pdfDocument.numPages===1?'':'s')+'...';
     var outputScale=Math.min(window.devicePixelRatio||1,1.5);
+    var renderedPages=document.createDocumentFragment();
     try{
       for(var pageNumber=1;pageNumber<=pdfDocument.numPages;pageNumber+=1){
         if(version!==pdfRenderVersion)return;
@@ -195,7 +195,7 @@
         canvas.height=Math.max(1,Math.floor(viewport.height*outputScale));
         canvas.style.width=Math.floor(viewport.width)+'px';
         canvas.style.height=Math.floor(viewport.height)+'px';
-        pdfPages.appendChild(canvas);
+        renderedPages.appendChild(canvas);
         context.save();
         context.fillStyle='#ffffff';
         context.fillRect(0,0,canvas.width,canvas.height);
@@ -205,6 +205,7 @@
         await page.render(renderOptions).promise;
       }
       if(version!==pdfRenderVersion)return;
+      pdfPages.replaceChildren(renderedPages);
       syncPdfZoomControls();
       if(pdfStatus)pdfStatus.textContent=pdfDocument.numPages+' page'+(pdfDocument.numPages===1?'':'s');
       requestAnimationFrame(function(){
@@ -216,6 +217,16 @@
       console.error('ATSRS PDF render failed',error);
       if(pdfStatus)pdfStatus.textContent='Preview could not be rendered.';
     }
+  }
+
+  function previewPdfScale(nextScale){
+    if(!pdfPages||!pdfScale||nextScale===pdfScale)return;
+    var ratio=nextScale/pdfScale;
+    pdfPages.querySelectorAll('.file-preview-pdf-page').forEach(function(canvas){
+      canvas.style.width=Math.max(1,Math.round(parseFloat(canvas.style.width||canvas.clientWidth)*ratio))+'px';
+      canvas.style.height=Math.max(1,Math.round(parseFloat(canvas.style.height||canvas.clientHeight)*ratio))+'px';
+    });
+    syncStagePan(pdfStage);
   }
 
   function pdfZoomPercent(){
@@ -235,16 +246,20 @@
     pdfRenderTimer=window.setTimeout(function(){
       pdfRenderTimer=0;
       renderPdf();
-    },250);
+    },40);
   }
 
   async function fitPdf(){
     if(!pdfDocument||!pdfStage)return;
-    var firstPage=await pdfDocument.getPage(1);
-    var naturalViewport=firstPage.getViewport({scale:1,rotation:pdfRotation});
-    var availableWidth=Math.max(1,pdfStage.clientWidth-42);
-    var availableHeight=Math.max(1,pdfStage.clientHeight-42);
-    pdfFitScale=Math.min(availableWidth/naturalViewport.width,availableHeight/naturalViewport.height);
+    var pages=await Promise.all(Array.from({length:pdfDocument.numPages},function(_,index){return pdfDocument.getPage(index+1);}));
+    var viewports=pages.map(function(page){return page.getViewport({scale:1,rotation:pdfRotation});});
+    var widest=Math.max.apply(null,viewports.map(function(viewport){return viewport.width;}));
+    var tallest=Math.max.apply(null,viewports.map(function(viewport){return viewport.height;}));
+    var availableWidth=Math.max(1,pdfStage.clientWidth-36);
+    var availableHeight=Math.max(1,pdfStage.clientHeight-36);
+    var nextScale=Math.min(availableWidth/widest,availableHeight/tallest);
+    previewPdfScale(nextScale);
+    pdfFitScale=nextScale;
     pdfScale=pdfFitScale;
     pdfFitted=true;
     await renderPdf();
@@ -256,7 +271,9 @@
     if(!pdfDocument)return;
     var current=pdfFitted?100:clampZoomPercent(Math.round(pdfScale/pdfFitScale*100/zoomStepPercent)*zoomStepPercent);
     pdfFitted=false;
-    pdfScale=pdfFitScale*clampZoomPercent(current+(direction<0?-zoomStepPercent:zoomStepPercent))/100;
+    var nextScale=pdfFitScale*clampZoomPercent(current+(direction<0?-zoomStepPercent:zoomStepPercent))/100;
+    previewPdfScale(nextScale);
+    pdfScale=nextScale;
     queuePdfRender();
   }
 

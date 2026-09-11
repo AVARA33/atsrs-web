@@ -63,7 +63,7 @@
   }
 
   function loadPreview(){
-    return loadScript('js/product-experience.js?v=452');
+    return loadScript('js/product-experience.js?v=453');
   }
 
   function report(error){
