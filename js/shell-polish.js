@@ -287,6 +287,7 @@
     if(typeof window.showPage==='function'&&profile)window.showPage('profile',profile);
     function reveal(){
       if(typeof window.showAccountTab==='function')window.showAccountTab('security');
+      if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('security',false);
       var manage=byId('manageNotifyBtn'),panel=byId('atsrsNotificationSettings');
       if(panel&&panel.classList.contains('hidden')&&manage)manage.click();
       else if(panel&&typeof window.atsrsRefreshNotifications==='function')window.atsrsRefreshNotifications();
