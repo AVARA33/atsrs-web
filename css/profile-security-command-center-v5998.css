@@ -102,12 +102,14 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action { grid-column:3; width:88px!important; }
 }
 
-/* Reminder preferences live below the security cards and must remain reachable. */
-body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] {
-  height:auto; min-height:294px; max-height:none; overflow:visible;
-}
-body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] #profileTabSecurityPanel {
-  height:auto; min-height:294px; overflow:visible;
+/* Keep the Security frame the same size as Sharing while its contents scroll. */
+@media(min-width:761px) {
+  body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] {
+    height:294px; min-height:294px; max-height:294px; overflow:hidden;
+  }
+  body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] #profileTabSecurityPanel {
+    height:100%; min-height:0; overflow-x:hidden; overflow-y:auto; scrollbar-gutter:stable;
+  }
 }
 body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
   height:auto; min-height:254px;
