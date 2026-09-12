@@ -71,6 +71,48 @@ html[data-theme="dark"] :is(
   -webkit-text-fill-color:var(--sidebar-accent)!important;
 }
 
+/* Shared profiles keep expiry meaning above generic heading and brand colors. */
+html[data-theme] .shared-document-card.status-expiring-90 h3,
+html[data-theme] .shared-document-status.expiring-90{
+  color:#ca8a04!important;
+  -webkit-text-fill-color:#ca8a04!important;
+}
+html[data-theme] .shared-document-card.status-expiring-60 h3,
+html[data-theme] .shared-document-status.expiring-60{
+  color:#d97706!important;
+  -webkit-text-fill-color:#d97706!important;
+}
+html[data-theme] .shared-document-card.status-expiring-30 h3,
+html[data-theme] .shared-document-status.expiring-30{
+  color:#ea580c!important;
+  -webkit-text-fill-color:#ea580c!important;
+}
+html[data-theme] :is(.shared-document-card.status-expiring-1,.shared-document-card.status-expired) h3,
+html[data-theme] :is(.shared-document-status.expiring-1,.shared-document-status.expired){
+  color:#dc2626!important;
+  -webkit-text-fill-color:#dc2626!important;
+}
+html[data-theme="dark"] .shared-document-card.status-expiring-90 h3,
+html[data-theme="dark"] .shared-document-status.expiring-90{
+  color:#fde047!important;
+  -webkit-text-fill-color:#fde047!important;
+}
+html[data-theme="dark"] .shared-document-card.status-expiring-60 h3,
+html[data-theme="dark"] .shared-document-status.expiring-60{
+  color:#fbbf24!important;
+  -webkit-text-fill-color:#fbbf24!important;
+}
+html[data-theme="dark"] .shared-document-card.status-expiring-30 h3,
+html[data-theme="dark"] .shared-document-status.expiring-30{
+  color:#fb923c!important;
+  -webkit-text-fill-color:#fb923c!important;
+}
+html[data-theme="dark"] :is(.shared-document-card.status-expiring-1,.shared-document-card.status-expired) h3,
+html[data-theme="dark"] :is(.shared-document-status.expiring-1,.shared-document-status.expired){
+  color:#f87171!important;
+  -webkit-text-fill-color:#f87171!important;
+}
+
 html[data-theme="dark"] body #app.app:not(.hidden) :is(
   .pill,
   .sidebar .nav button.active,
