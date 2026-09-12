@@ -269,7 +269,6 @@ window.ATSRS_AZ_MESSAGES = {
   "Search": "Axtarış",
   "Job title or role": "Vəzifə adı",
   "Role": "Vəzifə",
-  "roles selected": "vəzifə seçilib",
   "Region": "Region",
   "Country": "Ölkə",
   "City / location": "Şəhər / məkan",
