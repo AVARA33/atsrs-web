@@ -102,27 +102,51 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action { grid-column:3; width:88px!important; }
 }
 
-/* Keep the Security frame the same size as Sharing while its contents scroll. */
+/* Keep Security the same size as Sharing and switch compact views in place. */
 @media(min-width:761px) {
   body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] {
     height:294px; min-height:294px; max-height:294px; overflow:hidden;
   }
   body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] #profileTabSecurityPanel {
-    box-sizing:border-box; height:100%; min-height:0; overflow-x:hidden; overflow-y:auto; scrollbar-gutter:stable;
+    box-sizing:border-box; height:100%; min-height:0; padding:12px 16px; overflow:hidden; scrollbar-gutter:auto;
   }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
+    height:100%; min-height:0;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification { overflow:hidden; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification-heading {
+    padding-bottom:8px;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-channel-grid {
+    margin-bottom:8px;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-send-inline {
+    margin-top:8px;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid {
+    height:100%; grid-template-rows:repeat(3,minmax(0,1fr));
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center:has(> .atsrs-notification-settings:not(.hidden)) .profile-security-primary {
+    display:none;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings:not(.hidden) {
+    box-sizing:border-box; height:100%; margin:0; padding:8px 12px; overflow:hidden;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading h4 { margin:0; font-size:14px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading button { min-width:26px; width:26px; height:26px; min-height:26px; padding:0; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings > p { margin:0 0 3px; font-size:10px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field { min-height:39px; padding:3px 0; font-size:11px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field small { margin-top:1px; font-size:9px; line-height:1.1; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field input[type="checkbox"] { width:16px; height:16px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field :is(input[type="tel"],select) { height:30px; min-height:30px; font-size:10px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar { margin-top:5px; gap:4px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar button { width:100%; min-height:28px; height:28px; padding:0 8px; font-size:10px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-status { font-size:10px; }
 }
-body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
-  height:auto; min-height:254px;
-}
-body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification {
-  height:auto; overflow:visible;
-}
-body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid {
-  height:auto; grid-template-rows:repeat(3,minmax(70px,auto));
-}
-body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings {
-  margin:16px 0 0; min-width:0;
-}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings { min-width:0; }
 body.personal-mode #profilePage .profile-security-development-badge {
   display:inline-block; vertical-align:middle; margin-left:8px; padding:3px 7px;
   border:1px solid var(--line); border-radius:999px; color:var(--muted);
@@ -132,4 +156,6 @@ body.personal-mode #profilePage .profile-security-development-badge {
   body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
     height:auto; min-height:0;
   }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification { height:auto; overflow:visible; }
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid { height:auto; grid-template-rows:repeat(3,minmax(70px,auto)); }
 }

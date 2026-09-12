@@ -20,7 +20,8 @@ test('notification gear opens the server-backed reminder settings',()=>{
   assert.match(shell,/addEventListener\('click',navigateToNotificationSettings\)/);
   assert.match(notifications,/byId\('profileTabSecurityPanel'\)/);
   assert.match(notifications,/securityHost\.appendChild\(panel\)/);
-  assert.match(boot,/js\/notifications\.js\?v=388/);
-  assert.match(html,/js\/boot-refresh\.js\?v=447/);
+  assert.match(notifications,/atsrsCloseNotificationSettings/);
+  assert.match(boot,/js\/notifications\.js\?v=389/);
+  assert.match(html,/js\/boot-refresh\.js\?v=448/);
   assert.match(html,/js\/shell-polish\.js\?v=6065/);
 });
