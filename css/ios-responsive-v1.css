@@ -1,0 +1,104 @@
+/* iOS/iPadOS Safari and installed-web-app corrections. Kept after the shared
+   Android/mobile layer so WebKit viewport and safe-area behavior wins locally. */
+@supports (-webkit-touch-callout:none) {
+  html {
+    width:100%;
+    min-height:100%;
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    overflow-x:hidden;
+  }
+
+  body {
+    width:100%;
+    min-height:100%;
+    min-height:-webkit-fill-available;
+    overflow-x:hidden!important;
+  }
+
+  /* Prevent Safari from zooming the whole page when a form field receives focus. */
+  @media (hover:none) and (pointer:coarse) and (max-width:1024px) {
+    body #app.app:not(.hidden) :is(input,select,textarea) {
+      font-size:max(16px,1em)!important;
+    }
+
+    body #app.app:not(.hidden) :is(.table-wrap,.atsrs-document-table-wrap,.account-table-wrap) {
+      overflow-x:auto!important;
+      -webkit-overflow-scrolling:touch;
+      touch-action:pan-x pan-y;
+    }
+
+    body #app.app:not(.hidden) :is(.modal,.dialog,[role="dialog"]) {
+      max-height:calc(var(--atsrs-ios-vvh,100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;
+      overscroll-behavior:contain;
+      -webkit-overflow-scrolling:touch;
+    }
+  }
+
+  /* iPhone browser and Home Screen app. */
+  @media (hover:none) and (pointer:coarse) and (max-width:720px),
+         (hover:none) and (pointer:coarse) and (max-width:960px) and (orientation:landscape) and (max-height:560px) {
+    body #app.app:not(.hidden) > .sidebar {
+      padding-left:max(8px,env(safe-area-inset-left))!important;
+      padding-right:max(8px,env(safe-area-inset-right))!important;
+    }
+
+    body #app.app:not(.hidden) > .main {
+      min-height:var(--atsrs-ios-vvh,100dvh)!important;
+      padding-left:max(12px,env(safe-area-inset-left))!important;
+      padding-right:max(12px,env(safe-area-inset-right))!important;
+    }
+
+    body #app.app:not(.hidden) .main #atsrsGlobalControls,
+    body #app.app:not(.hidden) > .main > #atsrsGlobalControls {
+      right:max(8px,env(safe-area-inset-right))!important;
+    }
+
+    body #app.app:not(.hidden) .sidebar:not(.v76-mobile-closed) {
+      height:var(--atsrs-ios-vvh,100dvh)!important;
+      max-height:var(--atsrs-ios-vvh,100dvh)!important;
+    }
+
+    body #app.app:not(.hidden) :is(.file-preview-dialog,.job-detail-dialog,.jobs-admin-dialog,.cv-generator-dialog) {
+      width:100vw!important;
+      height:var(--atsrs-ios-vvh,100dvh)!important;
+      max-height:var(--atsrs-ios-vvh,100dvh)!important;
+      padding-bottom:env(safe-area-inset-bottom)!important;
+    }
+  }
+
+  /* iPad portrait/landscape: preserve the tablet workspace but keep the four
+     global actions compact and inside both safe edges. */
+  @media (hover:none) and (pointer:coarse) and (min-width:721px) and (max-width:1024px) {
+    body #app.app:not(.hidden) > .main {
+      min-width:0!important;
+      padding-left:max(16px,env(safe-area-inset-left))!important;
+      padding-right:max(16px,env(safe-area-inset-right))!important;
+      padding-bottom:max(16px,env(safe-area-inset-bottom))!important;
+    }
+
+    body #app.app:not(.hidden) #atsrsGlobalControls {
+      right:max(12px,env(safe-area-inset-right))!important;
+      max-width:calc(100vw - 124px - env(safe-area-inset-left) - env(safe-area-inset-right))!important;
+      gap:6px!important;
+    }
+
+    body #app.app:not(.hidden) #workspaceSwitcherButton {
+      max-width:min(190px,30vw)!important;
+    }
+
+    body #app.app:not(.hidden) :is(.atsrs-locale-options,#workspaceSwitcherMenu,.atsrs-notification-popover) {
+      max-width:calc(100vw - max(24px,env(safe-area-inset-left)) - max(24px,env(safe-area-inset-right)))!important;
+    }
+  }
+}
+
+@media (display-mode:standalone) {
+  @supports (-webkit-touch-callout:none) {
+    html,
+    body {
+      min-height:100dvh;
+      background:var(--bg,#050606);
+    }
+  }
+}
