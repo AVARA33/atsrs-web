@@ -108,7 +108,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
     height:294px; min-height:294px; max-height:294px; overflow:hidden;
   }
   body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] #profileTabSecurityPanel {
-    height:100%; min-height:0; overflow-x:hidden; overflow-y:auto; scrollbar-gutter:stable;
+    box-sizing:border-box; height:100%; min-height:0; overflow-x:hidden; overflow-y:auto; scrollbar-gutter:stable;
   }
 }
 body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
