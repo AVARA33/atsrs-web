@@ -7,6 +7,7 @@ import { DOF_FEED, dofEntries } from './workable.mjs';
 import { discover, detail } from './providers.mjs';
 
 const schema = {type:'object',additionalProperties:false,properties:{is_vacancy:{type:'boolean'},summary_quote:{type:'string'}},required:['is_vacancy','summary_quote']};
+const DESCRIPTION_FORMAT_REFRESH='Refresh official description formatting';
 async function hash(value: unknown) {
  const bytes = await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(value)));
  return Array.from(new Uint8Array(bytes)).map(v=>v.toString(16).padStart(2,'0')).join('');
@@ -184,6 +185,12 @@ Deno.serve(async req=>{
      const sections=d.jobAd.sections;
      const fullContent=sourceContent(sections);
      const text=clean(sections.jobDescription?.text,4000);
+     if(q.job_id&&q.reason===DESCRIPTION_FORMAT_REFRESH){
+      checked(await db.from('atsrs_jobs').update({description:fullContent.description,requirements:fullContent.requirements}).eq('id',q.job_id));
+      checked(await db.from('atsrs_job_ingestion_queue').update({state:'published',payload:{...q.payload,_detail_hash:await hash(sections)},processed_hash:q.listing_hash,checked_at:new Date().toISOString(),reason:null}).eq('board',board).eq('external_id',q.external_id));
+      stats.updated++;
+      continue;
+     }
      if(board==='DOF'){
       // Historical imports can use numeric dof.workable.com URLs instead of
       // Workable shortcodes. Hold same-title aliases for exact reconciliation.

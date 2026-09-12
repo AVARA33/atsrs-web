@@ -2,14 +2,29 @@ import { workableUrl } from './workable.mjs';
 import { allowedUrl } from './providers.mjs';
 export const MODEL = 'gpt-5.4-nano-2026-03-17';
 export function sourceContent(sections = {}) {
-  const job = clean(sections.jobDescription?.text, Infinity);
-  const additional = clean(sections.additionalInformation?.text, Infinity);
-  const requirements = clean(sections.qualifications?.text, Infinity);
+  const job = formatted(sections.jobDescription?.text, Infinity);
+  const additional = formatted(sections.additionalInformation?.text, Infinity);
+  const requirements = formatted(sections.qualifications?.text, Infinity);
   const description = additional ? `${job}\n\nAdditional information\n${additional}` : job;
   if (description.length > 12000 || requirements.length > 12000) {
     return { error: 'Full source text exceeds storage limit; manual review required' };
   }
   return { description, requirements: requirements || null, error: null };
+}
+export function formatted(value, limit = 12000) {
+  return String(value ?? '')
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<(?:br|hr)\b[^>]*>/gi, '\n')
+    .replace(/<li\b[^>]*>/gi, '\n• ')
+    .replace(/<\/(?:p|div|li|ul|ol|h[1-6]|section|article|tr|table)>/gi, '\n')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&#(?:x([0-9a-f]+)|(\d+));/gi, (_, h, d) => String.fromCodePoint(Math.min(0x10ffff, parseInt(h || d, h ? 16 : 10))))
+    .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"')
+    .replace(/&apos;|&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&bull;/g, '•').replace(/\u00a0/g, ' ').replace(/\r\n?/g, '\n')
+    .split('\n').map(line => line.replace(/[\t\f\v ]+/g, ' ').trim()).join('\n')
+    .replace(/\n{3,}/g, '\n\n').replace(/\n{2,}(?=• )/g, '\n').trim().slice(0, limit);
 }
 export function clean(value, limit = 12000) {
   return String(value ?? '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<[^>]*>/g, ' ')

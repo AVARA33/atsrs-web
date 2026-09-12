@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {clean,postingUrl,checkDetail,newPostingProblem,usageCost,verifiedClassification,sourceContent} from '../supabase/functions/job-ingestion/policy.mjs';
+import {clean,formatted,postingUrl,checkDetail,newPostingProblem,usageCost,verifiedClassification,sourceContent} from '../supabase/functions/job-ingestion/policy.mjs';
 test('additional salary, shifts and relocation facts are retained without AI rewriting',()=>{
  const r=sourceContent({jobDescription:{text:'<p>Review laboratory records.</p>'},additionalInformation:{text:'<p>$18–$20 per hour.</p><p>Relocation to Mississauga expected in 2026.</p><p>Monday–Friday 8am–5pm.</p>'},qualifications:{text:'<p>HS diploma.</p>'}});
  assert.equal(r.error,null);
@@ -8,6 +8,12 @@ test('additional salary, shifts and relocation facts are retained without AI rew
  assert.ok(r.description.includes('Relocation to Mississauga expected in 2026.'));
  assert.ok(r.description.includes('Monday–Friday 8am–5pm.'));
  assert.equal(r.requirements,'HS diploma.');
+});
+test('source paragraphs and lists remain readable after HTML is removed',()=>{
+ const text=formatted('<p>Role overview.</p><h3>Responsibilities</h3><ul><li>Operate the ROV safely.</li><li>Maintain tooling.</li></ul>');
+ assert.equal(text,'Role overview.\nResponsibilities\n• Operate the ROV safely.\n• Maintain tooling.');
+ assert.equal(formatted('Heading\nFirst line\nSecond line'),'Heading\nFirst line\nSecond line');
+ assert.equal(formatted('<li>&nbsp;Safe&nbsp;operations</li>'),'• Safe operations');
 });
 test('oversized source is sent to review rather than silently losing facts',()=>{
  assert.ok(sourceContent({jobDescription:{text:'a'.repeat(11990)},additionalInformation:{text:'Critical salary and location information.'}}).error);
