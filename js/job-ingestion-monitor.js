@@ -56,9 +56,19 @@
   // Build off-screen and swap once; never collapse the existing report while awaiting RPC.
   var target=host,oldTable=target.querySelector('.job-monitor-table'),oldCoverage=target.querySelector('details');
   var coverageOpen=!!oldCoverage&&oldCoverage.open;
-  var tableScroll=oldTable?oldTable.scrollLeft:0;
+  var tableScroll=oldTable?oldTable.scrollLeft:0,tableScrollTop=oldTable?oldTable.scrollTop:0;
   var builder=document.createElement('div');
-  function commit(){target.replaceChildren(...builder.children);var t=target.querySelector('.job-monitor-table');if(t)t.scrollLeft=tableScroll;if(restoreFocus)refresh.focus({preventScroll:true});}
+  function commit(){
+   target.replaceChildren(...builder.children);
+   var t=target.querySelector(':scope > .job-monitor-table');
+   if(t){
+    var table=t.querySelector('table'),rows=Array.from(table.querySelectorAll('tbody > tr')).slice(0,7);
+    var caption=table.querySelector('caption'),head=table.querySelector('thead');
+    if(rows.length===7)t.style.maxHeight=Math.ceil((caption?caption.getBoundingClientRect().height:0)+(head?head.getBoundingClientRect().height:0)+rows.reduce(function(sum,row){return sum+row.getBoundingClientRect().height;},0)+1)+'px';
+    t.scrollLeft=tableScroll;t.scrollTop=tableScrollTop;
+   }
+   if(restoreFocus)refresh.focus({preventScroll:true});
+  }
   var header=cell(builder,'div','');header.className='job-monitor-header';
   cell(header,'h2','AI balance & HR activity');
   var refresh=cell(header,'button','Refresh');refresh.type='button';refresh.className='btn';refresh.onclick=function(){return window.atsrsRefreshJobMonitor(true);};
