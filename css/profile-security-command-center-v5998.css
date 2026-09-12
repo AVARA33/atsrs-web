@@ -101,3 +101,27 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-meta { display:none; }
   body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-card-action { grid-column:3; width:88px!important; }
 }
+
+/* Reminder preferences live below the security cards and must remain reachable. */
+body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"]:has(.atsrs-notification-settings:not(.hidden)) {
+  height:auto; min-height:294px; max-height:none; overflow:visible;
+}
+body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"]:has(.atsrs-notification-settings:not(.hidden)) #profileTabSecurityPanel {
+  height:auto; min-height:294px; overflow:visible;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center:has(.atsrs-notification-settings:not(.hidden)) .profile-security-primary {
+  height:254px; min-height:254px;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings {
+  margin:16px 0 0; min-width:0;
+}
+body.personal-mode #profilePage .profile-security-development-badge {
+  display:inline-block; vertical-align:middle; margin-left:8px; padding:3px 7px;
+  border:1px solid var(--line); border-radius:999px; color:var(--muted);
+  font-size:10px; font-weight:600; white-space:nowrap;
+}
+@media(max-width:760px) {
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center:has(.atsrs-notification-settings:not(.hidden)) .profile-security-primary {
+    height:auto; min-height:0;
+  }
+}

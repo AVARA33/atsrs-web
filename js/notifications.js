@@ -98,7 +98,7 @@
   function ensureSettingsPanel(){
     var manage=byId('manageNotifyBtn');
     if(!manage)return;
-    var securityHost=byId('profileSecurityControls');
+    var securityHost=byId('profileTabSecurityPanel');
     var existing=byId('atsrsNotificationSettings');
     if(existing){
       if(securityHost&&existing.parentElement!==securityHost)securityHost.appendChild(existing);

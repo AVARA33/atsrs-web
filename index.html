@@ -208,7 +208,7 @@ html[data-theme="light"] body{background:#f6f8fb}
 <link rel="stylesheet" href="css/profile-rebuild-empty-v5875.css?v=5875">
 <link rel="stylesheet" href="css/profile-summary-card-v5876.css?v=5877">
 <link rel="stylesheet" href="css/profile-production-parity-v5878.css?v=6096">
-<link rel="stylesheet" href="css/profile-security-command-center-v5998.css?v=6000">
+<link rel="stylesheet" href="css/profile-security-command-center-v5998.css?v=6001">
   <link rel="stylesheet" href="css/profile-privacy-v1.css?v=27">
   <link rel="stylesheet" href="css/profile-sharing-v1.css?v=49">
 <link rel="stylesheet" href="css/recruiter-action-emphasis-v5926.css?v=5938">
@@ -1903,7 +1903,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <article id="profileTabSecurityPanel" class="profile-settings-panel profile-security-command-center" role="tabpanel" aria-labelledby="profileTabSecurityBtn" hidden>
       <div class="profile-security-primary">
       <section id="profileSecurityVerification" class="profile-security-verification" aria-labelledby="profileSecurityVerificationTitle" data-channel="whatsapp" data-state="ready">
-        <header class="profile-security-verification-heading"><div><h5 id="profileSecurityVerificationTitle">Secure Command Center</h5><p>Keep your contact verified and your account protected.</p></div></header>
+        <header class="profile-security-verification-heading"><div><h5 id="profileSecurityVerificationTitle">Secure Command Center <span class="profile-security-development-badge">Under development</span></h5><p>Mobile and WhatsApp verification are not available yet. You can update your contact details, but verification codes cannot be sent.</p></div></header>
         <div class="profile-security-verification-flow">
           <section class="profile-security-step profile-security-step-channel" aria-label="Choose verification channel">
             <header><div><strong>Contact verification</strong></div></header>
@@ -1915,10 +1915,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
           <section class="profile-security-step profile-security-step-send" aria-label="Send verification code">
             <div class="profile-security-saved-contact"><small id="profileSecuritySavedLabel">Saved WhatsApp number</small><div><strong id="profileSecuritySavedNumber">Not provided</strong><span id="profileSecuritySavedStatus">Not verified</span><button id="profileSecurityEditContact" type="button" aria-label="Edit saved contact"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div></div>
             <div id="profileSecurityInlineEditorHost"></div>
-            <div id="profileSecurityVerificationResult" class="profile-security-verification-result" aria-live="polite"><i class="ph ph-shield-check" aria-hidden="true"></i><strong>Ready to verify</strong><small>Select a channel and send a code.</small></div>
+            <div id="profileSecurityVerificationResult" class="profile-security-verification-result" aria-live="polite"><i class="ph ph-shield-check" aria-hidden="true"></i><strong>Under development</strong><small>Contact verification is not available yet.</small></div>
             <div class="profile-security-send-inline">
               <div><p id="profileSecuritySendCopy">We'll send a 6-digit code to your WhatsApp.</p><strong id="profileSecuritySendTarget">Not provided</strong></div>
-              <button id="profileSecuritySendCode" type="button"><span>Send verification code</span><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></button>
+              <button id="profileSecuritySendCode" type="button" disabled title="Contact verification is under development"><span>Under development</span><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></button>
               <p id="profileSecuritySendStatus" class="profile-security-live-status" role="status" aria-live="polite"></p>
             </div>
           </section>
@@ -2574,7 +2574,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/share-profile.js?v=444"></script>
 <script src="js/public-share-protection.js?v=1"></script>
 <script src="js/recipient-links.js?v=434"></script>
-<script src="js/boot-refresh.js?v=446"></script>
+<script src="js/boot-refresh.js?v=447"></script>
 <script src="js/account-security-live.js?v=379"></script>
 <script src="js/talent-directory.js?v=577"></script>
 <script src="js/corporate-reporting.js?v=520"></script>
@@ -2592,7 +2592,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/personal-dashboard-qa.js?v=550"></script>
 <script src="js/notification-read-sync.js?v=2"></script>
 <script src="js/shell-polish.js?v=6065"></script>
-<script src="js/profile-workspace-v5886.js?v=6066"></script>
+<script src="js/profile-workspace-v5886.js?v=6067"></script>
 <script src="js/profile-privacy-v1.js?v=15"></script>
 <script src="js/profile-sharing-v1.js?v=6097"></script>
 <script src="js/route-feature-loader.js?v=6098"></script>
