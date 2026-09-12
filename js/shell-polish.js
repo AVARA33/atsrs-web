@@ -277,6 +277,29 @@
     closeNotifications(false);var dashboard=byId('navDashboard');if(typeof window.showPage==='function'&&dashboard)window.showPage('dashboard',dashboard);setTimeout(function(){var panel=byId('atsrsNotificationPanel');if(panel)panel.scrollIntoView({behavior:'smooth',block:'center'})},120);
   }
 
+  function navigateToNotificationSettings(){
+    closeNotifications(false);
+    var profile=byId('navProfile');
+    var params=new URLSearchParams(location.search);
+    params.set('route','profile');
+    params.set('tab','security');
+    history.replaceState(null,'',location.pathname+'?'+params.toString()+location.hash);
+    if(typeof window.showPage==='function'&&profile)window.showPage('profile',profile);
+    function reveal(){
+      if(typeof window.showAccountTab==='function')window.showAccountTab('security');
+      var manage=byId('manageNotifyBtn'),panel=byId('atsrsNotificationSettings');
+      if(panel&&panel.classList.contains('hidden')&&manage)manage.click();
+      else if(panel&&typeof window.atsrsRefreshNotifications==='function')window.atsrsRefreshNotifications();
+      if(panel&&!panel.classList.contains('hidden')){
+        panel.scrollIntoView({behavior:'smooth',block:'center'});
+        var first=panel.querySelector('input,select,button');if(first)first.focus();
+        return true;
+      }
+      return false;
+    }
+    [0,100,280,650].forEach(function(delay){setTimeout(reveal,delay)});
+  }
+
   function syncNotificationPopoverCaret(){
     var controls=byId('atsrsGlobalControls'),button=byId('atsrsNotificationButton'),popover=byId('atsrsNotificationPopover');
     if(!controls||!button||!popover)return;
@@ -325,7 +348,7 @@
     button.setAttribute('aria-expanded',button.getAttribute('aria-expanded')==='true'?'true':'false');
     button.setAttribute('aria-controls','atsrsNotificationPopover');
     if(button.parentElement!==controls||button.nextElementSibling!==theme)controls.insertBefore(button,theme);
-    var popover=byId('atsrsNotificationPopover');if(!popover){popover=document.createElement('section');popover.id='atsrsNotificationPopover';popover.className='atsrs-notification-popover';popover.hidden=true;popover.setAttribute('role','dialog');popover.setAttribute('aria-label','Notifications');popover.innerHTML='<div class="atsrs-notification-popover-surface"><header><strong>Notifications</strong><div class="atsrs-notification-popover-actions"><button type="button" class="atsrs-notification-popover-mark-all">Mark all as read</button><button type="button" class="atsrs-notification-popover-settings" aria-label="Notification settings"><i class="ph ph-gear" aria-hidden="true"></i></button></div></header><div id="atsrsShellNotificationList" class="atsrs-shell-notification-list"></div><button type="button" class="atsrs-notification-popover-view-all">View all notifications</button></div>';controls.appendChild(popover);popover.querySelector('.atsrs-notification-popover-mark-all').addEventListener('click',function(event){event.preventDefault();event.stopPropagation();markNotificationPopoverRead()});popover.querySelector('.atsrs-notification-popover-settings').addEventListener('click',navigateToNotificationCenter);popover.querySelector('.atsrs-notification-popover-view-all').addEventListener('click',navigateToNotificationCenter)}
+    var popover=byId('atsrsNotificationPopover');if(!popover){popover=document.createElement('section');popover.id='atsrsNotificationPopover';popover.className='atsrs-notification-popover';popover.hidden=true;popover.setAttribute('role','dialog');popover.setAttribute('aria-label','Notifications');popover.innerHTML='<div class="atsrs-notification-popover-surface"><header><strong>Notifications</strong><div class="atsrs-notification-popover-actions"><button type="button" class="atsrs-notification-popover-mark-all">Mark all as read</button><button type="button" class="atsrs-notification-popover-settings" aria-label="Notification settings" title="Notification settings"><i class="ph ph-gear" aria-hidden="true"></i></button></div></header><div id="atsrsShellNotificationList" class="atsrs-shell-notification-list"></div><button type="button" class="atsrs-notification-popover-view-all">View all notifications</button></div>';controls.appendChild(popover);popover.querySelector('.atsrs-notification-popover-mark-all').addEventListener('click',function(event){event.preventDefault();event.stopPropagation();markNotificationPopoverRead()});popover.querySelector('.atsrs-notification-popover-settings').addEventListener('click',navigateToNotificationSettings);popover.querySelector('.atsrs-notification-popover-view-all').addEventListener('click',navigateToNotificationCenter)}
     syncNotificationPopoverCaret();
     renderNotificationPopover();
     updateNotificationLabel();
