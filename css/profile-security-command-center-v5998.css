@@ -131,19 +131,23 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
   }
   body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings:not(.hidden) {
     box-sizing:border-box; height:100%; margin:0; padding:8px 12px; overflow:hidden;
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:28px 22px 1fr 1fr 34px; column-gap:18px;
   }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading,
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings > p,
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar { grid-column:1/-1; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading {
     display:flex; align-items:center; justify-content:space-between; gap:12px;
   }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading h4 { margin:0; font-size:14px; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings-heading button { min-width:26px; width:26px; height:26px; min-height:26px; padding:0; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-settings > p { margin:0 0 3px; font-size:10px; }
-  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field { min-height:39px; padding:3px 0; font-size:11px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field { min-height:0; min-width:0; padding:3px 0; font-size:11px; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field small { margin-top:1px; font-size:9px; line-height:1.1; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field input[type="checkbox"] { width:16px; height:16px; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-field :is(input[type="tel"],select) { height:30px; min-height:30px; font-size:10px; }
-  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar { margin-top:5px; gap:4px; }
-  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar button { width:100%; min-height:28px; height:28px; padding:0 8px; font-size:10px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar { margin-top:0; gap:8px; }
+  body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-savebar button { width:auto; min-height:28px; height:28px; padding:0 12px; font-size:10px; }
   body.personal-mode #profilePage #profileTabSecurityPanel .atsrs-notification-status { font-size:10px; }
 }
 body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings { min-width:0; }
