@@ -103,14 +103,20 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 }
 
 /* Reminder preferences live below the security cards and must remain reachable. */
-body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"]:has(.atsrs-notification-settings:not(.hidden)) {
+body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] {
   height:auto; min-height:294px; max-height:none; overflow:visible;
 }
-body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"]:has(.atsrs-notification-settings:not(.hidden)) #profileTabSecurityPanel {
+body.personal-mode #profilePage .profile-settings-viewport[data-active-tab="security"] #profileTabSecurityPanel {
   height:auto; min-height:294px; overflow:visible;
 }
-body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center:has(.atsrs-notification-settings:not(.hidden)) .profile-security-primary {
-  height:254px; min-height:254px;
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
+  height:auto; min-height:254px;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-verification {
+  height:auto; overflow:visible;
+}
+body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-grid {
+  height:auto; grid-template-rows:repeat(3,minmax(70px,auto));
 }
 body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center > .atsrs-notification-settings {
   margin:16px 0 0; min-width:0;
@@ -121,7 +127,7 @@ body.personal-mode #profilePage .profile-security-development-badge {
   font-size:10px; font-weight:600; white-space:nowrap;
 }
 @media(max-width:760px) {
-  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center:has(.atsrs-notification-settings:not(.hidden)) .profile-security-primary {
+  body.personal-mode #profilePage #profileTabSecurityPanel.profile-security-command-center .profile-security-primary {
     height:auto; min-height:0;
   }
 }
