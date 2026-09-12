@@ -5,6 +5,12 @@ const test = require('node:test');
 const share = fs.readFileSync('css/share-profile.css', 'utf8');
 const dark = fs.readFileSync('css/dark-green-text-standard-v58140.css', 'utf8');
 const script = fs.readFileSync('js/share-profile.js', 'utf8');
+const index = fs.readFileSync('index.html', 'utf8');
+
+test('public share assets use the semantic-status cache release', () => {
+  assert.match(index, /css\/share-profile\.css\?v=6099/);
+  assert.match(index, /js\/share-profile\.js\?v=444/);
+});
 
 test('expired and warning cards keep their semantic colors in light mode', () => {
   assert.match(share, /\.shared-document-status\.expired\{[^}]*background:rgba\(239,68,68,.14\);[^}]*color:#f87171/s);
