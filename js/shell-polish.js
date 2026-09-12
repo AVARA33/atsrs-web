@@ -288,6 +288,8 @@
     function reveal(){
       if(typeof window.showAccountTab==='function')window.showAccountTab('security');
       if(typeof window.showProfileWorkspaceTab==='function')window.showProfileWorkspaceTab('security',false);
+      var securityTab=byId('profileTabSecurityBtn');
+      if(securityTab&&securityTab.getAttribute('aria-selected')!=='true')securityTab.click();
       var manage=byId('manageNotifyBtn'),panel=byId('atsrsNotificationSettings');
       if(panel&&panel.classList.contains('hidden')&&manage)manage.click();
       else if(panel&&typeof window.atsrsRefreshNotifications==='function')window.atsrsRefreshNotifications();

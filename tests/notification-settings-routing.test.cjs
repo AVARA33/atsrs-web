@@ -13,6 +13,8 @@ test('notification gear opens the server-backed reminder settings',()=>{
   assert.match(shell,/params\.set\('tab','security'\)/);
   assert.match(shell,/showAccountTab\('security'\)/);
   assert.match(shell,/showProfileWorkspaceTab\('security',false\)/);
+  assert.match(shell,/profileTabSecurityBtn/);
+  assert.match(shell,/securityTab\.click\(\)/);
   assert.match(shell,/byId\('manageNotifyBtn'\)/);
   assert.match(shell,/byId\('atsrsNotificationSettings'\)/);
   assert.match(shell,/addEventListener\('click',navigateToNotificationSettings\)/);
@@ -20,5 +22,5 @@ test('notification gear opens the server-backed reminder settings',()=>{
   assert.match(notifications,/securityHost\.appendChild\(panel\)/);
   assert.match(boot,/js\/notifications\.js\?v=387/);
   assert.match(html,/js\/boot-refresh\.js\?v=446/);
-  assert.match(html,/js\/shell-polish\.js\?v=6064/);
+  assert.match(html,/js\/shell-polish\.js\?v=6065/);
 });
