@@ -272,7 +272,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-ac
   background:#2f73c8!important;
 }
 
-@media(min-width:1500px){
+@media(min-width:761px){
   #jobsPage .jobs-hero > .jobs-region-nav{
     right:228px;
     bottom:14px;
@@ -291,7 +291,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-ac
   #jobsPage .jobs-hero-copy{grid-template-columns:76px minmax(0,1fr);gap:18px}
   #jobsPage .jobs-hero-icon{width:76px;height:76px;border-radius:17px}
   #jobsPage .jobs-hero-icon i{font-size:38px}
-  #jobsPage .jobs-hero > .jobs-region-nav{right:24px;bottom:56px;left:24px;display:grid;grid-template-columns:repeat(4,max-content);align-content:end;justify-content:start;overflow:visible}
+  #jobsPage .jobs-hero > .jobs-region-nav{right:214px;bottom:14px;left:24px;display:flex;flex-wrap:nowrap;align-items:flex-end;overflow-x:auto}
   #jobsPage .jobs-hero > .jobs-region-nav button{justify-self:start}
   #jobsPage .jobs-hero > .jobs-snapshot{right:24px;min-width:166px}
   #jobsPage .jobs-secondary-actions{flex-wrap:wrap}
