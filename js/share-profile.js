@@ -378,6 +378,17 @@
     try{var result=await ownerCall({action:'update_expiry',share_id:shareId,expires_at:expiresAt}),updated=result.share||null;if(!updated)return false;activeShares=activeShares.map(function(item){return item.id===updated.id?updated:item;});if(activeShare&&activeShare.id===updated.id)activeShare=updated;renderOwnerStatus();await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));ownerMessage('Link expiry updated.');return true;}
     catch(error){ownerMessage(friendlyError(error,'The link expiry could not be updated. Please try again.'),true);return false;}
   };
+  window.atsrsRemoveSharedFile=async function(shareId,fileId){
+    var result=await ownerCall({action:'remove_shared_file',share_id:shareId,file_id:fileId}),updated=result.share;
+    if(!updated)throw new Error('The shared file could not be removed.');
+    activeShares=activeShares.map(function(item){return item.id===updated.id?updated:item});
+    if(activeShare&&activeShare.id===updated.id)activeShare=updated;
+    renderOwnerStatus();
+    await refreshOwnerPanel({force:true});
+    window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));
+    ownerMessage('File removed from this share link. The original document remains in your account.');
+    return updated;
+  };
   window.revokeShareProfileLink=async function(shareId){
     if(!window.confirm('Delete this share link and all of its request history? This cannot be undone.'))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Deleting the share link...');

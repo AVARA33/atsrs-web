@@ -704,6 +704,26 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     return json(req, 200, { share: publicShareStatus(updated.data as ShareRow) });
   }
 
+  if (action === "remove_shared_file") {
+    const shareId = safeText(body.share_id, 40);
+    const fileId = safeText(body.file_id, 40);
+    if (!UUID_PATTERN.test(shareId) || !UUID_PATTERN.test(fileId)) {
+      return json(req, 400, { error: "Choose a valid share link and file." });
+    }
+    const target = existingShares.find((share) => share.id === shareId);
+    if (!target) return json(req, 404, { error: "Share link was not found." });
+    const selected = uniqueFileIds(target.selected_file_ids);
+    if (!selected.includes(fileId)) return json(req, 404, { error: "File is not in this share link." });
+    const updated = await admin.from("atsrs_profile_shares")
+      .update({ selected_file_ids: selected.filter((id) => id !== fileId), updated_at: new Date().toISOString() })
+      .eq("id", shareId).eq("user_id", user.id).eq("account_type", "personal")
+      .contains("selected_file_ids", [fileId])
+      .select(SHARE_SELECT).maybeSingle();
+    if (updated.error) throw updated.error;
+    if (!updated.data) return json(req, 409, { error: "The share changed. Refresh and try again." });
+    return json(req, 200, { share: publicShareStatus(updated.data as ShareRow) });
+  }
+
   if (action === "decide_request") {
     const requestId = safeText(body.request_id, 40);
     const decision = safeText(body.decision, 20);
