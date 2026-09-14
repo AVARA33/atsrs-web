@@ -205,6 +205,7 @@
   }
   window.atsrsGetActiveShareStatus=function(){return activeShare?Object.assign({},activeShare):null;};
   window.atsrsGetShares=function(){return activeShares.filter(Boolean).slice().sort(function(left,right){var rightTime=new Date(right.updated_at||right.created_at||0).getTime()||0,leftTime=new Date(left.updated_at||left.created_at||0).getTime()||0;return rightTime-leftTime;}).map(function(share){return Object.assign({},share,{share_url:share.active?shareLinkById(share.id):''});});};
+  window.atsrsGetShareFiles=function(shareId){var share=shareById(shareId),ids=share&&Array.isArray(share.selected_file_ids)?share.selected_file_ids:[];return ids.map(function(id){var file=ownerFiles.find(function(item){return item.id===id;});return{id:id,name:file?String(file.file_name||documentMeta(file).type):'File no longer available',category:file?fileCategoryLabel(file):'',available:!!file};});};
   window.atsrsGetActiveShares=function(){return window.atsrsGetShares().filter(function(share){return share.active;});};
   window.atsrsGetActiveRecruiterShares=function(){return window.atsrsGetActiveShares().filter(function(share){return share.audience==='recipient'&&share.recipient_recruiter_id;});};
   window.atsrsGetOwnerShareRequests=function(){return ownerRequests.map(function(request){return Object.assign({},request);});};
