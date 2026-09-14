@@ -10,6 +10,11 @@
   var helper=host&&host.querySelector('[data-atsrs-balance-helper]');if(!helper)return;
   var native=host.querySelector('.job-monitor-balance-refresh:not([data-atsrs-balance-helper])');if(native)native.remove();
   helper.classList.add('job-monitor-balance-refresh');
+  // The browser helper sets an inline !important top offset. Keep it beside the
+  // metric content instead of letting it cover the title on narrow cards.
+  helper.style.setProperty('top','50%','important');
+  helper.style.setProperty('bottom','auto','important');
+  helper.style.setProperty('transform','translateY(-50%)','important');
  }
  function readCache(){
   try{var parsed=JSON.parse(sessionStorage.getItem(cacheKey())||'null');return parsed&&parsed.data&&Number.isFinite(parsed.savedAt)?parsed:null;}
