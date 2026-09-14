@@ -1,0 +1,4 @@
+/* Keep the label's font metrics unchanged when a sidebar destination is selected. */
+#app.app:not(.hidden) > .sidebar .nav button.active {
+  font-weight: 700 !important;
+}
