@@ -67,9 +67,6 @@
    target.replaceChildren(...builder.children);
    var t=target.querySelector(':scope > .job-monitor-table');
    if(t){
-    var table=t.querySelector('table'),rows=Array.from(table.querySelectorAll('tbody > tr')).slice(0,7);
-    var caption=table.querySelector('caption'),head=table.querySelector('thead');
-    if(rows.length===7)t.style.maxHeight=Math.ceil((caption?caption.getBoundingClientRect().height:0)+(head?head.getBoundingClientRect().height:0)+rows.reduce(function(sum,row){return sum+row.getBoundingClientRect().height;},0)+1)+'px';
     t.scrollLeft=tableScroll;t.scrollTop=tableScrollTop;
    }
    if(restoreFocus)refresh.focus({preventScroll:true});

@@ -12,7 +12,7 @@ html[data-theme="light"] #jobIngestionMonitor a,body.light #jobIngestionMonitor 
 html[data-theme] body #app.app:not(.hidden) #jobIngestionMonitor .job-monitor-metrics>div:first-child button[data-atsrs-balance-helper]{position:absolute!important;top:50%!important;bottom:auto!important;right:7px!important;transform:translateY(-50%)!important;display:grid!important;place-items:center!important;width:26px!important;min-width:26px!important;max-width:26px!important;height:26px!important;min-height:26px!important;max-height:26px!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important}
 html[data-theme="light"] .job-monitor-balance-refresh,body.light .job-monitor-balance-refresh{border-color:#c9d6e6!important;color:#19345c!important}
 .job-monitor-table{overflow-x:auto}.job-monitor-table table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}.job-monitor-table th,.job-monitor-table td{text-align:left;padding:10px;white-space:nowrap;border-bottom:1px solid var(--border,#26362b)}
-#jobIngestionMonitor > .job-monitor-table{max-height:326px;overflow:auto;overscroll-behavior:contain}
+#jobIngestionMonitor > .job-monitor-table{max-height:360px;overflow:auto;overscroll-behavior:contain}
 #jobIngestionMonitor > .job-monitor-table tbody tr{height:35px}
 #jobIngestionMonitor > .job-monitor-table thead th{position:sticky;top:0;z-index:2;background:#0b100d!important;color:#e5ede8!important;box-shadow:0 1px 0 var(--border,#26362b)}
 #jobIngestionMonitor > .job-monitor-table tbody td{background:#0b100d;color:#cbd8d0}
