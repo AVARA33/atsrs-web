@@ -8,6 +8,7 @@ const outputDirectory = path.resolve(projectRoot, "dist");
 
 const publicFiles = [
   "_headers",
+  "_redirects",
   "index.html",
   "contact.html",
   "faq.html",
