@@ -10,6 +10,9 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const migration = fs.readFileSync(path.join(root, 'supabase', 'migrations', '20260917112828_job_posted_date_range_filter.sql'), 'utf8');
 
 assert.match(index, /id="jobsDateFilter"[^>]+aria-haspopup="dialog"/);
+assert.match(index, /jobs-date-filter atsrs-field-shell/);
+assert.match(index, /jobs-date-range atsrs-field-control-frame/);
+assert.match(index, /jobs-date-range-toggle atsrs-field-control/);
 assert.match(index, /id="jobsDateFrom" type="date"/);
 assert.match(index, /id="jobsDateTo" type="date"/);
 assert.match(index, /css\/jobs-prototype\.css\?v=6105/);
