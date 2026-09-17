@@ -4,7 +4,7 @@ param(
   [string]$BackupRoot = (Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'ATSRS Secure Backups'),
   [string]$MirrorRoot = $env:ATSRS_BACKUP_MIRROR_DIR,
   [string]$DatabaseUrl,
-  [string]$PostgresBin = 'C:\Users\user\Documents\GitHub\output\postgresql-17.10-client-extract\bin',
+  [string]$PostgresBin = 'C:\Users\user\Documents\GitHub\output\postgresql-17.11-client-extract\pgsql\bin',
   [string]$SecretPath = (Join-Path $env:LOCALAPPDATA 'ATSRS\Backup\secrets.clixml'),
   [switch]$SkipStorage,
   [switch]$ApplyRetention

@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
   [string]$DatabaseUrl,
-  [string]$PostgresBin = 'C:\Users\user\Documents\GitHub\output\postgresql-17.10-client-extract\bin',
+  [string]$PostgresBin = 'C:\Users\user\Documents\GitHub\output\postgresql-17.11-client-extract\pgsql\bin',
   [string]$SecretPath = (Join-Path $env:LOCALAPPDATA 'ATSRS\Backup\secrets.clixml')
 )
 
