@@ -12,7 +12,7 @@ const migration = fs.readFileSync(path.join(root, 'supabase', 'migrations', '202
 assert.match(index, /id="jobsDateFilter"[^>]+aria-haspopup="dialog"/);
 assert.match(index, /id="jobsDateFrom" type="date"/);
 assert.match(index, /id="jobsDateTo" type="date"/);
-assert.match(index, /css\/jobs-prototype\.css\?v=6102/);
+assert.match(index, /css\/jobs-prototype\.css\?v=6105/);
 assert.match(loader, /js\/jobs-prototype\.js\?v=6104/);
 assert.match(runtime, /document\.addEventListener\('pointerdown'/);
 assert.match(runtime, /if\(!missingJobsRpc\(result\.error\)&&!hasDateRange\)throw result\.error/);
@@ -21,6 +21,8 @@ assert.match(runtime, /p_date_from:state\.dateFrom\|\|null/);
 assert.match(runtime, /p_date_to:state\.dateTo\|\|null/);
 assert.match(runtime, /if\(from&&to&&from>to\)/);
 assert.match(css, /\.jobs-date-range-panel/);
+assert.match(css, /grid-template-columns:repeat\(3,minmax\(220px,300px\)\)/);
+assert.match(css, /\.jobs-date-range-panel\{[^}]+left:0/);
 assert.match(css, /@media\(max-width:600px\)\{\.jobs-date-range-panel/);
 assert.match(migration, /create or replace function public\.atsrs_jobs_feed_v3/);
 assert.match(migration, /p_date_from date default null/);
