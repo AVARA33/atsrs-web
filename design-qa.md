@@ -829,6 +829,8 @@ Final result: passed.
 - Profile sharing, localization and existing-link copy tests passed.
 - Cloudflare Pages build passed with 473 files.
 - Initial issue: the recipient fields bypassed the shared ATSRS field shell. The fix adopts `.atsrs-field-shell` and `.atsrs-field-label` and removes the conflicting recipient-input overrides.
+- Follow-up issue: the global `input:focus` rule still drew a second green border and 2px outline inside the canonical shell. The recipient inputs now copy the JobSearch reset (`border`, `outline`, `background` and `box-shadow` are cleared on the input), leaving the shared outer shell as the sole focus treatment.
+- Computed dark-focus parity: JobSearch and the corrected share fields both use neutral top/bottom borders, green left/right borders, a 10px shell radius, a 44px shell height and the same three-part side/bottom shadow; field text is 16px in both.
 - No actionable P0/P1/P2 findings remain for the requested scope.
 
 final result: passed
