@@ -796,6 +796,33 @@ final result: passed
 
 Final result: passed.
 
+# Share dialog CV version history — Design QA
+
+- Scope: AI-generated CV records in the Personal Profile share-link editor.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-e58731f9-2545-4d74-a107-b8b03bdc6f1e.png`.
+- Live implementation: `https://atsrs.com/?route=profile` in the authenticated production Profile → Sharing → Edit flow.
+- Production assets verified: `profile-sharing-v1.css?v=65` and `profile-sharing-v1.js?v=6112`.
+
+## Visual comparison
+
+- The main list contains exactly one current CV, identified as `Latest CV` with its creation timestamp.
+- Five older AI-generated CV records are grouped under the compact `Previous versions` disclosure instead of appearing as duplicate main-list rows.
+- The closed history control measures 43.33 px high; the expanded group measures 317.67 px and remains in normal document flow.
+- Previous-version rows show filename, creation timestamp and file size, making same-name generations distinguishable.
+- Existing non-CV document rows, modal surface, spacing, colors and action placement remain unchanged.
+
+## Interaction and regression checks
+
+- The disclosure exposes synchronized `aria-expanded` and `aria-controls` state and opens/closes without changing any file selection.
+- `Select all` continues to select the main document list but does not silently include collapsed CV history records.
+- A previously selected historical CV opens the history group automatically and remains individually selectable.
+- Production desktop validation found one latest CV, five previous versions and zero horizontal overflow.
+- At a 390 × 844 mobile viewport, the latest CV, expanded history and footer actions remain usable with no visible horizontal overflow.
+- No files were deleted and the live share was closed with Cancel; no share-link data was saved during QA.
+- Focused sharing, localization, current-CV and link-copy tests passed; Cloudflare Pages build and diff check passed.
+
+Final result: passed.
+
 ---
 
 # Share dialog standard fields — Design QA
