@@ -33,7 +33,7 @@ assert.match(js,/if\(!share\.recipient_recruiter_id\)\{/);
 assert.match(js,/action\('Share link','ph-copy'/);
 assert.doesNotMatch(js,/window\.previewShareProfile/);
 assert.match(js,/window\.deleteShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=62/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=63/);
 assert.match(html,/js\/share-profile\.js\?v=453/);
 assert.match(html,/js\/profile-sharing-v1\.js\?v=6111/);
 assert.match(shareJs,/row\.dataset\.fileCategory=String\(file\.category\|\|''\)/,'Shareable files must expose category metadata to the editor.');
@@ -43,6 +43,7 @@ assert.match(js,/summaryTitle\.textContent=uiText\('Previous versions'\)/,'Older
 assert.match(js,/input\.dataset\.profileSharingHistoryVersion='true'/,'Previous CV choices must be marked as history entries.');
 assert.match(js,/:not\(\[data-profile-sharing-history-version="true"\]\)/,'Select all must not silently include collapsed CV history.');
 assert.match(css,/profile-sharing-cv-history>summary/,'CV history must use a standard responsive disclosure treatment.');
+assert.match(css,/profile-sharing-cv-history>summary\{[^}]*display:list-item/,'The closed CV history summary must remain in normal details layout.');
 assert.match(css,/profile-sharing-recipient-field\.atsrs-field-shell>input:focus-visible\{[^}]*border:0!important;[^}]*outline:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important;[^}]*font-size:16px!important/,'Share recipient inputs must defer focus rendering to the same outer shell used by JobSearch.');
 assert.match(css,/html\[data-theme="light"\] \.profile-sharing-document-dialog\{--profile-share-field-bg:#fff;--profile-share-field-border:#d8e1ec/,'Light and dark share-dialog fields must use explicit standard theme tokens.');
 assert.match(css,/:is\(\.profile-sharing-row-actions,\.profile-sharing-link-request-actions\)>button\{[^}]*height:26px!important;[^}]*min-height:26px!important;[^}]*max-height:26px!important/);
