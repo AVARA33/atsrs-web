@@ -837,8 +837,13 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
   const fileIds = uniqueFileIds(body.file_ids);
   const expiresAt = parseExpiry(body.expires_at);
   const audience = "recipient" as ShareRow["audience"];
+  const recipientName = safeText(body.recipient_name, 180);
+  const recipientCompany = safeText(body.recipient_company, 180);
+  const recipientEmailInput = safeText(body.recipient_email, 254).toLowerCase();
+  const recipientEmail = recipientEmailInput ? safeEmail(recipientEmailInput) : "";
   if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
   if (!expiresAt) return json(req, 400, { error: "Choose a valid link expiry between 10 minutes and one year." });
+  if (recipientEmailInput && !recipientEmail) return json(req, 400, { error: "Enter a valid recipient email." });
   const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)
     .eq("account_type", "personal").in("id", fileIds);
   if (owned.error) throw owned.error;
@@ -854,6 +859,9 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     user_id: user.id,
     account_type: "personal",
     audience,
+    recipient_name: recipientName || null,
+    recipient_company: recipientCompany || null,
+    recipient_email: recipientEmail || null,
     token_hash: tokenHash,
     token_hint: token.slice(-8),
     selected_file_ids: fileIds,

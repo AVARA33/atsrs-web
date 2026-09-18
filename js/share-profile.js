@@ -141,8 +141,9 @@
     var params=new URLSearchParams({view:'cm',fs:'1',to:email,su:subject,body:body});
     return'https://mail.google.com/mail/?'+params.toString();
   }
-  async function createValidatedShare(fileIds,expiresAt,audience){
-    var request={action:'create',file_ids:fileIds,expires_at:expiresAt,audience:audience};
+  async function createValidatedShare(fileIds,expiresAt,audience,recipient){
+    recipient=recipient||{};
+    var request={action:'create',file_ids:fileIds,expires_at:expiresAt,audience:audience,recipient_name:String(recipient.name||'').trim(),recipient_company:String(recipient.company||'').trim(),recipient_email:String(recipient.email||'').trim().toLowerCase()};
     var result=await ownerCall(request);
     if(result.token&&await validateShareToken(result.token))return result;
     if(!result.token||!await validateShareToken(result.token))throw new Error('The secure link could not be verified.');
@@ -342,7 +343,8 @@
     var button=byId('saveShareBtn'),fileIds=selectedOwnerFiles(),expiresAt=selectedExpiry(),audienceInput=document.querySelector('input[name="profileSharingAudience"]:checked'),audience=audienceInput?audienceInput.value:'recipient';
     if(!fileIds.length){ownerMessage('Select at least one server document.',true);return false;}if(!expiresAt){ownerMessage('Choose a valid link expiry date.',true);return false;}
     if(button)button.disabled=true;ownerMessage('Creating a preview-only secure link...');
-    try{var result=await createValidatedShare(fileIds,expiresAt,audience);activeShare=result.share||null;if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);if(result.token)setOwnerToken(activeShare.id,result.token);}setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
+    var recipient={name:(byId('profileSharingRecipientName')||{}).value||'',company:(byId('profileSharingRecipientCompany')||{}).value||'',email:(byId('profileSharingRecipientEmail')||{}).value||''};
+    try{var result=await createValidatedShare(fileIds,expiresAt,audience,recipient);activeShare=result.share||null;if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);if(result.token)setOwnerToken(activeShare.id,result.token);}setKnownLink(result.share_url||shareUrl(result.token||''));renderOwnerStatus();ownerMessage('Secure preview link is ready. Downloads require your approval.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return true;}
     catch(error){console.error(error);ownerMessage(friendlyError(error,'Secure link could not be created. Please try again.'),true);return false;}finally{syncShareSelectAll();}
   };
   window.atsrsCreateRecruiterEmailShare=async function(recruiter){
