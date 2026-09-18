@@ -7,7 +7,7 @@ const az = fs.readFileSync('js/locale-az.js', 'utf8');
 const sharing = fs.readFileSync('js/profile-sharing-v1.js', 'utf8');
 const share = fs.readFileSync('js/share-profile.js', 'utf8');
 
-assert.match(html, /js\/locale-az\.js\?v=27/);
+assert.match(html, /js\/locale-az\.js\?v=28/);
 assert.match(html, /js\/locale\.js\?v=32/);
 assert.match(locale, /profileSharingDocumentDialog/);
 assert.match(locale, /profileSharingFilesDialog/);
