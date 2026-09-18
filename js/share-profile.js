@@ -1,5 +1,6 @@
 (function(){
   'use strict';
+  function uiText(value){return window.atsrsI18n&&typeof window.atsrsI18n.translate==='function'?window.atsrsI18n.translate(value):value}
 
   var OWNER_TOKEN_KEY='atsrs_share_profile_token';
   var activeShare=null;
@@ -186,7 +187,7 @@
         var name=document.createElement('b');name.textContent=meta.type;name.title=file.file_name||meta.type;nameLabel.appendChild(name);
         var category=document.createElement('span');category.textContent=fileCategoryLabel(file);
         var preview=document.createElement('button');preview.type='button';preview.className='secondary share-document-preview';preview.textContent='Preview';
-        preview.addEventListener('click',function(){if(typeof window.atsrsCloudPreview==='function')window.atsrsCloudPreview(file.id);else window.alert('Document preview is not available yet.');});
+        preview.addEventListener('click',function(){if(typeof window.atsrsCloudPreview==='function')window.atsrsCloudPreview(file.id);else window.alert(uiText('Document preview is not available yet.'));});
         row.appendChild(checkbox);row.appendChild(nameLabel);row.appendChild(category);row.appendChild(preview);list.appendChild(row);
       });
     });
@@ -392,31 +393,32 @@
     return updated;
   };
   window.revokeShareProfileLink=async function(shareId){
-    if(!window.confirm('Delete this share link and all of its request history? This cannot be undone.'))return;
+    if(!window.confirm(uiText('Delete this share link and all of its request history? This cannot be undone.')))return;
     var button=byId('revokeShareBtn');if(button)button.disabled=true;ownerMessage('Deleting the share link...');
     try{var result=await ownerCall({action:'revoke',share_id:shareId||activeShare&&activeShare.id}),deletedId=String(result.share_id||shareId||activeShare&&activeShare.id||'');activeShares=activeShares.filter(function(share){return share.id!==deletedId;});setOwnerToken(deletedId,'');activeShare=activeShares.find(function(share){return share.active;})||null;setKnownLink(activeShare?shareLinkById(activeShare.id):'');renderOwnerStatus();ownerMessage('Link deleted. Recruiter access stopped immediately and no email was sent.');await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));}
     catch(error){ownerMessage(friendlyError(error,'The link could not be deleted. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.deleteShareProfileLink=window.revokeShareProfileLink;
-  window.copyShareLink=async function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url){var missingCopy='This older link cannot be copied because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingCopy,true);window.alert(missingCopy);return false;}var token='';try{token=new URL(url).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){if(shareId)setOwnerToken(shareId,'');else setKnownLink('');ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}if(!await copyText(url)){ownerMessage('The link could not be copied. Please allow clipboard access and try again.',true);return false;}ownerMessage('Secure link copied.');var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};
-  window.previewShareProfile=function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url){var missingOpen='This older link cannot be opened because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingOpen,true);window.alert(missingOpen);return false;}var opened=window.open(url,'_blank');if(!opened){ownerMessage('Your browser blocked the new tab. Allow pop-ups for ATSRS and try again.',true);return false;}try{opened.opener=null;}catch(error){}return true;};
+  window.copyShareLink=async function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url){var missingCopy='This older link cannot be copied because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingCopy,true);window.alert(uiText(missingCopy));return false;}var token='';try{token=new URL(url).searchParams.get('share')||'';}catch(error){}if(!await validateShareToken(token)){if(shareId)setOwnerToken(shareId,'');else setKnownLink('');ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}if(!await copyText(url)){ownerMessage('The link could not be copied. Please allow clipboard access and try again.',true);return false;}ownerMessage('Secure link copied.');var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};
+  window.previewShareProfile=function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url){var missingOpen='This older link cannot be opened because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingOpen,true);window.alert(uiText(missingOpen));return false;}var opened=window.open(url,'_blank');if(!opened){ownerMessage('Your browser blocked the new tab. Allow pop-ups for ATSRS and try again.',true);return false;}try{opened.opener=null;}catch(error){}return true;};
   window.toggleSharePreview=window.previewShareProfile;
   window.decideShareRequest=async function(id,decision){
-    if(!window.confirm((decision==='approve'?'Approve':'Decline')+' this verified recruiter request?'))return;
-    try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'The request could not be updated. Please try again.'));}
+    var decisionQuestion=window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?(decision==='approve'?'Bu təsdiqlənmiş rekruter sorğusu qəbul edilsin?':'Bu təsdiqlənmiş rekruter sorğusu rədd edilsin?'):(decision==='approve'?'Approve':'Decline')+' this verified recruiter request?';
+    if(!window.confirm(decisionQuestion))return;
+    try{await ownerCall({action:'decide_request',request_id:id,decision:decision});await refreshShareRequests({force:true});}catch(error){window.alert(uiText(friendlyError(error,'The request could not be updated. Please try again.')));}
   };
   window.revokeShareRequestAccess=async function(id){
-    if(!window.confirm('Close all active download access for this recruiter? The shared preview link will remain active.'))return;
-    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Access could not be closed. Please try again.'));}
+    if(!window.confirm(uiText('Close all active download access for this recruiter? The shared preview link will remain active.')))return;
+    try{await ownerCall({action:'revoke_request_access',request_id:id});await refreshShareRequests({force:true});}catch(error){window.alert(uiText(friendlyError(error,'Access could not be closed. Please try again.')));}
   };
   window.revokeShareDocumentAccess=async function(id,fileId){
-    if(!window.confirm('Close download access to this document? Other approved documents will remain available.'))return;
-    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Document access could not be closed. Please try again.'));}
+    if(!window.confirm(uiText('Close download access to this document? Other approved documents will remain available.')))return;
+    try{await ownerCall({action:'revoke_document_access',request_id:id,file_id:fileId});await refreshShareRequests({force:true});}catch(error){window.alert(uiText(friendlyError(error,'Document access could not be closed. Please try again.')));}
   };
   window.approveAllShareRequests=async function(){
-    if(!window.confirm('Approve every pending recruiter request until its share link expires?'))return;
+    if(!window.confirm(uiText('Approve every pending recruiter request until its share link expires?')))return;
     var button=byId('approveAllRequestsBtn');if(button)button.disabled=true;
-    try{var result=await ownerCall({action:'approve_all_pending'});window.alert(result.approved+' request(s) approved.');await refreshShareRequests({force:true});}catch(error){window.alert(friendlyError(error,'Requests could not be approved. Please try again.'));}finally{if(button)button.disabled=false;}
+    try{var result=await ownerCall({action:'approve_all_pending'});window.alert(window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?result.approved+' sorğu təsdiqləndi.':result.approved+' request(s) approved.');await refreshShareRequests({force:true});}catch(error){window.alert(uiText(friendlyError(error,'Requests could not be approved. Please try again.')));}finally{if(button)button.disabled=false;}
   };
 
   function publicStatus(expiry){if(!expiry||String(expiry).toUpperCase()==='N/A')return{label:'NO EXPIRY',className:''};var today=new Date();today.setHours(0,0,0,0);var date=new Date(String(expiry).slice(0,10)+'T00:00:00'),days=Math.round((date-today)/86400000);if(days<0)return{label:'Expired',className:'expired'};if(days===0)return{label:'Expires today',className:'warning expiring-1'};if(days<=1)return{label:days+' day left',className:'warning expiring-1'};if(days<=30)return{label:days+' days left',className:'warning expiring-30'};if(days<=60)return{label:days+' days left',className:'warning expiring-60'};if(days<=90)return{label:days+' days left',className:'warning expiring-90'};return{label:'VALID',className:''};}
@@ -454,7 +456,7 @@
   async function downloadPublicDocument(documentData,button,quiet){
     if(button)button.disabled=true;
     try{var result=await publicCall({action:'download',file_id:documentData.id,viewer_token:viewerToken});startBrowserDownload(result.download_url,documentData.file_name);if(button){button.textContent='Downloaded';setTimeout(function(){button.textContent='Download';button.disabled=false;},1200);}if(!quiet)setTimeout(function(){loadPublicProfile(publicToken,{quiet:true});},250);return true;}
-    catch(error){if(!quiet)window.alert(friendlyError(error,'Download access is unavailable. Please try again.'));return false;}
+    catch(error){if(!quiet)window.alert(uiText(friendlyError(error,'Download access is unavailable. Please try again.')));return false;}
     finally{if(button&&button.textContent!=='Downloaded')button.disabled=false;}
   }
   async function downloadAllApproved(button){
@@ -464,7 +466,7 @@
     for(var index=0;index<available.length;index+=1){if(button)button.textContent='Downloading '+(index+1)+' of '+available.length;var ok=await downloadPublicDocument(available[index],null,true);if(ok)completed+=1;else failed+=1;await new Promise(function(resolve){setTimeout(resolve,180);});}
     if(lastPublicProfileData)renderPublicProfile(lastPublicProfileData);
     await loadPublicProfile(publicToken);
-    if(failed)window.alert(completed+' file(s) downloaded. '+failed+' could not be downloaded. Refreshing the page will show the current status.');
+    if(failed)window.alert(window.atsrsI18n&&window.atsrsI18n.getLocale&&window.atsrsI18n.getLocale()==='az'?completed+' fayl endirildi. '+failed+' faylı endirmək mümkün olmadı. Səhifəni yenilədikdə cari vəziyyət görünəcək.':completed+' file(s) downloaded. '+failed+' could not be downloaded. Refreshing the page will show the current status.');
   }
   function renderPublicDocument(documentData){
     var recent=recentPublicUpload(documentData.uploaded_at),card=document.createElement('article');card.className='shared-document-card'+(recent?' is-recent-upload':'');card.id=publicDocumentDomId(documentData.id);

@@ -5,7 +5,7 @@
   const key = 'atsrs_locale';
   let locale = 'az';
   try { if (localStorage.getItem(key) === 'en') locale = 'en'; } catch (_) {}
-  const dynamicScopeIds = new Set(['atsrsNotificationPopover', 'atsrsNotificationPanel', 'profileInlineBirthPicker']);
+  const dynamicScopeIds = new Set(['atsrsNotificationPopover', 'atsrsNotificationPanel', 'profileInlineBirthPicker', 'profileSharingDocumentDialog', 'profileSharingFilesDialog']);
   const scopes = ['landingPage', 'auth', 'introPage', 'jobsPage', 'resourcePage', 'developerPage', 'dashboardPage', 'recruitersPage', 'employersPage', 'certificatesPage', 'refsPage', 'profilePage', 'workspaceSwitcher', 'qrUploadDialog', 'atsrsFilePreviewModal', 'cvGeneratorModal', 'recipientLinkModal', 'shareRequestModal', ...dynamicScopeIds].map(id => document.getElementById(id)).filter(Boolean);
   const pricingShell = document.querySelector('.pricing-shell');
   if (pricingShell) scopes.push(pricingShell);
@@ -16,7 +16,7 @@
   const sidebar = document.querySelector('#app .sidebar');
   if (sidebar) scopes.push(sidebar);
   const records = new WeakMap();
-  const skip = '#profileSummaryName,#profileSummaryRole,#profileSummaryEmail,#profileSummaryPhone,#profileSummaryLocation,#profileSummaryWorkplace,#profilePersonalReadView strong,#profileSharingDocumentChoices,#profileSharingActiveList,#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
+  const skip = '#profileSummaryName,#profileSummaryRole,#profileSummaryEmail,#profileSummaryPhone,#profileSummaryLocation,#profileSummaryWorkplace,#profilePersonalReadView strong,#refsPage .atsrs-v134-row b,#refsPage .atsrs-v156-main-name b,#certTable .atsrs-document-name,#certTable td[data-label="Provider"],#certTable td[data-label="Verən qurum"],#documentPreview,#recruitersVisibleCount,#jobsVisibleCount,#employersPageCount,script,style,textarea,input,[contenteditable],.atsrs-locale-control,.google-word,#jobsGrid,#jobsPage select,.dashboard-document-timeline-copy,.dashboard-recent-copy,#recruitersPage .employer-card-copy h4,#recruitersPage .employer-card-copy p,#recruitersPage .employer-mark,#employersPage .employer-card-copy h4,#employersPage .employer-mark';
   const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-label'];
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function translated(source) {
@@ -53,6 +53,18 @@
     if (oneDayLeft) result = `${oneDayLeft[1]} gün qalıb`;
     const accessDates = normalized.match(/^Start: (.+) · End: (.+)$/);
     if (accessDates) result = `Başlanğıc: ${accessDates[1]} · Son: ${accessDates[2]}`;
+    const accessStart = normalized.match(/^Start: (.+)$/);
+    if (accessStart) result = `Başlanğıc: ${accessStart[1]}`;
+    const accessEnd = normalized.match(/^End: (.+)$/);
+    if (accessEnd) result = `Son: ${accessEnd[1]}`;
+    const sharedFiles = normalized.match(/^(\d+) files? shared$/);
+    if (sharedFiles) result = `${sharedFiles[1]} fayl paylaşılıb`;
+    const selectedAvailable = normalized.match(/^(\d+) selected · (\d+) available$/);
+    if (selectedAvailable) result = `${selectedAvailable[1]} seçilib · ${selectedAvailable[2]} mövcuddur`;
+    const requestedFiles = normalized.match(/^(\d+) files? requested$/);
+    if (requestedFiles) result = `${requestedFiles[1]} fayl sorğulanıb`;
+    const removeSharedFile = normalized.match(/^Remove (.+) from this share link$/);
+    if (removeSharedFile) result = `${removeSharedFile[1]} faylını bu paylaşım keçidindən çıxar`;
     const uploadedDocuments = normalized.match(/^Uploaded documents: (.+)$/);
     if (uploadedDocuments) result = `Yüklənmiş sənədlər: ${uploadedDocuments[1]}`;
     const accountCount = normalized.match(/^(\d+) account$/);
