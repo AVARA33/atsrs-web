@@ -141,7 +141,7 @@
     try{await navigator.clipboard.writeText(value);return true;}catch(error){}
     var area=document.createElement('textarea');area.value=value;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();var copied=false;try{copied=document.execCommand('copy');}catch(error){}area.remove();return copied;
   }
-  function shareCopyLabel(){var locale='en';try{locale=window.atsrsI18n&&typeof window.atsrsI18n.getLocale==='function'?window.atsrsI18n.getLocale():(localStorage.getItem('atsrs_locale')||navigator.language||'en')}catch(error){}locale=String(locale||'en').toLowerCase();if(locale.indexOf('az')===0)return'ATSRS profilinə təhlükəsiz baxış';if(locale.indexOf('ru')===0)return'Безопасно просмотреть в ATSRS';return'Securely view on ATSRS';}
+  function shareCopyLabel(){var locale='en';try{locale=window.atsrsI18n&&typeof window.atsrsI18n.getLocale==='function'?window.atsrsI18n.getLocale():(localStorage.getItem('atsrs_locale')||navigator.language||'en')}catch(error){}locale=String(locale||'en').toLowerCase();if(locale.indexOf('az')===0)return'ATSRS profilinə təhlükəsiz baxış';if(locale.indexOf('ru')===0)return'ATSRS — безопасный просмотр профиля';return'ATSRS — secure profile view';}
   async function copyShareReference(url){
     var label=shareCopyLabel();
     try{if(navigator.clipboard&&typeof navigator.clipboard.write==='function'&&typeof ClipboardItem==='function'){var html='<a href="'+url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'">'+label+'</a>';await navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([url],{type:'text/plain'}),'text/html':new Blob([html],{type:'text/html'})})]);return true;}}catch(error){}

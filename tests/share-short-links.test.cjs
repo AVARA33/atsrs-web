@@ -12,8 +12,12 @@ assert.match(client,/location\.pathname\|\|''\)\.match\(\/\^\\\/s\\\/\(\[A-Za-z0
 assert.match(client,/action:'short_link',share_id:shareId/,'Old active links must be able to obtain their short alias.');
 assert.match(client,/ClipboardItem/,'Rich clipboard targets must receive the localized linked label.');
 assert.match(client,/ATSRS profilinə təhlükəsiz baxış/);
-assert.match(client,/Securely view on ATSRS/);
-assert.match(client,/Безопасно просмотреть в ATSRS/);
+assert.match(client,/ATSRS — secure profile view/);
+assert.match(client,/ATSRS — безопасный просмотр профиля/);
+const labelFunction=client.split('\n').find((line)=>line.includes('function shareCopyLabel'))||'';
+const localizedLabels=[...labelFunction.matchAll(/return'([^']+)'/g)].map((match)=>match[1]);
+assert.equal(localizedLabels.length,3);
+assert.ok(localizedLabels.every((label)=>label.startsWith('ATSRS')),'Every localized rich-link label must begin with ATSRS.');
 
 assert.match(edge,/const SHORT_CODE_PATTERN = \/\^\[A-Za-z0-9_-\]\{22\}\$\//);
 assert.match(edge,/atsrs:profile-share-short:v1:/,'Aliases must be deterministically derived from the server secret and share id.');

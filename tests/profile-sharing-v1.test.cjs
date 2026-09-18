@@ -46,7 +46,7 @@ assert.match(js,/syncCustomDate\(\)/);
 assert.match(html,/js\/profile-sharing-v1\.js\?v=6110/);
 assert.match(js,/copiedUntil\[share\.id\]=Date\.now\(\)\+5000/);
 assert.match(js,/copyButton\.setAttribute\('aria-live','polite'\)/);
-assert.match(html,/js\/share-profile\.js\?v=451/);
+assert.match(html,/js\/share-profile\.js\?v=452/);
 assert.doesNotMatch(js,/share\.recipient_name\|\|primaryRequest/);
 assert.match(js,/requestRow\.dataset\.requestId=request\.id/);
 assert.match(js,/requestActions\.appendChild\(action\('Approve'/);
