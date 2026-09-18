@@ -381,6 +381,15 @@
     try{var result=await ownerCall({action:'update_expiry',share_id:shareId,expires_at:expiresAt}),updated=result.share||null;if(!updated)return false;activeShares=activeShares.map(function(item){return item.id===updated.id?updated:item;});if(activeShare&&activeShare.id===updated.id)activeShare=updated;renderOwnerStatus();await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));ownerMessage('Link expiry updated.');return true;}
     catch(error){ownerMessage(friendlyError(error,'The link expiry could not be updated. Please try again.'),true);return false;}
   };
+  window.updateShareProfileLink=async function(shareId,changes){
+    var share=activeShares.find(function(item){return item.id===shareId;});if(!share)throw new Error('Share link was not found.');
+    changes=changes&&typeof changes==='object'?changes:{};
+    var payload={action:'update_share',share_id:shareId,recipient_name:String(changes.recipient_name||'').trim(),recipient_company:String(changes.recipient_company||'').trim(),recipient_email:String(changes.recipient_email||'').trim(),file_ids:Array.isArray(changes.file_ids)?changes.file_ids:[],expires_at:String(changes.expires_at||'')};
+    var result=await ownerCall(payload),updated=result.share||null;if(!updated)throw new Error('The share link could not be updated.');
+    activeShares=activeShares.map(function(item){return item.id===updated.id?updated:item;});
+    if(activeShare&&activeShare.id===updated.id)activeShare=updated;
+    renderOwnerStatus();await refreshOwnerPanel({force:true});window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));ownerMessage('Share link updated.');return updated;
+  };
   window.atsrsRemoveSharedFile=async function(shareId,fileId){
     var result=await ownerCall({action:'remove_shared_file',share_id:shareId,file_id:fileId}),updated=result.share;
     if(!updated)throw new Error('The shared file could not be removed.');

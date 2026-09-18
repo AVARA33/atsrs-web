@@ -689,6 +689,50 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     });
   }
 
+  if (action === "update_share") {
+    const shareId = safeText(body.share_id, 40);
+    const expiresAt = parseExpiry(body.expires_at);
+    const fileIds = uniqueFileIds(body.file_ids);
+    const recipientName = safeText(body.recipient_name, 180);
+    const recipientCompany = safeText(body.recipient_company, 180);
+    const recipientEmailInput = safeText(body.recipient_email, 254).toLowerCase();
+    const recipientEmail = recipientEmailInput ? safeEmail(recipientEmailInput) : "";
+    if (!UUID_PATTERN.test(shareId) || !expiresAt) {
+      return json(req, 400, { error: "Choose a valid active link and expiry." });
+    }
+    if (!recipientName) return json(req, 400, { error: "Enter a recipient or link label." });
+    if (recipientEmailInput && !recipientEmail) return json(req, 400, { error: "Enter a valid recipient email." });
+    if (!fileIds.length) return json(req, 400, { error: "Select at least one server document." });
+    const target = existingShares.find((share) => share.id === shareId);
+    if (!target || !target.enabled) return json(req, 404, { error: "Active share link was not found." });
+    const owned = await admin.from("atsrs_files").select("id,metadata").eq("user_id", user.id)
+      .eq("account_type", "personal").in("id", fileIds);
+    if (owned.error) throw owned.error;
+    const found = new Set((owned.data ?? []).filter((row) =>
+      isShareEligibleFile(row as JsonObject)
+    ).map((row) => String(row.id)));
+    if (!fileIds.every((id) => found.has(id))) {
+      return json(req, 403, { error: "One or more selected files are not available." });
+    }
+    const now = new Date().toISOString();
+    const updated = await admin.from("atsrs_profile_shares").update({
+      recipient_name: recipientName,
+      recipient_company: recipientCompany || null,
+      recipient_email: recipientEmail || null,
+      selected_file_ids: fileIds,
+      expires_at: expiresAt,
+      updated_at: now,
+    }).eq("id", shareId).eq("user_id", user.id).eq("account_type", "personal").eq("enabled", true)
+      .select(SHARE_SELECT).maybeSingle();
+    if (updated.error) throw updated.error;
+    if (!updated.data) return json(req, 409, { error: "The share changed. Refresh and try again." });
+    const accessUpdate = await admin.from("atsrs_share_access_requests")
+      .update({ access_expires_at: expiresAt, updated_at: now })
+      .eq("share_id", shareId).eq("owner_id", user.id).eq("status", "approved");
+    if (accessUpdate.error) throw accessUpdate.error;
+    return json(req, 200, { share: publicShareStatus(updated.data as ShareRow) });
+  }
+
   if (action === "update_expiry") {
     const shareId = safeText(body.share_id, 40);
     const expiresAt = parseExpiry(body.expires_at);
