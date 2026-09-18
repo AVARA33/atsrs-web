@@ -11,6 +11,7 @@ const MAX_SHARED_FILES = 50;
 const CONFIDENTIALITY_NOTICE = "Confidentiality note: These documents are shared with you for recruitment, employment or compliance review. Please keep them confidential, use them only for that purpose, and do not share them with anyone else without the document owner's permission. If this email reached you by mistake, please let the sender know and delete it.";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TOKEN_PATTERN = /^[A-Za-z0-9_-]{40,128}$/;
+const SHORT_CODE_PATTERN = /^[A-Za-z0-9_-]{22}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type JsonObject = Record<string, unknown>;
@@ -26,6 +27,7 @@ type ShareRow = {
   recipient_email: string | null;
   token_hash: string;
   token_hint: string;
+  short_code_hash: string | null;
   selected_file_ids: string[];
   enabled: boolean;
   expires_at: string | null;
@@ -60,7 +62,7 @@ type AccessRequestRow = {
   updated_at: string;
 };
 
-const SHARE_SELECT = "id,user_id,account_type,audience,recipient_recruiter_id,recipient_name,recipient_company,recipient_email,token_hash,token_hint,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,revoked_at,created_at,updated_at";
+const SHARE_SELECT = "id,user_id,account_type,audience,recipient_recruiter_id,recipient_name,recipient_company,recipient_email,token_hash,token_hint,short_code_hash,selected_file_ids,enabled,expires_at,view_count,last_viewed_at,revoked_at,created_at,updated_at";
 const REQUEST_SELECT = "id,share_id,share_token_hash,owner_id,requester_name,requester_company,requester_email,requester_user_id,requested_file_ids,revoked_file_ids,request_all,status,otp_hash,otp_expires_at,otp_attempts,email_verified_at,viewer_token_hash,viewer_token_expires_at,access_expires_at,decided_at,created_at,updated_at";
 
 function getSupabaseSecretKey() {
@@ -132,6 +134,38 @@ async function hmacHex(secret: string, value: string) {
   );
   const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
   return Array.from(new Uint8Array(signature)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function shareShortCode(secret: string, shareId: string) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = new Uint8Array(await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(`atsrs:profile-share-short:v1:${shareId}`),
+  ));
+  let binary = "";
+  signature.slice(0, 16).forEach((value) => binary += String.fromCharCode(value));
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+async function ensureShareShortCode(admin: AdminClient, secretKey: string, share: ShareRow) {
+  const shortCode = await shareShortCode(secretKey, share.id);
+  const shortCodeHash = await sha256Hex(shortCode);
+  if (share.short_code_hash !== shortCodeHash) {
+    const update = await admin.from("atsrs_profile_shares").update({
+      short_code_hash: shortCodeHash,
+      updated_at: new Date().toISOString(),
+    }).eq("id", share.id).eq("user_id", share.user_id);
+    if (update.error) throw update.error;
+    share.short_code_hash = shortCodeHash;
+  }
+  return shortCode;
 }
 
 function safeText(value: unknown, maxLength = 180) {
@@ -354,6 +388,16 @@ async function loadShareByToken(admin: AdminClient, token: string) {
   return shareIsActive(share) ? share : null;
 }
 
+async function loadShareByShortCode(admin: AdminClient, shortCode: string) {
+  if (!SHORT_CODE_PATTERN.test(shortCode)) return null;
+  const shortCodeHash = await sha256Hex(shortCode);
+  const result = await admin.from("atsrs_profile_shares").select(SHARE_SELECT)
+    .eq("short_code_hash", shortCodeHash).eq("enabled", true).maybeSingle();
+  if (result.error) throw result.error;
+  const share = result.data as ShareRow | null;
+  return shareIsActive(share) ? share : null;
+}
+
 function shareResumeValue(row: AccessRequestRow) {
   return `atsrs:share-resume:v1:${row.id}:${row.share_id}:${row.requester_email}:${row.viewer_token_hash ?? ""}`;
 }
@@ -554,10 +598,12 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     }
     if (saved.error) throw saved.error;
     const share = saved.data as ShareRow;
+    const shortCode = await ensureShareShortCode(admin, secretKey, share);
     return json(req, 200, {
       share: publicShareStatus(share),
       token,
-      share_url: `${SITE_URL}/?share=${encodeURIComponent(token)}`,
+      short_code: shortCode,
+      share_url: `${SITE_URL}/s/${encodeURIComponent(shortCode)}`,
       recipient: {
         id: recruiterId,
         name: share.recipient_name,
@@ -572,6 +618,20 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     shares: existingShares.map(publicShareStatus),
     share: publicShareStatus(existing),
   });
+
+  if (action === "short_link") {
+    const shareId = safeText(body.share_id, 40);
+    const target = UUID_PATTERN.test(shareId)
+      ? existingShares.find((share) => share.id === shareId) ?? null
+      : null;
+    if (!shareIsActive(target)) return json(req, 404, { error: "Active share link was not found." });
+    const shortCode = await ensureShareShortCode(admin, secretKey, target!);
+    return json(req, 200, {
+      share: publicShareStatus(target),
+      short_code: shortCode,
+      share_url: `${SITE_URL}/s/${encodeURIComponent(shortCode)}`,
+    });
+  }
 
   if (action === "list_sent_requests") {
     const workspace = await admin.from("atsrs_workspaces").select("user_id")
@@ -924,13 +984,15 @@ async function ownerRequest(req: Request, admin: AdminClient, secretKey: string,
     : await admin.from("atsrs_profile_shares").insert(payload).select(SHARE_SELECT).single();
   if (saved.error) throw saved.error;
   const share = saved.data as ShareRow;
+  const shortCode = await ensureShareShortCode(admin, secretKey, share);
   await admin.from("atsrs_share_access_requests")
     .update({ status: "expired", access_expires_at: null, updated_at: now })
     .eq("share_id", share.id).in("status", ["otp_pending", "pending", "approved"]);
   return json(req, 200, {
     share: publicShareStatus(share),
     token,
-    share_url: `${SITE_URL}/?share=${encodeURIComponent(token)}`,
+    short_code: shortCode,
+    share_url: `${SITE_URL}/s/${encodeURIComponent(shortCode)}`,
   });
 }
 
@@ -1144,8 +1206,11 @@ async function downloadDocument(req: Request, admin: AdminClient, share: ShareRo
 
 async function publicAction(req: Request, admin: AdminClient, secretKey: string, body: JsonObject) {
   const token = safeText(body.token, 160);
+  const shortCode = safeText(body.short_code, 40);
   const resumeRequest = await loadResumeRequest(admin, secretKey, safeText(body.request_id, 40), safeText(body.resume, 80));
-  const share = resumeRequest ? await loadShareById(admin, resumeRequest.share_id) : await loadShareByToken(admin, token);
+  const share = resumeRequest
+    ? await loadShareById(admin, resumeRequest.share_id)
+    : shortCode ? await loadShareByShortCode(admin, shortCode) : await loadShareByToken(admin, token);
   if (!share) return json(req, 404, { error: "Shared profile was not found or is no longer active." });
   share.selected_file_ids = await refreshSharedMainCv(admin, share);
   const action = safeText(body.action, 40);
@@ -1165,9 +1230,12 @@ async function publicAction(req: Request, admin: AdminClient, secretKey: string,
 async function publicRequest(req: Request, admin: AdminClient, secretKey: string) {
   const requestUrl = new URL(req.url);
   const token = requestUrl.searchParams.get("token")?.trim() ?? "";
+  const shortCode = requestUrl.searchParams.get("short_code")?.trim() ?? "";
   const quietRefresh = requestUrl.searchParams.get("refresh") === "1";
   const resumeRequest = await loadResumeRequest(admin, secretKey, requestUrl.searchParams.get("request_id")?.trim() ?? "", requestUrl.searchParams.get("resume")?.trim() ?? "");
-  const share = resumeRequest ? await loadShareById(admin, resumeRequest.share_id) : await loadShareByToken(admin, token);
+  const share = resumeRequest
+    ? await loadShareById(admin, resumeRequest.share_id)
+    : shortCode ? await loadShareByShortCode(admin, shortCode) : await loadShareByToken(admin, token);
   if (!share) return json(req, 404, { error: "Shared profile was not found or is no longer active." });
   share.selected_file_ids = await refreshSharedMainCv(admin, share);
   const workspace = await admin.from("atsrs_workspace_data").select("data_key,payload")
