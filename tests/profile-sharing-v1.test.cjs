@@ -42,7 +42,7 @@ assert.match(css,/grid-template-columns:minmax\(0,180px\)/);
 assert.doesNotMatch(html,/Information included/);
 assert.doesNotMatch(html,/View details/);
 assert.match(js,/syncCustomDate\(\)/);
-assert.match(html,/js\/profile-sharing-v1\.js\?v=6109/);
+assert.match(html,/js\/profile-sharing-v1\.js\?v=6110/);
 assert.match(js,/copiedUntil\[share\.id\]=Date\.now\(\)\+5000/);
 assert.match(js,/copyButton\.setAttribute\('aria-live','polite'\)/);
 assert.match(html,/js\/share-profile\.js\?v=450/);
@@ -88,6 +88,8 @@ assert.doesNotMatch(shareJs,/window\.previewShareProfile[^;]*setKnownLink\(''\)/
 assert.match(js,/Loading uploaded documents/);
 assert.match(js,/function showDocumentDialog\(dialog\)/);
 assert.match(js,/function renderFilesDetails\(share,count\)/);
+assert.match(js,/function activeDurationLabel\(value,withDot\)/,'Active shares must show their remaining duration.');
+assert.match(js,/locale==='az'\?amount\+' '\+unit\+' aktiv'/,'Azerbaijani status must use the “3 gün aktiv” format.');
 assert.match(js,/sourceName\.getAttribute\('title'\)/,'The editor must show each real file name instead of repeating only its document type.');
 assert.match(js,/\['Created',historyTime\(share\.created_at\)\],\['Files',String\(count\)\],\['Opens',String\(Number\(share\.view_count\|\|0\)\)\],\['Status',status\.label,status\.className\],\['Expires',historyTime\(share\.expires_at\)\]/,'Share details must place Files, Opens, Status and Expires on the second row, with Expires under Created.');
 assert.match(js,/share\.recipient_name\|\|uiText\('Not specified'\)/);
