@@ -9,6 +9,8 @@ assert.match(edge, /fileMetadata\(file\)\.is_main === true/,
   'an explicitly selected Main CV must win');
 assert.match(edge, /sharedCvIds\.has\(id\) \? mainId : id/,
   'a stale shared CV id must be replaced without changing other shared documents');
+assert.match(edge, /metadata\.source !== "ai-generated" && metadata\.is_main !== false/,
+  'an explicitly selected AI-generated CV version must stay pinned to that version');
 assert.match(edge, /share\.selected_file_ids = await refreshSharedMainCv\(admin, share\)/g,
   'public rendering and public actions must use the same resolved file ids');
 assert.match(edge, /selected_file_ids: resolved/,

@@ -197,6 +197,12 @@
       heading.appendChild(headingTitle);heading.appendChild(headingCount);list.appendChild(heading);
       files.forEach(function(file){
         var meta=documentMeta(file),row=document.createElement('div');row.className='share-document-choice';
+        var metadata=file&&file.metadata&&typeof file.metadata==='object'?file.metadata:{};
+        row.dataset.fileCategory=String(file.category||'');
+        row.dataset.fileCreatedAt=String(file.created_at||'');
+        row.dataset.fileSize=String(file.size_bytes||0);
+        row.dataset.fileSource=String(metadata.source||'');
+        row.dataset.fileIsMain=metadata.is_main===true?'true':'false';
         var checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.id='share-file-'+file.id;checkbox.value=file.id;checkbox.checked=selected.has(file.id);checkbox.addEventListener('change',syncShareSelectAll);
         var nameLabel=document.createElement('label');nameLabel.className='share-document-name';nameLabel.htmlFor=checkbox.id;
         var name=document.createElement('b');name.textContent=meta.type;name.title=file.file_name||meta.type;nameLabel.appendChild(name);

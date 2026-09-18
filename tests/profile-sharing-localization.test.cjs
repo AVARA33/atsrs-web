@@ -7,7 +7,7 @@ const az = fs.readFileSync('js/locale-az.js', 'utf8');
 const sharing = fs.readFileSync('js/profile-sharing-v1.js', 'utf8');
 const share = fs.readFileSync('js/share-profile.js', 'utf8');
 
-assert.match(html, /js\/locale-az\.js\?v=28/);
+assert.match(html, /js\/locale-az\.js\?v=29/);
 assert.match(html, /js\/locale\.js\?v=32/);
 assert.match(locale, /profileSharingDocumentDialog/);
 assert.match(locale, /profileSharingFilesDialog/);
@@ -18,6 +18,8 @@ assert.match(az, /"View files": "Fayllara bax"/);
 assert.match(az, /"Files in this share link": "Bu paylaşım keçidindəki fayllar"/);
 assert.match(az, /"Recipient \/ link label": "Alıcı \/ keçid qeydi"/);
 assert.match(az, /"● Active": "● Aktiv"/);
+assert.match(az, /"Previous versions": "Əvvəlki versiyalar"/);
+assert.match(az, /"Latest CV": "Ən son CV"/);
 assert.match(sharing, /uiText\('Sharing settings could not be saved\. Please try again\.'\)/);
 assert.match(share, /window\.confirm\(uiText\('Delete this share link/);
 assert.match(share, /Bu təsdiqlənmiş rekruter sorğusu/);

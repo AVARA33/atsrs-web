@@ -214,10 +214,14 @@ function currentMainCv(files: JsonObject[]) {
 async function refreshSharedMainCv(admin: AdminClient, share: ShareRow) {
   const selectedIds = uniqueFileIds(share.selected_file_ids);
   if (!selectedIds.length || share.account_type !== "personal") return selectedIds;
-  const selected = await admin.from("atsrs_files").select("id,category")
+  const selected = await admin.from("atsrs_files").select("id,category,metadata")
     .eq("user_id", share.user_id).eq("account_type", share.account_type).in("id", selectedIds);
   if (selected.error) throw selected.error;
-  const sharedCvIds = new Set((selected.data ?? []).filter((file) => file.category === "cv").map((file) => String(file.id)));
+  const sharedCvIds = new Set((selected.data ?? []).filter((file) => {
+    if (file.category !== "cv") return false;
+    const metadata = fileMetadata(file as JsonObject);
+    return metadata.source !== "ai-generated" && metadata.is_main !== false;
+  }).map((file) => String(file.id)));
   if (!sharedCvIds.size) return selectedIds;
   const cvs = await admin.from("atsrs_files")
     .select("id,category,metadata,created_at,updated_at")
