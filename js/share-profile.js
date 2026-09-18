@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  function uiText(value){return window.atsrsI18n&&typeof window.atsrsI18n.translate==='function'?window.atsrsI18n.translate(value):value}
+  function uiText(value){var translated=window.atsrsI18n&&typeof window.atsrsI18n.translate==='function'?window.atsrsI18n.translate(value):'';if(translated)return translated;var locale='az';try{locale=localStorage.getItem('atsrs_locale')==='en'?'en':'az'}catch(_error){}return locale==='az'&&window.ATSRS_AZ_MESSAGES&&Object.prototype.hasOwnProperty.call(window.ATSRS_AZ_MESSAGES,value)?window.ATSRS_AZ_MESSAGES[value]:value}
 
   var OWNER_TOKEN_KEY='atsrs_share_profile_token';
   var activeShare=null;
