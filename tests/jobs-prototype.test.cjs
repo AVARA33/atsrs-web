@@ -15,27 +15,27 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=58176/);
-  assert.match(index,/route-feature-loader\.js\?v=58178/);
+  assert.match(index,/jobs-prototype\.css\?v=6108/);
+  assert.match(index,/route-feature-loader\.js\?v=6108/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=58177'\)/);
-  assert.match(routeLoader,/String\(page\|\|''\)==='jobs'/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6108'\)/);
+  assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
-  assert.match(index,/shell-polish\.js\?v=570/);
-  assert.match(index,/shell-polish\.css\?v=5869/);
+  assert.match(index,/shell-polish\.js\?v=6065/);
+  assert.match(index,/shell-polish\.css\?v=6095/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs',this\);window\.dispatchEvent\(new CustomEvent\('atsrs:jobs-nav'\)\)/);
   assert.match(index,/id="navJobs"[^>]*>JobSearch<\/button>/);
   assert.match(shellRuntime,/navJobs:'JobSearch'/);
-  assert.match(runtime,/function resetFromSidebar\(\)\{[\s\S]*?page=1;renderPagination\(\)/);
+  assert.match(runtime,/function resetFromSidebar\(\)\{[\s\S]*?renderPagination\(\)/);
   assert.match(runtime,/function scrollJobsToTop\(\)\{window\.scrollTo\(\{top:0,left:0,behavior:'auto'\}\)\}/);
   assert.doesNotMatch(runtime,/section\.scrollIntoView\(\{block:'start',behavior:'auto'\}\)/);
-  assert.match(runtime,/return load\(1\)/);
+  assert.match(runtime,/return load\(page\)/);
   assert.match(runtime,/addEventListener\('atsrs:jobs-nav',resetFromSidebar\)/);
   assert.match(runtime,/addEventListener\('atsrs:resume',function\(\)\{load\(page\)\}\)/);
   assert.match(runtime,/resetFromSidebar:resetFromSidebar/);
@@ -75,7 +75,8 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
 
 test('Jobs uses exact-count server pagination and responsive zero-overflow layout',()=>{
   assert.match(runtime,/jobsSearch/);
-  assert.match(runtime,/jobsRoleFilter/);
+  assert.match(runtime,/jobsRegionFilter/);
+  assert.match(runtime,/jobsCountryFilter/);
   assert.match(runtime,/jobsLocationFilter/);
   assert.match(index,/id="jobsPaginationTop"[^>]*aria-label="Jobs pagination"[^>]*data-jobs-pagination/);
   assert.match(index,/id="jobsPaginationBottom"[^>]*aria-label="Jobs pagination"[^>]*data-jobs-pagination/);
@@ -84,7 +85,7 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.doesNotMatch(jobsSection,/jobsLoadMore|Load more/);
   assert.doesNotMatch(runtime,/jobsLoadMore|cursor=null|more=false/);
   assert.match(runtime,/PAGE=30/);
-  assert.match(runtime,/client\.rpc\('atsrs_jobs_feed',feedParams\(target,state\)\)/);
+  assert.match(runtime,/client\.rpc\('atsrs_jobs_feed_v3',params\)/);
   assert.match(runtime,/p_page:target,p_page_size:PAGE/);
   assert.match(runtime,/function feedParams\(target,state\)/);
   assert.match(index,/id="jobsSearch"[^>]*placeholder="Job title or role"/);
@@ -92,7 +93,7 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.match(runtime,/var search=id\('jobsSearch'\);if\(search\)search\.addEventListener\('input',scheduleLoad\)/);
   assert.match(runtime,/p_search_terms:searchTerms\(state\.search\)/);
   assert.match(runtime,/load\(1\)/);
-  assert.match(runtime,/jobs\.length\+' of '\+total/);
+  assert.match(runtime,/shown\+' of '\+total\+' opportunit'/);
   assert.match(runtime,/aria-current','page/);
   assert.match(runtime,/aria-disabled','true/);
   assert.match(runtime,/jobs-page-chevron','‹'/);
@@ -137,15 +138,16 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.doesNotMatch(fixture,/jobsActiveFilters|jobs-active-filters|jobs-active-filter/);
   assert.doesNotMatch(runtime,/renderActiveFilters|removeSecondary|dateFilterLabel|jobsActiveFilters|jobs-active-filter/);
   assert.doesNotMatch(css,/\.jobs-active-filters\{display|\.jobs-active-filter\{display/);
-  ['jobsRoleFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter'].forEach(id=>{
+  ['jobsRegionFilter','jobsCountryFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter'].forEach(id=>{
     assert.match(index,new RegExp(`class="jobs-select-host"><select id="${id}"`));
   });
+  assert.match(index,/id="jobsDateFilter"[^>]*aria-haspopup="dialog"/);
   assert.doesNotMatch(index,/<datalist|jobs-datalist-control/);
   assert.doesNotMatch(index,/jobsMoreFilters|More filters/);
   assert.doesNotMatch(runtime,/jobsMoreFilters|\.classList\.toggle\('is-open'/);
   assert.doesNotMatch(css,/jobs-more-filters|jobs-secondary-filters\.is-open/);
   assert.match(runtime,/function setupJobsSelect\(selectId\)/);
-  assert.match(runtime,/\['jobsRoleFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter'\]\.forEach\(setupJobsSelect\)/);
+  assert.match(runtime,/\['jobsRegionFilter','jobsCountryFilter','jobsLocationFilter','jobsCompanyFilter','jobsRecruiterFilter'\]\.forEach\(setupJobsSelect\)/);
   assert.match(runtime,/function replaceJobsSelectOptions\(selectId,values,allLabel\)/);
   assert.match(runtime,/role','option'/);
   assert.match(runtime,/aria-selected/);
@@ -164,16 +166,16 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
   assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
   assert.match(css,/\.jobs-secondary-filters\{display:block;width:100%;margin:-2px 0 0\}/);
-  assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(220px,300px\) minmax\(220px,300px\) minmax\(180px,220px\) minmax\(280px,1fr\)/);
-  assert.match(css,/\.jobs-secondary-actions\{display:flex;align-items:center;align-self:end;justify-content:flex-start[^}]*min-height:46px/);
-  assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{justify-content:flex-start\}\}/);
+  assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(0,330px\) repeat\(3,minmax\(0,1fr\)\) 100px/);
+  assert.match(css,/\.jobs-secondary-actions\{display:flex;grid-column:4\/6;align-items:center;align-self:end;justify-content:flex-start[^}]*min-height:46px/);
+  assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{grid-column:auto;justify-content:flex-start\}\}/);
   assert.match(css,/\.jobs-secondary-field>span:first-child\{font-size:12px/);
   assert.match(css,/\.jobs-filters input,\.jobs-filters select,\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:var\(--jobs-filter-height\)/);
-  assert.match(css,/\.jobs-filters #jobsClearFilters\{grid-area:clear\}/);
+  assert.match(css,/\.jobs-filters #jobsClearFilters\{grid-area:clear;[^}]*width:100%/);
   assert.match(css,/\.jobs-filters #jobsClearFilters\{align-self:end;margin:0!important\}/);
-  assert.match(css,/grid-template-areas:"search role location clear"/);
-  assert.match(css,/@media\(max-width:1100px\)[\s\S]*grid-template-areas:"search search search" "role location clear"/);
-  assert.match(css,/@media\(max-width:600px\)[\s\S]*grid-template-areas:"search" "role" "location" "clear"/);
+  assert.match(css,/grid-template-areas:"search region country location clear"/);
+  assert.match(css,/@media\(max-width:1100px\)[\s\S]*grid-template-areas:"search region country" "location location clear"/);
+  assert.match(css,/@media\(max-width:600px\)[\s\S]*grid-template-areas:"search" "region" "country" "location" "clear"/);
   assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-select-option\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check\{cursor:pointer\}/);
@@ -183,7 +185,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(index,/class="jobs-secondary-primary"[\s\S]*class="jobs-secondary-actions"/);
   assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"/);
   assert.doesNotMatch(index,/jobs-filter-chip|jobs-toggle-track/);
-  assert.match(runtime,/control\.matches\('input\[type="checkbox"\]'\)\?control\.checked/);
+  assert.match(runtime,/control\.localName==='input'[\s\S]*?control\.checked/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid;gap:12px;margin:0 0 16px/);
   assert.match(css,/@media\(max-width:600px\)\{\.jobs-secondary-filters\{margin-bottom:0\}\}/);
@@ -205,23 +207,22 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/contact\(contacts,'Application'/);
   assert.doesNotMatch(runtime,/function action\(/);
   assert.match(runtime,/body=el\('div','job-card-body'\)/);
-  assert.match(runtime,/body\.append\(project,c\);a\.append\(head,details,body\)/);
+  assert.match(runtime,/body\.append\(project\);a\.append\(head,details,body,c\)/);
   assert.match(runtime,/function syncCardOverflow\(\)/);
-  assert.match(runtime,/body\.scrollHeight>body\.clientHeight\+1/);
-  assert.match(runtime,/body\.toggleAttribute\('data-overflow',scrollable\)/);
-  assert.match(runtime,/body\.tabIndex=0/);
+  assert.doesNotMatch(runtime,/body\.scrollHeight>body\.clientHeight\+1/);
+  assert.doesNotMatch(runtime,/toggleAttribute\('data-overflow'/);
+  assert.match(runtime,/body\.removeAttribute\('data-overflow'\)/);
   assert.match(runtime,/requestAnimationFrame\(syncCardOverflow\)/);
-  assert.match(css,/\.jobs-grid\.jobs-cards\{align-items:start\}/);
-  assert.match(css,/\.jobs-cards \.job-card\{height:560px;max-height:560px;grid-template-rows:auto minmax\(0,1fr\);align-content:stretch\}/);
-  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*overscroll-behavior-y:auto[^}]*scrollbar-gutter:stable/);
-  assert.doesNotMatch(css,/\.jobs-cards \.job-card-body\{[^}]*overscroll-behavior:(?:contain|none)/);
+  assert.match(css,/\.jobs-grid\.jobs-cards\{align-items:stretch\}/);
+  assert.match(css,/\.jobs-cards \.job-card\{height:auto;min-height:560px;max-height:none;grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
+  assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow:hidden/);
   assert.doesNotMatch(runtime,/addEventListener\(['"]wheel|\.onwheel\s*=/);
   assert.match(css,/\.jobs-list \.job-card-body\{display:contents\}/);
-  assert.match(css,/@media\(max-width:1250px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:580px;max-height:580px\}/);
-  assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{height:640px;max-height:640px\}/);
-  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-cards \.job-card\{height:min\(720px,calc\(100dvh - 24px\)\);max-height:min\(720px,calc\(100dvh - 24px\)\)\}/);
-  assert.match(css,/html\[data-theme="light"\] \.jobs-cards \.job-card-body\{scrollbar-color:rgba\(83,102,128,\.34\) transparent\}/);
-  assert.match(css,/\.jobs-cards \.job-card-body\[data-overflow\]:focus-visible\{outline:1px solid rgba\(34,197,94,\.34\)/);
+  assert.match(css,/@media\(max-width:1250px\)\{[\s\S]*?\.jobs-cards \.job-card\{min-height:580px\}/);
+  assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{min-height:640px\}/);
+  assert.match(css,/@media\(max-width:600px\)\{\.jobs-cards \.job-card\{height:auto;min-height:0;max-height:none\}/);
+  assert.doesNotMatch(css,/\.jobs-cards \.job-card-body\{[^}]*overflow-y:auto/);
+  assert.match(css,/\.jobs-cards \.job-contact-info\{[^}]*align-self:end[^}]*border-top/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info\{grid-auto-rows:auto\}/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info p\.job-contact-clickable\{[^}]*height:64px[^}]*min-height:64px[^}]*max-height:64px[^}]*overflow:hidden/);
   assert.match(css,/\.jobs-cards \.job-recruiter-info>p>span,\.jobs-cards \.job-recruiter-info \.job-contact-link-text\{[^}]*-webkit-line-clamp:2/);
@@ -329,11 +330,11 @@ test('Jobs dropdown keeps selected rows completely unfilled',()=>{
   assert.match(css,/\.jobs-select-menu\{[^}]*scrollbar-color:#5b6470 #111512/);
   assert.match(css,/\.jobs-select-toggle>i\{[^}]*width:16px[^}]*height:16px[^}]*flex:0 0 16px/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:hover>i/);
-  assert.match(index,/theme\.js\?v=5849/);
-  assert.match(index,/select-standard\.js\?v=58164/);
+  assert.match(index,/theme\.js\?v=6061/);
+  assert.match(index,/select-standard\.js\?v=6060/);
   assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/control\.closest\('\.jobs-select-host'\)/);
   assert.match(fs.readFileSync(path.join(root,'js','select-standard.js'),'utf8'),/select\.closest\('\.jobs-select-host'\)/);
-  assert.match(index,/shell-polish\.css\?v=5869/);
+  assert.match(index,/shell-polish\.css\?v=6095/);
   assert.match(shellCss,/:not\(\.jobs-select-option\)/);
   assert.match(shellCss,/:not\(\.personnel-combobox-options button\)/);
   assert.match(shellCss,/:not\(\.phone-code-option\)/);

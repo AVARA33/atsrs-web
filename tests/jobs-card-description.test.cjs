@@ -16,7 +16,10 @@ assert.match(runtime, /readablePreviewText\(description,900\)/);
 assert.match(runtime, /readablePreviewText\(job\.requirements,600\)/);
 assert.match(runtime, /el\('p','',readableJobText\(v\[1\]\)\)/);
 assert.doesNotMatch(runtime, /el\('p','',description\)/);
-assert.match(css, /\.job-card-description p\{[^}]*-webkit-line-clamp:12/);
+assert.match(css, /\.job-card-description p\{[^}]*-webkit-line-clamp:4/);
 assert.match(css, /\.jobs-list \.job-card-description p\{[^}]*-webkit-line-clamp:4/);
+assert.match(css, /\.jobs-cards \.job-card-summary\{[^}]*-webkit-line-clamp:3/);
+assert.match(css, /\.jobs-cards \.job-requirements span\{[^}]*-webkit-line-clamp:3/);
+assert.match(runtime, /Missing — manual review required/);
 
 console.log('Job cards show bounded, readable description and requirements previews.');
