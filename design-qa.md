@@ -798,6 +798,43 @@ Final result: passed.
 
 ---
 
+# Share dialog standard fields — Design QA
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-1a63e4af-afc5-43b8-ac03-9089c8db24ea.png`.
+- Canonical target: `css/floating-field-standard-v58178.css`.
+- Implementation: `index.html` (`#profileSharingDocumentDialog`) and `css/profile-sharing-v1.css`.
+- Browser-rendered QA capture: local isolated modal at 1280 × 720 CSS px (dark/light) and 390 × 844 CSS px (mobile), device scale 1.
+- Source pixels: 3440 × 1368.
+- States: dark idle, dark focused, light idle and mobile dark.
+
+## Full-view and focused comparison evidence
+
+- The source showed three legacy 34px recipient inputs with 7px radii and labels above the controls.
+- The implementation uses the existing ATSRS canonical 44px field shell, 10px radius, border-mounted floating labels, theme tokens and standard focus treatment.
+- Recipient, Company and Email were inspected together at desktop size in both themes. Focus on Recipient shows the canonical dark-theme green inline border/ring and accent label. Light mode uses the canonical blue accent and white field surface.
+- At 390px width all three fields stack without horizontal clipping; the footer and document rows remain usable.
+
+## Required fidelity surfaces
+
+- Fonts and typography: labels and values inherit the canonical ATSRS field system.
+- Spacing and layout rhythm: 10px desktop gap and single-column mobile layout; no overflow.
+- Colors and tokens: dark green and light blue theme accents verified.
+- Image quality and assets: not applicable; no visual assets changed.
+- Copy and content: unchanged.
+
+## Interaction and regression checks
+
+- Field focus, dark/light theme and 390 × 844 responsive states passed.
+- Browser console errors and warnings: 0.
+- Profile sharing, localization and existing-link copy tests passed.
+- Cloudflare Pages build passed with 473 files.
+- Initial issue: the recipient fields bypassed the shared ATSRS field shell. The fix adopts `.atsrs-field-shell` and `.atsrs-field-label` and removes the conflicting recipient-input overrides.
+- No actionable P0/P1/P2 findings remain for the requested scope.
+
+final result: passed
+
+---
+
 # Documents folder tabs — Chrome reference match
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-73dab9f0-0078-49e5-b902-da77613741f2.png`.
