@@ -156,6 +156,30 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-hero > .jobs-region-
 html[data-theme="light"] #jobsPage .jobs-snapshot > i{color:#2f73c8}
 #jobsPage .jobs-snapshot span{color:#91a198;font-size:11px}
 
+/* V6112: keep quick filters on their own row so labels never collide at zoom. */
+#jobsPage .jobs-secondary-primary{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+#jobsPage .jobs-secondary-actions{
+  grid-column:1/-1;
+  width:100%;
+  min-height:46px;
+  gap:14px;
+  padding-top:5px;
+  flex-wrap:nowrap;
+}
+
+#jobsPage .jobs-secondary-actions .jobs-compact-check{
+  min-height:36px;
+  padding:6px 8px;
+  gap:8px;
+}
+
+#jobsPage .jobs-secondary-actions .jobs-view-switch{
+  margin-left:auto;
+}
+
 html[data-theme] body #app.app:not(.hidden) #jobsPage #jobsClearFilters{
   justify-self:start;
   width:auto!important;
@@ -179,7 +203,7 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-actions .j
   display:flex;
   flex:0 0 auto;
   gap:8px!important;
-  margin-left:4px;
+  margin-left:auto;
   padding:0 0 0 12px!important;
   border:0!important;
   border-left:1px solid rgba(148,163,184,.22)!important;
@@ -294,7 +318,8 @@ html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-ac
   #jobsPage .jobs-hero > .jobs-region-nav{right:214px;bottom:14px;left:24px;display:flex;flex-wrap:nowrap;align-items:flex-end;overflow-x:auto}
   #jobsPage .jobs-hero > .jobs-region-nav button{justify-self:start}
   #jobsPage .jobs-hero > .jobs-snapshot{right:24px;min-width:166px}
-  #jobsPage .jobs-secondary-actions{flex-wrap:wrap}
+  #jobsPage .jobs-secondary-primary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #jobsPage .jobs-secondary-actions{grid-column:1/-1;flex-wrap:wrap}
 }
 
 @media(max-width:760px){

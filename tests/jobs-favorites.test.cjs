@@ -7,6 +7,7 @@ const root=path.join(__dirname,'..');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const runtime=fs.readFileSync(path.join(root,'js','jobs-prototype.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','jobs-prototype.css'),'utf8');
+const heroCss=fs.readFileSync(path.join(root,'css','jobsearch-hero-v6002.css'),'utf8');
 const locale=fs.readFileSync(path.join(root,'js','locale-az.js'),'utf8');
 const shellCss=fs.readFileSync(path.join(root,'css','shell-polish.css'),'utf8');
 const fixture=fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8');
@@ -15,7 +16,9 @@ const migration=fs.readFileSync(path.join(root,'supabase','migrations','20260919
 test('JobSearch exposes one accessible saved-jobs filter in the secondary row',()=>{
   assert.equal((index.match(/id="jobsFavoritesOnlyFilter"/g)||[]).length,1);
   assert.match(index,/id="jobsNewOnlyFilter"[\s\S]*id="jobsFavoritesOnlyFilter"/);
-  assert.match(index,/jobs-favorites-filter[\s\S]*ph ph-star[\s\S]*Saved jobs only/);
+  assert.match(index,/jobs-favorites-filter[\s\S]*ph ph-star[\s\S]*Favorites/);
+  assert.match(heroCss,/#jobsPage \.jobs-secondary-actions\{[\s\S]*?grid-column:1\/-1;[\s\S]*?gap:14px;[\s\S]*?flex-wrap:nowrap;/);
+  assert.match(heroCss,/#jobsPage \.jobs-secondary-actions \.jobs-view-switch\{[\s\S]*?margin-left:auto;/);
   assert.equal((fixture.match(/id="jobsFavoritesOnlyFilter"/g)||[]).length,1);
   assert.match(runtime,/favoritesOnly:!!\(id\('jobsFavoritesOnlyFilter'\)/);
   assert.match(runtime,/p_favorites_only:!!state\.favoritesOnly/);
@@ -44,7 +47,7 @@ test('Job cards provide an accessible persistent star toggle',()=>{
 });
 
 test('Azerbaijani copy covers saved-jobs controls',()=>{
-  assert.match(locale,/"Saved jobs only"\s*:\s*"Yalnız seçilmişlər"/);
+  assert.match(locale,/"Favorites"\s*:\s*"Seçilmişlər"/);
   assert.match(locale,/"Save job"\s*:\s*"Elanı seçilmişlərə əlavə et"/);
   assert.match(locale,/"Remove from saved jobs"\s*:\s*"Elanı seçilmişlərdən çıxar"/);
 });

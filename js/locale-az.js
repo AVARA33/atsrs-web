@@ -291,7 +291,7 @@ window.ATSRS_AZ_MESSAGES = {
   "Worksite": "İş yeri",
   "Onshore": "Quruda",
   "New jobs only": "Yalnız yeni vakansiyalar",
-  "Saved jobs only": "Yalnız seçilmişlər",
+  "Favorites": "Seçilmişlər",
   "Save job": "Elanı seçilmişlərə əlavə et",
   "Remove from saved jobs": "Elanı seçilmişlərdən çıxar",
   "Select the star on a vacancy to save it here.": "Elanı burada saxlamaq üçün kartdakı ulduza basın.",
