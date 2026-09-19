@@ -5,21 +5,17 @@ const test = require('node:test');
 
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const css = fs.readFileSync(path.join(root, 'css', 'view-switch-standard-v58144.css'), 'utf8');
-const fixture = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'view-switch-standard-harness.html'), 'utf8');
+const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
+const talent = fs.readFileSync(path.join(root, 'js', 'talent-directory.js'), 'utf8');
+const projects = fs.readFileSync(path.join(root, 'js', 'projects.js'), 'utf8');
 
-test('Cards/List controls share the Jobs visual contract', () => {
-  assert.match(html, /view-switch-standard-v58144\.css\?v=58144/);
-  assert.equal((html.match(/class="talent-view-switch(?: jobs-view-switch)?"/g) || []).length, 4);
-  for (const page of ['#jobsPage', '#candidatesPage', '#personnelPage', '#projectsPage']) {
-    assert.ok(css.includes(page), `${page} is included in the shared selector`);
-  }
-  assert.match(css, /height:44px!important/);
-  assert.match(css, /min-height:44px!important/);
-  assert.match(css, /background:#050706!important/);
-  assert.match(css, /background:#0c120f!important/);
-  assert.match(css, /background:var\(--sidebar-accent\)/);
-  assert.match(css, /background:var\(--atsrs-shell-accent\)/);
-  assert.match(css, /button:is\(\[aria-pressed="true"\],\.active\)::after/);
-  assert.equal((fixture.match(/class="talent-view-switch(?: jobs-view-switch)?"/g) || []).length, 4);
+test('directory workspaces use card view only', () => {
+  assert.doesNotMatch(html, /class="talent-view-switch|data-(?:jobs|candidate|personnel|project)-view=/);
+  assert.doesNotMatch(jobs, /atsrs_jobs_view|data-jobs-view/);
+  assert.doesNotMatch(talent, /atsrs_(?:candidate|personnel)_view|data-(?:candidate|personnel)-view/);
+  assert.doesNotMatch(projects, /atsrs_project_view|data-project-view/);
+  assert.match(jobs, /grid\.classList\.add\('jobs-cards'\)/);
+  assert.match(talent, /var candidateView='cards';/);
+  assert.match(talent, /var personnelView='cards';/);
+  assert.match(projects, /list\.classList\.remove\('is-list'\)/);
 });

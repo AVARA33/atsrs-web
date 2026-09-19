@@ -1,13 +1,7 @@
 (function(){
   'use strict';
 
-  var state={editingProjectId:'',assignmentPersonId:'',membersProjectId:'',projectView:'cards'};
-  var projectViewExplicit=false;
-  try{
-    state.projectView=localStorage.getItem('atsrs_project_view')||'cards';
-    projectViewExplicit=localStorage.getItem('atsrs_project_view_explicit')==='true';
-    if(window.matchMedia&&window.matchMedia('(max-width: 720px)').matches&&!projectViewExplicit)state.projectView='cards';
-  }catch(ignore){}
+  var state={editingProjectId:'',assignmentPersonId:'',membersProjectId:''};
 
   function el(id){return document.getElementById(id)}
   function safe(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -102,13 +96,6 @@
   function memberCount(id,people){
     return people.reduce(function(total,person){return total+(normalizedAssignments(person).some(function(assignment){return assignment.projectId===id&&isAssignmentActive(assignment)})?1:0)},0);
   }
-  function updateProjectViewSwitch(){
-    document.querySelectorAll('[data-project-view]').forEach(function(button){
-      var selected=button.dataset.projectView===state.projectView;
-      button.classList.toggle('active',selected);
-      button.setAttribute('aria-pressed',selected?'true':'false');
-    });
-  }
   function updateProjectCount(visible,total){
     var count=el('projectsWorkspaceCount');if(!count)return;
     count.textContent=visible===total?total+' '+(total===1?'project':'projects'):visible+' of '+total+' projects';
@@ -143,14 +130,14 @@
       var haystack=[projectName(project),project.code,project.client,project.location,project.owner].join(' ').toLowerCase();
       return (!search||haystack.indexOf(search)!==-1)&&(!filter||projectStatus(project)===filter);
     });
-    updateProjectViewSwitch();updateProjectCount(visible.length,all.length);
-    list.classList.toggle('is-list',state.projectView==='list');
+    updateProjectCount(visible.length,all.length);
+    list.classList.remove('is-list');
     if(!visible.length){
       list.innerHTML='<div class="projects-empty"><b>'+(all.length?'No projects match these filters.':'No projects yet.')+'</b><span>'+(all.length?'Change the search or status filter.':'Create the first project, then assign people from Personnel or from the project itself.')+'</span>'+(all.length?'':'<button type="button" data-project-create>New project</button>')+'</div>';
       var emptyCreate=list.querySelector('[data-project-create]');if(emptyCreate)emptyCreate.onclick=openProjectEditor;
       return;
     }
-    list.innerHTML=state.projectView==='list'?projectList(visible,people):visible.map(function(project){return projectCard(project,people)}).join('');
+    list.innerHTML=visible.map(function(project){return projectCard(project,people)}).join('');
     list.querySelectorAll('[data-project-members]').forEach(function(button){button.onclick=function(){openProjectMembers(button.dataset.projectMembers)}});
     list.querySelectorAll('[data-project-edit]').forEach(function(button){button.onclick=function(){openProjectEditor(button.dataset.projectEdit)}});
     list.querySelectorAll('[data-project-archive]').forEach(function(button){button.onclick=function(){toggleProjectArchive(button.dataset.projectArchive)}});
@@ -263,13 +250,6 @@
   function bind(){
     var create=el('newProjectBtn');if(!create)return;
     create.addEventListener('click',function(){openProjectEditor()});
-    document.querySelectorAll('[data-project-view]').forEach(function(button){
-      button.addEventListener('click',function(){
-        state.projectView=button.dataset.projectView||'cards';projectViewExplicit=true;
-        try{localStorage.setItem('atsrs_project_view',state.projectView);localStorage.setItem('atsrs_project_view_explicit','true')}catch(ignore){}
-        render();
-      });
-    });
     ['projectSearch','projectStatusFilter'].forEach(function(id){var node=el(id);if(node)node.addEventListener(id==='projectSearch'?'input':'change',render)});
     el('projectEditorForm').addEventListener('submit',saveProject);el('personnelAssignmentForm').addEventListener('submit',savePersonnelAssignments);el('projectMembersForm').addEventListener('submit',saveProjectMembers);
     el('addPersonnelAssignmentRow').addEventListener('click',function(){addAssignmentRow(null,true)});

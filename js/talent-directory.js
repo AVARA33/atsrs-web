@@ -13,25 +13,13 @@
   var lastSync=0;
   var activeActionPanel=null;
   var candidateView='cards';
-  var personnelView='list';
+  var personnelView='cards';
   var personnelSortBy='name';
   var personnelSortDirection='asc';
   var talentMailbox='active';
-  var candidateViewExplicit=false;
-  var personnelViewExplicit=false;
   var pendingOwnAvatarSync={queued:false,url:null};
   var ownAvatarSyncRunning=null;
   var ownAvatarSyncNeedsFlush=false;
-  try{
-    candidateView=localStorage.getItem('atsrs_candidate_view')||'cards';
-    personnelView=localStorage.getItem('atsrs_personnel_view')||'list';
-    candidateViewExplicit=localStorage.getItem('atsrs_candidate_view_explicit')==='true';
-    personnelViewExplicit=localStorage.getItem('atsrs_personnel_view_explicit')==='true';
-    if(window.matchMedia&&window.matchMedia('(max-width: 720px)').matches){
-      if(!candidateViewExplicit)candidateView='cards';
-      if(!personnelViewExplicit)personnelView='cards';
-    }
-  }catch(ignore){}
 
   function byId(id){return document.getElementById(id)}
   function client(){return window.supabaseClient||null}
@@ -353,16 +341,6 @@
   function linkedRecord(id){
     return linkedPersonnel.find(function(item){return item.professional_user_id===id})||null;
   }
-  function updateViewSwitches(){
-    document.querySelectorAll('[data-candidate-view]').forEach(function(button){
-      button.classList.toggle('active',button.dataset.candidateView===candidateView);
-      button.setAttribute('aria-pressed',button.dataset.candidateView===candidateView?'true':'false');
-    });
-    document.querySelectorAll('[data-personnel-view]').forEach(function(button){
-      button.classList.toggle('active',button.dataset.personnelView===personnelView);
-      button.setAttribute('aria-pressed',button.dataset.personnelView===personnelView?'true':'false');
-    });
-  }
   function upsertLinkedPersonnel(link,profile){
     if(!profile||!profile.user_id)return null;
     var record=Object.assign({},link||{},{
@@ -533,7 +511,6 @@
       ?(personnelHasMore?allRows.length+' of '+personnelTotal+' linked':allRows.length+' linked')
       :rows.length+' of '+allRows.length+' loaded';
     if(moreButton)moreButton.classList.toggle('hidden',!personnelHasMore);
-    updateViewSwitches();
     if(!rows.length){
       list.innerHTML=allRows.length
         ?'<div class="linked-personnel-empty"><b>No matching personnel</b><span>Clear or change the filters to see more people.</span></div>'
@@ -775,7 +752,6 @@
       :visible.length+' candidate'+(visible.length===1?'':'s');
     if(moreButton)moreButton.classList.toggle('hidden',!directoryHasMore);
     if(status)status.classList.add('hidden');
-    updateViewSwitches();
     grid.classList.toggle('is-list',candidateView==='list');
     activeActionPanel=null;
     if(!visible.length){
@@ -972,23 +948,6 @@
     if(candidateMore)candidateMore.addEventListener('click',function(){loadDirectory(true)});
     var personnelMore=byId('personnelLoadMore');
     if(personnelMore)personnelMore.addEventListener('click',function(){loadPersonnelLinks(true).catch(function(error){console.warn('ATSRS linked personnel load failed',error)})});
-    document.querySelectorAll('[data-candidate-view]').forEach(function(button){
-      button.addEventListener('click',function(){
-        candidateView=button.dataset.candidateView||'cards';
-        candidateViewExplicit=true;
-        try{localStorage.setItem('atsrs_candidate_view',candidateView);localStorage.setItem('atsrs_candidate_view_explicit','true')}catch(ignore){}
-        render();
-      });
-    });
-    document.querySelectorAll('[data-personnel-view]').forEach(function(button){
-      button.addEventListener('click',function(){
-        personnelView=button.dataset.personnelView||'list';
-        personnelViewExplicit=true;
-        try{localStorage.setItem('atsrs_personnel_view',personnelView);localStorage.setItem('atsrs_personnel_view_explicit','true')}catch(ignore){}
-        renderLinkedPersonnel();
-      });
-    });
-    updateViewSwitches();
     ['personnelSearch','personnelWorkStatusFilter','personnelAccessFilter','personnelDocumentFilter'].forEach(function(id){
       var element=byId(id);if(!element)return;
       element.addEventListener(id==='personnelSearch'?'input':'change',renderLinkedPersonnel);

@@ -47,9 +47,9 @@ assert.doesNotMatch(talent, /Every Personal user appears here automatically/);
 assert.match(html, /Only eligible Personal profiles that chose to appear/);
 assert.doesNotMatch(html, /future Excel exports/);
 assert.match(html, /role="group" aria-labelledby="talentWorkTypeLabel"/);
-assert.match(talent, /atsrs_candidate_view_explicit/);
-assert.match(talent, /atsrs_personnel_view_explicit/);
-assert.match(talent, /matchMedia\('\(max-width: 720px\)'\)/);
+assert.doesNotMatch(talent, /atsrs_(?:candidate|personnel)_view|data-(?:candidate|personnel)-view/);
+assert.match(talent, /var candidateView='cards';/);
+assert.match(talent, /var personnelView='cards';/);
 assert.match(talent, /class="secondary talent-add-personnel/);
 assert.match(talentCss, /\.talent-directory-grid\.is-list \.talent-list-actions \.talent-add-personnel\{[^}]*flex:0 0 138px;[^}]*width:138px!important;[^}]*min-width:138px!important;[^}]*max-width:138px!important/);
 
@@ -58,9 +58,7 @@ assert.match(css, /--atsrs-touch-height:44px/);
 assert.match(css, /\.corporate-compliance-metrics\{grid-template-columns:repeat\(6/);
 assert.match(css, /@media\(max-width:720px\)/);
 assert.match(css, /#app button:focus-visible/);
-assert.match(shellCss, /#candidatesPage,#personnelPage,#projectsPage[^}]*\.talent-view-switch\{[\s\S]*?background:#fff!important/);
-assert.match(shellCss, /\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#2f6fb2!important/);
-assert.match(shellCss, /html\[data-theme="dark"\][\s\S]*?\.talent-view-switch button\[aria-pressed="true"\][\s\S]*?border-color:#4f8b7d!important/);
+assert.doesNotMatch(html, /class="talent-view-switch|data-(?:candidate|personnel|project)-view=/);
 
 function runTitleHarness(activeId, activeText) {
   const elements = {

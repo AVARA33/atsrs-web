@@ -16,9 +16,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=6117/);
-  assert.match(index,/route-feature-loader\.js\?v=6110/);
+  assert.match(index,/route-feature-loader\.js\?v=6118/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6110'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6118'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -42,10 +42,7 @@ test('intentional Jobs sidebar navigation alone resets the shared page state',()
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/id="navJobs"[^>]*atsrs:jobs-nav/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/shell-polish\.css\?v=570-qa/);
   assert.match(fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8'),/workspace-surface-standard-v519\.css\?v=519-qa/);
-  const viewHandlerStart=runtime.indexOf("document.querySelectorAll('[data-jobs-view]'",runtime.indexOf('async function boot()'));
-  const viewHandlerEnd=runtime.indexOf('isAdmin=await adminCheck()',viewHandlerStart);
-  assert.ok(viewHandlerStart>=0&&viewHandlerEnd>viewHandlerStart);
-  assert.doesNotMatch(runtime.slice(viewHandlerStart,viewHandlerEnd),/load\(/);
+  assert.doesNotMatch(runtime,/data-jobs-view|atsrs_jobs_view/);
 });
 
 test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
@@ -187,7 +184,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);
   assert.match(index,/class="jobs-secondary-primary"[\s\S]*class="jobs-secondary-actions"/);
   assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"[\s\S]*id="jobsFavoritesOnlyFilter"/);
-  assert.match(index,/class="jobs-secondary-view-row"[\s\S]*class="talent-view-switch jobs-view-switch"/);
+  assert.doesNotMatch(index,/class="jobs-secondary-view-row"|data-jobs-view/);
   assert.doesNotMatch(index,/jobs-filter-chip|jobs-toggle-track/);
   assert.match(runtime,/control\.localName==='input'[\s\S]*?control\.checked/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
@@ -195,17 +192,11 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/@media\(max-width:600px\)\{\.jobs-secondary-filters\{margin-bottom:0\}\}/);
 });
 
-test('Jobs supports persistent accessible card and list views',()=>{
-  assert.match(index,/data-jobs-view="cards"/);
-  assert.match(index,/data-jobs-view="list"/);
-  assert.match(runtime,/atsrs_jobs_view/);
-  assert.match(runtime,/aria-pressed/);
-  assert.match(runtime,/jobs-list/);
-  assert.match(css,/\.jobs-grid\.jobs-list/);
-  assert.match(css,/\.jobs-list \.job-card-head\{display:grid;grid-template-columns:minmax\(0,1fr\) auto/);
-  assert.match(css,/@media\(min-width:901px\)\{\.jobs-list \.job-contact-info\{padding-top:38px\}\}/);
+test('Jobs is fixed to the standard card view',()=>{
+  assert.doesNotMatch(index,/data-jobs-view=|aria-label="Jobs view"/);
+  assert.doesNotMatch(runtime,/atsrs_jobs_view|data-jobs-view/);
+  assert.match(runtime,/function updateView\(\)\{var grid=id\('jobsGrid'\);if\(grid\)\{grid\.classList\.remove\('jobs-list'\);grid\.classList\.add\('jobs-cards'\)\}/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
-  assert.doesNotMatch(css,/\.jobs-list \.job-contact-(?:org|source)\{display:none/);
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
   assert.match(runtime,/contact\(contacts,'Listing source'/);
   assert.match(runtime,/contact\(contacts,'Application'/);
@@ -222,7 +213,6 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(css,/\.jobs-cards \.job-card\{height:auto;min-height:560px;max-height:none;grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
   assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow:hidden/);
   assert.doesNotMatch(runtime,/addEventListener\(['"]wheel|\.onwheel\s*=/);
-  assert.match(css,/\.jobs-list \.job-card-body\{display:contents\}/);
   assert.match(css,/@media\(max-width:1250px\)\{[\s\S]*?\.jobs-cards \.job-card\{min-height:580px\}/);
   assert.match(css,/@media\(max-width:900px\)\{[\s\S]*?\.jobs-cards \.job-card\{min-height:640px\}/);
   assert.match(css,/@media\(max-width:600px\)\{\.jobs-cards \.job-card\{height:auto;min-height:0;max-height:none\}/);
