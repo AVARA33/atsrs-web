@@ -17,13 +17,14 @@ assert.match(runtime, /status==='published'/);
 assert.match(runtime, /Cannot publish:/);
 assert.match(runtime, /Needs data review/);
 assert.match(runtime, /el\('footer','job-contact-info'\)/);
-assert.match(runtime, /body\.append\(project\);a\.append\(head,details,body,c\)/);
+assert.match(runtime, /body\.append\(project\);a\.append\(head,controls,body,c\)/);
 assert.doesNotMatch(runtime, /scrollHeight>body\.clientHeight/);
 
-assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch\}/);
-assert.match(css, /\.jobs-cards \.job-card-body\{[^}]*overflow:hidden/);
+assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:start\}/);
+assert.match(css, /\.jobs-cards \.job-card-body\{[^}]*overflow:visible/);
 assert.doesNotMatch(css, /\.jobs-cards \.job-card-body\{[^}]*overflow-y:auto/);
-assert.match(css, /\.jobs-cards \.job-contact-info\{[^}]*align-self:end[^}]*border-top/);
+assert.match(css, /\.jobs-cards \.job-contact-info\{[^}]*align-self:start[^}]*border-top/);
+assert.doesNotMatch(css, /\.jobs-cards \.job-card\{[^}]*min-height:(?:560|580|640)px/);
 assert.match(css, /\.jobs-cards \.job-card-summary\{[^}]*-webkit-line-clamp:3/);
 assert.match(css, /\.jobs-cards \.job-requirements span\{[^}]*-webkit-line-clamp:3/);
 
