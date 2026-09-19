@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6116/);
+  assert.match(index,/jobs-prototype\.css\?v=6117/);
   assert.match(index,/route-feature-loader\.js\?v=6110/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6110'\)/);
@@ -187,6 +187,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);
   assert.match(index,/class="jobs-secondary-primary"[\s\S]*class="jobs-secondary-actions"/);
   assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"[\s\S]*id="jobsFavoritesOnlyFilter"/);
+  assert.match(index,/class="jobs-secondary-view-row"[\s\S]*class="talent-view-switch jobs-view-switch"/);
   assert.doesNotMatch(index,/jobs-filter-chip|jobs-toggle-track/);
   assert.match(runtime,/control\.localName==='input'[\s\S]*?control\.checked/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
