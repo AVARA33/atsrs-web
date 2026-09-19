@@ -15,17 +15,17 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6108/);
-  assert.match(index,/route-feature-loader\.js\?v=6108/);
+  assert.match(index,/jobs-prototype\.css\?v=6109/);
+  assert.match(index,/route-feature-loader\.js\?v=6109/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6108'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6109'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
   assert.ok(index.indexOf('id="navJobs"')<index.indexOf('id="navCandidates"'),'Jobs must appear above Candidates in both workspace sidebars');
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=6065/);
-  assert.match(index,/shell-polish\.css\?v=6095/);
+  assert.match(index,/shell-polish\.css\?v=6096/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
@@ -85,8 +85,9 @@ test('Jobs uses exact-count server pagination and responsive zero-overflow layou
   assert.doesNotMatch(jobsSection,/jobsLoadMore|Load more/);
   assert.doesNotMatch(runtime,/jobsLoadMore|cursor=null|more=false/);
   assert.match(runtime,/PAGE=30/);
-  assert.match(runtime,/client\.rpc\('atsrs_jobs_feed_v3',params\)/);
+  assert.match(runtime,/client\.rpc\('atsrs_jobs_feed_v4',params\)/);
   assert.match(runtime,/p_page:target,p_page_size:PAGE/);
+  assert.match(runtime,/p_favorites_only:!!state\.favoritesOnly/);
   assert.match(runtime,/function feedParams\(target,state\)/);
   assert.match(index,/id="jobsSearch"[^>]*placeholder="Job title or role"/);
   assert.match(index,/id="jobsSearch" type="search"/);
@@ -131,7 +132,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   const fixture=fs.readFileSync(path.join(root,'tests','fixtures','jobs-prototype-harness.html'),'utf8');
   assert.equal((index.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
   assert.equal((fixture.match(/id="jobsSecondaryFilters"/g)||[]).length,1);
-  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>{
+  ['jobsCompanyFilter','jobsRecruiterFilter','jobsDateFilter','jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsFavoritesOnlyFilter'].forEach(id=>{
     assert.equal((index.match(new RegExp(`id="${id}"`,'g'))||[]).length,1,`${id} must exist exactly once`);
   });
   assert.doesNotMatch(index,/jobsActiveFilters|jobs-active-filters|jobs-active-filter/);
@@ -157,7 +158,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.doesNotMatch(css,/\.jobs-filters input:focus-visible[^\{]*\{border-color:var\(--jobs-filter-focus\)!important/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:focus-visible[^\{]*\{border-color:var\(--jobs-filter-focus\)!important/);
   assert.match(fieldCss,/\.atsrs-field-shell:focus-within\{[\s\S]*border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)!important/);
-  ['jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter'].forEach(id=>assert.match(index,new RegExp(`id="${id}"[^>]*type="checkbox"`)));
+  ['jobsOffshoreFilter','jobsOnshoreFilter','jobsNewOnlyFilter','jobsFavoritesOnlyFilter'].forEach(id=>assert.match(index,new RegExp(`id="${id}"[^>]*type="checkbox"`)));
   assert.match(runtime,/querySelectorAll\('#jobsSecondaryFilters'\)\.length!==1/);
   assert.match(runtime,/function uniqueValues\(/);
   assert.match(runtime,/replaceJobsSelectOptions\('jobsCompanyFilter'/);
@@ -165,6 +166,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(runtime,/function clearFilters\(\)/);
   assert.match(runtime,/setPressed\('jobsOffshoreFilter',false\)/);
   assert.match(runtime,/id\('jobsNewOnlyFilter'\)\.checked=false/);
+  assert.match(runtime,/id\('jobsFavoritesOnlyFilter'\)\.checked=false/);
   assert.match(css,/\.jobs-secondary-filters\{display:block;width:100%;margin:-2px 0 0\}/);
   assert.match(css,/\.jobs-secondary-primary\{display:grid;grid-template-columns:minmax\(0,330px\) repeat\(3,minmax\(0,1fr\)\) 100px/);
   assert.match(css,/\.jobs-secondary-actions\{display:flex;grid-column:4\/6;align-items:center;align-self:end;justify-content:flex-start[^}]*min-height:46px/);
@@ -183,7 +185,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.doesNotMatch(css,/html\[data-theme="light"\][^\n]*atsrs-brand-green/);
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);
   assert.match(index,/class="jobs-secondary-primary"[\s\S]*class="jobs-secondary-actions"/);
-  assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"/);
+  assert.match(index,/class="jobs-secondary-actions"[\s\S]*id="jobsOffshoreFilter"[\s\S]*id="jobsOnshoreFilter"[\s\S]*id="jobsNewOnlyFilter"[\s\S]*id="jobsFavoritesOnlyFilter"/);
   assert.doesNotMatch(index,/jobs-filter-chip|jobs-toggle-track/);
   assert.match(runtime,/control\.localName==='input'[\s\S]*?control\.checked/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.jobs-secondary-filters\{display:grid/);
@@ -207,7 +209,7 @@ test('Jobs supports persistent accessible card and list views',()=>{
   assert.match(runtime,/contact\(contacts,'Application'/);
   assert.doesNotMatch(runtime,/function action\(/);
   assert.match(runtime,/body=el\('div','job-card-body'\)/);
-  assert.match(runtime,/body\.append\(project\);a\.append\(head,details,body,c\)/);
+  assert.match(runtime,/body\.append\(project\);a\.append\(head\);if\(favorite\)a\.append\(favorite\);a\.append\(details,body,c\)/);
   assert.match(runtime,/function syncCardOverflow\(\)/);
   assert.doesNotMatch(runtime,/body\.scrollHeight>body\.clientHeight\+1/);
   assert.doesNotMatch(runtime,/toggleAttribute\('data-overflow'/);
@@ -292,7 +294,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
 });
 
 test('Jobs card and dialog controls share one uniform title-aligned interaction contract',()=>{
-  assert.match(css,/\.job-card-head h2\{[^}]*padding-right:42px/);
+  assert.match(css,/\.job-card-head h2\{[^}]*padding-right:78px/);
   assert.match(css,/body #jobsPage \.job-detail-toggle:hover,body \.job-detail-dialog \.job-detail-toggle:hover\{[^}]*background:#1a1c1e!important/);
   assert.match(css,/body #jobsPage \.job-detail-toggle:active,body \.job-detail-dialog \.job-detail-toggle:active\{[^}]*transform:scale\(\.95\)/);
   assert.match(css,/body #jobsPage \.job-detail-toggle:focus-visible,body \.job-detail-dialog \.job-detail-toggle:focus-visible\{[^}]*outline:2px solid rgba\(248,250,252,\.82\)!important[^}]*outline-offset:2px!important/);
@@ -334,7 +336,7 @@ test('Jobs dropdown keeps selected rows completely unfilled',()=>{
   assert.match(index,/select-standard\.js\?v=6060/);
   assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/control\.closest\('\.jobs-select-host'\)/);
   assert.match(fs.readFileSync(path.join(root,'js','select-standard.js'),'utf8'),/select\.closest\('\.jobs-select-host'\)/);
-  assert.match(index,/shell-polish\.css\?v=6095/);
+  assert.match(index,/shell-polish\.css\?v=6096/);
   assert.match(shellCss,/:not\(\.jobs-select-option\)/);
   assert.match(shellCss,/:not\(\.personnel-combobox-options button\)/);
   assert.match(shellCss,/:not\(\.phone-code-option\)/);
