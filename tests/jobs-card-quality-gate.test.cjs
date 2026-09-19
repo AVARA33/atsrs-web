@@ -9,6 +9,10 @@ const migration = fs.readFileSync(
   path.join(root, 'supabase', 'migrations', '20260918130609_enforce_job_publication_quality.sql'),
   'utf8'
 );
+const emailSourceMigration = fs.readFileSync(
+  path.join(root, 'supabase', 'migrations', '20260919162500_allow_email_application_sources.sql'),
+  'utf8'
+);
 const audit = fs.readFileSync(path.join(root, 'qa', 'jobs-publication-quality-audit.sql'), 'utf8');
 
 assert.match(runtime, /function jobQualityIssues\(job\)/);
@@ -34,6 +38,10 @@ assert.match(migration, /char_length\(btrim\(description\)\) >= 80/);
 assert.match(migration, /nullif\(btrim\(source_url\), ''\) is not null/);
 assert.match(migration, /nullif\(btrim\(application_url\), ''\) is not null/);
 assert.match(migration, /not valid/);
+assert.match(emailSourceMigration, /source_type = 'manual'/);
+assert.match(emailSourceMigration, /recruiter_email ~\*/);
+assert.match(emailSourceMigration, /nullif\(btrim\(application_url\), ''\) is not null/);
+assert.match(emailSourceMigration, /not valid/);
 
 assert.match(audit, /source_backed_repair/);
 assert.match(audit, /manual_review/);

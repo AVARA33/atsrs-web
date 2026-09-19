@@ -16,9 +16,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=6129/);
-  assert.match(index,/route-feature-loader\.js\?v=6128/);
+  assert.match(index,/route-feature-loader\.js\?v=6130/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6128'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6130'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -75,6 +75,9 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/Recruiter phone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
   assert.match(runtime,/contact\(contacts,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
+  assert.match(runtime,/function applicationUrl\(x\)/);
+  assert.match(runtime,/u\.protocol==='mailto:'/);
+  assert.match(runtime,/applicationUrl\(job\.application_url\)\|\|mailtoHref\(job\)/);
   assert.doesNotMatch(runtime,/Send email/);
   assert.doesNotMatch(runtime,/['"]tel:/);
   assert.doesNotMatch(index,/Recruiters use ATSRS through subscription plans/);
