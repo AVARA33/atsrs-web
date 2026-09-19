@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6135/);
-  assert.match(index,/route-feature-loader\.js\?v=6134/);
+  assert.match(index,/jobs-prototype\.css\?v=6136/);
+  assert.match(index,/route-feature-loader\.js\?v=6136/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6134'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6136'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -222,11 +222,16 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.doesNotMatch(runtime,/body\.scrollHeight>body\.clientHeight\+1/);
   assert.doesNotMatch(runtime,/toggleAttribute\('data-overflow'/);
   assert.match(runtime,/body\.removeAttribute\('data-overflow'\)/);
-  assert.match(runtime,/requestAnimationFrame\(syncCardOverflow\)/);
+  assert.match(runtime,/function syncCardHeights\(\)/);
+  assert.match(runtime,/Math\.max\(max,Math\.ceil\(card\.getBoundingClientRect\(\)\.height\)\)/);
+  assert.match(runtime,/slot\.style\.setProperty\('--jobs-card-collapsed-height',tallest\+'px'\)/);
+  assert.match(runtime,/window\.addEventListener\('resize',scheduleCardHeights\)/);
   assert.match(css,/\.jobs-grid\.jobs-cards\{align-items:stretch\}/);
   assert.match(css,/\.jobs-cards \.job-card\{height:100%;[^}]*grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
   assert.match(css,/\.job-card-slot\{[^}]*height:100%/);
   assert.match(css,/\.job-card-slot\.is-disclosure-open>\.job-card\{[^}]*height:auto;min-height:100%/);
+  assert.match(css,/\.jobs-cards \.job-card-slot\{height:var\(--jobs-card-collapsed-height,auto\)\}/);
+  assert.match(css,/\.jobs-cards \.job-card-slot>\.job-card\{height:var\(--jobs-card-collapsed-height,auto\)/);
   assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow:visible/);
   assert.doesNotMatch(runtime,/addEventListener\(['"]wheel|\.onwheel\s*=/);
   assert.doesNotMatch(css,/\.jobs-cards \.job-card\{[^}]*min-height:(?:560|580|640)px/);
