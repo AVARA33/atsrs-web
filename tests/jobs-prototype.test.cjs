@@ -16,9 +16,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=6127/);
-  assert.match(index,/route-feature-loader\.js\?v=6127/);
+  assert.match(index,/route-feature-loader\.js\?v=6128/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6127'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6128'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);

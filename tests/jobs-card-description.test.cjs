@@ -20,6 +20,8 @@ assert.match(runtime, /slot\.style\.height=slot\.getBoundingClientRect\(\)\.heig
 assert.match(runtime, /slot\.classList\.add\('is-disclosure-open'\)/);
 assert.match(runtime, /function ensureCardDisclosureBackdrop\(\)/);
 assert.match(runtime, /backdrop\.onclick=function\(\)\{document\.querySelectorAll\('\.job-card-slot\.is-disclosure-open'\)\.forEach\(closeCardDisclosures\)\}/);
+assert.match(runtime, /\(id\('jobsPage'\)\|\|document\.body\)\.append\(backdrop\)/);
+assert.doesNotMatch(runtime, /document\.body\.append\(backdrop\)/);
 assert.match(runtime, /readableJobText\(description\)/);
 assert.match(runtime, /cardDisclosure\(a,'requirements','Requirements',readableJobText\(job\.requirements\),false\)/);
 assert.match(runtime, /el\('p','',readableJobText\(v\[1\]\)\)/);
