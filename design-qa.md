@@ -798,6 +798,33 @@ Final result: passed.
 
 ---
 
+# JobSearch compact recruiter details — Design QA
+
+- Scope: authenticated Personal JobSearch result cards in card view.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d36abd16-7bb7-4f93-8cca-11d05a8f7f60.png`.
+- Browser-rendered implementation: live ATSRS build V6135, inspected in the connected Chrome session at a 1707 × 898 desktop viewport and a 390 × 844 responsive viewport.
+
+## Visual comparison
+
+- `Recruiter organisation` remains in the left column and `Recruiter name` now occupies the right column on the same baseline, matching the requested two-column fact layout.
+- The first three reference cards reduced from 565 px to 522 px in height without changing their content, typography, action tiles or disclosure controls.
+- The previous 250 px artificial middle gap on shorter cards is now 10 px because cards no longer stretch to the tallest card in their grid row.
+- Longer cards retain their natural height; no content is clipped and no nested card scrollbar was introduced.
+- At 390 px the two passive recruiter fields stack into one column, preserving readable labels and values.
+
+## Interaction and regression checks
+
+- Dark and light themes: passed.
+- Desktop horizontal overflow: 0.
+- Mobile horizontal overflow at 390 px: 0.
+- Content overflow across the first 12 desktop cards and first 6 mobile cards: 0.
+- Description and Requirements disclosures remain collapsed by default and retain their existing behavior.
+- Focused JobSearch, card quality, hero and disclosure tests passed.
+
+Final result: passed.
+
+---
+
 # JobSearch card action sizing — Design QA
 
 - Source defect evidence: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d249cc64-dc56-46f4-a50c-99d98ff53a0c.png` (2560 × 1528 px).
