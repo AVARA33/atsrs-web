@@ -30,6 +30,7 @@ assert.match(css, /\.job-card-slot\.is-description-open>\.job-card\{position:abs
 assert.match(css, /\.job-card-slot\.is-description-open\{z-index:80\}/);
 assert.match(css, /\.job-card-description-content\[hidden\]\{display:none!important\}/);
 assert.match(css, /\.job-card-slot\.is-description-open \.job-card-description p\{display:block;overflow:visible/);
+assert.match(css, /#jobsPage \.job-card-description-toggle\{[^}]*height:auto!important;min-height:0!important;[^}]*padding:0!important;[^}]*border:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important/);
 assert.match(runtime, /Missing — manual review required/);
 
 console.log('Job descriptions disclose above the fixed card grid without page reflow.');
