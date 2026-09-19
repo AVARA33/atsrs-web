@@ -16,7 +16,7 @@ test('JobSearch uses the international catalogue hero without release-only copy'
   assert.match(jobs,/<h3 id="jobsHeading">Worldwide JobSearch<\/h3>/);
   assert.match(jobs,/class="jobs-hero-map" aria-hidden="true"/);
   assert.doesNotMatch(jobs,/Latest release|Released on/);
-  assert.match(index,/css\/jobs-prototype\.css\?v=6122/);
+  assert.match(index,/css\/jobs-prototype\.css\?v=6123/);
   assert.match(jobsCss,/body:has\(#jobsPage:not\(\.hidden\)\) #app\.app:not\(\.hidden\)>\.main>#pageTitle\{display:none!important\}/);
 });
 

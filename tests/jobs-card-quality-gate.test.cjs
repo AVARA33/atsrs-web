@@ -21,12 +21,13 @@ assert.match(runtime, /body\.append\(project\);a\.append\(head,controls,body,c\)
 assert.doesNotMatch(runtime, /scrollHeight>body\.clientHeight/);
 
 assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:start\}/);
-assert.match(css, /\.jobs-cards \.job-card-body\{[^}]*overflow:visible/);
+assert.match(css, /\.jobs-cards \.job-card\{height:560px;min-height:560px;max-height:560px/);
+assert.match(css, /\.jobs-cards \.job-card\.has-description-open\{height:auto;max-height:none/);
+assert.match(css, /\.jobs-cards \.job-card-body\{[^}]*overflow:hidden/);
 assert.doesNotMatch(css, /\.jobs-cards \.job-card-body\{[^}]*overflow-y:auto/);
-assert.match(css, /\.jobs-cards \.job-contact-info\{[^}]*align-self:start[^}]*border-top/);
-assert.doesNotMatch(css, /\.jobs-cards \.job-card\{[^}]*min-height:(?:560|580|640)px/);
+assert.match(css, /\.jobs-cards \.job-contact-info\{[^}]*align-self:end[^}]*border-top/);
 assert.match(css, /\.jobs-cards \.job-card-summary\{[^}]*-webkit-line-clamp:3/);
-assert.match(css, /\.jobs-cards \.job-requirements span\{[^}]*-webkit-line-clamp:3/);
+assert.match(css, /\.job-card-description-content\.hidden\{display:none!important\}/);
 
 assert.match(migration, /atsrs_jobs_published_content_quality/);
 assert.match(migration, /char_length\(btrim\(description\)\) >= 80/);
