@@ -17,6 +17,10 @@ const permalinkMigration = fs.readFileSync(
   path.join(root, 'supabase', 'migrations', '20260919170500_job_source_permalinks.sql'),
   'utf8'
 );
+const sourceCorrectionMigration = fs.readFileSync(
+  path.join(root, 'supabase', 'migrations', '20260919174000_remove_internal_job_source_links.sql'),
+  'utf8'
+);
 const audit = fs.readFileSync(path.join(root, 'qa', 'jobs-publication-quality-audit.sql'), 'utf8');
 
 assert.match(runtime, /function jobQualityIssues\(job\)/);
@@ -50,6 +54,9 @@ assert.match(permalinkMigration, /atsrs_jobs_manual_source_url/);
 assert.match(permalinkMigration, /https:\/\/atsrs\.com\/\?route=jobs&job=/);
 assert.match(permalinkMigration, /atsrs_job_public_v1/);
 assert.match(permalinkMigration, /case when v_full then job\.source_url else null end/);
+assert.match(sourceCorrectionMigration, /drop trigger if exists atsrs_jobs_manual_source_url/);
+assert.match(sourceCorrectionMigration, /set source_url = null/);
+assert.match(sourceCorrectionMigration, /drop function if exists public\.atsrs_job_public_v1/);
 
 assert.match(audit, /source_backed_repair/);
 assert.match(audit, /manual_review/);
