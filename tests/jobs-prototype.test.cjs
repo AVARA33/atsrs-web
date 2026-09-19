@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6114/);
+  assert.match(index,/jobs-prototype\.css\?v=6116/);
   assert.match(index,/route-feature-loader\.js\?v=6110/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6110'\)/);
@@ -174,6 +174,7 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/\.jobs-secondary-field>span:first-child\{font-size:12px/);
   assert.match(css,/\.jobs-filters input,\.jobs-filters select,\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:var\(--jobs-filter-height\)/);
   assert.match(css,/\.jobs-filters #jobsClearFilters\{grid-area:clear;[^}]*width:100%/);
+  assert.match(css,/\.jobs-filters\{[^}]*box-sizing:border-box[^}]*padding-right:24px/);
   assert.match(css,/\.jobs-filters #jobsClearFilters\{align-self:end;margin:0!important\}/);
   assert.match(css,/grid-template-areas:"search region country location clear"/);
   assert.match(css,/@media\(max-width:1100px\)[\s\S]*grid-template-areas:"search region country" "location location clear"/);
