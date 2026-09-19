@@ -34,6 +34,6 @@ assert.match(css, /\.job-card-slot\.is-disclosure-open\{z-index:80\}/);
 assert.match(css, /\.job-card-disclosure-backdrop\{position:fixed;z-index:70;inset:0;[^}]*backdrop-filter:blur\(4px\)/);
 assert.match(css, /\.job-card-disclosure-content\[hidden\]\{display:none!important\}/);
 assert.match(css, /#jobsPage \.job-card-disclosure-toggle\{[^}]*height:auto!important;min-height:0!important;[^}]*padding:0!important;[^}]*border:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important/);
-assert.match(runtime, /Missing — manual review required/);
+assert.doesNotMatch(runtime, /Missing — manual review required/);
 
 console.log('Job descriptions and requirements disclose above the fixed card grid without page reflow.');
