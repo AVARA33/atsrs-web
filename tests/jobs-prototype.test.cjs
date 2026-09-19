@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6117/);
-  assert.match(index,/route-feature-loader\.js\?v=6118/);
+  assert.match(index,/jobs-prototype\.css\?v=6120/);
+  assert.match(index,/route-feature-loader\.js\?v=6120/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6118'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6120'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -26,6 +26,17 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(shellRuntime,/navJobs:'briefcase-metal'/);
   assert.match(index,/shell-polish\.js\?v=6065/);
   assert.match(index,/shell-polish\.css\?v=6096/);
+});
+
+test('Job title search terms are highlighted safely in every result card',()=>{
+  assert.match(runtime,/function highlightJobTitle\(root,value\)/);
+  assert.match(runtime,/new Set\(searchTerms\(value\)\)/);
+  assert.match(runtime,/words=\/\[\\p\{L\}\\p\{N\}\]\+\/gu/);
+  assert.match(runtime,/el\('mark','job-search-match',match\[0\]\)/);
+  assert.match(runtime,/highlightJobTitle\(resultCard,search\)/);
+  assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML/);
+  assert.match(css,/\.job-search-match\{[^}]*background:rgba\(34,197,94,\.22\)[^}]*-webkit-text-fill-color:#dff7e7/);
+  assert.match(css,/html\[data-theme="light"\] \.job-search-match\{[^}]*background:rgba\(37,99,235,\.14\)[^}]*-webkit-text-fill-color:#123f73/);
 });
 
 test('intentional Jobs sidebar navigation alone resets the shared page state',()=>{
