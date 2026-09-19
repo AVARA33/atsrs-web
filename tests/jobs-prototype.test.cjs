@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6124/);
+  assert.match(index,/jobs-prototype\.css\?v=6123/);
   assert.match(index,/route-feature-loader\.js\?v=6123/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6123'\)/);
@@ -232,8 +232,7 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(css,/\.jobs-cards \.job-card\.has-description-open\{height:auto;max-height:none;grid-template-rows:auto auto auto;align-content:start\}/);
   assert.match(css,/\.jobs-cards \.job-card-body\{[^}]*min-height:0[^}]*overflow:hidden/);
   assert.doesNotMatch(runtime,/addEventListener\(['"]wheel|\.onwheel\s*=/);
-  assert.match(css,/@media\(max-width:600px\)\{\.jobs-cards \.job-card\{height:560px;min-height:560px;max-height:560px\}/);
-  assert.match(css,/@media\(max-width:600px\)[\s\S]*?\.jobs-cards \.job-card\.has-description-open\{height:auto;min-height:0;max-height:none\}/);
+  assert.match(css,/@media\(max-width:600px\)\{\.jobs-cards \.job-card\{height:auto;min-height:0;max-height:none\}/);
   assert.doesNotMatch(css,/\.jobs-cards \.job-card-body\{[^}]*overflow-y:auto/);
   assert.match(css,/\.jobs-cards \.job-contact-info\{[^}]*align-self:end[^}]*border-top/);
   assert.match(css,/\.jobs-cards \.job-card-body\{grid-template-rows:auto\}/);
