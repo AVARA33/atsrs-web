@@ -864,6 +864,44 @@ final result: passed
 
 ---
 
+# Public header browser-zoom collision — Design QA
+
+- Source defect evidence: `C:\Users\user\AppData\Local\Temp\codex-clipboard-e98d0bee-bd04-4d33-987d-21b4c6c9a7eb.png` (2560 × 1528 px).
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\output\atsrs-header-zoom-fix-1600.png` (1600 × 900 px at a 1600 × 900 CSS viewport and 1× density).
+- State: public Home header, dark theme, Azerbaijani locale, desktop browser at a zoom-equivalent effective viewport.
+
+## Full-view and focused comparison evidence
+
+The source shows the full navigation's Android status control crossing into the locale and theme controls after browser zoom reduces the effective CSS viewport. In the implementation, the header switches to its existing compact desktop arrangement at 1680 px, before those regions can meet. The wordmark, established Home control, Android status, locale selector, theme switch, login action and account CTA remain visually unchanged.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing public landing typography, weights and localized labels are unchanged.
+- Spacing and layout rhythm: existing header padding and control gaps are retained; only the full-to-compact navigation threshold changes.
+- Colors and visual tokens: no token, color, border, shadow or theme treatment changed.
+- Image quality and asset fidelity: the existing logo, Android icon and Azerbaijani flag assets are reused without approximation.
+- Copy and content: no public header or landing-page copy changed.
+
+## Findings and comparison history
+
+- Initial P1: at a 1600 px effective viewport, the full navigation ended at x=1173.4 while the right action group began at x=1151.3, producing a 22.1 px collision between the Android and locale/theme regions.
+- Fix: move the established compact-header breakpoint from 1350 px to 1680 px and keep the right action group on one non-wrapping flex row.
+- Post-fix evidence: 2048, 1920, 1800, 1700, 1681, 1680, 1600, 1500, 1350, 1051, 1050, 901, 900 and 768 px all report zero header collisions and zero horizontal overflow.
+- At 1681 px the full navigation remains visible without collision; at 1680 px the compact navigation activates.
+- No actionable P0, P1 or P2 finding remains.
+
+## Primary interactions and console
+
+- Theme switch exercised dark → light successfully at the 1600 px zoom-equivalent viewport.
+- Locale, Home, Android status, theme, login and account actions remain individually visible in the compact header.
+- Browser console errors/warnings: 0.
+- Focused public header tests: passed.
+- Cloudflare Pages build: passed, 473 files.
+
+final result: passed
+
+---
+
 # Documents folder tabs — Chrome reference match
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-73dab9f0-0078-49e5-b902-da77613741f2.png`.

@@ -95,7 +95,7 @@ body.auth-open > #auth:not(.hidden){height:100dvh!important;min-height:0!importa
 .public-nav{display:flex;align-items:center;gap:clamp(18px,2.5vw,38px);font-size:14px;font-weight:600;color:var(--public-muted)}
 .public-nav a{display:flex;min-height:44px;align-items:center}.public-nav a:hover{color:var(--public-accent)}
 .public-home-link{width:44px;min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;color:var(--public-muted);font-size:20px}.public-home-link:hover{color:var(--public-accent)}.public-home-mobile{display:none}
-.public-header-actions{justify-self:end;display:flex;align-items:center;gap:10px}
+.public-header-actions{min-width:0;justify-self:end;display:flex;flex-wrap:nowrap;align-items:center;gap:10px}
 .public-android-entry{
   min-height:46px;padding:5px 13px 5px 6px;display:inline-flex;flex:0 0 auto;align-items:center;gap:9px;border:1px solid color-mix(in srgb,var(--public-accent) 54%,var(--public-line));border-radius:999px;
   background:color-mix(in srgb,var(--public-surface) 82%,var(--public-accent-soft));color:var(--public-ink);box-shadow:0 10px 26px color-mix(in srgb,var(--public-accent) 16%,transparent),inset 0 1px 0 color-mix(in srgb,#fff 58%,transparent)
@@ -216,7 +216,9 @@ html[data-theme="dark"] .atsrs-public-landing .public-theme-preview-dark{display
 @media(max-width:1050px){
   .public-header{grid-template-columns:1fr auto}.public-nav{display:none}.public-home-mobile{display:inline-flex}.public-hero{grid-template-columns:1fr;padding-top:90px}.public-hero-copy{max-width:760px}.public-hero-visual{min-height:620px}.public-audience-grid{gap:25px}.public-job-search-layout{grid-template-areas:"copy" "preview" "actions";grid-template-columns:1fr}.public-job-search-copy{max-width:780px}.public-preview-section{grid-template-columns:1fr}.public-preview-copy{max-width:740px}.public-preview-reverse .public-preview-copy,.public-preview-reverse .public-wide-shot{order:initial}.public-plan-grid{grid-template-columns:1fr 1fr}.public-plan-free{grid-template-columns:1fr 1fr}.public-plan-free a{grid-column:1/-1;width:min(240px,100%)}.public-steps{grid-template-columns:1fr 1fr}.public-steps li:nth-child(2){border-right:0}.public-steps li:nth-child(n+3){border-top:1px solid var(--public-line)}
 }
-@media(max-width:1350px) and (min-width:721px){.public-header{grid-template-columns:1fr auto}.public-nav{display:none}.public-home-mobile,.public-android-entry-mobile{display:inline-flex}}
+/* Browser zoom reduces the effective CSS viewport. Collapse the full navigation
+   before its Android entry can enter the right-side locale/theme action group. */
+@media(max-width:1680px) and (min-width:721px){.public-header{grid-template-columns:1fr auto}.public-nav{display:none}.public-home-mobile,.public-android-entry-mobile{display:inline-flex}}
 @media(max-width:900px) and (min-width:721px){.public-header-actions>.public-cta{display:none}}
 @media(max-width:1500px) and (min-width:1051px){.public-android-copy small{display:none}.public-android-entry{padding-right:11px}}
 @media(max-width:720px){
