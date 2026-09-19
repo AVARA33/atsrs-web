@@ -30,7 +30,12 @@ test('Job cards provide an accessible persistent star toggle',()=>{
   assert.match(runtime,/from\('atsrs_job_favorites'\)\.insert\(\{user_id:userId,job_id:job\.id\}\)/);
   assert.match(runtime,/client\.rpc\('atsrs_jobs_feed_v4',params\)/);
   assert.match(runtime,/if\(state\.favoritesOnly\)throw result\.error/);
-  assert.match(css,/\.job-favorite-toggle\{[^}]*right:44px[^}]*width:28px/);
+  assert.match(runtime,/controls=el\('div','job-card-controls'\)/);
+  assert.match(runtime,/if\(favorite\)controls\.append\(favorite\);controls\.append\(details\)/);
+  assert.match(css,/\.job-card-controls\{[^}]*right:8px[^}]*display:flex[^}]*gap:8px/);
+  assert.match(css,/\.job-card-controls \.job-detail-toggle,\.job-card-controls \.job-favorite-toggle\{[^}]*position:relative[^}]*flex:0 0 28px/);
+  assert.match(css,/#jobsPage \.job-card-controls \.job-favorite-toggle,html\[data-theme\][^}]*#jobsPage \.job-card-controls \.job-detail-toggle\{[^}]*min-width:28px!important[^}]*min-height:28px!important/);
+  assert.match(css,/\.job-favorite-toggle\{[^}]*width:28px!important[^}]*height:28px!important/);
   assert.match(css,/\.job-favorite-toggle\.is-favorite\{[^}]*border-color:#facc15!important[^}]*background:#facc15!important/);
   assert.match(css,/html\[data-theme\] body #app\.app:not\(\.hidden\) #jobsPage \.job-favorite-toggle\.is-favorite\{[^}]*background:#facc15!important/);
   assert.equal((shellCss.match(/:not\(\.job-favorite-toggle\)/g)||[]).length,3);

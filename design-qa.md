@@ -796,6 +796,44 @@ final result: passed
 
 Final result: passed.
 
+---
+
+# JobSearch card action sizing — Design QA
+
+- Source defect evidence: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d249cc64-dc56-46f4-a50c-99d98ff53a0c.png` (2560 × 1528 px).
+- Browser-rendered implementation: `C:\Users\user\Documents\GitHub\output\jobsearch-card-controls-1600.png` (1600 × 900 px at a 1600 × 900 CSS viewport and 1× density).
+- Focused combined comparison: `C:\Users\user\Documents\GitHub\output\jobsearch-card-controls-comparison.png` (920 × 280 px).
+- State: JobSearch card view, dark theme, unsaved favorite action beside the collapsed detail action.
+
+## Full-view and focused comparison evidence
+
+The full implementation preserves the existing three-column vacancy grid, card hierarchy and top-right action placement. The focused combined comparison isolates the requested region: the source favorite control is visibly larger than the detail control, while the implementation shows the favorite immediately to the detail control's left with matching geometry.
+
+## Required fidelity surfaces
+
+- Fonts and typography: card headings, badges and icon-library glyphs remain unchanged; both controls use the existing Phosphor icons.
+- Spacing and layout rhythm: favorite and detail controls are each exactly 28 × 28 px, share y=448.5 in the verified card, and have an 8 px gap.
+- Colors and visual tokens: the existing neutral resting controls and yellow selected-favorite state remain unchanged.
+- Image quality and asset fidelity: no raster or approximate icon was introduced; the existing `ph-star` and `ph-arrows-out` icons are retained.
+- Copy and content: vacancy, filter and accessibility labels are unchanged.
+
+## Findings and comparison history
+
+- Initial P2: the workspace minimum-button rule overrode the favorite control to 44 × 44 px while the detail control remained 28 × 28 px.
+- Fix: place both actions in one top-right flex group and apply the same high-specificity 28 × 28 px size contract to both controls.
+- Post-fix evidence: favorite and detail controls both measure 28 × 28 px, appear in favorite-then-detail order, retain an 8 px gap, and produce no horizontal overflow.
+- No actionable P0, P1 or P2 finding remains.
+
+## Primary interactions and console
+
+- Favorite toggle exercised from `aria-pressed=false` to `true` successfully.
+- Detail control opened and closed the existing vacancy dialog successfully.
+- Browser console errors/warnings: 0.
+- Focused JobSearch tests: 16/16 passed.
+- Cloudflare Pages build: passed, 473 files.
+
+final result: passed
+
 # Share dialog CV version history — Design QA
 
 - Scope: AI-generated CV records in the Personal Profile share-link editor.
