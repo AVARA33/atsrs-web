@@ -164,13 +164,20 @@ html[data-theme="light"] #jobsPage .jobs-snapshot > i{color:#2f73c8}
 }
 
 #jobsPage .jobs-secondary-actions{
+  display:grid;
+  grid-template-columns:repeat(4,max-content);
   grid-column:4/6;
   width:auto;
   min-height:46px;
   gap:7px;
   padding-top:0;
+  justify-content:space-between;
   flex-wrap:nowrap;
 }
+
+#jobsPage .jobs-secondary-actions .jobs-worksite-filter{display:contents}
+#jobsPage .jobs-secondary-actions .jobs-secondary-divider{display:none}
+#jobsPage .jobs-secondary-actions .jobs-favorites-filter{padding-right:0}
 
 #jobsPage .jobs-secondary-actions .jobs-compact-check{
   min-height:36px;
@@ -362,7 +369,7 @@ html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .jobs-secondary-vi
 
 @media(max-width:600px){
   #jobsPage .jobs-secondary-primary{grid-template-columns:1fr}
-  #jobsPage .jobs-secondary-actions{grid-column:auto;width:100%;flex-direction:column}
+  #jobsPage .jobs-secondary-actions{grid-template-columns:repeat(2,minmax(0,1fr));grid-column:auto;width:100%}
   #jobsPage .jobs-secondary-view-row{padding-right:0}
   html[data-theme] body #app.app:not(.hidden) #jobsPage #jobsClearFilters{justify-self:stretch;width:100%!important}
   html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-secondary-view-row .jobs-view-switch{

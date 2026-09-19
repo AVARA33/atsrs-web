@@ -18,6 +18,8 @@ test('JobSearch exposes one accessible saved-jobs filter in the secondary row',(
   assert.match(index,/id="jobsNewOnlyFilter"[\s\S]*id="jobsFavoritesOnlyFilter"/);
   assert.match(index,/jobs-favorites-filter[\s\S]*jobs-check-box[\s\S]*ph ph-check[\s\S]*Favorites/);
   assert.match(heroCss,/#jobsPage \.jobs-secondary-actions\{[\s\S]*?grid-column:4\/6;[\s\S]*?gap:7px;[\s\S]*?flex-wrap:nowrap;/);
+  assert.match(heroCss,/#jobsPage \.jobs-secondary-actions\{[\s\S]*?display:grid;[\s\S]*?grid-template-columns:repeat\(4,max-content\);[\s\S]*?justify-content:space-between;/);
+  assert.match(heroCss,/#jobsPage \.jobs-secondary-actions \.jobs-favorites-filter\{padding-right:0\}/);
   assert.match(heroCss,/#jobsPage \.jobs-secondary-view-row \.jobs-view-switch\{[\s\S]*?margin-left:auto;/);
   assert.match(index,/id="jobsNewOnlyFilter"[\s\S]*?<span>New jobs<\/span>/);
   assert.doesNotMatch(index,/>New jobs only</);

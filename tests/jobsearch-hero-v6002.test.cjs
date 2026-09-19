@@ -10,7 +10,7 @@ const jobsCss=fs.readFileSync(path.join(root,'css','jobs-prototype.css'),'utf8')
 
 test('JobSearch uses the international catalogue hero without release-only copy',()=>{
   const jobs=index.slice(index.indexOf('<section id="jobsPage"'),index.indexOf('<section id="employersPage"'));
-  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6117/);
+  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6119/);
   assert.match(jobs,/class="jobs-hero-icon"[\s\S]*ph-globe-hemisphere-west/);
   assert.match(jobs,/Global opportunity catalogue/);
   assert.match(jobs,/<h3 id="jobsHeading">Worldwide JobSearch<\/h3>/);
