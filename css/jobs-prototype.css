@@ -188,6 +188,13 @@ html[data-theme] #jobsPage .job-contact-clickable:focus-within{
 /* V6100: card previews never become nested scroll containers; full overflow belongs to the detail dialog. */
 @media(max-width:600px){.jobs-cards .job-card{height:100%;min-height:0;max-height:none}.jobs-cards .job-card-slot.is-disclosure-open>.job-card{height:auto;min-height:100%}.jobs-cards .job-card-body{overflow:visible;touch-action:auto}}
 
+/* V6135: vacancy cards keep their natural height and pair passive recruiter details. */
+.jobs-grid.jobs-cards{align-items:start}
+.jobs-cards .job-card{height:auto;grid-template-rows:auto auto auto;align-content:start}
+.jobs-cards .job-recruiter-info>.job-contact-org,
+.jobs-cards .job-recruiter-info>.job-contact-name{grid-column:auto}
+@media(max-width:700px){.jobs-cards .job-recruiter-info>.job-contact-org,.jobs-cards .job-recruiter-info>.job-contact-name{grid-column:1/-1}}
+
 /* V5922: resting tap icons animate once only on the card being explored. */
 .job-contact-link-icon.ph-hand-tap{font-size:16px;transform-origin:50% 88%}
 .job-contact-clickable:hover .job-contact-link-icon.ph-hand-tap{transform:none}
