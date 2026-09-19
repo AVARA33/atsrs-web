@@ -13,6 +13,10 @@ const emailSourceMigration = fs.readFileSync(
   path.join(root, 'supabase', 'migrations', '20260919162500_allow_email_application_sources.sql'),
   'utf8'
 );
+const permalinkMigration = fs.readFileSync(
+  path.join(root, 'supabase', 'migrations', '20260919170500_job_source_permalinks.sql'),
+  'utf8'
+);
 const audit = fs.readFileSync(path.join(root, 'qa', 'jobs-publication-quality-audit.sql'), 'utf8');
 
 assert.match(runtime, /function jobQualityIssues\(job\)/);
@@ -42,6 +46,10 @@ assert.match(emailSourceMigration, /source_type = 'manual'/);
 assert.match(emailSourceMigration, /recruiter_email ~\*/);
 assert.match(emailSourceMigration, /nullif\(btrim\(application_url\), ''\) is not null/);
 assert.match(emailSourceMigration, /not valid/);
+assert.match(permalinkMigration, /atsrs_jobs_manual_source_url/);
+assert.match(permalinkMigration, /https:\/\/atsrs\.com\/\?route=jobs&job=/);
+assert.match(permalinkMigration, /atsrs_job_public_v1/);
+assert.match(permalinkMigration, /case when v_full then job\.source_url else null end/);
 
 assert.match(audit, /source_backed_repair/);
 assert.match(audit, /manual_review/);

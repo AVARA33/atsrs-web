@@ -16,9 +16,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=6131/);
-  assert.match(index,/route-feature-loader\.js\?v=6130/);
+  assert.match(index,/route-feature-loader\.js\?v=6132/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6130'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6132'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -248,7 +248,12 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(css,/\.jobs-cards \.job-contact-static\{grid-column:1\/-1\}/);
   assert.match(css,/\.jobs-cards \.job-contact-clickable\{width:100%\}/);
   assert.match(css,/\.jobs-cards \.job-contact-email\{grid-column:1\/-1\}/);
-  assert.match(css,/\.jobs-cards \.job-contact-source\.job-contact-static\{[^}]*grid-column:auto[^}]*height:64px[^}]*border:1px solid/);
+  assert.doesNotMatch(css,/\.jobs-cards \.job-contact-source\.job-contact-static\{/);
+  assert.match(runtime,/function atsrsJobUrl\(job\)/);
+  assert.match(runtime,/function listingSourceHref\(job\)\{return httpUrl\(job&&job\.source_url\)\|\|atsrsJobUrl\(job\)\}/);
+  assert.match(runtime,/contact\(contacts,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
+  assert.match(runtime,/rpc\('atsrs_job_public_v1',\{p_job_id:jobId\}\)/);
+  assert.match(runtime,/if\(await openLinkedJob\(urlParams\.get\('job'\)\)\)return/);
   assert.match(css,/html\[data-theme="dark"\] #jobsPage \.job-card\{background:#070707;border-color:#252525\}/);
   assert.match(runtime,/job-contact-link-icon/);
   assert.match(css,/\.job-contact-link::before\{content:"";position:absolute;inset:0/);
