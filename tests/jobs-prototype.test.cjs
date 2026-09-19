@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6115/);
+  assert.match(index,/jobs-prototype\.css\?v=6114/);
   assert.match(index,/route-feature-loader\.js\?v=6110/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6110'\)/);
@@ -173,14 +173,14 @@ test('Jobs has exactly one non-duplicated accessible secondary filter system',()
   assert.match(css,/@media\(max-width:1250px\)\{\.jobs-secondary-primary\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}\.jobs-secondary-actions\{grid-column:auto;justify-content:flex-start\}\}/);
   assert.match(css,/\.jobs-secondary-field>span:first-child\{font-size:12px/);
   assert.match(css,/\.jobs-filters input,\.jobs-filters select,\.jobs-secondary-field input,\.jobs-secondary-field select\{[^}]*height:var\(--jobs-filter-height\)/);
-  assert.match(index,/id="jobsFavoritesOnlyFilter"[\s\S]*id="jobsClearFilters"[\s\S]*class="talent-view-switch jobs-view-switch"/);
-  assert.match(css,/#jobsClearFilters\{cursor:pointer\}/);
-  assert.match(css,/grid-template-areas:"search region country location"/);
-  assert.match(css,/@media\(max-width:1100px\)[\s\S]*grid-template-areas:"search region country" "location location location"/);
-  assert.match(css,/@media\(max-width:600px\)[\s\S]*grid-template-areas:"search" "region" "country" "location"/);
+  assert.match(css,/\.jobs-filters #jobsClearFilters\{grid-area:clear;[^}]*width:100%/);
+  assert.match(css,/\.jobs-filters #jobsClearFilters\{align-self:end;margin:0!important\}/);
+  assert.match(css,/grid-template-areas:"search region country location clear"/);
+  assert.match(css,/@media\(max-width:1100px\)[\s\S]*grid-template-areas:"search region country" "location location clear"/);
+  assert.match(css,/@media\(max-width:600px\)[\s\S]*grid-template-areas:"search" "region" "country" "location" "clear"/);
   assert.match(css,/\.jobs-select-toggle\{[^}]*cursor:pointer!important/);
   assert.match(css,/\.jobs-select-option\{[^}]*cursor:pointer!important/);
-  assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check,#jobsClearFilters\{cursor:pointer\}/);
+  assert.match(css,/\.jobs-filters button,\.jobs-view-switch button,\.jobs-page-button,\.jobs-compact-check\{cursor:pointer\}/);
   assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*var\(--jobs-filter-focus\)/);
   assert.doesNotMatch(css,/html\[data-theme="light"\][^\n]*atsrs-brand-green/);
   assert.match(css,/@media\(max-width:600px\)[\s\S]*\.jobs-compact-check\{min-height:36px/);

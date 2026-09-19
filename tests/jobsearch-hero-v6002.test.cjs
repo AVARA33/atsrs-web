@@ -10,13 +10,13 @@ const jobsCss=fs.readFileSync(path.join(root,'css','jobs-prototype.css'),'utf8')
 
 test('JobSearch uses the international catalogue hero without release-only copy',()=>{
   const jobs=index.slice(index.indexOf('<section id="jobsPage"'),index.indexOf('<section id="employersPage"'));
-  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6115/);
+  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6112/);
   assert.match(jobs,/class="jobs-hero-icon"[\s\S]*ph-globe-hemisphere-west/);
   assert.match(jobs,/Global opportunity catalogue/);
   assert.match(jobs,/<h3 id="jobsHeading">Worldwide JobSearch<\/h3>/);
   assert.match(jobs,/class="jobs-hero-map" aria-hidden="true"/);
   assert.doesNotMatch(jobs,/Latest release|Released on/);
-  assert.match(index,/css\/jobs-prototype\.css\?v=6115/);
+  assert.match(index,/css\/jobs-prototype\.css\?v=6114/);
   assert.match(jobsCss,/body:has\(#jobsPage:not\(\.hidden\)\) #app\.app:not\(\.hidden\)>\.main>#pageTitle\{display:none!important\}/);
 });
 
