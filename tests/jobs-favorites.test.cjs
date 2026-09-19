@@ -40,7 +40,8 @@ test('Job cards provide an accessible persistent star toggle',()=>{
   assert.match(css,/#jobsPage \.job-card-controls \.job-favorite-toggle,html\[data-theme\][^}]*#jobsPage \.job-card-controls \.job-detail-toggle\{[^}]*min-width:28px!important[^}]*min-height:28px!important/);
   assert.match(css,/\.job-favorite-toggle\{[^}]*width:28px!important[^}]*height:28px!important/);
   assert.match(css,/\.job-favorite-toggle\.is-favorite\{[^}]*border-color:#facc15!important[^}]*background:#facc15!important/);
-  assert.match(css,/\.jobs-favorites-filter input:checked\+\.jobs-check-box\{[^}]*border-color:#facc15[^}]*background:#facc15/);
+  assert.match(css,/\.jobs-compact-check input:checked\+\.jobs-check-box\{[^}]*border-color:var\(--jobs-filter-focus\)[^}]*background:var\(--jobs-filter-focus\)/);
+  assert.doesNotMatch(css,/\.jobs-favorites-filter input:checked\+\.jobs-check-box/);
   assert.match(css,/html\[data-theme\] body #app\.app:not\(\.hidden\) #jobsPage \.job-favorite-toggle\.is-favorite\{[^}]*background:#facc15!important/);
   assert.equal((shellCss.match(/:not\(\.job-favorite-toggle\)/g)||[]).length,3);
   assert.match(css,/\.job-detail-toggle[^}]*right:8px/);
