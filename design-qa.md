@@ -796,6 +796,32 @@ final result: passed
 
 Final result: passed.
 
+# Profile share custom-expiry field standardization — Design QA
+
+- Scope: the `Custom expiry date` field inside the Profile Sharing document modal.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-4d2247b2-ff34-49df-ae6c-60dd2b79898f.png`.
+- Implementation screenshot: live Codex browser capture of `https://atsrs.com/?route=profile&tab=sharing` on V6138 (capture retained in the task browser session).
+- Source pixels: 2560 × 1528. Implementation viewport: 1707 × 842 CSS px at device-pixel ratio 1.5 (approximately 2560 × 1263 capture pixels).
+- State: authenticated Personal profile, Sharing tab, Edit share link modal, Custom duration selected, date field focused.
+
+## Visual comparison
+
+- The source showed a second bright green border and two-pixel glow drawn by the inner date input inside the existing ATSRS floating-field shell.
+- V6138 removes that inner border, opaque field fill and standalone glow. The date input is transparent and borderless; the canonical outer ATSRS shell remains the only field frame.
+- The modal geometry, compact duration row, date value, label, calendar icon, document rows, typography and spacing are unchanged.
+- Dark mode uses the shared dark field tokens; light mode uses the shared blue field tokens. Both modes keep the inner input at `border: 0`, `box-shadow: none` and a transparent background.
+- A focused-region comparison was used because the change concerns only one compact control; the full modal capture confirmed no surrounding layout drift.
+
+## Interaction and regression checks
+
+- Clicking the date field still opens the ATSRS date picker, and Escape closes it without altering the saved date.
+- Dark and light theme states were checked on the deployed V6138 page.
+- Live computed styles confirmed the inner input has no border or shadow in either theme.
+- Browser console errors: 0.
+- The focused Profile Sharing contract test passed. The two broader floating-field parity tests remain blocked by their pre-existing hard-coded V5878/V5848 build assertions and are unrelated to this field change.
+
+Final result: passed.
+
 ---
 
 # JobSearch compact recruiter details — Design QA
