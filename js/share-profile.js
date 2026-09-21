@@ -383,6 +383,7 @@
     setKnownLink(url);renderOwnerStatus();
     var copied=await copyShareReference(url);
     ownerMessage(copied?'24-hour recruiter link copied. Email draft is opening.':'24-hour recruiter link created. Email draft is opening.');
+    await refreshOwnerPanel({force:true});
     window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));
     var composeWindow=window.open(composeUrl,'_blank');
     if(composeWindow){try{composeWindow.opener=null;}catch(error){}}else window.location.href=composeUrl;
@@ -591,8 +592,9 @@
     var oldShow=window.showAccountTab;if(typeof oldShow==='function'&&!oldShow.__atsrsSharing){window.showAccountTab=function(tab){var result=oldShow.apply(this,arguments);if(tab==='sharing')setTimeout(function(){refreshOwnerPanel({force:true});},0);return result;};window.showAccountTab.__atsrsSharing=true;}
     var oldPage=window.showPage;if(typeof oldPage==='function'&&!oldPage.__atsrsSharing){window.showPage=function(page){var result=oldPage.apply(this,arguments);if(page==='dashboard')setTimeout(function(){refreshShareRequests({force:true});},0);return result;};window.showPage.__atsrsSharing=true;}
     if(client()&&client().auth&&typeof client().auth.onAuthStateChange==='function')client().auth.onAuthStateChange(function(event,session){if(session&&session.user)refreshOwnerPanel();});
-    window.addEventListener('atsrs:resume',refreshShareRequests);
-    document.addEventListener('visibilitychange',function(){if(!document.hidden)refreshShareRequests();});
+    window.addEventListener('atsrs:resume',function(){refreshOwnerPanel({force:true});});
+    window.addEventListener('focus',function(){refreshOwnerPanel({force:true});});
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)refreshOwnerPanel({force:true});});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
