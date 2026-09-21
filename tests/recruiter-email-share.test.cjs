@@ -11,9 +11,9 @@ const migration = fs.readFileSync('supabase/migrations/20260829031507_recruiter_
 const serviceGrant = fs.readFileSync('supabase/migrations/20260829033000_grant_recruiter_email_share_service_access.sql', 'utf8');
 const activeShareInvariant = fs.readFileSync('supabase/migrations/20260829035000_unique_active_recruiter_profile_share.sql', 'utf8');
 
-assert.match(index, /data-atsrs-build="V6142"/);
+assert.match(index, /data-atsrs-build="V6143"/);
 assert.match(featureLoader, /js\/recruiters\.js\?v=6062/);
-assert.match(index, /js\/share-profile\.js\?v=455/);
+assert.match(index, /js\/share-profile\.js\?v=456/);
 assert.match(index, /js\/profile-sharing-v1\.js\?v=6112/);
 
 assert.match(recruiters, /linkedin_url,email_verification_status/);

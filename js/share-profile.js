@@ -143,10 +143,12 @@
     var area=document.createElement('textarea');area.value=value;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();var copied=false;try{copied=document.execCommand('copy');}catch(error){}area.remove();return copied;
   }
   function shareCopyLabel(){var locale='en';try{locale=window.atsrsI18n&&typeof window.atsrsI18n.getLocale==='function'?window.atsrsI18n.getLocale():(localStorage.getItem('atsrs_locale')||navigator.language||'en')}catch(error){}locale=String(locale||'en').toLowerCase();if(locale.indexOf('az')===0)return'ATSRS profilinə təhlükəsiz baxış';if(locale.indexOf('ru')===0)return'ATSRS — безопасный просмотр профиля';return'ATSRS — secure profile view';}
-  async function copyShareReference(url){
+  async function copyShareReference(urlOrPromise){
     var label=shareCopyLabel();
-    try{if(navigator.clipboard&&typeof navigator.clipboard.write==='function'&&typeof ClipboardItem==='function'){var html='<a href="'+url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'">'+label+'</a>';await navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([url],{type:'text/plain'}),'text/html':new Blob([html],{type:'text/html'})})]);return true;}}catch(error){}
-    return copyText(url);
+    var urlPromise=Promise.resolve(urlOrPromise).then(function(url){return String(url||'');});
+    try{if(navigator.clipboard&&typeof navigator.clipboard.write==='function'&&typeof ClipboardItem==='function'){var plain=urlPromise.then(function(url){return new Blob([url],{type:'text/plain'});});var html=urlPromise.then(function(url){return new Blob(['<a href="'+escapeHtml(url)+'">'+escapeHtml(label)+'</a>'],{type:'text/html'});});await navigator.clipboard.write([new ClipboardItem({'text/plain':plain,'text/html':html})]);return true;}}catch(error){}
+    try{var url=await urlPromise;if(url&&navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){await navigator.clipboard.writeText(url);return true;}}catch(error){}
+    return false;
   }
   async function ensureShortShareLink(shareId){var current=shareLinkById(shareId),code=ownerShortCodes()[shareId]||'';if(code)return current;var result=await ownerCall({action:'short_link',share_id:shareId});code=String(result&&result.short_code||'');if(code)setOwnerShortCode(shareId,code);return String(result&&result.share_url||shortShareUrl(code)||current);}
   function recruiterEmailTemplate(recipient,shareUrl){
@@ -444,7 +446,17 @@
     catch(error){ownerMessage(friendlyError(error,'The link could not be deleted. Please try again.'),true);}finally{if(button)button.disabled=false;}
   };
   window.deleteShareProfileLink=window.revokeShareProfileLink;
-  window.copyShareLink=async function(shareId){var url='';try{url=shareId?await ensureShortShareLink(shareId):knownShareUrl;}catch(error){ownerMessage(friendlyError(error,'The short link could not be prepared. Please try again.'),true);return false;}if(!url){var missingCopy='This older link cannot be copied because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingCopy,true);window.alert(uiText(missingCopy));return false;}if(!await validateShareUrl(url)){if(shareId){setOwnerToken(shareId,'');setOwnerShortCode(shareId,'');}else setKnownLink('');ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}if(!await copyShareReference(url)){ownerMessage('The link could not be copied. Please allow clipboard access and try again.',true);return false;}if(shareId)setKnownLink(url);ownerMessage('Secure link copied.');var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;};
+  window.copyShareLink=async function(shareId){
+    var urlPromise=shareId?ensureShortShareLink(shareId):Promise.resolve(knownShareUrl);
+    var copyPromise=copyShareReference(urlPromise);
+    var url='';
+    try{url=await urlPromise;}catch(error){await copyPromise.catch(function(){return false;});ownerMessage(friendlyError(error,'The short link could not be prepared. Please try again.'),true);return false;}
+    if(!url){var missingCopy='This older link cannot be copied because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingCopy,true);window.alert(uiText(missingCopy));return false;}
+    var copied=await copyPromise;
+    if(!copied){ownerMessage('The link could not be copied. Please allow clipboard access and try again.',true);return false;}
+    if(!await validateShareUrl(url)){if(shareId){setOwnerToken(shareId,'');setOwnerShortCode(shareId,'');}else setKnownLink('');ownerMessage('This link is no longer active. Create a new secure link.',true);window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));return false;}
+    if(shareId)setKnownLink(url);ownerMessage('Secure link copied.');var message=byId('shareCopyMsg');if(message){message.textContent='Secure link copied.';message.classList.remove('hidden');setTimeout(function(){message.classList.add('hidden');},1800);}return true;
+  };
   window.previewShareProfile=function(shareId){var url=shareId?shareLinkById(shareId):knownShareUrl;if(!url){var missingOpen='This older link cannot be opened because its secure key is no longer stored in this browser. Recreate this link once.';ownerMessage(missingOpen,true);window.alert(uiText(missingOpen));return false;}var opened=window.open(url,'_blank');if(!opened){ownerMessage('Your browser blocked the new tab. Allow pop-ups for ATSRS and try again.',true);return false;}try{opened.opener=null;}catch(error){}return true;};
   window.toggleSharePreview=window.previewShareProfile;
   window.decideShareRequest=async function(id,decision){

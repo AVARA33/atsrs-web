@@ -11,6 +11,11 @@ assert.match(client,/function shortShareUrl\(shortCode\)\{return shortCode\?'htt
 assert.match(client,/location\.pathname\|\|''\)\.match\(\/\^\\\/s\\\/\(\[A-Za-z0-9_-\]\{22\}\)/,'The public page must read a 22-character short code from the path.');
 assert.match(client,/action:'short_link',share_id:shareId/,'Old active links must be able to obtain their short alias.');
 assert.match(client,/ClipboardItem/,'Rich clipboard targets must receive the localized linked label.');
+assert.match(client,/var urlPromise=shareId\?ensureShortShareLink\(shareId\):Promise\.resolve\(knownShareUrl\)/,'Copy must prepare the URL without delaying clipboard access.');
+assert.match(client,/var copyPromise=copyShareReference\(urlPromise\)/,'Clipboard writing must begin directly inside the click handler.');
+assert.ok(client.indexOf('var copyPromise=copyShareReference(urlPromise)')<client.indexOf('if(!await validateShareUrl(url))'),'Clipboard writing must begin before asynchronous server validation consumes the browser user gesture.');
+const copyShareFunction=client.slice(client.indexOf('async function copyShareReference'),client.indexOf('async function ensureShortShareLink'));
+assert.doesNotMatch(copyShareFunction,/return copyText\(/,'Share copy must not report legacy execCommand success when the system clipboard was unchanged.');
 assert.match(client,/ATSRS profilinə təhlükəsiz baxış/);
 assert.match(client,/ATSRS — secure profile view/);
 assert.match(client,/ATSRS — безопасный просмотр профиля/);
