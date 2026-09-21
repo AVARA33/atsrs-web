@@ -88,6 +88,9 @@ body.personal-mode #profilePage .profile-sharing-row-requester{display:grid;gap:
 body.personal-mode #profilePage .profile-sharing-link-request{grid-template-columns:max-content minmax(0,1fr);min-height:32px;padding:4px 8px}
 body.personal-mode #profilePage .profile-sharing-row-copy strong{font-size:11px}
 body.personal-mode #profilePage .profile-sharing-row-copy small,body.personal-mode #profilePage .profile-sharing-row-time{font-size:9px}
+body.personal-mode #profilePage .profile-sharing-row-copy>i{flex:0 0 28px;min-width:28px;max-width:28px}
+body.personal-mode #profilePage .profile-sharing-row-copy>span{flex:1 1 auto;min-width:0;max-width:calc(100% - 36px);text-align:left}
+body.personal-mode #profilePage .profile-sharing-row-copy :is(strong,small){width:100%;max-width:100%;text-align:left}
 body.personal-mode #profilePage .profile-sharing-row-time.profile-sharing-dates{display:flex;align-items:center;gap:12px;white-space:nowrap;color:var(--text);font-weight:700;line-height:1.25}
 body.personal-mode #profilePage .profile-sharing-row-time.profile-sharing-dates span{display:block}
 body.personal-mode #profilePage .profile-sharing-row-status{font-size:10px}
