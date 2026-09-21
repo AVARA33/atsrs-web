@@ -65,8 +65,8 @@ html[data-theme="dark"] .profile-sharing-document-choice,html[data-theme="dark"]
 @media(max-width:760px){body.personal-mode #profilePage .profile-sharing-v1{grid-template-rows:auto minmax(150px,1fr);padding-top:40px}body.personal-mode #profilePage .profile-sharing-links-heading-floating{top:auto;right:0;bottom:calc(100% - 40px)}.profile-sharing-expiry-main{align-items:flex-start!important}.profile-sharing-expiry-main>.profile-sharing-create-button{margin-top:0!important}}
 .profile-sharing-custom-expiry.is-collapsed{display:none!important}
 
-/* Recruiter-directed sharing is created from Recruiter Directory; this tab is history and request management only. */
-body.personal-mode #profilePage .profile-sharing-v1{display:block;height:100%;min-height:0}
+/* Keep the workspace height fixed while the share history scrolls inside its remaining track. */
+body.personal-mode #profilePage .profile-sharing-v1{display:grid;height:100%;min-height:0;overflow:hidden}
 body.personal-mode #profilePage .profile-sharing-history-only{display:grid;height:100%;min-height:0;grid-template-rows:34px minmax(0,1fr);overflow:hidden;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 body.personal-mode #profilePage .profile-sharing-history-only>header{display:flex;align-items:center;justify-content:flex-end;height:34px;padding:0 10px;border-bottom:1px solid var(--line)}
 body.personal-mode #profilePage .profile-sharing-history-only .profile-sharing-links-heading{display:flex;align-items:center;gap:6px}
