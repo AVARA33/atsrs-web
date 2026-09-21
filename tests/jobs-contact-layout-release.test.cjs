@@ -8,8 +8,8 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6146"/);
-assert.match(index, /href="css\/jobs-prototype\.css\?v=6146"/);
+assert.match(index, /data-atsrs-build="V6147"/);
+assert.match(index, /href="css\/jobs-prototype\.css\?v=6147"/);
 assert.match(index, /src="js\/route-feature-loader\.js\?v=6146"/);
 assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6146'\)/);
 assert.match(jobs, /p\.classList\.add\('job-contact-static'\)/);
@@ -30,6 +30,7 @@ assert.match(css, /\.job-contact-linkedin\{grid-column:1;grid-row:1\}/);
 assert.match(css, /\.job-contact-email\{grid-column:2;grid-row:1\}/);
 assert.match(css, /\.job-contact-source\{grid-column:1;grid-row:2\}/);
 assert.match(css, /\.job-contact-application\{grid-column:2;grid-row:2\}/);
+assert.match(css, /html\[data-theme="light"\] #jobsPage \.job-contact-static>span\{color:#13233c;-webkit-text-fill-color:#13233c\}/);
 assert.match(jobs, /el\('footer','job-contact-info'\)/);
 assert.match(jobs, /if\(favorite\)controls\.append\(favorite\);controls\.append\(details\)/);
 assert.match(jobs, /body\.append\(project\);a\.append\(head,controls,body,c\)/);
@@ -38,4 +39,4 @@ assert.match(css, /\.job-contact-link-icon\.ph-hand-tap\{font-size:16px/);
 assert.match(css, /animation:jobs-contact-hand-tap 3s ease-out infinite/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
 
-console.log('V6146 JobSearch contact layout release is cache-busted');
+console.log('V6147 JobSearch contact layout release is cache-busted');
