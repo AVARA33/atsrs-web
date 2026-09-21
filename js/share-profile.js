@@ -137,6 +137,7 @@
     try{var parsed=new URL(url),match=parsed.pathname.match(/^\/s\/([A-Za-z0-9_-]{22})\/?$/),params=new URLSearchParams();if(match)params.set('short_code',match[1]);else{var token=parsed.searchParams.get('share')||'';if(!token)return false;params.set('token',token);}var response=await fetch(endpoint()+'?'+params.toString(),{headers:{apikey:publishableKey()},cache:'no-store'});return response.ok;}catch(error){return false;}
   }
   function verifiedEmail(value){var email=String(value||'').trim().toLowerCase();return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)?email:'';}
+  function escapeHtml(value){return String(value==null?'':value).replace(/[&<>"']/g,function(character){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character];});}
   async function copyText(value){
     try{await navigator.clipboard.writeText(value);return true;}catch(error){}
     var area=document.createElement('textarea');area.value=value;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();var copied=false;try{copied=document.execCommand('copy');}catch(error){}area.remove();return copied;
@@ -148,13 +149,26 @@
     return copyText(url);
   }
   async function ensureShortShareLink(shareId){var current=shareLinkById(shareId),code=ownerShortCodes()[shareId]||'';if(code)return current;var result=await ownerCall({action:'short_link',share_id:shareId});code=String(result&&result.short_code||'');if(code)setOwnerShortCode(shareId,code);return String(result&&result.share_url||shortShareUrl(code)||current);}
-  function recruiterGmailComposeUrl(recipient,shareUrl){
-    var email=verifiedEmail(recipient&&recipient.email);if(!email||!shareUrl)return'';
+  function recruiterEmailTemplate(recipient,shareUrl){
     var name=String(recipient&&recipient.name||'Recruiter').trim()||'Recruiter';
     var subject='ATSRS profile shared with '+name;
+    var label=shareCopyLabel();
+    var intro='I am sharing my ATSRS profile through this secure link. The link expires in 24 hours:';
     var confidentialityNotice='Confidentiality note: These documents are shared with you for recruitment, employment or compliance review. Please keep them confidential, use them only for that purpose, and do not share them with anyone else without the document owner\'s permission. If this email reached you by mistake, please let the sender know and delete it.';
-    var body='Hello '+name+',\n\nI am sharing my ATSRS profile through this secure link. The link expires in 24 hours:\n\n'+shareUrl+'\n\n'+confidentialityNotice+'\n\nKind regards,';
-    var params=new URLSearchParams({view:'cm',fs:'1',to:email,su:subject,body:body});
+    var text='Hello '+name+',\n\n'+intro+'\n\n'+label+': '+shareUrl+'\n\n'+confidentialityNotice+'\n\nKind regards,';
+    var safeUrl=escapeHtml(shareUrl),safeLabel=escapeHtml(label);
+    var html='<p>Hello '+escapeHtml(name)+',</p><p>'+escapeHtml(intro)+'</p><p><a href="'+safeUrl+'">'+safeLabel+'</a></p><p>'+escapeHtml(confidentialityNotice)+'</p><p>Kind regards,</p>';
+    return{subject:subject,text:text,html:html};
+  }
+  async function copyRecruiterEmailTemplate(recipient,shareUrl){
+    var template=recruiterEmailTemplate(recipient,shareUrl);
+    try{if(navigator.clipboard&&typeof navigator.clipboard.write==='function'&&typeof ClipboardItem==='function'){await navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([template.text],{type:'text/plain'}),'text/html':new Blob([template.html],{type:'text/html'})})]);return true;}}catch(error){}
+    return copyText(template.text);
+  }
+  function recruiterGmailComposeUrl(recipient,shareUrl){
+    var email=verifiedEmail(recipient&&recipient.email);if(!email||!shareUrl)return'';
+    var template=recruiterEmailTemplate(recipient,shareUrl);
+    var params=new URLSearchParams({view:'cm',fs:'1',to:email,su:template.subject});
     return'https://mail.google.com/mail/?'+params.toString();
   }
   async function createValidatedShare(fileIds,expiresAt,audience,recipient){
@@ -381,8 +395,8 @@
     activeShare=result.share||null;
     if(activeShare){activeShares=activeShares.filter(function(share){return share.id!==activeShare.id;});activeShares.unshift(activeShare);setOwnerToken(activeShare.id,token);if(result.short_code)setOwnerShortCode(activeShare.id,result.short_code);}
     setKnownLink(url);renderOwnerStatus();
-    var copied=await copyShareReference(url);
-    ownerMessage(copied?'24-hour recruiter link copied. Email draft is opening.':'24-hour recruiter link created. Email draft is opening.');
+    var copied=await copyRecruiterEmailTemplate(recipient,url);
+    ownerMessage(copied?'Formatted ATSRS email copied. Paste it into the Gmail draft (Ctrl+V).':'24-hour recruiter link created. Copy it from Profile → Sharing before sending.');
     await refreshOwnerPanel({force:true});
     window.dispatchEvent(new CustomEvent('atsrs:share-link-updated'));
     var composeWindow=window.open(composeUrl,'_blank');

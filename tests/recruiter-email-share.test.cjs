@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 
 const index = fs.readFileSync('index.html', 'utf8');
+const featureLoader = fs.readFileSync('js/route-feature-loader.js', 'utf8');
 const recruiters = fs.readFileSync('js/recruiters.js', 'utf8');
 const sharing = fs.readFileSync('js/share-profile.js', 'utf8');
 const sharingUi = fs.readFileSync('js/profile-sharing-v1.js', 'utf8');
@@ -10,10 +11,10 @@ const migration = fs.readFileSync('supabase/migrations/20260829031507_recruiter_
 const serviceGrant = fs.readFileSync('supabase/migrations/20260829033000_grant_recruiter_email_share_service_access.sql', 'utf8');
 const activeShareInvariant = fs.readFileSync('supabase/migrations/20260829035000_unique_active_recruiter_profile_share.sql', 'utf8');
 
-assert.match(index, /data-atsrs-build="V5959"/);
-assert.match(index, /js\/recruiters\.js\?v=15/);
-assert.match(index, /js\/share-profile\.js\?v=434/);
-assert.match(index, /js\/profile-sharing-v1\.js\?v=31/);
+assert.match(index, /data-atsrs-build="V6142"/);
+assert.match(featureLoader, /js\/recruiters\.js\?v=6062/);
+assert.match(index, /js\/share-profile\.js\?v=455/);
+assert.match(index, /js\/profile-sharing-v1\.js\?v=6112/);
 
 assert.match(recruiters, /linkedin_url,email_verification_status/);
 assert.doesNotMatch(recruiters, /\.select\([^\n]*professional_email/, 'the directory response must not bulk-download recruiter email addresses');
@@ -27,6 +28,13 @@ assert.match(recruiters, /atsrs:share-link-updated/);
 assert.match(sharing, /action:'create_recruiter_email_share'/);
 assert.match(sharing, /The link expires in 24 hours/);
 assert.match(sharing, /navigator\.clipboard\.writeText/);
+assert.match(sharing, /function recruiterEmailTemplate\(/);
+assert.match(sharing, /function escapeHtml\(/);
+assert.match(sharing, /copyRecruiterEmailTemplate\(recipient,url\)/);
+assert.match(sharing, /'text\/html':new Blob\(\[template\.html\]/);
+assert.match(sharing, /<a href="'\+safeUrl\+'">'\+safeLabel\+'<\/a>/);
+assert.match(sharing, /var params=new URLSearchParams\(\{view:'cm',fs:'1',to:email,su:template\.subject\}\)/);
+assert.doesNotMatch(sharing, /URLSearchParams\(\{view:'cm',fs:'1',to:email,su:[^}]+body:/, 'Gmail compose URLs must not expose the raw share URL in a plain-text body parameter');
 assert.match(sharing, /https:\/\/mail\.google\.com\/mail\//);
 assert.match(sharing, /window\.open\(composeUrl,'_blank'\)/);
 assert.match(sharing, /else window\.location\.href=composeUrl/);
