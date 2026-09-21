@@ -796,6 +796,31 @@ final result: passed
 
 Final result: passed.
 
+# Share history internal scrolling — Design QA
+
+- Scope: Profile > Sharing workspace only; the existing card dimensions and surrounding profile layout remain unchanged.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-98be1268-ef75-4066-8cff-2c5bada3f8b1.png`.
+- Implementation screenshot: live Chrome capture of `https://atsrs.com/?route=profile&tab=sharing&_atsrs_release=V6139-1789980856127`.
+- Source pixels: 2560 × 1528. Implementation viewport: 1707 × 842 CSS pixels at device pixel ratio 1.5 (2560.5 × 1263 device pixels). No density normalization was needed for the bounded sharing-card comparison.
+- State: authenticated Personal account, dark theme, Sharing tab, eight share-history records, list scrolled to the final record.
+
+## Full-view and focused comparison evidence
+
+- The outer profile workspace remains 294 CSS pixels high and the Sharing content shell remains 270 CSS pixels high, matching the pre-change layout.
+- The Share history region now occupies the existing 194-pixel lower grid track; its list viewport is 179 pixels high while its content is 400 pixels high.
+- A real mouse-wheel scroll moved the list from `scrollTop=0` to `scrollTop=220.67` and exposed the final link without moving or resizing the outer card.
+- The focused region was the full Sharing workspace itself; no separate crop was needed because the complete fixed-height card and the last visible history row were both readable in the browser capture.
+- Typography, spacing, theme colors, controls, icons and copy are unchanged; the implementation only restores the intended internal overflow behavior.
+- Browser console errors: 0.
+
+## Comparison history
+
+- Initial P1: `overflow:auto` existed on the list, but the parent shell rendered as a normal block. The list expanded to its full 400-pixel content height and was clipped by the fixed 294-pixel workspace, so users could not reach older links.
+- Fix: restored the Sharing shell's bounded two-row grid and kept overflow hidden on the shell, allowing the existing Share history list to become the sole scroll container.
+- Post-fix evidence: `clientHeight=179`, `scrollHeight=400`, `scrollTop=220.67`, final row visible, outer workspace still 294 pixels high.
+
+Final result: passed.
+
 # Profile share custom-expiry field standardization — Design QA
 
 - Scope: the `Custom expiry date` field inside the Profile Sharing document modal.
