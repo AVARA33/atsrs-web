@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6137/);
+  assert.match(index,/jobs-prototype\.css\?v=6145/);
   assert.match(index,/route-feature-loader\.js\?v=6137/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6137'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6145'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -74,7 +74,7 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter phone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
-  assert.match(runtime,/contact\(contacts,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
+  assert.match(runtime,/contact\(actions,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
   assert.match(runtime,/function applicationUrl\(x\)/);
   assert.match(runtime,/u\.protocol==='mailto:'/);
   assert.match(runtime,/applicationUrl\(job\.application_url\)\|\|mailtoHref\(job\)/);
@@ -212,8 +212,19 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/function updateView\(\)\{var grid=id\('jobsGrid'\);if\(grid\)\{grid\.classList\.remove\('jobs-list'\);grid\.classList\.add\('jobs-cards'\)\}/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
-  assert.match(runtime,/contact\(contacts,'Listing source'/);
-  assert.match(runtime,/contact\(contacts,'Application'/);
+  assert.match(runtime,/var actions=el\('div','job-contact-actions'\)/);
+  assert.match(runtime,/contact\(actions,'Recruiter LinkedIn','Open LinkedIn'/);
+  assert.match(runtime,/contact\(actions,'Recruiter email',validEmail\(job\.recruiter_email\)/);
+  assert.match(runtime,/contact\(actions,'Listing source'/);
+  assert.match(runtime,/contact\(actions,'Application','Open application'/);
+  assert.ok(runtime.indexOf("contact(actions,'Recruiter LinkedIn'") < runtime.indexOf("contact(actions,'Recruiter email'"));
+  assert.ok(runtime.indexOf("contact(actions,'Listing source'") < runtime.indexOf("contact(actions,'Application'"));
+  assert.match(css,/\.jobs-cards \.job-contact-actions\{grid-column:1\/-1;display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css,/\.job-contact-linkedin\{grid-column:1;grid-row:1\}/);
+  assert.match(css,/\.job-contact-email\{grid-column:2;grid-row:1\}/);
+  assert.match(css,/\.job-contact-source\{grid-column:1;grid-row:2\}/);
+  assert.match(css,/\.job-contact-application\{grid-column:2;grid-row:2\}/);
+  assert.match(runtime,/function hydrateRecruiterLinkedIn\(client,payload\)/);
   assert.doesNotMatch(runtime,/function action\(/);
   assert.match(runtime,/body=el\('div','job-card-body'\)/);
   assert.match(runtime,/if\(favorite\)controls\.append\(favorite\);controls\.append\(details\)/);
@@ -258,7 +269,7 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/function listingSourceHref\(job\)\{var source=httpUrl\(job&&job\.source_url\)/);
   assert.match(runtime,/hostname\.toLowerCase\(\)==='atsrs\.com'\?'':source/);
   assert.match(runtime,/Private source — no public link/);
-  assert.match(runtime,/contact\(contacts,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
+  assert.match(runtime,/contact\(actions,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
   assert.doesNotMatch(runtime,/rpc\('atsrs_job_public_v1'/);
   assert.match(css,/html\[data-theme="dark"\] #jobsPage \.job-card\{background:#070707;border-color:#252525\}/);
   assert.match(runtime,/job-contact-link-icon/);

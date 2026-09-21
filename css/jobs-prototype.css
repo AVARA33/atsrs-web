@@ -197,6 +197,16 @@ html[data-theme] #jobsPage .job-contact-clickable:focus-within{
 .jobs-cards .job-recruiter-info>.job-contact-name{grid-column:auto}
 @media(max-width:700px){.jobs-cards .job-recruiter-info>.job-contact-org,.jobs-cards .job-recruiter-info>.job-contact-name{grid-column:1/-1}}
 
+/* V6145 permanent card rule: LinkedIn/email form row one; source/application form the bottom row. */
+.jobs-cards .job-contact-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+.jobs-cards .job-contact-actions>.job-contact-clickable{box-sizing:border-box;height:64px;min-height:64px;max-height:64px;overflow:hidden}
+.jobs-cards .job-contact-actions>.job-contact-linkedin{grid-column:1;grid-row:1}
+.jobs-cards .job-contact-actions>.job-contact-email{grid-column:2;grid-row:1}
+.jobs-cards .job-contact-actions>.job-contact-source{grid-column:1;grid-row:2}
+.jobs-cards .job-contact-actions>.job-contact-application{grid-column:2;grid-row:2}
+.jobs-cards .job-contact-actions>.job-contact-application:only-child{grid-column:2}
+@media(max-width:700px){.jobs-cards .job-contact-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* V5922: resting tap icons animate once only on the card being explored. */
 .job-contact-link-icon.ph-hand-tap{font-size:16px;transform-origin:50% 88%}
 .job-contact-clickable:hover .job-contact-link-icon.ph-hand-tap{transform:none}
