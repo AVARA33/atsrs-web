@@ -33,7 +33,7 @@ assert.match(js,/if\(!share\.recipient_recruiter_id\)\{/);
 assert.match(js,/action\('Share link','ph-copy'/);
 assert.doesNotMatch(js,/window\.previewShareProfile/);
 assert.match(js,/window\.deleteShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=65/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=66/);
 assert.match(html,/js\/share-profile\.js\?v=453/);
 assert.match(html,/js\/profile-sharing-v1\.js\?v=6112/);
 assert.match(shareJs,/row\.dataset\.fileCategory=String\(file\.category\|\|''\)/,'Shareable files must expose category metadata to the editor.');
@@ -48,6 +48,9 @@ assert.match(css,/profile-sharing-cv-history-toggle/,'CV history must use a stab
 assert.match(css,/profile-sharing-cv-history\{[^}]*height:max-content;[^}]*min-height:42px/,'The CV history row must resist being collapsed by the scrollable document grid.');
 assert.match(css,/profile-sharing-cv-history-list\[hidden\]\{display:none!important\}/,'Collapsed CV history rows must remain hidden.');
 assert.match(css,/profile-sharing-recipient-field\.atsrs-field-shell>input:focus-visible\{[^}]*border:0!important;[^}]*outline:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important;[^}]*font-size:16px!important/,'Share recipient inputs must defer focus rendering to the same outer shell used by JobSearch.');
+assert.match(css,/profile-sharing-dialog-custom-expiry input\{[^}]*border:0!important;[^}]*outline:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important/,'Custom expiry must defer its border and focus rendering to the canonical ATSRS field shell.');
+assert.match(css,/profile-sharing-dialog-custom-expiry input:is\(:hover,:focus,:focus-visible\)\{[^}]*border:0!important;[^}]*outline:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important/,'Custom expiry interaction states must not draw a second green field inside the standard shell.');
+assert.doesNotMatch(css,/profile-sharing-dialog-custom-expiry input:focus\{[^}]*0 0 0 2px/,'Custom expiry must not restore the legacy standalone green focus ring.');
 assert.match(css,/html\[data-theme="light"\] \.profile-sharing-document-dialog\{--profile-share-field-bg:#fff;--profile-share-field-border:#d8e1ec/,'Light and dark share-dialog fields must use explicit standard theme tokens.');
 assert.match(css,/:is\(\.profile-sharing-row-actions,\.profile-sharing-link-request-actions\)>button\{[^}]*height:26px!important;[^}]*min-height:26px!important;[^}]*max-height:26px!important/);
 assert.match(css,/profile-sharing-expiry-check/);
