@@ -796,6 +796,27 @@ final result: passed
 
 Final result: passed.
 
+# Share-history recipient alignment — Design QA
+
+- Scope: first column of Profile > Sharing history rows only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-3f083f41-ce82-46b3-86f3-ce527ce45a66.png` (2560 × 1528 pixels).
+- Implementation screenshot: live Chrome capture of `https://atsrs.com/?route=profile&tab=sharing` on V6141.
+- Implementation viewport: 1707 × 898 CSS pixels at device pixel ratio 1.5.
+- State: authenticated Personal account, dark theme, eight share-history rows loaded.
+
+## Comparison and verification
+
+- Initial P2: long recipient metadata used the flex item's intrinsic width and compressed some 28-pixel mail icons to 14–24 pixels, shifting the text start left and breaking row alignment.
+- Fix: the icon now has a fixed 28 × 28 flex basis; the adjacent text owns only the remaining width, starts at one stable x-coordinate and truncates toward the right.
+- Post-fix measurement across all eight rows: icon width `28px`, icon x-position `218.67px`, text x-position `254.67px` with no variation.
+- Typography and copy remain unchanged; long email metadata still uses the existing single-line ellipsis.
+- Spacing, row height, grid columns, theme colors, action controls and internal vertical scrolling remain unchanged.
+- Existing Phosphor mail icons are preserved; no image or asset substitution was introduced.
+- The full Sharing workspace and the focused first-column region were both inspected in the live browser capture.
+- Browser console errors: 0.
+
+Final result: passed.
+
 # Share history internal scrolling — Design QA
 
 - Scope: Profile > Sharing workspace only; the existing card dimensions and surrounding profile layout remain unchanged.
