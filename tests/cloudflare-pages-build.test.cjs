@@ -37,7 +37,7 @@ test('Cloudflare Pages build publishes only the public ATSRS frontend', () => {
     assert.match(headers, new RegExp(requiredHeader), `${requiredHeader} must be deployed`);
   }
   assert.match(headers, /frame-ancestors 'none'/, 'Default CSP must prevent clickjacking');
-  for (const legalPath of ['/privacy.html', '/data-deletion.html']) {
+  for (const legalPath of ['/privacy.html', '/data-deletion.html', '/billing-terms.html']) {
     const escapedPath = legalPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const legalRule = headers.match(new RegExp(`${escapedPath}\\r?\\n([\\s\\S]*?)(?=\\r?\\n\\/|$)`));
     assert.ok(legalRule, `${legalPath} must have a scoped frame policy`);
