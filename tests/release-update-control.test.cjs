@@ -27,13 +27,13 @@ function makeElement(tagName) {
   return element;
 }
 
-async function run(unsaved, current) {
+async function run(unsaved, current, staleSignature) {
   const controls = makeElement('div');
   const documentHandlers = {};
   const intervals = [];
   const replaced = [];
   const document = {
-    documentElement: { getAttribute() { return current ? 'V6150' : 'V6149'; } },
+    documentElement: { getAttribute() { return current ? 'V6151' : 'V6150'; } },
     head: makeElement('head'), body: makeElement('body'), visibilityState: 'visible',
     createElement: makeElement,
     getElementById(id) { return id === 'atsrsGlobalControls' ? controls : null; },
@@ -49,8 +49,8 @@ async function run(unsaved, current) {
   };
   const context = {
     document, window, location, URL, Date, Math,
-    localStorage: { getItem() { return ''; }, setItem() {} },
-    fetch: async () => ({ ok: true, text: async () => '<html data-atsrs-build="V6150"></html>' })
+    localStorage: { getItem() { return staleSignature ? 'old-signature' : ''; }, setItem() {} },
+    fetch: async () => ({ ok: true, text: async () => '<html data-atsrs-build="V6151"></html>' })
   };
   vm.runInNewContext(script, context);
   intervals[1]();
@@ -68,12 +68,13 @@ async function run(unsaved, current) {
   assert.equal(replaced.length, unsaved || current ? 0 : 1);
   if (unsaved) assert.equal(notice.children[1].hidden, false);
   else if (current) assert.equal(notice.children[1].textContent, 'ATSRS is up to date.');
-  else assert.match(replaced[0], /_atsrs_release=V6150-/);
+  else assert.match(replaced[0], /_atsrs_release=V6151-/);
 }
 
 (async () => {
   await run(false, false);
   await run(true, false);
   await run(false, true);
+  await run(false, true, true);
   console.log('Release update control behaviour passed');
 })().catch(error => { console.error(error); process.exitCode = 1; });

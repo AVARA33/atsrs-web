@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6150" data-atsrs-update="22 Sep 2026">
+<html lang="en" data-atsrs-build="V6151" data-atsrs-update="22 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -86,7 +86,7 @@
       var response=await fetch('/?atsrs_release_check='+now,{cache:'no-store',credentials:'same-origin',headers:{'Accept':'text/html'}});
       if(!response.ok)return 'error';
       var html=await response.text(),serverBuild=serverBuildFrom(html),signature=releaseSignature(html);
-      if((serverBuild&&currentBuild&&serverBuild!==currentBuild)||(knownServerSignature&&signature!==knownServerSignature)){
+      if(serverBuild&&currentBuild?serverBuild!==currentBuild:!!(knownServerSignature&&signature!==knownServerSignature)){
         rememberSignature(signature);
         pendingRelease=serverBuild||signature;
         window.setTimeout(applyPendingReleaseWhenSafe,1800);
