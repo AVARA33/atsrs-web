@@ -12,7 +12,13 @@ function makeElement(tagName) {
   const children = [];
   const element = {
     tagName, children, hidden: false, parentElement: null, className: '',
-    classList: { add(name) { element.className += ' ' + name; } },
+    classList: {
+      add(name) { element.className += ' ' + name; },
+      toggle(name, enabled) {
+        element.className = element.className.replace(new RegExp('\\b' + name + '\\b', 'g'), '').trim();
+        if (enabled) element.className += ' ' + name;
+      }
+    },
     setAttribute(name, value) { attributes[name] = value; },
     getAttribute(name) { return attributes[name] || null; },
     addEventListener(name, handler) { handlers[name] = handler; },

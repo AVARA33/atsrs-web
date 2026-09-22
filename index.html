@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6151" data-atsrs-update="22 Sep 2026">
+<html lang="en" data-atsrs-build="V6153" data-atsrs-update="22 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -58,19 +58,31 @@
   function ensureUpdateNotice(){
     var controls=document.getElementById('atsrsGlobalControls');
     if(!controls)return null;
-    if(updateNotice){if(updateNotice.parentElement!==controls)controls.insertBefore(updateNotice,document.getElementById('atsrsNotificationButton')||controls.firstChild);return updateNotice;}
+    if(updateNotice){var language=controls.querySelector('.atsrs-locale-control');if(language&&updateNotice.nextElementSibling!==language)controls.insertBefore(updateNotice,language);else if(updateNotice.parentElement!==controls)controls.insertBefore(updateNotice,controls.firstChild);return updateNotice;}
     var style=document.createElement('style');
-    style.textContent='#atsrsGlobalControls .atsrs-release-notice{position:relative;display:none;flex:0 0 auto;pointer-events:auto}#atsrsGlobalControls .atsrs-release-notice.is-visible{display:block}#atsrsGlobalControls .atsrs-release-notice-button{min-height:36px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border:1px solid #1fcf64;border-radius:10px;background:#12351f;color:#b8ffc9;font:700 12px Arial,sans-serif;cursor:pointer;white-space:nowrap}#atsrsGlobalControls .atsrs-release-notice-button:hover,#atsrsGlobalControls .atsrs-release-notice-button:focus-visible{background:#1a4a2b;outline:2px solid #1fcf64;outline-offset:2px}#atsrsGlobalControls .atsrs-release-notice-icon{font-size:19px;line-height:1}#atsrsGlobalControls .atsrs-release-notice-message{position:absolute;right:0;top:calc(100% + 9px);z-index:2147483000;width:min(290px,calc(100vw - 24px));padding:10px 12px;border:1px solid #315840;border-radius:10px;background:#0b110e;color:#f2f7f4;box-shadow:0 12px 32px rgba(0,0,0,.3);font:500 12px/1.4 Arial,sans-serif}#atsrsGlobalControls .atsrs-release-notice-message[hidden]{display:none!important}html[data-theme="light"] #atsrsGlobalControls .atsrs-release-notice-button{background:#e8f8ed;color:#116132;border-color:#86c99c}html[data-theme="light"] #atsrsGlobalControls .atsrs-release-notice-message{background:#fff;color:#173121;border-color:#bed9ca}@media(max-width:560px){#atsrsGlobalControls .atsrs-release-notice-button{min-width:36px;min-height:36px;justify-content:center;padding:0 7px}#atsrsGlobalControls .atsrs-release-notice-label{display:none}}';
+    style.textContent=[
+      '#atsrsGlobalControls .atsrs-release-notice{position:relative;display:none;flex:0 0 44px;pointer-events:auto}',
+      '#atsrsGlobalControls .atsrs-release-notice.is-visible{display:block}',
+      'html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls .atsrs-release-notice-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;height:44px;min-height:44px;padding:0;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important;color:inherit!important;-webkit-text-fill-color:currentColor!important;cursor:pointer}',
+      '#atsrsGlobalControls .atsrs-release-notice-button .ph{font-size:24px;line-height:1;color:inherit}',
+      '#atsrsGlobalControls .atsrs-release-notice-button:focus-visible{outline:3px solid var(--sidebar-accent,#22c55e)!important;outline-offset:2px}',
+      '#atsrsGlobalControls .atsrs-release-notice.has-update .atsrs-release-notice-button:after{content:"";position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e}',
+      '#atsrsGlobalControls .atsrs-release-notice-message{position:absolute;right:0;top:calc(100% + 9px);z-index:2147483000;width:min(290px,calc(100vw - 24px));padding:10px 12px;border:1px solid #315840;border-radius:10px;background:#0b110e;color:#f2f7f4;box-shadow:0 12px 32px rgba(0,0,0,.3);font:500 12px/1.4 Arial,sans-serif}',
+      '#atsrsGlobalControls .atsrs-release-notice-message[hidden]{display:none!important}',
+      'html[data-theme="light"] #atsrsGlobalControls .atsrs-release-notice-message{background:#fff;color:#173121;border-color:#bed9ca}',
+      '@media(max-width:560px){#atsrsGlobalControls .atsrs-release-notice{flex-basis:38px}html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls .atsrs-release-notice-button{width:38px;min-width:38px;height:38px;min-height:38px}}'
+    ].join('');
     document.head.appendChild(style);
     updateNotice=document.createElement('div');updateNotice.className='atsrs-release-notice';updateNotice.setAttribute('role','status');
-    var update=document.createElement('button');update.type='button';update.className='atsrs-release-notice-button';update.setAttribute('aria-label','Check for ATSRS updates');update.title='Check for ATSRS updates';update.innerHTML='<span class="atsrs-release-notice-icon" aria-hidden="true">↻</span><span class="atsrs-release-notice-label">Update</span>';
+    var update=document.createElement('button');update.type='button';update.className='atsrs-release-notice-button';update.setAttribute('aria-label','Check for ATSRS updates');update.title='Check for ATSRS updates';update.innerHTML='<i class="ph ph-download-simple" aria-hidden="true"></i>';
     updateNoticeMessage=document.createElement('span');updateNoticeMessage.className='atsrs-release-notice-message';updateNoticeMessage.setAttribute('role','alert');updateNoticeMessage.hidden=true;
     update.addEventListener('click',async function(){updateNoticeMessage.hidden=true;if(!pendingRelease){updateNoticeMessage.textContent='Checking for updates…';updateNoticeMessage.hidden=false;var result=await checkLatestRelease(true);if(!pendingRelease){updateNoticeMessage.textContent=result==='current'?'ATSRS is up to date.':'Could not check for updates. Please try again.';return;}}if(!refreshIsSafe()){updateNoticeMessage.textContent='Save or finish your current work, then press Update again.';updateNoticeMessage.hidden=false;return;}refreshFromServer(pendingRelease);});
-    updateNotice.appendChild(update);updateNotice.appendChild(updateNoticeMessage);controls.insertBefore(updateNotice,document.getElementById('atsrsNotificationButton')||controls.firstChild);return updateNotice;
+    updateNotice.appendChild(update);updateNotice.appendChild(updateNoticeMessage);controls.insertBefore(updateNotice,controls.querySelector('.atsrs-locale-control')||controls.firstChild);return updateNotice;
   }
   function showUpdateNotice(){
     var notice=ensureUpdateNotice();if(!notice)return;
     notice.classList.add('is-visible');
+    notice.classList.toggle('has-update',!!pendingRelease);
     var button=notice.querySelector('button');
     if(button){button.setAttribute('aria-label',pendingRelease?'Update ATSRS now':'Check for ATSRS updates');button.title=pendingRelease?'ATSRS update available — update when ready':'Check for ATSRS updates';}
   }
