@@ -8,7 +8,9 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6147"/);
+assert.match(index, /data-atsrs-build="V6148"/);
+assert.match(index, /href="billing-terms\.html#candidate-fees" target="_blank" rel="noopener noreferrer"/);
+assert.doesNotMatch(index, /href="billing-terms\.html#candidate-fees" onclick=/);
 assert.match(index, /href="css\/jobs-prototype\.css\?v=6147"/);
 assert.match(index, /src="js\/route-feature-loader\.js\?v=6146"/);
 assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6146'\)/);
@@ -39,4 +41,4 @@ assert.match(css, /\.job-contact-link-icon\.ph-hand-tap\{font-size:16px/);
 assert.match(css, /animation:jobs-contact-hand-tap 3s ease-out infinite/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
 
-console.log('V6147 JobSearch contact layout release is cache-busted');
+console.log('V6148 JobSearch contact layout release is cache-busted');
