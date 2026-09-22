@@ -35,10 +35,10 @@ assert.match(runtime, /body\.append\(project\);a\.append\(head,controls,body,c\)
 assert.doesNotMatch(runtime, /scrollHeight>body\.clientHeight/);
 
 assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch\}/);
-assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:start\}/);
-assert.match(css, /\.jobs-cards \.job-card-slot\{height:var\(--jobs-card-collapsed-height,auto\)\}/);
-assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{height:var\(--jobs-card-collapsed-height,auto\);grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
-assert.match(runtime, /function syncCardHeights\(\)/);
+assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch;grid-auto-rows:1fr\}/);
+assert.match(css, /\.jobs-cards \.job-card-slot\{height:100%\}/);
+assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{height:100%;grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
+assert.doesNotMatch(runtime, /function syncCardHeights\(\)/);
 assert.match(css, /\.jobs-cards \.job-recruiter-info>\.job-contact-org,[\s\S]*?\.jobs-cards \.job-recruiter-info>\.job-contact-name\{grid-column:auto\}/);
 assert.match(css, /\.jobs-cards \.job-card-body\{[^}]*overflow:visible/);
 assert.doesNotMatch(css, /\.jobs-cards \.job-card-body\{[^}]*overflow-y:auto/);

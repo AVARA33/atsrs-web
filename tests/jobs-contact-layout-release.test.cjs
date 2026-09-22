@@ -8,12 +8,12 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6153"/);
+assert.match(index, /data-atsrs-build="V6154"/);
 assert.match(index, /href="billing-terms\.html#candidate-fees" target="_blank" rel="noopener noreferrer"/);
 assert.doesNotMatch(index, /href="billing-terms\.html#candidate-fees" onclick=/);
-assert.match(index, /href="css\/jobs-prototype\.css\?v=6147"/);
-assert.match(index, /src="js\/route-feature-loader\.js\?v=6146"/);
-assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6146'\)/);
+assert.match(index, /href="css\/jobs-prototype\.css\?v=6154"/);
+assert.match(index, /src="js\/route-feature-loader\.js\?v=6154"/);
+assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6154'\)/);
 assert.match(jobs, /p\.classList\.add\('job-contact-static'\)/);
 assert.match(jobs, /ph ph-hand-tap job-contact-link-icon/);
 assert.doesNotMatch(jobs, /ph ph-arrow-up-right job-contact-link-icon/);
@@ -23,7 +23,7 @@ assert.match(css, /html\[data-theme\] #jobsPage \.job-contact-clickable\{/);
 assert.match(css, /border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)/);
 assert.match(css, /html\[data-theme\] #jobsPage \.job-contact-clickable\{[\s\S]*?background:var\(--atsrs-field-surface\)/);
 assert.match(css, /\.job-contact-clickable:focus-within\{[\s\S]*?box-shadow:var\(--atsrs-field-focus-shadow\)/);
-assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{height:var\(--jobs-card-collapsed-height,auto\);grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
+assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{height:100%;grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
 assert.match(css, /\.jobs-cards \.job-contact-info\{align-self:end/);
 assert.match(jobs, /var actions=el\('div','job-contact-actions'\)/);
 assert.match(jobs, /if\(linkedinHref\)contact\(actions,'Recruiter LinkedIn','Open LinkedIn','linkedin',linkedinHref\)/);
