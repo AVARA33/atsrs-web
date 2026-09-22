@@ -16,22 +16,24 @@ function makeElement(tagName) {
     setAttribute(name, value) { attributes[name] = value; },
     getAttribute(name) { return attributes[name] || null; },
     addEventListener(name, handler) { handlers[name] = handler; },
+    querySelector(selector) { return selector === 'button' ? children[0] || null : null; },
     appendChild(child) { child.parentElement = element; children.push(child); },
     insertBefore(child, sibling) {
       child.parentElement = element;
       children.splice(Math.max(0, children.indexOf(sibling)), 0, child);
     },
-    click() { handlers.click(); }
+    click() { return handlers.click(); }
   };
   return element;
 }
 
-async function run(unsaved) {
+async function run(unsaved, current) {
   const controls = makeElement('div');
   const documentHandlers = {};
+  const intervals = [];
   const replaced = [];
   const document = {
-    documentElement: { getAttribute() { return 'V6148'; } },
+    documentElement: { getAttribute() { return current ? 'V6150' : 'V6149'; } },
     head: makeElement('head'), body: makeElement('body'), visibilityState: 'visible',
     createElement: makeElement,
     getElementById(id) { return id === 'atsrsGlobalControls' ? controls : null; },
@@ -43,32 +45,35 @@ async function run(unsaved) {
     replace(url) { replaced.push(url); }
   };
   const window = {
-    location, addEventListener() {}, setTimeout(handler) { handler(); }, setInterval() {}
+    location, addEventListener() {}, setTimeout(handler) { handler(); }, setInterval(handler) { intervals.push(handler); }
   };
   const context = {
     document, window, location, URL, Date, Math,
     localStorage: { getItem() { return ''; }, setItem() {} },
-    fetch: async () => ({ ok: true, text: async () => '<html data-atsrs-build="V6149"></html>' })
+    fetch: async () => ({ ok: true, text: async () => '<html data-atsrs-build="V6150"></html>' })
   };
   vm.runInNewContext(script, context);
-  await window.atsrsCheckLatestRelease();
+  intervals[1]();
+  if (!current) await window.atsrsCheckLatestRelease();
   const notice = controls.children[0];
   assert.match(notice.className, /is-visible/);
   const button = notice.children[0];
-  assert.equal(button.getAttribute('aria-label'), 'Update ATSRS now');
+  assert.equal(button.getAttribute('aria-label'), current ? 'Check for ATSRS updates' : 'Update ATSRS now');
   if (unsaved) {
     documentHandlers.input({ isTrusted: true, target: {
       closest(selector) { return selector.startsWith('#jobsPage') ? null : {}; }
     } });
   }
-  button.click();
-  assert.equal(replaced.length, unsaved ? 0 : 1);
+  await button.click();
+  assert.equal(replaced.length, unsaved || current ? 0 : 1);
   if (unsaved) assert.equal(notice.children[1].hidden, false);
-  else assert.match(replaced[0], /_atsrs_release=V6149-/);
+  else if (current) assert.equal(notice.children[1].textContent, 'ATSRS is up to date.');
+  else assert.match(replaced[0], /_atsrs_release=V6150-/);
 }
 
 (async () => {
-  await run(false);
-  await run(true);
+  await run(false, false);
+  await run(true, false);
+  await run(false, true);
   console.log('Release update control behaviour passed');
 })().catch(error => { console.error(error); process.exitCode = 1; });

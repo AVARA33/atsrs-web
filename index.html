@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6149" data-atsrs-update="22 Sep 2026">
+<html lang="en" data-atsrs-build="V6150" data-atsrs-update="22 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -63,37 +63,38 @@
     style.textContent='#atsrsGlobalControls .atsrs-release-notice{position:relative;display:none;flex:0 0 auto;pointer-events:auto}#atsrsGlobalControls .atsrs-release-notice.is-visible{display:block}#atsrsGlobalControls .atsrs-release-notice-button{min-height:36px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border:1px solid #1fcf64;border-radius:10px;background:#12351f;color:#b8ffc9;font:700 12px Arial,sans-serif;cursor:pointer;white-space:nowrap}#atsrsGlobalControls .atsrs-release-notice-button:hover,#atsrsGlobalControls .atsrs-release-notice-button:focus-visible{background:#1a4a2b;outline:2px solid #1fcf64;outline-offset:2px}#atsrsGlobalControls .atsrs-release-notice-icon{font-size:19px;line-height:1}#atsrsGlobalControls .atsrs-release-notice-message{position:absolute;right:0;top:calc(100% + 9px);z-index:2147483000;width:min(290px,calc(100vw - 24px));padding:10px 12px;border:1px solid #315840;border-radius:10px;background:#0b110e;color:#f2f7f4;box-shadow:0 12px 32px rgba(0,0,0,.3);font:500 12px/1.4 Arial,sans-serif}#atsrsGlobalControls .atsrs-release-notice-message[hidden]{display:none!important}html[data-theme="light"] #atsrsGlobalControls .atsrs-release-notice-button{background:#e8f8ed;color:#116132;border-color:#86c99c}html[data-theme="light"] #atsrsGlobalControls .atsrs-release-notice-message{background:#fff;color:#173121;border-color:#bed9ca}@media(max-width:560px){#atsrsGlobalControls .atsrs-release-notice-button{min-width:36px;min-height:36px;justify-content:center;padding:0 7px}#atsrsGlobalControls .atsrs-release-notice-label{display:none}}';
     document.head.appendChild(style);
     updateNotice=document.createElement('div');updateNotice.className='atsrs-release-notice';updateNotice.setAttribute('role','status');
-    var update=document.createElement('button');update.type='button';update.className='atsrs-release-notice-button';update.setAttribute('aria-label','Update ATSRS now');update.title='ATSRS update available — update when ready';update.innerHTML='<span class="atsrs-release-notice-icon" aria-hidden="true">↻</span><span class="atsrs-release-notice-label">Update</span>';
+    var update=document.createElement('button');update.type='button';update.className='atsrs-release-notice-button';update.setAttribute('aria-label','Check for ATSRS updates');update.title='Check for ATSRS updates';update.innerHTML='<span class="atsrs-release-notice-icon" aria-hidden="true">↻</span><span class="atsrs-release-notice-label">Update</span>';
     updateNoticeMessage=document.createElement('span');updateNoticeMessage.className='atsrs-release-notice-message';updateNoticeMessage.setAttribute('role','alert');updateNoticeMessage.hidden=true;
-    update.addEventListener('click',function(){if(!pendingRelease)return;if(!refreshIsSafe()){updateNoticeMessage.textContent='Save or finish your current work, then press Update again.';updateNoticeMessage.hidden=false;return;}refreshFromServer(pendingRelease);});
+    update.addEventListener('click',async function(){updateNoticeMessage.hidden=true;if(!pendingRelease){updateNoticeMessage.textContent='Checking for updates…';updateNoticeMessage.hidden=false;var result=await checkLatestRelease(true);if(!pendingRelease){updateNoticeMessage.textContent=result==='current'?'ATSRS is up to date.':'Could not check for updates. Please try again.';return;}}if(!refreshIsSafe()){updateNoticeMessage.textContent='Save or finish your current work, then press Update again.';updateNoticeMessage.hidden=false;return;}refreshFromServer(pendingRelease);});
     updateNotice.appendChild(update);updateNotice.appendChild(updateNoticeMessage);controls.insertBefore(updateNotice,document.getElementById('atsrsNotificationButton')||controls.firstChild);return updateNotice;
   }
   function showUpdateNotice(){
-    if(!pendingRelease)return;
     var notice=ensureUpdateNotice();if(!notice)return;
     notice.classList.add('is-visible');
+    var button=notice.querySelector('button');
+    if(button){button.setAttribute('aria-label',pendingRelease?'Update ATSRS now':'Check for ATSRS updates');button.title=pendingRelease?'ATSRS update available — update when ready':'Check for ATSRS updates';}
   }
   function applyPendingReleaseWhenSafe(){
-    if(!pendingRelease)return;
     showUpdateNotice();
   }
   async function checkLatestRelease(force){
     var now=Date.now();
-    if(checking||(!force&&now-lastCheckedAt<minimumCheckInterval))return;
+    if(checking||(!force&&now-lastCheckedAt<minimumCheckInterval))return 'busy';
     checking=true;
     lastCheckedAt=now;
     try{
       var response=await fetch('/?atsrs_release_check='+now,{cache:'no-store',credentials:'same-origin',headers:{'Accept':'text/html'}});
-      if(!response.ok)return;
+      if(!response.ok)return 'error';
       var html=await response.text(),serverBuild=serverBuildFrom(html),signature=releaseSignature(html);
       if((serverBuild&&currentBuild&&serverBuild!==currentBuild)||(knownServerSignature&&signature!==knownServerSignature)){
         rememberSignature(signature);
         pendingRelease=serverBuild||signature;
         window.setTimeout(applyPendingReleaseWhenSafe,1800);
-        return;
+        return 'update';
       }
       rememberSignature(signature);
-    }catch(error){}finally{checking=false;}
+      return 'current';
+    }catch(error){return 'error';}finally{checking=false;}
   }
   window.addEventListener('pageshow',function(event){checkLatestRelease(!!event.persisted);});
   window.addEventListener('focus',function(){checkLatestRelease(false);});
