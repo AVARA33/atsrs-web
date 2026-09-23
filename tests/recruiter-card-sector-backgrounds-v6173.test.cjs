@@ -20,8 +20,8 @@ test('recruiter cards receive a deterministic sector visual', () => {
 });
 
 test('recruiter artwork matches JobSearch strength without changing card dimensions', () => {
-  assert.match(css, /#recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.56;/);
-  assert.match(css, /rgba\(var\(--recruiter-card-surface-rgb\),\.99\).*rgba\(var\(--recruiter-card-surface-rgb\),\.86\).*rgba\(var\(--recruiter-card-surface-rgb\),\.30\)/);
+  assert.match(css, /#recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.64;/);
+  assert.match(css, /rgba\(var\(--recruiter-card-tone-rgb\),\.28\).*rgba\(var\(--recruiter-card-tone-rgb\),\.46\)/);
   assert.match(css, /#recruitersPage \.employer-card > \* \{ position:relative; z-index:1; \}/);
   assert.match(css, /#recruitersPage \.employer-card::before \{\s*z-index:2;/);
   assert.match(css, /min-height:108px/);
@@ -48,9 +48,9 @@ test('light mode keeps full-card artwork and tinted card surfaces visible', () =
   assert.match(css, /background-size:cover,cover,cover/);
 });
 
-test('V6176 cache-busts recruiter card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6177"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6176/);
+test('V6178 cache-busts recruiter card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6178"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6178/);
   assert.match(index, /route-feature-loader\.js\?v=6176/);
   assert.match(loader, /recruiters\.js\?v=6173/);
 });

@@ -494,12 +494,12 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   position:absolute;
   inset:0;
   z-index:0;
-  background-image:linear-gradient(90deg,rgba(var(--recruiter-card-surface-rgb),.99) 0%,rgba(var(--recruiter-card-surface-rgb),.86) 43%,rgba(var(--recruiter-card-surface-rgb),.30) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.24),transparent 68%),var(--recruiter-card-art);
+  background-image:linear-gradient(90deg,rgba(var(--recruiter-card-surface-rgb),.98) 0%,rgba(var(--recruiter-card-tone-rgb),.28) 58%,rgba(var(--recruiter-card-tone-rgb),.46) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.38),transparent 70%),var(--recruiter-card-art);
   background-position:center,center,right center;
   background-repeat:no-repeat;
   background-size:cover,cover,cover;
   background-blend-mode:normal,color,luminosity;
-  opacity:.56;
+  opacity:.64;
   pointer-events:none;
 }
 #recruitersPage .employer-card > * { position:relative; z-index:1; }
