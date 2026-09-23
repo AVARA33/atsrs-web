@@ -26,7 +26,8 @@
 
 - Focused automated tests: passed.
 - Production build: passed.
-- Live V6174 browser capture: passed in the authenticated Recruiter Directory.
+- Live V6175 browser capture: passed in the authenticated Recruiter Directory.
+- Verified the green, cyan, purple and red interior surfaces match the supplied reference rhythm.
 - Verified the first 12 cards received the expected deterministic categories and loaded artwork.
 - Verified every sampled desktop card remained exactly `108px` high.
 
