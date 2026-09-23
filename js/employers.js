@@ -484,7 +484,7 @@
       "saudi aramco": ["energy", "green"],
       sabic: ["industrial", "amber"],
       stc: ["technology", "purple"],
-      neom: ["infrastructure", "cyan"],
+      neom: ["development", "cyan"],
       aecom: ["infrastructure", "cyan"],
       halliburton: ["energy", "red"],
       airswift: ["offshore", "cyan"],

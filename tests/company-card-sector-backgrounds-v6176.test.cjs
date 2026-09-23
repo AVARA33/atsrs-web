@@ -21,9 +21,16 @@ test('company cards receive deterministic industry artwork and tones', () => {
 });
 
 test('every supported company industry has a full-card visual', () => {
-  for (const visual of ['offshore', 'energy', 'industrial', 'technology', 'infrastructure', 'science', 'hospitality', 'logistics', 'network']) {
+  for (const visual of ['offshore', 'energy', 'industrial', 'technology', 'development', 'infrastructure', 'science', 'hospitality', 'logistics', 'network']) {
     assert.match(css, new RegExp(`data-company-visual="${visual}"`));
   }
+  for (const asset of ['energy-refinery.webp', 'telecom-towers.webp', 'coastal-development.webp', 'infrastructure-bridge.webp', 'hospitality-hotel.webp', 'science-laboratory.webp', 'offshore-energy.webp', 'logistics-port.webp', 'corporate-network.webp']) {
+    const assetPath = path.join(root, 'assets', 'company-card-backgrounds', asset);
+    assert.ok(fs.existsSync(assetPath), `${asset} should exist`);
+    assert.ok(fs.statSync(assetPath).size < 100_000, `${asset} should stay optimized`);
+    assert.match(css, new RegExp(asset.replace('.', '\\.')));
+  }
+  assert.doesNotMatch(css, /assets\/job-card-backgrounds|assets\/recruiter-card-backgrounds/);
   assert.match(css, /#employersPage \.employer-card::after \{[\s\S]*?opacity: \.56;/);
   assert.match(css, /background-size: cover, cover, cover/);
 });
@@ -42,9 +49,9 @@ test('light mode preserves visible artwork and readable pale surfaces', () => {
   assert.match(css, /html\[data-theme="light"\] #employersPage \.employer-card::after \{[\s\S]*?opacity: \.48;/);
 });
 
-test('V6176 cache-busts company card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6179"/);
-  assert.match(index, /employers\.css\?v=6176/);
-  assert.match(index, /route-feature-loader\.js\?v=6179/);
-  assert.match(loader, /employers\.js\?v=6176/);
+test('V6180 cache-busts company card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6180"/);
+  assert.match(index, /employers\.css\?v=6180/);
+  assert.match(index, /route-feature-loader\.js\?v=6180/);
+  assert.match(loader, /employers\.js\?v=6180/);
 });

@@ -54,9 +54,9 @@ test('light mode keeps full-card artwork and tinted card surfaces visible', () =
   assert.match(css, /background-size:cover,cover,cover/);
 });
 
-test('V6179 cache-busts recruiter card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6179"/);
+test('V6180 preserves recruiter card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6180"/);
   assert.match(index, /recruiter-directory-v6029\.css\?v=6179/);
-  assert.match(index, /route-feature-loader\.js\?v=6179/);
+  assert.match(index, /route-feature-loader\.js\?v=6180/);
   assert.match(loader, /recruiters\.js\?v=6179/);
 });

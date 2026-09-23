@@ -317,7 +317,7 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
   gap: 24px;
 }
 #employersPage .employer-card {
-  --company-card-art: url("../assets/job-card-backgrounds/technology-data.webp");
+  --company-card-art: url("../assets/company-card-backgrounds/corporate-network.webp");
   --company-card-tone: #48d46b;
   --company-card-tone-rgb: 72, 212, 107;
   --company-card-surface-rgb: 6, 22, 14;
@@ -364,15 +364,16 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
   position: relative;
   z-index: 1;
 }
-#employersPage .employer-card[data-company-visual="offshore"] { --company-card-art: url("../assets/job-card-backgrounds/marine-rov.webp"); }
-#employersPage .employer-card[data-company-visual="energy"] { --company-card-art: url("../assets/job-card-backgrounds/marine-rov.webp"); }
-#employersPage .employer-card[data-company-visual="industrial"] { --company-card-art: url("../assets/job-card-backgrounds/logistics-transport.webp"); }
-#employersPage .employer-card[data-company-visual="technology"] { --company-card-art: url("../assets/job-card-backgrounds/technology-data.webp"); }
-#employersPage .employer-card[data-company-visual="infrastructure"] { --company-card-art: url("../assets/job-card-backgrounds/construction-architecture.webp"); }
-#employersPage .employer-card[data-company-visual="science"] { --company-card-art: url("../assets/job-card-backgrounds/healthcare-laboratory.webp"); }
-#employersPage .employer-card[data-company-visual="hospitality"] { --company-card-art: url("../assets/job-card-backgrounds/education-office.webp"); }
-#employersPage .employer-card[data-company-visual="logistics"] { --company-card-art: url("../assets/job-card-backgrounds/logistics-transport.webp"); }
-#employersPage .employer-card[data-company-visual="network"] { --company-card-art: url("../assets/job-card-backgrounds/technology-data.webp"); }
+#employersPage .employer-card[data-company-visual="offshore"] { --company-card-art: url("../assets/company-card-backgrounds/offshore-energy.webp"); }
+#employersPage .employer-card[data-company-visual="energy"] { --company-card-art: url("../assets/company-card-backgrounds/energy-refinery.webp"); }
+#employersPage .employer-card[data-company-visual="industrial"] { --company-card-art: url("../assets/company-card-backgrounds/energy-refinery.webp"); }
+#employersPage .employer-card[data-company-visual="technology"] { --company-card-art: url("../assets/company-card-backgrounds/telecom-towers.webp"); }
+#employersPage .employer-card[data-company-visual="development"] { --company-card-art: url("../assets/company-card-backgrounds/coastal-development.webp"); }
+#employersPage .employer-card[data-company-visual="infrastructure"] { --company-card-art: url("../assets/company-card-backgrounds/infrastructure-bridge.webp"); }
+#employersPage .employer-card[data-company-visual="science"] { --company-card-art: url("../assets/company-card-backgrounds/science-laboratory.webp"); }
+#employersPage .employer-card[data-company-visual="hospitality"] { --company-card-art: url("../assets/company-card-backgrounds/hospitality-hotel.webp"); }
+#employersPage .employer-card[data-company-visual="logistics"] { --company-card-art: url("../assets/company-card-backgrounds/logistics-port.webp"); }
+#employersPage .employer-card[data-company-visual="network"] { --company-card-art: url("../assets/company-card-backgrounds/corporate-network.webp"); }
 #employersPage .employer-card[data-company-tone="cyan"] { --company-card-tone:#22d3ee; --company-card-tone-rgb:34,211,238; --company-card-surface-rgb:4,25,32; --company-card-light-surface:#eaf9fc; }
 #employersPage .employer-card[data-company-tone="purple"] { --company-card-tone:#a855f7; --company-card-tone-rgb:168,85,247; --company-card-surface-rgb:24,12,40; --company-card-light-surface:#f5effc; }
 #employersPage .employer-card[data-company-tone="red"] { --company-card-tone:#fb5f57; --company-card-tone-rgb:251,95,87; --company-card-surface-rgb:38,12,12; --company-card-light-surface:#fcefed; }
