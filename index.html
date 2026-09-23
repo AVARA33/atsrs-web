@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-atsrs-build="V6154" data-atsrs-update="22 Sep 2026">
+<html lang="en" data-atsrs-build="V6155" data-atsrs-update="23 Sep 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -14,110 +14,32 @@
 (function(){
   'use strict';
   var currentBuild=document.documentElement.getAttribute('data-atsrs-build')||'';
-  var checking=false;
-  var lastCheckedAt=0;
-  var minimumCheckInterval=120000;
-  var signatureKey='atsrs_server_release_signature';
-  var knownServerSignature='';
-  var pendingRelease='';
-  var hasUnsavedChanges=false;
-  var updateNotice=null;
-  var updateNoticeMessage=null;
-  try{knownServerSignature=localStorage.getItem(signatureKey)||'';}catch(error){}
+  var reloadKey='atsrs_entry_release_reload';
 
   function serverBuildFrom(html){
     var match=String(html||'').match(/<html[^>]+data-atsrs-build=["']([^"']+)["']/i);
     return match&&match[1]||'';
-  }
-  function releaseSignature(html){
-    var value=String(html||'')
-      .replace(/\/cdn-cgi\/l\/email-protection#[a-f0-9]+/gi,'/cdn-cgi/l/email-protection')
-      .replace(/\sdata-cfemail=["'][a-f0-9]+["']/gi,'')
-      .replace(/<span class=["']__cf_email__["'][^>]*>[\s\S]*?<\/span>/gi,'[email protected]'),hash=2166136261;
-    for(var index=0;index<value.length;index+=1){hash^=value.charCodeAt(index);hash=Math.imul(hash,16777619);}
-    return (hash>>>0).toString(36)+'-'+value.length;
-  }
-  function rememberSignature(signature){
-    knownServerSignature=signature;
-    try{localStorage.setItem(signatureKey,signature);}catch(error){}
   }
   function refreshFromServer(serverBuild){
     var url=new URL(window.location.href);
     url.searchParams.set('_atsrs_release',serverBuild+'-'+Date.now());
     window.location.replace(url.toString());
   }
-  function isDataEntry(target){
-    if(!target||!target.closest)return false;
-    if(target.closest('#jobsPage .jobs-filters,#recruitersPage .employers-filters,#employersPage .employers-filters'))return false;
-    return !!target.closest('form,#certManualPanel,#profilePage,#refsPage,[contenteditable="true"],dialog,[role="dialog"]');
-  }
-  function refreshIsSafe(){
-    if(hasUnsavedChanges)return false;
-    return !document.querySelector('dialog[open],.modal.active,.file-preview-modal:not(.hidden),#certManualPanel.active');
-  }
-  function ensureUpdateNotice(){
-    var controls=document.getElementById('atsrsGlobalControls');
-    if(!controls)return null;
-    if(updateNotice){var language=controls.querySelector('.atsrs-locale-control');if(language&&updateNotice.nextElementSibling!==language)controls.insertBefore(updateNotice,language);else if(updateNotice.parentElement!==controls)controls.insertBefore(updateNotice,controls.firstChild);return updateNotice;}
-    var style=document.createElement('style');
-    style.textContent=[
-      '#atsrsGlobalControls .atsrs-release-notice{position:relative;display:none;flex:0 0 44px;pointer-events:auto}',
-      '#atsrsGlobalControls .atsrs-release-notice.is-visible{display:block}',
-      'html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls .atsrs-release-notice-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;height:44px;min-height:44px;padding:0;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important;color:inherit!important;-webkit-text-fill-color:currentColor!important;cursor:pointer}',
-      '#atsrsGlobalControls .atsrs-release-notice-button .ph{font-size:24px;line-height:1;color:inherit}',
-      '#atsrsGlobalControls .atsrs-release-notice-button:focus-visible{outline:3px solid var(--sidebar-accent,#22c55e)!important;outline-offset:2px}',
-      '#atsrsGlobalControls .atsrs-release-notice.has-update .atsrs-release-notice-button:after{content:"";position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e}',
-      '#atsrsGlobalControls .atsrs-release-notice-message{position:absolute;right:0;top:calc(100% + 9px);z-index:2147483000;width:min(290px,calc(100vw - 24px));padding:10px 12px;border:1px solid #315840;border-radius:10px;background:#0b110e;color:#f2f7f4;box-shadow:0 12px 32px rgba(0,0,0,.3);font:500 12px/1.4 Arial,sans-serif}',
-      '#atsrsGlobalControls .atsrs-release-notice-message[hidden]{display:none!important}',
-      'html[data-theme="light"] #atsrsGlobalControls .atsrs-release-notice-message{background:#fff;color:#173121;border-color:#bed9ca}',
-      '@media(max-width:560px){#atsrsGlobalControls .atsrs-release-notice{flex-basis:38px}html[data-theme] body #app.app:not(.hidden) #atsrsGlobalControls .atsrs-release-notice-button{width:38px;min-width:38px;height:38px;min-height:38px}}'
-    ].join('');
-    document.head.appendChild(style);
-    updateNotice=document.createElement('div');updateNotice.className='atsrs-release-notice';updateNotice.setAttribute('role','status');
-    var update=document.createElement('button');update.type='button';update.className='atsrs-release-notice-button';update.setAttribute('aria-label','Check for ATSRS updates');update.title='Check for ATSRS updates';update.innerHTML='<i class="ph ph-download-simple" aria-hidden="true"></i>';
-    updateNoticeMessage=document.createElement('span');updateNoticeMessage.className='atsrs-release-notice-message';updateNoticeMessage.setAttribute('role','alert');updateNoticeMessage.hidden=true;
-    update.addEventListener('click',async function(){updateNoticeMessage.hidden=true;if(!pendingRelease){updateNoticeMessage.textContent='Checking for updates…';updateNoticeMessage.hidden=false;var result=await checkLatestRelease(true);if(!pendingRelease){updateNoticeMessage.textContent=result==='current'?'ATSRS is up to date.':'Could not check for updates. Please try again.';return;}}if(!refreshIsSafe()){updateNoticeMessage.textContent='Save or finish your current work, then press Update again.';updateNoticeMessage.hidden=false;return;}refreshFromServer(pendingRelease);});
-    updateNotice.appendChild(update);updateNotice.appendChild(updateNoticeMessage);controls.insertBefore(updateNotice,controls.querySelector('.atsrs-locale-control')||controls.firstChild);return updateNotice;
-  }
-  function showUpdateNotice(){
-    var notice=ensureUpdateNotice();if(!notice)return;
-    notice.classList.add('is-visible');
-    notice.classList.toggle('has-update',!!pendingRelease);
-    var button=notice.querySelector('button');
-    if(button){button.setAttribute('aria-label',pendingRelease?'Update ATSRS now':'Check for ATSRS updates');button.title=pendingRelease?'ATSRS update available — update when ready':'Check for ATSRS updates';}
-  }
-  function applyPendingReleaseWhenSafe(){
-    showUpdateNotice();
-  }
-  async function checkLatestRelease(force){
+  async function updateOnFreshEntry(){
     var now=Date.now();
-    if(checking||(!force&&now-lastCheckedAt<minimumCheckInterval))return 'busy';
-    checking=true;
-    lastCheckedAt=now;
     try{
       var response=await fetch('/?atsrs_release_check='+now,{cache:'no-store',credentials:'same-origin',headers:{'Accept':'text/html'}});
-      if(!response.ok)return 'error';
-      var html=await response.text(),serverBuild=serverBuildFrom(html),signature=releaseSignature(html);
-      if(serverBuild&&currentBuild?serverBuild!==currentBuild:!!(knownServerSignature&&signature!==knownServerSignature)){
-        rememberSignature(signature);
-        pendingRelease=serverBuild||signature;
-        window.setTimeout(applyPendingReleaseWhenSafe,1800);
-        return 'update';
-      }
-      rememberSignature(signature);
-      return 'current';
-    }catch(error){return 'error';}finally{checking=false;}
+      if(!response.ok)return;
+      var serverBuild=serverBuildFrom(await response.text());
+      if(!serverBuild||serverBuild===currentBuild){try{sessionStorage.removeItem(reloadKey);}catch(error){}return;}
+      var attempted='';
+      try{attempted=sessionStorage.getItem(reloadKey)||'';}catch(error){}
+      if(attempted===serverBuild)return;
+      try{sessionStorage.setItem(reloadKey,serverBuild);}catch(error){}
+      refreshFromServer(serverBuild);
+    }catch(error){}
   }
-  window.addEventListener('pageshow',function(event){checkLatestRelease(!!event.persisted);});
-  window.addEventListener('focus',function(){checkLatestRelease(false);});
-  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')checkLatestRelease(false);});
-  document.addEventListener('input',function(event){if(event.isTrusted&&isDataEntry(event.target))hasUnsavedChanges=true;},{capture:true});
-  document.addEventListener('change',function(event){if(event.isTrusted&&isDataEntry(event.target))hasUnsavedChanges=true;},{capture:true});
-  window.atsrsMarkReleaseWorkSaved=function(){hasUnsavedChanges=false;};
-  ['atsrs:cloud-write-complete','atsrs:share-link-updated','atsrs:project-data-changed','atsrs:jobs-changed'].forEach(function(eventName){window.addEventListener(eventName,window.atsrsMarkReleaseWorkSaved);});
-  window.setInterval(function(){if(document.visibilityState==='visible')checkLatestRelease(false);},minimumCheckInterval);
-  window.setInterval(applyPendingReleaseWhenSafe,1000);
-  window.atsrsCheckLatestRelease=function(){return checkLatestRelease(true);};
+  window.addEventListener('pageshow',function(event){if(!event.persisted)updateOnFreshEntry();},{once:true});
 })();
 </script>
 <link id="atsrsFavicon" rel="icon" type="image/png" sizes="64x64" href="assets/branding/atsrs-favicon-green-v576.png?v=576" />
