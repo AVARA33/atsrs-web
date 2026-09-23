@@ -515,28 +515,38 @@ html[data-theme] body #app.app:not(.hidden) #employersPage .employer-tag {
   grid-column: 1 / -1;
   grid-row: 3;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(110px, auto);
+  grid-template-columns: repeat(5, 40px);
+  justify-content: end;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
 }
 #employersPage .employer-actions a,
 #employersPage .employer-actions button {
-  width: 100%;
-  height: 38px;
-  min-height: 38px;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
   box-sizing: border-box;
   margin: 0;
-  padding: 0 12px;
+  padding: 0;
   border: 1px solid #37413c;
   border-radius: 5px;
   background: #090c0b;
   color: #f0f5f2;
-  font-size: 12px;
+  font-size: 0;
 }
 #employersPage .employer-actions :is(a, button) > i {
   color: #48d46b;
-  font-size: 15px;
+  font-size: 19px;
+}
+#employersPage .employer-actions :is(a, button) > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 #employersPage .employer-actions :is(a, button):hover,
 #employersPage .employer-actions :is(a, button):focus-visible {
@@ -546,15 +556,14 @@ html[data-theme] body #app.app:not(.hidden) #employersPage .employer-tag {
   box-shadow: 0 0 0 3px rgba(72, 212, 107, .12);
 }
 #employersPage .employer-actions .employer-action-jobs {
-  grid-column: 5;
-  justify-self: end;
-  width: auto;
-  min-width: 120px;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-  gap: 10px;
-  border-color: transparent;
-  background: transparent;
+  grid-column: auto;
+  justify-self: stretch;
+  width: 40px;
+  min-width: 40px;
+  justify-content: center;
+  gap: 0;
+  border-color: #37413c;
+  background: #090c0b;
   color: #48d46b;
 }
 #employersPage .employer-actions .employer-action-jobs:hover,
@@ -682,10 +691,10 @@ html[data-theme="light"] #employersPage .employer-actions button:disabled {
     height: 58px;
   }
   #employersPage .employer-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(5, 40px);
   }
   #employersPage .employer-actions .employer-action-jobs {
-    grid-column: 1 / -1;
+    grid-column: auto;
     justify-content: center;
   }
 }
@@ -727,11 +736,12 @@ html[data-theme="light"] #employersPage .employer-actions button:disabled {
   }
   #employersPage .employer-actions {
     grid-row: 4;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(5, 40px);
+    justify-content: end;
     height: auto;
   }
   #employersPage .employer-actions .employer-action-jobs {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 }
 

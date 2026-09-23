@@ -49,9 +49,13 @@ test('light mode preserves visible artwork and readable pale surfaces', () => {
   assert.match(css, /html\[data-theme="light"\] #employersPage \.employer-card::after \{[\s\S]*?opacity: \.48;/);
 });
 
-test('V6180 cache-busts company card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6180"/);
-  assert.match(index, /employers\.css\?v=6180/);
-  assert.match(index, /route-feature-loader\.js\?v=6180/);
-  assert.match(loader, /employers\.js\?v=6180/);
+test('V6181 cache-busts icon-only company actions', () => {
+  assert.match(index, /data-atsrs-build="V6181"/);
+  assert.match(index, /employers\.css\?v=6181/);
+  assert.match(index, /route-feature-loader\.js\?v=6181/);
+  assert.match(loader, /employers\.js\?v=6181/);
+  assert.match(css, /grid-template-columns: repeat\(5, 40px\)/);
+  assert.match(css, /#employersPage \.employer-actions :is\(a, button\) > span \{[\s\S]*?clip-path: inset\(50%\)/);
+  assert.match(js, /link\.setAttribute\("aria-label", label\)/);
+  assert.match(js, /button\.setAttribute\("aria-label", label\)/);
 });

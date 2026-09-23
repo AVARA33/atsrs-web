@@ -569,6 +569,8 @@
     link.href = safeUrl;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", label);
+    link.title = label;
     link.innerHTML =
       '<i class="ph ph-' +
       icon +
@@ -592,6 +594,8 @@
   function action(label, icon, handler) {
     var button = document.createElement("button");
     button.type = "button";
+    button.setAttribute("aria-label", label);
+    button.title = label;
     button.innerHTML =
       '<i class="ph ph-' +
       icon +
@@ -605,6 +609,8 @@
     var button = document.createElement("button");
     button.type = "button";
     button.disabled = true;
+    button.setAttribute("aria-label", label + " unavailable");
+    button.title = label + " unavailable";
     button.innerHTML =
       '<i class="ph ph-' +
       icon +

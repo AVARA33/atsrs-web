@@ -8,11 +8,11 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6180"/);
+assert.match(index, /data-atsrs-build="V6181"/);
 assert.match(index, /href="billing-terms\.html#candidate-fees" target="_blank" rel="noopener noreferrer"/);
 assert.doesNotMatch(index, /href="billing-terms\.html#candidate-fees" onclick=/);
 assert.match(index, /href="css\/jobs-prototype\.css\?v=6177"/);
-assert.match(index, /src="js\/route-feature-loader\.js\?v=6180"/);
+assert.match(index, /src="js\/route-feature-loader\.js\?v=6181"/);
 assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6170'\)/);
 assert.match(jobs, /p\.classList\.add\('job-contact-static'\)/);
 assert.match(jobs, /ph ph-hand-tap job-contact-link-icon/);
