@@ -6,10 +6,10 @@ const loader=fs.readFileSync('js/route-feature-loader.js','utf8');
 const js=fs.readFileSync('js/recruiters.js','utf8');
 const css=fs.readFileSync('css/recruiter-directory-v6029.css','utf8');
 
-assert.match(html,/data-atsrs-build="V6157"/);
-assert.match(html,/js\/route-feature-loader\.js\?v=6157/);
+assert.match(html,/data-atsrs-build="V6158"/);
+assert.match(html,/js\/route-feature-loader\.js\?v=6158/);
 assert.match(html,/css\/recruiter-directory-v6029\.css\?v=6156/);
-assert.match(loader,/js\/recruiters\.js\?v=6156/);
+assert.match(loader,/js\/recruiters\.js\?v=6158/);
 assert.match(js,/ph ph-seal-check employer-verified-icon/);
 assert.match(js,/location\.className = "employer-location"/);
 assert.match(js,/"briefcase",[\s\S]*?goToJobs\(name\)/);

@@ -5,9 +5,9 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
-assert.match(html, /data-atsrs-build="V6157"/);
+assert.match(html, /data-atsrs-build="V6158"/);
 assert.match(html, /data-atsrs-update="23 Sep 2026"/);
-assert.match(html, /src="js\/route-feature-loader\.js\?v=6157"/);
+assert.match(html, /src="js\/route-feature-loader\.js\?v=6158"/);
 assert.match(html, /fetch\('\/\?atsrs_release_check='/);
 assert.match(html, /cache:'no-store'/);
 assert.match(html, /credentials:'same-origin'/);

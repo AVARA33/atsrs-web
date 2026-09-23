@@ -33,15 +33,17 @@
     );
   }
   function goToJobs(name) {
+    var url = new URL(window.location.href);
+    url.searchParams.set("route", "jobs");
+    url.searchParams.set("recruiter", name);
+    history.replaceState({}, "", url.pathname + url.search + url.hash);
+    window.__atsrsPendingJobsRecruiter = name;
+    if (typeof window.atsrsOpenJobsDirectory === "function") {
+      window.atsrsOpenJobsDirectory("jobs", byId("navJobs"));
+      return;
+    }
     if (typeof window.showPage === "function")
       window.showPage("jobs", byId("navJobs"));
-    setTimeout(function () {
-      var select = byId("jobsRecruiterFilter");
-      if (select) {
-        select.value = name;
-        select.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-    }, 0);
   }
   function share(name) {
     try {

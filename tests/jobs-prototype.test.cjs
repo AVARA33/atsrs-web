@@ -16,9 +16,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=6154/);
-  assert.match(index,/route-feature-loader\.js\?v=6157/);
+  assert.match(index,/route-feature-loader\.js\?v=6158/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6154'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6158'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -46,7 +46,7 @@ test('intentional Jobs sidebar navigation alone resets the shared page state',()
   assert.match(runtime,/function resetFromSidebar\(\)\{[\s\S]*?renderPagination\(\)/);
   assert.match(runtime,/function scrollJobsToTop\(\)\{window\.scrollTo\(\{top:0,left:0,behavior:'auto'\}\)\}/);
   assert.doesNotMatch(runtime,/section\.scrollIntoView\(\{block:'start',behavior:'auto'\}\)/);
-  assert.match(runtime,/return load\(page\)/);
+  assert.match(runtime,/return load\(filtered\?1:page\)/);
   assert.match(runtime,/addEventListener\('atsrs:jobs-nav',resetFromSidebar\)/);
   assert.match(runtime,/addEventListener\('atsrs:resume',function\(\)\{load\(page\)\}\)/);
   assert.match(runtime,/resetFromSidebar:resetFromSidebar/);
