@@ -16,10 +16,13 @@
 
 ## Verification
 
-- Automated CSS, cache-bust, localization and runtime tests: pending.
-- Production build: pending.
-- Live dark/light browser capture: pending.
+- Automated CSS, cache-bust, localization and runtime tests: 20 passed.
+- Production build: passed (`480` files generated).
+- Live V6176 browser verification: passed in both dark and light themes.
+- Companies: 30 cards loaded with deterministic `data-company-visual` and `data-company-tone`; dark artwork `.56`, light artwork `.48`.
+- Recruiters: 30 cards loaded; light artwork `.38`.
+- JobSearch: 30 cards loaded; light artwork `.52`.
 
 ## Result
 
-Final result: pending visual verification.
+Final result: passed. Card dimensions, controls and existing navigation behavior remained unchanged.
