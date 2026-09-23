@@ -8,10 +8,11 @@
 
 ## Verification
 
-- Automated palette, artwork, cache-bust, localization and layout tests: pending.
-- Production build: pending.
-- Live dark/light visual verification: pending.
+- Automated palette, artwork, cache-bust, localization and layout tests: 20 passed.
+- Production build: passed (`480` files generated).
+- Live V6177 dark/light visual verification: passed.
+- First-page live cards resolved to blue, amber, orange, green and teal artwork tones; no pink or purple category remained.
 
 ## Result
 
-Final result: pending visual verification.
+Final result: passed. Accent stripes and full-card artwork now share the same colour family without changing card behavior.
