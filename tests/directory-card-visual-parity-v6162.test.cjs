@@ -21,8 +21,8 @@ test('company and JobSearch cards use the compact recruiter typography', () => {
   assert.match(jobs, /\.jobs-cards \.job-card-summary\{font-size:12px;/);
 });
 
-test('the shared card styles are cache-busted in V6162', () => {
-  assert.match(html, /data-atsrs-build="V6162"/);
-  assert.match(html, /css\/jobs-prototype\.css\?v=6162/);
+test('the shared card styles remain cache-busted in V6163', () => {
+  assert.match(html, /data-atsrs-build="V6163"/);
+  assert.match(html, /css\/jobs-prototype\.css\?v=6163/);
   assert.match(html, /css\/employers\.css\?v=6162/);
 });

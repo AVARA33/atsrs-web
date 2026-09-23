@@ -35,7 +35,7 @@ assert.match(runtime, /body\.append\(project\);a\.append\(head,controls,body,c\)
 assert.doesNotMatch(runtime, /scrollHeight>body\.clientHeight/);
 
 assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch\}/);
-assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch;grid-auto-rows:1fr\}/);
+assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch;grid-auto-rows:auto\}/);
 assert.match(css, /\.jobs-cards \.job-card-slot\{height:100%\}/);
 assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{height:100%;grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
 assert.doesNotMatch(runtime, /function syncCardHeights\(\)/);

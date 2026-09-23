@@ -21,6 +21,6 @@ test('initial restoration and browser traversal do not create loops', () => {
 test('recruiter-to-jobs navigation leaves route history to showPage', () => {
   assert.match(recruiters, /__atsrsPendingJobsRecruiter = name/);
   assert.doesNotMatch(recruiters, /searchParams\.set\("route", "jobs"\)/);
-  assert.match(html, /data-atsrs-build="V6162"/);
+  assert.match(html, /data-atsrs-build="V6163"/);
   assert.match(html, /js\/storage\.js\?v=612/);
 });

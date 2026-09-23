@@ -189,8 +189,8 @@ html[data-theme] #jobsPage .job-contact-clickable:focus-within{
 /* V6100: card previews never become nested scroll containers; full overflow belongs to the detail dialog. */
 @media(max-width:600px){.jobs-cards .job-card{height:100%;min-height:0;max-height:none}.jobs-cards .job-card-slot.is-disclosure-open>.job-card{height:auto;min-height:100%}.jobs-cards .job-card-body{overflow:visible;touch-action:auto}}
 
-/* Keep all vacancy cards equal-height without a post-render measurement/layout shift. */
-.jobs-grid.jobs-cards{align-items:stretch;grid-auto-rows:1fr}
+/* V6163: keep each result row compact; cards still match the tallest card inside their own row. */
+.jobs-grid.jobs-cards{align-items:stretch;grid-auto-rows:auto}
 .jobs-cards .job-card-slot{height:100%}
 .jobs-cards .job-card-slot>.job-card{height:100%;grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
 .jobs-cards .job-card-slot.is-disclosure-open>.job-card{height:auto;min-height:100%}
