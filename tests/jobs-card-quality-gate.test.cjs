@@ -46,7 +46,8 @@ assert.match(css, /\.jobs-cards \.job-contact-info\{[^}]*align-self:end[^}]*bord
 assert.doesNotMatch(css, /\.jobs-cards \.job-card\{[^}]*min-height:(?:560|580|640)px/);
 assert.match(css, /\.jobs-cards \.job-card-summary\{[^}]*-webkit-line-clamp:3/);
 assert.match(css, /\.job-card-disclosure-content\[hidden\]\{display:none!important\}/);
-assert.match(runtime, /cardDisclosure\(a,'requirements','Requirements',readableJobText\(job\.requirements\),false\)/);
+assert.doesNotMatch(runtime, /project\.append\(cardDisclosure/);
+assert.match(runtime, /\[\['Description',job\.description\|\|job\.summary\],\['Requirements',job\.requirements\]\]/);
 
 assert.match(migration, /atsrs_jobs_published_content_quality/);
 assert.match(migration, /char_length\(btrim\(description\)\) >= 80/);

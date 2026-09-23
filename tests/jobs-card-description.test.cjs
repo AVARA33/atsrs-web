@@ -10,7 +10,7 @@ assert.match(runtime, /function previewText\(x,limit\)/);
 assert.match(runtime, /function readableJobText\(x\)/);
 assert.match(runtime, /function readablePreviewText\(x,limit\)/);
 assert.match(runtime, /previewText\(rawSummary,420\)/);
-assert.match(runtime, /description&&\(!rawSummary\|\|norm\(description\)!==norm\(rawSummary\)\)/);
+assert.doesNotMatch(runtime, /project\.append\(cardDisclosure/);
 assert.match(runtime, /function cardDisclosure\(card,kind,labelText,text,missing\)/);
 assert.match(runtime, /el\('button','job-card-disclosure-toggle job-card-'\+kind\+'-toggle'\)/);
 assert.match(runtime, /el\('span','job-card-disclosure-symbol job-card-'\+kind\+'-symbol','\+'\)/);
@@ -23,8 +23,7 @@ assert.match(runtime, /backdrop\.onclick=function\(\)\{document\.querySelectorAl
 assert.match(runtime, /pageNode\.append\(backdrop\)/);
 assert.match(runtime, /function render\(\)\{var grid=id\('jobsGrid'\);if\(!grid\)return;removeCardDisclosureBackdrop\(\)/);
 assert.doesNotMatch(runtime, /document\.body\.append\(backdrop\)/);
-assert.match(runtime, /readableJobText\(description\)/);
-assert.match(runtime, /cardDisclosure\(a,'requirements','Requirements',readableJobText\(job\.requirements\),false\)/);
+assert.match(runtime, /\[\['Description',job\.description\|\|job\.summary\],\['Requirements',job\.requirements\]\]/);
 assert.match(runtime, /el\('p','',readableJobText\(v\[1\]\)\)/);
 assert.doesNotMatch(runtime, /el\('p','',description\)/);
 assert.match(css, /\.job-card-description p\{display:block;margin:0;overflow:visible/);
@@ -38,4 +37,4 @@ assert.match(css, /\.job-card-disclosure-content\[hidden\]\{display:none!importa
 assert.match(css, /#jobsPage \.job-card-disclosure-toggle\{[^}]*height:auto!important;min-height:0!important;[^}]*padding:0!important;[^}]*border:0!important;[^}]*background:transparent!important;[^}]*box-shadow:none!important/);
 assert.doesNotMatch(runtime, /Missing — manual review required/);
 
-console.log('Job descriptions and requirements disclose above the fixed card grid without page reflow.');
+console.log('Job descriptions and requirements are reserved for the expanded job detail view.');
