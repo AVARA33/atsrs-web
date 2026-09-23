@@ -46,26 +46,26 @@ test('light mode keeps full-card artwork and tinted card surfaces visible', () =
   assert.match(css, /background-size:cover,cover,cover/);
 });
 
-test('reference action treatment uses circular controls and a functional more menu', () => {
+test('reference action treatment uses smaller circular controls at bottom right', () => {
   assert.match(css, /border-radius:50% !important/);
   assert.match(css, /background:rgba\(3,8,6,\.76\) !important/);
-  assert.match(css, /#recruitersPage \.recruiter-more-action/);
-  assert.match(css, /#recruitersPage \.recruiter-more-menu/);
-  assert.match(js, /moreAction\.setAttribute\("aria-haspopup", "menu"\)/);
-  assert.match(js, /article\.classList\.toggle\("is-more-open"\)/);
-  assert.match(js, /entry\[1\]\.click\(\)/);
+  assert.match(css, /right:10px;[\s\S]*?bottom:8px;/);
+  assert.match(css, /width:38px !important/);
+  assert.doesNotMatch(css, /#recruitersPage \.recruiter-more-action/);
+  assert.doesNotMatch(css, /#recruitersPage \.recruiter-more-menu/);
+  assert.doesNotMatch(js, /More recruiter actions/);
 });
 
-test('V6187 cache-busts reference recruiter card treatment', () => {
-  assert.match(index, /data-atsrs-build="V6187"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6187/);
-  assert.match(index, /route-feature-loader\.js\?v=6187/);
-  assert.match(loader, /recruiters\.js\?v=6187/);
+test('V6188 cache-busts reference recruiter card treatment', () => {
+  assert.match(index, /data-atsrs-build="V6188"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6188/);
+  assert.match(index, /route-feature-loader\.js\?v=6188/);
+  assert.match(loader, /recruiters\.js\?v=6188/);
 });
 
-test('recruiter cards reproduce the reference motto and controls', () => {
+test('recruiter cards keep the reference motto without a three-dot control', () => {
   assert.match(js, /recruiter-card-motto/);
   assert.match(js, /TALENT<br>PEOPLE<br>GROWTH/);
   assert.match(css, /\.recruiter-card-motto\s*\{/);
-  assert.match(css, /\.recruiter-more-action::after/);
+  assert.doesNotMatch(js, /recruiter-card-more-glyph/);
 });
