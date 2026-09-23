@@ -194,12 +194,13 @@ html[data-theme] #jobsPage .job-contact-clickable:focus-within{
 .jobs-cards .job-card-slot{height:100%}
 .jobs-cards .job-card-slot>.job-card{height:100%;grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
 .jobs-cards .job-card-slot.is-disclosure-open>.job-card{height:auto;min-height:100%}
+.jobs-cards .job-card-recruiter-meta{margin-top:6px}
 .jobs-cards .job-recruiter-info>.job-contact-org,
 .jobs-cards .job-recruiter-info>.job-contact-name{grid-column:auto}
 @media(max-width:700px){.jobs-cards .job-recruiter-info>.job-contact-org,.jobs-cards .job-recruiter-info>.job-contact-name{grid-column:1/-1}}
 
 /* V6145 permanent card rule: LinkedIn/email form row one; source/application form the bottom row. */
-.jobs-cards .job-contact-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+.jobs-cards .job-contact-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
 .jobs-cards .job-contact-actions>.job-contact-clickable{box-sizing:border-box;height:64px;min-height:64px;max-height:64px;overflow:hidden}
 .jobs-cards .job-contact-actions>.job-contact-linkedin{grid-column:1;grid-row:1}
 .jobs-cards .job-contact-actions>.job-contact-email{grid-column:2;grid-row:1}

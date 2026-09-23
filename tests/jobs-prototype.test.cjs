@@ -16,9 +16,9 @@ test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
   assert.match(index,/jobs-prototype\.css\?v=6154/);
-  assert.match(index,/route-feature-loader\.js\?v=6159/);
+  assert.match(index,/route-feature-loader\.js\?v=6161/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6159'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6161'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -212,14 +212,14 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/function updateView\(\)\{var grid=id\('jobsGrid'\);if\(grid\)\{grid\.classList\.remove\('jobs-list'\);grid\.classList\.add\('jobs-cards'\)\}/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
-  assert.match(runtime,/var actions=el\('div','job-contact-actions'\)/);
+  assert.match(runtime,/var actions=el\('div','job-recruiter-info job-contact-actions'\)/);
   assert.match(runtime,/if\(linkedinHref\)contact\(actions,'Recruiter LinkedIn','Open LinkedIn','linkedin',linkedinHref\)/);
   assert.match(runtime,/contact\(actions,'Recruiter email',validEmail\(job\.recruiter_email\)/);
   assert.match(runtime,/contact\(actions,'Listing source'/);
   assert.match(runtime,/contact\(actions,'Application','Open application'/);
   assert.ok(runtime.indexOf("contact(actions,'Recruiter LinkedIn'") < runtime.indexOf("contact(actions,'Recruiter email'"));
   assert.ok(runtime.indexOf("contact(actions,'Listing source'") < runtime.indexOf("contact(actions,'Application'"));
-  assert.match(css,/\.jobs-cards \.job-contact-actions\{grid-column:1\/-1;display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css,/\.jobs-cards \.job-contact-actions\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.match(css,/\.job-contact-linkedin\{grid-column:1;grid-row:1\}/);
   assert.match(css,/\.job-contact-email\{grid-column:2;grid-row:1\}/);
   assert.match(css,/\.job-contact-source\{grid-column:1;grid-row:2\}/);
