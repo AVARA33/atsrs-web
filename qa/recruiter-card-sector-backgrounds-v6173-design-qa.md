@@ -25,8 +25,10 @@
 
 - Focused automated tests: passed.
 - Production build: passed.
-- Final browser capture: pending deployment.
+- Live V6174 browser capture: passed in the authenticated Recruiter Directory.
+- Verified the first 12 cards received the expected deterministic categories and loaded artwork.
+- Verified every sampled desktop card remained exactly `108px` high.
 
 ## Result
 
-Final result: pending visual verification.
+Final result: passed.
