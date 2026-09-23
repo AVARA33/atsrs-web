@@ -45,14 +45,15 @@ test('company card tone system includes reference colors without pink', () => {
 });
 
 test('light mode preserves visible artwork and readable pale surfaces', () => {
-  assert.match(css, /html\[data-theme="light"\] #employersPage \.employer-card \{[\s\S]*?background: var\(--company-card-light-surface\)/);
-  assert.match(css, /html\[data-theme="light"\] #employersPage \.employer-card::after \{[\s\S]*?opacity: \.48;/);
+  assert.match(css, /V6189: company cards retain the dark sector artwork treatment in light mode/);
+  assert.match(css, /html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #employersPage \.employer-card \{[\s\S]*?background:rgb\(var\(--company-card-surface-rgb\)\) !important/);
+  assert.match(css, /V6189[\s\S]*?html\[data-theme="light"\] #employersPage \.employer-card::after \{[\s\S]*?opacity:\.56;/);
 });
 
 test('V6182 cache-busts icon-only company actions and direct-on-artwork tags', () => {
-  assert.match(index, /data-atsrs-build="V6188"/);
-  assert.match(index, /employers\.css\?v=6182/);
-  assert.match(index, /route-feature-loader\.js\?v=6188/);
+  assert.match(index, /data-atsrs-build="V6189"/);
+  assert.match(index, /employers\.css\?v=6189/);
+  assert.match(index, /route-feature-loader\.js\?v=6189/);
   assert.match(loader, /employers\.js\?v=6182/);
   assert.match(css, /grid-template-columns: repeat\(5, 40px\)/);
   assert.match(css, /#employersPage \.employer-actions :is\(a, button\) > span \{[\s\S]*?clip-path: inset\(50%\)/);

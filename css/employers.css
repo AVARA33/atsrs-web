@@ -684,6 +684,38 @@ html[data-theme="light"] #employersPage .employer-actions button:disabled {
   background: #fff;
   color: #94a3b8;
 }
+
+/* V6189: company cards retain the dark sector artwork treatment in light mode. */
+html[data-theme="light"] body #app.app:not(.hidden) #employersPage .employer-card {
+  border-color:rgba(var(--company-card-tone-rgb),.34) !important;
+  background:rgb(var(--company-card-surface-rgb)) !important;
+  color:#f7faf8 !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.24) !important;
+}
+html[data-theme="light"] #employersPage .employer-card::after {
+  background-image:linear-gradient(90deg,rgba(var(--company-card-surface-rgb),.99) 0%,rgba(var(--company-card-surface-rgb),.86) 43%,rgba(var(--company-card-surface-rgb),.30) 100%),linear-gradient(135deg,rgba(var(--company-card-tone-rgb),.22),transparent 68%),var(--company-card-art);
+  opacity:.56;
+  filter:none;
+}
+html[data-theme="light"] #employersPage .employer-mark { border-color:#303834; background:#0b1210; color:#48d46b; }
+html[data-theme="light"] #employersPage .employer-source { color:#b9c5bf; }
+html[data-theme="light"] #employersPage .employer-source > i { color:#48d46b; }
+html[data-theme="light"] #employersPage .employer-card-copy h4 { color:#f7faf8 !important; }
+html[data-theme="light"] #employersPage .employer-sector-label { color:#d8dfdb; }
+html[data-theme="light"] #employersPage .employer-card-copy p,
+html[data-theme="light"] #employersPage .employer-vacancy-panel > span:last-child { color:#aab3ae; }
+html[data-theme="light"] #employersPage .employer-vacancy-panel { border-color:#303733; }
+html[data-theme="light"] #employersPage .employer-vacancy-panel > span:first-child { color:#d9e0dc; }
+html[data-theme="light"] #employersPage .employer-vacancy-panel > strong { color:#f7faf8; }
+html[data-theme="light"] #employersPage .employer-tags { border-color:#282f2b; }
+html[data-theme="light"] body #app.app:not(.hidden) #employersPage .employer-tag { border:0 !important; background:transparent !important; color:#d6ded9 !important; }
+html[data-theme="light"] #employersPage .employer-actions a,
+html[data-theme="light"] #employersPage .employer-actions button { border-color:#37413c; background:#090c0b; color:#f0f5f2; }
+html[data-theme="light"] #employersPage .employer-actions :is(a,button) > i,
+html[data-theme="light"] #employersPage .employer-actions .employer-action-jobs { color:#48d46b !important; }
+html[data-theme="light"] #employersPage .employer-actions :is(a,button):hover,
+html[data-theme="light"] #employersPage .employer-actions :is(a,button):focus-visible { border-color:#48d46b; background:rgba(72,212,107,.08); color:#fff; box-shadow:0 0 0 3px rgba(72,212,107,.12); }
+html[data-theme="light"] #employersPage .employer-actions button:disabled { border-color:#2b332f; background:#090c0b; color:#737c77; }
 @media (max-width: 1180px) {
   #employersPage .employer-card {
     grid-template-columns: 82px minmax(0, 1fr) 108px;

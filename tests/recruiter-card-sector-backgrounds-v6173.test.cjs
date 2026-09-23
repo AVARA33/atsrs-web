@@ -41,8 +41,9 @@ test('universal recruiter artwork is optimized and preserves light mode', () => 
 });
 
 test('light mode keeps full-card artwork and tinted card surfaces visible', () => {
-  assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card \{[^}]*background:var\(--recruiter-card-light-surface,#fff\)/);
-  assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.38;/);
+  assert.match(css, /V6189: recruiter cards retain the dark artwork treatment in light mode/);
+  assert.match(css, /html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #recruitersPage \.employer-card \{[\s\S]*?background:var\(--recruiter-card-surface,#08100c\) !important/);
+  assert.match(css, /V6189[\s\S]*?html\[data-theme="light"\] #recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.94;/);
   assert.match(css, /background-size:cover,cover,cover/);
 });
 
@@ -56,10 +57,10 @@ test('reference action treatment uses smaller circular controls at bottom right'
   assert.doesNotMatch(js, /More recruiter actions/);
 });
 
-test('V6188 cache-busts reference recruiter card treatment', () => {
-  assert.match(index, /data-atsrs-build="V6188"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6188/);
-  assert.match(index, /route-feature-loader\.js\?v=6188/);
+test('V6189 cache-busts theme-parity recruiter card treatment', () => {
+  assert.match(index, /data-atsrs-build="V6189"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6189/);
+  assert.match(index, /route-feature-loader\.js\?v=6189/);
   assert.match(loader, /recruiters\.js\?v=6188/);
 });
 

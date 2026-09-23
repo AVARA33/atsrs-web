@@ -249,3 +249,51 @@ html[data-theme="light"] .job-card-expand-hint{color:#607087}
 .job-detail-panel::before{content:"";position:absolute;z-index:0;inset:0;background-image:linear-gradient(90deg,rgba(8,10,9,.99) 0%,rgba(8,10,9,.9) 48%,rgba(8,10,9,.48) 100%),linear-gradient(135deg,rgba(var(--job-card-accent-rgb),.18),transparent 68%),var(--job-card-art);background-position:center,center,right center;background-repeat:no-repeat;background-size:cover,cover,cover;background-blend-mode:normal,color,luminosity;opacity:.46;pointer-events:none}
 .job-detail-panel>*{position:relative;z-index:1}
 html[data-theme="light"] .job-detail-panel::before{background-image:linear-gradient(90deg,rgba(255,255,255,.99) 0%,rgba(255,255,255,.96) 55%,rgba(255,255,255,.82) 100%),var(--job-card-art);opacity:.2;filter:saturate(.4)}
+
+/* V6189: keep JobSearch cards visually identical in light and dark themes. */
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .job-card {
+  border-color:#242a27 !important;
+  background:#080a09 !important;
+  color:#f8fafc !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.24) !important;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .job-card[data-job-visual] {
+  border-color:rgba(var(--job-card-accent-rgb),.34) !important;
+  background:var(--job-card-surface,#080a09) !important;
+}
+html[data-theme="light"] #jobsPage .job-card::before { background:var(--job-card-accent,#22c55e) !important; }
+html[data-theme="light"] #jobsPage .job-card::after {
+  background-image:linear-gradient(90deg,rgba(var(--job-card-surface-rgb),.98) 0%,rgba(var(--job-card-accent-rgb),.28) 58%,rgba(var(--job-card-accent-rgb),.46) 100%),linear-gradient(135deg,rgba(var(--job-card-accent-rgb),.38),transparent 70%),var(--job-card-art);
+  opacity:.64;
+  filter:none;
+}
+html[data-theme="light"] body #app.app:not(.hidden) #jobsPage .job-card-head h2,
+html[data-theme="light"] #jobsPage .job-card .job-fact dd,
+html[data-theme="light"] #jobsPage .job-card .job-card-disclosure strong,
+html[data-theme="light"] #jobsPage .job-card .job-card-disclosure-symbol,
+html[data-theme="light"] #jobsPage .job-card .job-requirements strong,
+html[data-theme="light"] #jobsPage .job-card .job-recruiter-info strong,
+html[data-theme="light"] #jobsPage .job-card .job-contact-title {
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+html[data-theme="light"] #jobsPage .job-card :is(.job-card-description p,.job-fact dt,.job-card-expand-hint) { color:#9ca9a2 !important; }
+html[data-theme="light"] #jobsPage .job-card .job-card-company { color:var(--job-card-accent,#22c55e) !important; }
+html[data-theme="light"] #jobsPage .job-card .job-card-company span { color:#d7e0db !important; border-color:#314038 !important; }
+html[data-theme="light"] #jobsPage .job-card .job-card-date { color:#d7e0db !important; border-color:#303a35 !important; background:#0b110e !important; }
+html[data-theme="light"] #jobsPage .job-card .job-contact-clickable,
+html[data-theme="light"] #jobsPage .job-card .job-contact-static {
+  border-color:#37413c !important;
+  background:#090c0b !important;
+  box-shadow:none !important;
+}
+html[data-theme="light"] #jobsPage .job-card .job-contact-link,
+html[data-theme="light"] #jobsPage .job-card .job-contact-link-icon { color:var(--job-card-accent,#22c55e) !important; }
+html[data-theme="light"] #jobsPage .job-card .job-contact-static > span { color:#f8fafc !important; -webkit-text-fill-color:#f8fafc !important; }
+html[data-theme="light"] .job-detail-dialog { border-color:#242a27; background:#080a09; color:#f8fafc; }
+html[data-theme="light"] .job-detail-panel::before {
+  background-image:linear-gradient(90deg,rgba(8,10,9,.99) 0%,rgba(8,10,9,.9) 48%,rgba(8,10,9,.48) 100%),linear-gradient(135deg,rgba(var(--job-card-accent-rgb),.18),transparent 68%),var(--job-card-art);
+  opacity:.46;
+  filter:none;
+}
+html[data-theme="light"] .job-detail-section p { color:#c5cec9; }
