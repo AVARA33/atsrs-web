@@ -31,7 +31,7 @@ assert.match(runtime, /Needs data review/);
 assert.doesNotMatch(runtime, /Data quality review required/);
 assert.doesNotMatch(runtime, /Missing — manual review required/);
 assert.match(runtime, /el\('footer','job-contact-info'\)/);
-assert.match(runtime, /body\.append\(project\);a\.append\(head,controls,body,c\)/);
+assert.match(runtime, /body\.append\(project\);a\.append\(head,controls,body,expandHint,c\)/);
 assert.doesNotMatch(runtime, /scrollHeight>body\.clientHeight/);
 
 assert.match(css, /\.jobs-grid\.jobs-cards\{align-items:stretch\}/);

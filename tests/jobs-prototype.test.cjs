@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6163/);
-  assert.match(index,/route-feature-loader\.js\?v=6161/);
+  assert.match(index,/jobs-prototype\.css\?v=6164/);
+  assert.match(index,/route-feature-loader\.js\?v=6164/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6161'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6164'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -228,7 +228,7 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.doesNotMatch(runtime,/function action\(/);
   assert.match(runtime,/body=el\('div','job-card-body'\)/);
   assert.match(runtime,/if\(favorite\)controls\.append\(favorite\);controls\.append\(details\)/);
-  assert.match(runtime,/body\.append\(project\);a\.append\(head,controls,body,c\)/);
+  assert.match(runtime,/body\.append\(project\);a\.append\(head,controls,body,expandHint,c\)/);
   assert.match(runtime,/function syncCardOverflow\(\)/);
   assert.doesNotMatch(runtime,/body\.scrollHeight>body\.clientHeight\+1/);
   assert.doesNotMatch(runtime,/toggleAttribute\('data-overflow'/);

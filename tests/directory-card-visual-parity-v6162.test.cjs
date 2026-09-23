@@ -13,16 +13,16 @@ test('company and JobSearch cards inherit the recruiter card surface', () => {
   assert.match(jobs, /html\[data-theme="dark"\] #jobsPage \.job-card\{background:#08100c;/);
 });
 
-test('company and JobSearch cards use the compact recruiter typography', () => {
+test('company cards keep recruiter typography and JobSearch remains readable', () => {
   assert.match(recruiters, /#recruitersPage \.employer-card-copy h4 \{[\s\S]*?font-size:16px;/);
   assert.match(companies, /#employersPage \.employer-card-copy h4 \{[\s\S]*?font-size: 16px;/);
-  assert.match(jobs, /\.jobs-cards \.job-card-head h2\{font-size:16px;/);
+  assert.match(jobs, /\.jobs-cards \.job-card-head h2\{font-size:18px;/);
   assert.match(companies, /#employersPage \.employer-card-copy p \{[\s\S]*?font-size: 12px;/);
-  assert.match(jobs, /\.jobs-cards \.job-card-summary\{font-size:12px;/);
+  assert.match(jobs, /\.jobs-cards \.job-card-summary\{font-size:14px;/);
 });
 
-test('the shared card styles remain cache-busted in V6163', () => {
-  assert.match(html, /data-atsrs-build="V6163"/);
-  assert.match(html, /css\/jobs-prototype\.css\?v=6163/);
+test('the shared card styles remain cache-busted in V6164', () => {
+  assert.match(html, /data-atsrs-build="V6164"/);
+  assert.match(html, /css\/jobs-prototype\.css\?v=6164/);
   assert.match(html, /css\/employers\.css\?v=6162/);
 });

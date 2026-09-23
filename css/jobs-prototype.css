@@ -155,13 +155,13 @@ html[data-theme="dark"] #jobsPage .job-card{background:#08100c;border-color:#252
 .jobs-cards .job-recruiter-info{grid-template-columns:repeat(2,minmax(0,1fr))}
 
 /* V5918: readable vacancy copy and the standard selected-field treatment for real actions. */
-.jobs-cards .job-card-head h2{font-size:16px;line-height:1.2}
-.jobs-cards .job-card-summary{font-size:12px;line-height:1.45}
+.jobs-cards .job-card-head h2{font-size:18px;line-height:1.22}
+.jobs-cards .job-card-summary{font-size:14px;line-height:1.45}
 .jobs-cards .job-fact dt{font-size:10px}
-.jobs-cards .job-fact dd{font-size:12px;line-height:1.36}
+.jobs-cards .job-fact dd{font-size:13px;line-height:1.36}
 .jobs-cards .job-requirements{font-size:12px;line-height:1.45}
 .jobs-cards .job-contact-static strong{font-size:10px}
-.jobs-cards .job-contact-static>span{font-size:12px;line-height:1.36}
+.jobs-cards .job-contact-static>span{font-size:13px;line-height:1.36}
 html[data-theme] #jobsPage .job-contact-clickable{
   border:var(--atsrs-field-border-width) solid;
   border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line);
@@ -195,6 +195,9 @@ html[data-theme] #jobsPage .job-contact-clickable:focus-within{
 .jobs-cards .job-card-slot>.job-card{height:100%;grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
 .jobs-cards .job-card-slot.is-disclosure-open>.job-card{height:auto;min-height:100%}
 .jobs-cards .job-card-recruiter-meta{margin-top:6px}
+.job-card-expand-hint{display:none;margin:0;color:#839086;font-size:12px;line-height:1.4}
+.jobs-cards .job-card-expand-hint{display:block;align-self:end}
+html[data-theme="light"] .job-card-expand-hint{color:#607087}
 .jobs-cards .job-recruiter-info>.job-contact-org,
 .jobs-cards .job-recruiter-info>.job-contact-name{grid-column:auto}
 @media(max-width:700px){.jobs-cards .job-recruiter-info>.job-contact-org,.jobs-cards .job-recruiter-info>.job-contact-name{grid-column:1/-1}}

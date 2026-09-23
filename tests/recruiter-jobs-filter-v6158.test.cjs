@@ -21,7 +21,7 @@ test('JobSearch applies the requested recruiter after options load', () => {
 });
 
 test('runtime cache versions expose the recruiter filter handoff', () => {
-  assert.match(loader, /jobs-prototype\.js\?v=6161/);
+  assert.match(loader, /jobs-prototype\.js\?v=6164/);
   assert.match(loader, /recruiters\.js\?v=6158/);
-  assert.match(html, /route-feature-loader\.js\?v=6161/);
+  assert.match(html, /route-feature-loader\.js\?v=6164/);
 });

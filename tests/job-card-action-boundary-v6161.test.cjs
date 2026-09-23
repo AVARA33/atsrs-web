@@ -16,3 +16,9 @@ test('the separated footer contains only actionable contact controls for full ac
   assert.match(jobs, /if\(actions\.childElementCount\)c\.append\(actions\)/);
   assert.doesNotMatch(jobs, /c\.append\(contacts\)/);
 });
+
+test('collapsed cards explain how to open the full vacancy above the action divider', () => {
+  assert.match(jobs, /job-card-expand-hint','For more info, please expand the card\.'/);
+  assert.match(jobs, /a\.append\(head,controls,body,expandHint,c\)/);
+  assert.match(css, /\.jobs-cards \.job-card-expand-hint\{display:block;align-self:end\}/);
+});
