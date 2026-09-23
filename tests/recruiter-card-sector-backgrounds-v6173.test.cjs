@@ -21,10 +21,17 @@ test('recruiter cards receive a deterministic sector visual', () => {
 
 test('recruiter artwork matches JobSearch strength without changing card dimensions', () => {
   assert.match(css, /#recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.56;/);
-  assert.match(css, /rgba\(8,16,12,\.99\).*rgba\(8,16,12,\.86\).*rgba\(8,16,12,\.30\)/);
+  assert.match(css, /rgba\(var\(--recruiter-card-surface-rgb\),\.99\).*rgba\(var\(--recruiter-card-surface-rgb\),\.86\).*rgba\(var\(--recruiter-card-surface-rgb\),\.30\)/);
   assert.match(css, /#recruitersPage \.employer-card > \* \{ position:relative; z-index:1; \}/);
   assert.match(css, /#recruitersPage \.employer-card::before \{\s*z-index:2;/);
   assert.match(css, /min-height:108px/);
+});
+
+test('card interiors follow the existing green cyan purple and red accent rhythm', () => {
+  for (const surface of ['#06160d', '#06151b', '#130b20', '#1b0c0a']) assert.match(css, new RegExp(surface));
+  for (const tone of ['37,223,105', '40,215,215', '168,85,247', '239,90,80']) assert.match(css, new RegExp(tone));
+  assert.match(css, /background:var\(--recruiter-card-surface,#08100c\)/);
+  assert.doesNotMatch(css, /f472b6|244,114,182/i);
 });
 
 test('all sector mappings reuse optimized JobSearch artwork and preserve light mode', () => {
@@ -35,9 +42,9 @@ test('all sector mappings reuse optimized JobSearch artwork and preserve light m
   assert.match(css, /opacity:\.22/);
 });
 
-test('V6174 cache-busts recruiter card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6174"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6173/);
+test('V6175 cache-busts recruiter card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6175"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6175/);
   assert.match(index, /route-feature-loader\.js\?v=6174/);
   assert.match(loader, /recruiters\.js\?v=6173/);
 });

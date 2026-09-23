@@ -1,4 +1,4 @@
-# Recruiter card sector backgrounds — V6174 design QA
+# Recruiter card sector backgrounds — V6175 design QA
 
 ## Scope
 
@@ -11,6 +11,7 @@
 - Dark overlay: `rgba(8,16,12,.99)` → `.86` → `.30`.
 - Sector tint: `rgba(var(--recruiter-card-accent-rgb),.18)`.
 - Artwork layer opacity: `.56`.
+- Card interiors follow the existing four-colour accent rhythm: green, cyan, purple and red.
 - Light-theme artwork opacity: `.22` with a stronger white overlay.
 
 ## Responsive and content checks
