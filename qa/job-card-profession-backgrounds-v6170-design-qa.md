@@ -1,4 +1,4 @@
-# JobSearch profession backgrounds — V6170 design QA
+# JobSearch profession backgrounds — V6171 design QA
 
 ## Scope
 
@@ -13,6 +13,7 @@
 - Card artwork stays decorative (`pointer-events: none`) and does not intercept controls.
 - The expanded dialog reuses the same category and a softer overlay.
 - Dark and light themes have separate readability overlays.
+- V6171 increases artwork visibility and assigns a distinct accent colour to every category.
 
 ## Category coverage
 
@@ -31,6 +32,7 @@
 - Verified different job categories select different artwork.
 - Verified the expand control still opens the job dialog.
 - Verified the expanded dialog displays the matching profession artwork.
+- Verified marine, marketing and logistics cards are visually distinguishable by colour without changing content layout.
 - Automated focused tests: passed.
 
 ## Result
