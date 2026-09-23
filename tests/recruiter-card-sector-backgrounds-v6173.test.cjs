@@ -56,11 +56,11 @@ test('reference action treatment uses circular controls and a functional more me
   assert.match(js, /entry\[1\]\.click\(\)/);
 });
 
-test('V6186 cache-busts reference recruiter card treatment', () => {
-  assert.match(index, /data-atsrs-build="V6186"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6186/);
-  assert.match(index, /route-feature-loader\.js\?v=6186/);
-  assert.match(loader, /recruiters\.js\?v=6186/);
+test('V6187 cache-busts reference recruiter card treatment', () => {
+  assert.match(index, /data-atsrs-build="V6187"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6187/);
+  assert.match(index, /route-feature-loader\.js\?v=6187/);
+  assert.match(loader, /recruiters\.js\?v=6187/);
 });
 
 test('recruiter cards reproduce the reference motto and controls', () => {

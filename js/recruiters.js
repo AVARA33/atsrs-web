@@ -273,7 +273,7 @@
     var motto = document.createElement("span");
     motto.className = "recruiter-card-motto";
     motto.setAttribute("aria-hidden", "true");
-    motto.innerHTML = "TALENT<br>PEOPLE<br>GROWTH";
+    motto.innerHTML = "TALENT<br>PEOPLE<br>GROWTH<span class=\"recruiter-card-more-glyph\">&#8942;</span>";
     [
       ["LinkedIn profile", linkedinAction],
       ["View offers", jobsAction],
