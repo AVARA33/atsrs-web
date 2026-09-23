@@ -6,6 +6,7 @@ const html = fs.readFileSync('index.html', 'utf8');
 const recruiters = fs.readFileSync('css/recruiter-directory-v6029.css', 'utf8');
 const companies = fs.readFileSync('css/employers.css', 'utf8');
 const jobs = fs.readFileSync('css/jobs-prototype.css', 'utf8');
+const darkGreen = fs.readFileSync('css/dark-green-text-standard-v58140.css', 'utf8');
 
 test('company and JobSearch cards inherit the recruiter card surface', () => {
   assert.match(recruiters, /#recruitersPage \.employer-card \{[\s\S]*?background:#08100c;/);
@@ -24,10 +25,11 @@ test('company cards keep recruiter typography and JobSearch remains readable', (
 test('JobSearch vacancy titles are white in dark mode and readable in light mode', () => {
   assert.match(jobs, /html\[data-theme="dark"\][^{]*#jobsPage \.job-card-head h2\{color:#fff!important;-webkit-text-fill-color:#fff!important\}/);
   assert.match(jobs, /html\[data-theme="light"\][^{]*#jobsPage \.job-card-head h2\{color:#13233c!important;-webkit-text-fill-color:#13233c!important\}/);
+  assert.doesNotMatch(darkGreen, /#jobsPage \.job-card-head h2/);
 });
 
-test('the shared card styles remain cache-busted in V6167', () => {
-  assert.match(html, /data-atsrs-build="V6167"/);
+test('the shared card styles remain cache-busted in V6168', () => {
+  assert.match(html, /data-atsrs-build="V6168"/);
   assert.match(html, /css\/jobs-prototype\.css\?v=6166/);
   assert.match(html, /css\/employers\.css\?v=6162/);
 });

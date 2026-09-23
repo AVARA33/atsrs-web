@@ -121,7 +121,6 @@ html[data-theme="dark"] body #app.app:not(.hidden) :is(
   :is(#candidatesPage,#personnelPage,#projectsPage,#jobsPage) .talent-view-switch button[aria-pressed="true"],
   :is(#candidatesPage,#personnelPage,#projectsPage,#jobsPage) .talent-view-switch button.active,
   #jobsPage .jobs-hero h3,
-  #jobsPage .job-card-head h2,
   #jobsPage .jobs-view-switch button[aria-pressed="true"],
   #jobsPage .jobs-view-switch button.active
 ){

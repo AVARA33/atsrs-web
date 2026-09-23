@@ -6,8 +6,8 @@ const loader=fs.readFileSync('js/route-feature-loader.js','utf8');
 const js=fs.readFileSync('js/recruiters.js','utf8');
 const css=fs.readFileSync('css/recruiter-directory-v6029.css','utf8');
 
-assert.match(html,/data-atsrs-build="V6167"/);
-assert.match(html,/js\/route-feature-loader\.js\?v=6167/);
+assert.match(html,/data-atsrs-build="V6168"/);
+assert.match(html,/js\/route-feature-loader\.js\?v=6168/);
 assert.match(html,/css\/recruiter-directory-v6029\.css\?v=6156/);
 assert.match(loader,/js\/recruiters\.js\?v=6158/);
 assert.match(js,/ph ph-seal-check employer-verified-icon/);

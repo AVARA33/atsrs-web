@@ -37,7 +37,7 @@ test('dark brand accent does not override semantic document states', () => {
 });
 
 test('late theme layer forces matching title and badge colors in both themes', () => {
-  assert.match(index, /dark-green-text-standard-v58140\.css\?v=58141/);
+  assert.match(index, /dark-green-text-standard-v58140\.css\?v=6168/);
   assert.match(dark, /html\[data-theme\] :is\(\.shared-document-card\.status-expiring-1,\.shared-document-card\.status-expired\) h3/);
   assert.match(dark, /html\[data-theme="dark"\] :is\(\.shared-document-card\.status-expiring-1,\.shared-document-card\.status-expired\) h3/);
   assert.match(dark, /-webkit-text-fill-color:#dc2626!important/);
