@@ -148,20 +148,20 @@ html[data-theme="light"] body .job-detail-dialog .job-detail-toggle:focus-visibl
 html[data-theme="light"] .jobs-cards .job-contact-source.job-contact-static{border-color:#d8e1ee;background:#f5f8fc}
 html[data-theme="light"] #jobsPage .job-contact-static>span{color:#13233c;-webkit-text-fill-color:#13233c}
 
-/* V5916: dark-mode vacancy surfaces stay neutral black, never green-tinted. */
-html[data-theme="dark"] #jobsPage .job-card{background:#070707;border-color:#252525}
+/* V6162: JobSearch cards share the recruiter-directory surface and compact type scale. */
+html[data-theme="dark"] #jobsPage .job-card{background:#08100c;border-color:#252525}
 
 /* V5917: keep the two vacancy actions paired at every card breakpoint. */
 .jobs-cards .job-recruiter-info{grid-template-columns:repeat(2,minmax(0,1fr))}
 
 /* V5918: readable vacancy copy and the standard selected-field treatment for real actions. */
-.jobs-cards .job-card-head h2{font-size:19px}
-.jobs-cards .job-card-summary{font-size:14px;line-height:1.45}
+.jobs-cards .job-card-head h2{font-size:16px;line-height:1.2}
+.jobs-cards .job-card-summary{font-size:12px;line-height:1.45}
 .jobs-cards .job-fact dt{font-size:10px}
-.jobs-cards .job-fact dd{font-size:13px;line-height:1.36}
+.jobs-cards .job-fact dd{font-size:12px;line-height:1.36}
 .jobs-cards .job-requirements{font-size:12px;line-height:1.45}
 .jobs-cards .job-contact-static strong{font-size:10px}
-.jobs-cards .job-contact-static>span{font-size:13px;line-height:1.36}
+.jobs-cards .job-contact-static>span{font-size:12px;line-height:1.36}
 html[data-theme] #jobsPage .job-contact-clickable{
   border:var(--atsrs-field-border-width) solid;
   border-color:var(--atsrs-field-focus-block-line) var(--atsrs-field-focus-inline-line);

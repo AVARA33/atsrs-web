@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6154/);
+  assert.match(index,/jobs-prototype\.css\?v=6162/);
   assert.match(index,/route-feature-loader\.js\?v=6161/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6161'\)/);
@@ -270,7 +270,7 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/Private source — no public link/);
   assert.match(runtime,/contact\(actions,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
   assert.doesNotMatch(runtime,/rpc\('atsrs_job_public_v1'/);
-  assert.match(css,/html\[data-theme="dark"\] #jobsPage \.job-card\{background:#070707;border-color:#252525\}/);
+  assert.match(css,/html\[data-theme="dark"\] #jobsPage \.job-card\{background:#08100c;border-color:#252525\}/);
   assert.match(runtime,/job-contact-link-icon/);
   assert.match(css,/\.job-contact-link::before\{content:"";position:absolute;inset:0/);
   assert.match(css,/\.job-contact-clickable\{[^}]*border-color:rgba\(34,197,94,\.3\)[^}]*background:rgba\(34,197,94,\.04\)/);

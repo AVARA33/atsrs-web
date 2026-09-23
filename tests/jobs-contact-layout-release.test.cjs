@@ -8,17 +8,17 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6161"/);
+assert.match(index, /data-atsrs-build="V6162"/);
 assert.match(index, /href="billing-terms\.html#candidate-fees" target="_blank" rel="noopener noreferrer"/);
 assert.doesNotMatch(index, /href="billing-terms\.html#candidate-fees" onclick=/);
-assert.match(index, /href="css\/jobs-prototype\.css\?v=6154"/);
+assert.match(index, /href="css\/jobs-prototype\.css\?v=6162"/);
 assert.match(index, /src="js\/route-feature-loader\.js\?v=6161"/);
 assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6161'\)/);
 assert.match(jobs, /p\.classList\.add\('job-contact-static'\)/);
 assert.match(jobs, /ph ph-hand-tap job-contact-link-icon/);
 assert.doesNotMatch(jobs, /ph ph-arrow-up-right job-contact-link-icon/);
 assert.match(css, /\.jobs-cards \.job-recruiter-info\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
-assert.match(css, /\.jobs-cards \.job-card-summary\{font-size:14px;line-height:1\.45\}/);
+assert.match(css, /\.jobs-cards \.job-card-summary\{font-size:12px;line-height:1\.45\}/);
 assert.match(css, /html\[data-theme\] #jobsPage \.job-contact-clickable\{/);
 assert.match(css, /border-color:var\(--atsrs-field-focus-block-line\) var\(--atsrs-field-focus-inline-line\)/);
 assert.match(css, /html\[data-theme\] #jobsPage \.job-contact-clickable\{[\s\S]*?background:var\(--atsrs-field-surface\)/);

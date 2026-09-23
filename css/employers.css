@@ -325,7 +325,7 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
   padding: 24px 24px 18px;
   border-color: #28302c;
   border-radius: 14px;
-  background: #080b09;
+  background: #08100c;
   box-shadow: none;
   content-visibility: auto;
   contain-intrinsic-block-size: 270px;
@@ -396,20 +396,20 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
 }
 #employersPage .employer-card-copy h4 {
   margin-top: 7px;
-  font-size: 22px;
-  line-height: 1.18;
+  font-size: 16px;
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 #employersPage .employer-sector-label {
   color: #d8dfdb;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.35;
 }
 #employersPage .employer-card-copy p {
   max-width: 390px;
   color: #aab3ae;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.38;
 }
 #employersPage .employer-vacancy-panel {
@@ -655,7 +655,7 @@ html[data-theme="light"] #employersPage .employer-actions button:disabled {
     height: 44px;
   }
   #employersPage .employer-card-copy h4 {
-    font-size: 19px;
+    font-size: 16px;
   }
   #employersPage .employer-vacancy-panel {
     grid-column: 1 / -1;
