@@ -174,14 +174,27 @@
       : '<i class="ph ph-briefcase" aria-hidden="true"></i> '+(recruiter.profile_source_url?'Official job contact':'Active in JobSearch');
     var title = document.createElement("h4");
     title.textContent = name;
+    if (recruiter.linkedin_url) {
+      var verifiedIcon = document.createElement("i");
+      verifiedIcon.className = "ph ph-seal-check employer-verified-icon";
+      verifiedIcon.setAttribute("aria-label", "Verified LinkedIn profile");
+      title.append(verifiedIcon);
+    }
     var summary = document.createElement("p");
     summary.textContent = [
       recruiter.role_title || "Recruiter",
       recruiter.company,
-      recruiter.location,
     ].filter(Boolean).join(" · ");
     summary.title = summary.textContent;
-    copy.append(source, title, summary);
+    var location = document.createElement("p");
+    location.className = "employer-location";
+    if (recruiter.location) {
+      var locationIcon = document.createElement("i");
+      locationIcon.className = "ph ph-map-pin";
+      locationIcon.setAttribute("aria-hidden", "true");
+      location.append(locationIcon, document.createTextNode(recruiter.location));
+    }
+    copy.append(source, title, summary, location);
     head.append(mark, copy);
     var tags = document.createElement("div");
     tags.className = "employer-tags";
@@ -220,7 +233,7 @@
     actions.append(linkedinAction);
     var jobsAction = action(
       "View offers",
-      "arrow-right",
+      "briefcase",
       function () {
         goToJobs(name);
       },
