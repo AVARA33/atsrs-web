@@ -32,21 +32,21 @@ test('all generated artwork files exist and stay lightweight', () => {
   }
 });
 
-test('V6176 cache-busts the profession-aware JobSearch card styles', () => {
-  assert.match(index, /data-atsrs-build="V6176"/);
-  assert.match(index, /css\/jobs-prototype\.css\?v=6176/);
+test('V6177 cache-busts the profession-aware JobSearch card styles', () => {
+  assert.match(index, /data-atsrs-build="V6177"/);
+  assert.match(index, /css\/jobs-prototype\.css\?v=6177/);
   const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
   assert.match(loader, /js\/jobs-prototype\.js\?v=6170/);
 });
 
-test('every profession category has its own accent colour and a stronger artwork layer', () => {
-  for (const colour of ['#22d3ee', '#38bdf8', '#fb923c', '#34d399', '#2dd4bf', '#f59e0b', '#a78bfa']) {
+test('every profession category has a non-pink accent applied to its artwork layer', () => {
+  for (const colour of ['#22d3ee', '#38bdf8', '#fb923c', '#34d399', '#14b8a6', '#f59e0b', '#22c55e']) {
     assert.match(css, new RegExp(colour));
   }
-  assert.match(css, /\.job-card::after\{[^}]*opacity:\.56/);
+  assert.match(css, /\.job-card::after\{[^}]*rgba\(var\(--job-card-accent-rgb\),\.46\)[^}]*opacity:\.64/);
   assert.match(css, /\.job-card\[data-job-visual\]\{[^}]*--atsrs-jobs-green-text:var\(--job-card-accent\)/);
   assert.match(css, /html\[data-theme="dark"\] #jobsPage \.job-card\[data-job-visual\]\{background:var\(--job-card-surface\)\}/);
   assert.match(css, /html\[data-theme="light"\] #jobsPage \.job-card\[data-job-visual\]\{background:var\(--job-card-light-surface\)/);
   assert.match(css, /html\[data-theme="light"\] \.job-card::after\{[^}]*opacity:\.52/);
-  assert.doesNotMatch(css, /#f472b6|244,114,182/);
+  assert.doesNotMatch(css, /#(?:f472b6|a78bfa)|(?:244,114,182|167,139,250)/i);
 });
