@@ -270,6 +270,10 @@
     moreMenu.className = "recruiter-more-menu";
     moreMenu.setAttribute("role", "menu");
     moreMenu.hidden = true;
+    var motto = document.createElement("span");
+    motto.className = "recruiter-card-motto";
+    motto.setAttribute("aria-hidden", "true");
+    motto.innerHTML = "TALENT<br>PEOPLE<br>GROWTH";
     [
       ["LinkedIn profile", linkedinAction],
       ["View offers", jobsAction],
@@ -286,7 +290,7 @@
       });
       moreMenu.append(item);
     });
-    article.append(head, tags, actions, moreAction, moreMenu);
+    article.append(head, tags, motto, actions, moreAction, moreMenu);
     return article;
   }
   function db() {
