@@ -21,8 +21,13 @@ test('company cards keep recruiter typography and JobSearch remains readable', (
   assert.match(jobs, /\.jobs-cards \.job-card-summary\{font-size:14px;/);
 });
 
-test('the shared card styles remain cache-busted in V6165', () => {
-  assert.match(html, /data-atsrs-build="V6165"/);
-  assert.match(html, /css\/jobs-prototype\.css\?v=6164/);
+test('JobSearch vacancy titles are white in dark mode and readable in light mode', () => {
+  assert.match(jobs, /html\[data-theme="dark"\][^{]*#jobsPage \.job-card-head h2\{color:#fff!important;-webkit-text-fill-color:#fff!important\}/);
+  assert.match(jobs, /html\[data-theme="light"\][^{]*#jobsPage \.job-card-head h2\{color:#13233c!important;-webkit-text-fill-color:#13233c!important\}/);
+});
+
+test('the shared card styles remain cache-busted in V6166', () => {
+  assert.match(html, /data-atsrs-build="V6166"/);
+  assert.match(html, /css\/jobs-prototype\.css\?v=6166/);
   assert.match(html, /css\/employers\.css\?v=6162/);
 });

@@ -86,8 +86,7 @@ html[data-theme] body.personal-mode #app#app.app:not(.hidden) #profilePage#profi
 body.personal-mode #profilePage .profile-sharing-row{grid-template-columns:minmax(180px,.95fr) minmax(250px,1.3fr) 80px minmax(210px,.9fr) minmax(0,430px);gap:10px;min-height:50px;padding:5px 10px}
 body.personal-mode #profilePage .profile-sharing-row-requester{display:grid;gap:3px;min-width:0}
 body.personal-mode #profilePage .profile-sharing-link-request{grid-template-columns:max-content minmax(0,1fr);min-height:32px;padding:4px 8px}
-body.personal-mode #profilePage .profile-sharing-row-copy strong{color:#fff;font-size:11px}
-html[data-theme="light"] body.personal-mode #profilePage .profile-sharing-row-copy strong{color:#111827}
+body.personal-mode #profilePage .profile-sharing-row-copy strong{font-size:11px}
 body.personal-mode #profilePage .profile-sharing-row-copy small,body.personal-mode #profilePage .profile-sharing-row-time{font-size:9px}
 body.personal-mode #profilePage .profile-sharing-row-copy>i{flex:0 0 28px;min-width:28px;max-width:28px}
 body.personal-mode #profilePage .profile-sharing-row-copy>span{flex:1 1 auto;min-width:0;max-width:calc(100% - 36px);text-align:left}
