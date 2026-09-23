@@ -49,13 +49,19 @@ test('light mode preserves visible artwork and readable pale surfaces', () => {
   assert.match(css, /html\[data-theme="light"\] #employersPage \.employer-card::after \{[\s\S]*?opacity: \.48;/);
 });
 
-test('V6181 cache-busts icon-only company actions', () => {
-  assert.match(index, /data-atsrs-build="V6181"/);
-  assert.match(index, /employers\.css\?v=6181/);
-  assert.match(index, /route-feature-loader\.js\?v=6181/);
-  assert.match(loader, /employers\.js\?v=6181/);
+test('V6182 cache-busts icon-only company actions and direct-on-artwork tags', () => {
+  assert.match(index, /data-atsrs-build="V6182"/);
+  assert.match(index, /employers\.css\?v=6182/);
+  assert.match(index, /route-feature-loader\.js\?v=6182/);
+  assert.match(loader, /employers\.js\?v=6182/);
   assert.match(css, /grid-template-columns: repeat\(5, 40px\)/);
   assert.match(css, /#employersPage \.employer-actions :is\(a, button\) > span \{[\s\S]*?clip-path: inset\(50%\)/);
   assert.match(js, /link\.setAttribute\("aria-label", label\)/);
   assert.match(js, /button\.setAttribute\("aria-label", label\)/);
+});
+
+test('company category tags render directly on artwork without black pills', () => {
+  assert.match(css, /#employersPage \.employer-tag \{[\s\S]*?background: transparent;/);
+  assert.match(css, /#employersPage \.employer-tag \{[\s\S]*?background: transparent !important;/);
+  assert.match(css, /\.employer-tag \+ \.employer-tag::before \{[\s\S]*?content: "·";/);
 });
