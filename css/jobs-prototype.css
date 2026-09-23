@@ -53,7 +53,7 @@ html[data-theme="dark"] #jobsPage .job-card{background:#080a09;border-color:#242
 :is(.job-card,.job-detail-dialog)[data-job-visual="technology"]{--job-card-art:url("../assets/job-card-backgrounds/technology-data.webp");--job-card-accent:#38bdf8;--job-card-accent-rgb:56,189,248}
 :is(.job-card,.job-detail-dialog)[data-job-visual="construction"]{--job-card-art:url("../assets/job-card-backgrounds/construction-architecture.webp");--job-card-accent:#fb923c;--job-card-accent-rgb:251,146,60}
 :is(.job-card,.job-detail-dialog)[data-job-visual="healthcare"]{--job-card-art:url("../assets/job-card-backgrounds/healthcare-laboratory.webp");--job-card-accent:#34d399;--job-card-accent-rgb:52,211,153}
-:is(.job-card,.job-detail-dialog)[data-job-visual="marketing"]{--job-card-art:url("../assets/job-card-backgrounds/marketing-business.webp");--job-card-accent:#f472b6;--job-card-accent-rgb:244,114,182}
+:is(.job-card,.job-detail-dialog)[data-job-visual="marketing"]{--job-card-art:url("../assets/job-card-backgrounds/marketing-business.webp");--job-card-accent:#2dd4bf;--job-card-accent-rgb:45,212,191}
 :is(.job-card,.job-detail-dialog)[data-job-visual="logistics"]{--job-card-art:url("../assets/job-card-backgrounds/logistics-transport.webp");--job-card-accent:#f59e0b;--job-card-accent-rgb:245,158,11}
 :is(.job-card,.job-detail-dialog)[data-job-visual="office"]{--job-card-art:url("../assets/job-card-backgrounds/education-office.webp");--job-card-accent:#a78bfa;--job-card-accent-rgb:167,139,250}
 .job-card[data-job-visual]{--atsrs-jobs-green-text:var(--job-card-accent);border-color:rgba(var(--job-card-accent-rgb),.42);box-shadow:0 12px 28px rgba(var(--job-card-accent-rgb),.08)}
