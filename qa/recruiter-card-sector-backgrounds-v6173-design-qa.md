@@ -1,4 +1,4 @@
-# Recruiter card sector backgrounds — V6173 design QA
+# Recruiter card sector backgrounds — V6174 design QA
 
 ## Scope
 

@@ -35,8 +35,9 @@ test('all sector mappings reuse optimized JobSearch artwork and preserve light m
   assert.match(css, /opacity:\.22/);
 });
 
-test('V6173 cache-busts recruiter card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6173"/);
+test('V6174 cache-busts recruiter card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6174"/);
   assert.match(index, /recruiter-directory-v6029\.css\?v=6173/);
+  assert.match(index, /route-feature-loader\.js\?v=6174/);
   assert.match(loader, /recruiters\.js\?v=6173/);
 });
