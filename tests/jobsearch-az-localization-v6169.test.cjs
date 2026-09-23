@@ -39,8 +39,8 @@ test('dynamic JobSearch controls pass user-visible labels through uiText', () =>
   assert.match(jobs, /jobs-select-empty',uiText\('No matching roles'\)/);
 });
 
-test('V6172 preserves the Azerbaijani locale and JobSearch runtime', () => {
-  assert.match(index, /data-atsrs-build="V6172"/);
+test('V6173 preserves the Azerbaijani locale and JobSearch runtime', () => {
+  assert.match(index, /data-atsrs-build="V6173"/);
   assert.match(index, /js\/locale-az\.js\?v=6169/);
   assert.match(index, /js\/route-feature-loader\.js\?v=6170/);
   assert.match(loader, /js\/jobs-prototype\.js\?v=6170/);

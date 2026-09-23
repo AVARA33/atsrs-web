@@ -468,6 +468,9 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   gap:8px 14px;
 }
 #recruitersPage .employer-card {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   grid-template-rows:auto auto;
@@ -481,10 +484,32 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   box-shadow:none;
 }
 #recruitersPage .employer-card::before {
+  z-index:2;
   width:5px;
   background:#25df69;
   box-shadow:none;
 }
+#recruitersPage .employer-card::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background-image:linear-gradient(90deg,rgba(8,16,12,.99) 0%,rgba(8,16,12,.86) 43%,rgba(8,16,12,.30) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-accent-rgb),.18),transparent 68%),var(--recruiter-card-art);
+  background-position:center,center,right center;
+  background-repeat:no-repeat;
+  background-size:cover,cover,cover;
+  background-blend-mode:normal,color,luminosity;
+  opacity:.56;
+  pointer-events:none;
+}
+#recruitersPage .employer-card > * { position:relative; z-index:1; }
+#recruitersPage .employer-card[data-recruiter-visual="offshore"] { --recruiter-card-art:url("../assets/job-card-backgrounds/marine-rov.webp"); --recruiter-card-accent-rgb:34,211,238; }
+#recruitersPage .employer-card[data-recruiter-visual="energy"] { --recruiter-card-art:url("../assets/job-card-backgrounds/technology-data.webp"); --recruiter-card-accent-rgb:34,197,94; }
+#recruitersPage .employer-card[data-recruiter-visual="infrastructure"] { --recruiter-card-art:url("../assets/job-card-backgrounds/construction-architecture.webp"); --recruiter-card-accent-rgb:251,146,60; }
+#recruitersPage .employer-card[data-recruiter-visual="science"] { --recruiter-card-art:url("../assets/job-card-backgrounds/healthcare-laboratory.webp"); --recruiter-card-accent-rgb:52,211,153; }
+#recruitersPage .employer-card[data-recruiter-visual="hospitality"] { --recruiter-card-art:url("../assets/job-card-backgrounds/education-office.webp"); --recruiter-card-accent-rgb:167,139,250; }
+#recruitersPage .employer-card[data-recruiter-visual="logistics"] { --recruiter-card-art:url("../assets/job-card-backgrounds/logistics-transport.webp"); --recruiter-card-accent-rgb:245,158,11; }
+#recruitersPage .employer-card[data-recruiter-visual="network"] { --recruiter-card-art:url("../assets/job-card-backgrounds/technology-data.webp"); --recruiter-card-accent-rgb:34,197,94; }
 #recruitersPage .employer-card:nth-child(4n+2)::before { background:#28d7d7; }
 #recruitersPage .employer-card:nth-child(4n+3)::before { background:#a855f7; }
 #recruitersPage .employer-card:nth-child(4n+4)::before { background:#ef5a50; }
@@ -644,6 +669,11 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
 #recruitersPage .employer-actions button:disabled { display:inline-flex; opacity:.38; }
 
 html[data-theme="light"] #recruitersPage .employer-card { border-color:#d6e2dc; background:#fff; }
+html[data-theme="light"] #recruitersPage .employer-card::after {
+  background-image:linear-gradient(90deg,rgba(255,255,255,.99) 0%,rgba(255,255,255,.94) 52%,rgba(255,255,255,.72) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-accent-rgb),.10),transparent 68%),var(--recruiter-card-art);
+  opacity:.22;
+  filter:saturate(.42);
+}
 html[data-theme="light"] #recruitersPage .employer-card-copy h4 { color:#15231b; }
 html[data-theme="light"] #recruitersPage .employer-card-copy p,
 html[data-theme="light"] #recruitersPage .employer-vacancy-count { color:#40564a !important; }
