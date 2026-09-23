@@ -151,34 +151,12 @@
   function vacancyLabel(count) {
     return count + " active " + (count === 1 ? "vacancy" : "vacancies");
   }
-  function recruiterVisual(recruiter) {
-    var company = normalized(recruiter && recruiter.company);
-    var role = normalized(recruiter && recruiter.role_title);
-    var profile = company + " " + role;
-
-    if (/orion group/.test(company)) return "vessel";
-    if (/airswift|halliburton/.test(company)) return "offshore";
-    if (/\bslb\b|siemens energy|worley|assystem/.test(company)) return "energy";
-    if (/aecom|turner\s*&\s*townsend/.test(company)) return "infrastructure";
-    if (/eurofins/.test(company)) return "science";
-    if (/accor/.test(company)) return "hospitality";
-
-    if (/vessel|marine|ship/.test(profile)) return "vessel";
-    if (/offshore|subsea|rov|oil\s*&?\s*gas|oilfield/.test(profile)) return "offshore";
-    if (/energy|power|renewable/.test(profile)) return "energy";
-    if (/architect|construction|infrastructure|civil|engineering|industrial/.test(profile)) return "infrastructure";
-    if (/laborator|science|chemist|medical|health/.test(profile)) return "science";
-    if (/hotel|hospitality|resort/.test(profile)) return "hospitality";
-    if (/logistics|transport|supply chain|procurement/.test(profile)) return "logistics";
-    return "network";
-  }
   function card(recruiter) {
     var name = recruiter.name;
     var article = document.createElement("article");
     article.className = "employer-card";
     article.tabIndex = 0;
     article.dataset.recruiterName = name;
-    article.dataset.recruiterVisual = recruiterVisual(recruiter);
     if (recruiter.id) article.dataset.recruiterId = recruiter.id;
     var head = document.createElement("div");
     head.className = "employer-card-head";
