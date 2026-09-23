@@ -472,6 +472,50 @@
       (window.atsrsCompanyDirectoryLinks || {})[company.name] || {},
     );
   }
+  function companyVisual(company, data) {
+    var name = normalized(company && company.name);
+    var signal = normalized([
+      company && company.name,
+      data && data.sector,
+      data && data.summary,
+      (data && data.tags || []).join(" "),
+    ].join(" "));
+    var named = {
+      "saudi aramco": ["energy", "green"],
+      sabic: ["industrial", "amber"],
+      stc: ["technology", "purple"],
+      neom: ["infrastructure", "cyan"],
+      aecom: ["infrastructure", "cyan"],
+      halliburton: ["energy", "red"],
+      airswift: ["offshore", "cyan"],
+      slb: ["energy", "purple"],
+      eurofins: ["science", "cyan"],
+      accorhotel: ["hospitality", "amber"],
+      accor: ["hospitality", "amber"],
+      "orion group": ["offshore", "cyan"],
+      worley: ["industrial", "purple"],
+      "siemens energy": ["energy", "green"],
+      "turner & townsend": ["infrastructure", "purple"],
+    };
+    if (named[name]) return { art: named[name][0], tone: named[name][1] };
+    if (/\b(lab|laboratory|science|scient|medical|health|clinical|pharma|chemist)\b/.test(signal))
+      return { art: "science", tone: "cyan" };
+    if (/\b(hotel|hospitality|resort|restaurant|food|chef)\b/.test(signal))
+      return { art: "hospitality", tone: "amber" };
+    if (/\b(software|technology|digital|data|telecom|network|cyber|robot|electronics)\b/.test(signal))
+      return { art: "technology", tone: "purple" };
+    if (/\b(chemical|manufactur|factory|industrial|mining|production)\b/.test(signal))
+      return { art: "industrial", tone: "amber" };
+    if (/\b(construction|architect|infrastructure|development|civil|engineering|project)\b/.test(signal))
+      return { art: "infrastructure", tone: "cyan" };
+    if (/\b(logistics|transport|shipping|supply|warehouse|aviation)\b/.test(signal))
+      return { art: "logistics", tone: "amber" };
+    if (/\b(offshore|subsea|marine|maritime|rov|survey|vessel|dredg)\b/.test(signal))
+      return { art: "offshore", tone: "cyan" };
+    if (/\b(energy|oil|gas|power|renewable|wind|solar|utility)\b/.test(signal))
+      return { art: "energy", tone: "green" };
+    return { art: "network", tone: "green" };
+  }
   function jobCategories(row) {
     var signal = [row && row.title, row && row.worksite, row && row.work_type, row && row.equipment]
       .map(clean)
@@ -597,9 +641,12 @@
   function card(company) {
     var data = companyData(company),
       article = document.createElement("article");
+    var visual = companyVisual(company, data);
     article.className = "employer-card";
     article.tabIndex = 0;
     article.dataset.employerName = company.name;
+    article.dataset.companyVisual = visual.art;
+    article.dataset.companyTone = visual.tone;
     var head = document.createElement("div");
     head.className = "employer-card-head";
     var mark = document.createElement("div");

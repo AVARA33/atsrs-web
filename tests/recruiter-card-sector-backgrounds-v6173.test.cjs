@@ -39,12 +39,18 @@ test('all sector mappings reuse optimized JobSearch artwork and preserve light m
     assert.match(css, new RegExp(`data-recruiter-visual="${visual}"`));
   }
   assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card::after/);
-  assert.match(css, /opacity:\.22/);
+  assert.match(css, /opacity:\.38/);
 });
 
-test('V6175 cache-busts recruiter card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6175"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6175/);
-  assert.match(index, /route-feature-loader\.js\?v=6174/);
+test('light mode keeps full-card artwork and tinted card surfaces visible', () => {
+  assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card \{[^}]*background:var\(--recruiter-card-light-surface,#fff\)/);
+  assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.38;/);
+  assert.match(css, /background-size:cover,cover,cover/);
+});
+
+test('V6176 cache-busts recruiter card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6176"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6176/);
+  assert.match(index, /route-feature-loader\.js\?v=6176/);
   assert.match(loader, /recruiters\.js\?v=6173/);
 });

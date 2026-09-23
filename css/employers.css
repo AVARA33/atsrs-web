@@ -317,6 +317,14 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
   gap: 24px;
 }
 #employersPage .employer-card {
+  --company-card-art: url("../assets/job-card-backgrounds/technology-data.webp");
+  --company-card-tone: #48d46b;
+  --company-card-tone-rgb: 72, 212, 107;
+  --company-card-surface-rgb: 6, 22, 14;
+  --company-card-light-surface: #edf9f1;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   grid-template-columns: 108px minmax(0, 1fr) 128px;
   grid-template-rows: minmax(112px, auto) auto 44px;
   column-gap: 24px;
@@ -325,16 +333,50 @@ html[data-theme="light"] .employer-card:hover, html[data-theme="light"] .employe
   padding: 24px 24px 18px;
   border-color: #28302c;
   border-radius: 14px;
-  background: #08100c;
+  background: rgb(var(--company-card-surface-rgb));
   box-shadow: none;
   content-visibility: auto;
   contain-intrinsic-block-size: 270px;
 }
 #employersPage .employer-card::before {
+  z-index: 2;
   width: 4px;
-  background: #48d46b;
+  background: var(--company-card-tone);
   box-shadow: none;
 }
+#employersPage .employer-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(var(--company-card-surface-rgb), .99) 0%, rgba(var(--company-card-surface-rgb), .86) 43%, rgba(var(--company-card-surface-rgb), .30) 100%),
+    linear-gradient(135deg, rgba(var(--company-card-tone-rgb), .22), transparent 68%),
+    var(--company-card-art);
+  background-position: center, center, right center;
+  background-repeat: no-repeat;
+  background-size: cover, cover, cover;
+  background-blend-mode: normal, color, luminosity;
+  opacity: .56;
+  pointer-events: none;
+}
+#employersPage .employer-card > * {
+  position: relative;
+  z-index: 1;
+}
+#employersPage .employer-card[data-company-visual="offshore"] { --company-card-art: url("../assets/job-card-backgrounds/marine-rov.webp"); }
+#employersPage .employer-card[data-company-visual="energy"] { --company-card-art: url("../assets/job-card-backgrounds/marine-rov.webp"); }
+#employersPage .employer-card[data-company-visual="industrial"] { --company-card-art: url("../assets/job-card-backgrounds/logistics-transport.webp"); }
+#employersPage .employer-card[data-company-visual="technology"] { --company-card-art: url("../assets/job-card-backgrounds/technology-data.webp"); }
+#employersPage .employer-card[data-company-visual="infrastructure"] { --company-card-art: url("../assets/job-card-backgrounds/construction-architecture.webp"); }
+#employersPage .employer-card[data-company-visual="science"] { --company-card-art: url("../assets/job-card-backgrounds/healthcare-laboratory.webp"); }
+#employersPage .employer-card[data-company-visual="hospitality"] { --company-card-art: url("../assets/job-card-backgrounds/education-office.webp"); }
+#employersPage .employer-card[data-company-visual="logistics"] { --company-card-art: url("../assets/job-card-backgrounds/logistics-transport.webp"); }
+#employersPage .employer-card[data-company-visual="network"] { --company-card-art: url("../assets/job-card-backgrounds/technology-data.webp"); }
+#employersPage .employer-card[data-company-tone="cyan"] { --company-card-tone:#22d3ee; --company-card-tone-rgb:34,211,238; --company-card-surface-rgb:4,25,32; --company-card-light-surface:#eaf9fc; }
+#employersPage .employer-card[data-company-tone="purple"] { --company-card-tone:#a855f7; --company-card-tone-rgb:168,85,247; --company-card-surface-rgb:24,12,40; --company-card-light-surface:#f5effc; }
+#employersPage .employer-card[data-company-tone="red"] { --company-card-tone:#fb5f57; --company-card-tone-rgb:251,95,87; --company-card-surface-rgb:38,12,12; --company-card-light-surface:#fcefed; }
+#employersPage .employer-card[data-company-tone="amber"] { --company-card-tone:#f59e0b; --company-card-tone-rgb:245,158,11; --company-card-surface-rgb:31,20,5; --company-card-light-surface:#fff7e6; }
 #employersPage .employer-card:hover,
 #employersPage .employer-card:focus-within {
   transform: translateY(-1px);
@@ -521,12 +563,21 @@ html[data-theme] body #app.app:not(.hidden) #employersPage .employer-tag {
   color: #62df7e;
 }
 html[data-theme="light"] #employersPage .employer-card {
-  border-color: #d8e1ee;
-  background: #fff;
+  border-color: rgba(var(--company-card-tone-rgb), .34);
+  background: var(--company-card-light-surface);
   box-shadow: 0 10px 25px rgba(15, 23, 42, .07);
 }
 html[data-theme="light"] #employersPage .employer-card::before {
-  background: #2563eb;
+  background: var(--company-card-tone);
+}
+html[data-theme="light"] #employersPage .employer-card::after {
+  background-image:
+    linear-gradient(90deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.84) 48%, rgba(255,255,255,.46) 100%),
+    linear-gradient(135deg, rgba(var(--company-card-tone-rgb), .18), transparent 68%),
+    var(--company-card-art);
+  background-size: cover, cover, cover;
+  opacity: .48;
+  filter: saturate(.82) contrast(1.05);
 }
 html[data-theme="light"] #employersPage .employer-mark {
   border-color: #d6dfeb;
