@@ -12,7 +12,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 test('recruiter cards receive a deterministic sector visual', () => {
   assert.match(js, /function recruiterVisual\(recruiter\)/);
   assert.match(js, /article\.dataset\.recruiterVisual = recruiterVisual\(recruiter\)/);
-  for (const company of ['airswift', 'halliburton', 'orion group', 'slb', 'siemens energy', 'aecom', 'worley', 'eurofins', 'accor']) {
+  for (const company of ['airswift', 'halliburton', 'orion group', 'slb', 'siemens energy', 'assystem', 'aecom', 'worley', 'eurofins', 'accor']) {
     assert.match(js, new RegExp(company.replace(/\s+/g, '\\s+'), 'i'));
   }
   assert.match(js, /return "network"/);
@@ -34,9 +34,15 @@ test('card interiors follow the existing green cyan purple and red accent rhythm
   assert.doesNotMatch(css, /f472b6|244,114,182/i);
 });
 
-test('all sector mappings reuse optimized JobSearch artwork and preserve light mode', () => {
-  for (const visual of ['offshore', 'energy', 'infrastructure', 'science', 'hospitality', 'logistics', 'network']) {
+test('all sector mappings use deterministic optimized artwork and preserve light mode', () => {
+  for (const visual of ['offshore', 'vessel', 'energy', 'infrastructure', 'science', 'hospitality', 'logistics', 'network']) {
     assert.match(css, new RegExp(`data-recruiter-visual="${visual}"`));
+  }
+  for (const asset of ['global-network.webp', 'offshore-platform.webp', 'energy-refinery.webp', 'offshore-vessel.webp']) {
+    const assetPath = path.join(root, 'assets', 'recruiter-card-backgrounds', asset);
+    assert.ok(fs.existsSync(assetPath), `${asset} should exist`);
+    assert.ok(fs.statSync(assetPath).size < 100_000, `${asset} should stay optimized`);
+    assert.match(css, new RegExp(asset.replace('.', '\\.')));
   }
   assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card::after/);
   assert.match(css, /opacity:\.38/);
@@ -48,9 +54,9 @@ test('light mode keeps full-card artwork and tinted card surfaces visible', () =
   assert.match(css, /background-size:cover,cover,cover/);
 });
 
-test('V6178 cache-busts recruiter card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6178"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6178/);
-  assert.match(index, /route-feature-loader\.js\?v=6176/);
-  assert.match(loader, /recruiters\.js\?v=6173/);
+test('V6179 cache-busts recruiter card CSS and runtime', () => {
+  assert.match(index, /data-atsrs-build="V6179"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6179/);
+  assert.match(index, /route-feature-loader\.js\?v=6179/);
+  assert.match(loader, /recruiters\.js\?v=6179/);
 });

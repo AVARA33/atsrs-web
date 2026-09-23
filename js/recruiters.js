@@ -156,13 +156,15 @@
     var role = normalized(recruiter && recruiter.role_title);
     var profile = company + " " + role;
 
-    if (/airswift|halliburton|orion group/.test(company)) return "offshore";
-    if (/\bslb\b|siemens energy/.test(company)) return "energy";
-    if (/aecom|worley|turner\s*&\s*townsend/.test(company)) return "infrastructure";
+    if (/orion group/.test(company)) return "vessel";
+    if (/airswift|halliburton/.test(company)) return "offshore";
+    if (/\bslb\b|siemens energy|worley|assystem/.test(company)) return "energy";
+    if (/aecom|turner\s*&\s*townsend/.test(company)) return "infrastructure";
     if (/eurofins/.test(company)) return "science";
     if (/accor/.test(company)) return "hospitality";
 
-    if (/offshore|subsea|marine|vessel|rov|oil\s*&?\s*gas|oilfield/.test(profile)) return "offshore";
+    if (/vessel|marine|ship/.test(profile)) return "vessel";
+    if (/offshore|subsea|rov|oil\s*&?\s*gas|oilfield/.test(profile)) return "offshore";
     if (/energy|power|renewable/.test(profile)) return "energy";
     if (/architect|construction|infrastructure|civil|engineering|industrial/.test(profile)) return "infrastructure";
     if (/laborator|science|chemist|medical|health/.test(profile)) return "science";

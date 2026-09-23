@@ -43,8 +43,8 @@ test('light mode preserves visible artwork and readable pale surfaces', () => {
 });
 
 test('V6176 cache-busts company card CSS and runtime', () => {
-  assert.match(index, /data-atsrs-build="V6178"/);
+  assert.match(index, /data-atsrs-build="V6179"/);
   assert.match(index, /employers\.css\?v=6176/);
-  assert.match(index, /route-feature-loader\.js\?v=6176/);
+  assert.match(index, /route-feature-loader\.js\?v=6179/);
   assert.match(loader, /employers\.js\?v=6176/);
 });
