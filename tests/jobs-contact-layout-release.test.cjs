@@ -8,12 +8,12 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6168"/);
+assert.match(index, /data-atsrs-build="V6169"/);
 assert.match(index, /href="billing-terms\.html#candidate-fees" target="_blank" rel="noopener noreferrer"/);
 assert.doesNotMatch(index, /href="billing-terms\.html#candidate-fees" onclick=/);
 assert.match(index, /href="css\/jobs-prototype\.css\?v=6166"/);
-assert.match(index, /src="js\/route-feature-loader\.js\?v=6168"/);
-assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6164'\)/);
+assert.match(index, /src="js\/route-feature-loader\.js\?v=6169"/);
+assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6169'\)/);
 assert.match(jobs, /p\.classList\.add\('job-contact-static'\)/);
 assert.match(jobs, /ph ph-hand-tap job-contact-link-icon/);
 assert.doesNotMatch(jobs, /ph ph-arrow-up-right job-contact-link-icon/);
@@ -26,7 +26,7 @@ assert.match(css, /\.job-contact-clickable:focus-within\{[\s\S]*?box-shadow:var\
 assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{height:100%;grid-template-rows:auto minmax\(0,1fr\) auto;align-content:stretch\}/);
 assert.match(css, /\.jobs-cards \.job-contact-info\{align-self:end/);
 assert.match(jobs, /var actions=el\('div','job-recruiter-info job-contact-actions'\)/);
-assert.match(jobs, /if\(linkedinHref\)contact\(actions,'Recruiter LinkedIn','Open LinkedIn','linkedin',linkedinHref\)/);
+assert.match(jobs, /if\(linkedinHref\)contact\(actions,'Recruiter LinkedIn',uiText\('Open LinkedIn'\),'linkedin',linkedinHref\)/);
 assert.match(css, /\.jobs-cards \.job-contact-actions\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
 assert.match(css, /\.job-contact-linkedin\{grid-column:1;grid-row:1\}/);
 assert.match(css, /\.job-contact-email\{grid-column:2;grid-row:1\}/);
