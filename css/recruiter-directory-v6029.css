@@ -495,12 +495,12 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   position:absolute;
   inset:0;
   z-index:0;
-  background-image:linear-gradient(90deg,rgba(var(--recruiter-card-surface-rgb),.98) 0%,rgba(var(--recruiter-card-tone-rgb),.28) 58%,rgba(var(--recruiter-card-tone-rgb),.46) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.38),transparent 70%),var(--recruiter-card-art);
+  background-image:linear-gradient(90deg,rgba(var(--recruiter-card-surface-rgb),.98) 0%,rgba(var(--recruiter-card-surface-rgb),.82) 34%,rgba(var(--recruiter-card-surface-rgb),.22) 70%,rgba(var(--recruiter-card-surface-rgb),.12) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.16),transparent 68%),var(--recruiter-card-art);
   background-position:center,center,right center;
   background-repeat:no-repeat;
   background-size:cover,cover,cover;
   background-blend-mode:normal,color,luminosity;
-  opacity:.64;
+  opacity:.94;
   pointer-events:none;
 }
 #recruitersPage .employer-card > * { position:relative; z-index:1; }
@@ -628,28 +628,27 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  gap:0;
+  gap:8px;
   width:auto;
   contain:none;
-  padding:0 0 0 10px;
-  border-left:1px solid #26332d;
+  padding:22px 36px 0 10px;
+  border-left:0;
 }
 #recruitersPage .employer-actions a,
 #recruitersPage .employer-actions button,
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #recruitersPage .employer-actions :is(.employer-action-linkedin,.employer-action-jobs,.employer-action-share) {
-  flex:0 0 44px;
-  width:44px !important;
-  min-width:44px !important;
-  height:44px !important;
-  min-height:44px !important;
-  max-height:44px !important;
+  flex:0 0 48px;
+  width:48px !important;
+  min-width:48px !important;
+  height:48px !important;
+  min-height:48px !important;
+  max-height:48px !important;
   padding:0 !important;
   border:0 !important;
-  border-radius:8px !important;
-  background:transparent !important;
-  box-shadow:none !important;
+  border-radius:50% !important;
+  background:rgba(3,8,6,.76) !important;
+  box-shadow:0 5px 14px rgba(0,0,0,.26) !important;
 }
-#recruitersPage .employer-actions :is(a,button) + :is(a,button) { border-left:1px solid #26332d !important; border-radius:0 !important; }
 #recruitersPage .employer-actions :is(a,button) > i { color:#f1f6f3 !important; font-size:22px; }
 #recruitersPage .employer-actions :is(a,button) > span {
   position:absolute;
@@ -665,6 +664,42 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
 }
 #recruitersPage .employer-actions .employer-action-jobs.is-active > i { color:#25df69 !important; }
 #recruitersPage .employer-actions button:disabled { display:inline-flex; opacity:.38; }
+#recruitersPage .recruiter-more-action {
+  position:absolute;
+  z-index:3;
+  top:10px;
+  right:10px;
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:0;
+  border-radius:17px;
+  background:rgba(3,8,6,.66);
+  color:#f1f6f3;
+  box-shadow:0 4px 12px rgba(0,0,0,.24);
+  cursor:pointer;
+}
+#recruitersPage .recruiter-more-action > i { font-size:20px; }
+#recruitersPage .recruiter-more-action > span { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+#recruitersPage .recruiter-more-menu {
+  position:absolute;
+  z-index:5;
+  top:48px;
+  right:10px;
+  min-width:168px;
+  padding:6px;
+  border:1px solid rgba(102,140,119,.42);
+  border-radius:10px;
+  background:rgba(4,10,7,.96);
+  box-shadow:0 14px 32px rgba(0,0,0,.38);
+}
+#recruitersPage .recruiter-more-menu[hidden] { display:none; }
+#recruitersPage .recruiter-more-menu button { display:block; width:100%; padding:8px 10px; border:0; border-radius:7px; background:transparent; color:#eef5f1; text-align:left; cursor:pointer; }
+#recruitersPage .recruiter-more-menu button:hover:not(:disabled),
+#recruitersPage .recruiter-more-menu button:focus-visible { background:rgba(37,223,105,.14); }
+#recruitersPage .recruiter-more-menu button:disabled { opacity:.42; cursor:not-allowed; }
 
 html[data-theme="light"] #recruitersPage .employer-card { border-color:var(--recruiter-card-border,#d6e2dc); background:var(--recruiter-card-light-surface,#fff); }
 html[data-theme="light"] #recruitersPage .employer-card::after {
@@ -676,15 +711,17 @@ html[data-theme="light"] #recruitersPage .employer-card::after {
 html[data-theme="light"] #recruitersPage .employer-card-copy h4 { color:#15231b; }
 html[data-theme="light"] #recruitersPage .employer-card-copy p,
 html[data-theme="light"] #recruitersPage .employer-vacancy-count { color:#40564a !important; }
-html[data-theme="light"] #recruitersPage .employer-actions { border-left-color:#d8e3dd; }
-html[data-theme="light"] #recruitersPage .employer-actions :is(a,button) + :is(a,button) { border-left-color:#d8e3dd !important; }
+html[data-theme="light"] #recruitersPage .employer-actions :is(a,button) { background:rgba(255,255,255,.86) !important; box-shadow:0 4px 12px rgba(30,52,40,.14) !important; }
 html[data-theme="light"] #recruitersPage .employer-actions :is(a,button) > i { color:#24372d !important; }
 html[data-theme="light"] #recruitersPage .employer-actions .employer-action-jobs.is-active > i { color:#168542 !important; }
+html[data-theme="light"] #recruitersPage .recruiter-more-action { background:rgba(255,255,255,.88); color:#24372d; }
+html[data-theme="light"] #recruitersPage .recruiter-more-menu { border-color:#cad8d0; background:rgba(255,255,255,.98); }
+html[data-theme="light"] #recruitersPage .recruiter-more-menu button { color:#21362a; }
 
 @media(max-width:620px) {
   #recruitersPage .employer-card { grid-template-columns:minmax(0,1fr); min-height:0; padding:12px 12px 10px 18px; }
   #recruitersPage .employer-card-head { gap:12px; }
   #recruitersPage .employer-mark { flex-basis:56px; width:56px; height:56px; font-size:21px; }
   #recruitersPage .employer-tags { margin:-17px 0 0 68px; }
-  #recruitersPage .employer-actions { grid-column:1; grid-row:3; justify-content:flex-end; margin-top:10px; padding:8px 0 0; border-top:1px solid #26332d; border-left:0; }
+  #recruitersPage .employer-actions { grid-column:1; grid-row:3; justify-content:flex-end; margin-top:10px; padding:8px 38px 0 0; border-top:1px solid #26332d; border-left:0; }
 }

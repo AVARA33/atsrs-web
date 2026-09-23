@@ -258,7 +258,35 @@
       shareAction.title = "Choose what to include in a secure profile link";
     }
     actions.append(shareAction);
-    article.append(head, tags, actions);
+    var moreAction = action("More recruiter actions", "dots-three-vertical", function () {
+      var isOpen = article.classList.toggle("is-more-open");
+      moreAction.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      moreMenu.hidden = !isOpen;
+    });
+    moreAction.className = "recruiter-more-action";
+    moreAction.setAttribute("aria-haspopup", "menu");
+    moreAction.setAttribute("aria-expanded", "false");
+    var moreMenu = document.createElement("div");
+    moreMenu.className = "recruiter-more-menu";
+    moreMenu.setAttribute("role", "menu");
+    moreMenu.hidden = true;
+    [
+      ["LinkedIn profile", linkedinAction],
+      ["View offers", jobsAction],
+      ["Share my profile", shareAction],
+    ].forEach(function (entry) {
+      var item = document.createElement("button");
+      item.type = "button";
+      item.setAttribute("role", "menuitem");
+      item.textContent = entry[0];
+      item.disabled = Boolean(entry[1].disabled);
+      item.addEventListener("click", function () {
+        moreAction.click();
+        entry[1].click();
+      });
+      moreMenu.append(item);
+    });
+    article.append(head, tags, actions, moreAction, moreMenu);
     return article;
   }
   function db() {
