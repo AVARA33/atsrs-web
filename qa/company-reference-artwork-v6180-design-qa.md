@@ -7,5 +7,6 @@
 - Card dimensions, content, controls, fetching, pagination, and functionality remain unchanged.
 - Automated tests: 20 passed.
 - Cloudflare build: 493 files.
-- Dark/light live QA: pending deployment.
-
+- Dark-mode live QA: passed on V6180; sector subjects, tones, text, logos, and actions remain clear.
+- Light-mode live QA: passed on V6180 at artwork opacity `.48`; pale overlays retain the image while preserving readable content.
+- Live mapping sampled: Aramco/SABIC → refinery; STC → telecom; NEOM → coastal development; Archer Offshore → offshore platform; general sector fallbacks verified.
