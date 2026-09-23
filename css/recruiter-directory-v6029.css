@@ -495,11 +495,11 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   position:absolute;
   inset:0;
   z-index:0;
-  background-image:linear-gradient(90deg,rgba(var(--recruiter-card-surface-rgb),.98) 0%,rgba(var(--recruiter-card-surface-rgb),.82) 34%,rgba(var(--recruiter-card-surface-rgb),.22) 70%,rgba(var(--recruiter-card-surface-rgb),.12) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.16),transparent 68%),var(--recruiter-card-art);
+  background-image:linear-gradient(90deg,rgba(3,12,9,.98) 0%,rgba(3,12,9,.84) 34%,rgba(3,12,9,.20) 70%,rgba(3,12,9,.08) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.08),transparent 68%),var(--recruiter-card-art);
   background-position:center,center,right center;
   background-repeat:no-repeat;
   background-size:cover,cover,cover;
-  background-blend-mode:normal,color,luminosity;
+  background-blend-mode:normal,normal,normal;
   opacity:.94;
   pointer-events:none;
 }
@@ -681,8 +681,27 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
   box-shadow:0 4px 12px rgba(0,0,0,.24);
   cursor:pointer;
 }
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #recruitersPage .employer-card > .recruiter-more-action {
+  position:absolute !important;
+  z-index:3 !important;
+  inset:10px 10px auto auto !important;
+  display:grid !important;
+  place-items:center !important;
+  width:34px !important;
+  min-width:34px !important;
+  max-width:34px !important;
+  height:34px !important;
+  min-height:34px !important;
+  max-height:34px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:50% !important;
+  background:rgba(3,8,6,.70) !important;
+  color:#f1f6f3 !important;
+  box-shadow:0 4px 12px rgba(0,0,0,.24) !important;
+}
 #recruitersPage .recruiter-more-action > i { font-size:20px; }
-#recruitersPage .recruiter-more-action > span { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+#recruitersPage .recruiter-more-action > span { position:absolute !important; width:1px !important; height:1px !important; overflow:hidden !important; clip-path:inset(50%) !important; white-space:nowrap !important; }
 #recruitersPage .recruiter-more-menu {
   position:absolute;
   z-index:5;
@@ -714,7 +733,7 @@ html[data-theme="light"] #recruitersPage .employer-vacancy-count { color:#40564a
 html[data-theme="light"] #recruitersPage .employer-actions :is(a,button) { background:rgba(255,255,255,.86) !important; box-shadow:0 4px 12px rgba(30,52,40,.14) !important; }
 html[data-theme="light"] #recruitersPage .employer-actions :is(a,button) > i { color:#24372d !important; }
 html[data-theme="light"] #recruitersPage .employer-actions .employer-action-jobs.is-active > i { color:#168542 !important; }
-html[data-theme="light"] #recruitersPage .recruiter-more-action { background:rgba(255,255,255,.88); color:#24372d; }
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #recruitersPage .employer-card > .recruiter-more-action { background:rgba(255,255,255,.88) !important; color:#24372d !important; }
 html[data-theme="light"] #recruitersPage .recruiter-more-menu { border-color:#cad8d0; background:rgba(255,255,255,.98); }
 html[data-theme="light"] #recruitersPage .recruiter-more-menu button { color:#21362a; }
 

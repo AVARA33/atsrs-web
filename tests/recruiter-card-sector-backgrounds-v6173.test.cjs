@@ -18,7 +18,8 @@ test('all recruiter cards receive one universal recruitment-office visual', () =
 
 test('recruiter artwork matches JobSearch strength without changing card dimensions', () => {
   assert.match(css, /#recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.94;/);
-  assert.match(css, /rgba\(var\(--recruiter-card-surface-rgb\),\.82\).*rgba\(var\(--recruiter-card-surface-rgb\),\.12\)/);
+  assert.match(css, /rgba\(3,12,9,\.84\).*rgba\(3,12,9,\.08\)/);
+  assert.match(css, /background-blend-mode:normal,normal,normal/);
   assert.match(css, /#recruitersPage \.employer-card > \* \{ position:relative; z-index:1; \}/);
   assert.match(css, /#recruitersPage \.employer-card::before \{\s*z-index:2;/);
   assert.match(css, /min-height:108px/);
@@ -55,9 +56,9 @@ test('reference action treatment uses circular controls and a functional more me
   assert.match(js, /entry\[1\]\.click\(\)/);
 });
 
-test('V6184 cache-busts reference recruiter card treatment', () => {
-  assert.match(index, /data-atsrs-build="V6184"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6184/);
-  assert.match(index, /route-feature-loader\.js\?v=6184/);
-  assert.match(loader, /recruiters\.js\?v=6184/);
+test('V6185 cache-busts reference recruiter card treatment', () => {
+  assert.match(index, /data-atsrs-build="V6185"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6185/);
+  assert.match(index, /route-feature-loader\.js\?v=6185/);
+  assert.match(loader, /recruiters\.js\?v=6185/);
 });

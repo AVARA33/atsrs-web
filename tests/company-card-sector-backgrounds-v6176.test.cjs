@@ -50,9 +50,9 @@ test('light mode preserves visible artwork and readable pale surfaces', () => {
 });
 
 test('V6182 cache-busts icon-only company actions and direct-on-artwork tags', () => {
-  assert.match(index, /data-atsrs-build="V6184"/);
+  assert.match(index, /data-atsrs-build="V6185"/);
   assert.match(index, /employers\.css\?v=6182/);
-  assert.match(index, /route-feature-loader\.js\?v=6184/);
+  assert.match(index, /route-feature-loader\.js\?v=6185/);
   assert.match(loader, /employers\.js\?v=6182/);
   assert.match(css, /grid-template-columns: repeat\(5, 40px\)/);
   assert.match(css, /#employersPage \.employer-actions :is\(a, button\) > span \{[\s\S]*?clip-path: inset\(50%\)/);
