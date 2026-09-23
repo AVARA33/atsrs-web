@@ -8,7 +8,6 @@ const loader = fs.readFileSync('js/route-feature-loader.js', 'utf8');
 const html = fs.readFileSync('index.html', 'utf8');
 
 test('recruiter vacancy action carries the selected recruiter into JobSearch', () => {
-  assert.match(recruiters, /searchParams\.set\("recruiter", name\)/);
   assert.match(recruiters, /__atsrsPendingJobsRecruiter = name/);
   assert.match(recruiters, /atsrsOpenJobsDirectory\("jobs", byId\("navJobs"\)\)/);
 });

@@ -33,10 +33,6 @@
     );
   }
   function goToJobs(name) {
-    var url = new URL(window.location.href);
-    url.searchParams.set("route", "jobs");
-    url.searchParams.set("recruiter", name);
-    history.replaceState({}, "", url.pathname + url.search + url.hash);
     window.__atsrsPendingJobsRecruiter = name;
     if (typeof window.atsrsOpenJobsDirectory === "function") {
       window.atsrsOpenJobsDirectory("jobs", byId("navJobs"));
