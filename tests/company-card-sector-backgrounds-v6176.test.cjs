@@ -51,7 +51,7 @@ test('light mode preserves visible artwork and readable pale surfaces', () => {
 });
 
 test('V6182 cache-busts icon-only company actions and direct-on-artwork tags', () => {
-  assert.match(index, /data-atsrs-build="V6192"/);
+  assert.match(index, /data-atsrs-build="V6193"/);
   assert.match(index, /employers\.css\?v=6189/);
   assert.match(index, /route-feature-loader\.js\?v=6191/);
   assert.match(loader, /employers\.js\?v=6182/);

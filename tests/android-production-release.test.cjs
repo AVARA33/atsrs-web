@@ -48,10 +48,10 @@ test('Android updater enforces ATSRS HTTPS, checksum and anti-downgrade boundari
   assert.match(read('apps/android/src/atsrs-mobile-runtime.js'), /\^\[0-9A-Za-z\]\[0-9A-Za-z\.\+\-\]\{0,31\}\$/);
 });
 
-test('Public Android entry is a non-interactive coming-soon badge in both responsive slots', () => {
+test('Public header does not advertise the paused Android release', () => {
   const html = read('index.html');
-  assert.equal((html.match(/class="public-android-entry [^"]*is-coming-soon"/g) || []).length, 2);
-  assert.equal((html.match(/<strong>Android<\/strong><small>Coming soon<\/small>/g) || []).length, 2);
+  assert.doesNotMatch(html, /public-android-entry/);
+  assert.doesNotMatch(html, /<strong>Android<\/strong><small>Coming soon<\/small>/);
   assert.doesNotMatch(html, /href="\/download\/android\/"/);
   const headers = read('_headers');
   assert.match(headers, /application\/vnd\.android\.package-archive/);
