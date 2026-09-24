@@ -290,6 +290,43 @@ html[data-theme="light"] #jobsPage .job-card .job-contact-static {
 html[data-theme="light"] #jobsPage .job-card .job-contact-link,
 html[data-theme="light"] #jobsPage .job-card .job-contact-link-icon { color:var(--job-card-accent,#22c55e) !important; }
 html[data-theme="light"] #jobsPage .job-card .job-contact-static > span { color:#f8fafc !important; -webkit-text-fill-color:#f8fafc !important; }
+/* V6190: recruiter metadata is plain card content, never a separate black tile. */
+html[data-theme] #jobsPage .job-card .job-card-recruiter-meta .job-contact-static {
+  padding:2px 0 !important;
+  border-color:transparent !important;
+  background:transparent !important;
+}
+/* V6190: keep all informational copy crisp over illustrated cards in both themes. */
+html[data-theme] #jobsPage .job-card :is(
+  .job-card-summary,
+  .job-card-description p,
+  .job-requirements,
+  .job-fact dt,
+  .job-fact dd,
+  .job-card-expand-hint,
+  .job-card-recruiter-meta strong,
+  .job-card-recruiter-meta .job-contact-static > span
+) {
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  opacity:1 !important;
+  text-shadow:0 1px 3px rgba(0,0,0,.72);
+}
+html[data-theme] .job-detail-dialog :is(
+  .job-detail-title,
+  .job-detail-section h3,
+  .job-detail-section p,
+  .job-detail-contacts h3,
+  .job-fact dt,
+  .job-fact dd,
+  .job-recruiter-info strong,
+  .job-contact-static > span
+) {
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  opacity:1 !important;
+  text-shadow:0 1px 3px rgba(0,0,0,.72);
+}
 html[data-theme="light"] .job-detail-dialog { border-color:#242a27; background:#080a09; color:#f8fafc; }
 html[data-theme="light"] .job-detail-panel::before {
   background-image:linear-gradient(90deg,rgba(8,10,9,.99) 0%,rgba(8,10,9,.9) 48%,rgba(8,10,9,.48) 100%),linear-gradient(135deg,rgba(var(--job-card-accent-rgb),.18),transparent 68%),var(--job-card-art);

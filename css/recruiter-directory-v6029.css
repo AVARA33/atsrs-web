@@ -468,7 +468,7 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   gap:8px 14px;
 }
 #recruitersPage .employer-card {
-  --recruiter-card-art:url("../assets/recruiter-card-backgrounds/recruitment-office.webp");
+  --recruiter-card-art:url("../assets/recruiter-card-backgrounds/talent-network-v2.webp");
   position:relative;
   isolation:isolate;
   overflow:hidden;
@@ -495,12 +495,12 @@ html[data-theme="light"] #recruitersPage .recruiters-pagination .jobs-page-butto
   position:absolute;
   inset:0;
   z-index:0;
-  background-image:linear-gradient(90deg,rgba(3,12,9,.98) 0%,rgba(3,12,9,.84) 34%,rgba(3,12,9,.20) 70%,rgba(3,12,9,.08) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.08),transparent 68%),var(--recruiter-card-art);
-  background-position:center,center,right center;
+  background-image:linear-gradient(90deg,rgba(3,12,9,.98) 0%,rgba(3,12,9,.78) 34%,rgba(3,12,9,.22) 68%,rgba(3,12,9,.08) 100%),var(--recruiter-card-art);
+  background-position:center,right center;
   background-repeat:no-repeat;
-  background-size:cover,cover,cover;
-  background-blend-mode:normal,normal,normal;
-  opacity:.94;
+  background-size:cover,cover;
+  background-blend-mode:normal,normal;
+  opacity:.82;
   pointer-events:none;
 }
 #recruitersPage .employer-card > * { position:relative; z-index:1; }
@@ -682,8 +682,8 @@ html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .e
 #recruitersPage .employer-actions button:disabled { display:inline-flex; opacity:.38; }
 html[data-theme="light"] #recruitersPage .employer-card { border-color:var(--recruiter-card-border,#d6e2dc); background:var(--recruiter-card-light-surface,#fff); }
 html[data-theme="light"] #recruitersPage .employer-card::after {
-  background-image:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.86) 48%,rgba(255,255,255,.56) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.18),transparent 68%),var(--recruiter-card-art);
-  background-size:cover,cover,cover;
+  background-image:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.86) 48%,rgba(255,255,255,.56) 100%),var(--recruiter-card-art);
+  background-size:cover,cover;
   opacity:.38;
   filter:saturate(.68) contrast(1.03);
 }
@@ -712,8 +712,9 @@ html[data-theme="light"] body #app.app:not(.hidden) #recruitersPage .employer-ca
   box-shadow:0 12px 30px rgba(0,0,0,.24) !important;
 }
 html[data-theme="light"] #recruitersPage .employer-card::after {
-  background-image:linear-gradient(90deg,rgba(3,10,7,.99) 0%,rgba(3,10,7,.88) 35%,rgba(3,10,7,.16) 72%,rgba(3,10,7,.06) 100%),linear-gradient(135deg,rgba(var(--recruiter-card-tone-rgb),.20),transparent 68%),var(--recruiter-card-art);
-  opacity:.94;
+  background-image:linear-gradient(90deg,rgba(3,12,9,.98) 0%,rgba(3,12,9,.78) 34%,rgba(3,12,9,.22) 68%,rgba(3,12,9,.08) 100%),var(--recruiter-card-art);
+  background-size:cover,cover;
+  opacity:.82;
   filter:none;
 }
 html[data-theme="light"] #recruitersPage .employer-card-copy h4 { color:#f4f7f5 !important; }

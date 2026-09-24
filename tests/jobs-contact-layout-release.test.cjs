@@ -8,11 +8,11 @@ const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'),
 const jobs = fs.readFileSync(path.join(root, 'js', 'jobs-prototype.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobs-prototype.css'), 'utf8');
 
-assert.match(index, /data-atsrs-build="V6189"/);
+assert.match(index, /data-atsrs-build="V6190"/);
 assert.match(index, /href="billing-terms\.html#candidate-fees" target="_blank" rel="noopener noreferrer"/);
 assert.doesNotMatch(index, /href="billing-terms\.html#candidate-fees" onclick=/);
-assert.match(index, /href="css\/jobs-prototype\.css\?v=6189"/);
-assert.match(index, /src="js\/route-feature-loader\.js\?v=6189"/);
+assert.match(index, /href="css\/jobs-prototype\.css\?v=6190"/);
+assert.match(index, /src="js\/route-feature-loader\.js\?v=6190"/);
 assert.match(loader, /loadScript\('js\/jobs-prototype\.js\?v=6170'\)/);
 assert.match(jobs, /p\.classList\.add\('job-contact-static'\)/);
 assert.match(jobs, /ph ph-hand-tap job-contact-link-icon/);
@@ -33,6 +33,10 @@ assert.match(css, /\.job-contact-email\{grid-column:2;grid-row:1\}/);
 assert.match(css, /\.job-contact-source\{grid-column:1;grid-row:2\}/);
 assert.match(css, /\.job-contact-application\{grid-column:2;grid-row:2\}/);
 assert.match(css, /html\[data-theme="light"\] #jobsPage \.job-contact-static>span\{color:#13233c;-webkit-text-fill-color:#13233c\}/);
+assert.match(css, /\.job-card-recruiter-meta \.job-contact-static \{[\s\S]*?background:transparent !important/);
+assert.match(css, /V6190: keep all informational copy crisp over illustrated cards in both themes/);
+assert.match(css, /html\[data-theme\] #jobsPage \.job-card :is\([\s\S]*?\.job-card-summary,[\s\S]*?\.job-card-expand-hint,[\s\S]*?color:#f8fafc !important/);
+assert.match(css, /html\[data-theme\] \.job-detail-dialog :is\([\s\S]*?\.job-detail-section p,[\s\S]*?\.job-fact dd,[\s\S]*?color:#f8fafc !important/);
 assert.match(jobs, /el\('footer','job-contact-info'\)/);
 assert.match(jobs, /if\(favorite\)controls\.append\(favorite\);controls\.append\(details\)/);
 assert.match(jobs, /body\.append\(project\);a\.append\(head,controls,body,expandHint,c\)/);

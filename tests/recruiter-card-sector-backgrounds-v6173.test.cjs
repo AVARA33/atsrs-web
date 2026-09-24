@@ -9,17 +9,17 @@ const js = fs.readFileSync(path.join(root, 'js', 'recruiters.js'), 'utf8');
 const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
-test('all recruiter cards receive one universal recruitment-office visual', () => {
-  assert.match(css, /--recruiter-card-art:url\("\.\.\/assets\/recruiter-card-backgrounds\/recruitment-office\.webp"\)/);
+test('all recruiter cards receive one calm universal talent-network visual', () => {
+  assert.match(css, /--recruiter-card-art:url\("\.\.\/assets\/recruiter-card-backgrounds\/talent-network-v2\.webp"\)/);
   assert.doesNotMatch(css, /data-recruiter-visual=/);
   assert.doesNotMatch(js, /function recruiterVisual\(recruiter\)/);
   assert.doesNotMatch(js, /dataset\.recruiterVisual/);
 });
 
-test('recruiter artwork matches JobSearch strength without changing card dimensions', () => {
-  assert.match(css, /#recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.94;/);
-  assert.match(css, /rgba\(3,12,9,\.84\).*rgba\(3,12,9,\.08\)/);
-  assert.match(css, /background-blend-mode:normal,normal,normal/);
+test('recruiter artwork stays restrained without changing card dimensions', () => {
+  assert.match(css, /#recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.82;/);
+  assert.match(css, /rgba\(3,12,9,\.78\).*rgba\(3,12,9,\.08\)/);
+  assert.match(css, /background-blend-mode:normal,normal/);
   assert.match(css, /#recruitersPage \.employer-card > \* \{ position:relative; z-index:1; \}/);
   assert.match(css, /#recruitersPage \.employer-card::before \{\s*z-index:2;/);
   assert.match(css, /min-height:108px/);
@@ -33,9 +33,9 @@ test('card interiors follow the existing green cyan purple and red accent rhythm
 });
 
 test('universal recruiter artwork is optimized and preserves light mode', () => {
-  const assetPath = path.join(root, 'assets', 'recruiter-card-backgrounds', 'recruitment-office.webp');
-  assert.ok(fs.existsSync(assetPath), 'recruitment-office.webp should exist');
-  assert.ok(fs.statSync(assetPath).size < 100_000, 'recruitment-office.webp should stay optimized');
+  const assetPath = path.join(root, 'assets', 'recruiter-card-backgrounds', 'talent-network-v2.webp');
+  assert.ok(fs.existsSync(assetPath), 'talent-network-v2.webp should exist');
+  assert.ok(fs.statSync(assetPath).size < 150_000, 'talent-network-v2.webp should stay optimized');
   assert.match(css, /html\[data-theme="light"\] #recruitersPage \.employer-card::after/);
   assert.match(css, /opacity:\.38/);
 });
@@ -43,8 +43,8 @@ test('universal recruiter artwork is optimized and preserves light mode', () => 
 test('light mode keeps full-card artwork and tinted card surfaces visible', () => {
   assert.match(css, /V6189: recruiter cards retain the dark artwork treatment in light mode/);
   assert.match(css, /html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #recruitersPage \.employer-card \{[\s\S]*?background:var\(--recruiter-card-surface,#08100c\) !important/);
-  assert.match(css, /V6189[\s\S]*?html\[data-theme="light"\] #recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.94;/);
-  assert.match(css, /background-size:cover,cover,cover/);
+  assert.match(css, /V6189[\s\S]*?html\[data-theme="light"\] #recruitersPage \.employer-card::after \{[\s\S]*?opacity:\.82;/);
+  assert.match(css, /background-size:cover,cover/);
 });
 
 test('reference action treatment uses smaller circular controls at bottom right', () => {
@@ -57,10 +57,10 @@ test('reference action treatment uses smaller circular controls at bottom right'
   assert.doesNotMatch(js, /More recruiter actions/);
 });
 
-test('V6189 cache-busts theme-parity recruiter card treatment', () => {
-  assert.match(index, /data-atsrs-build="V6189"/);
-  assert.match(index, /recruiter-directory-v6029\.css\?v=6189/);
-  assert.match(index, /route-feature-loader\.js\?v=6189/);
+test('V6190 cache-busts the calm recruiter artwork', () => {
+  assert.match(index, /data-atsrs-build="V6190"/);
+  assert.match(index, /recruiter-directory-v6029\.css\?v=6190/);
+  assert.match(index, /route-feature-loader\.js\?v=6190/);
   assert.match(loader, /recruiters\.js\?v=6188/);
 });
 
