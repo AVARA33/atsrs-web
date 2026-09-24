@@ -58,9 +58,9 @@ test('reference action treatment uses smaller circular controls at bottom right'
 });
 
 test('V6190 cache-busts the calm recruiter artwork', () => {
-  assert.match(index, /data-atsrs-build="V6190"/);
+  assert.match(index, /data-atsrs-build="V6191"/);
   assert.match(index, /recruiter-directory-v6029\.css\?v=6190/);
-  assert.match(index, /route-feature-loader\.js\?v=6190/);
+  assert.match(index, /route-feature-loader\.js\?v=6191/);
   assert.match(loader, /recruiters\.js\?v=6188/);
 });
 
