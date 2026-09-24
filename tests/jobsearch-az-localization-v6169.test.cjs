@@ -40,7 +40,7 @@ test('dynamic JobSearch controls pass user-visible labels through uiText', () =>
 });
 
 test('V6177 preserves the Azerbaijani locale and JobSearch runtime', () => {
-  assert.match(index, /data-atsrs-build="V6191"/);
+  assert.match(index, /data-atsrs-build="V6192"/);
   assert.match(index, /js\/locale-az\.js\?v=6169/);
   assert.match(index, /js\/route-feature-loader\.js\?v=6191/);
   assert.match(loader, /js\/jobs-prototype\.js\?v=6191/);
