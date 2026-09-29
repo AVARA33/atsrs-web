@@ -33,7 +33,7 @@ assert.match(js,/if\(!share\.recipient_recruiter_id\)\{/);
 assert.match(js,/action\('Share link','ph-copy'/);
 assert.doesNotMatch(js,/window\.previewShareProfile/);
 assert.match(js,/window\.deleteShareProfileLink/);
-assert.match(html,/css\/profile-sharing-v1\.css\?v=71/);
+assert.match(html,/css\/profile-sharing-v1\.css\?v=6194/);
 assert.match(css,/profile-sharing-row-copy strong\{font-size:11px\}/,'Share-history recipient names keep their existing theme color.');
 assert.match(html,/js\/share-profile\.js\?v=456/);
 assert.match(html,/js\/profile-sharing-v1\.js\?v=6112/);
@@ -190,6 +190,8 @@ assert.match(css,/grid-template-columns:minmax\(160px,\.9fr\) minmax\(250px,1\.4
 assert.match(css,/profile-sharing-row-time\.profile-sharing-dates\{display:flex;[^}]*gap:12px;[^}]*font-weight:700/);
 assert.match(css,/button:is\(\.is-copy,\.is-recruiter\)\{width:96px!important;min-width:96px!important;max-width:96px!important;/);
 assert.match(css,/html\[data-theme="light"\][^{]*\.profile-sharing-row-status\{color:#2563eb\}/);
+assert.match(css,/\.profile-sharing-row\.is-expired \.profile-sharing-row-status\{color:#ef4444!important;font-weight:800\}/);
+assert.match(css,/\.profile-sharing-row\.is-expired\{opacity:1\}/);
 assert.match(css,/profile-sharing-link-request-actions button\{[^}]*min-width:0!important;[^}]*height:22px!important;[^}]*max-height:22px!important;[^}]*padding:0 6px!important/);
 assert.match(css,/profile-sharing-request-state\{[^}]*min-width:0;[^}]*height:22px;[^}]*max-height:22px;[^}]*padding:0 6px/);
 assert.match(css,/html\[data-theme="dark"\][^{]*profile-sharing-row\.is-email-focus[\s\S]*?background:var\(--surface,#0b0f0d\)!important/);
