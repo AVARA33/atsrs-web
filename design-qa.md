@@ -796,6 +796,21 @@ final result: passed
 
 Final result: passed.
 
+---
+
+# JobSearch card design QA — V6197
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-64050d36-87ae-4e9c-97d7-255bd40a3a09.png`.
+- Local implementation: `http://127.0.0.1:8766/tests/fixtures/jobs-prototype-harness.html?route=jobs&v=6194b`.
+- Passed: three-column desktop layout, compact proportions, full-card profession artwork, dark lower readability gradient, copper border/accent, white title hierarchy and charcoal detail tags.
+- Passed: long titles wrap without clipping and incomplete metadata creates no empty labelled rows.
+- Passed: NEW, favorite and Expand controls remain in the upper-right action area.
+- Passed: Expand opens the complete job-detail dialog; LinkedIn, email, source and application actions remain available under the existing entitlement rules.
+- Passed: desktop, tablet, mobile and same-card light-mode rules remain defined.
+- Focused result: 24 tests passed; Cloudflare Pages build and diff check passed.
+
+Final result: passed.
+
 # Share-history recipient alignment — Design QA
 
 - Scope: first column of Profile > Sharing history rows only.
