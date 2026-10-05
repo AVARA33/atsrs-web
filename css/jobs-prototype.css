@@ -695,3 +695,30 @@ html[data-theme="dark"] #jobsPage{--atsrs-jobs-green-text:#ac613b;--jobs-filter-
 
 @media(max-width:1250px){#jobsPage .jobs-cards .job-card-slot,#jobsPage .jobs-cards .job-card-slot>.job-card{min-height:346px;height:346px}}
 @media(max-width:600px){#jobsPage .jobs-cards .job-card-slot,#jobsPage .jobs-cards .job-card-slot>.job-card{min-height:370px;height:370px}#jobsPage .jobs-cards .job-card-slot>.job-card{padding:16px}#jobsPage .jobs-cards .job-card-brand{left:18px}#jobsPage .jobs-cards .job-contact-info{align-items:flex-end}}
+
+/* V6200: preserve natural artwork colours; copper is accent-only */
+html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{
+  background:#0B0C0D!important;
+  border-color:#34383C!important;
+  border-top-color:#AC613B!important;
+}
+html[data-theme] #jobsPage .jobs-cards .job-card::before{background:#AC613B!important}
+html[data-theme] #jobsPage .jobs-cards .job-card::after{
+  background-image:
+    linear-gradient(180deg,rgba(0,0,0,.58) 0%,rgba(0,0,0,.58) 42%,rgba(0,0,0,.82) 72%,rgba(0,0,0,.82) 100%),
+    var(--job-card-art)!important;
+  background-position:center,center!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-size:cover,cover!important;
+  background-blend-mode:normal,normal!important;
+  filter:none!important;
+  opacity:1!important;
+}
+html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta{
+  border-color:#AC613B!important;
+  background:#AC613B!important;
+}
+html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta:hover{
+  border-color:#C06D45!important;
+  background:#C06D45!important;
+}

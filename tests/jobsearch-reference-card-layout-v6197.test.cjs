@@ -27,3 +27,14 @@ test('compact cards preserve complete detail access and deterministic tags', () 
   assert.match(runtime, /Recruiter LinkedIn.*recruiterLinkedInUrl/s);
   assert.match(runtime, /openDetails\(job,details,preview\)/);
 });
+
+test('JobSearch artwork keeps natural colour beneath the specified black overlay', () => {
+  assert.match(css, /background:#0B0C0D!important/);
+  assert.match(css, /border-color:#34383C!important/);
+  assert.match(css, /border-top-color:#AC613B!important/);
+  assert.match(css, /rgba\(0,0,0,\.58\)/);
+  assert.match(css, /rgba\(0,0,0,\.82\)/);
+  assert.match(css, /background-blend-mode:normal,normal!important/);
+  assert.match(css, /filter:none!important/);
+  assert.match(css, /background:#C06D45!important/);
+});

@@ -13,7 +13,7 @@ test('JobSearch dark theme uses scoped warm black and copper tokens', () => {
   assert.match(css, /--jobs-copper-hover:#d07a4b/);
   assert.match(css, /--jobs-copper-soft:#2a1913/);
   assert.doesNotMatch(css, /html\[data-theme="dark"\]\s+body\s*\{\s*--jobs-copper/);
-  assert.match(html, /data-atsrs-build="V6199"/);
+  assert.match(html, /data-atsrs-build="V6200"/);
   assert.match(html, /jobs-prototype\.css\?v=6196/);
   assert.match(css, /complete the reference palette across every visible JobSearch surface/);
   assert.match(css, /\.job-card\[data-job-visual\] \.job-card-company\{color:#d07a4b!important/);
