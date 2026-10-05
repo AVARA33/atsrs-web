@@ -796,6 +796,30 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch exact card-reference refinement — V6198
+
+- Visual source of truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-64050d36-87ae-4e9c-97d7-255bd40a3a09.png`.
+- Local implementation: `http://127.0.0.1:8766/tests/fixtures/jobs-prototype-harness.html?route=jobs&v=6195`.
+- Scope was limited to JobSearch card presentation; real vacancy data, filtering, favorites, pagination, access rules and the existing Expand control were preserved.
+
+## Visual comparison
+
+- Cards now use the reference's compact 344-pixel desktop geometry, full-bleed profession artwork, warm-black surface and copper accent.
+- The company wordmark sits at the upper-left; NEW, favorite and Expand remain at the upper-right.
+- Vacancy title, company, short summary, icon-led metadata, compact charcoal tags, recruiter details and the copper action row follow the reference hierarchy.
+- A strong lower image gradient keeps text readable without hiding the artwork.
+- Responsive card heights remain explicit at desktop, tablet and mobile breakpoints.
+- The available project data does not include official image logos for every employer, so a deterministic company wordmark is used instead of inventing or scraping logos.
+
+## Interaction and regression checks
+
+- Expand opens the existing details dialog and complete vacancy information remains available there.
+- Favorite, pagination, filtering, source/application links and limited-access behavior remain unchanged.
+- Focused JobSearch tests, JavaScript syntax check, diff check and Cloudflare Pages build passed.
+- Browser console errors: 0.
+
+Final result: passed.
+
 ---
 
 # JobSearch card design QA — V6197
