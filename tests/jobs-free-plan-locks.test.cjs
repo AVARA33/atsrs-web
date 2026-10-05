@@ -28,8 +28,8 @@ test('Free cards and details replace premium contact tools with one accessible B
   assert.match(runtime,/link\.href='\/pricing\.html#bronze'/);
   assert.match(runtime,/View Bronze plan to unlock recruiter contacts and application tools/);
   assert.match(runtime,/if\(!hasFullJobAccess\(forceFull\)\)contacts\.append\(lockedJobAccess\(\)\)/);
-  assert.match(runtime,/if\(!full\)c\.append\(lockedJobAccess\(\)\)/);
-  assert.match(runtime,/full\?'Recruiter':'Company'/);
+  assert.match(runtime,/if\(!full\)\{c\.append\(lockedJobAccess\(\)\)\}else c\.append\(viewButton\)/);
+  assert.match(runtime,/full\?\(clean\(job\.recruiter_company\)\|\|clean\(job\.company\)\):clean\(job\.company\)/);
 });
 
 test('The lock treatment is scoped, themed and keyboard visible',()=>{

@@ -30,9 +30,9 @@ test('JobSearch Azerbaijani dictionary contains every dynamic card and action la
 
 test('dynamic JobSearch controls pass user-visible labels through uiText', () => {
   assert.match(jobs, /job-card-expand-hint',uiText\('For more info, please expand the card\.'\)/);
-  assert.match(jobs, /contact\(actions,'Listing source',sourceName\(job\)/);
-  assert.match(jobs, /contact\(actions,'Application',uiText\('Open application'\)/);
-  assert.match(jobs, /contact\(actions,'Recruiter LinkedIn',uiText\('Open LinkedIn'\)/);
+  assert.match(jobs, /contact\(list,'Listing source',sourceName\(job\)/);
+  assert.match(jobs, /contact\(list,'Application',uiText\('Open application'\)/);
+  assert.match(jobs, /contact\(list,'Recruiter LinkedIn',uiText\('Open LinkedIn'\)/);
   assert.match(jobs, /var label=uiText\(expanded\?'Minimize job details':'Expand job details'\)/);
   assert.match(jobs, /pageButton\(uiText\('Previous'\)/);
   assert.match(jobs, /pageButton\(uiText\('Next'\)/);
@@ -40,8 +40,8 @@ test('dynamic JobSearch controls pass user-visible labels through uiText', () =>
 });
 
 test('V6177 preserves the Azerbaijani locale and JobSearch runtime', () => {
-  assert.match(index, /data-atsrs-build="V6198"/);
+  assert.match(index, /data-atsrs-build="V6199"/);
   assert.match(index, /js\/locale-az\.js\?v=6169/);
   assert.match(index, /js\/route-feature-loader\.js\?v=6191/);
-  assert.match(loader, /js\/jobs-prototype\.js\?v=6195/);
+  assert.match(loader, /js\/jobs-prototype\.js\?v=6196/);
 });

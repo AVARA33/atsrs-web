@@ -796,6 +796,33 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch exact offshore-card match — V6199
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-64050d36-87ae-4e9c-97d7-255bd40a3a09.png` (1668 × 967 pixels).
+- Browser-rendered implementation: `http://127.0.0.1:8766/tests/fixtures/jobs-prototype-harness.html?route=jobs&access=full&v=6200` at a 1496 × 758 desktop viewport.
+- Combined comparison input: `tests/artifacts/jobsearch-v6199-comparison.html`.
+- State: dark theme, card grid, full job access.
+
+## Comparison history
+
+- Earlier P1: company text was standing in for available brand assets. Fixed with deterministic local logo mapping and a text wordmark fallback only where no verified asset exists.
+- Earlier P1: recruiter attribution and the reference CTA row were missing. Fixed with the recruiter identity row at lower-left and one copper `View job` control at lower-right.
+- Earlier P2: cards were taller and the image/text hierarchy drifted. Fixed with 334px desktop geometry, reference-like image crop, stronger lower gradient, compact icon metadata and charcoal tags.
+- Earlier P2: the CTA was being neutralized by inherited button styling. Fixed with an explicit copper component token and verified browser rendering.
+
+## Final fidelity review
+
+- Typography: title, company, metadata, tags and recruiter labels follow the reference hierarchy and compact optical weights.
+- Spacing: card height, internal padding, footer separation, upper brand placement and right-side controls match the reference rhythm.
+- Color: warm-black surfaces, copper edge/CTA and restrained charcoal tags match the selected design.
+- Images: existing profession backgrounds remain full bleed; verified local company logo assets are used when available.
+- Copy: real ATSRS vacancy data is preserved; no reference-only fictional vacancy content was introduced.
+- Focused card regions were inspected separately because full-page side-by-side scaling makes their small typography unreadable.
+- Expand and `View job` both open the same complete detail dialog; filtering, pagination and favorites remain intact.
+- Browser console errors observed during the card checks: 0.
+
+Final result: passed.
+
 # JobSearch exact card-reference refinement — V6198
 
 - Visual source of truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-64050d36-87ae-4e9c-97d7-255bd40a3a09.png`.
