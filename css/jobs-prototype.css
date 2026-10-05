@@ -723,3 +723,29 @@ html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta:hover{
   border-color:#C06D45!important;
   background:#C06D45!important;
 }
+
+/* V6208: permanent neutral/copper JobSearch palette; never fall back to green. */
+html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage{
+  --atsrs-accent:#AC613B;
+  --atsrs-accent-strong:#C06D45;
+  --atsrs-jobs-green-text:#AC613B;
+  --jobs-filter-focus:#AC613B;
+  accent-color:#AC613B;
+}
+html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-hero h3{
+  color:#F4F4F2!important;
+  -webkit-text-fill-color:#F4F4F2!important;
+}
+html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage :is(.jobs-snapshot i,.jobs-snapshot strong,.jobs-notice i,.jobs-notice strong,.jobs-notice a,.jobs-active-filter button){
+  color:#AC613B!important;
+  -webkit-text-fill-color:#AC613B!important;
+}
+html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage :is(input[type="checkbox"],input[type="radio"]){accent-color:#AC613B!important}
+html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-page-button.is-current,
+html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-page-button[aria-current="page"]{
+  border-color:#AC613B!important;
+  background:#271E1A!important;
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+  box-shadow:0 0 0 1px rgba(172,97,59,.18)!important;
+}
