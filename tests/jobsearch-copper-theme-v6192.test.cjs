@@ -9,14 +9,14 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
 test('JobSearch dark theme uses scoped warm black and copper tokens', () => {
   assert.match(css, /body:has\(#jobsPage:not\(\.hidden\)\)/);
-  assert.match(css, /--jobs-copper:#b8653b/);
-  assert.match(css, /--jobs-copper-hover:#d07a4b/);
-  assert.match(css, /--jobs-copper-soft:#2a1913/);
+  assert.match(css, /--jobs-copper:#ac613b/);
+  assert.match(css, /--jobs-copper-hover:#c06d45/);
+  assert.match(css, /--jobs-copper-soft:#271e1a/);
   assert.doesNotMatch(css, /html\[data-theme="dark"\]\s+body\s*\{\s*--jobs-copper/);
-  assert.match(html, /data-atsrs-build="V6202"/);
-  assert.match(html, /jobs-prototype\.css\?v=6197/);
+  assert.match(html, /data-atsrs-build="V6203"/);
+  assert.match(html, /jobs-prototype\.css\?v=6198/);
   assert.match(css, /complete the reference palette across every visible JobSearch surface/);
-  assert.match(css, /\.job-card\[data-job-visual\] \.job-card-company\{color:#d07a4b!important/);
+  assert.match(css, /\.job-card\[data-job-visual\] \.job-card-company\{color:#f4f4f2!important/);
   assert.match(css, /\.job-card\[data-job-visual\] \.job-new-badge\{border-color:#b8653b!important;background:#b8653b!important/);
 });
 

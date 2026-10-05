@@ -8,39 +8,35 @@ const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'css','jobsearch-hero-v6002.css'),'utf8');
 const jobsCss=fs.readFileSync(path.join(root,'css','jobs-prototype.css'),'utf8');
 
-test('JobSearch uses the international catalogue hero without release-only copy',()=>{
+test('JobSearch uses the compact reference heading without the former banner',()=>{
   const jobs=index.slice(index.indexOf('<section id="jobsPage"'),index.indexOf('<section id="employersPage"'));
-  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6119/);
-  assert.match(jobs,/class="jobs-hero-icon"[\s\S]*ph-globe-hemisphere-west/);
-  assert.match(jobs,/Global opportunity catalogue/);
-  assert.match(jobs,/<h3 id="jobsHeading">Worldwide JobSearch<\/h3>/);
+  assert.match(index,/css\/jobsearch-hero-v6002\.css\?v=6120/);
+  assert.match(jobs,/<h3 id="jobsHeading">JobSearch<\/h3>/);
+  assert.match(jobs,/Discover your next opportunity offshore/);
   assert.match(jobs,/class="jobs-hero-map" aria-hidden="true"/);
   assert.doesNotMatch(jobs,/Latest release|Released on/);
-  assert.match(index,/css\/jobs-prototype\.css\?v=6166/);
+  assert.match(index,/css\/jobs-prototype\.css\?v=6198/);
   assert.match(jobsCss,/body:has\(#jobsPage:not\(\.hidden\)\) #app\.app:not\(\.hidden\)>\.main>#pageTitle\{display:none!important\}/);
 });
 
-test('JobSearch hero uses a dedicated light surface instead of the dark banner',()=>{
+test('JobSearch heading remains compact and dark in both themes',()=>{
   assert.match(css,/html\[data-theme="light"\] #jobsPage \.jobs-hero\{/);
-  assert.match(css,/linear-gradient\(135deg,#ffffff 0%,#f5f9ff 55%,#f2faF3 100%\)/i);
-  assert.match(css,/html\[data-theme="light"\][\s\S]*?\.jobs-hero h3\{color:#132b56!important/);
+  assert.match(css,/#jobsPage \.jobs-hero\{[\s\S]*?min-height:0;[\s\S]*?background:transparent;/);
+  assert.match(css,/html\[data-theme="light"\][\s\S]*?\.jobs-hero h3\{color:#f4f4f2!important/);
   assert.match(css,/html\[data-theme="light"\][\s\S]*?#jobsPage \.jobs-snapshot strong\{color:#17345e\}/);
   assert.match(css,/html\[data-theme="light"\] #jobsPage \.jobs-hero-map\{opacity:\.58;filter:invert\(1\) hue-rotate\(306deg\) saturate\(1\.45\) contrast\(\.94\)\}/);
   assert.match(css,/html\[data-theme="light"\] #jobsPage \.jobs-hero > \.jobs-snapshot\{[\s\S]*?background:transparent;[\s\S]*?box-shadow:none;/);
 });
 
-test('JobSearch hero keeps live results controls and responsive map treatment',()=>{
+test('JobSearch heading keeps live results while decorative banner elements stay hidden',()=>{
   assert.match(index,/id="jobsVisibleCount" aria-live="polite"/);
   assert.doesNotMatch(index,/Server-backed vacancies/);
   assert.doesNotMatch(index,/data-jobs-view=|aria-label="Jobs view"/);
-  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-region-nav\{[\s\S]*?position:absolute[\s\S]*?right:30px[\s\S]*?bottom:58px/);
-  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-snapshot\{[\s\S]*?right:30px[\s\S]*?bottom:14px[\s\S]*?height:34px[\s\S]*?border-radius:999px[\s\S]*?background:transparent;[\s\S]*?box-shadow:none;/);
-  assert.match(css,/@media\(min-width:761px\)\{[\s\S]*?#jobsPage \.jobs-hero > \.jobs-region-nav\{[\s\S]*?right:228px[\s\S]*?bottom:14px[\s\S]*?align-items:flex-end/);
-  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-region-nav button\{[\s\S]*?background:rgba\(5,10,7,\.62\)!important/);
-  assert.match(css,/international-job-map-v1\.png/);
+  assert.match(css,/#jobsPage \.jobs-hero-map\{[\s\S]*?display:none/);
+  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-region-nav\{[\s\S]*?display:none/);
+  assert.match(css,/#jobsPage \.jobs-hero > \.jobs-snapshot\{[\s\S]*?position:static[\s\S]*?background:transparent;[\s\S]*?box-shadow:none;/);
   assert.match(css,/@media\(max-width:760px\)/);
   assert.match(css,/@media\(max-width:520px\)/);
-  assert.match(css,/@media\(max-width:1050px\)\{[\s\S]*?\.jobs-region-nav\{[\s\S]*?display:flex[\s\S]*?flex-wrap:nowrap/);
-  assert.match(css,/@media\(max-width:760px\)\{[\s\S]*?scrollbar-width:thin/);
+  assert.match(css,/@media\(max-width:1050px\)\{[\s\S]*?\.jobs-region-nav\{display:none/);
   assert.match(css,/@media\(max-width:600px\)\{[\s\S]*?#jobsPage \.jobs-secondary-primary\{grid-template-columns:1fr\}/);
 });
