@@ -544,3 +544,24 @@ html[data-theme="dark"] .job-detail-panel::before{
   opacity:.8!important;
   filter:saturate(.92) contrast(1.04)!important;
 }
+
+/* V6193: complete the reference palette across every visible JobSearch surface. */
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage{color:#f4f1ee!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-hero h3{color:#fffdfa!important;-webkit-text-fill-color:#fffdfa!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #atsrsThemeToggle :is(i,svg){color:#d07a4b!important;stroke:#d07a4b!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage :is(.jobs-notice,.jobs-active-filter,.jobs-select-menu,.jobs-date-range-popover){border-color:#34302d!important;background:#101211!important;color:#eee9e5!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage :is(.jobs-select-option:hover,.jobs-select-option:focus-visible,.jobs-select-option[data-active],.jobs-select-option[aria-selected="true"]){background:#2a1913!important;color:#d07a4b!important;-webkit-text-fill-color:#d07a4b!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-notice :is(i,strong,a),html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-active-filter button{color:#d07a4b!important;-webkit-text-fill-color:#d07a4b!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] h2{color:#fffdfa!important;-webkit-text-fill-color:#fffdfa!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-card-company{color:#d07a4b!important;-webkit-text-fill-color:#d07a4b!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-card-company span{border-color:#784129!important;background:#2a1913!important;color:#d99a77!important;-webkit-text-fill-color:#d99a77!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] :is(.job-card-summary,.job-card-expand-hint){color:#b8b3af!important;-webkit-text-fill-color:#b8b3af!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-fact dt{color:#a59f9a!important;-webkit-text-fill-color:#a59f9a!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-fact dd{color:#f5f2ef!important;-webkit-text-fill-color:#f5f2ef!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] :is(.job-favorite-toggle,.job-detail-toggle){border-color:#3a3937!important;background:#151716!important;color:#ece7e2!important;box-shadow:none!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] :is(.job-favorite-toggle,.job-detail-toggle):hover{border-color:#b8653b!important;background:#2a1913!important;color:#d07a4b!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-new-badge{border-color:#b8653b!important;background:#b8653b!important;color:#fffaf6!important;-webkit-text-fill-color:#fffaf6!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] :is(.job-contact-clickable,.job-contact-static){border-color:#363534!important;background:rgba(20,22,21,.9)!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-contact-application,html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card-preview>a:last-child{border-color:#b8653b!important;background:#b8653b!important;color:#fffaf6!important;-webkit-text-fill-color:#fffaf6!important;box-shadow:none!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card-preview>a:last-child:hover,html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .job-card[data-job-visual] .job-contact-application:hover{border-color:#d07a4b!important;background:#d07a4b!important}
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-page-button.is-current{border-color:#b8653b!important;background:#2a1913!important;color:#d07a4b!important;-webkit-text-fill-color:#d07a4b!important;box-shadow:0 0 0 1px rgba(184,101,59,.18)!important}

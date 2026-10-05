@@ -15,7 +15,7 @@ assert.match(index, /jobs-date-range atsrs-field-control-frame/);
 assert.match(index, /jobs-date-range-toggle atsrs-field-control/);
 assert.match(index, /id="jobsDateFrom" type="date"/);
 assert.match(index, /id="jobsDateTo" type="date"/);
-assert.match(index, /css\/jobs-prototype\.css\?v=6192/);
+assert.match(index, /css\/jobs-prototype\.css\?v=6193/);
 assert.match(loader, /js\/jobs-prototype\.js\?v=6104/);
 assert.match(runtime, /document\.addEventListener\('pointerdown'/);
 assert.match(runtime, /if\(!missingJobsRpc\(result\.error\)&&!hasDateRange\)throw result\.error/);
