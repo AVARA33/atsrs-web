@@ -334,3 +334,213 @@ html[data-theme="light"] .job-detail-panel::before {
   filter:none;
 }
 html[data-theme="light"] .job-detail-section p { color:#c5cec9; }
+
+/* V6192: JobSearch-only warm black + copper preview. Other routes remain unchanged. */
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)){
+  --jobs-copper:#b8653b;
+  --jobs-copper-hover:#d07a4b;
+  --jobs-copper-soft:#2a1913;
+  --jobs-page:#070909;
+  --jobs-surface:#0d1110;
+  --jobs-surface-raised:#121615;
+  --jobs-line:#252b2a;
+  --jobs-text:#f3f1ed;
+  --jobs-muted:#a7adb4;
+  background:var(--jobs-page)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden)>.main{
+  background:var(--jobs-page)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden)>.sidebar{
+  background:#0b0e0d!important;
+  border-color:var(--jobs-line)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark{
+  filter:sepia(1) saturate(2.1) hue-rotate(332deg) brightness(.82) contrast(1.15)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden) .sidebar .nav button:hover{
+  background:rgba(184,101,59,.08)!important;
+  color:var(--jobs-text)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden) .sidebar .nav button.active{
+  border-color:transparent!important;
+  background:var(--jobs-copper-soft)!important;
+  color:var(--jobs-copper-hover)!important;
+  -webkit-text-fill-color:var(--jobs-copper-hover)!important;
+  box-shadow:inset 3px 0 var(--jobs-copper)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #app.app:not(.hidden) .sidebar .nav button:focus-visible,
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #atsrsGlobalControls :is(button,[role="button"]):focus-visible{
+  outline:2px solid rgba(208,122,75,.72)!important;
+  outline-offset:2px!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #atsrsGlobalControls{
+  color:var(--jobs-text)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #atsrsGlobalControls :is(#atsrsNotificationButton,#atsrsThemeToggle,.account-badge,.account-menu-button){
+  color:var(--jobs-text)!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #atsrsThemeToggle .atsrs-theme-track{
+  border-color:#353b38!important;
+  background:#111413!important;
+}
+
+html[data-theme="dark"] body:has(#jobsPage:not(.hidden)) #atsrsThemeToggle .atsrs-theme-thumb{
+  background:var(--jobs-copper)!important;
+}
+
+html[data-theme="dark"] #jobsPage{
+  --atsrs-jobs-green-text:var(--jobs-copper,#b8653b);
+  --jobs-filter-border:var(--jobs-line,#252b2a);
+  --jobs-filter-bg:var(--jobs-surface,#0d1110);
+  --jobs-filter-text:var(--jobs-text,#f3f1ed);
+  --jobs-filter-label:var(--jobs-muted,#a7adb4);
+  --jobs-filter-focus:var(--jobs-copper,#b8653b);
+  --jobs-filter-hover:rgba(184,101,59,.11);
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #jobsPage .jobs-hero h3{
+  color:var(--jobs-text,#f3f1ed)!important;
+  -webkit-text-fill-color:var(--jobs-text,#f3f1ed)!important;
+}
+
+html[data-theme="dark"] #jobsPage .jobs-hero p,
+html[data-theme="dark"] #jobsPage .jobs-snapshot,
+html[data-theme="dark"] #jobsPage .jobs-geography-trail{
+  color:var(--jobs-muted,#a7adb4)!important;
+}
+
+html[data-theme="dark"] #jobsPage :is(.jobs-region-nav button,.jobs-select-toggle,.jobs-date-range-toggle,#jobsClearFilters){
+  border-color:var(--jobs-line,#252b2a)!important;
+  background:var(--jobs-surface,#0d1110)!important;
+  color:var(--jobs-text,#f3f1ed)!important;
+  -webkit-text-fill-color:var(--jobs-text,#f3f1ed)!important;
+}
+
+html[data-theme="dark"] #jobsPage :is(.jobs-region-nav button:hover,.jobs-region-nav button.is-active,.jobs-select-toggle:hover,.jobs-select-toggle[aria-expanded="true"],.jobs-date-range-toggle:hover,.jobs-date-range-toggle[aria-expanded="true"],#jobsClearFilters:hover){
+  border-color:var(--jobs-copper,#b8653b)!important;
+  background:var(--jobs-copper-soft,#2a1913)!important;
+  color:var(--jobs-copper-hover,#d07a4b)!important;
+  -webkit-text-fill-color:var(--jobs-copper-hover,#d07a4b)!important;
+}
+
+html[data-theme="dark"] #jobsPage :is(input,select,button,a):focus-visible{
+  outline:2px solid rgba(208,122,75,.72)!important;
+  outline-offset:2px!important;
+}
+
+html[data-theme="dark"] #jobsPage .jobs-compact-check input:checked+.jobs-check-box{
+  border-color:var(--jobs-copper,#b8653b)!important;
+  background:var(--jobs-copper,#b8653b)!important;
+}
+
+html[data-theme="dark"] #jobsPage .jobs-compact-check:has(input:checked){
+  color:var(--jobs-copper-hover,#d07a4b)!important;
+}
+
+html[data-theme="dark"] #jobsPage .jobs-view-switch button[aria-pressed="true"],
+html[data-theme="dark"] #jobsPage .jobs-view-switch button.active{
+  color:var(--jobs-copper-hover,#d07a4b)!important;
+  -webkit-text-fill-color:var(--jobs-copper-hover,#d07a4b)!important;
+  background:var(--jobs-copper-soft,#2a1913)!important;
+}
+
+html[data-theme="dark"] #jobsPage .jobs-view-switch button[aria-pressed="true"]::after,
+html[data-theme="dark"] #jobsPage .jobs-view-switch button.active::after{
+  background:var(--jobs-copper,#b8653b)!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card,
+html[data-theme="dark"] #jobsPage .job-card[data-job-visual]{
+  --job-card-accent:var(--jobs-copper,#b8653b);
+  --job-card-accent-rgb:184,101,59;
+  --atsrs-jobs-green-text:var(--jobs-copper,#b8653b);
+  border-color:rgba(184,101,59,.52)!important;
+  background:var(--jobs-surface,#0d1110)!important;
+  color:var(--jobs-text,#f3f1ed)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card::before{
+  width:2px!important;
+  background:var(--jobs-copper,#b8653b)!important;
+  box-shadow:none!important;
+  opacity:1!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card::after{
+  background-image:
+    linear-gradient(90deg,rgba(7,9,9,.99) 0%,rgba(7,9,9,.91) 43%,rgba(7,9,9,.64) 74%,rgba(7,9,9,.48) 100%),
+    var(--job-card-art)!important;
+  background-position:center,right center!important;
+  background-size:cover,cover!important;
+  background-blend-mode:normal,normal!important;
+  opacity:.84!important;
+  filter:saturate(.92) contrast(1.04)!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card :is(.job-card-company,.job-contact-link,.job-contact-link-icon){
+  color:var(--jobs-copper-hover,#d07a4b)!important;
+  -webkit-text-fill-color:var(--jobs-copper-hover,#d07a4b)!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card :is(.job-card-company span,.job-new-badge){
+  border-color:rgba(184,101,59,.58)!important;
+  background:var(--jobs-copper-soft,#2a1913)!important;
+  color:var(--jobs-copper-hover,#d07a4b)!important;
+  -webkit-text-fill-color:var(--jobs-copper-hover,#d07a4b)!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card .job-contact-clickable{
+  border-color:#343a37!important;
+  background:rgba(13,17,16,.92)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card .job-contact-clickable:hover,
+html[data-theme="dark"] #jobsPage .job-card .job-contact-clickable:focus-within{
+  border-color:var(--jobs-copper,#b8653b)!important;
+  background:var(--jobs-copper-soft,#2a1913)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card .job-contact-application{
+  border-color:var(--jobs-copper,#b8653b)!important;
+  background:var(--jobs-copper,#b8653b)!important;
+}
+
+html[data-theme="dark"] #jobsPage .job-card .job-contact-application :is(.job-contact-link,.job-contact-link-icon){
+  color:#fffaf6!important;
+  -webkit-text-fill-color:#fffaf6!important;
+}
+
+html[data-theme="dark"] #jobsPage .jobs-page-button.active,
+html[data-theme="dark"] #jobsPage .jobs-page-button[aria-current="page"]{
+  border-color:var(--jobs-copper,#b8653b)!important;
+  background:var(--jobs-copper-soft,#2a1913)!important;
+  color:var(--jobs-copper-hover,#d07a4b)!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] .job-detail-dialog[data-job-visual]{
+  --job-card-accent:var(--jobs-copper,#b8653b);
+  --job-card-accent-rgb:184,101,59;
+}
+
+html[data-theme="dark"] .job-detail-panel::before{
+  background-image:
+    linear-gradient(90deg,rgba(7,9,9,.995) 0%,rgba(7,9,9,.94) 48%,rgba(7,9,9,.64) 100%),
+    var(--job-card-art)!important;
+  background-blend-mode:normal,normal!important;
+  opacity:.8!important;
+  filter:saturate(.92) contrast(1.04)!important;
+}
