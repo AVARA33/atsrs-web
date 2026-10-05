@@ -20,6 +20,7 @@ test('offshore jobs receive deterministic reference-style backgrounds', () => {
   assert.match(runtime, /function jobVisualArtwork\(job\)/);
   assert.match(runtime, /a\.style\.setProperty\('--job-card-art'/);
   assert.match(runtime, /dialog\.style\.setProperty\('--job-card-art'/);
+  assert.match(runtime, /return art\[hash%art\.length\]/);
 });
 
 test('background approval precedes a shared company-logo position', () => {
