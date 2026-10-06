@@ -33,7 +33,41 @@ async function toggleFavorite(job,button){if(button.disabled)return;button.disab
 function favoriteControl(job){var button=el('button','job-favorite-toggle'),icon=el('i','ph ph-star');button.type='button';icon.setAttribute('aria-hidden','true');button.append(icon);syncFavoriteControl(button,job);button.onclick=function(event){event.preventDefault();event.stopPropagation();toggleFavorite(job,button)};return button}
 function verifiedDate(value){var match=clean(value).match(/^(\d{4})-(\d{2})-(\d{2})(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?$/);if(!match)return'';var y=Number(match[1]),m=Number(match[2]),day=Number(match[3]),d=new Date(Date.UTC(y,m-1,day));if(d.getUTCFullYear()!==y||d.getUTCMonth()!==m-1||d.getUTCDate()!==day)return'';return new Intl.DateTimeFormat((window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB'),{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(d)}
 function dateLabel(job){var value=verifiedDate(job&&job.source_posted_at||job&&job.display_posted_date);return value?'Posted '+value:''}
-function jobCompanyLogo(value){var name=clean(value),key=norm(name),assets=window.atsrsCompanyLogoAssets||{},assetNames=Object.keys(assets),logos=[[/oceaneering/,{src:'/assets/company-logos/job-card/oceaneering.png'}],[/technip\s*fmc|technipfmc/,{src:'/assets/company-logos/job-card/technipfmc.svg',tone:'mono'}],[/saipem/,{src:'/assets/company-logos/job-card/saipem.png'}],[/subsea\s*7|subsea7/,{src:'/assets/company-logos/job-card/subsea7.png'}],[/\bdof\b/,{src:'/assets/company-logos/job-card/dof.png',tone:'mono'}],[/fugro/,{src:'/assets/company-logos/job-card/fugro.png',tone:'mono'}],[/\baccor|accorhotel/,{src:'/assets/company-logos/job-card/accor.svg'}],[/\bsgs\b/,{src:'/assets/company-logos/job-card/sgs.png'}],[/eurofins/,{src:'/assets/company-logos/job-card/eurofins.png'}],[/avery\s*dennison/,{src:'/assets/company-logos/job-card/avery-dennison.png'}],[/veolia/,{src:'/assets/company-logos/job-card/veolia.webp'}],[/service\s*now|servicenow/,{src:'/assets/company-logos/job-card/servicenow.svg',tone:'mono'}],[/vattenfall/,{src:'/assets/company-logos/job-card/vattenfall.svg'}],[/ubisoft/,{src:'/assets/company-logos/job-card/ubisoft.svg',tone:'mono',compact:true}],[/jones\s*lang|\bjll\b/,{src:'/assets/company-logos/job-card/jll.png',tone:'mono'}],[/aecom/,{src:'/assets/company-logos/job-card/aecom.svg'}],[/western\s*sydney\s*university/,{src:'/assets/company-logos/job-card/western-sydney-university.png',tone:'mono'}],[/syngenta/,{src:'/assets/company-logos/job-card/syngenta.svg'}],[/western\s*digital/,{src:'/assets/company-logos/job-card/western-digital.svg',tone:'mono'}],[/iota\s*group/,{src:'/assets/company-logos/official/iotagroup.ge.png',compact:true}],[/rovop/,{src:'/assets/company-logos/official/rovop.com.png',compact:true}],[/bosch/,{src:'/assets/company-logos/official/bosch.com.png',tone:'catalog',compact:true}]];for(var j=0;j<logos.length;j+=1)if(logos[j][0].test(key))return logos[j][1];var source=assets[name]||'';if(!source)for(var i=0;i<assetNames.length;i+=1)if(norm(assetNames[i])===key){source=assets[assetNames[i]];break}return source?{src:(/^\//.test(source)?source:'/'+source),tone:'catalog',compact:true}:null}
+function jobCompanyLogo(value){
+  var name=clean(value),key=norm(name),assets=window.atsrsCompanyLogoAssets||{},assetNames=Object.keys(assets),logos=[
+    [/oceaneering/,{src:'/assets/company-logos/job-card/oceaneering.png'}],
+    [/technip\s*fmc|technipfmc/,{src:'/assets/company-logos/job-card/technipfmc.svg',tone:'mono'}],
+    [/saipem/,{src:'/assets/company-logos/job-card/saipem.png'}],
+    [/subsea\s*7|subsea7/,{src:'/assets/company-logos/job-card/subsea7.png'}],
+    [/\bdof\b/,{src:'/assets/company-logos/job-card/dof.png',tone:'mono'}],
+    [/fugro/,{src:'/assets/company-logos/job-card/fugro.png',tone:'mono'}],
+    [/viva\s*energy/,{src:'/assets/company-logos/job-card/viva-energy.png'}],
+    [/\bsixt\b/,{src:'/assets/company-logos/job-card/sixt.png',tone:'mono'}],
+    [/\bintuitive\b/,{src:'/assets/company-logos/job-card/intuitive.png'}],
+    [/lgc\s*group|\blgc\b/,{src:'/assets/company-logos/job-card/lgc.png'}],
+    [/\btomra\b/,{src:'/assets/company-logos/job-card/tomra.png',tone:'mono'}],
+    [/\baccor|accorhotel/,{src:'/assets/company-logos/job-card/accor.svg'}],
+    [/\bsgs\b/,{src:'/assets/company-logos/job-card/sgs.png'}],
+    [/eurofins/,{src:'/assets/company-logos/job-card/eurofins.png'}],
+    [/avery\s*dennison/,{src:'/assets/company-logos/job-card/avery-dennison.png'}],
+    [/veolia/,{src:'/assets/company-logos/job-card/veolia.webp'}],
+    [/service\s*now|servicenow/,{src:'/assets/company-logos/job-card/servicenow.svg',tone:'mono'}],
+    [/vattenfall/,{src:'/assets/company-logos/job-card/vattenfall.svg'}],
+    [/ubisoft/,{src:'/assets/company-logos/job-card/ubisoft.svg',tone:'mono',compact:true}],
+    [/jones\s*lang|\bjll\b/,{src:'/assets/company-logos/job-card/jll.png',tone:'mono'}],
+    [/aecom/,{src:'/assets/company-logos/job-card/aecom.svg'}],
+    [/western\s*sydney\s*university/,{src:'/assets/company-logos/job-card/western-sydney-university.png',tone:'mono'}],
+    [/syngenta/,{src:'/assets/company-logos/job-card/syngenta.svg'}],
+    [/western\s*digital/,{src:'/assets/company-logos/job-card/western-digital.svg',tone:'mono'}],
+    [/iota\s*group/,{src:'/assets/company-logos/official/iotagroup.ge.png',compact:true}],
+    [/rovop/,{src:'/assets/company-logos/official/rovop.com.png',compact:true}],
+    [/bosch/,{src:'/assets/company-logos/official/bosch.com.png',tone:'catalog',compact:true}]
+  ];
+  for(var j=0;j<logos.length;j+=1)if(logos[j][0].test(key))return logos[j][1];
+  var source=assets[name]||'';
+  if(!source)for(var i=0;i<assetNames.length;i+=1)if(norm(assetNames[i])===key){source=assets[assetNames[i]];break}
+  return source?{src:(/^\//.test(source)?source:'/'+source),tone:'catalog',compact:true}:null
+}
 function fact(dl,label,value){if(!clean(value))return;var key=clean(label).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),icons={region:'ph-map-pin',location:'ph-map-pin',posted:'ph-calendar-blank',duration:'ph-clock',worksite:'ph-buildings','work-type':'ph-briefcase'},w=el('div','job-fact job-fact-'+key),icon=el('i','ph '+(icons[key]||'ph-info'));icon.setAttribute('aria-hidden','true');w.append(icon,el('dt','',uiText(label)),el('dd','',value));dl.append(w)}
 function contact(box,label,value,kind,href){if(!clean(value))return;var translatedLabel=uiText(label),p=el('p','job-contact-'+kind);p.append(el('strong','',translatedLabel));if(href){var a=el('a','job-contact-link'),linkText=el('span','job-contact-link-text',value),linkIcon=el('i','ph ph-hand-tap job-contact-link-icon');p.classList.add('job-contact-clickable');a.href=href;a.setAttribute('aria-label',translatedLabel+': '+value);linkIcon.setAttribute('aria-hidden','true');a.append(linkText,linkIcon);if(/^https?:/i.test(href)){a.target='_blank';a.rel='noopener noreferrer'}p.append(a)}else{p.classList.add('job-contact-static');p.append(el('span','',value))}box.append(p)}
 function listingSourceHref(job){var source=httpUrl(job&&job.source_url);if(!source)return'';try{return new URL(source).hostname.toLowerCase()==='atsrs.com'?'':source}catch(ignore){return''}}
