@@ -21,6 +21,8 @@ test('compact cards preserve complete detail access and deterministic tags', () 
   assert.match(runtime, /icons=\{region:'ph-map-pin'.*'work-type':'ph-briefcase'/s);
   assert.match(runtime, /job-card-brand/);
   assert.match(runtime, /jobCompanyLogo/);
+  assert.match(runtime, /brand\.append\(brandText\)/);
+  assert.doesNotMatch(runtime, /el\('img','job-card-brand-logo'\)/);
   assert.match(runtime, /job-card-view-cta/);
   assert.match(runtime, /job-card-recruiter-copy/);
   assert.match(runtime, /job-card-tags/);
