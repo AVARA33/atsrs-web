@@ -9,7 +9,7 @@ test('offshore jobs receive deterministic reference-style backgrounds', () => {
   for (const asset of [
     'offshore-rov-oceaneering-hd.png',
     'offshore-technipfmc-hd.png',
-    'offshore-saipem-hd.png',
+    'offshore-saipem-clean-hd.png',
     'offshore-subsea7-hd.png',
     'offshore-dof-hd.png',
     'offshore-fugro-hd.png'
@@ -20,7 +20,9 @@ test('offshore jobs receive deterministic reference-style backgrounds', () => {
   assert.match(runtime, /function jobVisualArtwork\(job\)/);
   assert.match(runtime, /a\.style\.setProperty\('--job-card-art'/);
   assert.match(runtime, /dialog\.style\.setProperty\('--job-card-art'/);
-  assert.match(runtime, /if\(\/oceaneering\/\.test\(company\)\)return art\[0\]/);
+  assert.match(runtime, /if\(\/oceaneering\/\.test\(company\)\)return branded\[0\]/);
+  assert.match(runtime, /if\(\/saipem\/\.test\(company\)\)return branded\[2\]/);
+  assert.doesNotMatch(runtime, /offshore-saipem-hd\.png/);
   assert.match(runtime, /\.\.\/assets\/job-card-backgrounds\/offshore-rov-oceaneering-hd\.png/);
 });
 
