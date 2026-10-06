@@ -855,3 +855,34 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   top:13px;
   right:13px;
 }
+
+/* V6215: reference card hierarchy — wordmark, vacancy, metadata, body, recruiter, CTA. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand{
+  display:flex!important;
+  align-items:center;
+  justify-content:flex-start;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand-logo{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain;
+  object-position:left center;
+  filter:grayscale(1) brightness(0) invert(1);
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-head{
+  margin-top:72px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-head h2{
+  margin:0 0 4px;
+  font-size:18px;
+  font-weight:800;
+  line-height:1.12;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-company{
+  margin:0;
+  color:#f4f4f2!important;
+  -webkit-text-fill-color:#f4f4f2!important;
+  font-size:12px;
+  font-weight:500;
+}

@@ -23,6 +23,7 @@ test('offshore jobs receive deterministic reference-style backgrounds', () => {
   assert.match(runtime, /if\(\/oceaneering\/\.test\(company\)\)return branded\[0\]/);
   assert.match(runtime, /if\(\/saipem\/\.test\(company\)\)return branded\[2\]/);
   assert.doesNotMatch(runtime, /offshore-saipem-hd\.png/);
+  assert.match(runtime, /window\.atsrsCompanyLogoAssets/);
   assert.match(runtime, /\.\.\/assets\/job-card-backgrounds\/offshore-rov-oceaneering-hd\.png/);
 });
 
