@@ -820,6 +820,19 @@ Final result: passed.
 
 Final result: passed.
 
+# JobSearch company wordmark scale — Design QA
+
+- Scope: company wordmarks and compact company marks inside JobSearch cards.
+- Verified live build: `V6230` at `https://atsrs.com/?route=jobs&_atsrs_release=V6230-qa`.
+- The reserved brand slot remains exactly 34 pixels high; no card hierarchy or spacing was enlarged.
+- Standard wordmarks use the full 34-pixel slot. Compact and stacked artwork receives visual-only scaling from the left centre without affecting document flow.
+- The compact square-mark variant remains 34 × 34 pixels with 16-pixel company text.
+- Live audit covered all 30 loaded cards: 0 brand-slot violations, 0 title-position violations and 0 logos below the 34-pixel baseline.
+- All 30 cards retained the same 74-pixel brand-to-title offset, so vacancy titles and body copy were not pushed down.
+- Current-build console errors: 0. Focused JobSearch tests passed: 32/32.
+
+Final result: passed.
+
 # JobSearch NEW badge control spacing — Design QA
 
 - Scope: the `NEW` badge and the favorite/expand controls in JobSearch card headers only.
