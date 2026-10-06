@@ -57,7 +57,7 @@ function jobCompanyLogo(value){
     [/hello\s*kindred/,{src:'/assets/company-logos/job-card/hellokindred.svg?v=6224'}],
     [/wabtec/,{src:'/assets/company-logos/job-card/wabtec.svg?v=6224'}],
     [/\baccor|accorhotel/,{src:'/assets/company-logos/job-card/accor.svg'}],
-    [/\bsgs\b/,{src:'/assets/company-logos/job-card/sgs.png'}],
+    [/\bsgs\b/,{src:'/assets/company-logos/job-card/sgs.png?v=6225'}],
     [/eurofins/,{src:'/assets/company-logos/job-card/eurofins.png'}],
     [/avery\s*dennison/,{src:'/assets/company-logos/job-card/avery-dennison.png'}],
     [/veolia/,{src:'/assets/company-logos/job-card/veolia.webp'}],

@@ -48,13 +48,22 @@ test('reference companies and current feed companies resolve to curated wordmark
 });
 
 test('raster wordmarks that previously carried white canvases retain transparency', () => {
-  for (const asset of ['abano.png', 'jll.png', 'ldc.png']) {
+  for (const asset of ['abano.png', 'jll.png', 'ldc.png', 'sgs.png']) {
     const png = fs.readFileSync(`assets/company-logos/job-card/${asset}`);
     assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10], `${asset} must be a real PNG`);
     const colourType = png[25];
     const hasPaletteTransparency = png.includes(Buffer.from('tRNS'));
     assert.ok(colourType === 4 || colourType === 6 || hasPaletteTransparency, `${asset} must support transparency`);
   }
+});
+
+test('SGS cards use the official SGS wordmark rather than the company slogan', () => {
+  assert.match(runtime, /\/assets\/company-logos\/job-card\/sgs\.png\?v=6225/);
+  const png = fs.readFileSync('assets/company-logos/job-card/sgs.png');
+  const width = png.readUInt32BE(16);
+  const height = png.readUInt32BE(20);
+  assert.equal(width, 170);
+  assert.equal(height, 80);
 });
 
 test('JobSearch artwork keeps natural colour beneath the specified black overlay', () => {
