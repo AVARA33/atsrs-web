@@ -38,7 +38,8 @@ test('reference companies and current feed companies resolve to curated wordmark
     'servicenow.svg', 'vattenfall.svg', 'ubisoft.svg', 'jll.png', 'aecom.svg',
     'western-sydney-university.png', 'syngenta.svg', 'western-digital.svg',
     'viva-energy.png', 'sixt.png', 'intuitive.png', 'lgc.png', 'tomra.png',
-    'umdasch.svg', 'seek.png', 'red-bull.svg', 'egis.png', 'jde-peets.png'
+    'umdasch.svg', 'seek.png', 'red-bull.svg', 'egis.png', 'jde-peets.png',
+    'abano.png', 'ldc.png', 'qantas.svg', 'hellokindred.svg', 'wabtec.svg'
   ]) assert.match(runtime, new RegExp(asset.replace('.', '\\.')));
   assert.match(css, /V6219: use each employer's real mark/);
   assert.match(css, /max-width:168px!important/);
