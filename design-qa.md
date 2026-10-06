@@ -796,6 +796,28 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch SGS company identity V6225 — Design QA
+
+- Scope: company identity shown at the upper-left of JobSearch cards for SGS vacancies, plus a live regression audit of all currently rendered company headings.
+- Source visual issue: `C:\Users\user\AppData\Local\Temp\codex-clipboard-622686bd-cdc4-4cf7-865b-39b627e08a89.png` showed the SGS slogan “When you need to be sure” incorrectly used as the company identity.
+- Live corrected evidence: `output/jobsearch-sgs-logo-v6225.png`.
+
+## Visual comparison
+
+- The slogan-only asset was removed from SGS cards.
+- SGS cards now show the official `SGS` wordmark with its original grey and orange identity treatment on a transparent canvas.
+- Existing card artwork, overlay, typography, spacing, company line, controls, and copper action styling remain unchanged.
+
+## Interaction and regression checks
+
+- Live V6225 rendered 30 cards; 27 used curated image logos and the remaining cards retained their intentional text identity.
+- Both visible SGS cards loaded the corrected `170 × 80` transparent asset from `sgs.png?v=6225`.
+- No rendered company heading contained the slogan, no image logo was broken, and browser console errors were 0.
+- The curated company-logo contact sheet was reviewed for other slogan-only substitutions; no additional slogan-only company identity was found.
+- JavaScript syntax, diff validation, and all 29 focused JobSearch tests passed.
+
+final result: passed
+
 # JobSearch transparent company logos V6224 — Design QA
 
 - Scope: remove opaque white canvases from company wordmarks without changing the approved card backgrounds, layout, data or interactions.
