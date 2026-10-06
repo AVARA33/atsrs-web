@@ -18,7 +18,7 @@ test('JobSearch cards use the approved dark editorial layout', () => {
 
 test('compact cards preserve complete detail access and deterministic tags', () => {
   assert.match(runtime, /job-fact-'\+key/);
-  assert.match(runtime, /icons=\{region:'ph-map-pin'.*'work-type':'ph-briefcase'/s);
+  assert.match(runtime, /icons=\{region:'ph-map-pin'.*duration:rotation\?'ph-arrows-clockwise':'ph-clock'.*'work-type':'ph-notepad'/s);
   assert.match(runtime, /job-card-brand/);
   assert.match(runtime, /jobCompanyLogo/);
   assert.match(runtime, /el\('img','job-card-brand-logo'\)/);
@@ -81,4 +81,13 @@ test('NEW badge remains separated from the favorite and expand controls', () => 
   assert.match(css, /V6226: keep the NEW badge clear of the favorite and expand controls/);
   assert.match(css, /\.jobs-cards \.job-card-meta\{\s*right:82px;/);
   assert.match(css, /#jobsPage \.jobs-cards \.job-card-controls\{top:13px;right:13px;gap:5px\}/);
+});
+
+test('remaining card icons follow the selected reference hierarchy', () => {
+  assert.match(css, /V6227: place the remaining card icons in the selected reference hierarchy/);
+  assert.match(runtime, /ph-bookmark-simple-fill.*ph-bookmark-simple/);
+  assert.match(runtime, /project\.append\(dl\);if\(summaryNode\)project\.append\(summaryNode\)/);
+  assert.match(css, /\.job-fact-posted\{\s*display:none!important/);
+  assert.match(css, /\.job-facts:has\(\.job-fact-duration\) \.job-fact-work-type\{\s*display:none!important/);
+  assert.match(css, /\.job-card-recruiter-meta>i\{\s*width:20px;\s*height:22px;\s*border:0/);
 });

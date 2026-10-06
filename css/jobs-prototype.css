@@ -955,3 +955,48 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-meta{
   right:82px;
 }
+
+/* V6227: place the remaining card icons in the selected reference hierarchy. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-facts{
+  display:flex;
+  align-items:center;
+  flex-wrap:nowrap;
+  min-width:0;
+  min-height:18px;
+  gap:13px;
+  overflow:hidden;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-fact-posted{
+  display:none!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-facts:has(.job-fact-duration) .job-fact-work-type{
+  display:none!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards :is(.job-fact-location,.job-fact-duration,.job-fact-work-type){
+  align-items:center;
+  min-width:0;
+  gap:6px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-fact-location{
+  flex:0 1 auto;
+  max-width:72%;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards :is(.job-fact-duration,.job-fact-work-type){
+  flex:0 0 auto;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-fact dd{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-recruiter-meta>i{
+  width:20px;
+  height:22px;
+  border:0;
+  border-radius:0;
+  font-size:18px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-contact-info{
+  padding-top:4px;
+  border-top:0;
+}
