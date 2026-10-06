@@ -98,11 +98,15 @@ test('company wordmarks share a visual scale without changing the card hierarchy
   assert.match(css, /\.job-card-brand\.is-size-stacked \.job-card-brand-logo\{\s*height:34px!important;\s*max-height:34px!important/);
   assert.match(css, /\.job-card-brand\.show-logo-text \.job-card-brand-text\{\s*font-size:16px/);
   assert.match(runtime, /logo\.size\)brand\.classList\.add\('is-size-'\+logo\.size\)/);
-  assert.match(runtime, /louis\\s\*dreyfus[\s\S]*?size:'stacked'/);
+  assert.match(runtime, /louis\\s\*dreyfus[\s\S]*?size:'tagline-wordmark'/);
   assert.match(css, /V6229: use the full reserved brand slot so wordmarks never read too small/);
   assert.match(css, /\.job-card-brand-logo,[\s\S]*?height:34px!important;\s*max-height:34px!important/);
   assert.match(css, /\.job-card-brand:is\(\.is-catalog,\.show-logo-text\) \.job-card-brand-logo\{[\s\S]*?width:34px!important/);
   assert.match(css, /V6230: compensate only compact artwork, without changing the reserved slot/);
   assert.match(css, /\.job-card-brand\.is-size-compact-wordmark \.job-card-brand-logo\{\s*transform:scale\(1\.18\)/);
   assert.match(css, /\.job-card-brand\.is-size-stacked \.job-card-brand-logo\{\s*transform:scale\(1\.25\)/);
+  assert.match(css, /V6231: balance multi-line marks by perceived size; the 34px layout slot stays fixed/);
+  assert.match(runtime, /abano\\s\*healthcare[\s\S]*?size:'multiline-wordmark'/);
+  assert.match(css, /\.job-card-brand\.is-size-multiline-wordmark \.job-card-brand-logo\{\s*transform:scale\(1\.55\)/);
+  assert.match(css, /\.job-card-brand\.is-size-tagline-wordmark \.job-card-brand-logo\{\s*transform:scale\(1\.6\)/);
 });

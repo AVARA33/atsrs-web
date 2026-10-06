@@ -1043,3 +1043,13 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   transform:scale(1.25);
   transform-origin:left center;
 }
+
+/* V6231: balance multi-line marks by perceived size; the 34px layout slot stays fixed. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-size-multiline-wordmark .job-card-brand-logo{
+  transform:scale(1.55);
+  transform-origin:left center;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-size-tagline-wordmark .job-card-brand-logo{
+  transform:scale(1.6);
+  transform-origin:left center;
+}
