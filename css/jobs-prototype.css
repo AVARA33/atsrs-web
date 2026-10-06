@@ -785,3 +785,24 @@ html[data-theme] #jobsPage .jobs-cards .job-card::before{display:none!important}
 
 @media(max-width:1250px){html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{min-height:346px;height:346px}}
 @media(max-width:600px){html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{min-height:370px;height:370px;padding:16px}}
+
+/* V6210: hard lock the approved line-free card chrome and compact CTA. */
+html[data-theme] #jobsPage #jobsHeading{
+  color:#F4F4F2!important;
+  -webkit-text-fill-color:#F4F4F2!important;
+}
+html[data-theme] #jobsPage .jobs-cards .job-card::before{
+  content:none!important;
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  background:none!important;
+}
+html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta{
+  width:auto!important;
+  min-width:88px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  padding:0 12px!important;
+}

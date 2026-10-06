@@ -15,7 +15,7 @@ test('JobSearch uses the compact reference heading without the former banner',()
   assert.match(jobs,/Discover your next opportunity offshore/);
   assert.match(jobs,/class="jobs-hero-map" aria-hidden="true"/);
   assert.doesNotMatch(jobs,/Latest release|Released on/);
-  assert.match(index,/css\/jobs-prototype\.css\?v=6209/);
+  assert.match(index,/css\/jobs-prototype\.css\?v=6210/);
   assert.match(jobsCss,/body:has\(#jobsPage:not\(\.hidden\)\) #app\.app:not\(\.hidden\)>\.main>#pageTitle\{display:none!important\}/);
 });
 
