@@ -796,20 +796,20 @@ final result: passed
 
 Final result: passed.
 
-# JobSearch company wordmarks V6219 — Design QA
+# JobSearch company wordmarks V6223 — Design QA
 
 - Scope: the company identity at the upper-left of every JobSearch card; card artwork, vacancy data, filters and surrounding layout were intentionally preserved.
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-8ce4a6d7-382e-4b1e-adf3-ac79c818b738.png`.
-- Live implementation: `output/jobsearch-logos-v6219-live.png`.
-- Combined reference/live comparison: `output/jobsearch-logos-v6219-live-comparison.png`.
+- Live implementation: `output/jobsearch-logos-v6223-live.png`.
+- Combined reference/live comparison: `output/jobsearch-logos-v6223-live-comparison.png`.
 - Local fixture evidence: `output/jobsearch-logos-v6219-local.png`.
-- Source pixels: 3439 × 1368. Live capture pixels: 2279 × 731. Browser CSS viewport: 2294 × 735 at device-pixel ratio 1.5.
+- Source pixels: 3439 × 1368. Live capture pixels: 2279 × 731.
 - Audited state: authenticated Personal JobSearch, desktop three-column grid, dark theme; light-theme and expanded-detail checks were also completed.
 
 ## Visual comparison
 
 - Company identity now occupies the same upper-left hierarchy as the reference: the original company wordmark appears before the vacancy title instead of a generic text label.
-- Curated real assets cover Oceaneering, TechnipFMC, Saipem, Subsea7, DOF, Fugro and the current feed companies including Eurofins, Veolia, AECOM, SGS, Accor, Vattenfall, ServiceNow, Western Digital, JLL, Syngenta, Ubisoft, Avery Dennison and Western Sydney University.
+- Curated original assets cover the reference companies Oceaneering, TechnipFMC, Saipem, Subsea7, DOF and Fugro, plus the current live feed companies Eurofins, Abano Healthcare, Bosch Group, Accor, Ubisoft, SGS, Veolia, Egis, Louis Dreyfus Company, Assystem, Qantas, HelloKindred, Wabtec, AECOM, Umdasch Group, Masdar, SNV and Mitsubishi Power EMEA.
 - Wordmarks use a 188 × 34-pixel bounding area with `object-fit: contain`; compact catalogue marks retain the company name beside the icon rather than being stretched.
 - The live screen preserves the approved natural-colour job artwork, black readability overlay, copper controls, card proportions, typography and three-column rhythm.
 - The reference and live feeds contain different vacancies, so fidelity was evaluated by component hierarchy, position, scale, contrast and repeated-card behavior rather than by matching company content.
@@ -817,11 +817,11 @@ Final result: passed.
 
 ## Interaction and regression checks
 
-- Live V6219 showed 30 cards and the visible curated wordmarks loaded at non-zero natural dimensions; no visible logo fallback or broken image was present above the fold.
+- Live V6223 showed 30 cards across 18 companies. All 30 card identities rendered an image and all 30 completed with non-zero natural dimensions after the full-page lazy-load sweep; no missing, broken or text-fallback identity remained.
 - Light mode keeps JobSearch cards dark and readable and preserves the logo treatment.
 - The expanded job detail interaction opens normally; returning to the grid preserves card branding and layout.
-- Local fixture audit rendered 29 image identities across 30 cards with no broken-image fallback; the one unmapped fixture company remained a correct text fallback.
-- Focused JobSearch test suite: 20 passed, 0 failed. JavaScript syntax and staged-diff checks passed.
+- Unknown future companies without a verified logo retain their correct text name. Failed image loads also fall back to text; no fake or mismatched company mark is substituted.
+- Focused JobSearch test suite: 27 passed, 0 failed. JavaScript syntax and staged-diff checks passed.
 - Browser console errors: 0.
 
 final result: passed

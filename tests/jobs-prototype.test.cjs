@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6194/);
-  assert.match(index,/route-feature-loader\.js\?v=6169/);
+  assert.match(index,/jobs-prototype\.css\?v=6223/);
+  assert.match(index,/route-feature-loader\.js\?v=6223/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6169'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6223'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -74,7 +74,7 @@ test('Jobs uses server data, safe DOM rendering and owner write controls',()=>{
   assert.match(runtime,/Recruiter email/);
   assert.match(runtime,/Recruiter phone/);
   assert.doesNotMatch(runtime,/<details>|<summary>/);
-  assert.match(runtime,/contact\(actions,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
+  assert.match(runtime,/contact\(list,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
   assert.match(runtime,/function applicationUrl\(x\)/);
   assert.match(runtime,/u\.protocol==='mailto:'/);
   assert.match(runtime,/applicationUrl\(job\.application_url\)\|\|mailtoHref\(job\)/);
@@ -212,18 +212,16 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/function updateView\(\)\{var grid=id\('jobsGrid'\);if\(grid\)\{grid\.classList\.remove\('jobs-list'\);grid\.classList\.add\('jobs-cards'\)\}/);
   assert.match(shellCss,/#projectsPage,#jobsPage/);
   assert.doesNotMatch(css,/\.job-contact-phone\{display:none/);
-  assert.match(runtime,/var actions=el\('div','job-recruiter-info job-contact-actions'\)/);
-  assert.match(runtime,/if\(linkedinHref\)contact\(actions,'Recruiter LinkedIn',uiText\('Open LinkedIn'\),'linkedin',linkedinHref\)/);
-  assert.match(runtime,/contact\(actions,'Recruiter email',validEmail\(job\.recruiter_email\)/);
-  assert.match(runtime,/contact\(actions,'Listing source'/);
-  assert.match(runtime,/contact\(actions,'Application',uiText\('Open application'\)/);
-  assert.ok(runtime.indexOf("contact(actions,'Recruiter LinkedIn'") < runtime.indexOf("contact(actions,'Recruiter email'"));
-  assert.ok(runtime.indexOf("contact(actions,'Listing source'") < runtime.indexOf("contact(actions,'Application'"));
-  assert.match(css,/\.jobs-cards \.job-contact-actions\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
-  assert.match(css,/\.job-contact-linkedin\{grid-column:1;grid-row:1\}/);
-  assert.match(css,/\.job-contact-email\{grid-column:2;grid-row:1\}/);
-  assert.match(css,/\.job-contact-source\{grid-column:1;grid-row:2\}/);
-  assert.match(css,/\.job-contact-application\{grid-column:2;grid-row:2\}/);
+  assert.match(runtime,/var contacts=el\('section','job-detail-contacts'\),list=el\('div','job-recruiter-info'\)/);
+  assert.match(runtime,/contact\(list,'Recruiter LinkedIn',uiText\('Open LinkedIn'\),'linkedin',recruiterLinkedInUrl\(job\.recruiter_linkedin_url\)\)/);
+  assert.match(runtime,/contact\(list,'Recruiter email',validEmail\(job\.recruiter_email\)/);
+  assert.match(runtime,/contact\(list,'Listing source'/);
+  assert.match(runtime,/contact\(list,'Application',uiText\('Open application'\)/);
+  assert.ok(runtime.indexOf("contact(list,'Recruiter LinkedIn'") < runtime.indexOf("contact(list,'Recruiter email'"));
+  assert.ok(runtime.indexOf("contact(list,'Listing source'") < runtime.indexOf("contact(list,'Application'"));
+  assert.match(runtime,/var viewButton=el\('button','job-card-view-cta'\)/);
+  assert.match(runtime,/viewButton\.append\(el\('span','',uiText\('View job'\)\),viewIcon\)/);
+  assert.match(runtime,/c\.append\(viewButton\)/);
   assert.match(runtime,/function hydrateRecruiterLinkedIn\(client,payload\)/);
   assert.doesNotMatch(runtime,/function action\(/);
   assert.match(runtime,/body=el\('div','job-card-body'\)/);
@@ -268,7 +266,7 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/function listingSourceHref\(job\)\{var source=httpUrl\(job&&job\.source_url\)/);
   assert.match(runtime,/hostname\.toLowerCase\(\)==='atsrs\.com'\?'':source/);
   assert.match(runtime,/Private source — no public link/);
-  assert.match(runtime,/contact\(actions,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
+  assert.match(runtime,/contact\(list,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
   assert.doesNotMatch(runtime,/rpc\('atsrs_job_public_v1'/);
   assert.match(css,/html\[data-theme="dark"\] #jobsPage \.job-card\{background:#08100c;border-color:#252525\}/);
   assert.match(runtime,/job-contact-link-icon/);
@@ -356,11 +354,10 @@ test('Jobs view controls and inline notice use the approved palettes',()=>{
   assert.match(css,/html\[data-theme="light"\][^{]*#jobsPage \.jobs-view-switch button:focus-visible\{outline:2px solid var\(--atsrs-shell-accent\)!important;outline-offset:2px!important\}/);
 });
 
-test('Jobs dropdown keeps selected rows completely unfilled',()=>{
+test('Jobs dropdown uses the approved copper selected-row state',()=>{
   assert.match(css,/jobs-select-option\[aria-selected="true"\]/);
   assert.match(css,/jobs-select-option\[data-active\]/);
-  assert.match(css,/V58166:[\s\S]*?jobs-select-option\[aria-selected="true"\]\{[\s\S]*?background:transparent!important;[\s\S]*?box-shadow:none!important/);
-  assert.doesNotMatch(css,/V58166:[\s\S]*?jobs-select-option\[aria-selected="true"\][^\{]*\{[^}]*background:(?!transparent)/);
+  assert.match(css,/V6193:[\s\S]*?jobs-select-option\[aria-selected="true"\][^\{]*\{background:#2a1913!important;color:#d07a4b!important/);
   assert.match(css,/\.jobs-select-menu\{[^}]*scrollbar-color:#5b6470 #111512/);
   assert.match(css,/\.jobs-select-toggle>i\{[^}]*width:16px[^}]*height:16px[^}]*flex:0 0 16px/);
   assert.doesNotMatch(css,/\.jobs-select-toggle:hover>i/);
