@@ -76,3 +76,9 @@ test('JobSearch artwork keeps natural colour beneath the specified black overlay
   assert.match(css, /filter:none!important/);
   assert.match(css, /background:#C06D45!important/);
 });
+
+test('NEW badge remains separated from the favorite and expand controls', () => {
+  assert.match(css, /V6226: keep the NEW badge clear of the favorite and expand controls/);
+  assert.match(css, /\.jobs-cards \.job-card-meta\{\s*right:82px;/);
+  assert.match(css, /#jobsPage \.jobs-cards \.job-card-controls\{top:13px;right:13px;gap:5px\}/);
+});

@@ -950,3 +950,8 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   font-size:14px;
   line-height:1.1;
 }
+
+/* V6226: keep the NEW badge clear of the favorite and expand controls. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-meta{
+  right:82px;
+}
