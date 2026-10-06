@@ -907,3 +907,46 @@ html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.
   color:#16191d!important;
   -webkit-text-fill-color:#16191d!important;
 }
+
+/* V6219: use each employer's real mark in the reference card position. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand{
+  width:188px;
+  max-width:56%;
+  height:34px;
+  gap:8px;
+  overflow:visible;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.has-logo:not(.show-logo-text) .job-card-brand-text{
+  display:none;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand-logo{
+  flex:0 1 auto;
+  width:auto!important;
+  max-width:168px!important;
+  height:auto!important;
+  max-height:34px!important;
+  object-fit:contain;
+  object-position:left center;
+  filter:none!important;
+  opacity:1;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-mono .job-card-brand-logo{
+  filter:grayscale(1) brightness(0) invert(1)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-catalog .job-card-brand-logo{
+  flex:0 0 30px;
+  width:30px!important;
+  height:30px!important;
+  filter:grayscale(1) invert(1) contrast(4)!important;
+  mix-blend-mode:screen;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.show-logo-text .job-card-brand-logo{
+  flex:0 0 30px;
+  width:30px!important;
+  height:30px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.show-logo-text .job-card-brand-text{
+  min-width:0;
+  font-size:14px;
+  line-height:1.1;
+}

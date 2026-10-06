@@ -21,13 +21,27 @@ test('compact cards preserve complete detail access and deterministic tags', () 
   assert.match(runtime, /icons=\{region:'ph-map-pin'.*'work-type':'ph-briefcase'/s);
   assert.match(runtime, /job-card-brand/);
   assert.match(runtime, /jobCompanyLogo/);
-  assert.match(runtime, /brand\.append\(brandText\)/);
-  assert.doesNotMatch(runtime, /el\('img','job-card-brand-logo'\)/);
+  assert.match(runtime, /el\('img','job-card-brand-logo'\)/);
+  assert.match(runtime, /logoImage\.onerror/);
+  assert.match(runtime, /brand\.append\(logoImage,brandText\)/);
   assert.match(runtime, /job-card-view-cta/);
   assert.match(runtime, /job-card-recruiter-copy/);
   assert.match(runtime, /job-card-tags/);
   assert.match(runtime, /Recruiter LinkedIn.*recruiterLinkedInUrl/s);
   assert.match(runtime, /openDetails\(job,details,preview\)/);
+});
+
+test('reference companies and current feed companies resolve to curated wordmarks', () => {
+  for (const asset of [
+    'oceaneering.png', 'technipfmc.svg', 'saipem.png', 'subsea7.png', 'dof.png', 'fugro.png',
+    'accor.svg', 'sgs.png', 'eurofins.png', 'avery-dennison.png', 'veolia.webp',
+    'servicenow.svg', 'vattenfall.svg', 'ubisoft.svg', 'jll.png', 'aecom.svg',
+    'western-sydney-university.png', 'syngenta.svg', 'western-digital.svg'
+  ]) assert.match(runtime, new RegExp(asset.replace('.', '\\.')));
+  assert.match(css, /V6219: use each employer's real mark/);
+  assert.match(css, /max-width:168px!important/);
+  assert.match(css, /\.job-card-brand\.is-mono \.job-card-brand-logo/);
+  assert.match(css, /\.job-card-brand\.is-catalog \.job-card-brand-logo/);
 });
 
 test('JobSearch artwork keeps natural colour beneath the specified black overlay', () => {
