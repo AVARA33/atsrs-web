@@ -26,8 +26,8 @@ test('offshore jobs receive deterministic reference-style backgrounds', () => {
   assert.match(runtime, /\.\.\/assets\/job-card-backgrounds\/offshore-rov-oceaneering-hd\.png/);
 });
 
-test('background approval precedes a shared company-logo position', () => {
-  assert.match(css, /\.job-card-brand\{visibility:hidden\}/);
+test('approved backgrounds preserve a shared company-logo position', () => {
+  assert.match(css, /\.job-card-brand\{[\s\S]*visibility:visible!important/);
   assert.match(css, /background-position:center,right center!important/);
   assert.match(css, /rgba\(0,0,0,\.58\)/);
   assert.match(css, /rgba\(0,0,0,\.82\)/);

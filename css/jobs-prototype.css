@@ -827,3 +827,31 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   outline:0!important;
   box-shadow:none!important;
 }
+
+/* V6214: restore the reference card header over the approved artwork. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand{
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:4;
+  top:16px;
+  left:18px;
+  width:155px;
+  max-width:52%;
+  height:30px;
+  color:#f4f4f2!important;
+  -webkit-text-fill-color:#f4f4f2!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand-logo{
+  max-width:150px;
+  max-height:30px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand-text{
+  font-size:16px;
+  font-weight:900;
+  line-height:30px;
+  text-shadow:0 2px 8px rgba(0,0,0,.92);
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-controls{
+  top:13px;
+  right:13px;
+}

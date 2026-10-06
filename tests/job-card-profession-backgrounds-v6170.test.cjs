@@ -33,8 +33,8 @@ test('all generated artwork files exist and stay lightweight', () => {
 });
 
 test('V6177 cache-busts the profession-aware JobSearch card styles', () => {
-  assert.match(index, /data-atsrs-build="V6213"/);
-  assert.match(index, /css\/jobs-prototype\.css\?v=6212/);
+  assert.match(index, /data-atsrs-build="V6214"/);
+  assert.match(index, /css\/jobs-prototype\.css\?v=6214/);
   const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
   assert.match(loader, /js\/jobs-prototype\.js\?v=6213/);
 });
