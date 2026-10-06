@@ -796,6 +796,29 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch NEW badge control spacing — Design QA
+
+- Scope: the `NEW` badge and the favorite/expand controls in JobSearch card headers only.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-ce2e772d-bdba-42e5-a635-e2945c7278c6.png`.
+- Live build: `V6226`; stylesheet: `css/jobs-prototype.css?v=6226`.
+- Live QA viewport: 2294 × 735 CSS pixels at device-pixel ratio 1.5.
+
+## Visual comparison
+
+- The badge remains immediately before the two circular controls instead of passing behind or inside them.
+- The card artwork, company wordmark, title, copy and control sizes remain unchanged.
+- The badge-to-controls gap is exactly 8 pixels on every visible card carrying a `NEW` badge.
+
+## Interaction and regression checks
+
+- Audited 28 live `NEW` cards: 0 overlaps.
+- The computed `.job-card-meta` right offset is 82 pixels on every audited card.
+- Favorite and expand controls remain at their existing 28-pixel size and 5-pixel internal gap.
+- Current-build (`v=6226`) browser console errors: 0.
+- Focused JobSearch regression suite: 30/30 tests passed; JavaScript syntax and diff checks passed.
+
+Final result: passed.
+
 # JobSearch SGS company identity V6225 — Design QA
 
 - Scope: company identity shown at the upper-left of JobSearch cards for SGS vacancies, plus a live regression audit of all currently rendered company headings.
