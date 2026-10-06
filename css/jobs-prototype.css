@@ -886,3 +886,21 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   font-size:12px;
   font-weight:500;
 }
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand:has(.job-card-brand-logo) .job-card-brand-text{
+  display:none;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-icon-lockup{
+  gap:8px;
+  width:190px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-icon-lockup .job-card-brand-logo{
+  width:28px!important;
+  height:28px!important;
+  object-fit:contain;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-icon-lockup .job-card-brand-text{
+  display:block;
+  min-width:0;
+  font-size:14px;
+  line-height:30px;
+}
