@@ -15,7 +15,7 @@ test('JobSearch uses the compact reference heading without the former banner',()
   assert.match(jobs,/Discover your next opportunity offshore/);
   assert.match(jobs,/class="jobs-hero-map" aria-hidden="true"/);
   assert.doesNotMatch(jobs,/Latest release|Released on/);
-  assert.match(index,/css\/jobs-prototype\.css\?v=6217/);
+  assert.match(index,/css\/jobs-prototype\.css\?v=6218/);
   assert.match(jobsCss,/body:has\(#jobsPage:not\(\.hidden\)\) #app\.app:not\(\.hidden\)>\.main>#pageTitle\{display:none!important\}/);
 });
 
@@ -26,6 +26,7 @@ test('JobSearch heading remains compact and dark in both themes',()=>{
   assert.match(css,/html\[data-theme="light"\][\s\S]*?#jobsPage \.jobs-snapshot strong\{color:#17345e\}/);
   assert.match(css,/html\[data-theme="light"\] #jobsPage \.jobs-hero-map\{opacity:\.58;filter:invert\(1\) hue-rotate\(306deg\) saturate\(1\.45\) contrast\(\.94\)\}/);
   assert.match(css,/html\[data-theme="light"\] #jobsPage \.jobs-hero > \.jobs-snapshot\{[\s\S]*?background:transparent;[\s\S]*?box-shadow:none;/);
+  assert.match(jobsCss,/html\[data-theme="light"\][\s\S]*?\.jobs-hero #jobsHeading\{[\s\S]*?color:#16191d!important/);
 });
 
 test('JobSearch heading keeps live results while decorative banner elements stay hidden',()=>{

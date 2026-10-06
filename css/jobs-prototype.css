@@ -901,3 +901,9 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   font-size:16px;
   line-height:30px;
 }
+/* V6218: retain the dark reference cards in light mode, but keep the page title
+   readable against the light page canvas. */
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-hero #jobsHeading{
+  color:#16191d!important;
+  -webkit-text-fill-color:#16191d!important;
+}
