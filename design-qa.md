@@ -796,6 +796,21 @@ final result: passed
 
 Final result: passed.
 
+---
+
+# JobSearch reference company header — Design QA (V6214)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-8245ddaf-e30d-4124-a2fa-55d229aadf5a.png`.
+- Scope: company name/logo and top-right card controls; approved card artwork remains unchanged.
+- Live verification: V6214 at the authenticated JobSearch route.
+- Company branding is visible at the reference top-left position in a 155 × 30 px slot.
+- NEW, favorite and expand controls remain grouped at the top-right without overlap.
+- Runtime measurement across the first six cards reported zero brand/control overlaps.
+- Existing backgrounds, card dimensions, expansion behavior and application actions remain unchanged.
+- Focused JobSearch tests: 21 passed.
+
+Final result: passed.
+
 # JobSearch exact offshore-card match — V6199
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-64050d36-87ae-4e9c-97d7-255bd40a3a09.png` (1668 × 967 pixels).
