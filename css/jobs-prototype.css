@@ -749,3 +749,39 @@ html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage .jobs-page-button[ar
   -webkit-text-fill-color:#C06D45!important;
   box-shadow:0 0 0 1px rgba(172,97,59,.18)!important;
 }
+
+/* V6209: match the selected reference card proportions without an accent-line effect. */
+html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{
+  min-height:334px;
+  height:334px;
+  padding:18px 20px 14px;
+  border:1px solid #34383C!important;
+  border-top-color:#34383C!important;
+  border-radius:8px;
+  box-shadow:none;
+}
+html[data-theme] #jobsPage .jobs-cards .job-card::before{display:none!important}
+#jobsPage .jobs-cards .job-card-head{margin-top:74px}
+#jobsPage .jobs-cards .job-card-head h2{font-size:18px;line-height:1.12}
+#jobsPage .jobs-cards .job-card-company{font-size:12px}
+#jobsPage .jobs-cards .job-card-summary{font-size:11px;line-height:1.32}
+#jobsPage .jobs-cards .job-fact dd{font-size:10px}
+#jobsPage .jobs-cards .job-card-tags li{padding:3px 7px;font-size:9px}
+#jobsPage .jobs-cards .job-card-controls :is(.job-favorite-toggle,.job-detail-toggle){
+  width:28px;
+  height:28px;
+  min-width:28px;
+  border-radius:5px;
+}
+#jobsPage .jobs-cards button.job-card-view-cta{
+  min-width:88px;
+  height:34px;
+  padding:0 13px;
+  gap:6px;
+  font-size:10px;
+  border-radius:5px;
+}
+#jobsPage .jobs-cards .job-card-view-cta i{font-size:12px}
+
+@media(max-width:1250px){html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{min-height:346px;height:346px}}
+@media(max-width:600px){html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{min-height:370px;height:370px;padding:16px}}
