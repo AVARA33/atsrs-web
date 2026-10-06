@@ -99,4 +99,7 @@ test('company wordmarks share a visual scale without changing the card hierarchy
   assert.match(css, /\.job-card-brand\.show-logo-text \.job-card-brand-text\{\s*font-size:16px/);
   assert.match(runtime, /logo\.size\)brand\.classList\.add\('is-size-'\+logo\.size\)/);
   assert.match(runtime, /louis\\s\*dreyfus[\s\S]*?size:'stacked'/);
+  assert.match(css, /V6229: use the full reserved brand slot so wordmarks never read too small/);
+  assert.match(css, /\.job-card-brand-logo,[\s\S]*?height:34px!important;\s*max-height:34px!important/);
+  assert.match(css, /\.job-card-brand:is\(\.is-catalog,\.show-logo-text\) \.job-card-brand-logo\{[\s\S]*?width:34px!important/);
 });

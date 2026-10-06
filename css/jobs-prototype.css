@@ -1022,3 +1022,14 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   font-size:16px;
   line-height:1.1;
 }
+
+/* V6229: use the full reserved brand slot so wordmarks never read too small. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand-logo,
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand:is(.is-size-stacked,.is-catalog,.show-logo-text) .job-card-brand-logo{
+  height:34px!important;
+  max-height:34px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand:is(.is-catalog,.show-logo-text) .job-card-brand-logo{
+  flex-basis:34px;
+  width:34px!important;
+}
