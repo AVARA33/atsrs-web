@@ -47,6 +47,16 @@ test('reference companies and current feed companies resolve to curated wordmark
   assert.match(css, /\.job-card-brand\.is-catalog \.job-card-brand-logo/);
 });
 
+test('raster wordmarks that previously carried white canvases retain transparency', () => {
+  for (const asset of ['abano.png', 'jll.png', 'ldc.png']) {
+    const png = fs.readFileSync(`assets/company-logos/job-card/${asset}`);
+    assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10], `${asset} must be a real PNG`);
+    const colourType = png[25];
+    const hasPaletteTransparency = png.includes(Buffer.from('tRNS'));
+    assert.ok(colourType === 4 || colourType === 6 || hasPaletteTransparency, `${asset} must support transparency`);
+  }
+});
+
 test('JobSearch artwork keeps natural colour beneath the specified black overlay', () => {
   assert.match(css, /background:#0B0C0D!important/);
   assert.match(css, /border-color:#34383C!important/);

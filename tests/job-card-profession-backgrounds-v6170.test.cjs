@@ -33,10 +33,10 @@ test('all generated artwork files exist and stay lightweight', () => {
 });
 
 test('V6177 cache-busts the profession-aware JobSearch card styles', () => {
-  assert.match(index, /data-atsrs-build="V6223"/);
-  assert.match(index, /css\/jobs-prototype\.css\?v=6223/);
+  assert.match(index, /data-atsrs-build="V6224"/);
+  assert.match(index, /css\/jobs-prototype\.css\?v=6224/);
   const loader = fs.readFileSync(path.join(root, 'js', 'route-feature-loader.js'), 'utf8');
-  assert.match(loader, /js\/jobs-prototype\.js\?v=6223/);
+  assert.match(loader, /js\/jobs-prototype\.js\?v=6224/);
 });
 
 test('every profession category has a non-pink accent applied to its artwork layer', () => {
