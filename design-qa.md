@@ -796,6 +796,30 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch reference icon and content alignment — Design QA
+
+- Scope: JobSearch card controls, metadata icons, content order and footer alignment.
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-ba8bbb26-4195-4d16-9a2e-dc48e68f5e9a.png`.
+- Verified live build: `V6227` at `https://atsrs.com/?route=jobs&_atsrs_release=V6227-qa`.
+
+## Visual comparison
+
+- The top-right order now matches the reference hierarchy: `NEW`, bookmark and expand, with an 8-pixel measured gap and no overlap.
+- The former star control is rendered as the reference-style bookmark; the required expand control remains beside it.
+- Compact-card metadata appears before the summary and is limited to location plus one secondary item: duration when available, otherwise work type.
+- Posted-date metadata is hidden from compact cards, while duration and work-type icons use the matching rotation, clock and notepad symbols.
+- Recruiter identity is aligned at the bottom left with a simple user icon; the `View job` action remains at the bottom right.
+- Existing card artwork, logos, text content and copper palette are unchanged.
+
+## Interaction and regression checks
+
+- Audited all 30 cards returned by the live page: 0 layout-rule violations.
+- Confirmed the controls do not overlap, location remains first, no compact card shows more than two facts, and recruiter/CTA alignment is stable.
+- Live `V6227` console errors: 0.
+- JavaScript syntax, focused JobSearch tests and diff checks passed: 31/31 tests.
+
+Final result: passed.
+
 # JobSearch NEW badge control spacing — Design QA
 
 - Scope: the `NEW` badge and the favorite/expand controls in JobSearch card headers only.
