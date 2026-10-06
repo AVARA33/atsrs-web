@@ -820,3 +820,10 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   color:#f4f4f2!important;
   -webkit-text-fill-color:#f4f4f2!important;
 }
+
+/* V6212: the approved cards use artwork edge-to-edge, without a frame line. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
