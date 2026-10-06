@@ -806,3 +806,17 @@ html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta{
   max-height:34px!important;
   padding:0 12px!important;
 }
+
+/* V6211: outrank the shared 44px control floor without affecting other pages. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards button.job-card-view-cta{
+  width:auto!important;
+  min-width:88px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  padding:0 12px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-hero #jobsHeading{
+  color:#f4f4f2!important;
+  -webkit-text-fill-color:#f4f4f2!important;
+}
