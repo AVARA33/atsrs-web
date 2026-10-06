@@ -91,3 +91,12 @@ test('remaining card icons follow the selected reference hierarchy', () => {
   assert.match(css, /\.job-facts:has\(\.job-fact-duration\) \.job-fact-work-type\{\s*display:none!important/);
   assert.match(css, /\.job-card-recruiter-meta>i\{\s*width:20px;\s*height:22px;\s*border:0/);
 });
+
+test('company wordmarks share a visual scale without changing the card hierarchy', () => {
+  assert.match(css, /V6228: normalize wordmark scale inside the existing 34px brand slot/);
+  assert.match(css, /\.job-card-brand-logo\{\s*width:auto!important;\s*height:28px!important;[\s\S]*?max-height:28px!important/);
+  assert.match(css, /\.job-card-brand\.is-size-stacked \.job-card-brand-logo\{\s*height:34px!important;\s*max-height:34px!important/);
+  assert.match(css, /\.job-card-brand\.show-logo-text \.job-card-brand-text\{\s*font-size:16px/);
+  assert.match(runtime, /logo\.size\)brand\.classList\.add\('is-size-'\+logo\.size\)/);
+  assert.match(runtime, /louis\\s\*dreyfus[\s\S]*?size:'stacked'/);
+});

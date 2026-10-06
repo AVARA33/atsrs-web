@@ -1000,3 +1000,25 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   padding-top:4px;
   border-top:0;
 }
+
+/* V6228: normalize wordmark scale inside the existing 34px brand slot. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand-logo{
+  width:auto!important;
+  height:28px!important;
+  max-width:168px!important;
+  max-height:28px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.is-size-stacked .job-card-brand-logo{
+  height:34px!important;
+  max-height:34px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand:is(.is-catalog,.show-logo-text) .job-card-brand-logo{
+  flex:0 0 28px;
+  width:28px!important;
+  height:28px!important;
+  max-height:28px!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand.show-logo-text .job-card-brand-text{
+  font-size:16px;
+  line-height:1.1;
+}
