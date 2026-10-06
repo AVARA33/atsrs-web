@@ -796,6 +796,27 @@ final result: passed
 
 Final result: passed.
 
+# JobSearch transparent company logos V6224 — Design QA
+
+- Scope: remove opaque white canvases from company wordmarks without changing the approved card backgrounds, layout, data or interactions.
+- Reported defect: the Louis Dreyfus Company identity appeared as a blank white rectangle on the live card.
+- Live dark-mode evidence: `output/jobsearch-logo-audit-v6224-top.png`, `output/jobsearch-logo-audit-v6224-ldc.png`, `output/jobsearch-logo-audit-v6224-middle.png`, and `output/jobsearch-logo-audit-v6224-bottom.png`.
+- Live light-mode evidence: `output/jobsearch-logo-audit-v6224-light.png`.
+- Asset comparison evidence: `output/logo-audit/fixed-transparent.png`.
+
+## Findings and remediation
+
+- The visual audit found three raster assets with opaque white canvases: Louis Dreyfus Company, Abano Healthcare and JLL.
+- Their original marks and colours were preserved while only the surrounding white canvas was made transparent. The Louis Dreyfus and JLL marks continue to use the existing white-on-dark card treatment; Abano retains its original colour mark.
+- A post-fix corner-alpha sweep across every raster file in `assets/company-logos/job-card/` found `0` remaining opaque-white-canvas assets.
+- Live V6224 displayed 30 cards: 28 cards used curated logo images and all 28 loaded with non-zero natural dimensions; the two companies without a curated verified asset correctly retained text-only identities. No broken-image or error fallback appeared.
+- The reported Louis Dreyfus card now displays the `LDC.` wordmark directly over the card artwork with no white rectangle. Abano also displays without its former white square.
+- Dark and light themes were checked. Light mode continues to preserve the approved dark card surface and readable branding.
+- Focused JobSearch suite: 28 passed, 0 failed. JavaScript syntax and diff checks passed.
+- Browser console errors: 0.
+
+final result: passed
+
 # JobSearch company wordmarks V6223 — Design QA
 
 - Scope: the company identity at the upper-left of every JobSearch card; card artwork, vacancy data, filters and surrounding layout were intentionally preserved.
