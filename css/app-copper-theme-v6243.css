@@ -1,0 +1,354 @@
+/* ATSRS V6243 — permanent dark/copper product theme outside JobSearch. */
+:root,
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --atsrs-ref-dark-bg:#0B0C0D;
+  --atsrs-ref-dark-surface:#111315;
+  --atsrs-ref-dark-soft:#17191B;
+  --atsrs-ref-dark-line:#34383C;
+  --atsrs-ref-dark-text:#F7F4F1;
+  --atsrs-ref-dark-muted:#A9A6A2;
+  --atsrs-brand-green:#AC613B;
+  --atsrs-brand-green-strong:#C06D45;
+  --atsrs-ref-lime:#AC613B;
+  --atsrs-ref-lime-strong:#C06D45;
+  --public-bg:#0B0C0D;
+  --public-surface:#111315;
+  --public-surface-soft:#17191B;
+  --public-ink:#F7F4F1;
+  --public-muted:#A9A6A2;
+  --public-line:#34383C;
+  --public-accent:#AC613B;
+  --public-accent-strong:#C06D45;
+  --public-accent-soft:#271E1A;
+  --legal-bg:#0B0C0D;
+  --legal-surface:#111315;
+  --legal-soft:#17191B;
+  --legal-line:#34383C;
+  --legal-text:#F7F4F1;
+  --legal-muted:#A9A6A2;
+  --legal-accent:#AC613B;
+  --legal-link:#C06D45;
+  background:#0B0C0D!important;
+}
+
+html[data-theme="dark"] body{
+  --atsrs-bg:#0B0C0D;
+  --atsrs-bg2:#0B0C0D;
+  --atsrs-panel:#111315;
+  --atsrs-panel2:#17191B;
+  --atsrs-border:#34383C;
+  --atsrs-text:#F7F4F1;
+  --atsrs-muted:#A9A6A2;
+  --atsrs-green:#AC613B;
+  --atsrs-green-soft:#D58A63;
+  --atsrs-blue:#AC613B;
+  --atsrs-cyan:#C06D45;
+  --v76-bg:#0B0C0D;
+  --v76-panel:#111315;
+  --v76-panel2:#17191B;
+  --v76-border:#34383C;
+  --v76-text:#F7F4F1;
+  --v76-muted:#A9A6A2;
+  --v76-green:#AC613B;
+  --v76-blue:#C06D45;
+  --atsrs-shell-accent:#AC613B;
+  --atsrs-shell-accent-strong:#C06D45;
+  --atsrs-shell-accent-soft:#271E1A;
+  --atsrs-shell-accent-border:#6F3E28;
+  --atsrs-field-accent:#AC613B;
+  --atsrs-field-accent-strong:#C06D45;
+  --atsrs-field-accent-ring:rgba(172,97,59,.24);
+  --atsrs-field-accent-shadow:rgba(172,97,59,.18);
+  --atsrs-control-background:#0B0C0D;
+  --atsrs-control-border:#34383C;
+  --atsrs-control-text:#F7F4F1;
+  --atsrs-control-placeholder:#817E7A;
+  --atsrs-control-hover-border:#6F4A38;
+  --atsrs-control-focus-border:#AC613B;
+  --atsrs-control-focus-ring:rgba(172,97,59,.25);
+  --atsrs-control-label:#B9B5B0;
+  background:#0B0C0D!important;
+  color:#F7F4F1!important;
+  accent-color:#AC613B;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden),
+html[data-theme="dark"] body #app.app:not(.hidden)>.main{
+  background:#0B0C0D!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden)>.sidebar{
+  border-right:1px solid #25282B!important;
+  background:#090A0B!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button{
+  border-color:transparent!important;
+  background:transparent!important;
+  color:#D7D3CF!important;
+  -webkit-text-fill-color:#D7D3CF!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button:hover{
+  border-color:transparent!important;
+  background:#171514!important;
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{
+  border-color:transparent!important;
+  background:#271E1A!important;
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+  box-shadow:inset 3px 0 0 #AC613B!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active :is(i,span){
+  border-color:#AC613B!important;
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(.pill,.mode-badge,.auth-kicker){
+  border-color:rgba(172,97,59,.48)!important;
+  background:#171514!important;
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #dashboardPage,#recruitersPage,#employersPage,#certificatesPage,#refsPage,
+  #rotationPage,#profilePage,#developerPage,#introPage,#privacyPage,#dataRightsPage,
+  #billingPage,#resourcePage,#compliancePage,#reportsPage,#personnelPage,#projectsPage,
+  #candidatesPage
+) :is(.panel,.card,.mini-panel,.workflow-card,.snapshot-card,.roadmap-card,.scan-box,
+  .import-box,.upload-simple,.share-card,.stats-card,.stat-card,.summary-card,
+  .profile-card,.profile-summary-card,.account-status-card,.documents-register-card,
+  .reference-card,.developer-registration-card,.rotation-calendar-card,
+  .rotation-next-card,.rotation-settings-card){
+  border-color:#34383C!important;
+  background-color:#111315!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #dashboardPage,#recruitersPage,#employersPage,#certificatesPage,#refsPage,
+  #rotationPage,#profilePage,#developerPage,#introPage,#privacyPage,#dataRightsPage,
+  #billingPage,#resourcePage,#compliancePage,#reportsPage,#personnelPage,#projectsPage,
+  #candidatesPage
+) :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea,
+  .select-standard-toggle,.work-type-select-toggle,.jobs-select-toggle){
+  border:1px solid #34383C!important;
+  border-top-color:#AC613B!important;
+  border-left-color:#AC613B!important;
+  background:#0B0C0D!important;
+  color:#F7F4F1!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #dashboardPage,#recruitersPage,#employersPage,#certificatesPage,#refsPage,
+  #rotationPage,#profilePage,#developerPage,#introPage,#privacyPage,#dataRightsPage,
+  #billingPage,#resourcePage,#compliancePage,#reportsPage,#personnelPage,#projectsPage,
+  #candidatesPage
+) :is(input,select,textarea,.select-standard-toggle,.work-type-select-toggle):focus,
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #dashboardPage,#recruitersPage,#employersPage,#certificatesPage,#refsPage,
+  #rotationPage,#profilePage,#developerPage,#introPage,#privacyPage,#dataRightsPage,
+  #billingPage,#resourcePage,#compliancePage,#reportsPage,#personnelPage,#projectsPage,
+  #candidatesPage
+) :is(input,select,textarea,.select-standard-toggle,.work-type-select-toggle):focus-within{
+  border-color:#AC613B!important;
+  outline:0!important;
+  box-shadow:0 0 0 2px rgba(172,97,59,.16)!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  button.primary,.primary-button,.btn-primary,.contact-submit,.rotation-primary,
+  .profile-primary-action,.atsrs-primary-action,.upload-primary,.create-link-btn,
+  .company-card-action,.recruiter-card-action
+){
+  border-color:#AC613B!important;
+  background:#AC613B!important;
+  color:#FFF!important;
+  -webkit-text-fill-color:#FFF!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  button.primary,.primary-button,.btn-primary,.contact-submit,.rotation-primary,
+  .profile-primary-action,.atsrs-primary-action,.upload-primary,.create-link-btn,
+  .company-card-action,.recruiter-card-action
+):hover{
+  border-color:#C06D45!important;
+  background:#C06D45!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  a:not(.job-contact-link):not(.job-card-company),.text-link,.link-button,
+  .section-link,.quick-link-card i,.field-label i,.panel-title i
+){
+  color:#C06D45;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  .badge-ready,.verified-badge,.is-verified,.status-current,.status-active,
+  .account-status-verified,.profile-completeness strong,.good,.stat.good
+){
+  border-color:rgba(172,97,59,.48)!important;
+  background:rgba(172,97,59,.12)!important;
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  .employer-card,.recruiter-card,.candidate-card,.talent-card,.product-update-card,
+  .documents-register-row,.reference-row,.sharing-history-row
+){
+  border-color:#34383C!important;
+  background-color:#111315!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(.employer-card,.recruiter-card)::before{
+  background:#AC613B!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(.employer-card,.recruiter-card):hover,
+html[data-theme="dark"] body #app.app:not(.hidden) :is(.employer-card,.recruiter-card):focus-within{
+  border-color:#AC613B!important;
+  box-shadow:0 0 0 1px rgba(172,97,59,.16)!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #recruitersPage .recruiters-hero,
+  #employersPage .company-directory-hero
+){
+  border:1px solid #34383C!important;
+  border-top-color:#AC613B!important;
+  border-left-color:#AC613B!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #recruitersPage .recruiters-hero-eyebrow,
+  #employersPage .company-hero-eyebrow,
+  #recruitersPage .recruiters-trust-strip i,
+  #employersPage .company-trust-strip i,
+  #recruitersPage .recruiters-snapshot i,
+  #employersPage .company-page-count i
+){
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #recruitersPage .recruiters-trust-strip,
+  #employersPage .company-trust-strip,
+  #recruitersPage .recruiters-snapshot,
+  #employersPage .company-page-count
+){
+  border-color:rgba(172,97,59,.38)!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button{
+  border-color:#AC613B!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button:first-child{
+  border-color:#AC613B!important;
+  background:#AC613B!important;
+  color:#FFF!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button:hover{
+  border-color:#C06D45!important;
+  background:#271E1A!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  .account-tabs button.active,.module-tabs button.active,.profile-tab.active,
+  [role="tab"][aria-selected="true"],.talent-view-switch button.active,
+  .talent-view-switch button[aria-pressed="true"],.rotation-view-toggle button[aria-pressed="true"]
+){
+  border-color:#AC613B!important;
+  background:#271E1A!important;
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+  box-shadow:inset 0 -2px 0 #AC613B!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  input[type="checkbox"],input[type="radio"]
+){
+  accent-color:#AC613B!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  .atsrs-notification-badge,.atsrs-shell-notification-unread
+){
+  background:#AC613B!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .atsrs-shell-notification-icon{
+  background:rgba(172,97,59,.14)!important;
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  .atsrs-notification-popover-mark-all,.atsrs-notification-popover-view-all
+){
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
+html[data-theme="dark"] :is(.public-cta,.pricing-cta,.contact-submit){
+  border-color:#AC613B!important;
+  background:#AC613B!important;
+  color:#FFF!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] :is(.public-cta,.pricing-cta,.contact-submit):hover{
+  border-color:#C06D45!important;
+  background:#C06D45!important;
+}
+
+html[data-theme="dark"] :is(.public-eyebrow,.public-kicker,.public-plan-name,
+  .legal-eyebrow,.eyebrow,.auth-kicker){
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
+html[data-theme="dark"] :is(.public-header,.site-header,.legal-header){
+  border-color:#25282B!important;
+  background:#090A0B!important;
+}
+
+html[data-theme="dark"] :is(.public-plan,.pricing-plan,.pricing-table-wrap,
+  .summary-card,.toc,.notice,.legal-summary>div,.legal-toc,.callout,.contact-card,
+  .legal-callout,.legal-contact){
+  border-color:#34383C!important;
+  background:#111315!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] #atsrsBootScreen,
+html[data-theme="dark"] body.auth-open>#auth.auth:not(.hidden),
+html[data-theme="dark"] #auth.auth{
+  background:#0B0C0D!important;
+}
+
+html[data-theme="dark"] #atsrsBootScreen .atsrs-spinner span{
+  background:#AC613B!important;
+}
+
+@media(max-width:760px){
+  html[data-theme="dark"] body #app.app:not(.hidden)>.main{background:#0B0C0D!important}
+}
