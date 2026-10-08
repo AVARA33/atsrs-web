@@ -89,7 +89,9 @@ test('Android release page preserves Home navigation and canonical theme surface
   assert.match(css, /body\s*\{[^}]*background:\s*var\(--bg\)\s*!important/);
   assert.match(css, /\.android-public-nav-shell \.public-header\s*\{[^}]*background:\s*rgba\(255, 255, 255, \.97\)\s*!important/);
   assert.match(css, /html\[data-theme="dark"\] \.android-public-nav-shell \.public-header\s*\{[^}]*background:\s*rgba\(5, 6, 6, \.96\)\s*!important/);
-  assert.match(script, /localStorage\.setItem\("atsrs_theme",theme\)/);
+  assert.doesNotMatch(page, /data-public-theme-toggle|id="themeToggle"/);
+  assert.match(script, /root\.setAttribute\("data-theme","dark"\)/);
+  assert.doesNotMatch(script, /localStorage\.setItem\("atsrs_theme"/);
 });
 
 test('Signing credentials remain external and ignored', () => {

@@ -334,7 +334,7 @@
   function ensureNotificationButton(){
     var controls=byId('atsrsGlobalControls');
     var theme=byId('atsrsThemeToggle');
-    if(!controls||!theme)return;
+    if(!controls)return;
     var button=byId('atsrsNotificationButton');
     if(!button){
       button=document.createElement('button');
@@ -350,7 +350,9 @@
     button.setAttribute('aria-label','Notifications');
     button.setAttribute('aria-expanded',button.getAttribute('aria-expanded')==='true'?'true':'false');
     button.setAttribute('aria-controls','atsrsNotificationPopover');
-    if(button.parentElement!==controls||button.nextElementSibling!==theme)controls.insertBefore(button,theme);
+    var workspace=byId('workspaceSwitcher');
+    var anchor=theme&&theme.parentElement===controls?theme:(workspace&&workspace.parentElement===controls?workspace:null);
+    if(button.parentElement!==controls||button.nextElementSibling!==anchor)controls.insertBefore(button,anchor);
     var popover=byId('atsrsNotificationPopover');if(!popover){popover=document.createElement('section');popover.id='atsrsNotificationPopover';popover.className='atsrs-notification-popover';popover.hidden=true;popover.setAttribute('role','dialog');popover.setAttribute('aria-label','Notifications');popover.innerHTML='<div class="atsrs-notification-popover-surface"><header><strong>Notifications</strong><div class="atsrs-notification-popover-actions"><button type="button" class="atsrs-notification-popover-mark-all">Mark all as read</button><button type="button" class="atsrs-notification-popover-settings" aria-label="Notification settings" title="Notification settings"><i class="ph ph-gear" aria-hidden="true"></i></button></div></header><div id="atsrsShellNotificationList" class="atsrs-shell-notification-list"></div><button type="button" class="atsrs-notification-popover-view-all">View all notifications</button></div>';controls.appendChild(popover);popover.querySelector('.atsrs-notification-popover-mark-all').addEventListener('click',function(event){event.preventDefault();event.stopPropagation();markNotificationPopoverRead()});popover.querySelector('.atsrs-notification-popover-settings').addEventListener('click',navigateToNotificationSettings);popover.querySelector('.atsrs-notification-popover-view-all').addEventListener('click',navigateToNotificationCenter)}
     syncNotificationPopoverCaret();
     renderNotificationPopover();

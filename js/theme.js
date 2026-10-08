@@ -1,42 +1,14 @@
-/* ATSRS V576 global light and dark appearance control. */
+/* ATSRS V6242 dark-only appearance and account control placement. */
 (function(){
   'use strict';
-  var KEY='atsrs_theme';
-  var systemThemeMedia=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');
-
-  function savedTheme(){
-    try{var saved=localStorage.getItem(KEY);return saved==='light'||saved==='dark'?saved:'';}catch(error){return'';}
-  }
-
-  function systemTheme(){return systemThemeMedia&&systemThemeMedia.matches?'light':'dark';}
-
-  function currentTheme(){
-    return document.documentElement.dataset.theme==='light'?'light':'dark';
-  }
-
-  function saveTheme(theme){
-    try{localStorage.setItem(KEY,theme);}catch(error){}
-  }
-
-  function syncButton(){
-    var button=document.getElementById('atsrsThemeToggle');
-    if(!button)return;
-    var light=currentTheme()==='light';
-    button.setAttribute('aria-label','Switch to '+(light?'dark':'light')+' mode');
-    button.setAttribute('title','Switch to '+(light?'dark':'light')+' mode');
-    button.setAttribute('aria-checked',light?'true':'false');
-  }
-
-  function applyTheme(theme,persist){
-    theme=theme==='light'?'light':'dark';
-    document.documentElement.dataset.theme=theme;
-    document.documentElement.style.colorScheme=theme;
+  function applyTheme(){
+    document.documentElement.dataset.theme='dark';
+    document.documentElement.style.colorScheme='dark';
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content',theme==='light'?'#f6f8fb':'#050606');
-    if(typeof window.atsrsSyncFavicon==='function')window.atsrsSyncFavicon(theme);
-    if(persist)saveTheme(theme);
-    syncButton();
-    window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:theme}}));
+    if(meta)meta.setAttribute('content','#050606');
+    if(typeof window.atsrsSyncFavicon==='function')window.atsrsSyncFavicon('dark');
+    try{localStorage.removeItem('atsrs_theme');localStorage.removeItem('atsrs_public_theme');}catch(error){}
+    window.dispatchEvent(new CustomEvent('atsrs:themechange',{detail:{theme:'dark'}}));
   }
 
   function isPublicView(){
@@ -81,28 +53,7 @@
     }
 
     var button=document.getElementById('atsrsThemeToggle');
-    if(!button){
-      button=document.createElement('button');
-      button.id='atsrsThemeToggle';
-    }
-    button.className='atsrs-theme-toggle';
-    button.type='button';
-    button.setAttribute('role','switch');
-    if(!button.querySelector('.atsrs-theme-track')){
-      button.innerHTML=
-        '<span class="atsrs-theme-track" aria-hidden="true">'+
-          '<i class="ph ph-sun atsrs-theme-sun"></i>'+
-          '<i class="ph ph-moon atsrs-theme-moon"></i>'+
-          '<span class="atsrs-theme-thumb"></span>'+
-        '</span>';
-    }
-    if(button.dataset.atsrsThemeBound!=='true'){
-      button.addEventListener('click',function(){
-        applyTheme(currentTheme()==='light'?'dark':'light',true);
-      });
-      button.dataset.atsrsThemeBound='true';
-    }
-    controls.appendChild(button);
+    if(button)button.remove();
 
     var workspace=document.getElementById('workspaceSwitcher');
     if(workspace)controls.appendChild(workspace);
@@ -146,7 +97,7 @@
 
   function bind(){
     ensureControls();
-    applyTheme(currentTheme(),false);
+    applyTheme();
     syncPlacement();
     upgradeDisclosures(document);
 
@@ -165,17 +116,9 @@
     }
   }
 
-  window.atsrsSetTheme=function(theme){applyTheme(theme,true);};
+  window.atsrsSetTheme=function(){applyTheme();};
   window.atsrsRemoveThemeControls=removeControls;
   window.atsrsEnsureThemeControls=ensureControls;
   window.atsrsSyncThemePlacement=syncPlacement;
-  window.addEventListener('storage',function(event){
-    if(event.key===KEY)applyTheme(event.newValue==='light'||event.newValue==='dark'?event.newValue:systemTheme(),false);
-  });
-  if(systemThemeMedia){
-    var handleSystemTheme=function(){if(!savedTheme())applyTheme(systemTheme(),false);};
-    if(systemThemeMedia.addEventListener)systemThemeMedia.addEventListener('change',handleSystemTheme);
-    else if(systemThemeMedia.addListener)systemThemeMedia.addListener(handleSystemTheme);
-  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 })();

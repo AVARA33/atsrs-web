@@ -31,7 +31,7 @@ for (const [name, html] of Object.entries(pages)) {
   assert.match(html, /class="public-wordmark atsrs-home-lockup"/, `${name} must reuse the Home lockup`);
   assert.match(html, /href="\/\?view=home#platform"/, `${name} must retain public navigation`);
   assert.match(html, /href="\/\?view=login"/, `${name} must retain the Login route`);
-  assert.match(html, /data-public-theme-toggle/, `${name} must retain the public theme control`);
+  assert.doesNotMatch(html, /data-public-theme-toggle/, `${name} must not render the retired theme control`);
   assert.match(html, /<footer class="public-footer">/, `${name} must reuse the Home footer`);
   assert.match(html, /class="public-footer-legal"/, `${name} must retain the Home legal menu`);
   assert.match(html, /class="public-footer-bottom"/, `${name} must retain the Home footer bottom row`);
@@ -54,8 +54,9 @@ assert.doesNotMatch(pages.protection, /AWS|employee GDPR training|certified GDPR
 assert.doesNotMatch(pages.security, /security@atsrs\.com|guaranteed response|safe harbour/i);
 assert.match(css, /min-height:44px/);
 assert.match(css, /@media\(max-width:600px\)/);
-assert.match(runtime, /localStorage\.getItem\('atsrs_theme'\)/);
-assert.match(runtime, /querySelectorAll\('\[data-public-theme-toggle\]'\)/);
+assert.match(runtime, /document\.documentElement\.dataset\.theme='dark'/);
+assert.doesNotMatch(runtime, /localStorage\.getItem\('atsrs_theme'\)/);
+assert.match(runtime, /querySelectorAll\('\[data-public-theme-toggle\]'\)[\s\S]*?button\.remove\(\)/);
 assert.match(headerCss, /html\[data-embedded="true"\] \.legal-public-nav-shell\{display:none\}/);
 
 console.log('Public legal information architecture contracts passed');

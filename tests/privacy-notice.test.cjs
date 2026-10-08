@@ -36,23 +36,19 @@ assert.match(deletion,/class="notice"/);
 assert.match(deletion,/class="contact-card"/);
 
 for(const page of [privacy,deletion]){
-  assert.match(page,/localStorage\.getItem\('atsrs_theme'\)/);
-  assert.match(page,/prefers-color-scheme: light/);
+  assert.doesNotMatch(page,/localStorage\.getItem\('atsrs_theme'\)/);
+  assert.doesNotMatch(page,/prefers-color-scheme: light/);
   assert.match(page,/document\.documentElement\.dataset\.theme=theme/);
   assert.match(page,/new URLSearchParams\(window\.location\.search\)\.get\('embedded'\)==='1'/);
-  assert.match(page,/window\.addEventListener\('storage'/);
   assert.match(page,/class="public-header"/);
   assert.match(page,/class="public-wordmark atsrs-home-lockup"/);
-  assert.match(page,/data-public-theme-toggle/);
+  assert.doesNotMatch(page,/data-public-theme-toggle/);
   assert.match(page,/html\[data-embedded="true"\] \.hero h1\{display:block\}/);
   assert.doesNotMatch(page,/html\[data-embedded="true"\] \.hero h1\{display:none\}/);
   assert.match(page,/html\[data-theme="light"\]/);
   assert.doesNotMatch(page,/@media\(prefers-color-scheme:light\)/);
   assert.match(page,/html\[data-theme="light"\] \.eyebrow\{color:#245b93;border-color:#c8d9eb\}/);
-  assert.ok(
-    page.indexOf("localStorage.getItem('atsrs_theme')") < page.indexOf('<style>'),
-    'Stored theme must be applied before render-blocking styles to prevent a first-paint flash'
-  );
+  assert.match(page,/<html[^>]+data-theme="dark"/);
 }
 
 assert.doesNotMatch(index,/PRIVACY &amp; LEGAL/);

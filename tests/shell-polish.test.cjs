@@ -82,7 +82,8 @@ assert.match(css,/body #atsrsThemeToggle \.atsrs-theme-track\{[\s\S]*?width:42px
 assert.match(css,/html\[data-theme="dark"\] body #atsrsThemeToggle \.atsrs-theme-moon\{[\s\S]*?color:#0f172a!important/);
 assert.doesNotMatch(css,/#atsrsThemeToggle:hover \.atsrs-theme-track\{[\s\S]*?(?:background|border-color):/);
 assert.match(css,/#atsrsThemeToggle::before,[\s\S]*?#atsrsThemeToggle::after\{display:none!important;content:none!important\}/);
-assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/ph ph-sun atsrs-theme-sun/);
+assert.doesNotMatch(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/ph ph-sun atsrs-theme-sun/);
+assert.match(fs.readFileSync(path.join(root,'js','theme.js'),'utf8'),/document\.documentElement\.dataset\.theme='dark'/);
 assert.match(css,/\.sidebar \.nav button\.active[\s\S]*?background:transparent!important[\s\S]*?box-shadow:inset 3px 0 0 var\(--atsrs-shell-accent\)!important/);
 assert.match(css,/\.cert-mode-buttons button\.active[\s\S]*?background:transparent!important/);
 assert.match(css,/Account-page navigation needs an unmistakable current-page state[\s\S]*?data-theme="light"[\s\S]*?#profilePage \.account-tabs button\.active[\s\S]*?color:#245b93!important/);

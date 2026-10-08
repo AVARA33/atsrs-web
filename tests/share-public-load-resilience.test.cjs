@@ -18,7 +18,7 @@ test('public profile returns verified response payload',async()=>{
 });
 test('denied browser storage cannot suppress public share route',()=>{
   const html=fs.readFileSync('index.html','utf8');
-  assert.match(html,/try\{savedTheme=localStorage.getItem\('atsrs_theme'\);\}catch\(storageError\)\{\}/);
-  assert.ok(html.indexOf("if(atsrsEntryShare)document.documentElement.classList.add")<html.indexOf("try{savedTheme=localStorage"));
+  assert.match(html,/var initialTheme='dark';/);
+  assert.ok(html.indexOf("if(atsrsEntryShare)document.documentElement.classList.add")<html.indexOf("var initialTheme='dark'"));
   assert.match(html,/onclick="window.location.reload\(\)">Try again/);
 });
