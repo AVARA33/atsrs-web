@@ -1054,7 +1054,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   transform-origin:left center;
 }
 
-/* V6232: align every JobSearch filter field with the card CTA copper palette. */
+/* V6233: align every visible JobSearch field shell with the card CTA copper palette. */
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden){
   --jobs-filter-border:rgba(172,97,59,.58);
   --jobs-filter-bg:#15110f;
@@ -1062,7 +1062,8 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   --jobs-filter-focus:#C06D45;
   --jobs-filter-hover:rgba(172,97,59,.18);
 }
-html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-search-control,.jobs-select-toggle,.jobs-date-range-toggle,#jobsClearFilters){
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-field-shell,.jobs-secondary-filters .atsrs-field-shell,#jobsClearFilters){
+  --atsrs-field-label-surface:#15110f;
   border-color:var(--jobs-filter-border)!important;
   background:linear-gradient(180deg,rgba(172,97,59,.14),rgba(11,12,13,.96))!important;
   box-shadow:inset 0 0 0 1px rgba(192,109,69,.05)!important;
@@ -1072,7 +1073,8 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   background:transparent!important;
   box-shadow:none!important;
 }
-html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-search-control:focus-within,.jobs-select-toggle:hover,.jobs-select-toggle[aria-expanded="true"],.jobs-date-range-toggle:hover,.jobs-date-range-toggle[aria-expanded="true"],#jobsClearFilters:hover){
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-field-shell:hover,.jobs-filters .atsrs-field-shell:focus-within,.jobs-secondary-filters .atsrs-field-shell:hover,.jobs-secondary-filters .atsrs-field-shell:focus-within,#jobsClearFilters:hover){
+  --atsrs-field-label-surface:#271e1a;
   border-color:#C06D45!important;
   background:linear-gradient(180deg,rgba(192,109,69,.24),rgba(39,30,26,.96))!important;
   box-shadow:0 0 0 2px rgba(192,109,69,.14)!important;
@@ -1093,6 +1095,7 @@ html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.
   --jobs-filter-label:#8f4f30;
   --jobs-filter-text:#2d2019;
 }
-html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-search-control,.jobs-select-toggle,.jobs-date-range-toggle,#jobsClearFilters){
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-field-shell,.jobs-secondary-filters .atsrs-field-shell,#jobsClearFilters){
+  --atsrs-field-label-surface:#fff8f3;
   background:linear-gradient(180deg,#fffaf6,#f8ede6)!important;
 }

@@ -13,13 +13,13 @@ test('JobSearch dark theme uses scoped warm black and copper tokens', () => {
   assert.match(css, /--jobs-copper-hover:#c06d45/);
   assert.match(css, /--jobs-copper-soft:#271e1a/);
   assert.doesNotMatch(css, /html\[data-theme="dark"\]\s+body\s*\{\s*--jobs-copper/);
-  assert.match(html, /data-atsrs-build="V6232"/);
-  assert.match(html, /jobs-prototype\.css\?v=6232/);
+  assert.match(html, /data-atsrs-build="V6233"/);
+  assert.match(html, /jobs-prototype\.css\?v=6233/);
   assert.match(css, /complete the reference palette across every visible JobSearch surface/);
   assert.match(css, /\.job-card\[data-job-visual\] \.job-card-company\{color:#f4f4f2!important/);
-  assert.match(css, /V6232: align every JobSearch filter field with the card CTA copper palette/);
+  assert.match(css, /V6233: align every visible JobSearch field shell with the card CTA copper palette/);
   assert.match(css, /--jobs-filter-border:rgba\(172,97,59,\.58\)/);
-  assert.match(css, /\.jobs-filters \.atsrs-search-control:focus-within[\s\S]*?border-color:#C06D45!important/);
+  assert.match(css, /\.jobs-filters \.atsrs-field-shell:focus-within[\s\S]*?border-color:#C06D45!important/);
   assert.match(css, /\.jobs-compact-check input:checked\+\.jobs-check-box\{[\s\S]*?background:#AC613B!important/);
   assert.match(css, /\.job-card\[data-job-visual\] \.job-new-badge\{border-color:#b8653b!important;background:#b8653b!important/);
 });
