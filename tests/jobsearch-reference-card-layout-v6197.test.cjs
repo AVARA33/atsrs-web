@@ -79,7 +79,7 @@ test('JobSearch artwork keeps natural colour beneath the specified black overlay
 
 test('job cards share the graphite frame and copper top-left edge treatment', () => {
   assert.match(css, /V6238: carry the same graphite frame and copper top\/left accent onto every job card/);
-  assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{\s*border:1px solid #34383C!important;\s*box-shadow:inset 2px 0 0 #AC613B,inset 0 2px 0 #AC613B!important/);
+  assert.match(css, /\.jobs-cards \.job-card-slot>\.job-card\{\s*border:1px solid #34383C!important;\s*border-top-color:#AC613B!important;\s*border-left-color:#AC613B!important;\s*box-shadow:none!important/);
 });
 
 test('NEW badge remains separated from the favorite and expand controls', () => {
