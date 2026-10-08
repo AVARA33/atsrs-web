@@ -1054,7 +1054,7 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   transform-origin:left center;
 }
 
-/* V6233: align every visible JobSearch field shell with the card CTA copper palette. */
+/* V6234: align every visible JobSearch field shell with the card CTA copper palette. */
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden){
   --jobs-filter-border:rgba(172,97,59,.58);
   --jobs-filter-bg:#15110f;
@@ -1098,4 +1098,9 @@ html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.
 html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-field-shell,.jobs-secondary-filters .atsrs-field-shell,#jobsClearFilters){
   --atsrs-field-label-surface:#fff8f3;
   background:linear-gradient(180deg,#fffaf6,#f8ede6)!important;
+}
+html[data-theme="light"] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-compact-check .jobs-check-box{
+  border-color:rgba(172,97,59,.68)!important;
+  background:#fff8f3!important;
+  color:#fff!important;
 }
