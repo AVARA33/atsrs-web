@@ -1803,3 +1803,24 @@ The full JobSearch composition, filter grid and three-column card grid remain un
 - Automated JobSearch visual contract tests: 19 passed.
 
 final result: passed
+
+---
+
+# JobSearch rounded copper edge rollback — Design QA (V6240)
+
+- Source visual truth: user feedback on `C:\Users\user\AppData\Local\Temp\codex-clipboard-490a892b-ae4f-4825-8a58-e8f2140f2b24.png`, followed by the explicit instruction to restore the earlier turning edge.
+- Implementation screenshot: browser-rendered capture attached to the task from `https://atsrs.com/?route=jobs&_atsrs_release=V6240-qa`
+- Implementation viewport: 2294 × 735 CSS px at device pixel ratio 1.5.
+- State: authenticated personal JobSearch, dark theme, page 1, 30 cards loaded.
+
+## Comparison and regression evidence
+
+- The rejected V6239 straight-ending gradient segments were removed.
+- Filter and card accents again use the accepted V6238 inset treatment, allowing the copper edge to follow the rounded corner.
+- Live computed styles confirm graphite borders (`#34383C`) with copper inset edges (`#AC613B`) and no straight-segment background image.
+- Fonts, layout spacing, artwork, logos and copy remain unchanged.
+- Browser console errors: none.
+- Automated JobSearch visual contract tests: 19 passed.
+- No actionable P0, P1 or P2 issues remain for the requested rollback.
+
+final result: passed
