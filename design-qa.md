@@ -1757,4 +1757,3 @@ The JobSearch composition, card grid, filters, billing notice and pagination rem
 - Automated JobSearch visual contract tests: 18 passed.
 
 final result: passed
-
