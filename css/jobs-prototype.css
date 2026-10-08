@@ -1116,3 +1116,9 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   color:#C06D45!important;
   -webkit-text-fill-color:#C06D45!important;
 }
+
+/* V6238: carry the same graphite frame and copper top/left accent onto every job card. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{
+  border:1px solid #34383C!important;
+  box-shadow:inset 2px 0 0 #AC613B,inset 0 2px 0 #AC613B!important;
+}
