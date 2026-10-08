@@ -1824,3 +1824,31 @@ final result: passed
 - No actionable P0, P1 or P2 issues remain for the requested rollback.
 
 final result: passed
+
+---
+
+# JobSearch reference card perimeter — Design QA (V6241)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png`
+- Implementation screenshot: browser-rendered capture from `https://atsrs.com/?route=jobs&_atsrs_release=V6241-qa`
+- Implementation viewport: 2294 × 735 CSS px at device pixel ratio 1.5.
+- State: authenticated personal JobSearch, dark theme, page 1, 30 cards loaded.
+
+## Focused comparison evidence
+
+- Card top and left border: copper `#AC613B`.
+- Card right and bottom border: graphite `#34383C`.
+- Card corner radius: 8 CSS px, so the two edge colors meet through the rounded corner instead of ending as separate straight segments.
+- Card shadow: none; no extra glow or double-line artifact remains.
+- Filter fields retain the previously accepted black interior, graphite frame and rounded copper inset treatment.
+- Fonts, content spacing, company marks, artwork, overlays, card actions and copy remain unchanged.
+
+## Verification
+
+- Live computed styles match all four requested border colors and the 8 px radius.
+- Job feed loading verified: 30 cards rendered.
+- Browser console errors: none (two pre-existing normalized-shadow warnings only).
+- Automated JobSearch visual contract tests: 19 passed.
+- No actionable P0, P1 or P2 mismatches remain for the requested card-edge treatment.
+
+final result: passed
