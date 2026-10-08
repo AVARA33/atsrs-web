@@ -1757,3 +1757,49 @@ The JobSearch composition, card grid, filters, billing notice and pagination rem
 - Automated JobSearch visual contract tests: 18 passed.
 
 final result: passed
+
+---
+
+# JobSearch graphite/copper field and card edges — Design QA (V6238)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png`
+- Implementation screenshot: browser-rendered capture attached to the task from `https://atsrs.com/?route=jobs&_atsrs_release=V6238-qa`
+- Source pixels: 3439 × 1368
+- Implementation viewport: 2294 × 735 CSS px at device pixel ratio 1.5 (approximately 3441 × 1103 capture pixels)
+- State: authenticated personal JobSearch, dark theme, page 1, 30 cards loaded
+- Density normalization: compared at the same displayed page width; browser chrome and the source image viewer frame were excluded from fidelity judgment.
+
+## Full-view and focused comparison evidence
+
+The full JobSearch composition, filter grid and three-column card grid remain unchanged. The focused filter-and-card edge treatment was checked visually against the reference and verified with live computed styles:
+
+- Filter and card interior: `#0B0C0D`
+- Full filter and card frame: `#34383C`
+- Top/left inset edge accent: `#AC613B`, 2 CSS px
+- Card radius: 8 CSS px
+- The copper treatment does not tint the artwork or alter the content layout.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged; company marks, vacancy titles and filter labels preserve their prior sizes, weights and wrapping.
+- Spacing and layout rhythm: unchanged; adding inset accents does not consume layout space or push card/filter content.
+- Colors and visual tokens: graphite perimeter plus copper top/left accent matches the reference card-edge hierarchy; black interiors remain intact.
+- Image quality and asset fidelity: original job artwork and company logos remain unchanged, sharp and naturally colored beneath the existing dark overlay.
+- Copy and content: unchanged; the live feed renders 30 cards and the existing filters/pagination remain available.
+
+## Findings and comparison history
+
+- Earlier V6236 used a full copper filter border and cards had no visible frame.
+- V6237 fix: filters changed to a graphite perimeter with copper top/left inset accents.
+- V6238 fix: the same edge system was applied to every job card without changing card size or content flow.
+- Post-fix evidence: live computed styles report black interiors, graphite borders and matching copper inset shadows on both filters and cards.
+- No actionable P0, P1 or P2 mismatches remain.
+
+## Primary interactions and console
+
+- Job feed loading verified: 30 cards rendered.
+- Filter controls and the Clear filters control remain visible and enabled.
+- Browser console errors checked: none.
+- Automated JobSearch visual contract tests: 19 passed.
+
+final result: passed
