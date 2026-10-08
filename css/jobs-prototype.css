@@ -1073,7 +1073,11 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   background:#0B0C0D!important;
   color:#F4F4F2!important;
   -webkit-text-fill-color:#F4F4F2!important;
-  box-shadow:inset 2px 0 0 #AC613B,inset 0 2px 0 #AC613B!important;
+  background-image:linear-gradient(#AC613B,#AC613B),linear-gradient(#AC613B,#AC613B)!important;
+  background-position:10px 0,0 10px!important;
+  background-repeat:no-repeat!important;
+  background-size:calc(100% - 20px) 2px,2px calc(100% - 20px)!important;
+  box-shadow:none!important;
 }
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-filters .atsrs-search-control input{
   border:0!important;
@@ -1084,7 +1088,8 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   --atsrs-field-label-surface:#0B0C0D;
   border-color:#4B4F53!important;
   background:#0B0C0D!important;
-  box-shadow:inset 2px 0 0 #C06D45,inset 0 2px 0 #C06D45,0 0 0 2px rgba(192,109,69,.14)!important;
+  background-image:linear-gradient(#C06D45,#C06D45),linear-gradient(#C06D45,#C06D45)!important;
+  box-shadow:0 0 0 2px rgba(192,109,69,.14)!important;
 }
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) :is(.jobs-filters .atsrs-search-control>i,.jobs-select-toggle>i,.jobs-date-range-toggle>i){
   color:#C06D45!important;
@@ -1120,5 +1125,22 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
 /* V6238: carry the same graphite frame and copper top/left accent onto every job card. */
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{
   border:1px solid #34383C!important;
-  box-shadow:inset 2px 0 0 #AC613B,inset 0 2px 0 #AC613B!important;
+  box-shadow:none!important;
+}
+
+/* V6239: terminate copper edge segments before the rounded corners instead of wrapping around them. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card::before{
+  content:"";
+  display:block!important;
+  position:absolute;
+  z-index:3;
+  inset:0!important;
+  width:auto!important;
+  height:auto!important;
+  background-image:linear-gradient(#AC613B,#AC613B),linear-gradient(#AC613B,#AC613B)!important;
+  background-position:10px 0,0 10px!important;
+  background-repeat:no-repeat!important;
+  background-size:calc(100% - 20px) 2px,2px calc(100% - 20px)!important;
+  box-shadow:none!important;
+  pointer-events:none;
 }
