@@ -41,6 +41,40 @@ final result: passed
 
 ---
 
+# ATSRS site-wide dark/copper mode — Design QA (V6244)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png` and the accepted V6241 JobSearch graphite/copper card treatment.
+- Live implementation: `https://atsrs.com/?route=dashboard&_atsrs_release=V6244-final`.
+- Verified states: Dashboard, Recruiters, Companies, Documents, References, Profile and Developer at a 2294 × 735 CSS-pixel viewport with device pixel ratio 1.5.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing ATSRS type families, weights and hierarchy remain unchanged; the change is limited to the shared color/surface system.
+- Spacing and layout rhythm: existing page geometry, card dimensions, filters, hero sections and sidebar tracks remain unchanged.
+- Colors and visual tokens: page background resolves to `#0B0C0D`, principal panels to `#111315`, graphite borders to `#34383C`, copper accents to `#AC613B`, and active/hover copper to `#C06D45`.
+- Images and assets: company logos, recruiter artwork and JobSearch banner imagery retain their natural source colors; only UI surfaces, edges and controls use the copper system.
+- Copy and content: no labels, records, counts or application data were changed.
+
+## Findings and comparison history
+
+- Initial V6243 live finding: the browser retained the previous cached stylesheet, so active sidebar labels and recruiter/company hero edges still appeared green.
+- Fix: strengthened the relevant active-navigation and directory-hero selectors and moved every HTML entry point to the V6244 stylesheet cache key.
+- Post-fix evidence: live Dashboard reports build `V6244`, dark theme, `#0B0C0D` body background, copper active sidebar label, and zero theme switches.
+- Recruiters and Companies report copper top/left hero borders and copper active navigation while their branded artwork remains unmodified.
+- Documents, References, Profile and Developer all resolve to the permanent dark page background and shared dark panel surfaces.
+- No actionable P0, P1 or P2 visual mismatch remains.
+
+## Verification
+
+- Focused automated theme and JobSearch regression suite: 28/28 passed.
+- GitHub Pages deployment run `37850992139`: passed.
+- Live browser console errors: 0.
+- Light mode controls present: 0 across every verified authenticated route.
+
+final result: passed
+
+---
+
 # Personal Dashboard silent Storage refresh — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-2da21cbf-2bf4-4153-ad40-16f5a01be652.png` (3439 × 1368 px).
