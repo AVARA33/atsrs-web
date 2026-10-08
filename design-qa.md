@@ -1710,3 +1710,51 @@ Final result: passed.
 - Production parity passed: the live dropdown is 420 pixels wide, begins 10 pixels below the bell, has no horizontal overflow, and preserves toggle, outside-click and Escape dismissal.
 
 Final result: passed.
+
+---
+
+# JobSearch black controls and copper pagination — Design QA (V6236)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-e6b6fb1a-24f7-499b-aa12-20b1ad3924aa.png`
+- Implementation: browser-rendered capture attached to the task from `https://atsrs.com/?route=jobs&_atsrs_release=V6236-qa`
+- Source pixels: 3439 × 1368
+- Implementation viewport: 2294 × 735 CSS px at device pixel ratio 1.5 (approximately 3441 × 1103 capture pixels)
+- State: authenticated personal JobSearch, dark theme, page 1, 30 cards loaded
+- Density normalization: compared at the same displayed page width; browser chrome and the source annotation rectangle were excluded from fidelity judgment.
+
+## Full-view and focused comparison evidence
+
+The JobSearch composition, card grid, filters, billing notice and pagination remain in their existing positions. The focused filter and pagination region was checked visually and with computed styles:
+
+- Filter background: `#0B0C0D`
+- Filter border: `rgba(172, 97, 59, 0.58)`
+- Active pagination background: `#0B0C0D`
+- Active pagination border: `#AC613B`
+- Active pagination text: `#C06D45`
+- No green active-page styling remains.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged; no wrapping, weight or alignment regression observed.
+- Spacing and layout rhythm: unchanged; filter and pagination dimensions remain stable.
+- Colors and visual tokens: black interiors plus copper border/active states match the user's annotated direction.
+- Image quality and asset fidelity: card artwork and logos are unchanged and remain sharp.
+- Copy and content: unchanged; 30 cards load and pagination labels remain intact.
+
+## Findings and comparison history
+
+- Earlier V6234: filter interiors carried a copper tint and the active pagination page was green.
+- V6235 fix: filter interiors changed to black while copper borders were retained.
+- V6236 fix: active pagination changed to black with copper border/text, removing the green state.
+- Post-fix evidence: live computed styles and browser capture confirm both changes.
+- No actionable P0, P1 or P2 mismatches remain.
+
+## Primary interactions and console
+
+- Pagination page 1 → page 2 → page 1 tested successfully.
+- 30 cards remained rendered after pagination changes.
+- Browser console errors checked: none.
+- Automated JobSearch visual contract tests: 18 passed.
+
+final result: passed
+
