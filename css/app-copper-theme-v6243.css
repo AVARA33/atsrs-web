@@ -98,6 +98,27 @@ html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button:hover{
   -webkit-text-fill-color:#D58A63!important;
 }
 
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button:hover :is(.atsrs-nav-icon,.atsrs-nav-label,i,span),
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button:focus-visible :is(.atsrs-nav-icon,.atsrs-nav-label,i,span){
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:hover,
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:focus-visible,
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"].is-active{
+  border-color:transparent!important;
+  background:transparent!important;
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .sidebar-quick-links [role="button"]:focus-visible{
+  outline:2px solid rgba(192,109,69,.72)!important;
+  outline-offset:2px!important;
+}
+
 html[data-theme="dark"] body #app.app:not(.hidden) .sidebar .nav button.active{
   border-color:transparent!important;
   background:#271E1A!important;

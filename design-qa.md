@@ -1,3 +1,22 @@
+# Authenticated sidebar copper hover — Design QA (V6260)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-77df8f1e-4b11-473d-af50-bcdb9c979958.png`, with the user's explicit instruction that sidebar items must no longer turn green on hover.
+- Implementation surface: `tests/fixtures/sidebar-brand-v6257-harness.html?v=6260`, rendered in the Codex in-app browser.
+- State: authenticated dark sidebar; ordinary navigation hover and bottom Support/FAQ/Plans quick-link hover.
+
+## Comparison and verification
+
+- Navigation geometry, icon sizes, labels, active Recruiters state and black sidebar surface remain unchanged.
+- Hover background resolves to `rgb(23, 21, 20)`; button, icon and label all resolve to copper `rgb(213, 138, 99)` (`#D58A63`).
+- Bottom quick-link host and icon both resolve to the same copper `rgb(213, 138, 99)` on hover.
+- Keyboard focus uses a copper outline and copper icon/text, eliminating the remaining legacy green accessibility state.
+- Focused automated visual-contract suite: 10/10 passed.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
+
+---
+
 # ATSRS Android header entry — Design QA
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-52d83cf5-fcdd-4b36-8736-26c1de53b5a5.png`.
