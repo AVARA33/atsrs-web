@@ -41,6 +41,44 @@ final result: passed
 
 ---
 
+# Restored premium JobSearch banner — Design QA (V6245)
+
+- Structural source: the existing `.jobs-hero` markup and international map asset already present in the ATSRS repository.
+- Palette source: the accepted JobSearch card reference at `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png`.
+- Implementation evidence: browser-rendered captures from the local V6245 fixture and the authenticated live page at `https://atsrs.com/?route=jobs&_atsrs_release=V6245-final`.
+- Viewports checked: desktop 1280 × 720, live desktop 2294 × 779, and mobile 390 × 844 CSS px.
+- State: permanent dark mode, authenticated JobSearch, page 1, live vacancy feed rendered.
+
+## Fidelity and visual hierarchy
+
+- Banner interior uses the same warm black as the cards: `#0B0C0D`.
+- Top and left edges use copper `#AC613B`; right and bottom edges use graphite `#34383C`.
+- The existing international map image is restored and copper-toned at reduced opacity instead of being replaced by a synthetic illustration.
+- The globe emblem, eyebrow, region controls and live opportunity count use restrained copper accents; headings remain white and supporting copy remains muted.
+- The card grid, filters, card artwork and company marks were not resized or recolored.
+- Mobile layout keeps the live-count badge clear of the eyebrow and allows the region controls to scroll horizontally without changing page width.
+
+## Comparison history
+
+- Initial restored mobile pass placed the opportunity badge too close to the eyebrow.
+- V6245 correction added compact top clearance on narrow screens while preserving the desktop banner height and content rhythm.
+- Post-fix desktop and mobile captures show no overlap, clipping or unintended content shift.
+- No actionable P0, P1 or P2 visual mismatches remain.
+
+## Verification
+
+- Live computed styles: 236 px desktop minimum height, `rgb(11, 12, 13)` interior, copper top/left borders and graphite right/bottom borders.
+- Live map display: visible at 0.52 opacity.
+- Live region navigation: visible and wired to the existing JobSearch geography controls.
+- Live opportunity snapshot: `30 of 11238 opportunities` during verification.
+- Automated focused visual-contract suite: 25 passed.
+- GitHub Pages deployment for commit `610ee075` completed successfully.
+- The live feed rendered successfully; one transient pre-existing `ATSRS jobs load failed` retry log was observed after a region-filter probe, with the current cards and count still present.
+
+final result: passed
+
+---
+
 # ATSRS site-wide dark/copper mode — Design QA (V6244)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png` and the accepted V6241 JobSearch graphite/copper card treatment.
