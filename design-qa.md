@@ -1924,3 +1924,42 @@ final result: passed
 - No actionable P0, P1 or P2 mismatches remain for the requested card-edge treatment.
 
 final result: passed
+
+---
+
+# Unified white banner artwork — Design QA (V6246)
+
+- Source visual truth: the existing raster artwork assets `assets/jobsearch/international-job-map-v1.png`, `assets/recruiters/recruiter-directory-orbit-clean.png`, and `assets/company-directory/companies-hero-unified-v1.png`, plus the user's instruction to render their network/map artwork in white.
+- Implementation screenshots: browser-rendered captures attached to the task from the authenticated live JobSearch, Recruiters, and Companies routes at release V6246.
+- Source dimensions: JobSearch map 1774 × 887 px; Recruiters network 968 × 288 px; Companies network 2152 × 731 px.
+- Implementation viewport: 2294 × 779 CSS px at device pixel ratio 1.5; JobSearch was also checked in the local narrow preview.
+- State: permanent dark mode, authenticated personal workspace, each directory banner visible.
+
+## Full-view and focused comparison evidence
+
+- JobSearch retains its real world-map image, but its green/copper pixels are neutralized to soft white/gray over the black banner.
+- Recruiters retains the orbit/network artwork and labels, now in the same neutral white treatment.
+- Companies retains the employer network, company marks and grid, with color removed while preserving legibility and hierarchy.
+- The treatment uses filters on the original raster assets; no placeholder, CSS drawing, generated substitute or reconstructed logo was introduced.
+- Focused computed-style checks confirm the intended grayscale/saturation/brightness treatment on all three artwork layers.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged across all three banners; weights, sizes, wrapping and hierarchy match the preceding accepted release.
+- Spacing and layout rhythm: banner dimensions, copy placement, controls, trust strips and live-count badges remain unchanged.
+- Colors and visual tokens: white/gray network artwork now sits above warm-black surfaces while copper eyebrows, icons and frames remain intact.
+- Image quality and asset fidelity: original full-resolution raster assets remain in place with no crop or scaling changes; only display color and opacity changed.
+- Copy and content: unchanged.
+
+## Findings and verification
+
+- No P0, P1 or P2 mismatch was found after the live three-page comparison.
+- JobSearch artwork: grayscale, zero saturation, 2.05 brightness, 0.42 opacity on desktop.
+- Recruiters artwork: grayscale, zero saturation, 1.72 brightness, 0.46 opacity.
+- Companies artwork: grayscale, zero saturation, 1.70 brightness, 0.50 opacity.
+- Responsive opacity reductions preserve copy contrast on narrow screens.
+- Automated focused visual-contract suite: 28 passed.
+- Browser console errors after the final Companies verification: none.
+- GitHub Pages deployment for commit `a35ad7a4` completed successfully.
+
+final result: passed
