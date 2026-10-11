@@ -106,21 +106,21 @@ assert.doesNotMatch(css, /public-job-search-details|public-job-search-content/);
 
 for (const image of [
   'personal-dashboard.png',
-  'personal-dashboard-dark.png',
+  'personal-dashboard-copper-v6259.png',
   'candidate-directory.png',
-  'candidate-directory-dark.png',
+  'candidate-directory-copper-v6259.png',
   'corporate-personnel.png',
-  'corporate-personnel-dark.png',
+  'corporate-personnel-copper-v6259.png',
 ]) {
   assert.ok(fs.existsSync(path.join(root, 'assets', 'landing', image)), `${image} must exist`);
 }
 
 assert.match(index, /public-theme-preview-light[^>]+personal-dashboard\.png/);
-assert.match(index, /public-theme-preview-dark[^>]+personal-dashboard-dark\.png/);
+assert.match(index, /public-theme-preview-dark[^>]+personal-dashboard-copper-v6259\.png/);
 assert.match(index, /public-theme-preview-light[^>]+candidate-directory\.png/);
-assert.match(index, /public-theme-preview-dark[^>]+candidate-directory-dark\.png/);
+assert.match(index, /public-theme-preview-dark[^>]+candidate-directory-copper-v6259\.png/);
 assert.match(index, /public-theme-preview-light[^>]+corporate-personnel\.png/);
-assert.match(index, /public-theme-preview-dark[^>]+corporate-personnel-dark\.png/);
+assert.match(index, /public-theme-preview-dark[^>]+corporate-personnel-copper-v6259\.png/);
 assert.match(css, /\.public-theme-preview-dark\{display:none!important\}/);
 assert.match(css, /html\[data-theme="dark"\] \.atsrs-public-landing \.public-theme-preview-light\{display:none!important\}/);
 assert.match(css, /html\[data-theme="dark"\] \.atsrs-public-landing \.public-theme-preview-dark\{display:block!important\}/);

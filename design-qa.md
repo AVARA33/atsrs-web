@@ -41,6 +41,32 @@ final result: passed
 
 ---
 
+# Copper homepage product previews — Design QA (V6259)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-8e92012d-b8b6-44d2-9f86-f9d0c54fdd23.png` and the user's instruction to replace the remaining green areas in the homepage cards with the current site's copper/orange treatment.
+- Implementation: local browser render from `http://127.0.0.1:8767/?_atsrs_release=V6259-local-2`.
+- Source screenshot: 3439 × 1368 px; supplied preview was 2048 × 815 px.
+- State: public homepage, permanent dark mode, Azerbaijani locale, desktop viewport.
+
+## Comparison evidence
+
+- The Personal dashboard, Candidate directory and Corporate personnel raster previews now use copper/orange brand, navigation, heading, active-state and progress accents instead of green.
+- Each replacement asset is exactly 1265 × 712 px, matching the prior asset geometry and avoiding layout shift.
+- Black and graphite surfaces, warm-white text, portraits, copy, spacing and scrollbars remain intact.
+- Semantic red expiry, yellow warning, blue information and purple action states remain distinct rather than being flattened into copper.
+- The adjacent homepage video trigger and play control now use the same copper border, copper-tinted surface and copper action color; the former lime/green treatment is absent.
+
+## Visual verification
+
+- Hero composition: passed; both overlapping product previews remain aligned and legible.
+- Personal preview section: passed; copper dashboard screenshot and copper video card render without clipping or overlap.
+- Corporate preview section: passed; the personnel screenshot remains contained and the surrounding page geometry is unchanged.
+- Focused V6259 contract tests pass; the broader legacy public-landing test is currently blocked by an unrelated pre-existing Rotation currency assertion in the user's unstaged work.
+
+final result: passed
+
+---
+
 # Expanded vacancy company color — Design QA (V6258)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-fbe9f731-6643-4d97-9c2e-89214f8491c2.png`; the marked company/recruiter organisation heading was green and the user requested orange.
