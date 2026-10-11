@@ -6,9 +6,9 @@ const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/recruiters-copper-v6247.css', 'utf8');
 const artworkCss = fs.readFileSync('css/recruiters-art-neutral-v6248.css', 'utf8');
 
-test('V6248 loads recruiter copper overrides and neutral artwork last', () => {
-  assert.match(html, /data-atsrs-build="V6248"/);
-  assert.match(html, /banner-visuals-white-v6246\.css\?v=6246[\s\S]*recruiters-copper-v6247\.css\?v=6247[\s\S]*recruiters-art-neutral-v6248\.css\?v=6248/);
+test('V6250 loads recruiter copper overrides, neutral artwork, and shared copper edge standard last', () => {
+  assert.match(html, /data-atsrs-build="V6250"/);
+  assert.match(html, /banner-visuals-white-v6246\.css\?v=6246[\s\S]*recruiters-copper-v6247\.css\?v=6247[\s\S]*recruiters-art-neutral-v6248\.css\?v=6248[\s\S]*copper-edge-standard-v6250\.css\?v=6250/);
 });
 
 test('recruiter banner uses the neutral black and copper palette', () => {
@@ -33,4 +33,11 @@ test('recruiter initials and status accents no longer use the legacy green palet
 test('embedded recruiter card artwork is neutral instead of green', () => {
   assert.match(artworkCss, /#recruitersPage \.employer-card::after \{[\s\S]*filter: grayscale\(1\) saturate\(0\) brightness\(\.72\) contrast\(1\.14\) !important/);
   assert.match(artworkCss, /\.employers-notice i[\s\S]*color: #C06D45 !important/);
+});
+
+test('all directory banners, fields and cards share the same two-pixel copper edge', () => {
+  const borderCss = fs.readFileSync('css/copper-edge-standard-v6250.css', 'utf8');
+  assert.match(borderCss, /#jobsPage \.jobs-hero,[\s\S]*#recruitersPage \.recruiters-hero,[\s\S]*#employersPage \.company-directory-hero[\s\S]*border-width: 2px 1px 1px 2px !important/);
+  assert.match(borderCss, /#jobsPage \.jobs-filters,[\s\S]*#recruitersPage \.employers-toolbar,[\s\S]*#employersPage \.employers-toolbar[\s\S]*border-width: 2px 1px 1px 2px !important/);
+  assert.match(borderCss, /#jobsPage \.job-card,[\s\S]*#recruitersPage \.employer-card,[\s\S]*#employersPage \.employer-card[\s\S]*border-width: 2px 1px 1px 2px !important/);
 });

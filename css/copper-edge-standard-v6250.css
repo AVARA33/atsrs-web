@@ -1,0 +1,46 @@
+/* V6250 — one copper edge thickness for directory banners, filter fields and cards. */
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage .jobs-hero,
+  #recruitersPage .recruiters-hero,
+  #employersPage .company-directory-hero
+) {
+  border-style: solid !important;
+  border-width: 2px 1px 1px 2px !important;
+  border-top-color: #AC613B !important;
+  border-left-color: #AC613B !important;
+  border-right-color: #34383C !important;
+  border-bottom-color: #34383C !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage .jobs-filters,
+  #recruitersPage .employers-toolbar,
+  #employersPage .employers-toolbar
+) :is(input:not([type="checkbox"]):not([type="radio"]), select, .jobs-select-toggle) {
+  box-sizing: border-box !important;
+  border-style: solid !important;
+  border-width: 2px 1px 1px 2px !important;
+  border-top-color: #AC613B !important;
+  border-left-color: #AC613B !important;
+  border-right-color: #34383C !important;
+  border-bottom-color: #34383C !important;
+  background: #0B0C0D !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage .job-card,
+  #recruitersPage .employer-card,
+  #employersPage .employer-card
+) {
+  border-style: solid !important;
+  border-width: 2px 1px 1px 2px !important;
+  border-top-color: #AC613B !important;
+  border-left-color: #AC613B !important;
+  border-right-color: #34383C !important;
+  border-bottom-color: #34383C !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card::before {
+  width: 2px !important;
+}
