@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-atsrs-build="V6260" data-atsrs-update="12 Oct 2026">
+<html lang="en" data-theme="dark" data-atsrs-build="V6261" data-atsrs-update="12 Oct 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -208,7 +208,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <link rel="stylesheet" href="css/documents-tabs-copper-v6252.css?v=6252">
 <link rel="stylesheet" href="css/public-footer-copper-hover-v6253.css?v=6253">
 <link rel="stylesheet" href="css/brand-copper-lockup-v6254.css?v=6257">
-<link rel="stylesheet" href="css/brand-copper-spinner-v6256.css?v=6256">
+<link rel="stylesheet" href="css/brand-copper-spinner-v6256.css?v=6261">
 <script src="js/locale-az.js?v=6169" defer></script>
 <script src="js/legal-az-content.js?v=3" defer></script>
 <script src="js/locale.js?v=32" defer></script>
@@ -218,7 +218,10 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   <!--email_off-->
 <div id="atsrsBootScreen" role="status" aria-label="Loading ATSRS">
   <div class="atsrs-boot-mark" aria-hidden="true">
-    <i class="ph ph-spinner-gap atsrs-boot-spinner"></i>
+    <div class="atsrs-spinner atsrs-boot-spinner">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
   </div>
 </div>
 <script id="atsrs-v178-modular-boot-guard">

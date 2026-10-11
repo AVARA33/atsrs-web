@@ -1,3 +1,23 @@
+# Sequential copper boot loader — Design QA (V6261)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-6c79026c-b1a8-4b61-92c6-e22a3a41427f.png`, together with the user's explicit instruction to replace the rotating icon with the earlier professional loader whose individual lines illuminate and fade in sequence.
+- Implementation surface: `tests/fixtures/brand-copper-spinner-v6256-harness.html?v=6261`, rendered in the Codex in-app browser.
+- State: full-page ATSRS boot/loading transition on the permanent black theme.
+
+## Comparison and verification
+
+- The full-page black surface and exact centered 52 × 52 loader footprint are preserved.
+- Eight copper segments remain spatially fixed; staggered animation delays move the bright pulse clockwise instead of rotating the complete glyph.
+- Segment color is the established copper-orange `#C06D45`, with a restrained copper glow.
+- No logo, text, panel, generic icon or filled-orange mark appears during loading.
+- Reduced-motion users receive the same segmented form without animation.
+- Focused automated loading contract, production build and browser animation inspection passed.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
+
+---
+
 # Authenticated sidebar copper hover — Design QA (V6260)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-77df8f1e-4b11-473d-af50-bcdb9c979958.png`, with the user's explicit instruction that sidebar items must no longer turn green on hover.

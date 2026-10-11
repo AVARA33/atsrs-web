@@ -5,9 +5,9 @@ const fs = require('node:fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/public-footer-copper-hover-v6253.css', 'utf8');
 
-test('V6259 keeps the public footer hover override before the copper brand lockup', () => {
-  assert.match(html, /data-atsrs-build="V6259"/);
-  assert.match(html, /documents-tabs-copper-v6252\.css\?v=6252[\s\S]*public-footer-copper-hover-v6253\.css\?v=6253[\s\S]*brand-copper-lockup-v6254\.css\?v=6257[\s\S]*brand-copper-spinner-v6256\.css\?v=6256/);
+test('V6261 keeps the public footer hover override before the copper brand lockup', () => {
+  assert.match(html, /data-atsrs-build="V6261"/);
+  assert.match(html, /documents-tabs-copper-v6252\.css\?v=6252[\s\S]*public-footer-copper-hover-v6253\.css\?v=6253[\s\S]*brand-copper-lockup-v6254\.css\?v=6257[\s\S]*brand-copper-spinner-v6256\.css\?v=6261/);
 });
 
 test('all public footer links receive the shared copper hover and focus color', () => {

@@ -8,12 +8,16 @@
     html,body{width:100%;height:100%;margin:0;background:#050606}
     #atsrsBootScreen{width:100%;height:100%;display:grid;place-items:center}
   </style>
-  <link rel="stylesheet" href="../../vendor/phosphor-icons/phosphor-regular.css?v=442">
-  <link rel="stylesheet" href="../../css/brand-copper-spinner-v6256.css?v=6256">
+  <link rel="stylesheet" href="../../css/brand-copper-spinner-v6256.css?v=6261">
 </head>
 <body>
   <div id="atsrsBootScreen" role="status" aria-label="Loading ATSRS">
-    <div class="atsrs-boot-mark" aria-hidden="true"><i class="ph ph-spinner-gap atsrs-boot-spinner"></i></div>
+    <div class="atsrs-boot-mark" aria-hidden="true">
+      <div class="atsrs-spinner atsrs-boot-spinner">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
   </div>
 </body>
 </html>

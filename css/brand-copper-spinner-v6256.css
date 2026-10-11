@@ -1,4 +1,4 @@
-/* ATSRS V6256: minimal copper line spinner for refresh/loading transitions. */
+/* ATSRS V6261: sequential copper segment loader for refresh/loading transitions. */
 #atsrsBootScreen .atsrs-boot-mark{
   width:64px!important;
   height:64px!important;
@@ -15,24 +15,46 @@
 }
 
 #atsrsBootScreen .atsrs-boot-spinner{
-  display:block!important;
-  color:#C06D45!important;
-  font-size:52px!important;
-  line-height:1!important;
+  position:relative!important;
+  width:52px!important;
+  height:52px!important;
+  margin:0!important;
   filter:drop-shadow(0 0 12px rgba(192,109,69,.26))!important;
-  transform-origin:50% 50%!important;
-  animation:atsrsCopperLineSpin .82s linear infinite!important;
+  animation:none!important;
+}
+
+#atsrsBootScreen .atsrs-boot-spinner span{
+  position:absolute!important;
+  top:3px!important;
+  left:50%!important;
+  width:5px!important;
+  height:14px!important;
+  margin-left:-2.5px!important;
+  border-radius:999px!important;
+  background:#C06D45!important;
+  transform-origin:50% 23px!important;
+  animation:atsrsCopperSegmentPulse 1s linear infinite!important;
 }
 
 #atsrsBootScreen .atsrs-boot-shine{
   display:none!important;
 }
 
-@keyframes atsrsCopperLineSpin{
-  from{transform:rotate(0deg)}
-  to{transform:rotate(360deg)}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(1){transform:rotate(0deg);animation-delay:-.875s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(2){transform:rotate(45deg);animation-delay:-.75s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(3){transform:rotate(90deg);animation-delay:-.625s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(4){transform:rotate(135deg);animation-delay:-.5s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(5){transform:rotate(180deg);animation-delay:-.375s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(6){transform:rotate(225deg);animation-delay:-.25s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(7){transform:rotate(270deg);animation-delay:-.125s!important}
+#atsrsBootScreen .atsrs-boot-spinner span:nth-child(8){transform:rotate(315deg);animation-delay:0s!important}
+
+@keyframes atsrsCopperSegmentPulse{
+  0%{opacity:1}
+  50%,100%{opacity:.18}
 }
 
 @media (prefers-reduced-motion:reduce){
-  #atsrsBootScreen .atsrs-boot-spinner{animation:none!important}
+  #atsrsBootScreen .atsrs-boot-spinner span{animation:none!important}
+  #atsrsBootScreen .atsrs-boot-spinner span:nth-child(n+3){opacity:.32!important}
 }

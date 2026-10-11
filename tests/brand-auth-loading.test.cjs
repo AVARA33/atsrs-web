@@ -12,7 +12,9 @@ const processor = fs.readFileSync(path.join(root, 'scripts', 'make-transparent-b
 
 const boot = index.match(/<div id="atsrsBootScreen"[\s\S]*?<\/div>\s*<script id="atsrs-v178-modular-boot-guard">/)?.[0] || '';
 assert.match(boot, /atsrs-boot-mark/);
-assert.doesNotMatch(boot, /atsrs-spinner|atsrs-loader-title|atsrs-loader-sub|Welcome to ATSRS|Getting things ready/);
+assert.match(boot, /class="atsrs-spinner atsrs-boot-spinner"/);
+assert.equal((boot.match(/<span><\/span>/g) || []).length, 8);
+assert.doesNotMatch(boot, /atsrs-loader-title|atsrs-loader-sub|Welcome to ATSRS|Getting things ready/);
 assert.match(index, /atsrs-auth-lockup[\s\S]*?Applicant Tracking System &amp; Recruitment Solutions/);
 assert.match(index, /public-wordmark atsrs-home-lockup/);
 assert.match(css, /atsrs-lockup-green-transparent\.png/);
@@ -38,8 +40,10 @@ assert.match(processor, /graphite = np\.asarray\(\(8, 13, 21\)/);
 assert.match(processor, /neutral & text_region/);
 assert.match(processor, /coloured_alpha = np\.where\(coloured, alpha, 0\.0\)/);
 assert.match(lockupCss, /#auth \.atsrs-auth-lockup[\s\S]*?atsrs-copper-lockup/);
-assert.match(index, /class="ph ph-spinner-gap atsrs-boot-spinner"/);
-assert.match(loadingCss, /animation:atsrsCopperLineSpin \.82s linear infinite!important/);
+assert.match(index, /brand-copper-spinner-v6256\.css\?v=6261/);
+assert.doesNotMatch(index, /class="ph ph-spinner-gap atsrs-boot-spinner"/);
+assert.match(loadingCss, /animation:atsrsCopperSegmentPulse 1s linear infinite!important/);
+assert.match(loadingCss, /span:nth-child\(8\)[\s\S]*?animation-delay:0s!important/);
 
 for (const asset of ['atsrs-lockup-green-transparent.png', 'atsrs-lockup-blue-transparent.png', 'atsrs-lockup-light-transparent.png', 'atsrs-mark-green.png', 'atsrs-mark-blue.png']) {
   assert.ok(fs.statSync(path.join(root, 'assets', 'branding', asset)).size > 100000);
