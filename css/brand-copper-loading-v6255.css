@@ -1,0 +1,30 @@
+/* ATSRS V6255: copper browser mark and orange-only rotating boot symbol. */
+#atsrsBootScreen .atsrs-boot-mark{
+  width:clamp(112px,12vw,160px)!important;
+  aspect-ratio:1!important;
+  background-color:transparent!important;
+  background-image:url("../assets/branding/atsrs-mark-orange-v6255.png?v=6255")!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  background-size:contain!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 10px 24px rgba(172,97,59,.22))!important;
+  overflow:visible!important;
+  transform-origin:50% 50%!important;
+  animation:atsrsCopperBootSpin 1.55s linear infinite!important;
+}
+
+#atsrsBootScreen .atsrs-boot-shine{
+  display:none!important;
+}
+
+@keyframes atsrsCopperBootSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #atsrsBootScreen .atsrs-boot-mark{animation:none!important}
+}

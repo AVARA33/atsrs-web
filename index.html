@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-atsrs-build="V6254" data-atsrs-update="11 Oct 2026">
+<html lang="en" data-theme="dark" data-atsrs-build="V6255" data-atsrs-update="11 Oct 2026">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -42,7 +42,7 @@
   window.addEventListener('pageshow',function(event){if(!event.persisted)updateOnFreshEntry();},{once:true});
 })();
 </script>
-<link id="atsrsFavicon" rel="icon" type="image/png" sizes="64x64" href="assets/branding/atsrs-favicon-green-v576.png?v=576" />
+<link id="atsrsFavicon" rel="icon" type="image/png" sizes="64x64" href="assets/branding/atsrs-favicon-copper-v6255.png?v=6255" />
 <link id="atsrsBootLogoPreload" rel="preload" as="image" fetchpriority="high" />
 <script>
 try{
@@ -64,11 +64,11 @@ try{
   if(atsrsEntryShare)document.documentElement.classList.add('atsrs-public-share-mode');
   var initialTheme='dark';
   var atsrsBootLogoPreload=document.getElementById('atsrsBootLogoPreload');
-  if(atsrsBootLogoPreload)atsrsBootLogoPreload.href='assets/branding/atsrs-mark-green.png';
+  if(atsrsBootLogoPreload)atsrsBootLogoPreload.href='assets/branding/atsrs-mark-orange-v6255.png?v=6255';
   window.atsrsSyncFavicon=function(){
     var favicon=document.getElementById('atsrsFavicon');
     if(!favicon)return;
-    var href='assets/branding/atsrs-favicon-green-v576.png?v=576';
+    var href='assets/branding/atsrs-favicon-copper-v6255.png?v=6255';
     if(favicon.getAttribute('href')!==href)favicon.setAttribute('href',href);
   };
   document.documentElement.dataset.theme=initialTheme;
@@ -208,6 +208,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <link rel="stylesheet" href="css/documents-tabs-copper-v6252.css?v=6252">
 <link rel="stylesheet" href="css/public-footer-copper-hover-v6253.css?v=6253">
 <link rel="stylesheet" href="css/brand-copper-lockup-v6254.css?v=6254">
+<link rel="stylesheet" href="css/brand-copper-loading-v6255.css?v=6255">
 <script src="js/locale-az.js?v=6169" defer></script>
 <script src="js/legal-az-content.js?v=3" defer></script>
 <script src="js/locale.js?v=32" defer></script>
@@ -896,7 +897,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
       <div class="mission-node mission-node-ai"><i class="ph ph-magic-wand" aria-hidden="true"></i><span>AI Document<br>Scan</span></div>
 
       <button class="mission-core" type="button" onclick="showPage('jobs',document.getElementById('navJobs'));window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))" aria-label="Open Worldwide JobSearch">
-        <img src="assets/branding/atsrs-favicon-green-v576.png" alt="">
+        <img src="assets/branding/atsrs-favicon-copper-v6255.png?v=6255" alt="">
         <strong>Worldwide JobSearch</strong>
         <small>Core release hub</small>
       </button>

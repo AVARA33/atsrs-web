@@ -41,6 +41,37 @@ final result: passed
 
 ---
 
+# Copper favicon, login lockup and orange boot mark — Design QA (V6255)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-02201a08-efab-4841-97c1-d96cd8599bd5.png` plus the previously accepted copper lockup `C:\Users\user\AppData\Local\Temp\codex-clipboard-7db7a5c3-0f0c-4601-9d4c-58eaa1f59839.png`.
+- Implementation screenshots: browser-rendered local login and isolated loading-state captures attached to the task.
+- State: permanent dark mode; login route and boot-state harness at release V6255.
+
+## Full-view and focused comparison evidence
+
+- The browser favicon is a 64 × 64 copper crop taken from the exact accepted lockup, replacing the former green tab icon.
+- The login page continues to use the complete accepted copper/black/warm-white lockup with `background-size: contain`; no text or mark is cropped.
+- The loading view now contains only the orange ATSRS mark on the black page background. The former horizontal lockup and shine sweep are absent.
+- Computed styles confirm `atsrsCopperBootSpin`, a 1.55 s linear infinite rotation, a 112 × 112 px rendered mark at the test viewport and `display:none` on the old shine layer.
+
+## Required fidelity surfaces
+
+- Login geometry and copy: unchanged.
+- Loading geometry: centered, square and isolated; no added label or panel.
+- Colors: orange `#C06D45` mark on black `#050606`; copper selected artwork retained on login.
+- Asset fidelity: favicon and loading assets are deterministic crops/masks of the user-approved source rather than newly invented branding.
+
+## Findings and verification
+
+- Focused V6255 visual-contract suite: 35 of 35 tests passed.
+- Legacy repository-wide tests still contain unrelated pre-existing version assertions and dirty Rotation work; those failures were not changed as part of this scoped brand update.
+- Local browser audit confirmed V6255, the copper favicon href, the accepted login background asset, the orange boot asset and the active spin animation.
+- No actionable P0, P1 or P2 mismatch remains in the requested surfaces.
+
+final result: passed
+
+---
+
 # Public footer copper hover — Design QA (V6253)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-1557802f-5603-4f4d-8fbd-fdcd7a5680b5.png` and the user's instruction that the highlighted footer links should turn orange on mouse hover like the upper navigation.
