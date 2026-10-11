@@ -7,8 +7,8 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'jobsearch-banner-copper-v6245.css'), 'utf8');
 
-test('V6252 keeps the restored JobSearch banner after the site-wide copper theme', () => {
-  assert.match(html, /data-atsrs-build="V6252"/);
+test('V6253 keeps the restored JobSearch banner after the site-wide copper theme', () => {
+  assert.match(html, /data-atsrs-build="V6253"/);
   assert.match(html, /css\/app-copper-theme-v6243\.css\?v=6244[\s\S]*css\/jobsearch-banner-copper-v6245\.css\?v=6245/);
   assert.match(html, /class="jobs-hero"[\s\S]*class="jobs-hero-map"[\s\S]*id="jobsRegionNav"[\s\S]*class="jobs-snapshot"/);
 });

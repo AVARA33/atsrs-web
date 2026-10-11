@@ -5,9 +5,9 @@ const fs = require('node:fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/documents-tabs-copper-v6252.css', 'utf8');
 
-test('V6252 loads the Documents folder-tab correction last', () => {
-  assert.match(html, /data-atsrs-build="V6252"/);
-  assert.match(html, /company-banner-neutral-v6251\.css\?v=6251[\s\S]*documents-tabs-copper-v6252\.css\?v=6252/);
+test('V6253 keeps the Documents folder-tab correction before the footer hover override', () => {
+  assert.match(html, /data-atsrs-build="V6253"/);
+  assert.match(html, /company-banner-neutral-v6251\.css\?v=6251[\s\S]*documents-tabs-copper-v6252\.css\?v=6252[\s\S]*public-footer-copper-hover-v6253\.css\?v=6253/);
 });
 
 test('folder tabs use the site copper palette without green fallback', () => {

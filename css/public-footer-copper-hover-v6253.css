@@ -1,0 +1,9 @@
+/* V6253: match footer link interaction color to the copper public navigation. */
+#landingPage .public-footer a {
+  transition: color .16s ease !important;
+}
+
+#landingPage .public-footer a:hover,
+#landingPage .public-footer a:focus-visible {
+  color: #C06D45 !important;
+}
