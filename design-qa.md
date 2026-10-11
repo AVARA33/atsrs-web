@@ -41,6 +41,41 @@ final result: passed
 
 ---
 
+# Unified copper edge thickness — Design QA (V6250)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png`, `C:\Users\user\AppData\Local\Temp\codex-clipboard-e6b6fb1a-24f7-499b-aa12-20b1ad3924aa.png`, and the user's instruction to standardize the copper line thickness across banners, filter fields and cards.
+- Implementation screenshots: browser-rendered live captures attached to the task from JobSearch, Recruiters and Companies at release V6250.
+- Implementation viewport: 2294 × 768 CSS px in the authenticated desktop browser.
+- State: permanent dark mode, authenticated personal workspace, directory banners, filter controls and first-page cards visible.
+
+## Full-view and focused comparison evidence
+
+- All three directory banners use a 2 px copper (`#AC613B`) top/left edge and a 1 px graphite (`#34383C`) right/bottom edge.
+- JobSearch, Recruiters and Companies filter controls keep their `#0B0C0D` interiors and use the same copper/graphite edge system.
+- Directory cards use the same perimeter hierarchy, without changing their accepted dimensions, typography, content spacing or artwork crop.
+- Recruiter banner and card accents no longer use green; recruiter card artwork is neutral grayscale while the shared copper controls remain visible.
+- The white banner-map/network artwork introduced in V6246 remains unchanged.
+
+## Required fidelity surfaces
+
+- Typography and copy: unchanged.
+- Layout and spacing: unchanged; only border width/color rules were standardized.
+- Colors: copper `#AC613B`, graphite `#34383C`, black interior `#0B0C0D`.
+- Images and logos: original assets retained; no generated or substituted artwork.
+- Responsive behavior: existing radii and layout breakpoints retained.
+
+## Findings and verification
+
+- Live computed styles confirm 2 px copper top/left edges and thin graphite right/bottom edges on the banner and filter controls.
+- Focused current visual-contract suite: 21 of 21 tests passed.
+- GitHub Pages deployment for commit `3711ddb5` completed successfully.
+- One pre-existing `ATSRS jobs load failed` console record remained in the reused browser tab after route navigation; it is unrelated to the CSS edge treatment and produced no visual regression in the audited routes.
+- No actionable P0, P1 or P2 visual mismatch remains for the requested edge standardization.
+
+final result: passed
+
+---
+
 # Restored premium JobSearch banner — Design QA (V6245)
 
 - Structural source: the existing `.jobs-hero` markup and international map asset already present in the ATSRS repository.
