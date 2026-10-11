@@ -41,6 +41,41 @@ final result: passed
 
 ---
 
+# Documents folder tabs copper palette — Design QA (V6252)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-bb72e08b-c1ca-4b49-ae28-ebe4511710d7.png` and the user's instruction to replace the green folder-tab accents with the site's graphite/copper palette.
+- Implementation screenshot: browser-rendered live capture attached to the task from `https://atsrs.com/?route=certificates&_atsrs_release=V6252-final`.
+- Source image pixels: 3439 × 1368 px; prompt-normalized preview 2048 × 815 px.
+- Implementation viewport and pixels: 2294 × 735 CSS px at device pixel ratio 1.5; captured browser viewport 2294 × 735 px.
+- State: authenticated personal Documents workspace, permanent dark mode, `Medical` folder active.
+
+## Full-view and focused comparison evidence
+
+- The source showed green folder-tab outlines, counters and edit accents; the live V6252 capture shows the same geometry with copper accents.
+- Focused computed-style checks confirm the active folder tab uses `#AC613B` border, `#0B0C0D` interior, warm-white text and `#F0B08E` count text.
+- The active state was switched from `All` to `Medical` in the live browser and retained the same styling without shifting the document table.
+- Existing semantic document states remain distinct: live `Valid` and `No Expiry` text remains green, while the folder navigation no longer uses the legacy green accent.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged; tab label weights, sizes, line heights, truncation and count typography remain as before.
+- Spacing and layout rhythm: tab widths, 38 px height, gaps, radii, folder bar height and table position are unchanged.
+- Colors and visual tokens: graphite/black surfaces with copper `#AC613B`, hover copper `#C06D45`, warm count text `#F0B08E` and warm white `#F7F4F1`.
+- Image quality and asset fidelity: no image or icon asset was replaced; existing Phosphor folder icons remain intact.
+- Copy and content: folder labels, document counts and document rows are unchanged.
+
+## Findings and verification
+
+- No actionable P0, P1 or P2 mismatch remains after the live focused comparison.
+- Automated focused visual-contract suite: 27 of 27 tests passed.
+- Primary interaction tested: switched the active folder to `Medical` and verified its computed active-state tokens.
+- Browser console errors after the final live verification: none.
+- GitHub Pages deployment for commit `9651265c` completed successfully.
+
+final result: passed
+
+---
+
 # Unified copper edge thickness — Design QA (V6250)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-d769a3fe-373c-4932-abea-ba53588a6c95.png`, `C:\Users\user\AppData\Local\Temp\codex-clipboard-e6b6fb1a-24f7-499b-aa12-20b1ad3924aa.png`, and the user's instruction to standardize the copper line thickness across banners, filter fields and cards.
