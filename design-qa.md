@@ -41,6 +41,41 @@ final result: passed
 
 ---
 
+# Public footer copper hover — Design QA (V6253)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-1557802f-5603-4f4d-8fbd-fdcd7a5680b5.png` and the user's instruction that the highlighted footer links should turn orange on mouse hover like the upper navigation.
+- Implementation screenshot: browser-rendered live capture attached to the task from `https://atsrs.com/?_atsrs_release=V6253-final` with `Contact` actively hovered.
+- Source image pixels: 3439 × 1368 px; prompt-normalized preview was 2048 × 815 px.
+- Implementation viewport: 2294 × 735 CSS px at device pixel ratio 1.5.
+- State: public landing page, permanent dark mode, footer visible, desktop mouse-hover interaction.
+
+## Full-view and focused comparison evidence
+
+- All footer links retain their existing muted-gray color in the resting state.
+- A real browser mouse-move over `Contact` changed its computed color from `rgb(169, 166, 162)` to copper `rgb(192, 109, 69)` (`#C06D45`).
+- The same hover/focus rule covers the seven legal links, `contact@atsrs.com`, and `Report a Security Issue`.
+- The existing footer layout, spacing, typography, link hit areas and content remain unchanged.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged.
+- Spacing and layout rhythm: unchanged; no new wrapper, padding or movement was introduced.
+- Colors and visual tokens: resting gray preserved; interactive hover/focus uses the site's established copper-orange `#C06D45`.
+- Copy and content: unchanged.
+- Accessibility: keyboard `:focus-visible` receives the same copper treatment as pointer hover.
+
+## Findings and verification
+
+- The V6253 stylesheet is present in the live document and loaded from `css/public-footer-copper-hover-v6253.css?v=6253`.
+- Automated focused visual-contract suite: 30 of 30 tests passed.
+- Browser console errors after the final live hover verification: none.
+- GitHub Pages deployment for commit `fbd4460a` completed successfully.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
+
+---
+
 # Documents folder tabs copper palette — Design QA (V6252)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-bb72e08b-c1ca-4b49-ae28-ebe4511710d7.png` and the user's instruction to replace the green folder-tab accents with the site's graphite/copper palette.
@@ -2068,6 +2103,39 @@ final result: passed
 - Automated focused visual-contract suite: 24 of 24 tests passed.
 - Browser console errors after the final three-route verification: none.
 - GitHub Pages deployment for commit `024ab040` completed successfully.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
+
+---
+
+# Selected copper ATSRS lockup — Design QA (V6254)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-7db7a5c3-0f0c-4601-9d4c-58eaa1f59839.png`, explicitly selected by the user for application to the site.
+- Implementation screenshot: browser-rendered local landing-header capture attached to the task from `http://127.0.0.1:8767/?_atsrs_release=V6254-local`.
+- Source image pixels: 2131 × 738 px with alpha transparency.
+- Implementation viewport: 2294 px wide desktop viewport; focused header capture is 2294 × 220 px.
+- State: public landing page, permanent dark mode, Azerbaijani locale, desktop header visible.
+
+## Full-view and focused comparison evidence
+
+- The implementation uses the exact selected PNG asset; it is not redrawn or approximated in CSS.
+- The public header renders the lockup at 218 × 75.55 CSS px with `background-size: contain` and left-center alignment.
+- The full mark, divider, ATSRS wordmark, TM and two-line tagline remain visible without cropping or distortion.
+- A shared final override applies the same selected asset to the public header, authentication lockup, legal header, authenticated sidebar mark and boot mark.
+
+## Required fidelity surfaces
+
+- Fonts and typography: all surrounding navigation typography is unchanged; the logo's embedded wordmark and tagline remain part of the selected source image.
+- Spacing and layout rhythm: header height, navigation spacing and CTA placement are unchanged.
+- Colors and visual tokens: the selected copper/black/warm-white asset is preserved without CSS filtering.
+- Image quality and asset fidelity: exact 2131 × 738 source PNG retained, aspect ratio preserved, no stretch, replacement drawing or generated substitute.
+- Copy and content: page copy and navigation labels are unchanged.
+
+## Findings and verification
+
+- Focused comparison found no cropping, overlap, layout shift or aspect-ratio distortion at the accepted desktop header size.
+- Automated focused visual-contract suite: 32 of 32 tests passed.
 - No actionable P0, P1 or P2 mismatch remains.
 
 final result: passed

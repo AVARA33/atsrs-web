@@ -5,8 +5,8 @@ const fs = require('node:fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/company-banner-neutral-v6251.css', 'utf8');
 
-test('V6253 loads the Companies banner correction after the shared copper edge standard', () => {
-  assert.match(html, /data-atsrs-build="V6253"/);
+test('V6254 loads the Companies banner correction after the shared copper edge standard', () => {
+  assert.match(html, /data-atsrs-build="V6254"/);
   assert.match(html, /copper-edge-standard-v6250\.css\?v=6250[\s\S]*company-banner-neutral-v6251\.css\?v=6251/);
 });
 
