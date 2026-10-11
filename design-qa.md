@@ -66,6 +66,8 @@ final result: passed
 - Focused V6255 visual-contract suite: 35 of 35 tests passed.
 - Legacy repository-wide tests still contain unrelated pre-existing version assertions and dirty Rotation work; those failures were not changed as part of this scoped brand update.
 - Local browser audit confirmed V6255, the copper favicon href, the accepted login background asset, the orange boot asset and the active spin animation.
+- Live browser audit confirmed V6255, the production copper favicon URL, the complete login lockup and the V6255 loading stylesheet; browser console errors: none.
+- GitHub Pages deployment for commit `e4aeb0c7` completed successfully.
 - No actionable P0, P1 or P2 mismatch remains in the requested surfaces.
 
 final result: passed
