@@ -1,0 +1,28 @@
+/* ATSRS V6246 — unified white network artwork across directory banners. */
+
+html[data-theme="dark"] body #app.app:not(.hidden) #jobsPage .jobs-hero-map{
+  opacity:.42;
+  filter:grayscale(1) saturate(0) brightness(2.05) contrast(1.08);
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-visual{
+  opacity:.46;
+  filter:grayscale(1) saturate(0) brightness(1.72) contrast(1.08);
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-hero-backdrop,
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-network-reference{
+  opacity:.5;
+  filter:grayscale(1) saturate(0) brightness(1.7) contrast(1.08);
+}
+
+@media(max-width:860px){
+  html[data-theme="dark"] body #app.app:not(.hidden) #jobsPage .jobs-hero-map{opacity:.3}
+  html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-visual{opacity:.34}
+  html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-hero-backdrop,
+  html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-network-reference{opacity:.4}
+}
+
+@media(max-width:600px){
+  html[data-theme="dark"] body #app.app:not(.hidden) #jobsPage .jobs-hero-map{opacity:.22}
+}

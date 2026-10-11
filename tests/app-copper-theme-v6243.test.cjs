@@ -6,10 +6,10 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6245 loads the permanent app-wide dark copper theme', () => {
+test('V6246 loads the permanent app-wide dark copper theme', () => {
   const html = read('index.html');
   const css = read('css/app-copper-theme-v6243.css');
-  assert.match(html, /data-atsrs-build="V6245"/);
+  assert.match(html, /data-atsrs-build="V6246"/);
   assert.match(html, /href="css\/app-copper-theme-v6243\.css\?v=6244"/);
   assert.match(css, /--atsrs-ref-dark-bg:#0B0C0D/);
   assert.match(css, /--atsrs-ref-dark-line:#34383C/);
