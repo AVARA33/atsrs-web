@@ -2136,6 +2136,9 @@ final result: passed
 
 - Focused comparison found no cropping, overlap, layout shift or aspect-ratio distortion at the accepted desktop header size.
 - Automated focused visual-contract suite: 32 of 32 tests passed.
+- Live V6254 verification loaded `assets/branding/atsrs-lockup-copper-v6254.png?v=6254` at 188 × 65.15 CSS px in the production header.
+- Browser console errors after the final live verification: none.
+- GitHub Pages deployment for commit `945760b8` completed successfully.
 - No actionable P0, P1 or P2 mismatch remains.
 
 final result: passed
