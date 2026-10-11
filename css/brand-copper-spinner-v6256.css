@@ -1,0 +1,38 @@
+/* ATSRS V6256: minimal copper line spinner for refresh/loading transitions. */
+#atsrsBootScreen .atsrs-boot-mark{
+  width:64px!important;
+  height:64px!important;
+  aspect-ratio:1!important;
+  display:grid!important;
+  place-items:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  overflow:visible!important;
+  animation:none!important;
+}
+
+#atsrsBootScreen .atsrs-boot-spinner{
+  display:block!important;
+  color:#C06D45!important;
+  font-size:52px!important;
+  line-height:1!important;
+  filter:drop-shadow(0 0 12px rgba(192,109,69,.26))!important;
+  transform-origin:50% 50%!important;
+  animation:atsrsCopperLineSpin .82s linear infinite!important;
+}
+
+#atsrsBootScreen .atsrs-boot-shine{
+  display:none!important;
+}
+
+@keyframes atsrsCopperLineSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #atsrsBootScreen .atsrs-boot-spinner{animation:none!important}
+}

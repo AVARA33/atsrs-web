@@ -74,6 +74,38 @@ final result: passed
 
 ---
 
+# Copper line-spinner refresh state — Design QA (V6256)
+
+- Source visual truth: the user's current instruction to remove the briefly flashing filled-orange logo on login refresh and restore an orange rotating line loader; the affected login context is shown in `C:\Users\user\AppData\Local\Temp\codex-clipboard-02201a08-efab-4841-97c1-d96cd8599bd5.png`.
+- Implementation screenshot: browser-rendered isolated loading-state capture attached to the task from `http://127.0.0.1:8767/tests/fixtures/brand-copper-spinner-v6256-harness.html?v=6256`.
+- Implementation viewport: 920 × 553 CSS px at device pixel ratio 1.
+- State: refresh/loading transition on the permanent dark login experience.
+
+## Full-view and focused comparison evidence
+
+- The full orange ATSRS mark is absent from the loading state.
+- A single centered Phosphor `spinner-gap` line icon renders in copper-orange `#C06D45` on black `#050606`.
+- Computed styles confirm a transparent 64 × 64 px host, a 52 px icon, no background image, and `atsrsCopperLineSpin` at 0.82 s linear infinite.
+- The final login lockup remains the previously accepted full copper/black/warm-white ATSRS artwork and is not changed by this transition-only override.
+
+## Required fidelity surfaces
+
+- Fonts and typography: no text is displayed in the loading state; login typography remains unchanged.
+- Spacing and layout rhythm: spinner remains centered without changing login geometry.
+- Colors and visual tokens: copper-orange spinner on the existing black surface; no filled orange panel or logo.
+- Image quality and asset fidelity: no raster logo is used during loading; the spinner uses the project's existing Phosphor icon library.
+- Copy and content: unchanged.
+
+## Findings and verification
+
+- No P0, P1 or P2 mismatch was found in the isolated loading-state comparison.
+- Focused V6256 visual-contract suite: 34 of 34 tests passed; legacy favicon and auth contracts also passed.
+- Browser-computed styles and the rendered capture confirm the requested line-spinner state.
+
+final result: passed
+
+---
+
 # Public footer copper hover — Design QA (V6253)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-1557802f-5603-4f4d-8fbd-fdcd7a5680b5.png` and the user's instruction that the highlighted footer links should turn orange on mouse hover like the upper navigation.

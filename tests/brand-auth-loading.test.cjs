@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'brand-auth-v513.css'), 'utf8');
 const lockupCss = fs.readFileSync(path.join(root, 'css', 'brand-copper-lockup-v6254.css'), 'utf8');
-const loadingCss = fs.readFileSync(path.join(root, 'css', 'brand-copper-loading-v6255.css'), 'utf8');
+const loadingCss = fs.readFileSync(path.join(root, 'css', 'brand-copper-spinner-v6256.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'brand-auth-loading-harness.html'), 'utf8');
 const processor = fs.readFileSync(path.join(root, 'scripts', 'make-transparent-brand-assets.py'), 'utf8');
 
@@ -27,8 +27,8 @@ assert.match(css, /html\[data-theme="light"\] #atsrsBootScreen\{[\s\S]*?linear-g
 assert.match(css, /html\[data-theme="light"\] #atsrsBootScreen \.atsrs-boot-mark\{[\s\S]*?background-color:transparent[\s\S]*?atsrs-lockup-light-transparent\.png[\s\S]*?background-size:auto 100%/);
 assert.ok(index.indexOf("localStorage.getItem('atsrs_theme')") < index.indexOf('css/brand-auth-v513.css?v=547'));
 assert.match(index, /id="atsrsBootLogoPreload" rel="preload" as="image" fetchpriority="high"/);
-assert.match(index, /atsrsBootLogoPreload\.href='assets\/branding\/atsrs-mark-orange-v6255\.png\?v=6255'/);
-assert.ok(index.indexOf("atsrsBootLogoPreload.href='assets/branding/atsrs-mark-orange-v6255.png?v=6255'") < index.indexOf('css/brand-auth-v513.css?v=547'));
+assert.match(index, /atsrsBootLogoPreload\.removeAttribute\('href'\)/);
+assert.ok(index.indexOf("atsrsBootLogoPreload.removeAttribute('href')") < index.indexOf('css/brand-auth-v513.css?v=547'));
 assert.match(css, /@keyframes atsrsLogoShine/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.match(harness, /brand-auth-v513\.css\?v=547/);
@@ -38,8 +38,8 @@ assert.match(processor, /graphite = np\.asarray\(\(8, 13, 21\)/);
 assert.match(processor, /neutral & text_region/);
 assert.match(processor, /coloured_alpha = np\.where\(coloured, alpha, 0\.0\)/);
 assert.match(lockupCss, /#auth \.atsrs-auth-lockup[\s\S]*?atsrs-copper-lockup/);
-assert.match(loadingCss, /atsrs-mark-orange-v6255\.png\?v=6255/);
-assert.match(loadingCss, /animation:atsrsCopperBootSpin 1\.55s linear infinite!important/);
+assert.match(index, /class="ph ph-spinner-gap atsrs-boot-spinner"/);
+assert.match(loadingCss, /animation:atsrsCopperLineSpin \.82s linear infinite!important/);
 
 for (const asset of ['atsrs-lockup-green-transparent.png', 'atsrs-lockup-blue-transparent.png', 'atsrs-lockup-light-transparent.png', 'atsrs-mark-green.png', 'atsrs-mark-blue.png']) {
   assert.ok(fs.statSync(path.join(root, 'assets', 'branding', asset)).size > 100000);
