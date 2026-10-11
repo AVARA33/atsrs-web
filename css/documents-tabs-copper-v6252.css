@@ -1,0 +1,44 @@
+/* V6252: Documents folder tabs use the permanent graphite + copper palette. */
+#certificatesPage .atsrs-document-folder-tab-wrap.is-drop-before::before,
+#certificatesPage .atsrs-document-folder-tab-wrap.is-drop-after::after {
+  background: #AC613B !important;
+}
+
+#certificatesPage .atsrs-document-folder-tab {
+  color: #AEB8BF !important;
+}
+
+#certificatesPage .atsrs-document-folder-tab:hover {
+  border-color: rgba(172, 97, 59, .42) !important;
+  background: #171310 !important;
+  color: #F7F4F1 !important;
+}
+
+#certificatesPage .atsrs-document-folder-tab b {
+  border-color: #AC613B !important;
+  background: #0B0C0D !important;
+  color: #F0B08E !important;
+}
+
+body #app.app:not(.hidden) #certificatesPage .atsrs-document-folder-tab.active {
+  border-color: #AC613B !important;
+  border-bottom-color: transparent !important;
+  background: #0B0C0D !important;
+  color: #F7F4F1 !important;
+}
+
+#certificatesPage .atsrs-document-folder-tab.active i,
+#certificatesPage .atsrs-document-folder-tab.active b {
+  color: #F0B08E !important;
+}
+
+#certificatesPage .atsrs-document-folder-tab:focus-visible {
+  outline: 0 !important;
+  border-color: #C06D45 !important;
+  box-shadow: 0 0 0 2px rgba(192, 109, 69, .16) !important;
+}
+
+#certificatesPage .atsrs-document-folder-edit:hover,
+#certificatesPage .atsrs-document-folder-edit:focus-visible {
+  color: #C06D45 !important;
+}
