@@ -5,8 +5,8 @@ const fs = require('node:fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/banner-visuals-white-v6246.css', 'utf8');
 
-test('V6247 keeps the shared white banner artwork treatment before page-specific copper overrides', () => {
-  assert.match(html, /data-atsrs-build="V6247"/);
+test('V6248 keeps the shared white banner artwork treatment before page-specific copper overrides', () => {
+  assert.match(html, /data-atsrs-build="V6248"/);
   assert.match(html, /jobsearch-banner-copper-v6245\.css\?v=6245[\s\S]*banner-visuals-white-v6246\.css\?v=6246/);
 });
 

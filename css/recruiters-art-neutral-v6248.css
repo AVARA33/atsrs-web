@@ -1,0 +1,11 @@
+/* V6248 — neutralise the green embedded in recruiter card artwork. */
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card::after {
+  filter: grayscale(1) saturate(0) brightness(.72) contrast(1.14) !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employers-notice i,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .directory-notice i {
+  color: #C06D45 !important;
+  -webkit-text-fill-color: #C06D45 !important;
+}
