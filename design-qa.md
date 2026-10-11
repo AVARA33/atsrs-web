@@ -101,6 +101,9 @@ final result: passed
 - No P0, P1 or P2 mismatch was found in the isolated loading-state comparison.
 - Focused V6256 visual-contract suite: 34 of 34 tests passed; legacy favicon and auth contracts also passed.
 - Browser-computed styles and the rendered capture confirm the requested line-spinner state.
+- Live V6256 login audit confirmed the spinner node, `atsrsCopperLineSpin`, the 0.82 s duration, copper `rgb(192, 109, 69)`, no boot background image, and the unchanged accepted login lockup.
+- Browser console errors after the production verification: none.
+- GitHub Pages deployment for commit `6a379412` completed successfully.
 
 final result: passed
 
