@@ -41,6 +41,29 @@ final result: passed
 
 ---
 
+# Authenticated sidebar copper mark — Design QA (V6257)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a122cc75-de9b-41ae-99ad-36dc98ed1a6e.png`, where the wide lockup was visibly clipped inside the narrow authenticated sidebar.
+- Implementation surface: `tests/fixtures/sidebar-brand-v6257-harness.html?v=6257`, rendered in the in-app browser against the production sidebar dimensions.
+- State: authenticated JobSearch sidebar, permanent dark mode, desktop layout.
+
+## Focused comparison evidence
+
+- The 60 × 64 CSS px sidebar slot now uses the dedicated square copper mark asset instead of cropping the wide ATSRS lockup.
+- Computed styles confirm `background-size: contain` and centered positioning.
+- The complete copper/black mark is visible with balanced inset space and without distortion, clipping or layout movement.
+- The wide copper lockup remains unchanged on the public, login and legal surfaces where the full wordmark fits.
+
+## Verification
+
+- Focused local browser capture inspected after the fix.
+- Static visual-contract coverage includes the asset selection, centered containment and release cache key.
+- No text or navigation geometry changed.
+
+final result: passed
+
+---
+
 # Copper favicon, login lockup and orange boot mark — Design QA (V6255)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-02201a08-efab-4841-97c1-d96cd8599bd5.png` plus the previously accepted copper lockup `C:\Users\user\AppData\Local\Temp\codex-clipboard-7db7a5c3-0f0c-4601-9d4c-58eaa1f59839.png`.

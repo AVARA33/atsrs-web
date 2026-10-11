@@ -1,6 +1,7 @@
 /* ATSRS V6254: selected copper lockup across dark-only brand surfaces. */
 :root{
   --atsrs-copper-lockup:url("../assets/branding/atsrs-lockup-copper-v6254.png?v=6254");
+  --atsrs-copper-mark:url("../assets/branding/atsrs-mark-copper-v6255.png?v=6255");
 }
 
 #auth .atsrs-auth-lockup,
@@ -12,9 +13,9 @@
 
 body #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark,
 body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar-head .atsrs-sidebar-mark{
-  background-image:var(--atsrs-copper-lockup)!important;
-  background-position:left center!important;
-  background-size:auto 70px!important;
+  background-image:var(--atsrs-copper-mark)!important;
+  background-position:center!important;
+  background-size:contain!important;
   filter:none!important;
 }
 
