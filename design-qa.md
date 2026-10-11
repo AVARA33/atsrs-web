@@ -1998,3 +1998,41 @@ final result: passed
 - GitHub Pages deployment for commit `a35ad7a4` completed successfully.
 
 final result: passed
+
+---
+
+# Unified directory banner frame and neutral Companies title — Design QA (V6251)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-ed098072-29ec-4393-abb5-43f1acaa2347.png`, `C:\Users\user\AppData\Local\Temp\codex-clipboard-669b1c7f-bf14-427d-8c51-f2d4db4060f9.png`, and the user's instruction to make all three directory banners match the largest banner's outer geometry while preserving each internal background image.
+- Implementation screenshots: browser-rendered live captures attached to the task from Companies, JobSearch and Recruiters at release V6251.
+- Source image pixels: 3439 × 1368 px each; prompt-normalized previews were 2048 × 815 px.
+- Implementation viewport: 2294 × 735 CSS px at device pixel ratio 1.5.
+- State: authenticated personal workspace, permanent dark mode, desktop directory views.
+
+## Full-view and focused comparison evidence
+
+- JobSearch, Recruiters and Companies banners now measure exactly 1440 × 274 CSS px at the same x/y position in the shared desktop viewport.
+- All three use the same 18 px radius, no shadow, 2 px copper top/left edge and thin graphite right/bottom edge.
+- `Companies on ATSRS` is rendered in warm white `#F7F4F1`; its copper text fill, filter and shadow effects are absent.
+- Each banner retains its own existing internal map/network artwork and content composition as requested.
+- Focused computed-style checks confirmed the Companies title color and all four border widths/colors; separate full-view captures confirmed that no content was clipped after JobSearch increased from 236 px to 274 px.
+
+## Required fidelity surfaces
+
+- Fonts and typography: families, weights, sizes, line heights and wrapping remain unchanged; only the Companies heading color/effect changed.
+- Spacing and layout rhythm: outer banner width, height, position and radius are standardized; internal copy and image layouts remain page-specific.
+- Colors and visual tokens: warm-white heading, copper `#AC613B`, graphite `#34383C`, black `#0B0C0D`.
+- Image quality and asset fidelity: all original banner raster assets and crops remain in place; no generated or substituted image was introduced.
+- Copy and content: unchanged.
+
+## Findings, iteration history and verification
+
+- Initial live comparison found JobSearch at 236 px tall while Recruiters and Companies were 274 px; V6251 raised JobSearch to the 274 px reference height.
+- Initial Companies capture showed a copper heading; V6251 forces the heading to white and removes the inherited effect.
+- Post-fix live measurements confirm identical 1440 × 274 px banner frames, 18 px radii and matching edge tokens on all three routes.
+- Automated focused visual-contract suite: 24 of 24 tests passed.
+- Browser console errors after the final three-route verification: none.
+- GitHub Pages deployment for commit `024ab040` completed successfully.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
