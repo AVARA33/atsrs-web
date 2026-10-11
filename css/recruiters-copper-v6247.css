@@ -1,0 +1,120 @@
+/* V6247 — Recruiter Directory: remove legacy green/teal/purple/red accents. */
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero {
+  border-color: #34383C !important;
+  background: #0B0C0D !important;
+  box-shadow: inset 3px 0 0 #AC613B !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage :is(
+  .recruiters-hero-eyebrow,
+  .recruiters-trust-strip i,
+  .recruiters-snapshot > i
+) {
+  color: #C06D45 !important;
+  -webkit-text-fill-color: #C06D45 !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage :is(
+  .recruiters-trust-strip,
+  .recruiters-snapshot
+) {
+  border-color: rgba(172, 97, 59, .38) !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-trust-strip span + span {
+  border-left-color: #34383C !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button {
+  border-color: #AC613B !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button:first-child {
+  border-color: #AC613B !important;
+  background: #AC613B !important;
+  color: #FFF !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button:hover,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .recruiters-hero-actions button:focus-visible {
+  border-color: #C06D45 !important;
+  background: #271E1A !important;
+  color: #FFF !important;
+  box-shadow: 0 0 0 3px rgba(172, 97, 59, .16) !important;
+}
+
+/* Keep every recruiter card on the same neutral surface and copper accent. */
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+1),
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+2),
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+3),
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+4) {
+  --recruiter-card-surface: #0B0C0D;
+  --recruiter-card-light-surface: #0B0C0D;
+  --recruiter-card-surface-rgb: 11, 12, 13;
+  --recruiter-card-tone-rgb: 172, 97, 59;
+  --recruiter-card-border: #34383C;
+  border-color: #34383C !important;
+  border-top-color: #AC613B !important;
+  border-left-color: #AC613B !important;
+  background: #0B0C0D !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card::before,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+2)::before,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+3)::before,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+4)::before {
+  background: #AC613B !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card::after {
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, .98) 0%, rgba(0, 0, 0, .80) 34%, rgba(0, 0, 0, .28) 68%, rgba(0, 0, 0, .10) 100%),
+    var(--recruiter-card-art) !important;
+  opacity: .82 !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:hover,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:focus-within {
+  border-color: #484D52 !important;
+  border-top-color: #C06D45 !important;
+  border-left-color: #C06D45 !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .28) !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-mark,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+2) .employer-mark,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+3) .employer-mark,
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-card:nth-child(4n+4) .employer-mark {
+  border-color: rgba(172, 97, 59, .48) !important;
+  background: #271E1A !important;
+  color: #F0B08E !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage :is(
+  .employer-verified-icon,
+  .employer-location > i,
+  .employer-tags > i,
+  .employer-action-jobs.is-active,
+  .employer-action-jobs.is-active > i
+) {
+  color: #C06D45 !important;
+  -webkit-text-fill-color: #C06D45 !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a, button) {
+  background: rgba(11, 12, 13, .84) !important;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .30) !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage :is(
+  .recruiters-pagination .jobs-page-button.is-current,
+  .recruiters-pagination .jobs-page-button:hover
+) {
+  border-color: #AC613B !important;
+  background: #271E1A !important;
+  color: #F0B08E !important;
+  box-shadow: none !important;
+}
