@@ -61,7 +61,6 @@ html[data-theme="dark"] :is(
   .talent-mailbox-tools button.is-active,
   .corporate-summary-card.is-ready b,
   .job-card-company,
-  .job-detail-kicker,
   .job-status-published,
   .jobs-admin-message:not(.is-error),
   .jobs-filter-chip[aria-pressed="true"],

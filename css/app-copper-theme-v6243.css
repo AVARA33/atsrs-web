@@ -326,6 +326,12 @@ html[data-theme="dark"] :is(.public-eyebrow,.public-kicker,.public-plan-name,
   -webkit-text-fill-color:#C06D45!important;
 }
 
+/* V6258: vacancy detail company/recruiter heading follows the copper palette. */
+html[data-theme="dark"] body .job-detail-dialog .job-detail-kicker{
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
 html[data-theme="dark"] :is(.public-header,.site-header,.legal-header){
   border-color:#25282B!important;
   background:#090A0B!important;

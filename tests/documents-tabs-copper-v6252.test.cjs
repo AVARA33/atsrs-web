@@ -5,8 +5,8 @@ const fs = require('node:fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/documents-tabs-copper-v6252.css', 'utf8');
 
-test('V6257 keeps the Documents folder-tab correction before the footer hover override', () => {
-  assert.match(html, /data-atsrs-build="V6257"/);
+test('V6258 keeps the Documents folder-tab correction before the footer hover override', () => {
+  assert.match(html, /data-atsrs-build="V6258"/);
   assert.match(html, /company-banner-neutral-v6251\.css\?v=6251[\s\S]*documents-tabs-copper-v6252\.css\?v=6252[\s\S]*public-footer-copper-hover-v6253\.css\?v=6253/);
 });
 

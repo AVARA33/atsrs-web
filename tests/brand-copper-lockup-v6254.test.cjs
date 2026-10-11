@@ -9,7 +9,7 @@ const css = fs.readFileSync(path.join(root, 'css', 'brand-copper-lockup-v6254.cs
 const asset = path.join(root, 'assets', 'branding', 'atsrs-lockup-copper-v6254.png');
 
 test('loads the selected copper lockup as the final brand override', () => {
-  assert.match(html, /data-atsrs-build="V6257"/);
+  assert.match(html, /data-atsrs-build="V6258"/);
   assert.match(html, /brand-copper-lockup-v6254\.css\?v=6257/);
   assert.ok(fs.existsSync(asset));
   assert.ok(fs.statSync(asset).size > 100_000);

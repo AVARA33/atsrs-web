@@ -7,8 +7,8 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'brand-copper-spinner-v6256.css'), 'utf8');
 
-test('V6257 keeps the copper favicon but removes the boot-logo preload', () => {
-  assert.match(html, /data-atsrs-build="V6257"/);
+test('V6258 keeps the copper favicon but removes the boot-logo preload', () => {
+  assert.match(html, /data-atsrs-build="V6258"/);
   assert.match(html, /id="atsrsFavicon"[^>]+atsrs-favicon-copper-v6255\.png\?v=6255/);
   assert.match(html, /atsrsBootLogoPreload\.removeAttribute\('href'\)/);
   assert.match(html, /brand-copper-lockup-v6254\.css\?v=6257[\s\S]*brand-copper-spinner-v6256\.css\?v=6256/);

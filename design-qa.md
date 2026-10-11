@@ -41,6 +41,25 @@ final result: passed
 
 ---
 
+# Expanded vacancy company color — Design QA (V6258)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-fbe9f731-6643-4d97-9c2e-89214f8491c2.png`; the marked company/recruiter organisation heading was green and the user requested orange.
+- Implementation surface: `tests/fixtures/job-detail-copper-v6258-harness.html?v=6258`, rendered in the in-app browser.
+- Source pixels: 3439 × 1368 px; implementation focused capture: 1180 × 280 px at desktop density.
+- State: JobSearch expanded vacancy dialog, permanent dark mode.
+
+## Comparison evidence and findings
+
+- The company heading now computes to `rgb(192, 109, 69)` (`#C06D45`), matching the established copper/orange interaction palette.
+- The previous P2 color inconsistency came from the legacy green-text selector overriding the JobSearch theme; the obsolete `.job-detail-kicker` entry was removed and a scoped copper rule added.
+- Typography, spacing, background artwork, dialog geometry and all copy remain unchanged.
+- No new image, logo or icon assets were introduced.
+- Focused browser capture confirms the orange heading on the black dialog surface with no overlap or wrapping regression.
+
+final result: passed
+
+---
+
 # Authenticated sidebar copper mark — Design QA (V6257)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-a122cc75-de9b-41ae-99ad-36dc98ed1a6e.png`, where the wide lockup was visibly clipped inside the narrow authenticated sidebar.
