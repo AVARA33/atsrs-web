@@ -1,0 +1,53 @@
+/* V6251 — neutral Companies headline and one shared directory-banner frame. */
+
+html[data-theme="dark"] body #app.app:not(.hidden) :is(
+  #jobsPage .jobs-hero,
+  #recruitersPage .recruiters-hero,
+  #employersPage .company-directory-hero
+) {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 274px !important;
+  min-height: 274px !important;
+  margin-inline: auto !important;
+  border-style: solid !important;
+  border-width: 2px 1px 1px 2px !important;
+  border-top-color: #AC613B !important;
+  border-left-color: #AC613B !important;
+  border-right-color: #34383C !important;
+  border-bottom-color: #34383C !important;
+  border-radius: 18px !important;
+  background-color: #0B0C0D !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-directory-hero {
+  padding: 0 !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-hero-copy,
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-hero-copy h1 {
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #employersPage .company-hero-copy h1 {
+  color: #F7F4F1 !important;
+  -webkit-text-fill-color: #F7F4F1 !important;
+}
+
+@media (max-width: 979px) {
+  html[data-theme="dark"] body #app.app:not(.hidden) :is(
+    #jobsPage .jobs-hero,
+    #recruitersPage .recruiters-hero,
+    #employersPage .company-directory-hero
+  ) {
+    height: auto !important;
+    min-height: 274px !important;
+  }
+}
