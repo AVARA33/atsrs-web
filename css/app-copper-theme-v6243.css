@@ -225,6 +225,66 @@ html[data-theme="dark"] body #app.app:not(.hidden) :is(
   -webkit-text-fill-color:#D58A63!important;
 }
 
+/* Keep the older References/Profile modules on the same copper system. */
+html[data-theme="dark"] body.personal-mode :is(#refsPage,#profilePage){
+  --accent:#AC613B!important;
+  --atsrs-field-accent:#AC613B!important;
+  --atsrs-field-focus-inline-line:#AC613B!important;
+  --atsrs-field-focus-block-line:#6F3E28!important;
+  --profile-privacy-choice-accent:#AC613B!important;
+  --profile-security-accent:#AC613B!important;
+}
+
+html[data-theme="dark"] body.personal-mode #profilePage :is(.profile-privacy-shell,#profileTabSecurityPanel){
+  --profile-privacy-choice-accent:#AC613B!important;
+  --profile-security-accent:#AC613B!important;
+}
+
+html[data-theme="dark"] body.personal-mode #profilePage :is(
+  .profile-sharing-row-status,
+  .profile-sharing-history-only .profile-sharing-links-heading>span
+){
+  color:#C06D45!important;
+  -webkit-text-fill-color:#C06D45!important;
+}
+
+html[data-theme="dark"] body.personal-mode #profilePage :is(
+  .profile-sharing-create-button,.profile-sharing-dialog-confirm
+){
+  border-color:#AC613B!important;
+  background:#AC613B!important;
+  color:#FFF!important;
+  -webkit-text-fill-color:#FFF!important;
+  box-shadow:none!important;
+}
+
+html[data-theme="dark"] body.personal-mode #profilePage :is(
+  .profile-sharing-create-button,.profile-sharing-dialog-confirm
+):hover:not(:disabled){
+  border-color:#C06D45!important;
+  background:#C06D45!important;
+  box-shadow:0 0 0 2px rgba(192,109,69,.18)!important;
+}
+
+html[data-theme="dark"] body.personal-mode #profilePage .profile-sharing-document-dialog{
+  --profile-share-field-hover:rgba(192,109,69,.42)!important;
+}
+
+html[data-theme="dark"] body.personal-mode #refsPage :is(
+  .atsrs-v134-status.ready,#cvStatusBadge.badge-ready,
+  .cv-main-panel .atsrs-v156-box-title,.atsrs-reference-tabs button.is-active,
+  .atsrs-references-summary .is-primary i,.cv-beta-box h4,#cvBetaBadge
+){
+  border-color:rgba(172,97,59,.48)!important;
+  background-color:rgba(172,97,59,.12)!important;
+  color:#D58A63!important;
+  -webkit-text-fill-color:#D58A63!important;
+}
+
+html[data-theme="dark"] body.personal-mode #refsPage .atsrs-v134-career-card.atsrs-v144-expanded{
+  border-color:rgba(172,97,59,.58)!important;
+}
+
 html[data-theme="dark"] body #app.app:not(.hidden) :is(
   .employer-card,.recruiter-card,.candidate-card,.talent-card,.product-update-card,
   .documents-register-row,.reference-row,.sharing-history-row
@@ -339,6 +399,11 @@ html[data-theme="dark"] :is(.public-cta,.pricing-cta,.contact-submit){
 html[data-theme="dark"] :is(.public-cta,.pricing-cta,.contact-submit):hover{
   border-color:#C06D45!important;
   background:#C06D45!important;
+}
+
+html[data-theme="dark"] #auth .auth-home-link:is(:hover,:focus-visible),
+html[data-theme="dark"] .legal-switch:is(:hover,:focus-visible){
+  color:#C06D45!important;
 }
 
 html[data-theme="dark"] :is(.public-eyebrow,.public-kicker,.public-plan-name,
