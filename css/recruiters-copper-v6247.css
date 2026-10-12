@@ -109,6 +109,41 @@ html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-act
   box-shadow: 0 5px 14px rgba(0, 0, 0, .30) !important;
 }
 
+/* Keep all recruiter-card actions copper on pointer and keyboard interaction. */
+@media (hover: hover) {
+  html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions > :is(a, button):not(:disabled):hover {
+    border-color: #C06D45 !important;
+    background: rgba(172, 97, 59, .14) !important;
+    color: #FFF !important;
+    box-shadow:
+      inset 0 0 0 1px #C06D45,
+      0 0 0 3px rgba(172, 97, 59, .18),
+      0 5px 14px rgba(0, 0, 0, .30) !important;
+  }
+
+  html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions > :is(a, button):not(:disabled):hover > i {
+    color: #D58A63 !important;
+    -webkit-text-fill-color: #D58A63 !important;
+  }
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions > :is(a, button):focus-visible {
+  border-color: #C06D45 !important;
+  outline: 2px solid rgba(192, 109, 69, .72) !important;
+  outline-offset: 2px !important;
+  background: rgba(172, 97, 59, .14) !important;
+  color: #FFF !important;
+  box-shadow:
+    inset 0 0 0 1px #C06D45,
+    0 0 0 3px rgba(172, 97, 59, .18),
+    0 5px 14px rgba(0, 0, 0, .30) !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions > :is(a, button):focus-visible > i {
+  color: #D58A63 !important;
+  -webkit-text-fill-color: #D58A63 !important;
+}
+
 html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage :is(
   .recruiters-pagination .jobs-page-button.is-current,
   .recruiters-pagination .jobs-page-button:hover

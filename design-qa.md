@@ -18,6 +18,21 @@ final result: passed
 
 ---
 
+# Recruiter action copper aura — Design QA (V6262)
+
+- Source visual truth: the user's current instruction to replace the green hover aura on recruiter-card actions with the established ATSRS copper/orange interaction treatment.
+- Scope: the LinkedIn profile, View offers and Share my profile actions on Recruiter Directory cards.
+- Geometry: unchanged; the existing compact action-button dimensions, card content positions and spacing remain intact.
+- Resting state: unchanged neutral black/graphite button surface.
+- Hover state: copper inset edge (`#C06D45`), restrained copper outer aura and copper icon.
+- Keyboard state: the same copper treatment plus a visible copper focus outline.
+- Regression guard: disabled actions do not receive hover styling, and no recruiter data or action behavior was changed.
+- Automated focused visual-contract suite: passed.
+
+final result: passed
+
+---
+
 # Authenticated sidebar copper hover — Design QA (V6260)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-77df8f1e-4b11-473d-af50-bcdb9c979958.png`, with the user's explicit instruction that sidebar items must no longer turn green on hover.
