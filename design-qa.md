@@ -2332,3 +2332,18 @@ final result: passed
 - No actionable P0, P1 or P2 mismatch remains.
 
 final result: passed
+
+---
+
+# Recruiter action information panels — Design QA (V6263)
+
+- Source visual truth: the user's instruction that every recruiter-card action icon must explain itself on hover.
+- Scope: verified LinkedIn, ATSRS offers and controlled profile-sharing actions, including disabled states.
+- Interaction: hover and keyboard focus reveal the same label in a compact panel above the icon.
+- Visual treatment: `#0B0C0D` panel, `#AC613B` copper edge, warm-white text and a restrained black shadow.
+- Geometry: icon size, action spacing and recruiter-card content positions remain unchanged; panels are absolutely positioned inside the card.
+- Link integrity: only a verified personal `linkedin_url` can create the LinkedIn link; vacancy-source URLs are never reused as recruiter-profile links.
+- Automated focused contract suite: 24 of 24 tests passed.
+- Browser audit: the Share action panel reached full opacity, remained inside the card and computed to the expected copper/black/white tokens.
+
+final result: passed

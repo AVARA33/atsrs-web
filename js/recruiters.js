@@ -88,9 +88,9 @@
     button.innerHTML = active
       ? '<i class="ph ph-check-circle" aria-hidden="true"></i><span>Profile shared · 24h active</span>'
       : '<i class="ph ph-share-network" aria-hidden="true"></i><span>Share my profile</span>';
-    button.title = active
+    setActionInfo(button, active
       ? "An active 24-hour link already exists. Revoke it in Profile → Sharing before sharing again."
-      : "Create a 24-hour ATSRS link and open an email draft";
+      : "Create a 24-hour ATSRS link and open an email draft");
   }
   function syncVisibleShareActions() {
     document.querySelectorAll("#recruitersGrid .employer-action-share[data-recruiter-id]").forEach(function (button) {
@@ -132,6 +132,7 @@
       '" aria-hidden="true"></i><span>' +
       label +
       "</span>";
+    setActionInfo(button, label);
     button.addEventListener("click", handler);
     return button;
   }
@@ -146,7 +147,16 @@
       '" aria-hidden="true"></i><span>' +
       label +
       "</span>";
+    setActionInfo(link, label);
     return link;
+  }
+  function setActionInfo(control, label) {
+    if (!control) return;
+    var text = String(label || "").trim();
+    control.setAttribute("aria-label", text);
+    control.title = text;
+    var copy = control.querySelector("span");
+    if (copy) copy.textContent = text;
   }
   function vacancyLabel(count) {
     return count + " active " + (count === 1 ? "vacancy" : "vacancies");
@@ -217,13 +227,11 @@
     if (recruiter.linkedin_url) {
       linkedinAction = buttonLink(
         recruiter.linkedin_url,
-        "LinkedIn profile",
+        "Open verified LinkedIn profile",
         "linkedin-logo",
       );
-    } else if (recruiter.profile_source_url && /^https:\/\//i.test(recruiter.profile_source_url)) {
-      linkedinAction = buttonLink(recruiter.profile_source_url,"Contact source","arrow-square-out");
     } else {
-      linkedinAction = action("LinkedIn profile", "linkedin-logo", function () {});
+      linkedinAction = action("No verified personal LinkedIn profile is available", "linkedin-logo", function () {});
       linkedinAction.disabled = true;
       linkedinAction.setAttribute("aria-disabled", "true");
     }
@@ -244,6 +252,7 @@
     if (!(recruiter.vacancyCount > 0)) {
       jobsAction.disabled = true;
       jobsAction.setAttribute("aria-disabled", "true");
+      setActionInfo(jobsAction, "No active ATSRS offers");
     }
     actions.append(jobsAction);
     var shareAction = action("Share my profile", "share-network", function () {
@@ -255,7 +264,7 @@
       shareAction.dataset.recruiterId = recruiter.id;
       syncShareAction(shareAction, recruiter);
     } else {
-      shareAction.title = "Choose what to include in a secure profile link";
+      setActionInfo(shareAction, "Choose what to include in a secure profile link");
     }
     actions.append(shareAction);
     var motto = document.createElement("span");

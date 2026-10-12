@@ -6,7 +6,7 @@ const html = fs.readFileSync('index.html', 'utf8');
 const css = fs.readFileSync('css/public-footer-copper-hover-v6253.css', 'utf8');
 
 test('V6261 keeps the public footer hover override before the copper brand lockup', () => {
-  assert.match(html, /data-atsrs-build="V6262"/);
+  assert.match(html, /data-atsrs-build="V6263"/);
   assert.match(html, /documents-tabs-copper-v6252\.css\?v=6252[\s\S]*public-footer-copper-hover-v6253\.css\?v=6253[\s\S]*brand-copper-lockup-v6254\.css\?v=6257[\s\S]*brand-copper-spinner-v6256\.css\?v=6261/);
 });
 

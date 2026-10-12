@@ -41,7 +41,7 @@
   }
 
   function loadRecruiters(){
-    return loadScript('js/recruiters.js?v=6188');
+    return loadScript('js/recruiters.js?v=6263');
   }
 
   function loadEmployers(){

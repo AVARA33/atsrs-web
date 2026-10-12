@@ -105,8 +105,58 @@ html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage :is(
 }
 
 html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a, button) {
+  position: relative !important;
   background: rgba(11, 12, 13, .84) !important;
   box-shadow: 0 5px 14px rgba(0, 0, 0, .30) !important;
+}
+
+/* Restore the compact action labels as visible, in-card information panels. */
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a, button) > span {
+  position: absolute !important;
+  z-index: 20 !important;
+  right: 0 !important;
+  bottom: calc(100% + 10px) !important;
+  width: max-content !important;
+  max-width: 220px !important;
+  height: auto !important;
+  padding: 7px 10px !important;
+  overflow: visible !important;
+  clip: auto !important;
+  clip-path: none !important;
+  border: 1px solid #AC613B !important;
+  border-radius: 8px !important;
+  background: #0B0C0D !important;
+  color: #F7F4F1 !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .48) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(4px) !important;
+  transition: opacity .14s ease, transform .14s ease, visibility .14s ease !important;
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a, button) > span::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 100%;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid #AC613B;
+  border-bottom: 1px solid #AC613B;
+  background: #0B0C0D;
+  transform: translateY(-4px) rotate(45deg);
+}
+
+html[data-theme="dark"] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a, button):is(:hover, :focus-visible) > span {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
 }
 
 /* Keep all recruiter-card actions copper on pointer and keyboard interaction. */
