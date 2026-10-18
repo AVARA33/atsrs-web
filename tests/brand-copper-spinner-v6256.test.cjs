@@ -7,11 +7,11 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'brand-copper-spinner-v6256.css'), 'utf8');
 
-test('V6261 keeps the copper favicon but removes the boot-logo preload', () => {
-  assert.match(html, /data-atsrs-build="V6264"/);
+test('V6265 keeps the copper favicon but removes the boot-logo preload', () => {
+  assert.match(html, /data-atsrs-build="V6265"/);
   assert.match(html, /id="atsrsFavicon"[^>]+atsrs-favicon-copper-v6255\.png\?v=6255/);
   assert.match(html, /atsrsBootLogoPreload\.removeAttribute\('href'\)/);
-  assert.match(html, /brand-copper-lockup-v6254\.css\?v=6257[\s\S]*brand-copper-spinner-v6256\.css\?v=6261/);
+  assert.match(html, /brand-copper-lockup-v6254\.css\?v=6257[\s\S]*brand-copper-spinner-v6256\.css\?v=6265/);
 });
 
 test('boot screen uses sequential copper segments instead of a rotating glyph or filled logo', () => {
@@ -23,4 +23,6 @@ test('boot screen uses sequential copper segments instead of a rotating glyph or
   assert.match(css, /animation:atsrsCopperSegmentPulse 1s linear infinite!important/);
   assert.match(css, /span:nth-child\(8\)[\s\S]*animation-delay:0s!important/);
   assert.match(css, /#atsrsBootScreen \.atsrs-boot-mark\{[\s\S]*background:transparent!important/);
+  assert.match(css, /#atsrsBootScreen \.atsrs-boot-spinner\{[\s\S]*filter:none!important/);
+  assert.doesNotMatch(css, /drop-shadow/);
 });
