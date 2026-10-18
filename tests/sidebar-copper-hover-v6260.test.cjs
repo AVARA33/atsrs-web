@@ -8,7 +8,7 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'app-copper-theme-v6243.css'), 'utf8');
 
 test('V6260 loads the copper sidebar hover override with a fresh cache key', () => {
-  assert.match(html, /data-atsrs-build="V6265"/);
+  assert.match(html, /data-atsrs-build="V6266"/);
   assert.match(html, /app-copper-theme-v6243\.css\?v=6264/);
 });
 

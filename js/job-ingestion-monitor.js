@@ -1,7 +1,7 @@
 /* Owner-only reporting; authorization and secrets stay on the server. */
 (function(){
  'use strict';
- var generation=0,inFlight=null,CACHE_TTL=5*60*1000,CACHE_PREFIX='atsrs_developer_hr_summary_v1:';
+ var generation=0,inFlight=null,CACHE_TTL=30*1000,CACHE_PREFIX='atsrs_developer_hr_summary_v1:';
  function cell(parent,tag,text){var n=document.createElement(tag),value=String(text==null?'—':text);n.textContent=window.atsrsI18n?window.atsrsI18n.translate(value):value;parent.appendChild(n);return n;}
  function money(v){return v==null?'Unavailable':'$'+Number(v).toFixed(4);}
  function date(v){return new Date(v).toLocaleString(window.atsrsLocaleCode?window.atsrsLocaleCode():'en-GB',{timeZone:'Asia/Baku'});}
@@ -21,6 +21,11 @@
   catch(ignore){return null;}
  }
  function writeCache(data){try{sessionStorage.setItem(cacheKey(),JSON.stringify({savedAt:Date.now(),data:data}));}catch(ignore){}}
+ function setRefreshStatus(host,text,tone){var status=host.querySelector('.job-monitor-refresh-status');if(!status)return;status.textContent=text;status.setAttribute('data-tone',tone||'');}
+ function weekendStatus(value){
+  var day=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Baku',weekday:'short'}).format(new Date(value||Date.now()));
+  return day==='Sat'||day==='Sun'?' Weekend pause — next scheduled window Monday, 09:00 Baku.':'';
+ }
  window.atsrsRefreshJobMonitor=async function(force){
   var host=document.getElementById('jobIngestionMonitor');
   if(!host)return;
@@ -37,23 +42,29 @@
   var request=++generation;
   host.setAttribute('aria-busy','true');
   if(previousButton)previousButton.disabled=true;
+  if(hadContent)setRefreshStatus(host,'Refreshing server data…','loading');
   if(!hadContent){host.replaceChildren();cell(host,'p','Loading server statistics…');}
-  inFlight=(async function(){try{
-   var responses=await Promise.all([window.supabaseClient.rpc('atsrs_get_hr_dashboard_summary'),window.supabaseClient.rpc('atsrs_get_hr_queue_preview')]);
-   var summary=responses[0],queue=responses[1];
-   if(summary&&summary.data&&queue&&queue.data&&!queue.error){summary.data.coverage=summary.data.coverage||{};Object.assign(summary.data.coverage,queue.data);}
-   return summary;
-  }catch(e){return {error:e};}})();
+  var queuePromise;
+  try{queuePromise=Promise.resolve(window.supabaseClient.rpc('atsrs_get_hr_queue_preview')).catch(function(e){return {error:e};});}
+  catch(queueError){queuePromise=Promise.resolve({error:queueError});}
+  inFlight=(async function(){try{return await window.supabaseClient.rpc('atsrs_get_hr_dashboard_summary');}catch(e){return {error:e};}})();
   var result=await inFlight;inFlight=null;
   if(request!==generation||!window.__atsrsDeveloperAccess||owner!==window.__atsrsDeveloperAccessUserId)return;
   host.setAttribute('aria-busy','false');
   if(previousButton)previousButton.disabled=false;
   if(hadContent&&(result.error||!result.data)){
    previousButton.title='Refresh failed. Previous statistics retained; try again.';
+   setRefreshStatus(host,'Refresh failed — showing previous data.','error');
    return;
   }
   if(result.data)writeCache(result.data);
   renderResult(result.data,result.error);
+  if(result.data&&queuePromise){
+   queuePromise.then(function(queue){
+    if(request!==generation||!window.__atsrsDeveloperAccess||owner!==window.__atsrsDeveloperAccessUserId||!queue||queue.error||!queue.data)return;
+    result.data.coverage=result.data.coverage||{};Object.assign(result.data.coverage,queue.data);writeCache(result.data);renderResult(result.data,null);
+   });
+  }
   return result.data;
 
   function renderResult(data,error){
@@ -73,15 +84,17 @@
   }
   var header=cell(builder,'div','');header.className='job-monitor-header';
   cell(header,'h2','AI balance & HR activity');
+  var refreshStatus=cell(header,'span','');refreshStatus.className='job-monitor-refresh-status';refreshStatus.setAttribute('role','status');refreshStatus.setAttribute('aria-live','polite');
   var refresh=cell(header,'button','Refresh');refresh.type='button';refresh.className='btn';refresh.onclick=function(){return window.atsrsRefreshJobMonitor(true);};
-  if(result.error||!result.data){cell(builder,'p','Statistics unavailable. Refresh to retry.');commit();return;}
+  if(result.error||!result.data){refreshStatus.textContent='Refresh failed';refreshStatus.setAttribute('data-tone','error');cell(builder,'p','Statistics unavailable. Refresh to retry.');commit();return;}
   var d=result.data, b=d.balance;
+  refreshStatus.textContent=d.refreshed_at?'Updated '+date(d.refreshed_at)+' (Baku)':'Updated from server';refreshStatus.setAttribute('data-tone','success');
   var metrics=cell(builder,'div','');metrics.className='job-monitor-metrics';
-  [['Shared API balance · last verified',b?'$'+Number(b.amount_usd).toFixed(2):'Unavailable'],['HR daily limit',money(d.daily_limit)],['HR today · used',money(d.today_cost)],['HR today · remaining',money(d.daily_remaining)],['HR today · reserved',money(d.today_reserved)],['HR this month · calculated',money(d.month_cost)],['HR monthly limit',money(d.monthly_limit)],['Month reserved · unresolved',money(d.unresolved_reserve)],['AI Scan cost','Not connected']].forEach(function(p,index){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]);if(index===0){var balanceRefresh=cell(box,'button','');balanceRefresh.type='button';balanceRefresh.className='job-monitor-balance-refresh';balanceRefresh.innerHTML='<i class="ph ph-arrow-clockwise" aria-hidden="true"></i>';var balanceRefreshLabel=(window.atsrsLocaleCode&&String(window.atsrsLocaleCode()).toLowerCase().indexOf('az')===0)?'API balansını yenilə':'Refresh API balance';balanceRefresh.setAttribute('aria-label',balanceRefreshLabel);balanceRefresh.title=balanceRefreshLabel;balanceRefresh.onclick=function(){return window.atsrsRefreshJobMonitor(true);};}});
+  [['Shared API balance · last verified',b?'$'+Number(b.amount_usd).toFixed(2):'Unavailable'],['HR daily limit',money(d.daily_limit)],['HR today · used',money(d.today_cost)],['HR today · remaining',money(d.daily_remaining)],['HR today · reserved',money(d.today_reserved)],['HR this month · calculated',money(d.month_cost)],['HR monthly limit',money(d.monthly_limit)],['Month reserved · unresolved',money(d.unresolved_reserve)],['AI Scan cost','Not connected']].forEach(function(p){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]);});
   [['HR today · new recruiters',d.today_recruiters_added],['HR today · new companies',d.today_companies_added]].forEach(function(p){var box=cell(metrics,'div','');cell(box,'span',p[0]);cell(box,'strong',p[1]==null?'Unavailable':p[1]);});
   cell(builder,'p','Shared balance is not live'+(b?' — verified '+date(b.checked_at)+' (Baku)':'')+'. Refresh does not recheck the OpenAI balance. AI Scan and HR use the same balance.');
   var link=cell(builder,'a','Check current balance in OpenAI');link.href='https://platform.openai.com/settings/organization/billing/overview';link.target='_blank';link.rel='noopener noreferrer';
-  cell(builder,'p','HR statistics refreshed '+date(d.refreshed_at)+' (Baku). '+(d.enabled?'Enabled':'Paused')+' · Mon–Fri, 09:00–17:00 Baku · bounded batches every 5 minutes.');
+  cell(builder,'p','HR statistics refreshed '+date(d.refreshed_at)+' (Baku). '+(d.enabled?'Enabled':'Paused')+' · Mon–Fri, 09:00–17:00 Baku · bounded batches every 5 minutes.'+weekendStatus(d.refreshed_at));
   cell(builder,'p','HR costs are calculated from recorded tokens, not an invoice or total account spend. Reservations are separate. AI Scan costs are not included.');
   if(d.daily_reset_at)cell(builder,'p','Daily allowance resets '+date(d.daily_reset_at)+' (Baku); unused allowance does not roll over. Remaining subtracts both used cost and reservations. '+(d.daily_budget_paused?'New paid AI calls are paused: insufficient daily headroom. ':'')+'Each new call requires '+money(d.reservation_per_call)+' of budget headroom.');
   var wrap=cell(builder,'div','');wrap.className='job-monitor-table';var table=cell(wrap,'table','');

@@ -323,7 +323,10 @@
   }
 
   document.addEventListener('DOMContentLoaded', init);
-  window.addEventListener('atsrs:resume', function () { refresh(false); });
-  window.addEventListener('focus', function () { refresh(false); });
+  window.addEventListener('atsrs:resume', function () { refresh(true); });
+  window.addEventListener('focus', function () {
+    var page = byId('developerPage');
+    if (window.__atsrsDeveloperAccess && page && !page.classList.contains('hidden')) refresh(true);
+  });
   window.atsrsAdminOverview = { refresh: function () { return refresh(true); } };
 })();

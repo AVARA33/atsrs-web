@@ -9,7 +9,7 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 test('V6264 loads the permanent app-wide dark copper theme', () => {
   const html = read('index.html');
   const css = read('css/app-copper-theme-v6243.css');
-  assert.match(html, /data-atsrs-build="V6265"/);
+  assert.match(html, /data-atsrs-build="V6266"/);
   assert.match(html, /href="css\/app-copper-theme-v6243\.css\?v=6264"/);
   assert.match(css, /--atsrs-ref-dark-bg:#0B0C0D/);
   assert.match(css, /--atsrs-ref-dark-line:#34383C/);

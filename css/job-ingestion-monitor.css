@@ -1,6 +1,7 @@
 #jobIngestionMonitor{margin-top:20px;padding:20px;border:1px solid var(--border,#26362b);border-radius:12px;background:var(--panel,#0b100d);color:var(--text,#e5ede8)}
 #jobIngestionMonitor h2{font-size:18px;margin:0 0 8px}
 .job-monitor-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+.job-monitor-refresh-status{margin-left:auto;font-size:11px;color:#aab5ae}.job-monitor-refresh-status[data-tone="success"]{color:#c7d2cc}.job-monitor-refresh-status[data-tone="error"]{color:#e49369}.job-monitor-refresh-status[data-tone="loading"]{color:#c97848}
 #jobIngestionMonitor a{color:var(--accent,#57c75e)}
 .job-monitor-table caption{text-align:left;padding:16px 0;font-weight:600}
 html[data-theme="light"] #jobIngestionMonitor a,body.light #jobIngestionMonitor a{color:#315efb}

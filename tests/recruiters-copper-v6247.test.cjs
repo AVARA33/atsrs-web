@@ -9,7 +9,7 @@ const recruiterJs = fs.readFileSync('js/recruiters.js', 'utf8');
 const routeLoader = fs.readFileSync('js/route-feature-loader.js', 'utf8');
 
 test('V6264 loads recruiter copper overrides, neutral artwork, and shared copper edge standard before the Companies headline override', () => {
-  assert.match(html, /data-atsrs-build="V6265"/);
+  assert.match(html, /data-atsrs-build="V6266"/);
   assert.match(html, /banner-visuals-white-v6246\.css\?v=6246[\s\S]*recruiters-copper-v6247\.css\?v=6263[\s\S]*recruiters-art-neutral-v6248\.css\?v=6248[\s\S]*copper-edge-standard-v6250\.css\?v=6250[\s\S]*company-banner-neutral-v6251\.css\?v=6251/);
 });
 

@@ -65,11 +65,21 @@ test('pending publication queue renders the owner-only preview',async()=>{
  const s=setup(async()=>({data:{daily:[],coverage:{scope:[],sources:[],pending:2,review:0}}}),async()=>({data:{pending_recent:1,pending_no_date:1,queue_preview:[{specialty:'ROV',title:'ROV Pilot',company:'Marine Co',source_date:'2026-09-01',discovered_at:'2026-09-07T06:00:00Z',provider:'workable',board:'marine',external_id:'42'}]}}));
  await s.window.atsrsRefreshJobMonitor();const text=s.text(s.host);assert.match(text,/Pending publication queue/);assert.match(text,/ROV Pilot/);assert.match(text,/marine:42/);
 });
+test('slow queue preview does not block fresh HR metrics',async()=>{
+ let resolveQueue;
+ const s=setup(async()=>({data:{refreshed_at:'2026-10-18T17:42:46Z',today_recruiters_added:9,daily:[],coverage:{scope:[],sources:[]}}}),()=>new Promise(resolve=>{resolveQueue=resolve;}));
+ await s.window.atsrsRefreshJobMonitor(true);
+ assert.match(s.text(s.host),/HR today · new recruiters 9/);
+ assert.match(s.text(s.host),/Updated/);
+ resolveQueue({data:{pending_recent:0,pending_no_date:0,queue_preview:[]}});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.match(s.text(s.host),/Pending publication queue/);
+});
 test('logout while request is in flight prevents data appearing',async()=>{let resolve;const s=setup(()=>new Promise(r=>resolve=r));const pending=s.window.atsrsRefreshJobMonitor();s.window.__atsrsDeveloperAccess=false;await s.window.atsrsRefreshJobMonitor();resolve({data:{balance:{amount_usd:7.82}}});await pending;assert.equal(s.host.children.length,0);});
 test('network errors offer a retry without showing invented zeroes',async()=>{const s=setup(async()=>{throw Error('offline');});await s.window.atsrsRefreshJobMonitor();assert.match(s.text(s.host),/unavailable/);assert.doesNotMatch(s.text(s.host),/\$0/);});
 test('refresh keeps report mounted during request and retains it on failure',async()=>{
  let resolve,calls=0;const s=setup(()=>++calls===1?Promise.resolve({data:{daily:[]}}):new Promise(r=>resolve=r));
  await s.window.atsrsRefreshJobMonitor();const children=s.host.children,button=s.host.querySelector('button');
  const pending=s.window.atsrsRefreshJobMonitor();assert.equal(s.host.children,children);assert.equal(button.disabled,true);
- resolve({error:true});await pending;assert.equal(s.host.children,children);assert.equal(button.disabled,false);
+ resolve({error:true});await pending;assert.equal(s.host.children,children);assert.equal(button.disabled,false);assert.match(s.text(s.host),/Refresh failed — showing previous data/);
 });
