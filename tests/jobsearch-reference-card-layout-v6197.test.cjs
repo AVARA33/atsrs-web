@@ -90,7 +90,8 @@ test('NEW badge remains separated from the favorite and expand controls', () => 
 
 test('remaining card icons follow the selected reference hierarchy', () => {
   assert.match(css, /V6227: place the remaining card icons in the selected reference hierarchy/);
-  assert.match(runtime, /ph-bookmark-simple-fill.*ph-bookmark-simple/);
+  assert.match(runtime, /if\(icon\)icon\.className='ph ph-bookmark-simple'/);
+  assert.doesNotMatch(runtime, /ph-bookmark-simple-fill/);
   assert.match(runtime, /project\.append\(dl\);if\(summaryNode\)project\.append\(summaryNode\)/);
   assert.match(css, /\.job-fact-posted\{\s*display:none!important/);
   assert.match(css, /\.job-facts:has\(\.job-fact-duration\) \.job-fact-work-type\{\s*display:none!important/);
