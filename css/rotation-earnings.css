@@ -12,3 +12,15 @@ html:has(#rotationPage:not(.hidden)),body:has(#rotationPage:not(.hidden)){backgr
 #rotationPage .rotation-heading{border-style:solid;border-width:2px 1px 1px 2px;border-top-color:#ac613b;border-left-color:#ac613b;border-right-color:#34383c;border-bottom-color:#34383c;border-radius:18px}
 #rotationPage .rotation-dialog .rotation-card-heading button{background:#111415!important;background-image:none!important;border-color:#68412f!important;color:#e8e8e8!important;box-shadow:none!important}
 .rotation-tabs button,.rotation-tabs button.is-active{font-weight:600}
+
+/* V6273: Rotation joins the shared JobSearch / Recruiters / Companies banner hierarchy. */
+body:has(#rotationPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{display:none!important}
+#rotationPage.rotation-page{width:min(100%,1440px);max-width:1440px;margin:8px auto 0;padding:0 0 42px}
+#rotationPage .rotation-heading{position:relative;isolation:isolate;box-sizing:border-box;width:100%;height:274px;min-height:274px;margin:0 0 18px;padding:30px 34px;align-items:center;overflow:hidden;background-position:center;background-size:cover;box-shadow:none}
+#rotationPage .rotation-heading>div{position:relative;z-index:1;max-width:650px}
+#rotationPage .rotation-heading::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,9,10,.16),rgba(7,9,10,.06));pointer-events:none}
+#rotationPage .rotation-eyebrow{display:block;margin:0 0 8px;color:#c06d45;font-size:11px;font-weight:800;line-height:1.2;letter-spacing:.1em;text-transform:uppercase}
+#rotationPage .rotation-heading h1{margin:0 0 8px;color:#f7f4f1;font-size:clamp(29px,2.25vw,38px);font-weight:800;line-height:1.06;letter-spacing:-.026em}
+#rotationPage .rotation-heading p{max-width:540px;margin:0;color:#b9b5b1;font-size:14.5px;line-height:1.5}
+@media(max-width:800px){#rotationPage.rotation-page{margin:4px auto 0;padding:0 0 28px}#rotationPage .rotation-heading{height:auto;min-height:214px;margin-bottom:14px;padding:24px}}
+@media(max-width:600px){#rotationPage .rotation-heading{min-height:214px;padding:20px 18px}#rotationPage .rotation-heading h1{font-size:27px}#rotationPage .rotation-heading p{max-width:86%;font-size:13px}}

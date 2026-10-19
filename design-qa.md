@@ -1,3 +1,31 @@
+# Rotation banner hierarchy parity — Design QA (V6273)
+
+- User requirement: match the Rotation banner's internal text hierarchy and above-banner behavior to JobSearch, Recruiters and Companies; no standalone page title may remain above the banner.
+- Pre-change screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-banner-before-v8.png`.
+- Reference screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\jobsearch-banner-reference-v8.png`.
+- Post-change desktop screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-banner-after-v8.png`.
+- Post-change mobile screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-banner-after-v8-mobile.png` at 390 × 844 px.
+- Focused comparison: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-banner-v8-comparison.png`.
+
+## Findings and resolution
+
+- P1: Rotation did not hide the shared workspace `#pageTitle`, while JobSearch, Recruiters and Companies did. The route now hides that duplicate heading whenever Rotation is visible, leaving one semantic `h1` inside the banner.
+- P2: Rotation's desktop banner was 150 px high while the accepted directory-banner standard is 274 px. It now uses the same 274 px desktop frame, 18 px radius and existing copper/graphite edge language.
+- P2: The banner copy previously used a separate 38 px/14 px scale and spacing. Eyebrow, title and supporting text now follow the JobSearch hierarchy: 11 px copper uppercase eyebrow, responsive 29–38 px warm-white title, and 14.5 px muted description.
+- Mobile remains intentionally compact at 214 px rather than forcing the desktop height. The 390 px audit shows no horizontal overflow, clipping or duplicate heading.
+
+## Verification
+
+- Desktop measured banner: 274 px high, full available width, 18 px radius.
+- Mobile measured banner: 390 × 214 px; horizontal overflow: 0 px.
+- Focused Rotation tests: 5/5 passed.
+- Browser console errors and warnings: 0.
+- No actionable P0, P1 or P2 mismatch remains in this scope.
+
+final result: passed
+
+---
+
 # Rotation tab width stability — Design QA (V6272)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-6f04e18a-c573-43fd-8fe6-5f9a88702f1f.png` and the user's instruction that selecting a Rotation tab must not expand or contract any tab.
