@@ -1,3 +1,36 @@
+# Rotation tab width stability — Design QA (V6272)
+
+- Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-6f04e18a-c573-43fd-8fe6-5f9a88702f1f.png` and the user's instruction that selecting a Rotation tab must not expand or contract any tab.
+- Implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-tab-width-v7.png`.
+- Focused source/implementation comparison: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-tab-width-v7-comparison.png`.
+- Source pixels: 1735 × 318. Implementation pixels: 1265 × 712 at the in-app browser's desktop viewport and 1× density.
+- State: Rotation page, permanent black/copper theme; Calendar, Salary Calculator, Trips, Reports and Settings selected sequentially.
+
+## Findings and comparison history
+
+- Initial P2: only the active tab changed to `font-weight:800`; the inactive labels used the inherited regular weight. Because the tab row is content-sized, every selection changed the selected label's intrinsic width and shifted neighbouring tabs.
+- Fix: all Rotation tabs now use the same `font-weight:600` in both inactive and active states. Selection remains clear through copper text/icon, copper-tinted background, copper border and inset baseline without changing geometry.
+- Post-fix browser measurements remained identical in every selected state: Calendar 110.250 px; Salary Calculator 164.729 px; Trips 83.792 px; Reports 103.240 px; Settings 105.563 px.
+
+## Required fidelity surfaces
+
+- Fonts and typography: one stable 600 weight is used for all five labels; no wrapping or optical-weight jump remains.
+- Spacing and layout rhythm: padding, gap, border and tab widths stay unchanged across all selected states.
+- Colors and visual tokens: the accepted black/graphite resting state and copper active treatment remain intact.
+- Image quality and asset fidelity: existing Phosphor icons are unchanged; no new raster or approximate asset was introduced.
+- Copy and content: all tab labels and the underlying five views are unchanged.
+
+## Verification
+
+- All five tabs were clicked in the in-app browser and their widths were measured after every state change; every measurement stayed identical.
+- Focused Rotation tests: 5/5 passed.
+- Browser console errors and warnings: 0.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
+
+---
+
 # Rotation banner copper standardization — Design QA (V6271)
 
 - Selected future direction: the first displayed Rotation banner concept, `C:\Users\user\.codex\generated_images\01a0c457-182c-7083-8bab-06ed2e0ccc1e\exec-b6bc1dc7-4bc6-4020-a52b-cf3bca9cab03.png`.
