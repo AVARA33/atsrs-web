@@ -49,7 +49,7 @@ try{
   var atsrsEntryParams=new URLSearchParams(window.location.search);
   var atsrsRequestedView=atsrsEntryParams.get('view');
   var atsrsRequestedRoute=atsrsEntryParams.get('route');
-  var atsrsKnownAppRoutes={intro:1,dashboard:1,jobs:1,recruiters:1,employers:1,certificates:1,refs:1,profile:1,privacy:1,dataRights:1,compliance:1,security:1,reports:1,developer:1,resource:1,candidates:1,personnel:1,projects:1};
+  var atsrsKnownAppRoutes={intro:1,dashboard:1,jobs:1,recruiters:1,employers:1,certificates:1,refs:1,rotation:1,profile:1,privacy:1,dataRights:1,compliance:1,security:1,reports:1,developer:1,resource:1,candidates:1,personnel:1,projects:1};
   var atsrsRequestedApp=atsrsRequestedView==='jobs'||!!atsrsKnownAppRoutes[atsrsRequestedRoute];
   var atsrsEntryCallback=atsrsEntryParams.has('code')||atsrsEntryParams.has('error')||
     window.location.hash.indexOf('access_token=')>=0||window.location.hash.indexOf('type=recovery')>=0;
@@ -103,6 +103,7 @@ html{background:#050606}
   integrity="sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti"
   crossorigin="anonymous">
 <link rel="stylesheet" href="css/base.css?v=6096">
+<link rel="stylesheet" href="css/rotation-earnings.css?v=3">
 <link rel="stylesheet" href="css/login.css?v=375">
 <link rel="stylesheet" href="css/dashboard.css?v=447">
 <link rel="stylesheet" href="css/documents.css?v=375">
@@ -664,6 +665,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="navCredentials" class="company-only" onclick="showCompanyCredentials('documents')">Company Credentials</button>
 <button id="navCertificates" onclick="showPage('certificates',this)"></button>
 <button id="navRefs" onclick="showPage('refs',this)"></button>
+<button id="navRotation" class="personal-only" onclick="showPage('rotation',this)">Rotation</button>
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
@@ -1702,6 +1704,128 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 </div>
 </section>
 
+<section id="rotationPage" class="hidden rotation-page" aria-labelledby="rotationHeading">
+  <header class="rotation-heading">
+    <div>
+      <span class="rotation-eyebrow">OFFSHORE WORK PLANNER</span>
+      <h1 id="rotationHeading">Rotation</h1>
+      <p>Mark offshore, onshore, travel and home days. Your salary estimate updates automatically.</p>
+    </div>
+  </header>
+
+  <nav class="rotation-tabs" aria-label="Rotation sections">
+    <button type="button" class="is-active" data-rotation-tab="calendar"><i class="ph ph-calendar-dots"></i>Calendar</button>
+    <button type="button" data-rotation-tab="calculator"><i class="ph ph-calculator"></i>Salary Calculator</button>
+    <button type="button" data-rotation-tab="trips"><i class="ph ph-airplane-tilt"></i>Trips</button>
+    <button type="button" data-rotation-tab="reports"><i class="ph ph-chart-line-up"></i>Reports</button>
+    <button type="button" data-rotation-tab="settings"><i class="ph ph-gear-six"></i>Settings</button>
+  </nav>
+
+  <div id="rotationStatus" class="rotation-status" role="status" aria-live="polite"></div>
+
+  <section class="rotation-summary" aria-label="Rotation summary" data-rotation-view="calendar">
+    <article><i class="ph ph-anchor" aria-hidden="true"></i><span>Offshore<strong id="rotationWorkedSummary">0 days</strong></span></article>
+    <article><i class="ph ph-buildings" aria-hidden="true"></i><span>Onshore<strong id="rotationPlannedSummary">0 days</strong></span></article>
+    <article><i class="ph ph-airplane-tilt" aria-hidden="true"></i><span>Travel<strong id="rotationTravelSummary">0 days</strong></span></article>
+    <article><i class="ph ph-wallet" aria-hidden="true"></i><span>Estimated net<strong id="rotationEarningsSummary">$0</strong></span></article>
+  </section>
+
+  <div class="rotation-layout" data-rotation-view="calendar">
+    <section class="rotation-calendar-card" aria-labelledby="rotationCalendarTitle">
+      <div class="rotation-card-heading">
+        <h2 id="rotationCalendarTitle">Rotation Calendar</h2>
+        <div class="rotation-calendar-actions">
+          <button id="rotationAddBtn" class="rotation-primary" type="button"><i class="ph ph-plus" aria-hidden="true"></i>Mark days</button>
+          <div class="rotation-view-toggle" role="group" aria-label="Calendar view">
+          <button id="rotationYearViewBtn" type="button" aria-pressed="true">Year</button>
+          <button id="rotationMonthViewBtn" type="button" aria-pressed="false">Month</button>
+          </div>
+        </div>
+      </div>
+      <div class="rotation-period-controls">
+        <button id="rotationPrevBtn" type="button" aria-label="Previous period"><i class="ph ph-caret-left" aria-hidden="true"></i></button>
+        <strong id="rotationPeriodLabel"></strong>
+        <button id="rotationNextBtn" type="button" aria-label="Next period"><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+      </div>
+      <div id="rotationCalendar" class="rotation-calendar" aria-live="polite"></div>
+      <div class="rotation-legend" aria-label="Calendar legend">
+        <span><i class="is-offshore"></i>Offshore</span><span><i class="is-onshore"></i>Onshore</span><span><i class="is-travel"></i>Travel</span><span><i class="is-hotel"></i>Hotel</span><span><i class="is-home"></i>Home</span>
+      </div>
+    </section>
+
+    <aside class="rotation-sidebar">
+      <section class="rotation-next-card" aria-labelledby="rotationNextTitle">
+        <div class="rotation-card-heading"><h2 id="rotationNextTitle">Next mobilisation</h2><span>PLANNED</span></div>
+        <div id="rotationNextDates" class="rotation-next-dates">Set your rotation pattern</div>
+        <p id="rotationNextDays">—</p>
+        <div class="rotation-next-earnings"><span>Estimated</span><strong id="rotationNextEarnings">—</strong></div>
+      </section>
+
+      <form id="rotationSettingsForm" class="rotation-settings-card">
+        <h2>Rotation settings</h2>
+        <div class="rotation-field-grid">
+          <label><span>Work days</span><input id="rotationWorkDays" type="number" min="1" max="183" value="28" required></label>
+          <label><span>Leave days</span><input id="rotationLeaveDays" type="number" min="1" max="183" value="28" required></label>
+        </div>
+        <label><span>First offshore date</span><input id="rotationStartDate" type="date" required></label>
+        <div class="rotation-field-grid">
+          <label><span>Offshore day rate</span><input id="rotationDayRate" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+          <label><span>Currency</span><select id="rotationCurrency"><option>USD</option><option>EUR</option><option>GBP</option><option>AZN</option><option>NOK</option></select></label>
+        </div>
+        <label><span>Travel days per rotation</span><input id="rotationTravelDays" type="number" min="0" max="14" value="0"></label>
+        <label class="rotation-check"><input id="rotationTravelPaid" type="checkbox"><span>Include travel days in estimated earnings</span></label>
+        <button class="rotation-primary" type="submit">Save &amp; build schedule</button>
+        <p class="rotation-coming-later"><i class="ph ph-info" aria-hidden="true"></i>Click any calendar day to change only that date.</p>
+      </form>
+    </aside>
+  </div>
+
+  <section class="rotation-calculator hidden" data-rotation-view="calculator">
+    <form id="rotationCalculatorForm" class="rotation-calculator-form">
+      <div class="rotation-card-heading"><div><span class="rotation-eyebrow">PAY PROFILE</span><h2>Salary Calculator</h2></div><button id="rotationSaveProfileBtn" class="secondary" type="button">Save profile</button></div>
+      <div class="rotation-form-section">
+        <h3>Day rates</h3>
+        <div class="rotation-field-grid three"><label><span>Offshore / day</span><input id="rotationOffshoreRate" type="number" min="0" step="0.01"></label><label><span>Onshore / day</span><input id="rotationOnshoreRate" type="number" min="0" step="0.01"></label><label><span>Travel / day</span><input id="rotationTravelRate" type="number" min="0" step="0.01"></label></div>
+      </div>
+      <div class="rotation-form-section">
+        <h3>Fixed and additional pay</h3>
+        <div class="rotation-field-grid three"><label><span>Base salary</span><input id="rotationBaseSalary" type="number" min="0" step="0.01"></label><label><span>Per diem</span><input id="rotationPerDiem" type="number" min="0" step="0.01"></label><label><span>Bonus</span><input id="rotationBonus" type="number" min="0" step="0.01"></label></div>
+        <div class="rotation-field-grid three"><label><span>Overtime hours</span><input id="rotationOvertimeHours" type="number" min="0" step="0.5"></label><label><span>Hourly overtime rate</span><input id="rotationOvertimeRate" type="number" min="0" step="0.01"></label><label><span>Other deductions</span><input id="rotationDeductions" type="number" min="0" step="0.01"></label></div>
+      </div>
+      <div class="rotation-form-section">
+        <h3>Tax and payment</h3>
+        <div class="rotation-field-grid three"><label><span>Tax country</span><select id="rotationTaxCountry"><option value="">Select country</option><option>Azerbaijan</option><option>United Kingdom</option><option>Norway</option><option>United Arab Emirates</option><option>Other</option></select></label><label><span>Tax rate estimate (%)</span><input id="rotationTaxRate" type="number" min="0" max="100" step="0.1"></label><label><span>Tax-free allowance</span><input id="rotationTaxAllowance" type="number" min="0" step="0.01"></label></div>
+        <div class="rotation-field-grid three"><label><span>Calculation period</span><select id="rotationCalcPeriod"><option value="month">Selected month</option><option value="trip">Current trip</option></select></label><label><span>Pay frequency</span><select id="rotationPayFrequency"><option>Monthly</option><option>Per trip</option><option>Biweekly</option></select></label><label><span>Currency</span><select id="rotationCalcCurrency"><option>USD</option><option>EUR</option><option>GBP</option><option>AZN</option><option>NOK</option></select></label></div>
+      </div>
+      <p class="rotation-tax-note"><i class="ph ph-info"></i>Tax is an estimate based on the rate you enter, not tax advice.</p>
+    </form>
+    <aside class="rotation-pay-summary">
+      <div class="rotation-card-heading"><div><span class="rotation-eyebrow">LIVE ESTIMATE</span><h2>Salary summary</h2></div><button id="rotationExportPayslip" class="secondary" type="button"><i class="ph ph-download-simple"></i>Export</button></div>
+      <div class="rotation-net-card"><span>Estimated net salary</span><strong id="rotationNetSalary">$0</strong><small id="rotationPayPeriodLabel">Selected month</small></div>
+      <dl class="rotation-breakdown"><div><dt>Offshore</dt><dd id="rotationOffshorePay">$0</dd></div><div><dt>Onshore</dt><dd id="rotationOnshorePay">$0</dd></div><div><dt>Travel</dt><dd id="rotationTravelPay">$0</dd></div><div><dt>Base salary</dt><dd id="rotationBasePay">$0</dd></div><div><dt>Overtime &amp; allowance</dt><dd id="rotationExtraPay">$0</dd></div><div><dt>Gross pay</dt><dd id="rotationGrossPay">$0</dd></div><div class="is-tax"><dt>Estimated tax</dt><dd id="rotationTaxPay">− $0</dd></div><div class="is-tax"><dt>Other deductions</dt><dd id="rotationDeductionPay">− $0</dd></div></dl>
+      <div class="rotation-mini-calendar"><h3 id="rotationMiniCalendarTitle">Selected period</h3><div id="rotationMiniCalendar"></div></div>
+    </aside>
+  </section>
+
+  <section class="rotation-placeholder hidden" data-rotation-view="trips"><i class="ph ph-airplane-tilt"></i><h2>Trips</h2><p>Trip history will be assembled automatically from your marked calendar days.</p></section>
+  <section class="rotation-placeholder hidden" data-rotation-view="reports"><i class="ph ph-chart-line-up"></i><h2>Reports</h2><p>Monthly and annual rotation reports will use the same calendar and salary data.</p></section>
+  <section class="rotation-placeholder hidden" data-rotation-view="settings"><i class="ph ph-gear-six"></i><h2>Settings</h2><p>Your rotation pattern and default currency are available in the Calendar sidebar.</p></section>
+
+  <dialog id="rotationEntryDialog" class="rotation-dialog" aria-labelledby="rotationEntryTitle">
+    <form id="rotationEntryForm" method="dialog">
+      <div class="rotation-card-heading"><h2 id="rotationEntryTitle">Mark calendar days</h2><button id="rotationEntryClose" type="button" aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button></div>
+      <label><span>Day type</span><select id="rotationEntryType"><option value="offshore">Offshore</option><option value="onshore">Onshore</option><option value="travel">Travel</option><option value="hotel">Hotel</option><option value="home">Home</option></select></label>
+      <div class="rotation-field-grid">
+        <label><span>Start date</span><input id="rotationEntryStart" type="date" required></label>
+        <label><span>End date</span><input id="rotationEntryEnd" type="date" required></label>
+      </div>
+      <label><span>Note (optional)</span><textarea id="rotationEntryNote" maxlength="500" rows="3"></textarea></label>
+      <p class="rotation-dialog-note">The selected type is applied to every day in this range and immediately updates the salary estimate.</p>
+      <div class="rotation-dialog-actions"><button id="rotationEntryCancel" class="secondary" type="button">Cancel</button><button class="rotation-primary" type="submit">Save entry</button></div>
+    </form>
+  </dialog>
+</section>
+
 <section id="compliancePage" class="hidden">
 <div class="panel">
 <div class="corporate-page-heading">
@@ -2551,6 +2675,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account-resources-v5990.js?v=6065"></script>
 <script src="js/product-updates-atlas-v6004.js?v=6038"></script>
 <script src="js/modal-interaction-guard.js?v=2"></script>
+<script src="js/rotation-earnings.js?v=3"></script>
 
 
 

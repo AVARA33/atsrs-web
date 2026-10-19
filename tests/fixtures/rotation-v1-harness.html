@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATSRS Rotation Preview</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/rotation-earnings.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <style>
+    html,body{margin:0;background:#080a0b!important;background-image:none!important;color:#fff;font-family:Arial,sans-serif}
+    .preview-shell{display:grid;grid-template-columns:118px 1fr;min-height:100vh;background:#080a0b}
+    .preview-sidebar{position:sticky;top:0;height:100vh;border-right:1px solid #222;padding:18px 8px;background:#090b0c;text-align:center}
+    .preview-sidebar img{width:74px;height:auto}.preview-sidebar span{display:block;margin:25px 0;color:#8e989b;font-size:11px}
+    .preview-sidebar .active{padding:12px 4px;border-left:3px solid #c46f3d;border-radius:7px;background:#281912;color:#fff}
+    .preview-main{padding:18px;background:#080a0b!important}.rotation-page{margin:0}.rotation-page.hidden{display:block!important}
+  </style>
+</head>
+<body>
+  <div class="preview-shell"><aside class="preview-sidebar"><img src="../../assets/branding/atsrs-mark-copper-v6255.png" alt="ATSRS"><span>Dashboard</span><span>JobSearch</span><span>Documents</span><span class="active">Rotation</span><span>Profile</span></aside><main class="preview-main" id="mount"></main></div>
+  <script>fetch('../../index.html').then(r=>r.text()).then(t=>{const d=new DOMParser().parseFromString(t,'text/html'),section=d.querySelector('#rotationPage');document.querySelector('#mount').append(section);const s=document.createElement('script');s.src='../../js/rotation-earnings.js';document.body.append(s)});</script>
+</body>
+</html>

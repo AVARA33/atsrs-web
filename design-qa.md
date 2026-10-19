@@ -2347,3 +2347,13 @@ final result: passed
 - Browser audit: the Share action panel reached full opacity, remained inside the card and computed to the expected copper/black/white tokens.
 
 final result: passed
+## Rotation Calendar and Salary Calculator — 2026-10-19
+
+- Source references: user-approved ATSRS Rotation calendar and Salary Calculator mockups from this task.
+- Local implementation preview: `http://127.0.0.1:8770/tests/fixtures/rotation-v1-harness.html?route=rotation`
+- Verified: existing ATSRS copper logo remains untouched in production markup; dark-only black/copper palette; banner without action button; Calendar/Calculator tab switching; year/month calendar; Offshore, Onshore, Travel and Home day states; editable day ranges; live salary calculation; manual tax estimate; CSV estimate export; responsive single-column calculator.
+- Browser console: no warnings or errors in the verified local preview.
+- Automated verification: `node --test tests/rotation-earnings.test.cjs` and `git diff --check`.
+- Accepted intentional difference: the source mockup is a design target; the implementation reuses the current ATSRS navigation and branding rather than the logo/navigation drawn in the mockup.
+
+final result: passed

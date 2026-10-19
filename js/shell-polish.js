@@ -16,6 +16,7 @@
     navJobs:'briefcase-metal',
     navEmployers:'buildings',
     navRecruiters:'address-book',
+    navRotation:'calendar-check',
     navDeveloper:'code',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
@@ -35,6 +36,7 @@
     navJobs:'JobSearch',
     navEmployers:'Companies',
     navRecruiters:'Recruiters',
+    navRotation:'Rotation',
     navDeveloper:'Developer',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
@@ -53,6 +55,7 @@
     navJobs:'JobSearch',
     navEmployers:'Companies',
     navRecruiters:'Recruiters',
+    navRotation:'Rotation',
     navDeveloper:'Developer',
     navIntro:'Product Updates',
     navPrivacy:'Privacy'
