@@ -1,3 +1,24 @@
+# Rotation banner copper standardization — Design QA (V6271)
+
+- Selected future direction: the first displayed Rotation banner concept, `C:\Users\user\.codex\generated_images\01a0c457-182c-7083-8bab-06ed2e0ccc1e\exec-b6bc1dc7-4bc6-4020-a52b-cf3bca9cab03.png`.
+- Current scoped instruction: standardize the existing Rotation banner copper palette first; defer the banner image/composition until the user provides the next image instruction.
+- Implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-banner-copper-v6-mobile.png` at 390 × 844 px.
+- State: Rotation page, mobile viewport, Salary Calculator selected.
+
+## Comparison and verification
+
+- Rotation now uses the same principal copper `#C06D45` and structural copper `#AC613B` as the JobSearch, Recruiter and Companies banners.
+- The banner frame now matches the shared directory-banner treatment: 2 px copper top/left edges, 1 px graphite right/bottom edges and 18 px radius.
+- Warm-white heading and body copy, permanent black surface and existing background image remain unchanged.
+- The selected first concept is recorded as the future visual direction, but its orbit artwork has deliberately not been implemented yet.
+- Mobile rendering shows no clipping, overflow or hierarchy regression.
+- Focused automated Rotation tests: 5/5 passed.
+- No actionable P0, P1 or P2 mismatch remains in this scoped palette change.
+
+final result: passed
+
+---
+
 # Rotation mobile active tab — Design QA (V6270)
 
 - Source visual truth: `C:\Users\user\Documents\GitHub\.codex-remote-attachments\01a0c457-182c-7083-8bab-06ed2e0ccc1e\65ec8629-b161-4723-81d1-90774c8a2832\1-272373.jpg` and the user's instruction that the selected Rotation subpage must be identifiable on a phone, at minimum through a heading color difference.
