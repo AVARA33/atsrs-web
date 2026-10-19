@@ -16,7 +16,7 @@
     navJobs:'briefcase-metal',
     navEmployers:'buildings',
     navRecruiters:'address-book',
-    navRotation:'calendar-check',
+    navRotation:'arrows-clockwise',
     navDeveloper:'code',
     navIntro:'sparkle',
     navPrivacy:'lock-simple'
