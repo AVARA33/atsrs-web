@@ -62,7 +62,7 @@ test('route, owner RLS, and responsive feature assets are wired', () => {
   const migration = fs.readFileSync(path.join(root, 'supabase', 'migrations', '20261005123212_rotation_earnings_foundation.sql'), 'utf8');
   assert.match(html, /id="navRotation"[^>]*>[\s\S]*?ph-arrows-clockwise atsrs-nav-icon[\s\S]*?atsrs-nav-label">Rotation/);
   assert.match(html, /js\/shell-polish\.js\?v=6268/);
-  assert.match(html, /css\/rotation-earnings\.css\?v=8/);
+  assert.match(html, /css\/rotation-earnings\.css\?v=9/);
   assert.match(html, /js\/rotation-earnings\.js\?v=4/);
   assert.match(css, /\.rotation-tabs button\.is-active\{[^}]*border-color:#a85a35[^}]*background:#241711[^}]*color:#e18a5a[^}]*font-weight:800/);
   assert.match(css, /\.rotation-tabs button,\.rotation-tabs button\.is-active\{font-weight:600\}/);
@@ -70,6 +70,10 @@ test('route, owner RLS, and responsive feature assets are wired', () => {
   assert.match(css, /#rotationPage \.rotation-heading\{position:relative;isolation:isolate;box-sizing:border-box;width:100%;height:274px;min-height:274px/);
   assert.match(css, /#rotationPage \.rotation-heading h1\{[^}]*color:#f7f4f1[^}]*font-size:clamp\(29px,2\.25vw,38px\)/);
   assert.match(css, /#rotationPage \.rotation-heading p\{[^}]*color:#b9b5b1[^}]*font-size:14\.5px/);
+  assert.match(css, /#rotationPage \.rotation-calendar\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\);gap:16px\}/);
+  assert.match(css, /#rotationPage \.rotation-month\{[^}]*padding:12px[^}]*border:1px solid #242a2c[^}]*border-radius:10px/);
+  assert.match(css, /#rotationPage \.rotation-day\{[^}]*min-height:30px!important[^}]*font-size:11px!important/);
+  assert.match(css, /@media\(max-width:600px\)\{[^}]*#rotationPage \.rotation-calendar-card\{padding:14px\}/);
   assert.match(css, /\.rotation-tabs button\.is-active\{background:#241711!important;color:#e18a5a!important\}/);
   assert.match(css, /--r-copper:#c06d45;--r-copper2:#ac613b/);
   assert.match(css, /#rotationPage \.rotation-heading\{border-style:solid;border-width:2px 1px 1px 2px;border-top-color:#ac613b;border-left-color:#ac613b;border-right-color:#34383c;border-bottom-color:#34383c;border-radius:18px\}/);

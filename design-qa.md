@@ -1,3 +1,24 @@
+# Rotation calendar readability — Design QA (V6274)
+
+- User requirement: tidy the Rotation calendar without changing the established black/copper visual language.
+- Pre-change desktop screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-calendar-before-v9.png`.
+- Post-change desktop screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-calendar-after-v9.png`.
+- Responsive audit: 390 × 844 px in the in-app browser after the change.
+
+## Audit steps and health
+
+1. **Desktop density — fixed.** The year view previously forced four months into roughly 787 px, leaving day controls near 22 × 22 px. The calendar now uses three columns, separated month panels and 30 px-high day controls.
+2. **Month hierarchy — fixed.** Each month now has its own black panel, restrained border, copper top edge, clearer heading and weekday row.
+3. **Day states — passed.** Offshore, onshore, travel, hotel, home, today and keyboard-focus states remain visually distinct without changing the underlying schedule behavior.
+4. **Responsive layout — passed.** The grid steps down to two columns below 900 px and one column below 600 px. At 390 px, day controls measure about 42.6 × 36.1 px and the page has no horizontal overflow.
+5. **Regression check — passed.** Focused Rotation tests pass 5/5 and the browser reports zero console warnings or errors.
+
+Screenshot review confirms layout and visual hierarchy. It does not by itself prove complete WCAG compliance or every possible live-data state.
+
+final result: passed
+
+---
+
 # Rotation banner hierarchy parity — Design QA (V6273)
 
 - User requirement: match the Rotation banner's internal text hierarchy and above-banner behavior to JobSearch, Recruiters and Companies; no standalone page title may remain above the banner.

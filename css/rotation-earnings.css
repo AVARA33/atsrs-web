@@ -24,3 +24,32 @@ body:has(#rotationPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{disp
 #rotationPage .rotation-heading p{max-width:540px;margin:0;color:#b9b5b1;font-size:14.5px;line-height:1.5}
 @media(max-width:800px){#rotationPage.rotation-page{margin:4px auto 0;padding:0 0 28px}#rotationPage .rotation-heading{height:auto;min-height:214px;margin-bottom:14px;padding:24px}}
 @media(max-width:600px){#rotationPage .rotation-heading{min-height:214px;padding:20px 18px}#rotationPage .rotation-heading h1{font-size:27px}#rotationPage .rotation-heading p{max-width:86%;font-size:13px}}
+
+/* V6274: readable, structured Rotation calendar. */
+#rotationPage .rotation-calendar-card{padding:22px}
+#rotationPage .rotation-calendar-card>.rotation-card-heading{align-items:center;margin-bottom:4px}
+#rotationPage .rotation-calendar-actions{flex-wrap:wrap;justify-content:flex-end}
+#rotationPage .rotation-period-controls{min-height:42px;margin:10px 0 18px;padding:5px 8px;border-top:1px solid #242a2c;border-bottom:1px solid #242a2c}
+#rotationPage .rotation-period-controls strong{min-width:170px;color:#f7f4f1;font-size:14px;letter-spacing:.02em}
+#rotationPage .rotation-period-controls button{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;border-color:#343b3d!important}
+#rotationPage .rotation-calendar{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#rotationPage .rotation-calendar.is-month{grid-template-columns:minmax(0,540px);gap:0}
+#rotationPage .rotation-month{min-width:0;padding:12px;border:1px solid #242a2c;border-top-color:#744229;border-radius:10px;background:#090c0d}
+#rotationPage .rotation-month h3{margin:0 0 10px;padding:0 0 9px;border-bottom:1px solid #242a2c;color:#f7f4f1;font-size:14px;font-weight:800;letter-spacing:-.01em}
+#rotationPage .rotation-weekdays,#rotationPage .rotation-days{gap:4px}
+#rotationPage .rotation-weekdays{margin-bottom:4px}
+#rotationPage .rotation-weekdays span{padding:3px 0;color:#929a9d;font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+#rotationPage .rotation-day{width:100%!important;min-width:0!important;height:auto!important;min-height:30px!important;margin:0!important;padding:0!important;border-color:#1d2325!important;border-radius:6px!important;aspect-ratio:1.18;background:#111516!important;color:#d8ddde!important;font-size:11px!important;font-weight:650!important;line-height:1!important;box-shadow:none!important}
+#rotationPage .rotation-day:hover{z-index:1;border-color:#c06d45!important;background:#1b1512!important;color:#fff!important;transform:translateY(-1px)}
+#rotationPage .rotation-day:focus-visible{z-index:2;outline:2px solid #e18a5a!important;outline-offset:1px!important}
+#rotationPage .rotation-day.is-outside{border-color:transparent!important;background:transparent!important}
+#rotationPage .rotation-day.is-offshore{border-color:#cf7648!important;background:#ac613b!important;color:#fff!important}
+#rotationPage .rotation-day.is-onshore{border-color:#69777c!important;background:#4e5b60!important;color:#fff!important}
+#rotationPage .rotation-day.is-travel{border-color:#d5aa45!important;background:#c49a38!important;color:#111!important}
+#rotationPage .rotation-day.is-hotel{border-color:#93684d!important;background:#73503b!important;color:#fff!important}
+#rotationPage .rotation-day.is-home{border-color:#394245!important;background:#15191a!important;color:#c7cecf!important}
+#rotationPage .rotation-day.is-today::after{inset:-3px;border:2px solid #f7f4f1;border-radius:8px}
+#rotationPage .rotation-legend{gap:10px 18px;margin-top:18px;padding-top:15px;font-size:11px}
+#rotationPage .rotation-legend i{width:12px;height:12px;border-radius:4px}
+@media(max-width:900px){#rotationPage .rotation-calendar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#rotationPage .rotation-calendar-card{padding:14px}#rotationPage .rotation-calendar-card>.rotation-card-heading{align-items:flex-start;flex-direction:column}#rotationPage .rotation-calendar-actions{width:100%;justify-content:space-between}#rotationPage .rotation-period-controls{margin:10px 0 14px}#rotationPage .rotation-calendar{grid-template-columns:1fr;gap:12px}#rotationPage .rotation-month{padding:11px}#rotationPage .rotation-day{min-height:36px!important;font-size:12px!important}}
