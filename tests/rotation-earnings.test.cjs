@@ -62,8 +62,10 @@ test('route, owner RLS, and responsive feature assets are wired', () => {
   const migration = fs.readFileSync(path.join(root, 'supabase', 'migrations', '20261005123212_rotation_earnings_foundation.sql'), 'utf8');
   assert.match(html, /id="navRotation"[^>]*>[\s\S]*?ph-arrows-clockwise atsrs-nav-icon[\s\S]*?atsrs-nav-label">Rotation/);
   assert.match(html, /js\/shell-polish\.js\?v=6268/);
-  assert.match(html, /css\/rotation-earnings\.css\?v=4/);
+  assert.match(html, /css\/rotation-earnings\.css\?v=5/);
   assert.match(html, /js\/rotation-earnings\.js\?v=4/);
+  assert.match(css, /\.rotation-tabs button\.is-active\{[^}]*border-color:#a85a35[^}]*background:#241711[^}]*color:#e18a5a[^}]*font-weight:800/);
+  assert.match(css, /\.rotation-tabs button\.is-active\{background:#241711!important;color:#e18a5a!important\}/);
   assert.match(html, /id="rotationPage"/);
   assert.match(html, /option value="hotel">Hotel/);
   assert.match(storage, /rotation:navRotation/);

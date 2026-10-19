@@ -1,3 +1,25 @@
+# Rotation mobile active tab — Design QA (V6270)
+
+- Source visual truth: `C:\Users\user\Documents\GitHub\.codex-remote-attachments\01a0c457-182c-7083-8bab-06ed2e0ccc1e\65ec8629-b161-4723-81d1-90774c8a2832\1-272373.jpg` and the user's instruction that the selected Rotation subpage must be identifiable on a phone, at minimum through a heading color difference.
+- Implementation screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-mobile-active-v6.png`.
+- Focused source/implementation comparison: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\rotation-mobile-tab-comparison-v6.png`.
+- Source pixels: 591 × 1280. Implementation viewport and screenshot: 390 × 844 CSS/device pixels at 1× density. The source was height-normalized to 844 px only for the side-by-side comparison.
+- State: Rotation page, mobile viewport, `Salary Calculator` selected.
+
+## Comparison and verification
+
+- In the source screenshot, the selected `Salary Calculator` tab used nearly the same white/grey label, dark surface and thin outline as its neighbours, so the active state was not visually obvious.
+- The selected tab now uses copper label and icon color (`#E18A5A`), a darker copper-tinted surface (`#241711`), copper border (`#A85A35`), heavier label weight and a 3 px inset copper baseline.
+- Non-selected tabs remain neutral grey on black, preserving the existing ATSRS black/copper hierarchy.
+- Tab dimensions, horizontal scrolling, page geometry and Salary Calculator content are unchanged.
+- The 390 × 844 render confirms that the active section is recognizable at phone width without relying on hover.
+- Focused automated Rotation tests: 5/5 passed.
+- No actionable P0, P1 or P2 mismatch remains.
+
+final result: passed
+
+---
+
 # Sequential copper boot loader — Design QA (V6261)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-6c79026c-b1a8-4b61-92c6-e22a3a41427f.png`, together with the user's explicit instruction to replace the rotating icon with the earlier professional loader whose individual lines illuminate and fade in sequence.

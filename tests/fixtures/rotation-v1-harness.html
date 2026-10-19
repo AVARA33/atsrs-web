@@ -15,10 +15,11 @@
     .preview-sidebar img{width:74px;height:auto}.preview-sidebar span{display:block;margin:25px 0;color:#8e989b;font-size:11px}
     .preview-sidebar .active{padding:12px 4px;border-left:3px solid #c46f3d;border-radius:7px;background:#281912;color:#fff}
     .preview-main{padding:18px;background:#080a0b!important}.rotation-page{margin:0}.rotation-page.hidden{display:block!important}
+    @media(max-width:600px){.preview-shell{display:block}.preview-sidebar{display:none}.preview-main{padding:0}}
   </style>
 </head>
 <body>
   <div class="preview-shell"><aside class="preview-sidebar"><img src="../../assets/branding/atsrs-mark-copper-v6255.png" alt="ATSRS"><span>Dashboard</span><span>JobSearch</span><span>Documents</span><span class="active">Rotation</span><span>Profile</span></aside><main class="preview-main" id="mount"></main></div>
-  <script>fetch('../../index.html').then(r=>r.text()).then(t=>{const d=new DOMParser().parseFromString(t,'text/html'),section=d.querySelector('#rotationPage');document.querySelector('#mount').append(section);const s=document.createElement('script');s.src='../../js/rotation-earnings.js';document.body.append(s)});</script>
+  <script>fetch('../../index.html').then(r=>r.text()).then(t=>{const d=new DOMParser().parseFromString(t,'text/html'),section=d.querySelector('#rotationPage');document.querySelector('#mount').append(section);const s=document.createElement('script');s.src='../../js/rotation-earnings.js';s.onload=()=>{const wanted=new URLSearchParams(location.search).get('tab');if(wanted)document.querySelector(`[data-rotation-tab="${wanted}"]`)?.click()};document.body.append(s)});</script>
 </body>
 </html>
