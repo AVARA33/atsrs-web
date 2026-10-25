@@ -76,8 +76,8 @@ test('route, owner RLS, and responsive feature assets are wired', () => {
   assert.match(sidebarCss, /\.sidebar \.nav button[\s\S]*font-family: var\(--atsrs-font-sans\)[^}]*font-weight: 700/);
   assert.match(sidebarCss, /button\.active \.atsrs-nav-label\s*\{[^}]*color: #fff !important/);
   assert.match(html, /js\/shell-polish\.js\?v=6268/);
-  assert.match(html, /css\/rotation-earnings\.css\?v=11/);
-  assert.match(html, /js\/rotation-earnings\.js\?v=6/);
+  assert.match(html, /css\/rotation-earnings\.css\?v=12/);
+  assert.match(html, /js\/rotation-earnings\.js\?v=7/);
   assert.match(html, /data-rotation-tab="calendar" aria-pressed="true"/);
   assert.match(css, /\.rotation-tabs button\.is-active\{[^}]*border-color:#a85a35[^}]*background:#241711[^}]*color:#e18a5a[^}]*font-weight:800/);
   assert.match(css, /\.rotation-tabs button:is\(\.is-active,\[aria-pressed="true"\]\)\{[^}]*border-color:#c06d45!important[^}]*background:linear-gradient\(180deg,#3a241a,#25150f\)!important[^}]*color:#fff!important[^}]*font-weight:700!important/);
@@ -95,10 +95,12 @@ test('route, owner RLS, and responsive feature assets are wired', () => {
   assert.match(html, /id="rotationPage"/);
   assert.match(html, /option value="hotel">Hotel/);
   assert.match(html, /id="rotationEntryWeeks"/);
-  assert.match(html, /id="rotationEntryEnd"[^>]*readonly/);
+  assert.match(html, /id="rotationEntryEnd" type="date" required/);
+  assert.doesNotMatch(html, /id="rotationEntryEnd"[^>]*readonly/);
   assert.match(source, /for\(var n=1;n<=48;n\+\+\)/);
   assert.match(source, /about 6 months/);
   assert.match(source, /rotationEntryDialog'\)\.addEventListener\('cancel'/);
+  assert.match(source, /rotationEntryEnd'\)\.addEventListener\('change',function\(\)\{previewEntry\('end'\)\}\)/);
   assert.match(source, /setAttribute\('aria-pressed',selected\?'true':'false'\)/);
   assert.match(storage, /rotation:navRotation/);
   assert.match(css, /@media\(max-width:540px\)/);

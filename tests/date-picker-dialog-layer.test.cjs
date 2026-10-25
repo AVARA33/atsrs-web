@@ -6,12 +6,14 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'js', 'date-picker.js'), 'utf8');
+const selectScript = fs.readFileSync(path.join(root, 'js', 'select-standard.js'), 'utf8');
 const styles = fs.readFileSync(path.join(root, 'css', 'date-picker.css'), 'utf8');
 const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'date-picker-selection-v5851-harness.html'), 'utf8');
 
 test('date picker assets use the current cache version', () => {
-  assert.match(index, /css\/date-picker\.css\?v=5852/);
-  assert.match(index, /js\/date-picker\.js\?v=6096/);
+  assert.match(index, /css\/date-picker\.css\?v=5853/);
+  assert.match(index, /js\/date-picker\.js\?v=6097/);
+  assert.match(index, /js\/select-standard\.js\?v=6061/);
 });
 
 test('visual harness compares the real calendar selection with the real Jobs active page state', () => {
@@ -55,12 +57,19 @@ test('date picker joins an open modal top layer and restores itself on close', (
   assert.match(script, /activeDialogHost\.classList\.remove\('atsrs-date-picker-host'\)/);
   assert.match(script, /document\.body\.appendChild\(picker\)/);
   assert.match(styles, /dialog\.atsrs-date-picker-host\s*\{[^}]*overflow:visible!important;/s);
-  assert.match(script, /activeDialogHost&&window\.innerWidth>=860/);
-  assert.match(script, /dialog\.classList\.add\('place-side'\)/);
-  assert.match(styles, /\.atsrs-date-picker-dialog\.place-side::before,[\s\S]*?display:none;/);
+  assert.doesNotMatch(script, /activeDialogHost&&window\.innerWidth>=860/);
+  assert.match(script, /var centeredLeft=inputRect\.left;/);
   assert.match(styles, /max-height:calc\(100vh - 24px\);[\s\S]*?overflow-y:auto;/);
 });
 
 test('readonly calculated dates are not upgraded into interactive calendars', () => {
   assert.match(script, /if\(!input\|\|input\.readOnly\|\|input\.dataset\.atsrsDateReady==='true'\)return;/);
+});
+
+test('custom selects join an open modal top layer and return to the body on close', () => {
+  assert.match(selectScript, /closest\('dialog\[open\]'\)/);
+  assert.match(selectScript, /host\.appendChild\(control\.menu\)/);
+  assert.match(selectScript, /host\.classList\.add\('atsrs-select-menu-host'\)/);
+  assert.match(selectScript, /control\.host\.classList\.remove\('atsrs-select-menu-host'\)/);
+  assert.match(selectScript, /document\.body\.appendChild\(control\.menu\)/);
 });

@@ -137,10 +137,21 @@
     control.menu.style.top=(above?Math.max(edge,rect.top-gap-maxHeight):rect.bottom+gap)+'px';
     control.menu.classList.toggle('is-above',above);
   }
+  function attachMenu(control){
+    var host=control.select.closest&&control.select.closest('dialog[open]');
+    if(host){
+      host.appendChild(control.menu);
+      host.classList.add('atsrs-select-menu-host');
+      control.host=host;
+    }else if(control.menu.parentNode!==document.body){
+      document.body.appendChild(control.menu);
+    }
+  }
   function open(control,keyboard){
     if(control.trigger.disabled)return;
     if(openControl&&openControl!==control)close(openControl,false);
     sync(control);
+    attachMenu(control);
     control.menu.hidden=false;
     control.trigger.setAttribute('aria-expanded','true');
     openControl=control;
@@ -160,6 +171,11 @@
     control.trigger.setAttribute('aria-expanded','false');
     control.trigger.removeAttribute('aria-activedescendant');
     if(openControl===control)openControl=null;
+    if(control.host){
+      control.host.classList.remove('atsrs-select-menu-host');
+      control.host=null;
+    }
+    if(control.menu.parentNode!==document.body)document.body.appendChild(control.menu);
     if(focus)control.trigger.focus({preventScroll:true});
   }
   function chooseActive(control){
@@ -231,7 +247,7 @@
 
     shell.appendChild(trigger);
     document.body.appendChild(menu);
-    var control={select:select,shell:shell,trigger:trigger,menu:menu,active:0};
+    var control={select:select,shell:shell,trigger:trigger,menu:menu,active:0,host:null};
     controls.set(select,control);
     trigger.addEventListener('click',function(){control.menu.hidden?open(control,false):close(control,false)});
     trigger.addEventListener('keydown',function(event){onKeydown(event,control)});

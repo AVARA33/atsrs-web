@@ -115,28 +115,7 @@
     var dialogRect=dialog.getBoundingClientRect();
     var gap=8;
     var edge=12;
-    if(activeDialogHost&&window.innerWidth>=860){
-      var hostRect=activeDialogHost.getBoundingClientRect();
-      var sideGap=8;
-      var rightLeft=hostRect.right+sideGap;
-      var leftLeft=hostRect.left-dialogRect.width-sideGap;
-      var sideEdge=8;
-      var canUseRight=rightLeft+dialogRect.width<=window.innerWidth-sideEdge;
-      var canUseLeft=leftLeft>=sideEdge;
-      if(canUseRight||canUseLeft){
-        var sideLeft=canUseRight?rightLeft:leftLeft;
-        var sideMaxTop=Math.max(edge,window.innerHeight-dialogRect.height-edge);
-        var sideTop=Math.min(Math.max(edge,inputRect.top+(inputRect.height-dialogRect.height)/2),sideMaxTop);
-        dialog.style.left=Math.round(sideLeft)+'px';
-        dialog.style.top=Math.round(sideTop)+'px';
-        dialog.style.right='auto';
-        dialog.style.bottom='auto';
-        dialog.classList.add('place-side');
-        dialog.classList.remove('place-above','place-below');
-        return;
-      }
-    }
-    var centeredLeft=inputRect.left+(inputRect.width-dialogRect.width)/2;
+    var centeredLeft=inputRect.left;
     var maxLeft=Math.max(edge,window.innerWidth-dialogRect.width-edge);
     var left=Math.min(Math.max(edge,centeredLeft),maxLeft);
     var belowTop=inputRect.bottom+gap;

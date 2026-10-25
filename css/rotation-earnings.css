@@ -60,5 +60,6 @@ body:has(#rotationPage:not(.hidden)) #app.app:not(.hidden)>.main>#pageTitle{disp
 #rotationPage .rotation-dialog{width:min(620px,calc(100vw - 30px))}
 #rotationPage .rotation-entry-dates{grid-template-columns:minmax(0,1fr) minmax(0,.9fr) minmax(0,1fr)}
 #rotationPage .rotation-field-hint{margin:-5px 0 0;color:#7f898c;font-size:10px;line-height:1.45}
-#rotationPage input[readonly]{border-color:#293033!important;background:#101314!important;color:#c9ced0!important;cursor:default}
+#rotationPage .rotation-dialog.atsrs-select-menu-host{overflow:visible!important}
+#rotationPage .rotation-dialog>.atsrs-select-menu{z-index:2147483647!important}
 @media(max-width:600px){#rotationPage .rotation-entry-dates{grid-template-columns:1fr}}
