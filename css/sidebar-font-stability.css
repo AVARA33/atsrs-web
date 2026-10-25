@@ -1,4 +1,15 @@
-/* Keep the label's font metrics unchanged when a sidebar destination is selected. */
-#app.app:not(.hidden) > .sidebar .nav button.active {
+/* Keep every sidebar destination on the same type treatment, including the
+   selected destination. Responsive styles may still scale the shared size. */
+#app.app:not(.hidden) > .sidebar .nav button,
+#app.app:not(.hidden) > .sidebar .nav button :is(.atsrs-nav-label, span) {
+  font-family: var(--atsrs-font-sans), system-ui, sans-serif !important;
   font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Preserve the copper active marker while keeping the destination name as
+   readable as the other sidebar labels. */
+html[data-theme="dark"] body #app.app:not(.hidden) > .sidebar .nav button.active .atsrs-nav-label {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }

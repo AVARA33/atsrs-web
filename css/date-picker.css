@@ -30,13 +30,20 @@ dialog.atsrs-date-picker-host{
   --date-anchor-x:50%;
   position:fixed;
   width:min(320px,calc(100vw - 24px));
+  max-height:calc(100vh - 24px);
   padding:12px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
   pointer-events:auto;
   border:1px solid #343a36;
   border-radius:13px;
   background:#0b0d0c;
   box-shadow:0 14px 38px rgba(0,0,0,.42),0 2px 8px rgba(0,0,0,.28);
   color:#f8fafc;
+}
+.atsrs-date-picker-dialog.place-side::before,
+.atsrs-date-picker-dialog.place-side::after{
+  display:none;
 }
 .atsrs-date-picker-dialog::before,
 .atsrs-date-picker-dialog::after{

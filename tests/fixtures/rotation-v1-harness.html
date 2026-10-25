@@ -6,7 +6,8 @@
   <title>ATSRS Rotation Preview</title>
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/theme.css">
-  <link rel="stylesheet" href="../../css/rotation-earnings.css?v=9">
+  <link rel="stylesheet" href="../../css/date-picker.css?v=5852">
+  <link rel="stylesheet" href="../../css/rotation-earnings.css?v=11">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <style>
     html,body{margin:0;background:#080a0b!important;background-image:none!important;color:#fff;font-family:Arial,sans-serif}
@@ -20,6 +21,6 @@
 </head>
 <body>
   <div class="preview-shell"><aside class="preview-sidebar"><img src="../../assets/branding/atsrs-mark-copper-v6255.png" alt="ATSRS"><span>Dashboard</span><span>JobSearch</span><span>Documents</span><span class="active">Rotation</span><span>Profile</span></aside><main class="preview-main" id="mount"></main></div>
-  <script>fetch('../../index.html').then(r=>r.text()).then(t=>{const d=new DOMParser().parseFromString(t,'text/html'),section=d.querySelector('#rotationPage');document.querySelector('#mount').append(section);const s=document.createElement('script');s.src='../../js/rotation-earnings.js';s.onload=()=>{const wanted=new URLSearchParams(location.search).get('tab');if(wanted)document.querySelector(`[data-rotation-tab="${wanted}"]`)?.click()};document.body.append(s)});</script>
+  <script>fetch('../../index.html').then(r=>r.text()).then(t=>{const d=new DOMParser().parseFromString(t,'text/html'),section=d.querySelector('#rotationPage');document.querySelector('#mount').append(section);const datePicker=document.createElement('script');datePicker.src='../../js/date-picker.js?v=6096';datePicker.onload=()=>{const s=document.createElement('script');s.src='../../js/rotation-earnings.js?v=6';s.onload=()=>{const wanted=new URLSearchParams(location.search).get('tab');if(wanted)document.querySelector(`[data-rotation-tab="${wanted}"]`)?.click()};document.body.append(s)};document.body.append(datePicker)});</script>
 </body>
 </html>

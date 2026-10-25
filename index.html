@@ -103,7 +103,7 @@ html{background:#050606}
   integrity="sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti"
   crossorigin="anonymous">
 <link rel="stylesheet" href="css/base.css?v=6096">
-<link rel="stylesheet" href="css/rotation-earnings.css?v=9">
+<link rel="stylesheet" href="css/rotation-earnings.css?v=11">
 <link rel="stylesheet" href="css/login.css?v=375">
 <link rel="stylesheet" href="css/dashboard.css?v=447">
 <link rel="stylesheet" href="css/documents.css?v=375">
@@ -111,7 +111,7 @@ html{background:#050606}
 <link rel="stylesheet" href="css/cv-generator.css?v=6096">
 <link rel="stylesheet" href="css/account.css?v=6097">
 <link rel="stylesheet" href="css/product-experience.css?v=6097">
-<link rel="stylesheet" href="css/date-picker.css?v=5851">
+<link rel="stylesheet" href="css/date-picker.css?v=5852">
   <link rel="stylesheet" href="css/share-profile.css?v=6099">
 <link rel="stylesheet" href="css/public-share-protection.css?v=1">
 <link rel="stylesheet" href="css/recipient-links.css?v=433">
@@ -179,7 +179,7 @@ html{background:#050606}
 <link rel="stylesheet" href="css/modal-interaction-guard.css?v=1">
 <link rel="stylesheet" href="css/android-responsive-v1.css?v=1">
 <link rel="stylesheet" href="css/ios-responsive-v1.css?v=1">
-<link rel="stylesheet" href="css/sidebar-font-stability.css?v=1">
+<link rel="stylesheet" href="css/sidebar-font-stability.css?v=2">
 <script defer src="js/maintenance-guard.js?v=564"></script>
 
 
@@ -656,6 +656,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <div class="nav">
 <div class="nav-primary">
 <button id="navDashboard" onclick="showPage('dashboard',this)"></button>
+<button id="navRotation" class="personal-only" onclick="showPage('rotation',this)"><i class="ph ph-arrows-clockwise atsrs-nav-icon" aria-hidden="true"></i><span class="atsrs-nav-label">Rotation</span></button>
 <button id="navJobs" onclick="showPage('jobs',this);window.dispatchEvent(new CustomEvent('atsrs:jobs-nav'))">JobSearch</button>
 <button id="navRecruiters" class="personal-only" onclick="window.atsrsOpenJobsDirectory('recruiters',this)">Recruiters</button>
 <button id="navEmployers" class="personal-only" onclick="window.atsrsOpenJobsDirectory('employers',this)">Companies</button>
@@ -665,7 +666,6 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <button id="navCredentials" class="company-only" onclick="showCompanyCredentials('documents')">Company Credentials</button>
 <button id="navCertificates" onclick="showPage('certificates',this)"></button>
 <button id="navRefs" onclick="showPage('refs',this)"></button>
-<button id="navRotation" class="personal-only" onclick="showPage('rotation',this)"><i class="ph ph-arrows-clockwise atsrs-nav-icon" aria-hidden="true"></i><span class="atsrs-nav-label">Rotation</span></button>
 <button id="navCompliance" onclick="showPage('compliance',this)"></button>
 <button id="navReports" onclick="showPage('reports',this)"></button>
 <button id="navProfile" onclick="showPage('profile',this)"></button>
@@ -1714,11 +1714,11 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
   </header>
 
   <nav class="rotation-tabs" aria-label="Rotation sections">
-    <button type="button" class="is-active" data-rotation-tab="calendar"><i class="ph ph-calendar-dots"></i>Calendar</button>
-    <button type="button" data-rotation-tab="calculator"><i class="ph ph-calculator"></i>Salary Calculator</button>
-    <button type="button" data-rotation-tab="trips"><i class="ph ph-airplane-tilt"></i>Trips</button>
-    <button type="button" data-rotation-tab="reports"><i class="ph ph-chart-line-up"></i>Reports</button>
-    <button type="button" data-rotation-tab="settings"><i class="ph ph-gear-six"></i>Settings</button>
+    <button type="button" class="is-active" data-rotation-tab="calendar" aria-pressed="true"><i class="ph ph-calendar-dots"></i>Calendar</button>
+    <button type="button" data-rotation-tab="calculator" aria-pressed="false"><i class="ph ph-calculator"></i>Salary Calculator</button>
+    <button type="button" data-rotation-tab="trips" aria-pressed="false"><i class="ph ph-airplane-tilt"></i>Trips</button>
+    <button type="button" data-rotation-tab="reports" aria-pressed="false"><i class="ph ph-chart-line-up"></i>Reports</button>
+    <button type="button" data-rotation-tab="settings" aria-pressed="false"><i class="ph ph-gear-six"></i>Settings</button>
   </nav>
 
   <div id="rotationStatus" class="rotation-status" role="status" aria-live="polite"></div>
@@ -1815,10 +1815,12 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
     <form id="rotationEntryForm" method="dialog">
       <div class="rotation-card-heading"><h2 id="rotationEntryTitle">Mark calendar days</h2><button id="rotationEntryClose" type="button" aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button></div>
       <label><span>Day type</span><select id="rotationEntryType"><option value="offshore">Offshore</option><option value="onshore">Onshore</option><option value="travel">Travel</option><option value="hotel">Hotel</option><option value="home">Home</option></select></label>
-      <div class="rotation-field-grid">
+      <div class="rotation-field-grid rotation-entry-dates">
         <label><span>Start date</span><input id="rotationEntryStart" type="date" required></label>
-        <label><span>End date</span><input id="rotationEntryEnd" type="date" required></label>
+        <label><span>Duration</span><select id="rotationEntryWeeks" required aria-describedby="rotationEntryDurationHint"></select></label>
+        <label><span>End date</span><input id="rotationEntryEnd" type="date" required readonly aria-readonly="true"></label>
       </div>
+      <p id="rotationEntryDurationHint" class="rotation-field-hint">Choose from 1 to 48 weeks. The end date is calculated automatically and the range is previewed on the calendar.</p>
       <label><span>Note (optional)</span><textarea id="rotationEntryNote" maxlength="500" rows="3"></textarea></label>
       <p class="rotation-dialog-note">The selected type is applied to every day in this range and immediately updates the salary estimate.</p>
       <div class="rotation-dialog-actions"><button id="rotationEntryCancel" class="secondary" type="button">Cancel</button><button class="rotation-primary" type="submit">Save entry</button></div>
@@ -2644,7 +2646,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/document-date-validation.js?v=1"></script>
 <script src="js/payment-card-safety.js?v=1"></script>
 <script src="js/app.js?v=6126"></script>
-<script src="js/date-picker.js?v=6095"></script>
+<script src="js/date-picker.js?v=6096"></script>
 <script src="js/share-profile.js?v=456"></script>
 <script src="js/public-share-protection.js?v=1"></script>
 <script src="js/recipient-links.js?v=434"></script>
@@ -2675,7 +2677,7 @@ body.atsrs-session-pending #atsrsBootScreen{display:flex!important;}
 <script src="js/account-resources-v5990.js?v=6065"></script>
 <script src="js/product-updates-atlas-v6004.js?v=6038"></script>
 <script src="js/modal-interaction-guard.js?v=2"></script>
-<script src="js/rotation-earnings.js?v=4"></script>
+<script src="js/rotation-earnings.js?v=6"></script>
 
 
 
