@@ -289,6 +289,11 @@
     window.addEventListener('atsrs:data-hydrated',function(){scan(document)});
   }
 
-  window.atsrsSelectStandard={enhance:enhance,scan:scan,close:function(){close(openControl,false)}};
+  window.atsrsSelectStandard={
+    enhance:enhance,
+    scan:scan,
+    refresh:function(select){var control=controls.get(select);if(control)sync(control)},
+    close:function(){close(openControl,false)}
+  };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
