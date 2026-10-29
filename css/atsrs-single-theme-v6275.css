@@ -168,6 +168,24 @@ html body #app.app:not(.hidden)>.sidebar .nav button.active :is(i,span){
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
 }
 
+/* The legacy dark-theme sheet has a more specific green selector for the
+   current sidebar destination. Keep the label white and the state marker
+   bronze on every sidebar page. */
+html[data-theme] body #app.app:not(.hidden)>.sidebar .nav button.active{
+  border-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+  box-shadow:inset 3px 0 0 var(--atsrs-one-bronze)!important;
+}
+html[data-theme] body #app.app:not(.hidden)>.sidebar .nav button.active :is(
+  .atsrs-nav-icon,.atsrs-nav-label,i,span
+){
+  border-color:var(--atsrs-one-bronze)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+
 /* Prevent the last primary destination from sliding beneath fixed utilities on
    shorter desktop windows. */
 html body #app.app:not(.hidden) .sidebar .nav-primary{
@@ -261,6 +279,79 @@ html body.personal-mode #app #refsPage .atsrs-reference-tabs button.is-active{
   border-bottom-color:var(--atsrs-one-bronze-active)!important;
   color:var(--atsrs-one-text)!important;
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+html body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button{
+  border-bottom-color:color-mix(in srgb,var(--atsrs-one-bronze) 42%,transparent)!important;
+}
+html body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button.is-active{
+  border-bottom-color:var(--atsrs-one-bronze-active)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+
+/* Directory card artwork and controls are brand decoration, not a positive
+   status. Verified/official labels retain their semantic success colour. */
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-card{
+  --company-card-tone:var(--atsrs-one-bronze)!important;
+  --company-card-tone-rgb:168,102,66!important;
+  --company-card-surface-rgb:11,13,14!important;
+  border-color:var(--atsrs-one-line)!important;
+  border-left-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bg)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-card::before{
+  background:var(--atsrs-one-bronze)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-mark{
+  border-color:color-mix(in srgb,var(--atsrs-one-bronze) 48%,var(--atsrs-one-line))!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-bronze-active)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-actions :is(a,button),
+html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a,button){
+  border-color:var(--atsrs-one-line)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-actions :is(a,button)>i,
+html[data-theme] body #app.app:not(.hidden) #employersPage .employer-actions .employer-action-jobs,
+html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions :is(a,button)>i,
+html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs,
+html[data-theme] body #app.app:not(.hidden) #recruitersPage .employer-actions .employer-action-jobs.is-active>i{
+  color:var(--atsrs-one-bronze-active)!important;
+  -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
+}
+html[data-theme] body #app.app:not(.hidden) :is(#employersPage,#recruitersPage) .employer-actions :is(a,button):hover,
+html[data-theme] body #app.app:not(.hidden) :is(#employersPage,#recruitersPage) .employer-actions :is(a,button):focus-visible{
+  border-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--atsrs-one-bronze) 14%,transparent)!important;
+}
+
+/* Document category colour is decorative. Validity remains green, while
+   “No Expiry” is deliberately neutral. */
+html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-type-icon.is-green{
+  border-color:color-mix(in srgb,var(--atsrs-one-bronze) 44%,var(--atsrs-one-line))!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-bronze-active)!important;
+  -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-type-icon.is-green i{
+  color:var(--atsrs-one-bronze-active)!important;
+  -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #certificatesPage .atsrs-document-status.is-neutral{
+  border-color:var(--atsrs-one-line)!important;
+  background:transparent!important;
+  color:var(--atsrs-one-muted)!important;
+  -webkit-text-fill-color:var(--atsrs-one-muted)!important;
+}
+
+/* Developer headings and numeric totals are information hierarchy, not a
+   success signal. Access state labels continue to use semantic green. */
+html[data-theme] body #app.app:not(.hidden) #developerPage :is(
+  .admin-overview-kicker,.developer-document-count,#developerRegistrationCount
+){
+  color:var(--atsrs-one-bronze-active)!important;
+  -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
 }
 
 /* Product Updates: the network is branding, not a success message. */

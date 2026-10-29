@@ -6,10 +6,10 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6281 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6282 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6281"/);
-  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6279/);
+  assert.match(app, /data-atsrs-build="V6282"/);
+  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6282/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
   assert.match(app, /<h1 id="introMainTitle">Document, expiry and profile sharing platform<\/h1>/);
   assert.match(app, /<h1 class="sr-only">References workspace<\/h1>/);
@@ -18,7 +18,7 @@ test('V6281 loads one permanent ATSRS theme on the app and every public surface'
     'billing-terms.html', 'contact.html', 'data-deletion.html', 'data-protection.html',
     'faq.html', 'pricing.html', 'privacy.html', 'refund-policy.html', 'security.html',
     'terms.html', 'qr-upload.html', 'download/android/index.html'
-  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6279/, `${file} must load the one-theme stylesheet`);
+  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6282/, `${file} must load the one-theme stylesheet`);
 });
 
 test('the one-theme stylesheet defines the approved graphite and bronze palette', () => {
@@ -40,6 +40,12 @@ test('selected controls are visually distinct and semantic green is reserved for
   assert.match(css, /#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker \.atsrs-date-picker-days :is\(button,\.empty\)[\s\S]*?min-width:0!important/);
   assert.match(css, /\.document-status-valid,\.status-valid[\s\S]*?--atsrs-one-success/);
   assert.match(css, /#introPage \.updates-atlas[\s\S]*?--atlas-green:var\(--atsrs-one-bronze\)!important/);
+  assert.match(css, /#refsPage\[data-references-workspace="v5984"\] \.atsrs-reference-tabs button\.is-active[\s\S]*?--atsrs-one-bronze-active/);
+  assert.match(css, /#employersPage \.employer-card[\s\S]*?--company-card-tone:var\(--atsrs-one-bronze\)!important/);
+  assert.match(css, /#certificatesPage \.atsrs-document-type-icon\.is-green[\s\S]*?--atsrs-one-bronze-active/);
+  assert.match(css, /#certificatesPage \.atsrs-document-status\.is-neutral[\s\S]*?--atsrs-one-muted/);
+  assert.match(css, /#developerPage :is\([\s\S]*?\.developer-document-count[\s\S]*?--atsrs-one-bronze-active/);
+  assert.match(css, /\.profile-summary-verified[\s\S]*?--atsrs-one-success/);
 });
 
 test('dialog popovers are accessible and remain viewport-aligned inside their top-layer host', () => {
