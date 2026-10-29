@@ -6,9 +6,9 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6283 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6284 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6283"/);
+  assert.match(app, /data-atsrs-build="V6284"/);
   assert.match(app, /atsrs-single-theme-v6275\.css\?v=6283/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
   assert.match(app, /<h1 id="introMainTitle">Document, expiry and profile sharing platform<\/h1>/);
@@ -33,6 +33,7 @@ test('the one-theme stylesheet defines the approved graphite and bronze palette'
 
 test('selected controls are visually distinct and semantic green is reserved for status', () => {
   const css = read('css/atsrs-single-theme-v6275.css');
+  const referencesRuntime = read('js/references-workspace-v5984.js');
   assert.match(css, /#rotationPage \.rotation-tabs button:is\(\.is-active,\[aria-pressed="true"\]\)[\s\S]*?background:var\(--atsrs-one-bronze-soft\)!important/);
   assert.match(css, /#rotationPage \.rotation-heading h1[\s\S]*?color:var\(--atsrs-one-text\)!important/);
   assert.match(css, /#atsrsDatePicker \.atsrs-date-picker-dialog \.atsrs-date-picker-days button:is\(\.selected,\[data-selected="true"\],\[aria-pressed="true"\]\)[\s\S]*?box-shadow:inset 0 0 0 1px var\(--atsrs-one-bronze\)!important/);
@@ -46,6 +47,8 @@ test('selected controls are visually distinct and semantic green is reserved for
   assert.match(css, /#certificatesPage \.atsrs-document-status\.is-neutral[\s\S]*?--atsrs-one-muted/);
   assert.match(css, /#developerPage :is\([\s\S]*?\.developer-document-count[\s\S]*?--atsrs-one-bronze-active/);
   assert.match(css, /\.profile-summary-verified[\s\S]*?--atsrs-one-success/);
+  assert.match(referencesRuntime, /is-active'\)\?'#c07a50':'rgba\(168,102,66,\.42\)'/);
+  assert.doesNotMatch(referencesRuntime, /#55d06a|rgba\(85,208,106/);
 });
 
 test('dialog popovers are accessible and remain viewport-aligned inside their top-layer host', () => {

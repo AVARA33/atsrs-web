@@ -141,7 +141,7 @@
     var page=q('#refsPage');if(!page)return;
     var light=document.documentElement.getAttribute('data-theme')==='light';
     qa('.atsrs-reference-tabs button',page).forEach(function(button){
-      var color=light?(button.classList.contains('is-active')?'#3774cc':'rgba(55,116,204,.42)'):(button.classList.contains('is-active')?'#55d06a':'rgba(85,208,106,.42)');
+      var color=button.classList.contains('is-active')?'#c07a50':'rgba(168,102,66,.42)';
       button.style.setProperty('border-bottom-color',color,'important');
     });
   }
