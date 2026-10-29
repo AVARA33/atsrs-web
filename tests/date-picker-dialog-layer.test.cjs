@@ -12,8 +12,8 @@ const harness = fs.readFileSync(path.join(root, 'tests', 'fixtures', 'date-picke
 
 test('date picker assets use the current cache version', () => {
   assert.match(index, /css\/date-picker\.css\?v=5853/);
-  assert.match(index, /js\/date-picker\.js\?v=6097/);
-  assert.match(index, /js\/select-standard\.js\?v=6062/);
+  assert.match(index, /js\/date-picker\.js\?v=6280/);
+  assert.match(index, /js\/select-standard\.js\?v=6280/);
 });
 
 test('visual harness compares the real calendar selection with the real Jobs active page state', () => {

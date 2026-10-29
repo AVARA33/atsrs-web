@@ -6,9 +6,9 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6279 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6280 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6279"/);
+  assert.match(app, /data-atsrs-build="V6280"/);
   assert.match(app, /atsrs-single-theme-v6275\.css\?v=6279/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
   for (const file of [
