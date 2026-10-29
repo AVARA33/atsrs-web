@@ -171,14 +171,14 @@ html body #app.app:not(.hidden)>.sidebar .nav button.active :is(i,span){
 /* The legacy dark-theme sheet has a more specific green selector for the
    current sidebar destination. Keep the label white and the state marker
    bronze on every sidebar page. */
-html[data-theme] body #app.app:not(.hidden)>.sidebar .nav button.active{
+html[data-theme] body #app#app.app:not(.hidden)>.sidebar .nav button.active{
   border-color:var(--atsrs-one-bronze)!important;
   background:var(--atsrs-one-bronze-soft)!important;
   color:var(--atsrs-one-text)!important;
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
   box-shadow:inset 3px 0 0 var(--atsrs-one-bronze)!important;
 }
-html[data-theme] body #app.app:not(.hidden)>.sidebar .nav button.active :is(
+html[data-theme] body #app#app.app:not(.hidden)>.sidebar .nav button.active :is(
   .atsrs-nav-icon,.atsrs-nav-label,i,span
 ){
   border-color:var(--atsrs-one-bronze)!important;
@@ -280,10 +280,10 @@ html body.personal-mode #app #refsPage .atsrs-reference-tabs button.is-active{
   color:var(--atsrs-one-text)!important;
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
 }
-html body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button{
+html body.personal-mode #app#app #refsPage#refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button{
   border-bottom-color:color-mix(in srgb,var(--atsrs-one-bronze) 42%,transparent)!important;
 }
-html body.personal-mode #app #refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button.is-active{
+html body.personal-mode #app#app #refsPage#refsPage[data-references-workspace="v5984"] .atsrs-reference-tabs button.is-active{
   border-bottom-color:var(--atsrs-one-bronze-active)!important;
   color:var(--atsrs-one-text)!important;
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
