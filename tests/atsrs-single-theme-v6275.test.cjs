@@ -6,10 +6,10 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6284 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6285 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6284"/);
-  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6283/);
+  assert.match(app, /data-atsrs-build="V6285"/);
+  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6285/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
   assert.match(app, /<h1 id="introMainTitle">Document, expiry and profile sharing platform<\/h1>/);
   assert.match(app, /<h1 class="sr-only">References workspace<\/h1>/);
@@ -18,7 +18,7 @@ test('V6284 loads one permanent ATSRS theme on the app and every public surface'
     'billing-terms.html', 'contact.html', 'data-deletion.html', 'data-protection.html',
     'faq.html', 'pricing.html', 'privacy.html', 'refund-policy.html', 'security.html',
     'terms.html', 'qr-upload.html', 'download/android/index.html'
-  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6283/, `${file} must load the one-theme stylesheet`);
+  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6285/, `${file} must load the one-theme stylesheet`);
 });
 
 test('the one-theme stylesheet defines the approved graphite and bronze palette', () => {
@@ -46,6 +46,8 @@ test('selected controls are visually distinct and semantic green is reserved for
   assert.match(css, /#certificatesPage \.atsrs-document-type-icon\.is-green[\s\S]*?--atsrs-one-bronze-active/);
   assert.match(css, /#certificatesPage \.atsrs-document-status\.is-neutral[\s\S]*?--atsrs-one-muted/);
   assert.match(css, /#developerPage :is\([\s\S]*?\.developer-document-count[\s\S]*?--atsrs-one-bronze-active/);
+  assert.match(css, /#dashboardPage \.dashboard-personal-action>i[\s\S]*?--atsrs-one-bronze-active/);
+  assert.match(css, /#jobsPage \.jobs-notice>div>span[\s\S]*?--atsrs-one-muted/);
   assert.match(css, /\.profile-summary-verified[\s\S]*?--atsrs-one-success/);
   assert.match(referencesRuntime, /is-active'\)\?'#c07a50':'rgba\(168,102,66,\.42\)'/);
   assert.doesNotMatch(referencesRuntime, /#55d06a|rgba\(85,208,106/);

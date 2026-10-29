@@ -386,6 +386,29 @@ html[data-theme] body #app.app:not(.hidden) #developerPage :is(
 }
 #introPage .atlas-zone-live{border-color:var(--atsrs-one-bronze)!important}
 
+/* Informational actions and notices are brand hierarchy, not success states. */
+html[data-theme] body #app.app:not(.hidden) #dashboardPage .dashboard-personal-action>i{
+  color:var(--atsrs-one-bronze-active)!important;
+  -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice{
+  border-color:var(--atsrs-one-line)!important;
+  background:var(--atsrs-one-bg)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>i,
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>a{
+  color:var(--atsrs-one-bronze-active)!important;
+  -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>div>strong{
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>div>span{
+  color:var(--atsrs-one-muted)!important;
+  -webkit-text-fill-color:var(--atsrs-one-muted)!important;
+}
+
 /* Green is reserved for real positive state, amber for warnings and red for
    errors/expiry. Ordinary navigation and decorative icons remain bronze. */
 html body #app.app:not(.hidden) :is(
