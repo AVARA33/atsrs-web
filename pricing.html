@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-billing-enabled="false">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0b0d0e">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#050606">
   <title>Personal Plans | ATSRS</title>
   <meta name="description" content="Compare ATSRS Free, Bronze, Silver, Gold and Titan Personal plan capabilities.">
   <link rel="canonical" href="https://atsrs.com/pricing.html">
   <script>document.documentElement.dataset.theme='dark';document.documentElement.style.colorScheme='dark';</script>
   <link rel="stylesheet" href="vendor/phosphor-icons/phosphor-regular.css?v=441">
   <link rel="stylesheet" href="css/public-landing.css?v=6070">
-  <link rel="stylesheet" href="css/pricing.css?v=6068">
+  <link rel="stylesheet" href="css/pricing.css?v=6069">
   <link rel="stylesheet" href="css/brand-auth-v513.css?v=539">
   <link rel="stylesheet" href="css/privacy-brand-v533.css?v=539">
   <link rel="stylesheet" href="css/theme-palette-v508.css?v=58170">
@@ -19,14 +19,14 @@
 <link rel="stylesheet" href="css/app-copper-theme-v6243.css?v=6244">
 <link rel="stylesheet" href="css/atsrs-single-theme-v6275.css?v=6283">
 </head>
-
-  <!--email_off-->
+<body class="pricing-page-root">
   <div class="atsrs-public-landing pricing-shell">
     <header class="public-header">
       <a class="public-wordmark atsrs-home-lockup" href="/" aria-label="ATSRS — Applicant Tracking System &amp; Recruitment Solutions"></a>
-      <nav class="public-nav" aria-label="Pricing navigation"><a class="public-home-link" href="/?view=home" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><a href="/?view=home#platform">Platform</a><a href="/?view=home#how-it-works">How it works</a><a href="/?view=home#plans">Plans</a><a href="/?view=home#faq">FAQ</a><a href="contact.html">Contact</a></nav>
+      <nav class="public-nav" aria-label="Pricing navigation"><a class="public-home-link" href="/?view=home" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a><a href="about.html">About</a><a href="/?view=home#platform">Platform</a><a href="/?view=home#how-it-works">How it works</a><a href="/?view=home#plans">Plans</a><a href="/?view=home#faq">FAQ</a><a href="contact.html">Contact</a></nav>
       <div class="public-header-actions">
         <a class="public-home-link public-home-mobile" href="/?view=home" aria-label="Home" title="Home"><i class="ph ph-house" aria-hidden="true"></i></a>
+        <button type="button" class="public-theme-toggle" data-public-theme-toggle role="switch" aria-label="Switch colour theme"><span class="public-theme-track" aria-hidden="true"><i class="ph ph-moon public-theme-moon"></i><i class="ph ph-sun public-theme-sun"></i><span class="public-theme-thumb"></span></span></button>
         <a class="public-login" href="/?view=login">Log in</a>
         <a class="public-cta public-cta-small" href="/?view=signup">Create Free Account</a>
       </div>
@@ -38,37 +38,42 @@
         <h1>Choose the level that fits your document workflow.</h1>
         <p>Start with the essentials, then choose the level of career access, document capacity and AI support that fits how actively you work.</p>
         <div class="pricing-billing" aria-label="Billing period"><button type="button" class="active" data-pricing-cycle="monthly" aria-pressed="true">Monthly</button><button type="button" data-pricing-cycle="yearly" aria-pressed="false">Yearly <span>Save 20%</span></button></div>
+        <div class="pricing-notice"><i class="ph ph-info" aria-hidden="true"></i><span>Prices are shown in USD. Billing is not open yet and no charge is taken from this page. When enabled, card entry will stay on the bank's secure payment page; ATSRS will not store card numbers or CVV values.</span></div>
+        <div class="pricing-payment-consent" aria-label="Payment terms acceptance requirement">
+          <label><input type="checkbox" name="accepted_payment_terms" data-payment-terms disabled><span>I have read and accept the <a href="billing-terms.html">Payment Terms</a> and <a href="refund-policy.html">Refund &amp; Cancellation Policy</a>.</span></label>
+          <small>This checkbox becomes mandatory and enabled when paid checkout opens. No payment request can be created without acceptance.</small>
+        </div>
       </section>
 
       <section class="pricing-free-section" aria-label="ATSRS Free Personal plan">
         <article id="free" class="pricing-plan pricing-plan-free">
           <div class="pricing-plan-summary"><p class="public-plan-name">FREE</p><h2>Start with the essentials.</h2><p>Organise your core career documents and explore a limited selection of opportunities without a payment card.</p></div>
           <ul><li>100 MB Secure Storage</li><li>10 Tracked Documents</li><li>Manual and QR document upload</li><li>Document tracking and expiry dashboard</li><li>Personal profile, CV and references</li><li>Work availability and controlled share links</li><li>Unlimited Email + 50 WhatsApp expiry alerts / month</li><li>1 lifetime AI document scan + 1 lifetime AI CV generation</li><li>Limited JobSearch catalogue</li></ul>
-          <div class="pricing-plan-free-cta"><div class="pricing-price"><strong data-free-price data-usd="$0" data-azn="₼0">$0</strong><span>/ forever</span><small>Available without payment</small></div><a class="pricing-action" href="/?view=signup">Start with Free</a></div>
+          <div class="pricing-plan-free-cta"><div class="pricing-price"><strong>$0</strong><span>/ forever</span><small>Available without payment</small></div><a class="pricing-action" href="/?view=signup">Start with Free</a></div>
         </article>
       </section>
 
       <section class="pricing-paid-section" aria-label="ATSRS paid Personal plans">
         <div class="pricing-paid-grid">
         <article id="bronze" class="pricing-plan pricing-plan-bronze">
-          <span class="pricing-plan-status">RECOMMENDED</span><p class="public-plan-name">BRONZE</p><h2>Active Job Seekers</h2><p class="pricing-plan-copy">Unlock ATSRS career discovery and controlled outreach with practical Personal limits.</p><div class="pricing-price" data-plan-price data-monthly="$20" data-yearly="$16" data-monthly-azn="₼34" data-yearly-azn="₼27" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Monthly billing" data-yearly-note="Save 20% · $192 billed annually" data-yearly-note-azn="20% qənaət · illik ₼324 ödəniş"><strong>$20</strong><span>/ month</span><small>Monthly billing</small></div>
+          <span class="pricing-plan-status">RECOMMENDED</span><p class="public-plan-name">BRONZE</p><h2>Active Job Seekers</h2><p class="pricing-plan-copy">Unlock ATSRS career discovery and controlled outreach with practical Personal limits.</p><div class="pricing-price" data-plan-price data-monthly="$19.99" data-yearly="$16" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Monthly billing" data-yearly-note="Save 20% · $192 billed annually"><strong>$19.99</strong><span>/ month</span><small>Monthly billing</small></div>
           <ul><li>1000 MB Secure Storage</li><li>200 Tracked Documents</li><li>Unlimited Email + 150 WhatsApp expiry alerts / month</li><li>15 AI document scans + 3 AI CV generations / month</li><li>Full JobSearch vacancy catalogue</li><li>Immediate access to newest vacancies</li><li>Recruiter details and verified contact routes</li><li>Direct Apply and original source links</li><li>Recruiter and official company directories</li><li>24-hour recipient-specific profile sharing</li></ul>
-          <span class="pricing-action pricing-action-disabled" aria-disabled="true" title="Billing is not open yet">Choose Bronze</span>
+          <button type="button" class="pricing-action pricing-action-disabled" data-pricing-checkout="bronze" disabled aria-disabled="true" title="Billing is not open yet">Choose Bronze</button>
         </article>
         <article id="silver" class="pricing-plan pricing-plan-future pricing-plan-silver">
-          <span class="pricing-plan-status">COMING SOON</span><p class="public-plan-name">SILVER</p><h2>Frequent Career Activity</h2><p class="pricing-plan-copy">More working capacity without changing the complete Bronze feature set.</p><div class="pricing-price" data-plan-price data-monthly="$40" data-yearly="$32" data-monthly-azn="₼68" data-yearly-azn="₼54" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Planned price" data-yearly-note="Save 20% · $384 billed annually" data-yearly-note-azn="20% qənaət · illik ₼648 ödəniş"><strong>$40</strong><span>/ month</span><small>Planned price</small></div>
+          <span class="pricing-plan-status">COMING SOON</span><p class="public-plan-name">SILVER</p><h2>Frequent Career Activity</h2><p class="pricing-plan-copy">More working capacity without changing the complete Bronze feature set.</p><div class="pricing-price" data-plan-price data-monthly="$39.99" data-yearly="$32" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Planned price" data-yearly-note="Save 20% · $384 billed annually"><strong>$39.99</strong><span>/ month</span><small>Planned price</small></div>
           <ul><li>2 GB Secure Storage</li><li>700 Tracked Documents</li><li>Unlimited Email + 300 WhatsApp expiry alerts / month</li><li>50 AI document scans + 5 AI CV generations / month</li><li>Full JobSearch vacancy catalogue</li><li>Immediate access to newest vacancies</li><li>Recruiter details and verified contact routes</li><li>Direct Apply and original source links</li><li>Recruiter and official company directories</li><li>24-hour recipient-specific profile sharing</li></ul>
-          <span class="pricing-action pricing-action-disabled" aria-disabled="true">Coming soon</span>
+          <button type="button" class="pricing-action pricing-action-disabled" data-pricing-checkout="silver" disabled aria-disabled="true">Coming soon</button>
         </article>
         <article id="gold" class="pricing-plan pricing-plan-future pricing-plan-gold">
-          <span class="pricing-plan-status">COMING SOON</span><p class="public-plan-name">GOLD</p><h2>Intensive Career Management</h2><p class="pricing-plan-copy">High-volume capacity for people managing a larger professional record.</p><div class="pricing-price" data-plan-price data-monthly="$70" data-yearly="$56" data-monthly-azn="₼119" data-yearly-azn="₼95" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Planned price" data-yearly-note="Save 20% · $672 billed annually" data-yearly-note-azn="20% qənaət · illik ₼1 140 ödəniş"><strong>$70</strong><span>/ month</span><small>Planned price</small></div>
+          <span class="pricing-plan-status">COMING SOON</span><p class="public-plan-name">GOLD</p><h2>Intensive Career Management</h2><p class="pricing-plan-copy">High-volume capacity for people managing a larger professional record.</p><div class="pricing-price" data-plan-price data-monthly="$69.99" data-yearly="$56" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Planned price" data-yearly-note="Save 20% · $672 billed annually"><strong>$69.99</strong><span>/ month</span><small>Planned price</small></div>
           <ul><li>5 GB Secure Storage</li><li>1,500 Tracked Documents</li><li>Unlimited Email + 750 WhatsApp expiry alerts / month</li><li>150 AI document scans + 7 AI CV generations / month</li><li>Full JobSearch vacancy catalogue</li><li>Immediate access to newest vacancies</li><li>Recruiter details and verified contact routes</li><li>Direct Apply and original source links</li><li>Recruiter and official company directories</li><li>24-hour recipient-specific profile sharing</li></ul>
-          <span class="pricing-action pricing-action-disabled" aria-disabled="true">Coming soon</span>
+          <button type="button" class="pricing-action pricing-action-disabled" data-pricing-checkout="gold" disabled aria-disabled="true">Coming soon</button>
         </article>
         <article id="titan" class="pricing-plan pricing-plan-future pricing-plan-titan">
-          <span class="pricing-plan-status">COMING SOON</span><p class="public-plan-name">TITAN</p><h2>Maximum Personal Capacity</h2><p class="pricing-plan-copy">The highest ATSRS Personal limits for power users with extensive records.</p><div class="pricing-price" data-plan-price data-monthly="$120" data-yearly="$96" data-monthly-azn="₼204" data-yearly-azn="₼163" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Planned price" data-yearly-note="Save 20% · $1,152 billed annually" data-yearly-note-azn="20% qənaət · illik ₼1 956 ödəniş"><strong>$120</strong><span>/ month</span><small>Planned price</small></div>
+          <span class="pricing-plan-status">COMING SOON</span><p class="public-plan-name">TITAN</p><h2>Maximum Personal Capacity</h2><p class="pricing-plan-copy">The highest ATSRS Personal limits for power users with extensive records.</p><div class="pricing-price" data-plan-price data-monthly="$119.99" data-yearly="$96" data-monthly-period="/ month" data-yearly-period="/ month" data-monthly-note="Planned price" data-yearly-note="Save 20% · $1,152 billed annually"><strong>$119.99</strong><span>/ month</span><small>Planned price</small></div>
           <ul><li>10 GB Secure Storage</li><li>2,000 Tracked Documents</li><li>Unlimited Email and WhatsApp expiry alerts</li><li>500 AI document scans + 10 AI CV generations / month</li><li>Full JobSearch vacancy catalogue</li><li>Immediate access to newest vacancies</li><li>Recruiter details and verified contact routes</li><li>Direct Apply and original source links</li><li>Recruiter and official company directories</li><li>24-hour recipient-specific profile sharing</li></ul>
-          <span class="pricing-action pricing-action-disabled" aria-disabled="true">Coming soon</span>
+          <button type="button" class="pricing-action pricing-action-disabled" data-pricing-checkout="titan" disabled aria-disabled="true">Coming soon</button>
         </article>
         </div>
       </section>
@@ -80,7 +85,7 @@
           <table>
             <thead><tr><th scope="col">Capability</th><th scope="col">Free</th><th scope="col">Bronze</th><th scope="col">Silver <small>Planned</small></th><th scope="col">Gold <small>Planned</small></th><th scope="col">Titan <small>Planned</small></th></tr></thead>
             <tbody>
-              <tr><th scope="row">Price</th><td data-price-copy data-monthly="$0" data-yearly="$0" data-monthly-azn="₼0" data-yearly-azn="₼0">$0</td><td data-price-copy data-monthly="$20/mo" data-yearly="$16/mo · Save 20% · $192 billed annually" data-monthly-azn="₼34/ay" data-yearly-azn="₼27/ay · 20% qənaət · illik ₼324 ödəniş">$20/mo</td><td data-price-copy data-monthly="$40/mo" data-yearly="$32/mo · Save 20% · $384 billed annually" data-monthly-azn="₼68/ay" data-yearly-azn="₼54/ay · 20% qənaət · illik ₼648 ödəniş">$40/mo</td><td data-price-copy data-monthly="$70/mo" data-yearly="$56/mo · Save 20% · $672 billed annually" data-monthly-azn="₼119/ay" data-yearly-azn="₼95/ay · 20% qənaət · illik ₼1 140 ödəniş">$70/mo</td><td data-price-copy data-monthly="$120/mo" data-yearly="$96/mo · Save 20% · $1,152 billed annually" data-monthly-azn="₼204/ay" data-yearly-azn="₼163/ay · 20% qənaət · illik ₼1 956 ödəniş">$120/mo</td></tr>
+              <tr><th scope="row">Price</th><td data-price-copy data-monthly="$0" data-yearly="$0">$0</td><td data-price-copy data-monthly="$19.99/mo" data-yearly="$16/mo · Save 20% · $192 billed annually">$19.99/mo</td><td data-price-copy data-monthly="$39.99/mo" data-yearly="$32/mo · Save 20% · $384 billed annually">$39.99/mo</td><td data-price-copy data-monthly="$69.99/mo" data-yearly="$56/mo · Save 20% · $672 billed annually">$69.99/mo</td><td data-price-copy data-monthly="$119.99/mo" data-yearly="$96/mo · Save 20% · $1,152 billed annually">$119.99/mo</td></tr>
               <tr class="pricing-table-group"><th colspan="6" scope="rowgroup">Documents and AI</th></tr>
               <tr><th scope="row">Tracked Documents</th><td>10</td><td>200</td><td>700</td><td>1,500</td><td>2,000</td></tr>
               <tr><th scope="row">Storage</th><td>100 MB</td><td>1000 MB</td><td>2 GB</td><td>5 GB</td><td>10 GB</td></tr>
@@ -120,8 +125,8 @@
       </section>
     </main>
 
-    <footer class="public-footer"><div class="public-footer-business"><strong>ATSRS service operator: “HBA” Məhdud Məsuliyyətli Cəmiyyəti</strong><span>VÖEN: 1402128381</span><span>AZ1095, Bakı şəhəri, Nəsimi rayonu, Rəsul Rza küçəsi, ev 47, mənzil 6</span><a href="mailto:contact@atsrs.com">contact@atsrs.com</a></div>
-      <nav class="public-footer-legal" aria-label="Legal information"><a href="contact.html">Contact</a><a href="data-protection.html">Data Protection &amp; GDPR</a><a href="terms.html">Terms of Use</a><a href="privacy.html">Privacy Notice</a><a href="billing-terms.html">Billing Terms</a><a href="refund-policy.html">Refunds</a><a href="data-deletion.html">Data Rights</a></nav>
+    <footer class="public-footer">
+      <nav class="public-footer-legal" aria-label="Legal information"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="data-protection.html">Data Protection &amp; GDPR</a><a href="terms.html">Terms of Use</a><a href="privacy.html">Privacy Notice</a><a href="billing-terms.html">Billing Terms</a><a href="refund-policy.html">Refunds</a><a href="data-deletion.html">Data Rights</a></nav>
       <div class="public-footer-bottom"><p class="public-footer-copyright">© 2026 ATSRS. All rights reserved.</p><a class="public-footer-security" href="security.html">Report a Security Issue</a></div>
     </footer>
   </div>
@@ -130,6 +135,7 @@
   <script src="js/public-landing.js?v=6242"></script>
   <script src="js/pricing-currency.js?v=8"></script>
   <script src="js/pricing.js?v=470"></script>
-  <!--/email_off-->
+  <script src="vendor/supabase-js-2.111.0.min.js" integrity="sha384-fPWur1rx/DE6YtXP/x0MD6dd90RgnVsz5yX/DIg7CcVAnTBZsENWuIcpvVTM39ti" crossorigin="anonymous"></script>
+  <script type="module" src="js/pricing-checkout.js?v=1"></script>
 </body>
 </html>

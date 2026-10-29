@@ -1,0 +1,26 @@
+[Unit]
+Description=ATSRS PAŞA Bank e-commerce connector
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=atsrs-pasha
+Group=atsrs-pasha
+WorkingDirectory=/opt/atsrs-pasha-connector
+EnvironmentFile=/etc/atsrs-pasha/connector.env
+ExecStart=/usr/bin/node /opt/atsrs-pasha-connector/server.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/atsrs-pasha
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+MemoryDenyWriteExecute=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

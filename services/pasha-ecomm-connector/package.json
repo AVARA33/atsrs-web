@@ -1,0 +1,12 @@
+{
+  "name": "@atsrs/pasha-ecomm-connector",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

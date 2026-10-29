@@ -15,6 +15,11 @@ verify_jwt = true
 [functions.billing-webhook]
 verify_jwt = false
 
+[functions.billing-pasha-return]
+# PAŞA Bank posts the hosted-checkout transaction reference here. The function
+# confirms the result server-to-server before changing payment state.
+verify_jwt = false
+
 [functions.document-qr-upload]
 verify_jwt = false
 

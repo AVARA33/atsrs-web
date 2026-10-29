@@ -9,6 +9,8 @@ export type CheckoutRequest = {
   amountMinor: number;
   currency: string;
   customerReference: string;
+  clientIpAddress: string;
+  language: "az" | "en" | "ru";
   successUrl: string;
   cancelUrl: string;
 };
@@ -59,6 +61,23 @@ export type VerifiedWebhook = {
   safeFailureCode?: string;
 };
 
+export type ProviderPaymentState = VerifiedWebhook & {
+  providerOrderReference: string;
+};
+
+export type RefundRequest = {
+  providerOrderReference: string;
+  providerPaymentReference?: string;
+  amountMinor: number;
+  currency: string;
+  idempotencyKey: string;
+};
+
+export type RefundResult = {
+  providerRefundReference: string;
+  status: "pending" | "succeeded" | "failed";
+};
+
 export interface PaymentProvider {
   readonly key: string;
   createCheckout(request: CheckoutRequest): Promise<CheckoutResult>;
@@ -70,7 +89,11 @@ export interface PaymentProvider {
 // Bank adapters are intentionally not guessed. A provider is returned only
 // after its official merchant documentation, signing method and credentials
 // are available and a concrete adapter has been reviewed.
-export function resolvePaymentProvider(_configuredProvider: string): PaymentProvider | null {
+export async function resolvePaymentProvider(configuredProvider: string): Promise<PaymentProvider | null> {
+  if (configuredProvider === "pasha-ecomm") {
+    const { PashaEcommProvider } = await import("./pasha-ecomm.ts");
+    return new PashaEcommProvider();
+  }
   return null;
 }
 

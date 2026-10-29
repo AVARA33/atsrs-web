@@ -2,7 +2,8 @@
   "name": "atsrs-web",
   "private": true,
   "scripts": {
-    "build:cloudflare": "node scripts/build-cloudflare-pages.mjs"
+    "build:cloudflare": "node scripts/build-cloudflare-pages.mjs",
+    "test:pasha-local": "node scripts/verify-pasha-local-readiness.mjs"
   },
   "engines": {
     "node": ">=20"
