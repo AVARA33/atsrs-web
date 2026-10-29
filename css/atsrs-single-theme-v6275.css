@@ -192,6 +192,12 @@ html body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{display:none!
 #jobsPage .jobs-compact-check{min-height:44px!important;padding-block:8px!important}
 
 /* Rotation selected tabs and controls are unmistakable. */
+#rotationPage .rotation-heading h1{
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+  font-family:inherit!important;
+  font-weight:800!important;
+}
 #rotationPage .rotation-tabs button:is(.is-active,[aria-pressed="true"]){
   border-color:var(--atsrs-one-bronze)!important;
   background:var(--atsrs-one-bronze-soft)!important;
