@@ -17,6 +17,7 @@ html[data-theme="light"]{
   --atsrs-one-success:#4f9b68;
   --atsrs-one-warning:#c9a227;
   --atsrs-one-danger:#c65f55;
+  --atsrs-workspace-heading:var(--atsrs-one-text)!important;
   --accent:var(--atsrs-one-bronze)!important;
   --accent2:var(--atsrs-one-bronze-active)!important;
   --green:var(--atsrs-one-bronze)!important;
@@ -199,6 +200,7 @@ html[data-theme] body #app.app:not(.hidden) #rotationPage .rotation-heading h1,
   font-family:inherit!important;
   font-weight:800!important;
 }
+#rotationPage#rotationPage#rotationPage .rotation-tabs button:is(.is-active,[aria-pressed="true"]),
 #rotationPage .rotation-tabs button:is(.is-active,[aria-pressed="true"]){
   border-color:var(--atsrs-one-bronze)!important;
   background:var(--atsrs-one-bronze-soft)!important;
@@ -217,6 +219,21 @@ body .atsrs-select-menu{
   background:var(--atsrs-one-bg)!important;
   color:var(--atsrs-one-text)!important;
 }
+#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker .atsrs-date-picker-dialog{
+  overflow-x:hidden!important;
+  overscroll-behavior-x:none!important;
+}
+#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker :is(.atsrs-date-picker-days,.atsrs-date-picker-weekdays){
+  width:100%!important;
+  min-width:0!important;
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+}
+#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker .atsrs-date-picker-days :is(button,.empty){
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+}
+#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker .atsrs-date-picker-dialog .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]),
 html[data-theme] body #app.app:not(.hidden) #rotationPage #rotationEntryDialog #atsrsDatePicker .atsrs-date-picker-dialog .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]),
 #atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]){
   border-color:var(--atsrs-one-bronze)!important;
@@ -226,6 +243,7 @@ html[data-theme] body #app.app:not(.hidden) #rotationPage #rotationEntryDialog #
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
   box-shadow:inset 0 0 0 1px var(--atsrs-one-bronze)!important;
 }
+#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker .atsrs-date-picker-actions .confirm,
 html[data-theme] body #app.app:not(.hidden) #rotationPage #rotationEntryDialog #atsrsDatePicker .atsrs-date-picker-actions .confirm,
 #atsrsDatePicker .atsrs-date-picker-actions .confirm,
 html body :is(.public-cta,.contact-submit,.download-button){

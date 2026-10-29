@@ -6,16 +6,16 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6278 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6279 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6278"/);
-  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6278/);
+  assert.match(app, /data-atsrs-build="V6279"/);
+  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6279/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
   for (const file of [
     'billing-terms.html', 'contact.html', 'data-deletion.html', 'data-protection.html',
     'faq.html', 'pricing.html', 'privacy.html', 'refund-policy.html', 'security.html',
     'terms.html', 'qr-upload.html', 'download/android/index.html'
-  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6278/, `${file} must load the one-theme stylesheet`);
+  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6279/, `${file} must load the one-theme stylesheet`);
 });
 
 test('the one-theme stylesheet defines the approved graphite and bronze palette', () => {
@@ -33,6 +33,8 @@ test('selected controls are visually distinct and semantic green is reserved for
   assert.match(css, /#rotationPage \.rotation-tabs button:is\(\.is-active,\[aria-pressed="true"\]\)[\s\S]*?background:var\(--atsrs-one-bronze-soft\)!important/);
   assert.match(css, /#rotationPage \.rotation-heading h1[\s\S]*?color:var\(--atsrs-one-text\)!important/);
   assert.match(css, /#atsrsDatePicker \.atsrs-date-picker-dialog \.atsrs-date-picker-days button:is\(\.selected,\[data-selected="true"\],\[aria-pressed="true"\]\)[\s\S]*?box-shadow:inset 0 0 0 1px var\(--atsrs-one-bronze\)!important/);
+  assert.match(css, /#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker \.atsrs-date-picker-dialog[\s\S]*?overflow-x:hidden!important/);
+  assert.match(css, /#atsrsDatePicker#atsrsDatePicker#atsrsDatePicker \.atsrs-date-picker-days :is\(button,\.empty\)[\s\S]*?min-width:0!important/);
   assert.match(css, /\.document-status-valid,\.status-valid[\s\S]*?--atsrs-one-success/);
   assert.match(css, /#introPage \.updates-atlas[\s\S]*?--atlas-green:var\(--atsrs-one-bronze\)!important/);
 });
