@@ -6,11 +6,14 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6280 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6281 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6280"/);
+  assert.match(app, /data-atsrs-build="V6281"/);
   assert.match(app, /atsrs-single-theme-v6275\.css\?v=6279/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
+  assert.match(app, /<h1 id="introMainTitle">Document, expiry and profile sharing platform<\/h1>/);
+  assert.match(app, /<h1 class="sr-only">References workspace<\/h1>/);
+  assert.match(app, /<h1 class="sr-only">Privacy Notice<\/h1>/);
   for (const file of [
     'billing-terms.html', 'contact.html', 'data-deletion.html', 'data-protection.html',
     'faq.html', 'pricing.html', 'privacy.html', 'refund-policy.html', 'security.html',
