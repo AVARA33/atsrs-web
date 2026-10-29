@@ -396,7 +396,8 @@ html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice{
   background:var(--atsrs-one-bg)!important;
 }
 html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>i,
-html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>a{
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>a,
+html[data-theme] body #app.app:not(.hidden) #jobsPage .jobs-notice>a>span{
   color:var(--atsrs-one-bronze-active)!important;
   -webkit-text-fill-color:var(--atsrs-one-bronze-active)!important;
 }
