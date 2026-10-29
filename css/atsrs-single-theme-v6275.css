@@ -216,13 +216,16 @@ body .atsrs-select-menu{
   background:var(--atsrs-one-bg)!important;
   color:var(--atsrs-one-text)!important;
 }
+html[data-theme] body #app.app:not(.hidden) #atsrsDatePicker .atsrs-date-picker-dialog .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]),
 #atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]){
   border-color:var(--atsrs-one-bronze)!important;
-  background:var(--atsrs-one-bronze-soft)!important;
+  background-color:var(--atsrs-one-bronze-soft)!important;
+  background-image:none!important;
   color:var(--atsrs-one-text)!important;
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
   box-shadow:inset 0 0 0 1px var(--atsrs-one-bronze)!important;
 }
+html[data-theme] body #app.app:not(.hidden) #atsrsDatePicker .atsrs-date-picker-actions .confirm,
 #atsrsDatePicker .atsrs-date-picker-actions .confirm,
 html body :is(.public-cta,.contact-submit,.download-button){
   border-color:var(--atsrs-one-bronze-active)!important;
