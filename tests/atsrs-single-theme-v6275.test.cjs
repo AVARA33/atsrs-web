@@ -6,16 +6,16 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('V6277 loads one permanent ATSRS theme on the app and every public surface', () => {
+test('V6278 loads one permanent ATSRS theme on the app and every public surface', () => {
   const app = read('index.html');
-  assert.match(app, /data-atsrs-build="V6277"/);
-  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6277/);
+  assert.match(app, /data-atsrs-build="V6278"/);
+  assert.match(app, /atsrs-single-theme-v6275\.css\?v=6278/);
   assert.match(app, /<h1 class="sr-only">ATSRS account access<\/h1>/);
   for (const file of [
     'billing-terms.html', 'contact.html', 'data-deletion.html', 'data-protection.html',
     'faq.html', 'pricing.html', 'privacy.html', 'refund-policy.html', 'security.html',
     'terms.html', 'qr-upload.html', 'download/android/index.html'
-  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6277/, `${file} must load the one-theme stylesheet`);
+  ]) assert.match(read(file), /atsrs-single-theme-v6275\.css\?v=6278/, `${file} must load the one-theme stylesheet`);
 });
 
 test('the one-theme stylesheet defines the approved graphite and bronze palette', () => {

@@ -192,6 +192,7 @@ html body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{display:none!
 #jobsPage .jobs-compact-check{min-height:44px!important;padding-block:8px!important}
 
 /* Rotation selected tabs and controls are unmistakable. */
+html[data-theme] body #app.app:not(.hidden) #rotationPage .rotation-heading h1,
 #rotationPage .rotation-heading h1{
   color:var(--atsrs-one-text)!important;
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
@@ -216,7 +217,7 @@ body .atsrs-select-menu{
   background:var(--atsrs-one-bg)!important;
   color:var(--atsrs-one-text)!important;
 }
-html[data-theme] body #app.app:not(.hidden) #atsrsDatePicker .atsrs-date-picker-dialog .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]),
+html[data-theme] body #app.app:not(.hidden) #rotationPage #rotationEntryDialog #atsrsDatePicker .atsrs-date-picker-dialog .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]),
 #atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]){
   border-color:var(--atsrs-one-bronze)!important;
   background-color:var(--atsrs-one-bronze-soft)!important;
@@ -225,7 +226,7 @@ html[data-theme] body #app.app:not(.hidden) #atsrsDatePicker .atsrs-date-picker-
   -webkit-text-fill-color:var(--atsrs-one-text)!important;
   box-shadow:inset 0 0 0 1px var(--atsrs-one-bronze)!important;
 }
-html[data-theme] body #app.app:not(.hidden) #atsrsDatePicker .atsrs-date-picker-actions .confirm,
+html[data-theme] body #app.app:not(.hidden) #rotationPage #rotationEntryDialog #atsrsDatePicker .atsrs-date-picker-actions .confirm,
 #atsrsDatePicker .atsrs-date-picker-actions .confirm,
 html body :is(.public-cta,.contact-submit,.download-button){
   border-color:var(--atsrs-one-bronze-active)!important;
