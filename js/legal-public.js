@@ -4,7 +4,7 @@
     document.documentElement.dataset.theme='dark';
     document.documentElement.style.colorScheme='dark';
     var meta=document.querySelector('meta[name="theme-color"]');
-    if(meta)meta.setAttribute('content','#050606');
+    if(meta)meta.setAttribute('content','#0b0d0e');
     try{localStorage.removeItem('atsrs_theme');localStorage.removeItem('atsrs_public_theme');}catch(error){}
   }
   apply();

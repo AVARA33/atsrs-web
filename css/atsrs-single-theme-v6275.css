@@ -1,0 +1,287 @@
+/* ATSRS V6275 — one permanent graphite/bronze product theme.
+   There is no light/dark choice: the brand mark, content and controls share
+   one neutral background and use colour only when it communicates priority or
+   status. */
+:root,
+html,
+html[data-theme="dark"],
+html[data-theme="light"]{
+  color-scheme:dark!important;
+  --atsrs-one-bg:#0b0d0e;
+  --atsrs-one-line:#293033;
+  --atsrs-one-text:#f4f1ec;
+  --atsrs-one-muted:#9da5a7;
+  --atsrs-one-bronze:#a86642;
+  --atsrs-one-bronze-active:#c07a50;
+  --atsrs-one-bronze-soft:#211713;
+  --atsrs-one-success:#4f9b68;
+  --atsrs-one-warning:#c9a227;
+  --atsrs-one-danger:#c65f55;
+  --accent:var(--atsrs-one-bronze)!important;
+  --accent2:var(--atsrs-one-bronze-active)!important;
+  --green:var(--atsrs-one-bronze)!important;
+  --public-accent:var(--atsrs-one-bronze)!important;
+  --atsrs-jobs-green:var(--atsrs-one-bronze)!important;
+  --atsrs-jobs-green-text:var(--atsrs-one-bronze-active)!important;
+  --atsrs-bg:var(--atsrs-one-bg)!important;
+  --atsrs-bg2:var(--atsrs-one-bg)!important;
+  --atsrs-panel:var(--atsrs-one-bg)!important;
+  --atsrs-panel2:var(--atsrs-one-bg)!important;
+  --atsrs-border:var(--atsrs-one-line)!important;
+  --atsrs-text:var(--atsrs-one-text)!important;
+  --atsrs-muted:var(--atsrs-one-muted)!important;
+  --atsrs-shell-accent:var(--atsrs-one-bronze)!important;
+  --atsrs-shell-accent-strong:var(--atsrs-one-bronze-active)!important;
+  --atsrs-shell-accent-soft:var(--atsrs-one-bronze-soft)!important;
+  --atsrs-field-accent:var(--atsrs-one-bronze)!important;
+  --atsrs-field-accent-strong:var(--atsrs-one-bronze-active)!important;
+  background:var(--atsrs-one-bg)!important;
+}
+
+html[data-theme="light"]{filter:none!important}
+
+html body,
+html body.atsrs-public-view,
+html body.auth-open,
+html body #landingPage,
+html body .atsrs-public-landing,
+html body #app.app:not(.hidden),
+html body #app.app:not(.hidden)>.main,
+html body #app.app:not(.hidden)>.sidebar,
+html body #app.app:not(.hidden)>.main>section,
+html body :is(#atsrsBootScreen,#auth.auth){
+  background-color:var(--atsrs-one-bg)!important;
+  background-image:none;
+  color:var(--atsrs-one-text)!important;
+}
+
+html body :is(
+  .public-header,.public-hero,.public-section,.public-plan,.public-preview-card,
+  .public-workspace-card,.public-principle-card,.public-job-preview-card,
+  .public-directory-card,.public-process-step,.public-trust-card,.public-faq-item,
+  .public-cta-panel,.public-footer,.auth-card,.auth-intro,.legal-header,.legal-main,
+  .legal-shell,.legal-summary>div,.legal-toc,.legal-callout,.legal-contact,
+  .pricing-plan,.pricing-table-wrap,.contact-card,.android-shell,.android-card,
+  .qr-upload-card
+){
+  background-color:var(--atsrs-one-bg)!important;
+  background-image:none!important;
+  border-color:var(--atsrs-one-line)!important;
+  box-shadow:none!important;
+}
+
+html body :is(dialog,.modal,.atsrs-modal,.dialog,.popover,[role="dialog"]){
+  --surface:var(--atsrs-one-bg)!important;
+  --surface-2:var(--atsrs-one-bg)!important;
+}
+html body :is(
+  dialog,.modal,.atsrs-modal,.dialog,.popover,.dropdown-menu,.menu,
+  .atsrs-select-menu,.jobs-select-menu,.work-type-select-menu,
+  .personnel-combobox-options,.atsrs-notification-popover,
+  .workspace-switcher-menu,.job-detail-dialog,.profile-photo-crop-dialog,
+  .cv-generator-dialog,.share-request-dialog,.recipient-link-dialog
+){
+  background-color:var(--atsrs-one-bg)!important;
+  background-image:none!important;
+  border-color:var(--atsrs-one-line)!important;
+}
+
+html body :is([role="tooltip"],.tooltip,.atsrs-tooltip)::before,
+html body :is([role="tooltip"],.tooltip,.atsrs-tooltip){
+  background:var(--atsrs-one-bg)!important;
+  border-color:var(--atsrs-one-line)!important;
+  color:var(--atsrs-one-text)!important;
+}
+
+/* One theme means no visible or keyboard-reachable theme control. */
+#atsrsThemeToggle,
+#themeToggle,
+[data-public-theme-toggle],
+.theme-toggle,
+.public-theme-toggle{display:none!important}
+
+/* Surfaces use the same fill. Borders, spacing and elevation provide the
+   hierarchy without introducing a second background colour. */
+html body #app.app:not(.hidden) :is(
+  .panel,.card,.mini-panel,.workflow-card,.snapshot-card,.roadmap-card,.scan-box,
+  .import-box,.upload-simple,.share-card,.stats-card,.stat-card,.summary-card,
+  .profile-card,.profile-summary-card,.account-status-card,.documents-register-card,
+  .reference-card,.developer-registration-card,.rotation-calendar-card,
+  .rotation-next-card,.rotation-settings-card,.rotation-calculator-form,
+  .rotation-pay-summary,.rotation-placeholder,.employer-card,.recruiter-card,
+  .candidate-card,.talent-card,.product-update-card,.cv-main-panel,.cv-beta-box,
+  .atsrs-v134-career-card,.atsrs-reference-table-head,.account-resource-frame-shell
+){
+  border-color:var(--atsrs-one-line)!important;
+  background-color:var(--atsrs-one-bg)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+html body #app.app:not(.hidden) :is(
+  input:not([type="checkbox"]):not([type="radio"]),select,textarea,
+  .select-standard-toggle,.work-type-select-toggle,.jobs-select-toggle,
+  .atsrs-select-menu,.jobs-select-menu
+){
+  border-color:var(--atsrs-one-line)!important;
+  background-color:var(--atsrs-one-bg)!important;
+  background-image:none!important;
+  color:var(--atsrs-one-text)!important;
+}
+
+html body #app.app:not(.hidden) :focus-visible{
+  outline-color:var(--atsrs-one-bronze-active)!important;
+}
+
+/* Selected navigation, tabs, view switches, pagination and custom options use
+   one brand treatment everywhere. State badges are handled separately below. */
+html body #app.app:not(.hidden) :is(button,a,[role="tab"],[role="option"]):is(
+  .active,.is-active,.is-current,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"]
+),
+html body :is(.atsrs-select-option,.jobs-select-option)[aria-selected="true"]{
+  border-color:var(--atsrs-one-bronze)!important;
+  background-color:var(--atsrs-one-bronze-soft)!important;
+  background-image:none!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+html body #app.app:not(.hidden) :is(button,a,[role="tab"]):is(
+  .active,.is-active,.is-current,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"]
+) :is(i,svg){color:var(--atsrs-one-bronze-active)!important}
+html body :is(input[type="checkbox"],input[type="radio"]){accent-color:var(--atsrs-one-bronze-active)!important}
+
+html body #app.app:not(.hidden) :is(a,button):not(.danger):not(.error):hover{
+  border-color:color-mix(in srgb,var(--atsrs-one-bronze) 72%,var(--atsrs-one-line))!important;
+}
+
+/* Keep the active destination clear without turning the rail orange. */
+html body #app.app:not(.hidden)>.sidebar .nav button.active{
+  border-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+  box-shadow:inset 3px 0 0 var(--atsrs-one-bronze)!important;
+}
+html body #app.app:not(.hidden)>.sidebar .nav button.active :is(i,span){
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+
+/* Prevent the last primary destination from sliding beneath fixed utilities on
+   shorter desktop windows. */
+html body #app.app:not(.hidden) .sidebar .nav-primary{
+  padding-bottom:8px!important;
+  scroll-padding-bottom:8px!important;
+}
+html body #app.app:not(.hidden) .sidebar .nav-utility-group{
+  border-top:1px solid var(--atsrs-one-line)!important;
+  background:var(--atsrs-one-bg)!important;
+  box-shadow:0 -10px 18px var(--atsrs-one-bg)!important;
+}
+html body #app.app:not(.hidden) .sidebar .nav .nav-utility-divider{display:none!important}
+@media(min-width:801px) and (max-height:900px){
+  html body #app.app:not(.hidden) .sidebar .nav button,
+  html body.v76-sidebar-collapsed #app.app:not(.hidden) .sidebar .nav button{
+    min-height:54px!important;
+    height:54px!important;
+    padding-block:6px!important;
+  }
+}
+
+/* Job filters remain comfortable touch targets. */
+#jobsPage .jobs-compact-check{min-height:44px!important;padding-block:8px!important}
+
+/* Rotation selected tabs and controls are unmistakable. */
+#rotationPage .rotation-tabs button:is(.is-active,[aria-pressed="true"]){
+  border-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+  box-shadow:inset 0 -3px var(--atsrs-one-bronze-active)!important;
+}
+#rotationPage .rotation-tabs button:is(.is-active,[aria-pressed="true"]) i{
+  color:var(--atsrs-one-bronze-active)!important;
+}
+
+/* Popovers use the same theme and stay above a top-layer Rotation dialog. */
+#atsrsDatePicker .atsrs-date-picker-dialog,
+body .atsrs-select-menu{
+  border-color:var(--atsrs-one-line)!important;
+  background:var(--atsrs-one-bg)!important;
+  color:var(--atsrs-one-text)!important;
+}
+#atsrsDatePicker .atsrs-date-picker-days button:is(.selected,[data-selected="true"],[aria-pressed="true"]){
+  border-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+  box-shadow:inset 0 0 0 1px var(--atsrs-one-bronze)!important;
+}
+#atsrsDatePicker .atsrs-date-picker-actions .confirm,
+html body :is(.public-cta,.contact-submit,.download-button){
+  border-color:var(--atsrs-one-bronze-active)!important;
+  background:var(--atsrs-one-bronze-active)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+
+/* References navigation is brand bronze, not decorative green. */
+html body.personal-mode #app #refsPage .atsrs-reference-tabs button{
+  border-bottom-color:color-mix(in srgb,var(--atsrs-one-bronze) 42%,transparent)!important;
+}
+html body.personal-mode #app #refsPage .atsrs-reference-tabs button.is-active{
+  border-bottom-color:var(--atsrs-one-bronze-active)!important;
+  color:var(--atsrs-one-text)!important;
+  -webkit-text-fill-color:var(--atsrs-one-text)!important;
+}
+
+/* Product Updates: the network is branding, not a success message. */
+#introPage .updates-atlas{
+  --atlas-bg:var(--atsrs-one-bg)!important;
+  --atlas-panel:var(--atsrs-one-bg)!important;
+  --atlas-line:var(--atsrs-one-line)!important;
+  --atlas-text:var(--atsrs-one-text)!important;
+  --atlas-muted:var(--atsrs-one-muted)!important;
+  --atlas-green:var(--atsrs-one-bronze)!important;
+  --atlas-yellow:var(--atsrs-one-warning)!important;
+  --atlas-next:#8a949c!important;
+}
+#introPage :is(.updates-atlas-canvas,.updates-atlas-detail,.updates-atlas-summary,
+  .atlas-zone,.atlas-marker,.atlas-plan-card,.atlas-release-card,
+  .atlas-pricing-showcase,.atlas-plan-navigation){
+  background-color:var(--atsrs-one-bg)!important;
+  background-image:none!important;
+}
+#introPage .updates-atlas-view button.active::after,
+#introPage .updates-atlas-page-button.is-current{
+  border-color:var(--atsrs-one-bronze)!important;
+  background:var(--atsrs-one-bronze-soft)!important;
+  color:var(--atsrs-one-text)!important;
+}
+#introPage .atlas-coordinate{color:#657075!important}
+#introPage .atlas-zone-live :is(strong,i),
+#introPage .updates-atlas-summary span:first-child :is(b,em),
+#introPage .atlas-detail-status{
+  color:var(--atsrs-one-success)!important;
+  -webkit-text-fill-color:var(--atsrs-one-success)!important;
+}
+#introPage .atlas-zone-live{border-color:var(--atsrs-one-bronze)!important}
+
+/* Green is reserved for real positive state, amber for warnings and red for
+   errors/expiry. Ordinary navigation and decorative icons remain bronze. */
+html body #app.app:not(.hidden) :is(
+  .badge-ready,.verified-badge,.is-verified,.status-current,.status-active,
+  .account-status-verified,.profile-summary-verified,.good,.stat.good,
+  .document-status-valid,.status-valid
+){
+  border-color:color-mix(in srgb,var(--atsrs-one-success) 55%,transparent)!important;
+  background:color-mix(in srgb,var(--atsrs-one-success) 12%,transparent)!important;
+  color:#76bd8c!important;
+  -webkit-text-fill-color:#76bd8c!important;
+}
+
+@media(max-width:760px){
+  html body #app.app:not(.hidden),
+  html body #app.app:not(.hidden)>.main,
+  html body #app.app:not(.hidden)>.sidebar{background:var(--atsrs-one-bg)!important}
+}

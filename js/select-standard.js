@@ -131,10 +131,14 @@
     var desired=Math.min(360,Math.max(160,control.menu.scrollHeight));
     var above=availableBelow<Math.min(desired,220)&&availableAbove>availableBelow;
     var maxHeight=Math.max(120,Math.min(desired,above?availableAbove:availableBelow));
-    control.menu.style.left=Math.max(edge,Math.min(rect.left,window.innerWidth-rect.width-edge))+'px';
+    var viewportLeft=Math.max(edge,Math.min(rect.left,window.innerWidth-rect.width-edge));
+    var viewportTop=above?Math.max(edge,rect.top-gap-maxHeight):rect.bottom+gap;
+    /* Menus remain viewport-relative while temporarily hosted by a top-layer
+       dialog, which keeps them above the backdrop and attached to the field. */
+    control.menu.style.left=viewportLeft+'px';
     control.menu.style.width=Math.max(120,Math.min(rect.width,window.innerWidth-edge*2))+'px';
     control.menu.style.maxHeight=maxHeight+'px';
-    control.menu.style.top=(above?Math.max(edge,rect.top-gap-maxHeight):rect.bottom+gap)+'px';
+    control.menu.style.top=viewportTop+'px';
     control.menu.classList.toggle('is-above',above);
   }
   function attachMenu(control){

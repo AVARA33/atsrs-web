@@ -59,6 +59,8 @@
     picker.setAttribute('role','dialog');
     picker.setAttribute('aria-modal','false');
     picker.setAttribute('aria-labelledby','atsrsDatePickerTitle');
+    picker.setAttribute('aria-hidden','true');
+    picker.setAttribute('inert','');
     picker.innerHTML=
       '<div class="atsrs-date-picker-backdrop" data-date-cancel="true"></div>'+
       '<div class="atsrs-date-picker-dialog">'+
@@ -115,7 +117,9 @@
     var dialogRect=dialog.getBoundingClientRect();
     var gap=8;
     var edge=12;
-    var centeredLeft=inputRect.left;
+    var centeredLeft=activeInput.id==='rotationEntryEnd'
+      ?inputRect.right-dialogRect.width
+      :inputRect.left;
     var maxLeft=Math.max(edge,window.innerWidth-dialogRect.width-edge);
     var left=Math.min(Math.max(edge,centeredLeft),maxLeft);
     var belowTop=inputRect.bottom+gap;
@@ -127,6 +131,8 @@
     var top=Math.min(Math.max(edge,placeAbove?aboveTop:belowTop),maxTop);
     var anchorCenter=inputRect.left+(inputRect.width/2)-left;
 
+    /* The picker is fixed, so its coordinates must remain viewport-relative
+       even while it is temporarily hosted by a top-layer dialog. */
     dialog.style.left=Math.round(left)+'px';
     dialog.style.top=Math.round(top)+'px';
     dialog.style.setProperty('--date-anchor-x',Math.round(
@@ -233,7 +239,10 @@
       document.body.appendChild(picker);
     }
     picker.querySelector('#atsrsDatePickerTitle').textContent=fieldTitle(input);
+    picker.removeAttribute('inert');
+    picker.setAttribute('aria-hidden','false');
     picker.classList.remove('hidden');
+    input.setAttribute('aria-expanded','true');
     document.body.classList.add('atsrs-date-picker-open');
     render();
     requestAnimationFrame(function(){
@@ -246,6 +255,8 @@
   function close(){
     if(!picker)return;
     picker.classList.add('hidden');
+    picker.setAttribute('aria-hidden','true');
+    picker.setAttribute('inert','');
     document.body.classList.remove('atsrs-date-picker-open');
     if(activeDialogHost){
       activeDialogHost.classList.remove('atsrs-date-picker-host');
@@ -254,6 +265,7 @@
     if(picker.parentNode!==document.body)document.body.appendChild(picker);
     var returnTarget=activeInput;
     activeInput=null;
+    if(returnTarget)returnTarget.setAttribute('aria-expanded','false');
     if(returnTarget)setTimeout(function(){returnTarget.focus();},0);
   }
   function commit(){
@@ -297,6 +309,8 @@
     input.dataset.atsrsDateReady='true';
     input.classList.add('atsrs-date-input');
     input.setAttribute('aria-haspopup','dialog');
+    input.setAttribute('aria-controls','atsrsDatePicker');
+    input.setAttribute('aria-expanded','false');
     input.setAttribute('placeholder','YYYY-MM-DD');
     input.addEventListener('click',function(){open(input);});
     input.addEventListener('keydown',function(event){

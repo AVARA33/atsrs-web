@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rotation entry popover harness</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/date-picker.css">
+  <link rel="stylesheet" href="../../css/native-select-theme-v539.css">
+  <link rel="stylesheet" href="../../css/rotation-earnings.css">
+  <link rel="stylesheet" href="../../css/atsrs-single-theme-v6275.css">
+  <style>
+    body{min-height:100vh;margin:0;display:grid;place-items:center;background:#0b0d0e;color:#f4f1ec;font-family:Arial,sans-serif}
+    .harness-open{width:auto;padding:12px 18px;border:1px solid #a86642;border-radius:8px;background:#211713;color:#f4f1ec}
+  </style>
+</head>
+<body>
+  <section id="rotationPage" class="rotation-page">
+  <button id="openHarness" class="harness-open" type="button">Open Rotation entry</button>
+  <dialog id="rotationEntryDialog" class="rotation-dialog" aria-labelledby="rotationEntryTitle">
+    <form method="dialog">
+      <div class="rotation-card-heading"><h2 id="rotationEntryTitle">Mark calendar days</h2><button value="cancel" type="submit" aria-label="Close">×</button></div>
+      <label><span>Day type</span><select id="rotationEntryType"><option>Offshore</option><option>Onshore</option><option>Travel</option></select></label>
+      <div class="rotation-field-grid rotation-entry-dates">
+        <label><span>Start date</span><input id="rotationEntryStart" type="date" value="2026-10-12"></label>
+        <label><span>Duration</span><select id="rotationEntryWeeks"></select></label>
+        <label><span>End date</span><input id="rotationEntryEnd" type="date" value="2026-10-18"></label>
+      </div>
+      <p class="rotation-field-hint">Choose from 1 to 48 weeks. The end date is calculated automatically.</p>
+      <label><span>Note (optional)</span><textarea rows="3"></textarea></label>
+      <div class="rotation-dialog-actions"><button class="secondary" value="cancel">Cancel</button><button class="rotation-primary" value="default">Save entry</button></div>
+    </form>
+  </dialog>
+  </section>
+  <script src="../../js/select-standard.js"></script>
+  <script src="../../js/date-picker.js"></script>
+  <script>
+    (function(){
+      var dialog=document.getElementById('rotationEntryDialog');
+      var weeks=document.getElementById('rotationEntryWeeks');
+      var start=document.getElementById('rotationEntryStart');
+      var end=document.getElementById('rotationEntryEnd');
+      for(var n=1;n<=48;n++){
+        var option=document.createElement('option');
+        option.value=String(n);
+        option.textContent=n+' '+(n===1?'week':'weeks')+(n===26?' (about 6 months)':'');
+        weeks.appendChild(option);
+      }
+      function iso(date){return date.toISOString().slice(0,10)}
+      function syncEnd(){
+        var date=new Date(start.value+'T00:00:00Z');
+        date.setUTCDate(date.getUTCDate()+Number(weeks.value||1)*7-1);
+        end.value=iso(date);
+      }
+      weeks.addEventListener('change',syncEnd);
+      start.addEventListener('change',syncEnd);
+      document.getElementById('openHarness').addEventListener('click',function(){dialog.showModal()});
+    })();
+  </script>
+</body>
+</html>

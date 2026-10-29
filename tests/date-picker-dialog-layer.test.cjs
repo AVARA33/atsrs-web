@@ -58,7 +58,9 @@ test('date picker joins an open modal top layer and restores itself on close', (
   assert.match(script, /document\.body\.appendChild\(picker\)/);
   assert.match(styles, /dialog\.atsrs-date-picker-host\s*\{[^}]*overflow:visible!important;/s);
   assert.doesNotMatch(script, /activeDialogHost&&window\.innerWidth>=860/);
-  assert.match(script, /var centeredLeft=inputRect\.left;/);
+  assert.match(script, /var centeredLeft=activeInput\.id==='rotationEntryEnd'[\s\S]*?inputRect\.right-dialogRect\.width[\s\S]*?:inputRect\.left;/);
+  assert.match(script, /dialog\.style\.left=Math\.round\(left\)\+'px'/);
+  assert.match(script, /dialog\.style\.top=Math\.round\(top\)\+'px'/);
   assert.match(styles, /max-height:calc\(100vh - 24px\);[\s\S]*?overflow-y:auto;/);
 });
 
