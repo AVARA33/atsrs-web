@@ -1,3 +1,55 @@
+# JobSearch detail readability and grid-card restoration — Design QA (V6292)
+
+- Detail source visual truth: `C:\Users\user\Documents\Codex\2026-10-30\task-2\image(20261030-171548).png` (2560 × 1528 px, density-normalized in montage).
+- Grid typography source: ChatGPT Library `libfile_6f933aec6d048191b9038ff317d7a63e`, plus the user's exact numeric acceptance sizes.
+- Live detail screenshot: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\job-detail-v6291-live-helix.png`.
+- Detail side-by-side comparison: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\job-detail-v6291-comparison.png`.
+- Live grid screenshots: `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\job-grid-v6292-live-wide.png` and `C:\Users\user\Documents\GitHub\atsrs-rotation-earnings\output\job-grid-v6292-live-mobile.png`.
+- Viewports: 1440 × 900 and 390 × 844 CSS px at density 1.
+- State: ATSRS JobSearch grid and the live `ROV Senior Pilot Technician (Offshore)` detail; solution remains reusable across sectors, roles and countries.
+
+## Findings and resolution
+
+- P1 fixed: long-form detail copy no longer competes with the job artwork. Artwork remains in the existing dynamic header while metadata, description, requirements and contacts use opaque graphite surfaces.
+- P1 fixed: the exact existing eligibility sentence is promoted near the summary without rewriting or removing it from Requirements.
+- P1 fixed: Application uses the existing destination as the only primary Apply action; existing email, recruiter LinkedIn and listing-source URLs remain secondary and are never invented.
+- User correction applied: the rejected extra X control was fully removed. The original single 28 px circular minimize/collapse control, Escape behavior and focus trap remain.
+- P2 fixed: duplicate Country is visually suppressed only when Location already contains the exact country; the original job value remains in the job data and on the facts node dataset.
+- P2 fixed: long Tools / Equipment spans a wrapping full row; sentence content is split into exact, unchanged bullet items for readable scanning.
+- P1 grid typography fixed: heading remains 18 px/800. Company and summary are 16 px; summary line-height is 1.5; location/employment and View job are 15 px; chips are 14 px.
+- Historical four-link set restored from commit `e3dbe231` (`js/jobs-prototype.js`): Recruiter LinkedIn → validated `recruiter_linkedin_url`; Recruiter email → existing `mailtoHref(job)`; Listing source → validated `listingSourceHref(job)`; Application → validated application URL with existing email fallback. Missing source data produces no fabricated control.
+- Current View job button and existing favorite/minimize controls remain intact. The restored actions auto-flow into a two-column grid with no empty leading slot when fewer than four verified links exist.
+
+## Verification
+
+- Detail live V6291: one control, no `.job-detail-close`, 27 × 27 px rendered circle, correct eligibility text, no hand icons, no horizontal overflow, internal vertical scroll present.
+- Detail keyboard: Tab remains inside the modal; Escape closes; focus return was verified on the originating expand control before the user correction and preserved by the restored control path.
+- Detail links: Helix email, LinkedIn listing and application targets match the existing job data. No target was clicked or modified.
+- Grid live V6292 desktop: three equal columns; first card 407 × 510 px; no vertical clipping or action/footer overlap.
+- Grid live V6292 mobile: 390 px viewport, 375 px document, no horizontal overflow; card 351 × 560 px with no clipping or overlap. A denser local fixture with three restored actions grew to 632 px without overlap.
+- Measured grid contrast against the approved opaque card surface `#0b0c0d`: summary 14.20:1, facts 17.52:1, chips 17.04:1, company 17.78:1, action links 8.72:1. Apply text contrast is 5.21:1.
+- Focused automated tests: 6/6 passed. JavaScript syntax check, `git diff --check`, and Cloudflare production build passed.
+- Browser console errors: 0.
+
+## Comparison history
+
+1. Source showed artwork competing with body text, dense copy, repeated Country, an unprioritized application link and tiny grid typography (company 12 px, summary 11 px, facts/button 10 px, chips 9 px).
+2. First detail iteration added a redundant X. The user rejected it; V6291 removed its markup, CSS and tests and restored the original minimize/collapse control.
+3. V6291 visual comparison passed for the corrected detail structure, hierarchy and preserved artwork identity.
+4. V6292 restored the historical four-link set and raised only non-heading grid typography. Desktop/mobile captures show readable text, preserved photo composition and no overlap or overflow.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing family and heading scale preserved; all requested non-heading sizes verified from computed styles.
+- Spacing and layout: original photo-card composition retained; cards grow instead of shrinking text; responsive action wrapping passed.
+- Colors and tokens: ATSRS graphite/copper identity retained; contrast exceeds 4.5:1 for normal text.
+- Image quality: existing dynamic sector/job artwork remains unchanged; no generated or replacement assets.
+- Copy and content: job wording and URLs preserved exactly; no vacancy data invented.
+
+final result: passed
+
+---
+
 # JobSearch expanded contact actions — Design QA (V6289)
 
 - Source visual truth: `C:\Users\user\AppData\Local\Temp\codex-clipboard-7c444322-27a0-4043-a164-c6d7c1177f18.png`.
