@@ -777,9 +777,6 @@ html[data-theme="dark"] #jobsPage{--atsrs-jobs-green-text:#ac613b;--jobs-filter-
 #jobsPage .jobs-cards .job-card-recruiter-copy{display:grid;min-width:0;gap:1px}
 #jobsPage .jobs-cards .job-card-recruiter-copy strong{overflow:hidden;color:#f6f5f2!important;font-size:10px;line-height:1.15;text-overflow:ellipsis;white-space:nowrap}
 #jobsPage .jobs-cards .job-card-recruiter-copy small{overflow:hidden;color:#aaaead!important;font-size:8px;line-height:1.15;text-overflow:ellipsis;white-space:nowrap}
-#jobsPage .jobs-cards button.job-card-view-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:0 0 auto;width:auto!important;min-width:104px;height:38px;margin-left:auto;padding:0 17px;border:1px solid #ac613b!important;border-radius:6px;background-color:#ac613b!important;background-image:none!important;color:#fff!important;font-size:11px;font-weight:800;box-shadow:none;cursor:pointer}
-#jobsPage .jobs-cards .job-card-view-cta:hover{background:#c6784c!important;transform:translateY(-1px)}
-#jobsPage .jobs-cards .job-card-view-cta i{font-size:14px}
 #jobsPage .jobs-cards .job-access-lock{flex:1;min-height:36px;margin:0;padding:0;border:0;background:transparent!important}
 #jobsPage .jobs-cards .job-access-lock-copy,#jobsPage .jobs-cards .job-access-lock-features{display:none}
 #jobsPage .jobs-cards .job-access-unlock{width:auto;min-width:130px;min-height:36px;margin-left:auto;border-color:#bf6b3e;background:#b9673d;color:#fff}
@@ -808,14 +805,6 @@ html[data-theme] #jobsPage .jobs-cards .job-card::after{
 html[data-theme] #jobsPage .jobs-cards .job-card[data-job-visual="marine"]::after{background-position:center,right center!important}
 /* Company marks are added after the background crop is approved so every card can share one position. */
 #jobsPage .jobs-cards .job-card-brand{visibility:hidden}
-html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta{
-  border-color:#AC613B!important;
-  background:#AC613B!important;
-}
-html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta:hover{
-  border-color:#C06D45!important;
-  background:#C06D45!important;
-}
 
 /* V6208: permanent neutral/copper JobSearch palette; never fall back to green. */
 html[data-theme] body:has(#jobsPage:not(.hidden)) #jobsPage{
@@ -866,15 +855,6 @@ html[data-theme] #jobsPage .jobs-cards .job-card::before{display:none!important}
   min-width:28px;
   border-radius:5px;
 }
-#jobsPage .jobs-cards button.job-card-view-cta{
-  min-width:88px;
-  height:34px;
-  padding:0 13px;
-  gap:6px;
-  font-size:10px;
-  border-radius:5px;
-}
-#jobsPage .jobs-cards .job-card-view-cta i{font-size:12px}
 
 @media(max-width:1250px){html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{min-height:346px;height:346px}}
 @media(max-width:600px){html[data-theme] #jobsPage .jobs-cards .job-card-slot>.job-card{min-height:370px;height:370px;padding:16px}}
@@ -890,24 +870,6 @@ html[data-theme] #jobsPage .jobs-cards .job-card::before{
   width:0!important;
   height:0!important;
   background:none!important;
-}
-html[data-theme] #jobsPage .jobs-cards button.job-card-view-cta{
-  width:auto!important;
-  min-width:88px!important;
-  height:34px!important;
-  min-height:34px!important;
-  max-height:34px!important;
-  padding:0 12px!important;
-}
-
-/* V6211: outrank the shared 44px control floor without affecting other pages. */
-html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards button.job-card-view-cta{
-  width:auto!important;
-  min-width:88px!important;
-  height:34px!important;
-  min-height:34px!important;
-  max-height:34px!important;
-  padding:0 12px!important;
 }
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-hero #jobsHeading{
   color:#f4f4f2!important;
@@ -1305,26 +1267,12 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions .job-contact-link-icon{
   display:none;
 }
-html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-footer-row{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:12px;
-  min-width:0;
-}
 html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-recruiter-copy :is(strong,small){
   font-size:14px;
   line-height:1.3;
-}
-html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards button.job-card-view-cta,
-html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards button.job-card-view-cta span{
-  font-size:15px;
-  line-height:1;
 }
 @media(max-width:600px){
   html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot,
   html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{min-height:560px;height:auto}
   html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions{grid-template-columns:1fr 1fr}
-  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-footer-row{align-items:flex-start;flex-direction:column}
-  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards button.job-card-view-cta{margin-left:0}
 }

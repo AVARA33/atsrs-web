@@ -1,3 +1,12 @@
+# JobSearch duplicate detail CTA removal — Design QA (V6293)
+
+- Scope: remove the grid-card `View job` CTA while preserving the existing title-aligned expand control and the four conditional external actions.
+- Markup: `job-card-view-cta`, its icon and its click handler were removed. Recruiter identity now renders directly in the contact footer after the verified action links.
+- Styling: all dead `job-card-view-cta` and `job-card-footer-row` rules were removed; no replacement CTA or broad card-layout change was introduced.
+- Accessibility: the remaining expand button is a native `type="button"`, receives the localized `Expand job details` / `Minimize job details` accessible name, and retains explicit Enter/Space activation through `detailControlKeydown`.
+- Regression: focused JobSearch tests pass for the four historical links, duplicate-CTA absence, accessible expand control, and shared dialog behavior. `node --check js/jobs-prototype.js` passes.
+- Final result: passed.
+
 # JobSearch detail readability and grid-card restoration — Design QA (V6292)
 
 - Detail source visual truth: `C:\Users\user\Documents\Codex\2026-10-30\task-2\image(20261030-171548).png` (2560 × 1528 px, density-normalized in montage).

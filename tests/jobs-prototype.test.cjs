@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6292/);
-  assert.match(index,/route-feature-loader\.js\?v=6292/);
+  assert.match(index,/jobs-prototype\.css\?v=6293/);
+  assert.match(index,/route-feature-loader\.js\?v=6293/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6292'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6293'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -219,9 +219,7 @@ test('Jobs is fixed to the standard card view',()=>{
   assert.match(runtime,/contact\(list,'Application',uiText\('Open application'\)/);
   assert.ok(runtime.indexOf("contact(list,'Recruiter LinkedIn'") < runtime.indexOf("contact(list,'Recruiter email'"));
   assert.ok(runtime.indexOf("contact(list,'Listing source'") < runtime.indexOf("contact(list,'Application'"));
-  assert.match(runtime,/var viewButton=el\('button','job-card-view-cta'\)/);
-  assert.match(runtime,/viewButton\.append\(el\('span','',uiText\('View job'\)\),viewIcon\)/);
-  assert.match(runtime,/c\.append\(viewButton\)/);
+  assert.doesNotMatch(runtime,/job-card-view-cta|uiText\('View job'\)|var viewButton=/);
   assert.match(runtime,/function hydrateRecruiterLinkedIn\(client,payload\)/);
   assert.doesNotMatch(runtime,/function action\(/);
   assert.match(runtime,/body=el\('div','job-card-body'\)/);
@@ -354,7 +352,7 @@ test('Grid cards restore four historical job actions with readable typography',(
   assert.match(css,/\.jobs-cards \.job-card-summary\{[^}]*font-size:16px[^}]*line-height:1\.5/);
   assert.match(css,/\.jobs-cards \.job-fact dd\{[^}]*font-size:15px/);
   assert.match(css,/\.jobs-cards \.job-card-tags li\{[^}]*font-size:14px/);
-  assert.match(css,/\.jobs-cards button\.job-card-view-cta,[\s\S]*?\.jobs-cards button\.job-card-view-cta span\{[^}]*font-size:15px/);
+  assert.doesNotMatch(css,/job-card-view-cta/);
   assert.match(css,/\.jobs-cards \.job-card-contact-actions\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
 });
 
@@ -385,6 +383,10 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
   assert.match(runtime,/replaceChildren\(opener\)/);
   assert.match(runtime,/e\.key!=='Enter'&&e\.key!==' '/);
   assert.match(runtime,/details\.addEventListener\('keydown',detailControlKeydown\)/);
+  assert.match(runtime,/details\.type='button'/);
+  assert.match(runtime,/details\.onclick=function\(\)\{openDetails\(job,details,preview\)\}/);
+  assert.match(runtime,/button\.setAttribute\('aria-label',label\)/);
+  assert.doesNotMatch(runtime,/job-card-view-cta|uiText\('View job'\)/);
   assert.doesNotMatch(runtime,/e\.target===dialog/);
   assert.match(runtime,/addEventListener\('cancel',function\(e\)\{e\.preventDefault\(\);dismissDetails\(dialog\)\}\)/);
 });
