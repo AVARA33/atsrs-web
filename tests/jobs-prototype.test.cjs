@@ -15,7 +15,7 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6230/);
+  assert.match(index,/jobs-prototype\.css\?v=6288/);
   assert.match(index,/route-feature-loader\.js\?v=6230/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
   assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6230'\)/);
@@ -321,6 +321,13 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-dialog\{width:100vw;height:100dvh/);
   assert.match(css,/\.job-detail-dialog\[open\]:not\(\.is-leaving\)\{transform:scale\(1\)\}/);
   assert.match(css,/html\[data-theme="light"\] body #app\.app:not\(\.hidden\) #jobsPage \.jobs-view-switch\{border-color:transparent!important/);
+});
+
+test('Mobile job details preserve one-finger vertical touch scrolling',()=>{
+  assert.match(css,/\.job-detail-panel\{[^}]*display:flex[^}]*flex-direction:column[^}]*min-height:0[^}]*overflow:hidden/);
+  assert.match(css,/\.job-detail-body\{[^}]*flex:1 1 auto[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*overscroll-behavior-y:contain[^}]*touch-action:pan-y[^}]*-webkit-overflow-scrolling:touch/);
+  assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-panel\{height:100dvh;min-height:0;max-height:100dvh\}[\s\S]*?\.job-detail-body\{height:auto;min-height:0;max-height:none[^}]*overflow-y:auto[^}]*touch-action:pan-y[^}]*-webkit-overflow-scrolling:touch/);
+  assert.doesNotMatch(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-body\{height:100%;max-height:100%/);
 });
 
 test('Jobs card and dialog controls share one uniform title-aligned interaction contract',()=>{
