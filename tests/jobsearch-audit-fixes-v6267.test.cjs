@@ -32,6 +32,6 @@ test('job detail dialog supports Escape and decorative CTA icon is hidden', () =
 test('pagination reports the visible range and release cache is bumped', () => {
   assert.match(runtime, /var first=jobs\.length\?\(page-1\)\*PAGE\+1:0,last=/);
   assert.match(runtime, /first\+'–'\+last/);
-  assert.match(loader, /jobs-prototype\.js\?v=6267/);
-  assert.match(index, /data-atsrs-build="V6267"/);
+  assert.match(loader, /jobs-prototype\.js\?v=6287/);
+  assert.match(index, /data-atsrs-build="V6287"/);
 });
