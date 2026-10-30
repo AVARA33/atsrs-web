@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6291/);
-  assert.match(index,/route-feature-loader\.js\?v=6291/);
+  assert.match(index,/jobs-prototype\.css\?v=6292/);
+  assert.match(index,/route-feature-loader\.js\?v=6292/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6291'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6292'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -342,6 +342,20 @@ test('Expanded job contact actions use one neutral bottom row',()=>{
   assert.match(css,/\.job-detail-contacts \.job-detail-contact-actions>p\{[^}]*display:grid[^}]*min-height:46px/);
   assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions \.job-contact-clickable\{[^}]*border:0!important[^}]*background:transparent!important[^}]*box-shadow:none!important/);
   assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions \.job-contact-link,[\s\S]*?\.job-detail-dialog \.job-detail-contact-actions \.job-contact-static>span\{[^}]*color:var\(--jobs-copper-hover,#d07a4b\)!important/);
+});
+
+test('Grid cards restore four historical job actions with readable typography',()=>{
+  assert.match(runtime,/cardActions=el\('div','job-contact-actions job-card-contact-actions'\)/);
+  assert.match(runtime,/contact\(cardActions,'Recruiter LinkedIn',uiText\('Open LinkedIn'\),'linkedin',linkedinHref\)/);
+  assert.match(runtime,/contact\(cardActions,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
+  assert.match(runtime,/contact\(cardActions,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
+  assert.match(runtime,/contact\(cardActions,'Application',uiText\('Open application'\),'application',applicationHref\)/);
+  assert.match(css,/\.jobs-cards \.job-card-company\{[^}]*font-size:16px/);
+  assert.match(css,/\.jobs-cards \.job-card-summary\{[^}]*font-size:16px[^}]*line-height:1\.5/);
+  assert.match(css,/\.jobs-cards \.job-fact dd\{[^}]*font-size:15px/);
+  assert.match(css,/\.jobs-cards \.job-card-tags li\{[^}]*font-size:14px/);
+  assert.match(css,/\.jobs-cards button\.job-card-view-cta,[\s\S]*?\.jobs-cards button\.job-card-view-cta span\{[^}]*font-size:15px/);
+  assert.match(css,/\.jobs-cards \.job-card-contact-actions\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
 });
 
 test('Expanded job detail uses a readable content surface and prominent eligibility',()=>{
