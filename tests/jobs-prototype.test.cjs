@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6288/);
-  assert.match(index,/route-feature-loader\.js\?v=6230/);
+  assert.match(index,/jobs-prototype\.css\?v=6289/);
+  assert.match(index,/route-feature-loader\.js\?v=6289/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6230'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6289'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -328,6 +328,19 @@ test('Mobile job details preserve one-finger vertical touch scrolling',()=>{
   assert.match(css,/\.job-detail-body\{[^}]*flex:1 1 auto[^}]*min-height:0[^}]*overflow-x:hidden[^}]*overflow-y:auto[^}]*overscroll-behavior-y:contain[^}]*touch-action:pan-y[^}]*-webkit-overflow-scrolling:touch/);
   assert.match(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-panel\{height:100dvh;min-height:0;max-height:100dvh\}[\s\S]*?\.job-detail-body\{height:auto;min-height:0;max-height:none[^}]*overflow-y:auto[^}]*touch-action:pan-y[^}]*-webkit-overflow-scrolling:touch/);
   assert.doesNotMatch(css,/@media\(max-width:600px\)[^{]*\{[\s\S]*?\.job-detail-body\{height:100%;max-height:100%/);
+});
+
+test('Expanded job contact actions use one neutral bottom row',()=>{
+  assert.match(runtime,/meta=el\('div','job-recruiter-info job-detail-recruiter-meta'\),actions=el\('div','job-contact-actions job-detail-contact-actions'\)/);
+  assert.match(runtime,/contact\(meta,'Recruiter phone'/);
+  assert.match(runtime,/contact\(actions,'Recruiter LinkedIn'/);
+  assert.match(runtime,/contact\(actions,'Recruiter email'/);
+  assert.match(runtime,/contact\(actions,'Listing source'/);
+  assert.match(runtime,/contact\(actions,'Application'/);
+  assert.match(css,/\.job-detail-contacts \.job-detail-contact-actions\{[^}]*grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
+  assert.match(css,/\.job-detail-contacts \.job-detail-contact-actions>p\{[^}]*display:grid[^}]*min-height:46px/);
+  assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions \.job-contact-clickable\{[^}]*border:0!important[^}]*background:transparent!important[^}]*box-shadow:none!important/);
+  assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions \.job-contact-link,[\s\S]*?\.job-detail-dialog \.job-detail-contact-actions \.job-contact-static>span\{[^}]*color:var\(--jobs-copper-hover,#d07a4b\)!important/);
 });
 
 test('Jobs card and dialog controls share one uniform title-aligned interaction contract',()=>{
