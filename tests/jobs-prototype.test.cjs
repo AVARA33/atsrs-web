@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6293/);
-  assert.match(index,/route-feature-loader\.js\?v=6293/);
+  assert.match(index,/jobs-prototype\.css\?v=6294/);
+  assert.match(index,/route-feature-loader\.js\?v=6294/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6293'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6294'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -344,16 +344,27 @@ test('Expanded job contact actions use one neutral bottom row',()=>{
 
 test('Grid cards restore four historical job actions with readable typography',()=>{
   assert.match(runtime,/cardActions=el\('div','job-contact-actions job-card-contact-actions'\)/);
-  assert.match(runtime,/contact\(cardActions,'Recruiter LinkedIn',uiText\('Open LinkedIn'\),'linkedin',linkedinHref\)/);
-  assert.match(runtime,/contact\(cardActions,'Recruiter email',validEmail\(job\.recruiter_email\),'email',mailtoHref\(job\)\)/);
-  assert.match(runtime,/contact\(cardActions,'Listing source',sourceName\(job\),'source',listingSourceHref\(job\)\)/);
-  assert.match(runtime,/contact\(cardActions,'Application',uiText\('Open application'\),'application',applicationHref\)/);
+  assert.match(runtime,/if\(linkedinHref\)contact\(cardActions,'Recruiter LinkedIn',uiText\('Recruiter LinkedIn'\),'linkedin',linkedinHref\)/);
+  assert.match(runtime,/if\(emailHref\)contact\(cardActions,'Recruiter email',uiText\('Recruiter email'\),'email',emailHref\)/);
+  assert.match(runtime,/if\(sourceHref\)contact\(cardActions,'Listing source',uiText\('Listing source'\),'source',sourceHref\)/);
+  assert.match(runtime,/if\(applicationHref\)contact\(cardActions,'Application',uiText\('Application'\),'application',applicationHref\)/);
   assert.match(css,/\.jobs-cards \.job-card-company\{[^}]*font-size:16px/);
   assert.match(css,/\.jobs-cards \.job-card-summary\{[^}]*font-size:16px[^}]*line-height:1\.5/);
   assert.match(css,/\.jobs-cards \.job-fact dd\{[^}]*font-size:15px/);
   assert.match(css,/\.jobs-cards \.job-card-tags li\{[^}]*font-size:14px/);
   assert.doesNotMatch(css,/job-card-view-cta/);
   assert.match(css,/\.jobs-cards \.job-card-contact-actions\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css,/\.jobs-cards \.job-card-tags li\{[^}]*border:1px solid #7d4a31[^}]*background:#241b16[^}]*color:#f4e9df/);
+  assert.match(css,/\.jobs-cards \.job-card-contact-actions \.job-contact-link\{[^}]*color:#f4e9df!important[^}]*font-size:15px/);
+  assert.match(css,/\.jobs-cards \.job-card-contact-actions \.job-contact-link-text\{[^}]*font-size:15px!important[^}]*line-height:1\.3!important/);
+  assert.match(css,/\.jobs-cards \.job-card-contact-actions>\.job-contact-application\{[^}]*background:#342118!important/);
+  assert.match(runtime,/icons=\{linkedin:'ph-linkedin-logo',email:'ph-envelope-simple',source:'ph-link',application:'ph-file-text'\}/);
+});
+
+test('Expanded vacancy actions stay in one neutral desktop row',()=>{
+  assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions\{[^}]*grid-template-columns:repeat\(4,minmax\(0,1fr\)\)[^}]*align-items:stretch/);
+  assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions>\.job-contact-application\{[^}]*border:0!important[^}]*background:transparent!important/);
+  assert.match(css,/\.job-detail-dialog \.job-detail-contact-actions \.job-contact-link-text\{[^}]*color:#d8885d!important/);
 });
 
 test('Expanded job detail uses a readable content surface and prominent eligibility',()=>{

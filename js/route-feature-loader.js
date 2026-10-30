@@ -37,7 +37,7 @@
   }
 
   function loadJobs(){
-    return loadScript('js/jobs-prototype.js?v=6293');
+    return loadScript('js/jobs-prototype.js?v=6294');
   }
 
   function loadRecruiters(){

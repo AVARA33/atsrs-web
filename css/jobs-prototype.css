@@ -1276,3 +1276,241 @@ html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) 
   html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{min-height:560px;height:auto}
   html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions{grid-template-columns:1fr 1fr}
 }
+
+/* V6294 — approved Marketing card composition with warm ATSRS chips. */
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-grid.jobs-cards{
+  align-items:stretch;
+  gap:18px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot{
+  display:flex;
+  min-width:0;
+  height:auto;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{
+  width:100%;
+  min-height:600px;
+  height:100%;
+  padding:22px 22px 18px;
+  border:1px solid #7d4a31!important;
+  border-radius:12px;
+  background:#0b0c0d!important;
+  box-shadow:0 18px 38px rgba(0,0,0,.34);
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card::after{
+  background-image:linear-gradient(180deg,rgba(5,7,8,.34) 0%,rgba(5,7,8,.58) 38%,rgba(5,7,8,.84) 68%,rgba(5,7,8,.97) 100%),var(--job-card-art)!important;
+  background-position:center,center!important;
+  background-size:cover,cover!important;
+  filter:saturate(.82) contrast(1.06) brightness(.88)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand{
+  top:20px;
+  left:22px;
+  width:220px;
+  max-width:58%;
+  height:36px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-head{
+  align-self:start;
+  margin-top:78px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-head h2{
+  max-width:100%;
+  padding-right:0;
+  text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-company{
+  font-size:16px;
+  line-height:1.35;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-body{
+  align-self:start;
+  overflow:visible;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-project-info{
+  gap:12px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-summary{
+  display:block;
+  color:#dedbd8!important;
+  -webkit-text-fill-color:#dedbd8!important;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-line-clamp:unset;
+  line-clamp:unset;
+  overflow:visible;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-facts{
+  gap:8px 16px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-fact{
+  min-width:0;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-fact dd{
+  font-size:15px;
+  line-height:1.4;
+  overflow-wrap:anywhere;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-tags{
+  gap:7px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-tags li{
+  padding:6px 10px;
+  border:1px solid #7d4a31;
+  border-radius:7px;
+  background:#241b16;
+  color:#f4e9df;
+  font-size:14px;
+  line-height:1.35;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  box-shadow:none;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-contact-info{
+  align-self:end;
+  justify-self:stretch;
+  justify-content:stretch;
+  grid-template-columns:minmax(0,1fr);
+  width:100%;
+  box-sizing:border-box;
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid rgba(125,74,49,.72);
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-recruiter-meta{
+  display:none;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-auto-flow:row;
+  gap:9px 10px;
+  justify-self:stretch;
+  width:100%!important;
+  max-width:none!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions>.job-contact-clickable{
+  display:block!important;
+  min-height:50px;
+  padding:0;
+  border:1px solid #9a5a38!important;
+  border-radius:8px;
+  background:rgba(10,11,11,.9)!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions>.job-contact-clickable>strong{
+  position:absolute;
+  width:1px;
+  height:1px;
+  margin:-1px;
+  clip:rect(0 0 0 0);
+  clip-path:inset(50%);
+  overflow:hidden;
+  white-space:nowrap;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions .job-contact-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+  min-height:50px;
+  padding:9px 12px;
+  color:#f4e9df!important;
+  -webkit-text-fill-color:#f4e9df!important;
+  font-size:15px;
+  font-weight:700;
+  line-height:1.3;
+  text-decoration:none;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions .job-contact-link-icon{
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 auto;
+  color:#e89b70;
+  font-size:22px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions .job-contact-link-text{
+  min-width:0;
+  color:#f4e9df!important;
+  -webkit-text-fill-color:#f4e9df!important;
+  font-size:15px!important;
+  line-height:1.3!important;
+  overflow-wrap:anywhere;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions>.job-contact-application{
+  border-color:#a96440!important;
+  background:#342118!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions>.job-contact-clickable:hover{
+  border-color:#c47850!important;
+  background:#2b1c16!important;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions>.job-contact-clickable:focus-within{
+  outline:2px solid #e89b70;
+  outline-offset:2px;
+}
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-contact-linkedin,
+html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-contact-email{
+  display:block!important;
+}
+@media(max-width:900px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{min-height:0;height:auto}
+}
+@media(max-width:520px){
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-slot>.job-card{padding:20px 18px 16px}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-brand{left:18px;max-width:54%}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions{grid-template-columns:minmax(0,1fr)}
+  html[data-theme] body:where(.personal-mode,.company-mode) #app.app:not(.hidden) > .main #jobsPage:not(.hidden) .jobs-cards .job-card-contact-actions>.job-contact-clickable{width:100%}
+}
+
+/* V6294 — vacancy dialog actions use one bottom row and no legacy green cards. */
+html[data-theme] body .job-detail-dialog .job-detail-contacts{display:grid;grid-template-columns:minmax(0,1fr)}
+html[data-theme] body .job-detail-dialog .job-detail-contacts>h3,
+html[data-theme] body .job-detail-dialog .job-detail-recruiter-meta,
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions{grid-column:1/-1;width:100%;box-sizing:border-box}
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:stretch;
+  gap:10px 24px;
+  padding-top:10px;
+  border-top:1px solid rgba(125,74,49,.72);
+}
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions>p,
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions>.job-contact-application{
+  display:grid;
+  align-content:end;
+  height:100%;
+  min-width:0;
+  min-height:46px;
+  margin:0;
+  padding:2px 0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions .job-contact-link,
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions .job-contact-application .job-contact-link{
+  justify-content:flex-start;
+  min-height:0;
+  padding:6px 0!important;
+  color:#d8885d!important;
+  -webkit-text-fill-color:#d8885d!important;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+}
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions .job-contact-link-text{
+  color:#d8885d!important;
+  -webkit-text-fill-color:#d8885d!important;
+  text-decoration:inherit;
+}
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions>.job-contact-clickable:hover,
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions>.job-contact-application:hover{border:0!important;background:transparent!important;box-shadow:none!important}
+html[data-theme] body .job-detail-dialog .job-detail-contact-actions>.job-contact-clickable:focus-within{outline:2px solid #e89b70!important;outline-offset:3px!important}
+@media(max-width:900px){
+  html[data-theme] body .job-detail-dialog .job-detail-contact-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  html[data-theme] body .job-detail-dialog .job-detail-contact-actions{grid-template-columns:minmax(0,1fr)}
+}

@@ -1,3 +1,20 @@
+# Approved Marketing JobSearch grid — Design QA (V6294)
+
+- Approved visual source: ChatGPT Library `libfile_80a640fc0e8c8191bf44b2d4687f5d1b`, PNG 1672 × 941, SHA-256 `389EC6603866347F33664BD436C9066833B55CC69D8A5D44618E5235AB4F20BF`.
+- Scope: faithful three-column photo-card composition with the production job data, original four conditional actions, favorite/expand controls, and no `View job` or extra X.
+- Chip refinement requested by the user: background `#241B16`, border `#7D4A31`, text `#F4E9DF`. Application uses subdued `#342118`, not a bright-orange primary fill.
+- Fresh headless before: `output/job-grid-v6293-before-marketing.png`.
+- Fresh headless after: `output/job-grid-v6294-marketing-desktop-headless.png` and `output/job-grid-v6294-marketing-mobile-headless.png`.
+- Desktop 1600 px: three equal 468 px columns; first-row cards are all 468 × 702 px; no card clipping or overflow.
+- Mobile 390 px: document width 390 px, card width 354 px, single 316 px action column; no horizontal overflow or clipped content.
+- Computed typography: title 18/20.16 px at weight 800; company 16/21.6 px; summary 16/24 px; facts 15/21 px; chips 14/18.9 px; actions 15/19.5 px.
+- Contrast: chips 14.13:1, neutral actions 16.49:1, Application 12.76:1, company 17.78:1, summary 14.20:1, facts 17.52:1, copper action icons 8.78:1.
+- Conditional action QA: fixture with all verified fields renders exactly four controls in historical order. HTTP(S) targets use `_blank` plus `noopener noreferrer`; invalid or absent values do not create controls.
+- Interaction QA: 30 favorite controls and 30 expand controls; Enter opens, Space closes, `aria-expanded` and accessible labels update; `View job` count 0; extra X count 0.
+- Expanded vacancy dialog: the four available contact/application actions occupy one bottom-aligned desktop row; the legacy green boxes are replaced by neutral transparent controls with copper links. Responsive layouts use two columns below 900 px and one below 520 px.
+- Validation: focused JobSearch regression 3/3 passed, `node --check` passed, Cloudflare build produced 566 files, and `git diff --check` passed. The broad legacy file remains 10/16 because six pre-existing cache/string assertions are stale and unrelated to this card change.
+- Final result: passed.
+
 # JobSearch duplicate detail CTA removal — Design QA (V6293)
 
 - Scope: remove the grid-card `View job` CTA while preserving the existing title-aligned expand control and the four conditional external actions.
