@@ -15,10 +15,10 @@ const routeLoader=fs.readFileSync(path.join(root,'js','route-feature-loader.js')
 test('Jobs is isolated, navigable and visibly live',()=>{
   assert.match(index,/id="navJobs"[^>]*showPage\('jobs'/);
   assert.doesNotMatch(index,/LIVE JOBS|jobs-development-badge/,'The redundant LIVE JOBS badge must not appear in the Jobs hero.');
-  assert.match(index,/jobs-prototype\.css\?v=6290/);
-  assert.match(index,/route-feature-loader\.js\?v=6290/);
+  assert.match(index,/jobs-prototype\.css\?v=6291/);
+  assert.match(index,/route-feature-loader\.js\?v=6291/);
   assert.doesNotMatch(index,/<script src="js\/jobs-prototype\.js\?v=58163"><\/script>/);
-  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6290'\)/);
+  assert.match(routeLoader,/loadScript\('js\/jobs-prototype\.js\?v=6291'\)/);
   assert.match(routeLoader,/page=String\(page\|\|''\);[\s\S]*?if\(page==='jobs'\)loadJobs\(\)/);
   assert.equal((storage.match(/jobs:navJobs/g)||[]).length,2);
   assert.match(shellCss,/#navJobs/);
@@ -296,9 +296,7 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.match(runtime,/ph-arrows-in':'ph-arrows-out/);
   assert.match(runtime,/ph ph-arrows-out/);
   assert.doesNotMatch(runtime,/ph ph-(?:minus|square)/);
-  assert.match(runtime,/el\('button','job-detail-close'\)/);
-  assert.match(runtime,/setAttribute\('aria-label',uiText\('Close job details'\)\)/);
-  assert.match(runtime,/closeButton\.onclick=function\(\)\{dismissDetails\(dialog\)\}/);
+  assert.doesNotMatch(runtime,/job-detail-close|Close job details/);
   assert.doesNotMatch(runtime,/Restore vacancy details|Close vacancy details/);
   assert.match(runtime,/function dismissDetails\(dialog\)/);
   assert.match(runtime,/addEventListener\('cancel'/);
@@ -312,9 +310,8 @@ test('Jobs detail overlay is shared, accessible and safely rendered',()=>{
   assert.doesNotMatch(runtime,/innerHTML|insertAdjacentHTML|document\.write/);
   assert.match(css,/body #jobsPage \.job-detail-toggle,body \.job-detail-dialog \.job-detail-toggle\{[^}]*top:8px[^}]*right:8px[^}]*width:28px[^}]*height:28px[^}]*border-radius:50%!important/);
   assert.match(css,/#app\.app:not\(\.hidden\)>\.main #jobsPage \.job-detail-toggle[^}]*width:28px!important[^}]*height:28px!important[^}]*min-width:28px!important[^}]*min-height:28px!important/);
-  assert.match(css,/\.job-detail-controls\{position:absolute[^}]*display:flex/);
-  assert.doesNotMatch(css,/job-detail-dialog\.is-maximized|job-detail-maximize/);
-  assert.match(css,/\.job-detail-dialog \.job-detail-close\{[^}]*width:36px!important[^}]*height:36px!important/);
+  assert.match(css,/\.job-detail-controls\{display:contents\}/);
+  assert.doesNotMatch(css,/job-detail-dialog\.is-maximized|job-detail-maximize|job-detail-close/);
   assert.match(css,/background:#111214!important[^}]*color:#f8fafc!important/);
   assert.match(css,/\.job-detail-toggle::after[^}]*inset:-8px[^}]*border-radius:50%/);
   assert.doesNotMatch(css,/\.ph-square::before|\.ph-minus::before/);
@@ -371,7 +368,7 @@ test('Jobs card and dialog controls share one uniform title-aligned interaction 
   assert.equal((runtime.match(/el\('button','job-detail-toggle'\)/g)||[]).length,1);
   assert.equal((shellCss.match(/:not\(\.job-detail-toggle\)/g)||[]).length,3);
   assert.doesNotMatch(runtime,/el\('button','job-detail-control job-detail-minimize'\)/);
-  assert.match(runtime,/replaceChildren\(opener,closeButton\)/);
+  assert.match(runtime,/replaceChildren\(opener\)/);
   assert.match(runtime,/e\.key!=='Enter'&&e\.key!==' '/);
   assert.match(runtime,/details\.addEventListener\('keydown',detailControlKeydown\)/);
   assert.doesNotMatch(runtime,/e\.target===dialog/);
